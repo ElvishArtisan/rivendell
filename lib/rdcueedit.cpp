@@ -2,7 +2,7 @@
 //
 // Cueing Editor for RDLogLine-based Events
 //
-//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,12 +26,9 @@
 #include "rdconf.h"
 #include "rdcueedit.h"
 
-RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
+RDCueEdit::RDCueEdit(QWidget *parent)
   : RDWidget(parent)
 {
-  edit_cae=cae;
-  edit_play_card=card;
-  edit_play_port=port;
   edit_height=325;
   edit_slider_pressed=false;
   edit_shift_pressed=false;
@@ -102,7 +99,8 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_audition_button->
     setPalette(QPalette(backgroundColor(),QColor(Qt::gray)));
   edit_audition_button->setFont(buttonFont());
-  //  edit_audition_button->setText(tr("&Audition"));
+  edit_audition_button->
+    setDisabled((rda->station()->cueCard()<0)||(rda->station()->cuePort()<0));
   connect(edit_audition_button,SIGNAL(clicked()),
 	  this,SLOT(auditionButtonData()));
 
@@ -114,7 +112,8 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_pause_button->
     setPalette(QPalette(backgroundColor(),QColor(Qt::gray)));
   edit_pause_button->setFont(buttonFont());
-  //  edit_pause_button->setText(tr("&Pause"));
+  edit_pause_button->
+    setDisabled((rda->station()->cueCard()<0)||(rda->station()->cuePort()<0));
   connect(edit_pause_button,SIGNAL(clicked()),this,SLOT(pauseButtonData()));
 
   //
@@ -126,7 +125,8 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_stop_button->
     setPalette(QPalette(backgroundColor(),QColor(Qt::gray)));
   edit_stop_button->setFont(buttonFont());
-  //  edit_stop_button->setText(tr("&Stop"));
+  edit_stop_button->
+    setDisabled((rda->station()->cueCard()<0)||(rda->station()->cuePort()<0));
   connect(edit_stop_button,SIGNAL(clicked()),this,SLOT(stopButtonData()));
 
   //
@@ -180,7 +180,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   //
   // Play Deck
   //
-  edit_play_deck=new RDPlayDeck(edit_cae,RDPLAYDECK_AUDITION_ID,this);
+  edit_play_deck=new RDPlayDeck(rda->cae(),RDPLAYDECK_AUDITION_ID,this);
   connect(edit_play_deck,SIGNAL(stateChanged(int,RDPlayDeck::State)),this,
 	  SLOT(stateChangedData(int,RDPlayDeck::State)));
   connect(edit_play_deck,SIGNAL(position(int,int)),
@@ -312,8 +312,8 @@ void RDCueEdit::auditionButtonData()
   if(edit_play_deck->state()==RDPlayDeck::Playing) {
     return;
   }
-  edit_play_deck->setCard(edit_play_card);
-  edit_play_deck->setPort(edit_play_port);
+  edit_play_deck->setCard(rda->station()->cueCard());
+  edit_play_deck->setPort(rda->station()->cuePort());
   if(!edit_play_deck->setCart(edit_logline,false)) {
     return;
   }
@@ -621,8 +621,8 @@ void RDCueEdit::UpdateCounters()
 
 void RDCueEdit::ClearChannel()
 {
-  if(edit_cae->playPortActive(edit_play_deck->card(),edit_play_deck->port(),
-			      edit_play_deck->stream())) {
+  if(rda->cae()->playPortActive(edit_play_deck->card(),edit_play_deck->port(),
+				edit_play_deck->stream())) {
     return;
   }
   if((!edit_stop_rml.isEmpty())&&(edit_event_player!=NULL)) {

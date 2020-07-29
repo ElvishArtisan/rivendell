@@ -179,6 +179,7 @@ void Modbus::connectedData()
 	      "connection to Modbus device at %s:%u established",
 	      (const char *)modbus_ip_address.toString(),0xffff&modbus_ip_port);
   modbus_watchdog_active=false;
+  modbus_busy=false;
   pollInputs();
 }
 

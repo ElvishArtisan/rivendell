@@ -191,6 +191,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   rdairplay_previous_exit_code=rda->airplayConf()->exitCode();
   rda->airplayConf()->setExitCode(RDAirPlayConf::ExitDirty);
+  air_default_trans_type=rda->airplayConf()->defaultTransType();
   air_clear_filter=rda->airplayConf()->clearFilter();
   air_bar_action=rda->airplayConf()->barAction();
   air_op_mode_style=rda->airplayConf()->opModeStyle();
@@ -623,7 +624,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   air_pause_enabled=rda->airplayConf()->pauseEnabled();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log_list[i]=new ListLog(air_log[i],rda->cae(),i,air_pause_enabled,this);
+    air_log_list[i]=new ListLog(air_log[i],i,air_pause_enabled,this);
     air_log_list[i]->setGeometry(510,140,air_log_list[i]->sizeHint().width(),
 			      air_log_list[i]->sizeHint().height());
     air_log_list[i]->hide();
@@ -690,8 +691,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Button Log
   //
-  air_button_list=new ButtonLog(air_log[0],rda->cae(),0,rda->airplayConf(),
-				air_pause_enabled,this);
+  air_button_list=
+    new ButtonLog(air_log[0],0,rda->airplayConf(),air_pause_enabled,this);
   air_button_list->setGeometry(10,140,air_button_list->sizeHint().width(),
 			       air_button_list->sizeHint().height());
   connect(air_button_list,SIGNAL(selectClicked(int,int,RDLogLine::Status)),
@@ -1724,15 +1725,17 @@ void MainWidget::transportChangedData()
 	case RDAirPlayConf::CartTransition:
 	  if((next_logline=air_log[0]->
 	      logLine(air_log[0]->nextLine(line)))!=NULL) {
-	    if((unsigned)logline->startTime(RDLogLine::Actual).
+	    //
+	    // Are we not past the segue point?
+	    //
+	    if((logline->playPosition()>
+		(unsigned)logline->segueLength(next_logline->transType()))||
+	       ((unsigned)logline->startTime(RDLogLine::Actual).
 	       msecsTo(QTime::currentTime())<
 	       logline->segueLength(next_logline->transType())-
-	       logline->playPosition()) {
+	       logline->playPosition())) {
 	      air_pie_counter->
 		setTime(logline->segueLength(next_logline->transType()));
-	    }
-	    else {
-	      air_pie_counter->setTime(logline->effectiveLength());
 	    }
 	  }
 	  else {
@@ -2021,6 +2024,20 @@ void MainWidget::paintEvent(QPaintEvent *e)
   p->fillRect(10,70,410,air_stereo_meter->sizeHint().height(),Qt::black);
   p->end();
   delete p;
+}
+
+
+void MainWidget::wheelEvent(QWheelEvent *e)
+{
+  if((air_panel!=NULL)&&(e->orientation()==Qt::Vertical)) {
+    if(e->delta()>0) {
+      air_panel->panelDown();
+    }
+    if(e->delta()<0) {
+      air_panel->panelUp();
+    }
+  }
+  e->accept();
 }
 
 

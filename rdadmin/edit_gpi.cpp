@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Gpi
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,8 +32,6 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
 		 int *offcart,QString *offdesc,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   edit_gpi=gpi;
   edit_oncart=oncart;
   edit_offcart=offcart;

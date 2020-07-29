@@ -62,8 +62,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_playout_map=new QPixmap(play_xpm);
   event_macro_map=new QPixmap(rml5_xpm);
 
-  //
+  // *******************************
   // Library Section
+  // *******************************
   //
   // Text Filter
   //
@@ -175,11 +176,13 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   q=new RDSqlQuery(sql);
   if(q->first()) {
     event_player=
-      new RDSimplePlayer(rda->cae(),rda->ripc(),q->value(0).toInt(),q->value(1).toInt(),
-			 q->value(2).toUInt(),q->value(3).toUInt(),this);
+      new RDSimplePlayer(rda->cae(),rda->ripc(),q->value(0).toInt(),
+			 q->value(1).toInt(),q->value(2).toUInt(),
+			 q->value(3).toUInt(),this);
     event_player->playButton()->
       setGeometry(CENTER_LINE-180,sizeHint().height()-210,80,50);
-    event_player->stopButton()->setGeometry(CENTER_LINE-90,sizeHint().height()-210,80,50);
+    event_player->
+      stopButton()->setGeometry(CENTER_LINE-90,sizeHint().height()-210,80,50);
     event_player->stopButton()->setOnColor(Qt::red);
   }
   delete q;
@@ -191,7 +194,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_remarks_edit->
     setGeometry(10,sizeHint().height()-150,CENTER_LINE-20,140);
   event_remarks_edit->setTextFormat(Qt::PlainText);
-  label=new QLabel(event_remarks_edit,tr("REMARKS"),this);
+  label=new QLabel(event_remarks_edit,tr("USER NOTES"),this);
   label->setFont(labelFont());
   label->setGeometry(15,sizeHint().height()-165,100,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -209,60 +212,52 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 
   RefreshLibrary();
 
-  //
+  // *******************************
   // Pre-Position Log Section
-  //
-  event_position_header=new QLabel(tr("PRE-POSITION LOG"),this);
-  event_position_header->setFont(labelFont());
-  event_position_header->setGeometry(CENTER_LINE+15,10,200,16);
+  // *******************************
+  event_position_group=new QGroupBox(tr("PRE-POSITION LOG"),this);
+  event_position_group->setFont(labelFont());
+  event_position_group->
+    setGeometry(CENTER_LINE+10,2,sizeHint().width()-CENTER_LINE-15,43);
 
   event_position_box=new QCheckBox(this);
-  event_position_box->setGeometry(CENTER_LINE+15,27,15,22);
+  event_position_box->setGeometry(CENTER_LINE+15,19,15,22);
   connect(event_position_box,SIGNAL(toggled(bool)),
 	  this,SLOT(prepositionToggledData(bool)));
   event_position_label=
     new QLabel(event_position_box,tr("Cue to this event"),this);
   event_position_label->setFont(labelFont());
-  event_position_label->setGeometry(CENTER_LINE+35,27,150,22);
+  event_position_label->setGeometry(CENTER_LINE+35,18,150,22);
   event_position_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   event_position_edit=new QTimeEdit(this);
-  event_position_edit->setGeometry(CENTER_LINE+144,26,60,22);
+  event_position_edit->setGeometry(CENTER_LINE+144,18,60,22);
   event_position_edit->setDisplayFormat("mm:ss");
   event_position_unit=new QLabel(event_position_box,
      tr("before scheduled start.  (First cart will have a STOP transition.)"),
 				 this);
   event_position_unit->setFont(labelFont());
-  event_position_unit->setGeometry(CENTER_LINE+212,27,
+  event_position_unit->setGeometry(CENTER_LINE+212,18,
 				   sizeHint().width()-CENTER_LINE-227,22);
   event_position_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
-  //
+  // *******************************
   // Timed Start Section
-  //
-  event_timetype_header=new QLabel(tr("TIMED START"),this);
-  event_timetype_header->setFont(labelFont());
-  event_timetype_header->setGeometry(CENTER_LINE+15,62,200,16);
+  // *******************************
+  event_timetype_group=new QGroupBox(tr("TIMED START"),this);
+  event_timetype_group->setFont(labelFont());
+  event_timetype_group->
+    setGeometry(CENTER_LINE+10,52,sizeHint().width()-CENTER_LINE-15,60);
 
   //
   // Time Type
   //
   event_timetype_check=new QCheckBox(this);
-  event_timetype_check->setGeometry(CENTER_LINE+15,85,15,15);
+  event_timetype_check->setGeometry(CENTER_LINE+15,70,15,15);
   event_timetype_label=
     new QLabel(event_timetype_check,tr("Use hard start time"),this);
-  event_timetype_label->setGeometry(CENTER_LINE+35,84,120,16);
+  event_timetype_label->setGeometry(CENTER_LINE+35,69,120,16);
   event_timetype_label->setFont(labelFont());
   event_timetype_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Post Point
-  //
-  event_post_box=new QCheckBox(this);
-  event_post_box->setGeometry(CENTER_LINE+35,108,15,15);
-  event_post_label=new QLabel(event_post_box,tr("Make Post Point"),this);
-  event_post_label->setGeometry(CENTER_LINE+55,107,95,16);
-  event_post_label->setFont(labelFont());
-  event_post_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Grace Time
@@ -271,117 +266,180 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     new QGroupBox(tr("Action If Previous Event Still Playing"),this);
   event_grace_groupbox->setFont(labelFont());
   event_grace_groupbox->
-    setGeometry(CENTER_LINE+160,77,sizeHint().width()-CENTER_LINE-200,45);
+    setGeometry(CENTER_LINE+170,62,sizeHint().width()-CENTER_LINE-200,45);
   event_grace_group=new QButtonGroup(this);
   event_immediate_button=new QRadioButton(tr("Start immediately"),this);
-  event_immediate_button->setGeometry(CENTER_LINE+170,100,160,15);
+  event_immediate_button->setGeometry(CENTER_LINE+180,85,160,15);
   event_immediate_button->setFont(subLabelFont());
   event_grace_group->addButton(event_immediate_button,0);
   event_next_button=new QRadioButton(tr("Make next"),this);
-  event_next_button->setGeometry(CENTER_LINE+310,100,160,15);
+  event_next_button->setGeometry(CENTER_LINE+320,85,160,15);
   event_next_button->setFont(subLabelFont());
   event_grace_group->addButton(event_next_button,1);
   event_wait_button=new QRadioButton(tr("Wait up to"),this);
-  event_wait_button->setGeometry(CENTER_LINE+420,100,160,15);
+  event_wait_button->setGeometry(CENTER_LINE+430,85,160,15);
   event_wait_button->setFont(subLabelFont());
   event_grace_group->addButton(event_wait_button,2);
 
   event_grace_edit=new QTimeEdit(this);
-  event_grace_edit->setGeometry(CENTER_LINE+500,95,60,20);
+  event_grace_edit->setGeometry(CENTER_LINE+510,83,60,20);
   event_grace_edit->setDisplayFormat("mm:ss");
   connect(event_timetype_check,SIGNAL(toggled(bool)),
 	  this,SLOT(timeToggledData(bool)));
   connect(event_grace_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(graceClickedData(int)));
 
+  // *******************************
+  // Transitions Section
+  // *******************************
+  event_transitions_group=new QGroupBox(tr("TRANSITIONS"),this);
+  event_transitions_group->setFont(labelFont());
+  event_transitions_group->
+    setGeometry(CENTER_LINE+10,119,sizeHint().width()-CENTER_LINE-15,60);
+
   //
-  // Transition Type
+  // First Cart Transition Type
   //
-  event_transtype_box=new QComboBox(this);
-  event_transtype_box->setGeometry(CENTER_LINE+390,131,110,26);
-  event_transtype_box->insertItem(tr("Play"));
-  event_transtype_box->insertItem(tr("Segue"));
-  event_transtype_box->insertItem(tr("Stop"));
-  connect(event_transtype_box,SIGNAL(activated(int)),
+  event_firsttrans_label=
+    new QLabel(tr("First cart has a"),this);
+  event_firsttrans_label->setFont(labelFont());
+  event_firsttrans_label->
+    setGeometry(CENTER_LINE+15,134,
+		labelFontMetrics()->width(event_firsttrans_label->text()+" "),
+		20);
+  event_firsttrans_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+  event_firsttrans_box=new QComboBox(this);
+  event_firsttrans_box->setGeometry(event_firsttrans_label->geometry().x()+
+				    event_firsttrans_label->geometry().width(),
+				    134,90,20);
+  event_firsttrans_box->insertItem(tr("Play"));
+  event_firsttrans_box->insertItem(tr("Segue"));
+  event_firsttrans_box->insertItem(tr("Stop"));
+  event_firsttrans_unit=new QLabel("transition.",this);
+  event_firsttrans_unit->setFont(labelFont());
+  event_firsttrans_unit->
+    setGeometry(event_firsttrans_box->geometry().x()+
+		event_firsttrans_box->geometry().width()+5,134,
+		labelFontMetrics()->width(tr("transition.")),20);
+  event_firsttrans_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+  connect(event_firsttrans_box,SIGNAL(activated(int)),
 	  this,SLOT(timeTransitionData(int)));
-  event_time_label=
-    new QLabel(event_transtype_box,
-	       tr("Transition if previous event ends before start time:"),this);
-  event_time_label->setGeometry(CENTER_LINE+15,131,370,26);
-  event_time_label->setFont(labelFont());
-  event_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
+  
   //
+  // Default Transition Type
+  //
+  event_defaulttrans_label=new QLabel(tr("Imported carts have a"),this);
+  event_defaulttrans_label->setFont(labelFont());
+  event_defaulttrans_label->
+    setGeometry(CENTER_LINE+15,155,
+		labelFontMetrics()->width(event_defaulttrans_label->text()+" "),
+		20);
+  event_defaulttrans_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+  event_defaulttrans_box=new QComboBox(this);
+  event_defaulttrans_box->
+    setGeometry(event_defaulttrans_label->geometry().x()+
+		event_defaulttrans_label->geometry().width(),155,90,20);
+  event_defaulttrans_box->insertItem(tr("Play"));
+  event_defaulttrans_box->insertItem(tr("Segue"));
+  event_defaulttrans_box->insertItem(tr("Stop"));
+  event_defaulttrans_unit=new QLabel(tr("transition."),this);
+  event_defaulttrans_unit->setFont(labelFont());
+  event_defaulttrans_unit->
+    setGeometry(event_defaulttrans_box->geometry().x()+
+		event_defaulttrans_box->geometry().width()+5,155,
+		labelFontMetrics()->width(tr("transition.")),20);
+  event_defaulttrans_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+  
+  // *******************************
   // Enforcing Length Section
-  //
-  label=new QLabel(tr("ENFORCING LENGTH"),this);
-  label->setFont(labelFont());
-  label->setGeometry(CENTER_LINE+15,162,200,16);
+  // *******************************
+  event_autofill_group=new QGroupBox(tr("ENFORCING LENGTH"),this);
+  event_autofill_group->setFont(labelFont());
+  event_autofill_group->
+    setGeometry(CENTER_LINE+10,187,sizeHint().width()-CENTER_LINE-15,43);
 
-  event_autofill_box=new QCheckBox(this,"event_autofill_box");
-  event_autofill_box->setGeometry(CENTER_LINE+100,182,15,15);
+  event_autofill_box=new QCheckBox(this);
+  event_autofill_box->setGeometry(CENTER_LINE+15,207,15,15);
+  connect(event_autofill_box,SIGNAL(toggled(bool)),
+	  this,SLOT(autofillToggledData(bool)));
   label=new QLabel(event_autofill_box,tr("Use AutoFill"),this);
   label->setFont(labelFont());
-  label->setGeometry(CENTER_LINE+120,184,150,15);
+  label->setGeometry(CENTER_LINE+35,207,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   event_autofill_slop_box=new QCheckBox(this);
-  event_autofill_slop_box->setGeometry(CENTER_LINE+210,182,15,15);
+  event_autofill_slop_box->setGeometry(CENTER_LINE+210,207,15,15);
   connect(event_autofill_slop_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autofillWarnToggledData(bool)));
   event_autofill_slop_label1=
     new QLabel(event_autofill_slop_box,tr("Warn if fill is over or under"),
 	       this);
-  event_autofill_slop_label1->setFont(subLabelFont());
-  event_autofill_slop_label1->setGeometry(CENTER_LINE+230,184,170,15);
+  event_autofill_slop_label1->setFont(labelFont());
+  event_autofill_slop_label1->
+    setGeometry(CENTER_LINE+230,207,
+		labelFontMetrics()->width(event_autofill_slop_label1->text()),
+		15);
   event_autofill_slop_label1->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   event_autofill_slop_edit=new QTimeEdit(this);
-  event_autofill_slop_edit->setGeometry(CENTER_LINE+470,179,60,22);
   event_autofill_slop_edit->setDisplayFormat("mm:ss");
   event_autofill_slop_label=
-    new QLabel(event_autofill_slop_edit,tr("by at least"),this);
-  event_autofill_slop_label->setGeometry(CENTER_LINE+400,184,65,15);
-  event_autofill_slop_label->setFont(subLabelFont());
+    new QLabel(event_autofill_slop_edit,tr("by at least")+" ",this);
+  event_autofill_slop_label->
+    setGeometry(event_autofill_slop_label1->geometry().x()+
+	   event_autofill_slop_label1->geometry().width(),207,
+	   labelFontMetrics()->width(event_autofill_slop_label->text()+" "),15);
+  event_autofill_slop_edit->
+    setGeometry(event_autofill_slop_label->geometry().x()+
+		event_autofill_slop_label->geometry().width(),202,60,22);
+  event_autofill_slop_label->setFont(labelFont());
   event_autofill_slop_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   event_timescale_box=new QCheckBox(this);
-  event_timescale_box->setGeometry(CENTER_LINE+250,182,15,15);
+  event_timescale_box->setGeometry(CENTER_LINE+250,207,15,15);
   label=new QLabel(event_timescale_box,tr("Use Timescaling"),this);
   label->setFont(labelFont());
-  label->setGeometry(CENTER_LINE+270,182,150,15);
+  label->setGeometry(CENTER_LINE+270,207,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   event_timescale_box->hide();
   label->hide();
 
+  // *******************************
+  // Cart Stack Section
+  // *******************************
+  event_stack_group=new QGroupBox(tr("CART STACK"),this);
+  event_stack_group->setFont(labelFont());
+  event_stack_group->
+    setGeometry(CENTER_LINE+10,235,sizeHint().width()-CENTER_LINE-15,408);
   //
   // Pre-Import Carts Section
   //
   label=new QLabel(tr("PRE-IMPORT CARTS"),this);
   label->setFont(labelFont());
-  label->setGeometry(CENTER_LINE+15,210,200,16);
+  label->setGeometry(CENTER_LINE+15,250,200,16);
 
   //
   // Pre-Import Carts List
   //
   event_preimport_length_edit=new QLineEdit(this);
-  event_preimport_length_edit->setGeometry(sizeHint().width()-140,208,80,20);
+  event_preimport_length_edit->setGeometry(sizeHint().width()-140,248,80,20);
   event_preimport_length_edit->setReadOnly(true);
   label=new QLabel(event_preimport_length_edit,tr("Len:"),this);
   label->setFont(labelFont());
-  label->setGeometry(sizeHint().width()-330,210,185,16);
+  label->setGeometry(sizeHint().width()-330,250,185,16);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
 
   event_preimport_list=new ImportListView(this);
-  event_preimport_list->setGeometry(CENTER_LINE+15,227,
-				    sizeHint().width()-CENTER_LINE-75,125);
+  event_preimport_list->setGeometry(CENTER_LINE+15,267,
+				    sizeHint().width()-CENTER_LINE-75,115);
   event_preimport_list->setAllColumnsShowFocus(true);
+  event_preimport_list->setAllowFirstTrans(false);
   event_preimport_list->setItemMargin(5);
   event_preimport_list->load(event_name,RDEventImportList::PreImport);
   event_preimport_list->setSortColumn(-1);
-  connect(event_preimport_list,SIGNAL(sizeChanged(int)),
-	  this,SLOT(preimportChangedData(int)));
+  connect(event_preimport_list,SIGNAL(validationNeeded()),
+	  this,SLOT(validate()));
   event_preimport_list->addColumn("");
   event_preimport_list->addColumn(tr("Cart"));
   event_preimport_list->addColumn(tr("Group"));
@@ -395,62 +453,62 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   connect(event_preimport_list,SIGNAL(lengthChanged(int)),
 	  this,SLOT(preimportLengthChangedData(int)));
   event_preimport_up_button=new RDTransportButton(RDTransportButton::Up,this);
-  event_preimport_up_button->setGeometry(sizeHint().width()-50,237,40,40);
+  event_preimport_up_button->setGeometry(sizeHint().width()-50,272,40,40);
   connect(event_preimport_up_button,SIGNAL(clicked()),
 	  this,SLOT(preimportUpData()));
   event_preimport_down_button=
     new RDTransportButton(RDTransportButton::Down,this);
-  event_preimport_down_button->setGeometry(sizeHint().width()-50,302,40,40);
+  event_preimport_down_button->setGeometry(sizeHint().width()-50,337,40,40);
   connect(event_preimport_down_button,SIGNAL(clicked()),
 	  this,SLOT(preimportDownData()));
 
   //
-  // Import Section
+  // Imports
   //
   label=new QLabel(tr("IMPORT"),this);
   label->setFont(labelFont());
-  label->setGeometry(CENTER_LINE+15,362,200,16);
+  label->setGeometry(CENTER_LINE+15,387,200,16);
   
   event_source_group=new QButtonGroup(this);
   connect(event_source_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(importClickedData(int)));
   rbutton=new QRadioButton(this);
   event_source_group->addButton(rbutton,RDEventLine::None);
-  rbutton->setGeometry(CENTER_LINE+80,362,15,15);
+  rbutton->setGeometry(CENTER_LINE+80,387,15,15);
   label=new QLabel(rbutton,tr("None"),this);
   label->setFont(labelFont());
-  label->setGeometry(CENTER_LINE+100,362,150,15);
+  label->setGeometry(CENTER_LINE+100,387,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
   rbutton=new QRadioButton(this);
   event_source_group->addButton(rbutton,RDEventLine::Traffic);
-  rbutton->setGeometry(CENTER_LINE+160,362,15,15);
+  rbutton->setGeometry(CENTER_LINE+160,387,15,15);
   label=new QLabel(rbutton,tr("From Traffic"),this);
   label->setFont(labelFont());
-  label->setGeometry(CENTER_LINE+180,362,150,15);
+  label->setGeometry(CENTER_LINE+180,387,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
   rbutton=new QRadioButton(this);
-  rbutton->setGeometry(CENTER_LINE+280,362,15,15);
+  rbutton->setGeometry(CENTER_LINE+280,387,15,15);
   event_source_group->addButton(rbutton,RDEventLine::Music);
   label=new QLabel(rbutton,tr("From Music"),this);
   label->setFont(labelFont());
-  label->setGeometry(CENTER_LINE+300,362,150,15);
+  label->setGeometry(CENTER_LINE+300,387,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
   rbutton=new QRadioButton(this);
-  rbutton->setGeometry(CENTER_LINE+400,362,15,15);
+  rbutton->setGeometry(CENTER_LINE+400,387,15,15);
   event_source_group->addButton(rbutton,RDEventLine::Scheduler);
   label=new QLabel(rbutton,tr("Select from:"),this);
   label->setFont(labelFont());
-  label->setGeometry(CENTER_LINE+420,362,150,15);
+  label->setGeometry(CENTER_LINE+420,387,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
   //
   // Scheduler Group
   //
   event_sched_group_box=new QComboBox(this);
-  event_sched_group_box->setGeometry(CENTER_LINE+510,359,100,20);
+  event_sched_group_box->setGeometry(CENTER_LINE+510,384,100,20);
   QString sql2="select NAME from GROUPS order by NAME";
   RDSqlQuery *q2=new RDSqlQuery(sql2);
   while(q2->next()) {
@@ -464,16 +522,16 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_artist_sep_label=new QLabel(tr("Artist Separation"),this);
   event_artist_sep_label->setFont(defaultFont());
   event_artist_sep_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  event_artist_sep_label->setGeometry(CENTER_LINE+410,383,100,20);
+  event_artist_sep_label->setGeometry(CENTER_LINE+410,407,100,20);
   
   event_artist_sep_spinbox=new QSpinBox(this);
-  event_artist_sep_spinbox->setGeometry(CENTER_LINE+515,383,53,20);
+  event_artist_sep_spinbox->setGeometry(CENTER_LINE+515,408,53,20);
   event_artist_sep_spinbox->setMinValue( -1 );
   event_artist_sep_spinbox->setMaxValue( 50000 );
   event_artist_sep_spinbox->setSpecialValueText("None");
 
   event_artist_none_button=new QPushButton(this);
-  event_artist_none_button->setGeometry(CENTER_LINE+575,383,40,20);
+  event_artist_none_button->setGeometry(CENTER_LINE+575,408,40,20);
   event_artist_none_button->setFont(subButtonFont());
   event_artist_none_button->setText(tr("None"));
   connect(event_artist_none_button,SIGNAL(clicked()),this,SLOT(artistData()));
@@ -484,16 +542,16 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_title_sep_label=new QLabel(tr("Title Separation"),this);
   event_title_sep_label->setFont(defaultFont());
   event_title_sep_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  event_title_sep_label->setGeometry(CENTER_LINE+410,404,100,20);
+  event_title_sep_label->setGeometry(CENTER_LINE+410,429,100,20);
   
   event_title_sep_spinbox=new QSpinBox(this);
-  event_title_sep_spinbox->setGeometry(CENTER_LINE+515,404,53,20);
+  event_title_sep_spinbox->setGeometry(CENTER_LINE+515,429,53,20);
   event_title_sep_spinbox->setMinValue( -1 );
   event_title_sep_spinbox->setMaxValue( 50000 );
   event_title_sep_spinbox->setSpecialValueText("None");
 
   event_title_none_button=new QPushButton(this);
-  event_title_none_button->setGeometry(CENTER_LINE+575,404,40,20);
+  event_title_none_button->setGeometry(CENTER_LINE+575,429,40,20);
   event_title_none_button->setFont(subButtonFont());
   event_title_none_button->setText(tr("None"));
   connect(event_title_none_button,SIGNAL(clicked()),this,SLOT(titleData()));
@@ -504,10 +562,10 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_have_code_label=new QLabel(tr("Must have code"),this);
   event_have_code_label->setFont(defaultFont());
   event_have_code_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  event_have_code_label->setGeometry(CENTER_LINE+410,427,100,20);
+  event_have_code_label->setGeometry(CENTER_LINE+410,452,100,20);
   
   event_have_code_box=new QComboBox(this);
-  event_have_code_box->setGeometry(CENTER_LINE+515,427,100,20);
+  event_have_code_box->setGeometry(CENTER_LINE+515,452,100,20);
 
   //
   // And code
@@ -515,10 +573,10 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_have_code2_label=new QLabel(tr("and code"),this);
   event_have_code2_label->setFont(defaultFont());
   event_have_code2_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  event_have_code2_label->setGeometry(CENTER_LINE+410,448,100,20);
+  event_have_code2_label->setGeometry(CENTER_LINE+410,473,100,20);
 
   event_have_code2_box=new QComboBox(this);
-  event_have_code2_box->setGeometry(CENTER_LINE+515,448,100,20);
+  event_have_code2_box->setGeometry(CENTER_LINE+515,473,100,20);
 
   //
   // Fill scheduler codes
@@ -539,14 +597,14 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   event_startslop_label=new QLabel(tr("Import carts scheduled"),this);
   event_startslop_label->setFont(defaultFont());
-  event_startslop_label->setGeometry(CENTER_LINE+30,383,140,22);
+  event_startslop_label->setGeometry(CENTER_LINE+30,408,140,22);
   event_startslop_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   event_startslop_edit=new QTimeEdit(this);
-  event_startslop_edit->setGeometry(CENTER_LINE+166,383,60,22);
+  event_startslop_edit->setGeometry(CENTER_LINE+166,408,60,22);
   event_startslop_edit->setDisplayFormat("mm:ss");
   event_startslop_unit=new QLabel(tr("prior to the start of this event."),this);
   event_startslop_unit->setFont(defaultFont());
-  event_startslop_unit->setGeometry(CENTER_LINE+230,383,
+  event_startslop_unit->setGeometry(CENTER_LINE+230,408,
 		     sizeHint().width()-CENTER_LINE-450,22);
   event_startslop_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
@@ -555,69 +613,28 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   event_endslop_label=new QLabel(tr("Import carts scheduled"),this);
   event_endslop_label->setFont(defaultFont());
-  event_endslop_label->setGeometry(CENTER_LINE+30,404,140,22);
+  event_endslop_label->setGeometry(CENTER_LINE+30,429,140,22);
   event_endslop_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   event_endslop_edit=new QTimeEdit(this);
-  event_endslop_edit->setGeometry(CENTER_LINE+166,404,60,22);
+  event_endslop_edit->setGeometry(CENTER_LINE+166,429,60,22);
   event_endslop_edit->setDisplayFormat("mm:ss");
   event_endslop_unit=new QLabel(tr("after the end of this event."),this);
   event_endslop_unit->setFont(defaultFont());
-  event_endslop_unit->setGeometry(CENTER_LINE+230,404,
+  event_endslop_unit->setGeometry(CENTER_LINE+230,429,
 				  sizeHint().width()-CENTER_LINE-460,22);
   event_endslop_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
   //
-  // First Cart Transition Type
-  //
-  event_firsttrans_label=
-    new QLabel(tr("First cart has a"),this);
-  event_firsttrans_label->setFont(defaultFont());
-  event_firsttrans_label->setGeometry(CENTER_LINE+30,428,140,22);
-  event_firsttrans_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  event_firsttrans_box=new QComboBox(this);
-  event_firsttrans_box->setGeometry(CENTER_LINE+123,428,90,22);
-  event_firsttrans_box->insertItem(tr("Play"));
-  event_firsttrans_box->insertItem(tr("Segue"));
-  event_firsttrans_box->insertItem(tr("Stop"));
-  event_firsttrans_unit=new QLabel("transition.",this);
-  event_firsttrans_unit->setFont(defaultFont());
-  event_firsttrans_unit->setGeometry(CENTER_LINE+215,428,
-		     sizeHint().width()-CENTER_LINE-450,22);
-  event_firsttrans_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  
-  //
-  // Default Transition Type
-  //
-  event_defaulttrans_label=new QLabel(tr("Imported carts have a"),this);
-  event_defaulttrans_label->setFont(defaultFont());
-  event_defaulttrans_label->setGeometry(CENTER_LINE+30,451,180,22);
-  event_defaulttrans_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  event_defaulttrans_box=new QComboBox(this);
-  event_defaulttrans_box->setGeometry(CENTER_LINE+163,451,90,22);
-  event_defaulttrans_box->insertItem(tr("Play"));
-  event_defaulttrans_box->insertItem(tr("Segue"));
-  event_defaulttrans_box->insertItem(tr("Stop"));
-  event_defaulttrans_unit=new QLabel(tr("transition."),this);
-  event_defaulttrans_unit->setFont(defaultFont());
-  event_defaulttrans_unit->setGeometry(CENTER_LINE+255,451,
-		     sizeHint().width()-CENTER_LINE-420,22);
-  event_defaulttrans_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  
-  //
   // Nested Event
   //
-  event_nestevent_label=new QLabel(tr("Import inline traffic with the"),this);
+  event_nestevent_label=new QLabel(tr("Import inline traffic event"),this);
   event_nestevent_label->setFont(defaultFont());
-  event_nestevent_label->setGeometry(CENTER_LINE+30,474,190,22);
+  event_nestevent_label->setGeometry(CENTER_LINE+35,454,190,20);
   event_nestevent_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   event_nestevent_box=new QComboBox(this);
-  event_nestevent_box->setGeometry(CENTER_LINE+193,474,365,22);
+  event_nestevent_box->setGeometry(CENTER_LINE+30,473,365,20);
   event_nestevent_box->insertItem(tr("[none]"));
-  event_nestevent_unit=new QLabel(tr("event."),this);
-  event_nestevent_unit->setFont(defaultFont());
-  event_nestevent_unit->setGeometry(CENTER_LINE+563,474,40,22);
-  event_nestevent_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  
+
   //
   // Post-Import Carts Section
   //
@@ -638,11 +655,10 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 
   event_postimport_list=new ImportListView(this);
   event_postimport_list->setGeometry(CENTER_LINE+15,522,
-				     sizeHint().width()-CENTER_LINE-75,125);
+				     sizeHint().width()-CENTER_LINE-75,125-10);
   event_postimport_list->setAllColumnsShowFocus(true);
   event_postimport_list->setItemMargin(5);
   event_postimport_list->setSortColumn(-1);
-  event_postimport_list->setAllowStop(false);
   event_postimport_list->load(event_name,RDEventImportList::PostImport);
   event_postimport_list->addColumn("");
   event_postimport_list->addColumn(tr("Cart"));
@@ -656,14 +672,16 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 	  this,SLOT(cartClickedData(Q3ListViewItem *)));
   connect(event_postimport_list,SIGNAL(lengthChanged(int)),
 	  this,SLOT(postimportLengthChangedData(int)));
+  connect(event_postimport_list,SIGNAL(validationNeeded()),
+	  this,SLOT(validate()));
   event_postimport_up_button=
     new RDTransportButton(RDTransportButton::Up,this);
-  event_postimport_up_button->setGeometry(sizeHint().width()-50,532,40,40);
+  event_postimport_up_button->setGeometry(sizeHint().width()-50,532-3,40,40);
   connect(event_postimport_up_button,SIGNAL(clicked()),
 	  this,SLOT(postimportUpData()));
   event_postimport_down_button=
     new RDTransportButton(RDTransportButton::Down,this);
-  event_postimport_down_button->setGeometry(sizeHint().width()-50,597,40,40);
+  event_postimport_down_button->setGeometry(sizeHint().width()-50,597-3,40,40);
   connect(event_postimport_down_button,SIGNAL(clicked()),
 	  this,SLOT(postimportDownData()));
   
@@ -752,8 +770,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 	
   case RDLogLine::Hard:
     event_timetype_check->setChecked(true);
-    event_post_box->setChecked(event_event->postPoint());
-    event_transtype_box->setCurrentItem(event_event->firstTransType());
     switch((grace=event_event->graceTime())) {
     case 0:
       event_grace_group->button(0)->setChecked(true);
@@ -781,12 +797,36 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     event_autofill_slop_box->setChecked(true);
     event_autofill_slop_edit->setTime(QTime().addMSecs(autofill_slop));
   }
-  autofillWarnToggledData(event_autofill_slop_box->isChecked());
+  autofillToggledData(event_autofill_box->isChecked());
   event_timescale_box->setChecked(event_event->useTimescale());
   event_source_group->button(event_event->importSource())->setChecked(true);
   event_startslop_edit->setTime(QTime().addMSecs(event_event->startSlop()));
   event_endslop_edit->setTime(QTime().addMSecs(event_event->endSlop()));
-  event_firsttrans_box->setCurrentItem(event_event->firstTransType());
+  if(event_position_box->isChecked()||event_timetype_check->isChecked()) {
+    event_firsttrans_box->setCurrentItem(event_event->firstTransType());
+  }
+  else {
+    if(event_preimport_list->eventImportList()->size()>=2) {
+      event_firsttrans_box->
+	setCurrentItem(event_preimport_list->eventImportList()->
+		       item(0)->transType());
+    }
+    else {
+      if(event_event->importSource()!=RDEventLine::None) {
+	event_firsttrans_box->setCurrentItem(event_event->firstTransType());
+      }
+      else {
+	if(event_postimport_list->eventImportList()->size()>=1) {
+	  event_firsttrans_box->
+	    setCurrentItem(event_postimport_list->eventImportList()->
+			   item(0)->transType());
+	}
+	else {
+	  event_firsttrans_box->setCurrentItem(event_event->firstTransType());
+	}
+      }
+    }
+  }
   event_defaulttrans_box->setCurrentItem(event_event->defaultTransType());
   if(!event_event->schedGroup().isEmpty()) {
     event_sched_group_box->setCurrentText(event_event->schedGroup());
@@ -818,8 +858,8 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   prepositionToggledData(event_position_box->isChecked());
   timeToggledData(event_timetype_check->isChecked());
   importClickedData(event_source_group->checkedId());
-  preimportChangedData(event_preimport_list->childCount());
-  SetPostTransition();
+  event_postimport_list->refreshList();
+  validate();
 }
 
 
@@ -897,39 +937,34 @@ void EditEvent::cartClickedData(Q3ListViewItem *item)
 void EditEvent::prepositionToggledData(bool state)
 {
   event_position_edit->setEnabled(state);
+
+  //
+  // TIMED START Section
+  //
   event_timetype_check->setDisabled(state);
-  event_timetype_header->setDisabled(state);
+  event_timetype_group->setDisabled(state);
   event_timetype_label->setDisabled(state);
-  event_preimport_list->setAllowFirstTrans(!state);
   if(event_timetype_check->isChecked()) {
     event_grace_groupbox->setDisabled(state);
     event_immediate_button->setDisabled(state);
     event_next_button->setDisabled(state);
     event_wait_button->setDisabled(state);
   }
-  if((RDEventLine::ImportSource)event_source_group->checkedId()!=
-     RDEventLine::None) {
-    if(event_preimport_list->childCount()==0) {
-      event_firsttrans_box->setDisabled(state);
-      event_firsttrans_label->setDisabled(state);
-      event_firsttrans_unit->setDisabled(state);
-    }
-  }
+
+  //
+  // TRANSITIONS Section
+  //
   if(state) {
-    event_preimport_list->setForceTrans(RDLogLine::Stop);
+    event_firsttrans_box->setCurrentItem(2);
   }
-  else {
-    if(event_timetype_check->isChecked()) {
-      event_preimport_list->
-	setForceTrans((RDLogLine::TransType)event_transtype_box->
-		      currentItem());
-    }
-    else {
-      event_preimport_list->setForceTrans(RDLogLine::NoTrans);
-    }
-  }
+  event_firsttrans_box->setDisabled(state);
+  event_firsttrans_label->setDisabled(state);
+  event_firsttrans_unit->setDisabled(state);
+
+  //
+  // CART STACK Section
+  //
   event_preimport_list->refreshList();
-  SetPostTransition();
 }
 
 
@@ -940,60 +975,30 @@ void EditEvent::timeToggledData(bool state)
   event_next_button->setEnabled(state);
   event_wait_button->setEnabled(state);
   event_grace_edit->setEnabled(state);
-  event_post_label->setEnabled(state&&(event_grace_group->checkedId()==0));
-  event_post_box->setEnabled(state&&(event_grace_group->checkedId()==0));
-  event_preimport_list->setAllowFirstTrans(!state);
-  if(state) {
-    event_preimport_list->
-      setForceTrans((RDLogLine::TransType)event_transtype_box->currentItem());
-  }
-  else {
-    if(event_position_box->isChecked()) {
-      event_preimport_list->setForceTrans(RDLogLine::Stop);
-    }
-    else {
-      event_preimport_list->setForceTrans(RDLogLine::NoTrans);
-    }
-  }
   event_preimport_list->refreshList();
-  event_time_label->
-    setEnabled((event_source_group->checkedId()==RDEventLine::Scheduler)||
-	       state);
-  event_transtype_box->
-    setEnabled((event_source_group->checkedId()==RDEventLine::Scheduler)||
-	       state);
   if(state) {
     graceClickedData(event_grace_group->checkedId());
-    event_time_label->setEnabled(true);
     timeTransitionData(2);
     event_position_box->setDisabled(true);
     event_position_edit->setDisabled(true);
-    event_position_header->setDisabled(true);
+    event_position_group->setDisabled(true);
     event_position_label->setDisabled(true);
     event_position_unit->setDisabled(true);
-    event_firsttrans_box->setDisabled(true);
-    event_firsttrans_label->setDisabled(true);
-    event_firsttrans_unit->setDisabled(true);
   }
   else {
-    event_post_box->setChecked(false);
     event_grace_edit->setDisabled(true);
     if(event_position_box->isChecked()) {
       event_position_edit->setEnabled(true);
     }
     event_position_box->setEnabled(true);
-    event_position_header->setEnabled(true);
+    event_position_group->setEnabled(true);
     event_position_label->setEnabled(true);
     event_position_unit->setEnabled(true);
     if(((RDEventLine::ImportSource)event_source_group->checkedId()!=
        RDEventLine::None)&&(!event_position_box->isChecked())&&
        (event_preimport_list->childCount()==0)) {
-      event_firsttrans_box->setEnabled(true);
-      event_firsttrans_label->setEnabled(true);
-      event_firsttrans_unit->setEnabled(true);
     }
   }
-  SetPostTransition();
 }
 
 
@@ -1001,41 +1006,39 @@ void EditEvent::graceClickedData(int id)
 {
   switch(id) {
   case 0:
-    event_post_label->setEnabled(event_timetype_check->isChecked());
-    event_post_box->setEnabled(event_timetype_check->isChecked());
     timeTransitionData(RDLogLine::Stop);
     event_grace_edit->setDisabled(true);
     break;
 
   case 1:
-    event_post_label->setDisabled(true);
-    event_post_box->setDisabled(true);
     timeTransitionData(RDLogLine::Segue);
     event_grace_edit->setDisabled(true);
     break;
 
   case 2:
-    event_post_label->setDisabled(true);
-    event_post_box->setDisabled(true);
     timeTransitionData(RDLogLine::Segue);
     event_grace_edit->setEnabled(true);
     break;
   }
-  SetPostTransition();
 }
 
 
 void EditEvent::timeTransitionData(int id)
 {
-  if(event_timetype_check->isChecked()) {
-    event_preimport_list->
-      setForceTrans((RDLogLine::TransType)event_transtype_box->currentItem());
+  event_preimport_list->refreshList();
+}
+
+
+void EditEvent::autofillToggledData(bool state)
+{
+  event_autofill_slop_box->setEnabled(state);
+  event_autofill_slop_label1->setEnabled(state);
+  if(state) {
+    autofillWarnToggledData(event_autofill_slop_box->isChecked());
   }
   else {
-    event_preimport_list->setForceTrans(RDLogLine::NoTrans);
+    autofillWarnToggledData(false);
   }
-  event_preimport_list->refreshList();
-  SetPostTransition();
 }
 
 
@@ -1056,6 +1059,7 @@ void EditEvent::importClickedData(int id)
     statesched=false;
   }
   if(id==3) {
+    state=false;
     statesched=false;
     stateschedinv=true;
   }
@@ -1065,25 +1069,12 @@ void EditEvent::importClickedData(int id)
   event_endslop_edit->setEnabled(statesched);
   event_endslop_label->setEnabled(statesched);
   event_endslop_unit->setEnabled(statesched);
-  event_time_label->setEnabled((id==RDEventLine::Scheduler)||
-			       (event_timetype_check->isChecked()));
-  event_transtype_box->setEnabled((id==RDEventLine::Scheduler)||
-				  (event_timetype_check->isChecked()));
-  if((!event_timetype_check->isChecked())&&(!event_position_box->isChecked())) {
-    if((state&&(event_preimport_list->childCount()==0))||(!state)) {
-      event_firsttrans_box->setEnabled(state);
-      event_firsttrans_label->setEnabled(state);
-      event_firsttrans_unit->setEnabled(state);
-    }
-  }
   event_defaulttrans_box->setEnabled(state);
   event_defaulttrans_label->setEnabled(state);
   event_defaulttrans_unit->setEnabled(state);
   state=(id==2)&&state;
   event_nestevent_label->setEnabled(state);
   event_nestevent_box->setEnabled(state);
-  event_nestevent_unit->setEnabled(state);
-  SetPostTransition();
   event_sched_group_box->setEnabled(stateschedinv);
   event_artist_sep_label->setEnabled(stateschedinv);
   event_artist_sep_spinbox->setEnabled(stateschedinv);
@@ -1095,23 +1086,6 @@ void EditEvent::importClickedData(int id)
   event_have_code_label->setEnabled(stateschedinv);
   event_have_code2_box->setEnabled(stateschedinv);
   event_have_code2_label->setEnabled(stateschedinv);
-}
-
-
-void EditEvent::preimportChangedData(int size)
-{
-  if((size==0)&&(event_source_group->checkedId()!=0)&&
-     (!event_position_box->isChecked())&&(!event_timetype_check->isChecked())) {
-    event_firsttrans_box->setEnabled(true);
-    event_firsttrans_label->setEnabled(true);
-    event_firsttrans_unit->setEnabled(true);
-  }
-  else {
-    event_firsttrans_box->setDisabled(true);
-    event_firsttrans_label->setDisabled(true);
-    event_firsttrans_unit->setDisabled(true);
-  }
-  SetPostTransition();
 }
 
 
@@ -1134,7 +1108,6 @@ void EditEvent::preimportUpData()
     return;
   }
   event_preimport_list->move(line,line-1);
-  event_preimport_list->validateTransitions();
   event_preimport_list->refreshList(line-1);
 }
 
@@ -1152,7 +1125,6 @@ void EditEvent::preimportDownData()
     return;
   }
   event_preimport_list->move(line,line+1);
-  event_preimport_list->validateTransitions();
   event_preimport_list->refreshList(line+1);
   event_preimport_list->ensureItemVisible(item);
 }
@@ -1171,7 +1143,6 @@ void EditEvent::postimportUpData()
     return;
   }
   event_postimport_list->move(line,line-1);
-  event_postimport_list->validateTransitions();
   event_postimport_list->refreshList(line-1);
 }
 
@@ -1189,7 +1160,6 @@ void EditEvent::postimportDownData()
     return;
   }
   event_postimport_list->move(line,line+1);
-  event_postimport_list->validateTransitions();
   event_postimport_list->refreshList(line+1);
 }
 
@@ -1243,10 +1213,13 @@ void EditEvent::saveAsData()
     if(event_new_event) {
       AbandonEvent(old_name);
     }
-    setCaption("RDLogManager - "+tr("Editing Event")+" - "+event_event->name());
+    setWindowTitle("RDLogManager - "+tr("Editing Event")+" - "+
+		   event_event->name());
   }
   else {
-    if(QMessageBox::question(this,tr("RDLogManager"),tr("Event already exists!\nDo you want to overwrite it?"),QMessageBox::Yes,QMessageBox::No)!=
+    if(QMessageBox::question(this,tr("RDLogManager"),
+		   tr("Event already exists!\nDo you want to overwrite it?"),
+		   QMessageBox::Yes,QMessageBox::No)!=
        QMessageBox::Yes) {
       return;
     }
@@ -1286,6 +1259,62 @@ void EditEvent::colorData()
 }
 
 
+void EditEvent::validate()
+{
+  RDEventImportList *pre_list=event_preimport_list->eventImportList();
+  RDEventImportList *post_list=event_postimport_list->eventImportList();
+
+  //
+  // Pre-Position Log
+  //
+  if(event_position_box->isChecked()) {
+    event_firsttrans_box->setCurrentIndex((int)RDLogLine::Stop);
+  }
+
+  //
+  // Pre-Position Log / Timed Start
+  //
+  if(event_position_box->isChecked()||event_timetype_check->isChecked()) {
+    if(pre_list->size()>=2) {
+      pre_list->item(0)->
+	setTransType((RDLogLine::TransType)event_firsttrans_box->
+		     currentIndex());
+      event_postimport_list->setAllowFirstTrans(true);
+      if(post_list->size()>=2) {
+	if(post_list->item(0)->transType()==RDLogLine::Stop) {
+	  post_list->item(0)->setTransType(RDLogLine::Play);
+	  event_postimport_list->refreshList(0);
+	}
+      }
+    }
+    else {
+      event_postimport_list->setAllowFirstTrans(false);
+    }
+  }
+  else {
+    event_postimport_list->setAllowFirstTrans(pre_list->size()>=2);
+    if(pre_list->size()>=2) {
+      if(post_list->size()>=2) {
+	if(post_list->item(0)->transType()==RDLogLine::Stop) {
+	  post_list->item(0)->setTransType(RDLogLine::Play);
+	  event_postimport_list->refreshList(0);
+	}
+      }
+    }
+  }
+
+  //
+  // Fixup added list members
+  //
+  event_preimport_list->
+    fixupTransitions((RDLogLine::TransType)event_firsttrans_box->
+		     currentIndex());
+  event_postimport_list->
+    fixupTransitions((RDLogLine::TransType)event_firsttrans_box->
+		     currentIndex());
+}
+
+
 void EditEvent::okData()
 {
   Save();
@@ -1322,7 +1351,7 @@ void EditEvent::paintEvent(QPaintEvent *e)
   QPainter *p=new QPainter(this);
   p->setPen(Qt::black);
   p->drawLine(CENTER_LINE,10,CENTER_LINE,sizeHint().height()-10);
-  p->drawLine(CENTER_LINE+408,383,CENTER_LINE+408,465);
+  p->drawLine(CENTER_LINE+408,408,CENTER_LINE+408,493);
   p->end();
 }
 
@@ -1398,43 +1427,6 @@ void EditEvent::RefreshLibrary()
 }
 
 
-void EditEvent::SetPostTransition()
-{
-  if((event_position_box->isChecked())||
-     (event_timetype_check->isChecked())||
-     (event_preimport_list->childCount()!=0)||
-     (event_source_group->checkedId()!=0)) {
-    event_postimport_list->setAllowStop(false);
-  }
-  else {
-    event_postimport_list->setAllowStop(true);
-  }
-  if(event_preimport_list->childCount()==0) {
-    if(event_position_box->isChecked()) {
-      event_postimport_list->setAllowFirstTrans(false);
-      event_postimport_list->setForceTrans(RDLogLine::Stop);
-    }
-    else {
-      if(event_timetype_check->isChecked()) {
-	event_postimport_list->
-	  setForceTrans((RDLogLine::TransType)event_transtype_box->
-			currentItem());
-	  event_postimport_list->setAllowFirstTrans(false);
-      }
-      else {
-	event_postimport_list->setAllowFirstTrans(true);
-	event_postimport_list->setForceTrans(RDLogLine::NoTrans);
-      }
-    }
-  }
-  else { 
-    event_postimport_list->setAllowFirstTrans(true);
-    event_postimport_list->setForceTrans(RDLogLine::NoTrans);
-  }
-  event_postimport_list->refreshList();
-}
-
-
 void EditEvent::Save()
 {
   QString properties;
@@ -1448,9 +1440,8 @@ void EditEvent::Save()
   }
   if(event_timetype_check->isChecked()) {
     event_event->setTimeType(RDLogLine::Hard);
-    event_event->setPostPoint(event_post_box->isChecked());
     event_event->setFirstTransType((RDLogLine::TransType)
-				   event_transtype_box->currentItem());
+				   event_firsttrans_box->currentItem());
     switch(event_grace_group->checkedId()) {
     case 0:
       event_event->setGraceTime(0);
@@ -1468,7 +1459,6 @@ void EditEvent::Save()
   else {
     event_event->setTimeType(RDLogLine::Relative);
     event_event->setGraceTime(0);
-    event_event->setPostPoint(false);
     event_event->setFirstTransType(RDLogLine::Play);
   }
 
@@ -1492,7 +1482,7 @@ void EditEvent::Save()
   }
   event_event->
     setDefaultTransType((RDLogLine::TransType)event_defaulttrans_box->
-			currentItem());
+  			currentItem());
   event_event->setColor(event_color_button->backgroundColor());
   if(event_nestevent_box->currentItem()==0) {
     event_event->setNestedEvent("");
@@ -1500,7 +1490,6 @@ void EditEvent::Save()
   else {
     event_event->setNestedEvent(event_nestevent_box->currentText());
   }
-  event_event->setProperties(GetProperties());
   event_event->setSchedGroup(event_sched_group_box->currentText());  
   event_event->setArtistSep(event_artist_sep_spinbox->value());
   event_event->setTitleSep(event_title_sep_spinbox->value());
@@ -1529,9 +1518,11 @@ void EditEvent::Save()
   }
 
   event_preimport_list->setEventName(event_name);
-  event_preimport_list->save();
+  event_preimport_list->
+    save((RDLogLine::TransType)event_firsttrans_box->currentIndex());
   event_postimport_list->setEventName(event_name);
-  event_postimport_list->save();
+  event_postimport_list->
+    save((RDLogLine::TransType)event_firsttrans_box->currentIndex());
 
   event_saved=true;
 }
@@ -1539,100 +1530,40 @@ void EditEvent::Save()
 
 QString EditEvent::GetProperties()
 {
-  QString properties;
-  RDLogLine::TransType trans_type;
-  QString str;
+  int prepos_msec=-1;
+  RDLogLine::TimeType time_type=RDLogLine::Relative;
+  int grace_msec=-1;
 
   if(event_position_box->isChecked()) {
-    properties+=tr("Cue")+
-      "(-"+event_position_edit->time().toString("mm:ss")+")";
+    prepos_msec=QTime().msecsTo(event_position_edit->time());
   }
   if(event_timetype_check->isChecked()) {
-    trans_type=(RDLogLine::TransType)event_transtype_box->currentItem();
+    time_type=RDLogLine::Hard;
   }
-  else {
-    if(event_preimport_list->childCount()>0) {
-      str=event_preimport_list->firstChild()->text(5);
-      trans_type=RDLogLine::Play;
-      if(str==tr("SEGUE")) {
-	trans_type=RDLogLine::Segue;
-      }
-      if(str==tr("STOP")) {
-	trans_type=RDLogLine::Stop;
-      }
-    }
-    else {
-      if(event_position_box->isChecked()) {
-	trans_type=RDLogLine::Stop;
-      }
-      else {
-	trans_type=(RDLogLine::TransType)event_firsttrans_box->currentItem();
-      }
-    }
-  }
-  switch(trans_type) {
-  case RDLogLine::Play:
-    properties+=tr("PLAY");
-    break;
-
-  case RDLogLine::Segue:
-    properties+=tr("SEGUE");
-    break;
-
-  case RDLogLine::Stop:
-    properties+=tr("STOP");
-    break;
-
-  default:
-    break;
-  }
-
   if(event_timetype_check->isChecked()) {
     switch(event_grace_group->checkedId()) {
     case 0:
-      properties+=tr(", Timed(Start)");
+      grace_msec=0;
       break;
 
     case 1:
-      properties+=tr(", Timed(MakeNext)");
+      grace_msec=-1;
       break;
 
     default:
-      properties+=", "+tr("Timed(Wait)")+" "+
-	event_grace_edit->time().toString("mm:ss");
-      break;
-    }
-    if(event_post_box->isChecked()) {
-      properties+=tr(", Post");
+      grace_msec=QTime().msecsTo(event_grace_edit->time());
+      break;	  
     }
   }
-  if(event_autofill_box->isChecked()) {
-    properties+=tr(", Fill");
-  }
-  if(event_timescale_box->isChecked()) {
-    properties+=tr(", Scale");
-  }
-  switch((RDEventLine::ImportSource)event_source_group->checkedId()) {
-  case RDEventLine::Traffic:
-    properties+=tr(", Traffic");
-    break;
 
-  case RDEventLine::Music:
-    properties+=tr(", Music");
-    break;
-
-  case RDEventLine::Scheduler:
-    properties+=tr(", Scheduler");
-    break;
-
-  default:
-    break;
-  }
-  if(event_nestevent_box->currentItem()>0) {
-    properties+=tr(", Inline Traffic");
-  }
-
-  return properties;
+  return RDEventLine::
+    propertiesText(prepos_msec,
+		   (RDLogLine::TransType)event_firsttrans_box->currentItem(),
+		   time_type,
+		   grace_msec,
+		   event_autofill_box->isChecked(),
+		   (RDEventLine::ImportSource)event_source_group->checkedId(),
+		   event_nestevent_box->currentItem()>0);
 }
 
 

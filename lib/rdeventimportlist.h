@@ -2,7 +2,7 @@
 //
 // Abstract an rdlogmanager(1) Import List
 //
-//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -64,7 +64,7 @@ class RDEventImportList
   void removeItem(int n);
   void moveItem(int from_line,int to_line);
   void load();
-  void save() const;
+  void save(RDLogLine::TransType first_trans=RDLogLine::NoTrans) const;
   void clear();
 
  private:

@@ -298,19 +298,6 @@ void MainWidget::matrixActivatedData(int index)
     new RDMatrix(rda->config()->stationName(),gpi_matrix_box->currentItem());
   UpdateLabelsDown(0);
   gpi_up_button->setDisabled(true);
-  switch((RDMatrix::GpioType)gpi_type_box->currentItem()) {
-    case RDMatrix::GpioInput:
-      rda->ripc()->sendGpiStatus(gpi_matrix_box->currentItem());
-      rda->ripc()->sendGpiMask(gpi_matrix_box->currentItem());
-      rda->ripc()->sendGpiCart(gpi_matrix_box->currentItem());
-      break;
-
-    case RDMatrix::GpioOutput:
-      rda->ripc()->sendGpoStatus(gpi_matrix_box->currentItem());
-      rda->ripc()->sendGpoMask(gpi_matrix_box->currentItem());
-      rda->ripc()->sendGpoCart(gpi_matrix_box->currentItem());
-      break;
-  }
   RefreshEventsList();
   gpi_events_startup_timer->start(1000,true);
 }
@@ -459,6 +446,7 @@ void MainWidget::gpiMaskChangedData(int matrix,int line,bool state)
 
 void MainWidget::gpoMaskChangedData(int matrix,int line,bool state)
 {
+  //  printf("gpoMaskChangedData(%d,%d,%d)\n",matrix,line,state);
   if(gpi_type_box->currentItem()!=RDMatrix::GpioOutput) {
     return;
   }
@@ -502,6 +490,8 @@ void MainWidget::gpiCartChangedData(int matrix,int line,int off_cartnum,
 void MainWidget::gpoCartChangedData(int matrix,int line,int off_cartnum,
   int on_cartnum)
 {
+  //  printf("gpoCartChangedData(%d,%d,%d,%d)\n",matrix,line,off_cartnum,
+  //	 on_cartnum);
   if(gpi_type_box->currentItem()!=RDMatrix::GpioOutput) {
     return;
   }
@@ -633,9 +623,7 @@ void MainWidget::UpdateLabelsDown(int first_line)
     "order by NUMBER";
   q=new RDSqlQuery(sql);
   while(q->next()&&(count<(GPIMON_ROWS*GPIMON_COLS))) {
-    gpi_labels[count]->setLine(q->value(0).toInt()-1);
     gpi_labels[count]->setCart(q->value(1).toUInt(),q->value(2).toUInt());
-    gpi_labels[count]->show();
     if(!first_updated) {
       gpi_first_line=q->value(0).toInt();
       first_updated=true;
@@ -644,6 +632,22 @@ void MainWidget::UpdateLabelsDown(int first_line)
     count++;
   }
   gpi_down_button->setEnabled(q->next());
+  delete q;
+
+  sql=QString("select ")+
+    tablename+" "+  // 00
+    "from MATRICES where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\") && "+
+    QString().sprintf("(MATRIX=%d)",gpi_matrix->matrix());
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    for(int i=0;i<(GPIMON_ROWS*GPIMON_COLS);i++) {
+      if((i+first_line)<q->value(0).toInt()) {
+	gpi_labels[i]->setLine(i+first_line);
+	gpi_labels[i]->show();
+      }
+    }
+  }
   delete q;
 
   RefreshGpioStates();

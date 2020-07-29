@@ -2,7 +2,7 @@
 //
 // Render a Rivendell log to a single audio object.
 //
-//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -86,11 +86,13 @@ void __RDRenderLogLine::setRampRate(double lvl)
 }
 
 
-void __RDRenderLogLine::setRamp(RDLogLine::TransType next_trans)
+void __RDRenderLogLine::setRamp(RDLogLine::TransType next_trans,int segue_gain)
 {
   if((next_trans==RDLogLine::Segue)&&(segueStartPoint()>=0)) {
-    ll_ramp_rate=((double)RD_FADE_DEPTH)/
+    ll_ramp_rate=((double)segue_gain)/
       ((double)FramesFromMsec(segueEndPoint()-segueStartPoint()));
+    //ll_ramp_rate=((double)RD_FADE_DEPTH)/
+    //  ((double)FramesFromMsec(segueEndPoint()-segueStartPoint()));
   }
 }
 
@@ -109,6 +111,7 @@ bool __RDRenderLogLine::open(const QTime &time)
 	setEndPoint(ll_cut->endPoint(),RDLogLine::CartPointer);
 	setSegueStartPoint(ll_cut->segueStartPoint(),RDLogLine::CartPointer);
 	setSegueEndPoint(ll_cut->segueEndPoint(),RDLogLine::CartPointer);
+	setSegueGain(ll_cut->segueGain());
 	QString filename;
 	if(GetCutFile(cutname,ll_cut->startPoint(),ll_cut->endPoint(),
 		      &filename)) {
@@ -528,7 +531,7 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
 	sf_writef_float(sf_out,pcm,frames);
 	delete pcm;
 	pcm=NULL;
-	lls.at(i)->setRamp(lls.at(i+1)->transType());
+	lls.at(i)->setRamp(lls.at(i+1)->transType(),lls.at(i)->segueGain());
       }
       else {
 	if(i<(lls.size()-1)) {

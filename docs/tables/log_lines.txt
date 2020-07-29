@@ -15,7 +15,6 @@ START_TIME           int(11)            Milliseconds after 00:00:00
 GRACE_TIME           int(11) signed
 CART_NUMBER          int(10) unsigned   From CART.NUMBER
 TIME_TYPE            int(11) signed
-POST_POINT           enum('N','Y')
 TRANS_TYPE           int(11) signed     0 = Play, 1 = Stop, 2 = Segue
 START_POINT          int(11) signed     Overloads CUTS.START_POINT
 END_POINT            int(11) signed     Overloads CUTS.END_POINT

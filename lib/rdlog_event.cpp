@@ -2,7 +2,7 @@
 //
 // Abstract Rivendell Log Events.
 //
-//   (C) Copyright 2002-2014,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -117,7 +117,7 @@ int RDLogEvent::load(bool track_ptrs)
   log_max_id=log->nextId();
   delete log;
 
-  LoadLines(0,track_ptrs);
+  LoadLines(log_name,0,track_ptrs);
 
   return log_line.size();
 }
@@ -179,7 +179,7 @@ void RDLogEvent::save(RDConfig *config,bool update_tracks,int line)
 
 int RDLogEvent::append(const QString &logname,bool track_ptrs)
 {
-  return LoadLines(log_max_id,track_ptrs);
+  return LoadLines(logname,log_max_id,track_ptrs);
 }
 
 
@@ -794,7 +794,7 @@ QString RDLogEvent::xml() const
 }
 
 
-int RDLogEvent::LoadLines(int id_offset,bool track_ptrs)
+int RDLogEvent::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
 {
   RDLogLine line;
   RDSqlQuery *q1;
@@ -850,44 +850,43 @@ int RDLogEvent::LoadLines(int id_offset,bool track_ptrs)
     "LOG_LINES.COMMENT,"+            // 28
     "LOG_LINES.LABEL,"+              // 29
     "LOG_LINES.GRACE_TIME,"+         // 30
-    "LOG_LINES.POST_POINT,"+         // 31
-    "LOG_LINES.SOURCE,"+             // 32
-    "LOG_LINES.EXT_START_TIME,"+     // 33
-    "LOG_LINES.EXT_LENGTH,"+         // 34
-    "LOG_LINES.EXT_DATA,"+           // 35
-    "LOG_LINES.EXT_EVENT_ID,"+       // 36
-    "LOG_LINES.EXT_ANNC_TYPE,"+      // 37
-    "LOG_LINES.EXT_CART_NAME,"+      // 38
-    "CART.ASYNCRONOUS,"+             // 39
-    "LOG_LINES.FADEUP_POINT,"+       // 40
-    "LOG_LINES.FADEUP_GAIN,"+        // 41
-    "LOG_LINES.FADEDOWN_POINT,"+     // 42
-    "LOG_LINES.FADEDOWN_GAIN,"+      // 43
-    "LOG_LINES.SEGUE_GAIN,"+         // 44
-    "CART.PUBLISHER,"+               // 45
-    "CART.COMPOSER,"+                // 46
-    "CART.USAGE_CODE,"+              // 47
-    "CART.AVERAGE_SEGUE_LENGTH,"+    // 48
-    "LOG_LINES.LINK_EVENT_NAME,"+    // 49
-    "LOG_LINES.LINK_START_TIME,"+    // 50
-    "LOG_LINES.LINK_LENGTH,"+        // 51
-    "LOG_LINES.LINK_ID,"+            // 52
-    "LOG_LINES.LINK_EMBEDDED,"+      // 53
-    "LOG_LINES.ORIGIN_USER,"+        // 54
-    "LOG_LINES.ORIGIN_DATETIME,"+    // 55
-    "CART.VALIDITY,"+                // 56
-    "LOG_LINES.LINK_START_SLOP,"+    // 57
-    "LOG_LINES.LINK_END_SLOP,"+      // 58
-    "LOG_LINES.DUCK_UP_GAIN,"+       // 59
-    "LOG_LINES.DUCK_DOWN_GAIN,"+     // 60
-    "CART.START_DATETIME,"+          // 61
-    "CART.END_DATETIME,"+            // 62
-    "LOG_LINES.EVENT_LENGTH,"+       // 63
-    "CART.USE_EVENT_LENGTH,"+        // 64
-    "CART.NOTES	"+                   // 65
+    "LOG_LINES.SOURCE,"+             // 31
+    "LOG_LINES.EXT_START_TIME,"+     // 32
+    "LOG_LINES.EXT_LENGTH,"+         // 33
+    "LOG_LINES.EXT_DATA,"+           // 34
+    "LOG_LINES.EXT_EVENT_ID,"+       // 35
+    "LOG_LINES.EXT_ANNC_TYPE,"+      // 36
+    "LOG_LINES.EXT_CART_NAME,"+      // 37
+    "CART.ASYNCRONOUS,"+             // 38
+    "LOG_LINES.FADEUP_POINT,"+       // 39
+    "LOG_LINES.FADEUP_GAIN,"+        // 40
+    "LOG_LINES.FADEDOWN_POINT,"+     // 41
+    "LOG_LINES.FADEDOWN_GAIN,"+      // 42
+    "LOG_LINES.SEGUE_GAIN,"+         // 43
+    "CART.PUBLISHER,"+               // 44
+    "CART.COMPOSER,"+                // 45
+    "CART.USAGE_CODE,"+              // 46
+    "CART.AVERAGE_SEGUE_LENGTH,"+    // 47
+    "LOG_LINES.LINK_EVENT_NAME,"+    // 48
+    "LOG_LINES.LINK_START_TIME,"+    // 49
+    "LOG_LINES.LINK_LENGTH,"+        // 50
+    "LOG_LINES.LINK_ID,"+            // 51
+    "LOG_LINES.LINK_EMBEDDED,"+      // 52
+    "LOG_LINES.ORIGIN_USER,"+        // 53
+    "LOG_LINES.ORIGIN_DATETIME,"+    // 54
+    "CART.VALIDITY,"+                // 55
+    "LOG_LINES.LINK_START_SLOP,"+    // 56
+    "LOG_LINES.LINK_END_SLOP,"+      // 57
+    "LOG_LINES.DUCK_UP_GAIN,"+       // 58
+    "LOG_LINES.DUCK_DOWN_GAIN,"+     // 59
+    "CART.START_DATETIME,"+          // 60
+    "CART.END_DATETIME,"+            // 61
+    "LOG_LINES.EVENT_LENGTH,"+       // 62
+    "CART.USE_EVENT_LENGTH,"+        // 63
+    "CART.NOTES	"+                   // 64
     "from LOG_LINES left join CART "+
     "on LOG_LINES.CART_NUMBER=CART.NUMBER where "+
-    "LOG_LINES.LOG_NAME=\""+RDEscapeString(log_name)+"\" "+
+    "LOG_LINES.LOG_NAME=\""+RDEscapeString(logname)+"\" "+
     "order by COUNT";
    q=new RDSqlQuery(sql);
   if(q->size()<=0) {
@@ -909,26 +908,23 @@ int RDLogEvent::LoadLines(int id_offset,bool track_ptrs)
 		      QTime().addMSecs(q->value(2).toInt()));
     line.
       setTimeType((RDLogLine::TimeType)q->value(3).toInt());   // Time Type
-    if((line.timeType()==RDLogLine::Hard)&&
-       (q->value(31).toString()==QString("Y"))) {              // Post Point
-    }
     line.
       setTransType((RDLogLine::TransType)q->value(4).toInt()); // Trans Type
     line.setMarkerComment(q->value(28).toString());         // Comment
     line.setMarkerLabel(q->value(29).toString());           // Label
     line.setGraceTime(q->value(30).toInt());                // Grace Time
-    line.setUseEventLength(RDBool(q->value(64).toString())); // Use Event Length
-    line.setEventLength(q->value(63).toInt());              // Event Length
-    line.setSource((RDLogLine::Source)q->value(32).toUInt());
-    line.setLinkEventName(q->value(49).toString());         // Link Event Name
-    line.setLinkStartTime(QTime().addMSecs(q->value(50).toInt()));   // Link Start Time
-    line.setLinkLength(q->value(51).toInt());               // Link Length
-    line.setLinkStartSlop(q->value(57).toInt());            // Link Start Slop
-    line.setLinkEndSlop(q->value(58).toInt());              // Link End Slop
-    line.setLinkId(q->value(52).toInt());                   // Link ID
-    line.setLinkEmbedded(RDBool(q->value(53).toString()));   // Link Embedded
-    line.setOriginUser(q->value(54).toString());            // Origin User
-    line.setOriginDateTime(q->value(55).toDateTime());      // Origin DateTime
+    line.setUseEventLength(RDBool(q->value(63).toString())); // Use Event Length
+    line.setEventLength(q->value(62).toInt());              // Event Length
+    line.setSource((RDLogLine::Source)q->value(31).toUInt());
+    line.setLinkEventName(q->value(48).toString());         // Link Event Name
+    line.setLinkStartTime(QTime().addMSecs(q->value(49).toInt()));   // Link Start Time
+    line.setLinkLength(q->value(50).toInt());               // Link Length
+    line.setLinkStartSlop(q->value(56).toInt());            // Link Start Slop
+    line.setLinkEndSlop(q->value(57).toInt());              // Link End Slop
+    line.setLinkId(q->value(51).toInt());                   // Link ID
+    line.setLinkEmbedded(RDBool(q->value(52).toString()));   // Link Embedded
+    line.setOriginUser(q->value(53).toString());            // Origin User
+    line.setOriginDateTime(q->value(54).toDateTime());      // Origin DateTime
     switch(line.type()) {
     case RDLogLine::Cart:
       line.setCartNumber(q->value(1).toUInt());          // Cart Number
@@ -941,21 +937,21 @@ int RDLogEvent::LoadLines(int id_offset,bool track_ptrs)
       line.setGroupColor(group_colors[q->value(10).toString()]);
       line.setTitle(q->value(11).toString());           // Title
       line.setArtist(q->value(12).toString());          // Artist
-      line.setPublisher(q->value(45).toString());       // Publisher
-      line.setComposer(q->value(46).toString());        // Composer
+      line.setPublisher(q->value(44).toString());       // Publisher
+      line.setComposer(q->value(45).toString());        // Composer
       line.setAlbum(q->value(13).toString());           // Album
       line.setYear(q->value(14).toDate());              // Year
       line.setLabel(q->value(15).toString());           // Label
       line.setClient(q->value(16).toString());          // Client
       line.setAgency(q->value(17).toString());          // Agency
       line.setUserDefined(q->value(18).toString());     // User Defined
-      line.setCartNotes(q->value(65).toString());       // Cart Notes
+      line.setCartNotes(q->value(64).toString());       // Cart Notes
       line.setConductor(q->value(19).toString());       // Conductor
       line.setSongId(q->value(20).toString());          // Song ID
-      line.setUsageCode((RDCart::UsageCode)q->value(47).toInt());
+      line.setUsageCode((RDCart::UsageCode)q->value(46).toInt());
       line.setForcedLength(q->value(21).toUInt());      // Forced Length
       if(q->value(7).toInt()<0) {
-	line.setAverageSegueLength(q->value(48).toInt());
+	line.setAverageSegueLength(q->value(47).toInt());
       }
       else {
 	line.
@@ -969,52 +965,52 @@ int RDLogEvent::LoadLines(int id_offset,bool track_ptrs)
 	setEnforceLength(RDBool(q->value(25).toString())); // Enforce Length
       line.
 	setPreservePitch(RDBool(q->value(26).toString())); // Preserve Pitch
-      if(!q->value(33).isNull()) {                      // Ext Start Time
-	line.setExtStartTime(q->value(33).toTime());
+      if(!q->value(32).isNull()) {                      // Ext Start Time
+	line.setExtStartTime(q->value(32).toTime());
       }
-      if(!q->value(34).isNull()) {                      // Ext Length
-	line.setExtLength(q->value(34).toInt());
+      if(!q->value(33).isNull()) {                      // Ext Length
+	line.setExtLength(q->value(33).toInt());
       }
-      if(!q->value(35).isNull()) {                      // Ext Data
-	line.setExtData(q->value(35).toString());
+      if(!q->value(34).isNull()) {                      // Ext Data
+	line.setExtData(q->value(34).toString());
       }
-      if(!q->value(36).isNull()) {                      // Ext Event ID
-	line.setExtEventId(q->value(36).toString());
+      if(!q->value(35).isNull()) {                      // Ext Event ID
+	line.setExtEventId(q->value(35).toString());
       }
-      if(!q->value(37).isNull()) {                      // Ext Annc. Type
-	line.setExtAnncType(q->value(37).toString());
+      if(!q->value(36).isNull()) {                      // Ext Annc. Type
+	line.setExtAnncType(q->value(36).toString());
       }
-      if(!q->value(38).isNull()) {                      // Ext Cart Name
-	line.setExtCartName(q->value(38).toString());
+      if(!q->value(37).isNull()) {                      // Ext Cart Name
+	line.setExtCartName(q->value(37).toString());
       }
-      if(!q->value(40).isNull()) {                      // FadeUp Point
-	line.setFadeupPoint(q->value(40).toInt(),RDLogLine::LogPointer);
+      if(!q->value(39).isNull()) {                      // FadeUp Point
+	line.setFadeupPoint(q->value(39).toInt(),RDLogLine::LogPointer);
       }
-      if(!q->value(41).isNull()) {                      // FadeUp Gain
-	line.setFadeupGain(q->value(41).toInt());
+      if(!q->value(40).isNull()) {                      // FadeUp Gain
+	line.setFadeupGain(q->value(40).toInt());
       }
-      if(!q->value(42).isNull()) {                      // FadeDown Point
-	line.setFadedownPoint(q->value(42).toInt(),RDLogLine::LogPointer);
+      if(!q->value(41).isNull()) {                      // FadeDown Point
+	line.setFadedownPoint(q->value(41).toInt(),RDLogLine::LogPointer);
       }
-      if(!q->value(43).isNull()) {                      // FadeDown Gain
-	line.setFadedownGain(q->value(43).toInt());
+      if(!q->value(42).isNull()) {                      // FadeDown Gain
+	line.setFadedownGain(q->value(42).toInt());
       }
-      if(!q->value(44).isNull()) {                      // Segue Gain
-	line.setSegueGain(q->value(44).toInt());
+      if(!q->value(43).isNull()) {                      // Segue Gain
+	line.setSegueGain(q->value(43).toInt());
       }
-      if(!q->value(59).isNull()) {                      // Duck Up Gain
-	line.setDuckUpGain(q->value(59).toInt());
+      if(!q->value(58).isNull()) {                      // Duck Up Gain
+	line.setDuckUpGain(q->value(58).toInt());
       }
-      if(!q->value(60).isNull()) {                      // Duck Down Gain
-	line.setDuckDownGain(q->value(60).toInt());
+      if(!q->value(59).isNull()) {                      // Duck Down Gain
+	line.setDuckDownGain(q->value(59).toInt());
       }
-      if(!q->value(61).isNull()) {                      // Start Datetime
-	line.setStartDatetime(q->value(61).toDateTime());
+      if(!q->value(60).isNull()) {                      // Start Datetime
+	line.setStartDatetime(q->value(60).toDateTime());
       }
-      if(!q->value(62).isNull()) {                      // End Datetime
-	line.setEndDatetime(q->value(62).toDateTime());
+      if(!q->value(61).isNull()) {                      // End Datetime
+	line.setEndDatetime(q->value(61).toDateTime());
       }
-      line.setValidity((RDCart::Validity)q->value(56).toInt()); // Validity
+      line.setValidity((RDCart::Validity)q->value(55).toInt()); // Validity
       break;
 
     case RDLogLine::Macro:
@@ -1024,37 +1020,37 @@ int RDLogEvent::LoadLines(int id_offset,bool track_ptrs)
       line.setGroupColor(group_colors[q->value(10).toString()]);
       line.setTitle(q->value(11).toString());           // Title
       line.setArtist(q->value(12).toString());          // Artist
-      line.setPublisher(q->value(45).toString());       // Publisher
-      line.setComposer(q->value(46).toString());        // Composer
+      line.setPublisher(q->value(44).toString());       // Publisher
+      line.setComposer(q->value(45).toString());        // Composer
       line.setAlbum(q->value(13).toString());           // Album
       line.setYear(q->value(14).toDate());              // Year
       line.setLabel(q->value(15).toString());           // Label
       line.setClient(q->value(16).toString());          // Client
       line.setAgency(q->value(17).toString());          // Agency
       line.setUserDefined(q->value(18).toString());     // User Defined
-      line.setCartNotes(q->value(65).toString());       // Cart Notes
+      line.setCartNotes(q->value(64).toString());       // Cart Notes
       line.setForcedLength(q->value(21).toUInt());      // Forced Length
       line.setAverageSegueLength(q->value(21).toInt());
-      if(!q->value(33).isNull()) {                      // Ext Start Time
-	line.setExtStartTime(q->value(33).toTime());
+      if(!q->value(32).isNull()) {                      // Ext Start Time
+	line.setExtStartTime(q->value(32).toTime());
       }
-      if(!q->value(34).isNull()) {                      // Ext Length
-	line.setExtLength(q->value(34).toInt());
+      if(!q->value(33).isNull()) {                      // Ext Length
+	line.setExtLength(q->value(33).toInt());
       }
-      if(!q->value(35).isNull()) {                      // Ext Data
-	line.setExtData(q->value(35).toString());
+      if(!q->value(34).isNull()) {                      // Ext Data
+	line.setExtData(q->value(34).toString());
       }
-      if(!q->value(36).isNull()) {                      // Ext Event ID
-	line.setExtEventId(q->value(36).toString());
+      if(!q->value(35).isNull()) {                      // Ext Event ID
+	line.setExtEventId(q->value(35).toString());
       }
-      if(!q->value(37).isNull()) {                      // Ext Annc. Type
-	line.setExtAnncType(q->value(37).toString());
+      if(!q->value(36).isNull()) {                      // Ext Annc. Type
+	line.setExtAnncType(q->value(36).toString());
       }
-      if(!q->value(38).isNull()) {                      // Ext Cart Name
-	line.setExtCartName(q->value(38).toString());
+      if(!q->value(37).isNull()) {                      // Ext Cart Name
+	line.setExtCartName(q->value(37).toString());
       }
-      if(!q->value(39).isNull()) {                      // Asyncronous
-	line.setAsyncronous(RDBool(q->value(39).toString()));
+      if(!q->value(38).isNull()) {                      // Asyncronous
+	line.setAsyncronous(RDBool(q->value(38).toString()));
       }
       break;
 
@@ -1079,24 +1075,14 @@ int RDLogEvent::LoadLines(int id_offset,bool track_ptrs)
     }
 
     line.setHasCustomTransition(prev_custom||(q->value(5).toInt()>=0)||\
-				(q->value(40).toInt()>=0));
+				(q->value(39).toInt()>=0));
     if(line.type()==RDLogLine::Cart) {
       prev_custom=(q->value(6).toInt()>=0)||(q->value(7).toInt()>=0)||
-	(q->value(8).toInt()>=0)||(q->value(42).toInt()>=0);
+	(q->value(8).toInt()>=0)||(q->value(41).toInt()>=0);
     }
     else {
       prev_custom=false;
     }
-
-//    printf("LINE: %u  START: %d  END: %d  S_START: %d  S_END: %d  FD_UP: %d  FD_DN: %d\n",
-//	   log_line.size(),
-//	   q->value(5).toInt(),
-//	   q->value(6).toInt(),
-//	   q->value(7).toInt(),
-//	   q->value(8).toInt(),
-//	   q->value(38).toInt(),
-//	   q->value(40).toInt());
-
     line.clearModified();
     log_line.push_back(new RDLogLine(line));
   }

@@ -2,7 +2,7 @@
 //
 // The button play widget for RDAirPlay.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,8 +37,8 @@ class ButtonLog : public RDWidget
 {
  Q_OBJECT
  public:
-  ButtonLog(RDLogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
-	    bool allow_pause=false,QWidget *parent=0);
+  ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause=false,
+	    QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   RDAirPlayConf::OpMode opMode() const;
@@ -79,7 +79,6 @@ class ButtonLog : public RDWidget
   int log_line_counter;
   RDAirPlayConf::TimeMode log_time_mode;
   EditEvent *log_event_edit;
-  RDCae *log_cae;
   bool log_pause_enabled;
 };
 

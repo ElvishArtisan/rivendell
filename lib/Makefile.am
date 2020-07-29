@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/lib
 ##
-## (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -53,6 +53,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         export_musicsummary.cpp\
                         export_nprsoundex.cpp\
                         export_radiotraffic.cpp\
+                        export_resultsrecon.cpp\
                         export_soundex.cpp\
                         export_spincount.cpp\
                         export_technical.cpp\

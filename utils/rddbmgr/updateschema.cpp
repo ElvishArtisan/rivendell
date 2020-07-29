@@ -9903,6 +9903,31 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<315)&&(set_schema>cur_schema)) {
+    DropColumn("EVENTS","POST_POINT");
+    DropColumn("LOG_LINES","POST_POINT");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<316)&&(set_schema>cur_schema)) {
+    DropColumn("EVENTS","PROPERTIES");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<317)&&(set_schema>cur_schema)) {
+    sql=QString("create index STACK_LINES_ID_IDX on ")+
+      "STACK_SCHED_CODES(STACK_LINES_ID)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

@@ -3953,6 +3953,23 @@ Lagre no?</translation>
         <source>Include Import Markers in Finished Logs</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Copy To
+Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy To Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This action will overwrite your existing [custom] Traffic Data Import settings. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This action will overwrite your existing [custom] Music Data Import settings. Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditSvcPerms</name>

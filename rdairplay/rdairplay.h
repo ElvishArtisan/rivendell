@@ -102,6 +102,9 @@ class MainWidget : public RDWidget
   void closeEvent(QCloseEvent *);
   void paintEvent(QPaintEvent *e);
   
+ protected:
+  void wheelEvent(QWheelEvent *e);
+
  private:
   void RunLocalMacros(RDMacro *rml);
   void StopEvent(int button_id);
@@ -158,6 +161,7 @@ class MainWidget : public RDWidget
   int air_meter_port[3];
   int air_cue_card;
   int air_cue_port;
+  RDLogLine::TransType air_default_trans_type;
   RDInstanceLock *air_lock;
   bool air_clear_filter;
   RDAirPlayConf::BarAction air_bar_action;

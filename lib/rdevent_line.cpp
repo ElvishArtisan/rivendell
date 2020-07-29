@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <qobject.h>
 #include <q3textstream.h>
 
 #include "rdconf.h"
@@ -54,18 +55,6 @@ void RDEventLine::setName(const QString &name)
 }
 
 
-QString RDEventLine::properties() const
-{
-  return event_properties;
-}
-
-
-void RDEventLine::setProperties(const QString &str)
-{
-  event_properties=str;
-}
-
-
 int RDEventLine::preposition() const
 {
   return event_preposition;
@@ -99,18 +88,6 @@ int RDEventLine::graceTime() const
 void RDEventLine::setGraceTime(int offset)
 {
   event_grace_time=offset;
-}
-
-
-bool RDEventLine::postPoint() const
-{
-  return event_post_point;
-}
-
-
-void RDEventLine::setPostPoint(bool state)
-{
-  event_post_point=state;
 }
 
 
@@ -295,11 +272,9 @@ void RDEventLine::setLength(int msecs)
 void RDEventLine::clear()
 {
    event_name="";
-   event_properties="";
    event_preposition=0;
    event_time_type=RDLogLine::Relative;
    event_grace_time=0;
-   event_post_point=false;
    event_use_autofill=false;
    event_use_timescale=false;
    event_import_source=RDEventLine::None;
@@ -325,26 +300,24 @@ void RDEventLine::clear()
 bool RDEventLine::load()
 {
   QString sql=QString("select ")+
-    "PROPERTIES,"+          // 00
-    "PREPOSITION,"+         // 01
-    "TIME_TYPE,"+           // 02
-    "GRACE_TIME,"+          // 03
-    "POST_POINT,"+          // 04
-    "USE_AUTOFILL,"+        // 05
-    "USE_TIMESCALE,"+       // 06
-    "IMPORT_SOURCE,"+       // 07
-    "START_SLOP,"+          // 08
-    "END_SLOP,"+            // 09
-    "FIRST_TRANS_TYPE,"+    // 10
-    "DEFAULT_TRANS_TYPE,"+  // 11
-    "COLOR,"+               // 12
-    "AUTOFILL_SLOP,"+       // 13
-    "NESTED_EVENT,"+        // 14
-    "SCHED_GROUP,"+         // 15
-    "ARTIST_SEP,"+          // 16
-    "TITLE_SEP,"+           // 17
-    "HAVE_CODE,"+           // 18
-    "HAVE_CODE2	"+          // 19
+    "PREPOSITION,"+         // 00
+    "TIME_TYPE,"+           // 01
+    "GRACE_TIME,"+          // 02
+    "USE_AUTOFILL,"+        // 03
+    "USE_TIMESCALE,"+       // 04
+    "IMPORT_SOURCE,"+       // 05
+    "START_SLOP,"+          // 06
+    "END_SLOP,"+            // 07
+    "FIRST_TRANS_TYPE,"+    // 08
+    "DEFAULT_TRANS_TYPE,"+  // 09
+    "COLOR,"+               // 10
+    "AUTOFILL_SLOP,"+       // 11
+    "NESTED_EVENT,"+        // 12
+    "SCHED_GROUP,"+         // 13
+    "ARTIST_SEP,"+          // 14
+    "TITLE_SEP,"+           // 15
+    "HAVE_CODE,"+           // 16
+    "HAVE_CODE2	"+          // 17
     "from EVENTS where "+
     "NAME=\""+RDEscapeString(event_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -354,33 +327,31 @@ bool RDEventLine::load()
     delete q;
     return false;
   }
-  event_properties=q->value(0).toString();
-  event_preposition=q->value(1).toInt();
-  event_time_type=(RDLogLine::TimeType)q->value(2).toInt();
-  event_grace_time=q->value(3).toInt();
-  event_post_point=RDBool(q->value(4).toString());
-  event_use_autofill=RDBool(q->value(5).toString());
-  event_use_timescale=RDBool(q->value(6).toString());
-  event_import_source=(RDEventLine::ImportSource)q->value(7).toInt();
-  event_start_slop=q->value(8).toInt();
-  event_end_slop=q->value(9).toInt();
-  event_first_transtype=(RDLogLine::TransType)q->value(10).toInt();
-  event_default_transtype=(RDLogLine::TransType)q->value(11).toInt();
-  if(q->value(12).isNull()) {
+  event_preposition=q->value(0).toInt();
+  event_time_type=(RDLogLine::TimeType)q->value(1).toInt();
+  event_grace_time=q->value(2).toInt();
+  event_use_autofill=RDBool(q->value(3).toString());
+  event_use_timescale=RDBool(q->value(4).toString());
+  event_import_source=(RDEventLine::ImportSource)q->value(5).toInt();
+  event_start_slop=q->value(6).toInt();
+  event_end_slop=q->value(7).toInt();
+  event_first_transtype=(RDLogLine::TransType)q->value(8).toInt();
+  event_default_transtype=(RDLogLine::TransType)q->value(9).toInt();
+  if(q->value(10).isNull()) {
     event_color=QColor();
   }
   else {
-    event_color=QColor(q->value(12).toString());
+    event_color=QColor(q->value(10).toString());
   }
-  event_autofill_slop=q->value(13).toInt();
-  event_nested_event=q->value(14).toString();
-  event_sched_group=q->value(15).toString();
-  event_artist_sep=q->value(16).toInt();
-  event_title_sep=q->value(17).toInt();
-  event_have_code=q->value(18).toString();
-  event_have_code2=q->value(19).toString();
-
+  event_autofill_slop=q->value(11).toInt();
+  event_nested_event=q->value(12).toString();
+  event_sched_group=q->value(13).toString();
+  event_artist_sep=q->value(14).toInt();
+  event_title_sep=q->value(15).toInt();
+  event_have_code=q->value(16).toString();
+  event_have_code2=q->value(17).toString();
   delete q;
+
   event_preimport_list->load();
   event_postimport_list->load();
   return true;
@@ -394,11 +365,9 @@ bool RDEventLine::save(RDConfig *config)
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     sql=QString("update EVENTS set ")+
-      "PROPERTIES=\""+RDEscapeString(event_properties)+"\","+
       QString().sprintf("PREPOSITION=%d,",event_preposition)+
       QString().sprintf("TIME_TYPE=%d,",event_time_type)+
       QString().sprintf("GRACE_TIME=%d,",event_grace_time)+
-      "POST_POINT=\""+RDYesNo(event_post_point)+"\","+
       "USE_AUTOFILL=\""+RDYesNo(event_use_autofill)+"\","+
       "USE_TIMESCALE=\""+RDYesNo(event_use_timescale)+"\","+
       QString().sprintf("IMPORT_SOURCE=%d,",event_import_source)+
@@ -419,11 +388,9 @@ bool RDEventLine::save(RDConfig *config)
   else {
     sql=QString("insert into EVENTS set ")+
       "NAME=\""+RDEscapeString(event_name)+"\","+
-      "PROPERTIES=\""+RDEscapeString(event_properties)+"\","+
       QString().sprintf("PREPOSITION=%d,",event_preposition)+
       QString().sprintf("TIME_TYPE=%d,",event_time_type)+
       QString().sprintf("GRACE_TIME=%d,",event_grace_time)+
-      "POST_POINT=\""+RDYesNo(event_post_point)+"\","+
       "USE_AUTOFILL=\""+RDYesNo(event_use_autofill)+"\","+
       "USE_TIMESCALE=\""+RDYesNo(event_use_timescale)+"\","+
       QString().sprintf("IMPORT_SOURCE=%d,",event_import_source)+
@@ -463,7 +430,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   RDLogLine::TransType trans_type=event_first_transtype;
   RDLogLine::TimeType time_type=event_time_type;
   RDLogLine::Type link_type=RDLogLine::MusicLink;
-  bool post_point=event_post_point;
   int grace_time=event_grace_time;
   int link_id=0;
 
@@ -519,7 +485,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("GRACE_TIME=%d,",grace_time)+
       QString().sprintf("CART_NUMBER=%u,",i_item->cartNumber())+
       QString().sprintf("TIME_TYPE=%d,",time_type)+
-      "POST_POINT=\""+RDYesNo(post_point)+"\","+
       QString().sprintf("TRANS_TYPE=%d,",i_item->transType())+
       "COMMENT=\""+RDEscapeString(i_item->markerComment())+"\","+
       QString().sprintf("EVENT_LENGTH=%d",event_length);
@@ -527,7 +492,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     count++;
     trans_type=event_default_transtype;
     time_type=RDLogLine::Relative;
-    post_point=false;
     grace_time=-1;
 
     postimport_length+=GetLength(i_item->cartNumber());
@@ -560,7 +524,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("START_TIME=%d,",QTime().msecsTo(time))+
       QString().sprintf("GRACE_TIME=%d,",grace_time)+
       QString().sprintf("TIME_TYPE=%d,",time_type)+
-      "POST_POINT=\""+RDYesNo(post_point)+"\","+
       QString().sprintf("TRANS_TYPE=%d,",trans_type)+
       "LINK_EVENT_NAME=\""+RDEscapeString(event_name)+"\","+
       QString().sprintf("LINK_START_TIME=%d,",
@@ -577,7 +540,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     time=time.addMSecs(event_length);
     trans_type=event_default_transtype;
     time_type=RDLogLine::Relative;
-    post_point=false;
     grace_time=-1;
   }
 
@@ -884,7 +846,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	QString().sprintf("GRACE_TIME=%d,",grace_time)+
 	QString().sprintf("CART_NUMBER=%u,",schedCL->getItemCartNumber(schedpos))+
 	QString().sprintf("TIME_TYPE=%d,",time_type)+
-	"POST_POINT=\""+RDYesNo(post_point)+"\","+
 	QString().sprintf("TRANS_TYPE=%d,",trans_type)+
 	"EXT_START_TIME="+RDCheckDateTime(time,"hh:mm:ss")+","+
 	QString().sprintf("EVENT_LENGTH=%d",event_length);
@@ -937,7 +898,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("GRACE_TIME=%d,",grace_time)+
       QString().sprintf("CART_NUMBER=%u,",i_item->cartNumber())+
       QString().sprintf("TIME_TYPE=%d,",time_type)+
-      "POST_POINT=\""+RDYesNo(post_point)+"\","+
       QString().sprintf("TRANS_TYPE=%d,",i_item->transType())+
       "COMMENT=\""+RDEscapeString(i_item->markerComment())+"\","+
       QString().sprintf("EVENT_LENGTH=%d",event_length);
@@ -946,7 +906,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     time=time.addMSecs(GetLength(i_item->cartNumber()));
     time_type=RDLogLine::Relative;
     trans_type=event_default_transtype;
-    post_point=false;
     grace_time=-1;
   }
 
@@ -996,15 +955,22 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
     *(e->logLine(e->size()-1))=*logline;
     delete logline;
     logline=NULL;
-  }
 
-  //
-  // Clear Leading Event Values
-  //
-  time_type=RDLogLine::Relative;
-  trans_type=event_default_transtype;
-  //  time=time.addMSecs(length);
-  grace_time=-1;
+    //
+    // Clear Leading Event Values
+    //
+    time_type=RDLogLine::Relative;
+    trans_type=event_default_transtype;
+    grace_time=-1;
+  }
+  else {
+    //
+    // Propagate Leading Event Values to Next Event
+    //
+    time_type=link_logline->timeType();
+    trans_type=link_logline->transType();
+    grace_time=link_logline->graceTime();
+  }
 
   //
   // Calculate Event Time Boundaries
@@ -1190,6 +1156,13 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       }
     }
     time=time.addMSecs(length);
+
+    //
+    // Clear Leading Event Values
+    //
+    time_type=RDLogLine::Relative;
+    trans_type=event_default_transtype;
+    grace_time=-1;
   }
   delete q;
 
@@ -1280,6 +1253,100 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
   }
   
   return false;
+}
+
+
+QString RDEventLine::propertiesText() const
+{
+  QString ret;
+  QString sql=QString("select ")+
+    "NAME,"+              // 00
+    "COLOR,"+             // 01
+    "PREPOSITION,"+       // 02
+    "FIRST_TRANS_TYPE,"+  // 03
+    "TIME_TYPE,"+         // 04
+    "GRACE_TIME,"+        // 05
+    "USE_AUTOFILL,"+      // 06
+    "IMPORT_SOURCE,"+     // 07
+    "NESTED_EVENT "+      // 08
+    "from EVENTS where "+
+    "NAME=\""+RDEscapeString(event_name)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=RDEventLine::
+      propertiesText(q->value(2).toInt(),
+		     (RDLogLine::TransType)q->value(3).toUInt(),
+		     (RDLogLine::TimeType)q->value(4).toUInt(),
+		     q->value(5).toInt(),
+		     RDBool(q->value(6).toString()),
+		     (RDEventLine::ImportSource)q->value(7).toUInt(),
+		     !q->value(8).toString().isEmpty());  
+  }
+  delete q;
+
+  return ret;
+}
+
+
+QString RDEventLine::propertiesText(int prepos_msec,
+				    RDLogLine::TransType first_trans,
+				    RDLogLine::TimeType time_type,
+				    int grace_msec,
+				    bool autofill,
+				    RDEventLine::ImportSource import_src,
+				    bool inline_tfc)
+{
+  QString ret="";
+  QString str;
+
+  if(prepos_msec>=0) {
+    ret+=QObject::tr("Cue")+
+      "(-"+QTime(0,0,0).addMSecs(prepos_msec).toString("mm:ss")+"), ";
+  }
+
+  if(time_type==RDLogLine::Hard) {
+    switch(grace_msec) {
+    case 0:
+      ret+=QObject::tr("Timed(Start), ");
+      break;
+
+    case -1:
+      ret+=QObject::tr("Timed(MakeNext), ");
+      break;
+
+    default:
+      ret+=", "+QObject::tr("Timed(Wait)")+" "+
+	QTime(0,0,0).addMSecs(grace_msec).toString("mm:ss")+", ";
+      break;
+    }
+  }
+
+  if(autofill) {
+    ret+=QObject::tr("Fill")+", ";
+  }
+
+  switch(import_src) {
+  case RDEventLine::Traffic:
+    ret+=QObject::tr("Traffic, ");
+    break;
+
+  case RDEventLine::Music:
+    ret+=QObject::tr("Music, ");
+    break;
+
+  case RDEventLine::Scheduler:
+    ret+=QObject::tr("Scheduler, ");
+    break;
+
+  default:
+    break;
+  }
+
+  if(inline_tfc) {
+    ret+=QObject::tr("Inline Traffic, ");
+  }
+
+  return ret.left(ret.length()-2);
 }
 
 

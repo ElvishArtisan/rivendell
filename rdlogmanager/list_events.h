@@ -2,7 +2,7 @@
 //
 // List Rivendell Log Events
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -57,6 +57,7 @@ class ListEvents : public RDDialog
   void RefreshItem(Q3ListViewItem *item,std::vector<QString> *new_events=NULL);
   void UpdateItem(Q3ListViewItem *item,QString name);
   void WriteItem(Q3ListViewItem *item,RDSqlQuery *q);
+  QString WriteItemSql() const;
   int ActiveEvents(QString event_name,QString *clock_list);
   void DeleteEvent(QString event_name);
   QString GetEventFilter(QString svc_name);

@@ -2,7 +2,7 @@
 //
 // List a Rivendell Log Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,6 +21,7 @@
 #include <qmessagebox.h>
 #include <qpainter.h>
 
+#include <rdconf.h>
 #include <rdescape_string.h>
 
 #include "add_event.h"
@@ -60,9 +61,9 @@ ListEvents::ListEvents(QString *eventname,QWidget *parent)
   edit_events_list->setAllColumnsShowFocus(true);
   edit_events_list->setItemMargin(5);
   edit_events_list->addColumn(tr("Name"));
+  edit_events_list->addColumn(tr("Trans"));
+  edit_events_list->setColumnAlignment(1,Qt::AlignCenter);
   edit_events_list->addColumn(tr("Properties"));
-  edit_events_list->addColumn(tr("Color"));
-  edit_events_list->setColumnAlignment(2,Qt::AlignCenter);
   connect(edit_events_list,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
@@ -427,8 +428,7 @@ void ListEvents::RefreshList()
   }
 
   edit_events_list->clear();
-  QString sql=QString().sprintf("select NAME,PROPERTIES,COLOR from EVENTS %s",
-				(const char *)filter);
+  QString sql=WriteItemSql()+" "+filter;
   RDSqlQuery *q=new RDSqlQuery(sql);
   Q3ListViewItem *item=NULL;
   while(q->next()) {
@@ -458,8 +458,7 @@ void ListEvents::RefreshItem(Q3ListViewItem *item,
 
 void ListEvents::UpdateItem(Q3ListViewItem *item,QString name)
 {
-  QString sql=QString().sprintf("select NAME,PROPERTIES,COLOR from EVENTS\
-                                 where NAME=\"%s\"",(const char *)name);
+  QString sql=WriteItemSql()+"where NAME=\""+RDEscapeString(name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->next()) {
     item->setText(0,name);
@@ -475,14 +474,41 @@ void ListEvents::WriteItem(Q3ListViewItem *item,RDSqlQuery *q)
   QPainter *p=new QPainter();
 
   item->setText(0,q->value(0).toString());
-  item->setText(1,q->value(1).toString());
+  item->setText(1,
+	RDLogLine::transText((RDLogLine::TransType)q->value(3).toUInt()));
+  item->setText(2,RDEventLine::
+		propertiesText(q->value(2).toInt(),
+			       (RDLogLine::TransType)q->value(3).toUInt(),
+			       (RDLogLine::TimeType)q->value(4).toUInt(),
+			       q->value(5).toInt(),
+			       RDBool(q->value(6).toString()),
+			       (RDEventLine::ImportSource)q->value(7).toUInt(),
+			       !q->value(8).toString().isEmpty()));
   pix=new QPixmap(QSize(15,15));
   p->begin(pix);
-  p->fillRect(0,0,15,15,QColor(q->value(2).toString()));
+  p->fillRect(0,0,15,15,QColor(q->value(1).toString()));
   p->end();
-  item->setPixmap(2,*pix);
+  item->setPixmap(0,*pix);
 
   delete p;
+}
+
+
+QString ListEvents::WriteItemSql() const
+{
+  QString sql=QString("select ")+
+    "NAME,"+              // 00
+    "COLOR,"+             // 01
+    "PREPOSITION,"+       // 02
+    "FIRST_TRANS_TYPE,"+  // 03
+    "TIME_TYPE,"+         // 04
+    "GRACE_TIME,"+        // 05
+    "USE_AUTOFILL,"+      // 06
+    "IMPORT_SOURCE,"+     // 07
+    "NESTED_EVENT "+      // 08
+    "from EVENTS ";
+
+  return sql;
 }
 
 
@@ -555,9 +581,8 @@ void ListEvents::DeleteEvent(QString event_name)
 QString ListEvents::GetEventFilter(QString svc_name)
 {
   QString filter="where ";
-  QString sql=QString().sprintf("select EVENT_NAME from EVENT_PERMS\
-                                 where SERVICE_NAME=\"%s\"",
-				(const char *)svc_name);
+  QString sql=QString("select EVENT_NAME from EVENT_PERMS where ")+
+    "SERVICE_NAME=\""+RDEscapeString(svc_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->size()>0) {
     while(q->next()) {

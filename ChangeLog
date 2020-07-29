@@ -19457,6 +19457,7 @@
 	class.
 	* Added a 'CUTS.RECORDING_MBID' field to the database.
 	* Added a 'CUTS.RELEASE_MBID' field to the database.
+	* Incremented the database version to 313.
 2020-02-01 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'MusicBrainz' CD metadata lookup method in 'RDMbLookup'.
 2020-02-01 Fred Gleason <fredg@paravelsystems.com>
@@ -19748,7 +19749,178 @@
 	* Fixed a regression in rdairplay(1) that caused two events to be
 	started by a single spacebar tap if a SoundPanel event had been
 	played previously.
-2020-03-20 Patrick Linstruth <patrick@deltecent.com>
+2020-04-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that caused the initial event
+	in an imported set to fail receive the proper time and transition
+	type if the 'Include Import Markers in Finished Logs' checkbox in
+	rdadmin(1) had not been ticked.
+2020-04-08 David Klann <dklann@linux.com>
+	* Fixed a regression in rdexport(1) that caused exported file
+	names to be constructed improperly.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdlogmanager(1) that caused 'Make Post Point'
+	label to be displayed without last 't'.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdairplay(1) with HourSelector::updateTimeData()
+	where timer was not set properly when crossing midnight.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rdairplay(1) to always scroll log to the top when using
+	the hour selector.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rdlogmanager(1) to disable merge buttons if the selected
+	log does not contain any import links.
+2020-04-08 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the error message rendered when 'configure' fails to
+	detect one or more of the MusicBrainz dependencies to be less
+	ambiguous.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rdadmin(1) Edit Service dialog to display built-in
+	traffic and music import template values.
+	* Added "Copy To Custom" buttons to rdadmin(1) Edit Service dialog.
+2020-04-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'List GPIs' dialog in rdadmin(1) that
+	prevented changes in GPI assignments from being propagated
+	to the underlying device.
+2020-04-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Software Authority' driver that caused
+	autodetection of the number of GPIOs in a router to be unreliable.
+	* Removed superfluous code from rdgpimon(1).
+2020-04-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added debug syslog messages to the 'Software Authority' driver
+	in ripcd(8).
+2020-04-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDEventLine' that caused the
+	'Append Log' ['AL'] RML to append a copy of the currently loaded
+	log instead of the one specified in the RML command
+2020-04-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added font metrics methods for each standard font role in
+	'RDFontEngine'.
+	* Refactored the control layout in the 'Editing Event' dialog
+	in rdlogmanager.
+2020-04-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'EVENTS.POST_POINT' field from the database.
+	* Removed the 'LOG_LINES.POST_POINT' field from the database.
+	* Incremented the database version to 315.
+	* Removed 'RDEventLine::postPoint()' and
+	'RDEventLine::setPostPoint()' methods.
+	* Removed the 'Post Point' checkbox from the 'Editing Event' dialog
+	in rdlogmanager(1).
+2020-04-16 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'REMARKS' field to 'USER NOTES' in the 'Editing Event'
+	dialog in rdlogmanager(1).
+	* Renamed the 'REMARKS' field to 'USER NOTES' in the 'Edit Clock'
+	dialog in rdlogmanager(1).
+2020-04-18 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'EVENTS.PROPERTIES' field from the database.
+	* Incremented the database version to 316.
+	* Removed the 'RDEventLine::properties()' and
+	'RDEventLine::setProperties()' methods.
+	* Added 'RDEventLine::propertiesText()' methods.
+	* Added a 'Trans' column to the event list in the 'Edit Clock'
+	dialog in rdlogmanager(1).
+	* Added a 'Trans' column to the event list in the 'List Events'
+	dialog in rdlogmanager(1).
+2020-04-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogedit(1) that caused garbled text to appear
+	when 'Start Immediately' was selected in the 'Edit Log Entry'
+	dialog box.
+2020-04-27 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.3.0int0.
+2020-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a'STACK_LINES_ID_IDX' index to the 'STACK_SCHED_CODES'
+	table in the database.
+	* Incremented the database version to 317.
+	* Cleaned up SQL generation in rdmaint(8).
+2020-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.3.0int1.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that broke the ability to scroll through
+	Sound Panel panels by means of the mouse wheel.
+2020-05-19 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.0.
+2020-05-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDListView::NumericSort' to the 'RDListView::SortType'
+	enumeration.
+	* Fixed a bug in rdlibrary(1) that caused cuts to be incorrectly
+	sorted when scheduled 'By Specified Order'.
+2020-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'cmdline_parser_test' test harness.
+	* Fixed a bug in 'RDCmdSwitch' that caused value-only arguments
+	containing '=' characters to be incorrectly parsed.
+2020-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDFormPost' that caused an error when processing
+	multipart-mime submissions containing '=' characters.
+2020-05-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) where attempting to audition an
+	audio cart with a disabled cue output would crash the application.
+2020-06-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Results Report' report in rdadmin(1).
+2020-06-05 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version 3.4.0int0.
+2020-06-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused the 'Forced Segue'
+	setting in rdadmin(1) to be ignored when executing an event with
+	a hard start attribute.
+2020-06-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) where a paused event could not be
+	removed by dropping the empty cart on it.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a cast overflow bug in rdairplay(1) that cause incorrect
+	pie timer indications after adding or deleting events to a running
+	log.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that would throw a segfault when
+	attempting to delete a range of cuts, one of which was in the
+	clipboard.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a math bug in rdairplay(1) that caused the estimated
+	stop-down times in the post point widget to be incorrect after
+	adding or removing events from a running log.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that made it impossible to enter
+	useful strings in the 'WaveForm Caption' control on the
+	'Edit RDLogEdit' dialog.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in RDRenderer that caused segue transitions to
+	be rendered without regard to the 'No Fade on Segue Out' checkbox
+	in the 'Edit Audio' dialog.
+2020-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in ripcd(8) that caused connections to ModbusTCP
+	devices to fail to be properly restored by the connection watchdog.
+2020-06-18 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Edit Event' dialog in rdlogmanager(1) to use
+	symbolic menu item ids.
+2020-06-18 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the checkbox from the 'Delete' right-click menu item
+	in the 'Edit Event' dialog in rdlogmanager(1).
+2020-06-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'Edit Event' dialog in rdlogmanager(1)
+	that caused the first cart transition type to be incorrect when
+	the 'Pre-Import Carts' list was populated.
+2020-06-19 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Edit Event' dialog in rdlogmanager(1) to show '[auto]'
+	as the transition type for the leading event in Pre-/Post-Import
+	lists.
+2020-06-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3PopupMenu' dependency from rdlogmanager(1).
+2020-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Add Next' ['PX'] RML that failed to return an
+	error when an invalid offset value was supplied.
+	* Fixed a bug in the 'Add Next' ['PX'] RML that failed to honor
+	the 'Default Trans. Type' setting in the 'Configure RDAirPlay'
+	dialog in rdadmin(1).
+2020-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Applied the RD_MAX_CART_NUMBER define in
+	'rdairplay/local_macros.cpp'.
+2020-07-07 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'RDWaveFile' to work around known fencepost errors in
+	WAV files generated by "Sonic Studio soundBlade" by
+	"PME Mastering, Inc."
+2020-07-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.0int1.
+2020-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.1.
+2020-07-28 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'RDHttpServer' class.
 	* Added 'loadGroup' method to 'RDGroupList' class.
 	* Added 'RDNexus' class.

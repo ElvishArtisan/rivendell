@@ -54,10 +54,10 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   // Overlap Box
   //
   edit_overlap_box=new QCheckBox(this);
-  edit_overlap_box->setGeometry(30,72,15,15);
+  edit_overlap_box->setGeometry(30,94,15,15);
   edit_overlap_label=
     new QLabel(edit_overlap_box,tr("No Fade on Segue Out"),this);
-  edit_overlap_label->setGeometry(50,68,130,26);
+  edit_overlap_label->setGeometry(50,90,sizeHint().width()-60,26);
   edit_overlap_label->setFont(labelFont());
   edit_overlap_label->
     setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
@@ -66,36 +66,36 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   // Cart Number
   //
   edit_cart_edit=new QLineEdit(this);
-  edit_cart_edit->setGeometry(10,116,60,18);
+  edit_cart_edit->setGeometry(10,138,60,18);
   QLabel *label=new QLabel(tr("Cart"),this);
   label->setFont(labelFont());
-  label->setGeometry(12,100,60,14);
+  label->setGeometry(12,122,60,14);
 
   //
   // Title 
   //
   edit_title_edit=new QLineEdit(this);
-  edit_title_edit->setGeometry(75,116,260,18);
+  edit_title_edit->setGeometry(75,138,260,18);
   edit_title_edit->setReadOnly(true);
   label=new QLabel(tr("Title"),this);
   label->setFont(labelFont());
-  label->setGeometry(77,100,110,14);
+  label->setGeometry(77,122,110,14);
 
   //
   // Artist 
   //
   edit_artist_edit=new QLineEdit(this);
-  edit_artist_edit->setGeometry(340,116,sizeHint().width()-350,18);
+  edit_artist_edit->setGeometry(340,138,sizeHint().width()-350,18);
   edit_artist_edit->setReadOnly(true);
   label=new QLabel(tr("Artist"),this);
   label->setFont(labelFont());
-  label->setGeometry(342,100,110,14);
+  label->setGeometry(342,122,110,14);
 
   //
   // Cart Button
   //
   QPushButton *button=new QPushButton(this);
-  button->setGeometry(20,144,80,50);
+  button->setGeometry(20,166,80,50);
   button->setFont(buttonFont());
   button->setText(tr("Select\nCart"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectCartData()));
@@ -132,7 +132,7 @@ EditLogLine::~EditLogLine()
 
 QSize EditLogLine::sizeHint() const
 {
-  return QSize(625,230);
+  return QSize(625,252);
 } 
 
 
