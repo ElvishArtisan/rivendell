@@ -108,7 +108,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   list_dropboxes_view->addColumn(tr("Fix Broken Formats"));
   list_dropboxes_view->setColumnAlignment(9,Qt::AlignCenter);
   list_dropboxes_view->addColumn(tr("User Defined"));
-  list_dropboxes_view->setColumnAlignment(10,Qt::AlignVCenter|Qt::AlignLeft);
+  list_dropboxes_view->setColumnAlignment(10,Qt::AlignLeft);
   connect(list_dropboxes_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
