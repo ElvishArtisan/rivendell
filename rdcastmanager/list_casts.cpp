@@ -26,6 +26,7 @@
 #include <rdconf.h>
 #include <rdcut_dialog.h>
 #include <rdescape_string.h>
+#include <rdlist_logs.h>
 
 #include "edit_cast.h"
 #include "globals.h"
@@ -67,12 +68,14 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   // Progress Dialog
   //
   list_progress_dialog=
-    new QProgressDialog(tr("Uploading Audio..."),tr("Cancel"),0,
-			list_feed->totalPostSteps(),this);
+    new QProgressDialog(tr("Uploading Audio..."),tr("Cancel"),0,1,this);
   list_progress_dialog->setWindowTitle("RDCastManager - "+tr("Progress"));
+  list_progress_dialog->setCancelButton(NULL);
   list_progress_dialog->setMinimumDuration(0);
   connect(list_feed,SIGNAL(postProgressChanged(int)),
 	  this,SLOT(postProgressChangedData(int)));
+  connect(list_feed,SIGNAL(postProgressRangeChanged(int,int)),
+	  list_progress_dialog,SLOT(setRange(int,int)));
 
   //
   // Filter
@@ -157,6 +160,15 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   connect(list_file_button,SIGNAL(clicked()),this,SLOT(addFileData()));
 
   //
+  //  Post Log Button
+  //
+  list_log_button=new QPushButton(this);
+  list_log_button->setFont(buttonFont());
+  list_log_button->setText(tr("Post From\nLog"));
+  list_log_button->setDisabled(list_feed->isSuperfeed());
+  connect(list_log_button,SIGNAL(clicked()),this,SLOT(addLogData()));
+
+  //
   //  Edit Button
   //
   list_edit_button=new QPushButton(this);
@@ -219,9 +231,7 @@ void ListCasts::addCartData()
   }
   delete cd;
   RDFeed::Error err;
-  unsigned cast_id=list_feed->postCut(rda->user(),rda->station(),cutname,&err,
-				      rda->config()->logXloadDebugData(),
-				      rda->config());
+  unsigned cast_id=list_feed->postCut(cutname,&err);
   if(err!=RDFeed::ErrorOk) {
     QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
 			 RDFeed::errorString(err));
@@ -246,9 +256,7 @@ void ListCasts::addFileData()
     return;
   }
   RDFeed::Error err;
-  unsigned cast_id=list_feed->postFile(rda->user(),rda->station(),srcfile,&err,
-				       rda->config()->logXloadDebugData(),
-				       rda->config());
+  unsigned cast_id=list_feed->postFile(srcfile,&err);
   if(err!=RDFeed::ErrorOk) {
     QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
 			 RDFeed::errorString(err));
@@ -262,6 +270,35 @@ void ListCasts::addFileData()
   list_casts_view->setSelected(item,true);
   list_casts_view->ensureItemVisible(item);
   delete edit_cast;
+}
+
+
+void ListCasts::addLogData()
+{
+  QString logname;
+  RDFeed::Error err=RDFeed::ErrorOk; 
+  unsigned cast_id=0;
+
+  RDListLogs *d=new RDListLogs(&logname,RDLogFilter::UserFilter,this);
+  if(d->exec()) {
+    if((cast_id=list_feed->postLog(logname,&err))!=0) {
+      EditCast *cast=new EditCast(cast_id,this);
+      cast->exec();
+      RDListViewItem *item=new RDListViewItem(list_casts_view);
+      item->setId(cast_id);
+      RefreshItem(item);
+      list_casts_view->setSelected(item,true);
+      list_casts_view->ensureItemVisible(item);
+      //delete cast;
+    }
+    else {
+      QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
+			   RDFeed::errorString(err));
+      delete d;
+      return;
+    }
+  }
+  delete d;
 }
 
 
@@ -298,7 +335,8 @@ void ListCasts::deleteData()
 
   QProgressDialog *pd=
     new QProgressDialog(tr("Deleting Podcast..."),"Cancel",0,2,this);
-  pd->setCaption(tr("Progress"));
+  pd->setWindowTitle(tr("Progress"));
+  pd->setCancelButton(NULL);
   pd->setMinimumDuration(0);
   pd->setValue(0);
   qApp->processEvents();
@@ -407,8 +445,9 @@ void ListCasts::resizeEvent(QResizeEvent *e)
   list_casts_view->setGeometry(10,54,size().width()-20,size().height()-124);
   list_cart_button->setGeometry(10,size().height()-60,80,50);
   list_file_button->setGeometry(100,size().height()-60,80,50);
-  list_edit_button->setGeometry(190,size().height()-60,80,50);
-  list_delete_button->setGeometry(280,size().height()-60,80,50);
+  list_log_button->setGeometry(190,size().height()-60,80,50);
+  list_edit_button->setGeometry(300,size().height()-60,80,50);
+  list_delete_button->setGeometry(390,size().height()-60,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
 

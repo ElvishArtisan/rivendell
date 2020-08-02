@@ -20136,3 +20136,6 @@
 	dialogs in rdcatch(1).
 2020-07-08 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.0rss1.
+2020-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Post from Log' button to the 'Podcast List' dialog
+	in rdcastmanager(1).

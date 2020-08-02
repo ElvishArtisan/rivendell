@@ -38,7 +38,8 @@ class RDFeed : public QObject
   Q_OBJECT;
  public:
   enum Error {ErrorOk=0,ErrorNoFile=1,ErrorCannotOpenFile=2,
-	      ErrorUnsupportedType=3,ErrorUploadFailed=4,ErrorGeneral=5};
+	      ErrorUnsupportedType=3,ErrorUploadFailed=4,ErrorGeneral=5,
+	      ErrorNoLog=6,ErrorRenderError=7};
   RDFeed(const QString &keyname,RDConfig *config,QObject *parent=0);
   RDFeed(unsigned id,RDConfig *config,QObject *parent=0);
   QString keyName() const;
@@ -133,12 +134,9 @@ class RDFeed : public QObject
   bool postXmlConditional(const QString &caption,QWidget *widget);
   bool deleteXml(QString *err_msg);
   bool deleteImages(QString *err_msg);
-  unsigned postCut(RDUser *user,RDStation *station,
-		   const QString &cutname,Error *err,bool log_debug,
-		   RDConfig *config);
-  unsigned postFile(RDUser *user,RDStation *station,const QString &srcfile,
-		    Error *err,bool log_debug,RDConfig *config);
-  int totalPostSteps() const;
+  unsigned postCut(const QString &cutname,Error *err);
+  unsigned postFile(const QString &srcfile,Error *err);
+  unsigned postLog(const QString &logname,Error *err);
   QString rssXml(QString *err_msg,bool *ok=NULL);
   static unsigned create(const QString &keyname,bool enable_users,
 			 QString *err_msg);
@@ -150,6 +148,11 @@ class RDFeed : public QObject
 
  signals:
   void postProgressChanged(int step);
+  void postProgressRangeChanged(int min,int max);
+
+ private slots:
+  void renderMessage(const QString &msg);
+  void renderLineStartedData(int lineno,int total_lines);
 
  private:
   unsigned CreateCast(QString *filename,int bytes,int msecs) const;

@@ -267,6 +267,11 @@ Continuar deletando cast?</translation>
         <source>Feed</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Post From
+Log</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>

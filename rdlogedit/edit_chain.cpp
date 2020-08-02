@@ -93,7 +93,7 @@ void EditChain::selectLogData()
 
   RDListLogs *d=
     new RDListLogs(&logname,RDLogFilter::UserFilter,this);
-  if(d->exec()!=0) {
+  if(!d->exec()) {
     delete d;
     return;
   }

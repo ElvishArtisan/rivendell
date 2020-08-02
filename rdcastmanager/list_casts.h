@@ -2,7 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,6 +40,7 @@ class ListCasts : public RDDialog
  private slots:
   void addCartData();
   void addFileData();
+  void addLogData();
   void editData();
   void deleteData();
   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
@@ -60,6 +61,7 @@ class ListCasts : public RDDialog
   RDListView *list_casts_view;
   QPushButton *list_cart_button;
   QPushButton *list_file_button;
+  QPushButton *list_log_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;
   QPushButton *list_close_button;
