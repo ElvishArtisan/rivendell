@@ -20142,3 +20142,5 @@
 2020-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a fencepost bug in the 'RDRenderer::renderToFile()' method
 	with the 'last_line' parameter.
+2020-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDLogIcons' class.
