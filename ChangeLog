@@ -20139,3 +20139,6 @@
 2020-08-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Post from Log' button to the 'Podcast List' dialog
 	in rdcastmanager(1).
+2020-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a fencepost bug in the 'RDRenderer::renderToFile()' method
+	with the 'last_line' parameter.

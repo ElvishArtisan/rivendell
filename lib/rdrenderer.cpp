@@ -402,11 +402,18 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
 			const QTime &first_time,const QTime &last_time)
 {
   float *pcm=NULL;
-  QTime current_time=start_time;
   QString temp_output_filename;
+  QTime current_time;
 
   render_warnings.clear();
   render_abort=false;
+
+  if(start_time.isNull()) {
+    current_time=QTime::currentTime();
+  }
+  else {
+    current_time=start_time;
+  }
 
   //
   // Open Output File
@@ -483,7 +490,7 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
     }
     emit lineStarted(i,log->size()+render_total_passes-1);
     if(((first_line==-1)||(first_line<=(int)i))&&
-       ((last_line==-1)||(last_line>(int)i))) {
+       ((last_line==-1)||(last_line>=(int)i))) {
       if(lls.at(i)->transType()==RDLogLine::Stop) {
 	ProgressMessage(current_time,i,tr("STOP")+" ",lls.at(i)->summary());
 	render_warnings.
