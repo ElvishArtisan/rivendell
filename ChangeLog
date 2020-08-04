@@ -20144,3 +20144,5 @@
 	with the 'last_line' parameter.
 2020-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDLogIcons' class.
+2020-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Log Render Options' dialog to rdcastmanager(1).

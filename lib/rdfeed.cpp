@@ -1184,7 +1184,9 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
 }
 
 
-unsigned RDFeed::postLog(const QString &logname,RDFeed::Error *err)
+unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
+			 bool stop_at_stop,int start_line,int end_line,
+			 RDFeed::Error *err)
 {
   QString sql;
   RDSqlQuery *q=NULL;
@@ -1230,8 +1232,10 @@ unsigned RDFeed::postLog(const QString &logname,RDFeed::Error *err)
   connect(renderer,SIGNAL(lineStarted(int,int)),
 	  this,SLOT(renderLineStartedData(int,int)));
 
-  if(!renderer->renderToFile(tmpfile,log,settings,QTime(),true,&err_msg,
-			     0,log->size())) {
+  printf("first: %d  last: %d\n",start_line,end_line);
+
+  if(!renderer->renderToFile(tmpfile,log,settings,start_time,stop_at_stop,
+			     &err_msg,start_line,end_line)) {
     *err=RDFeed::ErrorRenderError;
     delete renderer;
     delete settings;

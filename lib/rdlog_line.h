@@ -21,9 +21,10 @@
 #ifndef RDLOG_LINE_H
 #define RDLOG_LINE_H
 
-#include <qdatetime.h>
-#include <qobject.h>
 #include <qcolor.h>
+#include <qdatetime.h>
+#include <qmap.h>
+#include <qobject.h>
 
 #include <rdcart.h>
 #include <rdlistviewitem.h>
@@ -31,8 +32,6 @@
 class RDLogLine
 {
  public:
-  bool hasBeenModified(void);
-
   enum StartTimeType {Imported=0,Logged=1,Predicted=2,Actual=3,Initial=4};
   enum TimeType {Relative=0,Hard=1,NoTime=255};
   enum TransType {Play=0,Segue=1,Stop=2,NoTrans=255};
@@ -56,6 +55,7 @@ class RDLogLine
   void clearModified(void);
   int id() const;
   void setId(int id);
+  bool hasBeenModified(void);
   RDLogLine::Status status() const;
   void setStatus(RDLogLine::Status stat);
   RDLogLine::State state() const;
@@ -74,8 +74,10 @@ class RDLogLine
   void setSource(RDLogLine::Source src);
   unsigned cartNumber() const;
   void setCartNumber(unsigned cart);
+  QString cartNumberText() const;
   QTime startTime(RDLogLine::StartTimeType type) const;
   void setStartTime(RDLogLine::StartTimeType type,QTime time);
+  QString startTimeText() const;
   int graceTime() const;
   void setGraceTime(int time);
   RDLogLine::TimeType timeType() const;
@@ -128,6 +130,7 @@ class RDLogLine
   void setGroupColor(const QColor &color);
   QString title() const;
   void setTitle(const QString &title);
+  QString titleText() const;
   QString artist() const;
   void setArtist(const QString &artist);
   QString publisher() const;
@@ -168,6 +171,7 @@ class RDLogLine
   void setUsageCode(RDCart::UsageCode code);
   unsigned forcedLength() const;
   void setForcedLength(unsigned len);
+  QString forcedLengthText() const;
   unsigned averageSegueLength() const;
   void setAverageSegueLength(unsigned len);
   unsigned cutQuantity() const;
@@ -385,4 +389,4 @@ class RDLogLine
 };
 
 
-#endif
+#endif  // RDLOG_LINE

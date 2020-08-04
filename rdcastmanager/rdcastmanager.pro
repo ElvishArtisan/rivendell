@@ -2,7 +2,7 @@
 #
 # The rdcastmanager/ QMake project file for Rivendell
 #
-# (C) Copyright 2003-2018 Fred Gleason <fredg@paravelsystems.com>
+# (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -24,15 +24,21 @@
 # purely for the sake of i18n support.
 #
 
-SOURCES += rdcastmanager.cpp
 SOURCES += edit_cast.cpp
 SOURCES += list_casts.cpp
+SOURCES += logdialog.cpp
+SOURCES += logmodel.cpp
 SOURCES += pick_report_dates.cpp
+SOURCES += rdcastmanager.cpp
+SOURCES += render_dialog.cpp
 
-HEADERS += rdcastmanager.h
 HEADERS += edit_cast.h
 HEADERS += list_casts.h
+HEADERS += logdialog.h
+HEADERS += logmodel.h
 HEADERS += pick_report_dates.h
+HEADERS += rdcastmanager.h
+HEADERS += render_dialog.h
 
 TRANSLATIONS += rdcastmanager_cs.ts
 TRANSLATIONS += rdcastmanager_de.ts

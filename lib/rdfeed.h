@@ -136,7 +136,8 @@ class RDFeed : public QObject
   bool deleteImages(QString *err_msg);
   unsigned postCut(const QString &cutname,Error *err);
   unsigned postFile(const QString &srcfile,Error *err);
-  unsigned postLog(const QString &logname,Error *err);
+  unsigned postLog(const QString &logname,const QTime &start_time,
+		   bool stop_at_stop,int start_line,int end_line,Error *err);
   QString rssXml(QString *err_msg,bool *ok=NULL);
   static unsigned create(const QString &keyname,bool enable_users,
 			 QString *err_msg);

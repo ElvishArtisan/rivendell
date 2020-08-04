@@ -28,6 +28,8 @@
 #include <rdfeed.h>
 #include <rdlistviewitem.h>
 
+#include "render_dialog.h"
+
 class ListCasts : public RDDialog
 {
   Q_OBJECT
@@ -77,6 +79,7 @@ class ListCasts : public RDDialog
   QLabel *list_active_label;
   QCheckBox *list_active_check;
   QProgressDialog *list_progress_dialog;
+  RenderDialog *list_render_dialog;
   RDFeed *list_feed;
   bool list_is_superfeed;
 };

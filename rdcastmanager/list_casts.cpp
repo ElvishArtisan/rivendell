@@ -65,8 +65,10 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_feed=new RDFeed(feed_id,rda->config(),this);
 
   //
-  // Progress Dialog
+  // Dialogs
   //
+  list_render_dialog=new RenderDialog(this);
+
   list_progress_dialog=
     new QProgressDialog(tr("Uploading Audio..."),tr("Cancel"),0,1,this);
   list_progress_dialog->setWindowTitle("RDCastManager - "+tr("Progress"));
@@ -202,6 +204,7 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
 
 ListCasts::~ListCasts()
 {
+  delete list_render_dialog;
   delete list_progress_dialog;
   delete list_feed;
 }
@@ -281,21 +284,37 @@ void ListCasts::addLogData()
 
   RDListLogs *d=new RDListLogs(&logname,RDLogFilter::UserFilter,this);
   if(d->exec()) {
-    if((cast_id=list_feed->postLog(logname,&err))!=0) {
-      EditCast *cast=new EditCast(cast_id,this);
-      cast->exec();
-      RDListViewItem *item=new RDListViewItem(list_casts_view);
-      item->setId(cast_id);
-      RefreshItem(item);
-      list_casts_view->setSelected(item,true);
-      list_casts_view->ensureItemVisible(item);
-      //delete cast;
+    RDLogEvent *log=new RDLogEvent(logname);
+    log->load();
+    QTime start_time;
+    bool ignore_stops=true;
+    int start_line=0;
+    int end_line=log->size()-1;
+
+    if(list_render_dialog->exec(log,&start_time,&ignore_stops,
+				&start_line,&end_line)) {
+      if((cast_id=list_feed->postLog(logname,start_time,ignore_stops,
+				     start_line,end_line,&err))!=0) {
+	EditCast *cast=new EditCast(cast_id,this);
+	cast->exec();
+	RDListViewItem *item=new RDListViewItem(list_casts_view);
+	item->setId(cast_id);
+	RefreshItem(item);
+	list_casts_view->setSelected(item,true);
+	list_casts_view->ensureItemVisible(item);
+	//delete cast;
+      }
+      else {
+	QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
+			     RDFeed::errorString(err));
+	delete d;
+	delete log;
+	return;
+      }
+
+      delete log;
     }
-    else {
-      QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
-			   RDFeed::errorString(err));
-      delete d;
-      return;
+    else {  // Render dialog was canceled!
     }
   }
   delete d;

@@ -162,6 +162,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdlivewiresource.cpp rdlivewiresource.h\
                         rdlog.cpp rdlog.h\
                         rdlog_event.cpp rdlog_event.h\
+                        rdlog_icons.cpp rdlog_icons.h\
                         rdlog_line.cpp rdlog_line.h\
                         rdlogedit_conf.cpp rdlogedit_conf.h\
                         rdlogfilter.cpp rdlogfilter.h\
