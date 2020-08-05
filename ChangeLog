@@ -19920,3 +19920,7 @@
 	* Incremented the package version to 3.4.0int1.
 2020-07-21 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.1.
+2020-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDDataPacer' class.
+	* Modified the GVC7000 switcher driver to insert 50 mS pauses
+	between protocol commands.
