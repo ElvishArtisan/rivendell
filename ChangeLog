@@ -19926,3 +19926,7 @@
 	between protocol commands.
 2020-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.1int0.
+2020-08-05 David Klann <dklann@linux.com>
+	* Correct the column settings in rdadmin/list_dropboxes.cpp.
+2020-08-05 David Klann <dklann@linux.com>
+	* Remove "Qt::AlignVCenter|" from User Defined.
