@@ -19912,3 +19912,10 @@
 2020-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Applied the RD_MAX_CART_NUMBER define in
 	'rdairplay/local_macros.cpp'.
+2020-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Applied the RD_MAX_CART_NUMBER define in
+	'rdairplay/local_macros.cpp'.
+2020-07-29 Brian McGlynn <bmcglynn@geneseemedia.net>
+	* Allow RN Macro to run when Rivendell daemons running as non-root
+	'ripcd/local_macros.cpp'.
+
