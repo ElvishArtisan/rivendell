@@ -820,13 +820,14 @@ bool RDFeed::postXml(QString *err_msg)
   CURLcode curl_err;
   bool ret=false;
   char errstr[CURL_ERROR_SIZE];
+  QDateTime now=QDateTime::currentDateTime();
 
   if((curl=curl_easy_init())==NULL) {
     *err_msg=tr("Unable to get CURL handle.");
     return false;
   }
 
-  feed_xml=rssXml(err_msg).toUtf8();
+  feed_xml=rssXml(err_msg,now).toUtf8();
   feed_xml_ptr=0;
 
   curl_easy_setopt(curl,CURLOPT_URL,feedUrl().toUtf8().constData());
@@ -848,6 +849,7 @@ bool RDFeed::postXml(QString *err_msg)
   switch((curl_err=curl_easy_perform(curl))) {
   case CURLE_OK:
   case CURLE_PARTIAL_FILE:
+    setLastBuildDateTime(now);
     ret=true;
     break;
 
@@ -1311,7 +1313,7 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
 }
 
 
-QString RDFeed::rssXml(QString *err_msg,bool *ok)
+QString RDFeed::rssXml(QString *err_msg,const QDateTime &now,bool *ok)
 {
   QString ret;
 
@@ -1337,22 +1339,21 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
     "FEEDS.CHANNEL_WEBMASTER,"+    // 10
     "FEEDS.CHANNEL_LANGUAGE,"+     // 11
     "FEEDS.CHANNEL_EXPLICIT,"+     // 12
-    "FEEDS.LAST_BUILD_DATETIME,"+  // 13
-    "FEEDS.ORIGIN_DATETIME,"+      // 14
-    "FEEDS.HEADER_XML,"+           // 15
-    "FEEDS.CHANNEL_XML,"+          // 16
-    "FEEDS.ITEM_XML,"+             // 17
-    "FEEDS.BASE_URL,"+             // 18
-    "FEEDS.ID,"+                   // 19
-    "FEEDS.UPLOAD_EXTENSION,"+     // 20
-    "FEEDS.CAST_ORDER,"+           // 21
-    "FEEDS.BASE_PREAMBLE,"+        // 22
-    "FEEDS.IS_SUPERFEED,"+         // 23
-    "FEED_IMAGES.ID,"+             // 24
-    "FEED_IMAGES.WIDTH,"+          // 25
-    "FEED_IMAGES.HEIGHT,"+         // 26
-    "FEED_IMAGES.DESCRIPTION,"+    // 27
-    "FEED_IMAGES.FILE_EXTENSION "+ // 28
+    "FEEDS.ORIGIN_DATETIME,"+      // 13
+    "FEEDS.HEADER_XML,"+           // 14
+    "FEEDS.CHANNEL_XML,"+          // 15
+    "FEEDS.ITEM_XML,"+             // 16
+    "FEEDS.BASE_URL,"+             // 17
+    "FEEDS.ID,"+                   // 18
+    "FEEDS.UPLOAD_EXTENSION,"+     // 19
+    "FEEDS.CAST_ORDER,"+           // 20
+    "FEEDS.BASE_PREAMBLE,"+        // 21
+    "FEEDS.IS_SUPERFEED,"+         // 22
+    "FEED_IMAGES.ID,"+             // 23
+    "FEED_IMAGES.WIDTH,"+          // 24
+    "FEED_IMAGES.HEIGHT,"+         // 25
+    "FEED_IMAGES.DESCRIPTION,"+    // 26
+    "FEED_IMAGES.FILE_EXTENSION "+ // 27
     "from FEEDS ";
   sql+="left join FEED_IMAGES ";
   sql+="on FEEDS.CHANNEL_IMAGE_ID=FEED_IMAGES.ID ";
@@ -1371,9 +1372,9 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
   QString channel_template=rda->rssSchemas()->channelTemplate(rssSchema());
   QString item_template=rda->rssSchemas()->itemTemplate(rssSchema());
   if(rssSchema()==RDRssSchemas::CustomSchema) {
-    header_template=chan_q->value(15).toString();
-    channel_template=chan_q->value(16).toString();
-    item_template=chan_q->value(17).toString();
+    header_template=chan_q->value(14).toString();
+    channel_template=chan_q->value(15).toString();
+    item_template=chan_q->value(16).toString();
   }
 
   //
@@ -1385,17 +1386,17 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
   // Render Channel XML
   //
   ret+="  <channel>\n";
-  ret+=ResolveChannelWildcards(channel_template,chan_q)+"\r\n";
+  ret+=ResolveChannelWildcards(channel_template,chan_q,now)+"\r\n";
 
   //
   // Render Item XML
   //
   QString where;
-  if(chan_q->value(23).toString()=="Y") {  // Is a Superfeed
+  if(chan_q->value(22).toString()=="Y") {  // Is a Superfeed
     sql=QString("select ")+
       "MEMBER_FEED_ID "+  // 00
       "from SUPERFEED_MAPS where "+
-      QString().sprintf("FEED_ID=%d",chan_q->value(19).toUInt());
+      QString().sprintf("FEED_ID=%d",chan_q->value(18).toUInt());
     q=new RDSqlQuery(sql);
     while(q->next()) {
       where+=QString().sprintf("(PODCASTS.FEED_ID=%u) || ",q->value(0).toUInt());
@@ -1404,7 +1405,7 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
     where=("("+where.left(where.length()-4)+") && ");
   }
   else {
-    where =QString().sprintf("(PODCASTS.FEED_ID=%u)&&",chan_q->value(19).toUInt());
+    where=QString().sprintf("(PODCASTS.FEED_ID=%u)&&",chan_q->value(18).toUInt());
   }
   sql=QString("select ")+
     "PODCASTS.FEED_ID,"+             // 00
@@ -1435,11 +1436,15 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
     "left join FEED_IMAGES "+
     "on PODCASTS.ITEM_IMAGE_ID=FEED_IMAGES.ID where "+
     where+
-    QString().sprintf("(PODCASTS.STATUS=%d) ",RDPodcast::StatusActive)+
+    QString().sprintf("(PODCASTS.STATUS=%d) && ",RDPodcast::StatusActive)+
+    "(PODCASTS.EFFECTIVE_DATETIME<=now()) && "+
+    "((PODCASTS.EXPIRATION_DATETIME is null)||"+
+    "(PODCASTS.EXPIRATION_DATETIME>now())) "+
     "order by PODCASTS.ORIGIN_DATETIME";
-  if(chan_q->value(21).toString()=="N") {
+  if(chan_q->value(20).toString()=="N") {
     sql+=" desc";
   }
+  //  printf("item_sql: %s\n",sql.toUtf8().constData());
   item_q=new RDSqlQuery(sql);
   while(item_q->next()) {
     ret+="    <item>\r\n";
@@ -1615,7 +1620,8 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
     "CHANNEL_LINK,"+         // 03
     "MAX_SHELF_LIFE,"+       // 04
     "UPLOAD_FORMAT,"+        // 05
-    "UPLOAD_EXTENSION "+     // 06
+    "UPLOAD_EXTENSION,"+     // 06
+    "ENABLE_AUTOPOST "+      // 07
     "from FEEDS where "+
     QString().sprintf("ID=%u",feed_id);
   q=new RDSqlQuery(sql);
@@ -1633,10 +1639,23 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
     "ITEM_DESCRIPTION=\""+RDEscapeString(q->value(1).toString())+"\","+
     "ITEM_CATEGORY=\""+RDEscapeString(q->value(2).toString())+"\","+
     "ITEM_LINK=\""+RDEscapeString(q->value(3).toString())+"\","+
-    QString().sprintf("SHELF_LIFE=%d,",q->value(4).toInt())+
     "ITEM_AUTHOR=\""+RDEscapeString(rda->user()->emailContact())+"\","+
-    "EFFECTIVE_DATETIME=UTC_TIMESTAMP(),"+
-    "ORIGIN_DATETIME=UTC_TIMESTAMP()";
+    "EFFECTIVE_DATETIME=now(),"+
+    "ORIGIN_DATETIME=now(),";
+  if(RDBool(q->value(7).toString())) {
+    sql+=QString().sprintf("STATUS=%d,",RDPodcast::StatusActive);
+  }
+  else {
+    sql+=QString().sprintf("STATUS=%d,",RDPodcast::StatusPending);
+  }
+  if(q->value(4).toInt()==0) {
+    sql+="EXPIRATION_DATETIME=NULL";
+  }
+  else {
+    sql+="EXPIRATION_DATETIME=\""+
+      QDateTime::currentDateTime().addDays(q->value(4).toInt()).
+      toString("yyyy-MM-dd hh:mm:ss")+"\"";
+  }
   q1=new RDSqlQuery(sql);
   delete q1;
 
@@ -1667,7 +1686,8 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
 }
 
 
-QString RDFeed::ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q)
+QString RDFeed::ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q,
+					const QDateTime &build_datetime)
 {
   QString ret="    "+tmplt;
 
@@ -1692,21 +1712,21 @@ QString RDFeed::ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q)
     explicit_str="true";
   }
   ret.replace("%EXPLICIT%",RDXmlEscape(explicit_str));
-  ret.replace("%BUILD_DATE%",chan_q->value(13).toDateTime().
+  ret.replace("%BUILD_DATE%",RDLocalToUtc(build_datetime).
 	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
-  ret.replace("%PUBLISH_DATE%",chan_q->value(14).toDateTime().
+  ret.replace("%PUBLISH_DATE%",RDLocalToUtc(chan_q->value(13).toDateTime()).
 	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
   ret.replace("%GENERATOR%",QString("Rivendell ")+VERSION);
-  ret.replace("%FEED_URL%",RDXmlEscape(chan_q->value(18).toString())+"/"+
+  ret.replace("%FEED_URL%",RDXmlEscape(chan_q->value(17).toString())+"/"+
 	      RDXmlEscape(keyName()+"."+RD_RSS_XML_FILE_EXTENSION));
-  ret.replace("%IMAGE_URL%",chan_q->value(18).toString()+"/"+
-	      RDFeed::imageFilename(id(),chan_q->value(24).toInt(),
-				    chan_q->value(28).toString()));
+  ret.replace("%IMAGE_URL%",chan_q->value(17).toString()+"/"+
+	      RDFeed::imageFilename(id(),chan_q->value(23).toInt(),
+				    chan_q->value(27).toString()));
   ret.replace("%IMAGE_WIDTH%",
-	      QString().sprintf("%d",chan_q->value(25).toInt()));
+	      QString().sprintf("%d",chan_q->value(24).toInt()));
   ret.replace("%IMAGE_HEIGHT%",
-	      QString().sprintf("%d",chan_q->value(25).toInt()));
-  ret.replace("%IMAGE_DESCRIPTION%",chan_q->value(27).toString());
+	      QString().sprintf("%d",chan_q->value(24).toInt()));
+  ret.replace("%IMAGE_DESCRIPTION%",chan_q->value(26).toString());
 
   return ret;
 }
@@ -1748,7 +1768,8 @@ QString RDFeed::ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
 	      RDGetTimeLength(item_q->value(12).toInt(),false,false));
   ret.replace("%ITEM_AUDIO_SECONDS%",
 	      QString().sprintf("%d",item_q->value(12).toInt()/1000));
-  ret.replace("%ITEM_PUBLISH_DATE%",item_q->value(13).toDateTime().
+  ret.replace("%ITEM_PUBLISH_DATE%",
+	      RDLocalToUtc(item_q->value(13).toDateTime()).
 	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
   ret.replace("%ITEM_GUID%",RDPodcast::guid(item_q->value(15).toString(),
 					    item_q->value(10).toString(),

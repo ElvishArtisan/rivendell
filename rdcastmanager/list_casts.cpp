@@ -45,12 +45,13 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_feed_id=feed_id;
   list_is_superfeed=is_super;
 
+  setWindowTitle("RDCastManager - "+tr("Podcast List")+
+		 "  [ID: "+QString().sprintf("%u",feed_id)+"]");
+
   //
   // Fix the Window Size
   //
   setMinimumSize(sizeHint());
-
-  setWindowTitle("RDCastManager - "+tr("Podcast List"));
 
   //
   // Create Icons
@@ -500,15 +501,15 @@ void ListCasts::RefreshItem(RDListViewItem *item)
   RDSqlQuery *q;
 
   sql=QString("select ")+
-    "PODCASTS.STATUS,"+            // 00
-    "PODCASTS.ITEM_TITLE,"+        // 01
-    "PODCASTS.ORIGIN_DATETIME,"+   // 02
-    "PODCASTS.SHELF_LIFE,"+        // 03
-    "PODCASTS.AUDIO_TIME,"+        // 04
-    "PODCASTS.ITEM_DESCRIPTION,"+  // 05
-    "FEEDS.KEY_NAME,"+             // 06
-    "PODCASTS.ITEM_CATEGORY,"+     // 07
-    "PODCASTS.ITEM_LINK "+         // 08
+    "PODCASTS.STATUS,"+               // 00
+    "PODCASTS.ITEM_TITLE,"+           // 01
+    "PODCASTS.ORIGIN_DATETIME,"+      // 02
+    "PODCASTS.EXPIRATION_DATETIME,"+  // 03
+    "PODCASTS.AUDIO_TIME,"+           // 04
+    "PODCASTS.ITEM_DESCRIPTION,"+     // 05
+    "FEEDS.KEY_NAME,"+                // 06
+    "PODCASTS.ITEM_CATEGORY,"+        // 07
+    "PODCASTS.ITEM_LINK "+            // 08
     "from PODCASTS left join FEEDS "+
     "on PODCASTS.FEED_ID=FEEDS.ID where "+
     QString().sprintf("PODCASTS.ID=%d",item->id());
@@ -528,14 +529,12 @@ void ListCasts::RefreshItem(RDListViewItem *item)
 	break;
     }
     item->setText(1,q->value(1).toString());
-    item->setText(2,RDUtcToLocal(q->value(2).toDateTime()).
-		  toString("MM/dd/yyyy hh:mm:ss"));
-    if(q->value(3).toInt()==0) {
+    item->setText(2,q->value(2).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+    if(q->value(3).isNull()) {
       item->setText(3,tr("Never"));
     }
     else {
-      item->setText(3,RDUtcToLocal(q->value(2).toDateTime()).
-		    addDays(q->value(3).toInt()).toString("MM/dd/yyyy"));
+      item->setText(3,q->value(3).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
     }
     item->setText(4,RDGetTimeLength(q->value(4).toInt(),false,false));
     item->setText(5,q->value(5).toString());

@@ -1,8 +1,8 @@
-// rdpurgecasts.h
+// rdrssd.h
 //
-// A Utility to Purge Expired Podcasts.
+// Rivendell RSS Processor Service
 //
-//   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,22 +18,29 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDPURGECASTS_H
-#define RDPURGECASTS_H
+#ifndef RDRSSD_H
+#define RDRSSD_H
 
-#include <qobject.h>
+#include <QObject>
+#include <QTimer>
 
-#define RDPURGECASTS_USAGE "[--help] [--verbose]\n\nPurge expired podcasts.\n"
+#define RDRSSD_DEFAULT_PROCESS_INTERVAL 60000
+#define RDRSSD_USAGE "[--process-interval=<secs>]\n\n"
 
 class MainObject : public QObject
 {
+  Q_OBJECT
  public:
   MainObject(QObject *parent=0);
 
+ private slots:
+  void timeoutData();
+
  private:
-  void PurgeCast(unsigned id);
-  bool purge_verbose;
+  void ProcessFeed(const QString &key_name);
+  int d_process_interval;
+  QTimer *d_timer;
 };
 
 
-#endif  // RDPURGECASTS_H
+#endif  // RDRSSD_H

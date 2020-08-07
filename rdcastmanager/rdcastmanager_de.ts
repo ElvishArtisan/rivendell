@@ -61,7 +61,7 @@
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Auswählen</translation>
+        <translation type="obsolete">&amp;Auswählen</translation>
     </message>
     <message>
         <source>Hold</source>
@@ -110,7 +110,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Expires On</source>
+        <source>at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Select Date</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

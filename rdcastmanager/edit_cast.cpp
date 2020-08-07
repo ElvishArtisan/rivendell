@@ -32,7 +32,6 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_cast=new RDPodcast(rda->config(),cast_id);
   cast_feed=new RDFeed(cast_cast->feedId(),rda->config());
   cast_status=cast_cast->status();
-  setWindowTitle("RDCastManager - "+tr("Editing PodCast"));
 
   //
   // Active Checkbox
@@ -42,6 +41,17 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
     new QLabel(cast_active_check,tr("Cast Active"),this);
   cast_active_label->setFont(labelFont());
   cast_active_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+
+  //
+  // Item Origin
+  //
+  cast_item_origin_edit=new QLineEdit(this);
+  cast_item_origin_edit->setReadOnly(true);
+  cast_item_origin_edit->setMaxLength(64);
+  cast_item_origin_label=
+    new QLabel(cast_item_origin_edit,tr("Posted At:"),this);
+  cast_item_origin_label->setFont(labelFont());
+  cast_item_origin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Item Title
@@ -127,18 +137,13 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
     new QLabel(cast_item_effective_edit,tr("Air Date/Time:"),this);
   cast_item_effective_label->setFont(labelFont());
   cast_item_effective_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
-  // Item Origin
-  //
-  cast_item_origin_edit=new QLineEdit(this);
-  cast_item_origin_edit->setReadOnly(true);
-  cast_item_origin_edit->setMaxLength(64);
-  cast_item_origin_label=
-    new QLabel(cast_item_origin_edit,tr("Posted At:"),this);
-  cast_item_origin_label->setFont(labelFont());
-  cast_item_origin_label->
+  cast_item_effective_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  cast_item_effective_button=new QPushButton(this);
+  cast_item_effective_button->setFont(subButtonFont());
+  cast_item_effective_button->setText(tr("&Select Date"));
+  connect(cast_item_effective_button,SIGNAL(clicked()),
+	  this,SLOT(effectiveSelectData()));
 
   //
   // Item Expiration
@@ -157,15 +162,15 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_expiration_box_label->
     setEnabled(cast_status!=RDPodcast::StatusExpired);
 
-  cast_item_expiration_edit=new QDateEdit(this);
+  cast_item_expiration_edit=new QDateTimeEdit(this);
+  cast_item_expiration_edit->setDisplayFormat("MM/dd/yyyy hh:mm:ss");
   cast_item_expiration_label=
-    new QLabel(cast_item_expiration_edit,tr("Expires On")+":",this);
+    new QLabel(cast_item_expiration_edit,tr("at"),this);
   cast_item_expiration_label->setFont(labelFont());
-  cast_item_expiration_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  cast_item_expiration_label->setAlignment(Qt::AlignCenter);
   cast_item_expiration_button=new QPushButton(this);
   cast_item_expiration_button->setFont(subButtonFont());
-  cast_item_expiration_button->setText(tr("&Select"));
+  cast_item_expiration_button->setText(tr("&Select Date"));
   connect(cast_item_expiration_button,SIGNAL(clicked()),
 	  this,SLOT(expirationSelectData()));
   cast_item_expiration_edit->setEnabled(cast_status!=RDPodcast::StatusExpired);
@@ -195,9 +200,11 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   // Populate Values
   //
+  setWindowTitle("RDCastManager - "+tr("Editing PodCast")+
+		 +"  [ID: "+QString().sprintf("%u",cast_cast->id())+"]");
   cast_item_title_edit->setText(cast_cast->itemTitle());
   cast_item_author_edit->setText(cast_cast->itemAuthor());
-  cast_item_origin_edit->setText(RDUtcToLocal(cast_cast->originDateTime()).
+  cast_item_origin_edit->setText(cast_cast->originDateTime().
 				 toString("MM/dd/yyyy - hh:mm:ss"));
   cast_item_category_edit->setText(cast_cast->itemCategory());
   cast_item_category_label->
@@ -212,15 +219,18 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_image_box->setCategoryId(cast_feed->id());
   cast_item_image_box->setCurrentImageId(cast_cast->itemImageId());
   cast_item_comments_edit->setText(cast_cast->itemComments());
-  cast_item_effective_edit->
-    setDateTime(RDUtcToLocal(cast_cast->effectiveDateTime()));
-  if(cast_cast->shelfLife()>0) {
+  cast_item_effective_edit->setDateTime(cast_cast->effectiveDateTime());
+  if(!cast_cast->expirationDateTime().isNull()) {
     cast_item_expiration_box->setCurrentItem(1);
   }
+  cast_item_expiration_edit->setDateTime(cast_cast->expirationDateTime());
   cast_item_expiration_edit->
-    setDate(RDUtcToLocal(cast_cast->originDateTime()).date().
-	    addDays(cast_cast->shelfLife()));
-  expirationSelectedData(cast_item_expiration_box->currentItem());
+    setEnabled(cast_item_expiration_box->currentItem());
+  cast_item_expiration_button->
+    setEnabled(cast_item_expiration_box->currentItem());
+  cast_item_expiration_label->
+    setEnabled(cast_item_expiration_box->currentItem());
+
   switch(cast_status) {
   case RDPodcast::StatusActive:
     cast_active_check->setChecked(true);
@@ -252,7 +262,7 @@ EditCast::~EditCast()
 
 QSize EditCast::sizeHint() const
 {
-  return QSize(640,480);
+  return QSize(640,440);
 } 
 
 
@@ -262,12 +272,29 @@ QSizePolicy EditCast::sizePolicy() const
 }
 
 
+void EditCast::effectiveSelectData()
+{
+  QDate current_date=QDate::currentDate();
+  QDate date=cast_item_effective_edit->date();
+
+  RDDateDialog *dd=
+    new RDDateDialog(current_date.year(),current_date.year()+10,this);
+  if(dd->exec(&date)==0) {
+    cast_item_effective_edit->setDate(date);
+  }
+  delete dd;
+}
+
+
 void EditCast::expirationSelectedData(int state)
 {
   state=state&&(cast_status!=RDPodcast::StatusExpired);
   cast_item_expiration_edit->setEnabled(state);
   cast_item_expiration_button->setEnabled(state);
   cast_item_expiration_label->setEnabled(state);
+  if(state) {
+    cast_item_expiration_edit->setDate(QDate::currentDate().addDays(1));
+  }
 }
 
 
@@ -275,9 +302,9 @@ void EditCast::expirationSelectData()
 {
   QDate current_date=QDate::currentDate();
   QDate date=cast_item_expiration_edit->date();
-    
+
   RDDateDialog *dd=
-    new RDDateDialog(current_date.year(),current_date.year()+10,this);
+    new RDDateDialog(1970,current_date.year()+10,this);
   if(dd->exec(&date)==0) {
     cast_item_expiration_edit->setDate(date);
   }
@@ -297,19 +324,18 @@ void EditCast::okData()
   cast_cast->setItemExplicit(cast_item_explicit_check->isChecked());
   cast_cast->setItemImageId(cast_item_image_box->currentImageId());
   cast_cast->setItemComments(cast_item_comments_edit->text());
-  cast_cast->
-    setEffectiveDateTime(RDLocalToUtc(cast_item_effective_edit->dateTime()));
+  cast_cast->setEffectiveDateTime(cast_item_effective_edit->dateTime());
   if(cast_active_check->isEnabled()) {
     if(cast_item_expiration_box->currentItem()) {
-      int shelf_life=RDUtcToLocal(cast_cast->originDateTime()).date().
+      int shelf_life=cast_cast->originDateTime().date().
 	daysTo(cast_item_expiration_edit->date());
       if(shelf_life<1) {
 	shelf_life=1;
       }
-      cast_cast->setShelfLife(shelf_life);
+      cast_cast->setExpirationDateTime(cast_item_expiration_edit->dateTime());
     }
     else {
-      cast_cast->setShelfLife(0);
+      cast_cast->setExpirationDateTime(QDateTime());
     }
     if(cast_active_check->isChecked()) {
       cast_cast->setStatus(RDPodcast::StatusActive);
@@ -318,10 +344,6 @@ void EditCast::okData()
       cast_cast->setStatus(RDPodcast::StatusPending);
     }
   }
-
-  cast_feed->
-    setLastBuildDateTime(RDLocalToUtc(QDateTime(QDate::currentDate(),
-						QTime::currentTime())));
 
   if(!cast_feed->postXmlConditional("RDCastManager",this)) {
     return;
@@ -418,21 +440,19 @@ void EditCast::resizeEvent(QResizeEvent *e)
   //
   // Air Date/Time
   //
-  cast_item_effective_edit->setGeometry(135,h-157,150,20);
-  cast_item_effective_label->setGeometry(20,h-157,110,20);
+  cast_item_effective_label->setGeometry(20,h-154,110,20);
+  cast_item_effective_edit->setGeometry(135,h-154,150,20);
+  cast_item_effective_button->setGeometry(295,h-156,75,24);
 
   //
-  // Cast Expires
+  // Cast Expiration
   //
-  cast_item_expiration_box->setGeometry(135,h-135,50,20);
-  cast_item_expiration_box_label->setGeometry(20,h-135,110,20);
+  cast_item_expiration_box_label->setGeometry(20,h-126,110,20);
+  cast_item_expiration_box->setGeometry(135,h-126,50,20);
 
-  //
-  // Expires On
-  //
-  cast_item_expiration_edit->setGeometry(135,h-113,95,20);
-  cast_item_expiration_label->setGeometry(20,h-113,110,20);
-  cast_item_expiration_button->setGeometry(240,h-113,50,20);
+  cast_item_expiration_label->setGeometry(190,h-126,20,20);
+  cast_item_expiration_edit->setGeometry(215,h-126,150,20);
+  cast_item_expiration_button->setGeometry(375,h-128,75,24);
 
   //
   // Buttons

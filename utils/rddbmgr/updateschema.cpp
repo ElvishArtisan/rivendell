@@ -10114,6 +10114,53 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<329)&&(set_schema>cur_schema)) {
+    sql=QString("alter table SYSTEM ")+
+      "add column RSS_PROCESSOR_STATION varchar(64) "+
+      "after NOTIFICATION_ADDRESS";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("select NAME from STATIONS where SYSTEM_MAINT='Y'");
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      sql=QString("update SYSTEM set ")+
+	"RSS_PROCESSOR_STATION=\""+RDEscapeString(q->value(0).toString())+"\"";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    sql=QString("alter table PODCASTS ")+
+      "add column EXPIRATION_DATETIME datetime after EFFECTIVE_DATETIME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("select ")+
+      "ID,"+                  // 00
+      "ORIGIN_DATETIME,"+     // 01
+      "SHELF_LIFE "+          // 02
+      "from PODCASTS where "+
+      "SHELF_LIFE>0";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update PODCASTS set ")+
+	"EXPIRATION_DATETIME=\""+
+	q->value(1).toDateTime().addDays(q->value(2).toInt()).
+	toString("yyyy-MM-dd hh:mm:ss")+"\" where "+
+	QString().sprintf("ID=%u",q->value(0).toUInt());
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    DropColumn("PODCASTS","SHELF_LIFE");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

@@ -663,8 +663,6 @@ void EditFeed::okData()
   feed_feed->setChannelXml(feed_channel_xml_edit->text());
   feed_feed->setItemXml(feed_item_xml_edit->text());
   feed_feed->setMaxShelfLife(feed_max_shelf_life_spin->value());
-  feed_feed->setLastBuildDateTime(QDateTime(QDate::currentDate(),
-					    QTime::currentTime()));
   feed_feed->setEnableAutopost(feed_autopost_box->currentIndex());
   feed_feed->setUploadFormat(feed_settings.format());
   feed_feed->setUploadChannels(feed_settings.channels());

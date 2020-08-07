@@ -64,8 +64,8 @@ class RDPodcast
   void setAudioLength(int len) const;
   int audioTime() const;
   void setAudioTime(int msecs) const;
-  unsigned shelfLife() const;
-  void setShelfLife(unsigned days) const;
+  QDateTime expirationDateTime() const;
+  void setExpirationDateTime(const QDateTime &dt) const;
   RDPodcast::Status status() const;
   void setStatus(RDPodcast::Status status);
   bool removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const;

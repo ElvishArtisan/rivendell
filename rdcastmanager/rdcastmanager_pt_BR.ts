@@ -49,7 +49,7 @@
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Selecionar</translation>
+        <translation type="obsolete">&amp;Selecionar</translation>
     </message>
     <message>
         <source>Posted At:</source>
@@ -110,7 +110,11 @@ Episódio</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Expires On</source>
+        <source>at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Select Date</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

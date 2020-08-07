@@ -40,6 +40,44 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
 
+  //
+  // Revert 329
+  //
+  if((cur_schema==329)&&(set_schema<cur_schema)) {
+    sql=QString("alter table PODCASTS ")+
+      "add column SHELF_LIFE int after AUDIO_TIME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("select ")+
+      "ID,"+                   // 00
+      "ORIGIN_DATETIME,"+      // 01
+      "EXPIRATION_DATETIME "+  // 02
+      "from PODCASTS";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if(q->value(2).isNull()) {
+	sql=QString("update PODCASTS set ")+
+	  "SHELF_LIFE=0 where "+
+	  QString().sprintf("ID=%u",q->value(0).toUInt());
+      }
+      else {
+	sql=QString("update PODCASTS set ")+
+	  QString().sprintf("SHELF_LIFE=%d where ",
+			    q->value(1).toDateTime().
+			    daysTo(q->value(2).toDateTime()))+
+	  QString().sprintf("ID=%u",q->value(0).toUInt());
+      }
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    DropColumn("PODCASTS","EXPIRATION_DATETIME");
+    DropColumn("SYSTEM","RSS_PROCESSOR_STATION");
+
+    WriteSchemaVersion(--cur_schema);
+  }
 
   //
   // Revert 328

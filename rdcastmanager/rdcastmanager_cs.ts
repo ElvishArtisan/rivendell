@@ -61,7 +61,7 @@
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
     <message>
         <source>Hold</source>
@@ -114,7 +114,11 @@ dílu</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Expires On</source>
+        <source>at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Select Date</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

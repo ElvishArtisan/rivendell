@@ -544,6 +544,7 @@ AC_CONFIG_FILES([rivendell.spec \
     rdrepld/Makefile \
     rdpadd/Makefile \
     rdpadengined/Makefile \
+    rdrssd/Makefile \
     rdselect/Makefile \
     rdservice/Makefile \
     rdvairplayd/Makefile \
@@ -571,7 +572,6 @@ AC_CONFIG_FILES([rivendell.spec \
     utils/rdmarkerset/Makefile \
     utils/rdmetadata/Makefile \
     utils/rdpopup/Makefile \
-    utils/rdpurgecasts/Makefile \
     utils/rdrender/Makefile \
     utils/rdselect_helper/Makefile \
     utils/rdsoftkeys/Makefile \

@@ -267,7 +267,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rdexport
 @LOCAL_PREFIX@/bin/rdimport
 @LOCAL_PREFIX@/bin/rdmetadata
-@LOCAL_PREFIX@/bin/rdpurgecasts
 @LOCAL_PREFIX@/bin/rdmaint
 @LOCAL_PREFIX@/bin/rdcollect
 @LOCAL_PREFIX@/bin/rdconvert
@@ -417,6 +416,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/sbin/rdrepld
 @LOCAL_PREFIX@/sbin/rdpadd
 @LOCAL_PREFIX@/sbin/rdpadengined
+@LOCAL_PREFIX@/sbin/rdrssd
 @LOCAL_PREFIX@/sbin/rdmarkerset
 @LOCAL_PREFIX@/sbin/rdcleandirs
 @LOCAL_PREFIX@/sbin/rddbmgr

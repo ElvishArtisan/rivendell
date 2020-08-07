@@ -187,6 +187,18 @@ void RDSystem::setNotificationAddress(const QHostAddress &addr)
 }
 
 
+QString RDSystem::rssProcessorStation() const
+{
+  return GetValue("RSS_PROCESSOR_STATION").toString();
+}
+
+
+void RDSystem::setRssProcessorStation(const QString &str) const
+{
+  SetRow("RSS_PROCESSOR_STATION",str);
+}
+
+
 QString RDSystem::xml() const
 {
   QString xml="<systemSettings>\n";
@@ -218,24 +230,25 @@ QVariant RDSystem::GetValue(const QString &field) const
 
 void RDSystem::SetRow(const QString &param,QString value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
-  //  value.replace("\\","\\\\");  // Needed to preserve Windows pathnames
-  sql=QString("update SYSTEM set ")+
-    param+"=\""+RDEscapeString(value)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  if(value.isNull()) {
+    sql=QString("update SYSTEM set ")+
+      param+"=NULL";
+  }
+  else {
+    sql=QString("update SYSTEM set ")+
+      param+"=\""+RDEscapeString(value)+"\"";
+  }
+  RDSqlQuery::apply(sql);
 }
 
 
 void RDSystem::SetRow(const QString &param,int value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
   sql=QString("update SYSTEM set ")+
     param+QString().sprintf("=%d",value);
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 }

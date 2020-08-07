@@ -20146,3 +20146,20 @@
 	* Added an 'RDLogIcons' class.
 2020-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Log Render Options' dialog to rdcastmanager(1).
+2020-08-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SYSTEM.RSS_PROCESSOR_STATION' field to the database.
+	* Added a 'PODCASTS.EXPIRATION_DATETIME' field to the database.
+	* Dropped the 'PODCASTS.SHELF_LIFE' field from the database.
+	* Incremented the database version to 329.
+	* Modified convention to use local system time for all podcast
+	components.
+	* Added 'RDPodcast::expirationDateTime()' and
+	'RDPodcast::setExpirationDateTime()' methods.
+	* Removed 'RDPodcast::shelfLife()' and 'RDPodcast::setShelfLife()'
+	methods.
+	* Added an rdrssd(8) daemon.
+	* Removed the rdpurgecasts(8) utility.
+	* Added 'RDSystem::rssProcessorStation()' and
+	'RDSystem::setRssProcessorStation()' methods.
+	* Added a 'Process RSS Updates' control to the 'System-Wide Settings'
+	dialog in rdadmin(1).

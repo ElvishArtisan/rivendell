@@ -298,16 +298,16 @@ void RDPodcast::setAudioTime(int msecs) const
 }
 
 
-unsigned RDPodcast::shelfLife() const
+QDateTime RDPodcast::expirationDateTime() const
 {
-  return RDGetSqlValue("PODCASTS","ID",podcast_id,"SHELF_LIFE").
-    toUInt();
+  return RDGetSqlValue("PODCASTS","ID",podcast_id,
+		       "EXPIRATION_DATETIME").toDateTime();
 }
 
 
-void RDPodcast::setShelfLife(unsigned days) const
+void RDPodcast::setExpirationDateTime(const QDateTime &dt) const
 {
-  SetRow("SHELF_LIFE",days);
+  SetRow("EXPIRATION_DATETIME",dt,"yyyy-MM-dd hh:mm:ss");
 }
 
 
@@ -387,12 +387,17 @@ void RDPodcast::SetRow(const QString &param,const QString &value) const
 void RDPodcast::SetRow(const QString &param,const QDateTime &value,
                        const QString &format) const
 {
-  RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update PODCASTS set ")+
-    param+"="+RDCheckDateTime(value, format)+" where "+
-    QString().sprintf("ID=%u",podcast_id);
-  q=new RDSqlQuery(sql);
-  delete q;
+  if(value.isNull()) {
+    sql=QString("update PODCASTS set ")+
+      param+"=NULL"+" where "+
+      QString().sprintf("ID=%u",podcast_id);
+  }
+  else {
+    sql=QString("update PODCASTS set ")+
+      param+"="+RDCheckDateTime(value, format)+" where "+
+      QString().sprintf("ID=%u",podcast_id);
+  }
+  RDSqlQuery::apply(sql);
 }

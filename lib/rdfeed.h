@@ -138,7 +138,7 @@ class RDFeed : public QObject
   unsigned postFile(const QString &srcfile,Error *err);
   unsigned postLog(const QString &logname,const QTime &start_time,
 		   bool stop_at_stop,int start_line,int end_line,Error *err);
-  QString rssXml(QString *err_msg,bool *ok=NULL);
+  QString rssXml(QString *err_msg,const QDateTime &now,bool *ok=NULL);
   static unsigned create(const QString &keyname,bool enable_users,
 			 QString *err_msg);
   static QString errorString(RDFeed::Error err);
@@ -157,7 +157,8 @@ class RDFeed : public QObject
 
  private:
   unsigned CreateCast(QString *filename,int bytes,int msecs) const;
-  QString ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q);
+  QString ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q,
+				  const QDateTime &build_datetime);
   QString ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
 			       RDSqlQuery *chan_q);
   QString GetTempFilename() const;

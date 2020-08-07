@@ -46,6 +46,7 @@ class EditCast : public RDDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void effectiveSelectData();
   void expirationSelectedData(int state);
   void expirationSelectData();
   void okData();
@@ -57,6 +58,8 @@ class EditCast : public RDDialog
  private:
   RDFeed *cast_feed;
   RDPodcast *cast_cast;
+  QLabel *cast_item_origin_label;
+  QLineEdit *cast_item_origin_edit;
   QLabel *cast_item_title_label;
   QLineEdit *cast_item_title_edit;
   QLabel *cast_item_author_label;
@@ -73,17 +76,16 @@ class EditCast : public RDDialog
   RDImagePickerBox *cast_item_image_box;
   QLabel *cast_item_comments_label;
   QLineEdit *cast_item_comments_edit;
-  QLabel *cast_item_origin_label;
-  QLineEdit *cast_item_origin_edit;
   QLabel *cast_item_expiration_box_label;
   QComboBox *cast_item_expiration_box;
   QLabel *cast_item_expiration_label;
   QCheckBox *cast_active_check;
   QLabel *cast_active_label;
   QPushButton *cast_item_expiration_button;
-  QDateEdit *cast_item_expiration_edit;
+  QDateTimeEdit *cast_item_expiration_edit;
   QLabel *cast_item_effective_label;
   QDateTimeEdit *cast_item_effective_edit;
+  QPushButton *cast_item_effective_button;
   QPushButton *cast_ok_button;
   QPushButton *cast_cancel_button;
   RDPodcast::Status cast_status;
