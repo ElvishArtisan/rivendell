@@ -20178,3 +20178,5 @@
 	dialog in rdcastmanager(1).
 	* Added a 'Posted By' column to the 'Podcast Item List'	dialog in
 	rdcastmanager(1).
+2020-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented multicast notifications for RSS feed items.

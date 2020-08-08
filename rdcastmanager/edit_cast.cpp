@@ -356,6 +356,11 @@ void EditCast::okData()
   if(!cast_feed->postXmlConditional("RDCastManager",this)) {
     return;
   }
+  RDNotification  *notify=new RDNotification(RDNotification::FeedItemType,
+					     RDNotification::ModifyAction,
+					     cast_cast->id());
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
   done(0);
 }
 

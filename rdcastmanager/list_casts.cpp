@@ -27,6 +27,7 @@
 #include <rdcut_dialog.h>
 #include <rdescape_string.h>
 #include <rdlist_logs.h>
+#include <rdpodcast.h>
 
 #include "edit_cast.h"
 #include "globals.h"
@@ -59,6 +60,12 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_greenball_map=new QPixmap(greenball_xpm);
   list_redball_map=new QPixmap(redball_xpm);
   list_whiteball_map=new QPixmap(whiteball_xpm);
+
+  //
+  // Notifications
+  //
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  this,SLOT(notificationReceivedData(RDNotification *)));
 
   //
   // The Feed
@@ -247,6 +254,11 @@ void ListCasts::addCartData()
   list_casts_view->setSelected(item,true);
   list_casts_view->ensureItemVisible(item);
   delete edit_cast;
+
+  RDNotification *notify=new RDNotification(RDNotification::FeedItemType,
+					    RDNotification::AddAction,cast_id);
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
 }
 
 
@@ -272,6 +284,11 @@ void ListCasts::addFileData()
   list_casts_view->setSelected(item,true);
   list_casts_view->ensureItemVisible(item);
   delete edit_cast;
+
+  RDNotification *notify=new RDNotification(RDNotification::FeedItemType,
+					    RDNotification::AddAction,cast_id);
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
 }
 
 
@@ -317,6 +334,11 @@ void ListCasts::addLogData()
     }
   }
   delete d;
+
+  RDNotification *notify=new RDNotification(RDNotification::FeedItemType,
+					    RDNotification::AddAction,cast_id);
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
 }
 
 
@@ -344,6 +366,7 @@ void ListCasts::deleteData()
   if(item==NULL) {
     return;
   }
+  unsigned cast_id=item->id();
   if(QMessageBox::question(this,"RDCastManager - "+tr("Delete Podcast"),
 			   tr("Are you sure you want to delete this podcast?"),
 			   QMessageBox::Yes,QMessageBox::No)==
@@ -394,6 +417,11 @@ void ListCasts::deleteData()
   delete pd;
   delete cast;
   delete item;
+
+  RDNotification *notify=new RDNotification(RDNotification::FeedItemType,
+					    RDNotification::DeleteAction,cast_id);
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
 }
 
 
@@ -467,6 +495,57 @@ void ListCasts::resizeEvent(QResizeEvent *e)
   list_edit_button->setGeometry(300,size().height()-60,80,50);
   list_delete_button->setGeometry(390,size().height()-60,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
+}
+
+
+void ListCasts::notificationReceivedData(RDNotification *notify)
+{
+  unsigned cast_id=0;
+  RDListViewItem *item=NULL;
+  RDPodcast *cast=NULL;
+
+  if(notify->type()==RDNotification::FeedItemType) {
+    cast_id=notify->id().toUInt();
+    switch(notify->action()) {
+    case RDNotification::AddAction:
+      cast=new RDPodcast(rda->config(),cast_id);
+      if(cast->keyName()==list_feed->keyName()) {
+	item=new RDListViewItem(list_casts_view);
+	item->setId(cast_id);
+	RefreshItem(item);
+	delete cast;
+	return;
+      }
+      delete cast;
+      break;
+
+    case RDNotification::DeleteAction:
+      item=(RDListViewItem *)list_casts_view->firstChild();
+      while(item!=NULL) {
+	if(item->id()==(int)cast_id) {
+	  delete item;
+	  return;
+	}
+	item=(RDListViewItem *)item->nextSibling();
+      }
+      break;
+
+    case RDNotification::ModifyAction:
+      item=(RDListViewItem *)list_casts_view->firstChild();
+      while(item!=NULL) {
+	if(item->id()==(int)cast_id) {
+	  RefreshItem(item);
+	}
+	item=(RDListViewItem *)item->nextSibling();
+      }
+      break;
+
+    case RDNotification::LastAction:
+    case RDNotification::NoAction:
+      break;
+
+    }
+  }
 }
 
 

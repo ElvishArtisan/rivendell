@@ -52,6 +52,7 @@ class ListCasts : public RDDialog
   void activeToggledData(bool state);
   void postProgressChangedData(int step);
   void closeData();
+  void notificationReceivedData(RDNotification *notify);
 
  protected:
   void resizeEvent(QResizeEvent *e);

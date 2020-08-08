@@ -85,6 +85,12 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
+  // Connect to ripcd(8)
+  //
+  rda->ripc()->
+    connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
+
+  //
   // Scan Timer
   //
   d_timer=new QTimer(this);
@@ -157,6 +163,11 @@ void MainObject::ProcessFeed(const QString &key_name)
 		  q->value(0).toUInt(),cast->itemTitle().toUtf8().constData(),
 		  feed->keyName().toUtf8().constData());
       delete cast;
+      RDNotification *notify=new RDNotification(RDNotification::FeedItemType,
+						RDNotification::DeleteAction,
+						q->value(0).toUInt());
+      rda->ripc()->sendNotification(*notify);
+      delete notify;
     }
     if(feed->postXml(&err_msg)) {
       rda->syslog(LOG_DEBUG,
