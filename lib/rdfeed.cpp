@@ -1660,6 +1660,8 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
     "ITEM_LINK=\""+RDEscapeString(q->value(3).toString())+"\","+
     "ITEM_AUTHOR=\""+RDEscapeString(rda->user()->emailContact())+"\","+
     "EFFECTIVE_DATETIME=now(),"+
+    "ORIGIN_LOGIN_NAME=\""+RDEscapeString(rda->user()->name())+"\","+
+    "ORIGIN_STATION=\""+RDEscapeString(rda->station()->name())+"\","+
     "ORIGIN_DATETIME=now(),";
   if(RDBool(q->value(7).toString())) {
     sql+=QString().sprintf("STATUS=%d,",RDPodcast::StatusActive);

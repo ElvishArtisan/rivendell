@@ -233,6 +233,31 @@ void RDPodcast::setItemSourceUrl(const QString &str) const
 }
 
 
+QString RDPodcast::originLoginName() const
+{
+  return RDGetSqlValue("PODCASTS","ID",podcast_id,"ORIGIN_LOGIN_NAME").
+    toString();
+}
+
+
+void RDPodcast::setOriginLoginName(const QString &str) const
+{
+  SetRow("ORIGIN_LOGIN_NAME",str);
+}
+
+
+QString RDPodcast::originStation() const
+{
+  return RDGetSqlValue("PODCASTS","ID",podcast_id,"ORIGIN_STATION").toString();
+}
+
+
+void RDPodcast::setOriginStation(const QString &str) const
+{
+  SetRow("ORIGIN_STATION",str);
+}
+
+
 QDateTime RDPodcast::originDateTime() const
 {
   return RDGetSqlValue("PODCASTS","ID",podcast_id,

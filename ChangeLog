@@ -20170,3 +20170,11 @@
 	item title when posting from a cart/cut.
 	* Modified rdcastmanager(1) to apply the file metadata or filename
 	as the default item title when posting from a file.
+2020-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PODCASTS.ORIGIN_LOGIN_NAME' field to the database.
+	* Added a 'PODCASTS.ORIGIN_STATION' field to the database.
+	* Incremented the database version to 330.
+	* Changed the 'Origin' column to 'Start' in the 'Podcast Item List'
+	dialog in rdcastmanager(1).
+	* Added a 'Posted By' column to the 'Podcast Item List'	dialog in
+	rdcastmanager(1).

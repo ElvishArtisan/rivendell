@@ -54,6 +54,10 @@ class RDPodcast
   void setItemSourceText(const QString &str) const;
   QString itemSourceUrl() const;
   void setItemSourceUrl(const QString &str) const;
+  QString originLoginName() const;
+  void setOriginLoginName(const QString &str) const;
+  QString originStation() const;
+  void setOriginStation(const QString &str) const;
   QDateTime originDateTime() const;
   void setOriginDateTime(const QDateTime &datetime) const;
   QDateTime effectiveDateTime() const;

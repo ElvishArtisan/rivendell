@@ -10161,6 +10161,21 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<330)&&(set_schema>cur_schema)) {
+    sql=QString("alter table PODCASTS ")+
+      "add column ORIGIN_LOGIN_NAME varchar(191) after AUDIO_TIME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS ")+
+      "add column ORIGIN_STATION varchar(64) after ORIGIN_LOGIN_NAME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

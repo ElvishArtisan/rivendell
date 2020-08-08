@@ -123,9 +123,9 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_casts_view->setColumnAlignment(0,Qt::AlignCenter);
   list_casts_view->addColumn(tr("Title"));
   list_casts_view->setColumnAlignment(1,Qt::AlignLeft);
-  list_casts_view->addColumn(tr("Origin"));
+  list_casts_view->addColumn(tr("Start"));
   list_casts_view->setColumnAlignment(2,Qt::AlignLeft);
-  list_casts_view->addColumn(tr("Expires"));
+  list_casts_view->addColumn(tr("Expiration"));
   list_casts_view->setColumnAlignment(3,Qt::AlignCenter);
   list_casts_view->addColumn(tr("Length"));
   list_casts_view->setColumnAlignment(4,Qt::AlignRight);
@@ -135,8 +135,8 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_casts_view->setColumnAlignment(6,Qt::AlignLeft);
   list_casts_view->addColumn(tr("Category"));
   list_casts_view->setColumnAlignment(7,Qt::AlignCenter);
-  list_casts_view->addColumn(tr("Link"));
-  list_casts_view->setColumnAlignment(8,Qt::AlignCenter);
+  list_casts_view->addColumn(tr("Posted By"));
+  list_casts_view->setColumnAlignment(8,Qt::AlignLeft);
   connect(list_casts_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
@@ -501,13 +501,14 @@ void ListCasts::RefreshItem(RDListViewItem *item)
   sql=QString("select ")+
     "PODCASTS.STATUS,"+               // 00
     "PODCASTS.ITEM_TITLE,"+           // 01
-    "PODCASTS.ORIGIN_DATETIME,"+      // 02
+    "PODCASTS.EFFECTIVE_DATETIME,"+   // 02
     "PODCASTS.EXPIRATION_DATETIME,"+  // 03
     "PODCASTS.AUDIO_TIME,"+           // 04
     "PODCASTS.ITEM_DESCRIPTION,"+     // 05
     "FEEDS.KEY_NAME,"+                // 06
     "PODCASTS.ITEM_CATEGORY,"+        // 07
-    "PODCASTS.ITEM_LINK "+            // 08
+    "PODCASTS.ORIGIN_LOGIN_NAME,"+    // 08
+    "PODCASTS.ORIGIN_STATION "+       // 09
     "from PODCASTS left join FEEDS "+
     "on PODCASTS.FEED_ID=FEEDS.ID where "+
     QString().sprintf("PODCASTS.ID=%d",item->id());
@@ -538,7 +539,15 @@ void ListCasts::RefreshItem(RDListViewItem *item)
     item->setText(5,q->value(5).toString());
     item->setText(6,q->value(6).toString());
     item->setText(7,q->value(7).toString());
-    item->setText(8,q->value(8).toString());
+    if(q->value(8).isNull()) {
+      item->setText(8,tr("unknown")+" "+tr("at")+" "+
+		    q->value(3).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+    }
+    else {
+      item->setText(8,q->value(8).toString()+" "+tr("on")+" "+
+		    q->value(9).toString()+" "+tr("at")+" "+
+		    q->value(3).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+    }
   }
   delete q;
 }

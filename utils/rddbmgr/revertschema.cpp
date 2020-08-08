@@ -41,6 +41,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 330
+  //
+  if((cur_schema==330)&&(set_schema<cur_schema)) {
+    DropColumn("PODCASTS","ORIGIN_STATION");
+    DropColumn("PODCASTS","ORIGIN_LOGIN_NAME");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 329
   //
   if((cur_schema==329)&&(set_schema<cur_schema)) {

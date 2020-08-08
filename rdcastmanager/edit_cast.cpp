@@ -45,13 +45,11 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   // Item Origin
   //
-  cast_item_origin_edit=new QLineEdit(this);
-  cast_item_origin_edit->setReadOnly(true);
-  cast_item_origin_edit->setMaxLength(64);
-  cast_item_origin_label=
-    new QLabel(cast_item_origin_edit,tr("Posted At:"),this);
+  cast_item_origin_label=new QLabel(tr("Posted By")+":",this);
   cast_item_origin_label->setFont(labelFont());
   cast_item_origin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  cast_item_origin_edit=new QLineEdit(this);
+  cast_item_origin_edit->setReadOnly(true);
 
   //
   // Item Title
@@ -204,8 +202,18 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
 		 +"  [Cast ID: "+QString().sprintf("%u",cast_cast->id())+"]");
   cast_item_title_edit->setText(cast_cast->itemTitle());
   cast_item_author_edit->setText(cast_cast->itemAuthor());
-  cast_item_origin_edit->setText(cast_cast->originDateTime().
-				 toString("MM/dd/yyyy - hh:mm:ss"));
+  if(cast_cast->originLoginName().isEmpty()) {
+    cast_item_origin_edit->
+      setText(tr("unknown")+" "+tr("at")+" "+
+	      cast_cast->originDateTime().toString("MM/dd/yyyy - hh:mm:ss"));
+  }
+  else {
+  cast_item_origin_edit->
+    setText(cast_cast->originLoginName()+" "+tr("on")+" "+
+	    cast_cast->originStation()+" "+tr("at")+" "+
+	    cast_cast->originDateTime().toString("MM/dd/yyyy - hh:mm:ss"));
+  }
+
   cast_item_category_edit->setText(cast_cast->itemCategory());
   cast_item_category_label->
     setVisible(rda->rssSchemas()->
@@ -375,9 +383,8 @@ void EditCast::resizeEvent(QResizeEvent *e)
   //
   // Posted At
   //
-  cast_item_origin_edit->setGeometry(w-160,ypos,150,20);
-  cast_item_origin_label->setGeometry(w-275,ypos,110,20);
-
+  cast_item_origin_label->setGeometry(w-445,ypos,110,20);
+  cast_item_origin_edit->setGeometry(w-330,ypos,320,20);
   ypos+=27;
 
   //

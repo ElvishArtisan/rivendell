@@ -41,7 +41,7 @@
     </message>
     <message>
         <source>Posted At:</source>
-        <translation>Gepostet am:</translation>
+        <translation type="obsolete">Gepostet am:</translation>
     </message>
     <message>
         <source>No</source>
@@ -125,6 +125,18 @@
         <source>Editing Item</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Posted By</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>on</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>
@@ -172,11 +184,11 @@ Car&amp;t/Cut</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation>Herkunft</translation>
+        <translation type="obsolete">Herkunft</translation>
     </message>
     <message>
         <source>Expires</source>
-        <translation>Läuf ab</translation>
+        <translation type="obsolete">Läuf ab</translation>
     </message>
     <message>
         <source>Length</source>
@@ -192,7 +204,7 @@ Car&amp;t/Cut</translation>
     </message>
     <message>
         <source>Link</source>
-        <translation>Link</translation>
+        <translation type="obsolete">Link</translation>
     </message>
     <message>
         <source>Uploading Audio...</source>
@@ -329,6 +341,30 @@ Log</source>
     </message>
     <message>
         <source>Only Show Active Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Posted By</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expiration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>on</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

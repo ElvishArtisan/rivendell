@@ -41,7 +41,7 @@
     </message>
     <message>
         <source>Posted At:</source>
-        <translation>Vyvěšeno:</translation>
+        <translation type="obsolete">Vyvěšeno:</translation>
     </message>
     <message>
         <source>No</source>
@@ -129,6 +129,18 @@ dílu</translation>
         <source>Editing Item</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Posted By</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>on</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>
@@ -187,11 +199,11 @@ Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n&gt;=2 &amp;&amp; n&lt;=4) ? 1 :
     </message>
     <message>
         <source>Origin</source>
-        <translation>Původ</translation>
+        <translation type="obsolete">Původ</translation>
     </message>
     <message>
         <source>Expires</source>
-        <translation>Přestane platit</translation>
+        <translation type="obsolete">Přestane platit</translation>
     </message>
     <message>
         <source>Length</source>
@@ -207,7 +219,7 @@ Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n&gt;=2 &amp;&amp; n&lt;=4) ? 1 :
     </message>
     <message>
         <source>Link</source>
-        <translation>Odkaz</translation>
+        <translation type="obsolete">Odkaz</translation>
     </message>
     <message>
         <source>Uploading Audio...</source>
@@ -344,6 +356,30 @@ Log</source>
     </message>
     <message>
         <source>Only Show Active Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Posted By</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expiration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>on</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
