@@ -19920,23 +19920,16 @@
 	* Incremented the package version to 3.4.0int1.
 2020-07-21 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.1.
-2020-07-28 Patrick Linstruth <patrick@deltecent.com>
-	* Added 'RDHttpServer' class.
-	* Added 'loadGroup' method to 'RDGroupList' class.
-	* Added 'RDNexus' class.
-	* Added timestamp and optional argument to 'RDNotification' class.
-	* Added PlayoutCartNumType, PlayoutExtIdType, and LogExtIdType
-	notification types to 'RDNotification' class.
-	* Added MoveAction, StartAction, and StopAction actions to
-	'RDNotification' class.
-	* Added rdnexusd(8).
-	* Added playout notifications to 'RDLogPlay' class.
-	* Removed the sending of modification notifications when Cancel
-	button pressed in rdlibrary(1).
-	* Added rdnexusd(8) to rdservice(8).
-	* Added ability to see import template offsets in rdadmin(1).
-	* Added 'list' method to 'RDStation' class.
-	* Added 'MusicMaster Nexus' button and dialog to rdadmin(1).
-	* Modified rdlibrary(1) to use 'CART.MINIMUM_TALK_LENGTH' for
-	"Talk" column.
-	* Added 'MusicMaster Nexus' import template.
+2020-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDDataPacer' class.
+	* Modified the GVC7000 switcher driver to insert 50 mS pauses
+	between protocol commands.
+2020-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.1int0.
+2020-08-05 David Klann <dklann@linux.com>
+	* Correct the column settings in rdadmin/list_dropboxes.cpp.
+2020-08-05 David Klann <dklann@linux.com>
+	* Remove "Qt::AlignVCenter|" from User Defined.
+2020-08-05 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression with "Scheduler Code:" label overlapping "Group"
+	combobox in rdlibrary(1).

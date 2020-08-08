@@ -1109,7 +1109,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     lib_filter_label->setGeometry(10,10,55,20);
     lib_group_label->setGeometry(10,40,55,20);
     lib_group_box->setGeometry(70,40,100,20);
-    lib_codes_label->setGeometry(160,40,130,20);
+    lib_codes_label->setGeometry(175,40,115,20);
     lib_codes_box->setGeometry(295,40,100,20);
     lib_codes2_label->setGeometry(410,40,130,20);
     lib_codes2_box->setGeometry(545,40,100,20);
