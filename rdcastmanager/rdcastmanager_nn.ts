@@ -5,7 +5,7 @@
     <name>EditCast</name>
     <message>
         <source>Editing PodCast</source>
-        <translation>Redigerer podkast</translation>
+        <translation type="obsolete">Redigerer podkast</translation>
     </message>
     <message>
         <source>Title:</source>
@@ -53,7 +53,7 @@
     </message>
     <message>
         <source>Cast Expires:</source>
-        <translation>Podkasten går ut:</translation>
+        <translation type="obsolete">Podkasten går ut:</translation>
     </message>
     <message>
         <source>Expires At:</source>
@@ -94,15 +94,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Post contains explicit content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cast Active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -113,12 +105,28 @@
         <source>&amp;Select Date</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Item Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item contains explicit content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item Expires</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Editing Item</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>
     <message>
         <source>Podcast List</source>
-        <translation>Podkastliste</translation>
+        <translation type="obsolete">Podkastliste</translation>
     </message>
     <message>
         <source>Post From
@@ -264,14 +272,6 @@ Vil du halda fram med å sletta podkasten?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Only Show Unexpired Casts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Only Show Active Casts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Posting Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -304,6 +304,18 @@ Vil du halda fram med å sletta podkasten?</translation>
     <message>
         <source>Post From
 Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Item List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Show Unexpired Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Show Active Items</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

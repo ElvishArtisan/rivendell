@@ -5,7 +5,7 @@
     <name>EditCast</name>
     <message>
         <source>Editing PodCast</source>
-        <translation>Editando PodCast</translation>
+        <translation type="obsolete">Editando PodCast</translation>
     </message>
     <message>
         <source>Title:</source>
@@ -33,7 +33,7 @@
     </message>
     <message>
         <source>Cast Expires:</source>
-        <translation>Expira:</translation>
+        <translation type="obsolete">Expira:</translation>
     </message>
     <message>
         <source>&amp;Select</source>
@@ -98,15 +98,7 @@ Episodios</translation>
         <translation type="obsolete">Expira el:</translation>
     </message>
     <message>
-        <source>Post contains explicit content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cast Active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -115,6 +107,22 @@ Episodios</translation>
     </message>
     <message>
         <source>&amp;Select Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item contains explicit content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item Expires</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Editing Item</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -162,7 +170,7 @@ Episodios</translation>
     </message>
     <message>
         <source>Podcast List</source>
-        <translation>Lista de Podcasts</translation>
+        <translation type="obsolete">Lista de Podcasts</translation>
     </message>
     <message>
         <source>Post From
@@ -208,11 +216,11 @@ Suscripción</translation>
     </message>
     <message>
         <source>Only Show Unexpired Casts</source>
-        <translation>Sólo Mostrar sin Expirar</translation>
+        <translation type="obsolete">Sólo Mostrar sin Expirar</translation>
     </message>
     <message>
         <source>Only Show Active Casts</source>
-        <translation>Sólo mostrar activos</translation>
+        <translation type="obsolete">Sólo mostrar activos</translation>
     </message>
     <message>
         <source>Posting Error</source>
@@ -264,6 +272,18 @@ Suscripción</translation>
     <message>
         <source>Post From
 Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Item List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Show Unexpired Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Show Active Items</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

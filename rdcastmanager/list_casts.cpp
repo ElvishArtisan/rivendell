@@ -45,8 +45,8 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_feed_id=feed_id;
   list_is_superfeed=is_super;
 
-  setWindowTitle("RDCastManager - "+tr("Podcast List")+
-		 "  [ID: "+QString().sprintf("%u",feed_id)+"]");
+  setWindowTitle("RDCastManager - "+tr("Podcast Item List")+
+		 "  [Feed ID: "+QString().sprintf("%u",feed_id)+"]");
 
   //
   // Fix the Window Size
@@ -96,7 +96,7 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   //
   list_unexpired_check=new QCheckBox(this);
   list_unexpired_label=
-    new QLabel(list_unexpired_check,tr("Only Show Unexpired Casts"),this);
+    new QLabel(list_unexpired_check,tr("Only Show Unexpired Items"),this);
   list_unexpired_label->setFont(labelFont());
   list_unexpired_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(list_unexpired_check,SIGNAL(toggled(bool)),
@@ -107,7 +107,7 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   //
   list_active_check=new QCheckBox(this);
   list_active_label=
-    new QLabel(list_active_check,tr("Only Show Active Casts"),this);
+    new QLabel(list_active_check,tr("Only Show Active Items"),this);
   list_active_label->setFont(labelFont());
   list_active_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(list_active_check,SIGNAL(toggled(bool)),
@@ -131,10 +131,8 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_casts_view->setColumnAlignment(4,Qt::AlignRight);
   list_casts_view->addColumn(tr("Description"));
   list_casts_view->setColumnAlignment(5,Qt::AlignLeft);
-
   list_casts_view->addColumn(tr("Feed"));
   list_casts_view->setColumnAlignment(6,Qt::AlignLeft);
-
   list_casts_view->addColumn(tr("Category"));
   list_casts_view->setColumnAlignment(7,Qt::AlignCenter);
   list_casts_view->addColumn(tr("Link"));

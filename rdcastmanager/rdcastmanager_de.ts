@@ -5,7 +5,7 @@
     <name>EditCast</name>
     <message>
         <source>Editing PodCast</source>
-        <translation>Podcast editieren</translation>
+        <translation type="obsolete">Podcast editieren</translation>
     </message>
     <message>
         <source>Title:</source>
@@ -53,7 +53,7 @@
     </message>
     <message>
         <source>Cast Expires:</source>
-        <translation>Cast läuft ab:</translation>
+        <translation type="obsolete">Cast läuft ab:</translation>
     </message>
     <message>
         <source>Expires At:</source>
@@ -98,15 +98,7 @@
         <translation type="obsolete">Medienlink:</translation>
     </message>
     <message>
-        <source>Post contains explicit content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cast Active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -117,12 +109,28 @@
         <source>&amp;Select Date</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Item Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item contains explicit content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item Expires</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Editing Item</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>
     <message>
         <source>Podcast List</source>
-        <translation>Podcastliste</translation>
+        <translation type="obsolete">Podcastliste</translation>
     </message>
     <message>
         <source>Post From
@@ -270,11 +278,11 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>Only Show Unexpired Casts</source>
-        <translation>Zeige nur nichtabgelaufene Casts</translation>
+        <translation type="obsolete">Zeige nur nichtabgelaufene Casts</translation>
     </message>
     <message>
         <source>Only Show Active Casts</source>
-        <translation>Zeige nur aktive Casts</translation>
+        <translation type="obsolete">Zeige nur aktive Casts</translation>
     </message>
     <message>
         <source>Posting Error</source>
@@ -309,6 +317,18 @@ Podcast trotzdem löschen?</translation>
     <message>
         <source>Post From
 Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Item List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Show Unexpired Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Show Active Items</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -38,7 +38,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   cast_active_check=new QCheckBox(this);
   cast_active_label=
-    new QLabel(cast_active_check,tr("Cast Active"),this);
+    new QLabel(cast_active_check,tr("Item Active"),this);
   cast_active_label->setFont(labelFont());
   cast_active_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -109,7 +109,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   cast_item_explicit_check=new QCheckBox(this);
   cast_item_explicit_label=new QLabel(cast_item_explicit_check,
-				     tr("Post contains explicit content"),this);
+				     tr("Item contains explicit content"),this);
   cast_item_explicit_label->setFont(labelFont());
   cast_item_explicit_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -154,7 +154,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   connect(cast_item_expiration_box,SIGNAL(activated(int)),
 	  this,SLOT(expirationSelectedData(int)));
   cast_item_expiration_box_label=
-    new QLabel(cast_item_expiration_box,tr("Cast Expires:"),this);
+    new QLabel(cast_item_expiration_box,tr("Item Expires")+":",this);
   cast_item_expiration_box_label->setFont(labelFont());
   cast_item_expiration_box_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -200,8 +200,8 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   // Populate Values
   //
-  setWindowTitle("RDCastManager - "+tr("Editing PodCast")+
-		 +"  [ID: "+QString().sprintf("%u",cast_cast->id())+"]");
+  setWindowTitle("RDCastManager - "+tr("Editing Item")+
+		 +"  [Cast ID: "+QString().sprintf("%u",cast_cast->id())+"]");
   cast_item_title_edit->setText(cast_cast->itemTitle());
   cast_item_author_edit->setText(cast_cast->itemAuthor());
   cast_item_origin_edit->setText(cast_cast->originDateTime().

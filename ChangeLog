@@ -20163,3 +20163,5 @@
 	'RDSystem::setRssProcessorStation()' methods.
 	* Added a 'Process RSS Updates' control to the 'System-Wide Settings'
 	dialog in rdadmin(1).
+2020-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Changed 'Cast' to 'Item' in rdcastmanager(1).

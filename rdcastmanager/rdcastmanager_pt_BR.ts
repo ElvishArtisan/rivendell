@@ -5,7 +5,7 @@
     <name>EditCast</name>
     <message>
         <source>Editing PodCast</source>
-        <translation>Editando Podcast</translation>
+        <translation type="obsolete">Editando Podcast</translation>
     </message>
     <message>
         <source>Media Link:</source>
@@ -65,7 +65,7 @@
     </message>
     <message>
         <source>Cast Expires:</source>
-        <translation>Cast Expira:</translation>
+        <translation type="obsolete">Cast Expira:</translation>
     </message>
     <message>
         <source>Expires At:</source>
@@ -98,15 +98,7 @@ Episódio</translation>
         <translation>&amp;Cancelar</translation>
     </message>
     <message>
-        <source>Post contains explicit content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cast Active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -117,12 +109,28 @@ Episódio</translation>
         <source>&amp;Select Date</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Item Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item contains explicit content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item Expires</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Editing Item</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>
     <message>
         <source>Podcast List</source>
-        <translation>Lista de POdcast</translation>
+        <translation type="obsolete">Lista de POdcast</translation>
     </message>
     <message>
         <source>Uploading Audio...</source>
@@ -138,11 +146,11 @@ Episódio</translation>
     </message>
     <message>
         <source>Only Show Unexpired Casts</source>
-        <translation>Mostrar Casts não expirados</translation>
+        <translation type="obsolete">Mostrar Casts não expirados</translation>
     </message>
     <message>
         <source>Only Show Active Casts</source>
-        <translation>Mostrar Casts Ativos</translation>
+        <translation type="obsolete">Mostrar Casts Ativos</translation>
     </message>
     <message>
         <source> </source>
@@ -274,6 +282,18 @@ Continuar deletando cast?</translation>
     <message>
         <source>Post From
 Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Item List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Show Unexpired Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Show Active Items</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
