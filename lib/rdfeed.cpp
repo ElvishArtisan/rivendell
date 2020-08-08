@@ -39,6 +39,7 @@
 #include "rdescape_string.h"
 #include "rdfeed.h"
 #include "rdlibrary_conf.h"
+#include "rdlog.h"
 #include "rdlog_event.h"
 #include "rdpodcast.h"
 #include "rdrenderer.h"
@@ -980,7 +981,9 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
   settings->setNormalizationLevel(normalizeLevel()/100);
   conv->setDestinationSettings(settings);
   emit postProgressChanged(1);
-  switch((export_err=conv->runExport(rda->user()->name(),rda->user()->password(),&audio_conv_err))) {
+  switch((export_err=conv->
+	  runExport(rda->user()->name(),rda->user()->password(),
+		    &audio_conv_err))) {
   case RDAudioExport::ErrorOk:
     break;
 
@@ -989,6 +992,7 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
     delete conv;
     *err=RDFeed::ErrorUnsupportedType;
     unlink(tmpfile);
+    emit postProgressChanged(5);
     return 0;
 
   case RDAudioExport::ErrorNoSource:
@@ -1003,6 +1007,7 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
     delete conv;
     *err=RDFeed::ErrorGeneral;
     unlink(tmpfile);
+    emit postProgressChanged(5);
     return 0;
   }
   delete settings;
@@ -1027,7 +1032,6 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
     break;
 
   default:
-    emit postProgressChanged(5);
     *err=RDFeed::ErrorUploadFailed;
     sql=QString().sprintf("delete from PODCASTS where ID=%u",cast_id);
     q=new RDSqlQuery(sql);
@@ -1036,6 +1040,7 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
     delete cast;
     *err=RDFeed::ErrorUploadFailed;
     unlink(tmpfile);
+    emit postProgressChanged(5);
     return 0;
   }
   emit postProgressChanged(3);
@@ -1045,8 +1050,11 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
   //
   // Set default cast parameters
   //
+  RDCart *cart=new RDCart(RDCut::cartNumber(cutname));
+  cast->setItemTitle(cart->title());
   cast->setItemAuthor(rda->user()->emailContact());
   cast->setItemImageId(defaultItemImageId());
+  delete cart;
   delete cast;
 
   emit postProgressChanged(4);
@@ -1071,6 +1079,7 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
   RDUpload *upload=NULL;
   RDUpload::ErrorCode upload_err;
   RDWaveFile *wave=NULL;
+  RDWaveData wavedata;
   unsigned audio_time=0;
 
   emit postProgressRangeChanged(0,4);
@@ -1095,8 +1104,8 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
 
   switch(conv->convert()) {
   case RDAudioConvert::ErrorOk:
-    wave=new RDWaveFile(tmpfile);
-    if(wave->openWave()) {
+    wave=new RDWaveFile(srcfile);
+    if(wave->openWave(&wavedata)) {
       audio_time=wave->getExtTimeLength();
     }
     delete wave;
@@ -1104,11 +1113,11 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
 
   case RDAudioConvert::ErrorInvalidSettings:
   case RDAudioConvert::ErrorFormatNotSupported:
-    emit postProgressChanged(4);
     delete settings;
     delete conv;
     *err=RDFeed::ErrorUnsupportedType;
     unlink(tmpfile);
+    emit postProgressChanged(4);
     return 0;
 
   case RDAudioConvert::ErrorNoSource:
@@ -1120,11 +1129,11 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
   case RDAudioConvert::ErrorInvalidSpeed:
   case RDAudioConvert::ErrorFormatError:
   case RDAudioConvert::ErrorNoSpace:
-    emit postProgressChanged(4);
     delete settings;
     delete conv;
     *err=RDFeed::ErrorGeneral;
     unlink(tmpfile);
+    emit postProgressChanged(4);
     return 0;
   }
   delete settings;
@@ -1153,7 +1162,6 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
     break;
 
   default:
-    emit postProgressChanged(4);
     *err=RDFeed::ErrorUploadFailed;
     sql=QString().sprintf("delete from PODCASTS where ID=%u",cast_id);
     q=new RDSqlQuery(sql);
@@ -1162,6 +1170,7 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
     delete cast;
     *err=RDFeed::ErrorUploadFailed;
     unlink(tmpfile);
+    emit postProgressChanged(4);
     return 0;
   }
   delete upload;
@@ -1172,6 +1181,12 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
   //
   // Set default cast parameters
   //
+  if(wavedata.metadataFound()&&(!wavedata.title().isEmpty())) {
+    cast->setItemTitle(wavedata.title());
+  }
+  else {
+    cast->setItemTitle(srcfile.split("/").last());
+  }
   cast->setItemAuthor(rda->user()->emailContact());
   cast->setItemImageId(defaultItemImageId());
   delete cast;
@@ -1199,22 +1214,22 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   RDUpload::ErrorCode upload_err;
   RDRenderer *renderer=NULL;
   RDSettings *settings=NULL;
-  RDLogEvent *log=NULL;
+  RDLogEvent *log_event=NULL;
 
   emit postProgressChanged(0);
 
   //
   // Open Log
   //
-  log=new RDLogEvent(logname);
-  log->load();
-  if(!log->exists()) {
+  log_event=new RDLogEvent(logname);
+  log_event->load();
+  if(!log_event->exists()) {
     *err=RDFeed::ErrorNoLog;
-    delete log;
+    delete log_event;
     return 0;
   }
 
-  emit postProgressRangeChanged(0,3+log->size());
+  emit postProgressRangeChanged(0,3+log_event->size());
 
   //
   // Render Log
@@ -1236,24 +1251,25 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
 
   printf("first: %d  last: %d\n",start_line,end_line);
 
-  if(!renderer->renderToFile(tmpfile,log,settings,start_time,stop_at_stop,
+  if(!renderer->renderToFile(tmpfile,log_event,settings,start_time,stop_at_stop,
 			     &err_msg,start_line,end_line)) {
     *err=RDFeed::ErrorRenderError;
     delete renderer;
     delete settings;
-    delete log;
+    delete log_event;
     unlink(tmpfile);
     return 0;
   }
   delete renderer;
 
-  emit postProgressChanged(1+log->size());
+  emit postProgressChanged(1+log_event->size());
 
   //
   // Upload Rendered File
   //
   QFile f(tmpfile);
-  unsigned cast_id=CreateCast(&destfile,f.size(),log->length(0,log->size()));
+  unsigned cast_id=
+    CreateCast(&destfile,f.size(),log_event->length(0,log_event->size()));
   RDPodcast *cast=new RDPodcast(feed_config,cast_id);
   upload=new RDUpload(rda->config(),this);
   upload->setSourceFile(tmpfile);
@@ -1262,13 +1278,12 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
 				       rda->config()->logXloadDebugData()))) {
   case RDUpload::ErrorOk:
     sql=QString().sprintf("update PODCASTS set AUDIO_TIME=%u where ID=%u",
-			  log->length(0,log->size()),cast_id);
+			  log_event->length(0,log_event->size()),cast_id);
     q=new RDSqlQuery(sql);
     delete q;
     break;
 
   default:
-    //emit postProgressChanged(totalPostSteps());
     *err=RDFeed::ErrorUploadFailed;
     sql=QString().sprintf("delete from PODCASTS where ID=%u",cast_id);
     q=new RDSqlQuery(sql);
@@ -1276,37 +1291,41 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
     delete upload;
     delete cast;
     delete settings;
-    delete log;
+    delete log_event;
     *err=RDFeed::ErrorUploadFailed;
     unlink(tmpfile);
+    emit postProgressChanged(3+log_event->size());
     return 0;
   }
 
-  emit postProgressChanged(2+log->size());
+  emit postProgressChanged(2+log_event->size());
 
-  //unlink(QString(tmpfile)+".wav");
   unlink(tmpfile);
 
   //
   // Set default cast parameters
   //
+  RDLog *log=new RDLog(logname);
+  if(log->description().isEmpty()) {
+    cast->setItemTitle(logname+" "+tr("log"));
+  }
+  else {
+    cast->setItemTitle(log->description());
+  }
   cast->setItemAuthor(rda->user()->emailContact());
   cast->setItemImageId(defaultItemImageId());
-  delete cast;
+  delete log;
 
-  //  emit postProgressChanged(4);
   postXml(&err_msg);
-
-  //  emit postProgressChanged(totalPostSteps());
 
   *err=RDFeed::ErrorOk;
 
-  emit postProgressChanged(3+log->size());
+  emit postProgressChanged(3+log_event->size());
 
+  delete cast;
   delete upload;
-  //  delete cast;
   delete settings;
-  delete log;
+  delete log_event;
   unlink(tmpfile);
 
   return cast_id;

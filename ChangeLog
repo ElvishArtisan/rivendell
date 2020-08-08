@@ -20165,3 +20165,8 @@
 	dialog in rdadmin(1).
 2020-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Changed 'Cast' to 'Item' in rdcastmanager(1).
+2020-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdcastmanager(1) to apply the cart title as the default
+	item title when posting from a cart/cut.
+	* Modified rdcastmanager(1) to apply the file metadata or filename
+	as the default item title when posting from a file.
