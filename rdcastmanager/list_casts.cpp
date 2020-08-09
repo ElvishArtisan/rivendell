@@ -36,8 +36,9 @@
 //
 // Icons
 //
-#include "../icons/redball.xpm"
+#include "../icons/blueball.xpm"
 #include "../icons/greenball.xpm"
+#include "../icons/redball.xpm"
 #include "../icons/whiteball.xpm"
 
 ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
@@ -57,6 +58,7 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   //
   // Create Icons
   //
+  list_blueball_map=new QPixmap(blueball_xpm);
   list_greenball_map=new QPixmap(greenball_xpm);
   list_redball_map=new QPixmap(redball_xpm);
   list_whiteball_map=new QPixmap(whiteball_xpm);
@@ -595,7 +597,12 @@ void ListCasts::RefreshItem(RDListViewItem *item)
   if(q->first()) {
     switch((RDPodcast::Status)q->value(0).toUInt()) {
       case RDPodcast::StatusActive:
-	item->setPixmap(0,*list_greenball_map);
+	if(q->value(2).toDateTime()<=QDateTime::currentDateTime()) {
+	  item->setPixmap(0,*list_greenball_map);
+	}
+	else {
+	  item->setPixmap(0,*list_blueball_map);
+	}
 	break;
 
       case RDPodcast::StatusPending:

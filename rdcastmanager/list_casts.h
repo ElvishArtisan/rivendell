@@ -68,8 +68,9 @@ class ListCasts : public RDDialog
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;
   QPushButton *list_close_button;
-  QPixmap *list_redball_map;
+  QPixmap *list_blueball_map;
   QPixmap *list_greenball_map;
+  QPixmap *list_redball_map;
   QPixmap *list_whiteball_map;
   unsigned list_feed_id;
   int list_encoder_id;

@@ -20183,3 +20183,6 @@
 2020-08-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcastmanager(1) that caused no items to
 	appear in superfeeds.
+2020-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Podcast Item List' dialog in rdcastmanager(1) to
+	show a blue icon for items with Air Dates in the future.

@@ -146,6 +146,7 @@ void MainObject::ProcessFeed(const QString &key_name)
     "(PODCASTS.EXPIRATION_DATETIME<"+now_str+"))";
   q=new RDSqlQuery(sql);
   while(q->next()) {
+    bool deleted=false;
     if(q->value(1).toDateTime()<now) {  // Delete expired cast
       RDPodcast *cast=new RDPodcast(rda->config(),q->value(0).toUInt());
       if(!cast->removeAudio(feed,&err_msg,false)) {
@@ -168,11 +169,19 @@ void MainObject::ProcessFeed(const QString &key_name)
 						q->value(0).toUInt());
       rda->ripc()->sendNotification(*notify);
       delete notify;
+      deleted=true;
     }
     if(feed->postXml(&err_msg)) {
       rda->syslog(LOG_DEBUG,
 		  "repost of XML for feed \"%s\" triggered by cast id %u",
 		  key_name.toUtf8().constData(),q->value(0).toUInt());
+      if(!deleted) {
+	RDNotification *notify=new RDNotification(RDNotification::FeedItemType,
+						  RDNotification::ModifyAction,
+						  q->value(0).toUInt());
+	rda->ripc()->sendNotification(*notify);
+	delete notify;
+      }
     }
     else {
       rda->syslog(LOG_WARNING,"repost of XML for feed \"%s\" failed [%s]",
