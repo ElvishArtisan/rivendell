@@ -126,6 +126,7 @@ int RenderDialog::exec(RDLogEvent *log,QTime *start_time,
   d_log=log;
   d_start_time=start_time;
   d_start_time_edit->setDisabled(start_time->isNull());
+  d_start_time_box->setCurrentIndex(0);
   d_ignore_stops=ignore_stops;
   if(*ignore_stops) {
     d_ignorestop_box->setCurrentIndex(1);
