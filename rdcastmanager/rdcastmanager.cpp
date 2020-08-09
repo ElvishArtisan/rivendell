@@ -194,7 +194,8 @@ void MainWidget::openData()
   if(item==NULL) {
     return;
   }
-  ListCasts *casts=new ListCasts(item->id(),item->text(3)=="Y",this);
+  ListCasts *casts=
+    new ListCasts(item->id(),item->text(3)==tr("[superfeed]"),this);
   casts->exec();
   RefreshItem(item);
   delete casts;

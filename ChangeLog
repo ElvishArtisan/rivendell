@@ -20180,3 +20180,6 @@
 	rdcastmanager(1).
 2020-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented multicast notifications for RSS feed items.
+2020-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcastmanager(1) that caused no items to
+	appear in superfeeds.
