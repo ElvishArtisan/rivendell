@@ -589,7 +589,8 @@ void ListCasts::RefreshItem(RDListViewItem *item)
     "FEEDS.KEY_NAME,"+                // 06
     "PODCASTS.ITEM_CATEGORY,"+        // 07
     "PODCASTS.ORIGIN_LOGIN_NAME,"+    // 08
-    "PODCASTS.ORIGIN_STATION "+       // 09
+    "PODCASTS.ORIGIN_STATION,"+       // 09
+    "PODCASTS.ORIGIN_DATETIME "+      // 10
     "from PODCASTS left join FEEDS "+
     "on PODCASTS.FEED_ID=FEEDS.ID where "+
     QString().sprintf("PODCASTS.ID=%d",item->id());
@@ -627,12 +628,12 @@ void ListCasts::RefreshItem(RDListViewItem *item)
     item->setText(7,q->value(7).toString());
     if(q->value(8).isNull()) {
       item->setText(8,tr("unknown")+" "+tr("at")+" "+
-		    q->value(3).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+		    q->value(10).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
     }
     else {
       item->setText(8,q->value(8).toString()+" "+tr("on")+" "+
 		    q->value(9).toString()+" "+tr("at")+" "+
-		    q->value(3).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+		    q->value(10).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
     }
   }
   delete q;
