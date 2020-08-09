@@ -191,7 +191,7 @@ Korg/Ku&amp;tt</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Skildring</translation>
+        <translation type="obsolete">Skildring</translation>
     </message>
     <message>
         <source>Category</source>

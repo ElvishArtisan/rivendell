@@ -138,14 +138,16 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_casts_view->setColumnAlignment(3,Qt::AlignCenter);
   list_casts_view->addColumn(tr("Length"));
   list_casts_view->setColumnAlignment(4,Qt::AlignRight);
-  list_casts_view->addColumn(tr("Description"));
-  list_casts_view->setColumnAlignment(5,Qt::AlignLeft);
+
+  //list_casts_view->addColumn(tr("Description"));
+  //list_casts_view->setColumnAlignment(5,Qt::AlignLeft);
+
   list_casts_view->addColumn(tr("Feed"));
-  list_casts_view->setColumnAlignment(6,Qt::AlignLeft);
+  list_casts_view->setColumnAlignment(5,Qt::AlignLeft);
   list_casts_view->addColumn(tr("Category"));
-  list_casts_view->setColumnAlignment(7,Qt::AlignCenter);
+  list_casts_view->setColumnAlignment(6,Qt::AlignCenter);
   list_casts_view->addColumn(tr("Posted By"));
-  list_casts_view->setColumnAlignment(8,Qt::AlignLeft);
+  list_casts_view->setColumnAlignment(7,Qt::AlignLeft);
   connect(list_casts_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
@@ -623,15 +625,15 @@ void ListCasts::RefreshItem(RDListViewItem *item)
       item->setText(3,q->value(3).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
     }
     item->setText(4,RDGetTimeLength(q->value(4).toInt(),false,false));
-    item->setText(5,q->value(5).toString());
-    item->setText(6,q->value(6).toString());
-    item->setText(7,q->value(7).toString());
+
+    item->setText(5,q->value(6).toString());
+    item->setText(6,q->value(7).toString());
     if(q->value(8).isNull()) {
-      item->setText(8,tr("unknown")+" "+tr("at")+" "+
+      item->setText(7,tr("unknown")+" "+tr("at")+" "+
 		    q->value(10).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
     }
     else {
-      item->setText(8,q->value(8).toString()+" "+tr("on")+" "+
+      item->setText(7,q->value(8).toString()+" "+tr("on")+" "+
 		    q->value(9).toString()+" "+tr("at")+" "+
 		    q->value(10).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
     }
