@@ -37,7 +37,7 @@ QValidator::State RDTextValidator::validate(QString &input,int &pos) const
   if(input.length()==0) {
     return QValidator::Acceptable;
   }
-  for(unsigned i=0;i<banned_chars.size();i++) {
+  for(int i=0;i<banned_chars.size();i++) {
     if(input.contains(banned_chars.at(i))) {
       return QValidator::Invalid;
     }
@@ -47,6 +47,12 @@ QValidator::State RDTextValidator::validate(QString &input,int &pos) const
 
 
 void RDTextValidator::addBannedChar(char c)
+{
+  banned_chars.push_back(QChar(c));
+}
+
+
+void RDTextValidator::addBannedChar(const QChar &c)
 {
   banned_chars.push_back(c);
 }

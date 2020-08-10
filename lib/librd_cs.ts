@@ -809,6 +809,10 @@
         <source>Results Report</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>whitespace is not permitted in service names</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

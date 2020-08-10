@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Service.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1095,6 +1095,11 @@ bool RDSvc::create(const QString &name,QString *err_msg,
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
+
+  if(name.simplified()!=name) {
+    *err_msg=QObject::tr("whitespace is not permitted in service names");
+    return false;
+  }
 
   sql=QString("select NAME from SERVICES where ")+
     "NAME=\""+RDEscapeString(name)+"\"";

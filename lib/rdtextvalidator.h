@@ -21,9 +21,9 @@
 #ifndef RDTEXTVALIDATOR_H
 #define RDTEXTVALIDATOR_H
 
-#include <vector>
-
-#include <qvalidator.h>
+#include <QChar>
+#include <QList>
+#include <QValidator>
 
 class RDTextValidator : public QValidator
 {
@@ -31,10 +31,12 @@ class RDTextValidator : public QValidator
   RDTextValidator(QObject *parent=0,const char *name=0,bool allow_quote=false);
   QValidator::State validate(QString &input,int &pos) const;
   void addBannedChar(char c);
+  void addBannedChar(const QChar &c);
   static QString stripString(QString str);
 
  private:
-  std::vector<char> banned_chars;
+  QList<QChar> banned_chars;
+  //  std::vector<char> banned_chars;
 };
 
 

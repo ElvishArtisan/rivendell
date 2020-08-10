@@ -48,10 +48,8 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("Add Service"));
 
@@ -59,6 +57,8 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
+  validator->addBannedChar(QChar(' '));
+  validator->addBannedChar(QChar('\t'));
 
   //
   // Service Name

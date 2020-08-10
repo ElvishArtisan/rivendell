@@ -19941,3 +19941,8 @@
 	'ripcd/local_macros.cpp'.
 2020-08-10 Fred Gleason <fredg@paravelsystems.com>
 	* Documented the '%%' filepath wildcard in the Operations Guide.
+2020-08-10 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check in 'RDSvc::create()' to disallow creation of a
+	service with a name containing whitespace.
+	* Added whitespace to the set of banned characters for service names
+	in the 'Add Service' dialog in rdadmin(1).
