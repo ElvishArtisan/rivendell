@@ -19939,5 +19939,5 @@
 2020-08-10 Brian McGlynn <bmcglynn@geneseemedia.net>
 	* Allow RN Macro to run when Rivendell daemons running as non-root
 	'ripcd/local_macros.cpp'.
-2020-08-10 Brian McGlynn <bmcglynn@geneseemedia.net>
+2020-08-10 Fred Gleason <fredg@paravelsystems.com>
 	* Documented the '%%' filepath wildcard in the Operations Guide.
