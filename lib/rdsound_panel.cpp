@@ -2,7 +2,7 @@
 //
 // The sound panel widget for RDAirPlay
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -604,6 +604,28 @@ void RDSoundPanel::tickClock()
 }
 
 
+void RDSoundPanel::panelUp()
+{
+  int index=panel_selector_box->currentIndex();
+
+  if(index<(panel_selector_box->count()-1)) {
+    panelActivatedData(index+1);
+    panel_selector_box->setCurrentIndex(index+1);
+  }
+}
+
+
+void RDSoundPanel::panelDown()
+{
+  int index=panel_selector_box->currentIndex();
+
+  if(index>0) {
+    panelActivatedData(index-1);
+    panel_selector_box->setCurrentIndex(index-1);
+  }
+}
+
+
 void RDSoundPanel::panelActivatedData(int n)
 {
   panel_buttons[PanelOffset(panel_type,panel_number)]->hide();
@@ -863,6 +885,20 @@ void RDSoundPanel::scanPanelData()
   if(panel_action_mode==RDAirPlayConf::Normal) {
     LoadPanel(panel_type,panel_number);
   }
+}
+
+
+void RDSoundPanel::wheelEvent(QWheelEvent *e)
+{
+  if(e->orientation()==Qt::Vertical) {
+    if(e->delta()>0) {
+      panelDown();
+    }
+    if(e->delta()<0) {
+      panelUp();
+    }
+  }
+  e->accept();
 }
 
 

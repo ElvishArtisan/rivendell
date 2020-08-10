@@ -2,7 +2,7 @@
 //
 // Cart slot label widget for RDCartSlot
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +19,6 @@
 //
 
 #include "rdconf.h"
-#include "rdnownext.h"
 #include "rdslotbox.h"
 
 #include "../icons/play.xpm"
@@ -112,9 +111,9 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   //
   // Position Slider
   //
-  line_position_bar=new Q3ProgressBar(this);
+  line_position_bar=new QProgressBar(this);
   line_position_bar->setGeometry(115,69,sizeHint().width()-190,13);
-  line_position_bar->setPercentageVisible(false);
+  line_position_bar->setTextVisible(false);
   line_position_bar->hide();
 
   //
@@ -321,9 +320,14 @@ void RDSlotBox::setCart(RDLogLine *logline)
 	}
 	if(line_logline->originUser().isEmpty()||
 	   (!line_logline->originDateTime().isValid())) {
+	  /*
 	  line_title_label->
 	    setText(RDResolveNowNext(line_airplay_conf->titleTemplate(),
 				     logline,log_id+1));
+	  */
+	  line_title_label->
+	    setText(logline->resolveWildcards(line_airplay_conf->
+					      titleTemplate()));
 	}
 	else {
 	  line_title_label->setText(line_logline->title()+" -- "+
@@ -332,24 +336,25 @@ void RDSlotBox::setCart(RDLogLine *logline)
 				    toString("M/d hh:mm"));
 	}
 	line_description_label->
-	  setText(RDResolveNowNext(line_airplay_conf->descriptionTemplate(),
-				   logline,log_id+1));
+	  setText(logline->
+		  resolveWildcards(line_airplay_conf->descriptionTemplate(),
+				   log_id+1));
 	line_artist_label->
-	  setText(RDResolveNowNext(line_airplay_conf->artistTemplate(),
-				   logline,log_id+1));
+	  setText(logline->resolveWildcards(line_airplay_conf->
+					    artistTemplate(),log_id+1));
 	line_up_label->
 	  setText(RDGetTimeLength(line_logline->playPosition(),true,true));
 	line_down_label->
 	  setText(RDGetTimeLength(line_logline->effectiveLength()-
 				  line_logline->playPosition(),true,true));
-	line_position_bar->setTotalSteps(line_logline->effectiveLength());
-	line_position_bar->setProgress(line_logline->playPosition());
+	line_position_bar->setMaximum(line_logline->effectiveLength());
+	line_position_bar->setValue(line_logline->playPosition());
 	if(logline->cutNumber()>=0) {
 	  line_cut_label->
 	    setText(QString().sprintf("%03u",logline->cutNumber()));
 	  line_outcue_label->
-	    setText(RDResolveNowNext(line_airplay_conf->outcueTemplate(),
-				     logline,log_id+1));
+	    setText(logline->resolveWildcards(line_airplay_conf->
+					      outcueTemplate(),log_id+1));
 	  line_position_bar->show();
 	  line_up_label->show();
 	  line_down_label->show();
@@ -430,13 +435,13 @@ void RDSlotBox::setTimer(int msecs)
   if(line_logline==NULL) {
     line_up_label->setText(RDGetTimeLength(0,true,true));
     line_down_label->setText(RDGetTimeLength(0,true,true));
-    line_position_bar->setProgress(0);
+    line_position_bar->setValue(0);
   }
   else {
     line_up_label->setText(RDGetTimeLength(msecs,true,true));
     line_down_label->
      setText(RDGetTimeLength(line_logline->effectiveLength()-msecs,true,true));
-    line_position_bar->setProgress(msecs);
+    line_position_bar->setValue(msecs);
   }
 }
 

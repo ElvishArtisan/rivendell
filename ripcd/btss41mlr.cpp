@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 4.1 MLR
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -54,6 +54,7 @@ BtSs41Mlr::BtSs41Mlr(RDMatrix *matrix,QObject *parent)
   //
   RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   bt_device=new RDTTYDevice();
+  connect(bt_device,SIGNAL(readyRead()),this,SLOT(readyReadData()));
   if(tty->active()) {
     bt_device->setName(tty->port());
     bt_device->setSpeed(tty->baudRate());
@@ -70,13 +71,6 @@ BtSs41Mlr::BtSs41Mlr(RDMatrix *matrix,QObject *parent)
   connect(bt_gpi_oneshot,SIGNAL(timeout(int)),this,SLOT(gpiOneshotData(int)));
   bt_gpo_oneshot=new RDOneShot(this);
   connect(bt_gpo_oneshot,SIGNAL(timeout(int)),this,SLOT(gpoOneshotData(int)));
-
-  //
-  // The Poll Timer
-  //
-  QTimer *timer=new QTimer(this,"poll_timer");
-  connect(timer,SIGNAL(timeout()),this,SLOT(readyReadData()));
-  timer->start(BTSS41MLR_POLL_INTERVAL);
 }
 
 

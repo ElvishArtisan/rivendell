@@ -88,27 +88,27 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   list_dropboxes_view=new RDListView(this);
   list_dropboxes_view->setAllColumnsShowFocus(true);
   list_dropboxes_view->addColumn(tr("ID"));
-  list_dropboxes_view->setColumnAlignment(0,Qt::AlignVCenter|Qt::AlignRight);
+  list_dropboxes_view->setColumnAlignment(0,Qt::AlignRight);
   list_dropboxes_view->addColumn(tr("Group"));
-  list_dropboxes_view->setColumnAlignment(0,Qt::AlignVCenter|Qt::AlignLeft);
+  list_dropboxes_view->setColumnAlignment(1,Qt::AlignLeft);
   list_dropboxes_view->addColumn(tr("Path"));
-  list_dropboxes_view->setColumnAlignment(1,Qt::AlignVCenter|Qt::AlignLeft);
+  list_dropboxes_view->setColumnAlignment(2,Qt::AlignLeft);
   list_dropboxes_view->addColumn(tr("Normalization Level"));
-  list_dropboxes_view->setColumnAlignment(2,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("Autotrim Level"));
   list_dropboxes_view->setColumnAlignment(3,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("To Cart"));
+  list_dropboxes_view->addColumn(tr("Autotrim Level"));
   list_dropboxes_view->setColumnAlignment(4,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("Use CartChunk ID"));
+  list_dropboxes_view->addColumn(tr("To Cart"));
   list_dropboxes_view->setColumnAlignment(5,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("Delete Cuts"));
+  list_dropboxes_view->addColumn(tr("Use CartChunk ID"));
   list_dropboxes_view->setColumnAlignment(6,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("Metadata Pattern"));
+  list_dropboxes_view->addColumn(tr("Delete Cuts"));
   list_dropboxes_view->setColumnAlignment(7,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("Fix Broken Formats"));
+  list_dropboxes_view->addColumn(tr("Metadata Pattern"));
   list_dropboxes_view->setColumnAlignment(8,Qt::AlignCenter);
+  list_dropboxes_view->addColumn(tr("Fix Broken Formats"));
+  list_dropboxes_view->setColumnAlignment(9,Qt::AlignCenter);
   list_dropboxes_view->addColumn(tr("User Defined"));
-  list_dropboxes_view->setColumnAlignment(9,Qt::AlignVCenter|Qt::AlignLeft);
+  list_dropboxes_view->setColumnAlignment(10,Qt::AlignLeft);
   connect(list_dropboxes_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,

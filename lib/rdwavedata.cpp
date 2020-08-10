@@ -2,7 +2,7 @@
 //
 //   A Container Class for Audio Meta Data.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -410,6 +410,30 @@ QString RDWaveData::isci() const
 void RDWaveData::setIsci(const QString &str)
 {
   data_isci=str;
+}
+
+
+QString RDWaveData::recordingMbId() const
+{
+  return data_recording_mbid;
+}
+
+
+void RDWaveData::setRecordingMbId(const QString &mbid)
+{
+  data_recording_mbid=mbid;
+}
+
+
+QString RDWaveData::releaseMbId() const
+{
+  return data_release_mbid;
+}
+
+
+void RDWaveData::setReleaseMbId(const QString &mbid)
+{
+  data_release_mbid=mbid;
 }
 
 
@@ -1172,6 +1196,8 @@ QString RDWaveData::dump() const
   }
   ret+="isrc: "+isrc()+"\n";
   ret+="isci: "+isci()+"\n";
+  ret+="recordingMbId: "+recordingMbId()+"\n";
+  ret+="releaseMbId: "+releaseMbId()+"\n";
   ret+=QString().sprintf("length: %d\n",length());
   ret+="originator: "+originator()+"\n";
   ret+="originationDate: "+originationDate().toString("yyyy-MM-dd")+"\n";
@@ -1279,6 +1305,8 @@ void RDWaveData::clear()
   data_originator_reference="";
   data_isrc="";
   data_isci="";
+  data_recording_mbid="";
+  data_release_mbid="";
   data_mcn="";
   data_out_cue="";
   data_release_year=0;

@@ -2,7 +2,7 @@
  *
  * Common Utility Functions for the Rivendell Access Library
  *
- * (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
+ * (C) Copyright 2015-2019 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -234,7 +234,9 @@ int validate_tm (struct tm *tmptr)
             leap = 1;
         else
             leap = 0;
-        if (!leap) 
+        if (leap)
+	    monthdays[1]=29;
+	else
             return 0;
     }
     if ( (tmptr->tm_mday > monthdays[tmptr->tm_mon]) ||

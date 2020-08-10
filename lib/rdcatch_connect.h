@@ -18,11 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-#include <qstring.h>
-#include <qobject.h>
-#include <q3socket.h>
 #include <qlabel.h>
+#include <qobject.h>
+#include <qstring.h>
+#include <qtcpsocket.h>
 
 #include <rd.h>
 #include <rddeck.h>
@@ -77,7 +76,7 @@ class RDCatchConnect : public QObject
  private:
   void SendCommand(QString cmd);
   void DispatchCommand();
-  Q3Socket *cc_socket;
+  QTcpSocket *cc_socket;
   QString cc_password;
   bool debug;
   char args[CC_MAX_ARGS][CC_MAX_LENGTH];
@@ -95,4 +94,4 @@ class RDCatchConnect : public QObject
 };
 
 
-#endif 
+#endif  // RDCATCH_CONNECT_H

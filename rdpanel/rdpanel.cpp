@@ -138,8 +138,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Cart Picker
   //
-  panel_cart_dialog=
-    new RDCartDialog(&panel_filter,&panel_group,&panel_schedcode,this);
+  panel_cart_dialog=new RDCartDialog(&panel_filter,&panel_group,
+				     &panel_schedcode,"RDPanel",this);
 
   //
   // Sound Panel Array
@@ -296,7 +296,7 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::caeConnectedData(bool state)
 {
-  std::vector<int> cards;
+  QList<int> cards;
 
   cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel1Channel));
   cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel2Channel));
@@ -338,6 +338,20 @@ void MainWidget::meterData()
 
 void MainWidget::masterTimerData()
 {
+}
+
+
+void MainWidget::wheelEvent(QWheelEvent *e)
+{
+  if(e->orientation()==Qt::Vertical) {
+    if(e->delta()>0) {
+      panel_panel->panelDown();
+    }
+    if(e->delta()<0) {
+      panel_panel->panelUp();
+    }
+  }
+  e->accept();
 }
 
 

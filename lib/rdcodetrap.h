@@ -2,7 +2,7 @@
 //
 //   A class for trapping arbitrary character sequences.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -21,14 +21,10 @@
 #ifndef RDCODETRAP_H
 #define RDCODETRAP_H
 
-#include <vector>
-
+#include <qlist.h>
 #include <qobject.h>
 
-using namespace std;
-
-
-struct RTrapEvent {
+struct RDTrapEvent {
   int id;
   char *code;
   int length;
@@ -53,7 +49,7 @@ class RDCodeTrap : public QObject
   void trapped(int id);
 
  private:
-  vector<struct RTrapEvent> trap_events;
+  QList<struct RDTrapEvent> trap_events;
 };
 
 

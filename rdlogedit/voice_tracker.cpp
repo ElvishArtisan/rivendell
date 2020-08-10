@@ -2374,7 +2374,8 @@ bool VoiceTracker::ImportTrack(RDListViewItem *item)
   RDWaveData *wdata=new RDWaveData();
   RDImportAudio *import=
     new RDImportAudio(edit_track_cuts[1]->cutName(),edit_import_path,
-		      edit_settings,&metadata,wdata,NULL,&import_running,this);
+		      edit_settings,&metadata,wdata,NULL,&global_import_running,
+		      "RDLogEdit",this);
   if(import->exec(true,false)<0) {
     delete import;
     delete wdata;

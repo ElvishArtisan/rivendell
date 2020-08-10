@@ -42,7 +42,7 @@ class __RDRenderLogLine : public RDLogLine
   void setRampLevel(double lvl);
   double rampRate() const;
   void setRampRate(double lvl);
-  void setRamp(RDLogLine::TransType next_trans);
+  void setRamp(RDLogLine::TransType next_trans,int segue_gain);
   bool open(const QTime &time);
   void close();
   QString summary() const;

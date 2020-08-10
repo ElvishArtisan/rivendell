@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 8.2
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +30,6 @@
 #include <switcher.h>
 
 #define BTSS82_UNIT_ID 0
-#define BTSS82_POLL_INTERVAL 100
 #define BTSS82_GPIO_PINS 16
 
 class BtSs82 : public Switcher

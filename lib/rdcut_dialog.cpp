@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cut.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -83,8 +83,7 @@ RDCutDialog::RDCutDialog(QString *cutname,const QString &caption,
   // Progress Dialog
   //
   cut_progress_dialog=
-    new Q3ProgressDialog(tr("Please Wait..."),"Cancel",10,this,
-			"cut_progress_dialog",false,
+    new QProgressDialog(tr("Please Wait..."),"Cancel",0,10,this,
 			Qt::WStyle_Customize|Qt::WStyle_NormalBorder);
   cut_progress_dialog->setCaption(" ");
   QLabel *label=new QLabel(tr("Please Wait..."),cut_progress_dialog);
@@ -492,8 +491,8 @@ void RDCutDialog::RefreshCarts()
   q=new RDSqlQuery(sql);
   int step=0;
   int count=0;
-  cut_progress_dialog->setTotalSteps(q->size()/RDCUT_DIALOG_STEP_SIZE);
-  cut_progress_dialog->setProgress(0);
+  cut_progress_dialog->setMaximum(q->size()/RDCUT_DIALOG_STEP_SIZE);
+  cut_progress_dialog->setValue(0);
   while(q->next()) {
     l=new RDListViewItem(cut_cart_list);
     switch((RDCart::Type)q->value(4).toUInt()) {
@@ -511,7 +510,7 @@ void RDCutDialog::RefreshCarts()
     l->setText(3,q->value(2).toString());     // Group
     l->setTextColor(3,q->value(3).toString(),QFont::Bold);
     if(count++>RDCUT_DIALOG_STEP_SIZE) {
-      cut_progress_dialog->setProgress(++step);
+      cut_progress_dialog->setValue(++step);
       count=0;
       qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     }

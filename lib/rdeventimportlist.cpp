@@ -2,7 +2,7 @@
 //
 // Abstract an rdlogmanager(1) Import List
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,12 +22,19 @@
 #include "rdescape_string.h"
 #include "rdeventimportlist.h"
 
-RDEventImportItem::RDEventImportItem()
+RDEventImportItem::RDEventImportItem(bool end_marker)
 {
+  event_end_marker=end_marker;
   event_type=RDLogLine::UnknownType;
   event_cart_number=0;
   event_trans_type=RDLogLine::Play;
   event_marker_comment="";
+}
+
+
+bool RDEventImportItem::isEndMarker() const
+{
+  return event_end_marker;
 }
 
 
@@ -69,6 +76,9 @@ void RDEventImportItem::setTransType(RDLogLine::TransType type)
 
 QString RDEventImportItem::markerComment() const
 {
+  if(event_end_marker) {
+    return QObject::tr("-- End of List --");
+  }
   return event_marker_comment;
 }
 
@@ -124,6 +134,12 @@ RDEventImportItem *RDEventImportList::item(int n) const
 }
 
 
+RDEventImportItem *RDEventImportList::endMarkerItem() const
+{
+  return list_items.back();
+}
+
+
 void RDEventImportList::takeItem(int before_line,RDEventImportItem *item)
 {
   list_items.insert(list_items.begin()+before_line,item);
@@ -171,16 +187,17 @@ void RDEventImportList::load()
     list_items.back()->setMarkerComment(q->value(3).toString());
   }
   delete q;
+  list_items.push_back(new RDEventImportItem(true));
 }
 
 
-void RDEventImportList::save() const
+void RDEventImportList::save(RDLogLine::TransType first_trans) const
 {
   QString sql=QString("delete from EVENT_LINES where ")+
     "EVENT_NAME=\""+RDEscapeString(list_event_name)+"\" && "+
     QString().sprintf("TYPE=%d",list_type);
   RDSqlQuery::apply(sql);
-  for(unsigned i=0;i<list_items.size();i++) {
+  for(int i=0;i<(list_items.size()-1);i++) {
     RDEventImportItem *item=list_items.at(i);
     sql=QString("insert into EVENT_LINES set ")+
       "EVENT_NAME=\""+RDEscapeString(list_event_name)+"\","+
@@ -188,8 +205,14 @@ void RDEventImportList::save() const
       QString().sprintf("COUNT=%u,",i)+
       QString().sprintf("EVENT_TYPE=%d,",item->eventType())+
       QString().sprintf("CART_NUMBER=%u,",item->cartNumber())+
-      QString().sprintf("TRANS_TYPE=%d,",item->transType())+
-      "MARKER_COMMENT=\""+RDEscapeString(item->markerComment())+"\"";
+      "MARKER_COMMENT=\""+RDEscapeString(item->markerComment())+"\",";
+    if(first_trans==RDLogLine::NoTrans) { 
+      sql+=QString().sprintf("TRANS_TYPE=%d",item->transType());
+    }
+    else {
+      sql+=QString().sprintf("TRANS_TYPE=%d",first_trans);
+      first_trans=RDLogLine::NoTrans;
+    }
     RDSqlQuery::apply(sql);
   }
 }
@@ -199,7 +222,7 @@ void RDEventImportList::clear()
 {
   list_event_name="";
   list_type=RDEventImportList::PreImport;
-  for(unsigned i=0;i<list_items.size();i++) {
+  for(int i=0;i<list_items.size();i++) {
     delete list_items.at(i);
   }
   list_items.clear();

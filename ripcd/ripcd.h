@@ -2,7 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -55,7 +55,6 @@
 //
 #define RIPCD_MAX_LENGTH 256
 #define RIPCD_RML_READ_INTERVAL 100
-#define RIPCD_TTY_READ_INTERVAL 100
 #define RIPCD_USAGE "[-d]\n\nSupplying the '-d' flag will set 'debug' mode, causing ripcd(8) to stay\nin the foreground and print debugging info on standard output.\n" 
 
 class MainObject : public QObject
@@ -77,7 +76,7 @@ class MainObject : public QObject
   void gpiStateData(int matrix,unsigned line,bool state);
   void gpoStateData(int matrix,unsigned line,bool state);
   void ttyTrapData(int cartnum);
-  void ttyScanData();
+  void ttyReadyReadData(int num);
   void macroTimerData(int num);
   void readyReadData(int conn_id);
   void killData(int conn_id);
@@ -130,6 +129,7 @@ class MainObject : public QObject
   bool ripcd_tty_inuse[MAX_TTYS];
   int ripcd_switcher_tty[MAX_MATRICES][2];
   RDTTYDevice *ripcd_tty_dev[MAX_TTYS];
+  QSignalMapper *ripcd_tty_ready_read_mapper;
   RDTty::Termination ripcd_tty_term[MAX_TTYS];
   RDCodeTrap *ripcd_tty_trap[MAX_TTYS];
   bool ripc_onair_flag;

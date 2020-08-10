@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for Modbus TCP
 //
-//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,10 +41,11 @@ Modbus::Modbus(RDMatrix *matrix,QObject *parent)
   modbus_ip_address=matrix->ipAddress(RDMatrix::Primary);
   modbus_ip_port=matrix->ipPort(RDMatrix::Primary);
 
-  modbus_socket=new Q3Socket(this);
+  modbus_socket=new QTcpSocket(this);
   connect(modbus_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(modbus_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(modbus_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
+  connect(modbus_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   modbus_socket->connectToHost(modbus_ip_address.toString(),modbus_ip_port);
 
   modbus_poll_timer=new QTimer(this);
@@ -178,6 +179,7 @@ void Modbus::connectedData()
 	      "connection to Modbus device at %s:%u established",
 	      (const char *)modbus_ip_address.toString(),0xffff&modbus_ip_port);
   modbus_watchdog_active=false;
+  modbus_busy=false;
   pollInputs();
 }
 
@@ -301,7 +303,7 @@ void Modbus::readyReadData()
 }
 
 
-void Modbus::errorData(int err)
+void Modbus::errorData(QAbstractSocket::SocketError err)
 {
   watchdogData();
 }

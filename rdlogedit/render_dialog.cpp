@@ -2,7 +2,7 @@
 //
 // Render Log Dialog for Rivendell.
 //
-//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -53,8 +53,8 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   // Dialogs
   //
   render_progress_dialog=
-    new Q3ProgressDialog(tr("Rendering Log..."),tr("Cancel"),0,this,"",true);
-  render_progress_dialog->setWindowTitle("RDLogEdit - "+tr("Render Progress"));
+    new QProgressDialog(tr("Rendering Log..."),tr("Cancel"),0,0,this);
+  render_progress_dialog->setWindowTitle(tr("Render Progress"));
 
   //
   // Settings
@@ -214,7 +214,7 @@ void RenderDialog::selectData()
 {
   if(render_to_box->currentItem()) {
     QString filename=
-      QFileDialog::getSaveFileName(this,"RDLogEdit - "+tr("Render Log"),
+      QFileDialog::getSaveFileName(this,tr("Render Log"),
 				   render_save_path,RD_AUDIO_FILE_FILTER);
     if(!filename.isEmpty()) {
       render_filename_edit->setText(filename);
@@ -253,6 +253,13 @@ void RenderDialog::audiosettingsData()
 }
 
 
+void RenderDialog::lineStartedData(int linno,int totallines)
+{
+  render_progress_dialog->setMaximum(totallines);
+  render_progress_dialog->setValue(linno);
+}
+
+
 void RenderDialog::renderData()
 {
   QString err_msg;
@@ -269,9 +276,8 @@ void RenderDialog::renderData()
     start_time=render_starttime_edit->time();
   }
   RDRenderer *r=new RDRenderer(this);
-  connect(r,SIGNAL(lineStarted(int,int)),
-	  render_progress_dialog,SLOT(setProgress(int,int)));
-  connect(render_progress_dialog,SIGNAL(cancelled()),r,SLOT(abort()));
+  connect(r,SIGNAL(lineStarted(int,int)),this,SLOT(lineStartedData(int,int)));
+  connect(render_progress_dialog,SIGNAL(canceled()),r,SLOT(abort()));
   if(render_to_box->currentItem()) {
     result=
       r->renderToFile(render_filename_edit->text(),render_log,render_settings,

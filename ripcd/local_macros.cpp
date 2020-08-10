@@ -2,7 +2,7 @@
 //
 // Local RML Macros for the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -96,19 +96,22 @@ void MainObject::gpoStateData(int matrix,unsigned line,bool state)
 
 void MainObject::ttyTrapData(int cartnum)
 {
+  rda->syslog(LOG_DEBUG,"executing trap cart %06d",cartnum);
   ExecCart(cartnum);
 }
 
 
-void MainObject::ttyScanData()
+
+void MainObject::ttyReadyReadData(int num)
 {
   char buf[256];
   int n;
 
-  for(int i=0;i<MAX_TTYS;i++) {
-    if(ripcd_tty_dev[i]!=NULL) {
-      while((n=ripcd_tty_dev[i]->read(buf,255))>0) {
-	ripcd_tty_trap[i]->scan(buf,n);
+  if(ripcd_tty_dev[num]!=NULL) {
+    while((n=ripcd_tty_dev[num]->read(buf,255))>0) {
+      buf[n]=0;
+      if(ripcd_tty_trap[num]!=NULL) {
+	ripcd_tty_trap[num]->scan(buf,n);
       }
     }
   }
@@ -206,6 +209,10 @@ void MainObject::LoadLocalMacros()
       ripcd_tty_dev[tty_port]->
 	setParity((RDTTYDevice::Parity)q->value(4).toInt());
       if(ripcd_tty_dev[tty_port]->open(QIODevice::ReadWrite)) {
+	connect(ripcd_tty_dev[tty_port],SIGNAL(readyRead()),
+		ripcd_tty_ready_read_mapper,SLOT(map()));
+	ripcd_tty_ready_read_mapper->
+	  setMapping(ripcd_tty_dev[tty_port],tty_port);
 	ripcd_tty_term[tty_port]=(RDTty::Termination)q->value(5).toInt();
 	ripcd_tty_inuse[tty_port]=true;
 	ripcd_tty_trap[tty_port]=new RDCodeTrap(this);
@@ -219,9 +226,6 @@ void MainObject::LoadLocalMacros()
     }
   }
   delete q;
-  QTimer *timer=new QTimer(this,"tty_scan_timer");
-  connect(timer,SIGNAL(timeout()),this,SLOT(ttyScanData()));
-  timer->start(RIPCD_TTY_READ_INTERVAL);
 }
 
 
@@ -489,6 +493,57 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 #endif  // JACK
     break;
       
+  case RDMacro::JZ:
+#ifdef JACK
+    if(rml->argQuantity()!=0) {
+      if(rml->echoRequested()) {
+	rml->acknowledge(false);
+	sendRml(rml);
+      }
+      return;
+    }
+    if(ripcd_jack_client!=NULL) {
+      const char **outputs=jack_get_ports(ripcd_jack_client,NULL,
+					JACK_DEFAULT_AUDIO_TYPE,
+					JackPortIsOutput);
+      if(outputs) {
+	int i=0;
+	while(outputs[i]!=0) {
+	  jack_port_t *oport=jack_port_by_name(ripcd_jack_client,outputs[i]);
+	  const char **inputs=
+	    jack_port_get_all_connections(ripcd_jack_client,oport);
+	  if(inputs) {
+	    int j=0;
+	    while(inputs[j]!=0) {
+	      if((err=jack_disconnect(ripcd_jack_client,outputs[i],inputs[j]))==0) {
+		rda->syslog(LOG_DEBUG,
+			    "executed JACK port disconnection \"%s %s\"",
+			    inputs[j],outputs[i]);
+	      }
+	      else {
+		rda->syslog(LOG_WARNING,
+			    "JACK port disconnection \"%s %s\" failed, err: %d",
+			    inputs[j],outputs[i],err);
+	      }
+	      j++;
+	    }
+	  }
+	  i++;
+	}
+      }
+      if(rml->echoRequested()) {
+	rml->acknowledge(true);
+	sendRml(rml);
+      }
+    }
+#else
+    if(rml->echoRequested()) {
+      rml->acknowledge(false);
+      sendRml(rml);
+    }
+#endif  // JACK
+    break;
+
   case RDMacro::LO:
     if(rml->argQuantity()>2) {
       if(rml->echoRequested()) {
@@ -631,7 +686,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       sendRml(rml);
     }
     break;
-      
+
   case RDMacro::SI:
     tty_port=rml->arg(0).toInt();
     if((tty_port<0)||(tty_port>MAX_TTYS)||(rml->argQuantity()!=3)) {
@@ -652,6 +707,8 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     str+=rml->arg(rml->argQuantity()-1);
     ripcd_tty_trap[tty_port]->addTrap(rml->arg(1).toInt(),
 				      str,str.length());
+    rda->syslog(LOG_DEBUG,"added trap \"%s\" to tty port %d",
+		(const char *)str.toUtf8(),rml->arg(1).toInt());
     rml->acknowledge(true);
     sendRml(rml);
     return;
@@ -793,6 +850,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     //
     if(ripcd_tty_dev[tty_port]!=NULL) {
       ripcd_tty_dev[tty_port]->close();
+      ripcd_tty_ready_read_mapper->disconnect(ripcd_tty_dev[tty_port]);
       delete ripcd_tty_dev[tty_port];
       ripcd_tty_dev[tty_port]=NULL;
       ripcd_tty_inuse[tty_port]=false;
@@ -1008,20 +1066,47 @@ RDMacro MainObject::ForwardConvert(const RDMacro &rml) const
 void MainObject::RunCommand(const QString &user,const QString &group,
 			    const QString &cmd) const
 {
+  //
+  // Maintainer's Note: Everything passed to execv() must be either in
+  //                    local or heap storage. *Don't* pass (const char *)
+  //                    references from Qt directly!
+  //
+
+  //
+  // Build the command
+  //
   QStringList f0=cmd.split(" ",QString::SkipEmptyParts);
+  char userarg[256];
+  strncpy(userarg,user.toUtf8().constData(),255);
+  char grouparg[256];
+  strncpy(grouparg,group.toUtf8().constData(),255);
   const char *args[f0.size()+6];
   args[0]=RD_RUNUSER;
   args[1]="-u";
-  args[2]=user.toUtf8();
+  args[2]=userarg;
   args[3]="-g";
-  args[4]=group.toUtf8();
+  args[4]=grouparg;
+  QList<char *> rargs;
   for(int i=0;i<f0.size();i++) {
-    args[5+i]=f0.at(i).toUtf8();
+    rargs.push_back((char *)malloc(f0.at(i).toUtf8().length()+1));
+    strcpy(rargs.back(),f0.at(i).toUtf8());
+    args[5+i]=rargs.back();
   }
   args[5+f0.size()]=(char *)NULL;
+
+  //
+  // Run it
+  //
   if(vfork()==0) {
     execv(RD_RUNUSER,(char * const *)args);
-    exit(0);
+    exit(0);  // Just in case...
+  }
+
+  //
+  // Free the heap storage
+  //
+  for(int i=0;i<rargs.size();i++) {
+    free(rargs.at(i));
   }
 }
 

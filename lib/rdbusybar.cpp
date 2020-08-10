@@ -2,7 +2,7 @@
 //
 //   A 'progress bar' widget that shows busy state.
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   it under the terms of the GNU Library General Public License 
 //   version 2 as published by the Free Software Foundation.
@@ -18,16 +18,13 @@
 //
 //
 
-#include <rdbusybar.h>
-//Added by qt3to4:
-#include <Q3Frame>
-#include <QLabel>
+#include "rdbusybar.h"
 
 RDBusyBar::RDBusyBar(QWidget *parent,Qt::WFlags f)
-  : Q3Frame(parent,"",f)
+  : QFrame(parent,f)
 {
   bar_pos=0;
-  setFrameStyle(Q3Frame::StyledPanel|Q3Frame::Sunken);
+  setFrameStyle(QFrame::StyledPanel|QFrame::Sunken);
   QPalette p=palette();
   p.setColor(QPalette::Active,QColorGroup::Background,
 	     p.color(QPalette::Active,QColorGroup::Base));
@@ -37,6 +34,8 @@ RDBusyBar::RDBusyBar(QWidget *parent,Qt::WFlags f)
   p.setColor(QPalette::Active,QColorGroup::Background,
 	     p.color(QPalette::Active,QColorGroup::Highlight));
   bar_label->setPalette(p);
+  bar_label->setStyleSheet("background-color:"+
+		      p.color(QPalette::Active,QColorGroup::Highlight).name());
   bar_label->hide();
 
   bar_timer=new QTimer(this);
@@ -48,7 +47,7 @@ void RDBusyBar::activate(bool state)
   if(state) {
     Update();
     bar_label->show();
-    bar_timer->start(500);
+    bar_timer->start(200);
   }
   else {
     bar_label->hide();

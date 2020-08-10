@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the UNITY4000
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -72,7 +72,7 @@ Unity4000::Unity4000(RDMatrix *matrix,QObject *parent)
     unity_device->setSpeed(tty->baudRate());
     unity_device->setWordLength(tty->dataBits());
     unity_device->setParity(tty->parity());
-    unity_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
+    unity_device->open(QIODevice::Unbuffered|QIODevice::WriteOnly);
   }
   delete tty;
 }

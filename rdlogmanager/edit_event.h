@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -59,14 +59,15 @@ class EditEvent : public RDDialog
   void filterChangedData(const QString &str);
   void filterActivatedData(const QString &str);
   void filterClickedData(int id);
+  void searchData();
   void cartClickedData(Q3ListViewItem *item);
   void prepositionToggledData(bool state);
   void timeToggledData(bool);
   void graceClickedData(int);
   void timeTransitionData(int);
+  void autofillToggledData(bool);
   void autofillWarnToggledData(bool);
   void importClickedData(int);
-  void preimportChangedData(int size);
   void preimportLengthChangedData(int msecs);
   void preimportUpData();
   void preimportDownData();
@@ -79,6 +80,7 @@ class EditEvent : public RDDialog
   void saveAsData();
   void svcData();
   void colorData();
+  void validate();
   void okData();
   void cancelData();
 
@@ -88,7 +90,6 @@ class EditEvent : public RDDialog
 
  private:
   void RefreshLibrary();
-  void SetPostTransition();
   void Save();
   void CopyEventPerms(QString old_name,QString new_name);
   void AbandonEvent(QString name);
@@ -110,32 +111,31 @@ class EditEvent : public RDDialog
   QComboBox* event_have_code2_box;
   QLabel *event_have_code2_label;
   LibListView *event_lib_list;
+  QPushButton *event_search_button;
   QPixmap *event_playout_map;
   QPixmap *event_macro_map;
-  QLabel *event_position_header;
+  QGroupBox *event_position_group;
   QLabel *event_position_label;
   QLabel *event_position_unit;
   QCheckBox *event_position_box;
   QTimeEdit *event_position_edit;
-  QLabel *event_timetype_header;
-  QCheckBox *event_timetype_box;
+  QGroupBox *event_timetype_group;
+  QCheckBox *event_timetype_check;
   QLabel *event_timetype_label;
-  QCheckBox *event_post_box;
-  QLabel *event_post_label;
-  QLabel *event_time_label;
   QButtonGroup *event_grace_group;
   QGroupBox *event_grace_groupbox;
   QRadioButton *event_immediate_button;
   QRadioButton *event_next_button;
   QRadioButton *event_wait_button;
   QTimeEdit *event_grace_edit;
-  QComboBox *event_transtype_box;
+  QGroupBox *event_autofill_group;
   QCheckBox *event_autofill_box;
   QCheckBox *event_autofill_slop_box;
   QLabel *event_autofill_slop_label1;
   QLabel *event_autofill_slop_label;
   QTimeEdit *event_autofill_slop_edit;
   QCheckBox *event_timescale_box;
+  QGroupBox *event_stack_group;
   ImportListView *event_preimport_list;
   QLineEdit *event_preimport_length_edit;
   RDTransportButton *event_preimport_up_button;
@@ -147,6 +147,7 @@ class EditEvent : public RDDialog
   QTimeEdit *event_endslop_edit;
   QLabel *event_endslop_label;
   QLabel *event_endslop_unit;
+  QGroupBox *event_transitions_group;
   QComboBox *event_firsttrans_box;
   QLabel *event_firsttrans_label;
   QLabel *event_firsttrans_unit;
@@ -155,7 +156,6 @@ class EditEvent : public RDDialog
   QLabel *event_defaulttrans_unit;
   QLabel *event_nestevent_label;
   QComboBox *event_nestevent_box;
-  QLabel *event_nestevent_unit;
   ImportListView *event_postimport_list;
   QLineEdit *event_postimport_length_edit;
   RDTransportButton *event_postimport_up_button;

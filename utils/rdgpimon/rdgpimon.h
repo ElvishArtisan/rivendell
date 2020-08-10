@@ -67,6 +67,7 @@ class MainWidget : public RDWidget
  private:
   void UpdateLabelsUp(int last_line);
   void UpdateLabelsDown(int first_line);
+  void RefreshGpioStates();
   void RefreshEventsList();
   void AddEventsItem(int line,bool state);
   RDMatrix *gpi_matrix;

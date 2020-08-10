@@ -2,7 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -102,7 +102,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_cut_list->setAllColumnsShowFocus(true);
   rdcart_cut_list->setSelectionMode(Q3ListView::Extended);
   rdcart_cut_list->setItemMargin(5);
-  rdcart_cut_list->setSorting(11);
+  rdcart_cut_list->setSorting(12);
   connect(rdcart_cut_list,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
@@ -110,7 +110,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
 
   rdcart_cut_list->addColumn(tr("Wt"));
   rdcart_cut_list->setColumnAlignment(0,Qt::AlignHCenter);
-  rdcart_cut_list->setColumnSortType(0,RDListView::LineSort);
+  rdcart_cut_list->setColumnSortType(0,RDListView::NumericSort);
 
   rdcart_cut_list->addColumn(tr("Description"));
   rdcart_cut_list->setColumnAlignment(1,Qt::AlignLeft);
@@ -268,9 +268,11 @@ void AudioCart::changeCutScheduling(int sched)
   }
   if(sched) {
     rdcart_cut_list->setColumnText(0,tr("Wt"));
+    rdcart_cut_list->setSortColumn(12);
   }
   else {
     rdcart_cut_list->setColumnText(0,tr("Ord"));
+    rdcart_cut_list->setSortColumn(0);
   }
   rdcart_use_weighting=sched!=0;
 }
@@ -358,15 +360,18 @@ void AudioCart::deleteCutData()
   // Check Clipboard
   //
   if(cut_clipboard!=NULL) {
-    if(item->text(12)==cut_clipboard->cutName()) {
-      if(QMessageBox::question(this,tr("Empty Clipboard"),
-			      tr("Deleting this cut will also empty the clipboard.\nDo you still want to proceed?"),QMessageBox::Yes,QMessageBox::No)==
-	 QMessageBox::No) {
-	return;
+    for(unsigned i=0;i<cutnames.size();i++) {
+      if(cutnames.at(i)==cut_clipboard->cutName()) {
+	if(QMessageBox::question(this,tr("Empty Clipboard"),
+				 tr("Deleting this cut will also empty the clipboard.\nDo you still want to proceed?"),QMessageBox::Yes,QMessageBox::No)==
+	   QMessageBox::No) {
+	  return;
+	}
+	delete cut_clipboard;
+	cut_clipboard=NULL;
+	paste_cut_button->setDisabled(true);
+	break;
       }
-      delete cut_clipboard;
-      cut_clipboard=NULL;
-      paste_cut_button->setDisabled(true);
     }
   }
 
@@ -546,6 +551,7 @@ void AudioCart::ripCutData()
   QString title;
   QString artist;
   QString album;
+  QString label;
 
   RDListViewItem *item=NULL;
   std::vector<QString> cutnames;
@@ -553,9 +559,9 @@ void AudioCart::ripCutData()
     return;
   }
   cutname=item->text(12);
-  RDCddbRecord *rec=new RDCddbRecord();
+  RDDiscRecord *rec=new RDDiscRecord();
   CdRipper *ripper=new CdRipper(cutname,rec,rda->libraryConf(),rdcart_profile_rip);
-  if((track=ripper->exec(&title,&artist,&album))>=0) {
+  if((track=ripper->exec(&title,&artist,&album,&label))>=0) {
     if((rdcart_controls->title_edit->text().isEmpty()||
 	(rdcart_controls->title_edit->text()==tr("[new cart]")))&&
        (!title.isEmpty())) {
@@ -563,8 +569,11 @@ void AudioCart::ripCutData()
     }
     rdcart_controls->artist_edit->setText(artist);
     rdcart_controls->album_edit->setText(album);
+    rdcart_controls->label_edit->setText(label);
     RDCut *cut=new RDCut(cutname);
     cut->setIsrc(rec->isrc(track));
+    cut->setRecordingMbId(rec->trackRecordingMbId(track));
+    cut->setReleaseMbId(rec->discReleaseMbId());
     delete cut;
   }
   if(cut_clipboard==NULL) {
@@ -596,7 +605,7 @@ void AudioCart::importCutData()
   RDImportAudio *import=new RDImportAudio(cutname,rdcart_import_path,
 					  &settings,&rdcart_import_metadata,
 					  &wavedata,cut_clipboard,
-					  &import_active);
+					  &import_active,"RDLibrary",this);
   import->enableAutotrim(rda->libraryConf()->defaultTrimState());
   import->setAutotrimLevel(rda->libraryConf()->trimThreshold());
   import->enableNormalization(rda->libraryConf()->ripperLevel()!=0);

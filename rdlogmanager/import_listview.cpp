@@ -2,7 +2,7 @@
 //
 //   The Import Carts ListView widget for RDLogManager.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,6 +39,17 @@
 #include "../icons/mic16.xpm"
 #include "../icons/notemarker.xpm"
 
+//
+// Menu Items
+//
+#define MENU_INSERT_NOTE 0
+#define MENU_EDIT_NOTE 1
+#define MENU_INSERT_TRACK 2
+#define MENU_EDIT_TRACK 3
+#define MENU_PLAY_TRANS 4
+#define MENU_SEGUE_TRANS 5
+#define MENU_DELETE 6
+
 ImportListView::ImportListView(QWidget *parent)
   : Q3ListView(parent)
 {
@@ -60,52 +71,57 @@ ImportListView::ImportListView(QWidget *parent)
   //
   // Right Button Menu
   //
-  import_menu=new Q3PopupMenu(this);
+  import_menu=new QMenu(this);
   connect(import_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
-  import_menu->
-    insertItem(tr("Insert Log Note"),this,SLOT(insertNoteMenuData()),0,0);
-  import_menu->
-    insertItem(tr("Edit Log Note"),this,SLOT(editNoteMenuData()),0,1);
+  import_menu->insertItem(tr("Insert Log Note"),this,SLOT(insertNoteMenuData()),
+			  0,MENU_INSERT_NOTE);
+  import_menu->insertItem(tr("Edit Log Note"),this,SLOT(editNoteMenuData()),
+			  0,MENU_EDIT_NOTE);
   import_menu->insertSeparator();
-  import_menu->
-    insertItem(tr("Insert Voice Track"),this,SLOT(insertTrackMenuData()),0,2);
-  import_menu->
-    insertItem(tr("Edit Voice Track"),this,SLOT(editTrackMenuData()),0,3);
+  import_menu->insertItem(tr("Insert Voice Track"),
+			  this,SLOT(insertTrackMenuData()),
+			  0,MENU_INSERT_TRACK);
+  import_menu->insertItem(tr("Edit Voice Track"),this,SLOT(editTrackMenuData()),
+			  0,MENU_EDIT_TRACK);
   import_menu->insertSeparator();
-  import_menu->
-    insertItem(tr("Set PLAY Transition"),this,SLOT(playMenuData()),0,4);
-  import_menu->
-    insertItem(tr("Set SEGUE Transition"),this,SLOT(segueMenuData()),0,5);
-  import_menu->
-    insertItem(tr("Set STOP Transition"),this,SLOT(stopMenuData()),0,6);
+  import_menu->insertItem(tr("PLAY Transition"),this,SLOT(playMenuData()),
+			    0,MENU_PLAY_TRANS);
+  import_menu->insertItem(tr("SEGUE Transition"),this,SLOT(segueMenuData()),
+			  0,MENU_SEGUE_TRANS);
   import_menu->insertSeparator();
-  import_menu->
-    insertItem(tr("Delete"),this,SLOT(deleteMenuData()),0,8);
-
-  import_force_trans=RDLogLine::NoTrans;
-  import_allow_stop=true;
+  import_menu->insertItem(tr("Delete"),this,SLOT(deleteMenuData()),
+			  0,MENU_DELETE);
   import_allow_first_trans=true;
-
   setAcceptDrops(true);
 }
 
 
-void ImportListView::setForceTrans(RDLogLine::TransType trans)
+RDEventImportList *ImportListView::eventImportList() const
 {
-  import_force_trans=trans;
-  validateTransitions();
-}
-
-
-void ImportListView::setAllowStop(bool state)
-{
-  import_allow_stop=state;
+  return import_list;
 }
 
 
 void ImportListView::setAllowFirstTrans(bool state)
 {
-  import_allow_first_trans=state;
+  Q3ListViewItem *item=NULL;
+  RDEventImportItem *i_item=NULL;
+
+  if(state!=import_allow_first_trans) {
+    if(childCount()>=2) {
+      if((item=firstChild())!=NULL) {
+	if(!state) {
+	  item->setText(5,tr("[auto]"));
+	}
+	else {
+	  if((i_item=import_list->item(0))!=NULL) {
+	    item->setText(5,RDLogLine::transText(i_item->transType()));
+	  }
+	}
+      }
+    }
+    import_allow_first_trans=state;
+  }
 }
 
 
@@ -131,9 +147,14 @@ bool ImportListView::load(const QString &event_name,
 }
 
 
-void ImportListView::save()
+void ImportListView::save(RDLogLine::TransType first_trans)
 {
-  import_list->save();
+  if(import_allow_first_trans) {
+    import_list->save(RDLogLine::NoTrans);
+  }
+  else {
+    import_list->save(first_trans);
+  }
 }
 
 
@@ -150,67 +171,62 @@ void ImportListView::refreshList(int line)
   for(int i=import_list->size()-1;i>=0;i--) {
     item=new Q3ListViewItem(this);
     if((i_item=import_list->item(i))!=NULL) {
-      if((i_item->eventType()==RDLogLine::Cart)||
-	 (i_item->eventType()==RDLogLine::Macro)) {
-	cart=new RDCart(i_item->cartNumber());
+      if(i_item->isEndMarker()) {
+	item->setText(4,i_item->markerComment());
       }
-      switch(i_item->eventType()) {
-      case RDLogLine::Cart:
-	item->setPixmap(0,*import_playout_map);
-	item->setText(1,QString().sprintf("%06u",i_item->cartNumber()));
-	item->setText(2,cart->groupName());
-	item->setText(3,RDGetTimeLength(cart->forcedLength(),false,false));
-	item->setText(4,cart->title());
-	total_len+=cart->forcedLength();
-	break;
+      else {
+	if((i_item->eventType()==RDLogLine::Cart)||
+	   (i_item->eventType()==RDLogLine::Macro)) {
+	  cart=new RDCart(i_item->cartNumber());
+	}
+	switch(i_item->eventType()) {
+	case RDLogLine::Cart:
+	  item->setPixmap(0,*import_playout_map);
+	  item->setText(1,QString().sprintf("%06u",i_item->cartNumber()));
+	  item->setText(2,cart->groupName());
+	  item->setText(3,RDGetTimeLength(cart->forcedLength(),false,false));
+	  item->setText(4,cart->title());
+	  total_len+=cart->forcedLength();
+	  break;
 	    
-      case RDLogLine::Macro:
-	item->setPixmap(0,*import_macro_map);
-	item->setText(1,QString().sprintf("%06u",i_item->cartNumber()));
-	item->setText(2,cart->groupName());
-	item->setText(3,RDGetTimeLength(cart->forcedLength(),false,false));
-	item->setText(4,cart->title());
-	total_len+=cart->forcedLength();
-	break;
+	case RDLogLine::Macro:
+	  item->setPixmap(0,*import_macro_map);
+	  item->setText(1,QString().sprintf("%06u",i_item->cartNumber()));
+	  item->setText(2,cart->groupName());
+	  item->setText(3,RDGetTimeLength(cart->forcedLength(),false,false));
+	  item->setText(4,cart->title());
+	  total_len+=cart->forcedLength();
+	  break;
 
-      case RDLogLine::Marker:
-	item->setPixmap(0,*import_notemarker_map);
-	item->setText(2,tr("Marker"));
-	item->setText(4,tr("[Log Note]"));
-	break;
+	case RDLogLine::Marker:
+	  item->setPixmap(0,*import_notemarker_map);
+	  item->setText(2,tr("Marker"));
+	  item->setText(4,tr("[Log Note]"));
+	  break;
 
-      case RDLogLine::Track:
-	item->setPixmap(0,*import_mic16_map);
-	item->setText(2,tr("Track"));
-	item->setText(4,tr("[Voice Track]"));
-	break;
+	case RDLogLine::Track:
+	  item->setPixmap(0,*import_mic16_map);
+	  item->setText(2,tr("Track"));
+	  item->setText(4,tr("[Voice Track]"));
+	  break;
 
-      default:
-	break;
+	default:
+	  break;
+	}
+	if((i==0)&&(!import_allow_first_trans)) {
+	  item->setText(5,tr("[auto]"));
+	}
+	else {
+	  item->setText(5,RDLogLine::transText(i_item->transType()));
+	}
+	item->setText(6,QString().sprintf("%d",i));
+	if(cart!=NULL) {
+	  delete cart;
+	  cart=NULL;
+	}
       }
-      switch(i_item->transType()) {
-      case RDLogLine::Play:
-	item->setText(5,tr("PLAY"));
-	break;
-
-      case RDLogLine::Segue:
-	item->setText(5,tr("SEGUE"));
-	break;
-
-      case RDLogLine::Stop:
-	item->setText(5,tr("STOP"));
-	break;
-
-      default:
-	break;
-      }
-      item->setText(6,QString().sprintf("%d",i));
       if(i==line) {
 	select_item=item;
-      }
-      if(cart!=NULL) {
-	delete cart;
-	cart=NULL;
       }
     }
   }
@@ -222,22 +238,18 @@ void ImportListView::refreshList(int line)
 }
 
 
-void ImportListView::validateTransitions()
+void ImportListView::fixupTransitions(RDLogLine::TransType repl_trans)
 {
-  if(import_list->size()>0) {
-    if(import_force_trans!=RDLogLine::NoTrans) {
-      import_list->item(0)->setTransType(import_force_trans);
-    }
-    else {
-      if((import_list->item(0)->transType()==RDLogLine::Stop)&&
-	 (!import_allow_stop)) {
-	import_list->item(0)->setTransType(RDLogLine::Segue);
-      }
-    }
+  Q3ListViewItem *item=firstChild();
+
+  if(repl_trans==RDLogLine::Stop) {
+    repl_trans=RDLogLine::RDLogLine::Segue;
   }
-  for(int i=1;i<import_list->size();i++) {
-    if(import_list->item(i)->transType()==RDLogLine::Stop) {
-      import_list->item(1)->setTransType(RDLogLine::Segue);
+  for(int i=0;i<import_list->size();i++) {
+    if(import_list->item(i)->transType()==RDLogLine::NoTrans) {
+      import_list->item(i)->setTransType(repl_trans);
+      item->setText(5,RDLogLine::transText(repl_trans));
+      item=item->nextSibling();
     }
   }
 }
@@ -245,84 +257,61 @@ void ImportListView::validateTransitions()
 
 void ImportListView::aboutToShowData()
 {
-  if(import_menu_item==NULL) {
-    import_menu->setItemChecked(0,false);
-    import_menu->setItemEnabled(0,true);
-    import_menu->setItemChecked(1,false);
-    import_menu->setItemEnabled(1,false);
-    import_menu->setItemChecked(2,false);
-    import_menu->setItemEnabled(2,true);
-    import_menu->setItemChecked(3,false);
-    import_menu->setItemEnabled(3,false);
-    import_menu->setItemChecked(4,false);
-    import_menu->setItemEnabled(4,false);
-    import_menu->setItemChecked(5,false);
-    import_menu->setItemEnabled(5,false);
-    import_menu->setItemChecked(6,false);
-    import_menu->setItemEnabled(6,false);
-    import_menu->setItemChecked(7,false);
-    import_menu->setItemEnabled(7,false);
-    import_menu->setItemChecked(8,false);
-    import_menu->setItemEnabled(8,false);
+  if((import_menu_item==NULL)||(import_menu_i_item->isEndMarker())) {
+    import_menu->setItemEnabled(MENU_INSERT_NOTE,true);
+    import_menu->setItemEnabled(MENU_EDIT_NOTE,false);
+    import_menu->setItemEnabled(MENU_INSERT_TRACK,true);
+    import_menu->setItemEnabled(MENU_EDIT_TRACK,false);
+    import_menu->setItemChecked(MENU_PLAY_TRANS,false);
+    import_menu->setItemEnabled(MENU_PLAY_TRANS,false);
+    import_menu->setItemChecked(MENU_SEGUE_TRANS,false);
+    import_menu->setItemEnabled(MENU_SEGUE_TRANS,false);
+    import_menu->setItemEnabled(MENU_DELETE,false);
     return;
   }
   if(import_menu_i_item->eventType()==RDLogLine::Marker) {
-    import_menu->setItemEnabled(1,true);
+    import_menu->setItemEnabled(MENU_EDIT_NOTE,true);
   }
   else {
-    import_menu->setItemEnabled(1,false);
+    import_menu->setItemEnabled(MENU_EDIT_NOTE,false);
   }
   if(import_menu_i_item->eventType()==RDLogLine::Track) {
-    import_menu->setItemEnabled(3,true);
+    import_menu->setItemEnabled(MENU_EDIT_TRACK,true);
   }
   else {
-    import_menu->setItemEnabled(3,false);
+    import_menu->setItemEnabled(MENU_EDIT_TRACK,false);
   }
-  import_menu->setItemChecked(4,false);
-  import_menu->setItemChecked(5,false);
-  import_menu->setItemChecked(6,false);
-  import_menu->setItemChecked(7,false);
+  import_menu->setItemChecked(MENU_PLAY_TRANS,false);
+  import_menu->setItemChecked(MENU_SEGUE_TRANS,false);
   if(import_menu_line==0) {
-    import_menu->setItemEnabled(4,import_allow_first_trans);
-    import_menu->setItemEnabled(5,import_allow_first_trans);
-    import_menu->setItemEnabled(7,import_allow_first_trans);
-    if((import_menu_line==0)&&import_allow_stop&&import_allow_first_trans) {
-//      import_menu->setItemEnabled(4,true);
-      import_menu->setItemEnabled(6,true);
-    }
-    else {
-      import_menu->setItemEnabled(6,false);
-    }
+    import_menu->setItemEnabled(MENU_PLAY_TRANS,import_allow_first_trans);
+    import_menu->setItemEnabled(MENU_SEGUE_TRANS,import_allow_first_trans);
   }
   else {
-    import_menu->setItemEnabled(4,true);
-    import_menu->setItemEnabled(5,true);
-    import_menu->setItemEnabled(7,true);
-    if((import_menu_line==0)&&import_allow_stop) {
-      import_menu->setItemEnabled(6,true);
-      import_menu->setItemEnabled(6,true);
-    }
-    else {
-      import_menu->setItemEnabled(6,false);
-    }
+    import_menu->setItemEnabled(MENU_PLAY_TRANS,true);
+    import_menu->setItemEnabled(MENU_SEGUE_TRANS,true);
+    import_menu->setItemEnabled(MENU_DELETE,true);
   }
   switch(import_menu_i_item->transType()) {
   case RDLogLine::Play:
-    import_menu->setItemChecked(4,true);
+    import_menu->setItemChecked(MENU_PLAY_TRANS,true);
+    import_menu->setItemChecked(MENU_SEGUE_TRANS,false);
     break;
 
   case RDLogLine::Segue:
-    import_menu->setItemChecked(5,true);
+    import_menu->setItemChecked(MENU_PLAY_TRANS,false);
+    import_menu->setItemChecked(MENU_SEGUE_TRANS,true);
     break;
 
   case RDLogLine::Stop:
-    import_menu->setItemChecked(6,true);
+    import_menu->setItemChecked(MENU_PLAY_TRANS,false);
+    import_menu->setItemChecked(MENU_SEGUE_TRANS,false);
     break;
 
   default:
     break;
   }
-  import_menu->setItemEnabled(8,true);
+  import_menu->setItemEnabled(MENU_DELETE,true);
 }
 
 
@@ -338,12 +327,17 @@ void ImportListView::insertNoteMenuData()
   if(import_menu_item==NULL) {
     import_menu_line=0;
   }
+  else {
+    if((import_menu_i_item!=NULL)&&(import_menu_i_item->isEndMarker())) {
+      import_menu_line=import_list->size()-1;
+    }
+  }
   RDEventImportItem *i_item=new RDEventImportItem();
   i_item->setEventType(RDLogLine::Marker);
   i_item->setMarkerComment(note);
-  i_item->setTransType(RDLogLine::Segue);
+  i_item->setTransType(RDLogLine::NoTrans);
   import_list->takeItem(import_menu_line,i_item);
-  validateTransitions();
+  emit validationNeeded();
   refreshList(import_menu_line);
   emit sizeChanged(childCount());
 }
@@ -373,12 +367,17 @@ void ImportListView::insertTrackMenuData()
   if(import_menu_item==NULL) {
     import_menu_line=0;
   }
+  else {
+    if((import_menu_i_item!=NULL)&&(import_menu_i_item->isEndMarker())) {
+      import_menu_line=import_list->size()-1;
+    }
+  }
   RDEventImportItem *i_item=new RDEventImportItem();
   i_item->setEventType(RDLogLine::Track);
   i_item->setMarkerComment(note);
-  i_item->setTransType(RDLogLine::Segue);
+  i_item->setTransType(RDLogLine::NoTrans);
   import_list->takeItem(import_menu_line,i_item);
-  validateTransitions();
+  emit validationNeeded();
   refreshList(import_menu_line);
   emit sizeChanged(childCount());
 }
@@ -420,7 +419,7 @@ void ImportListView::stopMenuData()
 void ImportListView::deleteMenuData()
 {
   import_list->removeItem(import_menu_item->text(6).toInt());
-  validateTransitions();
+  emit validationNeeded();
   refreshList();
   emit sizeChanged(childCount());
 }
@@ -432,28 +431,33 @@ void ImportListView::contentsMousePressEvent(QMouseEvent *e)
   import_menu_item=selectedItem();
   if(import_menu_item==NULL) {
     import_menu_i_item=NULL;
+    return;
   }
   else {
-    if((import_menu_i_item=import_list->
-	item(import_menu_line=import_menu_item->text(6).toInt()))==NULL) {
-      return;
+    if(import_menu_item->text(6).isEmpty()) {  // End of List Marker
+      import_menu_i_item=import_list->endMarkerItem();
+    }
+    else {
+    import_menu_i_item=import_list->
+      item(import_menu_line=import_menu_item->text(6).toInt());
     }
   }
   switch(e->button()) {
-      case Qt::RightButton:
-	import_menu->setGeometry(import_parent->geometry().x()+
-				 geometry().x()+e->pos().x()+2,
-				 import_parent->geometry().y()+
-				 geometry().y()+e->pos().y()+
-				 header()->geometry().height()+2,
-				 import_menu->sizeHint().width(),
-				 import_menu->sizeHint().height());
-	import_menu->exec();
-	break;
+  case Qt::RightButton:
+    import_menu->setGeometry(import_parent->geometry().x()+
+			     geometry().x()+e->pos().x()+2,
+			     import_parent->geometry().y()+
+			     geometry().y()+e->pos().y()+
+			     header()->geometry().height()+2-
+			     contentsY(),
+			     import_menu->sizeHint().width(),
+			     import_menu->sizeHint().height());
+    import_menu->exec();
+    break;
 
-      default:
-	e->ignore();
-	break;
+  default:
+    e->ignore();
+    break;
   }
 }
 
@@ -462,12 +466,16 @@ void ImportListView::contentsMouseDoubleClickEvent(QMouseEvent *e)
 {
   Q3ListView::contentsMouseDoubleClickEvent(e);
   import_menu_item=selectedItem();
-  if(import_menu_item==NULL) {
+  if((import_menu_item==NULL)||(import_menu_item->text(6).isEmpty())) {
     return;
   }
   if(import_list->
      item(import_menu_item->text(6).toInt())->eventType()==RDLogLine::Marker) {
     editNoteMenuData();
+  }
+  if(import_list->
+     item(import_menu_item->text(6).toInt())->eventType()==RDLogLine::Track) {
+    editTrackMenuData();
   }
 }
 
@@ -487,14 +495,15 @@ void ImportListView::dropEvent(QDropEvent *e)
 
   if(RDCartDrag::decode(e,&cartnum)) {
     if(cartnum==0) {
-      if((item=itemAt(pos))==NULL) {
+      if(((item=itemAt(pos))==NULL)||(item->text(6).isEmpty())) {
 	return;
       }
+      line=item->text(6).toInt();
       import_list->removeItem(item->text(6).toInt());
     }
     else {
       if((item=itemAt(pos))==NULL) {
-	line=childCount();
+	line=childCount()-1;
       }
       else {
 	line=item->text(6).toInt();
@@ -508,12 +517,12 @@ void ImportListView::dropEvent(QDropEvent *e)
       else {
 	i_item->setEventType(RDLogLine::Macro);
       }
-      i_item->setTransType(RDLogLine::Segue);
+      i_item->setTransType(RDLogLine::NoTrans);
       import_list->takeItem(line,i_item);
       delete cart;
     }
   }
-  validateTransitions();
+  emit validationNeeded();
   refreshList(line);
   emit sizeChanged(childCount());
 }

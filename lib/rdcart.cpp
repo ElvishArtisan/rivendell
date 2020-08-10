@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Cart.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1448,7 +1448,10 @@ QString RDCart::xmlSql(bool include_cuts)
       "CUTS.HOOK_START_POINT,"+    // 70
       "CUTS.HOOK_END_POINT,"+      // 71
       "CUTS.TALK_START_POINT,"+    // 72
-      "CUTS.TALK_END_POINT "+      // 73
+      "CUTS.TALK_END_POINT,"+      // 73
+      "CUTS.RECORDING_MBID,"+      // 74
+      "CUTS.RELEASE_MBID "+        // 75
+
       "from CART left join CUTS "+
       "on CART.NUMBER=CUTS.CART_NUMBER ";
   }
@@ -1977,6 +1980,16 @@ unsigned RDCart::readXml(std::vector<RDWaveData> *data,const QString &xml)
       }
       if(f0[i].contains("<isci>")) {
 	data->back().setIsci(GetXmlValue("isci",f0[i]).toString());
+	cartdata.setMetadataFound(true);
+      }
+      if(f0[i].contains("<recordingMbId>")) {
+	data->back().setRecordingMbId(GetXmlValue("recordingMbId",f0[i]).
+				      toString());
+	cartdata.setMetadataFound(true);
+      }
+      if(f0[i].contains("<releaseMbId>")) {
+	data->back().setReleaseMbId(GetXmlValue("releaseMbId",
+						f0[i]).toString());
 	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<length>")) {

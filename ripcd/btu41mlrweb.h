@@ -2,7 +2,7 @@
 //
 // Rivendell switcher driver for the BroadcastTools Universal 4.1 MLR>>Web
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,7 +24,7 @@
 #include <vector>
 
 #include <qsignalmapper.h>
-#include <q3socket.h>
+#include <qtcpsocket.h>
 #include <qtimer.h>
 
 #include <rd.h>
@@ -56,14 +56,14 @@ class BtU41MlrWeb : public Switcher
  private slots:
   void connectedData();
   void readyReadData();
-  void errorData(int err);
+  void errorData(QAbstractSocket::SocketError err);
   void keepaliveData();
   void watchdogData();
 
  private:
   void ProcessCommand(const QString &cmd);
   void SendCommand(const QString &cmd);
-  Q3Socket *bt_socket;
+  QTcpSocket *bt_socket;
   QTimer *bt_watchdog_timer;
   bool bt_watchdog_active;
   QHostAddress bt_ip_address;

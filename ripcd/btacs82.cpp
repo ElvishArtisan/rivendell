@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools ACS 8.2
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -53,6 +53,7 @@ BtAcs82::BtAcs82(RDMatrix *matrix,QObject *parent)
   //
   RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   bt_device=new RDTTYDevice();
+  connect(bt_device,SIGNAL(readyRead()),this,SLOT(processStatus()));
   if(tty->active()) {
     bt_device->setName(tty->port());
     bt_device->setSpeed(tty->baudRate());
@@ -71,13 +72,6 @@ BtAcs82::BtAcs82(RDMatrix *matrix,QObject *parent)
   bt_gpo_oneshot=new RDOneShot(this);
   connect(bt_gpo_oneshot,SIGNAL(timeout(void *)),
 	  this,SLOT(gpoOneshotData(int)));
-
-  //
-  // The Poll Timer
-  //
-  QTimer *timer=new QTimer(this,"poll_timer");
-  connect(timer,SIGNAL(timeout()),this,SLOT(processStatus()));
-  timer->start(BTACS82_POLL_INTERVAL);
 }
 
 

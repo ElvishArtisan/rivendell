@@ -2,7 +2,7 @@
 //
 // Download a File
 //
-//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -107,7 +107,7 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   long response_code=0;
   RDDownload::ErrorCode ret=RDDownload::ErrorOk;
   RDSystemUser *user=NULL;
-  char url[1024];
+  //  char url[1024];
   char userpwd[256];
 
   //
@@ -128,14 +128,19 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
     curl_easy_cleanup(curl);
     return RDDownload::ErrorNoDestination;
   }
+
   //
-  // Write out URL as a C string before passing to curl_easy_setopt(), 
-  // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
-  // error.
+  // Write out an encoded URL
   //
-  strncpy(url,conv_src_url.
-	  toString(conv_src_url.protocol().lower().left(4)=="http").utf8(),1024);
-  curl_easy_setopt(curl,CURLOPT_URL,url);
+  QByteArray url=conv_src_url.toEncoded(QUrl::RemoveUserInfo);
+
+  //
+  // An URL anchor element will never occur here, so treat any '#' 
+  // characters as part of the path.
+  //
+  url.replace("#","%23");
+
+  curl_easy_setopt(curl,CURLOPT_URL,(const char *)url);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,f);
   strncpy(userpwd,(username+":"+password).utf8(),256);
   curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);

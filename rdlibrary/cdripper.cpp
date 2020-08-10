@@ -2,7 +2,7 @@
 //
 // CD Track Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +23,9 @@
 #include <rdaudioimport.h>
 #include <rdcdripper.h>
 #include <rdconf.h>
+#include <rddisclookup_factory.h>
 #include <rdtempdirectory.h>
+#include <rdtextfile.h>
 
 #include "cdripper.h"
 #include "globals.h"
@@ -34,14 +36,13 @@
 //
 bool ripper_running;
 
-CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
+CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
 		   bool profile_rip,QWidget *parent) 
   : RDDialog(parent)
 {
   rip_profile_rip=profile_rip;
-  rip_isrc_read=false;
   rip_conf=conf;
-  rip_cddb_record=rec;
+  rip_disc_record=rec;
   rip_track[0]=-1;
   rip_track[1]=-1;
   rip_title=NULL;
@@ -52,20 +53,6 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   // Fix the Window Size
   //
   setMinimumSize(sizeHint());
-
-  //
-  // Create Temporary Directory
-  //
-  char path[PATH_MAX];
-  strncpy(path,RDTempDirectory::basePath(),PATH_MAX);
-  strcat(path,"/XXXXXX");
-  if(mkdtemp(path)==NULL) {
-    QMessageBox::warning(this,"RDLibrary - "+tr("Ripper Error"),
-			 tr("Unable to create temporary directory!"));
-  }
-  else {
-    rip_cdda_dir.setPath(path);
-  }
 
   //
   // Target Cut
@@ -89,16 +76,18 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_cdrom->open();
 
   //
-  // CDDB Stuff
+  // Disc Metadata Lookup
   //
   if(rip_profile_rip) {
-    rip_cddb_lookup=new RDCddbLookup("RDLibrary",stdout,this);
+    rip_disc_lookup=RDDiscLookupFactory(rda->libraryConf()->cdServerType(),
+					"RDLibrary",stdout,this);
   }
   else {
-    rip_cddb_lookup=new RDCddbLookup("RDLibrary",NULL,this);
+    rip_disc_lookup=RDDiscLookupFactory(rda->libraryConf()->cdServerType(),
+					"RDLibrary",NULL,this);
   }
-  connect(rip_cddb_lookup,SIGNAL(lookupDone(RDCddbLookup::Result)),
-	  this,SLOT(cddbDoneData(RDCddbLookup::Result)));
+  connect(rip_disc_lookup,SIGNAL(lookupDone(RDDiscLookup::Result,const QString &)),
+	  this,SLOT(lookupDoneData(RDDiscLookup::Result,const QString &)));
 
   //
   // Title Selector
@@ -126,6 +115,14 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_album_edit=new QLineEdit(this);
 
   //
+  // Label Edit
+  //
+  rip_label_label=new QLabel(tr("Label:"),this);
+  rip_label_label->setFont(labelFont());
+  rip_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  rip_label_edit=new QLineEdit(this);
+
+  //
   // Other Edit
   //
   rip_other_label=new QLabel(tr("Other:"),this);
@@ -135,17 +132,43 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_other_edit->setReadOnly(true);
 
   //
-  // Apply FreeDB Check Box
+  // Apply Metadata Check Box
   //
   rip_apply_box=new QCheckBox(this);
   rip_apply_box->setChecked(true);
   rip_apply_box->setDisabled(true);
-  rip_apply_label=
-    new QLabel(rip_apply_box,tr("Apply FreeDB Values to Cart"),this);
+  rip_apply_label=new QLabel(rip_apply_box,tr("Apply")+" "+
+			     rip_disc_lookup->sourceName()+" "+
+			     tr("Values to Cart"),this);
   rip_apply_label->setFont(labelFont());
   rip_apply_label->setAlignment(Qt::AlignLeft);
   rip_apply_box->setChecked(false);
   rip_apply_label->setDisabled(true);
+  rip_apply_box->setVisible(!rip_disc_lookup->sourceName().isNull());
+  rip_apply_label->setVisible(!rip_disc_lookup->sourceName().isNull());
+
+  //
+  // Web Browser Button
+  //
+  rip_browser_button=new QPushButton(this);
+  rip_browser_button->setPixmap(rip_disc_lookup->sourceLogo());
+  rip_browser_button->setDisabled(true);
+  rip_browser_label=new QLabel(this);
+  rip_browser_label->setPixmap(rip_disc_lookup->sourceLogo());
+  rip_browser_label->setDisabled(true);
+  connect(rip_browser_button,SIGNAL(clicked()),this,SLOT(openBrowserData()));
+  if(rip_disc_lookup->sourceLogo().isNull()) {
+    rip_browser_button->hide();
+    rip_browser_label->hide();
+  }
+  else {
+    if(rda->station()->browserPath().isEmpty()) {
+      rip_browser_button->hide();
+    }
+    else {
+      rip_browser_label->hide();
+    }
+  }
 
   //
   // Track List
@@ -278,14 +301,6 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
 
 CdRipper::~CdRipper()
 {
-  QStringList files=rip_cdda_dir.entryList();
-  for(int i=0;i<files.size();i++) {
-    if((files[i]!=".")&&(files[i]!="..")) {
-      rip_cdda_dir.remove(files[i]);
-    }
-  }
-  rmdir(rip_cdda_dir.path());
-
   rip_cdrom->close();
   delete rip_cdrom;
   delete rip_track_list;
@@ -300,7 +315,7 @@ CdRipper::~CdRipper()
 
 QSize CdRipper::sizeHint() const
 {
-  return QSize(470,606);
+  return QSize(730,628);
 }
 
 
@@ -310,11 +325,12 @@ QSizePolicy CdRipper::sizePolicy() const
 }
 
 
-int CdRipper::exec(QString *title,QString *artist,QString *album)
+int CdRipper::exec(QString *title,QString *artist,QString *album,QString *label)
 {
   rip_title=title;
   rip_artist=artist;
   rip_album=album;
+  rip_label=label;
   return QDialog::exec();
 }
 
@@ -427,16 +443,7 @@ void CdRipper::ripTrackButtonData()
     *rip_title=rip_title_box->currentText();
     *rip_artist=rip_artist_edit->text();
     *rip_album=rip_album_edit->text();
-  }
-
-  //
-  // Read ISRCs
-  //
-  if(!rip_isrc_read) {
-    if(rda->libraryConf()->readIsrc()) {
-      rip_cddb_lookup->readIsrc(rip_cdda_dir.path(),rip_conf->ripperDevice());
-    }
-    rip_isrc_read=true;
+    *rip_label=rip_label_edit->text();
   }
 
   //
@@ -556,7 +563,6 @@ void CdRipper::mediaChangedData()
 {
   Q3ListViewItem *l;
 
-  rip_isrc_read=false;
   rip_track_list->clear();
   rip_track[0]=-1;
   rip_track[1]=-1;
@@ -571,13 +577,11 @@ void CdRipper::mediaChangedData()
     }
     l->setText(1,RDGetTimeLength(rip_cdrom->trackLength(i)));
   }
-  rip_cddb_record->clear();
-  rip_cdrom->setCddbRecord(rip_cddb_record);
-  rip_cddb_lookup->setCddbRecord(rip_cddb_record);
+  rip_disc_record->clear();
+  rip_cdrom->setCddbRecord(rip_disc_record);
+  rip_disc_lookup->setCddbRecord(rip_disc_record);
   Profile("starting metadata lookup");
-  rip_cddb_lookup->lookupRecord(rip_cdda_dir.path(),rip_conf->ripperDevice(),
-				rip_conf->cddbServer(),8880,
-				RIPPER_CDDB_USER,PACKAGE_NAME,VERSION);
+  rip_disc_lookup->lookup();
   Profile("metadata lookup finished");
 }
 
@@ -596,35 +600,39 @@ void CdRipper::stoppedData()
 }
 
 
-void CdRipper::cddbDoneData(RDCddbLookup::Result result)
+void CdRipper::lookupDoneData(RDDiscLookup::Result result,const QString &err_msg)
 {
   switch(result) {
-  case RDCddbLookup::ExactMatch:
+  case RDDiscLookup::ExactMatch:
     if(rip_cdrom->status()!=RDCdPlayer::Ok) {
       return;
     }
-    rip_artist_edit->setText(rip_cddb_record->discArtist());
-    rip_album_edit->setText(rip_cddb_record->discAlbum());
-    rip_other_edit->setText(rip_cddb_record->discExtended());
-    for(int i=0;i<rip_cddb_record->tracks();i++) {
+    rip_artist_edit->setText(rip_disc_record->discArtist());
+    rip_album_edit->setText(rip_disc_record->discAlbum());
+    rip_label_edit->setText(rip_disc_record->discLabel());
+    rip_other_edit->setText(rip_disc_record->discExtended());
+    for(int i=0;i<rip_disc_record->tracks();i++) {
       rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	setText(2,rip_cddb_record->trackTitle(i));
+	setText(2,rip_disc_record->trackTitle(i));
       rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	setText(3,rip_cddb_record->trackExtended(i));
+	setText(3,rip_disc_record->trackExtended(i));
     }
     rip_apply_box->setChecked(true);
     rip_apply_box->setEnabled(true);
     rip_apply_label->setEnabled(true);
+    rip_browser_button->setDisabled(rip_disc_lookup->sourceUrl().isNull());
+    rip_browser_label->setDisabled(rip_disc_lookup->sourceUrl().isNull());
     trackSelectionChangedData();
     break;
 
-  case RDCddbLookup::PartialMatch:
+  case RDDiscLookup::NoMatch:
     rip_track[0]=-1;
     rip_track[1]=-1;
-    printf("Partial Match!\n");
     break;
 
-  default:
+  case RDDiscLookup::LookupError:
+    QMessageBox::warning(this,"RDLibrary - "+rip_disc_lookup->sourceName()+
+			 " "+tr("Lookup Error"),err_msg);
     rip_track[0]=-1;
     rip_track[1]=-1;
     break;
@@ -648,6 +656,12 @@ void CdRipper::autotrimCheckData(bool state)
 }
 
 
+void CdRipper::openBrowserData()
+{
+  RDWebBrowser(rip_disc_lookup->sourceUrl());
+}
+
+
 void CdRipper::closeData()
 {
   if(rip_done) {
@@ -667,27 +681,31 @@ void CdRipper::resizeEvent(QResizeEvent *e)
   rip_artist_edit->setGeometry(65,31,size().width()-125,18);
   rip_album_label->setGeometry(10,54,50,18);
   rip_album_edit->setGeometry(65,53,size().width()-125,18);
-  rip_other_label->setGeometry(10,76,50,16);
-  rip_other_edit->setGeometry(65,75,size().width()-125,60);
-  rip_apply_box->setGeometry(65,140,15,15);
-  rip_apply_label->setGeometry(85,140,250,20);
-  rip_track_list->setGeometry(10,178,size().width()-110,size().height()-290);
-  rip_track_label->setGeometry(10,162,100,14);
-  rip_bar->setGeometry(10,size().height()-100,size().width()-112,20);
-  rip_eject_button->setGeometry(size().width()-90,178,80,50);
-  rip_play_button->setGeometry(size().width()-90,238,80,50);
-  rip_stop_button->setGeometry(size().width()-90,298,80,50);
-  rip_rip_button->setGeometry(size().width()-90,402,80,50);
+  rip_label_label->setGeometry(10,76,50,18);
+  rip_label_edit->setGeometry(65,75,size().width()-125,18);
+  rip_other_label->setGeometry(10,98,50,16);
+  rip_other_edit->setGeometry(65,97,size().width()-125,60);
+  rip_apply_box->setGeometry(65,162,15,15);
+  rip_apply_label->setGeometry(85,162,250,20);
+  rip_browser_button->setGeometry(size().width()-260,161,200,35);
+  rip_browser_label->setGeometry(size().width()-260,161,200,35);
+  rip_track_list->setGeometry(10,200,size().width()-110,size().height()-305);
+  rip_track_label->setGeometry(10,184,100,14);
+  rip_bar->setGeometry(10,size().height()-100,size().width()-110,20);
+  rip_eject_button->setGeometry(size().width()-90,200,80,50);
+  rip_play_button->setGeometry(size().width()-90,260,80,50);
+  rip_stop_button->setGeometry(size().width()-90,320,80,50);
+  rip_rip_button->setGeometry(size().width()-90,424,80,50);
   rip_normalize_box->setGeometry(10,size().height()-76,20,20);
   rip_normalize_box_label->setGeometry(30,size().height()-76,85,20);
-  rip_normalize_spin->setGeometry(170,size().height()-76,40,20);
   rip_normalize_label->setGeometry(120,size().height()-76,45,20);
-  rip_normalize_unit->setGeometry(215,size().height()-76,40,20);
-  rip_autotrim_box->setGeometry(10,size().height()-52,20,20);
+  rip_normalize_spin->setGeometry(170,size().height()-76,50,20);
+  rip_normalize_unit->setGeometry(225,size().height()-76,40,20);
   rip_autotrim_box_label->setGeometry(30,size().height()-52,85,20);
-  rip_autotrim_spin->setGeometry(170,size().height()-52,40,20);
+  rip_autotrim_box->setGeometry(10,size().height()-52,20,20);
   rip_autotrim_label->setGeometry(120,size().height()-52,45,20);
-  rip_autotrim_unit->setGeometry(215,size().height()-52,40,20);
+  rip_autotrim_spin->setGeometry(170,size().height()-52,50,20);
+  rip_autotrim_unit->setGeometry(225,size().height()-52,40,20);
   rip_channels_box->setGeometry(90,size().height()-28,50,20);
   rip_channels_label->setGeometry(10,size().height()-28,75,20);
   rip_close_button->setGeometry(size().width()-90,size().height()-60,80,50);

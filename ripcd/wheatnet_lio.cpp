@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for WheatNet LIO
 //
-//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,10 +34,11 @@ WheatnetLio::WheatnetLio(RDMatrix *matrix,QObject *parent)
   lio_ip_port=matrix->ipPort(RDMatrix::Primary);
   lio_card=matrix->card();
 
-  lio_socket=new Q3Socket(this);
+  lio_socket=new QTcpSocket(this);
   connect(lio_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(lio_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(lio_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
+  connect(lio_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   lio_socket->connectToHost(lio_ip_address.toString(),lio_ip_port);
 
   lio_poll_timer=new QTimer(this);
@@ -204,7 +205,7 @@ void WheatnetLio::readyReadData()
 }
 
 
-void WheatnetLio::errorData(int err)
+void WheatnetLio::errorData(QAbstractSocket::SocketError err)
 {
   watchdogData();
 }

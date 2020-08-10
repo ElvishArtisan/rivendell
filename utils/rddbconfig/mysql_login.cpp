@@ -2,7 +2,7 @@
 //
 // mySQL Administrative Login widget for RDDbConfig
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <qlabel.h>
 #include <qpushbutton.h>
-
-#include <rdlabel.h>
 
 #include "mysql_login.h"
 
@@ -35,7 +34,7 @@ MySqlLogin::MySqlLogin(QString *username,QString *password, QWidget *parent)
   //
   // Message Label
   //
-  RDLabel *label=new RDLabel(tr("Enter your MySQL administrator username and password\nThe Hostname and Database are found in /etc/rd.conf"),this);
+  QLabel *label=new QLabel(tr("Enter your MySQL administrator username and password\nThe Hostname and Database are found in /etc/rd.conf"),this);
   label->setFont(labelFont());
   label->setGeometry(10,10,sizeHint().width()-20,30);
   label->setAlignment(Qt::AlignCenter);

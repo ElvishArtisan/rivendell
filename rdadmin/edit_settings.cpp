@@ -2,7 +2,7 @@
 //
 // Edit Rivendell System-Wide Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <q3filedialog.h>
 
 #include <qapplication.h>
+#include <qfiledialog.h>
 #include <qmessagebox.h>
+#include <qprogressdialog.h>
 
 #include <rdconf.h>
 #include <rddb.h>
@@ -255,7 +256,9 @@ void EditSettings::duplicatesCheckedData(bool state)
 void EditSettings::saveData()
 {
   QString filename=RDGetHomeDir();
-  filename=Q3FileDialog::getSaveFileName(filename,"Text Files *.txt",this);
+  filename=QFileDialog::getSaveFileName(this,"RDAdmin - "+tr("Save text file"),
+					filename,
+					"Text files (*.txt);;All files (*.*)");
   if(filename.isNull()) {
     return;
   }
@@ -304,7 +307,8 @@ void EditSettings::okData()
   if(edit_duplicate_carts_box->isChecked()!=
      edit_system->allowDuplicateCartTitles()) {
     QLabel *msg=new QLabel(this);
-    Q3ProgressDialog *pd=new Q3ProgressDialog(this);
+    QProgressDialog *pd=new QProgressDialog(this);
+    pd->setWindowTitle("RDAdmin - "+tr("Progress"));
     pd->setLabel(msg);
     pd->setCancelButton(NULL);
     pd->setMinimumDuration(2);
@@ -318,7 +322,8 @@ void EditSettings::okData()
       int count=0;
       int step=0;
       int step_size=q->size()/10;
-      pd->setProgress(0,10);
+      pd->setMaximum(10);
+      pd->setValue(0);
       while(q->next()) {
 	sql=QString("select NUMBER from CART where ")+
 	  "(TITLE=\""+RDEscapeString(q->value(1).toString())+"\")&&"+
@@ -330,7 +335,7 @@ void EditSettings::okData()
 	delete q1;
 	count++;
 	if(count>=step_size) {
-	  pd->setProgress(++step);
+	  pd->setValue(++step);
 	  count=0;
 	  qApp->processEvents();
 	}
@@ -369,7 +374,7 @@ void EditSettings::okData()
       sql="alter table CART drop index TITLE_IDX";
       q=new RDSqlQuery(sql);
       delete q;
-      sql="alter table CART modify column TITLE char(255) unique";
+      sql="alter table CART modify column TITLE varchar(191) unique";
       q=new RDSqlQuery(sql);
       delete q;
       edit_system->setAllowDuplicateCartTitles(false);
@@ -378,7 +383,7 @@ void EditSettings::okData()
       sql="alter table CART drop index TITLE";
       q=new RDSqlQuery(sql);
       delete q;
-      sql="alter table CART modify column TITLE char(255)";
+      sql="alter table CART modify column TITLE varchar(191)";
       q=new RDSqlQuery(sql);
       delete q;
       sql="alter table CART add index TITLE_IDX(TITLE)";

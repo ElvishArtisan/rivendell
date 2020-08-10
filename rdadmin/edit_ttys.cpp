@@ -18,8 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <qmessagebox.h>
+
 #include <rdapplication.h>
 #include <rddb.h>
+#include <rdescape_string.h>
+#include <rdmatrix.h>
 #include <rdstation.h>
 #include <rdtextvalidator.h>
 
@@ -238,6 +242,34 @@ void EditTtys::idSelectedData()
 
 void EditTtys::enableButtonData(int state)
 {
+  QString sql;
+  RDSqlQuery *q;
+
+  if(!state) {
+    sql=QString("select ")+
+      "NAME,"+    // 00
+      "MATRIX,"+  // 01
+      "TYPE "+    // 02
+      "from MATRICES where "+
+      "STATION_NAME=\""+RDEscapeString(edit_station)+"\" && "+
+      QString().sprintf("(PORT_TYPE=%d && PORT=%d) || ",
+			RDMatrix::TtyPort,edit_port_box->currentIndex())+
+      QString().sprintf("(PORT_TYPE_2=%d && PORT_2=%d)",
+			RDMatrix::TtyPort,edit_port_box->currentIndex());
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      QMessageBox::information(this,"RDAdmin - "+tr("Error"),
+			       tr("This port is currently in use by the following Switcher/GPIO device")+":\n"+
+			       "\t"+tr("Matrix")+QString().sprintf(": %d.\n",q->value(1).toInt())+
+			       "\t"+tr("Type")+": "+RDMatrix::typeString((RDMatrix::Type)q->value(2).toInt())+"\n"+
+			       "\t"+tr("Description")+": "+q->value(0).toString());
+      delete q;
+      edit_enable_button->setChecked(true);
+      return;
+    }
+    delete q;
+  }
+
   if(state==0) {  // Off
     SetEnable(false);
   }
@@ -293,63 +325,81 @@ void EditTtys::ReadRecord(int id)
   edit_tty=new RDTty(edit_station,id,true);
   edit_port_edit->setText(edit_tty->port());
   switch(edit_tty->baudRate()) {
-      case 50:
-	edit_baudrate_box->setCurrentItem(0);
-	break;
-      case 75:
-	edit_baudrate_box->setCurrentItem(1);
-	break;
-      case 110:
-	edit_baudrate_box->setCurrentItem(2);
-	break;
-      case 134:
-	edit_baudrate_box->setCurrentItem(3);
-	break;
-      case 150:
-	edit_baudrate_box->setCurrentItem(4);
-	break;
-      case 200:
-	edit_baudrate_box->setCurrentItem(5);
-	break;
-      case 300:
-	edit_baudrate_box->setCurrentItem(6);
-	break;
-      case 600:
-	edit_baudrate_box->setCurrentItem(7);
-	break;
-      case 1200:
-	edit_baudrate_box->setCurrentItem(8);
-	break;
-      case 1800:
-	edit_baudrate_box->setCurrentItem(9);
-	break;
-      case 2400:
-	edit_baudrate_box->setCurrentItem(10);
-	break;
-      case 4800:
-	edit_baudrate_box->setCurrentItem(11);
-	break;
-      case 9600:
-	edit_baudrate_box->setCurrentItem(12);
-	break;
-      case 19200:
-	edit_baudrate_box->setCurrentItem(13);
-	break;
-      case 38400:
-	edit_baudrate_box->setCurrentItem(14);
-	break;
-      case 57600:
-	edit_baudrate_box->setCurrentItem(15);
-	break;
-      case 115200:
-	edit_baudrate_box->setCurrentItem(16);
-	break;
-      case 230400:
-	edit_baudrate_box->setCurrentItem(17);
-	break;
-      default:
-	edit_baudrate_box->setCurrentItem(12);
-	break;	
+  case 50:
+    edit_baudrate_box->setCurrentItem(0);
+    break;
+
+  case 75:
+    edit_baudrate_box->setCurrentItem(1);
+    break;
+
+  case 110:
+    edit_baudrate_box->setCurrentItem(2);
+    break;
+
+  case 134:
+    edit_baudrate_box->setCurrentItem(3);
+    break;
+
+  case 150:
+    edit_baudrate_box->setCurrentItem(4);
+    break;
+
+  case 200:
+    edit_baudrate_box->setCurrentItem(5);
+    break;
+
+  case 300:
+    edit_baudrate_box->setCurrentItem(6);
+    break;
+
+  case 600:
+    edit_baudrate_box->setCurrentItem(7);
+    break;
+
+  case 1200:
+    edit_baudrate_box->setCurrentItem(8);
+    break;
+
+  case 1800:
+    edit_baudrate_box->setCurrentItem(9);
+    break;
+
+  case 2400:
+    edit_baudrate_box->setCurrentItem(10);
+    break;
+
+  case 4800:
+    edit_baudrate_box->setCurrentItem(11);
+    break;
+
+  case 9600:
+    edit_baudrate_box->setCurrentItem(12);
+    break;
+
+  case 19200:
+    edit_baudrate_box->setCurrentItem(13);
+    break;
+
+  case 38400:
+    edit_baudrate_box->setCurrentItem(14);
+    break;
+
+  case 57600:
+    edit_baudrate_box->setCurrentItem(15);
+    break;
+
+  case 115200:
+    edit_baudrate_box->setCurrentItem(16);
+    break;
+
+  case 230400:
+    edit_baudrate_box->setCurrentItem(17);
+    break;
+
+  default:
+    edit_baudrate_box->setCurrentItem(12);
+    break;	
   }
   edit_parity_box->setCurrentItem(edit_tty->parity());
   edit_databits_box->setCurrentItem(edit_tty->dataBits()-5);

@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS USI Protocol
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -88,18 +88,19 @@ SasUsi::SasUsi(RDMatrix *matrix,QObject *parent)
       sas_device->setSpeed(tty->baudRate());
       sas_device->setWordLength(tty->dataBits());
       sas_device->setParity(tty->parity());
-      sas_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
+      sas_device->open(QIODevice::Unbuffered|QIODevice::WriteOnly);
     }
     delete tty;
 
   case RDMatrix::TcpPort:
-    sas_socket=new Q3Socket(this);
+    sas_socket=new QTcpSocket(this);
     connect(sas_socket,SIGNAL(connected()),this,SLOT(connectedData()));
-    connect(sas_socket,SIGNAL(connectionClosed()),
+    connect(sas_socket,SIGNAL(disconnected()),
 	    this,SLOT(connectionClosedData()));
     connect(sas_socket,SIGNAL(readyRead()),
 	    this,SLOT(readyReadData()));
-    connect(sas_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
+    connect(sas_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	    this,SLOT(errorData(Q)));
     ipConnect();
     break;
 
@@ -388,30 +389,30 @@ void SasUsi::readyReadData()
 }
 
 
-void SasUsi::errorData(int err)
+void SasUsi::errorData(QAbstractSocket::SocketError err)
 {
-  switch((Q3Socket::Error)err) {
-      case Q3Socket::ErrConnectionRefused:
-	rda->syslog(LOG_WARNING,
-	  "connection to SasUsi device at %s:%d refused, attempting reconnect",
-		    (const char *)sas_ipaddress.toString().toUtf8(),
-	  sas_ipport);
-	sas_reconnect_timer->start(SASUSI_RECONNECT_INTERVAL,true);
-	break;
+  switch(err) {
+  case QAbstractSocket::ConnectionRefusedError:
+    rda->syslog(LOG_WARNING,
+	   "connection to SasUsi device at %s:%d refused, attempting reconnect",
+		(const char *)sas_ipaddress.toString().toUtf8(),
+		sas_ipport);
+    sas_reconnect_timer->start(SASUSI_RECONNECT_INTERVAL,true);
+    break;
 
-      case Q3Socket::ErrHostNotFound:
-	rda->syslog(LOG_WARNING,
-	       "error on connection to SasUsi device at %s:%d: Host Not Found",
-		    (const char *)sas_ipaddress.toString().toUtf8(),
-		    sas_ipport);
-	break;
+  case QAbstractSocket::HostNotFoundError:
+    rda->syslog(LOG_WARNING,
+		"error on connection to SasUsi device at %s:%d: Host Not Found",
+		(const char *)sas_ipaddress.toString().toUtf8(),
+		sas_ipport);
+    break;
 
-      case Q3Socket::ErrSocketRead:
-	rda->syslog(LOG_WARNING,
-	     "error on connection to SasUsi device at %s:%d: Socket Read Error",
-		    (const char *)sas_ipaddress.toString().toUtf8(),
-		    sas_ipport);
-	break;
+  default:
+    rda->syslog(LOG_WARNING,
+       	"received network error %d on connection to SasUsi device at %s:%d",
+		(const char *)sas_ipaddress.toString().toUtf8(),
+		sas_ipport);
+    break;
   }
 }
 

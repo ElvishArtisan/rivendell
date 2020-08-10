@@ -26,6 +26,7 @@
 #include <qtimer.h>
 
 #include <rd.h>
+#include <rddatapacer.h>
 #include <rdmatrix.h>
 #include <rdmacro.h>
 
@@ -52,11 +53,12 @@ class Gvc7000 : public Switcher
   void connectedData();
   void disconnectedData();
   void errorData(QAbstractSocket::SocketError err);
+  void sendCommandData(const QByteArray &data);
 
  private:
-  void SendCommand(const QString &str);
   QString ToSeries7000Native(const QString &str) const;
   QTcpSocket *gvc_socket;
+  RDDataPacer *gvc_pacer;
   QHostAddress gvc_ipaddress;
   int gvc_matrix;
   int gvc_ipport;

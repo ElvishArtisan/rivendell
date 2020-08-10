@@ -2,7 +2,7 @@
 //
 // Local RML Macros for the Rivendell's RDAirPlay
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,6 +44,8 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
   int mach=0;
   RDLogLine::TransType trans=RDLogLine::Play;
   int offset=0;
+  bool ok=false;
+  unsigned cart=0;
 
   if(rml->role()!=RDMacro::Cmd) {
     return;
@@ -306,7 +308,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(1).toInt()>AIR_PANEL_BUTTON_COLUMNS)||
        (rml->arg(2).toInt()<=0)||
        (rml->arg(2).toInt()>AIR_PANEL_BUTTON_ROWS)||
-       (rml->arg(3).toUInt()>999999)) {
+       (rml->arg(3).toUInt()>RD_MAX_CART_NUMBER)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -792,38 +794,58 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)||
-       (rml->arg(1).toUInt()>999999)) {
+    mach=rml->arg(0).toInt();
+    cart=cart;
+    offset=0;
+    trans=air_default_trans_type;
+    if((mach<1)||(mach>3)||
+       (rml->arg(1).toUInt()>RD_MAX_CART_NUMBER)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
       }
       return;
     }
-    offset=0;
     if(rml->argQuantity()>=3) {
-      offset=rml->arg(2).toInt();
+      offset=rml->arg(2).toInt(&ok);
+      if(!ok) {
+	if(rml->echoRequested()) {
+	  rml->acknowledge(false);
+	  rda->ripc()->sendRml(rml);
+	}
+	return;
+      }
     }
-    trans=RDLogLine::Play;
     if(rml->argQuantity()==4) {
+      trans=RDLogLine::NoTrans;
+      if(rml->arg(3).toLower()=="play") {
+	trans=RDLogLine::Play;
+      }
       if(rml->arg(3).toLower()=="segue") {
 	trans=RDLogLine::Segue;
       }
       if(rml->arg(3).toLower()=="stop") {
 	trans=RDLogLine::Stop;
       }
+      if(trans==RDLogLine::NoTrans) {
+	if(rml->echoRequested()) {
+	  rml->acknowledge(false);
+	  rda->ripc()->sendRml(rml);
+	}
+	return;
+      }
     }
-    if(air_log[rml->arg(0).toInt()-1]->nextLine()>=0) {
-      air_log[rml->arg(0).toInt()-1]->
-	insert(air_log[rml->arg(0).toInt()-1]->nextLine()+offset,
+    if(air_log[mach-1]->nextLine()>=0) {
+      air_log[mach-1]->
+	insert(air_log[mach-1]->nextLine()+offset,
 	       rml->arg(1).toUInt(),RDLogLine::NoTrans,trans);
     }
     else {
-      air_log[rml->arg(0).toInt()-1]->
-	insert(air_log[rml->arg(0).toInt()-1]->size(),
+      air_log[mach-1]->
+	insert(air_log[mach-1]->size(),
 	       rml->arg(1).toUInt(),RDLogLine::NoTrans,trans);
-      air_log[rml->arg(0).toInt()-1]->
-	makeNext(air_log[rml->arg(0).toInt()-1]->size()-1);
+      air_log[mach-1]->
+	makeNext(air_log[mach-1]->size()-1);
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
@@ -882,7 +904,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if(rml->arg(2).toUInt()>999999) {
+    if(rml->arg(2).toUInt()>RD_MAX_CART_NUMBER) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);

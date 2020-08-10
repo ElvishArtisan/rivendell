@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Log Line.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -118,6 +118,8 @@ void RDLogLine::clear()
   log_publisher="";
   log_composer="";
   log_isrc="";
+  log_recording_mbid="";
+  log_release_mbid="";
   log_album="";
   log_year=QDate();
   log_isci="";
@@ -822,6 +824,30 @@ QString RDLogLine::isrc() const
 void RDLogLine::setIsrc(const QString &string)
 {
   log_isrc=string;
+}
+
+
+QString RDLogLine::recordingMbId() const
+{
+  return log_recording_mbid;
+}
+
+
+void RDLogLine::setRecordingMbId(const QString &mbid)
+{
+  log_recording_mbid=mbid;
+}
+
+
+QString RDLogLine::releaseMbId() const
+{
+  return log_release_mbid;
+}
+
+
+void RDLogLine::setReleaseMbId(const QString &mbid)
+{
+  log_release_mbid=mbid;
 }
 
 
@@ -1555,23 +1581,51 @@ void RDLogLine::setStartSource(RDLogLine::StartSource src)
 }
 
 
-QString RDLogLine::resolveWildcards(QString pattern)
+QString RDLogLine::resolveWildcards(QString pattern,int log_id)
 {
-  pattern.replace("%n",QString().sprintf("%06u",cartNumber()));
-  pattern.replace("%h",QString().sprintf("%d",effectiveLength()));
-  pattern.replace("%g",groupName());
-  pattern.replace("%t",title());
+  //  MAINTAINERS'S NOTE: These mappings must be kept in sync with those
+  //                      of the 'resolvePadFields()' method in
+  //                      'apis/PyPAD/api/PyPAD.py'!
+
   pattern.replace("%a",artist());
-  pattern.replace("%l",album());
-  pattern.replace("%y",year().toString("yyyy"));
   pattern.replace("%b",label());
+  pattern.replace("%c",client());
+  pattern=RDLogLine::resolveNowNextDateTime(pattern,"%d(",startDatetime());
+  pattern.replace("%e",agency());
+  // %f [unassigned]
+  pattern.replace("%g",groupName());
+  pattern.replace("%h",QString().sprintf("%d",effectiveLength()));
+  pattern.replace("%i",description());
+  pattern.replace("%j",QString().sprintf("%03d",cutNumber()));
+  // %k rdimport(1) parameter
+  pattern.replace("%l",album());
+  pattern.replace("%m",composer());
+  pattern.replace("%n",QString().sprintf("%06u",cartNumber()));
+  pattern.replace("%o",outcue());
+  pattern.replace("%p",publisher());
+  // %q rdimport(1) parameter
   pattern.replace("%r",conductor());
   pattern.replace("%s",songId());
-  pattern.replace("%c",client());
-  pattern.replace("%e",agency());
-  pattern.replace("%m",composer());
-  pattern.replace("%p",publisher());
+  pattern.replace("%t",title());
   pattern.replace("%u",userDefined());
+  pattern.replace("%v",QString().sprintf("%d",effectiveLength()/1000));
+  pattern.replace("%wc",isci());
+  pattern.replace("%wi",isrc());
+  pattern.replace("%wm",recordingMbId());
+  pattern.replace("%wr",releaseMbId());
+  if(log_id<0) {
+    pattern.replace("%x",QString().sprintf("%d",id()));
+  }
+  else {
+    pattern.replace("%x",QString().sprintf("%d",log_id));
+  }
+  if(year().isValid()) {
+    pattern.replace("%y",QString().sprintf("%d",year().year()));
+  }
+  else {
+    pattern.replace("%y","");
+  }
+  // %z Log Line Number
 
   return pattern;
 }
@@ -1618,7 +1672,9 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
       "OUTCUE,"+                // 10
       "ISRC,"+                  // 11
       "ISCI,"+                  // 12
-      "DESCRIPTION "+           // 13
+      "DESCRIPTION,"+           // 13
+      "RECORDING_MBID,"+        // 14
+      "RELEASE_MBID "+          // 15
       "from CUTS where CUT_NAME=\""+RDEscapeString(log_cut_name)+"\"";
     q=new RDSqlQuery(sql);
     if(!q->first()) {
@@ -1748,6 +1804,8 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
     log_isrc=q->value(11).toString();
     log_isci=q->value(12).toString();
     log_description=q->value(13).toString();
+    log_recording_mbid=q->value(14).toString();
+    log_release_mbid=q->value(15).toString();
     log_segue_gain_cut=q->value(5).toInt();
     delete q;
     delete cart;
@@ -1810,6 +1868,22 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
 void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
 			 bool timescale,RDLogLine::TransType type,int len)
 {
+  loadCart(cartnum);
+
+  if(len>=0) {
+    log_forced_length=len;
+    log_enforce_length=true;
+  }
+  if(type!=RDLogLine::NoTrans) {
+    log_trans_type=type;
+  }
+  log_state=setEvent(mach,next_type,timescale);
+  log_timescaling_active=log_enforce_length&&timescale;
+}
+
+
+void RDLogLine::loadCart(int cartnum,int cutnum)
+{
   QString sql=QString("select ")+
     "CART.TYPE,"+                  // 00
     "CART.GROUP_NAME,"+            // 01
@@ -1817,7 +1891,6 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
     "CART.ARTIST,"+                // 03
     "CART.ALBUM,"+                 // 04
     "CART.YEAR,"+                  // 05
-    //    "CART.ISRC,"+                  // 06
     "CART.LABEL,"+                 // 06
     "CART.CLIENT,"+                // 07
     "CART.AGENCY,"+                // 08
@@ -1868,7 +1941,6 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
   log_artist=q->value(3).toString();
   log_album=q->value(4).toString();
   log_year=q->value(5).toDate();
-  //  log_isrc=q->value(6).toString();
   log_label=q->value(6).toString();
   log_client=q->value(7).toString();
   log_agency=q->value(8).toString();
@@ -1880,15 +1952,9 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
   log_play_order=(RDCart::PlayOrder)q->value(15).toInt();
   log_start_datetime=q->value(16).toDateTime();
   log_end_datetime=q->value(17).toDateTime();
+  log_forced_length=q->value(12).toUInt();
+  log_enforce_length=RDBool(q->value(18).toString());
   log_preserve_pitch=RDBool(q->value(19).toString());
-  if(len<0) {
-    log_forced_length=q->value(12).toUInt();
-    log_enforce_length=RDBool(q->value(18).toString());
-  }
-  else {
-    log_forced_length=len;
-    log_enforce_length=true;
-  }
   log_now_next_enabled=RDBool(q->value(20).toString());
   log_asyncronous=RDBool(q->value(21).toString());
   log_publisher=q->value(22).toString();
@@ -1898,12 +1964,90 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
   log_cart_notes=q->value(26).toString();
   log_group_color=QColor(q->value(27).toString());
   log_play_source=RDLogLine::UnknownSource;
-  if(type!=RDLogLine::NoTrans) {
-    log_trans_type=type;
-  }
   delete q;
-  log_state=setEvent(mach,next_type,timescale);
-  log_timescaling_active=log_enforce_length&&timescale;
+
+  if(cutnum>0) {
+    sql=QString("select ")+
+      "LENGTH,"+                // 00
+      "START_POINT,"+           // 01
+      "END_POINT,"+             // 02
+      "SEGUE_START_POINT,"+     // 03
+      "SEGUE_END_POINT,"+       // 04
+      "SEGUE_GAIN,"+            // 05
+      "TALK_START_POINT,"+      // 06
+      "TALK_END_POINT,"+        // 07
+      "HOOK_START_POINT,"+      // 08
+      "HOOK_END_POINT,"+        // 09
+      "OUTCUE,"+                // 10
+      "ISRC,"+                  // 11
+      "ISCI,"+                  // 12
+      "DESCRIPTION,"+           // 13
+      "RECORDING_MBID,"+        // 14
+      "RELEASE_MBID "+          // 15
+      "from CUTS where CUT_NAME=\""+RDCut::cutName(cartnum,cutnum)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      if(log_hook_mode &&(q->value(8).toInt()>=0)&&(q->value(9).toInt()>=0)) {
+	log_start_point[0]=q->value(8).toInt();
+	log_end_point[0]=q->value(9).toInt();
+	log_segue_start_point[0]=-1;
+	log_segue_end_point[0]=-1;
+	log_talk_start=-1;
+	log_talk_end=-1;
+      }
+      else {
+       log_start_point[0]=q->value(1).toInt();
+       log_end_point[0]=q->value(2).toInt();
+       if(log_start_point[RDLogLine::LogPointer]>=0 ||
+          log_end_point[RDLogLine::LogPointer]>=0) {
+         log_effective_length=log_end_point[RDLogLine::LogPointer]-
+           log_start_point[RDLogLine::LogPointer];
+       }
+       else {
+         log_effective_length=q->value(0).toUInt();
+       }
+       log_segue_start_point[0]=q->value(3).toInt();
+       log_segue_end_point[0]=q->value(4).toInt();
+       log_talk_start=q->value(6).toInt();
+       log_talk_end=q->value(7).toInt();
+      }
+      log_hook_start=q->value(8).toInt();
+      log_hook_end=q->value(9).toInt();
+      if(log_talk_end>log_end_point[RDLogLine::LogPointer] && 
+        log_end_point[RDLogLine::LogPointer]>=0) {
+       log_talk_end=log_end_point[RDLogLine::LogPointer];
+      }
+      if(log_talk_end<log_start_point[RDLogLine::LogPointer]) {
+       log_talk_end=0;
+       log_talk_start=0;
+      }
+      else {
+       if(log_talk_start<log_start_point[RDLogLine::LogPointer]) {
+         log_talk_start=0;
+         log_talk_end-=log_start_point[RDLogLine::LogPointer];
+       }
+       if(log_talk_start>log_end_point[RDLogLine::LogPointer] &&
+          log_end_point[RDLogLine::LogPointer]>=0) {
+         log_talk_start=0;
+         log_talk_end=0;
+       }
+      }
+      log_talk_length=log_talk_end-log_talk_start;
+    }
+    if(segueStartPoint(RDLogLine::AutoPointer)>=0) {
+      log_average_segue_length=segueStartPoint(RDLogLine::AutoPointer)-
+       startPoint(RDLogLine::AutoPointer);
+    }
+    log_cut_number=cutnum;
+    log_outcue=q->value(10).toString();
+    log_isrc=q->value(11).toString();
+    log_isci=q->value(12).toString();
+    log_description=q->value(13).toString();
+    log_recording_mbid=q->value(14).toString();
+    log_release_mbid=q->value(15).toString();
+    log_segue_gain_cut=q->value(5).toInt();
+    delete q;
+  }
 }
 
 
@@ -1999,6 +2143,12 @@ QString RDLogLine::xml(int line) const
   ret+="    "+RDXmlField("markerComment",markerComment());
   ret+="    "+RDXmlField("markerLabel",markerLabel());
 
+  ret+="    "+RDXmlField("description",description());
+  ret+="    "+RDXmlField("isrc",isrc());
+  ret+="    "+RDXmlField("isci",isci());
+  ret+="    "+RDXmlField("recordingMbId",recordingMbId());
+  ret+="    "+RDXmlField("releaseMbId",releaseMbId());
+
   ret+="    "+RDXmlField("originUser",originUser());
   ret+="    "+RDXmlField("originDateTime",originDateTime());
   ret+="    "+RDXmlField("startPoint",startPoint(RDLogLine::CartPointer),
@@ -2059,10 +2209,42 @@ QString RDLogLine::xml(int line) const
 }
 
 
-QString RDLogLine::resolveWildcards(unsigned cartnum,const QString &pattern)
+QString RDLogLine::resolveNowNextDateTime(const QString &str,
+					  const QString &code,
+					  const QDateTime &dt)
+{
+  int ptr=0;
+  std::vector<QString> dts;
+  QString ret=str;
+
+  while((ptr=ret.find(code,ptr))>=0) {
+    for(int i=ptr+3;i<ret.length();i++) {
+      if(ret.at(i)==')') {
+	dts.push_back(ret.mid(ptr+3,i-ptr-3));
+	ptr+=(i-ptr-3);
+	break;
+      }
+    }
+  }
+  if(dt.isValid()&&(!dt.time().isNull())) {
+    for(unsigned i=0;i<dts.size();i++) {
+      ret.replace(code+dts[i]+")",dt.toString(dts[i]));
+    }
+  }
+  else {
+    for(unsigned i=0;i<dts.size();i++) {
+      ret.replace(code+dts[i]+")","");
+    }
+  }
+  return ret;
+}
+
+
+QString RDLogLine::resolveWildcards(unsigned cartnum,const QString &pattern,
+				    int cutnum)
 {
   RDLogLine logline;
-  logline.loadCart(cartnum,RDLogLine::Play,0,false);
+  logline.loadCart(cartnum,cutnum);
   return logline.resolveWildcards(pattern);
 }
 

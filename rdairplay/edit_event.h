@@ -2,7 +2,7 @@
 //
 // Event Editor for RDAirPlay
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +36,7 @@ class EditEvent : public RDDialog
 {
   Q_OBJECT
  public:
-  EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent=0);
+  EditEvent(RDLogPlay *log,QWidget *parent=0);
   ~EditEvent();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -78,7 +78,6 @@ class EditEvent : public RDDialog
   QPushButton *edit_cancel_button;
   QLabel *edit_horizrule_label;
   int edit_height;
-  RDCae *edit_cae;
 };
 
 

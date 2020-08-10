@@ -610,7 +610,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     break;
 
   case RDReport::RadioTraffic:
-    ret=ExportRadioTraffic(filename,startdate,enddate,mixname);
+    ret=ExportRadioTraffic(filename,startdate,enddate,mixname,0);
     break;
 
   case RDReport::VisualTraffic:
@@ -619,11 +619,15 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 
   case RDReport::CounterPoint:
   case RDReport::WideOrbit:
-    ret=ExportRadioTraffic(filename,startdate,enddate,mixname);
+    ret=ExportRadioTraffic(filename,startdate,enddate,mixname,0);
+    break;
+
+  case RDReport::CounterPoint2:
+    ret=ExportRadioTraffic(filename,startdate,enddate,mixname,1);
     break;
 
   case RDReport::Music1:
-    ret=ExportRadioTraffic(filename,startdate,enddate,mixname);
+    ret=ExportRadioTraffic(filename,startdate,enddate,mixname,0);
     break;
 
   case RDReport::MusicClassical:
@@ -648,6 +652,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 
   case RDReport::CutLog:
     ret=ExportCutLog(filename,startdate,enddate,mixname);
+    break;
+
+  case RDReport::ResultsReport:
+    ret=ExportResultsReport(filename,startdate,enddate,mixname);
     break;
 
   default:
@@ -697,6 +705,9 @@ QString RDReport::filterText(RDReport::ExportFilter filter)
   case RDReport::CounterPoint:
     return QObject::tr("CounterPoint Traffic Reconciliation");
 
+  case RDReport::CounterPoint2:
+    return QObject::tr("CounterPoint Traffic Reconciliation v2");
+
   case RDReport::MrMaster:
     return QObject::tr("Mr. Master Reconciliation");
 
@@ -724,9 +735,13 @@ QString RDReport::filterText(RDReport::ExportFilter filter)
   case RDReport::CutLog:
     return QObject::tr("Cut Log");
 
-  default:
-    return QObject::tr("Unknown");
+  case RDReport::ResultsReport:
+    return QObject::tr("Results Report");
+
+  case RDReport::LastFilter:
+    break;
   }
+
   return QObject::tr("Unknown");
 }
 
@@ -758,6 +773,7 @@ bool RDReport::multipleDaysAllowed(RDReport::ExportFilter filter)
   case RDReport::RadioTraffic:
   case RDReport::VisualTraffic:
   case RDReport::CounterPoint:
+  case RDReport::CounterPoint2:
   case RDReport::LastFilter:
   case RDReport::MrMaster:
   case RDReport::Music1:
@@ -767,6 +783,7 @@ bool RDReport::multipleDaysAllowed(RDReport::ExportFilter filter)
   case RDReport::SpinCount:
   case RDReport::WideOrbit:
   case RDReport::CutLog:
+  case RDReport::ResultsReport:
     return false;
 
   case RDReport::BmiEmr:
@@ -789,6 +806,7 @@ bool RDReport::multipleMonthsAllowed(RDReport::ExportFilter filter)
   case RDReport::RadioTraffic:
   case RDReport::VisualTraffic:
   case RDReport::CounterPoint:
+  case RDReport::CounterPoint2:
   case RDReport::LastFilter:
   case RDReport::MrMaster:
   case RDReport::Music1:
@@ -797,6 +815,7 @@ bool RDReport::multipleMonthsAllowed(RDReport::ExportFilter filter)
   case RDReport::NaturalLog:
   case RDReport::WideOrbit:
   case RDReport::CutLog:
+  case RDReport::ResultsReport:
     return false;
     
   case RDReport::MusicSummary:

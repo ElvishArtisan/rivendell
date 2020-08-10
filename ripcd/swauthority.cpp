@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for systems using Software Authority Protocol
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -51,6 +51,9 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent)
   swa_gpos=0;
   swa_start_cart=matrix->startCart(RDMatrix::Primary);
   swa_stop_cart=matrix->stopCart(RDMatrix::Primary);
+  swa_is_gpio=false;
+
+  rda->syslog(LOG_DEBUG,"%p - card: %d\n",this,swa_card);
 
   //
   // Reconnection Timer
@@ -61,13 +64,14 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the connection
   //
-  swa_socket=new Q3Socket(this);
+  swa_socket=new QTcpSocket(this);
   connect(swa_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(swa_socket,SIGNAL(connectionClosed()),
 	  this,SLOT(connectionClosedData()));
   connect(swa_socket,SIGNAL(readyRead()),
 	  this,SLOT(readyReadData()));
-  connect(swa_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
+  connect(swa_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   ipConnect();
 }
 
@@ -155,6 +159,8 @@ void SoftwareAuthority::processCommand(RDMacro *cmd)
 
 void SoftwareAuthority::ipConnect()
 {
+  rda->syslog(LOG_DEBUG,"%p - connecting to %s:%d",this,
+	      swa_ipaddress.toString().toUtf8().constData(),swa_ipport);
   swa_socket->connectToHost(swa_ipaddress.toString(),swa_ipport);
 }
 
@@ -203,30 +209,31 @@ void SoftwareAuthority::readyReadData()
 }
 
 
-void SoftwareAuthority::errorData(int err)
+void SoftwareAuthority::errorData(QAbstractSocket::SocketError err)
 {
-  switch((Q3Socket::Error)err) {
-      case Q3Socket::ErrConnectionRefused:
-	rda->syslog(LOG_WARNING,
-	       "connection to SoftwareAuthority device at %s:%d refused, attempting reconnect",
-		    (const char *)swa_ipaddress.toString().toUtf8(),
-		    swa_ipport);
-	swa_reconnect_timer->start(SWAUTHORITY_RECONNECT_INTERVAL,true);
-	break;
+  switch(err) {
+  case QAbstractSocket::ConnectionRefusedError:
+    rda->syslog(LOG_WARNING,
+		"connection to SoftwareAuthority device at %s:%d refused, attempting reconnect",
+		(const char *)swa_ipaddress.toString().toUtf8(),
+		swa_ipport);
+    swa_reconnect_timer->start(SWAUTHORITY_RECONNECT_INTERVAL,true);
+    break;
 
-      case Q3Socket::ErrHostNotFound:
-	rda->syslog(LOG_WARNING,
-	       "error on connection to SoftwareAuthority device at %s:%d: Host Not Found",
-		    (const char *)swa_ipaddress.toString().toUtf8(),
-		    swa_ipport);
-	break;
+  case QAbstractSocket::HostNotFoundError:
+    rda->syslog(LOG_WARNING,
+		"error on connection to SoftwareAuthority device at %s:%d: Host Not Found",
+		(const char *)swa_ipaddress.toString().toUtf8(),
+		swa_ipport);
+    break;
 
-      case Q3Socket::ErrSocketRead:
-	rda->syslog(LOG_WARNING,
-	       "error on connection to SoftwareAuthority device at %s:%d: Socket Read Error",
-		    (const char *)swa_ipaddress.toString().toUtf8(),
-		    swa_ipport);
-	break;
+  default:
+    rda->syslog(LOG_WARNING,
+		"error %d on connection to SoftwareAuthority device at %s:%d",
+		err,
+		(const char *)swa_ipaddress.toString().toUtf8(),
+		swa_ipport);
+    break;
   }
 }
 
@@ -234,6 +241,7 @@ void SoftwareAuthority::errorData(int err)
 void SoftwareAuthority::SendCommand(const char *str)
 {
   //  LogLine(RDConfig::LogDebug,QString().sprintf("sending SA cmd: %s",(const char *)PrettifyCommand(str)));
+  rda->syslog(LOG_DEBUG,"%p - sending \"%s\"",this,str);
   QString cmd=QString().sprintf("%s\x0d\x0a",(const char *)str);
   swa_socket->writeBlock((const char *)cmd,strlen(cmd));
 }
@@ -253,11 +261,18 @@ void SoftwareAuthority::DispatchCommand()
 
   QString line_in=swa_buffer;
   QString section=line_in.lower().replace(">>","");
+  rda->syslog(LOG_DEBUG,"%p - received \"%s\"",this,
+	      section.toUtf8().constData());
 
   //
-  // Startup Sequence.  Get the input and output lists.
+  // Startup Sequence. Get initial GPIO states and the input and output lists.
   //
   if(section=="login successful") {
+    swa_inputs=0;
+    swa_outputs=0;
+    swa_gpis=0;
+    swa_gpos=0;
+    swa_is_gpio=false;
     sprintf(buffer,"gpistat %d\x0D\x0A",swa_card);      // Request GPI States
     SendCommand(buffer);
     sprintf(buffer,"gpostat %d\x0D\x0A",swa_card);      // Request GPO States
@@ -297,15 +312,18 @@ void SoftwareAuthority::DispatchCommand()
       // Write Sources Data
       //
       swa_istate=0;
+      if(swa_is_gpio) {
+	swa_gpis=swa_inputs*RD_LIVEWIRE_GPIO_BUNDLE_SIZE;
+      }
       sql=QString("update MATRICES set ")+
-	QString().sprintf("INPUTS=%d ",swa_inputs)+
+	QString().sprintf("INPUTS=%d,",swa_inputs)+
+	QString().sprintf("GPIS=%d ",swa_gpis)+
 	"where (STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
 	QString().sprintf("(MATRIX=%d)",swa_matrix);
       q=new RDSqlQuery(sql);
       delete q;
       return;
     }
-    swa_inputs++;
     f0=line_in.split("\t",QString::KeepEmptyParts);
     name=f0[1];
     if(f0.size()>=7) {
@@ -330,6 +348,9 @@ void SoftwareAuthority::DispatchCommand()
 	QString().sprintf("MATRIX=%d,",swa_matrix)+
 	QString().sprintf("NUMBER=%d",f0[0].toInt());
     }
+    if(f0[0].toInt()>swa_inputs) {
+      swa_inputs=f0[0].toInt();
+    }
     delete q;
     q=new RDSqlQuery(sql);
     delete q;
@@ -341,8 +362,12 @@ void SoftwareAuthority::DispatchCommand()
       // Write Destinations Data
       //
       swa_istate=0;
+      if(swa_is_gpio) {
+	swa_gpos=swa_outputs*RD_LIVEWIRE_GPIO_BUNDLE_SIZE;
+      }
       sql=QString("update MATRICES set ")+
-	QString().sprintf("OUTPUTS=%d ",swa_outputs)+
+	QString().sprintf("OUTPUTS=%d,",swa_outputs)+
+	QString().sprintf("GPOS=%d ",swa_gpos)+
 	"where (STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
 	QString().sprintf("(MATRIX=%d)",swa_matrix);
       q=new RDSqlQuery(sql);
@@ -357,7 +382,6 @@ void SoftwareAuthority::DispatchCommand()
       }
       return;
     }
-    swa_outputs++;
     f0=line_in.split("\t",QString::KeepEmptyParts);
     name=f0[1];
     if(f0.size()>=6) {
@@ -382,17 +406,10 @@ void SoftwareAuthority::DispatchCommand()
 	QString().sprintf("MATRIX=%d,",swa_matrix)+
 	QString().sprintf("NUMBER=%d",f0[0].toInt());
     }
+    if(f0[0].toInt()>swa_outputs) {
+      swa_outputs=f0[0].toInt();
+    }
     delete q;
-    q=new RDSqlQuery(sql);
-    delete q;
-
-    //
-    // Write GPIO Data
-    //
-    sql=QString("update MATRICES set ")+
-      QString().sprintf("GPIS=%d,GPOS=%d where ",swa_gpis,swa_gpos)+
-      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-      QString().sprintf("(MATRIX=%d)",swa_matrix);
     q=new RDSqlQuery(sql);
     delete q;
     break;
@@ -405,9 +422,6 @@ void SoftwareAuthority::DispatchCommand()
   if((f0.size()==4)&&(f0[0].lower()=="gpistat")&&(f0[1].toInt()==swa_card)) {
     if(swa_gpi_states[f0[2].toInt()].isEmpty()) {
       swa_gpi_states[f0[2].toInt()]=f0[3];
-      if((RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt())>swa_gpis) {
-	swa_gpis=RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt();
-      }
     }
     else {
       for(unsigned i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
@@ -418,13 +432,11 @@ void SoftwareAuthority::DispatchCommand()
       }
       swa_gpi_states[f0[2].toInt()]=f0[3];
     }
+    swa_is_gpio=true;
   }
   if((f0.size()==4)&&(f0[0].lower()=="gpostat")&&(f0[1].toInt()==swa_card)) {
     if(swa_gpo_states[f0[2].toInt()].isEmpty()) {
       swa_gpo_states[f0[2].toInt()]=f0[3];
-      if((RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt())>swa_gpos) {
-	swa_gpos=RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt();
-      }
     }
     else {
       for(unsigned i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
@@ -435,6 +447,7 @@ void SoftwareAuthority::DispatchCommand()
       }
       swa_gpo_states[f0[2].toInt()]=f0[3];
     }
+    swa_is_gpio=true;
   }
 }
 

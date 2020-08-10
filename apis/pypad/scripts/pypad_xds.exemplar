@@ -30,6 +30,16 @@ UdpPort=1234
 ;
 IsciPrefix=TEST_
 
+; Repetitions
+;
+; Send each CIC update packet this many times.
+Repetitions=1
+
+; Repetition Delay
+;
+; Delay this many milliseconds between each repetition.
+RepetitionDelay=100
+
 ; Log Selection
 ;
 ; Set the status for each log to 'Yes', 'No' or 'Onair' to indicate whether
@@ -67,6 +77,8 @@ VLog120=No
 ;UdpPort=6789
 ;TtyDevice=/dev/ttyS1
 ;TtySpeed=19200
+;Repetitions=1
+;RepetitionDelay=100
 ;MasterLog=Yes
 ;Aux1Log=No
 ;Aux2Log=Onair

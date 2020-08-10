@@ -2,7 +2,7 @@
 //
 // CD Ripper Dialog for Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,14 @@
 #ifndef CDRIPPER_H
 #define CDRIPPER_H
 
-#include <qprogressbar.h>
-
-#include <qlineedit.h>
-#include <qdir.h>
-#include <qspinbox.h>
-#include <qcheckbox.h>
 #include <q3textedit.h>
+
+#include <qcheckbox.h>
+#include <qdir.h>
+#include <qlineedit.h>
+#include <qpixmap.h>
+#include <qprogressbar.h>
+#include <qspinbox.h>
 
 #include <rddialog.h>
 #include <rdcddblookup.h>
@@ -38,14 +39,14 @@ class CdRipper : public RDDialog
 {
   Q_OBJECT
  public:
-  CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
+  CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
 	   bool profile_rip,QWidget *parent=0);
   ~CdRipper();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  public slots:
-  int exec(QString *title,QString *artist,QString *album);
+   int exec(QString *title,QString *artist,QString *album,QString *label);
 
  private slots:
   void trackSelectionChangedData();
@@ -57,9 +58,10 @@ class CdRipper : public RDDialog
   void mediaChangedData();
   void playedData(int);
   void stoppedData();
-  void cddbDoneData(RDCddbLookup::Result);
+  void lookupDoneData(RDDiscLookup::Result,const QString &err_msg);
   void normalizeCheckData(bool);
   void autotrimCheckData(bool);
+  void openBrowserData();
   void closeData();
 
  protected:
@@ -70,8 +72,8 @@ class CdRipper : public RDDialog
   void Profile(const QString &msg);
   RDLibraryConf *rip_conf;
   RDCdPlayer *rip_cdrom;
-  RDCddbRecord *rip_cddb_record;
-  RDCddbLookup *rip_cddb_lookup;
+  RDDiscRecord *rip_disc_record;
+  RDDiscLookup *rip_disc_lookup;
   RDCut *rip_cut;
   QLabel *rip_track_label;
   RDListView *rip_track_list;
@@ -81,16 +83,21 @@ class CdRipper : public RDDialog
   QString *rip_title;
   QString *rip_artist;
   QString *rip_album;
+  QString *rip_label;
   QLabel *rip_title_label;
   QComboBox *rip_title_box;
   QLabel *rip_album_label;
   QLineEdit *rip_album_edit;
+  QLabel *rip_label_label;
+  QLineEdit *rip_label_edit;
   QLabel *rip_artist_label;
   QLineEdit *rip_artist_edit;
   QLabel *rip_other_label;
   Q3TextEdit *rip_other_edit;
   QCheckBox *rip_apply_box;
   QLabel *rip_apply_label;
+  QPushButton *rip_browser_button;
+  QLabel *rip_browser_label;
   RDTransportButton *rip_eject_button;
   RDTransportButton *rip_play_button;
   RDTransportButton *rip_stop_button;
@@ -110,8 +117,6 @@ class CdRipper : public RDDialog
   QLabel *rip_autotrim_unit;   
   bool rip_done;
   bool rip_profile_rip;
-  QDir rip_cdda_dir;
-  bool rip_isrc_read;
 };
 
 

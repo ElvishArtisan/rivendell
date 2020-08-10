@@ -30,19 +30,19 @@ bin_PROGRAMS = mmping mmpublish mmsonginfo mmsync
 
 dist_mmping_SOURCES = mmping.cpp mmping.h 
 nodist_mmping_SOURCES = moc_mmping.cpp
-mmping_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT4_LIBS@ -lQt3Support
+mmping_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 dist_mmpublish_SOURCES = mmpublish.cpp mmpublish.h 
 nodist_mmpublish_SOURCES = moc_mmpublish.cpp
-mmpublish_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT4_LIBS@ -lQt3Support
+mmpublish_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 dist_mmsonginfo_SOURCES = mmsonginfo.cpp mmsonginfo.h 
 nodist_mmsonginfo_SOURCES = moc_mmsonginfo.cpp
-mmsonginfo_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT4_LIBS@ -lQt3Support
+mmsonginfo_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 dist_mmsync_SOURCES = mmsync.cpp mmsync.h 
 nodist_mmsync_SOURCES = moc_mmsync.cpp
-mmsync_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT4_LIBS@ -lQt3Support
+mmsync_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 CLEANFILES = *~\
              *.qm\

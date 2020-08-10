@@ -29,7 +29,7 @@ moc_%.cpp:	%.h
 sbin_PROGRAMS = rdnexusd
 dist_rdnexusd_SOURCES = rdnexusd.cpp rdnexusd.h
 nodist_rdnexusd_SOURCES = moc_rdnexusd.cpp
-rdnexusd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
+rdnexusd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 CLEANFILES = *~ moc_*
 DISTCLEANFILES = moc_*

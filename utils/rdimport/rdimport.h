@@ -2,7 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -57,7 +57,6 @@ class MainObject : public QObject
  private:
   enum Result {Success=0,FileBad=1,NoCart=2,NoCut=3};
   void RunDropBox();
-  void ProcessFileList(const QString &flist);
   void ProcessFileEntry(const QString &entry);
   MainObject::Result ImportFile(const QString &filename,unsigned *cartnum);
   void VerifyFile(const QString &filename,unsigned *cartnum);
@@ -80,7 +79,6 @@ class MainObject : public QObject
   bool import_verbose;
   bool import_log_syslog;
   bool import_log_file;
-  //  QString import_log_directory;
   QString import_log_filename;
   bool import_to_mono;
   bool import_use_cartchunk_cutid;
@@ -125,6 +123,10 @@ class MainObject : public QObject
   QString import_string_conductor;
   QString import_string_description;
   QString import_string_outcue;
+  QString import_string_isrc;
+  QString import_string_isci;
+  QString import_string_recording_mbid;
+  QString import_string_release_mbid;
   QString import_string_publisher;
   QString import_string_label;
   QString import_string_song_id;

@@ -2,7 +2,7 @@
 //
 // The button log widget for RDAirPlay
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,13 +20,12 @@
 
 #include "button_log.h"
 
-ButtonLog::ButtonLog(RDLogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
-		     bool allow_pause,QWidget *parent)
+ButtonLog::ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
+		     QWidget *parent)
   : RDWidget(parent)
 {
   log_id=id;
   log_log=log;
-  log_cae=cae;
   log_action_mode=RDAirPlayConf::Normal;
   log_op_mode=RDAirPlayConf::LiveAssist;
   log_time_mode=RDAirPlayConf::TwentyFourHour;
@@ -46,7 +45,7 @@ ButtonLog::ButtonLog(RDLogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
   //
   // Edit Event Dialog
   //
-  log_event_edit=new EditEvent(log_log,log_cae,this);
+  log_event_edit=new EditEvent(log_log,this);
 
   //
   // Line Boxes / Start Buttons

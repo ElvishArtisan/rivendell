@@ -524,9 +524,12 @@
 	from one of these systems, all that is necessary is to select the
 	appropriate system in the
 	<computeroutput>Import Template</computeroutput> dropdown. If the
-	target scheduler system is not on this list, a custom parser can
+	target scheduler system is not on this list, or if your system
+	requires custom settings, a custom parser can
 	be defined by selecting <computeroutput>[custom]</computeroutput>
 	from the dropdown.
+	The <computeroutput>Copy To Custom</computeroutput> button will
+	copy the selected import template values to the custom parser.
       </para>
       <para>
 	Log schedule files for Rivendell are assumed to be in so-called

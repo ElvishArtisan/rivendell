@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>rdimport</refentrytitle>
     <manvolnum>1</manvolnum>
-    <refmiscinfo class='source'>June 2016</refmiscinfo>
+    <refmiscinfo class='source'>February 2020</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -398,13 +398,6 @@
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term><userinput>%l</userinput></term>
-	    <listitem>
-	      <para>Album</para>
-	    </listitem>
-	  </varlistentry>
-
-	  <varlistentry>
 	    <term><userinput>%r</userinput></term>
 	    <listitem>
 	      <para>Conductor</para>
@@ -429,6 +422,34 @@
 	    <term><userinput>%u</userinput></term>
 	    <listitem>
 	      <para>User Defined</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%wc</userinput></term>
+	    <listitem>
+	      <para>Industry Standard Commercial Identification [ISCI] Code</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%wi</userinput></term>
+	    <listitem>
+	      <para>International Standard Recording Code [ISRC]</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%wm</userinput></term>
+	    <listitem>
+	      <para>MusicBrainz Recording ID</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%wr</userinput></term>
+	    <listitem>
+	      <para>MusicBrainz Release ID</para>
 	    </listitem>
 	  </varlistentry>
 
@@ -698,6 +719,20 @@
 	    </varlistentry>
 
 	    <varlistentry>
+	      <term><userinput>isci</userinput></term>
+	      <listitem>
+		<para>Industry Standard Commercial Identification [ISCI] Code</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>isrc</userinput></term>
+	      <listitem>
+		<para>International Standard Recording Code [ISRC]</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
 	      <term><userinput>label</userinput></term>
 	      <listitem>
 		<para>Record Label Name (rights holder)</para>
@@ -715,6 +750,20 @@
 	      <term><userinput>publisher</userinput></term>
 	      <listitem>
 		<para>Music Publisher (rights holder)</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>recording-mbid</userinput></term>
+	      <listitem>
+		<para>MusicBrainz Recording ID</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>release-mbid</userinput></term>
+	      <listitem>
+		<para>MusicBrainz Release ID</para>
 	      </listitem>
 	    </varlistentry>
 
@@ -902,10 +951,6 @@
 
 <refsect1 id='see_also'><title>See Also</title>
 <para>
-  <citerefentry>
-    <refentrytitle>rdimport</refentrytitle><manvolnum>1</manvolnum>
-  </citerefentry>
-  <literal>,</literal>
   <citerefentry>
     <refentrytitle>rdexport</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>

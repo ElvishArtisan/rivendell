@@ -2,7 +2,7 @@
 //
 // Audio File Importation Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,14 +27,10 @@
 #include <math.h>
 
 #include <qpushbutton.h>
-#include <q3filedialog.h>
+#include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qpainter.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
-#include <QLabel>
 
 #include "rd.h"
 #include "rdapplication.h"
@@ -47,7 +43,8 @@
 RDImportAudio::RDImportAudio(QString cutname,QString *path,
 			     RDSettings *settings,bool *import_metadata,
 			     RDWaveData *wavedata,RDCut *clipboard,
-			     bool *running,QWidget *parent) 
+			     bool *running,const QString &caption,
+			     QWidget *parent) 
   : RDDialog(parent)
 {
   import_default_settings=settings;
@@ -58,11 +55,12 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_wavedata=wavedata;
   import_clipboard=clipboard;
   import_running=running;
+  import_caption=caption;
   import_file_filter=RD_AUDIO_FILE_FILTER;
   import_import_conv=NULL;
   import_export_conv=NULL;
 
-  setWindowTitle(tr("Import/Export Audio File"));
+  setWindowTitle(caption+" - "+tr("Import/Export Audio File"));
 
   //
   // Fix the Window Size
@@ -73,16 +71,15 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   //
   // Mode Group
   //
-  import_mode_group=new Q3ButtonGroup(this);
-  import_mode_group->hide();
-  connect(import_mode_group,SIGNAL(clicked(int)),
+  import_mode_group=new QButtonGroup(this);
+  connect(import_mode_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(modeClickedData(int)));
 
   //
   // Input Mode Button
   //
   import_importmode_button=new QRadioButton(tr("Import File"), this);
-  import_mode_group->insert(import_importmode_button);
+  import_mode_group->addButton(import_importmode_button,0);
   import_importmode_button->setGeometry(10,10,sizeHint().width()-40,15);
   import_importmode_button->setFont(sectionLabelFont());
   import_importmode_button->setChecked(true);
@@ -156,7 +153,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   // Output Mode Button
   //
   import_exportmode_button=new QRadioButton(tr("Export File"),this);
-  import_mode_group->insert(import_exportmode_button);
+  import_mode_group->addButton(import_exportmode_button,1);
   import_exportmode_button->setGeometry(10,120,sizeHint().width()-40,15);
   import_exportmode_button->setFont(sectionLabelFont());
 
@@ -270,7 +267,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_channels_box->setCurrentItem(settings->channels()-1);
 
   filenameChangedData("");
-  modeClickedData(import_mode_group->selectedId());
+  modeClickedData(import_mode_group->checkedId());
 }
 
 
@@ -405,14 +402,16 @@ void RDImportAudio::selectInputFileData()
   QString filename;
 
   if(import_in_filename_edit->text().isEmpty()) {
-    filename=
-      Q3FileDialog::getOpenFileName(*import_path,
-				   import_file_filter,this);
+    filename=QFileDialog::getOpenFileName(this,import_caption+" - "+
+					  tr("Select Audio File"),
+					  *import_path,
+					  import_file_filter);
   }
   else {
-    filename=
-      Q3FileDialog::getOpenFileName(import_in_filename_edit->text(),
-				   import_file_filter,this);
+    filename=QFileDialog::getOpenFileName(this,import_caption+" - "+
+					  tr("Select Audio File"),
+					  import_in_filename_edit->text(),
+					  import_file_filter);
   }
   if(!filename.isEmpty()) {
     import_in_filename_edit->setText(filename);
@@ -429,12 +428,16 @@ void RDImportAudio::selectOutputFileData()
 				 import_settings->format())+")";
 
   if(import_out_filename_edit->text().isEmpty()) {
-    filename=
-      Q3FileDialog::getSaveFileName(*import_path,filter,this);
+    filename=QFileDialog::getSaveFileName(this,import_caption+" - "+
+					  tr("Save Audio File"),
+					  *import_path,
+					  filter);
   }
   else {
-    filename=Q3FileDialog::getSaveFileName(import_out_filename_edit->text(),
-					  filter,this);
+    filename=QFileDialog::getSaveFileName(this,import_caption+" - "+
+					  tr("Save Audio File"),
+					  import_out_filename_edit->text(),
+					  filter);
   }
   if(!filename.isEmpty()) {
     import_out_filename_edit->
@@ -469,7 +472,7 @@ void RDImportAudio::importData()
     import_export_conv->abort();
     return;
   }
-  if(import_mode_group->selectedId()==0) {
+  if(import_mode_group->checkedId()==0) {
     Import();
   }
   else {

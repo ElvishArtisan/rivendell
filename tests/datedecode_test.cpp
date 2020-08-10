@@ -33,8 +33,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
-  QString date="";
-  QString datetime="";
+  QString date;
+  QString datetime;
   QString service="";
   int schema=0;
 
@@ -63,12 +63,12 @@ MainObject::MainObject(QObject *parent)
       exit(256);
     }
   }
-  if((!date.isEmpty())&&(!datetime.isEmpty())) {
+  if((!date.isNull())&&(!datetime.isNull())) {
     fprintf(stderr,
 	    "datedecode_test: --date and --datetime are mutually exclusive\n");
     exit(256);
   }
-  if(date.isEmpty()&&datetime.isEmpty()) {
+  if(date.isNull()&&datetime.isNull()) {
     fprintf(stderr,
 	    "datedecode_test: you must specify either --date or --datetime\n");
     exit(256);
@@ -94,12 +94,12 @@ MainObject::MainObject(QObject *parent)
   //
   // Process Code
   //
-  if(!date.isEmpty()) {
+  if(!date.isNull()) {
     printf("%s\n",
 	   (const char *)RDDateDecode(date,QDate::currentDate(),station,config,
 				      service));
   }
-  if(!datetime.isEmpty()) {
+  if(!datetime.isNull()) {
     printf("%s\n",(const char *)RDDateTimeDecode(datetime,
 		  QDateTime(QDate::currentDate(),QTime::currentTime()),station,
 						 config,service));

@@ -41,7 +41,6 @@ GpiLabel::GpiLabel(QWidget *parent)
   QPalette p=palette();
   p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkGreen);
   p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkGreen);
-  p.setColor(QPalette::Disabled,QColorGroup::Foreground,Qt::darkGreen);
   gpi_oncart_label=new QLabel(this);
   gpi_oncart_label->setGeometry(0,33,59,16);
   gpi_oncart_label->setFont(labelFont());
@@ -53,7 +52,6 @@ GpiLabel::GpiLabel(QWidget *parent)
   //
   p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkRed);
   p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkRed);
-  p.setColor(QPalette::Disabled,QColorGroup::Foreground,Qt::darkRed);
   gpi_offcart_label=new QLabel(this);
   gpi_offcart_label->setGeometry(0,49,59,16);
   gpi_offcart_label->setFont(labelFont());

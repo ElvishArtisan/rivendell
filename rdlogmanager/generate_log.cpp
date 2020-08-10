@@ -599,6 +599,7 @@ void GenerateLog::UpdateControls()
     }
     else {
       gen_music_enabled=false;
+      gen_music_button->setDisabled(true);
       gen_mus_merged_label->setPixmap(*gen_whiteball_map);
     }
     if(log->linkQuantity(RDLog::SourceTraffic)>0) {
@@ -612,6 +613,7 @@ void GenerateLog::UpdateControls()
     }
     else {
       gen_traffic_enabled=false;
+      gen_traffic_button->setDisabled(true);
       gen_tfc_merged_label->setPixmap(*gen_whiteball_map);
     }
   }

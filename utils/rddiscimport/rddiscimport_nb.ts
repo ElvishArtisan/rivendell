@@ -96,10 +96,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDDiscImport - Open Index File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Read</source>
         <translation type="unfinished"></translation>
     </message>
@@ -153,6 +149,10 @@
     </message>
     <message>
         <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Index File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

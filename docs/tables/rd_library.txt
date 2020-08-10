@@ -23,7 +23,9 @@ TAIL_PREROLL	     int(10) unsigned
 RIPPER_DEVICE        varchar(64)
 PARANOIA_LEVEL       int(11)
 RIPPER_LEVEL         int(11)
+CD_SERVER_TYPE       int(10) unsigned  0=None, 1=CDDB, 2=MusicBrainz
 CDDB_SERVER          varchar(64)
+MB_SERVER            varchar(64)
 READ_ISRC            enum('N','Y')
 ENABLE_EDITOR        enum('N','Y')
 SRC_CONVERTER        int(11)

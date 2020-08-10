@@ -191,7 +191,7 @@ horario</translation>
     </message>
     <message>
         <source>Remarks</source>
-        <translation>Comentarios</translation>
+        <translation type="obsolete">Comentarios</translation>
     </message>
     <message>
         <source>&amp;Clone</source>
@@ -216,6 +216,14 @@ horario</translation>
     </message>
     <message>
         <source>That event does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -303,7 +311,7 @@ horario</translation>
     </message>
     <message>
         <source>Make Post Point</source>
-        <translation>Hacer Post Point</translation>
+        <translation type="obsolete">Hacer Post Point</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
@@ -335,7 +343,7 @@ horario</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
-        <translation>Transición si evento termina antes que éste inicie:</translation>
+        <translation type="obsolete">Transición si evento termina antes que éste inicie:</translation>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
@@ -387,11 +395,11 @@ horario</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation>Transic. cart. importados</translation>
+        <translation type="unfinished">Transic. cart. importados</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation>.</translation>
+        <translation type="unfinished">.</translation>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
@@ -441,27 +449,27 @@ List</source>
     </message>
     <message>
         <source>Cue</source>
-        <translation>Cue</translation>
+        <translation type="obsolete">Cue</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>SEGUE</translation>
+        <translation type="obsolete">SEGUE</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>PARAR</translation>
+        <translation type="obsolete">PARAR</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>REPROD</translation>
+        <translation type="obsolete">REPROD</translation>
     </message>
     <message>
         <source>, Timed(Start)</source>
-        <translation>, Tiempo(Inicio)</translation>
+        <translation type="obsolete">, Tiempo(Inicio)</translation>
     </message>
     <message>
         <source>, Timed(MakeNext)</source>
-        <translation>, Tiempo(HacerSiguiente)</translation>
+        <translation type="obsolete">, Tiempo(HacerSiguiente)</translation>
     </message>
     <message>
         <source>Timed(Wait</source>
@@ -469,23 +477,23 @@ List</source>
     </message>
     <message>
         <source>, Post</source>
-        <translation>, Post</translation>
+        <translation type="obsolete">, Post</translation>
     </message>
     <message>
         <source>, Fill</source>
-        <translation>, Llenar</translation>
+        <translation type="obsolete">, Llenar</translation>
     </message>
     <message>
         <source>, Scale</source>
-        <translation>, Escalar</translation>
+        <translation type="obsolete">, Escalar</translation>
     </message>
     <message>
         <source>, Traffic</source>
-        <translation>, Tráfico</translation>
+        <translation type="obsolete">, Tráfico</translation>
     </message>
     <message>
         <source>, Music</source>
-        <translation>, Música</translation>
+        <translation type="obsolete">, Música</translation>
     </message>
     <message>
         <source>Event already exists!
@@ -507,15 +515,15 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>event.</source>
-        <translation>.</translation>
+        <translation type="obsolete">.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
-        <translation>Importar tráfico con el evento</translation>
+        <translation type="obsolete">Importar tráfico con el evento</translation>
     </message>
     <message>
         <source>, Inline Traffic</source>
-        <translation>, tráfico en línea</translation>
+        <translation type="obsolete">, tráfico en línea</translation>
     </message>
     <message>
         <source>Select from:</source>
@@ -531,11 +539,11 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>, Scheduler</source>
-        <translation>, Programador</translation>
+        <translation type="obsolete">, Programador</translation>
     </message>
     <message>
         <source>REMARKS</source>
-        <translation>COMENTARIOS</translation>
+        <translation type="obsolete">COMENTARIOS</translation>
     </message>
     <message>
         <source>Len:</source>
@@ -551,10 +559,6 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -599,6 +603,26 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Artist Separation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TRANSITIONS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CART STACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import inline traffic event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1055,15 +1079,15 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
-        <translation>Asignar transición REPROD</translation>
+        <translation type="obsolete">Asignar transición REPROD</translation>
     </message>
     <message>
         <source>Set SEGUE Transition</source>
-        <translation>Asignar transición SEGUE</translation>
+        <translation type="obsolete">Asignar transición SEGUE</translation>
     </message>
     <message>
         <source>Set STOP Transition</source>
-        <translation>Asignar transición PARAR</translation>
+        <translation type="obsolete">Asignar transición PARAR</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1104,6 +1128,18 @@ removerá estos datos.  ¿Remezclar?</translation>
     <message>
         <source>Edit Voice Track</source>
         <translation>Editar pista de voz</translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[auto]</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1227,7 +1263,7 @@ eliminar</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Color</translation>
+        <translation type="obsolete">Color</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1309,6 +1345,10 @@ eliminar</translation>
     </message>
     <message>
         <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1484,14 +1524,26 @@ Reporte</translation>
     </message>
     <message>
         <source>Report Complete</source>
-        <translation>Reporte completado</translation>
+        <translation type="obsolete">Reporte completado</translation>
     </message>
     <message>
         <source>Report complete!</source>
         <translation type="obsolete">¡Reporte completado!</translation>
     </message>
     <message>
-        <source>Report generated in</source>
+        <source>File Exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open report file at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The report file already exists.  Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

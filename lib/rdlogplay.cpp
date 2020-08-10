@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,7 +31,6 @@
 #include "rdlog.h"
 #include "rdlogplay.h"
 #include "rdmixer.h"
-#include "rdnownext.h"
 #include "rdsvc.h"
 #include "rdweb.h"
 
@@ -1433,7 +1432,13 @@ void RDLogPlay::transTimerData()
     }
     makeNext(play_trans_line);
     if(logline->transType()!=RDLogLine::Stop || grace>=0) {
-      StartEvent(trans_line,RDLogLine::Play,0,RDLogLine::StartTime);
+      if(play_trans_length>0) {
+	StartEvent(trans_line,RDLogLine::Segue,play_trans_length,
+		   RDLogLine::StartTime);
+      }
+      else {
+	StartEvent(trans_line,RDLogLine::Play,0,RDLogLine::StartTime);
+      }
     }
   }
   SetTransTimer();
@@ -2420,7 +2425,8 @@ void RDLogPlay::UpdatePostPoint(int line)
     if((line<size())&&(play_trans_line>=0)&&(play_trans_line<size())) {
       post_line=play_trans_line;
       post_time=logLine(post_line)->startTime(RDLogLine::Logged);
-      offset=length(line,post_line)-QTime::currentTime().msecsTo(post_time);
+      offset=length(line,post_line)-QTime::currentTime().msecsTo(post_time)-
+	logLine(line)->playPosition();
     }
   }
   if((post_time!=play_post_time)||(offset!=play_post_offset)) {
@@ -2708,6 +2714,9 @@ void RDLogPlay::Playing(int id)
   UpdatePostPoint();
   if (isRefreshable()&&play_log->autoRefresh()) {
     refresh();
+  }
+  if((logline->timeType()==RDLogLine::Hard)&&(play_grace_timer->isActive())) {
+    play_grace_timer->stop();
   }
   LogPlayEvent(logline);
   emit transportChanged();
@@ -3102,6 +3111,8 @@ QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
     ret+=RDJsonField("description",ll->description(),4+padding);
     ret+=RDJsonField("isrc",ll->isrc(),4+padding);
     ret+=RDJsonField("isci",ll->isci(),4+padding);
+    ret+=RDJsonField("recordingMbId",ll->recordingMbId(),4+padding);
+    ret+=RDJsonField("releaseMbId",ll->releaseMbId(),4+padding);
     ret+=RDJsonField("externalEventId",ll->extEventId(),4+padding);
     ret+=RDJsonField("externalData",ll->extData(),4+padding);
     ret+=RDJsonField("externalAnncType",ll->extAnncType(),4+padding,true);

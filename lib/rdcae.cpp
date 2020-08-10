@@ -123,13 +123,13 @@ void RDCae::connectHost()
 }
 
 
-void RDCae::enableMetering(std::vector<int> *cards)
+void RDCae::enableMetering(QList<int> *cards)
 {
   QString cmd=QString().sprintf("ME %u",cae_meter_socket->port());
-  for(unsigned i=0;i<cards->size();i++) {
+  for(int i=0;i<cards->size();i++) {
     if(cards->at(i)>=0) {
       bool found=false;
-      for(unsigned j=0;j<i;j++) {
+      for(int j=0;j<i;j++) {
 	if(cards->at(i)==cards->at(j)) {
 	  found=true;
 	}

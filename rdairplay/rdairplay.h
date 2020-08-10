@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -96,13 +96,15 @@ class MainWidget : public RDWidget
   void masterTimerData();
   void transportChangedData();
   void timeModeData(RDAirPlayConf::TimeMode mode);
-  void refreshStatusChangedData(bool active);
   void clearSplashData();
   void keyPressEvent(QKeyEvent *e);
   void keyReleaseEvent(QKeyEvent *e);
   void closeEvent(QCloseEvent *);
   void paintEvent(QPaintEvent *e);
   
+ protected:
+  void wheelEvent(QWheelEvent *e);
+
  private:
   void RunLocalMacros(RDMacro *rml);
   void StopEvent(int button_id);
@@ -153,12 +155,13 @@ class MainWidget : public RDWidget
   QString air_add_filter;
   QString air_add_group;
   QString air_add_schedcode;
-  RDLabel *air_message_label;
+  QLabel *air_message_label;
   int air_source_id;
   int air_meter_card[3];
   int air_meter_port[3];
   int air_cue_card;
   int air_cue_port;
+  RDLogLine::TransType air_default_trans_type;
   RDInstanceLock *air_lock;
   bool air_clear_filter;
   RDAirPlayConf::BarAction air_bar_action;
@@ -169,7 +172,6 @@ class MainWidget : public RDWidget
   bool air_start_start[RDAIRPLAY_LOG_QUANTITY];
   RDAirPlayConf::ExitCode rdairplay_previous_exit_code;
   QDateTime air_startup_datetime;
-  RDLabel *air_refresh_label;
   QPixmap *air_refresh_pixmap;
   QString air_editor_cmd;
   QSplashScreen *air_splash_screen;

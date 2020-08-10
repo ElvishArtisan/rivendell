@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Cut.
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,22 +24,20 @@
 #include <fcntl.h>
 
 #include <qobject.h>
-//Added by qt3to4:
-#include <Q3Signal>
 
-#include <rd.h>
-#include <rdconf.h>
-#include <rdwavefile.h>
-
-#include <rdcut.h>
-#include <rdtextvalidator.h>
-#include <rdconfig.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdgroup.h>
-#include <rdweb.h>
-#include <rdcopyaudio.h>
-#include <rdtrimaudio.h>
+#include "rd.h"
+#include "rdconf.h"
+#include "rdconfig.h"
+#include "rdcopyaudio.h"
+#include "rdcut.h"
+#include "rddb.h"
+#include "rddisclookup.h"
+#include "rdescape_string.h"
+#include "rdgroup.h"
+#include "rdtextvalidator.h"
+#include "rdtrimaudio.h"
+#include "rdwavefile.h"
+#include "rdweb.h"
 
 //
 // Global Classes
@@ -222,13 +220,10 @@ QString RDCut::isrc(IsrcFormat fmt) const
 {
   QString str= RDGetSqlValue("CUTS","CUT_NAME",cut_name,"ISRC").
     toString();
-  if((fmt==RDCut::RawIsrc)||(str.length()!=12)) {
+  if((fmt==RDCut::RawIsrc)||(!RDDiscLookup::isrcIsValid(str))) {
     return str;
   }
-  str.insert(2,"-");
-  str.insert(6,"-");
-  str.insert(9,"-");
-  return str;
+  return RDDiscLookup::formattedIsrc(str);
 }
 
 
@@ -241,6 +236,30 @@ void RDCut::setIsrc(const QString &isrc) const
 QString RDCut::isci() const
 {
   return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"ISCI").toString();
+}
+
+
+QString RDCut::recordingMbId() const
+{
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"RECORDING_MBID").toString();
+}
+
+
+void RDCut::setRecordingMbId(const QString &mbid)
+{
+  SetRow("RECORDING_MBID",mbid);
+}
+
+
+QString RDCut::releaseMbId() const
+{
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"RELEASE_MBID").toString();
+}
+
+
+void RDCut::setReleaseMbId(const QString &mbid)
+{
+  SetRow("RELEASE_MBID",mbid);
 }
 
 
@@ -886,7 +905,12 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
     "HOOK_START_POINT,"+   // 15
     "HOOK_END_POINT,"+     // 16
     "TALK_START_POINT,"+   // 17
-    "TALK_END_POINT "+     // 18
+    "TALK_END_POINT,"+     // 18
+    "ISRC,"+               // 19
+    "ISCI,"+               // 20
+    "RECORDING_MBID,"+         // 21
+    "RELEASE_MBID "+       // 22
+
     "from CUTS where "+
     "CUT_NAME=\""+RDEscapeString(cut_name)+"\"";
   q=new RDSqlQuery(sql);
@@ -913,7 +937,11 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
       QString().sprintf("HOOK_START_POINT=%d,",q->value(15).toInt())+
       QString().sprintf("HOOK_END_POINT=%d,",q->value(16).toInt())+
       QString().sprintf("TALK_START_POINT=%d,",q->value(17).toInt())+
-      QString().sprintf("TALK_END_POINT=%d ",q->value(18).toInt())+
+      QString().sprintf("TALK_END_POINT=%d,",q->value(18).toInt())+
+      "ISRC=\""+RDEscapeString(q->value(19).toString())+"\","+
+      "ISCI=\""+RDEscapeString(q->value(20).toString())+"\","+
+      "RECORDING_MBID=\""+RDEscapeString(q->value(21).toString())+"\","+
+      "RELEASE_MBID=\""+RDEscapeString(q->value(22).toString())+"\" "+
       "where CUT_NAME=\""+RDEscapeString(cutname)+"\"";
   }
   delete q;
@@ -976,7 +1004,10 @@ void RDCut::getMetadata(RDWaveData *data) const
     "HOOK_START_POINT,"+   // 16
     "HOOK_END_POINT,"+     // 17
     "FADEUP_POINT,"+       // 18
-    "FADEDOWN_POINT "+     // 19
+    "FADEDOWN_POINT,"+     // 19
+    "RECORDING_MBID,"+         // 20
+    "RELEASE_MBID "+       // 21
+
     "from CUTS where CUT_NAME=\""+cut_name+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
@@ -1004,6 +1035,8 @@ void RDCut::getMetadata(RDWaveData *data) const
     data->setHookEndPos(q->value(17).toInt());
     data->setFadeUpPos(q->value(18).toInt());
     data->setFadeDownPos(q->value(19).toInt());
+    data->setRecordingMbId(q->value(20).toString());
+    data->setReleaseMbId(q->value(21).toString());
     data->setMetadataFound(true);
   }
   delete q;
@@ -1038,6 +1071,13 @@ void RDCut::setMetadata(RDWaveData *data) const
   }
   if(!data->isci().isEmpty()) {
     sql+=QString("ISCI=\"")+RDEscapeString(data->isci())+"\",";
+  }
+  if(!data->recordingMbId().isEmpty()) {
+    sql+=QString("RECORDING_MBID=\"")+
+      RDEscapeString(data->recordingMbId())+"\",";
+  }
+  if(!data->releaseMbId().isEmpty()) {
+    sql+=QString("RELEASE_MBID=\"")+RDEscapeString(data->releaseMbId())+"\",";
   }
   if(data->startPos()>=0) {
     sql+=QString().sprintf("START_POINT=%d,",data->startPos());
@@ -1448,6 +1488,10 @@ void RDCut::disconnect(QObject *receiver,const char *member) const
 
 QString RDCut::xml(RDSqlQuery *q,bool absolute,RDSettings *settings)
 {
+  //
+  // The 'RDSqlQuery *q' query should be generated using the field
+  // definitions provided by 'RDCart::xmlSql()'.
+  //
   QString xml="";
 
   xml+="<cut>\n";
@@ -1460,6 +1504,8 @@ QString RDCut::xml(RDSqlQuery *q,bool absolute,RDSettings *settings)
   xml+="  "+RDXmlField("outcue",q->value(34).toString());
   xml+="  "+RDXmlField("isrc",q->value(35).toString());
   xml+="  "+RDXmlField("isci",q->value(36).toString());
+  xml+="  "+RDXmlField("recordingMbId",q->value(74).toString());
+  xml+="  "+RDXmlField("releaseMbId",q->value(75).toString());
   xml+="  "+RDXmlField("length",q->value(37).toUInt());
   if(q->value(38).isNull()) {
     xml+="  "+RDXmlField("originDatetime","");

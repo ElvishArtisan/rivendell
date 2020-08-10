@@ -2,7 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -124,6 +124,13 @@ MainObject::MainObject(QObject *parent)
     mapper->setMapping(ripc_macro_timer[i],i);
     connect(ripc_macro_timer[i],SIGNAL(timeout()),mapper,SLOT(map()));
   }
+
+  //
+  // TTY Ready Read Mapper
+  //
+  ripcd_tty_ready_read_mapper=new QSignalMapper(this);
+  connect(ripcd_tty_ready_read_mapper,SIGNAL(mapped(int)),
+	  this,SLOT(ttyReadyReadData(int)));
 
   ripcd_host_addr=rda->station()->address();
 
@@ -619,6 +626,11 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
     BroadcastCommand("ON "+msg+"!",conn->id());
     ripcd_notification_mcaster->
       send(msg,rda->system()->notificationAddress(),RD_NOTIFICATION_PORT);
+    rda->syslog(LOG_DEBUG,"sent notification: \"%s\" to %s:%d",
+		(const char *)msg.toUtf8(),
+		(const char *)rda->system()->notificationAddress().
+		toString().toUtf8(),
+		RD_NOTIFICATION_PORT);
     delete notify;
   }
 
@@ -756,6 +768,7 @@ void MainObject::LoadGpiTable()
       q->value(3).toInt();
   }
   delete q;
+  rda->syslog(LOG_DEBUG,"GPIO table settings reloaded");
 }
 
 

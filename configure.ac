@@ -3,7 +3,7 @@ dnl
 dnl Autoconf configuration for Rivendell.
 dnl Use autoconf to process this into a configure script
 dnl
-dnl   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+dnl   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 dnl
 dnl   This program is free software; you can redistribute it and/or modify
 dnl   it under the terms of the GNU General Public License version 2 as
@@ -172,18 +172,15 @@ else
     AC_SUBST(USERMODE_PKG,"usermode usermode-gtk")
     AC_SUBST(MYSQL_PKG,"mariadb")
     AC_SUBST(QT4_MYSQL_PKG,"qt-mysql")
-    AC_SUBST(CDDA2WAV_PKG,"icedax")
   else
     if test $ar_distro_major -ge 6 ; then
     AC_SUBST(USERMODE_PKG,"usermode")
       AC_SUBST(MYSQL_PKG,"mysql")
       AC_SUBST(QT4_MYSQL_PKG,"qt4-mysql")
-      AC_SUBST(CDDA2WAV_PKG,"icedax")
     else
       AC_SUBST(USERMODE_PKG,"usermode")
       AC_SUBST(MYSQL_PKG,"mysql")
       AC_SUBST(QT4_MYSQL_PKG,"qt-MySQL")
-      AC_SUBST(CDDA2WAV_PKG,"")
     fi
   fi
 fi
@@ -235,6 +232,12 @@ else
     AC_MSG_ERROR([*** LibParanoia not found ***])
   fi
 fi
+
+#
+# Check for MusicBrainz support libraries
+# (libdiscid, libmusicbrainz and libcoverart)
+#
+PKG_CHECK_MODULES(MUSICBRAINZ,libdiscid libmusicbrainz5 libcoverart,,[AC_MSG_ERROR([*** One or more MusicBrainz libraries not found ***])])
 
 #
 # Check for Id3Lib

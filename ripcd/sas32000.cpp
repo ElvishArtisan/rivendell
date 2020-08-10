@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS32000
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,14 +44,14 @@ Sas32000::Sas32000(RDMatrix *matrix,QObject *parent)
     sas_device->setSpeed(tty->baudRate());
     sas_device->setWordLength(tty->dataBits());
     sas_device->setParity(tty->parity());
-    sas_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
+    sas_device->open(QIODevice::Unbuffered|QIODevice::WriteOnly);
   }
   delete tty;
 
   //
   // Queue Timer
   //
-  sas_timer=new QTimer(this,"sas_timer");
+  sas_timer=new QTimer(this);
   connect(sas_timer,SIGNAL(timeout()),this,SLOT(runQueue()));
 }
 

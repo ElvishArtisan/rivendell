@@ -55,6 +55,14 @@ Gvc7000::Gvc7000(RDMatrix *matrix,QObject *parent)
   connect(gvc_reconnect_timer,SIGNAL(timeout()),this,SLOT(ipConnect()));
 
   //
+  // Data Pacer
+  //
+  gvc_pacer=new RDDataPacer(this);
+  gvc_pacer->setPaceInterval(10);
+  connect(gvc_pacer,SIGNAL(dataSent(const QByteArray &)),
+	  this,SLOT(sendCommandData(const QByteArray &)));
+
+  //
   // Initialize the connection
   //
   gvc_socket=new QTcpSocket(this);
@@ -106,7 +114,7 @@ void Gvc7000::processCommand(RDMacro *cmd)
       emit rmlEcho(cmd);
       return;
     }
-    SendCommand(ToSeries7000Native(QString().sprintf("TI,%04X,%04X",cmd->arg(2).toInt()-1,cmd->arg(1).toInt()-1)));
+    gvc_pacer->send(ToSeries7000Native(QString().sprintf("TI,%04X,%04X",cmd->arg(2).toInt()-1,cmd->arg(1).toInt()-1)).toAscii());
     cmd->acknowledge(true);
     emit rmlEcho(cmd);
     break;
@@ -127,7 +135,7 @@ void Gvc7000::ipConnect()
 
 void Gvc7000::keepaliveData()
 {
-  SendCommand(ToSeries7000Native("QJ"));
+  gvc_pacer->send(ToSeries7000Native("QJ").toAscii());
 }
 
 
@@ -177,12 +185,19 @@ void Gvc7000::errorData(QAbstractSocket::SocketError err)
 }
 
 
+void Gvc7000::sendCommandData(const QByteArray &data)
+{
+  syslog(LOG_DEBUG,"gvc7000 sending \"%s\"",data.constData());
+  gvc_socket->write(data);
+}
+
+/*
 void Gvc7000::SendCommand(const QString &str)
 {
   syslog(LOG_DEBUG,"gvc7000 sending \"%s\"",(const char *)str.toAscii());
   gvc_socket->write(str.toAscii());
 }
-
+*/
 
 QString Gvc7000::ToSeries7000Native(const QString &str) const
 {

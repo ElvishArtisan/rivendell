@@ -270,6 +270,8 @@ EXTRA_DIST = admin.xpm\
              chain.png\
              chain.xpm\
              checkmark.xpm\
+             cover_art_default-60x60.xcf\
+             cover_art_default-60x60.xpm\
              download.xpm\
              ex.xpm\
              fillstart.xpm\
@@ -283,6 +285,8 @@ EXTRA_DIST = admin.xpm\
              mic16.xpm\
              music.png\
              music.xpm\
+             musicbrainz-159x25.xpm\
+             musicbrainz.svg\
              note.xpm\
              note2.xpm\
              notemarker.png\

@@ -4,7 +4,7 @@
 #
 # Write PAD updates to HTTP GET URL
 #
-#   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2019-2020 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -36,12 +36,22 @@ def ProcessPad(update):
         while(True):
             section='Url'+str(n)
             try:
+                username=''
+                if update.config().has_option(section,'Username'):
+                    username=update.config().get(section,'Username')
+                password=''
+                if update.config().has_option(section,'Password'):
+                    password=update.config().get(section,'Password')
                 url=update.resolvePadFields(update.config().get(section,'URL'),pypad.ESCAPE_URL)
                 buf=BytesIO()
                 curl=pycurl.Curl()
                 curl.setopt(curl.URL,url)
                 curl.setopt(curl.WRITEDATA,buf)
                 curl.setopt(curl.FOLLOWLOCATION,True)
+                if (username!=""):
+                    curl.setopt(curl.USERNAME,username)
+                if (password!=""):
+                    curl.setopt(curl.PASSWORD,password)
 
             except configparser.NoSectionError:
                 if(n==1):
@@ -51,6 +61,7 @@ def ProcessPad(update):
             if update.shouldBeProcessed(section):
                 try:
                     curl.perform()
+                    update.syslog(syslog.LOG_DEBUG,'['+section+'] sending URL "'+url+'"')
                     code=curl.getinfo(pycurl.RESPONSE_CODE)
                     if (code<200) or (code>=300):
                         update.syslog(syslog.LOG_WARNING,'['+section+'] returned response code '+str(code))

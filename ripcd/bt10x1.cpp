@@ -44,7 +44,7 @@ Bt10x1::Bt10x1(RDMatrix *matrix,QObject *parent)
     bt_device->setSpeed(tty->baudRate());
     bt_device->setWordLength(tty->dataBits());
     bt_device->setParity(tty->parity());
-    bt_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
+    bt_device->open(QIODevice::Unbuffered|QIODevice::WriteOnly);
   }
   delete tty;
 }

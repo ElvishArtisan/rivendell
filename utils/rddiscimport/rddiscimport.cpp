@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing TM Century GoldDisc CDs
 //
-//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <q3filedialog.h>
-
 #include <qapplication.h>
+#include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qtranslator.h>
 
@@ -158,14 +157,14 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   dg_disc_label=new QLabel(tr("Disk Progress"),this);
   dg_disc_label->setFont(labelFont());
   dg_disc_label->setDisabled(true);
-  dg_disc_bar=new Q3ProgressBar(this);
+  dg_disc_bar=new QProgressBar(this);
   dg_disc_bar->setDisabled(true);
 
   dg_track_label=new QLabel(tr("Track Progress"),this);
   dg_track_label->setFont(labelFont());
   dg_track_label->setDisabled(true);
-  dg_track_bar=new Q3ProgressBar(this);
-  dg_track_bar->setTotalSteps(dg_ripper->totalSteps()+1);
+  dg_track_bar=new QProgressBar(this);
+  dg_track_bar->setMaximum(dg_ripper->totalSteps()+1);
   dg_track_bar->setDisabled(true);
   connect(dg_ripper,SIGNAL(progressChanged(int)),
 	  dg_track_bar,SLOT(setProgress(int)));
@@ -287,9 +286,10 @@ void MainWidget::indexFileSelectedData()
   QString filename;
   int lines;
 
-  filename=Q3FileDialog::getOpenFileName(dg_indexfile_edit->text(),
-					"CSV Files *.csv",this,"",
-					tr("RDDiscImport - Open Index File"));
+  filename=QFileDialog::getOpenFileName(this,"RDDiscImport - "+
+					tr("Open Index File"),
+					dg_indexfile_edit->text(),
+					"CSV files (*.csv);;All files (*.*)");
   dg_metalibrary->clear();
   if((lines=dg_metalibrary->load(filename))<0) {
     QMessageBox::warning(this,"RDDiscImport - "+tr("Read Error"),
@@ -446,12 +446,12 @@ void MainWidget::ripData()
   //
   // Rip and Import
   //
-  dg_disc_bar->setTotalSteps(dg_player->tracks());
+  dg_disc_bar->setMaximum(dg_player->tracks());
   for(int i=0;i<dg_player->tracks();i++) {
     if(dg_rip_enableds[i]) {
       MetaRecord *r=dg_metalibrary->track(dg_discid_edit->text(),i);
       if(r!=NULL) {
-	dg_disc_bar->setProgress(i);
+	dg_disc_bar->setValue(i);
 	dg_track_label->setText(QString().sprintf("Track %d: ",i+1)+
 				r->title()+" - "+r->artist());
 	dg_ripper->rip(i);

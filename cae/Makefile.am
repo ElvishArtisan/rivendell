@@ -2,7 +2,7 @@
 ##
 ## Core Audio Engine Makefile.am for Rivendell
 ##
-## Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+## Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +19,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -Wno-strict-aliasing @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -Wno-strict-aliasing @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
 LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 
@@ -45,6 +45,7 @@ caed_LDADD = @LIB_RDLIBS@\
              @LIBSRC@\
              @LIBVORBIS@\
              @QT4_LIBS@\
+             @MUSICBRAINZ_LIBS@\
              -lQt3Support
 
 CLEANFILES = *~\

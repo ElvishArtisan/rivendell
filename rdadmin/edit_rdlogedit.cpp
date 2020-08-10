@@ -2,7 +2,7 @@
 //
 // Edit an RDLogedit Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -185,7 +185,6 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   lib_waveform_caption_edit=new QLineEdit(this);
   lib_waveform_caption_edit->setGeometry(180,268,sizeHint().width()-190,19);
-  lib_waveform_caption_edit->setValidator(validator);
   QLabel *lib_waveform_caption_label=
     new QLabel(lib_waveform_caption_edit,tr("WaveForm Caption:"),this);
   lib_waveform_caption_label->setFont(labelFont());

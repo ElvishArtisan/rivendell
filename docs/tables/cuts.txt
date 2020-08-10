@@ -13,6 +13,8 @@ DESCRIPTION          varchar(64)       Indexed
 OUTCUE               varchar(64)       Indexed
 ISRC                 varchar(12)       International Standard Recording Code
 ISCI                 varchar(32)       ISCI Code
+RECORDING_MBID       varchar(40)       MusicBrainz Recording ID
+RELEASE_MBID         varchar(40)       MusicBrainz Parent Release ID
 SHA1_HASH            varchar(40)
 LENGTH               int(10) unsigned  Overall length in ms.
 ORIGIN_DATETIME      datetime          Date/Time when recorded

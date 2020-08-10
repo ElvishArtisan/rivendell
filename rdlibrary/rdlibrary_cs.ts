@@ -307,7 +307,7 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>Apply FreeDB Values to Cart</source>
-        <translation>Použít hodnoty FreeDB na vozík</translation>
+        <translation type="obsolete">Použít hodnoty FreeDB na vozík</translation>
     </message>
     <message>
         <source>Tracks</source>
@@ -452,20 +452,28 @@ vytahování</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ripper Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create temporary directory!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Rip CD</source>
         <translation type="unfinished">Vytáhnout z CD</translation>
     </message>
     <message>
         <source>Rip
 Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Values to Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lookup Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -496,7 +504,7 @@ Track</source>
     </message>
     <message>
         <source>Apply FreeDB Values to Carts</source>
-        <translation>Použít hodnoty FreeDB na vozíky</translation>
+        <translation type="obsolete">Použít hodnoty FreeDB na vozíky</translation>
     </message>
     <message>
         <source>Tracks</source>
@@ -688,14 +696,6 @@ z CD</translation>
 zrušeno!</translation>
     </message>
     <message>
-        <source>Ripper Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create temporary directory!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Track</source>
         <translation type="unfinished"></translation>
     </message>
@@ -738,6 +738,18 @@ Selection</source>
     </message>
     <message>
         <source>Unable to allocate cart in group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Values to Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lookup Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

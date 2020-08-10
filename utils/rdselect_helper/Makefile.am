@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-##   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -17,7 +17,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT4_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -36,7 +36,7 @@ nodist_rdselect_helper_SOURCES = moc_rdselect_helper.cpp\
                                  rdconfig.cpp rdconfig.h\
                                  rdprofile.cpp rdprofile.h
 
-rdselect_helper_LDADD = -lQtCore -lQtNetwork -lQt3Support
+rdselect_helper_LDADD = -lQtCore -lQtNetwork -lQt3Support @MUSICBRAINZ_LIBS@
 
 CLEANFILES = *~\
              *.idb\

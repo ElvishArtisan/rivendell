@@ -319,7 +319,12 @@ For example:
 	* Modified the code in 'lib/rdimport_audio.cpp' to use the
 	'RDCart::setMetadata()' and 'RDCut::setMetadata()' methods.
 
-3) If your change alters any user-visible aspect (UI or behavior), update
+3) If your changes add, remove or change the behavior of one or more
+   configuration entries in rd.conf(5), update the default configuration
+   file ('conf/rd.conf-sample') accordingly. Similiarly, for PyPAD scripts,
+    be sure to update the corresponding '<plugin-name>-exemplar' files.
+
+4) If your changes alter any user-visible aspect (UI or behavior), update
    the user documentation appropriately. The documentation is written
    in DocBook 5 markup, and can be found at the following locations in
    the source tree:
@@ -330,7 +335,7 @@ For example:
 
    Internal and public APIs - 'docs/apis/'.
 
-4) If you wish your work to be mentioned in the 'Credits' list displayed in
+5) If you wish your work to be mentioned in the 'Credits' list displayed in
    rdadmin(1), add or modify the appropriate entry in the 'AUTHORS' file.
    Entries should be sorted by surname, then christian name of the author.
 

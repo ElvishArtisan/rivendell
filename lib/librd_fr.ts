@@ -727,6 +727,54 @@
         <source>No carts found in group</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>-- End of List --</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CounterPoint Traffic Reconciliation v2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timed(Wait)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timed(Start), </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timed(MakeNext), </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scheduler, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inline Traffic, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Results Report</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1062,23 +1110,19 @@ La Couleur</translation>
         <source>End</source>
         <translation type="unfinished">Fin</translation>
     </message>
+    <message>
+        <source>Open Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDCddbLookup</name>
     <message>
         <source>CDDB Query</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Multiple Matches Found!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1247,6 +1291,29 @@ Cart</source>
     </message>
     <message>
         <source>Su</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RDDiscLookup</name>
+    <message>
+        <source>Multiple Matches Found!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to read CD.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1809,6 +1876,14 @@ Do you want to overwrite it?</source>
         <source>Export Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDIntegerDialog</name>
@@ -1918,6 +1993,49 @@ Do you want to overwrite it?</source>
     <message>
         <source>Panel</source>
         <translation type="obsolete">Panneau</translation>
+    </message>
+</context>
+<context>
+    <name>RDMbLookup</name>
+    <message>
+        <source>Connection Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Result</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LastHTTPCode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LastErrorMessage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timeout Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authentication Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fetch Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Request Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lookup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resource Not Found</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

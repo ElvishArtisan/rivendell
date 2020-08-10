@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for systems using Software Authority Protocol
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +24,8 @@
 #include <map>
 #include <vector>
 
-#include <q3socket.h>
 #include <qhostaddress.h>
+#include <qtcpsocket.h>
 #include <qtimer.h>
 
 #include <rd.h>
@@ -54,7 +54,7 @@ class SoftwareAuthority : public Switcher
   void connectedData();
   void connectionClosedData();
   void readyReadData();
-  void errorData(int err);
+  void errorData(QAbstractSocket::SocketError err);
 
  private:
   void SendCommand(const char *str);
@@ -62,7 +62,7 @@ class SoftwareAuthority : public Switcher
   void ExecuteMacroCart(unsigned cartnum);
   QString PrettifyCommand(const char *cmd) const;
   QString BundleString(int offset,bool state);
-  Q3Socket *swa_socket;
+  QTcpSocket *swa_socket;
   char swa_buffer[SWAUTHORITY_MAX_LENGTH];
   unsigned swa_ptr;
   QHostAddress swa_ipaddress;
@@ -79,6 +79,7 @@ class SoftwareAuthority : public Switcher
   unsigned swa_start_cart;
   unsigned swa_stop_cart;
   int swa_istate;
+  bool swa_is_gpio;
   RDMatrix::PortType swa_porttype;
   std::map<int,QString> swa_gpi_states;
   std::map<int,QString> swa_gpo_states;
