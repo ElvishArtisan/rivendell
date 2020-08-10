@@ -1097,10 +1097,20 @@ void MainObject::RunCommand(const QString &user,const QString &group,
   //
   // Run it
   //
-  if(vfork()==0) {
-    execv(RD_RUNUSER,(char * const *)args);
-    exit(0);  // Just in case...
-  }
+ 
+  //Can only change user/group if we are running as root
+  if(getuid()==0) {
+     if(vfork()==0) {
+       execv(RD_RUNUSER,(char * const *)args);
+       exit(0);  // Just in case...
+     }
+   }
+   else {
+     if(fork()==0) {
+       system((const char *)cmd);
+       exit(0); 
+     }
+   }
 
   //
   // Free the heap storage
