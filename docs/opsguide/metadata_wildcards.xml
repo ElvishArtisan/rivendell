@@ -44,6 +44,7 @@
 	  <row><entry><userinput>%x</userinput></entry><entry><userinput>%X</userinput></entry><entry>Log line ID (numeric)</entry></row>
 	  <row><entry><userinput>%y</userinput></entry><entry><userinput>%Y</userinput></entry><entry>Release Year</entry></row>
 	  <row><entry><userinput>%z</userinput></entry><entry><userinput>%Z</userinput></entry><entry>Log line number (numeric)</entry></row>
+	  <row><entry><userinput>%%</userinput></entry><entry><userinput>%%</userinput></entry><entry>Literal &quot;%&quot; (ASCII 37)</entry></row>
 	  <row><entry><userinput>\r</userinput></entry><entry><userinput>\r</userinput></entry><entry>Literal Carriage Return (ASCII 13)</entry></row>
 	  <row><entry><userinput>\n</userinput></entry><entry><userinput>\n</userinput></entry><entry>Literal Linefeed (ASCII 10)</entry></row>
 	</tbody>
