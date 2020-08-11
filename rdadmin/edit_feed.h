@@ -83,6 +83,8 @@ class EditFeed : public RDDialog
   QLineEdit *feed_channel_editor_edit;
   QLabel *feed_channel_author_label;
   QLineEdit *feed_channel_author_edit;
+  QCheckBox *feed_channel_author_is_default_check;
+  QLabel *feed_channel_author_is_default_label;
   QLabel *feed_channel_owner_name_label;
   QLineEdit *feed_channel_owner_name_edit;
   QLabel *feed_channel_owner_email_label;

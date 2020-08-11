@@ -1545,6 +1545,10 @@ Feeds</source>
 Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Use as default Item Author</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>

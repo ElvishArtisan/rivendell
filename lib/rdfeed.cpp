@@ -296,6 +296,19 @@ void RDFeed::setChannelAuthor(const QString &str) const
 }
 
 
+bool RDFeed::channelAuthorIsDefault() const
+{
+  return RDBool(RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
+			      "CHANNEL_AUTHOR_IS_DEFAULT").toString());
+}
+
+
+void RDFeed::setChannelAuthorIsDefault(bool state) const
+{
+  SetRow("CHANNEL_AUTHOR_IS_DEFAULT",RDYesNo(state));
+}
+
+
 QString RDFeed::channelOwnerName() const
 {
   return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CHANNEL_OWNER_NAME").
@@ -1052,7 +1065,6 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
   //
   RDCart *cart=new RDCart(RDCut::cartNumber(cutname));
   cast->setItemTitle(cart->title());
-  cast->setItemAuthor(rda->user()->emailContact());
   cast->setItemImageId(defaultItemImageId());
   delete cart;
   delete cast;
@@ -1187,7 +1199,6 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
   else {
     cast->setItemTitle(srcfile.split("/").last());
   }
-  cast->setItemAuthor(rda->user()->emailContact());
   cast->setItemImageId(defaultItemImageId());
   delete cast;
 
@@ -1248,8 +1259,6 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
 	  this,SLOT(renderMessage(const QString &)));
   connect(renderer,SIGNAL(lineStarted(int,int)),
 	  this,SLOT(renderLineStartedData(int,int)));
-
-  printf("first: %d  last: %d\n",start_line,end_line);
 
   if(!renderer->renderToFile(tmpfile,log_event,settings,start_time,stop_at_stop,
 			     &err_msg,start_line,end_line)) {
@@ -1312,7 +1321,6 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   else {
     cast->setItemTitle(log->description());
   }
-  cast->setItemAuthor(rda->user()->emailContact());
   cast->setItemImageId(defaultItemImageId());
   delete log;
 
@@ -1633,20 +1641,26 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
   unsigned cast_id=0;
 
   sql=QString("select ")+
-    "CHANNEL_TITLE,"+        // 00
-    "CHANNEL_DESCRIPTION,"+  // 01
-    "CHANNEL_CATEGORY,"+     // 02
-    "CHANNEL_LINK,"+         // 03
-    "MAX_SHELF_LIFE,"+       // 04
-    "UPLOAD_FORMAT,"+        // 05
-    "UPLOAD_EXTENSION,"+     // 06
-    "ENABLE_AUTOPOST "+      // 07
+    "CHANNEL_TITLE,"+              // 00
+    "CHANNEL_DESCRIPTION,"+        // 01
+    "CHANNEL_CATEGORY,"+           // 02
+    "CHANNEL_LINK,"+               // 03
+    "MAX_SHELF_LIFE,"+             // 04
+    "UPLOAD_FORMAT,"+              // 05
+    "UPLOAD_EXTENSION,"+           // 06
+    "ENABLE_AUTOPOST,"+            // 07
+    "CHANNEL_AUTHOR,"+             // 08
+    "CHANNEL_AUTHOR_IS_DEFAULT "+  // 09
     "from FEEDS where "+
     QString().sprintf("ID=%u",feed_id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
     return 0;
+  }
+  QString item_author=rda->user()->emailContact();
+  if(q->value(9).toString()=="Y") {
+    item_author=q->value(8).toString();
   }
 
   //
@@ -1658,7 +1672,7 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
     "ITEM_DESCRIPTION=\""+RDEscapeString(q->value(1).toString())+"\","+
     "ITEM_CATEGORY=\""+RDEscapeString(q->value(2).toString())+"\","+
     "ITEM_LINK=\""+RDEscapeString(q->value(3).toString())+"\","+
-    "ITEM_AUTHOR=\""+RDEscapeString(rda->user()->emailContact())+"\","+
+    "ITEM_AUTHOR=\""+RDEscapeString(item_author)+"\","+
     "EFFECTIVE_DATETIME=now(),"+
     "ORIGIN_LOGIN_NAME=\""+RDEscapeString(rda->user()->name())+"\","+
     "ORIGIN_STATION=\""+RDEscapeString(rda->station()->name())+"\","+

@@ -20215,3 +20215,10 @@
 	'RDRssSchemas::itemCommentsSupported()' methods.
 	* Modified the 'Editing Item' dialog in rdcastmanager(1) to
 	conditionally display the 'Link' and 'Comments' controls.
+2020-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEEDS.CHANNEL_AUTHOR_IS_DEFAULT' field to the database.
+	* Incremented the database version to 332.
+	* Added 'RDFeed::channelAuthorIsDefault()' and
+	'RDFeed::setChannelAuthorIsDefault()' methods.
+	* Added a 'Use as default Item Author' checkbox to the 'Edit Feed'
+	dialog in rdadmin(1).

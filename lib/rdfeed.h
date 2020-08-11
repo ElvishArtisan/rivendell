@@ -65,6 +65,8 @@ class RDFeed : public QObject
   void setChannelEditor(const QString &str) const;
   QString channelAuthor() const;
   void setChannelAuthor(const QString &str) const;
+  bool channelAuthorIsDefault() const;
+  void setChannelAuthorIsDefault(bool state) const;
   QString channelOwnerName() const;
   void setChannelOwnerName(const QString &str) const;
   QString channelOwnerEmail() const;

@@ -149,6 +149,13 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_channel_author_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
+  feed_channel_author_is_default_check=new QCheckBox(this);
+  feed_channel_author_is_default_label=
+    new QLabel(tr("Use as default Item Author"),this);
+  feed_channel_author_is_default_label->setFont(labelFont());
+  feed_channel_author_is_default_label->
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+
   //
   // Channel Owner Name
   //
@@ -453,6 +460,8 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_channel_copyright_edit->setText(feed_feed->channelCopyright());
   feed_channel_editor_edit->setText(feed_feed->channelEditor());
   feed_channel_author_edit->setText(feed_feed->channelAuthor());
+  feed_channel_author_is_default_check->
+    setChecked(feed_feed->channelAuthorIsDefault());
   feed_channel_owner_name_edit->setText(feed_feed->channelOwnerName());
   feed_channel_owner_email_edit->setText(feed_feed->channelOwnerEmail());
   feed_channel_webmaster_edit->setText(feed_feed->channelWebmaster());
@@ -507,7 +516,7 @@ EditFeed::~EditFeed()
 
 QSize EditFeed::sizeHint() const
 {
-  return QSize(1000,688);
+  return QSize(1000,710);
 } 
 
 
@@ -643,6 +652,8 @@ void EditFeed::okData()
   feed_feed->setChannelCopyright(feed_channel_copyright_edit->text());
   feed_feed->setChannelEditor(feed_channel_editor_edit->text());
   feed_feed->setChannelAuthor(feed_channel_author_edit->text());
+  feed_feed->setChannelAuthorIsDefault(feed_channel_author_is_default_check->
+				       isChecked());
   feed_feed->setChannelOwnerName(feed_channel_owner_name_edit->text());
   feed_feed->setChannelOwnerEmail(feed_channel_owner_email_edit->text());
   feed_feed->setChannelWebmaster(feed_channel_webmaster_edit->text());
@@ -705,7 +716,7 @@ void EditFeed::resizeEvent(QResizeEvent *e)
 
   feed_list_images_button->setGeometry(345,13,100,38);
 
-  feed_channel_section_groupbox->setGeometry(10,52,sizeHint().width()/2-10,355);
+  feed_channel_section_groupbox->setGeometry(10,52,sizeHint().width()/2-10,377);
 
   feed_channel_title_edit->setGeometry(115,67,375,19);
   feed_channel_title_label->setGeometry(20,67,90,19);
@@ -725,67 +736,73 @@ void EditFeed::resizeEvent(QResizeEvent *e)
   feed_channel_author_edit->setGeometry(115,176,375,19);
   feed_channel_author_label->setGeometry(20,176,90,19);
 
-  feed_channel_owner_name_edit->setGeometry(115,198,375,19);
-  feed_channel_owner_name_label->setGeometry(20,198,90,19);
+  feed_channel_author_is_default_check->setGeometry(120,197,15,15);
+  feed_channel_author_is_default_label->setGeometry(140,196,260,19);
 
-  feed_channel_owner_email_edit->setGeometry(115,220,375,19);
-  feed_channel_owner_email_label->setGeometry(20,220,90,19);
+  feed_channel_explicit_check->setGeometry(205,198,15,15);
+  feed_channel_explicit_label->setGeometry(225,197,260,19);
 
-  feed_channel_webmaster_edit->setGeometry(115,242,375,19);
-  feed_channel_webmaster_label->setGeometry(20,242,90,19);
+  feed_channel_owner_name_edit->setGeometry(115,220,375,19);
+  feed_channel_owner_name_label->setGeometry(20,220,90,19);
 
-  feed_channel_language_edit->setGeometry(115,264,60,19);
-  feed_channel_language_label->setGeometry(20,264,90,19);
+  feed_channel_owner_email_edit->setGeometry(115,242,375,19);
+  feed_channel_owner_email_label->setGeometry(20,242,90,19);
 
-  feed_channel_explicit_check->setGeometry(205,266,15,15);
-  feed_channel_explicit_label->setGeometry(225,265,260,19);
+  feed_channel_webmaster_edit->setGeometry(115,264,375,19);
+  feed_channel_webmaster_label->setGeometry(20,264,90,19);
 
-  feed_channel_description_edit->setGeometry(115,286,375,76);
-  feed_channel_description_label->setGeometry(20,286,90,19);
+  feed_channel_language_edit->setGeometry(115,286,60,19);
+  feed_channel_language_label->setGeometry(20,286,90,19);
 
-  feed_channel_image_box->setGeometry(115,364,375,38);
+  feed_channel_explicit_check->setGeometry(205,288,15,15);
+  feed_channel_explicit_label->setGeometry(225,287,260,19);
+
+  feed_channel_description_edit->setGeometry(115,308,375,76);
+  feed_channel_description_label->setGeometry(20,308,90,19);
+
+  feed_channel_image_box->setGeometry(115,386,375,38);
   feed_channel_image_box->setIconSize(QSize(36,36));
-  feed_channel_image_label->setGeometry(20,364,90,19);
+  feed_channel_image_label->setGeometry(20,386,90,19);
 
-  feed_purge_url_edit->setGeometry(155,414,335,19);
-  feed_purge_url_label->setGeometry(20,414,130,19);
-  feed_purge_username_edit->setGeometry(225,436,95,19);
-  feed_purge_username_label->setGeometry(40,436,180,19);
-  feed_purge_password_edit->setGeometry(395,436,95,19);
-  feed_purge_password_label->setGeometry(320,436,70,19);
+  feed_purge_url_edit->setGeometry(155,436,335,19);
+  feed_purge_url_label->setGeometry(20,436,130,19);
+  feed_purge_username_edit->setGeometry(225,458,95,19);
+  feed_purge_username_label->setGeometry(40,458,180,19);
+  feed_purge_password_edit->setGeometry(395,458,95,19);
+  feed_purge_password_label->setGeometry(320,458,70,19);
 
-  feed_format_edit->setGeometry(155,460,285,20);
-  feed_format_label->setGeometry(5,460,145,20);
-  feed_format_button->setGeometry(450,458,40,24);
+  feed_format_edit->setGeometry(155,482,285,20);
+  feed_format_label->setGeometry(5,482,145,20);
+  feed_format_button->setGeometry(450,480,40,24);
 
-  feed_normalize_check->setGeometry(155,487,15,15);
-  feed_normalize_check_label->setGeometry(175,484,83,20);
-  feed_normalize_spin->setGeometry(295,484,40,20);
-  feed_normalize_label->setGeometry(245,484,45,20);
-  feed_normalize_unit_label->setGeometry(340,484,40,20);
+  feed_normalize_check->setGeometry(155,509,15,15);
+  feed_normalize_check_label->setGeometry(175,506,83,20);
+  feed_normalize_spin->setGeometry(295,506,40,20);
+  feed_normalize_label->setGeometry(245,506,45,20);
+  feed_normalize_unit_label->setGeometry(340,506,40,20);
 
-  feed_extension_edit->setGeometry(155,504,70,19);
-  feed_extension_label->setGeometry(20,504,130,19);
+  feed_extension_edit->setGeometry(155,526,70,19);
+  feed_extension_label->setGeometry(20,526,130,19);
 
-  feed_base_url_edit->setGeometry(155,526,335,19);
-  feed_base_url_label->setGeometry(5,526,145,19);
+  feed_base_url_edit->setGeometry(155,548,335,19);
+  feed_base_url_label->setGeometry(5,548,145,19);
 
-  feed_autopost_box->setGeometry(155,551,60,19);
-  feed_autopost_label->setGeometry(5,551,145,19);
+  feed_autopost_box->setGeometry(155,573,60,19);
+  feed_autopost_label->setGeometry(5,573,145,19);
 
-  feed_max_shelf_life_spin->setGeometry(155,573,90,19);
-  feed_max_shelf_life_label->setGeometry(20,573,130,19);
-  feed_max_shelf_life_unit_label->setGeometry(250,573,50,19);
+  feed_max_shelf_life_spin->setGeometry(155,595,90,19);
+  feed_max_shelf_life_label->setGeometry(20,595,130,19);
+  feed_max_shelf_life_unit_label->setGeometry(250,595,50,19);
 
-  feed_item_image_box->setGeometry(155,595,335,38);
+  feed_item_image_box->setGeometry(155,617,335,38);
   feed_item_image_box->setIconSize(QSize(36,36));
-  feed_item_image_label->setGeometry(20,595,130,19);
+  feed_item_image_label->setGeometry(20,617,130,19);
 
-  feed_base_preamble_edit->setGeometry(155,636,335,19);
-  feed_base_preamble_label->setGeometry(20,636,130,19);
+  feed_base_preamble_edit->setGeometry(155,658,335,19);
+  feed_base_preamble_label->setGeometry(20,658,130,19);
 
-  feed_castorder_box->setGeometry(155,660,100,19);
-  feed_castorder_label->setGeometry(20,660,130,19);
+  feed_castorder_box->setGeometry(155,682,100,19);
+  feed_castorder_label->setGeometry(20,682,130,19);
 
   //
   // Right-hand Side
