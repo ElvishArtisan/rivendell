@@ -397,6 +397,10 @@ Log</source>
         <source>List Log</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>At least one log event must be selected!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LogModel</name>

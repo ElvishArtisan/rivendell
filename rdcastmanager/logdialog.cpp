@@ -20,6 +20,7 @@
 
 #include <QItemSelection>
 #include <QItemSelectionModel>
+#include <QMessageBox>
 #include <QModelIndexList>
 
 #include "logdialog.h"
@@ -85,6 +86,11 @@ int LogDialog::exec(RDLogEvent *log,int *start_line,int *end_line)
 void LogDialog::okData()
 {
   QModelIndexList list=d_log_view->selectionModel()->selectedRows();
+  if(list.size()==0) {
+    QMessageBox::information(this,"RDCastManager - "+tr("List Log"),
+			     tr("At least one log event must be selected!"));
+    return;
+  }
   *d_start_line=list.first().row();
   *d_end_line=list.last().row();
   d_log_model->clearLogEvent();
