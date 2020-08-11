@@ -114,6 +114,38 @@ RDRssSchemas::RDRssSchemas()
 
 
   //
+  // Item Link Support
+  //
+  // CustomSchema
+  c_supports_item_links.push_back(true);
+
+  // Rss202Schema
+  c_supports_item_links.push_back(true);
+
+  // AppleSchema
+  c_supports_item_links.push_back(false);
+
+  // AppleSuperfeedSchema
+  c_supports_item_links.push_back(false);
+
+
+  //
+  // Item Comments Support
+  //
+  // CustomSchema
+  c_supports_item_comments.push_back(true);
+
+  // Rss202Schema
+  c_supports_item_comments.push_back(true);
+
+  // AppleSchema
+  c_supports_item_comments.push_back(false);
+
+  // AppleSuperfeedSchema
+  c_supports_item_comments.push_back(false);
+
+
+  //
   // Item Templates
   //
   // CustomSchema
@@ -347,6 +379,18 @@ bool RDRssSchemas::supportsItemImages(RssSchema schema) const
 bool RDRssSchemas::supportsItemCategories(RssSchema schema) const
 {
   return c_supports_item_categories.at(schema);
+}
+
+
+bool RDRssSchemas::supportsItemLinks(RssSchema schema) const
+{
+  return c_supports_item_links.at(schema);
+}
+
+
+bool RDRssSchemas::supportsItemComments(RssSchema schema) const
+{
+  return c_supports_item_comments.at(schema);
 }
 
 

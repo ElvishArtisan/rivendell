@@ -41,6 +41,8 @@ class RDRssSchemas
   QString itemTemplate(RssSchema schema) const;
   bool supportsItemImages(RssSchema schema) const;
   bool supportsItemCategories(RssSchema schema) const;
+  bool supportsItemLinks(RssSchema schema) const;
+  bool supportsItemComments(RssSchema schema) const;
   QStringList categories(RssSchema schema) const;
   QStringList subCategories(RssSchema schema,const QString &category) const;
 
@@ -53,6 +55,8 @@ class RDRssSchemas
   QStringList c_item_templates;
   QList<bool> c_supports_item_images;
   QList<bool> c_supports_item_categories;
+  QList<bool> c_supports_item_links;
+  QList<bool> c_supports_item_comments;
   QList<QStringList> c_categories;
   QList<QMap<QString,QStringList> > c_sub_categories;
 };

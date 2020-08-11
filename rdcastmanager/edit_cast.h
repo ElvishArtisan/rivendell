@@ -58,8 +58,7 @@ class EditCast : public RDDialog
  private:
   RDFeed *cast_feed;
   RDPodcast *cast_cast;
-  //  QLabel *cast_item_origin_user_label;
-  //  QLineEdit *cast_item_origin_user_edit;
+  RDRssSchemas::RssSchema cast_schema;
   QLabel *cast_item_origin_label;
   QLineEdit *cast_item_origin_edit;
   QLabel *cast_item_title_label;

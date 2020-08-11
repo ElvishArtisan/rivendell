@@ -31,6 +31,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
 {
   cast_cast=new RDPodcast(rda->config(),cast_id);
   cast_feed=new RDFeed(cast_cast->feedId(),rda->config());
+  cast_schema=cast_feed->rssSchema();
   cast_status=cast_cast->status();
 
   //
@@ -87,10 +88,29 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   cast_item_link_edit=new QLineEdit(this);
   cast_item_link_edit->setMaxLength(255);
+  cast_item_link_edit->
+    setVisible(rda->rssSchemas()->supportsItemLinks(cast_schema));
   cast_item_link_label=
     new QLabel(cast_item_link_edit,tr("Link URL:"),this);
   cast_item_link_label->setFont(labelFont());
   cast_item_link_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  cast_item_link_label->
+    setVisible(rda->rssSchemas()->supportsItemLinks(cast_schema));
+  
+
+  //
+  // Item Comments
+  //
+  cast_item_comments_edit=new QLineEdit(this);
+  cast_item_comments_edit->setMaxLength(64);
+  cast_item_comments_edit->
+    setVisible(rda->rssSchemas()->supportsItemComments(cast_schema));
+  cast_item_comments_label=
+    new QLabel(cast_item_comments_edit,tr("Comments URL:"),this);
+  cast_item_comments_label->setFont(labelFont());
+  cast_item_comments_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  cast_item_comments_label->
+    setVisible(rda->rssSchemas()->supportsItemComments(cast_schema));
 
   //
   // Item Description
@@ -115,16 +135,6 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_image_label=new QLabel(cast_item_image_box,tr("Image")+":",this);
   cast_item_image_label->setFont(labelFont());
   cast_item_image_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
-  // Item Comments
-  //
-  cast_item_comments_edit=new QLineEdit(this);
-  cast_item_comments_edit->setMaxLength(64);
-  cast_item_comments_label=
-    new QLabel(cast_item_comments_edit,tr("Comments URL:"),this);
-  cast_item_comments_label->setFont(labelFont());
-  cast_item_comments_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Effective DateTime
@@ -270,7 +280,7 @@ EditCast::~EditCast()
 
 QSize EditCast::sizeHint() const
 {
-  return QSize(640,440);
+  return QSize(640,430);
 } 
 
 
@@ -418,16 +428,20 @@ void EditCast::resizeEvent(QResizeEvent *e)
   //
   // Link URL
   //
-  cast_item_link_edit->setGeometry(135,ypos,size().width()-145,20);
-  cast_item_link_label->setGeometry(20,ypos,110,20);
-  ypos+=22;
+  if(rda->rssSchemas()->supportsItemLinks(cast_schema)) {
+    cast_item_link_edit->setGeometry(135,ypos,size().width()-145,20);
+    cast_item_link_label->setGeometry(20,ypos,110,20);
+    ypos+=22;
+  }
 
   //
   // Comments URL
   //
-  cast_item_comments_edit->setGeometry(135,ypos,size().width()-145,20);
-  cast_item_comments_label->setGeometry(10,ypos,120,20);
-  ypos+=22;
+  if(rda->rssSchemas()->supportsItemComments(cast_schema)) {
+    cast_item_comments_edit->setGeometry(135,ypos,size().width()-145,20);
+    cast_item_comments_label->setGeometry(10,ypos,120,20);
+    ypos+=22;
+  }
 
   //
   // Description

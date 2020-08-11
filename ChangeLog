@@ -20210,3 +20210,8 @@
 	* Removed the 'RDSettings::customCommandLine()',
 	'RDSettings::setCustomCommandLine()' and
 	' RDSettings::resolvedCustomCommandLine()' methods.
+2020-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDRssSchemas::itemLinksSupported()' and
+	'RDRssSchemas::itemCommentsSupported()' methods.
+	* Modified the 'Editing Item' dialog in rdcastmanager(1) to
+	conditionally display the 'Link' and 'Comments' controls.
