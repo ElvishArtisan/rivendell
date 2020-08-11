@@ -20201,3 +20201,5 @@
 2020-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdcastmanager(1) that caused a segfault when
 	attempting to post a log with no events selected.
+2020-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.0rss3.
