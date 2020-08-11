@@ -1978,28 +1978,6 @@ void RDStation::remove(const QString &name)
     "OWNER=\""+RDEscapeString(name)+"\")";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString("select ID from ENCODERS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    sql=QString().sprintf("delete from ENCODER_CHANNELS where ENCODER_ID=%d",
-			  q->value(0).toInt());
-    q1=new RDSqlQuery(sql);
-    delete q1;
-    sql=QString().sprintf("delete from ENCODER_SAMPLERATES where ENCODER_ID=%d",
-			  q->value(0).toInt());
-    q1=new RDSqlQuery(sql);
-    delete q1;
-    sql=QString().sprintf("delete from ENCODER_BITRATES where ENCODER_ID=%d",
-			  q->value(0).toInt());
-    q1=new RDSqlQuery(sql);
-    delete q1;
-  }
-  delete q;
-  sql=QString("delete from ENCODERS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
   sql=QString().sprintf("delete from RDHOTKEYS where ")+
     "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);

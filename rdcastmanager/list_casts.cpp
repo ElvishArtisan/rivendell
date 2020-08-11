@@ -206,8 +206,9 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   RefreshList();
-  GetEncoderId();
+
   connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
+
   userChangedData();
 }
 
@@ -440,10 +441,8 @@ void ListCasts::userChangedData()
 {
   bool is_superfeed=list_feed->isSuperfeed();
 
-  list_cart_button->setEnabled(rda->user()->addPodcast()&&
-			       (list_encoder_id>=0)&&(!is_superfeed));
-  list_file_button->setEnabled(rda->user()->addPodcast()&&
-			       (list_encoder_id>=0)&&(!is_superfeed));
+  list_cart_button->setEnabled(rda->user()->addPodcast()&&(!is_superfeed));
+  list_file_button->setEnabled(rda->user()->addPodcast()&&(!is_superfeed));
   list_edit_button->setEnabled(rda->user()->editPodcast()&&(!is_superfeed));
   list_delete_button->
     setEnabled(rda->user()->deletePodcast()&&(!is_superfeed));
@@ -636,35 +635,6 @@ void ListCasts::RefreshItem(RDListViewItem *item)
       item->setText(7,q->value(8).toString()+" "+tr("on")+" "+
 		    q->value(9).toString()+" "+tr("at")+" "+
 		    q->value(10).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
-    }
-  }
-  delete q;
-}
-
-
-void ListCasts::GetEncoderId()
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  list_encoder_id=-1;
-  RDFeed *feed=new RDFeed(list_feed_id,rda->config());
-  int format=feed->uploadFormat();
-  delete feed;
-  if((format>0)&&(format<100)) {  // Built-in format
-    list_encoder_id=format;
-    return;
-  }
-  sql=QString().sprintf("select NAME from ENCODERS where ID=%d",format);
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    sql=QString("select ID from ENCODERS where ")+
-      "(NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+
-      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")";
-    delete q;
-    q=new RDSqlQuery(sql);
-    if(q->first()) {
-      list_encoder_id=q->value(0).toInt();
     }
   }
   delete q;

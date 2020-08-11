@@ -41,6 +41,68 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 331
+  //
+  if((cur_schema==331)&&(set_schema<cur_schema)) {
+    sql=QString("create table if not exists ENCODER_CHANNELS (")+
+      "ID int not null auto_increment primary key,"+
+      "ENCODER_ID int not null,"+
+      "CHANNELS int not null,"+
+      "index ENCODER_ID_IDX(ENCODER_ID))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create table if not exists ENCODER_BITRATES (")+
+      "ID int not null auto_increment primary key,"+
+      "ENCODER_ID int not null,"+
+      "BITRATES int not null,"+
+      "index ENCODER_ID_IDX(ENCODER_ID))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create table if not exists ENCODER_SAMPLERATES (")+
+      "ID int not null auto_increment primary key,"+
+      "ENCODER_ID int not null,"+
+      "SAMPLERATES int not null,"+
+      "index ENCODER_ID_IDX(ENCODER_ID))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create table if not exists ENCODERS (")+
+      "ID int not null auto_increment primary key,"+
+      "NAME char(32) not null,"+
+      "STATION_NAME char(64),"+
+      "COMMAND_LINE char(255),"+
+      "DEFAULT_EXTENSION char(16),"+
+      "index NAME_IDX(NAME,STATION_NAME))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    // Ensure that dynamic format IDs start after 100
+    sql=QString("insert into ENCODERS set ID=100,NAME=\"dummy\"");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("delete from ENCODERS where ID=100");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 330
   //
   if((cur_schema==330)&&(set_schema<cur_schema)) {
@@ -100,7 +162,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
       "ACCESS_DATE date not null,"+
       "ACCESS_COUNT int unsigned not null default 0,"+
       "unique index KEY_NAME_CAST_ID_DATE_IDX(FEED_KEY_NAME,CAST_ID,ACCESS_DATE))"+
-      " charset latin1 collate latin1_swedish_ci"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;

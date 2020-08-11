@@ -20203,3 +20203,10 @@
 	attempting to post a log with no events selected.
 2020-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.0rss3.
+2020-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Dropped the 'ENCODERS', 'ENCODER_BITRATES', 'ENCODER_BITRATES'
+	and 'ENCODER_CHANNELS' tables from the database.
+	* Incremented the database version to 331.
+	* Removed the 'RDSettings::customCommandLine()',
+	'RDSettings::setCustomCommandLine()' and
+	' RDSettings::resolvedCustomCommandLine()' methods.

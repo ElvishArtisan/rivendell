@@ -10176,6 +10176,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<331)&&(set_schema>cur_schema)) {
+    DropTable("ENCODER_SAMPLERATES");
+    DropTable("ENCODER_BITRATES");
+    DropTable("ENCODER_CHANNELS");
+    DropTable("ENCODERS");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

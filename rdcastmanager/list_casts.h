@@ -73,7 +73,6 @@ class ListCasts : public RDDialog
   QPixmap *list_redball_map;
   QPixmap *list_whiteball_map;
   unsigned list_feed_id;
-  int list_encoder_id;
   QLabel *list_filter_label;
   QLineEdit *list_filter_edit;
   QLabel *list_unexpired_label;
