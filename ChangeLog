@@ -20222,3 +20222,6 @@
 	'RDFeed::setChannelAuthorIsDefault()' methods.
 	* Added a 'Use as default Item Author' checkbox to the 'Edit Feed'
 	dialog in rdadmin(1).
+2020-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDFontEngine::bigLabelFont()' and
+	'RDFontEngine::bigLabelFontMetrics()' methods.
