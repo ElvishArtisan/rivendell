@@ -20225,3 +20225,6 @@
 2020-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDFontEngine::bigLabelFont()' and
 	'RDFontEngine::bigLabelFontMetrics()' methods.
+2020-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a feed name label to the 'Podcast Item List' in
+	rdcastmanager(1).

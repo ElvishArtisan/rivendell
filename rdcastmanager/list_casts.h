@@ -61,6 +61,7 @@ class ListCasts : public RDDialog
   void RefreshList();
   void RefreshItem(RDListViewItem *item);
   void GetEncoderId();
+  QLabel *list_casts_label;
   RDListView *list_casts_view;
   QPushButton *list_cart_button;
   QPushButton *list_file_button;

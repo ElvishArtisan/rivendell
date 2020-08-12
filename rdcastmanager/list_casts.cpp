@@ -125,6 +125,10 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   //
   // Group List
   //
+  list_casts_label=
+    new QLabel(list_feed->channelTitle(),this);
+  list_casts_label->setFont(bigLabelFont());
+  list_casts_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   list_casts_view=new RDListView(this);
   list_casts_view->setAllColumnsShowFocus(true);
   list_casts_view->setItemMargin(5);
@@ -138,10 +142,6 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_casts_view->setColumnAlignment(3,Qt::AlignCenter);
   list_casts_view->addColumn(tr("Length"));
   list_casts_view->setColumnAlignment(4,Qt::AlignRight);
-
-  //list_casts_view->addColumn(tr("Description"));
-  //list_casts_view->setColumnAlignment(5,Qt::AlignLeft);
-
   list_casts_view->addColumn(tr("Feed"));
   list_casts_view->setColumnAlignment(5,Qt::AlignLeft);
   list_casts_view->addColumn(tr("Category"));
@@ -491,7 +491,8 @@ void ListCasts::resizeEvent(QResizeEvent *e)
   list_unexpired_label->setGeometry(75,33,200,20);
   list_active_check->setGeometry(300,35,15,15);
   list_active_label->setGeometry(320,33,200,20);
-  list_casts_view->setGeometry(10,54,size().width()-20,size().height()-124);
+  list_casts_label->setGeometry(15,57,size().width()-25,20);
+  list_casts_view->setGeometry(10,76,size().width()-20,size().height()-146);
   list_cart_button->setGeometry(10,size().height()-60,80,50);
   list_file_button->setGeometry(100,size().height()-60,80,50);
   list_log_button->setGeometry(190,size().height()-60,80,50);
