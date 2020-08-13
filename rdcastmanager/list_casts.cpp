@@ -372,15 +372,15 @@ void ListCasts::deleteData()
     return;
   }
   unsigned cast_id=item->id();
-  if(QMessageBox::question(this,"RDCastManager - "+tr("Delete Podcast"),
-			   tr("Are you sure you want to delete this podcast?"),
+  if(QMessageBox::question(this,"RDCastManager - "+tr("Delete Item"),
+			   tr("Are you sure you want to delete this item?"),
 			   QMessageBox::Yes,QMessageBox::No)==
      QMessageBox::No) {
     return;
   }
 
   QProgressDialog *pd=
-    new QProgressDialog(tr("Deleting Podcast..."),"Cancel",0,2,this);
+    new QProgressDialog(tr("Deleting Item..."),"Cancel",0,2,this);
   pd->setWindowTitle(tr("Progress"));
   pd->setCancelButton(NULL);
   pd->setMinimumDuration(0);

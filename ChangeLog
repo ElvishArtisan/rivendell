@@ -20233,3 +20233,6 @@
 2020-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the name of the 'List Log' dialog in rdcastmanager(1)
 	to 'List Log Events'.
+2020-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the word 'podcast' to 'item' in the item deletion
+	confirmation in the 'Podcast Item List' dialog in rdcastmanager(1).
