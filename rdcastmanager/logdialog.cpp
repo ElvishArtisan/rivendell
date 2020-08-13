@@ -28,7 +28,7 @@
 LogDialog::LogDialog(QWidget *parent)
   : RDDialog(parent)
 {
-  setWindowTitle("RDCastManager - "+tr("List Log"));
+  setWindowTitle("RDCastManager - "+tr("List Log Events"));
 
   d_log_view=new QTableView(this);
   d_log_view->setSelectionBehavior(QAbstractItemView::SelectRows);

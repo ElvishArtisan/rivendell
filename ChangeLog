@@ -20230,3 +20230,6 @@
 	rdcastmanager(1).
 2020-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Documented the 'RDFontEngine::bigLabelFont()' method.
+2020-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the name of the 'List Log' dialog in rdcastmanager(1)
+	to 'List Log Events'.
