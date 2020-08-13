@@ -41,6 +41,7 @@ all-local:	cae.html\
                 fonts.rdadmin.configure_rdairplay_screenshot.png\
                 fonts.rdairplay_screenshot.png\
                 fonts.rdcartslots_screenshot.png\
+                fonts.rdcastmanager.list_carts.png\
                 fonts.rdcastmanager.uploading_audio_screenshot.png\
                 fonts.rdlibrary.edit_audio_screenshot.png\
                 notification.html\
