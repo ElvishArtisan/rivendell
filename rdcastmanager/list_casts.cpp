@@ -270,7 +270,9 @@ void ListCasts::addCartData()
 void ListCasts::addFileData()
 {
   QString srcfile=
-    QFileDialog::getOpenFileName(this,"RDCastManager","",RD_AUDIO_FILE_FILTER);
+    QFileDialog::getOpenFileName(this,"RDCastManager - "+
+				 tr("Select Audio File"),"",
+				 RD_AUDIO_FILE_FILTER);
   if(srcfile.isNull()) {
     return;
   }
