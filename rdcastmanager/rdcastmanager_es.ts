@@ -240,15 +240,15 @@ Suscripción</translation>
     </message>
     <message>
         <source>Delete Podcast</source>
-        <translation>Borrar Podcast</translation>
+        <translation type="obsolete">Borrar Podcast</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this podcast?</source>
-        <translation>¿Está seguro de borrar este Podcast?</translation>
+        <translation type="obsolete">¿Está seguro de borrar este Podcast?</translation>
     </message>
     <message>
         <source>Deleting Podcast...</source>
-        <translation>Eliminando Podcast...</translation>
+        <translation type="obsolete">Eliminando Podcast...</translation>
     </message>
     <message>
         <source>Remote Error</source>
@@ -291,10 +291,6 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Only Show Unexpired Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Only Show Active Items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -322,6 +318,22 @@ Log</source>
         <source>on</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Delete Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this item?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting Item...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LogDialog</name>
@@ -339,6 +351,10 @@ Log</source>
     </message>
     <message>
         <source>At least one log event must be selected!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List Log Events</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

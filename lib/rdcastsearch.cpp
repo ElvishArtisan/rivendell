@@ -24,8 +24,7 @@
 #include <rdpodcast.h>
 #include <rdcastsearch.h>
 
-QString RDCastSearchString(const QString &filter,bool unexp_only,
-			   bool active_only)
+QString RDCastSearchString(const QString &filter,bool active_only)
 {
   QString ret;
   if(!filter.stripWhiteSpace().isEmpty()) {
@@ -39,9 +38,6 @@ QString RDCastSearchString(const QString &filter,bool unexp_only,
       "(PODCASTS.ITEM_SOURCE_TEXT like \"%"+fil+"%\")||"+
       "(PODCASTS.ITEM_SOURCE_URL like \"%"+fil+"%\"))";
   }
-  if(unexp_only) {
-    ret+=QString().sprintf("&&(STATUS!=%d)",RDPodcast::StatusExpired);
-  }
   if(active_only) {
     ret+=QString().sprintf("&&(STATUS=%d)",RDPodcast::StatusActive);
   }
@@ -50,7 +46,7 @@ QString RDCastSearchString(const QString &filter,bool unexp_only,
 
 
 QString RDCastSearch(const QString &keyname,bool is_super,const QString &filter,
-		     bool unexp_only,bool active_only)
+		     bool active_only)
 {
   QString sql;
   RDSqlQuery *q;
@@ -81,7 +77,7 @@ QString RDCastSearch(const QString &keyname,bool is_super,const QString &filter,
     }
     delete q;
   }
-  ret+=RDCastSearchString(filter,unexp_only,active_only);
+  ret+=RDCastSearchString(filter,active_only);
 
   return ret;
 }

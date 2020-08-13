@@ -101,17 +101,6 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
 	  this,SLOT(filterChangedData(const QString &)));
 
   //
-  // Unexpired Check Box
-  //
-  list_unexpired_check=new QCheckBox(this);
-  list_unexpired_label=
-    new QLabel(list_unexpired_check,tr("Only Show Unexpired Items"),this);
-  list_unexpired_label->setFont(labelFont());
-  list_unexpired_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  connect(list_unexpired_check,SIGNAL(toggled(bool)),
-	  this,SLOT(notexpiredToggledData(bool)));
-
-  //
   // Active Check Box
   //
   list_active_check=new QCheckBox(this);
@@ -489,10 +478,8 @@ void ListCasts::resizeEvent(QResizeEvent *e)
 {
   list_filter_label->setGeometry(10,10,40,20);
   list_filter_edit->setGeometry(55,10,size().width()-65,20);
-  list_unexpired_check->setGeometry(55,35,15,15);
-  list_unexpired_label->setGeometry(75,33,200,20);
-  list_active_check->setGeometry(300,35,15,15);
-  list_active_label->setGeometry(320,33,200,20);
+  list_active_check->setGeometry(60,35,15,15);
+  list_active_label->setGeometry(80,33,200,20);
   list_casts_label->setGeometry(15,57,size().width()-25,20);
   list_casts_view->setGeometry(10,76,size().width()-20,size().height()-146);
   list_cart_button->setGeometry(10,size().height()-60,80,50);
@@ -565,7 +552,6 @@ void ListCasts::RefreshList()
   sql=QString("select ID from PODCASTS ")+
     RDCastSearch(list_feed->keyName(),list_is_superfeed,
 		 list_filter_edit->text(),
-		 list_unexpired_check->isChecked(),
 		 list_active_check->isChecked())+
 		 " order by ORIGIN_DATETIME";
   q=new RDSqlQuery(sql);

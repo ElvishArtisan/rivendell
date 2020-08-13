@@ -76,8 +76,6 @@ class ListCasts : public RDDialog
   unsigned list_feed_id;
   QLabel *list_filter_label;
   QLineEdit *list_filter_edit;
-  QLabel *list_unexpired_label;
-  QCheckBox *list_unexpired_check;
   QLabel *list_active_label;
   QCheckBox *list_active_check;
   QProgressDialog *list_progress_dialog;

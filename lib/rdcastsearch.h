@@ -22,7 +22,7 @@
 #define RDCASTSEARCH_H
 
 QString RDCastSearch(const QString &keyname,bool is_super,const QString &filter,
-		     bool unexp_only,bool active_only);
+		     bool active_only);
 
 
 #endif  // RDCASTSEARCH_H

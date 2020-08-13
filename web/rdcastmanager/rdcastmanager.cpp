@@ -551,6 +551,7 @@ void MainObject::ServeListCasts()
   line_colors[0]=RD_WEB_LINE_COLOR1;
   line_colors[1]=RD_WEB_LINE_COLOR2;
   int current_color=0;
+  /*
   sql=QString("select ")+
     "ID,"+               // 00
     "STATUS,"+           // 01
@@ -562,6 +563,7 @@ void MainObject::ServeListCasts()
     "from PODCASTS "+
     RDCastSearch(cast_key_name,false,filter,unexp_only,active_only)+
     " order by ORIGIN_DATETIME desc";
+  */
   q=new RDSqlQuery(sql);
   while(q->next()) {
     printf("<tr>\n");

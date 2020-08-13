@@ -247,15 +247,15 @@ Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n&gt;=2 &amp;&amp; n&lt;=4) ? 1 :
     </message>
     <message>
         <source>Delete Podcast</source>
-        <translation>Smazat podcast</translation>
+        <translation type="obsolete">Smazat podcast</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this podcast?</source>
-        <translation>Opravdu chcete smazat tento podcast?</translation>
+        <translation type="obsolete">Opravdu chcete smazat tento podcast?</translation>
     </message>
     <message>
         <source>Deleting Podcast...</source>
-        <translation>Maže se podcast...</translation>
+        <translation type="obsolete">Maže se podcast...</translation>
     </message>
     <message>
         <source>Internal Error</source>
@@ -351,10 +351,6 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Only Show Unexpired Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Only Show Active Items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -382,6 +378,22 @@ Log</source>
         <source>on</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Delete Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this item?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting Item...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LogDialog</name>
@@ -399,6 +411,10 @@ Log</source>
     </message>
     <message>
         <source>At least one log event must be selected!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List Log Events</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
