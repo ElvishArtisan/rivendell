@@ -20242,3 +20242,5 @@
 2020-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Unly Show Unexpired Items' checkbox from the
 	'Podcast Feed Item List' dialog in rdcastmanager(1).
+2020-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDCastManager' chapter to the Operations Guide.

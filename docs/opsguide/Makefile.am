@@ -37,6 +37,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 chapter.rdlogedit.html\
                 chapter.rdlogin.html\
                 chapter.rdlogmanager.html\
+                chapter.rdcastmanager.html\
                 chapter.rml.html\
                 chapter.utilities.html\
                 chapter.voicetracking.html\
@@ -102,6 +103,9 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.rdcartslots.operation_in_breakaway_mode.html\
                 sect.rdcartslots.operation_in_cart_deck_mode.html\
                 sect.rdcartslots.setting_the_slot_options.html\
+                sect.rdcastmanager.deleting_an_item.html\
+                sect.rdcastmanager.editing_an_items_metadata.html\
+                sect.rdcastmanager.posting_creating_a_new_item.html\
                 sect.rdcatch.adding_new_events.html\
                 sect.rdcatch_automating_macro_execution.html\
                 sect.rdcatch.automating_playouts.html\
@@ -217,6 +221,15 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdairplay.soundpanel_widget.png\
                   rdairplay.wallclock_widget.png\
                   rdairplay.where_to.png\
+                  rdcastmanager.delete_item_dialog.png\
+                  rdcastmanager.editing_item_dialog.png\
+                  rdcastmanager.list_log_events_dialog.png\
+                  rdcastmanager.list_log_select_select_audio_file_dialog.png\
+                  rdcastmanager.log_render_options_dialog.png\
+                  rdcastmanager.podcast_item_list_dialog.png\
+                  rdcastmanager.rdcastmanager_screenshot.png\
+                  rdcastmanager.select_cut_dialog.png\
+                  rdcastmanager.select_log_dialog.png\
                   rdcartslots.rdcartslots.edit_slot_options_dialog.png\
                   rdcartslots.rdcartslots_screenshot.png\
                   rdcartslots.rivendell_services_dialog.png\
@@ -274,15 +287,21 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   voicetracking.voice_tracker_dialog_track_selected.png\
                   webget.webget_screen.png
 
-OPSGUIDE_ICONS = chain.png\
+OPSGUIDE_ICONS = blueball.png\
+                 chain.png\
+                 greenball.png\
+                 greencheckmark.png\
                  mic16.png\
                  music.png\
                  notemarker.png\
                  play.png\
+                 redball.png\
+                 redx.png\
                  rml5.png\
                  track_cart.png\
                  traffic.png\
-                 trashcan-32x32.png
+                 trashcan-32x32.png\
+                 whiteball.png
 
 OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 $(OPSGUIDE_ICONS) \
@@ -297,6 +316,7 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 rdadmin.xml\
                 rdairplay.xml\
                 rdcartslots.xml\
+                rdcastmanager.xml\
                 rdcatch.xml\
                 rddbconfig.xml\
                 rdlibrary.xml\
@@ -345,14 +365,20 @@ CLEANFILES = *~\
              *.pdf
 
 DISTCLEANFILES = chain.png \
+                 blueball.png\
+                 greenball.png\
+                 greencheckmark.png\
                  mic16.png \
                  music.png \
                  notemarker.png \
                  play.png \
+                 redball.png\
+                 redx.png\
                  rml5.png \
                  track_cart.png \
                  traffic.png \
-                 trashcan-32x32.png
+                 trashcan-32x32.png\
+                 whiteball.png
 
 MAINTAINERCLEANFILES = *~\
                        *.1\

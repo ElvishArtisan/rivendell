@@ -12,6 +12,7 @@
   <!ENTITY rdcartslots SYSTEM "rdcartslots.xml">
   <!ENTITY rdlogmanager SYSTEM "rdlogmanager.xml">
   <!ENTITY voicetracking SYSTEM "voicetracking.xml">
+  <!ENTITY rdcastmanager SYSTEM "rdcastmanager.xml">
   <!ENTITY webget SYSTEM "webget.xml">
   <!ENTITY rml SYSTEM "rml.xml">
   <!ENTITY utilities SYSTEM "utilities.xml">
@@ -39,6 +40,7 @@
     &rdcartslots;
     &rdlogmanager;
     &voicetracking;
+    &rdcastmanager;
     &webget;
   </part>
   <part xml:id="part.rivendell_administration" xmlns="http://docbook.org/ns/docbook" version="5.0">

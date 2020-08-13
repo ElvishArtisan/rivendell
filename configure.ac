@@ -487,6 +487,25 @@ ln -s ../../icons/traffic.png docs/opsguide/traffic.png
 rm -f docs/opsguide/trashcan-32x32.png
 ln -s ../../icons/trashcan-32x32.png docs/opsguide/trashcan-32x32.png
 
+rm -f docs/opsguide/blueball.png
+ln -s ../../icons/blueball.png docs/opsguide/blueball.png
+
+rm -f docs/opsguide/greenball.png
+ln -s ../../icons/greenball.png docs/opsguide/greenball.png
+
+rm -f docs/opsguide/redball.png
+ln -s ../../icons/redball.png docs/opsguide/redball.png
+
+rm -f docs/opsguide/whiteball.png
+ln -s ../../icons/whiteball.png docs/opsguide/whiteball.png
+
+rm -f docs/opsguide/greencheckmark.png
+ln -s ../../icons/greencheckmark.png docs/opsguide/greencheckmark.png
+
+rm -f docs/opsguide/redx.png
+ln -s ../../icons/redx.png docs/opsguide/redx.png
+
+
 AC_CONFIG_FILES([rivendell.spec \
     Makefile \
     conf/rd-bin.conf \
