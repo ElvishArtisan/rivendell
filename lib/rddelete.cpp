@@ -81,6 +81,7 @@ QStringList RDDelete::supportedSchemes() const
   schemes.push_back("file");
   schemes.push_back("ftp");
   schemes.push_back("sftp");
+  schemes.push_back("ftps");
 
   return schemes;
 }
@@ -131,7 +132,7 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,DeleteErrorCallback);
   }
 
-  if(conv_target_url.scheme().toLower()=="ftp") {
+  if(conv_target_url.scheme().toLower()=="ftp"||conv_target_url.scheme().toLower()=="ftps") {
     QStringList f0=conv_target_url.path().split("/",QString::SkipEmptyParts);
     filename=f0.last();
     f0.removeLast();

@@ -82,6 +82,7 @@ QStringList RDDownload::supportedSchemes() const
 
   schemes.push_back("file");
   schemes.push_back("ftp");
+  schemes.push_back("ftps");
   schemes.push_back("http");
   schemes.push_back("https");
   schemes.push_back("sftp");

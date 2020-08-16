@@ -20244,3 +20244,6 @@
 	'Podcast Feed Item List' dialog in rdcastmanager(1).
 2020-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDCastManager' chapter to the Operations Guide.
+2020-08-15 David Klann <dklann@linux.com>
+	* Added support for FTPS protocol for uploading, downloading, and
+        Feed management.
