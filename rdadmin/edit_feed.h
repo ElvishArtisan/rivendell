@@ -52,6 +52,7 @@ class EditFeed : public RDDialog
   void superfeedActivatedData(int n);
   void schemaActivatedData(int n);
   void checkboxToggledData(bool state);
+  void purgeUrlChangedData(const QString &str);
   void lineeditChangedData(const QString &str);
   void selectSubfeedsData();
   void setFormatData();
@@ -101,6 +102,8 @@ class EditFeed : public RDDialog
   QLineEdit *feed_purge_username_edit;
   QLabel *feed_purge_password_label;
   QLineEdit *feed_purge_password_edit;
+  QCheckBox *feed_purge_use_id_file_check;
+  QLabel *feed_purge_use_id_file_label;
   QLabel *feed_rss_schema_label;
   QComboBox *feed_rss_schema_box;
   QLabel *feed_header_xml_label;

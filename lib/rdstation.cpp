@@ -283,6 +283,19 @@ void RDStation::setBrowserPath(const QString &cmd) const
 }
 
 
+QString RDStation::sshIdentityFile() const
+{
+  return RDGetSqlValue("STATIONS","NAME",station_name,"SSH_IDENTITY_FILE").
+    toString();
+}
+
+
+void RDStation::setSshIdentityFile(const QString &str) const
+{
+  SetRow("SSH_IDENTITY_FILE",str);
+}
+
+
 RDStation::FilterMode RDStation::filterMode() const
 {
   return (RDStation::FilterMode)RDGetSqlValue("STATIONS","NAME",station_name,

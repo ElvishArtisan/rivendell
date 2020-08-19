@@ -10196,6 +10196,28 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<333)&&(set_schema>cur_schema)) {
+    sql=QString("alter table STATIONS add ")+
+      "SSH_IDENTITY_FILE text after BROWSER_PATH";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RECORDINGS ")+
+      "add column URL_USE_ID_FILE enum('N','Y') default 'N' after URL_PASSWORD";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table FEEDS add ")+
+      "column PURGE_USE_ID_FILE enum('N','Y') default 'N' after PURGE_PASSWORD";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
 

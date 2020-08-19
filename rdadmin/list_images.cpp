@@ -128,6 +128,8 @@ void ListImages::addData()
 						img_id,f0.last()),
 			  list_feed->purgeUsername(),
 			  list_feed->purgePassword(),
+			  rda->station()->sshIdentityFile(),
+			  list_feed->purgeUseIdFile(),
 			  &err_msg)){
       QMessageBox::warning(this,"RDAdmin - "+tr("Upload Error"),
 			   tr("Image upload failed!")+"\n"+
@@ -192,7 +194,9 @@ void ListImages::deleteData()
 						    list_model->imageId(row),
 						    q->value(0).toString()),
 			      list_feed->purgeUsername(),
-			      list_feed->purgePassword(),&err_msg)) {
+			      list_feed->purgePassword(),
+			      rda->station()->sshIdentityFile(),
+			      list_feed->purgeUseIdFile(),&err_msg)) {
 	  if(QMessageBox::information(this,"RDAdmin - "+tr("Delete Error"),
 				      tr("Unable to delete remote file!")+"\n"+
 				      "["+err_msg+"].\n"+
@@ -276,7 +280,9 @@ int ListImages::SelectedRow() const
 
 bool ListImages::UploadRemoteImage(const QString &filename,const QString &url,
 				   const QString &username,
-				   const QString &password,QString *err_msg)
+				   const QString &password,
+				   const QString &id_filename,bool use_id_file,
+				   QString *err_msg)
 {
   RDUpload::ErrorCode err_code;
   RDUpload *upload=new RDUpload(rda->config(),this);
@@ -286,7 +292,7 @@ bool ListImages::UploadRemoteImage(const QString &filename,const QString &url,
 					  0,upload->totalSteps(),this);
   pd->setWindowTitle("RDAdmin");
   connect(upload,SIGNAL(progressChanged(int)),pd,SLOT(setValue(int)));
-  err_code=upload->runUpload(username,password,false);
+  err_code=upload->runUpload(username,password,id_filename,use_id_file,false);
   delete pd;
   delete upload;
 
@@ -295,13 +301,15 @@ bool ListImages::UploadRemoteImage(const QString &filename,const QString &url,
 
 
 bool ListImages::DeleteRemoteImage(const QString &url,const QString &username,
-				   const QString &password,QString *err_msg)
+				   const QString &password,
+				   const QString &id_filename,bool use_id_file,
+				   QString *err_msg)
 {
   RDDelete::ErrorCode err_code;
 
   RDDelete *del=new RDDelete(rda->config(),this);
   del->setTargetUrl(url);
-  err_code=del->runDelete(username,password,false);
+  err_code=del->runDelete(username,password,id_filename,use_id_file,false);
   *err_msg=RDDelete::errorText(err_code);
   delete del;
 

@@ -58,9 +58,11 @@ class ListImages : public RDDialog
   int SelectedRow() const;
   bool UploadRemoteImage(const QString &filename,const QString &url,
 			 const QString &username,const QString &password,
+			 const QString &id_filename,bool use_id_file,
 			 QString *err_msg);
   bool DeleteRemoteImage(const QString &url,const QString &username,
-			 const QString &password,QString *err_msg);
+			 const QString &password,const QString &id_filename,
+			 bool use_id_file,QString *err_msg);
   EditImage *list_edit_image_dialog;
   QListView *list_view;
   RDImagePickerModel *list_model;

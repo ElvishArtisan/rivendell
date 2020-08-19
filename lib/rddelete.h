@@ -43,6 +43,8 @@ class RDDelete : public RDTransfer
   void setTargetUrl(const QString &url);
   RDDelete::ErrorCode runDelete(const QString &username,
 				const QString &password,
+				const QString &id_filename,
+				bool use_id_filename,
 				bool log_debug);
   static QString errorText(RDDelete::ErrorCode err);
 

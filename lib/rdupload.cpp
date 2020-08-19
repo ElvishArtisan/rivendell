@@ -112,6 +112,8 @@ int RDUpload::totalSteps() const
 
 RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
 					const QString &password,
+					const QString &id_filename,
+					bool use_id_filename,
 					bool log_debug)
 {
   CURL *curl=NULL;
@@ -155,12 +157,25 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
   //
   url.replace("#","%23");
 
+  //
+  // Authentication
+  //
+  if((conv_dst_url.scheme().toLower()=="sftp")&&
+     (!id_filename.isEmpty())&&use_id_filename) {
+    curl_easy_setopt(curl,CURLOPT_USERNAME,username.toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
+		     id_filename.toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
+  }
+  else {
+    strncpy(userpwd,(username+":"+password).utf8(),256);
+    curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
+  }
+
   curl_easy_setopt(curl,CURLOPT_URL,(const char *)url);
   curl_easy_setopt(curl,CURLOPT_UPLOAD,1);
   curl_easy_setopt(curl,CURLOPT_READDATA,f);
   curl_easy_setopt(curl,CURLOPT_INFILESIZE,(long)conv_src_size);
-  strncpy(userpwd,(username+":"+password).utf8(),256);
-  curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,UploadProgressCallback);
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);

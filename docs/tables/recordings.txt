@@ -60,5 +60,6 @@ ONE_SHOT             enum ('N','Y')
 URL                  varchar(255)
 URL_USERNAME         varchar(64)
 URL_PASSWORD         varchar(64)
+URL_USE_ID_FILE      enum('N','Y')
 ENABLE_METADATA      enum('N','Y')
 FEED_ID              int               From FEEDS.ID

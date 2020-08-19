@@ -112,6 +112,8 @@ int RDDownload::totalSteps() const
 
 RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
 					      const QString &password,
+					      const QString &id_filename,
+					      bool use_id_filename,
 					      bool log_debug)
 {
   CURL *curl=NULL;
@@ -120,6 +122,7 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   long response_code=0;
   RDDownload::ErrorCode ret=RDDownload::ErrorOk;
   RDSystemUser *user=NULL;
+  char userpwd[256];
 
   if(!urlIsSupported(conv_src_url)) {
     return RDDownload::ErrorUnsupportedProtocol;
@@ -155,10 +158,23 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   //
   url.replace("#","%23");
 
+  //
+  // Authentication
+  //
+  if((conv_src_url.scheme().toLower()=="sftp")&&
+     (!id_filename.isEmpty())&&use_id_filename) {
+    curl_easy_setopt(curl,CURLOPT_USERNAME,username.toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
+		     id_filename.toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
+  }
+  else {
+    strncpy(userpwd,(username+":"+password).utf8(),256);
+    curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
+  }
+
   curl_easy_setopt(curl,CURLOPT_URL,url.constData());
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,f);
-  curl_easy_setopt(curl,CURLOPT_USERNAME,username.toUtf8().constData());
-  curl_easy_setopt(curl,CURLOPT_PASSWORD,password.toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_FOLLOWLOCATION,1);
   curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,DownloadProgressCallback);

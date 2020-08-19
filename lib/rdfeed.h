@@ -92,6 +92,8 @@ class RDFeed : public QObject
   void setPurgeUsername(const QString &str) const;
   QString purgePassword() const;
   void setPurgePassword(const QString &str) const;
+  bool purgeUseIdFile() const;
+  void setPurgeUseIdFile(bool state) const;
   RDRssSchemas::RssSchema rssSchema() const;
   void setRssSchema(RDRssSchemas::RssSchema schema) const;
   QString headerXml() const;

@@ -212,7 +212,10 @@ void MainObject::RunDownload(CatchEvent *evt)
     url_username=RD_ANON_FTP_USERNAME;
     url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
   }
-  switch((conv_err=conv->runDownload(url_username,url_password,
+  //
+  // FIXME: Finish implementing public key support!
+  //
+  switch((conv_err=conv->runDownload(url_username,url_password,"",false,
 				     rda->config()->logXloadDebugData()))) {
   case RDDownload::ErrorOk:
     rda->syslog(LOG_INFO,"finished download of %s to %s, id=%d",
@@ -324,7 +327,10 @@ void MainObject::RunUpload(CatchEvent *evt)
     url_username=RD_ANON_FTP_USERNAME;
     url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
   }
-  switch((conv_err=conv->runUpload(url_username,url_password,
+  //
+  // FIXME: Finish implementing ssh(1) identity keys!
+  //
+  switch((conv_err=conv->runUpload(url_username,url_password,"",false,
 				   rda->config()->logXloadDebugData()))) {
   case RDUpload::ErrorOk:
     catch_connect->setExitCode(evt->id(),RDRecording::Ok,tr("Ok"));

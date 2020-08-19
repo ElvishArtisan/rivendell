@@ -466,6 +466,19 @@ void RDFeed::setPurgePassword(const QString &str) const
 }
 
 
+bool RDFeed::purgeUseIdFile() const
+{
+  return RDBool(RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
+			      "PURGE_USE_ID_FILE").toString());
+}
+
+
+void RDFeed::setPurgeUseIdFile(bool state) const
+{
+  SetRow("PURGE_USE_ID_FILE",RDYesNo(state));
+}
+
+
 RDRssSchemas::RssSchema RDFeed::rssSchema() const
 {
   return (RDRssSchemas::RssSchema)RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
@@ -844,12 +857,29 @@ bool RDFeed::postXml(QString *err_msg)
   feed_xml=rssXml(err_msg,now).toUtf8();
   feed_xml_ptr=0;
 
+  //
+  // Authentication
+  //
+  if((QUrl(feedUrl()).scheme().toLower()=="sftp")&&
+     (!rda->station()->sshIdentityFile().isEmpty())&&purgeUseIdFile()) {
+    curl_easy_setopt(curl,CURLOPT_USERNAME,
+		     purgeUsername().toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
+		     rda->station()->sshIdentityFile().toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_KEYPASSWD,
+		     purgePassword().toUtf8().constData());
+  }
+  else {
+    curl_easy_setopt(curl,CURLOPT_USERNAME,
+		     purgeUsername().toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_PASSWORD,
+		     purgePassword().toUtf8().constData());
+  }
+
   curl_easy_setopt(curl,CURLOPT_URL,feedUrl().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_UPLOAD,1);
   curl_easy_setopt(curl,CURLOPT_READFUNCTION, __RDFeed_Readfunction_Callback);
   curl_easy_setopt(curl,CURLOPT_READDATA,this);
-  curl_easy_setopt(curl,CURLOPT_USERNAME,purgeUsername().toUtf8().constData());
-  curl_easy_setopt(curl,CURLOPT_PASSWORD,purgePassword().toUtf8().constData());
 
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
@@ -916,6 +946,8 @@ bool RDFeed::deleteXml(QString *err_msg)
   }
   conv->setTargetUrl(feedUrl());
   conv_err=conv->runDelete(purgeUsername(),purgePassword(),
+			   rda->station()->sshIdentityFile(),
+			   purgeUseIdFile(),
 			   rda->config()->logXloadDebugData());
   *err_msg=RDDelete::errorText(conv_err);
   delete conv;
@@ -945,6 +977,8 @@ bool RDFeed::deleteImages(QString *err_msg)
     }
     conv->setTargetUrl(img_url);
     conv_err=conv->runDelete(purgeUsername(),purgePassword(),
+			     rda->station()->sshIdentityFile(),
+			     purgeUseIdFile(),
 			     rda->config()->logXloadDebugData());
     *err_msg=RDDelete::errorText(conv_err);
     delete conv;
@@ -1039,6 +1073,8 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
   upload->setSourceFile(tmpfile);
   upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
   switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),
+				       rda->station()->sshIdentityFile(),
+				       purgeUseIdFile(),
 				       rda->config()->logXloadDebugData()))) {
   case RDUpload::ErrorOk:
     *err=RDFeed::ErrorOk;
@@ -1165,6 +1201,8 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
   upload->setSourceFile(tmpfile);
   upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
   switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),
+				       rda->station()->sshIdentityFile(),
+				       purgeUseIdFile(),
 				       rda->config()->logXloadDebugData()))) {
   case RDUpload::ErrorOk:
     sql=QString().sprintf("update PODCASTS set AUDIO_TIME=%u where ID=%u",
@@ -1284,6 +1322,8 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   upload->setSourceFile(tmpfile);
   upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
   switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),
+				       rda->station()->sshIdentityFile(),
+				       purgeUseIdFile(),
 				       rda->config()->logXloadDebugData()))) {
   case RDUpload::ErrorOk:
     sql=QString().sprintf("update PODCASTS set AUDIO_TIME=%u where ID=%u",

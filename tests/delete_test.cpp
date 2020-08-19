@@ -36,6 +36,7 @@ MainObject::MainObject(QObject *parent)
   username="";
   password="";
   RDDelete::ErrorCode conv_err;
+  use_identity_file=false;
 
   //
   // Open the Database
@@ -56,6 +57,14 @@ MainObject::MainObject(QObject *parent)
     }
     if(rda->cmdSwitch()->key(i)=="--password") {
       password=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--ssh-identity-filename") {
+      ssh_identity_filename=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--use-identity-file") {
+      use_identity_file=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--target-url") {
@@ -96,7 +105,8 @@ MainObject::MainObject(QObject *parent)
   conv->setTargetUrl(target_url);
   printf("Deleting...\n");
   conv_err=conv->
-    runDelete(username,password,rda->config()->logXloadDebugData());
+    runDelete(username,password,ssh_identity_filename,use_identity_file,
+	      rda->config()->logXloadDebugData());
   printf("Result: %s\n",(const char *)RDDelete::errorText(conv_err));
   delete conv;
 

@@ -41,6 +41,17 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 333
+  //
+  if((cur_schema==333)&&(set_schema<cur_schema)) {
+    DropColumn("STATIONS","SSH_IDENTITY_FILE");
+    DropColumn("RECORDINGS","URL_USE_ID_FILE");
+    DropColumn("FEEDS","PURGE_USE_ID_FILE");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 332
   //
   if((cur_schema==332)&&(set_schema<cur_schema)) {

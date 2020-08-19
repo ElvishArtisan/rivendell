@@ -361,6 +361,8 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
   }
   conv->setTargetUrl(url);
   conv_err=conv->runDelete(feed->purgeUsername(),feed->purgePassword(),
+			   rda->station()->sshIdentityFile(),
+			   feed->purgeUseIdFile(),
 			   rda->config()->logXloadDebugData());
   *err_text=RDDelete::errorText(conv_err);
   delete conv;

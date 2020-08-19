@@ -369,8 +369,11 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   RDUpload *upload=new RDUpload(rda->config());
   upload->setSourceFile(tempfile);
   upload->setDestinationUrl(config()->url()+"/"+filename);
+  //
+  // FIXME: Finish implementing ssh(1) id keys!
+  //
   switch(upload_err=upload->runUpload(config()->urlUsername(),
-				      config()->urlPassword(),
+				      config()->urlPassword(),"",false,
 				      rda->config()->logXloadDebugData())) {
   case RDUpload::ErrorOk:
     break;
@@ -420,8 +423,11 @@ void CitadelXds::PurgeCuts()
       Q3Url url(path+q->value(1).toString());
       conv=new RDDelete(rda->config());
       conv->setTargetUrl(url);
+      //
+      // FIXME: Finish implementing ssh(1) key support!
+      //
       if((conv_err=conv->runDelete(config()->urlUsername(),
-				   config()->urlPassword(),
+				   config()->urlPassword(),"",false,
 				   rda->config()->logXloadDebugData()))==
 	 RDDelete::ErrorOk) {
 	sql=QString().sprintf("delete from REPL_CART_STATE where ID=%d",

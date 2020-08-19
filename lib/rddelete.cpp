@@ -94,6 +94,8 @@ void RDDelete::setTargetUrl(const QString &url)
 
 RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
 					const QString &password,
+					const QString &id_filename,
+					bool use_id_filename,
 					bool log_debug)
 {
   CURL *curl=NULL;
@@ -103,6 +105,7 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
   QString currentdir;
   QString filename;
   QString xml="";
+  char userpwd[256];
 
   if(!urlIsSupported(conv_target_url)) {
     return RDDelete::ErrorUnsupportedUrlScheme;
@@ -118,9 +121,22 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
     return RDDelete::ErrorInternal;
   }
 
+  //
+  // Authentication
+  //
+  if((conv_target_url.scheme().toLower()=="sftp")&&
+     (!id_filename.isEmpty())&&use_id_filename) {
+    curl_easy_setopt(curl,CURLOPT_USERNAME,username.toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
+		     id_filename.toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
+  }
+  else {
+    strncpy(userpwd,(username+":"+password).utf8(),256);
+    curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
+  }
+
   curl_easy_setopt(curl,CURLOPT_URL,conv_target_url.toEncoded().constData());
-  curl_easy_setopt(curl,CURLOPT_USERNAME,username.toUtf8().constData());
-  curl_easy_setopt(curl,CURLOPT_PASSWORD,password.toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_HTTPAUTH,CURLAUTH_ANY);
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,DeleteWriteCallback);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,&xml);

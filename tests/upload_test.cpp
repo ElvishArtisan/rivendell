@@ -37,6 +37,7 @@ MainObject::MainObject(QObject *parent)
   username="";
   password="";
   RDUpload::ErrorCode conv_err;
+  use_identity_file=false;
 
   //
   // Open the Database
@@ -57,6 +58,14 @@ MainObject::MainObject(QObject *parent)
     }
     if(rda->cmdSwitch()->key(i)=="--password") {
       password=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--ssh-identity-filename") {
+      ssh_identity_filename=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--use-identity-file") {
+      use_identity_file=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--source-file") {
@@ -94,7 +103,8 @@ MainObject::MainObject(QObject *parent)
   conv->setDestinationUrl(destination_url);
   printf("Uploading...\n");
   conv_err=conv->
-    runUpload(username,password,rda->config()->logXloadDebugData());
+    runUpload(username,password,ssh_identity_filename,use_identity_file,
+	      rda->config()->logXloadDebugData());
   printf("Result: %s\n",(const char *)RDUpload::errorText(conv_err));
   delete conv;
 

@@ -26,7 +26,7 @@
 #include <qobject.h>
 #include <qurl.h>
 
-#define DELETE_TEST_USAGE "[options]\n\nTest the Rivendell deletion routines\n\nOptions are:\n--username=<username>\n\n--password=<password>\n\n--target-url=<url>\n\n"
+#define DELETE_TEST_USAGE "[options]\n\nTest the Rivendell deletion routines\n\nOptions are:\n--username=<username>\n\n--password=<password>\n\n--ssh-identity-key=<filename>\n\n--use-identity-file=y|n\n\n--target-url=<url>\n\n"
 
 class MainObject : public QObject
 {
@@ -37,6 +37,8 @@ class MainObject : public QObject
   QString username;
   QString password;
   QUrl target_url;
+  QString ssh_identity_filename;
+  bool use_identity_file;
 };
 
 

@@ -43,6 +43,8 @@ class RDDownload : public RDTransfer
   int totalSteps() const;
   RDDownload::ErrorCode runDownload(const QString &username,
 				    const QString &password,
+				    const QString &id_filename,
+				    bool use_id_filename,
 				    bool log_debug);
   bool aborting() const;
   static QString errorText(RDDownload::ErrorCode err);

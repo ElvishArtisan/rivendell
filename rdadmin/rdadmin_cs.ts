@@ -1714,6 +1714,10 @@ Clipboard</source>
         <source>Use as default Item Author</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Authenticate with local identity file</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
@@ -4083,6 +4087,10 @@ Instances</source>
     </message>
     <message>
         <source>Web Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SSH Ident. File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

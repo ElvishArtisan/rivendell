@@ -20244,3 +20244,18 @@
 	'Podcast Feed Item List' dialog in rdcastmanager(1).
 2020-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDCastManager' chapter to the Operations Guide.
+2020-08-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'STATIONS.SSH_IDENTITY_FILE' field to the database.
+	* Added a 'RECORDINGS.URL_USE_ID_FILE' field to the database.
+	* Added a 'FEEDS.PURGE_USE_ID_FILE' field to the database.
+	* Incremented the database version to 333.
+	* Added 'RDStation::sshIdentityFile()' and
+	'RDStation::setSshIdentityFile()' methods.
+	* Added 'RDRecording::urlUseIdFile()' and
+	'RDRecording::setUrlUseIdFile()' methods.
+	* Added 'RDFeed::purgeUseIdFile()' and 'RDFeed::setPurgeUseIdFile()'
+	methods.
+	* Added a 'SSH Ident. File' control to the 'Host' dialog in
+	rdadmin(1).
+	* Added an 'Authenticate with local identity file' checkbox to
+	the 'Feed' dialog in rdadmin(1).
