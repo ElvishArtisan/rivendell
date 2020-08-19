@@ -1901,7 +1901,6 @@ void RDStation::remove(const QString &name)
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
 
   sql=QString("delete from DECKS where ")+
     "STATION_NAME=\""+RDEscapeString(name)+"\"";

@@ -138,13 +138,15 @@ void RDSettings::setAutotrimLevel(int level)
 
 QString RDSettings::description()
 {
-  QString sql;
-  RDSqlQuery *q;
   QString desc;
   QString sr=QString().sprintf("%d S/sec",set_sample_rate);
   switch(set_format) {
     case RDSettings::Pcm16:
       desc="PCM16, ";
+      break;
+      
+    case RDSettings::Pcm24:
+      desc="PCM24, ";
       break;
       
     case RDSettings::MpegL1:
@@ -158,6 +160,7 @@ QString RDSettings::description()
       break;
       
     case RDSettings::MpegL2:
+    case RDSettings::MpegL2Wav:
       desc="MPEG L2, ";
       if(set_bit_rate==0) {
 	desc+=QString().sprintf("Qual %d, ",set_quality);
