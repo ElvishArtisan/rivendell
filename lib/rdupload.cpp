@@ -85,6 +85,7 @@ QStringList RDUpload::supportedSchemes() const
   schemes.push_back("file");
   schemes.push_back("ftp");
   schemes.push_back("sftp");
+  schemes.push_back("ftps");
 
   return schemes;
 }

@@ -20244,6 +20244,7 @@
 	'Podcast Feed Item List' dialog in rdcastmanager(1).
 2020-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDCastManager' chapter to the Operations Guide.
+<<<<<<< HEAD
 2020-08-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'STATIONS.SSH_IDENTITY_FILE' field to the database.
 	* Added a 'RECORDINGS.URL_USE_ID_FILE' field to the database.
@@ -20270,3 +20271,6 @@
 	'lib/rdstation.cpp'.
 2020-08-19 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.0rss4.
+2020-08-15 David Klann <dklann@linux.com>
+	* Added support for FTPS protocol for uploading, downloading, and
+        Feed management.
