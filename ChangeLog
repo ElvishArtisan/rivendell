@@ -20271,6 +20271,6 @@
 	'lib/rdstation.cpp'.
 2020-08-19 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.0rss4.
-2020-08-15 David Klann <dklann@linux.com>
+2020-08-19 David Klann <dklann@linux.com>
 	* Added support for FTPS protocol for uploading, downloading, and
         Feed management.
