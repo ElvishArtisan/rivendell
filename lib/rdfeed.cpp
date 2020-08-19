@@ -455,14 +455,14 @@ void RDFeed::setPurgeUsername(const QString &str) const
 
 QString RDFeed::purgePassword() const
 {
-  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"PURGE_PASSWORD").
-    toString();
+  return QString(QByteArray::fromBase64(RDGetSqlValue("FEEDS","KEY_NAME",
+			 feed_keyname,"PURGE_PASSWORD").toString().toUtf8()));
 }
 
 
 void RDFeed::setPurgePassword(const QString &str) const
 {
-  SetRow("PURGE_PASSWORD",str);
+  SetRow("PURGE_PASSWORD",QString(str.toUtf8().toBase64()));
 }
 
 

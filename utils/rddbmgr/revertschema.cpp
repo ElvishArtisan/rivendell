@@ -41,6 +41,35 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 334
+  //
+  if((cur_schema==334)&&(set_schema<cur_schema)) {
+    sql=QString("select ")+
+      "KEY_NAME,"+        // 00
+      "PURGE_PASSWORD "+  // 01
+      "from FEEDS";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      QString password(QByteArray::fromBase64(q->value(1).toString().toUtf8()));
+      sql=QString("update FEEDS set ")+
+	"PURGE_PASSWORD=\""+RDEscapeString(password)+"\" where "+
+	"KEY_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+    sql=QString("alter table FEEDS modify column ")+
+      "PURGE_PASSWORD varchar(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+ 
+  //
   // Revert 333
   //
   if((cur_schema==333)&&(set_schema<cur_schema)) {

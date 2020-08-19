@@ -20259,3 +20259,9 @@
 	rdadmin(1).
 	* Added an 'Authenticate with local identity file' checkbox to
 	the 'Feed' dialog in rdadmin(1).
+2020-08-19 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the database field 'FEEDS.PURGE_PASSWORD' from
+	'varchar(64)' to 'text'.
+	* Changed the contents of the 'FEEDS.PURGE_PASSWORD' database
+	field from plaintext to Base64 encoding.
+	* Incremented the database version to 334.

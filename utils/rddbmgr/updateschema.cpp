@@ -10218,6 +10218,31 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<334)&&(set_schema>cur_schema)) {
+    sql=QString("alter table FEEDS modify column ")+
+      "PURGE_PASSWORD text";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("select ")+
+      "KEY_NAME,"+        // 00
+      "PURGE_PASSWORD "+  // 01
+      "from FEEDS";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update FEEDS set ")+
+	"PURGE_PASSWORD=\""+
+	RDEscapeString(q->value(1).toString().toUtf8().toBase64())+"\" where "+
+	"KEY_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
 
