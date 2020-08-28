@@ -43,6 +43,7 @@ class MainWidget : public RDWidget
   void userChangedData();
   void feedClickedData(Q3ListViewItem *item);
   void feedDoubleclickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void notificationReceivedData(RDNotification *notify);
   void quitMainWidget();
 
  protected:

@@ -55,6 +55,8 @@ class RDRipc : public QObject
   void sendGpoMask(int matrix);
   void sendGpiCart(int matrix);
   void sendGpoCart(int matrix);
+  void sendNotification(RDNotification::Type type,
+			RDNotification::Action action,const QVariant &id);
   void sendNotification(const RDNotification &notify);
   void sendOnairFlag();
   void sendRml(RDMacro *macro);

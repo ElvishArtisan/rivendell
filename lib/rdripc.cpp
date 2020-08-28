@@ -139,6 +139,15 @@ void RDRipc::sendGpoCart(int matrix)
 }
 
 
+void RDRipc::sendNotification(RDNotification::Type type,
+			      RDNotification::Action action,const QVariant &id)
+{
+  RDNotification *notify=new RDNotification(type,action,id);
+  sendNotification(*notify);
+  delete notify;
+}
+
+
 void RDRipc::sendNotification(const RDNotification &notify)
 {
   SendCommand("ON "+notify.write()+"!");

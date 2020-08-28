@@ -101,6 +101,12 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   cast_redx_map=new QPixmap(redx_xpm);
 
   //
+  // Notifications
+  //
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  this,SLOT(notificationReceivedData(RDNotification *)));
+
+  //
   // Feed List
   //
   cast_feed_list=new RDListView(this);
@@ -215,6 +221,34 @@ void MainWidget::copyData()
 void MainWidget::feedDoubleclickedData(Q3ListViewItem *,const QPoint &,int)
 {
   openData();
+}
+
+
+void MainWidget::notificationReceivedData(RDNotification *notify)
+{
+  QString keyname;
+  RDListViewItem *item=NULL;
+
+  if(notify->type()==RDNotification::FeedType) {
+    keyname=notify->id().toString();
+    switch(notify->action()) {
+    case RDNotification::ModifyAction:
+      item=(RDListViewItem *)cast_feed_list->firstChild();
+      while(item!=NULL) {
+	if(item->text(1)==keyname) {
+	  RefreshItem(item);
+	}
+	item=(RDListViewItem *)item->nextSibling();
+      }
+      break;
+
+    case RDNotification::NoAction:
+    case RDNotification::AddAction:
+    case RDNotification::DeleteAction:
+    case RDNotification::LastAction:
+      break;
+    }
+  }
 }
 
 

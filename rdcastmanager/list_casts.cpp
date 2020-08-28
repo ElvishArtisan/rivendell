@@ -249,10 +249,11 @@ void ListCasts::addCartData()
   list_casts_view->ensureItemVisible(item);
   delete edit_cast;
 
-  RDNotification *notify=new RDNotification(RDNotification::FeedItemType,
-					    RDNotification::AddAction,cast_id);
-  rda->ripc()->sendNotification(*notify);
-  delete notify;
+  rda->ripc()->sendNotification(RDNotification::FeedType,
+				RDNotification::ModifyAction,
+				list_feed->keyName());
+  rda->ripc()->sendNotification(RDNotification::FeedItemType,
+				RDNotification::AddAction,cast_id);
 }
 
 
@@ -281,10 +282,11 @@ void ListCasts::addFileData()
   list_casts_view->ensureItemVisible(item);
   delete edit_cast;
 
-  RDNotification *notify=new RDNotification(RDNotification::FeedItemType,
-					    RDNotification::AddAction,cast_id);
-  rda->ripc()->sendNotification(*notify);
-  delete notify;
+  rda->ripc()->sendNotification(RDNotification::FeedType,
+				RDNotification::ModifyAction,
+				list_feed->keyName());
+  rda->ripc()->sendNotification(RDNotification::FeedItemType,
+				RDNotification::AddAction,cast_id);
 }
 
 
@@ -314,7 +316,12 @@ void ListCasts::addLogData()
 	RefreshItem(item);
 	list_casts_view->setSelected(item,true);
 	list_casts_view->ensureItemVisible(item);
-	//delete cast;
+	delete cast;
+	rda->ripc()->sendNotification(RDNotification::FeedType,
+				      RDNotification::ModifyAction,
+				      list_feed->keyName());
+	rda->ripc()->sendNotification(RDNotification::FeedItemType,
+				      RDNotification::AddAction,cast_id);
       }
       else {
 	QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
@@ -330,11 +337,6 @@ void ListCasts::addLogData()
     }
   }
   delete d;
-
-  RDNotification *notify=new RDNotification(RDNotification::FeedItemType,
-					    RDNotification::AddAction,cast_id);
-  rda->ripc()->sendNotification(*notify);
-  delete notify;
 }
 
 
@@ -347,6 +349,12 @@ void ListCasts::editData()
   EditCast *edit_cast=new EditCast(item->id(),this);
   if(edit_cast->exec()==0) {
     RefreshItem(item);
+
+    rda->ripc()->sendNotification(RDNotification::FeedType,
+				  RDNotification::ModifyAction,
+				  list_feed->keyName());
+    rda->ripc()->sendNotification(RDNotification::FeedItemType,
+				  RDNotification::ModifyAction,item->id());
   }
   delete edit_cast;
 }
@@ -413,11 +421,11 @@ void ListCasts::deleteData()
   delete pd;
   delete cast;
   delete item;
-
-  RDNotification *notify=new RDNotification(RDNotification::FeedItemType,
-					    RDNotification::DeleteAction,cast_id);
-  rda->ripc()->sendNotification(*notify);
-  delete notify;
+  rda->ripc()->sendNotification(RDNotification::FeedType,
+				RDNotification::ModifyAction,
+				list_feed->keyName());
+  rda->ripc()->sendNotification(RDNotification::FeedItemType,
+				RDNotification::DeleteAction,cast_id);
 }
 
 

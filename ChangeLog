@@ -20277,3 +20277,6 @@
 2020-08-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added sanity checks for Air and Expiration datetimes to the
 	'Editing Item' dialog in rdcastmanager(1).
+2020-08-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDNotification::FeedType' value to the
+	'RDNotification::Type' enumeration.

@@ -128,7 +128,6 @@ void MainObject::ProcessFeed(const QString &key_name)
   QDateTime now=QDateTime::currentDateTime();
   QString now_str="\""+now.toString("yyyy-MM-dd hh:mm:ss")+"\"";
   QString err_msg;
-
   RDFeed *feed=new RDFeed(key_name,rda->config(),this);
 
   //
@@ -164,11 +163,12 @@ void MainObject::ProcessFeed(const QString &key_name)
 		  q->value(0).toUInt(),cast->itemTitle().toUtf8().constData(),
 		  feed->keyName().toUtf8().constData());
       delete cast;
-      RDNotification *notify=new RDNotification(RDNotification::FeedItemType,
-						RDNotification::DeleteAction,
-						q->value(0).toUInt());
-      rda->ripc()->sendNotification(*notify);
-      delete notify;
+
+      rda->ripc()->sendNotification(RDNotification::FeedType,
+				 RDNotification::ModifyAction,feed->keyName());
+      rda->ripc()->sendNotification(RDNotification::FeedItemType,
+				    RDNotification::DeleteAction,
+				    q->value(0).toUInt());
       deleted=true;
     }
     if(feed->postXml(&err_msg)) {
@@ -176,11 +176,12 @@ void MainObject::ProcessFeed(const QString &key_name)
 		  "repost of XML for feed \"%s\" triggered by cast id %u",
 		  key_name.toUtf8().constData(),q->value(0).toUInt());
       if(!deleted) {
-	RDNotification *notify=new RDNotification(RDNotification::FeedItemType,
-						  RDNotification::ModifyAction,
-						  q->value(0).toUInt());
-	rda->ripc()->sendNotification(*notify);
-	delete notify;
+	rda->ripc()->sendNotification(RDNotification::FeedType,
+				      RDNotification::ModifyAction,
+				      feed->keyName());
+	rda->ripc()->sendNotification(RDNotification::FeedType,
+				      RDNotification::ModifyAction,
+				      feed->keyName());
       }
     }
     else {
