@@ -20274,3 +20274,6 @@
 2020-08-19 David Klann <dklann@linux.com>
 	* Added support for FTPS protocol for uploading, downloading, and
         Feed management.
+2020-08-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added sanity checks for Air and Expiration datetimes to the
+	'Editing Item' dialog in rdcastmanager(1).

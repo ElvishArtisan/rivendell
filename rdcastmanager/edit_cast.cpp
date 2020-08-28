@@ -334,6 +334,23 @@ void EditCast::okData()
 {
   QString err_msg;
 
+  //
+  // Sanity Checks
+  //
+  if(cast_item_expiration_box->currentItem()) {
+    if(cast_item_effective_edit->dateTime()>
+      cast_item_expiration_edit->dateTime()) {
+      QMessageBox::warning(this,"RDCastManager - "+tr("Error"),
+		       tr("Item expiration cannot be prior to Air Date/Time!"));
+      return;
+    }
+    if(cast_item_expiration_edit->dateTime()<QDateTime::currentDateTime()) {
+      QMessageBox::warning(this,"RDCastManager - "+tr("Error"),
+			   tr("Item expiration must be in the future!"));
+      return;
+    }
+  }
+
   cast_cast->setItemTitle(cast_item_title_edit->text());
   cast_cast->setItemAuthor(cast_item_author_edit->text());
   cast_cast->setItemCategory(cast_item_category_edit->text());

@@ -87,6 +87,18 @@
         <source>on</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item expiration cannot be prior to Air Date/Time!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item expiration must be in the future!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>
