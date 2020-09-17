@@ -93,6 +93,7 @@ class RDUser
   bool groupAuthorized(const QString &group_name);
   QStringList groups() const;
   bool cartAuthorized(unsigned cartnum) const;
+  bool feedAuthorized(const QString &keyname);
   QString serviceCheckDefault(QString serv) const;
   QStringList services() const;
   static bool emailIsValid(const QString &addr);

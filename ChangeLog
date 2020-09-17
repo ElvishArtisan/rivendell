@@ -20280,3 +20280,8 @@
 2020-08-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDNotification::FeedType' value to the
 	'RDNotification::Type' enumeration.
+2020-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDUser::feedAuthorized()' method.
+	* Added a 'SavePodcast' method to the Web API.
+	* Added a 'GetPodcast' method to the Web API.
+	* Added a 'DeletePodcast' method to the Web API.

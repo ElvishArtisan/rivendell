@@ -544,6 +544,22 @@ bool RDUser::cartAuthorized(unsigned cartnum) const
 }
 
 
+bool RDUser::feedAuthorized(const QString &keyname)
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool ret=false;
+
+  sql=QString("select ID from FEED_PERMS where ")+
+    "(USER_NAME=\""+RDEscapeString(user_name)+"\")&&"+
+    "(KEY_NAME=\""+RDEscapeString(keyname)+"\")";
+  q=new RDSqlQuery(sql);
+  ret=q->first();
+  delete q;
+  return ret;
+}
+
+
 QString RDUser::serviceCheckDefault(QString serv) const
 {
   bool match_flag = false;

@@ -832,6 +832,68 @@
 </sect1>
 
 <sect1>
+  <title>DeletePodcast</title>
+  <subtitle>Delete posted podcast audio from the audio store</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_DELETE_PODCAST</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Delete Podcast</code>, Feed Permission
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested podcast's parent feed is not authorized for the specified
+    Rivendell user in RDAdmin->ManageUsers->PodcastFeedPermissions.
+  </para>
+  <table xml:id="ex.delete_podcast
+" frame="all">
+    <title>GetPodcast Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    39
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ID
+	  </entry>
+	  <entry>
+	    ID of podcast item (integer)
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
   <title>EditCart</title>
   <subtitle>
     Write metadata changes for an existing cart into the
@@ -1707,6 +1769,68 @@
 	  </entry>
 	  <entry>
 	    Number of Cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>GetPodcast</title>
+  <subtitle>Get posted podcast audio</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_GET_PODCAST</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Edit Podcast</code>, Feed Permission
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested podcast's parent feed is not authorized for the specified
+    Rivendell user in RDAdmin->ManageUsers->PodcastFeedPermissions.
+  </para>
+  <table xml:id="ex.get_podcast
+" frame="all">
+    <title>GetPodcast Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    37
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ID
+	  </entry>
+	  <entry>
+	    ID of podcast item (integer)
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -3519,6 +3643,82 @@
 	  </entry>
 	  <entry>
 	    Mandatory. String, max length 8.
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>SavePodcast</title>
+  <subtitle>Save posted podcast audio</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_SAVE_PODCAST</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Create Podcast</code>, Feed Permission
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested podcast's parent feed is not authorized for the specified
+    Rivendell user in RDAdmin->ManageUsers->PodcastFeedPermissions.
+  </para>
+  <para>
+    NOTE: The method must be called with 'multipart/form-data' encoding.
+  </para>
+  <table xml:id="ex.save_podcast
+" frame="all">
+    <title>SavePodcast Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    38
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ID
+	  </entry>
+	  <entry>
+	    ID of podcast (integer)
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    FILENAME
+	  </entry>
+	  <entry>
+	    Binary file data
+	  </entry>
+	  <entry>
+	    Mandatory
 	  </entry>
 	</row>
       </tbody>

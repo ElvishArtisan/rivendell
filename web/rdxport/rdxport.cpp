@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal
 //
-//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -154,6 +154,7 @@ void Xport::ripcConnectedData(bool state)
   // Read Command Variable and Dispatch 
   //
   int command=xport_post->value("COMMAND").toInt();
+
   switch(command) {
   case RDXPORT_COMMAND_EXPORT:
     Export();
@@ -293,6 +294,18 @@ void Xport::ripcConnectedData(bool state)
 
   case RDXPORT_COMMAND_SAVEFILE:
     SaveFile();
+    break;
+
+  case RDXPORT_COMMAND_SAVE_PODCAST:
+    SavePodcast();
+    break;
+
+  case RDXPORT_COMMAND_GET_PODCAST:
+    GetPodcast();
+    break;
+
+  case RDXPORT_COMMAND_DELETE_PODCAST:
+    DeletePodcast();
     break;
 
   default:
