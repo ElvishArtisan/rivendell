@@ -137,6 +137,8 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_casts_view->setColumnAlignment(6,Qt::AlignCenter);
   list_casts_view->addColumn(tr("Posted By"));
   list_casts_view->setColumnAlignment(7,Qt::AlignLeft);
+  list_casts_view->addColumn(tr("SHA1"));
+  list_casts_view->setColumnAlignment(8,Qt::AlignLeft);
   connect(list_casts_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
@@ -588,7 +590,8 @@ void ListCasts::RefreshItem(RDListViewItem *item)
     "PODCASTS.ITEM_CATEGORY,"+        // 07
     "PODCASTS.ORIGIN_LOGIN_NAME,"+    // 08
     "PODCASTS.ORIGIN_STATION,"+       // 09
-    "PODCASTS.ORIGIN_DATETIME "+      // 10
+    "PODCASTS.ORIGIN_DATETIME,"+      // 10
+    "PODCASTS.SHA1_HASH "+            // 11
     "from PODCASTS left join FEEDS "+
     "on PODCASTS.FEED_ID=FEEDS.ID where "+
     QString().sprintf("PODCASTS.ID=%d",item->id());
@@ -632,6 +635,12 @@ void ListCasts::RefreshItem(RDListViewItem *item)
       item->setText(7,q->value(8).toString()+" "+tr("on")+" "+
 		    q->value(9).toString()+" "+tr("at")+" "+
 		    q->value(10).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+    }
+    if(q->value(11).toString().isEmpty()) {
+      item->setText(8,tr("[none]"));
+    }
+    else {
+      item->setText(8,q->value(11).toString());
     }
   }
   delete q;

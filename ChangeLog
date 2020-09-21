@@ -20291,3 +20291,6 @@
 	* Added 'RDPodcast::sha1Hash()' and 'RDPodcast::setSha1Hash()'
 	methods.
 	* Implemented audio relinking for podcast media files.
+2020-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SHA1' column to the 'Podcast Item List' dialog in
+	rdcastmanager(1).
