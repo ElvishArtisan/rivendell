@@ -41,6 +41,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 335
+  //
+  if((cur_schema==335)&&(set_schema<cur_schema)) {
+    DropIndex("PODCASTS","SHA1_HASH_IDX");
+    DropColumn("PODCASTS","SHA1_HASH");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 334
   //
   if((cur_schema==334)&&(set_schema<cur_schema)) {

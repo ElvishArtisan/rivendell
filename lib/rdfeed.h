@@ -160,6 +160,7 @@ class RDFeed : public QObject
   void renderLineStartedData(int lineno,int total_lines);
 
  private:
+  bool SavePodcast(unsigned cast_id,const QString &src_filename) const;
   unsigned CreateCast(QString *filename,int bytes,int msecs) const;
   QString ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q,
 				  const QDateTime &build_datetime);

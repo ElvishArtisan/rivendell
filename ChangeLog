@@ -20285,3 +20285,9 @@
 	* Added a 'SavePodcast' method to the Web API.
 	* Added a 'GetPodcast' method to the Web API.
 	* Added a 'DeletePodcast' method to the Web API.
+2020-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PODCASTS.SHA1_HASH' field to the database.
+	* Incremented the database version to 335.
+	* Added 'RDPodcast::sha1Hash()' and 'RDPodcast::setSha1Hash()'
+	methods.
+	* Implemented audio relinking for podcast media files.

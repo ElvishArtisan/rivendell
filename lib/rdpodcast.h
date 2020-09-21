@@ -68,6 +68,8 @@ class RDPodcast
   void setAudioLength(int len) const;
   int audioTime() const;
   void setAudioTime(int msecs) const;
+  QString sha1Hash() const;
+  void setSha1Hash(const QString &str=QString()) const;
   QDateTime expirationDateTime() const;
   void setExpirationDateTime(const QDateTime &dt) const;
   RDPodcast::Status status() const;
@@ -79,6 +81,7 @@ class RDPodcast
 		      unsigned feed_id,unsigned cast_id);
 
  private:
+  bool DeletePodcast(unsigned cast_id) const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,const QDateTime &datetime,const QString &value) const;

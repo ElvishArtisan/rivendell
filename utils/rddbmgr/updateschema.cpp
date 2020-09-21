@@ -10243,6 +10243,20 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<335)&&(set_schema>cur_schema)) {
+    sql=QString("alter table PODCASTS add column ")+
+      "SHA1_HASH varchar(40) after AUDIO_TIME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS add index SHA1_HASH_IDX(SHA1_HASH)");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
 

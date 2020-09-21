@@ -46,6 +46,7 @@
 #include "rdtempdirectory.h"
 #include "rdupload.h"
 #include "rdwavefile.h"
+#include "rdxport_interface.h"
 
 size_t __RDFeed_Readfunction_Callback(char *buffer,size_t size,size_t nitems,
 				      void *userdata)
@@ -1093,6 +1094,11 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
     return 0;
   }
   emit postProgressChanged(3);
+
+  //
+  // Save to Audio Store
+  //
+  SavePodcast(cast_id,tmpfile);
   unlink(tmpfile);
   delete upload;
 
@@ -1225,6 +1231,10 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
   }
   delete upload;
 
+  //
+  // Save to Audio Store
+  //
+  SavePodcast(cast_id,tmpfile);
   unlink(QString(tmpfile)+".wav");
   unlink(tmpfile);
 
@@ -1349,6 +1359,10 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
 
   emit postProgressChanged(2+log_event->size());
 
+  //
+  // Save to Audio Store
+  //
+  SavePodcast(cast_id,tmpfile);
   unlink(tmpfile);
 
   //
@@ -1670,6 +1684,80 @@ void RDFeed::renderMessage(const QString &msg)
 void RDFeed::renderLineStartedData(int lineno,int total_lines)
 {
   emit postProgressChanged(lineno+1);
+}
+
+
+bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  // We have to use multipart here because we have a file to send.
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_SAVE_PODCAST),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",cast_id),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"FILENAME",
+	       CURLFORM_FILE,src_filename.toUtf8().constData(),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
 }
 
 

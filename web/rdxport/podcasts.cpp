@@ -29,6 +29,7 @@
 #include <rdescape_string.h>
 #include <rdformpost.h>
 #include <rdgroup.h>
+#include <rdhash.h>
 #include <rdpodcast.h>
 #include <rduser.h>
 #include <rdweb.h>
@@ -83,6 +84,7 @@ void Xport::SavePodcast()
     delete cast;
     XmlExit(err_msg.toUtf8(),500,"podcasts.cpp",LINE_NUMBER);
   }
+  cast->setSha1Hash(RDSha1Hash(destpath));
 
   printf("Content-type: text/html; charset: UTF-8\n");
   printf("Status: 200\n\n");
@@ -191,6 +193,7 @@ void Xport::DeletePodcast()
       XmlExit(err_msg.toUtf8(),500,"podcasts.cpp",LINE_NUMBER);
     }
   }
+  cast->setSha1Hash();
 
   printf("Content-type: text/html; charset: UTF-8\n");
   printf("Status: 200\n\n");
