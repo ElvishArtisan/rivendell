@@ -53,9 +53,13 @@ install-exec-am:
 	cp listservices.html $(DESTDIR)@libexecdir@
 	cp listsystemsettings.html $(DESTDIR)@libexecdir@
 	cp locklog.html $(DESTDIR)@libexecdir@
+	cp postpodcast.html $(DESTDIR)@libexecdir@
+	cp postrss.html $(DESTDIR)@libexecdir@
 	cp rehash.html $(DESTDIR)@libexecdir@
 	cp removecart.html $(DESTDIR)@libexecdir@
 	cp removecut.html $(DESTDIR)@libexecdir@
+	cp removepodcast.html $(DESTDIR)@libexecdir@
+	cp removerss.html $(DESTDIR)@libexecdir@
 	cp savefile.html $(DESTDIR)@libexecdir@
 	cp savelog.html $(DESTDIR)@libexecdir@
 	cp savepodcast.html $(DESTDIR)@libexecdir@
@@ -97,9 +101,13 @@ uninstall-local:
 	rm -f $(DESTDIR)@libexecdir@/listservices.html
 	rm -f $(DESTDIR)@libexecdir@/listsystemsettings.html
 	rm -f $(DESTDIR)@libexecdir@/locklog.html
+	rm -f $(DESTDIR)@libexecdir@/postpodcast.html
+	rm -f $(DESTDIR)@libexecdir@/postrss.html
 	rm -f $(DESTDIR)@libexecdir@/rehash.html
 	rm -f $(DESTDIR)@libexecdir@/removecart.html
 	rm -f $(DESTDIR)@libexecdir@/removecut.html
+	rm -f $(DESTDIR)@libexecdir@/removepodcast.html
+	rm -f $(DESTDIR)@libexecdir@/removepodrss.html
 	rm -f $(DESTDIR)@libexecdir@/savefile.html
 	rm -f $(DESTDIR)@libexecdir@/savelog.html
 	rm -f $(DESTDIR)@libexecdir@/savepodcast.html
@@ -140,9 +148,13 @@ EXTRA_DIST = addcart.html\
              listservices.html\
              listsystemsettings.html\
              locklog.html\
+             postpodcast.html\
+             postrss.html\
              rehash.html\
              removecart.html\
              removecut.html\
+             removepodcast.html\
+             removerss.html\
              savefile.html\
              savelog.html\
              savepodcast.html\

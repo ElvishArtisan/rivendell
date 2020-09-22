@@ -20294,3 +20294,8 @@
 2020-09-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'SHA1' column to the 'Podcast Item List' dialog in
 	rdcastmanager(1).
+2020-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PostPodcast' method to the Web API.
+	* Added a 'RemovePodcast' method to the Web API.
+	* Added a 'PostRss' method to the Web API.
+	* Added a 'RemoveRss' method to the Web API.

@@ -5171,6 +5171,10 @@ Do you still want to delete it?</source>
         <source>Public URL</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Repost</source>
+        <translation type="unfinished">&amp;Republicar</translation>
+    </message>
 </context>
 <context>
     <name>ListGpis</name>

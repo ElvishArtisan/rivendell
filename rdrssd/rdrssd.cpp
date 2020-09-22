@@ -148,7 +148,7 @@ void MainObject::ProcessFeed(const QString &key_name)
     bool deleted=false;
     if(q->value(1).toDateTime()<now) {  // Delete expired cast
       RDPodcast *cast=new RDPodcast(rda->config(),q->value(0).toUInt());
-      if(!cast->removeAudio(feed,&err_msg,false)) {
+      if(!cast->dropAudio(feed,&err_msg,false)) {
 	rda->syslog(LOG_WARNING,
 		    "audio purge failed for cast %u [%s] on feed \"%s\" [%s]",
 		    q->value(0).toUInt(),

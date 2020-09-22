@@ -315,7 +315,7 @@ Podcast trotzdem löschen?</translation>
     <message>
         <source>Unable to delete remote audio!
 </source>
-        <translation>Kann die Audiodatei(en) auf dem anderen Server nicht löschen!</translation>
+        <translation type="obsolete">Kann die Audiodatei(en) auf dem anderen Server nicht löschen!</translation>
     </message>
     <message>
         <source>The server said: &quot;</source>
@@ -397,6 +397,11 @@ Log</source>
     </message>
     <message>
         <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to drop remote audio!
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

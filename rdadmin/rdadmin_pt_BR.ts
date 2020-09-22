@@ -4958,6 +4958,10 @@ Você ainda quer Deletar?</translation>
         <source>Public URL</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Repost</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListGpis</name>

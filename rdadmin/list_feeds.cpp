@@ -73,6 +73,14 @@ ListFeeds::ListFeeds(QWidget *parent)
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
+  //  Repost Button
+  //
+  list_repost_button=new QPushButton(this);
+  list_repost_button->setFont(buttonFont());
+  list_repost_button->setText(tr("&Repost"));
+  connect(list_repost_button,SIGNAL(clicked()),this,SLOT(repostData()));
+
+  //
   //  Close Button
   //
   list_close_button=new QPushButton(this);
@@ -118,7 +126,7 @@ ListFeeds::~ListFeeds()
 
 QSize ListFeeds::sizeHint() const
 {
-  return QSize(800,300);
+  return QSize(800,390);
 } 
 
 
@@ -231,7 +239,7 @@ void ListFeeds::deleteData()
     pd->setValue(pd->value()+1);
     qApp->processEvents();
     cast=new RDPodcast(rda->config(),q->value(0).toUInt());
-    cast->removeAudio(feed,&errs,rda->config()->logXloadDebugData());
+    cast->dropAudio(feed,&errs,rda->config()->logXloadDebugData());
     delete cast;
   }
   delete q;
@@ -239,7 +247,7 @@ void ListFeeds::deleteData()
   //
   // Delete Remote XML
   //
-  if(!feed->deleteXml(&errs)) {
+  if(!feed->removeRss(&errs)) {
     QMessageBox::warning(this,"RDAdmin - "+tr("Warning"),
 			 tr("Failed to delete remote feed XML.")+
 			 "["+errs+"].");
@@ -293,6 +301,11 @@ void ListFeeds::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 }
 
 
+void ListFeeds::repostData()
+{
+}
+
+
 void ListFeeds::closeData()
 {
   done(0);
@@ -304,6 +317,7 @@ void ListFeeds::resizeEvent(QResizeEvent *e)
   list_add_button->setGeometry(size().width()-90,30,80,50);
   list_edit_button->setGeometry(size().width()-90,90,80,50);
   list_delete_button->setGeometry(size().width()-90,150,80,50);
+  list_repost_button->setGeometry(size().width()-90,240,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
   list_feeds_view->setGeometry(10,30,size().width()-120,size().height()-40);
 }

@@ -839,6 +839,7 @@
   </para>
   <para>
     Required User Permissions: <code>Delete Podcast</code>, Feed Permission
+    or <code>Administer System</code>
   </para>
   <para>
     A <computeroutput>404</computeroutput> error will be returned if the
@@ -847,7 +848,7 @@
   </para>
   <table xml:id="ex.delete_podcast
 " frame="all">
-    <title>GetPodcast Call Fields</title>
+    <title>DeletePodcast Call Fields</title>
     <tgroup cols="3" align="left" colsep="1" rowsep="1">
       <colspec colname="FIELD NAME" />
       <colspec colname="MEANING" />
@@ -1783,7 +1784,8 @@
   <title>GetPodcast</title>
   <subtitle>Get posted podcast audio</subtitle>
   <para>
-    Command Code: <code>RDXPORT_COMMAND_GET_PODCAST</code>
+    Command Code: <code>RDXPORT_COMMAND_GET_PODCAST</code>, Feed Permissions
+    or <code>Administer System</code>
   </para>
   <para>
     Required User Permissions: <code>Edit Podcast</code>, Feed Permission
@@ -2851,6 +2853,132 @@
 </sect1>
 
 <sect1>
+  <title>PostPodcast</title>
+  <subtitle>Upload podcast audio from the audio store to the remote archive</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_POST_PODCAST</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Add Podcast</code>, Feed Permission
+    or <code>Administer System</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested podcast's parent feed is not authorized for the specified
+    Rivendell user in RDAdmin->ManageUsers->PodcastFeedPermissions.
+  </para>
+  <table xml:id="ex.post_podcast
+" frame="all">
+    <title>PostPodcast Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    40
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ID
+	  </entry>
+	  <entry>
+	    ID of podcast item (integer)
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>PostRss</title>
+  <subtitle>Upload podcast RSS XML to the remote archive</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_POST_RSS</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Edit Podcast</code>, Feed Permission
+    or <code>Administer System</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested feed is not authorized for the specified
+    Rivendell user in RDAdmin->ManageUsers->PodcastFeedPermissions.
+  </para>
+  <table xml:id="ex.post_rss
+" frame="all">
+    <title>PostRss Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    42
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ID
+	  </entry>
+	  <entry>
+	    ID of podcast feed (integer)
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
   <title>Rehash</title>
   <subtitle>Generate a SHA-1 hash for a cut and write it to the database</subtitle>
   <para>
@@ -3030,6 +3158,132 @@
 	  </entry>
 	  <entry>
 	    Number of cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>RemovePodcast</title>
+  <subtitle>Delete podcast audio from the remote archive</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_REMOVE_PODCAST</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Delete Podcast</code>, Feed Permission
+    or <code>Administer System</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested podcast's parent feed is not authorized for the specified
+    Rivendell user in RDAdmin->ManageUsers->PodcastFeedPermissions.
+  </para>
+  <table xml:id="ex.remove_podcast
+" frame="all">
+    <title>RemovePodcast Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    41
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ID
+	  </entry>
+	  <entry>
+	    ID of podcast item (integer)
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>RemoveRss</title>
+  <subtitle>Remove podcast RSS XML from the remote archive</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_REMOVE_RSS</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Delete Podcast</code>, Feed Permission
+    or <code>Administer System</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested feed is not authorized for the specified
+    Rivendell user in RDAdmin->ManageUsers->PodcastFeedPermissions.
+  </para>
+  <table xml:id="ex.remove_rss
+" frame="all">
+    <title>RemoveRss Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    43
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ID
+	  </entry>
+	  <entry>
+	    ID of podcast feed (integer)
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -3658,6 +3912,7 @@
   </para>
   <para>
     Required User Permissions: <code>Create Podcast</code>, Feed Permission
+    or <code>Administer System</code>
   </para>
   <para>
     A <computeroutput>404</computeroutput> error will be returned if the

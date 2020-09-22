@@ -362,30 +362,12 @@ void RDPodcast::setStatus(RDPodcast::Status status)
 }
 
 
-bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
+bool RDPodcast::dropAudio(RDFeed *feed,QString *err_text,bool log_debug) const
 {
-  RDDelete::ErrorCode conv_err;
-  QUrl url(feed->purgeUrl()+"/"+audioFilename());
-  RDDelete *conv=new RDDelete(rda->config());
-  if(!conv->urlIsSupported(url)) {
-    *err_text="unsupported url scheme";
-    delete conv;
+  if(!RemovePodcast(podcast_id)) {
     return false;
   }
-  conv->setTargetUrl(url);
-  conv_err=conv->runDelete(feed->purgeUsername(),feed->purgePassword(),
-			   rda->station()->sshIdentityFile(),
-			   feed->purgeUseIdFile(),
-			   rda->config()->logXloadDebugData());
-  *err_text=RDDelete::errorText(conv_err);
-  delete conv;
-
-  //
-  // Delete from Audio Store
-  //
-  DeletePodcast(id());
-
-  return conv_err==RDDelete::ErrorOk;
+  return DeletePodcast(podcast_id);
 }
 
 
@@ -417,6 +399,75 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
 	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_DELETE_PODCAST),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",cast_id),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RDPodcast::RemovePodcast(unsigned cast_id) const
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	   (const char *)QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_PODCAST),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),

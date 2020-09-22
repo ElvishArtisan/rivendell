@@ -85,6 +85,10 @@ class Xport : public QObject
   void SavePodcast();
   void GetPodcast();
   void DeletePodcast();
+  void PostPodcast();
+  void RemovePodcast();
+  void PostRss();
+  void RemoveRss();
   void LockLog();
   QString LogLockXml(bool result,const QString &log_name,const QString &guid,
 		     const QString &username,const QString &stationname,
@@ -100,6 +104,10 @@ class Xport : public QObject
   RDFormPost *xport_post;
   QString xport_remote_hostname;
   QHostAddress xport_remote_address;
+  QByteArray xport_curl_data;
+  int xport_curl_data_ptr;
+  friend size_t __PostRss_Readfunction_Callback(char *buffer,size_t size,
+						size_t nitems,void *userdata);
 };
 
 

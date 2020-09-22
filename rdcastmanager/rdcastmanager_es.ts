@@ -269,7 +269,7 @@ Suscripción</translation>
     <message>
         <source>Unable to delete remote audio!
 </source>
-        <translation>¡No fue posible eliminar audio remoto!
+        <translation type="obsolete">¡No fue posible eliminar audio remoto!
 </translation>
     </message>
     <message>
@@ -352,6 +352,11 @@ Log</source>
     </message>
     <message>
         <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to drop remote audio!
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

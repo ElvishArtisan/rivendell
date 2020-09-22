@@ -390,10 +390,9 @@ void ListCasts::deleteData()
   sleep(1);
   qApp->processEvents();
   RDPodcast *cast=new RDPodcast(rda->config(),item->id());
-  if(!cast->removeAudio(list_feed,&err_text,
-			rda->config()->logXloadDebugData())) {
+  if(!cast->dropAudio(list_feed,&err_text,rda->config()->logXloadDebugData())) {
     if(QMessageBox::warning(this,"RDCastManager - "+tr("Remote Error"),
-			    tr("Unable to delete remote audio!\n")+
+			    tr("Unable to drop remote audio!\n")+
 			    tr("The server said: \"")+err_text+"\".\n\n"+
 			    tr("Continue deleting cast?"),
 		 QMessageBox::Yes,QMessageBox::No)==QMessageBox::No) {

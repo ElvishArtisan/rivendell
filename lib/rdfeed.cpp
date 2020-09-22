@@ -48,23 +48,6 @@
 #include "rdwavefile.h"
 #include "rdxport_interface.h"
 
-size_t __RDFeed_Readfunction_Callback(char *buffer,size_t size,size_t nitems,
-				      void *userdata)
-{
-  RDFeed *feed=(RDFeed *)userdata;
-
-  int curlsize=size*nitems;
-  int segsize=feed->feed_xml.size()-feed->feed_xml_ptr;
-  if(segsize<curlsize) {
-    curlsize=segsize;
-  }
-  memcpy(buffer,feed->feed_xml.mid(feed->feed_xml_ptr,curlsize).constData(),
-	 curlsize);
-  feed->feed_xml_ptr+=curlsize;
-  return curlsize;
-}
-
-
 RDFeed::RDFeed(const QString &keyname,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
@@ -809,7 +792,7 @@ bool RDFeed::deleteImage(int img_id,QString *err_msg)
 }
 
 
-QString RDFeed::audioUrl(const QString &cgi_hostname,unsigned cast_id)
+QString RDFeed::audioUrl(unsigned cast_id)
 {
   RDPodcast *cast=new RDPodcast(feed_config,cast_id);
   QUrl url(baseUrl(cast->feedId()));
@@ -844,81 +827,70 @@ QString RDFeed::imageUrl(int img_id) const
 
 bool RDFeed::postXml(QString *err_msg)
 {
+  long response_code;
   CURL *curl=NULL;
   CURLcode curl_err;
-  bool ret=false;
-  char errstr[CURL_ERROR_SIZE];
-  QDateTime now=QDateTime::currentDateTime();
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_POST_RSS),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",feed_id),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
   if((curl=curl_easy_init())==NULL) {
-    *err_msg=tr("Unable to get CURL handle.");
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
     return false;
   }
 
-  feed_xml=rssXml(err_msg,now).toUtf8();
-  feed_xml_ptr=0;
-
   //
-  // Authentication
+  // Clean up
   //
-  if((QUrl(feedUrl()).scheme().toLower()=="sftp")&&
-     (!rda->station()->sshIdentityFile().isEmpty())&&purgeUseIdFile()) {
-    curl_easy_setopt(curl,CURLOPT_USERNAME,
-		     purgeUsername().toUtf8().constData());
-    curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
-		     rda->station()->sshIdentityFile().toUtf8().constData());
-    curl_easy_setopt(curl,CURLOPT_KEYPASSWD,
-		     purgePassword().toUtf8().constData());
-  }
-  else {
-    curl_easy_setopt(curl,CURLOPT_USERNAME,
-		     purgeUsername().toUtf8().constData());
-    curl_easy_setopt(curl,CURLOPT_PASSWORD,
-		     purgePassword().toUtf8().constData());
-  }
-
-  curl_easy_setopt(curl,CURLOPT_URL,feedUrl().toUtf8().constData());
-  curl_easy_setopt(curl,CURLOPT_UPLOAD,1);
-  curl_easy_setopt(curl,CURLOPT_READFUNCTION, __RDFeed_Readfunction_Callback);
-  curl_easy_setopt(curl,CURLOPT_READDATA,this);
-
-  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
-  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
-  curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent().utf8());
-  curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errstr);
-  /*
-    curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
-    curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,UploadErrorCallback);
-  */
-  switch((curl_err=curl_easy_perform(curl))) {
-  case CURLE_OK:
-  case CURLE_PARTIAL_FILE:
-    setLastBuildDateTime(now);
-    ret=true;
-    break;
-
-  default:
-    *err_msg=errstr;
-    ret=false;
-    break;
-  }
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
   curl_easy_cleanup(curl);
+  curl_formfree(first);
 
   //
-  // Update Enclosing Superfeeds
+  // Process the results
   //
-  QStringList superfeeds=isSubfeedOf();
-  for(int i=0;i<superfeeds.size();i++) {
-    QString err_msg2;
-    RDFeed *feed=new RDFeed(superfeeds.at(i),feed_config,this);
-    if(!feed->postXml(&err_msg2)) {
-      *err_msg+="\n"+err_msg2;
-    }
-    delete feed;
+  if((response_code<200)||(response_code>299)) {
+    return false;
   }
 
-  return ret;
+  return true;
 }
 
 
@@ -936,8 +908,74 @@ bool RDFeed::postXmlConditional(const QString &caption,QWidget *widget)
 }
 
 
-bool RDFeed::deleteXml(QString *err_msg)
+bool RDFeed::removeRss(QString *err_msg)
 {
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_RSS),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",feed_id),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
+
+  /*
   RDDelete::ErrorCode conv_err;
   RDDelete *conv=new RDDelete(rda->config());
   if(!conv->urlIsSupported(feedUrl())) {
@@ -954,6 +992,7 @@ bool RDFeed::deleteXml(QString *err_msg)
   delete conv;
 
   return conv_err==RDDelete::ErrorOk;
+  */
 }
 
 
@@ -995,11 +1034,7 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
   QString err_msg;
   QString tmpfile;
   QString destfile;
-  QString sql;
-  RDSqlQuery *q;
   RDPodcast *cast=NULL;
-  RDUpload *upload=NULL;
-  RDUpload::ErrorCode upload_err;
   RDAudioConvert::ErrorCode audio_conv_err;
   RDAudioExport::ErrorCode export_err;
 
@@ -1060,47 +1095,23 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
   }
   delete settings;
   delete conv;
-
-  //
-  // Upload
-  //
-  emit postProgressChanged(2);
-  QFile file(tmpfile);
-  int length=file.size();
-  unsigned cast_id=CreateCast(&destfile,length,cut->length());
-  delete cut;
-  cast=new RDPodcast(feed_config,cast_id);
-  upload=new RDUpload(rda->config(),this);
-  upload->setSourceFile(tmpfile);
-  upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
-  switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),
-				       rda->station()->sshIdentityFile(),
-				       purgeUseIdFile(),
-				       rda->config()->logXloadDebugData()))) {
-  case RDUpload::ErrorOk:
-    *err=RDFeed::ErrorOk;
-    break;
-
-  default:
-    *err=RDFeed::ErrorUploadFailed;
-    sql=QString().sprintf("delete from PODCASTS where ID=%u",cast_id);
-    q=new RDSqlQuery(sql);
-    delete q;
-    delete upload;
-    delete cast;
-    *err=RDFeed::ErrorUploadFailed;
-    unlink(tmpfile);
-    emit postProgressChanged(5);
-    return 0;
-  }
-  emit postProgressChanged(3);
+  postProgressChanged(2);
 
   //
   // Save to Audio Store
   //
+  QFile file(tmpfile);
+  int length=file.size();
+  unsigned cast_id=CreateCast(&destfile,length,cut->length());
+  cast=new RDPodcast(feed_config,cast_id);
   SavePodcast(cast_id,tmpfile);
   unlink(tmpfile);
-  delete upload;
+
+  //
+  // Upload to remote archive
+  //
+  PostPodcast(cast_id);
+  postProgressChanged(3);
 
   //
   // Set default cast parameters
@@ -1109,11 +1120,14 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
   cast->setItemTitle(cart->title());
   cast->setItemImageId(defaultItemImageId());
   delete cart;
+  delete cut;
   delete cast;
-
   emit postProgressChanged(4);
-  postXml(&err_msg);
 
+  //
+  // Update posted XML
+  //
+  postXml(&err_msg);
   emit postProgressChanged(5);
 
   return cast_id;
@@ -1123,20 +1137,16 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
 unsigned RDFeed::postFile(const QString &srcfile,Error *err)
 {
   QString err_msg;
-  QString sql;
-  RDSqlQuery *q;
   QString cmd;
   QString tmpfile;
   QString tmpfile2;
   QString destfile;
   int time_length=0;
-  RDUpload *upload=NULL;
-  RDUpload::ErrorCode upload_err;
   RDWaveFile *wave=NULL;
   RDWaveData wavedata;
   unsigned audio_time=0;
 
-  emit postProgressRangeChanged(0,4);
+  emit postProgressRangeChanged(0,6);
   emit postProgressChanged(0);
 
   //
@@ -1153,7 +1163,6 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
   settings->setBitRate(uploadBitRate());
   settings->setNormalizationLevel(normalizeLevel()/100);
   conv->setDestinationSettings(settings);
-
   emit postProgressChanged(1);
 
   switch(conv->convert()) {
@@ -1171,7 +1180,7 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
     delete conv;
     *err=RDFeed::ErrorUnsupportedType;
     unlink(tmpfile);
-    emit postProgressChanged(4);
+    emit postProgressChanged(6);
     return 0;
 
   case RDAudioConvert::ErrorNoSource:
@@ -1187,56 +1196,30 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
     delete conv;
     *err=RDFeed::ErrorGeneral;
     unlink(tmpfile);
-    emit postProgressChanged(4);
+    emit postProgressChanged(6);
     return 0;
   }
   delete settings;
   delete conv;
-
-  //
-  // Upload
-  //
   emit postProgressChanged(2);
-
-  QFile file(tmpfile);
-  int length=file.size();
-
-  unsigned cast_id=CreateCast(&destfile,length,time_length);
-  RDPodcast *cast=new RDPodcast(feed_config,cast_id);
-  upload=new RDUpload(rda->config(),this);
-  upload->setSourceFile(tmpfile);
-  upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
-  switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),
-				       rda->station()->sshIdentityFile(),
-				       purgeUseIdFile(),
-				       rda->config()->logXloadDebugData()))) {
-  case RDUpload::ErrorOk:
-    sql=QString().sprintf("update PODCASTS set AUDIO_TIME=%u where ID=%u",
-			  audio_time,cast_id);
-    q=new RDSqlQuery(sql);
-    delete q;
-    break;
-
-  default:
-    *err=RDFeed::ErrorUploadFailed;
-    sql=QString().sprintf("delete from PODCASTS where ID=%u",cast_id);
-    q=new RDSqlQuery(sql);
-    delete q;
-    delete upload;
-    delete cast;
-    *err=RDFeed::ErrorUploadFailed;
-    unlink(tmpfile);
-    emit postProgressChanged(4);
-    return 0;
-  }
-  delete upload;
 
   //
   // Save to Audio Store
   //
+  QFile file(tmpfile);
+  int length=file.size();
+  unsigned cast_id=CreateCast(&destfile,length,time_length);
+  RDPodcast *cast=new RDPodcast(feed_config,cast_id);
   SavePodcast(cast_id,tmpfile);
   unlink(QString(tmpfile)+".wav");
   unlink(tmpfile);
+  emit postProgressChanged(3);
+
+  //
+  // Upload to remote archive
+  //
+  PostPodcast(cast_id);
+  postProgressChanged(4);
 
   //
   // Set default cast parameters
@@ -1247,13 +1230,17 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
   else {
     cast->setItemTitle(srcfile.split("/").last());
   }
+  cast->setAudioTime(audio_time);
   cast->setItemImageId(defaultItemImageId());
   delete cast;
+  emit postProgressChanged(5);
 
-  emit postProgressChanged(3);
+  //
+  //
+  // Update posted XML
+  //
   postXml(&err_msg);
-
-  emit postProgressChanged(4);
+  emit postProgressChanged(6);
 
   *err=RDFeed::ErrorOk;
   return cast_id;
@@ -1264,17 +1251,17 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
 			 bool stop_at_stop,int start_line,int end_line,
 			 RDFeed::Error *err)
 {
-  QString sql;
-  RDSqlQuery *q=NULL;
   QString tmpfile;
   QString destfile;
   QString err_msg;
-  RDUpload *upload=NULL;
-  RDUpload::ErrorCode upload_err;
   RDRenderer *renderer=NULL;
   RDSettings *settings=NULL;
   RDLogEvent *log_event=NULL;
 
+  feed_render_start_line=start_line;
+  feed_render_end_line=end_line;
+
+  emit postProgressRangeChanged(0,4+(end_line-start_line));
   emit postProgressChanged(0);
 
   //
@@ -1288,8 +1275,6 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
     return 0;
   }
 
-  emit postProgressRangeChanged(0,3+log_event->size());
-
   //
   // Render Log
   //
@@ -1301,7 +1286,6 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   settings->setSampleRate(uploadSampleRate());
   settings->setBitRate(uploadBitRate());
   settings->setNormalizationLevel(normalizeLevel()/100);
-
   renderer=new RDRenderer(this);
   connect(renderer,SIGNAL(progressMessageSent(const QString &)),
 	  this,SLOT(renderMessage(const QString &)));
@@ -1318,52 +1302,24 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
     return 0;
   }
   delete renderer;
-
-  emit postProgressChanged(1+log_event->size());
+  emit postProgressChanged(1+(end_line-start_line));
 
   //
-  // Upload Rendered File
+  // Save to Audio Store
   //
   QFile f(tmpfile);
   unsigned cast_id=
     CreateCast(&destfile,f.size(),log_event->length(0,log_event->size()));
   RDPodcast *cast=new RDPodcast(feed_config,cast_id);
-  upload=new RDUpload(rda->config(),this);
-  upload->setSourceFile(tmpfile);
-  upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
-  switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),
-				       rda->station()->sshIdentityFile(),
-				       purgeUseIdFile(),
-				       rda->config()->logXloadDebugData()))) {
-  case RDUpload::ErrorOk:
-    sql=QString().sprintf("update PODCASTS set AUDIO_TIME=%u where ID=%u",
-			  log_event->length(0,log_event->size()),cast_id);
-    q=new RDSqlQuery(sql);
-    delete q;
-    break;
-
-  default:
-    *err=RDFeed::ErrorUploadFailed;
-    sql=QString().sprintf("delete from PODCASTS where ID=%u",cast_id);
-    q=new RDSqlQuery(sql);
-    delete q;
-    delete upload;
-    delete cast;
-    delete settings;
-    delete log_event;
-    *err=RDFeed::ErrorUploadFailed;
-    unlink(tmpfile);
-    emit postProgressChanged(3+log_event->size());
-    return 0;
-  }
-
-  emit postProgressChanged(2+log_event->size());
-
-  //
-  // Save to Audio Store
-  //
   SavePodcast(cast_id,tmpfile);
   unlink(tmpfile);
+  emit postProgressChanged(2+(end_line-start_line));
+
+  //
+  // Save to remote archive
+  //
+  PostPodcast(cast_id);
+  emit postProgressChanged(3+(end_line-start_line));
 
   //
   // Set default cast parameters
@@ -1376,16 +1332,14 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
     cast->setItemTitle(log->description());
   }
   cast->setItemImageId(defaultItemImageId());
+  cast->setAudioTime(log_event->length(start_line,1+end_line));
   delete log;
 
   postXml(&err_msg);
-
   *err=RDFeed::ErrorOk;
-
-  emit postProgressChanged(3+log_event->size());
+  emit postProgressChanged(4+(end_line-start_line));
 
   delete cast;
-  delete upload;
   delete settings;
   delete log_event;
   unlink(tmpfile);
@@ -1683,7 +1637,9 @@ void RDFeed::renderMessage(const QString &msg)
 
 void RDFeed::renderLineStartedData(int lineno,int total_lines)
 {
-  emit postProgressChanged(lineno+1);
+  if((lineno>=feed_render_start_line)&&(lineno<=feed_render_end_line)) {
+    emit postProgressChanged(1+(lineno-feed_render_start_line));
+  }
 }
 
 
@@ -1716,6 +1672,75 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"FILENAME",
 	       CURLFORM_FILE,src_filename.toUtf8().constData(),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RDFeed::PostPodcast(unsigned cast_id) const
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_POST_PODCAST),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",cast_id),
 	       CURLFORM_END);
 
   //
@@ -1924,8 +1949,7 @@ QString RDFeed::ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
   }
   ret.replace("%ITEM_EXPLICIT%",explicit_str);
   ret.replace("%ITEM_AUDIO_URL%",
-	      RDXmlEscape(audioUrl(feed_cgi_hostname,
-				   item_q->value(14).toUInt())));
+	      RDXmlEscape(audioUrl(item_q->value(14).toUInt())));
   ret.replace("%ITEM_AUDIO_LENGTH%",item_q->value(11).toString());
   ret.replace("%ITEM_AUDIO_TIME%",
 	      RDGetTimeLength(item_q->value(12).toInt(),false,false));

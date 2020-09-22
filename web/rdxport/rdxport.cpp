@@ -308,6 +308,22 @@ void Xport::ripcConnectedData(bool state)
     DeletePodcast();
     break;
 
+  case RDXPORT_COMMAND_POST_PODCAST:
+    PostPodcast();
+    break;
+
+  case RDXPORT_COMMAND_REMOVE_PODCAST:
+    RemovePodcast();
+    break;
+
+  case RDXPORT_COMMAND_POST_RSS:
+    PostRss();
+    break;
+
+  case RDXPORT_COMMAND_REMOVE_RSS:
+    RemoveRss();
+    break;
+
   default:
     printf("Content-type: text/html\n\n");
     printf("rdxport: missing/invalid command\n");

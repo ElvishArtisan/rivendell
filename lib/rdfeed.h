@@ -132,11 +132,12 @@ class RDFeed : public QObject
   int importImageFile(const QString &pathname,QString *err_msg,
 		      QString desc="") const;
   bool deleteImage(int img_id,QString *err_msg);
-  QString audioUrl(const QString &cgi_hostname,unsigned cast_id);
+  QString audioUrl(unsigned cast_id);
   QString imageUrl(int img_id) const;
   bool postXml(QString *err_msg);
   bool postXmlConditional(const QString &caption,QWidget *widget);
-  bool deleteXml(QString *err_msg);
+  //bool deleteXml(QString *err_msg);
+  bool removeRss(QString *err_msg);
   bool deleteImages(QString *err_msg);
   unsigned postCut(const QString &cutname,Error *err);
   unsigned postFile(const QString &srcfile,Error *err);
@@ -161,6 +162,7 @@ class RDFeed : public QObject
 
  private:
   bool SavePodcast(unsigned cast_id,const QString &src_filename) const;
+  bool PostPodcast(unsigned cast_id) const;
   unsigned CreateCast(QString *filename,int bytes,int msecs) const;
   QString ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q,
 				  const QDateTime &build_datetime);
@@ -178,8 +180,8 @@ class RDFeed : public QObject
   RDConfig *feed_config;
   QByteArray feed_xml;
   int feed_xml_ptr;
-  friend size_t __RDFeed_Readfunction_Callback(char *buffer,size_t size,
-					       size_t nitems,void *userdata);
+  int feed_render_start_line;
+  int feed_render_end_line;
 };
 
 

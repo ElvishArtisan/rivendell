@@ -1437,7 +1437,7 @@ void MainObject::DeleteCast()
 
   RDFeed *feed=new RDFeed(cast_feed_id,rda->config());
   RDPodcast *cast=new RDPodcast(rda->config(),cast_cast_id);
-  cast->removeAudio(feed,&errs,rda->config()->logXloadDebugData());
+  cast->dropAudio(feed,&errs,rda->config()->logXloadDebugData());
   delete cast;
   delete feed;
 

@@ -4835,6 +4835,10 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
         <source>Public URL</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Repost</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListGpis</name>

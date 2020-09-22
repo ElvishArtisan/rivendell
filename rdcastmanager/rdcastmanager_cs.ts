@@ -330,7 +330,7 @@ Podcast trotzdem löschen?</translation>
     <message>
         <source>Unable to delete remote audio!
 </source>
-        <translation>Nelze smazat soubory se zvukem na jiném serveru!</translation>
+        <translation type="obsolete">Nelze smazat soubory se zvukem na jiném serveru!</translation>
     </message>
     <message>
         <source>The server said: &quot;</source>
@@ -412,6 +412,11 @@ Log</source>
     </message>
     <message>
         <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to drop remote audio!
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

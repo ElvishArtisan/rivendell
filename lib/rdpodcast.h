@@ -74,7 +74,7 @@ class RDPodcast
   void setExpirationDateTime(const QDateTime &dt) const;
   RDPodcast::Status status() const;
   void setStatus(RDPodcast::Status status);
-  bool removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const;
+  bool dropAudio(RDFeed *feed,QString *err_text,bool log_debug) const;
   static QString guid(const QString &url,const QString &filename,
 		      unsigned feed_id,unsigned cast_id);
   static QString guid(const QString &full_url,
@@ -82,6 +82,7 @@ class RDPodcast
 
  private:
   bool DeletePodcast(unsigned cast_id) const;
+  bool RemovePodcast(unsigned cast_id) const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,const QDateTime &datetime,const QString &value) const;

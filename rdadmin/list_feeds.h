@@ -40,6 +40,7 @@ class ListFeeds : public RDDialog
   void editData();
   void deleteData();
   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void repostData();
   void closeData();
 
  protected:
@@ -52,6 +53,7 @@ class ListFeeds : public RDDialog
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;
+  QPushButton *list_repost_button;
   QPushButton *list_close_button;
 };
 
