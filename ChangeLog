@@ -20299,3 +20299,7 @@
 	* Added a 'RemovePodcast' method to the Web API.
 	* Added a 'PostRss' method to the Web API.
 	* Added a 'RemoveRss' method to the Web API.
+2020-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the type of the 'FEED_IMAGES.DATA' database field
+	to 'longblob'.
+	* Incremented the database version to 336.

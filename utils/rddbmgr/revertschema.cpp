@@ -41,6 +41,19 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 336
+  //
+  if((cur_schema==336)&&(set_schema<cur_schema)) {
+    sql=QString("alter table FEED_IMAGES modify column ")+
+      "DATA mediumblob not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 335
   //
   if((cur_schema==335)&&(set_schema<cur_schema)) {
