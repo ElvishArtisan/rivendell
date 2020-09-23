@@ -599,7 +599,7 @@ void ListCasts::RefreshItem(RDListViewItem *item)
     "FEED_IMAGES.DATA "+              // 12
     "from PODCASTS left join FEEDS "+
     "on PODCASTS.FEED_ID=FEEDS.ID left join FEED_IMAGES "+
-    "on FEEDS.ID=FEED_IMAGES.FEED_ID where "+
+    "on PODCASTS.ITEM_IMAGE_ID=FEED_IMAGES.ID where "+
     QString().sprintf("PODCASTS.ID=%d",item->id());
   q=new RDSqlQuery(sql);
   if(q->first()) {

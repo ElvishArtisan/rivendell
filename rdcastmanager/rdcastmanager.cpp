@@ -286,7 +286,7 @@ void MainWidget::RefreshItem(RDListViewItem *item)
     "FEEDS.BASE_URL,"+              // 03
     "FEED_IMAGES.DATA "+            // 04
     "from FEEDS left join FEED_IMAGES "+
-    "on FEEDS.ID=FEED_IMAGES.FEED_ID where "+
+    "on FEEDS.CHANNEL_IMAGE_ID=FEED_IMAGES.ID where "+
     "FEEDS.KEY_NAME=\""+RDEscapeString(item->text(1))+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
