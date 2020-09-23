@@ -167,9 +167,52 @@ void ListImages::deleteData()
   QString err_msg="";
   QString sql;
   RDSqlQuery *q=NULL;
+  int channel_ids=0;
+  int channel_default_ids=0;
+  int item_ids=0;
 
   if((row=SelectedRow())>=0) {
-    sql=QString("select FILE_EXTENSION from FEED_IMAGES where ")+
+    sql=QString("select ")+
+      "ID "+
+      "from FEEDS where "+
+      QString().sprintf("CHANNEL_IMAGE_ID=%d",list_model->imageId(row));
+    q=new RDSqlQuery(sql);
+    channel_ids=q->size();
+    delete q;
+
+    sql=QString("select ")+
+      "ID "+
+      "from FEEDS where "+
+      QString().sprintf("DEFAULT_ITEM_IMAGE_ID=%d",list_model->imageId(row));
+    q=new RDSqlQuery(sql);
+    channel_default_ids=q->size();
+    delete q;
+
+    sql=QString("select ")+
+      "ID "+
+      "from PODCASTS where "+
+      QString().sprintf("ITEM_IMAGE_ID=%d",list_model->imageId(row));
+    q=new RDSqlQuery(sql);
+    item_ids=q->size();
+    delete q;
+
+    if((channel_ids>0)||(channel_default_ids>0)||(item_ids>0)) {
+      QString msg=tr("Image is in use as")+" ";
+      if(channel_ids>0) {
+	msg+=tr("a channel image")+", ";
+      }
+      if(channel_default_ids>0) {
+	msg+=tr("a default item image")+", ";
+      }
+      if(item_ids>0) {
+	msg+=tr("an item image")+", ";
+      }
+      msg=msg.left(msg.length()-2)+".";
+      QMessageBox::warning(this,"RDAdmin - "+tr("Image in Use"),msg);
+      return;
+    }
+
+    sql=QString("select ID from FEED_IMAGES where ")+
       QString().sprintf("ID=%d",list_model->imageId(row));
     q=new RDSqlQuery(sql);
     if(q->first()) {

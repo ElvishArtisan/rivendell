@@ -20306,3 +20306,9 @@
 2020-09-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'PostImage' method to the Web API.
 	* Added a 'RemoveImage' method to the Web API.
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'FEEDS.CHANNEL_IMAGE_ID_IDX', 'FEEDS.DEFAULT_ITEM_IMAGE_ID_IDX'
+	and 'PODCASTS.ITEM_IMAGE_ID_IDX' indexes to the database.
+	* Incremented the database version to 337.
+	* Added a sanity check to the 'Image Manager' dialog in
+	rdadmin(1) to prevent deletion of in-use images.

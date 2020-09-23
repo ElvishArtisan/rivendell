@@ -10263,10 +10263,29 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
+
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<337)&&(set_schema>cur_schema)) {
+    sql=QString("alter table FEEDS ")+
+      "add index CHANNEL_IMAGE_ID_IDX(CHANNEL_IMAGE_ID)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "add index DEFAULT_ITEM_IMAGE_ID_IDX(DEFAULT_ITEM_IMAGE_ID)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS ")+
+      "add index ITEM_IMAGE_ID_IDX(ITEM_IMAGE_ID)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
 
+    WriteSchemaVersion(++cur_schema);
+  }
 
 
   // NEW SCHEMA UPDATES GO HERE...

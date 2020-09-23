@@ -5216,6 +5216,26 @@ Você ainda quer Deletar?</translation>
         <source>Image upload failed!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Image is in use as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>a channel image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>a default item image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>an item image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image in Use</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListLiveWireGpios</name>
