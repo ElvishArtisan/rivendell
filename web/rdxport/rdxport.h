@@ -89,6 +89,8 @@ class Xport : public QObject
   void RemovePodcast();
   void PostRss();
   void RemoveRss();
+  void PostImage();
+  void RemoveImage();
   void LockLog();
   QString LogLockXml(bool result,const QString &log_name,const QString &guid,
 		     const QString &username,const QString &stationname,

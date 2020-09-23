@@ -58,12 +58,10 @@ ListImages::ListImages(RDImagePickerModel *model,QWidget *parent)
 
   list_view_button=new QPushButton(tr("View"),this);
   list_view_button->setFont(buttonFont());
-  //  list_view_button->setDisabled(true);
   connect(list_view_button,SIGNAL(clicked()),this,SLOT(viewData()));
 
   list_delete_button=new QPushButton(tr("Delete"),this);
   list_delete_button->setFont(buttonFont());
-  //  list_delete_button->setDisabled(true);
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   list_close_button=new QPushButton(tr("Close"),this);
@@ -123,18 +121,12 @@ void ListImages::addData()
     // Upload the image
     //
     f0=filename.split(".",QString::SkipEmptyParts);
-    if(!UploadRemoteImage(filename,list_feed->purgeUrl()+"/"+
-			  RDFeed::imageFilename(list_feed->id(),
-						img_id,f0.last()),
-			  list_feed->purgeUsername(),
-			  list_feed->purgePassword(),
-			  rda->station()->sshIdentityFile(),
-			  list_feed->purgeUseIdFile(),
-			  &err_msg)){
+    if(!list_feed->postImage(img_id)) {
       QMessageBox::warning(this,"RDAdmin - "+tr("Upload Error"),
 			   tr("Image upload failed!")+"\n"+
 			   "["+err_msg+"].");
       list_feed->deleteImage(img_id,&err_msg);
+      return;
     }
 
     //
@@ -188,26 +180,6 @@ void ListImages::deleteData()
 	   QMessageBox::Yes) {
 	  return;
 	}
-	
-	if(!DeleteRemoteImage(list_feed->purgeUrl()+"/"+
-			      RDFeed::imageFilename(list_feed->id(),
-						    list_model->imageId(row),
-						    q->value(0).toString()),
-			      list_feed->purgeUsername(),
-			      list_feed->purgePassword(),
-			      rda->station()->sshIdentityFile(),
-			      list_feed->purgeUseIdFile(),&err_msg)) {
-	  if(QMessageBox::information(this,"RDAdmin - "+tr("Delete Error"),
-				      tr("Unable to delete remote file!")+"\n"+
-				      "["+err_msg+"].\n"+
-				      "\n"+
-				      tr("Delete local data?"),
-				      QMessageBox::Yes,QMessageBox::No)!=
-	     QMessageBox::Yes) {
-	    return;
-	  }
-	}
-
 	if(list_feed->deleteImage(list_model->imageId(row),&err_msg)) {
 	  list_model->refresh();
 	}
@@ -275,43 +247,4 @@ int ListImages::SelectedRow() const
   }
 
   return -1;
-}
-
-
-bool ListImages::UploadRemoteImage(const QString &filename,const QString &url,
-				   const QString &username,
-				   const QString &password,
-				   const QString &id_filename,bool use_id_file,
-				   QString *err_msg)
-{
-  RDUpload::ErrorCode err_code;
-  RDUpload *upload=new RDUpload(rda->config(),this);
-  upload->setSourceFile(filename);
-  upload->setDestinationUrl(url);
-  QProgressDialog *pd=new QProgressDialog(tr("Uploading image..."),"",
-					  0,upload->totalSteps(),this);
-  pd->setWindowTitle("RDAdmin");
-  connect(upload,SIGNAL(progressChanged(int)),pd,SLOT(setValue(int)));
-  err_code=upload->runUpload(username,password,id_filename,use_id_file,false);
-  delete pd;
-  delete upload;
-
-  return err_code==RDUpload::ErrorOk;
-}
-
-
-bool ListImages::DeleteRemoteImage(const QString &url,const QString &username,
-				   const QString &password,
-				   const QString &id_filename,bool use_id_file,
-				   QString *err_msg)
-{
-  RDDelete::ErrorCode err_code;
-
-  RDDelete *del=new RDDelete(rda->config(),this);
-  del->setTargetUrl(url);
-  err_code=del->runDelete(username,password,id_filename,use_id_file,false);
-  *err_msg=RDDelete::errorText(err_code);
-  delete del;
-
-  return err_code==RDDelete::ErrorOk;
 }

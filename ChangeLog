@@ -20303,3 +20303,6 @@
 	* Modified the type of the 'FEED_IMAGES.DATA' database field
 	to 'longblob'.
 	* Incremented the database version to 336.
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PostImage' method to the Web API.
+	* Added a 'RemoveImage' method to the Web API.

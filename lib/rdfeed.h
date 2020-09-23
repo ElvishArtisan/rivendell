@@ -129,6 +129,7 @@ class RDFeed : public QObject
   void setUploadMimetype(const QString &str);
   int normalizeLevel() const;
   void setNormalizeLevel(int lvl) const;
+  QByteArray imageData(int img_id) const;
   int importImageFile(const QString &pathname,QString *err_msg,
 		      QString desc="") const;
   bool deleteImage(int img_id,QString *err_msg);
@@ -136,8 +137,9 @@ class RDFeed : public QObject
   QString imageUrl(int img_id) const;
   bool postXml(QString *err_msg);
   bool postXmlConditional(const QString &caption,QWidget *widget);
-  //bool deleteXml(QString *err_msg);
   bool removeRss(QString *err_msg);
+  bool postImage(int img_id) const;
+  bool removeImage(int img_id) const;
   bool deleteImages(QString *err_msg);
   unsigned postCut(const QString &cutname,Error *err);
   unsigned postFile(const QString &srcfile,Error *err);

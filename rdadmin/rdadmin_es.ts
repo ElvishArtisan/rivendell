@@ -5429,22 +5429,6 @@ Do you still want to delete it?</source>
         <source>Image upload failed!</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Delete Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to delete remote file!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete local data?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Uploading image...</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ListLiveWireGpios</name>

@@ -324,6 +324,14 @@ void Xport::ripcConnectedData(bool state)
     RemoveRss();
     break;
 
+  case RDXPORT_COMMAND_POST_IMAGE:
+    PostImage();
+    break;
+
+  case RDXPORT_COMMAND_REMOVE_IMAGE:
+    RemoveImage();
+    break;
+
   default:
     printf("Content-type: text/html\n\n");
     printf("rdxport: missing/invalid command\n");

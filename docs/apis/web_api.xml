@@ -2853,6 +2853,63 @@
 </sect1>
 
 <sect1>
+  <title>PostImage</title>
+  <subtitle>Upload a podcast image to the remote archive</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_POST_IMAGE</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Administer System</code>
+  </para>
+  <table xml:id="ex.post_image
+" frame="all">
+    <title>PostRss Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    44
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ID
+	  </entry>
+	  <entry>
+	    ID of image (integer)
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
   <title>PostPodcast</title>
   <subtitle>Upload podcast audio from the audio store to the remote archive</subtitle>
   <para>
@@ -3158,6 +3215,63 @@
 	  </entry>
 	  <entry>
 	    Number of cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>RemoveImage</title>
+  <subtitle>Remove a podcast image from the remote archive</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_REMOVE_IMAGE</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Administer System</code>
+  </para>
+  <table xml:id="ex.remove_image
+" frame="all">
+    <title>PostRss Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    45
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ID
+	  </entry>
+	  <entry>
+	    ID of image (integer)
 	  </entry>
 	  <entry>
 	    Mandatory
