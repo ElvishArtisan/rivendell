@@ -466,6 +466,9 @@ EXTRA_DIST = admin.xpm\
              rml3.xpm\
              rml5.png\
              rml5.xpm\
+             rss.png\
+             rss.xcf\
+             rss.xpm\
              split.xpm\
              switch.xpm\
              switch2.xpm\

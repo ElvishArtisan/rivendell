@@ -20320,3 +20320,10 @@
 	dialog in rdadmin(1).
 	* Added an 'Unpost' button to the 'Rivendell Feed List' dialog
 	in rdadmin(1).
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Replaced the feed summary status icon with the feed image in the
+	feed list in rdcastmanager(1).
+	* Moved the post status icon to a new 'Status' column in the item
+	list on the 'Podcast Item List' dialog in rdcastmanager(1).
+	* Added the item icon to the start of each entry in the item list
+	on the 'Podcast Item List' dialog in rdcastmanager(1).

@@ -385,6 +385,10 @@ Log</source>
         <source>Unable to update remote XML data!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LogDialog</name>

@@ -56,6 +56,7 @@ class MainWidget : public RDWidget
   QPixmap *cast_rivendell_map;
   QPixmap *cast_greencheckmark_map;
   QPixmap *cast_redx_map;
+  QPixmap *cast_rdcastmanager_32x32_map;
   QPushButton *cast_open_button;
   QPushButton *cast_copy_button;
   QPushButton *cast_close_button;

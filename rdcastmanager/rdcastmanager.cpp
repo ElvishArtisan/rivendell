@@ -37,6 +37,7 @@
 #include "../icons/rdcastmanager-22x22.xpm"
 #include "../icons/greencheckmark.xpm"
 #include "../icons/redx.xpm"
+#include "../icons/rdcastmanager-32x32.xpm"
 
 //
 // Global Resources
@@ -99,6 +100,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   setWindowIcon(*cast_rivendell_map);
   cast_greencheckmark_map=new QPixmap(greencheckmark_xpm);
   cast_redx_map=new QPixmap(redx_xpm);
+  cast_rdcastmanager_32x32_map=new QPixmap(rdcastmanager_32x32_xpm);
 
   //
   // Notifications
@@ -278,12 +280,14 @@ void MainWidget::RefreshItem(RDListViewItem *item)
   int total=0;
 
   sql=QString("select ")+
-    "CHANNEL_TITLE,"+    // 00
-    "IS_SUPERFEED,"+     // 01
-    "ID,"+               // 02
-    "BASE_URL "+         // 03
-    "from FEEDS where "+
-    "KEY_NAME=\""+RDEscapeString(item->text(1))+"\"";
+    "FEEDS.CHANNEL_TITLE,"+         // 00
+    "FEEDS.IS_SUPERFEED,"+          // 01
+    "FEEDS.ID,"+                    // 02
+    "FEEDS.BASE_URL,"+              // 03
+    "FEED_IMAGES.DATA "+            // 04
+    "from FEEDS left join FEED_IMAGES "+
+    "on FEEDS.ID=FEED_IMAGES.FEED_ID where "+
+    "FEEDS.KEY_NAME=\""+RDEscapeString(item->text(1))+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString().sprintf("select STATUS from PODCASTS where FEED_ID=%u",
@@ -302,11 +306,12 @@ void MainWidget::RefreshItem(RDListViewItem *item)
       }
     }
     delete q1;
-    if(active==total) {
-      item->setPixmap(0,*cast_greencheckmark_map);
+    if(q->value(4).isNull()) {
+      item->setPixmap(0,*cast_rdcastmanager_32x32_map);
     }
     else {
-      item->setPixmap(0,*cast_redx_map);
+      QImage img=QImage::fromData(q->value(4).toByteArray());
+      item->setPixmap(0,QPixmap::fromImage(img.scaled(32,32)));
     }
     item->setText(2,q->value(0).toString());
     if(RDBool(q->value(1).toString())) {

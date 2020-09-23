@@ -40,6 +40,7 @@
 #include "../icons/greenball.xpm"
 #include "../icons/redball.xpm"
 #include "../icons/whiteball.xpm"
+#include "../icons/rdcastmanager-32x32.xpm"
 
 ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   : RDDialog(parent)
@@ -62,6 +63,7 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_greenball_map=new QPixmap(greenball_xpm);
   list_redball_map=new QPixmap(redball_xpm);
   list_whiteball_map=new QPixmap(whiteball_xpm);
+  list_rdcastmanager_32x32_map=new QPixmap(rdcastmanager_32x32_xpm);
 
   //
   // Notifications
@@ -125,20 +127,24 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_casts_view->setColumnAlignment(0,Qt::AlignCenter);
   list_casts_view->addColumn(tr("Title"));
   list_casts_view->setColumnAlignment(1,Qt::AlignLeft);
+
+  list_casts_view->addColumn(tr("Status"));
+  list_casts_view->setColumnAlignment(2,Qt::AlignCenter);
+
   list_casts_view->addColumn(tr("Start"));
-  list_casts_view->setColumnAlignment(2,Qt::AlignLeft);
+  list_casts_view->setColumnAlignment(3,Qt::AlignLeft);
   list_casts_view->addColumn(tr("Expiration"));
-  list_casts_view->setColumnAlignment(3,Qt::AlignCenter);
+  list_casts_view->setColumnAlignment(4,Qt::AlignCenter);
   list_casts_view->addColumn(tr("Length"));
-  list_casts_view->setColumnAlignment(4,Qt::AlignRight);
+  list_casts_view->setColumnAlignment(5,Qt::AlignRight);
   list_casts_view->addColumn(tr("Feed"));
-  list_casts_view->setColumnAlignment(5,Qt::AlignLeft);
+  list_casts_view->setColumnAlignment(6,Qt::AlignLeft);
   list_casts_view->addColumn(tr("Category"));
-  list_casts_view->setColumnAlignment(6,Qt::AlignCenter);
+  list_casts_view->setColumnAlignment(7,Qt::AlignCenter);
   list_casts_view->addColumn(tr("Posted By"));
-  list_casts_view->setColumnAlignment(7,Qt::AlignLeft);
-  list_casts_view->addColumn(tr("SHA1"));
   list_casts_view->setColumnAlignment(8,Qt::AlignLeft);
+  list_casts_view->addColumn(tr("SHA1"));
+  list_casts_view->setColumnAlignment(9,Qt::AlignLeft);
   connect(list_casts_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
@@ -589,56 +595,65 @@ void ListCasts::RefreshItem(RDListViewItem *item)
     "PODCASTS.ORIGIN_LOGIN_NAME,"+    // 08
     "PODCASTS.ORIGIN_STATION,"+       // 09
     "PODCASTS.ORIGIN_DATETIME,"+      // 10
-    "PODCASTS.SHA1_HASH "+            // 11
+    "PODCASTS.SHA1_HASH,"+            // 11
+    "FEED_IMAGES.DATA "+              // 12
     "from PODCASTS left join FEEDS "+
-    "on PODCASTS.FEED_ID=FEEDS.ID where "+
+    "on PODCASTS.FEED_ID=FEEDS.ID left join FEED_IMAGES "+
+    "on FEEDS.ID=FEED_IMAGES.FEED_ID where "+
     QString().sprintf("PODCASTS.ID=%d",item->id());
   q=new RDSqlQuery(sql);
   if(q->first()) {
+    if(q->value(12).isNull()) {
+      item->setPixmap(0,*list_rdcastmanager_32x32_map);
+    }
+    else {
+      QImage img=QImage::fromData(q->value(12).toByteArray());
+      item->setPixmap(0,QPixmap::fromImage(img.scaled(32,32)));
+    }
+    item->setText(1,q->value(1).toString());
     switch((RDPodcast::Status)q->value(0).toUInt()) {
       case RDPodcast::StatusActive:
 	if(q->value(2).toDateTime()<=QDateTime::currentDateTime()) {
-	  item->setPixmap(0,*list_greenball_map);
+	  item->setPixmap(2,*list_greenball_map);
 	}
 	else {
-	  item->setPixmap(0,*list_blueball_map);
+	  item->setPixmap(2,*list_blueball_map);
 	}
 	break;
 
       case RDPodcast::StatusPending:
-	item->setPixmap(0,*list_redball_map);
+	item->setPixmap(2,*list_redball_map);
 	break;
 
       case RDPodcast::StatusExpired:
-	item->setPixmap(0,*list_whiteball_map);
+	item->setPixmap(2,*list_whiteball_map);
 	break;
     }
-    item->setText(1,q->value(1).toString());
-    item->setText(2,q->value(2).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+    item->setText(3,q->value(2).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
     if(q->value(3).isNull()) {
-      item->setText(3,tr("Never"));
+      item->setText(4,tr("Never"));
     }
     else {
-      item->setText(3,q->value(3).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
+      item->setText(4,q->value(3).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
     }
-    item->setText(4,RDGetTimeLength(q->value(4).toInt(),false,false));
+    item->setText(5,RDGetTimeLength(q->value(4).toInt(),false,false));
 
-    item->setText(5,q->value(6).toString());
-    item->setText(6,q->value(7).toString());
+    item->setText(6,q->value(6).toString());
+    item->setText(7,q->value(7).toString());
     if(q->value(8).isNull()) {
-      item->setText(7,tr("unknown")+" "+tr("at")+" "+
+      item->setText(8,tr("unknown")+" "+tr("at")+" "+
 		    q->value(10).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
     }
     else {
-      item->setText(7,q->value(8).toString()+" "+tr("on")+" "+
+      item->setText(8,q->value(8).toString()+" "+tr("on")+" "+
 		    q->value(9).toString()+" "+tr("at")+" "+
 		    q->value(10).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
     }
     if(q->value(11).toString().isEmpty()) {
-      item->setText(8,tr("[none]"));
+      item->setText(9,tr("[none]"));
     }
     else {
-      item->setText(8,q->value(11).toString());
+      item->setText(9,q->value(11).toString());
     }
   }
   delete q;
