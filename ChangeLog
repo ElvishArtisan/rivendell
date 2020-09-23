@@ -20327,3 +20327,6 @@
 	list on the 'Podcast Item List' dialog in rdcastmanager(1).
 	* Added the item icon to the start of each entry in the item list
 	on the 'Podcast Item List' dialog in rdcastmanager(1).
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added the feed image to the start of each entry in the feed list
+	on the 'Rivendell Feed List' dialog in rdadmin(1).
