@@ -133,11 +133,12 @@ class RDFeed : public QObject
   int importImageFile(const QString &pathname,QString *err_msg,
 		      QString desc="") const;
   bool deleteImage(int img_id,QString *err_msg);
+  bool postPodcast(unsigned cast_id) const;
   QString audioUrl(unsigned cast_id);
   QString imageUrl(int img_id) const;
-  bool postXml(QString *err_msg);
+  bool postXml();
   bool postXmlConditional(const QString &caption,QWidget *widget);
-  bool removeRss(QString *err_msg);
+  bool removeRss();
   bool postImage(int img_id) const;
   bool removeImage(int img_id) const;
   void removeAllImages();
@@ -164,7 +165,6 @@ class RDFeed : public QObject
 
  private:
   bool SavePodcast(unsigned cast_id,const QString &src_filename) const;
-  bool PostPodcast(unsigned cast_id) const;
   unsigned CreateCast(QString *filename,int bytes,int msecs) const;
   QString ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q,
 				  const QDateTime &build_datetime);

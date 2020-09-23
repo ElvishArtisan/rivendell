@@ -448,8 +448,8 @@ void Xport::PostRss()
   for(int i=0;i<superfeeds.size();i++) {
     QString err_msg2;
     RDFeed *feed=new RDFeed(superfeeds.at(i),rda->config(),this);
-    if(!feed->postXml(&err_msg2)) {
-      err_msg+="\n"+err_msg2;
+    if(!feed->postXml()) {
+      err_msg+="\nRepost of XML failed";
     }
     delete feed;
   }

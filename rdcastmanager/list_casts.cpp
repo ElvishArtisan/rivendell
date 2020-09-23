@@ -411,10 +411,9 @@ void ListCasts::deleteData()
   q=new RDSqlQuery(sql);
   delete q;
 
-  if(!list_feed->postXml(&err_text)) {
+  if(!list_feed->postXml()) {
     QMessageBox::warning(this,"RDCastManager - "+tr("Remote Error"),
-			 tr("Unable to update remote XML data!\n")+
-			 tr("The server said: \"")+err_text+"\".");
+			 tr("Unable to update remote XML data!"));
   }
 
   pd->reset();

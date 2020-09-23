@@ -4939,10 +4939,6 @@ Wollen Sie ihn immernoch löschen?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Feeds:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Are you sure you want to delete feed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4972,6 +4968,66 @@ Wollen Sie ihn immernoch löschen?</translation>
     </message>
     <message>
         <source>&amp;Repost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feed Repost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This operation will repost all XML, image and</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>audio data to the remote archive, and thus may</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>take signficant time to complete.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Posting images...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Posting item data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Unpost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Posting RSS XML data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unposting RSS XML data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>audio data from the remote archive, and thus may</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This operation will unpost (remove) all XML, image and</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unposting item data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unposting images...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Feeds</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -75,6 +75,7 @@ class RDPodcast
   RDPodcast::Status status() const;
   void setStatus(RDPodcast::Status status);
   bool dropAudio(RDFeed *feed,QString *err_text,bool log_debug) const;
+  bool removePodcast() const;
   static QString guid(const QString &url,const QString &filename,
 		      unsigned feed_id,unsigned cast_id);
   static QString guid(const QString &full_url,
@@ -82,7 +83,6 @@ class RDPodcast
 
  private:
   bool DeletePodcast(unsigned cast_id) const;
-  bool RemovePodcast(unsigned cast_id) const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,const QDateTime &datetime,const QString &value) const;

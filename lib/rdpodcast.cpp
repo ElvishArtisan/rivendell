@@ -364,28 +364,14 @@ void RDPodcast::setStatus(RDPodcast::Status status)
 
 bool RDPodcast::dropAudio(RDFeed *feed,QString *err_text,bool log_debug) const
 {
-  if(!RemovePodcast(podcast_id)) {
+  if(!removePodcast()) {
     return false;
   }
   return DeletePodcast(podcast_id);
 }
 
 
-QString RDPodcast::guid(const QString &url,const QString &filename,
-			unsigned feed_id,unsigned cast_id)
-{
-  return url+"/"+filename+QString().sprintf("_%06u_%06u",feed_id,cast_id);
-}
-
-
-QString RDPodcast::guid(const QString &full_url,unsigned feed_id,
-			unsigned cast_id)
-{
-  return full_url+QString().sprintf("_%06u_%06u",feed_id,cast_id);
-}
-
-
-bool RDPodcast::DeletePodcast(unsigned cast_id) const
+bool RDPodcast::removePodcast() const
 {
   long response_code;
   CURL *curl=NULL;
@@ -398,7 +384,7 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_DELETE_PODCAST),
+	   (const char *)QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_PODCAST),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
@@ -408,7 +394,7 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",cast_id),
+	       (const char *)QString().sprintf("%u",podcast_id),
 	       CURLFORM_END);
 
   //
@@ -454,7 +440,21 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
 }
 
 
-bool RDPodcast::RemovePodcast(unsigned cast_id) const
+QString RDPodcast::guid(const QString &url,const QString &filename,
+			unsigned feed_id,unsigned cast_id)
+{
+  return url+"/"+filename+QString().sprintf("_%06u_%06u",feed_id,cast_id);
+}
+
+
+QString RDPodcast::guid(const QString &full_url,unsigned feed_id,
+			unsigned cast_id)
+{
+  return full_url+QString().sprintf("_%06u_%06u",feed_id,cast_id);
+}
+
+
+bool RDPodcast::DeletePodcast(unsigned cast_id) const
 {
   long response_code;
   CURL *curl=NULL;
@@ -467,7 +467,7 @@ bool RDPodcast::RemovePodcast(unsigned cast_id) const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	   (const char *)QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_PODCAST),
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_DELETE_PODCAST),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),

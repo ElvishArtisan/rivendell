@@ -330,11 +330,6 @@ Podcast trotzdem löschen?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to update remote XML data!
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Feed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -402,6 +397,10 @@ Log</source>
     <message>
         <source>Unable to drop remote audio!
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to update remote XML data!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -20315,3 +20315,8 @@
 2020-09-22 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed the 'RDFeed::deleteImages()' method to
 	'RDFeed::removeAllImages()'.
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the 'Repost' button on the 'Rivendell Feed List'
+	dialog in rdadmin(1).
+	* Added an 'Unpost' button to the 'Rivendell Feed List' dialog
+	in rdadmin(1).

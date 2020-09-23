@@ -81,6 +81,14 @@ ListFeeds::ListFeeds(QWidget *parent)
   connect(list_repost_button,SIGNAL(clicked()),this,SLOT(repostData()));
 
   //
+  //  Unpost Button
+  //
+  list_unpost_button=new QPushButton(this);
+  list_unpost_button->setFont(buttonFont());
+  list_unpost_button->setText(tr("&Unpost"));
+  connect(list_unpost_button,SIGNAL(clicked()),this,SLOT(unpostData()));
+
+  //
   //  Close Button
   //
   list_close_button=new QPushButton(this);
@@ -107,8 +115,8 @@ ListFeeds::ListFeeds(QWidget *parent)
   list_feeds_view->setColumnAlignment(4,Qt::AlignCenter|Qt::AlignVCenter);
   list_feeds_view->addColumn(tr("Creation Date"));
   list_feeds_view->setColumnAlignment(5,Qt::AlignCenter|Qt::AlignVCenter);
-  QLabel *list_box_label=new QLabel(list_feeds_view,tr("&Feeds:"),this);
-  list_box_label->setFont(labelFont());
+  QLabel *list_box_label=new QLabel(list_feeds_view,tr("Podcast Feeds"),this);
+  list_box_label->setFont(bigLabelFont());
   list_box_label->setGeometry(14,11,85,19);
   connect(list_feeds_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
@@ -126,7 +134,7 @@ ListFeeds::~ListFeeds()
 
 QSize ListFeeds::sizeHint() const
 {
-  return QSize(800,390);
+  return QSize(800,450);
 } 
 
 
@@ -247,10 +255,9 @@ void ListFeeds::deleteData()
   //
   // Delete Remote XML
   //
-  if(!feed->removeRss(&errs)) {
+  if(!feed->removeRss()) {
     QMessageBox::warning(this,"RDAdmin - "+tr("Warning"),
-			 tr("Failed to delete remote feed XML.")+
-			 "["+errs+"].");
+			 tr("Failed to delete remote feed XML."));
   }
 
   //
@@ -299,6 +306,160 @@ void ListFeeds::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 
 void ListFeeds::repostData()
 {
+  QString sql;
+  RDSqlQuery *q=NULL;
+  RDFeed *feed=NULL;
+  int count;
+
+  RDListViewItem *item=(RDListViewItem *)list_feeds_view->selectedItem();
+  if(item==NULL) {
+    return;
+  }
+  QString keyname=item->text(0);
+  if(keyname.isEmpty()) {
+    return;
+  }
+
+  if(QMessageBox::question(this,"RDAdmin - "+tr("Feed Repost"),
+		      tr("This operation will repost all XML, image and")+"\n"+
+		      tr("audio data to the remote archive, and thus may")+"\n"+
+		      tr("take signficant time to complete.")+"\n\n"+
+			   tr("Continue?"),QMessageBox::Yes,QMessageBox::No)!=
+     QMessageBox::Yes) {
+    return;
+  }
+
+  feed=new RDFeed(keyname,rda->config(),this);
+  QProgressDialog *pd=new QProgressDialog(this);
+  pd->setCancelButton(NULL);
+
+  //
+  // Post Images
+  //
+  sql=QString("select ")+
+    "ID "+              // 00
+    "from FEED_IMAGES where "+
+    QString().sprintf("FEED_ID=%u",feed->id());
+  q=new RDSqlQuery(sql);
+  pd->setLabelText(tr("Posting images..."));
+  pd->setRange(0,q->size());
+  count=0;
+  pd->setValue(0);
+  while(q->next()) {
+    feed->postImage(q->value(0).toUInt());
+    pd->setValue(++count);
+  }
+  delete q;
+
+  //
+  // Post Item Data
+  //
+  sql=QString("select ")+
+    "ID "+              // 00
+    "from PODCASTS where "+
+    QString().sprintf("FEED_ID=%u",feed->id());
+  q=new RDSqlQuery(sql);
+  pd->setLabelText(tr("Posting item data..."));
+  pd->setRange(0,q->size());
+  count=0;
+  pd->setValue(0);
+  while(q->next()) {
+    feed->postPodcast(q->value(0).toUInt());
+    pd->setValue(++count);
+  }
+  delete q;
+
+  //
+  // Post RSS XML
+  //
+  pd->setLabelText(tr("Posting RSS XML data..."));
+  pd->setRange(0,1);
+  pd->setValue(0);
+  feed->postXml();
+  pd->setValue(1);
+
+  delete pd;
+}
+
+
+void ListFeeds::unpostData()
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+  RDFeed *feed=NULL;
+  int count;
+
+  RDListViewItem *item=(RDListViewItem *)list_feeds_view->selectedItem();
+  if(item==NULL) {
+    return;
+  }
+  QString keyname=item->text(0);
+  if(keyname.isEmpty()) {
+    return;
+  }
+
+  if(QMessageBox::question(this,"RDAdmin - "+tr("Feed Repost"),
+	     tr("This operation will unpost (remove) all XML, image and")+"\n"+
+	     tr("audio data from the remote archive, and thus may")+"\n"+
+	     tr("take signficant time to complete.")+"\n\n"+
+			   tr("Continue?"),QMessageBox::Yes,QMessageBox::No)!=
+     QMessageBox::Yes) {
+    return;
+  }
+
+  feed=new RDFeed(keyname,rda->config(),this);
+  QProgressDialog *pd=new QProgressDialog(this);
+  pd->setCancelButton(NULL);
+
+  //
+  // Remove RSS XML
+  //
+  pd->setLabelText(tr("Unposting RSS XML data..."));
+  pd->setRange(0,1);
+  pd->setValue(0);
+  feed->removeRss();
+  pd->setValue(1);
+
+  //
+  // Remove Item Data
+  //
+  sql=QString("select ")+
+    "ID "+              // 00
+    "from PODCASTS where "+
+    QString().sprintf("FEED_ID=%u",feed->id());
+  q=new RDSqlQuery(sql);
+  pd->setLabelText(tr("Unposting item data..."));
+  pd->setRange(0,q->size());
+  count=0;
+  pd->setValue(0);
+  while(q->next()) {
+    RDPodcast *cast=new RDPodcast(rda->config(),q->value(0).toUInt());
+    cast->removePodcast();
+    delete cast;
+    pd->setValue(++count);
+
+  }
+  delete q;
+
+  //
+  // Remove Images
+  //
+  sql=QString("select ")+
+    "ID "+              // 00
+    "from FEED_IMAGES where "+
+    QString().sprintf("FEED_ID=%u",feed->id());
+  q=new RDSqlQuery(sql);
+  pd->setLabelText(tr("Unposting images..."));
+  pd->setRange(0,q->size());
+  count=0;
+  pd->setValue(0);
+  while(q->next()) {
+    feed->removeImage(q->value(0).toUInt());
+    pd->setValue(++count);
+  }
+  delete q;
+
+  delete pd;
 }
 
 
@@ -314,6 +475,7 @@ void ListFeeds::resizeEvent(QResizeEvent *e)
   list_edit_button->setGeometry(size().width()-90,90,80,50);
   list_delete_button->setGeometry(size().width()-90,150,80,50);
   list_repost_button->setGeometry(size().width()-90,240,80,50);
+  list_unpost_button->setGeometry(size().width()-90,300,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
   list_feeds_view->setGeometry(10,30,size().width()-120,size().height()-40);
 }

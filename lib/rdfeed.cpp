@@ -796,6 +796,75 @@ bool RDFeed::deleteImage(int img_id,QString *err_msg)
 }
 
 
+bool RDFeed::postPodcast(unsigned cast_id) const
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_POST_PODCAST),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",cast_id),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
+}
+
+
 QString RDFeed::audioUrl(unsigned cast_id)
 {
   RDPodcast *cast=new RDPodcast(feed_config,cast_id);
@@ -829,7 +898,7 @@ QString RDFeed::imageUrl(int img_id) const
 }
 
 
-bool RDFeed::postXml(QString *err_msg)
+bool RDFeed::postXml()
 {
   long response_code;
   CURL *curl=NULL;
@@ -900,19 +969,16 @@ bool RDFeed::postXml(QString *err_msg)
 
 bool RDFeed::postXmlConditional(const QString &caption,QWidget *widget)
 {
-  QString err_msg;
-
-  if(!postXml(&err_msg)) {
+  if(!postXml()) {
     QMessageBox::warning(widget,caption+" - "+tr("Error"),
-			 tr("XML data upload failed!")+"\n"+
-			 "["+err_msg+"]");
+			 tr("XML data upload failed!"));
     return false;
   }
   return true;
 }
 
 
-bool RDFeed::removeRss(QString *err_msg)
+bool RDFeed::removeRss()
 {
   long response_code;
   CURL *curl=NULL;
@@ -1217,7 +1283,7 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
   //
   // Upload to remote archive
   //
-  PostPodcast(cast_id);
+  postPodcast(cast_id);
   postProgressChanged(3);
 
   //
@@ -1234,7 +1300,7 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
   //
   // Update posted XML
   //
-  postXml(&err_msg);
+  postXml();
   emit postProgressChanged(5);
 
   return cast_id;
@@ -1325,7 +1391,7 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
   //
   // Upload to remote archive
   //
-  PostPodcast(cast_id);
+  postPodcast(cast_id);
   postProgressChanged(4);
 
   //
@@ -1346,7 +1412,7 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
   //
   // Update posted XML
   //
-  postXml(&err_msg);
+  postXml();
   emit postProgressChanged(6);
 
   *err=RDFeed::ErrorOk;
@@ -1425,7 +1491,7 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   //
   // Save to remote archive
   //
-  PostPodcast(cast_id);
+  postPodcast(cast_id);
   emit postProgressChanged(3+(end_line-start_line));
 
   //
@@ -1442,7 +1508,7 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   cast->setAudioTime(log_event->length(start_line,1+end_line));
   delete log;
 
-  postXml(&err_msg);
+  postXml();
   *err=RDFeed::ErrorOk;
   emit postProgressChanged(4+(end_line-start_line));
 
@@ -1779,75 +1845,6 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"FILENAME",
 	       CURLFORM_FILE,src_filename.toUtf8().constData(),
-	       CURLFORM_END);
-
-  //
-  // Set up the transfer
-  //
-  if((curl=curl_easy_init())==NULL) {
-    curl_formfree(first);
-    return false;
-  }
-  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
-  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
-  curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
-  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
-  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
-  curl_easy_setopt(curl,CURLOPT_URL,
-	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
-
-  //
-  // Send it
-  //
-  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
-    curl_easy_cleanup(curl);
-    curl_formfree(first);
-    return false;
-  }
-
-  //
-  // Clean up
-  //
-  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
-  curl_easy_cleanup(curl);
-  curl_formfree(first);
-
-  //
-  // Process the results
-  //
-  if((response_code<200)||(response_code>299)) {
-    return false;
-  }
-
-  return true;
-}
-
-
-bool RDFeed::PostPodcast(unsigned cast_id) const
-{
-  long response_code;
-  CURL *curl=NULL;
-  CURLcode curl_err;
-  struct curl_httppost *first=NULL;
-  struct curl_httppost *last=NULL;
-
-  //
-  // Generate POST Data
-  //
-  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
-	       CURLFORM_COPYCONTENTS,
-	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_POST_PODCAST),
-	       CURLFORM_END);
-  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
-	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
-	       CURLFORM_END);
-  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
-	       CURLFORM_COPYCONTENTS,
-	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
-  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
-	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",cast_id),
 	       CURLFORM_END);
 
   //
