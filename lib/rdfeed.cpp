@@ -1119,36 +1119,20 @@ bool RDFeed::removeImage(int img_id) const
 }
 
 
-bool RDFeed::deleteImages(QString *err_msg)
+void RDFeed::removeAllImages()
 {
-  RDDelete::ErrorCode conv_err=RDDelete::ErrorOk;
+  QString sql;
+  RDSqlQuery *q=NULL;
 
-  QString sql=QString("select ")+
-    "ID,"+              // 00
-    "FILE_EXTENSION "+  // 01
+  sql=QString("select ")+
+    "ID "+  // 00
     "from FEED_IMAGES where "+
-    "FEED_KEY_NAME=\""+RDEscapeString(keyName())+"\"";
-  RDSqlQuery *q=new RDSqlQuery(sql);
+    QString().sprintf("FEED_ID=%u",feed_id);
+  q=new RDSqlQuery(sql);
   while(q->next()) {
-    QString img_url=purgeUrl()+"/"+
-      RDFeed::imageFilename(id(),q->value(0).toInt(),q->value(1).toString());
-    RDDelete *conv=new RDDelete(rda->config());
-    if(!conv->urlIsSupported(img_url)) {
-      *err_msg="unsupported url scheme";
-      delete conv;
-      return false;
-    }
-    conv->setTargetUrl(img_url);
-    conv_err=conv->runDelete(purgeUsername(),purgePassword(),
-			     rda->station()->sshIdentityFile(),
-			     purgeUseIdFile(),
-			     rda->config()->logXloadDebugData());
-    *err_msg=RDDelete::errorText(conv_err);
-    delete conv;
+    removeImage(q->value(0).toUInt());
   }
   delete q;
-
-  return conv_err==RDDelete::ErrorOk;
 }
 
 

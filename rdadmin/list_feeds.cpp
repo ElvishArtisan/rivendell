@@ -262,11 +262,7 @@ void ListFeeds::deleteData()
   //
   // Delete Images
   //
-  if(!feed->deleteImages(&errs)) {
-    QMessageBox::warning(this,"RDAdmin - "+tr("Warning"),
-			 tr("Failed to delete remote images.")+
-			 "["+errs+"].");
-  }
+  feed->removeAllImages();
   sql=QString("delete from FEED_IMAGES where ")+
     QString().sprintf("FEED_ID=%d",feed->id());
   RDSqlQuery::apply(sql);

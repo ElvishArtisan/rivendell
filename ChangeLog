@@ -20312,3 +20312,6 @@
 	* Incremented the database version to 337.
 	* Added a sanity check to the 'Image Manager' dialog in
 	rdadmin(1) to prevent deletion of in-use images.
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'RDFeed::deleteImages()' method to
+	'RDFeed::removeAllImages()'.

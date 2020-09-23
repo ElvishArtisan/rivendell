@@ -5156,10 +5156,6 @@ Do you still want to delete it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Failed to delete remote images.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Warning</source>
         <translation type="unfinished">Advertencia</translation>
     </message>

@@ -140,7 +140,7 @@ class RDFeed : public QObject
   bool removeRss(QString *err_msg);
   bool postImage(int img_id) const;
   bool removeImage(int img_id) const;
-  bool deleteImages(QString *err_msg);
+  void removeAllImages();
   unsigned postCut(const QString &cutname,Error *err);
   unsigned postFile(const QString &srcfile,Error *err);
   unsigned postLog(const QString &logname,const QTime &start_time,
