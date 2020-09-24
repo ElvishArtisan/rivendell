@@ -19,51 +19,8 @@
     <para>
       When started, RDCastManager will display the list of available podcast
       feeds for the currently logged in user. Each line begins with an icon,
-      indicating the status of the respective podcast feed, as follows:
+      showing the assigned channel image for the repective feed.
     </para>
-    <table xml:id="table.rdcastmanager.rdcastmanager_feed_states" frame="all">
-      <title>RDCastManager Feed States</title>
-      <tgroup cols="2" align="left" colsep="1" rowsep="1">
-	<colspec colname="Icon" colwidth="1.0*"/>
-	<colspec colname="Meaning" colwidth="10.0*"/>
-	<thead>
-	  <row>
-	    <entry>
-	      Status
-	    </entry>
-	    <entry>
-	      Meaning
-	    </entry>
-	  </row>
-	</thead>
-	<tbody>
-	  <row>
-	    <entry>
-	      <inlinemediaobject>
-		<imageobject>
-		  <imagedata fileref="greencheckmark.png" scale="100"/>
-		</imageobject>
-	      </inlinemediaobject>
-	    </entry>
-	    <entry>
-	      All items in the feed are active.
-	    </entry>
-	  </row>
-	  <row>
-	    <entry>
-	      <inlinemediaobject>
-		<imageobject>
-		  <imagedata fileref="redx.png" scale="100"/>
-		</imageobject>
-	      </inlinemediaobject>
-	    </entry>
-	    <entry>
-	      One or more items in the feed are currently inactive.
-	    </entry>
-	  </row>
-	</tbody>
-      </tgroup>
-    </table>
     <para>
       To see the list of items posted
       to a particular feed, select the desired feed on the list and then touch
@@ -82,7 +39,7 @@
     </para>
     <para>
       Each posted item has a <emphasis>status</emphasis>, indicated by the
-      color of the icon at the beginning of its line on the list.
+      color of the icon in the <computeroutput>Status</computeroutput> column.
     </para>
 
     <table xml:id="table.rdcastmanager.rdcastmanager_item_states" frame="all">

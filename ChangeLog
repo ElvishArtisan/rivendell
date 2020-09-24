@@ -20333,3 +20333,6 @@
 2020-09-22 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in rdcastmanager(1) that caused incorrect feed and
 	item icons to be displayed in lists.
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Updated screenshots in the 'RDCastManager' chapter of the
+	Operations Guide.
