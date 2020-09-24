@@ -31,6 +31,7 @@ noinst_PROGRAMS = addcart_test \
 		  createticket_test \
 		  deleteaudio_test \
 		  deletelog_test \
+		  deletepodcast_test \
 		  editcart_test \
 		  editcut_test \
 		  exportcart_test \
@@ -55,7 +56,6 @@ noinst_PROGRAMS = addcart_test \
                   postimage_test \
                   postpodcast_test \
                   postrss_test \
-                  postpodcast_test \
 		  removecart_test \
 		  removecut_test \
                   removeimage_test \
@@ -95,6 +95,9 @@ deleteaudio_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
 
 dist_deletelog_test_SOURCES = deletelog_test.c common.c common.h 
 deletelog_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
+
+dist_deletepodcast_test_SOURCES = deletepodcast_test.c common.c common.h 
+deletepodcast_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
 
 dist_editcart_test_SOURCES = editcart_test.c 
 editcart_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
@@ -167,9 +170,6 @@ postpodcast_test_LDADD =  -lrivwebcapi -lexpat -lcurl -lm
 
 dist_postrss_test_SOURCES = postrss_test.c 
 postrss_test_LDADD =  -lrivwebcapi -lexpat -lcurl -lm
-
-dist_postpodcast_test_SOURCES = postpodcast_test.c 
-postpodcast_test_LDADD =  -lrivwebcapi -lexpat -lcurl -lm
 
 dist_removecart_test_SOURCES = removecart_test.c 
 removecart_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm

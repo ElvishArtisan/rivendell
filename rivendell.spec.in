@@ -469,6 +469,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/man/man7/rd_createticket.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_deleteaudio.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_deletelog.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_deletepodcast.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_editcart.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_editcut.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_export.7.gz

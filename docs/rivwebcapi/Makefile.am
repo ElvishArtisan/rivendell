@@ -64,6 +64,9 @@ all-local:	rd_addcart.html\
                 rd_deletelog.html\
                 rd_deletelog.pdf\
                 rd_deletelog.xml\
+                rd_deletepodcast.html\
+                rd_deletepodcast.pdf\
+                rd_deletepodcast.xml\
                 rd_editcart.html\
                 rd_editcart.pdf\
                 rd_editcart.xml\
@@ -175,6 +178,7 @@ man_MANS = rd_addcart.7\
            rd_createticket.7\
            rd_deleteaudio.7\
            rd_deletelog.7\
+           rd_deletepodcast.7\
            rd_editcart.7\
            rd_editcut.7\
            rd_exportpeaks.7\
@@ -251,6 +255,10 @@ EXTRA_DIST = rd_addcart.7\
              rd_deletelog.html\
              rd_deletelog.pdf\
              rd_deletelog.xml\
+             rd_deletepodcast.7\
+             rd_deletepodcast.html\
+             rd_deletepodcast.pdf\
+             rd_deletepodcast.xml\
              rd_editcart.7\
              rd_editcart.html\
              rd_editcart.pdf\
