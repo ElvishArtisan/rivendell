@@ -20347,3 +20347,7 @@
 	'RD_SavePodcast()' calls to the rivwebcapi API.
 2020-09-23 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RD_DeletePodcast()' call to the rivwebcapi API.
+2020-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdxport.cgi(1) that caused segfaults when
+	processing the 'PostRss' for feeds enclosed by one or more
+	superfeeds.

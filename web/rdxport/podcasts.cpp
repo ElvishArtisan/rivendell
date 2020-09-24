@@ -30,7 +30,6 @@
 #include <rdconf.h>
 #include <rddelete.h>
 #include <rdescape_string.h>
-#include <rdfeed.h>
 #include <rdformpost.h>
 #include <rdgroup.h>
 #include <rdhash.h>
@@ -354,41 +353,17 @@ void Xport::RemovePodcast()
 }
 
 
-void Xport::PostRss()
+bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
 {
-  int feed_id=0;
-  QString keyname;
-  QString destpath;
-  QString err_msg;
-  RDFeed *feed=NULL;
-  QString msg="OK";
-  bool ret=false;
-
   CURL *curl=NULL;
   CURLcode curl_err;
   char errstr[CURL_ERROR_SIZE];
-  QDateTime now=QDateTime::currentDateTime();
+  bool ret=false;
 
-  if(!xport_post->getValue("ID",&feed_id)) {
-    XmlExit("Missing ID",400,"podcasts.cpp",LINE_NUMBER);
-  }
-  feed=new RDFeed(feed_id,rda->config(),this);
-  if(!feed->exists()) {
-    XmlExit("No such feed",404,"podcasts.cpp",LINE_NUMBER);
-  }
-  keyname=feed->keyName();
-
-  if(((!rda->user()->editPodcast())||
-      (!rda->user()->feedAuthorized(keyname)))&&
-     (!rda->user()->adminConfig())) {
-    delete feed;
-    XmlExit("No such feed",404,"podcasts.cpp",LINE_NUMBER);
-  }
   if((curl=curl_easy_init())==NULL) {
     XmlExit("unable to get CURL handle",500,"podcasts.cpp",LINE_NUMBER);
   }
-
-  xport_curl_data=feed->rssXml(&err_msg,now).toUtf8();
+  xport_curl_data=feed->rssXml(err_msg,now).toUtf8();
   xport_curl_data_ptr=0;
 
   //
@@ -435,11 +410,49 @@ void Xport::PostRss()
     break;
 
   default:
-    err_msg=errstr;
+    *err_msg+=errstr;
     ret=false;
     break;
   }
   curl_easy_cleanup(curl);
+
+  rda->syslog(LOG_DEBUG,
+	      "posted RSS XML to \"%s\"",feed->feedUrl().toUtf8().constData());
+
+  return ret;
+}
+
+
+void Xport::PostRss()
+{
+  int feed_id=0;
+  QString keyname;
+  QString destpath;
+  QString err_msg;
+  RDFeed *feed=NULL;
+  QString msg="OK";
+  bool ret=false;
+
+  QDateTime now=QDateTime::currentDateTime();
+
+  if(!xport_post->getValue("ID",&feed_id)) {
+    XmlExit("Missing ID",400,"podcasts.cpp",LINE_NUMBER);
+  }
+  feed=new RDFeed(feed_id,rda->config(),this);
+  if(!feed->exists()) {
+    XmlExit("No such feed",404,"podcasts.cpp",LINE_NUMBER);
+  }
+  keyname=feed->keyName();
+
+  if(((!rda->user()->editPodcast())||
+      (!rda->user()->feedAuthorized(keyname)))&&
+     (!rda->user()->adminConfig())) {
+    delete feed;
+    XmlExit("No such feed",404,"podcasts.cpp",LINE_NUMBER);
+  }
+
+  ret=PostRssElemental(feed,now,&err_msg);
+  delete feed;
 
   //
   // Update Enclosing Superfeeds
@@ -448,7 +461,7 @@ void Xport::PostRss()
   for(int i=0;i<superfeeds.size();i++) {
     QString err_msg2;
     RDFeed *feed=new RDFeed(superfeeds.at(i),rda->config(),this);
-    if(!feed->postXml()) {
+    if(!PostRssElemental(feed,now,&err_msg)) {
       err_msg+="\nRepost of XML failed";
     }
     delete feed;
@@ -461,9 +474,6 @@ void Xport::PostRss()
   printf("Content-type: text/html; charset: UTF-8\n");
   printf("Status: 200\n\n");
   printf("OK\n");
-
-  rda->syslog(LOG_DEBUG,
-	      "posted RSS XML to \"%s\"",feed->feedUrl().toUtf8().constData());
 
   Exit(0);
 }
