@@ -4,14 +4,14 @@
                     Header
   -->
   <refmeta>
-    <refentrytitle>RD_PostImage</refentrytitle>
+    <refentrytitle>RD_RemoveRss</refentrytitle>
     <manvolnum>7</manvolnum>
     <refmiscinfo class='source'>September 2020</refmiscinfo>
     <refmiscinfo class='manual'>Rivendell C Library Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
-    <refname>rd_postimage</refname>
-    <refpurpose>Rivendell Post RSS Image C Library Function</refpurpose>
+    <refname>rd_removerss</refname>
+    <refpurpose>Rivendell Remove RSS XML C Library Function</refpurpose>
   </refnamediv>
   <info>
     <author>
@@ -29,14 +29,14 @@
   -->
   <refsynopsisdiv id='synopsis'>
     <funcsynopsis>
-    <funcsynopsisinfo>#include &lt;rivwebcapi/rd_postimage.h&gt;</funcsynopsisinfo>
+    <funcsynopsisinfo>#include &lt;rivwebcapi/rd_removerss.h&gt;</funcsynopsisinfo>
     <funcprototype>
-    <funcdef>int <function>RD_PostImage</function></funcdef>
+    <funcdef>int <function>RD_RemoveRss</function></funcdef>
       <paramdef>const char <parameter>hostname[]</parameter></paramdef>
       <paramdef>const char <parameter>username[]</parameter></paramdef>
       <paramdef>const char <parameter>passwd[]</parameter></paramdef>
       <paramdef>const char <parameter>ticket[]</parameter></paramdef>
-      <paramdef>const unsigned <parameter>img_id</parameter></paramdef>
+      <paramdef>const unsigned <parameter>feed_id</parameter></paramdef>
       <paramdef>const char <parameter>user_agent[]</parameter></paramdef>
     </funcprototype> 
     </funcsynopsis>
@@ -45,12 +45,11 @@
 
   <refsect1 id='description'><title>Description</title>
   <para>
-    <command>RD_PostImage</command> is  the function to use
-    to post an RSS image from the Rivendell database to the remote RSS
-    repository.
+    <command>RD_RemoveRss</command> is  the function to use
+    to remove the RSS XML from the remote RSS repository.
   </para>
-  <table xml:id="ex.postimage" frame="all">
-    <title>RD_PostImage function call fields</title>
+  <table xml:id="ex.postrss" frame="all">
+    <title>RD_RemoveRss function call fields</title>
     <tgroup cols="4" align="left" colsep="1" rowsep="1">
       <colspec colname="FIELD NAME" />
       <colspec colname="FIELD TYPE" />
@@ -131,13 +130,13 @@
         </row>
         <row>
           <entry>
-            img_id
+            feed_id
           </entry>
           <entry>
           unsigned integer
           </entry>
           <entry>
-            Image ID
+            Feed ID
           </entry>
           <entry>
             Mandatory
@@ -173,13 +172,13 @@
   </refsect2>
   <refsect3 id='errors'><title>ERRORS</title>
     <para>
-      400          Missing Image ID
+      400          Missing Feed ID
     </para>
     <para>
       403          User Authentification Error.
     </para>
     <para>
-      404          Unauthorized or No Such Image
+      404          Unauthorized or No Such Feed
     </para>
     <para>
       nnn          Unknown Error Occurred.

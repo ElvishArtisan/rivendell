@@ -11,7 +11,7 @@
   </refmeta>
   <refnamediv>
     <refname>rd_removeimage</refname>
-    <refpurpose>Rivendell Remove Cut C Library Function</refpurpose>
+    <refpurpose>Rivendell Remove RSS Image C Library Function</refpurpose>
   </refnamediv>
   <info>
     <author>
