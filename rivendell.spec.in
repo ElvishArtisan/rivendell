@@ -491,12 +491,15 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/man/man7/rd_listservices.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_listsystemsettings.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_postimage.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_postpodcast.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_postrss.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_removecart.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_removecut.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_removeimage.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_removepodcast.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_removerss.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_savelog.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_savepodcast.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_trimaudio.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_unassignschedcode.7.gz
 

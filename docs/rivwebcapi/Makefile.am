@@ -130,6 +130,9 @@ all-local:	rd_addcart.html\
                 rd_postimage.html\
                 rd_postimage.pdf\
                 rd_postimage.xml\
+                rd_postpodcast.html\
+                rd_postpodcast.pdf\
+                rd_postpodcast.xml\
                 rd_postrss.html\
                 rd_postrss.pdf\
                 rd_postrss.xml\
@@ -142,6 +145,9 @@ all-local:	rd_addcart.html\
                 rd_removeimage.html\
                 rd_removeimage.pdf\
                 rd_removeimage.xml\
+                rd_removepodcast.html\
+                rd_removepodcast.pdf\
+                rd_removepodcast.xml\
                 rd_removerss.html\
                 rd_removerss.pdf\
                 rd_removerss.xml\
@@ -149,6 +155,9 @@ all-local:	rd_addcart.html\
                 rd_savelog.html\
                 rd_savelog.pdf\
                 rd_savelog.xml\
+                rd_savepodcast.html\
+                rd_savepodcast.pdf\
+                rd_savepodcast.xml\
                 rd_trimaudio.html\
                 rd_trimaudio.pdf\
                 rd_trimaudio.xml\
@@ -188,12 +197,15 @@ man_MANS = rd_addcart.7\
            rd_listservices.7\
            rd_listsystemsettings.7\
            rd_postimage.7\
+           rd_postpodcast.7\
            rd_postrss.7\
            rd_removecart.7\
            rd_removecut.7\
            rd_removeimage.7\
+           rd_removepodcast.7\
            rd_removerss.7\
            rd_savelog.7\
+           rd_savepodcast.7\
            rd_trimaudio.7\
            rd_unassignschedcode.7
 
@@ -328,6 +340,10 @@ EXTRA_DIST = rd_addcart.7\
              rd_postimage.html\
              rd_postimage.pdf\
              rd_postimage.xml\
+             rd_postpodcast.7\
+             rd_postpodcast.html\
+             rd_postpodcast.pdf\
+             rd_postpodcast.xml\
              rd_postrss.7\
              rd_postrss.html\
              rd_postrss.pdf\
@@ -344,6 +360,10 @@ EXTRA_DIST = rd_addcart.7\
              rd_removeimage.html\
              rd_removeimage.pdf\
              rd_removeimage.xml\
+             rd_removepodcast.7\
+             rd_removepodcast.html\
+             rd_removepodcast.pdf\
+             rd_removepodcast.xml\
              rd_removerss.7\
              rd_removerss.html\
              rd_removerss.pdf\
@@ -352,6 +372,10 @@ EXTRA_DIST = rd_addcart.7\
              rd_savelog.html\
              rd_savelog.pdf\
              rd_savelog.xml\
+             rd_savepodcast.7\
+             rd_savepodcast.html\
+             rd_savepodcast.pdf\
+             rd_savepodcast.xml\
              rd_trimaudio.7\
              rd_trimaudio.html\
              rd_trimaudio.pdf\

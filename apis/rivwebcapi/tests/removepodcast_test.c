@@ -1,6 +1,6 @@
-/* removerss_test.c
+/* removepodcast_test.c
  *
- * Test the remove RSS XML library.
+ * Test the remove podcast library.
  *
  * (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
  *
@@ -22,16 +22,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <rivwebcapi/rd_removerss.h>
 #include <rivwebcapi/rd_createticket.h>
 #include <rivwebcapi/rd_getuseragent.h>
 #include <rivwebcapi/rd_getversion.h>
+#include <rivwebcapi/rd_removepodcast.h>
 
 int main(int argc,char *argv[])
 {
+
   char buf[BUFSIZ];
   char *p;
-  long int feed_id=0;
+  long int cast_id=0;
   char *host;
   char *user;
   char *passwd;
@@ -60,10 +61,10 @@ int main(int argc,char *argv[])
     passwd = "";
   } 
 
-  printf("Please enter the ID number of the RSS feed that you want to remove ==> ");
+  printf("Please enter the ID number of the RSS podcast item that you want to remove ==> ");
   if (fgets(buf,sizeof(buf),stdin) != NULL)
   {
-    feed_id = strtol(buf, &p,10);
+    cast_id = strtol(buf, &p,10);
 
     if ( (buf[0] != '\n') &&
          ((*p != '\n') && (*p != '\0')))
@@ -81,11 +82,11 @@ int main(int argc,char *argv[])
   //
   // Call the function
   //
-  int result=RD_RemoveRss( host,
+  int result=RD_RemovePodcast( host,
 		user,
 		passwd,
 		ticket,
-		(unsigned)feed_id,
+		(unsigned)cast_id,
                 user_agent);
 
   if(result<0) {
@@ -98,7 +99,7 @@ int main(int argc,char *argv[])
   {
     switch(result) {
       case 404:
-        fprintf(stderr,"ERROR:  No Such Feed Exists! \n");
+        fprintf(stderr,"ERROR:  No Such Image Exists! \n");
         break;
       case  401:
         fprintf(stderr, "ERROR:  Unauthorized \n");
@@ -112,7 +113,7 @@ int main(int argc,char *argv[])
   //
   // List the Results
   //
-    printf(" Feed: %ld was successfully removed!\n",feed_id);
+    printf(" Podcast item: %ld was successfully removed!\n",cast_id);
     printf("\n");
 
 // Add test of create_ticket function 
@@ -166,12 +167,12 @@ int main(int argc,char *argv[])
   //
   // Call the function
   //
-  result=RD_RemoveRss( host,
-		user,
-		passwd,
-		ticket,
-		(unsigned)feed_id,
-                user_agent);
+  result=RD_RemovePodcast(host,
+			  user,
+			  passwd,
+			  ticket,
+			  (unsigned)cast_id,
+			  user_agent);
 
   if(result<0) {
     fprintf(stderr,"Something went wrong!\n");
@@ -183,7 +184,7 @@ int main(int argc,char *argv[])
   {
     switch(result) {
       case 404:
-        fprintf(stderr,"ERROR:  No Feed Exists! \n");
+        fprintf(stderr,"ERROR:  No Image Exists! \n");
         break;
       case  401:
         fprintf(stderr, "ERROR:  Unauthorized\n");
@@ -197,7 +198,7 @@ int main(int argc,char *argv[])
   //
   // List the Results
   //
-    printf(" Feed: %ld was successfully removed!\n",feed_id);
+    printf(" Podcast item: %ld was successfully removed!\n",cast_id);
     printf("\n");
 
   exit(0);

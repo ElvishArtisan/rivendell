@@ -1,7 +1,8 @@
-/* removerss_test.c
+/* import_test.c
  *
- * Test the remove RSS XML library.
+ * Test the Save RSS item audio API Library
  *
+ * (C) Copyright 2015 Todd Baker <bakert@rfa.org>             
  * (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
@@ -22,16 +23,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <rivwebcapi/rd_removerss.h>
 #include <rivwebcapi/rd_createticket.h>
 #include <rivwebcapi/rd_getuseragent.h>
 #include <rivwebcapi/rd_getversion.h>
+#include <rivwebcapi/rd_savepodcast.h>
 
 int main(int argc,char *argv[])
 {
+
+  int i;
   char buf[BUFSIZ];
   char *p;
-  long int feed_id=0;
+  long int cast_id=0;
+  char filename[BUFSIZ];
   char *host;
   char *user;
   char *passwd;
@@ -60,10 +64,10 @@ int main(int argc,char *argv[])
     passwd = "";
   } 
 
-  printf("Please enter the ID number of the RSS feed that you want to remove ==> ");
+  printf("Please enter the Podcast ID Number that you want to save to  ==> ");
   if (fgets(buf,sizeof(buf),stdin) != NULL)
   {
-    feed_id = strtol(buf, &p,10);
+    cast_id = strtol(buf, &p,10);
 
     if ( (buf[0] != '\n') &&
          ((*p != '\n') && (*p != '\0')))
@@ -72,8 +76,15 @@ int main(int argc,char *argv[])
 	exit(0);
     }
   } 
+  printf("Please enter the File Name that you want to save ==> ");
+  if (fgets(filename,sizeof(filename),stdin) != NULL)
+  {
+    if((0xFF&filename[strlen(filename)-1])<32) {
+      filename[strlen(filename)-1]=0;
+    }
+  } 
 
-  // Add the User Agent and Version
+  // Add the Rivendell-C-API Version
   strcat(user_agent,RD_GetUserAgent());
   strcat(user_agent,RD_GetVersion());
   strcat(user_agent," (Test Suite)");
@@ -81,15 +92,15 @@ int main(int argc,char *argv[])
   //
   // Call the function
   //
-  int result=RD_RemoveRss( host,
-		user,
-		passwd,
-		ticket,
-		(unsigned)feed_id,
-                user_agent);
-
+  int result= RD_SavePodcast(host,
+			     user,
+			     passwd,
+			     ticket,
+			     (unsigned)cast_id,
+			     filename,
+			     user_agent);
   if(result<0) {
-    fprintf(stderr,"Something went wrong!\n");
+    fprintf(stderr,"Something went wrong! Result Code = %d\n",result);
     exit(256);
   }
 
@@ -97,27 +108,25 @@ int main(int argc,char *argv[])
        (result != 0))
   {
     switch(result) {
-      case 404:
-        fprintf(stderr,"ERROR:  No Such Feed Exists! \n");
-        break;
-      case  401:
-        fprintf(stderr, "ERROR:  Unauthorized \n");
-        break;
-      default:
-        fprintf(stderr, "Unknown Error occurred ==> %d",result);
+    case 404:
+      fprintf(stderr,"ERROR: no such podcast item \n");
+      break;
+
+    default:
+      fprintf(stderr, "Unknown Error occurred ==> %d",result);
+      break;
     }
     exit(256);
   }
 
   //
-  // List the Results
+  // List the results
   //
-    printf(" Feed: %ld was successfully removed!\n",feed_id);
-    printf("\n");
+  printf(" Podcast item: %ld was successfully saved!\n",cast_id);
+
 
 // Add test of create_ticket function 
     
-    int i;
     struct rd_ticketinfo *myticket=0;
     unsigned numrecs=0;
 
@@ -163,18 +172,17 @@ int main(int argc,char *argv[])
     passwd="";
     strcpy( ticket,myticket->ticket);
     fprintf(stderr, "Ticket was copied - = %s\n",ticket);
-  //
-  // Call the function
-  //
-  result=RD_RemoveRss( host,
-		user,
-		passwd,
-		ticket,
-		(unsigned)feed_id,
-                user_agent);
+
+  result=RD_SavePodcast(host,
+			user,
+			passwd,
+			ticket,
+			(unsigned)cast_id,
+			filename,
+			user_agent);
 
   if(result<0) {
-    fprintf(stderr,"Something went wrong!\n");
+    fprintf(stderr,"Something went wrong! Result Code = %d\n",result);
     exit(256);
   }
 
@@ -182,23 +190,21 @@ int main(int argc,char *argv[])
        (result != 0))
   {
     switch(result) {
-      case 404:
-        fprintf(stderr,"ERROR:  No Feed Exists! \n");
-        break;
-      case  401:
-        fprintf(stderr, "ERROR:  Unauthorized\n");
-        break;
-      default:
-        fprintf(stderr, "Unknown Error occurred ==> %d",result);
+    case 404:
+      fprintf(stderr,"ERROR: no such podcast item \n");
+      break;
+
+    default:
+      fprintf(stderr, "Unknown Error occurred ==> %d",result);
+      break;
     }
     exit(256);
   }
 
   //
-  // List the Results
+  // List the results
   //
-    printf(" Feed: %ld was successfully removed!\n",feed_id);
-    printf("\n");
+  printf(" Podcast item: %ld was successfully saved!\n",cast_id);
 
   exit(0);
 }
