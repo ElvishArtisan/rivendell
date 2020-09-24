@@ -145,10 +145,12 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_casts_view->setColumnAlignment(8,Qt::AlignLeft);
   list_casts_view->addColumn(tr("SHA1"));
   list_casts_view->setColumnAlignment(9,Qt::AlignLeft);
-  connect(list_casts_view,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+  if(!list_feed->isSuperfeed()) {
+    connect(list_casts_view,
+	    SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+	    this,
+	    SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+  }
 
   //
   //  Post Cart Button
@@ -448,6 +450,7 @@ void ListCasts::userChangedData()
 
   list_cart_button->setEnabled(rda->user()->addPodcast()&&(!is_superfeed));
   list_file_button->setEnabled(rda->user()->addPodcast()&&(!is_superfeed));
+  list_log_button->setEnabled(rda->user()->addPodcast()&&(!is_superfeed));
   list_edit_button->setEnabled(rda->user()->editPodcast()&&(!is_superfeed));
   list_delete_button->
     setEnabled(rda->user()->deletePodcast()&&(!is_superfeed));

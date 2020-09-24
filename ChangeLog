@@ -20351,3 +20351,6 @@
 	* Fixed a regression in rdxport.cgi(1) that caused segfaults when
 	processing the 'PostRss' for feeds enclosed by one or more
 	superfeeds.
+2020-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcastmanager(1) that made it possible to edit
+	underlying posts when viewing a superfeed.
