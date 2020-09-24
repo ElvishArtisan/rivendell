@@ -52,8 +52,10 @@ noinst_PROGRAMS = addcart_test \
 		  listschedcodes_test \
 		  listservices_test \
 		  listsystemsettings_test \
+                  postimage_test \
 		  removecart_test \
 		  removecut_test \
+                  removeimage_test \
 		  savelog_test \
 		  trimaudio_test \
 		  unassignschedcode_test
@@ -151,11 +153,17 @@ listservices_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
 dist_listsystemsettings_test_SOURCES = listsystemsettings_test.c 
 listsystemsettings_test_LDADD =  -lrivwebcapi -lexpat -lcurl -lm
 
+dist_postimage_test_SOURCES = postimage_test.c 
+postimage_test_LDADD =  -lrivwebcapi -lexpat -lcurl -lm
+
 dist_removecart_test_SOURCES = removecart_test.c 
 removecart_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
 
 dist_removecut_test_SOURCES = removecut_test.c 
 removecut_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
+
+dist_removeimage_test_SOURCES = removeimage_test.c 
+removeimage_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
 
 dist_savelog_test_SOURCES = savelog_test.c common.c common.h
 savelog_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm

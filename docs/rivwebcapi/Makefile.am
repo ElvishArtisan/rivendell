@@ -2,7 +2,7 @@
 ##
 ## docs/rivwebcapi/Makefile.am for Rivendell C API
 ##
-## (C) Copyright 2015-2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2015-2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -127,11 +127,17 @@ all-local:	rd_addcart.html\
                 rd_listsystemsettings.html\
                 rd_listsystemsettings.pdf\
                 rd_listsystemsettings.xml\
+                rd_postimage.html\
+                rd_postimage.pdf\
+                rd_postimage.xml\
                 rd_removecart.html\
                 rd_removecart.pdf\
                 rd_removecart.xml\
                 rd_removecut.html\
                 rd_removecut.pdf\
+                rd_removecut.xml\
+                rd_removeimage.html\
+                rd_removeimage.pdf\
                 rd_removecut.xml\
                 rd_savelog.html\
                 rd_savelog.pdf\
@@ -174,8 +180,10 @@ man_MANS = rd_addcart.7\
            rd_listschedcodes.7\
            rd_listservices.7\
            rd_listsystemsettings.7\
+           rd_postimage.7\
            rd_removecart.7\
            rd_removecut.7\
+           rd_removeimage.7\
            rd_savelog.7\
            rd_trimaudio.7\
            rd_unassignschedcode.7
@@ -307,6 +315,10 @@ EXTRA_DIST = rd_addcart.7\
              rd_listsystemsettings.html\
              rd_listsystemsettings.pdf\
              rd_listsystemsettings.xml\
+             rd_postimage.7\
+             rd_postimage.html\
+             rd_postimage.pdf\
+             rd_postimage.xml\
              rd_removecart.7\
              rd_removecart.html\
              rd_removecart.pdf\
@@ -315,6 +327,10 @@ EXTRA_DIST = rd_addcart.7\
              rd_removecut.html\
              rd_removecut.pdf\
              rd_removecut.xml\
+             rd_removeimage.7\
+             rd_removeimage.html\
+             rd_removeimage.pdf\
+             rd_removeimage.xml\
              rd_savelog.7\
              rd_savelog.html\
              rd_savelog.pdf\

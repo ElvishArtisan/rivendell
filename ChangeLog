@@ -20336,3 +20336,6 @@
 2020-09-22 Fred Gleason <fredg@paravelsystems.com>
 	* Updated screenshots in the 'RDCastManager' chapter of the
 	Operations Guide.
+2020-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RD_PostImage()' and 'RD_RemoveImage()' calls to the
+	rivwebcapi API.
