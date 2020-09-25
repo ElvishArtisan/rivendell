@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.4.0rss4 -- 19 August 2020
+v3.4.0rss5 -- 23 September 2020
 
 Changes:
    Podcasting. The podcasting subsystem has been completely overhauled so
@@ -12,7 +12,7 @@ Changes:
    Various Bugfixes. See 'ChangeLog' for details.
 
 Database Update:
-   This version of Rivendell uses database schema version 317, and will
+   This version of Rivendell uses database schema version 337, and will
    automatically upgrade any earlier versions. To see the current schema
    version prior to upgrade, see RDAdmin->SystemInfo.
 
