@@ -377,6 +377,7 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
 		     rda->station()->sshIdentityFile().toUtf8().constData());
     curl_easy_setopt(curl,CURLOPT_KEYPASSWD,
 		     feed->purgePassword().toUtf8().constData());
+    *err_msg+="using ssh key at \""+rda->station()->sshIdentityFile()+"\" ";
   }
   else {
     curl_easy_setopt(curl,CURLOPT_USERNAME,

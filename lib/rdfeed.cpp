@@ -837,6 +837,8 @@ bool RDFeed::postPodcast(unsigned cast_id) const
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
 	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
 
   //
   // Send it
@@ -939,6 +941,8 @@ bool RDFeed::postXml()
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
 	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
 
   //
   // Send it
@@ -1019,6 +1023,8 @@ bool RDFeed::removeRss()
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
 	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
 
   //
   // Send it
@@ -1088,6 +1094,8 @@ bool RDFeed::postImage(int img_id) const
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
 	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
 
   //
   // Send it
@@ -1157,6 +1165,8 @@ bool RDFeed::removeImage(int img_id) const
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
 	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
 
   //
   // Send it
@@ -1862,6 +1872,8 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
 	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
 
   //
   // Send it

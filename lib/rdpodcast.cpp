@@ -412,6 +412,8 @@ bool RDPodcast::removePodcast() const
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
 	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
 
   //
   // Send it
@@ -495,6 +497,8 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
 	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
 
   //
   // Send it

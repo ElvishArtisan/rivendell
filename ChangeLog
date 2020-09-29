@@ -20356,3 +20356,5 @@
 	underlying posts when viewing a superfeed.
 2020-09-23 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.0rss5.
+2020-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added debugging messages to syslog for the podcasting subsystem.
