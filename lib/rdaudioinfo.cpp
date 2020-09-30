@@ -213,7 +213,7 @@ RDAudioInfo::ErrorCode RDAudioInfo::runInfo(const QString &username,
 
 QString RDAudioInfo::errorText(RDAudioInfo::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown Error [%u]",err);
+  QString ret=QString().sprintf("Unknown RDAudioInfo Error [%u]",err);
 
   switch(err) {
   case RDAudioInfo::ErrorOk:

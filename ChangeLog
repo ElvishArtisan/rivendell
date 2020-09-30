@@ -20360,3 +20360,6 @@
 	* Added debugging messages to syslog for the podcasting subsystem.
 2020-09-29 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.0rss6.
+2020-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added the name of the Rivendell library component to 'Unknown Error'
+	messages.

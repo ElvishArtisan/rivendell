@@ -1741,7 +1741,7 @@ unsigned RDFeed::create(const QString &keyname,bool enable_users,
 
 QString RDFeed::errorString(RDFeed::Error err)
 {
-  QString ret="Unknown Error";
+  QString ret=QString().sprintf("Unknown RDFeed Error [%d]",err);
 
   switch(err) {
   case RDFeed::ErrorOk:

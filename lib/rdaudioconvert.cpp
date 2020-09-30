@@ -231,7 +231,7 @@ bool RDAudioConvert::settingsValid(RDSettings *settings)
 
 QString RDAudioConvert::errorText(RDAudioConvert::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown Error [%u]",err);
+  QString ret=QString().sprintf("Unknown RDAudioConvert Error [%u]",err);
 
   switch(err) {
   case RDAudioConvert::ErrorOk:

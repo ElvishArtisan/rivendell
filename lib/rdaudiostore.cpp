@@ -161,7 +161,7 @@ RDAudioStore::ErrorCode RDAudioStore::runStore(const QString &username,
 
 QString RDAudioStore::errorText(RDAudioStore::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown Error [%u]",err);
+  QString ret=QString().sprintf("Unknown RDAudioStore Error [%u]",err);
 
   switch(err) {
   case RDAudioStore::ErrorOk:

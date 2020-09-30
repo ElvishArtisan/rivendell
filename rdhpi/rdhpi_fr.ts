@@ -20,7 +20,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown Error:</source>
+        <source>Unknown RDHpiPlayStream Error:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -43,7 +43,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown Error:</source>
+        <source>Unknown RDHpiRecordStream Error:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -160,7 +160,7 @@ RDRehash::ErrorCode RDRehash::runRehash(const QString &username,
 
 QString RDRehash::errorText(RDRehash::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown Error [%u]",err);
+  QString ret=QString().sprintf("Unknown RDRehash Error [%u]",err);
 
   switch(err) {
   case RDRehash::ErrorOk:
