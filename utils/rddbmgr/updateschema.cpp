@@ -10287,6 +10287,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<338)&&(set_schema>cur_schema)) {
+    sql=QString("alter table FEEDS ")+
+      "modify column CHANNEL_LANGUAGE varchar(8) default 'en-us'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

@@ -19,7 +19,7 @@ CHANNEL_AUTHOR_IS_DEFAULT  enum('N','Y')
 CHANNEL_OWNER_NAME         varchar(64)
 CHANNEL_OWNER_EMAIL        varchar(64)
 CHANNEL_WEBMASTER          varchar(64)
-CHANNEL_LANGUAGE           varchar(5)
+CHANNEL_LANGUAGE           varchar(8)
 CHANNEL_EXPLICIT           enum('N','Y')
 CHANNEL_IMAGE_ID           int(11)           From FEED_IMAGES.ID
 BASE_URL                   varchar(191)

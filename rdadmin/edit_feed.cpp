@@ -193,7 +193,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   // Channel Language
   //
   feed_channel_language_edit=new QLineEdit(this);
-  feed_channel_language_edit->setMaxLength(5);
+  feed_channel_language_edit->setMaxLength(8);
   feed_channel_language_label=
     new QLabel(feed_channel_language_edit,tr("Language:"),this);
   feed_channel_language_label->setFont(labelFont());

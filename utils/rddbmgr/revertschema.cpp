@@ -41,6 +41,19 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 338
+  //
+  if((cur_schema==338)&&(set_schema<cur_schema)) {
+    sql=QString("alter table FEEDS modify column ")+
+      "CHANNEL_LANGUAGE varchar(5) default 'en-us'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 337
   //
   if((cur_schema==337)&&(set_schema<cur_schema)) {
@@ -49,7 +62,6 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
     DropIndex("FEEDS","CHANNEL_IMAGE_ID_IDX");
     WriteSchemaVersion(--cur_schema);
   }
-
 
   //
   // Revert 336

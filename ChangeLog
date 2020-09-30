@@ -20372,3 +20372,9 @@
 	* Incremented the package version to 3.4.0rss7.
 2020-09-29 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.0rss8.
+2020-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the 'FEEDS.CHANNEL_LANGUAGE' database field from
+	'varchar(5)' to' 'varchar(8)'.
+	* Incremented the database version to 338.
+	* Increased the 5 character length limitation of the
+	'Channel Language' field for podcasts to 8.
