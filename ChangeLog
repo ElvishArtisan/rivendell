@@ -20365,3 +20365,6 @@
 	messages.
 2020-09-29 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.0rss7.
+2020-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDFeed::postCut()' that could throw an intermittent
+	'Unknown Error' message.

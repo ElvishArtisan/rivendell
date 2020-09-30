@@ -1312,6 +1312,7 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
   //
   postXml();
   emit postProgressChanged(5);
+  *err=RDFeed::ErrorOk;
 
   return cast_id;
 }
@@ -1424,8 +1425,8 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
   //
   postXml();
   emit postProgressChanged(6);
-
   *err=RDFeed::ErrorOk;
+
   return cast_id;
 }
 
@@ -1519,8 +1520,8 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   delete log;
 
   postXml();
-  *err=RDFeed::ErrorOk;
   emit postProgressChanged(4+(end_line-start_line));
+  *err=RDFeed::ErrorOk;
 
   delete cast;
   delete settings;
