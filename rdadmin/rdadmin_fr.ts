@@ -4835,6 +4835,19 @@ Replicators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There was an error during import
+please check your settings and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Start Time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4851,11 +4864,11 @@ Replicators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Event ID</source>
+        <source>GUID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Announcement Type</source>
+        <source>Event ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4863,24 +4876,19 @@ Replicators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>There was an error during import
-please check your settings and try again.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>[spot break]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>GUID</source>
+        <source>Annc Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[voice track]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[approximate spot break]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

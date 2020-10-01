@@ -4582,6 +4582,33 @@ Permissions</source>
     </message>
 </context>
 <context>
+    <name>ImportModel</name>
+    <message>
+        <source>Start Time</source>
+        <translation type="obsolete">Počáteční čas</translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="obsolete">Vozík</translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="obsolete">Délka</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Název</translation>
+    </message>
+    <message>
+        <source>Event ID</source>
+        <translation type="obsolete">ID události</translation>
+    </message>
+    <message>
+        <source>[spot break]</source>
+        <translation type="obsolete">[přerušení místa]</translation>
+    </message>
+</context>
+<context>
     <name>InfoDialog</name>
     <message>
         <source>System Information</source>
@@ -6266,19 +6293,19 @@ Chcete obě spojit?</translation>
     </message>
     <message>
         <source>Start Time</source>
-        <translation>Počáteční čas</translation>
+        <translation type="unfinished">Počáteční čas</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Vozík</translation>
+        <translation type="unfinished">Vozík</translation>
     </message>
     <message>
         <source>Len</source>
-        <translation>Délka</translation>
+        <translation type="unfinished">Délka</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Název</translation>
+        <translation type="unfinished">Název</translation>
     </message>
     <message>
         <source>Contract #</source>
@@ -6286,15 +6313,15 @@ Chcete obě spojit?</translation>
     </message>
     <message>
         <source>Event ID</source>
-        <translation>ID události</translation>
+        <translation type="unfinished">ID události</translation>
     </message>
     <message>
         <source>Announcement Type</source>
-        <translation>Typ oznámení</translation>
+        <translation type="obsolete">Typ oznámení</translation>
     </message>
     <message>
         <source>Imported Events</source>
-        <translation>Zavedené události</translation>
+        <translation type="unfinished">Zavedené události</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -6312,10 +6339,22 @@ Prověřte, prosím, svá nastavení a zkuste to znovu.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[přerušení místa]</translation>
+        <translation type="unfinished">[přerušení místa]</translation>
     </message>
     <message>
         <source>GUID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Annc Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[voice track]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[approximate spot break]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

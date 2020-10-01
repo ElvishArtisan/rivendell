@@ -4554,6 +4554,33 @@ Permissions</source>
     </message>
 </context>
 <context>
+    <name>ImportModel</name>
+    <message>
+        <source>Start Time</source>
+        <translation type="obsolete">Hora de inicio</translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="obsolete">Cartucho</translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="obsolete">Lon</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Título</translation>
+    </message>
+    <message>
+        <source>Event ID</source>
+        <translation type="obsolete">ID de evento</translation>
+    </message>
+    <message>
+        <source>[spot break]</source>
+        <translation type="obsolete">[parada del spot]</translation>
+    </message>
+</context>
+<context>
     <name>InfoDialog</name>
     <message>
         <source>System Information</source>
@@ -6237,19 +6264,19 @@ Do you want to combine the two?</source>
     </message>
     <message>
         <source>Start Time</source>
-        <translation>Hora de inicio</translation>
+        <translation type="unfinished">Hora de inicio</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Cartucho</translation>
+        <translation type="unfinished">Cartucho</translation>
     </message>
     <message>
         <source>Len</source>
-        <translation>Lon</translation>
+        <translation type="unfinished">Lon</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Título</translation>
+        <translation type="unfinished">Título</translation>
     </message>
     <message>
         <source>Contract #</source>
@@ -6257,15 +6284,15 @@ Do you want to combine the two?</source>
     </message>
     <message>
         <source>Event ID</source>
-        <translation>ID de evento</translation>
+        <translation type="unfinished">ID de evento</translation>
     </message>
     <message>
         <source>Announcement Type</source>
-        <translation>Tipo de Anuncio</translation>
+        <translation type="obsolete">Tipo de Anuncio</translation>
     </message>
     <message>
         <source>Imported Events</source>
-        <translation>Eventos importados</translation>
+        <translation type="unfinished">Eventos importados</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -6283,10 +6310,22 @@ Revise los parámetros e intente de nuevo.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[parada del spot]</translation>
+        <translation type="unfinished">[parada del spot]</translation>
     </message>
     <message>
         <source>GUID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Annc Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[voice track]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[approximate spot break]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

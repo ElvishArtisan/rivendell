@@ -4455,6 +4455,33 @@ Permissions</source>
     </message>
 </context>
 <context>
+    <name>ImportModel</name>
+    <message>
+        <source>Start Time</source>
+        <translation type="obsolete">Startzeit</translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="obsolete">Cart</translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="obsolete">Länge</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Titel</translation>
+    </message>
+    <message>
+        <source>Event ID</source>
+        <translation type="obsolete">Event-ID</translation>
+    </message>
+    <message>
+        <source>[spot break]</source>
+        <translation type="obsolete">[spot break]</translation>
+    </message>
+</context>
+<context>
     <name>InfoDialog</name>
     <message>
         <source>System Information</source>
@@ -5976,19 +6003,19 @@ Wollen Sie die beiden kombinieren?</translation>
     </message>
     <message>
         <source>Start Time</source>
-        <translation>Startzeit</translation>
+        <translation type="unfinished">Startzeit</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Cart</translation>
+        <translation type="unfinished">Cart</translation>
     </message>
     <message>
         <source>Len</source>
-        <translation>Länge</translation>
+        <translation type="unfinished">Länge</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Titel</translation>
+        <translation type="unfinished">Titel</translation>
     </message>
     <message>
         <source>Contract #</source>
@@ -5996,15 +6023,15 @@ Wollen Sie die beiden kombinieren?</translation>
     </message>
     <message>
         <source>Event ID</source>
-        <translation>Event-ID</translation>
+        <translation type="unfinished">Event-ID</translation>
     </message>
     <message>
         <source>Announcement Type</source>
-        <translation>Ankündigungstyp</translation>
+        <translation type="obsolete">Ankündigungstyp</translation>
     </message>
     <message>
         <source>Imported Events</source>
-        <translation>Importierte Events</translation>
+        <translation type="unfinished">Importierte Events</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -6022,10 +6049,22 @@ Bitte überprüfen Sie ihre Einstellungen und versuchen sie es erneut.</translat
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[spot break]</translation>
+        <translation type="unfinished">[spot break]</translation>
     </message>
     <message>
         <source>GUID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Annc Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[voice track]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[approximate spot break]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

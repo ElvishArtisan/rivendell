@@ -2,7 +2,7 @@
 //
 // Test a Rivendell Log Import
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -104,6 +104,9 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   test_events_list=new RDListView(this);
   test_events_list->setItemMargin(2);
+  test_events_list->setSortColumn(0);
+  test_events_list->setSortOrder(Qt::Ascending);
+  test_events_list->setAllColumnsShowFocus(true);
   test_events_list->addColumn(tr("Start Time"));
   test_events_list->setColumnAlignment(0,Qt::AlignCenter);
   test_events_list->addColumn(tr("Cart"));
@@ -116,7 +119,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   test_events_list->setColumnAlignment(4,Qt::AlignCenter);
   test_events_list->addColumn(tr("Event ID"));
   test_events_list->setColumnAlignment(5,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Announcement Type"));
+  test_events_list->addColumn(tr("Annc Type"));
   test_events_list->setColumnAlignment(6,Qt::AlignCenter);
   test_events_list->setColumnSortType(0,RDListView::LineSort);
   test_events_label=new QLabel(test_events_list,tr("Imported Events"),this);
@@ -191,44 +194,51 @@ void TestImport::importData()
     "INSERT_TRACK,"+   // 08
     "INSERT_FIRST,"+   // 09
     "TITLE,"+          // 10
-    "TRACK_STRING "+   // 11
+    "LINK_START_TIME," // 11
+    "LINK_LENGTH "+    // 12
     "from IMPORTER_LINES where "+
     "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
-    QString().sprintf("PROCESS_ID=%u",getpid());
+    QString().sprintf("PROCESS_ID=%u ",getpid())+
+    "order by START_HOUR,START_SECS";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(9).toUInt()==RDEventLine::InsertBreak) {
       if(q->value(7).toString()=="Y") {
 	item=new RDListViewItem(test_events_list);
 	item->setLine(next_line++);
-	item->
-	  setText(0,RDSvc::timeString(q->value(0).toInt(),
-				      q->value(1).toInt()));
-	item->setText(1,tr("[spot break]"));
+	item->setText(3,tr("[spot break]"));
+	if(!q->value(11).isNull()) {
+	  item->setText(3,tr("[spot break]"));
+	  item->setText(0,q->value(11).toTime().toString("hh:mm:ss"));
+	  item->setText(2,RDGetTimeLength(q->value(12).toInt(),false,false));
+	}
+	else {
+	  item->setText(3,tr("[approximate spot break]"));
+	}
       }
       if(q->value(8).toString()=="Y") {
 	item=new RDListViewItem(test_events_list);
 	item->setLine(next_line++);
-	item->setText(0,RDSvc::timeString(q->value(0).toInt(),
-					  q->value(1).toInt()));
-	item->setText(1,"["+q->value(11).toString()+"]");
+	item->setText(3,tr("[voice track]"));
       }
     }
     else {
       if(q->value(8).toString()=="Y") {
 	item=new RDListViewItem(test_events_list);
 	item->setLine(next_line++);
-	item->setText(0,RDSvc::timeString(q->value(0).toInt(),
-					  q->value(1).toInt()));
-	item->setText(1,"["+q->value(11).toString()+"]");
+	item->setText(3,tr("[voice track]"));
       }
       if(q->value(7).toString()=="Y") {
 	item=new RDListViewItem(test_events_list);
 	item->setLine(next_line++);
-	item->
-	  setText(0,RDSvc::timeString(q->value(0).toInt(),
-				      q->value(1).toInt()));
-	item->setText(1,tr("[spot break]"));
+	if(!q->value(11).isNull()) {
+	  item->setText(3,tr("[spot break]"));
+	  item->setText(0,q->value(11).toTime().toString("hh:mm:ss"));
+	  item->setText(2,RDGetTimeLength(q->value(12).toInt(),false,false));
+	}
+	else {
+	  item->setText(3,tr("[approximate spot break]"));
+	}
       }
     }
     item=new RDListViewItem(test_events_list);
@@ -239,10 +249,10 @@ void TestImport::importData()
     if(q->value(3).toInt()>=0) {
       item->setText(2,RDGetTimeLength(q->value(3).toInt(),false,false));
     }
-    item->setText(3,q->value(10).toString());
-    item->setText(4,q->value(4).toString());
-    item->setText(5,q->value(5).toString());
-    item->setText(6,q->value(6).toString());
+    item->setText(3,q->value(10).toString().trimmed());
+    item->setText(4,q->value(4).toString().trimmed());
+    item->setText(5,q->value(5).toString().trimmed());
+    item->setText(6,q->value(6).toString().trimmed());
   }
   delete q;
 

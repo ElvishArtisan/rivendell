@@ -4356,6 +4356,33 @@ Permissions</source>
     </message>
 </context>
 <context>
+    <name>ImportModel</name>
+    <message>
+        <source>Start Time</source>
+        <translation type="obsolete">Starttid</translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="obsolete">Korg</translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="obsolete">Len</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Tittel</translation>
+    </message>
+    <message>
+        <source>Event ID</source>
+        <translation type="obsolete">Hendings-ID</translation>
+    </message>
+    <message>
+        <source>[spot break]</source>
+        <translation type="obsolete">[spott-avbrot]</translation>
+    </message>
+</context>
+<context>
     <name>InfoDialog</name>
     <message>
         <source>System Information</source>
@@ -5818,19 +5845,19 @@ Vil du kombinera desse to?</translation>
     </message>
     <message>
         <source>Start Time</source>
-        <translation>Starttid</translation>
+        <translation type="unfinished">Starttid</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Korg</translation>
+        <translation type="unfinished">Korg</translation>
     </message>
     <message>
         <source>Len</source>
-        <translation>Len</translation>
+        <translation type="unfinished">Len</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Tittel</translation>
+        <translation type="unfinished">Tittel</translation>
     </message>
     <message>
         <source>Contract #</source>
@@ -5838,15 +5865,15 @@ Vil du kombinera desse to?</translation>
     </message>
     <message>
         <source>Event ID</source>
-        <translation>Hendings-ID</translation>
+        <translation type="unfinished">Hendings-ID</translation>
     </message>
     <message>
         <source>Announcement Type</source>
-        <translation>Annonseringstype</translation>
+        <translation type="obsolete">Annonseringstype</translation>
     </message>
     <message>
         <source>Imported Events</source>
-        <translation>Importerte hendingar</translation>
+        <translation type="unfinished">Importerte hendingar</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -5864,10 +5891,22 @@ Sjekk oppsettet ditt og prøv att.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[spott-avbrot]</translation>
+        <translation type="unfinished">[spott-avbrot]</translation>
     </message>
     <message>
         <source>GUID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Annc Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[voice track]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[approximate spot break]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
