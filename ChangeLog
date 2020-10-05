@@ -19949,3 +19949,12 @@
 2020-10-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'Test Import' dialog in rdadmin(1) that caused
 	the sort of events in the 'Imported Events' list to be incorrect.
+2020-10-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug the 'Editing Event' dialog in rdlogmanager(1) that
+	caused the Services List to be initialized with all services upon
+	creation, even when one	or more services had already be added to
+	the list by the user.
+	* Fixed a bug the 'Edit Clock' dialog in rdlogmanager(1) that
+	caused the Services List to be initialized with all services upon
+	creation, even when one	or more services had already be added to
+	the list by the user.

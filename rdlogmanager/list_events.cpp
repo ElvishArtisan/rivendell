@@ -213,25 +213,29 @@ void ListEvents::addData()
   }
   else {
     if(edit_filter_box->currentItem()==0) {
-      sql="select NAME from SERVICES";
+      sql=QString(" select ")+
+	"ID "+  // 00
+	"from EVENT_PERMS where "+
+	"EVENT_NAME=\""+RDEscapeString(logname)+"\"";
       q=new RDSqlQuery(sql);
-      while(q->next()) {
-	sql=QString().sprintf("insert into EVENT_PERMS set\
-                               EVENT_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			      (const char *)logname,
-			      (const char *)q->value(0).toString());
+      if(!q->first()) {
+	sql="select NAME from SERVICES";
 	q1=new RDSqlQuery(sql);
+	while(q1->next()) {
+	  sql=QString("insert into EVENT_PERMS set ")+
+	    "EVENT_NAME=\""+RDEscapeString(logname)+"\","+
+	    "SERVICE_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	  RDSqlQuery::apply(sql);
+	}
 	delete q1;
       }
       delete q;
     }
     else {
-      sql=QString().sprintf("insert into EVENT_PERMS set\
-                             EVENT_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			    (const char *)logname,
-			    (const char *)edit_filter_box->currentText());
-      q=new RDSqlQuery(sql);
-      delete q;
+      sql=QString("insert into EVENT_PERMS set ")+
+	"EVENT_NAME=\""+RDEscapeString(logname)+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(edit_filter_box->currentText())+"\"";
+      RDSqlQuery::apply(sql);
     }
   }
   delete event_dialog;

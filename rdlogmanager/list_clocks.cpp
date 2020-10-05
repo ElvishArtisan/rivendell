@@ -2,7 +2,7 @@
 //
 // List Rivendell Log Clocks
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -234,13 +234,20 @@ void ListClocks::addData()
   }
   else {
     if(edit_filter_box->currentItem()==0) {
-      sql="select NAME from SERVICES";
+      sql=QString("select ")+
+	"ID "+  // 00
+	"from CLOCK_PERMS where "+
+	"CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
       q=new RDSqlQuery(sql);
-      while(q->next()) {
-	sql=QString("insert into CLOCK_PERMS set ")+
-	  "CLOCK_NAME=\""+RDEscapeString(clockname)+"\","+
-	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      if(!q->first()) {
+	sql="select NAME from SERVICES";
 	q1=new RDSqlQuery(sql);
+	while(q1->next()) {
+	  sql=QString("insert into CLOCK_PERMS set ")+
+	    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\","+
+	    "SERVICE_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	  RDSqlQuery::apply(sql);
+	}
 	delete q1;
       }
       delete q;
@@ -249,8 +256,7 @@ void ListClocks::addData()
       sql=QString("insert into CLOCK_PERMS set ")+
 	"CLOCK_NAME=\""+RDEscapeString(clockname)+"\","+
 	"SERVICE_NAME=\""+RDEscapeString(edit_filter_box->currentText())+"\"";
-      q=new RDSqlQuery(sql);
-      delete q;
+      RDSqlQuery::apply(sql);
     }
     Q3ListViewItem *item=new Q3ListViewItem(edit_clocks_list);
     item->setText(0,clockname);
