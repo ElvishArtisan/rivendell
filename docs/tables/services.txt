@@ -12,6 +12,8 @@ NAME_TEMPLATE           varchar(191)
 DESCRIPTION_TEMPLATE    varchar(191)
 PROGRAM_CODE            varchar(191)
 CHAIN_LOG               enum('N','Y')
+SUB_EVENT_INHERITANCE   int(11)               0=Inherit from parent event,
+                                              1=Inherit from scheduler file
 TRACK_GROUP             varchar(10)           From GROUPS.NAME
 AUTOSPOT_GROUP          varchar(10)           From GROUPS.NAME
 AUTO_REFRESH            enum('N','Y')

@@ -4154,6 +4154,18 @@ Custom</source>
         <source>This action will overwrite your existing [custom] Music Data Import settings. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Inline Traffic Inheritance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From Parent RDLogManager Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>From Music Scheduler File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditSvcPerms</name>

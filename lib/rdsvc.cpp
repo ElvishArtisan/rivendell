@@ -207,6 +207,19 @@ void RDSvc::setChainto(bool state) const
 }
 
 
+RDSvc::SubEventInheritance RDSvc::subEventInheritance() const
+{
+  return (RDSvc::SubEventInheritance)
+    RDGetSqlValue("SERVICES","NAME",svc_name,"SUB_EVENT_INHERITANCE").toInt();
+}
+
+
+void RDSvc::setSubEventInheritance(RDSvc::SubEventInheritance inherit) const
+{
+  SetRow("SUB_EVENT_INHERITANCE",inherit);
+}
+
+
 QString RDSvc::importTemplate(ImportSource src) const
 {
   QString fieldname=SourceString(src)+"IMPORT_TEMPLATE";

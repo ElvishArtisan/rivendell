@@ -41,6 +41,14 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 339
+  //
+  if((cur_schema==339)&&(set_schema<cur_schema)) {
+    DropColumn("SERVICES","SUB_EVENT_INHERITANCE");
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 338
   //
   if((cur_schema==338)&&(set_schema<cur_schema)) {

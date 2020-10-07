@@ -78,6 +78,7 @@ class EditSvc : public RDDialog
   QLineEdit *svc_mus_label_cart_edit;
   QLineEdit *svc_mus_break_edit;
   QLineEdit *svc_mus_track_edit;
+  QComboBox *svc_sub_event_inheritance_box;
   QCheckBox *svc_chain_box;
   QCheckBox *svc_autorefresh_box;
   QCheckBox *svc_loglife_box;
