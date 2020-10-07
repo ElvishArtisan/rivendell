@@ -20398,3 +20398,5 @@
 2020-10-07 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the predicted next release version from '4.0' to '3.5'.
 	in rddbmgr(8).
+2020-10-07 Patrick Linstruth <patrick@deltecent.com>
+	* Added '--scheduler-code=' switch to rdexport(1).

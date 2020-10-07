@@ -34,6 +34,7 @@
 #include <rdcart.h>
 #include <rdescape_string.h>
 #include <rdgroup.h>
+#include <rdschedcode.h>
 
 #include "rdexport.h"
 
@@ -51,6 +52,7 @@ MainObject::MainObject(QObject *parent)
   export_channels=0;
   export_quality=3;
   export_xml=false;
+  export_verbose=false;
 
   //
   // Open the Database
@@ -162,6 +164,10 @@ MainObject::MainObject(QObject *parent)
       export_groups.push_back(rda->cmdSwitch()->value(i));
       rda->cmdSwitch()->setProcessed(i,true);
     }
+    if(rda->cmdSwitch()->key(i)=="--scheduler-code") {
+      export_schedcodes.push_back(rda->cmdSwitch()->value(i));
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
     if(rda->cmdSwitch()->key(i)=="--metadata-pattern") {
       export_metadata_pattern=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
@@ -232,6 +238,27 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
+  // Validate Scheduler Code List
+  //
+  std::vector<QString> bad_schedcodes;
+  for(unsigned i=0;i<export_schedcodes.size();i++) {
+    RDSchedCode *sch=new RDSchedCode(export_schedcodes[i]);
+    if(!sch->exists()) {
+      bad_schedcodes.push_back(export_schedcodes[i]);
+    }
+    delete sch;
+  }
+  if(bad_schedcodes.size()>0) {
+    QString str="no such scheduler code(s): ";
+    for(unsigned i=0;i<bad_schedcodes.size();i++) {
+      str+=bad_schedcodes[i]+", ";
+    }
+    str=str.left(str.length()-2);
+    fprintf(stderr,"rdexport: %s\n",(const char *)str.toUtf8());
+    exit(256);
+  }
+
+  //
   // RIPC Connection
   //
   connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
@@ -270,6 +297,14 @@ void MainObject::userData()
   for(unsigned i=0;i<export_groups.size();i++) {
     Verbose("Processing group \""+export_groups[i]+"\"...");
     ExportGroup(export_groups[i]);
+  }
+
+  //
+  // Process Scheduler Codes
+  //
+  for(unsigned i=0;i<export_schedcodes.size();i++) {
+    Verbose("Processing scheduler code \""+export_schedcodes[i]+"\"...");
+    ExportSchedCode(export_schedcodes[i]);
   }
 
   //
@@ -314,6 +349,22 @@ void MainObject::ExportGroup(const QString &groupname)
     "(GROUP_NAME=\""+RDEscapeString(groupname)+"\")&&"+
     QString().sprintf("(TYPE=%u) ",RDCart::Audio)+
     "order by NUMBER";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    ExportCart(q->value(0).toUInt());
+  }
+  delete q;
+}
+
+
+void MainObject::ExportSchedCode(const QString &schedcode)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("select CART_NUMBER from CART_SCHED_CODES where ")+
+    "SCHED_CODE=\""+RDEscapeString(schedcode)+"\" "+
+    "order by CART_NUMBER";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     ExportCart(q->value(0).toUInt());
