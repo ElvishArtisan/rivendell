@@ -10308,6 +10308,37 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<340)&&(set_schema>cur_schema)) {
+    sql=QString("delete from IMPORTER_LINES");  // Purge stale lines first
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "add column TYPE int unsigned not null "+
+      "after LINE_ID";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "modify column START_HOUR int";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "modify column START_SECS int";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    DropColumn("IMPORTER_LINES","INSERT_BREAK");
+    DropColumn("IMPORTER_LINES","INSERT_TRACK");
+    DropColumn("IMPORTER_LINES","INSERT_FIRST");
+    DropColumn("IMPORTER_LINES","LINK_START_TIME");
+    DropColumn("IMPORTER_LINES","LINK_LENGTH");
+    DropColumn("IMPORTER_LINES","TRACK_STRING");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

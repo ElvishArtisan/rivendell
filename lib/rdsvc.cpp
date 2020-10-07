@@ -564,27 +564,19 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   // Parse and Save
   //
   int line_id=0;
-  bool insert_found=false;
   bool cart_ok=false;
   bool start_time_ok=false;
-  bool line_used=false;
-  bool insert_break=false;
-  bool insert_track=false;
-  bool break_first=false;
-  bool track_first=false;
   QString track_label;
   QTime link_time;
-  int link_length=-1;
 
   while(fgets(buf,RD_MAX_IMPORT_LINE_LENGTH,infile)!=NULL) {
-    line_used=false;
-    str_buf=QString(buf);
+    str_buf=QString::fromUtf8(buf);
 
     //
     // Cart Number
     //
     cartnum=0;
-    cartname=str_buf.mid(cart_offset,cart_length).stripWhiteSpace();
+    cartname=str_buf.mid(cart_offset,cart_length).trimmed();
 
     //
     // Start Time
@@ -622,119 +614,66 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     //
     // Title
     //
-    title=str_buf.mid(title_offset,title_length).stripWhiteSpace();
+    title=str_buf.mid(title_offset,title_length).trimmed();
 
     //
     // Process Line
     //
     cartnum=cartname.toUInt(&cart_ok);
-    if(start_time_ok&&(cart_ok||
-		       ((!label_cart.isEmpty())&&(cartname==label_cart))||
-		       ((!track_cart.isEmpty())&&(cartname==track_cart)))) {
-      sql=QString("insert into IMPORTER_LINES set ")+
-	"STATION_NAME=\""+RDEscapeString(svc_station->name())+"\","+
-	QString().sprintf("PROCESS_ID=%d,",getpid())+
-	QString().sprintf("LINE_ID=%d,",line_id++)+
-	QString().sprintf("START_HOUR=%d,",start_hour)+
+
+    //
+    // Common SQL Elements
+    //
+    sql=QString("insert into IMPORTER_LINES set ")+
+      "STATION_NAME=\""+RDEscapeString(svc_station->name())+"\","+
+      QString().sprintf("PROCESS_ID=%d,",getpid())+
+      QString().sprintf("LINE_ID=%d,",line_id);
+    if(start_time_ok) {
+      sql+=QString().sprintf("START_HOUR=%d,",start_hour)+
 	QString().sprintf("START_SECS=%d,",
-			  60*start_minutes+start_seconds)+
+			  60*start_minutes+start_seconds);
+    }
+    if(cartlen>0) {
+      sql+=QString().sprintf("LENGTH=%d,",cartlen);
+    }
+
+    //
+    // Cart
+    //
+    if(start_time_ok&&cart_ok&&(cartnum>0)&&(cartnum<=RD_MAX_CART_NUMBER)) {
+      sql+=QString().sprintf("TYPE=%u,",RDLogLine::Cart)+
+	"EXT_DATA=\""+data_buf.trimmed()+"\","+
+	"EXT_EVENT_ID=\""+eventid_buf.trimmed()+"\","+
+	"EXT_ANNC_TYPE=\""+annctype_buf.trimmed()+"\","+
+	"EXT_CART_NAME=\""+cartname.trimmed()+"\","+
 	QString().sprintf("CART_NUMBER=%u,",cartnum)+
-	"TITLE=\""+RDEscapeString(title)+"\","+
-	QString().sprintf("LENGTH=%d,",cartlen)+
-	"EXT_DATA=\""+data_buf+"\","+
-	"EXT_EVENT_ID=\""+eventid_buf+"\","+
-	"EXT_ANNC_TYPE=\""+annctype_buf+"\","+
-	"EXT_CART_NAME=\""+cartname+"\"";
-      q=new RDSqlQuery(sql);
-      delete q;
-      //
-      // Insert Break
-      //
-      if(insert_break) {
-	sql=QString("update IMPORTER_LINES set ")+
-	  "INSERT_BREAK=\"Y\"";
-	if(break_first) {
-	  sql+=QString().sprintf(",INSERT_FIRST=%d",
-				 RDEventLine::InsertBreak);
-	}
-	if(link_time.isValid()&&(link_length>=0)) {
-	  sql+=",LINK_START_TIME=\""+
-	    link_time.toString("hh:mm:ss")+"\""+
-	    QString().sprintf(",LINK_LENGTH=%d",
-			      link_length);
-	}
-	sql+=QString(" where ")+
-	  "STATION_NAME=\""+RDEscapeString(svc_station->name())+"\" && "+
-	  QString().sprintf("PROCESS_ID=%u && ",getpid())+
-	  QString().sprintf("LINE_ID=%d",line_id-1);
-	q=new RDSqlQuery(sql);
-	delete q;
-      }
-      //
-      // Insert Track
-      //
-      if(insert_track) {
-	if(track_first) {
-	  sql=QString("update IMPORTER_LINES set ")+
-	    "INSERT_TRACK=\"Y\","+
-	    "TRACK_STRING=\""+RDEscapeString(track_label)+"\","+
-	    QString().sprintf("INSERT_FIRST=%d ",RDEventLine::InsertTrack)+
-	    QString("where ")+
-	    "STATION_NAME=\""+RDEscapeString(svc_station->name())+"\" && "+
-	    QString().sprintf("PROCESS_ID=%u && ",getpid())+
-	    QString().sprintf("LINE_ID=%d",line_id-1);
-	}
-	else {
-	  sql=QString("update IMPORTER_LINES set ")+
-	    "INSERT_TRACK=\"Y\","+
-	    "TRACK_STRING=\""+RDEscapeString(track_label)+"\" "+
-	    QString("where ")+
-	    "STATION_NAME=\""+RDEscapeString(svc_station->name())+"\" && "+
-	    QString().sprintf("PROCESS_ID=%u && ",getpid())+
-	    QString().sprintf("LINE_ID=%d",line_id-1);
-	}
-	q=new RDSqlQuery(sql);
-	delete q;
-      }
-      insert_break=false;
-      break_first=false;
-      insert_track=false;
-      track_first=false;
-      insert_found=false;
-      line_used=true;
+	"TITLE=\""+RDEscapeString(title)+"\"";
+      RDSqlQuery::apply(sql);
+      line_id++;
+      continue;
     }
-    if((cartname==break_str)&&start_time_ok) {
-      link_time=
-	QTime(start_hour,start_minutes,start_seconds);
-      link_length=cartlen;
-    }
-    else {
-      link_time=QTime();
-      link_length=-1;
-    }
-    if(!line_used) {
-      //
-      // Look for Break and Track Strings
-      //
-      if(!break_str.isEmpty()) {
-	if(str_buf.contains(break_str)) {
-	  insert_break=true;
-	  if(!insert_found) {
-	    break_first=true;
-	    insert_found=true;
-	  }
-	}
+
+    //
+    // Inline Break
+    //
+    if((src==RDSvc::Music)&&(!break_str.isEmpty())) {
+      if(str_buf.contains(break_str)) {
+	sql+=QString().sprintf("TYPE=%u",RDLogLine::TrafficLink);
+	RDSqlQuery::apply(sql);
+	line_id++;
+	continue;
       }
-      if(!track_str.isEmpty()) {
-	if(str_buf.contains(track_str)) {
-	  insert_track=true;
-	  track_label=str_buf;
-	  if(!insert_found) {
-	    track_first=true;
-	    insert_found=true;
-	  }
-	}
-      }
+    }
+
+    //
+    // Track Marker
+    //
+    if((!track_str.isEmpty())&&(str_buf.contains(track_str))) {
+      sql+=QString().sprintf("TYPE=%u,",RDLogLine::Track)+
+	"TITLE=\""+RDEscapeString(str_buf.simplified().trimmed())+"\"";
+      RDSqlQuery::apply(sql);
+      line_id++;
+      continue;
     }
   }
 

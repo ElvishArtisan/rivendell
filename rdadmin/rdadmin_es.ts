@@ -6648,10 +6648,6 @@ Revise los parámetros e intente de nuevo.</translation>
         <source>[voice track]</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>[approximate spot break]</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ViewAdapters</name>

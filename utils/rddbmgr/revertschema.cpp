@@ -41,6 +41,54 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 340
+  //
+  if((cur_schema==340)&&(set_schema<cur_schema)) {
+    sql=QString("alter table IMPORTER_LINES ")+
+      "add column INSERT_BREAK enum('N','Y') default 'N' after LENGTH";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "add column INSERT_TRACK enum('N','Y') default 'N' after INSERT_BREAK";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "add column INSERT_FIRST int unsigned default 0 after INSERT_TRACK";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "add column TRACK_STRING varchar(191) after INSERT_FIRST";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "add column LINK_START_TIME time after EXT_CART_NAME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "add column LINK_LENGTH int after LINK_START_TIME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "modify column START_HOUR int not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "modify column START_SECS int not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    DropColumn("IMPORTER_LINES","TYPE");
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 339
   //
   if((cur_schema==339)&&(set_schema<cur_schema)) {

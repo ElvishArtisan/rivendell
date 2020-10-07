@@ -20408,3 +20408,18 @@
 	'RDSvc::setSubEventInheritance()' methods.
 	* Added an 'Inline Traffic Inheritance' control to the 'Edit Service'
 	dialog in rdadmin(1).
+2020-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'IMPORTER_LINES.TYPE' field to the database.
+	* Removed the 'not null' attribute from the
+	'IMPORTER_LINES.START_HOUR' field in the database.
+	* Removed the 'not null' attribute from the
+	'IMPORTER_LINES.START_SECS' field in the database.
+	* Removed the 'IMPORTER_LINES.LINK_LENGTH' field from the database.
+	* Removed the 'IMPORTER_LINES.INSERT_TRACK' field from the database.
+	* Removed the 'IMPORTER_LINES.INSERT_FIRST' field from the database.
+	* Removed the 'IMPORTER_LINES.TRACK_STRING' field from the database.
+	* Removed the 'IMPORTER_LINES.LINK_START_TIME' field from the database.
+	* Removed the 'IMPORTER_LINES.LINK_LENGTH' field from the database.
+	* Incremented the database version to 340.
+	* Added type icons to the 'Imported Events' list in the 'Test Import'
+	dialog in rdadmin(1).

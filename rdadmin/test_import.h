@@ -25,6 +25,7 @@
 #include <q3datetimeedit.h>
 #include <qlabel.h>
 #include <qlineedit.h>
+#include <qpixmap.h>
 
 #include <rddialog.h>
 #include <rdlistview.h>
@@ -60,6 +61,9 @@ class TestImport : public RDDialog
   QLabel *test_filename_label;
   QLineEdit *test_filename_edit;
   QPushButton *test_close_button;
+  QPixmap *test_playout_map;
+  QPixmap *test_mic16_map;
+  QPixmap *test_traffic_map;
 };
 
 

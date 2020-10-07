@@ -9,19 +9,14 @@ ID                   int(10) unsigned  Primary key, auto increment
 STATION_NAME         varchar(64)       From STATIONS.NAME
 PROCESS_ID           int unsigned
 LINE_ID              int(10) unsigned
+TYPE                 int(10) unsigned  RDLogLine::Type
 START_HOUR           int (11) signed
 START_SECS           int(11) signed
 CART_NUMBER          int (10) unsigned
 TITLE                varchar(191)
 LENGTH               int (11) signed
-INSERT_BREAK         enum('N','Y')
-INSERT_TRACK         enum('N','Y')
-INSERT_FIRST         int (10) unsigned
-TRACK_STRING         varchar(191)
 EXT_DATA             varchar(32)
 EXT_EVENT_ID         varchar(32)
 EXT_ANNC_TYPE        varchar(8)
 EXT_CART_NAME        varchar(32)
-LINK_START_TIME      time
-LINK_LENGTH          int (11) signed
 EVENT_USED           enum('N','Y')

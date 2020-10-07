@@ -35,6 +35,10 @@
 #include "globals.h"
 #include "test_import.h"
 
+#include "../icons/play.xpm"
+#include "../icons/mic16.xpm"
+#include "../icons/traffic.xpm"
+
 TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   : RDDialog(parent)
 {
@@ -60,6 +64,13 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
     setWindowTitle("RDAdmin - "+tr("Test Music Import"));
     break;
   }
+
+  //
+  // Create Icons
+  //
+  test_playout_map=new QPixmap(play_xpm);
+  test_mic16_map=new QPixmap(mic16_xpm);
+  test_traffic_map=new QPixmap(traffic_xpm);
 
   //
   // Date Selector
@@ -107,20 +118,22 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   test_events_list->setSortColumn(0);
   test_events_list->setSortOrder(Qt::Ascending);
   test_events_list->setAllColumnsShowFocus(true);
-  test_events_list->addColumn(tr("Start Time"));
+  test_events_list->addColumn("");
   test_events_list->setColumnAlignment(0,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Cart"));
+  test_events_list->addColumn(tr("Start Time"));
   test_events_list->setColumnAlignment(1,Qt::AlignCenter);
+  test_events_list->addColumn(tr("Cart"));
+  test_events_list->setColumnAlignment(2,Qt::AlignCenter);
   test_events_list->addColumn(tr("Len"));
-  test_events_list->setColumnAlignment(2,Qt::AlignRight);
+  test_events_list->setColumnAlignment(3,Qt::AlignRight);
   test_events_list->addColumn(tr("Title"));
-  test_events_list->setColumnAlignment(3,Qt::AlignLeft);
+  test_events_list->setColumnAlignment(4,Qt::AlignLeft);
   test_events_list->addColumn(tr("GUID"));
-  test_events_list->setColumnAlignment(4,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Event ID"));
   test_events_list->setColumnAlignment(5,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Annc Type"));
+  test_events_list->addColumn(tr("Event ID"));
   test_events_list->setColumnAlignment(6,Qt::AlignCenter);
+  test_events_list->addColumn(tr("Annc Type"));
+  test_events_list->setColumnAlignment(7,Qt::AlignCenter);
   test_events_list->setColumnSortType(0,RDListView::LineSort);
   test_events_label=new QLabel(test_events_list,tr("Imported Events"),this);
   test_events_label->setGeometry(15,160,sizeHint().width()-30,18);
@@ -190,76 +203,59 @@ void TestImport::importData()
     "EXT_DATA,"+       // 04
     "EXT_EVENT_ID,"+   // 05
     "EXT_ANNC_TYPE,"+  // 06
-    "INSERT_BREAK,"+   // 07
-    "INSERT_TRACK,"+   // 08
-    "INSERT_FIRST,"+   // 09
-    "TITLE,"+          // 10
-    "LINK_START_TIME," // 11
-    "LINK_LENGTH "+    // 12
+    "TITLE,"+          // 07
+    "TYPE "+           // 08
     "from IMPORTER_LINES where "+
     "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
     QString().sprintf("PROCESS_ID=%u ",getpid())+
-    "order by START_HOUR,START_SECS";
+    "order by LINE_ID";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    if(q->value(9).toUInt()==RDEventLine::InsertBreak) {
-      if(q->value(7).toString()=="Y") {
-	item=new RDListViewItem(test_events_list);
-	item->setLine(next_line++);
-	item->setText(3,tr("[spot break]"));
-	if(!q->value(11).isNull()) {
-	  item->setText(3,tr("[spot break]"));
-	  item->setText(0,q->value(11).toTime().toString("hh:mm:ss"));
-	  item->setText(2,RDGetTimeLength(q->value(12).toInt(),false,false));
-	}
-	else {
-	  item->setText(3,tr("[approximate spot break]"));
-	}
-      }
-      if(q->value(8).toString()=="Y") {
-	item=new RDListViewItem(test_events_list);
-	item->setLine(next_line++);
-	item->setText(3,tr("[voice track]"));
-      }
-    }
-    else {
-      if(q->value(8).toString()=="Y") {
-	item=new RDListViewItem(test_events_list);
-	item->setLine(next_line++);
-	item->setText(3,tr("[voice track]"));
-      }
-      if(q->value(7).toString()=="Y") {
-	item=new RDListViewItem(test_events_list);
-	item->setLine(next_line++);
-	if(!q->value(11).isNull()) {
-	  item->setText(3,tr("[spot break]"));
-	  item->setText(0,q->value(11).toTime().toString("hh:mm:ss"));
-	  item->setText(2,RDGetTimeLength(q->value(12).toInt(),false,false));
-	}
-	else {
-	  item->setText(3,tr("[approximate spot break]"));
-	}
-      }
-    }
     item=new RDListViewItem(test_events_list);
     item->setLine(next_line++);
-    item->setText(0,RDSvc::timeString(q->value(0).toInt(),
-				      q->value(1).toInt()));
-    item->setText(1,q->value(2).toString());
-    if(q->value(3).toInt()>=0) {
-      item->setText(2,RDGetTimeLength(q->value(3).toInt(),false,false));
+    if((!q->value(0).isNull())&&(!q->value(1).isNull())) {
+      item->setText(1,RDSvc::timeString(q->value(0).toInt(),
+					q->value(1).toInt()));
     }
-    item->setText(3,q->value(10).toString().trimmed());
-    item->setText(4,q->value(4).toString().trimmed());
-    item->setText(5,q->value(5).toString().trimmed());
-    item->setText(6,q->value(6).toString().trimmed());
+    if(!q->value(3).isNull()) {
+      item->setText(3,RDGetTimeLength(q->value(3).toInt(),false,false));
+    }
+    item->setText(5,q->value(4).toString().trimmed());
+    item->setText(6,q->value(5).toString().trimmed());
+    item->setText(7,q->value(6).toString().trimmed());
+    switch((RDLogLine::Type)q->value(8).toUInt()) {
+    case RDLogLine::Cart:
+      item->setPixmap(0,*test_playout_map);
+      item->setText(2,q->value(2).toString());
+      item->setText(4,q->value(7).toString().trimmed());
+      break;
+
+    case RDLogLine::TrafficLink:
+      item->setPixmap(0,*test_traffic_map);
+      item->setText(4,tr("[spot break]"));
+      break;
+
+    case RDLogLine::Track:
+      item->setPixmap(0,*test_mic16_map);
+      item->setText(4,tr("[voice track]"));
+      break;
+
+    case RDLogLine::Macro:
+    case RDLogLine::OpenBracket:
+    case RDLogLine::CloseBracket:
+    case RDLogLine::Chain:
+    case RDLogLine::MusicLink:
+    case RDLogLine::Marker:
+    case RDLogLine::UnknownType:
+      break;
+    }
   }
   delete q;
 
   sql=QString("delete from IMPORTER_LINES where ")+
     "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
     QString().sprintf("PROCESS_ID=%u",getpid());
-  //  printf("IMPORTER_LINES cleanup SQL: %s\n",(const char *)sql);
+  //printf("IMPORTER_LINES cleanup SQL: %s\n",(const char *)sql);
   RDSqlQuery::apply(sql);
 }
 

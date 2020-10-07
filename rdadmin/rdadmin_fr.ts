@@ -5116,19 +5116,15 @@ please check your settings and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[spot break]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Annc Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[voice track]</source>
+        <source>[spot break]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[approximate spot break]</source>
+        <source>[voice track]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
