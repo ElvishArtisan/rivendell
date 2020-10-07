@@ -186,7 +186,7 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
 
 QString RDPeaksExport::errorText(RDPeaksExport::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown Error [%u]",err);
+  QString ret=QString().sprintf("Unknown RDPeaksExport Error [%u]",err);
 
   switch(err) {
   case RDPeaksExport::ErrorOk:

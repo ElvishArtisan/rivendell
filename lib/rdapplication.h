@@ -36,6 +36,7 @@
 #include <rdlibrary_conf.h>
 #include <rdlogedit_conf.h>
 #include <rdripc.h>
+#include <rdrssschemas.h>
 #include <rdstation.h>
 #include <rdsystem.h>
 #include <rduser.h>
@@ -58,10 +59,10 @@ class RDApplication : public QObject
   RDLogeditConf *logeditConf();
   RDAirPlayConf *panelConf();
   RDRipc *ripc();
+  RDRssSchemas *rssSchemas();
   RDStation *station();
   RDSystem *system();
   RDUser *user();
-  //  void log(RDConfig::LogPriority prio,const QString &msg);
   bool dropTable(const QString &tbl_name);
   void addTempFile(const QString &pathname);
   void syslog(int priority,const char *fmt,...) const;
@@ -83,6 +84,7 @@ class RDApplication : public QObject
   RDLibraryConf *app_library_conf;
   RDLogeditConf *app_logedit_conf;
   RDRipc *app_ripc;
+  RDRssSchemas *app_schemas;
   RDStation *app_station;
   RDSystem *app_system;
   RDUser *app_user;

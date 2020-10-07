@@ -806,6 +806,34 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>MARKER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TRACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LOG CHAIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LINK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[cart not found]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[music link]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[traffic link]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>whitespace is not permitted in service names</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2008,6 +2036,13 @@ para o período do relatório
     <message>
         <source>Pin:</source>
         <translation>Pin:</translation>
+    </message>
+</context>
+<context>
+    <name>RDImagePickerModel</name>
+    <message>
+        <source>Image</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

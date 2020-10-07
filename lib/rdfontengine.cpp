@@ -54,6 +54,7 @@ RDFontEngine::~RDFontEngine()
   delete font_big_button_font_metrics;
   delete font_sub_button_font_metrics;
   delete font_section_label_font_metrics;
+  delete font_big_label_font_metrics;
   delete font_label_font_metrics;
   delete font_sub_label_font_metrics;
   delete font_progress_font_metrics;
@@ -121,6 +122,18 @@ QFont RDFontEngine::sectionLabelFont() const
 QFontMetrics *RDFontEngine::sectionLabelFontMetrics() const
 {
   return font_section_label_font_metrics;
+}
+
+
+QFont RDFontEngine::bigLabelFont() const
+{
+  return font_big_label_font;
+}
+
+
+QFontMetrics *RDFontEngine::bigLabelFontMetrics() const
+{
+  return font_big_label_font_metrics;
 }
 
 
@@ -263,6 +276,10 @@ void RDFontEngine::MakeFonts(const QFont &default_font)
   font_section_label_font=QFont(family,label_size+2,QFont::Bold);
   font_section_label_font.setPixelSize(label_size+2);
   font_section_label_font_metrics=new QFontMetrics(font_section_label_font);
+
+  font_big_label_font=QFont(family,label_size+4,QFont::Bold);
+  font_big_label_font.setPixelSize(label_size+4);
+  font_big_label_font_metrics=new QFontMetrics(font_label_font);
 
   font_label_font=QFont(family,label_size,QFont::Bold);
   font_label_font.setPixelSize(label_size);

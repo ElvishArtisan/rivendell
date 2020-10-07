@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Podcast Entry
 //
-//   (C) Copyright 2002-2007,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,8 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <qsqldatabase.h>
 
 #include <rdconfig.h>
 #include <rdfeed.h>
@@ -40,6 +38,10 @@ class RDPodcast
   void setItemTitle(const QString &str) const;
   QString itemDescription() const;
   void setItemDescription(const QString &str) const;
+  bool itemExplicit() const;
+  void setItemExplicit(bool state) const;
+  int itemImageId() const;
+  void setItemImageId(int img_id) const;
   QString itemCategory() const;
   void setItemCategory(const QString &str) const;
   QString itemLink() const;
@@ -52,6 +54,10 @@ class RDPodcast
   void setItemSourceText(const QString &str) const;
   QString itemSourceUrl() const;
   void setItemSourceUrl(const QString &str) const;
+  QString originLoginName() const;
+  void setOriginLoginName(const QString &str) const;
+  QString originStation() const;
+  void setOriginStation(const QString &str) const;
   QDateTime originDateTime() const;
   void setOriginDateTime(const QDateTime &datetime) const;
   QDateTime effectiveDateTime() const;
@@ -62,19 +68,21 @@ class RDPodcast
   void setAudioLength(int len) const;
   int audioTime() const;
   void setAudioTime(int msecs) const;
-  unsigned shelfLife() const;
-  void setShelfLife(unsigned days) const;
+  QString sha1Hash() const;
+  void setSha1Hash(const QString &str=QString()) const;
+  QDateTime expirationDateTime() const;
+  void setExpirationDateTime(const QDateTime &dt) const;
   RDPodcast::Status status() const;
   void setStatus(RDPodcast::Status status);
-  //QString audioUploadCommand(const QString &srcfile) const;
-  //QString audioPurgeCommand() const;
-  bool removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const;
+  bool dropAudio(RDFeed *feed,QString *err_text,bool log_debug) const;
+  bool removePodcast() const;
   static QString guid(const QString &url,const QString &filename,
 		      unsigned feed_id,unsigned cast_id);
   static QString guid(const QString &full_url,
 		      unsigned feed_id,unsigned cast_id);
 
  private:
+  bool DeletePodcast(unsigned cast_id) const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,const QDateTime &datetime,const QString &value) const;

@@ -2,7 +2,7 @@
 ##
 ## docs/tables/automake.am for Rivendell
 ##
-## (C) Copyright 2002-2018 Fred Gleason <fredg@salemradiolabs.com>
+## (C) Copyright 2002-2020 Fred Gleason <fredg@salemradiolabs.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,6 @@ EXTRA_DIST = audio_cards.txt\
              aux_metadata.txt\
              cart.txt\
              cartslots.txt\
-             cast_downloads.txt\
              clipboard.txt\
              clock_lines.txt\
              clock_perms.txt\
@@ -41,15 +40,12 @@ EXTRA_DIST = audio_cards.txt\
              dropbox_paths.txt\
              dropbox_sched_codes.txt\
              elr_lines.txt\
-             encoder_bitrates.txt\
-             encoder_channels.txt\
-             encoder_samplerates.txt\
-             encoders.txt\
              event_lines.txt\
              event_perms.txt\
              events.txt\
              extended_panel_names.txt\
              extended_panels.txt\
+             feed_images.txt\
              feed_perms.txt\
              feeds.txt\
              gpio_events.txt\
@@ -99,6 +95,7 @@ EXTRA_DIST = audio_cards.txt\
              stack_lines.txt\
              stack_sched_codes.txt\
              stations.txt\
+             superfeed_maps.txt\
              switcher_nodes.txt\
              system.txt\
              triggers.txt\

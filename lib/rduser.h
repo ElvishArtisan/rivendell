@@ -18,8 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-
 #ifndef RDUSER_H
 #define RDUSER_H
 
@@ -43,6 +41,9 @@ class RDUser
   void setPamService(const QString &str) const;
   QString fullName() const;
   void setFullName(const QString &name) const;
+  QString emailAddress() const;
+  void setEmailAddress(const QString &str) const;
+  QString emailContact() const;
   QString description() const;
   void setDescription(const QString &desc) const;
   QString phone() const;
@@ -92,23 +93,11 @@ class RDUser
   bool groupAuthorized(const QString &group_name);
   QStringList groups() const;
   bool cartAuthorized(unsigned cartnum) const;
-
-  /** Check a default service to ensure it is valid for the current user.
-   *
-   * @param serv QString with the proposed default service, presumably gotten
-   *             from RDAirPlayConf::defaultSvc()
-   * @return QString with serv if it was valid, otherwise an empty QString.
-   */
+  bool feedAuthorized(const QString &keyname);
   QString serviceCheckDefault(QString serv) const;
-
-  /** Calculate the services associated with a user, based on the user's group
-   * membership and the relationship of groups to services.
-   *
-   * Note: admin users, those who pass adminConfig(), can see all services.
-   *
-   * @return QStringList with all the services associated with the user.
-   */
   QStringList services() const;
+  static bool emailIsValid(const QString &addr);
+  static QString emailContact(const QString &addr,const QString &fullname);
 
  private:
   void SetRow(const QString &param,const QString &value) const;

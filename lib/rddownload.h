@@ -21,12 +21,12 @@
 #ifndef RDDOWNLOAD_H
 #define RDDOWNLOAD_H
 
-#include <qobject.h>
 #include <qurl.h>
 
 #include <rdconfig.h>
+#include <rdtransfer.h>
 
-class RDDownload : public QObject
+class RDDownload : public RDTransfer
 {
   Q_OBJECT;
  public:
@@ -37,11 +37,14 @@ class RDDownload : public QObject
 		  ErrorInvalidLogin=11,ErrorRemoteAccess=12,
 		  ErrorRemoteConnection=13};
   RDDownload(RDConfig *config,QObject *parent=0);
+  QStringList supportedSchemes() const;
   void setSourceUrl(const QString &url);
   void setDestinationFile(const QString &filename);
   int totalSteps() const;
   RDDownload::ErrorCode runDownload(const QString &username,
 				    const QString &password,
+				    const QString &id_filename,
+				    bool use_id_filename,
 				    bool log_debug);
   bool aborting() const;
   static QString errorText(RDDownload::ErrorCode err);
@@ -60,7 +63,6 @@ class RDDownload : public QObject
   QString conv_dst_filename;
   bool conv_aborting;
   uint conv_dst_size;
-  RDConfig *conv_config;
 };
 
 

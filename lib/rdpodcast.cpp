@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Podcast
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,11 +25,13 @@
 #include <qurl.h>
 
 #include "rdapplication.h"
-#include "rddb.h"
-#include "rdpodcast.h"
 #include "rdconf.h"
+#include "rddb.h"
+#include "rddelete.h"
 #include "rdescape_string.h"
+#include "rdpodcast.h"
 #include "rdurl.h"
+#include "rdxport_interface.h"
 
 //
 // CURL Callbacks
@@ -129,6 +131,31 @@ void RDPodcast::setItemDescription(const QString &str) const
 }
 
 
+bool RDPodcast::itemExplicit() const
+{
+  return RDBool(RDGetSqlValue("PODCASTS","ID",podcast_id,
+			      "ITEM_EXPLICIT").toString());
+}
+
+
+void RDPodcast::setItemExplicit(bool state) const
+{
+  SetRow("ITEM_EXPLICIT",RDYesNo(state));
+}
+
+
+int RDPodcast::itemImageId() const
+{
+  return RDGetSqlValue("PODCASTS","ID",podcast_id,"ITEM_IMAGE_ID").toInt();
+}
+
+
+void RDPodcast::setItemImageId(int img_id) const
+{
+  SetRow("ITEM_IMAGE_ID",img_id);
+}
+
+
 QString RDPodcast::itemCategory() const
 {
   return RDGetSqlValue("PODCASTS","ID",podcast_id,"ITEM_CATEGORY").
@@ -207,6 +234,31 @@ void RDPodcast::setItemSourceUrl(const QString &str) const
 }
 
 
+QString RDPodcast::originLoginName() const
+{
+  return RDGetSqlValue("PODCASTS","ID",podcast_id,"ORIGIN_LOGIN_NAME").
+    toString();
+}
+
+
+void RDPodcast::setOriginLoginName(const QString &str) const
+{
+  SetRow("ORIGIN_LOGIN_NAME",str);
+}
+
+
+QString RDPodcast::originStation() const
+{
+  return RDGetSqlValue("PODCASTS","ID",podcast_id,"ORIGIN_STATION").toString();
+}
+
+
+void RDPodcast::setOriginStation(const QString &str) const
+{
+  SetRow("ORIGIN_STATION",str);
+}
+
+
 QDateTime RDPodcast::originDateTime() const
 {
   return RDGetSqlValue("PODCASTS","ID",podcast_id,
@@ -266,22 +318,34 @@ int RDPodcast::audioTime() const
 }
 
 
+QString RDPodcast::sha1Hash() const
+{
+  return RDGetSqlValue("PODCASTS","ID",podcast_id,"SHA1_HASH").toString();
+}
+
+
+void RDPodcast::setSha1Hash(const QString &str) const
+{
+  SetRow("SHA1_HASH",str);
+}
+
+
 void RDPodcast::setAudioTime(int msecs) const
 {
   SetRow("AUDIO_TIME",msecs);
 }
 
 
-unsigned RDPodcast::shelfLife() const
+QDateTime RDPodcast::expirationDateTime() const
 {
-  return RDGetSqlValue("PODCASTS","ID",podcast_id,"SHELF_LIFE").
-    toUInt();
+  return RDGetSqlValue("PODCASTS","ID",podcast_id,
+		       "EXPIRATION_DATETIME").toDateTime();
 }
 
 
-void RDPodcast::setShelfLife(unsigned days) const
+void RDPodcast::setExpirationDateTime(const QDateTime &dt) const
 {
-  SetRow("SHELF_LIFE",days);
+  SetRow("EXPIRATION_DATETIME",dt,"yyyy-MM-dd hh:mm:ss");
 }
 
 
@@ -298,81 +362,83 @@ void RDPodcast::setStatus(RDPodcast::Status status)
 }
 
 
-bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
+bool RDPodcast::dropAudio(RDFeed *feed,QString *err_text,bool log_debug) const
 {
-  CURL *curl=NULL;
-  struct curl_slist *cmds=NULL;
-  CURLcode err;
-  QUrl *url;
-  bool ret=true;
-  QString currentdir;
-  char urlstr[1024];
-  char userpwd[256];
-
-  if((curl=curl_easy_init())==NULL) {
-    rda->syslog(LOG_ERR,"unable to initialize curl library\n");
+  if(!removePodcast()) {
     return false;
   }
-  url=new QUrl(feed->purgeUrl());
-  strncpy(urlstr,(const char *)(url->protocol()+"://"+url->host()+"/").utf8(),
-	  1024);
-  curl_easy_setopt(curl,CURLOPT_URL,urlstr);
-  strncpy(userpwd,(feed->purgeUsername()+":"+feed->purgePassword()).utf8(),256);
-  curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
-  curl_easy_setopt(curl,CURLOPT_HTTPAUTH,CURLAUTH_ANY);
-  curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)podcast_config->userAgent().utf8());
-  if(log_debug) {
-    curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
-    curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,PodcastErrorCallback);
-  }
-  if(url->scheme()=="ftp") {
-    currentdir="";
-    if(!url->dirPath().right(url->dirPath().length()-1).isEmpty()) {
-      currentdir=url->dirPath().right(url->dirPath().length()-1)+"/";
-    }
-    if(!url->fileName().isEmpty()) {
-      currentdir+=url->fileName()+"/";
-    }
-    if(!currentdir.isEmpty()) {
-      cmds=curl_slist_append(cmds,QString().sprintf("cwd %s",
-						    (const char *)currentdir));
-    }
-    cmds=curl_slist_append(cmds, QString().sprintf("dele %s",
-						   (const char *)audioFilename()));
-  }
-  if(url->scheme()=="sftp") {
-    cmds=curl_slist_append(cmds,("rm "+url->path()+"/"+audioFilename()).toUtf8());
-  }
-  if(cmds==NULL) {
-    if(err_text!=NULL) {
-      *err_text="\""+url->scheme()+"\" scheme does not support remote deletion";
-      delete url;
-      curl_easy_cleanup(curl);
-      return false;
-    }
-  }
-  curl_easy_setopt(curl,CURLOPT_QUOTE,cmds);
-  switch((err=curl_easy_perform(curl))) {
-  case CURLE_OK:
-#ifdef CURLE_QUOTE_ERROR
-  case CURLE_QUOTE_ERROR:  // In case the file is already gone
-#endif  // CURLE_QUOTE_ERROR
-    ret=true;
-    break;
+  return DeletePodcast(podcast_id);
+}
 
-  default:
-    ret=false;
-    break;
+
+bool RDPodcast::removePodcast() const
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	   (const char *)QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_PODCAST),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",podcast_id),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
   }
-  if(err_text!=NULL) {
-    *err_text=curl_easy_strerror(err);
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
   }
-  curl_slist_free_all(cmds);
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
   curl_easy_cleanup(curl);
-  delete url;
-    
-  return ret;
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
 }
 
 
@@ -390,41 +456,120 @@ QString RDPodcast::guid(const QString &full_url,unsigned feed_id,
 }
 
 
+bool RDPodcast::DeletePodcast(unsigned cast_id) const
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_DELETE_PODCAST),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",cast_id),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
+}
+
+
 void RDPodcast::SetRow(const QString &param,int value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
   sql=QString("update PODCASTS set ")+
     param+QString().sprintf("=%d where ",value)+
     QString().sprintf("ID=%u",podcast_id);
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 }
 
 
 void RDPodcast::SetRow(const QString &param,const QString &value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update PODCASTS set ")+
-    param+"=\""+RDEscapeString(value)+"\" where "+
-    QString().sprintf("ID=%u",podcast_id);
-  q=new RDSqlQuery(sql);
-  delete q;
+  if(value.isNull()) {
+    sql=QString("update PODCASTS set ")+
+      param+"=NULL where "+
+      QString().sprintf("ID=%u",podcast_id);
+  }
+  else {
+    sql=QString("update PODCASTS set ")+
+      param+"=\""+RDEscapeString(value)+"\" where "+
+      QString().sprintf("ID=%u",podcast_id);
+  }
+  RDSqlQuery::apply(sql);
 }
 
 
 void RDPodcast::SetRow(const QString &param,const QDateTime &value,
                        const QString &format) const
 {
-  RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update PODCASTS set ")+
-    param+"="+RDCheckDateTime(value, format)+" where "+
-    QString().sprintf("ID=%u",podcast_id);
-  q=new RDSqlQuery(sql);
-  delete q;
+  if(value.isNull()) {
+    sql=QString("update PODCASTS set ")+
+      param+"=NULL"+" where "+
+      QString().sprintf("ID=%u",podcast_id);
+  }
+  else {
+    sql=QString("update PODCASTS set ")+
+      param+"="+RDCheckDateTime(value, format)+" where "+
+      QString().sprintf("ID=%u",podcast_id);
+  }
+  RDSqlQuery::apply(sql);
 }

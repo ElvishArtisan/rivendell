@@ -91,6 +91,16 @@
     <title>Label Fonts</title>
     <variablelist>
       <varlistentry>
+	<term><code>bigLabelFont()</code></term>
+	<listitem>
+	  <para>
+	    Font for use in <code>QLabel</code> widgets used for
+	    labeling the major UI element in a dialog, such as a
+	    <code>QListView</code>.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
 	<term><code>labelFont()</code></term>
 	<listitem>
 	  <para>
@@ -269,6 +279,21 @@
 	<caption>
 	  <para>
 	    Example of <code>progressFont()</code>
+	  </para>
+	</caption>
+      </mediaobject>
+    </para>
+  </sect2>
+  <sect2 xml:id="sect.examples.rdcastmanager.list_carts">
+    <title>RDCastManager - List Carts</title>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="fonts.rdcastmanager.list_carts.png" scale="70"/>
+	</imageobject>
+	<caption>
+	  <para>
+	    Example of <code>bigLabelFont()</code>
 	  </para>
 	</caption>
       </mediaobject>

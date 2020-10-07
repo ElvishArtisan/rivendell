@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Notification message.
 //
-//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,7 @@ class RDNotification
 {
  public:
   enum Type {NullType=0,CartType=1,LogType=2,PypadType=3,DropboxType=4,
-	     CatchEventType=5,LastType=6};
+	     CatchEventType=5,FeedItemType=6,FeedType=7,LastType=8};
   enum Action {NoAction=0,AddAction=1,DeleteAction=2,ModifyAction=3,
 	       LastAction=4};
   RDNotification(Type type,Action action,const QVariant &id);

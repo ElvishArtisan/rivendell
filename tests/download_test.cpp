@@ -37,6 +37,7 @@ MainObject::MainObject(QObject *parent)
   username="";
   password="";
   RDDownload::ErrorCode conv_err;
+  use_identity_file=false;
 
   //
   // Open the Database
@@ -59,12 +60,20 @@ MainObject::MainObject(QObject *parent)
       password=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
     }
+    if(rda->cmdSwitch()->key(i)=="--ssh-identity-filename") {
+      ssh_identity_filename=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--use-identity-file") {
+      use_identity_file=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
     if(rda->cmdSwitch()->key(i)=="--source-url") {
       source_url=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(rda->cmdSwitch()->key(i)=="--destination-filename") {
-      destination_filename=rda->cmdSwitch()->value(i);
+    if(rda->cmdSwitch()->key(i)=="--destination-file") {
+      destination_file=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(!rda->cmdSwitch()->processed(i)) {
@@ -81,7 +90,7 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"download_test: missing source-url\n");
     exit(256);
   }
-  if(destination_filename.isEmpty()) {
+  if(destination_file.isEmpty()) {
     fprintf(stderr,"download_test: missing destination-filename\n");
     exit(256);
   }
@@ -91,10 +100,11 @@ MainObject::MainObject(QObject *parent)
   //
   RDDownload *conv=new RDDownload(rda->config(),this);
   conv->setSourceUrl(source_url);
-  conv->setDestinationFile(destination_filename);
+  conv->setDestinationFile(destination_file);
   printf("Downloading...\n");
   conv_err=conv->
-    runDownload(username,password,rda->config()->logXloadDebugData());
+    runDownload(username,password,ssh_identity_filename,use_identity_file,
+		rda->config()->logXloadDebugData());
   printf("Result: %s\n",(const char *)RDDownload::errorText(conv_err));
   delete conv;
 

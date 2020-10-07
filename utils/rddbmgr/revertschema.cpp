@@ -40,6 +40,392 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
 
+  //
+  // Revert 338
+  //
+  if((cur_schema==338)&&(set_schema<cur_schema)) {
+    sql=QString("alter table FEEDS modify column ")+
+      "CHANNEL_LANGUAGE varchar(5) default 'en-us'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 337
+  //
+  if((cur_schema==337)&&(set_schema<cur_schema)) {
+    DropIndex("PODCASTS","ITEM_IMAGE_ID_IDX");
+    DropIndex("FEEDS","DEFAULT_ITEM_IMAGE_ID_IDX");
+    DropIndex("FEEDS","CHANNEL_IMAGE_ID_IDX");
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 336
+  //
+  if((cur_schema==336)&&(set_schema<cur_schema)) {
+    sql=QString("alter table FEED_IMAGES modify column ")+
+      "DATA mediumblob not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 335
+  //
+  if((cur_schema==335)&&(set_schema<cur_schema)) {
+    DropIndex("PODCASTS","SHA1_HASH_IDX");
+    DropColumn("PODCASTS","SHA1_HASH");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 334
+  //
+  if((cur_schema==334)&&(set_schema<cur_schema)) {
+    sql=QString("select ")+
+      "KEY_NAME,"+        // 00
+      "PURGE_PASSWORD "+  // 01
+      "from FEEDS";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      QString password(QByteArray::fromBase64(q->value(1).toString().toUtf8()));
+      sql=QString("update FEEDS set ")+
+	"PURGE_PASSWORD=\""+RDEscapeString(password)+"\" where "+
+	"KEY_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+    sql=QString("alter table FEEDS modify column ")+
+      "PURGE_PASSWORD varchar(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+ 
+  //
+  // Revert 333
+  //
+  if((cur_schema==333)&&(set_schema<cur_schema)) {
+    DropColumn("STATIONS","SSH_IDENTITY_FILE");
+    DropColumn("RECORDINGS","URL_USE_ID_FILE");
+    DropColumn("FEEDS","PURGE_USE_ID_FILE");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 332
+  //
+  if((cur_schema==332)&&(set_schema<cur_schema)) {
+    DropColumn("FEEDS","CHANNEL_AUTHOR_IS_DEFAULT");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 331
+  //
+  if((cur_schema==331)&&(set_schema<cur_schema)) {
+    sql=QString("create table if not exists ENCODER_CHANNELS (")+
+      "ID int not null auto_increment primary key,"+
+      "ENCODER_ID int not null,"+
+      "CHANNELS int not null,"+
+      "index ENCODER_ID_IDX(ENCODER_ID))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create table if not exists ENCODER_BITRATES (")+
+      "ID int not null auto_increment primary key,"+
+      "ENCODER_ID int not null,"+
+      "BITRATES int not null,"+
+      "index ENCODER_ID_IDX(ENCODER_ID))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create table if not exists ENCODER_SAMPLERATES (")+
+      "ID int not null auto_increment primary key,"+
+      "ENCODER_ID int not null,"+
+      "SAMPLERATES int not null,"+
+      "index ENCODER_ID_IDX(ENCODER_ID))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create table if not exists ENCODERS (")+
+      "ID int not null auto_increment primary key,"+
+      "NAME char(32) not null,"+
+      "STATION_NAME char(64),"+
+      "COMMAND_LINE char(255),"+
+      "DEFAULT_EXTENSION char(16),"+
+      "index NAME_IDX(NAME,STATION_NAME))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    // Ensure that dynamic format IDs start after 100
+    sql=QString("insert into ENCODERS set ID=100,NAME=\"dummy\"");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("delete from ENCODERS where ID=100");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 330
+  //
+  if((cur_schema==330)&&(set_schema<cur_schema)) {
+    DropColumn("PODCASTS","ORIGIN_STATION");
+    DropColumn("PODCASTS","ORIGIN_LOGIN_NAME");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 329
+  //
+  if((cur_schema==329)&&(set_schema<cur_schema)) {
+    sql=QString("alter table PODCASTS ")+
+      "add column SHELF_LIFE int after AUDIO_TIME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("select ")+
+      "ID,"+                   // 00
+      "ORIGIN_DATETIME,"+      // 01
+      "EXPIRATION_DATETIME "+  // 02
+      "from PODCASTS";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if(q->value(2).isNull()) {
+	sql=QString("update PODCASTS set ")+
+	  "SHELF_LIFE=0 where "+
+	  QString().sprintf("ID=%u",q->value(0).toUInt());
+      }
+      else {
+	sql=QString("update PODCASTS set ")+
+	  QString().sprintf("SHELF_LIFE=%d where ",
+			    q->value(1).toDateTime().
+			    daysTo(q->value(2).toDateTime()))+
+	  QString().sprintf("ID=%u",q->value(0).toUInt());
+      }
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    DropColumn("PODCASTS","EXPIRATION_DATETIME");
+    DropColumn("SYSTEM","RSS_PROCESSOR_STATION");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 328
+  //
+  if((cur_schema==328)&&(set_schema<cur_schema)) {
+    sql=QString("create table if not exists CAST_DOWNLOADS (")+
+      "ID int unsigned not null auto_increment primary key,"+
+      "FEED_KEY_NAME varchar(8) not null,"+
+      "CAST_ID int unsigned not null,"+
+      "ACCESS_DATE date not null,"+
+      "ACCESS_COUNT int unsigned not null default 0,"+
+      "unique index KEY_NAME_CAST_ID_DATE_IDX(FEED_KEY_NAME,CAST_ID,ACCESS_DATE))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table FEEDS add column ")+
+      "AUDIENCE_METRICS enum('N','Y') default 'N' after IS_SUPERFEED";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("update FEEDS set AUDIENCE_METRICS='Y'");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table FEEDS add column ")+
+      "KEEP_METADATA enum('N','Y') default 'Y' after ENABLE_AUTOPOST";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table FEEDS add column ")+
+      "REDIRECT_PATH varchar(191) after NORMALIZE_LEVEL";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table FEEDS add column ")+
+      "MEDIA_LINK_MODE int default 0 after REDIRECT_PATH";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 327
+  //
+  if((cur_schema==327)&&(set_schema<cur_schema)) {
+    DropColumn("FEEDS","CHANNEL_SUB_CATEGORY");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 326
+  //
+  if((cur_schema==326)&&(set_schema<cur_schema)) {
+    DropColumn("PODCASTS","ITEM_EXPLICIT");
+    DropColumn("FEEDS","CHANNEL_EXPLICIT");
+    DropColumn("FEEDS","CHANNEL_OWNER_EMAIL");
+    DropColumn("FEEDS","CHANNEL_OWNER_NAME");
+    DropColumn("FEEDS","CHANNEL_AUTHOR");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 325
+  //
+  if((cur_schema==325)&&(set_schema<cur_schema)) {
+    sql=QString("create table RSS_SCHEMAS (")+
+      "ID int unsigned primary key,"+
+      "NAME varchar(64) unique not null,"+
+      "HEADER_XML text,"+
+      "CHANNEL_XML text,"+
+      "ITEM_XML text,"+
+      "index NAME_IDX(NAME))";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 324
+  //
+  if((cur_schema==324)&&(set_schema<cur_schema)) {
+    DropColumn("PODCASTS","ITEM_IMAGE_ID");
+    DropColumn("FEEDS","DEFAULT_ITEM_IMAGE_ID");
+    DropColumn("FEEDS","CHANNEL_IMAGE_ID");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 323
+  //
+  if((cur_schema==323)&&(set_schema<cur_schema)) {
+    DropTable("FEED_IMAGES");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 322
+  //
+  if((cur_schema==322)&&(set_schema<cur_schema)) {
+    sql=QString("select ID,RSS_SCHEMA from FEEDS where RSS_SCHEMA!=0");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("select ")+
+	"HEADER_XML,"+   // 00
+	"CHANNEL_XML,"+  // 01
+	"ITEM_XML "+     // 02
+	"from RSS_SCHEMAS where "+
+	QString().sprintf("ID=%u",q->value(1).toUInt());
+      q1=new RDSqlQuery(sql);
+      if(q1->first()) {
+	QString("update FEEDS set ")+
+	  "HEADER_XML=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	  "CHANNEL_XML=\""+RDEscapeString(q1->value(1).toString())+"\","+
+	  "ITEM_XML=\""+RDEscapeString(q1->value(2).toString())+"\" "+
+	  "where "+
+	  QString().sprintf("ID=%u",q->value(0).toUInt());
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+    }
+    delete q;
+    DropColumn("FEEDS","RSS_SCHEMA");
+    DropTable("RSS_SCHEMAS");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 321
+  //
+  if((cur_schema==321)&&(set_schema<cur_schema)) {
+    DropColumn("FEEDS","CHANNEL_EDITOR");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 320
+  //
+  if((cur_schema==320)&&(set_schema<cur_schema)) {
+    DropColumn("USERS","EMAIL_ADDRESS");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 319
+  //
+  if((cur_schema==319)&&(set_schema<cur_schema)) {
+    DropColumn("FEEDS","AUDIENCE_METRICS");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 318
+  //
+  if((cur_schema==318)&&(set_schema<cur_schema)) {
+    DropTable("SUPERFEED_MAPS");
+    DropIndex("FEEDS","IS_SUPERFEED_IDX");
+    DropColumn("FEEDS","IS_SUPERFEED");
+
+    WriteSchemaVersion(--cur_schema);
+  }
 
   //
   // Revert 317

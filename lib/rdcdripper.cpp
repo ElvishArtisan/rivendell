@@ -152,7 +152,7 @@ RDCdRipper::ErrorCode RDCdRipper::rip(int first_track,int last_track)
 
 QString RDCdRipper::errorText(RDCdRipper::ErrorCode err)
 {
-  QString ret="Unknown Error";
+  QString ret=QString().sprintf("Unknown RDCdRipper Error [%d]",err);
 
   switch(err) {
   case RDCdRipper::ErrorOk:

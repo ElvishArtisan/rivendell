@@ -389,64 +389,165 @@ void MainObject::RelinkAudio(const QString &srcdir) const
     QString hash=RDSha1Hash(filename);
     QString firstdest;
     bool delete_source=true;
+
+    //
+    // Check against audio cuts
+    //
     sql=QString("select CUTS.CUT_NAME,CART.TITLE from ")+
       "CUTS left join CART "+
       "on CUTS.CART_NUMBER=CART.NUMBER where "+
       "CUTS.SHA1_HASH=\""+RDEscapeString(hash)+"\"";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      printf("  Recovering %06u/%03d [%s]...",
-	     RDCut::cartNumber(q->value(0).toString()),
-	     RDCut::cutNumber(q->value(0).toString()),
-	     (const char *)q->value(1).toString());
-      fflush(stdout);
-      if(db_relink_audio_move) {
-	unlink(RDCut::pathName(q->value(0).toString()));
-	if(link(filename,RDCut::pathName(q->value(0).toString()))<0) {
-	  if(errno==EXDEV) {
-	    if(firstdest.isEmpty()) {
-	      if(CopyFile(RDCut::pathName(q->value(0).toString()),filename)) {
-		firstdest=RDCut::pathName(q->value(0).toString());
-	      }
-	      else {
-		fprintf(stderr,"unable to copy file \"%s\"\n",
-			(const char *)filename);
-		delete_source=false;
-	      }
-	    }
-	    else {
-	      unlink(RDCut::pathName(q->value(0).toString()));
-	      link(firstdest,RDCut::pathName(q->value(0).toString()));
-	    }
-	  }
-	  else {
-	    fprintf(stderr,"unable to move file \"%s\" [%s]\n",
-		    (const char *)filename,strerror(errno));
-	    delete_source=false;
-	  }
-	}
-      }
-      else {
-	if(firstdest.isEmpty()) {
-	  if(CopyFile(RDCut::pathName(q->value(0).toString()),filename)) {
-	    firstdest=RDCut::pathName(q->value(0).toString());
-	  }
-	  else {
-	    fprintf(stderr,"unable to copy file \"%s\"\n",
-		    (const char *)filename);
-	  }
-	}
-	else {
-	  unlink(RDCut::pathName(q->value(0).toString()));
-	  link(firstdest,RDCut::pathName(q->value(0).toString()));
-	}
-      }
-      printf("  done.\n");
+      RelinkCut(filename,q->value(0).toString(),q->value(1).toString(),
+		&firstdest,&delete_source);
     }
+
+    //
+    // Check against RSS posts
+    //
+    sql=QString("select ")+
+      "FEEDS.KEY_NAME,"+           // 00
+      "PODCASTS.ID,"+              // 01
+      "PODCASTS.ITEM_TITLE,"+      // 02
+      "PODCASTS.AUDIO_FILENAME "+  // 03
+      "from PODCASTS left join FEEDS "+
+      "on FEEDS.ID=PODCASTS.FEED_ID where "+
+      "PODCASTS.SHA1_HASH=\""+RDEscapeString(hash)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      RelinkCast(filename,q->value(0).toString(),q->value(1).toUInt(),
+		 q->value(2).toString(),q->value(3).toString(),
+		 &firstdest,&delete_source);
+    }
+    delete q;
+
+    //
+    // (Perhaps) delete the source file
+    //
     if(db_relink_audio_move&&delete_source) {
       unlink(filename);
     }
   }
+}
+
+
+void MainObject::RelinkCut(const QString &src_filename,const QString &cutname,
+			   const QString &title,
+			   QString *firstdest,bool *delete_src) const
+{
+  printf("  Recovering %06u/%03d [%s]...",
+	 RDCut::cartNumber(cutname),RDCut::cutNumber(cutname),
+	 title.toUtf8().constData());
+  fflush(stdout);
+
+  if(db_relink_audio_move) {
+    unlink(RDCut::pathName(cutname));
+    if(link(src_filename,RDCut::pathName(cutname))<0) {
+      if(errno==EXDEV) {  // We're crossing filesystems, so do a copy
+	if(firstdest->isEmpty()) {
+	  if(CopyToAudioStore(RDCut::pathName(cutname),src_filename)) {
+	    *firstdest=RDCut::pathName(cutname);
+	  }
+	  else {
+	    fprintf(stderr,"unable to copy file \"%s\"\n",
+		    (const char *)src_filename);
+	    *delete_src=false;
+	  }
+	}
+	else {
+	  unlink(RDCut::pathName(cutname));
+	  link(*firstdest,RDCut::pathName(cutname));
+	}
+      }
+      else {
+	fprintf(stderr,"unable to move file \"%s\" [%s]\n",
+		(const char *)src_filename,strerror(errno));
+	*delete_src=false;
+      }
+    }
+    else {
+      chown(RDCut::pathName(cutname),db_config->uid(),db_config->gid());
+      chmod(RDCut::pathName(cutname),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP);
+    }
+  }
+  else {
+    if(firstdest->isEmpty()) {
+      if(CopyToAudioStore(RDCut::pathName(cutname),src_filename)) {
+	*firstdest=RDCut::pathName(cutname);
+      }
+      else {
+	fprintf(stderr,"unable to copy file \"%s\"\n",
+		(const char *)src_filename);
+      }
+    }
+    else {
+      unlink(RDCut::pathName(cutname));
+      link(*firstdest,RDCut::pathName(cutname));
+    }
+  }
+  printf("  done.\n");
+}
+
+
+void MainObject::RelinkCast(const QString &src_filename,const QString &keyname,
+			    unsigned cast_id,const QString &title,
+			    const QString &audio_filename,
+			    QString *firstdest,bool *delete_src) const
+{
+  QString destpath=QString(RD_AUDIO_ROOT)+"/"+audio_filename;
+
+  printf("  Recovering RSS item %s:%u [%s]...",
+	 keyname.toUtf8().constData(),cast_id,title.toUtf8().constData());
+  fflush(stdout);
+
+  if(db_relink_audio_move) {
+    unlink(destpath);
+    if(link(src_filename,destpath)<0) {
+      if(errno==EXDEV) {  // We're crossing filesystems, so do a copy
+	if(firstdest->isEmpty()) {
+	  if(CopyToAudioStore(destpath,src_filename)) {
+	    *firstdest=destpath;
+	  }
+	  else {
+	    fprintf(stderr,"unable to copy file \"%s\"\n",
+		    (const char *)src_filename);
+	    *delete_src=false;
+	  }
+	}
+	else {
+	  unlink(destpath);
+	  link(*firstdest,destpath);
+	}
+      }
+      else {
+	fprintf(stderr,"unable to move file \"%s\" [%s]\n",
+		(const char *)src_filename,strerror(errno));
+	*delete_src=false;
+      }
+    }
+    else {
+      chown(destpath,db_config->uid(),db_config->gid());
+      chmod(destpath,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP);
+    }
+  }
+  else {
+    if(firstdest->isEmpty()) {
+      unlink(destpath);
+      if(CopyToAudioStore(destpath,src_filename)) {
+	*firstdest=destpath;
+      }
+      else {
+	fprintf(stderr,"unable to copy file \"%s\" [%s]\n",
+		(const char *)src_filename,strerror(errno));
+      }
+    }
+    else {
+      unlink(destpath);
+      link(*firstdest,destpath);
+    }
+  }
+  printf("  done.\n");
 }
 
 
@@ -865,7 +966,8 @@ bool MainObject::UserResponse() const
 }
 
 
-bool MainObject::CopyFile(const QString &destfile,const QString &srcfile) const
+bool MainObject::CopyToAudioStore(const QString &destfile,
+				  const QString &srcfile) const
 {
   int src_fd=-1;
   struct stat src_stat;
@@ -896,10 +998,10 @@ bool MainObject::CopyFile(const QString &destfile,const QString &srcfile) const
     write(dest_fd,data,n);
   }
   free(data);
-  fchown(dest_fd,150,150);  // FIXME: do name lookup!
+  fchown(dest_fd,db_config->uid(),db_config->gid());
+  fchmod(dest_fd,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP);
   close(dest_fd);
   close(src_fd);
-  
 
   return true;
 }

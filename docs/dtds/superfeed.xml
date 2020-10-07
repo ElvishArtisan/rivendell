@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<info>
+  <title>The Rivendell &quot;superfeed&quot; Namespace</title>
+  <subtitle>Version 0.1</subtitle>
+  <revnumber>v0.1</revnumber>
+  <author>
+    <personname>
+      <firstname>Fred</firstname>
+      <surname>Gleason</surname>
+      <email>fredg@paravelsystems.com</email>
+    </personname>
+  </author>
+  <edition>
+    v0.1
+  </edition>
+  <copyright><year>2020</year><holder>Fred Gleason</holder></copyright>
+  <legalnotice>
+    <para>
+      Permission is granted to copy, distribute and/or modify this document
+      under the terms of the GNU Free Documentation License, Version 1.3
+      or any later version published by the Free Software Foundation;
+      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+    </para>
+  </legalnotice>
+</info>
+
+<sect1 xml:id="overview">
+  <title>Overview</title>
+  <para>
+    The &quot;superfeed&quot; XML namespace adds support for additional
+    fields used by Rivendell Superfeed RSS podcasting functionality.
+  </para>
+</sect1>
+<sect1 xml:id="namespace_declaration">
+  <title>Namespace Declaration</title>
+  <para>
+    The namespace declaration is:
+  </para>
+  <para>
+    <code>xmlns:superfeed=&quot;http://www.rivendellaudio.org/dtds/superfeed-0.1.dtd&quot;</code>
+  </para>
+</sect1>
+<sect1 xml:id="fields">
+  <title>Fields</title>
+  <para>
+    The namespace adds the following fields:
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<code>&lt;channelTitle&gt;</code>
+      </term>
+      <listitem>
+	<para>
+	  The value of the <code>&lt;title&gt;</code> field from the
+	  <code>&lt;channel&gt;</code> section of the underlying elemental
+	  feed.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<code>&lt;channelDescription&gt;</code>
+      </term>
+      <listitem>
+	<para>
+	  The value of the <code>&lt;description&gt;</code> field from the
+	  <code>&lt;channel&gt;</code> section of the underlying elemental
+	  feed.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</sect1>
+
+<sect1 xml:id="example">
+  <title>Example</title>
+  <para>
+    The following example posits the existence of two elemental feeds,
+    <computeroutput>AIRPLAY</computeroutput>,
+    <computeroutput>CARTSLTS</computeroutput> and
+    <computeroutput>LIBRARY</computeroutput>; each containing a single
+    post. A superfeed, called <computeroutput>RIVENDEL</computeroutput>
+    and consisting of those three elemental fields would look like this:
+  </para>
+  <literallayout>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;rss version=&quot;2.0&quot; xmlns:itunes=&quot;http://www.itunes.com/dtds/podcast-1.0.dtd&quot; xmlns:content=&quot;http://purl.org/rss/1.0/modules/content/&quot; xmlns:atom=&quot;http://www.w3.org/2005/Atom&quot; xmlns:superfeed=&quot;http://www.rivendellaudio.org/dtds/superfeed-0.1.dtd&quot;&gt;
+  &lt;channel&gt;
+    &lt;title&gt;Rivendell Radio Automation&lt;/title&gt;
+    &lt;description&gt;All about the Rivendell Radio Automation System&lt;/description&gt;
+    &lt;itunes:summary&gt;All about the Rivendell Radio Automation System&lt;/itunes:summary&gt;
+    &lt;category&gt;Technology&lt;/category&gt;
+    &lt;link&gt;http://feeds.example.com/rivendel&lt;/link&gt;
+    &lt;language&gt;en-us&lt;/language&gt;
+    &lt;copyright&gt;© 2020 John Q. Author&lt;/copyright&gt;
+    &lt;lastBuildDate&gt;Thu, 4 Jun 2020 12:18:54 GMT&lt;/lastBuildDate&gt;
+    &lt;pubDate&gt;Thu, 21 May 2020 10:43:55 GMT&lt;/pubDate&gt;
+    &lt;managingEditor&gt;editor@example.com&lt;/managingEditor&gt;
+    &lt;webMaster&gt;webmaster@example.com&lt;/webMaster&gt;
+    &lt;generator&gt;Rivendell 3.3.0int1&lt;/generator&gt;
+    &lt;image&gt;
+      &lt;url&gt;http://feeds.example.com/rivendel/img000022_000038.png&lt;/url&gt;
+      &lt;title&gt;Rivendell Radio Automation&lt;/title&gt;
+      &lt;link&gt;http://feeds.example.com/rivendel&lt;/link&gt;
+      &lt;width&gt;2048&lt;/width&gt;
+      &lt;height&gt;2048&lt;/height&gt;
+      &lt;description&gt;The Rivendell Icon&lt;/description&gt;
+    &lt;/image&gt;
+    &lt;atom:link href=&quot;http://feeds.example.com/rivendel/RIVENDEL.rss&quot; rel=&quot;self&quot; type=&quot;application/rss+xml&quot; /&gt;
+    &lt;itunes:author&gt;author@example.com&lt;/itunes:author&gt;
+    &lt;itunes:type&gt;episodic&lt;/itunes:type&gt;
+    &lt;itunes:owner&gt;
+     &lt;itunes:name&gt;John Q. Author&lt;/itunes:name&gt;
+      &lt;itunes:email&gt;fredg@paravelsystems.com&lt;/itunes:email&gt;
+    &lt;/itunes:owner&gt;
+    &lt;itunes:image href=&quot;http://feeds.example.com/rivendel/img000022_000038.png&quot; /&gt;
+    &lt;itunes:category text=&quot;Technology&quot; /&gt;
+    &lt;itunes:explicit&gt;false&lt;/itunes:explicit&gt;
+    &lt;item&gt;
+      &lt;superfeed:channelTitle&gt;RDAirPlay&lt;/superfeed:channelTitle&gt;
+      &lt;superfeed:channelDescription&gt;All about RDAirPlay in Rivendell&lt;/superfeed:channelDescription&gt;
+      &lt;title&gt;Thurber Jewelers&lt;/title&gt;
+      &lt;itunes:title&gt;Thurber Jewelers&lt;/itunes:title&gt;
+      &lt;link&gt;http://feeds.example.com/airplay&lt;/link&gt;
+      &lt;guid isPermaLink=&quot;false&quot;&gt;http://feeds.example.com/airplay/000019_000026.mp3_000019_000026&lt;/guid&gt;
+      &lt;description&gt;All about RDAirPlay in Rivendell&lt;/description&gt;
+      &lt;itunes:summary&gt;All about RDAirPlay in Rivendell&lt;/itunes:summary&gt;
+      &lt;author&gt;someone@example.com (John Q. Author)&lt;/author&gt;
+      &lt;itunes:author&gt;someone@example.com (John Q. Author)&lt;/itunes:author&gt;
+      &lt;comments&gt;http://feeds.example.com/airplay&lt;/comments&gt;
+      &lt;source url=&quot;http://feeds.example.com/airplay/RIVENDEL&quot;&gt;Rivendell Radio Automation&lt;/source&gt;
+      &lt;enclosure url=&quot;http://feeds.example.com/airplay/000019_000026.mp3&quot; length=&quot;170496&quot; type=&quot;audio/mpeg&quot; /&gt;
+      &lt;category&gt;Technology&lt;/category&gt;
+      &lt;pubDate&gt;Thu, 21 May 2020 20:31:26 GMT&lt;/pubDate&gt;
+      &lt;itunes:duration&gt;14&lt;/itunes:duration&gt;
+      &lt;itunes:image href=&quot;http://feeds.example.com/airplay/img000019_000024.png&quot; /&gt;
+      &lt;itunes:explicit&gt;false&lt;/itunes:explicit&gt;
+    &lt;/item&gt;
+    &lt;item&gt;
+      &lt;superfeed:channelTitle&gt;RDCartSlots&lt;/superfeed:channelTitle&gt;
+      &lt;superfeed:channelDescription&gt;All channel all about RDCartSlots!&lt;/superfeed:channelDescription&gt;
+      &lt;title&gt;Liberty Tax&lt;/title&gt;
+      &lt;itunes:title&gt;Liberty Tax&lt;/itunes:title&gt;
+      &lt;link&gt;http://feeds.example.com&lt;/link&gt;
+      &lt;guid isPermaLink=&quot;false&quot;&gt;http://feeds.example.com/cartslts/000025_000025.mp3_000025_000025&lt;/guid&gt;
+      &lt;description&gt;The Liberty tax advisors.&lt;/description&gt;
+      &lt;itunes:summary&gt;The Liberty tax advisors.&lt;/itunes:summary&gt;
+      &lt;author&gt;someone@example.com (John Q. Author)&lt;/author&gt;
+      &lt;itunes:author&gt;someone@example.com (John Q. Author)&lt;/itunes:author&gt;
+      &lt;comments&gt;http://feeds.example.com/cartslts&lt;/comments&gt;
+      &lt;source url=&quot;http://feeds.example.com/cartslts/RIVENDEL&quot;&gt;Rivendell Radio Automation&lt;/source&gt;
+      &lt;enclosure url=&quot;http://feeds.example.com/cartslts/000025_000025.mp3&quot; length=&quot;369216&quot; type=&quot;audio/mpeg&quot; /&gt;
+      &lt;category&gt;Technology&lt;/category&gt;
+      &lt;pubDate&gt;Thu, 21 May 2020 19:17:26 GMT&lt;/pubDate&gt;
+      &lt;itunes:duration&gt;15&lt;/itunes:duration&gt;
+      &lt;itunes:image href=&quot;http://feeds.example.com/cartslts/img000025_000037.png&quot; /&gt;
+      &lt;itunes:explicit&gt;false&lt;/itunes:explicit&gt;
+    &lt;/item&gt;
+    &lt;item&gt;
+      &lt;superfeed:channelTitle&gt;RDLibrary&lt;/superfeed:channelTitle&gt;
+      &lt;superfeed:channelDescription&gt;A channel all about RDLibrary&lt;/superfeed:channelDescription&gt;
+      &lt;title&gt;The Peanut Shoppe&lt;/title&gt;
+      &lt;itunes:title&gt;The Peanut Shoppe&lt;/itunes:title&gt;
+      &lt;link&gt;http://feeds.example.com/library&lt;/link&gt;
+      &lt;guid isPermaLink=&quot;false&quot;&gt;http://feeds.example.com/library/000024_000024.mp3_000024_000024&lt;/guid&gt;
+      &lt;description&gt;A trip to a peanut and candy shop in downtown Wadsworth OH.&lt;/description&gt;
+      &lt;itunes:summary&gt;A trip to a peanut and candy shop in downtown Wadsworth OH.&lt;/itunes:summary&gt;
+      &lt;author&gt;someone@example.com (John Q. Author)&lt;/author&gt;
+      &lt;itunes:author&gt;someone@example.com (John Q. Author)&lt;/itunes:author&gt;
+      &lt;comments&gt;http://feeds.example.com/library&lt;/comments&gt;
+      &lt;source url=&quot;http://feeds.example.com/library/RIVENDEL&quot;&gt;Rivendell Radio Automation&lt;/source&gt;
+      &lt;enclosure url=&quot;http://feeds.example.com/library/000024_000024.mp3&quot; length=&quot;196992&quot; type=&quot;audio/mpeg&quot; /&gt;
+      &lt;category&gt;Technology&lt;/category&gt;
+      &lt;pubDate&gt;Thu, 21 May 2020 19:14:53 GMT&lt;/pubDate&gt;
+      &lt;itunes:duration&gt;16&lt;/itunes:duration&gt;
+      &lt;itunes:image href=&quot;http://feeds.example.com/library/img000024_000036.png&quot; /&gt;
+      &lt;itunes:explicit&gt;false&lt;/itunes:explicit&gt;
+    &lt;/item&gt;
+  &lt;/channel&gt;
+&lt;/rss&gt;
+
+  </literallayout>
+</sect1>
+
+</article>

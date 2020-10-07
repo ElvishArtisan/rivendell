@@ -24,6 +24,7 @@ install-exec-am:
 	mkdir -p $(DESTDIR)@libexecdir@
 	cp greencheckmark.png $(DESTDIR)@libexecdir@
 	cp redx.png $(DESTDIR)@libexecdir@
+	cp blueball.png $(DESTDIR)@libexecdir@
 	cp greenball.png $(DESTDIR)@libexecdir@
 	cp redball.png $(DESTDIR)@libexecdir@
 	cp whiteball.png $(DESTDIR)@libexecdir@
@@ -188,6 +189,7 @@ install-exec-am:
 uninstall-local:	
 	rm -f $(DESTDIR)@libexecdir@/greencheckmark.png
 	rm -f $(DESTDIR)@libexecdir@/redx.png
+	rm -f $(DESTDIR)@libexecdir@/blueball.png
 	rm -f $(DESTDIR)@libexecdir@/greenball.png
 	rm -f $(DESTDIR)@libexecdir@/redball.png
 	rm -f $(DESTDIR)@libexecdir@/whiteball.png
@@ -266,6 +268,7 @@ uninstall-local:
 
 
 EXTRA_DIST = admin.xpm\
+             blueball.png\
              blueball.xpm\
              chain.png\
              chain.xpm\
@@ -463,6 +466,9 @@ EXTRA_DIST = admin.xpm\
              rml3.xpm\
              rml5.png\
              rml5.xpm\
+             rss.png\
+             rss.xcf\
+             rss.xpm\
              split.xpm\
              switch.xpm\
              switch2.xpm\

@@ -24,6 +24,7 @@
 #include <qobject.h>
 
 #include <rdconfig.h>
+#include <rdfeed.h>
 #include <rdstation.h>
 
 #define RDDBMGR_USAGE "[options]\n"
@@ -49,6 +50,13 @@ class MainObject : public QObject
 		   const QString &new_filename,const QString &new_str,
 		   QString *err_msg);
   void RelinkAudio(const QString &srcdir) const;
+  void RelinkCut(const QString &src_filename,const QString &cutname,
+		 const QString &title,
+		 QString *firstdest,bool *delete_src) const;
+  void RelinkCast(const QString &src_filename,const QString &keyname,
+		  unsigned cast_id,const QString &title,
+		  const QString &audio_filename,
+		  QString *firstdest,bool *delete_src) const;
   void CheckOrphanedTracks() const;
   void CheckCutCounts() const;
   void CheckPendingCarts() const;
@@ -61,7 +69,7 @@ class MainObject : public QObject
   void RehashCut(const QString &cutnum) const;
   void SetCutLength(const QString &cutname,int len) const;
   void RemoveCart(unsigned cartnum);
-  bool CopyFile(const QString &destfile,const QString &srcfile) const;
+  bool CopyToAudioStore(const QString &destfile,const QString &srcfile) const;
   bool UserResponse() const;
 
   //

@@ -2,7 +2,7 @@
 ##
 ## docs/rivwebcapi/Makefile.am for Rivendell C API
 ##
-## (C) Copyright 2015-2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2015-2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -64,6 +64,9 @@ all-local:	rd_addcart.html\
                 rd_deletelog.html\
                 rd_deletelog.pdf\
                 rd_deletelog.xml\
+                rd_deletepodcast.html\
+                rd_deletepodcast.pdf\
+                rd_deletepodcast.xml\
                 rd_editcart.html\
                 rd_editcart.pdf\
                 rd_editcart.xml\
@@ -127,15 +130,37 @@ all-local:	rd_addcart.html\
                 rd_listsystemsettings.html\
                 rd_listsystemsettings.pdf\
                 rd_listsystemsettings.xml\
+                rd_postimage.html\
+                rd_postimage.pdf\
+                rd_postimage.xml\
+                rd_postpodcast.html\
+                rd_postpodcast.pdf\
+                rd_postpodcast.xml\
+                rd_postrss.html\
+                rd_postrss.pdf\
+                rd_postrss.xml\
                 rd_removecart.html\
                 rd_removecart.pdf\
                 rd_removecart.xml\
                 rd_removecut.html\
                 rd_removecut.pdf\
                 rd_removecut.xml\
+                rd_removeimage.html\
+                rd_removeimage.pdf\
+                rd_removeimage.xml\
+                rd_removepodcast.html\
+                rd_removepodcast.pdf\
+                rd_removepodcast.xml\
+                rd_removerss.html\
+                rd_removerss.pdf\
+                rd_removerss.xml\
+                rd_removecut.xml\
                 rd_savelog.html\
                 rd_savelog.pdf\
                 rd_savelog.xml\
+                rd_savepodcast.html\
+                rd_savepodcast.pdf\
+                rd_savepodcast.xml\
                 rd_trimaudio.html\
                 rd_trimaudio.pdf\
                 rd_trimaudio.xml\
@@ -153,6 +178,7 @@ man_MANS = rd_addcart.7\
            rd_createticket.7\
            rd_deleteaudio.7\
            rd_deletelog.7\
+           rd_deletepodcast.7\
            rd_editcart.7\
            rd_editcut.7\
            rd_exportpeaks.7\
@@ -174,9 +200,16 @@ man_MANS = rd_addcart.7\
            rd_listschedcodes.7\
            rd_listservices.7\
            rd_listsystemsettings.7\
+           rd_postimage.7\
+           rd_postpodcast.7\
+           rd_postrss.7\
            rd_removecart.7\
            rd_removecut.7\
+           rd_removeimage.7\
+           rd_removepodcast.7\
+           rd_removerss.7\
            rd_savelog.7\
+           rd_savepodcast.7\
            rd_trimaudio.7\
            rd_unassignschedcode.7
 
@@ -222,6 +255,10 @@ EXTRA_DIST = rd_addcart.7\
              rd_deletelog.html\
              rd_deletelog.pdf\
              rd_deletelog.xml\
+             rd_deletepodcast.7\
+             rd_deletepodcast.html\
+             rd_deletepodcast.pdf\
+             rd_deletepodcast.xml\
              rd_editcart.7\
              rd_editcart.html\
              rd_editcart.pdf\
@@ -307,6 +344,18 @@ EXTRA_DIST = rd_addcart.7\
              rd_listsystemsettings.html\
              rd_listsystemsettings.pdf\
              rd_listsystemsettings.xml\
+             rd_postimage.7\
+             rd_postimage.html\
+             rd_postimage.pdf\
+             rd_postimage.xml\
+             rd_postpodcast.7\
+             rd_postpodcast.html\
+             rd_postpodcast.pdf\
+             rd_postpodcast.xml\
+             rd_postrss.7\
+             rd_postrss.html\
+             rd_postrss.pdf\
+             rd_postrss.xml\
              rd_removecart.7\
              rd_removecart.html\
              rd_removecart.pdf\
@@ -315,10 +364,26 @@ EXTRA_DIST = rd_addcart.7\
              rd_removecut.html\
              rd_removecut.pdf\
              rd_removecut.xml\
+             rd_removeimage.7\
+             rd_removeimage.html\
+             rd_removeimage.pdf\
+             rd_removeimage.xml\
+             rd_removepodcast.7\
+             rd_removepodcast.html\
+             rd_removepodcast.pdf\
+             rd_removepodcast.xml\
+             rd_removerss.7\
+             rd_removerss.html\
+             rd_removerss.pdf\
+             rd_removerss.xml\
              rd_savelog.7\
              rd_savelog.html\
              rd_savelog.pdf\
              rd_savelog.xml\
+             rd_savepodcast.7\
+             rd_savepodcast.html\
+             rd_savepodcast.pdf\
+             rd_savepodcast.xml\
              rd_trimaudio.7\
              rd_trimaudio.html\
              rd_trimaudio.pdf\

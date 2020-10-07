@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+                    Header
+  -->
+  <refmeta>
+    <refentrytitle>RD_DeletePodcast</refentrytitle>
+    <manvolnum>7</manvolnum>
+    <refmiscinfo class='source'>September 2020</refmiscinfo>
+    <refmiscinfo class='manual'>Rivendell C Library Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rd_deletepodcast</refname>
+    <refpurpose>Rivendell Delete RSS item audio C Library Function</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+        <firstname>Fred</firstname>
+        <surname>Gleason</surname>
+        <email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Rivendell C Library Author</contrib>
+    </author>
+  </info>
+
+  <!--
+                    Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <funcsynopsis>
+    <funcsynopsisinfo>#include &lt;rivwebcapi/rd_deletepodcast.h&gt;</funcsynopsisinfo>
+    <funcprototype>
+    <funcdef>int <function>RD_DeletePodcast</function></funcdef>
+      <paramdef>const char <parameter>hostname[]</parameter></paramdef>
+      <paramdef>const char <parameter>username[]</parameter></paramdef>
+      <paramdef>const char <parameter>passwd[]</parameter></paramdef>
+      <paramdef>const char <parameter>ticket[]</parameter></paramdef>
+      <paramdef>const unsigned <parameter>cast_id</parameter></paramdef>
+      <paramdef>const char <parameter>user_agent[]</parameter></paramdef>
+    </funcprototype> 
+    </funcsynopsis>
+
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>RD_DeletePodcast</command> is the function to use
+    to delete RSS item audio from audio store.
+  </para>
+  <table xml:id="ex.deletepodcast" frame="all">
+    <title>RD_DeletePodcast function call fields</title>
+    <tgroup cols="4" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="FIELD TYPE" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+        <row>
+          <entry>
+            FIELD NAME
+          </entry>
+          <entry>
+            FIELD TYPE
+          </entry>
+          <entry>
+            MEANING
+          </entry>
+          <entry>
+            REMARKS
+          </entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            hostname
+          </entry>
+          <entry>
+            Character Array
+          </entry>
+          <entry>
+            Name Of Rivendell DB Host
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            username
+          </entry>
+          <entry>
+            Character Array
+          </entry>
+          <entry>
+            Rivendell User Name
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            passwd
+          </entry>
+          <entry>
+            Character Array
+          </entry>
+          <entry>
+            Rivendell User Password
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            ticket
+          </entry>
+          <entry>
+            Character Array
+          </entry>
+          <entry>
+            Rivendell Authentification Ticket
+          </entry>
+          <entry>
+            Mandatory When NO User/Password Pair Provided.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            cast_id
+          </entry>
+          <entry>
+            unsigned integer
+          </entry>
+          <entry>
+            Podcast ID
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            user_agent
+          </entry>
+          <entry>
+            Character Array
+          </entry>
+          <entry>
+            User Agent Value put into HTTP request
+          </entry>
+          <entry>
+            Optional (default is Rivendell-C-API/x.x.x)
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+
+  </refsect1>
+  <refsect2 id='returns'><title>RETURN VALUE</title>
+    <para>
+      On success, zero is returned. 
+    </para>
+    <para>
+      If a server error occurs a -1 is returned.
+      If a client error occurs a specific error number is returned.
+    </para>
+  </refsect2>
+  <refsect3 id='errors'><title>ERRORS</title>
+    <para>
+      400          Missing Podcast ID
+    </para>
+    <para>
+      403          User Authentification Error.
+    </para>
+    <para>
+      404          Unauthorized or No Such Podcast
+    </para>
+    <para>
+      nnn          Unknown Error Occurred.
+    </para>
+  </refsect3>
+     
+</refentry>

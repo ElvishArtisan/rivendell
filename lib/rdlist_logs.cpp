@@ -119,13 +119,13 @@ void RDListLogs::okButtonData()
     return;
   }
   *list_logname=item->text(0);
-  done(0);
+  done(true);
 }
 
 
 void RDListLogs::cancelButtonData()
 {
-  done(1);
+  done(false);
 }
 
 

@@ -68,10 +68,22 @@ int DeleteErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
 }
 
 
-RDDelete::RDDelete(RDConfig *config,QObject *parent)
-  : QObject(parent)
+RDDelete::RDDelete(RDConfig *c,QObject *parent)
+  : RDTransfer(c,parent)
 {
-  conv_config=config;
+}
+
+
+QStringList RDDelete::supportedSchemes() const
+{
+  QStringList schemes;
+
+  schemes.push_back("file");
+  schemes.push_back("ftp");
+  schemes.push_back("sftp");
+  schemes.push_back("ftps");
+
+  return schemes;
 }
 
 
@@ -83,6 +95,8 @@ void RDDelete::setTargetUrl(const QString &url)
 
 RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
 					const QString &password,
+					const QString &id_filename,
+					bool use_id_filename,
 					bool log_debug)
 {
   CURL *curl=NULL;
@@ -90,44 +104,76 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
   CURLcode err;
   RDDelete::ErrorCode ret=RDDelete::ErrorOk;
   QString currentdir;
-  char urlstr[1024];
-  char userpwd[256];
+  QString filename;
   QString xml="";
+  char userpwd[256];
+
+  if(!urlIsSupported(conv_target_url)) {
+    return RDDelete::ErrorUnsupportedUrlScheme;
+  }
+
+  if(conv_target_url.scheme().toLower()=="file") {
+    unlink(conv_target_url.path().toUtf8().constData());
+    return RDDelete::ErrorOk;
+  }
 
   if((curl=curl_easy_init())==NULL) {
     rda->syslog(LOG_ERR,"unable to initialize curl library\n");
     return RDDelete::ErrorInternal;
   }
-  strncpy(urlstr,(const char *)(conv_target_url.protocol()+"://"+
-				conv_target_url.host()+"/").utf8(),1024);
-  curl_easy_setopt(curl,CURLOPT_URL,urlstr);
-  strncpy(userpwd,(QString(username)+":"+password).utf8(),256);
-  curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
+
+  //
+  // Authentication
+  //
+  if((conv_target_url.scheme().toLower()=="sftp")&&
+     (!id_filename.isEmpty())&&use_id_filename) {
+    curl_easy_setopt(curl,CURLOPT_USERNAME,username.toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
+		     id_filename.toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
+  }
+  else {
+    strncpy(userpwd,(username+":"+password).utf8(),256);
+    curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
+  }
+
+  curl_easy_setopt(curl,CURLOPT_URL,conv_target_url.toEncoded().constData());
   curl_easy_setopt(curl,CURLOPT_HTTPAUTH,CURLAUTH_ANY);
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,DeleteWriteCallback);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,&xml);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)conv_config->userAgent().utf8());
+		   config()->userAgent().toUtf8().constData());
   if(log_debug) {
     curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,DeleteErrorCallback);
   }
-  currentdir="";
-  if(!conv_target_url.dirPath().right(conv_target_url.dirPath().length()-1).
-     isEmpty()) {
-    currentdir=conv_target_url.dirPath().
-      right(conv_target_url.dirPath().length()-1)+"/";
+
+  if(conv_target_url.scheme().toLower()=="ftp"||conv_target_url.scheme().toLower()=="ftps") {
+    QStringList f0=conv_target_url.path().split("/",QString::SkipEmptyParts);
+    filename=f0.last();
+    f0.removeLast();
+    if(f0.size()>0) {
+      currentdir=f0.join("/")+"/";
+    }
+    if(!currentdir.isEmpty()) {
+      cmds=curl_slist_append(cmds,(QString("cwd ")+currentdir).toUtf8());
+    }
+    cmds=curl_slist_append(cmds,(QString("dele ")+filename).toUtf8());
   }
-  if(!currentdir.isEmpty()) {
-    cmds=curl_slist_append(cmds,QString().sprintf("cwd %s",
-						  (const char *)currentdir));
+
+  if(conv_target_url.scheme().toLower()=="sftp") {
+    cmds=
+      curl_slist_append(cmds,(QString("rm ")+conv_target_url.path()).toUtf8());
   }
-  cmds=curl_slist_append(cmds, QString().sprintf("dele %s",
-			 (const char *)conv_target_url.fileName()));
+
   curl_easy_setopt(curl,CURLOPT_QUOTE,cmds);
+
   switch((err=curl_easy_perform(curl))) {
   case CURLE_OK:
-  case 21:   // CURLE_QUOTE_ERROR -- In case the file is already gone
+  case CURLE_REMOTE_ACCESS_DENIED:   // Sometimes we get this even when
+                                     // successful (?!)
+  case CURLE_QUOTE_ERROR:            //  In case the file is already gone
+  case CURLE_REMOTE_FILE_NOT_FOUND:
     ret=RDDelete::ErrorOk;
     break;
 
@@ -151,10 +197,6 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
     ret=RDDelete::ErrorRemoteConnection;
     break;
 
-  case 9:   // CURLE_REMOTE_ACCESS_DENIED:
-    ret=RDDelete::ErrorRemoteAccess;
-    break;
-
   default:
     ret=RDDelete::ErrorUnknown;
     printf("CURL error: %d\n",err);
@@ -165,14 +207,14 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
   }
   curl_slist_free_all(cmds);
   curl_easy_cleanup(curl);
-    
+
   return ret;
 }
 
 
 QString RDDelete::errorText(RDDelete::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown Error [%u]",err);
+  QString ret=QString().sprintf("Unknown RDDelete Error [%u]",err);
 
   switch(err) {
   case RDDelete::ErrorOk:
@@ -220,7 +262,10 @@ QString RDDelete::errorText(RDDelete::ErrorCode err)
     break;
 
   case RDDelete::ErrorUnknown:
-    ret=tr("Unknown Error");
+    break;
+
+  case RDDelete::ErrorUnsupportedUrlScheme:
+    ret=tr("Unsupported URL Scheme");
     break;
   }
   return ret;

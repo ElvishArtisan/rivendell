@@ -551,6 +551,7 @@ void MainObject::ServeListCasts()
   line_colors[0]=RD_WEB_LINE_COLOR1;
   line_colors[1]=RD_WEB_LINE_COLOR2;
   int current_color=0;
+  /*
   sql=QString("select ")+
     "ID,"+               // 00
     "STATUS,"+           // 01
@@ -560,8 +561,9 @@ void MainObject::ServeListCasts()
     "ITEM_CATEGORY,"+    // 05
     "AUDIO_TIME "+       // 06
     "from PODCASTS "+
-    RDCastSearch(cast_feed_id,filter,unexp_only,active_only)+
+    RDCastSearch(cast_key_name,false,filter,unexp_only,active_only)+
     " order by ORIGIN_DATETIME desc";
+  */
   q=new RDSqlQuery(sql);
   while(q->next()) {
     printf("<tr>\n");
@@ -813,6 +815,7 @@ void MainObject::ServeEditCast(int cast_id)
   //
   // Media Link
   //
+  /*
   if(feed->mediaLinkMode()!=RDFeed::LinkNone) {
     printf("<tr>\n");
     printf("<td align=\"right\" bgcolor=\"%s\">Media Link:</td>\n",
@@ -828,7 +831,7 @@ void MainObject::ServeEditCast(int cast_id)
     printf("<td colspan=\"3\">&nbsp;</td>\n");
     printf("</tr>\n");
   }
-
+  */
   //
   // Cast Data
   //
@@ -1434,7 +1437,7 @@ void MainObject::DeleteCast()
 
   RDFeed *feed=new RDFeed(cast_feed_id,rda->config());
   RDPodcast *cast=new RDPodcast(rda->config(),cast_cast_id);
-  cast->removeAudio(feed,&errs,rda->config()->logXloadDebugData());
+  cast->dropAudio(feed,&errs,rda->config()->logXloadDebugData());
   delete cast;
   delete feed;
 
@@ -1569,6 +1572,7 @@ void MainObject::ServeSubscriptionReport()
 
 void MainObject::PostEpisode()
 {
+  /*
   QString media_file;
 
   GetContext();
@@ -1609,7 +1613,7 @@ void MainObject::PostEpisode()
     Exit(0);
   }
   ServeEditCast(cast_id);
-    
+  */    
   Exit(0);
 }
 

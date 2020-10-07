@@ -134,7 +134,7 @@ QString RDHPIRecordStream::errorString(RDHPIRecordStream::Error err)
     break;
 
   default:
-    str=QString(tr("Unknown Error:"));
+    str=QString(tr("Unknown RDHpiRecordStream Error:"));
     return QString().sprintf("%s %d\n",(const char *)str,err);
     break;
   }

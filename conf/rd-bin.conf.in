@@ -1,8 +1,8 @@
-# rdfeed.conf
+# rd-bin.conf
 #
 # This is the Apache Web Server configuration for Rivendell.
 #
-#   (C) Copyright 2007,2010,2016 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2007-2020 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -35,13 +35,7 @@
   <Files *.html>
     SetHandler default-handler
   </Files>
-  <Files *.xml>
-    SetHandler cgi-script
-  </Files>
   <Files *.cgi>
-    SetHandler cgi-script
-  </Files>
-  <Files *.mp3>
     SetHandler cgi-script
   </Files>
 </Directory>

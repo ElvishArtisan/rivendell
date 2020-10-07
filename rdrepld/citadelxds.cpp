@@ -2,7 +2,7 @@
 //
 // Replicator implementation for the Citadel XDS Portal
 //
-//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,6 +23,8 @@
 #include <stdio.h>
 #include <syslog.h>
 #include <errno.h>
+
+#include <q3url.h>
 
 #include <qfileinfo.h>
 #include <qdatetime.h>
@@ -364,11 +366,14 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   //
   // Upload File
   //
-  RDUpload *upload=new RDUpload();
+  RDUpload *upload=new RDUpload(rda->config());
   upload->setSourceFile(tempfile);
   upload->setDestinationUrl(config()->url()+"/"+filename);
+  //
+  // FIXME: Finish implementing ssh(1) id keys!
+  //
   switch(upload_err=upload->runUpload(config()->urlUsername(),
-				      config()->urlPassword(),
+				      config()->urlPassword(),"",false,
 				      rda->config()->logXloadDebugData())) {
   case RDUpload::ErrorOk:
     break;
@@ -418,8 +423,11 @@ void CitadelXds::PurgeCuts()
       Q3Url url(path+q->value(1).toString());
       conv=new RDDelete(rda->config());
       conv->setTargetUrl(url);
+      //
+      // FIXME: Finish implementing ssh(1) key support!
+      //
       if((conv_err=conv->runDelete(config()->urlUsername(),
-				   config()->urlPassword(),
+				   config()->urlPassword(),"",false,
 				   rda->config()->logXloadDebugData()))==
 	 RDDelete::ErrorOk) {
 	sql=QString().sprintf("delete from REPL_CART_STATE where ID=%d",

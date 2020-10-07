@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,25 +18,35 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <errno.h>
 #include <math.h>
 
-#include <qfile.h>
-#include <q3url.h>
-#include <qapplication.h>
+#include <curl/curl.h>
 
-#include <rddb.h>
-#include <rdfeed.h>
-#include <rdconf.h>
-#include <rdlibrary_conf.h>
-#include <rdescape_string.h>
-#include <rdwavefile.h>
-#include <rdpodcast.h>
-#include <rdcart.h>
-#include <rdcut.h>
-#include <rdaudioexport.h>
-#include <rdaudioconvert.h>
-#include <rdtempdirectory.h>
-#include <rdupload.h>
+#include <qapplication.h>
+#include <qfile.h>
+#include <qmessagebox.h>
+#include <qurl.h>
+
+#include "rdapplication.h"
+#include "rdaudioconvert.h"
+#include "rdaudioexport.h"
+#include "rdcart.h"
+#include "rdcut.h"
+#include "rdconf.h"
+#include "rddb.h"
+#include "rddelete.h"
+#include "rdescape_string.h"
+#include "rdfeed.h"
+#include "rdlibrary_conf.h"
+#include "rdlog.h"
+#include "rdlog_event.h"
+#include "rdpodcast.h"
+#include "rdrenderer.h"
+#include "rdtempdirectory.h"
+#include "rdupload.h"
+#include "rdwavefile.h"
+#include "rdxport_interface.h"
 
 RDFeed::RDFeed(const QString &keyname,RDConfig *config,QObject *parent)
   : QObject(parent)
@@ -54,6 +64,13 @@ RDFeed::RDFeed(const QString &keyname,RDConfig *config,QObject *parent)
     feed_id=q->value(0).toUInt();
   }
   delete q;
+
+  //
+  // Get the CGI Hostname
+  //
+  if(getenv("SERVER_NAME")!=NULL) {
+    feed_cgi_hostname=getenv("SERVER_NAME");
+  }
 }
 
 
@@ -77,7 +94,59 @@ RDFeed::RDFeed(unsigned id,RDConfig *config,QObject *parent)
 
 bool RDFeed::exists() const
 {
-  return RDDoesRowExist("FEEDS","NAME",feed_keyname);
+  return RDDoesRowExist("FEEDS","KEY_NAME",feed_keyname);
+}
+
+
+bool RDFeed::isSuperfeed() const
+{
+  return RDBool(RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"IS_SUPERFEED").
+		toString());
+  
+}
+
+
+void RDFeed::setIsSuperfeed(bool state) const
+{
+  SetRow("IS_SUPERFEED",RDYesNo(state));
+}
+
+
+QStringList RDFeed::subfeedNames() const
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+  QStringList ret;
+
+  sql=QString("select ")+
+    "MEMBER_KEY_NAME "+  // 00
+    "from SUPERFEED_MAPS where "+
+    "KEY_NAME=\""+RDEscapeString(keyName())+"\"";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    ret.push_back(q->value(0).toString());
+  }
+  delete q;
+
+  return ret;
+}
+
+
+QStringList RDFeed::isSubfeedOf() const
+{
+  QStringList ret;
+
+  QString sql=QString("select ")+
+    "KEY_NAME "+  // 00
+    "from SUPERFEED_MAPS where "+
+    "MEMBER_KEY_NAME=\""+RDEscapeString(keyName())+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    ret.push_back(q->value(0).toString());
+  }
+  delete q;
+
+  return ret;
 }
 
 
@@ -132,6 +201,19 @@ void RDFeed::setChannelCategory(const QString &str) const
 }
 
 
+QString RDFeed::channelSubCategory() const
+{
+  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CHANNEL_SUB_CATEGORY").
+    toString();
+}
+
+
+void RDFeed::setChannelSubCategory(const QString &str) const
+{
+  SetRow("CHANNEL_SUB_CATEGORY",str);
+}
+
+
 QString RDFeed::channelLink() const
 {
   return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CHANNEL_LINK").
@@ -172,6 +254,71 @@ void RDFeed::setChannelWebmaster(const QString &str) const
 }
 
 
+QString RDFeed::channelEditor() const
+{
+  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CHANNEL_EDITOR").
+    toString();
+}
+
+
+void RDFeed::setChannelEditor(const QString &str) const
+{
+  SetRow("CHANNEL_EDITOR",str);
+}
+
+
+QString RDFeed::channelAuthor() const
+{
+  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CHANNEL_AUTHOR").
+    toString();
+}
+
+
+void RDFeed::setChannelAuthor(const QString &str) const
+{
+  SetRow("CHANNEL_AUTHOR",str);
+}
+
+
+bool RDFeed::channelAuthorIsDefault() const
+{
+  return RDBool(RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
+			      "CHANNEL_AUTHOR_IS_DEFAULT").toString());
+}
+
+
+void RDFeed::setChannelAuthorIsDefault(bool state) const
+{
+  SetRow("CHANNEL_AUTHOR_IS_DEFAULT",RDYesNo(state));
+}
+
+
+QString RDFeed::channelOwnerName() const
+{
+  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CHANNEL_OWNER_NAME").
+    toString();
+}
+
+
+void RDFeed::setChannelOwnerName(const QString &str) const
+{
+  SetRow("CHANNEL_OWNER_NAME",str);
+}
+
+
+QString RDFeed::channelOwnerEmail() const
+{
+  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CHANNEL_OWNER_EMAIL").
+    toString();
+}
+
+
+void RDFeed::setChannelOwnerEmail(const QString &str) const
+{
+  SetRow("CHANNEL_OWNER_EMAIL",str);
+}
+
+
 QString RDFeed::channelLanguage() const
 {
   return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CHANNEL_LANGUAGE").
@@ -185,11 +332,64 @@ void RDFeed::setChannelLanguage(const QString &str)
 }
 
 
-QString RDFeed::baseUrl() const
+bool RDFeed::channelExplicit() const
 {
-  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"BASE_URL").
-    toString();
+  return RDBool(RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
+			      "CHANNEL_EXPLICIT").toString());
 }
+
+
+void RDFeed::setChannelExplicit(bool state) const
+{
+  SetRow("CHANNEL_EXPLICIT",RDYesNo(state));
+}
+
+
+int RDFeed::channelImageId() const
+{
+  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CHANNEL_IMAGE_ID").
+    toInt();
+}
+
+
+void RDFeed::setChannelImageId(int img_id) const
+{
+  SetRow("CHANNEL_IMAGE_ID",img_id);
+}
+
+
+int RDFeed::defaultItemImageId() const
+{
+  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"DEFAULT_ITEM_IMAGE_ID").
+    toInt();
+}
+
+
+void RDFeed::setDefaultItemImageId(int img_id) const
+{
+  SetRow("DEFAULT_ITEM_IMAGE_ID",img_id);
+}
+
+
+QString RDFeed::baseUrl(const QString &subfeed_key_name) const
+{
+  QString key_name=subfeed_key_name;
+  if(subfeed_key_name.isEmpty()) {
+    key_name=feed_keyname;
+  }
+  return RDGetSqlValue("FEEDS","KEY_NAME",key_name,"BASE_URL").toString();  
+}
+
+
+QString RDFeed::baseUrl(int subfeed_feed_id) const
+{
+  int id=subfeed_feed_id;
+  if(subfeed_feed_id<0) {
+    id=feed_id;
+  }
+  return RDGetSqlValue("FEEDS","ID",id,"BASE_URL").toString();  
+}
+
 
 
 void RDFeed::setBaseUrl(const QString &str) const
@@ -239,14 +439,40 @@ void RDFeed::setPurgeUsername(const QString &str) const
 
 QString RDFeed::purgePassword() const
 {
-  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"PURGE_PASSWORD").
-    toString();
+  return QString(QByteArray::fromBase64(RDGetSqlValue("FEEDS","KEY_NAME",
+			 feed_keyname,"PURGE_PASSWORD").toString().toUtf8()));
 }
 
 
 void RDFeed::setPurgePassword(const QString &str) const
 {
-  SetRow("PURGE_PASSWORD",str);
+  SetRow("PURGE_PASSWORD",QString(str.toUtf8().toBase64()));
+}
+
+
+bool RDFeed::purgeUseIdFile() const
+{
+  return RDBool(RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
+			      "PURGE_USE_ID_FILE").toString());
+}
+
+
+void RDFeed::setPurgeUseIdFile(bool state) const
+{
+  SetRow("PURGE_USE_ID_FILE",RDYesNo(state));
+}
+
+
+RDRssSchemas::RssSchema RDFeed::rssSchema() const
+{
+  return (RDRssSchemas::RssSchema)RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
+					       "RSS_SCHEMA").toUInt();
+}
+
+
+void RDFeed::setRssSchema(RDRssSchemas::RssSchema schema) const
+{
+  SetRow("RSS_SCHEMA",(unsigned)schema);
 }
 
 
@@ -286,6 +512,12 @@ QString RDFeed::itemXml() const
 void RDFeed::setItemXml(const QString &str)
 {
   SetRow("ITEM_XML",str);
+}
+
+
+QString RDFeed::feedUrl() const
+{
+  return purgeUrl()+"/"+keyName()+"."+RD_RSS_XML_FILE_EXTENSION;
 }
 
 
@@ -350,19 +582,6 @@ bool RDFeed::enableAutopost() const
 void RDFeed::setEnableAutopost(bool state) const
 {
   SetRow("ENABLE_AUTOPOST",RDYesNo(state));
-}
-
-
-bool RDFeed::keepMetadata() const
-{
-  return RDBool(RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
-			      "KEEP_METADATA").toString());
-}
-
-
-void RDFeed::setKeepMetadata(bool state)
-{
-  SetRow("KEEP_METADATA",RDYesNo(state));
 }
 
 
@@ -470,77 +689,540 @@ void RDFeed::setNormalizeLevel(int lvl) const
 }
 
 
-QString RDFeed::redirectPath() const
+QByteArray RDFeed::imageData(int img_id) const
 {
-  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"REDIRECT_PATH").
-    toString();
+  return RDGetSqlValue("FEED_IMAGES","ID",img_id,"DATA").toByteArray();
 }
 
 
-void RDFeed::setRedirectPath(const QString &str)
+int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
+			    QString desc) const
 {
-  SetRow("REDIRECT_PATH",str);
-}
+  bool ok=false;
+  QString sql;
+  int ret;
+  QSize min=rda->rssSchemas()->minimumImageSize(rssSchema());
+  QSize max=rda->rssSchemas()->maximumImageSize(rssSchema());
+  *err_msg="OK";
 
-
-RDFeed::MediaLinkMode RDFeed::mediaLinkMode() const
-{
-  return (RDFeed::MediaLinkMode)RDGetSqlValue("FEEDS","KEY_NAME",
-					      feed_keyname,"MEDIA_LINK_MODE").
-    toUInt();
-}
-  
-
-void RDFeed::setMediaLinkMode(RDFeed::MediaLinkMode mode) const
-{
-  SetRow("MEDIA_LINK_MODE",(unsigned)mode);
-}
-
-
-QString RDFeed::audioUrl(RDFeed::MediaLinkMode mode,
-			 const QString &cgi_hostname,unsigned cast_id)
-{
-  Q3Url url(baseUrl());
-  QString ret;
-  RDPodcast *cast;
-
-  switch(mode) {
-    case RDFeed::LinkNone:
-      ret="";
-      break;
-
-    case RDFeed::LinkDirect:
-      cast=new RDPodcast(feed_config,cast_id);
-      ret=baseUrl()+"/"+cast->audioFilename();
-      delete cast;
-      break;
-
-    case RDFeed::LinkCounted:
-      ret=QString("http://")+basePreamble()+cgi_hostname+
-	"/rd-bin/rdfeed."+uploadExtension()+"?"+keyName()+
-	QString().sprintf("&cast_id=%d",cast_id);
-      break;
+  //
+  // Load the image
+  //
+  QFile file(pathname);
+  if(!file.open(QIODevice::ReadOnly)) {
+    *err_msg=QString("Unable to open image file [")+
+      QString(strerror(errno))+"]";
+    return -1;
   }
+  QByteArray data=file.readAll();
+  file.close();
+
+  //
+  // Validate the image
+  //
+  QImage *img=new QImage();
+  if(!img->loadFromData(data)) {
+    *err_msg="Invalid image file!";
+    return -1;
+  }
+  if((!min.isNull())&&
+     ((img->width()<min.width())||(img->height()<min.height()))) {
+    *err_msg=
+      QString().sprintf("Image is too small - %dx%d or larger required",
+			min.width(),min.height());
+    return -1;
+  }
+  if((!max.isNull())&&
+     ((img->width()>max.width())||(img->height()>max.height()))) {
+    *err_msg=
+      QString().sprintf("Image is too large - %dx%d or smaller required",
+			max.width(),max.height());
+    return -1;
+  }
+
+  //
+  // Fix up the Description
+  //
+  if(desc.isEmpty()) {
+    desc=tr("Imported from")+" "+pathname;
+  }
+
+  //
+  // FIXME: Upload to remote file store here...
+  //
+
+  //
+  // Write it to the DB
+  //
+  QStringList f0=pathname.split(".",QString::SkipEmptyParts);
+  sql=QString("insert into FEED_IMAGES set ")+
+    QString().sprintf("FEED_ID=%u,",id())+
+    "FEED_KEY_NAME=\""+RDEscapeString(keyName())+"\","+
+    QString().sprintf("WIDTH=%d,",img->width())+
+    QString().sprintf("HEIGHT=%d,",img->height())+
+    QString().sprintf("DEPTH=%d,",img->depth())+
+    "DESCRIPTION=\""+RDEscapeString(desc)+"\","+
+    "FILE_EXTENSION=\""+RDEscapeString(f0.last().toLower())+"\","+
+    "DATA="+RDEscapeBlob(data);
+  ret=RDSqlQuery::run(sql,&ok).toInt();
+  if(!ok) {
+    *err_msg="Unable to write to database";
+    return -1;
+  }
+
   return ret;
 }
 
 
-unsigned RDFeed::postCut(RDUser *user,RDStation *station,
-			 const QString &cutname,Error *err,bool log_debug,
-			 RDConfig *config)
+bool RDFeed::deleteImage(int img_id,QString *err_msg)
 {
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  *err_msg="OK";
+
+  removeImage(img_id);
+
+  sql=QString("delete from FEED_IMAGES where ")+
+    QString().sprintf("ID=%d",img_id);
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    *err_msg=QString("database error: ")+*err_msg;
+    delete q;
+    return false;
+  }
+  delete q;
+
+  return true;
+}
+
+
+bool RDFeed::postPodcast(unsigned cast_id) const
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_POST_PODCAST),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",cast_id),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
+}
+
+
+QString RDFeed::audioUrl(unsigned cast_id)
+{
+  RDPodcast *cast=new RDPodcast(feed_config,cast_id);
+  QUrl url(baseUrl(cast->feedId()));
+  QString ret;
+
+  ret=url.toString()+"/"+cast->audioFilename();
+  delete cast;
+
+  return ret;
+}
+
+
+QString RDFeed::imageUrl(int img_id) const
+{
+  QString ret;
+
+  QString sql=QString("select ")+
+    "FEED_ID,"+         // 00
+    "FILE_EXTENSION "+  // 01
+    "from FEED_IMAGES where "+
+    QString().sprintf("ID=%d",img_id);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=baseUrl(q->value(0).toUInt())+"/"+
+      RDFeed::imageFilename(id(),img_id,q->value(1).toString());
+  }
+  delete q;
+
+  return ret;
+}
+
+
+bool RDFeed::postXml()
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_POST_RSS),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",feed_id),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RDFeed::postXmlConditional(const QString &caption,QWidget *widget)
+{
+  if(!postXml()) {
+    QMessageBox::warning(widget,caption+" - "+tr("Error"),
+			 tr("XML data upload failed!"));
+    return false;
+  }
+  return true;
+}
+
+
+bool RDFeed::removeRss()
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_RSS),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",feed_id),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RDFeed::postImage(int img_id) const
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_POST_IMAGE),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",img_id),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
+}
+
+
+bool RDFeed::removeImage(int img_id) const
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_IMAGE),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",img_id),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
+}
+
+
+void RDFeed::removeAllImages()
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  sql=QString("select ")+
+    "ID "+  // 00
+    "from FEED_IMAGES where "+
+    QString().sprintf("FEED_ID=%u",feed_id);
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    removeImage(q->value(0).toUInt());
+  }
+  delete q;
+}
+
+
+unsigned RDFeed::postCut(const QString &cutname,Error *err)
+{
+  QString err_msg;
   QString tmpfile;
   QString destfile;
-  QString sql;
-  RDSqlQuery *q;
   RDPodcast *cast=NULL;
-  RDUpload *upload=NULL;
-  RDUpload::ErrorCode upload_err;
   RDAudioConvert::ErrorCode audio_conv_err;
   RDAudioExport::ErrorCode export_err;
 
+  emit postProgressRangeChanged(0,5);
   emit postProgressChanged(0);
-  emit postProgressChanged(1);
 
   //
   // Export Cut
@@ -564,7 +1246,10 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
   settings->setBitRate(uploadBitRate());
   settings->setNormalizationLevel(normalizeLevel()/100);
   conv->setDestinationSettings(settings);
-  switch((export_err=conv->runExport(user->name(),user->password(),&audio_conv_err))) {
+  emit postProgressChanged(1);
+  switch((export_err=conv->
+	  runExport(rda->user()->name(),rda->user()->password(),
+		    &audio_conv_err))) {
   case RDAudioExport::ErrorOk:
     break;
 
@@ -573,6 +1258,7 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
     delete conv;
     *err=RDFeed::ErrorUnsupportedType;
     unlink(tmpfile);
+    emit postProgressChanged(5);
     return 0;
 
   case RDAudioExport::ErrorNoSource:
@@ -587,70 +1273,65 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
     delete conv;
     *err=RDFeed::ErrorGeneral;
     unlink(tmpfile);
+    emit postProgressChanged(5);
     return 0;
   }
   delete settings;
   delete conv;
+  postProgressChanged(2);
 
   //
-  // Upload
+  // Save to Audio Store
   //
-  emit postProgressChanged(2);
   QFile file(tmpfile);
   int length=file.size();
   unsigned cast_id=CreateCast(&destfile,length,cut->length());
-  delete cut;
   cast=new RDPodcast(feed_config,cast_id);
-  upload=new RDUpload(this);
-  upload->setSourceFile(tmpfile);
-  upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
-  switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),
-				       log_debug))) {
-  case RDUpload::ErrorOk:
-    *err=RDFeed::ErrorOk;
-    break;
-
-  default:
-    emit postProgressChanged(totalPostSteps());
-    *err=RDFeed::ErrorUploadFailed;
-    sql=QString().sprintf("delete from PODCASTS where ID=%u",cast_id);
-    q=new RDSqlQuery(sql);
-    delete q;
-    delete upload;
-    delete cast;
-    *err=RDFeed::ErrorUploadFailed;
-    unlink(tmpfile);
-    return 0;
-  }
-  emit postProgressChanged(3);
+  SavePodcast(cast_id,tmpfile);
   unlink(tmpfile);
-  delete upload;
-  delete cast;
 
-  emit postProgressChanged(totalPostSteps());
+  //
+  // Upload to remote archive
+  //
+  postPodcast(cast_id);
+  postProgressChanged(3);
+
+  //
+  // Set default cast parameters
+  //
+  RDCart *cart=new RDCart(RDCut::cartNumber(cutname));
+  cast->setItemTitle(cart->title());
+  cast->setItemImageId(defaultItemImageId());
+  delete cart;
+  delete cut;
+  delete cast;
+  emit postProgressChanged(4);
+
+  //
+  // Update posted XML
+  //
+  postXml();
+  emit postProgressChanged(5);
+  *err=RDFeed::ErrorOk;
 
   return cast_id;
 }
 
 
-unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
-			  bool log_debug,RDConfig *config)
+unsigned RDFeed::postFile(const QString &srcfile,Error *err)
 {
-  QString sql;
-  RDSqlQuery *q;
+  QString err_msg;
   QString cmd;
   QString tmpfile;
   QString tmpfile2;
   QString destfile;
   int time_length=0;
-  RDUpload *upload=NULL;
-  RDUpload::ErrorCode upload_err;
   RDWaveFile *wave=NULL;
+  RDWaveData wavedata;
   unsigned audio_time=0;
 
+  emit postProgressRangeChanged(0,6);
   emit postProgressChanged(0);
-  emit postProgressChanged(1);
-  qApp->processEvents();
 
   //
   // Convert Cut
@@ -666,10 +1347,12 @@ unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
   settings->setBitRate(uploadBitRate());
   settings->setNormalizationLevel(normalizeLevel()/100);
   conv->setDestinationSettings(settings);
+  emit postProgressChanged(1);
+
   switch(conv->convert()) {
   case RDAudioConvert::ErrorOk:
-    wave=new RDWaveFile(tmpfile);
-    if(wave->openWave()) {
+    wave=new RDWaveFile(srcfile);
+    if(wave->openWave(&wavedata)) {
       audio_time=wave->getExtTimeLength();
     }
     delete wave;
@@ -677,11 +1360,11 @@ unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
 
   case RDAudioConvert::ErrorInvalidSettings:
   case RDAudioConvert::ErrorFormatNotSupported:
-    emit postProgressChanged(totalPostSteps());
     delete settings;
     delete conv;
     *err=RDFeed::ErrorUnsupportedType;
     unlink(tmpfile);
+    emit postProgressChanged(6);
     return 0;
 
   case RDAudioConvert::ErrorNoSource:
@@ -693,71 +1376,373 @@ unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
   case RDAudioConvert::ErrorInvalidSpeed:
   case RDAudioConvert::ErrorFormatError:
   case RDAudioConvert::ErrorNoSpace:
-    emit postProgressChanged(totalPostSteps());
     delete settings;
     delete conv;
     *err=RDFeed::ErrorGeneral;
     unlink(tmpfile);
+    emit postProgressChanged(6);
     return 0;
   }
   delete settings;
   delete conv;
+  emit postProgressChanged(2);
 
   //
-  // Upload
+  // Save to Audio Store
   //
-  emit postProgressChanged(2);
-  emit postProgressChanged(3);
-  qApp->processEvents();
   QFile file(tmpfile);
   int length=file.size();
-
   unsigned cast_id=CreateCast(&destfile,length,time_length);
   RDPodcast *cast=new RDPodcast(feed_config,cast_id);
-  upload=new RDUpload(this);
-  upload->setSourceFile(tmpfile);
-  upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
-  switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),
-				       log_debug))) {
-  case RDUpload::ErrorOk:
-    sql=QString().sprintf("update PODCASTS set AUDIO_TIME=%u where ID=%u",
-			  audio_time,cast_id);
-    q=new RDSqlQuery(sql);
-    delete q;
-    break;
-
-  default:
-    emit postProgressChanged(totalPostSteps());
-    *err=RDFeed::ErrorUploadFailed;
-    sql=QString().sprintf("delete from PODCASTS where ID=%u",cast_id);
-    q=new RDSqlQuery(sql);
-    delete q;
-    delete upload;
-    delete cast;
-    *err=RDFeed::ErrorUploadFailed;
-    unlink(tmpfile);
-    return 0;
-  }
-  delete upload;
-  delete cast;
+  SavePodcast(cast_id,tmpfile);
   unlink(QString(tmpfile)+".wav");
   unlink(tmpfile);
-  emit postProgressChanged(totalPostSteps());
+  emit postProgressChanged(3);
 
+  //
+  // Upload to remote archive
+  //
+  postPodcast(cast_id);
+  postProgressChanged(4);
+
+  //
+  // Set default cast parameters
+  //
+  if(wavedata.metadataFound()&&(!wavedata.title().isEmpty())) {
+    cast->setItemTitle(wavedata.title());
+  }
+  else {
+    cast->setItemTitle(srcfile.split("/").last());
+  }
+  cast->setAudioTime(audio_time);
+  cast->setItemImageId(defaultItemImageId());
+  delete cast;
+  emit postProgressChanged(5);
+
+  //
+  //
+  // Update posted XML
+  //
+  postXml();
+  emit postProgressChanged(6);
   *err=RDFeed::ErrorOk;
+
   return cast_id;
 }
 
 
-int RDFeed::totalPostSteps() const
+unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
+			 bool stop_at_stop,int start_line,int end_line,
+			 RDFeed::Error *err)
 {
-  return RDFEED_TOTAL_POST_STEPS;
+  QString tmpfile;
+  QString destfile;
+  QString err_msg;
+  RDRenderer *renderer=NULL;
+  RDSettings *settings=NULL;
+  RDLogEvent *log_event=NULL;
+
+  feed_render_start_line=start_line;
+  feed_render_end_line=end_line;
+
+  emit postProgressRangeChanged(0,4+(end_line-start_line));
+  emit postProgressChanged(0);
+
+  //
+  // Open Log
+  //
+  log_event=new RDLogEvent(logname);
+  log_event->load();
+  if(!log_event->exists()) {
+    *err=RDFeed::ErrorNoLog;
+    delete log_event;
+    return 0;
+  }
+
+  //
+  // Render Log
+  //
+  tmpfile=GetTempFilename();
+
+  settings=new RDSettings();
+  settings->setFormat(uploadFormat());
+  settings->setChannels(uploadChannels());
+  settings->setSampleRate(uploadSampleRate());
+  settings->setBitRate(uploadBitRate());
+  settings->setNormalizationLevel(normalizeLevel()/100);
+  renderer=new RDRenderer(this);
+  connect(renderer,SIGNAL(progressMessageSent(const QString &)),
+	  this,SLOT(renderMessage(const QString &)));
+  connect(renderer,SIGNAL(lineStarted(int,int)),
+	  this,SLOT(renderLineStartedData(int,int)));
+
+  if(!renderer->renderToFile(tmpfile,log_event,settings,start_time,stop_at_stop,
+			     &err_msg,start_line,end_line)) {
+    *err=RDFeed::ErrorRenderError;
+    delete renderer;
+    delete settings;
+    delete log_event;
+    unlink(tmpfile);
+    return 0;
+  }
+  delete renderer;
+  emit postProgressChanged(1+(end_line-start_line));
+
+  //
+  // Save to Audio Store
+  //
+  QFile f(tmpfile);
+  unsigned cast_id=
+    CreateCast(&destfile,f.size(),log_event->length(0,log_event->size()));
+  RDPodcast *cast=new RDPodcast(feed_config,cast_id);
+  SavePodcast(cast_id,tmpfile);
+  unlink(tmpfile);
+  emit postProgressChanged(2+(end_line-start_line));
+
+  //
+  // Save to remote archive
+  //
+  postPodcast(cast_id);
+  emit postProgressChanged(3+(end_line-start_line));
+
+  //
+  // Set default cast parameters
+  //
+  RDLog *log=new RDLog(logname);
+  if(log->description().isEmpty()) {
+    cast->setItemTitle(logname+" "+tr("log"));
+  }
+  else {
+    cast->setItemTitle(log->description());
+  }
+  cast->setItemImageId(defaultItemImageId());
+  cast->setAudioTime(log_event->length(start_line,1+end_line));
+  delete log;
+
+  postXml();
+  emit postProgressChanged(4+(end_line-start_line));
+  *err=RDFeed::ErrorOk;
+
+  delete cast;
+  delete settings;
+  delete log_event;
+  unlink(tmpfile);
+
+  return cast_id;
+}
+
+
+QString RDFeed::rssXml(QString *err_msg,const QDateTime &now,bool *ok)
+{
+  QString ret;
+
+  QString sql;
+  RDSqlQuery *chan_q;
+  RDSqlQuery *item_q;
+  RDSqlQuery *q;
+
+  if(ok!=NULL) {
+    *ok=false;
+  }
+  sql=QString("select ")+
+    "FEEDS.CHANNEL_TITLE,"+        // 00
+    "FEEDS.CHANNEL_DESCRIPTION,"+  // 01
+    "FEEDS.CHANNEL_CATEGORY,"+     // 02
+    "FEEDS.CHANNEL_SUB_CATEGORY,"+ // 03
+    "FEEDS.CHANNEL_LINK,"+         // 04
+    "FEEDS.CHANNEL_COPYRIGHT,"+    // 05
+    "FEEDS.CHANNEL_EDITOR,"+       // 06
+    "FEEDS.CHANNEL_AUTHOR,"+       // 07
+    "FEEDS.CHANNEL_OWNER_NAME,"+   // 08
+    "FEEDS.CHANNEL_OWNER_EMAIL,"+  // 09
+    "FEEDS.CHANNEL_WEBMASTER,"+    // 10
+    "FEEDS.CHANNEL_LANGUAGE,"+     // 11
+    "FEEDS.CHANNEL_EXPLICIT,"+     // 12
+    "FEEDS.ORIGIN_DATETIME,"+      // 13
+    "FEEDS.HEADER_XML,"+           // 14
+    "FEEDS.CHANNEL_XML,"+          // 15
+    "FEEDS.ITEM_XML,"+             // 16
+    "FEEDS.BASE_URL,"+             // 17
+    "FEEDS.ID,"+                   // 18
+    "FEEDS.UPLOAD_EXTENSION,"+     // 19
+    "FEEDS.CAST_ORDER,"+           // 20
+    "FEEDS.BASE_PREAMBLE,"+        // 21
+    "FEEDS.IS_SUPERFEED,"+         // 22
+    "FEED_IMAGES.ID,"+             // 23
+    "FEED_IMAGES.WIDTH,"+          // 24
+    "FEED_IMAGES.HEIGHT,"+         // 25
+    "FEED_IMAGES.DESCRIPTION,"+    // 26
+    "FEED_IMAGES.FILE_EXTENSION "+ // 27
+    "from FEEDS ";
+  sql+="left join FEED_IMAGES ";
+  sql+="on FEEDS.CHANNEL_IMAGE_ID=FEED_IMAGES.ID ";
+  sql+="where ";
+  sql+="FEEDS.KEY_NAME=\""+RDEscapeString(keyName())+"\"";
+  chan_q=new RDSqlQuery(sql);
+  if(!chan_q->first()) {
+    *err_msg="no feed matches the supplied key name";
+    return QString();
+  }
+
+  //
+  // Load the XML Templates
+  //
+  QString header_template=rda->rssSchemas()->headerTemplate(rssSchema());
+  QString channel_template=rda->rssSchemas()->channelTemplate(rssSchema());
+  QString item_template=rda->rssSchemas()->itemTemplate(rssSchema());
+  if(rssSchema()==RDRssSchemas::CustomSchema) {
+    header_template=chan_q->value(14).toString();
+    channel_template=chan_q->value(15).toString();
+    item_template=chan_q->value(16).toString();
+  }
+
+  //
+  // Render Header XML
+  //
+  ret+=header_template+"\r\n";
+
+  //
+  // Render Channel XML
+  //
+  ret+="  <channel>\n";
+  ret+=ResolveChannelWildcards(channel_template,chan_q,now)+"\r\n";
+
+  //
+  // Render Item XML
+  //
+  QString where;
+  if(chan_q->value(22).toString()=="Y") {  // Is a Superfeed
+    sql=QString("select ")+
+      "MEMBER_FEED_ID "+  // 00
+      "from SUPERFEED_MAPS where "+
+      QString().sprintf("FEED_ID=%d",chan_q->value(18).toUInt());
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      where+=QString().sprintf("(PODCASTS.FEED_ID=%u) || ",q->value(0).toUInt());
+    }
+    delete q;
+    where=("("+where.left(where.length()-4)+") && ");
+  }
+  else {
+    where=QString().sprintf("(PODCASTS.FEED_ID=%u)&&",chan_q->value(18).toUInt());
+  }
+  sql=QString("select ")+
+    "PODCASTS.FEED_ID,"+             // 00
+    "PODCASTS.ITEM_TITLE,"+          // 01
+    "PODCASTS.ITEM_DESCRIPTION,"+    // 02
+    "PODCASTS.ITEM_CATEGORY,"+       // 03
+    "PODCASTS.ITEM_LINK,"+           // 04
+    "PODCASTS.ITEM_AUTHOR,"+         // 05
+    "PODCASTS.ITEM_SOURCE_TEXT,"+    // 06
+    "PODCASTS.ITEM_SOURCE_URL,"+     // 07
+    "PODCASTS.ITEM_COMMENTS,"+       // 08
+    "PODCASTS.ITEM_EXPLICIT,"+       // 09
+    "PODCASTS.AUDIO_FILENAME,"+      // 10
+    "PODCASTS.AUDIO_LENGTH,"+        // 11
+    "PODCASTS.AUDIO_TIME,"+          // 12
+    "PODCASTS.EFFECTIVE_DATETIME,"+  // 13
+    "PODCASTS.ID,"+                  // 14
+    "FEEDS.BASE_URL,"+               // 15
+    "FEEDS.CHANNEL_TITLE,"+          // 16
+    "FEEDS.CHANNEL_DESCRIPTION,"+    // 17
+    "FEED_IMAGES.ID,"+               // 18
+    "FEED_IMAGES.WIDTH,"+            // 19
+    "FEED_IMAGES.HEIGHT,"+           // 20
+    "FEED_IMAGES.DESCRIPTION,"+      // 21
+    "FEED_IMAGES.FILE_EXTENSION "+   // 22
+    "from PODCASTS left join FEEDS "+
+    "on PODCASTS.FEED_ID=FEEDS.ID "+
+    "left join FEED_IMAGES "+
+    "on PODCASTS.ITEM_IMAGE_ID=FEED_IMAGES.ID where "+
+    where+
+    QString().sprintf("(PODCASTS.STATUS=%d) && ",RDPodcast::StatusActive)+
+    "(PODCASTS.EFFECTIVE_DATETIME<=now()) && "+
+    "((PODCASTS.EXPIRATION_DATETIME is null)||"+
+    "(PODCASTS.EXPIRATION_DATETIME>now())) "+
+    "order by PODCASTS.ORIGIN_DATETIME";
+  if(chan_q->value(20).toString()=="N") {
+    sql+=" desc";
+  }
+  //  printf("item_sql: %s\n",sql.toUtf8().constData());
+  item_q=new RDSqlQuery(sql);
+  while(item_q->next()) {
+    ret+="    <item>\r\n";
+    ret+=ResolveItemWildcards(item_template,item_q,chan_q);
+    ret+="\r\n";
+    ret+="    </item>\r\n";
+  }
+  delete item_q;
+
+  ret+="  </channel>\r\n";
+  ret+="</rss>\r\n";
+  delete chan_q;
+
+  if(ok!=NULL) {
+    *ok=true;
+  }
+
+  return ret;
+}
+
+
+unsigned RDFeed::create(const QString &keyname,bool enable_users,
+			QString *err_msg)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+  unsigned feed_id=0;
+
+  //
+  // Sanity Checks
+  //
+  sql=QString("select KEY_NAME from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    *err_msg=tr("A feed with that key name already exists!");
+    delete q;
+    return 0;
+  }
+  delete q;
+
+  //
+  // Create Feed
+  //
+  sql=QString("insert into FEEDS set ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\","+
+    "ORIGIN_DATETIME=now(),"+
+    "HEADER_XML=\"\","+
+    "CHANNEL_XML=\"\","+
+    "ITEM_XML=\"\"";
+  q=new RDSqlQuery(sql);
+  feed_id=q->lastInsertId().toUInt();
+  delete q;
+
+  //
+  // Create Default Feed Perms
+  //
+  if(enable_users) {
+    sql=QString("select LOGIN_NAME from USERS where ")+
+      "(ADMIN_USERS_PRIV='N')&&(ADMIN_CONFIG_PRIV='N')";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into FEED_PERMS set ")+
+	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  }
+
+  return feed_id;
 }
 
 
 QString RDFeed::errorString(RDFeed::Error err)
 {
-  QString ret="Unknown Error";
+  QString ret=QString().sprintf("Unknown RDFeed Error [%d]",err);
 
   switch(err) {
   case RDFeed::ErrorOk:
@@ -783,8 +1768,138 @@ QString RDFeed::errorString(RDFeed::Error err)
   case RDFeed::ErrorGeneral:
     ret="General Error";
     break;
+
+  case RDFeed::ErrorNoLog:
+    ret="No such log";
+    break;
+
+  case RDFeed::ErrorRenderError:
+    ret="Log rendering error";
+    break;
   }
   return ret;
+}
+
+
+QString RDFeed::imageFilename(int feed_id,int img_id,const QString &ext)
+{
+  return QString().sprintf("img%06d_%06d.",feed_id,img_id)+ext;
+}
+
+
+QString RDFeed::publicUrl(const QString &base_url,const QString &keyname)
+{
+  return base_url+"/"+keyname+"."+RD_RSS_XML_FILE_EXTENSION;
+}
+
+
+QString RDFeed::itunesCategoryXml(const QString &category,
+				  const QString &sub_category,int padding)
+{
+  QString pad_str="";
+
+  for(int i=0;i<padding;i++) {
+    pad_str+=" ";
+  }
+  if(category.isEmpty()) {
+    return QString("");
+  }
+  if(sub_category.isEmpty()) {
+    return QString("<itunes:category text=\"")+RDXmlEscape(category)+"\" />";
+  }
+  return QString("<itunes:category text=\"")+RDXmlEscape(category)+"\">\n"+
+    pad_str+"  <itunes:category text=\""+RDXmlEscape(sub_category)+"\" />\n"+
+    pad_str+"</itunes:category>";
+}
+
+
+void RDFeed::renderMessage(const QString &msg)
+{
+  fprintf(stderr,"RENDERER: %s\n",msg.toUtf8().constData());
+}
+
+
+void RDFeed::renderLineStartedData(int lineno,int total_lines)
+{
+  if((lineno>=feed_render_start_line)&&(lineno<=feed_render_end_line)) {
+    emit postProgressChanged(1+(lineno-feed_render_start_line));
+  }
+}
+
+
+bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
+{
+  long response_code;
+  CURL *curl=NULL;
+  CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
+
+  //
+  // Generate POST Data
+  //
+  // We have to use multipart here because we have a file to send.
+  //
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_SAVE_PODCAST),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,
+	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",cast_id),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"FILENAME",
+	       CURLFORM_FILE,src_filename.toUtf8().constData(),
+	       CURLFORM_END);
+
+  //
+  // Set up the transfer
+  //
+  if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
+    return false;
+  }
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)rda->config()->userAgent());
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
+  curl_easy_setopt(curl,CURLOPT_URL,
+	    rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+  rda->syslog(LOG_DEBUG,"using web service URL: %s",
+	   rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
+
+  //
+  // Send it
+  //
+  if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
+    return false;
+  }
+
+  //
+  // Clean up
+  //
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
+
+  //
+  // Process the results
+  //
+  if((response_code<200)||(response_code>299)) {
+    return false;
+  }
+
+  return true;
 }
 
 
@@ -795,14 +1910,27 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
   RDSqlQuery *q1;
   unsigned cast_id=0;
 
-  sql=QString().sprintf("select CHANNEL_TITLE,CHANNEL_DESCRIPTION,\
-                         CHANNEL_CATEGORY,CHANNEL_LINK,MAX_SHELF_LIFE,\
-                         UPLOAD_FORMAT,UPLOAD_EXTENSION from FEEDS \
-                         where ID=%u",feed_id);
+  sql=QString("select ")+
+    "CHANNEL_TITLE,"+              // 00
+    "CHANNEL_DESCRIPTION,"+        // 01
+    "CHANNEL_CATEGORY,"+           // 02
+    "CHANNEL_LINK,"+               // 03
+    "MAX_SHELF_LIFE,"+             // 04
+    "UPLOAD_FORMAT,"+              // 05
+    "UPLOAD_EXTENSION,"+           // 06
+    "ENABLE_AUTOPOST,"+            // 07
+    "CHANNEL_AUTHOR,"+             // 08
+    "CHANNEL_AUTHOR_IS_DEFAULT "+  // 09
+    "from FEEDS where "+
+    QString().sprintf("ID=%u",feed_id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
     return 0;
+  }
+  QString item_author=rda->user()->emailContact();
+  if(q->value(9).toString()=="Y") {
+    item_author=q->value(8).toString();
   }
 
   //
@@ -814,9 +1942,25 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
     "ITEM_DESCRIPTION=\""+RDEscapeString(q->value(1).toString())+"\","+
     "ITEM_CATEGORY=\""+RDEscapeString(q->value(2).toString())+"\","+
     "ITEM_LINK=\""+RDEscapeString(q->value(3).toString())+"\","+
-    QString().sprintf("SHELF_LIFE=%d,",q->value(4).toInt())+
-    "EFFECTIVE_DATETIME=UTC_TIMESTAMP(),"+
-    "ORIGIN_DATETIME=UTC_TIMESTAMP()";
+    "ITEM_AUTHOR=\""+RDEscapeString(item_author)+"\","+
+    "EFFECTIVE_DATETIME=now(),"+
+    "ORIGIN_LOGIN_NAME=\""+RDEscapeString(rda->user()->name())+"\","+
+    "ORIGIN_STATION=\""+RDEscapeString(rda->station()->name())+"\","+
+    "ORIGIN_DATETIME=now(),";
+  if(RDBool(q->value(7).toString())) {
+    sql+=QString().sprintf("STATUS=%d,",RDPodcast::StatusActive);
+  }
+  else {
+    sql+=QString().sprintf("STATUS=%d,",RDPodcast::StatusPending);
+  }
+  if(q->value(4).toInt()==0) {
+    sql+="EXPIRATION_DATETIME=NULL";
+  }
+  else {
+    sql+="EXPIRATION_DATETIME=\""+
+      QDateTime::currentDateTime().addDays(q->value(4).toInt()).
+      toString("yyyy-MM-dd hh:mm:ss")+"\"";
+  }
   q1=new RDSqlQuery(sql);
   delete q1;
 
@@ -844,6 +1988,102 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
   delete q1;
   delete q;
   return cast_id;
+}
+
+
+QString RDFeed::ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q,
+					const QDateTime &build_datetime)
+{
+  QString ret="    "+tmplt;
+
+  ret.replace("\n","\r\n    ");
+  ret.replace("%TITLE%",RDXmlEscape(chan_q->value(0).toString()));
+  ret.replace("%DESCRIPTION%",RDXmlEscape(chan_q->value(1).toString()));
+  ret.replace("%CATEGORY%",RDXmlEscape(chan_q->value(2).toString()));
+  ret.replace("%SUB_CATEGORY%",RDXmlEscape(chan_q->value(3).toString()));
+  ret.replace("%ITUNES_CATEGORY%",
+	      RDFeed::itunesCategoryXml(chan_q->value(2).toString(),
+					chan_q->value(3).toString(),4));
+  ret.replace("%LINK%",RDXmlEscape(chan_q->value(4).toString()));
+  ret.replace("%COPYRIGHT%",RDXmlEscape(chan_q->value(5).toString()));
+  ret.replace("%EDITOR%",RDXmlEscape(chan_q->value(6).toString()));
+  ret.replace("%AUTHOR%",RDXmlEscape(chan_q->value(7).toString()));
+  ret.replace("%OWNER_NAME%",RDXmlEscape(chan_q->value(8).toString()));
+  ret.replace("%OWNER_EMAIL%",RDXmlEscape(chan_q->value(9).toString()));
+  ret.replace("%WEBMASTER%",RDXmlEscape(chan_q->value(10).toString()));
+  ret.replace("%LANGUAGE%",RDXmlEscape(chan_q->value(11).toString()));
+  QString explicit_str="false";
+  if(chan_q->value(12).toString()=="Y") {
+    explicit_str="true";
+  }
+  ret.replace("%EXPLICIT%",RDXmlEscape(explicit_str));
+  ret.replace("%BUILD_DATE%",RDLocalToUtc(build_datetime).
+	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
+  ret.replace("%PUBLISH_DATE%",RDLocalToUtc(chan_q->value(13).toDateTime()).
+	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
+  ret.replace("%GENERATOR%",QString("Rivendell ")+VERSION);
+  ret.replace("%FEED_URL%",RDXmlEscape(chan_q->value(17).toString())+"/"+
+	      RDXmlEscape(keyName()+"."+RD_RSS_XML_FILE_EXTENSION));
+  ret.replace("%IMAGE_URL%",chan_q->value(17).toString()+"/"+
+	      RDFeed::imageFilename(id(),chan_q->value(23).toInt(),
+				    chan_q->value(27).toString()));
+  ret.replace("%IMAGE_WIDTH%",
+	      QString().sprintf("%d",chan_q->value(24).toInt()));
+  ret.replace("%IMAGE_HEIGHT%",
+	      QString().sprintf("%d",chan_q->value(24).toInt()));
+  ret.replace("%IMAGE_DESCRIPTION%",chan_q->value(26).toString());
+
+  return ret;
+}
+
+
+QString RDFeed::ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
+				     RDSqlQuery *chan_q)
+{
+  QString ret="      "+tmplt;
+
+  ret.replace("\n","\r\n      ");
+
+  ret.replace("%ITEM_CHANNEL_TITLE%",RDXmlEscape(item_q->value(16).toString()));
+  ret.replace("%ITEM_CHANNEL_DESCRIPTION%",
+	      RDXmlEscape(item_q->value(17).toString()));
+  ret.replace("%ITEM_TITLE%",RDXmlEscape(item_q->value(1).toString()));
+  ret.replace("%ITEM_DESCRIPTION%",
+	      RDXmlEscape(item_q->value(2).toString()));
+  ret.replace("%ITEM_CATEGORY%",
+	      RDXmlEscape(item_q->value(3).toString()));
+  ret.replace("%ITEM_LINK%",RDXmlEscape(item_q->value(4).toString()));
+  ret.replace("%ITEM_AUTHOR%",RDXmlEscape(item_q->value(5).toString()));
+  ret.replace("%ITEM_SOURCE_TEXT%",
+	      RDXmlEscape(chan_q->value(0).toString()));
+  ret.replace("%ITEM_SOURCE_URL%",
+	      RDXmlEscape(item_q->value(15).toString()+"/"+keyName()));    
+  ret.replace("%ITEM_COMMENTS%",
+	      RDXmlEscape(item_q->value(8).toString()));
+  QString explicit_str="false";
+  if(item_q->value(9).toString()=="Y") {
+    explicit_str="true";
+  }
+  ret.replace("%ITEM_EXPLICIT%",explicit_str);
+  ret.replace("%ITEM_AUDIO_URL%",
+	      RDXmlEscape(audioUrl(item_q->value(14).toUInt())));
+  ret.replace("%ITEM_AUDIO_LENGTH%",item_q->value(11).toString());
+  ret.replace("%ITEM_AUDIO_TIME%",
+	      RDGetTimeLength(item_q->value(12).toInt(),false,false));
+  ret.replace("%ITEM_AUDIO_SECONDS%",
+	      QString().sprintf("%d",item_q->value(12).toInt()/1000));
+  ret.replace("%ITEM_PUBLISH_DATE%",
+	      RDLocalToUtc(item_q->value(13).toDateTime()).
+	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
+  ret.replace("%ITEM_GUID%",RDPodcast::guid(item_q->value(15).toString(),
+					    item_q->value(10).toString(),
+					    item_q->value(0).toUInt(),
+					    item_q->value(14).toUInt()));
+  ret.replace("%ITEM_IMAGE_URL%",item_q->value(15).toString()+"/"+
+	      RDFeed::imageFilename(item_q->value(0).toInt(),
+				    item_q->value(18).toInt(),
+				    item_q->value(22).toString()));
+  return ret;
 }
 
 

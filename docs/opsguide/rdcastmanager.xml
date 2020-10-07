@@ -1,0 +1,420 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdcastmanager">
+  <title>Managing Podcasts with RDCastManager</title>
+  <sect1 xml:id="sect.rdcastmanager.overview">
+    <title>Overview</title>
+    <para>
+      RDCastManager is a Rivendell module designed for posting items and
+      managing item metadata for audio podcasts managed by Rivendell.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdcastmanager.rdcastmanager_screenshot.png" scale="55"/>
+	</imageobject>
+	<caption>
+	  <para>The RDCastManager Main Window</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      When started, RDCastManager will display the list of available podcast
+      feeds for the currently logged in user. Each line begins with an icon,
+      showing the assigned channel image for the repective feed.
+    </para>
+    <para>
+      To see the list of items posted
+      to a particular feed, select the desired feed on the list and then touch
+      the <computeroutput>View Feed</computeroutput> button to open the
+      <computeroutput>Podcast Item List</computeroutput> dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdcastmanager.podcast_item_list_dialog.png" scale="55"/>
+	</imageobject>
+	<caption>
+	  <para>The Podcast Item List Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      Each posted item has a <emphasis>status</emphasis>, indicated by the
+      color of the icon in the <computeroutput>Status</computeroutput> column.
+    </para>
+
+    <table xml:id="table.rdcastmanager.rdcastmanager_item_states" frame="all">
+      <title>RDCastManager Item States</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Icon" colwidth="1.0*"/>
+	<colspec colname="Meaning" colwidth="10.0*"/>
+	<thead>
+	  <row>
+	    <entry>
+	      Status
+	    </entry>
+	    <entry>
+	      Meaning
+	    </entry>
+	  </row>
+	</thead>
+	<tbody>
+	  <row>
+	    <entry>
+	      <inlinemediaobject>
+		<imageobject>
+		  <imagedata fileref="greenball.png" scale="100"/>
+		</imageobject>
+	      </inlinemediaobject>
+	    </entry>
+	    <entry>
+	      Item is active and visible to the audience.
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      <inlinemediaobject>
+		<imageobject>
+		  <imagedata fileref="redball.png" scale="100"/>
+		</imageobject>
+	      </inlinemediaobject>
+	    </entry>
+	    <entry>
+	      Item is inactive and not visible to the audience.
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      <inlinemediaobject>
+		<imageobject>
+		  <imagedata fileref="blueball.png" scale="100"/>
+		</imageobject>
+	      </inlinemediaobject>
+	    </entry>
+	    <entry>
+	      Item is active, but currently embargoed and not visible to
+	      the audience.
+	    </entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect1>
+
+  <sect1 xml:id="sect.rdcastmanager.editing_an_items_metadata">
+    <title>Editing an Item's Metadata</title>
+    <para>
+      To view (and possibly modify) an item's metadata, select the item
+      on the list and then touch the <computeroutput>Edit</computeroutput>
+      button to open the <computeroutput>Editing Item</computeroutput>
+      dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdcastmanager.editing_item_dialog.png" scale="55"/>
+	</imageobject>
+	<caption>
+	  <para>The Editing Item Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      The following controls are available:
+    </para>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term><computeroutput>Item Active</computeroutput></term>
+	  <listitem>
+	    <para>
+	      When ticked, this makes the item visible to the audience
+	      (but see <computeroutput>Air Date/Time</computeroutput> below).
+	    </para>
+	    <para>
+	      Unticking this is a good way to put an item &quot;on hold&quot;
+	      without permanently deleting it from the feed.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>Posted By</computeroutput></term>
+	  <listitem>
+	    <para>
+	      This is a &quot;read-only&quot; field that provides details on
+	      the provenance of the item.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>Title</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The title of the item.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>Author E-Mail</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The e-mail address (and optionally, full name) of the
+	      author/originator of the item.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>Description</computeroutput></term>
+	  <listitem>
+	    <para>
+	      Text describing the content of the item.
+	    </para>
+	    <para>
+	      The accompanying
+	      <computeroutput>Item contains explicit content</computeroutput>
+	      checkbox should be ticked if the item contains content that
+	      may not be suitable for under-age listeners.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>Image</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The icon that will associated with this item when viewed
+	      by the audience.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>Air Date/Time</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The date/time that the item was/will be published. If this is
+	      set to a value in the future, the item will be
+	      <emphasis>embargoed</emphasis> --i.e. hidden from the audience--
+	      until this date/time.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>Expires</computeroutput></term>
+	  <listitem>
+	    <para>
+	      If this dropdown is set to <userinput>Yes</userinput>, then
+	      the item will be automatically deleted from the feed at the
+	      specified date/time. If set to <userinput>No</userinput>,
+	      the item will never be deleted automatically.
+	    </para>
+	    <warning>
+	      Deleting an item cannot be undone!
+	    </warning>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      To save any changes made to the item's metadata and close the dialog
+      touch the <computeroutput>OK</computeroutput>. To close the dialog
+      while abandoning any pending changes, touch
+      <computeroutput>Cancel</computeroutput>.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="sect.rdcastmanager.deleting_an_item">
+    <title>Deleting an Item</title>
+    <para>
+      To delete an item and permanently remove it from the feed, select
+      the desired item and touch the <computeroutput>Delete</computeroutput>
+      button. The system will prompt for confirmation:
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdcastmanager.delete_item_dialog.png" scale="55"/>
+	</imageobject>
+	<caption>
+	  <para>The Delete Item Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      then touch the <computeroutput>Yes</computeroutput> button to complete
+      the operation.
+    </para>
+    <warning>
+      Deletion of an item is permanent; it cannot be undone!
+    </warning>
+    <note>
+      If it is desired to temporarily hide an item, simply untick the
+      <computeroutput>Item Active</computeroutput> checkbox in the item's
+      <computeroutput>Editing Item</computeroutput> dialog. 
+    </note>
+  </sect1>
+
+  <sect1 xml:id="sect.rdcastmanager.posting_creating_a_new_item">
+    <title>Posting: Creating a New Item</title>
+    <para>
+      &quot;Posting&quot; is the action by which a new item is added to
+      a podcast feed. RDCastManager is capable of posting to a feed from
+      three different sources: a Rivendell cart/cut, a Rivendell log, and
+      directly from an audio file.
+    </para>
+
+    <sect2 xml:id="sect.rdcastmanager.posting_from_a_rivendell_cart_cut">
+      <title>Posting from a Rivendell Cart/Cut</title>
+      <para>
+	To post the contents of a Rivendell cart/cut, touch the
+	<computeroutput>Post from Cart/Cut</computeroutput> button to
+	open the <computeroutput>Select Cut</computeroutput> dialog:
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdcastmanager.select_cut_dialog.png" scale="55"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Select Cut Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	Select the desired cart/cut, then touch the
+	<computeroutput>OK</computeroutput> button. RDCastManager will
+	upload the audio and then open the
+	<computeroutput>Editing Item</computeroutput> dialog to allow
+	the new item's metadata to be set.
+      </para>
+    </sect2>
+
+    <sect2 xml:id="sect.rdcastmanager.posting_from_a_rivendell_log">
+      <title>Posting from a Rivendell Log</title>
+      <para>
+	To post one or more events from a Rivendell log, touch the
+	<computeroutput>Post from Log</computeroutput> button to
+	open the <computeroutput>Select Log</computeroutput> dialog:
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdcastmanager.select_log_dialog.png" scale="55"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Select Log Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	Select the log to post, then touch the
+	<computeroutput>OK</computeroutput> button to bring up the
+	<computeroutput>Log Render Options</computeroutput> dialog:
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdcastmanager.log_render_options_dialog.png" scale="55"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Select Log Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	The following controls are available in this dialog:
+      </para>
+      <para>
+	<variablelist>
+	  <varlistentry>
+	    <term><computeroutput>Virtual Start Time</computeroutput></term>
+	    <listitem>
+	      <para>
+		Set the virtual start time to be used when rendering the
+		log. This can be useful for simulating a &quot;real&quot;
+		log play-out so that dayparting of cuts works as expected.
+		By default, the wall time when the
+		<computeroutput>OK</computeroutput> is touched will be used.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><computeroutput>At STOP transition</computeroutput></term>
+	    <listitem>
+	      <para>
+		Set the action to take during log rendering if a STOP
+		transition is encountered. If
+		<computeroutput>Treat as PLAY</computeroutput> (the default)
+		is selected, rendering will continue as if a PLAY transition
+		were found. If <computeroutput>Stop Rendering</computeroutput>
+		is selected, rendering of the log will be terminated at that
+		point.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><computeroutput>Selected Log Events</computeroutput></term>
+	    <listitem>
+	      <para>
+		By default, all of the events in the log will be rendered
+		(subject to possible truncation by a STOP transition as
+		specified by the setting of
+		<computeroutput>At STOP Transition</computeroutput>). To
+		select a subset of events to be rendered, touch the
+		<computeroutput>Select</computeroutput> button bring up
+		the <computeroutput>List Log</computeroutput> dialog:
+	      </para>
+	      <para>
+		<mediaobject>
+		  <imageobject>
+		    <imagedata align="center" fileref="rdcastmanager.list_log_events_dialog.png" scale="55"/>
+		  </imageobject>
+		  <caption>
+		    <para>The List Log Events Dialog</para>
+		  </caption>
+		</mediaobject>
+	      </para>
+	      <para>
+		Select the events to be rendered and then touch the
+		<computeroutput>OK</computeroutput> button to return to the
+		<computeroutput>Log Render Options</computeroutput> dialog.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </para>
+      <para>
+	After the desired rendering options set, touch the
+	<computeroutput>OK</computeroutput> button. RDCastManager will
+	upload the audio and then open the
+	<computeroutput>Editing Item</computeroutput> dialog to allow
+	the new item's metadata to be set.
+      </para>
+    </sect2>
+
+    <sect2 xml:id="sect.rdcastmanager.posting_an_audio_file">
+      <title>Posting an Audio File</title>
+      <para>
+	To post the contents of an audio file, touch the
+	<computeroutput>Post from File</computeroutput> button to bring up
+	the <computeroutput>Select Audio File</computeroutput> dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdcastmanager.list_log_select_select_audio_file_dialog.png" scale="55"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Select Audio File Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	Select the file to be posted and then touch the
+	<computeroutput>OK</computeroutput> button. RDCastManager will
+	upload the audio and then open the
+	<computeroutput>Editing Item</computeroutput> dialog to allow
+	the new item's metadata to be set.
+      </para>
+    </sect2>
+  </sect1>
+</chapter>

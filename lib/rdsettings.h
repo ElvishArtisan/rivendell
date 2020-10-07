@@ -2,7 +2,7 @@
 //
 // Audio Format Settings
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,9 +48,6 @@ class RDSettings
   int autotrimLevel() const;
   void setAutotrimLevel(int level);
   QString description();
-  QString customCommandLine() const;
-  void setCustomCommandLine(const QString &str);
-  QString resolvedCustomCommandLine(const QString &destfile);
   static QString pathName(const QString &stationname,QString pathname,
 			  RDSettings::Format fmt);
   static QString defaultExtension(RDSettings::Format fmt);
@@ -70,9 +67,7 @@ class RDSettings
   unsigned set_quality;
   int set_normalization_level;
   int set_autotrim_level;
-  QString set_custom_command_line;
 };
 
 
-#endif
-
+#endif  // RDSETTINGS_H

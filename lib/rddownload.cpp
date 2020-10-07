@@ -69,11 +69,25 @@ int DownloadErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
 }
 
 
-RDDownload::RDDownload(RDConfig *config,QObject *parent)
-  : QObject(parent)
+RDDownload::RDDownload(RDConfig *c,QObject *parent)
+  : RDTransfer(c,parent)
 {
-  conv_config=config;
   conv_aborting=false;
+}
+
+
+QStringList RDDownload::supportedSchemes() const
+{
+  QStringList schemes;
+
+  schemes.push_back("file");
+  schemes.push_back("ftp");
+  schemes.push_back("ftps");
+  schemes.push_back("http");
+  schemes.push_back("https");
+  schemes.push_back("sftp");
+
+  return schemes;
 }
 
 
@@ -99,6 +113,8 @@ int RDDownload::totalSteps() const
 
 RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
 					      const QString &password,
+					      const QString &id_filename,
+					      bool use_id_filename,
 					      bool log_debug)
 {
   CURL *curl=NULL;
@@ -107,8 +123,11 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   long response_code=0;
   RDDownload::ErrorCode ret=RDDownload::ErrorOk;
   RDSystemUser *user=NULL;
-  //  char url[1024];
   char userpwd[256];
+
+  if(!urlIsSupported(conv_src_url)) {
+    return RDDownload::ErrorUnsupportedProtocol;
+  }
 
   //
   // Validate User for file: transfers
@@ -140,17 +159,30 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   //
   url.replace("#","%23");
 
-  curl_easy_setopt(curl,CURLOPT_URL,(const char *)url);
+  //
+  // Authentication
+  //
+  if((conv_src_url.scheme().toLower()=="sftp")&&
+     (!id_filename.isEmpty())&&use_id_filename) {
+    curl_easy_setopt(curl,CURLOPT_USERNAME,username.toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
+		     id_filename.toUtf8().constData());
+    curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
+  }
+  else {
+    strncpy(userpwd,(username+":"+password).utf8(),256);
+    curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
+  }
+
+  curl_easy_setopt(curl,CURLOPT_URL,url.constData());
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,f);
-  strncpy(userpwd,(username+":"+password).utf8(),256);
-  curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_FOLLOWLOCATION,1);
   curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,DownloadProgressCallback);
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,0);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)conv_config->userAgent().utf8());
+		   config()->userAgent().toUtf8().constData());
   if(log_debug) {
     curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,DownloadErrorCallback);
@@ -224,7 +256,7 @@ bool RDDownload::aborting() const
 
 QString RDDownload::errorText(RDDownload::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown Error [%u]",err);
+  QString ret=QString().sprintf("Unknown RDDownload Error [%u]",err);
 
   switch(err) {
   case RDDownload::ErrorOk:

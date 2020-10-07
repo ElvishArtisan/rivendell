@@ -15,9 +15,14 @@ ITEM_COMMENTS        varchar(191)
 ITEM_AUTHOR          varchar(191)
 ITEM_SOURCE_TEXT     varchar(64)
 ITEM_SOURCE_URL      varchar(191)
+ITEM_EXPLICIT        enum('N','Y')
+ITEM_IMAGE_ID        int(11)           From FEED_IMAGES.ID
 AUDIO_FILENAME       varchar(191)
 AUDIO_LENGTH         int(10) unsigned
 AUDIO_TIME           int(10) unsigned
-SHELF_LIFE           int(11)
+SHA1_HASH            varchar(40)
+ORIGIN_LOGIN_NAME    varchar(191)      From USERS.LOGIN_NAME
+ORIGIN_STATION       varchar(64)       From STATIONS.NAME
 ORIGIN_DATETIME      datetime
 EFFECTIVE_DATETIME   datetime
+EXPIRATION_DATETIME  datetime

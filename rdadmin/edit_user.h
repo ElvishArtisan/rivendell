@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell User
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,8 @@
 #ifndef EDIT_USER_H
 #define EDIT_USER_H
 
-#include <q3buttongroup.h>
-
 #include <qcheckbox.h>
+#include <qgroupbox.h>
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
@@ -54,6 +53,7 @@ class EditUser : public RDDialog
  private:
   QLineEdit *user_name_edit;
   QLineEdit *user_full_name_edit;
+  QLineEdit *user_email_address_edit;
   QLineEdit *user_description_edit;
   QCheckBox *user_localauth_check;
   QLabel *user_localauth_label;
@@ -64,11 +64,11 @@ class EditUser : public RDDialog
   QSpinBox *user_webapi_auth_spin;
   QCheckBox *user_web_box;
   QLabel *user_web_label;
-  Q3ButtonGroup *user_admin_group;
-  Q3ButtonGroup *user_prod_group;
-  Q3ButtonGroup *user_traffic_group;
-  Q3ButtonGroup *user_onair_group;
-  Q3ButtonGroup *user_podcast_group;
+  QGroupBox *user_admin_group;
+  QGroupBox *user_prod_group;
+  QGroupBox *user_traffic_group;
+  QGroupBox *user_onair_group;
+  QGroupBox *user_podcast_group;
   QCheckBox *user_admin_config_button;
   QCheckBox *user_create_carts_button;
   QCheckBox *user_delete_carts_button;

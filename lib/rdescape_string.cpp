@@ -2,7 +2,7 @@
 //
 // Escape non-valid characters in a string.
 //
-//   (C) Copyright 2002-2005,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -112,4 +112,22 @@ QString RDEscapeString(QString const &str)
 QString RDEscapeShellString(QString str)
 {
   return "\""+str.replace("$","\\$")+"\"";
+}
+
+
+QString RDEscapeBlob(const QByteArray &data)
+{
+  return RDEscapeBlob(data.constData(),data.length());
+}
+
+
+QString RDEscapeBlob(const char *data,size_t len)
+{
+  QString ret="x'";
+
+  for(unsigned i=0;i<len;i++) {
+    ret+=QString().sprintf("%02x",0xff&data[i]);
+  }
+
+  return ret+"'";
 }

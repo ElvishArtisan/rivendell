@@ -191,7 +191,7 @@ RDTrimAudio::ErrorCode RDTrimAudio::runTrim(const QString &username,
 
 QString RDTrimAudio::errorText(RDTrimAudio::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown Error [%u]",err);
+  QString ret=QString().sprintf("Unknown RDTrimAudio Error [%u]",err);
 
   switch(err) {
   case RDTrimAudio::ErrorOk:

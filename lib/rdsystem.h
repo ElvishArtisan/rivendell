@@ -44,6 +44,8 @@ class RDSystem
   void setShowUserList(bool state) const;
   QHostAddress notificationAddress() const;
   void setNotificationAddress(const QHostAddress &addr);
+  QString rssProcessorStation() const;
+  void setRssProcessorStation(const QString &str=QString()) const;
   QString xml() const;
 
  private:

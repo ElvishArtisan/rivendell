@@ -5,7 +5,7 @@
     <name>EditCast</name>
     <message>
         <source>Editing PodCast</source>
-        <translation>Podcast editieren</translation>
+        <translation type="obsolete">Podcast editieren</translation>
     </message>
     <message>
         <source>Title:</source>
@@ -29,11 +29,11 @@
     </message>
     <message>
         <source>Source Text:</source>
-        <translation>Quelltext:</translation>
+        <translation type="obsolete">Quelltext:</translation>
     </message>
     <message>
         <source>Source URL:</source>
-        <translation>Quell-URL:</translation>
+        <translation type="obsolete">Quell-URL:</translation>
     </message>
     <message>
         <source>Comments URL:</source>
@@ -41,7 +41,7 @@
     </message>
     <message>
         <source>Posted At:</source>
-        <translation>Gepostet am:</translation>
+        <translation type="obsolete">Gepostet am:</translation>
     </message>
     <message>
         <source>No</source>
@@ -53,7 +53,7 @@
     </message>
     <message>
         <source>Cast Expires:</source>
-        <translation>Cast läuft ab:</translation>
+        <translation type="obsolete">Cast läuft ab:</translation>
     </message>
     <message>
         <source>Expires At:</source>
@@ -61,24 +61,24 @@
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Auswählen</translation>
+        <translation type="obsolete">&amp;Auswählen</translation>
     </message>
     <message>
         <source>Hold</source>
-        <translation>Hold</translation>
+        <translation type="obsolete">Hold</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Aktiv</translation>
+        <translation type="obsolete">Aktiv</translation>
     </message>
     <message>
         <source>Posting Status:</source>
-        <translation>Posting Status:</translation>
+        <translation type="obsolete">Posting Status:</translation>
     </message>
     <message>
         <source>Episode
 &amp;Report</source>
-        <translation>Episoden-
+        <translation type="obsolete">Episoden-
 &amp;Report</translation>
     </message>
     <message>
@@ -95,10 +95,58 @@
     </message>
     <message>
         <source>Media Link:</source>
-        <translation>Medienlink:</translation>
+        <translation type="obsolete">Medienlink:</translation>
     </message>
     <message>
-        <source>Expires On:</source>
+        <source>Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Select Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item contains explicit content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item Expires</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Editing Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Posted By</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item expiration cannot be prior to Air Date/Time!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item expiration must be in the future!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -106,7 +154,7 @@
     <name>ListCasts</name>
     <message>
         <source>Podcast List</source>
-        <translation>Podcastliste</translation>
+        <translation type="obsolete">Podcastliste</translation>
     </message>
     <message>
         <source>Post From
@@ -131,7 +179,7 @@ Car&amp;t/Cut</translation>
     <message>
         <source>Subscription
 &amp;Report</source>
-        <translation>Abonnement
+        <translation type="obsolete">Abonnement
 &amp;Report</translation>
     </message>
     <message>
@@ -148,11 +196,11 @@ Car&amp;t/Cut</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation>Herkunft</translation>
+        <translation type="obsolete">Herkunft</translation>
     </message>
     <message>
         <source>Expires</source>
-        <translation>Läuf ab</translation>
+        <translation type="obsolete">Läuf ab</translation>
     </message>
     <message>
         <source>Length</source>
@@ -160,7 +208,7 @@ Car&amp;t/Cut</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Beschreibung</translation>
+        <translation type="obsolete">Beschreibung</translation>
     </message>
     <message>
         <source>Category</source>
@@ -168,7 +216,7 @@ Car&amp;t/Cut</translation>
     </message>
     <message>
         <source>Link</source>
-        <translation>Link</translation>
+        <translation type="obsolete">Link</translation>
     </message>
     <message>
         <source>Uploading Audio...</source>
@@ -196,15 +244,15 @@ Car&amp;t/Cut</translation>
     </message>
     <message>
         <source>Delete Podcast</source>
-        <translation>Podcast löschen</translation>
+        <translation type="obsolete">Podcast löschen</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this podcast?</source>
-        <translation>Sind Sie sicher, daß sie diesen Podcast löschen wollen?</translation>
+        <translation type="obsolete">Sind Sie sicher, daß sie diesen Podcast löschen wollen?</translation>
     </message>
     <message>
         <source>Deleting Podcast...</source>
-        <translation>Lösche Podcast...</translation>
+        <translation type="obsolete">Lösche Podcast...</translation>
     </message>
     <message>
         <source>Internal Error</source>
@@ -254,11 +302,11 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>Only Show Unexpired Casts</source>
-        <translation>Zeige nur nichtabgelaufene Casts</translation>
+        <translation type="obsolete">Zeige nur nichtabgelaufene Casts</translation>
     </message>
     <message>
         <source>Only Show Active Casts</source>
-        <translation>Zeige nur aktive Casts</translation>
+        <translation type="obsolete">Zeige nur aktive Casts</translation>
     </message>
     <message>
         <source>Posting Error</source>
@@ -267,7 +315,7 @@ Podcast trotzdem löschen?</translation>
     <message>
         <source>Unable to delete remote audio!
 </source>
-        <translation>Kann die Audiodatei(en) auf dem anderen Server nicht löschen!</translation>
+        <translation type="obsolete">Kann die Audiodatei(en) auf dem anderen Server nicht löschen!</translation>
     </message>
     <message>
         <source>The server said: &quot;</source>
@@ -279,6 +327,166 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post From
+Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Item List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Show Active Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Posted By</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expiration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this item?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting Item...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SHA1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to drop remote audio!
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to update remote XML data!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LogDialog</name>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At least one log event must be selected!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List Log Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LogModel</name>
+    <message>
+        <source>Start Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Titel</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Länge</translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ext Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -306,7 +514,7 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Beschreibung</translation>
+        <translation type="obsolete">Beschreibung</translation>
     </message>
     <message>
         <source>Casts</source>
@@ -338,32 +546,87 @@ Feed</translation>
         <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Public URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy URL to
+Clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[superfeed]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PickReportDates</name>
     <message>
-        <source>Select Report Dates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Start Date:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Select</source>
-        <translation type="unfinished">&amp;Auswählen</translation>
+        <translation type="obsolete">&amp;Auswählen</translation>
     </message>
+</context>
+<context>
+    <name>RenderDialog</name>
     <message>
-        <source>&amp;End Date:</source>
+        <source>[now]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Generate
-Report</source>
+        <source>As Specified</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>C&amp;lose</source>
+        <source>Virtual Start Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop Rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Treat as PLAY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At STOP transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">Abbre&amp;chen</translation>
+    </message>
+    <message>
+        <source>Log Render Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected Log Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>through</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

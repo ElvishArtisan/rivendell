@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2015-2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2015-2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -31,6 +31,7 @@ dist_librivwebcapi_la_SOURCES = rd_addcart.c rd_addcart.h \
 				rd_createticket.c rd_createticket.h \
 				rd_deleteaudio.c rd_deleteaudio.h \
 				rd_deletelog.c rd_deletelog.h \
+				rd_deletepodcast.c rd_deletepodcast.h \
 				rd_editcart.c rd_editcart.h \
 				rd_editcut.c rd_editcut.h \
 				rd_export.c rd_export.h \
@@ -52,9 +53,16 @@ dist_librivwebcapi_la_SOURCES = rd_addcart.c rd_addcart.h \
 				rd_listservices.c rd_listservices.h \
 				rd_listschedcodes.c rd_listschedcodes.h \
 				rd_listsystemsettings.c rd_listsystemsettings.h \
+                                rd_postimage.c rd_postimage.h \
+                                rd_postpodcast.c rd_postpodcast.h \
+                                rd_postrss.c rd_postrss.h \
 				rd_removecart.c rd_removecart.h \
 				rd_removecut.c rd_removecut.h \
+                                rd_removeimage.c rd_removeimage.h \
+                                rd_removepodcast.c rd_removepodcast.h \
+                                rd_removerss.c rd_removerss.h \
 				rd_savelog.c rd_savelog.h \
+				rd_savepodcast.c rd_savepodcast.h \
 				rd_trimaudio.c rd_trimaudio.h \
 				rd_unassignschedcode.c rd_unassignschedcode.h 
 
@@ -74,6 +82,7 @@ include_HEADERS = rd_addcart.h\
                   rd_cut.h\
                   rd_deleteaudio.h\
                   rd_deletelog.h\
+                  rd_deletepodcast.h\
                   rd_editcart.h\
                   rd_editcut.h\
                   rd_export.h\
@@ -96,10 +105,17 @@ include_HEADERS = rd_addcart.h\
                   rd_listschedcodes.h\
                   rd_listservices.h\
                   rd_listsystemsettings.h \
+                  rd_postimage.h \
+                  rd_postpodcast.h \
+                  rd_postrss.h \
                   rd_savelog.h\
+                  rd_savepodcast.h\
                   rd_schedcodes.h\
                   rd_removecart.h\
                   rd_removecut.h\
+                  rd_removeimage.h\
+                  rd_removepodcast.h\
+                  rd_removerss.h\
                   rd_trimaudio.h\
                   rd_unassignschedcode.h
 

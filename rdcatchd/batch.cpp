@@ -2,7 +2,7 @@
 //
 // Batch Routines for the Rivendell netcatcher daemon
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -212,7 +212,10 @@ void MainObject::RunDownload(CatchEvent *evt)
     url_username=RD_ANON_FTP_USERNAME;
     url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
   }
-  switch((conv_err=conv->runDownload(url_username,url_password,
+  //
+  // FIXME: Finish implementing public key support!
+  //
+  switch((conv_err=conv->runDownload(url_username,url_password,"",false,
 				     rda->config()->logXloadDebugData()))) {
   case RDDownload::ErrorOk:
     rda->syslog(LOG_INFO,"finished download of %s to %s, id=%d",
@@ -314,7 +317,7 @@ void MainObject::RunUpload(CatchEvent *evt)
 	      (const char *)evt->tempName().toUtf8(),
 	      (const char *)evt->resolvedUrl().toUtf8(),
 	      evt->id());
-  RDUpload *conv=new RDUpload(this);
+  RDUpload *conv=new RDUpload(rda->config(),this);
   conv->setSourceFile(evt->tempName());
   conv->setDestinationUrl(evt->resolvedUrl());
   QString url_username=evt->urlUsername();
@@ -324,7 +327,10 @@ void MainObject::RunUpload(CatchEvent *evt)
     url_username=RD_ANON_FTP_USERNAME;
     url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
   }
-  switch((conv_err=conv->runUpload(url_username,url_password,
+  //
+  // FIXME: Finish implementing ssh(1) identity keys!
+  //
+  switch((conv_err=conv->runUpload(url_username,url_password,"",false,
 				   rda->config()->logXloadDebugData()))) {
   case RDUpload::ErrorOk:
     catch_connect->setExitCode(evt->id(),RDRecording::Ok,tr("Ok"));

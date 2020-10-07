@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/rdadmin
 ##
-## (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -72,6 +72,7 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        edit_group.cpp edit_group.h\
                        edit_hostvar.cpp edit_hostvar.h\
                        edit_hotkeys.cpp edit_hotkeys.h\
+                       edit_image.cpp edit_image.h\
                        edit_jack.cpp edit_jack.h\
                        edit_jack_client.cpp edit_jack_client.h\
                        edit_livewiregpio.cpp edit_livewiregpio.h\
@@ -88,6 +89,7 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        edit_schedcodes.cpp edit_schedcodes.h\
                        edit_settings.cpp edit_settings.h\
                        edit_station.cpp edit_station.h\
+                       edit_superfeed.cpp edit_superfeed.h\
                        edit_svc.cpp edit_svc.h\
                        edit_svc_perms.cpp edit_svc_perms.h\
                        edit_ttys.cpp edit_ttys.h\
@@ -106,6 +108,7 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        list_gpis.cpp list_gpis.h\
                        list_groups.cpp list_groups.h\
                        list_hostvars.cpp list_hostvars.h\
+                       list_images.cpp list_images.h\
                        list_livewiregpios.cpp list_livewiregpios.h\
                        list_matrices.cpp list_matrices.h\
                        list_nodes.cpp list_nodes.h\
@@ -152,6 +155,7 @@ nodist_rdadmin_SOURCES = global_credits.c\
                          moc_edit_group.cpp\
                          moc_edit_hostvar.cpp\
                          moc_edit_hotkeys.cpp\
+                         moc_edit_image.cpp\
                          moc_edit_jack.cpp\
                          moc_edit_jack_client.cpp\
                          moc_edit_livewiregpio.cpp\
@@ -168,6 +172,7 @@ nodist_rdadmin_SOURCES = global_credits.c\
                          moc_edit_schedcodes.cpp\
                          moc_edit_settings.cpp\
                          moc_edit_station.cpp\
+                         moc_edit_superfeed.cpp\
                          moc_edit_svc.cpp\
                          moc_edit_svc_perms.cpp\
                          moc_edit_ttys.cpp\
@@ -185,6 +190,7 @@ nodist_rdadmin_SOURCES = global_credits.c\
                          moc_list_gpis.cpp\
                          moc_list_groups.cpp\
                          moc_list_hostvars.cpp\
+                         moc_list_images.cpp\
                          moc_list_livewiregpios.cpp\
                          moc_list_matrices.cpp\
                          moc_list_nodes.cpp\

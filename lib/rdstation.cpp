@@ -283,6 +283,19 @@ void RDStation::setBrowserPath(const QString &cmd) const
 }
 
 
+QString RDStation::sshIdentityFile() const
+{
+  return RDGetSqlValue("STATIONS","NAME",station_name,"SSH_IDENTITY_FILE").
+    toString();
+}
+
+
+void RDStation::setSshIdentityFile(const QString &str) const
+{
+  SetRow("SSH_IDENTITY_FILE",str);
+}
+
+
 RDStation::FilterMode RDStation::filterMode() const
 {
   return (RDStation::FilterMode)RDGetSqlValue("STATIONS","NAME",station_name,
@@ -1888,7 +1901,6 @@ void RDStation::remove(const QString &name)
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
 
   sql=QString("delete from DECKS where ")+
     "STATION_NAME=\""+RDEscapeString(name)+"\"";
@@ -1976,28 +1988,6 @@ void RDStation::remove(const QString &name)
   sql=QString("delete from EXTENDED_PANELS where ")+
     QString().sprintf("(TYPE=%d && ",RDAirPlayConf::StationPanel)+
     "OWNER=\""+RDEscapeString(name)+"\")";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("select ID from ENCODERS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    sql=QString().sprintf("delete from ENCODER_CHANNELS where ENCODER_ID=%d",
-			  q->value(0).toInt());
-    q1=new RDSqlQuery(sql);
-    delete q1;
-    sql=QString().sprintf("delete from ENCODER_SAMPLERATES where ENCODER_ID=%d",
-			  q->value(0).toInt());
-    q1=new RDSqlQuery(sql);
-    delete q1;
-    sql=QString().sprintf("delete from ENCODER_BITRATES where ENCODER_ID=%d",
-			  q->value(0).toInt());
-    q1=new RDSqlQuery(sql);
-    delete q1;
-  }
-  delete q;
-  sql=QString("delete from ENCODERS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString().sprintf("delete from RDHOTKEYS where ")+

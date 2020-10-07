@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,15 @@
 #ifndef RDFEED_H
 #define RDFEED_H
 
-#include <qsqldatabase.h>
 #include <qobject.h>
 
+#include <rdapplication.h>
 #include <rdconfig.h>
-#include <rduser.h>
-#include <rdstation.h>
+#include <rdrssschemas.h>
 #include <rdsettings.h>
+#include <rdstation.h>
+#include <rduser.h>
+#include <rdweb.h>
 
 #define RDFEED_TOTAL_POST_STEPS 4
 
@@ -36,28 +38,51 @@ class RDFeed : public QObject
   Q_OBJECT;
  public:
   enum Error {ErrorOk=0,ErrorNoFile=1,ErrorCannotOpenFile=2,
-	      ErrorUnsupportedType=3,ErrorUploadFailed=4,ErrorGeneral=5};
-  enum MediaLinkMode {LinkNone=0,LinkDirect=1,LinkCounted=2};
+	      ErrorUnsupportedType=3,ErrorUploadFailed=4,ErrorGeneral=5,
+	      ErrorNoLog=6,ErrorRenderError=7};
   RDFeed(const QString &keyname,RDConfig *config,QObject *parent=0);
   RDFeed(unsigned id,RDConfig *config,QObject *parent=0);
   QString keyName() const;
   unsigned id() const;
   bool exists() const;
+  bool isSuperfeed() const;
+  void setIsSuperfeed(bool state) const;
+  QStringList subfeedNames() const;
+  QStringList isSubfeedOf() const;
   QString channelTitle() const;
   void setChannelTitle(const QString &str) const;
   QString channelDescription() const;
   void setChannelDescription(const QString &str) const;
   QString channelCategory() const;
   void setChannelCategory(const QString &str) const;
+  QString channelSubCategory() const;
+  void setChannelSubCategory(const QString &str) const;
   QString channelLink() const;
   void setChannelLink(const QString &str) const;
   QString channelCopyright() const;
   void setChannelCopyright(const QString &str) const;
+  QString channelEditor() const;
+  void setChannelEditor(const QString &str) const;
+  QString channelAuthor() const;
+  void setChannelAuthor(const QString &str) const;
+  bool channelAuthorIsDefault() const;
+  void setChannelAuthorIsDefault(bool state) const;
+  QString channelOwnerName() const;
+  void setChannelOwnerName(const QString &str) const;
+  QString channelOwnerEmail() const;
+  void setChannelOwnerEmail(const QString &str) const;
   QString channelWebmaster() const;
   void setChannelWebmaster(const QString &str) const;
   QString channelLanguage() const;
   void setChannelLanguage(const QString &str);
-  QString baseUrl() const;
+  bool channelExplicit() const;
+  void setChannelExplicit(bool state) const;
+  int channelImageId() const;
+  void setChannelImageId(int img_id) const;
+  int defaultItemImageId() const;
+  void setDefaultItemImageId(int img_id) const;
+  QString baseUrl(const QString &subfeed_key_name) const;
+  QString baseUrl(int subfeed_feed_id) const;
   void setBaseUrl(const QString &str) const;
   QString basePreamble() const;
   void setBasePreamble(const QString &str) const;
@@ -67,12 +92,17 @@ class RDFeed : public QObject
   void setPurgeUsername(const QString &str) const;
   QString purgePassword() const;
   void setPurgePassword(const QString &str) const;
+  bool purgeUseIdFile() const;
+  void setPurgeUseIdFile(bool state) const;
+  RDRssSchemas::RssSchema rssSchema() const;
+  void setRssSchema(RDRssSchemas::RssSchema schema) const;
   QString headerXml() const;
   void setHeaderXml(const QString &str);
   QString channelXml() const;
   void setChannelXml(const QString &str);
   QString itemXml() const;
   void setItemXml(const QString &str);
+  QString feedUrl() const;
   bool castOrder() const;
   void setCastOrder(bool state) const;
   int maxShelfLife() const;
@@ -83,8 +113,6 @@ class RDFeed : public QObject
   void setOriginDateTime(const QDateTime &datetime) const;
   bool enableAutopost() const;
   void setEnableAutopost(bool state) const;
-  bool keepMetadata() const;
-  void setKeepMetadata(bool state);
   RDSettings::Format uploadFormat() const;
   void setUploadFormat(RDSettings::Format fmt) const;
   int uploadChannels() const;
@@ -101,33 +129,61 @@ class RDFeed : public QObject
   void setUploadMimetype(const QString &str);
   int normalizeLevel() const;
   void setNormalizeLevel(int lvl) const;
-  QString redirectPath() const;
-  void setRedirectPath(const QString &str);
-  RDFeed::MediaLinkMode mediaLinkMode() const;
-  void setMediaLinkMode(RDFeed::MediaLinkMode mode) const;
-  QString audioUrl(RDFeed::MediaLinkMode mode,const QString &cgi_hostname,
-		   unsigned cast_id);
-  unsigned postCut(RDUser *user,RDStation *station,
-		   const QString &cutname,Error *err,bool log_debug,
-		   RDConfig *config);
-  unsigned postFile(RDStation *station,const QString &srcfile,Error *err,
-		    bool log_debug,RDConfig *config);
-  int totalPostSteps() const;
+  QByteArray imageData(int img_id) const;
+  int importImageFile(const QString &pathname,QString *err_msg,
+		      QString desc="") const;
+  bool deleteImage(int img_id,QString *err_msg);
+  bool postPodcast(unsigned cast_id) const;
+  QString audioUrl(unsigned cast_id);
+  QString imageUrl(int img_id) const;
+  bool postXml();
+  bool postXmlConditional(const QString &caption,QWidget *widget);
+  bool removeRss();
+  bool postImage(int img_id) const;
+  bool removeImage(int img_id) const;
+  void removeAllImages();
+  unsigned postCut(const QString &cutname,Error *err);
+  unsigned postFile(const QString &srcfile,Error *err);
+  unsigned postLog(const QString &logname,const QTime &start_time,
+		   bool stop_at_stop,int start_line,int end_line,Error *err);
+  QString rssXml(QString *err_msg,const QDateTime &now,bool *ok=NULL);
+  static unsigned create(const QString &keyname,bool enable_users,
+			 QString *err_msg);
   static QString errorString(RDFeed::Error err);
+  static QString imageFilename(int feed_id,int img_id,const QString &ext);
+  static QString publicUrl(const QString &base_url,const QString &keyname);
+  static QString itunesCategoryXml(const QString &category,
+				   const QString &sub_category,int padding=0);
 
  signals:
   void postProgressChanged(int step);
+  void postProgressRangeChanged(int min,int max);
+
+ private slots:
+  void renderMessage(const QString &msg);
+  void renderLineStartedData(int lineno,int total_lines);
 
  private:
+  bool SavePodcast(unsigned cast_id,const QString &src_filename) const;
   unsigned CreateCast(QString *filename,int bytes,int msecs) const;
+  QString ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q,
+				  const QDateTime &build_datetime);
+  QString ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
+			       RDSqlQuery *chan_q);
   QString GetTempFilename() const;
+  void LoadSchemas();
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,const QDateTime &value,
               const QString &format) const;
   QString feed_keyname;
   unsigned feed_id;
+  QString feed_cgi_hostname;
   RDConfig *feed_config;
+  QByteArray feed_xml;
+  int feed_xml_ptr;
+  int feed_render_start_line;
+  int feed_render_end_line;
 };
 
 

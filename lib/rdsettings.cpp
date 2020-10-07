@@ -2,7 +2,7 @@
 //
 // Audio Format Settings
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -138,13 +138,15 @@ void RDSettings::setAutotrimLevel(int level)
 
 QString RDSettings::description()
 {
-  QString sql;
-  RDSqlQuery *q;
   QString desc;
   QString sr=QString().sprintf("%d S/sec",set_sample_rate);
   switch(set_format) {
     case RDSettings::Pcm16:
       desc="PCM16, ";
+      break;
+      
+    case RDSettings::Pcm24:
+      desc="PCM24, ";
       break;
       
     case RDSettings::MpegL1:
@@ -158,6 +160,7 @@ QString RDSettings::description()
       break;
       
     case RDSettings::MpegL2:
+    case RDSettings::MpegL2Wav:
       desc="MPEG L2, ";
       if(set_bit_rate==0) {
 	desc+=QString().sprintf("Qual %d, ",set_quality);
@@ -184,24 +187,6 @@ QString RDSettings::description()
     case RDSettings::OggVorbis:
       desc=QString().sprintf("OggVorbis, Qual %d, ",set_quality);
       break;
-      
-    default:  // Custom format
-      if(set_format_name.isEmpty()) {
-	sql=QString().sprintf("select NAME from ENCODERS where ID=%d",
-			      set_format);
-	q=new RDSqlQuery(sql);
-	if(q->first()) {
-	  set_format_name=q->value(0).toString();
-	}
-	else {
-	  set_format_name="Unknown";
-	}
-	delete q;
-      }
-      desc=set_format_name+" ";
-      if(set_bit_rate>0) {
-	desc+=" "+QString().sprintf("%d kbit/sec, ",set_bit_rate/1000);
-      }
   }
   if(set_sample_rate>0) {
     desc+=QString().sprintf("%d samp/sec, ",set_sample_rate);
@@ -220,42 +205,6 @@ QString RDSettings::description()
 	break;
   }
   return desc;
-}
-
-
-QString RDSettings::customCommandLine() const
-{
-  return set_custom_command_line;
-}
-
-
-void RDSettings::setCustomCommandLine(const QString &str)
-{
-  set_custom_command_line=str;
-}
-
-
-QString RDSettings::resolvedCustomCommandLine(const QString &destfile)
-{
-  if(set_custom_command_line.isEmpty()) {
-    QString sql;
-    RDSqlQuery *q;
-    sql=QString().sprintf("select COMMAND_LINE from ENCODERS where ID=%d",
-			  set_format);
-    q=new RDSqlQuery(sql);
-    if(q->first()) {
-      set_custom_command_line=q->value(0).toString();
-    }
-    delete q;
-  }
-  QString ret=set_custom_command_line;
-
-  ret.replace("%f",destfile);
-  ret.replace("%c",QString().sprintf("%u",set_channels));
-  ret.replace("%r",QString().sprintf("%u",set_sample_rate));
-  ret.replace("%b",QString().sprintf("%u",set_bit_rate));
-
-  return ret;
 }
 
 
@@ -336,23 +285,7 @@ QString RDSettings::defaultExtension(const QString &stationname,
     return QString("ogg");
   }
 
-  //
-  // Custom Format
-  //
-  QString sql;
-  RDSqlQuery *q;
-  QString ret;
-
-  sql=QString("select DEFAULT_EXTENSION from ENCODERS where ")+
-    QString().sprintf("ID=%d)&&",fmt)+
-    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    ret=q->value(0).toString();
-  }
-  delete q;
-
-  return ret;
+  return QString("dat");
 }
 
 
@@ -394,5 +327,5 @@ void RDSettings::clear()
   set_quality=0;
   set_normalization_level=0;
   set_autotrim_level=0;
-  set_custom_command_line="";
+  //  set_custom_command_line="";
 }
