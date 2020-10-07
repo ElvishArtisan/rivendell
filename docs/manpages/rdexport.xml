@@ -426,6 +426,18 @@
 
     <varlistentry>
       <term>
+	<option>--scheduler-code=</option><replaceable>scheduler-code</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify a scheduler code to be exported. This option may be given multiple
+	  times.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--title=</option><replaceable>title</replaceable>
       </term>
       <listitem>

@@ -19958,3 +19958,5 @@
 	caused the Services List to be initialized with all services upon
 	creation, even when one	or more services had already be added to
 	the list by the user.
+2020-10-06 Patrick Linstruth <patrick@deltecent.com>
+	* Added '--scheduler-code=' switch to rdexport(1).
