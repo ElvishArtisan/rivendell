@@ -161,7 +161,7 @@ void MainObject::InitializeSchemaMap() {
   global_version_map["3.2"]=311;
   global_version_map["3.3"]=314;
   global_version_map["3.4"]=317;
-  global_version_map["4.0"]=338;
+  global_version_map["3.5"]=338;
 }
 
 

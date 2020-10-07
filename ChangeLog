@@ -20395,3 +20395,6 @@
 	caused the Services List to be initialized with all services upon
 	creation, even when one	or more services had already be added to
 	the list by the user.
+2020-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the predicted next release version from '4.0' to '3.5'.
+	in rddbmgr(8).
