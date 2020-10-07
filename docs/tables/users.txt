@@ -5,10 +5,11 @@ on the system.
 
 FIELD NAME           TYPE             REMARKS
 --------------------------------------------------------------------------
-LOGIN_NAME           varchar(255)     Primary key
-FULL_NAME            varchar(255)     Indexed
+LOGIN_NAME           varchar(191)     Primary key
+FULL_NAME            varchar(191)     Indexed
+EMAIL_ADDRESS        varchar(191)
 PHONE_NUMBER         varchar(20)
-DESCRIPTION          varchar(255)
+DESCRIPTION          varchar(191)
 PASSWORD             varchar(32)      Not-NULL, Hashed
 WEBAPI_AUTH_TIMEOUT  int(11) signed   Seconds
 ENABLE_WEB           enum('N','Y')

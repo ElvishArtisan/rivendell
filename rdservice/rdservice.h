@@ -2,7 +2,7 @@
 //
 // Rivendell Services Manager
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,9 +34,9 @@
 #define RDSERVICE_RDPADENGINED_ID 4
 #define RDSERVICE_RDVAIRPLAYD_ID 5
 #define RDSERVICE_RDREPLD_ID 6
-#define RDSERVICE_LOCALMAINT_ID 7
-#define RDSERVICE_SYSTEMMAINT_ID 8
-#define RDSERVICE_PURGECASTS_ID 9
+#define RDSERVICE_RDRSSD_ID 7
+#define RDSERVICE_LOCALMAINT_ID 8
+#define RDSERVICE_SYSTEMMAINT_ID 9
 #define RDSERVICE_LAST_ID 10
 #define RDSERVICE_FIRST_DROPBOX_ID 100
 
@@ -46,7 +46,8 @@ class MainObject : public QObject
  public:
   enum StartupTarget {TargetCaed=0,TargetRipcd=1,TargetRdcatchd=2,
 		      TargetRdpadd=3,TargetRdpadengined=4,
-		      TargetRdvairplayd=5,TargetRdrepld=6,TargetAll=7};
+		      TargetRdvairplayd=5,TargetRdrepld=6,
+		      TargetRdrssd=7,TargetAll=8};
   MainObject(QObject *parent=0);
 
  private slots:

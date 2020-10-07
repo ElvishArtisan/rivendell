@@ -42,6 +42,8 @@ class RDFontEngine
   QFontMetrics *subButtonFontMetrics() const;
   QFont sectionLabelFont() const;
   QFontMetrics *sectionLabelFontMetrics() const;
+  QFont bigLabelFont() const;
+  QFontMetrics *bigLabelFontMetrics() const;
   QFont labelFont() const;
   QFontMetrics *labelFontMetrics() const;
   QFont subLabelFont() const;
@@ -69,6 +71,8 @@ class RDFontEngine
   QFontMetrics *font_sub_button_font_metrics;
   QFont font_section_label_font;
   QFontMetrics *font_section_label_font_metrics;
+  QFont font_big_label_font;
+  QFontMetrics *font_big_label_font_metrics;
   QFont font_label_font;
   QFontMetrics *font_label_font_metrics;
   QFont font_sub_label_font;

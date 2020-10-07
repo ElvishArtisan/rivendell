@@ -1,0 +1,12 @@
+               SUPERFEED_MAPS Table Layout for Rivendell
+
+The SUPERFEED_MAPS table contains the mappings of actual RSS feeds with super
+feeds.
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+FEED_ID              int(10) unsigned  From FEEDS.ID
+MEMBER_FEED_ID       int(10) unsigned  From FEEDS.ID
+KEY_NAME             varchar(8)        From FEEDS.KEY_NAME
+MEMBER_KEY_NAME      varchar(8)        From FEEDS.KEY_NAME

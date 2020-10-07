@@ -2,7 +2,7 @@
  *
  * Public Interface for the RDXport Service
  *
- *   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
+ *   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -57,6 +57,15 @@
 #define RDXPORT_COMMAND_LOCKLOG 34
 #define RDXPORT_COMMAND_SAVESTRING 35
 #define RDXPORT_COMMAND_SAVEFILE 36
+#define RDXPORT_COMMAND_GET_PODCAST 37
+#define RDXPORT_COMMAND_SAVE_PODCAST 38
+#define RDXPORT_COMMAND_DELETE_PODCAST 39
+#define RDXPORT_COMMAND_POST_PODCAST 40
+#define RDXPORT_COMMAND_REMOVE_PODCAST 41
+#define RDXPORT_COMMAND_POST_RSS 42
+#define RDXPORT_COMMAND_REMOVE_RSS 43
+#define RDXPORT_COMMAND_POST_IMAGE 44
+#define RDXPORT_COMMAND_REMOVE_IMAGE 45
 
 
 #endif  // RDXPORT_INTERFACE_H

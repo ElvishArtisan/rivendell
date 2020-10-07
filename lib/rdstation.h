@@ -68,6 +68,8 @@ class RDStation
   void setReportEditorPath(const QString &cmd);
   QString browserPath() const;
   void setBrowserPath(const QString &cmd) const;
+  QString sshIdentityFile() const;
+  void setSshIdentityFile(const QString &str) const;
   RDStation::FilterMode filterMode() const;
   void setFilterMode(RDStation::FilterMode mode) const;
   bool startJack() const;

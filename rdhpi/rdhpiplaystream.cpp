@@ -159,7 +159,7 @@ QString RDHPIPlayStream::errorString(RDHPIPlayStream::Error err)
     break;
 
   default:
-    str=QString(tr("Unknown Error:"));
+    str=QString(tr("Unknown RDHpiPlayStream Error:"));
     return QString().sprintf("%s %d\n",(const char *)str,err);
     break;
   }

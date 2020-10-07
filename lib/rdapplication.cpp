@@ -191,6 +191,7 @@ bool RDApplication::open(QString *err_msg,RDApplication::ErrorType *err_type,
   //
   app_station=new RDStation(app_config->stationName());
   app_system=new RDSystem();
+  app_schemas=new RDRssSchemas();
   app_library_conf=new RDLibraryConf(app_config->stationName());
   app_logedit_conf=new RDLogeditConf(app_config->stationName());
   app_airplay_conf=new RDAirPlayConf(app_config->stationName(),"RDAIRPLAY");
@@ -259,6 +260,12 @@ RDAirPlayConf *RDApplication::panelConf()
 RDRipc *RDApplication::ripc()
 {
   return app_ripc;
+}
+
+
+RDRssSchemas *RDApplication::rssSchemas()
+{
+  return app_schemas;
 }
 
 

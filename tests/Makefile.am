@@ -35,7 +35,9 @@ noinst_PROGRAMS = audio_convert_test\
                   datedecode_test\
                   dateparse_test\
                   db_charset_test\
+                  delete_test\
                   download_test\
+                  feed_image_test\
                   getpids_test\
                   log_unlink_test\
                   mcast_recv_test\
@@ -78,8 +80,14 @@ dateparse_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -l
 dist_db_charset_test_SOURCES = db_charset_test.cpp db_charset_test.h
 db_charset_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
+dist_delete_test_SOURCES = delete_test.cpp delete_test.h
+delete_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
+
 dist_download_test_SOURCES = download_test.cpp download_test.h
 download_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
+
+dist_feed_image_test_SOURCES = feed_image_test.cpp feed_image_test.h
+feed_image_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 dist_getpids_test_SOURCES = getpids_test.cpp getpids_test.h
 getpids_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support

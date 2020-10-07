@@ -1,0 +1,16 @@
+                FEED_IMAGES Table Layout for Rivendell
+
+The FEED_IMAGES table holds binary images used by podcast feeds.
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+FEED_ID              int(10) unsigned  From FEEDS.ID
+FEED_KEY_NAME        varchar(8)        From FEEDS.KEY_NAME
+WIDTH                int(11) signed    Pixels
+HEIGHT               int(11) signed    Pixels
+DEPTH                int(11) signed    Bits/pixel
+DESCRIPTION          varchar(191)
+FILE_EXTENSION       varchar(10)
+DATA                 longblob

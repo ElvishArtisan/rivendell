@@ -66,15 +66,12 @@ RDLogLine::RDLogLine(unsigned cartnum)
   delete q;
 }
 
+
 void RDLogLine::clearModified(void)
 {
   modified = false;
 }
 
-bool RDLogLine::hasBeenModified(void)
-{
-  return modified;
-}
 
 void RDLogLine::clear()
 {
@@ -230,6 +227,12 @@ void RDLogLine::setId(int id)
 }
 
 
+bool RDLogLine::hasBeenModified(void)
+{
+  return modified;
+}
+
+
 RDLogLine::Status RDLogLine::status() const
 {
   return log_status;
@@ -349,6 +352,43 @@ void RDLogLine::setCartNumber(unsigned cart)
 }
 
 
+QString RDLogLine::cartNumberText() const
+{
+  QString ret=QObject::tr("UNKNOWN");
+
+  switch(type()) {
+  case RDLogLine::Cart:
+  case RDLogLine::Macro:
+    ret=QString().sprintf("%06u",cartNumber());
+    break;
+
+  case RDLogLine::Marker:
+    ret=QObject::tr("MARKER");
+    break;
+
+  case RDLogLine::Track:
+    ret=QObject::tr("TRACK");
+    break;
+
+  case RDLogLine::Chain:
+    ret=QObject::tr("LOG CHAIN");
+    break;
+
+  case RDLogLine::MusicLink:
+  case RDLogLine::TrafficLink:
+    ret=QObject::tr("LINK");
+    break;
+
+  case RDLogLine::OpenBracket:
+  case RDLogLine::CloseBracket:
+  case RDLogLine::UnknownType:
+    break;
+  }
+
+  return ret;
+}
+
+
 QTime RDLogLine::startTime(RDLogLine::StartTimeType type) const
 {
   return log_start_time[type];
@@ -361,6 +401,24 @@ void RDLogLine::setStartTime(RDLogLine::StartTimeType type,QTime time)
     log_start_time[RDLogLine::Actual]=time;
   }
   log_start_time[type]=time;
+}
+
+
+QString RDLogLine::startTimeText() const
+{
+  QString ret("");
+
+  if(timeType()==RDLogLine::Hard) {
+    ret="T";
+  }
+  else {
+    if(!startTime(RDLogLine::Logged).isValid()) {
+      return QString("           ");
+    }
+  }
+  ret+=startTime(RDLogLine::Logged).toString("hh:mm:ss.zzz").left(10);
+
+  return ret;
 }
 
 
@@ -755,6 +813,48 @@ void RDLogLine::setTitle(const QString &title)
 }
 
 
+QString RDLogLine::titleText() const
+{
+  QString ret;
+
+  switch(type()) {
+  case RDLogLine::Cart:
+  case RDLogLine::Macro:
+    if(title().isEmpty()) {
+      ret=QObject::tr("[cart not found]");
+    }
+    else {
+      ret=title();
+    }
+    break;
+
+  case RDLogLine::Chain:
+    ret=markerComment();
+    break;
+
+  case RDLogLine::Track:
+  case RDLogLine::Marker:
+    ret=RDTruncateAfterWord(markerComment(),5,true);
+    break;
+
+  case RDLogLine::MusicLink:
+    ret=QObject::tr("[music link]");
+    break;
+
+  case RDLogLine::TrafficLink:
+    ret=QObject::tr("[traffic link]");
+    break;
+
+  case RDLogLine::OpenBracket:
+  case RDLogLine::CloseBracket:
+  case RDLogLine::UnknownType:
+    break;
+  }
+
+  return ret;
+}
+
+
 QString RDLogLine::artist() const
 {
   return log_artist;
@@ -992,6 +1092,31 @@ unsigned RDLogLine::forcedLength() const
 void RDLogLine::setForcedLength(unsigned len)
 {
   log_forced_length=len;
+}
+
+
+QString RDLogLine::forcedLengthText() const
+{
+  QString ret="";
+
+  switch(type()) {
+  case RDLogLine::Cart:
+  case RDLogLine::Macro:
+    ret=RDGetTimeLength(forcedLength(),false,false);
+    break;
+    
+  case RDLogLine::Marker:
+  case RDLogLine::OpenBracket:
+  case RDLogLine::CloseBracket:
+  case RDLogLine::Chain:
+  case RDLogLine::Track:
+  case RDLogLine::MusicLink:
+  case RDLogLine::TrafficLink:
+  case RDLogLine::UnknownType:
+    break;
+  }
+
+  return ret;
 }
 
 

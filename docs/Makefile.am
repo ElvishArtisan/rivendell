@@ -2,7 +2,7 @@
 ##
 ## docs/automake.am for Rivendell
 ##
-## (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +20,7 @@
 ## Use automake to process this into a Makefile.in
 
 if DOCBOOK_AM
-  DOCBOOK_AM_OPT = stylesheets apis manpages opsguide rivwebcapi
+  DOCBOOK_AM_OPT = stylesheets apis manpages opsguide rivwebcapi dtds
 endif
 
 SUBDIRS = $(DOCBOOK_AM_OPT) examples\

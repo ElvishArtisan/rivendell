@@ -25,7 +25,7 @@
 
 #include <qobject.h>
 
-#define UPLOAD_TEST_USAGE "[options]\n\nTest the Rivendell upload routines\n\nOptions are:\n--username=<username>\n\n--password=<password>\n\n--source-file=<filename>\n\n--destination-url=<url>\n\n"
+#define UPLOAD_TEST_USAGE "[options]\n\nTest the Rivendell upload routines\n\nOptions are:\n--username=<username>\n\n--password=<password>\n\n--ssh-identity-key=<filename>\n\n--use-identity-file=y|n\n\n--source-file=<filename>\n\n--destination-url=<url>\n\n"
 
 class MainObject : public QObject
 {
@@ -37,6 +37,8 @@ class MainObject : public QObject
   QString password;
   QString source_filename;
   QString destination_url;
+  QString ssh_identity_filename;
+  bool use_identity_file;
 };
 
 

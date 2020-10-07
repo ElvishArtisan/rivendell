@@ -18,17 +18,20 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qdatetime.h>
-
 #ifndef RDESCAPE_STRING_H
 #define RDESCAPE_STRING_H
+
+#include <qbytearray.h>
+#include <qdatetime.h>
+#include <qstring.h>
 
 QString RDCheckDateTime(const QTime &time, const QString &format);
 QString RDCheckDateTime(const QDateTime &datetime, const QString &format);
 QString RDCheckDateTime(const QDate &date, const QString &format);
 QString RDEscapeString(const QString &str);
 QString RDEscapeShellString(QString str);
+QString RDEscapeBlob(const QByteArray &data);
+QString RDEscapeBlob(const char *data,size_t len);
 
 
 #endif  // RDESCAPE_STRING_H

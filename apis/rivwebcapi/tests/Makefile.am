@@ -1,7 +1,7 @@
 ## automake.am
 ##
 ## (C) Copyright 2015 Todd Baker <bakert@rfa.org>
-## (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -31,6 +31,7 @@ noinst_PROGRAMS = addcart_test \
 		  createticket_test \
 		  deleteaudio_test \
 		  deletelog_test \
+		  deletepodcast_test \
 		  editcart_test \
 		  editcut_test \
 		  exportcart_test \
@@ -52,9 +53,16 @@ noinst_PROGRAMS = addcart_test \
 		  listschedcodes_test \
 		  listservices_test \
 		  listsystemsettings_test \
+                  postimage_test \
+                  postpodcast_test \
+                  postrss_test \
 		  removecart_test \
 		  removecut_test \
+                  removeimage_test \
+                  removepodcast_test \
+                  removerss_test \
 		  savelog_test \
+		  savepodcast_test \
 		  trimaudio_test \
 		  unassignschedcode_test
 
@@ -87,6 +95,9 @@ deleteaudio_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
 
 dist_deletelog_test_SOURCES = deletelog_test.c common.c common.h 
 deletelog_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
+
+dist_deletepodcast_test_SOURCES = deletepodcast_test.c common.c common.h 
+deletepodcast_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
 
 dist_editcart_test_SOURCES = editcart_test.c 
 editcart_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
@@ -151,14 +162,35 @@ listservices_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
 dist_listsystemsettings_test_SOURCES = listsystemsettings_test.c 
 listsystemsettings_test_LDADD =  -lrivwebcapi -lexpat -lcurl -lm
 
+dist_postimage_test_SOURCES = postimage_test.c 
+postimage_test_LDADD =  -lrivwebcapi -lexpat -lcurl -lm
+
+dist_postpodcast_test_SOURCES = postpodcast_test.c 
+postpodcast_test_LDADD =  -lrivwebcapi -lexpat -lcurl -lm
+
+dist_postrss_test_SOURCES = postrss_test.c 
+postrss_test_LDADD =  -lrivwebcapi -lexpat -lcurl -lm
+
 dist_removecart_test_SOURCES = removecart_test.c 
 removecart_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
 
 dist_removecut_test_SOURCES = removecut_test.c 
 removecut_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
 
+dist_removeimage_test_SOURCES = removeimage_test.c 
+removeimage_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
+
+dist_removepodcast_test_SOURCES = removepodcast_test.c 
+removepodcast_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
+
+dist_removerss_test_SOURCES = removerss_test.c 
+removerss_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
+
 dist_savelog_test_SOURCES = savelog_test.c common.c common.h
 savelog_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
+
+dist_savepodcast_test_SOURCES = savepodcast_test.c common.c common.h
+savepodcast_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
 
 dist_trimaudio_test_SOURCES = trimaudio_test.c 
 trimaudio_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm

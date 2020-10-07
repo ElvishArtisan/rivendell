@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Netcatch Recording.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -613,6 +613,18 @@ QString RDRecording::urlPassword() const
 void RDRecording::setUrlPassword(QString passwd) const
 {
   SetRow("URL_PASSWORD",passwd);
+}
+
+
+bool RDRecording::urlUseIdFile() const
+{
+  return RDBool(GetStringValue("URL_PASSWORD"));
+}
+
+
+void RDRecording::setUrlUseIdFile(bool state) const
+{
+  SetRow("URL_USE_ID_FILE",RDYesNo(state));
 }
 
 

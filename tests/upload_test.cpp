@@ -2,7 +2,7 @@
 //
 // Test Rivendell file uploading.
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,6 +37,7 @@ MainObject::MainObject(QObject *parent)
   username="";
   password="";
   RDUpload::ErrorCode conv_err;
+  use_identity_file=false;
 
   //
   // Open the Database
@@ -59,6 +60,14 @@ MainObject::MainObject(QObject *parent)
       password=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
     }
+    if(rda->cmdSwitch()->key(i)=="--ssh-identity-filename") {
+      ssh_identity_filename=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--use-identity-file") {
+      use_identity_file=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
     if(rda->cmdSwitch()->key(i)=="--source-file") {
       source_filename=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
@@ -74,33 +83,6 @@ MainObject::MainObject(QObject *parent)
     }
   }
 
-  /*
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"upload_test",
-  		    UPLOAD_TEST_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--username") {
-      username=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--password") {
-      password=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--source-file") {
-      source_filename=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--destination-url") {
-      destination_url=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-  }
-  */
-
   //
   // Sanity Checks
   //
@@ -112,34 +94,17 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"upload_test: missing destination-url\n");
     exit(256);
   }
-  /*
-  //
-  // Read Configuration
-  //
-  rdconfig=new RDConfig();
-  rdconfig->load();
-  rdconfig->setModuleName("upload_test");
 
-  //
-  // Open Database
-  //
-  QString err (tr("upload_test: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,err.ascii());
-    delete cmd;
-    exit(256);
-  }
-  */
   //
   // Run the Test
   //
-  RDUpload *conv=new RDUpload(this);
+  RDUpload *conv=new RDUpload(rda->config(),this);
   conv->setSourceFile(source_filename);
   conv->setDestinationUrl(destination_url);
   printf("Uploading...\n");
   conv_err=conv->
-    runUpload(username,password,rda->config()->logXloadDebugData());
+    runUpload(username,password,ssh_identity_filename,use_identity_file,
+	      rda->config()->logXloadDebugData());
   printf("Result: %s\n",(const char *)RDUpload::errorText(conv_err));
   delete conv;
 

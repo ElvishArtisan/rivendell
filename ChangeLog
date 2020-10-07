@@ -19534,6 +19534,15 @@
 	* Cleaned up a compiler warning in 'lib/rdcae.cpp'.
 2020-02-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.1int1.
+2020-02-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Support dependencies from the 'Editing Feed' dialog
+	in rdadmin(1).
+2020-02-07 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the default character encoding for podcasts from
+	'ISO-8859-1' to 'UTF-8'.
+2020-02-10 Fred Gleason <fredg@paravelsys tems.com>
+	* Cleaned up UI alignment in the 'Rivendell Feed List' dialog in
+	rdadmin(1).
 2020-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the BroadcastTools SS16.4 switcher driver
 	that could cause deadlocks and intermittent operation.
@@ -19669,6 +19678,8 @@
 	* Added a syslog message for each CIC update in the 'pypad_xds.py'
 	script.
 2020-02-23 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented superfeed in 'rdfeed.xml'.
+2020-02-23 Fred Gleason <fredg@paravelsystems.com>
 	* Added '-lexpat' to the '--libs' output for the 'rivwebcapi'
 	pkg-config profile.
 2020-02-24 Fred Gleason <fredg@paravelsystems.com>
@@ -19733,8 +19744,22 @@
 	* Fixed a bug in rddbmgr(8) that threw a SQL error when attempting
 	to modify a DB containing tables set to use character set UTF-8
 	to schema 297.
+2020-03-10 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '%FEED_URL%' variable to the channel and item data
+	resolver for RSS feeds.
+	* Added an '<atom:link>' tag to the XML templates for RSS feeds.
+2020-03-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in the default channel XML template for RSS feeds.
+2020-03-10 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up formatting of the RSS feeds in rdadmin(1)'s 'List Feeds'
+	dialog.
+2020-03-10 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Source URL' and 'Source Text' controls from the
+	'Edit Cast' dialog in rdcastmanager(1).
 2020-03-12 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to v3.2.1int4.
+	* Fixed a bug where '<enclosure>' tags in RSS Superfeeds were rendered
+	with an incorrect 'url=' attribute.
+	* Added indentation formatting on RSS XML feeds.
 2020-03-12 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a race in ripcd(8) that caused arguments to the
 	'Run Shell Command' ['RN'] macro to be corrupted.
@@ -19743,8 +19768,6 @@
 	that caused the Transition Type dropdown to be greyed-out when
 	the 'IMPORT' controls were set to use the built-in music
 	scheduler.
-2020-03-16 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to v3.3.0.
 2020-03-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that caused two events to be
 	started by a single spacebar tap if a SoundPanel event had been
@@ -19836,8 +19859,147 @@
 2020-05-12 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that broke the ability to scroll through
 	Sound Panel panels by means of the mouse wheel.
-2020-05-19 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 3.4.0.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Rebased DB schema changes 315-320 from the 'rss' branch
+	to be 318-323.
+2020-05-12 Fred Gleason <fredg@paravelsys tems.com>
+	* Added a 'FEEDS.IS_SUPERFEED' field to the database.
+	* Added a 'SUPERFEED_MAPS' table to the database.
+	* Incremented the database version to 318.
+	* Added a 'Superfeed' column to the feed list in the 'Rivendell
+	Feed List' dialog in rdadmin(1).
+	* Added an 'Is Superfeed' dropdown to the 'Feed' dialog in
+	rdadmin(1).
+	* Added a 'Select Member Feeds' button to the 'Feed' dialog in
+	rdadmin(1).
+	* Added an 'RSS Superfeed' selection dialog to rdadmin(1).
+2020-05-12 Fred Gleason <fredg@paravelsys tems.com>
+	* Added an 'RDFeed::create()' method.
+	* Added a 'Base Feed On' dropdown to the 'Add RSS Feed' dialog
+	in rdadmin(1).
+2020-05-12 Fred Gleason <fredg@paravelsys tems.com>
+	* Added a check to the 'Add RSS Feed' dialog in rdadmin(1) to
+	prevent creation of feeds with a blank name.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEEDS.AUDIENCE_METRICS' field to the database.
+	* Incremented the database version to 319.
+	* Added a 'Collect Audience Metrics' checkbox to the 'Feed'
+	dialog in rdadmin(1).
+	* Added an 'RDTransfer' base class.
+	* Rebased 'RDDelete' to 'RDTransfer'.
+	* Added 'sftp' support to 'RDDelete'.
+	* Added 'file' support to 'RDDelete'.
+	* Refactored RSS generation to occur in 'RDFeed'.
+	* Added a 'delete_test' test harness.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Rebased 'RDUpload' to 'RDTransfer'.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Rebased 'RDDownload' to 'RDTransfer'.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the URL scheme check code in the 'Edit Feed' dialog
+	in rdadmin(1).
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'USERS.EMAIL_ADDRESS' field to the database.
+	* Incremented the database version to 320.
+	* Added 'RDUser::emailAddress()', 'RDUser::setEmaiAddress()' and
+	'RDUser::emailContact()' methods.
+	* Added 'RDUser::emailIsValid()' and 'RDUser::emailContact()'
+	static methods.
+	* Added logic to rdcastmanager(1) to insert the author's e-mail
+	contact automatically when posting a new episode.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Tweaked controls to be disabled for superfeeds in the 'Edit Feed'
+	dialog in rdadmin(1).
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the maximum length of RSS <channel> entries to match
+	the current DB schema in the 'Edit Feed' dialog in rdadmin(1).
+	* Added a 'FEEDS.CHANNEL_EDITOR' field to the database.
+	* Incremented the database version to 321.
+	* Added 'RDFeed::channelEditor()' and
+	'RDFeed::setChannelEditor()' methods.
+	* Added an 'Editor' control to the 'Channel' controls in the
+	'Edit Feed' dialog in rdadmin(1).
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RSS_SCHEMAS' table to the database.
+	* Incremented the database version to 322.
+	* Added an 'RSS Schema' dropdown to the 'Edit Feed' dialog in
+	rdadmin(1).
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEED_IMAGES' table to the database.
+	* Incremented the database version to 323.
+	* Added 'feed_image_test' in 'tests/'.
+2020-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEEDS.CHANNEL_IMAGE_ID' field to the database.
+	* Added a 'FEEDS.DEFAULT_ITEM_IMAGE_ID' field to the database.
+	* Added a 'PODCASTS.ITEM_IMAGE_ID' field to the database.
+	* Incremented the database version to 324.
+	* Added an 'Image Manager' dialog to rdadmin(1).
+	* Added an 'Image Viewer' dialog on rdadmin(1).
+2020-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Dropped the 'RSS_SCHEMAS' table from the database.
+	* Incremented the database version to 325.
+	* Moved RSS template definitions to 'lib/rdfeed.h'.
+2020-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Updated interlocking logic in the 'Edit Feed' dialog in
+	rdadmin(1) to handle image assignments correctly.
+2020-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDRssSchemas' class.
+2020-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to remove remote imaging when deleting an RSS feed.
+2020-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'FEEDS.CHANNEL_AUTHOR', 'FEEDS.CHANNEL_OWNER_NAME',
+	'FEEDS.CHANNEL_OWNER_EMAIL', 'FEEDS.CHANNEL_EXPLICIT' and
+	'PODCASTS.ITEM_EXPLICIT' fields to the database.
+	* Incremented the database version to 326.
+	* Added 'RDFeed::channelAuthor()', 'RDFeed::setChannelAuthor()',
+	'RDFeed::channelOwnerName()', 'RDFeed::setChannelOwnerName()',
+	'RDFeed::channelOwnerEmail(), 'RDFeed::setChannelOwnerEmail()',
+	'RDFeed::channelExplicit()', 'RDFeed::setChannelExplicit()',
+	'RDPodcast::itemExplicit()' and 'RDPodcast::setItemExplicit()'
+	methods.
+	* Added 'Author', Owner Name' and 'Owner E-Mail controls to the
+	'Edit Feed' dialog box in rdadmin(1).
+	* Added a 'Channel contains explicit content' checkbox to the
+	'Edit Feed' dialog box in rdadmin(1).
+2020-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDPodcast::itemExplicit()', 'RDPodcast::setItemExplicit()',
+	'RDPodcast::itemImageId()', and 'RDPodcast::setItemImageId()'
+	methods.
+	* Added a 'Post contains explicit content' checkbox to the 'Edit
+	Podcast' dialog in rdcastmanager(1).
+	* Added an 'Image' control to the 'Edit Podcast dialog in
+	rdcastmanager(1).
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Populated the 'Apple' RSS schema.
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Edit Feed' dialog in rdadmin(1) that allowed
+	superfeed setups to be saved with no member subfeeds.
+	* Fixed a bug in the 'Edit Feed' dialog in rdadmin(1) that allowed
+	a per-item default image to be configured for superfeeds.
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a file-type field to the image attributes line in rdadmin(1).
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added image size and type data to the 'View Image' dialog in
+	rdadmin(1).
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check to verify correct size of imported images in
+	'RDFeed::importImageFile()'.
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in the podcasting system that caused corrupt URLs
+	to be generated for GUID and image tags for items contained in
+	a superfeed.
+	* Commented out file posting code in the web version of
+	RDCastManager.
+	* Disabled the 'Post from Cart/Cut', 'Post from File', 'Edit' and
+	'Delete' buttons when showing a superfeed in the 'Podcast List'
+	dialog of rdcastmanager(1).
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'URL' field to the 'View Image' dialog in rdadmin(1).
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added '<itunes:author>' tags to the 'Apple' RSS schema.
+	* Added '<itunes:summary>' tags to the 'Apple' RSS schema.
+2020-06-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'iTunes + Superfeed' RSS schema.
 2020-05-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDListView::NumericSort' to the 'RDListView::SortType'
 	enumeration.
@@ -19912,14 +20074,77 @@
 2020-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Applied the RD_MAX_CART_NUMBER define in
 	'rdairplay/local_macros.cpp'.
+2020-06-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDFeed::publicUrl()' static method.
+	* Added a 'Public URL' column in the 'List Feeds' dialog in
+	rdadmin(1).
+	* Removed the 'Superfeed' and 'Description' columns from the
+	main window of rdcastmanager(1).
+	* Added a 'Public URL' column and a 'Copy URL to Clipboard'
+	button to the main window of rdcastmanager(1).
+2020-06-30 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'exemplar' parameter from the 'RDFeed::create()'
+	method.
+	* Removed the 'Base Feed On' dropdown from the 'Add Feed'
+	dialog in rdadmin(1).
+2020-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused the 'Public URL' column in
+	the 'List Feeds' dialog to display incorrect data after editing
+	a feed.
+2020-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEEDS.CHANNEL_SUB_CATEGORY' field to the database.
+	* Incremented the database version to 327.
+	* Added 'RDFeed::channelSubCategory()' and
+	'RDFeed::setChannelSubCategory()' methods.
+	* Added a 'RDRssCategoryBox' widget.
+	* Updated the 'Edit Feed' dialog in rdadmin(1) to use the
+	'RDRssCategoryBox' widget.
+2020-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for iTunes subcategories to the podcast subsystem.
+2020-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDRssSchemas::supportsItemCategories()' method.
+2020-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDApplication::rssSchemas()' method.
+	* Removed the 'RDFeed::rssSchemas()' method.
+2020-07-03 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the relocated the 'Comment URL' control in the
+	'Editing Podcast' dialog in rdcastmanager(1).
+	* Made the 'Category' control conditional in the 'Editing Podcast'
+	dialog in rdcastmanager(1).
+2020-07-03 Fred Gleason <fredg@paravelsystems.com>
+	* Dropped the 'FEEDS.AUDIENCE_METRICS' field from the database.
+	* Dropped the 'FEEDS.KEEP_METADATA' field from the database.
+	* Dropped the 'FEEDS.MEDIA_LINK_MODE' field from the database.
+	* Dropped the 'FEEDS.REDIRECT_PATH' field from the database.
+	* Dropped the 'CAST_DOWNLOADS' table from the database.
+	* Incremented the database version to 328.
+	* Removed support for dynamically generated RSS feed metadata.
+2020-07-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'Copy to Clipboard' buttons for the XML template editors
+	in the 'Edit Feed' dialog in rdadmin(1).
 2020-07-07 Fred Gleason <fredg@paravelsystems.com>
 	* Modified 'RDWaveFile' to work around known fencepost errors in
 	WAV files generated by "Sonic Studio soundBlade" by
 	"PME Mastering, Inc."
 2020-07-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.0int1.
+<<<<<<< HEAD
+2020-07-08 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the layout of the 'Editing PodCast' dialog in
+	rdcastmanager(1) to more consistent with the event editing
+	dialogs in rdcatch(1).
 2020-07-21 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.1.
+2020-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Post from Log' button to the 'Podcast List' dialog
+	in rdcastmanager(1).
+2020-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a fencepost bug in the 'RDRenderer::renderToFile()' method
+	with the 'last_line' parameter.
+2020-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDLogIcons' class.
+2020-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Log Render Options' dialog to rdcastmanager(1).
 2020-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDDataPacer' class.
 	* Modified the GVC7000 switcher driver to insert 50 mS pauses
@@ -19933,9 +20158,56 @@
 2020-08-05 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed regression with "Scheduler Code:" label overlapping "Group"
 	combobox in rdlibrary(1).
-2020-06-23 Fred Gleason <fredg@paravelsystems.com>
-	* Applied the RD_MAX_CART_NUMBER define in
-	'rdairplay/local_macros.cpp'.
+2020-08-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SYSTEM.RSS_PROCESSOR_STATION' field to the database.
+	* Added a 'PODCASTS.EXPIRATION_DATETIME' field to the database.
+	* Dropped the 'PODCASTS.SHELF_LIFE' field from the database.
+	* Incremented the database version to 329.
+	* Modified convention to use local system time for all podcast
+	components.
+	* Added 'RDPodcast::expirationDateTime()' and
+	'RDPodcast::setExpirationDateTime()' methods.
+	* Removed 'RDPodcast::shelfLife()' and 'RDPodcast::setShelfLife()'
+	methods.
+	* Added an rdrssd(8) daemon.
+	* Removed the rdpurgecasts(8) utility.
+	* Added 'RDSystem::rssProcessorStation()' and
+	'RDSystem::setRssProcessorStation()' methods.
+	* Added a 'Process RSS Updates' control to the 'System-Wide Settings'
+	dialog in rdadmin(1).
+2020-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Changed 'Cast' to 'Item' in rdcastmanager(1).
+2020-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdcastmanager(1) to apply the cart title as the default
+	item title when posting from a cart/cut.
+	* Modified rdcastmanager(1) to apply the file metadata or filename
+	as the default item title when posting from a file.
+2020-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PODCASTS.ORIGIN_LOGIN_NAME' field to the database.
+	* Added a 'PODCASTS.ORIGIN_STATION' field to the database.
+	* Incremented the database version to 330.
+	* Changed the 'Origin' column to 'Start' in the 'Podcast Item List'
+	dialog in rdcastmanager(1).
+	* Added a 'Posted By' column to the 'Podcast Item List'	dialog in
+	rdcastmanager(1).
+2020-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented multicast notifications for RSS feed items.
+2020-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcastmanager(1) that caused no items to
+	appear in superfeeds.
+2020-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Podcast Item List' dialog in rdcastmanager(1) to
+	show a blue icon for items with Air Dates in the future.
+2020-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Podcast Item List' dialog in rdcastmanager(1)
+	That caused incorrect data to appear in the 'Posted By' column.
+2020-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Description' column from the 'Podcast Item List'
+	dialog in rdcastmanager(1).
+2020-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Log Render Options' dialog in rdcastmanager(1)
+	that could cause the start time control to be disabled even with
+	the Virtual Start Time dropdown set to 'As Specified'.
 2020-08-10 Brian McGlynn <bmcglynn@geneseemedia.net>
 	* Allow RN Macro to run when Rivendell daemons running as non-root
 	'ripcd/local_macros.cpp'.
@@ -19946,6 +20218,171 @@
 	service with a name containing whitespace.
 	* Added whitespace to the set of banned characters for service names
 	in the 'Add Service' dialog in rdadmin(1).
+2020-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcastmanager(1) that caused a segfault when
+	attempting to post a log with no events selected.
+2020-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Dropped the 'ENCODERS', 'ENCODER_BITRATES', 'ENCODER_BITRATES'
+	and 'ENCODER_CHANNELS' tables from the database.
+	* Incremented the database version to 331.
+	* Removed the 'RDSettings::customCommandLine()',
+	'RDSettings::setCustomCommandLine()' and
+	' RDSettings::resolvedCustomCommandLine()' methods.
+2020-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDRssSchemas::itemLinksSupported()' and
+	'RDRssSchemas::itemCommentsSupported()' methods.
+	* Modified the 'Editing Item' dialog in rdcastmanager(1) to
+	conditionally display the 'Link' and 'Comments' controls.
+2020-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEEDS.CHANNEL_AUTHOR_IS_DEFAULT' field to the database.
+	* Incremented the database version to 332.
+	* Added 'RDFeed::channelAuthorIsDefault()' and
+	'RDFeed::setChannelAuthorIsDefault()' methods.
+	* Added a 'Use as default Item Author' checkbox to the 'Edit Feed'
+	dialog in rdadmin(1).
+2020-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDFontEngine::bigLabelFont()' and
+	'RDFontEngine::bigLabelFontMetrics()' methods.
+2020-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a feed name label to the 'Podcast Item List' in
+	rdcastmanager(1).
+2020-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the 'RDFontEngine::bigLabelFont()' method.
+2020-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the name of the 'List Log' dialog in rdcastmanager(1)
+	to 'List Log Events'.
+2020-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the word 'podcast' to 'item' in the item deletion
+	confirmation in the 'Podcast Item List' dialog in rdcastmanager(1).
+2020-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Titled the audio selector dialog in rdcastmanager(1)
+	'Select Audio File'.
+2020-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Unly Show Unexpired Items' checkbox from the
+	'Podcast Feed Item List' dialog in rdcastmanager(1).
+2020-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDCastManager' chapter to the Operations Guide.
+2020-08-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'STATIONS.SSH_IDENTITY_FILE' field to the database.
+	* Added a 'RECORDINGS.URL_USE_ID_FILE' field to the database.
+	* Added a 'FEEDS.PURGE_USE_ID_FILE' field to the database.
+	* Incremented the database version to 333.
+	* Added 'RDStation::sshIdentityFile()' and
+	'RDStation::setSshIdentityFile()' methods.
+	* Added 'RDRecording::urlUseIdFile()' and
+	'RDRecording::setUrlUseIdFile()' methods.
+	* Added 'RDFeed::purgeUseIdFile()' and 'RDFeed::setPurgeUseIdFile()'
+	methods.
+	* Added a 'SSH Ident. File' control to the 'Host' dialog in
+	rdadmin(1).
+	* Added an 'Authenticate with local identity file' checkbox to
+	the 'Feed' dialog in rdadmin(1).
+2020-08-19 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the database field 'FEEDS.PURGE_PASSWORD' from
+	'varchar(64)' to 'text'.
+	* Changed the contents of the 'FEEDS.PURGE_PASSWORD' database
+	field from plaintext to Base64 encoding.
+	* Incremented the database version to 334.
+2020-08-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed compiler warnings in 'lib/rdsettings.cpp' and
+	'lib/rdstation.cpp'.
+2020-08-19 David Klann <dklann@linux.com>
+	* Added support for FTPS protocol for uploading, downloading, and
+        Feed management.
+2020-08-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added sanity checks for Air and Expiration datetimes to the
+	'Editing Item' dialog in rdcastmanager(1).
+2020-08-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDNotification::FeedType' value to the
+	'RDNotification::Type' enumeration.
+2020-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDUser::feedAuthorized()' method.
+	* Added a 'SavePodcast' method to the Web API.
+	* Added a 'GetPodcast' method to the Web API.
+	* Added a 'DeletePodcast' method to the Web API.
+2020-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PODCASTS.SHA1_HASH' field to the database.
+	* Incremented the database version to 335.
+	* Added 'RDPodcast::sha1Hash()' and 'RDPodcast::setSha1Hash()'
+	methods.
+	* Implemented audio relinking for podcast media files.
+2020-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SHA1' column to the 'Podcast Item List' dialog in
+	rdcastmanager(1).
+2020-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PostPodcast' method to the Web API.
+	* Added a 'RemovePodcast' method to the Web API.
+	* Added a 'PostRss' method to the Web API.
+	* Added a 'RemoveRss' method to the Web API.
+2020-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the type of the 'FEED_IMAGES.DATA' database field
+	to 'longblob'.
+	* Incremented the database version to 336.
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PostImage' method to the Web API.
+	* Added a 'RemoveImage' method to the Web API.
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'FEEDS.CHANNEL_IMAGE_ID_IDX', 'FEEDS.DEFAULT_ITEM_IMAGE_ID_IDX'
+	and 'PODCASTS.ITEM_IMAGE_ID_IDX' indexes to the database.
+	* Incremented the database version to 337.
+	* Added a sanity check to the 'Image Manager' dialog in
+	rdadmin(1) to prevent deletion of in-use images.
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'RDFeed::deleteImages()' method to
+	'RDFeed::removeAllImages()'.
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the 'Repost' button on the 'Rivendell Feed List'
+	dialog in rdadmin(1).
+	* Added an 'Unpost' button to the 'Rivendell Feed List' dialog
+	in rdadmin(1).
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Replaced the feed summary status icon with the feed image in the
+	feed list in rdcastmanager(1).
+	* Moved the post status icon to a new 'Status' column in the item
+	list on the 'Podcast Item List' dialog in rdcastmanager(1).
+	* Added the item icon to the start of each entry in the item list
+	on the 'Podcast Item List' dialog in rdcastmanager(1).
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added the feed image to the start of each entry in the feed list
+	on the 'Rivendell Feed List' dialog in rdadmin(1).
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in rdcastmanager(1) that caused incorrect feed and
+	item icons to be displayed in lists.
+2020-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Updated screenshots in the 'RDCastManager' chapter of the
+	Operations Guide.
+2020-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RD_PostImage()' and 'RD_RemoveImage()' calls to the
+	rivwebcapi API.
+2020-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RD_PostRss()' and 'RD_RemoveRss()' calls to the
+	rivwebcapi API.
+2020-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RD_PostPodcast()', 'RDRemovePodcast()' and
+	'RD_SavePodcast()' calls to the rivwebcapi API.
+2020-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RD_DeletePodcast()' call to the rivwebcapi API.
+2020-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdxport.cgi(1) that caused segfaults when
+	processing the 'PostRss' for feeds enclosed by one or more
+	superfeeds.
+2020-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcastmanager(1) that made it possible to edit
+	underlying posts when viewing a superfeed.
+2020-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added debugging messages to syslog for the podcasting subsystem.
+2020-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added the name of the Rivendell library component to 'Unknown Error'
+	messages.
+2020-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDFeed::postCut()' that could throw an intermittent
+	'Unknown Error' message.
+2020-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the 'FEEDS.CHANNEL_LANGUAGE' database field from
+	'varchar(5)' to' 'varchar(8)'.
+	* Incremented the database version to 338.
+	* Increased the 5 character length limitation of the
+	'Channel Language' field for podcasts to 8.
 2020-10-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'Test Import' dialog in rdadmin(1) that caused
 	the sort of events in the 'Imported Events' list to be incorrect.
@@ -19958,5 +20395,8 @@
 	caused the Services List to be initialized with all services upon
 	creation, even when one	or more services had already be added to
 	the list by the user.
-2020-10-06 Patrick Linstruth <patrick@deltecent.com>
+2020-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the predicted next release version from '4.0' to '3.5'.
+	in rddbmgr(8).
+2020-10-07 Patrick Linstruth <patrick@deltecent.com>
 	* Added '--scheduler-code=' switch to rdexport(1).

@@ -162,6 +162,38 @@ void RDUser::setFullName(const QString &name) const
 }
 
 
+QString RDUser::emailAddress() const
+{
+  return RDGetSqlValue("USERS","LOGIN_NAME",user_name,"EMAIL_ADDRESS").
+    toString();
+}
+
+
+void RDUser::setEmailAddress(const QString &str) const
+{
+  SetRow("EMAIL_ADDRESS",str);
+}
+
+
+QString RDUser::emailContact() const
+{
+  QString ret;
+
+  QString sql=QString("select ")+
+    "EMAIL_ADDRESS,"+  // 00
+    "FULL_NAME "+      // 01
+    "from USERS where "+
+    "LOGIN_NAME=\""+RDEscapeString(user_name)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=RDUser::emailContact(q->value(0).toString(),q->value(1).toString());
+  }
+  delete q;
+
+  return ret;
+}
+
+
 QString RDUser::description() const
 {
   return RDGetSqlValue("USERS","LOGIN_NAME",user_name,"DESCRIPTION").toString();
@@ -512,6 +544,22 @@ bool RDUser::cartAuthorized(unsigned cartnum) const
 }
 
 
+bool RDUser::feedAuthorized(const QString &keyname)
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool ret=false;
+
+  sql=QString("select ID from FEED_PERMS where ")+
+    "(USER_NAME=\""+RDEscapeString(user_name)+"\")&&"+
+    "(KEY_NAME=\""+RDEscapeString(keyname)+"\")";
+  q=new RDSqlQuery(sql);
+  ret=q->first();
+  delete q;
+  return ret;
+}
+
+
 QString RDUser::serviceCheckDefault(QString serv) const
 {
   bool match_flag = false;
@@ -556,6 +604,36 @@ QStringList RDUser::services() const
   delete q;
 
   return services_list;
+}
+
+
+bool RDUser::emailIsValid(const QString &addr)
+{
+  QStringList f0=addr.split("@",QString::KeepEmptyParts);
+
+  if(f0.size()!=2) {
+    return false;
+  }
+  QStringList f1=f0.last().split(".");
+  if(f1.size()<2) {
+    return false;
+  }
+  return true;
+}
+
+
+QString RDUser::emailContact(const QString &addr,const QString &fullname)
+{
+  QString ret;
+
+  if(RDUser::emailIsValid(addr)) {
+    ret=addr;
+    if(!fullname.isEmpty()) {
+      ret+=" ("+fullname+")";
+    }
+  }
+
+  return ret;
 }
 
 

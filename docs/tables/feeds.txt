@@ -2,37 +2,46 @@
 
 The FEEDS table holds data concerning which defines RSS feeds.
 
-FIELD NAME           TYPE              REMARKS
+FIELD NAME                 TYPE              REMARKS
 ---------------------------------------------------------------
-ID                   int(10) unsigned  Primary key, auto increment
-KEY_NAME             varchar(8)        Unique
-CHANNEL_TITLE        varchar(191)
-CHANNEL_DESCRIPTION  text
-CHANNEL_CATEGORY     varchar(64)
-CHANNEL_LINK         varchar(191)
-CHANNEL_COPYRIGHT    varchar(64)
-CHANNEL_WEBMASTER    varchar(64)
-CHANNEL_LANGUAGE     varchar(5)
-BASE_URL             varchar(191)
-BASE_PREAMBLE        varchar(191)
-PURGE_URL            varchar(191)
-PURGE_USERNAME       varchar(64)
-PURGE_PASSWORD       varchar(64)
-HEADER_XML           text
-CHANNEL_XML          text
-ITEM_XML             text
-CAST_ORDER           enum('N','Y')
-MAX_SHELF_LIFE       int(11)
-LAST_BUILD_DATETIME  datetime
-ORIGIN_DATETIME      datetime
-ENABLE_AUTOPOST      enum('N','Y')
-KEEP_METADATA        enum('N','Y')
-UPLOAD_FORMAT        int(11)
-UPLOAD_CHANNELS      int(11)
-UPLOAD_SAMPRATE      int(11)
-UPLOAD_BITRATE       int(11)
-UPLOAD_QUALITY       int(11)
-UPLOAD_EXTENSION     varchar(16)
-NORMALIZE_LEVEL      int(11)
-REDIRECT_PATH        varchar(191)
-MEDIA_LINK_MODE      int(11)
+ID                         int(10) unsigned  Primary key, auto increment
+KEY_NAME                   varchar(8)        Unique
+IS_SUPERFEED               enum('N','Y')
+CHANNEL_TITLE              varchar(191)
+CHANNEL_DESCRIPTION        text
+CHANNEL_CATEGORY           varchar(64)
+CHANNEL_SUB_CATEGORY       varchar(64)
+CHANNEL_LINK               varchar(191)
+CHANNEL_COPYRIGHT          varchar(64)
+CHANNEL_EDITOR             varchar(64)
+CHANNEL_AUTHOR             varchar(64)
+CHANNEL_AUTHOR_IS_DEFAULT  enum('N','Y')
+CHANNEL_OWNER_NAME         varchar(64)
+CHANNEL_OWNER_EMAIL        varchar(64)
+CHANNEL_WEBMASTER          varchar(64)
+CHANNEL_LANGUAGE           varchar(8)
+CHANNEL_EXPLICIT           enum('N','Y')
+CHANNEL_IMAGE_ID           int(11)           From FEED_IMAGES.ID
+BASE_URL                   varchar(191)
+BASE_PREAMBLE              varchar(191)
+PURGE_URL                  varchar(191)
+PURGE_USERNAME             varchar(64)
+PURGE_PASSWORD             text              Base64 encoded
+PURGE_USE_ID_FILE          enum('N','Y')
+RSS_SCHEMA                 int(10) unsigned  0=Custom, 1=RSS-2.0.2
+HEADER_XML                 text
+CHANNEL_XML                text
+ITEM_XML                   text
+CAST_ORDER                 enum('N','Y')
+MAX_SHELF_LIFE             int(11)
+LAST_BUILD_DATETIME        datetime
+ORIGIN_DATETIME            datetime
+ENABLE_AUTOPOST            enum('N','Y')
+DEFAULT_ITEM_IMAGE_ID      int(11)           From FEED_IMAGES.ID
+UPLOAD_FORMAT              int(11)
+UPLOAD_CHANNELS            int(11)
+UPLOAD_SAMPRATE            int(11)
+UPLOAD_BITRATE             int(11)
+UPLOAD_QUALITY             int(11)
+UPLOAD_EXTENSION           varchar(16)
+NORMALIZE_LEVEL            int(11)

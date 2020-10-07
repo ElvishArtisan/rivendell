@@ -40,6 +40,7 @@ dist_rdxport_cgi_SOURCES = audioinfo.cpp\
                            exportpeaks.cpp\
                            import.cpp\
                            logs.cpp\
+                           podcasts.cpp\
                            rdxport.cpp rdxport.h\
                            rehash.cpp\
                            tests.cpp\

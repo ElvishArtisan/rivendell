@@ -20,6 +20,7 @@ STARTUP_CART         int(10) unsigned
 EDITOR_PATH          varchar(191)       Audio editor --e.g. Audacity
 REPORT_EDITOR_PATH   varchar(191)       Text Editor --e.g. GEdit
 BROWSER_PATH         varchar(191)       Web Browser --e.g. Firefox
+SSH_IDENTITY_FILE    text
 FILTER_MODE          int(11)            0=Synchronous, 1=Asynchronous
 START_JACK           enum('Y','N')
 JACK_SERVER_NAME     varchar(64)

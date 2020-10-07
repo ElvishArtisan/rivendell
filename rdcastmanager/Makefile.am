@@ -45,13 +45,17 @@ bin_PROGRAMS = rdcastmanager
 dist_rdcastmanager_SOURCES = edit_cast.cpp edit_cast.h\
                              globals.h\
                              list_casts.cpp list_casts.h\
-                             pick_report_dates.cpp pick_report_dates.h\
-                             rdcastmanager.cpp rdcastmanager.h
+                             logdialog.cpp logdialog.h\
+                             logmodel.cpp logmodel.h\
+                             rdcastmanager.cpp rdcastmanager.h\
+                             render_dialog.cpp render_dialog.h
 
 nodist_rdcastmanager_SOURCES = moc_edit_cast.cpp\
                                moc_list_casts.cpp\
-                               moc_pick_report_dates.cpp\
-                               moc_rdcastmanager.cpp
+                               moc_logdialog.cpp\
+                               moc_logmodel.cpp\
+                               moc_rdcastmanager.cpp\
+                               moc_render_dialog.cpp
 
 rdcastmanager_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 

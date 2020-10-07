@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal
 //
-//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -154,145 +154,226 @@ void Xport::ripcConnectedData(bool state)
   // Read Command Variable and Dispatch 
   //
   int command=xport_post->value("COMMAND").toInt();
+
   switch(command) {
   case RDXPORT_COMMAND_EXPORT:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_EXPORT");
     Export();
     break;
 
   case RDXPORT_COMMAND_IMPORT:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_IMPORT");
     Import();
     break;
 
   case RDXPORT_COMMAND_DELETEAUDIO:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_DELETEAUDIO");
     DeleteAudio();
     break;
 
   case RDXPORT_COMMAND_LISTGROUPS:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LISTGROUPS");
     ListGroups();
     break;
 
   case RDXPORT_COMMAND_LISTGROUP:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LISTGROUP");
     ListGroup();
     break;
 
   case RDXPORT_COMMAND_ADDCART:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_ADDCART");
     AddCart();
     break;
 
   case RDXPORT_COMMAND_LISTCARTS:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LISTCARTS");
     ListCarts();
     break;
 
   case RDXPORT_COMMAND_LISTCART:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LISTCART");
     ListCart();
     break;
 
   case RDXPORT_COMMAND_EDITCART:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_EDITCART");
     EditCart();
     break;
 
   case RDXPORT_COMMAND_REMOVECART:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_REMOVECART");
     RemoveCart();
     break;
 
   case RDXPORT_COMMAND_ADDCUT:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_ADDCUT");
     AddCut();
     break;
 
   case RDXPORT_COMMAND_LISTCUTS:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LISTCUTS");
     ListCuts();
     break;
 
   case RDXPORT_COMMAND_LISTCUT:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LISTCUT");
     ListCut();
     break;
 
   case RDXPORT_COMMAND_EDITCUT:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_EDITCUT");
     EditCut();
     break;
 
   case RDXPORT_COMMAND_REMOVECUT:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_REMOVECUT");
     RemoveCut();
     break;
 
   case RDXPORT_COMMAND_EXPORT_PEAKS:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_EXPORT_PEAKS");
     ExportPeaks();
     break;
 
   case RDXPORT_COMMAND_TRIMAUDIO:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_TRIMAUDIO");
     TrimAudio();
     break;
 
   case RDXPORT_COMMAND_COPYAUDIO:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_COPYAUDIO");
     CopyAudio();
     break;
 
   case RDXPORT_COMMAND_AUDIOINFO:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_AUDIOINFO");
     AudioInfo();
     break;
 
   case RDXPORT_COMMAND_AUDIOSTORE:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_AUDIOSTORE");
     AudioStore();
     break;
 
   case RDXPORT_COMMAND_ADDLOG:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_ADDLOG");
     AddLog();
     break;
 
   case RDXPORT_COMMAND_DELETELOG:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_DELETELOG");
     DeleteLog();
     break;
 
   case RDXPORT_COMMAND_LISTLOGS:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LISTLOGS");
     ListLogs();
     break;
 
   case RDXPORT_COMMAND_LISTLOG:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LISTLOG");
     ListLog();
     break;
 
   case RDXPORT_COMMAND_SAVELOG:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_SAVELOG");
     SaveLog();
     break;
 
   case RDXPORT_COMMAND_LISTSCHEDCODES:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LISTSCHEDCODES");
     ListSchedCodes();
     break;
 
   case RDXPORT_COMMAND_ASSIGNSCHEDCODE:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_ASSIGNSCHEDCODE");
     AssignSchedCode();
     break;
 
   case RDXPORT_COMMAND_UNASSIGNSCHEDCODE:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_UNASSIGNSCHEDCODE");
     UnassignSchedCode();
     break;
 
   case RDXPORT_COMMAND_LISTCARTSCHEDCODES:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LISTCARTSCHEDCODES");
     ListCartSchedCodes();
     break;
 
   case RDXPORT_COMMAND_LISTSERVICES:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LISTSERVICES");
     ListServices();
     break;
 
   case RDXPORT_COMMAND_LISTSYSTEMSETTINGS:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LISTSYSTEMSETTINGS");
     ListSystemSettings();
     break;
 
   case RDXPORT_COMMAND_LOCKLOG:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_LOCKLOG");
     LockLog();
     break;
 
   case RDXPORT_COMMAND_REHASH:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_REHASH");
     Rehash();
     break;
 
   case RDXPORT_COMMAND_SAVESTRING:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_SAVESTRING");
     SaveString();
     break;
 
   case RDXPORT_COMMAND_SAVEFILE:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_SAVEFILE");
     SaveFile();
+    break;
+
+  case RDXPORT_COMMAND_SAVE_PODCAST:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_SAVE_PODCAST");
+    SavePodcast();
+    break;
+
+  case RDXPORT_COMMAND_GET_PODCAST:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_GET_PODCAST");
+    GetPodcast();
+    break;
+
+  case RDXPORT_COMMAND_DELETE_PODCAST:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_DELETE_PODCAST");
+    DeletePodcast();
+    break;
+
+  case RDXPORT_COMMAND_POST_PODCAST:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_POST_PODCAST");
+    PostPodcast();
+    break;
+
+  case RDXPORT_COMMAND_REMOVE_PODCAST:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_REMOVE_PODCAST");
+    RemovePodcast();
+    break;
+
+  case RDXPORT_COMMAND_POST_RSS:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_POST_RSS");
+    PostRss();
+    break;
+
+  case RDXPORT_COMMAND_REMOVE_RSS:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_REMOVE_RSS");
+    RemoveRss();
+    break;
+
+  case RDXPORT_COMMAND_POST_IMAGE:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_POST_IMAGE");
+    PostImage();
+    break;
+
+  case RDXPORT_COMMAND_REMOVE_IMAGE:
+    rda->syslog(LOG_DEBUG,"processing RDXPORT_COMMAND_REMOVE_IMAGE");
+    RemoveImage();
     break;
 
   default:

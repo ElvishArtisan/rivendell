@@ -21,7 +21,11 @@
     </message>
     <message>
         <source>Unknown Error:</source>
-        <translation>Unbekannter Fehler:</translation>
+        <translation type="obsolete">Unbekannter Fehler:</translation>
+    </message>
+    <message>
+        <source>Unknown RDHpiPlayStream Error:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -44,7 +48,11 @@
     </message>
     <message>
         <source>Unknown Error:</source>
-        <translation>Unbekannter Fehler:</translation>
+        <translation type="obsolete">Unbekannter Fehler:</translation>
+    </message>
+    <message>
+        <source>Unknown RDHpiRecordStream Error:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

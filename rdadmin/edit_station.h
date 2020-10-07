@@ -94,6 +94,8 @@ class EditStation : public RDDialog
    QLineEdit *station_report_editor_edit;
    QLabel *station_web_browser_label;
    QLineEdit *station_web_browser_edit;
+   QLabel *station_ssh_identity_file_label;
+   QLineEdit *station_ssh_identity_file_edit;
    QLabel *station_timeoffset_label;
    QSpinBox *station_timeoffset_box;
    QLabel *station_startup_cart_label;

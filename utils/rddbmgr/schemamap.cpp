@@ -2,7 +2,7 @@
 //
 // DB schema version <==> Rivendell version map
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -161,6 +161,7 @@ void MainObject::InitializeSchemaMap() {
   global_version_map["3.2"]=311;
   global_version_map["3.3"]=314;
   global_version_map["3.4"]=317;
+  global_version_map["3.5"]=338;
 }
 
 

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell User
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,8 +32,6 @@
 EditUser::EditUser(const QString &user,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -53,7 +51,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   user_name_edit=new QLineEdit(this);
   user_name_edit->setGeometry(130,11,sizeHint().width()-140,19);
-  user_name_edit->setMaxLength(255);
+  user_name_edit->setMaxLength(191);
   user_name_edit->setValidator(validator);
   QLabel *user_name_label=new QLabel(user_name_edit,tr("&User Name:"),this);
   user_name_label->setGeometry(5,11,120,19);
@@ -65,7 +63,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   user_full_name_edit=new QLineEdit(this);
   user_full_name_edit->setGeometry(130,32,sizeHint().width()-140,19);
-  user_full_name_edit->setMaxLength(255);
+  user_full_name_edit->setMaxLength(191);
   user_full_name_edit->setValidator(validator);
   QLabel *user_full_name_label=
     new QLabel(user_full_name_edit,tr("&Full Name:"),this);
@@ -78,7 +76,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   user_description_edit=new QLineEdit(this);
   user_description_edit->setGeometry(130,53,sizeHint().width()-140,19);
-  user_description_edit->setMaxLength(255);
+  user_description_edit->setMaxLength(191);
   user_description_edit->setValidator(validator);
   QLabel *user_description_label=
     new QLabel(user_description_edit,tr("&Description:"),this);
@@ -87,14 +85,27 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
+  // Email Address
+  //
+  user_email_address_edit=new QLineEdit(this);
+  user_email_address_edit->setGeometry(130,74,sizeHint().width()-140,19);
+  user_email_address_edit->setMaxLength(191);
+  user_email_address_edit->setValidator(validator);
+  QLabel *user_email_address_label=
+    new QLabel(user_email_address_edit,tr("E-Mail Address")+":",this);
+  user_email_address_label->setGeometry(5,74,120,19);
+  user_email_address_label->setFont(labelFont());
+  user_email_address_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  //
   // User Phone
   //
   user_phone_edit=new QLineEdit(this);
-  user_phone_edit->setGeometry(130,75,sizeHint().width()-140,19);
+  user_phone_edit->setGeometry(130,95,sizeHint().width()-140,19);
   user_phone_edit->setMaxLength(20);
   user_phone_edit->setValidator(validator);
   QLabel *user_phone_label=new QLabel(user_phone_edit,tr("&Phone:"),this);
-  user_phone_label->setGeometry(10,75,115,19);
+  user_phone_label->setGeometry(10,95,115,19);
   user_phone_label->setFont(labelFont());
   user_phone_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -102,12 +113,12 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // Local Authentication
   //
   user_localauth_check=new QCheckBox(this);
-  user_localauth_check->setGeometry(20,97,15,15);
+  user_localauth_check->setGeometry(20,118,15,15);
   connect(user_localauth_check,SIGNAL(toggled(bool)),
 	  this,SLOT(localAuthToggledData(bool)));
   user_localauth_label=new QLabel(user_localauth_check,
 				  tr("Authenticate This User Locally"),this);
-  user_localauth_label->setGeometry(40,95,200,19);
+  user_localauth_label->setGeometry(40,116,200,19);
   user_localauth_label->setFont(labelFont());
   user_localauth_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -115,11 +126,11 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // PAM Service
   //
   user_pamservice_edit=new QLineEdit(this);
-  user_pamservice_edit->setGeometry(130,119,140,19);
+  user_pamservice_edit->setGeometry(130,140,140,19);
   user_pamservice_edit->setMaxLength(32);
   user_pamservice_label=
     new QLabel(user_pamservice_edit,tr("PAM Service")+":",this);
-  user_pamservice_label->setGeometry(10,119,115,19);
+  user_pamservice_label->setGeometry(10,140,115,19);
   user_pamservice_label->setFont(labelFont());
   user_pamservice_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -127,7 +138,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // Change Password Button
   //
   user_password_button=new QPushButton(this);
-  user_password_button->setGeometry(sizeHint().width()-90,97,80,50);
+  user_password_button->setGeometry(sizeHint().width()-90,118,80,50);
   user_password_button->setFont(buttonFont());
   user_password_button->setText(tr("Change\n&Password"));
   connect(user_password_button,SIGNAL(clicked()),this,SLOT(passwordData()));
@@ -136,20 +147,20 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // WebAPI Authorization Timeout
   //
   user_webapi_auth_spin=new QSpinBox(this);
-  user_webapi_auth_spin->setGeometry(130,141,80,19);
+  user_webapi_auth_spin->setGeometry(130,162,80,19);
   user_webapi_auth_spin->setRange(0,86400);
   user_webapi_auth_spin->setSpecialValueText(tr("Disabled"));
   QLabel *user_webapi_auth_label=
     new QLabel(user_webapi_auth_spin,tr("WebAPI Timeout:"),this);
-  user_webapi_auth_label->setGeometry(10,141,115,19);
+  user_webapi_auth_label->setGeometry(10,162,115,19);
   user_webapi_auth_label->setFont(labelFont());
   user_webapi_auth_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Administrative Group Priviledges
   //
-  user_admin_group=new Q3ButtonGroup(tr("Administrative Rights"),this);
-  user_admin_group->setGeometry(10,170,355,45);
+  user_admin_group=new QGroupBox(tr("Administrative Rights"),this);
+  user_admin_group->setGeometry(10,191,355,45);
   user_admin_group->setFont(labelFont());
 
   user_admin_config_button=new QCheckBox(user_admin_group);
@@ -167,8 +178,8 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   // Production Group Priviledges
   //
-  user_prod_group=new Q3ButtonGroup(tr("Production Rights"),this);
-  user_prod_group->setGeometry(10,225,355,106);
+  user_prod_group=new QGroupBox(tr("Production Rights"),this);
+  user_prod_group->setGeometry(10,246,355,106);
   user_prod_group->setFont(labelFont());
 
   user_create_carts_button=new QCheckBox(user_prod_group);
@@ -233,8 +244,8 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   // Traffic Group Priviledges
   //
-  user_traffic_group=new Q3ButtonGroup(tr("Traffic Rights"),this);
-  user_traffic_group->setGeometry(10,341,355,66);
+  user_traffic_group=new QGroupBox(tr("Traffic Rights"),this);
+  user_traffic_group->setGeometry(10,362,355,66);
   user_traffic_group->setFont(labelFont());
 
   user_create_log_button=new QCheckBox(user_traffic_group);
@@ -274,8 +285,8 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   // OnAir Group Priviledges
   //
-  user_onair_group=new Q3ButtonGroup(tr("OnAir Rights"),this);
-  user_onair_group->setGeometry(10,417,355,85);
+  user_onair_group=new QGroupBox(tr("OnAir Rights"),this);
+  user_onair_group->setGeometry(10,438,355,85);
   user_onair_group->setFont(labelFont());
 
   user_playout_log_button=new QCheckBox(user_onair_group);
@@ -324,8 +335,8 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   // Podcast Group Priviledges
   //
-  user_podcast_group=new Q3ButtonGroup(tr("Podcasting Rights"),this);
-  user_podcast_group->setGeometry(10,512,355,66);
+  user_podcast_group=new QGroupBox(tr("Podcasting Rights"),this);
+  user_podcast_group->setGeometry(10,533,355,66);
   user_podcast_group->setFont(labelFont());
 
   user_add_podcast_button=new QCheckBox(user_podcast_group);
@@ -366,7 +377,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //  Group Permissions Button
   //
   user_assign_perms_button=new QPushButton(this);
-  user_assign_perms_button->setGeometry(10,582,sizeHint().width()/3-20,50);
+  user_assign_perms_button->setGeometry(10,603,sizeHint().width()/3-20,50);
   user_assign_perms_button->setFont(buttonFont());
   user_assign_perms_button->setText(tr("Group\nPermissions"));
   connect(user_assign_perms_button,SIGNAL(clicked()),this,SLOT(groupsData()));
@@ -375,7 +386,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //  Services Permissions Button
   //
   user_assign_svcs_button=new QPushButton(this);
-  user_assign_svcs_button->setGeometry(sizeHint().width()/3+10,582,sizeHint().width()/3-20,50);
+  user_assign_svcs_button->setGeometry(sizeHint().width()/3+10,603,sizeHint().width()/3-20,50);
   user_assign_svcs_button->setFont(buttonFont());
   user_assign_svcs_button->setText(tr("Service\nPermissions"));
   connect(user_assign_svcs_button,SIGNAL(clicked()),this,SLOT(servicesData()));
@@ -385,7 +396,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   user_assign_feeds_button=new QPushButton(this);
   user_assign_feeds_button->
-    setGeometry(2*sizeHint().width()/3+10,582,sizeHint().width()/3-20,50);
+    setGeometry(2*sizeHint().width()/3+10,603,sizeHint().width()/3-20,50);
   user_assign_feeds_button->setFont(buttonFont());
   user_assign_feeds_button->setText(tr("Podcast Feed\nPermissions"));
   connect(user_assign_feeds_button,SIGNAL(clicked()),this,SLOT(feedsData()));
@@ -417,6 +428,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_name_edit->setReadOnly(true);
   user_full_name_edit->setText(user_user->fullName());
   user_description_edit->setText(user_user->description());
+  user_email_address_edit->setText(user_user->emailAddress());
   user_phone_edit->setText(user_user->phone());
   user_localauth_check->setChecked(user_user->localAuthentication());
   user_pamservice_edit->setText(user_user->pamService());
@@ -467,6 +479,7 @@ EditUser::~EditUser()
   delete user_name_edit;
   delete user_full_name_edit;
   delete user_description_edit;
+  delete user_email_address_edit;
   delete user_phone_edit;
   delete user_admin_group;
   delete user_prod_group;
@@ -477,7 +490,7 @@ EditUser::~EditUser()
 
 QSize EditUser::sizeHint() const
 {
-  return QSize(375,702);
+  return QSize(375,723);
 } 
 
 
@@ -582,6 +595,7 @@ void EditUser::okData()
 {
   user_user->setFullName(user_full_name_edit->text());
   user_user->setDescription(user_description_edit->text());
+  user_user->setEmailAddress(user_email_address_edit->text());
   user_user->setPhone(user_phone_edit->text());
   user_user->setLocalAuthentication(user_localauth_check->isChecked());
   user_user->setPamService(user_pamservice_edit->text());

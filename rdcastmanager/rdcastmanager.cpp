@@ -2,7 +2,7 @@
 //
 // A PodCast Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,9 +19,11 @@
 //
 
 #include <qapplication.h>
+#include <qclipboard.h>
 #include <qtranslator.h>
 #include <qmessagebox.h>
 
+#include <rdconf.h>
 #include <rdescape_string.h>
 #include <rdpodcast.h>
 
@@ -35,6 +37,7 @@
 #include "../icons/rdcastmanager-22x22.xpm"
 #include "../icons/greencheckmark.xpm"
 #include "../icons/redx.xpm"
+#include "../icons/rdcastmanager-32x32.xpm"
 
 //
 // Global Resources
@@ -97,6 +100,13 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   setWindowIcon(*cast_rivendell_map);
   cast_greencheckmark_map=new QPixmap(greencheckmark_xpm);
   cast_redx_map=new QPixmap(redx_xpm);
+  cast_rdcastmanager_32x32_map=new QPixmap(rdcastmanager_32x32_xpm);
+
+  //
+  // Notifications
+  //
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  this,SLOT(notificationReceivedData(RDNotification *)));
 
   //
   // Feed List
@@ -104,20 +114,26 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   cast_feed_list=new RDListView(this);
   cast_feed_list->setAllColumnsShowFocus(true);
   cast_feed_list->setItemMargin(5);
+  connect(cast_feed_list,SIGNAL(clicked(Q3ListViewItem *)),
+	  this,SLOT(feedClickedData(Q3ListViewItem *)));
   connect(cast_feed_list,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
 	  SLOT(feedDoubleclickedData(Q3ListViewItem *,const QPoint &,int)));
   cast_feed_list->addColumn("");
   cast_feed_list->setColumnAlignment(0,Qt::AlignCenter);
+
   cast_feed_list->addColumn(tr("Key Name"));
-  cast_feed_list->setColumnAlignment(1,Qt::AlignHCenter);
+  cast_feed_list->setColumnAlignment(1,Qt::AlignLeft);
+
   cast_feed_list->addColumn(tr("Feed Name"));
   cast_feed_list->setColumnAlignment(2,Qt::AlignLeft);
-  cast_feed_list->addColumn(tr("Description"));
-  cast_feed_list->setColumnAlignment(3,Qt::AlignLeft);
+
   cast_feed_list->addColumn(tr("Casts"));
   cast_feed_list->setColumnAlignment(3,Qt::AlignCenter);
+
+  cast_feed_list->addColumn(tr("Public URL"));
+  cast_feed_list->setColumnAlignment(4,Qt::AlignLeft);
 
   //
   // Open Button
@@ -125,7 +141,17 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   cast_open_button=new QPushButton(this);
   cast_open_button->setFont(buttonFont());
   cast_open_button->setText(tr("&View\nFeed"));
+  cast_open_button->setDisabled(true);
   connect(cast_open_button,SIGNAL(clicked()),this,SLOT(openData()));
+
+  //
+  // Copy Button
+  //
+  cast_copy_button=new QPushButton(this);
+  cast_copy_button->setFont(buttonFont());
+  cast_copy_button->setText(tr("Copy URL to\nClipboard"));
+  cast_copy_button->setDisabled(true);
+  connect(cast_copy_button,SIGNAL(clicked()),this,SLOT(copyData()));
 
   //
   // Close Button
@@ -163,22 +189,68 @@ void MainWidget::userChangedData()
 }
 
 
+void MainWidget::feedClickedData(Q3ListViewItem *item)
+{
+  cast_open_button->setDisabled(item==NULL);
+  cast_copy_button->setDisabled(item==NULL);
+}
+
+
 void MainWidget::openData()
 {
   RDListViewItem *item=(RDListViewItem *)cast_feed_list->selectedItem();
   if(item==NULL) {
     return;
   }
-  ListCasts *casts=new ListCasts(item->id(),this);
+  ListCasts *casts=
+    new ListCasts(item->id(),item->text(3)==tr("[superfeed]"),this);
   casts->exec();
   RefreshItem(item);
   delete casts;
 }
 
 
+void MainWidget::copyData()
+{
+  RDListViewItem *item=(RDListViewItem *)cast_feed_list->selectedItem();
+  if(item==NULL) {
+    return;
+  }
+  QApplication::clipboard()->setText(item->text(4));
+}
+
+
 void MainWidget::feedDoubleclickedData(Q3ListViewItem *,const QPoint &,int)
 {
   openData();
+}
+
+
+void MainWidget::notificationReceivedData(RDNotification *notify)
+{
+  QString keyname;
+  RDListViewItem *item=NULL;
+
+  if(notify->type()==RDNotification::FeedType) {
+    keyname=notify->id().toString();
+    switch(notify->action()) {
+    case RDNotification::ModifyAction:
+      item=(RDListViewItem *)cast_feed_list->firstChild();
+      while(item!=NULL) {
+	if(item->text(1)==keyname) {
+	  RefreshItem(item);
+	}
+	item=(RDListViewItem *)item->nextSibling();
+      }
+      break;
+
+    case RDNotification::NoAction:
+    case RDNotification::AddAction:
+    case RDNotification::DeleteAction:
+    case RDNotification::LastAction:
+      break;
+    }
+  }
 }
 
 
@@ -193,6 +265,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   if(cast_resize) {
     cast_feed_list->setGeometry(10,10,size().width()-20,size().height()-70);
     cast_open_button->setGeometry(10,size().height()-55,80,50);
+    cast_copy_button->setGeometry(120,size().height()-55,100,50);
     cast_close_button->setGeometry(size().width()-90,size().height()-55,80,50);
   }
 }
@@ -207,11 +280,14 @@ void MainWidget::RefreshItem(RDListViewItem *item)
   int total=0;
 
   sql=QString("select ")+
-    "CHANNEL_TITLE,"+        // 00
-    "CHANNEL_DESCRIPTION,"+  // 01
-    "ID "+                   // 02
-    "from FEEDS where "+
-    "KEY_NAME=\""+RDEscapeString(item->text(1))+"\"";
+    "FEEDS.CHANNEL_TITLE,"+         // 00
+    "FEEDS.IS_SUPERFEED,"+          // 01
+    "FEEDS.ID,"+                    // 02
+    "FEEDS.BASE_URL,"+              // 03
+    "FEED_IMAGES.DATA "+            // 04
+    "from FEEDS left join FEED_IMAGES "+
+    "on FEEDS.CHANNEL_IMAGE_ID=FEED_IMAGES.ID where "+
+    "FEEDS.KEY_NAME=\""+RDEscapeString(item->text(1))+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString().sprintf("select STATUS from PODCASTS where FEED_ID=%u",
@@ -230,15 +306,21 @@ void MainWidget::RefreshItem(RDListViewItem *item)
       }
     }
     delete q1;
-    if(active==total) {
-      item->setPixmap(0,*cast_greencheckmark_map);
+    if(q->value(4).isNull()) {
+      item->setPixmap(0,*cast_rdcastmanager_32x32_map);
     }
     else {
-      item->setPixmap(0,*cast_redx_map);
+      QImage img=QImage::fromData(q->value(4).toByteArray());
+      item->setPixmap(0,QPixmap::fromImage(img.scaled(32,32)));
     }
     item->setText(2,q->value(0).toString());
-    item->setText(3,q->value(1).toString());
-    item->setText(4,QString().sprintf("%d / %d",active,total));
+    if(RDBool(q->value(1).toString())) {
+      item->setText(3,tr("[superfeed]"));
+    }
+    else {
+      item->setText(3,QString().sprintf("%d / %d",active,total));
+    }
+    item->setText(4,RDFeed::publicUrl(q->value(3).toString(),item->text(1)));
   }
   delete q;
 }

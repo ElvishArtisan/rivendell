@@ -2,7 +2,7 @@
 //
 // Delete a Remote File
 //
-//   (C) Copyright 2011,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2011-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,11 +22,12 @@
 #define RDDELETE_H
 
 #include <qobject.h>
-#include <q3url.h>
+#include <qurl.h>
 
 #include <rdconfig.h>
+#include <rdtransfer.h>
 
-class RDDelete : public QObject
+class RDDelete : public RDTransfer
 {
   Q_OBJECT;
  public:
@@ -35,17 +36,20 @@ class RDDelete : public QObject
 		  ErrorInternal=5,ErrorRemoteServer=6,ErrorUrlInvalid=7,
 		  ErrorUnspecified=8,ErrorInvalidUser=9,
 		  ErrorInvalidLogin=11,ErrorRemoteAccess=12,
-		  ErrorRemoteConnection=13,ErrorUnknown=14};
+		  ErrorRemoteConnection=13,ErrorUnknown=14,
+		  ErrorUnsupportedUrlScheme=15};
   RDDelete(RDConfig *config,QObject *parent=0);
+  QStringList supportedSchemes() const;
   void setTargetUrl(const QString &url);
   RDDelete::ErrorCode runDelete(const QString &username,
 				const QString &password,
+				const QString &id_filename,
+				bool use_id_filename,
 				bool log_debug);
   static QString errorText(RDDelete::ErrorCode err);
 
  private:
-  Q3Url conv_target_url;
-  RDConfig *conv_config;
+  QUrl conv_target_url;
 };
 
 
