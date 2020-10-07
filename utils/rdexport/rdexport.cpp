@@ -52,6 +52,7 @@ MainObject::MainObject(QObject *parent)
   export_channels=0;
   export_quality=3;
   export_xml=false;
+  export_verbose=false;
 
   //
   // Open the Database
