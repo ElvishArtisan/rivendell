@@ -20414,7 +20414,6 @@
 	'IMPORTER_LINES.START_HOUR' field in the database.
 	* Removed the 'not null' attribute from the
 	'IMPORTER_LINES.START_SECS' field in the database.
-	* Removed the 'IMPORTER_LINES.LINK_LENGTH' field from the database.
 	* Removed the 'IMPORTER_LINES.INSERT_TRACK' field from the database.
 	* Removed the 'IMPORTER_LINES.INSERT_FIRST' field from the database.
 	* Removed the 'IMPORTER_LINES.TRACK_STRING' field from the database.
