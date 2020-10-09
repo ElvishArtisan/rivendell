@@ -632,4 +632,9 @@
 #define RD_EXIT_NO_PERMS 11         // Insufficient permissions
 #define RD_EXIT_REPORT_FAILED 12    // Report generation failed
 
+/*
+ * Shelf life for GPIO event records
+ */
+#define RD_GPIO_EVENT_DAYS 30
+
 #endif  // RD_H

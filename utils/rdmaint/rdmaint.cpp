@@ -120,6 +120,8 @@ void MainObject::RunSystemMaintenance()
   q=new RDSqlQuery(sql);
   delete q;
 
+  PrintMessage("Starting System Maintenance");
+
   PurgeCuts();
   PurgeLogs();
   PurgeElr();
@@ -127,6 +129,8 @@ void MainObject::RunSystemMaintenance()
   PurgeWebapiAuths();
   PurgeStacks();
   RehashCuts();
+
+  PrintMessage("Finished System Maintenance");
 }
 
 
@@ -138,6 +142,8 @@ void MainObject::RunLocalMaintenance()
 
 void MainObject::PurgeCuts()
 {
+  PrintMessage("Starting PurgeCuts()");
+
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
@@ -188,11 +194,15 @@ void MainObject::PurgeCuts()
     delete q1;
   }
   delete q;
+
+  PrintMessage("Completed PurgeCuts()");
 }
 
 
 void MainObject::PurgeLogs()
 {
+  PrintMessage("Starting PurgeLogs()");
+
   QString sql;
   RDSqlQuery *q;
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
@@ -210,11 +220,15 @@ void MainObject::PurgeLogs()
     delete log;
   }
   delete q;
+
+  PrintMessage("Completed PurgeLogs()");
 }
 
 
 void MainObject::PurgeElr()
 {
+  PrintMessage("Starting PurgeElr()");
+
   QString sql;
   RDSqlQuery *q;
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
@@ -233,11 +247,15 @@ void MainObject::PurgeElr()
     RDSqlQuery::apply(sql);
   }
   delete q;
+
+  PrintMessage("Completed PurgeElr()");
 }
 
 
 void MainObject::PurgeDropboxes()
 {
+  PrintMessage("Starting PurgeDropboxes()");
+
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
@@ -259,35 +277,46 @@ void MainObject::PurgeDropboxes()
     }
   }
   delete q;
+
+  PrintMessage("Completed PurgeDropboxes()");
 }
 
 
 void MainObject::PurgeGpioEvents()
 {
+  PrintMessage("Starting PurgeGpioEvents()");
+
   QString sql;
-  RDSqlQuery *q;
 
   sql=QString("delete from GPIO_EVENTS where ")+
     "EVENT_DATETIME<\""+
-    QDate::currentDate().addDays(-30).toString("yyyy-MM-dd")+" 00:00:00\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+    QDate::currentDate().addDays(-RD_GPIO_EVENT_DAYS).toString("yyyy-MM-dd")+" 00:00:00\"";
+  printf("SQL: %s\n",sql.toUtf8().constData());
+  RDSqlQuery::apply(sql);
+
+  PrintMessage("Starting Completed GpioEvents()");
 }
 
 
 void MainObject::PurgeWebapiAuths()
 {
+  PrintMessage("Starting PurgeWebapiAuths()");
+
   QString sql;
   RDSqlQuery *q;
 
   sql=QString("delete from WEBAPI_AUTHS where EXPIRATION_DATETIME<now()");
   q=new RDSqlQuery(sql);
   delete q;
+
+  PrintMessage("Completed PurgeWebapiAuths()");
 }
 
 
 void MainObject::PurgeStacks()
 {
+  PrintMessage("Starting PurgeStacks()");
+
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
@@ -348,11 +377,15 @@ void MainObject::PurgeStacks()
     delete q1;
   }
   delete q;
+
+  PrintMessage("Completed PurgeStacks()");
 }
 
 
 void MainObject::RehashCuts()
 {
+  PrintMessage("Starting RehashCuts()");
+
   QString sql;
   RDSqlQuery *q;
   RDRehash::ErrorCode err;
@@ -377,9 +410,22 @@ void MainObject::RehashCuts()
     sleep(1);
   }
   delete q;
+
+  PrintMessage("Completed RehashCuts()");
 }
 
-  
+
+ void MainObject::PrintMessage(const QString &msg) const
+ {
+   if(maint_verbose) {
+     printf("%s: %s\n",
+	    QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss").
+	    toUtf8().constData(),
+	    msg.toUtf8().constData());
+   }
+ }
+
+
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);

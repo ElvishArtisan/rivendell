@@ -45,6 +45,7 @@ class MainObject : public QObject
   void PurgeWebapiAuths();
   void PurgeStacks();
   void RehashCuts();
+  void PrintMessage(const QString &msg) const;
   bool maint_verbose;
   bool maint_system;
 };

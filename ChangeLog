@@ -20442,3 +20442,7 @@
 	asserted after exiting when handling schedule import errors.
 2020-10-09 Fred Gleason <fredg@paravelsystems.com>
 	* Updated rdservice(8) to use standard exit code defines.
+2020-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added an index to the 'GPIO_EVENTS.EVENT_DATETIME' field.
+	* Incremented the database version to 342.
+	* Implemented the '--verbose' switch for rdmaint(8).

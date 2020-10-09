@@ -41,12 +41,22 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 342
+  //
+  if((cur_schema==342)&&(set_schema<cur_schema)) {
+    DropIndex("GPIO_EVENTS","EVENT_DATETIME_IDX");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 341
   //
   if((cur_schema==341)&&(set_schema<cur_schema)) {
     DropColumn("IMPORTER_LINES","FILE_LINE");
     DropColumn("IMPORTER_LINES","LINK_START_TIME");
     DropColumn("IMPORTER_LINES","LINK_LENGTH");
+
     WriteSchemaVersion(--cur_schema);
   }
 
