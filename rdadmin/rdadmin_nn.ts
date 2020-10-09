@@ -4060,15 +4060,15 @@ Custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Inline Traffic Inheritance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>From Parent RDLogManager Event</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>From Music Scheduler File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inline Traffic Start/Length</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

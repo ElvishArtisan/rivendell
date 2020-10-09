@@ -20446,3 +20446,7 @@
 	* Added an index to the 'GPIO_EVENTS.EVENT_DATETIME' field.
 	* Incremented the database version to 342.
 	* Implemented the '--verbose' switch for rdmaint(8).
+2020-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'Inline Traffic Inheritance' control to 'Inline
+	Traffic Start/Length' and moved it to the 'Music Data Import'
+	section of the 'Edit Service' dialog in rdadmin(1).
