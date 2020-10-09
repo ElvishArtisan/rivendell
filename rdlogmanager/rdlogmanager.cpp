@@ -60,7 +60,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   rda=new RDApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE,this);
   if(!rda->open(&err_msg)) {
     QMessageBox::critical(this,"RDLogManager - "+tr("Error"),err_msg);
-    exit(1);
+    exit(RD_EXIT_NO_DB);
   }
 
   setWindowTitle(tr("RDLogManager"));
@@ -228,7 +228,7 @@ void MainWidget::reportsData()
 
 void MainWidget::quitMainWidget()
 {
-  exit(0);
+  exit(RD_EXIT_OK);
 }
 
 
@@ -319,7 +319,7 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-s\"\n");
-	exit(2);
+	exit(RD_EXIT_UNKNOWN_OPTION);
       }
       cmd->setProcessed(i,true);
     }
@@ -330,7 +330,7 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-r\"\n");
-	exit(2);
+	exit(RD_EXIT_UNKNOWN_OPTION);
       }
       cmd->setProcessed(i,true);
     }
@@ -341,7 +341,7 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-d\"\n");
-	exit(2);
+	exit(RD_EXIT_UNKNOWN_OPTION);
       }
       cmd->setProcessed(i,true);
     }
@@ -352,14 +352,14 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-e\"\n");
-	exit(2);
+	exit(RD_EXIT_UNKNOWN_OPTION);
       }
       cmd->setProcessed(i,true);
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"rdlogmanager: unknown command option \"%s\"\n",
 	      (const char *)cmd->key(i));
-      exit(2);
+      exit(RD_EXIT_UNKNOWN_OPTION);
     }
   }
   delete cmd;
@@ -367,7 +367,7 @@ int main(int argc,char *argv[])
      (cmd_generate||cmd_merge_traffic||cmd_merge_music)) {
     fprintf(stderr,
 	    "rdlogmanager: log and report operations are mutually exclusive\n");
-    exit(256);
+    exit(RD_EXIT_UNKNOWN_OPTION);
   }
 
   if(cmd_generate||cmd_merge_traffic||cmd_merge_music) {

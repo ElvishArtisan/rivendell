@@ -50,8 +50,8 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
 
   rda=new RDApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE);
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
-    exit(1);
+    fprintf(stderr,"rdlogmanager: %s\n",err_msg.toUtf8().constData());
+    exit(RD_EXIT_NO_DB);
   }
 
   //
@@ -60,7 +60,7 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
   RDReport *report=new RDReport(rptname,rda->station(),rda->config());
   if(!report->exists()) {
     fprintf(stderr,"rdlogmanager: no such report\n");
-    return 256;
+    return RD_EXIT_NO_REPORT;
   }
 
   //
@@ -71,14 +71,14 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
     fprintf(stderr,"report \"%s\" for %s already exists\n",
 	    (const char *)rptname.utf8(),
 	    (const char *)yesterday.addDays(start_offset).toString());
-    exit(256);
+    exit(RD_EXIT_OUTPUT_PROTECTED);
   }
   if(!report->generateReport(yesterday.addDays(start_offset),
 			     yesterday.addDays(end_offset),rda->station(),
 			     &out_path)) {
     fprintf(stderr,"rdlogmanager: report generation failed [%s]\n",
 	    (const char *)RDReport::errorText(report->errorCode()));
-    return 256;
+    return RD_EXIT_REPORT_FAILED;
   }
-  return 0;
+  return RD_EXIT_OK;
 }

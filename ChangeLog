@@ -20432,3 +20432,11 @@
 	* Added generation of an 'RDLogManager Error Report' when errors
 	are detected when importing an external scheduler file in
 	rdlogmanager(1).
+2020-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Defined a set of standard exit code defines starting with
+	'RD_EXIT_' in 'lib/rd.h'.
+	* Regularized the exit codes returned by rdlogmanager(1).
+	* Cleaned up error handling when using rdlogmanager(1) in
+	command line mode.
+	* Fixed a bug in rdlogmanager(1) that could leave a log lock
+	asserted after exiting when handling schedule import errors.

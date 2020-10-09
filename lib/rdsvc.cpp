@@ -826,6 +826,8 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   RDLogEvent *dest_event=NULL;
   RDLogLine *logline=NULL;
 
+  *err_msg="";
+
   RDLogLock *log_lock=new RDLogLock(logname,user,svc_station,this);
   if(!TryLock(log_lock,err_msg)) {
     delete log_lock;
@@ -877,6 +879,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   //
   if(src==RDSvc::Music) {
     if(!ResolveInlineTrafficLinks(logname,err_msg)) {
+      delete log_lock;
       return false;
     }
   }

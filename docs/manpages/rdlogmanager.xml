@@ -119,94 +119,118 @@
       </listitem>
     </varlistentry>
   </variablelist>
-</refsect1>
+  </refsect1>
 
-<refsect1 id='modifier_options'><title>Modifier Options</title>
-<para>
-  Modifier options change the default parameters of the specified mode.
-</para>
-<variablelist remap='TP'>
-  <varlistentry>
-    <term>
-      <option>-d
-      <arg choice='req'><replaceable>days</replaceable></arg>
-      </option>
-    </term>
-    <listitem>
-      <para>
-	Specify a start date offset in days. For log operations, this will
-	be added to &quot;tomorrow's&quot; date to arrive at a target date,
-	whereas for report operations it will be added to
-	&quot;yesterday's&quot; date to arrive at a target date.
-	Default value is <userinput>0</userinput>.
-      </para>
-    </listitem>
-  </varlistentry>
-  <varlistentry>
-    <term>
-      <option>-e
-      <arg choice='req'><replaceable>days</replaceable></arg>
-      </option>
-    </term>
-    <listitem>
-      <para>
-	Specify an end date offset in days. This will be added to
-	&quot;yesterday's&quot;
-	date to arrive at a target end date. Valid only for certain report
-	types. Default value is <userinput>0</userinput>.
-      </para>
-    </listitem>
-  </varlistentry>
-  <varlistentry>
-    <term>
-      <option>-P</option>
-    </term>
-    <listitem>
-      <para>
-	Protect an existing target object --i.e. if the specified
-	operation has already been performed, do not overwrite the
-	prior result.
-      </para>
-    </listitem>
-  </varlistentry>
-  <varlistentry>
-    <term>
-      <option>-s
-      <arg choice='req'><replaceable>service-name</replaceable></arg>
-      </option>
-    </term>
-    <listitem>
-      <para>
-	Specify the name of the service for a log operation. Required
-	when the the <option>-g</option>, <option>-m</option> or
-	<option>-t</option> modes are specified (see above).
-      </para>
-    </listitem>
-  </varlistentry>
-</variablelist>
-</refsect1>
-
-<refsect1>
-  <title>BUGS</title>
+  <refsect1 id='modifier_options'><title>Modifier Options</title>
   <para>
-    The syntax of <command>rdlogmanager</command><manvolnum>1</manvolnum>'s
-    switches is decidedly grotty, nor does it conform to the
-    &quot;long-form&quot; switch conventions used in most other
-    Rivendell commands.
+    Modifier options change the default parameters of the specified mode.
   </para>
-</refsect1>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>-d
+	<arg choice='req'><replaceable>days</replaceable></arg>
+	</option>
+      </term>
+      <listitem>
+	<para>
+	  Specify a start date offset in days. For log operations, this will
+	  be added to &quot;tomorrow's&quot; date to arrive at a target date,
+	  whereas for report operations it will be added to
+	  &quot;yesterday's&quot; date to arrive at a target date.
+	  Default value is <userinput>0</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>-e
+	<arg choice='req'><replaceable>days</replaceable></arg>
+	</option>
+      </term>
+      <listitem>
+	<para>
+	  Specify an end date offset in days. This will be added to
+	  &quot;yesterday's&quot;
+	  date to arrive at a target end date. Valid only for certain report
+	  types. Default value is <userinput>0</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>-P</option>
+      </term>
+      <listitem>
+	<para>
+	  Protect an existing target object --i.e. if the specified
+	  operation has already been performed, do not overwrite the
+	  prior result.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>-s
+	<arg choice='req'><replaceable>service-name</replaceable></arg>
+	</option>
+      </term>
+      <listitem>
+	<para>
+	  Specify the name of the service for a log operation. Required
+	  when the the <option>-g</option>, <option>-m</option> or
+	  <option>-t</option> modes are specified (see above).
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsect1>
 
-<refsect1 id='see_also'><title>See Also</title>
+  <refsect1 id='exit_values'><title>Exit Values</title>
 <para>
-  <citerefentry>
-    <refentrytitle>rdclilogedit</refentrytitle><manvolnum>1</manvolnum>
-  </citerefentry>
-  <literal>,</literal>
-  <citerefentry>
-    <refentrytitle>rdrender</refentrytitle><manvolnum>1</manvolnum>
-  </citerefentry>
+  <segmentedlist>
+    <?dbhtml list-presentation="tabular"?>
+    <?dbfo   list-presentation="tabular"?>
+    <segtitle></segtitle>
+    <segtitle></segtitle>
+    <seglistitem><seg>0</seg><seg>Normal exit</seg></seglistitem>
+    <seglistitem><seg>1</seg><seg>Prior instance found</seg></seglistitem>
+    <seglistitem><seg>2</seg><seg>Unable to open database</seg></seglistitem>
+    <seglistitem><seg>3</seg><seg>Unable to start a service component</seg></seglistitem>
+    <seglistitem><seg>4</seg><seg>Unrecognized/invalid command line option</seg></seglistitem>
+    <seglistitem><seg>5</seg><seg>Output overwrite protected</seg></seglistitem>
+    <seglistitem><seg>6</seg><seg>No such service</seg></seglistitem>
+    <seglistitem><seg>7</seg><seg>No such log</seg></seglistitem>
+    <seglistitem><seg>8</seg><seg>No such report</seg></seglistitem>
+    <seglistitem><seg>9</seg><seg>Log generation failed</seg></seglistitem>
+    <seglistitem><seg>10</seg><seg>Schedule file import failed</seg></seglistitem>
+    <seglistitem><seg>11</seg><seg>Insufficient permissions</seg></seglistitem>
+    <seglistitem><seg>11</seg><seg>Report generation failed</seg></seglistitem>
+  </segmentedlist>
 </para>
-</refsect1>
+  </refsect1>
+
+  <refsect1>
+    <title>BUGS</title>
+    <para>
+      The syntax of <command>rdlogmanager</command><manvolnum>1</manvolnum>'s
+      switches is decidedly grotty, nor does it conform to the
+      &quot;long-form&quot; switch conventions used in most other
+      Rivendell commands.
+    </para>
+  </refsect1>
+
+  <refsect1 id='see_also'><title>See Also</title>
+  <para>
+    <citerefentry>
+      <refentrytitle>rdclilogedit</refentrytitle><manvolnum>1</manvolnum>
+    </citerefentry>
+    <literal>,</literal>
+    <citerefentry>
+      <refentrytitle>rdrender</refentrytitle><manvolnum>1</manvolnum>
+    </citerefentry>
+  </para>
+  </refsect1>
 
 </refentry>
 

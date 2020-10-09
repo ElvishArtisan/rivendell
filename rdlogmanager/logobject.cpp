@@ -2,7 +2,7 @@
 //
 // Generate/merge logs from the command line.
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,8 +48,8 @@ LogObject::LogObject(const QString &svcname,int start_offset,
   //
   rda=new RDApplication("RDLogManager","rdlogmanager","");
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
-    exit(1);
+    fprintf(stderr,"rdlogmanager: %s\n",err_msg.toUtf8().constData());
+    exit(RD_EXIT_NO_DB);
   }
 
   connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
@@ -73,7 +73,7 @@ void LogObject::userData()
     RDSvc *svc=new RDSvc(log_service_name,rda->station(),rda->config());
     if(!svc->exists()) {
       fprintf(stderr,"rdlogmanager: no such service\n");
-      exit(256);
+      exit(RD_EXIT_NO_SERVICE);
     }
     QDate start_date=QDate::currentDate().addDays(1+log_start_offset);
     QString logname=
@@ -87,8 +87,8 @@ void LogObject::userData()
     if(log_generate_log) {
       if(log_protect_existing&&log->exists()) {
 	fprintf(stderr,"log \"%s\" already exists\n",
-		(const char *)log->name().utf8());
-	exit(256);
+		log->name().utf8().constData());
+	exit(RD_EXIT_OUTPUT_PROTECTED);
       }
       SendNotification(RDNotification::DeleteAction,log->name());
       log->removeTracks(rda->station(),rda->user(),rda->config());
@@ -99,8 +99,9 @@ void LogObject::userData()
 			   RDDateDecode(svc->nameTemplate(),start_date.addDays(1),
 				   rda->station(),rda->config(),svc->name()),
 			   &unused_report,rda->user(),&err_msg)) {
-	fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
-	exit(256);
+	fprintf(stderr,"rdlogmanager: log generation failed\n");
+	printf("%s\n",err_msg.toUtf8().constData());
+	exit(RD_EXIT_LOG_GEN_FAILED);
       }
       log->updateTracks();
       SendNotification(RDNotification::AddAction,log->name());
@@ -123,39 +124,42 @@ void LogObject::userData()
     if(log_merge_music) {
       if(!log->exists()) {
 	fprintf(stderr,"rdlogmanager: log does not exist\n");
-	exit(256);
+	exit(RD_EXIT_NO_LOG);
       }
       if(log_protect_existing&&
 	 (log->linkState(RDLog::SourceMusic)==RDLog::LinkDone)) {
 	fprintf(stderr,
 		"rdlogmanager: music for log \"%s\" is already imported\n",
-		(const char *)log->name().utf8());
-	exit(256);
+		log->name().utf8().constData());
+	exit(RD_EXIT_LOG_LINK_FAILED);
       }
       if((!log->includeImportMarkers())&&
 	 (log->linkState(RDLog::SourceMusic)!=RDLog::LinkMissing)) {
 	fprintf(stderr,
 		"rdlogmanager: music for log \"%s\" cannot be reimported\n",
-		(const char *)log->name().utf8());
-	exit(256);
+		log->name().utf8().constData());
+	exit(RD_EXIT_LOG_LINK_FAILED);
       }
       report="";
       log->removeTracks(rda->station(),rda->user(),rda->config());
       if(!svc->clearLogLinks(RDSvc::Traffic,logname,rda->user(),&err_msg)) {
-	fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
-	exit(256);
+	fprintf(stderr,"rdlogmanager: music import failed\n");
+	printf("%s\n",err_msg.toUtf8().constData());
+	exit(RD_EXIT_LOG_LINK_FAILED);
       }
       if(!svc->clearLogLinks(RDSvc::Music,logname,rda->user(),&err_msg)) {
-	fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
-	exit(256);
+	fprintf(stderr,"rdlogmanager: music import failed\n");
+	printf("%s\n",err_msg.toUtf8().constData());
+	exit(RD_EXIT_LOG_LINK_FAILED);
       }
       if(svc->linkLog(RDSvc::Music,start_date,logname,&report,rda->user(),
 		      &err_msg)) {
 	printf("%s\n",(const char*)report);
       }
       else {
-	fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
-	exit(256);
+	fprintf(stderr,"rdlogmanager: music import failed\n");
+	printf("%s\n",err_msg.toUtf8().constData());
+	exit(RD_EXIT_LOG_LINK_FAILED);
       }
       SendNotification(RDNotification::ModifyAction,log->name());
     }
@@ -166,33 +170,38 @@ void LogObject::userData()
     if(log_merge_traffic) {
       if(!log->exists()) {
 	fprintf(stderr,"rdlogmanager: log does not exist\n");
-	exit(256);
+	exit(RD_EXIT_NO_LOG);
       }
       if(log_protect_existing&&
 	 (log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone)) {
 	fprintf(stderr,
 		"rdlogmanager: traffic for log \"%s\" is already imported\n",
 		(const char *)log->name().utf8());
-	exit(256);
+	exit(RD_EXIT_LOG_LINK_FAILED);
       }
       if((!log->includeImportMarkers())&&
 	 (log->linkState(RDLog::SourceTraffic)!=RDLog::LinkMissing)) {
 	fprintf(stderr,
 		"rdlogmanager: traffic for log \"%s\" cannot be reimported\n",
-		(const char *)log->name().utf8());
-	exit(256);
+		log->name().utf8().constData());
+	exit(RD_EXIT_LOG_LINK_FAILED);
       }
       report="";
       if(!svc->clearLogLinks(RDSvc::Traffic,logname,rda->user(),&err_msg)) {
-	fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
-	exit(256);
+	fprintf(stderr,"rdlogmanager: traffic schedule import failed\n");
+	printf("%s\n",err_msg.toUtf8().constData());
+	exit(RD_EXIT_LOG_LINK_FAILED);
       }
       if(svc->linkLog(RDSvc::Traffic,start_date,logname,&report,rda->user(),
 		      &err_msg)) {
-	printf("%s\n",(const char*)report);
+	printf("%s\n",report.toUtf8().constData());
       }
       else {
-	fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
+	fprintf(stderr,"rdlogmanager: traffic import failed\n");
+	printf("%s\n",err_msg.toUtf8().constData());
+	delete log;
+	delete svc;
+	exit(RD_EXIT_LOG_LINK_FAILED);
       }
       SendNotification(RDNotification::ModifyAction,log->name());
     }
@@ -202,10 +211,10 @@ void LogObject::userData()
     //
     delete log;
     delete svc;
-    exit(0);
+    exit(RD_EXIT_OK);
   }
   fprintf(stderr,"rdlogmanager: insufficient permissions\n");
-  exit(1);
+  exit(RD_EXIT_NO_PERMS);
 }
 
 
