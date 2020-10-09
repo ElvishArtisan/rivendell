@@ -65,7 +65,7 @@ MainObject::MainObject(QObject *parent)
   //
   if(RDGetPids("rdservice").size()>1) {
     rda->syslog(LOG_ERR,"prior instance found");
-    exit(1);
+    exit(RD_EXIT_PRIOR_INSTANCE);
   }
 
   //
@@ -75,7 +75,7 @@ MainObject::MainObject(QObject *parent)
   if(!rda->open(&err_msg,&err_type,false)) {
     rda->syslog(LOG_ERR,"unable to open database [%s]",
 		(const char *)err_msg.utf8());
-    exit(2);
+    exit(RD_EXIT_NO_DB);
   }
 
   //
@@ -91,7 +91,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rdservice: unknown command-line option\n");
-      exit(4);
+      exit(RD_EXIT_UNKNOWN_OPTION);
     }
   }
 
@@ -109,7 +109,7 @@ MainObject::MainObject(QObject *parent)
     Shutdown();
     rda->syslog(LOG_ERR,"unable to start service component [%s]",
 		(const char *)err_msg.toUtf8());
-    exit(3);
+    exit(RD_EXIT_SVC_FAILED);
   }
 
   //
@@ -149,7 +149,7 @@ void MainObject::exitData()
     Shutdown();
     RDDeletePid(RD_PID_DIR,"rdservice.pid");
     rda->syslog(LOG_DEBUG,"shutting down normally");
-    exit(0);
+    exit(RD_EXIT_OK);
   }
 
   if(global_reload_dropboxes) {

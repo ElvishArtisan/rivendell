@@ -20440,3 +20440,5 @@
 	command line mode.
 	* Fixed a bug in rdlogmanager(1) that could leave a log lock
 	asserted after exiting when handling schedule import errors.
+2020-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Updated rdservice(8) to use standard exit code defines.
