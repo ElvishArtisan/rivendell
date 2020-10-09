@@ -1014,14 +1014,6 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to link music log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to link traffic log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>already exists.  Recreating it</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1059,6 +1051,18 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>No broken rules or validation exceptions found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDLogManager Error Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music schedule import failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic schedule import failed!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

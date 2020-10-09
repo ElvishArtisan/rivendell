@@ -134,6 +134,8 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   test_events_list->setColumnAlignment(6,Qt::AlignCenter);
   test_events_list->addColumn(tr("Annc Type"));
   test_events_list->setColumnAlignment(7,Qt::AlignCenter);
+  test_events_list->addColumn(tr("Line"));
+  test_events_list->setColumnAlignment(8,Qt::AlignRight);
   test_events_list->setColumnSortType(0,RDListView::LineSort);
   test_events_label=new QLabel(test_events_list,tr("Imported Events"),this);
   test_events_label->setGeometry(15,160,sizeHint().width()-30,18);
@@ -204,7 +206,8 @@ void TestImport::importData()
     "EXT_EVENT_ID,"+   // 05
     "EXT_ANNC_TYPE,"+  // 06
     "TITLE,"+          // 07
-    "TYPE "+           // 08
+    "TYPE,"+           // 08
+    "FILE_LINE "+      // 09
     "from IMPORTER_LINES where "+
     "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
     QString().sprintf("PROCESS_ID=%u ",getpid())+
@@ -223,6 +226,7 @@ void TestImport::importData()
     item->setText(5,q->value(4).toString().trimmed());
     item->setText(6,q->value(5).toString().trimmed());
     item->setText(7,q->value(6).toString().trimmed());
+    item->setText(8,QString().sprintf("%u",1+q->value(9).toUInt()));
     switch((RDLogLine::Type)q->value(8).toUInt()) {
     case RDLogLine::Cart:
       item->setPixmap(0,*test_playout_map);

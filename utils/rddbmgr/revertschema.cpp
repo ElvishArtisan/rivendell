@@ -41,6 +41,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 341
+  //
+  if((cur_schema==341)&&(set_schema<cur_schema)) {
+    DropColumn("IMPORTER_LINES","FILE_LINE");
+    DropColumn("IMPORTER_LINES","LINK_START_TIME");
+    DropColumn("IMPORTER_LINES","LINK_LENGTH");
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 340
   //
   if((cur_schema==340)&&(set_schema<cur_schema)) {
@@ -85,6 +95,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
       return false;
     }
     DropColumn("IMPORTER_LINES","TYPE");
+
     WriteSchemaVersion(--cur_schema);
   }
 

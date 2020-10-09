@@ -6275,6 +6275,10 @@ por favor, cheque suas configurações e tente novamente</translation>
         <source>[voice track]</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ViewAdapters</name>

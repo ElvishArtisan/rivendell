@@ -20422,3 +20422,13 @@
 	* Incremented the database version to 340.
 	* Added type icons to the 'Imported Events' list in the 'Test Import'
 	dialog in rdadmin(1).
+2020-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'IMPORTER_LINES.FILE_LINE' field to the database.
+	* Added an 'IMPORTER_LINES.LINK_START_TIME' field to the database.
+	* Added an 'IMPORTER_LINES.LINK_LENGTH' field to the database.
+	* Incremented the database version to 341.
+	* Reimplemented the 'RDSvc::linkLog()' and 'RDEventLine::linkLog()'
+	methods to use the updated 'IMPORTER_LINES' table schema.
+	* Added generation of an 'RDLogManager Error Report' when errors
+	are detected when importing an external scheduler file in
+	rdlogmanager(1).

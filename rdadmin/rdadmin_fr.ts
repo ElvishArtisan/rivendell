@@ -5127,6 +5127,10 @@ please check your settings and try again.</source>
         <source>[voice track]</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ViewAdapters</name>

@@ -1003,13 +1003,10 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
     "EXT_EVENT_ID,"+    // 04
     "EXT_ANNC_TYPE,"+   // 05
     "EXT_CART_NAME,"+   // 06
-    "INSERT_BREAK,"+    // 07
-    "INSERT_TRACK,"+    // 08
-    "INSERT_FIRST,"+    // 09
-    "TITLE,"+           // 10
-    "TRACK_STRING,"+    // 11
-    "LINK_START_TIME,"+ // 12
-    "LINK_LENGTH "+     // 13
+    "TITLE,"+           // 07
+    "TYPE,"+            // 08
+    "LINK_START_TIME,"+ // 09
+    "LINK_LENGTH "+     // 10
     "from IMPORTER_LINES where "+
     "STATION_NAME=\""+RDEscapeString(event_station->name())+"\" && "+
     QString().sprintf("PROCESS_ID=%u && ",getpid())+
@@ -1020,142 +1017,99 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
   q=new RDSqlQuery(sql);
   while(q->next()) {
     int length=GetLength(q->value(0).toUInt(),q->value(2).toInt());
-    if(q->value(9).toUInt()==RDEventLine::InsertBreak) {
-      if(q->value(7).toString()=="Y") {  // Insert Break
-	if((!event_nested_event.isEmpty()&&(event_nested_event!=event_name))) {
-	  e->insert(e->size(),1);
-	  logline=e->logLine(e->size()-1);
-	  logline->setId(e->nextId());
-	  logline->setStartTime(RDLogLine::Logged,time);
-	  logline->setType(RDLogLine::TrafficLink);
-	  logline->setSource(event_src);
-	  logline->setTransType(trans_type);
-	  logline->setEventLength(event_length);
-	  logline->setLinkEventName(event_nested_event);
-	  if(!q->value(13).isNull()) {
-	    logline->setLinkStartTime(q->value(12).toTime());
-	    logline->setLinkLength(q->value(13).toInt());
-	  }
-	  else {
-	    logline->setLinkStartTime(link_logline->linkStartTime());
-	    logline->setLinkLength(link_logline->linkLength());
-	  }
-	  logline->setLinkStartSlop(link_logline->linkStartSlop());
-	  logline->setLinkEndSlop(link_logline->linkEndSlop());
-	  logline->setLinkId(link_logline->linkId());
-	  logline->setLinkEmbedded(true);
-	}
-      }
-      if(q->value(8).toString()=="Y") {  // Insert Track
+
+    //
+    // Inline Traffic Break
+    //
+    if(q->value(8).toUInt()==RDLogLine::TrafficLink) {
+      if((!event_nested_event.isEmpty()&&(event_nested_event!=event_name))) {
 	e->insert(e->size(),1);
 	logline=e->logLine(e->size()-1);
 	logline->setId(e->nextId());
 	logline->setStartTime(RDLogLine::Logged,time);
-	logline->setType(RDLogLine::Track);
+	logline->setType(RDLogLine::TrafficLink);
 	logline->setSource(event_src);
-	logline->setTransType(RDLogLine::Segue);
-	logline->setMarkerComment(q->value(11).toString());
+	logline->setTransType(trans_type);
 	logline->setEventLength(event_length);
-	logline->setLinkEventName(event_name);
-	logline->setLinkStartTime(link_logline->linkStartTime());
-	logline->setLinkLength(link_logline->linkLength());
+	logline->setLinkEventName(event_nested_event);
+	logline->setLinkStartTime(q->value(9).toTime());
+	logline->setLinkLength(q->value(10).toInt());
 	logline->setLinkStartSlop(link_logline->linkStartSlop());
 	logline->setLinkEndSlop(link_logline->linkEndSlop());
 	logline->setLinkId(link_logline->linkId());
 	logline->setLinkEmbedded(true);
-      }
-    }
-    else {
-      if(q->value(8).toString()=="Y") {  // Insert Track
-	e->insert(e->size(),1);
-	logline=e->logLine(e->size()-1);
-	logline->setId(e->nextId());
-	logline->setStartTime(RDLogLine::Logged,time);
-	logline->setType(RDLogLine::Track);
-	logline->setSource(event_src);
-	logline->setTransType(RDLogLine::Segue);
-	logline->setMarkerComment(q->value(11).toString());
-        logline->setEventLength(event_length);
-	logline->setLinkEventName(event_name);
-	logline->setLinkStartTime(link_logline->linkStartTime());
-	logline->setLinkLength(link_logline->linkLength());
-	logline->setLinkStartSlop(link_logline->linkStartSlop());
-	logline->setLinkEndSlop(link_logline->linkEndSlop());
-	logline->setLinkId(link_logline->linkId());
-	logline->setLinkEmbedded(true);
-      }
-      if(q->value(7).toString()=="Y") {  // Insert Break
-	if((!event_nested_event.isEmpty()&&(event_nested_event!=event_name))) {
-	  e->insert(e->size(),1);
-	  logline=e->logLine(e->size()-1);
-	  logline->setId(e->nextId());
-	  logline->setStartTime(RDLogLine::Logged,time);
-	  logline->setType(RDLogLine::TrafficLink);
-	  logline->setSource(event_src);
-	  logline->setTransType(trans_type);
-	  logline->setEventLength(event_length);
-	  logline->setLinkEventName(event_nested_event);
-	  if(!q->value(13).isNull()) {
-	    logline->setLinkStartTime(q->value(12).toTime());
-	    logline->setLinkLength(q->value(13).toInt());
-	  }
-	  else {
-	    logline->setLinkStartTime(link_logline->linkStartTime());
-	    logline->setLinkLength(link_logline->linkLength());
-	  }
-	  logline->setLinkStartSlop(link_logline->linkStartSlop());
-	  logline->setLinkEndSlop(link_logline->linkEndSlop());
-	  logline->setLinkId(link_logline->linkId());
-	  logline->setLinkEmbedded(true);
-	}
       }
     }
 
     //
-    // Insert imported event
+    // Voicetrack Marker
     //
-    e->insert(e->size(),1);
-    logline=e->logLine(e->size()-1);
-    logline->setId(e->nextId());
-    logline->setSource(event_src);
-    logline->
-      setStartTime(RDLogLine::Logged,
-		   QTime(start_start_hour,0,0).addSecs(q->value(1).toInt()));
-    logline->setGraceTime(grace_time);
-    logline->setTimeType(time_type);
-    logline->setTransType(trans_type);
-    logline->setExtStartTime(QTime().addSecs(3600*start_start_hour+
-					     q->value(1).toInt()));
-    logline->setExtLength(q->value(2).toInt());
-    logline->setExtData(q->value(3).toString().trimmed());
-    logline->setExtEventId(q->value(4).toString().trimmed());
-    logline->setExtAnncType(q->value(5).toString().trimmed());
-    logline->setExtCartName(q->value(6).toString().trimmed());
-    logline->setEventLength(event_length);
-    logline->setLinkEventName(event_name);
-    logline->setLinkStartTime(link_logline->linkStartTime());
-    logline->setLinkLength(link_logline->linkLength());
-    logline->setLinkStartSlop(link_logline->linkStartSlop());
-    logline->setLinkEndSlop(link_logline->linkEndSlop());
-    logline->setLinkId(link_logline->linkId());
-    logline->setLinkEmbedded(link_logline->linkEmbedded());
-    if((q->value(6).toString()==label_cart)&&(!label_cart.isEmpty())) {
-      logline->setType(RDLogLine::Marker);
-      logline->setMarkerComment(q->value(10).toString());
-      logline->setCartNumber(0);
+    if(q->value(8).toUInt()==RDLogLine::Track) {
+      e->insert(e->size(),1);
+      logline=e->logLine(e->size()-1);
+      logline->setId(e->nextId());
+      logline->setStartTime(RDLogLine::Logged,time);
+      logline->setType(RDLogLine::Track);
+      logline->setSource(event_src);
+      logline->setTransType(RDLogLine::Segue);
+      logline->setMarkerComment(q->value(7).toString());
+      logline->setEventLength(event_length);
+      logline->setLinkEventName(event_name);
+      logline->setLinkStartTime(link_logline->linkStartTime());
+      logline->setLinkLength(link_logline->linkLength());
+      logline->setLinkStartSlop(link_logline->linkStartSlop());
+      logline->setLinkEndSlop(link_logline->linkEndSlop());
+      logline->setLinkId(link_logline->linkId());
+      logline->setLinkEmbedded(true);
     }
-    else {
-      if((q->value(6).toString()==track_cart)&&(!track_cart.isEmpty())) {
-	logline->setType(RDLogLine::Track);
-	logline->setMarkerComment(q->value(10).toString());
+
+    //
+    // Cart
+    //
+    if(q->value(8).toUInt()==RDLogLine::Cart) {
+      e->insert(e->size(),1);
+      logline=e->logLine(e->size()-1);
+      logline->setId(e->nextId());
+      logline->setSource(event_src);
+      logline->
+	setStartTime(RDLogLine::Logged,
+		     QTime(start_start_hour,0,0).addSecs(q->value(1).toInt()));
+      logline->setGraceTime(grace_time);
+      logline->setTimeType(time_type);
+      logline->setTransType(trans_type);
+      logline->setExtStartTime(QTime().addSecs(3600*start_start_hour+
+					       q->value(1).toInt()));
+      logline->setExtLength(q->value(2).toInt());
+      logline->setExtData(q->value(3).toString().trimmed());
+      logline->setExtEventId(q->value(4).toString().trimmed());
+      logline->setExtAnncType(q->value(5).toString().trimmed());
+      logline->setExtCartName(q->value(6).toString().trimmed());
+      logline->setEventLength(event_length);
+      logline->setLinkEventName(event_name);
+      logline->setLinkStartTime(link_logline->linkStartTime());
+      logline->setLinkLength(link_logline->linkLength());
+      logline->setLinkStartSlop(link_logline->linkStartSlop());
+      logline->setLinkEndSlop(link_logline->linkEndSlop());
+      logline->setLinkId(link_logline->linkId());
+      logline->setLinkEmbedded(link_logline->linkEmbedded());
+      if((q->value(6).toString()==label_cart)&&(!label_cart.isEmpty())) {
+	logline->setType(RDLogLine::Marker);
+	logline->setMarkerComment(q->value(7).toString());
 	logline->setCartNumber(0);
       }
       else {
-	logline->setType(RDLogLine::Cart);
-	logline->setCartNumber(q->value(0).toUInt());
+	if((q->value(6).toString()==track_cart)&&(!track_cart.isEmpty())) {
+	  logline->setType(RDLogLine::Track);
+	  logline->setMarkerComment(q->value(7).toString());
+	  logline->setCartNumber(0);
+	}
+	else {
+	  logline->setType(RDLogLine::Cart);
+	  logline->setCartNumber(q->value(0).toUInt());
+	}
       }
+      time=time.addMSecs(length);
     }
-    time=time.addMSecs(length);
 
     //
     // Clear Leading Event Values

@@ -2323,5 +2323,21 @@ please try again!</source>
         <source>Import failed</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid start time and/or length on inline traffic break.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>multiple inline traffic breaks not permitted within the same music event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In event</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

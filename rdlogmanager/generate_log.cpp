@@ -2,7 +2,7 @@
 //
 // Generate a Rivendell Log
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -427,14 +427,15 @@ void GenerateLog::musicData()
   connect(svc,SIGNAL(generationProgress(int)),
 	  gen_progress_dialog,SLOT(setValue(int)));
   QString report;
-  if(!svc->linkLog(RDSvc::Music,gen_date_edit->date(),logname,&report,rda->user(),
-		   &err_msg)) {
-    
-      QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
-			   tr("Unable to link music log")+": "+err_msg);
-      delete log;
-      delete svc;
-      return;
+  if(!svc->linkLog(RDSvc::Music,gen_date_edit->date(),logname,&report,
+		   rda->user(),&err_msg)) {
+    gen_progress_dialog->setValue(gen_progress_dialog->maximum());
+    RDTextFile(tr("RDLogManager Error Report")+"\n\n"+
+	       tr("Music schedule import failed!")+"\n\n"+err_msg);
+    delete log;
+    delete svc;
+    UpdateControls();
+    return;
   }
   SendNotification(RDNotification::ModifyAction,log->name());
   delete log;
@@ -489,10 +490,12 @@ void GenerateLog::trafficData()
   QString report;
   if(!svc->linkLog(RDSvc::Traffic,gen_date_edit->date(),logname,&report,rda->user(),
 		   &err_msg)) {
-    QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
-			 tr("Unable to link traffic log")+": "+err_msg);
+    gen_progress_dialog->setValue(gen_progress_dialog->maximum());
+    RDTextFile(tr("RDLogManager Error Report")+"\n\n"+
+	       tr("Traffic schedule import failed!")+"\n\n"+err_msg);
     delete log;
     delete svc;
+    UpdateControls();
     return;
   }
   SendNotification(RDNotification::ModifyAction,log->name());

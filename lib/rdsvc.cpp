@@ -569,6 +569,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   QString track_label;
   QTime link_time;
 
+  int file_line=0;
   while(fgets(buf,RD_MAX_IMPORT_LINE_LENGTH,infile)!=NULL) {
     str_buf=QString::fromUtf8(buf);
 
@@ -598,11 +599,26 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     //
     // Length
     //
-    hours_len_buf=str_buf.mid(hours_len_offset,hours_len_length);
-    minutes_len_buf=str_buf.mid(minutes_len_offset,minutes_len_length);
-    seconds_len_buf=str_buf.mid(seconds_len_offset,seconds_len_length);
-    cartlen=3600000*hours_len_buf.toInt()+60000*minutes_len_buf.toInt()+
-      1000*seconds_len_buf.toInt();
+    cartlen=-1;
+    int len=0;
+    bool ok1=true;
+    bool ok2=true;
+    bool ok3=true;
+    if(hours_len_length>0) {
+      QString buf=str_buf.mid(hours_len_offset,hours_len_length);
+      len+=3600000*buf.toUInt(&ok1);
+    }
+    if(minutes_len_length>0) {
+      QString buf=str_buf.mid(minutes_len_offset,minutes_len_length);
+      len+=60000*buf.toInt(&ok2);
+    }
+    if(seconds_len_length>0) {
+      QString buf=str_buf.mid(seconds_len_offset,seconds_len_length);
+      len+=1000*buf.toUInt(&ok3);
+    }
+    if(ok1&&ok2&&ok3) {
+      cartlen=len;
+    }
 
     //
     // External Data
@@ -627,13 +643,14 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     sql=QString("insert into IMPORTER_LINES set ")+
       "STATION_NAME=\""+RDEscapeString(svc_station->name())+"\","+
       QString().sprintf("PROCESS_ID=%d,",getpid())+
+      QString().sprintf("FILE_LINE=%u,",file_line)+
       QString().sprintf("LINE_ID=%d,",line_id);
     if(start_time_ok) {
       sql+=QString().sprintf("START_HOUR=%d,",start_hour)+
 	QString().sprintf("START_SECS=%d,",
 			  60*start_minutes+start_seconds);
     }
-    if(cartlen>0) {
+    if(cartlen>=0) {
       sql+=QString().sprintf("LENGTH=%d,",cartlen);
     }
 
@@ -650,6 +667,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 	"TITLE=\""+RDEscapeString(title)+"\"";
       RDSqlQuery::apply(sql);
       line_id++;
+      file_line++;
       continue;
     }
 
@@ -661,6 +679,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 	sql+=QString().sprintf("TYPE=%u",RDLogLine::TrafficLink);
 	RDSqlQuery::apply(sql);
 	line_id++;
+	file_line++;
 	continue;
       }
     }
@@ -673,8 +692,10 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 	"TITLE=\""+RDEscapeString(str_buf.simplified().trimmed())+"\"";
       RDSqlQuery::apply(sql);
       line_id++;
+      file_line++;
       continue;
     }
+    file_line++;
   }
 
   //
@@ -800,6 +821,10 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   QString sql;
   RDSqlQuery *q;
   QString autofill_errors;
+  QTime prev_start_time;
+  RDLogEvent *src_event=NULL;
+  RDLogEvent *dest_event=NULL;
+  RDLogLine *logline=NULL;
 
   RDLogLock *log_lock=new RDLogLock(logname,user,svc_station,this);
   if(!TryLock(log_lock,err_msg)) {
@@ -848,12 +873,20 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   }
 
   //
+  // Resolve embedded link parameters
+  //
+  if(src==RDSvc::Music) {
+    if(!ResolveInlineTrafficLinks(logname,err_msg)) {
+      return false;
+    }
+  }
+
+  //
   // Iterate Through the Log
   //
-  RDLogEvent *src_event=new RDLogEvent(logname);
-  RDLogEvent *dest_event=new RDLogEvent(logname);
+  src_event=new RDLogEvent(logname);
+  dest_event=new RDLogEvent(logname);
   src_event->load();
-  RDLogLine *logline=NULL;
   for(int i=0;i<src_event->size();i++) {
     logline=src_event->logLine(i);
     if(logline->type()==src_type) {
@@ -904,7 +937,8 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
     "IMPORTER_LINES.STATION_NAME=\""+
     RDEscapeString(svc_station->name())+"\" && "+
     QString().sprintf("IMPORTER_LINES.PROCESS_ID=%u && ",getpid())+
-    "IMPORTER_LINES.EVENT_USED=\"N\"";
+    "IMPORTER_LINES.EVENT_USED=\"N\" "+
+    "order by LINE_ID";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     event=true;
@@ -945,7 +979,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   sql=QString("delete from IMPORTER_LINES where ")+
     "STATION_NAME=\""+RDEscapeString(svc_station->name())+"\" && "+
     QString().sprintf("PROCESS_ID=%u",getpid());
-  //  printf("Importer Table Cleanup SQL: %s\n",(const char *)sql);
+  // printf("Importer Table Cleanup SQL: %s\n",(const char *)sql);
   RDSqlQuery::apply(sql);
   delete log_lock;
 
@@ -1580,5 +1614,132 @@ bool RDSvc::CheckId(std::vector<int> *v,int value)
     }
   }
   v->push_back(value);
+  return true;
+}
+
+
+QString RDSvc::MakeErrorLine(int indent,unsigned lineno,const QString &msg) 
+  const
+{
+  QString margin;
+
+  for(int i=0;i<indent;i++) {
+    margin+=" ";
+  }
+  return margin+tr("Line")+QString().sprintf(" %u: ",1+lineno)+msg+"\n";
+}
+
+
+bool RDSvc::ResolveInlineTrafficLinks(const QString &logname,QString *err_msg)
+  const
+{
+  RDLogEvent *evt=NULL;
+  RDLogLine *logline=NULL;
+  QTime start;
+  QTime end;
+  QString sql;
+  RDSqlQuery *q=NULL;
+  bool ok=false;
+
+  switch(subEventInheritance()) {
+  case RDSvc::ParentEvent:
+    evt=new RDLogEvent(logname);
+    evt->load();
+    ok=true;
+    for(int i=0;i<evt->size();i++) {
+      logline=evt->logLine(i);
+      if(logline->type()==RDLogLine::MusicLink) {
+	start=logline->linkStartTime();
+	end=logline->linkStartTime().addSecs(logline->linkLength());
+	sql=QString("select ")+
+	  "ID,"+          // 00
+	  "FILE_LINE "+   // 01
+	  "from IMPORTER_LINES where "+
+	  "IMPORTER_LINES.STATION_NAME=\""+
+	  RDEscapeString(svc_station->name())+"\" && "+
+	  QString().sprintf("IMPORTER_LINES.PROCESS_ID=%u && ",getpid())+
+	  QString().sprintf("TYPE=%u && ",RDLogLine::TrafficLink)+
+	  QString().sprintf("START_HOUR=%d && ",start.hour())+
+	  QString().sprintf("START_SECS>=%d && ",
+			    60*start.minute()+start.second())+
+	  QString().sprintf("START_SECS<%d",60*start.minute()+start.second()+logline->linkLength()/1000);
+	q=new RDSqlQuery(sql);
+	if(q->size()>1) {
+	  *err_msg+=tr("In event")+" \""+logline->linkEventName()+"\"@"+
+	    logline->startTime(RDLogLine::Logged).toString("hh:mm:ss")+":\n";
+	  while(q->next()) {
+	    *err_msg+=MakeErrorLine(4,q->value(1).toUInt(),
+				    tr("multiple inline traffic breaks not permitted within the same music event"));
+	  }
+	  *err_msg+="\n";
+	  ok=false;
+	}
+	if(q->first()) {
+	  sql=QString("update IMPORTER_LINES set ")+
+	    "LINK_START_TIME=\""+
+	    logline->linkStartTime().toString("hh:mm:ss")+"\","+
+	    QString().sprintf("LINK_LENGTH=%d where ",logline->linkLength())+
+	    QString().sprintf("ID=%u",q->value(0).toUInt());
+	  RDSqlQuery::apply(sql);
+	}
+	delete q;
+      }
+    }
+    delete evt;
+    evt=NULL;
+
+    if(!ok) {
+      return false;
+    }
+    break;
+
+  case RDSvc::SchedFile:
+    //
+    // Verify that all inline traffic events have explicit start times
+    // and length
+    //
+    sql=QString("select ")+
+      "FILE_LINE "+   // 00
+      "from IMPORTER_LINES where "+
+      "IMPORTER_LINES.STATION_NAME=\""+
+      RDEscapeString(svc_station->name())+"\" && "+
+      QString().sprintf("IMPORTER_LINES.PROCESS_ID=%u && ",getpid())+
+      QString().sprintf("TYPE=%u && ",RDLogLine::TrafficLink)+
+      "(START_HOUR is null || START_SECS is null || LENGTH is null)";
+    ok=true;
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      *err_msg=MakeErrorLine(0,q->value(0).toUInt(),
+			     tr("invalid start time and/or length on inline traffic break."));
+      ok=false;
+    }
+    delete q;
+    if(!ok) {
+      return false;
+    }
+
+    //
+    // Resolve link parameters
+    //
+    sql=QString("select ")+
+      "ID,"+          // 00
+      "START_HOUR,"+  // 01
+      "START_SECS,"+  // 02
+      "LENGTH "+      // 03
+      "from IMPORTER_LINES where "+
+      QString().sprintf("TYPE=%u",RDLogLine::TrafficLink);
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update IMPORTER_LINES set ")+
+	"LINK_START_TIME=\""+QTime(q->value(1).toInt(),0,0).
+	addSecs(q->value(2).toInt()).toString("hh:mm:ss")+"\","+
+	QString().sprintf("LINK_LENGTH=%d where ",q->value(3).toInt())+
+	QString().sprintf("ID=%u",q->value(0).toUInt());
+      RDSqlQuery::apply(sql);
+    }
+    delete q;
+    break;
+  }
+
   return true;
 }
