@@ -20450,3 +20450,5 @@
 	* Renamed the 'Inline Traffic Inheritance' control to 'Inline
 	Traffic Start/Length' and moved it to the 'Music Data Import'
 	section of the 'Edit Service' dialog in rdadmin(1).
+2020-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version 3.4.1int1.
