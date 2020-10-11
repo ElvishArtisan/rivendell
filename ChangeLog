@@ -20456,3 +20456,6 @@
 	* Fixed a bug in rdairplay(1) where copying a log event using
 	the 'Copy' button would result in the new event always getting
 	a 'PLAY' transition.
+	2020-10-11 Fred Gleason <fredg@paravelsystems.com>
+2020-10-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed gcc(1) format-string warnings in 'lib/rdmulticaster.cpp'.
