@@ -1529,7 +1529,8 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
 			  rda->airplayConf()->defaultTransType());
       }
       else {
-	air_log[id]->copy(air_copy_line,line);
+	air_log[id]->
+	  copy(air_copy_line,line,rda->airplayConf()->defaultTransType());
       }
     }
     else {

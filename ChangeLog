@@ -20452,3 +20452,7 @@
 	section of the 'Edit Service' dialog in rdadmin(1).
 2020-10-09 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version 3.4.1int1.
+2020-10-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) where copying a log event using
+	the 'Copy' button would result in the new event always getting
+	a 'PLAY' transition.
