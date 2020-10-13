@@ -1,4 +1,4 @@
-2002-4-28 Fred Gleason <fredg@wava.com>
+22002-4-28 Fred Gleason <fredg@wava.com>
 	* Initial package creation
 	* Created basic structure for Core Audio Engine (ALSA).  PW and DC
 	commands work.
@@ -20456,6 +20456,11 @@
 	* Fixed a bug in rdairplay(1) where copying a log event using
 	the 'Copy' button would result in the new event always getting
 	a 'PLAY' transition.
-	2020-10-11 Fred Gleason <fredg@paravelsystems.com>
 2020-10-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed gcc(1) format-string warnings in 'lib/rdmulticaster.cpp'.
+2020-10-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'ENCODER_PRESETS' table to the database.
+	* Incremented the database verssion to 343.
+	* Added an 'Encoder Profiles' dialog to rdadmin(1).
+	* Removed static content dependencies from the WebGet service.
+	* Refactored the WebGet service to use Encoder Profiles.

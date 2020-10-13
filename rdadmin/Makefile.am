@@ -87,11 +87,11 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        edit_report.cpp edit_report.h\
                        edit_sas_resource.cpp edit_sas_resource.h\
                        edit_schedcodes.cpp edit_schedcodes.h\
-                       edit_settings.cpp edit_settings.h\
                        edit_station.cpp edit_station.h\
                        edit_superfeed.cpp edit_superfeed.h\
                        edit_svc.cpp edit_svc.h\
                        edit_svc_perms.cpp edit_svc_perms.h\
+                       edit_system.cpp edit_system.h\
                        edit_ttys.cpp edit_ttys.h\
                        edit_user.cpp edit_user.h\
                        edit_user_perms.cpp edit_user_perms.h\
@@ -103,6 +103,7 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        info_dialog.cpp info_dialog.h\
                        license.cpp license.h\
                        list_dropboxes.cpp list_dropboxes.h\
+                       list_encoders.cpp list_encoders.h\
                        list_endpoints.cpp list_endpoints.h\
                        list_feeds.cpp list_feeds.h\
                        list_gpis.cpp list_gpis.h\
@@ -170,11 +171,11 @@ nodist_rdadmin_SOURCES = global_credits.c\
                          moc_edit_report.cpp\
                          moc_edit_sas_resource.cpp\
                          moc_edit_schedcodes.cpp\
-                         moc_edit_settings.cpp\
                          moc_edit_station.cpp\
                          moc_edit_superfeed.cpp\
                          moc_edit_svc.cpp\
                          moc_edit_svc_perms.cpp\
+                         moc_edit_system.cpp\
                          moc_edit_ttys.cpp\
                          moc_edit_user.cpp\
                          moc_edit_user_perms.cpp\
@@ -185,6 +186,7 @@ nodist_rdadmin_SOURCES = global_credits.c\
                          moc_info_dialog.cpp\
                          moc_license.cpp\
                          moc_list_dropboxes.cpp\
+                         moc_list_encoders.cpp\
                          moc_list_endpoints.cpp\
                          moc_list_feeds.cpp\
                          moc_list_gpis.cpp\

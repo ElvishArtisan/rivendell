@@ -41,6 +41,7 @@ class MainObject : public QObject
   void ripcConnectedData(bool state);
 
  private:
+  void ServeForm();
   bool Authenticate();
   void Exit(int code);
   void XmlExit(const QString &msg,int code,

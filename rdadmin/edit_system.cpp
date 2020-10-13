@@ -1,4 +1,4 @@
-// edit_settings.cpp
+// edit_system.cpp
 //
 // Edit Rivendell System-Wide Configuration
 //
@@ -27,10 +27,10 @@
 #include <rddb.h>
 #include <rdescape_string.h>
 
-#include "edit_settings.h"
+#include "edit_system.h"
 #include "globals.h"
 
-EditSettings::EditSettings(QWidget *parent)
+EditSystem::EditSystem(QWidget *parent)
   : RDDialog(parent)
 {
   QString sql;
@@ -49,6 +49,7 @@ EditSettings::EditSettings(QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("System-Wide Settings"));
 
   edit_system=new RDSystem();
+  edit_encoders_dialog=new ListEncoders(this);
 
   //
   // System Sample Rate
@@ -192,6 +193,14 @@ EditSettings::EditSettings(QWidget *parent)
   edit_save_button->hide();
 
   //
+  //  Encoders Button
+  //
+  edit_encoders_button=new QPushButton(this);
+  edit_encoders_button->setFont(buttonFont());
+  edit_encoders_button->setText(tr("Edit Encoder\nList"));
+  connect(edit_encoders_button,SIGNAL(clicked()),this,SLOT(encodersData()));
+
+  //
   //  Ok Button
   //
   edit_ok_button=new QPushButton(this);
@@ -240,35 +249,36 @@ EditSettings::EditSettings(QWidget *parent)
 }
 
 
-EditSettings::~EditSettings()
+EditSystem::~EditSystem()
 {
   delete edit_system;
+  delete edit_encoders_dialog;
   delete edit_duplicate_carts_box;
   delete edit_duplicate_label;
   delete edit_duplicate_list;
 }
 
 
-QSize EditSettings::sizeHint() const
+QSize EditSystem::sizeHint() const
 {
   return QSize(500,284+y_pos);
 } 
 
 
-QSizePolicy EditSettings::sizePolicy() const
+QSizePolicy EditSystem::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
 }
 
 
-void EditSettings::duplicatesCheckedData(bool state)
+void EditSystem::duplicatesCheckedData(bool state)
 {
   edit_fix_duplicate_carts_box->setDisabled(state);
   edit_fix_duplicate_carts_label->setDisabled(state);
 }
 
 
-void EditSettings::saveData()
+void EditSystem::saveData()
 {
   QString filename=RDGetHomeDir();
   filename=QFileDialog::getSaveFileName(this,"RDAdmin - "+tr("Save text file"),
@@ -312,7 +322,13 @@ void EditSettings::saveData()
 }
 
 
-void EditSettings::okData()
+void EditSystem::encodersData()
+{
+  edit_encoders_dialog->exec();
+}
+
+
+void EditSystem::okData()
 {
   QString sql;
   RDSqlQuery *q;
@@ -428,13 +444,13 @@ void EditSettings::okData()
 }
 
 
-void EditSettings::cancelData()
+void EditSystem::cancelData()
 {
   done(-1);
 }
 
 
-void EditSettings::BuildDuplicatesList(std::map<unsigned,QString> *dups)
+void EditSystem::BuildDuplicatesList(std::map<unsigned,QString> *dups)
 {
   QString sql;
   RDSqlQuery *q;
@@ -456,7 +472,7 @@ void EditSettings::BuildDuplicatesList(std::map<unsigned,QString> *dups)
 }
 
 
-void EditSettings::resizeEvent(QResizeEvent *e)
+void EditSystem::resizeEvent(QResizeEvent *e)
 {
   edit_sample_rate_box->setGeometry(250,10,70,20);
   edit_sample_rate_label->setGeometry(10,10,235,20);
@@ -485,10 +501,11 @@ void EditSettings::resizeEvent(QResizeEvent *e)
   edit_rss_processor_label->setGeometry(10,185,235,20);
   edit_rss_processor_box->setGeometry(250,185,200,20);
 
-  edit_duplicate_hidden_label->setGeometry(15,186,size().width()-30,50);
-  edit_duplicate_list->setGeometry(10,234,size().width()-20,215);
-  edit_save_button->setGeometry(size().width()-85,454,70,25);
+  edit_duplicate_hidden_label->setGeometry(15,207,size().width()-30,50);
+  edit_duplicate_list->setGeometry(10,255,size().width()-20,215);
+  edit_save_button->setGeometry(size().width()-85,475,70,25);
 
+  edit_encoders_button->setGeometry(10,size().height()-60,120,50);
   edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

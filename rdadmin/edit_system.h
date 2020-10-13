@@ -1,4 +1,4 @@
-// edit_settings.h
+// edit_system.h
 //
 // Edit Rivendell System-wide Settings.
 //
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef EDIT_SETTINGS_H
-#define EDIT_SETTINGS_H
+#ifndef EDIT_SYSTEM_H
+#define EDIT_SYSTEM_H
 
 #include <q3listview.h>
 
@@ -35,12 +35,14 @@
 #include <rddialog.h>
 #include <rdsystem.h>
 
-class EditSettings : public RDDialog
+#include "list_encoders.h"
+
+class EditSystem : public RDDialog
 {
   Q_OBJECT
   public:
-   EditSettings(QWidget *parent=0);
-   ~EditSettings();
+   EditSystem(QWidget *parent=0);
+   ~EditSystem();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
 
@@ -48,6 +50,7 @@ class EditSettings : public RDDialog
    void BuildDuplicatesList(std::map<unsigned,QString> *dups);
    void duplicatesCheckedData(bool state);
    void saveData();
+   void encodersData();
    void okData();
    void cancelData();
 
@@ -78,13 +81,14 @@ class EditSettings : public RDDialog
   QLineEdit *edit_notification_address_edit;
   QLabel *edit_rss_processor_label;
   QComboBox *edit_rss_processor_box;
-  QPushButton *edit_settings_button;
   QPushButton *edit_save_button;
+  QPushButton *edit_encoders_button;
   QPushButton *edit_ok_button;
   QPushButton *edit_cancel_button;
   RDSystem *edit_system;
+  ListEncoders *edit_encoders_dialog;
   int y_pos;
 };
 
 
-#endif  // EDIT_SETTINGS_H
+#endif  // EDIT_SYSTEM_H

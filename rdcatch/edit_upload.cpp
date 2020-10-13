@@ -483,9 +483,8 @@ void EditUpload::selectCartData()
 
 void EditUpload::setFormatData()
 {
-  RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(&edit_settings,this);
-  dialog->exec();
+  RDExportSettingsDialog *dialog=new RDExportSettingsDialog("RDCatch",this);
+  dialog->exec(&edit_settings);
   delete dialog;
   edit_format_edit->setText(edit_settings.description());
 }

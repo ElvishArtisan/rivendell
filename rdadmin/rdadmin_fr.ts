@@ -2944,119 +2944,6 @@ in order to populate the audio resources database.</source>
     </message>
 </context>
 <context>
-    <name>EditSettings</name>
-    <message>
-        <source>System-Wide Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>System Sample Rate:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>samples/second</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow Duplicate Cart Titles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ISCI Cross Reference Path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Maximum Remote Post Length:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mbytes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The following duplicate titles must be corrected before &quot;Allow Duplicate Values&quot; can be turned off.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Save List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The file &quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&quot; exists.
-
-Overwrite?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Checking the Library for duplicates.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Temporary Cart Group:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auto-Correct Duplicate Cart Titles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show User List in RDLogin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to write file &quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Multicast Address for Notifications</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save text file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Progress</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Process RSS Updates On</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>EditStation</name>
     <message>
         <source>Host: </source>
@@ -3473,6 +3360,124 @@ Custom</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditSystem</name>
+    <message>
+        <source>System-Wide Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System Sample Rate:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>samples/second</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow Duplicate Cart Titles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto-Correct Duplicate Cart Titles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISCI Cross Reference Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multicast Address for Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum Remote Post Length:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mbytes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Temporary Cart Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show User List in RDLogin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Process RSS Updates On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following duplicate titles must be corrected before &quot;Allow Duplicate Values&quot; can be turned off.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Save List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save text file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The file &quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot; exists.
+
+Overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to write file &quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checking the Library for duplicates.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Encoder
+List</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3956,6 +3961,37 @@ Permissions</source>
     </message>
     <message>
         <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ListEncoders</name>
+    <message>
+        <source>Encoder Profiles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Preset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure that you want to delete preset</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

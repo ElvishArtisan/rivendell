@@ -41,6 +41,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 343
+  //
+  if((cur_schema==343)&&(set_schema<cur_schema)) {
+    DropTable("ENCODER_PRESETS");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 342
   //
   if((cur_schema==342)&&(set_schema<cur_schema)) {

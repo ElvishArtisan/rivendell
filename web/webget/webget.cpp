@@ -2,7 +2,7 @@
 //
 // Rivendell download utility
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,6 +40,7 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString err_msg;
+  webget_post=NULL;
 
   //
   // Open the Database
@@ -78,8 +79,12 @@ MainObject::MainObject(QObject *parent)
   if(getenv("REQUEST_METHOD")==NULL) {
     XmlExit("missing REQUEST_METHOD",500,"webget.cpp",LINE_NUMBER);
   }
+  if(QString(getenv("REQUEST_METHOD")).lower()=="get") {
+    ServeForm();
+    Exit(0);
+  }
   if(QString(getenv("REQUEST_METHOD")).lower()!="post") {
-    XmlExit("invalid web method",500,"webget.cpp",LINE_NUMBER);
+    XmlExit("invalid web method",400,"webget.cpp",LINE_NUMBER);
   }
   if(getenv("REMOTE_ADDR")!=NULL) {
     webget_remote_address.setAddress(getenv("REMOTE_ADDR"));
@@ -124,6 +129,8 @@ MainObject::MainObject(QObject *parent)
 
 void MainObject::ripcConnectedData(bool state)
 {
+  bool ok=false;
+
   if(!state) {
     XmlExit("unable to connect to ripc service",500,"webget.cpp",LINE_NUMBER);
     Exit(0);
@@ -134,33 +141,12 @@ void MainObject::ripcConnectedData(bool state)
     XmlExit("missing \"title\"",400,"webget.cpp",LINE_NUMBER);
   }
 
-  int channels;
-  if(!webget_post->getValue("channels",&channels)) {
-    XmlExit("missing \"channels\"",400,"webget.cpp",LINE_NUMBER);
+  unsigned preset;
+  if(!webget_post->getValue("preset",&preset,&ok)) {
+    XmlExit("missing \"preset\"",400,"webget.cpp",LINE_NUMBER);
   }
-
-  int samprate;
-  if(!webget_post->getValue("samprate",&samprate)) {
-    XmlExit("missing \"samprate\"",400,"webget.cpp",LINE_NUMBER);
-  }
-
-  int format;
-  if(!webget_post->getValue("format",&format)) {
-    XmlExit("missing \"format\"",400,"webget.cpp",LINE_NUMBER);
-  }
-
-  int bitrate=0;
-  if((format==RDSettings::MpegL2)||(format==RDSettings::MpegL3)) {
-    if(!webget_post->getValue("bitrate",&bitrate)) {
-      XmlExit("missing \"bitrate\"",400,"webget.cpp",LINE_NUMBER);
-    }
-  }
-
-  int quality=0;
-  if(format==RDSettings::OggVorbis) {
-    if(!webget_post->getValue("quality",&quality)) {
-      XmlExit("missing \"quality\"",400,"webget.cpp",LINE_NUMBER);
-    }
+  if(!ok) {
+    XmlExit("invalid \"preset\" value",400,"webget.cpp",LINE_NUMBER);
   }
 
   unsigned cartnum=0;
@@ -189,12 +175,13 @@ void MainObject::ripcConnectedData(bool state)
   // Audio Settings
   //
   RDSettings *settings=new RDSettings();
-  settings->setFormat((RDSettings::Format)format);
-  settings->setChannels(channels);
-  settings->setSampleRate(samprate);
-  settings->setBitRate(bitrate);
-  settings->setQuality(quality);
-  settings->setNormalizationLevel(-1);
+  if(!settings->loadPreset(preset)) {
+    printf("Content-type: text/html\n");
+    printf("Status: 400\n");
+    printf("\n");
+    printf("no such preset!\n");
+    Exit(0);
+  }
 
   //
   // Generate Metadata
@@ -303,9 +290,72 @@ void MainObject::ripcConnectedData(bool state)
     Exit(200);
   }
   else {
-    XmlExit(RDAudioConvert::errorText(conv_err),resp_code,"export.cpp",
+    XmlExit(RDAudioConvert::errorText(conv_err),resp_code,"webget.cpp",
 	    LINE_NUMBER,conv_err);
   }
+}
+
+
+void MainObject::ServeForm()
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  printf("Content-type: text/html\n\n");
+
+  printf("<html>\n");
+  printf("  <head>\n");
+  printf("    <title>Rivendell Webget</title>\n");
+  printf("  </head>\n");
+  printf("  <body>\n");
+  printf("    <form method=\"post\" action=\"webget.cgi\" enctype=\"application/x-www-form-urlencoded\">\n");
+  printf("      <table style=\"margin: auto;padding: 10px 0\" cellpadding=\"0\" cellspacing=\"5\" border=\"0\">\n");
+  printf("	<tr>\n");
+  printf("	  <td colspan=\"2\"><img src=\"logos/webget_logo.png\" border=\"0\"></td>\n");
+  printf("	</tr>\n");
+  printf("	<tr>\n");
+  printf("	  <td colspan=\"2\"><strong>Get audio from Rivendell</strong></td>\n");
+  printf("	</tr>\n");
+  printf("	<tr><td colspan=\"2\"><hr></td></tr>\n");
+  printf("	<tr>\n");
+  printf("	  <td style=\"text-align: right\">Cart Title:</td>\n");
+  printf("	  <td><input type=\"text\" name=\"title\" size=\"40\" maxlength=\"255\"></td>\n");
+  printf("	</tr>\n");
+  printf("	<tr><td cellspan=\"2\">&nbsp</td></tr>\n");
+
+  printf("	<tr>\n");
+  printf("	  <td style=\"text-align: right\">Format:</td>\n");
+  printf("	  <td>\n");
+  printf("	    <select name=\"preset\" id=\"preset\">\n");
+  sql=QString("select ")+
+    "ID,"+    // 00
+    "NAME "+  // 01
+    "from ENCODER_PRESETS order by NAME";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    printf("            <option value=\"%u\">%s</option>\n",
+	   q->value(0).toUInt(),q->value(1).toString().toUtf8().constData());
+  }
+  delete q;
+  printf("	    </select>\n");
+  printf("	  </td>\n");
+  printf("	</tr>\n");
+  printf("	<tr><td cellspan=\"2\">&nbsp</td></tr>\n");
+  printf("	<td style=\"text-align: right\">User Name:</td>\n");
+  printf("	<td><input type=\"text\" size=\"32\" maxsize=\"255\" name=\"LOGIN_NAME\"></td>\n");
+  printf("	</tr>\n");
+  printf("        <tr>\n");
+  printf("	<td style=\"text-align: right\">Password:</td>\n");
+  printf("	<td><input type=\"password\" size=\"32\" maxsize=\"32\" name=\"PASSWORD\"></td>\n");
+  printf("	<tr><td cellspan=\"2\">&nbsp</td></tr>\n");
+  printf("	<tr>\n");
+  printf("	  <td>&nbsp;</td>\n");
+  printf("	  <td><input type=\"submit\" value=\"OK\"></td>\n");
+  printf("	</tr>\n");
+  printf("      </table>\n");
+  printf("    </form>\n");
+  printf("  </body>\n");
+  printf("</html>\n");
 }
 
 
@@ -346,6 +396,7 @@ void MainObject::XmlExit(const QString &str,int code,const QString &srcfile,
   if(webget_post!=NULL) {
     delete webget_post;
   }
+
 #ifdef RDXPORT_DEBUG
   if(srcline>0) {
     RDXMLResult(str+" \""+srcfile+"\" "+QString().sprintf("line %d",srcline),

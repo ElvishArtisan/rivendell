@@ -1,0 +1,16 @@
+                 ENCODER_PRESETS Table Layout for Rivendell
+
+The ENCODER_PRESETS table holds data concerning predefined sets if
+encoder settings for subsystems such as WebGet.
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(10) unsigned
+NAME                 varchar(64)       Unique
+FORMAT               int(10) unsigned  RDSettings::Format
+CHANNELS             int(10) unsigned
+SAMPLE_RATE          int(10) unsigned  Samples/sec
+BIT_RATE             int(10) unsigned  Bits/second
+QUALITY              int(11) unsigned
+NORMALIZATION_LEVEL  int(11) signed    dBFS
+AUTOTRIM_LEVEL       int(11) signed    dBFS

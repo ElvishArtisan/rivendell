@@ -3715,35 +3715,35 @@ in order to populate the audio resources database.</source>
     <name>EditSettings</name>
     <message>
         <source>System-Wide Settings</source>
-        <translation>Nastavení systému-wide</translation>
+        <translation type="obsolete">Nastavení systému-wide</translation>
     </message>
     <message>
         <source>System Sample Rate:</source>
-        <translation>Vzorkovací kmitočet systému:</translation>
+        <translation type="obsolete">Vzorkovací kmitočet systému:</translation>
     </message>
     <message>
         <source>samples/second</source>
-        <translation>vzorky/sekundy</translation>
+        <translation type="obsolete">vzorky/sekundy</translation>
     </message>
     <message>
         <source>Allow Duplicate Cart Titles</source>
-        <translation>Povolit zdvojené názvy vozíků</translation>
+        <translation type="obsolete">Povolit zdvojené názvy vozíků</translation>
     </message>
     <message>
         <source>ISCI Cross Reference Path:</source>
-        <translation>Cesta křížového odkazu ISCI:</translation>
+        <translation type="obsolete">Cesta křížového odkazu ISCI:</translation>
     </message>
     <message>
         <source>Maximum Remote Post Length:</source>
-        <translation>Největší délka vzdáleného vyvěšení:</translation>
+        <translation type="obsolete">Největší délka vzdáleného vyvěšení:</translation>
     </message>
     <message>
         <source>Mbytes</source>
-        <translation>MiB</translation>
+        <translation type="obsolete">MiB</translation>
     </message>
     <message>
         <source>The following duplicate titles must be corrected before &quot;Allow Duplicate Values&quot; can be turned off.</source>
-        <translation>Následující zdvojené názvy musí být opraveny před vypnutím Povolit zdvojené hodnoty.</translation>
+        <translation type="obsolete">Následující zdvojené názvy musí být opraveny před vypnutím Povolit zdvojené hodnoty.</translation>
     </message>
     <message>
         <source>CART</source>
@@ -3755,83 +3755,55 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>&amp;Save List</source>
-        <translation>&amp;Uložit seznam</translation>
+        <translation type="obsolete">&amp;Uložit seznam</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>File Exists</source>
-        <translation>Soubor existuje</translation>
+        <translation type="obsolete">Soubor existuje</translation>
     </message>
     <message>
         <source>The file &quot;</source>
-        <translation>Soubor &quot;</translation>
+        <translation type="obsolete">Soubor &quot;</translation>
     </message>
     <message>
         <source>&quot; exists.
 
 Overwrite?</source>
-        <translation>&quot; existuje.
+        <translation type="obsolete">&quot; existuje.
 
 Přepsat?</translation>
     </message>
     <message>
         <source>File Error</source>
-        <translation>Chyba v souboru</translation>
+        <translation type="obsolete">Chyba v souboru</translation>
     </message>
     <message>
         <source>Unable to write file &quot;</source>
-        <translation type="unfinished">Nelze zapsat soubor &quot;</translation>
+        <translation type="obsolete">Nelze zapsat soubor &quot;</translation>
     </message>
     <message>
         <source>Checking the Library for duplicates.</source>
-        <translation>Přezkušuje se knihovna kvůli zdvojeným názvům.</translation>
-    </message>
-    <message>
-        <source>Temporary Cart Group:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auto-Correct Duplicate Cart Titles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show User List in RDLogin</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Přezkušuje se knihovna kvůli zdvojeným názvům.</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation type="unfinished">Vozík</translation>
+        <translation type="obsolete">Vozík</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Název</translation>
-    </message>
-    <message>
-        <source>Multicast Address for Notifications</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save text file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Progress</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Název</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="unfinished">[žádný]</translation>
-    </message>
-    <message>
-        <source>Process RSS Updates On</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[žádný]</translation>
     </message>
 </context>
 <context>
@@ -4379,6 +4351,126 @@ Custom</source>
     <message>
         <source>&amp;Cancel</source>
         <translation>Z&amp;rušit</translation>
+    </message>
+</context>
+<context>
+    <name>EditSystem</name>
+    <message>
+        <source>System-Wide Settings</source>
+        <translation type="unfinished">Nastavení systému-wide</translation>
+    </message>
+    <message>
+        <source>System Sample Rate:</source>
+        <translation type="unfinished">Vzorkovací kmitočet systému:</translation>
+    </message>
+    <message>
+        <source>samples/second</source>
+        <translation type="unfinished">vzorky/sekundy</translation>
+    </message>
+    <message>
+        <source>Allow Duplicate Cart Titles</source>
+        <translation type="unfinished">Povolit zdvojené názvy vozíků</translation>
+    </message>
+    <message>
+        <source>Auto-Correct Duplicate Cart Titles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISCI Cross Reference Path:</source>
+        <translation type="unfinished">Cesta křížového odkazu ISCI:</translation>
+    </message>
+    <message>
+        <source>Multicast Address for Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum Remote Post Length:</source>
+        <translation type="unfinished">Největší délka vzdáleného vyvěšení:</translation>
+    </message>
+    <message>
+        <source>Mbytes</source>
+        <translation type="unfinished">MiB</translation>
+    </message>
+    <message>
+        <source>Temporary Cart Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show User List in RDLogin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished">[žádný]</translation>
+    </message>
+    <message>
+        <source>Process RSS Updates On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following duplicate titles must be corrected before &quot;Allow Duplicate Values&quot; can be turned off.</source>
+        <translation type="unfinished">Následující zdvojené názvy musí být opraveny před vypnutím Povolit zdvojené hodnoty.</translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Vozík</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Název</translation>
+    </message>
+    <message>
+        <source>&amp;Save List</source>
+        <translation type="unfinished">&amp;Uložit seznam</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>Save text file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Exists</source>
+        <translation type="unfinished">Soubor existuje</translation>
+    </message>
+    <message>
+        <source>The file &quot;</source>
+        <translation type="unfinished">Soubor &quot;</translation>
+    </message>
+    <message>
+        <source>&quot; exists.
+
+Overwrite?</source>
+        <translation type="unfinished">&quot; existuje.
+
+Přepsat?</translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <translation type="unfinished">Chyba v souboru</translation>
+    </message>
+    <message>
+        <source>Unable to write file &quot;</source>
+        <translation type="unfinished">Nelze zapsat soubor &quot;</translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checking the Library for duplicates.</source>
+        <translation type="unfinished">Přezkušuje se knihovna kvůli zdvojeným názvům.</translation>
+    </message>
+    <message>
+        <source>Edit Encoder
+List</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5056,6 +5148,34 @@ Stále ještě jej chcete smazat?</translation>
     <message>
         <source>Encoders on</source>
         <translation type="obsolete">Kodéry na</translation>
+    </message>
+    <message>
+        <source>Encoder Profiles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Preset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure that you want to delete preset</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

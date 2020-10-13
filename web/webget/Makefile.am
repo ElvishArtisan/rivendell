@@ -27,15 +27,9 @@ moc_%.cpp:	%.h
 
 install-exec-local:	
 	mkdir -p $(DESTDIR)@libexecdir@
-	cp webget.html $(DESTDIR)@libexecdir@/
-	cp webget.js $(DESTDIR)@libexecdir@/
 
 install-exec-hook:	
 	if test -z $(DESTDIR) ; then chown root $(DESTDIR)$(libexecdir)/webget.cgi ; chmod 4755 $(DESTDIR)$(libexecdir)/webget.cgi ; fi
-
-uninstall-local:	
-	rm -f $(DESTDIR)@libexecdir@/webget.html
-	rm -f $(DESTDIR)@libexecdir@/webget.js
 
 libexec_PROGRAMS = webget.cgi
 
@@ -44,9 +38,6 @@ dist_webget_cgi_SOURCES =  webget.cpp webget.h
 nodist_webget_cgi_SOURCES = moc_webget.cpp
 
 webget_cgi_LDADD = @LIB_RDLIBS@ -lsndfile @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
-
-EXTRA_DIST = webget.html\
-             webget.js
 
 CLEANFILES = *~\
              moc_*

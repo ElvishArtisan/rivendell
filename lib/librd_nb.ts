@@ -837,6 +837,10 @@
         <source>whitespace is not permitted in service names</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>new profile</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1824,23 +1828,23 @@ Skriv over?</translation>
     <name>RDExportSettingsDialog</name>
     <message>
         <source>Edit Export Settings</source>
-        <translation>Rediger eksportinnstillingar</translation>
+        <translation type="obsolete">Rediger eksportinnstillingar</translation>
     </message>
     <message>
         <source>&amp;Channels:</source>
-        <translation>&amp;Kanalar:</translation>
+        <translation type="obsolete">&amp;Kanalar:</translation>
     </message>
     <message>
         <source>&amp;Sample Rate:</source>
-        <translation>&amp;Punktprøverate:</translation>
+        <translation type="obsolete">&amp;Punktprøverate:</translation>
     </message>
     <message>
         <source>&amp;Bitrate:</source>
-        <translation>&amp;Bitrate:</translation>
+        <translation type="obsolete">&amp;Bitrate:</translation>
     </message>
     <message>
         <source>&amp;Quality:</source>
-        <translation>&amp;Kvalitet:</translation>
+        <translation type="obsolete">&amp;Kvalitet:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1969,6 +1973,58 @@ Skriv over?</translation>
     <message>
         <source>PCM24</source>
         <translation type="unfinished">PCM24</translation>
+    </message>
+    <message>
+        <source>Edit Audio Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample Rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitrate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quality</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is already in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normalization Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Autotrim Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dBFS</source>
+        <translation type="unfinished">dBFS</translation>
     </message>
 </context>
 <context>

@@ -10373,6 +10373,28 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<343)&&(set_schema>cur_schema)) {
+    sql=QString("create table if not exists ENCODER_PRESETS (")+
+      "ID int auto_increment not null primary key,"+
+      "NAME varchar(64) not null,"+
+      "FORMAT int unsigned not null,"+
+      "CHANNELS int unsigned not null,"+
+      "SAMPLE_RATE int unsigned not null,"+
+      "BIT_RATE int unsigned not null,"+
+      "QUALITY int unsigned not null,"+
+      "NORMALIZATION_LEVEL int not null,"+
+      "AUTOTRIM_LEVEL int not null,"+
+      "unique index NAME_IDX (NAME))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

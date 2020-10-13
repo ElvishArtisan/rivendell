@@ -2,7 +2,7 @@
 //
 // The Administrator Utility for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,7 +40,7 @@
 #include <rddbheartbeat.h>
 #include <rdescape_string.h>
 
-#include "edit_settings.h"
+#include "edit_system.h"
 #include "globals.h"
 #include "info_dialog.h"
 #include "list_feeds.h"
@@ -306,9 +306,9 @@ void MainWidget::manageStationsData()
 
 void MainWidget::systemSettingsData()
 {
-  EditSettings *edit_settings=new EditSettings(this);
-  edit_settings->exec();
-  delete edit_settings;
+  EditSystem *edit_system=new EditSystem(this);
+  edit_system->exec();
+  delete edit_system;
 }
 
 

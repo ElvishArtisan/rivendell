@@ -2,7 +2,7 @@
 //
 // Edit Audio Export Settings
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,125 +18,223 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
+#include <QMessageBox>
+#include <QPushButton>
 
+#include "rdescape_string.h"
 #include "rdexport_settings_dialog.h"
 
-RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
+RDExportSettingsDialog::RDExportSettingsDialog(const QString &caption,
 					       QWidget *parent)
   : RDDialog(parent)
 {
-  lib_settings=settings;
+  lib_id=0;
+  lib_caption=caption;
+  lib_normalization_level_enabled=false;
+  lib_autotrim_level_enabled=false;
 
   //
   // Dialog Name
   //
-  setWindowTitle(tr("Edit Export Settings"));
+  setMinimumSize(sizeHint());
+  setWindowTitle(caption+" - "+tr("Edit Audio Settings"));
 
   //
-  // Default Format
+  // Name
+  //
+  lib_name_edit=new QLineEdit(this);
+  lib_name_label=new QLabel(lib_name_edit,tr("Name")+":",this);
+  lib_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  lib_name_label->setFont(labelFont());
+
+  //
+  // Format
   //
   lib_format_box=new QComboBox(this);
-  lib_format_box->setGeometry(100,10,150,19);
   connect(lib_format_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(formatData(const QString &)));
-  QLabel *lib_format_label=new QLabel(lib_format_box,"Format:",this);
-  lib_format_label->setGeometry(25,10,70,19);
+  lib_format_label=new QLabel(lib_format_box,tr("Format")+":",this);
   lib_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  lib_format_label->setFont(labelFont());
 
   //
-  // Default Channels
+  // Channels
   //
   lib_channels_box=new QComboBox(this);
-  lib_channels_box->setGeometry(100,32,60,19);
-  QLabel *lib_channels_label=
-    new QLabel(lib_channels_box,tr("&Channels:"),this);
-  lib_channels_label->setGeometry(25,32,70,19);
+  lib_channels_label=
+    new QLabel(lib_channels_box,tr("Channels")+":",this);
   lib_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  lib_channels_label->setFont(labelFont());
 
   //
-  // Default Sample Rate
+  // Sample Rate
   //
   lib_samprate_box=new QComboBox(this);
-  lib_samprate_box->setGeometry(100,54,100,19);
   connect(lib_samprate_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(samprateData(const QString &)));
-  QLabel *lib_samprate_label=
-    new QLabel(lib_samprate_box,tr("&Sample Rate:"),this);
-  lib_samprate_label->setGeometry(25,54,75,19);
+  lib_samprate_label=
+    new QLabel(lib_samprate_box,tr("Sample Rate")+":",this);
   lib_samprate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  lib_samprate_label->setFont(labelFont());
 
   //
-  // Default Bitrate
+  // Bitrate
   //
   lib_bitrate_box=new QComboBox(this);
-  lib_bitrate_box->setGeometry(100,76,100,19);
   connect(lib_bitrate_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(bitrateData(const QString &)));
-  lib_bitrate_label=new QLabel(lib_bitrate_box,tr("&Bitrate:"),this);
-  lib_bitrate_label->setGeometry(25,76,70,19);
+  lib_bitrate_label=new QLabel(lib_bitrate_box,tr("Bitrate")+":",this);
   lib_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  lib_bitrate_label->setFont(labelFont());
 
   //
   // Quality
   //
   lib_quality_spin=new QSpinBox(this);
-  lib_quality_spin->setGeometry(100,98,50,19);
   lib_quality_spin->setRange(0,10);
-  lib_quality_label=new QLabel(lib_quality_spin,tr("&Quality:"),this);
-  lib_quality_label->setGeometry(25,98,70,19);
+  lib_quality_label=new QLabel(lib_quality_spin,tr("Quality")+":",this);
   lib_quality_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  lib_quality_label->setFont(labelFont());
+
+  //
+  // Normalization Level
+  //
+  lib_normalization_level_spin=new QSpinBox(this);
+  lib_normalization_level_spin->setRange(-100,0);
+  lib_normalization_level_label=
+    new QLabel(lib_normalization_level_spin,tr("Normalization Level")+":",this);
+  lib_normalization_level_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  lib_normalization_level_label->setFont(labelFont());
+  lib_normalization_level_label->hide();
+  lib_normalization_level_spin->hide();
+  lib_normalization_level_unit_label=new QLabel(tr("dBFS"),this);
+  lib_normalization_level_unit_label->
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  lib_normalization_level_unit_label->setFont(labelFont());
+  lib_normalization_level_label->hide();
+  lib_normalization_level_spin->hide();
+  lib_normalization_level_unit_label->hide();
+
+  //
+  // Autotrim Level
+  //
+  lib_autotrim_level_spin=new QSpinBox(this);
+  lib_autotrim_level_spin->setRange(-100,0);
+  lib_autotrim_level_label=
+    new QLabel(lib_autotrim_level_spin,tr("Autotrim Level")+":",this);
+  lib_autotrim_level_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  lib_autotrim_level_label->setFont(labelFont());
+  lib_autotrim_level_label->hide();
+  lib_autotrim_level_spin->hide();
+  lib_autotrim_level_unit_label=new QLabel(tr("dBFS"),this);
+  lib_autotrim_level_unit_label->
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  lib_autotrim_level_unit_label->setFont(labelFont());
+  lib_autotrim_level_label->hide();
+  lib_autotrim_level_spin->hide();
+  lib_autotrim_level_unit_label->hide();
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this);
-  ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  ok_button->setDefault(true);
-  ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
-  connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
+  lib_ok_button=new QPushButton(this);
+  lib_ok_button->setDefault(true);
+  lib_ok_button->setFont(buttonFont());
+  lib_ok_button->setText(tr("&OK"));
+  connect(lib_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this);
-  cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
-  connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  lib_cancel_button=new QPushButton(this);
+  lib_cancel_button->setFont(buttonFont());
+  lib_cancel_button->setText(tr("&Cancel"));
+  connect(lib_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+}
 
-  //
-  // Populate Fields
-  //
+
+RDExportSettingsDialog::~RDExportSettingsDialog()
+{
+  delete lib_channels_box;
+  delete lib_samprate_box;
+  delete lib_bitrate_box;
+}
+
+
+QSize RDExportSettingsDialog::sizeHint() const
+{
+  return QSize(325,180);
+} 
+
+
+QSizePolicy RDExportSettingsDialog::sizePolicy() const
+{
+  return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void RDExportSettingsDialog::setShowNormalizationLevel(bool state)
+{
+  lib_normalization_level_enabled=state;
+  lib_normalization_level_label->setVisible(state);
+  lib_normalization_level_spin->setVisible(state);
+  lib_normalization_level_unit_label->setVisible(state);
+}
+
+
+void RDExportSettingsDialog::setShowAutotrimLevel(bool state)
+{
+  lib_autotrim_level_enabled=state;
+  lib_autotrim_level_label->setVisible(state);
+  lib_autotrim_level_spin->setVisible(state);
+  lib_autotrim_level_unit_label->setVisible(state);
+}
+
+
+int RDExportSettingsDialog::exec(RDSettings *s,unsigned id)
+{
+  lib_settings=s;
+  lib_id=id;
+
+  lib_format_box->clear();
+  lib_channels_box->clear();
+
+  if(id==0) {
+    lib_name_label->hide();
+    lib_name_edit->hide();
+  }
+  else {
+    lib_name_label->show();
+    lib_name_edit->show();
+    lib_name_edit->setText(lib_settings->name());
+  }
   lib_format_box->insertItem(tr("PCM16"));
-  if(settings->format()==RDSettings::Pcm16) {
+  if(lib_settings->format()==RDSettings::Pcm16) {
     lib_format_box->setCurrentItem(lib_format_box->count()-1);
   }
   lib_format_box->insertItem(tr("PCM24"));
-  if(settings->format()==RDSettings::Pcm24) {
+  if(lib_settings->format()==RDSettings::Pcm24) {
     lib_format_box->setCurrentItem(lib_format_box->count()-1);
   }
   if(rda->station()->haveCapability(RDStation::HaveFlac)) {
     lib_format_box->insertItem(tr("FLAC"));
-    if(settings->format()==RDSettings::Flac) {
+    if(lib_settings->format()==RDSettings::Flac) {
       lib_format_box->setCurrentItem(lib_format_box->count()-1);
     }
   }
   lib_format_box->insertItem(tr("MPEG Layer 2"));
-  if(settings->format()==RDSettings::MpegL2) {
+  if(lib_settings->format()==RDSettings::MpegL2) {
     lib_format_box->setCurrentItem(lib_format_box->count()-1);
   }
   if(rda->station()->haveCapability(RDStation::HaveLame)) {
     lib_format_box->insertItem(tr("MPEG Layer 3"));
-    if(settings->format()==RDSettings::MpegL3) {
+    if(lib_settings->format()==RDSettings::MpegL3) {
       lib_format_box->setCurrentItem(lib_format_box->count()-1);
     }
   }
   if(rda->station()->haveCapability(RDStation::HaveOggenc)) {
     lib_format_box->insertItem(tr("OggVorbis"));
-    if(settings->format()==RDSettings::OggVorbis) {
+    if(lib_settings->format()==RDSettings::OggVorbis) {
       lib_format_box->setCurrentItem(lib_format_box->count()-1);
     }
   }
@@ -156,26 +254,27 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   }
   ShowBitRates(lib_settings->format(),lib_settings->sampleRate(),
 	       lib_settings->bitRate(),lib_settings->quality());
-}
 
+  lib_normalization_level_spin->setValue(lib_settings->normalizationLevel());
+  lib_autotrim_level_spin->setValue(lib_settings->autotrimLevel());
 
-RDExportSettingsDialog::~RDExportSettingsDialog()
-{
-  delete lib_channels_box;
-  delete lib_samprate_box;
-  delete lib_bitrate_box;
-}
+  if(id==0) {
+    setMinimumHeight(sizeHint().height());
+    setMaximumHeight(sizeHint().height());
+  }
+  else {
+    int height=sizeHint().height()+22;
+    if(lib_normalization_level_enabled) {
+      height+=22;
+    }
+    if(lib_autotrim_level_enabled) {
+      height+=22;
+    }
+    setMinimumHeight(height);
+    setMaximumHeight(height);
+  }
 
-
-QSize RDExportSettingsDialog::sizeHint() const
-{
-  return QSize(275,190);
-} 
-
-
-QSizePolicy RDExportSettingsDialog::sizePolicy() const
-{
-  return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+  return RDDialog::exec();
 }
 
 
@@ -210,8 +309,27 @@ void RDExportSettingsDialog::bitrateData(const QString &str)
 
 void RDExportSettingsDialog::okData()
 {
+  QString sql;
+  RDSqlQuery *q=NULL;
   unsigned rate=0;
 
+  if(lib_id>0) {
+    sql=QString("select ")+
+      "ID "+  // 00
+      "from ENCODER_PRESETS where "+
+      "NAME=\""+RDEscapeString(lib_name_edit->text())+"\" && "+
+      QString().sprintf("ID!=%u",lib_id);
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      QMessageBox::information(this,lib_caption+" - "+tr("Duplicate Name"),
+			       tr("The name")+" \""+lib_name_edit->text()+"\" "+
+			       tr("is already in use."));
+      delete q;
+      return;
+    }
+    delete q;
+    lib_settings->setName(lib_name_edit->text());
+  }
   lib_settings->setFormat(GetFormat(lib_format_box->currentText()));
   lib_settings->setChannels(lib_channels_box->currentItem()+1);
   lib_settings->setSampleRate(lib_samprate_box->currentText().toInt());
@@ -251,13 +369,61 @@ void RDExportSettingsDialog::okData()
     lib_settings->setQuality(lib_quality_spin->value());
     break;
   }
-  done(0);
+  lib_settings->setNormalizationLevel(lib_normalization_level_spin->value());
+  lib_settings->setAutotrimLevel(lib_autotrim_level_spin->value());
+
+  done(true);
 }
 
 
 void RDExportSettingsDialog::cancelData()
 {
-  done(1);
+  done(false);
+}
+
+
+void RDExportSettingsDialog::resizeEvent(QResizeEvent *e)
+{
+  int ypos=2;
+
+  if(lib_id>0) {
+    lib_name_label->setGeometry(10,ypos,135,19);
+    lib_name_edit->setGeometry(150,ypos,size().width()-160,19);
+    ypos+=22;
+  }
+
+  lib_format_label->setGeometry(10,ypos,135,19);
+  lib_format_box->setGeometry(150,ypos,150,19);
+  ypos+=22;
+
+  lib_channels_label->setGeometry(10,ypos,135,19);
+  lib_channels_box->setGeometry(150,ypos,60,19);
+  ypos+=22;
+
+  lib_samprate_label->setGeometry(10,ypos,135,19);
+  lib_samprate_box->setGeometry(150,ypos,100,19);
+  ypos+=22;
+
+  lib_bitrate_label->setGeometry(10,ypos,135,19);
+  lib_bitrate_box->setGeometry(150,ypos,100,19);
+  ypos+=22;
+
+  lib_quality_label->setGeometry(10,ypos,135,19);
+  lib_quality_spin->setGeometry(150,ypos,50,19);
+  ypos+=22;
+
+  lib_normalization_level_label->setGeometry(10,ypos,135,19);
+  lib_normalization_level_spin->setGeometry(150,ypos,50,19);
+  lib_normalization_level_unit_label->setGeometry(205,ypos,100,19);
+  ypos+=22;
+
+  lib_autotrim_level_label->setGeometry(10,ypos,135,19);
+  lib_autotrim_level_spin->setGeometry(150,ypos,50,19);
+  lib_autotrim_level_unit_label->setGeometry(205,ypos,100,19);
+  ypos+=22;
+
+  lib_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  lib_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
 
 
@@ -272,7 +438,7 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
   lib_bitrate_box->clear();
   switch(fmt) {
   case RDSettings::Pcm16:  // PCM16
-  case RDSettings::Pcm24:  // PCM16
+  case RDSettings::Pcm24:  // PCM24
     lib_channels_box->insertItem("1");
     lib_channels_box->insertItem("2");
     lib_samprate_box->insertItem("32000");
@@ -823,4 +989,3 @@ RDSettings::Format RDExportSettingsDialog::GetFormat(QString str)
   }
   return RDSettings::Pcm16;
 }
-

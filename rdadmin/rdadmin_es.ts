@@ -3722,35 +3722,35 @@ in order to populate the audio resources database.</source>
     <name>EditSettings</name>
     <message>
         <source>System-Wide Settings</source>
-        <translation>Parámetros de todo el Sistema</translation>
+        <translation type="obsolete">Parámetros de todo el Sistema</translation>
     </message>
     <message>
         <source>System Sample Rate:</source>
-        <translation>Tasa de Muestreo del Sistema:</translation>
+        <translation type="obsolete">Tasa de Muestreo del Sistema:</translation>
     </message>
     <message>
         <source>samples/second</source>
-        <translation>muestras/segundo</translation>
+        <translation type="obsolete">muestras/segundo</translation>
     </message>
     <message>
         <source>Allow Duplicate Cart Titles</source>
-        <translation>Permitir títulos duplicados de cartuchos</translation>
+        <translation type="obsolete">Permitir títulos duplicados de cartuchos</translation>
     </message>
     <message>
         <source>ISCI Cross Reference Path:</source>
-        <translation>Ubicac. de Ref. Cruzadas ISCI:</translation>
+        <translation type="obsolete">Ubicac. de Ref. Cruzadas ISCI:</translation>
     </message>
     <message>
         <source>Maximum Remote Post Length:</source>
-        <translation>Long. máx. de posts remotos:</translation>
+        <translation type="obsolete">Long. máx. de posts remotos:</translation>
     </message>
     <message>
         <source>Mbytes</source>
-        <translation>MBytes</translation>
+        <translation type="obsolete">MBytes</translation>
     </message>
     <message>
         <source>The following duplicate titles must be corrected before &quot;Allow Duplicate Values&quot; can be turned off.</source>
-        <translation>Los siguientes títulos duplicados deben ser corregidos antes de desactivar la opción respectiva.</translation>
+        <translation type="obsolete">Los siguientes títulos duplicados deben ser corregidos antes de desactivar la opción respectiva.</translation>
     </message>
     <message>
         <source>CART</source>
@@ -3762,83 +3762,47 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>&amp;Save List</source>
-        <translation>&amp;Guardar lista</translation>
+        <translation type="obsolete">&amp;Guardar lista</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>File Exists</source>
-        <translation>El archivo ya existe</translation>
+        <translation type="obsolete">El archivo ya existe</translation>
     </message>
     <message>
         <source>The file &quot;</source>
-        <translation>El archivo &quot;</translation>
+        <translation type="obsolete">El archivo &quot;</translation>
     </message>
     <message>
         <source>&quot; exists.
 
 Overwrite?</source>
-        <translation>&quot; ya existe.
+        <translation type="obsolete">&quot; ya existe.
 
 ¿Sobreescribir?</translation>
     </message>
     <message>
         <source>File Error</source>
-        <translation>Error de archivo</translation>
+        <translation type="obsolete">Error de archivo</translation>
     </message>
     <message>
         <source>Checking the Library for duplicates.</source>
-        <translation>Buscando duplicados en la biblioteca.</translation>
-    </message>
-    <message>
-        <source>Temporary Cart Group:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auto-Correct Duplicate Cart Titles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show User List in RDLogin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to write file &quot;</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Buscando duplicados en la biblioteca.</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation type="unfinished">Cartucho</translation>
+        <translation type="obsolete">Cartucho</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Título</translation>
-    </message>
-    <message>
-        <source>Multicast Address for Notifications</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save text file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Progress</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Process RSS Updates On</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Título</translation>
     </message>
 </context>
 <context>
@@ -4332,6 +4296,126 @@ Custom</source>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Cancelar</translation>
+    </message>
+</context>
+<context>
+    <name>EditSystem</name>
+    <message>
+        <source>System-Wide Settings</source>
+        <translation type="unfinished">Parámetros de todo el Sistema</translation>
+    </message>
+    <message>
+        <source>System Sample Rate:</source>
+        <translation type="unfinished">Tasa de Muestreo del Sistema:</translation>
+    </message>
+    <message>
+        <source>samples/second</source>
+        <translation type="unfinished">muestras/segundo</translation>
+    </message>
+    <message>
+        <source>Allow Duplicate Cart Titles</source>
+        <translation type="unfinished">Permitir títulos duplicados de cartuchos</translation>
+    </message>
+    <message>
+        <source>Auto-Correct Duplicate Cart Titles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISCI Cross Reference Path:</source>
+        <translation type="unfinished">Ubicac. de Ref. Cruzadas ISCI:</translation>
+    </message>
+    <message>
+        <source>Multicast Address for Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum Remote Post Length:</source>
+        <translation type="unfinished">Long. máx. de posts remotos:</translation>
+    </message>
+    <message>
+        <source>Mbytes</source>
+        <translation type="unfinished">MBytes</translation>
+    </message>
+    <message>
+        <source>Temporary Cart Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show User List in RDLogin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Process RSS Updates On</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following duplicate titles must be corrected before &quot;Allow Duplicate Values&quot; can be turned off.</source>
+        <translation type="unfinished">Los siguientes títulos duplicados deben ser corregidos antes de desactivar la opción respectiva.</translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Cartucho</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Título</translation>
+    </message>
+    <message>
+        <source>&amp;Save List</source>
+        <translation type="unfinished">&amp;Guardar lista</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;Aceptar</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Save text file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Exists</source>
+        <translation type="unfinished">El archivo ya existe</translation>
+    </message>
+    <message>
+        <source>The file &quot;</source>
+        <translation type="unfinished">El archivo &quot;</translation>
+    </message>
+    <message>
+        <source>&quot; exists.
+
+Overwrite?</source>
+        <translation type="unfinished">&quot; ya existe.
+
+¿Sobreescribir?</translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <translation type="unfinished">Error de archivo</translation>
+    </message>
+    <message>
+        <source>Unable to write file &quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checking the Library for duplicates.</source>
+        <translation type="unfinished">Buscando duplicados en la biblioteca.</translation>
+    </message>
+    <message>
+        <source>Edit Encoder
+List</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5019,6 +5103,34 @@ Do you still want to delete it?</source>
     <message>
         <source>Encoders on</source>
         <translation type="obsolete">Codificad. en</translation>
+    </message>
+    <message>
+        <source>Encoder Profiles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Añadir</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Editar</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Borrar</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Preset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure that you want to delete preset</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

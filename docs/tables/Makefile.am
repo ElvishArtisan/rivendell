@@ -40,6 +40,7 @@ EXTRA_DIST = audio_cards.txt\
              dropbox_paths.txt\
              dropbox_sched_codes.txt\
              elr_lines.txt\
+             encoder_presets.txt\
              event_lines.txt\
              event_perms.txt\
              events.txt\

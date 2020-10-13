@@ -18,6 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QObject>
+
 #include <rdsettings.h>
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -25,6 +27,18 @@
 RDSettings::RDSettings()
 {
   clear();
+}
+
+
+QString RDSettings::name() const
+{
+  return set_name;
+}
+
+
+void RDSettings::setName(const QString &str)
+{
+  set_name=str;
 }
 
 
@@ -208,6 +222,75 @@ QString RDSettings::description()
 }
 
 
+bool RDSettings::loadPreset(unsigned id)
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+  bool ret=false;
+
+  sql=QString("select ")+
+    "NAME,"+                 // 00
+    "FORMAT,"+               // 01
+    "CHANNELS,"+             // 02
+    "SAMPLE_RATE,"+          // 03
+    "BIT_RATE,"+             // 04
+    "QUALITY,"+              // 05
+    "NORMALIZATION_LEVEL,"+  // 06
+    "AUTOTRIM_LEVEL "+       // 07
+    "from ENCODER_PRESETS where "+
+    QString().sprintf("ID=%u",id);
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=true;
+    set_name=q->value(0).toString();
+    set_format=(RDSettings::Format)q->value(1).toUInt();
+    set_channels=q->value(2).toUInt();
+    set_sample_rate=q->value(3).toUInt();
+    set_bit_rate=q->value(4).toUInt();
+    set_quality=q->value(5).toUInt();
+    set_normalization_level=q->value(6).toInt();
+    set_autotrim_level=q->value(7).toInt();
+  }
+  delete q;
+
+  return ret;
+}
+
+
+unsigned RDSettings::addPreset()
+{
+  QString sql;
+
+  set_name=MakeNewName();
+  sql=QString("insert into ENCODER_PRESETS set ")+
+    SqlFields();
+  return RDSqlQuery::run(sql).toUInt();
+}
+
+
+bool RDSettings::savePreset(unsigned id) const
+{
+  QString sql;
+
+  sql=QString("update ENCODER_PRESETS set ")+
+    SqlFields()+" where "+
+    QString().sprintf("ID=%u",id);
+
+  return RDSqlQuery::apply(sql);
+}
+
+
+bool RDSettings::deletePreset(unsigned id) const
+{
+  QString sql;
+
+  sql=QString("delete from ENCODER_PRESETS where ")+
+    QString().sprintf("ID=%u",id);
+
+  return RDSqlQuery::apply(sql);
+}
+
+
 QString RDSettings::pathName(const QString &stationname,QString pathname,
 			     RDSettings::Format fmt)
 {
@@ -317,8 +400,30 @@ unsigned RDSettings::bytesPerSec(const QString &stationname,
 }
 
 
+QString RDSettings::dump() const
+{
+  QString ret;
+
+  ret+="RDSettings:\n";
+  ret+="name(): "+name()+"\n";
+  ret+=QString().sprintf("format(): %u\n",format());
+  ret+="formatName(): "+formatName()+"\n";
+  ret+=QString().sprintf("channels(): %u\n",channels());
+  ret+=QString().sprintf("sampleRate(): %u\n",sampleRate());
+  ret+=QString().sprintf("layer(): %u\n",layer());
+  ret+=QString().sprintf("bitRate(): %u\n",bitRate());
+  ret+=QString().sprintf("quality(): %u\n",quality());
+  ret+=QString().sprintf("normalizationLevel(): %d\n",normalizationLevel());
+  ret+=QString().sprintf("autotrimLevel(): %d\n",autotrimLevel());
+  ret+="Name: "+name()+"\n";
+
+  return ret;
+}
+
+
 void RDSettings::clear()
 {
+  set_name="["+QObject::tr("new profile")+"]";
   set_format=RDSettings::Pcm16;
   set_format_name="";
   set_channels=2;
@@ -327,5 +432,43 @@ void RDSettings::clear()
   set_quality=0;
   set_normalization_level=0;
   set_autotrim_level=0;
-  //  set_custom_command_line="";
+}
+
+
+QString RDSettings::SqlFields() const
+{
+  return QString("NAME=")+"\""+RDEscapeString(set_name)+"\","+
+    QString().sprintf("FORMAT=%u,",set_format)+
+    QString().sprintf("CHANNELS=%u,",set_channels)+
+    QString().sprintf("SAMPLE_RATE=%u,",set_sample_rate)+
+    QString().sprintf("BIT_RATE=%u,",set_bit_rate)+
+    QString().sprintf("QUALITY=%u,",set_quality)+
+    QString().sprintf("NORMALIZATION_LEVEL=%d,",set_normalization_level)+
+    QString().sprintf("AUTOTRIM_LEVEL=%d ",set_autotrim_level);
+}
+
+
+QString RDSettings::MakeNewName() const
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+  bool unique=false;
+  int count=0;
+  QString ret="["+QObject::tr("new profile")+"]";
+  
+  while(!unique) {
+    sql=QString("select ")+
+      "ID "+  // 00
+      "from ENCODER_PRESETS where "+
+      "NAME=\""+RDEscapeString(ret)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      ret="["+QObject::tr("new profile")+QString().sprintf(" %d]",++count);
+    }
+    else {
+      unique=true;
+    }
+  }
+
+  return ret;
 }

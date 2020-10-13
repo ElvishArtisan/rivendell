@@ -221,6 +221,16 @@ bool RDFormPost::getValue(const QString &name,long *n,bool *ok)
 }
 
 
+bool RDFormPost::getValue(const QString &name,unsigned *n,bool *ok)
+{
+  if(post_values.count(name)>0) {
+    *n=post_values.at(name).toUInt(ok);
+    return true;
+  }
+  return false;
+}
+
+
 bool RDFormPost::getValue(const QString &name,QDateTime *datetime,bool *ok)
 {
   QString str;

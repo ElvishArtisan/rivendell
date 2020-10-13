@@ -53,10 +53,10 @@ x11 {
   SOURCES += edit_rdpanel.cpp
   SOURCES += edit_replicator.cpp
   SOURCES += edit_report.cpp
-  SOURCES += edit_settings.cpp
   SOURCES += edit_station.cpp
   SOURCES += edit_svc.cpp
   SOURCES += edit_svc_perms.cpp
+  SOURCES += edit_system.cpp
   SOURCES += edit_ttys.cpp
   SOURCES += edit_user.cpp
   SOURCES += edit_user_perms.cpp
@@ -64,6 +64,7 @@ x11 {
   SOURCES += info_dialog.cpp
   SOURCES += license.cpp
   SOURCES += list_dropboxes.cpp
+  SOURCES += list_encoders.cpp
   SOURCES += list_endpoints.cpp
   SOURCES += list_feeds.cpp
   SOURCES += list_gpis.cpp
@@ -123,10 +124,10 @@ x11 {
   HEADERS += edit_rdpanel.h
   HEADERS += edit_replicator.h
   HEADERS += edit_report.h
-  HEADERS += edit_settings.h
   HEADERS += edit_station.h
   HEADERS += edit_svc.h
   HEADERS += edit_svc_perms.h
+  HEADERS += edit_system.h
   HEADERS += edit_ttys.h
   HEADERS += edit_user.h
   HEADERS += edit_user_perms.h
@@ -134,6 +135,7 @@ x11 {
   HEADERS += info_dialog.h
   HEADERS += license.h
   HEADERS += list_dropboxes.h
+  HEADERS += list_encoders.h
   HEADERS += list_endpoints.h
   HEADERS += list_feeds.h
   HEADERS += list_gpis.h

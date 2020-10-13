@@ -274,8 +274,8 @@ QSizePolicy EditReplicator::sizePolicy() const
 
 void EditReplicator::setFormatData()
 {
-  RDExportSettingsDialog *dialog=new RDExportSettingsDialog(repl_settings,this);
-  dialog->exec();
+  RDExportSettingsDialog *dialog=new RDExportSettingsDialog("RDAdmin",this);
+  dialog->exec(repl_settings);
   delete dialog;
   repl_format_edit->setText(repl_settings->description());
 }

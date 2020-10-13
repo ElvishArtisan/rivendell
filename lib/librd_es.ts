@@ -837,6 +837,10 @@
         <source>whitespace is not permitted in service names</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>new profile</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1824,23 +1828,23 @@ Overwrite?</source>
     <name>RDExportSettingsDialog</name>
     <message>
         <source>Edit Export Settings</source>
-        <translation>Editar parám. exportación</translation>
+        <translation type="obsolete">Editar parám. exportación</translation>
     </message>
     <message>
         <source>&amp;Channels:</source>
-        <translation>&amp;Canales:</translation>
+        <translation type="obsolete">&amp;Canales:</translation>
     </message>
     <message>
         <source>&amp;Sample Rate:</source>
-        <translation>Tasa de &amp;Muestreo:</translation>
+        <translation type="obsolete">Tasa de &amp;Muestreo:</translation>
     </message>
     <message>
         <source>&amp;Bitrate:</source>
-        <translation>&amp;Tasa de bits:</translation>
+        <translation type="obsolete">&amp;Tasa de bits:</translation>
     </message>
     <message>
         <source>&amp;Quality:</source>
-        <translation>&amp;Calidad:</translation>
+        <translation type="obsolete">&amp;Calidad:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1969,6 +1973,58 @@ Overwrite?</source>
     <message>
         <source>PCM24</source>
         <translation type="unfinished">PCM24</translation>
+    </message>
+    <message>
+        <source>Edit Audio Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample Rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitrate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quality</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is already in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normalization Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Autotrim Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dBFS</source>
+        <translation type="unfinished">dBFS</translation>
     </message>
 </context>
 <context>

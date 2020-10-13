@@ -593,9 +593,8 @@ void EditFeed::selectSubfeedsData()
 
 void EditFeed::setFormatData()
 {
-  RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(&feed_settings,this);
-  dialog->exec();
+  RDExportSettingsDialog *dialog=new RDExportSettingsDialog("RDAdmin",this);
+  dialog->exec(&feed_settings);
   delete dialog;
   feed_format_edit->setText(feed_settings.description());
 }

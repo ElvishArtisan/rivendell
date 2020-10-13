@@ -48,6 +48,7 @@ class RDFormPost
   bool getValue(const QString &name,QString *str,bool *ok=NULL);
   bool getValue(const QString &name,int *n,bool *ok=NULL);
   bool getValue(const QString &name,long *n,bool *ok=NULL);
+  bool getValue(const QString &name,unsigned *n,bool *ok=NULL);
   bool getValue(const QString &name,QDateTime *datetime,bool *ok=NULL);
   bool getValue(const QString &name,QDate *date,bool *ok=NULL);
   bool getValue(const QString &name,QTime *time,bool *ok=NULL);

@@ -23,6 +23,7 @@
 
 #include <qcombobox.h>
 #include <qlabel.h>
+#include <qlineedit.h>
 #include <qspinbox.h>
 
 #include <rddialog.h>
@@ -31,31 +32,56 @@
 class RDExportSettingsDialog : public RDDialog
 {
   Q_OBJECT
-  public:
-  RDExportSettingsDialog(RDSettings *settings,QWidget *parent=0);
-   ~RDExportSettingsDialog();
-   QSize sizeHint() const;
-   QSizePolicy sizePolicy() const;
+ public:
+  RDExportSettingsDialog(const QString &caption,QWidget *parent=0);
+  ~RDExportSettingsDialog();
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
+  void setShowNormalizationLevel(bool state);
+  void setShowAutotrimLevel(bool state);
 
-  private slots:
-   void formatData(const QString &);
-   void samprateData(const QString &);
-   void bitrateData(const QString &);
-   void okData();
-   void cancelData();
+ public slots:
+  int exec(RDSettings *s,unsigned id=0);
 
-  private:
-   void ShowBitRates(RDSettings::Format fmt,int samprate,int bitrate,int qual);
-   void SetCurrentItem(QComboBox *box,int value);
-   RDSettings::Format GetFormat(QString str);
-   RDSettings *lib_settings;
-   QComboBox *lib_format_box;
-   QComboBox *lib_channels_box;
-   QLabel *lib_bitrate_label;
-   QComboBox *lib_bitrate_box;
-   QComboBox *lib_samprate_box;
-   QLabel *lib_quality_label;
-   QSpinBox *lib_quality_spin;
+ private slots:
+  void formatData(const QString &);
+  void samprateData(const QString &);
+  void bitrateData(const QString &);
+  void okData();
+  void cancelData();
+
+ protected:
+  void resizeEvent(QResizeEvent *e); 
+
+ private:
+  void ShowBitRates(RDSettings::Format fmt,int samprate,int bitrate,int qual);
+  void SetCurrentItem(QComboBox *box,int value);
+  RDSettings::Format GetFormat(QString str);
+  RDSettings *lib_settings;
+  QLabel *lib_name_label;
+  QLineEdit *lib_name_edit;
+  unsigned lib_id;
+  QString lib_caption;
+  QLabel *lib_format_label;
+  QComboBox *lib_format_box;
+  QLabel *lib_channels_label;
+  QComboBox *lib_channels_box;
+  QLabel *lib_bitrate_label;
+  QComboBox *lib_bitrate_box;
+  bool lib_normalization_level_enabled;
+  QLabel *lib_normalization_level_label;
+  QSpinBox *lib_normalization_level_spin;
+  QLabel *lib_normalization_level_unit_label;
+  bool lib_autotrim_level_enabled;
+  QLabel *lib_autotrim_level_label;
+  QSpinBox *lib_autotrim_level_spin;
+  QLabel *lib_autotrim_level_unit_label;
+  QLabel *lib_samprate_label;
+  QComboBox *lib_samprate_box;
+  QLabel *lib_quality_label;
+  QSpinBox *lib_quality_spin;
+  QPushButton *lib_ok_button;
+  QPushButton *lib_cancel_button;
 };
 
 
