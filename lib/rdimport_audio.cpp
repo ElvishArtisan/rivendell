@@ -424,8 +424,7 @@ void RDImportAudio::selectOutputFileData()
 {
   QString filename;
   QString filter=import_settings->formatName()+" (*."+
-    RDSettings::defaultExtension(rda->station()->name(),
-				 import_settings->format())+")";
+    RDSettings::defaultExtension(import_settings->format())+")";
 
   if(import_out_filename_edit->text().isEmpty()) {
     filename=QFileDialog::getSaveFileName(this,import_caption+" - "+
@@ -441,8 +440,7 @@ void RDImportAudio::selectOutputFileData()
   }
   if(!filename.isEmpty()) {
     import_out_filename_edit->
-      setText(RDSettings::pathName(rda->station()->name(),filename,
-				   import_settings->format()));
+      setText(RDSettings::pathName(filename,import_settings->format()));
     *import_path=RDGetPathPart(import_out_filename_edit->text());
   }
 }
@@ -456,8 +454,7 @@ void RDImportAudio::selectOutputFormatData()
   delete dialog;
   import_format_edit->setText(import_settings->description());
   import_out_filename_edit->
-    setText(RDSettings::pathName(rda->station()->name(),
-				 import_out_filename_edit->text(),
+    setText(RDSettings::pathName(import_out_filename_edit->text(),
 				 import_settings->format()));
 }
 

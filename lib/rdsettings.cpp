@@ -291,20 +291,18 @@ bool RDSettings::deletePreset(unsigned id) const
 }
 
 
-QString RDSettings::pathName(const QString &stationname,QString pathname,
-			     RDSettings::Format fmt)
+QString RDSettings::pathName(QString pathname,RDSettings::Format fmt)
 {
   QString ext;
   int index=pathname.findRev(".");
   if(index<0) {
-    return pathname+"."+defaultExtension(stationname,fmt);
+    return pathname+"."+defaultExtension(fmt);
   }
   ext=pathname.right(pathname.length()-index);
-  if(ext.lower()==defaultExtension(stationname,fmt)) {
+  if(ext.lower()==defaultExtension(fmt)) {
     return pathname;
   }
-  return pathname.replace(index,ext.length(),"."+
-			  defaultExtension(stationname,fmt));
+  return pathname.replace(index,ext.length(),"."+defaultExtension(fmt));
 }
 
 
@@ -340,63 +338,6 @@ QString RDSettings::defaultExtension(RDSettings::Format fmt)
     break;
   }
   return ret;
-}
-
-
-QString RDSettings::defaultExtension(const QString &stationname,
-				     RDSettings::Format fmt)
-{
-  switch(fmt) {
-  case RDSettings::Pcm16:
-  case RDSettings::Pcm24:
-  case RDSettings::MpegL2Wav:
-    return QString("wav");
-
-  case RDSettings::MpegL1:
-    return QString("mp1");
-
-  case RDSettings::MpegL2:
-    return QString("mp2");
-
-  case RDSettings::MpegL3:
-    return QString("mp3");
-
-  case RDSettings::Flac:
-    return QString("flac");
-
-  case RDSettings::OggVorbis:
-    return QString("ogg");
-  }
-
-  return QString("dat");
-}
-
-
-unsigned RDSettings::bytesPerSec(const QString &stationname,
-				 RDSettings::Format fmt,unsigned quality)
-{
-  //
-  // Guesstimate the bit rate for a VBR encoding.  This is *not* exact,
-  // but is intended merely to provide a half-way sane value for use with
-  // progress bars and such.
-  //
-  switch(fmt) {
-      case RDSettings::MpegL3:
-	return 16000;
-	break;
-
-      case RDSettings::OggVorbis:
-	return 4173*quality+7977;
-	break;
-
-      case RDSettings::Flac:
-	return 72500;
-	break;
-
-      default:
-	break;
-  }
-  return 0;
 }
 
 

@@ -476,7 +476,7 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
   conv->setCutNumber(RDCut::cutNumber(cut->cutName()));
   conv->setDestinationSettings(&settings);
   conv->setDestinationFile(ResolveOutputName(cart,cut,
-      RDSettings::defaultExtension(rda->station()->name(),settings.format())));
+			   RDSettings::defaultExtension(settings.format())));
   conv->setEnableMetadata(true);
 
   if((export_err=conv->runExport(rda->user()->name(),rda->user()->password(),

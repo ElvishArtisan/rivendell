@@ -20470,3 +20470,9 @@
 	'conf/rivendell-webapi.conf'.
 2020-10-15 Fred Gleason <fredg@paravelsystems.com>
 	* Modified 'RDFormPost' to use 'QMap' instead of 'std::map'.
+2020-10-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDSettings::defaultExtension()' method containing the
+	'stationname' parameter.
+	* Removed the 'stationname' parameter from the
+	'RDSettings::pathName()' method.
+	* Removed the 'RDSettings::bytesPerSec()' method.

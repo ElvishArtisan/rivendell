@@ -54,13 +54,8 @@ class RDSettings
   unsigned addPreset();
   bool savePreset(unsigned id) const;
   bool deletePreset(unsigned id) const;
-  static QString pathName(const QString &stationname,QString pathname,
-			  RDSettings::Format fmt);
+  static QString pathName(QString pathname,RDSettings::Format fmt);
   static QString defaultExtension(RDSettings::Format fmt);
-  static QString defaultExtension(const QString &stationname,
-				  RDSettings::Format fmt);
-  static unsigned bytesPerSec(const QString &stationname,
-			      RDSettings::Format fmt,unsigned quality);
   QString dump() const;
   void clear();
 
