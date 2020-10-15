@@ -66,6 +66,8 @@ class RDApplication : public QObject
   bool dropTable(const QString &tbl_name);
   void addTempFile(const QString &pathname);
   void syslog(int priority,const char *fmt,...) const;
+  void logAuthenticationFailure(const QHostAddress &orig_addr,
+				const QString &login_name=QString());
   static void syslog(RDConfig *config,int priority,const char *fmt,...);
 
  private slots:

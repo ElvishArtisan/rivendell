@@ -312,6 +312,21 @@ void RDApplication::addTempFile(const QString &pathname)
 }
 
 
+void RDApplication::logAuthenticationFailure(const QHostAddress &orig_addr,
+					     const QString &login_name)
+{
+  if(login_name.isEmpty()) {
+    syslog(LOG_NOTICE,"failed WebAPI login from %s",
+	   orig_addr.toString().toUtf8().constData());
+  }
+  else {
+    syslog(LOG_NOTICE,"failed WebAPI login from %s for user \"%s\"",
+	   orig_addr.toString().toUtf8().constData(),
+	   login_name.toUtf8().constData());
+  }
+}
+
+
 void RDApplication::syslog(int priority,const char *fmt,...) const
 {
   va_list args;

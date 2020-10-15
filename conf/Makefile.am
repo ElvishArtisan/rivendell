@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -33,6 +33,7 @@ EXTRA_DIST = asound.conf-sample\
              rd-bin.conf.in\
              rd.conf-sample\
              rivendell.pam\
+             rivendell-webapi.conf\
              syslog.conf-sample
 
 CLEANFILES = *~

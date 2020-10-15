@@ -138,6 +138,8 @@ cat conf/rd.conf-sample | sed s/SyslogFacility=1/SyslogFacility=23/ > $RPM_BUILD
 cp conf/asound.conf-sample $RPM_BUILD_ROOT/@DOC_PATH@/
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/misc
 cp conf/syslog.conf-sample $RPM_BUILD_ROOT/@DOC_PATH@/
+mkdir -p $RPM_BUILD_ROOT/etc/fail2ban/filter.d
+cp conf/rivendell-webapi.conf $RPM_BUILD_ROOT/etc/fail2ban/filter.d/
 cp docs/misc/colors $RPM_BUILD_ROOT/@DOC_PATH@/misc/
 cp docs/misc/reports.txt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
 cp docs/misc/ALSA.txt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
@@ -387,6 +389,7 @@ rm -rf $RPM_BUILD_ROOT
 /etc/security/console.apps/rddbconfig-root
 /etc/pam.d/rddbconfig-root
 /etc/pam.d/rivendell
+/etc/fail2ban/filter.d/rivendell-webapi.conf
 /lib/systemd/system/rivendell.service
 %{_mandir}/man1/rdairplay.1.gz
 %{_mandir}/man1/rdalsaconfig.1.gz

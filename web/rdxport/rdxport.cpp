@@ -416,13 +416,16 @@ bool Xport::Authenticate()
   // Next, check the whitelist
   //
   if(!xport_post->getValue("LOGIN_NAME",&name)) {
+    rda->logAuthenticationFailure(xport_post->clientAddress());
     return false;
   }
   if(!xport_post->getValue("PASSWORD",&passwd)) {
+    rda->logAuthenticationFailure(xport_post->clientAddress(),name);
     return false;
   }
   rda->user()->setName(name);
   if(!rda->user()->exists()) {
+    rda->logAuthenticationFailure(xport_post->clientAddress(),name);
     return false;
   }
   if((xport_post->clientAddress().toIPv4Address()>>24)==127) {  // Localhost
@@ -443,6 +446,7 @@ bool Xport::Authenticate()
   // Finally, try password
   //
   if(!rda->user()->checkPassword(passwd,false)) {
+    rda->logAuthenticationFailure(xport_post->clientAddress(),name);
     return false;
   }
   TryCreateTicket(name);

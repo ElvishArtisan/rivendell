@@ -365,15 +365,18 @@ bool MainObject::Authenticate()
   QString passwd;
 
   if(!webget_post->getValue("LOGIN_NAME",&name)) {
+    rda->logAuthenticationFailure(webget_post->clientAddress());
     return false;
   }
   if(!webget_post->getValue("PASSWORD",&passwd)) {
+    rda->logAuthenticationFailure(webget_post->clientAddress(),name);
     return false;
   }
   RDUser *user=new RDUser(name);
   if((!user->exists())||
      (!user->checkPassword(passwd,false))||
      (!user->webgetLogin())) {
+    rda->logAuthenticationFailure(webget_post->clientAddress(),name);
     return false;
   }
 

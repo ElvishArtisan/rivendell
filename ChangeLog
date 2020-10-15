@@ -20464,3 +20464,7 @@
 	* Added an 'Encoder Profiles' dialog to rdadmin(1).
 	* Removed static content dependencies from the WebGet service.
 	* Refactored the WebGet service to use Encoder Profiles.
+2020-10-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDApplication::logAuthenticationFailure()' method.
+	* Added a sample Fail2Ban jail filter for the WebAPI in
+	'conf/rivendell-webapi.conf'.
