@@ -20476,3 +20476,6 @@
 	* Removed the 'stationname' parameter from the
 	'RDSettings::pathName()' method.
 	* Removed the 'RDSettings::bytesPerSec()' method.
+2020-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'WebGet' service to supply a sane default
+	filename for downloaded content.

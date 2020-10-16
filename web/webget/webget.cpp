@@ -111,7 +111,7 @@ MainObject::MainObject(QObject *parent)
   //
   if(!Authenticate()) {
     printf("Content-type: text/html\n");
-    printf("Status: 400\n");
+    printf("Status: 401\n");
     printf("\n");
     printf("Invalid User name or Password!\n");
     Exit(0);
@@ -165,7 +165,7 @@ void MainObject::ripcConnectedData(bool state)
   delete q;
   if(cartnum==0) {
     printf("Content-type: text/html\n");
-    printf("Status: 400\n");
+    printf("Status: 404\n");
     printf("\n");
     printf("No such cart!\n");
     Exit(0);
@@ -300,60 +300,78 @@ void MainObject::ServeForm()
 {
   QString sql;
   RDSqlQuery *q=NULL;
+  time_t t=time(NULL);
 
   printf("Content-type: text/html\n\n");
 
   printf("<html>\n");
   printf("  <head>\n");
   printf("    <title>Rivendell Webget</title>\n");
+  printf("    <script src=\"webget.js?%lu\" type=\"application/javascript\"></script>\n",t);
+  printf("    <script src=\"utils.js?%lu\" type=\"application/javascript\"></script>\n",t);
+  printf("    <script type=\"application/javascript\">\n");
+  printf("      var preset_ids=new Array();\n");
+  printf("      var preset_exts=new Array();\n");
+  sql=QString("select ")+
+    "ID,"+      // 00
+    "FORMAT "+  // 01
+    "from ENCODER_PRESETS order by ID";
+  int count=0;
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    printf("      preset_ids[%d]=%d;\n",count,q->value(0).toInt());
+    printf("      preset_exts[%d]='%s';\n",
+	   count,RDSettings::defaultExtension((RDSettings::Format)q->value(1).toUInt()).toUtf8().constData());
+    count++;
+  }
+  delete q;
+  printf("    </script>\n");
   printf("  </head>\n");
   printf("  <body>\n");
-  printf("    <form method=\"post\" action=\"webget.cgi\" enctype=\"application/x-www-form-urlencoded\">\n");
-  printf("      <table style=\"margin: auto;padding: 10px 0\" cellpadding=\"0\" cellspacing=\"5\" border=\"0\">\n");
-  printf("	<tr>\n");
-  printf("	  <td colspan=\"2\"><img src=\"logos/webget_logo.png\" border=\"0\"></td>\n");
-  printf("	</tr>\n");
-  printf("	<tr>\n");
-  printf("	  <td colspan=\"2\"><strong>Get audio from Rivendell</strong></td>\n");
-  printf("	</tr>\n");
-  printf("	<tr><td colspan=\"2\"><hr></td></tr>\n");
-  printf("	<tr>\n");
-  printf("	  <td style=\"text-align: right\">Cart Title:</td>\n");
-  printf("	  <td><input type=\"text\" name=\"title\" size=\"40\" maxlength=\"255\"></td>\n");
-  printf("	</tr>\n");
-  printf("	<tr><td cellspan=\"2\">&nbsp</td></tr>\n");
+  printf("    <table style=\"margin: auto;padding: 10px 0\" cellpadding=\"0\" cellspacing=\"5\" border=\"0\">\n");
+  printf("    <tr>\n");
+  printf("	<td colspan=\"2\"><img src=\"logos/webget_logo.png\" border=\"0\"></td>\n");
+  printf("    </tr>\n");
+  printf("    <tr>\n");
+  printf("	<td colspan=\"2\"><strong>Get audio from Rivendell</strong></td>\n");
+  printf("    </tr>\n");
+  printf("    <tr><td colspan=\"2\"><hr></td></tr>\n");
+  printf("    <tr>\n");
+  printf("	<td style=\"text-align: right\">Cart Title:</td>\n");
+  printf("	<td><input type=\"text\" id=\"title\" size=\"40\" maxlength=\"255\"></td>\n");
+  printf("    </tr>\n");
+  printf("    <tr><td cellspan=\"2\">&nbsp</td></tr>\n");
 
-  printf("	<tr>\n");
-  printf("	  <td style=\"text-align: right\">Format:</td>\n");
-  printf("	  <td>\n");
-  printf("	    <select name=\"preset\" id=\"preset\">\n");
+  printf("    <tr>\n");
+  printf("	<td style=\"text-align: right\">Format:</td>\n");
+  printf("	<td>\n");
+  printf("	  <select id=\"preset\">\n");
   sql=QString("select ")+
     "ID,"+    // 00
     "NAME "+  // 01
     "from ENCODER_PRESETS order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    printf("            <option value=\"%u\">%s</option>\n",
+    printf("          <option value=\"%u\">%s</option>\n",
 	   q->value(0).toUInt(),q->value(1).toString().toUtf8().constData());
   }
   delete q;
-  printf("	    </select>\n");
-  printf("	  </td>\n");
-  printf("	</tr>\n");
-  printf("	<tr><td cellspan=\"2\">&nbsp</td></tr>\n");
-  printf("	<td style=\"text-align: right\">User Name:</td>\n");
-  printf("	<td><input type=\"text\" size=\"32\" maxsize=\"255\" name=\"LOGIN_NAME\"></td>\n");
-  printf("	</tr>\n");
-  printf("        <tr>\n");
-  printf("	<td style=\"text-align: right\">Password:</td>\n");
-  printf("	<td><input type=\"password\" size=\"32\" maxsize=\"32\" name=\"PASSWORD\"></td>\n");
-  printf("	<tr><td cellspan=\"2\">&nbsp</td></tr>\n");
-  printf("	<tr>\n");
-  printf("	  <td>&nbsp;</td>\n");
-  printf("	  <td><input type=\"submit\" value=\"OK\"></td>\n");
-  printf("	</tr>\n");
-  printf("      </table>\n");
-  printf("    </form>\n");
+  printf("	  </select>\n");
+  printf("	</td>\n");
+  printf("    </tr>\n");
+  printf("    <tr><td cellspan=\"2\">&nbsp</td></tr>\n");
+  printf("    <td style=\"text-align: right\">User Name:</td>\n");
+  printf("    <td><input type=\"text\" size=\"32\" maxsize=\"255\" id=\"LOGIN_NAME\"></td>\n");
+  printf("    </tr>\n");
+  printf("      <tr>\n");
+  printf("    <td style=\"text-align: right\">Password:</td>\n");
+  printf("    <td><input type=\"password\" size=\"32\" maxsize=\"32\" id=\"PASSWORD\"></td>\n");
+  printf("    <tr><td cellspan=\"2\">&nbsp</td></tr>\n");
+  printf("    <tr>\n");
+  printf("	<td>&nbsp;</td>\n");
+  printf("	<td><input type=\"button\" value=\"OK\" onclick=\"ProcessOkButton()\"></td>\n");
+  printf("    </tr>\n");
+  printf("    </table>\n");
   printf("  </body>\n");
   printf("</html>\n");
 }
