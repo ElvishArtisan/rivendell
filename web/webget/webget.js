@@ -24,13 +24,13 @@ function Id(id)
 
 function MakePost()
 {
-    var sep=MakeMimeSeparator();
+    var sep=RD_MakeMimeSeparator();
     form=sep+"\r\n";
 
-    form+=AddMimePart('title',Id('title').value,sep,false);
-    form+=AddMimePart('preset',Id('preset').value,sep,false);
-    form+=AddMimePart('LOGIN_NAME',Id('LOGIN_NAME').value,sep,false);
-    form+=AddMimePart('PASSWORD',Id('PASSWORD').value,sep,true);
+    form+=RD_AddMimePart('title',Id('title').value,sep,false);
+    form+=RD_AddMimePart('preset',Id('preset').value,sep,false);
+    form+=RD_AddMimePart('LOGIN_NAME',Id('LOGIN_NAME').value,sep,false);
+    form+=RD_AddMimePart('PASSWORD',Id('PASSWORD').value,sep,true);
 
     return form;
 }
@@ -44,7 +44,7 @@ function ProcessOkButton()
 
 function SendForm(form,url)
 {
-    var http=GetXMLHttpRequest();
+    var http=RD_GetXMLHttpRequest();
     if(http==null) {
 	return;
     }

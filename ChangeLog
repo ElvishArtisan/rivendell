@@ -20481,3 +20481,6 @@
 	filename for downloaded content.
 2020-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'rdcastmanager.cgi'.
+2020-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Prepended 'RD_' to the names of all common Javascript functions
+	in 'web/common/utils.js'.

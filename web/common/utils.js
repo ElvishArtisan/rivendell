@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-function PostForm(form,url)
+function RD_PostForm(form,url)
 {
     var http=GetXMLHttpRequest();
     if(http==null) {
@@ -42,7 +42,7 @@ function PostForm(form,url)
 }
 
 
-function MakeMimeSeparator()
+function RD_MakeMimeSeparator()
 {
     sep='----------------------------';
     for(var i=0;i<27;i++) {
@@ -53,7 +53,7 @@ function MakeMimeSeparator()
 }
 
 
-function AddMimePart(name,value,sep,is_last)
+function RD_AddMimePart(name,value,sep,is_last)
 {
     var form='Content-Disposition: form-data; name="'+name+'"\r\n';
     form+='\r\n';
@@ -68,7 +68,7 @@ function AddMimePart(name,value,sep,is_last)
 }
 
 
-function UrlEncode(str) {
+function RD_UrlEncode(str) {
     var ret=new String;
 
     for(i=0;i<str.length;i++) {
@@ -115,7 +115,7 @@ function UrlEncode(str) {
 }
 
 
-function EncodeChar(c) {
+function RD_EncodeChar(c) {
     var ret=new String;
     ret="%";
     if(c<16) {
@@ -143,7 +143,7 @@ var http_factories=[
 ];
 
 
-function GetXMLHttpRequest() {
+function RD_GetXMLHttpRequest() {
     for(var i=0;i<http_factories.length;i++) {
 	try {
 	    var factory=http_factories[i];

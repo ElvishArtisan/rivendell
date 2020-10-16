@@ -526,6 +526,7 @@ AC_CONFIG_FILES([rivendell.spec \
     rdhpi/Makefile \
     cae/Makefile \
     web/Makefile \
+    web/common/Makefile \
     web/rdxport/Makefile \
     web/tests/Makefile \
     web/webget/Makefile \

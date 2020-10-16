@@ -2,7 +2,7 @@
 //
 // Script for selecting cut label elements for the EditCut web method
 //
-//   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,7 @@
 function EditCut_Field(field,sep)
 {
     if(document.getElementById("USE_"+field).checked) {
-	return AddMimePart(field,document.getElementById(field).value,sep,false);
+	return RD_AddMimePart(field,document.getElementById(field).value,sep,false);
     }
     return '';
 }
@@ -29,7 +29,7 @@ function EditCut_Field(field,sep)
 
 function EditCut_MakePost()
 {
-    var sep=MakeMimeSeparator();
+    var sep=RD_MakeMimeSeparator();
     form=sep+"\r\n";
 
     form+=EditCut_Field('EVERGREEN',sep);
@@ -59,12 +59,12 @@ function EditCut_MakePost()
     form+=EditCut_Field('TALK_START_POINT',sep);
     form+=EditCut_Field('TALK_END_POINT',sep);
     form+=EditCut_Field('WEIGHT',sep);
-    form+=AddMimePart('LOGIN_NAME',document.getElementById('LOGIN_NAME').value,sep,false);
-    form+=AddMimePart('PASSWORD',document.getElementById('PASSWORD').value,sep,false);
-    form+=AddMimePart('TICKET',document.getElementById('TICKET').value,sep,false);
-    form+=AddMimePart('CART_NUMBER',document.getElementById('CART_NUMBER').value,sep,false);
-    form+=AddMimePart('CUT_NUMBER',document.getElementById('CUT_NUMBER').value,sep,false);
-    form+=AddMimePart('COMMAND','15',sep,true);
+    form+=RD_AddMimePart('LOGIN_NAME',document.getElementById('LOGIN_NAME').value,sep,false);
+    form+=RD_AddMimePart('PASSWORD',document.getElementById('PASSWORD').value,sep,false);
+    form+=RD_AddMimePart('TICKET',document.getElementById('TICKET').value,sep,false);
+    form+=RD_AddMimePart('CART_NUMBER',document.getElementById('CART_NUMBER').value,sep,false);
+    form+=RD_AddMimePart('CUT_NUMBER',document.getElementById('CUT_NUMBER').value,sep,false);
+    form+=RD_AddMimePart('COMMAND','15',sep,true);
 
     return form;
 }
@@ -78,5 +78,5 @@ function EditCut_ShowPost()
 
 function EditCut_Submit()
 {
-    PostForm(EditCut_MakePost(),"rdxport.cgi");
+    RD_PostForm(EditCut_MakePost(),"rdxport.cgi");
 }

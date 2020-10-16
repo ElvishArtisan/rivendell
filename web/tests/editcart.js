@@ -2,7 +2,7 @@
 //
 // Script for selecting cart label elements for the EditCart web method
 //
-//   (C) Copyright 2015-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,7 @@
 function EditCart_Field(field,sep)
 {
     if(document.getElementById("USE_"+field).checked) {
-	return AddMimePart(field,document.getElementById(field).value,sep,false);
+	return RD_AddMimePart(field,document.getElementById(field).value,sep,false);
     }
     return '';
 }
@@ -29,7 +29,7 @@ function EditCart_Field(field,sep)
 
 function EditCart_MakePost()
 {
-    var sep=MakeMimeSeparator();
+    var sep=RD_MakeMimeSeparator();
     form=sep+"\r\n";
 
     form+=EditCart_Field('ASYNCHRONOUS',sep);
@@ -49,14 +49,14 @@ function EditCart_MakePost()
     form+=EditCart_Field('USER_DEFINED',sep);
     form+=EditCart_Field('OWNER',sep);
     form+=EditCart_Field('NOTES',sep);
-    form+=AddMimePart('LOGIN_NAME',document.getElementById('LOGIN_NAME').value,sep,false);
-    form+=AddMimePart('PASSWORD',document.getElementById('PASSWORD').value,sep,false);
-    form+=AddMimePart('TICKET',document.getElementById('TICKET').value,sep,false);
-    form+=AddMimePart('CART_NUMBER',document.getElementById('CART_NUMBER').value,sep,false);
+    form+=RD_AddMimePart('LOGIN_NAME',document.getElementById('LOGIN_NAME').value,sep,false);
+    form+=RD_AddMimePart('PASSWORD',document.getElementById('PASSWORD').value,sep,false);
+    form+=RD_AddMimePart('TICKET',document.getElementById('TICKET').value,sep,false);
+    form+=RD_AddMimePart('CART_NUMBER',document.getElementById('CART_NUMBER').value,sep,false);
     if(document.getElementById("INCLUDE_CUTS").value.length==0) {
-	form+=AddMimePart('INCLUDE_CUTS',document.getElementById('INCLUDE_CUTS').value,sep,false);
+	form+=RD_AddMimePart('INCLUDE_CUTS',document.getElementById('INCLUDE_CUTS').value,sep,false);
     }
-    form+=AddMimePart('COMMAND','14',sep,true);
+    form+=RD_AddMimePart('COMMAND','14',sep,true);
 
     return form;
 }
@@ -70,5 +70,5 @@ function EditCart_ShowPost()
 
 function EditCart_Submit()
 {
-    PostForm(EditCart_MakePost(),"rdxport.cgi");
+    RD_PostForm(EditCart_MakePost(),"rdxport.cgi");
 }
