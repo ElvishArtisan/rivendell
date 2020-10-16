@@ -20,8 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-SUBDIRS = rdcastmanager\
-          rdxport\
+SUBDIRS = rdxport\
           tests\
           webget
 

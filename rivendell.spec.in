@@ -380,7 +380,6 @@ rm -rf $RPM_BUILD_ROOT
 @libexecdir@/*.html
 @libexecdir@/*.js
 @libexecdir@/*.png
-@libexecdir@/rdcastmanager.cgi
 %attr(6755,root,root) @libexecdir@/rdxport.cgi
 %attr(6755,root,root) @libexecdir@/webget.cgi
 @sysconfdir@/rd-bin.conf
