@@ -340,7 +340,6 @@ void MainObject::ServeForm()
   printf("	<td style=\"text-align: right\">Cart Title:</td>\n");
   printf("	<td><input type=\"text\" id=\"title\" size=\"40\" maxlength=\"255\"></td>\n");
   printf("    </tr>\n");
-  printf("    <tr><td cellspan=\"2\">&nbsp</td></tr>\n");
 
   printf("    <tr>\n");
   printf("	<td style=\"text-align: right\">Format:</td>\n");
