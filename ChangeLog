@@ -20486,3 +20486,5 @@
 	in 'web/common/utils.js'.
 2020-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Tweaked the layout of the WebGet UI.
+2020-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'webget' subpackage to the 'make rpm' target.

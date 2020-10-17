@@ -57,6 +57,10 @@ Requires: python36, python36-pycurl, python36-requests, python36-pyserial, pytho
 Summary: The RDSelect system selector tool for Rivendell.
 Requires: rivendell = @VERSION@, autofs
 
+%package webget
+Summary: The WebGet audio fetcher service for Rivendell
+Requires: rivendell = @VERSION@
+
 
 %description
 Rivendell is a complete radio broadcast automation solution, with
@@ -101,6 +105,11 @@ Program Associated Data (PAD) using of Python scripts.
 This package contains the RDMonitor/RDSelect tool for Rivendell, which can
 be used to select which amoung multiple Rivendell instances a host should be
 associated with.
+
+
+%description webget
+This package contains the WebGet audio fetching tool for Rivendell.
+
 
 %prep
 
@@ -378,10 +387,11 @@ rm -rf $RPM_BUILD_ROOT
 /.qt/qt
 @libexecdir@/*.gif
 @libexecdir@/*.html
-@libexecdir@/*.js
+@libexecdir@/editcart.js
+@libexecdir@/editcut.js
+@libexecdir@/utils.js
 @libexecdir@/*.png
 %attr(6755,root,root) @libexecdir@/rdxport.cgi
-%attr(6755,root,root) @libexecdir@/webget.cgi
 @sysconfdir@/rd-bin.conf
 /etc/security/console.apps/rdalsaconfig-root
 /etc/pam.d/rdalsaconfig-root
@@ -523,6 +533,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4755,root,root) @LOCAL_PREFIX@/bin/rdselect_helper
 @LOCAL_PREFIX@/bin/rdmonitor
 /etc/X11/xinit/xinitrc.d/start-rdmonitor.sh
+
+
+%files webget
+%attr(6755,root,root) @libexecdir@/webget.cgi
+@libexecdir@/webget.js
 
 
 %post select
