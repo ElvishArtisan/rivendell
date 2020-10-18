@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.4.1int1 -- 9 October 2020
+v3.4.1int2 -- 18 October 2020
 
 Changes:
    Podcasting Subsystem. Major refactoring, with explicit support of
@@ -14,10 +14,14 @@ Changes:
    GVC7000 Switcher Driver. Modified the 'GVC7000 Protocol' switcher
    driver to better handle stacked commands.
 
+   WebGet. Modified the WebGet service to offer audio profiles when
+   exporting audio rather than having the user set individual export
+   parameters.
+
    Various bugfixes. See 'ChangeLog' for details.
 
 Database Update:
-   This version of Rivendell uses database schema version 317, and will
+   This version of Rivendell uses database schema version 343, and will
    automatically upgrade any earlier versions. To see the current schema
    version prior to upgrade, see RDAdmin->SystemInfo.
 

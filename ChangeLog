@@ -20488,3 +20488,5 @@
 	* Tweaked the layout of the WebGet UI.
 2020-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'webget' subpackage to the 'make rpm' target.
+2020-10-18 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.1int2.
