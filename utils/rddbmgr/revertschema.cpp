@@ -413,7 +413,9 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
       "HEADER_XML text,"+
       "CHANNEL_XML text,"+
       "ITEM_XML text,"+
-      "index NAME_IDX(NAME))";
+      "index NAME_IDX(NAME)) "+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }

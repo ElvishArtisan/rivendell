@@ -9953,7 +9953,9 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "index FEED_ID_IDX(FEED_ID),"+
       "index MEMBER_FEED_ID_IDX(MEMBER_FEED_ID),"+
       "index KEY_NAME_IDX(KEY_NAME),"+
-      "index MEMBER_KEY_NAME_IDX(MEMBER_KEY_NAME))";
+      "index MEMBER_KEY_NAME_IDX(MEMBER_KEY_NAME)) "+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -10003,7 +10005,9 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "HEADER_XML text,"+
       "CHANNEL_XML text,"+
       "ITEM_XML text,"+
-      "index NAME_IDX(NAME))";
+      "index NAME_IDX(NAME)) "+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -10029,7 +10033,9 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "FILE_EXTENSION varchar(10) not null,"+
       "DATA mediumblob not null,"+
       "index FEED_ID_IDX (FEED_ID),"+
-      "index FEED_KEY_NAME_IDX (FEED_KEY_NAME))";
+      "index FEED_KEY_NAME_IDX (FEED_KEY_NAME)) "+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
