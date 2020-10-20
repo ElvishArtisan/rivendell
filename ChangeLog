@@ -20490,3 +20490,5 @@
 	* Added a 'webget' subpackage to the 'make rpm' target.
 2020-10-18 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.1int2.
+2020-10-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added an experimental command rdmerge(8).

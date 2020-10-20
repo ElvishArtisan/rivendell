@@ -162,6 +162,7 @@ utils/rdimport/rdimport
 utils/rdcollect/rdcollect
 utils/rdexport/rdexport
 utils/rdmaint/rdmaint
+utils/rdmerge/rdmerge
 utils/rdgen/rdgen
 utils/rdrender/rdrender
 utils/rdrevert/rdrevert
