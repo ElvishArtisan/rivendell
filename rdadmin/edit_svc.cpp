@@ -78,8 +78,8 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_name_edit->setMaxLength(10);
   svc_name_edit->setReadOnly(true);
   label=new QLabel(svc_name_edit,tr("&Service Name:"),this);
-  label->setGeometry(10,33,170,19);
-  label->setAlignment(Qt::AlignRight);
+  label->setGeometry(10,31,170,19);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Service Description
@@ -89,8 +89,8 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_description_edit->setMaxLength(255);
   svc_description_edit->setValidator(validator);
   label=new QLabel(svc_description_edit,tr("Service &Description:"),this);
-  label->setGeometry(10,54,170,19);
-  label->setAlignment(Qt::AlignRight);
+  label->setGeometry(10,52,170,19);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Service Program Code
@@ -101,7 +101,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_program_code_edit->setValidator(validator);
   label=new QLabel(svc_program_code_edit,tr("&Program Code:"),this);
   label->setGeometry(10,73,170,19);
-  label->setAlignment(Qt::AlignRight);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Log Name Template
@@ -112,7 +112,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_name_template_edit->setValidator(log_validator);
   label=new QLabel(svc_name_template_edit,tr("Log Name &Template:"),this);
   label->setGeometry(10,94,170,19);
-  label->setAlignment(Qt::AlignRight);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Log Description Template
@@ -123,45 +123,61 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   label=new QLabel(svc_description_template_edit,
 		   tr("Log &Description Template:"),this);
   label->setGeometry(10,115,170,19);
-  label->setAlignment(Qt::AlignRight);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  //
+  // Inline Event Inheritance Log
+  //
+  svc_sub_event_inheritance_box=new QComboBox(this);
+  svc_sub_event_inheritance_box->setGeometry(185,136,240,19);
+  svc_sub_event_inheritance_box->
+    insertItem((int)RDSvc::ParentEvent,tr("From Relative Position"));
+  svc_sub_event_inheritance_box->
+    insertItem((int)RDSvc::SchedFile,tr("From Scheduler File"));
+  connect(svc_sub_event_inheritance_box,SIGNAL(activated(const QString &)),
+	  this,SLOT(textChangedData(const QString &)));
+  label=new QLabel(svc_sub_event_inheritance_box,
+		   tr("Inline Event Start/Length")+":",this);
+  label->setGeometry(10,136,170,19);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Voicetracking Group
   //
   svc_voice_group_box=new QComboBox(this);
-  svc_voice_group_box->setGeometry(185,136,240,19);
+  svc_voice_group_box->setGeometry(185,157,240,19);
   svc_voice_group_box->insertItem(tr("[none]"));
   label=new QLabel(svc_voice_group_box,tr("Voicetrack Group:"),this);
-  label->setGeometry(10,136,170,19);
-  label->setAlignment(Qt::AlignRight);
+  label->setGeometry(10,157,170,19);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Autospot Group
   //
   svc_autospot_group_box=new QComboBox(this);
-  svc_autospot_group_box->setGeometry(185,157,240,19);
+  svc_autospot_group_box->setGeometry(185,178,240,19);
   svc_autospot_group_box->insertItem(tr("[none]"));
   label=new QLabel(svc_autospot_group_box,tr("AutoSpot Group:"),this);
-  label->setGeometry(10,157,170,19);
-  label->setAlignment(Qt::AlignRight);
+  label->setGeometry(10,178,170,19);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Chain Log
   //
   svc_chain_box=new QCheckBox(this);
-  svc_chain_box->setGeometry(30,180,15,15);
+  svc_chain_box->setGeometry(30,201,15,15);
   label=new QLabel(svc_chain_box,tr("Insert CHAIN TO at log end"),this);
-  label->setGeometry(50,180,170,19);
+  label->setGeometry(50,201,170,19);
   label->setAlignment(Qt::AlignLeft);
 
   //
   // Default Auto Refresh
   //
   svc_autorefresh_box=new QCheckBox(this);
-  svc_autorefresh_box->setGeometry(230,180,15,15);
+  svc_autorefresh_box->setGeometry(230,201,15,15);
   label=
     new QLabel(svc_autorefresh_box,tr("Enable AutoRefresh By Default"),this);
-  label->setGeometry(250,180,200,19);
+  label->setGeometry(250,201,200,19);
   label->setAlignment(Qt::AlignLeft);
 
   //
@@ -239,7 +255,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Traffic Import Section
   //
   label=new QLabel(tr("Traffic Data Import"),this);
-  label->setGeometry(10,210,160,24);
+  label->setGeometry(10,231,160,24);
   label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignLeft);
 
@@ -247,11 +263,11 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Linux Traffic Import Path
   //
   svc_tfc_path_edit=new QLineEdit(this);
-  svc_tfc_path_edit->setGeometry(185,234,240,19);
+  svc_tfc_path_edit->setGeometry(185,255,240,19);
   svc_tfc_path_edit->setMaxLength(191);
   svc_tfc_path_edit->setValidator(validator);
   label=new QLabel(svc_tfc_path_edit,tr("Import Path:"),this);
-  label->setGeometry(10,234,170,19);
+  label->setGeometry(10,255,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_tfc_path_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
@@ -260,11 +276,11 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Linux Traffic Preimport Command
   //
   svc_tfc_preimport_cmd_edit=new QLineEdit(this);
-  svc_tfc_preimport_cmd_edit->setGeometry(185,255,240,19);
+  svc_tfc_preimport_cmd_edit->setGeometry(185,276,240,19);
   svc_tfc_preimport_cmd_edit->setValidator(validator);
   label=
     new QLabel(svc_tfc_preimport_cmd_edit,tr("Preimport Command:"),this);
-  label->setGeometry(10,255,170,19);
+  label->setGeometry(10,276,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_tfc_preimport_cmd_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
@@ -273,10 +289,10 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Note Cart
   //
   svc_tfc_label_cart_edit=new QLineEdit(this);
-  svc_tfc_label_cart_edit->setGeometry(185,276,240,19);
+  svc_tfc_label_cart_edit->setGeometry(185,297,240,19);
   svc_tfc_label_cart_edit->setMaxLength(32);
-  label=new QLabel(svc_tfc_label_cart_edit,tr("Note Cart String:"),this);
-  label->setGeometry(10,276,170,19);
+  label=new QLabel(svc_tfc_label_cart_edit,tr("Insert Marker String")+":",this);
+  label->setGeometry(10,297,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_tfc_label_cart_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
@@ -285,10 +301,10 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Track String
   //
   svc_tfc_track_edit=new QLineEdit(this);
-  svc_tfc_track_edit->setGeometry(185,297,240,19);
+  svc_tfc_track_edit->setGeometry(185,318,240,19);
   svc_tfc_track_edit->setMaxLength(32);
   label=new QLabel(svc_tfc_track_edit,tr("Insert Voice Track String:"),this);
-  label->setGeometry(10,297,170,19);
+  label->setGeometry(10,318,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_tfc_track_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
@@ -297,9 +313,9 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Traffic Import Template
   //
   svc_tfc_import_template_box=new QComboBox(this);
-  svc_tfc_import_template_box->setGeometry(185,318,240,19);
+  svc_tfc_import_template_box->setGeometry(185,339,240,19);
   label=new QLabel(svc_tfc_import_template_box,tr("Import Template:"),this);
-  label->setGeometry(10,318,170,19);
+  label->setGeometry(10,339,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_tfc_import_template_box,SIGNAL(activated(int)),
 	  this,SLOT(tfcTemplateActivatedData(int)));
@@ -308,14 +324,14 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Traffic Parser Settings
   //
   svc_tfc_fields=new ImportFields(this);
-  svc_tfc_fields->setGeometry(10,339,svc_tfc_fields->sizeHint().width(),
+  svc_tfc_fields->setGeometry(10,360,svc_tfc_fields->sizeHint().width(),
 			      svc_tfc_fields->sizeHint().height());
 
   //
   //  Traffic Test Button
   //
   button=new QPushButton(this);
-  button->setGeometry(360,339,60,40);
+  button->setGeometry(360,360,60,40);
   button->setFont(buttonFont());
   button->setText(tr("Test \n&Traffic"));
   connect(button,SIGNAL(clicked()),this,SLOT(trafficData()));
@@ -324,7 +340,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //  Traffic Copy Button
   //
   svc_tfc_copy_button=new QPushButton(this);
-  svc_tfc_copy_button->setGeometry(360,389,60,40);
+  svc_tfc_copy_button->setGeometry(360,410,60,40);
   svc_tfc_copy_button->setFont(buttonFont());
   svc_tfc_copy_button->setText(tr("Copy To\nCustom"));
   connect(svc_tfc_copy_button,SIGNAL(clicked()),this,SLOT(trafficCopyData()));
@@ -333,7 +349,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Music Import Section
   //
   label=new QLabel(tr("Music Data Import"),this);
-  label->setGeometry(445,213,160,24);
+  label->setGeometry(445,234,160,24);
   label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignLeft);
 
@@ -341,11 +357,11 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Linux Music Import Path
   //
   svc_mus_path_edit=new QLineEdit(this);
-  svc_mus_path_edit->setGeometry(620,234,240,19);
+  svc_mus_path_edit->setGeometry(620,256,240,19);
   svc_mus_path_edit->setMaxLength(191);
   svc_mus_path_edit->setValidator(validator);
   label=new QLabel(svc_mus_path_edit,tr("Import Path:"),this);
-  label->setGeometry(450,234,165,19);
+  label->setGeometry(450,256,165,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_mus_path_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
@@ -354,11 +370,11 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Linux Music Preimport Command
   //
   svc_mus_preimport_cmd_edit=new QLineEdit(this);
-  svc_mus_preimport_cmd_edit->setGeometry(620,255,240,19);
+  svc_mus_preimport_cmd_edit->setGeometry(620,276,240,19);
   svc_mus_preimport_cmd_edit->setValidator(validator);
   label=
     new QLabel(svc_mus_preimport_cmd_edit,tr("Preimport Command:"),this);
-  label->setGeometry(450,255,165,19);
+  label->setGeometry(450,276,165,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_mus_preimport_cmd_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
@@ -367,10 +383,10 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Label Cart
   //
   svc_mus_label_cart_edit=new QLineEdit(this);
-  svc_mus_label_cart_edit->setGeometry(620,276,240,19);
+  svc_mus_label_cart_edit->setGeometry(620,297,240,19);
   svc_mus_label_cart_edit->setMaxLength(32);
-  label=new QLabel(svc_mus_label_cart_edit,tr("Note Cart String:"),this);
-  label->setGeometry(450,276,165,19);
+  label=new QLabel(svc_mus_label_cart_edit,tr("Insert Marker String")+":",this);
+  label->setGeometry(450,297,165,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_mus_label_cart_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
@@ -379,10 +395,10 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Insert Voice Track String
   //
   svc_mus_track_edit=new QLineEdit(this);
-  svc_mus_track_edit->setGeometry(620,297,240,19);
+  svc_mus_track_edit->setGeometry(620,318,240,19);
   svc_mus_track_edit->setMaxLength(255);
   label=new QLabel(svc_mus_track_edit,tr("Insert Voice Track String:"),this);
-  label->setGeometry(450,297,165,19);
+  label->setGeometry(450,318,165,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_mus_track_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
@@ -391,29 +407,13 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   // Insert Spot Break String
   //
   svc_mus_break_edit=new QLineEdit(this);
-  svc_mus_break_edit->setGeometry(620,318,240,19);
+  svc_mus_break_edit->setGeometry(620,339,240,19);
   svc_mus_break_edit->setMaxLength(255);
   label=new QLabel(svc_mus_break_edit,tr("Insert Traffic Break String:"),this);
-  label->setGeometry(450,318,165,19);
+  label->setGeometry(450,339,165,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_mus_break_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
-
-  //
-  // Inline Event Inheritance Log
-  //
-  svc_sub_event_inheritance_box=new QComboBox(this);
-  svc_sub_event_inheritance_box->setGeometry(620,339,240,19);
-  svc_sub_event_inheritance_box->
-    insertItem((int)RDSvc::ParentEvent,tr("From Parent RDLogManager Event"));
-  svc_sub_event_inheritance_box->
-    insertItem((int)RDSvc::SchedFile,tr("From Music Scheduler File"));
-  connect(svc_sub_event_inheritance_box,SIGNAL(activated(const QString &)),
-	  this,SLOT(textChangedData(const QString &)));
-  label=new QLabel(svc_sub_event_inheritance_box,
-		   tr("Inline Traffic Start/Length")+":",this);
-  label->setGeometry(450,339,165,19);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Music Import Template

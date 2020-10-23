@@ -20501,3 +20501,9 @@
 	* Restored operation of Label/Note carts in rdlogmanager(1).
 	* Fixed a bug in rdlogmanager(1) that caused inline events
 	without explicit start time/length data to fail to be placed.
+2020-10-23 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'Inline Traffic Start/Length' control to 'Inline
+	Event Start/Length' and moved it to the 'General' section of the
+	'Edit Service dialog in rdadmin(1).
+	* Renamed the 'Note Cart String' controls to 'Insert Marker String'
+	in the 'Edit Service dialog in rdadmin(1).
