@@ -2894,7 +2894,7 @@ prøv ein gong til!</translation>
     </message>
     <message>
         <source>[unknown cart]</source>
-        <translation>[ukjend korg]</translation>
+        <translation type="obsolete">[ukjend korg]</translation>
     </message>
     <message>
         <source>Autofill Errors
@@ -2929,6 +2929,34 @@ prøv ein gong til!</translation>
     </message>
     <message>
         <source>In event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid start time and/or length on track marker.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unexpected event type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid start time and/or length on note cart.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Note Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Track</source>
+        <translation type="unfinished">Spor</translation>
+    </message>
+    <message>
+        <source>Traffic Link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unexpected event</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

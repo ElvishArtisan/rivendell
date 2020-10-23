@@ -62,6 +62,7 @@ class TestImport : public RDDialog
   QLineEdit *test_filename_edit;
   QPushButton *test_close_button;
   QPixmap *test_playout_map;
+  QPixmap *test_marker_map;
   QPixmap *test_mic16_map;
   QPixmap *test_traffic_map;
 };

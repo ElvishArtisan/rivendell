@@ -1064,6 +1064,28 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
     }
 
     //
+    // Label/Note Cart
+    //
+    if(q->value(8).toUInt()==RDLogLine::Marker) {
+      e->insert(e->size(),1);
+      logline=e->logLine(e->size()-1);
+      logline->setId(e->nextId());
+      logline->setStartTime(RDLogLine::Logged,time);
+      logline->setType(RDLogLine::Marker);
+      logline->setSource(event_src);
+      logline->setTransType(RDLogLine::Segue);
+      logline->setMarkerComment(q->value(7).toString());
+      logline->setEventLength(event_length);
+      logline->setLinkEventName(event_name);
+      logline->setLinkStartTime(link_logline->linkStartTime());
+      logline->setLinkLength(link_logline->linkLength());
+      logline->setLinkStartSlop(link_logline->linkStartSlop());
+      logline->setLinkEndSlop(link_logline->linkEndSlop());
+      logline->setLinkId(link_logline->linkId());
+      logline->setLinkEmbedded(true);
+    }
+
+    //
     // Cart
     //
     if(q->value(8).toUInt()==RDLogLine::Cart) {
@@ -1074,6 +1096,8 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       logline->
 	setStartTime(RDLogLine::Logged,
 		     QTime(start_start_hour,0,0).addSecs(q->value(1).toInt()));
+      logline->setType(RDLogLine::Cart);
+      logline->setCartNumber(q->value(0).toUInt());
       logline->setGraceTime(grace_time);
       logline->setTimeType(time_type);
       logline->setTransType(trans_type);
@@ -1092,22 +1116,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       logline->setLinkEndSlop(link_logline->linkEndSlop());
       logline->setLinkId(link_logline->linkId());
       logline->setLinkEmbedded(link_logline->linkEmbedded());
-      if((q->value(6).toString()==label_cart)&&(!label_cart.isEmpty())) {
-	logline->setType(RDLogLine::Marker);
-	logline->setMarkerComment(q->value(7).toString());
-	logline->setCartNumber(0);
-      }
-      else {
-	if((q->value(6).toString()==track_cart)&&(!track_cart.isEmpty())) {
-	  logline->setType(RDLogLine::Track);
-	  logline->setMarkerComment(q->value(7).toString());
-	  logline->setCartNumber(0);
-	}
-	else {
-	  logline->setType(RDLogLine::Cart);
-	  logline->setCartNumber(q->value(0).toUInt());
-	}
-      }
       time=time.addMSecs(length);
     }
 

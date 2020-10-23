@@ -6331,6 +6331,10 @@ por favor, cheque suas configurações e tente novamente</translation>
         <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>NOTE</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ViewAdapters</name>

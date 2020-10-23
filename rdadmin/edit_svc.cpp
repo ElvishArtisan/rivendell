@@ -408,6 +408,8 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
     insertItem((int)RDSvc::ParentEvent,tr("From Parent RDLogManager Event"));
   svc_sub_event_inheritance_box->
     insertItem((int)RDSvc::SchedFile,tr("From Music Scheduler File"));
+  connect(svc_sub_event_inheritance_box,SIGNAL(activated(const QString &)),
+	  this,SLOT(textChangedData(const QString &)));
   label=new QLabel(svc_sub_event_inheritance_box,
 		   tr("Inline Traffic Start/Length")+":",this);
   label->setGeometry(450,339,165,19);

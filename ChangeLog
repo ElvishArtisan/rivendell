@@ -20494,3 +20494,10 @@
 	* Fixed a bug in rddbmgr(8) that could cause the 'RSS_SCHEMAS',
 	'FEED_IMAGES' and 'SUPERFEED_MAPS' to be created with incorrect
 	character set and engine type values.
+2020-10-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added generation of an 'RDLogManager Error Report' when errors
+	are detected when importing voice track markers from an external
+	scheduler file in rdlogmanager(1).
+	* Restored operation of Label/Note carts in rdlogmanager(1).
+	* Fixed a bug in rdlogmanager(1) that caused inline events
+	without explicit start time/length data to fail to be placed.

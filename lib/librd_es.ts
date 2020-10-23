@@ -2977,7 +2977,7 @@ please try again!</source>
     </message>
     <message>
         <source>[unknown cart]</source>
-        <translation>[cartucho desconocido]</translation>
+        <translation type="obsolete">[cartucho desconocido]</translation>
     </message>
     <message>
         <source>Event Fill Errors
@@ -3007,6 +3007,34 @@ please try again!</source>
     </message>
     <message>
         <source>In event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid start time and/or length on track marker.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unexpected event type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid start time and/or length on note cart.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Note Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Track</source>
+        <translation type="unfinished">Pista</translation>
+    </message>
+    <message>
+        <source>Traffic Link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unexpected event</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -90,7 +90,7 @@ class RDSvc : public QObject
   void setImportLength(ImportSource src,ImportField field,int len) const;
   QString importFilename(ImportSource src,const QDate &date) const;
   bool import(ImportSource src,const QDate &date,const QString &break_str,
-	      const QString &track_str) const;
+	      const QString &track_str,bool resolve_implied_times) const;
   bool generateLog(const QDate &date,const QString &logname,
 		   const QString &nextname,QString *report,RDUser *user,
 		   QString *err_msg);
@@ -128,4 +128,4 @@ class RDSvc : public QObject
 };
 
 
-#endif 
+#endif  // RDSVC_H

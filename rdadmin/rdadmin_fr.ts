@@ -5167,6 +5167,10 @@ please check your settings and try again.</source>
         <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>NOTE</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ViewAdapters</name>

@@ -36,6 +36,7 @@
 #include "test_import.h"
 
 #include "../icons/play.xpm"
+#include "../icons/marker.xpm"
 #include "../icons/mic16.xpm"
 #include "../icons/traffic.xpm"
 
@@ -69,6 +70,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   // Create Icons
   //
   test_playout_map=new QPixmap(play_xpm);
+  test_marker_map=new QPixmap(marker_xpm);
   test_mic16_map=new QPixmap(mic16_xpm);
   test_traffic_map=new QPixmap(traffic_xpm);
 
@@ -192,7 +194,7 @@ void TestImport::importData()
 
   test_events_list->clear();
   if(!test_svc->import(test_src,test_date_edit->date(),test_svc->breakString(),
-		       test_svc->trackString(test_src))) {
+		       test_svc->trackString(test_src),true)) {
     QMessageBox::information(this,tr("Import Error"),
 			     tr("There was an error during import\nplease check your settings and try again."));
     return;
@@ -234,6 +236,12 @@ void TestImport::importData()
       item->setText(4,q->value(7).toString().trimmed());
       break;
 
+    case RDLogLine::Marker:
+      item->setPixmap(0,*test_marker_map);
+      item->setText(2,tr("NOTE"));
+      item->setText(4,q->value(7).toString().trimmed());
+      break;
+
     case RDLogLine::TrafficLink:
       item->setPixmap(0,*test_traffic_map);
       item->setText(4,tr("[spot break]"));
@@ -249,7 +257,6 @@ void TestImport::importData()
     case RDLogLine::CloseBracket:
     case RDLogLine::Chain:
     case RDLogLine::MusicLink:
-    case RDLogLine::Marker:
     case RDLogLine::UnknownType:
       break;
     }
@@ -259,7 +266,7 @@ void TestImport::importData()
   sql=QString("delete from IMPORTER_LINES where ")+
     "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
     QString().sprintf("PROCESS_ID=%u",getpid());
-  //printf("IMPORTER_LINES cleanup SQL: %s\n",(const char *)sql);
+  //  printf("IMPORTER_LINES cleanup SQL: %s\n",(const char *)sql);
   RDSqlQuery::apply(sql);
 }
 

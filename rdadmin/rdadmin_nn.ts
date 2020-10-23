@@ -6213,6 +6213,10 @@ Sjekk oppsettet ditt og prøv att.</translation>
         <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>NOTE</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ViewAdapters</name>
