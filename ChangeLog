@@ -20510,3 +20510,5 @@
 2020-10-27 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Run Script' ['RN'] RML to invoke scripts via
 	the system shell.
+2020-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the runuser(1) dependency.

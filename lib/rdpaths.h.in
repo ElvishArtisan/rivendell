@@ -50,10 +50,5 @@ extern "C" {
 #define RD_PYPAD_PYTHON_PATH "@PYTHON@"
 #define RD_PYPAD_SCRIPT_DIR "@libdir@/rivendell/pypad"
 
-/*
- * runuser(1)
- */
-#define RD_RUNUSER "@RUNUSER_PATH@"
-
 
 #endif  // RDPATHS_H

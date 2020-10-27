@@ -1476,18 +1476,14 @@
       </para>
       <para>
 	<code>
-	  runuser -u <replaceable>user</replaceable>
-	  -g <replaceable>group</replaceable> <replaceable>cmd</replaceable>
-	  </code>
+	  /bin/sh -c <replaceable>cmd</replaceable>
+	</code>
       </para>
       <para>
-	where <replaceable>user</replaceable> and
-	<replaceable>group</replaceable> are the values specified by the
+	using the user and group specified by the
 	&quot;RnRmlOwner=&quot; and &quot;RnRmlGroup=&quot; directives in
 	the &quot;[Identity]&quot; section of
-	<command>rd.conf</command><manvolnum>5</manvolnum>. See the
-	<command>runuser</command><manvolnum>1</manvolnum> man page for
-	details concerning handling of the process enironment.
+	<command>rd.conf</command><manvolnum>5</manvolnum>.
       </para>
     </note>
   </sect2>
