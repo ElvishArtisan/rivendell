@@ -105,8 +105,7 @@ class MainObject : public QObject
   void SendGpoCart(int ch,int matrix);
   RDMacro ForwardConvert(const RDMacro &rml) const;
   bool LoadSwitchDriver(int matrix_num);
-  void RunCommand(const QString &user,const QString &group,
-		  const QString &cmd) const;
+  void RunCommand(uid_t uid,gid_t gid,const QString &cmd) const;
   QSqlDatabase *ripcd_db;
   QString ripcd_host;
   bool debug;

@@ -19,6 +19,8 @@
 //
 
 #include <errno.h>
+#include <grp.h>
+#include <pwd.h>
 #include <stdlib.h>
 #include <syslog.h>
 #include <sys/types.h>
@@ -680,7 +682,8 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     for(int i=0;i<rml->argQuantity();i++) {
       cmd+=rml->arg(i)+" ";
     }
-    RunCommand(rda->config()->rnRmlOwner(),rda->config()->rnRmlGroup(),cmd.trimmed());
+    RunCommand(rda->config()->rnRmlUid(),rda->config()->rnRmlGid(),
+	       cmd.trimmed());
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       sendRml(rml);
@@ -1063,60 +1066,54 @@ RDMacro MainObject::ForwardConvert(const RDMacro &rml) const
 }
 
 
-void MainObject::RunCommand(const QString &user,const QString &group,
-			    const QString &cmd) const
+void MainObject::RunCommand(uid_t uid,gid_t gid,const QString &cmd) const
 {
   //
-  // Maintainer's Note: Everything passed to execv() must be either in
+  // Maintainer's Note: Everything passed to execl() *must* be either in
   //                    local or heap storage. *Don't* pass (const char *)
-  //                    references from Qt directly!
+  //                    references from Qt directly, as they will fall
+  //                    out of scope!
   //
 
-  //
-  // Build the command
-  //
-  QStringList f0=cmd.split(" ",QString::SkipEmptyParts);
-  char userarg[256];
-  strncpy(userarg,user.toUtf8().constData(),255);
-  char grouparg[256];
-  strncpy(grouparg,group.toUtf8().constData(),255);
-  const char *args[f0.size()+6];
-  args[0]=RD_RUNUSER;
-  args[1]="-u";
-  args[2]=userarg;
-  args[3]="-g";
-  args[4]=grouparg;
-  QList<char *> rargs;
-  for(int i=0;i<f0.size();i++) {
-    rargs.push_back((char *)malloc(f0.at(i).toUtf8().length()+1));
-    strcpy(rargs.back(),f0.at(i).toUtf8());
-    args[5+i]=rargs.back();
-  }
-  args[5+f0.size()]=(char *)NULL;
+  struct passwd *pwd=NULL;
+  struct group *grp=NULL;
+  QString username="[unknown]";
+  QString groupname="[unknown]";
 
-  //
-  // Run it
-  //
- 
-  //Can only change user/group if we are running as root
-  if(getuid()==0) {
-     if(vfork()==0) {
-       execv(RD_RUNUSER,(char * const *)args);
-       exit(0);  // Just in case...
-     }
-   }
-   else {
-     if(fork()==0) {
-       system((const char *)cmd);
-       exit(0); 
-     }
-   }
-
-  //
-  // Free the heap storage
-  //
-  for(int i=0;i<rargs.size();i++) {
-    free(rargs.at(i));
+  if(fork()==0) {
+    if(getuid()==0) {
+      if(setgid(gid)!=0) {
+	rda->syslog(LOG_WARNING,"unable to set effective GID=%d [%s]",uid,
+		    strerror(errno));
+	return;
+      }
+      if(setuid(uid)!=0) {
+	rda->syslog(LOG_WARNING,"unable to set effective UID=%d [%s]",uid,
+		    strerror(errno));
+	return;
+      }
+      if(setuid(uid)!=0) {
+	rda->syslog(LOG_WARNING,"unable to set real UID=%d [%s]",uid,
+		    strerror(errno));
+	return;
+      }
+    }
+    if((pwd=getpwuid(getuid()))!=NULL) {
+      username=QString::fromUtf8(pwd->pw_name);
+    }
+    if((grp=getgrgid(getgid()))!=NULL) {
+      groupname=QString::fromUtf8(grp->gr_name);
+    }
+    rda->syslog(LOG_DEBUG,"executing script \"%s\" as %s:%s",
+		cmd.toUtf8().constData(),username.toUtf8().constData(),
+		groupname.toUtf8().constData());
+    int cmdlen=cmd.toUtf8().size()+4;
+    char cmdstr[cmdlen];
+    memset(cmdstr,0,cmdlen);  // These function take bytes, not characters!
+    memcpy(cmdstr,cmd.toUtf8().constData(),cmd.toUtf8().size());
+    execl("/bin/sh","/bin/sh","-c",cmdstr,(char *)NULL);
+    rda->syslog(LOG_WARNING,"execution of \"%s\" failed [%s]",
+		cmd.toUtf8().constData(),strerror(errno));
+    exit(0);
   }
 }
-

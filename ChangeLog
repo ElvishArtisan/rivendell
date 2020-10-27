@@ -20507,3 +20507,6 @@
 	'Edit Service dialog in rdadmin(1).
 	* Renamed the 'Note Cart String' controls to 'Insert Marker String'
 	in the 'Edit Service dialog in rdadmin(1).
+2020-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Run Script' ['RN'] RML to invoke scripts via
+	the system shell.
