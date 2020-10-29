@@ -25,8 +25,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "rdapplication.h"
 #include "rdconf.h"
 #include "rddatetime.h"
+#include "rdescape_string.h"
 #include "rdweb.h"
 
 #include <rdformpost.h>
@@ -314,6 +316,77 @@ bool RDFormPost::getValue(const QString &name,bool *state,bool *ok)
 bool RDFormPost::isFile(const QString &name)
 {
   return post_filenames[name];
+}
+
+
+bool RDFormPost::authenticate(bool *used_ticket)
+{
+  QString ticket;
+  QString sql;
+  RDSqlQuery *q;
+  QString name;
+  QString passwd;
+
+  //
+  // First, attempt ticket authentication
+  //
+  if(used_ticket!=NULL) {
+    *used_ticket=false;
+  }
+  if(getValue("TICKET",&ticket)) {
+    sql=QString("select LOGIN_NAME from WEBAPI_AUTHS where ")+
+      "(TICKET=\""+RDEscapeString(ticket)+"\")&&"+
+      "(IPV4_ADDRESS=\""+clientAddress().toString()+"\")&&"+
+      "(EXPIRATION_DATETIME>now())";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      rda->user()->setName(q->value(0).toString());
+      delete q;
+      if(used_ticket!=NULL) {
+	*used_ticket=true;
+      }
+      return true;
+    }
+    delete q;
+  }
+
+  //
+  // Next, check the whitelist
+  //
+  if(!getValue("LOGIN_NAME",&name)) {
+    rda->logAuthenticationFailure(clientAddress());
+    return false;
+  }
+  if(!getValue("PASSWORD",&passwd)) {
+    rda->logAuthenticationFailure(clientAddress(),name);
+    return false;
+  }
+  rda->user()->setName(name);
+  if(!rda->user()->exists()) {
+    rda->logAuthenticationFailure(clientAddress(),name);
+    return false;
+  }
+  if((clientAddress().toIPv4Address()>>24)==127) {  // Localhost
+    return true;
+  }
+  sql=QString("select NAME from STATIONS where ")+
+    "IPV4_ADDRESS=\""+clientAddress().toString()+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    delete q;
+    return true;
+  }
+  delete q;
+
+  //
+  // Finally, try password
+  //
+  if(!rda->user()->checkPassword(passwd,false)) {
+    rda->logAuthenticationFailure(clientAddress(),name);
+    return false;
+  }
+
+  return true;
 }
 
 

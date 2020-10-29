@@ -28,6 +28,7 @@
 #include <QVariant>
 #include <QHostAddress>
 
+#include <rdconfig.h>
 #include <rdtempdirectory.h>
 
 class RDFormPost
@@ -53,6 +54,7 @@ class RDFormPost
   bool getValue(const QString &name,QTime *time,bool *ok=NULL);
   bool getValue(const QString &name,bool *state,bool *ok=NULL);
   bool isFile(const QString &name);
+  bool authenticate(bool *used_ticket=NULL);
   QString tempDir() const;
   unsigned headerContentLength() const;
   QString headerContentType() const;

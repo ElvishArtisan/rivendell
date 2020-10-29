@@ -389,69 +389,14 @@ void Xport::ripcConnectedData(bool state)
 
 bool Xport::Authenticate()
 {
-  QString ticket;
-  QString sql;
-  RDSqlQuery *q;
-  QString name;
-  QString passwd;
+  bool used_ticket=false;
+  bool ok=xport_post->authenticate(&used_ticket);
 
-  //
-  // First, attempt ticket authentication
-  //
-  if(xport_post->getValue("TICKET",&ticket)) {
-    sql=QString("select LOGIN_NAME from WEBAPI_AUTHS where ")+
-      "(TICKET=\""+RDEscapeString(ticket)+"\")&&"+
-      "(IPV4_ADDRESS=\""+xport_post->clientAddress().toString()+"\")&&"+
-      "(EXPIRATION_DATETIME>now())";
-    q=new RDSqlQuery(sql);
-    if(q->first()) {
-      rda->user()->setName(q->value(0).toString());
-      delete q;
-      return true;
-    }
-    delete q;
+  if(ok&&(!used_ticket)) {
+    TryCreateTicket(rda->user()->name());
   }
 
-  //
-  // Next, check the whitelist
-  //
-  if(!xport_post->getValue("LOGIN_NAME",&name)) {
-    rda->logAuthenticationFailure(xport_post->clientAddress());
-    return false;
-  }
-  if(!xport_post->getValue("PASSWORD",&passwd)) {
-    rda->logAuthenticationFailure(xport_post->clientAddress(),name);
-    return false;
-  }
-  rda->user()->setName(name);
-  if(!rda->user()->exists()) {
-    rda->logAuthenticationFailure(xport_post->clientAddress(),name);
-    return false;
-  }
-  if((xport_post->clientAddress().toIPv4Address()>>24)==127) {  // Localhost
-    TryCreateTicket(name);
-    return true;
-  }
-  sql=QString("select NAME from STATIONS where ")+
-    "IPV4_ADDRESS=\""+xport_post->clientAddress().toString()+"\"";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    delete q;
-    TryCreateTicket(name);
-    return true;
-  }
-  delete q;
-
-  //
-  // Finally, try password
-  //
-  if(!rda->user()->checkPassword(passwd,false)) {
-    rda->logAuthenticationFailure(xport_post->clientAddress(),name);
-    return false;
-  }
-  TryCreateTicket(name);
-
-  return true;
+  return ok;
 }
 
 
