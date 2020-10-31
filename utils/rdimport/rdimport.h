@@ -74,6 +74,7 @@ class MainObject : public QObject
   void ReadXmlFile(const QString &basename,RDWaveData *wavedata) const;
   void Log(int prio,const QString &msg) const;
   void SendNotification(RDNotification::Action action,unsigned cartnum);
+  void NormalExit() const;
   unsigned import_file_key;
   RDGroup *import_group;
   bool import_verbose;
@@ -134,6 +135,7 @@ class MainObject : public QObject
   QString import_string_title;
   QString import_string_user_defined;
   int import_string_year;
+  int import_failed_imports;
   struct DropboxList {
     QString filename;
     unsigned size;

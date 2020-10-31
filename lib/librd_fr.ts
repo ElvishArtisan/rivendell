@@ -952,6 +952,82 @@
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>prior instance already running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unable to open database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unable to start a service component</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown/invalid command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unable to overwrite output [-P given]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no such service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no such log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no such report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>log generation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>schedule import failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>insufficient permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>report generation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>one or more audio imports failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown dropbox id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no such group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid cart number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no such scheduler code</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAudioSettingsDialog</name>

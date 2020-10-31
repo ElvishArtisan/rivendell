@@ -20520,3 +20520,8 @@
 	* Added a 'put' section to the WebGet interface.
 2020-10-31 Fred Gleason <fredg@paravelsystems.com>
 	* Added an '--output-pattern' switch to rdimport(1).
+2020-10-31 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDApplication::ExitCode'.
+	* Implemented 'RDApplication::ExitCode' in rdimport(1).
+	* Implemented 'RDApplication::ExitCode' in rdlogmanager(1).
+	* Implemented 'RDApplication::ExitCode' in rdservice(8).

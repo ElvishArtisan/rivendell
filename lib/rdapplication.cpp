@@ -353,6 +353,91 @@ void RDApplication::syslog(RDConfig *config,int priority,const char *fmt,...)
 }
 
 
+QString RDApplication::exitCodeText(RDApplication::ExitCode code)
+{
+  QString ret=tr("unknown")+QString().sprintf(" [%u]",code);
+
+  switch(code) {
+  case RDApplication::ExitOk:
+    ret=tr("ok");
+    break;
+
+  case RDApplication::ExitPriorInstance:
+    ret=tr("prior instance already running");
+    break;
+
+  case RDApplication::ExitNoDb:
+    ret=tr("unable to open database");
+    break;
+
+  case RDApplication::ExitSvcFailed:
+    ret=tr("unable to start a service component");
+    break;
+
+  case RDApplication::ExitInvalidOption:
+    ret=tr("unknown/invalid command option");
+    break;
+
+  case RDApplication::ExitOutputProtected:
+    ret=tr("unable to overwrite output [-P given]");
+    break;
+
+  case RDApplication::ExitNoSvc:
+    ret=tr("no such service");
+    break;
+
+  case RDApplication::ExitNoLog:
+    ret=tr("no such log");
+    break;
+
+  case RDApplication::ExitNoReport:
+    ret=tr("no such report");
+    break;
+
+  case RDApplication::ExitLogGenFailed:
+    ret=tr("log generation failed");
+    break;
+
+  case RDApplication::ExitLogLinkFailed:
+    ret=tr("schedule import failed");
+    break;
+
+  case RDApplication::ExitNoPerms:
+    ret=tr("insufficient permissions");
+    break;
+
+  case RDApplication::ExitReportFailed:
+    ret=tr("report generation failed");
+    break;
+
+  case RDApplication::ExitImportFailed:
+    ret=tr("one or more audio imports failed");
+    break;
+
+  case RDApplication::ExitNoDropbox:
+    ret=tr("unknown dropbox id");
+    break;
+
+  case RDApplication::ExitNoGroup:
+    ret=tr("no such group");
+    break;
+
+  case RDApplication::ExitInvalidCart:
+    ret=tr("invalid cart number");
+    break;
+
+  case RDApplication::ExitNoSchedCode:
+    ret=tr("no such scheduler code");
+    break;
+
+  case RDApplication::ExitLast:
+    break;
+  }
+
+  return ret;
+}
+
+
 void RDApplication::userChangedData()
 {
   app_user->setName(app_ripc->user());

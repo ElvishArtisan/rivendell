@@ -2,7 +2,7 @@
 //
 // The Log Generator Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -60,7 +60,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   rda=new RDApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE,this);
   if(!rda->open(&err_msg)) {
     QMessageBox::critical(this,"RDLogManager - "+tr("Error"),err_msg);
-    exit(RD_EXIT_NO_DB);
+    exit(RDApplication::ExitNoDb);
   }
 
   setWindowTitle(tr("RDLogManager"));
@@ -228,7 +228,7 @@ void MainWidget::reportsData()
 
 void MainWidget::quitMainWidget()
 {
-  exit(RD_EXIT_OK);
+  exit(RDApplication::ExitOk);
 }
 
 
@@ -319,7 +319,7 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-s\"\n");
-	exit(RD_EXIT_UNKNOWN_OPTION);
+	exit(RDApplication::ExitInvalidOption);
       }
       cmd->setProcessed(i,true);
     }
@@ -330,7 +330,7 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-r\"\n");
-	exit(RD_EXIT_UNKNOWN_OPTION);
+	exit(RDApplication::ExitInvalidOption);
       }
       cmd->setProcessed(i,true);
     }
@@ -341,7 +341,7 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-d\"\n");
-	exit(RD_EXIT_UNKNOWN_OPTION);
+	exit(RDApplication::ExitInvalidOption);
       }
       cmd->setProcessed(i,true);
     }
@@ -352,14 +352,14 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-e\"\n");
-	exit(RD_EXIT_UNKNOWN_OPTION);
+	exit(RDApplication::ExitInvalidOption);
       }
       cmd->setProcessed(i,true);
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"rdlogmanager: unknown command option \"%s\"\n",
 	      (const char *)cmd->key(i));
-      exit(RD_EXIT_UNKNOWN_OPTION);
+      exit(RDApplication::ExitInvalidOption);
     }
   }
   delete cmd;
@@ -367,7 +367,7 @@ int main(int argc,char *argv[])
      (cmd_generate||cmd_merge_traffic||cmd_merge_music)) {
     fprintf(stderr,
 	    "rdlogmanager: log and report operations are mutually exclusive\n");
-    exit(RD_EXIT_UNKNOWN_OPTION);
+    exit(RDApplication::ExitInvalidOption);
   }
 
   if(cmd_generate||cmd_merge_traffic||cmd_merge_music) {

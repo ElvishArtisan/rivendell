@@ -92,29 +92,21 @@
   </variablelist>
   </refsect1>
 
-  <refsect1 id='exit_values'><title>Exit Values</title>
-<para>
-  <segmentedlist>
-    <?dbhtml list-presentation="tabular"?>
-    <?dbfo   list-presentation="tabular"?>
-    <segtitle></segtitle>
-    <segtitle></segtitle>
-    <seglistitem><seg>0</seg><seg>Normal exit</seg></seglistitem>
-    <seglistitem><seg>1</seg><seg>Prior instance found</seg></seglistitem>
-    <seglistitem><seg>2</seg><seg>Unable to open database</seg></seglistitem>
-    <seglistitem><seg>3</seg><seg>Unable to start a service component</seg></seglistitem>
-    <seglistitem><seg>4</seg><seg>Unrecognized/invalid command line option</seg></seglistitem>
-    <seglistitem><seg>5</seg><seg>Output overwrite protected</seg></seglistitem>
-    <seglistitem><seg>6</seg><seg>No such service</seg></seglistitem>
-    <seglistitem><seg>7</seg><seg>No such log</seg></seglistitem>
-    <seglistitem><seg>8</seg><seg>No such report</seg></seglistitem>
-    <seglistitem><seg>9</seg><seg>Log generation failed</seg></seglistitem>
-    <seglistitem><seg>10</seg><seg>Schedule file import failed</seg></seglistitem>
-    <seglistitem><seg>11</seg><seg>Insufficient permissions</seg></seglistitem>
-    <seglistitem><seg>11</seg><seg>Report generation failed</seg></seglistitem>
-  </segmentedlist>
-</para>
-  </refsect1>
+<refsect1 id='exit_values'><title>Exit Values</title>
+  <para>
+    <segmentedlist>
+      <?dbhtml list-presentation="tabular"?>
+      <?dbfo   list-presentation="tabular"?>
+      <segtitle></segtitle>
+      <segtitle></segtitle>
+      <seglistitem><seg>0</seg><seg>Normal exit</seg></seglistitem>
+      <seglistitem><seg>1</seg><seg>Prior instance already running</seg></seglistitem>
+      <seglistitem><seg>2</seg><seg>Unable to open database</seg></seglistitem>
+      <seglistitem><seg>3</seg><seg>Unable to start a service component</seg></seglistitem>
+      <seglistitem><seg>4</seg><seg>Unknown/invalid command line option</seg></seglistitem>
+    </segmentedlist>
+  </para>
+</refsect1>
 
   <refsect1 id='see_also'><title>See Also</title>
   <para>

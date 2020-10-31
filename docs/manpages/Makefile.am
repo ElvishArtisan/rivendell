@@ -65,7 +65,8 @@ man_MANS = rdairplay.1\
            rdservice.8\
            rdsoftkeys.1
 
-EXTRA_DIST = rdairplay.1\
+EXTRA_DIST = exitcodes.xml\
+             rdairplay.1\
              rdairplay.xml\
              rdalsaconfig.1\
              rdalsaconfig.xml\

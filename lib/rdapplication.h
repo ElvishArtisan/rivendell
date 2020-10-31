@@ -47,6 +47,12 @@ class RDApplication : public QObject
  public:
   enum ErrorType {ErrorOk=0,ErrorDbVersionSkew=1,ErrorNoHostEntry=2,
   ErrorNoService=3};
+  enum ExitCode {ExitOk=0,ExitPriorInstance=1,ExitNoDb=2,ExitSvcFailed=3,
+		 ExitInvalidOption=4,ExitOutputProtected=5,ExitNoSvc=6,
+		 ExitNoLog=7,ExitNoReport=8,ExitLogGenFailed=9,
+		 ExitLogLinkFailed=10,ExitNoPerms=11,ExitReportFailed=12,
+		 ExitImportFailed=13,ExitNoDropbox=14,ExitNoGroup=15,
+		 ExitInvalidCart=16,ExitNoSchedCode=17,ExitLast=18};
   RDApplication(const QString &module_name,const QString &cmdname,
 		const QString &usage,QObject *parent=0);
   ~RDApplication();
@@ -69,6 +75,7 @@ class RDApplication : public QObject
   void logAuthenticationFailure(const QHostAddress &orig_addr,
 				const QString &login_name=QString());
   static void syslog(RDConfig *config,int priority,const char *fmt,...);
+  static QString exitCodeText(ExitCode code);
 
  private slots:
   void userChangedData();

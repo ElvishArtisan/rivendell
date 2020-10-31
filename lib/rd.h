@@ -616,23 +616,6 @@
 #define RD_RSS_XML_FILE_EXTENSION "rss"
 
 /*
- * Exit Codes
- */
-#define RD_EXIT_OK 0                // Normal exit
-#define RD_EXIT_PRIOR_INSTANCE 1    // Prior instance found
-#define RD_EXIT_NO_DB 2             // Unable to open database
-#define RD_EXIT_SVC_FAILED 3        // Unable to start a service component
-#define RD_EXIT_UNKNOWN_OPTION 4    // Unrecognized command line option
-#define RD_EXIT_OUTPUT_PROTECTED 5  // Couldn't overwrite output (-P)
-#define RD_EXIT_NO_SERVICE 6        // No such service
-#define RD_EXIT_NO_LOG 7            // No such log
-#define RD_EXIT_NO_REPORT 8         // No such report
-#define RD_EXIT_LOG_GEN_FAILED 9    // Log generation failed
-#define RD_EXIT_LOG_LINK_FAILED 10  // Schedule import failed
-#define RD_EXIT_NO_PERMS 11         // Insufficient permissions
-#define RD_EXIT_REPORT_FAILED 12    // Report generation failed
-
-/*
  * Shelf life for GPIO event records
  */
 #define RD_GPIO_EVENT_DAYS 30

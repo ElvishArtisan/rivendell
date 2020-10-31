@@ -947,6 +947,25 @@
   </variablelist>
 </refsect1>
 
+<refsect1 id='exit_values'><title>Exit Values</title>
+  <para>
+    <segmentedlist>
+      <?dbhtml list-presentation="tabular"?>
+      <?dbfo   list-presentation="tabular"?>
+      <segtitle></segtitle>
+      <segtitle></segtitle>
+      <seglistitem><seg>0</seg><seg>Normal exit</seg></seglistitem>
+      <seglistitem><seg>2</seg><seg>Unable to open database</seg></seglistitem>
+      <seglistitem><seg>4</seg><seg>Unknown/invalid command line option</seg></seglistitem>
+      <seglistitem><seg>13</seg><seg>One or more audio imports failed</seg></seglistitem>
+      <seglistitem><seg>14</seg><seg>Unknown dropbox ID</seg></seglistitem>
+      <seglistitem><seg>15</seg><seg>No such group</seg></seglistitem>
+      <seglistitem><seg>16</seg><seg>Invalid cart number</seg></seglistitem>
+      <seglistitem><seg>17</seg><seg>No such scheduler code</seg></seglistitem>
+    </segmentedlist>
+  </para>
+</refsect1>
+
 <refsect1>
   <title>NOTES</title>
   <para>
