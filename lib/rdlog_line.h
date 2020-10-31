@@ -48,7 +48,7 @@ class RDLogLine
 		   CartSlot=5};
   enum PointerSource {CartPointer=0,LogPointer=1,AutoPointer=2};
   RDLogLine();
-  RDLogLine(unsigned cartnum);
+  RDLogLine(unsigned cartnum,int cutnum=0);
   void clear();
   void clearExternalData();
   void clearTrackData(RDLogLine::TransEdge edge);

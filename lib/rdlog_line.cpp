@@ -38,16 +38,28 @@ RDLogLine::RDLogLine()
 }
 
 
-RDLogLine::RDLogLine(unsigned cartnum)
+RDLogLine::RDLogLine(unsigned cartnum,int cutnum)
 {
   QString sql;
   RDSqlQuery *q;
 
   clear();
   log_cart_number=cartnum;
-  sql=QString().sprintf("select GROUP_NAME,TITLE,ARTIST,ALBUM,YEAR,LABEL,\
-                         CLIENT,AGENCY,COMPOSER,PUBLISHER,USER_DEFINED,NOTES \
-                         from CART where NUMBER=%u",log_cart_number);
+  sql=QString("select ")+
+    "GROUP_NAME,"+    // 00
+    "TITLE,"+         // 01
+    "ARTIST,"+        // 02
+    "ALBUM,"+         // 03
+    "YEAR,"+          // 04
+    "LABEL,"          // 05
+    "CLIENT,"+        // 06
+    "AGENCY,"+        // 07
+    "COMPOSER,"+      // 08
+    "PUBLISHER,"+     // 09
+    "USER_DEFINED,"+  // 10
+    "NOTES "+         // 11
+    "from CART where "+
+    QString().sprintf("NUMBER=%u",log_cart_number);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     log_group_name=q->value(0).toString();
@@ -64,6 +76,33 @@ RDLogLine::RDLogLine(unsigned cartnum)
     log_cart_notes=q->value(11).toString();
   }
   delete q;
+
+  if(cutnum>0) {
+    log_cut_number=cutnum;
+    sql=QString("select ")+
+      "DESCRIPTION,"+     // 00
+      "START_DATETIME,"+  // 01
+      "END_DATETIME,"+    // 02
+      "OUTCUE,"+          // 03
+      "ISCI,"+            // 04
+      "ISRC,"+            // 05
+      "RECORDING_MBID,"+  // 06
+      "RELEASE_MBID "+    // 07
+      "from CUTS where "+
+      "CUT_NAME=\""+RDEscapeString(RDCut::cutName(cartnum,cutnum))+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      log_description=q->value(0).toString();
+      log_start_datetime=q->value(1).toDateTime();
+      log_end_datetime=q->value(2).toDateTime();
+      log_outcue=q->value(3).toString();
+      log_isci=q->value(4).toString();
+      log_isrc=q->value(5).toString();
+      log_recording_mbid=q->value(6).toString();
+      log_release_mbid=q->value(7).toString();
+    }
+    delete q;
+  }
 }
 
 
@@ -1710,8 +1749,30 @@ QString RDLogLine::resolveWildcards(QString pattern,int log_id)
 {
   //  MAINTAINERS'S NOTE: These mappings must be kept in sync with those
   //                      of the 'resolvePadFields()' method in
-  //                      'apis/PyPAD/api/PyPAD.py'!
+  //                      'apis/PyPAD/api/PyPAD.py', as well as the
+  //                      'RunPattern()' and 'VerifyPattern()' methods
+  //                      in 'utils/rdimport/rdimport.cpp'.
 
+  //
+  // Generate Start/End Datetime Strings
+  //
+  QString start_date=QObject::tr("[none]");
+  QString end_date=QObject::tr("[none]");
+  QString start_time=QObject::tr("[none]");
+  QString end_time=QObject::tr("[none]");
+
+  if(startDatetime().isValid()) {
+    start_date=startDatetime().toString("yyyy-MM-dd");
+    start_time=startDatetime().toString("hh:mm:ss");
+  }
+  if(endDatetime().isValid()) {
+    end_date=endDatetime().toString("yyyy-MM-dd");
+    end_time=endDatetime().toString("hh:mm:ss");
+  }
+
+  //
+  // Resolve Wildcards
+  //
   pattern.replace("%a",artist());
   pattern.replace("%b",label());
   pattern.replace("%c",client());
@@ -1722,13 +1783,15 @@ QString RDLogLine::resolveWildcards(QString pattern,int log_id)
   pattern.replace("%h",QString().sprintf("%d",effectiveLength()));
   pattern.replace("%i",description());
   pattern.replace("%j",QString().sprintf("%03d",cutNumber()));
-  // %k rdimport(1) parameter
+  pattern.replace("%k",start_time);
+  pattern.replace("%K",end_time);
   pattern.replace("%l",album());
   pattern.replace("%m",composer());
   pattern.replace("%n",QString().sprintf("%06u",cartNumber()));
   pattern.replace("%o",outcue());
   pattern.replace("%p",publisher());
-  // %q rdimport(1) parameter
+  pattern.replace("%q",start_date);
+  pattern.replace("%Q",end_date);
   pattern.replace("%r",conductor());
   pattern.replace("%s",songId());
   pattern.replace("%t",title());

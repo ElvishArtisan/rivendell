@@ -114,6 +114,7 @@ class MainObject : public QObject
   int import_segue_length;
   unsigned import_cart_number;
   QString import_metadata_pattern;
+  QString import_output_pattern;
   QString import_string_agency;
   QString import_string_album;
   QString import_string_artist;

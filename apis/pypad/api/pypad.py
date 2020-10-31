@@ -370,7 +370,9 @@ class Update(object):
         #
         # MAINTAINER'S NOTE: These mappings must be kept in sync with
         #                    those of the 'RDLogLine::resolveWildcards()'
-        #                    method in 'lib/rdlog_line.cpp'.
+        #                    method in 'lib/rdlog_line.cpp' as well as
+        #                    the 'RunPattern()' and 'VerifyPattern()' methods
+        #                    in 'utils/rdimport/rdimport.cpp'.
         #
         string=self.__replaceWildcardPair('a','artist',string,esc)
         string=self.__replaceWildcardPair('b','label',string,esc)

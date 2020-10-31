@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>rdimport</refentrytitle>
     <manvolnum>1</manvolnum>
-    <refmiscinfo class='source'>February 2020</refmiscinfo>
+    <refmiscinfo class='source'>October 2020</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -498,6 +498,25 @@
 	  Specify the <replaceable>level</replaceable> to use for peak
 	  normalizing the audio, in dBFS.  Specifying <userinput>0</userinput>
 	  will turn  off normalization.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--output-pattern=</option><replaceable>pattern</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify a <replaceable>pattern</replaceable> string
+	  (which may include metadata wildcards), which will cause
+	  <command>rdimport</command><manvolnum>1</manvolnum> to print
+	  this string to standard output once for each file successfully
+	  imported, with the wildcards appropriately resolved.
+	</para>
+	<para>
+	  See the <option>--metadata-pattern</option> section (above) for
+	  the list of supported wildcards.
 	</para>
       </listitem>
     </varlistentry>

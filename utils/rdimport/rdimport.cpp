@@ -302,7 +302,15 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--metadata-pattern") {
       import_metadata_pattern=rda->cmdSwitch()->value(i);
       if(!VerifyPattern(import_metadata_pattern)) {
-	Log(LOG_ERR,QString("rdimport: invalid metadata pattern\n"));
+	Log(LOG_ERR,QString("rdimport: invalid --metadata-pattern\n"));
+	exit(2);
+      }
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--output-pattern") {
+      import_output_pattern=rda->cmdSwitch()->value(i);
+      if(!VerifyPattern(import_output_pattern)) {
+	Log(LOG_ERR,QString("rdimport: invalid --output-pattern\n"));
 	exit(2);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -453,16 +461,6 @@ MainObject::MainObject(QObject *parent)
     Log(LOG_ERR,QString().sprintf("rdimport: --metadata-pattern and --xml are mutually exclusive\n"));
     exit(255);
   }
-  /*
-  if((!import_log_directory.isEmpty())&&import_log_filename.isEmpty()) {
-    Log(LOG_ERR,QString().sprintf("rdimport: --log-directory requires --log-filename\n"));
-    exit(255);
-  }
-  if((!import_log_filename.isEmpty())&&import_log_directory.isEmpty()) {
-    Log(LOG_ERR,QString().sprintf("rdimport: --log-filename requires --log-directory\n"));
-    exit(255);
-  }
-  */
   if((!import_log_filename.isEmpty())&&import_log_syslog) {
     Log(LOG_ERR,QString().sprintf("rdimport: --log-filename and --log-syslog are mutually exclusive\n"));
     exit(255);
@@ -677,6 +675,10 @@ MainObject::MainObject(QObject *parent)
   if(!import_metadata_pattern.isEmpty()) {
     Log(LOG_INFO,QString().sprintf(" Using metadata pattern: %s\n",
 				   (const char *)import_metadata_pattern));
+  }
+  if(!import_output_pattern.isEmpty()) {
+    Log(LOG_INFO,QString().sprintf(" Using output pattern: %s\n",
+				   (const char *)import_output_pattern));
   }
   Log(LOG_INFO,QString().sprintf(" Start Date Offset = %d days\n",import_startdate_offset));
   Log(LOG_INFO,QString().sprintf(" End Date Offset = %d days\n",import_enddate_offset));
@@ -1333,6 +1335,14 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   else {
     SendNotification(RDNotification::ModifyAction,cart->number());
   }
+
+  if(!import_output_pattern.isEmpty()) {
+    RDLogLine *ll=new RDLogLine(cart->number(),cut->cutNumber());
+    printf("%s\n",
+	   ll->resolveWildcards(import_output_pattern).toUtf8().constData());
+    delete ll;
+  }
+
   delete settings;
   delete conv;
   delete cut;
@@ -1623,6 +1633,13 @@ bool MainObject::FixChunkSizes(const QString &filename)
 bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 			    RDWaveData *wavedata,QString *groupname)
 {
+  //  MAINTAINERS'S NOTE: These mappings must be kept in sync with those
+  //                      of the 'resolvePadFields()' method in
+  //                      'apis/PyPAD/api/PyPAD.py', as well as the
+  //                      'resolveWildcards()' method in the
+  //                      'lib/rdlog_line.cpp' file and the
+  //                      'VerifyPattern()' method in this file.
+
   bool macro_active=false;
   int ptr=0;
   QChar field;
@@ -1922,6 +1939,13 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 
 bool MainObject::VerifyPattern(const QString &pattern)
 {
+  //  MAINTAINERS'S NOTE: These mappings must be kept in sync with those
+  //                      of the 'resolvePadFields()' method in
+  //                      'apis/PyPAD/api/PyPAD.py', as well as the
+  //                      'resolveWildcards()' method in the
+  //                      'lib/rdlog_line.cpp' file and the
+  //                      'RunPattern()' method in this file.
+
   bool macro_active=false;
   for(int i=0;i<pattern.length();i++) {
     if(pattern.at(i)==QChar('%')) {
