@@ -22,29 +22,37 @@ function Id(id)
 }
 
 
-function MakePost()
+function ProcessGet()
 {
-    var sep=RD_MakeMimeSeparator();
-    form=sep+"\r\n";
+    form=new FormData();
 
-    form+=RD_AddMimePart('title',Id('title').value,sep,false);
-    form+=RD_AddMimePart('preset',Id('preset').value,sep,false);
-    form+=RD_AddMimePart('LOGIN_NAME',Id('LOGIN_NAME').value,sep,false);
-    form+=RD_AddMimePart('PASSWORD',Id('PASSWORD').value,sep,true);
+    form.append('LOGIN_NAME',Id('LOGIN_NAME').value);
+    form.append('PASSWORD',Id('PASSWORD').value);
+    form.append('direction','get');
+    form.append('title',Id('title').value);
+    form.append('preset',Id('preset').value);
 
-    return form;
+    SendForm(form,"webget.cgi");
 }
 
 
-function ProcessOkButton()
+function ProcessPut()
 {
-    SendForm(MakePost(),"webget.cgi");
+    form=new FormData();
+
+    form.append('LOGIN_NAME',Id('LOGIN_NAME').value);
+    form.append('PASSWORD',Id('PASSWORD').value);
+    form.append('direction','put');
+    form.append('group',Id('group').value);
+    form.append('filename',Id('filename').files[0]);
+
+    SendForm(form,"webget.cgi");
 }
 
 
 function SendForm(form,url)
 {
-    var http=RD_GetXMLHttpRequest();
+    var http=new XMLHttpRequest();
     if(http==null) {
 	return;
     }
@@ -61,30 +69,33 @@ function SendForm(form,url)
     // Process the response
     //
     http.onload=function(e) {
-	if(this.status==200) {
-	    var blob=new Blob([this.response],
-			      {type: http.getResponseHeader('content-type')});
-	    let a=document.createElement('a');
-	    a.style='display: none';
-	    document.body.appendChild(a);
-	    let url=window.URL.createObjectURL(blob);
-	    a.href=url;
-	    a.download=Id('title').value+'.'+FileExtension(Id('preset').value);
-	    a.click();
-	    window.URL.revokeObjectURL(url);
+
+	var blob=new Blob([this.response],
+			  {type: http.getResponseHeader('content-type')});
+	var f0=blob.type.split(';');
+	if(f0[0]=='text/html') {
+	    reader=new FileReader();
+	    reader.addEventListener('loadend',()=> {
+		alert(reader.result);
+	    });
+	    reader.readAsText(blob);
 	}
 	else {
-	    if(this.status==401) {
-		alert('Invalid User Name or Password!');
+	    if((f0[0]=='audio/x-mpeg')||
+	       (f0[0]=='audio/x-wav')||
+	       (f0[0]=='audio/ogg')||
+	       (f0[0]=='audio/flac')) {
+		let a=document.createElement('a');
+		a.style='display: none';
+		document.body.appendChild(a);
+		let url=window.URL.createObjectURL(blob);
+		a.href=url;
+		a.download=Id('title').value+'.'+FileExtension(Id('preset').value);
+		a.click();
+		window.URL.revokeObjectURL(url);
 	    }
 	    else {
-		if(this.status=404) {
-		    alert('No cart with that name found!');
-		}
-		else {
-		    alert('Unable to access WebGet [response code: '+
-			  http.status+']!');
-		}
+		alert('Unknown mimetype: '+f0[0]);
 	    }
 	}
     }
@@ -102,3 +113,14 @@ function FileExtension(prof_id)
     return 'dat';
 }
 
+
+function TitleChanged()
+{
+    Id('get_button').disabled=Id('title').value.length==0;
+}
+
+
+function FilenameChanged()
+{
+    Id('put_button').disabled=Id('filename').value.length==0;
+}

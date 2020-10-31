@@ -315,7 +315,7 @@ bool RDFormPost::getValue(const QString &name,bool *state,bool *ok)
 
 bool RDFormPost::isFile(const QString &name)
 {
-  return post_filenames[name];
+  return post_filenames.value(name);
 }
 
 

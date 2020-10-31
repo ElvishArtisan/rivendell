@@ -20514,3 +20514,7 @@
 	* Removed the runuser(1) dependency.
 2020-10-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDFormPost::authenticate()' method.
+2020-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDFormPost' that broke file control
+	processing.
+	* Added a 'put' section to the WebGet interface.

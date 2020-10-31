@@ -1,6 +1,6 @@
 // webget.cpp
 //
-// Rivendell download utility
+// Rivendell upload/download utility
 //
 //   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -28,7 +28,8 @@
 #include <stdio.h>
 #include <openssl/sha.h>
 
-#include <qapplication.h>
+#include <QApplication>
+#include <QProcess>
 
 #include <rdapplication.h>
 #include <rdescape_string.h>
@@ -77,13 +78,18 @@ MainObject::MainObject(QObject *parent)
   // Determine Connection Type
   //
   if(getenv("REQUEST_METHOD")==NULL) {
+    rda->syslog(LOG_WARNING,"missing request method");
+    rda->logAuthenticationFailure(webget_post->clientAddress());
     XmlExit("missing REQUEST_METHOD",500,"webget.cpp",LINE_NUMBER);
   }
   if(QString(getenv("REQUEST_METHOD")).lower()=="get") {
-    ServeForm();
+    ServeLogin();
     Exit(0);
   }
   if(QString(getenv("REQUEST_METHOD")).lower()!="post") {
+    rda->syslog(LOG_WARNING,"unsupported web method \"%s\"",
+		getenv("REQUEST_METHOD"));
+    rda->logAuthenticationFailure(webget_post->clientAddress());
     XmlExit("invalid web method",400,"webget.cpp",LINE_NUMBER);
   }
   if(getenv("REMOTE_ADDR")!=NULL) {
@@ -101,6 +107,10 @@ MainObject::MainObject(QObject *parent)
   //
   webget_post=new RDFormPost(RDFormPost::AutoEncoded,false);
   if(webget_post->error()!=RDFormPost::ErrorOk) {
+    rda->syslog(LOG_WARNING,"post parsing error [%s]",
+		webget_post->errorString(webget_post->error()).
+		toUtf8().constData());
+    rda->logAuthenticationFailure(webget_post->clientAddress());
     XmlExit(webget_post->errorString(webget_post->error()),400,"webget.cpp",
 	    LINE_NUMBER);
     Exit(0);
@@ -110,10 +120,7 @@ MainObject::MainObject(QObject *parent)
   // Authenticate Connection
   //
   if(!Authenticate()) {
-    printf("Content-type: text/html\n");
-    printf("Status: 401\n");
-    printf("\n");
-    printf("Invalid User name or Password!\n");
+    ServeLogin();
     Exit(0);
   }
 
@@ -129,23 +136,59 @@ MainObject::MainObject(QObject *parent)
 
 void MainObject::ripcConnectedData(bool state)
 {
-  bool ok=false;
-
   if(!state) {
     XmlExit("unable to connect to ripc service",500,"webget.cpp",LINE_NUMBER);
     Exit(0);
   }
 
+  QString direction;
+  if(!webget_post->getValue("direction",&direction)) {
+    ServeForm();
+    Exit(0);
+  }
+
+  rda->syslog(LOG_NOTICE,"direction: %s",direction.toUtf8().constData());
+
+  if(direction.toLower()=="get") {
+    rda->syslog(LOG_NOTICE,"GETTING...");
+    GetAudio();
+    Exit(0);
+  }
+  if(direction.toLower()=="put") {
+    rda->syslog(LOG_NOTICE,"PUTTING...");
+    PutAudio();
+    Exit(0);
+  }
+
+  rda->syslog(LOG_WARNING,"invalid webget direction \"%s\" from %s",
+	      direction.toUtf8().constData(),
+	      webget_post->clientAddress().toString().toUtf8().constData());
+  rda->logAuthenticationFailure(webget_post->clientAddress()); // So Fail2Ban can notice this
+  ServeLogin();
+}
+
+
+void MainObject::GetAudio()
+{
+  bool ok=false;
+
   QString title;
   if(!webget_post->getValue("title",&title)) {
+    rda->syslog(LOG_WARNING,"missing \"title\"");
+    rda->logAuthenticationFailure(webget_post->clientAddress());
     XmlExit("missing \"title\"",400,"webget.cpp",LINE_NUMBER);
+    Exit(0);
   }
 
   unsigned preset;
   if(!webget_post->getValue("preset",&preset,&ok)) {
+    rda->syslog(LOG_WARNING,"missing \"preset\"");
+    rda->logAuthenticationFailure(webget_post->clientAddress());
     XmlExit("missing \"preset\"",400,"webget.cpp",LINE_NUMBER);
   }
   if(!ok) {
+    rda->syslog(LOG_WARNING,"invalid \"preset\" value");
+    rda->logAuthenticationFailure(webget_post->clientAddress());
     XmlExit("invalid \"preset\" value",400,"webget.cpp",LINE_NUMBER);
   }
 
@@ -180,6 +223,8 @@ void MainObject::ripcConnectedData(bool state)
     printf("Status: 400\n");
     printf("\n");
     printf("no such preset!\n");
+    rda->syslog(LOG_WARNING,"no such preset %u",preset);
+    rda->logAuthenticationFailure(webget_post->clientAddress());
     Exit(0);
   }
 
@@ -210,6 +255,9 @@ void MainObject::ripcConnectedData(bool state)
   QString err_msg;
   RDTempDirectory *tempdir=new RDTempDirectory("rdxport-export");
   if(!tempdir->create(&err_msg)) {
+    rda->syslog(LOG_WARNING,"unable to create temporary directory [%s]",
+		err_msg.toUtf8().constData());
+    rda->logAuthenticationFailure(webget_post->clientAddress());
     XmlExit("unable to create temporary directory ["+err_msg+"]",500);
   }
   QString tmpfile=tempdir->path()+"/exported_audio";
@@ -290,9 +338,68 @@ void MainObject::ripcConnectedData(bool state)
     Exit(200);
   }
   else {
+    rda->syslog(LOG_WARNING,"%s",
+		RDAudioConvert::errorText(conv_err).toUtf8().constData());
+    rda->logAuthenticationFailure(webget_post->clientAddress());
     XmlExit(RDAudioConvert::errorText(conv_err),resp_code,"webget.cpp",
 	    LINE_NUMBER,conv_err);
   }
+}
+
+
+void MainObject::PutAudio()
+{
+  QString group_name;
+  if(!webget_post->getValue("group",&group_name)) {
+    rda->syslog(LOG_WARNING,"missing \"group\" in put submission");
+    rda->logAuthenticationFailure(webget_post->clientAddress());
+    XmlExit("missing \"group\"",400,"webget.cpp",LINE_NUMBER);
+    Exit(0);
+  }
+
+  QString filename;
+  if(!webget_post->getValue("filename",&filename)) {
+    rda->syslog(LOG_WARNING,"missing \"filename\" in put submission");
+    rda->logAuthenticationFailure(webget_post->clientAddress());
+    XmlExit("missing \"missing\"",400,"webget.cpp",LINE_NUMBER);
+    Exit(0);
+  }
+
+  if(!webget_post->isFile("filename")) {
+    rda->syslog(LOG_WARNING,"\"filename\" is not a file in put submission");
+    rda->logAuthenticationFailure(webget_post->clientAddress());
+    XmlExit("invalid \"filename\"",400,"webget.cpp",LINE_NUMBER);
+    Exit(0);
+  }
+
+  QStringList args;
+  args.push_back("--verbose");
+  args.push_back(group_name);
+  args.push_back(filename);
+  QProcess *proc=new QProcess(this);
+  proc->start("rdimport",args);
+  proc->waitForFinished();
+  if(proc->exitStatus()==QProcess::CrashExit) {
+    delete proc;
+    rda->syslog(LOG_WARNING,"importer process crashed [cmdline: %s]",
+		("rdimport "+args.join(" ")).toUtf8().constData());
+    XmlExit("Importer process crashed!",500,"webget",LINE_NUMBER);
+  }
+  if(proc->exitCode()!=0) {
+    rda->syslog(LOG_WARNING,
+		"importer process returned exit code %d [cmdline: %s]",
+		proc->exitCode(),
+		("rdimport "+args.join(" ")).toUtf8().constData());
+    delete proc;
+    XmlExit("Importer process error!",500,"webget",LINE_NUMBER);
+  }
+
+  printf("Content-type: text/html\n");
+  printf("Status: 200\n");
+  printf("\n");
+  printf("%s\n",proc->readAllStandardOutput().constData());
+  delete proc;
+  Exit(0);
 }
 
 
@@ -306,9 +413,9 @@ void MainObject::ServeForm()
 
   printf("<html>\n");
   printf("  <head>\n");
-  printf("    <title>Rivendell Webget</title>\n");
+  printf("    <title>Rivendell Webget [User: %s]</title>\n",
+	 rda->user()->name().toUtf8().constData());
   printf("    <script src=\"webget.js?%lu\" type=\"application/javascript\"></script>\n",t);
-  printf("    <script src=\"utils.js?%lu\" type=\"application/javascript\"></script>\n",t);
   printf("    <script type=\"application/javascript\">\n");
   printf("      var preset_ids=new Array();\n");
   printf("      var preset_exts=new Array();\n");
@@ -327,7 +434,21 @@ void MainObject::ServeForm()
   delete q;
   printf("    </script>\n");
   printf("  </head>\n");
+
   printf("  <body>\n");
+
+
+  //
+  // Credentials
+  //
+  printf("    <input type=\"hidden\" name=\"LOGIN_NAME\" id=\"LOGIN_NAME\" value=\"%s\">\n",
+	 rda->user()->name().toUtf8().constData());
+  printf("    <input type=\"hidden\" name=\"PASSWORD\" id=\"PASSWORD\" value=\"%s\">\n",
+	 rda->user()->password().toUtf8().constData());
+
+  //
+  // Get Audio
+  //
   printf("    <table style=\"margin: auto;padding: 10px 0\" cellpadding=\"0\" cellspacing=\"5\" border=\"0\">\n");
   printf("    <tr>\n");
   printf("	<td colspan=\"2\"><img src=\"logos/webget_logo.png\" border=\"0\"></td>\n");
@@ -337,12 +458,12 @@ void MainObject::ServeForm()
   printf("    </tr>\n");
   printf("    <tr><td colspan=\"2\"><hr></td></tr>\n");
   printf("    <tr>\n");
-  printf("	<td style=\"text-align: right\">Cart Title:</td>\n");
-  printf("	<td><input type=\"text\" id=\"title\" size=\"40\" maxlength=\"255\"></td>\n");
+  printf("	<td style=\"text-align: right\">From Cart Title:</td>\n");
+  printf("	<td><input type=\"text\" id=\"title\" size=\"40\" oninput=\"TitleChanged()\"></td>\n");
   printf("    </tr>\n");
 
   printf("    <tr>\n");
-  printf("	<td style=\"text-align: right\">Format:</td>\n");
+  printf("	<td style=\"text-align: right\">Using Format:</td>\n");
   printf("	<td>\n");
   printf("	  <select id=\"preset\">\n");
   sql=QString("select ")+
@@ -358,19 +479,105 @@ void MainObject::ServeForm()
   printf("	  </select>\n");
   printf("	</td>\n");
   printf("    </tr>\n");
-  printf("    <tr><td cellspan=\"2\">&nbsp</td></tr>\n");
+  printf("    <tr>\n");
+  printf("	<td>&nbsp;</td>\n");
+  printf("	<td><input type=\"button\" value=\"OK\" id=\"get_button\" onclick=\"ProcessGet()\" disabled></td>\n");
+  printf("    </tr>\n");
+
+  printf("    <tr><td>&nbsp;</td></tr>\n");
+
+  //
+  // Put Audio
+  //
+  printf("    <tr>\n");
+  printf("	<td colspan=\"2\"><strong>Put audio into Rivendell</strong></td>\n");
+  printf("    </tr>\n");
+  printf("    <tr><td colspan=\"2\"><hr></td></tr>\n");
+  printf("    <tr>\n");
+  printf("	<td style=\"text-align: right\">From File:</td>\n");
+  printf("	<td><input type=\"file\" id=\"filename\" size=\"40\" accept=\"audio/*\" onchange=\"FilenameChanged()\"></td>\n");
+  printf("    </tr>\n");
+
+  printf("    <tr>\n");
+  printf("	<td style=\"text-align: right\">To Group:</td>\n");
+  printf("	<td>\n");
+  printf("	  <select id=\"group\">\n");
+  sql=QString("select ")+
+    "GROUPS.NAME "+  // 00
+    "from GROUPS left join USER_PERMS "+
+    "on GROUPS.NAME=USER_PERMS.GROUP_NAME where "+
+    "USER_PERMS.USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" && "+
+    QString().sprintf("GROUPS.DEFAULT_CART_TYPE=%u && ",RDCart::Audio)+
+    "GROUPS.DEFAULT_LOW_CART>0 && "+
+    "GROUPS.DEFAULT_HIGH_CART>0 "+
+    "order by GROUPS.NAME";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    printf("          <option value=\"%s\">%s</option>\n",
+	   q->value(0).toString().toUtf8().constData(),
+	   q->value(0).toString().toUtf8().constData());
+  }
+  printf("	  </select>\n");
+  printf("	</td>\n");
+  printf("    </tr>\n");
+  printf("    <tr>\n");
+  printf("	<td>&nbsp;</td>\n");
+  printf("	<td><input type=\"button\" value=\"OK\" id=\"put_button\" onclick=\"ProcessPut()\" disabled></td>\n");
+  printf("    </tr>\n");
+
+  //
+  // Footer
+  //
+  printf("    </table>\n");
+  printf("  </body>\n");
+  printf("</html>\n");
+}
+
+
+void MainObject::ServeLogin()
+{
+  printf("Content-type: text/html\n\n");
+
+  //
+  // Head
+  //
+  printf("<html>\n");
+  printf("  <head>\n");
+  printf("    <title>Rivendell Webget</title>\n");
+  printf("  </head>\n");
+
+  //
+  // Body
+  //
+  printf("  <body>\n");
+  printf("  <form action=\"/rd-bin/webget.cgi\" method=\"post\" enctype=\"multipart/form-data\">\n");
+  printf("    <input type=\"hidden\" name=\"LOGIN_NAME\" value=\"%s\">\n",
+	 rda->user()->name().toUtf8().constData());
+  printf("    <input type=\"hidden\" name=\"PASSWORD\" value=\"%s\">\n",
+	 rda->user()->password().toUtf8().constData());
+  printf("    <table style=\"margin: auto;padding: 10px 0\" cellpadding=\"0\" cellspacing=\"5\" border=\"0\">\n");
+  printf("    <tr>\n");
+  printf("	<td colspan=\"2\"><img src=\"logos/webget_logo.png\" border=\"0\"></td>\n");
+  printf("    </tr>\n");
+  printf("    <tr>\n");
+  printf("	<td colspan=\"2\"><strong>Log in to Rivendell</strong></td>\n");
+  printf("    </tr>\n");
+  printf("    <tr><td colspan=\"2\"><hr></td></tr>\n");
+
   printf("    <td style=\"text-align: right\">User Name:</td>\n");
-  printf("    <td><input type=\"text\" size=\"32\" maxsize=\"255\" id=\"LOGIN_NAME\"></td>\n");
+  printf("    <td><input type=\"text\" size=\"32\" name=\"LOGIN_NAME\" autofocus></td>\n");
   printf("    </tr>\n");
   printf("      <tr>\n");
   printf("    <td style=\"text-align: right\">Password:</td>\n");
-  printf("    <td><input type=\"password\" size=\"32\" maxsize=\"32\" id=\"PASSWORD\"></td>\n");
+  printf("    <td><input type=\"password\" size=\"32\" maxsize=\"32\" name=\"PASSWORD\"></td>\n");
   printf("    <tr><td cellspan=\"2\">&nbsp</td></tr>\n");
   printf("    <tr>\n");
   printf("	<td>&nbsp;</td>\n");
-  printf("	<td><input type=\"button\" value=\"OK\" onclick=\"ProcessOkButton()\"></td>\n");
+  printf("	<td><input type=\"submit\" value=\"OK\"></td>\n");
   printf("    </tr>\n");
+
   printf("    </table>\n");
+  printf("  </form>\n");
   printf("  </body>\n");
   printf("</html>\n");
 }
@@ -382,17 +589,19 @@ bool MainObject::Authenticate()
   QString passwd;
 
   if(!webget_post->getValue("LOGIN_NAME",&name)) {
+    rda->syslog(LOG_WARNING,"missing LOGIN_NAME");
     rda->logAuthenticationFailure(webget_post->clientAddress());
     return false;
   }
   if(!webget_post->getValue("PASSWORD",&passwd)) {
+    rda->syslog(LOG_WARNING,"missing PASSWORD");
     rda->logAuthenticationFailure(webget_post->clientAddress(),name);
     return false;
   }
-  RDUser *user=new RDUser(name);
-  if((!user->exists())||
-     (!user->checkPassword(passwd,false))||
-     (!user->webgetLogin())) {
+  rda->user()->setName(name);
+  if((!rda->user()->exists())||
+     (!rda->user()->checkPassword(passwd,false))||
+     (!rda->user()->webgetLogin())) {
     rda->logAuthenticationFailure(webget_post->clientAddress(),name);
     return false;
   }

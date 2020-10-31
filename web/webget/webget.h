@@ -1,8 +1,8 @@
 // webget.h
 //
-// Rivendell audio download utility
+// Rivendell audio upload/download utility
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +41,10 @@ class MainObject : public QObject
   void ripcConnectedData(bool state);
 
  private:
+  void GetAudio();
+  void PutAudio();
   void ServeForm();
+  void ServeLogin();
   bool Authenticate();
   void Exit(int code);
   void XmlExit(const QString &msg,int code,
