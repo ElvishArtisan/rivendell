@@ -144,8 +144,6 @@ EditSystem::EditSystem(QWidget *parent)
   // Show User List
   //
   edit_show_user_list_box=new QCheckBox(this);
-  connect(edit_show_user_list_box,SIGNAL(toggled(bool)),
-	  this,SLOT(duplicatesCheckedData(bool)));
   edit_show_user_list_label=
     new QLabel(edit_show_user_list_box,tr("Show User List in RDLogin"),this);
   edit_show_user_list_label->setFont(labelFont());
