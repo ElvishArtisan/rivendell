@@ -47,9 +47,7 @@ class MainObject : public QObject
   void ServeLogin();
   bool Authenticate();
   void Exit(int code);
-  void XmlExit(const QString &msg,int code,
-	       const QString &srcfile="",int line=-1,
-	       RDAudioConvert::ErrorCode err=RDAudioConvert::ErrorOk);
+  void TextExit(const QString &msg,int code,int line) const;
   RDFormPost *webget_post;
   QString webget_remote_hostname;
   QHostAddress webget_remote_address;

@@ -48,7 +48,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=new RDApplication("webget.cgi","webget.cgi",WEBGET_CGI_USAGE,this);
   if(!rda->open(&err_msg)) {
-    XmlExit(err_msg,500,"webget.cpp",LINE_NUMBER);
+    TextExit(err_msg,500,LINE_NUMBER);
   }
 
   //
@@ -56,7 +56,7 @@ MainObject::MainObject(QObject *parent)
   //
   for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
     if(!rda->cmdSwitch()->processed(i)) {
-      XmlExit("unknown command option",500,"webget.cpp",LINE_NUMBER);
+      TextExit("unknown command option",500,LINE_NUMBER);
     }
   }
 
@@ -64,14 +64,13 @@ MainObject::MainObject(QObject *parent)
   // Drop root permissions
   //
   if(setgid(rda->config()->gid())<0) {
-    XmlExit("Unable to set Rivendell group",500,"webget.cpp",LINE_NUMBER);
+    TextExit("Unable to set Rivendell group",500,LINE_NUMBER);
   }
   if(setuid(rda->config()->uid())<0) {
-    XmlExit("Unable to set Rivendell user",500,"webget.cpp",LINE_NUMBER);
+    TextExit("Unable to set Rivendell user",500,LINE_NUMBER);
   }
   if(getuid()==0) {
-    XmlExit("Rivendell user should never be \"root\"!",500,"webget.cpp",
-	    LINE_NUMBER);
+    TextExit("Rivendell user should never be \"root\"!",500,LINE_NUMBER);
   }
 
   //
@@ -80,7 +79,7 @@ MainObject::MainObject(QObject *parent)
   if(getenv("REQUEST_METHOD")==NULL) {
     rda->syslog(LOG_WARNING,"missing request method");
     rda->logAuthenticationFailure(webget_post->clientAddress());
-    XmlExit("missing REQUEST_METHOD",500,"webget.cpp",LINE_NUMBER);
+    TextExit("missing REQUEST_METHOD",500,LINE_NUMBER);
   }
   if(QString(getenv("REQUEST_METHOD")).lower()=="get") {
     ServeLogin();
@@ -90,7 +89,7 @@ MainObject::MainObject(QObject *parent)
     rda->syslog(LOG_WARNING,"unsupported web method \"%s\"",
 		getenv("REQUEST_METHOD"));
     rda->logAuthenticationFailure(webget_post->clientAddress());
-    XmlExit("invalid web method",400,"webget.cpp",LINE_NUMBER);
+    TextExit("invalid web method",400,LINE_NUMBER);
   }
   if(getenv("REMOTE_ADDR")!=NULL) {
     webget_remote_address.setAddress(getenv("REMOTE_ADDR"));
@@ -111,8 +110,7 @@ MainObject::MainObject(QObject *parent)
 		webget_post->errorString(webget_post->error()).
 		toUtf8().constData());
     rda->logAuthenticationFailure(webget_post->clientAddress());
-    XmlExit(webget_post->errorString(webget_post->error()),400,"webget.cpp",
-	    LINE_NUMBER);
+    TextExit(webget_post->errorString(webget_post->error()),400,LINE_NUMBER);
     Exit(0);
   }
 
@@ -137,8 +135,7 @@ MainObject::MainObject(QObject *parent)
 void MainObject::ripcConnectedData(bool state)
 {
   if(!state) {
-    XmlExit("unable to connect to ripc service",500,"webget.cpp",LINE_NUMBER);
-    Exit(0);
+    TextExit("unable to connect to ripc service",500,LINE_NUMBER);
   }
 
   QString direction;
@@ -146,16 +143,11 @@ void MainObject::ripcConnectedData(bool state)
     ServeForm();
     Exit(0);
   }
-
-  rda->syslog(LOG_NOTICE,"direction: %s",direction.toUtf8().constData());
-
   if(direction.toLower()=="get") {
-    rda->syslog(LOG_NOTICE,"GETTING...");
     GetAudio();
     Exit(0);
   }
   if(direction.toLower()=="put") {
-    rda->syslog(LOG_NOTICE,"PUTTING...");
     PutAudio();
     Exit(0);
   }
@@ -176,7 +168,7 @@ void MainObject::GetAudio()
   if(!webget_post->getValue("title",&title)) {
     rda->syslog(LOG_WARNING,"missing \"title\"");
     rda->logAuthenticationFailure(webget_post->clientAddress());
-    XmlExit("missing \"title\"",400,"webget.cpp",LINE_NUMBER);
+    TextExit("missing \"title\"",400,LINE_NUMBER);
     Exit(0);
   }
 
@@ -184,12 +176,12 @@ void MainObject::GetAudio()
   if(!webget_post->getValue("preset",&preset,&ok)) {
     rda->syslog(LOG_WARNING,"missing \"preset\"");
     rda->logAuthenticationFailure(webget_post->clientAddress());
-    XmlExit("missing \"preset\"",400,"webget.cpp",LINE_NUMBER);
+    TextExit("missing \"preset\"",400,LINE_NUMBER);
   }
   if(!ok) {
     rda->syslog(LOG_WARNING,"invalid \"preset\" value");
     rda->logAuthenticationFailure(webget_post->clientAddress());
-    XmlExit("invalid \"preset\" value",400,"webget.cpp",LINE_NUMBER);
+    TextExit("invalid \"preset\" value",400,LINE_NUMBER);
   }
 
   unsigned cartnum=0;
@@ -258,7 +250,8 @@ void MainObject::GetAudio()
     rda->syslog(LOG_WARNING,"unable to create temporary directory [%s]",
 		err_msg.toUtf8().constData());
     rda->logAuthenticationFailure(webget_post->clientAddress());
-    XmlExit("unable to create temporary directory ["+err_msg+"]",500);
+    TextExit("unable to create temporary directory ["+err_msg+"]",500,
+	     LINE_NUMBER);
   }
   QString tmpfile=tempdir->path()+"/exported_audio";
   RDAudioConvert *conv=new RDAudioConvert(this);
@@ -341,8 +334,7 @@ void MainObject::GetAudio()
     rda->syslog(LOG_WARNING,"%s",
 		RDAudioConvert::errorText(conv_err).toUtf8().constData());
     rda->logAuthenticationFailure(webget_post->clientAddress());
-    XmlExit(RDAudioConvert::errorText(conv_err),resp_code,"webget.cpp",
-	    LINE_NUMBER,conv_err);
+    TextExit(RDAudioConvert::errorText(conv_err),resp_code,LINE_NUMBER);
   }
 }
 
@@ -353,7 +345,7 @@ void MainObject::PutAudio()
   if(!webget_post->getValue("group",&group_name)) {
     rda->syslog(LOG_WARNING,"missing \"group\" in put submission");
     rda->logAuthenticationFailure(webget_post->clientAddress());
-    XmlExit("missing \"group\"",400,"webget.cpp",LINE_NUMBER);
+    TextExit("missing \"group\"",400,LINE_NUMBER);
     Exit(0);
   }
 
@@ -361,19 +353,19 @@ void MainObject::PutAudio()
   if(!webget_post->getValue("filename",&filename)) {
     rda->syslog(LOG_WARNING,"missing \"filename\" in put submission");
     rda->logAuthenticationFailure(webget_post->clientAddress());
-    XmlExit("missing \"missing\"",400,"webget.cpp",LINE_NUMBER);
+    TextExit("missing \"missing\"",400,LINE_NUMBER);
     Exit(0);
   }
 
   if(!webget_post->isFile("filename")) {
     rda->syslog(LOG_WARNING,"\"filename\" is not a file in put submission");
     rda->logAuthenticationFailure(webget_post->clientAddress());
-    XmlExit("invalid \"filename\"",400,"webget.cpp",LINE_NUMBER);
+    TextExit("invalid \"filename\"",400,LINE_NUMBER);
     Exit(0);
   }
 
   QStringList args;
-  args.push_back("--verbose");
+  args.push_back("--output-pattern=Added cart %n [\"%t\"]");
   args.push_back(group_name);
   args.push_back(filename);
   QProcess *proc=new QProcess(this);
@@ -383,23 +375,51 @@ void MainObject::PutAudio()
     delete proc;
     rda->syslog(LOG_WARNING,"importer process crashed [cmdline: %s]",
 		("rdimport "+args.join(" ")).toUtf8().constData());
-    XmlExit("Importer process crashed!",500,"webget",LINE_NUMBER);
+    TextExit("Importer process crashed!",500,LINE_NUMBER);
   }
-  if(proc->exitCode()!=0) {
+  switch((RDApplication::ExitCode)proc->exitCode()) {
+  case RDApplication::ExitOk:
+  case RDApplication::ExitLast:
+    break;
+
+  case RDApplication::ExitPriorInstance:
+  case RDApplication::ExitNoDb:
+  case RDApplication::ExitSvcFailed:
+  case RDApplication::ExitInvalidOption:
+  case RDApplication::ExitOutputProtected:
+  case RDApplication::ExitNoSvc:
+  case RDApplication::ExitNoLog:
+  case RDApplication::ExitNoReport:
+  case RDApplication::ExitLogGenFailed:
+  case RDApplication::ExitLogLinkFailed:
+  case RDApplication::ExitNoPerms:
+  case RDApplication::ExitReportFailed:
+  case RDApplication::ExitNoDropbox:
+  case RDApplication::ExitNoGroup:
+  case RDApplication::ExitInvalidCart:
+  case RDApplication::ExitNoSchedCode:
     rda->syslog(LOG_WARNING,
-		"importer process returned exit code %d [cmdline: %s]",
+		"importer process returned exit code %d [cmdline: %s, client addr: %s]",
 		proc->exitCode(),
-		("rdimport "+args.join(" ")).toUtf8().constData());
+		("rdimport "+args.join(" ")).toUtf8().constData(),
+		webget_post->clientAddress().toString().toUtf8().constData());
     delete proc;
-    XmlExit("Importer process error!",500,"webget",LINE_NUMBER);
+    TextExit("Internal error! See syslog for details.",500,LINE_NUMBER);
+
+  case RDApplication::ExitImportFailed:
+    rda->syslog(LOG_WARNING,
+		"file importation failed [cmdline: %s, client addr: %s]",
+		("rdimport "+args.join(" ")).toUtf8().constData(),
+		webget_post->clientAddress().toString().toUtf8().constData());
+    TextExit("File importation failed!\nSee syslog for details.",500,LINE_NUMBER);
   }
 
-  printf("Content-type: text/html\n");
-  printf("Status: 200\n");
-  printf("\n");
-  printf("%s\n",proc->readAllStandardOutput().constData());
-  delete proc;
-  Exit(0);
+  QString resultstr=proc->readAllStandardOutput();
+  rda->syslog(LOG_INFO,"%s from user %s at %s",
+	      resultstr.toUtf8().constData(),
+	      rda->user()->name().toUtf8().constData(),
+	      webget_post->clientAddress().toString().toUtf8().constData());
+  TextExit(resultstr.toUtf8().constData(),200,LINE_NUMBER);
 }
 
 
@@ -619,23 +639,19 @@ void MainObject::Exit(int code)
 }
 
 
-void MainObject::XmlExit(const QString &str,int code,const QString &srcfile,
-			 int srcline,RDAudioConvert::ErrorCode err)
+void MainObject::TextExit(const QString &msg,int code,int srcline) const
 {
   if(webget_post!=NULL) {
     delete webget_post;
   }
 
+  printf("Content-type: text/html\n");
+  printf("Status: %d\n",code);
+  printf("\n");
+  printf("%s\n",msg.toUtf8().constData());
 #ifdef RDXPORT_DEBUG
-  if(srcline>0) {
-    RDXMLResult(str+" \""+srcfile+"\" "+QString().sprintf("line %d",srcline),
-		code,err);
-  }
-  else {
-    RDXMLResult(str,code,err);
-  }
-#else
-  RDXMLResult(str,code,err);
+  printf("\n");
+  printf("[Line: %d]\n",srcline);
 #endif  // RDXPORT_DEBUG
   exit(0);
 }
