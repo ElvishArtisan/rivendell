@@ -20528,3 +20528,6 @@
 2020-11-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdadmin(1) that caused corruption of the
 	'Auto-Correct Duplicate Cart Title' control.
+2020-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in rdimport(1) that caused incorrect exit codes to
+	be emitted when a non-existent group was specified.

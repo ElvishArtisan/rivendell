@@ -504,7 +504,7 @@ MainObject::MainObject(QObject *parent)
   }
   if(import_group==NULL) {
     Log(LOG_ERR,QString().sprintf("rdimport: invalid group specified\n"));
-    exit(2);
+    exit(RDApplication::ExitNoGroup);
   }
   if(import_cart_number>0) {
     if(!import_group->cartNumberValid(import_cart_number)) {
@@ -579,7 +579,7 @@ MainObject::MainObject(QObject *parent)
       }
       else {
 	Log(LOG_ERR,QString("rdimport: invalid segue length\n"));
-	exit(2);
+	exit(RDApplication::ExitInvalidOption);
       }
       rda->cmdSwitch()->setProcessed(i,true);
     }
@@ -591,7 +591,7 @@ MainObject::MainObject(QObject *parent)
        (rda->cmdSwitch()->key(i).left(2)=="--")) {
       Log(LOG_ERR,QString().sprintf("rdimport: unknown command option \"%s\"\n",
 	      (const char *)rda->cmdSwitch()->key(i)));
-      exit(2);
+      exit(RDApplication::ExitInvalidOption);
     }
   }
   if(import_to_mono) {
@@ -823,7 +823,7 @@ void MainObject::userData()
     Log(LOG_ERR,
             QString().sprintf("rdimport: user \"%s\" has no edit audio permission\n",
 	    (const char *)rda->user()->name()));
-    exit(256);
+    exit(RDApplication::ExitNoPerms);
   }
 
   //
@@ -979,6 +979,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	  QFile::remove(import_temp_fix_filename);
 	  import_temp_fix_filename="";
 	}
+	import_failed_imports++;
 	return MainObject::FileBad;
       }
       Log(LOG_WARNING,QString().sprintf("success.\n"));
@@ -998,6 +999,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	QFile::remove(import_temp_fix_filename);
 	import_temp_fix_filename="";
       }
+      import_failed_imports++;
       return MainObject::FileBad;
     }
   }
@@ -1043,6 +1045,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       delete wavefile;
       delete wavedata;
       delete effective_group;
+      import_failed_imports++;
       return MainObject::FileBad;
     }
   }
@@ -1052,9 +1055,11 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if(*cartnum==0) {
     Log(LOG_ERR,QString().sprintf("rdimport: no free carts available in specified group\n"));
     wavefile->closeWave();
+    import_failed_imports++;
     delete wavefile;
     delete wavedata;
     delete effective_group;
+    import_failed_imports++;
     if(import_drop_box) {
       if(!import_run) {
 	NormalExit();
@@ -1065,7 +1070,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       }
       return MainObject::NoCart;
     }
-    exit(256);
+    exit(RDApplication::ExitImportFailed);
   }
   if(import_delete_cuts) {
     DeleteCuts(import_cart_number);
@@ -1083,6 +1088,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if(cutnum<0) {
     Log(LOG_WARNING,QString().sprintf("rdimport: no free cuts available in cart %06u\n",*cartnum));
     delete cart;
+    import_failed_imports++;
     return MainObject::NoCut;
   }
   RDCut *cut=new RDCut(*cartnum,cutnum);
@@ -1153,6 +1159,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       QFile::remove(import_temp_fix_filename);
       import_temp_fix_filename="";
     }
+    import_failed_imports++;
     return MainObject::FileBad;
     break;
   }
@@ -1841,7 +1848,7 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 	    }
 	    else {
 	      Log(LOG_ERR,"invalid ISRC \""+value+"\"\n");
-	      exit(1);
+	      exit(RDApplication::ExitInvalidOption);
 	    }
 	    break;
 
