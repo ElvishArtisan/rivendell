@@ -22,6 +22,7 @@
 
 install-exec-am:	
 	mkdir -p $(DESTDIR)@libexecdir@
+	cp donut-spinner.gif $(DESTDIR)@libexecdir@
 	cp greencheckmark.png $(DESTDIR)@libexecdir@
 	cp redx.png $(DESTDIR)@libexecdir@
 	cp blueball.png $(DESTDIR)@libexecdir@
@@ -187,6 +188,7 @@ install-exec-am:
 	cp rivendell-32x32.xpm $(DESTDIR)@prefix@/share/X11/fvwm2/pixmaps/rivendell.xpm
 
 uninstall-local:	
+	rm -f $(DESTDIR)@libexecdir@/donut-spinner.gif
 	rm -f $(DESTDIR)@libexecdir@/greencheckmark.png
 	rm -f $(DESTDIR)@libexecdir@/redx.png
 	rm -f $(DESTDIR)@libexecdir@/blueball.png
@@ -275,6 +277,8 @@ EXTRA_DIST = admin.xpm\
              checkmark.xpm\
              cover_art_default-60x60.xcf\
              cover_art_default-60x60.xpm\
+             donut-spinner.gif\
+             donut-spinner.xcf\
              download.xpm\
              ex.xpm\
              fillstart.xpm\

@@ -20536,3 +20536,5 @@
 	'text/html'.
 2020-11-01 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.1int3.
+2020-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'donut-spinner' indicator to Webget.

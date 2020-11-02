@@ -500,7 +500,7 @@ void MainObject::ServeForm()
   printf("	</td>\n");
   printf("    </tr>\n");
   printf("    <tr>\n");
-  printf("	<td>&nbsp;</td>\n");
+  printf("	<td style=\"text-align: right\" id=\"get_spinner\">&nbsp;</td>\n");
   printf("	<td><input type=\"button\" value=\"OK\" id=\"get_button\" onclick=\"ProcessGet()\" disabled></td>\n");
   printf("    </tr>\n");
 
@@ -541,7 +541,7 @@ void MainObject::ServeForm()
   printf("	</td>\n");
   printf("    </tr>\n");
   printf("    <tr>\n");
-  printf("	<td>&nbsp;</td>\n");
+  printf("	<td style=\"text-align: right\" id=\"put_spinner\">&nbsp;</td>\n");
   printf("	<td><input type=\"button\" value=\"OK\" id=\"put_button\" onclick=\"ProcessPut()\" disabled></td>\n");
   printf("    </tr>\n");
 

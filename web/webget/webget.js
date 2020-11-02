@@ -32,7 +32,7 @@ function ProcessGet()
     form.append('title',Id('title').value);
     form.append('preset',Id('preset').value);
 
-    SendForm(form,"webget.cgi");
+    SendForm(form,'webget.cgi','get_spinner');
 }
 
 
@@ -46,11 +46,11 @@ function ProcessPut()
     form.append('group',Id('group').value);
     form.append('filename',Id('filename').files[0]);
 
-    SendForm(form,"webget.cgi");
+    SendForm(form,'webget.cgi','put_spinner');
 }
 
 
-function SendForm(form,url)
+function SendForm(form,url,spinner_id)
 {
     var http=new XMLHttpRequest();
     if(http==null) {
@@ -60,6 +60,7 @@ function SendForm(form,url)
     //
     // Send the form
     //
+    Id(spinner_id).innerHTML='<img src="/rd-bin/donut-spinner.gif">';
     http.open("POST",url,true);
     http.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
     http.responseType='blob';
@@ -69,7 +70,7 @@ function SendForm(form,url)
     // Process the response
     //
     http.onload=function(e) {
-
+	Id(spinner_id).innerHTML='';
 	var blob=new Blob([this.response],
 			  {type: http.getResponseHeader('content-type')});
 	var f0=blob.type.split(';');
