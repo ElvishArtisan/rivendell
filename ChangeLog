@@ -20534,3 +20534,5 @@
 2020-11-01 Fred Gleason <fredg@paravelsystems.com>
 	* Modified Webget to issue all error messages as mimetype
 	'text/html'.
+2020-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.1int3.
