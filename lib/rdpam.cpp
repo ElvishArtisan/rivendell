@@ -80,12 +80,14 @@ bool RDPam::authenticate(const QString &username,const QString &token)
   conv.conv=RDPamCallback;
   conv.appdata_ptr=(RDPam *)this;
   if((err=pam_start(system_pam_service,username,&conv,&pamh))!=PAM_SUCCESS) {
-    rda->syslog(LOG_WARNING,"PAM Error: %s",pam_strerror(pamh,err));
+    rda->syslog(LOG_WARNING,"PAM error [%s]",pam_strerror(pamh,err));
     pam_end(pamh,err);
     CleanupPam();
     return false;
   }
   if((err=pam_authenticate(pamh,0))!=PAM_SUCCESS) {
+    rda->syslog(LOG_WARNING,"PAM authentication failed [%s]",
+		pam_strerror(pamh,err));
     pam_end(pamh,err);
     CleanupPam();
     return false;

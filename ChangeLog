@@ -20538,3 +20538,6 @@
 	* Incremented the package version to 3.4.1int3.
 2020-11-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'donut-spinner' indicator to Webget.
+2020-11-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added logging for failed PAM authentication in
+	'RDPam::authenticate()'.
