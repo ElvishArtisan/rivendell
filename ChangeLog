@@ -20541,3 +20541,6 @@
 2020-11-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added logging for failed PAM authentication in
 	'RDPam::authenticate()'.
+2020-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in Webget that caused authentication to fail
+	when using PAM.

@@ -50,6 +50,8 @@ class MainObject : public QObject
   void TextExit(const QString &msg,int code,int line) const;
   RDFormPost *webget_post;
   QString webget_remote_hostname;
+  QString webget_remote_username;
+  QString webget_remote_password;
   QHostAddress webget_remote_address;
 };
 

@@ -464,7 +464,7 @@ void MainObject::ServeForm()
   printf("    <input type=\"hidden\" name=\"LOGIN_NAME\" id=\"LOGIN_NAME\" value=\"%s\">\n",
 	 rda->user()->name().toUtf8().constData());
   printf("    <input type=\"hidden\" name=\"PASSWORD\" id=\"PASSWORD\" value=\"%s\">\n",
-	 rda->user()->password().toUtf8().constData());
+	 webget_remote_password.toUtf8().constData());
 
   //
   // Get Audio
@@ -571,10 +571,6 @@ void MainObject::ServeLogin()
   //
   printf("  <body>\n");
   printf("  <form action=\"/rd-bin/webget.cgi\" method=\"post\" enctype=\"multipart/form-data\">\n");
-  printf("    <input type=\"hidden\" name=\"LOGIN_NAME\" value=\"%s\">\n",
-	 rda->user()->name().toUtf8().constData());
-  printf("    <input type=\"hidden\" name=\"PASSWORD\" value=\"%s\">\n",
-	 rda->user()->password().toUtf8().constData());
   printf("    <table style=\"margin: auto;padding: 10px 0\" cellpadding=\"0\" cellspacing=\"5\" border=\"0\">\n");
   printf("    <tr>\n");
   printf("	<td colspan=\"2\"><img src=\"logos/webget_logo.png\" border=\"0\"></td>\n");
@@ -605,24 +601,23 @@ void MainObject::ServeLogin()
 
 bool MainObject::Authenticate()
 {
-  QString name;
-  QString passwd;
-
-  if(!webget_post->getValue("LOGIN_NAME",&name)) {
+  if(!webget_post->getValue("LOGIN_NAME",&webget_remote_username)) {
     rda->syslog(LOG_WARNING,"missing LOGIN_NAME");
     rda->logAuthenticationFailure(webget_post->clientAddress());
     return false;
   }
-  if(!webget_post->getValue("PASSWORD",&passwd)) {
+  if(!webget_post->getValue("PASSWORD",&webget_remote_password)) {
     rda->syslog(LOG_WARNING,"missing PASSWORD");
-    rda->logAuthenticationFailure(webget_post->clientAddress(),name);
+    rda->logAuthenticationFailure(webget_post->clientAddress(),
+				  webget_remote_username);
     return false;
   }
-  rda->user()->setName(name);
+  rda->user()->setName(webget_remote_username);
   if((!rda->user()->exists())||
-     (!rda->user()->checkPassword(passwd,false))||
+     (!rda->user()->checkPassword(webget_remote_password,false))||
      (!rda->user()->webgetLogin())) {
-    rda->logAuthenticationFailure(webget_post->clientAddress(),name);
+    rda->logAuthenticationFailure(webget_post->clientAddress(),
+				  webget_remote_username);
     return false;
   }
 
