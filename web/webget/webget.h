@@ -44,7 +44,7 @@ class MainObject : public QObject
   void GetAudio();
   void PutAudio();
   void ServeForm();
-  void ServeLogin();
+  void ServeLogin(int resp_code);
   bool Authenticate();
   void Exit(int code);
   void TextExit(const QString &msg,int code,int line) const;
@@ -52,6 +52,7 @@ class MainObject : public QObject
   QString webget_remote_hostname;
   QString webget_remote_username;
   QString webget_remote_password;
+  QString webget_ticket;
   QHostAddress webget_remote_address;
 };
 

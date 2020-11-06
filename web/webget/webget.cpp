@@ -82,7 +82,7 @@ MainObject::MainObject(QObject *parent)
     TextExit("missing REQUEST_METHOD",500,LINE_NUMBER);
   }
   if(QString(getenv("REQUEST_METHOD")).lower()=="get") {
-    ServeLogin();
+    ServeLogin(200);
     Exit(0);
   }
   if(QString(getenv("REQUEST_METHOD")).lower()!="post") {
@@ -118,7 +118,7 @@ MainObject::MainObject(QObject *parent)
   // Authenticate Connection
   //
   if(!Authenticate()) {
-    ServeLogin();
+    ServeLogin(403);
     Exit(0);
   }
 
@@ -156,7 +156,7 @@ void MainObject::ripcConnectedData(bool state)
 	      direction.toUtf8().constData(),
 	      webget_post->clientAddress().toString().toUtf8().constData());
   rda->logAuthenticationFailure(webget_post->clientAddress()); // So Fail2Ban can notice this
-  ServeLogin();
+  ServeLogin(403);
 }
 
 
@@ -457,14 +457,11 @@ void MainObject::ServeForm()
 
   printf("  <body>\n");
 
-
   //
   // Credentials
   //
-  printf("    <input type=\"hidden\" name=\"LOGIN_NAME\" id=\"LOGIN_NAME\" value=\"%s\">\n",
-	 rda->user()->name().toUtf8().constData());
-  printf("    <input type=\"hidden\" name=\"PASSWORD\" id=\"PASSWORD\" value=\"%s\">\n",
-	 webget_remote_password.toUtf8().constData());
+  printf("    <input type=\"hidden\" name=\"TICKET\" id=\"TICKET\" value=\"%s\">\n",
+	 webget_ticket.toUtf8().constData());
 
   //
   // Get Audio
@@ -554,9 +551,11 @@ void MainObject::ServeForm()
 }
 
 
-void MainObject::ServeLogin()
+void MainObject::ServeLogin(int resp_code)
 {
-  printf("Content-type: text/html\n\n");
+  printf("Content-type: text/html\n");
+  printf("Status: %d\n",resp_code);
+  printf("\n");
 
   //
   // Head
@@ -601,6 +600,27 @@ void MainObject::ServeLogin()
 
 bool MainObject::Authenticate()
 {
+  QDateTime expire_dt;
+
+  //
+  // First try ticket authentication
+  //
+  if(webget_post->getValue("TICKET",&webget_ticket)) {
+    if(RDUser::ticketIsValid(webget_ticket,webget_post->clientAddress(),
+			     &webget_remote_username)) {
+      rda->user()->setName(webget_remote_username);
+      if(!rda->user()->webgetLogin()) {
+	rda->logAuthenticationFailure(webget_post->clientAddress(),
+				      webget_remote_username);
+	return false;
+      }
+      return true;
+    }
+  }
+
+  //
+  // Then, try to authenticate by username/password
+  //
   if(!webget_post->getValue("LOGIN_NAME",&webget_remote_username)) {
     rda->syslog(LOG_WARNING,"missing LOGIN_NAME");
     rda->logAuthenticationFailure(webget_post->clientAddress());
@@ -616,6 +636,12 @@ bool MainObject::Authenticate()
   if((!rda->user()->exists())||
      (!rda->user()->checkPassword(webget_remote_password,false))||
      (!rda->user()->webgetLogin())) {
+    rda->logAuthenticationFailure(webget_post->clientAddress(),
+				  webget_remote_username);
+    return false;
+  }
+  if(!rda->user()->createTicket(&webget_ticket,&expire_dt,
+				webget_post->clientAddress())) {
     rda->logAuthenticationFailure(webget_post->clientAddress(),
 				  webget_remote_username);
     return false;

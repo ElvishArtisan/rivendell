@@ -26,8 +26,7 @@ function ProcessGet()
 {
     form=new FormData();
 
-    form.append('LOGIN_NAME',Id('LOGIN_NAME').value);
-    form.append('PASSWORD',Id('PASSWORD').value);
+    form.append('TICKET',Id('TICKET').value);
     form.append('direction','get');
     form.append('title',Id('title').value);
     form.append('preset',Id('preset').value);
@@ -40,8 +39,7 @@ function ProcessPut()
 {
     form=new FormData();
 
-    form.append('LOGIN_NAME',Id('LOGIN_NAME').value);
-    form.append('PASSWORD',Id('PASSWORD').value);
+    form.append('TICKET',Id('TICKET').value);
     form.append('direction','put');
     form.append('group',Id('group').value);
     form.append('filename',Id('filename').files[0]);
@@ -77,7 +75,14 @@ function SendForm(form,url,spinner_id)
 	if(f0[0]=='text/html') {
 	    reader=new FileReader();
 	    reader.addEventListener('loadend',()=> {
-		alert(reader.result);
+		if(http.status==403) {  // Ticket expired, display the login
+		    document.open(http.getResponseHeader("Content-Type"));
+		    document.write(reader.result);
+		    document.close();
+		}
+		else {
+		    alert(reader.result);
+}
 	    });
 	    reader.readAsText(blob);
 	}

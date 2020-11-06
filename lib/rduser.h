@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell User
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,6 +20,8 @@
 
 #ifndef RDUSER_H
 #define RDUSER_H
+
+#include <QDateTime>
 
 class RDUser
 {
@@ -98,7 +100,7 @@ class RDUser
   QStringList services() const;
   bool createTicket(QString *ticket,QDateTime *expire_dt,
 		    const QHostAddress &client_addr,
-		    const QDateTime &start_dt) const;
+		    QDateTime start_dt=QDateTime()) const;
   static bool ticketIsValid(const QString &ticket,
 			    const QHostAddress &client_addr,
 			    QString *username=NULL,QDateTime *expire_dt=NULL);

@@ -612,10 +612,13 @@ QStringList RDUser::services() const
 
 bool RDUser::createTicket(QString *ticket,QDateTime *expire_dt,
 			  const QHostAddress &client_addr,
-			  const QDateTime &start_dt) const
+			  QDateTime start_dt) const
 {
   *ticket=QString();
   *expire_dt=QDateTime();
+  if(!start_dt.isValid()) {
+    start_dt=QDateTime::currentDateTime();
+  }
 
   if(exists()) {
     char rawstr[1024];

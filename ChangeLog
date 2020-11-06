@@ -20547,3 +20547,6 @@
 2020-11-06 Fred Gleason <fredg@paravelsystems.com>
 	* Consolidated ticket processing operations in new
 	'RDUser::createTicket()' and 'RDUser::ticketIsValid()' methods.
+2020-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Modified Webget to use tickets for authenticating media transfer
+	requests.
