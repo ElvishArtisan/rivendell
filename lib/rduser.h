@@ -96,6 +96,12 @@ class RDUser
   bool feedAuthorized(const QString &keyname);
   QString serviceCheckDefault(QString serv) const;
   QStringList services() const;
+  bool createTicket(QString *ticket,QDateTime *expire_dt,
+		    const QHostAddress &client_addr,
+		    const QDateTime &start_dt) const;
+  static bool ticketIsValid(const QString &ticket,
+			    const QHostAddress &client_addr,
+			    QString *username=NULL,QDateTime *expire_dt=NULL);
   static bool emailIsValid(const QString &addr);
   static QString emailContact(const QString &addr,const QString &fullname);
 

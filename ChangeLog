@@ -20544,3 +20544,6 @@
 2020-11-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in Webget that caused authentication to fail
 	when using PAM.
+2020-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Consolidated ticket processing operations in new
+	'RDUser::createTicket()' and 'RDUser::ticketIsValid()' methods.

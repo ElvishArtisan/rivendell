@@ -323,7 +323,7 @@ bool RDFormPost::authenticate(bool *used_ticket)
 {
   QString ticket;
   QString sql;
-  RDSqlQuery *q;
+  RDSqlQuery *q=NULL;
   QString name;
   QString passwd;
 
@@ -334,20 +334,13 @@ bool RDFormPost::authenticate(bool *used_ticket)
     *used_ticket=false;
   }
   if(getValue("TICKET",&ticket)) {
-    sql=QString("select LOGIN_NAME from WEBAPI_AUTHS where ")+
-      "(TICKET=\""+RDEscapeString(ticket)+"\")&&"+
-      "(IPV4_ADDRESS=\""+clientAddress().toString()+"\")&&"+
-      "(EXPIRATION_DATETIME>now())";
-    q=new RDSqlQuery(sql);
-    if(q->first()) {
-      rda->user()->setName(q->value(0).toString());
-      delete q;
+    if(RDUser::ticketIsValid(ticket,clientAddress(),&name)) {
+      rda->user()->setName(name);
       if(used_ticket!=NULL) {
 	*used_ticket=true;
       }
       return true;
     }
-    delete q;
   }
 
   //
