@@ -111,6 +111,7 @@ uninstall-local:
 	rm -f $(DESTDIR)@libexecdir@/removeimage.html
 	rm -f $(DESTDIR)@libexecdir@/removepodcast.html
 	rm -f $(DESTDIR)@libexecdir@/removepodrss.html
+	rm -f $(DESTDIR)@libexecdir@/removerss.html
 	rm -f $(DESTDIR)@libexecdir@/savefile.html
 	rm -f $(DESTDIR)@libexecdir@/savelog.html
 	rm -f $(DESTDIR)@libexecdir@/savepodcast.html

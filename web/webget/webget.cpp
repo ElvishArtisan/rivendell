@@ -365,7 +365,7 @@ void MainObject::PutAudio()
   }
 
   QStringList args;
-  args.push_back("--output-pattern=Added cart %n [\"%t\"]");
+  args.push_back("--output-pattern=Added cart %n [%t]");
   args.push_back(group_name);
   args.push_back(filename);
   QProcess *proc=new QProcess(this);
