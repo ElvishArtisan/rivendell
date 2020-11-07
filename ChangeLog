@@ -20550,3 +20550,5 @@
 2020-11-06 Fred Gleason <fredg@paravelsystems.com>
 	* Modified Webget to use tickets for authenticating media transfer
 	requests.
+2020-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.1int4.
