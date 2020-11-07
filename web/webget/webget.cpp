@@ -365,6 +365,9 @@ void MainObject::PutAudio()
   }
 
   QStringList args;
+  if(rda->libraryConf()->defaultChannels()==1) {
+    args.push_back("--to-mono");
+  }
   args.push_back("--output-pattern=Added cart %n [%t]");
   args.push_back(group_name);
   args.push_back(filename);
