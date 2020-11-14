@@ -20563,3 +20563,5 @@
 2020-11-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdmonitor(1) that caused false indications of
 	a failed audio store when used with autofs(8).
+2020-11-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDProcess::setProcessEnvironment()' method.

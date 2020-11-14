@@ -60,6 +60,12 @@ QStringList RDProcess::arguments() const
 }
 
 
+void RDProcess::setProcessEnvironment(const QProcessEnvironment &env)
+{
+  p_process->setProcessEnvironment(env);
+}
+
+
 void RDProcess::start(const QString &program,const QStringList &args)
 {
   p_program=program;
