@@ -2,7 +2,7 @@
 //
 // Functions for getting system status.
 //
-//   (C) Copyright 2016-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -23,6 +23,7 @@
 #include <syslog.h>
 #include <errno.h>
 
+#include <QDir>
 #include <qsqlquery.h>
 #include <qstringlist.h>
 #include <qvariant.h>
@@ -35,6 +36,12 @@ bool RDAudioStoreValid(RDConfig *config)
   FILE *f=NULL;
   char line[1024];
   bool ret=false;
+
+  //
+  // Make sure the filesystem is actually mounted
+  //
+  QDir dir(config->audioRoot());
+  dir.count();
 
   if((f=fopen("/etc/mtab","r"))==NULL) {
     rda->syslog(LOG_ERR,"unable to read mtab(5) [%s]",strerror(errno));
