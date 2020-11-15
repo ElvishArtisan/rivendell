@@ -1256,7 +1256,6 @@ bool RDSvc::create(const QString &name,QString *err_msg,
   else {    // Base on Existing Service
     sql=QString("select ")+
       "DESCRIPTION,"+            // 00
-
       "NAME_TEMPLATE,"+          // 01
       "DESCRIPTION_TEMPLATE,"+   // 02
       "PROGRAM_CODE,"+           // 03
@@ -1332,7 +1331,6 @@ bool RDSvc::create(const QString &name,QString *err_msg,
       sql=QString("insert into SERVICES set ")+
 	"DESCRIPTION=\""+
 	RDEscapeString(tr("Copy of")+" "+q->value(0).toString())+"\","+
-
 	"NAME_TEMPLATE=\""+RDEscapeString(q->value(1).toString())+"\","+
 	"DESCRIPTION_TEMPLATE=\""+RDEscapeString(q->value(2).toString())+"\","+
 	"PROGRAM_CODE=\""+RDEscapeString(q->value(3).toString())+"\","+
