@@ -742,7 +742,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     int prev_hour=0;
     int prev_secs=0;
     int prev_length=0;
-    unsigned prev_id=0;
+    QList<unsigned> prev_ids;
 
     sql=QString("select ")+
       "ID,"+          // 00
@@ -757,7 +757,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     while(q->next()) {
       if((!q->value(1).isNull())&&(!q->value(2).isNull())&&
 	 (!q->value(3).isNull())) {
-	if(prev_id!=0) {
+	if(prev_ids.size()>0) {
 	  int len=1000*(q->value(2).toInt()-prev_secs)-prev_length;
 	  if(len<0) {
 	    len=0;
@@ -766,19 +766,40 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 	    QString().sprintf("START_HOUR=%d,",prev_hour)+
 	    QString().sprintf("START_SECS=%d,",prev_secs+prev_length/1000)+
 	    QString().sprintf("LENGTH=%d ",len)+
-	    QString().sprintf("where ID=%u",prev_id);
+	    "where ";
+	  for(int i=0;i<prev_ids.size();i++) {
+	    sql+=QString().sprintf("(ID=%u)||",prev_ids.at(i));
+	  }
+	  sql=sql.left(sql.length()-2);
 	  RDSqlQuery::apply(sql);
-	  prev_id=0;
+	  prev_ids.clear();
 	}
 	prev_hour=q->value(1).toInt();
 	prev_secs=q->value(2).toInt();
 	prev_length=q->value(3).toInt();
       }
       else {
-	prev_id=q->value(0).toUInt();
+	prev_ids.push_back(q->value(0).toUInt());
       }
     }
     delete q;
+
+    //
+    // Handle trailing implied start time events
+    //
+    if(prev_ids.size()>0) {
+      sql=QString("update IMPORTER_LINES set ")+
+	QString().sprintf("START_HOUR=%d,",prev_hour)+
+	QString().sprintf("START_SECS=%d,",prev_secs+prev_length/1000)+
+	"LENGTH=0 "+
+	"where ";
+      for(int i=0;i<prev_ids.size();i++) {
+	sql+=QString().sprintf("(ID=%u)||",prev_ids.at(i));
+      }
+      sql=sql.left(sql.length()-2);
+      RDSqlQuery::apply(sql);
+      prev_ids.clear();
+    }
   }
 
   return true;
@@ -957,7 +978,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   // Resolve embedded link parameters
   //
   if(src==RDSvc::Music) {
-    if(!ResolveInlineTrafficLinks(logname,err_msg)) {
+    if(!ResolveInlineEvents(logname,err_msg)) {
       delete log_lock;
       return false;
     }
@@ -1769,7 +1790,7 @@ QString RDSvc::MakeErrorLine(int indent,unsigned lineno,const QString &msg)
 }
 
 
-bool RDSvc::ResolveInlineTrafficLinks(const QString &logname,QString *err_msg)
+bool RDSvc::ResolveInlineEvents(const QString &logname,QString *err_msg)
   const
 {
   RDLogEvent *evt=NULL;
@@ -1853,17 +1874,17 @@ bool RDSvc::ResolveInlineTrafficLinks(const QString &logname,QString *err_msg)
     while(q->next()) {
       switch((RDLogLine::Type)q->value(1).toUInt()) {
       case RDLogLine::Marker:
-	*err_msg=MakeErrorLine(0,q->value(0).toUInt(),
+	*err_msg+=MakeErrorLine(0,q->value(0).toUInt(),
 			       tr("invalid start time and/or length on note cart."));
 	break;
 
       case RDLogLine::TrafficLink:
-	*err_msg=MakeErrorLine(0,q->value(0).toUInt(),
+	*err_msg+=MakeErrorLine(0,q->value(0).toUInt(),
 			       tr("invalid start time and/or length on inline traffic break."));
 	break;
 
       case RDLogLine::Track:
-	*err_msg=MakeErrorLine(0,q->value(0).toUInt(),
+	*err_msg+=MakeErrorLine(0,q->value(0).toUInt(),
 			       tr("invalid start time and/or length on track marker."));
 	break;
 
@@ -1874,7 +1895,7 @@ bool RDSvc::ResolveInlineTrafficLinks(const QString &logname,QString *err_msg)
       case RDLogLine::Chain:
       case RDLogLine::MusicLink:
       case RDLogLine::UnknownType:
-	*err_msg=MakeErrorLine(0,q->value(0).toUInt(),
+	*err_msg+=MakeErrorLine(0,q->value(0).toUInt(),
 			       tr("unexpected event type")+
 			       " \""+RDLogLine::typeText((RDLogLine::Type)q->value(1).toUInt())+"\"");
 	break;

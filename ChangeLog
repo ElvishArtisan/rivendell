@@ -20573,3 +20573,10 @@
 	'SERVICES.MUS_TRACK_CART', 'SERVICES.MUS_BREAK_STRING',
 	'SERVICES.MUS_TRACK_STRING', 'SERVICES.PROGRAM_CODE' and
 	'SERVICES.DESCRIPTION' fields when using an exemplar.
+2020-11-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that, after detection of a
+	linker error, caused subsequent linker errors to fail to be
+	appended to the error report.
+	* Fixed a bug in rdlogmanager(1) that caused second and subsequent
+	inline Track Markers or Markers within an Event to fail to be
+	inserted Relative Position mode.
