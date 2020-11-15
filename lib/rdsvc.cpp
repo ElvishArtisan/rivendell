@@ -980,6 +980,8 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   if(src==RDSvc::Music) {
     if(!ResolveInlineEvents(logname,err_msg)) {
       delete log_lock;
+      *err_msg=tr("Import file")+": \""+importFilename(src,date)+"\"\n\n"+
+	*err_msg;
       return false;
     }
   }

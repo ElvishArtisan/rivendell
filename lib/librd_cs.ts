@@ -3142,5 +3142,9 @@ Zkuste to, prosím, znovu!</translation>
         <source>Copy of</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Import file</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

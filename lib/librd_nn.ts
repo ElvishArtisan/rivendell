@@ -3043,5 +3043,9 @@ prøv ein gong til!</translation>
         <source>Copy of</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Import file</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
