@@ -3084,5 +3084,9 @@ por favor, tente novamente!</translation>
         <source>Unexpected event</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Copy of</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

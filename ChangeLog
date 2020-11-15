@@ -20565,3 +20565,11 @@
 	a failed audio store when used with autofs(8).
 2020-11-14 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDProcess::setProcessEnvironment()' method.
+	* Fixed a bug in 'RDSvc::create()' that failed to propagate
+	the 'SERVICES.SUB_EVENT_INHERITANCE', 'SERVICES.TFC_PREIMPORT_CMD',
+	'SERVICES.TFC_LABEL_CART', 'SERVICES.TFC_TRACK_CART',
+	'SERVICES.TFC_BREAK_STRING', 'SERVICES.TFC_TRACK_STRING',
+	'SERVICES.MUS_PREIMPORT_CMD, 'SERVICES.MUS_LABEL_CART',
+	'SERVICES.MUS_TRACK_CART', 'SERVICES.MUS_BREAK_STRING',
+	'SERVICES.MUS_TRACK_STRING', 'SERVICES.PROGRAM_CODE' and
+	'SERVICES.DESCRIPTION' fields when using an exemplar.

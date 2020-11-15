@@ -1255,124 +1255,153 @@ bool RDSvc::create(const QString &name,QString *err_msg,
   }
   else {    // Base on Existing Service
     sql=QString("select ")+
-      "NAME_TEMPLATE,"+          // 00
-      "DESCRIPTION_TEMPLATE,"+   // 01
-      "CHAIN_LOG,"+              // 02
-      "TRACK_GROUP,"+            // 03
-      "AUTOSPOT_GROUP,"+         // 04
-      "DEFAULT_LOG_SHELFLIFE,"+  // 05
-      "LOG_SHELFLIFE_ORIGIN,"+   // 06
-      "AUTO_REFRESH,"+           // 07
-      "ELR_SHELFLIFE,"+          // 08
-      "TFC_IMPORT_TEMPLATE,"+    // 09
-      "TFC_PATH,"+               // 10
-      "TFC_CART_OFFSET,"+        // 11
-      "TFC_CART_LENGTH,"+        // 12
-      "TFC_TITLE_OFFSET,"        // 13
-      "TFC_TITLE_LENGTH,"+       // 14
-      "TFC_LEN_HOURS_OFFSET,"    // 15
-      "TFC_LEN_HOURS_LENGTH,"    // 16
-      "TFC_LEN_MINUTES_OFFSET,"  // 17
-      "TFC_LEN_MINUTES_LENGTH,"  // 18
-      "TFC_LEN_SECONDS_OFFSET,"  // 19
-      "TFC_LEN_SECONDS_LENGTH,"  // 20
-      "TFC_HOURS_OFFSET,"+       // 21
-      "TFC_HOURS_LENGTH,"+       // 22
-      "TFC_MINUTES_OFFSET,"+     // 23
-      "TFC_MINUTES_LENGTH,"+     // 24
-      "TFC_SECONDS_OFFSET,"+     // 25
-      "TFC_SECONDS_LENGTH,"+     // 26
-      "TFC_DATA_OFFSET,"+        // 27
-      "TFC_DATA_LENGTH,"+        // 28
-      "TFC_EVENT_ID_OFFSET,"+    // 29
-      "TFC_EVENT_ID_LENGTH,"+    // 30
-      "TFC_ANNC_TYPE_OFFSET,"+   // 31
-      "TFC_ANNC_TYPE_LENGTH,"+   // 32
-      "MUS_IMPORT_TEMPLATE,"+    // 33
-      "MUS_PATH,"+               // 34
-      "MUS_CART_OFFSET,"+        // 35
-      "MUS_CART_LENGTH,"+        // 36
-      "MUS_TITLE_OFFSET,"        // 37
-      "MUS_TITLE_LENGTH,"+       // 38
-      "MUS_LEN_HOURS_OFFSET,"    // 39
-      "MUS_LEN_HOURS_LENGTH,"    // 40
-      "MUS_LEN_MINUTES_OFFSET,"  // 41
-      "MUS_LEN_MINUTES_LENGTH,"  // 42
-      "MUS_LEN_SECONDS_OFFSET,"  // 43
-      "MUS_LEN_SECONDS_LENGTH,"  // 44
-      "MUS_HOURS_OFFSET,"+       // 45
-      "MUS_HOURS_LENGTH,"+       // 46
-      "MUS_MINUTES_OFFSET,"+     // 47
-      "MUS_MINUTES_LENGTH,"+     // 48
-      "MUS_SECONDS_OFFSET,"+     // 49
-      "MUS_SECONDS_LENGTH,"+     // 50
-      "MUS_DATA_OFFSET,"+        // 51
-      "MUS_DATA_LENGTH,"+        // 52
-      "MUS_EVENT_ID_OFFSET,"+    // 53
-      "MUS_EVENT_ID_LENGTH,"+    // 54
-      "MUS_ANNC_TYPE_OFFSET,"+   // 55
-      "MUS_ANNC_TYPE_LENGTH "+   // 56
+      "DESCRIPTION,"+            // 00
+
+      "NAME_TEMPLATE,"+          // 01
+      "DESCRIPTION_TEMPLATE,"+   // 02
+      "PROGRAM_CODE,"+           // 03
+      "CHAIN_LOG,"+              // 04
+      "SUB_EVENT_INHERITANCE,"+  // 05
+      "TRACK_GROUP,"+            // 06
+      "AUTOSPOT_GROUP,"+         // 07
+      "DEFAULT_LOG_SHELFLIFE,"+  // 08
+      "LOG_SHELFLIFE_ORIGIN,"+   // 09
+      "AUTO_REFRESH,"+           // 10
+      "ELR_SHELFLIFE,"+          // 11
+      "TFC_PREIMPORT_CMD,"+      // 12
+      "TFC_IMPORT_TEMPLATE,"+    // 13
+      "TFC_PATH,"+               // 14
+      "TFC_LABEL_CART,"+         // 15
+      "TFC_TRACK_CART,"+         // 16
+      "TFC_BREAK_STRING,"+       // 17
+      "TFC_TRACK_STRING,"+       // 18
+      "TFC_CART_OFFSET,"+        // 19
+      "TFC_CART_LENGTH,"+        // 20
+      "TFC_TITLE_OFFSET,"        // 21
+      "TFC_TITLE_LENGTH,"+       // 22
+      "TFC_LEN_HOURS_OFFSET,"    // 23
+      "TFC_LEN_HOURS_LENGTH,"    // 24
+      "TFC_LEN_MINUTES_OFFSET,"  // 25
+      "TFC_LEN_MINUTES_LENGTH,"  // 26
+      "TFC_LEN_SECONDS_OFFSET,"  // 27
+      "TFC_LEN_SECONDS_LENGTH,"  // 28
+      "TFC_HOURS_OFFSET,"+       // 29
+      "TFC_HOURS_LENGTH,"+       // 30
+      "TFC_MINUTES_OFFSET,"+     // 31
+      "TFC_MINUTES_LENGTH,"+     // 32
+      "TFC_SECONDS_OFFSET,"+     // 33
+      "TFC_SECONDS_LENGTH,"+     // 34
+      "TFC_DATA_OFFSET,"+        // 35
+      "TFC_DATA_LENGTH,"+        // 36
+      "TFC_EVENT_ID_OFFSET,"+    // 37
+      "TFC_EVENT_ID_LENGTH,"+    // 38
+      "TFC_ANNC_TYPE_OFFSET,"+   // 39
+      "TFC_ANNC_TYPE_LENGTH,"+   // 40
+      "MUS_PREIMPORT_CMD,"+      // 41
+      "MUS_IMPORT_TEMPLATE,"+    // 42
+      "MUS_PATH,"+               // 43
+      "MUS_LABEL_CART,"+         // 44
+      "MUS_TRACK_CART,"+         // 45
+      "MUS_BREAK_STRING,"+       // 46
+      "MUS_TRACK_STRING,"+       // 47
+      "MUS_CART_OFFSET,"+        // 48
+      "MUS_CART_LENGTH,"+        // 49
+      "MUS_TITLE_OFFSET,"        // 50
+      "MUS_TITLE_LENGTH,"+       // 51
+      "MUS_LEN_HOURS_OFFSET,"    // 52
+      "MUS_LEN_HOURS_LENGTH,"    // 53
+      "MUS_LEN_MINUTES_OFFSET,"  // 54
+      "MUS_LEN_MINUTES_LENGTH,"  // 55
+      "MUS_LEN_SECONDS_OFFSET,"  // 56
+      "MUS_LEN_SECONDS_LENGTH,"  // 57
+      "MUS_HOURS_OFFSET,"+       // 58
+      "MUS_HOURS_LENGTH,"+       // 59
+      "MUS_MINUTES_OFFSET,"+     // 60
+      "MUS_MINUTES_LENGTH,"+     // 61
+      "MUS_SECONDS_OFFSET,"+     // 62
+      "MUS_SECONDS_LENGTH,"+     // 63
+      "MUS_DATA_OFFSET,"+        // 64
+      "MUS_DATA_LENGTH,"+        // 65
+      "MUS_EVENT_ID_OFFSET,"+    // 66
+      "MUS_EVENT_ID_LENGTH,"+    // 67
+      "MUS_ANNC_TYPE_OFFSET,"+   // 68
+      "MUS_ANNC_TYPE_LENGTH "+   // 69
       " from SERVICES where NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       sql=QString("insert into SERVICES set ")+
-	"NAME_TEMPLATE=\""+RDEscapeString(q->value(0).toString())+"\","+
-	"DESCRIPTION_TEMPLATE=\""+RDEscapeString(q->value(1).toString())+"\","+
-	"CHAIN_LOG=\""+RDEscapeString(q->value(2).toString())+"\","+
-	"TRACK_GROUP=\""+RDEscapeString(q->value(3).toString())+"\","+
-	"AUTOSPOT_GROUP=\""+RDEscapeString(q->value(4).toString())+"\","+
-	QString().sprintf("DEFAULT_LOG_SHELFLIFE=%d,",q->value(5).toInt())+
-	QString().sprintf("LOG_SHELFLIFE_ORIGIN=%d,",q->value(6).toInt())+
-	"AUTO_REFRESH=\""+RDEscapeString(q->value(7).toString())+"\","+
-	QString().sprintf("ELR_SHELFLIFE=%d,",q->value(8).toInt())+
-	"TFC_IMPORT_TEMPLATE=\""+RDEscapeString(q->value(9).toString())+"\","+
-	"TFC_PATH=\""+RDEscapeString(q->value(10).toString())+"\","+
-	QString().sprintf("TFC_CART_OFFSET=%d,",q->value(11).toInt())+
-	QString().sprintf("TFC_CART_LENGTH=%d,",q->value(12).toInt())+
-	QString().sprintf("TFC_TITLE_OFFSET=%d,",q->value(13).toInt())+
-	QString().sprintf("TFC_TITLE_LENGTH=%d,",q->value(14).toInt())+
-	QString().sprintf("TFC_LEN_HOURS_OFFSET=%d,",q->value(15).toInt())+
-	QString().sprintf("TFC_LEN_HOURS_LENGTH=%d,",q->value(16).toInt())+
-	QString().sprintf("TFC_LEN_MINUTES_OFFSET=%d,",q->value(17).toInt())+
-	QString().sprintf("TFC_LEN_MINUTES_LENGTH=%d,",q->value(18).toInt())+
-	QString().sprintf("TFC_LEN_SECONDS_OFFSET=%d,",q->value(19).toInt())+
-	QString().sprintf("TFC_LEN_SECONDS_LENGTH=%d,",q->value(20).toInt())+
-	QString().sprintf("TFC_HOURS_OFFSET=%d,",q->value(21).toInt())+
-	QString().sprintf("TFC_HOURS_LENGTH=%d,",q->value(22).toInt())+
-	QString().sprintf("TFC_MINUTES_OFFSET=%d,",q->value(23).toInt())+
-	QString().sprintf("TFC_MINUTES_LENGTH=%d,",q->value(24).toInt())+
-	QString().sprintf("TFC_SECONDS_OFFSET=%d,",q->value(25).toInt())+
-	QString().sprintf("TFC_SECONDS_LENGTH=%d,",q->value(26).toInt())+
-	QString().sprintf("TFC_DATA_OFFSET=%d,",q->value(27).toInt())+
-	QString().sprintf("TFC_DATA_LENGTH=%d,",q->value(28).toInt())+
-	QString().sprintf("TFC_EVENT_ID_OFFSET=%d,",q->value(29).toInt())+
-	QString().sprintf("TFC_EVENT_ID_LENGTH=%d,",q->value(30).toInt())+
-	QString().sprintf("TFC_ANNC_TYPE_OFFSET=%d,",q->value(31).toInt())+
-	QString().sprintf("TFC_ANNC_TYPE_LENGTH=%d,",q->value(32).toInt())+
-	"MUS_IMPORT_TEMPLATE=\""+RDEscapeString(q->value(33).toString())+"\","+
-	"MUS_PATH=\""+RDEscapeString(q->value(34).toString())+"\","+
-	QString().sprintf("MUS_CART_OFFSET=%d,",q->value(35).toInt())+
-	QString().sprintf("MUS_CART_LENGTH=%d,",q->value(36).toInt())+
-	QString().sprintf("MUS_TITLE_OFFSET=%d,",q->value(37).toInt())+
-	QString().sprintf("MUS_TITLE_LENGTH=%d,",q->value(38).toInt())+
-	QString().sprintf("MUS_LEN_HOURS_OFFSET=%d,",q->value(39).toInt())+
-	QString().sprintf("MUS_LEN_HOURS_LENGTH=%d,",q->value(40).toInt())+
-	QString().sprintf("MUS_LEN_MINUTES_OFFSET=%d,",q->value(41).toInt())+
-	QString().sprintf("MUS_LEN_MINUTES_LENGTH=%d,",q->value(42).toInt())+
-	QString().sprintf("MUS_LEN_SECONDS_OFFSET=%d,",q->value(43).toInt())+
-	QString().sprintf("MUS_LEN_SECONDS_LENGTH=%d,",q->value(44).toInt())+
-	QString().sprintf("MUS_HOURS_OFFSET=%d,",q->value(45).toInt())+
-	QString().sprintf("MUS_HOURS_LENGTH=%d,",q->value(46).toInt())+
-	QString().sprintf("MUS_MINUTES_OFFSET=%d,",q->value(47).toInt())+
-	QString().sprintf("MUS_MINUTES_LENGTH=%d,",q->value(48).toInt())+
-	QString().sprintf("MUS_SECONDS_OFFSET=%d,",q->value(49).toInt())+
-	QString().sprintf("MUS_SECONDS_LENGTH=%d,",q->value(50).toInt())+
-	QString().sprintf("MUS_DATA_OFFSET=%d,",q->value(51).toInt())+
-	QString().sprintf("MUS_DATA_LENGTH=%d,",q->value(52).toInt())+
-	QString().sprintf("MUS_EVENT_ID_OFFSET=%d,",q->value(53).toInt())+
-	QString().sprintf("MUS_EVENT_ID_LENGTH=%d,",q->value(54).toInt())+
-	QString().sprintf("MUS_ANNC_TYPE_OFFSET=%d,",q->value(55).toInt())+
-	QString().sprintf("MUS_ANNC_TYPE_LENGTH=%d,",q->value(56).toInt())+
+	"DESCRIPTION=\""+
+	RDEscapeString(tr("Copy of")+" "+q->value(0).toString())+"\","+
+
+	"NAME_TEMPLATE=\""+RDEscapeString(q->value(1).toString())+"\","+
+	"DESCRIPTION_TEMPLATE=\""+RDEscapeString(q->value(2).toString())+"\","+
+	"PROGRAM_CODE=\""+RDEscapeString(q->value(3).toString())+"\","+
+	"CHAIN_LOG=\""+RDEscapeString(q->value(4).toString())+"\","+
+	QString().sprintf("SUB_EVENT_INHERITANCE=%d,",q->value(5).toInt())+
+	"TRACK_GROUP=\""+RDEscapeString(q->value(6).toString())+"\","+
+	"AUTOSPOT_GROUP=\""+RDEscapeString(q->value(7).toString())+"\","+
+	QString().sprintf("DEFAULT_LOG_SHELFLIFE=%d,",q->value(8).toInt())+
+	QString().sprintf("LOG_SHELFLIFE_ORIGIN=%d,",q->value(9).toInt())+
+	"AUTO_REFRESH=\""+RDEscapeString(q->value(10).toString())+"\","+
+	QString().sprintf("ELR_SHELFLIFE=%d,",q->value(11).toInt())+
+	"TFC_PREIMPORT_CMD=\""+RDEscapeString(q->value(12).toString())+"\","+
+	"TFC_IMPORT_TEMPLATE=\""+RDEscapeString(q->value(13).toString())+"\","+
+	"TFC_PATH=\""+RDEscapeString(q->value(14).toString())+"\","+
+	"TFC_LABEL_CART=\""+RDEscapeString(q->value(15).toString())+"\","+
+	"TFC_TRACK_CART=\""+RDEscapeString(q->value(16).toString())+"\","+
+	"TFC_BREAK_STRING=\""+RDEscapeString(q->value(17).toString())+"\","+
+	"TFC_TRACK_STRING=\""+RDEscapeString(q->value(18).toString())+"\","+
+	QString().sprintf("TFC_CART_OFFSET=%d,",q->value(19).toInt())+
+	QString().sprintf("TFC_CART_LENGTH=%d,",q->value(20).toInt())+
+	QString().sprintf("TFC_TITLE_OFFSET=%d,",q->value(21).toInt())+
+	QString().sprintf("TFC_TITLE_LENGTH=%d,",q->value(22).toInt())+
+	QString().sprintf("TFC_LEN_HOURS_OFFSET=%d,",q->value(23).toInt())+
+	QString().sprintf("TFC_LEN_HOURS_LENGTH=%d,",q->value(24).toInt())+
+	QString().sprintf("TFC_LEN_MINUTES_OFFSET=%d,",q->value(25).toInt())+
+	QString().sprintf("TFC_LEN_MINUTES_LENGTH=%d,",q->value(26).toInt())+
+	QString().sprintf("TFC_LEN_SECONDS_OFFSET=%d,",q->value(27).toInt())+
+	QString().sprintf("TFC_LEN_SECONDS_LENGTH=%d,",q->value(28).toInt())+
+	QString().sprintf("TFC_HOURS_OFFSET=%d,",q->value(29).toInt())+
+	QString().sprintf("TFC_HOURS_LENGTH=%d,",q->value(30).toInt())+
+	QString().sprintf("TFC_MINUTES_OFFSET=%d,",q->value(31).toInt())+
+	QString().sprintf("TFC_MINUTES_LENGTH=%d,",q->value(32).toInt())+
+	QString().sprintf("TFC_SECONDS_OFFSET=%d,",q->value(33).toInt())+
+	QString().sprintf("TFC_SECONDS_LENGTH=%d,",q->value(34).toInt())+
+	QString().sprintf("TFC_DATA_OFFSET=%d,",q->value(35).toInt())+
+	QString().sprintf("TFC_DATA_LENGTH=%d,",q->value(36).toInt())+
+	QString().sprintf("TFC_EVENT_ID_OFFSET=%d,",q->value(37).toInt())+
+	QString().sprintf("TFC_EVENT_ID_LENGTH=%d,",q->value(38).toInt())+
+	QString().sprintf("TFC_ANNC_TYPE_OFFSET=%d,",q->value(39).toInt())+
+	QString().sprintf("TFC_ANNC_TYPE_LENGTH=%d,",q->value(40).toInt())+
+	"MUS_PREIMPORT_CMD=\""+RDEscapeString(q->value(41).toString())+"\","+
+	"MUS_IMPORT_TEMPLATE=\""+RDEscapeString(q->value(42).toString())+"\","+
+	"MUS_PATH=\""+RDEscapeString(q->value(43).toString())+"\","+
+	"MUS_LABEL_CART=\""+RDEscapeString(q->value(44).toString())+"\","+
+	"MUS_TRACK_CART=\""+RDEscapeString(q->value(45).toString())+"\","+
+	"MUS_BREAK_STRING=\""+RDEscapeString(q->value(46).toString())+"\","+
+	"MUS_TRACK_STRING=\""+RDEscapeString(q->value(47).toString())+"\","+
+	QString().sprintf("MUS_CART_OFFSET=%d,",q->value(48).toInt())+
+	QString().sprintf("MUS_CART_LENGTH=%d,",q->value(49).toInt())+
+	QString().sprintf("MUS_TITLE_OFFSET=%d,",q->value(50).toInt())+
+	QString().sprintf("MUS_TITLE_LENGTH=%d,",q->value(51).toInt())+
+	QString().sprintf("MUS_LEN_HOURS_OFFSET=%d,",q->value(52).toInt())+
+	QString().sprintf("MUS_LEN_HOURS_LENGTH=%d,",q->value(53).toInt())+
+	QString().sprintf("MUS_LEN_MINUTES_OFFSET=%d,",q->value(54).toInt())+
+	QString().sprintf("MUS_LEN_MINUTES_LENGTH=%d,",q->value(55).toInt())+
+	QString().sprintf("MUS_LEN_SECONDS_OFFSET=%d,",q->value(56).toInt())+
+	QString().sprintf("MUS_LEN_SECONDS_LENGTH=%d,",q->value(57).toInt())+
+	QString().sprintf("MUS_HOURS_OFFSET=%d,",q->value(58).toInt())+
+	QString().sprintf("MUS_HOURS_LENGTH=%d,",q->value(59).toInt())+
+	QString().sprintf("MUS_MINUTES_OFFSET=%d,",q->value(60).toInt())+
+	QString().sprintf("MUS_MINUTES_LENGTH=%d,",q->value(61).toInt())+
+	QString().sprintf("MUS_SECONDS_OFFSET=%d,",q->value(62).toInt())+
+	QString().sprintf("MUS_SECONDS_LENGTH=%d,",q->value(63).toInt())+
+	QString().sprintf("MUS_DATA_OFFSET=%d,",q->value(64).toInt())+
+	QString().sprintf("MUS_DATA_LENGTH=%d,",q->value(65).toInt())+
+	QString().sprintf("MUS_EVENT_ID_OFFSET=%d,",q->value(66).toInt())+
+	QString().sprintf("MUS_EVENT_ID_LENGTH=%d,",q->value(67).toInt())+
+	QString().sprintf("MUS_ANNC_TYPE_OFFSET=%d,",q->value(68).toInt())+
+	QString().sprintf("MUS_ANNC_TYPE_LENGTH=%d,",q->value(69).toInt())+
 	"NAME=\""+RDEscapeString(name)+"\"";
       delete q;
       q=new RDSqlQuery(sql);
