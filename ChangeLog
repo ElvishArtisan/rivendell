@@ -20586,3 +20586,6 @@
 2020-11-16 Fred Gleason <fredg@paravelsystems.com>
 	* Revised the 'Managing Services' section of the Operations
 	Guide.
+2020-11-16 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Encoder Profiles' dialog in rdadmin to left-justify
+	the 'Name' column.

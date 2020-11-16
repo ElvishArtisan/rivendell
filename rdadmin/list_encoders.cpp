@@ -49,7 +49,7 @@ ListEncoders::ListEncoders(QWidget *parent)
   c_list->setItemMargin(5);
 
   c_list->addColumn("Name");
-  c_list->setColumnAlignment(0,Qt::AlignLeft|Qt::AlignVCenter);
+  c_list->setColumnAlignment(0,Qt::AlignLeft);
   connect(c_list,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
