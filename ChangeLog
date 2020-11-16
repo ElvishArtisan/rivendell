@@ -20589,3 +20589,6 @@
 2020-11-16 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'Encoder Profiles' dialog in rdadmin to left-justify
 	the 'Name' column.
+2020-11-16 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the Webget service to require the 'Create Carts'
+	priviledge in order to upload content.

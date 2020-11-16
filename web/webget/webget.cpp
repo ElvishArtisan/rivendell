@@ -341,11 +341,27 @@ void MainObject::GetAudio()
 
 void MainObject::PutAudio()
 {
+  if(!rda->user()->createCarts()) {
+    rda->syslog(LOG_WARNING,"user \"%s\" lacks CreateCarts permission",
+		rda->user()->name().toUtf8().constData());
+    rda->logAuthenticationFailure(webget_post->clientAddress());
+    ServeLogin(403);
+    Exit(0);
+  }
+
   QString group_name;
   if(!webget_post->getValue("group",&group_name)) {
     rda->syslog(LOG_WARNING,"missing \"group\" in put submission");
     rda->logAuthenticationFailure(webget_post->clientAddress());
     TextExit("missing \"group\"",400,LINE_NUMBER);
+    Exit(0);
+  }
+  if(!rda->user()->groupAuthorized(group_name)) {
+    rda->syslog(LOG_WARNING,"user \"%s\" lacks permission for group \"%s\"",
+		rda->user()->name().toUtf8().constData(),
+		group_name.toUtf8().constData());
+    rda->logAuthenticationFailure(webget_post->clientAddress());
+    ServeLogin(403);
     Exit(0);
   }
 
@@ -509,41 +525,43 @@ void MainObject::ServeForm()
   //
   // Put Audio
   //
-  printf("    <tr>\n");
-  printf("	<td colspan=\"2\"><strong>Put audio into Rivendell</strong></td>\n");
-  printf("    </tr>\n");
-  printf("    <tr><td colspan=\"2\"><hr></td></tr>\n");
-  printf("    <tr>\n");
-  printf("	<td style=\"text-align: right\">From File:</td>\n");
-  printf("	<td><input type=\"file\" id=\"filename\" size=\"40\" accept=\"audio/*\" onchange=\"FilenameChanged()\"></td>\n");
-  printf("    </tr>\n");
+  if(rda->user()->createCarts()) {
+    printf("    <tr>\n");
+    printf("	<td colspan=\"2\"><strong>Put audio into Rivendell</strong></td>\n");
+    printf("    </tr>\n");
+    printf("    <tr><td colspan=\"2\"><hr></td></tr>\n");
+    printf("    <tr>\n");
+    printf("	<td style=\"text-align: right\">From File:</td>\n");
+    printf("	<td><input type=\"file\" id=\"filename\" size=\"40\" accept=\"audio/*\" onchange=\"FilenameChanged()\"></td>\n");
+    printf("    </tr>\n");
 
-  printf("    <tr>\n");
-  printf("	<td style=\"text-align: right\">To Group:</td>\n");
-  printf("	<td>\n");
-  printf("	  <select id=\"group\">\n");
-  sql=QString("select ")+
-    "GROUPS.NAME "+  // 00
-    "from GROUPS left join USER_PERMS "+
-    "on GROUPS.NAME=USER_PERMS.GROUP_NAME where "+
-    "USER_PERMS.USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" && "+
-    QString().sprintf("GROUPS.DEFAULT_CART_TYPE=%u && ",RDCart::Audio)+
-    "GROUPS.DEFAULT_LOW_CART>0 && "+
-    "GROUPS.DEFAULT_HIGH_CART>0 "+
-    "order by GROUPS.NAME";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    printf("          <option value=\"%s\">%s</option>\n",
-	   q->value(0).toString().toUtf8().constData(),
-	   q->value(0).toString().toUtf8().constData());
+    printf("    <tr>\n");
+    printf("	<td style=\"text-align: right\">To Group:</td>\n");
+    printf("	<td>\n");
+    printf("	  <select id=\"group\">\n");
+    sql=QString("select ")+
+      "GROUPS.NAME "+  // 00
+      "from GROUPS left join USER_PERMS "+
+      "on GROUPS.NAME=USER_PERMS.GROUP_NAME where "+
+      "USER_PERMS.USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" && "+
+      QString().sprintf("GROUPS.DEFAULT_CART_TYPE=%u && ",RDCart::Audio)+
+      "GROUPS.DEFAULT_LOW_CART>0 && "+
+      "GROUPS.DEFAULT_HIGH_CART>0 "+
+      "order by GROUPS.NAME";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      printf("          <option value=\"%s\">%s</option>\n",
+	     q->value(0).toString().toUtf8().constData(),
+	     q->value(0).toString().toUtf8().constData());
+    }
+    printf("	  </select>\n");
+    printf("	</td>\n");
+    printf("    </tr>\n");
+    printf("    <tr>\n");
+    printf("	<td style=\"text-align: right\" id=\"put_spinner\">&nbsp;</td>\n");
+    printf("	<td><input type=\"button\" value=\"OK\" id=\"put_button\" onclick=\"ProcessPut()\" disabled></td>\n");
+    printf("    </tr>\n");
   }
-  printf("	  </select>\n");
-  printf("	</td>\n");
-  printf("    </tr>\n");
-  printf("    <tr>\n");
-  printf("	<td style=\"text-align: right\" id=\"put_spinner\">&nbsp;</td>\n");
-  printf("	<td><input type=\"button\" value=\"OK\" id=\"put_button\" onclick=\"ProcessPut()\" disabled></td>\n");
-  printf("    </tr>\n");
 
   //
   // Footer
