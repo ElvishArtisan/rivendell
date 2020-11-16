@@ -20583,3 +20583,6 @@
 2020-11-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added the name of the import file to schedule import failure
 	reports.
+2020-11-16 Fred Gleason <fredg@paravelsystems.com>
+	* Revised the 'Managing Services' section of the Operations
+	Guide.

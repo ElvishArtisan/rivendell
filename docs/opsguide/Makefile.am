@@ -2,7 +2,7 @@
 ##
 ## docs/opsguide/automake.am for Rivendell
 ##
-## (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -199,6 +199,7 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdadmin.select_pypad_script_dialog.png\
                   rdadmin.select_scheduler_codes_dialog.png\
                   rdadmin.services_dialog.png\
+                  rdadmin.services_dialog_general.png\
                   rdadmin.system_wide_settings_dialog.png\
                   rdadmin.test_import_dialog.png\
                   rdadmin.user_dialog.png\

@@ -297,6 +297,16 @@
     <sect2 xml:id="sect.rdadmin.manage_services.general">
       <title>The <computeroutput>General</computeroutput> Section</title>
       <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.services_dialog_general.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The General Section</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
 	The <computeroutput>Service Name</computeroutput> field contains
 	the name of the service (read-only). This value is available in
 	<link linkend="sect.filepath_wildcards.definition">
@@ -308,7 +318,7 @@
       </para>
       <para>
 	The <computeroutput>Program Code</computeroutput> is a string that
-	is sent to RLM plug-ins as part of every Now &amp; Next update.
+	is sent to PyPAD scripts as part of every Now &amp; Next update.
       </para>
       <para>
 	The <computeroutput>Log Name Template</computeroutput> field is
@@ -325,6 +335,17 @@
 	<link linkend="sect.filepath_wildcards.definition">
 	filepath wildcards</link>.
       </para>
+      <para>
+	The <computeroutput>Inline Event Start/Length</computeroutput>
+	dropdown selects how the Start Time and Length will be calculated
+	when inserting Inline Events. See the section on
+	<link linkend="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters">Inline Event Scheduling Parameters</link>
+	for details.
+      </para>
+
+
+
+
       <para>
 	The <computeroutput>Voicetrack Group</computeroutput> dropdown
 	specifies the Rivendell group to be used for storing voicetracks
@@ -373,6 +394,98 @@
 	If import markers are not included in finished logs, then it will
 	not be possible re-import music or traffic data into those logs.
       </warning>
+
+      <sect3 xml:id="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters">
+	<title>Inline Event Scheduling Parameters</title>
+	<para>
+	  When inserting an Inline Event (such as a Marker, Voice Track
+	  or Traffic Break), the Start Time and Length used will be calculated
+	  on the basis of the
+	  <computeroutput>Inline Event Start/Length</computeroutput> setting,
+	  as follows:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term><computeroutput>From Scheduler File</computeroutput></term>
+	    <listitem>
+	      <para>
+		When this mode is specified, all inline events must be
+		formatted as if they were a regular element of the schedule,
+		with Start Time and Length values explicitly given and the
+		string specified by the
+		<computeroutput>Insert Marker String</computeroutput>,
+		<computeroutput>Insert Voice Track String</computeroutput> or
+		<computeroutput>Insert Traffic Break String</computeroutput>
+		field values aligned as if it was a cart number. Inline Traffic
+		Breaks will generate Traffic Links with Start Time/Length
+		values that correspond to those specified on the respective
+		line of the imported file.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><computeroutput>From Relative Position</computeroutput></term>
+	    <listitem>
+	      <para>
+		When this mode is specified, the string specified by the
+		<computeroutput>Insert Marker String</computeroutput>,
+		<computeroutput>Insert Voice Track String</computeroutput> or
+		<computeroutput>Insert Traffic Break String</computeroutput>
+		must occur somewhere on the line in the schedule file. The
+		correct placement, Start Time and Length of each inline
+		event will be determined heuristically, with Inline Traffic
+		Breaks generating Traffic Links with Start Time/Length
+		values taken from that of the parent Music Event.
+	      </para>
+	      <para>
+		N.B. This means that only one Inline Event of each type
+		may be placed within the same parent Music Event!
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+	<note>
+	  The <computeroutput>From Relative Position</computeroutput> mode is
+	  <emphasis role="bold">deprecated</emphasis>, and support for it
+	  will be removed in a future version of Rivendell. It is currently
+	  supported only to avoid breaking existing Rivendell setups. All
+	  new installations should use
+	  <computeroutput>From Scheduler File</computeroutput>!
+	</note>
+
+	<sect4 xml:id="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters.examples">
+	  <title>Examples</title>
+	  <para>
+	    Example of an inline Track Marker with
+	    <computeroutput>Inline Event Start/Length</computeroutput>
+	    set to <userinput>From Scheduler File</userinput>,
+	    using the
+	    <userinput>Rivendell Standard Import</userinput> template:
+	  <literallayout>
+	  <computeroutput>
+01:18:04  250098         Southern Nights                    00:02:56
+01:21:00  TRACK          Track Marker                       00:00:45
+01:22:30  250101         Come A Little Bit Closer           00:02:44
+	  </computeroutput>
+	  </literallayout>
+	  </para>
+	  <para>
+	    Example of an inline Track Marker with
+	    <computeroutput>Inline Event Start/Length</computeroutput>
+	    set to <userinput>From Relative Position</userinput>,
+	    using the
+	    <userinput>Rivendell Standard Import</userinput> template:
+	  <literallayout>
+	  <computeroutput>
+01:18:04  250098         Southern Nights                    00:02:56
+  TRACK          Track Marker
+01:22:30  250101         Come A Little Bit Closer           00:02:44
+	  </computeroutput>
+	  </literallayout>
+	  </para>
+	</sect4>
+      </sect3>
+
       <sect3 xml:id="sect.rdadmin.manage_services.general.configure_autofill_carts">
 	<title>Configuring Autofill Carts</title>
 	<para>
@@ -445,43 +558,36 @@
 	</mediaobject>
       </para>
       <para>
-	The <computeroutput>Linux Import Path</computeroutput> field takes
+	The <computeroutput>Import Path</computeroutput> field takes
 	the fully-qualified path to the file to be used for import events
-	by RDLogManager when run on Linux. This field can take
+	by RDLogManager. This field can take
 	<link linkend="sect.filepath_wildcards.definition">
 	filepath wildcards</link>.
       </para>
       <para>
-	The <computeroutput>Linux Preimport Command</computeroutput> field
+	The <computeroutput>Preimport Command</computeroutput> field
 	takes the fully-qualified path to the command to be run before
 	attempting to import the file specified in
-	<computeroutput>Linux Import Path</computeroutput>. This field can take
+	<computeroutput>Import Path</computeroutput>. This field can take
 	<link linkend="sect.filepath_wildcards.definition">
-	filepath wildcards</link>.
+	filepath wildcards</link>. This can be useful when a schedule file
+	requires pre-processing of some sort before being imported by
+	<command>rdlogmanager</command><manvolnum>1</manvolnum>.
       </para>
       <para>
-	The <computeroutput>Windows Import Path</computeroutput> field takes
-	the fully-qualified path to the file to be used for import events
-	by RDLogManager when run on Windows. This field can take
-	<link linkend="sect.filepath_wildcards.definition">
-	filepath wildcards</link>.
-      </para>
-      <para>
-	The <computeroutput>Windows Preimport Command</computeroutput> field
-	takes the fully-qualified path to the command to be run before
-	attempting to import the file specified in
-	<computeroutput>Windows Import Path</computeroutput>. This field
-	can take <link linkend="sect.filepath_wildcards.definition">
-	filepath wildcards</link>.
-      </para>
-      <para>
-	The <computeroutput>Note Cart String</computeroutput> field can
+	The <computeroutput>Insert Marker String</computeroutput> field can
 	be used	to configure placement of a marker event in the generated log.
 	When the string set here is found in the 'cart' field in a line
 	of the specified import file, RDLogManager will insert a marker
 	event, the text of which will be the 'title' field from that same
 	line.
       </para>
+      <note>
+	See the section on
+	<link linkend="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters">Inline Event Scheduling Parameters</link>
+	for details on how the Start Time and Length parameters are
+	calculated when inserting a Marker String.
+      </note>
       <para>
 	The <computeroutput>Insert Voice Track String</computeroutput>
 	field can be used to configure placement of a voice track marker
@@ -490,6 +596,12 @@
 	will insert a voice track event, the text of which will be the
 	'title' field from that same line.
       </para>
+      <note>
+	See the section on
+	<link linkend="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters">Inline Event Scheduling Parameters</link>
+	for details on how the Start Time and Length parameters are
+	calculated when inserting a Voice Track String.
+      </note>
       <para>
 	The <computeroutput>Insert Traffic Break String</computeroutput>
 	field can be used to configuration placement of a traffic break
@@ -504,6 +616,12 @@
 	  This field is available only in the
 	  <computeroutput>Music Data Import</computeroutput> section!
 	</para>
+      </note>
+      <note>
+	See the section on
+	<link linkend="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters">Inline Event Scheduling Parameters</link>
+	for details on how the Link Start Time and Link Length parameters are
+	calculated when inserting a Traffic Break.
       </note>
     </sect2>
     <sect2 xml:id="sect.rdadmin.manage_services.traffic_music_import_parser_settings">
@@ -521,9 +639,12 @@
       <para>
 	Rivendell includes the ability to import log schedule files from
 	a variety of third-party scheduling utilities. To configure an import
-	from one of these systems, all that is necessary is to select the
-	appropriate system in the
-	<computeroutput>Import Template</computeroutput> dropdown. If the
+	from one of these systems, all that is usually necessary is to select
+	the appropriate system in the
+	<computeroutput>Import Template</computeroutput> dropdown in the
+	<computeroutput>Traffic Data Import</computeroutput> or
+	<computeroutput>Music Data Import</computeroutput> sections.
+	However, if the
 	target scheduler system is not on this list, or if your system
 	requires custom settings, a custom parser can
 	be defined by selecting <computeroutput>[custom]</computeroutput>
@@ -531,6 +652,11 @@
 	The <computeroutput>Copy To Custom</computeroutput> button will
 	copy the selected import template values to the custom parser.
       </para>
+      <warning>
+	Using the <computeroutput>Copy To Custom</computeroutput> action
+	will cause the prior custom import template values to be
+	overwritten!
+      </warning>
       <para>
 	Log schedule files for Rivendell are assumed to be in so-called
 	&quot;column-aligned&quot; format --i.e. each record occupies a single
