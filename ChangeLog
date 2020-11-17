@@ -20599,3 +20599,5 @@
 2020-11-16 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Cart Data Dump (fixed width)' from the
 	Operations Guide.
+2020-11-16 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.1int6.

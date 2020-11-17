@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.4.1int5 -- 9 November 2020
+v3.4.1int6 --16 November 2020
 
 Changes:
    Podcasting Subsystem. Major refactoring, with explicit support of
