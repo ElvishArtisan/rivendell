@@ -3,36 +3,68 @@
   <sect1 xml:id="sect.webget.webget">
     <title>Webget</title>
     <para>
-      Webget is a web-based utility for downloading Rivendell audio content
-      from remote locations. It can be accessed at
-      <userinput>http://<replaceable>host-name</replaceable>/rd-bin/webget.html</userinput>, where <replaceable>host-name</replaceable> is the host name or
+      Webget is a web-based utility for up- and down-loading Rivendell
+      audio content to and from remote locations. It can be accessed at
+      <userinput>http://<replaceable>host-name</replaceable>/rd-bin/webget.cgi</userinput>, where <replaceable>host-name</replaceable> is the host name or
       IP address of the Rivendell system.
+    </para>
+    <note>
+      Depending on the site-specific configuration of Rivendell, Webget
+      may need to be accessed at
+      <userinput>https://<replaceable>host-name</replaceable>/rd-bin/webget.cgi</userinput>.
+    </note>
+    <para>
+      After entering a set of valid credentials, the user will be taken to
+      the main Webget screen:
     </para>
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="webget.webget_screen.png" scale="60"/>
+	  <imagedata align="center" fileref="webget.webget_screen.png" scale="50"/>
 	</imageobject>
 	<caption><para>The Webget screen</para></caption>
       </mediaobject>
     </para>
-    <para>
-      Content in Webget is searched for on the basis of the Cart's
-      <computeroutput>Title</computeroutput> field. The format of the
-      downloaded audio can be specified. Credentials for a valid Rivendell user
-      that has the <computeroutput>Production Rights/Allow WebGet Login</computeroutput> 
-      priviledge enabled in <command>rdadmin</command><manvolnum>1</manvolnum>
-      must be provided. Click the <computeroutput>OK</computeroutput>
-      button to generate the audio.
-    </para>
     <note>
-      If multiple carts with the specified title exist, then the cart
-      with the lowest <computeroutput>Cart Number</computeroutput> will
-      be used.
+      To configure Webget, see the
+      <link linkend="sect.rdadmin.configuring_webget">Configuring Webget</link>
+      section in <link linkend="sect.rdadmin.overview">
+      Configuring Rivendell with RDAdmin</link>.
     </note>
-    <note>
-      If the selected cart contains multiple cuts, then the cut with the
-      lowest <computeroutput>Cut Number</computeroutput> will be used.
-    </note>
+    <sect2 xml:id="sect.webget.webget.downloading_audio">
+      <title>Downloading Audio</title>
+      <para>
+	Content can be downloaded using Webget by entering the
+	<computeroutput>Title</computeroutput> of the desired Cart in the
+	<computeroutput>From Cart Title</computeroutput> field, with the
+	format of the downloaded audio selected by means of the
+	<computeroutput>Using Format</computeroutput> dropdown.
+	Touch the <computeroutput>OK</computeroutput>
+	button to initiate the download.
+      </para>
+      <note>
+	If multiple carts with the specified title exist, then the cart
+	with the lowest <computeroutput>Cart Number</computeroutput> will
+	be used.
+      </note>
+      <note>
+	If the selected cart contains multiple cuts, then the cut with the
+	lowest <computeroutput>Cut Number</computeroutput> will be used.
+      </note>
+    </sect2>
+    <sect2 xml:id="sect.webget.webget.uploading_audio">
+      <title>Uploading Audio</title>
+      <para>
+	Content can be uploaded using Webget by selecting the desired
+	audio file with the <computeroutput>From File</computeroutput>
+	browser button, selecting the destination Rivendell Group from
+	the <computeroutput>To Group</computeroutput> dropdown and then
+	touching the <computeroutput>OK</computeroutput> button.
+      </para>
+      <para>
+	After the upload is complete, Webget will display a dialog with
+	the Cart Number and Title containing the uploaded audio.
+      </para>
+    </sect2>
   </sect1>
 </chapter>

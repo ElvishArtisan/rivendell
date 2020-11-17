@@ -158,7 +158,9 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdadmin.configure_rdpanel_dialog.png\
                   rdadmin.dropbox_configuration_dialog.png\
                   rdadmin.edit_audio_ports_dialog.png\
+                  rdadmin.edit_audio_settings_dialog.png\
                   rdadmin.edit_channel_gpios_dialog.png\
+                  rdadmin.encoder_profiles_dialog.png\
                   rdadmin.edit_gpi_dialog.png\
                   rdadmin.edit_host_variable_dialog.png\
                   rdadmin.edit_pypad_instance_dialog.png\

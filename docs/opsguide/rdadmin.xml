@@ -2651,4 +2651,94 @@
       to be replicated should be taken.
     </para>
   </sect1>
+
+  <sect1 xml:id="sect.rdadmin.configuring_webget">
+    <title>Configuring Webget</title>
+    <para>
+      Configuration of the Webget service consists of two tasks:
+    </para>
+    <itemizedlist>
+      <listitem>
+	<para>
+	  Configure a set of Encoder Formats
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+	  Configure one or more Users for access
+	</para>
+      </listitem>
+    </itemizedlist>
+    <sect2 xml:id="sect.rdadmin.configuring_encoder_formats">
+      <title>Configuring Encoder Formats</title>
+      <para>
+	To configure Encoder Formats, log in to
+	<command>rdadmin</command><manvolnum>1</manvolnum>, touch the
+	<computeroutput>System Settings</computeroutput> button to open
+	the <computeroutput>System-Wide Settings</computeroutput> button,
+	then touch the <computeroutput>Edit Encoder List</computeroutput>
+	button to open the <computeroutput>Encoder Profiles</computeroutput>
+	dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.encoder_profiles_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Encoder Profiles Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	To add a new Encoder Profile, touch the
+	<computeroutput>Add</computeroutput> button to open the
+	<computeroutput>Edit Audio Settings</computeroutput> dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.edit_audio_settings_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Audio Settings Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	Enter the description of the Profile to appear in Webget, select
+	the desired audio parameters and then touch the
+	<computeroutput>OK</computeroutput> button.
+      </para>
+      <para>
+	Exiting Encoder Profiles can be modified or deleted by means of
+	the <computeroutput>Edit</computeroutput> and
+	<computeroutput>Delete</computeroutput> buttons, respectively.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdadmin.configuring_webget_users">
+      <title>Configuring Webget Users</title>
+      <para>
+	To configure one or more users for Webget access, log in to
+	<command>rdadmin</command><manvolnum>1</manvolnum>, touch the
+	<computeroutput>Manage Users</computeroutput> button to open
+	the <computeroutput>Rivendell User List</computeroutput> button,
+	then create or select the desired user to open the
+	<computeroutput>User</computeroutput> dialog.
+      </para>
+      <para> 
+	For downloads, each Webget user must have the
+	<computeroutput>Allow WebGet Login</computeroutput> permission enabled,
+	as well as rights to one or more Groups set by touching the
+	<computeroutput>Group Permissions</computeroutput> button.
+      </para>
+      <para> 
+	For uploads, each Webget user must have the
+	<computeroutput>Allow WebGet Login</computeroutput> and
+	<computeroutput>Create Carts</computeroutput> permissions enabled,
+	as well as rights to one or more Groups set by touching the
+	<computeroutput>Group Permissions</computeroutput> button.
+      </para>
+    </sect2>
+  </sect1>
 </chapter>
