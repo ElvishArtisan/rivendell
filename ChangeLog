@@ -20596,3 +20596,6 @@
 	* Rewrote the 'Webget' chapter of the Operations Guide to conform
 	to changes in Webget.
 	* Added a 'Configuring Webget' section to the Operations Guide.
+2020-11-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Cart Data Dump (fixed width)' from the
+	Operations Guide.

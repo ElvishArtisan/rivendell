@@ -1052,17 +1052,6 @@
 	selected carts on the system, with their attributes.
       </para>
     </sect2>
-    <sect2 xml:id="sect.rdlibrary.the_cart_data_dump__fixed_width_">
-      <title>The Cart Data Dump (fixed width)</title>
-      <para>
-	The fixed-width cart data dump is a special type of report that
-	consists of column-aligned data elements, one line per cut for the
-	selected
-	carts on the system.  It is intended for use where a 'dump' of
-	available carts in the system is desired for import into an
-	external system (such as a music scheduling system).
-      </para>
-    </sect2>
     <sect2 xml:id="sect.rdlibrary.the_cart_data_dump__csv_">
       <title>The Cart Data Dump (CSV)</title>
       <para>
