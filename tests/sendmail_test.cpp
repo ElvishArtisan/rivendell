@@ -41,7 +41,12 @@ MainObject::MainObject(QObject *parent)
   QString bcc_addrs;
   QString subject;
   QString body;
+  QString body_file;
   bool dry_run=false;
+  FILE *f=NULL;
+  QByteArray raw;
+  char data[1024];
+  size_t n;
 
   //
   // Read Command Options
@@ -74,6 +79,10 @@ MainObject::MainObject(QObject *parent)
       body=cmd->value(i);
       cmd->setProcessed(i,true);
     }
+    if(cmd->key(i)=="--body-file") {
+      body_file=cmd->value(i);
+      cmd->setProcessed(i,true);
+    }
     if(cmd->key(i)=="--dry-run") {
       dry_run=true;
       cmd->setProcessed(i,true);
@@ -83,6 +92,30 @@ MainObject::MainObject(QObject *parent)
 	      (const char *)cmd->key(i));
       exit(RDApplication::ExitInvalidOption);
     }
+  }
+
+  //
+  // Sanity Checks
+  //
+  if((!body.isEmpty())&&(!body_file.isEmpty())) {
+    fprintf(stderr,
+	    "sendmail_test: --body and --body-file are mutually exclusive\n");
+    exit(RDApplication::ExitInvalidOption);
+  }
+
+  //
+  // Load Message Body
+  //
+  if(!body_file.isEmpty()) {
+    if((f=fopen(body_file.toUtf8(),"r"))==NULL) {
+      perror("sendmail_test");
+      exit(256);
+    }
+    while((n=fread(data,1,1024,f))>0) {
+      raw+=QByteArray(data,n);
+    }
+    fclose(f);
+    body=QString::fromUtf8(raw);
   }
 
   if(!RDSendMail(&err_msg,subject,body,

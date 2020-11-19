@@ -41,15 +41,44 @@ bool __RDSendMail_IsAscii(const QString &str)
 QByteArray __RDSendMail_EncodeBody(QString *charset,QString *encoding,
 				   const QString &str)
 {
+  QByteArray raw;
+  int index=0;
+  QByteArray ret;
+
   if(__RDSendMail_IsAscii(str)) {
+    //
+    // All 7 Bit Characters
+    //
     *charset="";
     *encoding="";
-    return str.toAscii();
+
+    //
+    // Ensure no naked CR or LF characters (RFC5322 Section 2.3)
+    //
+    ret=str.toAscii();
+    index=0;
+    while((index=ret.indexOf("/r",index))>=0) {
+      if(ret.mid(index+1,1)!="/n") {
+	ret.insert(index+1,"/n");
+	index++;
+      }
+    }
+    index=0;
+    while((index=ret.indexOf("\n",index))>=0) {
+      if((index==0)||(ret.mid(index-1,1)!="\r")) {
+	ret.insert(index,"\r");
+	index+=2;
+      }
+    }
+    return ret;
   }
+
+  //
+  // 8+ Bit Characters
+  //
   *charset=";charset=utf8";
   *encoding="Content-Transfer-Encoding: base64\r\n";
-  QByteArray ret;
-  QByteArray raw=str.toUtf8();
+  raw=str.toUtf8();
   for(int i=0;i<raw.length();i+=48) {
     ret+=raw.mid(i,48).toBase64()+"\r\n";
   }

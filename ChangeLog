@@ -20608,3 +20608,5 @@
 	display-name component of e-mail addresses in 'RDSendMail()'.
 2020-11-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--dry-run' switch to the 'sendmail_test' test harness.
+2020-11-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--body-file' switch to the 'sendmail_test' test harness.
