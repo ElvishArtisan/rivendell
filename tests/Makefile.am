@@ -46,6 +46,7 @@ noinst_PROGRAMS = audio_convert_test\
                   rdxml_parse_test\
                   readcd_test\
                   reserve_carts_test\
+                  sendmail_test\
                   stringcode_test\
                   test_hash\
                   test_pam\
@@ -116,6 +117,9 @@ readcd_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3
 
 dist_reserve_carts_test_SOURCES = reserve_carts_test.cpp reserve_carts_test.h
 reserve_carts_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
+
+dist_sendmail_test_SOURCES = sendmail_test.cpp sendmail_test.h
+sendmail_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 dist_stringcode_test_SOURCES = stringcode_test.cpp stringcode_test.h
 stringcode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support

@@ -208,6 +208,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdschedcodes_dialog.cpp rdschedcodes_dialog.h\
                         rdschedruleslist.cpp rdschedruleslist.h\
                         rdsegmeter.cpp rdsegmeter.h\
+                        rdsendmail.cpp rdsendmail.h\
                         rdsettings.cpp rdsettings.h\
                         rdsimpleplayer.cpp rdsimpleplayer.h\
                         rdslider.cpp rdslider.h\

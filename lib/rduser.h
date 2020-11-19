@@ -22,6 +22,7 @@
 #define RDUSER_H
 
 #include <QDateTime>
+#include <QHostAddress>
 
 class RDUser
 {

@@ -20601,3 +20601,5 @@
 	Operations Guide.
 2020-11-16 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.1int6.
+2020-11-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDSendMail()' function in 'lib/rdsendmail.[cpp|h]'.

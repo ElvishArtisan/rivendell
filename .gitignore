@@ -131,6 +131,7 @@ tests/readcd_test
 tests/reserve_carts_test
 tests/sas_switch_torture
 tests/sas_torture
+tests/sendmail_test
 tests/stringcode_test
 tests/test_hash
 tests/test_pam
