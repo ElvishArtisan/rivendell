@@ -20603,3 +20603,6 @@
 	* Incremented the package version to 3.4.1int6.
 2020-11-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDSendMail()' function in 'lib/rdsendmail.[cpp|h]'.
+2020-11-18 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented support for multi-byte UTF-8 characters for the
+	display-name component of e-mail addresses in 'RDSendMail()'.

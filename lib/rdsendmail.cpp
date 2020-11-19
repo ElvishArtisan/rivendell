@@ -65,6 +65,51 @@ QByteArray __RDSendMail_EncodeHeader(const QString &str)
   return QByteArray("=?utf-8?B?")+str.toUtf8().toBase64()+"?=";
 }
 
+
+QByteArray __RDSendMail_EncodeAddress(const QString &str,bool *ok)
+{
+  //
+  // See RFC5322 Section 3.4 for these formats
+  //
+  int start=0;
+  int end=0;
+  QString addr;
+  QString name;
+
+  addr=str;
+  if(str.contains("<")&&str.contains(">")) {
+     start=str.indexOf("<");
+     end=str.indexOf(">");
+     if(start<end) {
+       addr=str.mid(start+1,end-start-1).trimmed();
+       name=str.left(start).trimmed();
+     }
+  }
+  if(str.contains("(")&&str.contains(")")) {
+     start=str.indexOf("(");
+     end=str.indexOf(")");
+     if(start<end) {
+       name=str.mid(start+1,end-start-1).trimmed();
+       addr=str;
+       addr=addr.remove("("+name+")").trimmed();
+     }
+  }
+  if(!RDUser::emailIsValid(addr)) {
+    *ok=false;
+    return QByteArray();
+  }
+  *ok=true;
+
+  //
+  // Output in "display-name <local@domain>" format
+  //
+  if(name.isEmpty()) {
+    return addr.toAscii();
+  }
+  return __RDSendMail_EncodeHeader(name)+" <"+addr.toAscii()+">";
+}
+
+
 //
 // This implements a basic email sending capability using the system's
 // sendmail(1) interface.
@@ -76,6 +121,11 @@ bool RDSendMail(QString *err_msg,const QString &subject,const QString &body,
   QStringList args;
   QProcess *proc=NULL;
   QString msg="";
+  QByteArray from_addr_enc;
+  QList<QByteArray> to_addrs_enc;
+  QList<QByteArray> cc_addrs_enc;
+  QList<QByteArray> bcc_addrs_enc;
+  bool ok=false;
 
   *err_msg="";
 
@@ -86,29 +136,34 @@ bool RDSendMail(QString *err_msg,const QString &subject,const QString &body,
     *err_msg+=QObject::tr("You must supply a \"from\" address")+"\n";
   }
   else {
-    if(!RDUser::emailIsValid(from_addr)) {
+    from_addr_enc=__RDSendMail_EncodeAddress(from_addr,&ok);
+    if(!ok) {
       *err_msg+=QObject::tr("address")+" \""+from_addr+"\" "+
 	QObject::tr("is invalid")+"\n";
     }
   }
   for(int i=0;i<to_addrs.size();i++) {
-    if(!RDUser::emailIsValid(to_addrs.at(i))) {
+    to_addrs_enc.push_back(__RDSendMail_EncodeAddress(to_addrs.at(i),&ok));
+    if(!ok) {
       *err_msg+=QObject::tr("address")+" \""+to_addrs.at(i)+"\" "+
 	QObject::tr("is invalid")+"\n";
     }
   }
   for(int i=0;i<cc_addrs.size();i++) {
-    if(!RDUser::emailIsValid(cc_addrs.at(i))) {
+    cc_addrs_enc.push_back(__RDSendMail_EncodeAddress(cc_addrs.at(i),&ok));
+    if(!ok) {
       *err_msg+=QObject::tr("address")+" \""+cc_addrs.at(i)+"\" "+
 	QObject::tr("is invalid")+"\n";
     }
   }
   for(int i=0;i<bcc_addrs.size();i++) {
-    if(!RDUser::emailIsValid(bcc_addrs.at(i))) {
+    bcc_addrs_enc.push_back(__RDSendMail_EncodeAddress(bcc_addrs.at(i),&ok));
+    if(!ok) {
       *err_msg+=QObject::tr("address")+" \""+bcc_addrs.at(i)+"\" "+
 	QObject::tr("is invalid")+"\n";
     }
   }
+
   if(!err_msg->isEmpty()) {
     return false;
   }
@@ -120,33 +175,31 @@ bool RDSendMail(QString *err_msg,const QString &subject,const QString &body,
   QString encoding;
   QByteArray raw=__RDSendMail_EncodeBody(&charset,&encoding,body);
 
-  msg+="From: "+from_addr+"\r\n";
+  msg+="From: "+from_addr_enc+"\r\n";
 
-  //  msg+="Content-Type: text/plain;charset=utf-8\r\n";
-  //  msg+="Content-Transfer-Encoding: base64\r\n";
   msg+="Content-Type: text/plain"+charset+"\r\n";
   msg+=encoding;
 
-  if(to_addrs.size()>0) {
+  if(to_addrs_enc.size()>0) {
     msg+="To: ";
-    for(int i=0;i<to_addrs.size();i++) {
-      msg+=to_addrs.at(i)+", ";
+    for(int i=0;i<to_addrs_enc.size();i++) {
+      msg+=to_addrs_enc.at(i)+", ";
     }
     msg=msg.left(msg.length()-2);
     msg+="\r\n";
   }
-  if(cc_addrs.size()>0) {
+  if(cc_addrs_enc.size()>0) {
     msg+="Cc: ";
-    for(int i=0;i<cc_addrs.size();i++) {
-      msg+=cc_addrs.at(i)+", ";
+    for(int i=0;i<cc_addrs_enc.size();i++) {
+      msg+=cc_addrs_enc.at(i)+", ";
     }
     msg=msg.left(msg.length()-2);
     msg+="\r\n";
   }
-  if(bcc_addrs.size()>0) {
+  if(bcc_addrs_enc.size()>0) {
     msg+="Bcc: ";
-    for(int i=0;i<bcc_addrs.size();i++) {
-      msg+=bcc_addrs.at(i)+", ";
+    for(int i=0;i<bcc_addrs_enc.size();i++) {
+      msg+=bcc_addrs_enc.at(i)+", ";
     }
     msg=msg.left(msg.length()-2);
     msg+="\r\n";

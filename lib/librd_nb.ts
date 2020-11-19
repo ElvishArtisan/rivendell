@@ -846,14 +846,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>is invalid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>You must supply a &quot;from&quot; address</source>
         <translation type="unfinished"></translation>
     </message>
@@ -871,6 +863,14 @@
     </message>
     <message>
         <source>ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is invalid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
