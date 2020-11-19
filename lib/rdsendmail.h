@@ -27,11 +27,11 @@
 bool RDSendMail(QString *err_msg,const QString &subject,const QString &body,
 		const QString &from_addr,const QStringList &to_addrs,
 		const QStringList &cc_addrs=QStringList(),
-		const QStringList &bcc_addrs=QStringList());
+		const QStringList &bcc_addrs=QStringList(),bool dry_run=false);
 bool RDSendMail(QString *err_msg,const QString &subject,const QString &body,
 		const QString &from_addr,const QString &to_addrs,
 		const QString &cc_addrs=QString(),
-		const QString &bcc_addrs=QString());
+		const QString &bcc_addrs=QString(),bool dry_run=false);
 
 
 #endif  // RDSENDMAIL

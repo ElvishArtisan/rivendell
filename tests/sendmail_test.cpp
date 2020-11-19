@@ -41,6 +41,7 @@ MainObject::MainObject(QObject *parent)
   QString bcc_addrs;
   QString subject;
   QString body;
+  bool dry_run=false;
 
   //
   // Read Command Options
@@ -73,6 +74,10 @@ MainObject::MainObject(QObject *parent)
       body=cmd->value(i);
       cmd->setProcessed(i,true);
     }
+    if(cmd->key(i)=="--dry-run") {
+      dry_run=true;
+      cmd->setProcessed(i,true);
+    }
     if(!cmd->processed(i)) {
       fprintf(stderr,"sendmail_test: unknown option \"%s\"\n",
 	      (const char *)cmd->key(i));
@@ -80,7 +85,8 @@ MainObject::MainObject(QObject *parent)
     }
   }
 
-  if(!RDSendMail(&err_msg,subject,body,from_addr,to_addrs,cc_addrs,bcc_addrs)) {
+  if(!RDSendMail(&err_msg,subject,body,
+		 from_addr,to_addrs,cc_addrs,bcc_addrs,dry_run)) {
     fprintf(stderr,"%s\n",err_msg.toUtf8().constData());
     exit(256);
   }

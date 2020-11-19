@@ -103,6 +103,8 @@ QByteArray __RDSendMail_EncodeAddress(const QString &str,bool *ok)
   //
   // Output in "display-name <local@domain>" format
   //
+  // FIXME: Add support for IDNA (see RFC5891)
+  //
   if(name.isEmpty()) {
     return addr.toAscii();
   }
@@ -116,7 +118,8 @@ QByteArray __RDSendMail_EncodeAddress(const QString &str,bool *ok)
 //
 bool RDSendMail(QString *err_msg,const QString &subject,const QString &body,
 		const QString &from_addr,const QStringList &to_addrs,
-		const QStringList &cc_addrs,const QStringList &bcc_addrs)
+		const QStringList &cc_addrs,const QStringList &bcc_addrs,
+		bool dry_run)
 {
   QStringList args;
   QProcess *proc=NULL;
@@ -209,6 +212,13 @@ bool RDSendMail(QString *err_msg,const QString &subject,const QString &body,
   msg+="\r\n";
   msg+=raw;
 
+  if(dry_run) {
+    printf("*** MESSAGE STARTS ***\n");
+    printf("%s",msg.toAscii().constData());
+    printf("*** MESSAGE ENDS ***\n");
+    return true;
+  }
+
   //
   // Send message
   //
@@ -247,10 +257,11 @@ bool RDSendMail(QString *err_msg,const QString &subject,const QString &body,
 
 bool RDSendMail(QString *err_msg,const QString &subject,const QString &body,
 		const QString &from_addr,const QString &to_addrs,
-		const QString &cc_addrs,const QString &bcc_addrs)
+		const QString &cc_addrs,const QString &bcc_addrs,bool dry_run)
 {
   return RDSendMail(err_msg,subject,body,from_addr,
 		    to_addrs.split(",",QString::SkipEmptyParts),
 		    cc_addrs.split(",",QString::SkipEmptyParts),
-		    bcc_addrs.split(",",QString::SkipEmptyParts));
+		    bcc_addrs.split(",",QString::SkipEmptyParts),
+		    dry_run);
 }
