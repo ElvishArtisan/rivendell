@@ -50,6 +50,17 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   //
+  // Revert 344
+  //
+  if((cur_schema==344)&&(set_schema<cur_schema)) {
+    DropColumn("GROUPS","NOTIFY_EMAIL_ADDRESS");
+    DropColumn("SYSTEM","ORIGIN_EMAIL_ADDRESS");
+
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 342
   //
   if((cur_schema==342)&&(set_schema<cur_schema)) {

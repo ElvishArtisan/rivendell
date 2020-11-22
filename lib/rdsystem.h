@@ -38,6 +38,8 @@ class RDSystem
   void setMaxPostLength(unsigned bytes) const;
   QString isciXreferencePath() const;
   void setIsciXreferencePath(const QString &str) const;
+  QString originEmailAddress() const;
+  void setOriginEmailAddress(const QString &str) const;
   QString tempCartGroup() const;
   void setTempCartGroup(const QString &str) const;
   bool showUserList() const;

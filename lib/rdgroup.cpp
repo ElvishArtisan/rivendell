@@ -241,6 +241,19 @@ void RDGroup::setColor(const QColor &color)
 }
 
 
+QString RDGroup::notifyEmailAddress() const
+{
+  return RDGetSqlValue("GROUPS","NAME",group_name,"NOTIFY_EMAIL_ADDRESS").
+    toString();
+}
+
+
+void RDGroup::setNotifyEmailAddress(const QString &addr) const
+{
+  SetRow("NOTIFY_EMAIL_ADDRESS",addr);
+}
+
+
 unsigned RDGroup::nextFreeCart(unsigned startcart) const
 {
   return GetNextFreeCart(startcart);

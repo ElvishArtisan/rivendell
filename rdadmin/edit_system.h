@@ -71,6 +71,8 @@ class EditSystem : public RDDialog
   QLabel *edit_maxpost_unit_label;
   QLabel *edit_isci_path_label;
   QLineEdit *edit_isci_path_edit;
+  QLabel *edit_origin_email_addr_label;
+  QLineEdit *edit_origin_email_addr_edit;
   QLabel *edit_temp_cart_group_label;
   QComboBox *edit_temp_cart_group_box;
   QComboBox *edit_rss_processor_station_box;

@@ -58,6 +58,8 @@ class RDGroup
   void setEnableNowNext(bool state) const;
   QColor color() const;
   void setColor(const QColor &color);
+  QString notifyEmailAddress() const;
+  void setNotifyEmailAddress(const QString &addr) const;
   unsigned nextFreeCart(unsigned startcart=0) const;
   int freeCartQuantity() const;
   bool reserveCarts(std::vector<unsigned> *cart_nums,

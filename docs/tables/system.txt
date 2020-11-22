@@ -14,3 +14,4 @@ TEMP_CART_GROUP       varchar(10)        From 'GROUPS.NAME'
 SHOW_USER_LIST        enum('N','Y')
 NOTIFICATION_ADDRESS  varchar(15)
 RSS_PROCESSOR_STATION varchar(64)
+ORIGIN_EMAIL_ADDRESS  varchar(64)

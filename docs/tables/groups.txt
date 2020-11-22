@@ -19,3 +19,4 @@ REPORT_TFC           enum('N','Y')
 REPORT_MUS           enum('N','Y')
 ENABLE_NOW_NEXT      enum('N','Y')
 COLOR                varchar(7)
+NOTIFY_EMAIL_ADDRESS text

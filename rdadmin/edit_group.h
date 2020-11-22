@@ -63,6 +63,8 @@ class EditGroup : public RDDialog
   QLineEdit *group_name_edit;
   QLabel *group_description_label;
   QLineEdit *group_description_edit;
+  QLabel *group_notify_email_addrs_label;
+  QLineEdit *group_notify_email_addrs_edit;
   QLabel *group_cartrange_label;
   QSpinBox *group_lowcart_box;
   QLabel *group_highcart_label;

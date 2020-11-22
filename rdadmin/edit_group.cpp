@@ -50,10 +50,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   group_group=new RDGroup(group);
 
@@ -95,6 +92,16 @@ EditGroup::EditGroup(QString group,QWidget *parent)
     new QLabel(group_title_edit,tr("Default Import &Title:"),this);
   group_title_label->setFont(labelFont());
   group_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  //
+  // Default Title
+  //
+  group_notify_email_addrs_edit=new QLineEdit(this);
+  group_notify_email_addrs_label=
+    new QLabel(group_notify_email_addrs_edit,
+	       tr("Notification E-Mail Addresses")+":",this);
+  group_notify_email_addrs_label->setFont(labelFont());
+  group_notify_email_addrs_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Default Cart Type
@@ -240,6 +247,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_name_edit->setText(group_group->name());
   group_description_edit->setText(group_group->description());
   group_title_edit->setText(group_group->defaultTitle());
+  group_notify_email_addrs_edit->setText(group_group->notifyEmailAddress());
   group_carttype_box->setCurrentItem(group_group->defaultCartType()-1);
   group_lowcart_box->setValue(group_group->defaultLowCart());
   group_highcart_box->setValue(group_group->defaultHighCart());
@@ -289,7 +297,7 @@ EditGroup::~EditGroup()
 
 QSize EditGroup::sizeHint() const
 {
-  return QSize(400,493);
+  return QSize(500,524);
 } 
 
 
@@ -356,6 +364,7 @@ void EditGroup::okData()
 
   group_group->setDescription(group_description_edit->text());
   group_group->setDefaultTitle(group_title_edit->text());
+  group_group->setNotifyEmailAddress(group_notify_email_addrs_edit->text());
   group_group->
     setDefaultCartType((RDCart::Type)(group_carttype_box->currentItem()+1));
   group_group->setDefaultLowCart(group_lowcart_box->value());
@@ -430,54 +439,60 @@ void EditGroup::cancelData()
 
 void EditGroup::resizeEvent(QResizeEvent *e)
 {
-  group_name_edit->setGeometry(165,11,100,19);
-  group_name_label->setGeometry(10,11,150,19);
+  int w=size().width();
+  int h=size().height();
 
-  group_description_edit->setGeometry(165,32,size().width()-175,19);
-  group_description_label->setGeometry(10,32,150,19);
+  group_name_edit->setGeometry(215,11,100,19);
+  group_name_label->setGeometry(10,11,200,19);
 
-  group_title_edit->setGeometry(165,53,size().width()-175,19);
-  group_title_label->setGeometry(10,53,150,19);
+  group_description_edit->setGeometry(215,32,w-225,19);
+  group_description_label->setGeometry(10,32,200,19);
 
-  group_carttype_box->setGeometry(165,74,100,19);
-  group_carttype_label->setGeometry(10,74,150,19);
+  group_title_edit->setGeometry(215,53,w-225,19);
+  group_title_label->setGeometry(10,53,200,19);
 
-  group_lowcart_box->setGeometry(165,95,70,19);
-  group_cartrange_label->setGeometry(10,95,150,19);
-  group_highcart_box->setGeometry(265,95,70,19);
-  group_highcart_label->setGeometry(240,95,20,19);
+  group_notify_email_addrs_edit->setGeometry(215,74,w-225,19);
+  group_notify_email_addrs_label->setGeometry(10,74,200,19);
 
-  group_enforcerange_box->setGeometry(20,118,15,15);
-  group_enforcerange_label->setGeometry(40,118,size().width()-50,19);
+  group_carttype_box->setGeometry(215,95,100,19);
+  group_carttype_label->setGeometry(10,95,200,19);
 
-  group_traffic_check->setGeometry(20,145,15,15);
-  group_traffic_label->setGeometry(40,143,size().width()-50,19);
+  group_lowcart_box->setGeometry(215,116,70,19);
+  group_cartrange_label->setGeometry(10,116,200,19);
+  group_highcart_box->setGeometry(315,116,70,19);
+  group_highcart_label->setGeometry(290,116,20,19);
 
-  group_music_check->setGeometry(20,166,15,15);
-  group_music_label->setGeometry(40,164,size().width()-50,19);
+  group_enforcerange_box->setGeometry(20,139,15,15);
+  group_enforcerange_label->setGeometry(40,139,w-50,19);
 
-  group_cutlife_check->setGeometry(20,193,15,15);
-  group_cutlife_label->setGeometry(40,193,140,19);
-  group_cutlife_spin->setGeometry(185,191,45,19);
-  group_cutlife_unit->setGeometry(245,193,size().width()-245,19);
+  group_traffic_check->setGeometry(20,166,15,15);
+  group_traffic_label->setGeometry(40,164,w-50,19);
 
-  group_shelflife_check->setGeometry(20,214,15,15);
-  group_shelflife_spin->setGeometry(200,212,40,19);
-  group_shelflife_label->setGeometry(40,214,160,19);
-  group_shelflife_unit->setGeometry(250,214,50,19);
+  group_music_check->setGeometry(20,187,15,15);
+  group_music_label->setGeometry(40,185,w-50,19);
 
-  group_delete_carts_check->setGeometry(40,235,15,15);
-  group_delete_carts_label->setGeometry(60,235,160,19);
+  group_cutlife_check->setGeometry(20,214,15,15);
+  group_cutlife_label->setGeometry(40,214,140,19);
+  group_cutlife_spin->setGeometry(185,212,45,19);
+  group_cutlife_unit->setGeometry(245,214,w-245,19);
 
-  group_nownext_check->setGeometry(20,263,15,15);
-  group_nownext_label->setGeometry(40,262,size().width()-50,19);
+  group_shelflife_check->setGeometry(20,235,15,15);
+  group_shelflife_spin->setGeometry(200,234,40,19);
+  group_shelflife_label->setGeometry(40,235,160,19);
+  group_shelflife_unit->setGeometry(250,235,50,19);
 
-  group_svcs_sel->setGeometry(10,285,401,130);
+  group_delete_carts_check->setGeometry(40,256,15,15);
+  group_delete_carts_label->setGeometry(60,256,160,19);
 
-  group_color_button->setGeometry(10,size().height()-60,80,50);
+  group_nownext_check->setGeometry(20,277,15,15);
+  group_nownext_label->setGeometry(40,276,w-50,19);
 
-  group_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
-  group_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+  group_svcs_sel->setGeometry(10,298,w-20,h-370);
+
+  group_color_button->setGeometry(10,h-60,80,50);
+
+  group_ok_button->setGeometry(w-180,h-60,80,50);
+  group_cancel_button->setGeometry(w-90,h-60,80,50);
 }
 
 

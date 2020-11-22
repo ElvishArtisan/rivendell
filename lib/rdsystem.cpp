@@ -135,6 +135,18 @@ void RDSystem::setIsciXreferencePath(const QString &str) const
 }
 
 
+QString RDSystem::originEmailAddress() const
+{
+  return GetValue("ORIGIN_EMAIL_ADDRESS").toString();
+}
+
+
+void RDSystem::setOriginEmailAddress(const QString &str) const
+{
+  SetRow("ORIGIN_EMAIL_ADDRESS",str);
+}
+
+
 QString RDSystem::tempCartGroup() const
 {
   return GetValue("TEMP_CART_GROUP").toString();

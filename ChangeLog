@@ -20610,3 +20610,11 @@
 	* Added a '--dry-run' switch to the 'sendmail_test' test harness.
 2020-11-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--body-file' switch to the 'sendmail_test' test harness.
+2020-11-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SYSTEM.ORIGIN_EMAIL_ADDRESS' field to the database.
+	* Added a 'GROUPS.NOTIFY_EMAIL_ADDRESS' field to the database.
+	* Incremented the database version to 344.
+	* Added an 'Origin E-Mail Address' control to the 'System-Wide
+	Settings' dialog in rdadmin(1).
+	* Added a 'Notification E-Mail Addresses' control to the 'Group'
+	dialog in rdadmin(1).

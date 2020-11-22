@@ -99,6 +99,17 @@ EditSystem::EditSystem(QWidget *parent)
     setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
+  // Origin Email Address
+  //
+  edit_origin_email_addr_edit=new QLineEdit(this);
+  edit_origin_email_addr_edit->setMaxLength(64);
+  edit_origin_email_addr_label=
+    new QLabel(edit_origin_email_addr_edit,tr("Origin E-Mail Address")+":",this);
+  edit_origin_email_addr_label->setFont(labelFont());
+  edit_origin_email_addr_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+
+  //
   // Notification Address
   //
   edit_notification_address_edit=new QLineEdit(this);
@@ -220,6 +231,7 @@ EditSystem::EditSystem(QWidget *parent)
   duplicatesCheckedData(edit_system->allowDuplicateCartTitles());
   edit_maxpost_spin->setValue(edit_system->maxPostLength()/1000000);
   edit_isci_path_edit->setText(edit_system->isciXreferencePath());
+  edit_origin_email_addr_edit->setText(edit_system->originEmailAddress());
   edit_notification_address_edit->
     setText(edit_system->notificationAddress().toString());
   edit_show_user_list_box->setChecked(edit_system->showUserList());
@@ -259,7 +271,7 @@ EditSystem::~EditSystem()
 
 QSize EditSystem::sizeHint() const
 {
-  return QSize(500,284+y_pos);
+  return QSize(500,306+y_pos);
 } 
 
 
@@ -375,9 +387,7 @@ void EditSystem::okData()
 	Q3ListViewItem *item;
 	y_pos=305;
 	setMinimumWidth(sizeHint().width());
-	setMaximumWidth(sizeHint().width());
 	setMinimumHeight(sizeHint().height());
-	setMaximumHeight(sizeHint().height());
 	edit_duplicate_carts_box->setChecked(true);
 	edit_duplicate_hidden_label->show();
 	edit_duplicate_list->show();
@@ -427,6 +437,7 @@ void EditSystem::okData()
   edit_system->setSampleRate(edit_sample_rate_box->currentText().toUInt());
   edit_system->setMaxPostLength(edit_maxpost_spin->value()*1000000);
   edit_system->setIsciXreferencePath(edit_isci_path_edit->text());
+  edit_system->setOriginEmailAddress(edit_origin_email_addr_edit->text());
   edit_system->
     setNotificationAddress(QHostAddress(edit_notification_address_edit->text()));
   edit_system->setTempCartGroup(edit_temp_cart_group_box->currentText());
@@ -486,22 +497,25 @@ void EditSystem::resizeEvent(QResizeEvent *e)
   edit_isci_path_edit->setGeometry(250,98,size().width()-260,20);
   edit_isci_path_label->setGeometry(10,98,235,20);
 
-  edit_notification_address_edit->setGeometry(250,120,150,20);
-  edit_notification_address_label->setGeometry(10,120,235,20);
+  edit_origin_email_addr_edit->setGeometry(250,120,size().width()-260,20);
+  edit_origin_email_addr_label->setGeometry(10,120,235,20);
 
-  edit_maxpost_spin->setGeometry(250,142,60,20);
-  edit_maxpost_label->setGeometry(10,142,235,20);
-  edit_maxpost_unit_label->setGeometry(315,142,60,20);
+  edit_notification_address_edit->setGeometry(250,142,150,20);
+  edit_notification_address_label->setGeometry(10,142,235,20);
 
-  edit_temp_cart_group_box->setGeometry(250,163,100,20);
-  edit_temp_cart_group_label->setGeometry(10,163,235,20);
+  edit_maxpost_spin->setGeometry(250,164,60,20);
+  edit_maxpost_label->setGeometry(10,164,235,20);
+  edit_maxpost_unit_label->setGeometry(315,164,60,20);
 
-  edit_rss_processor_label->setGeometry(10,185,235,20);
-  edit_rss_processor_box->setGeometry(250,185,200,20);
+  edit_temp_cart_group_box->setGeometry(250,185,100,20);
+  edit_temp_cart_group_label->setGeometry(10,185,235,20);
 
-  edit_duplicate_hidden_label->setGeometry(15,207,size().width()-30,50);
-  edit_duplicate_list->setGeometry(10,255,size().width()-20,215);
-  edit_save_button->setGeometry(size().width()-85,475,70,25);
+  edit_rss_processor_label->setGeometry(10,207,235,20);
+  edit_rss_processor_box->setGeometry(250,207,200,20);
+
+  edit_duplicate_hidden_label->setGeometry(15,229,size().width()-30,50);
+  edit_duplicate_list->setGeometry(10,277,size().width()-20,215);
+  edit_save_button->setGeometry(size().width()-85,497,70,25);
 
   edit_encoders_button->setGeometry(10,size().height()-60,120,50);
   edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);

@@ -10400,6 +10400,24 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<344)&&(set_schema>cur_schema)) {
+    sql=QString("alter table SYSTEM add column ")+
+      "ORIGIN_EMAIL_ADDRESS varchar(64) not null "+
+      "default 'Rivendell <noreply@example.com>' "+
+      "after RSS_PROCESSOR_STATION";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table GROUPS add column ")+
+      "NOTIFY_EMAIL_ADDRESS text after COLOR";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

@@ -1893,6 +1893,10 @@ Stále ještě chcete uložit?</translation>
         <source>days after cut creation</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Notification E-Mail Addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditHostvar</name>
@@ -4474,6 +4478,10 @@ Přepsat?</translation>
     <message>
         <source>Edit Encoder
 List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Origin E-Mail Address</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
