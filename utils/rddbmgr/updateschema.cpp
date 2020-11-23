@@ -10418,6 +10418,15 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<345)&&(set_schema>cur_schema)) {
+    sql=QString("alter table DROPBOXES add column ")+
+      "SEND_EMAIL enum('N','Y') not null default 'N' after DELETE_SOURCE";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

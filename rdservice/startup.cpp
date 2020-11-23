@@ -2,7 +2,7 @@
 //
 // Startup routines for the Rivendell Services Manager
 //
-//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -248,7 +248,8 @@ bool MainObject::StartDropboxes(QString *err_msg)
     "SET_USER_DEFINED,"+         // 20
     "FORCE_TO_MONO,"+            // 21
     "SEGUE_LEVEL,"+              // 22
-    "SEGUE_LENGTH "+             // 23
+    "SEGUE_LENGTH,"+             // 23
+    "SEND_EMAIL "+               // 24
     "from DROPBOXES where "+
     "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   q=new RDSqlQuery(sql);
@@ -299,6 +300,10 @@ bool MainObject::StartDropboxes(QString *err_msg)
     }
     if(q->value(13).toString()=="Y") {
       args.push_back("--delete-source");
+    }
+    if(q->value(24).toString()=="Y") {
+      args.push_back("--send-mail");
+      args.push_back("--mail-per-file");
     }
     if(q->value(17).toString()=="Y") {
       args.push_back(QString().sprintf("--create-startdate-offset=%d",

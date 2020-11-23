@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Dropbox Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -78,6 +78,7 @@ class EditDropbox : public RDDialog
   QLineEdit *box_log_path_edit;
   QPushButton *box_log_path_button;
   QCheckBox *box_delete_source_box;
+  QCheckBox *box_send_email_box;
   QCheckBox *box_normalization_box;
   QLabel *box_normalization_level_label;
   QSpinBox *box_normalization_level_spin;

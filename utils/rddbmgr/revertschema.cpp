@@ -41,10 +41,10 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
-  // Revert 343
+  // Revert 345
   //
-  if((cur_schema==343)&&(set_schema<cur_schema)) {
-    DropTable("ENCODER_PRESETS");
+  if((cur_schema==345)&&(set_schema<cur_schema)) {
+    DropColumn("DROPBOXES","SEND_EMAIL");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -56,6 +56,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
     DropColumn("GROUPS","NOTIFY_EMAIL_ADDRESS");
     DropColumn("SYSTEM","ORIGIN_EMAIL_ADDRESS");
 
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 343
+  //
+  if((cur_schema==343)&&(set_schema<cur_schema)) {
+    DropTable("ENCODER_PRESETS");
 
     WriteSchemaVersion(--cur_schema);
   }

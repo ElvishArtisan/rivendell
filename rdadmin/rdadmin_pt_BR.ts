@@ -1197,6 +1197,10 @@ files, causing any whose files remain to be imported again.</source>
         <source>Select Log File</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Send e-mail reports</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEncoder</name>

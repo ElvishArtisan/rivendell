@@ -20620,3 +20620,10 @@
 	dialog in rdadmin(1).
 2020-11-23 Fred Gleason <fredg@paravelsystems.com>
 	* Added '--send-mail' and '--mail-per-file' options to rdimport(1).
+2020-11-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'DROPBOXES.SEND_EMAIL' field to the database.
+	* Incremented the database version to 345.
+	* Added 'RDDropbox::sendEmail()' and 'RDDropbox::setSendEmail()'
+	methods.
+	* Added a 'Send e-mail reports' checkbox to the 'Dropbox
+	Configuration' dialog in rdadmin(1).
