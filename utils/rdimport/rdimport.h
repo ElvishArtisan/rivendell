@@ -31,6 +31,7 @@
 #include <QList>
 #include <QStringList>
 
+#include <rdapplication.h>
 #include <rdcart.h>
 #include <rdcut.h>
 #include <rdgroup.h>
@@ -78,6 +79,7 @@ class MainObject : public QObject
   void Log(int prio,const QString &msg) const;
   void SendNotification(RDNotification::Action action,unsigned cartnum);
   void NormalExit() const;
+  void ErrorExit(RDApplication::ExitCode code) const;
   unsigned import_file_key;
   RDGroup *import_group;
   bool import_verbose;
