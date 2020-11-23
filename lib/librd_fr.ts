@@ -1056,6 +1056,10 @@
         <source>no such scheduler code</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>bad ticket</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAudioSettingsDialog</name>

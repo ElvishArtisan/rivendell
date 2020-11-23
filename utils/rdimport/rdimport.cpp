@@ -612,7 +612,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Print Status Messages
   //
-  Log(LOG_INFO,QString("rdimport started\n"));
+  Log(LOG_INFO,QString("rdimport started"));
 
   Log(LOG_INFO,QString().sprintf("RDImport v%s\n",VERSION));
   if(import_to_mono) {
@@ -846,11 +846,15 @@ void MainObject::userData()
   //
   // Verify Permissions
   //
-  if(!rda->user()->editAudio()) {
+  if(!rda->user()->createCarts()) {
     Log(LOG_ERR,
-            QString().sprintf("rdimport: user \"%s\" has no edit audio permission\n",
-	    (const char *)rda->user()->name()));
+	QString().sprintf("rdimport: user \"%s\" has no Create Carts permission\n",
+			  rda->user()->name().toUtf8().constData()));
     ErrorExit(RDApplication::ExitNoPerms);
+  }
+
+  if(import_verbose) {
+    printf(" running as user \"%s\"\n",rda->user()->name().toUtf8().constData());
   }
 
   //
@@ -2217,7 +2221,7 @@ void MainObject::Log(int prio,const QString &msg) const
 
 void MainObject::NormalExit() const
 {
-  if(import_journal!=NULL) {
+  if((import_journal!=NULL)&&(import_send_mail)) {
     import_journal->sendAll();
   }
   if(import_failed_imports>0) {
@@ -2229,7 +2233,7 @@ void MainObject::NormalExit() const
 
 void MainObject::ErrorExit(RDApplication::ExitCode code) const
 {
-  if(import_journal!=NULL) {
+  if((import_journal!=NULL)&&(import_send_mail)) {
     import_journal->sendAll();
   }
   exit(code);

@@ -52,7 +52,8 @@ class RDApplication : public QObject
 		 ExitNoLog=7,ExitNoReport=8,ExitLogGenFailed=9,
 		 ExitLogLinkFailed=10,ExitNoPerms=11,ExitReportFailed=12,
 		 ExitImportFailed=13,ExitNoDropbox=14,ExitNoGroup=15,
-		 ExitInvalidCart=16,ExitNoSchedCode=17,ExitLast=18};
+		 ExitInvalidCart=16,ExitNoSchedCode=17,
+		 ExitBadTicket=18,ExitLast=19};
   RDApplication(const QString &module_name,const QString &cmdname,
 		const QString &usage,QObject *parent=0);
   ~RDApplication();
@@ -98,6 +99,7 @@ class RDApplication : public QObject
   RDSystem *app_system;
   RDUser *app_user;
   RDDbHeartbeat *app_heartbeat;
+  QString app_ticket;
   QString app_module_name;
   QString app_command_name;
   QString app_usage;

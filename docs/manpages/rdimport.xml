@@ -912,6 +912,19 @@
 
     <varlistentry>
       <term>
+	<option>--ticket=</option><replaceable>ticket-hash</replaceable>:<replaceable>ipv4-address</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Run <command>rdimport</command><manvolnum>1</manvolnum> as the
+	  Rivendell user specified by <replaceable>ticket</replaceable>
+	  rather than as the currently &quot;logged in&quot; user.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--to-cart=</option><replaceable>cartnum</replaceable>
       </term>
       <listitem>

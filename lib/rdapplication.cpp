@@ -25,6 +25,8 @@
 #include <qobject.h>
 #include <qprocess.h>
 
+#include "rdescape_string.h"
+
 #include "dbversion.h"
 #include "rdapplication.h"
 #include "rdcmd_switch.h"
@@ -127,6 +129,10 @@ bool RDApplication::open(QString *err_msg,RDApplication::ErrorType *err_type,
   for(unsigned i=0;i<app_cmd_switch->keys();i++) {
     if(app_cmd_switch->key(i)=="--skip-db-check") {
       skip_db_check=true;
+      app_cmd_switch->setProcessed(i,true);
+    }
+    if(app_cmd_switch->key(i)=="--ticket") {
+      app_ticket=app_cmd_switch->value(i);
       app_cmd_switch->setProcessed(i,true);
     }
     if(app_cmd_switch->key(i)=="--persistent-dropbox-id") {
@@ -430,6 +436,10 @@ QString RDApplication::exitCodeText(RDApplication::ExitCode code)
     ret=tr("no such scheduler code");
     break;
 
+  case RDApplication::ExitBadTicket:
+    ret=tr("bad ticket");
+    break;
+
   case RDApplication::ExitLast:
     break;
   }
@@ -440,8 +450,36 @@ QString RDApplication::exitCodeText(RDApplication::ExitCode code)
 
 void RDApplication::userChangedData()
 {
-  app_user->setName(app_ripc->user());
-  emit userChanged();
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  if(app_ticket.isEmpty()) {
+    app_user->setName(app_ripc->user());
+    emit userChanged();
+    return;
+  }
+  QStringList f0=app_ticket.split(":");
+  if(f0.size()==2) {
+    sql=QString("select ")+
+      "LOGIN_NAME "+  // 00
+      "from WEBAPI_AUTHS where "+
+      "TICKET=\""+RDEscapeString(f0.at(0))+"\" && "+
+      "IPV4_ADDRESS=\""+RDEscapeString(f0.at(1))+"\" && "+
+      "EXPIRATION_DATETIME>now()";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      app_user->setName(q->value(0).toString());
+      emit userChanged();
+      delete q;
+      return;
+    }
+    delete q;
+  }
+  fprintf(stderr,"%s: %s\n",
+	  QString(qApp->argv()[0]).split("/",QString::SkipEmptyParts).last().toUtf8().constData(),
+	  RDApplication::exitCodeText(RDApplication::ExitBadTicket).
+	  toUtf8().constData());
+  exit(RDApplication::ExitBadTicket);
 }
 
 

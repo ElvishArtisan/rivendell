@@ -348,6 +348,13 @@ void MainObject::PutAudio()
     ServeLogin(403);
     Exit(0);
   }
+  if(!rda->user()->editAudio()) {
+    rda->syslog(LOG_WARNING,"user \"%s\" lacks EditAudio permission",
+		rda->user()->name().toUtf8().constData());
+    rda->logAuthenticationFailure(webget_post->clientAddress());
+    ServeLogin(403);
+    Exit(0);
+  }
 
   QString group_name;
   if(!webget_post->getValue("group",&group_name)) {
@@ -381,6 +388,11 @@ void MainObject::PutAudio()
   }
 
   QStringList args;
+
+  args.push_back(QString("--ticket=")+webget_ticket+":"+
+  		 webget_post->clientAddress().toString());
+  args.push_back("--send-mail");
+  args.push_back("--mail-per-file");
   if(rda->libraryConf()->defaultChannels()==1) {
     args.push_back("--to-mono");
   }
@@ -417,6 +429,7 @@ void MainObject::PutAudio()
   case RDApplication::ExitNoGroup:
   case RDApplication::ExitInvalidCart:
   case RDApplication::ExitNoSchedCode:
+  case RDApplication::ExitBadTicket:
     rda->syslog(LOG_WARNING,
 		"importer process returned exit code %d [cmdline: %s, client addr: %s]",
 		proc->exitCode(),

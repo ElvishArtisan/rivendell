@@ -20630,3 +20630,5 @@
 2020-11-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdimport(1) that could cause generation of
 	mail reports to be bypassed.
+2020-11-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--ticket=' option to rdimport(1).
