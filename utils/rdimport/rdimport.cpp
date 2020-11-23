@@ -99,6 +99,8 @@ MainObject::MainObject(QObject *parent)
   import_xml=false;
   import_to_mono=false;
   import_failed_imports=0;
+  import_send_mail=false;
+  import_mail_per_file=false;
 
   //
   // Open the Database
@@ -445,6 +447,15 @@ MainObject::MainObject(QObject *parent)
       import_xml=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
+    if(rda->cmdSwitch()->key(i)=="--send-mail") {
+      import_send_mail=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--mail-per-file") {
+      import_mail_per_file=true;
+      import_send_mail=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
   }
 
   //
@@ -707,6 +718,17 @@ MainObject::MainObject(QObject *parent)
   else {
     Log(LOG_INFO,QString(" Broken format workarounds are DISABLED\n"));
   }
+  if(import_send_mail) {
+    if(import_mail_per_file) {
+      Log(LOG_INFO,QString(" E-mail report per file is ENABLED\n"));
+    }
+    else {
+      Log(LOG_INFO,QString(" Summary e-mail report is ENABLED\n"));
+    }
+  }
+  else {
+    Log(LOG_INFO,QString(" E-mail reporting is DISABLED\n"));
+  }
   if(import_create_dates) {
     Log(LOG_INFO,QString(" Import Create Dates mode is ON\n"));
     Log(LOG_INFO,QString().sprintf(" Import Create Start Date Offset = %d days\n",import_create_startdate_offset));
@@ -799,6 +821,11 @@ MainObject::MainObject(QObject *parent)
 			  (const char *)rda->cmdSwitch()->key(i).toUtf8()));
     }
   }
+
+  //
+  // Start the email journal
+  //
+  import_journal=new Journal(import_mail_per_file);
 
   // 
   // Setup Signal Handling 
@@ -968,18 +995,19 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	Log(LOG_WARNING,QString().sprintf(
 		" File \"%s\" is not readable or not a recognized format, skipping...\n",
 		(const char *)RDGetBasePart(filename).toUtf8()));
-	delete wavefile;
-	delete wavedata;
-	delete effective_group;
 	if(!import_run) {
 	  NormalExit();
 	}
 	if(!import_temp_fix_filename.isEmpty()) {
-//	  printf("Fixed Name: %s\n",(const char *)import_temp_fix_filename);
 	  QFile::remove(import_temp_fix_filename);
 	  import_temp_fix_filename="";
 	}
 	import_failed_imports++;
+	import_journal->addFailure(effective_group->name(),filename,
+				   tr("unknown/unrecognized file format"));
+	delete wavefile;
+	delete wavedata;
+	delete effective_group;
 	return MainObject::FileBad;
       }
       Log(LOG_WARNING,QString().sprintf("success.\n"));
@@ -989,9 +1017,6 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       Log(LOG_WARNING,QString().sprintf(
         " File \"%s\" is not readable or not a recognized format, skipping...\n",
         (const char *)RDGetBasePart(filename).toUtf8()));
-      delete wavefile;
-      delete wavedata;
-      delete effective_group;
       if(!import_run) {
 	NormalExit();
       }
@@ -1000,6 +1025,11 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	import_temp_fix_filename="";
       }
       import_failed_imports++;
+      import_journal->addFailure(effective_group->name(),filename,
+				 tr("unknown/unrecognized file format"));
+      delete wavefile;
+      delete wavedata;
+      delete effective_group;
       return MainObject::FileBad;
     }
   }
@@ -1042,10 +1072,12 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	      " File \"%s\" has an invalid or out of range Cart Number, skipping...\n",
 	      (const char *)RDGetBasePart(filename).toUtf8()));
       wavefile->closeWave();
+      import_failed_imports++;
+      import_journal->addFailure(effective_group->name(),filename,
+				 tr("invalid/out-of-range cart number"));
       delete wavefile;
       delete wavedata;
       delete effective_group;
-      import_failed_imports++;
       return MainObject::FileBad;
     }
   }
@@ -1056,9 +1088,6 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     Log(LOG_ERR,QString().sprintf("rdimport: no free carts available in specified group\n"));
     wavefile->closeWave();
     import_failed_imports++;
-    delete wavefile;
-    delete wavedata;
-    delete effective_group;
     import_failed_imports++;
     if(import_drop_box) {
       if(!import_run) {
@@ -1068,6 +1097,11 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	QFile::remove(import_temp_fix_filename);
 	import_temp_fix_filename="";
       }
+      import_journal->addFailure(effective_group->name(),filename,
+				 tr("no free cart available in group"));
+      delete wavefile;
+      delete wavedata;
+      delete effective_group;
       return MainObject::NoCart;
     }
     exit(RDApplication::ExitImportFailed);
@@ -1087,8 +1121,10 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     cart->addCut(import_format,import_bitrate,import_channels);
   if(cutnum<0) {
     Log(LOG_WARNING,QString().sprintf("rdimport: no free cuts available in cart %06u\n",*cartnum));
-    delete cart;
     import_failed_imports++;
+    import_journal->addFailure(effective_group->name(),filename,
+			       tr("no free cut available in cart"));
+    delete cart;
     return MainObject::NoCut;
   }
   RDCut *cut=new RDCut(*cartnum,cutnum);
@@ -1149,9 +1185,6 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     delete cut;
     delete cart;
     wavefile->closeWave();
-    delete wavefile;
-    delete wavedata;
-    delete effective_group;
     if(!import_run) {
       NormalExit();
     }
@@ -1160,6 +1193,11 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       import_temp_fix_filename="";
     }
     import_failed_imports++;
+    import_journal->addFailure(effective_group->name(),filename,
+			       tr("corrupt audio file"));
+    delete wavefile;
+    delete wavedata;
+    delete effective_group;
     return MainObject::FileBad;
     break;
   }
@@ -1350,6 +1388,9 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	   ll->resolveWildcards(import_output_pattern).toUtf8().constData());
     delete ll;
   }
+
+  import_journal->
+    addSuccess(effective_group->name(),filename,*cartnum,cart->title());
 
   delete settings;
   delete conv;
@@ -2176,6 +2217,7 @@ void MainObject::Log(int prio,const QString &msg) const
 
 void MainObject::NormalExit() const
 {
+  import_journal->sendAll();
   if(import_failed_imports>0) {
     exit(RDApplication::ExitImportFailed);
   }

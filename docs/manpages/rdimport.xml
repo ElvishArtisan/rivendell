@@ -258,6 +258,24 @@
 
     <varlistentry>
       <term>
+	<option>--mail-per-file</option>
+      </term>
+      <listitem>
+	<para>
+	  Send an e-mail message for each file processed, rather than
+	  a single message per run summarizing all actions taken. Implies
+	  the <command>--send-mail</command> switch.
+	</para>
+	<para>
+	  See the <command>--send-mail</command> switch (below) for more
+	  details about generating e-mailed reports from
+	  <command>rdimport</command><manvolnum>1</manvolnum>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--metadata-pattern=</option><replaceable>pattern</replaceable>
       </term>
       <listitem>
@@ -543,6 +561,32 @@
 	  setting the segue start marker, in dBFS, as measured after any
           specified normalization has been applied.  Default action is not
 	  to create segue markers.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--send-mail</option>
+      </term>
+      <listitem>
+	<para>
+	  Send e-mail to the address(es) specified in the destination group's
+	  <computeroutput>Notification E-Mail Addresses</computeroutput>
+	  setting in <command>rdadmin</command><manvolnum>1</manvolnum>
+	  summarizing the action(s) performed during the run.
+	  Each invocation of
+	  <command>rdimport</command><manvolnum>1</manvolnum> will
+	  potentially generate
+	  one message for all successful imports and another for all failed
+	  imports (but see the <option>--mail-per-file</option> switch
+	  (above) for a way to modify this behavior).
+	</para>
+	<para>
+	  NOTE: Rivendell uses the system's
+	  <command>sendmail</command><manvolnum>1</manvolnum> subsystem
+	  for originating e-mail. For many modern e-mail setups, further
+	  configuration of that subsystem may be necessary.
 	</para>
       </listitem>
     </varlistentry>
@@ -989,6 +1033,10 @@
 
 <refsect1 id='see_also'><title>See Also</title>
 <para>
+  <citerefentry>
+    <refentrytitle>sendmail</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  <literal>,</literal>
   <citerefentry>
     <refentrytitle>rdexport</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>

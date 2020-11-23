@@ -28,6 +28,8 @@
 #include <qsqldatabase.h>
 #include <qfileinfo.h>
 #include <qdatetime.h>
+#include <QList>
+#include <QStringList>
 
 #include <rdcart.h>
 #include <rdcut.h>
@@ -36,6 +38,7 @@
 #include <rdwavedata.h>
 #include <rdwavefile.h>
 
+#include "journal.h"
 #include "markerset.h"
 
 #define RDIMPORT_TEMP_BASENAME "rdimp"
@@ -113,6 +116,8 @@ class MainObject : public QObject
   int import_autotrim_level;
   int import_segue_level;
   int import_segue_length;
+  bool import_send_mail;
+  bool import_mail_per_file;
   unsigned import_cart_number;
   QString import_metadata_pattern;
   QString import_output_pattern;
@@ -151,6 +156,7 @@ class MainObject : public QObject
   MarkerSet *import_segue_markers;
   MarkerSet *import_fadedown_marker;
   MarkerSet *import_fadeup_marker;
+  Journal *import_journal;
 };
 
 
