@@ -583,8 +583,8 @@
 	line.
       </para>
       <note>
-	See the section on
-	<link linkend="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters">Inline Event Scheduling Parameters</link>
+	See
+	<xref linkend="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters" />
 	for details on how the Start Time and Length parameters are
 	calculated when inserting a Marker String.
       </note>
@@ -597,8 +597,8 @@
 	'title' field from that same line.
       </para>
       <note>
-	See the section on
-	<link linkend="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters">Inline Event Scheduling Parameters</link>
+	See
+	<xref linkend="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters" />
 	for details on how the Start Time and Length parameters are
 	calculated when inserting a Voice Track String.
       </note>
@@ -612,14 +612,12 @@
 	in the relevant music event.
       </para>
       <note>
-	<para>
-	  This field is available only in the
-	  <computeroutput>Music Data Import</computeroutput> section!
-	</para>
+	This field is available only in the
+	<computeroutput>Music Data Import</computeroutput> section!
       </note>
       <note>
-	See the section on
-	<link linkend="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters">Inline Event Scheduling Parameters</link>
+	See
+	<xref linkend="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters" />
 	for details on how the Link Start Time and Link Length parameters are
 	calculated when inserting a Traffic Break.
       </note>
@@ -2515,13 +2513,38 @@
       is an integer) to the end of the title string.
     </para>
     <para>
+      If the <computeroutput>Show User List in RDLogin</computeroutput> box
+      is ticked, rdlogin(1) will require users to enter their user name as
+      well as their password when logging in (instead of providing all possible
+      user names in a dropdown).
+    </para>
+    <para>
       The <computeroutput>ISCI Cross Reference Path:</computeroutput> field
       takes the full path to the ISCI cross reference file used by the
       rdrepld(8) daemon (used only in conjunction with X-Digital copysplit
       replication).
     </para>
     <para>
-      The <computeroutput>Maximum Reemote Post Length:</computeroutput> field
+      The <computeroutput>Origin E-Mail Address:</computeroutput> field
+      take the value that Rivendell will use as the &quot;From:&quot; address
+      when sending e-mail.
+    </para>
+    <note>
+      Rivendell uses the system's
+      <command>sendmail</command><manvolnum>1</manvolnum> interface when
+      originating e-mail. For many modern e-mail setups, additional site-
+      and distro-specific configuration will likely be necessary beyond
+      what can be covered here.
+    </note>
+    <para>
+      The <computeroutput>Multicast Address for Notifications:</computeroutput>
+      field takes the IPv4 multicast address to use for communicating
+      state and configuration changes between Rivendell hosts and modules.
+      It should seldom be necessary to change this value from the default
+      (<userinput>239.19.255.72</userinput>).
+    </para>
+    <para>
+      The <computeroutput>Maximum Remote Post Length:</computeroutput> field
       sets the maximum length POST submission that will be processed by the
       RDXport service. It should seldom be necessary to change this value.
     </para>
@@ -2532,10 +2555,17 @@
       rdcartslots(1).
     </para>
     <para>
-      If the <computeroutput>Show User List in RDLogin</computeroutput> box
-      is ticked, rdlogin(1) will require users to enter their user name as
-      well as their password when logging in (instead of providing all possible
-      user names in a dropdown).
+      The <computeroutput>Process RSS Updates On:</computeroutput> dropdown
+      sets the Rivendell host to be used for processing automatic state
+      changes for RSS feeds. If no RSS feeds are configured, this value
+      can be set to <userinput>[none]</userinput>.
+    </para>
+    <para>
+      Touching the <computeroutput>Edit Encoder List</computeroutput> button
+      will bring up the <computeroutput>Encoder Profiles</computeroutput>
+      dialog. See
+      <xref linkend="sect.rdadmin.configuring_encoder_formats" />
+      for more information.
     </para>
   </sect1>
   <sect1 xml:id="sect.rdadmin.manage_scheduler_codes">

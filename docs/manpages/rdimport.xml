@@ -584,9 +584,10 @@
 	</para>
 	<para>
 	  NOTE: Rivendell uses the system's
-	  <command>sendmail</command><manvolnum>1</manvolnum> subsystem
-	  for originating e-mail. For many modern e-mail setups, further
-	  configuration of that subsystem may be necessary.
+	  <command>sendmail</command><manvolnum>1</manvolnum> interface when
+	  originating e-mail. For many modern e-mail setups, additional site-
+	  and distro-specific configuration will likely be necessary beyond
+	  what can be covered here.
 	</para>
       </listitem>
     </varlistentry>
