@@ -6139,15 +6139,15 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIPCIÓN</translation>
+        <translation type="obsolete">DESCRIPCIÓN</translation>
     </message>
     <message>
         <source>USER NAME</source>
-        <translation>NMBRE USUAR</translation>
+        <translation type="obsolete">NMBRE USUAR</translation>
     </message>
     <message>
         <source>FULL NAME</source>
-        <translation>NMBRE COMPLETO</translation>
+        <translation type="obsolete">NMBRE COMPLETO</translation>
     </message>
     <message>
         <source>Are you sure you want to delete user</source>
@@ -6172,6 +6172,30 @@ Do you still want to proceed?</source>
     <message>
         <source>You cannot delete yourself!</source>
         <translation>¡Ud. no puede borrarse a sí mismo!</translation>
+    </message>
+    <message>
+        <source>Login Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E-Mail Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Phone Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Local Auth</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -5881,15 +5881,15 @@ Wollen Sie immernoch fortfahren?</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>BESCHREIBUNG</translation>
+        <translation type="obsolete">BESCHREIBUNG</translation>
     </message>
     <message>
         <source>USER NAME</source>
-        <translation>BENUTZERNAME</translation>
+        <translation type="obsolete">BENUTZERNAME</translation>
     </message>
     <message>
         <source>FULL NAME</source>
-        <translation>VOLLER NAME</translation>
+        <translation type="obsolete">VOLLER NAME</translation>
     </message>
     <message>
         <source>Are you sure you want to delete user</source>
@@ -5914,6 +5914,30 @@ Wollen Sie immernoch fortfahren?</translation>
     <message>
         <source>You cannot delete yourself!</source>
         <translation>Die können sich nicht selbst löschen!</translation>
+    </message>
+    <message>
+        <source>Login Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E-Mail Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Phone Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Local Auth</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -20635,3 +20635,6 @@
 2020-11-24 Fred Gleason <fredg@paravelsystems.com>
 	* Documented user-facing changes to the 'System-Wide Settings'
 	dialog in rdadmin(1) in the Operations Guide.
+2020-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'E-Mail Address', 'Phone Number' and 'Local Auth' columns
+	to the 'Users' list in the 'Rivendell User List' dialog in rdadmin(1).

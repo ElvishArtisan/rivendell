@@ -5757,16 +5757,8 @@ Er du sikker på at du vil halda fram?</translation>
         <translation>Slett brukaren</translation>
     </message>
     <message>
-        <source>USER NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>FULL NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>DESCRIPTION</source>
-        <translation type="unfinished">SKILDRING</translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>This user is set as the default user for the following hosts:
@@ -5776,6 +5768,30 @@ Er du sikker på at du vil halda fram?</translation>
     </message>
     <message>
         <source>You must change this before deleting the user.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E-Mail Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Phone Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Local Auth</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

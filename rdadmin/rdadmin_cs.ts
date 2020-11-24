@@ -6185,15 +6185,15 @@ Stále ještě chcete pokračovat?</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>USER NAME</source>
-        <translation>UŽIVATELSKÉ JMÉNO</translation>
+        <translation type="obsolete">UŽIVATELSKÉ JMÉNO</translation>
     </message>
     <message>
         <source>FULL NAME</source>
-        <translation>CELÉ JMÉNO</translation>
+        <translation type="obsolete">CELÉ JMÉNO</translation>
     </message>
     <message>
         <source>Are you sure you want to delete user</source>
@@ -6218,6 +6218,30 @@ Stále ještě chcete pokračovat?</translation>
     <message>
         <source>You cannot delete yourself!</source>
         <translation>Nemůžete vymazat sám sebe!</translation>
+    </message>
+    <message>
+        <source>Login Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E-Mail Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Phone Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Local Auth</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

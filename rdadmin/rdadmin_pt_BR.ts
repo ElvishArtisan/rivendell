@@ -5849,15 +5849,15 @@ Você quer proceder?</translation>
     </message>
     <message>
         <source>USER NAME</source>
-        <translation>USUÁRIO</translation>
+        <translation type="obsolete">USUÁRIO</translation>
     </message>
     <message>
         <source>FULL NAME</source>
-        <translation>NOME COMPLETO</translation>
+        <translation type="obsolete">NOME COMPLETO</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIÇÃO</translation>
+        <translation type="obsolete">DESCRIÇÃO</translation>
     </message>
     <message>
         <source>&amp;Users:</source>
@@ -5886,6 +5886,30 @@ Você quer proceder?</translation>
     <message>
         <source>Are you sure you want to delete user</source>
         <translation>Tem certeza que quer deletar este Usuário?</translation>
+    </message>
+    <message>
+        <source>Login Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E-Mail Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Phone Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Local Auth</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
