@@ -10427,6 +10427,21 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<346)&&(set_schema>cur_schema)) {
+    sql=QString("alter table USERS drop column ADMIN_USERS_PRIV");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table USERS add column ")+
+      "ADMIN_RSS_PRIV enum('N','Y') not null default 'N' "+
+      "after ADMIN_CONFIG_PRIV";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

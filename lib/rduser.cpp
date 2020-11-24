@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell User.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -245,6 +245,19 @@ bool RDUser::adminConfig() const
 void RDUser::setAdminConfig(bool priv) const
 {
   SetRow("ADMIN_CONFIG_PRIV",priv);
+}
+
+
+bool RDUser::adminRss() const
+{
+  return RDBool(RDGetSqlValue("USERS","LOGIN_NAME",user_name,
+			    "ADMIN_RSS_PRIV").toString());
+}
+
+
+void RDUser::setAdminRss(bool priv) const
+{
+  SetRow("ADMIN_RSS_PRIV",priv);
 }
 
 

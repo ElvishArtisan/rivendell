@@ -20638,3 +20638,10 @@
 2020-11-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'E-Mail Address', 'Phone Number' and 'Local Auth' columns
 	to the 'Users' list in the 'Rivendell User List' dialog in rdadmin(1).
+2020-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'USERS.ADMIN_USERS_PRIV' field from the database.
+	* Added a 'USERS.ADMIN_RSS_PRIV' field to the database.
+	* Incremented the database version to 346.
+	* Added 'RDUser:adminRss()' and 'RDUser::setAdminRss()' methods.
+	* Added an 'Administer RSS Feeds' checkbox to the 'Administrative
+	Rights' section of the 'User' dialog in rdadmin(1).

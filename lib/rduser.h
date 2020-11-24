@@ -55,6 +55,8 @@ class RDUser
   void setWebapiAuthTimeout(int sec) const;
   bool adminConfig() const;
   void setAdminConfig(bool priv) const;
+  bool adminRss() const;
+  void setAdminRss(bool priv) const;
   bool createCarts() const;
   void setCreateCarts(bool priv) const;
   bool deleteCarts() const;

@@ -35,6 +35,7 @@
 //
 #include "../icons/admin.xpm"
 #include "../icons/localuser.xpm"
+#include "../icons/rss.xpm"
 #include "../icons/user.xpm"
 
 ListUsers::ListUsers(const QString &admin_name,QWidget *parent)
@@ -56,6 +57,7 @@ ListUsers::ListUsers(const QString &admin_name,QWidget *parent)
   //
   list_admin_map=new QPixmap(admin_xpm);
   list_localuser_map=new QPixmap(localuser_xpm);
+  list_rss_map=new QPixmap(rss_xpm);
   list_user_map=new QPixmap(user_xpm);
 
   //
@@ -288,12 +290,13 @@ void ListUsers::RefreshList()
   list_users_view->clear();
   sql=QString("select ")+
     "ADMIN_CONFIG_PRIV,"+  // 00
-    "LOGIN_NAME,"+         // 01
-    "FULL_NAME,"+          // 02
-    "DESCRIPTION,"+        // 03
-    "EMAIL_ADDRESS,"+      // 04
-    "PHONE_NUMBER,"+       // 05
-    "LOCAL_AUTH "+         // 06
+    "ADMIN_RSS_PRIV,"+     // 01
+    "LOGIN_NAME,"+         // 02
+    "FULL_NAME,"+          // 03
+    "DESCRIPTION,"+        // 04
+    "EMAIL_ADDRESS,"+      // 05
+    "PHONE_NUMBER,"+       // 06
+    "LOCAL_AUTH "+         // 07
     "from USERS";
   q=new RDSqlQuery(sql);
   while (q->next()) {
@@ -302,19 +305,24 @@ void ListUsers::RefreshList()
       item->setPixmap(0,*list_admin_map);
     }
     else {
-      if(q->value(6).toString()=="Y") {
-	item->setPixmap(0,*list_localuser_map);
+      if(q->value(1).toString()=="Y") {
+	item->setPixmap(0,*list_rss_map);
       }
       else {
-	item->setPixmap(0,*list_user_map);
+	if(q->value(7).toString()=="Y") {
+	  item->setPixmap(0,*list_localuser_map);
+	}
+	else {
+	  item->setPixmap(0,*list_user_map);
+	}
       }
     }
-    item->setText(1,q->value(1).toString());
-    item->setText(2,q->value(2).toString());
-    item->setText(3,q->value(3).toString());
-    item->setText(4,q->value(4).toString());
-    item->setText(5,q->value(5).toString());
-    item->setText(6,q->value(6).toString());
+    item->setText(1,q->value(2).toString());
+    item->setText(2,q->value(3).toString());
+    item->setText(3,q->value(4).toString());
+    item->setText(4,q->value(5).toString());
+    item->setText(5,q->value(6).toString());
+    item->setText(6,q->value(7).toString());
   }
   delete q;
 }
@@ -327,11 +335,12 @@ void ListUsers::RefreshItem(RDListViewItem *item)
 
   sql=QString("select ")+
     "ADMIN_CONFIG_PRIV,"+  // 00
-    "FULL_NAME,"+          // 01
-    "DESCRIPTION,"+        // 02
-    "EMAIL_ADDRESS,"+      // 03
-    "PHONE_NUMBER,"+       // 04
-    "LOCAL_AUTH "+         // 05
+    "ADMIN_RSS_PRIV,"+     // 01
+    "FULL_NAME,"+          // 02
+    "DESCRIPTION,"+        // 03
+    "EMAIL_ADDRESS,"+      // 04
+    "PHONE_NUMBER,"+       // 05
+    "LOCAL_AUTH "+         // 06
     "from USERS where "+
     "LOGIN_NAME=\""+RDEscapeString(item->text(1))+"\"";
   q=new RDSqlQuery(sql);
@@ -340,18 +349,23 @@ void ListUsers::RefreshItem(RDListViewItem *item)
       item->setPixmap(0,*list_admin_map);
     }
     else {
-      if(q->value(3).toString()=="Y") {
-	item->setPixmap(0,*list_localuser_map);
+      if(q->value(1).toString()=="Y") {
+	item->setPixmap(0,*list_rss_map);
       }
       else {
-	item->setPixmap(0,*list_user_map);
+	if(q->value(4).toString()=="Y") {
+	  item->setPixmap(0,*list_localuser_map);
+	}
+	else {
+	  item->setPixmap(0,*list_user_map);
+	}
       }
     }
-    item->setText(2,q->value(1).toString());
-    item->setText(3,q->value(2).toString());
-    item->setText(4,q->value(3).toString());
-    item->setText(5,q->value(4).toString());
-    item->setText(6,q->value(5).toString());
+    item->setText(2,q->value(2).toString());
+    item->setText(3,q->value(3).toString());
+    item->setText(4,q->value(4).toString());
+    item->setText(5,q->value(5).toString());
+    item->setText(6,q->value(6).toString());
   }
   delete q;
 }

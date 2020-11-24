@@ -1724,7 +1724,7 @@ unsigned RDFeed::create(const QString &keyname,bool enable_users,
   //
   if(enable_users) {
     sql=QString("select LOGIN_NAME from USERS where ")+
-      "(ADMIN_USERS_PRIV='N')&&(ADMIN_CONFIG_PRIV='N')";
+      "(ADMIN_RSS_PRIV='N')&&(ADMIN_CONFIG_PRIV='N')";
     q=new RDSqlQuery(sql);
     while(q->next()) {
       sql=QString("insert into FEED_PERMS set ")+

@@ -58,6 +58,7 @@ class ListUsers : public RDDialog
   QString list_admin_name;
   QPixmap *list_admin_map;
   QPixmap *list_localuser_map;
+  QPixmap *list_rss_map;
   QPixmap *list_user_map;
 };
 

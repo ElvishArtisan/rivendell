@@ -46,7 +46,9 @@ class EditUser : public RDDialog
   void groupsData();
   void servicesData();
   void feedsData();
-  void adminToggledData(bool state);
+  void adminConfigToggledData(bool state);
+  void adminRssToggledData(bool state);
+  void adminToggled(bool state);
   void okData();
   void cancelData();
 
@@ -70,6 +72,7 @@ class EditUser : public RDDialog
   QGroupBox *user_onair_group;
   QGroupBox *user_podcast_group;
   QCheckBox *user_admin_config_button;
+  QCheckBox *user_admin_rss_button;
   QCheckBox *user_create_carts_button;
   QCheckBox *user_delete_carts_button;
   QCheckBox *user_modify_carts_button;
@@ -92,6 +95,8 @@ class EditUser : public RDDialog
   QPushButton *user_assign_perms_button;
   QPushButton *user_assign_svcs_button;
   QPushButton *user_assign_feeds_button;
+  QLabel *user_admin_config_label;
+  QLabel *user_admin_rss_label;
   QLabel *user_create_carts_label;
   QLabel *user_delete_carts_label;
   QLabel *user_modify_carts_label;

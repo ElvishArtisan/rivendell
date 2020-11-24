@@ -166,14 +166,26 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_admin_config_button=new QCheckBox(user_admin_group);
   user_admin_config_button->setGeometry(10,21,15,15);
   connect(user_admin_config_button,SIGNAL(toggled(bool)),
-	  this,SLOT(adminToggledData(bool)));
-  QLabel *user_admin_config_label=
+	  this,SLOT(adminConfigToggledData(bool)));
+  user_admin_config_label=
     new QLabel(user_admin_config_button,tr("Administer S&ystem"),
 	       user_admin_group);
-  user_admin_config_label->setGeometry(192,21,150,19);
+  //  user_admin_config_label->setGeometry(192,21,150,19);
   user_admin_config_label->setGeometry(30,21,150,19);
   user_admin_config_label->setFont(subLabelFont());
   user_admin_config_label->setAlignment(Qt::AlignLeft);
+
+  user_admin_rss_button=new QCheckBox(user_admin_group);
+  user_admin_rss_button->setGeometry(172,21,15,15);
+  connect(user_admin_rss_button,SIGNAL(toggled(bool)),
+	  this,SLOT(adminRssToggledData(bool)));
+  user_admin_rss_label=
+    new QLabel(user_admin_rss_button,tr("Administer RSS Feeds"),
+	       user_admin_group);
+  user_admin_rss_label->setGeometry(192,21,150,19);
+  //  user_admin_rss_label->setGeometry(30,21,150,19);
+  user_admin_rss_label->setFont(subLabelFont());
+  user_admin_rss_label->setAlignment(Qt::AlignLeft);
 
   //
   // Production Group Priviledges
@@ -437,31 +449,37 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_web_box->setChecked(user_user->enableWeb());
   if(user_user->adminConfig()) {
     user_admin_config_button->setChecked(true);
-    adminToggledData(true);
+    adminConfigToggledData(true);
   }
   else {
-    user_create_carts_button->setChecked(user_user->createCarts());
-    user_delete_carts_button->setChecked(user_user->deleteCarts());
-    user_modify_carts_button->setChecked(user_user->modifyCarts());
-    user_edit_audio_button->setChecked(user_user->editAudio());
-    user_edit_catches_button->setChecked(user_user->editCatches());
-    user_voicetrack_log_button->setChecked(user_user->voicetrackLog());
-    user_webget_login_button->setChecked(user_user->webgetLogin());
+    if(user_user->adminRss()) {
+      user_admin_rss_button->setChecked(true);
+      adminRssToggledData(true);
+    }
+    else {
+      user_create_carts_button->setChecked(user_user->createCarts());
+      user_delete_carts_button->setChecked(user_user->deleteCarts());
+      user_modify_carts_button->setChecked(user_user->modifyCarts());
+      user_edit_audio_button->setChecked(user_user->editAudio());
+      user_edit_catches_button->setChecked(user_user->editCatches());
+      user_voicetrack_log_button->setChecked(user_user->voicetrackLog());
+      user_webget_login_button->setChecked(user_user->webgetLogin());
     
-    user_create_log_button->setChecked(user_user->createLog());
-    user_delete_log_button->setChecked(user_user->deleteLog());
-    user_delete_rec_button->setChecked(user_user->deleteRec());
+      user_create_log_button->setChecked(user_user->createLog());
+      user_delete_log_button->setChecked(user_user->deleteLog());
+      user_delete_rec_button->setChecked(user_user->deleteRec());
     
-    user_playout_log_button->setChecked(user_user->playoutLog());
-    user_arrange_log_button->setChecked(user_user->arrangeLog());
-    user_addto_log_button->setChecked(user_user->addtoLog());
-    user_removefrom_log_button->setChecked(user_user->removefromLog());
-    user_config_panels_button->setChecked(user_user->configPanels());
-    user_modify_template_button->setChecked(user_user->modifyTemplate());
+      user_playout_log_button->setChecked(user_user->playoutLog());
+      user_arrange_log_button->setChecked(user_user->arrangeLog());
+      user_addto_log_button->setChecked(user_user->addtoLog());
+      user_removefrom_log_button->setChecked(user_user->removefromLog());
+      user_config_panels_button->setChecked(user_user->configPanels());
+      user_modify_template_button->setChecked(user_user->modifyTemplate());
 
-    user_add_podcast_button->setChecked(user_user->addPodcast());
-    user_edit_podcast_button->setChecked(user_user->editPodcast());
-    user_delete_podcast_button->setChecked(user_user->deletePodcast());
+      user_add_podcast_button->setChecked(user_user->addPodcast());
+      user_edit_podcast_button->setChecked(user_user->editPodcast());
+      user_delete_podcast_button->setChecked(user_user->deletePodcast());
+    }
   }
 
   //
@@ -544,7 +562,23 @@ void EditUser::feedsData()
 }
 
 
-void EditUser::adminToggledData(bool state)
+void EditUser::adminConfigToggledData(bool state)
+{
+  user_admin_rss_button->setDisabled(state);
+  user_admin_rss_label->setDisabled(state);
+  adminToggled(state);
+}
+
+
+void EditUser::adminRssToggledData(bool state)
+{
+  user_admin_config_button->setDisabled(state);
+  user_admin_config_label->setDisabled(state);
+  adminToggled(state);
+}
+
+
+void EditUser::adminToggled(bool state)
 {
   user_web_box->setDisabled(state);
   user_web_label->setDisabled(state);
@@ -587,6 +621,7 @@ void EditUser::adminToggledData(bool state)
   user_voicetrack_log_label->setDisabled(state);
   user_webget_login_label->setDisabled(state);
   user_assign_perms_button->setDisabled(state);
+  user_assign_svcs_button->setDisabled(state);
   user_assign_feeds_button->setDisabled(state);
 }
 
@@ -602,6 +637,7 @@ void EditUser::okData()
   user_user->setWebapiAuthTimeout(user_webapi_auth_spin->value());
   user_user->setEnableWeb(user_web_box->isChecked());
   user_user->setAdminConfig(user_admin_config_button->isChecked());
+  user_user->setAdminRss(user_admin_rss_button->isChecked());
   user_user->setCreateCarts(user_create_carts_button->isChecked());
   user_user->setDeleteCarts(user_delete_carts_button->isChecked());
   user_user->setModifyCarts(user_modify_carts_button->isChecked());

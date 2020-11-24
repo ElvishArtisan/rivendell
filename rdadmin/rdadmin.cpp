@@ -120,12 +120,14 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
     exit(0);
   }
   rda->user()->setName(admin_username);
+  bool config_priv=rda->user()->adminConfig();
+  bool rss_priv=rda->user()->adminRss();
   if(!rda->user()->checkPassword(admin_password,false)) {
     QMessageBox::warning(this,"Login Failed","Login Failed!.\n");
     exit(1);
   }
   else {
-    if(!rda->user()->adminConfig()) {
+    if((!config_priv)&&(!rss_priv)) {
       QMessageBox::warning(this,tr("Insufficient Priviledges"),
          tr("This account has insufficient priviledges for this operation."));
       exit(1);
@@ -160,6 +162,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   users_button->setGeometry(10,50,80,60);
   users_button->setFont(buttonFont());
   users_button->setText(tr("Manage\n&Users"));
+  users_button->setEnabled(config_priv);
   connect(users_button,SIGNAL(clicked()),this,SLOT(manageUsersData()));
 
   //
@@ -169,6 +172,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   groups_button->setGeometry(10,120,80,60);
   groups_button->setFont(buttonFont());
   groups_button->setText(tr("Manage\n&Groups"));
+  groups_button->setEnabled(config_priv);
   connect(groups_button,SIGNAL(clicked()),this,SLOT(manageGroupsData()));
   
   //
@@ -178,6 +182,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   services_button->setGeometry(100,50,80,60);
   services_button->setFont(buttonFont());
   services_button->setText(tr("Manage\n&Services"));
+  services_button->setEnabled(config_priv);
   connect(services_button,SIGNAL(clicked()),this,SLOT(manageServicesData()));
   
   //
@@ -187,6 +192,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   stations_button->setGeometry(100,120,80,60);
   stations_button->setFont(buttonFont());
   stations_button->setText(tr("Manage\nHo&sts"));
+  stations_button->setEnabled(config_priv);
   connect(stations_button,SIGNAL(clicked()),this,SLOT(manageStationsData()));
   
   //
@@ -196,6 +202,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   reports_button->setGeometry(190,50,80,60);
   reports_button->setFont(buttonFont());
   reports_button->setText(tr("Manage\nR&eports"));
+  reports_button->setEnabled(config_priv);
   connect(reports_button,SIGNAL(clicked()),this,SLOT(reportsData()));
 
   //
@@ -205,6 +212,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   podcasts_button->setGeometry(280,50,80,60);
   podcasts_button->setFont(buttonFont());
   podcasts_button->setText(tr("Manage\n&Feeds"));
+  podcasts_button->setEnabled(config_priv||rss_priv);
   connect(podcasts_button,SIGNAL(clicked()),this,SLOT(podcastsData()));
 
   //
@@ -214,6 +222,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   system_button->setGeometry(190,120,80,60);
   system_button->setFont(buttonFont());
   system_button->setText(tr("System\nSettings"));
+  system_button->setEnabled(config_priv);
   connect(system_button,SIGNAL(clicked()),this,SLOT(systemSettingsData()));
 
   //
@@ -223,6 +232,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   schedcodes_button->setGeometry(280,120,80,60);
   schedcodes_button->setFont(buttonFont());
   schedcodes_button->setText(tr("Scheduler\nCodes"));
+  schedcodes_button->setEnabled(config_priv);
   connect(schedcodes_button,SIGNAL(clicked()),this,SLOT(manageSchedCodes()));
 
   //
@@ -232,6 +242,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   repl_button->setGeometry(100,190,80,60);
   repl_button->setFont(buttonFont());
   repl_button->setText(tr("Manage\nReplicators"));
+  repl_button->setEnabled(config_priv);
   connect(repl_button,SIGNAL(clicked()),this,SLOT(manageReplicatorsData()));
 
   //
@@ -241,6 +252,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   info_button->setGeometry(190,190,80,60);
   info_button->setFont(buttonFont());
   info_button->setText(tr("System\nInfo"));
+  info_button->setEnabled(config_priv||rss_priv);
   connect(info_button,SIGNAL(clicked()),this,SLOT(systemInfoData()));
 
   //

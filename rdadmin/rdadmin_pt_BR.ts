@@ -4500,6 +4500,10 @@ Permissions</source>
         <source>E-Mail Address</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Administer RSS Feeds</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditUserPerms</name>
