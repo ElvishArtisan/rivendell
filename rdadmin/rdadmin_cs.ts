@@ -5541,39 +5541,39 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>START CART</source>
-        <translation>ZAČÍT VOZÍK</translation>
+        <translation type="obsolete">ZAČÍT VOZÍK</translation>
     </message>
     <message>
         <source>END CART</source>
-        <translation>UKONČIT VOZÍK</translation>
+        <translation type="obsolete">UKONČIT VOZÍK</translation>
     </message>
     <message>
         <source>ENFORCE RANGE</source>
-        <translation>VYNUTIT ROZSAH</translation>
+        <translation type="obsolete">VYNUTIT ROZSAH</translation>
     </message>
     <message>
         <source>DEFAULT TYPE</source>
-        <translation>VÝCHOZÍ TYP</translation>
+        <translation type="obsolete">VÝCHOZÍ TYP</translation>
     </message>
     <message>
         <source>TRAFFIC REPORT</source>
-        <translation>PŘENOSOVÁ ZPRÁVA</translation>
+        <translation type="obsolete">PŘENOSOVÁ ZPRÁVA</translation>
     </message>
     <message>
         <source>MUSIC REPORT</source>
-        <translation>HUDEBNÍ ZPRÁVA</translation>
+        <translation type="obsolete">HUDEBNÍ ZPRÁVA</translation>
     </message>
     <message>
         <source>NOW &amp; NEXT</source>
-        <translation>NYNÍ &amp; DALŠÍ</translation>
+        <translation type="obsolete">NYNÍ &amp; DALŠÍ</translation>
     </message>
     <message>
         <source>&amp;Groups:</source>
@@ -5590,6 +5590,42 @@ Stále ještě jej chcete smazat?</translation>
     <message>
         <source>Delete Group</source>
         <translation>Smazat skupinu</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enforce Range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now &amp; Next</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

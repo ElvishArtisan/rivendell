@@ -20645,3 +20645,6 @@
 	* Added 'RDUser:adminRss()' and 'RDUser::setAdminRss()' methods.
 	* Added an 'Administer RSS Feeds' checkbox to the 'Administrative
 	Rights' section of the 'User' dialog in rdadmin(1).
+2020-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Documented user-facing changes to the 'Rivendell Group List' and
+	'Group' dialogs in rdadmin(1) in the Operations Guide.

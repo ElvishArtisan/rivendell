@@ -2,7 +2,7 @@
 //
 // List Rivendell Groups
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -101,21 +101,21 @@ ListGroups::ListGroups(QWidget *parent)
   //
   list_groups_view=new RDListView(this);
   list_groups_view->setAllColumnsShowFocus(true);
-  list_groups_view->addColumn(tr("NAME"));
-  list_groups_view->addColumn(tr("DESCRIPTION"));
-  list_groups_view->addColumn(tr("START CART"));
+  list_groups_view->addColumn(tr("Name"));
+  list_groups_view->addColumn(tr("Description"));
+  list_groups_view->addColumn(tr("Start Cart"));
   list_groups_view->setColumnAlignment(2,Qt::AlignCenter);
-  list_groups_view->addColumn(tr("END CART"));
+  list_groups_view->addColumn(tr("End Cart"));
   list_groups_view->setColumnAlignment(3,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("ENFORCE RANGE"));
+  list_groups_view->addColumn(tr("Enforce Range"));
   list_groups_view->setColumnAlignment(4,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("DEFAULT TYPE"));
+  list_groups_view->addColumn(tr("Default Type"));
   list_groups_view->setColumnAlignment(5,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("TRAFFIC REPORT"));
+  list_groups_view->addColumn(tr("Traffic Report"));
   list_groups_view->setColumnAlignment(6,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("MUSIC REPORT"));
+  list_groups_view->addColumn(tr("Music Report"));
   list_groups_view->setColumnAlignment(7,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("NOW & NEXT"));
+  list_groups_view->addColumn(tr("Now & Next"));
   list_groups_view->setColumnAlignment(8,Qt::AlignHCenter);
   QLabel *list_box_label=new QLabel(list_groups_view,tr("&Groups:"),this);
   list_box_label->setFont(labelFont());

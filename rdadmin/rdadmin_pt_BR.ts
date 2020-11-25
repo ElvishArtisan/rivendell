@@ -5219,39 +5219,39 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOME</translation>
+        <translation type="obsolete">NOME</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIÇÃO</translation>
+        <translation type="obsolete">DESCRIÇÃO</translation>
     </message>
     <message>
         <source>START CART</source>
-        <translation>INÍCIO DOS CARTÕES</translation>
+        <translation type="obsolete">INÍCIO DOS CARTÕES</translation>
     </message>
     <message>
         <source>END CART</source>
-        <translation>FIM DOS CARTÕES</translation>
+        <translation type="obsolete">FIM DOS CARTÕES</translation>
     </message>
     <message>
         <source>ENFORCE RANGE</source>
-        <translation>FORÇAR VARIAÇÃO</translation>
+        <translation type="obsolete">FORÇAR VARIAÇÃO</translation>
     </message>
     <message>
         <source>DEFAULT TYPE</source>
-        <translation>TIPO PADRÃO</translation>
+        <translation type="obsolete">TIPO PADRÃO</translation>
     </message>
     <message>
         <source>TRAFFIC REPORT</source>
-        <translation>RELATÓRIO DE TRÁFEGO</translation>
+        <translation type="obsolete">RELATÓRIO DE TRÁFEGO</translation>
     </message>
     <message>
         <source>MUSIC REPORT</source>
-        <translation>RELATÓRIO DE MÚSICAS</translation>
+        <translation type="obsolete">RELATÓRIO DE MÚSICAS</translation>
     </message>
     <message>
         <source>NOW &amp; NEXT</source>
-        <translation>AGORA &amp; PRÓXIMO</translation>
+        <translation type="obsolete">AGORA &amp; PRÓXIMO</translation>
     </message>
     <message>
         <source>&amp;Groups:</source>
@@ -5268,6 +5268,42 @@ Você ainda quer Deletar?</translation>
     <message>
         <source>Delete Group</source>
         <translation>Deletar Grupo</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enforce Range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now &amp; Next</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

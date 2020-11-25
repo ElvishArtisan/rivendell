@@ -5108,39 +5108,39 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NAMN</translation>
+        <translation type="obsolete">NAMN</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>SKILDRING</translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>START CART</source>
-        <translation>START KORG</translation>
+        <translation type="obsolete">START KORG</translation>
     </message>
     <message>
         <source>END CART</source>
-        <translation>SLUTT KORG</translation>
+        <translation type="obsolete">SLUTT KORG</translation>
     </message>
     <message>
         <source>ENFORCE RANGE</source>
-        <translation>TVING OMRÅDE</translation>
+        <translation type="obsolete">TVING OMRÅDE</translation>
     </message>
     <message>
         <source>DEFAULT TYPE</source>
-        <translation>STANDARDTYPE</translation>
+        <translation type="obsolete">STANDARDTYPE</translation>
     </message>
     <message>
         <source>TRAFFIC REPORT</source>
-        <translation>TRAFIKKRAPPORT</translation>
+        <translation type="obsolete">TRAFIKKRAPPORT</translation>
     </message>
     <message>
         <source>MUSIC REPORT</source>
-        <translation>MUSIKKRAPPORT</translation>
+        <translation type="obsolete">MUSIKKRAPPORT</translation>
     </message>
     <message>
         <source>NOW &amp; NEXT</source>
-        <translation>NO &amp; NESTE</translation>
+        <translation type="obsolete">NO &amp; NESTE</translation>
     </message>
     <message>
         <source>&amp;Groups:</source>
@@ -5157,6 +5157,42 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     <message>
         <source>Delete Group</source>
         <translation>Slett gruppa</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enforce Range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now &amp; Next</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

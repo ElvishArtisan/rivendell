@@ -177,6 +177,15 @@
 	</tgroup>
       </table>
       <para>
+	The <computeroutput>Notification E-Mail Addresses</computeroutput> is
+	the e-mail address(es) to use when generating import reports with
+	<link linkend="sect.rdadmin.manage_hosts.configuring_dropboxes">
+	dropboxes</link> or with the 
+	<command>rdimport</command><manvolnum>1</manvolnum> command-line
+	tool. Multiple
+	e-mail address can be used by seperating each address with a comma.
+      </para>
+      <para>
 	The <computeroutput>Default Cart Type:</computeroutput> controls
 	which type of cart (<computeroutput>Audio</computeroutput> or
 	<computeroutput>Macro</computeroutput> RDLibrary will default to
