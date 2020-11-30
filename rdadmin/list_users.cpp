@@ -353,7 +353,7 @@ void ListUsers::RefreshItem(RDListViewItem *item)
 	item->setPixmap(0,*list_rss_map);
       }
       else {
-	if(q->value(4).toString()=="Y") {
+	if(q->value(6).toString()=="Y") {
 	  item->setPixmap(0,*list_localuser_map);
 	}
 	else {

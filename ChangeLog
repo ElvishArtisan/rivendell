@@ -20651,3 +20651,7 @@
 2020-11-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that caused new passwords to be
 	truncated to 16 characters.
+2020-11-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused to incorrect user type
+	icon to be displayed in the 'Rivendell User List' dialog after
+	modifying a user.
