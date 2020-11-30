@@ -71,6 +71,11 @@
 #define DEFAULT_MYSQL_COLLATION "utf8mb4_general_ci"
 
 /*
+ * Maximum Length of Rivendell User Passwords
+ */
+#define RD_MAX_PASSWORD_LENGTH 32
+
+/*
  * ALSA Settings
  */
 #define RD_ALSA_DEFAULT_PERIOD_QUANTITY 4

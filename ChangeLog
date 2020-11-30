@@ -20648,3 +20648,6 @@
 2020-11-24 Fred Gleason <fredg@paravelsystems.com>
 	* Documented user-facing changes to the 'Rivendell Group List' and
 	'Group' dialogs in rdadmin(1) in the Operations Guide.
+2020-11-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused new passwords to be
+	truncated to 16 characters.

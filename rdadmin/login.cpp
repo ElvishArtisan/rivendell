@@ -73,7 +73,7 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   //
   login_name_edit=new QLineEdit(this);
   login_name_edit->setGeometry(100,10,100,19);
-  login_name_edit->setMaxLength(16);
+  login_name_edit->setMaxLength(RD_MAX_PASSWORD_LENGTH);
   login_name_edit->setFocus();
   login_name_edit->setValidator(validator);
   QLabel *login_name_label=new QLabel(login_name_edit,tr("User &Name:"),this);

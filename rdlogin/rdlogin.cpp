@@ -127,6 +127,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Password
   //
   login_password_edit=new QLineEdit(this);
+  login_password_edit->setMaxLength(RD_MAX_PASSWORD_LENGTH);
   login_password_edit->setEchoMode(QLineEdit::Password);
   login_password_label=new QLabel(login_password_edit,tr("&Password:"),this);
   login_password_label->setFont(labelFont());

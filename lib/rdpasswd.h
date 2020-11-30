@@ -2,7 +2,7 @@
 //
 // Set Password Widget for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,31 +21,37 @@
 #ifndef RDPASSWD_H
 #define RDPASSWD_H
 
-#include <qlineedit.h>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include <rddialog.h>
 
 class RDPasswd : public RDDialog
 {
   Q_OBJECT
-  public:
-   RDPasswd(QString *password,QWidget *parent=0);
-   ~RDPasswd();
-   QSize sizeHint() const;
-   QSizePolicy sizePolicy() const;
+ public:
+  RDPasswd(QString *password,QWidget *parent=0);
+  ~RDPasswd();
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
 
-  protected:
+ private slots:
+  void okData();
+  void cancelData();
 
-  private slots:
-   void okData();
-   void cancelData();
+ protected:
+  void resizeEvent(QResizeEvent *e);
 
-  private:
-   QLineEdit *passwd_password_1_edit;
-   QLineEdit *passwd_password_2_edit;
-   QString *passwd_password;
+ private:
+  QLabel *passwd_password_1_label;
+  QLineEdit *passwd_password_1_edit;
+  QLabel *passwd_password_2_label;
+  QLineEdit *passwd_password_2_edit;
+  QString *passwd_password;
+  QPushButton *passwd_ok_button;
+  QPushButton *passwd_cancel_button;
 };
 
 
-#endif
-
+#endif  // RDPASSWD_H
