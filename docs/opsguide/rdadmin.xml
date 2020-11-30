@@ -1859,6 +1859,18 @@
 	  </varlistentry>
 	  <varlistentry>
 	    <term>
+	      <computeroutput>Send e-mail reports</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		A report will be sent to the <computeroutput>Notification
+		E-Mail Addresses</computeroutput> associated with the
+		destination group for each file processed by the dropbox.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
 	      <computeroutput>Force to Monaural</computeroutput>
 	    </term>
 	    <listitem>
