@@ -1,7 +1,38 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.4.1int6 --16 November 2020
+v3.4.1int7 -- 29 November 2020
+
+Changes:
+   Podcasting Subsystem. Major refactoring, with explicit support of
+   iTunes and Superfeed DTDs added. All feed elements, including XML elements,
+   are now statically served rather than dynamically generated.
+
+   RDLogManager. Added control to specify explicitly how Start
+   Times/Lengths are derived for Inline Traffic Events.
+
+   Dropboxes. Added the ability to generate e-mail reports for each
+   attempted file import.
+
+   GVC7000 Switcher Driver. Modified the 'GVC7000 Protocol' switcher
+   driver to better handle stacked commands.
+
+   WebGet. Modified the WebGet service to offer audio profiles when
+   exporting audio rather than having the user set individual export
+   parameters. Added the ability to upload audio files into specified
+   Rivendell groups.
+
+   Various bugfixes. See 'ChangeLog' for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 346, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v3.4.1int6 --19 November 2020
 
 Changes:
    Podcasting Subsystem. Major refactoring, with explicit support of
