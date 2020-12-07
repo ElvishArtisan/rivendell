@@ -173,6 +173,8 @@ class RDCart
   static unsigned readXml(std::vector<RDWaveData> *data,const QString &xml);
   static QString uniqueCartTitle(unsigned cartnum=0);
   static bool titleIsUnique(unsigned except_cartnum,const QString &str);
+  static QString ensureTitleIsUnique(unsigned except_cartnum,
+				     const QString &str);
   
  private:
   static QVariant GetXmlValue(const QString &tag,const QString &line);
@@ -180,8 +182,6 @@ class RDCart
   int GetNextFreeCut() const;
   RDCut::Validity ValidateCut(RDSqlQuery *q,bool enforce_length,
 			      unsigned length,bool *time_ok) const;
-  QString VerifyTitle(const QString &title) const;
-
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,unsigned value) const;
   void SetRow(const QString &param,const QDateTime &value) const;

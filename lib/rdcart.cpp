@@ -212,7 +212,7 @@ QString RDCart::title() const
 
 void RDCart::setTitle(const QString &title)
 {
-  SetRow("TITLE",VerifyTitle(title));
+  SetRow("TITLE",title);
   metadata_changed=true;
 }
 
@@ -943,7 +943,7 @@ void RDCart::setMetadata(const RDWaveData *data)
 {
   QString sql="update CART set ";
   if(!data->title().isEmpty()) {
-    sql+=QString("TITLE=\"")+RDEscapeString(VerifyTitle(data->title()))+"\",";
+    sql+=QString("TITLE=\"")+RDEscapeString(data->title())+"\",";
   }
   if(!data->artist().isEmpty()) {
     sql+=QString("ARTIST=\"")+RDEscapeString(data->artist())+"\",";
@@ -2153,6 +2153,34 @@ bool RDCart::titleIsUnique(unsigned except_cartnum,const QString &str)
 }
 
 
+QString RDCart::ensureTitleIsUnique(unsigned except_cartnum,
+				    const QString &str)
+{
+  QString ret=str;
+  QString sql;
+  RDSqlQuery *q;
+  int n=1;
+
+  while(n<1000000) {
+    sql=QString("select ")+
+      "NUMBER "+  // 00
+      "from CART where "+
+      "(TITLE=\""+RDEscapeString(ret)+"\") && "+
+      QString().sprintf("(NUMBER!=%u)",except_cartnum);
+    q=new RDSqlQuery(sql);
+    if(!q->first()) {
+      delete q;
+      return ret;
+    }
+    delete q;
+    ret=str+QString().sprintf(" [%d]",n++);
+  }
+
+  return QString();
+
+}
+
+
 QVariant RDCart::GetXmlValue(const QString &tag,const QString &line)
 {
   bool ok=false;
@@ -2306,33 +2334,6 @@ RDCut::Validity RDCart::ValidateCut(RDSqlQuery *q,bool enforce_length,
     }
   }
 
-  return ret;
-}
-
-
-QString RDCart::VerifyTitle(const QString &title) const
-{
-  QString ret=title;
-  QString sql;
-  RDSqlQuery *q;
-  RDSystem *system=new RDSystem();
-
-  if(!system->allowDuplicateCartTitles()) {
-    int n=1;
-    while(1==1) {
-      sql=QString("select NUMBER from CART where ")+
-	"(TITLE=\""+RDEscapeString(ret)+"\")&&"+
-	QString().sprintf("(NUMBER!=%u)",cart_number);
-      q=new RDSqlQuery(sql);
-      if(!q->first()) {
-	delete q;
-	return ret;
-      }
-      delete q;
-      ret=title+QString().sprintf(" [%d]",n++);
-    }
-  }
-  delete system;
   return ret;
 }
 
