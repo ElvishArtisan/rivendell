@@ -2321,12 +2321,12 @@ QString RDCart::VerifyTitle(const QString &title) const
     int n=1;
     while(1==1) {
       sql=QString("select NUMBER from CART where ")+
-	"(TITLE=\""+RDEscapeString(ret)+"\")&&"+
-	QString().sprintf("(NUMBER!=%u)",cart_number);
+       "(TITLE=\""+RDEscapeString(ret)+"\")&&"+
+       QString().sprintf("(NUMBER!=%u)",cart_number);
       q=new RDSqlQuery(sql);
       if(!q->first()) {
-	delete q;
-	return ret;
+       delete q;
+       return ret;
       }
       delete q;
       ret=title+QString().sprintf(" [%d]",n++);

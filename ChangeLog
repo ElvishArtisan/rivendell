@@ -20660,3 +20660,10 @@
 	Configuration' dialog in rdadmin(1) in the Operations Guide.
 2020-11-29 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.1int7.
+2020-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDCart::ensureTitleIsUnique()' static method.
+	* Removed code to make cart titles automatically unique from
+	'RDCart::setTitle()'.
+	* Refactored rdimport(1) to allow detection of duplicate titles.
+2020-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Reverted changed from 2020-12-09.
