@@ -961,7 +961,23 @@ void MainObject::ProcessFileEntry(const QString &entry)
 	  VerifyFile(QString::fromUtf8(globbuf.gl_pathv[i]),&import_cart_number);
 	}
 	else {
-	  ImportFile(QString::fromUtf8(globbuf.gl_pathv[i]),&import_cart_number);
+	  //ImportFile(QString::fromUtf8(globbuf.gl_pathv[i]),&import_cart_number);
+	  switch(ImportFile(QString::fromUtf8(globbuf.gl_pathv[i]),&import_cart_number)) {
+	    case MainObject::Success:
+	      break;
+	      
+ 	    case MainObject::DuplicateTitle:
+	      break;
+
+	    case MainObject::FileBad:
+	      break;
+	      
+	    case MainObject::NoCart:
+	      break;
+
+	    case MainObject::NoCut:
+	      break;
+	  }
 	}
       }
     }
@@ -974,69 +990,31 @@ void MainObject::ProcessFileEntry(const QString &entry)
 MainObject::Result MainObject::ImportFile(const QString &filename,
 					  unsigned *cartnum)
 {
-  bool cart_created=false;
-  QString effective_filename;
   bool found_cart=false;
-  QDateTime dt;
-  bool ok=false;
-  RDAudioImport::ErrorCode conv_err;
-  RDAudioConvert::ErrorCode audio_conv_err;
-  RDGroup *effective_group=new RDGroup(import_group->name());
+  bool cart_created=false;
   RDWaveData *wavedata=new RDWaveData();
   RDWaveFile *wavefile=new RDWaveFile(filename);
+  RDGroup *effective_group=new RDGroup(import_group->name());
   QString err_msg;
+  RDAudioImport::ErrorCode conv_err;
+  RDAudioConvert::ErrorCode audio_conv_err;
+  QDateTime dt;
+  QString sql;
+  RDSqlQuery *q=NULL;
+  bool ok=false;
 
-  if(wavefile->openWave(wavedata)) {
-    effective_filename=filename;
+  //
+  // Open the file
+  //
+  if(!OpenAudioFile(wavefile,wavedata)) {
+    delete wavedata;
+    delete wavefile;
+    return MainObject::FileBad;
   }
-  else {
-    if(import_fix_broken_formats) {
-      Log(LOG_WARNING,QString().sprintf(" File \"%s\" appears to be malformed, trying workaround ... ",
-		       (const char *)RDGetBasePart(filename).toUtf8()));
-      delete wavefile;
-      if((wavefile=FixFile(filename,wavedata))==NULL) {
-	Log(LOG_WARNING,QString().sprintf("failed.\n"));
-	Log(LOG_WARNING,QString().sprintf(
-		" File \"%s\" is not readable or not a recognized format, skipping...\n",
-		(const char *)RDGetBasePart(filename).toUtf8()));
-	if(!import_run) {
-	  NormalExit();
-	}
-	if(!import_temp_fix_filename.isEmpty()) {
-	  QFile::remove(import_temp_fix_filename);
-	  import_temp_fix_filename="";
-	}
-	import_failed_imports++;
-	import_journal->addFailure(effective_group->name(),filename,
-				   tr("unknown/unrecognized file format"));
-	delete wavefile;
-	delete wavedata;
-	delete effective_group;
-	return MainObject::FileBad;
-      }
-      Log(LOG_WARNING,QString().sprintf("success.\n"));
-      effective_filename=import_temp_fix_filename;
-    }
-    else {
-      Log(LOG_WARNING,QString().sprintf(
-        " File \"%s\" is not readable or not a recognized format, skipping...\n",
-        (const char *)RDGetBasePart(filename).toUtf8()));
-      if(!import_run) {
-	NormalExit();
-      }
-      if(!import_temp_fix_filename.isEmpty()) {
-	QFile::remove(import_temp_fix_filename);
-	import_temp_fix_filename="";
-      }
-      import_failed_imports++;
-      import_journal->addFailure(effective_group->name(),filename,
-				 tr("unknown/unrecognized file format"));
-      delete wavefile;
-      delete wavedata;
-      delete effective_group;
-      return MainObject::FileBad;
-    }
-  }
+
+  //
+  // Get file-sourced metadata
+  //
   if(!import_metadata_pattern.isEmpty()) {
     QString groupname=effective_group->name();
     found_cart=RunPattern(import_metadata_pattern,RDGetBasePart(filename),
@@ -1044,37 +1022,53 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     if(wavedata->validateDateTimes()) {
       Log(LOG_WARNING,QString().sprintf(
 	      " File \"%s\": End date/time cannot be prior to start date/time, ignoring...\n",
-	      (const char *)filename.toUtf8()));
+	      filename.toUtf8().constData()));
     }
+
+    //
+    // Process Group override
+    //
     if(groupname!=effective_group->name()) {
       delete effective_group;
       effective_group=new RDGroup(groupname);
       if(!effective_group->exists()) {
 	Log(LOG_WARNING,QString().sprintf(" Specified group \"%s\" from file \"%s\" does not exist, using default group...\n",
-		(const char *)groupname,(const char *)filename.toUtf8()));
+					  groupname.toUtf8().constData(),
+					  filename.toUtf8().constData()));
 	delete effective_group;
 	effective_group=new RDGroup(import_group->name());
       }
     }
+
+    //
+    // Ensure that we have at least a Title
+    //
     if(wavedata->metadataFound()&&wavedata->title().isEmpty()) {
       wavedata->setTitle(effective_group->generateTitle(filename));
     }
   }
 
+  //
+  // Get external XML metadata
+  //
   if(import_xml) {
     ReadXmlFile(filename,wavedata);
   }
 
+  //
+  // Get CartChunk metadata
+  //
   if(import_use_cartchunk_cutid||found_cart) {
     *cartnum=0;
-    sscanf(wavedata->cutId(),"%u",cartnum);
+    *cartnum=wavedata->cutId().toUInt(&ok);
+    //sscanf(wavedata->cutId(),"%u",cartnum);
     (*cartnum)+=import_cart_number_offset;
-    if((*cartnum==0)||(*cartnum>999999)||
+    if((!ok)||(*cartnum==0)||(*cartnum>999999)||
        (effective_group->enforceCartRange()&&
 	(!effective_group->cartNumberValid(*cartnum)))) {
       Log(LOG_WARNING,QString().sprintf(
 	      " File \"%s\" has an invalid or out of range Cart Number, skipping...\n",
-	      (const char *)RDGetBasePart(filename).toUtf8()));
+	      RDGetBasePart(filename).toUtf8().constData()));
       wavefile->closeWave();
       import_failed_imports++;
       import_journal->addFailure(effective_group->name(),filename,
@@ -1085,6 +1079,10 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       return MainObject::FileBad;
     }
   }
+
+  //
+  // Attempt to find a free cart
+  //
   if(*cartnum==0) {
     *cartnum=effective_group->nextFreeCart();
   }
@@ -1110,16 +1108,59 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     }
     ErrorExit(RDApplication::ExitImportFailed);
   }
+
+  //
+  // Prepare destination cart/cut
+  //
   if(import_delete_cuts) {
     DeleteCuts(import_cart_number);
   }
-  if (RDCart::exists(*cartnum)) {
+  if(RDCart::exists(*cartnum)) {
     cart_created=false;
   }
   else {
+    if((wavedata->title().length()==0)||
+       ((wavedata->title().length()>0)&&(wavedata->title()[0] == '\0'))) {
+      wavedata->setTitle(effective_group->generateTitle(filename));
+    }
+
+    if(!rda->system()->allowDuplicateCartTitles()) {
+      if(rda->system()->fixDuplicateCartTitles()) {
+	wavedata->setTitle(RDCart::ensureTitleIsUnique(0,wavedata->title()));
+      }
+      else {
+	sql=QString("select ")+
+	  "NUMBER "+  // 00
+	  "from CART where "+
+	  "TITLE=\""+RDEscapeString(wavedata->title())+"\"";
+	q=new RDSqlQuery(sql);
+	if(q->first()) {
+	  QString err_msg=QString().
+	    sprintf(" File \"%s\" has duplicate title \"%s\", skipping...\n",
+		    RDGetBasePart(filename).toUtf8().constData(),
+		    wavedata->title().toUtf8().constData());
+	  Log(LOG_WARNING,err_msg);
+	  import_journal->addFailure(effective_group->name(),filename,
+				     tr("duplicate title"));
+	  if(!import_output_pattern.isEmpty()) {
+	    printf("Import failed: duplicate title \"%s\"\n",
+		   wavedata->title().toUtf8().constData());
+	  }
+	  delete q;
+	  delete wavedata;
+	  delete wavefile;
+	  return MainObject::DuplicateTitle;
+	}
+	delete q;
+      }
+    }
     cart_created=
       RDCart::create(effective_group->name(),RDCart::Audio,&err_msg,*cartnum)!=0;
   }
+
+  //
+  // Create cart/cut
+  //
   RDCart *cart=new RDCart(*cartnum);
   int cutnum=
     cart->addCut(import_format,import_bitrate,import_channels);
@@ -1132,6 +1173,10 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     return MainObject::NoCut;
   }
   RDCut *cut=new RDCut(*cartnum,cutnum);
+
+  //
+  // Import audio
+  //
   RDAudioImport *conv=new RDAudioImport(this);
   conv->setCartNumber(cart->number());
   conv->setCutNumber(cutnum);
@@ -1150,26 +1195,14 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   settings->setNormalizationLevel(import_normalization_level/100);
   settings->setAutotrimLevel(import_autotrim_level/100);
   conv->setDestinationSettings(settings);
-  conv->setUseMetadata(cart_created);
-  if(wavedata->title().length()==0 || ( (wavedata->title().length()>0) && (wavedata->title()[0] == '\0')) ) {
-    Log(LOG_INFO,QString().sprintf(" Importing file \"%s\" to cart %06u ... ",
-		(const char *)RDGetBasePart(filename).toUtf8(),*cartnum));
+  conv->setUseMetadata(false);
+  if(import_string_title.isNull()) {
+    Log(LOG_INFO,QString().
+	sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
+		RDGetBasePart(filename).toUtf8().constData(),
+		wavedata->title().stripWhiteSpace().toUtf8().constData(),
+		*cartnum));
   }
-  else {
-    if(import_string_title.isNull()) {
-      Log(LOG_INFO,QString().sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
-		  (const char *)RDGetBasePart(filename).toUtf8(),
-		  (const char *)wavedata->title().stripWhiteSpace().toUtf8(),
-				     *cartnum));
-    }
-    else {
-      Log(LOG_INFO,QString().sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
-		  (const char *)RDGetBasePart(filename).toUtf8(),
-		  (const char *)import_string_title.stripWhiteSpace().toUtf8(),
-		  *cartnum));
-    }
-  }
-
   switch(conv_err=conv->runImport(rda->user()->name(),rda->user()->password(),
 				  &audio_conv_err)) {
   case RDAudioImport::ErrorOk:
@@ -1205,38 +1238,17 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     return MainObject::FileBad;
     break;
   }
-  if(wavedata->metadataFound()) {
-    if(import_autotrim_level!=0) {
-      wavedata->setStartPos(-1);
-      wavedata->setEndPos(-1);
-    }
-    if(cart_created) {
-      cart->setMetadata(wavedata);
-    }
-    cut->setMetadata(wavedata);
+
+  if(import_autotrim_level!=0) {
+    wavedata->setStartPos(-1);
+    wavedata->setEndPos(-1);
   }
+  if(cart_created) {
+    cart->setMetadata(wavedata);
+  }
+  cut->setMetadata(wavedata);
   cut->autoSegue(import_segue_level,import_segue_length,rda->station(),
 		 rda->user(),rda->config());
-  if((wavedata->title().length()==0)||
-     ((wavedata->title().length()>0)&&(wavedata->title()[0] == '\0'))) {
-    QString title=effective_group->generateTitle(filename);
-    if((!wavedata->metadataFound())&&(!wavedata->description().isEmpty())) {
-      cut->setDescription(title);
-    }
-    if(cart_created) {
-      cart->setTitle(title);
-    }
-  }
-  if(import_title_from_cartchunk_cutid) {    
-    if((wavedata->cutId().length()>0)&&(wavedata->cutId()[0]!='\0')) {
-      if(cut->description().isEmpty()&&
-	 (!wavedata->metadataFound())&&
-	 (!wavedata->description().isEmpty())) {
-	cut->setDescription(wavedata->cutId());
-      }
-      cart->setTitle(wavedata->cutId());
-    }
-  }
   if(cut->description().isEmpty()) {      // Final backstop, so we don't end up
     cut->setDescription(cart->title());   // with an empty description field.
   }
@@ -1421,6 +1433,56 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 }
 
 
+bool MainObject::OpenAudioFile(RDWaveFile *wavefile,RDWaveData *wavedata)
+{
+  QString orig_filename=wavefile->getName();
+
+  if(!wavefile->openWave(wavedata)) {
+    if(import_fix_broken_formats) {
+      Log(LOG_WARNING,QString().sprintf(" File \"%s\" appears to be malformed, trying workaround ... ",
+		   RDGetBasePart(orig_filename).toUtf8().constData()));
+      delete wavefile;
+      if((wavefile=FixFile(orig_filename,wavedata))==NULL) {
+	Log(LOG_WARNING,QString().sprintf("failed.\n"));
+	Log(LOG_WARNING,QString().sprintf(
+		" File \"%s\" is not readable or not a recognized format, skipping...\n",
+		RDGetBasePart(orig_filename).toUtf8().constData()));
+	if(!import_run) {
+	  NormalExit();
+	}
+	if(!import_temp_fix_filename.isEmpty()) {
+	  QFile::remove(import_temp_fix_filename);
+	  import_temp_fix_filename="";
+	}
+	import_failed_imports++;
+	import_journal->addFailure(import_group->name(),orig_filename,
+				   tr("unknown/unrecognized file format"));
+	return MainObject::FileBad;
+      }
+      Log(LOG_WARNING,QString().sprintf("success.\n"));
+    }
+    else {
+      Log(LOG_WARNING,QString().sprintf(
+        " File \"%s\" is not readable or not a recognized format, skipping...\n",
+        RDGetBasePart(wavefile->getName()).toUtf8().constData()));
+      if(!import_run) {
+	NormalExit();
+      }
+      if(!import_temp_fix_filename.isEmpty()) {
+	QFile::remove(import_temp_fix_filename);
+	import_temp_fix_filename="";
+      }
+      import_failed_imports++;
+      import_journal->addFailure(import_group->name(),orig_filename,
+				 tr("unknown/unrecognized file format"));
+      return MainObject::FileBad;
+    }
+  }
+
+  return true;
+}
+
+
 void MainObject::VerifyFile(const QString &filename,unsigned *cartnum)
 {
   bool found=false;
@@ -1455,6 +1517,7 @@ void MainObject::VerifyFile(const QString &filename,unsigned *cartnum)
 	      WriteTimestampCache(filename,file->lastModified());
 	      break;
 	      
+ 	    case MainObject::DuplicateTitle:
 	    case MainObject::FileBad:
 	      (*ci)->failed=true;
 	      (*ci)->checked=true;

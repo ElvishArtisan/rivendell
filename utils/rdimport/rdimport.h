@@ -59,10 +59,11 @@ class MainObject : public QObject
   void userData();
 
  private:
-  enum Result {Success=0,FileBad=1,NoCart=2,NoCut=3};
+  enum Result {Success=0,FileBad=1,NoCart=2,NoCut=3,DuplicateTitle=4};
   void RunDropBox();
   void ProcessFileEntry(const QString &entry);
   MainObject::Result ImportFile(const QString &filename,unsigned *cartnum);
+  bool OpenAudioFile(RDWaveFile *wavefile,RDWaveData *wavedata);
   void VerifyFile(const QString &filename,unsigned *cartnum);
   RDWaveFile *FixFile(const QString &filename,RDWaveData *wavedata);
   bool IsWav(int fd);
