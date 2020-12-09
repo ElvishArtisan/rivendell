@@ -20666,7 +20666,7 @@
 	'RDCart::setTitle()'.
 	* Refactored rdimport(1) to allow detection of duplicate titles.
 2020-12-09 Fred Gleason <fredg@paravelsystems.com>
-	* Reverted changed from 2020-12-09.
+	* Reverted changes from 2020-12-07.
 2020-12-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'Webget' service that caused it to automatically
 	unique-ify the title even when 'Auto-Correct Duplicate Cart Titles'
