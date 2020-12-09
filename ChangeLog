@@ -20678,3 +20678,5 @@
 	and 'Auto-Correct Duplicate Cart Titles' checkboxes on the
 	'System-Wide Settings' dialog in rdadmin(1) as well as the
 	Operations Guide.
+2020-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.1int8.
