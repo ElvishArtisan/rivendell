@@ -20673,3 +20673,8 @@
 	in rdadmin(1) was unchecked.
 2020-12-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in 'lib/rdcart.h' that broke the build.
+2020-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a deprecation warning for the 'Allow Duplicate Cart Titles'
+	and 'Auto-Correct Duplicate Cart Titles' checkboxes on the
+	'System-Wide Settings' dialog in rdadmin(1) as well as the
+	Operations Guide.

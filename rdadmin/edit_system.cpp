@@ -283,6 +283,16 @@ QSizePolicy EditSystem::sizePolicy() const
 
 void EditSystem::duplicatesCheckedData(bool state)
 {
+  if((!state)&&edit_system->allowDuplicateCartTitles()) {
+    if(QMessageBox::warning(this,"RDAdmin - "+tr("Deprecation Warning"),
+			    tr("The ability to disallow duplicate cart titles in Rivendell <strong>has been deprecated</strong> and may be removed from future versions; it is included strictly to keep existing setups working. Use of it can cause other features within Rivendell to operate unreliably. It should never be used in new Rivendell setups!")+"<p>"+
+			    tr("Attempt to disallow duplicate cart titles anyway?"),
+			    QMessageBox::No,QMessageBox::Yes)!=QMessageBox::Yes) {
+      edit_duplicate_carts_box->setChecked(true);
+      return;
+    }
+  }
+
   edit_fix_duplicate_carts_box->setDisabled(state);
   edit_fix_duplicate_carts_label->setDisabled(state);
 }

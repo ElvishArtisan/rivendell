@@ -2518,10 +2518,8 @@
       system and not altered thereafter.
     </para>
     <warning>
-      <para>
-	Changing this setting on a system with existing audio in the
-	audio store may result in incorrect play-out of that audio!
-      </para>
+      Changing this setting on a system with existing audio in the
+      audio store may result in incorrect play-out of that audio!
     </warning>
     <para>
       The <computeroutput>Allow Duplicate Cart Titles</computeroutput> box,
@@ -2533,6 +2531,14 @@
       &quot;<userinput>[n]</userinput>&quot;, (where <userinput>n</userinput>
       is an integer) to the end of the title string.
     </para>
+    <warning>
+      The ability to disallow duplicate cart titles in Rivendell
+      <emphasis role="bold">has been deprecated</emphasis>
+      and may be removed from future versions; it is included
+      strictly to keep existing setups working. Use of it can cause other
+      features within Rivendell to operate unreliably. It should never be
+      used in new Rivendell setups!
+    </warning>
     <para>
       If the <computeroutput>Show User List in RDLogin</computeroutput> box
       is ticked, rdlogin(1) will require users to enter their user name as
@@ -2706,9 +2712,14 @@
   <sect1 xml:id="sect.rdadmin.configuring_webget">
     <title>Configuring Webget</title>
     <para>
-      Configuration of the Webget service consists of two tasks:
+      Configuration of the Webget service consists of three tasks:
     </para>
     <itemizedlist>
+      <listitem>
+	<para>
+	  Configure Rivendell to disallow duplicate cart titles.
+	</para>
+      </listitem>
       <listitem>
 	<para>
 	  Configure a set of Encoder Formats
@@ -2720,6 +2731,13 @@
 	</para>
       </listitem>
     </itemizedlist>
+    <sect2 xml:id="sect.rdadmin.disallowing_duplicate_cart_titles">
+      <title>Disallowing Duplicate Cart Titles</title>
+      <para>
+	See &quot;Allow Duplicate Cart Titles&quot; checkbox in
+	<xref linkend="sect.rdadmin.manage_system_settings" />.
+      </para>
+    </sect2>
     <sect2 xml:id="sect.rdadmin.configuring_encoder_formats">
       <title>Configuring Encoder Formats</title>
       <para>

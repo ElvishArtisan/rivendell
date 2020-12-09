@@ -4213,6 +4213,18 @@ List</source>
         <source>Origin E-Mail Address</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Deprecation Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The ability to disallow duplicate cart titles in Rivendell &lt;strong&gt;has been deprecated&lt;/strong&gt; and may be removed from future versions; it is included strictly to keep existing setups working. Use of it can cause other features within Rivendell to operate unreliably. It should never be used in new Rivendell setups!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attempt to disallow duplicate cart titles anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditTtys</name>
