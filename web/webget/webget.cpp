@@ -33,6 +33,8 @@
 
 #include <rdapplication.h>
 #include <rdescape_string.h>
+#include <rdgroup.h>
+#include <rdsendmail.h>
 #include <rdweb.h>
 
 #include "webget.h"
@@ -341,6 +343,14 @@ void MainObject::GetAudio()
 
 void MainObject::PutAudio()
 {
+  QString sql;
+  RDSqlQuery *q=NULL;
+  QString err_msg;
+  RDGroup *group;
+
+  //
+  // Verify permissions
+  //
   if(!rda->user()->createCarts()) {
     rda->syslog(LOG_WARNING,"user \"%s\" lacks CreateCarts permission",
 		rda->user()->name().toUtf8().constData());
@@ -356,6 +366,9 @@ void MainObject::PutAudio()
     Exit(0);
   }
 
+  //
+  // Get user values
+  //
   QString group_name;
   if(!webget_post->getValue("group",&group_name)) {
     rda->syslog(LOG_WARNING,"missing \"group\" in put submission");
@@ -366,6 +379,14 @@ void MainObject::PutAudio()
   if(!rda->user()->groupAuthorized(group_name)) {
     rda->syslog(LOG_WARNING,"user \"%s\" lacks permission for group \"%s\"",
 		rda->user()->name().toUtf8().constData(),
+		group_name.toUtf8().constData());
+    rda->logAuthenticationFailure(webget_post->clientAddress());
+    ServeLogin(403);
+    Exit(0);
+  }
+  group=new RDGroup(group_name);
+  if(!group->exists()) {
+    rda->syslog(LOG_WARNING,"group \"%s\" does not exist",
 		group_name.toUtf8().constData());
     rda->logAuthenticationFailure(webget_post->clientAddress());
     ServeLogin(403);
@@ -387,6 +408,52 @@ void MainObject::PutAudio()
     Exit(0);
   }
 
+  //
+  // Generate Title
+  //
+  QStringList f0=filename.split("/",QString::SkipEmptyParts);
+  QStringList f1=f0.last().split(".",QString::KeepEmptyParts);
+  QString short_name=f0.last();
+  f1.removeLast();
+  QString title=f1.join(".");
+
+  //
+  // Validate title uniqueness
+  //
+  if((!rda->system()->allowDuplicateCartTitles())&&
+     (!rda->system()->fixDuplicateCartTitles())) {
+    sql=QString("select ")+
+      "NUMBER "+  // 00
+      "from CART where "+
+      "TITLE=\""+RDEscapeString(title)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      QString body;
+      body+="Rivendell File Import Report\n";
+      body+="\n";
+      body+="IMPORT FAILED!\n";
+      body+="\n";
+      body+="Filename: "+short_name+"\n";
+      body+="Submitted by: "+rda->user()->emailContact()+"\n";
+      body+="Group: "+group_name+"\n";
+      body+="Reason: Title exists\n";
+      rda->syslog(LOG_WARNING,
+	  "failed import of file \"%s\" from \"%s\" at %s, title already exists",
+		  short_name.toUtf8().constData(),
+		  rda->user()->name().toUtf8().constData(),
+		  webget_post->clientAddress().toString().toUtf8().constData());
+      RDSendMail(&err_msg,tr("Rivendell import FAILURE for file: ")+short_name,
+		 body,rda->system()->originEmailAddress(),
+		 group->notifyEmailAddress());
+      TextExit(tr("Audio import failed: title already exists!"),400,
+	       LINE_NUMBER);
+    }
+    delete q;
+  }
+
+  //
+  // Import audio
+  //
   QStringList args;
 
   args.push_back(QString("--ticket=")+webget_ticket+":"+
@@ -397,6 +464,7 @@ void MainObject::PutAudio()
     args.push_back("--to-mono");
   }
   args.push_back("--output-pattern=Added cart %n [%t]");
+  args.push_back("--set-string-title="+title);
   args.push_back(group_name);
   args.push_back(filename);
   QProcess *proc=new QProcess(this);
@@ -447,8 +515,8 @@ void MainObject::PutAudio()
   }
 
   QString resultstr=proc->readAllStandardOutput();
-  rda->syslog(LOG_INFO,"%s from user %s at %s",
-	      resultstr.toUtf8().constData(),
+  rda->syslog(LOG_INFO,"%s from user \"%s\" at %s",
+	      resultstr.trimmed().toUtf8().constData(),
 	      rda->user()->name().toUtf8().constData(),
 	      webget_post->clientAddress().toString().toUtf8().constData());
   TextExit(resultstr.toUtf8().constData(),200,LINE_NUMBER);
