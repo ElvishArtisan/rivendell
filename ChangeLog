@@ -20683,3 +20683,5 @@
 2020-12-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdimport(1) that caused generation of double
 	error messages when processing invalid audio files.
+2020-12-10 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.1int9.
