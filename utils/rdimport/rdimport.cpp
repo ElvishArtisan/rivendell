@@ -1457,7 +1457,7 @@ bool MainObject::OpenAudioFile(RDWaveFile *wavefile,RDWaveData *wavedata)
 	import_failed_imports++;
 	import_journal->addFailure(import_group->name(),orig_filename,
 				   tr("unknown/unrecognized file format"));
-	return MainObject::FileBad;
+	return false;
       }
       Log(LOG_WARNING,QString().sprintf("success.\n"));
     }
@@ -1475,7 +1475,7 @@ bool MainObject::OpenAudioFile(RDWaveFile *wavefile,RDWaveData *wavedata)
       import_failed_imports++;
       import_journal->addFailure(import_group->name(),orig_filename,
 				 tr("unknown/unrecognized file format"));
-      return MainObject::FileBad;
+      return false;
     }
   }
 
