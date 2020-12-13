@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.4.1int9 -- 10 December 2020
+v3.5.0 -- 12 December 2020
 
 Changes:
    Podcasting Subsystem. Major refactoring, with explicit support of
@@ -9,7 +9,8 @@ Changes:
    are now statically served rather than dynamically generated.
 
    RDLogManager. Added control to specify explicitly how Start
-   Times/Lengths are derived for Inline Traffic Events.
+   Times/Lengths are derived for Inline Events (traffic, markers and
+   voice tracks).
 
    Dropboxes. Added the ability to generate e-mail reports for each
    attempted file import.
@@ -21,6 +22,8 @@ Changes:
    exporting audio rather than having the user set individual export
    parameters. Added the ability to upload audio files into specified
    Rivendell groups.
+
+   Audio Library. Deprecated the ability to enforce unique cart titles.
 
    Various bugfixes. See 'ChangeLog' for details.
 
