@@ -266,7 +266,7 @@ korger som er ugyldige for denne tenesta!</translation>
     </message>
     <message>
         <source>Voice Track</source>
-        <translation>Røyst-spor</translation>
+        <translation type="obsolete">Røyst-spor</translation>
     </message>
     <message>
         <source>The log contains carts that are disabled
@@ -308,15 +308,15 @@ skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>SPEL</translation>
+        <translation type="obsolete">SPEL</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>STOPP</translation>
+        <translation type="obsolete">STOPP</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>KRYSSTON</translation>
+        <translation type="obsolete">KRYSSTON</translation>
     </message>
     <message>
         <source>OVERLAP</source>
@@ -324,59 +324,59 @@ skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>[cart not found]</source>
-        <translation>[fann ikkje korga]</translation>
+        <translation type="obsolete">[fann ikkje korga]</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation>MARKØR</translation>
+        <translation type="obsolete">MARKØR</translation>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>SPOR</translation>
+        <translation type="obsolete">SPOR</translation>
     </message>
     <message>
         <source>LOG CHAIN</source>
-        <translation>LOGGKJEDE</translation>
+        <translation type="obsolete">LOGGKJEDE</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation>LENKJE</translation>
+        <translation type="obsolete">LENKJE</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[musikkimport]</translation>
+        <translation type="obsolete">[musikkimport]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[trafikkimport]</translation>
+        <translation type="obsolete">[trafikkimport]</translation>
     </message>
     <message>
         <source>Manual</source>
-        <translation>Manuelt</translation>
+        <translation type="obsolete">Manuelt</translation>
     </message>
     <message>
         <source>Traffic</source>
-        <translation>Trafikk</translation>
+        <translation type="obsolete">Trafikk</translation>
     </message>
     <message>
         <source>Music</source>
-        <translation>Musikk</translation>
+        <translation type="obsolete">Musikk</translation>
     </message>
     <message>
         <source>RDLogManager</source>
-        <translation>RDLogManager</translation>
+        <translation type="obsolete">RDLogManager</translation>
     </message>
     <message>
         <source>Voice Tracker</source>
-        <translation>Spor røyst</translation>
+        <translation type="obsolete">Spor røyst</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
-        <translation>--- slutt på loggen ---</translation>
+        <translation type="obsolete">--- slutt på loggen ---</translation>
     </message>
     <message>
         <source>[INVALID CART]</source>
-        <translation>[UGYLDIG KORG]</translation>
+        <translation type="obsolete">[UGYLDIG KORG]</translation>
     </message>
     <message>
         <source>Delete on</source>
@@ -395,19 +395,7 @@ skrudd av for denne tenesta!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Selected:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to save log, audio deletion error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Link Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Len</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -439,60 +427,20 @@ skrudd av for denne tenesta!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart</source>
-        <translation type="unfinished">Korg</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Korg</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Tittel</translation>
+        <translation type="obsolete">Tittel</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation type="unfinished">Artist</translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Artist</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished">Selskap</translation>
-    </message>
-    <message>
-        <source>Source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ext Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Selskap</translation>
     </message>
     <message>
         <source>Run Length</source>
@@ -507,15 +455,7 @@ skrudd av for denne tenesta!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sch. Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Estimated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Est. Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

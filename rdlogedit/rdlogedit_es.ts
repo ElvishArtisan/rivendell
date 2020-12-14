@@ -267,31 +267,31 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>REPROD</translation>
+        <translation type="obsolete">REPROD</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>PARAR</translation>
+        <translation type="obsolete">PARAR</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>SEGUE</translation>
+        <translation type="obsolete">SEGUE</translation>
     </message>
     <message>
         <source>[cart not found]</source>
-        <translation>[cartucho no encontrado]</translation>
+        <translation type="obsolete">[cartucho no encontrado]</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation>MARCADOR</translation>
+        <translation type="obsolete">MARCADOR</translation>
     </message>
     <message>
         <source>LOG CHAIN</source>
-        <translation>ENCADENAR A LISTA</translation>
+        <translation type="obsolete">ENCADENAR A LISTA</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
-        <translation>--- fin de lista ---</translation>
+        <translation type="obsolete">--- fin de lista ---</translation>
     </message>
     <message>
         <source>SOURCE</source>
@@ -299,27 +299,27 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Manual</source>
-        <translation>Manual</translation>
+        <translation type="obsolete">Manual</translation>
     </message>
     <message>
         <source>Traffic</source>
-        <translation>Tráfico</translation>
+        <translation type="obsolete">Tráfico</translation>
     </message>
     <message>
         <source>Music</source>
-        <translation>Música</translation>
+        <translation type="obsolete">Música</translation>
     </message>
     <message>
         <source>RDLogManager</source>
-        <translation>RDLogManager</translation>
+        <translation type="obsolete">RDLogManager</translation>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>PISTA</translation>
+        <translation type="obsolete">PISTA</translation>
     </message>
     <message>
         <source>Voice Tracker</source>
-        <translation>Pista de voz</translation>
+        <translation type="obsolete">Pista de voz</translation>
     </message>
     <message>
         <source>Tracks:</source>
@@ -327,19 +327,19 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Voice Track</source>
-        <translation>Pista de voz</translation>
+        <translation type="obsolete">Pista de voz</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation>ENLACE</translation>
+        <translation type="obsolete">ENLACE</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[importar tráfico]</translation>
+        <translation type="obsolete">[importar tráfico]</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[importar música]</translation>
+        <translation type="obsolete">[importar música]</translation>
     </message>
     <message>
         <source>The log contains carts that are disabled
@@ -353,7 +353,7 @@ desactivados para el servicio actual!
     </message>
     <message>
         <source>[INVALID CART]</source>
-        <translation>[CARTUCHO INVÁLIDO]</translation>
+        <translation type="obsolete">[CARTUCHO INVÁLIDO]</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -385,7 +385,7 @@ desactivados para el servicio actual!
     </message>
     <message>
         <source>Selected:</source>
-        <translation>Seleccionado:</translation>
+        <translation type="obsolete">Seleccionado:</translation>
     </message>
     <message>
         <source>Delete on</source>
@@ -398,14 +398,6 @@ desactivados para el servicio actual!
     <message>
         <source>Unable to save log, audio deletion error!</source>
         <translation>No es posible guardar la Lista, ¡error por eliminación de audio!</translation>
-    </message>
-    <message>
-        <source>Link Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Len</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save</source>
@@ -437,59 +429,23 @@ desactivados para el servicio actual!
     </message>
     <message>
         <source>Time</source>
-        <translation type="unfinished">Tiempo</translation>
-    </message>
-    <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Tiempo</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation type="unfinished">Cartucho</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Cartucho</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Título</translation>
+        <translation type="obsolete">Título</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation type="unfinished">Artista</translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Artista</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished">Etiqueta</translation>
-    </message>
-    <message>
-        <source>Source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ext Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Etiqueta</translation>
     </message>
     <message>
         <source>Scheduled</source>
@@ -500,15 +456,7 @@ desactivados para el servicio actual!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sch. Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Estimated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Est. Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

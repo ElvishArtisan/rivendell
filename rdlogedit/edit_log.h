@@ -27,8 +27,11 @@
 #include <rddialog.h>
 #include <rdgroup_list.h>
 #include <rdloglock.h>
+#include <rdlogmodel.h>
 
-#include "drop_listview.h"
+#include <QTableView>
+
+//#include "drop_listview.h"
 #include "list_reports.h"
 #include "render_dialog.h"
 
@@ -68,7 +71,7 @@ class EditLog : public RDDialog
   void insertMarkerButtonData();
   void clickedData(Q3ListViewItem *item);
   void selectionChangedData();
-  void doubleClickData(Q3ListViewItem *item);
+  void doubleClickedData(const QModelIndex &index);
   void editButtonData();
   void deleteButtonData();
   void upButtonData();
@@ -93,18 +96,18 @@ class EditLog : public RDDialog
  private:
   void DeleteLines(int line,int count);
   void SaveLog();
-  void RefreshLine(RDListViewItem *item);
-  void SetStartTimeField(RDListViewItem *item);
-  void RefreshList();
+  //  void RefreshLine(RDListViewItem *item);
+  //  void SetStartTimeField(RDListViewItem *item);
+  //  void RefreshList();
   void UpdateSelection();
   void RenumberList(int line);
-  bool UpdateColor(RDListViewItem *item,RDLogLine *logline);
+  //  bool UpdateColor(RDListViewItem *item,RDLogLine *logline);
   void SelectRecord(int id);
   void UpdateTracks();
   bool DeleteTracks();
   bool ValidateSvc();
   void LoadClipboard(bool clear_ext);
-  RDListViewItem *SingleSelection();
+  int SingleSelectionLine();
   void SetLogModified(bool state);
   void SendNotification(RDNotification::Action action,const QString &log_name);
   RDLog *edit_log;
@@ -132,7 +135,7 @@ class EditLog : public RDDialog
   QCheckBox *edit_startdate_box;
   QLabel *edit_enddate_label;
   QCheckBox *edit_enddate_box;
-  DropListView *edit_log_list;
+  //  DropListView *edit_log_list;
   QPixmap *edit_playout_map;
   QPixmap *edit_macro_map;
   QPixmap *edit_marker_map;
@@ -175,7 +178,6 @@ class EditLog : public RDDialog
   unsigned edit_start_macro;
   unsigned edit_end_macro;
   RDSimplePlayer *edit_player;
-  //  QLabel *edit_time_label;
   QGroupBox *edit_time_groupbox;
   QLabel *edit_stoptime_label;
   QLineEdit *edit_stoptime_edit;
@@ -188,6 +190,8 @@ class EditLog : public RDDialog
   RDLogLock *edit_log_lock;
   QPushButton *edit_renderas_button;
   RenderDialog *edit_render_dialog;
+  QTableView *edit_log_view;
+  RDLogModel *edit_log_model;
 };
 
 

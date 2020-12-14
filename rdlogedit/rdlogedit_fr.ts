@@ -153,10 +153,6 @@ that are invalid for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Voice Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>The log contains carts that are disabled
 for the selected service!
 
@@ -182,83 +178,11 @@ for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PLAY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>STOP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SEGUE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[cart not found]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MARKER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TRACK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LOG CHAIN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LINK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[music import]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[traffic import]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Manual</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Traffic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Music</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDLogManager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Voice Tracker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>--- end of log ---</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[INVALID CART]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Next Stop:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Log End:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Selected:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -271,14 +195,6 @@ for the selected service!</source>
     </message>
     <message>
         <source>Unable to save log, audio deletion error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Link Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Len</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -306,62 +222,6 @@ for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ext Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Run Length</source>
         <translation type="unfinished"></translation>
     </message>
@@ -374,15 +234,7 @@ for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sch. Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Estimated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Est. Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

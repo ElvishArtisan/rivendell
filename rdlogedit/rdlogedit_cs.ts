@@ -263,7 +263,7 @@ jež jsou pro vybranou službu neplatné!</translation>
     </message>
     <message>
         <source>Voice Track</source>
-        <translation>Stopa hlasu</translation>
+        <translation type="obsolete">Stopa hlasu</translation>
     </message>
     <message>
         <source>The log contains carts that are disabled
@@ -305,71 +305,71 @@ jež jsou pro vybranou službu zakázány!</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>PŘEHRÁT</translation>
+        <translation type="obsolete">PŘEHRÁT</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>ZASTAVIT</translation>
+        <translation type="obsolete">ZASTAVIT</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>PŘECHOD</translation>
+        <translation type="obsolete">PŘECHOD</translation>
     </message>
     <message>
         <source>[cart not found]</source>
-        <translation>[vozík nenalezen]</translation>
+        <translation type="obsolete">[vozík nenalezen]</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation>ZNAČKA</translation>
+        <translation type="obsolete">ZNAČKA</translation>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>STOPA</translation>
+        <translation type="obsolete">STOPA</translation>
     </message>
     <message>
         <source>LOG CHAIN</source>
-        <translation>ŘETĚZEC ZÁPISU</translation>
+        <translation type="obsolete">ŘETĚZEC ZÁPISU</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation>ODKAZ</translation>
+        <translation type="obsolete">ODKAZ</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[zavedení hudby]</translation>
+        <translation type="obsolete">[zavedení hudby]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[zavedení přenosu]</translation>
+        <translation type="obsolete">[zavedení přenosu]</translation>
     </message>
     <message>
         <source>Manual</source>
-        <translation>Ruční</translation>
+        <translation type="obsolete">Ruční</translation>
     </message>
     <message>
         <source>Traffic</source>
-        <translation>Přenos</translation>
+        <translation type="obsolete">Přenos</translation>
     </message>
     <message>
         <source>Music</source>
-        <translation>Hudba</translation>
+        <translation type="obsolete">Hudba</translation>
     </message>
     <message>
         <source>RDLogManager</source>
-        <translation>RDLogManager</translation>
+        <translation type="obsolete">RDLogManager</translation>
     </message>
     <message>
         <source>Voice Tracker</source>
-        <translation>Rozdělovač hlasu</translation>
+        <translation type="obsolete">Rozdělovač hlasu</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
-        <translation>--- konec zápisu ---</translation>
+        <translation type="obsolete">--- konec zápisu ---</translation>
     </message>
     <message>
         <source>[INVALID CART]</source>
-        <translation>[NEPLATNÝ VOZÍK]</translation>
+        <translation type="obsolete">[NEPLATNÝ VOZÍK]</translation>
     </message>
     <message>
         <source>Next Stop:</source>
@@ -385,7 +385,7 @@ jež jsou pro vybranou službu zakázány!</translation>
     </message>
     <message>
         <source>Selected:</source>
-        <translation>Vybráno:</translation>
+        <translation type="obsolete">Vybráno:</translation>
     </message>
     <message>
         <source>Delete on</source>
@@ -398,14 +398,6 @@ jež jsou pro vybranou službu zakázány!</translation>
     <message>
         <source>Unable to save log, audio deletion error!</source>
         <translation>Soubor se zápisem nelze uložit, chyba při mazání zvuku!</translation>
-    </message>
-    <message>
-        <source>Link Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Len</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save</source>
@@ -436,60 +428,20 @@ jež jsou pro vybranou službu zakázány!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart</source>
-        <translation type="unfinished">Vozík</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Vozík</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Název</translation>
+        <translation type="obsolete">Název</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation type="unfinished">Umělec</translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Umělec</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished">Štítek</translation>
-    </message>
-    <message>
-        <source>Source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ext Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Štítek</translation>
     </message>
     <message>
         <source>Scheduled</source>
@@ -500,15 +452,7 @@ jež jsou pro vybranou službu zakázány!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sch. Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Estimated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Est. Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

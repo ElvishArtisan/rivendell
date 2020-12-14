@@ -285,7 +285,7 @@ que são inválidos para o serviço selecionado!</translation>
     </message>
     <message>
         <source>Voice Track</source>
-        <translation>Faixa de Voz</translation>
+        <translation type="obsolete">Faixa de Voz</translation>
     </message>
     <message>
         <source>The log contains carts that are disabled
@@ -327,86 +327,78 @@ para o serviço selecionado!</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>SIMPLES</translation>
+        <translation type="obsolete">SIMPLES</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>PARE</translation>
+        <translation type="obsolete">PARE</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>SOBRE</translation>
+        <translation type="obsolete">SOBRE</translation>
     </message>
     <message>
         <source>[cart not found]</source>
-        <translation>[cartão não encontrado]</translation>
+        <translation type="obsolete">[cartão não encontrado]</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation>MARCADOR</translation>
+        <translation type="obsolete">MARCADOR</translation>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>FAIXA</translation>
+        <translation type="obsolete">FAIXA</translation>
     </message>
     <message>
         <source>LOG CHAIN</source>
-        <translation>CORRENTE DE LISTA</translation>
+        <translation type="obsolete">CORRENTE DE LISTA</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation>LINK</translation>
+        <translation type="obsolete">LINK</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[importar músicas]</translation>
+        <translation type="obsolete">[importar músicas]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[importar tráfego]</translation>
+        <translation type="obsolete">[importar tráfego]</translation>
     </message>
     <message>
         <source>Manual</source>
-        <translation>Manual</translation>
+        <translation type="obsolete">Manual</translation>
     </message>
     <message>
         <source>Traffic</source>
-        <translation>Tráfego</translation>
+        <translation type="obsolete">Tráfego</translation>
     </message>
     <message>
         <source>Music</source>
-        <translation>Músicas</translation>
+        <translation type="obsolete">Músicas</translation>
     </message>
     <message>
         <source>RDLogManager</source>
-        <translation>RDControle</translation>
+        <translation type="obsolete">RDControle</translation>
     </message>
     <message>
         <source>Voice Tracker</source>
-        <translation>Faixas de Voz</translation>
+        <translation type="obsolete">Faixas de Voz</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
-        <translation>-- fim da lista--</translation>
+        <translation type="obsolete">-- fim da lista--</translation>
     </message>
     <message>
         <source>Selected:</source>
-        <translation>Selecionado:</translation>
+        <translation type="obsolete">Selecionado:</translation>
     </message>
     <message>
         <source>[INVALID CART]</source>
-        <translation>CARTÃO INVÁLIDO</translation>
+        <translation type="obsolete">CARTÃO INVÁLIDO</translation>
     </message>
     <message>
         <source>Unable to save log, audio deletion error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Link Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Len</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -439,59 +431,23 @@ para o serviço selecionado!</translation>
     </message>
     <message>
         <source>Time</source>
-        <translation type="unfinished">Tempo</translation>
-    </message>
-    <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Tempo</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation type="unfinished">Cartão</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Cartão</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Título</translation>
+        <translation type="obsolete">Título</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation type="unfinished">Artista</translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Artista</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished">Selo</translation>
-    </message>
-    <message>
-        <source>Source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ext Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Selo</translation>
     </message>
     <message>
         <source>Scheduled</source>
@@ -502,15 +458,7 @@ para o serviço selecionado!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sch. Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Estimated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Est. Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

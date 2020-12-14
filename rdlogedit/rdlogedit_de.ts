@@ -263,7 +263,7 @@ die für den gewählten Service ungültig sind!</translation>
     </message>
     <message>
         <source>Voice Track</source>
-        <translation>Voice Track</translation>
+        <translation type="obsolete">Voice Track</translation>
     </message>
     <message>
         <source>The log contains carts that are disabled
@@ -305,71 +305,71 @@ die für den gewählten Service ungültig sind!</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>PLAY</translation>
+        <translation type="obsolete">PLAY</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>STOP</translation>
+        <translation type="obsolete">STOP</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>ÜBERGANG</translation>
+        <translation type="obsolete">ÜBERGANG</translation>
     </message>
     <message>
         <source>[cart not found]</source>
-        <translation>[cart nicht gefunden]</translation>
+        <translation type="obsolete">[cart nicht gefunden]</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation>MARKER</translation>
+        <translation type="obsolete">MARKER</translation>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>TRACK</translation>
+        <translation type="obsolete">TRACK</translation>
     </message>
     <message>
         <source>LOG CHAIN</source>
-        <translation>LOG CHAIN</translation>
+        <translation type="obsolete">LOG CHAIN</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation>LINK</translation>
+        <translation type="obsolete">LINK</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[musikimport]</translation>
+        <translation type="obsolete">[musikimport]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[trafficimport]</translation>
+        <translation type="obsolete">[trafficimport]</translation>
     </message>
     <message>
         <source>Manual</source>
-        <translation>Manuell</translation>
+        <translation type="obsolete">Manuell</translation>
     </message>
     <message>
         <source>Traffic</source>
-        <translation>Traffic</translation>
+        <translation type="obsolete">Traffic</translation>
     </message>
     <message>
         <source>Music</source>
-        <translation>Musik</translation>
+        <translation type="obsolete">Musik</translation>
     </message>
     <message>
         <source>RDLogManager</source>
-        <translation>RDLogManager</translation>
+        <translation type="obsolete">RDLogManager</translation>
     </message>
     <message>
         <source>Voice Tracker</source>
-        <translation>Voice Tracker</translation>
+        <translation type="obsolete">Voice Tracker</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
-        <translation>--- ende des logs ---</translation>
+        <translation type="obsolete">--- ende des logs ---</translation>
     </message>
     <message>
         <source>[INVALID CART]</source>
-        <translation>[UNGÜLTIGER CART]</translation>
+        <translation type="obsolete">[UNGÜLTIGER CART]</translation>
     </message>
     <message>
         <source>Next Stop:</source>
@@ -385,7 +385,7 @@ die für den gewählten Service ungültig sind!</translation>
     </message>
     <message>
         <source>Selected:</source>
-        <translation>Ausgewählt:</translation>
+        <translation type="obsolete">Ausgewählt:</translation>
     </message>
     <message>
         <source>Delete on</source>
@@ -398,14 +398,6 @@ die für den gewählten Service ungültig sind!</translation>
     <message>
         <source>Unable to save log, audio deletion error!</source>
         <translation>Kann Logdatei nicht speichern, Audiolöschfehler!</translation>
-    </message>
-    <message>
-        <source>Link Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Len</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Save</source>
@@ -436,60 +428,20 @@ die für den gewählten Service ungültig sind!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart</source>
-        <translation type="unfinished">Cart</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Cart</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Titel</translation>
+        <translation type="obsolete">Titel</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation type="unfinished">Künstler</translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Künstler</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished">Label</translation>
-    </message>
-    <message>
-        <source>Source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ext Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Label</translation>
     </message>
     <message>
         <source>Scheduled</source>
@@ -500,15 +452,7 @@ die für den gewählten Service ungültig sind!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sch. Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Estimated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Est. Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

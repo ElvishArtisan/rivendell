@@ -18,8 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-#include <qpainter.h>
+#include <QMessageBox>
+#include <QPainter>
+#include <QItemSelectionModel>
 
 #include <rdadd_log.h>
 #include <rdconf.h>
@@ -295,54 +296,21 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
 
   //
-  // Log Event List
+  // Log Event View
   //
-  edit_log_list=new DropListView(this);
-  edit_log_list->setAllColumnsShowFocus(true);
-  edit_log_list->setSelectionMode(Q3ListView::Extended);
-  edit_log_list->setItemMargin(5);
-  edit_log_list->addColumn("");
-  edit_log_list->setColumnAlignment(0,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("Time"));
-  edit_log_list->setColumnAlignment(1,Qt::AlignRight);
-  edit_log_list->addColumn(tr("Trans"));
-  edit_log_list->setColumnAlignment(2,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("Cart"));
-  edit_log_list->setColumnAlignment(3,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("Group"));
-  edit_log_list->setColumnAlignment(4,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("Length"));
-  edit_log_list->setColumnAlignment(5,Qt::AlignRight);
-  edit_log_list->addColumn(tr("Title"));
-  edit_log_list->setColumnAlignment(6,Qt::AlignLeft);
-  edit_log_list->addColumn(tr("Artist"));
-  edit_log_list->setColumnAlignment(7,Qt::AlignLeft);
-  edit_log_list->addColumn(tr("Client"));
-  edit_log_list->setColumnAlignment(8,Qt::AlignLeft);
-  edit_log_list->addColumn(tr("Agency"));
-  edit_log_list->setColumnAlignment(9,Qt::AlignLeft);
-  edit_log_list->addColumn(tr("Label"));
-  edit_log_list->setColumnAlignment(10,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("Source"));
-  edit_log_list->setColumnAlignment(11,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("Ext Data"));
-  edit_log_list->setColumnAlignment(12,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("Line ID"));
-  edit_log_list->setColumnAlignment(13,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("Count"));
-  edit_log_list->setColumnAlignment(14,Qt::AlignHCenter);
-  edit_log_list->setHardSortColumn(14);
-  edit_log_list->setColumnSortType(14,RDListView::LineSort);
-  if(editing_allowed) {
-    connect(edit_log_list,SIGNAL(doubleClicked(Q3ListViewItem *)),
-	    this,SLOT(doubleClickData(Q3ListViewItem *)));
-    connect(edit_log_list,SIGNAL(cartDropped(int,RDLogLine *)),
-	    this,SLOT(cartDroppedData(int,RDLogLine *)));
-  }
-  connect(edit_log_list,SIGNAL(clicked(Q3ListViewItem *)),
-  	  this,SLOT(clickedData(Q3ListViewItem *)));
-  connect(edit_log_list,SIGNAL(selectionChanged()),
-  	  this,SLOT(selectionChangedData()));
+  edit_log_view=new QTableView(this);
+  edit_log_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  edit_log_view->setSelectionMode(QAbstractItemView::ContiguousSelection);
+  edit_log_view->setShowGrid(false);
+  edit_log_view->setSortingEnabled(false);
+  edit_log_view->setWordWrap(false);
+  connect(edit_log_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  edit_log_model=new RDLogModel(this);
+  edit_log_model->setFont(defaultFont());
+  edit_log_model->setLogEvent(edit_log_event);
+  edit_log_view->setModel(edit_log_model);
+  edit_log_view->resizeColumnsToContents();
 
   //
   //  Insert Cart Button
@@ -558,7 +526,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
     edit_enddate_label->setDisabled(true);
     edit_enddate_box->setChecked(false);
   }
-  RefreshList();
+  //  RefreshList();
   serviceActivatedData(edit_service_box->currentText());
   SetLogModified(false);
   UpdateTracks();
@@ -706,12 +674,14 @@ void EditLog::endDateEnabledData(bool state)
 
 void EditLog::timestyleChangedData(int index)
 {
+  /*
   RDListViewItem *item=(RDListViewItem *)edit_log_list->firstChild();
   while(item!=NULL) {
     SetStartTimeField(item);
     item=(RDListViewItem *)item->nextSibling();
   }
   global_start_time_style=index;
+  */
 }
 
 
@@ -729,6 +699,7 @@ void EditLog::autorefreshChangedData(int index)
 
 void EditLog::insertCartButtonData()
 {
+  /*
   int line;
   int id;
 
@@ -761,11 +732,13 @@ void EditLog::insertCartButtonData()
   RefreshList();
   SelectRecord(id);
   UpdateSelection();
+  */
 }
 
 
 void EditLog::insertMarkerButtonData()
 {
+  /*
   int line;
   int id;
   int ret;
@@ -835,11 +808,13 @@ void EditLog::insertMarkerButtonData()
   UpdateTracks();
   SelectRecord(id);
   UpdateSelection();
+  */
 }
 
 
 void EditLog::clickedData(Q3ListViewItem *item)
 {
+  /*
   RDListViewItem *rditem=SingleSelection();
   if(rditem==NULL) {
     edit_player->setCart(0);
@@ -848,18 +823,21 @@ void EditLog::clickedData(Q3ListViewItem *item)
   else {
     edit_player->setCart(rditem->text(3).toUInt());
   }
+  */
 }
 
 
 void EditLog::selectionChangedData()
 {
-  UpdateSelection();
+  //  UpdateSelection();
 }
 
 
-void EditLog::doubleClickData(Q3ListViewItem *item)
+void EditLog::doubleClickedData(const QModelIndex &index)
 {
-  if(item->text(13).toInt()==END_MARKER_ID) {
+  int line=index.row();
+
+  if(line>=(edit_log_model->rowCount()-1)) {
     insertCartButtonData();
   }
   else {
@@ -870,20 +848,17 @@ void EditLog::doubleClickData(Q3ListViewItem *item)
 
 void EditLog::editButtonData()
 {
+  /*
   EditLogLine *edit_cart;
   EditMarker *edit_marker;
   EditTrack *edit_track;
   EditChain *edit_chain;
+  int line;
 
-  RDListViewItem *item=SingleSelection();
-  if(item==NULL) {
+  if((line=SingleSelectionLine())<0) {
     return;
   }
-  int id=item->text(13).toInt();
-  int line=item->text(14).toInt();
-  if(id==END_MARKER_ID) {
-    return;
-  }
+
   switch(edit_log_event->logLine(line)->type()) {
   case RDLogLine::Cart:
   case RDLogLine::Macro:
@@ -892,7 +867,7 @@ void EditLog::editButtonData()
 		      edit_schedcode,edit_service_box->currentText(),
 		      &edit_group_list,edit_log_event,line,this);
     if(edit_cart->exec()>=0) {
-      edit_log_event->refresh(item->text(14).toInt());
+      edit_log_event->refresh(line);
       SetLogModified(true);
     }
     delete edit_cart;
@@ -928,11 +903,13 @@ void EditLog::editButtonData()
   RefreshList();
   SelectRecord(id);
   UpdateSelection();
+  */
 }
 
 
 void EditLog::deleteButtonData()
 {
+  /*
   int count=0;
 
   Q3ListViewItem *next=edit_log_list->firstChild();
@@ -950,11 +927,13 @@ void EditLog::deleteButtonData()
     next=next->nextSibling();
   }
   DeleteLines(line,count);
+  */
 }
 
 
 void EditLog::upButtonData()
 {
+  /*
   Q3ListViewItem *item=SingleSelection();
   if((item==NULL)||(item->text(14).toInt()==0)||
      (item->text(13).toInt()==END_MARKER_ID)) {
@@ -968,11 +947,13 @@ void EditLog::upButtonData()
   RefreshList();
   SelectRecord(id);
   UpdateSelection();
+  */
 }
 
 
 void EditLog::downButtonData()
 {
+  /*
   Q3ListViewItem *item=SingleSelection();
 
   if((item==NULL)||(item->text(14).toInt()==(edit_log_list->childCount()-2))||
@@ -986,6 +967,7 @@ void EditLog::downButtonData()
   RefreshList();
   SelectRecord(id);
   UpdateSelection();
+  */
 }
 
 
@@ -1006,6 +988,7 @@ void EditLog::copyButtonData()
 
 void EditLog::pasteButtonData()
 {
+  /*
   Q3ListViewItem *item=SingleSelection();
   if((item==NULL)||(edit_clipboard->size()==0)) {
     return;
@@ -1024,11 +1007,13 @@ void EditLog::pasteButtonData()
   UpdateTracks();
   SelectRecord(id);
   UpdateSelection();
+  */
 }
 
 
 void EditLog::cartDroppedData(int line,RDLogLine *ll)
 {
+  /*
   RDListViewItem *item=NULL;
   bool appended=false;
 
@@ -1067,11 +1052,13 @@ void EditLog::cartDroppedData(int line,RDLogLine *ll)
   edit_log_list->sort();
   edit_log_list->clearSelection();
   item->setSelected(true);
+  */
 }
 
 
 void EditLog::notificationReceivedData(RDNotification *notify)
 {
+  /*
   RDListViewItem *item=NULL;
 
   if(notify->type()==RDNotification::CartType) {
@@ -1088,6 +1075,7 @@ void EditLog::notificationReceivedData(RDNotification *notify)
       item=(RDListViewItem *)item->nextSibling();
     }
   }
+  */
 }
 
 
@@ -1153,7 +1141,7 @@ void EditLog::saveasData()
 	      edit_log->originDatetime().toString("MM/dd/yyyy - hh:mm:ss"));
   }
   delete log;
-  RefreshList();
+  //  RefreshList();
   SetLogModified(false);
   edit_deleted_tracks.clear();
 }
@@ -1161,6 +1149,7 @@ void EditLog::saveasData()
 
 void EditLog::renderasData()
 {
+  /*
   int first_line=-1;
   int last_line=-1;
 
@@ -1182,6 +1171,7 @@ void EditLog::renderasData()
   else {
     edit_render_dialog->exec(rda->user(),edit_log_event,first_line,last_line+1);
   }
+  */
 }
 
 
@@ -1298,8 +1288,9 @@ void EditLog::resizeEvent(QResizeEvent *e)
   edit_endtime_label->setGeometry(625,102,65,18);
   edit_endtime_edit->setGeometry(695,102,60,18);
 
-  edit_log_list->setGeometry(10,127,
-			    size().width()-20,size().height()-257);
+  //  edit_log_list->setGeometry(10,127,
+  //			    size().width()-20,size().height()-257);
+  edit_log_view->setGeometry(10,127,size().width()-20,size().height()-257);
   edit_cart_button->setGeometry(20,size().height()-125,80,50);
   edit_marker_button->setGeometry(110,size().height()-125,80,50);
   edit_edit_button->setGeometry(200,size().height()-125,80,50);
@@ -1344,6 +1335,7 @@ void EditLog::paintEvent(QPaintEvent *e)
 
 void EditLog::DeleteLines(int line,int count)
 {
+  /*
   RDListViewItem *item=NULL;
   RDListViewItem *next=NULL;
   if(count>0) {
@@ -1369,6 +1361,7 @@ void EditLog::DeleteLines(int line,int count)
   }
   UpdateTracks();
   UpdateSelection();
+  */
 }
 
 
@@ -1401,7 +1394,7 @@ void EditLog::SaveLog()
   SendNotification(RDNotification::ModifyAction,edit_log->name());
 }
 
-
+/*
 void EditLog::RefreshLine(RDListViewItem *item)
 {
   int line=item->text(14).toInt();
@@ -1571,8 +1564,8 @@ void EditLog::RefreshLine(RDListViewItem *item)
   item->setText(13,QString().sprintf("%d",logline->id()));
   UpdateColor(item,logline);
 }
-
-
+*/
+/*
 void EditLog::SetStartTimeField(RDListViewItem *item)
 {
   int line=item->text(14).toInt();
@@ -1621,8 +1614,8 @@ void EditLog::SetStartTimeField(RDListViewItem *item)
     }
   }
 }
-
-
+*/
+/*
 void EditLog::RefreshList()
 {
   RDListViewItem *l;
@@ -1638,10 +1631,11 @@ void EditLog::RefreshList()
     RefreshLine(l);
   }
 }
-
+*/
 
 void EditLog::UpdateSelection()
 {
+  /*
   RDListViewItem *rditem=SingleSelection();
   if(rditem==NULL) {  // Multiple items selected?
     edit_endtime_edit->setText("");
@@ -1682,9 +1676,10 @@ void EditLog::UpdateSelection()
     edit_endtime_edit->setText("");
     edit_stoptime_edit->setText("");
   }
+  */
 }
 
-
+/*
 bool EditLog::UpdateColor(RDListViewItem *item,RDLogLine *logline)
 {
   bool ret=true;
@@ -1738,10 +1733,11 @@ bool EditLog::UpdateColor(RDListViewItem *item,RDLogLine *logline)
   }
   return ret;
 }
-
+*/
 
 void EditLog::RenumberList(int line)
 {
+  /*
   Q3ListViewItem *prev=NULL;
   Q3ListViewItem *item=edit_log_list->firstChild();
   if(item==NULL) {
@@ -1756,11 +1752,13 @@ void EditLog::RenumberList(int line)
     item=item->nextSibling();
   }
   prev->setText(13,QString().sprintf("%d",END_MARKER_ID));
+  */
 }
 
 
 void EditLog::SelectRecord(int id)
 {
+  /*
   Q3ListViewItem *item=edit_log_list->firstChild();
 
   while(item!=NULL) {
@@ -1771,31 +1769,24 @@ void EditLog::SelectRecord(int id)
     }
     item=item->nextSibling();
   }
+  */
 }
 
 
-RDListViewItem *EditLog::SingleSelection()
+int EditLog::SingleSelectionLine()
 {
-  RDListViewItem *item=NULL;
-  RDListViewItem *next=(RDListViewItem *)edit_log_list->firstChild();
-
-  while(next!=NULL) {
-    if(edit_log_list->isSelected(next)) {
-      if(item==NULL) {
-	item=next;
-      }
-      else {
-	return NULL;
-      }
-    }
-    next=(RDListViewItem *)next->nextSibling();
+  QItemSelectionModel *sel=edit_log_view->selectionModel();
+  if((sel->selectedRows().size()==1)&&
+     (sel->selectedRows().at(0).row()<(edit_log_model->rowCount()-1))) {
+    return sel->selectedRows().at(0).row();
   }
-  return item;
+  return -1;
 }
 
 
 bool EditLog::ValidateSvc()
 {
+  /*
   RDLogLine *logline=NULL;
   bool valid=true;
   RDListViewItem *item=(RDListViewItem *)edit_log_list->firstChild();
@@ -1806,6 +1797,8 @@ bool EditLog::ValidateSvc()
     item=(RDListViewItem *)item->nextSibling();
   }
   return valid;
+  */
+  return true;
 }
 
 
@@ -1846,6 +1839,7 @@ bool EditLog::DeleteTracks()
 
 void EditLog::LoadClipboard(bool clear_ext)
 {
+  /*
   Q3ListViewItem *next=edit_log_list->firstChild();
 
   edit_clipboard->clear();
@@ -1860,6 +1854,7 @@ void EditLog::LoadClipboard(bool clear_ext)
     }
     next=next->nextSibling();
   }
+  */
 }
 
 
