@@ -26,7 +26,7 @@
 
 #include <rdcut_dialog.h>
 #include <rddialog.h>
-#include <rdlog_event.h>
+#include <rdlogmodel.h>
 
 #include "logdialog.h"
 
@@ -45,7 +45,7 @@ class RenderDialog : public RDDialog
   QSize sizeHint() const;
 
  public slots:
-  int exec(RDLogEvent *log,QTime *start_time,bool *ignore_stops,
+  int exec(RDLogModel *model,QTime *start_time,bool *ignore_stops,
 	   int *start_line,int *end_line);
 
  private slots:
@@ -70,17 +70,14 @@ class RenderDialog : public RDDialog
   QPushButton *d_select_button;
   QPushButton *d_ok_button;
   QPushButton *d_cancel_button;
-
   LogDialog *d_log_dialog;
-
   int d_modified_start_line;
   int d_modified_end_line;
-
   QTime *d_start_time;
   bool *d_ignore_stops;
   int *d_start_line;
   int *d_end_line;
-  RDLogEvent *d_log;
+  RDLogModel *d_model;
 };
 
 

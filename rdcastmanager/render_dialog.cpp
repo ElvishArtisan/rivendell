@@ -120,10 +120,10 @@ QSize RenderDialog::sizeHint() const
 }
 
 
-int RenderDialog::exec(RDLogEvent *log,QTime *start_time,
+int RenderDialog::exec(RDLogModel *model,QTime *start_time,
 		       bool *ignore_stops,int *start_line,int *end_line)
 {
-  d_log=log;
+  d_model=model;
   d_start_time=start_time;
   d_start_time_edit->setDisabled(start_time->isNull());
   d_start_time_box->setCurrentIndex(0);
@@ -152,7 +152,8 @@ void RenderDialog::startTimeActivatedData(int n)
 
 void RenderDialog::selectData()
 {
-  if(d_log_dialog->exec(d_log,&d_modified_start_line,&d_modified_end_line)) {
+  if(d_log_dialog->
+     exec(d_model,&d_modified_start_line,&d_modified_end_line)) {
     UpdateLogEventsSelection();
   }
 }
@@ -206,7 +207,8 @@ void RenderDialog::resizeEvent(QResizeEvent *e)
 
 void RenderDialog::UpdateLogEventsSelection()
 {
-  if((d_modified_start_line==0)&&(d_modified_end_line==(d_log->size()-1))) {
+  if((d_modified_start_line==0)&&(d_modified_end_line==
+				  (d_model->lineCount()-1))) {
     d_select_label->setText(tr("All lines"));
   }
   else {

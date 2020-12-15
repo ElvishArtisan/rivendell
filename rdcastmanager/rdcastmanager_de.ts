@@ -434,60 +434,12 @@ Log</source>
 <context>
     <name>LogModel</name>
     <message>
-        <source>Start Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Title</source>
-        <translation type="unfinished">Titel</translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Titel</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Länge</translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ext Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Länge</translation>
     </message>
 </context>
 <context>

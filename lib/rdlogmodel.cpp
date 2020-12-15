@@ -27,7 +27,7 @@
 
 #include "rdlogmodel.h"
 
-RDLogModel::RDLogModel(const QString &logname,QObject *parent)
+RDLogModel::RDLogModel(const QString &logname,bool read_only,QObject *parent)
   : QAbstractTableModel(parent)
 {
   d_fms=NULL;
@@ -36,6 +36,7 @@ RDLogModel::RDLogModel(const QString &logname,QObject *parent)
   d_start_time_style=RDLogModel::Scheduled;
 
   d_log_name=logname;
+  d_read_only=read_only;
   d_max_id=0;
 
   //
@@ -140,6 +141,9 @@ int RDLogModel::columnCount(const QModelIndex &parent) const
 
 int RDLogModel::rowCount(const QModelIndex &parent) const
 {
+  if(d_read_only) {
+    return lineCount();
+  }
   return 1+lineCount();
 }
 

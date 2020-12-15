@@ -308,14 +308,14 @@ void ListCasts::addLogData()
 
   RDListLogs *d=new RDListLogs(&logname,RDLogFilter::UserFilter,this);
   if(d->exec()) {
-    RDLogEvent *log=new RDLogEvent(logname);
-    log->load();
+    RDLogModel *model=new RDLogModel(logname,true,this);
+    model->load();
     QTime start_time;
     bool ignore_stops=true;
     int start_line=0;
-    int end_line=log->size()-1;
+    int end_line=model->lineCount()-1;
 
-    if(list_render_dialog->exec(log,&start_time,&ignore_stops,
+    if(list_render_dialog->exec(model,&start_time,&ignore_stops,
 				&start_line,&end_line)) {
       if((cast_id=list_feed->postLog(logname,start_time,ignore_stops,
 				     start_line,end_line,&err))!=0) {
@@ -337,11 +337,11 @@ void ListCasts::addLogData()
 	QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
 			     RDFeed::errorString(err));
 	delete d;
-	delete log;
+	delete model;
 	return;
       }
 
-      delete log;
+      delete model;
     }
     else {  // Render dialog was canceled!
     }

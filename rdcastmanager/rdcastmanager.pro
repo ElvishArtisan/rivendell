@@ -27,7 +27,6 @@
 SOURCES += edit_cast.cpp
 SOURCES += list_casts.cpp
 SOURCES += logdialog.cpp
-SOURCES += logmodel.cpp
 SOURCES += pick_report_dates.cpp
 SOURCES += rdcastmanager.cpp
 SOURCES += render_dialog.cpp
@@ -35,7 +34,6 @@ SOURCES += render_dialog.cpp
 HEADERS += edit_cast.h
 HEADERS += list_casts.h
 HEADERS += logdialog.h
-HEADERS += logmodel.h
 HEADERS += pick_report_dates.h
 HEADERS += rdcastmanager.h
 HEADERS += render_dialog.h

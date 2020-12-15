@@ -36,7 +36,7 @@ class RDLogModel : public QAbstractTableModel
   Q_OBJECT
  public:
   enum StartTimeStyle {Estimated=0,Scheduled=1};
-  RDLogModel(const QString &logname,QObject *parent=0);
+  RDLogModel(const QString &logname,bool read_only,QObject *parent=0);
   ~RDLogModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
@@ -46,10 +46,6 @@ class RDLogModel : public QAbstractTableModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
-
-  //
-  // From RDLogEvent
-  //
   bool exists();
   bool exists(int line);
   bool exists(const QTime &hard_time,int except_line=-1);
@@ -113,6 +109,7 @@ class RDLogModel : public QAbstractTableModel
   QString d_log_name;
   QString d_service_name;
   int d_max_id;
+  bool d_read_only;
   QList<RDLogLine *> d_log_lines;
 };
 

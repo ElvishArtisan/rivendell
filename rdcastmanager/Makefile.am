@@ -46,14 +46,12 @@ dist_rdcastmanager_SOURCES = edit_cast.cpp edit_cast.h\
                              globals.h\
                              list_casts.cpp list_casts.h\
                              logdialog.cpp logdialog.h\
-                             logmodel.cpp logmodel.h\
                              rdcastmanager.cpp rdcastmanager.h\
                              render_dialog.cpp render_dialog.h
 
 nodist_rdcastmanager_SOURCES = moc_edit_cast.cpp\
                                moc_list_casts.cpp\
                                moc_logdialog.cpp\
-                               moc_logmodel.cpp\
                                moc_rdcastmanager.cpp\
                                moc_render_dialog.cpp
 

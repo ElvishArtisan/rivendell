@@ -20696,3 +20696,5 @@
 	* Fixed a regression in rdlogedit(1)'s 'Edit Log' dialog that
 	could delay updating cart status indications when changing the
 	logs owning service.
+2020-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdcastmanager(1) to use the standard log model.

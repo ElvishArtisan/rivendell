@@ -1,6 +1,6 @@
 // logdialog.h
 //
-// Real-only lister dialogs for Rivendell logs
+// Read-only log lister dialog for Rivendell
 //
 //   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -25,9 +25,7 @@
 #include <qtableview.h>
 
 #include <rddialog.h>
-#include <rdlog_event.h>
-
-#include "logmodel.h"
+#include <rdlogmodel.h>
 
 class LogDialog : public RDDialog
 {
@@ -38,7 +36,7 @@ class LogDialog : public RDDialog
   QSize sizeHint() const;
   
  public slots:
-  int exec(RDLogEvent *log,int *start_line,int *end_line);
+  int exec(RDLogModel *model,int *start_line,int *end_line);
 
  private slots:
   void okData();
@@ -51,11 +49,10 @@ class LogDialog : public RDDialog
   QTableView *d_log_view;
   QPushButton *d_ok_button;
   QPushButton *d_cancel_button;
-  LogModel *d_log_model;
-  RDLogEvent *d_log;
+  RDLogModel *d_model;
   int *d_start_line;
   int *d_end_line;
 };
 
 
-#endif  // LIST_CASTS_H
+#endif  // LOGDIALOG_H

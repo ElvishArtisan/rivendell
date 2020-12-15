@@ -1,6 +1,6 @@
 // logdialog.cpp
 //
-// Real-only lister dialogs for Rivendell logs
+// Read-only log lister dialog for Rivendell
 //
 //   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -36,9 +36,7 @@ LogDialog::LogDialog(QWidget *parent)
   d_log_view->setShowGrid(false);
   d_log_view->setSortingEnabled(false);
   d_log_view->setWordWrap(false);
-  d_log_model=new LogModel(this);
-  d_log_model->setFont(font());
-  d_log_view->setModel(d_log_model);
+  d_model=NULL;
 
   d_ok_button=new QPushButton(tr("OK"),this);
   d_ok_button->setFont(buttonFont());
@@ -52,6 +50,9 @@ LogDialog::LogDialog(QWidget *parent)
 
 LogDialog::~LogDialog()
 {
+  if(d_model!=NULL) {
+    delete d_model;
+  }
 }
 
 
@@ -61,21 +62,23 @@ QSize LogDialog::sizeHint() const
 }
 
 
-int LogDialog::exec(RDLogEvent *log,int *start_line,int *end_line)
+int LogDialog::exec(RDLogModel *model,int *start_line,int *end_line)
 {
   QItemSelection item_sel;
   QItemSelectionModel *sel=NULL;
 
-  d_log_model->setLogEvent(log);
+  d_model=model;
+  d_model->setFont(font());
+  d_log_view->setModel(d_model);
+
   d_log_view->resizeColumnsToContents();
 
   sel=d_log_view->selectionModel();
   sel->reset();
-  item_sel.select(d_log_model->index(*start_line,0),
-  		  d_log_model->index(*end_line,d_log_model->columnCount()-1));
+  item_sel.select(d_model->index(*start_line,0),
+  		  d_model->index(*end_line,d_model->columnCount()-1));
   sel->select(item_sel,QItemSelectionModel::SelectCurrent);
 
-  d_log=log;
   d_start_line=start_line;
   d_end_line=end_line;
 
@@ -93,7 +96,6 @@ void LogDialog::okData()
   }
   *d_start_line=list.first().row();
   *d_end_line=list.last().row();
-  d_log_model->clearLogEvent();
 
   done(true);
 }
@@ -101,8 +103,6 @@ void LogDialog::okData()
 
 void LogDialog::cancelData()
 {
-  d_log_model->clearLogEvent();
-
   done(false);
 }
 
