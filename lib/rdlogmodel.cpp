@@ -1565,6 +1565,15 @@ void RDLogModel::emitDataChanged(int row)
 }
 
 
+void RDLogModel::emitAllDataChanged()
+{
+  QModelIndex left=createIndex(0,0);
+  QModelIndex right=createIndex(lineCount(),columnCount());
+
+  emit dataChanged(left,right);
+}
+
+
 QColor RDLogModel::backgroundColor(int line,RDLogLine *ll) const
 {
   return d_palette.color(QPalette::Base);

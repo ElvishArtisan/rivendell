@@ -65,7 +65,10 @@ bool LogModel::allGroupsValid() const
 
 void LogModel::setServiceName(const QString &str)
 {
-  d_group_list->setServiceName(str);
+  if(d_group_list->serviceName()!=str) {
+    d_group_list->setServiceName(str);
+    emitAllDataChanged();
+  }
 }
 
 

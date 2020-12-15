@@ -91,6 +91,7 @@ class RDLogModel : public QAbstractTableModel
 
  protected:
   void emitDataChanged(int row);
+  void emitAllDataChanged();
   virtual QColor backgroundColor(int line,RDLogLine *ll) const;
 
  private:

@@ -20692,3 +20692,7 @@
 	* Added a 'RDLogLine::refreshCart()' method.
 	* Refactored the 'Edit Log' dialog in rdlogedit(1) to use Qt's
 	MVC API.
+2020-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogedit(1)'s 'Edit Log' dialog that
+	could delay updating cart status indications when changing the
+	logs owning service.
