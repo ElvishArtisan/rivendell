@@ -2239,6 +2239,61 @@ void RDLogLine::loadCart(int cartnum,int cutnum)
 }
 
 
+void RDLogLine::refreshCart()
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  if((type()==RDLogLine::Cart)||(type()==RDLogLine::Macro)) {
+    sql=QString("select ")+
+      "TITLE,"+             // 00
+      "ARTIST,"+            // 01
+      "ALBUM,"+             // 02
+      "YEAR,"+              // 03
+      "CONDUCTOR,"+         // 04
+      "LABEL,"+             // 05
+      "CLIENT,"+            // 06
+      "AGENCY,"+            // 07
+      "PUBLISHER,"+         // 08
+      "COMPOSER,"+          // 09
+      "USER_DEFINED,"+      // 10
+      "SONG_ID,"+           // 11
+      "USAGE_CODE,"+        // 12
+      "FORCED_LENGTH,"+     // 13
+      "ENFORCE_LENGTH,"+    // 14
+      "VALIDITY,"+          // 15
+      "START_DATETIME,"+    // 16
+      "END_DATETIME,"+      // 17
+      "NOTES "+             // 19
+      "from CART where "+
+      QString().sprintf("NUMBER=%u",cartNumber());
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      log_title=q->value(0).toString();
+      log_artist=q->value(1).toString();
+      log_album=q->value(2).toString();
+      log_year=q->value(3).toDate();
+      log_conductor=q->value(4).toString();
+      log_label=q->value(5).toString();
+      log_client=q->value(6).toString();
+      log_agency=q->value(7).toString();
+      log_publisher=q->value(8).toString();
+      log_composer=q->value(9).toString();
+      log_user_defined=q->value(10).toString();
+      log_song_id=q->value(11).toString();
+      log_song_id=q->value(12).toString();
+      log_forced_length=q->value(13).toUInt();
+      log_enforce_length=q->value(14).toString()=="Y";
+      log_validity=(RDCart::Validity)q->value(15).toUInt();
+      log_start_datetime=q->value(16).toDateTime();
+      log_end_datetime=q->value(17).toDateTime();
+      log_cart_notes=q->value(18).toString();
+    }
+    delete q;
+  }
+}
+
+
 void RDLogLine::refreshPointers()
 {
   if(log_cut_name.isEmpty()) {

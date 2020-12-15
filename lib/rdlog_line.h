@@ -266,6 +266,7 @@ class RDLogLine
 		bool timescale,RDLogLine::TransType type=RDLogLine::NoTrans,
 		int len=-1);
   void loadCart(int cartnum,int cutnum=-1);
+  void refreshCart();
   void refreshPointers();
   QString xml(int line) const;
   static QString resolveNowNextDateTime(const QString &str,const QString &code,

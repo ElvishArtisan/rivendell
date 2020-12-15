@@ -1,8 +1,8 @@
-//   drop_listview.cpp
+//   drop_tableview.cpp
 //
-//   The Log ListView widget for RDLogEdit.
+//   The Log TableView widget for RDLogEdit.
 //
-//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,39 +19,37 @@
 //
 //
 
-#include <q3header.h>
-//Added by qt3to4:
-#include <QDropEvent>
-#include <QDragEnterEvent>
-
 #include <rdcartdrag.h>
 
-#include <drop_listview.h>
+#include "drop_tableview.h"
 
-DropListView::DropListView(QWidget *parent)
-  : RDListView(parent)
+DropTableView::DropTableView(QWidget *parent)
+  : QTableView(parent)
 {
   setAcceptDrops(true);
 }
 
 
-void DropListView::dragEnterEvent(QDragEnterEvent *e)
+void DropTableView::dragEnterEvent(QDragEnterEvent *e)
 {
   e->accept(RDCartDrag::canDecode(e));
 }
 
 
-void DropListView::dropEvent(QDropEvent *e)
+void DropTableView::dragMoveEvent(QDragMoveEvent *e)
+{
+  e->accept(RDCartDrag::canDecode(e));
+}
+
+
+void DropTableView::dropEvent(QDropEvent *e)
 {
   RDLogLine ll;
   int line=-1;
-  QPoint pos(e->pos().x(),e->pos().y()-header()->sectionRect(0).height());
+  int y_pos=e->pos().y();
 
   if(RDCartDrag::decode(e,&ll)) {
-    RDListViewItem *item=(RDListViewItem *)itemAt(pos);
-    if(item!=NULL) {
-      line=item->text(14).toInt();
-    }
+    line=rowAt(y_pos);
     emit cartDropped(line,&ll);
   }
 }

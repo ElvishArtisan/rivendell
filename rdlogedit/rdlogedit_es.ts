@@ -234,7 +234,7 @@ Meta</translation>
     <message>
         <source>This log contains one or more carts
 that are invalid for the selected service!</source>
-        <translation>¡Esta Lista contiene uno o más cartuchos
+        <translation type="obsolete">¡Esta Lista contiene uno o más cartuchos
 que son inválidos para el dispositivo elegido!</translation>
     </message>
     <message>
@@ -327,7 +327,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Voice Track</source>
-        <translation type="obsolete">Pista de voz</translation>
+        <translation type="unfinished">Pista de voz</translation>
     </message>
     <message>
         <source>LINK</source>
@@ -385,7 +385,7 @@ desactivados para el servicio actual!
     </message>
     <message>
         <source>Selected:</source>
-        <translation type="obsolete">Seleccionado:</translation>
+        <translation type="unfinished">Seleccionado:</translation>
     </message>
     <message>
         <source>Delete on</source>
@@ -457,6 +457,10 @@ desactivados para el servicio actual!
     </message>
     <message>
         <source>Estimated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This log contains one or more carts that are invalid for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

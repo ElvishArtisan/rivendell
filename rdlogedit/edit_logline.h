@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell cart event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,18 +22,16 @@
 #define EDIT_LOGLINE_H
 
 #include <rdcart_dialog.h>
-#include <rdlog_event.h>
-#include <rdgroup_list.h>
 
 #include "edit_event.h"
+#include "logmodel.h"
 
 class EditLogLine : public EditEvent
 {
   Q_OBJECT
  public:
   EditLogLine(RDLogLine *,QString *filter,QString *group,QString *schedcode,
-	      QString svcname,RDGroupList *grplist,RDLogEvent *log,int lineno,
-	      QWidget *parent=0);
+	      QString svcname,LogModel *model,int lineno,QWidget *parent=0);
   ~EditLogLine();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -56,8 +54,7 @@ class EditLogLine : public EditEvent
   QString *edit_group;
   QString *edit_schedcode;
   QString edit_service;
-  RDGroupList *edit_group_list;
-  RDLogEvent *edit_log_event;
+  LogModel *edit_log_model;
   int edit_line;
 };
 

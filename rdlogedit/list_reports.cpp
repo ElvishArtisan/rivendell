@@ -2,7 +2,7 @@
 //
 // List and Generate Log Reports
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,7 +32,7 @@
 ListReports::ListReports(const QString &logname,const QString &description,
 			 const QString service_name,const QDate &start_date,
 			 const QDate &end_date,bool auto_refresh,
-			 RDLogEvent *events,QWidget *parent)
+			 RDLogModel *model,QWidget *parent)
   : RDDialog(parent)
 {
   list_log_name=logname;
@@ -41,7 +41,7 @@ ListReports::ListReports(const QString &logname,const QString &description,
   list_start_date=start_date;
   list_end_date=end_date;
   list_auto_refresh=auto_refresh;
-  list_events=events;
+  list_model=model;
 
   setWindowTitle("RDLogEdit - "+tr("Reports"));
 
@@ -176,7 +176,6 @@ void ListReports::GenerateLogReport(QString *report)
     end_date=list_end_date.toString("MM/dd/yyyy");
   }
   *report=RDReport::center("Rivendell Log Listing",132)+"\n";
-  //  *report="                                                     Rivendell Log Listing\n";
   *report+=QString("Generated: ")+
     QDateTime::currentDateTime().toString("MM/dd/yyyy")+"                        Log: "+
     RDReport::leftJustify(list_log_name,30)+
@@ -192,8 +191,8 @@ void ListReports::GenerateLogReport(QString *report)
   // Generate Event Listing
   //
   RDLogLine *logline;
-  for(int i=0;i<list_events->size();i++) {
-    logline=list_events->logLine(i);
+  for(int i=0;i<list_model->lineCount();i++) {
+    logline=list_model->logLine(i);
 
     //
     // Type
@@ -290,7 +289,7 @@ void ListReports::GenerateLogReport(QString *report)
 
 void ListReports::GenerateExceptionReport(QString *report,const QDate &date)
 {
-  int errs=list_events->validate(report,date);
+  int errs=list_model->validate(report,date);
   if(errs==0) {
     QMessageBox::information(this,tr("Log Check"),tr("No exceptions found."));
     *report="";

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,22 +35,9 @@
 #include "edit_track.h"
 #include "globals.h"
 
-//
-// Icons
-//
-#include "../icons/play.xpm"
-#include "../icons/rml5.xpm"
-#include "../icons/marker.xpm"
-#include "../icons/chain.xpm"
-#include "../icons/track_cart.xpm"
-#include "../icons/notemarker.xpm"
-#include "../icons/music.xpm"
-#include "../icons/mic16.xpm"
-#include "../icons/traffic.xpm"
-
 EditLog::EditLog(QString logname,QString *filter,QString *group,
-		 QString *schedcode,vector<RDLogLine> *clipboard,
-		 vector<QString> *new_logs,QWidget *parent)
+		 QString *schedcode,QList<RDLogLine> *clipboard,
+		 QStringList *new_logs,QWidget *parent)
   : RDDialog(parent)
 {
   QString sql;
@@ -89,19 +76,6 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   setMinimumHeight(RDLOGEDIT_EDITLOG_DEFAULT_HEIGHT);
 
   //
-  // Create Icons
-  //
-  edit_playout_map=new QPixmap(play_xpm);
-  edit_macro_map=new QPixmap(rml5_xpm);
-  edit_marker_map=new QPixmap(marker_xpm);
-  edit_chain_map=new QPixmap(chain_xpm);
-  edit_track_cart_map=new QPixmap(track_cart_xpm);
-  edit_notemarker_map=new QPixmap(notemarker_xpm);
-  edit_music_map=new QPixmap(music_xpm);
-  edit_mic16_map=new QPixmap(mic16_xpm);
-  edit_traffic_map=new QPixmap(traffic_xpm);
-
-  //
   // Dialogs
   //
   edit_render_dialog=
@@ -121,14 +95,6 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   // Log Data Structures
   //
   edit_log_lock=new RDLogLock(edit_logname,rda->user(),rda->station(),this);
-  edit_log_event=new RDLogEvent(edit_logname);
-  edit_log_event->load(true);
-
-  //
-  // Notifications
-  //
-  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
-	  this,SLOT(notificationReceivedData(RDNotification *)));
 
   //
   // Log Name
@@ -298,25 +264,37 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Log Event View
   //
-  edit_log_view=new QTableView(this);
+  edit_log_view=new DropTableView(this);
   edit_log_view->setSelectionBehavior(QAbstractItemView::SelectRows);
   edit_log_view->setSelectionMode(QAbstractItemView::ContiguousSelection);
   edit_log_view->setShowGrid(false);
   edit_log_view->setSortingEnabled(false);
   edit_log_view->setWordWrap(false);
-  connect(edit_log_view,SIGNAL(doubleClicked(const QModelIndex &)),
-	  this,SLOT(doubleClickedData(const QModelIndex &)));
-  edit_log_model=new RDLogModel(this);
+  edit_log_model=new LogModel(edit_logname,this);
   edit_log_model->setFont(defaultFont());
-  edit_log_model->setLogEvent(edit_log_event);
+  edit_log_model->setPalette(palette());
+  edit_log_model->load(true);
   edit_log_view->setModel(edit_log_model);
   edit_log_view->resizeColumnsToContents();
+  connect(edit_log_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(edit_log_view,SIGNAL(clicked(const QModelIndex &)),
+	  this,SLOT(clickedData(const QModelIndex &)));
+  connect(edit_log_view,SIGNAL(cartDropped(int,RDLogLine *)),
+	  this,SLOT(cartDroppedData(int,RDLogLine *)));
+  connect(edit_log_view->selectionModel(),
+       SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
+       this,
+       SLOT(selectionChangedData(const QItemSelection &,const QItemSelection)));
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  edit_log_model,SLOT(processNotification(RDNotification *)));
 
   //
   //  Insert Cart Button
   //
   edit_cart_button=new QPushButton(this);
-  edit_cart_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  edit_cart_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_cart_button->setFont(buttonFont());
   edit_cart_button->setText(tr("Insert\nCart"));
   connect(edit_cart_button,SIGNAL(clicked()),
@@ -326,7 +304,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //  Insert Marker Button
   //
   edit_marker_button=new QPushButton(this);
-  edit_marker_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  edit_marker_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_marker_button->setFont(buttonFont());
   edit_marker_button->setText(tr("Insert\nMeta"));
   connect(edit_marker_button,SIGNAL(clicked()),
@@ -336,7 +315,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //  Edit Button
   //
   edit_edit_button=new QPushButton(this);
-  edit_edit_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  edit_edit_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_edit_button->setFont(buttonFont());
   edit_edit_button->setText(tr("Edit"));
   connect(edit_edit_button,SIGNAL(clicked()),this,SLOT(editButtonData()));
@@ -345,7 +325,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //  Delete Button
   //
   edit_delete_button=new QPushButton(this);
-  edit_delete_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  edit_delete_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_delete_button->setFont(buttonFont());
   edit_delete_button->setText(tr("Delete"));
   connect(edit_delete_button,SIGNAL(clicked()),this,SLOT(deleteButtonData()));
@@ -354,21 +335,24 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //  Up Button
   //
   edit_up_button=new RDTransportButton(RDTransportButton::Up,this);
-  edit_up_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  edit_up_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   connect(edit_up_button,SIGNAL(clicked()),this,SLOT(upButtonData()));
 
   //
   //  Down Button
   //
   edit_down_button=new RDTransportButton(RDTransportButton::Down,this);
-  edit_down_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  edit_down_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   connect(edit_down_button,SIGNAL(clicked()),this,SLOT(downButtonData()));
 
   //
   //  Cut Button
   //
   edit_cut_button=new QPushButton(this);
-  edit_cut_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  edit_cut_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_cut_button->setFont(buttonFont());
   edit_cut_button->setText(tr("Cut"));
   connect(edit_cut_button,SIGNAL(clicked()),this,SLOT(cutButtonData()));
@@ -377,7 +361,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //  Copy Button
   //
   edit_copy_button=new QPushButton(this);
-  edit_copy_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  edit_copy_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_copy_button->setFont(buttonFont());
   edit_copy_button->setText(tr("Copy"));
   connect(edit_copy_button,SIGNAL(clicked()),this,SLOT(copyButtonData()));
@@ -386,7 +371,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //  Paste Button
   //
   edit_paste_button=new QPushButton(this);
-  edit_paste_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  edit_paste_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_paste_button->setFont(buttonFont());
   edit_paste_button->setText(tr("Paste"));
   connect(edit_paste_button,SIGNAL(clicked()),this,SLOT(pasteButtonData()));
@@ -526,7 +512,6 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
     edit_enddate_label->setDisabled(true);
     edit_enddate_box->setChecked(false);
   }
-  //  RefreshList();
   serviceActivatedData(edit_service_box->currentText());
   SetLogModified(false);
   UpdateTracks();
@@ -573,7 +558,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
 
 EditLog::~EditLog()
 {
-  delete edit_log_event;
+  delete edit_log_model;
   delete edit_log_lock;
 }
 
@@ -642,10 +627,10 @@ void EditLog::selectPurgeDateData()
 void EditLog::serviceActivatedData(const QString &svcname)
 {
   SetLogModified(true);
-  edit_group_list.loadSvc(svcname);
-  if(!ValidateSvc()) {
+  edit_log_model->setServiceName(svcname);
+  if(!edit_log_model->allGroupsValid()) {
     QMessageBox::warning(this,tr("Invalid Carts"),
-			 tr("This log contains one or more carts\nthat are invalid for the selected service!"));
+			 tr("This log contains one or more carts that are invalid for the selected service!"));
   }
 }
 
@@ -674,14 +659,7 @@ void EditLog::endDateEnabledData(bool state)
 
 void EditLog::timestyleChangedData(int index)
 {
-  /*
-  RDListViewItem *item=(RDListViewItem *)edit_log_list->firstChild();
-  while(item!=NULL) {
-    SetStartTimeField(item);
-    item=(RDListViewItem *)item->nextSibling();
-  }
-  global_start_time_style=index;
-  */
+  edit_log_model->setStartTimeStyle((RDLogModel::StartTimeStyle)index);
 }
 
 
@@ -699,104 +677,93 @@ void EditLog::autorefreshChangedData(int index)
 
 void EditLog::insertCartButtonData()
 {
-  /*
   int line;
-  int id;
 
-  Q3ListViewItem *item=SingleSelection();
-  if(item==NULL || (line=item->text(14).toInt())<0) {
-    line=edit_log_event->size();
-    id=END_MARKER_ID;
-  } else {
-    id=item->text(13).toInt();
+  if((line=SingleSelectionLine())<0) {
+    return;
   }
-  edit_log_event->insert(line,1);
-  edit_log_event->logLine(line)->setTransType(edit_default_trans);
-  edit_log_event->logLine(line)->setFadeupGain(-3000);
-  edit_log_event->logLine(line)->setFadedownGain(-3000);
+
+  edit_log_model->insert(line,1);
+  edit_log_model->logLine(line)->setTransType(edit_default_trans);
+  edit_log_model->logLine(line)->setFadeupGain(-3000);
+  edit_log_model->logLine(line)->setFadedownGain(-3000);
   EditLogLine *edit=
-    new EditLogLine(edit_log_event->logLine(line),edit_filter,edit_group,
+    new EditLogLine(edit_log_model->logLine(line),edit_filter,edit_group,
 		    edit_schedcode,edit_service_box->currentText(),
-		    &edit_group_list,edit_log_event,line,this);
+		    edit_log_model,line,this);
   int ret=edit->exec();
   if(ret>=0) {
-    edit_log_event->refresh(line);
+    edit_log_model->refresh(line);
     SetLogModified(true);
   }
   else {
-    edit_log_event->remove(line,1);
+    edit_log_model->remove(line,1);
     delete edit;
     return;
   }
   delete edit;
-  RefreshList();
-  SelectRecord(id);
-  UpdateSelection();
-  */
+  UpdateCounters();
 }
 
 
 void EditLog::insertMarkerButtonData()
 {
-  /*
   int line;
-  int id;
+
+  if((line=SingleSelectionLine())<0) {
+    return;
+  }
+
   int ret;
   EditMarker *edit_marker;
   EditTrack *edit_track;
   EditChain *edit_chain;
 
-  Q3ListViewItem *item=SingleSelection();
-  if(item==NULL) {
-    return;
-  }
-  line=item->text(14).toInt();
-  id=item->text(13).toInt();
   AddMeta *meta=new AddMeta(this);
   switch((RDLogLine::Type)meta->exec()) {
   case RDLogLine::Marker:
-    edit_log_event->insert(line,1);
-    edit_log_event->logLine(line)->setType(RDLogLine::Marker);
-    edit_marker=new EditMarker(edit_log_event->logLine(line),this);
+    edit_log_model->insert(line,1);
+    edit_log_model->logLine(line)->setType(RDLogLine::Marker);
+    edit_marker=new EditMarker(edit_log_model->logLine(line),this);
     ret=edit_marker->exec();
     if(ret>=0) {
-      edit_log_event->refresh(line);
+      edit_log_model->refresh(line);
       SetLogModified(true);
     }
     else {
-      edit_log_event->remove(line,1);
+      edit_log_model->remove(line,1);
     }
     delete edit_marker;
     break;
 
   case RDLogLine::Track:
-    edit_log_event->insert(line,1);
-    edit_log_event->logLine(line)->setType(RDLogLine::Track);
-    edit_log_event->logLine(line)->setTransType(RDLogLine::Segue);
-    edit_log_event->logLine(line)->setMarkerComment(tr("Voice Track"));
-    edit_track=new EditTrack(edit_log_event->logLine(line),this);
+    edit_log_model->insert(line,1);
+    edit_log_model->logLine(line)->setType(RDLogLine::Track);
+    edit_log_model->logLine(line)->setTransType(RDLogLine::Segue);
+    edit_log_model->logLine(line)->setMarkerComment(tr("Voice Track"));
+    edit_track=new EditTrack(edit_log_model->logLine(line),this);
     ret=edit_track->exec();
     if(ret>=0) {
-      edit_log_event->refresh(line);
+      edit_log_model->refresh(line);
       SetLogModified(true);
     }
     else {
-      edit_log_event->remove(line,1);
+      edit_log_model->remove(line,1);
     }
     delete edit_track;
     break;
 
   case RDLogLine::Chain:
-    edit_log_event->insert(line,1);
-    edit_log_event->logLine(line)->setType(RDLogLine::Chain);
-    edit_chain=new EditChain(edit_log_event->logLine(line),this);
+    edit_log_model->insert(line,1);
+    edit_log_model->logLine(line)->setType(RDLogLine::Chain);
+    edit_chain=new EditChain(edit_log_model->logLine(line),this);
     ret=edit_chain->exec();
     if(ret>=0) {
-      edit_log_event->refresh(line);
+      edit_log_model->refresh(line);
       SetLogModified(true);
     }
     else {
-      edit_log_event->remove(line,1);
+      edit_log_model->remove(line,1);
     }
     delete edit_chain;
     break;
@@ -804,32 +771,36 @@ void EditLog::insertMarkerButtonData()
   default:
     break;
   }
-  RefreshList();
   UpdateTracks();
-  SelectRecord(id);
-  UpdateSelection();
-  */
+  UpdateCounters();
 }
 
 
-void EditLog::clickedData(Q3ListViewItem *item)
+void EditLog::clickedData(const QModelIndex &index)
 {
-  /*
-  RDListViewItem *rditem=SingleSelection();
-  if(rditem==NULL) {
+  int line;
+  RDLogLine *ll=NULL;
+
+  if((line=SingleSelectionLine())<0) {
     edit_player->setCart(0);
-    return;
   }
   else {
-    edit_player->setCart(rditem->text(3).toUInt());
+    if((ll=edit_log_model->logLine(line))!=NULL) {
+      if(ll->type()==RDLogLine::Cart) {
+	edit_player->setCart(ll->cartNumber());
+      }
+    }
+    else {
+      edit_player->setCart(0);
+    }
   }
-  */
 }
 
 
-void EditLog::selectionChangedData()
+void EditLog::selectionChangedData(const QItemSelection &selected,
+				   const QItemSelection &deselected)
 {
-  //  UpdateSelection();
+  UpdateCounters();
 }
 
 
@@ -848,7 +819,6 @@ void EditLog::doubleClickedData(const QModelIndex &index)
 
 void EditLog::editButtonData()
 {
-  /*
   EditLogLine *edit_cart;
   EditMarker *edit_marker;
   EditTrack *edit_track;
@@ -859,22 +829,22 @@ void EditLog::editButtonData()
     return;
   }
 
-  switch(edit_log_event->logLine(line)->type()) {
+  switch(edit_log_model->logLine(line)->type()) {
   case RDLogLine::Cart:
   case RDLogLine::Macro:
     edit_cart=
-      new EditLogLine(edit_log_event->logLine(line),edit_filter,edit_group,
+      new EditLogLine(edit_log_model->logLine(line),edit_filter,edit_group,
 		      edit_schedcode,edit_service_box->currentText(),
-		      &edit_group_list,edit_log_event,line,this);
+		      edit_log_model,line,this);
     if(edit_cart->exec()>=0) {
-      edit_log_event->refresh(line);
+      edit_log_model->refresh(line);
       SetLogModified(true);
     }
     delete edit_cart;
     break;
 
   case RDLogLine::Marker:
-    edit_marker=new EditMarker(edit_log_event->logLine(line),this);
+    edit_marker=new EditMarker(edit_log_model->logLine(line),this);
     if(edit_marker->exec()>=0) {
       SetLogModified(true);
     }
@@ -882,7 +852,7 @@ void EditLog::editButtonData()
     break;
 
   case RDLogLine::Track:
-    edit_track=new EditTrack(edit_log_event->logLine(line),this);
+    edit_track=new EditTrack(edit_log_model->logLine(line),this);
     if(edit_track->exec()>=0) {
       SetLogModified(true);
     }
@@ -890,7 +860,7 @@ void EditLog::editButtonData()
     break;
 
   case RDLogLine::Chain:
-    edit_chain=new EditChain(edit_log_event->logLine(line),this);
+    edit_chain=new EditChain(edit_log_model->logLine(line),this);
     if(edit_chain->exec()>=0) {
       SetLogModified(true);
     }
@@ -900,74 +870,58 @@ void EditLog::editButtonData()
   default:
     break;
   }
-  RefreshList();
-  SelectRecord(id);
-  UpdateSelection();
-  */
+  UpdateCounters();
 }
 
 
 void EditLog::deleteButtonData()
 {
-  /*
-  int count=0;
+  QModelIndexList rows=edit_log_view->selectionModel()->selectedRows();
 
-  Q3ListViewItem *next=edit_log_list->firstChild();
-  int line=0;
-
-  while(next!=NULL) {
-    if(edit_log_list->isSelected(next)) {
-      if(next->text(13).toInt()!=END_MARKER_ID) {
-	if(count==0) {
-	  line=next->text(14).toInt();
-	}
-	count++;
-      }
-    }
-    next=next->nextSibling();
+  if(rows.last().row()>=(edit_log_model->rowCount()-1)) {
+    rows.removeLast();    // So we don't remove the end handle!
   }
-  DeleteLines(line,count);
-  */
+  if(rows.size()==0) {
+    return;
+  }
+  DeleteLines(rows.first().row(),rows.size());
+  edit_log_view->selectionModel()->
+    select(edit_log_model->index(rows.first().row(),0),
+	   QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
+  UpdateCounters();
 }
 
 
 void EditLog::upButtonData()
 {
-  /*
-  Q3ListViewItem *item=SingleSelection();
-  if((item==NULL)||(item->text(14).toInt()==0)||
-     (item->text(13).toInt()==END_MARKER_ID)) {
+  int line;
+
+  if((line=SingleSelectionLine())<=0) {
     return;
   }
-  int id=item->text(13).toInt();
-  sscanf((const char *)item->text(13),"%u",&id);
-  edit_log_event->move(item->text(14).toInt(),
-		       item->text(14).toInt()-1);
+  edit_log_model->move(line,line-1);
   SetLogModified(true);
-  RefreshList();
-  SelectRecord(id);
-  UpdateSelection();
-  */
+  edit_log_view->selectionModel()->
+    select(edit_log_model->index(line-1,0),
+	   QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
+  UpdateCounters();
 }
 
 
 void EditLog::downButtonData()
 {
-  /*
-  Q3ListViewItem *item=SingleSelection();
+  int line;
 
-  if((item==NULL)||(item->text(14).toInt()==(edit_log_list->childCount()-2))||
-     (item->text(13).toInt()==END_MARKER_ID)) {
+  if(((line=SingleSelectionLine())<0)||
+     (line>=(edit_log_model->lineCount()-1))) {
     return;
   }
-  int id=item->text(13).toInt();
-  edit_log_event->move(item->text(14).toInt(),
-		       item->text(14).toInt()+1);
+  edit_log_model->move(line,line+1);
   SetLogModified(true);
-  RefreshList();
-  SelectRecord(id);
-  UpdateSelection();
-  */
+  edit_log_view->selectionModel()->
+    select(edit_log_model->index(line+1,0),
+	   QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
+  UpdateCounters();
 }
 
 
@@ -976,7 +930,7 @@ void EditLog::cutButtonData()
   LoadClipboard(false);
   deleteButtonData();
   UpdateTracks();
-  UpdateSelection();
+  UpdateCounters();
 }
 
 
@@ -988,37 +942,29 @@ void EditLog::copyButtonData()
 
 void EditLog::pasteButtonData()
 {
-  /*
-  Q3ListViewItem *item=SingleSelection();
-  if((item==NULL)||(edit_clipboard->size()==0)) {
+  int line;
+
+  if((line=SingleSelectionLine())<0) {
     return;
   }
-  int line=item->text(14).toInt();
-  int id=item->text(13).toInt();
-  edit_log_event->insert(line,edit_clipboard->size());
-  for(unsigned i=0;i<edit_clipboard->size();i++) {
-    edit_clipboard->at(i).setId(edit_log_event->logLine(line+i)->id());
-    *edit_log_event->logLine(line+i)=edit_clipboard->at(i);
-    edit_log_event->logLine(line+i)->setSource(RDLogLine::Manual);
-    edit_clipboard->at(i).clearExternalData();
+  edit_log_model->insert(line,edit_clipboard->size());
+  for(int i=0;i<edit_clipboard->size();i++) {
+    *edit_log_model->logLine(line+i)=edit_clipboard->at(i);
+    edit_log_model->logLine(line+i)->setSource(RDLogLine::Manual);
+    (*edit_clipboard)[i].clearExternalData();
   }
   SetLogModified(true);
-  RefreshList();
   UpdateTracks();
-  SelectRecord(id);
-  UpdateSelection();
-  */
+  UpdateCounters();
 }
 
 
 void EditLog::cartDroppedData(int line,RDLogLine *ll)
 {
-  /*
-  RDListViewItem *item=NULL;
   bool appended=false;
 
-  if((line<0)||(line==edit_log_event->size())) {
-    line=edit_log_event->size();
+  if((line<0)||(line==edit_log_model->lineCount())) {
+    line=edit_log_model->lineCount();
     appended=true;
   }
   if(ll->cartNumber()==0) {  // Empty Cart
@@ -1027,61 +973,19 @@ void EditLog::cartDroppedData(int line,RDLogLine *ll)
     }
     return;
   }
-  edit_log_event->insert(line,1);
-  edit_log_event->setLogLine(line,ll);
-  edit_log_event->logLine(line)->setTransType(edit_default_trans);
-  edit_log_event->logLine(line)->setFadeupGain(-3000);
-  edit_log_event->logLine(line)->setFadedownGain(-3000);
-  edit_log_event->refresh(line);
+  edit_log_model->insert(line,1);
+  edit_log_model->setLogLine(line,ll);
+  edit_log_model->logLine(line)->setTransType(edit_default_trans);
+  edit_log_model->logLine(line)->setFadeupGain(-3000);
+  edit_log_model->logLine(line)->setFadedownGain(-3000);
+  edit_log_model->refresh(line);
   SetLogModified(true);
-  if(appended) {
-    item=(RDListViewItem *)edit_log_list->lastItem();
-    item->setText(14,QString().sprintf("%d",item->text(14).toInt()+1));
-  }
-  else {
-    item=(RDListViewItem *)edit_log_list->
-      findItem(QString().sprintf("%d",line),14);
-    item->setText(14,QString().sprintf("%d",item->text(14).toInt()+1));
-    while((item=(RDListViewItem *)item->nextSibling())!=NULL) {
-      item->setText(14,QString().sprintf("%d",item->text(14).toInt()+1));
-    }
-  }
-  item=new RDListViewItem(edit_log_list);
-  item->setText(14,QString().sprintf("%d",line));
-  RefreshLine(item);
-  edit_log_list->sort();
-  edit_log_list->clearSelection();
-  item->setSelected(true);
-  */
-}
-
-
-void EditLog::notificationReceivedData(RDNotification *notify)
-{
-  /*
-  RDListViewItem *item=NULL;
-
-  if(notify->type()==RDNotification::CartType) {
-    unsigned cartnum=notify->id().toUInt();
-    item=(RDListViewItem *)edit_log_list->firstChild();
-    while(item!=NULL) {
-      if(item->text(3).toUInt()==cartnum) {
-	int line=item->text(14).toInt();
-	if(line>=0) {
-	  edit_log_event->refresh(line);
-	  RefreshLine(item);
-	}
-      }
-      item=(RDListViewItem *)item->nextSibling();
-    }
-  }
-  */
 }
 
 
 void EditLog::saveData()
 {
-  if(!ValidateSvc()) {
+  if(!edit_log_model->allGroupsValid()) {
     if(QMessageBox::warning(this,tr("Invalid Carts"),
 			    tr("The log contains carts that are disabled\nfor the selected service!\n\nDo you still want to save?"),QMessageBox::Yes,QMessageBox::No)==QMessageBox::No) {
       return;
@@ -1102,7 +1006,7 @@ void EditLog::saveData()
 
 void EditLog::saveasData()
 {
-  if(!ValidateSvc()) {
+  if(!edit_log_model->allGroupsValid()) {
     if(QMessageBox::warning(this,tr("Invalid Carts"),
 			    tr("The log contains carts that are disabled\nfor the selected service!\n\nDo you still want to save?"),QMessageBox::Yes,QMessageBox::No)==QMessageBox::No) {
       return;
@@ -1128,7 +1032,7 @@ void EditLog::saveasData()
     delete edit_log;
     edit_newlogs->push_back(logname);
     edit_log=new RDLog(logname);
-    edit_log_event->setLogName(logname);
+    edit_log_model->setLogName(logname);
     for(int i=0;i<edit_service_box->count();i++) {
       if(edit_service_box->text(i)==svcname) {
 	edit_service_box->setCurrentItem(i);
@@ -1141,7 +1045,6 @@ void EditLog::saveasData()
 	      edit_log->originDatetime().toString("MM/dd/yyyy - hh:mm:ss"));
   }
   delete log;
-  //  RefreshList();
   SetLogModified(false);
   edit_deleted_tracks.clear();
 }
@@ -1149,29 +1052,18 @@ void EditLog::saveasData()
 
 void EditLog::renderasData()
 {
-  /*
-  int first_line=-1;
-  int last_line=-1;
+  QModelIndexList rows=edit_log_view->selectionModel()->selectedRows();
 
-  Q3ListViewItem *next=edit_log_list->firstChild();
-  while(next!=NULL) {
-    if(edit_log_list->isSelected(next)) {
-      if(next->text(13).toInt()!=END_MARKER_ID) {
-	if(first_line<0) {
-	  first_line=next->text(14).toInt();
-	}
-	last_line=next->text(14).toInt();
-      }
-    }
-    next=next->nextSibling();
+  if((rows.size()>0)&&(rows.last().row()>=(edit_log_model->rowCount()-1))) {
+    rows.removeLast();    // So we don't include the end handle!
   }
-  if(first_line<0) {
-    edit_render_dialog->exec(rda->user(),edit_log_event,0,0);
+  if(rows.size()==0) {
+    edit_render_dialog->exec(rda->user(),edit_log_model,0,0);
   }
   else {
-    edit_render_dialog->exec(rda->user(),edit_log_event,first_line,last_line+1);
+    edit_render_dialog->exec(rda->user(),edit_log_model,rows.first().row(),
+			     1+rows.last().row());
   }
-  */
 }
 
 
@@ -1189,7 +1081,7 @@ void EditLog::reportsData()
     new ListReports(edit_log->name(),edit_description_edit->text(),
 		    edit_service_box->currentText(),start_date,end_date,
 		    edit_autorefresh_box->currentItem()==0,
-		    edit_log_event,this);
+		    edit_log_model,this);
   lr->exec();
   delete lr;
 }
@@ -1198,7 +1090,7 @@ void EditLog::reportsData()
 void EditLog::okData()
 {
   if(edit_changed) {
-    if(!ValidateSvc()) {
+    if(!edit_log_model->allGroupsValid()) {
       if(QMessageBox::warning(this,tr("Invalid Carts"),
 			      tr("The log contains carts that are disabled\nfor the selected service!\n\nDo you still want to save?"),QMessageBox::Yes,QMessageBox::No)==QMessageBox::No) {
 	return;
@@ -1208,8 +1100,8 @@ void EditLog::okData()
     DeleteTracks();
   }
   edit_player->stop();
-  for(unsigned i=0;i<edit_clipboard->size();i++) {
-    edit_clipboard->at(i).clearExternalData();
+  for(int i=0;i<edit_clipboard->size();i++) {
+    (*edit_clipboard)[i].clearExternalData();
   }
   done(true);
 }
@@ -1224,7 +1116,7 @@ void EditLog::cancelData()
 				 QMessageBox::Yes,QMessageBox::No,
 				 QMessageBox::Cancel)) {
     case QMessageBox::Yes:
-      if(!ValidateSvc()) {
+      if(!edit_log_model->allGroupsValid()) {
 	QMessageBox::warning(this,tr("Invalid Carts"),
 			     tr("The log contains carts that are disabled\nfor the selected service!"));
 	    return;
@@ -1239,8 +1131,8 @@ void EditLog::cancelData()
     }
   }
   edit_player->stop();
-  for(unsigned i=0;i<edit_clipboard->size();i++) {
-    edit_clipboard->at(i).clearExternalData();
+  for(int i=0;i<edit_clipboard->size();i++) {
+    (*edit_clipboard)[i].clearExternalData();
   }
   done(false);
 }
@@ -1288,8 +1180,6 @@ void EditLog::resizeEvent(QResizeEvent *e)
   edit_endtime_label->setGeometry(625,102,65,18);
   edit_endtime_edit->setGeometry(695,102,60,18);
 
-  //  edit_log_list->setGeometry(10,127,
-  //			    size().width()-20,size().height()-257);
   edit_log_view->setGeometry(10,127,size().width()-20,size().height()-257);
   edit_cart_button->setGeometry(20,size().height()-125,80,50);
   edit_marker_button->setGeometry(110,size().height()-125,80,50);
@@ -1335,33 +1225,9 @@ void EditLog::paintEvent(QPaintEvent *e)
 
 void EditLog::DeleteLines(int line,int count)
 {
-  /*
-  RDListViewItem *item=NULL;
-  RDListViewItem *next=NULL;
-  if(count>0) {
-    for(int i=line;i<(line+count);i++) {
-      if(edit_log_event->logLine(i)->source()==RDLogLine::Tracker) {
-	edit_deleted_tracks.
-	  push_back(edit_log_event->logLine(i)->cartNumber());
-      }
-    }
-    item=(RDListViewItem *)edit_log_list->
-      findItem(QString().sprintf("%d",line),14);
-    for(int i=0;i<count;i++) {
-      next=(RDListViewItem *)item->nextSibling();
-      delete item;
-      item=next;
-    }
-    if(next!=NULL) {
-      next->setSelected(true);
-    }
-    edit_log_event->remove(line,count);
-    SetLogModified(true);
-    RenumberList(line);
-  }
+  edit_log_model->remove(line,count);
   UpdateTracks();
-  UpdateSelection();
-  */
+  SetLogModified(true);
 }
 
 
@@ -1388,283 +1254,41 @@ void EditLog::SaveLog()
     edit_log->setEndDate(QDate());
   }
   edit_log->setAutoRefresh(edit_autorefresh_box->currentItem()==0);
-  edit_log_event->save(rda->config());
+  edit_log_model->save(rda->config());
   edit_log->
     setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
   SendNotification(RDNotification::ModifyAction,edit_log->name());
 }
 
-/*
-void EditLog::RefreshLine(RDListViewItem *item)
+
+void EditLog::UpdateCounters()
 {
-  int line=item->text(14).toInt();
-  if(line<0) {
-    return;
-  }
-  edit_log_event->refresh(line);
-  SetStartTimeField(item);
-  RDLogLine *logline=edit_log_event->logLine(line);
-  switch(logline->transType()) {
-  case RDLogLine::Play:
-    item->setText(2,tr("PLAY"));
-    item->setTextColor(2,item->textColor(1),QFont::Normal);
-    break;
+  int line;
 
-  case RDLogLine::Stop:
-    item->setText(2,tr("STOP"));
-    item->setTextColor(2,item->textColor(1),QFont::Normal);
-    break;
-
-  case RDLogLine::Segue:
-    item->setText(2,tr("SEGUE"));
-    if(logline->hasCustomTransition()) {
-      item->setTextColor(2,RD_CUSTOM_TRANSITION_COLOR,QFont::Bold);
-    }
-    else {
-      item->setTextColor(2,item->textColor(1),QFont::Normal);
-    }
-    break;
-
-  default:
-    break;
-  }
-  switch(logline->type()) {
-  case RDLogLine::Cart:
-    switch(logline->source()) {
-    case RDLogLine::Tracker:
-      item->setPixmap(0,*edit_track_cart_map);
-      break;
-
-    default:
-      item->setPixmap(0,*edit_playout_map);
-      break;
-    }
-    item->setText(3,QString().
-		  sprintf("%06u",logline->cartNumber()));
-    if(logline->title().isEmpty()) {
-      item->setText(4,"");
-      item->setText(5,tr("[cart not found]"));
-    }
-    else {
-      item->setText(4,logline->groupName());
-      item->setTextColor(4,logline->groupColor(),QFont::Bold);
-      if((logline->source()!=RDLogLine::Tracker)||
-	 logline->originUser().isEmpty()||
-	 (!logline->originDateTime().isValid())) {
-	item->setText(6,logline->title());
-      }
-      else {
-	item->setText(6,logline->title()+" -- "+logline->originUser()+
-		      " "+logline->originDateTime().toString("M/d hh:mm"));
-      }
-    }
-    item->
-      setText(5,RDGetTimeLength(logline->forcedLength(),false,false));
-    item->setText(7,logline->artist());
-    item->setText(8,logline->client());
-    item->setText(9,logline->agency());
-    item->setText(12,logline->extData());
-    break;
-	
-  case RDLogLine::Macro:
-    item->setPixmap(0,*edit_macro_map);
-    item->setText(3,QString().
-		  sprintf("%06u",logline->cartNumber()));
-    if(logline->title().isEmpty()) {
-      item->setText(4,"");
-      item->setText(6,tr("[cart not found]"));
-    }
-    else {
-      item->setText(4,logline->groupName());
-      item->setTextColor(4,logline->groupColor(),QFont::Bold);
-      item->setText(6,logline->title());
-    }
-    item->setText(5,RDGetTimeLength(logline->forcedLength(),false,false));
-    item->setText(7,logline->artist());
-    item->setText(8,logline->client());
-    item->setText(9,logline->agency());
-    item->setText(12,logline->extData());
-    break;
-	
-  case RDLogLine::Marker:
-    item->setPixmap(0,*edit_notemarker_map);
-    item->setText(3,tr("MARKER"));
-    item->setText(4,"");
-    item->setText(6,RDTruncateAfterWord(edit_log_event->
-					logLine(line)->markerComment(),5,true));
-    item->setText(10,logline->markerLabel());
-    item->setText(12,logline->extData());
-    break;
-
-  case RDLogLine::Track:
-    item->setPixmap(0,*edit_mic16_map);
-    item->setText(3,tr("TRACK"));
-    item->setText(4,"");
-    item->setText(6,RDTruncateAfterWord(edit_log_event->
-					logLine(line)->markerComment(),5,true));
-    item->setText(12,logline->extData());
-    break;
-
-  case RDLogLine::Chain:
-    item->setPixmap(0,*edit_chain_map);
-    item->setText(3,tr("LOG CHAIN"));
-    item->setText(4,"");
-    item->setText(6,logline->markerLabel());
-    item->setText(7,RDTruncateAfterWord(edit_log_event->
-					logLine(line)->markerComment(),5,true));
-    item->setText(12,logline->extData());
-    break;
-
-  case RDLogLine::MusicLink:
-    item->setPixmap(0,*edit_music_map);
-    item->setText(3,tr("LINK"));
-    item->setText(4,"");
-    item->setText(6,tr("[music import]"));
-    item->setText(12,tr("Link Start")+": "+
-		  logline->linkStartTime().toString("hh:mm:ss")+", "+
-		  tr("Len")+": "+
-		  RDGetTimeLength(logline->linkLength(),false,false));
-    break;
-
-  case RDLogLine::TrafficLink:
-    item->setPixmap(0,*edit_traffic_map);
-    item->setText(3,tr("LINK"));
-    item->setText(4,"");
-    item->setText(6,tr("[traffic import]"));
-    item->setText(12,tr("Link Start")+": "+
-		  logline->linkStartTime().toString("hh:mm:ss")+", "+
-		  tr("Len")+": "+
-		  RDGetTimeLength(logline->linkLength(),false,false));
-    break;
-
-  default:
-    break;
-  }
-  switch(logline->source()) {
-  case RDLogLine::Manual:
-    item->setText(11,tr("Manual"));
-    break;
-
-  case RDLogLine::Traffic:
-    item->setText(11,tr("Traffic"));
-    break;
-
-  case RDLogLine::Music:
-    item->setText(11,tr("Music"));
-    break;
-
-  case RDLogLine::Template:
-    item->setText(11,tr("RDLogManager"));
-    break;
-
-  case RDLogLine::Tracker:
-    item->setText(11,tr("Voice Tracker"));
-    break;
-  }
-  item->setText(13,QString().sprintf("%d",logline->id()));
-  UpdateColor(item,logline);
-}
-*/
-/*
-void EditLog::SetStartTimeField(RDListViewItem *item)
-{
-  int line=item->text(14).toInt();
-  RDLogLine *logline=edit_log_event->logLine(line);
-
-  if(edit_timestyle_box->currentIndex()==0) {  // Estimated
-    edit_log_list->setColumnText(1,tr("Est. Time"));
-  }
-  else {  // Scheduled
-    edit_log_list->setColumnText(1,tr("Sch. Time"));
-  }
-
-  if(logline!=NULL) {
-    switch(logline->timeType()) {
-    case RDLogLine::Hard:
-      item->setText(1,QString("T")+edit_log_event->
-		    logLine(line)->startTime(RDLogLine::Logged).
-		    toString("hh:mm:ss.zzz").left(10));
-      break;
-
-    default:
-      if(edit_timestyle_box->currentIndex()==0) {  // Estimated
-	if(logline->
-	   startTime(RDLogLine::Predicted).isNull()) {
-	  item->setText(1,edit_log_event->
-			blockStartTime(line).
-			toString("hh:mm:ss.zzz").left(10));
-	}
-	else {
-	  item->setText(1,edit_log_event->
-			logLine(line)->startTime(RDLogLine::Predicted).
-			toString("hh:mm:ss.zzz").left(10));
-	}
-      }
-      else {   // Scheduled
-	if(logline->startTime(RDLogLine::Logged).isNull()) {
-	  item->setText(1,"");
-	}
-	else {
-	  item->setText(1,edit_log_event->
-			logLine(line)->startTime(RDLogLine::Logged).
-			toString("hh:mm:ss.zzz").left(10));
-	}
-      }
-      break;
-    }
-  }
-}
-*/
-/*
-void EditLog::RefreshList()
-{
-  RDListViewItem *l;
-
-  edit_log_list->clear();
-  l=new RDListViewItem(edit_log_list);
-  l->setText(6,tr("--- end of log ---"));
-  l->setText(13,QString().sprintf("%d",END_MARKER_ID));
-  l->setText(14,QString().sprintf("%d",edit_log_event->size()));
-  for(int i=edit_log_event->size()-1;i>=0;i--) {
-    l=new RDListViewItem(edit_log_list);
-    l->setText(14,QString().sprintf("%d",i));
-    RefreshLine(l);
-  }
-}
-*/
-
-void EditLog::UpdateSelection()
-{
-  /*
-  RDListViewItem *rditem=SingleSelection();
-  if(rditem==NULL) {  // Multiple items selected?
+  if((line=SingleSelectionLine())<0) {
     edit_endtime_edit->setText("");
     edit_stoptime_label->setText(tr("Selected:"));
-    Q3ListViewItem *next=edit_log_list->firstChild();
-    int start_line=-1;
-    int end_line=-1;
-    while(next!=NULL) {
-      if(edit_log_list->isSelected(next)) {
-	if((start_line<0)&&(next->text(13).toInt()!=END_MARKER_ID)) {
-	  start_line=next->text(14).toInt();
-	}
-	if(next->text(13).toInt()!=END_MARKER_ID) {
-	  end_line=next->text(14).toInt();
-	}
+    QItemSelectionModel *sel=edit_log_view->selectionModel();
+    QModelIndexList rows=sel->selectedRows();
+    if(rows.size()==0) {
+      edit_endtime_edit->setText("");
+      edit_stoptime_edit->setText("");
+    }
+    else {
+      if(rows.last().row()>=(edit_log_model->rowCount()-1)) {
+	rows.removeLast();    // So we don't include the end handle!
       }
-      next=next->nextSibling();
+      edit_stoptime_edit->
+	setText(RDGetTimeLength(edit_log_model->length(rows.first().row(),
+						       rows.last().row()+1),
+				true,false));
     }
-    if(start_line>=0) {
-      edit_stoptime_edit->setText(RDGetTimeLength(edit_log_event->
-		      length(start_line,end_line+1),true,false));
-    }
-    return;
   }
-  if(rditem->text(13).toInt()>0) {
-    edit_endtime_edit->setText(RDGetTimeLength(edit_log_event->
-      length(rditem->text(14).toInt(),edit_log_event->size()),true,false));
+  else {
+    edit_endtime_edit->setText(RDGetTimeLength(edit_log_model->
+      length(line,edit_log_model->lineCount()),true,false));
     edit_stoptime_label->setText(tr("Next Stop:"));
-    int stoplen=edit_log_event->lengthToStop(rditem->text(14).toInt());
+    int stoplen=edit_log_model->lengthToStop(line);
     if(stoplen>=0) {
       edit_stoptime_edit->setText(RDGetTimeLength(stoplen,true,false));
     }
@@ -1672,133 +1296,21 @@ void EditLog::UpdateSelection()
       edit_stoptime_edit->setText("");
     }
   }
-  else {
-    edit_endtime_edit->setText("");
-    edit_stoptime_edit->setText("");
-  }
-  */
-}
-
-/*
-bool EditLog::UpdateColor(RDListViewItem *item,RDLogLine *logline)
-{
-  bool ret=true;
-  QDateTime now=QDateTime(QDate::currentDate(),QTime::currentTime());
-
-  switch(logline->type()) {
-  case RDLogLine::Cart:
-    switch(logline->validity(now)) {
-    case RDCart::AlwaysValid:
-      if(edit_group_list.isGroupValid(item->text(4))||
-	 item->text(4).isEmpty()) {
-	item->setBackgroundColor(palette().color(QPalette::Active,
-						 QColorGroup::Base));
-      }
-      else {
-	item->setBackgroundColor(RD_CART_INVALID_SERVICE_COLOR);
-	ret=false;
-      }
-      break;
-	      
-    case RDCart::ConditionallyValid:
-      item->setBackgroundColor(RD_CART_CONDITIONAL_COLOR);
-      break;
-	      
-    case RDCart::FutureValid:
-      item->setBackgroundColor(RD_CART_FUTURE_COLOR);
-      break;
-	      
-    case RDCart::EvergreenValid:
-      item->setBackgroundColor(RD_CART_EVERGREEN_COLOR);
-      break;
-	      
-    case RDCart::NeverValid:
-      item->setBackgroundColor(RD_CART_ERROR_COLOR);
-      item->setText(6,tr("[INVALID CART]"));
-      break;
-    }
-    break;
-
-  default:
-    if(edit_group_list.isGroupValid(item->text(4))||
-       item->text(4).isEmpty()) {
-      item->setBackgroundColor(palette().color(QPalette::Active,
-					       QColorGroup::Base));
-    }
-    else {
-      item->setBackgroundColor(RD_CART_INVALID_SERVICE_COLOR);
-      ret=false;
-    }
-    break;
-  }
-  return ret;
-}
-*/
-
-void EditLog::RenumberList(int line)
-{
-  /*
-  Q3ListViewItem *prev=NULL;
-  Q3ListViewItem *item=edit_log_list->firstChild();
-  if(item==NULL) {
-    return;
-  }
-  for(int i=0;i<line;i++) {
-    item=item->nextSibling();
-  }
-  while(item!=NULL) {
-    item->setText(14,QString().sprintf("%d",line++));
-    prev=item;
-    item=item->nextSibling();
-  }
-  prev->setText(13,QString().sprintf("%d",END_MARKER_ID));
-  */
 }
 
 
-void EditLog::SelectRecord(int id)
+int EditLog::SingleSelectionLine(bool incl_end_handle)
 {
-  /*
-  Q3ListViewItem *item=edit_log_list->firstChild();
-
-  while(item!=NULL) {
-    if(item->text(13).toInt()==id) {
-      edit_log_list->setSelected(item,true);
-      edit_log_list->ensureItemVisible(item);
-      return;
-    }
-    item=item->nextSibling();
+  int offset=-1;
+  if(incl_end_handle) {
+    offset=0;
   }
-  */
-}
-
-
-int EditLog::SingleSelectionLine()
-{
   QItemSelectionModel *sel=edit_log_view->selectionModel();
   if((sel->selectedRows().size()==1)&&
-     (sel->selectedRows().at(0).row()<(edit_log_model->rowCount()-1))) {
+     (sel->selectedRows().at(0).row()<(edit_log_model->rowCount()-offset))) {
     return sel->selectedRows().at(0).row();
   }
   return -1;
-}
-
-
-bool EditLog::ValidateSvc()
-{
-  /*
-  RDLogLine *logline=NULL;
-  bool valid=true;
-  RDListViewItem *item=(RDListViewItem *)edit_log_list->firstChild();
-  while(item!=NULL) {
-    if((logline=edit_log_event->logLine(item->text(14).toInt()))!=NULL) {
-      valid&=UpdateColor(item,logline);
-    }
-    item=(RDListViewItem *)item->nextSibling();
-  }
-  return valid;
-  */
-  return true;
 }
 
 
@@ -1808,8 +1320,8 @@ void EditLog::UpdateTracks()
   unsigned tracks=0;
   RDLogLine *logline;
 
-  for(int i=0;i<edit_log_event->size();i++) {
-    logline=edit_log_event->logLine(i);
+  for(int i=0;i<edit_log_model->lineCount();i++) {
+    logline=edit_log_model->logLine(i);
     if(logline->type()==RDLogLine::Track) {
       markers++;
     }
@@ -1839,22 +1351,17 @@ bool EditLog::DeleteTracks()
 
 void EditLog::LoadClipboard(bool clear_ext)
 {
-  /*
-  Q3ListViewItem *next=edit_log_list->firstChild();
+  QItemSelectionModel *sel=edit_log_view->selectionModel();
 
   edit_clipboard->clear();
-  while(next!=NULL) {
-    if((edit_log_list->isSelected(next))&&
-       (next->text(13).toInt()!=END_MARKER_ID)) {
-      edit_clipboard->
-	push_back(*edit_log_event->logLine(next->text(14).toInt()));
-      if(clear_ext) {
-	edit_clipboard->back().clearExternalData();
-      }
+  QModelIndexList rows=sel->selectedRows();
+  for(int i=0;i<rows.size();i++) {
+    edit_clipboard->
+      push_back(*edit_log_model->logLine(rows.at(i).row()));
+    if(clear_ext) {
+      edit_clipboard->back().clearExternalData();
     }
-    next=next->nextSibling();
   }
-  */
 }
 
 

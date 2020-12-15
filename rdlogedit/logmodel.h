@@ -1,8 +1,8 @@
-//   drop_listview.h
+// logmodel.h
 //
-//   The Log ListView widget for RDLogEdit.
+// Data model for Rivendell logs in RDLogEdit
 //
-//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,30 +17,32 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
-#ifndef DROP_LISTVIEW_H
-#define DROP_LISTVIEW_H
+#ifndef LOGMODEL_H
+#define LOGMODEL_H
 
-#include <rdlistview.h>
-#include <rdlog_line.h>
-//Added by qt3to4:
-#include <QDropEvent>
-#include <QDragEnterEvent>
+#include <rdgroup_list.h>
+#include <rdlogmodel.h>
 
-class DropListView : public RDListView
+class LogModel : public RDLogModel
 {
   Q_OBJECT
  public:
-  DropListView(QWidget *parent);
+  LogModel(const QString &logname,QObject *parent=0);
+  ~LogModel();
+  QString serviceName() const;
+  bool groupIsValid(const QString &grpname) const;
+  bool allGroupsValid() const;
 
- signals:
-  void cartDropped(int line,RDLogLine *ll);
+ public slots:
+   void setServiceName(const QString &str);
 
  protected:
-  void dragEnterEvent(QDragEnterEvent *e);
-  void dropEvent(QDropEvent *e);
+  QColor backgroundColor(int line,RDLogLine *ll) const;
+
+ private:
+  RDGroupList *d_group_list;
 };
 
 
-#endif  // DROP_LISTVIEW_H
+#endif  // LOGMODEL_H

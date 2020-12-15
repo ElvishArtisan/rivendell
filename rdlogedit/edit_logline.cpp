@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Entry
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +24,7 @@
 
 EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
 			 QString *schedcode,QString svcname,
-			 RDGroupList *grplist,RDLogEvent *log,int lineno,
-			 QWidget *parent)
+			 LogModel *model,int lineno,QWidget *parent)
   : EditEvent(line,parent)
 {
   //
@@ -40,8 +39,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   edit_group=group;
   edit_schedcode=schedcode;
   edit_service=svcname;
-  edit_group_list=grplist;
-  edit_log_event=log;
+  edit_log_model=model;
   edit_line=lineno;
 
   //
@@ -165,7 +163,7 @@ bool EditLogLine::saveData()
   }
   RDCart *cart=new RDCart(edit_cart_edit->text().toUInt());
   if(cart->exists()) {
-    if(!edit_group_list->isGroupValid(cart->groupName())) {
+    if(!edit_log_model->groupIsValid(cart->groupName())) {
       delete cart;
       QMessageBox::warning(this,tr("Disabled Cart"),
 			   tr("This cart belongs to a disabled\ngroup for the specified service!"));

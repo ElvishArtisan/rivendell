@@ -258,12 +258,12 @@ einfügen</translation>
     <message>
         <source>This log contains one or more carts
 that are invalid for the selected service!</source>
-        <translation>Dieses Log enthält einen oder mehrere Carts,
+        <translation type="obsolete">Dieses Log enthält einen oder mehrere Carts,
 die für den gewählten Service ungültig sind!</translation>
     </message>
     <message>
         <source>Voice Track</source>
-        <translation type="obsolete">Voice Track</translation>
+        <translation type="unfinished">Voice Track</translation>
     </message>
     <message>
         <source>The log contains carts that are disabled
@@ -385,7 +385,7 @@ die für den gewählten Service ungültig sind!</translation>
     </message>
     <message>
         <source>Selected:</source>
-        <translation type="obsolete">Ausgewählt:</translation>
+        <translation type="unfinished">Ausgewählt:</translation>
     </message>
     <message>
         <source>Delete on</source>
@@ -453,6 +453,10 @@ die für den gewählten Service ungültig sind!</translation>
     </message>
     <message>
         <source>Estimated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This log contains one or more carts that are invalid for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2,7 +2,7 @@
 //
 // List and Generate Log Reports
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,6 +27,7 @@
 
 #include <rddialog.h>
 #include <rdlog.h>
+#include <rdlogmodel.h>
 
 class ListReports : public RDDialog
 {
@@ -34,7 +35,7 @@ class ListReports : public RDDialog
  public:
  ListReports(const QString &logname,const QString &description,
 	     const QString service_name,const QDate &start_date,
-	     const QDate &end_date,bool auto_refresh,RDLogEvent *events,
+	     const QDate &end_date,bool auto_refresh,RDLogModel *model,
 	     QWidget *parent=0);
  ~ListReports();
  QSize sizeHint() const;
@@ -55,7 +56,7 @@ class ListReports : public RDDialog
   QDate list_start_date;
   QDate list_end_date;
   bool list_auto_refresh;
-  RDLogEvent *list_events;
+  RDLogModel *list_model;
   Q3DateEdit *list_date_edit;
 };
 

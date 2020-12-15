@@ -261,12 +261,12 @@ meta</translation>
     <message>
         <source>This log contains one or more carts
 that are invalid for the selected service!</source>
-        <translation>Denne loggen inneheld ei eller fleire
+        <translation type="obsolete">Denne loggen inneheld ei eller fleire
 korger som er ugyldige for denne tenesta!</translation>
     </message>
     <message>
         <source>Voice Track</source>
-        <translation type="obsolete">Røyst-spor</translation>
+        <translation type="unfinished">Røyst-spor</translation>
     </message>
     <message>
         <source>The log contains carts that are disabled
@@ -456,6 +456,14 @@ skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>Estimated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This log contains one or more carts that are invalid for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

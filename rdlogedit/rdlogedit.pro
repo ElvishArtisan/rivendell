@@ -25,7 +25,7 @@
 #
 
 SOURCES += add_meta.cpp
-SOURCES += drop_listview.cpp
+SOURCES += drop_tableview.cpp
 SOURCES += edit_chain.cpp
 SOURCES += edit_log.cpp
 SOURCES += edit_logline.cpp
@@ -33,12 +33,13 @@ SOURCES += edit_marker.cpp
 SOURCES += edit_track.cpp
 SOURCES += list_listviewitem.cpp
 SOURCES += list_reports.cpp
+SOURCES += logmodel.cpp
 SOURCES += rdlogedit.cpp
 SOURCES += render_dialog.cpp
 SOURCES += voice_tracker.cpp
 
 HEADERS += add_meta.h
-HEADERS += drop_listview.h
+HEADERS += drop_tableview.h
 HEADERS += edit_chain.h
 HEADERS += edit_log.h
 HEADERS += edit_logline.h
@@ -47,6 +48,7 @@ HEADERS += edit_track.h
 HEADERS += globals.h
 HEADERS += list_listviewitem.h
 HEADERS += list_reports.h
+HEADERS += logmodel.h
 HEADERS += rdlogedit.h
 HEADERS += render_dialog.h
 HEADERS += voice_tracker.h

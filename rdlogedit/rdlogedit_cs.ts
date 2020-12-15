@@ -258,12 +258,12 @@ popisná data</translation>
     <message>
         <source>This log contains one or more carts
 that are invalid for the selected service!</source>
-        <translation>Tento zápis obsahuje jeden nebo více vozíků,
+        <translation type="obsolete">Tento zápis obsahuje jeden nebo více vozíků,
 jež jsou pro vybranou službu neplatné!</translation>
     </message>
     <message>
         <source>Voice Track</source>
-        <translation type="obsolete">Stopa hlasu</translation>
+        <translation type="unfinished">Stopa hlasu</translation>
     </message>
     <message>
         <source>The log contains carts that are disabled
@@ -385,7 +385,7 @@ jež jsou pro vybranou službu zakázány!</translation>
     </message>
     <message>
         <source>Selected:</source>
-        <translation type="obsolete">Vybráno:</translation>
+        <translation type="unfinished">Vybráno:</translation>
     </message>
     <message>
         <source>Delete on</source>
@@ -453,6 +453,10 @@ jež jsou pro vybranou službu zakázány!</translation>
     </message>
     <message>
         <source>Estimated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This log contains one or more carts that are invalid for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

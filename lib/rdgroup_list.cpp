@@ -1,8 +1,8 @@
 // rdgroup_list.cpp
 //
-// A container class for Rivendell Groups
+// A list container for Rivendell Groups
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rddb.h>
-#include <rdgroup_list.h>
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdgroup_list.h"
 
 RDGroupList::RDGroupList()
 {
@@ -27,48 +28,58 @@ RDGroupList::RDGroupList()
 }
 
 
-void RDGroupList::loadSvc(QString svcname)
+QString RDGroupList::serviceName() const
 {
-  QString sql;
-  RDSqlQuery *q;
+  return d_service_name;
+}
 
-  clear();
-  sql=QString().sprintf("select GROUP_NAME from AUDIO_PERMS where\
-                         SERVICE_NAME=\"%s\"",
-			(const char *)svcname);
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    list_groups.push_back(QString(q->value(0).toString()));
+
+void RDGroupList::setServiceName(const QString &str)
+{
+  if(d_service_name!=str) {
+    QString sql;
+    RDSqlQuery *q;
+
+    clear();
+    sql=QString("select ")+
+      "GROUP_NAME "+  // 00
+      "from AUDIO_PERMS where "+
+      "SERVICE_NAME=\""+RDEscapeString(str)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      d_groups.push_back(QString(q->value(0).toString()));
+    }
+    delete q;
+    d_service_name=str;
   }
-  delete q;
 }
 
 
 void RDGroupList::clear()
 {
-  list_groups.clear();
+  d_groups.clear();
 }
 
 
 int RDGroupList::size() const
 {
-  return list_groups.size();
+  return d_groups.size();
 }
 
 
-QString RDGroupList::group(unsigned n) const
+QString RDGroupList::group(int n) const
 {
-  if(n<list_groups.size()) {
-    return list_groups[n];
+  if(n<d_groups.size()) {
+    return d_groups.at(n);
   }
   return QString();
 }
 
 
-bool RDGroupList::isGroupValid(QString group)
+bool RDGroupList::groupIsValid(QString group)
 {
-  for(unsigned i=0;i<list_groups.size();i++) {
-      if(list_groups[i].upper()==group.upper()) {
+  for(int i=0;i<d_groups.size();i++) {
+    if(d_groups.at(i).toUpper()==group.toUpper()) {
       return true;
     }
   }

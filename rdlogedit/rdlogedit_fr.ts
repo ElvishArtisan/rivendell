@@ -148,11 +148,6 @@ Meta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This log contains one or more carts
-that are invalid for the selected service!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>The log contains carts that are disabled
 for the selected service!
 
@@ -235,6 +230,18 @@ for the selected service!</source>
     </message>
     <message>
         <source>Estimated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voice Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This log contains one or more carts that are invalid for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

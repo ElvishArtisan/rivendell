@@ -1,6 +1,6 @@
-// rdgroup_list.h
+//   drop_tableview.h
 //
-// A list container for Rivendell Groups
+//   The Log TableView widget for RDLogEdit.
 //
 //   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -17,27 +17,31 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+//
 
-#ifndef RDGROUP_LIST_H
-#define RDGROUP_LIST_H
+#ifndef DROP_TABLEVIEW_H
+#define DROP_TABLEVIEW_H
 
-#include <QStringList>
+#include <QDropEvent>
+#include <QDragEnterEvent>
+#include <QTableView>
 
-class RDGroupList
+#include <rdlog_line.h>
+
+class DropTableView : public QTableView
 {
+  Q_OBJECT
  public:
-  RDGroupList();
-  QString serviceName() const;
-  void setServiceName(const QString &str);
-  void clear();
-  int size() const;
-  QString group(int n) const;
-  bool groupIsValid(QString group);
+  DropTableView(QWidget *parent);
 
- private:
-  QString d_service_name;
-  QStringList d_groups;
+ signals:
+  void cartDropped(int line,RDLogLine *ll);
+
+ protected:
+  void dragEnterEvent(QDragEnterEvent *e);
+  void dragMoveEvent(QDragMoveEvent *e);
+  void dropEvent(QDropEvent *e);
 };
 
 
-#endif  // RDGROUP_LIST_H
+#endif  // DROP_TABLEVIEW_H

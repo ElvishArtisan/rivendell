@@ -2,7 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -280,7 +280,7 @@ void MainWidget::addData()
 {
   QString logname;
   QString svcname;
-  std::vector<QString> newlogs;
+  QStringList newlogs;
   RDAddLog *log;
 
   if(rda->user()->createLog()) {
@@ -309,7 +309,7 @@ void MainWidget::addData()
     RefreshItem(item);
     log_log_list->setSelected(item,true);
     log_log_list->ensureItemVisible((Q3ListViewItem *)item);
-    for(unsigned i=0;i<newlogs.size();i++) {
+    for(int i=0;i<newlogs.size();i++) {
       item=new ListListViewItem(log_log_list);
       item->setText(1,newlogs[i]);
       RefreshItem(item);
@@ -326,14 +326,14 @@ void MainWidget::editData()
     return;
   }
   QString logname=items.at(0)->text(1);
-  std::vector<QString> newlogs;
+  QStringList newlogs;
   LockList();
   EditLog *log=
     new EditLog(logname,&log_filter,&log_group,&log_schedcode,
 		&log_clipboard,&newlogs,this);
   if(log->exec()) {
     RefreshItem(items.at(0));
-    for(unsigned i=0;i<newlogs.size();i++) {
+    for(int i=0;i<newlogs.size();i++) {
       ListListViewItem *item=new ListListViewItem(log_log_list);
       item->setText(1,newlogs[i]);
       RefreshItem(item);

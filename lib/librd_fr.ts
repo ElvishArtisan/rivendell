@@ -2237,11 +2237,11 @@ Do you want to overwrite it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sch. Time</source>
+        <source>--- end of log ---</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>--- end of log ---</source>
+        <source>Start Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

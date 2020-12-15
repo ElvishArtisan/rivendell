@@ -84,4 +84,4 @@ class RDLogEvent
 };
 
 
-#endif 
+#endif  // RDLOG_LINE_H

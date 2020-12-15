@@ -29,6 +29,7 @@
 #include <qstringlist.h>
 
 #include <rdlog_event.h>
+#include <rdlogmodel.h>
 #include <rdsettings.h>
 
 class __RDRenderLogLine : public RDLogLine
@@ -75,7 +76,17 @@ class RDRenderer : public QObject
 		    QString *err_msg,int first_line,int last_line,
 		    const QTime &first_time=QTime(),
 		    const QTime &last_time=QTime());
+  bool renderToFile(const QString &outfile,RDLogModel *model,RDSettings *s,
+		    const QTime &start_time,bool ignore_stops,
+		    QString *err_msg,int first_line,int last_line,
+		    const QTime &first_time=QTime(),
+		    const QTime &last_time=QTime());
   bool renderToCart(unsigned cartnum,int cutnum,RDLogEvent *log,RDSettings *s,
+		    const QTime &start_time,bool ignore_stops,
+		    QString *err_msg,int first_line,int last_line,
+		    const QTime &first_time=QTime(),
+		    const QTime &last_time=QTime());
+  bool renderToCart(unsigned cartnum,int cutnum,RDLogModel *model,RDSettings *s,
 		    const QTime &start_time,bool ignore_stops,
 		    QString *err_msg,int first_line,int last_line,
 		    const QTime &first_time=QTime(),
@@ -91,6 +102,10 @@ class RDRenderer : public QObject
 
  private:
   bool Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
+	      const QTime &start_time,bool ignore_stops,
+	      QString *err_msg,int first_line,int last_line,
+	      const QTime &first_time,const QTime &last_time);
+  bool Render(const QString &outfile,RDLogModel *model,RDSettings *s,
 	      const QTime &start_time,bool ignore_stops,
 	      QString *err_msg,int first_line,int last_line,
 	      const QTime &first_time,const QTime &last_time);

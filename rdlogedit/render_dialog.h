@@ -26,7 +26,7 @@
 
 #include <rdcut_dialog.h>
 #include <rddialog.h>
-#include <rdlog_event.h>
+#include <rdlogmodel.h>
 
 //
 // Widget Settings
@@ -44,7 +44,7 @@ class RenderDialog : public RDDialog
   QSize sizeHint() const;
 
  public slots:
-   int exec(RDUser *user,RDLogEvent *log,int first_line,int last_line);
+   int exec(RDUser *user,RDLogModel *model,int first_line,int last_line);
 
  private slots:
   void toChangedData(int item);
@@ -65,7 +65,7 @@ class RenderDialog : public RDDialog
   RDSystem *render_system;
   RDConfig *render_config;
   RDUser *render_user;
-  RDLogEvent *render_log;
+  RDLogModel *render_model;
   int render_first_line;
   int render_last_line;
   RDSettings *render_settings;

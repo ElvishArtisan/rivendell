@@ -2,7 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,6 +20,8 @@
 
 #ifndef RDLOGEDIT_H
 #define RDLOGEDIT_H
+
+#include <QList>
 
 #include <rdlog_line.h>
 #include <rdlogfilter.h>
@@ -77,7 +79,7 @@ class MainWidget : public RDWidget
   int log_stream_no;
   RDLogFilter *log_filter_widget;
   Q3ListView *log_log_list;
-  std::vector<RDLogLine> log_clipboard;
+  QList<RDLogLine> log_clipboard;
   QPushButton *log_add_button;
   QPushButton *log_edit_button;
   QPushButton *log_delete_button;

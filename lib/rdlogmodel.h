@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell logs
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,21 +22,24 @@
 #define RDLOGMODEL_H
 
 #include <QAbstractTableModel>
-#include <qfont.h>
-#include <qfontmetrics.h>
-#include <qlist.h>
+#include <QFont>
+#include <QFontMetrics>
+#include <QList>
+#include <QPalette>
 
 #include <rdlog_event.h>
 #include <rdlog_icons.h>
+#include <rdnotification.h>
 
 class RDLogModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  RDLogModel(QObject *parent=0);
+  enum StartTimeStyle {Estimated=0,Scheduled=1};
+  RDLogModel(const QString &logname,QObject *parent=0);
   ~RDLogModel();
-  void setLogEvent(RDLogEvent *log);
-  void clearLogEvent();
+  QPalette palette();
+  void setPalette(const QPalette &pal);
   void setFont(const QFont &font);
   int columnCount(const QModelIndex &parent=QModelIndex()) const;
   int rowCount(const QModelIndex &parent=QModelIndex()) const;
@@ -44,8 +47,60 @@ class RDLogModel : public QAbstractTableModel
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
 
+  //
+  // From RDLogEvent
+  //
+  bool exists();
+  bool exists(int line);
+  bool exists(const QTime &hard_time,int except_line=-1);
+  QString logName() const;
+  void setLogName(QString logname);
+  QString serviceName() const;
+  int load(bool track_ptrs=false);
+  void saveModified(RDConfig *config,bool update_tracks=true);
+  void save(RDConfig *config,bool update_tracks=true,int line=-1);
+  int append(const QString &logname,bool track_ptrs=false);
+  int validate(QString *report,const QDate &date);
+  void clear();
+  void refresh(int line);
+  int lineCount() const;
+  void insert(int line,int num_lines,bool preserve_trans=false);
+  void remove(int line,int num_lines,bool preserve_trans=false);
+  void move(int from_line,int to_line);
+  void copy(int from_line,int to_line);
+  int length(int from_line,int to_line,QTime *sched_time=NULL);
+  int lengthToStop(int from_line,QTime *sched_time=NULL);
+  bool blockLength(int *nominal_length,int *actual_length,int line);
+  QTime blockStartTime(int line) const;
+  RDLogLine *logLine(int line) const;
+  void setLogLine(int line,RDLogLine *ll);
+  RDLogLine *loglineById(int id, bool ignore_holdovers=false) const;
+  int lineById(int id, bool ignore_holdovers=false) const;
+  int lineByStartHour(int hour,RDLogLine::StartTimeType type) const;
+  int lineByStartHour(int hour) const;
+  int nextTimeStart(QTime after);
+  RDLogLine::TransType nextTransType(int);
+  void removeCustomTransition(int line);
+  int nextId() const;
+  int nextLinkId() const;
+  QString xml() const;
+
+ public slots:
+  void processNotification(RDNotification *notify);
+  void setStartTimeStyle(StartTimeStyle style);
+
+ protected:
+  void emitDataChanged(int row);
+  virtual QColor backgroundColor(int line,RDLogLine *ll) const;
+
  private:
-  RDLogEvent *d_log;
+  QString StartTimeString(int line) const;
+  int LoadLines(const QString &logname,int id_offset,bool track_ptrs);
+  void SaveLine(int line);
+  void InsertLines(QString values);
+  void InsertLineValues(QString *query, int line);
+  void LoadNowNext(unsigned from_line);
+  QPalette d_palette;
   QFont d_font;
   QFontMetrics *d_fms;
   QFont d_bold_font;
@@ -53,6 +108,11 @@ class RDLogModel : public QAbstractTableModel
   QList<QVariant> d_headers;
   QList<QVariant> d_alignments;
   RDLogIcons *d_log_icons;
+  StartTimeStyle d_start_time_style;
+  QString d_log_name;
+  QString d_service_name;
+  int d_max_id;
+  QList<RDLogLine *> d_log_lines;
 };
 
 

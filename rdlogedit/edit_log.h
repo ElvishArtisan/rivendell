@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,20 +25,17 @@
 
 #include <rdcart_dialog.h>
 #include <rddialog.h>
-#include <rdgroup_list.h>
 #include <rdloglock.h>
-#include <rdlogmodel.h>
 
+#include <QList>
+#include <QStringList>
 #include <QTableView>
 
-//#include "drop_listview.h"
+#include "drop_tableview.h"
 #include "list_reports.h"
+#include "logmodel.h"
 #include "render_dialog.h"
 
-//
-// Widget Settings
-//
-#define END_MARKER_ID -2
 #define RDLOGEDIT_EDITLOG_DEFAULT_WIDTH 950
 #define RDLOGEDIT_EDITLOG_DEFAULT_HEIGHT 600
 
@@ -47,7 +44,7 @@ class EditLog : public RDDialog
  Q_OBJECT
  public:
  EditLog(QString logname,QString *filter,QString *group,QString *schedcode,
-	 vector<RDLogLine> *clipboard,vector<QString> *new_logs,
+	 QList<RDLogLine> *clipboard,QStringList *new_logs,
 	 QWidget *parent=0);
   ~EditLog();
   QSize sizeHint() const;
@@ -69,8 +66,9 @@ class EditLog : public RDDialog
   void timestyleChangedData(int index);
   void insertCartButtonData();
   void insertMarkerButtonData();
-  void clickedData(Q3ListViewItem *item);
-  void selectionChangedData();
+  void clickedData(const QModelIndex &index);
+  void selectionChangedData(const QItemSelection &selected,
+			    const QItemSelection &deselected);
   void doubleClickedData(const QModelIndex &index);
   void editButtonData();
   void deleteButtonData();
@@ -80,7 +78,6 @@ class EditLog : public RDDialog
   void copyButtonData();
   void pasteButtonData();
   void cartDroppedData(int line,RDLogLine *ll);
-  void notificationReceivedData(RDNotification *notify);
   void saveData();
   void saveasData();
   void renderasData();
@@ -96,25 +93,17 @@ class EditLog : public RDDialog
  private:
   void DeleteLines(int line,int count);
   void SaveLog();
-  //  void RefreshLine(RDListViewItem *item);
-  //  void SetStartTimeField(RDListViewItem *item);
-  //  void RefreshList();
-  void UpdateSelection();
-  void RenumberList(int line);
-  //  bool UpdateColor(RDListViewItem *item,RDLogLine *logline);
-  void SelectRecord(int id);
+  void UpdateCounters();
   void UpdateTracks();
   bool DeleteTracks();
-  bool ValidateSvc();
   void LoadClipboard(bool clear_ext);
-  int SingleSelectionLine();
+  int SingleSelectionLine(bool incl_end_handle=false);
   void SetLogModified(bool state);
   void SendNotification(RDNotification::Action action,const QString &log_name);
   RDLog *edit_log;
-  RDLogEvent *edit_log_event;
-  std::vector<RDLogLine> *edit_clipboard;
+  QList<RDLogLine> *edit_clipboard;
   std::vector<unsigned> edit_deleted_tracks;
-  std::vector<QString> *edit_newlogs;
+  QStringList *edit_newlogs;
   QString edit_logname;
   QString *edit_filter;
   QString *edit_group;
@@ -135,16 +124,6 @@ class EditLog : public RDDialog
   QCheckBox *edit_startdate_box;
   QLabel *edit_enddate_label;
   QCheckBox *edit_enddate_box;
-  //  DropListView *edit_log_list;
-  QPixmap *edit_playout_map;
-  QPixmap *edit_macro_map;
-  QPixmap *edit_marker_map;
-  QPixmap *edit_chain_map;
-  QPixmap *edit_track_cart_map;
-  QPixmap *edit_notemarker_map;
-  QPixmap *edit_music_map;
-  QPixmap *edit_mic16_map;
-  QPixmap *edit_traffic_map;
   QLabel *edit_modified_label;
   QLabel *edit_logname_label_label;
   QLabel *edit_logname_label;
@@ -171,7 +150,6 @@ class EditLog : public RDDialog
   RDTransportButton *edit_stop_button;
   QPushButton *edit_ok_button;
   QPushButton *edit_cancel_button;
-  RDGroupList edit_group_list;
   RDLogLine::TransType edit_default_trans;
   int edit_output_card;
   int edit_output_port;
@@ -190,8 +168,8 @@ class EditLog : public RDDialog
   RDLogLock *edit_log_lock;
   QPushButton *edit_renderas_button;
   RenderDialog *edit_render_dialog;
-  QTableView *edit_log_view;
-  RDLogModel *edit_log_model;
+  DropTableView *edit_log_view;
+  LogModel *edit_log_model;
 };
 
 
