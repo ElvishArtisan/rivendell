@@ -1020,6 +1020,19 @@ QString RDLogModel::xml() const
 }
 
 
+void RDLogModel::setTransition(int line,RDLogLine::TransType trans)
+{
+  RDLogLine *ll=NULL;
+
+  if((ll=logLine(line))!=NULL) {
+    if(ll->transType()!=trans) {
+      ll->setTransType(trans);
+      emitDataChanged(line);
+    }
+  }
+}
+
+
 void RDLogModel::processNotification(RDNotification *notify)
 {
   RDLogLine *ll=NULL;

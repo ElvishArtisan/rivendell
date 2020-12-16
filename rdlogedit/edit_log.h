@@ -31,9 +31,9 @@
 #include <QStringList>
 #include <QTableView>
 
-#include "drop_tableview.h"
 #include "list_reports.h"
 #include "logmodel.h"
+#include "logtableview.h"
 #include "render_dialog.h"
 
 #define RDLOGEDIT_EDITLOG_DEFAULT_WIDTH 950
@@ -54,6 +54,8 @@ class EditLog : public RDDialog
   int exec();
   
  private slots:
+  void dataChangedData(const QModelIndex &top_left,
+		       const QModelIndex &bottom_right);
   void descriptionChangedData(const QString &);
   void purgeDateChangedData(const QDate &date);
   void purgeDateToggledData(bool state);
@@ -168,7 +170,7 @@ class EditLog : public RDDialog
   RDLogLock *edit_log_lock;
   QPushButton *edit_renderas_button;
   RenderDialog *edit_render_dialog;
-  DropTableView *edit_log_view;
+  LogTableView *edit_log_view;
   LogModel *edit_log_model;
 };
 

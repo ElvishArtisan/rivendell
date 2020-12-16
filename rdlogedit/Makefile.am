@@ -41,7 +41,6 @@ all:
 bin_PROGRAMS = rdlogedit
 
 dist_rdlogedit_SOURCES = add_meta.cpp add_meta.h\
-                         drop_tableview.cpp drop_tableview.h\
                          edit_chain.cpp edit_chain.h\
                          edit_event.cpp edit_event.h\
                          edit_log.cpp edit_log.h\
@@ -52,12 +51,12 @@ dist_rdlogedit_SOURCES = add_meta.cpp add_meta.h\
                          list_reports.cpp list_reports.h\
                          log_listview.cpp log_listview.h\
                          logmodel.cpp logmodel.h\
+                         logtableview.cpp logtableview.h\
                          rdlogedit.cpp rdlogedit.h globals.h\
                          render_dialog.cpp render_dialog.h\
                          voice_tracker.cpp voice_tracker.h
 
 nodist_rdlogedit_SOURCES = moc_add_meta.cpp\
-                           moc_drop_tableview.cpp\
                            moc_edit_chain.cpp\
                            moc_edit_event.cpp\
                            moc_edit_log.cpp\
@@ -67,6 +66,7 @@ nodist_rdlogedit_SOURCES = moc_add_meta.cpp\
                            moc_list_reports.cpp\
                            moc_log_listview.cpp\
                            moc_logmodel.cpp\
+                           moc_logtableview.cpp\
                            moc_rdlogedit.cpp\
                            moc_render_dialog.cpp\
                            moc_voice_tracker.cpp

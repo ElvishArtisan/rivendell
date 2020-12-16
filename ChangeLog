@@ -20698,3 +20698,6 @@
 	logs owning service.
 2020-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdcastmanager(1) to use the standard log model.
+2020-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a right-click menu to the 'Edit Log' dialog in
+	rdlogedit(1).

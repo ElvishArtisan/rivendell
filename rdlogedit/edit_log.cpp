@@ -264,7 +264,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Log Event View
   //
-  edit_log_view=new DropTableView(this);
+  edit_log_view=new LogTableView(this);
   edit_log_view->setSelectionBehavior(QAbstractItemView::SelectRows);
   edit_log_view->setSelectionMode(QAbstractItemView::ContiguousSelection);
   edit_log_view->setShowGrid(false);
@@ -276,6 +276,9 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_log_model->load(true);
   edit_log_view->setModel(edit_log_model);
   edit_log_view->resizeColumnsToContents();
+  connect(edit_log_model,
+	  SIGNAL(dataChanged(const QModelIndex &,const QModelIndex &)),
+	  this,SLOT(dataChangedData(const QModelIndex &,const QModelIndex &)));
   connect(edit_log_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));
   connect(edit_log_view,SIGNAL(clicked(const QModelIndex &)),
@@ -592,6 +595,13 @@ int EditLog::exec()
   }
 
   return QDialog::exec();
+}
+
+
+void EditLog::dataChangedData(const QModelIndex &top_left,
+			      const QModelIndex &bottom_right)
+{
+  SetLogModified(true);
 }
 
 

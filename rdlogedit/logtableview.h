@@ -1,4 +1,4 @@
-//   drop_tableview.cpp
+//   logtableview.h
 //
 //   The Log TableView widget for RDLogEdit.
 //
@@ -19,37 +19,44 @@
 //
 //
 
-#include <rdcartdrag.h>
+#ifndef LOGTABLEVIEW_H
+#define LOGTABLEVIEW_H
 
-#include "drop_tableview.h"
+#include <QDropEvent>
+#include <QDragEnterEvent>
+#include <QMenu>
+#include <QTableView>
 
-DropTableView::DropTableView(QWidget *parent)
-  : QTableView(parent)
+#include <rdlog_line.h>
+
+class LogTableView : public QTableView
 {
-  setAcceptDrops(true);
-}
+  Q_OBJECT
+ public:
+  LogTableView(QWidget *parent);
+
+ signals:
+  void cartDropped(int line,RDLogLine *ll);
+
+ protected:
+  void dragEnterEvent(QDragEnterEvent *e);
+  void dragMoveEvent(QDragMoveEvent *e);
+  void dropEvent(QDropEvent *e);
+  void mousePressEvent(QMouseEvent *e);
+
+ private slots:
+  void aboutToShowMenuData();
+  void setPlayData();
+  void setSegueData();
+  void setStopData();
+
+ private:
+  int d_mouse_row;
+  QMenu *d_mouse_menu;
+  QAction *d_play_action;
+  QAction *d_segue_action;
+  QAction *d_stop_action;
+};
 
 
-void DropTableView::dragEnterEvent(QDragEnterEvent *e)
-{
-  e->accept(RDCartDrag::canDecode(e));
-}
-
-
-void DropTableView::dragMoveEvent(QDragMoveEvent *e)
-{
-  e->accept(RDCartDrag::canDecode(e));
-}
-
-
-void DropTableView::dropEvent(QDropEvent *e)
-{
-  RDLogLine ll;
-  int line=-1;
-  int y_pos=e->pos().y();
-
-  if(RDCartDrag::decode(e,&ll)) {
-    line=rowAt(y_pos);
-    emit cartDropped(line,&ll);
-  }
-}
+#endif  // LOGTABLEVIEW_H

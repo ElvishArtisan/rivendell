@@ -764,6 +764,21 @@ vybrané služby!</translation>
     </message>
 </context>
 <context>
+    <name>LogTableView</name>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainWidget</name>
     <message>
         <source>RDLogEdit - Host</source>

@@ -82,6 +82,7 @@ class RDLogModel : public QAbstractTableModel
   QString xml() const;
 
  public slots:
+  void setTransition(int line,RDLogLine::TransType trans);
   void processNotification(RDNotification *notify);
   void setStartTimeStyle(StartTimeStyle style);
 
