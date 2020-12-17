@@ -1140,23 +1140,23 @@ See your system administrator for an update!</source>
     </message>
     <message>
         <source>Edit Cue Markers</source>
-        <translation>Editar marcadores</translation>
+        <translation type="obsolete">Editar marcadores</translation>
     </message>
     <message>
         <source>Undo Segue Changes</source>
-        <translation>Deshacer cambios en Segue</translation>
+        <translation type="obsolete">Deshacer cambios en Segue</translation>
     </message>
     <message>
         <source>Set Start Point Here</source>
-        <translation>Colocar punto de inicio aquí</translation>
+        <translation type="obsolete">Colocar punto de inicio aquí</translation>
     </message>
     <message>
         <source>Set End Point Here</source>
-        <translation>Colocar punto de fin aquí</translation>
+        <translation type="obsolete">Colocar punto de fin aquí</translation>
     </message>
     <message>
         <source>Set to Hook Markers</source>
-        <translation>Colocar en los marcadores &quot;Hook&quot;</translation>
+        <translation type="obsolete">Colocar en los marcadores &quot;Hook&quot;</translation>
     </message>
     <message>
         <source>Start</source>
@@ -1196,7 +1196,7 @@ Track</source>
     </message>
     <message>
         <source> </source>
-        <translation> </translation>
+        <translation type="obsolete"> </translation>
     </message>
     <message>
         <source>TIME</source>
@@ -1263,83 +1263,83 @@ sólo podrás editar transiciones ya existentes.</translation>
     </message>
     <message>
         <source>Import</source>
-        <translation>Importar</translation>
+        <translation type="unfinished">Importar</translation>
     </message>
     <message>
         <source>Cart Creation Failure</source>
-        <translation>Falló la creación de cartuchos</translation>
+        <translation type="unfinished">Falló la creación de cartuchos</translation>
     </message>
     <message>
         <source>Unable to create new cart for voice track!</source>
-        <translation>¡No fue posible crear un nuevo cartucho para la pista de voz!</translation>
+        <translation type="unfinished">¡No fue posible crear un nuevo cartucho para la pista de voz!</translation>
     </message>
     <message>
         <source>RDLogEdit</source>
-        <translation>RDLogEdit</translation>
+        <translation type="unfinished">RDLogEdit</translation>
     </message>
     <message>
         <source>Audio Deletion Error!</source>
-        <translation>¡Error eliminando audio!</translation>
+        <translation type="unfinished">¡Error eliminando audio!</translation>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>PISTA</translation>
+        <translation type="obsolete">PISTA</translation>
     </message>
     <message>
         <source>Voice Track</source>
-        <translation>Pista de voz</translation>
+        <translation type="unfinished">Pista de voz</translation>
     </message>
     <message>
         <source>Track List</source>
-        <translation>Listado de pistas</translation>
+        <translation type="unfinished">Listado de pistas</translation>
     </message>
     <message>
         <source>No more tracks!</source>
-        <translation>¡No hay más pistas!</translation>
+        <translation type="unfinished">¡No hay más pistas!</translation>
     </message>
     <message>
         <source>[end of log]</source>
-        <translation>[fin de la lista]</translation>
+        <translation type="obsolete">[fin de la lista]</translation>
     </message>
     <message>
         <source>[cart not found]</source>
-        <translation>[cartucho no encontrado]</translation>
+        <translation type="obsolete">[cartucho no encontrado]</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation>MARCADOR</translation>
+        <translation type="obsolete">MARCADOR</translation>
     </message>
     <message>
         <source>LOG CHAIN</source>
-        <translation>ENCADENAR A LISTA</translation>
+        <translation type="obsolete">ENCADENAR A LISTA</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation>ENLACE</translation>
+        <translation type="obsolete">ENLACE</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[importar música]</translation>
+        <translation type="obsolete">[importar música]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[importar tráfico]</translation>
+        <translation type="obsolete">[importar tráfico]</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>REPROD</translation>
+        <translation type="obsolete">REPROD</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>SEGUE</translation>
+        <translation type="obsolete">SEGUE</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>PARAR</translation>
+        <translation type="obsolete">PARAR</translation>
     </message>
     <message>
         <source>Abort</source>
-        <translation>Abortar</translation>
+        <translation type="unfinished">Abortar</translation>
     </message>
     <message>
         <source>Segue Changed</source>
@@ -1374,36 +1374,20 @@ sólo podrás editar transiciones ya existentes.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart</source>
-        <translation type="unfinished">Cartucho</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Cartucho</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Título</translation>
+        <translation type="obsolete">Título</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation type="unfinished">Artista</translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Artista</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished">Etiqueta</translation>
+        <translation type="obsolete">Etiqueta</translation>
     </message>
 </context>
 </TS>

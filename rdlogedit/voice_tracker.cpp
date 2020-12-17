@@ -1,8 +1,8 @@
 // voice_tracker.cpp
 //
-// A Rivendell Voice Tracker
+// Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,19 +32,6 @@
 #include "edit_track.h"
 #include "globals.h"
 #include "voice_tracker.h"
-
-//
-// Icons
-//
-#include "../icons/play.xpm"
-#include "../icons/rml5.xpm"
-#include "../icons/marker.xpm"
-#include "../icons/chain.xpm"
-#include "../icons/track_cart.xpm"
-#include "../icons/music.xpm"
-#include "../icons/notemarker.xpm"
-#include "../icons/traffic.xpm"
-#include "../icons/mic16.xpm"
 
 VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
 			   QWidget *parent)
@@ -87,23 +74,8 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumWidth(sizeHint().width());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Icons
-  //
-  edit_playout_map=new QPixmap(play_xpm);
-  edit_macro_map=new QPixmap(rml5_xpm);
-  edit_marker_map=new QPixmap(marker_xpm);
-  edit_chain_map=new QPixmap(chain_xpm);
-  edit_track_cart_map=new QPixmap(track_cart_xpm);
-  edit_music_map=new QPixmap(music_xpm);
-  edit_mic16_map=new QPixmap(mic16_xpm);
-  edit_notemarker_map=new QPixmap(notemarker_xpm);
-  edit_traffic_map=new QPixmap(traffic_xpm);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Palettes
@@ -141,12 +113,6 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   // Macro Event Player
   //
   track_event_player=new RDEventPlayer(rda->ripc(),this);
-
-  //
-  // Notifications
-  //
-  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
-	  this,SLOT(notificationReceivedData(RDNotification *)));
 
   //
   // Waveform Pixmaps
@@ -196,12 +162,10 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Voicetrack Group
   //
-  RDLog *log=new RDLog(logname);
-  RDSvc *svc=new RDSvc(log->service(),rda->station(),rda->config());
-  track_group=new RDGroup(svc->trackGroup());
-  track_tracks=log->scheduledTracks()-log->completedTracks();
-  delete svc;
-  delete log;
+  d_log=new RDLog(logname);
+  d_svc=new RDSvc(d_log->service(),rda->station(),rda->config());
+  track_group=new RDGroup(d_svc->trackGroup());
+  track_tracks=d_log->scheduledTracks()-d_log->completedTracks();
 
   //
   // Play Decks
@@ -233,12 +197,13 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   track_log_lock=new RDLogLock(edit_log_name,rda->user(),rda->station(),this);
   track_log=new RDLog(edit_log_name);
-  track_log_event=new RDLogEvent(edit_log_name);
-  track_log_event->load();
+  //  track_log_event=new RDLogEvent(edit_log_name);
+  //  track_log_event->load();
 
   //
   // Right-Click Menu
   //
+  /*
   track_menu=new Q3PopupMenu(this,"track_menu");
   connect(track_menu,SIGNAL(aboutToShow()),this,SLOT(updateMenuData()));
   connect(track_menu,SIGNAL(aboutToHide()),this,SLOT(hideMenuData()));
@@ -252,7 +217,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
     insertItem(tr("Set End Point Here"),this,SLOT(setEndPointData()),0,3);
   track_menu->
     insertItem(tr("Set to Hook Markers"),this,SLOT(setHookPointData()),0,4);
-
+  */
   //
   // Track 1 Button
   //
@@ -398,6 +363,40 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Log List
   //
+  d_log_view=new LogTableView(this);
+  d_log_view->
+    setGeometry(10,335,sizeHint().width()-120,sizeHint().height()-405);
+  d_log_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  d_log_view->setSelectionMode(QAbstractItemView::SingleSelection);
+  d_log_view->setShowGrid(false);
+  d_log_view->setSortingEnabled(false);
+  d_log_view->setWordWrap(false);
+  d_log_view->setAcceptDrops(false);
+  d_log_model=new LogModel(edit_log_name,this);
+  d_log_model->setFont(defaultFont());
+  d_log_model->setPalette(palette());
+  d_log_model->load(true);
+  d_log_model->setServiceName(d_log->service());
+  d_log_view->setModel(d_log_model);
+  d_log_view->resizeColumnsToContents();
+  /*
+  connect(d_log_model,
+	  SIGNAL(dataChanged(const QModelIndex &,const QModelIndex &)),
+	  this,SLOT(dataChangedData(const QModelIndex &,const QModelIndex &)));
+  connect(d_log_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(d_log_view,SIGNAL(clicked(const QModelIndex &)),
+	  this,SLOT(clickedData(const QModelIndex &)));
+  */
+  //  connect(d_log_view,SIGNAL(cartDropped(int,RDLogLine *)),
+  //	  this,SLOT(cartDroppedData(int,RDLogLine *)));
+  connect(d_log_view->selectionModel(),
+       SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
+       this,
+       SLOT(selectionChangedData(const QItemSelection &,const QItemSelection &)));
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  d_log_model,SLOT(processNotification(RDNotification *)));
+  /*
   track_log_list=new LogListView(this);
   track_log_list->
     setGeometry(10,335,sizeHint().width()-120,sizeHint().height()-405);
@@ -430,6 +429,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   for(int i=0;i<track_log_list->columns();i++) {
     track_log_list->setColumnSortType(i,RDListView::LineSort);
   }
+  */
 
   //
   // Reset Button
@@ -478,18 +478,20 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_close_button->setText(tr("&Close"));
   connect(track_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
-  for(int i=0;i<track_log_event->size();i++) {
-    if(track_log_event->logLine(i)->type()==RDLogLine::Track) {
+  //
+  // Select first track
+  //
+  for(int i=0;i<d_log_model->lineCount();i++) {
+    if(d_log_model->logLine(i)->type()==RDLogLine::Track) {
       track_line=i;
       track_loaded=true;
       LoadTrack(track_line);
       LoadBlockLength(track_line);
-      i=track_log_event->size();
+      d_log_view->selectRow(i);
+      i=d_log_model->lineCount();
     }
   }
   RefreshList();
-  track_log_list->ensureVisible(0,track_log_list->
-     itemPos(track_log_list->selectedItem()),0,track_log_list->size().height()/2);
   UpdateControls();
   UpdateRemaining();
 
@@ -507,6 +509,8 @@ VoiceTracker::~VoiceTracker()
     wpg[i]=NULL;
   }
   delete track_log_lock;
+  delete d_svc;
+  delete d_log;
 }
 
 
@@ -632,6 +636,7 @@ void VoiceTracker::wheelEvent(QWheelEvent *e)
 
 void VoiceTracker::updateMenuData()
 {
+  /*
   if(!edit_wave_name[edit_rightclick_track].isEmpty()) {
     if(edit_rightclick_track==1 && track_loaded) {
       track_menu->setItemEnabled(0,false);
@@ -665,6 +670,7 @@ void VoiceTracker::updateMenuData()
   menu_clicked_point=edit_rightclick_pos;
   DrawTrackMap(edit_rightclick_track);
   WriteTrackMap(edit_rightclick_track);
+  */
 }
 
 
@@ -791,12 +797,19 @@ void VoiceTracker::stopData()
 
 void VoiceTracker::track1Data()
 {
+  int line;
+
+  if((line=SingleSelectionLine())<0) {
+    return;
+  }
+  /*
   RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
   if(item==NULL) {
     return;
   }
+  */
   if(track_track1_button->text()==tr("Import")) {
-    if(!ImportTrack(item)) {
+    if(!ImportTrack(line)) {
       QMessageBox::warning(this,tr("Cart Creation Failure"),
 			   tr("Unable to create new cart for voice track!"));
       return;
@@ -820,13 +833,20 @@ void VoiceTracker::track1Data()
 
 void VoiceTracker::recordData()
 {
+  int line;
+
   if(edit_deck_state==VoiceTracker::DeckIdle) {
+    if((line=SingleSelectionLine())<0) {
+      return;
+    }
+    /*
     RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
     if(item==NULL) {
       return;
     }
+    */
     if(track_record_button->text()==tr("Import")) {
-      if(!ImportTrack(item)) {
+      if(!ImportTrack(line)) {
 	QMessageBox::warning(this,tr("Cart Creation Failure"),
 			     tr("Unable to create new cart for voice track!"));
 	return;
@@ -872,7 +892,7 @@ void VoiceTracker::recordData()
                edit_logline[0]->startPoint()-
                edit_deck[0]->currentPosition());
   edit_deck_state=VoiceTracker::DeckTrack2;
-  track_start_time=track_log_event->blockStartTime(track_line);
+  track_start_time=d_log_model->blockStartTime(track_line);
   if(!edit_wave_name[0].isEmpty() && track_start_time>QTime(0,0,0)){
     track_start_time=track_start_time.addMSecs(-edit_logline[0]->
                          segueLength(RDLogLine::Segue));
@@ -975,6 +995,12 @@ void VoiceTracker::finishedData()
 
 void VoiceTracker::postData()
 {
+  int line;
+
+  if((line=SingleSelectionLine())<0) {
+    return;
+  }
+
   if(edit_wave_name[2].isEmpty()) {
     return;
   }
@@ -1004,8 +1030,8 @@ void VoiceTracker::postData()
   edit_wave_origin[2]=edit_wave_origin[1]-
     (segue_start-edit_logline[1]->startPoint());
 
-  RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
-  RenderTransition(item->line());
+  //  RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
+  RenderTransition(line);
   UpdateControls();
   UpdateRemaining();
 }
@@ -1023,11 +1049,10 @@ void VoiceTracker::resetData()
     edit_logline[1]->setSource(RDLogLine::Manual);
     edit_logline[1]->setOriginUser("");
     edit_logline[1]->setOriginDateTime(QDateTime());
-  //  printf("CART: %u  TITLE: %s\n",edit_track_cart->number(),(const char *)edit_track_cart->title());
     edit_logline[1]->setMarkerComment(edit_track_cart->title());
     edit_logline[1]->setForcedLength(0);
     edit_logline[1]->clearTrackData(RDLogLine::AllTrans);
-    track_log_event->removeCustomTransition(edit_track_line[1]);
+    d_log_model->removeCustomTransition(edit_track_line[1]);
     if(!edit_track_cart->remove(rda->station(),rda->user(),rda->config())) {
       QMessageBox::warning(this,tr("RDLogEdit"),tr("Audio Deletion Error!"));
     }
@@ -1041,11 +1066,11 @@ void VoiceTracker::resetData()
     delete wpg[1];
     wpg[1]=NULL;
     if(!edit_wave_name[2].isEmpty()) {
-      track_log_event->removeCustomTransition(edit_track_line[2]);
+      d_log_model->removeCustomTransition(edit_track_line[2]);
     }
   }
   else {
-    track_log_event->removeCustomTransition(edit_track_line[1]);
+    d_log_model->removeCustomTransition(edit_track_line[1]);
   }
   SaveTrack(track_line);
   LoadTrack(track_line);
@@ -1053,31 +1078,26 @@ void VoiceTracker::resetData()
     DrawTrackMap(i);
     WriteTrackMap(i);
   }
-  RDListViewItem *real_item=(RDListViewItem *)track_log_list->selectedItem();
-  RDListViewItem *item=NULL;
+  int real_line=SingleSelectionLine();
+  int line=-1;
   if(track_offset) {
-    item=GetItemByLine(real_item->line()-1);
+    line=real_line-1;
   }
   else {
-    item=real_item;
+    line=real_line;
   }
-  if(item==NULL) {
+  if(line<0) {
     return;
   }
   if(track_loaded) {
-    item->setPixmap(0,*edit_mic16_map);
-    item->setText(3,tr("TRACK"));
-    item->setText(4,"");
-    item->setText(5,"");
+    d_log_model->refresh(line);
     track_tracks++;
   }
   LoadBlockLength(track_line);
-  RefreshLine(real_item);
-  if(!track_offset) {
-    item=(RDListViewItem *)real_item->nextSibling();
-  }
-  if((real_item!=item)&&(item!=NULL)) {
-    RefreshLine(item);
+  RefreshLine(real_line);
+  line++;
+  if((real_line!=line)&&(line>=0)) {
+    RefreshLine(line);
   }
   UpdateRemaining();
   UpdateControls();
@@ -1086,42 +1106,31 @@ void VoiceTracker::resetData()
 
 void VoiceTracker::insertData()
 {
-  RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
-  if(item==NULL) {
+  int line;
+
+  if((line=SingleSelectionLine())<0) {
     return;
   }
-  int line=item->line();
   SaveTrack(line);
   if(line==TRACKER_MAX_LINENO) {
-    line=track_log_event->size();
+    line=d_log_model->lineCount();
   }
-  track_log_event->insert(line,1,true);
-  track_log_event->logLine(line)->setType(RDLogLine::Track);
-  track_log_event->logLine(line)->setTransType(RDLogLine::Segue);
-  track_log_event->logLine(line)->setMarkerComment(tr("Voice Track"));
-  EditTrack *edit=new EditTrack(track_log_event->logLine(line),this);
+  d_log_model->insert(line,1,true);
+  d_log_model->logLine(line)->setType(RDLogLine::Track);
+  d_log_model->logLine(line)->setTransType(RDLogLine::Segue);
+  d_log_model->logLine(line)->setMarkerComment(tr("Voice Track"));
+  EditTrack *edit=new EditTrack(d_log_model->logLine(line),this);
   if(edit->exec()>=0) {
-    while(item!=NULL) {
-      if(item->line()!=TRACKER_MAX_LINENO) {
-	item->setLine(item->line()+1);
-      }
-      item=(RDListViewItem *)item->nextSibling();
-    }
-    item=new RDListViewItem(track_log_list);
-    item->setLine(line);
-    RefreshLine(item);
-    track_log_list->setSelected(item,true);
-    track_log_list->ensureVisible(0,track_log_list->itemPos(item),
-				  0,track_log_list->size().height()/2);
+    RefreshLine(line);
+    d_log_view->selectRow(line);
     track_tracks++;
     track_size_altered=true;
     track_line=-1;
-    logClickedData(item,QPoint(),0);
     UpdateRemaining();
     UpdateControls();
   }
   else {
-    track_log_event->remove(line,1);
+    d_log_model->remove(line,1);
   }
   delete edit;
 }
@@ -1130,25 +1139,18 @@ void VoiceTracker::insertData()
 void VoiceTracker::insertData(int line,RDLogLine *logline,bool warn)
 {
   SaveTrack(line);
-  track_log_event->insert(line,1,true);
-  *track_log_event->logLine(line)=*logline;
-  RDListViewItem *item=GetItemByLine(line);
-  while(item!=NULL) {
-    if(item->line()!=TRACKER_MAX_LINENO) {
-      item->setLine(item->line()+1);
-    }
-    item=(RDListViewItem *)item->nextSibling();
-  }
-  item=new RDListViewItem(track_log_list);
-  item->setLine(line);
-  RefreshLine(item);
-  track_log_list->ensureVisible(0,track_log_list->itemPos(item),
-				0,track_log_list->size().height()/2);
+  d_log_model->insert(line,1,true);
+  *d_log_model->logLine(line)=*logline;
+  d_log_model->insert(line,1);
+  d_log_model->logLine(line)->setType(RDLogLine::Track);
+  d_log_model->logLine(line)->setTransType(RDLogLine::Segue);
+  d_log_model->logLine(line)->setMarkerComment(tr("Voice Track"));
+  d_log_model->refresh(line);
+
   track_tracks++;
   track_size_altered=true;
   track_line=-1;
   track_changed=false;
-  logClickedData(item,QPoint(),0);
   UpdateRemaining();
   UpdateControls();
 }
@@ -1156,34 +1158,25 @@ void VoiceTracker::insertData(int line,RDLogLine *logline,bool warn)
 
 void VoiceTracker::deleteData()
 {
-  RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
-  if(track_offset) {
-    item=GetItemByLine(item->line()-1);
-  }
-  if(item==NULL) {
+  int line;
+
+  if((line=SingleSelectionLine())<0) {
     return;
   }
-  deleteData(item->line(),true);
+  if(track_offset) {
+    line--;
+  }
+  deleteData(line,true);
 }
 
 
 void VoiceTracker::deleteData(int line,bool warn)
 {
   SaveTrack(line);
-  track_log_event->remove(line,1,true);
-  RDListViewItem *l=(RDListViewItem *)GetItemByLine(line)->nextSibling();
-  while(l!=NULL) {
-    if(l->line()!=TRACKER_MAX_LINENO) {
-      l->setLine(l->line()-1);
-    }
-    l=(RDListViewItem *)l->nextSibling();
-  }
-  if((l=(RDListViewItem *)GetItemByLine(line)->nextSibling())!=NULL) {
-    track_log_list->setSelected(l,true);
-  }
-  delete GetItemByLine(line);
+  //  d_log_model->remove(line,1,true);
+  d_log_view->selectRow(line+1);
+  d_log_model->remove(line,1);
   track_line=-1;
-  logClickedData(l,QPoint(),0);
   track_tracks--;
   track_size_altered=true;
   UpdateControls();
@@ -1193,58 +1186,37 @@ void VoiceTracker::deleteData(int line,bool warn)
 
 void VoiceTracker::previousData()
 {
-  RDListViewItem *current=(RDListViewItem *)track_log_list->selectedItem();
-  if(current==NULL) {
-    return;
-  }
-  RDListViewItem *item=(RDListViewItem *)track_log_list->firstChild();
-  RDListViewItem *previous=NULL;
-  while(item!=current) {
-    if(item->line()!=TRACKER_MAX_LINENO) {
-      if((track_log_event->logLine(item->line())->type()==RDLogLine::Track)||
-	 (track_log_event->logLine(item->line())->source()==
-	  RDLogLine::Tracker)) {
-	previous=item;
+  RDLogLine *ll=NULL;
+  int line=SingleSelectionLine();
+
+  for(int i=line-1;i>=0;i--) {
+    if((ll=d_log_model->logLine(i))!=NULL) {
+      if((ll->type()==RDLogLine::Track)||(ll->source()==RDLogLine::Tracker)) {
+	d_log_view->selectRow(i);
+	track_loaded=true;
+	return;
       }
     }
-    item=(RDListViewItem *)item->nextSibling();
   }
-  if(previous==NULL) {
-    QMessageBox::information(this,tr("Track List"),tr("No more tracks!"));
-    return;
-  }
-  track_log_list->setSelected(previous,true);
-  track_log_list->ensureVisible(0,track_log_list->itemPos(previous),
-				0,track_log_list->size().height()/2);
-  logClickedData(previous,QPoint(),0);
-  track_loaded=true;
+  QMessageBox::information(this,tr("Track List"),tr("No more tracks!"));
 }
 
 
 void VoiceTracker::nextData()
 {
-  RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
-  if(item==NULL) {
-    return;
-  }
-  item=(RDListViewItem *)item->nextSibling();
-  while(item!=NULL) {
-    if(item->line()!=TRACKER_MAX_LINENO) {
-      if((track_log_event->logLine(item->line())->type()==RDLogLine::Track)||
-	 (track_log_event->logLine(item->line())->source()==
-	  RDLogLine::Tracker)) {
-	track_log_list->setSelected(item,true);
-	track_log_list->ensureVisible(0,track_log_list->itemPos(item),
-				      0,track_log_list->size().height()/2);
-	logClickedData(item,QPoint(),0);
+  RDLogLine *ll=NULL;
+  int line=SingleSelectionLine();
+
+  for(int i=line+1;i<d_log_model->lineCount();i++) {
+    if((ll=d_log_model->logLine(i))!=NULL) {
+      if((ll->type()==RDLogLine::Track)||(ll->source()==RDLogLine::Tracker)) {
+	d_log_view->selectRow(i);
 	track_loaded=true;
 	return;
       }
     }
-    item=(RDListViewItem *)item->nextSibling();
   }
-  QMessageBox::information(this,tr("Track List"),
-			   tr("No more tracks!"));
+  QMessageBox::information(this,tr("Track List"),tr("No more tracks!"));
 }
 
 
@@ -1290,6 +1262,7 @@ void VoiceTracker::editAudioData()
 
 void VoiceTracker::setStartPointData()
 {
+  /*
     if(!track_changed) {
       PushSegues();
       track_changed=true;
@@ -1362,11 +1335,13 @@ void VoiceTracker::setStartPointData()
     RefreshList();
     item=(RDListViewItem *)track_log_list->selectedItem();
     track_log_list->ensureVisible(0,track_log_list->itemPos(item),0,track_log_list->size().height()/2);
+  */
 }
 
 
 void VoiceTracker::setEndPointData()
 {
+  /*
     if(!track_changed) {
       PushSegues();
       track_changed=true;
@@ -1454,11 +1429,13 @@ void VoiceTracker::setEndPointData()
     RefreshList();
     item=(RDListViewItem *)track_log_list->selectedItem();
     track_log_list->ensureVisible(0,track_log_list->itemPos(item),0,track_log_list->size().height()/2);
+  */
 }
 
 
 void VoiceTracker::setHookPointData()
 {
+  /*
     if(!track_changed) {
       PushSegues();
       track_changed=true;
@@ -1525,11 +1502,13 @@ void VoiceTracker::setHookPointData()
     RefreshList();
     item=(RDListViewItem *)track_log_list->selectedItem();
     track_log_list->ensureVisible(0,track_log_list->itemPos(item),0,track_log_list->size().height()/2);
+  */
 }
 
 
 void VoiceTracker::undoChangesData()
 {
+  /*
   PopSegues();
   track_changed=false;
   RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
@@ -1538,6 +1517,7 @@ void VoiceTracker::undoChangesData()
   if(GetItemByLine(item->line()+1)!=NULL){
     RefreshLine(GetItemByLine(item->line()+1));
   }
+  */
 }
 
 
@@ -1592,8 +1572,7 @@ void VoiceTracker::stateChangedData(int id,RDPlayDeck::State state)
 	edit_segue_start_offset[i]=0;
       }
     }
-    RenderTransition(((RDListViewItem *)track_log_list->selectedItem())->
-		     line());
+    RenderTransition(SingleSelectionLine());
     UpdateControls();
     break;
   }
@@ -1763,21 +1742,23 @@ void VoiceTracker::segueStartData(int id)
 }
 
 
-void VoiceTracker::logClickedData(Q3ListViewItem *item,const QPoint &pt,
-					int col)
+void VoiceTracker::selectionChangedData(const QItemSelection &selected,
+					const QItemSelection &deselected)
 {
   CheckChanges();
-  if(item==NULL) {
+  if(selected.indexes().size()==0) {
     track_loaded=false;
     segue_loaded=false;
     edit_length_label->setText("-:--:--.-");
     return;
   }
-  RefreshLine(((RDListViewItem *)item));
-  RenderTransition(((RDListViewItem *)item)->line());
+  if(selected.indexes().size()>=1) {
+    RefreshLine(selected.indexes().at(0).row());
+    RenderTransition(selected.indexes().at(0).row());
+  }
 }
 
-
+/*
 void VoiceTracker::transitionChangedData(int line,RDLogLine::TransType trans)
 {
   track_log_event->logLine(line)->setTransType(trans);
@@ -1794,7 +1775,7 @@ void VoiceTracker::transitionChangedData(int line,RDLogLine::TransType trans)
   }
   SaveTrack(track_line);
 }
-
+*/
 
 void VoiceTracker::meterData()
 {
@@ -1876,6 +1857,7 @@ void VoiceTracker::recordStoppedData(int card,int stream)
 void VoiceTracker::recordUnloadedData(int card,int stream,unsigned msecs)
 {
   // printf("recordUnloadedData(%d,%d)\n",card,stream);
+
   if((card!=edit_input_card)||(stream!=edit_input_port)) {
     return;
   }
@@ -1927,6 +1909,7 @@ void VoiceTracker::recordUnloadedData(int card,int stream,unsigned msecs)
        edit_wave_origin[0]);
     DrawTrackMap(1);
     WriteTrackMap(1);
+    /*
     RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
     if(track_offset) {
       item=GetItemByLine(item->line()-1);
@@ -1938,10 +1921,18 @@ void VoiceTracker::recordUnloadedData(int card,int stream,unsigned msecs)
     item->setText(3,QString().sprintf("%06u",edit_track_cart->number()));
     item->setText(4,track_group->name());
     item->setText(5,RDGetTimeLength(edit_track_cart->forcedLength()));
+    */
+    int line=SingleSelectionLine();
+    if(track_offset) {
+      line--;
+    }
+    if(line<0) {
+      return;
+    }
     SaveTrack(track_line);
-    RefreshLine(item);
+    RefreshLine(line);
     if(!edit_wave_name[2].isEmpty()) {
-      RefreshLine((RDListViewItem *)item->nextSibling());
+      RefreshLine(line);
     }
   }
   else {
@@ -1955,30 +1946,12 @@ void VoiceTracker::recordUnloadedData(int card,int stream,unsigned msecs)
 }
 
 
-void VoiceTracker::notificationReceivedData(RDNotification *notify)
-{
-  RDListViewItem *item=NULL;
-
-  if(notify->type()==RDNotification::CartType) {
-    unsigned cartnum=notify->id().toUInt();
-    item=(RDListViewItem *)track_log_list->firstChild();
-    while(item!=NULL) {
-      if(item->text(3).toUInt()==cartnum) {
-	track_log_event->refresh(item->line());
-	RefreshLine(item);
-      }
-      item=(RDListViewItem *)item->nextSibling();
-    }
-  }
-}
-
-
 void VoiceTracker::closeData()
 {
   stopData();
   CheckChanges();
   if(track_size_altered) {
-    track_log_event->save(rda->config());
+    d_log_model->save(rda->config());
   }
   done(0);
 }
@@ -2074,24 +2047,8 @@ void VoiceTracker::mousePressEvent(QMouseEvent *e)
   if(TransportActive()) {
     return;
   }
-  switch(e->button()) {
-  case Qt::LeftButton:
+  if(e->button()==Qt::LeftButton) {
     edit_current_track=GetClick(e,edit_previous_point);
-    break;
-
-  case Qt::RightButton:
-    edit_rightclick_track=GetClick(e,edit_previous_point);
-    edit_rightclick_pos=edit_previous_point->x();
-    if(edit_rightclick_track>=0) {
-      track_menu->setGeometry(e->globalX(),e->globalY()+20,
-			      track_menu->sizeHint().width(),
-			      track_menu->sizeHint().height());
-      track_menu->exec();
-    }
-    break;
-
-  default:
-    break;
   }
 }
 
@@ -2265,7 +2222,7 @@ void VoiceTracker::LoadTrack(int line)
       edit_wave_origin[0]=0;
     }
     else {
-      edit_logline[0]=track_log_event->logLine(edit_track_line[0]);
+      edit_logline[0]=d_log_model->logLine(edit_track_line[0]);
       edit_logline[0]->refreshPointers();
       edit_wave_origin[0]=edit_logline[0]->segueStartPoint()-track_preroll;
     }
@@ -2273,11 +2230,11 @@ void VoiceTracker::LoadTrack(int line)
     //
     // Track 1 Parameters
     //
-    edit_logline[1]=track_log_event->logLine(edit_track_line[1]);
+    edit_logline[1]=d_log_model->logLine(edit_track_line[1]);
     if(!edit_wave_name[1].isEmpty()) {
       edit_logline[1]->refreshPointers();
     }  
-    if((track_log_event->logLine(edit_track_line[1])!=NULL)&&
+    if((d_log_model->logLine(edit_track_line[1])!=NULL)&&
        (!edit_wave_name[1].isEmpty())) {
       edit_wave_origin[1]=edit_logline[1]->startPoint()-track_preroll;
       edit_length_label->
@@ -2305,7 +2262,7 @@ void VoiceTracker::LoadTrack(int line)
       edit_wave_origin[2]=0;
     }
     else {
-      edit_logline[2]=track_log_event->logLine(edit_track_line[2]);
+      edit_logline[2]=d_log_model->logLine(edit_track_line[2]);
       edit_logline[2]->refreshPointers();
       if(edit_logline[2]->transType()!=RDLogLine::Segue) {
 	if(!edit_wave_name[1].isEmpty()) {  
@@ -2332,7 +2289,7 @@ void VoiceTracker::LoadTrack(int line)
     }
     edit_wave_width=TRACKER_START_WIDTH;
   }
-  track_start_time=track_log_event->blockStartTime(line);
+  track_start_time=d_log_model->blockStartTime(line);
   DrawTrackMap(0);
   DrawTrackMap(1);
   DrawTrackMap(2);
@@ -2345,15 +2302,14 @@ void VoiceTracker::SaveTrack(int line)
   if((line<0)||(line==TRACKER_MAX_LINENO)) {
     return;
   }
-  if((line>0)&&(track_log_event->logLine(line-1)->type()==RDLogLine::Track)) {
+  if((line>0)&&(d_log_model->logLine(line-1)->type()==RDLogLine::Track)) {
     line--;
   }
-
   if(track_size_altered) {
-     track_log_event->save(rda->config());
+     d_log_model->save(rda->config());
   }
   else {
-     track_log_event->saveModified(rda->config());
+     d_log_model->saveModified(rda->config());
   }
 
   track_log->
@@ -2364,7 +2320,7 @@ void VoiceTracker::SaveTrack(int line)
 }
 
 
-bool VoiceTracker::ImportTrack(RDListViewItem *item)
+bool VoiceTracker::ImportTrack(int line)
 {
   bool metadata=false;
 
@@ -2428,19 +2384,22 @@ bool VoiceTracker::ImportTrack(RDListViewItem *item)
 			    edit_logline[1]->
 			    startPoint());
   }
+  /*
   item->setPixmap(0,*edit_track_cart_map);
   item->setText(3,QString().sprintf("%06u",edit_track_cart->number()));
   item->setText(4,track_group->name());
   item->setText(5,RDGetTimeLength(edit_track_cart->forcedLength()));
+  */
   postData();
   SaveTrack(track_line);
   LoadTrack(track_line);
   WriteTrackMap(0);
   WriteTrackMap(1);
   WriteTrackMap(2);
-  RefreshLine(item);
+
+  RefreshLine(line);
   if(!edit_wave_name[2].isEmpty()) {
-    RefreshLine((RDListViewItem *)item->nextSibling());
+    RefreshLine(line+1);
   }
 
   return true;
@@ -2478,7 +2437,7 @@ void VoiceTracker::LoadBlockLength(int line)
   int nominal_length=0;
   int actual_length=0;
 
-  track_block_valid=track_log_event->
+  track_block_valid=d_log_model->
     blockLength(&nominal_length,&actual_length,line);
   track_time_remaining=nominal_length-actual_length;
 }
@@ -2486,6 +2445,7 @@ void VoiceTracker::LoadBlockLength(int line)
 
 void VoiceTracker::RefreshList()
 {
+  /*
   RDListViewItem *item=NULL;
   track_log_list->clear();
   item=new RDListViewItem(track_log_list);
@@ -2501,15 +2461,18 @@ void VoiceTracker::RefreshList()
       track_log_list->ensureVisible(0,track_log_list->itemPos(item),0,track_log_list->size().height()/2);
     }
   }
+  */
 }
 
 
-void VoiceTracker::RefreshLine(RDListViewItem *item)
+void VoiceTracker::RefreshLine(int line)
 {
-  RDLogLine *logline=track_log_event->logLine(item->line());
+  RDLogLine *logline=d_log_model->logLine(line);
   if(logline==NULL) {
     return;
   }
+  logline->refreshCart();
+  /*
   switch(logline->type()) {
   case RDLogLine::Cart:
     switch(logline->source()) {
@@ -2628,6 +2591,7 @@ void VoiceTracker::RefreshLine(RDListViewItem *item)
   default:
     break;
   }
+  */
 }
 
 
@@ -2664,21 +2628,21 @@ void VoiceTracker::StartNext(int finishing_id,int next_id)
 
 QString VoiceTracker::GetCutName(int line,RDCut **cut)
 {
-  if((line<0)||(line>=track_log_event->size())) {
+  if((line<0)||(line>=d_log_model->lineCount())) {
     return QString();
   }
   QString wavname;
   QString pathname;
-  RDLogLine *logline=track_log_event->logLine(line);
+  RDLogLine *logline=d_log_model->logLine(line);
   if(*cut!=NULL) {
     delete *cut;
     *cut=NULL;
   }
-  if(line==(track_log_event->size()-1)) {
+  if(line==(d_log_model->lineCount()-1)) {
     logline->setEvent(0,RDLogLine::Stop,false);
   }
   else {
-    logline->setEvent(0,track_log_event->logLine(line+1)->transType(),false);
+    logline->setEvent(0,d_log_model->logLine(line+1)->transType(),false);
   }
   if(!logline->cutName().isEmpty()) {
     *cut=new RDCut(logline->cutName());
@@ -2803,7 +2767,7 @@ void VoiceTracker::DragTrack(int trackno,int xdiff)
   for(int i=trackno;i<3;i++) {
     edit_wave_origin[i]-=tdiff;
   }
-  track_start_time=track_log_event->blockStartTime(track_line);
+  track_start_time=d_log_model->blockStartTime(track_line);
   for(int i=0;i<3;i++) {
     DrawTrackMap(i);
     WriteTrackMap(i);
@@ -2832,18 +2796,22 @@ void VoiceTracker::DragTrack(int trackno,int xdiff)
     }
   }
   LoadBlockLength(track_line);
-  RDListViewItem *item=NULL;
-  if(track_log_event->logLine(track_line)->type()==RDLogLine::Track) {
-    item=GetItemByLine(track_line+1);
+  //  RDListViewItem *item=NULL;
+  int line=-1;
+  if(d_log_model->logLine(track_line)->type()==RDLogLine::Track) {
+    //    item=GetItemByLine(track_line+1);
+    line=track_line+1;
   }
   else {
-    item=GetItemByLine(track_line);
+    //    item=GetItemByLine(track_line);
+    line=track_line;
   }
-  if(item!=NULL) {
-    RefreshLine(item);
-    if(GetItemByLine(item->line()+1)!=NULL) {
-      RefreshLine(GetItemByLine(item->line()+1));
-    }  
+  if(line>=0) {
+    RefreshLine(line);
+    //    if(GetItemByLine(item->line()+1)!=NULL) {
+    //      RefreshLine(GetItemByLine(item->line()+1));
+    //    }
+    RefreshLine(line+1);
   }
   UpdateRemaining();
   UpdateControls();
@@ -3019,18 +2987,22 @@ void VoiceTracker::DragTarget(int trackno,const QPoint &pt)
     break;
   }
   track_changed=true;
-  RDListViewItem *item=NULL;
-  if(track_log_event->logLine(track_line)->type()==RDLogLine::Track) {
-    item=GetItemByLine(track_line+1);
+  //  RDListViewItem *item=NULL;
+  int line=-1;
+  if(d_log_model->logLine(track_line)->type()==RDLogLine::Track) {
+    //    item=GetItemByLine(track_line+1);
+    line=track_line+1;
   }
   else {
-    item=GetItemByLine(track_line);
+    //    item=GetItemByLine(track_line);
+    line=track_line;
   }
-  if(item!=NULL) {
-    RefreshLine(item);
-    if(GetItemByLine(item->line()+1)!=NULL) {
-      RefreshLine(GetItemByLine(item->line()+1));
-    }  
+  if(line>=0) {
+    RefreshLine(line);
+    //    if(GetItemByLine(item->line()+1)!=NULL) {
+    //      RefreshLine(GetItemByLine(item->line()+1));
+    //    }  
+    RefreshLine(line);
   }
   UpdateControls();
 }
@@ -3673,10 +3645,11 @@ bool VoiceTracker::PlayoutActive()
 
 void VoiceTracker::UpdateControls()
 {
+  int line=SingleSelectionLine();
   bool transport_idle=!TransportActive();
 
-  RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
-  if((item==NULL)||(item->line()==TRACKER_MAX_LINENO)) {
+  //  RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
+  if((line<0)||(line==TRACKER_MAX_LINENO)) {
     track_track1_button->setDisabled(true);
     track_track1_button->setText(tr("Start"));
     track_track1_button->setPalette(track_start_palette);
@@ -3693,13 +3666,13 @@ void VoiceTracker::UpdateControls()
     track_insert_button->setEnabled(transport_idle&&CanInsertTrack());
     track_delete_button->setEnabled(transport_idle&&CanDeleteTrack());
     track_close_button->setEnabled(true);
-    track_log_list->setEnabled(transport_idle);
+    d_log_view->setEnabled(transport_idle);
     return;
   }
-  RDLogLine *real_logline=track_log_event->logLine(item->line());
+  RDLogLine *real_logline=d_log_model->logLine(line);
   RDLogLine *logline=NULL;
   if(track_offset) {
-    logline=track_log_event->logLine(item->line()-1);
+    logline=d_log_model->logLine(line-1);
   }
   else {
     logline=real_logline;
@@ -3752,7 +3725,7 @@ void VoiceTracker::UpdateControls()
 	track_insert_button->setEnabled(transport_idle&&CanInsertTrack());
 	track_delete_button->setEnabled(transport_idle&&CanDeleteTrack());
 	track_close_button->setEnabled(true);
-	track_log_list->setEnabled(transport_idle);
+	d_log_view->setEnabled(transport_idle);
 	break;
 
       case VoiceTracker::DeckTrack1:
@@ -3775,7 +3748,7 @@ void VoiceTracker::UpdateControls()
 	track_insert_button->setDisabled(true);
 	track_delete_button->setDisabled(true);
 	track_close_button->setDisabled(true);
-	track_log_list->setDisabled(true);
+	d_log_view->setDisabled(true);
 	break;
 	    
       case VoiceTracker::DeckTrack2:
@@ -3819,7 +3792,7 @@ void VoiceTracker::UpdateControls()
 	track_next_button->setDisabled(true);
 	track_previous_button->setDisabled(true);
 	track_close_button->setDisabled(true);
-	track_log_list->setDisabled(true);
+	d_log_view->setDisabled(true);
 	break;
 	    
       case VoiceTracker::DeckTrack3:
@@ -3842,7 +3815,7 @@ void VoiceTracker::UpdateControls()
 	track_next_button->setDisabled(true);
 	track_previous_button->setDisabled(true);
 	track_close_button->setDisabled(true);
-	track_log_list->setDisabled(true);
+	d_log_view->setDisabled(true);
 	break;
       }
     }
@@ -3867,7 +3840,7 @@ void VoiceTracker::UpdateControls()
       track_insert_button->setEnabled(transport_idle&&CanInsertTrack());
       track_delete_button->setEnabled(transport_idle&&CanDeleteTrack());
       track_close_button->setEnabled(true);
-      track_log_list->setEnabled(transport_idle);
+      d_log_view->setEnabled(transport_idle);
     }
   }
   else {             // Straight Segue
@@ -3890,7 +3863,7 @@ void VoiceTracker::UpdateControls()
     track_insert_button->setEnabled(transport_idle&&CanInsertTrack());
     track_delete_button->setEnabled(transport_idle&&CanDeleteTrack());
     track_close_button->setEnabled(true);
-    track_log_list->setEnabled(transport_idle);
+    d_log_view->setEnabled(transport_idle);
   }
 }
 
@@ -4030,14 +4003,14 @@ double VoiceTracker::GetCurrentTime()
 bool VoiceTracker::IsTrack(int line,bool *offset)
 {
   *offset=false;
-  if(track_log_event->logLine(line)==NULL) {
+  if(d_log_model->logLine(line)==NULL) {
     return false;
   }
-  if((track_log_event->logLine(line)->type()==RDLogLine::Track)||
-     (track_log_event->logLine(line)->source()==RDLogLine::Tracker)) {
+  if((d_log_model->logLine(line)->type()==RDLogLine::Track)||
+     (d_log_model->logLine(line)->source()==RDLogLine::Tracker)) {
     return true;
   }
-  if(track_log_event->logLine(line-1)==NULL) {
+  if(d_log_model->logLine(line-1)==NULL) {
     return false;
   }
   return false;
@@ -4046,21 +4019,22 @@ bool VoiceTracker::IsTrack(int line,bool *offset)
 
 bool VoiceTracker::CanInsertTrack()
 {
-  RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
-  if(item==NULL) {
+  int line;
+
+  if((line=SingleSelectionLine())<0) {
     return false;
   }
-  if(item->line()==TRACKER_MAX_LINENO) {
-    if(track_log_event->size()<=0) {
+  if(line==TRACKER_MAX_LINENO) {
+    if(d_log_model->lineCount()<=0) {
       return true;
     }
-    return track_log_event->logLine(track_log_event->size()-1)->type()
+    return d_log_model->logLine(d_log_model->lineCount()-1)->type()
       !=RDLogLine::Track;
   }
-  bool state=track_log_event->logLine(item->line())->type()==RDLogLine::Track;
-  if(item->line()>0) {
+  bool state=d_log_model->logLine(line)->type()==RDLogLine::Track;
+  if(line>0) {
     state=state||
-      (track_log_event->logLine(item->line()-1)->type()==RDLogLine::Track);
+      (d_log_model->logLine(line-1)->type()==RDLogLine::Track);
   }
 
   return !state;
@@ -4069,14 +4043,12 @@ bool VoiceTracker::CanInsertTrack()
 
 bool VoiceTracker::CanDeleteTrack()
 {
-  RDListViewItem *item=(RDListViewItem *)track_log_list->selectedItem();
-  if(track_offset) {
-    item=GetItemByLine(item->line()-1);
-  }
-  if((item==NULL)||(item->line()==TRACKER_MAX_LINENO)) {
+  int line=SingleSelectionLine();
+
+  if((line<0)||(line==TRACKER_MAX_LINENO)) {
     return false;
   }
-  return track_log_event->logLine(item->line())->type()==RDLogLine::Track;
+  return d_log_model->logLine(line)->type()==RDLogLine::Track;
 }
 
 
@@ -4094,6 +4066,7 @@ void VoiceTracker::ClearCursor(QPainter *p)
 
 RDListViewItem *VoiceTracker::GetItemByLine(int line)
 {
+  /*
   RDListViewItem *item=(RDListViewItem *)track_log_list->firstChild();
   while(item!=NULL) {
     if(item->line()==line) {
@@ -4101,6 +4074,8 @@ RDListViewItem *VoiceTracker::GetItemByLine(int line)
     }
     item=(RDListViewItem *)item->nextSibling();
   }
+  return NULL;
+  */
   return NULL;
 }
 
@@ -4142,6 +4117,21 @@ void VoiceTracker::PopSegues()
       *(edit_logline[i])=*(edit_saved_logline[i]);
     }
   }
+}
+
+
+int VoiceTracker::SingleSelectionLine(bool incl_end_handle)
+{
+  int offset=-1;
+  if(incl_end_handle) {
+    offset=0;
+  }
+  QItemSelectionModel *sel=d_log_view->selectionModel();
+  if((sel->selectedRows().size()==1)&&
+     (sel->selectedRows().at(0).row()<(d_log_model->rowCount()-offset))) {
+    return sel->selectedRows().at(0).row();
+  }
+  return -1;
 }
 
 

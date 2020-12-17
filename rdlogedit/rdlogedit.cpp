@@ -597,7 +597,8 @@ void MainWidget::logSelectionChangedData()
   }
   log_edit_button->setEnabled(count==1);
   log_delete_button->setEnabled(count>0&&rda->user()->deleteLog());
-  log_track_button->setEnabled(count==1&&rda->user()->voicetrackLog());
+  log_track_button->setEnabled(rda->system()->allowDuplicateCartTitles()&&
+			       count==1&&rda->user()->voicetrackLog());
 }
 
 

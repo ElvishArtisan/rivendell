@@ -507,82 +507,85 @@ int RDLogModel::validate(QString *report,const QDate &date)
 
 void RDLogModel::refresh(int line)
 {
-  if(d_log_name.isEmpty()||d_log_lines[line]->cartNumber()==0) {
+  if(d_log_name.isEmpty()) {
     return;
   }
-  QString sql=QString("select ")+
-    "CART.TYPE,"+                  // 00
-    "CART.GROUP_NAME,"+            // 01
-    "CART.TITLE,"+                 // 02
-    "CART.ARTIST,"+                // 03
-    "CART.ALBUM,"+                 // 04
-    "CART.YEAR,"+                  // 05
-    "CART.LABEL,"+                 // 06
-    "CART.CLIENT,"+                // 07
-    "CART.AGENCY,"+                // 08
-    "CART.USER_DEFINED,"+          // 09
-    "CART.FORCED_LENGTH,"+         // 10
-    "CART.CUT_QUANTITY,"+          // 11
-    "CART.LAST_CUT_PLAYED,"+       // 12
-    "CART.PLAY_ORDER,"+            // 13
-    "CART.ENFORCE_LENGTH,"+        // 14
-    "CART.PRESERVE_PITCH,"+        // 15
-    "CART.PUBLISHER,"+             // 16
-    "CART.COMPOSER,"+              // 17
-    "CART.USAGE_CODE,"+            // 18
-    "CART.AVERAGE_SEGUE_LENGTH,"+  // 19
-    "CART.VALIDITY,"+              // 20
-    "CART.NOTES,"+                 // 21
-    "GROUPS.COLOR "+               // 22
-    "from CART left join GROUPS "+
-    "on CART.GROUP_NAME=GROUPS.NAME where "+
-    QString().sprintf("CART.NUMBER=%u",d_log_lines[line]->cartNumber());
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    switch((RDCart::Type)q->value(0).toInt()) {
-    case RDCart::Audio:
-      d_log_lines[line]->setType(RDLogLine::Cart);
-      break;
+  if(d_log_lines[line]->cartNumber()>0) {
+    QString sql=QString("select ")+
+      "CART.TYPE,"+                  // 00
+      "CART.GROUP_NAME,"+            // 01
+      "CART.TITLE,"+                 // 02
+      "CART.ARTIST,"+                // 03
+      "CART.ALBUM,"+                 // 04
+      "CART.YEAR,"+                  // 05
+      "CART.LABEL,"+                 // 06
+      "CART.CLIENT,"+                // 07
+      "CART.AGENCY,"+                // 08
+      "CART.USER_DEFINED,"+          // 09
+      "CART.FORCED_LENGTH,"+         // 10
+      "CART.CUT_QUANTITY,"+          // 11
+      "CART.LAST_CUT_PLAYED,"+       // 12
+      "CART.PLAY_ORDER,"+            // 13
+      "CART.ENFORCE_LENGTH,"+        // 14
+      "CART.PRESERVE_PITCH,"+        // 15
+      "CART.PUBLISHER,"+             // 16
+      "CART.COMPOSER,"+              // 17
+      "CART.USAGE_CODE,"+            // 18
+      "CART.AVERAGE_SEGUE_LENGTH,"+  // 19
+      "CART.VALIDITY,"+              // 20
+      "CART.NOTES,"+                 // 21
+      "GROUPS.COLOR "+               // 22
+      "from CART left join GROUPS "+
+      "on CART.GROUP_NAME=GROUPS.NAME where "+
+      QString().sprintf("CART.NUMBER=%u",d_log_lines[line]->cartNumber());
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    if(q->first()) {
+      switch((RDCart::Type)q->value(0).toInt()) {
+      case RDCart::Audio:
+	d_log_lines[line]->setType(RDLogLine::Cart);
+	break;
 	  
-    case RDCart::Macro:
-      d_log_lines[line]->setType(RDLogLine::Macro);
-      break;
+      case RDCart::Macro:
+	d_log_lines[line]->setType(RDLogLine::Macro);
+	break;
 	  
-    default:
-      break;
-    }	
-    d_log_lines[line]->
-      setCartType((RDCart::Type)q->value(0).toInt());              // Cart Type
-    d_log_lines[line]->setGroupName(q->value(1).toString());       // Group Name
-    d_log_lines[line]->setTitle(q->value(2).toString());           // Title
-    d_log_lines[line]->setArtist(q->value(3).toString());          // Artist
-    d_log_lines[line]->setPublisher(q->value(16).toString());      // Publisher
-    d_log_lines[line]->setComposer(q->value(17).toString());       // Composer
-    d_log_lines[line]->setAlbum(q->value(4).toString());           // Album
-    d_log_lines[line]->setYear(q->value(5).toDate());              // Year
-    d_log_lines[line]->setLabel(q->value(6).toString());           // Label
-    d_log_lines[line]->setClient(q->value(7).toString());          // Client
-    d_log_lines[line]->setAgency(q->value(8).toString());          // Agency
-    d_log_lines[line]->setUserDefined(q->value(9).toString());     // User Defined
-    d_log_lines[line]->setUsageCode((RDCart::UsageCode)q->value(16).toInt());
-    d_log_lines[line]->setForcedLength(q->value(10).toUInt());   // Forced Length
-    d_log_lines[line]->setAverageSegueLength(q->value(19).toUInt());
-    d_log_lines[line]->setCutQuantity(q->value(11).toUInt());       // Cut Quantity
-    d_log_lines[line]->setLastCutPlayed(q->value(12).toUInt());  // Last Cut Played
-    d_log_lines[line]->
-      setPlayOrder((RDCart::PlayOrder)q->value(13).toUInt()); // Play Order
-    d_log_lines[line]->
-      setEnforceLength(RDBool(q->value(14).toString()));     // Enforce Length
-    d_log_lines[line]->
-      setPreservePitch(RDBool(q->value(15).toString()));     // Preserve Pitch
-    d_log_lines[line]->setValidity((RDCart::Validity)q->value(20).toInt());
-    d_log_lines[line]->setCartNotes(q->value(21).toString());   // Cart Notes
-    d_log_lines[line]->setGroupColor(q->value(22).toString());  // Group Color
+      default:
+	break;
+      }	
+      d_log_lines[line]->
+	setCartType((RDCart::Type)q->value(0).toInt());              // Cart Type
+      d_log_lines[line]->setGroupName(q->value(1).toString());       // Group Name
+      d_log_lines[line]->setTitle(q->value(2).toString());           // Title
+      d_log_lines[line]->setArtist(q->value(3).toString());          // Artist
+      d_log_lines[line]->setPublisher(q->value(16).toString());      // Publisher
+      d_log_lines[line]->setComposer(q->value(17).toString());       // Composer
+      d_log_lines[line]->setAlbum(q->value(4).toString());           // Album
+      d_log_lines[line]->setYear(q->value(5).toDate());              // Year
+      d_log_lines[line]->setLabel(q->value(6).toString());           // Label
+      d_log_lines[line]->setClient(q->value(7).toString());          // Client
+      d_log_lines[line]->setAgency(q->value(8).toString());          // Agency
+      d_log_lines[line]->setUserDefined(q->value(9).toString());     // User Defined
+      d_log_lines[line]->setUsageCode((RDCart::UsageCode)q->value(16).toInt());
+      d_log_lines[line]->setForcedLength(q->value(10).toUInt());   // Forced Length
+      d_log_lines[line]->setAverageSegueLength(q->value(19).toUInt());
+      d_log_lines[line]->setCutQuantity(q->value(11).toUInt());       // Cut Quantity
+      d_log_lines[line]->setLastCutPlayed(q->value(12).toUInt());  // Last Cut Played
+      d_log_lines[line]->
+	setPlayOrder((RDCart::PlayOrder)q->value(13).toUInt()); // Play Order
+      d_log_lines[line]->
+	setEnforceLength(RDBool(q->value(14).toString()));     // Enforce Length
+      d_log_lines[line]->
+	setPreservePitch(RDBool(q->value(15).toString()));     // Preserve Pitch
+      d_log_lines[line]->setValidity((RDCart::Validity)q->value(20).toInt());
+      d_log_lines[line]->setCartNotes(q->value(21).toString());   // Cart Notes
+      d_log_lines[line]->setGroupColor(q->value(22).toString());  // Group Color
+    }
+    else {
+      d_log_lines[line]->setValidity(RDCart::NeverValid);
+    }
+    delete q;
   }
-  else {
-    d_log_lines[line]->setValidity(RDCart::NeverValid);
-  }
-  delete q;
+  emitDataChanged(line);
 }
 
 

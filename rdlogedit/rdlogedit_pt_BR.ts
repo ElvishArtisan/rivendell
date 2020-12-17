@@ -1131,19 +1131,19 @@ Continuar?</translation>
     </message>
     <message>
         <source>Edit Cue Markers</source>
-        <translation type="unfinished">Editar Marcador de Escuta</translation>
+        <translation type="obsolete">Editar Marcador de Escuta</translation>
     </message>
     <message>
         <source>Undo Segue Changes</source>
-        <translation type="unfinished">Desfazer Mudanças de Sobre</translation>
+        <translation type="obsolete">Desfazer Mudanças de Sobre</translation>
     </message>
     <message>
         <source>Set Start Point Here</source>
-        <translation type="unfinished">Marcar Início aqui</translation>
+        <translation type="obsolete">Marcar Início aqui</translation>
     </message>
     <message>
         <source>Set End Point Here</source>
-        <translation type="unfinished">Marcar Término aqui</translation>
+        <translation type="obsolete">Marcar Término aqui</translation>
     </message>
     <message>
         <source>Start</source>
@@ -1183,7 +1183,7 @@ Faixa</translation>
     </message>
     <message>
         <source> </source>
-        <translation type="unfinished"> </translation>
+        <translation type="obsolete"> </translation>
     </message>
     <message>
         <source>TIME</source>
@@ -1263,7 +1263,7 @@ Assim sendo, somente transições existentes serão editáveis.</translation>
     </message>
     <message>
         <source>TRACK</source>
-        <translation type="unfinished">FAIXA</translation>
+        <translation type="obsolete">FAIXA</translation>
     </message>
     <message>
         <source>Voice Track</source>
@@ -1279,43 +1279,43 @@ Assim sendo, somente transições existentes serão editáveis.</translation>
     </message>
     <message>
         <source>[end of log]</source>
-        <translation type="unfinished">[Fim da Lista]</translation>
+        <translation type="obsolete">[Fim da Lista]</translation>
     </message>
     <message>
         <source>[cart not found]</source>
-        <translation type="unfinished">[cartão não encontrado]</translation>
+        <translation type="obsolete">[cartão não encontrado]</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation type="unfinished">MARCADOR</translation>
+        <translation type="obsolete">MARCADOR</translation>
     </message>
     <message>
         <source>LOG CHAIN</source>
-        <translation type="unfinished">CORRENTE DE LISTA</translation>
+        <translation type="obsolete">CORRENTE DE LISTA</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation type="unfinished">ENLACE</translation>
+        <translation type="obsolete">ENLACE</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation type="unfinished">[importar de música]</translation>
+        <translation type="obsolete">[importar de música]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation type="unfinished">[importar de tráfego]</translation>
+        <translation type="obsolete">[importar de tráfego]</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation type="unfinished">SIMPLES</translation>
+        <translation type="obsolete">SIMPLES</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation type="unfinished">SOBRE</translation>
+        <translation type="obsolete">SOBRE</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation type="unfinished">PARE</translation>
+        <translation type="obsolete">PARE</translation>
     </message>
     <message>
         <source>Abort</source>
@@ -1330,16 +1330,8 @@ Assim sendo, somente transições existentes serão editáveis.</translation>
         <translation type="unfinished">Salvar mudanças nos &quot;Sobres&quot;?</translation>
     </message>
     <message>
-        <source>Set to Hook Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>RDLogEdit</source>
         <translation type="unfinished">RDListas</translation>
-    </message>
-    <message>
-        <source>Audio Deletion Error!</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>RDLogEdit - Voice Tracker</source>
@@ -1366,36 +1358,24 @@ Assim sendo, somente transições existentes serão editáveis.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart</source>
-        <translation type="unfinished">Cartão</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Cartão</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Título</translation>
+        <translation type="obsolete">Título</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation type="unfinished">Artista</translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Artista</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished">Selo</translation>
+        <translation type="obsolete">Selo</translation>
+    </message>
+    <message>
+        <source>Audio Deletion Error!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

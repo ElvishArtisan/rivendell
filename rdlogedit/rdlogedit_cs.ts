@@ -1139,26 +1139,6 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
         <translation type="unfinished">Rozdělovač hlasu</translation>
     </message>
     <message>
-        <source>Edit Cue Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Undo Segue Changes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set Start Point Here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set End Point Here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set to Hook Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1190,10 +1170,6 @@ Track</source>
     </message>
     <message>
         <source>Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1256,84 +1232,48 @@ therefore only existing transitions will be editable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Import</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart Creation Failure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create new cart for voice track!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDLogEdit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Audio Deletion Error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>TRACK</source>
-        <translation type="unfinished">STOPA</translation>
+        <translation type="obsolete">STOPA</translation>
     </message>
     <message>
         <source>Voice Track</source>
         <translation type="unfinished">Stopa hlasu</translation>
     </message>
     <message>
-        <source>Track List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No more tracks!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[end of log]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>[cart not found]</source>
-        <translation type="unfinished">[vozík nenalezen]</translation>
+        <translation type="obsolete">[vozík nenalezen]</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation type="unfinished">ZNAČKA</translation>
+        <translation type="obsolete">ZNAČKA</translation>
     </message>
     <message>
         <source>LOG CHAIN</source>
-        <translation type="unfinished">ŘETĚZEC ZÁPISU</translation>
+        <translation type="obsolete">ŘETĚZEC ZÁPISU</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation type="unfinished">ODKAZ</translation>
+        <translation type="obsolete">ODKAZ</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation type="unfinished">[zavedení hudby]</translation>
+        <translation type="obsolete">[zavedení hudby]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation type="unfinished">[zavedení přenosu]</translation>
+        <translation type="obsolete">[zavedení přenosu]</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation type="unfinished">PŘEHRÁT</translation>
+        <translation type="obsolete">PŘEHRÁT</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation type="unfinished">PŘECHOD</translation>
+        <translation type="obsolete">PŘECHOD</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation type="unfinished">ZASTAVIT</translation>
-    </message>
-    <message>
-        <source>Abort</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">ZASTAVIT</translation>
     </message>
     <message>
         <source>Segue Changed</source>
@@ -1368,36 +1308,52 @@ therefore only existing transitions will be editable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart</source>
-        <translation type="unfinished">Vozík</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Vozík</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Název</translation>
+        <translation type="obsolete">Název</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation type="unfinished">Umělec</translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Umělec</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished">Štítek</translation>
+        <translation type="obsolete">Štítek</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Track List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No more tracks!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart Creation Failure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create new cart for voice track!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDLogEdit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Deletion Error!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

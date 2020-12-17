@@ -20701,3 +20701,6 @@
 2020-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added a right-click menu to the 'Edit Log' dialog in
 	rdlogedit(1).
+2020-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Voice Tracker' dialog in rdlogedit(1) to use
+	Qt's MVC API.

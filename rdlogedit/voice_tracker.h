@@ -1,8 +1,8 @@
 // voice_tracker.h
 //
-// A Rivendell Voice Tracker
+// Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,11 +27,13 @@
 #include <rdlog.h>
 #include <rdloglock.h>
 #include <rdplay_deck.h>
+#include <rdsvc.h>
 #include <rdstereometer.h>
 #include <rdtransportbutton.h>
 #include <rdwavepainter.h>
 
-#include "log_listview.h"
+#include "logmodel.h"
+#include "logtableview.h"
 
 //
 // Widget Settings
@@ -57,6 +59,8 @@
 #define TRACKER_SCROLL_SCALE 2
 #define TRACKER_SCROLL_SCALE 2
 #define TRACKER_FORCED_SEGUE 1000
+
+#define TRACKER_MAX_LINENO 2147483647
 
 class VoiceTracker : public RDDialog
 {
@@ -98,14 +102,14 @@ class VoiceTracker : public RDDialog
   void stateChangedData(int id,RDPlayDeck::State state);
   void positionData(int id,int msecs);
   void segueStartData(int id);
-  void logClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
-  void transitionChangedData(int line,RDLogLine::TransType trans);
+  void selectionChangedData(const QItemSelection &selected,
+			    const QItemSelection &deselected);
+  // void transitionChangedData(int line,RDLogLine::TransType trans);
   void meterData();
   void recordLoadedData(int card,int stream);
   void recordingData(int card,int stream);
   void recordStoppedData(int card,int stream);
   void recordUnloadedData(int cart,int stream,unsigned msecs);
-  void notificationReceivedData(RDNotification *notify);
   void closeData();
 
  protected:
@@ -121,11 +125,11 @@ class VoiceTracker : public RDDialog
 	       TrackFadedownGain=6,TrackFadedownPoint=7,TargetSize=8};
   void LoadTrack(int line);
   void SaveTrack(int line);
-  bool ImportTrack(RDListViewItem *item);
+  bool ImportTrack(int line);
   void RenderTransition(int line);
   void LoadBlockLength(int line);
   void RefreshList();
-  void RefreshLine(RDListViewItem *item);
+  void RefreshLine(int line);
   void StartNext(int finishing_id,int next_id=-1);
   QString GetCutName(int line,RDCut **cut);
   int GetClick(QMouseEvent *e,QPoint *p);
@@ -155,6 +159,7 @@ class VoiceTracker : public RDDialog
   void CheckChanges();
   void PushSegues();
   void PopSegues();
+  int SingleSelectionLine(bool incl_end_handle=false);
   void SendNotification(RDNotification::Action action,const QString &log_name);
   RDStereoMeter *track_meter;
   QTimer *track_meter_timer;
@@ -172,7 +177,7 @@ class VoiceTracker : public RDDialog
   QPushButton *track_delete_button;
   QPushButton *track_close_button;
   RDLog *track_log;
-  RDLogEvent *track_log_event;
+  //  RDLogEvent *track_log_event;
   RDEventPlayer *track_event_player;
   QString edit_log_name;
   int track_line;
@@ -182,7 +187,7 @@ class VoiceTracker : public RDDialog
   int track_time_counter;
   bool track_block_valid;
   QTime track_start_time;
-  LogListView *track_log_list;
+  //  LogListView *track_log_list;
   QLabel *edit_length_label;
   QLabel *edit_tracks_remaining_label;
   QLabel *edit_time_remaining_label;
@@ -206,15 +211,6 @@ class VoiceTracker : public RDDialog
   RDGroup *track_group;
   int edit_wave_width;
   int edit_cursor_pos;
-  QPixmap *edit_playout_map;
-  QPixmap *edit_macro_map;
-  QPixmap *edit_marker_map;
-  QPixmap *edit_chain_map;
-  QPixmap *edit_track_cart_map;
-  QPixmap *edit_music_map;
-  QPixmap *edit_notemarker_map;
-  QPixmap *edit_traffic_map;
-  QPixmap *edit_mic16_map;
   int edit_input_card;
   int edit_input_port;
   int edit_output_card;
@@ -261,7 +257,7 @@ class VoiceTracker : public RDDialog
   QPalette track_record_palette;
   QPalette track_done_palette;
   QPalette track_abort_palette;
-  Q3PopupMenu *track_menu;
+  //  Q3PopupMenu *track_menu;
   int menu_clicked_point;
   QString *edit_import_path;
   RDSettings *edit_settings;
@@ -272,6 +268,11 @@ class VoiceTracker : public RDDialog
   VoiceTracker::Target track_current_target;
   bool edit_shift_pressed;
   RDLogLock *track_log_lock;
+
+  LogTableView *d_log_view;
+  LogModel *d_log_model;
+  RDLog *d_log;
+  RDSvc *d_svc;
 };
 
 

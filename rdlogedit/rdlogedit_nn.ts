@@ -1139,26 +1139,6 @@ Vil du halda fram?</translation>
         <translation type="unfinished">Spor røyst</translation>
     </message>
     <message>
-        <source>Edit Cue Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Undo Segue Changes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set Start Point Here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set End Point Here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set to Hook Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1190,10 +1170,6 @@ Track</source>
     </message>
     <message>
         <source>Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1256,84 +1232,52 @@ therefore only existing transitions will be editable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Import</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart Creation Failure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create new cart for voice track!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>RDLogEdit</source>
         <translation type="unfinished">RDLogEdit</translation>
     </message>
     <message>
-        <source>Audio Deletion Error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>TRACK</source>
-        <translation type="unfinished">SPOR</translation>
+        <translation type="obsolete">SPOR</translation>
     </message>
     <message>
         <source>Voice Track</source>
         <translation type="unfinished">Røyst-spor</translation>
     </message>
     <message>
-        <source>Track List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No more tracks!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[end of log]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>[cart not found]</source>
-        <translation type="unfinished">[fann ikkje korga]</translation>
+        <translation type="obsolete">[fann ikkje korga]</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation type="unfinished">MARKØR</translation>
+        <translation type="obsolete">MARKØR</translation>
     </message>
     <message>
         <source>LOG CHAIN</source>
-        <translation type="unfinished">LOGGKJEDE</translation>
+        <translation type="obsolete">LOGGKJEDE</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation type="unfinished">LENKJE</translation>
+        <translation type="obsolete">LENKJE</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation type="unfinished">[musikkimport]</translation>
+        <translation type="obsolete">[musikkimport]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation type="unfinished">[trafikkimport]</translation>
+        <translation type="obsolete">[trafikkimport]</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation type="unfinished">SPEL</translation>
+        <translation type="obsolete">SPEL</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation type="unfinished">KRYSSTON</translation>
+        <translation type="obsolete">KRYSSTON</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation type="unfinished">STOPP</translation>
-    </message>
-    <message>
-        <source>Abort</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">STOPP</translation>
     </message>
     <message>
         <source>Segue Changed</source>
@@ -1368,36 +1312,48 @@ therefore only existing transitions will be editable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart</source>
-        <translation type="unfinished">Korg</translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Korg</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Tittel</translation>
+        <translation type="obsolete">Tittel</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation type="unfinished">Artist</translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Artist</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished">Selskap</translation>
+        <translation type="obsolete">Selskap</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Track List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No more tracks!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart Creation Failure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create new cart for voice track!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Deletion Error!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
