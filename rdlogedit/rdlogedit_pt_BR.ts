@@ -1131,19 +1131,19 @@ Continuar?</translation>
     </message>
     <message>
         <source>Edit Cue Markers</source>
-        <translation type="obsolete">Editar Marcador de Escuta</translation>
+        <translation type="unfinished">Editar Marcador de Escuta</translation>
     </message>
     <message>
         <source>Undo Segue Changes</source>
-        <translation type="obsolete">Desfazer Mudanças de Sobre</translation>
+        <translation type="unfinished">Desfazer Mudanças de Sobre</translation>
     </message>
     <message>
         <source>Set Start Point Here</source>
-        <translation type="obsolete">Marcar Início aqui</translation>
+        <translation type="unfinished">Marcar Início aqui</translation>
     </message>
     <message>
         <source>Set End Point Here</source>
-        <translation type="obsolete">Marcar Término aqui</translation>
+        <translation type="unfinished">Marcar Término aqui</translation>
     </message>
     <message>
         <source>Start</source>
@@ -1375,6 +1375,10 @@ Assim sendo, somente transições existentes serão editáveis.</translation>
     </message>
     <message>
         <source>Audio Deletion Error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set to Hook Markers</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

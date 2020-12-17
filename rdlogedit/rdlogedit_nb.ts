@@ -1355,5 +1355,25 @@ therefore only existing transitions will be editable.</source>
         <source>Audio Deletion Error!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit Cue Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo Segue Changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Start Point Here</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set End Point Here</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set to Hook Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

@@ -128,7 +128,6 @@ class VoiceTracker : public RDDialog
   bool ImportTrack(int line);
   void RenderTransition(int line);
   void LoadBlockLength(int line);
-  void RefreshList();
   void RefreshLine(int line);
   void StartNext(int finishing_id,int next_id=-1);
   QString GetCutName(int line,RDCut **cut);
@@ -155,7 +154,6 @@ class VoiceTracker : public RDDialog
   bool CanInsertTrack();
   bool CanDeleteTrack();
   void ClearCursor(QPainter *p);
-  RDListViewItem *GetItemByLine(int line);
   void CheckChanges();
   void PushSegues();
   void PopSegues();
@@ -273,6 +271,13 @@ class VoiceTracker : public RDDialog
   LogModel *d_log_model;
   RDLog *d_log;
   RDSvc *d_svc;
+
+  QMenu *d_mouse_menu;
+  QAction *d_edit_cue_action;
+  QAction *d_undo_segue_action;
+  QAction *d_set_start_action;
+  QAction *d_set_end_action;
+  QAction *d_set_hook_action;
 };
 
 

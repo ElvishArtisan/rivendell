@@ -1140,23 +1140,23 @@ See your system administrator for an update!</source>
     </message>
     <message>
         <source>Edit Cue Markers</source>
-        <translation type="obsolete">Editar marcadores</translation>
+        <translation type="unfinished">Editar marcadores</translation>
     </message>
     <message>
         <source>Undo Segue Changes</source>
-        <translation type="obsolete">Deshacer cambios en Segue</translation>
+        <translation type="unfinished">Deshacer cambios en Segue</translation>
     </message>
     <message>
         <source>Set Start Point Here</source>
-        <translation type="obsolete">Colocar punto de inicio aquí</translation>
+        <translation type="unfinished">Colocar punto de inicio aquí</translation>
     </message>
     <message>
         <source>Set End Point Here</source>
-        <translation type="obsolete">Colocar punto de fin aquí</translation>
+        <translation type="unfinished">Colocar punto de fin aquí</translation>
     </message>
     <message>
         <source>Set to Hook Markers</source>
-        <translation type="obsolete">Colocar en los marcadores &quot;Hook&quot;</translation>
+        <translation type="unfinished">Colocar en los marcadores &quot;Hook&quot;</translation>
     </message>
     <message>
         <source>Start</source>

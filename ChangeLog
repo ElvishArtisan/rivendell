@@ -20704,3 +20704,6 @@
 2020-12-17 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Voice Tracker' dialog in rdlogedit(1) to use
 	Qt's MVC API.
+2020-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented the right-click menu in the 'Voice Tracker' dialog
+	in rdlogedit(1).
