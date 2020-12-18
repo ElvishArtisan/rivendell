@@ -47,7 +47,6 @@
 #define TRACKER_DONE_BUTTON_COLOR Qt::blue
 #define TRACKER_START_WIDTH 19633
 #define TRACKER_MSECS_PER_PIXEL 29
-//#define TRACKER_MB_PER_PIXEL 141
 #define TRACKER_MB_PER_PIXEL 42
 #define TRACKER_GAIN_MARGIN 4
 #define TRACKER_MAX_GAIN 0
@@ -117,6 +116,7 @@ class VoiceTracker : public RDDialog
   void mousePressEvent(QMouseEvent *e);
   void mouseReleaseEvent(QMouseEvent *e);
   void mouseMoveEvent(QMouseEvent *e);
+  void closeEvent(QCloseEvent *e);
 
  private:
   enum DeckState {DeckIdle=0,DeckTrack1=1,DeckTrack2=2,DeckTrack3=3};
@@ -159,6 +159,7 @@ class VoiceTracker : public RDDialog
   void PopSegues();
   int SingleSelectionLine(bool incl_end_handle=false);
   void SendNotification(RDNotification::Action action,const QString &log_name);
+  void SendNotification(RDNotification::Action action,unsigned cartnum);
   RDStereoMeter *track_meter;
   QTimer *track_meter_timer;
   RDTransportButton *track_play_button;
@@ -175,7 +176,6 @@ class VoiceTracker : public RDDialog
   QPushButton *track_delete_button;
   QPushButton *track_close_button;
   RDLog *track_log;
-  //  RDLogEvent *track_log_event;
   RDEventPlayer *track_event_player;
   QString edit_log_name;
   int track_line;
@@ -185,7 +185,6 @@ class VoiceTracker : public RDDialog
   int track_time_counter;
   bool track_block_valid;
   QTime track_start_time;
-  //  LogListView *track_log_list;
   QLabel *edit_length_label;
   QLabel *edit_tracks_remaining_label;
   QLabel *edit_time_remaining_label;
@@ -255,7 +254,6 @@ class VoiceTracker : public RDDialog
   QPalette track_record_palette;
   QPalette track_done_palette;
   QPalette track_abort_palette;
-  //  Q3PopupMenu *track_menu;
   int menu_clicked_point;
   QString *edit_import_path;
   RDSettings *edit_settings;
@@ -266,12 +264,10 @@ class VoiceTracker : public RDDialog
   VoiceTracker::Target track_current_target;
   bool edit_shift_pressed;
   RDLogLock *track_log_lock;
-
   LogTableView *d_log_view;
   LogModel *d_log_model;
   RDLog *d_log;
   RDSvc *d_svc;
-
   QMenu *d_mouse_menu;
   QAction *d_edit_cue_action;
   QAction *d_undo_segue_action;

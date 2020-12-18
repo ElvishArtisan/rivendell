@@ -1003,6 +1003,7 @@ void VoiceTracker::resetData()
     if(!edit_track_cart->remove(rda->station(),rda->user(),rda->config())) {
       QMessageBox::warning(this,tr("RDLogEdit"),tr("Audio Deletion Error!"));
     }
+    SendNotification(RDNotification::DeleteAction,edit_track_cart->number());
     delete edit_track_cart;
     edit_track_cart=NULL;
     if(edit_track_cuts[1]!=NULL) {
@@ -1890,6 +1891,7 @@ void VoiceTracker::recordUnloadedData(int card,int stream,unsigned msecs)
     stateChangedData(2,RDPlayDeck::Finished);
   }
   UpdateControls();
+  SendNotification(RDNotification::ModifyAction,edit_logline[1]->cartNumber());
 }
 
 
@@ -2103,6 +2105,17 @@ void VoiceTracker::mouseMoveEvent(QMouseEvent *e)
   }
   if(track_current_cursor==track_cross_cursor) {
     DragTarget(edit_current_track,pt);
+  }
+}
+
+
+void VoiceTracker::closeEvent(QCloseEvent *e)
+{
+  if(track_close_button->isEnabled()) {
+    closeData();
+  }
+  else {
+    e->ignore();
   }
 }
 
@@ -2343,12 +2356,6 @@ bool VoiceTracker::ImportTrack(int line)
 			    edit_logline[1]->
 			    startPoint());
   }
-  /*
-  item->setPixmap(0,*edit_track_cart_map);
-  item->setText(3,QString().sprintf("%06u",edit_track_cart->number()));
-  item->setText(4,track_group->name());
-  item->setText(5,RDGetTimeLength(edit_track_cart->forcedLength()));
-  */
   postData();
   SaveTrack(track_line);
   LoadTrack(track_line);
@@ -3780,6 +3787,7 @@ bool VoiceTracker::InitTrack()
     setFadedownPoint(edit_logline[1]->endPoint(),RDLogLine::LogPointer);
   edit_logline[1]->setFadeupGain(RD_FADE_DEPTH);
   track_tracks--;
+  SendNotification(RDNotification::AddAction,next_cart);
 
   return true;
 }
@@ -3936,6 +3944,16 @@ void VoiceTracker::SendNotification(RDNotification::Action action,
 {
   RDNotification *notify=new RDNotification(RDNotification::LogType,
 					    action,QVariant(log_name));
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
+}
+
+
+void VoiceTracker::SendNotification(RDNotification::Action action,
+				    unsigned cartnum)
+{
+  RDNotification *notify=new RDNotification(RDNotification::CartType,
+					    action,QVariant(cartnum));
   rda->ripc()->sendNotification(*notify);
   delete notify;
 }

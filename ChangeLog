@@ -20710,3 +20710,7 @@
 2020-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlogedit(1) that caused changing the
 	Start Time type to trigger a request for a save.
+2020-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in the 'Voice Tracker' dialog of rdlogedit that
+	could leave voice track carts in indeterminate state when the
+	dialog was closed by means of the 'X' button.
