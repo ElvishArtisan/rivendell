@@ -20714,3 +20714,6 @@
 	* Fixed bugs in the 'Voice Tracker' dialog of rdlogedit that
 	could leave voice track carts in indeterminate state when the
 	dialog was closed by means of the 'X' button.
+2020-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Regularized the naming of class variables in the 'Voice Tracker'
+	dialog in rdlogedit(1).
