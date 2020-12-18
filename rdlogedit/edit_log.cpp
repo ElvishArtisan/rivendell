@@ -669,7 +669,11 @@ void EditLog::endDateEnabledData(bool state)
 
 void EditLog::timestyleChangedData(int index)
 {
+  bool changed=edit_changed;
   edit_log_model->setStartTimeStyle((RDLogModel::StartTimeStyle)index);
+  if(!changed) {
+    SetLogModified(false);
+  }
 }
 
 

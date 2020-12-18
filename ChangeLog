@@ -20707,3 +20707,6 @@
 2020-12-17 Fred Gleason <fredg@paravelsystems.com>
 	* Reimplemented the right-click menu in the 'Voice Tracker' dialog
 	in rdlogedit(1).
+2020-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogedit(1) that caused changing the
+	Start Time type to trigger a request for a save.
