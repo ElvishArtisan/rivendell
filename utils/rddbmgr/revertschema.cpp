@@ -41,6 +41,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 347
+  //
+  if((cur_schema==347)&&(set_schema<cur_schema)) {
+    DropColumn("STACK_LINES","TITLE");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 346
   //
   if((cur_schema==346)&&(set_schema<cur_schema)) {

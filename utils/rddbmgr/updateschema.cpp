@@ -10442,6 +10442,19 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<347)&&(set_schema>cur_schema)) {
+    sql=QString("alter table STACK_LINES add column ")+
+      "TITLE varchar(191) not null after ARTIST";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    if (!StackLineTitles347(err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
 
 
   // NEW SCHEMA UPDATES GO HERE...
@@ -10714,3 +10727,29 @@ bool MainObject::ConvertArtistSep307(QString *err_msg) const
 
   return true;
 }
+
+bool MainObject::StackLineTitles347(QString *err_msg) const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  //
+  // Add titles to STACK_LINES
+  //
+  q=new RDSqlQuery("select NUMBER,TITLE from CART",false);
+  while(q->next()) {
+    if(!q->value(1).isNull()) {
+      sql=QString("update STACK_LINES set ")+
+	"TITLE=\""+RDEscapeString(q->value(1).toString().lower().replace(" ",""))+"\" "+
+	"where CART=\""+RDEscapeString(q->value(0).toString())+"\"";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+        delete q;
+        return false;
+      }
+    }
+  }
+  delete q;
+
+  return true;
+}
+
