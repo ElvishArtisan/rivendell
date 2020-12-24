@@ -1,6 +1,20 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.5.0int0 -- 24 December 2020
+
+Changes:
+   RDImport. Added the user's e-mail address to the set of addressees used
+   when the '--send-mail' switch is used.
+
+Database Update:
+   This version of Rivendell uses database schema version 346, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.5.0 -- 12 December 2020
 
 Changes:
