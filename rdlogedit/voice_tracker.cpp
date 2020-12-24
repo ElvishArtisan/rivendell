@@ -39,7 +39,6 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
 {
   setAttribute(Qt::WA_PaintOutsidePaintEvent);
 
-  //  edit_log_name=logname;
   d_import_path=import_path;
   d_coding=RDCae::Pcm16;
   d_track_cart=NULL;
@@ -318,6 +317,9 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   d_length_label=new QLabel(this);
   d_length_label->setText("-:--:--.-");
+  d_length_label->
+    setStyleSheet("background-color: "+
+		  palette().color(QColorGroup::Background).name());
   d_length_label->setGeometry(565,255,110,25);
   d_length_label->setAlignment(Qt::AlignCenter);
   d_length_label->setFont(timerFont());
@@ -332,18 +334,24 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   label->setPalette(QPalette(backgroundColor(),colorGroup().mid()));  
   d_tracks_remaining_label=new QLabel(this);
   d_tracks_remaining_label->setText("0");
-  d_tracks_remaining_label->setGeometry(565,313,40,18);
+  d_tracks_remaining_label->
+    setStyleSheet("background-color: "+
+		  palette().color(QColorGroup::Background).name());
+  d_tracks_remaining_label->setGeometry(555,313,40,18);
   d_tracks_remaining_label->setAlignment(Qt::AlignCenter);
   d_tracks_remaining_label->setFont(labelFont());
   label=new QLabel(tr("Tracks"),this);
-  label->setGeometry(565,300,40,14);
+  label->setGeometry(555,300,40,14);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignHCenter);
   label->setPalette(QPalette(backgroundColor(),colorGroup().mid()));  
 
   d_time_remaining_label=new QLabel(this);
   d_time_remaining_label->setText("0:00:00.0");
-  d_time_remaining_label->setGeometry(615,313,60,18);
+  d_time_remaining_label->
+    setStyleSheet("background-color: "+
+		  palette().color(QColorGroup::Background).name());
+  d_time_remaining_label->setGeometry(600,313,80,18);
   d_time_remaining_label->setAlignment(Qt::AlignCenter);
   d_time_remaining_label->setFont(labelFont());
   d_time_remaining_palette[0]=d_time_remaining_label->palette();
@@ -353,7 +361,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   d_time_remaining_palette[1].
     setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::red);
   label=new QLabel(tr("Time"),this);
-  label->setGeometry(615,300,60,14);
+  label->setGeometry(605,300,60,14);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignHCenter);
   label->setPalette(QPalette(backgroundColor(),colorGroup().mid()));  

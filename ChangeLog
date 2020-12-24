@@ -20717,3 +20717,6 @@
 2020-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Regularized the naming of class variables in the 'Voice Tracker'
 	dialog in rdlogedit(1).
+2020-12-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogedit(1) that broke the 'Tracks' and
+	'Time Remaining' counters in the 'Voice Tracker' dialog.
