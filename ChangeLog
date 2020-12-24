@@ -20699,3 +20699,6 @@
 	* Fixed title separation in rdlogmanager(1) scheduler.
 	* Added a 'STACK_LINES.TITLE' field to the database.
 	* Incremented the database version to 347.
+2020-12-24 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the schema map in rddbmgr(8) to position schema update
+	347 as part of v3.6.x.
