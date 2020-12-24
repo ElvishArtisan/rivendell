@@ -20686,6 +20686,7 @@
 	* Incremented the package version to 3.4.1int9.
 2020-12-12 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.5.0.
+<<<<<<< HEAD
 2020-12-14 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDLogModel' class.
 2020-12-15 Fred Gleason <fredg@paravelsystems.com>
@@ -20720,3 +20721,19 @@
 2020-12-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlogedit(1) that broke the 'Tracks' and
 	'Time Remaining' counters in the 'Voice Tracker' dialog.
+2020-12-24 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdimport(1) so as to send e-mail reports to the address
+	of the current Rivendell user in addition to the group's
+	Notification E-Mail Address.
+	* Modified the Webget service so as to send e-mail reports to the
+	address	of the current Rivendell user in addition to the group's
+	Notification E-Mail Address.
+2020-12-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.5.0int0.
+2020-12-24 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed title separation in rdlogmanager(1) scheduler.
+	* Added a 'STACK_LINES.TITLE' field to the database.
+	* Incremented the database version to 347.
+2020-12-24 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the schema map in rddbmgr(8) to position schema update
+	347 as part of v3.6.x.
