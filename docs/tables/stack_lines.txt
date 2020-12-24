@@ -9,4 +9,5 @@ SCHED_STACK_ID       int(10) unsigned
 SERVICE_NAME         varchar(10)        From SERVICES.NAME
 CART                 int(10) unsigned   From CART.NUMBER
 ARTIST               varchar(191)       From CART.ARTIST
+TITLE                varchar(191)       From CART.TITLE
 SCHEDULED_AT         datetime

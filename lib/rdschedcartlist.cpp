@@ -29,12 +29,14 @@ RDSchedCartList::RDSchedCartList()
 
 void RDSchedCartList::insertItem(unsigned cartnumber,int cartlength,int stack_id,
 			       const QString &stack_artist,
+			       const QString &stack_title,
 			       const QStringList &stack_schedcodes)
 {
   list_cartnum.push_back(cartnumber);
   list_cartlen.push_back(cartlength);
   list_stackid.push_back(stack_id);
   list_artist.push_back(stack_artist.lower().replace(" ",""));
+  list_title.push_back(stack_title.lower().replace(" ",""));
   list_schedcodes.push_back(stack_schedcodes);  
 }
 
@@ -45,6 +47,7 @@ void RDSchedCartList::removeItem(int itemnumber)
   list_cartlen.removeAt(itemnumber);
   list_stackid.removeAt(itemnumber);
   list_artist.removeAt(itemnumber);
+  list_title.removeAt(itemnumber);
   list_schedcodes.removeAt(itemnumber);
 }
 
@@ -58,6 +61,7 @@ bool RDSchedCartList::removeIfCode(int itemnumber,const QString &test_code)
       list_cartlen.removeAt(i);
       list_stackid.removeAt(i);
       list_artist.removeAt(i);
+      list_title.removeAt(i);
       list_schedcodes.removeAt(i);
       matched=true;
     }
@@ -91,6 +95,7 @@ void RDSchedCartList::save(void)
   list_savecartlen=list_cartlen;
   list_savestackid=list_stackid;
   list_saveartist=list_artist;
+  list_savetitle=list_title;
   list_saveschedcodes=list_schedcodes;
 }
 
@@ -101,6 +106,7 @@ void RDSchedCartList::restore(void)
   list_cartlen=list_savecartlen;
   list_stackid=list_savestackid;
   list_artist=list_saveartist;
+  list_title=list_savetitle;
   list_schedcodes=list_saveschedcodes;
 }
 
@@ -120,6 +126,12 @@ int RDSchedCartList::getItemStackid(int itemnumber)
 QString RDSchedCartList::getItemArtist(int itemnumber)
 {
   return list_artist.at(itemnumber);
+}
+
+
+QString RDSchedCartList::getItemTitle(int itemnumber)
+{
+  return list_title.at(itemnumber);
 }
 
 
