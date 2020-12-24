@@ -20695,3 +20695,7 @@
 	Notification E-Mail Address.
 2020-12-24 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.5.0int0.
+2020-12-24 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed title separation in rdlogmanager(1) scheduler.
+	* Added a 'STACK_LINES.TITLE' field to the database.
+	* Incremented the database version to 347.

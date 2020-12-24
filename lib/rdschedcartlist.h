@@ -31,6 +31,7 @@ class RDSchedCartList
    RDSchedCartList();
    void insertItem(unsigned cartnumber,int cartlength,int stack_id,
 		   const QString &stack_artist,
+	           const QString &stack_title,
 		   const QStringList &stack_schedcodes);
    void removeItem(int itemnumber);
    bool removeIfCode(int itemnumber,const QString &test_code);
@@ -40,6 +41,7 @@ class RDSchedCartList
    int getItemCartLength(int itemnumber);
    int getItemStackid(int itemnumber);
    QString getItemArtist(int itemnumber);
+   QString getItemTitle(int itemnumber);
    QStringList getItemSchedCodes(int itemnumber);
    int getNumberOfItems(void);
    void save(void);
@@ -53,7 +55,9 @@ class RDSchedCartList
    QList<int> list_stackid;
    QList<int> list_savestackid;
    QStringList list_artist;
+   QStringList list_title;
    QStringList list_saveartist;
+   QStringList list_savetitle;
    QList<QStringList> list_schedcodes;
    QList<QStringList> list_saveschedcodes;
 };

@@ -591,7 +591,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     //
     // Load all carts in requested group into schedCL
     //
-    sql=QString("select NUMBER,ARTIST,")+
+    sql=QString("select NUMBER,ARTIST,TITLE,")+
       "CONCAT(GROUP_CONCAT(RPAD(SC.SCHED_CODE,11,' ') separator ''),'.') as SCHED_CODES"+
       " from CART LEFT JOIN CART_SCHED_CODES AS SC on (NUMBER=SC.CART_NUMBER)"+
       " where GROUP_NAME='"+RDEscapeString(schedGroup())+"'"+
@@ -599,12 +599,12 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     RDSchedCartList *schedCL=new RDSchedCartList();
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      QStringList codes=q->value(2).toString().split(" ",QString::SkipEmptyParts);
+      QStringList codes=q->value(3).toString().split(" ",QString::SkipEmptyParts);
       if((codes.size()>0)&&(codes.last()==".")) {
 	codes.removeLast();
       }
       schedCL->
-	insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),codes);
+	insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),q->value(2).toString(),codes);
     }
     delete q;
       
@@ -636,17 +636,17 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       // Title separation
       //
       // Iterate through schedCL and remove carts from schedCL that
-      // match cart number on the stack essentially removing matched titles.
+      // match title on the stack.
       //
       if(titlesep>=0) {
         schedCL->save();		  
-        sql=QString("select CART from STACK_LINES where ")+
+        sql=QString("select TITLE from STACK_LINES where ")+
           "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
           QString().sprintf("SCHED_STACK_ID >= %d",stackid-titlesep);
         q=new RDSqlQuery(sql);
         while (q->next()) {
           for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
-            if(q->value(0).toUInt()==schedCL->getItemCartNumber(counter)) {
+            if(q->value(0).toString()==schedCL->getItemTitle(counter)) {
               schedCL->removeItem(counter);
               counter--;
             }
@@ -859,7 +859,8 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	"SCHEDULED_AT=now(),"+
 	QString().sprintf("SCHED_STACK_ID=%u,",stackid)+
 	QString().sprintf("CART=%u,",schedCL->getItemCartNumber(schedpos))+
-	"ARTIST=\""+RDEscapeString(schedCL->getItemArtist(schedpos))+"\"";
+	"ARTIST=\""+RDEscapeString(schedCL->getItemArtist(schedpos))+"\","+
+	"TITLE=\""+RDEscapeString(schedCL->getItemTitle(schedpos))+"\"";
       unsigned line_id=RDSqlQuery::run(sql).toUInt();
       QStringList codes=schedCL->getItemSchedCodes(schedpos);
       for(int i=0;i<codes.size();i++) {
