@@ -20686,3 +20686,10 @@
 	* Incremented the package version to 3.4.1int9.
 2020-12-12 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.5.0.
+2020-12-24 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdimport(1) so as to send e-mail reports to the address
+	of the current Rivendell user in addition to the group's
+	Notification E-Mail Address.
+	* Modified the Webget service so as to send e-mail reports to the
+	address	of the current Rivendell user in addition to the group's
+	Notification E-Mail Address.

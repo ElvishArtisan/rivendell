@@ -418,6 +418,17 @@ void MainObject::PutAudio()
   QString title=f1.join(".");
 
   //
+  // Generate destination e-mail addresses
+  //
+  QStringList to_addrs;
+  if(!group->notifyEmailAddress().isEmpty()) {
+    to_addrs.push_back(group->notifyEmailAddress());
+  }
+  if(!rda->user()->emailAddress().isEmpty()) {
+    to_addrs.push_back(rda->user()->emailAddress());
+  }
+
+  //
   // Validate title uniqueness
   //
   if((!rda->system()->allowDuplicateCartTitles())&&
@@ -442,9 +453,12 @@ void MainObject::PutAudio()
 		  short_name.toUtf8().constData(),
 		  rda->user()->name().toUtf8().constData(),
 		  webget_post->clientAddress().toString().toUtf8().constData());
-      RDSendMail(&err_msg,tr("Rivendell import FAILURE for file: ")+short_name,
-		 body,rda->system()->originEmailAddress(),
-		 group->notifyEmailAddress());
+      if(to_addrs.size()>0) {
+	RDSendMail(&err_msg,tr("Rivendell import FAILURE for file: ")+
+		   short_name,body,rda->system()->originEmailAddress(),
+		   to_addrs);
+	//group->notifyEmailAddress());
+      }
       TextExit(tr("Audio import failed: title already exists!"),400,
 	       LINE_NUMBER);
     }

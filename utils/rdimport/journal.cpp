@@ -39,6 +39,9 @@ void Journal::addSuccess(const QString &groupname,QString filename,
   RDGroup *group=new RDGroup(groupname);
   QStringList addrs=
     group->notifyEmailAddress().split(",",QString::SkipEmptyParts);
+  if(!rda->user()->emailAddress().isEmpty()) {
+    addrs.push_back(rda->user()->emailAddress());
+  }
 
   if(addrs.size()>0) {
     filename=filename.split("/",QString::SkipEmptyParts).last();
@@ -86,6 +89,9 @@ void Journal::addFailure(const QString &groupname,QString filename,
   RDGroup *group=new RDGroup(groupname);
   QStringList addrs=
     group->notifyEmailAddress().split(",",QString::SkipEmptyParts);
+  if(!rda->user()->emailAddress().isEmpty()) {
+    addrs.push_back(rda->user()->emailAddress());
+  }
 
   if(addrs.size()>0) {
     filename=filename.split("/",QString::SkipEmptyParts).last();
@@ -142,6 +148,10 @@ void Journal::sendAll()
 	QString from_addr;
 	QStringList to_addrs;
 
+	if(!rda->user()->emailAddress().isEmpty()) {
+	  to_addrs.push_back(rda->user()->emailAddress());
+	}
+
 	from_addr=rda->system()->originEmailAddress();
 	to_addrs=it.key().split(",",QString::SkipEmptyParts);
 	subject=QObject::tr("Rivendell import report")+"\n";
@@ -188,6 +198,10 @@ void Journal::sendAll()
 
 	from_addr=rda->system()->originEmailAddress();
 	to_addrs=it.key().split(",",QString::SkipEmptyParts);
+	if(!rda->user()->emailAddress().isEmpty()) {
+	  to_addrs.push_back(rda->user()->emailAddress());
+	}
+
 	subject=QObject::tr("Rivendell import FAILURE report")+"\n";
 
 	body+=QObject::tr("Rivendell File Import FAILURE Report")+"\n";
