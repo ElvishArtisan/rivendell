@@ -535,18 +535,6 @@ Log</source>
         <source>You must refresh the log before it can be saved.</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>LogLineBox</name>

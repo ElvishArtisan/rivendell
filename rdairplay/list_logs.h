@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +21,12 @@
 #ifndef LIST_LOGS_H
 #define LIST_LOGS_H
 
-#include <q3listview.h>
-#include <qpushbutton.h>
+#include <QPushButton>
+#include <QTableView>
 
 #include <rddialog.h>
 #include <rdlogfilter.h>
+#include <rdloglistmodel.h>
 #include <rdloglock.h>
 #include <rdlogplay.h>
 
@@ -43,23 +44,23 @@ class ListLogs : public RDDialog
    int exec(QString *logname,QString *svcname,RDLogLock **loglock);
 
  private slots:
-  void filterChangedData(const QString &where_sql);
-  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
+  void doubleClickedData(const QModelIndex &index);
   void closeEvent(QCloseEvent *);
   void loadButtonData();
   void saveButtonData();
   void saveAsButtonData();
   void unloadButtonData();
   void cancelButtonData();
+  void modelResetData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
   bool TryLock(RDLogLock *lock);
   RDLogFilter *list_filter_widget;
-  Q3ListView *list_log_list;
+  QTableView *list_log_view;
+  RDLogListModel *list_log_model;
   QString *list_logname;
   QString *list_svcname;
   QPushButton *list_load_button;

@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-#include <qpushbutton.h>
+#include <QMessageBox>
 
 #include <rdadd_log.h>
 #include <rdapplication.h>
@@ -43,27 +42,27 @@ ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)
   //
   // Filter Widget
   //
-  list_filter_widget=
-    new RDLogFilter(RDLogFilter::StationFilter,this);
-  connect(list_filter_widget,SIGNAL(filterChanged(const QString &)),
-	  this,SLOT(filterChangedData(const QString &)));
+  list_filter_widget=new RDLogFilter(RDLogFilter::StationFilter,this);
 
   //
   // Log List
   //
-  list_log_list=new Q3ListView(this);
-  list_log_list->setAllColumnsShowFocus(true);
-  list_log_list->setItemMargin(5);
-  connect(list_log_list,
-          SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-          this,
-          SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-  list_log_list->addColumn(tr("Name"));
-  list_log_list->setColumnAlignment(0,Qt::AlignLeft);
-  list_log_list->addColumn(tr("Description"));
-  list_log_list->setColumnAlignment(1,Qt::AlignLeft);
-  list_log_list->addColumn(tr("Service"));
-  list_log_list->setColumnAlignment(2,Qt::AlignLeft);
+  list_log_view=new QTableView(this);
+  list_log_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  list_log_view->setSelectionMode(QAbstractItemView::SingleSelection);
+  list_log_view->setShowGrid(false);
+  list_log_view->setSortingEnabled(false);
+  list_log_view->setWordWrap(false);
+  list_log_model=new RDLogListModel(this);
+  list_log_model->setFont(defaultFont());
+  list_log_model->setPalette(palette());
+  list_log_view->setModel(list_log_model);
+  list_log_view->resizeColumnsToContents();
+  connect(list_filter_widget,SIGNAL(filterChanged(const QString &)),
+	  list_log_model,SLOT(setFilterSql(const QString &)));
+  connect(list_log_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_log_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
 
   //
   // Load Button
@@ -100,14 +99,12 @@ ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)
   list_cancel_button->setFont(buttonFont());
   list_cancel_button->setDefault(true);
   connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelButtonData()));
-
-  RefreshList();
 }
 
 
 QSize ListLogs::sizeHint() const
 {
-  return QSize(500,400);
+  return QSize(600,400);
 }
 
 
@@ -132,15 +129,9 @@ int ListLogs::exec(QString *logname,QString *svcname,RDLogLock **log_lock)
     services_list.push_back(q->value(0).toString());
   }
   delete q;
-  RefreshList();
+  list_log_model->setFilterSql(list_filter_widget->whereSql());
 
   return QDialog::exec();
-}
-
-
-void ListLogs::filterChangedData(const QString &where_sql)
-{
-  RefreshList();
 }
 
 
@@ -150,7 +141,7 @@ void ListLogs::closeEvent(QCloseEvent *e)
 }
 
 
-void ListLogs::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
+void ListLogs::doubleClickedData(const QModelIndex &index)
 {
   loadButtonData();
 }
@@ -158,12 +149,12 @@ void ListLogs::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 
 void ListLogs::loadButtonData()
 {
-  Q3ListViewItem *item=list_log_list->selectedItem();
-  if(item==NULL) {
+  if(list_log_view->selectionModel()->selectedRows().size()!=1) {
     return;
   }
-  *list_logname=item->text(0);
-  *list_log_lock=NULL;
+  *list_logname=list_log_model->logName(list_log_view->selectionModel()->
+					selectedRows().at(0).row());
+
   done(ListLogs::Load);
 }
 
@@ -224,45 +215,26 @@ void ListLogs::cancelButtonData()
 }
 
 
-void ListLogs::resizeEvent(QResizeEvent *e)
+void ListLogs::modelResetData()
 {
-  list_filter_widget->setGeometry(10,10,size().width()-20,
-				  list_filter_widget->sizeHint().height());
-  list_log_list->setGeometry(10,list_filter_widget->sizeHint().height(),size().width()-20,size().height()-list_filter_widget->sizeHint().height()-80);
-  list_load_button->setGeometry(10,size().height()-60,80,50);
-  list_unload_button->setGeometry(100,size().height()-60,80,50);
-  list_save_button->setGeometry(210,size().height()-60,80,50);
-  list_saveas_button->setGeometry(300,size().height()-60,80,50);
-  list_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+  list_log_view->resizeColumnsToContents();
 }
 
 
-void ListLogs::RefreshList()
+void ListLogs::resizeEvent(QResizeEvent *e)
 {
-  RDSqlQuery *q;
-  QString sql;
-  Q3ListViewItem *l;
-  QDate current_date=QDate::currentDate();
-  QStringList services_list;
+  int w=size().width();
+  int h=size().height();
 
-  list_log_list->clear();
-  sql=QString("select NAME,DESCRIPTION,SERVICE from LOGS ")+
-    "where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&"+
-    "((START_DATE<=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
-    "(START_DATE=\"0000-00-00\")||"+
-    "(START_DATE is null))&&"+
-    "((END_DATE>=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
-    "(END_DATE=\"0000-00-00\")||"+
-    "(END_DATE is null))"+
-    list_filter_widget->whereSql();
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    l=new Q3ListViewItem(list_log_list);
-    l->setText(0,q->value(0).toString());
-    l->setText(1,q->value(1).toString());
-    l->setText(2,q->value(2).toString());
-  }
-  delete q;
+  list_filter_widget->
+    setGeometry(10,10,w-20,list_filter_widget->sizeHint().height());
+  list_log_view->setGeometry(10,list_filter_widget->sizeHint().height(),
+			     w-20,h-list_filter_widget->sizeHint().height()-80);
+  list_load_button->setGeometry(10,h-60,80,50);
+  list_unload_button->setGeometry(100,h-60,80,50);
+  list_save_button->setGeometry(210,h-60,80,50);
+  list_saveas_button->setGeometry(300,h-60,80,50);
+  list_cancel_button->setGeometry(w-90,h-60,80,50);
 }
 
 

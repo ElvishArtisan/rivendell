@@ -20751,3 +20751,6 @@
 	* Refactored 'RDListLogs' dialog to use 'RDLogListModel'.
 	* Added a 'caption' argument to the constructor of the
 	'RDListLogs' dialog.
+2020-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'ListLogs' dialog in rdairplay(1) to use
+	'RDLogListModel'.
