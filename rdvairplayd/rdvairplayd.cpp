@@ -276,7 +276,7 @@ void MainObject::logReloadedData(int log)
   rml.setAddress(addr);
   rml.setEchoRequested(false);
 
-  if(air_start_lines[log]<air_logs[log]->size()) {
+  if(air_start_lines[log]<air_logs[log]->lineCount()) {
     rml.setCommand(RDMacro::MN);  // Make Next
     rml.addArg(mach+1);
     rml.addArg(air_start_lines[log]);

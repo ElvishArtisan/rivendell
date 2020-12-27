@@ -2,7 +2,7 @@
 //
 // A command-line log editor for Rivendell
 //
-//   (C) Copyright 2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -124,7 +124,7 @@ void MainObject::DispatchCommand(QString cmd)
   //
   // These need a log loaded
   //
-  if((processed)||(edit_log_event!=NULL)) {
+  if((processed)||(edit_log_model!=NULL)) {
     if(verb=="addcart") {
       if(rda->user()->addtoLog()) {
 	if(cmds.size()==3) {
@@ -229,7 +229,7 @@ void MainObject::DispatchCommand(QString cmd)
       if(rda->user()->removefromLog()) {
 	if(cmds.size()==2) {
 	  line=cmds[1].toInt(&ok);
-	  if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	  if(ok&&(line>=0)&&(line<edit_log_model->lineCount())) {
 	    Remove(line);
 	  }
 	  else {
@@ -306,7 +306,7 @@ void MainObject::DispatchCommand(QString cmd)
       if(rda->user()->arrangeLog()) {
 	if(cmds.size()==3) {
 	  line=cmds[1].toInt(&ok);
-	  if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	  if(ok&&(line>=0)&&(line<edit_log_model->lineCount())) {
 	    unsigned cartnum=cmds[2].toUInt(&ok);
 	    if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
 	      Setcart(line,cartnum);
@@ -334,7 +334,7 @@ void MainObject::DispatchCommand(QString cmd)
       if(rda->user()->arrangeLog()) {
 	if(cmds.size()>=3) {
 	  line=cmds[1].toInt(&ok);
-	  if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	  if(ok&&(line>=0)&&(line<edit_log_model->lineCount())) {
 	    cmds.remove(cmds.begin());
 	    cmds.remove(cmds.begin());
 	    Setcomment(line,cmds.join(" "));
@@ -402,7 +402,7 @@ void MainObject::DispatchCommand(QString cmd)
       if(rda->user()->arrangeLog()) {
 	if(cmds.size()==3) {
 	  line=cmds[1].toInt(&ok);
-	  if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	  if(ok&&(line>=0)&&(line<edit_log_model->lineCount())) {
 	    Setlabel(line,cmds[2]);
 	  }
 	  else {
@@ -494,7 +494,7 @@ void MainObject::DispatchCommand(QString cmd)
       if(rda->user()->arrangeLog()) {
 	if(cmds.size()>=3) {
 	  line=cmds[1].toInt(&ok);
-	  if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	  if(ok&&(line>=0)&&(line<edit_log_model->lineCount())) {
 	    RDLogLine::TimeType ttype=RDLogLine::NoTime;
 	    if(cmds[2].lower()=="hard") {
 	      ttype=RDLogLine::Hard;
@@ -546,7 +546,7 @@ void MainObject::DispatchCommand(QString cmd)
       if(rda->user()->arrangeLog()) {
 	if(cmds.size()==3) {
 	  line=cmds[1].toInt(&ok);
-	  if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	  if(ok&&(line>=0)&&(line<edit_log_model->lineCount())) {
 	    RDLogLine::TransType trans=RDLogLine::NoTrans;
 	    if(cmds[2].lower()=="play") {
 	      trans=RDLogLine::Play;

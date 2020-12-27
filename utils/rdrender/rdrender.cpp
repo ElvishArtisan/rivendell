@@ -2,7 +2,7 @@
 //
 // Render a Rivendell log.
 //
-//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -289,8 +289,8 @@ void MainObject::userData()
     fprintf(stderr,"rdrender: no such log\n");
     exit(1);
   }
-  RDLogEvent *log_event=new RDLogEvent(render_logname);
-  log_event->load();
+  RDLogModel *log_model=new RDLogModel(render_logname,false,this);
+  log_model->load();
 
   //
   // Render It
@@ -300,7 +300,7 @@ void MainObject::userData()
   connect(r,SIGNAL(progressMessageSent(const QString &)),
 	  this,SLOT(printProgressMessage(const QString &)));
   if(render_to_file.isEmpty()) {
-    if(!r->renderToCart(render_cart_number,render_cut_number,log_event,
+    if(!r->renderToCart(render_cart_number,render_cut_number,log_model,
 			&render_settings,render_start_time,
 			render_ignore_stops,&err_msg,render_first_line,
 			render_last_line,render_first_time,render_last_time)) {
@@ -309,7 +309,7 @@ void MainObject::userData()
     }
   }
   else {
-    if(!r->renderToFile(render_to_file,log_event,&render_settings,
+    if(!r->renderToFile(render_to_file,log_model,&render_settings,
 			render_start_time,render_ignore_stops,
 			&err_msg,render_first_line,render_last_line,
 			render_first_time,render_last_time)) {

@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Service
 //
-//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -121,7 +121,7 @@ class RDSvc : public QObject
 			QString *label_cart,QString *track_cart);
   bool CheckId(std::vector<int> *v,int value);
   QString MakeErrorLine(int indent,unsigned lineno,const QString &msg) const;
-  bool ResolveInlineEvents(const QString &logname,QString *err_msg) const;
+  bool ResolveInlineEvents(const QString &logname,QString *err_msg);
   QString svc_name;
   RDStation *svc_station;
   RDConfig *svc_config;

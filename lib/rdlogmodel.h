@@ -27,7 +27,6 @@
 #include <QList>
 #include <QPalette>
 
-#include <rdlog_event.h>
 #include <rdlog_icons.h>
 #include <rdnotification.h>
 
@@ -37,6 +36,7 @@ class RDLogModel : public QAbstractTableModel
  public:
   enum StartTimeStyle {Estimated=0,Scheduled=1};
   RDLogModel(const QString &logname,bool read_only,QObject *parent=0);
+  RDLogModel(QObject *parent=0);
   ~RDLogModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
@@ -98,6 +98,7 @@ class RDLogModel : public QAbstractTableModel
   void InsertLines(QString values);
   void InsertLineValues(QString *query, int line);
   void LoadNowNext(unsigned from_line);
+  void MakeModel();
   QPalette d_palette;
   QFont d_font;
   QFontMetrics *d_fms;

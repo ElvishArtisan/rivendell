@@ -339,9 +339,9 @@ void GenerateLog::createData()
   //
   // Generate Exception Report
   //
-  RDLogEvent *event=new RDLogEvent(logname);
-  event->load();
-  if((event->validate(&report,gen_date_edit->date())==0)&&
+  RDLogModel *model=new RDLogModel(logname,false,this);
+  model->load();
+  if((model->validate(&report,gen_date_edit->date())==0)&&
      unused_report.isEmpty()) {
     QMessageBox::information(this,tr("No Errors"),\
       tr("No broken rules or validation exceptions found."));
@@ -357,7 +357,7 @@ void GenerateLog::createData()
 
     RDTextFile(report+"\n"+unused_report);
   }
-  delete event;
+  delete model;
 
   UpdateControls();
 }

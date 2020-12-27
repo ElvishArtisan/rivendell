@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Log services
 //
-//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,9 +30,9 @@
 #include <rdescape_string.h>
 #include <rdformpost.h>
 #include <rdlog.h>
-#include <rdlog_event.h>
 #include <rdlog_line.h>
 #include <rdloglock.h>
+#include <rdlogmodel.h>
 #include <rduser.h>
 #include <rdweb.h>
 
@@ -224,8 +224,8 @@ void Xport::ListLog()
   //
   // Generate Log Listing
   //
-  RDLogEvent *log_event=log->createLogEvent();
-  log_event->load(true);
+  RDLogModel *log_model=log->createLogEvent();
+  log_model->load(true);
 
   //
   // Process Request
@@ -233,7 +233,7 @@ void Xport::ListLog()
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("%s\n",(const char *)log_event->xml().utf8());
+  printf("%s\n",(const char *)log_model->xml().utf8());
 
   Exit(0);
 }
@@ -291,10 +291,10 @@ void Xport::SaveLog()
   //
   // Logline Data
   //
-  RDLogEvent *logevt=new RDLogEvent(log_name);
+  RDLogModel *logmodel=new RDLogModel(log_name,false,this);
   for(int i=0;i<line_quantity;i++) {
-    logevt->insert(i,1);
-    RDLogLine *ll=logevt->logLine(i);
+    logmodel->insert(i,1);
+    RDLogLine *ll=logmodel->logLine(i);
     QString line=QString().sprintf("LINE%d",i);
     QString str;
     int integer1;
@@ -514,7 +514,7 @@ void Xport::SaveLog()
       log->setStartDate(start_date);
       log->setEndDate(end_date);
       log->setModifiedDatetime(QDateTime::currentDateTime());
-      logevt->save(rda->config());
+      logmodel->save(rda->config());
       SendNotification(RDNotification::LogType,RDNotification::ModifyAction,
 		       QVariant(log->name()));
       RDLogLock::clearLock(lock_guid);
@@ -532,7 +532,7 @@ void Xport::SaveLog()
       log->setStartDate(start_date);
       log->setEndDate(end_date);
       log->setModifiedDatetime(QDateTime::currentDateTime());
-      logevt->save(rda->config());
+      logmodel->save(rda->config());
       SendNotification(RDNotification::LogType,RDNotification::ModifyAction,
 		       QVariant(log->name()));
     }
@@ -540,7 +540,7 @@ void Xport::SaveLog()
       XmlExit("invalid log lock",400);
     }
   }
-  XmlExit(QString().sprintf("OK Saved %d events",logevt->size()),
+  XmlExit(QString().sprintf("OK Saved %d events",logmodel->lineCount()),
 	  200,"logs.cpp",LINE_NUMBER);
 }
 

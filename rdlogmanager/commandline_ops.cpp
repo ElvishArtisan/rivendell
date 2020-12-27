@@ -27,7 +27,6 @@
 #include <rdapplication.h>
 #include <rddatedecode.h>
 #include <rdlog.h>
-#include <rdlog_event.h>
 #include <rdreport.h>
 #include <rdsvc.h>
 

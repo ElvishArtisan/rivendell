@@ -26,8 +26,7 @@
 #include <qpixmap.h>
 #include <q3popupmenu.h>
 
-#include <rdlistview.h>
-#include <rdlog_event.h>
+#include <rdlistviewitem.h>
 
 class ClockListView : public RDListView
 {

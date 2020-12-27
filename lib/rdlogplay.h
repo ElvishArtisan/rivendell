@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,17 +23,17 @@
 
 #include <vector>
 
-#include <qobject.h>
-#include <qsignalmapper.h>
-#include <qtimer.h>
-#include <qdatetime.h>
+#include <QDateTime>
+#include <QObject>
+#include <QSignalMapper>
+#include <QTimer>
 
 #include <rd.h>
 #include <rdairplay_conf.h>
 #include <rdapplication.h>
 #include <rdevent_player.h>
 #include <rdlog.h>
-#include <rdlog_event.h>
+#include <rdlogmodel.h>
 #include <rdmacro_event.h>
 #include <rdplay_deck.h>
 #include <rdsimpleplayer.h>
@@ -48,7 +48,7 @@
 #define LOGPLAY_RESCAN_INTERVAL 5000
 #define LOGPLAY_RESCAN_SIZE 30
 
-class RDLogPlay : public QObject,public RDLogEvent
+class RDLogPlay : public RDLogModel
 {
  Q_OBJECT
  public:

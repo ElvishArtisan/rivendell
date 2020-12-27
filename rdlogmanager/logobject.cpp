@@ -109,13 +109,13 @@ void LogObject::userData()
       //
       // Generate Exception Report
       //
-      RDLogEvent *event=new RDLogEvent(logname);
-      event->load();
-      if((event->validate(&report,start_date)!=0)||
+      RDLogModel *model=new RDLogModel(logname,false,this);
+      model->load();
+      if((model->validate(&report,start_date)!=0)||
 	 (!unused_report.isEmpty())) {
 	printf("%s\n\n%s",(const char*)report,(const char*)unused_report);
       }
-      delete event;
+      delete model;
     }
 
     //

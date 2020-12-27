@@ -79,7 +79,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 		  rml->arg(0).toInt());
     }
     if(rml->argQuantity()==3) { // Start Log
-      if(rml->arg(2).toInt()<air_logs[index]->size()) {
+      if(rml->arg(2).toInt()<air_logs[index]->lineCount()) {
 	if(rml->arg(2).toInt()>=0) {  // Unconditional start
 	  if(air_logs[index]->play(rml->arg(2).toInt(),RDLogLine::StartMacro)) {	
 	    rda->syslog(LOG_INFO,"started log machine %d at line %d",
@@ -98,11 +98,11 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 	if(rml->arg(2).toInt()==-2) {  // Start if trans type allows
 	  // Find first non-running event
 	  bool found=false;
-	  for(int i=0;i<air_logs[index]->size();i++) {
+	  for(int i=0;i<air_logs[index]->lineCount();i++) {
 	    if((logline=air_logs[index]->logLine(i))!=NULL) {
 	      if(logline->status()==RDLogLine::Scheduled) {
 		found=true;
-		i=air_logs[index]->size();
+		i=air_logs[index]->lineCount();
 	      }
 	    }
 	  }
@@ -183,7 +183,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       return;
     }
     if((rml->arg(1).toInt()<0)||
-       (rml->arg(1).toInt()>=air_logs[index]->size())) {
+       (rml->arg(1).toInt()>=air_logs[index]->lineCount())) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -215,7 +215,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       return;
     }
     if((rml->arg(1).toInt()<0)||
-       (rml->arg(1).toInt()>=air_logs[index]->size())) {
+       (rml->arg(1).toInt()>=air_logs[index]->lineCount())) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -493,11 +493,11 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 		  rml->arg(1).toUInt(),next_line,rml->arg(0).toInt());
     }
     else {
-      air_logs[index]->insert(air_logs[index]->size(),
+      air_logs[index]->insert(air_logs[index]->lineCount(),
 			      rml->arg(1).toUInt(),RDLogLine::Play);
-      air_logs[index]->makeNext(air_logs[index]->size()-1);
+      air_logs[index]->makeNext(air_logs[index]->lineCount()-1);
       rda->syslog(LOG_INFO,"inserted cart %06u at line %d on log machine %d",
-		  rml->arg(1).toUInt(),air_logs[index]->size()-1,
+		  rml->arg(1).toUInt(),air_logs[index]->lineCount()-1,
 		  rml->arg(0).toInt());
     }
     if(rml->echoRequested()) {

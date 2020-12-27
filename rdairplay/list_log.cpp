@@ -904,10 +904,10 @@ void ListLog::logInsertedData(int line)
 {
   bool appended=false;
 
-  if(line>=list_log->size()) {
-    line=list_log->size()-1;
+  if(line>=list_log->lineCount()) {
+    line=list_log->lineCount()-1;
   }
-  if(line>=list_log->size()-1) {
+  if(line>=list_log->lineCount()-1) {
     appended=true;
   }
   int count;
@@ -1008,7 +1008,7 @@ void ListLog::selectionChangedData()
   }
   if(item->text(15).toInt()>=0) {
     list_endtime_edit->setText(RDGetTimeLength(list_log->
-      length(item->text(15).toInt(),list_log->size()),true,false));
+      length(item->text(15).toInt(),list_log->lineCount()),true,false));
     list_stoptime_label->setText(tr("Next Stop:"));
     int stoplen=list_log->lengthToStop(item->text(15).toInt());
     if(stoplen>=0) {
@@ -1071,8 +1071,8 @@ void ListLog::RefreshList()
   l=new RDListViewItem(list_log_list);
   l->setText(5,tr("--- end of log ---"));
   l->setText(15,QString().sprintf("%d",END_MARKER_ID));
-  l->setText(14,QString().sprintf("%d",list_log->size()));
-  for(int i=list_log->size()-1;i>=0;i--) {
+  l->setText(14,QString().sprintf("%d",list_log->lineCount()));
+  for(int i=list_log->lineCount()-1;i>=0;i--) {
     if((logline=list_log->logLine(i))!=NULL) {
       l=new RDListViewItem(list_log_list);
       logline->setListViewItem(l);
@@ -1460,7 +1460,7 @@ void ListLog::UpdateColor(int line,bool next)
 
 void ListLog::SetColor()
 {
-  for(int i=0;i<list_log->size();i++) {
+  for(int i=0;i<list_log->lineCount();i++) {
     UpdateColor(i);
   }
 }

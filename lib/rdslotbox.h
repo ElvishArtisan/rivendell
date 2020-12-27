@@ -33,7 +33,6 @@
 #include <rdairplay_conf.h>
 #include <rdcartdrag.h>
 #include <rdlog_line.h>
-#include <rdlog_event.h>
 #include <rdplaymeter.h>
 #include <rdplay_deck.h>
 #include <rdslotoptions.h>

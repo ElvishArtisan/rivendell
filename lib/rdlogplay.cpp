@@ -41,7 +41,7 @@
 //#define SHOW_METER_SLOTS
 
 RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QObject *parent)
-  : QObject(parent),RDLogEvent("")
+  : RDLogModel(parent)
 {
   //
   // Initialize Data Structures
@@ -228,7 +228,7 @@ void RDLogPlay::setOpMode(RDAirPlayConf::OpMode mode)
 void RDLogPlay::setLogName(QString name)
 {
   if(logName()!=name) {
-    RDLogEvent::setLogName(name);
+    RDLogModel::setLogName(name);
     emit renamed();
     rda->airplayConf()->setCurrentLog(play_id,name);
   }
@@ -524,11 +524,11 @@ void RDLogPlay::load()
   // Remove All Idle Events
   //
   if((running=runningEvents(lines))==0) {
-    remove(0,size(),false);
+    remove(0,lineCount(),false);
   }
   else {
-    if(lines[running-1]<(size()-1)) {
-      remove(lines[running-1]+1,size()-lines[running-1]-1,false);
+    if(lines[running-1]<(lineCount()-1)) {
+      remove(lines[running-1]+1,lineCount()-lines[running-1]-1,false);
     }
     for(int i=running-1;i>0;i--) {
       remove(lines[i-1]+1,lines[i]-lines[i-1]-1,false);
@@ -541,20 +541,20 @@ void RDLogPlay::load()
   // Note that events left in the log are holdovers from a previous log.
   // Their IDs may clash with those of events in the log we will now load,
   // and it may be appropriate to ignore them in that case.
-  for(int i = 0, ilim = size(); i != ilim; ++i)
+  for(int i = 0, ilim = lineCount(); i != ilim; ++i)
     logLine(i)->setHoldover(true);
 
   //
   // Load Events
   //
-  RDLogEvent::load();
+  RDLogModel::load();
   play_rescan_pos=0;
   if(play_timescaling_available) {
-    for(int i=0;i<size();i++) {
+    for(int i=0;i<lineCount();i++) {
       logLine(i)->setTimescalingActive(logLine(i)->enforceLength());
     }
   }
-  RefreshEvents(0,size());
+  RefreshEvents(0,lineCount());
   RDLog *log=new RDLog(logName());
   play_svc_name=log->service();
   delete log;
@@ -565,7 +565,7 @@ void RDLogPlay::load()
   SetTransTimer();
   emit transportChanged();
   UpdatePostPoint();
-  if((running>0)&&(size()>running)) {
+  if((running>0)&&(lineCount()>running)) {
     makeNext(running);
   }
 
@@ -587,21 +587,20 @@ void RDLogPlay::load()
 
 void RDLogPlay::append(const QString &log_name)
 {
-  int old_size=size();
+  int old_size=lineCount();
 
-  if(size()==0) {
-    //    setLogName(RDLog::tableName(log_name));
+  if(lineCount()==0) {
     load();
     return;
   }
 
-  RDLogEvent::append(log_name);
+  RDLogModel::append(log_name);
   if(play_timescaling_available) {
-    for(int i=old_size;i<size();i++) {
+    for(int i=old_size;i<lineCount();i++) {
       logLine(i)->setTimescalingActive(logLine(i)->enforceLength());
     }
   }
-  RefreshEvents(old_size,size()-old_size);
+  RefreshEvents(old_size,lineCount()-old_size);
   UpdateStartTimes(old_size);
   emit reloaded();
   SetTransTimer();
@@ -628,7 +627,7 @@ bool RDLogPlay::refresh()
     return true;
   }
   emit refreshStatusChanged(true);
-  if((size()==0)||(play_log==NULL)) {
+  if((lineCount()==0)||(play_log==NULL)) {
     emit refreshStatusChanged(false);
     emit refreshabilityChanged(false);
     return true;
@@ -637,7 +636,7 @@ bool RDLogPlay::refresh()
   //
   // Load the Updated Log
   //
-  RDLogEvent *e=new RDLogEvent();
+  RDLogModel *e=new RDLogModel();
   e->setLogName(logName());
   e->load();
   play_modified_datetime=play_log->modifiedDatetime();
@@ -665,7 +664,7 @@ bool RDLogPlay::refresh()
   //
   // Pass 1: Finished or Active Events
   //
-  for(int i=0;i<size();i++) {
+  for(int i=0;i<lineCount();i++) {
     d=logLine(i);
     if(d->status()!=RDLogLine::Scheduled) {
       if((!d->isHoldover()) && (s=e->loglineById(d->id()))!=NULL) {
@@ -683,7 +682,7 @@ bool RDLogPlay::refresh()
   //
   // Pass 2: Purge Deleted Events
   //
-  for(int i=size()-1;i>=0;i--) {
+  for(int i=lineCount()-1;i>=0;i--) {
     if(logLine(i)->pass()==0) {
       remove(i,1,false,true);
     }
@@ -691,7 +690,7 @@ bool RDLogPlay::refresh()
 
   // Find first non-holdover event, where start-of-log
   // new events should be added:
-  for(int i=0;i<e->size();i++) {
+  for(int i=0;i<e->lineCount();i++) {
     if(logLine(i)!=NULL) {
       if(logLine(i)->isHoldover()) {
 	++first_non_holdover;
@@ -705,7 +704,7 @@ bool RDLogPlay::refresh()
   //
   // Pass 3: Add New Events
   //
-  for(int i=0;i<e->size();i++) {
+  for(int i=0;i<e->lineCount();i++) {
     s=e->logLine(i);
     if(s->pass()==0) {
       if((prev_line=(i-1))<0) {  // First Event
@@ -724,7 +723,7 @@ bool RDLogPlay::refresh()
   //
   // Pass 4: Delete Orphaned Past Playouts
   //
-  for(int i=size()-1;i>=0;i--) {
+  for(int i=lineCount()-1;i>=0;i--) {
     d=logLine(i);
     if((d->status()==RDLogLine::Finished)&&(d->pass()!=2)) {
       remove(i,1,false,true);
@@ -752,10 +751,10 @@ bool RDLogPlay::refresh()
   // Clean Up
   //
   delete e;
-  for(int i=0;i<size();i++) {
+  for(int i=0;i<lineCount();i++) {
     logLine(i)->clearPass();
   }
-  RefreshEvents(0,size());
+  RefreshEvents(0,lineCount());
   UpdateStartTimes(next_line);
   UpdatePostPoint();
   SetTransTimer();
@@ -774,7 +773,7 @@ bool RDLogPlay::refresh()
 
 void RDLogPlay::save(int line)
 {
-  RDLogEvent::save(rda->config(),line);
+  RDLogModel::save(rda->config(),line);
   if(play_log!=NULL) {
     delete play_log;
   }
@@ -821,7 +820,7 @@ void RDLogPlay::insert(int line,int cartnum,RDLogLine::TransType next_type,
   RDPlayDeck *playdeck;
   int mod_line=-1;
   
-  if(line<(size()-1)) {
+  if(line<(lineCount()-1)) {
     if(logLine(line)->hasCustomTransition()) {
       mod_line=line+1;
     }
@@ -841,9 +840,9 @@ void RDLogPlay::insert(int line,int cartnum,RDLogLine::TransType next_type,
   if(play_macro_deck->line()>=0) {
     play_macro_deck->setLine(play_macro_deck->line()+1);
   }
-  RDLogEvent::insert(line,1);
+  RDLogModel::insert(line,1);
   if((logline=logLine(line))==NULL) {
-    RDLogEvent::remove(line,1);
+    RDLogModel::remove(line,1);
     return;
   }
   if(nextLine()>line) {
@@ -874,7 +873,7 @@ void RDLogPlay::insert(int line,RDLogLine *l,bool update,bool preserv_custom_tra
   RDPlayDeck *playdeck;
   int mod_line=-1;
   
-  if(line<(size()-1)) {
+  if(line<(lineCount()-1)) {
     if(logLine(line)->hasCustomTransition()) {
       mod_line=line+1;
     }
@@ -894,9 +893,9 @@ void RDLogPlay::insert(int line,RDLogLine *l,bool update,bool preserv_custom_tra
   if(play_macro_deck->line()>=0) {
     play_macro_deck->setLine(play_macro_deck->line()+1);
   }
-  RDLogEvent::insert(line,1,preserv_custom_transition);
+  RDLogModel::insert(line,1,preserv_custom_transition);
   if((logline=logLine(line))==NULL) {
-    RDLogEvent::remove(line,1);
+    RDLogModel::remove(line,1);
     return;
   }
   *logline=*l;
@@ -922,16 +921,17 @@ void RDLogPlay::insert(int line,RDLogLine *l,bool update,bool preserv_custom_tra
 }
 
 
-void RDLogPlay::remove(int line,int num_lines,bool update,bool preserv_custom_transition)
+void RDLogPlay::remove(int line,int num_lines,bool update,
+		       bool preserv_custom_transition)
 {
   RDPlayDeck *playdeck;
   RDLogLine *logline;
   int mod_line=-1;
 
-  if((num_lines==0)||(line<0)||(line>=size())) {
+  if((num_lines==0)||(line<0)||(line>=lineCount())) {
     return;
   }
-  if((line+num_lines)<(size()-1)) {
+  if((line+num_lines)<(lineCount()-1)) {
     if(logLine(line+num_lines)->hasCustomTransition()) {
       mod_line=line;
     }
@@ -966,13 +966,13 @@ void RDLogPlay::remove(int line,int num_lines,bool update,bool preserv_custom_tr
     play_macro_deck->setLine(play_macro_deck->line()-num_lines);
   }
 
-  RDLogEvent::remove(line,num_lines,preserv_custom_transition);
+  RDLogModel::remove(line,num_lines,preserv_custom_transition);
   if(update) {
     if(nextLine()>line) {
       makeNext(nextLine()-num_lines);
     }
     UpdateStartTimes(line);
-    if(size()==0) {
+    if(lineCount()==0) {
       emit reloaded();
     }
     if(mod_line>=0) {
@@ -993,7 +993,7 @@ void RDLogPlay::move(int from_line,int to_line)
   RDPlayDeck *playdeck;
   int mod_line[2]={-1,-1};
 
-  if(from_line<(size()-1)) {
+  if(from_line<(lineCount()-1)) {
     if(logLine(from_line+1)->hasCustomTransition()) {
       if(from_line<to_line) {
 	mod_line[0]=from_line;
@@ -1003,7 +1003,7 @@ void RDLogPlay::move(int from_line,int to_line)
       }
     }
   }
-  if(to_line<size()) {
+  if(to_line<lineCount()) {
     if(logLine(to_line)->hasCustomTransition()) {
       if(from_line>to_line) {
 	mod_line[1]=to_line;
@@ -1049,7 +1049,7 @@ void RDLogPlay::move(int from_line,int to_line)
   if(to_line>from_line) {
     offset=1;
   }
-  RDLogEvent::move(from_line,to_line);
+  RDLogModel::move(from_line,to_line);
   if(from_line>to_line) {
     UpdateStartTimes(to_line);
   }
@@ -1091,7 +1091,7 @@ void RDLogPlay::copy(int from_line,int to_line,RDLogLine::TransType type)
 
 int RDLogPlay::topLine()
 {
-  for(int i=0;i<size();i++) {
+  for(int i=0;i<lineCount();i++) {
     if((logLine(i)->status()==RDLogLine::Playing)||
        (logLine(i)->status()==RDLogLine::Finishing)||
        (logLine(i)->status()==RDLogLine::Paused)) {
@@ -1134,7 +1134,7 @@ int RDLogPlay::nextLine(int line)
   }
   // End of FIXME
 
-  for(int i=line+1;i<size();i++) {
+  for(int i=line+1;i<lineCount();i++) {
     if(logLine(i)->status()==RDLogLine::Scheduled) {
       return i;
     }
@@ -1185,7 +1185,7 @@ void RDLogPlay::transportEvents(int line[])
   for(int i=0;i<TRANSPORT_QUANTITY;i++) {
     line[i]=-1;
   }
-  if((start<0)||(size()==0)) {
+  if((start<0)||(lineCount()==0)) {
     return;
   }
 
@@ -1197,7 +1197,7 @@ void RDLogPlay::transportEvents(int line[])
   if((logline=logLine(start))==NULL) {
     return;
   }
-  for(int i=start;i<size();i++) {
+  for(int i=start;i<lineCount();i++) {
     if((logline=logLine(i))==NULL) {
       return;
     }
@@ -1225,7 +1225,7 @@ int RDLogPlay::runningEvents(int *lines, bool include_paused)
   int table[TRANSPORT_QUANTITY];
   bool changed=true;
 
-  if(size()==0) {
+  if(lineCount()==0) {
     return 0;
   }
   for(int i=0;i<TRANSPORT_QUANTITY;i++) {
@@ -1239,7 +1239,7 @@ int RDLogPlay::runningEvents(int *lines, bool include_paused)
   // Build Running Event List
   //
   if(include_paused) {
-    for(int i=0;i<size();i++) {
+    for(int i=0;i<lineCount();i++) {
       if((logLine(i)->status()==RDLogLine::Playing)||
 	 (logLine(i)->status()==RDLogLine::Finishing)||
 	 (logLine(i)->status()==RDLogLine::Paused)) {
@@ -1251,7 +1251,7 @@ int RDLogPlay::runningEvents(int *lines, bool include_paused)
     }
   }
   else {
-    for(int i=0;i<size();i++) {
+    for(int i=0;i<lineCount();i++) {
       if((logLine(i)->status()==RDLogLine::Playing)||
 	 (logLine(i)->status()==RDLogLine::Finishing)) {
 	events[count++]=i;
@@ -1702,7 +1702,7 @@ void RDLogPlay::notificationReceivedData(RDNotification *notify)
 
   if(notify->type()==RDNotification::CartType) {
     unsigned cartnum=notify->id().toUInt();
-    for(int i=0;i<size();i++) {
+    for(int i=0;i<lineCount();i++) {
       if((ll=logLine(i))!=NULL) {
 	if((ll->cartNumber()==cartnum)&&(ll->status()==RDLogLine::Scheduled)&&
 	   ((ll->type()==RDLogLine::Cart)||(ll->type()==RDLogLine::Macro))) {
@@ -2060,7 +2060,8 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
   default:
     break;
   }
-  while((play_next_line<size())&&((logline=logLine(play_next_line))!=NULL)) {
+  while((play_next_line<lineCount())&&((logline=logLine(play_next_line))!=
+				       NULL)) {
     if((logline->state()==RDLogLine::Ok)||
        (logline->state()==RDLogLine::NoCart)||
        (logline->state()==RDLogLine::NoCut)) {
@@ -2182,7 +2183,7 @@ void RDLogPlay::UpdateStartTimes(int line)
   else {
     line=play_next_line;
   }
-  for(int i=line;i<size();i++) {
+  for(int i=line;i<lineCount();i++) {
     if((logline=logLine(i))!=NULL) {
       if((next_logline=logLine(nextLine(i)))!=NULL) {
 	next_trans=next_logline->transType();
@@ -2259,7 +2260,7 @@ void RDLogPlay::FinishEvent(int line)
 	return;
       }
       if((play_op_mode==RDAirPlayConf::Auto)&&
-	 (logline->id()!=-1)&&(play_next_line<size())) {
+	 (logline->id()!=-1)&&(play_next_line<lineCount())) {
 	if(play_next_line>=0) {
 	  if(logline->transType()==RDLogLine::Play) {
 	    StartEvent(play_next_line,RDLogLine::Play,0,RDLogLine::StartPlay);
@@ -2350,7 +2351,7 @@ QTime RDLogPlay::GetNextStop(int line)
     return QTime();
   }
 
-  for(int i=line;i<size();i++) {
+  for(int i=line;i<lineCount();i++) {
     if((status(i)==RDLogLine::Playing)||
        (status(i)==RDLogLine::Finishing)) {
       if((logLine(i)->type()==RDLogLine::Cart)&&
@@ -2417,7 +2418,8 @@ void RDLogPlay::UpdatePostPoint(int line)
     offset=0;
   }
   else {
-    if((line<size())&&(play_trans_line>=0)&&(play_trans_line<size())) {
+    if((line<lineCount())&&(play_trans_line>=0)&&
+       (play_trans_line<lineCount())) {
       post_line=play_trans_line;
       post_time=logLine(post_line)->startTime(RDLogLine::Logged);
       offset=length(line,post_line)-QTime::currentTime().msecsTo(post_time)-
@@ -2452,7 +2454,8 @@ void RDLogPlay::AdvanceActiveEvent()
     }
   }
   else {
-    if(line<(size()-1)) {
+    //if(line<(size()-1)) {
+    if(line<(lineCount())) {
       RDLogLine *logline;
       if((logline=logLine(line+1))!=NULL) {
 	trans=logLine(line+1)->transType();
@@ -2502,7 +2505,7 @@ void RDLogPlay::SetTransTimer(QTime current_time,bool stop)
     }
   }
   play_trans_line=-1;
-  for(int i=0;i<size();i++) {
+  for(int i=0;i<lineCount();i++) {
     if((logline=logLine(i))!=NULL) {
       if((logline->timeType()==RDLogLine::Hard)&&
 	 ((logline->status()==RDLogLine::Scheduled)||
@@ -2583,7 +2586,7 @@ bool RDLogPlay::GetNextPlayable(int *line,bool skip_meta,bool forced_start)
   RDLogLine::TransType next_type=RDLogLine::Play;
   int skipped=0;
 
-  for(int i=*line;i<size();i++) {
+  for(int i=*line;i<lineCount();i++) {
     if((logline=logLine(i))==NULL) {
       return false;
     }
@@ -2840,14 +2843,14 @@ bool RDLogPlay::ClearBlock(int start_line)
 {
   RDLogLine::Status status;
 
-  for(int i=start_line;i<size();i++) {
+  for(int i=start_line;i<lineCount();i++) {
     status=logLine(i)->status();
     if((status!=RDLogLine::Scheduled)&&(status!=RDLogLine::Finished)) {
       remove(start_line,i-start_line);
       return true;
     }
   }
-  remove(start_line,size()-start_line);
+  remove(start_line,lineCount()-start_line);
   return false;
 }
 
@@ -2924,12 +2927,12 @@ void RDLogPlay::SendNowNext()
   // Get NEXT Event
   //
   logline[1]=NULL;
-  for(int i=nextLine();i<size();i++) {
+  for(int i=nextLine();i<lineCount();i++) {
     if((ll=logLine(i))!=NULL) {
       if((ll->status()==RDLogLine::Scheduled)&&
 	 logLine(i)->nowNextEnabled()&&(!logLine(i)->asyncronous())) {
 	logline[1]=logLine(i);
-	i=size();
+	i=lineCount();
       }
     }
   }

@@ -2,7 +2,7 @@
 //
 // Render a Rivendell log to a single audio object.
 //
-//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,6 @@
 #include <qobject.h>
 #include <qstringlist.h>
 
-#include <rdlog_event.h>
 #include <rdlogmodel.h>
 #include <rdsettings.h>
 
@@ -71,17 +70,7 @@ class RDRenderer : public QObject
  public:
   RDRenderer(QObject *parent=0);
   ~RDRenderer();
-  bool renderToFile(const QString &outfile,RDLogEvent *log,RDSettings *s,
-		    const QTime &start_time,bool ignore_stops,
-		    QString *err_msg,int first_line,int last_line,
-		    const QTime &first_time=QTime(),
-		    const QTime &last_time=QTime());
   bool renderToFile(const QString &outfile,RDLogModel *model,RDSettings *s,
-		    const QTime &start_time,bool ignore_stops,
-		    QString *err_msg,int first_line,int last_line,
-		    const QTime &first_time=QTime(),
-		    const QTime &last_time=QTime());
-  bool renderToCart(unsigned cartnum,int cutnum,RDLogEvent *log,RDSettings *s,
 		    const QTime &start_time,bool ignore_stops,
 		    QString *err_msg,int first_line,int last_line,
 		    const QTime &first_time=QTime(),
@@ -101,10 +90,6 @@ class RDRenderer : public QObject
   void lineStarted(int linno,int totallines);
 
  private:
-  bool Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
-	      const QTime &start_time,bool ignore_stops,
-	      QString *err_msg,int first_line,int last_line,
-	      const QTime &first_time,const QTime &last_time);
   bool Render(const QString &outfile,RDLogModel *model,RDSettings *s,
 	      const QTime &start_time,bool ignore_stops,
 	      QString *err_msg,int first_line,int last_line,

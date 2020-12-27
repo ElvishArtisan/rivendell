@@ -40,7 +40,6 @@
 #include "rdfeed.h"
 #include "rdlibrary_conf.h"
 #include "rdlog.h"
-#include "rdlog_event.h"
 #include "rdpodcast.h"
 #include "rdrenderer.h"
 #include "rdtempdirectory.h"
@@ -1440,7 +1439,7 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   QString err_msg;
   RDRenderer *renderer=NULL;
   RDSettings *settings=NULL;
-  RDLogEvent *log_event=NULL;
+  RDLogModel *log_model=NULL;
 
   feed_render_start_line=start_line;
   feed_render_end_line=end_line;
@@ -1451,11 +1450,11 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   //
   // Open Log
   //
-  log_event=new RDLogEvent(logname);
-  log_event->load();
-  if(!log_event->exists()) {
+  log_model=new RDLogModel(logname,false,this);
+  log_model->load();
+  if(!log_model->exists()) {
     *err=RDFeed::ErrorNoLog;
-    delete log_event;
+    delete log_model;
     return 0;
   }
 
@@ -1476,12 +1475,12 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   connect(renderer,SIGNAL(lineStarted(int,int)),
 	  this,SLOT(renderLineStartedData(int,int)));
 
-  if(!renderer->renderToFile(tmpfile,log_event,settings,start_time,stop_at_stop,
+  if(!renderer->renderToFile(tmpfile,log_model,settings,start_time,stop_at_stop,
 			     &err_msg,start_line,end_line)) {
     *err=RDFeed::ErrorRenderError;
     delete renderer;
     delete settings;
-    delete log_event;
+    delete log_model;
     unlink(tmpfile);
     return 0;
   }
@@ -1493,7 +1492,7 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   //
   QFile f(tmpfile);
   unsigned cast_id=
-    CreateCast(&destfile,f.size(),log_event->length(0,log_event->size()));
+    CreateCast(&destfile,f.size(),log_model->length(0,log_model->lineCount()));
   RDPodcast *cast=new RDPodcast(feed_config,cast_id);
   SavePodcast(cast_id,tmpfile);
   unlink(tmpfile);
@@ -1516,7 +1515,7 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
     cast->setItemTitle(log->description());
   }
   cast->setItemImageId(defaultItemImageId());
-  cast->setAudioTime(log_event->length(start_line,1+end_line));
+  cast->setAudioTime(log_model->length(start_line,1+end_line));
   delete log;
 
   postXml();
@@ -1525,7 +1524,7 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
 
   delete cast;
   delete settings;
-  delete log_event;
+  delete log_model;
   unlink(tmpfile);
 
   return cast_id;

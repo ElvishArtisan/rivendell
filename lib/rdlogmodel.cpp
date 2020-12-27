@@ -30,13 +30,15 @@
 RDLogModel::RDLogModel(const QString &logname,bool read_only,QObject *parent)
   : QAbstractTableModel(parent)
 {
+  d_log_name=logname;
+  d_read_only=read_only;
+
+  MakeModel();
+  /*
   d_fms=NULL;
   d_bold_fms=NULL;
   d_log_icons=new RDLogIcons();
   d_start_time_style=RDLogModel::Scheduled;
-
-  d_log_name=logname;
-  d_read_only=read_only;
   d_max_id=0;
 
   //
@@ -87,6 +89,16 @@ RDLogModel::RDLogModel(const QString &logname,bool read_only,QObject *parent)
 
   d_headers.push_back(tr("Count"));
   d_alignments.push_back(right);
+  */
+}
+
+
+RDLogModel::RDLogModel(QObject *parent)
+  : QAbstractTableModel(parent)
+{
+  d_read_only=false;
+
+  MakeModel();
 }
 
 
@@ -1597,4 +1609,63 @@ void RDLogModel::emitAllDataChanged()
 QColor RDLogModel::backgroundColor(int line,RDLogLine *ll) const
 {
   return d_palette.color(QPalette::Base);
+}
+
+
+void RDLogModel::MakeModel()
+{
+  d_fms=NULL;
+  d_bold_fms=NULL;
+  d_log_icons=new RDLogIcons();
+  d_start_time_style=RDLogModel::Scheduled;
+  d_max_id=0;
+
+  //
+  // Column Attributes
+  //
+  unsigned left=Qt::AlignLeft|Qt::AlignVCenter;
+  unsigned center=Qt::AlignCenter;
+  unsigned right=Qt::AlignRight|Qt::AlignVCenter;
+
+  d_headers.push_back(tr("Start Time"));
+  d_alignments.push_back(right);
+
+  d_headers.push_back(tr("Trans"));
+  d_alignments.push_back(center);
+
+  d_headers.push_back(tr("Cart"));
+  d_alignments.push_back(center);
+
+  d_headers.push_back(tr("Group"));
+  d_alignments.push_back(center);
+
+  d_headers.push_back(tr("Length"));
+  d_alignments.push_back(right);
+
+  d_headers.push_back(tr("Title"));
+  d_alignments.push_back(left);
+
+  d_headers.push_back(tr("Artist"));
+  d_alignments.push_back(left);
+
+  d_headers.push_back(tr("Client"));
+  d_alignments.push_back(left);
+
+  d_headers.push_back(tr("Agency"));
+  d_alignments.push_back(left);
+
+  d_headers.push_back(tr("Label"));
+  d_alignments.push_back(left);
+
+  d_headers.push_back(tr("Source"));
+  d_alignments.push_back(left);
+
+  d_headers.push_back(tr("Ext Data"));
+  d_alignments.push_back(left);
+
+  d_headers.push_back(tr("Line ID"));
+  d_alignments.push_back(right);
+
+  d_headers.push_back(tr("Count"));
+  d_alignments.push_back(right);
 }

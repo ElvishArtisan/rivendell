@@ -132,7 +132,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       air_log[rml->arg(0).toInt()-1]->load();
     }
     if(rml->argQuantity()==3) { // Start Log
-      if(rml->arg(2).toInt()<air_log[rml->arg(0).toInt()-1]->size()) {
+      if(rml->arg(2).toInt()<air_log[rml->arg(0).toInt()-1]->lineCount()) {
 	if(rml->arg(2).toInt()>=0) {  // Unconditional start
 	  air_log[rml->arg(0).toInt()-1]->play(rml->arg(2).toInt(),
 					       RDLogLine::StartMacro);
@@ -140,11 +140,11 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 	if(rml->arg(2).toInt()==-2) {  // Start if trans type allows
 	  // Find first non-running event
 	  bool found=false;
-	  for(int i=0;i<air_log[rml->arg(0).toInt()-1]->size();i++) {
+	  for(int i=0;i<air_log[rml->arg(0).toInt()-1]->lineCount();i++) {
 	    if((logline=air_log[rml->arg(0).toInt()-1]->logLine(i))!=NULL) {
 	      if(logline->status()==RDLogLine::Scheduled) {
 		found=true;
-		i=air_log[rml->arg(0).toInt()-1]->size();
+		i=air_log[rml->arg(0).toInt()-1]->lineCount();
 	      }
 	    }
 	  }
@@ -212,7 +212,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       return;
     }
     if((rml->arg(1).toInt()<0)||
-       (rml->arg(1).toInt()>=air_log[rml->arg(0).toInt()-1]->size())) {
+       (rml->arg(1).toInt()>=air_log[rml->arg(0).toInt()-1]->lineCount())) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -339,7 +339,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       return;
     }
     if((rml->arg(1).toInt()<0)||
-       (rml->arg(1).toInt()>=air_log[rml->arg(0).toInt()-1]->size())) {
+       (rml->arg(1).toInt()>=air_log[rml->arg(0).toInt()-1]->lineCount())) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -842,10 +842,10 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     else {
       air_log[mach-1]->
-	insert(air_log[mach-1]->size(),
+	insert(air_log[mach-1]->lineCount(),
 	       rml->arg(1).toUInt(),RDLogLine::NoTrans,trans);
       air_log[mach-1]->
-	makeNext(air_log[mach-1]->size()-1);
+	makeNext(air_log[mach-1]->lineCount()-1);
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);

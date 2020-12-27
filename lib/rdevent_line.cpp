@@ -914,7 +914,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 }
 
 
-bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
+bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
 			  RDLogLine *link_logline,const QString &track_str,
 			  const QString &label_cart,const QString &track_cart,
 			  QString *errors)
@@ -949,11 +949,11 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
   // Insert Parent Link
   //
   if(log->includeImportMarkers()) {
-    e->insert(e->size(),1);
+    e->insert(e->lineCount(),1);
     logline=new RDLogLine();
     *logline=*link_logline;
     logline->setId(e->nextId());
-    *(e->logLine(e->size()-1))=*logline;
+    *(e->logLine(e->lineCount()-1))=*logline;
     delete logline;
     logline=NULL;
 
@@ -1024,8 +1024,8 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
     //
     if(q->value(8).toUInt()==RDLogLine::TrafficLink) {
       if((!event_nested_event.isEmpty()&&(event_nested_event!=event_name))) {
-	e->insert(e->size(),1);
-	logline=e->logLine(e->size()-1);
+	e->insert(e->lineCount(),1);
+	logline=e->logLine(e->lineCount()-1);
 	logline->setId(e->nextId());
 	logline->setStartTime(RDLogLine::Logged,time);
 	logline->setType(RDLogLine::TrafficLink);
@@ -1046,8 +1046,8 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
     // Voicetrack Marker
     //
     if(q->value(8).toUInt()==RDLogLine::Track) {
-      e->insert(e->size(),1);
-      logline=e->logLine(e->size()-1);
+      e->insert(e->lineCount(),1);
+      logline=e->logLine(e->lineCount()-1);
       logline->setId(e->nextId());
       logline->setStartTime(RDLogLine::Logged,time);
       logline->setType(RDLogLine::Track);
@@ -1068,8 +1068,8 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
     // Label/Note Cart
     //
     if(q->value(8).toUInt()==RDLogLine::Marker) {
-      e->insert(e->size(),1);
-      logline=e->logLine(e->size()-1);
+      e->insert(e->lineCount(),1);
+      logline=e->logLine(e->lineCount()-1);
       logline->setId(e->nextId());
       logline->setStartTime(RDLogLine::Logged,time);
       logline->setType(RDLogLine::Marker);
@@ -1090,8 +1090,8 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
     // Cart
     //
     if(q->value(8).toUInt()==RDLogLine::Cart) {
-      e->insert(e->size(),1);
-      logline=e->logLine(e->size()-1);
+      e->insert(e->lineCount(),1);
+      logline=e->logLine(e->lineCount()-1);
       logline->setId(e->nextId());
       logline->setSource(event_src);
       logline->
@@ -1166,8 +1166,8 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       while(q->next()&&(fill_start_time<=time)) {
 	if((time.addMSecs(q->value(1).toInt())<=end_time)&&
 	   (time.addMSecs(q->value(1).toInt())>time)) {
-	  e->insert(e->size(),1);
-	  logline=e->logLine(e->size()-1);
+	  e->insert(e->lineCount(),1);
+	  logline=e->logLine(e->lineCount()-1);
 	  logline->setId(e->nextId());
 	  logline->setStartTime(RDLogLine::Logged,time);
 	  logline->setType(RDLogLine::Cart);

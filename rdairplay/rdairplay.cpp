@@ -1268,7 +1268,7 @@ void MainWidget::logReloadedData(int log)
   rml.setAddress(addr);
   rml.setEchoRequested(false);
 
-  if(air_start_line[log]<air_log[log]->size()) {
+  if(air_start_line[log]<air_log[log]->lineCount()) {
     rml.setCommand(RDMacro::MN);  // Make Next
     rml.addArg(log+1);
     rml.addArg(air_start_line[log]);
@@ -1443,11 +1443,11 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
   case StartButton::AddTo:
     if(line<0) {
       air_log[id]->
-	insert(air_log[id]->size(),air_add_cart,RDLogLine::Play,
+	insert(air_log[id]->lineCount(),air_add_cart,RDLogLine::Play,
 	       rda->airplayConf()->defaultTransType());
-      air_log[id]->logLine(air_log[id]->size()-1)->
+      air_log[id]->logLine(air_log[id]->lineCount()-1)->
 	setTransType(rda->airplayConf()->defaultTransType());
-      air_log_list[id]->refresh(air_log[id]->size()-1);
+      air_log_list[id]->refresh(air_log[id]->lineCount()-1);
     }
     else {
       air_log[id]->
@@ -1483,8 +1483,8 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
   case StartButton::MoveTo:
     if(air_source_id==id) {
       if(line<0) {
-	air_log[id]->move(air_copy_line,air_log[id]->size());
-	air_log_list[id]->refresh(air_log[id]->size()-1);
+	air_log[id]->move(air_copy_line,air_log[id]->lineCount());
+	air_log_list[id]->refresh(air_log[id]->lineCount()-1);
       }
       else {
 	if(line>air_copy_line) {
@@ -1498,8 +1498,8 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
       air_log[air_source_id]->remove(air_copy_line,1);
       if(line<0) {
 	air_log[id]->
-	  insert(air_log[id]->size(),air_add_cart,RDLogLine::Play);
-	air_log_list[id]->refresh(air_log[id]->size()-1);
+	  insert(air_log[id]->lineCount(),air_add_cart,RDLogLine::Play);
+	air_log_list[id]->refresh(air_log[id]->lineCount()-1);
       }
       else {
 	air_log[id]->
@@ -1525,7 +1525,7 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
   case StartButton::CopyTo:
     if(air_source_id==id) {
       if(line<0) {
-	air_log[id]->copy(air_copy_line,air_log[id]->size(),
+	air_log[id]->copy(air_copy_line,air_log[id]->lineCount(),
 			  rda->airplayConf()->defaultTransType());
       }
       else {
@@ -1535,12 +1535,12 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
     }
     else {
       if(line<0) {
-	air_log[id]->insert(air_log[id]->size(),air_add_cart,
+	air_log[id]->insert(air_log[id]->lineCount(),air_add_cart,
 			    rda->airplayConf()->defaultTransType(),
 			    rda->airplayConf()->defaultTransType());
-	air_log[id]->logLine(air_log[id]->size()-1)->
+	air_log[id]->logLine(air_log[id]->lineCount()-1)->
 	  setTransType(rda->airplayConf()->defaultTransType());
-	air_log_list[id]->refresh(air_log[id]->size()-1);
+	air_log_list[id]->refresh(air_log[id]->lineCount()-1);
       }
       else {
 	air_log[id]->
@@ -1608,11 +1608,11 @@ void MainWidget::cartDroppedData(int id,int line,RDLogLine *ll)
   else {
     if(line<0) {
       air_log[id]->
-	insert(air_log[id]->size(),ll->cartNumber(),RDLogLine::Play,
+	insert(air_log[id]->lineCount(),ll->cartNumber(),RDLogLine::Play,
 	       rda->airplayConf()->defaultTransType());
-      air_log[id]->logLine(air_log[id]->size()-1)->
+      air_log[id]->logLine(air_log[id]->lineCount()-1)->
 	setTransType(rda->airplayConf()->defaultTransType());
-      air_log_list[id]->refresh(air_log[id]->size()-1);
+      air_log_list[id]->refresh(air_log[id]->lineCount()-1);
     }
     else {
       air_log[id]->

@@ -299,7 +299,7 @@ void ButtonLog::startButton(int id)
   int line=log_line_box[id]->line();
   RDLogLine *logline=log_log->logLine(line);
   if(line<0) {
-    line=log_log->size();
+    line=log_log->lineCount();
   }
   switch(log_start_button[id]->mode()) {
   case StartButton::Stop:
@@ -345,7 +345,7 @@ void ButtonLog::pauseButtonHotkey(int id)
 {
   int line=log_line_box[id]->line();
   if (line<0) {
-   line=log_log->size();
+   line=log_log->lineCount();
   }
   if (log_start_button[id]->mode() == StartButton::Play) {
       log_log->pause(line);
@@ -356,7 +356,7 @@ void ButtonLog::stopButtonHotkey(int id)
 {
   int line=log_line_box[id]->line();
   if (line<0) {
-   line=log_log->size();
+   line=log_log->lineCount();
   }
   log_log->stop(line);
 }

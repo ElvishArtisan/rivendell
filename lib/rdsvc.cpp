@@ -28,6 +28,7 @@
 #include "rd.h"
 #include "rdescape_string.h"
 #include "rdlog.h"
+#include "rdlogmodel.h"
 #include "rdsvc.h"
 #include "rdweb.h"
 
@@ -922,8 +923,8 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   RDSqlQuery *q;
   QString autofill_errors;
   QTime prev_start_time;
-  RDLogEvent *src_event=NULL;
-  RDLogEvent *dest_event=NULL;
+  RDLogModel *src_model=NULL;
+  RDLogModel *dst_model=NULL;
   RDLogLine *logline=NULL;
 
   *err_msg="";
@@ -989,27 +990,27 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   //
   // Iterate Through the Log
   //
-  src_event=new RDLogEvent(logname);
-  dest_event=new RDLogEvent(logname);
-  src_event->load();
-  for(int i=0;i<src_event->size();i++) {
-    logline=src_event->logLine(i);
+  src_model=new RDLogModel(logname,true,this);
+  dst_model=new RDLogModel(logname,true,this);
+  src_model->load();
+  for(int i=0;i<src_model->lineCount();i++) {
+    logline=src_model->logLine(i);
     if(logline->type()==src_type) {
       RDEventLine *e=new RDEventLine(svc_station);
       e->setName(logline->linkEventName());
       e->load();
-      e->linkLog(dest_event,log,svc_name,logline,track_str,label_cart,
+      e->linkLog(dst_model,log,svc_name,logline,track_str,label_cart,
 		 track_cart,&autofill_errors);
       delete e;
       emit generationProgress(1+(24*current_link++)/total_links);
     }
     else {
-      dest_event->insert(dest_event->size(),1,true);
-      *(dest_event->logLine(dest_event->size()-1))=*logline;
-      dest_event->logLine(dest_event->size()-1)->setId(dest_event->nextId());
+      dst_model->insert(dst_model->lineCount(),1,true);
+      *(dst_model->logLine(dst_model->lineCount()-1))=*logline;
+      dst_model->logLine(dst_model->lineCount()-1)->setId(dst_model->nextId());
     }
   }
-  dest_event->save(svc_config);
+  dst_model->save(svc_config);
 
   //
   // Update the Log Link Status
@@ -1029,7 +1030,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   //
   QString cartname;
   QString missing_report;
-  dest_event->validate(&missing_report,date);
+  dst_model->validate(&missing_report,date);
   bool event=false;
   QString link_report=tr("The following events were not placed:\n");
   sql=QString("select ")+
@@ -1108,8 +1109,8 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   // Clean Up
   //
   emit generationProgress(24);
-  delete src_event;
-  delete dest_event;
+  delete src_model;
+  delete dst_model;
 
   sql=QString("delete from IMPORTER_LINES where ")+
     "STATION_NAME=\""+RDEscapeString(svc_station->name())+"\" && "+
@@ -1142,21 +1143,21 @@ bool RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname,
 	break;
   }
 
-  RDLogEvent *src_event=new RDLogEvent(logname);
-  RDLogEvent *dest_event=new RDLogEvent(logname);
-  src_event->load();
+  RDLogModel *src_model=new RDLogModel(logname,false,this);
+  RDLogModel *dst_model=new RDLogModel(logname,false,this);
+  src_model->load();
   RDLogLine *logline=NULL;
-  for(int i=0;i<src_event->size();i++) {
-    logline=src_event->logLine(i);
+  for(int i=0;i<src_model->lineCount();i++) {
+    logline=src_model->logLine(i);
     if((logline->linkId()<0)||(logline->source()!=event_source)) {
-      dest_event->insert(dest_event->size(),1,true);
-      *(dest_event->logLine(dest_event->size()-1))=*logline;
-      dest_event->logLine(dest_event->size()-1)->setId(dest_event->nextId());
+      dst_model->insert(dst_model->lineCount(),1,true);
+      *(dst_model->logLine(dst_model->lineCount()-1))=*logline;
+      dst_model->logLine(dst_model->lineCount()-1)->setId(dst_model->nextId());
     }
   }
-  dest_event->save(svc_config);
-  delete src_event;
-  delete dest_event;
+  dst_model->save(svc_config);
+  delete src_model;
+  delete dst_model;
 
   RDLog *log=new RDLog(logname);
   if(src==RDSvc::Traffic) {
@@ -1793,9 +1794,8 @@ QString RDSvc::MakeErrorLine(int indent,unsigned lineno,const QString &msg)
 
 
 bool RDSvc::ResolveInlineEvents(const QString &logname,QString *err_msg)
-  const
 {
-  RDLogEvent *evt=NULL;
+  RDLogModel *model=NULL;
   RDLogLine *logline=NULL;
   QTime start;
   QTime end;
@@ -1805,11 +1805,11 @@ bool RDSvc::ResolveInlineEvents(const QString &logname,QString *err_msg)
 
   switch(subEventInheritance()) {
   case RDSvc::ParentEvent:
-    evt=new RDLogEvent(logname);
-    evt->load();
+    model=new RDLogModel(logname,false,this);
+    model->load();
     ok=true;
-    for(int i=0;i<evt->size();i++) {
-      logline=evt->logLine(i);
+    for(int i=0;i<model->lineCount();i++) {
+      logline=model->logLine(i);
       if(logline->type()==RDLogLine::MusicLink) {
 	start=logline->linkStartTime();
 	end=logline->linkStartTime().addSecs(logline->linkLength());
@@ -1847,8 +1847,8 @@ bool RDSvc::ResolveInlineEvents(const QString &logname,QString *err_msg)
 	delete q;
       }
     }
-    delete evt;
-    evt=NULL;
+    delete model;
+    model=NULL;
 
     if(!ok) {
       return false;

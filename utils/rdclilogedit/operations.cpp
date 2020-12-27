@@ -2,7 +2,7 @@
 //
 // A command-line log editor for Rivendell
 //
-//   (C) Copyright 2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,62 +27,62 @@
 
 void MainObject::Addcart(int line,unsigned cartnum)
 {
-  if(line>edit_log_event->size()) {
-    line=edit_log_event->size();
+  if(line>edit_log_model->lineCount()) {
+    line=edit_log_model->lineCount();
   }
-  edit_log_event->insert(line,1);
-  edit_log_event->logLine(line)->
+  edit_log_model->insert(line,1);
+  edit_log_model->logLine(line)->
     setTransType(rda->airplayConf()->defaultTransType());
-  edit_log_event->logLine(line)->setFadeupGain(-3000);
-  edit_log_event->logLine(line)->setFadedownGain(-3000);
-  edit_log_event->logLine(line)->setCartNumber(cartnum);
-  edit_log_event->refresh(line);
+  edit_log_model->logLine(line)->setFadeupGain(-3000);
+  edit_log_model->logLine(line)->setFadedownGain(-3000);
+  edit_log_model->logLine(line)->setCartNumber(cartnum);
+  edit_log_model->refresh(line);
   edit_modified=true;
 }
 
 
 void MainObject::Addchain(int line,const QString &logname)
 {
-  if(line>edit_log_event->size()) {
-    line=edit_log_event->size();
+  if(line>edit_log_model->lineCount()) {
+    line=edit_log_model->lineCount();
   }
-  edit_log_event->insert(line,1);
-  edit_log_event->logLine(line)->setType(RDLogLine::Chain);
-  edit_log_event->logLine(line)->
+  edit_log_model->insert(line,1);
+  edit_log_model->logLine(line)->setType(RDLogLine::Chain);
+  edit_log_model->logLine(line)->
     setTransType(rda->airplayConf()->defaultTransType());
-  edit_log_event->logLine(line)->setMarkerLabel(logname);
-  edit_log_event->refresh(line);
+  edit_log_model->logLine(line)->setMarkerLabel(logname);
+  edit_log_model->refresh(line);
   edit_modified=true;
 }
 
 
 void MainObject::Addmarker(int line)
 {
-  if(line>edit_log_event->size()) {
-    line=edit_log_event->size();
+  if(line>edit_log_model->lineCount()) {
+    line=edit_log_model->lineCount();
   }
-  edit_log_event->insert(line,1);
-  edit_log_event->logLine(line)->setType(RDLogLine::Marker);
-  edit_log_event->logLine(line)->
+  edit_log_model->insert(line,1);
+  edit_log_model->logLine(line)->setType(RDLogLine::Marker);
+  edit_log_model->logLine(line)->
     setTransType(rda->airplayConf()->defaultTransType());
-  edit_log_event->logLine(line)->setMarkerLabel(tr("Label"));
-  edit_log_event->logLine(line)->setMarkerComment(tr("Marker Comment"));
-  edit_log_event->refresh(line);
+  edit_log_model->logLine(line)->setMarkerLabel(tr("Label"));
+  edit_log_model->logLine(line)->setMarkerComment(tr("Marker Comment"));
+  edit_log_model->refresh(line);
   edit_modified=true;
 }
 
 
 void MainObject::Addtrack(int line)
 {
-  if(line>edit_log_event->size()) {
-    line=edit_log_event->size();
+  if(line>edit_log_model->lineCount()) {
+    line=edit_log_model->lineCount();
   }
-  edit_log_event->insert(line,1);
-  edit_log_event->logLine(line)->setType(RDLogLine::Track);
-  edit_log_event->logLine(line)->
+  edit_log_model->insert(line,1);
+  edit_log_model->logLine(line)->setType(RDLogLine::Track);
+  edit_log_model->logLine(line)->
     setTransType(rda->airplayConf()->defaultTransType());
-  edit_log_event->logLine(line)->setMarkerComment(tr("Voice Track"));
-  edit_log_event->refresh(line);
+  edit_log_model->logLine(line)->setMarkerComment(tr("Voice Track"));
+  edit_log_model->refresh(line);
   edit_modified=true;
 }
 
@@ -171,10 +171,10 @@ void MainObject::Header() const
 
 void MainObject::List()
 {
-  for(int i=0;i<edit_log_event->size();i++) {
-    printf("%4d %s\n",i,(const char *)ListLine(edit_log_event,i));
+  for(int i=0;i<edit_log_model->lineCount();i++) {
+    printf("%4d %s\n",i,(const char *)ListLine(edit_log_model,i));
   }
-  printf("%4d  --- end of log ---\n",edit_log_event->size());
+  printf("%4d  --- end of log ---\n",edit_log_model->lineCount());
 }
 
 
@@ -215,9 +215,9 @@ void MainObject::Load(QString logname)
     delete edit_log;
     edit_log=NULL;
   }
-  if(edit_log_event!=NULL) {
-    delete edit_log_event;
-    edit_log_event=NULL;
+  if(edit_log_model!=NULL) {
+    delete edit_log_model;
+    edit_log_model=NULL;
   }
   if(edit_log_lock!=NULL) {
     delete edit_log_lock;
@@ -250,8 +250,8 @@ void MainObject::Load(QString logname)
 
   edit_log=new RDLog(logname);
   if(edit_log->exists()) {
-    edit_log_event=new RDLogEvent(logname);
-    edit_log_event->load();
+    edit_log_model=new RDLogModel(logname,false,this);
+    edit_log_model->load();
     edit_description=edit_log->description();
     edit_service=edit_log->service();
     edit_start_date=edit_log->startDate();
@@ -268,10 +268,10 @@ void MainObject::Load(QString logname)
 }
 
 
-QString MainObject::ListLine(RDLogEvent *evt,int line) const
+QString MainObject::ListLine(RDLogModel *model,int line) const
 {
   QString ret="";
-  RDLogLine *logline=evt->logLine(line);
+  RDLogLine *logline=model->logLine(line);
 
   switch(logline->timeType()) {
   case RDLogLine::Hard:
@@ -282,7 +282,7 @@ QString MainObject::ListLine(RDLogEvent *evt,int line) const
 
   case RDLogLine::Relative:
     ret+=QString().
-      sprintf(" %s  ",(const char *)evt->blockStartTime(line).
+      sprintf(" %s  ",(const char *)model->blockStartTime(line).
 	      toString("hh:mm:ss"));
     break;
 
@@ -354,15 +354,15 @@ void MainObject::New(const QString &logname)
   if(edit_log!=NULL) {
     delete edit_log;
   }
-  if(edit_log_event!=NULL) {
-    delete edit_log_event;
+  if(edit_log_model!=NULL) {
+    delete edit_log_model;
   }
   if(edit_log_lock!=NULL) {
     delete edit_log_lock;
   }
   edit_log=new RDLog(logname);
   if(!edit_log->exists()) {
-    edit_log_event=new RDLogEvent(logname);
+    edit_log_model=new RDLogModel(logname,false,this);
     edit_description=logname+" log";
     sql=QString("select NAME from SERVICES");
     q=new RDSqlQuery(sql);
@@ -391,14 +391,14 @@ void MainObject::New(const QString &logname)
 
 void MainObject::Remove(int line)
 {
-  edit_log_event->remove(line,1);
+  edit_log_model->remove(line,1);
   edit_modified=true;
 }
 
 
 void MainObject::Save()
 {
-  edit_log_event->save(rda->config());
+  edit_log_model->save(rda->config());
   edit_log->setDescription(edit_description);
   edit_log->setStartDate(edit_start_date);
   edit_log->setEndDate(edit_end_date);
@@ -434,8 +434,8 @@ void MainObject::Saveas(const QString &logname)
       "SERVICE=\""+RDEscapeString(edit_service)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
-    edit_log_event->setLogName(logname);
-    edit_log_event->save(rda->config());
+    edit_log_model->setLogName(logname);
+    edit_log_model->save(rda->config());
     delete edit_log;
     edit_log=log;
     edit_modified=false;
@@ -457,12 +457,12 @@ void MainObject::Setautorefresh(bool state)
 
 void MainObject::Setcart(int line,unsigned cartnum)
 {
-  RDLogLine *logline=edit_log_event->logLine(line);
+  RDLogLine *logline=edit_log_model->logLine(line);
   if(logline!=NULL) {
     if((logline->type()==RDLogLine::Cart)||
        (logline->type()==RDLogLine::Macro)) {
       logline->setCartNumber(cartnum);
-      edit_log_event->refresh(line);
+      edit_log_model->refresh(line);
       edit_modified=true;
     }
     else {
@@ -477,12 +477,12 @@ void MainObject::Setcart(int line,unsigned cartnum)
 
 void MainObject::Setcomment(int line,const QString &str)
 {
-  RDLogLine *logline=edit_log_event->logLine(line);
+  RDLogLine *logline=edit_log_model->logLine(line);
   if(logline!=NULL) {
     if((logline->type()==RDLogLine::Marker)||
        (logline->type()==RDLogLine::Track)) {
       logline->setMarkerComment(str);
-      edit_log_event->refresh(line);
+      edit_log_model->refresh(line);
       edit_modified=true;
     }
     else {
@@ -511,12 +511,12 @@ void MainObject::Setenddate(const QDate &date)
 
 void MainObject::Setlabel(int line,const QString &str)
 {
-  RDLogLine *logline=edit_log_event->logLine(line);
+  RDLogLine *logline=edit_log_model->logLine(line);
   if(logline!=NULL) {
     if((logline->type()==RDLogLine::Chain)||
        (logline->type()==RDLogLine::Marker)) {
       logline->setMarkerLabel(str);
-      edit_log_event->refresh(line);
+      edit_log_model->refresh(line);
       edit_modified=true;
     }
     else {
@@ -553,16 +553,16 @@ void MainObject::Setservice(const QString &str)
 
 void MainObject::Settime(int line,RDLogLine::TimeType type,const QTime &time)
 {
-  edit_log_event->logLine(line)->setTimeType(type);
-  edit_log_event->logLine(line)->setStartTime(RDLogLine::Logged,time);
+  edit_log_model->logLine(line)->setTimeType(type);
+  edit_log_model->logLine(line)->setStartTime(RDLogLine::Logged,time);
   edit_modified=true;
 }
 
 
 void MainObject::Settrans(int line,RDLogLine::TransType type)
 {
-  edit_log_event->logLine(line)->setTransType(type);
-  edit_log_event->refresh(line);
+  edit_log_model->logLine(line)->setTransType(type);
+  edit_log_model->refresh(line);
   edit_modified=true;
 }
 
@@ -580,9 +580,9 @@ void MainObject::Unload()
     delete edit_log;
     edit_log=NULL;
   }
-  if(edit_log_event!=NULL) {
-    delete edit_log_event;
-    edit_log_event=NULL;
+  if(edit_log_model!=NULL) {
+    delete edit_log_model;
+    edit_log_model=NULL;
   }
   if(edit_log_lock!=NULL) {
     delete edit_log_lock;
