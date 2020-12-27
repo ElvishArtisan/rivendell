@@ -118,8 +118,8 @@ class EditLog : public RDDialog
   QLabel *edit_autorefresh_label;
   QComboBox *edit_autorefresh_box;
   QLineEdit *edit_autorefresh_edit;
-  Q3DateEdit *edit_startdate_edit;
-  Q3DateEdit *edit_enddate_edit;
+  QDateEdit *edit_startdate_edit;
+  QDateEdit *edit_enddate_edit;
   QLabel *edit_startdate_label;
   QLabel *edit_startdate_box_label;
   QLabel *edit_enddate_box_label;
@@ -165,7 +165,7 @@ class EditLog : public RDDialog
   QLineEdit *edit_endtime_edit;
   QCheckBox *edit_purgedate_box;
   QLabel *edit_purgedate_label;
-  Q3DateEdit *edit_purgedate_edit;
+  QDateEdit *edit_purgedate_edit;
   QPushButton *edit_purgedate_button;
   RDLogLock *edit_log_lock;
   QPushButton *edit_renderas_button;

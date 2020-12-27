@@ -47,9 +47,7 @@ dist_rdlogedit_SOURCES = add_meta.cpp add_meta.h\
                          edit_logline.cpp edit_logline.h\
                          edit_marker.cpp edit_marker.h\
                          edit_track.cpp edit_track.h\
-                         list_listviewitem.cpp list_listviewitem.h\
                          list_reports.cpp list_reports.h\
-                         log_listview.cpp log_listview.h\
                          logmodel.cpp logmodel.h\
                          logtableview.cpp logtableview.h\
                          rdlogedit.cpp rdlogedit.h globals.h\
@@ -64,7 +62,6 @@ nodist_rdlogedit_SOURCES = moc_add_meta.cpp\
                            moc_edit_marker.cpp\
                            moc_edit_track.cpp\
                            moc_list_reports.cpp\
-                           moc_log_listview.cpp\
                            moc_logmodel.cpp\
                            moc_logtableview.cpp\
                            moc_rdlogedit.cpp\

@@ -155,7 +155,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_purgedate_label=new QLabel(edit_purgedate_box,tr("Delete on"),this);
   edit_purgedate_label->setFont(labelFont());
   edit_purgedate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  edit_purgedate_edit=new Q3DateEdit(this);
+  edit_purgedate_edit=new QDateEdit(this);
+  edit_purgedate_edit->setDisplayFormat("MM/dd/yyyy");
   edit_purgedate_button=new QPushButton(tr("Select"),this);
   edit_purgedate_button->setFont(buttonFont());
   connect(edit_purgedate_box,SIGNAL(toggled(bool)),
@@ -164,7 +165,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
 	  edit_purgedate_edit,SLOT(setEnabled(bool)));
   connect(edit_purgedate_box,SIGNAL(toggled(bool)),
 	  edit_purgedate_button,SLOT(setEnabled(bool)));
-  connect(edit_purgedate_edit,SIGNAL(valueChanged(const QDate &)),
+  connect(edit_purgedate_edit,SIGNAL(dateChanged(const QDate &)),
 	  this,SLOT(purgeDateChangedData(const QDate &)));
   connect(edit_purgedate_button,SIGNAL(clicked()),
 	  this,SLOT(selectPurgeDateData()));
@@ -199,22 +200,24 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Start Date
   //
-  edit_startdate_edit=new Q3DateEdit(this);
+  edit_startdate_edit=new QDateEdit(this);
+  edit_startdate_edit->setDisplayFormat("MM/dd/yyyy");
   edit_startdate_label=new QLabel(edit_startdate_edit,tr("Start Date:"),this);
   edit_startdate_label->setFont(labelFont());
   edit_startdate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
-  connect(edit_startdate_edit,SIGNAL(valueChanged(const QDate &)),
+  connect(edit_startdate_edit,SIGNAL(dateChanged(const QDate &)),
 	  this,SLOT(dateValueChangedData(const QDate &)));
 
 
   //
   // End Date
   //
-  edit_enddate_edit=new Q3DateEdit(this);
+  edit_enddate_edit=new QDateEdit(this);
+  edit_enddate_edit->setDisplayFormat("MM/dd/yyyy");
   edit_enddate_label=new QLabel(edit_startdate_edit,tr("End Date:"),this);
   edit_enddate_label->setFont(labelFont());
   edit_enddate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
-  connect(edit_enddate_edit,SIGNAL(valueChanged(const QDate &)),
+  connect(edit_enddate_edit,SIGNAL(dateChanged(const QDate &)),
 	  this,SLOT(dateValueChangedData(const QDate &)));
 
   //
@@ -533,12 +536,12 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   }
   if(!editing_allowed) {
     if(edit_startdate_box->isChecked()) {
-      edit_startdate_edit->setRange(edit_startdate_edit->date(),
-				    edit_startdate_edit->date());
+      edit_startdate_edit->setMinimumDate(edit_startdate_edit->date());
+      edit_startdate_edit->setMaximumDate(edit_startdate_edit->date());
     }
     if(edit_enddate_box->isChecked()) {
-      edit_enddate_edit->setRange(edit_enddate_edit->date(),
-				  edit_enddate_edit->date());
+      edit_enddate_edit->setMinimumDate(edit_enddate_edit->date());
+      edit_enddate_edit->setMaximumDate(edit_enddate_edit->date());
     }
   }
   edit_startdate_box->setEnabled(editing_allowed);

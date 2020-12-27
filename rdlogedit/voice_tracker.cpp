@@ -3161,7 +3161,7 @@ void VoiceTracker::DrawCursor(RDWavePainter *wp,int height,int xpos,
   if(left_arrow) {
     arrow_x=-8;
   }
-  Q3PointArray *pa=new Q3PointArray(3);
+  QPolygon *pa=new QPolygon(3);
   pa->setPoint(0,xpos,arrow_offset);
   pa->setPoint(1,xpos+arrow_x,arrow_offset-5);
   pa->setPoint(2,xpos+arrow_x,arrow_offset+5);

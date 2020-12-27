@@ -21,7 +21,7 @@
 #ifndef LIST_REPORTS_H
 #define LIST_REPORTS_H
 
-#include <q3datetimeedit.h>
+#include <qdatetimeedit.h>
 
 #include <qcombobox.h>
 
@@ -57,7 +57,7 @@ class ListReports : public RDDialog
   QDate list_end_date;
   bool list_auto_refresh;
   RDLogModel *list_model;
-  Q3DateEdit *list_date_edit;
+  QDateEdit *list_date_edit;
 };
 
 

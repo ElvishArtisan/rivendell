@@ -2,7 +2,7 @@
 //
 // Base class for rdlogedit(1) event editor dialogs
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -74,7 +74,6 @@ EditEvent::EditEvent(RDLogLine *line,QWidget *parent)
   edit_grace_bgroup->addButton(radio_button,2);
   edit_grace_timeedit=new QTimeEdit(this);
   edit_grace_timeedit->setDisplayFormat("mm:ss");
-  //  edit_grace_timeedit->setDisplay(Q3TimeEdit::Minutes|Q3TimeEdit::Seconds);
   connect(edit_timetype_box,SIGNAL(toggled(bool)),
 	  this,SLOT(timeToggledData(bool)));
   connect(edit_grace_bgroup,SIGNAL(buttonClicked(int)),

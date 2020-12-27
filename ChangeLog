@@ -20740,3 +20740,8 @@
 	* Added a 'RDLogListModel' class.
 	* Added a 'RDLogIcons::listIcon()' method.
 	* Refactored rdlogedit(1) to use 'RDLogListModel'.
+2020-12-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'ListListViewItem' class from rdlogedit(1).
+	* Removed 'LogListView' class from rdlogedit(1).
+	* Removed dependency on 'Q3DateEdit' from rdlogedit(1).
+	* Removed dependency on 'Q3PointArray' from rdlogedit(1).
