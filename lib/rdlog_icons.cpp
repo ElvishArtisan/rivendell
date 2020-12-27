@@ -23,6 +23,13 @@
 //
 // Icons
 //
+#include "../icons/greencheckmark.xpm"
+#include "../icons/redx.xpm"
+#include "../icons/blueball.xpm"
+#include "../icons/greenball.xpm"
+#include "../icons/redball.xpm"
+#include "../icons/whiteball.xpm"
+
 #include "../icons/play.xpm"
 #include "../icons/rml5.xpm"
 #include "../icons/chain.xpm"
@@ -34,8 +41,15 @@
 
 RDLogIcons::RDLogIcons()
 {
+  d_list_icons.push_back(QPixmap(greencheckmark_xpm));
+  d_list_icons.push_back(QPixmap(redx_xpm));
+  d_list_icons.push_back(QPixmap(greenball_xpm));
+  d_list_icons.push_back(QPixmap(redball_xpm));
+  d_list_icons.push_back(QPixmap(whiteball_xpm));
+  d_list_icons.push_back(QPixmap(blueball_xpm));
+
   //
-  // Create Icons
+  // Create Type Icons
   //
   log_type_icons[RDLogLine::Cart]=QPixmap(play_xpm);
   log_type_icons[RDLogLine::Macro]=QPixmap(rml5_xpm);
@@ -45,6 +59,12 @@ RDLogIcons::RDLogIcons()
   log_type_icons[RDLogLine::MusicLink]=QPixmap(music_xpm);
   log_type_icons[RDLogLine::TrafficLink]=QPixmap(traffic_xpm);
   log_track_cart_icon=QPixmap(track_cart_xpm);
+}
+
+
+QPixmap RDLogIcons::listIcon(RDLogIcons::IconType type) const
+{
+  return d_list_icons.at(type);
 }
 
 

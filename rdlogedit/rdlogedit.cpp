@@ -38,11 +38,6 @@
 // Icons
 //
 #include "../icons/rdlogedit-22x22.xpm"
-#include "../icons/greencheckmark.xpm"
-#include "../icons/redx.xpm"
-#include "../icons/greenball.xpm"
-#include "../icons/redball.xpm"
-#include "../icons/whiteball.xpm"
 
 //
 // Global Resources
@@ -58,7 +53,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   QString err_msg;
 
   log_resize=false;
-  log_log_list=NULL;
+  log_log_view=NULL;
+  log_log_model=NULL;
   log_list_locked=false;
 
   //
@@ -100,7 +96,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // RIPC Connection
   //
-  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
   connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
 	  this,SLOT(notificationReceivedData(RDNotification *)));
   connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
@@ -110,13 +105,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Create Icons
   //
-  log_rivendell_map=new QPixmap(rdlogedit_22x22_xpm);
-  setWindowIcon(*log_rivendell_map);
-  log_greencheckmark_map=new QPixmap(greencheckmark_xpm);
-  log_redx_map=new QPixmap(redx_xpm);
-  log_whiteball_map=new QPixmap(whiteball_xpm);
-  log_greenball_map=new QPixmap(greenball_xpm);
-  log_redball_map=new QPixmap(redball_xpm);
+  setWindowIcon(QPixmap(rdlogedit_22x22_xpm));
 
   //
   // Log Filter
@@ -129,42 +118,25 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Log List
   //
-  log_log_list=new Q3ListView(this);
-  log_log_list->setAllColumnsShowFocus(true);
-  log_log_list->setSelectionMode(Q3ListView::Extended);
-  log_log_list->setItemMargin(5);
-  connect(log_log_list,SIGNAL(selectionChanged()),
-	  this,SLOT(logSelectionChangedData()));
-  connect(log_log_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(logDoubleclickedData(Q3ListViewItem *,const QPoint &,int)));
-  log_log_list->addColumn("");
-  log_log_list->setColumnAlignment(0,Qt::AlignCenter);
-  log_log_list->addColumn(tr("Log Name"));
-  log_log_list->setColumnAlignment(1,Qt::AlignHCenter);
-  log_log_list->addColumn(tr("Description"));
-  log_log_list->setColumnAlignment(2,Qt::AlignLeft);
-  log_log_list->addColumn(tr("Service"));
-  log_log_list->setColumnAlignment(3,Qt::AlignLeft);
-  log_log_list->addColumn(tr("Music"));
-  log_log_list->setColumnAlignment(4,Qt::AlignCenter);
-  log_log_list->addColumn(tr("Traffic"));
-  log_log_list->setColumnAlignment(5,Qt::AlignCenter);
-  log_log_list->addColumn(tr("Tracks"));
-  log_log_list->setColumnAlignment(6,Qt::AlignHCenter);
-  log_log_list->addColumn(tr("Valid From"));
-  log_log_list->setColumnAlignment(7,Qt::AlignHCenter);
-  log_log_list->addColumn(tr("Valid To"));
-  log_log_list->setColumnAlignment(8,Qt::AlignHCenter);
-  log_log_list->addColumn(tr("Auto Refresh"));
-  log_log_list->setColumnAlignment(9,Qt::AlignHCenter);
-  log_log_list->addColumn(tr("Origin"));
-  log_log_list->setColumnAlignment(10,Qt::AlignLeft);
-  log_log_list->addColumn(tr("Last Linked"));
-  log_log_list->setColumnAlignment(11,Qt::AlignLeft);
-  log_log_list->addColumn(tr("Last Modified"));
-  log_log_list->setColumnAlignment(12,Qt::AlignLeft);
+  log_log_view=new QTableView(this);
+  log_log_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  log_log_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
+  log_log_view->setShowGrid(false);
+  log_log_view->setSortingEnabled(false);
+  log_log_view->setWordWrap(false);
+  log_log_model=new RDLogListModel(this);
+  log_log_model->setFont(defaultFont());
+  log_log_model->setPalette(palette());
+  log_log_view->setModel(log_log_model);
+  log_log_view->resizeColumnsToContents();
+  connect(log_filter_widget,SIGNAL(filterChanged(const QString &)),
+	  log_log_model,SLOT(setFilterSql(const QString &)));
+  connect(log_log_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(log_log_view->selectionModel(),
+       SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
+       this,
+       SLOT(selectionChangedData(const QItemSelection &,const QItemSelection)));
 
   //
   // Add Button
@@ -181,6 +153,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   log_edit_button->setFont(buttonFont());
   log_edit_button->setText(tr("&Edit"));
   connect(log_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
+  log_edit_button->setDisabled(true);
 
   //
   // Delete Button
@@ -234,10 +207,6 @@ QSizePolicy MainWidget::sizePolicy() const
 }
 
 
-void MainWidget::connectedData(bool state)
-{
-}
-
 void MainWidget::caeConnectedData(bool state)
 {
   QList<int> cards;
@@ -255,11 +224,13 @@ void MainWidget::userData()
 
   str1=QString("RDLogEdit")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User"));
-  setCaption(str1+": "+rda->config()->stationName()+", "+str2+": "+
-	     rda->ripc()->user());
+  setWindowTitle(str1+": "+rda->config()->stationName()+", "+str2+": "+
+		 rda->ripc()->user());
 
   log_filter_widget->changeUser();
-  RefreshList();
+  log_log_model->setFilterSql(log_filter_widget->whereSql());
+  log_log_view->resizeColumnsToContents();
+  //  RefreshList();
 
   //
   // Set Control Perms
@@ -272,7 +243,7 @@ void MainWidget::userData()
 
 void MainWidget::recentData(bool state)
 {
-  RefreshList();
+  //  RefreshList();
 }
 
 
@@ -282,6 +253,7 @@ void MainWidget::addData()
   QString svcname;
   QStringList newlogs;
   RDAddLog *log;
+  int row=-1;
 
   if(rda->user()->createLog()) {
     log=new RDAddLog(&logname,&svcname,RDLogFilter::UserFilter,
@@ -304,16 +276,9 @@ void MainWidget::addData()
 				 &log_clipboard,&newlogs,this);
     editlog->exec();
     delete editlog;
-    ListListViewItem *item=new ListListViewItem(log_log_list);
-    item->setText(1,logname);
-    RefreshItem(item);
-    log_log_list->setSelected(item,true);
-    log_log_list->ensureItemVisible((Q3ListViewItem *)item);
-    for(int i=0;i<newlogs.size();i++) {
-      item=new ListListViewItem(log_log_list);
-      item->setText(1,newlogs[i]);
-      RefreshItem(item);
-    }
+
+    row=log_log_model->addLog(logname);
+    log_log_view->selectRow(row);
     UnlockList();
   }
 }
@@ -321,23 +286,19 @@ void MainWidget::addData()
 
 void MainWidget::editData()
 {
-  std::vector<ListListViewItem *> items;
-  if(SelectedLogs(&items)!=1) {
+  int row=-1;
+
+  if((row=SingleSelectedRow())<0) {
     return;
   }
-  QString logname=items.at(0)->text(1);
+  QString logname=log_log_model->logName(row);
   QStringList newlogs;
   LockList();
   EditLog *log=
     new EditLog(logname,&log_filter,&log_group,&log_schedcode,
 		&log_clipboard,&newlogs,this);
   if(log->exec()) {
-    RefreshItem(items.at(0));
-    for(int i=0;i<newlogs.size();i++) {
-      ListListViewItem *item=new ListListViewItem(log_log_list);
-      item->setText(1,newlogs[i]);
-      RefreshItem(item);
-    }
+    log_log_model->refresh(row);
   }
   UnlockList();
   delete log;
@@ -350,25 +311,20 @@ void MainWidget::deleteData()
   QString str1;
   QString str2;
   unsigned tracks=0;
-  ListListViewItem *item=(ListListViewItem *)log_log_list->firstChild();
-  std::vector<ListListViewItem *> items;
 
   if(rda->user()->deleteLog()) {
-    while(item!=NULL) {
-      if(item->isSelected()) {
-	items.push_back(item);
-	RDLog *log=new RDLog(items.at(0)->text(1));
-	tracks+=log->completedTracks();
-	delete log;
-      }
-      item=(ListListViewItem *)item->nextSibling();
+    QModelIndexList rows=log_log_view->selectionModel()->selectedRows();
+    for(int i=0;i<rows.size();i++) {
+      RDLog *log=new RDLog(log_log_model->logName(rows.at(i).row()));
+      tracks+=log->completedTracks();
+      delete log;
     }
-    if(items.size()==1) {
+    if(rows.size()==1) {
       if(QMessageBox::question(this,"RDLogEdit - "+tr("Delete Log"),
 			       tr("Are you sure you want to delete the")+" \""+
-			       items.at(0)->text(1)+"\" "+tr("log?"),
-			       QMessageBox::Yes,
-			       QMessageBox::No)!=QMessageBox::Yes) {
+			       log_log_model->logName(rows.at(0).row())+"\" "+
+			       tr("log?"),QMessageBox::Yes,QMessageBox::No)!=
+	 QMessageBox::Yes) {
 	return;
       }
       if(tracks>0) {
@@ -386,10 +342,9 @@ void MainWidget::deleteData()
     else {
       if(QMessageBox::question(this,"RDLogEdit - "+tr("Delete Log"),
 			       tr("Are you sure you want to delete these")+
-			       QString().sprintf(" %lu ",items.size())+
-			       tr("logs?"),
-			       QMessageBox::Yes,
-			       QMessageBox::No)!=QMessageBox::Yes) {
+			       QString().sprintf(" %d ",rows.size())+
+			       tr("logs?"),QMessageBox::Yes,QMessageBox::No)!=
+	 QMessageBox::Yes) {
 	return;
       }
       if(tracks>0) {
@@ -405,29 +360,53 @@ void MainWidget::deleteData()
       }
     }
 
+    //
+    // Sort selected rows in decreasing order
+    //
+    QList<int> rowtable;
+    for(int i=0;i<rows.size();i++) {
+      rowtable.push_back(i);
+    }
+    bool modified;
+    do {
+      modified=false;
+      for(int i=0;i<(rows.size()-1);i++) {
+	if(rows.at(rowtable.at(i))<rows.at(rowtable.at(i+1))) {
+	  rowtable.swap(i,i+1);
+	  modified=true;
+	}
+      }
+    } while(modified);
+
+    //
+    // Do it!
+    //
     LockList();
-    for(unsigned i=0;i<items.size();i++) {
+    for(int i=0;i<rows.size();i++) {
       QString username;
       QString stationname;
       QHostAddress addr;
-      RDLogLock *log_lock=new RDLogLock(items.at(i)->text(1),rda->user(),
-					rda->station(),this);
+      int rownum=rows.at(rowtable.at(i)).row();
+      RDLogLock *log_lock=
+	new RDLogLock(log_log_model->logName(rownum),rda->user(),
+		      rda->station(),this);
       if(log_lock->tryLock(&username,&stationname,&addr)) {
-	RDLog *log=new RDLog(items.at(i)->text(1));
+	RDLog *log=new RDLog(log_log_model->logName(rownum));
 	if(log->remove(rda->station(),rda->user(),rda->config())) {
 	  SendNotification(RDNotification::DeleteAction,log->name());
-	  delete items.at(i);
+	  log_log_model->removeLog(rownum);
 	}
 	else {
 	  QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),
 			       tr("Unable to delete log")+" \""+
-			       items.at(i)->text(1)+"\", "+
+			       log_log_model->logName(rownum)+"\", "+
 			       tr("audio deletion error!"));
 	}
 	delete log;
       }
       else {
-	QString msg=tr("Log")+" "+items.at(i)->text(1)+"\" "+
+	QString msg=
+	  tr("Log")+" "+log_log_model->logName(rownum)+"\" "+
 	  tr("is in use by")+" "+username+"@"+stationname;
 	if(stationname!=addr.toString()) {
 	  msg+=" ["+addr.toString()+"]";
@@ -443,15 +422,17 @@ void MainWidget::deleteData()
 
 void MainWidget::trackData()
 {
-  std::vector<ListListViewItem *> items;
-  if(SelectedLogs(&items)!=1) {
+  int row=-1;
+
+  if((row=SingleSelectedRow())<0) {
     return;
   }
   LockList();
-  VoiceTracker *dialog=new VoiceTracker(items.at(0)->text(1),&log_import_path);
+  VoiceTracker *dialog=
+    new VoiceTracker(log_log_model->logName(row),&log_import_path);
   dialog->exec();
   delete dialog;
-  RefreshItem(items.at(0));
+  log_log_model->refresh(row);
   UnlockList();
 }
 
@@ -582,27 +563,23 @@ void MainWidget::reportData()
 
 void MainWidget::filterChangedData(const QString &str)
 {
-  RefreshList();
+  //  RefreshList();
 }
 
-void MainWidget::logSelectionChangedData()
+
+void MainWidget::selectionChangedData(const QItemSelection &selected,
+				      const QItemSelection &deselected)
 {
-  int count=0;
-  ListListViewItem *item=(ListListViewItem *)log_log_list->firstChild();
-  while(item!=NULL) {
-    if(item->isSelected()) {
-      count++;
-    }
-    item=(ListListViewItem *)item->nextSibling();
-  }
+  int count=log_log_view->selectionModel()->selectedRows().size();
+
   log_edit_button->setEnabled(count==1);
   log_delete_button->setEnabled(count>0&&rda->user()->deleteLog());
   log_track_button->setEnabled(rda->system()->allowDuplicateCartTitles()&&
-			       count==1&&rda->user()->voicetrackLog());
+			       (count==1)&&rda->user()->voicetrackLog());
 }
 
 
-void MainWidget::logDoubleclickedData(Q3ListViewItem *,const QPoint &,int)
+void MainWidget::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -610,30 +587,15 @@ void MainWidget::logDoubleclickedData(Q3ListViewItem *,const QPoint &,int)
 
 void MainWidget::notificationReceivedData(RDNotification *notify)
 {
-  QString sql;
-  RDSqlQuery *q;
-  ListListViewItem *item=NULL;
-
   if(notify->type()==RDNotification::LogType) {
     QString logname=notify->id().toString();
     switch(notify->action()) {
     case RDNotification::AddAction:
-      sql=QString("select NAME from LOGS where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&")+
-	"(NAME=\""+RDEscapeString(logname)+"\") "+
-	log_filter_widget->whereSql();
-      q=new RDSqlQuery(sql);
-      if(q->first()) {
-	item=new ListListViewItem(log_log_list);
-	item->setText(1,logname);
-	RefreshItem(item);
-      }
-      delete q;
+      log_log_model->addLog(logname);
       break;
 
     case RDNotification::ModifyAction:
-      if((item=(ListListViewItem *)log_log_list->findItem(logname,1))!=NULL) {
-	RefreshItem(item);
-      }
+      log_log_model->refresh(logname);
       break;
 
     case RDNotification::DeleteAction:
@@ -641,9 +603,7 @@ void MainWidget::notificationReceivedData(RDNotification *notify)
 	log_deleted_logs.push_back(logname);
       }
       else {
-	if((item=(ListListViewItem *)log_log_list->findItem(logname,1))!=NULL) {
-	  delete item;
-	}
+	log_log_model->removeLog(logname);
       }
       break;
 
@@ -664,13 +624,13 @@ void MainWidget::quitMainWidget()
 
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
-  if((log_log_list==NULL)||(!log_resize)) {
+  if((log_log_view==NULL)||(!log_resize)) {
     return;
   }
   log_filter_widget->setGeometry(10,10,size().width()-10,
 				 log_filter_widget->sizeHint().height());
 
-  log_log_list->setGeometry(10,log_filter_widget->sizeHint().height(),
+  log_log_view->setGeometry(10,log_filter_widget->sizeHint().height(),
 			    size().width()-20,size().height()-
 			    log_filter_widget->sizeHint().height()-65);
   log_add_button->setGeometry(10,size().height()-55,80,50);
@@ -681,134 +641,6 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   log_close_button->setGeometry(size().width()-90,size().height()-55,80,50);
 
   global_top_window_size=e->size();
-}
-
-
-void MainWidget::RefreshItem(ListListViewItem *item)
-{
-  RDSqlQuery *q;
-  QString sql;
-
-  sql=QString("select ")+
-    "DESCRIPTION,"+        // 00
-    "SERVICE,"+            // 01
-    "START_DATE,"+         // 02
-    "END_DATE,"+           // 03
-    "ORIGIN_USER,"+        // 04
-    "ORIGIN_DATETIME,"+    // 05
-    "COMPLETED_TRACKS,"+   // 06
-    "SCHEDULED_TRACKS,"+   // 07
-    "MUSIC_LINKS,"+        // 08
-    "MUSIC_LINKED,"+       // 09
-    "TRAFFIC_LINKS,"+      // 10
-    "TRAFFIC_LINKED,"+     // 11
-    "LINK_DATETIME,"+      // 12
-    "MODIFIED_DATETIME,"+  // 13
-    "AUTO_REFRESH "+       // 14
-    "from LOGS where "+
-    "(TYPE=0)&&"+        
-    "(LOG_EXISTS=\"Y\")&&"+
-    "(NAME=\""+RDEscapeString(item->text(1))+"\")";
-  q=new RDSqlQuery(sql);
-  if(q->next()) {
-    item->setText(2,q->value(0).toString());
-    item->setText(3,q->value(1).toString());
-    if((q->value(6).toInt()==q->value(7).toInt())&&
-       ((q->value(8).toInt()==0)||(q->value(9).toString()=="Y"))&&
-       ((q->value(10).toInt()==0)||(q->value(11).toString()=="Y"))) {
-      item->setPixmap(0,*log_greencheckmark_map);
-    }
-    else {
-      item->setPixmap(0,*log_redx_map);
-    }
-    if(q->value(8).toInt()==0) {
-      item->setPixmap(4,*log_whiteball_map);
-    }
-    else {
-      if(q->value(9).toString()=="Y") {
-	item->setPixmap(4,*log_greenball_map);
-      }
-      else {
-	item->setPixmap(4,*log_redball_map);
-      }
-    }
-    if(q->value(10).toInt()==0) {
-      item->setPixmap(5,*log_whiteball_map);
-    }
-    else {
-      if(q->value(11).toString()=="Y") {
-	item->setPixmap(5,*log_greenball_map);
-      }
-      else {
-	item->setPixmap(5,*log_redball_map);
-      }
-    }
-    item->setTracks(q->value(6).toInt());
-    item->setTotalTracks(q->value(7).toInt());
-    item->setTrackColumn(6);
-    if(!q->value(2).toDate().isNull()) {
-      item->setText(7,q->value(2).toDate().toString("MM/dd/yyyy"));
-    }
-    else {
-      item->setText(7,tr("Always"));
-    }
-    if(!q->value(3).toDate().isNull()) {
-      item->setText(8,q->value(3).toDate().toString("MM/dd/yyyy"));
-    }
-    else {
-      item->setText(8,tr("TFN"));
-    }
-    item->setText(9,q->value(14).toString());
-    item->setText(10,q->value(4).toString()+QString(" - ")+
-      q->value(5).toDateTime().toString("MM/dd/yyyy - hh:mm:ss"));
-    item->
-      setText(11,q->value(12).toDateTime().toString("MM/dd/yyyy - hh:mm:ss"));
-    item->
-      setText(12,q->value(13).toDateTime().toString("MM/dd/yyyy - hh:mm:ss"));
-  }
-  delete q;
-}
-
-
-void MainWidget::RefreshList()
-{
-  RDSqlQuery *q;
-  QString sql;
-  ListListViewItem *item;
-
-  log_log_list->clear(); // Note: clear here, in case user has no perms.
-
-  sql="select NAME from LOGS where (TYPE=0)&&(LOG_EXISTS=\"Y\")"+
-    log_filter_widget->whereSql();
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    item=new ListListViewItem(log_log_list);
-    item->setText(1,q->value(0).toString());
-    RefreshItem(item);
-  }
-  delete q;
-  logSelectionChangedData();
-}
-
-
-unsigned MainWidget::SelectedLogs(std::vector<ListListViewItem *> *items,
-				  int *tracks) const
-{
-  ListListViewItem *item=(ListListViewItem *)log_log_list->firstChild();
-
-  items->clear();
-  while(item!=NULL) {
-    if(item->isSelected()) {
-      items->push_back(item);
-      if(tracks!=NULL) {
-	RDLog *log=new RDLog(item->text(1));
-	(*tracks)+=log->completedTracks();
-	delete log;
-      }
-    }
-    item=(ListListViewItem *)item->nextSibling();
-  }
-  return items->size();
 }
 
 
@@ -830,16 +662,20 @@ void MainWidget::LockList()
 
 void MainWidget::UnlockList()
 {
-  ListListViewItem *item=NULL;
-
   for(int i=0;i<log_deleted_logs.size();i++) {
-    if((item=(ListListViewItem *)log_log_list->
-	findItem(log_deleted_logs[i],1))!=NULL) {
-      delete item;
-    }
+    log_log_model->removeLog(log_deleted_logs.at(i));
   }
   log_deleted_logs.clear();
   log_list_locked=false;
+}
+
+
+int MainWidget::SingleSelectedRow() const
+{
+  if(log_log_view->selectionModel()->selectedRows().size()!=1) {
+    return -1;
+  }
+  return log_log_view->selectionModel()->selectedRows().at(0).row();
 }
 
 

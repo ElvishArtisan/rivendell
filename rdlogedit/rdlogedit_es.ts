@@ -842,7 +842,7 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>Add Log</source>
-        <translation>Agregar lista</translation>
+        <translation type="unfinished">Agregar lista</translation>
     </message>
     <message>
         <source>Log Exists</source>
@@ -854,15 +854,11 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>Always</source>
-        <translation>Siempre</translation>
-    </message>
-    <message>
-        <source>TFN</source>
-        <translation></translation>
+        <translation type="obsolete">Siempre</translation>
     </message>
     <message>
         <source>This will also delete the</source>
-        <translation>Esto también borrará los </translation>
+        <translation type="unfinished">Esto también borrará los </translation>
     </message>
     <message>
         <source>voice tracks associated with this log.
@@ -872,7 +868,7 @@ Continue?</source>
     </message>
     <message>
         <source>Tracks Exist</source>
-        <translation>La pista ya existe</translation>
+        <translation type="unfinished">La pista ya existe</translation>
     </message>
     <message>
         <source>TRACKS</source>
@@ -886,7 +882,7 @@ de &amp;Voz</translation>
     </message>
     <message>
         <source>Delete Log</source>
-        <translation>Eliminar Lista</translation>
+        <translation type="unfinished">Eliminar Lista</translation>
     </message>
     <message>
         <source>MUSIC</source>
@@ -937,6 +933,30 @@ See your system administrator for an update!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Name</source>
+        <translation type="obsolete">Nombre de la Lista</translation>
+    </message>
+    <message>
+        <source>Music</source>
+        <translation type="obsolete">Música</translation>
+    </message>
+    <message>
+        <source>Traffic</source>
+        <translation type="obsolete">Tráfico</translation>
+    </message>
+    <message>
+        <source>Tracks</source>
+        <translation type="obsolete">Pistas</translation>
+    </message>
+    <message>
         <source>Are you sure you want to delete the</source>
         <translation type="unfinished"></translation>
     </message>
@@ -965,10 +985,6 @@ See your system administrator for an update!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to delete log</source>
         <translation type="unfinished"></translation>
     </message>
@@ -982,58 +998,6 @@ See your system administrator for an update!</source>
     </message>
     <message>
         <source>is in use by</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unknown command option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log Name</source>
-        <translation type="unfinished">Nombre de la Lista</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Music</source>
-        <translation type="unfinished">Música</translation>
-    </message>
-    <message>
-        <source>Traffic</source>
-        <translation type="unfinished">Tráfico</translation>
-    </message>
-    <message>
-        <source>Tracks</source>
-        <translation type="unfinished">Pistas</translation>
-    </message>
-    <message>
-        <source>Valid From</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid To</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auto Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Origin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Last Linked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Last Modified</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -874,7 +874,7 @@ Report</translation>
     </message>
     <message>
         <source>Add Log</source>
-        <translation>Log Hinzufügen</translation>
+        <translation type="unfinished">Log Hinzufügen</translation>
     </message>
     <message>
         <source>Log Exists</source>
@@ -886,11 +886,11 @@ Report</translation>
     </message>
     <message>
         <source>Delete Log</source>
-        <translation>Log Löschen</translation>
+        <translation type="unfinished">Log Löschen</translation>
     </message>
     <message>
         <source>This will also delete the</source>
-        <translation>Dies löscht ebenfalls die</translation>
+        <translation type="unfinished">Dies löscht ebenfalls die</translation>
     </message>
     <message>
         <source>voice tracks associated with this log.
@@ -900,15 +900,15 @@ Fortfahren?</translation>
     </message>
     <message>
         <source>Tracks Exist</source>
-        <translation>Track existiert</translation>
+        <translation type="unfinished">Track existiert</translation>
     </message>
     <message>
         <source>Always</source>
-        <translation>Immer</translation>
+        <translation type="obsolete">Immer</translation>
     </message>
     <message>
         <source>TFN</source>
-        <translation>TFN</translation>
+        <translation type="obsolete">TFN</translation>
     </message>
     <message>
         <source>RDLogEdit</source>
@@ -925,6 +925,26 @@ Fortfahren?</translation>
     <message>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Name</source>
+        <translation type="obsolete">Logname</translation>
+    </message>
+    <message>
+        <source>Music</source>
+        <translation type="obsolete">Musik</translation>
+    </message>
+    <message>
+        <source>Traffic</source>
+        <translation type="obsolete">Traffic</translation>
     </message>
     <message>
         <source>Are you sure you want to delete the</source>
@@ -955,10 +975,6 @@ Fortfahren?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to delete log</source>
         <translation type="unfinished"></translation>
     </message>
@@ -972,58 +988,6 @@ Fortfahren?</translation>
     </message>
     <message>
         <source>is in use by</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unknown command option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log Name</source>
-        <translation type="unfinished">Logname</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Music</source>
-        <translation type="unfinished">Musik</translation>
-    </message>
-    <message>
-        <source>Traffic</source>
-        <translation type="unfinished">Traffic</translation>
-    </message>
-    <message>
-        <source>Tracks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid From</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid To</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auto Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Origin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Last Linked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Last Modified</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

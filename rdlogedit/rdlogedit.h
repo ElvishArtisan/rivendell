@@ -22,13 +22,13 @@
 #define RDLOGEDIT_H
 
 #include <QList>
+#include <QTableView>
 
 #include <rdlog_line.h>
 #include <rdlogfilter.h>
+#include <rdloglistmodel.h>
 #include <rdnotification.h>
 #include <rdwidget.h>
-
-#include "list_listviewitem.h"
 
 #define RDLOGEDIT_POSITION_FILENAME ".rdlogedit"
 #define RDLOGEDIT_DEFAULT_WIDTH 640
@@ -44,7 +44,6 @@ class MainWidget : public RDWidget
   QSizePolicy sizePolicy() const;
   
  private slots:
-  void connectedData(bool state);
   void caeConnectedData(bool state);
   void userData();
   void recentData(bool state);
@@ -54,8 +53,9 @@ class MainWidget : public RDWidget
   void trackData();
   void reportData();
   void filterChangedData(const QString &str);
-  void logSelectionChangedData();
-  void logDoubleclickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void selectionChangedData(const QItemSelection &selected,
+			    const QItemSelection &deselected);
+  void doubleClickedData(const QModelIndex &index);
   void notificationReceivedData(RDNotification *notify);
   void quitMainWidget();
 
@@ -63,22 +63,19 @@ class MainWidget : public RDWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshItem(ListListViewItem *item);
-  void RefreshList();
-  unsigned SelectedLogs(std::vector<ListListViewItem *> *items,
-			int *tracks=NULL) const;
   void SendNotification(RDNotification::Action action,const QString &logname);
   void LockList();
   void UnlockList();
   void LoadPositions() const;
   void SavePositions() const;
+  int SingleSelectedRow() const;
   QString log_filename;
   QString log_import_path;
-  QLabel *log_user_label;
   int log_card_no;
   int log_stream_no;
   RDLogFilter *log_filter_widget;
-  Q3ListView *log_log_list;
+  QTableView *log_log_view;
+  RDLogListModel *log_log_model;
   QList<RDLogLine> log_clipboard;
   QPushButton *log_add_button;
   QPushButton *log_edit_button;
@@ -86,12 +83,6 @@ class MainWidget : public RDWidget
   QPushButton *log_track_button;
   QPushButton *log_report_button;
   QPushButton *log_close_button;
-  QPixmap *log_rivendell_map;
-  QPixmap *log_greencheckmark_map;
-  QPixmap *log_redx_map;
-  QPixmap *log_whiteball_map;
-  QPixmap *log_greenball_map;
-  QPixmap *log_redball_map;
   QString log_filter;
   QString log_group;
   QString log_schedcode;

@@ -168,6 +168,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdlogedit_conf.cpp rdlogedit_conf.h\
                         rdlogfilter.cpp rdlogfilter.h\
                         rdloglock.cpp rdloglock.h\
+                        rdloglistmodel.cpp rdloglistmodel.h\
                         rdlogmodel.cpp rdlogmodel.h\
                         rdlogplay.cpp rdlogplay.h\
                         rdmacro.cpp rdmacro.h\
@@ -313,6 +314,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdlivewire.cpp\
                           moc_rdlogfilter.cpp\
                           moc_rdloglock.cpp\
+                          moc_rdloglistmodel.cpp\
                           moc_rdlogmodel.cpp\
                           moc_rdlogplay.cpp\
                           moc_rdmacro_event.cpp\

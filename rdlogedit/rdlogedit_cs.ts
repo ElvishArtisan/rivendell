@@ -874,7 +874,7 @@ o zápisu</translation>
     </message>
     <message>
         <source>Add Log</source>
-        <translation>Přidat zápis</translation>
+        <translation type="unfinished">Přidat zápis</translation>
     </message>
     <message>
         <source>Log Exists</source>
@@ -886,11 +886,11 @@ o zápisu</translation>
     </message>
     <message>
         <source>Delete Log</source>
-        <translation>Smazat zápis</translation>
+        <translation type="unfinished">Smazat zápis</translation>
     </message>
     <message>
         <source>This will also delete the</source>
-        <translation>Toto smaže i</translation>
+        <translation type="unfinished">Toto smaže i</translation>
     </message>
     <message>
         <source>voice tracks associated with this log.
@@ -900,15 +900,15 @@ Pokračovat?</translation>
     </message>
     <message>
         <source>Tracks Exist</source>
-        <translation>Stopa existuje</translation>
+        <translation type="unfinished">Stopa existuje</translation>
     </message>
     <message>
         <source>Always</source>
-        <translation>Vždy</translation>
+        <translation type="obsolete">Vždy</translation>
     </message>
     <message>
         <source>TFN</source>
-        <translation>TFN</translation>
+        <translation type="obsolete">TFN</translation>
     </message>
     <message>
         <source>RDLogEdit</source>
@@ -935,6 +935,26 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
     <message>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Name</source>
+        <translation type="obsolete">Název zápisu</translation>
+    </message>
+    <message>
+        <source>Music</source>
+        <translation type="obsolete">Hudba</translation>
+    </message>
+    <message>
+        <source>Traffic</source>
+        <translation type="obsolete">Přenos</translation>
     </message>
     <message>
         <source>Are you sure you want to delete the</source>
@@ -965,10 +985,6 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to delete log</source>
         <translation type="unfinished"></translation>
     </message>
@@ -982,58 +998,6 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
     </message>
     <message>
         <source>is in use by</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unknown command option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log Name</source>
-        <translation type="unfinished">Název zápisu</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Music</source>
-        <translation type="unfinished">Hudba</translation>
-    </message>
-    <message>
-        <source>Traffic</source>
-        <translation type="unfinished">Přenos</translation>
-    </message>
-    <message>
-        <source>Tracks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid From</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid To</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auto Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Origin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Last Linked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Last Modified</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2661,6 +2661,65 @@ Do you still want to proceed?</source>
     </message>
 </context>
 <context>
+    <name>RDLogListModel</name>
+    <message>
+        <source>Log Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music</source>
+        <translation type="unfinished">Música</translation>
+    </message>
+    <message>
+        <source>Traffic</source>
+        <translation type="unfinished">Tráfico</translation>
+    </message>
+    <message>
+        <source>Tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Valid From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Valid To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Linked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Modified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDLogModel</name>
     <message>
         <source>Trans</source>
@@ -2715,11 +2774,11 @@ Do you still want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>--- end of log ---</source>
+        <source>Start Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Start Time</source>
+        <source>--- end of log ---</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

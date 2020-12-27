@@ -29,11 +29,15 @@
 class RDLogIcons
 {
  public:
+  enum IconType {GreenCheck=0,RedX=1,GreenBall=2,RedBall=3,WhiteBall=4,
+		 BlueBall=5};
   RDLogIcons();
+  QPixmap listIcon(IconType type) const;
   QPixmap typeIcon(RDLogLine::Type type,
 		   RDLogLine::Source src=RDLogLine::Manual) const;
 
  private:
+  QList<QPixmap> d_list_icons;
   QMap<RDLogLine::Type,QPixmap> log_type_icons;
   QPixmap log_track_cart_icon;
 };

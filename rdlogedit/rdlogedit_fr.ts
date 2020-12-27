@@ -411,30 +411,6 @@ Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add Log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This will also delete the</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tracks Exist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Always</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TFN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Host</source>
         <translation type="unfinished"></translation>
     </message>
@@ -443,11 +419,35 @@ Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Are you sure you want to delete the</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>log?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tracks Exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This will also delete the</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -471,10 +471,6 @@ Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to delete log</source>
         <translation type="unfinished"></translation>
     </message>
@@ -488,58 +484,6 @@ Report</source>
     </message>
     <message>
         <source>is in use by</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unknown command option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Music</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Traffic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tracks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid From</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid To</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auto Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Origin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Last Linked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Last Modified</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
