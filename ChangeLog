@@ -20745,3 +20745,5 @@
 	* Removed 'LogListView' class from rdlogedit(1).
 	* Removed dependency on 'Q3DateEdit' from rdlogedit(1).
 	* Removed dependency on 'Q3PointArray' from rdlogedit(1).
+2020-12-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dependency on 'Q3PointArray' from 'RDWavePainter'.
