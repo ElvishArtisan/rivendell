@@ -306,7 +306,8 @@ void ListCasts::addLogData()
   RDFeed::Error err=RDFeed::ErrorOk; 
   unsigned cast_id=0;
 
-  RDListLogs *d=new RDListLogs(&logname,RDLogFilter::UserFilter,this);
+  RDListLogs *d=
+    new RDListLogs(&logname,RDLogFilter::UserFilter,"RDCastManager",this);
   if(d->exec()) {
     RDLogModel *model=new RDLogModel(logname,true,this);
     model->load();

@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2007-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2007-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 // The RDListLogs class creates a basic dialog that displays a list of logs
 // (log name, description, and service) and allows the user to select one.  If
@@ -26,25 +26,26 @@
 #ifndef RDLIST_LOGS_H
 #define RDLIST_LOGS_H
 
-#include <q3listview.h>
-#include <qpushbutton.h>
+#include <QPushButton>
+#include <QTableView>
 
 #include <rddialog.h>
 #include <rdlogfilter.h>
+#include <rdloglistmodel.h>
 
 class RDListLogs : public RDDialog
 {
   Q_OBJECT
-
  public:
-  RDListLogs(QString *logname,RDLogFilter::FilterMode mode,QWidget *parent=0);
+  RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
+	     const QString &caption,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void filterChangedData(const QString &where_sql);
-  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
+  void doubleClickedData(const QModelIndex &index);
   void closeEvent(QCloseEvent *);
+  void modelResetData();
   void okButtonData();
   void cancelButtonData();
 
@@ -52,8 +53,8 @@ class RDListLogs : public RDDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  Q3ListView *list_log_list;
+  QTableView *list_log_view;
+  RDLogListModel *list_log_model;
   QString *list_logname;
   QPushButton *list_ok_button;
   QPushButton *list_cancel_button;

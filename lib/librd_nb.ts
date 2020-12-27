@@ -2491,18 +2491,6 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
         <source>ALL</source>
         <translation type="obsolete">ALLE</translation>
     </message>
-    <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>RDListSelector</name>

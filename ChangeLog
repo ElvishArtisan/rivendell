@@ -20747,3 +20747,7 @@
 	* Removed dependency on 'Q3PointArray' from rdlogedit(1).
 2020-12-26 Fred Gleason <fredg@paravelsystems.com>
 	* Removed dependency on 'Q3PointArray' from 'RDWavePainter'.
+2020-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'RDListLogs' dialog to use 'RDLogListModel'.
+	* Added a 'caption' argument to the constructor of the
+	'RDListLogs' dialog.

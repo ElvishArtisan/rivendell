@@ -1167,7 +1167,7 @@ void EditRDAirPlay::selectData()
 {
   QString logname=air_startlog_edit->text();
 
-  RDListLogs *ll=new RDListLogs(&logname,RDLogFilter::NoFilter,this);
+  RDListLogs *ll=new RDListLogs(&logname,RDLogFilter::NoFilter,"RDAdmin",this);
   if(ll->exec()) {
     air_startlog_edit->setText(logname);
   }

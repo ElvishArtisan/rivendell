@@ -2518,18 +2518,6 @@ Do you still want to proceed?</source>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
-    <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>RDListSelector</name>
