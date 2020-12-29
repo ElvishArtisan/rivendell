@@ -34,62 +34,6 @@ RDLogModel::RDLogModel(const QString &logname,bool read_only,QObject *parent)
   d_read_only=read_only;
 
   MakeModel();
-  /*
-  d_fms=NULL;
-  d_bold_fms=NULL;
-  d_log_icons=new RDLogIcons();
-  d_start_time_style=RDLogModel::Scheduled;
-  d_max_id=0;
-
-  //
-  // Column Attributes
-  //
-  unsigned left=Qt::AlignLeft|Qt::AlignVCenter;
-  unsigned center=Qt::AlignCenter;
-  unsigned right=Qt::AlignRight|Qt::AlignVCenter;
-
-  d_headers.push_back(tr("Start Time"));
-  d_alignments.push_back(right);
-
-  d_headers.push_back(tr("Trans"));
-  d_alignments.push_back(center);
-
-  d_headers.push_back(tr("Cart"));
-  d_alignments.push_back(center);
-
-  d_headers.push_back(tr("Group"));
-  d_alignments.push_back(center);
-
-  d_headers.push_back(tr("Length"));
-  d_alignments.push_back(right);
-
-  d_headers.push_back(tr("Title"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Artist"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Client"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Agency"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Label"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Source"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Ext Data"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Line ID"));
-  d_alignments.push_back(right);
-
-  d_headers.push_back(tr("Count"));
-  d_alignments.push_back(right);
-  */
 }
 
 
@@ -126,6 +70,18 @@ QPalette RDLogModel::palette()
 void RDLogModel::setPalette(const QPalette &pal)
 {
   d_palette=pal;
+}
+
+
+QFont RDLogModel::normalFont() const
+{
+  return d_font;
+}
+
+
+QFont RDLogModel::boldFont() const
+{
+  return d_bold_font;
 }
 
 
@@ -179,78 +135,19 @@ QVariant RDLogModel::data(const QModelIndex &index,int role) const
   if((ll=logLine(row))!=NULL) {
     switch((Qt::ItemDataRole)role) {
     case Qt::DisplayRole:
-      switch(index.column()) {
-      case 0:  // Start Time
-	return StartTimeString(row);
-
-      case 1:  // Transition
-	return RDLogLine::transText(ll->transType());
-
-      case 2:  // Cart Number
-	return ll->cartNumberText();
-
-      case 3:  // Group
-	return ll->groupName();
-
-      case 4:  // Length
-	return ll->forcedLengthText();
-
-      case 5:  // Title
-	return ll->titleText();
-
-      case 6:  // Artist
-	return ll->artist();
-
-      case 7:  // Client
-	return ll->client();
-
-      case 8:  // Agency
-	return ll->agency();
-
-      case 9:  // Label
-	return ll->markerLabel();
-
-      case 10:  // Source
-	return RDLogLine::sourceText(ll->source());
-
-      case 11:  // Ext Data
-	return ll->extData();
-
-      case 12:  // Line ID
-	return QString().sprintf("%d",ll->id());
-
-      case 13:  // Count
-	return QString().sprintf("%d",row);
-      }
-      break;
+      return cellText(col,row,ll);
 
     case Qt::DecorationRole:
-      if(col==0) {
-	return d_log_icons->typeIcon(ll->type(),ll->source());
-      }
-      break;
+      return cellIcon(col,row,ll);
 
     case Qt::FontRole:
-      if(col==3) {
-	return d_bold_font;
-      }
-      return d_font;
+      return cellTextFont(col,row,ll);
 
     case Qt::TextColorRole:
-      switch(col) {
-      case 0:
-	if(ll->timeType()==RDLogLine::Hard) {
-	  return Qt::blue;
-	}
-	break;
-
-      case 3:
-	return ll->groupColor();
-      }
-      break;
+      return cellTextColor(col,row,ll);
 
     case Qt::BackgroundRole:
-      return backgroundColor(row,ll);
+      return rowBackgroundColor(row,ll);
 
     default:
       break;
@@ -319,6 +216,8 @@ int RDLogModel::load(bool track_ptrs)
   QString sql;
   RDSqlQuery *q;
 
+  beginResetModel();
+
   //
   // Get the service name
   //
@@ -336,10 +235,7 @@ int RDLogModel::load(bool track_ptrs)
 
   LoadLines(d_log_name,0,track_ptrs);
 
-  if(lineCount()>0) {
-    beginInsertRows(QModelIndex(),0,lineCount()-1);
-    endInsertRows();
-  }
+  endResetModel();
 
   return d_log_lines.size();
 }
@@ -517,7 +413,7 @@ int RDLogModel::validate(QString *report,const QDate &date)
 }
 
 
-void RDLogModel::refresh(int line)
+void RDLogModel::update(int line)
 {
   if(d_log_name.isEmpty()) {
     return;
@@ -1606,7 +1502,140 @@ void RDLogModel::emitAllDataChanged()
 }
 
 
-QColor RDLogModel::backgroundColor(int line,RDLogLine *ll) const
+QStringList RDLogModel::headerTexts() const
+{
+  QStringList ret;
+
+  ret.push_back(tr("Start Time"));
+  ret.push_back(tr("Trans"));
+  ret.push_back(tr("Cart"));
+  ret.push_back(tr("Group"));
+  ret.push_back(tr("Length"));
+  ret.push_back(tr("Title"));
+  ret.push_back(tr("Artist"));
+  ret.push_back(tr("Client"));
+  ret.push_back(tr("Agency"));
+  ret.push_back(tr("Label"));
+  ret.push_back(tr("Source"));
+  ret.push_back(tr("Ext Data"));
+  ret.push_back(tr("Line ID"));
+  ret.push_back(tr("Count"));
+
+  return ret;
+}
+
+
+QList<int> RDLogModel::columnAlignments() const
+{
+  QList<int> ret;
+  int left=Qt::AlignLeft|Qt::AlignVCenter;
+  int center=Qt::AlignCenter;
+  int right=Qt::AlignRight|Qt::AlignVCenter;
+
+  ret.push_back(right);   // Start Time
+  ret.push_back(center);  // Trans
+  ret.push_back(center);  // Cart
+  ret.push_back(center);  // Group
+  ret.push_back(right);   // Length
+  ret.push_back(left);    // Title
+  ret.push_back(left);    // Artist
+  ret.push_back(left);    // Client
+  ret.push_back(left);    // Agency
+  ret.push_back(left);    // Label
+  ret.push_back(left);    // Source
+  ret.push_back(left);    // Ext Data
+  ret.push_back(right);   // Line ID
+  ret.push_back(right);   // Count
+
+  return ret;
+}
+
+
+QPixmap RDLogModel::cellIcon(int col,int row,RDLogLine *ll) const
+{
+  if(col==0) {
+    return d_log_icons->typeIcon(ll->type(),ll->source());
+  }
+  return QPixmap();
+}
+
+
+QString RDLogModel::cellText(int col,int line,RDLogLine *ll) const
+{
+  switch(col) {
+  case 0:  // Start Time
+    return StartTimeString(line);
+
+  case 1:  // Transition
+    return RDLogLine::transText(ll->transType());
+
+  case 2:  // Cart Number
+    return ll->cartNumberText();
+
+  case 3:  // Group
+    return ll->groupName();
+
+  case 4:  // Length
+    return ll->forcedLengthText();
+
+  case 5:  // Title
+    return ll->titleText();
+
+  case 6:  // Artist
+    return ll->artist();
+
+  case 7:  // Client
+    return ll->client();
+
+  case 8:  // Agency
+    return ll->agency();
+
+  case 9:  // Label
+    return ll->markerLabel();
+
+  case 10:  // Source
+    return RDLogLine::sourceText(ll->source());
+
+  case 11:  // Ext Data
+    return ll->extData();
+
+  case 12:  // Line ID
+    return QString().sprintf("%d",ll->id());
+
+  case 13:  // Count
+    return QString().sprintf("%d",line);
+  }
+  return QString();
+}
+
+
+QFont RDLogModel::cellTextFont(int col,int line,RDLogLine *ll) const
+{
+  if(col==3) {
+    return d_bold_font;
+  }
+  return d_font;
+}
+
+
+QColor RDLogModel::cellTextColor(int col,int line,RDLogLine *ll) const
+{
+  switch(col) {
+  case 0:
+    if(ll->timeType()==RDLogLine::Hard) {
+      return Qt::blue;
+    }
+    break;
+    
+  case 3:
+    return ll->groupColor();
+  }
+
+  return d_palette.color(QPalette::Foreground);
+}
+
+
+QColor RDLogModel::rowBackgroundColor(int line,RDLogLine *ll) const
 {
   return d_palette.color(QPalette::Base);
 }
@@ -1620,52 +1649,16 @@ void RDLogModel::MakeModel()
   d_start_time_style=RDLogModel::Scheduled;
   d_max_id=0;
 
-  //
-  // Column Attributes
-  //
-  unsigned left=Qt::AlignLeft|Qt::AlignVCenter;
-  unsigned center=Qt::AlignCenter;
-  unsigned right=Qt::AlignRight|Qt::AlignVCenter;
+  QStringList headers=headerTexts();
+  QList<int> alignments=columnAlignments();
 
-  d_headers.push_back(tr("Start Time"));
-  d_alignments.push_back(right);
+  if(headers.size()!=alignments.size()) {
+    fprintf(stderr,"header/alignment size mismatch\n");
+    exit(1);
+  }
 
-  d_headers.push_back(tr("Trans"));
-  d_alignments.push_back(center);
-
-  d_headers.push_back(tr("Cart"));
-  d_alignments.push_back(center);
-
-  d_headers.push_back(tr("Group"));
-  d_alignments.push_back(center);
-
-  d_headers.push_back(tr("Length"));
-  d_alignments.push_back(right);
-
-  d_headers.push_back(tr("Title"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Artist"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Client"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Agency"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Label"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Source"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Ext Data"));
-  d_alignments.push_back(left);
-
-  d_headers.push_back(tr("Line ID"));
-  d_alignments.push_back(right);
-
-  d_headers.push_back(tr("Count"));
-  d_alignments.push_back(right);
+  for(int i=0;i<headers.size();i++) {
+    d_headers.push_back(headers.at(i));
+    d_alignments.push_back(alignments.at(i));
+  }
 }

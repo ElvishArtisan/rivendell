@@ -21,8 +21,6 @@
 #ifndef RDLOGPLAY_H
 #define RDLOGPLAY_H
 
-#include <vector>
-
 #include <QDateTime>
 #include <QObject>
 #include <QSignalMapper>
@@ -87,8 +85,10 @@ class RDLogPlay : public RDLogModel
   void clear();
   void insert(int line,int cartnum,RDLogLine::TransType next_type,
 	      RDLogLine::TransType type=RDLogLine::Play);
-  void insert(int line,RDLogLine *logline,bool update=true,bool preserv_custom_transition=false);
-  void remove(int line,int num_lines,bool update=true,bool preserv_custom_transition=false);
+  void insert(int line,RDLogLine *logline,bool update=true,
+	      bool preserv_custom_transition=false);
+  void remove(int line,int num_lines,bool update=true,
+	      bool preserv_custom_transition=false);
   void move(int from_line,int to_line);
   void copy(int from_line,int to_line,
 	    RDLogLine::TransType type=RDLogLine::Play);
@@ -105,9 +105,13 @@ class RDLogPlay : public RDLogModel
   RDLogLine::Status status(int line);
   QTime startTime(int line);
   QTime nextStop() const;
+  int startOfHour(int hour) const;
   bool running(bool include_paused=true);
   void resync();
   bool isRefreshable() const;
+
+ public slots:
+  void setTimeMode(RDAirPlayConf::TimeMode mode);
 
  private slots:
   void transTimerData();
@@ -123,7 +127,6 @@ class RDLogPlay : public RDLogModel
   void macroFinishedData();
   void macroStoppedData();
   void timescalingSupportedData(int card,bool state);
-  //  void rescanEventsData();
   void auditionStartedData();
   void auditionStoppedData();
   void notificationReceivedData(RDNotification *notify);
@@ -135,6 +138,7 @@ class RDLogPlay : public RDLogModel
   void inserted(int line);
   void removed(int line,int num,bool moving);
   void modified(int line);
+  void hourChanged(int hour,bool state);
   void auditionHeadPlayed(int line);
   void auditionTailPlayed(int line);
   void auditionStopped(int line);
@@ -153,12 +157,18 @@ class RDLogPlay : public RDLogModel
   void channelStarted(int id,int mport,int card,int port);
   void channelStopped(int id,int mport,int card,int port);
 
+ protected:
+  QString cellText(int col,int line,RDLogLine *ll) const;
+  QFont cellTextFont(int col,int row,RDLogLine *ll) const;
+  QColor cellTextColor(int col,int row,RDLogLine *ll) const;
+  QColor rowBackgroundColor(int row,RDLogLine *ll) const;
+
  private:
   bool StartEvent(int line,RDLogLine::TransType trans_type,int trans_length,
 		  RDLogLine::StartSource src,int mport=-1,int duck_length=0);
   bool StartAudioEvent(int line);
   void CleanupEvent(int id);
-  void UpdateStartTimes(int line);
+  void UpdateStartTimes();
   void FinishEvent(int line);
   QTime GetStartTime(QTime sched_time,RDLogLine::TransType trans_type,
 		     RDLogLine::TimeType time_type,QTime prev_time,
@@ -177,6 +187,7 @@ class RDLogPlay : public RDLogModel
   bool GetNextPlayable(int *line,bool skip_meta,bool forced_start=false);
   void LogPlayEvent(RDLogLine *logline);
   void RefreshEvents(int line,int line_quan,bool force_update=false);
+  void ChangeTransport();
   void Playing(int id);
   void Paused(int id);
   void Stopping(int id);
@@ -184,6 +195,7 @@ class RDLogPlay : public RDLogModel
   void Finished(int id);
   void ClearChannel(int deckid);
   RDLogLine::TransType GetTransType(const QString &logname,int line);
+  QString TimeString(const QTime &time) const;
   bool ClearBlock(int start_line);
   void SendNowNext();
   QString GetPadJson(const QString &name,RDLogLine *ll,
@@ -193,6 +205,7 @@ class RDLogPlay : public RDLogModel
 		  RDAirPlayConf::TrafficAction action,bool onair_flag) const;
   RDCae *play_cae;
   RDAirPlayConf::OpMode play_op_mode;
+  RDAirPlayConf::TimeMode play_time_mode;
   int play_slot_id[LOGPLAY_MAX_PLAYS];
   int play_segue_length;
   int play_trans_length;
@@ -243,6 +256,7 @@ class RDLogPlay : public RDLogModel
   int play_audition_preroll;
   RDEventPlayer *play_event_player;
   RDUnixSocket *play_pad_socket;
+  bool play_hours[24];
 };
 
 

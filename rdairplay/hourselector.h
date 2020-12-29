@@ -31,7 +31,9 @@ class HourSelector : public RDWidget
   HourSelector(QWidget *parent=0);
   QSizePolicy sizePolicy() const;
   void setTimeMode(RDAirPlayConf::TimeMode mode);
-  void updateHours(bool states[24]);
+
+ public slots:
+  void updateHour(int hour,bool state);
 
  signals:
   void hourSelected(int hour);

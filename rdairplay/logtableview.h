@@ -1,8 +1,8 @@
-// logmodel.h
+//   logtableview.h
 //
-// Data model for Rivendell logs in RDLogEdit
+//   The Log TableView widget for RDAirPlay
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,32 +17,31 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+//
 
-#ifndef LOGMODEL_H
-#define LOGMODEL_H
+#ifndef LOGTABLEVIEW_H
+#define LOGTABLEVIEW_H
 
-#include <rdgroup_list.h>
-#include <rdlogmodel.h>
+#include <QDropEvent>
+#include <QDragEnterEvent>
+#include <QTableView>
 
-class LogModel : public RDLogModel
+#include <rdlog_line.h>
+
+class LogTableView : public QTableView
 {
   Q_OBJECT
  public:
-  LogModel(const QString &logname,QObject *parent=0);
-  ~LogModel();
-  QString serviceName() const;
-  bool groupIsValid(const QString &grpname) const;
-  bool allGroupsValid() const;
+  LogTableView(QWidget *parent);
 
- public slots:
-   void setServiceName(const QString &str);
+ signals:
+  void cartDropped(int line,RDLogLine *ll);
 
  protected:
-  QColor rowBackgroundColor(int row,RDLogLine *ll) const;
-
- private:
-  RDGroupList *d_group_list;
+  void dragEnterEvent(QDragEnterEvent *e);
+  void dragMoveEvent(QDragMoveEvent *e);
+  void dropEvent(QDropEvent *e);
 };
 
 
-#endif  // LOGMODEL_H
+#endif  // LOGTABLEVIEW_H

@@ -36,7 +36,7 @@ void MainObject::Addcart(int line,unsigned cartnum)
   edit_log_model->logLine(line)->setFadeupGain(-3000);
   edit_log_model->logLine(line)->setFadedownGain(-3000);
   edit_log_model->logLine(line)->setCartNumber(cartnum);
-  edit_log_model->refresh(line);
+  edit_log_model->update(line);
   edit_modified=true;
 }
 
@@ -51,7 +51,7 @@ void MainObject::Addchain(int line,const QString &logname)
   edit_log_model->logLine(line)->
     setTransType(rda->airplayConf()->defaultTransType());
   edit_log_model->logLine(line)->setMarkerLabel(logname);
-  edit_log_model->refresh(line);
+  edit_log_model->update(line);
   edit_modified=true;
 }
 
@@ -67,7 +67,7 @@ void MainObject::Addmarker(int line)
     setTransType(rda->airplayConf()->defaultTransType());
   edit_log_model->logLine(line)->setMarkerLabel(tr("Label"));
   edit_log_model->logLine(line)->setMarkerComment(tr("Marker Comment"));
-  edit_log_model->refresh(line);
+  edit_log_model->update(line);
   edit_modified=true;
 }
 
@@ -82,7 +82,7 @@ void MainObject::Addtrack(int line)
   edit_log_model->logLine(line)->
     setTransType(rda->airplayConf()->defaultTransType());
   edit_log_model->logLine(line)->setMarkerComment(tr("Voice Track"));
-  edit_log_model->refresh(line);
+  edit_log_model->update(line);
   edit_modified=true;
 }
 
@@ -462,7 +462,7 @@ void MainObject::Setcart(int line,unsigned cartnum)
     if((logline->type()==RDLogLine::Cart)||
        (logline->type()==RDLogLine::Macro)) {
       logline->setCartNumber(cartnum);
-      edit_log_model->refresh(line);
+      edit_log_model->update(line);
       edit_modified=true;
     }
     else {
@@ -482,7 +482,7 @@ void MainObject::Setcomment(int line,const QString &str)
     if((logline->type()==RDLogLine::Marker)||
        (logline->type()==RDLogLine::Track)) {
       logline->setMarkerComment(str);
-      edit_log_model->refresh(line);
+      edit_log_model->update(line);
       edit_modified=true;
     }
     else {
@@ -516,7 +516,7 @@ void MainObject::Setlabel(int line,const QString &str)
     if((logline->type()==RDLogLine::Chain)||
        (logline->type()==RDLogLine::Marker)) {
       logline->setMarkerLabel(str);
-      edit_log_model->refresh(line);
+      edit_log_model->update(line);
       edit_modified=true;
     }
     else {
@@ -562,7 +562,7 @@ void MainObject::Settime(int line,RDLogLine::TimeType type,const QTime &time)
 void MainObject::Settrans(int line,RDLogLine::TransType type)
 {
   edit_log_model->logLine(line)->setTransType(type);
-  edit_log_model->refresh(line);
+  edit_log_model->update(line);
   edit_modified=true;
 }
 

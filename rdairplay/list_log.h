@@ -1,6 +1,6 @@
 // list_log.h
 //
-// The full log list widget for RDAirPlay.
+// The full log widget for RDAirPlay.
 //
 //   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -21,14 +21,14 @@
 #ifndef LIST_LOG_H
 #define LIST_LOG_H
 
+#include <rdlogplay.h>
 #include <rdwidget.h>
 
 #include "edit_event.h"
 #include "hourselector.h"
 #include "lib_listview.h"
 #include "list_logs.h"
-
-#define END_MARKER_ID -2
+#include "logtableview.h"
 
 class ListLog : public RDWidget
 {
@@ -38,9 +38,6 @@ class ListLog : public RDWidget
 	  QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  void refresh();
-  void refresh(int line);
-  void setStatus(int line,RDLogLine::Status status);
   RDAirPlayConf::ActionMode actionMode() const;
   void setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum=0);
   void setOpMode(RDAirPlayConf::OpMode mode);
@@ -62,43 +59,29 @@ class ListLog : public RDWidget
   void takeButtonData();
   void playButtonData();
   void modifyButtonData();
-  void doubleclickedData(Q3ListViewItem *,const QPoint &,int);
+  void doubleClickedData(const QModelIndex &index);
   void scrollButtonData();
   void refreshButtonData();
   void nextButtonData();
   void loadButtonData();
-  void logReloadedData();
-  void logPlayedData(int line);
-  void logPausedData(int line);
-  void logStoppedData(int line);
-  void logInsertedData(int line);
-  void logRemovedData(int line,int num,bool moving);
-  void selectionChangedData();
+  void selectionChangedData(const QItemSelection &new_sel,
+			    const QItemSelection &old_sel);
   void transportChangedData();
-  void modifiedData(int line);
+  void modelResetData();
   void refreshabilityChangedData(bool state);
   void cartDroppedData(int line,RDLogLine *ll);
 
  private:
   enum PlayButtonMode {ButtonDisabled=0,ButtonPlay=1,ButtonStop=2};
-  void RefreshList();
-  void RefreshList(int line);
-  void RefreshItem(RDListViewItem *l,int line);
   int CurrentLine();
   RDLogLine::Status CurrentStatus();
   RDLogLine::State CurrentState();
   void ClearSelection();
-  RDListViewItem *GetItem(int line);
-  void UpdateTimes(int removed_line=-1,int num_lines=0);
   void ScrollTo(int line);
-  void UpdateColor(int line,bool next=false);
-  void SetColor();
   void SetPlaybuttonMode(ListLog::PlayButtonMode mode);
   QString TimeString(const QTime &time) const;
-  void UpdateHourSelector();
-  int PredictedStartHour(RDListViewItem *item);
   HourSelector *list_hour_selector;
-  LibListView *list_log_list;
+  LogTableView *list_log_view;
   RDLogPlay *list_log;
   ListLogs *list_logs_dialog;
   RDAirPlayConf::ActionMode list_action_mode;
@@ -128,14 +111,6 @@ class ListLog : public RDWidget
   bool list_scroll;
   bool list_suspended_scroll;
   QPalette list_scroll_color[2];
-  QPixmap *list_playout_map;
-  QPixmap *list_macro_map;
-  QPixmap *list_chain_map;
-  QPixmap *list_track_cart_map;
-  QPixmap *list_mic16_map;
-  QPixmap *list_notemarker_map;
-  QPixmap *list_traffic_map;
-  QPixmap *list_music_map;
   bool list_pause_allowed;
   bool list_audition_head_playing;
   bool list_audition_tail_playing;

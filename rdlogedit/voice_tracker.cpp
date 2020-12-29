@@ -1019,7 +1019,7 @@ void VoiceTracker::resetData()
     return;
   }
   if(d_loaded) {
-    d_log_model->refresh(line);
+    d_log_model->update(line);
     d_tracks++;
   }
   LoadBlockLength(d_track_line);
@@ -1074,7 +1074,7 @@ void VoiceTracker::insertData(int line,RDLogLine *logline,bool warn)
   d_log_model->logLine(line)->setType(RDLogLine::Track);
   d_log_model->logLine(line)->setTransType(RDLogLine::Segue);
   d_log_model->logLine(line)->setMarkerComment(tr("Voice Track"));
-  d_log_model->refresh(line);
+  d_log_model->update(line);
 
   d_tracks++;
   d_size_altered=true;

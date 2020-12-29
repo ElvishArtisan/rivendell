@@ -97,11 +97,9 @@ void HourSelector::setTimeMode(RDAirPlayConf::TimeMode mode)
 }
 
 
-void HourSelector::updateHours(bool states[24])
+void HourSelector::updateHour(int hour,bool state)
 {
-  for(unsigned i=0;i<24;i++) {
-    hour_button[i]->setEnabled(states[i]);
-  }
+  hour_button[hour]->setEnabled(state);
 }
 
 

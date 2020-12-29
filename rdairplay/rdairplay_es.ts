@@ -291,47 +291,47 @@ Lista</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
-        <translation>--- fin de la lista ---</translation>
+        <translation type="obsolete">--- fin de la lista ---</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>REPRO</translation>
+        <translation type="obsolete">REPRO</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>PARAR</translation>
+        <translation type="obsolete">PARAR</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>SEGUE</translation>
+        <translation type="obsolete">SEGUE</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation>MARCADOR</translation>
+        <translation type="obsolete">MARCADOR</translation>
     </message>
     <message>
         <source>CHAIN TO</source>
-        <translation>ENCADENAR A</translation>
+        <translation type="obsolete">ENCADENAR A</translation>
     </message>
     <message>
         <source>[CART NOT FOUND]</source>
-        <translation>[CARTUCHO NO ENCONTRADO]</translation>
+        <translation type="obsolete">[CARTUCHO NO ENCONTRADO]</translation>
     </message>
     <message>
         <source>[NO VALID CUT AVAILABLE]</source>
-        <translation>[NO HAY AUDIOS VÁLIDOS]</translation>
+        <translation type="obsolete">[NO HAY AUDIOS VÁLIDOS]</translation>
     </message>
     <message>
         <source>T</source>
-        <translation type="unfinished">T</translation>
+        <translation type="obsolete">T</translation>
     </message>
     <message>
         <source>[NO AUDIO AVAILABLE]</source>
-        <translation>[NO HAY AUDIO DISPONIBLE]</translation>
+        <translation type="obsolete">[NO HAY AUDIO DISPONIBLE]</translation>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>PISTA</translation>
+        <translation type="obsolete">PISTA</translation>
     </message>
     <message>
         <source>LEN</source>
@@ -339,15 +339,15 @@ Lista</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation>ENLACE</translation>
+        <translation type="obsolete">ENLACE</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[importar música]</translation>
+        <translation type="obsolete">[importar música]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[importar tráfico]</translation>
+        <translation type="obsolete">[importar tráfico]</translation>
     </message>
     <message>
         <source>EST TIME</source>
@@ -381,7 +381,7 @@ Lista</translation>
     </message>
     <message>
         <source>Selected:</source>
-        <translation>Selecc.:</translation>
+        <translation type="unfinished">Selecc.:</translation>
     </message>
     <message>
         <source>Audition
@@ -397,70 +397,6 @@ Final</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Len</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Est. Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sch. Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

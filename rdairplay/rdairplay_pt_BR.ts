@@ -330,63 +330,63 @@ Log</source>
     </message>
     <message>
         <source>Selected:</source>
-        <translation>Selecionado:</translation>
+        <translation type="unfinished">Selecionado:</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
-        <translation>Fim da Lista</translation>
+        <translation type="obsolete">Fim da Lista</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>TOQUE</translation>
+        <translation type="obsolete">TOQUE</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>PARE</translation>
+        <translation type="obsolete">PARE</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>SOBRE</translation>
+        <translation type="obsolete">SOBRE</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation>MARCADOR</translation>
+        <translation type="obsolete">MARCADOR</translation>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>PISTA</translation>
+        <translation type="obsolete">PISTA</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation>LINK</translation>
+        <translation type="obsolete">LINK</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[importar música]</translation>
+        <translation type="obsolete">[importar música]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[importar tráfego]</translation>
+        <translation type="obsolete">[importar tráfego]</translation>
     </message>
     <message>
         <source>CHAIN TO</source>
-        <translation>CORRENTE PARA</translation>
+        <translation type="obsolete">CORRENTE PARA</translation>
     </message>
     <message>
         <source>[CART NOT FOUND]</source>
-        <translation>[CART NÃO ENCONTRADO]</translation>
+        <translation type="obsolete">[CART NÃO ENCONTRADO]</translation>
     </message>
     <message>
         <source>[NO VALID CUT AVAILABLE]</source>
-        <translation>[NÃO HÁ CONTEÚDO VÁLIDO]</translation>
+        <translation type="obsolete">[NÃO HÁ CONTEÚDO VÁLIDO]</translation>
     </message>
     <message>
         <source>[NO AUDIO AVAILABLE]</source>
-        <translation>[NÃO HÁ ÁUDIO VÁLIDO]</translation>
+        <translation type="obsolete">[NÃO HÁ ÁUDIO VÁLIDO]</translation>
     </message>
     <message>
         <source>T</source>
-        <translation type="unfinished">T</translation>
+        <translation type="obsolete">T</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -398,70 +398,6 @@ Log</source>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Len</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Est. Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sch. Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -305,19 +305,19 @@ logg</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
-        <translation>--- slutt på loggen ---</translation>
+        <translation type="obsolete">--- slutt på loggen ---</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>SPEL</translation>
+        <translation type="obsolete">SPEL</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>STOPP</translation>
+        <translation type="obsolete">STOPP</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>OVERGANG</translation>
+        <translation type="obsolete">OVERGANG</translation>
     </message>
     <message>
         <source>OVERLAP</source>
@@ -325,43 +325,43 @@ logg</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation>MARKØR</translation>
+        <translation type="obsolete">MARKØR</translation>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>SPOR</translation>
+        <translation type="obsolete">SPOR</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation>LENKJE</translation>
+        <translation type="obsolete">LENKJE</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[musikkimport]</translation>
+        <translation type="obsolete">[musikkimport]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[trafikkimport]</translation>
+        <translation type="obsolete">[trafikkimport]</translation>
     </message>
     <message>
         <source>CHAIN TO</source>
-        <translation>LENK TIL</translation>
+        <translation type="obsolete">LENK TIL</translation>
     </message>
     <message>
         <source>[CART NOT FOUND]</source>
-        <translation>[FANN IKKJE KORG]</translation>
+        <translation type="obsolete">[FANN IKKJE KORG]</translation>
     </message>
     <message>
         <source>[NO VALID CUT AVAILABLE]</source>
-        <translation>[GYLDIG KUTT FINST IKKJE</translation>
+        <translation type="obsolete">[GYLDIG KUTT FINST IKKJE</translation>
     </message>
     <message>
         <source>[NO AUDIO AVAILABLE]</source>
-        <translation>[LYD FINST IKKJE]</translation>
+        <translation type="obsolete">[LYD FINST IKKJE]</translation>
     </message>
     <message>
         <source>T</source>
-        <translation type="unfinished">S</translation>
+        <translation type="obsolete">S</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -398,75 +398,11 @@ Tail</source>
         <translation type="unfinished">Start</translation>
     </message>
     <message>
-        <source>Selected:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Len</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Est. Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sch. Time</source>
+        <source>Selected:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

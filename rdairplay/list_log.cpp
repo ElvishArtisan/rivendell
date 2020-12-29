@@ -1,8 +1,8 @@
 // list_log.cpp
 //
-// The full log list for RDAirPlay
+// The full log widget for RDAirPlay
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,15 +26,6 @@
 #include "colors.h"
 #include "list_log.h"
 
-#include "../icons/play.xpm"
-#include "../icons/rml5.xpm"
-#include "../icons/chain.xpm"
-#include "../icons/track_cart.xpm"
-#include "../icons/mic16.xpm"
-#include "../icons/notemarker.xpm"
-#include "../icons/traffic.xpm"
-#include "../icons/music.xpm"
-
 ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
 		 QWidget *parent)
   : RDWidget(parent)
@@ -49,18 +40,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_playbutton_mode=ListLog::ButtonDisabled;
   list_audition_head_playing=false;
   list_audition_tail_playing=false;
-
-  //
-  // Create Icons
-  //
-  list_playout_map=new QPixmap(play_xpm);
-  list_macro_map=new QPixmap(rml5_xpm);
-  list_chain_map=new QPixmap(chain_xpm);
-  list_track_cart_map=new QPixmap(track_cart_xpm);
-  list_mic16_map=new QPixmap(mic16_xpm);
-  list_notemarker_map=new QPixmap(notemarker_xpm);
-  list_traffic_map=new QPixmap(traffic_xpm);
-  list_music_map=new QPixmap(music_xpm);
 
   //
   // Create Palettes
@@ -130,12 +109,10 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_hour_selector->setTimeMode(list_time_mode);
   connect(list_hour_selector,SIGNAL(hourSelected(int)),
 	  this,SLOT(selectHour(int)));
+  connect(list_log,SIGNAL(hourChanged(int,bool)),
+  	  list_hour_selector,SLOT(updateHour(int,bool)));
   list_hour_selector->hide();
 
-  //
-  // Log List
-  //
-  list_log_list=new LibListView(this);
   int y=0;
   int h=sizeHint().height()-60;
   if(rda->airplayConf()->showCounters()) {
@@ -147,54 +124,33 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
     list_hour_selector->setGeometry(0,0,sizeHint().width(),80);
     list_hour_selector->show();
   }
-  list_log_list->setGeometry(0,y,sizeHint().width(),h);
-  list_log_list->setAllColumnsShowFocus(true);
-  list_log_list->setSelectionMode(Q3ListView::Extended);
-  list_log_list->setItemMargin(5);
-  list_log_list->addColumn("");
-  list_log_list->setColumnAlignment(0,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("Est. Time"));
-  list_log_list->setColumnAlignment(1,Qt::AlignRight);
-  list_log_list->addColumn(tr("Len"));
-  list_log_list->setColumnAlignment(2,Qt::AlignRight);
-  list_log_list->addColumn(tr("Trans"));
-  list_log_list->setColumnAlignment(3,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("Cart"));
-  list_log_list->setColumnAlignment(4,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("Title"));
-  list_log_list->setColumnAlignment(5,Qt::AlignLeft);
-  list_log_list->addColumn(tr("Artist"));
-  list_log_list->setColumnAlignment(6,Qt::AlignLeft);
-  list_log_list->addColumn(tr("Group"));
-  list_log_list->setColumnAlignment(7,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("Sch. Time"));
-  list_log_list->setColumnAlignment(8,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("Album"));
-  list_log_list->setColumnAlignment(9,Qt::AlignLeft);
-  list_log_list->addColumn(tr("Label"));
-  list_log_list->setColumnAlignment(10,Qt::AlignLeft);
-  list_log_list->addColumn(tr("Client"));
-  list_log_list->setColumnAlignment(11,Qt::AlignLeft);
-  list_log_list->addColumn(tr("Agency"));
-  list_log_list->setColumnAlignment(12,Qt::AlignLeft);
-  list_log_list->addColumn(tr("Marker"));
-  list_log_list->setColumnAlignment(13,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("Line ID"));
-  list_log_list->setColumnAlignment(14,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("Count"));
-  list_log_list->setColumnAlignment(15,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("Status"));
-  list_log_list->setColumnAlignment(16,Qt::AlignHCenter);
-  list_log_list->setHardSortColumn(15);
-  list_log_list->setFocusPolicy(Qt::NoFocus);
-  connect(list_log_list,SIGNAL(selectionChanged()),
-	  this,SLOT(selectionChangedData()));
-  connect(list_log_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleclickedData(Q3ListViewItem *,const QPoint &,int)));
-  connect(list_log_list,SIGNAL(cartDropped(int,RDLogLine *)),
+
+  //
+  // Log View
+  //
+  list_log_view=new LogTableView(this);
+  list_log_view->setGeometry(0,y,sizeHint().width(),h);
+  list_log_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  list_log_view->setSelectionMode(QAbstractItemView::ContiguousSelection);
+  list_log_view->setShowGrid(false);
+  list_log_view->setSortingEnabled(false);
+  list_log_view->setWordWrap(false);
+  list_log->setFont(defaultFont());
+  list_log->setPalette(palette());
+  list_log_view->setModel(list_log);
+  list_log_view->resizeColumnsToContents();
+  list_log->setTimeMode(list_time_mode);
+  connect(list_log_view->selectionModel(),
+       SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
+       this,
+       SLOT(selectionChangedData(const QItemSelection &,const QItemSelection)));
+  connect(list_log_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_log,SIGNAL(modelReset()),this,SLOT(modelResetData()));
+  connect(list_log_view,SIGNAL(cartDropped(int,RDLogLine *)),
 	  this,SLOT(cartDroppedData(int,RDLogLine *)));
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  list_log,SLOT(processNotification(RDNotification *)));
 
   //
   // List Logs Dialog
@@ -247,7 +203,8 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_take_button=new QPushButton(this);
   list_take_button->setGeometry(10,sizeHint().height()-55,80,50);
   list_take_button->setFont(bigButtonFont());
-  list_take_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  list_take_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_take_button->setText(tr("Select"));
   list_take_button->setFocusPolicy(Qt::NoFocus);
   connect(list_take_button,SIGNAL(clicked()),this,SLOT(takeButtonData()));
@@ -259,7 +216,8 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_head_button=new QPushButton(this);
   list_head_button->setGeometry(10,sizeHint().height()-113,80,50);
   list_head_button->setFont(bigButtonFont());
-  list_head_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  list_head_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_head_button->setText(tr("Audition\nHead"));
   list_head_button->setFocusPolicy(Qt::NoFocus);
   connect(list_head_button,SIGNAL(clicked()),this,SLOT(headButtonData()));
@@ -273,7 +231,8 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_tail_button=new QPushButton(this);
   list_tail_button->setGeometry(90,sizeHint().height()-113,80,50);
   list_tail_button->setFont(bigButtonFont());
-  list_tail_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  list_tail_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_tail_button->setText(tr("Audition\nTail"));
   list_tail_button->setFocusPolicy(Qt::NoFocus);
   connect(list_tail_button,SIGNAL(clicked()),this,SLOT(tailButtonData()));
@@ -287,7 +246,8 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_play_button=new QPushButton(this);
   list_play_button->setGeometry(10,sizeHint().height()-55,80,50);
   list_play_button->setFont(bigButtonFont());
-  list_play_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  list_play_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_play_button->setText(tr("Start"));
   list_play_button->setDisabled(true);
   list_play_button->setFocusPolicy(Qt::NoFocus);
@@ -299,7 +259,8 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_next_button=new QPushButton(this);
   list_next_button->setGeometry(90,sizeHint().height()-55,80,50);
   list_next_button->setFont(bigButtonFont());
-  list_next_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  list_next_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_next_button->setText(tr("Make\nNext"));
   list_next_button->setDisabled(true);
   list_next_button->setFocusPolicy(Qt::NoFocus);
@@ -311,7 +272,8 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_modify_button=new QPushButton(this);
   list_modify_button->setGeometry(170,sizeHint().height()-55,80,50);
   list_modify_button->setFont(bigButtonFont());
-  list_modify_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  list_modify_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_modify_button->setText(tr("Modify"));
   list_modify_button->setDisabled(true);
   list_modify_button->setFocusPolicy(Qt::NoFocus);
@@ -323,7 +285,8 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_scroll_button=new QPushButton(this);
   list_scroll_button->setGeometry(250,sizeHint().height()-55,80,50);
   list_scroll_button->setFont(bigButtonFont());
-  list_scroll_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  list_scroll_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_scroll_button->setText(tr("Scroll"));
   list_scroll_button->setFocusPolicy(Qt::NoFocus);
   connect(list_scroll_button,SIGNAL(clicked()),this,SLOT(scrollButtonData()));
@@ -335,7 +298,8 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_refresh_button=new QPushButton(this);
   list_refresh_button->setGeometry(330,sizeHint().height()-55,80,50);
   list_refresh_button->setFont(bigButtonFont());
-  list_refresh_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  list_refresh_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_refresh_button->setText(tr("Refresh\nLog"));
   list_refresh_button->setDisabled(true);
   list_refresh_button->setFocusPolicy(Qt::NoFocus);
@@ -349,7 +313,8 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_load_button->setGeometry(sizeHint().width()-90,sizeHint().height()-55,
 				80,50);
   list_load_button->setFont(bigButtonFont());
-  list_load_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  list_load_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_load_button->setText(tr("Select\nLog"));
   list_load_button->setFocusPolicy(Qt::NoFocus);
   connect(list_load_button,SIGNAL(clicked()),this,SLOT(loadButtonData()));
@@ -382,9 +347,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
 	  this,SLOT(auditionStoppedData(int)));
 
   setBackgroundColor(QColor(system_mid_color));
-
-  RefreshList();
-  UpdateTimes();
 }
 
 
@@ -400,37 +362,12 @@ QSizePolicy ListLog::sizePolicy() const
 }
 
 
-void ListLog::refresh()
-{
-  RefreshList();
-  UpdateTimes();
-}
-
-
-void ListLog::refresh(int line)
-{
-  RefreshList(line);
-  UpdateTimes();
-}
-
-
-void ListLog::setStatus(int line,RDLogLine::Status status)
-{
-  RDListViewItem *next=GetItem(line);
-  if(next==NULL) {
-    return;
-  }
-  next->setText(16,QString().sprintf("%d",status));
-}
-
-
 void ListLog::setOpMode(RDAirPlayConf::OpMode mode)
 {
   if(mode==list_op_mode) {
     return;
   }
   list_op_mode=mode;
-  UpdateTimes();
 }
 
 
@@ -449,8 +386,8 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
   }
   switch(mode) {
   case RDAirPlayConf::Normal:
-    list_log_list->setSelectionMode(Q3ListView::Extended);
-    list_log_list->setPalette(palette());
+    list_log_view->setSelectionMode(QAbstractItemView::ContiguousSelection);
+    list_log_view->setPalette(palette());
     list_take_button->hide();
     list_play_button->show();
     list_next_button->show();
@@ -461,8 +398,8 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
     break;
 
   case RDAirPlayConf::AddTo:
-    list_log_list->setSelectionMode(Q3ListView::Single);
-    list_log_list->setPalette(list_list_to_color);
+    list_log_view->setSelectionMode(QAbstractItemView::SingleSelection);
+    list_log_view->setPalette(list_list_to_color);
     list_take_button->setText(ADD_TO_MODE_TITLE);
     list_take_button->setPalette(list_to_color);
     list_take_button->show();
@@ -475,8 +412,8 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
     break;
 
   case RDAirPlayConf::DeleteFrom:
-    list_log_list->setSelectionMode(Q3ListView::Single);
-    list_log_list->setPalette(list_list_from_color);
+    list_log_view->setSelectionMode(QAbstractItemView::SingleSelection);
+    list_log_view->setPalette(list_list_from_color);
     list_take_button->setText(DELETE_FROM_MODE_TITLE);
     list_take_button->setPalette(list_from_color);
     list_take_button->show();
@@ -489,8 +426,8 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
     break;
 
   case RDAirPlayConf::MoveFrom:
-    list_log_list->setSelectionMode(Q3ListView::Single);
-    list_log_list->setPalette(list_list_from_color);
+    list_log_view->setSelectionMode(QAbstractItemView::SingleSelection);
+    list_log_view->setPalette(list_list_from_color);
     list_take_button->setText(MOVE_FROM_MODE_TITLE);
     list_take_button->setPalette(list_from_color);
     list_take_button->show();
@@ -503,8 +440,8 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
     break;
 
   case RDAirPlayConf::MoveTo:
-    list_log_list->setSelectionMode(Q3ListView::Single);
-    list_log_list->setPalette(list_list_to_color);
+    list_log_view->setSelectionMode(QAbstractItemView::SingleSelection);
+    list_log_view->setPalette(list_list_to_color);
     list_take_button->setText(MOVE_TO_MODE_TITLE);
     list_take_button->setPalette(list_to_color);
     list_take_button->show();
@@ -517,8 +454,8 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
     break;
 
   case RDAirPlayConf::CopyFrom:
-    list_log_list->setSelectionMode(Q3ListView::Single);
-    list_log_list->setPalette(list_list_from_color);
+    list_log_view->setSelectionMode(QAbstractItemView::SingleSelection);
+    list_log_view->setPalette(list_list_from_color);
     list_take_button->setText(COPY_FROM_MODE_TITLE);
     list_take_button->setPalette(list_from_color);
     list_take_button->show();
@@ -531,8 +468,8 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
     break;
 
   case RDAirPlayConf::CopyTo:
-    list_log_list->setSelectionMode(Q3ListView::Single);
-    list_log_list->setPalette(list_list_to_color);
+    list_log_view->setSelectionMode(QAbstractItemView::SingleSelection);
+    list_log_view->setPalette(list_list_to_color);
     list_take_button->setText(COPY_TO_MODE_TITLE);
     list_take_button->setPalette(list_to_color);
     list_take_button->show();
@@ -566,9 +503,9 @@ void ListLog::setTimeMode(RDAirPlayConf::TimeMode mode)
     return;
   }
   list_hour_selector->setTimeMode(mode);
+  list_log->setTimeMode(mode);
   list_time_mode=mode;
-  UpdateTimes();
-  RefreshList();
+  list_log_view->resizeColumnToContents(0);
 }
 
 
@@ -581,17 +518,9 @@ void ListLog::userChanged(bool add_allowed,bool delete_allowed,
 
 void ListLog::selectHour(int hour)
 {
-  RDListViewItem *item=(RDListViewItem *)list_log_list->firstChild();
-  while(item!=NULL) {
-    if(PredictedStartHour(item)==hour) {
-      list_log_list->clearSelection();
-      // Always start from the bottom so visible item is at the top
-      list_log_list->ensureItemVisible(list_log_list->lastItem());
-      list_log_list->ensureItemVisible(item);
-      list_log_list->setSelected(item,true);
-      return;
-    }
-    item=(RDListViewItem *)item->nextSibling();
+  int row=list_log->startOfHour(hour);
+  if(row>=0) {
+    list_log_view->selectRow(row);
   }
 }
 
@@ -613,13 +542,13 @@ void ListLog::takeButtonData()
       return;
 	      
     default:
-      line=list_log_list->currentItem()->text(15).toInt();
+      line=CurrentLine();
       break;
     }
     break;
 	  
   case RDAirPlayConf::CopyFrom:
-    line=list_log_list->currentItem()->text(15).toInt();
+    line=CurrentLine();
     if(list_log->logLine(line)!=NULL) {
       switch(list_log->logLine(line)->type()) {
       case RDLogLine::Marker:
@@ -647,7 +576,7 @@ void ListLog::takeButtonData()
       return;
 	      
     default:
-      line=list_log_list->currentItem()->text(15).toInt();
+      line=CurrentLine();
       break;
     }
     break;
@@ -660,7 +589,7 @@ void ListLog::takeButtonData()
       return;
 	      
     default:
-      line=list_log_list->currentItem()->text(15).toInt();
+      line=CurrentLine();
       // Don't try delete "end of log" or other invalid log entries.
       if (line<0) {
 	return;
@@ -672,6 +601,7 @@ void ListLog::takeButtonData()
   default:
     break;
   }
+
   emit selectClicked(list_id,line,status);
 }
 
@@ -767,31 +697,36 @@ void ListLog::playButtonData()
 
 void ListLog::modifyButtonData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_log_list->currentItem();
-  if((item==NULL)||
-     ((item->text(16).toInt()!=RDLogLine::Scheduled)&&
-      (item->text(16).toInt()!=RDLogLine::Paused)&&
-      (item->text(16).toInt()!=RDLogLine::NoCart)&&
-      (item->text(16).toInt()!=RDLogLine::NoCut))) {
+  QModelIndexList rows=list_log_view->selectionModel()->selectedRows();
+
+  if(rows.size()==0) {
     return;
   }
-  int line=item->text(15).toInt();
-  if(list_event_edit->exec(line)==0) {
-    list_log->lineModified(line);
+  if(rows.size()==1) {
+    RDLogLine *ll=list_log->logLine(rows.first().row());
+    if(ll!=NULL) {
+      if((ll->status()!=RDLogLine::Scheduled)&&
+	 (ll->status()!=RDLogLine::Paused)&&
+	 (ll->state()!=RDLogLine::NoCart)&&
+	 (ll->state()!=RDLogLine::NoCut)) {
+	return;
+      }
+    }
   }
-  if(line==1) {
+  if(list_event_edit->exec(rows.first().row())==0) {
+    list_log->lineModified(rows.first().row());
+  }
+  if(rows.first().row()==1) {
     return;
   }
-  refresh(line);
   ClearSelection();
 }
 
 
-void ListLog::doubleclickedData(Q3ListViewItem *,const QPoint &,int)
+void ListLog::doubleClickedData(const QModelIndex &index)
 {
   modifyButtonData();
 }
-
 
 
 void ListLog::scrollButtonData()
@@ -816,13 +751,17 @@ void ListLog::refreshButtonData()
 
 void ListLog::nextButtonData()
 {
-  if((list_log_list->currentItem()==NULL)||
-     (list_log_list->currentItem()->text(16).toInt()!=RDLogLine::Scheduled)) {
-    return;
+  RDLogLine *ll=NULL;
+  QModelIndexList rows=list_log_view->selectionModel()->selectedRows();
+
+  if(rows.size()==1) {
+    if((ll=list_log->logLine(rows.first().row()))!=NULL) {
+      if(ll->status()==RDLogLine::Scheduled) {
+	list_log->makeNext(rows.first().row());
+	ClearSelection();
+      }
+    }
   }
-  int line=list_log_list->currentItem()->text(15).toInt();
-  list_log->makeNext(line);
-  ClearSelection();
 }
 
 
@@ -871,124 +810,42 @@ void ListLog::loadButtonData()
 }
 
 
-void ListLog::logReloadedData()
+void ListLog::selectionChangedData(const QItemSelection &new_sel,
+				   const QItemSelection &old_sel)
 {
-  RefreshList();
-  UpdateTimes();
-  selectionChangedData();
-}
+  QModelIndexList rows=list_log_view->selectionModel()->selectedRows();
 
-
-void ListLog::logPlayedData(int line)
-{
-  setStatus(line,RDLogLine::Playing);
-  UpdateTimes();
-}
-
-
-void ListLog::logPausedData(int line)
-{
-  setStatus(line,RDLogLine::Paused);
-  UpdateTimes();
-}
-
-
-void ListLog::logStoppedData(int line)
-{
-  setStatus(line,RDLogLine::Finished);
-  UpdateTimes();
-}
-
-
-void ListLog::logInsertedData(int line)
-{
-  bool appended=false;
-
-  if(line>=list_log->lineCount()) {
-    line=list_log->lineCount()-1;
-  }
-  if(line>=list_log->lineCount()-1) {
-    appended=true;
-  }
-  int count;
-  RDListViewItem *item=GetItem(line+1);
-  while(item!=NULL) {
-    if((count=item->text(15).toInt())>=0) {
-      item->setText(15,QString().sprintf("%d",count+1));
-    }
-    item=(RDListViewItem *)item->nextSibling();
-  }
-  item=new RDListViewItem(list_log_list);
-  list_log->logLine(line)->setListViewItem(item);
-  RefreshItem(item,line);
-  if(appended) {
-    if((item=(RDListViewItem *)list_log_list->findItem("-2",13))!=NULL) {
-      list_log_list->ensureItemVisible(item);
-    }
-  }
-  list_log_list->sort();
-}
-
-
-void ListLog::logRemovedData(int line,int num,bool moving)
-{
-  int count;
-  RDListViewItem *item=GetItem(line+num);
-  while(item!=NULL) {
-    if((count=item->text(15).toInt())>=0) {
-      item->setText(15,QString().sprintf("%d",count-num));
-    }
-    item=(RDListViewItem *)item->nextSibling();
-  }
-  for(int i=line;i<(line+num);i++) {
-    delete GetItem(i);
-  }
-  if(!moving) {
-    UpdateTimes(line,num);
-  }
-  list_log_list->sort();
-}
-
-
-void ListLog::selectionChangedData()
-{
-  int count=0;
-  RDListViewItem *item=NULL;
-  RDListViewItem *next=(RDListViewItem *)list_log_list->firstChild();
-  int start_line=-1;
-  int end_line=-1;
-
-  while(next!=NULL) {
-    if(list_log_list->isSelected(next)) {
-      item=next;
-      if((start_line<0)&&(next->text(14).toInt()!=END_MARKER_ID)) {
-	start_line=next->text(15).toInt();
-      }
-      if(next->text(12).toInt()!=END_MARKER_ID) {
-	end_line=next->text(15).toInt();
-      }
-      count++;
-    }
-    next=(RDListViewItem *)next->nextSibling();
-  }
-  if(count!=1) {
+  if(rows.size()!=1) {
     list_endtime_edit->setText("");
     list_stoptime_label->setText(tr("Selected:"));
     SetPlaybuttonMode(ListLog::ButtonDisabled);
     list_modify_button->setDisabled(true);
     list_next_button->setDisabled(true);
-    if(start_line>=0) {
-      list_stoptime_edit->setText(RDGetTimeLength(list_log->
-		      length(start_line,end_line+1),true,false));
+    if(rows.size()>0) {
+      int last_line=rows.last().row();
+      if(last_line>=list_log->lineCount()) {
+	last_line=list_log->lineCount()-1;
+      }
+      list_stoptime_edit->
+	setText(RDGetTimeLength(list_log->
+				length(rows.first().row(),last_line+1),
+				true,false));
     }
     return;
   }  
   switch(CurrentStatus()) {
   case RDLogLine::Scheduled:
   case RDLogLine::Paused:
-    SetPlaybuttonMode(ListLog::ButtonPlay);
-    list_modify_button->setEnabled(true);
-    list_next_button->setEnabled(true);
+    if(rows.first().row()>=list_log->lineCount()) {  //End marker!
+      SetPlaybuttonMode(ListLog::ButtonDisabled);
+      list_modify_button->setDisabled(true);
+      list_next_button->setDisabled(true);
+    }
+    else {
+      SetPlaybuttonMode(ListLog::ButtonPlay);
+      list_modify_button->setEnabled(true);
+      list_next_button->setEnabled(true);
+    }
     break;
 
   case RDLogLine::Playing:
@@ -1006,11 +863,12 @@ void ListLog::selectionChangedData()
   default:
     break;
   }
-  if(item->text(15).toInt()>=0) {
-    list_endtime_edit->setText(RDGetTimeLength(list_log->
-      length(item->text(15).toInt(),list_log->lineCount()),true,false));
+  if((rows.size()==1)&&(rows.first().row()<list_log->lineCount())) {
+    list_endtime_edit->
+      setText(RDGetTimeLength(list_log->
+	       length(rows.last().row(),list_log->lineCount()),true,false));
     list_stoptime_label->setText(tr("Next Stop:"));
-    int stoplen=list_log->lengthToStop(item->text(15).toInt());
+    int stoplen=list_log->lengthToStop(rows.last().row());
     if(stoplen>=0) {
       list_stoptime_edit->setText(RDGetTimeLength(stoplen,true,false));
     }
@@ -1029,24 +887,16 @@ void ListLog::transportChangedData()
 {
   int transport_line[TRANSPORT_QUANTITY];
 
-  SetColor();
-
   list_log->transportEvents(transport_line);
-  for(int i=0;i<TRANSPORT_QUANTITY;i++) {
-    if(transport_line[i]!=-1) {
-      UpdateColor(transport_line[i],true);
-    }
-  }
   if(list_scroll&&(transport_line[0]>=0)) {
     ScrollTo(transport_line[0]);
   }
 }
 
 
-void ListLog::modifiedData(int line)
+void ListLog::modelResetData()
 {
-  RefreshList(line);
-  UpdateTimes();
+  list_log_view->resizeColumnsToContents();
 }
 
 
@@ -1062,407 +912,63 @@ void ListLog::cartDroppedData(int line,RDLogLine *ll)
 }
 
 
-void ListLog::RefreshList()
+int ListLog::CurrentLine()
 {
-  RDListViewItem *l;
-  RDLogLine *logline;
+  QModelIndexList rows=list_log_view->selectionModel()->selectedRows();
 
-  list_log_list->clear();
-  l=new RDListViewItem(list_log_list);
-  l->setText(5,tr("--- end of log ---"));
-  l->setText(15,QString().sprintf("%d",END_MARKER_ID));
-  l->setText(14,QString().sprintf("%d",list_log->lineCount()));
-  for(int i=list_log->lineCount()-1;i>=0;i--) {
-    if((logline=list_log->logLine(i))!=NULL) {
-      l=new RDListViewItem(list_log_list);
-      logline->setListViewItem(l);
-    }
-    RefreshItem(l,i);
+  if(rows.size()==1) {
+    return rows.first().row();
   }
+
+  return -1;
 }
 
 
-void ListLog::RefreshList(int line)
+RDLogLine::Status ListLog::CurrentStatus()
 {
-  RDListViewItem *next=(RDListViewItem *)list_log_list->firstChild();
-  while((next!=NULL)&&next->text(15).toInt()!=line) {
-    next=(RDListViewItem *)next->nextSibling();
-  }
-  if(next!=NULL) {
-    RefreshItem(next,line);
-  }
-}
+  QModelIndexList rows=list_log_view->selectionModel()->selectedRows();
 
-
-void ListLog::RefreshItem(RDListViewItem *l,int line)
-{
-  int lines[TRANSPORT_QUANTITY];
-  bool is_next=false;
-
-  RDLogLine *log_line=list_log->logLine(line);
-  if(log_line==NULL) {
-    return;
-  }
-  switch(log_line->timeType()) {
-  case RDLogLine::Hard:
-    l->setText(1,QString("T")+
-	       TimeString(log_line->startTime(RDLogLine::Logged)));
-    l->setText(8,QString("T")+
-	       TimeString(log_line->startTime(RDLogLine::Logged)));
-    for(int i=0;i<list_log_list->columns();i++) {
-      l->setTextColor(i,LOG_HARDTIME_TEXT_COLOR,QFont::Bold);
-    }
-    l->setText(14,"N");
-    break;
-
-  default:
-    if(!log_line->startTime(RDLogLine::Logged).isNull()) {
-      l->setText(8,TimeString(log_line->startTime(RDLogLine::Logged)));
+  if(rows.size()==1) {
+    RDLogLine *ll=list_log->logLine(rows.first().row());
+    if(ll==NULL) {
+      return RDLogLine::Scheduled;
     }
     else {
-      l->setText(8,"");
-    }
-    for(int i=0;i<list_log_list->columns();i++) {
-      l->setTextColor(i,LOG_RELATIVE_TEXT_COLOR,QFont::Normal);
-    }
-    l->setText(14,"");
-    break;
-  }
-  switch(log_line->transType()) {
-  case RDLogLine::Play:
-    l->setText(3,tr("PLAY"));
-    l->setTextColor(3,l->textColor(2),QFont::Normal);
-    break;
-
-  case RDLogLine::Stop:
-    l->setText(3,tr("STOP"));
-    l->setTextColor(3,l->textColor(2),QFont::Normal);
-    break;
-
-  case RDLogLine::Segue:
-    l->setText(3,tr("SEGUE"));
-    if(log_line->hasCustomTransition()) {
-      l->setTextColor(3,RD_CUSTOM_TRANSITION_COLOR,QFont::Bold);
-    }
-    else {
-      if(log_line->timeType()==RDLogLine::Hard) {
-	l->setTextColor(3,l->textColor(2),QFont::Bold);
-      }
-      else {
-	l->setTextColor(3,l->textColor(2),QFont::Normal);
-      }
-    }
-    break;
-
-  default:
-    break;
-  }
-  switch(log_line->type()) {
-  case RDLogLine::Cart:
-    switch(log_line->source()) {
-    case RDLogLine::Tracker:
-      l->setPixmap(0,*list_track_cart_map);
-      break;
-
-    default:
-      l->setPixmap(0,*list_playout_map);
-      break;
-	}
-	l->setText(2,RDGetTimeLength(log_line->effectiveLength(),false,false));
-	l->setText(4,QString().
-		   sprintf("%06u",log_line->cartNumber()));
-	if((log_line->source()!=RDLogLine::Tracker)||
-	   log_line->originUser().isEmpty()||
-	   (!log_line->originDateTime().isValid())) {
-	  l->setText(5,log_line->title());
-	}
-	else {
-	  l->setText(5,log_line->title()+" -- "+log_line->originUser()+" "+
-		     log_line->originDateTime().toString("M/d hh:mm"));
-	}
-	l->setText(6,log_line->artist());
-	l->setText(7,log_line->groupName());
-	l->setTextColor(7,log_line->groupColor(),QFont::Bold);
-	l->setText(9,log_line->album());
-	l->setText(10,log_line->label());
-	l->setText(11,log_line->client());
-	l->setText(12,log_line->agency());
-	break;
-
-      case RDLogLine::Macro:
-	l->setPixmap(0,*list_macro_map);
-	l->setText(2,RDGetTimeLength(log_line->forcedLength(),false,false));
-	l->setText(4,QString().
-		   sprintf("%06u",log_line->cartNumber()));
-	l->setText(5,log_line->title());
-	l->setText(6,log_line->artist());
-	l->setText(7,log_line->groupName());
-	l->setTextColor(7,log_line->groupColor(),QFont::Bold);
-	l->setText(9,log_line->album());
-	l->setText(10,log_line->label());
-	l->setText(11,log_line->client());
-	l->setText(12,log_line->agency());
-	break;
-
-      case RDLogLine::Marker:
-	l->setPixmap(0,*list_notemarker_map);
-	l->setText(2,"00:00");
-	l->setText(4,tr("MARKER"));
-	l->setText(5,RDTruncateAfterWord(log_line->markerComment(),5,true));
-	l->setText(13,log_line->markerLabel());
-	break;
-
-      case RDLogLine::Track:
-	l->setPixmap(0,*list_mic16_map);
-	l->setText(2,"00:00");
-	l->setText(4,tr("TRACK"));
-	l->setText(5,RDTruncateAfterWord(log_line->markerComment(),5,true));
-	break;
-
-      case RDLogLine::MusicLink:
-	l->setPixmap(0,*list_music_map);
-	l->setText(2,"00:00");
-	l->setText(4,tr("LINK"));
-	l->setText(5,tr("[music import]"));
-	break;
-
-      case RDLogLine::TrafficLink:
-	l->setPixmap(0,*list_traffic_map);
-	l->setText(2,"00:00");
-	l->setText(4,tr("LINK"));
-	l->setText(5,tr("[traffic import]"));
-	break;
-
-      case RDLogLine::Chain:
-	l->setPixmap(0,*list_chain_map);
-	l->setText(2,"");
-	l->setText(4,tr("CHAIN TO"));
-	l->setText(5,log_line->markerLabel());
-	l->setText(6,RDTruncateAfterWord(log_line->markerComment(),5,true));
-	break;
-
-      default:
-	break;
-  }
-  l->setText(14,QString().sprintf("%d",log_line->id()));
-  l->setText(15,QString().sprintf("%d",line));
-  l->setText(16,QString().sprintf("%d",log_line->status()));
-  SetPlaybuttonMode(ListLog::ButtonDisabled);
-  list_modify_button->setDisabled(true);
-  switch(log_line->state()) {
-  case RDLogLine::NoCart:
-    if(log_line->type()==RDLogLine::Cart) {
-      l->setPixmap(0,NULL);
-      if(log_line->startTime(RDLogLine::Logged).isNull()) {
-	l->setText(8,"");
-      }
-      else {
-	l->setText(8,
-		   log_line->startTime(RDLogLine::Logged).toString("hh:mm:ss"));
-      }
-      l->setText(3,"");
-      l->setText(5,tr("[CART NOT FOUND]"));
-    }
-    break;
-
-  case RDLogLine::NoCut:
-    if(log_line->type()==RDLogLine::Cart) {
-      l->setText(6,tr("[NO VALID CUT AVAILABLE]"));
-    }
-    break;
-
-  default:
-    if((log_line->type()==RDLogLine::Cart)&&
-       (log_line->effectiveLength()==0)) {
-      l->setText(6,tr("[NO AUDIO AVAILABLE]"));
-    }
-    break;
-  }
-  list_log->transportEvents(lines);
-  for(int i=0;i<TRANSPORT_QUANTITY;i++) {
-    if(line==lines[i]) {
-      is_next=true;
+      return ll->status();
     }
   }
-  UpdateColor(line,is_next);
+  return RDLogLine::Finished;
 }
 
 
-RDListViewItem *ListLog::GetItem(int line)
+RDLogLine::State ListLog::CurrentState()
 {
-  RDLogLine *logline;
-  if((logline=list_log->logLine(line))==NULL) {
-    return NULL;
+  QModelIndexList rows=list_log_view->selectionModel()->selectedRows();
+
+  if(rows.size()==1) {
+    RDLogLine *ll=list_log->logLine(rows.first().row());
+    if(ll!=NULL) {
+      return ll->state();
+    }    
   }
-  return logline->listViewItem();
-}
-
-
-int ListLog::CurrentLine() {
-  RDListViewItem *item;
-
-  if((item=(RDListViewItem *)list_log_list->currentItem())==NULL) {
-    return -1;
-  }
-  if(!list_log_list->isSelected(item)) {
-    return -1;
-  }
-  return list_log_list->currentItem()->text(15).toInt();
-}
-
-
-RDLogLine::Status ListLog::CurrentStatus() {
-  if(list_log_list->currentItem()==NULL) {
-    return RDLogLine::Finished;
-  }
-  return (RDLogLine::Status)list_log_list->currentItem()->text(16).toInt();
-}
-
-
-RDLogLine::State ListLog::CurrentState() {
-  if(list_log_list->currentItem()==NULL) {
-    return RDLogLine::NoCart;
-  }
-  return list_log->
-    logLine(list_log_list->currentItem()->text(14).toInt())->state();
+  return RDLogLine::NoCart;
 }
 
 
 void ListLog::ClearSelection()
 {
-  list_log_list->clearSelection();
+  list_log_view->clearSelection();
   SetPlaybuttonMode(ListLog::ButtonDisabled);
   list_modify_button->setDisabled(true);
   list_next_button->setDisabled(true);
 }
 
 
-void ListLog::UpdateTimes(int removed_line,int num_lines)
-{
-  QTime time;
-  QTime end_time;
-  int line;
-  RDLogLine *logline;
-
-  RDListViewItem *next=(RDListViewItem *)list_log_list->firstChild();
-  for(int i=0;i<(list_log_list->childCount()-1);i++) {
-    if((line=next->text(15).toInt())>=removed_line) {
-      line+=num_lines;
-    }
-    if((logline=list_log->logLine(line))!=NULL) {
-      switch((RDLogLine::Status)next->text(16).toInt()) {
-      case RDLogLine::Scheduled:
-      case RDLogLine::Paused:
-	switch(logline->timeType()) {
-	case RDLogLine::Hard:
-	  next->setText(1,QString(tr("T"))+
-			TimeString(logline->startTime(RDLogLine::Logged)));
-	  break;
-		  
-	default:
-	  if(!logline->startTime(RDLogLine::Predicted).isNull()) {
-	    next->setText(1,
-			  TimeString(logline->startTime(RDLogLine::Predicted)));
-	  }
-	  else {
-	    next->setText(1,"");
-	  }
-	  break;
-	}
-	break;
-
-      default:
-	next->setText(1,TimeString(logline->startTime(RDLogLine::Actual)));
-	break;
-      }
-      next=(RDListViewItem *)next->nextSibling();
-    }
-  }
-  UpdateHourSelector();
-}
-
-
 void ListLog::ScrollTo(int line)
 {
-  RDListViewItem *item=GetItem(line);
-
-  list_log_list->ensureVisible(0,list_log_list->itemPos(item),
-			       0,list_log_list->size().height()/2);
-  list_log_list->setCurrentItem(item);
-  list_log_list->clearSelection();
-}
-
-
-void ListLog::UpdateColor(int line,bool next)
-{
-  RDLogLine *logline;
-  if((logline=list_log->logLine(line))==NULL) {
-    return;
-  }
-  RDListViewItem *item=GetItem(line);
-  if(item==NULL) {
-    return;
-  }
-  switch(logline->status()) {
-  case RDLogLine::Scheduled:
-  case RDLogLine::Auditioning:
-    if((logline->type()==RDLogLine::Cart)&&
-       (logline->state()==RDLogLine::NoCart)) {
-      item->setBackgroundColor(QColor(LOG_ERROR_COLOR));
-    }
-    else {
-      if(((logline->cutNumber()<0)&&(logline->type()==RDLogLine::Cart))||
-	 (logline->state()==RDLogLine::NoCut)) {
-	item->setBackgroundColor(QColor(LOG_ERROR_COLOR));
-	item->setText(6,tr("[NO VALID CUT AVAILABLE]"));
-      }
-      else {
-	if(next) {
-	  if(logline->evergreen()) {
-	    item->setBackgroundColor(QColor(LOG_EVERGREEN_COLOR));
-	  }
-	  else {
-	    item->setBackgroundColor(QColor(LOG_NEXT_COLOR));
-	  }
-	}
-	else {
-	  if(logline->evergreen()) {
-	    item->setBackgroundColor(QColor(LOG_EVERGREEN_COLOR));
-	  }
-	  else {
-	    item->setBackgroundColor(QColor(LOG_SCHEDULED_COLOR));
-	  }
-	}
-      }
-    }
-    break;
-	
-  case RDLogLine::Playing:
-  case RDLogLine::Finishing:
-    item->setBackgroundColor(QColor(LOG_PLAYING_COLOR));
-    break;
-	
-  case RDLogLine::Paused:
-    item->setBackgroundColor(QColor(LOG_PAUSED_COLOR));
-    break;
-	
-  case RDLogLine::Finished:
-    if(logline->state()==RDLogLine::Ok) {
-      item->setBackgroundColor(QColor(LOG_FINISHED_COLOR));
-    }
-    else {
-      item->setBackgroundColor(QColor(LOG_ERROR_COLOR));
-    }
-      break;
-  }
-}
-
-
-void ListLog::SetColor()
-{
-  for(int i=0;i<list_log->lineCount();i++) {
-    UpdateColor(i);
-  }
+  list_log_view->
+    scrollTo(list_log->index(line,0),QAbstractItemView::PositionAtCenter);
+  list_log_view->clearSelection();
 }
 
 
@@ -1511,38 +1017,4 @@ QString ListLog::TimeString(const QTime &time) const
     break;
   }
   return ret;
-}
-
-
-void ListLog::UpdateHourSelector()
-{
-  bool found[24]={false};
-  RDListViewItem *item=(RDListViewItem *)list_log_list->firstChild();
-  int hour=-1;
-
-  while(item!=NULL) {
-    if((hour=PredictedStartHour(item))>=0) {
-      found[hour]=true;
-    }
-    item=(RDListViewItem *)item->nextSibling();
-  }
-  list_hour_selector->updateHours(found);
-}
-
-
-int ListLog::PredictedStartHour(RDListViewItem *item)
-{
-  bool ok=false;
-
-  if(item==NULL) {
-    return -1;
-  }
-  QStringList item_fields=item->text(1).split(":");
-  if(item_fields.size()==3) {
-    int item_hour=item_fields[0].replace("T","").toInt(&ok);
-    if(ok) {
-      return item_hour;
-    }
-  }
-  return -1;
 }

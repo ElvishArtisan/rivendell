@@ -20756,3 +20756,6 @@
 	'RDLogListModel'.
 2020-12-27 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'RDLogEvent' class.
+2020-12-29 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the Full Log widget in rdairplay to use the model-based
+	API.

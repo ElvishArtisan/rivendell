@@ -301,59 +301,59 @@ zápis</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
-        <translation>--- konec zápisu ---</translation>
+        <translation type="obsolete">--- konec zápisu ---</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>PŘEHRÁT</translation>
+        <translation type="obsolete">PŘEHRÁT</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>ZASTAVIT</translation>
+        <translation type="obsolete">ZASTAVIT</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>PŘECHOD</translation>
+        <translation type="obsolete">PŘECHOD</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation>ZNAČKA</translation>
+        <translation type="obsolete">ZNAČKA</translation>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>STOPA</translation>
+        <translation type="obsolete">STOPA</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation>ODKAZ</translation>
+        <translation type="obsolete">ODKAZ</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[zavedení hudby]</translation>
+        <translation type="obsolete">[zavedení hudby]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[zavedení přenosu]</translation>
+        <translation type="obsolete">[zavedení přenosu]</translation>
     </message>
     <message>
         <source>CHAIN TO</source>
-        <translation>ŘETĚZ K</translation>
+        <translation type="obsolete">ŘETĚZ K</translation>
     </message>
     <message>
         <source>[CART NOT FOUND]</source>
-        <translation>[VOZÍK NENALEZEN]</translation>
+        <translation type="obsolete">[VOZÍK NENALEZEN]</translation>
     </message>
     <message>
         <source>[NO VALID CUT AVAILABLE]</source>
-        <translation>[ŽÁDNÝ PLATNÝ ZÁBĚR NENÍ DOSTUPNÝ]</translation>
+        <translation type="obsolete">[ŽÁDNÝ PLATNÝ ZÁBĚR NENÍ DOSTUPNÝ]</translation>
     </message>
     <message>
         <source>[NO AUDIO AVAILABLE]</source>
-        <translation>[ŽÁDNÝ ZVUK NENÍ DOSTUPNÝ]</translation>
+        <translation type="obsolete">[ŽÁDNÝ ZVUK NENÍ DOSTUPNÝ]</translation>
     </message>
     <message>
         <source>T</source>
-        <translation type="unfinished">T</translation>
+        <translation type="obsolete">T</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -381,7 +381,7 @@ zápis</translation>
     </message>
     <message>
         <source>Selected:</source>
-        <translation>Vybráno:</translation>
+        <translation type="unfinished">Vybráno:</translation>
     </message>
     <message>
         <source>Audition
@@ -397,70 +397,6 @@ poslechu</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Len</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Est. Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sch. Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

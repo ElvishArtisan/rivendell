@@ -51,6 +51,7 @@ dist_rdairplay_SOURCES = button_log.cpp button_log.h\
                          list_logs.cpp list_logs.h\
                          local_macros.cpp colors.h\
                          loglinebox.cpp loglinebox.h\
+                         logtableview.cpp logtableview.h\
                          mode_display.cpp mode_display.h\
                          pie_counter.cpp pie_counter.h\
                          post_counter.cpp post_counter.h\
@@ -67,6 +68,7 @@ nodist_rdairplay_SOURCES = moc_button_log.cpp\
                            moc_list_log.cpp\
                            moc_list_logs.cpp\
                            moc_loglinebox.cpp\
+                           moc_logtableview.cpp\
                            moc_mode_display.cpp\
                            moc_pie_counter.cpp\
                            moc_post_counter.cpp\

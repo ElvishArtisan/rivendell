@@ -23,9 +23,9 @@
 #include <sys/mman.h>
 #include <sys/wait.h>
 
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QMessageBox>
+#include <QTranslator>
 
 #include <rdconf.h>
 #include <rdgetpasswd.h>
@@ -39,7 +39,6 @@
 //
 // Global Resources
 //
-RDAudioPort *rdaudioport_conf;
 RDEventPlayer *rdevent_player;
 RDCartDialog *rdcart_dialog;
 MainWidget *prog_ptr;
@@ -1447,7 +1446,7 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
 	       rda->airplayConf()->defaultTransType());
       air_log[id]->logLine(air_log[id]->lineCount()-1)->
 	setTransType(rda->airplayConf()->defaultTransType());
-      air_log_list[id]->refresh(air_log[id]->lineCount()-1);
+      air_log[id]->update(air_log[id]->lineCount()-1);
     }
     else {
       air_log[id]->
@@ -1455,7 +1454,7 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
 	       rda->airplayConf()->defaultTransType());
       air_log[id]->logLine(line)->
 	setTransType(rda->airplayConf()->defaultTransType());
-      air_log_list[id]->refresh(line);
+      air_log[id]->update(line);
     }
     SetActionMode(StartButton::Stop);
     break;
@@ -1484,14 +1483,14 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
     if(air_source_id==id) {
       if(line<0) {
 	air_log[id]->move(air_copy_line,air_log[id]->lineCount());
-	air_log_list[id]->refresh(air_log[id]->lineCount()-1);
+	air_log[id]->update(air_log[id]->lineCount()-1);
       }
       else {
 	if(line>air_copy_line) {
 	  line--;
 	}
 	air_log[id]->move(air_copy_line,line);
-	air_log_list[id]->refresh(line);
+	air_log[id]->update(line);
       }
     }
     else {
@@ -1499,12 +1498,12 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
       if(line<0) {
 	air_log[id]->
 	  insert(air_log[id]->lineCount(),air_add_cart,RDLogLine::Play);
-	air_log_list[id]->refresh(air_log[id]->lineCount()-1);
+	air_log[id]->update(air_log[id]->lineCount()-1);
       }
       else {
 	air_log[id]->
 	  insert(line,air_add_cart,air_log[id]->nextTransType(line));
-	air_log_list[id]->refresh(line);
+	air_log[id]->update(line);
       }
     }
     SetActionMode(StartButton::Stop);
@@ -1540,7 +1539,7 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
 			    rda->airplayConf()->defaultTransType());
 	air_log[id]->logLine(air_log[id]->lineCount()-1)->
 	  setTransType(rda->airplayConf()->defaultTransType());
-	air_log_list[id]->refresh(air_log[id]->lineCount()-1);
+	air_log[id]->update(air_log[id]->lineCount()-1);
       }
       else {
 	air_log[id]->
@@ -1548,7 +1547,7 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
 		 rda->airplayConf()->defaultTransType());
 	air_log[id]->logLine(line)->
 	  setTransType(rda->airplayConf()->defaultTransType());
-	air_log_list[id]->refresh(line);
+	air_log[id]->update(line);
       }
     }
     SetActionMode(StartButton::Stop);
@@ -1612,7 +1611,7 @@ void MainWidget::cartDroppedData(int id,int line,RDLogLine *ll)
 	       rda->airplayConf()->defaultTransType());
       air_log[id]->logLine(air_log[id]->lineCount()-1)->
 	setTransType(rda->airplayConf()->defaultTransType());
-      air_log_list[id]->refresh(air_log[id]->lineCount()-1);
+      air_log[id]->update(air_log[id]->lineCount()-1);
     }
     else {
       air_log[id]->
@@ -1620,7 +1619,7 @@ void MainWidget::cartDroppedData(int id,int line,RDLogLine *ll)
 	       rda->airplayConf()->defaultTransType());
       air_log[id]->logLine(line)->
 	setTransType(rda->airplayConf()->defaultTransType());
-      air_log_list[id]->refresh(line);
+      air_log[id]->update(line);
     }
   }
 }

@@ -301,59 +301,59 @@ auswählen</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
-        <translation>--- ende des Logs ---</translation>
+        <translation type="obsolete">--- ende des Logs ---</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>PLAY</translation>
+        <translation type="obsolete">PLAY</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>STOP</translation>
+        <translation type="obsolete">STOP</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>SEGUE</translation>
+        <translation type="obsolete">SEGUE</translation>
     </message>
     <message>
         <source>MARKER</source>
-        <translation>MARKER</translation>
+        <translation type="obsolete">MARKER</translation>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>TRACK</translation>
+        <translation type="obsolete">TRACK</translation>
     </message>
     <message>
         <source>LINK</source>
-        <translation>LINK</translation>
+        <translation type="obsolete">LINK</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[musikimport]</translation>
+        <translation type="obsolete">[musikimport]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[traffic import]</translation>
+        <translation type="obsolete">[traffic import]</translation>
     </message>
     <message>
         <source>CHAIN TO</source>
-        <translation>CHAIN TO</translation>
+        <translation type="obsolete">CHAIN TO</translation>
     </message>
     <message>
         <source>[CART NOT FOUND]</source>
-        <translation>[CART NICHT GEFUNDEN]</translation>
+        <translation type="obsolete">[CART NICHT GEFUNDEN]</translation>
     </message>
     <message>
         <source>[NO VALID CUT AVAILABLE]</source>
-        <translation>[KEIN GÜLTIGER CUT VERFÜGBAR]</translation>
+        <translation type="obsolete">[KEIN GÜLTIGER CUT VERFÜGBAR]</translation>
     </message>
     <message>
         <source>[NO AUDIO AVAILABLE]</source>
-        <translation>[KEIN AUDIO VERFÜGBAR]</translation>
+        <translation type="obsolete">[KEIN AUDIO VERFÜGBAR]</translation>
     </message>
     <message>
         <source>T</source>
-        <translation type="unfinished">T</translation>
+        <translation type="obsolete">T</translation>
     </message>
     <message>
         <source>Pause</source>
@@ -381,7 +381,7 @@ auswählen</translation>
     </message>
     <message>
         <source>Selected:</source>
-        <translation>Ausgewählt:</translation>
+        <translation type="unfinished">Ausgewählt:</translation>
     </message>
     <message>
         <source>Audition
@@ -397,70 +397,6 @@ vorhören</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Len</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trans</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Count</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Est. Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sch. Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -72,7 +72,7 @@ void LogModel::setServiceName(const QString &str)
 }
 
 
-QColor LogModel::backgroundColor(int line,RDLogLine *ll) const
+QColor LogModel::rowBackgroundColor(int row,RDLogLine *ll) const
 {
   QDateTime now=QDateTime(QDate::currentDate(),QTime::currentTime());
 
@@ -82,7 +82,7 @@ QColor LogModel::backgroundColor(int line,RDLogLine *ll) const
     case RDCart::AlwaysValid:
       if(d_group_list->groupIsValid(ll->groupName())||
 	 ll->groupName().isEmpty()) {
-	return RDLogModel::backgroundColor(line,ll);
+	return RDLogModel::rowBackgroundColor(row,ll);
       }
       return RD_CART_INVALID_SERVICE_COLOR;
 	      
@@ -102,9 +102,9 @@ QColor LogModel::backgroundColor(int line,RDLogLine *ll) const
 
   default:
     if(d_group_list->groupIsValid(ll->groupName())||ll->groupName().isEmpty()) {
-      return RDLogModel::backgroundColor(line,ll);
+      return RDLogModel::rowBackgroundColor(row,ll);
     }
     return RD_CART_INVALID_SERVICE_COLOR;
   }
-  return RDLogModel::backgroundColor(line,ll);
+  return RDLogModel::rowBackgroundColor(row,ll);
 }

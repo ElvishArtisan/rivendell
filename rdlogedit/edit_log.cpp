@@ -710,7 +710,7 @@ void EditLog::insertCartButtonData()
 		    edit_log_model,line,this);
   int ret=edit->exec();
   if(ret>=0) {
-    edit_log_model->refresh(line);
+    edit_log_model->update(line);
     SetLogModified(true);
   }
   else {
@@ -744,7 +744,7 @@ void EditLog::insertMarkerButtonData()
     edit_marker=new EditMarker(edit_log_model->logLine(line),this);
     ret=edit_marker->exec();
     if(ret>=0) {
-      edit_log_model->refresh(line);
+      edit_log_model->update(line);
       SetLogModified(true);
     }
     else {
@@ -761,7 +761,7 @@ void EditLog::insertMarkerButtonData()
     edit_track=new EditTrack(edit_log_model->logLine(line),this);
     ret=edit_track->exec();
     if(ret>=0) {
-      edit_log_model->refresh(line);
+      edit_log_model->update(line);
       SetLogModified(true);
     }
     else {
@@ -776,7 +776,7 @@ void EditLog::insertMarkerButtonData()
     edit_chain=new EditChain(edit_log_model->logLine(line),this);
     ret=edit_chain->exec();
     if(ret>=0) {
-      edit_log_model->refresh(line);
+      edit_log_model->update(line);
       SetLogModified(true);
     }
     else {
@@ -854,7 +854,7 @@ void EditLog::editButtonData()
 		      edit_schedcode,edit_service_box->currentText(),
 		      edit_log_model,line,this);
     if(edit_cart->exec()>=0) {
-      edit_log_model->refresh(line);
+      edit_log_model->update(line);
       SetLogModified(true);
     }
     delete edit_cart;
@@ -995,7 +995,7 @@ void EditLog::cartDroppedData(int line,RDLogLine *ll)
   edit_log_model->logLine(line)->setTransType(edit_default_trans);
   edit_log_model->logLine(line)->setFadeupGain(-3000);
   edit_log_model->logLine(line)->setFadedownGain(-3000);
-  edit_log_model->refresh(line);
+  edit_log_model->update(line);
   SetLogModified(true);
 }
 

@@ -2771,6 +2771,21 @@ Do you still want to proceed?</source>
     </message>
 </context>
 <context>
+    <name>RDLogPlay</name>
+    <message>
+        <source>[CART NOT FOUND]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[NO AUDIO AVAILABLE]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>T</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDMbLookup</name>
     <message>
         <source>Connection Exception</source>

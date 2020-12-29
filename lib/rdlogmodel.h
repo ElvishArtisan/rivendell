@@ -40,6 +40,8 @@ class RDLogModel : public QAbstractTableModel
   ~RDLogModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
+  QFont normalFont() const;
+  QFont boldFont() const;
   void setFont(const QFont &font);
   int columnCount(const QModelIndex &parent=QModelIndex()) const;
   int rowCount(const QModelIndex &parent=QModelIndex()) const;
@@ -58,7 +60,7 @@ class RDLogModel : public QAbstractTableModel
   int append(const QString &logname,bool track_ptrs=false);
   int validate(QString *report,const QDate &date);
   void clear();
-  void refresh(int line);
+  void update(int line);
   int lineCount() const;
   void insert(int line,int num_lines,bool preserve_trans=false);
   void remove(int line,int num_lines,bool preserve_trans=false);
@@ -89,7 +91,13 @@ class RDLogModel : public QAbstractTableModel
  protected:
   void emitDataChanged(int row);
   void emitAllDataChanged();
-  virtual QColor backgroundColor(int line,RDLogLine *ll) const;
+  virtual QStringList headerTexts() const;
+  virtual QList<int> columnAlignments() const;
+  virtual QPixmap cellIcon(int col,int row,RDLogLine *ll) const;
+  virtual QString cellText(int col,int line,RDLogLine *ll) const;
+  virtual QFont cellTextFont(int col,int line,RDLogLine *ll) const;
+  virtual QColor cellTextColor(int col,int line,RDLogLine *ll) const;
+  virtual QColor rowBackgroundColor(int line,RDLogLine *ll) const;
 
  private:
   QString StartTimeString(int line) const;
