@@ -1563,6 +1563,85 @@ Cart</source>
     </message>
 </context>
 <context>
+    <name>RDCutListModel</name>
+    <message>
+        <source>Wt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Länge</translation>
+    </message>
+    <message>
+        <source>Last Played</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source># of Plays</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ingest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outcue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Daypart Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Daypart End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SHA1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>not available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ord</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDDateDialog</name>
     <message>
         <source>Select Date</source>

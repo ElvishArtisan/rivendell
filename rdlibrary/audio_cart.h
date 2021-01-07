@@ -2,7 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,12 @@
 #ifndef AUDIO_CART_H
 #define AUDIO_CART_H
 
-#include <qprogressdialog.h>
+#include <QProgressDialog>
+#include <QTableView>
 
 #include <rdcart.h>
-#include <rdlistviewitem.h>
+//#include <rdlistviewitem.h>
+#include <rdcutlistmodel.h>
 #include <rdwidget.h>
 
 #include "audio_controls.h"
@@ -51,6 +53,7 @@ class AudioCart : public RDWidget
   void pasteCutData();
   void editCutData();
   void recordCutData();
+  void doubleClickedData(const QModelIndex &index);
   void ripCutData();
   void importCutData();
 
@@ -67,12 +70,15 @@ class AudioCart : public RDWidget
   void audioChanged();
 
  private:
+  int SingleSelectedLine() const;
   RDListViewItem *SelectedCuts(std::vector<QString> *cutnames);
   void RefreshList();
   void RefreshLine(RDListViewItem *item);
   unsigned NextCut();
   RDCart *rdcart_cart;
-  RDListView *rdcart_cut_list;
+  //  RDListView *rdcart_cut_list;
+  QTableView *rdcart_cut_view;
+  RDCutListModel *rdcart_cut_model;
   unsigned rdcart_average_length;
   QString *rdcart_import_path;
   bool rdcart_select_cut;

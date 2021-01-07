@@ -47,6 +47,10 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_profile_rip=profile_rip;
   rdcart_modification_allowed=rda->user()->editAudio()&&cart->owner().isEmpty();
 
+
+  rdcart_use_weighting=true;
+
+
   QColor system_button_text_color = palette().active().buttonText();
 
   //
@@ -97,6 +101,24 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Cart Cut List
   //
+  rdcart_cut_view=new QTableView(this);
+  rdcart_cut_view->setGeometry(100,0,430,sizeHint().height());
+  rdcart_cut_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  rdcart_cut_view->setSelectionMode(QAbstractItemView::SingleSelection);
+  rdcart_cut_view->setShowGrid(false);
+  rdcart_cut_view->setSortingEnabled(false);
+  rdcart_cut_view->setWordWrap(false);
+  rdcart_cut_model=NULL;
+  connect(rdcart_cut_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+
+  /*
+  connect(list_filter_widget,SIGNAL(filterChanged(const QString &)),
+	  rdcart_cut_model,SLOT(setFilterSql(const QString &)));
+  connect(rdcart_cut_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
+  */
+
+  /*
   rdcart_cut_list=new RDListView(this);
   rdcart_cut_list->setGeometry(100,0,430,sizeHint().height());
   rdcart_cut_list->setAllColumnsShowFocus(true);
@@ -155,7 +177,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_cut_list->setColumnAlignment(13,Qt::AlignLeft);
 
   RefreshList();
-
+  */
   //
   // Record Cut Button
   //
@@ -253,6 +275,25 @@ QSizePolicy AudioCart::sizePolicy() const
 
 void AudioCart::changeCutScheduling(int sched)
 {
+  RDCutListModel *old_model=rdcart_cut_model;
+
+  rdcart_cut_model=new RDCutListModel(sched,this);
+  rdcart_cut_model->setFont(defaultFont());
+  rdcart_cut_model->setPalette(palette());
+  rdcart_cut_model->setCartNumber(rdcart_cart->number());
+  rdcart_cut_view->setModel(rdcart_cut_model);
+  rdcart_cut_view->resizeColumnsToContents();
+  delete old_model;
+
+  if(sched) {
+    rdcart_cut_view->sortByColumn(12,Qt::AscendingOrder);
+  }
+  else {
+    rdcart_cut_view->sortByColumn(0,Qt::AscendingOrder);
+  }
+
+  rdcart_use_weighting=sched!=0;
+  /*
   QString sql;
   RDSqlQuery *q;
 
@@ -274,7 +315,7 @@ void AudioCart::changeCutScheduling(int sched)
     rdcart_cut_list->setColumnText(0,tr("Ord"));
     rdcart_cut_list->setSortColumn(0);
   }
-  rdcart_use_weighting=sched!=0;
+  */
 }
 
 
@@ -289,27 +330,27 @@ void AudioCart::addCutData()
 			 tr("This cart cannot contain any additional cuts!"));
     return;
   }
-  rdcart_cut_list->clearSelection();
-  RDListViewItem *item=new RDListViewItem(rdcart_cut_list);
-  item->setText(12,next_name);
-  RefreshLine(item);
-  rdcart_cut_list->setSelected(item,true);
-  rdcart_cut_list->ensureItemVisible(item);
+  rdcart_cut_view->clearSelection();
+
+  int row=rdcart_cut_model->addCut(next_name);
+  rdcart_cut_view->selectRow(row);
+  rdcart_cut_view->scrollTo(rdcart_cut_model->index(row,0));
   disk_gauge->update();
+
   emit cartDataChanged();
 }
 
 
 void AudioCart::deleteCutData()
 {
-  QString filename;
-  QString str;
-  std::vector<QString> cutnames;
-  RDListViewItem *item=NULL;
-
-  item=SelectedCuts(&cutnames);
-  if(cutnames.size()==0) {
+  QModelIndexList rows=rdcart_cut_view->selectionModel()->selectedRows();
+  if(rows.size()==0) {
     return;
+  }
+
+  QStringList cutnames;
+  for(int i=0;i<rows.size();i++) {
+    cutnames.push_back(rdcart_cut_model->cutName(rows.at(i).row()));
   }
 
   //
@@ -318,7 +359,7 @@ void AudioCart::deleteCutData()
   if(cutnames.size()==1) {
     switch(QMessageBox::question(this,"RDLibrary - "+tr("Delete Cut"),
 				 tr("Are you sure you want to delete")+" \""+
-				 item->text(1)+"\"?",
+				 rdcart_cut_model->data(rdcart_cut_model->index(rows.first().row(),1)).toString()+"\"?",
 				 QMessageBox::Yes,QMessageBox::No)) {
 
     case QMessageBox::No:
@@ -332,7 +373,7 @@ void AudioCart::deleteCutData()
   else {
     if(QMessageBox::question(this,"RDLibrary - "+tr("Delete Cuts"),
 			     tr("Are you sure you want to delete")+
-			     QString().sprintf(" %lu ",cutnames.size())+
+			     QString().sprintf(" %d ",cutnames.size())+
 			     tr("cuts")+"?",QMessageBox::Yes,
 			     QMessageBox::No)!=QMessageBox::Yes) {
       return;
@@ -342,9 +383,9 @@ void AudioCart::deleteCutData()
   //
   // Check for RDCatch Events
   //
-  for(unsigned i=0;i<cutnames.size();i++) {
+  for(int i=0;i<cutnames.size();i++) {
     QString sql=QString("select CUT_NAME from RECORDINGS where ")+
-      "CUT_NAME=\""+RDEscapeString(cutnames[i])+"\"";
+      "CUT_NAME=\""+RDEscapeString(cutnames.at(i))+"\"";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       if(QMessageBox::warning(this,tr("RDCatch Event Exists"),
@@ -360,7 +401,7 @@ void AudioCart::deleteCutData()
   // Check Clipboard
   //
   if(cut_clipboard!=NULL) {
-    for(unsigned i=0;i<cutnames.size();i++) {
+    for(int i=0;i<cutnames.size();i++) {
       if(cutnames.at(i)==cut_clipboard->cutName()) {
 	if(QMessageBox::question(this,tr("Empty Clipboard"),
 				 tr("Deleting this cut will also empty the clipboard.\nDo you still want to proceed?"),QMessageBox::Yes,QMessageBox::No)==
@@ -378,37 +419,21 @@ void AudioCart::deleteCutData()
   //
   // Delete Cuts
   //
-  for(unsigned i=0;i<cutnames.size();i++) {
-    if(!rdcart_cart->removeCut(rda->station(),rda->user(),cutnames[i],
+  for(int i=0;i<cutnames.size();i++) {
+    if(!rdcart_cart->removeCut(rda->station(),rda->user(),cutnames.at(i),
 			       rda->config())) {
       QMessageBox::warning(this,tr("RDLibrary"),
 			   tr("Unable to delete audio for cut")+
-			   QString().sprintf(" %d!",RDCut::cutNumber(cutnames[i])));
+			   QString().sprintf(" %d!",RDCut::cutNumber(cutnames.at(i))));
       return;
     }
+    rdcart_cut_model->removeCut(cutnames.at(i));
   }
-  //  UpdateCutCount();
-
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			    QTime().msecsTo(rdcart_controls->
 					    forced_length_edit->time()));
   rdcart_cart->resetRotation();
   disk_gauge->update();
-
-  //
-  // Update List
-  //
-  item=(RDListViewItem *)rdcart_cut_list->firstChild();
-  while(item!=NULL) {
-    RDListViewItem *del=NULL;
-    if(item->isSelected()) {
-      del=item;
-    }
-    item=(RDListViewItem *)item->nextSibling();
-    if(del!=NULL) {
-      delete del;
-    }
-  }
 
   emit cartDataChanged();
 }
@@ -416,33 +441,67 @@ void AudioCart::deleteCutData()
 
 void AudioCart::copyCutData()
 {
-  std::vector<QString> cutnames;
-  RDListViewItem *item=NULL;
+  int row;
 
-  if((item=SelectedCuts(&cutnames))==NULL) {
-    QMessageBox::information(this,"RDLibrary - "+tr("Copy Cut"),
-			  tr("No data copied - you must select a single cut!"));
+  if((row=SingleSelectedLine())<0) {
     return;
   }
   if(cut_clipboard!=NULL) {
     delete cut_clipboard;
   }
-  cut_clipboard=new RDCut(item->text(12));
+  cut_clipboard=new RDCut(rdcart_cut_model->cutName(row));
   paste_cut_button->setEnabled(rdcart_modification_allowed);
+}
+
+
+void AudioCart::pasteCutData()
+{
+  int row;
+
+  if((row=SingleSelectedLine())<0) {
+    return;
+  }
+  if(!cut_clipboard->exists()) {
+    QMessageBox::information(this,tr("Clipboard Empty"),
+			     tr("Clipboard is currently empty."));
+    delete cut_clipboard;
+    cut_clipboard=NULL;
+    paste_cut_button->setDisabled(true);
+    return;
+  }
+  if(QFile::exists(RDCut::pathName(rdcart_cut_model->cutName(row)))) {
+    if(QMessageBox::warning(this,tr("Audio Exists"),
+			    tr("This will overwrite the existing recording.\nDo you want to proceed?"),
+			    QMessageBox::Yes,
+			    QMessageBox::No)==QMessageBox::No) {
+      return;
+    }
+  }
+  cut_clipboard->connect(this,SLOT(copyProgressData(const QVariant &)));
+  cut_clipboard->copyTo(rda->station(),rda->user(),
+			rdcart_cut_model->cutName(row),rda->config());
+  cut_clipboard->disconnect(this,SLOT(copyProgressData(const QVariant &)));
+  rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
+			    QTime().msecsTo(rdcart_controls->
+					    forced_length_edit->time()));
+  rdcart_cart->resetRotation();
+  rdcart_cut_model->refresh(row);
+  disk_gauge->update();
+
+  emit cartDataChanged();
 }
 
 
 void AudioCart::extEditorCutData()
 {
-  std::vector<QString> cutnames;
-  RDListViewItem *item=NULL;
+  int row;
 
-  if((item=SelectedCuts(&cutnames))==NULL) {
+  if((row=SingleSelectedLine())<0) {
     return;
   }
 
   QString cmd=rda->station()->editorPath();
-  cmd.replace("%f",RDCut::pathName(rdcart_cut_list->currentItem()->text(12)));
+  cmd.replace("%f",RDCut::pathName(rdcart_cut_model->cutName(row)));
   // FIXME: other replace commands to match: lib/rdcart_dialog.cpp editorData()
   //        These substitions should be documented (maybe a text file),
   //            ex: %f = cart_cut filename
@@ -454,53 +513,15 @@ void AudioCart::extEditorCutData()
   }
 }
 
-void AudioCart::pasteCutData()
-{
-  std::vector<QString> cutnames;
-  RDListViewItem *item=NULL;
-
-  if((item=SelectedCuts(&cutnames))==NULL) {
-    QMessageBox::information(this,"RDLibrary - "+tr("Paste Cut"),
-			  tr("You must select a single cut!"));
-    return;
-  }
-  if(!cut_clipboard->exists()) {
-    QMessageBox::information(this,tr("Clipboard Empty"),
-			     tr("Clipboard is currently empty."));
-    delete cut_clipboard;
-    cut_clipboard=NULL;
-    paste_cut_button->setDisabled(true);
-    return;
-  }
-  if(QFile::exists(RDCut::pathName(item->text(12)))) {
-    if(QMessageBox::warning(this,tr("Audio Exists"),
-			    tr("This will overwrite the existing recording.\nDo you want to proceed?"),
-			    QMessageBox::Yes,
-			    QMessageBox::No)==QMessageBox::No) {
-      return;
-    }
-  }
-  cut_clipboard->connect(this,SLOT(copyProgressData(const QVariant &)));
-  cut_clipboard->copyTo(rda->station(),rda->user(),item->text(12),rda->config());
-  cut_clipboard->disconnect(this,SLOT(copyProgressData(const QVariant &)));
-  rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
-			    QTime().msecsTo(rdcart_controls->
-					    forced_length_edit->time()));
-  rdcart_cart->resetRotation();
-  disk_gauge->update();
-  emit cartDataChanged();
-  RefreshList();
-}
-
 
 void AudioCart::editCutData()
 {
-  RDListViewItem *item=NULL;
-  std::vector<QString> cutnames;
-  if((item=SelectedCuts(&cutnames))==NULL) {
+  int row;
+
+  if((row=SingleSelectedLine())<0) {
     return;
   }
-  QString cutname=item->text(12);
+  QString cutname=rdcart_cut_model->cutName(row);
   if(!RDAudioExists(cutname)) {
     QMessageBox::information(this,"RDLibrary",
 			     tr("No audio is present in the cut!"));
@@ -515,7 +536,7 @@ void AudioCart::editCutData()
     rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			      QTime().msecsTo(rdcart_controls->
 					      forced_length_edit->time()));
-    RefreshLine(item);
+    rdcart_cut_model->refresh(row);
   }
   delete edit;
 }
@@ -523,15 +544,16 @@ void AudioCart::editCutData()
 
 void AudioCart::recordCutData()
 {
-  RDListViewItem *item=NULL;
-  std::vector<QString> cutnames;
-  if((item=SelectedCuts(&cutnames))==NULL) {
+  int row;
+
+  if((row=SingleSelectedLine())<0) {
     return;
   }
-  QString cutname=item->text(12);
+  QString cutname=rdcart_cut_model->cutName(row);
   RecordCut *cut=new RecordCut(rdcart_cart,cutname,rdcart_use_weighting,this);
   cut->exec();
   delete cut;
+  rdcart_cut_model->refresh(row);
   if(cut_clipboard==NULL) {
     paste_cut_button->setDisabled(true);
   }
@@ -540,7 +562,12 @@ void AudioCart::recordCutData()
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			    QTime().msecsTo(rdcart_controls->
 					    forced_length_edit->time()));
-  RefreshLine(item);
+}
+
+
+void AudioCart::doubleClickedData(const QModelIndex &index)
+{
+  recordCutData();
 }
 
 
@@ -552,13 +579,13 @@ void AudioCart::ripCutData()
   QString artist;
   QString album;
   QString label;
+  int row;
 
-  RDListViewItem *item=NULL;
-  std::vector<QString> cutnames;
-  if((item=SelectedCuts(&cutnames))==NULL) {
+  if((row=SingleSelectedLine())<0) {
     return;
   }
-  cutname=item->text(12);
+
+  cutname=rdcart_cut_model->cutName(row);
   RDDiscRecord *rec=new RDDiscRecord();
   CdRipper *ripper=new CdRipper(cutname,rec,rda->libraryConf(),rdcart_profile_rip);
   if((track=ripper->exec(&title,&artist,&album,&label))>=0) {
@@ -586,7 +613,7 @@ void AudioCart::ripCutData()
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			    QTime().msecsTo(rdcart_controls->
 					    forced_length_edit->time()));
-  RefreshLine(item);
+  rdcart_cut_model->refresh(row);
 }
 
 
@@ -594,12 +621,14 @@ void AudioCart::importCutData()
 {
   QString cutname;
   RDWaveData wavedata;
-  RDListViewItem *item=NULL;
   std::vector<QString> cutnames;
-  if((item=SelectedCuts(&cutnames))==NULL) {
+  int row;
+
+  if((row=SingleSelectedLine())<0) {
     return;
   }
-  cutname=item->text(12);
+
+  cutname=rdcart_cut_model->cutName(row);
   RDSettings settings;
   rda->libraryConf()->getSettings(&settings);
   RDImportAudio *import=new RDImportAudio(cutname,rdcart_import_path,
@@ -661,7 +690,7 @@ void AudioCart::importCutData()
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			    QTime().msecsTo(rdcart_controls->
 					    forced_length_edit->time()));
-  RefreshLine(item);
+  rdcart_cut_model->refresh(row);
 }
 
 
@@ -678,8 +707,18 @@ void AudioCart::copyProgressData(const QVariant &step)
 }
 
 
+int AudioCart::SingleSelectedLine() const
+{
+  if(rdcart_cut_view->selectionModel()->selectedRows().size()!=1) {
+    return -1;
+  }
+  return rdcart_cut_view->selectionModel()->selectedRows().first().row();
+}
+
+
 RDListViewItem *AudioCart::SelectedCuts(std::vector<QString> *cutnames)
 {
+  /*
   RDListViewItem *ret=NULL;
   RDListViewItem *item=(RDListViewItem *)rdcart_cut_list->firstChild();
   while(item!=NULL) {
@@ -693,11 +732,14 @@ RDListViewItem *AudioCart::SelectedCuts(std::vector<QString> *cutnames)
     return ret;
   }
   return NULL;
+  */
+  return NULL;
 }
 
 
 void AudioCart::RefreshList()
 {
+  /*
   RDSqlQuery *q;
   QString sql;
   RDListViewItem *l;
@@ -826,6 +868,7 @@ void AudioCart::RefreshList()
     rdcart_cut_list->setSelected(l,true);
     rdcart_select_cut=false;
   }
+  */
 }
 
 

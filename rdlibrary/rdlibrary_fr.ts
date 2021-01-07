@@ -54,27 +54,6 @@ Markers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDCatch Event Exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Empty Clipboard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Deleting this cut will also empty the clipboard.
-Do you still want to proceed?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Clipboard Empty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -104,56 +83,7 @@ Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDLibrary</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>No audio is present in the cut!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This cart cannot contain any additional cuts!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDLibrary - Edit Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Cuts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>cuts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>One or more cuts are used in one or more RDCatch events!
-Do you still want to delete?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to delete audio for cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No data copied - you must select a single cut!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Paste Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You must select a single cut!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SHA1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -165,59 +95,53 @@ Do you still want to delete?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Wt</source>
+        <source>RDLibrary - Edit Cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Description</source>
+        <source>This cart cannot contain any additional cuts!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Length</source>
+        <source>Delete Cuts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Last Played</source>
+        <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source># of Plays</source>
+        <source>cuts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Source</source>
+        <source>Delete Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ingest</source>
+        <source>RDCatch Event Exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Outcue</source>
+        <source>One or more cuts are used in one or more RDCatch events!
+Do you still want to delete?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Start Date</source>
+        <source>Empty Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>End Date</source>
+        <source>Deleting this cut will also empty the clipboard.
+Do you still want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Daypart Start</source>
+        <source>RDLibrary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Daypart End</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ord</source>
+        <source>Unable to delete audio for cut</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

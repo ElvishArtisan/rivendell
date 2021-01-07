@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/lib
 ##
-## (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -84,6 +84,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdcastsearch.cpp rdcastsearch.h\
                         rdcatch_conf.cpp rdcatch_conf.h\
                         rdcatch_connect.cpp rdcatch_connect.h\
+                        rdcutlistmodel.cpp rdcutlistmodel.h\
                         rdcddblookup.cpp rdcddblookup.h\
                         rdcdplayer.cpp rdcdplayer.h\
                         rdcdripper.cpp rdcdripper.h\
@@ -278,6 +279,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdcueedit.cpp\
                           moc_rdcueeditdialog.cpp\
                           moc_rdcut_dialog.cpp\
+                          moc_rdcutlistmodel.cpp\
                           moc_rddatapacer.cpp\
                           moc_rddatedialog.cpp\
                           moc_rddatepicker.cpp\

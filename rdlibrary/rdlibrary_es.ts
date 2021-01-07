@@ -85,20 +85,20 @@
     </message>
     <message>
         <source>Are you sure you want to delete</source>
-        <translation>¿Desea eliminar </translation>
+        <translation type="unfinished">¿Desea eliminar </translation>
     </message>
     <message>
         <source>Delete Cut</source>
-        <translation>Eliminar audio</translation>
+        <translation type="unfinished">Eliminar audio</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Vaciar portapapeles</translation>
+        <translation type="unfinished">Vaciar portapapeles</translation>
     </message>
     <message>
         <source>Deleting this cut will also empty the clipboard.
 Do you still want to proceed?</source>
-        <translation>Eliminando este audio también dejará el portapapeles vacío.
+        <translation type="unfinished">Eliminando este audio también dejará el portapapeles vacío.
 ¿Desea continuar la eliminación?</translation>
     </message>
     <message>
@@ -141,7 +141,7 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>RDCatch Event Exists</source>
-        <translation>Ya existe un evento RDCatch</translation>
+        <translation type="unfinished">Ya existe un evento RDCatch</translation>
     </message>
     <message>
         <source>Audio Exists</source>
@@ -171,7 +171,7 @@ Audio</translation>
     </message>
     <message>
         <source>RDLibrary</source>
-        <translation>RDLibrary</translation>
+        <translation type="unfinished">RDLibrary</translation>
     </message>
     <message>
         <source>Unable to delete audio!</source>
@@ -182,11 +182,27 @@ Audio</translation>
         <translation>¡No hay audios en este cut!</translation>
     </message>
     <message>
-        <source>This cart cannot contain any additional cuts!</source>
+        <source>not available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Played</source>
+        <translation type="obsolete">Últ. Reprod</translation>
+    </message>
+    <message>
+        <source># of Plays</source>
+        <translation type="obsolete"># de reprod</translation>
+    </message>
+    <message>
         <source>RDLibrary - Edit Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This cart cannot contain any additional cuts!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -204,90 +220,6 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>Unable to delete audio for cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No data copied - you must select a single cut!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Paste Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You must select a single cut!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SHA1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>not available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Last Played</source>
-        <translation type="unfinished">Últ. Reprod</translation>
-    </message>
-    <message>
-        <source># of Plays</source>
-        <translation type="unfinished"># de reprod</translation>
-    </message>
-    <message>
-        <source>Source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ingest</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Outcue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>End Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Daypart Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Daypart End</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ord</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

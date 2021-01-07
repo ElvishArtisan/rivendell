@@ -109,15 +109,15 @@ značky</translation>
     </message>
     <message>
         <source>Are you sure you want to delete</source>
-        <translation>Jste si jistý, že chcete smazat</translation>
+        <translation type="unfinished">Jste si jistý, že chcete smazat</translation>
     </message>
     <message>
         <source>Delete Cut</source>
-        <translation>Smazat záběr</translation>
+        <translation type="unfinished">Smazat záběr</translation>
     </message>
     <message>
         <source>RDCatch Event Exists</source>
-        <translation>Událost RDCatch existuje</translation>
+        <translation type="unfinished">Událost RDCatch existuje</translation>
     </message>
     <message>
         <source>This cut is used in one or more RDCatch events!
@@ -127,12 +127,12 @@ Přesto smazat?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Vyprázdnit schránku</translation>
+        <translation type="unfinished">Vyprázdnit schránku</translation>
     </message>
     <message>
         <source>Deleting this cut will also empty the clipboard.
 Do you still want to proceed?</source>
-        <translation>Smazání tohoto záběru vyprázdní také schránku.
+        <translation type="unfinished">Smazání tohoto záběru vyprázdní také schránku.
 Přesto smazat?</translation>
     </message>
     <message>
@@ -171,7 +171,7 @@ Přesto pokračovat?</translation>
     </message>
     <message>
         <source>RDLibrary</source>
-        <translation>RDLibrary</translation>
+        <translation type="unfinished">RDLibrary</translation>
     </message>
     <message>
         <source>Unable to delete audio!</source>
@@ -182,11 +182,27 @@ Přesto pokračovat?</translation>
         <translation>V záběru není přítomen žádný zvuk!</translation>
     </message>
     <message>
-        <source>This cart cannot contain any additional cuts!</source>
+        <source>not available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Played</source>
+        <translation type="obsolete">Naposledy přehráno</translation>
+    </message>
+    <message>
+        <source># of Plays</source>
+        <translation type="obsolete"># přehrání</translation>
+    </message>
+    <message>
         <source>RDLibrary - Edit Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This cart cannot contain any additional cuts!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -204,90 +220,6 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>Unable to delete audio for cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No data copied - you must select a single cut!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Paste Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You must select a single cut!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SHA1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>not available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Last Played</source>
-        <translation type="unfinished">Naposledy přehráno</translation>
-    </message>
-    <message>
-        <source># of Plays</source>
-        <translation type="unfinished"># přehrání</translation>
-    </message>
-    <message>
-        <source>Source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ingest</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Outcue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>End Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Daypart Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Daypart End</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ord</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
