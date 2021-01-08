@@ -908,9 +908,30 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
     "TALK_END_POINT,"+     // 18
     "ISRC,"+               // 19
     "ISCI,"+               // 20
-    "RECORDING_MBID,"+         // 21
-    "RELEASE_MBID "+       // 22
+    "RECORDING_MBID,"+     // 21
+    "RELEASE_MBID,"+       // 22
 
+    "EVERGREEN,"+          // 23
+    "SHA1_HASH,"+          // 24
+    "ORIGIN_DATETIME,"+    // 25
+    "START_DATETIME,"+     // 26
+    "END_DATETIME,"+       // 27
+    "START_DAYPART,"+      // 28
+    "END_DAYPART,"+        // 29
+    "ORIGIN_NAME,"+        // 30
+    "ORIGIN_LOGIN_NAME,"+  // 31
+    "SOURCE_HOSTNAME,"+    // 32
+    "WEIGHT,"+             // 33
+    "PLAY_ORDER,"+         // 34
+    "UPLOAD_DATETIME,"+    // 35
+    "VALIDITY,"+           // 36
+    "SUN,"+                // 37
+    "MON,"+                // 38
+    "TUE,"+                // 39
+    "WED,"+                // 40
+    "THU,"+                // 41
+    "FRI,"+                // 42
+    "SAT "+                // 43
     "from CUTS where "+
     "CUT_NAME=\""+RDEscapeString(cut_name)+"\"";
   q=new RDSqlQuery(sql);
@@ -920,7 +941,6 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
       "DESCRIPTION=\""+RDEscapeString(q->value(0).toString())+"\","+
       "OUTCUE=\""+RDEscapeString(q->value(1).toString())+"\","+
       QString().sprintf("LENGTH=%u,",q->value(2).toUInt())+
-      "ORIGIN_DATETIME=now(),"+
       "ORIGIN_NAME=\""+RDEscapeString(station->name())+"\","+
       QString().sprintf("CODING_FORMAT=%u,",q->value(3).toUInt())+
       QString().sprintf("SAMPLE_RATE=%u,",q->value(4).toUInt())+
@@ -941,7 +961,32 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
       "ISRC=\""+RDEscapeString(q->value(19).toString())+"\","+
       "ISCI=\""+RDEscapeString(q->value(20).toString())+"\","+
       "RECORDING_MBID=\""+RDEscapeString(q->value(21).toString())+"\","+
-      "RELEASE_MBID=\""+RDEscapeString(q->value(22).toString())+"\" "+
+      "RELEASE_MBID=\""+RDEscapeString(q->value(22).toString())+"\","+
+      "EVERGREEN=\""+q->value(23).toString()+"\","+
+      "SHA1_HASH=\""+RDEscapeString(q->value(24).toString())+"\","+
+      "ORIGIN_DATETIME="+
+      RDCheckDateTime(q->value(25).toDateTime(),"yyyy-MM-dd hh:mm:ss")+","+
+      "START_DATETIME="+
+      RDCheckDateTime(q->value(26).toDateTime(),"yyyy-MM-dd hh:mm:ss")+","+
+      "END_DATETIME="+
+      RDCheckDateTime(q->value(27).toDateTime(),"yyyy-MM-dd hh:mm:ss")+","+
+      "START_DAYPART="+RDCheckDateTime(q->value(28).toTime(),"hh:mm:ss")+","+
+      "END_DAYPART="+RDCheckDateTime(q->value(29).toTime(),"hh:mm:ss")+","+
+      "ORIGIN_NAME=\""+RDEscapeString(q->value(30).toString())+"\","+
+      "ORIGIN_LOGIN_NAME=\""+RDEscapeString(q->value(31).toString())+"\","+
+      "SOURCE_HOSTNAME=\""+RDEscapeString(q->value(32).toString())+"\","+
+      QString().sprintf("WEIGHT=%u,",q->value(33).toUInt())+
+      QString().sprintf("PLAY_ORDER=%d,",q->value(34).toUInt())+
+      "UPLOAD_DATETIME="+
+      RDCheckDateTime(q->value(35).toDateTime(),"yyyy-MM-dd hh:mm:ss")+","+
+      QString().sprintf("VALIDITY=%u,",q->value(36).toUInt())+
+      "SUN=\""+q->value(37).toString()+"\","+
+      "MON=\""+q->value(38).toString()+"\","+
+      "TUE=\""+q->value(39).toString()+"\","+
+      "WED=\""+q->value(40).toString()+"\","+
+      "THU=\""+q->value(41).toString()+"\","+
+      "FRI=\""+q->value(42).toString()+"\","+
+      "SAT=\""+q->value(43).toString()+"\" "+
       "where CUT_NAME=\""+RDEscapeString(cutname)+"\"";
   }
   delete q;

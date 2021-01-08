@@ -25,7 +25,6 @@
 #include <QTableView>
 
 #include <rdcart.h>
-//#include <rdlistviewitem.h>
 #include <rdcutlistmodel.h>
 #include <rdwidget.h>
 
@@ -42,6 +41,7 @@ class AudioCart : public RDWidget
 	    bool profile_rip,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+  RDCutListModel *cutListModel();
 
  public slots:
   void changeCutScheduling(int sched);
@@ -62,7 +62,6 @@ class AudioCart : public RDWidget
    * cut of audio.
    **/
   void extEditorCutData();
-  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
   void copyProgressData(const QVariant &step);
   
  signals:
@@ -71,12 +70,7 @@ class AudioCart : public RDWidget
 
  private:
   int SingleSelectedLine() const;
-  RDListViewItem *SelectedCuts(std::vector<QString> *cutnames);
-  void RefreshList();
-  void RefreshLine(RDListViewItem *item);
-  unsigned NextCut();
   RDCart *rdcart_cart;
-  //  RDListView *rdcart_cut_list;
   QTableView *rdcart_cut_view;
   RDCutListModel *rdcart_cut_model;
   unsigned rdcart_average_length;

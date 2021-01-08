@@ -75,23 +75,7 @@ Do you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Never</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>No audio is present in the cut!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>not available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -532,10 +516,6 @@ Selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Preserve Pitch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Title:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -695,14 +675,6 @@ Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The following cut order values are assigned more than once</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate Cut Order</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit Carts [multiple]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -712,6 +684,14 @@ Notes</source>
     </message>
     <message>
         <source>Use RDLogManager Length for PAD Updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following cut order values are assigned more than once</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate Cut Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

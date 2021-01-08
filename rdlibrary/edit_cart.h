@@ -72,8 +72,6 @@ class EditCart : public RDDialog
   QLineEdit *rdcart_average_length_edit;
   QLabel *rdcart_forced_length_label;
   QLineEdit *rdcart_forced_length_ledit;
-  QCheckBox *rdcart_preserve_pitch_button;
-  QLabel *rdcart_preserve_pitch_label;
   unsigned rdcart_average_length;
   unsigned rdcart_length_deviation;
   AudioCart *rdcart_audio_cart;
@@ -89,5 +87,4 @@ class EditCart : public RDDialog
   bool rdcart_profile_rip;
 };
 
-#endif
-
+#endif  // EDIT_CART_H

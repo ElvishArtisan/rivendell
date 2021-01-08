@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cart
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -200,21 +200,6 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
     rdcart_forced_length_label->hide();
     rdcart_controls.forced_length_edit->hide();
   }
-
-  //
-  // Cart Preserve Pitch
-  //
-  rdcart_preserve_pitch_button=new QCheckBox(this);
-  rdcart_preserve_pitch_button->setGeometry(430,38,20,15);
-  rdcart_preserve_pitch_label=
-    new QLabel(rdcart_preserve_pitch_button,tr("Preserve Pitch"),this);
-  rdcart_preserve_pitch_label->setGeometry(450,38,140,21);
-  rdcart_preserve_pitch_label->setFont(labelFont());
-  rdcart_preserve_pitch_label->
-    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
-  // ???????????????????????????????
-  rdcart_preserve_pitch_button->hide();
-  rdcart_preserve_pitch_label->hide();
 
   //
   // Cart Title
@@ -627,13 +612,6 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
       setTime(QTime().addMSecs(rdcart_cart->forcedLength()));
     rdcart_forced_length_ledit->
       setText(rdcart_controls.forced_length_edit->time().toString("hh:mm:ss"));
-    if(rdcart_cart->preservePitch()) {
-      rdcart_preserve_pitch_button->setChecked(true);
-    }
-    rdcart_preserve_pitch_button->
-      setEnabled(rdcart_controls.enforce_length_box->isChecked());
-    rdcart_preserve_pitch_label->
-      setEnabled(rdcart_controls.enforce_length_box->isChecked());
     rdcart_controls.title_edit->setText(rdcart_cart->title());
     if(!rdcart_cart->startDateTime().isNull()) {
       rdcart_start_date_edit->
@@ -827,28 +805,13 @@ void EditCart::okData()
       }
     }
     if(rdcart_cut_sched_box->currentItem()==0) {
-      std::vector<int> play_orders;
-      std::vector<int> order_duplicates;
-      sql=QString("select PLAY_ORDER from CUTS where ")+
-	QString().sprintf("CART_NUMBER=%u",rdcart_cart->number());
-      q=new RDSqlQuery(sql);
-      while(q->next()) {
-	play_orders.push_back(q->value(0).toInt());
-      }
-      delete q;
-      for(unsigned i=0;i<play_orders.size();i++) {
-	for(unsigned j=i;j<play_orders.size();j++) {
-	  if((i!=j)&&(play_orders[i]==play_orders[j])) {
-	    order_duplicates.push_back(play_orders[j]);
-	  }
-	}
-      }
-      if(order_duplicates.size()>0) {
+      QList<int> dup_values;
+      if(rdcart_audio_cart->cutListModel()->playOrderDuplicates(&dup_values)) {
 	QString msg=
 	  tr("The following cut order values are assigned more than once")+
 	  ":\n";
-	for(unsigned i=0;i<order_duplicates.size();i++) {
-	  msg+=QString().sprintf("%d, ",order_duplicates[i]);
+	for(int i=0;i<dup_values.size();i++) {
+	  msg+=QString().sprintf("%d, ",dup_values.at(i));
 	}
 	msg=msg.left(msg.length()-2)+".";
 	QMessageBox::warning(this,"RDLibrary - "+tr("Duplicate Cut Order"),msg);
@@ -873,7 +836,6 @@ void EditCart::okData()
 	setForcedLength(RDSetTimeLength(rdcart_average_length_edit->text()));
       rdcart_cart->setEnforceLength(false);
     }
-    rdcart_cart->setPreservePitch(rdcart_preserve_pitch_button->isChecked());
     rdcart_cart->setTitle(rdcart_controls.title_edit->text());
     if(rdcart_controls.year_edit->text().toInt()==0) {
       rdcart_cart->setYear();

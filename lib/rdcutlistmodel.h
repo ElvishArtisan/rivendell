@@ -51,6 +51,8 @@ class RDCutListModel : public QAbstractTableModel
   void refresh(int row);
   void refresh(const QString &cutname);
   unsigned cartNumber() const;
+  int row(const QString &cutname) const;
+  bool playOrderDuplicates(QList<int> *values) const;
 
  public slots:
   void setCartNumber(unsigned cartnum);
@@ -59,6 +61,7 @@ class RDCutListModel : public QAbstractTableModel
  protected:
   void updateRow(int row,RDSqlQuery *q);
   QString sqlFields() const;
+  void sortRows(int use_weighting);
 
  private:
   RDCart::Validity ValidateCut(RDSqlQuery *q,unsigned offset,
@@ -70,6 +73,7 @@ class RDCutListModel : public QAbstractTableModel
   QList<QVariant> d_alignments;
   QList<QList<QVariant> > d_texts;
   QList<QVariant> d_colors;
+  QList<int> d_row_index;
   unsigned d_cart_number;
   bool d_use_weighting;
 };

@@ -111,11 +111,11 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>Never</source>
-        <translation>Nunca</translation>
+        <translation type="obsolete">Nunca</translation>
     </message>
     <message>
         <source>None</source>
-        <translation>Ninguno</translation>
+        <translation type="obsolete">Ninguno</translation>
     </message>
     <message>
         <source>1 Cut</source>
@@ -180,14 +180,6 @@ Audio</translation>
     <message>
         <source>No audio is present in the cut!</source>
         <translation>¡No hay audios en este cut!</translation>
-    </message>
-    <message>
-        <source>not available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Last Played</source>
@@ -705,7 +697,7 @@ Selection</source>
     </message>
     <message>
         <source>Preserve Pitch</source>
-        <translation>Preservar pitch</translation>
+        <translation type="obsolete">Preservar pitch</translation>
     </message>
     <message>
         <source>&amp;Title:</source>
@@ -890,14 +882,6 @@ Notas</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The following cut order values are assigned more than once</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate Cut Order</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit Carts [multiple]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -907,6 +891,14 @@ Notas</translation>
     </message>
     <message>
         <source>Use RDLogManager Length for PAD Updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following cut order values are assigned more than once</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate Cut Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
