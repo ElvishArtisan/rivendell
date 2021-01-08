@@ -20766,3 +20766,5 @@
 2021-01-07 Fred Gleason <fredg@paravelsystems.com>
 	* Restored support for scheduling cuts by specified order in
 	the 'Edit Cut' dialog in rdlibrary(1).
+2021-01-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a memory leak in 'RDLogListModel'.

@@ -212,6 +212,7 @@ void RDLogListModel::refresh(int row)
       updateRow(row,q);
       emit dataChanged(createIndex(row,0),createIndex(row,columnCount()));
     }
+    delete q;
   }
 }
 
