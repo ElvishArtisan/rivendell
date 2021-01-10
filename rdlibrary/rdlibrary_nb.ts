@@ -1095,31 +1095,31 @@ korg</translation>
     </message>
     <message>
         <source>Filter:</source>
-        <translation>Filter:</translation>
+        <translation type="obsolete">Filter:</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Søk</translation>
+        <translation type="obsolete">&amp;Søk</translation>
     </message>
     <message>
         <source>&amp;Clear</source>
-        <translation>&amp;Tøm</translation>
+        <translation type="obsolete">&amp;Tøm</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Gruppe:</translation>
+        <translation type="obsolete">Gruppe:</translation>
     </message>
     <message>
         <source>Scheduler Code:</source>
-        <translation>Planleggarkode:</translation>
+        <translation type="obsolete">Planleggarkode:</translation>
     </message>
     <message>
         <source>Show Audio Carts</source>
-        <translation>Vis lydkorger</translation>
+        <translation type="obsolete">Vis lydkorger</translation>
     </message>
     <message>
         <source>Show Macro Carts</source>
-        <translation>Vis makrokorger</translation>
+        <translation type="obsolete">Vis makrokorger</translation>
     </message>
     <message>
         <source>CART</source>
@@ -1217,7 +1217,7 @@ CD</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>ALT</translation>
+        <translation type="obsolete">ALT</translation>
     </message>
     <message>
         <source></source>
@@ -1225,31 +1225,31 @@ CD</translation>
     </message>
     <message>
         <source>Are you sure you want to delete cart(s)</source>
-        <translation>Er du sikker på at du vil sletta korg(ene)</translation>
+        <translation type="unfinished">Er du sikker på at du vil sletta korg(ene)</translation>
     </message>
     <message>
         <source>Delete Cart(s)</source>
-        <translation>Slett korg(ene)</translation>
+        <translation type="unfinished">Slett korg(ene)</translation>
     </message>
     <message>
         <source>Cart %06u is used in one or more RDCatch events!
 Do you still want to delete it?</source>
-        <translation>Korga %06u er brukt i ei eller fleire RDCatch-hendingar.
+        <translation type="obsolete">Korga %06u er brukt i ei eller fleire RDCatch-hendingar.
 Vil du sletta ho likevel?</translation>
     </message>
     <message>
         <source>RDCatch Event Exists</source>
-        <translation>RDCatch-hending eksisterer</translation>
+        <translation type="unfinished">RDCatch-hending eksisterer</translation>
     </message>
     <message>
         <source>Deleting cart %06u will also empty the clipboard.
       	Do you still want to proceed?</source>
-        <translation>Viss du slettar korga %06u, tømer du utklyppstavla.
+        <translation type="obsolete">Viss du slettar korga %06u, tømer du utklyppstavla.
       	Vil du halda fram?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Tøm utklyppstavla</translation>
+        <translation type="unfinished">Tøm utklyppstavla</translation>
     </message>
     <message>
         <source>Sequence</source>
@@ -1272,35 +1272,11 @@ Vil du sletta ho likevel?</translation>
         <translation type="obsolete">, brukar:</translation>
     </message>
     <message>
-        <source>Show Note Bubbles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDLibrary</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to delete audio!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Only First </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> Matches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Host</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow Cart Dragging</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1312,92 +1288,20 @@ Vil du sletta ho likevel?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>End</source>
-        <translation type="unfinished">Slutt</translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Composer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Conductor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Publisher</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User Defined</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Slutt</translation>
     </message>
     <message>
         <source>Cuts</source>
-        <translation type="unfinished">Kutt</translation>
-    </message>
-    <message>
-        <source>Last Cut Played</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Kutt</translation>
     </message>
     <message>
         <source>Enforce Length</source>
-        <translation type="unfinished">Tving lengd</translation>
+        <translation type="obsolete">Tving lengd</translation>
     </message>
     <message>
         <source>Preserve Pitch</source>
-        <translation type="unfinished">Hald tonehøgd</translation>
-    </message>
-    <message>
-        <source>Length Deviation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Owned By</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Talk</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Hald tonehøgd</translation>
     </message>
     <message>
         <source>Run
@@ -1405,15 +1309,51 @@ Vil du sletta ho likevel?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>And Scheduler Code:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Matching Carts:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is used in one or more RDCatch events!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to delete it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>will also empty the clipboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to proceed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDLibrary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to delete audio!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is a voicetrack belonging to log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>It cannot be deleted here!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voicetrack Found</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

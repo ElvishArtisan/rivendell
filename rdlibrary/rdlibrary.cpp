@@ -2,7 +2,7 @@
 //
 // The Library Utility for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,10 +20,10 @@
 
 #include <sys/wait.h>
 
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <qshortcut.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QMessageBox>
+#include <QShortcut>
+#include <QTranslator>
 
 #include <curl/curl.h>
 
@@ -158,226 +158,39 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Filter
   //
-  lib_filter_edit=new QLineEdit(this);
-  lib_filter_label=new QLabel(lib_filter_edit,tr("Filter:"),this);
-  lib_filter_label->setFont(labelFont());
-  lib_filter_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  connect(lib_filter_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(filterChangedData(const QString &)));
-  connect(lib_filter_edit,SIGNAL(returnPressed()),
-	  this,SLOT(searchClickedData()));
-
-  //
-  // Filter Search Button
-  //
-  lib_search_button=new QPushButton(tr("&Search"),this);
-  lib_search_button->setFont(buttonFont());
-  connect(lib_search_button,SIGNAL(clicked()),this,SLOT(searchClickedData()));
-  switch(lib_filter_mode) {
-  case RDStation::FilterSynchronous:
-    lib_search_button->hide();
-    break;
-
-  case RDStation::FilterAsynchronous:
-    break;
-  }
-
-  //
-  // Filter Clear Button
-  //
-  lib_clear_button=new QPushButton(tr("&Clear"),this);
-  lib_clear_button->setFont(buttonFont());
-  lib_clear_button->setDisabled(true);
-  connect(lib_clear_button,SIGNAL(clicked()),this,SLOT(clearClickedData()));
-
-  //
-  // Group Filter
-  //
-  lib_group_box=new QComboBox(this);
-  lib_group_label=new QLabel(lib_group_box,tr("Group:"),this);
-  lib_group_label->setFont(labelFont());
-  lib_group_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  connect(lib_group_box,SIGNAL(activated(const QString &)),
-	  this,SLOT(groupActivatedData(const QString &)));
-
-  //
-  // Scheduler Codes Filter
-  //
-  lib_codes_box=new QComboBox(this);
-  lib_codes_label=new QLabel(lib_codes_box,tr("Scheduler Code:"),this);
-  lib_codes_label->setFont(labelFont());
-  lib_codes_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  connect(lib_codes_box,SIGNAL(activated(const QString &)),
-	  this,SLOT(groupActivatedData(const QString &)));
-
-  //
-  // Scheduler Codes2 Filter
-  //
-  lib_codes2_box=new QComboBox(this);
-  lib_codes2_label=new QLabel(lib_codes2_box,tr("And Scheduler Code:"),this);
-  lib_codes2_label->setFont(labelFont());
-  lib_codes2_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  connect(lib_codes2_box,SIGNAL(activated(const QString &)),
-	  this,SLOT(groupActivatedData(const QString &)));
-
-  //
-  // Results Counter
-  //
-  lib_matches_edit=new QLineEdit(this);
-  lib_matches_edit->setReadOnly(true);
-  lib_matches_label=new QLabel(lib_matches_edit,tr("Matching Carts:"),this);
-  lib_matches_label->setFont(labelFont());
-
-  //
-  // Show Allow Cart Drags Checkbox
-  //
-  lib_allowdrag_box=new QCheckBox(this);
-  lib_allowdrag_box->setChecked(false);
-  lib_allowdrag_label=
-    new QLabel(lib_allowdrag_box,tr("Allow Cart Dragging"),this);
-  lib_allowdrag_label->setFont(labelFont());
-  lib_allowdrag_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  connect(lib_allowdrag_box,SIGNAL(stateChanged(int)),
-	  this,SLOT(dragsChangedData(int)));
-  if(!rda->station()->enableDragdrop()) {
-    lib_allowdrag_box->hide();
-    lib_allowdrag_label->hide();
-  }
-
-  //
-  // Show Audio Carts Checkbox
-  //
-  lib_showaudio_box=new QCheckBox(this);
-  lib_showaudio_box->setChecked(true);
-  lib_showaudio_label=new QLabel(lib_showaudio_box,tr("Show Audio Carts"),this);
-  lib_showaudio_label->setFont(labelFont());
-  lib_showaudio_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  connect(lib_showaudio_box,SIGNAL(stateChanged(int)),
-	  this,SLOT(audioChangedData(int)));
-
-  //
-  // Show Macro Carts Checkbox
-  //
-  lib_showmacro_box=new QCheckBox(this);
-  lib_showmacro_box->setChecked(true);
-  lib_showmacro_label=new QLabel(lib_showmacro_box,tr("Show Macro Carts"),this);
-  lib_showmacro_label->setFont(labelFont());
-  lib_showmacro_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  connect(lib_showmacro_box,SIGNAL(stateChanged(int)),
-	  this,SLOT(macroChangedData(int)));
-
-  //
-  // Show Cart Notes Checkbox
-  //
-  lib_shownotes_box=new QCheckBox(this);
-  lib_shownotes_box->setChecked(true);
-  lib_shownotes_label=
-    new QLabel(lib_shownotes_box,tr("Show Note Bubbles"),this);
-  lib_shownotes_label->setFont(labelFont());
-  lib_shownotes_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-
-  //
-  // Show Matches Checkbox
-  //
-  lib_showmatches_box=new QCheckBox(this);
-  lib_showmatches_label=
-    new QLabel(lib_showmatches_box,tr("Show Only First ")+
-	       QString().sprintf("%d",RD_LIMITED_CART_SEARCH_QUANTITY)+
-	       tr(" Matches"),this);
-  lib_showmatches_label->setFont(labelFont());
-  lib_showmatches_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  connect(lib_showmatches_box,SIGNAL(stateChanged(int)),
-	  this,SLOT(searchLimitChangedData(int)));
-
+  lib_cart_filter=new RDCartFilter(this);
+  connect(rda,SIGNAL(userChanged()),lib_cart_filter,SLOT(changeUser()));
+  connect(lib_cart_filter,SIGNAL(selectedGroupChanged(const QString &)),
+	  this,SLOT(selectedGroupChangedData(const QString &)));
+  
   //
   // Cart List
   //
-  lib_cart_list=new LibListView(this);
-  lib_cart_list->setAllColumnsShowFocus(true);
-  lib_cart_list->setItemMargin(5);
-  lib_cart_list->setSelectionMode(Q3ListView::Extended);
-  lib_cart_list->setRootIsDecorated(true);
-  lib_cart_list->enableNoteBubbles(true);
-  lib_cart_list->setContiguous(false);
-  connect(lib_cart_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int)));
-  connect(lib_cart_list,SIGNAL(selectionChanged()),
-	  this,SLOT(cartClickedData()));
-  connect(lib_cart_list,SIGNAL(onItem(Q3ListViewItem *)),
-	  this,SLOT(cartOnItemData(Q3ListViewItem *)));
-  connect(lib_shownotes_box,SIGNAL(toggled(bool)),
-  	  lib_cart_list,SLOT(enableNoteBubbles(bool)));
-  lib_cart_list->addColumn("");
-  lib_cart_list->setColumnAlignment(Icon,Qt::AlignHCenter);
-  lib_cart_list->addColumn(tr("Cart"));
-  lib_cart_list->setColumnAlignment(Cart,Qt::AlignLeft);
-
-  lib_cart_list->addColumn(tr("Group"));
-  lib_cart_list->setColumnAlignment(Group,Qt::AlignHCenter);
-
-  lib_cart_list->addColumn(tr("Length"));
-  lib_cart_list->setColumnAlignment(Length,Qt::AlignRight);
-  lib_cart_list->setColumnSortType(Length,RDListView::TimeSort);
-
-  lib_cart_list->addColumn(tr("Talk"));
-  lib_cart_list->setColumnAlignment(Talk,Qt::AlignRight);
-  lib_cart_list->setColumnSortType(Length,RDListView::TimeSort);
-
-  lib_cart_list->addColumn(tr("Title"));
-  lib_cart_list->setColumnAlignment(Title,Qt::AlignLeft);
-
-  lib_cart_list->addColumn(tr("Artist"));
-  lib_cart_list->setColumnAlignment(Artist,Qt::AlignLeft);
-
-  lib_cart_list->addColumn(tr("Start"));
-  lib_cart_list->setColumnAlignment(Start,Qt::AlignHCenter);
-
-  lib_cart_list->addColumn(tr("End"));
-  lib_cart_list->setColumnAlignment(End,Qt::AlignHCenter);
-
-  lib_cart_list->addColumn(tr("Album"));
-  lib_cart_list->setColumnAlignment(Album,Qt::AlignLeft);
-
-  lib_cart_list->addColumn(tr("Label"));
-  lib_cart_list->setColumnAlignment(Label,Qt::AlignLeft);
-
-  lib_cart_list->addColumn(tr("Composer"));
-  lib_cart_list->setColumnAlignment(Composer,Qt::AlignLeft);
-
-  lib_cart_list->addColumn(tr("Conductor"));
-  lib_cart_list->setColumnAlignment(Conductor,Qt::AlignLeft);
-
-  lib_cart_list->addColumn(tr("Publisher"));
-  lib_cart_list->setColumnAlignment(Publisher,Qt::AlignLeft);
-
-  lib_cart_list->addColumn(tr("Client"));
-  lib_cart_list->setColumnAlignment(Client,Qt::AlignLeft);
-
-  lib_cart_list->addColumn(tr("Agency"));
-  lib_cart_list->setColumnAlignment(Agency,Qt::AlignLeft);
-
-  lib_cart_list->addColumn(tr("User Defined"));
-  lib_cart_list->setColumnAlignment(UserDefined,Qt::AlignLeft);
-
-  lib_cart_list->addColumn(tr("Cuts"));
-  lib_cart_list->setColumnAlignment(Cuts,Qt::AlignRight);
-
-  lib_cart_list->addColumn(tr("Last Cut Played"));
-  lib_cart_list->setColumnAlignment(LastCutPlayed,Qt::AlignHCenter);
-
-  lib_cart_list->addColumn(tr("Enforce Length"));
-  lib_cart_list->setColumnAlignment(EnforceLength,Qt::AlignHCenter);
-
-  lib_cart_list->addColumn(tr("Preserve Pitch"));
-  lib_cart_list->setColumnAlignment(PreservePitch,Qt::AlignHCenter);
-
-  lib_cart_list->addColumn(tr("Length Deviation"));
-  lib_cart_list->setColumnAlignment(LengthDeviation,Qt::AlignHCenter);
-
-  lib_cart_list->addColumn(tr("Owned By"));
-  lib_cart_list->setColumnAlignment(OwnedBy,Qt::AlignHCenter);
+  lib_cart_view=new QTableView(this);
+  lib_cart_view->setGeometry(100,0,430,sizeHint().height());
+  lib_cart_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  lib_cart_view->setShowGrid(false);
+  lib_cart_view->setSortingEnabled(false);
+  lib_cart_view->setWordWrap(false);
+  lib_cart_model=new RDLibraryModel(this);
+  lib_cart_model->setFont(font());
+  lib_cart_model->setPalette(palette());
+  lib_cart_view->setModel(lib_cart_model);
+  connect(lib_cart_filter,SIGNAL(filterChanged(const QString &)),
+	  lib_cart_model,SLOT(setFilterSql(const QString &)));
+  connect(lib_cart_filter,SIGNAL(dragEnabledChanged(bool)),
+	  this,SLOT(dragsChangedData(bool)));
+  connect(lib_cart_model,SIGNAL(modelReset()),
+	  lib_cart_view,SLOT(resizeColumnsToContents()));
+  connect(lib_cart_model,SIGNAL(rowCountChanged(int)),
+	  lib_cart_filter,SLOT(setMatchCount(int)));
+  connect(lib_cart_view,SIGNAL(doubleClicked(const QModelIndex &)),
+  	  this,SLOT(cartDoubleClickedData(const QModelIndex &)));
+  connect(lib_cart_view->selectionModel(),
+       SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
+       this,
+       SLOT(selectionChangedData(const QItemSelection &,
+				 const QItemSelection &)));
 
   //
   // Add Button
@@ -473,29 +286,16 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   ::signal(SIGCHLD,SigHandler);
 
-  //
-  // Load Data
-  //
-  switch(rda->libraryConf()->limitSearch()) {
-  case RDLibraryConf::LimitNo:
-    lib_showmatches_box->setChecked(false);
-    break;
-
-  case RDLibraryConf::LimitYes:
-    lib_showmatches_box->setChecked(true);
-    break;
-
-  case RDLibraryConf::LimitPrevious:
-    lib_showmatches_box->setChecked(rda->libraryConf()->searchLimited());
-    break;
-  }
-
   lib_resize=true;
 
   //
   // Create RDMacroEvent for running macros
   //
   lib_macro_events=new RDMacroEvent(rda->station()->address(),rda->ripc(),this);
+
+  dragsChangedData(lib_cart_filter->dragEnabled());
+  lib_cart_model->setFilterSql(lib_cart_filter->filterSql());
+  lib_cart_view->resizeColumnsToContents();
 
   LoadGeometry();
 }
@@ -513,6 +313,12 @@ QSizePolicy MainWidget::sizePolicy() const
 }
 
 
+void MainWidget::selectedGroupChangedData(const QString &grpname)
+{
+  lib_default_group=grpname;
+}
+
+
 void MainWidget::caeConnectedData(bool state)
 {
   if(state) {
@@ -526,89 +332,12 @@ void MainWidget::caeConnectedData(bool state)
 
 void MainWidget::userData()
 {
-  QString sql;
-  RDSqlQuery *q;
-
   if(lib_edit_pending) {
     lib_user_changed=true;
     return;
   }
 
   SetCaption(rda->ripc()->user());
-
-  lib_group_box->clear();
-  lib_group_box->insertItem(tr("ALL"));
-  sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" order by GROUP_NAME";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    lib_group_box->insertItem(q->value(0).toString());
-  }
-  delete q;
-
-  if(lib_group_box->count()==1) {
-    lib_add_button->setDisabled(true);
-    lib_edit_button->setDisabled(true);
-    lib_delete_button->setDisabled(true);
-    lib_rip_button->setDisabled(true);
-  }
-  else {
-    lib_add_button->setEnabled(rda->user()->createCarts());
-    lib_rip_button->setEnabled(rda->user()->editAudio());
-  }
-
-  lib_codes_box->clear();
-  lib_codes_box->insertItem(tr("ALL"));
-  lib_codes2_box->clear();
-  lib_codes2_box->insertItem(tr("ALL"));
-  sql=QString().sprintf("select CODE from SCHED_CODES");
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    lib_codes_box->insertItem(q->value(0).toString());
-    lib_codes2_box->insertItem(q->value(0).toString());
-  }
-  delete q;
-  lib_search_button->setDisabled(true);
-  groupActivatedData(lib_group_box->currentText());
-}
-
-
-void MainWidget::filterChangedData(const QString &str)
-{
-  lib_search_button->setEnabled(true);
-  if(lib_filter_mode!=RDStation::FilterSynchronous) {
-    return;
-  }
-  searchClickedData();
-}
-
-
-void MainWidget::searchClickedData()
-{
-  lib_search_button->setDisabled(true);
-  if(lib_filter_edit->text().isEmpty()) {
-    lib_clear_button->setDisabled(true);
-  }
-  else {
-    lib_clear_button->setEnabled(true);
-  }
-  RefreshList();
-}
-
-
-void MainWidget::clearClickedData()
-{
-  lib_filter_edit->clear();
-  filterChangedData("");
-}
-
-
-void MainWidget::groupActivatedData(const QString &str)
-{
-  if(str!=tr("ALL")) {
-    lib_default_group=str;
-  }
-  filterChangedData("");
 }
 
 
@@ -645,6 +374,7 @@ void MainWidget::addData()
     return;
   }
   delete add_cart;
+
   sql=QString("insert into CART set ")+
     QString().sprintf("NUMBER=%u,TYPE=%d,",cart_num,cart_type)+
     "GROUP_NAME=\""+RDEscapeString(lib_default_group)+"\","+
@@ -654,23 +384,16 @@ void MainWidget::addData()
   
   EditCart *cart=
     new EditCart(cart_num,&lib_import_path,true,profile_ripping,this);
-  if(cart->exec() <0) {
+  if(cart->exec()) {
+    int row=lib_cart_model->addCart(cart_num);
+    lib_cart_view->selectRow(row);
+    lib_cart_view->scrollTo(lib_cart_model->index(row,0));
+    SendNotification(RDNotification::AddAction,cart_num);
+  } 
+  else {
     RDCart *rdcart=new RDCart(cart_num);
     rdcart->remove(rda->station(),rda->user(),rda->config());
     delete rdcart;
-  } 
-  else {
-    RDListViewItem *item=new RDListViewItem(lib_cart_list);
-    item->setText(Cart,QString().sprintf("%06u",cart_num));
-    RefreshLine(item);
-    SendNotification(RDNotification::AddAction,cart_num);
-    Q3ListViewItemIterator it(lib_cart_list);
-    while(it.current()) {
-      lib_cart_list->setSelected(it.current(),false);
-      ++it;
-    }
-    lib_cart_list->setSelected(item,true);
-    lib_cart_list->ensureItemVisible(item);
   }
   delete cart;
 
@@ -681,175 +404,151 @@ void MainWidget::addData()
 
 void MainWidget::editData()
 {
-  int sel_count=0;
-  Q3ListViewItemIterator *it;
+  QModelIndexList rows=lib_cart_view->selectionModel()->selectedRows();
 
   lib_player->stop();
   LockUser();
 
-  it=new Q3ListViewItemIterator(lib_cart_list);
-  while(it->current()) {
-    if (it->current()->isSelected() && !it->current()->parent()) {
-      sel_count++;
+  if(rows.size()==1) {
+    EditCart *edit_cart=
+      new EditCart(lib_cart_model->cartNumber(rows.first().row()),
+		   &lib_import_path,false,profile_ripping,this);
+    if(edit_cart->exec()) {
+      lib_cart_model->refreshRow(rows.first().row());
+      //cartOnItemData(item);
+      SendNotification(RDNotification::ModifyAction,
+		       lib_cart_model->cartNumber(rows.first().row()));
     }
-    ++(*it);
-  }
-  delete it;
-
-  if(sel_count==0) {
-    UnlockUser();
-    return;
-  }
-  if(sel_count==1) { //single edit
-    it=new Q3ListViewItemIterator(lib_cart_list);
-    while(!it->current()->isSelected() || it->current()->parent()) {
-      ++(*it);
-    }
-    RDListViewItem *item=(RDListViewItem *)it->current();
-
-    EditCart *edit_cart=new EditCart(item->text(Cart).toUInt(),&lib_import_path,
-				     false,profile_ripping,this);
-    edit_cart->exec();
-    RefreshLine(item);
-    cartOnItemData(item);
-    SendNotification(RDNotification::ModifyAction,item->text(Cart).toUInt());
     delete edit_cart;
-    delete it;
   }
-  else { //multi edit
-    if(rda->user()->modifyCarts()) {
-      EditCart *edit_cart=
-	new EditCart(0,&lib_import_path,false,profile_ripping,this,"",
-				       lib_cart_list);
-    
-      edit_cart->exec();
-      delete edit_cart;
-    
-      it=new Q3ListViewItemIterator(lib_cart_list);
-      while(it->current()) {
-        if (it->current()->isSelected() && !it->current()->parent()) {
-          RefreshLine((RDListViewItem *)it->current());
-	  SendNotification(RDNotification::ModifyAction,
-			   it->current()->text(1).toUInt());
-        }
-        ++(*it);
-      }
-      delete it;
-    }
+  if(rows.size()>1) {
   }
+
   UnlockUser();
 }
 
 
 void MainWidget::macroData()
 {
-  Q3ListViewItemIterator *it;
-  Q3ListViewItem *item;
+  int row=-1;
 
-  it=new Q3ListViewItemIterator(lib_cart_list);
-  while(it->current()) {
-    if (it->current()->isSelected()) {
-      item=it->current();
-      RDCart *rdcart=new RDCart(item->text(Cart).toUInt());
-      lib_macro_events->clear();
-      lib_macro_events->load(rdcart->macros());
-      lib_macro_events->exec();
-      delete rdcart;
-      break;
-    }
-    ++(*it);
+  if(((row=SingleSelectedLine())<0)||
+     (lib_cart_model->cartType(row)!=RDCart::Macro)) {
+    return;
   }
-  delete it;
+  RDCart *rdcart=new RDCart(lib_cart_model->cartNumber(row));
+  lib_macro_events->clear();
+  lib_macro_events->load(rdcart->macros());
+  lib_macro_events->exec();
+  delete rdcart;
 }
 
 void MainWidget::deleteData()
 {
-  QString filename;
   QString sql;
-  RDSqlQuery *q;
-  QString str;
-  int sel_count=0;
-  Q3ListViewItemIterator *it;
-  bool del_flag;
+  RDSqlQuery *q=NULL;
 
   lib_player->stop();
   LockUser();
 
-  it=new Q3ListViewItemIterator(lib_cart_list);
-  while(it->current()) {
-    if (it->current()->isSelected() && !it->current()->parent()) {
-      sel_count++;
-    }
-    ++(*it);
-  }
-  delete it;
+  QModelIndexList rows=lib_cart_view->selectionModel()->selectedRows();
 
-  if(sel_count==0) {
+  if(rows.size()==0) {
     UnlockUser();
     return;
   }
 
-  str=QString(tr("Are you sure you want to delete cart(s)"));
-  if(QMessageBox::question(this,tr("Delete Cart(s)"),str,QMessageBox::Yes,QMessageBox::No)!=
-     QMessageBox::Yes) {
+  //
+  // Get confirmation
+  //
+  QString str=tr("Are you sure you want to delete cart(s)");
+  if(QMessageBox::question(this,tr("Delete Cart(s)"),str,QMessageBox::Yes,
+			   QMessageBox::No)!=QMessageBox::Yes) {
     UnlockUser();
     return;
   }
-  it=new Q3ListViewItemIterator(lib_cart_list);
-  while(it->current()) {
-    if (it->current()->isSelected() && !it->current()->parent()) {
-    del_flag=true;
-    RDListViewItem *item=(RDListViewItem *)it->current();
-  sql=QString().sprintf("select CUT_NAME from RECORDINGS where \
-                         (CUT_NAME like \"%06u_%%\")||(MACRO_CART=%u)",
-			item->text(Cart).toUInt(),item->text(Cart).toUInt());
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-      QString str=QString().sprintf(tr("Cart %06u is used in one or more RDCatch events!\n\
-Do you still want to delete it?"),item->text(Cart).toUInt());
-      if(QMessageBox::warning(this,tr("RDCatch Event Exists"),str,
-			        QMessageBox::Yes,QMessageBox::No)==QMessageBox::No) {
-        del_flag=false;
+
+  //
+  // Check for RDCatch events
+  //
+  for(int i=0;i<rows.size();i++) {
+    unsigned cartnum=lib_cart_model->cartNumber(rows.at(i).row());
+    sql=QString("select ")+
+      "CUT_NAME "+  // 00
+      "from RECORDINGS where "+
+      QString().sprintf("(CUT_NAME like \"%06u_%%\")||",cartnum)+
+      QString().sprintf("(MACRO_CART=%u)",cartnum);
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      QString str=tr("Cart")+
+	QString().sprintf(" %06u ",cartnum)+
+	tr("is used in one or more RDCatch events!")+"\n"+
+	tr("Do you still want to delete it?");
+      if(QMessageBox::warning(this,"RDLibrary - "+tr("RDCatch Event Exists"),
+			      str,QMessageBox::Yes,QMessageBox::No)!=
+	 QMessageBox::Yes) {
+	delete q;
+        UnlockUser();
+	return;
+      }
     }
+    delete q;
   }
-  delete q;
+
+  //
+  // Check clipboard
+  //
   if(cut_clipboard!=NULL) {
-    if(item->text(Cart).toUInt()==cut_clipboard->cartNumber()) {
-      	QString str=QString().sprintf(tr("Deleting cart %06u will also empty the clipboard.\n\
-      	Do you still want to proceed?"),item->text(Cart).toUInt());
-        switch(QMessageBox::question(this,tr("Empty Clipboard"),str,
-				  QMessageBox::Yes,
-				  QMessageBox::No)) {
-	case QMessageBox::No:
-	case QMessageBox::NoButton:
-	  del_flag=false;
-
-	default:
-	  break;
+    for(int i=0;i<rows.size();i++) {
+      unsigned cartnum=lib_cart_model->cartNumber(rows.at(i).row());
+      if(cartnum==cut_clipboard->cartNumber()) {
+      	QString str=tr("Deleting cart")+QString().sprintf(" %06u ",cartnum)+
+	  tr("will also empty the clipboard.")+"\n"+
+	  tr("Do you still want to proceed?");
+        if(QMessageBox::question(this,"RDLibrary - "+tr("Empty Clipboard"),
+				     str,QMessageBox::Yes,QMessageBox::No)!=
+	   QMessageBox::Yes) {
+	  UnlockUser();
+	  return;
+	}
       }
       delete cut_clipboard;
       cut_clipboard=NULL;
+      break;
     }
   }
-  if(del_flag && item->text(OwnedBy).isEmpty()) {
-    RDCart *rdcart=new RDCart(item->text(Cart).toUInt());
+
+  //
+  // Check for voicetracks
+  //
+  for(int i=0;i<rows.size();i++) {
+    unsigned cartnum=lib_cart_model->cartNumber(rows.at(i).row());
+    if(!lib_cart_model->cartOwnedBy(i).isEmpty()) {
+      QString str=tr("Cart")+QString().sprintf(" %06u ",cartnum)+
+	tr("is a voicetrack belonging to log")+" \""+
+	lib_cart_model->cartOwnedBy(i)+"\".\n"+tr("It cannot be deleted here!");
+      QMessageBox::information(this,"RDLibrary - "+tr("Voicetrack Found"),str);
+      UnlockUser();
+      return;
+    }
+  }
+
+  //
+  // Delete Carts
+  //
+  for(int i=rows.size()-1;i>=0;i--) {
+    RDCart *rdcart=new RDCart(lib_cart_model->cartNumber(rows.at(i).row()));
     if(!rdcart->remove(rda->station(),rda->user(),rda->config())) {
       QMessageBox::warning(this,tr("RDLibrary"),tr("Unable to delete audio!"));
       return;
     }
+    lib_cart_model->removeCart(rdcart->number());
     SendNotification(RDNotification::DeleteAction,rdcart->number());
     delete rdcart;
-    delete item;
-  } 
-  else {
-    ++(*it);
-  } 
-    }
-    else {
-      ++(*it);
-    } 
   }
-  delete it;
+
+  lib_cart_view->selectRow(rows.first().row());
+  lib_cart_view->scrollTo(lib_cart_model->index(rows.first().row(),0));
 
   UnlockUser();
 }
@@ -859,22 +558,17 @@ void MainWidget::ripData()
 {
   lib_player->stop();
   LockUser();
-  QString group=lib_group_box->currentText();
-  QString schedcode=lib_codes_box->currentText();
+  QString group=lib_cart_filter->selectedGroup();
+  QString schedcode=lib_cart_filter->selectedSchedCode();
   DiskRipper *dialog=new DiskRipper(&lib_filter_text,&group,&schedcode,
 				    profile_ripping,this);
   if(dialog->exec()==0) {
-    for(int i=0;i<lib_group_box->count();i++) {
-      if(lib_group_box->text(i)==group) {
-	lib_filter_edit->setText(lib_filter_text);
-	lib_group_box->setCurrentItem(i);
-	groupActivatedData(lib_group_box->currentText());
-      }
-    }
+    lib_cart_filter->setSelectedGroup(group);
+    lib_cart_filter->setFilterText(lib_filter_text);
   }
   delete dialog;
   if(!UnlockUser()) {
-    RefreshList();
+    //    RefreshList();
   }
 }
 
@@ -884,180 +578,110 @@ void MainWidget::reportsData()
   lib_player->stop();
   LockUser();
   ListReports *lr=
-    new ListReports(lib_filter_edit->text(),GetTypeFilter(),
-		    lib_group_box->currentText(),lib_codes_box->currentText(),
-		    this);
+    new ListReports(lib_cart_filter->filterText(),
+		    lib_cart_filter->selectedGroup(),
+		    lib_cart_filter->filterSql(),this);
+
   lr->exec();
   delete lr;
   UnlockUser();
 }
 
 
-void MainWidget::cartOnItemData(Q3ListViewItem *item)
-{
-  if((!lib_shownotes_box->isChecked())||(item==NULL)) {
-    return;
-  }
-  //  lib_cart_tip->
-  //    setCartNumber(lib_cart_list->itemRect(item),item->text(Cart).toUInt());
-}
-
-
-void MainWidget::cartClickedData()
-{
-  int del_count=0;
-  int sel_count=0;
-  int play_count=0;
-  Q3ListViewItemIterator *it;
-  Q3ListViewItem *item;
-
-  it=new Q3ListViewItemIterator(lib_cart_list);
-  while(it->current()) {
-    if (it->current()->isSelected()) {
-      play_count++;
-      item=it->current();
-      if(!it->current()->parent()) {
-        sel_count++;
-      }
-      if(it->current()->text(OwnedBy).isEmpty() && !it->current()->parent()) {
-        del_count++;
-      }
-    }
-    ++(*it);
-  }
-  delete it;
-  
-  if(del_count>0) {
-    lib_delete_button->setEnabled(rda->user()->deleteCarts());
-  } 
-  else {
-    lib_delete_button->setEnabled(false);
-  }
-
-  if(play_count==1) {
-    RDCart *rdcart=new RDCart(item->text(Cart).toUInt());
-    if(rdcart->type()==RDCart::Macro) {
-      lib_macro_button->setEnabled(true);
-      lib_macro_button->setVisible(true);
-      lib_player->playButton()->setEnabled(false);
-      lib_player->stopButton()->setEnabled(false);
-      lib_player->playButton()->setVisible(false);
-      lib_player->stopButton()->setVisible(false);
-      lib_player->stop();
-    }
-    else {
-      lib_player->setCart(item->text(Cart));
-      lib_player->playButton()->setEnabled(true);
-      lib_player->stopButton()->setEnabled(true);
-      lib_player->playButton()->setVisible(true);
-      lib_player->stopButton()->setVisible(true);
-      lib_macro_button->setEnabled(false);
-      lib_macro_button->setVisible(false);
-      if(lib_player->isPlaying()) {
-        lib_player->play();
-      }
-    }
-    delete rdcart;
-  }
-  else {
-    lib_player->stop();
-    lib_player->playButton()->setEnabled(false);
-    lib_player->stopButton()->setEnabled(false);
-    lib_player->playButton()->setVisible(true);
-    lib_player->stopButton()->setVisible(true);
-    lib_macro_button->setEnabled(false);
-    lib_macro_button->setVisible(false);
-  }
-
-  if(sel_count) {
-    if(del_count==0) {
-      lib_edit_button->setEnabled(false);
-    }
-    else {
-      lib_edit_button->setEnabled(rda->user()->modifyCarts());
-    }
-  } 
-  else {
-    lib_edit_button->setEnabled(false);
-  }
-}
-
-
-void MainWidget::cartDoubleclickedData(Q3ListViewItem * item,const QPoint &,int)
+void MainWidget::cartDoubleClickedData(const QModelIndex &)
 {
   editData();
+}
 
-  //
-  // KLUDGE ALERT:
-  // The default double-click behavior of a Q3ListViewItem is to expand/collapse the item.
-  // We don't want it to do that, so if we set the open status to the opposite of what we
-  // want (the current status), it will put it back to what we do want. There is probably
-  // a Qt way of doing this which should probably be addressed at a later date.
-  //
-  if(item!=NULL) {
-    item->setOpen(!item->isOpen());
+
+void MainWidget::selectionChangedData(const QItemSelection &,
+				      const QItemSelection &)
+{
+  QModelIndexList rows=lib_cart_view->selectionModel()->selectedRows();
+
+  lib_player->playButton()->setEnabled(rows.size()==1);
+  lib_player->stopButton()->setEnabled(rows.size()==1);
+  lib_macro_button->setEnabled(rows.size()==1);
+  if(rows.size()==1) {
+    switch(lib_cart_model->cartType(rows.first().row())) {
+    case RDCart::Audio:
+      lib_player->setCart(lib_cart_model->cartNumber(rows.first().row()));
+      lib_player->playButton()->show();
+      lib_player->stopButton()->show();
+      lib_macro_button->hide();
+      break;
+
+    case RDCart::Macro:
+      lib_player->playButton()->hide();
+      lib_player->stopButton()->hide();
+      lib_macro_button->show();
+      break;
+
+    case RDCart::All:
+      lib_player->playButton()->hide();
+      lib_player->stopButton()->hide();
+      lib_macro_button->hide();
+      break;
+    }
   }
+  lib_edit_button->setEnabled(rows.size()>0);
+  lib_delete_button->setEnabled((rows.size()>0)&&rda->user()->deleteCarts());
 }
 
 
 void MainWidget::audioChangedData(int state)
 {
-  filterChangedData("");
+  //  filterChangedData("");
 }
 
 
 void MainWidget::macroChangedData(int state)
 {
-  filterChangedData("");
+  //  filterChangedData("");
 }
 
 
-void MainWidget::searchLimitChangedData(int state)
-{
-  rda->libraryConf()->setSearchLimited(state);
-  filterChangedData("");
-}
-
-
-void MainWidget::dragsChangedData(int state)
+void MainWidget::dragsChangedData(bool state)
 {
   if(state) {
-    lib_cart_list->setSelectionMode(Q3ListView::Single);
+    QModelIndexList rows=lib_cart_view->selectionModel()->selectedRows();
+    if(rows.size()>1) {
+      lib_cart_view->selectRow(rows.first().row());
+    }
+    lib_cart_view->setSelectionMode(QAbstractItemView::SingleSelection);
   }
   else {
-    lib_cart_list->setSelectionMode(Q3ListView::Extended);
+    lib_cart_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
   }
 }
 
 
 void MainWidget::notificationReceivedData(RDNotification *notify)
 {
-  RDListViewItem *item=NULL;
   QString sql;
-  RDSqlQuery *q;
+  RDSqlQuery *q=NULL;
+  QStringList and_fields;
 
   if(notify->type()==RDNotification::CartType) {
     unsigned cartnum=notify->id().toUInt();
     switch(notify->action()) {
     case RDNotification::AddAction:
-      sql=QString("select CART.NUMBER from CART ")+
+      and_fields.push_back(QString().sprintf("CART.NUMBER=%u",cartnum));
+      sql=QString("select ")+
+	"CART.NUMBER "+  // 00
+	"from CART "+
+	"left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
 	"left join CUTS on CART.NUMBER=CUTS.CART_NUMBER "+
-	WhereClause()+
-	QString().sprintf(" && CART.NUMBER=%u ",cartnum);
+	lib_cart_filter->filterSql(and_fields);
       q=new RDSqlQuery(sql);
       if(q->first()) {
-	item=new RDListViewItem(lib_cart_list);
-	item->setText(Cart,QString().sprintf("%06u",cartnum));
-	RefreshLine(item);
+	lib_cart_model->addCart(cartnum);
       }
       delete q;
       break;
 
     case RDNotification::ModifyAction:
-      if((item=(RDListViewItem *)lib_cart_list->
-	  findItem(QString().sprintf("%06u",cartnum),Cart))!=NULL) {
-	RefreshLine(item);
-      }
+      lib_cart_model->refreshCart(cartnum);
       break;
 
     case RDNotification::DeleteAction:
@@ -1065,9 +689,7 @@ void MainWidget::notificationReceivedData(RDNotification *notify)
 	lib_deleted_carts.push_back(cartnum);
       }
       else {
-	if((item=(RDListViewItem *)lib_cart_list->findItem(QString().sprintf("%06u",cartnum),Cart))!=NULL) {
-	  delete item;
-	}
+	lib_cart_model->removeCart(cartnum);
       }
       break;
 
@@ -1095,37 +717,9 @@ void MainWidget::closeEvent(QCloseEvent *e)
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
   if(lib_resize) {
-    switch(lib_filter_mode) {
-    case RDStation::FilterSynchronous:
-      lib_filter_edit->setGeometry(70,10,e->size().width()-170,20);
-      break;
-
-    case RDStation::FilterAsynchronous:
-      lib_search_button->setGeometry(e->size().width()-180,10,80,50);
-      lib_filter_edit->setGeometry(70,10,e->size().width()-260,20);
-      break;
-    }
-    lib_clear_button->setGeometry(e->size().width()-90,10,80,50);
-    lib_filter_label->setGeometry(10,10,55,20);
-    lib_group_label->setGeometry(10,40,55,20);
-    lib_group_box->setGeometry(70,40,100,20);
-    lib_codes_label->setGeometry(175,40,115,20);
-    lib_codes_box->setGeometry(295,40,100,20);
-    lib_codes2_label->setGeometry(410,40,130,20);
-    lib_codes2_box->setGeometry(545,40,100,20);
-    lib_matches_label->setGeometry(660,40,100,20);
-    lib_matches_edit->setGeometry(765,40,55,20);
-    lib_showmatches_label->setGeometry(760,66,200,20);
-    lib_showmatches_box->setGeometry(740,68,15,15);
-    lib_allowdrag_label->setGeometry(580,66,130,20);
-    lib_allowdrag_box->setGeometry(560,68,15,15);
-    lib_showaudio_label->setGeometry(90,66,130,20);
-    lib_showaudio_box->setGeometry(70,68,15,15);
-    lib_showmacro_label->setGeometry(250,66,130,20);
-    lib_showmacro_box->setGeometry(230,68,15,15);
-    lib_shownotes_label->setGeometry(410,66,130,20);
-    lib_shownotes_box->setGeometry(390,68,15,15);
-    lib_cart_list->
+    lib_cart_filter->
+      setGeometry(0,0,size().width(),lib_cart_filter->sizeHint().height());
+    lib_cart_view->
       setGeometry(10,90,e->size().width()-20,e->size().height()-155);
     lib_add_button->setGeometry(10,e->size().height()-60,80,50);
     lib_edit_button->setGeometry(100,e->size().height()-60,80,50);
@@ -1145,8 +739,10 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   }
 }
 
+
 void MainWidget::RefreshCuts(RDListViewItem *p,unsigned cartnum)
 {
+  /*
   RDListViewItem *l=NULL;
   Q3ListViewItem *i=NULL;
   RDSqlQuery *q;
@@ -1221,10 +817,13 @@ void MainWidget::RefreshCuts(RDListViewItem *p,unsigned cartnum)
   }
 
   delete q;
+  */
 }
+
 
 void MainWidget::RefreshList()
 {
+  /*
   RDSqlQuery *q;
   QString sql;
   RDListViewItem *l=NULL;
@@ -1376,32 +975,7 @@ void MainWidget::RefreshList()
   lib_progress_dialog->reset();
   lib_matches_edit->setText(QString().sprintf("%d",matches));
   delete q;
-}
-
-
-QString MainWidget::WhereClause() const
-{
-  QString sql="";
-  QString type_filter=GetTypeFilter();
-
-  QStringList schedcodes;
-  if(lib_codes_box->currentText()!=tr("ALL")) {
-    schedcodes << lib_codes_box->currentText();
-  }
-  if(lib_codes2_box->currentText()!=tr("ALL")) {
-    schedcodes << lib_codes2_box->currentText();
-  }
-  if(lib_group_box->currentText()==QString(tr("ALL"))) {
-    sql=RDAllCartSearchText(lib_filter_edit->text(),schedcodes,
-			  rda->user()->name(),true)+" && "+type_filter;
-
-  }
-  else {
-    sql=RDCartSearchText(lib_filter_edit->text(),lib_group_box->currentText(),
-		       schedcodes,true)+" && "+type_filter;      
-  }
-
-  return sql;
+  */
 }
 
 
@@ -1595,25 +1169,17 @@ void MainWidget::SetCaption(QString user)
 }
 
 
-QString MainWidget::GetTypeFilter() const
+int MainWidget::SingleSelectedLine() const
 {
-  QString type_filter;
+  int row=-1;
 
-  if(lib_showaudio_box->isChecked()) {
-    if(lib_showmacro_box->isChecked()) {
-      type_filter="((TYPE=1)||(TYPE=2)||(TYPE=3))";
-    }
-    else {
-      type_filter="((TYPE=1)||(TYPE=3))";
-    }
+  if(lib_cart_view->selectionModel()->selectedRows().size()==1) {
+    return lib_cart_view->selectionModel()->selectedRows().first().row();
   }
-  else {
-    if(lib_showmacro_box->isChecked()) {
-      type_filter="(TYPE=2)";
-    }
-  }
-  return type_filter;
+
+  return row;
 }
+
 
 QString MainWidget::GeometryFile() {
   bool home_found = false;
@@ -1635,10 +1201,7 @@ void MainWidget::LoadGeometry()
   profile->setSource(geometry_file);
   resize(profile->intValue("RDLibrary","Width",sizeHint().width()),
 	 profile->intValue("RDLibrary","Height",sizeHint().height()));
-  lib_shownotes_box->
-    setChecked(profile->boolValue("RDLibrary","ShowNoteBubbles",true));
-  lib_allowdrag_box->
-    setChecked(profile->boolValue("RDLibrary","AllowCartDragging",false));
+  lib_cart_filter->loadConfig(profile);
 
   delete profile;
 }
@@ -1655,19 +1218,7 @@ void MainWidget::SaveGeometry()
   fprintf(file,"Width=%d\n",geometry().width());
   fprintf(file,"Height=%d\n",geometry().height());
   fprintf(file,"ShowNoteBubbles=");
-  if(lib_shownotes_box->isChecked()) {
-    fputs("Yes\n",file);
-  }
-  else {
-    fputs("No\n",file);
-  }
-  fprintf(file,"AllowCartDragging=");
-  if(lib_allowdrag_box->isChecked()) {
-    fprintf(file,"Yes\n");
-  }
-  else {
-    fprintf(file,"No\n");
-  }
+  lib_cart_filter->saveConfig(file);
 
   fclose(file);
 }
@@ -1681,17 +1232,20 @@ void MainWidget::LockUser()
 
 bool MainWidget::UnlockUser()
 {
-
-  RDListViewItem *item=NULL;
+  //  RDListViewItem *item=NULL;
 
   //
   // Process Deleted Carts
   //
   for(unsigned i=0;i<lib_deleted_carts.size();i++) {
+    lib_cart_model->removeCart(lib_deleted_carts.at(i));
+    /*
     if((item=(RDListViewItem *)lib_cart_list->findItem(QString().sprintf("%06u",lib_deleted_carts.at(i)),Cart))!=NULL) {
       delete item;
     }
+    */
   }
+  lib_deleted_carts.clear();
 
   //
   // Process User Change

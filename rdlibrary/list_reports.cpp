@@ -2,7 +2,7 @@
 //
 // List RDLibrary Reports
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,15 +28,12 @@
 #include "globals.h"
 #include "list_reports.h"
 
-ListReports::ListReports(const QString &filter,const QString &type_filter,
-			 const QString &group,const QString &schedcode,
-			 QWidget *parent)
-  : RDDialog(parent)
+ListReports::ListReports(const QString &filter,const QString &grpname,
+			 const QString &filter_sql,QWidget *parent)
 {
   list_filter=filter;
-  list_type_filter=type_filter;
-  list_group=group;
-  list_schedcode=schedcode;
+  list_group=grpname;
+  list_filter_sql=filter_sql;
 
   setWindowTitle("RDLibrary - "+tr("Select Report"));
 
@@ -177,9 +174,11 @@ void ListReports::GenerateCartReport(QString *report)
   //
   // Generate Rows
   //
+  /*
   if(list_type_filter.isEmpty()) {
     return;
   }
+  */
   sql=QString("select ")+
     "CART.TYPE,"+              // 00
     "CART.NUMBER,"+            // 01
@@ -192,22 +191,16 @@ void ListReports::GenerateCartReport(QString *report)
     "CART.ENFORCE_LENGTH,"+    // 08
     "CART.LENGTH_DEVIATION,"+  // 09
     "CART.OWNER "+             // 10
-    "from CART left join CUTS on "+
-    "CART.NUMBER=CUTS.CART_NUMBER ";
-  if(list_group==QString("ALL")) {
-    sql+=RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+
-      list_type_filter+" order by NUMBER";
-  }
-  else {
-    sql+=RDCartSearchText(list_filter,list_group,schedcode,true)+" && "+
-      list_type_filter+" order by NUMBER";
-  }
+    "from CART "+
+    "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
+    "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER ";
+  sql+=list_filter_sql;
   unsigned prev_cartnum=0;
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(1).toUInt()!=prev_cartnum) { // So we don't show duplicates 
       prev_cartnum=q->value(1).toUInt();
-
+      
       //
       // Cart Type
       //
@@ -326,9 +319,6 @@ void ListReports::GenerateCutReport(QString *report)
   //
   // Generate Rows
   //
-  if(list_type_filter.isEmpty()) {
-    return;
-  }
   sql=QString("select ")+
     "CART.NUMBER,"+              // 00
     "CUTS.CUT_NAME,"+            // 01
@@ -351,16 +341,10 @@ void ListReports::GenerateCutReport(QString *report)
     "CUTS.SAT,"+                 // 18
     "CUTS.START_DAYPART,"+       // 19
     "CUTS.END_DAYPART "+         // 20
-    "from CART join CUTS "+
-    "on CART.NUMBER=CUTS.CART_NUMBER ";
-  if(list_group==QString("ALL")) {
-    sql+=RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+
-      list_type_filter+" order by CART.NUMBER,CUTS.CUT_NAME";
-  }
-  else {
-    sql+=RDCartSearchText(list_filter,list_group,schedcode,true)+" && "+
-      list_type_filter+" order by CART.NUMBER,CUTS.CUT_NAME";
-  }
+    "from CART "+
+    "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
+    "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER ";
+  sql+=list_filter_sql;
   q=new RDSqlQuery(sql);
   while(q->next()) {
     //
@@ -528,9 +512,6 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   //
   // Generate Rows
   //
-  if(list_type_filter.isEmpty()) {
-    return;
-  }
   sql=QString("select ")+
     "CART.NUMBER,"+             // 00
     "CART.TYPE,"+               // 01
@@ -563,16 +544,10 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
     "CUTS.TALK_END_POINT,"+     // 28
     "CUTS.FADEUP_POINT,"+       // 29
     "CUTS.FADEDOWN_POINT "+     // 30
-    "from CART left join CUTS "+
-    "on CART.NUMBER=CUTS.CART_NUMBER ";
-  if(list_group==QString("ALL")) {
-    sql+=RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+
-      list_type_filter+" order by CART.NUMBER,CUTS.CUT_NAME";
-  }
-  else {
-    sql+=RDCartSearchText(list_filter,list_group,schedcode,true)+" && "+
-      list_type_filter+" order by CART.NUMBER,CUTS.CUT_NAME";
-  }
+    "from CART "+
+    "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
+    "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER ";
+  sql+=list_filter_sql;
   q=new RDSqlQuery(sql);
 
   //

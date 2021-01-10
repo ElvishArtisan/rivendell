@@ -1104,23 +1104,23 @@ Cartucho</translation>
     </message>
     <message>
         <source>Filter:</source>
-        <translation>Filtro:</translation>
+        <translation type="obsolete">Filtro:</translation>
     </message>
     <message>
         <source>&amp;Clear</source>
-        <translation>&amp;Limpiar</translation>
+        <translation type="obsolete">&amp;Limpiar</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Grupo:</translation>
+        <translation type="obsolete">Grupo:</translation>
     </message>
     <message>
         <source>Show Audio Carts</source>
-        <translation>Mostrar cart. de audio</translation>
+        <translation type="obsolete">Mostrar cart. de audio</translation>
     </message>
     <message>
         <source>Show Macro Carts</source>
-        <translation>Mostrar cart. macro</translation>
+        <translation type="obsolete">Mostrar cart. macro</translation>
     </message>
     <message>
         <source>CART</source>
@@ -1204,11 +1204,11 @@ Cartucho</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>TODAS</translation>
+        <translation type="obsolete">TODAS</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Vaciar portapapeles</translation>
+        <translation type="unfinished">Vaciar portapapeles</translation>
     </message>
     <message>
         <source>Sequence</source>
@@ -1242,7 +1242,7 @@ CD</translation>
     </message>
     <message>
         <source>RDCatch Event Exists</source>
-        <translation>Evento RDCatch ya existe</translation>
+        <translation type="unfinished">Evento RDCatch ya existe</translation>
     </message>
     <message>
         <source>Re&amp;ports</source>
@@ -1250,7 +1250,7 @@ CD</translation>
     </message>
     <message>
         <source>Scheduler Code:</source>
-        <translation>Códs. Musicaliz.:</translation>
+        <translation type="obsolete">Códs. Musicaliz.:</translation>
     </message>
     <message>
         <source></source>
@@ -1258,22 +1258,22 @@ CD</translation>
     </message>
     <message>
         <source>Are you sure you want to delete cart(s)</source>
-        <translation>¿Está seguro de eliminar el o los cartuchos?</translation>
+        <translation type="unfinished">¿Está seguro de eliminar el o los cartuchos?</translation>
     </message>
     <message>
         <source>Delete Cart(s)</source>
-        <translation>Eliminar cartucho(s)</translation>
+        <translation type="unfinished">Eliminar cartucho(s)</translation>
     </message>
     <message>
         <source>Cart %06u is used in one or more RDCatch events!
 Do you still want to delete it?</source>
-        <translation>El cartucho %06u está siendo usado en eventos RDCatch
+        <translation type="obsolete">El cartucho %06u está siendo usado en eventos RDCatch
 ¿Aún así desea eliminarlos?</translation>
     </message>
     <message>
         <source>Deleting cart %06u will also empty the clipboard.
       	Do you still want to proceed?</source>
-        <translation>Al eliminar el cartucho %06u también se vaciará el portapapeles.
+        <translation type="obsolete">Al eliminar el cartucho %06u también se vaciará el portapapeles.
       	¿Desea continuar?</translation>
     </message>
     <message>
@@ -1282,7 +1282,7 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>Bu&amp;scar:</translation>
+        <translation type="obsolete">Bu&amp;scar:</translation>
     </message>
     <message>
         <source>Please Wait...</source>
@@ -1290,23 +1290,23 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Show Note Bubbles</source>
-        <translation>Most. notas flotantes</translation>
+        <translation type="obsolete">Most. notas flotantes</translation>
     </message>
     <message>
         <source>RDLibrary</source>
-        <translation>RDLibrary</translation>
+        <translation type="unfinished">RDLibrary</translation>
     </message>
     <message>
         <source>Unable to delete audio!</source>
-        <translation>¡No puedo eliminar el audio!</translation>
+        <translation type="unfinished">¡No puedo eliminar el audio!</translation>
     </message>
     <message>
         <source>Show Only First </source>
-        <translation>Mostrar sólo primeros </translation>
+        <translation type="obsolete">Mostrar sólo primeros </translation>
     </message>
     <message>
         <source> Matches</source>
-        <translation> hallazgos</translation>
+        <translation type="obsolete"> hallazgos</translation>
     </message>
     <message>
         <source>Host</source>
@@ -1314,10 +1314,6 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow Cart Dragging</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1329,92 +1325,20 @@ Do you still want to delete it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>End</source>
-        <translation type="unfinished">Fin</translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Composer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Conductor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Publisher</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User Defined</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Fin</translation>
     </message>
     <message>
         <source>Cuts</source>
-        <translation type="unfinished">Audios</translation>
-    </message>
-    <message>
-        <source>Last Cut Played</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Audios</translation>
     </message>
     <message>
         <source>Enforce Length</source>
-        <translation type="unfinished">Forzar duración</translation>
+        <translation type="obsolete">Forzar duración</translation>
     </message>
     <message>
         <source>Preserve Pitch</source>
-        <translation type="unfinished">Preservar pitch</translation>
-    </message>
-    <message>
-        <source>Length Deviation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Owned By</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Talk</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Preservar pitch</translation>
     </message>
     <message>
         <source>Run
@@ -1422,15 +1346,43 @@ Do you still want to delete it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>And Scheduler Code:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Matching Carts:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is used in one or more RDCatch events!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to delete it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>will also empty the clipboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to proceed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is a voicetrack belonging to log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>It cannot be deleted here!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voicetrack Found</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

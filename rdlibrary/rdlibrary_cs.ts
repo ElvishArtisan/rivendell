@@ -1115,31 +1115,31 @@ vozík</translation>
     </message>
     <message>
         <source>Filter:</source>
-        <translation>Filtr:</translation>
+        <translation type="obsolete">Filtr:</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Hledat</translation>
+        <translation type="obsolete">&amp;Hledat</translation>
     </message>
     <message>
         <source>&amp;Clear</source>
-        <translation>&amp;Smazat</translation>
+        <translation type="obsolete">&amp;Smazat</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Skupina</translation>
+        <translation type="obsolete">Skupina</translation>
     </message>
     <message>
         <source>Scheduler Code:</source>
-        <translation>Kódy rozvrhovače:</translation>
+        <translation type="obsolete">Kódy rozvrhovače:</translation>
     </message>
     <message>
         <source>Show Audio Carts</source>
-        <translation>Ukázat zvukové karty</translation>
+        <translation type="obsolete">Ukázat zvukové karty</translation>
     </message>
     <message>
         <source>Show Macro Carts</source>
-        <translation>Ukázat makro karty</translation>
+        <translation type="obsolete">Ukázat makro karty</translation>
     </message>
     <message>
         <source>CART</source>
@@ -1237,7 +1237,7 @@ z CD</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>VŠE</translation>
+        <translation type="obsolete">VŠE</translation>
     </message>
     <message>
         <source></source>
@@ -1256,31 +1256,31 @@ Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n&gt;=2 &amp;&amp; n&lt;=4) ? 1 :
     </message>
     <message>
         <source>Are you sure you want to delete cart(s)</source>
-        <translation>Jste si jistý, že chcete smazat tento vozík(y)</translation>
+        <translation type="unfinished">Jste si jistý, že chcete smazat tento vozík(y)</translation>
     </message>
     <message>
         <source>Delete Cart(s)</source>
-        <translation>Smazat vozík(y)</translation>
+        <translation type="unfinished">Smazat vozík(y)</translation>
     </message>
     <message>
         <source>Cart %06u is used in one or more RDCatch events!
 Do you still want to delete it?</source>
-        <translation>Vozík %06u je používán jednou nebo více událostmi RDCatch.
+        <translation type="obsolete">Vozík %06u je používán jednou nebo více událostmi RDCatch.
 Přesto smazat?</translation>
     </message>
     <message>
         <source>RDCatch Event Exists</source>
-        <translation>Událost RDCatch existuje</translation>
+        <translation type="unfinished">Událost RDCatch existuje</translation>
     </message>
     <message>
         <source>Deleting cart %06u will also empty the clipboard.
       	Do you still want to proceed?</source>
-        <translation>Smazání vozíku %06u vyprázdní také schránku
+        <translation type="obsolete">Smazání vozíku %06u vyprázdní také schránku
       	Přesto pokračovat?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Vyprázdnit schránku</translation>
+        <translation type="unfinished">Vyprázdnit schránku</translation>
     </message>
     <message>
         <source>Sequence</source>
@@ -1304,23 +1304,23 @@ Přesto smazat?</translation>
     </message>
     <message>
         <source>Show Note Bubbles</source>
-        <translation>Ukázat bzbliny s poznámkami</translation>
+        <translation type="obsolete">Ukázat bzbliny s poznámkami</translation>
     </message>
     <message>
         <source>RDLibrary</source>
-        <translation>RDLibrary</translation>
+        <translation type="unfinished">RDLibrary</translation>
     </message>
     <message>
         <source>Unable to delete audio!</source>
-        <translation>Soubor(y) se zvukem nelze smazat!</translation>
+        <translation type="unfinished">Soubor(y) se zvukem nelze smazat!</translation>
     </message>
     <message>
         <source>Show Only First </source>
-        <translation>Ukázat pouze první </translation>
+        <translation type="obsolete">Ukázat pouze první </translation>
     </message>
     <message>
         <source> Matches</source>
-        <translation>Shody</translation>
+        <translation type="obsolete">Shody</translation>
     </message>
     <message>
         <source>Host</source>
@@ -1328,10 +1328,6 @@ Přesto smazat?</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow Cart Dragging</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1343,92 +1339,20 @@ Přesto smazat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>End</source>
-        <translation type="unfinished">Konec</translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Composer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Conductor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Publisher</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User Defined</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Konec</translation>
     </message>
     <message>
         <source>Cuts</source>
-        <translation type="unfinished">Záběry</translation>
-    </message>
-    <message>
-        <source>Last Cut Played</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Záběry</translation>
     </message>
     <message>
         <source>Enforce Length</source>
-        <translation type="unfinished">Vynutit délku</translation>
+        <translation type="obsolete">Vynutit délku</translation>
     </message>
     <message>
         <source>Preserve Pitch</source>
-        <translation type="unfinished">Zachovat výšku tónu</translation>
-    </message>
-    <message>
-        <source>Length Deviation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Owned By</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Talk</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Zachovat výšku tónu</translation>
     </message>
     <message>
         <source>Run
@@ -1436,15 +1360,43 @@ Přesto smazat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>And Scheduler Code:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Matching Carts:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is used in one or more RDCatch events!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to delete it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>will also empty the clipboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to proceed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is a voicetrack belonging to log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>It cannot be deleted here!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voicetrack Found</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

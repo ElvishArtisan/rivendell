@@ -937,7 +937,7 @@ void EditCart::okData()
     delete it;
   }
   
-  done(0);
+  done(true);
 }
 
 
@@ -954,7 +954,7 @@ void EditCart::cancelData()
 			      QTime().msecsTo(rdcart_controls.
 					      forced_length_edit->time()));
   }
-  done(-1);
+  done(false);
 }
 
 

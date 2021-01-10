@@ -1268,6 +1268,65 @@ La Couleur</translation>
     </message>
 </context>
 <context>
+    <name>RDCartFilter</name>
+    <message>
+        <source>Filter:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scheduler Code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>And Scheduler Code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Matching Carts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow Cart Dragging</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Audio Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Macro Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Note Bubbles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Only First </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Matches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDCddbLookup</name>
     <message>
         <source>CDDB Query</source>
@@ -2160,6 +2219,97 @@ Do you want to overwrite it?</source>
     <message>
         <source>&amp;Cancel</source>
         <translation type="obsolete">&amp;Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>RDLibraryModel</name>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Cart</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished">Début</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Fin</translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Composer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Publisher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Cut Played</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enforce Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length Deviation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owned By</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TFN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conductor</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -2,7 +2,7 @@
 //
 // Library Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,14 @@
 #ifndef RDLIBRARY_H
 #define RDLIBRARY_H
 
-#include <qprogressdialog.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QProgressDialog>
+#include <QTableView>
 
+#include <rdcartfilter.h>
+#include <rdlibrarymodel.h>
 #include <rdsimpleplayer.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-
 #include <rdwidget.h>
 
 #include "disk_gauge.h"
@@ -60,12 +62,9 @@ class MainWidget : public RDWidget
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void selectedGroupChangedData(const QString &grpname);
   void caeConnectedData(bool state);
   void userData();
-  void filterChangedData(const QString &str);
-  void searchClickedData();
-  void clearClickedData();
-  void groupActivatedData(const QString &str);
   void addData();
   void editData();
   void deleteData();
@@ -73,13 +72,11 @@ class MainWidget : public RDWidget
   void ripData();
   void reportsData();
   void playerShortcutData();
-  void cartOnItemData(Q3ListViewItem *item);
-  void cartClickedData();
-  void cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int);
+  void cartDoubleClickedData(const QModelIndex &);
+  void selectionChangedData(const QItemSelection &,const QItemSelection &);
   void audioChangedData(int state);
   void macroChangedData(int state);
-  void searchLimitChangedData(int state);
-  void dragsChangedData(int state);
+  void dragsChangedData(bool state);
   void notificationReceivedData(RDNotification *notify);
   void quitMainWidget();
 
@@ -90,35 +87,27 @@ class MainWidget : public RDWidget
  private:
   void RefreshList();
   void RefreshCuts(RDListViewItem *p,unsigned cartnum);
-  QString WhereClause() const;
   void RefreshLine(RDListViewItem *item);
   void UpdateItemColor(RDListViewItem *item,RDCart::Validity validity,
 		       const QDateTime &end_datetime,
 		       const QDateTime &current_datetime); 
   void SetCaption(QString user);
-  QString GetTypeFilter() const;
+  int SingleSelectedLine() const;
   QString GeometryFile();
   void LoadGeometry();
   void SaveGeometry();
   void LockUser();
   bool UnlockUser();
   void SendNotification(RDNotification::Action action,unsigned cartnum);
-  LibListView *lib_cart_list;
+  RDCartFilter *lib_cart_filter;
+  //  LibListView *lib_cart_list;
+  QTableView *lib_cart_view;
+  RDLibraryModel *lib_cart_model;
   QString lib_filter_text;
   QString lib_search_text;
   QPixmap *lib_playout_map;
   QPixmap *lib_macro_map;
   QPixmap *lib_track_cart_map;
-  QLineEdit *lib_filter_edit;
-  QLabel *lib_filter_label;
-  QComboBox *lib_group_box;
-  QLabel *lib_group_label;
-  QComboBox *lib_codes_box;
-  QLabel *lib_codes_label;
-  QComboBox *lib_codes2_box;
-  QLabel *lib_codes2_label;
-  QLineEdit *lib_matches_edit;
-  QLabel *lib_matches_label;
   QPushButton *lib_search_button;
   QPushButton *lib_clear_button;
   QPushButton *lib_add_button;
@@ -132,16 +121,6 @@ class MainWidget : public RDWidget
   RDSimplePlayer *lib_player;
   int lib_output_card;
   int lib_output_port;
-  QCheckBox *lib_allowdrag_box;
-  QLabel *lib_allowdrag_label;
-  QCheckBox *lib_showaudio_box;
-  QLabel *lib_showaudio_label;
-  QCheckBox *lib_showmacro_box;
-  QLabel *lib_shownotes_label;
-  QCheckBox *lib_shownotes_box;
-  QLabel *lib_showmatches_label;
-  QCheckBox *lib_showmatches_box;
-  QLabel *lib_showmacro_label;
   QString lib_default_group;
   QString lib_import_path;
   QPixmap *lib_rivendell_map;

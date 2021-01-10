@@ -1103,31 +1103,31 @@ starten</translation>
     </message>
     <message>
         <source>Filter:</source>
-        <translation>Filter:</translation>
+        <translation type="obsolete">Filter:</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Suchen</translation>
+        <translation type="obsolete">&amp;Suchen</translation>
     </message>
     <message>
         <source>&amp;Clear</source>
-        <translation>&amp;Löschen</translation>
+        <translation type="obsolete">&amp;Löschen</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Gruppe:</translation>
+        <translation type="obsolete">Gruppe:</translation>
     </message>
     <message>
         <source>Scheduler Code:</source>
-        <translation>Scheduler Code:</translation>
+        <translation type="obsolete">Scheduler Code:</translation>
     </message>
     <message>
         <source>Show Audio Carts</source>
-        <translation>Audio Carts anzeigen</translation>
+        <translation type="obsolete">Audio Carts anzeigen</translation>
     </message>
     <message>
         <source>Show Macro Carts</source>
-        <translation>Makro-Carts anzeigen</translation>
+        <translation type="obsolete">Makro-Carts anzeigen</translation>
     </message>
     <message>
         <source>CART</source>
@@ -1225,7 +1225,7 @@ CD</source>
     </message>
     <message>
         <source>ALL</source>
-        <translation>ALLE</translation>
+        <translation type="obsolete">ALLE</translation>
     </message>
     <message>
         <source></source>
@@ -1233,31 +1233,31 @@ CD</source>
     </message>
     <message>
         <source>Are you sure you want to delete cart(s)</source>
-        <translation>Sind sie sicher diese(n) Cart(s)  löschen zu wollen</translation>
+        <translation type="unfinished">Sind sie sicher diese(n) Cart(s)  löschen zu wollen</translation>
     </message>
     <message>
         <source>Delete Cart(s)</source>
-        <translation>Cart(s)  löschen</translation>
+        <translation type="unfinished">Cart(s)  löschen</translation>
     </message>
     <message>
         <source>Cart %06u is used in one or more RDCatch events!
 Do you still want to delete it?</source>
-        <translation>Cart %06u wird von einem oder mehreren RDCatch-Events
+        <translation type="obsolete">Cart %06u wird von einem oder mehreren RDCatch-Events
 verwendet. Trotzdem löschen?</translation>
     </message>
     <message>
         <source>RDCatch Event Exists</source>
-        <translation>RDCatch-Event existiert</translation>
+        <translation type="unfinished">RDCatch-Event existiert</translation>
     </message>
     <message>
         <source>Deleting cart %06u will also empty the clipboard.
       	Do you still want to proceed?</source>
-        <translation>Den Cart %06u zu löschen wird auch die Zwischenablage leeren
+        <translation type="obsolete">Den Cart %06u zu löschen wird auch die Zwischenablage leeren
       	Trotzdem fortfahren?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Zwischenablage leeren</translation>
+        <translation type="unfinished">Zwischenablage leeren</translation>
     </message>
     <message>
         <source>Sequence</source>
@@ -1281,23 +1281,23 @@ verwendet. Trotzdem löschen?</translation>
     </message>
     <message>
         <source>Show Note Bubbles</source>
-        <translation>Zeige Notizen</translation>
+        <translation type="obsolete">Zeige Notizen</translation>
     </message>
     <message>
         <source>RDLibrary</source>
-        <translation>RDLibrary</translation>
+        <translation type="unfinished">RDLibrary</translation>
     </message>
     <message>
         <source>Unable to delete audio!</source>
-        <translation>Kann die Audiodatei(en) nicht löschen!</translation>
+        <translation type="unfinished">Kann die Audiodatei(en) nicht löschen!</translation>
     </message>
     <message>
         <source>Show Only First </source>
-        <translation>Zeige nur erste</translation>
+        <translation type="obsolete">Zeige nur erste</translation>
     </message>
     <message>
         <source> Matches</source>
-        <translation>Treffer</translation>
+        <translation type="obsolete">Treffer</translation>
     </message>
     <message>
         <source>Host</source>
@@ -1305,10 +1305,6 @@ verwendet. Trotzdem löschen?</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow Cart Dragging</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1320,92 +1316,20 @@ verwendet. Trotzdem löschen?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>End</source>
-        <translation type="unfinished">Ende</translation>
-    </message>
-    <message>
-        <source>Album</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Composer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Conductor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Publisher</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User Defined</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Ende</translation>
     </message>
     <message>
         <source>Cuts</source>
-        <translation type="unfinished">Cuts</translation>
-    </message>
-    <message>
-        <source>Last Cut Played</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Cuts</translation>
     </message>
     <message>
         <source>Enforce Length</source>
-        <translation type="unfinished">Länge erzwingen</translation>
+        <translation type="obsolete">Länge erzwingen</translation>
     </message>
     <message>
         <source>Preserve Pitch</source>
-        <translation type="unfinished">Pitch schützen</translation>
-    </message>
-    <message>
-        <source>Length Deviation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Owned By</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Talk</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Pitch schützen</translation>
     </message>
     <message>
         <source>Run
@@ -1413,15 +1337,43 @@ verwendet. Trotzdem löschen?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>And Scheduler Code:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Matching Carts:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is used in one or more RDCatch events!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to delete it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>will also empty the clipboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to proceed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is a voicetrack belonging to log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>It cannot be deleted here!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voicetrack Found</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

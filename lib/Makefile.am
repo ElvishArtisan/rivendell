@@ -80,6 +80,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdcart_dialog.cpp rdcart_dialog.h\
                         rdcart_search_text.cpp rdcart_search_text.h\
                         rdcartdrag.cpp rdcartdrag.h\
+                        rdcartfilter.cpp rdcartfilter.h\
                         rdcartslot.cpp rdcartslot.h\
                         rdcastsearch.cpp rdcastsearch.h\
                         rdcatch_conf.cpp rdcatch_conf.h\
@@ -152,6 +153,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rd.h\
                         rdkernelgpio.cpp rdkernelgpio.h\
                         rdlibrary_conf.cpp rdlibrary_conf.h\
+                        rdlibrarymodel.cpp rdlibrarymodel.h\
                         rdlineedit.cpp rdlineedit.h\
                         rdlistselector.cpp rdlistselector.h\
                         rdlist_groups.cpp rdlist_groups.h\
@@ -269,6 +271,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdcae.cpp\
                           moc_rdcardselector.cpp\
                           moc_rdcart_dialog.cpp\
+                          moc_rdcartfilter.cpp\
                           moc_rdcartslot.cpp\
                           moc_rdcatch_connect.cpp\
                           moc_rdcddblookup.cpp\
@@ -306,6 +309,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdimagepickermodel.cpp\
                           moc_rdimport_audio.cpp\
                           moc_rdkernelgpio.cpp\
+                          moc_rdlibrarymodel.cpp\
                           moc_rdlineedit.cpp\
                           moc_rdlist_groups.cpp\
                           moc_rdlist_logs.cpp\
