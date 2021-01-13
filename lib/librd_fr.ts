@@ -2311,6 +2311,10 @@ Do you want to overwrite it?</source>
         <source>Conductor</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDListGroups</name>

@@ -24,7 +24,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QProgressDialog>
-#include <QTableView>
+#include <QTreeView>
 
 #include <rdcartfilter.h>
 #include <rdlibrarymodel.h>
@@ -74,6 +74,7 @@ class MainWidget : public RDWidget
   void playerShortcutData();
   void cartDoubleClickedData(const QModelIndex &);
   void selectionChangedData(const QItemSelection &,const QItemSelection &);
+  void modelResetData();
   void audioChangedData(int state);
   void macroChangedData(int state);
   void dragsChangedData(bool state);
@@ -92,7 +93,7 @@ class MainWidget : public RDWidget
 		       const QDateTime &end_datetime,
 		       const QDateTime &current_datetime); 
   void SetCaption(QString user);
-  int SingleSelectedLine() const;
+  int SingleSelectedCartLine() const;
   QString GeometryFile();
   void LoadGeometry();
   void SaveGeometry();
@@ -101,7 +102,7 @@ class MainWidget : public RDWidget
   void SendNotification(RDNotification::Action action,unsigned cartnum);
   RDCartFilter *lib_cart_filter;
   //  LibListView *lib_cart_list;
-  QTableView *lib_cart_view;
+  QTreeView *lib_cart_view;
   RDLibraryModel *lib_cart_model;
   QString lib_filter_text;
   QString lib_search_text;

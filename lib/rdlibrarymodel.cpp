@@ -23,9 +23,11 @@
 #include "rdlibrarymodel.h"
 
 RDLibraryModel::RDLibraryModel(QObject *parent)
-  : QAbstractTableModel(parent)
+  : QAbstractItemModel(parent)
 {
   d_log_icons=new RDLogIcons();
+  d_font_metrics=NULL;
+  d_bold_font_metrics=NULL;
 
   //
   // Column Attributes
@@ -120,9 +122,39 @@ void RDLibraryModel::setPalette(const QPalette &pal)
 void RDLibraryModel::setFont(const QFont &font)
 {
   d_font=font;
+  if(d_font_metrics!=NULL) {
+    delete d_font_metrics;
+  }
+  d_font_metrics=new QFontMetrics(d_font);
 
   d_bold_font=font;
   d_bold_font.setWeight(QFont::Bold);
+  if(d_bold_font_metrics!=NULL) {
+    delete d_bold_font_metrics;
+  }
+  d_bold_font_metrics=new QFontMetrics(d_bold_font);
+}
+
+
+QModelIndex RDLibraryModel::index(int row,int col,
+				  const QModelIndex &parent) const
+{
+  if(!parent.isValid()) {
+    return createIndex(row,col,(quint32)0);
+  }
+  if((parent.column()==0)&&(parent.internalId()==0)) {
+    return createIndex(row,col,(quint32)(1+parent.row()));
+  }
+  return QModelIndex();
+}
+
+
+QModelIndex RDLibraryModel::parent(const QModelIndex &index) const
+{
+  if(index.isValid()&&(index.internalId()>0)) {
+    return createIndex(index.internalId()-1,0,(quint32)0);
+  }
+  return QModelIndex();
 }
 
 
@@ -134,7 +166,25 @@ int RDLibraryModel::columnCount(const QModelIndex &parent) const
 
 int RDLibraryModel::rowCount(const QModelIndex &parent) const
 {
+  if(parent.isValid()) {
+    if(parent.internalId()==0) {
+      return d_cut_texts.at(parent.row()).size();
+    }
+    return d_cut_texts.at(parent.internalId()-1).size();
+  }
   return d_texts.size();
+}
+
+
+bool RDLibraryModel::hasChildren(const QModelIndex &parent) const
+{
+  if(parent.isValid()) {
+    if((parent.internalId()==0)&&(parent.column()==0)) {
+      return d_cut_texts.at(parent.row()).size()>0;
+    }
+    return false;
+  }
+  return true;
 }
 
 
@@ -153,35 +203,66 @@ QVariant RDLibraryModel::data(const QModelIndex &index,int role) const
   QString str;
   int col=index.column();
   int row=index.row();
+  QPixmap pix;
 
-  if(row<d_texts.size()) {
-    switch((Qt::ItemDataRole)role) {
-    case Qt::DisplayRole:
-      return d_texts.at(row).at(col);
+  if(!index.isValid()) {
+    return QVariant();
+  }
+  if(index.internalId()>0) {   // Cuts
+    if(row<d_cut_texts.at(index.internalId()-1).size()) {
+      switch((Qt::ItemDataRole)role) {
+      case Qt::DisplayRole:
+	return d_cut_texts.at(index.internalId()-1).at(row).at(col);
 
-    case Qt::DecorationRole:
-      return d_icons.at(row).at(col);
+      case Qt::TextAlignmentRole:
+	return d_alignments.at(col);
 
-    case Qt::TextAlignmentRole:
-      return d_alignments.at(col);
-
-    case Qt::FontRole:
-      if(col==1) {  // Group
-	return d_bold_font;
+      case Qt::SizeHintRole:
+	return QSize(RD_LISTWIDGET_ITEM_WIDTH_PADDING+
+		     d_font_metrics->width(d_cut_texts.
+		     at(index.internalId()-1).at(row).at(col).toString()),
+		     RD_LISTWIDGET_ITEM_HEIGHT);
+      default:
+	break;
       }
-      return d_font;
+    }    
+  }
+  else {   // Carts
+    if(row<d_texts.size()) {
+      switch((Qt::ItemDataRole)role) {
+      case Qt::DisplayRole:
+	return d_texts.at(row).at(col);
 
-    case Qt::TextColorRole:
-      if(col==1) {
-	return d_group_colors.value(d_texts.at(row).at(1).toString());
+      case Qt::DecorationRole:
+	return d_icons.at(row).at(col);
+
+      case Qt::TextAlignmentRole:
+	return d_alignments.at(col);
+
+      case Qt::FontRole:
+	if(col==1) {  // Group
+	  return d_bold_font;
+	}
+	return d_font;
+
+      case Qt::TextColorRole:
+	if(col==1) {
+	  return d_group_colors.value(d_texts.at(row).at(1).toString());
+	}
+	break;
+
+      case Qt::BackgroundRole:
+	return d_background_colors.at(row);
+
+      case Qt::SizeHintRole:
+	return QSize(RD_LISTWIDGET_ITEM_WIDTH_PADDING+
+		     (d_icons.at(row).at(col).value<QPixmap>().width())+
+		     d_font_metrics->width(d_texts.at(row).at(col).toString()),
+		     RD_LISTWIDGET_ITEM_HEIGHT);
+
+      default:
+	break;
       }
-      break;
-
-    case Qt::BackgroundRole:
-      return d_background_colors.at(row);
-
-    default:
-      break;
     }
   }
 
@@ -225,8 +306,11 @@ int RDLibraryModel::addCart(unsigned cartnum)
   for(int i=0;i<columnCount();i++) {
     list.push_back(QVariant());
   }
+  QList<QList<QVariant> > list_list;
+  list_list.push_back(list);
   d_icons.insert(offset,list);
   d_texts.insert(offset,list);
+  d_cut_texts.insert(offset,list_list);
   d_background_colors.insert(offset,QVariant());
   d_cart_types.insert(offset,RDCart::All);
 
@@ -252,6 +336,7 @@ void RDLibraryModel::removeCart(unsigned cartnum)
       beginRemoveRows(QModelIndex(),i,i);
 
       d_texts.removeAt(i);
+      d_cut_texts.removeAt(i);
       d_background_colors.removeAt(i);
       d_cart_types.removeAt(i);
       d_icons.removeAt(i);
@@ -272,7 +357,7 @@ void RDLibraryModel::refreshRow(int row)
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     updateRow(row,q);
-    emit dataChanged(createIndex(row,0),createIndex(row,columnCount()));
+    emit dataChanged(createIndex(row,0,0),createIndex(row,columnCount(),(quint32)0));
   }
   delete q;
 }
@@ -306,6 +391,18 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   RDSqlQuery *q=NULL;
 
   //
+  // Placeholder values
+  //
+  QList<QVariant> list;
+  QList<QVariant> icons;
+  for(int i=0;i<columnCount();i++) {
+    list.push_back(QVariant());
+    icons.push_back(QVariant());
+  }
+  QList<QList<QVariant> > list_list;
+  list_list.push_back(list);
+
+  //
   // Reload the color table
   //
   d_group_colors.clear();
@@ -323,22 +420,24 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
     filter_sql;
   beginResetModel();
   d_texts.clear();
+  d_cut_texts.clear();
   d_background_colors.clear();
   d_cart_types.clear();
   d_icons.clear();
+  unsigned prev_cartnum=0;
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    QList<QVariant> texts; 
-    QList<QVariant> icons;
-    for(int i=0;i<columnCount();i++) {
-      texts.push_back(QVariant());
-      icons.push_back(QVariant());
+    if(q->value(0).toUInt()!=prev_cartnum) {
+      d_texts.push_back(list);
+      d_cut_texts.push_back(list_list);
+      d_background_colors.push_back(QVariant());
+      d_cart_types.push_back(RDCart::All);
+      d_icons.push_back(icons);
+      updateRow(d_texts.size()-1,q);
+      prev_cartnum=q->value(0).toUInt();
     }
-    d_texts.push_back(texts);
-    d_background_colors.push_back(QVariant());
-    d_cart_types.push_back(RDCart::All);
-    d_icons.push_back(icons);
-    updateRow(d_texts.size()-1,q);
+    //    if(q->value(15).toUInt()==RDCart::Audio) {
+
   }
   delete q;
   endResetModel();
@@ -348,6 +447,11 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
 
 void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
 {
+  unsigned cartnum=q->value(0).toUInt();
+
+  //
+  // Text Values (Qt::Display)
+  //
   switch((RDCart::Type)q->value(15).toUInt()) {
   case RDCart::Audio:
     if(q->value(21).isNull()) {
@@ -373,7 +477,7 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
   if(q->value(16).toUInt()==1) {
     d_texts[row][2]=RDGetTimeLength(q->value(1).toUInt());  // Total Length
     d_texts[row][3]=              // Talk Length
-      RDGetTimeLength(q->value(25).toUInt()-q->value(24).toUInt());
+      RDGetTimeLength(q->value(28).toUInt()-q->value(27).toUInt());
   }
 
   d_texts[row][4]=q->value(2);    // Title
@@ -437,6 +541,33 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
     d_background_colors[row]=QColor(RD_CART_EVERGREEN_COLOR);
     break;
   }
+
+  //  printf("start at: %d\n",q->at());
+
+  //
+  // Cut Attributes
+  //
+  d_cut_texts[row].clear();
+  QList<QVariant> list;
+  for(int i=0;i<columnCount();i++) {
+    list.push_back(QVariant());
+  }
+
+  do {
+    if(q->value(24).isNull()) {
+      return;  // No cuts!
+    }
+    // Process
+    d_cut_texts[row].push_back(list);
+    d_cut_texts[row].back()[0]=tr("Cut")+  // Cut Number
+      QString().sprintf(" %03d",RDCut::cutNumber(q->value(24).toString()));
+    d_cut_texts[row].back()[2]=  // Length
+      RDGetTimeLength(q->value(26).toUInt()-q->value(25).toUInt());
+    d_cut_texts[row].back()[3]=  // Talk Length
+      RDGetTimeLength(q->value(28).toUInt()-q->value(27).toUInt());
+    d_cut_texts[row].back()[4]=q->value(29).toString();  // Description
+  } while(q->next()&&(q->value(0).toUInt()==cartnum));
+  q->previous();
 }
 
 
@@ -467,11 +598,34 @@ QString sql=QString("select ")+
   "CART.OWNER,"+              // 21
   "CART.VALIDITY,"+           // 22
   "GROUPS.COLOR,"+            // 23
-  "CUTS.TALK_START_POINT,"+   // 24
-  "CUTS.TALK_END_POINT "+     // 25
+  "CUTS.CUT_NAME,"+           // 24
+  "CUTS.START_POINT,"+        // 25
+  "CUTS.END_POINT,"+          // 26
+  "CUTS.TALK_START_POINT,"+   // 27
+  "CUTS.TALK_END_POINT,"+     // 28
+  "CUTS.DESCRIPTION "+        // 29
   "from CART "+
   "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
   "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER ";
 
   return sql;
+}
+
+
+QByteArray RDLibraryModel::DumpIndex(const QModelIndex &index,const QString &caption) const
+{
+  QByteArray ret;
+
+  if(!caption.isEmpty()) {
+    ret+=(caption+": ").toUtf8();
+  }
+  if(index.isValid()) {
+    ret+=QString().sprintf("QModelIndex(%d,%d,%llu)",
+			   index.row(),index.column(),index.internalId()).
+      toUtf8();
+  }
+  else {
+    ret+=QString("QModelIndex()").toUtf8();
+  }
+  return ret;
 }

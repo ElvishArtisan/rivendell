@@ -2684,6 +2684,10 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
         <source>Conductor</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Cut</translation>
+    </message>
 </context>
 <context>
     <name>RDLicense</name>

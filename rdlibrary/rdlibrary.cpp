@@ -166,10 +166,10 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Cart List
   //
-  lib_cart_view=new QTableView(this);
+  lib_cart_view=new QTreeView(this);
   lib_cart_view->setGeometry(100,0,430,sizeHint().height());
   lib_cart_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  lib_cart_view->setShowGrid(false);
+  //  lib_cart_view->setShowGrid(false);
   lib_cart_view->setSortingEnabled(false);
   lib_cart_view->setWordWrap(false);
   lib_cart_model=new RDLibraryModel(this);
@@ -180,8 +180,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 	  lib_cart_model,SLOT(setFilterSql(const QString &)));
   connect(lib_cart_filter,SIGNAL(dragEnabledChanged(bool)),
 	  this,SLOT(dragsChangedData(bool)));
-  connect(lib_cart_model,SIGNAL(modelReset()),
-	  lib_cart_view,SLOT(resizeColumnsToContents()));
+  connect(lib_cart_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
   connect(lib_cart_model,SIGNAL(rowCountChanged(int)),
 	  lib_cart_filter,SLOT(setMatchCount(int)));
   connect(lib_cart_view,SIGNAL(doubleClicked(const QModelIndex &)),
@@ -295,7 +294,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 
   dragsChangedData(lib_cart_filter->dragEnabled());
   lib_cart_model->setFilterSql(lib_cart_filter->filterSql());
-  lib_cart_view->resizeColumnsToContents();
+  //  lib_cart_view->resizeColumnsToContents();
 
   LoadGeometry();
 }
@@ -386,7 +385,7 @@ void MainWidget::addData()
     new EditCart(cart_num,&lib_import_path,true,profile_ripping,this);
   if(cart->exec()) {
     int row=lib_cart_model->addCart(cart_num);
-    lib_cart_view->selectRow(row);
+    //    lib_cart_view->selectRow(row);
     lib_cart_view->scrollTo(lib_cart_model->index(row,0));
     SendNotification(RDNotification::AddAction,cart_num);
   } 
@@ -432,7 +431,7 @@ void MainWidget::macroData()
 {
   int row=-1;
 
-  if(((row=SingleSelectedLine())<0)||
+  if(((row=SingleSelectedCartLine())<0)||
      (lib_cart_model->cartType(row)!=RDCart::Macro)) {
     return;
   }
@@ -547,7 +546,7 @@ void MainWidget::deleteData()
     delete rdcart;
   }
 
-  lib_cart_view->selectRow(rows.first().row());
+  //  lib_cart_view->selectRow(rows.first().row());
   lib_cart_view->scrollTo(lib_cart_model->index(rows.first().row(),0));
 
   UnlockUser();
@@ -597,7 +596,13 @@ void MainWidget::cartDoubleClickedData(const QModelIndex &)
 void MainWidget::selectionChangedData(const QItemSelection &,
 				      const QItemSelection &)
 {
+  QList<int> cartlines;
+  QStringList cutnames;
   QModelIndexList rows=lib_cart_view->selectionModel()->selectedRows();
+
+  for(int i=0;i<rows.size();i++) {
+
+  }
 
   lib_player->playButton()->setEnabled(rows.size()==1);
   lib_player->stopButton()->setEnabled(rows.size()==1);
@@ -629,6 +634,14 @@ void MainWidget::selectionChangedData(const QItemSelection &,
 }
 
 
+void MainWidget::modelResetData()
+{
+  for(int i=0;i<lib_cart_model->columnCount();i++) {
+    lib_cart_view->resizeColumnToContents(i);
+  }
+}
+
+
 void MainWidget::audioChangedData(int state)
 {
   //  filterChangedData("");
@@ -646,7 +659,7 @@ void MainWidget::dragsChangedData(bool state)
   if(state) {
     QModelIndexList rows=lib_cart_view->selectionModel()->selectedRows();
     if(rows.size()>1) {
-      lib_cart_view->selectRow(rows.first().row());
+      //lib_cart_view->selectRow(rows.first().row());
     }
     lib_cart_view->setSelectionMode(QAbstractItemView::SingleSelection);
   }
@@ -1169,11 +1182,13 @@ void MainWidget::SetCaption(QString user)
 }
 
 
-int MainWidget::SingleSelectedLine() const
+int MainWidget::SingleSelectedCartLine() const
 {
   int row=-1;
 
-  if(lib_cart_view->selectionModel()->selectedRows().size()==1) {
+  if((lib_cart_view->selectionModel()->selectedRows().size()==1)&&
+     (lib_cart_view->selectionModel()->selectedRows().first().internalId()==
+      0)) {
     return lib_cart_view->selectionModel()->selectedRows().first().row();
   }
 

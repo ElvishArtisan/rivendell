@@ -21,7 +21,7 @@
 #ifndef RDLIBRARYMODEL_H
 #define RDLIBRARYMODEL_H
 
-#include <QAbstractTableModel>
+#include <QAbstractItemModel>
 #include <QFont>
 #include <QFontMetrics>
 #include <QList>
@@ -33,7 +33,7 @@
 #include <rdlog_icons.h>
 #include <rdnotification.h>
 
-class RDLibraryModel : public QAbstractTableModel
+class RDLibraryModel : public QAbstractItemModel
 {
   Q_OBJECT
  public:
@@ -42,8 +42,12 @@ class RDLibraryModel : public QAbstractTableModel
   QPalette palette();
   void setPalette(const QPalette &pal);
   void setFont(const QFont &font);
+  QModelIndex index(int row,int col,
+		    const QModelIndex &parent=QModelIndex()) const;
+  QModelIndex parent(const QModelIndex &index) const;
   int columnCount(const QModelIndex &parent=QModelIndex()) const;
   int rowCount(const QModelIndex &parent=QModelIndex()) const;
+  bool hasChildren(const QModelIndex &parent=QModelIndex()) const;
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
@@ -68,12 +72,16 @@ class RDLibraryModel : public QAbstractTableModel
   QString sqlFields() const;
 
  private:
+  QByteArray DumpIndex(const QModelIndex &index,const QString &caption="") const;
   QPalette d_palette;
   QFont d_font;
+  QFontMetrics *d_font_metrics;
   QFont d_bold_font;
+  QFontMetrics *d_bold_font_metrics;
   QList<QVariant> d_headers;
   QList<QList<QVariant> > d_texts;
   QList<QList<QVariant> > d_icons;
+  QList<QList<QList<QVariant> > > d_cut_texts;
   QList<QVariant> d_alignments;
   QList<QVariant> d_background_colors;
   QList<RDCart::Type> d_cart_types;

@@ -625,4 +625,11 @@
  */
 #define RD_GPIO_EVENT_DAYS 30
 
+/*
+ * Height/Width for QTreeWidget, QTableWidget and QListView widgets
+ */
+#define RD_LISTWIDGET_ITEM_HEIGHT 25
+#define RD_LISTWIDGET_ITEM_WIDTH_PADDING 20
+
+
 #endif  // RD_H

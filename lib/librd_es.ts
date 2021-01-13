@@ -2682,6 +2682,10 @@ Do you still want to proceed?</source>
         <source>Conductor</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Cortar</translation>
+    </message>
 </context>
 <context>
     <name>RDLicense</name>

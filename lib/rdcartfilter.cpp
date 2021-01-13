@@ -244,7 +244,8 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   for(int i=0;i<and_fields.size();i++) {
     sql+="&& "+and_fields.at(i)+" ";
   }
-  sql+=" group by CART.NUMBER order by CART.NUMBER ";
+  //  sql+=" group by CART.NUMBER order by CART.NUMBER ";
+  sql+=" order by CART.NUMBER ";
   if(d_showmatches_box->isChecked()) {
     sql+=QString().sprintf("limit %d ",RD_LIMITED_CART_SEARCH_QUANTITY);
   }

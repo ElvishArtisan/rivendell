@@ -2663,6 +2663,10 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
         <source>Conductor</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Klypp</translation>
+    </message>
 </context>
 <context>
     <name>RDLicense</name>
