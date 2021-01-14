@@ -29,7 +29,6 @@ x11 {
   SOURCES += edit_notes.cpp
   SOURCES += edit_schedulercodes.cpp
   SOURCES += filter.cpp
-  SOURCES += lib_listview.cpp
   SOURCES += libraryview.cpp
   SOURCES += list_reports.cpp
   SOURCES += macro_cart.cpp
@@ -48,7 +47,6 @@ x11 {
   HEADERS += edit_notes.h
   HEADERS += edit_schedulercodes.h
   HEADERS += filter.h
-  HEADERS += lib_listview.h
   HEADERS += libraryview.h
   HEADERS += list_reports.h
   HEADERS += macro_cart.h

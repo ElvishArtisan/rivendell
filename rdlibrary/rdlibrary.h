@@ -31,7 +31,6 @@
 #include <rdwidget.h>
 
 #include "disk_gauge.h"
-#include "lib_listview.h"
 #include "libraryview.h"
 
 #define RDLIBRARY_GEOMETRY_FILE ".rdlibrary"

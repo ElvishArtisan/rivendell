@@ -22,7 +22,8 @@
 #include <QMimeData>
 #include <QMouseEvent>
 
-#include "rdlibrarymodel.h"
+#include <rdcartdrag.h>
+#include <rdlibrarymodel.h>
 
 #include "libraryview.h"
 
@@ -34,28 +35,20 @@ LibraryView::LibraryView(QWidget *parent)
 
 void LibraryView::mousePressEvent(QMouseEvent *e)
 {
-  if(e->button()==Qt::LeftButton) {
-    QDrag *drag=new QDrag(this);
-    QMimeData *mime=new QMimeData();
-
-    RDLibraryModel *mod=(RDLibraryModel *)model();
-    QModelIndex index=indexAt(e->pos());
-
-    QString str="[Rivendell-Cart]\n";
-    str+="Number="+QString().sprintf("%06u",mod->cartNumber(index))+"\n";
-    QColor color=mod->data(mod->index(index.row(),1),Qt::TextColorRole).value<QColor>();
-    if(color.isValid()) {
-      str+="Color="+color.name()+"\n";
-    }
-
-    QString title=mod->data(mod->index(index.row(),4),Qt::DisplayRole).toString();
-    if(!title.isEmpty()) {
-      str+="ButtonText="+title+"\n";
-    }
-    printf("DRAG: %s\n",str.toUtf8().constData());
-    mime->setText(str);
-
-  }
   QTreeView::mousePressEvent(e);
 
+  if(dragEnabled()&&(e->button()==Qt::LeftButton)) {
+    RDLibraryModel *mod=(RDLibraryModel *)model();
+    QModelIndex index=indexAt(e->pos());
+    QDrag *drag=new QDrag(this);
+    RDCartDrag *cd=
+      new RDCartDrag(mod->cartNumber(index),
+		     mod->data(mod->index(index.row(),4)).toString(),
+		     mod->data(mod->index(index.row(),0),Qt::TextColorRole).
+		     value<QColor>());
+    drag->setMimeData(cd);
+    drag->setPixmap(mod->data(mod->index(index.row(),0),Qt::DecorationRole).
+		    value<QPixmap>());
+    drag->exec();
+  }
 }

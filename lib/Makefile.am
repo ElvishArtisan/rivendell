@@ -58,6 +58,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         export_spincount.cpp\
                         export_technical.cpp\
                         export_textlog.cpp\
+                        rd3cartdrag.cpp rd3cartdrag.h\
                         rdadd_cart.cpp rdadd_cart.h\
                         rdadd_log.cpp rdadd_log.h\
                         rdairplay_conf.cpp rdairplay_conf.h\
@@ -79,7 +80,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdcart.cpp rdcart.h\
                         rdcart_dialog.cpp rdcart_dialog.h\
                         rdcart_search_text.cpp rdcart_search_text.h\
-                        rd3cartdrag.cpp rd3cartdrag.h\
+                        rdcartdrag.cpp rdcartdrag.h\
                         rdcartfilter.cpp rdcartfilter.h\
                         rdcartslot.cpp rdcartslot.h\
                         rdcastsearch.cpp rdcastsearch.h\
