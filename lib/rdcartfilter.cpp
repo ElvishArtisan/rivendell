@@ -226,6 +226,10 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   QString sql="";
   QString type_filter=GetTypeFilter();
 
+  if(type_filter.isEmpty()) {
+    return QString("where CART.NUMBER=0 ");
+  }
+
   QStringList schedcodes;
   if(d_codes_box->currentText()!=tr("ALL")) {
     schedcodes << d_codes_box->currentText();
@@ -235,11 +239,11 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   }
   if(d_group_box->currentText()==QString(tr("ALL"))) {
     sql=RDAllCartSearchText(d_filter_edit->text(),schedcodes,
-			  rda->user()->name(),true)+" && "+type_filter;
+			  rda->user()->name(),true)+" "+type_filter;
   }
   else {
     sql=RDCartSearchText(d_filter_edit->text(),d_group_box->currentText(),
-		       schedcodes,true)+" && "+type_filter;      
+		       schedcodes,true)+" "+type_filter;      
   }
   for(int i=0;i<and_fields.size();i++) {
     sql+="&& "+and_fields.at(i)+" ";
@@ -249,6 +253,8 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   if(d_showmatches_box->isChecked()) {
     sql+=QString().sprintf("limit %d ",RD_LIMITED_CART_SEARCH_QUANTITY);
   }
+
+  //  printf("SQL: %s\n",sql.toUtf8().constData());
 
   return sql;
 }
@@ -432,15 +438,15 @@ QString RDCartFilter::GetTypeFilter() const
 
   if(d_showaudio_box->isChecked()) {
     if(d_showmacro_box->isChecked()) {
-      type_filter="((TYPE=1)||(TYPE=2)||(TYPE=3))";
+      type_filter="&& ((TYPE=1)||(TYPE=2)||(TYPE=3))";
     }
     else {
-      type_filter="((TYPE=1)||(TYPE=3))";
+      type_filter="&& ((TYPE=1)||(TYPE=3))";
     }
   }
   else {
     if(d_showmacro_box->isChecked()) {
-      type_filter="(TYPE=2)";
+      type_filter="&& (TYPE=2)";
     }
   }
   return type_filter;

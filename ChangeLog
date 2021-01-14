@@ -20788,3 +20788,6 @@
 	* Reenabled cart dragging in rdlibrary(1).
 2021-01-14 Fred Gleason <fredg@paravelsystems.com>
 	* Purged unneeded data structures in rdlibrary(1).
+2021-01-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that caused a SQL error to be generated
+	when neither audio nor macro carts were selected in the cart filter.
