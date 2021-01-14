@@ -20778,3 +20778,6 @@
 	RD_LISTWIDGET_ITEM_HEIGHT defines in 'lib/rd.h' to define consistent
 	item sizes in list-style widgets.
 	* Modified rdlibrary(1) to use a tree-based model.
+2021-01-13 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Edit Log' dialog in rdlibrary(1) to use the
+	model-based API.

@@ -51,13 +51,17 @@ class RDLibraryModel : public QAbstractItemModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
-  unsigned cartNumber(int row) const;
-  RDCart::Type cartType(int row) const;
-  QString cartOwnedBy(int row);
+  bool isCart(const QModelIndex &index) const;
+  unsigned cartNumber(const QModelIndex &index) const;
+  QModelIndex cartRow(unsigned cartnum) const;
+  RDCart::Type cartType(const QModelIndex &index) const;
+  QString cutName(const QModelIndex &index) const;
+  QString cartOwnedBy(const QModelIndex &index);
   int addCart(unsigned cartnum);
   void removeCart(unsigned cartnum);
-  void refreshRow(int row);
+  void refreshRow(const QModelIndex &index);
   void refreshCart(unsigned cartnum);
+  void refreshCartLine(int cartline);
 
  signals:
   void rowCountChanged(int rows);
@@ -84,6 +88,7 @@ class RDLibraryModel : public QAbstractItemModel
   QList<QList<QList<QVariant> > > d_cut_texts;
   QList<QVariant> d_alignments;
   QList<QVariant> d_background_colors;
+  QList<unsigned> d_cart_numbers;
   QList<RDCart::Type> d_cart_types;
   QMap<QString,QVariant> d_group_colors;
   RDLogIcons *d_log_icons;

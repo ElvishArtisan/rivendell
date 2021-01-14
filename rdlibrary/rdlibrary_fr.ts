@@ -876,10 +876,6 @@ CD</source>
         <translation></translation>
     </message>
     <message>
-        <source>TFN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Host</source>
         <translation type="unfinished"></translation>
     </message>
@@ -945,14 +941,6 @@ CD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDLibrary</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to delete audio!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>is a voicetrack belonging to log</source>
         <translation type="unfinished"></translation>
     </message>
@@ -962,6 +950,14 @@ CD</source>
     </message>
     <message>
         <source>Voicetrack Found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDLibrary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to delete audio!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

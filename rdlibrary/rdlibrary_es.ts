@@ -1219,10 +1219,6 @@ Cartucho</translation>
         <translation type="obsolete">Aleatorio</translation>
     </message>
     <message>
-        <source>TFN</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>RDLibrary - Host:</source>
         <translation type="obsolete">RDLibrary - Servidor: </translation>
     </message>

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cart
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,6 +21,8 @@
 #ifndef EDIT_CART_H
 #define EDIT_CART_H
 
+#include <QList>
+
 #include <rddialog.h>
 
 #include "audio_cart.h"
@@ -32,8 +34,8 @@ class EditCart : public RDDialog
 {
   Q_OBJECT
  public:
-  EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
-	   QWidget *parent=0,const char *name=0,Q3ListView *lib_cart_list=NULL);
+  EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
+	   bool profile_rip,QWidget *parent=0);
   ~EditCart();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -54,7 +56,7 @@ class EditCart : public RDDialog
 
  private:
   void PopulateGroupList();
-  Q3ListView *lib_cart_list_edit;
+  QList<unsigned> rdcart_cart_numbers;
   bool ValidateLengths();
   RDCart *rdcart_cart;
   QLineEdit *rdcart_type_edit;

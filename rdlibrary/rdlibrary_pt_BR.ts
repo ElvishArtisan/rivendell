@@ -1263,7 +1263,7 @@ Você ainda quer deletá-lo?</translation>
     </message>
     <message>
         <source>TFN</source>
-        <translation>TFN</translation>
+        <translation type="obsolete">TFN</translation>
     </message>
     <message>
         <source>RDLibrary - Host:</source>
@@ -1339,14 +1339,6 @@ Você ainda quer deletá-lo?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDLibrary</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to delete audio!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>is a voicetrack belonging to log</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1356,6 +1348,14 @@ Você ainda quer deletá-lo?</translation>
     </message>
     <message>
         <source>Voicetrack Found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDLibrary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to delete audio!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

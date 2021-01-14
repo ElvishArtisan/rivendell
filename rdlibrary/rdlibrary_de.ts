@@ -1269,7 +1269,7 @@ verwendet. Trotzdem löschen?</translation>
     </message>
     <message>
         <source>TFN</source>
-        <translation>TFN</translation>
+        <translation type="obsolete">TFN</translation>
     </message>
     <message>
         <source>RDLibrary - Host:</source>

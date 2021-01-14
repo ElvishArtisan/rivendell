@@ -86,20 +86,17 @@ class MainWidget : public RDWidget
   void closeEvent(QCloseEvent *e);
   
  private:
-  void RefreshList();
-  void RefreshCuts(RDListViewItem *p,unsigned cartnum);
-  void RefreshLine(RDListViewItem *item);
-  void UpdateItemColor(RDListViewItem *item,RDCart::Validity validity,
-		       const QDateTime &end_datetime,
-		       const QDateTime &current_datetime); 
   void SetCaption(QString user);
-  int SingleSelectedCartLine() const;
+  int CurrentSelection(QModelIndexList *carts,QModelIndexList *cuts=NULL) const;
+  void SelectRow(const QModelIndex &index);
+  void SelectRow(unsigned cartnum);
   QString GeometryFile();
   void LoadGeometry();
   void SaveGeometry();
   void LockUser();
   bool UnlockUser();
   void SendNotification(RDNotification::Action action,unsigned cartnum);
+  void SetPlayer(RDCart::Type type);
   RDCartFilter *lib_cart_filter;
   //  LibListView *lib_cart_list;
   QTreeView *lib_cart_view;

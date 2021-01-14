@@ -30,26 +30,26 @@
 #include "rdlibrary.h"
 #include "record_cut.h"
 
-EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
-		   QWidget *parent,const char *name,Q3ListView *lib_cart_list)
+EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
+		   bool profile_rip,QWidget *parent)
   : RDDialog(parent)
 {
   bool modification_allowed;
   rdcart_cart=NULL;
   rdcart_profile_rip=profile_rip;
+  rdcart_cart_numbers=cartnums;
 
   rdcart_new_cart=new_cart;
   sched_codes="";
   add_codes="";
   remove_codes="";
-  lib_cart_list_edit=lib_cart_list;
 
   //
   // Fix the Window Size
   //
   setMinimumWidth(sizeHint().width());
   setMaximumWidth(sizeHint().width());
-  if(lib_cart_list_edit==NULL) {
+  if(cartnums.size()==1) {
     setMinimumHeight(sizeHint().height());
     setMaximumHeight(sizeHint().height());
   }
@@ -58,8 +58,8 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
     setMaximumHeight(sizeHint().height()-270);
   }
 
-  if(lib_cart_list_edit==NULL) {
-    rdcart_cart=new RDCart(number);
+  if(cartnums.size()==1) {
+    rdcart_cart=new RDCart(cartnums.at(0));
     rdcart_import_path=path;
     setWindowTitle("RDLibrary - "+tr("Edit Cart")+
 		   QString().sprintf(" %06u",rdcart_cart->number())+" ["+
@@ -84,7 +84,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
     }
   }
 
-  if(lib_cart_list_edit==NULL) {
+  if(cartnums.size()==1) {
     //
     // Cart Number
     //
@@ -104,7 +104,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   // Cart Group
   //
   rdcart_group_box=new QComboBox(this);
-  if(lib_cart_list_edit==NULL) {
+  if(cartnums.size()==1) {
     rdcart_group_box->setGeometry(280,11,140,21);
   }
   else {
@@ -114,7 +114,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_group_edit->setGeometry(280,11,140,21);
   rdcart_group_edit->setReadOnly(true);
   QLabel *rdcart_group_label=new QLabel(rdcart_group_box,tr("Group:"),this);
-  if(lib_cart_list_edit==NULL) {
+  if(cartnums.size()==1) {
     rdcart_group_label->setGeometry(215,13,60,21);
   }
   else {
@@ -136,7 +136,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_type_label->setFont(labelFont());
   rdcart_type_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
-  if(lib_cart_list_edit!=NULL) {
+  if(cartnums.size()>1) {
     rdcart_type_label->hide();
     rdcart_type_edit->hide();
   }
@@ -155,7 +155,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_average_length_label->setFont(labelFont());
   rdcart_average_length_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
-  if(lib_cart_list_edit!=NULL) {
+  if(cartnums.size()>1) {
     rdcart_average_length_label->hide();
     rdcart_average_length_edit->hide();
   }
@@ -173,7 +173,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
     setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   connect(rdcart_controls.enforce_length_box,SIGNAL(toggled(bool)),
 	  this,SLOT(forcedLengthData(bool)));
-  if(lib_cart_list_edit!=NULL) {
+  if(cartnums.size()>1) {
     rdcart_enforce_length_label->hide();
     rdcart_controls.enforce_length_box->hide();
   }
@@ -196,7 +196,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_forced_length_label->setFont(labelFont());
   rdcart_forced_length_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
-  if(lib_cart_list_edit!=NULL) {
+  if(cartnums.size()>1) {
     rdcart_forced_length_label->hide();
     rdcart_controls.forced_length_edit->hide();
   }
@@ -278,7 +278,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   rdcart_usage_box=new QComboBox(this);
   rdcart_usage_box->setGeometry(270,110,150,21);
-  if(lib_cart_list_edit!=0) {
+  if(cartnums.size()>1) {
     rdcart_usage_box->insertItem("");
     }
   for(int i=0;i<(int)RDCart::UsageLast;i++) {
@@ -503,7 +503,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   connect(script_button,SIGNAL(clicked()),this,SLOT(scriptData()));
   script_button->hide();
 
-  if(lib_cart_list_edit==NULL) {
+  if(cartnums.size()==1) {
     //
     // Cut Widget
     //
@@ -547,10 +547,11 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //  Ok Button
   //
   QPushButton *ok_button=new QPushButton(this);
-  if(lib_cart_list_edit==NULL) 
+  if(cartnums.size()==1) 
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   else
-    ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60-270,80,50);
+    ok_button->
+      setGeometry(sizeHint().width()-180,sizeHint().height()-60-270,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
@@ -560,12 +561,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //  Cancel Button
   //
   QPushButton *cancel_button=new QPushButton(this);
-  if(lib_cart_list_edit==NULL) 
+  if(cartnums.size()==1) 
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   else 
-    cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60-270,
-			     80,50);
+    cancel_button->
+      setGeometry(sizeHint().width()-90,sizeHint().height()-60-270,80,50);
   cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
@@ -573,7 +574,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Populate Fields
   //
-  if(lib_cart_list_edit==NULL) { //single edit
+  if(cartnums.size()==1) { //single edit
     rdcart_number_edit->
       setText(QString().sprintf("%06d",rdcart_cart->number()));
     if(rdcart_group_box->count() == 0)
@@ -602,9 +603,10 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
 	  rdcart_type_edit->setText(tr("UNKNOWN"));
 	  break;
     }
-    rdcart_controls.enforce_length_box->setChecked(rdcart_cart->enforceLength());
+    rdcart_controls.enforce_length_box->
+      setChecked(rdcart_cart->enforceLength());
     forcedLengthData(rdcart_controls.enforce_length_box->isChecked());
-    if(lib_cart_list_edit==NULL) {
+    if(cartnums.size()==1) {
       rdcart_average_length_edit->
 	setText(RDGetTimeLength(rdcart_cart->averageLength()));
     }
@@ -688,7 +690,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_start_date_edit->setReadOnly(!modification_allowed);
   rdcart_end_date_edit->setReadOnly(!modification_allowed);
   rdcart_notes_button->setEnabled(modification_allowed);
-  if(lib_cart_list_edit==NULL) {
+  if(cartnums.size()==1) {
     rdcart_average_length_edit->
       setReadOnly((!modification_allowed)||
 		(!rdcart_controls.enforce_length_box->isChecked()));
@@ -763,20 +765,17 @@ void EditCart::lengthChangedData(unsigned len)
 
 void EditCart::okData()
 {
-  Q3ListViewItemIterator *it;
-  RDCart *rdcart_cart_medit;
-  RDSystem *system;
+  //  RDSystem *system;
   QString sql;
   RDSqlQuery *q;
 
-  if(lib_cart_list_edit==NULL) { // Single Edit
+  if(rdcart_cart_numbers.size()==1) { // Single Edit
     if(rdcart_controls.title_edit->text().isEmpty()) {
       QMessageBox::warning(this,tr("Missing Title"),
 			   tr("You must provide at least a Cart Title!"));
       return;
     }
-    system=new RDSystem();
-    if(!system->allowDuplicateCartTitles()) {
+    if(!rda->system()->allowDuplicateCartTitles()) {
       sql=QString("select NUMBER from CART where ")+
 	"(TITLE=\""+RDEscapeString(rdcart_controls.title_edit->text())+"\") &&"+
 	QString().sprintf("(NUMBER!=%u)",rdcart_cart->number());
@@ -785,12 +784,10 @@ void EditCart::okData()
 	QMessageBox::warning(this,tr("Duplicate Title"),
 			     tr("The cart title must be unique!"));
 	delete q;
-	delete system;
 	return;
       }
       delete q;
     }
-    delete system;
     if(rdcart_controls.enforce_length_box->isChecked()) {
       if(!ValidateLengths()) {
 	switch(QMessageBox::warning(this,tr("Length Mismatch"),
@@ -867,74 +864,60 @@ void EditCart::okData()
     }
   }
   else {  // Multi Edit
-    it=new Q3ListViewItemIterator(lib_cart_list_edit);
-    while(it->current()) {
-      if(it->current()->isSelected()) {  
-        RDListViewItem *item=(RDListViewItem *)it->current();
-        if(item->text(MainWidget::OwnedBy).isEmpty()) {
- 
-          rdcart_cart_medit=new RDCart(item->text(MainWidget::Cart).toUInt());
-	  
-          if(!rdcart_group_box->currentText().stripWhiteSpace().isEmpty()) {
-	    rdcart_cart_medit->setGroupName(rdcart_group_box->currentText());
-	  }
-          if(!rdcart_controls.title_edit->text().stripWhiteSpace().isEmpty()) {
-            rdcart_cart_medit->setTitle(rdcart_controls.title_edit->text());
-	  }
-          if(rdcart_controls.year_edit->text().toInt()) {
-            rdcart_cart_medit->setYear(rdcart_controls.year_edit->text().toInt());
-          }
-          if(!rdcart_controls.artist_edit->text().stripWhiteSpace().isEmpty()) {
-            rdcart_cart_medit->setArtist(rdcart_controls.artist_edit->text());
-	  }
-          if(!rdcart_controls.album_edit->text().stripWhiteSpace().isEmpty()) {
-            rdcart_cart_medit->setAlbum(rdcart_controls.album_edit->text());
-	  }
-          if(!rdcart_controls.label_edit->text().stripWhiteSpace().isEmpty()) {
-            rdcart_cart_medit->setLabel(rdcart_controls.label_edit->text());
-	  }
-          if(!rdcart_controls.client_edit->text().stripWhiteSpace().isEmpty()) {
-            rdcart_cart_medit->setClient(rdcart_controls.client_edit->text());
-	  }
-          if(!rdcart_controls.agency_edit->text().stripWhiteSpace().isEmpty()) {
-            rdcart_cart_medit->setAgency(rdcart_controls.agency_edit->text());
-	  }
-          if(!rdcart_controls.song_id_edit->
-	     text().stripWhiteSpace().isEmpty()) {
-            rdcart_cart_medit->
-	      setSongId(rdcart_controls.song_id_edit->text());
-	  }
-          if(!rdcart_controls.publisher_edit->text().stripWhiteSpace().
-	     isEmpty()) {
-            rdcart_cart_medit->
-	      setPublisher(rdcart_controls.publisher_edit->text());
-	  }
-          if(!rdcart_controls.composer_edit->
-	     text().stripWhiteSpace().isEmpty()) {
-            rdcart_cart_medit->
-	      setComposer(rdcart_controls.composer_edit->text());
-	  }
-          if(!rdcart_controls.conductor_edit->text().
-	     stripWhiteSpace().isEmpty()) {
-            rdcart_cart_medit->
-	      setConductor(rdcart_controls.conductor_edit->text());
-	  }
-          if(!rdcart_controls.user_defined_edit->text().
-	     stripWhiteSpace().isEmpty()) {
-            rdcart_cart_medit->
-	      setUserDefined(rdcart_controls.user_defined_edit->text());
-	  }
-          if(!rdcart_usage_box->currentText().stripWhiteSpace().isEmpty()) {
-            rdcart_cart_medit->setUsageCode((RDCart::UsageCode)
-				    (rdcart_usage_box->currentItem()-1));
-	  }
-          rdcart_cart_medit->updateSchedCodes(add_codes,remove_codes);
-	  delete rdcart_cart_medit; 
-        }
+    for(int i=0;i<rdcart_cart_numbers.size();i++) {
+      RDCart *cart=new RDCart(rdcart_cart_numbers.at(i));
+      if(cart->owner().isEmpty()) {
+	if(!rdcart_group_box->currentText().stripWhiteSpace().isEmpty()) {
+	  cart->setGroupName(rdcart_group_box->currentText());
+	}
+	if(!rdcart_controls.title_edit->text().stripWhiteSpace().isEmpty()) {
+	  cart->setTitle(rdcart_controls.title_edit->text());
+	}
+	if(rdcart_controls.year_edit->text().toInt()) {
+	  cart->setYear(rdcart_controls.year_edit->text().toInt());
+	}
+	if(!rdcart_controls.artist_edit->text().stripWhiteSpace().isEmpty()) {
+	  cart->setArtist(rdcart_controls.artist_edit->text());
+	}
+	if(!rdcart_controls.album_edit->text().stripWhiteSpace().isEmpty()) {
+	  cart->setAlbum(rdcart_controls.album_edit->text());
+	}
+	if(!rdcart_controls.label_edit->text().stripWhiteSpace().isEmpty()) {
+	  cart->setLabel(rdcart_controls.label_edit->text());
+	}
+	if(!rdcart_controls.client_edit->text().stripWhiteSpace().isEmpty()) {
+	  cart->setClient(rdcart_controls.client_edit->text());
+	}
+	if(!rdcart_controls.agency_edit->text().stripWhiteSpace().isEmpty()) {
+	  cart->setAgency(rdcart_controls.agency_edit->text());
+	}
+	if(!rdcart_controls.song_id_edit->text().stripWhiteSpace().isEmpty()) {
+	  cart->setSongId(rdcart_controls.song_id_edit->text());
+	}
+	if(!rdcart_controls.publisher_edit->text().
+	   stripWhiteSpace().isEmpty()) {
+	  cart->setPublisher(rdcart_controls.publisher_edit->text());
+	}
+	if(!rdcart_controls.composer_edit->
+	   text().stripWhiteSpace().isEmpty()) {
+	  cart->setComposer(rdcart_controls.composer_edit->text());
+	}
+	if(!rdcart_controls.conductor_edit->text().
+	   stripWhiteSpace().isEmpty()) {
+	  cart->setConductor(rdcart_controls.conductor_edit->text());
+	}
+	if(!rdcart_controls.user_defined_edit->text().
+	   stripWhiteSpace().isEmpty()) {
+	  cart->setUserDefined(rdcart_controls.user_defined_edit->text());
+	}
+	if(!rdcart_usage_box->currentText().stripWhiteSpace().isEmpty()) {
+	  cart->setUsageCode((RDCart::UsageCode)
+			     (rdcart_usage_box->currentItem()-1));
+	}
+	cart->updateSchedCodes(add_codes,remove_codes);
       }
-      ++(*it);
+      delete cart;
     }
-    delete it;
   }
   
   done(true);
@@ -944,7 +927,7 @@ void EditCart::okData()
 void EditCart::cancelData()
 {
   unsigned len;
-  if((lib_cart_list_edit==NULL)&&(rdcart_cart->type()==RDCart::Audio)) {
+  if((rdcart_cart_numbers.size()==1)&&(rdcart_cart->type()==RDCart::Audio)) {
     len=rdcart_cart->calculateAverageLength(&rdcart_length_deviation);
     rdcart_cart->setLengthDeviation(rdcart_length_deviation);
     if(!rdcart_controls.enforce_length_box->isChecked()) {
@@ -1026,7 +1009,7 @@ bool EditCart::ValidateLengths()
 
 void EditCart::schedCodesData()
 {
-  if(lib_cart_list_edit==NULL) {
+  if(rdcart_cart_numbers.size()==1) {
     EditSchedulerCodes *dialog=new EditSchedulerCodes(&sched_codes,NULL,this);
     dialog->exec();
     delete dialog;
