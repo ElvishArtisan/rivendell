@@ -20786,3 +20786,5 @@
 	* Renamed the 'RDEmptyCart' widget to 'RD3EmptyCart'.
 2021-01-14 Fred Gleason <fredg@paravelsystems.com>
 	* Reenabled cart dragging in rdlibrary(1).
+2021-01-14 Fred Gleason <fredg@paravelsystems.com>
+	* Purged unneeded data structures in rdlibrary(1).

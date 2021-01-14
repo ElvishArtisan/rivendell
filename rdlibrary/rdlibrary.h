@@ -100,12 +100,6 @@ class MainWidget : public RDWidget
   LibraryView *lib_cart_view;
   RDLibraryModel *lib_cart_model;
   QString lib_filter_text;
-  QString lib_search_text;
-  QPixmap *lib_playout_map;
-  QPixmap *lib_macro_map;
-  QPixmap *lib_track_cart_map;
-  QPushButton *lib_search_button;
-  QPushButton *lib_clear_button;
   QPushButton *lib_add_button;
   QPushButton *lib_edit_button;
   QPushButton *lib_delete_button;
@@ -119,15 +113,13 @@ class MainWidget : public RDWidget
   int lib_output_port;
   QString lib_default_group;
   QString lib_import_path;
-  QPixmap *lib_rivendell_map;
-  RDStation::FilterMode lib_filter_mode;
   QProgressDialog *lib_progress_dialog;
   bool profile_ripping;
   bool lib_edit_pending;
   bool lib_user_changed;
   QTimer *lib_user_timer;
   bool lib_resize;
-  std::vector<unsigned> lib_deleted_carts;
+  QList<unsigned> lib_deleted_carts;
 };
 
 

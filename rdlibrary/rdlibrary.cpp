@@ -57,10 +57,7 @@ void SigHandler(int signo);
 //
 // Icons
 //
-#include "../icons/play.xpm"
-#include "../icons/rml5.xpm"
-#include "../icons/track_cart.xpm"
-#include "../icons/rdlibrary-22x22.xpm"
+#include "../icons/rivendell-22x22.xpm"
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   : RDWidget(c,parent)
@@ -85,11 +82,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Create Icons
   //
-  lib_playout_map=new QPixmap(play_xpm);
-  lib_macro_map=new QPixmap(rml5_xpm);
-  lib_track_cart_map=new QPixmap(track_cart_xpm);
-  lib_rivendell_map=new QPixmap(rdlibrary_22x22_xpm);
-  setWindowIcon(*lib_rivendell_map);
+  setWindowIcon(QPixmap(rivendell_22x22_xpm));
 
   //
   // Progress Dialog
@@ -136,7 +129,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Allocate Global Resources
   //
-  lib_filter_mode=rda->station()->filterMode();
   rdaudioport_conf=new RDAudioPort(rda->config()->stationName(),
 				   rda->libraryConf()->inputCard());
   connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
@@ -907,7 +899,7 @@ bool MainWidget::UnlockUser()
   //
   // Process Deleted Carts
   //
-  for(unsigned i=0;i<lib_deleted_carts.size();i++) {
+  for(int i=0;i<lib_deleted_carts.size();i++) {
     lib_cart_model->removeCart(lib_deleted_carts.at(i));
   }
   lib_deleted_carts.clear();
