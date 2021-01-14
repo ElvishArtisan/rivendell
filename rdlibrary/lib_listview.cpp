@@ -2,7 +2,7 @@
 //
 //   A drag & drop QListView widget for Rivendell's RDLibrary
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +19,7 @@
 //
 //
 
-#include <rdcartdrag.h>
+#include <rd3cartdrag.h>
 #include <rdlibrary.h>
 #include <rdlistviewitem.h>
 
@@ -102,8 +102,8 @@ void LibListView::contentsMouseMoveEvent(QMouseEvent *e)
       return;
     }
     if(item->text(MainWidget::OwnedBy).isEmpty()&&!item->parent()) {  // Voice tracks and cuts cannot be dragged
-      RDCartDrag *d=
-        new RDCartDrag(item->text(MainWidget::Cart).left(6).toUInt(),item->text(MainWidget::Title),
+      RD3CartDrag *d=
+        new RD3CartDrag(item->text(MainWidget::Cart).left(6).toUInt(),item->text(MainWidget::Title),
                        item->textColor(MainWidget::Group), this);
       d->dragCopy();
       emit clicked(item);

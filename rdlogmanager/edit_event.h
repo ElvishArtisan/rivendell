@@ -33,7 +33,7 @@
 #include <qtextedit.h>
 
 #include <rddialog.h>
-#include <rdemptycart.h>
+#include <rd3emptycart.h>
 #include <rdevent.h>
 #include <rdsimpleplayer.h>
 
@@ -166,7 +166,7 @@ class EditEvent : public RDDialog
   std::vector<QString> *event_new_events;
   RDSimplePlayer *event_player;
   QTextEdit *event_remarks_edit;
-  RDEmptyCart *event_empty_cart;
+  RD3EmptyCart *event_empty_cart;
 };
 
 

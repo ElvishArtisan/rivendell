@@ -1,8 +1,8 @@
-// rdcartdrag.cpp
+// rd3cartdrag.cpp
 //
 // Stored value drag object for Rivendell carts.
 //
-//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,10 +22,10 @@
 
 #include <qstringlist.h>
 
-#include <rd.h>
-#include <rdcart.h>
-#include <rdcartdrag.h>
-#include <rdprofile.h>
+#include "rd.h"
+#include "rd3cartdrag.h"
+#include "rdcart.h"
+#include "rdprofile.h"
 
 //
 // Icons
@@ -34,7 +34,7 @@
 #include "../icons/rml5.xpm"
 #include "../icons/trashcan-16x16.xpm"
 
-RDCartDrag::RDCartDrag(unsigned cartnum,const QPixmap *icon,const QColor &color,
+RD3CartDrag::RD3CartDrag(unsigned cartnum,const QPixmap *icon,const QColor &color,
 		       QWidget *src)
   : Q3StoredDrag(RDMIMETYPE_CART,src)
 {
@@ -61,7 +61,7 @@ RDCartDrag::RDCartDrag(unsigned cartnum,const QPixmap *icon,const QColor &color,
 }
 
 
-RDCartDrag::RDCartDrag(unsigned cartnum,const QString &title,
+RD3CartDrag::RD3CartDrag(unsigned cartnum,const QString &title,
 		       const QColor &color,QWidget *src)
   : Q3StoredDrag(RDMIMETYPE_CART,src)
 {
@@ -88,13 +88,13 @@ RDCartDrag::RDCartDrag(unsigned cartnum,const QString &title,
 }
 
 
-bool RDCartDrag::canDecode(QMimeSource *e)
+bool RD3CartDrag::canDecode(QMimeSource *e)
 {
   return e->provides(RDMIMETYPE_CART);
 }
 
 
-bool RDCartDrag::decode(QMimeSource *e,unsigned *cartnum,QColor *color,
+bool RD3CartDrag::decode(QMimeSource *e,unsigned *cartnum,QColor *color,
 			QString *title)
 {
   RDProfile *p=new RDProfile();
@@ -111,20 +111,20 @@ bool RDCartDrag::decode(QMimeSource *e,unsigned *cartnum,QColor *color,
 }
 
 
-bool RDCartDrag::decode(QMimeSource *e,RDLogLine *ll,
+bool RD3CartDrag::decode(QMimeSource *e,RDLogLine *ll,
 			RDLogLine::TransType next_trans,int log_mach,
 			bool timescale,RDLogLine::TransType trans)
 {
   unsigned cartnum;
 
-  RDCartDrag::decode(e,&cartnum);
+  RD3CartDrag::decode(e,&cartnum);
   ll->loadCart(cartnum,next_trans,log_mach,timescale,trans);
 
   return true;
 }
 
 
-void RDCartDrag::SetData(unsigned cartnum,const QColor &color,const QString &title)
+void RD3CartDrag::SetData(unsigned cartnum,const QColor &color,const QString &title)
 {
   QString str="[Rivendell-Cart]\n";
   str+="Number="+QString().sprintf("%06u",cartnum)+"\n";

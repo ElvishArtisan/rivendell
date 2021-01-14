@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +23,7 @@
 
 #include <qsplashscreen.h>
 
-#include <rdemptycart.h>
+#include <rd3emptycart.h>
 #include <rdhotkeylist.h>
 #include <rdhotkeys.h>
 #include <rdinstancelock.h>
@@ -191,7 +191,7 @@ class MainWidget : public RDWidget
   int air_stop_gpo_lines[RDAirPlayConf::LastChannel];
   RDAirPlayConf::GpioType air_channel_gpio_types[RDAirPlayConf::LastChannel];
   std::map<unsigned,QTimer *> air_channel_timers[2];
-  RDEmptyCart *air_empty_cart;
+  RD3EmptyCart *air_empty_cart;
 };
 
 

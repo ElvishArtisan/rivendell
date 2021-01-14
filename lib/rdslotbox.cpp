@@ -2,7 +2,7 @@
 //
 // Cart slot label widget for RDCartSlot
 //
-//   (C) Copyright 2012-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -497,7 +497,7 @@ void RDSlotBox::mousePressEvent(QMouseEvent *e)
 
   if((line_logline!=NULL)&&(line_mode==RDSlotOptions::CartDeckMode)&&
      line_allow_drags) {
-    RDCartDrag *d=new RDCartDrag(line_logline->cartNumber(),
+    RD3CartDrag *d=new RD3CartDrag(line_logline->cartNumber(),
 				 line_icon_label->pixmap(),
 				 line_group_label->palette().
 				 color(QColorGroup::Foreground),this);
@@ -526,7 +526,7 @@ void RDSlotBox::paintEvent(QPaintEvent *e)
 
 void RDSlotBox::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RDCartDrag::canDecode(e)&&
+  e->accept(RD3CartDrag::canDecode(e)&&
 	    (line_mode==RDSlotOptions::CartDeckMode)&&
 	    (line_deck->state()==RDPlayDeck::Stopped));
 }
@@ -536,7 +536,7 @@ void RDSlotBox::dropEvent(QDropEvent *e)
 {
   unsigned cartnum;
 
-  if(RDCartDrag::decode(e,&cartnum)) {
+  if(RD3CartDrag::decode(e,&cartnum)) {
     emit cartDropped(cartnum);
   }
 }

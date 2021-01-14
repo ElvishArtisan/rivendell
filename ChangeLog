@@ -20781,3 +20781,6 @@
 2021-01-13 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'Edit Log' dialog in rdlibrary(1) to use the
 	model-based API.
+2021-01-13 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'RDCartDrag' class to 'RD3CartDrag'.
+	* Renamed the 'RDEmptyCart' widget to 'RD3EmptyCart'.

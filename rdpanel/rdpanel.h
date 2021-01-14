@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Wall Utility for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,7 @@
 #ifndef RDPANEL_H
 #define RDPANEL_H
 
-#include <rdemptycart.h>
+#include <rd3emptycart.h>
 #include <rdsound_panel.h>
 #include <rdstereometer.h>
 #include <rdwidget.h>
@@ -67,7 +67,7 @@ class MainWidget : public RDWidget
   QString panel_filter;
   QString panel_group;
   QString panel_schedcode;
-  RDEmptyCart *panel_empty_cart;
+  RD3EmptyCart *panel_empty_cart;
 };
 
 

@@ -2,7 +2,7 @@
 //
 //   The Library ListView widget for RDLogManager.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +19,7 @@
 //
 //
 
-#include <rdcartdrag.h>
+#include <rd3cartdrag.h>
 
 #include <lib_listview.h>
 
@@ -36,8 +36,8 @@ void LibListView::contentsMousePressEvent(QMouseEvent *e)
   if(item==NULL) {
     return;
   }
-  RDCartDrag *d=new RDCartDrag(item->text(1).toUInt(),item->pixmap(0),
-			       Qt::lightGray,this);
+  RD3CartDrag *d=new RD3CartDrag(item->text(1).toUInt(),item->pixmap(0),
+				 Qt::lightGray,this);
   d->dragCopy();
 
   emit clicked(item);

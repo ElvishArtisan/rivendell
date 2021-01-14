@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Wall Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -266,7 +266,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Empty Cart
   //
-  panel_empty_cart=new RDEmptyCart(this);
+  panel_empty_cart=new RD3EmptyCart(this);
   panel_empty_cart->setGeometry(373,sizeHint().height()-52,32,32);
   if(!rda->station()->enableDragdrop()) {
     panel_empty_cart->hide();

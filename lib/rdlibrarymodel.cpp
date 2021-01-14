@@ -188,6 +188,12 @@ bool RDLibraryModel::hasChildren(const QModelIndex &parent) const
 }
 
 
+Qt::ItemFlags RDLibraryModel::flags(const QModelIndex &index) const
+{
+  return Qt::ItemIsSelectable|Qt::ItemIsDragEnabled|Qt::ItemIsEnabled;
+}
+
+
 QVariant RDLibraryModel::headerData(int section,Qt::Orientation orient,
 				    int role) const
 {

@@ -79,7 +79,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdcart.cpp rdcart.h\
                         rdcart_dialog.cpp rdcart_dialog.h\
                         rdcart_search_text.cpp rdcart_search_text.h\
-                        rdcartdrag.cpp rdcartdrag.h\
+                        rd3cartdrag.cpp rd3cartdrag.h\
                         rdcartfilter.cpp rdcartfilter.h\
                         rdcartslot.cpp rdcartslot.h\
                         rdcastsearch.cpp rdcastsearch.h\
@@ -122,7 +122,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rddummylookup.cpp rddummylookup.h\
                         rdedit_audio.cpp rdedit_audio.h\
                         rdedit_panel_name.cpp rdedit_panel_name.h\
-                        rdemptycart.cpp rdemptycart.h\
+                        rd3emptycart.cpp rd3emptycart.h\
                         rdescape_string.cpp rdescape_string.h\
                         rdevent.cpp rdevent.h\
                         rdevent_line.cpp rdevent_line.h\
@@ -294,7 +294,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rddummylookup.cpp\
                           moc_rdedit_audio.cpp\
                           moc_rdedit_panel_name.cpp\
-                          moc_rdemptycart.cpp\
+                          moc_rd3emptycart.cpp\
                           moc_rdevent_player.cpp\
                           moc_rdexport_settings_dialog.cpp\
                           moc_rdfeed.cpp\

@@ -24,7 +24,6 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QProgressDialog>
-#include <QTreeView>
 
 #include <rdcartfilter.h>
 #include <rdlibrarymodel.h>
@@ -33,6 +32,7 @@
 
 #include "disk_gauge.h"
 #include "lib_listview.h"
+#include "libraryview.h"
 
 #define RDLIBRARY_GEOMETRY_FILE ".rdlibrary"
 #define RDLIBRARY_STEP_SIZE 5000
@@ -98,8 +98,7 @@ class MainWidget : public RDWidget
   void SendNotification(RDNotification::Action action,unsigned cartnum);
   void SetPlayer(RDCart::Type type);
   RDCartFilter *lib_cart_filter;
-  //  LibListView *lib_cart_list;
-  QTreeView *lib_cart_view;
+  LibraryView *lib_cart_view;
   RDLibraryModel *lib_cart_model;
   QString lib_filter_text;
   QString lib_search_text;

@@ -30,6 +30,7 @@ x11 {
   SOURCES += edit_schedulercodes.cpp
   SOURCES += filter.cpp
   SOURCES += lib_listview.cpp
+  SOURCES += libraryview.cpp
   SOURCES += list_reports.cpp
   SOURCES += macro_cart.cpp
   SOURCES += rdlibrary.cpp
@@ -48,6 +49,7 @@ x11 {
   HEADERS += edit_schedulercodes.h
   HEADERS += filter.h
   HEADERS += lib_listview.h
+  HEADERS += libraryview.h
   HEADERS += list_reports.h
   HEADERS += macro_cart.h
   HEADERS += rdlibrary.h

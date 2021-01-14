@@ -31,7 +31,7 @@
 #include <qtimer.h>
 
 #include <rdairplay_conf.h>
-#include <rdcartdrag.h>
+#include <rd3cartdrag.h>
 #include <rdlog_line.h>
 #include <rdplaymeter.h>
 #include <rdplay_deck.h>

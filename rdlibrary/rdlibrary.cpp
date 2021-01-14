@@ -166,10 +166,9 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Cart List
   //
-  lib_cart_view=new QTreeView(this);
+  lib_cart_view=new LibraryView(this);
   lib_cart_view->setGeometry(100,0,430,sizeHint().height());
   lib_cart_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  //  lib_cart_view->setShowGrid(false);
   lib_cart_view->setSortingEnabled(false);
   lib_cart_view->setWordWrap(false);
   lib_cart_model=new RDLibraryModel(this);
@@ -688,13 +687,14 @@ void MainWidget::dragsChangedData(bool state)
   if(state) {
     QModelIndexList rows=lib_cart_view->selectionModel()->selectedRows();
     if(rows.size()>1) {
-      //lib_cart_view->selectRow(rows.first().row());
+      SelectRow(rows.first());
     }
     lib_cart_view->setSelectionMode(QAbstractItemView::SingleSelection);
   }
   else {
     lib_cart_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
   }
+  lib_cart_view->setDragEnabled(state);
 }
 
 

@@ -2,7 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -793,8 +793,8 @@ void LogLineBox::mouseMoveEvent(QMouseEvent *e)
     line_move_count--;
     if(line_move_count==0) {
       if(line_allow_drags&&(line_logline!=NULL)) {
-	RDCartDrag *d=
-	  new RDCartDrag(line_logline->cartNumber(),line_icon_label->pixmap(),
+	RD3CartDrag *d=
+	  new RD3CartDrag(line_logline->cartNumber(),line_icon_label->pixmap(),
 			 line_group_label->palette().
 			 color(QColorGroup::Foreground),this);
 	d->dragCopy();
@@ -834,7 +834,7 @@ void LogLineBox::paintEvent(QPaintEvent *e)
 
 void LogLineBox::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RDCartDrag::canDecode(e)&&
+  e->accept(RD3CartDrag::canDecode(e)&&
 	    ((line_status==RDLogLine::Scheduled)||
 	     (line_status==RDLogLine::Paused)));
 }
@@ -844,7 +844,7 @@ void LogLineBox::dropEvent(QDropEvent *e)
 {
   RDLogLine ll;
 
-  if(RDCartDrag::decode(e,&ll)) {
+  if(RD3CartDrag::decode(e,&ll)) {
     emit cartDropped(log_line,&ll);
   }
 }

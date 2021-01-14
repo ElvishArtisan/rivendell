@@ -53,6 +53,7 @@ dist_rdlibrary_SOURCES = audio_cart.cpp audio_cart.h\
                          edit_schedulercodes.cpp edit_schedulercodes.h\
                          globals.h\
                          lib_listview.cpp lib_listview.h\
+                         libraryview.cpp libraryview.h\
                          list_reports.cpp list_reports.h\
                          macro_cart.cpp macro_cart.h\
                          notebubble.cpp notebubble.h\
@@ -67,8 +68,9 @@ nodist_rdlibrary_SOURCES = moc_audio_cart.cpp\
                            moc_edit_cart.cpp\
                            moc_edit_macro.cpp\
                            moc_edit_notes.cpp\
-                           moc_edit_schedulercodes.cpp \
+                           moc_edit_schedulercodes.cpp\
                            moc_lib_listview.cpp\
+                           moc_libraryview.cpp\
                            moc_list_reports.cpp\
                            moc_macro_cart.cpp\
                            moc_notebubble.cpp\

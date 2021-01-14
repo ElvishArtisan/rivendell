@@ -2,7 +2,7 @@
 //
 // A drag source for an empty cart.
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rdemptycart.h>
+#include "rd3emptycart.h"
 
 //
 // Icons
@@ -29,7 +29,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 
-RDEmptyCart::RDEmptyCart(QWidget *parent)
+RD3EmptyCart::RD3EmptyCart(QWidget *parent)
   : QWidget(parent)
 {
   empty_label=new QLabel(this);
@@ -38,27 +38,27 @@ RDEmptyCart::RDEmptyCart(QWidget *parent)
 }
 
 
-RDEmptyCart::~RDEmptyCart()
+RD3EmptyCart::~RD3EmptyCart()
 {
   delete empty_label;
 }
 
 
-QSize RDEmptyCart::sizeHint() const
+QSize RD3EmptyCart::sizeHint() const
 {
   return QSize(32,32);
 }
 
 
-QSizePolicy RDEmptyCart::sizePolicy() const
+QSizePolicy RD3EmptyCart::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
 }
 
 
-void RDEmptyCart::mousePressEvent(QMouseEvent *e)
+void RD3EmptyCart::mousePressEvent(QMouseEvent *e)
 {
   QWidget::mousePressEvent(e);
-  RDCartDrag *d=new RDCartDrag(0,"",Qt::lightGray,this);
+  RD3CartDrag *d=new RD3CartDrag(0,"",Qt::lightGray,this);
   d->dragCopy();
 }

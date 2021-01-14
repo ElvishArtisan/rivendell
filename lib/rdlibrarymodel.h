@@ -48,6 +48,7 @@ class RDLibraryModel : public QAbstractItemModel
   int columnCount(const QModelIndex &parent=QModelIndex()) const;
   int rowCount(const QModelIndex &parent=QModelIndex()) const;
   bool hasChildren(const QModelIndex &parent=QModelIndex()) const;
+  Qt::ItemFlags flags(const QModelIndex &index) const;
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;

@@ -1,4 +1,4 @@
-// rdcartdrag.h
+// rd3cartdrag.h
 //
 // Stored value drag object for Rivendell carts.
 //
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDCARTDRAG_H
-#define RDCARTDRAG_H
+#ifndef RD3CARTDRAG_H
+#define RD3CARTDRAG_H
 
 #include <qcolor.h>
 #include <qpixmap.h>
@@ -29,13 +29,13 @@
 #include <rdcart.h>
 #include <rdlog_line.h>
 
-class RDCartDrag : public Q3StoredDrag
+class RD3CartDrag : public Q3StoredDrag
 {
  public:
-  RDCartDrag(unsigned cartnum,const QPixmap *icon,const QColor &color,
-	     QWidget *src=0);
-  RDCartDrag(unsigned cartnum,const QString &title,const QColor &color,
-	     QWidget *src=0);
+  RD3CartDrag(unsigned cartnum,const QPixmap *icon,const QColor &color,
+	      QWidget *src=0);
+  RD3CartDrag(unsigned cartnum,const QString &title,const QColor &color,
+	      QWidget *src=0);
   static bool canDecode(QMimeSource *e);
   static bool decode(QMimeSource *e,unsigned *cartnum,QColor *color=NULL,
 		     QString *title=NULL);
@@ -49,4 +49,4 @@ class RDCartDrag : public Q3StoredDrag
 };
 
 
-#endif  // RDCARTDRAG_H
+#endif  // RD3CARTDRAG_H

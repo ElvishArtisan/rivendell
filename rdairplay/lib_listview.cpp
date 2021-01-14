@@ -2,7 +2,7 @@
 //
 //   The Log ListView widget for RDAirPlay's Full Log widget.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,7 @@
 
 #include <q3header.h>
 
-#include <rdcartdrag.h>
+#include <rd3cartdrag.h>
 
 #include <lib_listview.h>
 
@@ -35,7 +35,7 @@ LibListView::LibListView(QWidget *parent)
 
 void LibListView::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RDCartDrag::canDecode(e));
+  e->accept(RD3CartDrag::canDecode(e));
 }
 
 
@@ -45,7 +45,7 @@ void LibListView::dropEvent(QDropEvent *e)
   int line=-1;
   QPoint pos(e->pos().x(),e->pos().y()-header()->sectionRect(0).height());
 
-  if(RDCartDrag::decode(e,&ll)) {
+  if(RD3CartDrag::decode(e,&ll)) {
     RDListViewItem *item=(RDListViewItem *)itemAt(pos);
     if(item!=NULL) {
       line=item->text(15).toInt();

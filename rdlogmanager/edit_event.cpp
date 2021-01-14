@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -157,7 +157,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   // Empty Cart Source
   //
-  event_empty_cart=new RDEmptyCart(this);
+  event_empty_cart=new RD3EmptyCart(this);
   event_empty_cart->setGeometry(CENTER_LINE-227,sizeHint().height()-202,32,32);
 
   //

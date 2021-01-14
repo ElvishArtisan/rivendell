@@ -24,7 +24,7 @@
 
 #include <rdcart.h>
 #include <rdconf.h>
-#include <rdcartdrag.h>
+#include <rd3cartdrag.h>
 
 #include <edit_note.h>
 #include <edit_track.h>
@@ -482,7 +482,7 @@ void ImportListView::contentsMouseDoubleClickEvent(QMouseEvent *e)
 
 void ImportListView::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RDCartDrag::canDecode(e));
+  e->accept(RD3CartDrag::canDecode(e));
 }
 
 
@@ -493,7 +493,7 @@ void ImportListView::dropEvent(QDropEvent *e)
   int line=0;
   QPoint pos(e->pos().x(),e->pos().y()-header()->sectionRect(0).height());
 
-  if(RDCartDrag::decode(e,&cartnum)) {
+  if(RD3CartDrag::decode(e,&cartnum)) {
     if(cartnum==0) {
       if(((item=itemAt(pos))==NULL)||(item->text(6).isEmpty())) {
 	return;

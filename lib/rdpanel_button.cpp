@@ -2,7 +2,7 @@
 //
 // The SoundPanel Button for RDAirPlay.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,7 @@
 
 #include <qpainter.h>
 
-#include <rdcartdrag.h>
+#include <rd3cartdrag.h>
 #include <rdconf.h>
 
 #include "rdpanel_button.h"
@@ -367,7 +367,7 @@ void RDPanelButton::mouseMoveEvent(QMouseEvent *e)
   if(button_move_count==0) {
     QPushButton::mouseReleaseEvent(e);
     if(button_allow_drags) {
-      RDCartDrag *d=new RDCartDrag(button_cart,button_text,button_color,this);
+      RD3CartDrag *d=new RD3CartDrag(button_cart,button_text,button_color,this);
       d->dragCopy();
     }
   }
@@ -383,7 +383,7 @@ void RDPanelButton::mouseReleaseEvent(QMouseEvent *e)
 
 void RDPanelButton::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RDCartDrag::canDecode(e)&&button_allow_drags&&
+  e->accept(RD3CartDrag::canDecode(e)&&button_allow_drags&&
   ((button_play_deck==NULL)||(button_play_deck->state()==RDPlayDeck::Stopped)));
 }
 
@@ -394,7 +394,7 @@ void RDPanelButton::dropEvent(QDropEvent *e)
   QColor color;
   QString title;
 
-  if(RDCartDrag::decode(e,&cartnum,&color,&title)) {
+  if(RD3CartDrag::decode(e,&cartnum,&color,&title)) {
     emit cartDropped(button_row,button_col,cartnum,color,title);
   }
 }
