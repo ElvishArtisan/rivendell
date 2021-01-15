@@ -377,8 +377,8 @@ void MainWidget::addData()
   EditCart *cart=
     new EditCart(cartnums,&lib_import_path,true,profile_ripping,this);
   if(cart->exec()) {
-    int row=lib_cart_model->addCart(cart_num);
-    lib_cart_view->scrollTo(lib_cart_model->index(row,0));
+    QModelIndex row=lib_cart_model->addCart(cart_num);
+    SelectRow(row);
     SendNotification(RDNotification::AddAction,cart_num);
   } 
   else {

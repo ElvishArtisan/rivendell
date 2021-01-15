@@ -58,7 +58,7 @@ class RDLibraryModel : public QAbstractItemModel
   RDCart::Type cartType(const QModelIndex &index) const;
   QString cutName(const QModelIndex &index) const;
   QString cartOwnedBy(const QModelIndex &index);
-  int addCart(unsigned cartnum);
+  QModelIndex addCart(unsigned cartnum);
   void removeCart(unsigned cartnum);
   void refreshRow(const QModelIndex &index);
   void refreshCart(unsigned cartnum);

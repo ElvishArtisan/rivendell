@@ -334,7 +334,7 @@ QString RDLibraryModel::cartOwnedBy(const QModelIndex &index)
 }
 
 
-int RDLibraryModel::addCart(unsigned cartnum)
+QModelIndex RDLibraryModel::addCart(unsigned cartnum)
 {
   //
   // Find the insertion offset
@@ -372,7 +372,7 @@ int RDLibraryModel::addCart(unsigned cartnum)
   endInsertRows();
   emit rowCountChanged(d_texts.size());
 
-  return offset;
+  return createIndex(offset,0,0);
 }
 
 
