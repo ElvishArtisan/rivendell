@@ -153,7 +153,7 @@ void ListLogs::loadButtonData()
     return;
   }
   *list_logname=list_log_model->logName(list_log_view->selectionModel()->
-					selectedRows().at(0).row());
+					selectedRows().at(0));
 
   done(ListLogs::Load);
 }

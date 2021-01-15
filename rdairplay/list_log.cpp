@@ -327,8 +327,8 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   //
   // Map Slots
   //
-  connect(list_log,SIGNAL(reloaded()),this,SLOT(logReloadedData()));
-  connect(list_log,SIGNAL(played(int)),this,SLOT(logPlayedData(int)));
+  //  connect(list_log,SIGNAL(reloaded()),this,SLOT(logReloadedData()));
+  //  connect(list_log,SIGNAL(played(int)),this,SLOT(logPlayedData(int)));
   connect(list_log,SIGNAL(paused(int)),this,SLOT(logPausedData(int)));
   connect(list_log,SIGNAL(stopped(int)),this,SLOT(logStoppedData(int)));
   connect(list_log,SIGNAL(inserted(int)),this,SLOT(logInsertedData(int)));

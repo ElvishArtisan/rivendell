@@ -117,7 +117,7 @@ void RDListLogs::okButtonData()
   if(list_log_view->selectionModel()->selectedRows().size()!=1) {
     return;
   }
-  *list_logname=list_log_model->logName(list_log_view->selectionModel()->selectedRows().at(0).row());
+  *list_logname=list_log_model->logName(list_log_view->selectionModel()->selectedRows().at(0));
 
   done(true);
 }

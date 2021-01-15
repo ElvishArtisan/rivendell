@@ -20799,3 +20799,10 @@
 2021-01-15 Fred Gleason <fredg@paravelsystems.com>
 	* Modified 'RDCutList::cutName()'to take 'QModelIndex' instead of
 	'int'.
+2021-01-15 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'RDLogListModel::logName()' to take 'QModelIndex'
+	instead of 'int'.
+	* Modified 'RDLogListModel::removeLog()' to take 'QModelIndex'
+	instead of 'int'.
+	* Modified 'RDLogListModel::addLog()' to return 'QModelIndex' instead
+	of 'int'.

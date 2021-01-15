@@ -156,13 +156,13 @@ QVariant RDLogListModel::data(const QModelIndex &index,int role) const
 }
 
 
-QString RDLogListModel::logName(int row) const
+QString RDLogListModel::logName(const QModelIndex &row) const
 {
-  return d_texts.at(row).at(0).toString();
+  return d_texts.at(row.row()).at(0).toString();
 }
 
 
-int RDLogListModel::addLog(const QString &name)
+QModelIndex RDLogListModel::addLog(const QString &name)
 {
   QList<QVariant> list;
 
@@ -172,19 +172,19 @@ int RDLogListModel::addLog(const QString &name)
   list.push_back(name);
   d_texts.push_back(list);
 
-  refresh(d_texts.size()-1);
+  updateRowLine(d_texts.size()-1);
   endInsertRows();
 
-  return d_texts.size()-1;
+  return createIndex(d_texts.size()-1,0);
 }
 
 
-void RDLogListModel::removeLog(int row)
+void RDLogListModel::removeLog(const QModelIndex &row)
 {
-  beginRemoveRows(QModelIndex(),row,row);
+  beginRemoveRows(QModelIndex(),row.row(),row.row());
 
-  d_texts.removeAt(row);
-  d_icons.removeAt(row);
+  d_texts.removeAt(row.row());
+  d_icons.removeAt(row.row());
 
   endRemoveRows();
 }
@@ -194,23 +194,24 @@ void RDLogListModel::removeLog(const QString &logname)
 {
   for(int i=0;i<d_texts.size();i++) {
     if(d_texts.at(i).at(0)==logname) {
-      removeLog(i);
+      removeLog(createIndex(i,0));
       return;
     }
   }
 }
 
 
-void RDLogListModel::refresh(int row)
+void RDLogListModel::refresh(const QModelIndex &row)
 {
-  if(row<d_texts.size()) {
+  if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      "where NAME=\""+RDEscapeString(d_texts.at(row).at(0).toString())+"\"";
+      "where NAME=\""+RDEscapeString(d_texts.at(row.row()).at(0).toString())+
+      "\"";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
-      printf("updating %d\n",row);
-      updateRow(row,q);
-      emit dataChanged(createIndex(row,0),createIndex(row,columnCount()));
+      updateRow(row.row(),q);
+      emit dataChanged(createIndex(row.row(),0),
+		       createIndex(row.row(),columnCount()));
     }
     delete q;
   }
@@ -221,7 +222,7 @@ void RDLogListModel::refresh(const QString &logname)
 {
   for(int i=0;i<d_texts.size();i++) {
     if(d_texts.at(i).at(0)==logname) {
-      refresh(i);
+      updateRowLine(i);
       return;
     }
   }
@@ -261,6 +262,21 @@ void RDLogListModel::updateModel(const QString &filter_sql)
   }
   delete q;
   endResetModel();
+}
+
+
+void RDLogListModel::updateRowLine(int line)
+{
+  if(line<d_texts.size()) {
+    QString sql=sqlFields()+
+      "where NAME=\""+RDEscapeString(d_texts.at(line).at(0).toString())+"\"";
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    if(q->first()) {
+      updateRow(line,q);
+      emit dataChanged(createIndex(line,0),createIndex(line,columnCount()));
+    }
+    delete q;
+  }
 }
 
 

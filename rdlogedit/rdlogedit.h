@@ -68,7 +68,7 @@ class MainWidget : public RDWidget
   void UnlockList();
   void LoadPositions() const;
   void SavePositions() const;
-  int SingleSelectedRow() const;
+  QModelIndex SingleSelectedRow() const;
   QString log_filename;
   QString log_import_path;
   int log_card_no;

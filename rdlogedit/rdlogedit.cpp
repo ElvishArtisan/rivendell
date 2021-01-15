@@ -253,7 +253,7 @@ void MainWidget::addData()
   QString svcname;
   QStringList newlogs;
   RDAddLog *log;
-  int row=-1;
+  QModelIndex row;
 
   if(rda->user()->createLog()) {
     log=new RDAddLog(&logname,&svcname,RDLogFilter::UserFilter,
@@ -278,7 +278,7 @@ void MainWidget::addData()
     delete editlog;
 
     row=log_log_model->addLog(logname);
-    log_log_view->selectRow(row);
+    log_log_view->selectRow(row.row());
     UnlockList();
   }
 }
@@ -286,9 +286,9 @@ void MainWidget::addData()
 
 void MainWidget::editData()
 {
-  int row=-1;
+  QModelIndex row=SingleSelectedRow();
 
-  if((row=SingleSelectedRow())<0) {
+  if(!row.isValid()) {
     return;
   }
   QString logname=log_log_model->logName(row);
@@ -315,14 +315,14 @@ void MainWidget::deleteData()
   if(rda->user()->deleteLog()) {
     QModelIndexList rows=log_log_view->selectionModel()->selectedRows();
     for(int i=0;i<rows.size();i++) {
-      RDLog *log=new RDLog(log_log_model->logName(rows.at(i).row()));
+      RDLog *log=new RDLog(log_log_model->logName(rows.at(i)));
       tracks+=log->completedTracks();
       delete log;
     }
     if(rows.size()==1) {
       if(QMessageBox::question(this,"RDLogEdit - "+tr("Delete Log"),
 			       tr("Are you sure you want to delete the")+" \""+
-			       log_log_model->logName(rows.at(0).row())+"\" "+
+			       log_log_model->logName(rows.at(0))+"\" "+
 			       tr("log?"),QMessageBox::Yes,QMessageBox::No)!=
 	 QMessageBox::Yes) {
 	return;
@@ -386,27 +386,27 @@ void MainWidget::deleteData()
       QString username;
       QString stationname;
       QHostAddress addr;
-      int rownum=rows.at(rowtable.at(i)).row();
+      QModelIndex row=rows.at(rowtable.at(i));
       RDLogLock *log_lock=
-	new RDLogLock(log_log_model->logName(rownum),rda->user(),
+	new RDLogLock(log_log_model->logName(row),rda->user(),
 		      rda->station(),this);
       if(log_lock->tryLock(&username,&stationname,&addr)) {
-	RDLog *log=new RDLog(log_log_model->logName(rownum));
+	RDLog *log=new RDLog(log_log_model->logName(row));
 	if(log->remove(rda->station(),rda->user(),rda->config())) {
 	  SendNotification(RDNotification::DeleteAction,log->name());
-	  log_log_model->removeLog(rownum);
+	  log_log_model->removeLog(row);
 	}
 	else {
 	  QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),
 			       tr("Unable to delete log")+" \""+
-			       log_log_model->logName(rownum)+"\", "+
+			       log_log_model->logName(row)+"\", "+
 			       tr("audio deletion error!"));
 	}
 	delete log;
       }
       else {
 	QString msg=
-	  tr("Log")+" "+log_log_model->logName(rownum)+"\" "+
+	  tr("Log")+" "+log_log_model->logName(row)+"\" "+
 	  tr("is in use by")+" "+username+"@"+stationname;
 	if(stationname!=addr.toString()) {
 	  msg+=" ["+addr.toString()+"]";
@@ -422,9 +422,9 @@ void MainWidget::deleteData()
 
 void MainWidget::trackData()
 {
-  int row=-1;
+  QModelIndex row=SingleSelectedRow();
 
-  if((row=SingleSelectedRow())<0) {
+  if(!row.isValid()) {
     return;
   }
   LockList();
@@ -670,12 +670,12 @@ void MainWidget::UnlockList()
 }
 
 
-int MainWidget::SingleSelectedRow() const
+QModelIndex MainWidget::SingleSelectedRow() const
 {
   if(log_log_view->selectionModel()->selectedRows().size()!=1) {
-    return -1;
+    return QModelIndex();
   }
-  return log_log_view->selectionModel()->selectedRows().at(0).row();
+  return log_log_view->selectionModel()->selectedRows().at(0);
 }
 
 

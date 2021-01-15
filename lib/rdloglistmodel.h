@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell log metadata
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,11 +45,11 @@ class RDLogListModel : public QAbstractTableModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
-  QString logName(int row) const;
-  int addLog(const QString &name);
-  void removeLog(int row);
+  QString logName(const QModelIndex &row) const;
+  QModelIndex addLog(const QString &name);
+  void removeLog(const QModelIndex &row);
   void removeLog(const QString &logname);
-  void refresh(int row);
+  void refresh(const QModelIndex &row);
   void refresh(const QString &logname);
 
  public slots:
@@ -58,6 +58,7 @@ class RDLogListModel : public QAbstractTableModel
 
  protected:
   void updateModel(const QString &filter_sql);
+  void updateRowLine(int line);
   void updateRow(int row,RDSqlQuery *q);
   QString sqlFields() const;
 
