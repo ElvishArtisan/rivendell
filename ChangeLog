@@ -20806,3 +20806,5 @@
 	instead of 'int'.
 	* Modified 'RDLogListModel::addLog()' to return 'QModelIndex' instead
 	of 'int'.
+2021-01-15 Fred Gleason <fredg@paravelsystems.com>
+	* Commented out removed slots in 'rdairplay/list_log.cpp'.

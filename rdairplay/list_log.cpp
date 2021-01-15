@@ -329,14 +329,14 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   //
   //  connect(list_log,SIGNAL(reloaded()),this,SLOT(logReloadedData()));
   //  connect(list_log,SIGNAL(played(int)),this,SLOT(logPlayedData(int)));
-  connect(list_log,SIGNAL(paused(int)),this,SLOT(logPausedData(int)));
-  connect(list_log,SIGNAL(stopped(int)),this,SLOT(logStoppedData(int)));
-  connect(list_log,SIGNAL(inserted(int)),this,SLOT(logInsertedData(int)));
-  connect(list_log,SIGNAL(removed(int,int,bool)),
-	  this,SLOT(logRemovedData(int,int,bool)));
+  //  connect(list_log,SIGNAL(paused(int)),this,SLOT(logPausedData(int)));
+  //  connect(list_log,SIGNAL(stopped(int)),this,SLOT(logStoppedData(int)));
+  //  connect(list_log,SIGNAL(inserted(int)),this,SLOT(logInsertedData(int)));
+  //  connect(list_log,SIGNAL(removed(int,int,bool)),
+  //	  this,SLOT(logRemovedData(int,int,bool)));
   connect(list_log,SIGNAL(transportChanged()),
 	  this,SLOT(transportChangedData()));
-  connect(list_log,SIGNAL(modified(int)),this,SLOT(modifiedData(int)));
+  //  connect(list_log,SIGNAL(modified(int)),this,SLOT(modifiedData(int)));
   connect(list_log,SIGNAL(refreshabilityChanged(bool)),
 	  this,SLOT(refreshabilityChangedData(bool)));
   connect(list_log,SIGNAL(auditionHeadPlayed(int)),
