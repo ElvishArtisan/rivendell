@@ -248,9 +248,9 @@ void AudioCart::addCutData()
   }
   rdcart_cut_view->clearSelection();
 
-  int row=rdcart_cut_model->addCut(next_name);
-  rdcart_cut_view->selectRow(row);
-  rdcart_cut_view->scrollTo(rdcart_cut_model->index(row,0));
+  QModelIndex row=rdcart_cut_model->addCut(next_name);
+  rdcart_cut_view->selectRow(row.row());
+  rdcart_cut_view->scrollTo(row);
   disk_gauge->update();
 
   emit cartDataChanged();
@@ -266,7 +266,7 @@ void AudioCart::deleteCutData()
 
   QStringList cutnames;
   for(int i=0;i<rows.size();i++) {
-    cutnames.push_back(rdcart_cut_model->cutName(rows.at(i).row()));
+    cutnames.push_back(rdcart_cut_model->cutName(rows.at(i)));
   }
 
   //
@@ -357,9 +357,8 @@ void AudioCart::deleteCutData()
 
 void AudioCart::copyCutData()
 {
-  int row;
-
-  if((row=SingleSelectedLine())<0) {
+  QModelIndex row=SingleSelectedLine();
+  if(!row.isValid()) {
     return;
   }
   if(cut_clipboard!=NULL) {
@@ -372,9 +371,9 @@ void AudioCart::copyCutData()
 
 void AudioCart::pasteCutData()
 {
-  int row;
+  QModelIndex row=SingleSelectedLine();
 
-  if((row=SingleSelectedLine())<0) {
+  if(!row.isValid()) {
     return;
   }
   if(!cut_clipboard->exists()) {
@@ -410,9 +409,9 @@ void AudioCart::pasteCutData()
 
 void AudioCart::extEditorCutData()
 {
-  int row;
+  QModelIndex row=SingleSelectedLine();
 
-  if((row=SingleSelectedLine())<0) {
+  if(!row.isValid()) {
     return;
   }
 
@@ -432,26 +431,27 @@ void AudioCart::extEditorCutData()
 
 void AudioCart::editCutData()
 {
-  int row;
+  QModelIndex row=SingleSelectedLine();
 
-  if((row=SingleSelectedLine())<0) {
+  if(!row.isValid()) {
     return;
   }
   QString cutname=rdcart_cut_model->cutName(row);
   if(!RDAudioExists(cutname)) {
     QMessageBox::information(this,"RDLibrary",
-			     tr("No audio is present in the cut!"));
+                            tr("No audio is present in the cut!"));
     return;
   }
   RDEditAudio *edit=
     new RDEditAudio(rdcart_cart,cutname,rda->libraryConf()->outputCard(),
-		    rda->libraryConf()->outputPort(),rda->libraryConf()->tailPreroll(),
+		    rda->libraryConf()->outputPort(),
+		    rda->libraryConf()->tailPreroll(),
 		    rda->libraryConf()->trimThreshold(),this);
   if(edit->exec()!=-1) {
     emit cartDataChanged();
     rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
-			      QTime().msecsTo(rdcart_controls->
-					      forced_length_edit->time()));
+                             QTime().msecsTo(rdcart_controls->
+                                             forced_length_edit->time()));
     rdcart_cut_model->refresh(row);
   }
   delete edit;
@@ -460,9 +460,9 @@ void AudioCart::editCutData()
 
 void AudioCart::recordCutData()
 {
-  int row;
+  QModelIndex row=SingleSelectedLine();
 
-  if((row=SingleSelectedLine())<0) {
+  if(!row.isValid()) {
     return;
   }
   QString cutname=rdcart_cut_model->cutName(row);
@@ -470,7 +470,7 @@ void AudioCart::recordCutData()
   cut->exec();
   delete cut;
   rdcart_cut_model->refresh(cutname);
-  rdcart_cut_view->selectRow(rdcart_cut_model->row(cutname));
+  rdcart_cut_view->selectRow(rdcart_cut_model->row(cutname).row());
   if(cut_clipboard==NULL) {
     paste_cut_button->setDisabled(true);
   }
@@ -496,9 +496,10 @@ void AudioCart::ripCutData()
   QString artist;
   QString album;
   QString label;
-  int row;
 
-  if((row=SingleSelectedLine())<0) {
+  QModelIndex row=SingleSelectedLine();
+
+  if(!row.isValid()) {
     return;
   }
 
@@ -539,9 +540,10 @@ void AudioCart::importCutData()
   QString cutname;
   RDWaveData wavedata;
   std::vector<QString> cutnames;
-  int row;
 
-  if((row=SingleSelectedLine())<0) {
+  QModelIndex row=SingleSelectedLine();
+
+  if(!row.isValid()) {
     return;
   }
 
@@ -618,10 +620,10 @@ void AudioCart::copyProgressData(const QVariant &step)
 }
 
 
-int AudioCart::SingleSelectedLine() const
+QModelIndex AudioCart::SingleSelectedLine() const
 {
   if(rdcart_cut_view->selectionModel()->selectedRows().size()!=1) {
-    return -1;
+    return QModelIndex();
   }
-  return rdcart_cut_view->selectionModel()->selectedRows().first().row();
+  return rdcart_cut_view->selectionModel()->selectedRows().first();
 }

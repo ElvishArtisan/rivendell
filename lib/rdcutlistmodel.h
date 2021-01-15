@@ -44,14 +44,14 @@ class RDCutListModel : public QAbstractTableModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
-  QString cutName(int row) const;
-  int addCut(const QString &name);
-  void removeCut(int row);
+  QString cutName(const QModelIndex &row) const;
+  QModelIndex addCut(const QString &name);
+  void removeCut(const QModelIndex &index);
   void removeCut(const QString &cutname);
-  void refresh(int row);
+  void refresh(const QModelIndex &index);
   void refresh(const QString &cutname);
   unsigned cartNumber() const;
-  int row(const QString &cutname) const;
+  QModelIndex row(const QString &cutname) const;
   bool playOrderDuplicates(QList<int> *values) const;
 
  public slots:
@@ -60,6 +60,7 @@ class RDCutListModel : public QAbstractTableModel
 
  protected:
   void updateRow(int row,RDSqlQuery *q);
+  void updateCutLine(int line);
   QString sqlFields() const;
   void sortRows(int use_weighting);
 

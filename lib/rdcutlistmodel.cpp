@@ -35,7 +35,7 @@ RDCutListModel::RDCutListModel(bool use_weighting,QObject *parent)
   unsigned center=Qt::AlignCenter;
   unsigned right=Qt::AlignRight|Qt::AlignVCenter;
 
-  if(d_use_weighting) {
+  if(d_use_weighting) {                      // 00
     d_headers.push_back(tr("Wt"));
     d_alignments.push_back(right);
   }
@@ -44,43 +44,43 @@ RDCutListModel::RDCutListModel(bool use_weighting,QObject *parent)
     d_alignments.push_back(right);
   }
 
-  d_headers.push_back(tr("Description"));
+  d_headers.push_back(tr("Description"));   // 01
   d_alignments.push_back(left);
 
-  d_headers.push_back(tr("Length"));
+  d_headers.push_back(tr("Length"));        // 02
   d_alignments.push_back(right);
 
-  d_headers.push_back(tr("Last Played"));
+  d_headers.push_back(tr("Last Played"));   // 03
   d_alignments.push_back(center);
 
-  d_headers.push_back(tr("# of Plays"));
+  d_headers.push_back(tr("# of Plays"));    // 04
   d_alignments.push_back(right);
 
-  d_headers.push_back(tr("Source"));
+  d_headers.push_back(tr("Source"));        // 05
   d_alignments.push_back(left);
 
-  d_headers.push_back(tr("Ingest"));
+  d_headers.push_back(tr("Ingest"));        // 06
   d_alignments.push_back(left);
 
-  d_headers.push_back(tr("Outcue"));
+  d_headers.push_back(tr("Outcue"));        // 07
   d_alignments.push_back(left);
 
-  d_headers.push_back(tr("Start Date"));
+  d_headers.push_back(tr("Start Date"));    // 08
   d_alignments.push_back(center);
 
-  d_headers.push_back(tr("End Date"));
+  d_headers.push_back(tr("End Date"));      // 09
   d_alignments.push_back(center);
 
-  d_headers.push_back(tr("Daypart Start"));
+  d_headers.push_back(tr("Daypart Start")); // 10
   d_alignments.push_back(left);
 
-  d_headers.push_back(tr("Daypart End"));
+  d_headers.push_back(tr("Daypart End"));   // 11
   d_alignments.push_back(left);
 
-  d_headers.push_back(tr("Name"));
+  d_headers.push_back(tr("Name"));          // 12
   d_alignments.push_back(left);
 
-  d_headers.push_back(tr("SHA1"));
+  d_headers.push_back(tr("SHA1"));          // 13
   d_alignments.push_back(left);
 }
 
@@ -158,13 +158,13 @@ QVariant RDCutListModel::data(const QModelIndex &index,int role) const
 }
 
 
-QString RDCutListModel::cutName(int row) const
+QString RDCutListModel::cutName(const QModelIndex &row) const
 {
-  return d_texts.at(d_row_index.at(row)).at(12).toString();
+  return d_texts.at(d_row_index.at(row.row())).at(12).toString();
 }
 
 
-int RDCutListModel::addCut(const QString &name)
+QModelIndex RDCutListModel::addCut(const QString &name)
 {
   QList<QVariant> list;
 
@@ -177,27 +177,27 @@ int RDCutListModel::addCut(const QString &name)
   d_texts.push_back(list);
   d_colors.push_back(d_palette.color(QPalette::Background));
   d_row_index.push_back(d_row_index.size());
-  refresh(d_texts.size()-1);
+  updateCutLine(d_texts.size()-1);
   sortRows(d_use_weighting);
   endResetModel();
 
   for(int i=0;i<d_row_index.size();i++) {
     if(d_row_index.at(i)==(d_row_index.size()-1)) {
-      return i;
+      return createIndex(i,0);
     }
   }
-  return -1;
+  return QModelIndex();
 }
 
 
-void RDCutListModel::removeCut(int row)
+void RDCutListModel::removeCut(const QModelIndex &row)
 {
   beginResetModel();
-  d_texts.removeAt(d_row_index.at(row));
-  d_colors.removeAt(d_row_index.at(row));
-  d_row_index.removeAt(row);
+  d_texts.removeAt(d_row_index.at(row.row()));
+  d_colors.removeAt(d_row_index.at(row.row()));
+  d_row_index.removeAt(row.row());
   for(int i=0;i<d_row_index.size();i++) {
-    if(d_row_index.at(i)>row) {
+    if(d_row_index.at(i)>row.row()) {
       d_row_index[i]--;
     }
   }
@@ -209,28 +209,17 @@ void RDCutListModel::removeCut(int row)
 void RDCutListModel::removeCut(const QString &cutname)
 {
   for(int i=0;i<d_texts.size();i++) {
-    if(cutName(i)==cutname) {
-      removeCut(i);
+    if(d_texts.at(i).at(12)==cutname) {
+      removeCut(createIndex(i,0));
       return;
     }
   }
 }
 
 
-void RDCutListModel::refresh(int row)
+void RDCutListModel::refresh(const QModelIndex &row)
 {
-  if(row<d_texts.size()) {
-    QString sql=sqlFields()+
-      "where CUT_NAME=\""+RDEscapeString(d_texts.at(d_row_index.at(row)).at(12).toString())+
-      "\"";
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    if(q->first()) {
-      beginResetModel();
-      updateRow(row,q);
-      sortRows(d_use_weighting);
-      endResetModel();
-    }
-  }
+  updateCutLine(row.row());
 }
 
 
@@ -238,7 +227,7 @@ void RDCutListModel::refresh(const QString &cutname)
 {
   for(int i=0;i<d_texts.size();i++) {
     if(d_texts.at(d_row_index.at(i)).at(12)==cutname) {
-      refresh(i);
+      updateCutLine(i);
       return;
     }
   }
@@ -251,14 +240,14 @@ unsigned RDCutListModel::cartNumber() const
 }
 
 
-int RDCutListModel::row(const QString &cutname) const
+QModelIndex RDCutListModel::row(const QString &cutname) const
 {
   for(int i=0;i<d_row_index.size();i++) {
     if(d_texts.at(d_row_index.at(i)).at(12).toString()==cutname) {
-      return i;
+      return createIndex(i,0);
     }
   }
-  return -1;
+  return QModelIndex();
 }
 
 
@@ -419,6 +408,23 @@ void RDCutListModel::updateRow(int row,RDSqlQuery *q)
     case RDCart::AlwaysValid:
       d_colors[d_row_index.at(row)]=d_palette.color(QPalette::Background);
       break;
+    }
+  }
+}
+
+
+void RDCutListModel::updateCutLine(int line)
+{
+  if(line<d_texts.size()) {
+    QString sql=sqlFields()+
+      "where CUT_NAME=\""+RDEscapeString(d_texts.at(d_row_index.at(line)).
+					 at(12).toString())+"\"";
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    if(q->first()) {
+      beginResetModel();
+      updateRow(line,q);
+      sortRows(d_use_weighting);
+      endResetModel();
     }
   }
 }

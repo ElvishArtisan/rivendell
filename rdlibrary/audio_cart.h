@@ -69,7 +69,7 @@ class AudioCart : public RDWidget
   void audioChanged();
 
  private:
-  int SingleSelectedLine() const;
+  QModelIndex SingleSelectedLine() const;
   RDCart *rdcart_cart;
   QTableView *rdcart_cut_view;
   RDCutListModel *rdcart_cut_model;
