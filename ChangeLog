@@ -20794,3 +20794,5 @@
 2021-01-15 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'RDLibraryModel::addCart()' to return 'QModelIndex'
 	rather than 'int'.
+	* Renamed 'RDLibraryModel::refreshCartLine()' to
+	'RDLibrary::updateCartLine()' and made it protected.

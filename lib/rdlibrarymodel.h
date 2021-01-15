@@ -62,7 +62,6 @@ class RDLibraryModel : public QAbstractItemModel
   void removeCart(unsigned cartnum);
   void refreshRow(const QModelIndex &index);
   void refreshCart(unsigned cartnum);
-  void refreshCartLine(int cartline);
 
  signals:
   void rowCountChanged(int rows);
@@ -73,6 +72,7 @@ class RDLibraryModel : public QAbstractItemModel
 
  protected:
   void updateModel(const QString &filter_sql);
+  void updateCartLine(int cartline);
   void updateRow(int row,RDSqlQuery *q);
   QString sqlFields() const;
 

@@ -400,7 +400,7 @@ void RDLibraryModel::removeCart(unsigned cartnum)
 void RDLibraryModel::refreshRow(const QModelIndex &index)
 {
   if(isCart(index)) {
-    refreshCartLine(index.row());
+    updateCartLine(index.row());
   }
 }
 
@@ -410,24 +410,9 @@ void RDLibraryModel::refreshCart(unsigned cartnum)
   QString cartnum_str=QString().sprintf("%06u",cartnum);
   for(int i=0;i<d_texts.size();i++) {
     if(d_texts.at(i).at(0).toString()==cartnum_str) {
-      refreshCartLine(i);
+      updateCartLine(i);
     }
   }
-}
-
-
-void RDLibraryModel::refreshCartLine(int cartline)
-{
-  QString sql=sqlFields()+
-    "where "+
-    "CART.NUMBER="+d_texts.at(cartline).at(0).toString();
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    updateRow(cartline,q);
-    emit dataChanged(createIndex(cartline,0,0),
-		     createIndex(cartline,columnCount(),(quint32)0));
-  }
-  delete q;
 }
 
 
@@ -499,6 +484,21 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   delete q;
   endResetModel();
   emit rowCountChanged(d_texts.size());
+}
+
+
+void RDLibraryModel::updateCartLine(int cartline)
+{
+  QString sql=sqlFields()+
+    "where "+
+    "CART.NUMBER="+d_texts.at(cartline).at(0).toString();
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    updateRow(cartline,q);
+    emit dataChanged(createIndex(cartline,0,0),
+		     createIndex(cartline,columnCount(),(quint32)0));
+  }
+  delete q;
 }
 
 
