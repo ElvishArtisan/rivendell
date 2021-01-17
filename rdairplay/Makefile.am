@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/rdairplay
 ##
-## (C) 2002-2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +44,6 @@ bin_PROGRAMS = rdairplay
 
 dist_rdairplay_SOURCES = button_log.cpp button_log.h\
                          edit_event.cpp edit_event.h\
-                         globals.h\
                          hourselector.cpp hourselector.h\
                          lib_listview.cpp lib_listview.h\
                          list_log.cpp list_log.h\

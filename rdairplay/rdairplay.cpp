@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,18 +32,8 @@
 #include <rddatedecode.h>
 #include <rdescape_string.h>
 
-#include "globals.h"
 #include "rdairplay.h"
 #include "wall_clock.h"
-
-//
-// Global Resources
-//
-RDEventPlayer *rdevent_player;
-RDCartDialog *rdcart_dialog;
-MainWidget *prog_ptr;
-RDHotKeyList *rdkeylist;
-RDHotkeys *rdhotkeys;
 
 //
 // Icons
@@ -59,7 +49,6 @@ void SigHandler(int signo);
 MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   : RDWidget(config,parent)
 {
-  prog_ptr=this;
   QString str;
   int cards[3];
   int ports[3];
@@ -271,7 +260,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Macro Player
   //
-  rdevent_player=new RDEventPlayer(rda->ripc(),this);
+  air_event_player=new RDEventPlayer(rda->ripc(),this);
 
   //
   // Log Machines
@@ -282,7 +271,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   connect(rename_mapper,SIGNAL(mapped(int)),this,SLOT(logRenamedData(int)));
   QString default_svcname=rda->airplayConf()->defaultSvc();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log[i]=new RDLogPlay(i,rdevent_player,this);
+    air_log[i]=new RDLogPlay(i,air_event_player,this);
     air_log[i]->setDefaultServiceName(default_svcname);
     air_log[i]->setNowCart(rda->airplayConf()->logNowCart(i));
     air_log[i]->setNextCart(rda->airplayConf()->logNextCart(i));
@@ -338,7 +327,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Cart Picker
   //
-  rdcart_dialog=new RDCartDialog(&air_add_filter,&air_add_group,
+  air_cart_dialog=new RDCartDialog(&air_add_filter,&air_add_group,
 				 &air_add_schedcode,"RDAirPlay",false,this);
 
   //
@@ -514,7 +503,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 		       rda->airplayConf()->flashPanel(),
 		       "RDAirPlay",
 		       rda->airplayConf()->buttonLabelTemplate(),false,
-		       rdevent_player,rdcart_dialog,this);
+		       air_event_player,air_cart_dialog,this);
     air_panel->setGeometry(510,140,air_panel->sizeHint().width(),
 			 air_panel->sizeHint().height());
     air_panel->setPauseEnabled(rda->airplayConf()->panelPauseEnabled());
@@ -730,8 +719,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Create the HotKeyList object
   //
-  rdkeylist=new RDHotKeyList();
-  rdhotkeys=new RDHotkeys(rda->config()->stationName(),"rdairplay");
+  air_keylist=new RDHotKeyList();
+  air_hotkeys=new RDHotkeys(rda->config()->stationName(),"rdairplay");
   AltKeyHit=false;
   CtrlKeyHit=false;
 
@@ -967,14 +956,14 @@ void MainWidget::logChannelStartedData(int id,int mport,int card,int port)
       if(air_start_gpo_matrices[RDAirPlayConf::MainLog1Channel]>=0) {
 	switch(air_channel_gpio_types[RDAirPlayConf::MainLog1Channel]) {
 	case RDAirPlayConf::LevelGpio:
-	  rdevent_player->
+	  air_event_player->
 	    exec(QString().sprintf("GO %d %d 1 0!",
 		      air_start_gpo_matrices[RDAirPlayConf::MainLog1Channel],
 		      air_start_gpo_lines[RDAirPlayConf::MainLog1Channel]+1));
 	  break;
 
 	case RDAirPlayConf::EdgeGpio:
-	  rdevent_player->
+	  air_event_player->
 	    exec(QString().sprintf("GO %d %d 1 300!",
 		      air_start_gpo_matrices[RDAirPlayConf::MainLog1Channel],
 		      air_start_gpo_lines[RDAirPlayConf::MainLog1Channel]+1));
@@ -987,14 +976,14 @@ void MainWidget::logChannelStartedData(int id,int mport,int card,int port)
       if(air_start_gpo_matrices[RDAirPlayConf::MainLog2Channel]>=0) {
 	switch(air_channel_gpio_types[RDAirPlayConf::MainLog2Channel]) {
 	case RDAirPlayConf::LevelGpio:
-	  rdevent_player->
+	  air_event_player->
 	    exec(QString().sprintf("GO %d %d 1 0!",
 		      air_start_gpo_matrices[RDAirPlayConf::MainLog2Channel],
 		      air_start_gpo_lines[RDAirPlayConf::MainLog2Channel]+1));
 	  break;
 
 	case RDAirPlayConf::EdgeGpio:
-	  rdevent_player->
+	  air_event_player->
 	    exec(QString().sprintf("GO %d %d 1 300!",
 		      air_start_gpo_matrices[RDAirPlayConf::MainLog2Channel],
 		      air_start_gpo_lines[RDAirPlayConf::MainLog2Channel]+1));
@@ -1009,14 +998,14 @@ void MainWidget::logChannelStartedData(int id,int mport,int card,int port)
     if(air_start_gpo_matrices[RDAirPlayConf::AuxLog1Channel]>=0) {
       switch(air_channel_gpio_types[RDAirPlayConf::AuxLog1Channel]) {
       case RDAirPlayConf::LevelGpio:
-	rdevent_player->
+	air_event_player->
 	  exec(QString().sprintf("GO %d %d 1 0!",
 		      air_start_gpo_matrices[RDAirPlayConf::AuxLog1Channel],
 		      air_start_gpo_lines[RDAirPlayConf::AuxLog1Channel]+1));
 	break;
 
       case RDAirPlayConf::EdgeGpio:
-	rdevent_player->
+	air_event_player->
 	  exec(QString().sprintf("GO %d %d 1 300!",
 		      air_start_gpo_matrices[RDAirPlayConf::AuxLog1Channel],
 		      air_start_gpo_lines[RDAirPlayConf::AuxLog1Channel]+1));
@@ -1029,14 +1018,14 @@ void MainWidget::logChannelStartedData(int id,int mport,int card,int port)
     if(air_start_gpo_matrices[RDAirPlayConf::AuxLog2Channel]>=0) {
       switch(air_channel_gpio_types[RDAirPlayConf::AuxLog2Channel]) {
       case RDAirPlayConf::LevelGpio:
-	rdevent_player->
+	air_event_player->
 	  exec(QString().sprintf("GO %d %d 1 0!",
 		      air_start_gpo_matrices[RDAirPlayConf::AuxLog2Channel],
 		      air_start_gpo_lines[RDAirPlayConf::AuxLog2Channel]+1));
 	break;
 
       case RDAirPlayConf::EdgeGpio:
-	rdevent_player->
+	air_event_player->
 	  exec(QString().sprintf("GO %d %d 1 300!",
 		      air_start_gpo_matrices[RDAirPlayConf::AuxLog2Channel],
 		      air_start_gpo_lines[RDAirPlayConf::AuxLog2Channel]+1));
@@ -1057,14 +1046,14 @@ void MainWidget::logChannelStoppedData(int id,int mport,int card,int port)
       if(air_stop_gpo_matrices[RDAirPlayConf::MainLog1Channel]>=0) {
 	switch(air_channel_gpio_types[RDAirPlayConf::MainLog1Channel]) {
 	case RDAirPlayConf::LevelGpio:
-	  rdevent_player->
+	  air_event_player->
 	    exec(QString().sprintf("GO %d %d 0 0!",
 		      air_stop_gpo_matrices[RDAirPlayConf::MainLog1Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::MainLog1Channel]+1));
 	  break;
 
 	case RDAirPlayConf::EdgeGpio:
-	  rdevent_player->
+	  air_event_player->
 	    exec(QString().sprintf("GO %d %d 1 300!",
 		      air_stop_gpo_matrices[RDAirPlayConf::MainLog1Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::MainLog1Channel]+1));
@@ -1077,14 +1066,14 @@ void MainWidget::logChannelStoppedData(int id,int mport,int card,int port)
       if(air_stop_gpo_matrices[RDAirPlayConf::MainLog2Channel]>=0) {
 	switch(air_channel_gpio_types[RDAirPlayConf::MainLog2Channel]) {
 	case RDAirPlayConf::LevelGpio:
-	  rdevent_player->
+	  air_event_player->
 	    exec(QString().sprintf("GO %d %d 0 0!",
 		      air_stop_gpo_matrices[RDAirPlayConf::MainLog2Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::MainLog2Channel]+1));
 	  break;
 
 	case RDAirPlayConf::EdgeGpio:
-	  rdevent_player->
+	  air_event_player->
 	    exec(QString().sprintf("GO %d %d 1 300!",
 		      air_stop_gpo_matrices[RDAirPlayConf::MainLog2Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::MainLog2Channel]+1));
@@ -1099,14 +1088,14 @@ void MainWidget::logChannelStoppedData(int id,int mport,int card,int port)
     if(air_stop_gpo_matrices[RDAirPlayConf::AuxLog1Channel]>=0) {
       switch(air_channel_gpio_types[RDAirPlayConf::AuxLog1Channel]) {
       case RDAirPlayConf::LevelGpio:
-	rdevent_player->
+	air_event_player->
 	  exec(QString().sprintf("GO %d %d 0 0!",
 		      air_stop_gpo_matrices[RDAirPlayConf::AuxLog1Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::AuxLog1Channel]+1));
 	break;
 
       case RDAirPlayConf::EdgeGpio:
-	rdevent_player->
+	air_event_player->
 	  exec(QString().sprintf("GO %d %d 1 300!",
 		      air_stop_gpo_matrices[RDAirPlayConf::AuxLog1Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::AuxLog1Channel]+1));
@@ -1119,14 +1108,14 @@ void MainWidget::logChannelStoppedData(int id,int mport,int card,int port)
     if(air_stop_gpo_matrices[RDAirPlayConf::AuxLog2Channel]>=0) {
       switch(air_channel_gpio_types[RDAirPlayConf::AuxLog2Channel]) {
       case RDAirPlayConf::LevelGpio:
-	rdevent_player->
+	air_event_player->
 	  exec(QString().sprintf("GO %d %d 0 0!",
 		      air_stop_gpo_matrices[RDAirPlayConf::AuxLog2Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::AuxLog2Channel]+1));
 	break;
 
       case RDAirPlayConf::EdgeGpio:
-	rdevent_player->
+	air_event_player->
 	  exec(QString().sprintf("GO %d %d 1 300!",
 		      air_stop_gpo_matrices[RDAirPlayConf::AuxLog2Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::AuxLog2Channel]+1));
@@ -1147,14 +1136,14 @@ void MainWidget::panelChannelStartedData(int mport,int card,int port)
   if(air_start_gpo_matrices[chan]>=0) {
     switch(air_channel_gpio_types[chan]) {
     case RDAirPlayConf::LevelGpio:
-      rdevent_player->
+      air_event_player->
 	exec(QString().sprintf("GO %d %d 1 0!",
 			       air_start_gpo_matrices[chan],
 			       air_start_gpo_lines[chan]+1));
       break;
 
     case RDAirPlayConf::EdgeGpio:
-      rdevent_player->
+      air_event_player->
 	exec(QString().sprintf("GO %d %d 1 300!",
 			       air_start_gpo_matrices[chan],
 			       air_start_gpo_lines[chan]+1));
@@ -1171,14 +1160,14 @@ void MainWidget::panelChannelStoppedData(int mport,int card,int port)
   if(air_stop_gpo_matrices[chan]>=0) {
     switch(air_channel_gpio_types[chan]) {
     case RDAirPlayConf::LevelGpio:
-      rdevent_player->
+      air_event_player->
 	exec(QString().sprintf("GO %d %d 0 0!",
 			       air_stop_gpo_matrices[chan],
 			       air_stop_gpo_lines[chan]+1));
       break;
 
     case RDAirPlayConf::EdgeGpio:
-      rdevent_player->
+      air_event_player->
 	exec(QString().sprintf("GO %d %d 1 300!",
 			       air_stop_gpo_matrices[chan],
 			       air_stop_gpo_lines[chan]+1));
@@ -1838,7 +1827,7 @@ void MainWidget::keyPressEvent(QKeyEvent *e)
 void MainWidget::keyReleaseEvent(QKeyEvent *e)
 {
   int keyhit = e->key();
-  QString mystring=(*rdkeylist).GetKeyCode(keyhit);
+  QString mystring=(*air_keylist).GetKeyCode(keyhit);
   QString hotkeystrokes;
   QString hot_label;
   QString temp_string;
@@ -1888,16 +1877,16 @@ void MainWidget::keyReleaseEvent(QKeyEvent *e)
       if (keystrokecount == 0)
           hotkeystrokes = QString ("");
       if (AltKeyHit) {
-          hotkeystrokes =  (*rdkeylist).GetKeyCode(Qt::Key_Alt);
+          hotkeystrokes =  (*air_keylist).GetKeyCode(Qt::Key_Alt);
           hotkeystrokes +=  QString(" + ");
       }
       if (CtrlKeyHit) {
           if (AltKeyHit) {
-              hotkeystrokes +=  (*rdkeylist).GetKeyCode(Qt::Key_Control);
+              hotkeystrokes +=  (*air_keylist).GetKeyCode(Qt::Key_Control);
               hotkeystrokes += QString (" + ");
           }
           else {
-              hotkeystrokes =  (*rdkeylist).GetKeyCode(Qt::Key_Control);
+              hotkeystrokes =  (*air_keylist).GetKeyCode(Qt::Key_Control);
               hotkeystrokes += QString (" + ");
           }
       }
@@ -1910,7 +1899,7 @@ void MainWidget::keyReleaseEvent(QKeyEvent *e)
 
   if (hotkeystrokes.length() > 0)  {
 
-    hot_label=(*rdhotkeys).GetRowLabel(RDEscapeString(rda->config()->stationName()),
+    hot_label=(*air_hotkeys).GetRowLabel(RDEscapeString(rda->config()->stationName()),
                         (const char *)"airplay",(const char *)hotkeystrokes);
 
     if (hot_label.length()>0) {
@@ -2237,7 +2226,7 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
     if(air_panel!=NULL) {
       air_panel->setActionMode(RDAirPlayConf::Normal);
     }
-    if(rdcart_dialog->exec(&air_add_cart,RDCart::All,0,0,
+    if(air_cart_dialog->exec(&air_add_cart,RDCart::All,0,0,
 			   rda->user()->name(),rda->user()->password())==0) {
       SetActionMode(StartButton::AddTo);
     }

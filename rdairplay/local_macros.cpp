@@ -25,7 +25,6 @@
 #include <rdescape_string.h>
 #include <rdmacro.h>
 
-#include "globals.h"
 #include "button_log.h"
 #include "rdairplay.h"
 

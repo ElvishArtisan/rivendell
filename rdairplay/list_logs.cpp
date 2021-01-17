@@ -25,7 +25,6 @@
 #include <rddb.h>
 #include <rdescape_string.h>
 
-#include "globals.h"
 #include "list_logs.h"
 
 ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)

@@ -192,6 +192,10 @@ class MainWidget : public RDWidget
   RDAirPlayConf::GpioType air_channel_gpio_types[RDAirPlayConf::LastChannel];
   std::map<unsigned,QTimer *> air_channel_timers[2];
   RD3EmptyCart *air_empty_cart;
+  RDCartDialog *air_cart_dialog;
+  RDEventPlayer *air_event_player;
+  RDHotKeyList *air_keylist;
+  RDHotkeys *air_hotkeys;
 };
 
 

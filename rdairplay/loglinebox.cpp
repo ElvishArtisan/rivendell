@@ -18,12 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
+#include <QMouseEvent>
+#include <QPainter>
 
 #include <rdconf.h>
 
 #include "colors.h"
-#include "globals.h"
 #include "loglinebox.h"
 
 #include "../icons/play.xpm"

@@ -24,7 +24,6 @@
 #include <rdapplication.h>
 
 #include "colors.h"
-#include "globals.h"
 #include "post_counter.h"
 
 PostCounter::PostCounter(QWidget *parent)

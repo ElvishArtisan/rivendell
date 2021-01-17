@@ -20816,3 +20816,5 @@
 2021-01-17 Fred Gleason <fredg@paravelsystems.com>
 	* Restore support for cart notes in rdlibrary(1).
 	* Added support for cart notes in the 'RDCartDialog' dialog.
+2021-01-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed all global variables from rdairplay(1).
