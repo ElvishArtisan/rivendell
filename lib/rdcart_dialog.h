@@ -26,6 +26,7 @@
 #include <QLineEdit>
 #include <QProgressDialog>
 #include <QPushButton>
+#include <QStringList>
 #include <QTableView>
 
 #include <rdbusydialog.h>
@@ -48,9 +49,13 @@ class RDCartDialog : public RDDialog
   QSizePolicy sizePolicy() const;
 
  public slots:
-  int exec(int *cartnum,RDCart::Type type,QString *svcname,int svc_quan,
-	   const QString &username,const QString &passwd,
-	   bool *temp_allowed=NULL);
+  int exec(int *cartnum,RDCart::Type type,const QString &svc,
+	   bool *temp_allowed);
+  //  int exec(int *cartnum,RDCart::Type type,QString *svcname,int svc_quan,
+  //	   bool *temp_allowed);
+  //  int exec(int *cartnum,RDCart::Type type,QString *svcname,int svc_quan,
+  //	   const QString &username,const QString &passwd,
+  //	   bool *temp_allowed=NULL);
 
  private slots:
   void modelResetData();
@@ -82,15 +87,12 @@ class RDCartDialog : public RDDialog
   QString *cart_filter;
   bool local_filter;
   RDCart::Type cart_type;
-  QString *cart_service;
-  int cart_service_quan;
+  QStringList cart_services;
   RDStation::FilterMode cart_filter_mode;
   QProgressDialog *cart_progress_dialog;
   QString cart_import_path;
   QString cart_import_file_filter;
   bool *cart_temp_allowed;
-  QString cart_user_name;
-  QString cart_user_password;
   RDBusyDialog *cart_busy_dialog;
   RDSimplePlayer *cart_player;
   QString cart_caption;

@@ -20818,3 +20818,6 @@
 	* Added support for cart notes in the 'RDCartDialog' dialog.
 2021-01-17 Fred Gleason <fredg@paravelsystems.com>
 	* Removed all global variables from rdairplay(1).
+2021-01-17 Fred Gleason <fredg@paravelsystems.com>
+	* Restored enforcement of service authorized groups in rdairplay(1)
+	and rdlogedit(1).

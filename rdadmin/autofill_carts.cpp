@@ -138,8 +138,7 @@ QSizePolicy AutofillCarts::sizePolicy() const
 void AutofillCarts::addData()
 {
   int cart=0;
-  if(admin_cart_dialog->exec(&cart,RDCart::Audio,NULL,0,
-			     rda->user()->name(),rda->user()->password())<0) {
+  if(admin_cart_dialog->exec(&cart,RDCart::Audio,QString(),NULL)<0) {
     return;
   }
   RDCart *rdcart=new RDCart(cart);

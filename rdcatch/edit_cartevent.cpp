@@ -294,8 +294,7 @@ void EditCartEvent::selectCartData()
   if(edit_cart!=NULL) {
     cartnum=edit_cart->number();
   }
-  switch(catch_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-				 rda->user()->name(),rda->user()->password())) {
+  switch(catch_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)) {
       case 0:
 	if(edit_cart!=NULL) {
 	  delete edit_cart;

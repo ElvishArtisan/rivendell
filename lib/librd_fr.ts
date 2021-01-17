@@ -1218,10 +1218,6 @@ La Couleur</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>And Scheduler Code:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Matching Carts:</source>
         <translation type="unfinished"></translation>
     </message>

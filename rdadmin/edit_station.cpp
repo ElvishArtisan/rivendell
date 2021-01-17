@@ -606,8 +606,7 @@ void EditStation::selectClicked()
 {
   int cartnum=station_startup_cart_edit->text().toInt();
 
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     station_startup_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
 }
@@ -628,8 +627,7 @@ void EditStation::heartbeatClickedData()
 {
   int cartnum=station_hbcart_edit->text().toInt();
 
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     station_hbcart_edit->setText(QString().sprintf("%06d",cartnum));
   }
 }
@@ -889,8 +887,7 @@ void EditStation::startCartClickedData()
 {
   int cartnum=station_start_cart_edit->text().toUInt();
 
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     station_start_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
 }
@@ -900,8 +897,7 @@ void EditStation::stopCartClickedData()
 {
   int cartnum=station_stop_cart_edit->text().toUInt();
 
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     station_stop_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
 }

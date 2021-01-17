@@ -403,8 +403,7 @@ void EditRDLogedit::selectStartData()
 {
   int cartnum=lib_startcart_edit->text().toInt();
 
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     lib_startcart_edit->setText(QString().sprintf("%d",cartnum));
   }
 }
@@ -413,8 +412,7 @@ void EditRDLogedit::selectStartData()
 void EditRDLogedit::selectEndData()
 {
   int cartnum=lib_endcart_edit->text().toInt();
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     lib_endcart_edit->setText(QString().sprintf("%d",cartnum));
   }
 }
@@ -423,8 +421,7 @@ void EditRDLogedit::selectEndData()
 void EditRDLogedit::selectRecordStartData()
 {
   int cartnum=lib_recstartcart_edit->text().toInt();
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     lib_recstartcart_edit->setText(QString().sprintf("%d",cartnum));
   }
 }
@@ -433,8 +430,7 @@ void EditRDLogedit::selectRecordStartData()
 void EditRDLogedit::selectRecordEndData()
 {
   int cartnum=lib_recendcart_edit->text().toInt();
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     lib_recendcart_edit->setText(QString().sprintf("%d",cartnum));
   }
 }

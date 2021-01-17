@@ -97,12 +97,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_cart_model->setPalette(palette());
   cart_cart_view->setModel(cart_cart_model);
   cart_cart_filter->setModel(cart_cart_model);
-  //  connect(cart_cart_filter,SIGNAL(filterChanged(const QString &)),
-  //	  cart_cart_model,SLOT(setFilterSql(const QString &)));
   connect(cart_cart_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
-
-  //  connect(cart_cart_model,SIGNAL(rowCountChanged(int)),
-  //	  cart_cart_filter,SLOT(setMatchCount(int)));
   connect(cart_cart_view,SIGNAL(doubleClicked(const QModelIndex &)),
   	  this,SLOT(cartDoubleClickedData(const QModelIndex &)));
   connect(cart_cart_view->selectionModel(),
@@ -189,18 +184,15 @@ QSize RDCartDialog::sizeHint() const
 }
 
 
-int RDCartDialog::exec(int *cartnum,RDCart::Type type,QString *svcname,
-		       int svc_quan,const QString &username,
-		       const QString &passwd,bool *temp_allowed)
+int RDCartDialog::exec(int *cartnum,RDCart::Type type,const QString &svc,
+		       bool *temp_allowed)
 {
+  printf("RDCartDialog service: %s\n",svc.toUtf8().constData());
   LoadState();
   cart_cart_filter->setShowCartType(type);
+  cart_cart_filter->setService(svc);
   cart_cartnum=cartnum;
   cart_type=type;
-  cart_service=svcname;
-  cart_service_quan=svc_quan;
-  cart_user_name=username;
-  cart_user_password=passwd;
   cart_temp_allowed=temp_allowed;
   switch(cart_type) {
     case RDCart::All:
@@ -398,7 +390,7 @@ void RDCartDialog::loadFileData()
     settings.setNormalizationLevel(-11);
     conv->setDestinationSettings(&settings);
     conv->setUseMetadata(true);
-    err=conv->runImport(cart_user_name,cart_user_password,&conv_err);
+    err=conv->runImport(rda->user()->name(),rda->user()->password(),&conv_err);
     cart_busy_dialog->hide();
     switch(conv_err) {
     case RDAudioImport::ErrorOk:

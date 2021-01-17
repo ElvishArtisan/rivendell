@@ -355,8 +355,7 @@ void EditCartSlots::cartSelectData()
 {
   int cartnum=edit_cart_edit->text().toInt();
 
-  if(admin_cart_dialog->exec(&cartnum,RDCart::All,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::All,QString(),NULL)==0) {
     edit_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
 }

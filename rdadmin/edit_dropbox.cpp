@@ -538,8 +538,7 @@ void EditDropbox::pathChangedData(QString text)
 void EditDropbox::selectCartData()
 {
   int cartnum=box_to_cart_edit->text().toInt();
-  admin_cart_dialog->exec(&cartnum,RDCart::Audio,NULL,0,
-			  rda->user()->name(),rda->user()->password());
+  admin_cart_dialog->exec(&cartnum,RDCart::Audio,QString(),NULL);
   if(cartnum>0) {
     box_to_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }

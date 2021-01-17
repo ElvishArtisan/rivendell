@@ -1109,8 +1109,7 @@ void EditMatrix::sasResourcesButtonData()
 void EditMatrix::startCartData()
 {
   int cartnum=edit_start_cart_edit->text().toUInt();
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     if(cartnum>0) {
       edit_start_cart_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1124,8 +1123,7 @@ void EditMatrix::startCartData()
 void EditMatrix::stopCartData()
 {
   int cartnum=edit_stop_cart_edit->text().toUInt();
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     if(cartnum>0) {
       edit_stop_cart_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1139,8 +1137,7 @@ void EditMatrix::stopCartData()
 void EditMatrix::startCart2Data()
 {
   int cartnum=edit_start_cart2_edit->text().toUInt();
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     if(cartnum>0) {
       edit_start_cart2_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1154,8 +1151,7 @@ void EditMatrix::startCart2Data()
 void EditMatrix::stopCart2Data()
 {
   int cartnum=edit_stop_cart2_edit->text().toUInt();
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     if(cartnum>0) {
       edit_stop_cart2_edit->setText(QString().sprintf("%06u",cartnum));
     }

@@ -201,8 +201,7 @@ QSizePolicy EditGpi::sizePolicy() const
 void EditGpi::selectOnData()
 {
   int oncart=edit_onmacro_edit->text().toInt();
-  if(admin_cart_dialog->exec(&oncart,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&oncart,RDCart::Macro,QString(),NULL)==0) {
     if(oncart>0) {
       RDCart *rdcart=new RDCart(oncart);
       edit_onmacro_edit->setText(QString().sprintf("%06d",oncart));
@@ -227,8 +226,7 @@ void EditGpi::clearOnData()
 void EditGpi::selectOffData()
 {
   int offcart=edit_offmacro_edit->text().toInt();
-  if(admin_cart_dialog->exec(&offcart,RDCart::Macro,NULL,0,
-			     rda->user()->name(),rda->user()->password())==0) {
+  if(admin_cart_dialog->exec(&offcart,RDCart::Macro,QString(),NULL)==0) {
     if(offcart>0) {
       RDCart *rdcart=new RDCart(offcart);
       edit_offmacro_edit->setText(QString().sprintf("%06d",offcart));

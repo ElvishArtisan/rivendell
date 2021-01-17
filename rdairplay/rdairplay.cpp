@@ -328,7 +328,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Cart Picker
   //
   air_cart_dialog=new RDCartDialog(&air_add_filter,&air_add_group,
-				 &air_add_schedcode,"RDAirPlay",false,this);
+				   &air_add_schedcode,"RDAirPlay",false,this);
 
   //
   // Wall Clock
@@ -2226,8 +2226,8 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
     if(air_panel!=NULL) {
       air_panel->setActionMode(RDAirPlayConf::Normal);
     }
-    if(air_cart_dialog->exec(&air_add_cart,RDCart::All,0,0,
-			   rda->user()->name(),rda->user()->password())==0) {
+    if(air_cart_dialog->
+       exec(&air_add_cart,RDCart::All,air_log[0]->serviceName(),NULL)==0) {
       SetActionMode(StartButton::AddTo);
     }
     else {

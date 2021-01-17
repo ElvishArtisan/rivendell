@@ -155,8 +155,7 @@ int RDButtonDialog::exec(RDPanelButton *button,bool hookmode,
 
 void RDButtonDialog::setCartData()
 {
-  if(edit_cart_dialog->exec(&edit_cart,RDCart::All,&edit_svcname,1,
-			    edit_user_name,edit_user_password)==0) {
+  if(edit_cart_dialog->exec(&edit_cart,RDCart::All,edit_svcname,NULL)==0) {
     DisplayCart(edit_cart);
   }
 }

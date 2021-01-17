@@ -147,8 +147,7 @@ void EditLogLine::selectCartData()
   if(!ok) {
     cartnum=-1;
   }
-  if(edit_cart_dialog->exec(&cartnum,RDCart::All,&edit_service,1,
-			   rda->user()->name(),rda->user()->password())==0) {
+  if(edit_cart_dialog->exec(&cartnum,RDCart::All,edit_service,NULL)==0) {
     FillCart(cartnum);
   }
 }

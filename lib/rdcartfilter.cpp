@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QList>
 #include <QResizeEvent>
 
 #include "rdapplication.h"
@@ -33,6 +34,9 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   d_model=NULL;
   d_show_drag_box=show_drag_box;
 
+  //
+  // Filter Phrase
+  //
   d_filter_edit=new QLineEdit(this);
   d_filter_label=new QLabel(d_filter_edit,tr("Filter:"),this);
   d_filter_label->setFont(labelFont());
@@ -83,16 +87,6 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   d_codes_label->setFont(labelFont());
   d_codes_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(d_codes_box,SIGNAL(activated(const QString &)),
-	  this,SLOT(groupChangedData(const QString &)));
-
-  //
-  // Scheduler Codes2 Filter
-  //
-  d_codes2_box=new QComboBox(this);
-  d_codes2_label=new QLabel(d_codes2_box,tr("And Scheduler Code:"),this);
-  d_codes2_label->setFont(labelFont());
-  d_codes2_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  connect(d_codes2_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupChangedData(const QString &)));
 
   //
@@ -232,7 +226,7 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   sql+=RDCartFilter::typeFilter(d_showaudio_check->isChecked(),
 				d_showmacro_check->isChecked(),
 				d_show_cart_type);
-  //  sql+=RDCartFilter::phraseFilter(d_filter_edit->text().trimmed(),true);
+  sql+=RDCartFilter::phraseFilter(d_filter_edit->text().trimmed(),true);
   QStringList groups;
   for(int i=0;i<d_group_box->count();i++) {
     groups.push_back(d_group_box->text(i));
@@ -369,6 +363,24 @@ void RDCartFilter::setUserIsAdmin(bool state)
 }
 
 
+QString RDCartFilter::service() const
+{
+  return d_service;
+}
+
+
+void RDCartFilter::setService(const QString &svc)
+{
+  if(svc!=d_service) {
+    d_service=svc;
+    if(!d_service.isEmpty()) {
+      LoadServiceGroups();
+    }
+    emit filterChanged(filterSql());
+  }
+}
+
+
 RDLibraryModel *RDCartFilter::model() const
 {
   return d_model;
@@ -409,35 +421,19 @@ void RDCartFilter::changeUser()
   QString sql;
   RDSqlQuery *q;
 
-  d_group_box->clear();
-  d_group_box->insertItem(tr("ALL"));
-  if(d_user_is_admin) {
-    sql=QString("select NAME from GROUPS order by NAME ");
+  if(d_service.isEmpty()) {
+    LoadUserGroups();
   }
-  else {
-    sql=QString("select GROUP_NAME from USER_PERMS where ")+
-      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
-      "order by GROUP_NAME";
-  }
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    d_group_box->insertItem(q->value(0).toString());
-  }
-  delete q;
 
   d_codes_box->clear();
   d_codes_box->insertItem(tr("ALL"));
-  d_codes2_box->clear();
-  d_codes2_box->insertItem(tr("ALL"));
   sql=QString().sprintf("select CODE from SCHED_CODES");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_codes_box->insertItem(q->value(0).toString());
-    d_codes2_box->insertItem(q->value(0).toString());
   }
   delete q;
   d_search_button->setDisabled(true);
-  groupChangedData(d_group_box->currentText());
 }
 
 
@@ -523,8 +519,6 @@ void RDCartFilter::resizeEvent(QResizeEvent *e)
   d_group_box->setGeometry(70,40,100,20);
   d_codes_label->setGeometry(175,40,115,20);
   d_codes_box->setGeometry(295,40,100,20);
-  d_codes2_label->setGeometry(410,40,130,20);
-  d_codes2_box->setGeometry(545,40,100,20);
   d_matches_label->setGeometry(660,40,100,20);
   d_matches_edit->setGeometry(765,40,55,20);
   d_showmatches_label->setGeometry(760,66,200,20);
@@ -545,29 +539,29 @@ QString RDCartFilter::phraseFilter(const QString &phrase, bool incl_cuts)
   QString sql="";
 
   if(phrase.isEmpty()) {
-    sql=" &&";
+    sql=" ";
   }
   else {
-    sql+=QString(" (")+
-      "(CART.TITLE like \"%%\")||"+
-      "(CART.ARTIST like \"%%\")||"+
-      "(CART.CLIENT like \"%%\")||"+
-      "(CART.AGENCY like \"%%\")||"+
-      "(CART.ALBUM like \"%%\")||"+
-      "(CART.LABEL like \"%%\")||"+
-      "(CART.NUMBER like \"%%\")||"+
-      "(CART.PUBLISHER like \"%%\")||"+
-      "(CART.COMPOSER like \"%%\")||"+
-      "(CART.CONDUCTOR like \"%%\")||"+
-      "(CART.SONG_ID like \"%%\")||"+
-      "(CART.USER_DEFINED like \"%%\")";
+    QString search=RDEscapeString(phrase);
+    sql=sql+QString(" ((CART.TITLE like \"%")+search+"%\")||"+
+      "(CART.ARTIST like \"%"+search+"%\")||"+
+      "(CART.CLIENT like \"%"+search+"%\")||"+
+      "(CART.AGENCY like \"%"+search+"%\")||"+
+      "(CART.ALBUM like \"%"+search+"%\")||"+
+      "(CART.LABEL like \"%"+search+"%\")||"+
+      "(CART.NUMBER like \"%"+search+"%\")||"+
+      "(CART.PUBLISHER like \"%"+search+"%\")||"+
+      "(CART.COMPOSER like \"%"+search+"%\")||"+
+      "(CART.CONDUCTOR like \"%"+search+"%\")||"+
+      "(CART.SONG_ID like \"%"+search+"%\")||"+
+      "(CART.USER_DEFINED like \"%"+search+"%\")";
     if(incl_cuts) {
-      sql+=QString("||(CUTS.ISCI like \"%%\")")+
-	"||(CUTS.ISRC like \"%%\")"+
-	"||(CUTS.DESCRIPTION like \"%%\")"+
-	"||(CUTS.OUTCUE like \"%%\")";
+      sql+=QString("||(CUTS.ISCI like \"%")+search+"%\")"+
+	"||(CUTS.ISRC like \"%"+search+"%\")"+
+	"||(CUTS.DESCRIPTION like \"%"+search+"%\")"+
+	"||(CUTS.OUTCUE like \"%"+search+"%\")";
     }
-    sql+=") &&";
+    sql+=") && ";
   }
 
   return sql;
@@ -629,4 +623,49 @@ QString RDCartFilter::typeFilter(bool incl_audio,bool incl_macro,
     break;
   }
   return sql;
+}
+
+
+void RDCartFilter::LoadUserGroups()
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  d_group_box->clear();
+  d_group_box->insertItem(tr("ALL"));
+  if(d_user_is_admin) {
+    sql=QString("select NAME from GROUPS order by NAME ");
+  }
+  else {
+    sql=QString("select GROUP_NAME from USER_PERMS where ")+
+      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
+      "order by GROUP_NAME";
+  }
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    d_group_box->insertItem(q->value(0).toString());
+  }
+  delete q;
+
+  groupChangedData(d_group_box->currentText());
+}
+
+
+void RDCartFilter::LoadServiceGroups()
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  d_group_box->clear();
+  d_group_box->insertItem(0,tr("ALL"));
+  sql=QString("select ")+
+    "GROUP_NAME "+
+    "from AUDIO_PERMS where "+
+    "SERVICE_NAME=\""+RDEscapeString(d_service)+"\" "+
+    "order by GROUP_NAME";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    d_group_box->insertItem(d_group_box->count(),q->value(0).toString());
+  }
+  delete q;
 }

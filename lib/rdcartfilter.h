@@ -53,6 +53,8 @@ class RDCartFilter : public RDWidget
   void setLimitSearch(bool state);
   bool userIsAdmin() const;
   void setUserIsAdmin(bool state);
+  QString service() const;
+  void setService(const QString &svc);
   RDLibraryModel *model() const;
   static QString phraseFilter(const QString &phrase,bool incl_cuts);
   static QString groupFilter(const QString &group,const QStringList &groups);
@@ -83,6 +85,8 @@ class RDCartFilter : public RDWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
+  void LoadUserGroups();
+  void LoadServiceGroups();
   RDLibraryModel *d_model;
   QLineEdit *d_filter_edit;
   QLabel *d_filter_label;
@@ -90,8 +94,6 @@ class RDCartFilter : public RDWidget
   QLabel *d_group_label;
   QComboBox *d_codes_box;
   QLabel *d_codes_label;
-  QComboBox *d_codes2_box;
-  QLabel *d_codes2_label;
   QLineEdit *d_matches_edit;
   QLabel *d_matches_label;
   QPushButton *d_search_button;
@@ -110,6 +112,7 @@ class RDCartFilter : public RDWidget
   RDCart::Type d_show_cart_type;
   QString d_default_group;
   bool d_user_is_admin;
+  QString d_service;
 };
 
 

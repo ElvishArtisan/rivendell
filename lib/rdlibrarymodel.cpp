@@ -445,6 +445,7 @@ void RDLibraryModel::setShowNotes(int state)
 
 void RDLibraryModel::setFilterSql(const QString &sql)
 {
+  //  printf("FILTER SQL: %s\n",sql.toUtf8().constData());
   updateModel(sql);
 }
 

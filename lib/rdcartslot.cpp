@@ -428,8 +428,7 @@ void RDCartSlot::loadData()
   case RDSlotOptions::CartDeckMode:
     cartnum=slot_logline->cartNumber();
     if(cartnum==0) {
-      if(slot_cart_dialog->exec(&cartnum,RDCart::All,&svcname,0,
-				slot_user->name(),slot_user->password(),
+      if(slot_cart_dialog->exec(&cartnum,RDCart::All,QString(),
 				&slot_temp_cart)==0) {
 	load(cartnum);
       }
