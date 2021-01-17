@@ -25,11 +25,13 @@
 #include "rdcartfilter.h"
 #include "rdescape_string.h"
 
-RDCartFilter::RDCartFilter(QWidget *parent)
+RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   : RDWidget(parent)
 {
   d_show_cart_type=RDCart::All;
   d_user_is_admin=false;
+  d_model=NULL;
+  d_show_drag_box=show_drag_box;
 
   d_filter_edit=new QLineEdit(this);
   d_filter_label=new QLabel(d_filter_edit,tr("Filter:"),this);
@@ -112,7 +114,7 @@ RDCartFilter::RDCartFilter(QWidget *parent)
   d_allowdrag_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(d_allowdrag_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(dragsChangedData(int)));
-  if(!rda->station()->enableDragdrop()) {
+  if((!d_show_drag_box)||(!rda->station()->enableDragdrop())) {
     d_allowdrag_box->hide();
     d_allowdrag_label->hide();
   }
@@ -367,6 +369,23 @@ void RDCartFilter::setUserIsAdmin(bool state)
 }
 
 
+RDLibraryModel *RDCartFilter::model() const
+{
+  return d_model;
+}
+
+
+void RDCartFilter::setModel(RDLibraryModel *model)
+{
+  connect(this,SIGNAL(filterChanged(const QString &)),
+	  model,SLOT(setFilterSql(const QString &)));
+  connect(d_shownotes_box,SIGNAL(stateChanged(int)),
+	  model,SLOT(setShowNotes(int)));
+  connect(model,SIGNAL(rowCountChanged(int)),this,SLOT(setMatchCount(int)));
+  model->setShowNotes(d_shownotes_box->isChecked());
+}
+
+
 void RDCartFilter::setFilterText(const QString &str)
 {
   d_filter_edit->setText(str);
@@ -382,12 +401,6 @@ void RDCartFilter::setSelectedGroup(const QString &grpname)
       groupChangedData(d_group_box->currentText());
     }
   }
-}
-
-
-void RDCartFilter::setMatchCount(int matches)
-{
-  d_matches_edit->setText(QString().sprintf("%d",matches));
 }
 
 
@@ -435,6 +448,12 @@ void RDCartFilter::filterChangedData(const QString &str)
     return;
   }
   searchClickedData();
+}
+
+
+void RDCartFilter::setMatchCount(int matches)
+{
+  d_matches_edit->setText(QString().sprintf("%d",matches));
 }
 
 

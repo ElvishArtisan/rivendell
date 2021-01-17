@@ -62,11 +62,13 @@ class RDLibraryModel : public QAbstractItemModel
   void removeCart(unsigned cartnum);
   void refreshRow(const QModelIndex &index);
   void refreshCart(unsigned cartnum);
+  bool showNotes() const;
 
  signals:
   void rowCountChanged(int rows);
 
  public slots:
+  void setShowNotes(int state);
   void setFilterSql(const QString &sql);
   void processNotification(RDNotification *notify);
 
@@ -78,6 +80,7 @@ class RDLibraryModel : public QAbstractItemModel
 
  private:
   QByteArray DumpIndex(const QModelIndex &index,const QString &caption="") const;
+  bool d_show_notes;
   QPalette d_palette;
   QFont d_font;
   QFontMetrics *d_font_metrics;
@@ -86,6 +89,7 @@ class RDLibraryModel : public QAbstractItemModel
   QList<QVariant> d_headers;
   QList<QList<QVariant> > d_texts;
   QList<QList<QVariant> > d_icons;
+  QList<QVariant> d_notes;
   QList<QList<QList<QVariant> > > d_cut_texts;
   QList<QVariant> d_alignments;
   QList<QVariant> d_background_colors;

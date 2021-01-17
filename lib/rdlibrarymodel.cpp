@@ -28,6 +28,7 @@ RDLibraryModel::RDLibraryModel(QObject *parent)
   d_log_icons=new RDLogIcons();
   d_font_metrics=NULL;
   d_bold_font_metrics=NULL;
+  d_show_notes=false;
 
   //
   // Column Attributes
@@ -220,6 +221,11 @@ QVariant RDLibraryModel::data(const QModelIndex &index,int role) const
       case Qt::DisplayRole:
 	return d_cut_texts.at(index.internalId()-1).at(row).at(col);
 
+      case Qt::ToolTipRole:
+	if(d_show_notes) {
+	  return d_notes.at(index.internalId()-1);
+	}
+
       case Qt::TextAlignmentRole:
 	return d_alignments.at(col);
 
@@ -250,6 +256,11 @@ QVariant RDLibraryModel::data(const QModelIndex &index,int role) const
 	  return d_bold_font;
 	}
 	return d_font;
+
+      case Qt::ToolTipRole:
+	if(d_show_notes) {
+	  return d_notes.at(row);
+	}
 
       case Qt::TextColorRole:
 	if(col==1) {
@@ -356,6 +367,7 @@ QModelIndex RDLibraryModel::addCart(unsigned cartnum)
   list_list.push_back(list);
   d_icons.insert(offset,list);
   d_texts.insert(offset,list);
+  d_notes.insert(offset,QVariant());
   d_cart_numbers.insert(offset,0);
   d_cut_texts.insert(offset,list_list);
   d_background_colors.insert(offset,QVariant());
@@ -383,6 +395,7 @@ void RDLibraryModel::removeCart(unsigned cartnum)
       beginRemoveRows(QModelIndex(),i,i);
 
       d_texts.removeAt(i);
+      d_notes.removeAt(i);
       d_cart_numbers.removeAt(i);
       d_cut_texts.removeAt(i);
       d_background_colors.removeAt(i);
@@ -415,6 +428,18 @@ void RDLibraryModel::refreshCart(unsigned cartnum)
       emit dataChanged(createIndex(i,0,0),createIndex(i,columnCount(),0));
     }
   }
+}
+
+
+bool RDLibraryModel::showNotes() const
+{
+  return d_show_notes;
+}
+
+
+void RDLibraryModel::setShowNotes(int state)
+{
+  d_show_notes=state;
 }
 
 
@@ -462,9 +487,10 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
 
   sql=sqlFields()+
     filter_sql;
-  printf("SQL: %s\n",sql.toUtf8().constData());
+  //  printf("SQL: %s\n",sql.toUtf8().constData());
   beginResetModel();
   d_texts.clear();
+  d_notes.clear();
   d_cart_numbers.clear();
   d_cut_texts.clear();
   d_background_colors.clear();
@@ -475,6 +501,7 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   while(q->next()) {
     if(q->value(0).toUInt()!=prev_cartnum) {
       d_texts.push_back(list);
+      d_notes.push_back(QVariant());
       d_cart_numbers.push_back(0);
       d_cut_texts.push_back(list_list);
       d_background_colors.push_back(QVariant());
@@ -573,6 +600,7 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
   d_texts[row][19]=               // Length Deviation
     QString().sprintf("%u",q->value(20).toUInt());
   d_texts[row][20]=q->value(21);  // Owned By
+  d_notes[row]=q->value(30).toString();
 
   switch((RDCart::Validity)q->value(22).toUInt()) {
   case RDCart::NeverValid:
@@ -664,7 +692,8 @@ QString sql=QString("select ")+
   "CUTS.END_POINT,"+          // 26
   "CUTS.TALK_START_POINT,"+   // 27
   "CUTS.TALK_END_POINT,"+     // 28
-  "CUTS.DESCRIPTION "+        // 29
+  "CUTS.DESCRIPTION,"+        // 29
+  "CART.NOTES "+              // 30
   "from CART "+
   "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
   "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER ";

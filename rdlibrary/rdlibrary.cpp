@@ -150,7 +150,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Filter
   //
-  lib_cart_filter=new RDCartFilter(this);
+  lib_cart_filter=new RDCartFilter(true,this);
   connect(rda,SIGNAL(userChanged()),lib_cart_filter,SLOT(changeUser()));
   connect(lib_cart_filter,SIGNAL(selectedGroupChanged(const QString &)),
 	  this,SLOT(selectedGroupChangedData(const QString &)));
@@ -166,16 +166,13 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   lib_cart_model=new RDLibraryModel(this);
   lib_cart_model->setFont(font());
   lib_cart_model->setPalette(palette());
+  lib_cart_filter->setModel(lib_cart_model);
   lib_cart_view->setModel(lib_cart_model);
-  connect(lib_cart_filter,SIGNAL(filterChanged(const QString &)),
-	  lib_cart_model,SLOT(setFilterSql(const QString &)));
+  connect(lib_cart_view,SIGNAL(doubleClicked(const QModelIndex &)),
+  	  this,SLOT(cartDoubleClickedData(const QModelIndex &)));
   connect(lib_cart_filter,SIGNAL(dragEnabledChanged(bool)),
 	  this,SLOT(dragsChangedData(bool)));
   connect(lib_cart_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
-  connect(lib_cart_model,SIGNAL(rowCountChanged(int)),
-	  lib_cart_filter,SLOT(setMatchCount(int)));
-  connect(lib_cart_view,SIGNAL(doubleClicked(const QModelIndex &)),
-  	  this,SLOT(cartDoubleClickedData(const QModelIndex &)));
   connect(lib_cart_view->selectionModel(),
        SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
        this,

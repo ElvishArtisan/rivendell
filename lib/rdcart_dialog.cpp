@@ -79,7 +79,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   //
   // Cart Filter
   //
-  cart_cart_filter=new RDCartFilter(this);
+  cart_cart_filter=new RDCartFilter(false,this);
   cart_cart_filter->setUserIsAdmin(user_is_admin);
   connect(rda,SIGNAL(userChanged()),cart_cart_filter,SLOT(changeUser()));
 
@@ -96,12 +96,13 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_cart_model->setFont(font());
   cart_cart_model->setPalette(palette());
   cart_cart_view->setModel(cart_cart_model);
-  connect(cart_cart_filter,SIGNAL(filterChanged(const QString &)),
-	  cart_cart_model,SLOT(setFilterSql(const QString &)));
+  cart_cart_filter->setModel(cart_cart_model);
+  //  connect(cart_cart_filter,SIGNAL(filterChanged(const QString &)),
+  //	  cart_cart_model,SLOT(setFilterSql(const QString &)));
   connect(cart_cart_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
 
-  connect(cart_cart_model,SIGNAL(rowCountChanged(int)),
-	  cart_cart_filter,SLOT(setMatchCount(int)));
+  //  connect(cart_cart_model,SIGNAL(rowCountChanged(int)),
+  //	  cart_cart_filter,SLOT(setMatchCount(int)));
   connect(cart_cart_view,SIGNAL(doubleClicked(const QModelIndex &)),
   	  this,SLOT(cartDoubleClickedData(const QModelIndex &)));
   connect(cart_cart_view->selectionModel(),

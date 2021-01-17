@@ -20813,3 +20813,6 @@
 	'RDCartFilter::groupFilter()' and 'RDCartFilter::typeFilter()'
 	methods.
 	* Refactored 'RDCartDialog' to use the model-based API.
+2021-01-17 Fred Gleason <fredg@paravelsystems.com>
+	* Restore support for cart notes in rdlibrary(1).
+	* Added support for cart notes in the 'RDCartDialog' dialog.

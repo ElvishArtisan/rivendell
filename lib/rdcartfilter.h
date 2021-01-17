@@ -28,6 +28,7 @@
 #include <QPushButton>
 #include <QWidget>
 
+#include <rdlibrarymodel.h>
 #include <rdprofile.h>
 #include <rdwidget.h>
 
@@ -35,7 +36,7 @@ class RDCartFilter : public RDWidget
 {
   Q_OBJECT;
  public:
-  RDCartFilter(QWidget *parent=0);
+  RDCartFilter(bool show_drag_box,QWidget *parent=0);
   ~RDCartFilter();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -52,14 +53,15 @@ class RDCartFilter : public RDWidget
   void setLimitSearch(bool state);
   bool userIsAdmin() const;
   void setUserIsAdmin(bool state);
+  RDLibraryModel *model() const;
   static QString phraseFilter(const QString &phrase,bool incl_cuts);
   static QString groupFilter(const QString &group,const QStringList &groups);
   static QString typeFilter(bool incl_audio,bool incl_macro,RDCart::Type mask);
 
  public slots:
+  void setModel(RDLibraryModel *model);
   void setFilterText(const QString &str);
   void setSelectedGroup(const QString &grpname);
-  void setMatchCount(int matches);
   void changeUser();
 
  signals:
@@ -68,6 +70,7 @@ class RDCartFilter : public RDWidget
   void dragEnabledChanged(bool state);
 
  private slots:
+  void setMatchCount(int matches);
   void filterChangedData(const QString &str);
   void searchClickedData();
   void clearClickedData();
@@ -80,6 +83,7 @@ class RDCartFilter : public RDWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
+  RDLibraryModel *d_model;
   QLineEdit *d_filter_edit;
   QLabel *d_filter_label;
   QComboBox *d_group_box;
@@ -94,6 +98,7 @@ class RDCartFilter : public RDWidget
   QPushButton *d_clear_button;
   QCheckBox *d_allowdrag_box;
   QLabel *d_allowdrag_label;
+  bool d_show_drag_box;
   QCheckBox *d_showaudio_check;
   QLabel *d_showaudio_label;
   QCheckBox *d_showmacro_check;
