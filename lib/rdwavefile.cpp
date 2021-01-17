@@ -4644,6 +4644,7 @@ QString RDWaveFile::cutString(char *buffer,unsigned start_point,unsigned size)
   QString string;
 
   for(unsigned i=start_point;i<start_point+size;i++) {
+    if(!(buffer[i])) break;
     string=string.append(buffer[i]);
   }
   
