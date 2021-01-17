@@ -1251,19 +1251,19 @@ barvu</translation>
     </message>
     <message>
         <source>Cart Filter:</source>
-        <translation>Filtr vozíku:</translation>
+        <translation type="obsolete">Filtr vozíku:</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Hledat</translation>
+        <translation type="obsolete">&amp;Hledat</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Skupina:</translation>
+        <translation type="obsolete">Skupina:</translation>
     </message>
     <message>
         <source>NUMBER</source>
@@ -1321,19 +1321,19 @@ barvu</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>VŠE</translation>
+        <translation type="obsolete">VŠE</translation>
     </message>
     <message>
         <source>Show Only First</source>
-        <translation>Ukázat pouze první </translation>
+        <translation type="obsolete">Ukázat pouze první </translation>
     </message>
     <message>
         <source>Matches</source>
-        <translation>Shody</translation>
+        <translation type="obsolete">Shody</translation>
     </message>
     <message>
         <source>Scheduler Code:</source>
-        <translation>Kódy rozvrhovače:</translation>
+        <translation type="obsolete">Kódy rozvrhovače:</translation>
     </message>
     <message>
         <source>Load From
@@ -1370,52 +1370,12 @@ ze &amp;souboru</translation>
         <translation>Zavádí se</translation>
     </message>
     <message>
-        <source>Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Length</source>
-        <translation type="unfinished">Délka</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Composer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Conductor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User Def</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Délka</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Konec</translation>
+        <translation type="obsolete">Konec</translation>
     </message>
     <message>
         <source>Open Audio File</source>

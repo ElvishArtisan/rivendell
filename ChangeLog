@@ -20808,3 +20808,8 @@
 	of 'int'.
 2021-01-15 Fred Gleason <fredg@paravelsystems.com>
 	* Commented out removed slots in 'rdairplay/list_log.cpp'.
+2021-01-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added static 'RDCartFilter::phraseFilter()',
+	'RDCartFilter::groupFilter()' and 'RDCartFilter::typeFilter()'
+	methods.
+	* Refactored 'RDCartDialog' to use the model-based API.

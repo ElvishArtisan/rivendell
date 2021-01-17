@@ -1247,19 +1247,19 @@ farge</translation>
     </message>
     <message>
         <source>Cart Filter:</source>
-        <translation>Korgfilter:</translation>
+        <translation type="obsolete">Korgfilter:</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Søk</translation>
+        <translation type="obsolete">&amp;Søk</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Tøm</translation>
+        <translation type="obsolete">&amp;Tøm</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Gruppe:</translation>
+        <translation type="obsolete">Gruppe:</translation>
     </message>
     <message>
         <source>NUMBER</source>
@@ -1316,19 +1316,7 @@ farge</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>ALLE</translation>
-    </message>
-    <message>
-        <source>Show Only First</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Matches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Scheduler Code:</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">ALLE</translation>
     </message>
     <message>
         <source>Load From
@@ -1360,52 +1348,12 @@ farge</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Length</source>
-        <translation type="unfinished">Lengd</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Composer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Conductor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User Def</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Lengd</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Slutten</translation>
+        <translation type="obsolete">Slutten</translation>
     </message>
     <message>
         <source>Open Audio File</source>

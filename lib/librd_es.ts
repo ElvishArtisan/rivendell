@@ -1243,15 +1243,15 @@ Color</translation>
     </message>
     <message>
         <source>Cart Filter:</source>
-        <translation>Filtrar:</translation>
+        <translation type="obsolete">Filtrar:</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Limpiar</translation>
+        <translation type="obsolete">&amp;Limpiar</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Grupo:</translation>
+        <translation type="obsolete">Grupo:</translation>
     </message>
     <message>
         <source>NUMBER</source>
@@ -1299,7 +1299,7 @@ Color</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>TODAS</translation>
+        <translation type="obsolete">TODAS</translation>
     </message>
     <message>
         <source>GROUP</source>
@@ -1313,7 +1313,7 @@ Color</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Buscar</translation>
+        <translation type="obsolete">&amp;Buscar</translation>
     </message>
     <message>
         <source>Please Wait...</source>
@@ -1321,15 +1321,15 @@ Color</translation>
     </message>
     <message>
         <source>Show Only First</source>
-        <translation>Mostrar los primeros</translation>
+        <translation type="obsolete">Mostrar los primeros</translation>
     </message>
     <message>
         <source>Matches</source>
-        <translation>resultados</translation>
+        <translation type="obsolete">resultados</translation>
     </message>
     <message>
         <source>Scheduler Code:</source>
-        <translation>Cód. Programac.:</translation>
+        <translation type="obsolete">Cód. Programac.:</translation>
     </message>
     <message>
         <source>Load From
@@ -1361,52 +1361,12 @@ Color</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Length</source>
-        <translation type="unfinished">Longitud</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Composer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Conductor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User Def</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Longitud</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Final</translation>
+        <translation type="obsolete">Final</translation>
     </message>
     <message>
         <source>Open Audio File</source>

@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cart.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,17 +21,18 @@
 #ifndef RDCART_DIALOG_H
 #define RDCART_DIALOG_H
 
-#include <qcheckbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qprogressdialog.h>
-#include <qpushbutton.h>
+#include <QCheckBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QProgressDialog>
+#include <QPushButton>
+#include <QTableView>
 
 #include <rdbusydialog.h>
 #include <rdcart.h>
-#include <rdcombobox.h>
 #include <rddialog.h>
-#include <rdlistviewitem.h>
+#include <rdcartfilter.h>
+#include <rdlibrarymodel.h>
 #include <rdsimpleplayer.h>
 
 #define RDCART_DIALOG_STEP_SIZE 1000
@@ -41,7 +42,7 @@ class RDCartDialog : public RDDialog
  Q_OBJECT
  public:
   RDCartDialog(QString *filter,QString *group,QString *schedcode,
-	       const QString &caption,QWidget *parent=0);
+	       const QString &caption,bool user_is_admin,QWidget *parent=0);
   ~RDCartDialog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -52,14 +53,11 @@ class RDCartDialog : public RDDialog
 	   bool *temp_allowed=NULL);
 
  private slots:
-  void filterChangedData(const QString &);
-  void filterSearchedData();
-  void filterClearedData();
-  void groupActivatedData(const QString &group);
-  void schedcodeActivatedData(const QString &schedcode);
-  void limitChangedData(int state);
+  void modelResetData();
   void clickedData(Q3ListViewItem *item);
-  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
+  void cartDoubleClickedData(const QModelIndex &index);
+  void selectionChangedData(const QItemSelection &before,
+			    const QItemSelection &after);
   void editorData();
   void loadFileData();
   void okData();
@@ -70,37 +68,20 @@ class RDCartDialog : public RDDialog
   void closeEvent(QCloseEvent *e);
 
  private:
-  void RefreshCarts();
-  void BuildGroupList();
-  QString GetSearchFilter(const QString &filter,const QString &group,
-			  const QString &schedcode);
   QString StateFile();
   void LoadState();
   void SaveState();
   int *cart_cartnum;
-  QLabel *cart_cart_label;
-  RDListView *cart_cart_list;
-  QLabel *cart_filter_label;
-  QLineEdit *cart_filter_edit;
-  QLabel *cart_limit_label;
-  QCheckBox *cart_limit_box;
+  RDCartFilter *cart_cart_filter;
+  QTableView *cart_cart_view;
+  RDLibraryModel *cart_cart_model;
   QPushButton *cart_ok_button;
   QPushButton *cart_cancel_button;
-  QPushButton *cart_search_button;
-  QPushButton *cart_clear_button;
   QPushButton *cart_editor_button;
   QPushButton *cart_file_button;
-  QLabel *cart_group_label;
-  RDComboBox *cart_group_box;
-  QLabel *cart_schedcode_label;
-  RDComboBox *cart_schedcode_box;
   QString *cart_filter;
-  QString *cart_group;
-  QString *cart_schedcode;
   bool local_filter;
   RDCart::Type cart_type;
-  QPixmap *cart_playout_map;
-  QPixmap *cart_macro_map;
   QString *cart_service;
   int cart_service_quan;
   RDStation::FilterMode cart_filter_mode;

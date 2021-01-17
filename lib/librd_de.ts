@@ -1247,19 +1247,19 @@ setzen</translation>
     </message>
     <message>
         <source>Cart Filter:</source>
-        <translation>Cart Filter:</translation>
+        <translation type="obsolete">Cart Filter:</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Suchen</translation>
+        <translation type="obsolete">&amp;Suchen</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Löschen</translation>
+        <translation type="obsolete">&amp;Löschen</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Gruppe:</translation>
+        <translation type="obsolete">Gruppe:</translation>
     </message>
     <message>
         <source>NUMBER</source>
@@ -1317,19 +1317,15 @@ senden</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>ALLE</translation>
+        <translation type="obsolete">ALLE</translation>
     </message>
     <message>
         <source>Show Only First</source>
-        <translation>Zeige nur erste</translation>
+        <translation type="obsolete">Zeige nur erste</translation>
     </message>
     <message>
         <source>Matches</source>
-        <translation>Treffer</translation>
-    </message>
-    <message>
-        <source>Scheduler Code:</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Treffer</translation>
     </message>
     <message>
         <source>Load From
@@ -1361,52 +1357,12 @@ senden</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Length</source>
-        <translation type="unfinished">Länge</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Composer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Conductor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Agency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User Def</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Länge</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Ende</translation>
+        <translation type="obsolete">Ende</translation>
     </message>
     <message>
         <source>Open Audio File</source>

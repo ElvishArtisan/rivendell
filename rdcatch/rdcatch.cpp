@@ -330,7 +330,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Cart Picker
   //
   catch_cart_dialog=new RDCartDialog(&catch_filter,&catch_group,
-				     &catch_schedcode,"RDCatch",this);
+				     &catch_schedcode,"RDCatch",false,this);
 
   //
   // Cart List

@@ -339,7 +339,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Cart Picker
   //
   rdcart_dialog=new RDCartDialog(&air_add_filter,&air_add_group,
-				 &air_add_schedcode,"RDAirPlay",this);
+				 &air_add_schedcode,"RDAirPlay",false,this);
 
   //
   // Wall Clock

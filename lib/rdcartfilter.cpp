@@ -28,6 +28,9 @@
 RDCartFilter::RDCartFilter(QWidget *parent)
   : RDWidget(parent)
 {
+  d_show_cart_type=RDCart::All;
+  d_user_is_admin=false;
+
   d_filter_edit=new QLineEdit(this);
   d_filter_label=new QLabel(d_filter_edit,tr("Filter:"),this);
   d_filter_label->setFont(labelFont());
@@ -117,23 +120,23 @@ RDCartFilter::RDCartFilter(QWidget *parent)
   //
   // Show Audio Carts Checkbox
   //
-  d_showaudio_box=new QCheckBox(this);
-  d_showaudio_box->setChecked(true);
-  d_showaudio_label=new QLabel(d_showaudio_box,tr("Show Audio Carts"),this);
+  d_showaudio_check=new QCheckBox(this);
+  d_showaudio_check->setChecked(true);
+  d_showaudio_label=new QLabel(d_showaudio_check,tr("Show Audio Carts"),this);
   d_showaudio_label->setFont(labelFont());
   d_showaudio_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  connect(d_showaudio_box,SIGNAL(stateChanged(int)),
+  connect(d_showaudio_check,SIGNAL(stateChanged(int)),
 	  this,SLOT(checkChangedData(int)));
 
   //
   // Show Macro Carts Checkbox
   //
-  d_showmacro_box=new QCheckBox(this);
-  d_showmacro_box->setChecked(true);
-  d_showmacro_label=new QLabel(d_showmacro_box,tr("Show Macro Carts"),this);
+  d_showmacro_check=new QCheckBox(this);
+  d_showmacro_check->setChecked(true);
+  d_showmacro_label=new QLabel(d_showmacro_check,tr("Show Macro Carts"),this);
   d_showmacro_label->setFont(labelFont());
   d_showmacro_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  connect(d_showmacro_box,SIGNAL(stateChanged(int)),
+  connect(d_showmacro_check,SIGNAL(stateChanged(int)),
 	  this,SLOT(checkChangedData(int)));
 
   //
@@ -223,8 +226,27 @@ void RDCartFilter::saveConfig(FILE *f) const
 
 QString RDCartFilter::filterSql(const QStringList &and_fields) const
 {
-  QString sql="";
-  QString type_filter=GetTypeFilter();
+  QString sql=" where ";
+  sql+=RDCartFilter::typeFilter(d_showaudio_check->isChecked(),
+				d_showmacro_check->isChecked(),
+				d_show_cart_type);
+  //  sql+=RDCartFilter::phraseFilter(d_filter_edit->text().trimmed(),true);
+  QStringList groups;
+  for(int i=0;i<d_group_box->count();i++) {
+    groups.push_back(d_group_box->text(i));
+  }
+  sql+=RDCartFilter::groupFilter(d_group_box->currentText(),groups);
+  sql=sql.left(sql.length()-2);  // Remove the final "&&"
+  sql+="order by CART.NUMBER ";
+  if(d_showmatches_box->isChecked()) {
+    sql+=QString().sprintf("limit %d ",RD_LIMITED_CART_SEARCH_QUANTITY);
+  }
+
+  //  printf("FILTER SQL: %s\n",sql.toUtf8().constData());
+
+  return sql;
+
+  /*
 
   if(type_filter.isEmpty()) {
     return QString("where CART.NUMBER=0 ");
@@ -238,11 +260,16 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
     schedcodes << d_codes2_box->currentText();
   }
   if(d_group_box->currentText()==QString(tr("ALL"))) {
-    sql=RDAllCartSearchText(d_filter_edit->text(),schedcodes,
-			  rda->user()->name(),true)+" "+type_filter;
+    if(d_user_is_admin) {
+      // sql=" where ";
+    }
+    else {
+      sql+=RDAllCartSearchText(d_filter_edit->text(),schedcodes,
+			       rda->user()->name(),true)+" "+type_filter;
+    }
   }
   else {
-    sql=RDCartSearchText(d_filter_edit->text(),d_group_box->currentText(),
+    sql+=RDCartSearchText(d_filter_edit->text(),d_group_box->currentText(),
 		       schedcodes,true)+" "+type_filter;      
   }
   for(int i=0;i<and_fields.size();i++) {
@@ -257,6 +284,7 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   //  printf("SQL: %s\n",sql.toUtf8().constData());
 
   return sql;
+  */
 }
 
 
@@ -281,6 +309,61 @@ QString RDCartFilter::selectedSchedCode() const
 bool RDCartFilter::dragEnabled() const
 {
   return d_allowdrag_box->isChecked();
+}
+
+
+RDCart::Type RDCartFilter::showCartType() const
+{
+  return d_show_cart_type;
+}
+
+
+void RDCartFilter::setShowCartType(RDCart::Type type)
+{
+  if(type!=d_show_cart_type) { 
+    if(type==RDCart::All) {
+      d_showaudio_check->show();
+      d_showaudio_label->show();
+      d_showmacro_check->show();
+      d_showmacro_label->show();
+    }
+    else {
+      d_showaudio_check->hide();
+      d_showaudio_label->hide();
+      d_showmacro_check->hide();
+      d_showmacro_label->hide();
+    }
+    d_show_cart_type=type;
+
+    emit filterChanged(filterSql());
+  }
+}
+
+
+bool RDCartFilter::limitSearch() const
+{
+  return d_showmatches_box->isChecked();
+}
+
+
+void RDCartFilter::setLimitSearch(bool state)
+{
+  d_showmatches_box->setChecked(state);
+}
+
+
+bool RDCartFilter::userIsAdmin() const
+{
+  return d_user_is_admin;
+}
+
+
+void RDCartFilter::setUserIsAdmin(bool state)
+{
+  if(state!=d_user_is_admin) {
+    d_user_is_admin=state;
+    changeUser();
+  }
 }
 
 
@@ -315,8 +398,14 @@ void RDCartFilter::changeUser()
 
   d_group_box->clear();
   d_group_box->insertItem(tr("ALL"));
-  sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" order by GROUP_NAME";
+  if(d_user_is_admin) {
+    sql=QString("select NAME from GROUPS order by NAME ");
+  }
+  else {
+    sql=QString("select GROUP_NAME from USER_PERMS where ")+
+      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
+      "order by GROUP_NAME";
+  }
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_group_box->insertItem(q->value(0).toString());
@@ -424,30 +513,101 @@ void RDCartFilter::resizeEvent(QResizeEvent *e)
   d_allowdrag_label->setGeometry(580,66,130,20);
   d_allowdrag_box->setGeometry(560,68,15,15);
   d_showaudio_label->setGeometry(90,66,130,20);
-  d_showaudio_box->setGeometry(70,68,15,15);
+  d_showaudio_check->setGeometry(70,68,15,15);
   d_showmacro_label->setGeometry(250,66,130,20);
-  d_showmacro_box->setGeometry(230,68,15,15);
+  d_showmacro_check->setGeometry(230,68,15,15);
   d_shownotes_label->setGeometry(410,66,130,20);
   d_shownotes_box->setGeometry(390,68,15,15);
 }
 
 
-QString RDCartFilter::GetTypeFilter() const
+QString RDCartFilter::phraseFilter(const QString &phrase, bool incl_cuts)
 {
-  QString type_filter;
+  QString sql="";
 
-  if(d_showaudio_box->isChecked()) {
-    if(d_showmacro_box->isChecked()) {
-      type_filter="&& ((TYPE=1)||(TYPE=2)||(TYPE=3))";
-    }
-    else {
-      type_filter="&& ((TYPE=1)||(TYPE=3))";
-    }
+  if(phrase.isEmpty()) {
+    sql=" &&";
   }
   else {
-    if(d_showmacro_box->isChecked()) {
-      type_filter="&& (TYPE=2)";
+    sql+=QString(" (")+
+      "(CART.TITLE like \"%%\")||"+
+      "(CART.ARTIST like \"%%\")||"+
+      "(CART.CLIENT like \"%%\")||"+
+      "(CART.AGENCY like \"%%\")||"+
+      "(CART.ALBUM like \"%%\")||"+
+      "(CART.LABEL like \"%%\")||"+
+      "(CART.NUMBER like \"%%\")||"+
+      "(CART.PUBLISHER like \"%%\")||"+
+      "(CART.COMPOSER like \"%%\")||"+
+      "(CART.CONDUCTOR like \"%%\")||"+
+      "(CART.SONG_ID like \"%%\")||"+
+      "(CART.USER_DEFINED like \"%%\")";
+    if(incl_cuts) {
+      sql+=QString("||(CUTS.ISCI like \"%%\")")+
+	"||(CUTS.ISRC like \"%%\")"+
+	"||(CUTS.DESCRIPTION like \"%%\")"+
+	"||(CUTS.OUTCUE like \"%%\")";
     }
+    sql+=") &&";
   }
-  return type_filter;
+
+  return sql;
+}
+
+
+QString RDCartFilter::groupFilter(const QString &group,
+				  const QStringList &groups)
+{
+  QString sql=" (";
+
+  if(group==tr("ALL")) {
+    for(int i=1;i<groups.size();i++) {
+      sql+="(CART.GROUP_NAME=\""+RDEscapeString(groups.at(i))+"\")||";
+    }
+    sql=sql.left(sql.length()-2);
+  }
+  else {
+    sql+="CART.GROUP_NAME=\""+RDEscapeString(group)+"\"";
+  }
+
+  sql+=") &&";
+
+  return sql;
+}
+
+
+QString RDCartFilter::typeFilter(bool incl_audio,bool incl_macro,
+				    RDCart::Type mask)
+{
+  QString sql;
+
+  switch(mask) {
+  case RDCart::Audio:
+    sql="((CART.TYPE=1)||(CART.TYPE=3)) &&";
+    break;
+
+  case RDCart::Macro:
+    sql="(CART.TYPE=2) &&";
+    break;
+
+  case RDCart::All:
+    if(incl_audio) {
+      if(incl_macro) {
+	sql="((CART.TYPE=1)||(CART.TYPE=2)||(CART.TYPE=3)) &&";
+      }
+      else {
+	sql="((CART.TYPE=1)||(CART.TYPE=3)) &&";
+      }
+    }
+    else {
+      if(incl_macro) {
+	sql="(CART.TYPE=2) &&";
+      }
+      else {
+	sql="(CART.TYPE=0) &&";  // NEVER matches!
+      }
+    }
+    break;
+  }
+  return sql;
 }

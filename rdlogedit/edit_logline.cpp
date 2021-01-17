@@ -46,7 +46,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   // Cart Picker
   //
   edit_cart_dialog=new RDCartDialog(edit_filter,edit_group,edit_schedcode,
-				    "RDLogEdit",this);
+				    "RDLogEdit",false,this);
 
   //
   // Overlap Box

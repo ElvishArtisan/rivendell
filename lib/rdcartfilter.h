@@ -46,6 +46,15 @@ class RDCartFilter : public RDWidget
   QString selectedGroup() const;
   QString selectedSchedCode() const;
   bool dragEnabled() const;
+  RDCart::Type showCartType() const;
+  void setShowCartType(RDCart::Type type);
+  bool limitSearch() const;
+  void setLimitSearch(bool state);
+  bool userIsAdmin() const;
+  void setUserIsAdmin(bool state);
+  static QString phraseFilter(const QString &phrase,bool incl_cuts);
+  static QString groupFilter(const QString &group,const QStringList &groups);
+  static QString typeFilter(bool incl_audio,bool incl_macro,RDCart::Type mask);
 
  public slots:
   void setFilterText(const QString &str);
@@ -71,7 +80,6 @@ class RDCartFilter : public RDWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
-  QString GetTypeFilter() const;
   QLineEdit *d_filter_edit;
   QLabel *d_filter_label;
   QComboBox *d_group_box;
@@ -86,16 +94,17 @@ class RDCartFilter : public RDWidget
   QPushButton *d_clear_button;
   QCheckBox *d_allowdrag_box;
   QLabel *d_allowdrag_label;
-  QCheckBox *d_showaudio_box;
+  QCheckBox *d_showaudio_check;
   QLabel *d_showaudio_label;
-  QCheckBox *d_showmacro_box;
+  QCheckBox *d_showmacro_check;
   QLabel *d_shownotes_label;
   QCheckBox *d_shownotes_box;
   QLabel *d_showmatches_label;
   QCheckBox *d_showmatches_box;
   QLabel *d_showmacro_label;
-
+  RDCart::Type d_show_cart_type;
   QString d_default_group;
+  bool d_user_is_admin;
 };
 
 

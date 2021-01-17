@@ -401,6 +401,7 @@ void RDLibraryModel::refreshRow(const QModelIndex &index)
 {
   if(isCart(index)) {
     updateCartLine(index.row());
+    emit dataChanged(index,createIndex(index.row(),columnCount(),0));
   }
 }
 
@@ -411,6 +412,7 @@ void RDLibraryModel::refreshCart(unsigned cartnum)
   for(int i=0;i<d_texts.size();i++) {
     if(d_texts.at(i).at(0).toString()==cartnum_str) {
       updateCartLine(i);
+      emit dataChanged(createIndex(i,0,0),createIndex(i,columnCount(),0));
     }
   }
 }
@@ -460,6 +462,7 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
 
   sql=sqlFields()+
     filter_sql;
+  printf("SQL: %s\n",sql.toUtf8().constData());
   beginResetModel();
   d_texts.clear();
   d_cart_numbers.clear();
