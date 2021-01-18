@@ -70,7 +70,6 @@ class RDLibraryModel : public QAbstractItemModel
  public slots:
   void setShowNotes(int state);
   void setFilterSql(const QString &sql);
-  void processNotification(RDNotification *notify);
 
  protected:
   void updateModel(const QString &filter_sql);

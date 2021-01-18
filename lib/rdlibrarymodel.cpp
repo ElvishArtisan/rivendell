@@ -450,11 +450,6 @@ void RDLibraryModel::setFilterSql(const QString &sql)
 }
 
 
-void RDLibraryModel::processNotification(RDNotification *notify)
-{
-}
-
-
 void RDLibraryModel::updateModel(const QString &filter_sql)
 {
   QString sql;
