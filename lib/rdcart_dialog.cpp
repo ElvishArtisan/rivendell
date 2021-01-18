@@ -237,6 +237,7 @@ int RDCartDialog::exec(int *cartnum,RDCart::Type type,const QString &svc,
 void RDCartDialog::modelResetData()
 {
   cart_cart_view->resizeColumnsToContents();
+  cart_cart_view->resizeRowsToContents();
   if(cart_cartnum!=NULL) {
     QModelIndex index=cart_cart_model->cartRow(*cart_cartnum);
     cart_cart_view->selectRow(index.row());

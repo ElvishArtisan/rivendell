@@ -20826,3 +20826,6 @@
 	get an evergreen background color.
 2021-01-18 Fred Gleason <fredg@paravelsystems.com>
 	* Removed unused method from 'RDLibraryModel'.
+2021-01-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to enforce standard row height to the
+	'RDCartDialog' dialog.
