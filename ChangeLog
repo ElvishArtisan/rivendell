@@ -20821,3 +20821,6 @@
 2021-01-17 Fred Gleason <fredg@paravelsystems.com>
 	* Restored enforcement of service authorized groups in rdairplay(1)
 	and rdlogedit(1).
+2021-01-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlibrary(1) that caused macro carts to
+	get an evergreen background color.

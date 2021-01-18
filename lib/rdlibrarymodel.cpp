@@ -603,36 +603,40 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
   d_texts[row][20]=q->value(21);  // Owned By
   d_notes[row]=q->value(30).toString();
 
-  switch((RDCart::Validity)q->value(22).toUInt()) {
-  case RDCart::NeverValid:
-    d_background_colors[row]=QColor(RD_CART_ERROR_COLOR);
-    break;
+  if(q->value(15).toUInt()==RDCart::Audio) {
+    switch((RDCart::Validity)q->value(22).toUInt()) {
+    case RDCart::NeverValid:
+      d_background_colors[row]=QColor(RD_CART_ERROR_COLOR);
+      break;
 
-  case RDCart::ConditionallyValid:
-    if(q->value(14).toDateTime().isValid()&&
-       (q->value(14).toDateTime()<QDateTime::currentDateTime())) {
-      d_background_colors[row]= QColor(RD_CART_ERROR_COLOR);
+    case RDCart::ConditionallyValid:
+      if(q->value(14).toDateTime().isValid()&&
+	 (q->value(14).toDateTime()<QDateTime::currentDateTime())) {
+	d_background_colors[row]= QColor(RD_CART_ERROR_COLOR);
+      }
+      else {
+	d_background_colors[row]=QColor(RD_CART_CONDITIONAL_COLOR);
+      }
+      break;
+
+    case RDCart::FutureValid:
+      d_background_colors[row]=QColor(RD_CART_FUTURE_COLOR);
+      break;
+
+    case RDCart::AlwaysValid:
+      d_background_colors[row]=
+	QColor(palette().color(QPalette::Active,QColorGroup::Base));
+      break;
+
+    case RDCart::EvergreenValid:
+      d_background_colors[row]=QColor(RD_CART_EVERGREEN_COLOR);
+      break;
     }
-    else {
-      d_background_colors[row]=QColor(RD_CART_CONDITIONAL_COLOR);
-    }
-    break;
-
-  case RDCart::FutureValid:
-    d_background_colors[row]=QColor(RD_CART_FUTURE_COLOR);
-    break;
-
-  case RDCart::AlwaysValid:
+  }
+  if(q->value(15).toUInt()==RDCart::Macro) {
     d_background_colors[row]=
       QColor(palette().color(QPalette::Active,QColorGroup::Base));
-    break;
-
-  case RDCart::EvergreenValid:
-    d_background_colors[row]=QColor(RD_CART_EVERGREEN_COLOR);
-    break;
   }
-
-  //  printf("start at: %d\n",q->at());
 
   //
   // Cut Attributes
