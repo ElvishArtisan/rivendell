@@ -53,8 +53,10 @@ class RDLibraryModel : public QAbstractItemModel
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
   bool isCart(const QModelIndex &index) const;
+  bool isCut(const QModelIndex &index) const;
   unsigned cartNumber(const QModelIndex &index) const;
   QModelIndex cartRow(unsigned cartnum) const;
+  QModelIndex cutRow(const QString &cutname) const;
   RDCart::Type cartType(const QModelIndex &index) const;
   QString cutName(const QModelIndex &index) const;
   QString cartOwnedBy(const QModelIndex &index);
@@ -90,6 +92,7 @@ class RDLibraryModel : public QAbstractItemModel
   QList<QList<QVariant> > d_icons;
   QList<QVariant> d_notes;
   QList<QList<QList<QVariant> > > d_cut_texts;
+  QList<QStringList> d_cut_cutnames;
   QList<QVariant> d_alignments;
   QList<QVariant> d_background_colors;
   QList<unsigned> d_cart_numbers;

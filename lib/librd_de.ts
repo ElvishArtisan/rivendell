@@ -1477,7 +1477,7 @@ senden</translation>
     <name>RDCutDialog</name>
     <message>
         <source>Select Cut</source>
-        <translation>Cut auswählen</translation>
+        <translation type="unfinished">Cut auswählen</translation>
     </message>
     <message>
         <source>Please Wait...</source>
@@ -1485,23 +1485,23 @@ senden</translation>
     </message>
     <message>
         <source>Cart Filter:</source>
-        <translation>Cart-Filter:</translation>
+        <translation type="obsolete">Cart-Filter:</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Suchen</translation>
+        <translation type="obsolete">&amp;Suchen</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Löschen</translation>
+        <translation type="obsolete">&amp;Löschen</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Gruppe:</translation>
+        <translation type="obsolete">Gruppe:</translation>
     </message>
     <message>
         <source>Carts</source>
-        <translation>Carts</translation>
+        <translation type="obsolete">Carts</translation>
     </message>
     <message>
         <source>NUMBER</source>
@@ -1517,7 +1517,7 @@ senden</translation>
     </message>
     <message>
         <source>Cuts</source>
-        <translation>Cuts</translation>
+        <translation type="obsolete">Cuts</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
@@ -1526,11 +1526,11 @@ senden</translation>
     <message>
         <source>&amp;Add New
 Cart</source>
-        <translation>Neuen C&amp;art hinzufügen</translation>
+        <translation type="unfinished">Neuen C&amp;art hinzufügen</translation>
     </message>
     <message>
         <source>&amp;Clear</source>
-        <translation>&amp;Löschen</translation>
+        <translation type="unfinished">&amp;Löschen</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1542,35 +1542,29 @@ Cart</source>
     </message>
     <message>
         <source>ALL</source>
-        <translation>ALLE</translation>
+        <translation type="obsolete">ALLE</translation>
     </message>
     <message>
         <source>Show Only First</source>
-        <translation>Zeige nur erste</translation>
+        <translation type="obsolete">Zeige nur erste</translation>
     </message>
     <message>
         <source>Matches</source>
-        <translation>Treffer</translation>
+        <translation type="obsolete">Treffer</translation>
     </message>
     <message>
-        <source>Scheduler Code:</source>
-        <translation type="unfinished"></translation>
+        <source>Select Cart</source>
+        <translation type="obsolete">Cart auswählen</translation>
     </message>
     <message>
-        <source>Number</source>
-        <translation type="unfinished"></translation>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbrechen</translation>
     </message>
     <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
+        <source>Send to
+&amp;Editor</source>
+        <translation type="obsolete">An &amp;Editor
+senden</translation>
     </message>
 </context>
 <context>

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Upload Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,13 @@
 #ifndef EDIT_UPLOAD_H
 #define EDIT_UPLOAD_H
 
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qdatetimeedit.h>
-#include <qlabel.h>
-#include <qspinbox.h>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QDateTimeEdit>
+#include <QLabel>
+#include <QSpinBox>
 
+#include <rdcut_dialog.h>
 #include <rddeck.h>
 #include <rddialog.h>
 #include <rdrecording.h>
@@ -59,6 +60,7 @@ class EditUpload : public RDDialog
   bool CheckEvent(bool include_myself);
   bool CheckFormat();
   RDDeck *edit_deck;
+  RDCutDialog *edit_cut_dialog;
   RDRecording *edit_recording;
   RDSettings edit_settings;
   QCheckBox *edit_active_button;
@@ -90,6 +92,8 @@ class EditUpload : public RDDialog
   QCheckBox *edit_oneshot_box;
   std::vector<int> *edit_added_events;
   QString *edit_filter;
+  QString edit_group;
+  QString edit_schedcode;
 };
 
 

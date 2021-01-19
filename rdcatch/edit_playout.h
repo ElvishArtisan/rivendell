@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Playout
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>/
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>/
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,11 @@
 #ifndef EDIT_PLAYOUT_H
 #define EDIT_PLAYOUT_H
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qdatetimeedit.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDateTimeEdit>
 
+#include <rdcut_dialog.h>
 #include <rddeck.h>
 #include <rddialog.h>
 #include <rdrecording.h>
@@ -54,6 +55,7 @@ class EditPlayout : public RDDialog
   void Save();
   QString GetLocation(int *chan) const;
   RDDeck *edit_deck;
+  RDCutDialog *edit_cut_dialog;
   RDRecording *edit_recording;
   QCheckBox *edit_active_button;
   QComboBox *edit_station_box;

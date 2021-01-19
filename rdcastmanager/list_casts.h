@@ -2,7 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,10 @@
 #ifndef LIST_CASTS_H
 #define LIST_CASTS_H
 
-#include <qcheckbox.h>
-#include <qprogressdialog.h>
+#include <QCheckBox>
+#include <QProgressDialog>
 
+#include <rdcut_dialog.h>
 #include <rddialog.h>
 #include <rdfeed.h>
 #include <rdlistviewitem.h>
@@ -61,6 +62,7 @@ class ListCasts : public RDDialog
   void RefreshList();
   void RefreshItem(RDListViewItem *item);
   void GetEncoderId();
+  RDCutDialog *list_cut_dialog;
   QLabel *list_casts_label;
   RDListView *list_casts_view;
   QPushButton *list_cart_button;

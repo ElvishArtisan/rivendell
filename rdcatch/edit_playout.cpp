@@ -20,7 +20,6 @@
 
 #include <qgroupbox.h>
 
-#include <rdcut_dialog.h>
 #include <rdcut_path.h>
 #include <rdtextvalidator.h>
 
@@ -54,6 +53,12 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   // The Recording Record
   //
   edit_recording=new RDRecording(id);
+
+  //
+  // Dialogs
+  //
+  edit_cut_dialog=new RDCutDialog(edit_filter,NULL,NULL,false,false,false,
+				  "RDCatch",this);
 
   //
   // Active Button
@@ -256,6 +261,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
 
 EditPlayout::~EditPlayout()
 {
+  delete edit_cut_dialog;
   delete edit_station_box;
   if(edit_deck!=NULL) {
     delete edit_deck;
@@ -290,16 +296,10 @@ void EditPlayout::activateStationData(int id,bool use_temp)
 
 void EditPlayout::selectCutData()
 {
-  RDCutDialog *cut=
-    new RDCutDialog(&edit_cutname,"RDCatch",edit_filter,NULL,NULL,false,false,
-		    false,this);
-  switch(cut->exec()) {
-      case 0:
-	edit_destination_edit->setText(edit_cutname);
-	edit_description_edit->setText(RDCutPath(edit_cutname));
-	break;
+  if(edit_cut_dialog->exec(&edit_cutname)) {
+    edit_destination_edit->setText(edit_cutname);
+    edit_description_edit->setText(RDCutPath(edit_cutname));
   }
-  delete cut;
 }
 
 

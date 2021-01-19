@@ -1464,7 +1464,7 @@ farge</translation>
     <name>RDCutDialog</name>
     <message>
         <source>Select Cut</source>
-        <translation>Vel klypp</translation>
+        <translation type="unfinished">Vel klypp</translation>
     </message>
     <message>
         <source>Please Wait...</source>
@@ -1472,23 +1472,23 @@ farge</translation>
     </message>
     <message>
         <source>Cart Filter:</source>
-        <translation>Korgfilter:</translation>
+        <translation type="obsolete">Korgfilter:</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Søk</translation>
+        <translation type="obsolete">&amp;Søk</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Tøm</translation>
+        <translation type="obsolete">&amp;Tøm</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Gruppe:</translation>
+        <translation type="obsolete">Gruppe:</translation>
     </message>
     <message>
         <source>Carts</source>
-        <translation>Korger</translation>
+        <translation type="obsolete">Korger</translation>
     </message>
     <message>
         <source>NUMBER</source>
@@ -1504,7 +1504,7 @@ farge</translation>
     </message>
     <message>
         <source>Cuts</source>
-        <translation>Klypp</translation>
+        <translation type="obsolete">Klypp</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
@@ -1513,11 +1513,11 @@ farge</translation>
     <message>
         <source>&amp;Add New
 Cart</source>
-        <translation>&amp;Legg til ny korg</translation>
+        <translation type="unfinished">&amp;Legg til ny korg</translation>
     </message>
     <message>
         <source>&amp;Clear</source>
-        <translation>&amp;Tøm</translation>
+        <translation type="unfinished">&amp;Tøm</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1529,35 +1529,20 @@ Cart</source>
     </message>
     <message>
         <source>ALL</source>
-        <translation>ALLE</translation>
+        <translation type="obsolete">ALLE</translation>
     </message>
     <message>
-        <source>Show Only First</source>
+        <source>Select Cart</source>
+        <translation type="obsolete">Vel korg</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Matches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Scheduler Code:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
+        <source>Send to
+&amp;Editor</source>
+        <translation type="obsolete">Send til R&amp;edigering</translation>
     </message>
 </context>
 <context>

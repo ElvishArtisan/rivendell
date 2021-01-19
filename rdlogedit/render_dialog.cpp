@@ -2,7 +2,7 @@
 //
 // Render Log Dialog for Rivendell.
 //
-//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qfiledialog.h>
+#include <QFileDialog>
 
 #include <qlineedit.h>
 #include <qmessagebox.h>
@@ -55,7 +55,8 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   render_progress_dialog=
     new QProgressDialog(tr("Rendering Log..."),tr("Cancel"),0,0,this);
   render_progress_dialog->setWindowTitle(tr("Render Progress"));
-
+  render_cut_dialog=new RDCutDialog(NULL,NULL,NULL,false,true,true,"RDLogEdit",
+				    false,this);
   //
   // Settings
   //
@@ -224,15 +225,12 @@ void RenderDialog::selectData()
   }
   else {
     QString cutname;
-    RDCutDialog *d=
-      new RDCutDialog(&cutname,"RDLogEdit",NULL,NULL,NULL,false,true,true,this);
-    if(d->exec()==0) {
+    if(render_cut_dialog->exec(&cutname)) {
       render_to_cartnum=RDCut::cartNumber(cutname);
       render_to_cutnum=RDCut::cutNumber(cutname);
       render_filename_edit->setText(QString().sprintf("%06u:%03d",
 				    render_to_cartnum,render_to_cutnum));
     }
-    delete d;
   }
 }
 

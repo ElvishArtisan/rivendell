@@ -2,7 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qfiledialog.h>
-#include <qmessagebox.h>
+#include <QApplication>
+#include <QFileDialog>
+#include <QMessageBox>
 
 #include <rdcastsearch.h>
 #include <rdconf.h>
-#include <rdcut_dialog.h>
 #include <rdescape_string.h>
 #include <rdlist_logs.h>
 #include <rdpodcast.h>
@@ -80,6 +79,9 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   // Dialogs
   //
   list_render_dialog=new RenderDialog(this);
+
+  list_cut_dialog=new RDCutDialog(&cast_filter,&cast_group,&cast_schedcode,
+				  false,false,false,"RDCastManager",this);
 
   list_progress_dialog=
     new QProgressDialog(tr("Uploading Audio..."),tr("Cancel"),0,1,this);
@@ -214,6 +216,7 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
 
 ListCasts::~ListCasts()
 {
+  delete list_cut_dialog;
   delete list_render_dialog;
   delete list_progress_dialog;
   delete list_feed;
@@ -235,14 +238,9 @@ QSizePolicy ListCasts::sizePolicy() const
 void ListCasts::addCartData()
 {
   QString cutname;
-  RDCutDialog *cd=
-    new RDCutDialog(&cutname,"RDCastManager",&cast_filter,&cast_group,
-		    &cast_schedcode);
-  if(cd->exec()!=0) {
-    delete cd;
+  if(!list_cut_dialog->exec(&cutname)) {
     return;
   }
-  delete cd;
   RDFeed::Error err;
   unsigned cast_id=list_feed->postCut(cutname,&err);
   if(err!=RDFeed::ErrorOk) {

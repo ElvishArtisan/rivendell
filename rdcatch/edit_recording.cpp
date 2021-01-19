@@ -22,7 +22,6 @@
 #include <qgroupbox.h>
 #include <qmessagebox.h>
 
-#include <rdcut_dialog.h>
 #include <rdcut_path.h>
 #include <rdescape_string.h>
 #include <rdmatrix.h>
@@ -58,6 +57,12 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   // The Recording Record
   //
   edit_recording=new RDRecording(id);
+
+  //
+  // Dialogs
+  //
+  edit_cut_dialog=new RDCutDialog(edit_filter,&edit_group,&edit_schedcode,
+				  false,true,true,"RDCatch",this);
 
   //
   // Active Button
@@ -560,6 +565,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
 
 EditRecording::~EditRecording()
 {
+  delete edit_cut_dialog;
   delete edit_station_box;
   if(edit_deck!=NULL) {
     delete edit_deck;
@@ -685,16 +691,11 @@ void EditRecording::selectCutData()
 {
   QString str;
 
-  RDCutDialog *cut=
-    new RDCutDialog(&edit_cutname,"RDCatch",edit_filter,NULL,NULL,false,true);
-  switch(cut->exec()) {
-  case 0:
+  if(edit_cut_dialog->exec(&edit_cutname)) {
     edit_description_edit->setText(RDCutPath(edit_cutname));
     str=QString(tr("Cut"));
     edit_destination_edit->setText(tr("Cut")+" "+edit_cutname);
-    break;
   }
-  delete cut;
 }
 
 

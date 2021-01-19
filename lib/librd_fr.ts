@@ -1298,44 +1298,7 @@ La Couleur</translation>
 <context>
     <name>RDCutDialog</name>
     <message>
-        <source>Select Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Please Wait...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart Filter:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>C&amp;lear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Carts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cuts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Add New
-Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1347,35 +1310,20 @@ Cart</source>
         <translation type="unfinished">&amp;Annuler</translation>
     </message>
     <message>
-        <source>ALL</source>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Scheduler Code:</source>
+        <source>Select Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show Only First</source>
+        <source>&amp;Add New
+Cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Matches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
+        <source>&amp;Clear</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

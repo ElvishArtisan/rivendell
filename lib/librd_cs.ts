@@ -1490,7 +1490,7 @@ ze &amp;souboru</translation>
     <name>RDCutDialog</name>
     <message>
         <source>Select Cut</source>
-        <translation>Vybrat záběr</translation>
+        <translation type="unfinished">Vybrat záběr</translation>
     </message>
     <message>
         <source>Please Wait...</source>
@@ -1498,23 +1498,23 @@ ze &amp;souboru</translation>
     </message>
     <message>
         <source>Cart Filter:</source>
-        <translation>Filtr vozíku:</translation>
+        <translation type="obsolete">Filtr vozíku:</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Hledat</translation>
+        <translation type="obsolete">&amp;Hledat</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Skupina:</translation>
+        <translation type="obsolete">Skupina:</translation>
     </message>
     <message>
         <source>Carts</source>
-        <translation>Vozíky</translation>
+        <translation type="obsolete">Vozíky</translation>
     </message>
     <message>
         <source>NUMBER</source>
@@ -1530,7 +1530,7 @@ ze &amp;souboru</translation>
     </message>
     <message>
         <source>Cuts</source>
-        <translation>Záběry</translation>
+        <translation type="obsolete">Záběry</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
@@ -1539,12 +1539,12 @@ ze &amp;souboru</translation>
     <message>
         <source>&amp;Add New
 Cart</source>
-        <translation>&amp;Přidat nový
+        <translation type="unfinished">&amp;Přidat nový
 vozík</translation>
     </message>
     <message>
         <source>&amp;Clear</source>
-        <translation>&amp;Smazat</translation>
+        <translation type="unfinished">&amp;Smazat</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1556,35 +1556,39 @@ vozík</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>VŠE</translation>
+        <translation type="obsolete">VŠE</translation>
     </message>
     <message>
         <source>Show Only First</source>
-        <translation>Ukázat pouze první </translation>
+        <translation type="obsolete">Ukázat pouze první </translation>
     </message>
     <message>
         <source>Matches</source>
-        <translation>Shody</translation>
+        <translation type="obsolete">Shody</translation>
     </message>
     <message>
         <source>Scheduler Code:</source>
-        <translation>Kódy rozvrhovače:</translation>
+        <translation type="obsolete">Kódy rozvrhovače:</translation>
     </message>
     <message>
-        <source>Number</source>
-        <translation type="unfinished"></translation>
+        <source>Select Cart</source>
+        <translation type="obsolete">Vybrat vozík</translation>
     </message>
     <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
     <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
+        <source>Send to
+&amp;Editor</source>
+        <translation type="obsolete">Poslat do
+&amp;editoru</translation>
     </message>
     <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
+        <source>Load From
+&amp;File</source>
+        <translation type="obsolete">Nahrát
+ze &amp;souboru</translation>
     </message>
 </context>
 <context>

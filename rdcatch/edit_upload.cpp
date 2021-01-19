@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Upload Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,11 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qgroupbox.h>
-#include <qmessagebox.h>
-#include <qurl.h>
+#include <QGroupBox>
+#include <QMessageBox>
+#include <QUrl>
 
-#include <rdcut_dialog.h>
 #include <rdcut_path.h>
 #include <rdescape_string.h>
 #include <rdexport_settings_dialog.h>
@@ -60,6 +59,12 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   // The Recording Record
   //
   edit_recording=new RDRecording(id);
+
+  //
+  // Dialogs
+  //
+  edit_cut_dialog=new RDCutDialog(edit_filter,&edit_group,&edit_schedcode,
+				  false,false,false,"RDCatch",false,this);
 
   //
   // Active Button
@@ -375,6 +380,7 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   edit_url_edit->setText(edit_recording->url());
   edit_username_edit->setText(edit_recording->urlUsername());
   edit_password_edit->setText(edit_recording->urlPassword());
+  edit_cutname=edit_recording->cutName();
   if(!edit_recording->cutName().isEmpty()) {
     edit_destination_edit->setText("Cut "+edit_recording->cutName());
   }
@@ -469,15 +475,11 @@ void EditUpload::selectCartData()
 {
   QString str;
 
-  RDCutDialog *cut=new RDCutDialog(&edit_cutname,"RDCatch",edit_filter);
-  switch(cut->exec()) {
-  case 0:
+  if(edit_cut_dialog->exec(&edit_cutname)) {
     edit_description_edit->setText(RDCutPath(edit_cutname));
     str=QString(tr("Cut"));
     edit_destination_edit->setText(tr("Cut")+" "+edit_cutname);
-    break;
   }
-  delete cut;
 }
 
 
@@ -610,17 +612,6 @@ bool EditUpload::CheckFormat()
 	break;
   }
   delete station;
-
-  QString sql;
-  RDSqlQuery *q;
-  sql=QString("select STATION_NAME from ENCODERS where ")+
-    "(NAME=\""+RDEscapeString(edit_settings.formatName())+"\")&&"+
-    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    res=true;
-  }
-  delete q;
 
   return res;
 }

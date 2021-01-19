@@ -30,6 +30,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   : RDWidget(parent)
 {
   d_show_cart_type=RDCart::All;
+  d_show_track_carts=true;
   d_user_is_admin=false;
   d_model=NULL;
   d_show_drag_box=show_drag_box;
@@ -232,7 +233,12 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
     groups.push_back(d_group_box->text(i));
   }
   sql+=RDCartFilter::groupFilter(d_group_box->currentText(),groups);
-  sql=sql.left(sql.length()-2);  // Remove the final "&&"
+  if(d_show_track_carts) {
+    sql=sql.left(sql.length()-2);  // Remove the final "&&"
+  }
+  else {
+    sql+="CART.OWNER is null ";
+  }
   sql+="order by CART.NUMBER ";
   if(d_showmatches_box->isChecked()) {
     sql+=QString().sprintf("limit %d ",RD_LIMITED_CART_SEARCH_QUANTITY);
@@ -331,6 +337,21 @@ void RDCartFilter::setShowCartType(RDCart::Type type)
     }
     d_show_cart_type=type;
 
+    emit filterChanged(filterSql());
+  }
+}
+
+
+bool RDCartFilter::showTrackCarts() const
+{
+  return d_show_track_carts;
+}
+
+
+void RDCartFilter::setShowTrackCarts(bool state)
+{
+  if(state!=d_show_track_carts) {
+    d_show_track_carts=state;
     emit filterChanged(filterSql());
   }
 }

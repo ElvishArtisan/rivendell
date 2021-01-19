@@ -2,7 +2,7 @@
 //
 // CD Disk Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qmessagebox.h>
+#include <QApplication>
+#include <QMessageBox>
 
 #include <rdaudioimport.h>
 #include <rdcdripper.h>
 #include <rdconf.h>
-#include <rdcut_dialog.h>
 #include <rddisclookup_factory.h>
 #include <rdgroup.h>
 #include <rdlist_groups.h>
@@ -55,6 +54,9 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Create Dialogs
   //
   rip_wavedata_dialog=new RDWaveDataDialog("RDLibrary",this);
+  rip_cut_dialog=new RDCutDialog(rip_filter_text,rip_group_text,
+				 rip_schedcode_text,true,true,true,"RDLibrary",
+				 false,this);
 
   //
   // The CDROM Drive
@@ -352,6 +354,7 @@ DiskRipper::~DiskRipper()
   delete rip_stop_button;
   delete rip_track_bar;
   delete rip_wavedata_dialog;
+  delete rip_cut_dialog;
 }
 
 
@@ -511,10 +514,7 @@ void DiskRipper::setCutButtonData()
     return;
   }
   QString cutname=rip_cutnames[item->text(0).toUInt()-1];
-  RDCutDialog *dialog=
-    new RDCutDialog(&cutname,"RDLibrary",rip_filter_text,rip_group_text,
-		    rip_schedcode_text,true,true,true,this);
-  if(dialog->exec()==0) {
+  if(rip_cut_dialog->exec(&cutname)) {
     if(cutname.isEmpty()) {
       rip_cutnames[item->text(0).toUInt()-1]="";
       item->setText(5,"");
@@ -534,7 +534,6 @@ void DiskRipper::setCutButtonData()
 				    QMessageBox::No)) {
 	case QMessageBox::No:
 	case QMessageBox::NoButton:
-	  delete dialog;
 	  return;
 	  
 	default:
@@ -568,7 +567,6 @@ void DiskRipper::setCutButtonData()
       delete cart;
     }
   }
-  delete dialog;
 
   bool track_selected=false;
   item=(RDListViewItem *)rip_track_list->firstChild();

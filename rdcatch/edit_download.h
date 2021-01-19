@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Download Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,14 @@
 #ifndef EDIT_DOWNLOAD_H
 #define EDIT_DOWNLOAD_H
 
-#include <qdatetimeedit.h>
 
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qspinbox.h>
-#include <qlabel.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDateTimeEdit>
+#include <QLabel>
+#include <QSpinBox>
 
+#include <rdcut_dialog.h>
 #include <rddeck.h>
 #include <rddialog.h>
 #include <rdrecording.h>
@@ -36,7 +37,8 @@ class EditDownload : public RDDialog
 {
  Q_OBJECT
  public:
-  EditDownload(int id,std::vector<int> *adds,QString *filter,QWidget *parent=0);
+  EditDownload(int record_id,std::vector<int> *adds,QString *filter,
+	       QWidget *parent=0);
   ~EditDownload();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -58,6 +60,7 @@ class EditDownload : public RDDialog
   void Save();
   bool CheckEvent(bool include_myself);
   RDDeck *edit_deck;
+  RDCutDialog *edit_cut_dialog;
   RDRecording *edit_recording;
   QCheckBox *edit_active_button;
   QComboBox *edit_station_box;
@@ -91,6 +94,8 @@ class EditDownload : public RDDialog
   QSpinBox *edit_normalize_spin;
   QLabel *edit_normalize_unit;
   QString *edit_filter;
+  QString edit_group;
+  QString edit_schedcode;
 };
 
 

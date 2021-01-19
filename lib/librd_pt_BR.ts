@@ -1469,7 +1469,7 @@ Cor</translation>
     <name>RDCutDialog</name>
     <message>
         <source>Select Cut</source>
-        <translation>Selecionar Conteúdo</translation>
+        <translation type="unfinished">Selecionar Conteúdo</translation>
     </message>
     <message>
         <source>Please Wait...</source>
@@ -1477,23 +1477,23 @@ Cor</translation>
     </message>
     <message>
         <source>Cart Filter:</source>
-        <translation>Filtro de Cartões:</translation>
+        <translation type="obsolete">Filtro de Cartões:</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Procurar</translation>
+        <translation type="obsolete">&amp;Procurar</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Limpar</translation>
+        <translation type="obsolete">&amp;Limpar</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Grupo:</translation>
+        <translation type="obsolete">Grupo:</translation>
     </message>
     <message>
         <source>Carts</source>
-        <translation>Cartão:</translation>
+        <translation type="obsolete">Cartão:</translation>
     </message>
     <message>
         <source>NUMBER</source>
@@ -1509,7 +1509,7 @@ Cor</translation>
     </message>
     <message>
         <source>Cuts</source>
-        <translation>Conteúdos</translation>
+        <translation type="obsolete">Conteúdos</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
@@ -1518,12 +1518,12 @@ Cor</translation>
     <message>
         <source>&amp;Add New
 Cart</source>
-        <translation>&amp;Novo
+        <translation type="unfinished">&amp;Novo
 Cartão</translation>
     </message>
     <message>
         <source>&amp;Clear</source>
-        <translation>&amp;Limpar</translation>
+        <translation type="unfinished">&amp;Limpar</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1535,35 +1535,21 @@ Cartão</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>TODOS</translation>
+        <translation type="obsolete">TODOS</translation>
     </message>
     <message>
-        <source>Show Only First</source>
-        <translation type="unfinished"></translation>
+        <source>Select Cart</source>
+        <translation type="obsolete">Selecionar Cartão</translation>
     </message>
     <message>
-        <source>Matches</source>
-        <translation type="unfinished"></translation>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
     <message>
-        <source>Scheduler Code:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
+        <source>Send to
+&amp;Editor</source>
+        <translation type="obsolete">Mandar ao
+&amp;Editor</translation>
     </message>
 </context>
 <context>

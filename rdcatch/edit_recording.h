@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Netcatch Recording
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,13 +22,14 @@
 #define EDIT_RECORDING_H
 
 
-#include <qbuttongroup.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qdatetimeedit.h>
-#include <qspinbox.h>
-#include <qlabel.h>
+#include <QButtonGroup>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QDateTimeEdit>
+#include <QLabel>
+#include <QSpinBox>
 
+#include <rdcut_dialog.h>
 #include <rddeck.h>
 #include <rddialog.h>
 #include <rdrecording.h>
@@ -66,6 +67,7 @@ class EditRecording : public RDDialog
   int GetSource();
   QString GetLocation(int *chan) const;
   RDDeck *edit_deck;
+  RDCutDialog *edit_cut_dialog;
   RDRecording *edit_recording;
   QCheckBox *edit_active_button;
   QComboBox *edit_station_box;
@@ -125,8 +127,9 @@ class EditRecording : public RDDialog
   QSpinBox *edit_normalize_spin;
   QLabel *edit_normalize_unit;
   QString *edit_filter;
+  QString edit_group;
+  QString edit_schedcode;
 };
 
 
-#endif
-
+#endif  // EDIT_RECORDING_H

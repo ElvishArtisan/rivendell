@@ -1477,23 +1477,23 @@ Color</translation>
     <name>RDCutDialog</name>
     <message>
         <source>Select Cut</source>
-        <translation>Seleccione audio</translation>
+        <translation type="unfinished">Seleccione audio</translation>
     </message>
     <message>
         <source>Cart Filter:</source>
-        <translation>Filtro:</translation>
+        <translation type="obsolete">Filtro:</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Limpiar</translation>
+        <translation type="obsolete">&amp;Limpiar</translation>
     </message>
     <message>
         <source>Group:</source>
-        <translation>Grupo:</translation>
+        <translation type="obsolete">Grupo:</translation>
     </message>
     <message>
         <source>Carts</source>
-        <translation>Cartuchos</translation>
+        <translation type="obsolete">Cartuchos</translation>
     </message>
     <message>
         <source>NUMBER</source>
@@ -1505,7 +1505,7 @@ Color</translation>
     </message>
     <message>
         <source>Cuts</source>
-        <translation>Audios</translation>
+        <translation type="obsolete">Audios</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
@@ -1520,17 +1520,13 @@ Color</translation>
         <translation>&amp;Cancelar</translation>
     </message>
     <message>
-        <source>ALL</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>&amp;Clear</source>
-        <translation>&amp;Limpiar</translation>
+        <translation type="unfinished">&amp;Limpiar</translation>
     </message>
     <message>
         <source>&amp;Add New
 Cart</source>
-        <translation>&amp;Añadir
+        <translation type="unfinished">&amp;Añadir
 Cartucho</translation>
     </message>
     <message>
@@ -1543,35 +1539,33 @@ Cartucho</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation>&amp;Buscar</translation>
+        <translation type="obsolete">&amp;Buscar</translation>
     </message>
     <message>
         <source>Show Only First</source>
-        <translation>Mostrar los primeros</translation>
+        <translation type="obsolete">Mostrar los primeros</translation>
     </message>
     <message>
         <source>Matches</source>
-        <translation>resultados</translation>
+        <translation type="obsolete">resultados</translation>
     </message>
     <message>
         <source>Scheduler Code:</source>
-        <translation>Cód. Programac.:</translation>
+        <translation type="obsolete">Cód. Programac.:</translation>
     </message>
     <message>
-        <source>Number</source>
-        <translation type="unfinished"></translation>
+        <source>Select Cart</source>
+        <translation type="obsolete">Elegir Cartucho</translation>
     </message>
     <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
     <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
+        <source>Send to
+&amp;Editor</source>
+        <translation type="obsolete">Enviar al
+&amp;Editor</translation>
     </message>
 </context>
 <context>

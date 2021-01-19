@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cut.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,14 +21,19 @@
 #ifndef RDCUT_DIALOG_H
 #define RDCUT_DIALOG_H
 
-#include <q3listview.h>
+#include <QCheckBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QProgressDialog>
+#include <QPushButton>
+#include <QStringList>
+#include <QTreeView>
 
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qprogressdialog.h>
-
+#include <rdbusydialog.h>
+#include <rdcart.h>
 #include <rddialog.h>
-#include <rdlistviewitem.h>
+#include <rdcartfilter.h>
+#include <rdlibrarymodel.h>
 
 #define RDCUT_DIALOG_STEP_SIZE 1000
 
@@ -36,62 +41,51 @@ class RDCutDialog : public RDDialog
 {
  Q_OBJECT
  public:
- RDCutDialog(QString *cutname,const QString &caption,QString *filter=0,
-	     QString *group=0,QString *schedcode=NULL,bool show_clear=false,
-	     bool allow_add=false,bool exclude_tracks=false,QWidget *parent=0);
+  RDCutDialog(QString *filter,QString *group,QString *schedcode,bool show_clear,
+	      bool allow_add,bool exclude_tracks,const QString &caption,
+	      bool user_is_admin,QWidget *parent=0);
   ~RDCutDialog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  public slots:
-  int exec();
+  int exec(QString *cutname);
 
  private slots:
-  void filterChangedData(const QString &);
-  void clearData();
-  void groupActivatedData(const QString &);
-  void limitChangedData(int state);
-  void cartClickedData(Q3ListViewItem *);
-  void selectionChangedData();
-  void searchButtonData();
-  void clearButtonData();
+  void modelResetData();
+  void cartDoubleClickedData(const QModelIndex &index);
+  void selectionChangedData(const QItemSelection &before,
+			    const QItemSelection &after);
   void addButtonData();
   void okData();
   void cancelData();
 
  protected:
+  void resizeEvent(QResizeEvent *e);
   void closeEvent(QCloseEvent *e);
-  
+
  private:
-  void RefreshCarts();
-  void RefreshCuts();
-  void SelectCut(QString cutname);
-  void BuildGroupList();
   QString StateFile();
   void LoadState();
   void SaveState();
-  RDListView *cut_cart_list;
-  Q3ListView *cut_cut_list;
-  QLineEdit *cut_filter_edit;
-  QCheckBox *cart_limit_box;
-  QPushButton *cut_search_button;
-  QPushButton *cut_clear_button;
-  QPushButton *cut_ok_button;
-  QPushButton *cut_cancel_button;
-  QComboBox *cut_group_box;
-  QLabel *cut_schedcode_label;
-  QComboBox *cut_schedcode_box;
-  QString *cut_cutname;
-  QString *cut_filter;
-  QString *cut_group;
-  QString *cut_schedcode;
+  QString *cart_cutname;
+  RDCartFilter *cart_cart_filter;
+  QTreeView *cart_cart_view;
+  RDLibraryModel *cart_cart_model;
+  QPushButton *cart_ok_button;
+  QPushButton *cart_cancel_button;
+  QPushButton *cart_add_button;
+  QPushButton *cart_clear_button;
+  QString *cart_filter;
   bool local_filter;
-  QPixmap *cut_playout_map;
-  QPixmap *cut_macro_map;
-  bool cut_allow_clear;
-  bool cut_exclude_tracks;
-  QProgressDialog *cut_progress_dialog;
-  QString cut_caption;
+  RDStation::FilterMode cart_filter_mode;
+  QProgressDialog *cart_progress_dialog;
+  QString cart_import_path;
+  QString cart_import_file_filter;
+  bool *cart_temp_allowed;
+  RDBusyDialog *cart_busy_dialog;
+  QString cart_caption;
+  bool cart_allow_add;
 };
 
 

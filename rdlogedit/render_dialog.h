@@ -2,7 +2,7 @@
 //
 // Log Rendering Dialog for Rivendell.
 //
-//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,8 @@
 #ifndef RENDER_DIALOG_H
 #define RENDER_DIALOG_H
 
-#include <qdatetimeedit.h>
-#include <qprogressdialog.h>
+#include <QDateTimeEdit>
+#include <QProgressDialog>
 
 #include <rdcut_dialog.h>
 #include <rddialog.h>
@@ -69,6 +69,7 @@ class RenderDialog : public RDDialog
   int render_first_line;
   int render_last_line;
   RDSettings *render_settings;
+  RDCutDialog *render_cut_dialog;
   QProgressDialog *render_progress_dialog;
   QLabel *render_to_label;
   QComboBox *render_to_box;

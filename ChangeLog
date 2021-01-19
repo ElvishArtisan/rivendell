@@ -20829,3 +20829,7 @@
 2021-01-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to enforce standard row height to the
 	'RDCartDialog' dialog.
+2021-01-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDLibraryModel::isCut() and 'RDLibraryModel::cutRow()
+	methods.
+	* Refactored 'RDCutDialog' to use the model-based API.

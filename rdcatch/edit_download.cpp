@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Download Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,11 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qgroupbox.h>
-#include <qmessagebox.h>
-#include <qurl.h>
+#include <QGroupBox>
+#include <QMessageBox>
+#include <QUrl>
 
-#include <rdcut_dialog.h>
 #include <rdcut_path.h>
 #include <rdescape_string.h>
 #include <rdtextvalidator.h>
@@ -30,7 +29,7 @@
 #include "edit_download.h"
 #include "globals.h"
 
-EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
+EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
 			   QWidget *parent)
   : RDDialog(parent)
 {
@@ -58,7 +57,13 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   //
   // The Recording Record
   //
-  edit_recording=new RDRecording(id);
+  edit_recording=new RDRecording(record_id);
+
+  //
+  // Dialogs
+  //
+  edit_cut_dialog=new RDCutDialog(edit_filter,&edit_group,&edit_schedcode,
+				  false,true,true,"RDCatch",this);
 
   //
   // Active Button
@@ -375,7 +380,8 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   edit_url_edit->setText(edit_recording->url());
   edit_username_edit->setText(edit_recording->urlUsername());
   edit_password_edit->setText(edit_recording->urlPassword());
-  edit_destination_edit->setText("Cut "+edit_recording->cutName());
+  edit_cutname=edit_recording->cutName();
+  edit_destination_edit->setText("Cut "+edit_cutname);
   edit_channels_box->setCurrentItem(edit_recording->channels()-1);
   if(edit_recording->trimThreshold()>0) {
     edit_autotrim_box->setChecked(true);
@@ -451,15 +457,10 @@ void EditDownload::urlChangedData(const QString &str)
 
 void EditDownload::selectCartData()
 {
-  RDCutDialog *cut=
-    new RDCutDialog(&edit_cutname,"RDCatch",edit_filter,NULL,NULL,false,true);
-  switch(cut->exec()) {
-  case 0:
+  if(edit_cut_dialog->exec(&edit_cutname)) {
     edit_description_edit->setText(RDCutPath(edit_cutname));
     edit_destination_edit->setText(tr("Cut")+" "+edit_cutname);
-    break;
   }
-  delete cut;
 }
 
 
@@ -570,7 +571,7 @@ void EditDownload::Save()
   else {
     edit_recording->setNormalizationLevel(0);
   }
-  edit_recording->setCutName(edit_destination_edit->text().right(10));
+  edit_recording->setCutName(edit_cutname);
   edit_recording->setUrl(edit_url_edit->text());
   edit_recording->setUrlUsername(edit_username_edit->text());
   edit_recording->setUrlPassword(edit_password_edit->text());

@@ -2,7 +2,7 @@
 //
 // CD Disk Ripper Dialog for Rivendell
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,11 @@
 #ifndef DISK_RIPPER_H
 #define DISK_RIPPER_H
 
-#include <qprogressbar.h>
-#include <qtextedit.h>
+#include <QProgressBar>
+#include <QTextEdit>
 
 #include <qcheckbox.h>
+#include <rdcut_dialog.h>
 #include <qdir.h>
 
 #include <rdcddblookup.h>
@@ -76,6 +77,7 @@ class DiskRipper : public RDDialog
   QString BuildTrackName(int start_track,int end_track) const;
   void SetArtistAlbum();
   void SendNotification(RDNotification::Action action,unsigned cartnum);
+  RDCutDialog *rip_cut_dialog;
   RDCdPlayer *rip_cdrom;
   RDDiscRecord rip_disc_record;
   RDDiscLookup *rip_disc_lookup;

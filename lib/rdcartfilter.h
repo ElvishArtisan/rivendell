@@ -49,6 +49,8 @@ class RDCartFilter : public RDWidget
   bool dragEnabled() const;
   RDCart::Type showCartType() const;
   void setShowCartType(RDCart::Type type);
+  bool showTrackCarts() const;
+  void setShowTrackCarts(bool state);
   bool limitSearch() const;
   void setLimitSearch(bool state);
   bool userIsAdmin() const;
@@ -110,6 +112,7 @@ class RDCartFilter : public RDWidget
   QCheckBox *d_showmatches_box;
   QLabel *d_showmacro_label;
   RDCart::Type d_show_cart_type;
+  bool d_show_track_carts;
   QString d_default_group;
   bool d_user_is_admin;
   QString d_service;

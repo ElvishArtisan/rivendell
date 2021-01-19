@@ -293,6 +293,12 @@ bool RDLibraryModel::isCart(const QModelIndex &index) const
 }
 
 
+bool RDLibraryModel::isCut(const QModelIndex &index) const
+{
+  return index.internalId()>0;
+}
+
+
 unsigned RDLibraryModel::cartNumber(const QModelIndex &index) const
 {
   if(index.isValid()) {
@@ -302,6 +308,17 @@ unsigned RDLibraryModel::cartNumber(const QModelIndex &index) const
     return d_cart_numbers.at(index.internalId()-1);
   }
   return 0;
+}
+
+
+QString RDLibraryModel::cutName(const QModelIndex &index) const
+{
+  if(index.isValid()) {
+    if(isCut(index)) {
+      return d_cut_cutnames.at(index.internalId()-1).at(index.row());
+    }
+  }
+  return QString();
 }
 
 
@@ -316,6 +333,21 @@ QModelIndex RDLibraryModel::cartRow(unsigned cartnum) const
 }
 
 
+QModelIndex RDLibraryModel::cutRow(const QString &cutname) const
+{
+  int cartpos=d_cart_numbers.indexOf(RDCut::cartNumber(cutname));
+
+  if(cartpos<0) {
+    return QModelIndex();
+  }
+  int cutpos=d_cut_cutnames.at(cartpos).indexOf(cutname);
+  if(cutpos<0) {
+    return QModelIndex();
+  }
+  return createIndex(cutpos,0,cartpos+1);
+}
+
+
 RDCart::Type RDLibraryModel::cartType(const QModelIndex &index) const
 {
   if(isCart(index)) {
@@ -324,7 +356,7 @@ RDCart::Type RDLibraryModel::cartType(const QModelIndex &index) const
   return d_cart_types.at(index.internalId()-1);
 }
 
-
+/*
 QString RDLibraryModel::cutName(const QModelIndex &index) const
 {
   if(isCart(index)) {
@@ -334,7 +366,7 @@ QString RDLibraryModel::cutName(const QModelIndex &index) const
 			d_cut_texts.at(index.internalId()-1).at(index.row()).
 			at(0).toString().right(3).toInt());
 }
-
+*/
 
 QString RDLibraryModel::cartOwnedBy(const QModelIndex &index)
 {
@@ -370,6 +402,7 @@ QModelIndex RDLibraryModel::addCart(unsigned cartnum)
   d_notes.insert(offset,QVariant());
   d_cart_numbers.insert(offset,0);
   d_cut_texts.insert(offset,list_list);
+  d_cut_cutnames.insert(offset,QStringList());
   d_background_colors.insert(offset,QVariant());
   d_cart_types.insert(offset,RDCart::All);
 
@@ -398,6 +431,7 @@ void RDLibraryModel::removeCart(unsigned cartnum)
       d_notes.removeAt(i);
       d_cart_numbers.removeAt(i);
       d_cut_texts.removeAt(i);
+      d_cut_cutnames.removeAt(i);
       d_background_colors.removeAt(i);
       d_cart_types.removeAt(i);
       d_icons.removeAt(i);
@@ -489,6 +523,7 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   d_notes.clear();
   d_cart_numbers.clear();
   d_cut_texts.clear();
+  d_cut_cutnames.clear();
   d_background_colors.clear();
   d_cart_types.clear();
   d_icons.clear();
@@ -500,6 +535,7 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
       d_notes.push_back(QVariant());
       d_cart_numbers.push_back(0);
       d_cut_texts.push_back(list_list);
+      d_cut_cutnames.push_back(QStringList());
       d_background_colors.push_back(QVariant());
       d_cart_types.push_back(RDCart::All);
       d_icons.push_back(icons);
@@ -637,6 +673,7 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
   // Cut Attributes
   //
   d_cut_texts[row].clear();
+  d_cut_cutnames[row].clear();
   QList<QVariant> list;
   for(int i=0;i<columnCount();i++) {
     list.push_back(QVariant());
@@ -647,6 +684,7 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
       return;  // No cuts!
     }
     // Process
+    d_cut_cutnames[row].push_back(q->value(24).toString());
     d_cut_texts[row].push_back(list);
     d_cut_texts[row].back()[0]=tr("Cut")+  // Cut Number
       QString().sprintf(" %03d",RDCut::cutNumber(q->value(24).toString()));
