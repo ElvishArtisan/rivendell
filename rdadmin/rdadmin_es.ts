@@ -5540,55 +5540,19 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>&amp;Groups:</source>
-        <translation>&amp;Grupos:</translation>
+        <translation type="obsolete">&amp;Grupos:</translation>
     </message>
     <message>
         <source>member carts will be deleted along with group</source>
-        <translation>cartuchos serán borrados junto con el grupo</translation>
+        <translation type="unfinished">cartuchos serán borrados junto con el grupo</translation>
     </message>
     <message>
         <source>Are you sure you want to delete group</source>
-        <translation>Desea eliminar el grupo</translation>
+        <translation type="unfinished">Desea eliminar el grupo</translation>
     </message>
     <message>
         <source>Delete Group</source>
-        <translation>Borrar grupo</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>End Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enforce Range</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Traffic Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Music Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Now &amp; Next</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Borrar grupo</translation>
     </message>
 </context>
 <context>

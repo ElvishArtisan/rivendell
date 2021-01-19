@@ -2,7 +2,7 @@
 //
 // Rename a Rivendell Group
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,8 +34,6 @@
 RenameGroup::RenameGroup(QString group,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   group_name=group;
 
   //
@@ -118,6 +116,14 @@ QSize RenameGroup::sizeHint() const
 QSizePolicy RenameGroup::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int RenameGroup::exec(QString *newname)
+{
+  group_new_name=newname;
+
+  return RDDialog::exec();
 }
 
 
@@ -236,11 +242,19 @@ void RenameGroup::okData()
     delete q;
   }
 
-  done(0);
+  *group_new_name=group_newname_edit->text();
+
+  done(true);
 }
 
 
 void RenameGroup::cancelData()
 {
-  done(-1);
+  done(false);
+}
+
+
+void RenameGroup::closeEvent(QCloseEvent *e)
+{
+  cancelData();
 }

@@ -2,7 +2,7 @@
 //
 // List Rivendell Groups
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +20,7 @@
 
 #include <math.h>
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rdapplication.h>
 #include <rdcart.h>
@@ -38,8 +38,6 @@
 ListGroups::ListGroups(QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -99,6 +97,24 @@ ListGroups::ListGroups(QWidget *parent)
   //
   // Group List
   //
+  list_groups_view=new QTableView(this);
+  list_groups_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  list_groups_view->setSelectionMode(QAbstractItemView::SingleSelection);
+  list_groups_view->setShowGrid(false);
+  list_groups_view->setSortingEnabled(false);
+  list_groups_view->setWordWrap(false);
+  list_groups_model=new RDGroupListModel(this);
+  list_groups_model->setFont(defaultFont());
+  list_groups_model->setPalette(palette());
+  list_groups_view->setModel(list_groups_model);
+  list_groups_view->resizeColumnsToContents();
+  connect(list_groups_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_groups_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
+
+  list_groups_model->setFilterSql(QString());
+
+  /*
   list_groups_view=new RDListView(this);
   list_groups_view->setAllColumnsShowFocus(true);
   list_groups_view->addColumn(tr("Name"));
@@ -124,8 +140,9 @@ ListGroups::ListGroups(QWidget *parent)
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
 	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+  */
 
-  RefreshList();
+  //  RefreshList();
 }
 
 
@@ -136,7 +153,7 @@ ListGroups::~ListGroups()
 
 QSize ListGroups::sizeHint() const
 {
-  return QSize(640,480);
+  return QSize(1024,750);
 } 
 
 
@@ -148,77 +165,87 @@ QSizePolicy ListGroups::sizePolicy() const
 
 void ListGroups::addData()
 {
-  QString group;
+  QString grpname;
 
-  AddGroup *add_group=new AddGroup(&group,this);
-  if(add_group->exec()<0) {
+  AddGroup *add_group=new AddGroup(&grpname,this);
+  if(!add_group->exec()) {
     delete add_group;
     return;
   }
   delete add_group;
   add_group=NULL;
-  RDListViewItem *item=new RDListViewItem(list_groups_view);
-  item->setText(0,group);
-  RefreshItem(item);
-  item->setSelected(true);
-  list_groups_view->setCurrentItem(item);
-  list_groups_view->ensureItemVisible(item);
+  QModelIndex index=list_groups_model->addGroup(grpname);
+  if(index.isValid()) {
+    list_groups_view->selectRow(index.row());
+  }
 }
 
 
 void ListGroups::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_groups_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_groups_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  EditGroup *edit_group=new EditGroup(item->text(0),this);
-  edit_group->exec();
+  EditGroup *edit_group=
+    new EditGroup(list_groups_model->groupName(rows.first()),this);
+  if(edit_group->exec()) {
+    list_groups_model->refresh(rows.first());
+  }
   delete edit_group;
   edit_group=NULL;
-  RefreshItem(item);
 }
 
 
 void ListGroups::renameData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_groups_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_groups_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
 
-  QString groupname=item->text(0);
-  RenameGroup *rename_group=new RenameGroup(groupname,this);
-  rename_group->exec();
+  QString grpname=list_groups_model->groupName(rows.first());
+  QString newgrpname;
+  RenameGroup *rename_group=new RenameGroup(grpname,this);
+  if(rename_group->exec(&newgrpname)) {
+    QModelIndex index=list_groups_model->renameGroup(grpname,newgrpname);
+    if(index.isValid()) {
+      list_groups_view->selectRow(index.row());
+    }
+  }
   delete rename_group;
   rename_group=NULL;
-  RefreshList();
 }
 
 
 void ListGroups::deleteData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_groups_view->selectedItem();
-  if(item==NULL) {
-    return;
-  }
-
   QString sql;
-  RDSqlQuery *q;
+  RDSqlQuery *q=NULL;
   QString warning;
   int carts=0;
+  QModelIndexList rows=list_groups_view->selectionModel()->selectedRows();
 
-  QString groupname=item->text(0);
-  if(groupname.isEmpty()) {
+  if(rows.size()!=1) {
     return;
   }
-  sql=QString("select NUMBER from CART where ")+
-    "GROUP_NAME=\""+RDEscapeString(groupname)+"\"";
+
+
+  QString grpname=list_groups_model->groupName(rows.first());
+  if(grpname.isEmpty()) {
+    return;
+  }
+  sql=QString("select ")+
+    "NUMBER "+  // 00
+    "from CART where "+
+    "GROUP_NAME=\""+RDEscapeString(grpname)+"\"";
   q=new RDSqlQuery(sql);
   if((carts=q->size())>0) {
-    warning=QString().sprintf("%d ",carts)+tr("member carts will be deleted along with group")+" \""+groupname+"\"!";
+    warning=QString().sprintf("%d ",carts)+tr("member carts will be deleted along with group")+" \""+grpname+"\"!\n";
   }
-  warning+=tr("Are you sure you want to delete group")+" \""+groupname+"\"?";
+  warning+=tr("Are you sure you want to delete group")+" \""+grpname+"\"?";
   switch(QMessageBox::warning(this,tr("Delete Group"),warning,
 			      QMessageBox::Yes,QMessageBox::No)) {
   case QMessageBox::No:
@@ -245,35 +272,30 @@ void ListGroups::deleteData()
   // Delete Member Audio Perms
   //
   sql=QString("delete from AUDIO_PERMS where ")+
-    "GROUP_NAME=\""+RDEscapeString(groupname)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+    "GROUP_NAME=\""+RDEscapeString(grpname)+"\"";
+  RDSqlQuery::apply(sql);
   
   //
   // Delete Member User Perms
   //
   sql=QString("delete from USER_PERMS where ")+
-    "GROUP_NAME=\""+RDEscapeString(groupname)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+    "GROUP_NAME=\""+RDEscapeString(grpname)+"\"";
+  RDSqlQuery::apply(sql);
   
   //
   // Delete Replicator Map Records
   //
   sql=QString("delete from REPLICATOR_MAP where ")+
-    "GROUP_NAME=\""+RDEscapeString(groupname)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+    "GROUP_NAME=\""+RDEscapeString(grpname)+"\"";
+  RDSqlQuery::apply(sql);
   
   //
   // Delete from Group List
   //
   sql=QString("delete from GROUPS where ")+
-    "NAME=\""+RDEscapeString(groupname)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  item->setSelected(false);
-  delete item;
+    "NAME=\""+RDEscapeString(grpname)+"\"";
+  RDSqlQuery::apply(sql);
+  list_groups_model->removeGroup(grpname);
 }
 
 
@@ -380,16 +402,21 @@ void ListGroups::reportData()
 }
 
 
-void ListGroups::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				   int col)
+void ListGroups::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
 
 
+void ListGroups::modelResetData()
+{
+  list_groups_view->resizeColumnsToContents();
+}
+
+
 void ListGroups::closeData()
 {
-  done(0);
+  done(true);
 }
 
 
@@ -407,6 +434,7 @@ void ListGroups::resizeEvent(QResizeEvent *e)
 
 void ListGroups::RefreshList()
 {
+  /*
   QString sql;
   RDSqlQuery *q;
   RDListViewItem *item;
@@ -430,11 +458,13 @@ void ListGroups::RefreshList()
     WriteItem(item,q);
   }
   delete q;
+  */
 }
 
 
 void ListGroups::RefreshItem(RDListViewItem *item)
 {
+  /*
   QString sql;
   RDSqlQuery *q;
 
@@ -456,9 +486,10 @@ void ListGroups::RefreshItem(RDListViewItem *item)
     WriteItem(item,q);
   }
   delete q;
+  */
 }
 
-
+/*
 void ListGroups::WriteItem(RDListViewItem *item,RDSqlQuery *q)
 {
   item->setText(0,q->value(0).toString());
@@ -490,3 +521,4 @@ void ListGroups::WriteItem(RDListViewItem *item,RDSqlQuery *q)
   item->setText(7,q->value(7).toString());
   item->setText(8,q->value(8).toString());
 }
+*/

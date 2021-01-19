@@ -205,16 +205,16 @@ void AddGroup::okData()
     q=new RDSqlQuery(sql);
     delete q;
     delete group;
-    done(-1);
+    done(false);
     return;
   }
   delete group;
   *group_group=group_name_edit->text();
-  done(0);
+  done(true);
 }
 
 
 void AddGroup::cancelData()
 {
-  done(-1);
+  done(false);
 }

@@ -20833,3 +20833,7 @@
 	* Added 'RDLibraryModel::isCut() and 'RDLibraryModel::cutRow()
 	methods.
 	* Refactored 'RDCutDialog' to use the model-based API.
+2021-01-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDGroupListModel' class.
+	* Refactored the 'List Groups' dialog in rdadmin(1) to use the
+	model-based API.

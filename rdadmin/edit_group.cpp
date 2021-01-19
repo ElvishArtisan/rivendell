@@ -427,13 +427,13 @@ void EditGroup::okData()
   q=new RDSqlQuery(sql);
   delete q;
 
-  done(0);
+  done(true);
 }
 
 
 void EditGroup::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

@@ -2,7 +2,7 @@
 //
 // List Rivendell Groups
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +21,13 @@
 #ifndef LIST_GROUPS_H
 #define LIST_GROUPS_H
 
-#include <qpushbutton.h>
+#include <QPushButton>
+#include <QTableView>
 
 #include <rddb.h>
 #include <rddialog.h>
-#include <rdlistviewitem.h>
+#include <rdgrouplistmodel.h>
+//#include <rdlistviewitem.h>
 
 class ListGroups : public RDDialog
 {
@@ -42,7 +44,9 @@ class ListGroups : public RDDialog
   void renameData();
   void deleteData();
   void reportData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
+  //  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void modelResetData();
   void closeData();
 
  protected:
@@ -51,8 +55,10 @@ class ListGroups : public RDDialog
  private:
   void RefreshList();
   void RefreshItem(RDListViewItem *item);
-  void WriteItem(RDListViewItem *item,RDSqlQuery *q);
-  RDListView *list_groups_view;
+  //  void WriteItem(RDListViewItem *item,RDSqlQuery *q);
+  //  RDListView *list_groups_view;
+  QTableView *list_groups_view;
+  RDGroupListModel *list_groups_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_rename_button;

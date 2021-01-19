@@ -5589,55 +5589,19 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Groups:</source>
-        <translation>&amp;Skupiny:</translation>
+        <translation type="obsolete">&amp;Skupiny:</translation>
     </message>
     <message>
         <source>member carts will be deleted along with group</source>
-        <translation>Členské vozíky budou smazány se skupinou</translation>
+        <translation type="unfinished">Členské vozíky budou smazány se skupinou</translation>
     </message>
     <message>
         <source>Are you sure you want to delete group</source>
-        <translation>Opravdu chcete smazat tuto skupinu</translation>
+        <translation type="unfinished">Opravdu chcete smazat tuto skupinu</translation>
     </message>
     <message>
         <source>Delete Group</source>
-        <translation>Smazat skupinu</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>End Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enforce Range</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Traffic Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Music Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Now &amp; Next</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Smazat skupinu</translation>
     </message>
 </context>
 <context>

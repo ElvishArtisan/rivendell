@@ -5156,55 +5156,19 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
     <message>
         <source>&amp;Groups:</source>
-        <translation>&amp;Grupper:</translation>
+        <translation type="obsolete">&amp;Grupper:</translation>
     </message>
     <message>
         <source>member carts will be deleted along with group</source>
-        <translation>medlemskorger blir sletta saman med gruppa</translation>
+        <translation type="unfinished">medlemskorger blir sletta saman med gruppa</translation>
     </message>
     <message>
         <source>Are you sure you want to delete group</source>
-        <translation>Er du sikker på at du vil sletta gruppa</translation>
+        <translation type="unfinished">Er du sikker på at du vil sletta gruppa</translation>
     </message>
     <message>
         <source>Delete Group</source>
-        <translation>Slett gruppa</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>End Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enforce Range</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Traffic Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Music Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Now &amp; Next</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Slett gruppa</translation>
     </message>
 </context>
 <context>
