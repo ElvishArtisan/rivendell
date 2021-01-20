@@ -103,7 +103,7 @@ ListGroups::ListGroups(QWidget *parent)
   list_groups_view->setShowGrid(false);
   list_groups_view->setSortingEnabled(false);
   list_groups_view->setWordWrap(false);
-  list_groups_model=new RDGroupListModel(this);
+  list_groups_model=new RDGroupListModel(false,true,this);
   list_groups_model->setFont(defaultFont());
   list_groups_model->setPalette(palette());
   list_groups_view->setModel(list_groups_model);
@@ -111,38 +111,6 @@ ListGroups::ListGroups(QWidget *parent)
   connect(list_groups_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));
   connect(list_groups_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
-
-  list_groups_model->setFilterSql(QString());
-
-  /*
-  list_groups_view=new RDListView(this);
-  list_groups_view->setAllColumnsShowFocus(true);
-  list_groups_view->addColumn(tr("Name"));
-  list_groups_view->addColumn(tr("Description"));
-  list_groups_view->addColumn(tr("Start Cart"));
-  list_groups_view->setColumnAlignment(2,Qt::AlignCenter);
-  list_groups_view->addColumn(tr("End Cart"));
-  list_groups_view->setColumnAlignment(3,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("Enforce Range"));
-  list_groups_view->setColumnAlignment(4,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("Default Type"));
-  list_groups_view->setColumnAlignment(5,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("Traffic Report"));
-  list_groups_view->setColumnAlignment(6,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("Music Report"));
-  list_groups_view->setColumnAlignment(7,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("Now & Next"));
-  list_groups_view->setColumnAlignment(8,Qt::AlignHCenter);
-  QLabel *list_box_label=new QLabel(list_groups_view,tr("&Groups:"),this);
-  list_box_label->setFont(labelFont());
-  list_box_label->setGeometry(14,11,85,19);
-  connect(list_groups_view,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-  */
-
-  //  RefreshList();
 }
 
 
@@ -430,95 +398,3 @@ void ListGroups::resizeEvent(QResizeEvent *e)
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
   list_groups_view->setGeometry(10,30,size().width()-120,size().height()-40);
 }
-
-
-void ListGroups::RefreshList()
-{
-  /*
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item;
-
-  list_groups_view->clear();
-  sql=QString("select ")+
-    "NAME,"+                // 00
-    "DESCRIPTION,"+         // 01
-    "DEFAULT_LOW_CART,"+    // 02
-    "DEFAULT_HIGH_CART,"+   // 03
-    "ENFORCE_CART_RANGE,"+  // 04
-    "DEFAULT_CART_TYPE,"+   // 05
-    "REPORT_TFC,"+          // 06
-    "REPORT_MUS,"+          // 07
-    "ENABLE_NOW_NEXT,"+     // 08
-    "COLOR "+               // 09
-    "from GROUPS";
-  q=new RDSqlQuery(sql);
-  while (q->next()) {
-    item=new RDListViewItem(list_groups_view);
-    WriteItem(item,q);
-  }
-  delete q;
-  */
-}
-
-
-void ListGroups::RefreshItem(RDListViewItem *item)
-{
-  /*
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("select ")+
-    "NAME,"+                // 00
-    "DESCRIPTION,"+         // 01
-    "DEFAULT_LOW_CART,"+    // 02
-    "DEFAULT_HIGH_CART,"+   // 03
-    "ENFORCE_CART_RANGE,"+  // 04
-    "DEFAULT_CART_TYPE,"+   // 05
-    "REPORT_TFC,"+          // 06
-    "REPORT_MUS,"+          // 07
-    "ENABLE_NOW_NEXT,"+     // 08
-    "COLOR "+               // 09
-    "from GROUPS where "+
-    "NAME=\""+RDEscapeString(item->text(0))+"\"";
-  q=new RDSqlQuery(sql);
-  if(q->next()) {
-    WriteItem(item,q);
-  }
-  delete q;
-  */
-}
-
-/*
-void ListGroups::WriteItem(RDListViewItem *item,RDSqlQuery *q)
-{
-  item->setText(0,q->value(0).toString());
-  item->setTextColor(0,q->value(9).toString(),QFont::Bold);
-  item->setText(1,q->value(1).toString());
-  if(q->value(2).toUInt()>0) {
-    item->setText(2,QString().sprintf("%06u",q->value(2).toUInt()));
-    item->setText(3,QString().sprintf("%06u",q->value(3).toUInt()));
-  }
-  else {
-    item->setText(2,"[none]");
-    item->setText(3,"[none]");
-  }
-  item->setText(4,q->value(4).toString());
-  switch((RDCart::Type)q->value(5).toUInt()) {
-  case RDCart::Audio:
-    item->setText(5,"Audio");
-    break;
-	
-  case RDCart::Macro:
-    item->setText(5,"Macro");
-    break;
-	
-  default:	
-    item->setText(5,"[none]");
-    break;
-  }
-  item->setText(6,q->value(6).toString());
-  item->setText(7,q->value(7).toString());
-  item->setText(8,q->value(8).toString());
-}
-*/

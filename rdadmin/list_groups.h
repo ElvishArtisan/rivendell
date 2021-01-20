@@ -27,7 +27,6 @@
 #include <rddb.h>
 #include <rddialog.h>
 #include <rdgrouplistmodel.h>
-//#include <rdlistviewitem.h>
 
 class ListGroups : public RDDialog
 {
@@ -53,10 +52,6 @@ class ListGroups : public RDDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshItem(RDListViewItem *item);
-  //  void WriteItem(RDListViewItem *item,RDSqlQuery *q);
-  //  RDListView *list_groups_view;
   QTableView *list_groups_view;
   RDGroupListModel *list_groups_model;
   QPushButton *list_add_button;
@@ -68,6 +63,4 @@ class ListGroups : public RDDialog
 };
 
 
-#endif
-
-
+#endif  // LIST_GROUPS_H

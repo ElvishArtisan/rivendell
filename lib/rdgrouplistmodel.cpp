@@ -18,12 +18,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include "rdapplication.h"
 #include "rdescape_string.h"
 #include "rdgrouplistmodel.h"
 
-RDGroupListModel::RDGroupListModel(QObject *parent)
+RDGroupListModel::RDGroupListModel(bool show_all,bool user_is_admin,
+				   QObject *parent)
   : QAbstractTableModel(parent)
 {
+  d_show_all=show_all;
+  d_user_is_admin=user_is_admin;
   d_service_names.push_back(tr("ALL"));
   d_log_icons=new RDLogIcons();
 
@@ -60,6 +64,10 @@ RDGroupListModel::RDGroupListModel(QObject *parent)
 
   d_headers.push_back(tr("Now & Next"));
   d_alignments.push_back(center);
+
+  if(user_is_admin) {
+    changeUser();
+  }
 }
 
 
@@ -256,31 +264,62 @@ void RDGroupListModel::refresh(const QString &grpname)
 }
 
 
-void RDGroupListModel::setFilterSql(const QString &sql)
+void RDGroupListModel::changeUser()
 {
-  updateModel(sql);
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  d_visible_groups.clear();
+  d_visible_groups.push_back(tr("ALL"));
+  if(d_user_is_admin) {
+    sql=QString("select ")+
+      "NAME "+  // 00
+      "from GROUPS "+
+      "order by NAME";
+  }
+  else {
+    sql=QString("select ")+
+      "GROUP_NAME "+  // 00
+      "from USER_PERMS where "+
+      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
+      "order by GROUP_NAME";
+  }
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    d_visible_groups.push_back(q->value(0).toString());
+  }
+  delete q;
+
+  beginResetModel();
+  updateModel();
+  endResetModel();
 }
 
 
-void RDGroupListModel::updateModel(const QString &filter_sql)
+void RDGroupListModel::updateModel()
 {
+  QList<QVariant> texts; 
+  QList<QVariant> icons;
+
   RDSqlQuery *q=NULL;
-  QString sql=sqlFields();
-  if(!filter_sql.isEmpty()) {
-    sql+="where "+
-      filter_sql;
-  }
+  QString sql=sqlFields()+filterSql();
   sql+="order by NAME ";
   beginResetModel();
   d_texts.clear();
   d_colors.clear();
   d_icons.clear();
+
+  if(d_show_all) {
+    d_texts.push_back(texts);
+    d_texts.back().push_back(tr("ALL"));
+    d_colors.push_back(QVariant());
+    d_icons.push_back(icons);    
+  }
+
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    QList<QVariant> texts; 
     d_texts.push_back(texts);
     d_colors.push_back(QVariant());
-    QList<QVariant> icons;
     d_icons.push_back(icons);
     updateRow(d_texts.size()-1,q);
   }
@@ -373,3 +412,18 @@ QString RDGroupListModel::sqlFields() const
 
     return sql;
 }
+
+
+QString RDGroupListModel::filterSql() const
+{
+  QString sql=QString(" where (");
+
+  for(int i=0;i<d_visible_groups.size();i++) {
+    sql+=QString("(GROUPS.NAME=\"")+RDEscapeString(d_visible_groups.at(i))+"\")||";
+  }
+  sql=sql.left(sql.length()-2);
+  sql+=") ";
+
+  return sql;
+}
+    

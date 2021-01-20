@@ -32,8 +32,10 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   d_show_cart_type=RDCart::All;
   d_show_track_carts=true;
   d_user_is_admin=false;
-  d_model=NULL;
+  d_cart_model=NULL;
   d_show_drag_box=show_drag_box;
+
+  d_group_model=new RDGroupListModel(true,false,this);
 
   //
   // Filter Phrase
@@ -74,6 +76,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   // Group Filter
   //
   d_group_box=new QComboBox(this);
+  d_group_box->setModel(d_group_model);
   d_group_label=new QLabel(d_group_box,tr("Group:"),this);
   d_group_label->setFont(labelFont());
   d_group_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -180,6 +183,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
 
 RDCartFilter::~RDCartFilter()
 {
+  delete d_group_model;
 }
 
 
@@ -404,7 +408,7 @@ void RDCartFilter::setService(const QString &svc)
 
 RDLibraryModel *RDCartFilter::model() const
 {
-  return d_model;
+  return d_cart_model;
 }
 
 
@@ -443,7 +447,9 @@ void RDCartFilter::changeUser()
   RDSqlQuery *q;
 
   if(d_service.isEmpty()) {
-    LoadUserGroups();
+    //    LoadUserGroups();
+    d_group_model->changeUser();
+    d_group_box->setCurrentText(tr("ALL"));
   }
 
   d_codes_box->clear();
@@ -455,6 +461,8 @@ void RDCartFilter::changeUser()
   }
   delete q;
   d_search_button->setDisabled(true);
+
+  emit filterChanged(filterSql());
 }
 
 
@@ -537,9 +545,9 @@ void RDCartFilter::resizeEvent(QResizeEvent *e)
   d_clear_button->setGeometry(e->size().width()-90,10,80,50);
   d_filter_label->setGeometry(10,10,55,20);
   d_group_label->setGeometry(10,40,55,20);
-  d_group_box->setGeometry(70,40,100,20);
-  d_codes_label->setGeometry(175,40,115,20);
-  d_codes_box->setGeometry(295,40,100,20);
+  d_group_box->setGeometry(70,38,140,24);
+  d_codes_label->setGeometry(215,40,115,20);
+  d_codes_box->setGeometry(335,38,120,24);
   d_matches_label->setGeometry(660,40,100,20);
   d_matches_edit->setGeometry(765,40,55,20);
   d_showmatches_label->setGeometry(760,66,200,20);

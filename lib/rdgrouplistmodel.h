@@ -34,7 +34,7 @@ class RDGroupListModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  RDGroupListModel(QObject *parent=0);
+  RDGroupListModel(bool show_all,bool user_is_admin,QObject *parent=0);
   ~RDGroupListModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
@@ -53,13 +53,14 @@ class RDGroupListModel : public QAbstractTableModel
   void refresh(const QString &grpname);
 
  public slots:
-  void setFilterSql(const QString &sql);
+  void changeUser();
 
  protected:
-  void updateModel(const QString &filter_sql);
+  void updateModel();
   void updateRowLine(int line);
   void updateRow(int row,RDSqlQuery *q);
   QString sqlFields() const;
+  virtual QString filterSql() const;
 
  private:
   QPalette d_palette;
@@ -72,6 +73,9 @@ class RDGroupListModel : public QAbstractTableModel
   QList<QVariant> d_icons;
   QList<QVariant> d_colors;
   RDLogIcons *d_log_icons;
+  bool d_show_all;
+  bool d_user_is_admin;
+  QStringList d_visible_groups;
 };
 
 

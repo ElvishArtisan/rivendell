@@ -28,6 +28,7 @@
 #include <QPushButton>
 #include <QWidget>
 
+#include <rdgrouplistmodel.h>
 #include <rdlibrarymodel.h>
 #include <rdprofile.h>
 #include <rdwidget.h>
@@ -89,7 +90,8 @@ class RDCartFilter : public RDWidget
  private:
   void LoadUserGroups();
   void LoadServiceGroups();
-  RDLibraryModel *d_model;
+  RDLibraryModel *d_cart_model;
+  RDGroupListModel *d_group_model;
   QLineEdit *d_filter_edit;
   QLabel *d_filter_label;
   QComboBox *d_group_box;
