@@ -20840,3 +20840,7 @@
 2021-01-20 Fred Gleason <fredg@paravelsystems.com>
 	* Modified 'RDCartFilter' to use 'RDGroupListModel' for the
 	'Group' dropdown.
+2021-01-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlibrary(1) that broke display of the
+	'Group' control in the 'Edit Cart' dialog with a user with
+	no editing privileges.

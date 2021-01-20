@@ -24,6 +24,7 @@
 #include <QList>
 
 #include <rddialog.h>
+#include <rdgrouplistmodel.h>
 
 #include "audio_cart.h"
 #include "audio_controls.h"
@@ -55,13 +56,13 @@ class EditCart : public RDDialog
   void closeEvent(QCloseEvent *e);
 
  private:
-  void PopulateGroupList();
   QList<unsigned> rdcart_cart_numbers;
   bool ValidateLengths();
   RDCart *rdcart_cart;
   QLineEdit *rdcart_type_edit;
   QLineEdit *rdcart_number_edit;
   QComboBox *rdcart_group_box;
+  RDGroupListModel *rdcart_group_model;
   QLineEdit *rdcart_group_edit;
   AudioControls rdcart_controls;
   QComboBox *rdcart_cut_sched_box;

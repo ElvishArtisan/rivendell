@@ -110,6 +110,8 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   else {
     rdcart_group_box->setGeometry(135,38,110,21);
   }
+  rdcart_group_model=new RDGroupListModel(false,false,this);
+  rdcart_group_box->setModel(rdcart_group_model);
   rdcart_group_edit=new QLineEdit(this);
   rdcart_group_edit->setGeometry(280,11,140,21);
   rdcart_group_edit->setReadOnly(true);
@@ -574,19 +576,12 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   //
   // Populate Fields
   //
+  rdcart_group_model->changeUser();
   if(cartnums.size()==1) { //single edit
     rdcart_number_edit->
       setText(QString().sprintf("%06d",rdcart_cart->number()));
-    if(rdcart_group_box->count() == 0)
-    {
-      PopulateGroupList();
-      for(int i=0;i<rdcart_group_box->count();i++) {
-	if(rdcart_group_box->text(i)==rdcart_cart->groupName()) {
-	  rdcart_group_box->setCurrentItem(i);
-	}
-      }
-      rdcart_group_edit->setText(rdcart_cart->groupName());
-    }
+    rdcart_group_box->setCurrentText(rdcart_cart->groupName());
+    rdcart_group_edit->setText(rdcart_group_box->currentText());
     switch(rdcart_cart->type()) {
 	case RDCart::Audio:
 	  rdcart_type_edit->setText(tr("AUDIO"));
@@ -655,7 +650,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   else {//multi edit
     if(rdcart_group_box->count() == 0) {
       rdcart_group_box->insertItem("");
-      PopulateGroupList();
+      //      PopulateGroupList();
       rdcart_group_box->setCurrentItem(0);
     }
     rdcart_usage_box->setCurrentItem(0);
@@ -984,26 +979,6 @@ bool EditCart::ValidateLengths()
 {
   return rdcart_cart->validateLengths(QTime().
 		     msecsTo(rdcart_controls.forced_length_edit->time()));
-  /*
-  int maxlen=(int)(RD_TIMESCALE_MAX*
-		   (double)QTime().msecsTo(rdcart_controls.forced_length_edit->
-					   time()));
-  int minlen=(int)(RD_TIMESCALE_MIN*
-		   (double)QTime().msecsTo(rdcart_controls.forced_length_edit->
-					   time()));
-  QString sql=QString().sprintf("select LENGTH from CUTS where CART_NUMBER=%u",
-				rdcart_cart->number());
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    if((q->value(0).toInt()>maxlen)||(q->value(0).toInt()<minlen)) {
-      delete q;
-      return false;
-    }
-  }
-  delete q;
-
-  return true;
-  */
 }
 
 
@@ -1013,25 +988,11 @@ void EditCart::schedCodesData()
     EditSchedulerCodes *dialog=new EditSchedulerCodes(&sched_codes,NULL,this);
     dialog->exec();
     delete dialog;
-    }
+  }
   else  {
     EditSchedulerCodes *dialog=
       new EditSchedulerCodes(&add_codes,&remove_codes,this);
     dialog->exec();
     delete dialog;
-    }
-}
-
-
-void EditCart::PopulateGroupList()
-{
-  QString sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
-    "order by GROUP_NAME";
-
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    rdcart_group_box->insertItem(q->value(0).toString());
   }
-  delete q;
 }
