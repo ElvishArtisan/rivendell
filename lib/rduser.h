@@ -27,11 +27,14 @@
 class RDUser
 {
  public:
+  enum Type {TypeAll=0,TypeAdminConfig=1,TypeAdminRss=2,TypeLocalUser=3,
+	     TypeExternalUser=4,TypeAdmin=5,TypeUser=6,TypeLast=7};
   RDUser(const QString &name);
   RDUser();
   QString name() const;
   void setName(const QString &name);
   bool exists() const;
+  Type type() const;
   bool authenticated(bool webuser) const;
   bool checkPassword(const QString &password,bool webuser);
   QString password() const;
@@ -109,6 +112,7 @@ class RDUser
 			    QString *username=NULL,QDateTime *expire_dt=NULL);
   static bool emailIsValid(const QString &addr);
   static QString emailContact(const QString &addr,const QString &fullname);
+  static QString typeText(Type type);
 
  private:
   void SetRow(const QString &param,const QString &value) const;

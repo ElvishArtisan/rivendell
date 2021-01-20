@@ -244,10 +244,11 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdttydevice.cpp rdttydevice.h\
                         rdttyout.cpp rdttyout.h\
                         rdurl.cpp rdurl.h\
-                        rduser.cpp rduser.h\
                         rdupload.cpp rdupload.h\
                         rdunixserver.cpp rdunixserver.h\
                         rdunixsocket.cpp rdunixsocket.h\
+                        rduser.cpp rduser.h\
+                        rduserlistmodel.cpp rduserlistmodel.h\
                         rdversion.cpp rdversion.h\
                         rdwavedata.cpp rdwavedata.h\
                         rdwavedata_dialog.cpp rdwavedata_dialog.h\
@@ -359,6 +360,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdttydevice.cpp\
                           moc_rdunixserver.cpp\
                           moc_rdunixsocket.cpp\
+                          moc_rduserlistmodel.cpp\
                           moc_rdupload.cpp\
                           moc_rdwavedata_dialog.cpp\
                           moc_rdwidget.cpp

@@ -4880,19 +4880,11 @@ Carts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Users:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete user</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Delete User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You must change this before deleting the user.</source>
+        <source>You cannot delete yourself!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4902,31 +4894,11 @@ Carts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You cannot delete yourself!</source>
+        <source>You must change this before deleting the user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Login Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Full Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>E-Mail Address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Phone Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Local Auth</source>
+        <source>Are you sure you want to delete user</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

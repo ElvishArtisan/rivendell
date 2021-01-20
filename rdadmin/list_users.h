@@ -2,7 +2,7 @@
 //
 // List Rivendell Users
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,14 @@
 #ifndef LIST_USERS_H
 #define LIST_USERS_H
 
-#include <qpixmap.h>
-#include <qpushbutton.h>
+#include <QPixmap>
+#include <QPushButton>
+#include <QTableView>
 
 #include <rddb.h>
 #include <rddialog.h>
 #include <rdlistviewitem.h>
+#include <rduserlistmodel.h>
 
 class ListUsers : public RDDialog
 {
@@ -41,25 +43,20 @@ class ListUsers : public RDDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshItem(RDListViewItem *item);
-  RDListView *list_users_view;
+  QTableView *list_users_view;
+  RDUserListModel *list_users_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;
   QPushButton *list_close_button;
   QString list_admin_name;
-  QPixmap *list_admin_map;
-  QPixmap *list_localuser_map;
-  QPixmap *list_rss_map;
-  QPixmap *list_user_map;
 };
 
 

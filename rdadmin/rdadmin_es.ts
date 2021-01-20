@@ -6151,7 +6151,7 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>&amp;Users:</source>
-        <translation>&amp;Usuarios:</translation>
+        <translation type="obsolete">&amp;Usuarios:</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
@@ -6167,51 +6167,27 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>Are you sure you want to delete user</source>
-        <translation>Está seguro de querer eliminar el usuario</translation>
+        <translation type="unfinished">Está seguro de querer eliminar el usuario</translation>
     </message>
     <message>
         <source>Delete User</source>
-        <translation>Eliminar usuario</translation>
+        <translation type="unfinished">Eliminar usuario</translation>
     </message>
     <message>
         <source>You must change this before deleting the user.</source>
-        <translation>Usted debe cambiar esto antes de eliminar el usuario.</translation>
+        <translation type="unfinished">Usted debe cambiar esto antes de eliminar el usuario.</translation>
     </message>
     <message>
         <source>This user is set as the default user for the following hosts:
 
 </source>
-        <translation>Este usuario es el predeterminado en los siguientes equipos:
+        <translation type="unfinished">Este usuario es el predeterminado en los siguientes equipos:
 
 </translation>
     </message>
     <message>
         <source>You cannot delete yourself!</source>
-        <translation>¡Ud. no puede borrarse a sí mismo!</translation>
-    </message>
-    <message>
-        <source>Login Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Full Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>E-Mail Address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Phone Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Local Auth</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">¡Ud. no puede borrarse a sí mismo!</translation>
     </message>
 </context>
 <context>

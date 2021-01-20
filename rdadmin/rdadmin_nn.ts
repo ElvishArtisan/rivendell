@@ -5754,7 +5754,7 @@ Er du sikker på at du vil halda fram?</translation>
     </message>
     <message>
         <source>&amp;Users:</source>
-        <translation>Br&amp;ukarar:</translation>
+        <translation type="obsolete">Br&amp;ukarar:</translation>
     </message>
     <message>
         <source>Can&apos;t Delete User</source>
@@ -5762,15 +5762,15 @@ Er du sikker på at du vil halda fram?</translation>
     </message>
     <message>
         <source>You cannot delete yourself!</source>
-        <translation>Du kan ikkje sletta deg sjølv!</translation>
+        <translation type="unfinished">Du kan ikkje sletta deg sjølv!</translation>
     </message>
     <message>
         <source>Are you sure you want to delete user</source>
-        <translation>Er du sikker på at du vil sletta brukaren</translation>
+        <translation type="unfinished">Er du sikker på at du vil sletta brukaren</translation>
     </message>
     <message>
         <source>Delete User</source>
-        <translation>Slett brukaren</translation>
+        <translation type="unfinished">Slett brukaren</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
@@ -5784,30 +5784,6 @@ Er du sikker på at du vil halda fram?</translation>
     </message>
     <message>
         <source>You must change this before deleting the user.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Login Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Full Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>E-Mail Address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Phone Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Local Auth</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -877,6 +877,30 @@
         <source>is invalid</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>System Administrator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RSS Feeds Administrator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Local User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Administrator</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -3541,6 +3565,33 @@ Zkuste to, prosím, znovu!</translation>
     </message>
     <message>
         <source>Import file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RDUserListModel</name>
+    <message>
+        <source>Login Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>E-Mail Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Phone Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Local Auth</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

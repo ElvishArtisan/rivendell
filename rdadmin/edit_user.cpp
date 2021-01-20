@@ -658,11 +658,11 @@ void EditUser::okData()
   user_user->setEditPodcast(user_edit_podcast_button->isChecked());
   user_user->setDeletePodcast(user_delete_podcast_button->isChecked());
 
-  done(0);
+  done(true);
 }
 
 
 void EditUser::cancelData()
 {
-  done(-1);
+  done(false);
 }

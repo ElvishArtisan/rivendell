@@ -2,7 +2,7 @@
 //
 // Icons for Rivendell log events.
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,6 +25,7 @@
 #include <QPixmap>
 
 #include <rdlog_line.h>
+#include <rduser.h>
 
 class RDLogIcons
 {
@@ -35,11 +36,13 @@ class RDLogIcons
   QPixmap listIcon(IconType type) const;
   QPixmap typeIcon(RDLogLine::Type type,
 		   RDLogLine::Source src=RDLogLine::Manual) const;
+  QPixmap userIcon(RDUser::Type type) const;
 
  private:
   QList<QPixmap> d_list_icons;
   QMap<RDLogLine::Type,QPixmap> log_type_icons;
   QPixmap log_track_cart_icon;
+  QMap<RDUser::Type,QPixmap> d_user_icons;
 };
 
 

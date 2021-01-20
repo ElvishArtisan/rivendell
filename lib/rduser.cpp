@@ -56,6 +56,36 @@ void RDUser::setName(const QString &name)
 }
 
 
+RDUser::Type RDUser::type() const
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+  RDUser::Type type=RDUser::TypeAll;
+
+  sql=QString("select ")+
+    "ADMIN_CONFIG_PRIV,"+  // 00
+    "ADMIN_RSS_PRIV "+     // 01
+    "from USERS where "+
+    "LOGIN_NAME=\""+RDEscapeString(user_name)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(q->value(0).toString()=="Y") {
+      type=RDUser::TypeAdminConfig;
+    }
+    else {
+      if(q->value(1).toString()=="Y") {
+	type=RDUser::TypeAdminRss;
+      }
+      else {
+	type=RDUser::TypeLocalUser;
+      }
+    }
+  }
+
+  return type;
+}
+
+
 bool RDUser::exists() const
 {
   return RDDoesRowExist("USERS","LOGIN_NAME",user_name);
@@ -727,6 +757,42 @@ QString RDUser::emailContact(const QString &addr,const QString &fullname)
     if(!fullname.isEmpty()) {
       ret+=" ("+fullname+")";
     }
+  }
+
+  return ret;
+}
+
+
+QString RDUser::typeText(RDUser::Type type)
+{
+  QString ret=QObject::tr("Unknown");
+
+  switch(type) {
+  case RDUser::TypeAdminConfig:
+    ret=QObject::tr("System Administrator");
+
+  case RDUser::TypeAdminRss:
+    ret=QObject::tr("RSS Feeds Administrator");
+
+  case RDUser::TypeExternalUser:
+    ret=QObject::tr("External User");
+    break;
+
+  case RDUser::TypeLocalUser:
+    ret=QObject::tr("Local User");
+    break;
+
+  case RDUser::TypeUser:
+    ret=QObject::tr("User");
+    break;
+
+  case RDUser::TypeAdmin:
+    ret=QObject::tr("Administrator");
+    break;
+
+  case RDUser::TypeAll:
+  case RDUser::TypeLast:
+    break;
   }
 
   return ret;

@@ -20844,3 +20844,10 @@
 	* Fixed a regression in rdlibrary(1) that broke display of the
 	'Group' control in the 'Edit Cart' dialog with a user with
 	no editing privileges.
+2021-01-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDLogIcons::userType()' method.
+	* Added a 'RDUser::Type' enumeration.
+	* Added a 'RDUser::type()' method.
+	* Added a 'RDUserListModel' class.
+	* Refactored the 'List Users' dialog in rdadmin(1) to use the
+	model-based API.

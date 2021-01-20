@@ -2,7 +2,7 @@
 //
 // Icons for Rivendell log events.
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,6 +39,11 @@
 #include "../icons/mic16.xpm"
 #include "../icons/traffic.xpm"
 
+#include "../icons/localuser.xpm"
+#include "../icons/user.xpm"
+#include "../icons/rss.xpm"
+#include "../icons/admin.xpm"
+
 RDLogIcons::RDLogIcons()
 {
   d_list_icons.push_back(QPixmap(greencheckmark_xpm));
@@ -59,6 +64,14 @@ RDLogIcons::RDLogIcons()
   log_type_icons[RDLogLine::MusicLink]=QPixmap(music_xpm);
   log_type_icons[RDLogLine::TrafficLink]=QPixmap(traffic_xpm);
   log_track_cart_icon=QPixmap(track_cart_xpm);
+
+  //
+  // User Icons
+  //
+  d_user_icons[RDUser::TypeAdminConfig]=QPixmap(admin_xpm);
+  d_user_icons[RDUser::TypeAdminRss]=QPixmap(rss_xpm);
+  d_user_icons[RDUser::TypeLocalUser]=QPixmap(localuser_xpm);
+  d_user_icons[RDUser::TypeExternalUser]=QPixmap(user_xpm);
 }
 
 
@@ -74,4 +87,10 @@ QPixmap RDLogIcons::typeIcon(RDLogLine::Type type,RDLogLine::Source src) const
     return log_track_cart_icon;
   }
   return log_type_icons.value(type);
+}
+
+
+QPixmap RDLogIcons::userIcon(RDUser::Type type) const
+{
+  return d_user_icons.value(type);
 }

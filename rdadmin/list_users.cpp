@@ -2,7 +2,7 @@
 //
 // List Rivendell Users
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,18 +30,9 @@
 #include "edit_user.h"
 #include "list_users.h"
 
-//
-// Icons
-//
-#include "../icons/admin.xpm"
-#include "../icons/localuser.xpm"
-#include "../icons/rss.xpm"
-#include "../icons/user.xpm"
-
 ListUsers::ListUsers(const QString &admin_name,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
   list_admin_name=admin_name;
 
   //
@@ -51,14 +42,6 @@ ListUsers::ListUsers(const QString &admin_name,QWidget *parent)
   setMinimumHeight(sizeHint().height());
 
   setWindowTitle("RDAdmin - "+tr("Rivendell User List"));
-
-  //
-  // Create Icons
-  //
-  list_admin_map=new QPixmap(admin_xpm);
-  list_localuser_map=new QPixmap(localuser_xpm);
-  list_rss_map=new QPixmap(rss_xpm);
-  list_user_map=new QPixmap(user_xpm);
 
   //
   //  Add Button
@@ -96,31 +79,29 @@ ListUsers::ListUsers(const QString &admin_name,QWidget *parent)
   //
   // User List
   //
-  list_users_view=new RDListView(this);
-  list_users_view->setAllColumnsShowFocus(true);
-  list_users_view->setItemMargin(5);
-  list_users_view->addColumn("");
-  list_users_view->addColumn(tr("Login Name"));
-  list_users_view->addColumn(tr("Full Name"));
-  list_users_view->addColumn(tr("Description"));
-  list_users_view->addColumn(tr("E-Mail Address"));
-  list_users_view->addColumn(tr("Phone Number"));
-  list_users_view->addColumn(tr("Local Auth"));
-  list_users_view->setColumnAlignment(6,Qt::AlignCenter);
-  QLabel *list_box_label=new QLabel(list_users_view,tr("&Users:"),this);
-  list_box_label->setFont(labelFont());
-  list_box_label->setGeometry(14,11,85,19);
-  connect(list_users_view,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+  list_users_view=new QTableView(this);
+  list_users_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  list_users_view->setSelectionMode(QAbstractItemView::SingleSelection);
+  list_users_view->setShowGrid(false);
+  list_users_view->setSortingEnabled(false);
+  list_users_view->setWordWrap(false);
+  list_users_model=new RDUserListModel(this);
+  list_users_model->setFont(defaultFont());
+  list_users_model->setPalette(palette());
+  list_users_view->setModel(list_users_model);
+  connect(list_users_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_users_model,SIGNAL(modelReset()),
+	  list_users_view,SLOT(resizeColumnsToContents()));
 
-  RefreshList();
+  list_users_model->setTypeFilter(RDUser::TypeAll);
 }
 
 
 ListUsers::~ListUsers()
 {
+  delete list_users_view;
+  delete list_users_model;
 }
 
 
@@ -140,67 +121,67 @@ void ListUsers::addData()
 {
   QString user;
 
-  AddUser *add_user=new AddUser(&user,this);
-  if(add_user->exec()<0) {
-    delete add_user;
+  AddUser *d=new AddUser(&user,this);
+  if(!d->exec()) {
+    delete d;
     return;
   }
-  delete add_user;
-  add_user=NULL;
-  RDListViewItem *item=new RDListViewItem(list_users_view);
-  item->setText(1,user);
-  RefreshItem(item);
-  item->setSelected(true);
-  list_users_view->setCurrentItem(item);
-  list_users_view->ensureItemVisible(item);
+  delete d;
+
+  QModelIndex index=list_users_model->addUser(user);
+  if(index.isValid()) {
+    list_users_view->selectRow(index.row());
+    list_users_view->scrollTo(index,QAbstractItemView::PositionAtCenter);
+  }
 }
 
 
 void ListUsers::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_users_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_users_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  EditUser *edit_user=new EditUser(item->text(1),this);
-  if(edit_user->exec()==0) {
-    RefreshItem(item);
+  EditUser *d=new EditUser(list_users_model->userName(rows.first()),this);
+  if(d->exec()) {
+    list_users_model->refresh(rows.first());
   }
-  delete edit_user;
+  delete d;
 }
 
 
 void ListUsers::deleteData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_users_view->selectedItem();
-  if(item==NULL) {
+  QString sql;
+  RDSqlQuery *q;
+  QString warning;
+  QString str;
+  QModelIndexList rows=list_users_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-
-  if(list_admin_name==item->text(1)) {
+  QString username=list_users_model->userName(rows.first());
+  if(list_admin_name==username) {
     QMessageBox::warning(this,tr("Delete User"),
 			 tr("You cannot delete yourself!"));
     return;
   }
 
-  QString sql;
-  RDSqlQuery *q;
-  QString warning;
-  QString str;
-
-  QString username=RDEscapeString(item->text(1));
-
   //
   // Check for default user assignments
   //
-  sql=QString("select NAME from STATIONS where ")+
+  sql=QString("select ")+
+    "NAME "+  // 00
+    "from STATIONS where "+
     "DEFAULT_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
-  if(q->size()>0) {
+  if(q->first()) {
     str=tr("This user is set as the default user for the following hosts:\n\n");
-    while(q->next()) {
+    do {
       str+=("     "+q->value(0).toString()+"\n");
-    }
+    } while(q->next());
     str+="\n";
     str+=tr("You must change this before deleting the user.");
     delete q;
@@ -210,15 +191,10 @@ void ListUsers::deleteData()
   delete q;
 
   str=QString(tr("Are you sure you want to delete user"));
-  warning+=str+" \""+item->text(1)+"\"?";
-  switch(QMessageBox::warning(this,"RDAdmin - "+tr("Delete User"),warning,
-			      QMessageBox::Yes,QMessageBox::No)) {
-  case QMessageBox::No:
-  case Qt::NoButton:
+  warning+=str+" \""+username+"\"?";
+  if(QMessageBox::warning(this,"RDAdmin - "+tr("Delete User"),warning,
+			  QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
     return;
-
-  default:
-    break;
   }
 
   //
@@ -226,40 +202,34 @@ void ListUsers::deleteData()
   //
   sql=QString("delete from FEED_PERMS where ")+
     "USER_NAME=\""+RDEscapeString(username)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
   
   //
   // Delete Member User Perms
   //
   sql=QString("delete from USER_PERMS where ")+
     "USER_NAME=\""+RDEscapeString(username)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
   
   //
   // Delete from User List
   //
   sql=QString("delete from USERS where ")+
     "LOGIN_NAME=\""+RDEscapeString(username)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 
   //
   // Delete from Cached Web Connections
   //
   sql=QString("delete from WEB_CONNECTIONS where ")+
     "LOGIN_NAME=\""+RDEscapeString(username)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 
-  item->setSelected(false);
-  delete item;
+  list_users_model->removeUser(username);
 }
 
 
-void ListUsers::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				   int col)
+void ListUsers::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -267,7 +237,7 @@ void ListUsers::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 
 void ListUsers::closeData()
 {
-  done(0);
+  done(true);
 }
 
 
@@ -278,94 +248,4 @@ void ListUsers::resizeEvent(QResizeEvent *e)
   list_delete_button->setGeometry(size().width()-90,150,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
   list_users_view->setGeometry(10,30,size().width()-120,size().height()-40);
-}
-
-
-void ListUsers::RefreshList()
-{
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item;
-
-  list_users_view->clear();
-  sql=QString("select ")+
-    "ADMIN_CONFIG_PRIV,"+  // 00
-    "ADMIN_RSS_PRIV,"+     // 01
-    "LOGIN_NAME,"+         // 02
-    "FULL_NAME,"+          // 03
-    "DESCRIPTION,"+        // 04
-    "EMAIL_ADDRESS,"+      // 05
-    "PHONE_NUMBER,"+       // 06
-    "LOCAL_AUTH "+         // 07
-    "from USERS";
-  q=new RDSqlQuery(sql);
-  while (q->next()) {
-    item=new RDListViewItem(list_users_view);
-    if(q->value(0).toString()=="Y") {
-      item->setPixmap(0,*list_admin_map);
-    }
-    else {
-      if(q->value(1).toString()=="Y") {
-	item->setPixmap(0,*list_rss_map);
-      }
-      else {
-	if(q->value(7).toString()=="Y") {
-	  item->setPixmap(0,*list_localuser_map);
-	}
-	else {
-	  item->setPixmap(0,*list_user_map);
-	}
-      }
-    }
-    item->setText(1,q->value(2).toString());
-    item->setText(2,q->value(3).toString());
-    item->setText(3,q->value(4).toString());
-    item->setText(4,q->value(5).toString());
-    item->setText(5,q->value(6).toString());
-    item->setText(6,q->value(7).toString());
-  }
-  delete q;
-}
-
-
-void ListUsers::RefreshItem(RDListViewItem *item)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("select ")+
-    "ADMIN_CONFIG_PRIV,"+  // 00
-    "ADMIN_RSS_PRIV,"+     // 01
-    "FULL_NAME,"+          // 02
-    "DESCRIPTION,"+        // 03
-    "EMAIL_ADDRESS,"+      // 04
-    "PHONE_NUMBER,"+       // 05
-    "LOCAL_AUTH "+         // 06
-    "from USERS where "+
-    "LOGIN_NAME=\""+RDEscapeString(item->text(1))+"\"";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    if(q->value(0).toString()=="Y") {
-      item->setPixmap(0,*list_admin_map);
-    }
-    else {
-      if(q->value(1).toString()=="Y") {
-	item->setPixmap(0,*list_rss_map);
-      }
-      else {
-	if(q->value(6).toString()=="Y") {
-	  item->setPixmap(0,*list_localuser_map);
-	}
-	else {
-	  item->setPixmap(0,*list_user_map);
-	}
-      }
-    }
-    item->setText(2,q->value(2).toString());
-    item->setText(3,q->value(3).toString());
-    item->setText(4,q->value(4).toString());
-    item->setText(5,q->value(5).toString());
-    item->setText(6,q->value(6).toString());
-  }
-  delete q;
 }

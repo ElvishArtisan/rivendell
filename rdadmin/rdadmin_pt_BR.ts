@@ -5877,55 +5877,31 @@ Você quer proceder?</translation>
     </message>
     <message>
         <source>&amp;Users:</source>
-        <translation>&amp;Usuários: </translation>
+        <translation type="obsolete">&amp;Usuários: </translation>
     </message>
     <message>
         <source>Delete User</source>
-        <translation>Deletar Usuário</translation>
+        <translation type="unfinished">Deletar Usuário</translation>
     </message>
     <message>
         <source>You cannot delete yourself!</source>
-        <translation>Você não pode se deletar!</translation>
+        <translation type="unfinished">Você não pode se deletar!</translation>
     </message>
     <message>
         <source>This user is set as the default user for the following hosts:
 
 </source>
-        <translation>Este usuário é o padrão para os seguintes clientes: 
+        <translation type="unfinished">Este usuário é o padrão para os seguintes clientes: 
 
 </translation>
     </message>
     <message>
         <source>You must change this before deleting the user.</source>
-        <translation>Você deve mudar isto antes de deletar o usuário.</translation>
+        <translation type="unfinished">Você deve mudar isto antes de deletar o usuário.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete user</source>
-        <translation>Tem certeza que quer deletar este Usuário?</translation>
-    </message>
-    <message>
-        <source>Login Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Full Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>E-Mail Address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Phone Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Local Auth</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tem certeza que quer deletar este Usuário?</translation>
     </message>
 </context>
 <context>

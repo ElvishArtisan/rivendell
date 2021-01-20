@@ -6197,7 +6197,7 @@ Stále ještě chcete pokračovat?</translation>
     </message>
     <message>
         <source>&amp;Users:</source>
-        <translation>&amp;Uživatelé:</translation>
+        <translation type="obsolete">&amp;Uživatelé:</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
@@ -6213,51 +6213,27 @@ Stále ještě chcete pokračovat?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete user</source>
-        <translation>Opravdu chcete smazat tohoto uživatele</translation>
+        <translation type="unfinished">Opravdu chcete smazat tohoto uživatele</translation>
     </message>
     <message>
         <source>Delete User</source>
-        <translation>Smazat uživatele</translation>
+        <translation type="unfinished">Smazat uživatele</translation>
     </message>
     <message>
         <source>You must change this before deleting the user.</source>
-        <translation>Toto musíte před smazáním uživatele změnit.</translation>
+        <translation type="unfinished">Toto musíte před smazáním uživatele změnit.</translation>
     </message>
     <message>
         <source>This user is set as the default user for the following hosts:
 
 </source>
-        <translation>Tento uživatel je nastaven jako výchozí u následujících serverů:
+        <translation type="unfinished">Tento uživatel je nastaven jako výchozí u následujících serverů:
 
 </translation>
     </message>
     <message>
         <source>You cannot delete yourself!</source>
-        <translation>Nemůžete vymazat sám sebe!</translation>
-    </message>
-    <message>
-        <source>Login Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Full Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>E-Mail Address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Phone Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Local Auth</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nemůžete vymazat sám sebe!</translation>
     </message>
 </context>
 <context>

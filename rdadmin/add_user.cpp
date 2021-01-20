@@ -148,16 +148,16 @@ void AddUser::okData()
     q=new RDSqlQuery(sql);
     delete q;
     delete user;
-    done(-1);
+    done(false);
     return;
   }
   delete user;
   *user_name=user_name_edit->text();
-  done(0);
+  done(true);
 }
 
 
 void AddUser::cancelData()
 {
-  done(-1);
+  done(false);
 }
