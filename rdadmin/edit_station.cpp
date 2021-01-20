@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Workstation Configuration
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,11 +48,8 @@
 EditStation::EditStation(QString sname,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   RDSqlQuery *q;
   QString sql;
-  int item=0;
   char temp[256];
 
   //
@@ -108,14 +105,17 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
-  // Station Default Name
+  // Station Default User Name
   //
-  station_default_name_edit=new QComboBox(this);
-  station_default_name_edit->setEditable(false);
-  station_default_name_label=
-    new QLabel(station_default_name_edit,tr("Default &User:"),this);
-  station_default_name_label->setFont(labelFont());
-  station_default_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  station_username_box=new QComboBox(this);
+  station_username_box->setEditable(false);
+  station_username_model=new RDUserListModel(this);
+  station_username_model->setTypeFilter(RDUser::TypeUser);
+  station_username_box->setModel(station_username_model);
+  station_username_label=
+    new QLabel(station_username_box,tr("Default &User:"),this);
+  station_username_label->setFont(labelFont());
+  station_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Station IP Address
@@ -521,17 +521,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
     station_stop_cart_edit->
       setText(QString().sprintf("%06u",station_station->cueStopCart()));
   }
-
-  sql="select LOGIN_NAME from USERS";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    station_default_name_edit->insertItem(q->value(0).toString());
-    if(q->value(0).toString()==station_station->defaultName()) {
-      station_default_name_edit->setCurrentItem(item);
-    }
-    item++;
-  }
-  delete q;
+  station_username_box->setCurrentText(station_station->defaultName());
   if((cartnum=station_station->heartbeatCart())>0) {
     station_heartbeat_box->setChecked(true);
     station_hbcart_edit->setText(QString().sprintf("%u",cartnum));
@@ -593,6 +583,7 @@ EditStation::~EditStation()
 {
   delete station_station;
   delete station_cae_station;
+  delete station_username_model;
 }
 
 
@@ -712,7 +703,7 @@ void EditStation::okData()
   station_station->setCueStartCart(station_start_cart_edit->text().toInt());
   station_station->setCueStopCart(station_stop_cart_edit->text().toInt());
   station_station->setDescription(station_description_edit->text());
-  station_station->setDefaultName(station_default_name_edit->currentText());
+  station_station->setDefaultName(station_username_box->currentText());
   station_station->setAddress(addr);
   station_station->
     setEditorPath(station_audio_editor_edit->text());
@@ -914,8 +905,8 @@ void EditStation::resizeEvent(QResizeEvent *e)
   station_description_edit->setGeometry(115,44,size().width()-120,19);
   station_description_label->setGeometry(10,44,100,19);
 
-  station_default_name_edit->setGeometry(115,65,160,19);
-  station_default_name_label->setGeometry(10,65,100,19);
+  station_username_box->setGeometry(115,65,160,19);
+  station_username_label->setGeometry(10,65,100,19);
 
   station_address_edit->setGeometry(115,86,120,19);
   station_address_label->setGeometry(10,86,100,19);

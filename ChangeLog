@@ -20851,3 +20851,6 @@
 	* Added a 'RDUserListModel' class.
 	* Refactored the 'List Users' dialog in rdadmin(1) to use the
 	model-based API.
+2021-01-20 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'Default User' control in the 'Host' dialog in
+	rdadmin(1) to use 'RDUserListModel'.

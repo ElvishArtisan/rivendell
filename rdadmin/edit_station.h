@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Workstation
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,6 +34,7 @@
 #include <rdcatch_connect.h>
 #include <rdripc.h>
 #include <rdstation.h>
+#include <rduserlistmodel.h>
 
 class EditStation : public RDDialog
 {
@@ -84,8 +85,9 @@ class EditStation : public RDDialog
    QLineEdit *station_short_name_edit;
    QLabel *station_description_label;
    QLineEdit *station_description_edit;
-   QLabel *station_default_name_label;
-   QComboBox *station_default_name_edit;
+   QLabel *station_username_label;
+   QComboBox *station_username_box;
+   RDUserListModel *station_username_model;
    QLabel *station_address_label;
    QLineEdit *station_address_edit;
    QLabel *station_audio_editor_label;
