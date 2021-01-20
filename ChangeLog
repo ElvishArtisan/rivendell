@@ -20854,3 +20854,6 @@
 2021-01-20 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'Default User' control in the 'Host' dialog in
 	rdadmin(1) to use 'RDUserListModel'.
+2021-01-20 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'Username' control in rdlogin(1) to use
+	'RDUserListModel'.

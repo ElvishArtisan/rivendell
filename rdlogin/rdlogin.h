@@ -2,7 +2,7 @@
 //
 // The User Login/Logout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +21,12 @@
 #ifndef RDLOGIN_H
 #define RDLOGIN_H
 
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
+#include <rduserlistmodel.h>
 #include <rdwidget.h>
 
 #define RDLOGIN_USAGE "\n"
@@ -55,6 +56,7 @@ class MainWidget : public RDWidget
   QLabel *login_label;
   QLabel *login_username_label;
   QComboBox *login_username_box;
+  RDUserListModel *login_username_model;
   QLineEdit *login_username_edit;
   QLabel *login_password_label;
   QLineEdit *login_password_edit;

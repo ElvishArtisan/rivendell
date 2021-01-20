@@ -2,7 +2,7 @@
 //
 // The User Login/Logout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -98,14 +98,19 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   login_username_box=new QComboBox(this);
   login_username_box->setFocus();
+  login_username_model=new RDUserListModel(this);
+  login_username_model->setTypeFilter(RDUser::TypeUser);
+  login_username_box->setModel(login_username_model);
   QFontMetrics fm(font());
-  sql="select LOGIN_NAME from USERS where ADMIN_CONFIG_PRIV=\"N\"\
-       order by LOGIN_NAME";
+  sql=QString("select ")+
+    "LOGIN_NAME "+  // 00
+    "from USERS where "+
+    "ADMIN_CONFIG_PRIV='N'"+
+    "order by LOGIN_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    login_username_box->insertItem(q->value(0).toString());
-    if(fm.width(q->value(0).toString())>login_user_width) {
-      login_user_width=fm.width(q->value(0).toString());
+    if((20+fm.width(q->value(0).toString()))>login_user_width) {
+      login_user_width=20+fm.width(q->value(0).toString());
     }
   }
   delete q;
@@ -257,11 +262,11 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 {
   if(login_resize) {
     login_label->setGeometry(0,10,size().width(),21);
-    login_username_box->setGeometry(110,40,size().width()-120,19);
-    login_username_edit->setGeometry(110,40,size().width()-120,19);
+    login_username_box->setGeometry(110,38,size().width()-120,23);
+    login_username_edit->setGeometry(110,38,size().width()-120,23);
     login_username_label->setGeometry(10,40,85,19);
-    login_password_edit->setGeometry(110,61,size().width()-120,19);
-    login_password_label->setGeometry(10,61,85,19);
+    login_password_edit->setGeometry(110,65,size().width()-120,23);
+    login_password_label->setGeometry(10,67,85,19);
     login_button->setGeometry(size().width()-270,size().height()-60,80,50);
     logout_button->setGeometry(size().width()-180,size().height()-60,80,50);
     cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
