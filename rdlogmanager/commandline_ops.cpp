@@ -2,7 +2,7 @@
 //
 // Command Line Operations for RDLogManager
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,7 +47,7 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
     return 256;
   }
 
-  rda=new RDApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE));
   if(!rda->open(&err_msg)) {
     fprintf(stderr,"rdlogmanager: %s\n",err_msg.toUtf8().constData());
     exit(RDApplication::ExitNoDb);

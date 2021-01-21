@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell log metadata
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include "rdapplication.h"
 #include "rdescape_string.h"
 #include "rdloglistmodel.h"
 
@@ -25,7 +26,6 @@ RDLogListModel::RDLogListModel(QObject *parent)
   : QAbstractTableModel(parent)
 {
   d_service_names.push_back(tr("ALL"));
-  d_log_icons=new RDLogIcons();
 
   //
   // Column Attributes
@@ -74,7 +74,6 @@ RDLogListModel::RDLogListModel(QObject *parent)
 
 RDLogListModel::~RDLogListModel()
 {
-  delete d_log_icons;
 }
 
 
@@ -289,10 +288,10 @@ void RDLogListModel::updateRow(int row,RDSqlQuery *q)
   if((q->value(7).toInt()==q->value(8).toInt())&&
      ((q->value(9).toInt()==0)||(q->value(10).toString()=="Y"))&&
      ((q->value(11).toInt()==0)||(q->value(12).toString()=="Y"))) {
-    icons.push_back(d_log_icons->listIcon(RDLogIcons::GreenCheck));
+    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::GreenCheck));
   }
   else {
-    icons.push_back(d_log_icons->listIcon(RDLogIcons::RedX));
+    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::RedX));
   }
 
   // Description
@@ -306,28 +305,28 @@ void RDLogListModel::updateRow(int row,RDSqlQuery *q)
   // Music State
   texts.push_back(QString());
   if(q->value(9).toInt()==0) {
-    icons.push_back(d_log_icons->listIcon(RDLogIcons::WhiteBall));
+    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
   }
   else {
     if(q->value(10).toString()=="Y") {
-      icons.push_back(d_log_icons->listIcon(RDLogIcons::GreenBall));
+      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
     }
     else {
-      icons.push_back(d_log_icons->listIcon(RDLogIcons::RedBall));
+      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
     }
   }
 
   // Traffic State
   texts.push_back(QString());
   if(q->value(11).toInt()==0) {
-    icons.push_back(d_log_icons->listIcon(RDLogIcons::WhiteBall));
+    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
   }
   else {
     if(q->value(12).toString()=="Y") {
-      icons.push_back(d_log_icons->listIcon(RDLogIcons::GreenBall));
+      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
     }
     else {
-      icons.push_back(d_log_icons->listIcon(RDLogIcons::RedBall));
+      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
     }
   }
 
@@ -336,14 +335,14 @@ void RDLogListModel::updateRow(int row,RDSqlQuery *q)
 				    q->value(7).toInt(),
 				    q->value(8).toInt()));
   if(q->value(8).toInt()==0) {
-    icons.push_back(d_log_icons->listIcon(RDLogIcons::WhiteBall));
+    icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
   }
   else {
     if(q->value(8).toInt()==q->value(7).toInt()) {
-      icons.push_back(d_log_icons->listIcon(RDLogIcons::GreenBall));
+      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
     }
     else {
-      icons.push_back(d_log_icons->listIcon(RDLogIcons::RedBall));
+      icons.push_back(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
     }
   }
 

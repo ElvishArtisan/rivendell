@@ -20,11 +20,11 @@
 
 #include <stdio.h>
 
-#include <rdconf.h>
-#include <rdescape_string.h>
-#include <rdlog.h>
-#include <rdlog_line.h>
-
+#include "rdapplication.h"
+#include "rdconf.h"
+#include "rdescape_string.h"
+#include "rdlog.h"
+#include "rdlog_line.h"
 #include "rdlogmodel.h"
 
 RDLogModel::RDLogModel(const QString &logname,bool read_only,QObject *parent)
@@ -54,7 +54,6 @@ RDLogModel::~RDLogModel()
   if(d_bold_fms!=NULL) {
     delete d_bold_fms;
   }
-  delete d_log_icons;
   for(int i=0;i<d_log_lines.size();i++) {
     delete d_log_lines[i];
   }
@@ -1554,7 +1553,7 @@ QList<int> RDLogModel::columnAlignments() const
 QPixmap RDLogModel::cellIcon(int col,int row,RDLogLine *ll) const
 {
   if(col==0) {
-    return d_log_icons->typeIcon(ll->type(),ll->source());
+    return rda->iconEngine()->typeIcon(ll->type(),ll->source());
   }
   return QPixmap();
 }
@@ -1645,7 +1644,6 @@ void RDLogModel::MakeModel()
 {
   d_fms=NULL;
   d_bold_fms=NULL;
-  d_log_icons=new RDLogIcons();
   d_start_time_style=RDLogModel::Scheduled;
   d_max_id=0;
 

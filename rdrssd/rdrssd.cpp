@@ -2,7 +2,7 @@
 //
 // Rivendell RSS Processor Service
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,7 +42,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rdrssd","rdrssd",RDRSSD_USAGE,this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdrssd","rdrssd",RDRSSD_USAGE,this));
   if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"rdrssd: %s\n",(const char *)err_msg);
     exit(1);

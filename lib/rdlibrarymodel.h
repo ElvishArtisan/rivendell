@@ -30,7 +30,6 @@
 
 #include <rdcart.h>
 #include <rddb.h>
-#include <rdlog_icons.h>
 #include <rdnotification.h>
 
 class RDLibraryModel : public QAbstractItemModel
@@ -98,7 +97,6 @@ class RDLibraryModel : public QAbstractItemModel
   QList<unsigned> d_cart_numbers;
   QList<RDCart::Type> d_cart_types;
   QMap<QString,QVariant> d_group_colors;
-  RDLogIcons *d_log_icons;
 };
 
 

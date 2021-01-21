@@ -27,7 +27,6 @@
 #include <QPalette>
 
 #include <rddb.h>
-#include <rdlog_icons.h>
 #include <rdnotification.h>
 
 class RDGroupListModel : public QAbstractTableModel
@@ -72,7 +71,6 @@ class RDGroupListModel : public QAbstractTableModel
   QList<QList<QVariant> > d_texts;
   QList<QVariant> d_icons;
   QList<QVariant> d_colors;
-  RDLogIcons *d_log_icons;
   bool d_show_all;
   bool d_user_is_admin;
   QStringList d_visible_groups;

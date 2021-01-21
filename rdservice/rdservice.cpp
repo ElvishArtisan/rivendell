@@ -2,7 +2,7 @@
 //
 // Rivendell Services Manager
 //
-//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -71,7 +71,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rdservice","rdservice","\n\n",this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdservice","rdservice","\n\n",this));
   if(!rda->open(&err_msg,&err_type,false)) {
     rda->syslog(LOG_ERR,"unable to open database [%s]",
 		(const char *)err_msg.utf8());

@@ -51,7 +51,7 @@ Xport::Xport(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rdxport.cgi","rdxport.cgi",RDXPORT_CGI_USAGE,this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdxport.cgi","rdxport.cgi",RDXPORT_CGI_USAGE,this));
   if(!rda->open(&err_msg,NULL,false)) {
     printf("Content-type: text/html\n");
     printf("Status: 500\n");
@@ -475,7 +475,7 @@ void Xport::XmlExit(const QString &str,int code,const QString &srcfile,
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv,false);
   new Xport();
   return a.exec();
 }

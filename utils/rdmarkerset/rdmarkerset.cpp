@@ -61,7 +61,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rdmarkerset","rdmarkerset",RDMARKERSET_USAGE,this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdmarkerset","rdmarkerset",RDMARKERSET_USAGE,this));
   if(!rda->open(&err_msg)) {
     fprintf(stderr,"rdmarkerset: %s\n",(const char *)err_msg);
     exit(1);
@@ -393,7 +393,7 @@ void MainObject::Print(const QString &msg)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv,false);
   new MainObject();
   return a.exec();
 }

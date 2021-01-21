@@ -69,7 +69,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rdrender","rdrender",RDRENDER_USAGE,this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdrender","rdrender",RDRENDER_USAGE,this));
   if(!rda->open(&err_msg)) {
     fprintf(stderr,"rdrender: %s\n",(const char *)err_msg.toUtf8());
     exit(1);
@@ -337,7 +337,7 @@ void MainObject::printProgressMessage(const QString &msg)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv,false);
   new MainObject();
   return a.exec();
 }

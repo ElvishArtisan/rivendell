@@ -27,7 +27,7 @@
 #include <QList>
 #include <QPalette>
 
-#include <rdlog_icons.h>
+#include <rdlog_line.h>
 #include <rdnotification.h>
 
 class RDLogModel : public QAbstractTableModel
@@ -114,7 +114,6 @@ class RDLogModel : public QAbstractTableModel
   QFontMetrics *d_bold_fms;
   QList<QVariant> d_headers;
   QList<QVariant> d_alignments;
-  RDLogIcons *d_log_icons;
   StartTimeStyle d_start_time_style;
   QString d_log_name;
   QString d_service_name;

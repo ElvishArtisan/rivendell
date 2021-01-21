@@ -50,7 +50,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rdclilogedit","rdclilogedit",RDCLILOGEDIT_USAGE,this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdclilogedit","rdclilogedit",RDCLILOGEDIT_USAGE,this));
   if(!rda->open(&err_msg)) {
     fprintf(stderr,"rdclilogedit: %s\n",(const char *)err_msg);
     exit(1);

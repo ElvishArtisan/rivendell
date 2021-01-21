@@ -1,6 +1,6 @@
-// rdlog_icons.h
+// rdiconengine.h
 //
-// Icons for Rivendell log events.
+// Icon generator for Rivendell
 //
 //   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDLOG_ICONS_H
-#define RDLOG_ICONS_H
+#ifndef RDICONENGINE_H
+#define RDICONENGINE_H
 
 #include <QMap>
 #include <QPixmap>
@@ -27,12 +27,12 @@
 #include <rdlog_line.h>
 #include <rduser.h>
 
-class RDLogIcons
+class RDIconEngine
 {
  public:
   enum IconType {GreenCheck=0,RedX=1,GreenBall=2,RedBall=3,WhiteBall=4,
 		 BlueBall=5};
-  RDLogIcons();
+  RDIconEngine();
   QPixmap listIcon(IconType type) const;
   QPixmap typeIcon(RDLogLine::Type type,
 		   RDLogLine::Source src=RDLogLine::Manual) const;
@@ -46,4 +46,4 @@ class RDLogIcons
 };
 
 
-#endif  // RDLOG_ICONS
+#endif  // RDICONENGINE

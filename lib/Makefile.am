@@ -99,6 +99,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdconf.cpp rdconf.h\
                         rdconfig.cpp rdconfig.h\
                         rdcopyaudio.cpp rdcopyaudio.h\
+                        rdcoreapplication.cpp rdcoreapplication.h\
                         rdcueedit.cpp rdcueedit.h\
                         rdcueeditdialog.cpp rdcueeditdialog.h\
                         rdcut.cpp rdcut.h\
@@ -148,6 +149,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdhotkeys.cpp rdhotkeys.h\
                         rdhotkeylist.cpp rdhotkeylist.h\
                         rdidvalidator.cpp rdidvalidator.h\
+                        rdiconengine.cpp rdiconengine.h\
                         rdimagepickerbox.cpp rdimagepickerbox.h\
                         rdimagepickermodel.cpp rdimagepickermodel.h\
                         rdimport_audio.cpp rdimport_audio.h\
@@ -167,7 +169,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdlivewiredestination.cpp rdlivewiredestination.h\
                         rdlivewiresource.cpp rdlivewiresource.h\
                         rdlog.cpp rdlog.h\
-                        rdlog_icons.cpp rdlog_icons.h\
                         rdlog_line.cpp rdlog_line.h\
                         rdlogedit_conf.cpp rdlogedit_conf.h\
                         rdlogfilter.cpp rdlogfilter.h\
@@ -282,6 +283,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdcdripper.cpp\
                           moc_rdcodetrap.cpp\
                           moc_rdcombobox.cpp\
+                          moc_rdcoreapplication.cpp\
                           moc_rdcueedit.cpp\
                           moc_rdcueeditdialog.cpp\
                           moc_rdcut_dialog.cpp\

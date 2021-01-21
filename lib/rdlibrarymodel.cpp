@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include "rdapplication.h"
 #include "rdconf.h"
 #include "rdescape_string.h"
 #include "rdlibrarymodel.h"
@@ -25,7 +26,6 @@
 RDLibraryModel::RDLibraryModel(QObject *parent)
   : QAbstractItemModel(parent)
 {
-  d_log_icons=new RDLogIcons();
   d_font_metrics=NULL;
   d_bold_font_metrics=NULL;
   d_show_notes=false;
@@ -104,7 +104,6 @@ RDLibraryModel::RDLibraryModel(QObject *parent)
 
 RDLibraryModel::~RDLibraryModel()
 {
-  delete d_log_icons;
 }
 
 
@@ -574,16 +573,16 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
   switch((RDCart::Type)q->value(15).toUInt()) {
   case RDCart::Audio:
     if(q->value(21).isNull()) {
-      d_icons[row][0]=d_log_icons->typeIcon(RDLogLine::Cart);
+      d_icons[row][0]=rda->iconEngine()->typeIcon(RDLogLine::Cart);
     }
     else {
       d_icons[row][0]=
-	d_log_icons->typeIcon(RDLogLine::Cart,RDLogLine::Tracker);
+	rda->iconEngine()->typeIcon(RDLogLine::Cart,RDLogLine::Tracker);
     }
     break;
     
   case RDCart::Macro:
-    d_icons[row][0]=d_log_icons->typeIcon(RDLogLine::Macro);
+    d_icons[row][0]=rda->iconEngine()->typeIcon(RDLogLine::Macro);
     break;
     
   case RDCart::All:

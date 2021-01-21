@@ -29,7 +29,6 @@ RDGroupListModel::RDGroupListModel(bool show_all,bool user_is_admin,
   d_show_all=show_all;
   d_user_is_admin=user_is_admin;
   d_service_names.push_back(tr("ALL"));
-  d_log_icons=new RDLogIcons();
 
   //
   // Column Attributes
@@ -73,7 +72,6 @@ RDGroupListModel::RDGroupListModel(bool show_all,bool user_is_admin,
 
 RDGroupListModel::~RDGroupListModel()
 {
-  delete d_log_icons;
 }
 
 
@@ -350,10 +348,10 @@ void RDGroupListModel::updateRow(int row,RDSqlQuery *q)
   texts.push_back(q->value(0));
   d_colors[row]=QColor(q->value(10).toString());
   if(q->value(5).toInt()==RDCart::Macro) {
-    d_icons[row]=d_log_icons->typeIcon(RDLogLine::Macro);
+    d_icons[row]=rda->iconEngine()->typeIcon(RDLogLine::Macro);
   }
   else {
-    d_icons[row]=d_log_icons->typeIcon(RDLogLine::Cart);
+    d_icons[row]=rda->iconEngine()->typeIcon(RDLogLine::Cart);
   }
 
   // Description

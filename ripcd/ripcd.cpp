@@ -2,7 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -79,7 +79,7 @@ MainObject::MainObject(QObject *parent)
   QString err_msg;
   RDApplication::ErrorType err_type=RDApplication::ErrorOk;
 
-  rda=new RDApplication("ripcd","ripcd",RIPCD_USAGE,this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("ripcd","ripcd",RIPCD_USAGE,this));
   if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"ripcd: %s\n",(const char *)err_msg.utf8());
     exit(1);
@@ -850,7 +850,7 @@ void MainObject::SendGpoCart(int ch,int matrix)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv,false);
   new MainObject();
   return a.exec();
 }

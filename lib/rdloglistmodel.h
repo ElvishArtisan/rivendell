@@ -28,7 +28,6 @@
 #include <QPalette>
 
 #include <rddb.h>
-#include <rdlog_icons.h>
 #include <rdnotification.h>
 
 class RDLogListModel : public QAbstractTableModel
@@ -70,7 +69,6 @@ class RDLogListModel : public QAbstractTableModel
   QList<QList<QVariant> > d_texts;
   QList<QList<QVariant> > d_icons;
   QList<QVariant> d_alignments;
-  RDLogIcons *d_log_icons;
 };
 
 

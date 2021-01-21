@@ -43,7 +43,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rddelete","rddelete",RDDELETE_USAGE,this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rddelete","rddelete",RDDELETE_USAGE,this));
   if(!rda->open(&err_msg)) {
     fprintf(stderr,"rddelete: %s\n",(const char *)err_msg);
     exit(1);
@@ -329,7 +329,7 @@ bool MainObject::GetNextStdinObject(QString *logname)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv,false);
   new MainObject();
   return a.exec();
 }

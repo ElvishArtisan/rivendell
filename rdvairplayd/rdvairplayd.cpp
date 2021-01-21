@@ -2,7 +2,7 @@
 //
 // Headless log player
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -64,7 +64,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rdvairplayd","rdvairplayd",RDVAIRPLAYD_USAGE,this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdvairplayd","rdvairplayd",RDVAIRPLAYD_USAGE,this));
   if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"rdvairplayd: %s\n",(const char *)err_msg);
     exit(1);
@@ -340,7 +340,7 @@ void MainObject::SetManualMode(int index)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv,false);
   new MainObject();
   return a.exec();
 }

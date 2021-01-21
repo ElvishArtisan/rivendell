@@ -42,7 +42,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rdconvert","rdconvert",RDCONVERT_USAGE,this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdconvert","rdconvert",RDCONVERT_USAGE,this));
   if(!rda->open(&err_msg)) {
     fprintf(stderr,"rdconvert: %s\n",(const char *)err_msg);
     exit(1);

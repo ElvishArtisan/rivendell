@@ -2,7 +2,7 @@
 //
 // Rivendell PAD Consolidation Server
 //
-//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -55,7 +55,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rdpadengined","rdpadengined",RDPADENGINED_USAGE,this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdpadengined","rdpadengined",RDPADENGINED_USAGE,this));
   if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"rdpadengined: %s\n",(const char *)err_msg);
     exit(1);

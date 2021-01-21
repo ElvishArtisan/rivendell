@@ -2,7 +2,7 @@
 //
 // A Batch Exporter for Rivendell.
 //
-//   (C) Copyright 2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -57,7 +57,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rdexport","rdexport",RDEXPORT_USAGE,this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdexport","rdexport",RDEXPORT_USAGE,this));
   if(!rda->open(&err_msg)) {
     fprintf(stderr,"rdexport: %s\n",(const char *)err_msg.toUtf8());
     exit(1);
@@ -564,7 +564,7 @@ void MainObject::Verbose(const QString &msg)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv,false);
   new MainObject();
   return a.exec();
 }

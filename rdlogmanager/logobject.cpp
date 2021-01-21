@@ -46,7 +46,7 @@ LogObject::LogObject(const QString &svcname,int start_offset,
   //
   // Open the Database
   //
-  rda=new RDApplication("RDLogManager","rdlogmanager","");
+  rda=static_cast<RDApplication *>(new RDCoreApplication("RDLogManager","rdlogmanager",""));
   if(!rda->open(&err_msg)) {
     fprintf(stderr,"rdlogmanager: %s\n",err_msg.toUtf8().constData());
     exit(RDApplication::ExitNoDb);

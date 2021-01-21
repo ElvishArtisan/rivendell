@@ -1,6 +1,6 @@
-// rdlog_icons.cpp
+// rdiconengine.cpp
 //
-// Icons for Rivendell log events.
+// Icon generator for Rivendell
 //
 //   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include "rdlog_icons.h"
+#include "rdiconengine.h"
 
 //
 // Icons
@@ -44,7 +44,7 @@
 #include "../icons/rss.xpm"
 #include "../icons/admin.xpm"
 
-RDLogIcons::RDLogIcons()
+RDIconEngine::RDIconEngine()
 {
   d_list_icons.push_back(QPixmap(greencheckmark_xpm));
   d_list_icons.push_back(QPixmap(redx_xpm));
@@ -75,13 +75,13 @@ RDLogIcons::RDLogIcons()
 }
 
 
-QPixmap RDLogIcons::listIcon(RDLogIcons::IconType type) const
+QPixmap RDIconEngine::listIcon(RDIconEngine::IconType type) const
 {
   return d_list_icons.at(type);
 }
 
 
-QPixmap RDLogIcons::typeIcon(RDLogLine::Type type,RDLogLine::Source src) const
+QPixmap RDIconEngine::typeIcon(RDLogLine::Type type,RDLogLine::Source src) const
 {
   if((type==RDLogLine::Cart)&&(src==RDLogLine::Tracker)) {
     return log_track_cart_icon;
@@ -90,7 +90,7 @@ QPixmap RDLogIcons::typeIcon(RDLogLine::Type type,RDLogLine::Source src) const
 }
 
 
-QPixmap RDLogIcons::userIcon(RDUser::Type type) const
+QPixmap RDIconEngine::userIcon(RDUser::Type type) const
 {
   return d_user_icons.value(type);
 }

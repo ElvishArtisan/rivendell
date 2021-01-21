@@ -26,7 +26,6 @@ RDUserListModel::RDUserListModel(QObject *parent)
   : QAbstractTableModel(parent)
 {
   d_type_filter=RDUser::TypeLast;
-  d_log_icons=new RDLogIcons();
 
   //
   // Column Attributes
@@ -57,7 +56,6 @@ RDUserListModel::RDUserListModel(QObject *parent)
 
 RDUserListModel::~RDUserListModel()
 {
-  delete d_log_icons;
 }
 
 
@@ -287,18 +285,18 @@ void RDUserListModel::updateRow(int row,RDSqlQuery *q)
   // Login Name
   texts.push_back(q->value(0));
   if(q->value(1).toString()=="Y") {
-    d_icons[row]=d_log_icons->userIcon(RDUser::TypeAdminConfig);
+    d_icons[row]=rda->iconEngine()->userIcon(RDUser::TypeAdminConfig);
   }
   else {
     if(q->value(2).toString()=="Y") {
-      d_icons[row]=d_log_icons->userIcon(RDUser::TypeAdminRss);
+      d_icons[row]=rda->iconEngine()->userIcon(RDUser::TypeAdminRss);
     }
     else {
       if(q->value(7).toString()=="Y") {
-	d_icons[row]=d_log_icons->userIcon(RDUser::TypeLocalUser);
+	d_icons[row]=rda->iconEngine()->userIcon(RDUser::TypeLocalUser);
       }
       else {
-	d_icons[row]=d_log_icons->userIcon(RDUser::TypeExternalUser);
+	d_icons[row]=rda->iconEngine()->userIcon(RDUser::TypeExternalUser);
       }
     }
   }

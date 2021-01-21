@@ -27,7 +27,6 @@
 #include <QPalette>
 
 #include <rddb.h>
-#include <rdlog_icons.h>
 #include <rdnotification.h>
 #include <rduser.h>
 
@@ -71,7 +70,6 @@ class RDUserListModel : public QAbstractTableModel
   QList<QVariant> d_alignments;
   QList<QList<QVariant> > d_texts;
   QList<QVariant> d_icons;
-  RDLogIcons *d_log_icons;
   RDUser::Type d_type_filter;
 };
 
