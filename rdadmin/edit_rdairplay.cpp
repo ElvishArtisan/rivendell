@@ -691,12 +691,15 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   // Space Bar Action
   //
-  air_bar_group=new Q3ButtonGroup(1,Qt::Vertical,tr("Space Bar Action"),this);
-  air_bar_group->setFont(subLabelFont());
-  air_bar_group->setGeometry(805,532,sizeHint().width()-815,55);
-  new QRadioButton(tr("None"),air_bar_group);
-  new QRadioButton(tr("Start Next"),air_bar_group);
-
+  air_baraction_box=new QComboBox(this);
+  air_baraction_box->setGeometry(895,532,100,20);
+  air_baraction_box->insertItem(0,tr("None"));
+  air_baraction_box->insertItem(1,tr("Start Next"));
+  air_baraction_label=
+    new QLabel(air_baraction_box,tr("Space Bar Action")+":",this);
+  air_baraction_label->setFont(subLabelFont());
+  air_baraction_label->setGeometry(790,532,110,20);
+  
   //
   // Start/Stop Section
   //
@@ -959,7 +962,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
     air_auxlog_box[i]->setChecked(air_conf->showAuxButton(i));
   }
   air_clearfilter_box->setChecked(air_conf->clearFilter());
-  air_bar_group->setButton((int)air_conf->barAction());
+  air_baraction_box->setCurrentIndex((int)air_conf->barAction());
   air_flash_box->setChecked(air_conf->flashPanel());
   air_panel_pause_box->setChecked(air_conf->panelPauseEnabled());
   air_label_template_edit->setText(air_conf->buttonLabelTemplate());
@@ -1246,7 +1249,7 @@ void EditRDAirPlay::okData()
   }
   air_conf->setClearFilter(air_clearfilter_box->isChecked());
   air_conf->
-    setBarAction((RDAirPlayConf::BarAction)air_bar_group->selectedId());
+    setBarAction((RDAirPlayConf::BarAction)air_baraction_box->currentIndex());
   air_conf->setFlashPanel(air_flash_box->isChecked());
   air_conf->setPanelPauseEnabled(air_panel_pause_box->isChecked());
   air_conf->setButtonLabelTemplate(air_label_template_edit->text());

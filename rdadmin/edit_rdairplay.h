@@ -21,8 +21,6 @@
 #ifndef EDIT_RDAIRPLAY_H
 #define EDIT_RDAIRPLAY_H
 
-#include <q3buttongroup.h>
-
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLabel>
@@ -111,7 +109,8 @@ class EditRDAirPlay : public RDDialog
   QSpinBox *air_aux2_box;
   QCheckBox *air_auxlog_box[2];
   QCheckBox *air_clearfilter_box;
-  Q3ButtonGroup *air_bar_group;
+  QLabel *air_baraction_label;
+  QComboBox *air_baraction_box;
   QCheckBox *air_flash_box;
   QCheckBox *air_panel_pause_box;
   QCheckBox *air_show_counters_box;

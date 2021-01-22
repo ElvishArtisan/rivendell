@@ -20882,3 +20882,6 @@
 	'RDServiceListModel'.
 	* Modified the 'Configure RDPanel' dialog in rdadmin(1) to use
 	'RDServiceListModel'.
+2021-01-22 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ButtonGroup' dependency from the 'Configure
+	RDAirPlay' dialog in rdadmin(1).
