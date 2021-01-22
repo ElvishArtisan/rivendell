@@ -981,7 +981,7 @@ Isto para popular os recursos de áudio na Base de Dados.</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[Nenhum]</translation>
+        <translation type="obsolete">[Nenhum]</translation>
     </message>
     <message>
         <source>Channel assignments will not be available for this host as audio resource data

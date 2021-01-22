@@ -41,7 +41,8 @@ class RDStationListModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  RDStationListModel(const QString &localhost_name,QObject *parent=0);
+  RDStationListModel(bool incl_none,const QString &localhost_name,
+		     QObject *parent=0);
   ~RDStationListModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
@@ -69,6 +70,7 @@ class RDStationListModel : public QAbstractTableModel
   QFont d_font;
   QFont d_bold_font;
   QString d_localhost_name;
+  bool d_include_none;
   QList<QVariant> d_headers;
   QList<QVariant> d_alignments;
   QStringList d_hostnames;

@@ -22,11 +22,13 @@
 #include "rdescape_string.h"
 #include "rdstationlistmodel.h"
 
-RDStationListModel::RDStationListModel(const QString &localhost_name,
+RDStationListModel::RDStationListModel(bool incl_none,
+				       const QString &localhost_name,
 				       QObject *parent)
   : QAbstractTableModel(parent)
 {
   d_localhost_name=localhost_name;
+  d_include_none=incl_none;
 
   //
   // Column Attributes
@@ -269,6 +271,17 @@ void RDStationListModel::updateModel()
   d_hostnames.clear();
   d_texts.clear();
   d_icons.clear();
+  if(d_include_none) {
+    d_hostnames.push_back(tr("[none]"));
+    d_texts.push_back(texts);
+    d_texts.back().push_back(tr("[none]"));
+    d_icons.push_back(texts);
+    for(int i=1;i<columnCount();i++) {
+      d_texts.back().push_back(QVariant());
+      d_icons.back().push_back(QVariant());
+    }
+    d_icons.push_back(texts);
+  }    
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_hostnames.push_back(QString());

@@ -21,20 +21,18 @@
 #ifndef EDIT_DECKS_H
 #define EDIT_DECKS_H
 
-#include <vector>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
-#include <qsqldatabase.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
-#include <qspinbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-
+#include <rdcardselector.h>
+#include <rdcatch_conf.h>
 #include <rddeck.h>
 #include <rddialog.h>
-#include <rdcardselector.h>
 #include <rdstation.h>
-#include <rdcatch_conf.h>
+#include <rdstationlistmodel.h>
 
 class EditDecks : public RDDialog
 {
@@ -87,6 +85,7 @@ class EditDecks : public RDDialog
    QComboBox *edit_bitrate_box;
    QLabel *edit_swstation_label;
    QComboBox *edit_swstation_box;
+   RDStationListModel *edit_station_model;
    QLabel *edit_swmatrix_label;
    QComboBox *edit_swmatrix_box;
    std::vector<int> edit_matrix_ids;

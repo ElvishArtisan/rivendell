@@ -992,7 +992,7 @@ for lydressursar.</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ingen]</translation>
+        <translation type="obsolete">[ingen]</translation>
     </message>
     <message>
         <source>Channel assignments will not be available for this host as audio resource data

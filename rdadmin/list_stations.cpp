@@ -83,7 +83,7 @@ ListStations::ListStations(QWidget *parent)
   list_stations_view->setShowGrid(false);
   list_stations_view->setSortingEnabled(false);
   list_stations_view->setWordWrap(false);
-  list_stations_model=new RDStationListModel("",this);
+  list_stations_model=new RDStationListModel(false,"",this);
   list_stations_model->setFont(defaultFont());
   list_stations_model->setPalette(palette());
   list_stations_view->setModel(list_stations_model);
@@ -92,16 +92,6 @@ ListStations::ListStations(QWidget *parent)
   connect(list_stations_model,SIGNAL(modelReset()),
 	  list_stations_view,SLOT(resizeColumnsToContents()));
   list_stations_view->resizeColumnsToContents();
-  /*
-  list_box=new Q3ListBox(this);
-  QLabel *list_box_label=new QLabel(list_box,tr("Ho&sts:"),this);
-  list_box_label->setFont(labelFont());
-  list_box_label->setGeometry(14,10,85,19);
-  connect(list_box,SIGNAL(doubleClicked(Q3ListBoxItem *)),
-	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
-
-  RefreshList();
-  */
 }
 
 
@@ -198,21 +188,3 @@ void ListStations::resizeEvent(QResizeEvent *e)
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
   list_stations_view->setGeometry(10,30,size().width()-110,size().height()-40);
 }
-
-/*
-void ListStations::RefreshList(QString stationname)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  list_box->clear();
-  q=new RDSqlQuery("select NAME from STATIONS");
-  while (q->next()) {
-    list_box->insertItem(q->value(0).toString());
-    if(stationname==list_box->text(list_box->count()-1)) {
-      list_box->setCurrentItem(list_box->count()-1);
-    }
-  }
-  delete q;
-}
-*/

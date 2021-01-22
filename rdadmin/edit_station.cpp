@@ -76,7 +76,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // Models
   //
   station_username_model=new RDUserListModel(this);
-  station_station_model=new RDStationListModel(sname,this);
+  station_station_model=new RDStationListModel(false,sname,this);
 
   //
   // Station Name

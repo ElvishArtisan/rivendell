@@ -1086,7 +1086,7 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ninguno]</translation>
+        <translation type="obsolete">[ninguno]</translation>
     </message>
     <message>
         <source>No Audio Configuration Data</source>

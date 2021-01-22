@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Deck Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,13 +42,10 @@
 EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
   setMaximumHeight(sizeHint().height());
 
   edit_station=station;
@@ -72,6 +69,11 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   label->setFont(sectionLabelFont());
   label->setGeometry(35,14,100,22);
   label->setAlignment(Qt::AlignRight);
+
+  //
+  // Models
+  //
+  edit_station_model=new RDStationListModel(true,"",this);
 
   //
   // Settings Label
@@ -141,7 +143,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_swstation_box=new QComboBox(this);
   edit_swstation_box->setGeometry(125,190,250,24);
-  edit_swstation_box->setInsertionPolicy(QComboBox::NoInsert);
+  edit_swstation_box->setModel(edit_station_model);
   edit_swstation_label=new QLabel(edit_swstation_box,tr("Switcher Host:"),this);
   edit_swstation_label->setFont(labelFont());
   edit_swstation_label->setGeometry(10,190,110,24);
@@ -348,13 +350,6 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_bitrate_box->insertItem(tr("128 kbps/chan"));
   edit_bitrate_box->insertItem(tr("160 kbps/chan"));
   edit_bitrate_box->insertItem(tr("192 kbps/chan"));
-  edit_swstation_box->insertItem(tr("[none]"));
-  RDSqlQuery *q=new RDSqlQuery("select NAME from STATIONS where \
-                              NAME!=\"DEFAULT\"");
-  while(q->next()) {
-    edit_swstation_box->insertItem(q->value(0).toString());
-  }
-  delete q;
   ReadRecord(edit_record_channel);
   ReadRecord(edit_play_channel);
   ReadRecord(0);
@@ -374,6 +369,7 @@ EditDecks::~EditDecks()
   delete edit_audition_deck;
   delete edit_errorrml_edit;
   delete edit_catch_conf;
+  delete edit_station_model;
 }
 
 
@@ -545,7 +541,7 @@ void EditDecks::closeData()
   WriteRecord(0);
   WriteRecord(edit_record_channel);
   WriteRecord(edit_play_channel);
-  done(0);
+  done(true);
 }
 
 
