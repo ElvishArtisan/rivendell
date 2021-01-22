@@ -41,7 +41,7 @@ class RDServiceListModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  RDServiceListModel(QObject *parent=0);
+  RDServiceListModel(bool incl_none,QObject *parent=0);
   ~RDServiceListModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
@@ -68,7 +68,7 @@ class RDServiceListModel : public QAbstractTableModel
   QPalette d_palette;
   QFont d_font;
   QFont d_bold_font;
-  QStringList d_service_names;
+  bool d_include_none;
   QList<QVariant> d_headers;
   QList<QVariant> d_alignments;
   QList<QList<QVariant> > d_texts;

@@ -2086,10 +2086,6 @@ GPIOs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Data Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2711,10 +2707,6 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>No Audio Configuration Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -2555,7 +2555,7 @@ for lydressursar.</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ingen]</translation>
+        <translation type="obsolete">[ingen]</translation>
     </message>
     <message>
         <source>Data Error</source>
@@ -3243,7 +3243,7 @@ for lydressursar.</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="unfinished">[ingen]</translation>
+        <translation type="obsolete">[ingen]</translation>
     </message>
     <message>
         <source>Select Image File</source>

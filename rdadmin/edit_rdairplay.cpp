@@ -2,7 +2,7 @@
 //
 // Edit an RDAirPlay Configuration
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,19 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <q3buttongroup.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-
-#include <qcheckbox.h>
-#include <qdialog.h>
-#include <qevent.h>
-#include <qfiledialog.h>
-#include <qmessagebox.h>
-#include <qpainter.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qstring.h>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QPainter>
+#include <QRadioButton>
 
 #include <rd.h>
 #include <rddb.h>
@@ -47,11 +38,6 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
-  QString sql;
-  RDSqlQuery *q;
-
   air_exitpasswd_changed=false;
   air_logmachine=0;
   air_virtual_logmachine=0;
@@ -60,10 +46,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   air_conf=new RDAirPlayConf(station->name(),"RDAIRPLAY");
 
@@ -76,6 +60,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   // Dialog Name
   //
   setWindowTitle("RDAdmin - "+tr("Configure RDAirPlay"));
+
+  //
+  // Models
+  //
+  air_service_model=new RDServiceListModel(true,this);
 
   //
   // Channel Assignments Section
@@ -541,6 +530,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   air_defaultsvc_box=new QComboBox(this);
   air_defaultsvc_box->setGeometry(895,142,100,20);
+  air_defaultsvc_box->setModel(air_service_model);
   label=new QLabel(air_defaultsvc_box,tr("Default Service:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(760,142,130,20);
@@ -961,18 +951,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_piecount_box->setValue(air_conf->pieCountLength()/1000);
   air_countto_box->setCurrentItem(air_conf->pieEndPoint());
   air_default_transtype_box->setCurrentItem(air_conf->defaultTransType());
-  air_defaultsvc_box->insertItem(tr("[none]"));
-  QString defaultsvc=air_conf->defaultSvc();
-  sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
-    "STATION_NAME=\""+RDEscapeString(air_conf->station())+"\"";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    air_defaultsvc_box->insertItem(q->value(0).toString());
-    if(defaultsvc==q->value(0).toString()) {
-      air_defaultsvc_box->setCurrentItem(air_defaultsvc_box->count()-1);
-    }
-  }
-  delete q;
+  air_defaultsvc_box->setCurrentText(air_conf->defaultSvc());
   air_station_box->setValue(air_conf->panels(RDAirPlayConf::StationPanel));
   air_user_box->setValue(air_conf->panels(RDAirPlayConf::UserPanel));
   air_timesync_box->setChecked(air_conf->checkTimesync());
@@ -1040,6 +1019,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
 
 EditRDAirPlay::~EditRDAirPlay()
 {
+  delete air_service_model;
 }
 
 

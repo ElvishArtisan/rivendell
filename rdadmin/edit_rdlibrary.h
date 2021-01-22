@@ -2,7 +2,7 @@
 //
 // Edit an RDLibrry Configuration
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,11 @@
 #ifndef EDIT_RDLIBRARY_H
 #define EDIT_RDLIBRARY_H
 
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
 #include <q3datetimeedit.h>
+
+#include <QComboBox>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rdcardselector.h>
 #include <rddialog.h>

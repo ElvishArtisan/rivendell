@@ -2767,7 +2767,7 @@ Parameters</source>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ninguno]</translation>
+        <translation type="obsolete">[ninguno]</translation>
     </message>
     <message>
         <source>No Audio Configuration Data</source>
@@ -3463,7 +3463,7 @@ para generar la base de datos con los recursos de audio disponibles.</translatio
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ninguno]</translation>
+        <translation type="obsolete">[ninguno]</translation>
     </message>
     <message>
         <source>Select Image File</source>

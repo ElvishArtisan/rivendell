@@ -22,9 +22,11 @@
 #include "rdescape_string.h"
 #include "rdservicelistmodel.h"
 
-RDServiceListModel::RDServiceListModel(QObject *parent)
+RDServiceListModel::RDServiceListModel(bool incl_none,QObject *parent)
   : QAbstractTableModel(parent)
 {
+  d_include_none=incl_none;
+
   //
   // Column Attributes
   //
@@ -236,13 +238,19 @@ void RDServiceListModel::refresh(const QString &grpname)
 void RDServiceListModel::updateModel()
 {
   QList<QVariant> texts; 
-  QList<QVariant> icons;
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields();
   sql+="order by NAME ";
   beginResetModel();
   d_texts.clear();
+  if(d_include_none) {
+    d_texts.push_back(texts);
+    d_texts.back().push_back(tr("[none]"));
+    for(int i=1;i<columnCount();i++) {
+      d_texts.back().push_back(QVariant());
+    }
+  }
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_texts.push_back(texts);

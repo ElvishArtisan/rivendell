@@ -2,7 +2,7 @@
 //
 // Edit an RDPanel Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,17 @@
 #ifndef EDIT_RDPANEL_H
 #define EDIT_RDPANEL_H
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qspinbox.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rd.h>
 #include <rdairplay_conf.h>
 #include <rdcardselector.h>
 #include <rddialog.h>
+#include <rdservicelistmodel.h>
 #include <rdstation.h>
 
 /*
@@ -68,6 +69,7 @@ class EditRDPanel : public RDDialog
   QLineEdit *air_label_template_edit;
   QComboBox *air_defaultsvc_box;
   QLineEdit *air_skin_edit;
+  RDServiceListModel *air_service_model;
 };
 
 

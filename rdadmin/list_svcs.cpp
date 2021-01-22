@@ -89,7 +89,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   list_services_view->setShowGrid(false);
   list_services_view->setSortingEnabled(false);
   list_services_view->setWordWrap(false);
-  list_services_model=new RDServiceListModel(this);
+  list_services_model=new RDServiceListModel(false,this);
   list_services_model->setFont(defaultFont());
   list_services_model->setPalette(palette());
   list_services_view->setModel(list_services_model);

@@ -2777,7 +2777,7 @@ Daemons auf diesem Host neu, indem sie als &apos;root&apos;-Benutzer den Befehl
     </message>
     <message>
         <source>[none]</source>
-        <translation>[žádný]</translation>
+        <translation type="obsolete">[žádný]</translation>
     </message>
     <message>
         <source>Data Error</source>
@@ -3479,7 +3479,7 @@ pro naplnění databáze zdroji zvuku.</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[žádný]</translation>
+        <translation type="obsolete">[žádný]</translation>
     </message>
     <message>
         <source>Select Image File</source>

@@ -2,7 +2,7 @@
 //
 // Edit an RDPanel Configuration
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qfiledialog.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
+#include <QFileDialog>
+#include <QMessageBox>
 
 #include <rd.h>
 #include <rddb.h>
@@ -34,11 +33,6 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
 			 QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
-  QString sql;
-  RDSqlQuery *q;
-
   //
   // Fix the Window Size
   //
@@ -56,6 +50,11 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   // Dialog Name
   //
   setWindowTitle("RDAdmin - "+tr("Configure RDPanel"));
+
+  //
+  // Models
+  //
+  air_service_model=new RDServiceListModel(true,this);
 
   //
   // Channel Assignments Section
@@ -288,6 +287,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   //
   air_defaultsvc_box=new QComboBox(this);
   air_defaultsvc_box->setGeometry(520,151,100,20);
+  air_defaultsvc_box->setModel(air_service_model);
   label=new QLabel(air_defaultsvc_box,tr("Default Service:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(385,151,130,20);
@@ -358,18 +358,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_card_sel[5]->setCard(air_conf->card(RDAirPlayConf::CueChannel));
   air_card_sel[5]->setPort(air_conf->port(RDAirPlayConf::CueChannel));
 
-  air_defaultsvc_box->insertItem(tr("[none]"));
-  QString defaultsvc=air_conf->defaultSvc();
-  sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
-    "STATION_NAME=\""+RDEscapeString(air_conf->station())+"\"";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    air_defaultsvc_box->insertItem(q->value(0).toString());
-    if(defaultsvc==q->value(0).toString()) {
-      air_defaultsvc_box->setCurrentItem(air_defaultsvc_box->count()-1);
-    }
-  }
-  delete q;
+  air_defaultsvc_box->setCurrentText(air_conf->defaultSvc());
   air_skin_edit->setText(air_conf->skinPath());
   air_station_box->setValue(air_conf->panels(RDAirPlayConf::StationPanel));
   air_user_box->setValue(air_conf->panels(RDAirPlayConf::UserPanel));

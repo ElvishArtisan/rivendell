@@ -2623,7 +2623,7 @@ Daemons auf diesem Host neu, indem sie als &apos;root&apos;-Benutzer den Befehl
     </message>
     <message>
         <source>[none]</source>
-        <translation>[keine]</translation>
+        <translation type="obsolete">[keine]</translation>
     </message>
     <message>
         <source>Data Error</source>
@@ -3301,7 +3301,7 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>[none]</source>
-        <translation type="unfinished">[keine]</translation>
+        <translation type="obsolete">[keine]</translation>
     </message>
     <message>
         <source>Select Image File</source>

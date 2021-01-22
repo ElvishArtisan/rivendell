@@ -2,7 +2,7 @@
 //
 // Edit an RDAirPlay Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,18 +21,19 @@
 #ifndef EDIT_RDAIRPLAY_H
 #define EDIT_RDAIRPLAY_H
 
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <q3datetimeedit.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
 #include <q3buttongroup.h>
+
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rd.h>
 #include <rdairplay_conf.h>
 #include <rdcardselector.h>
 #include <rddialog.h>
+#include <rdservicelistmodel.h>
 #include <rdstation.h>
 
 /*
@@ -148,6 +149,7 @@ class EditRDAirPlay : public RDDialog
   QComboBox *air_virtual_logstartmode_box;
   int air_virtual_logstartmachine;
   RDAirPlayConf::OpMode air_virtual_opmodes[RD_RDVAIRPLAY_LOG_QUAN];
+  RDServiceListModel *air_service_model;
 };
 
 
