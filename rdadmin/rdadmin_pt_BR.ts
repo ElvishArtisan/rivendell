@@ -5812,15 +5812,15 @@ Carts</source>
     </message>
     <message>
         <source>Are you sure you want to delete service</source>
-        <translation>Tem certeza que quer deletar este Serviço?</translation>
+        <translation type="unfinished">Tem certeza que quer deletar este Serviço?</translation>
     </message>
     <message>
         <source>Delete Service</source>
-        <translation>Deletar Serviço</translation>
+        <translation type="unfinished">Deletar Serviço</translation>
     </message>
     <message>
         <source>There are</source>
-        <translation>Há</translation>
+        <translation type="unfinished">Há</translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.
@@ -5830,7 +5830,7 @@ Você quer proceder?</translation>
     </message>
     <message>
         <source>Logs Exist</source>
-        <translation>Lista Existente</translation>
+        <translation type="unfinished">Lista Existente</translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.</source>

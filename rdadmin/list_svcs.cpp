@@ -2,7 +2,7 @@
 //
 // List Rivendell Services
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,15 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
+#include <QPainter>
+#include <QEvent>
+#include <QMessageBox>
+
 #include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
 #include <q3buttongroup.h>
 
 #include <rdapplication.h>
@@ -41,8 +37,6 @@
 ListSvcs::ListSvcs(QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -86,20 +80,31 @@ ListSvcs::ListSvcs(QWidget *parent)
   //
   // Services List Box
   //
-  list_box=new Q3ListBox(this);
-  list_title_label=new QLabel(list_box,tr("&Services:"),this);
+  list_services_view=new QTableView(this);
+  list_title_label=new QLabel(list_services_view,tr("&Services:"),this);
   list_title_label->setFont(labelFont());
   list_title_label->setGeometry(14,11,85,19);
-  connect(list_box,SIGNAL(doubleClicked(Q3ListBoxItem *)),
-	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
-
-  RefreshList();
+  list_services_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  list_services_view->setSelectionMode(QAbstractItemView::SingleSelection);
+  list_services_view->setShowGrid(false);
+  list_services_view->setSortingEnabled(false);
+  list_services_view->setWordWrap(false);
+  list_services_model=new RDServiceListModel(this);
+  list_services_model->setFont(defaultFont());
+  list_services_model->setPalette(palette());
+  list_services_view->setModel(list_services_model);
+  connect(list_services_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_services_model,SIGNAL(modelReset()),
+	  list_services_view,SLOT(resizeColumnsToContents()));
+  list_services_view->resizeColumnsToContents();
 }
 
 
 ListSvcs::~ListSvcs()
 {
-  delete list_box;
+  delete list_services_model;
+  delete list_services_view;
 }
 
 
@@ -119,24 +124,27 @@ void ListSvcs::addData()
 {
   QString svcname;
 
-  AddSvc *add_svc=new AddSvc(&svcname,this);
-  if(add_svc->exec()<0) {
-    delete add_svc;
-    return;
+  AddSvc *d=new AddSvc(&svcname,this);
+  if(d->exec()) {
+    QModelIndex index=list_services_model->addService(svcname);
+    list_services_view->selectRow(index.row());
   }
-  delete add_svc;
-  RefreshList(svcname);
+  delete d;
 }
 
 
 void ListSvcs::editData()
 {
-  if(list_box->currentItem()<0) {
+  QModelIndexList rows=list_services_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  EditSvc *edit_svc=new EditSvc(list_box->currentText(),this);
-  edit_svc->exec();
-  delete edit_svc;
+  EditSvc *d=new EditSvc(list_services_model->serviceName(rows.first()),this);
+  if(d->exec()) {
+    list_services_model->refresh(rows.first());
+  }
+  delete d;
 }
 
 
@@ -144,15 +152,21 @@ void ListSvcs::deleteData()
 {
   QString sql;
   RDSqlQuery *q;
+  QModelIndexList rows=list_services_view->selectionModel()->selectedRows();
 
+  if(rows.size()!=1) {
+    return;
+  }
+  QString svcname=list_services_model->serviceName(rows.first());
   if(QMessageBox::warning(this,"RDAdmin- "+tr("Delete Service"),
 			  tr("Are you sure you want to delete service")+
-			  " \""+list_box->currentText()+"\"?",
+			  " \""+svcname+"\"?",
 			  QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
     return;
   }
+
   sql=QString("select NAME from LOGS where ")+
-    "SERVICE=\""+RDEscapeString(list_box->currentText())+"\"";
+    "SERVICE=\""+RDEscapeString(svcname)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(QMessageBox::warning(this,"RDAdmin - "+tr("Logs Exist"),
@@ -165,23 +179,20 @@ void ListSvcs::deleteData()
     }
   }
   delete q;
-  RDSvc *svc=new RDSvc(list_box->currentText(),rda->station(),rda->config());
+  RDSvc *svc=new RDSvc(svcname,rda->station(),rda->config());
   svc->remove();
   delete svc;
-  list_box->removeItem(list_box->currentItem());
-  if(list_box->currentItem()>=0) {
-    list_box->setSelected(list_box->currentItem(),true);
-  }
+  list_services_model->removeService(svcname);
 }
 
 
 void ListSvcs::closeData()
 {
-  done(0);
+  done(true);
 }
 
 
-void ListSvcs::doubleClickedData(Q3ListBoxItem *item)
+void ListSvcs::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -193,22 +204,5 @@ void ListSvcs::resizeEvent(QResizeEvent *e)
   list_edit_button->setGeometry(size().width()-90,90,80,50);
   list_delete_button->setGeometry(size().width()-90,150,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
-  list_box->setGeometry(10,30,size().width()-110,size().height()-40);
-}
-
-
-void ListSvcs::RefreshList(QString svcname)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  list_box->clear();
-  q=new RDSqlQuery("select NAME from SERVICES");
-  while (q->next()) {
-    list_box->insertItem(q->value(0).toString());
-    if(svcname==list_box->text(list_box->count()-1)) {
-      list_box->setCurrentItem(list_box->count()-1);
-    }
-  }
-  delete q;
+  list_services_view->setGeometry(10,30,size().width()-110,size().height()-40);
 }

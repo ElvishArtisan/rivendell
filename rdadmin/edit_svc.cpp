@@ -706,13 +706,13 @@ void EditSvc::musTemplateActivatedData(int index)
 void EditSvc::okData()
 {
   Save();
-  done(0);
+  done(true);
 }
 
 
 void EditSvc::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

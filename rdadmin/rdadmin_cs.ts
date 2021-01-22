@@ -6144,15 +6144,15 @@ vozíky</translation>
     </message>
     <message>
         <source>Are you sure you want to delete service</source>
-        <translation>Opravdu chcete smazat tuto službu</translation>
+        <translation type="unfinished">Opravdu chcete smazat tuto službu</translation>
     </message>
     <message>
         <source>Delete Service</source>
-        <translation>Smazat službu</translation>
+        <translation type="unfinished">Smazat službu</translation>
     </message>
     <message>
         <source>There are</source>
-        <translation>Jsou tu</translation>
+        <translation type="unfinished">Jsou tu</translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.
@@ -6162,7 +6162,7 @@ Stále ještě chcete pokračovat?</translation>
     </message>
     <message>
         <source>Logs Exist</source>
-        <translation>Zápisy existují</translation>
+        <translation type="unfinished">Zápisy existují</translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.</source>

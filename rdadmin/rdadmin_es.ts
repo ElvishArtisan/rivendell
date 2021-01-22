@@ -6098,15 +6098,15 @@ Cartuchos</translation>
     </message>
     <message>
         <source>Are you sure you want to delete service</source>
-        <translation>Está seguro de querer eliminar este servicio</translation>
+        <translation type="unfinished">Está seguro de querer eliminar este servicio</translation>
     </message>
     <message>
         <source>Delete Service</source>
-        <translation>Eliminar un servicio</translation>
+        <translation type="unfinished">Eliminar un servicio</translation>
     </message>
     <message>
         <source>There are</source>
-        <translation>Hay </translation>
+        <translation type="unfinished">Hay </translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.
@@ -6116,7 +6116,7 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>Logs Exist</source>
-        <translation>El PlayList ya existe</translation>
+        <translation type="unfinished">El PlayList ya existe</translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.</source>

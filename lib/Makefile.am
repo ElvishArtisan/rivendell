@@ -216,6 +216,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdschedruleslist.cpp rdschedruleslist.h\
                         rdsegmeter.cpp rdsegmeter.h\
                         rdsendmail.cpp rdsendmail.h\
+                        rdservicelistmodel.cpp rdservicelistmodel.h\
                         rdsettings.cpp rdsettings.h\
                         rdsimpleplayer.cpp rdsimpleplayer.h\
                         rdslider.cpp rdslider.h\
@@ -346,6 +347,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdschedcodes_dialog.cpp\
                           moc_rdrsscategorybox.cpp\
                           moc_rdsegmeter.cpp\
+                          moc_rdservicelistmodel.cpp\
                           moc_rdsimpleplayer.cpp\
                           moc_rdslider.cpp\
                           moc_rdsocket.cpp\

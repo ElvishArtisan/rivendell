@@ -4833,19 +4833,19 @@ Carts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Delete Service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>There are</source>
+        <source>Are you sure you want to delete service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Logs Exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

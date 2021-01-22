@@ -2703,6 +2703,45 @@ please try again!</source>
     </message>
 </context>
 <context>
+    <name>RDServiceListModel</name>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pgm Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Track Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Shelf Life</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ELR Shelf Life</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chain Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDSoundPanel</name>
     <message>
         <source>Play All</source>

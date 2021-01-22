@@ -5701,15 +5701,15 @@ Carts</source>
     </message>
     <message>
         <source>Are you sure you want to delete service</source>
-        <translation>Er du sikker på at du vil sletta tenesta</translation>
+        <translation type="unfinished">Er du sikker på at du vil sletta tenesta</translation>
     </message>
     <message>
         <source>Delete Service</source>
-        <translation>Slett tenesta</translation>
+        <translation type="unfinished">Slett tenesta</translation>
     </message>
     <message>
         <source>There are</source>
-        <translation>Denne tenesta eig</translation>
+        <translation type="unfinished">Denne tenesta eig</translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.
@@ -5719,7 +5719,7 @@ Er du sikker på at du vil halda fram?</translation>
     </message>
     <message>
         <source>Logs Exist</source>
-        <translation>Loggen eksisterer</translation>
+        <translation type="unfinished">Loggen eksisterer</translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.</source>

@@ -174,15 +174,15 @@ void AddSvc::okData()
   EditSvc *edit_svc=new EditSvc(svc_name_edit->text(),this);
   if(edit_svc->exec()<0) {
     delete edit_svc;
-    done(-1);
+    done(false);
     return;
   }
   delete edit_svc;
-  done(0);
+  done(true);
 }
 
 
 void AddSvc::cancelData()
 {
-  done(-1);
+  done(false);
 }

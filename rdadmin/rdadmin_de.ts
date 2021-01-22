@@ -5840,15 +5840,15 @@ Carts</source>
     </message>
     <message>
         <source>Are you sure you want to delete service</source>
-        <translation>Sind Sie sicher, daß sie den Service löschen wollen</translation>
+        <translation type="unfinished">Sind Sie sicher, daß sie den Service löschen wollen</translation>
     </message>
     <message>
         <source>Delete Service</source>
-        <translation>Service löschen</translation>
+        <translation type="unfinished">Service löschen</translation>
     </message>
     <message>
         <source>There are</source>
-        <translation>Es gibt</translation>
+        <translation type="unfinished">Es gibt</translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.
@@ -5858,7 +5858,7 @@ Wollen Sie immernoch fortfahren?</translation>
     </message>
     <message>
         <source>Logs Exist</source>
-        <translation>Logs existieren</translation>
+        <translation type="unfinished">Logs existieren</translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.</source>
