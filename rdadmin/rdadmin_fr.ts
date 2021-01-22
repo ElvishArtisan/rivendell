@@ -4790,11 +4790,11 @@ Carts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ho&amp;sts:</source>
+        <source>Rivendell Host List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete host</source>
+        <source>H&amp;osts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4802,7 +4802,7 @@ Carts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rivendell Host List</source>
+        <source>Are you sure you want to delete host</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

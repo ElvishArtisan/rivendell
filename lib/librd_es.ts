@@ -3483,6 +3483,73 @@ please try again!</source>
     </message>
 </context>
 <context>
+    <name>RDStationListModel</name>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IP Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Xport Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CAE Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maint Pool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag &amp; Drop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HPI Ver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JACK Ver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ALSA Ver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[unavailable]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDStereoMeter</name>
     <message>
         <source>L</source>

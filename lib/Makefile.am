@@ -227,6 +227,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdsocketstrings.cpp rdsocketstrings.h\
                         rdsound_panel.cpp rdsound_panel.h\
                         rdstation.cpp rdstation.h\
+                        rdstationlistmodel.cpp rdstationlistmodel.h\
                         rdstatus.cpp rdstatus.h\
                         rdstereometer.cpp rdstereometer.h\
                         rdstringlist.cpp rdstringlist.h\
@@ -354,6 +355,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdsound_panel.cpp\
                           moc_rdslotbox.cpp\
                           moc_rdslotdialog.cpp\
+                          moc_rdstationlistmodel.cpp\
                           moc_rdstereometer.cpp\
                           moc_rdsvc.cpp\
                           moc_rdtimeedit.cpp\

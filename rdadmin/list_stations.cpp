@@ -2,7 +2,7 @@
 //
 // List Rivendell Workstations
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rdairplay_conf.h>
 #include <rddb.h>
@@ -31,8 +31,6 @@
 ListStations::ListStations(QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -76,6 +74,25 @@ ListStations::ListStations(QWidget *parent)
   //
   // Station List Box
   //
+  list_stations_view=new QTableView(this);
+  list_title_label=new QLabel(list_stations_view,tr("H&osts:"),this);
+  list_title_label->setFont(labelFont());
+  list_title_label->setGeometry(14,11,85,19);
+  list_stations_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  list_stations_view->setSelectionMode(QAbstractItemView::SingleSelection);
+  list_stations_view->setShowGrid(false);
+  list_stations_view->setSortingEnabled(false);
+  list_stations_view->setWordWrap(false);
+  list_stations_model=new RDStationListModel(this);
+  list_stations_model->setFont(defaultFont());
+  list_stations_model->setPalette(palette());
+  list_stations_view->setModel(list_stations_model);
+  connect(list_stations_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_stations_model,SIGNAL(modelReset()),
+	  list_stations_view,SLOT(resizeColumnsToContents()));
+  list_stations_view->resizeColumnsToContents();
+  /*
   list_box=new Q3ListBox(this);
   QLabel *list_box_label=new QLabel(list_box,tr("Ho&sts:"),this);
   list_box_label->setFont(labelFont());
@@ -84,12 +101,14 @@ ListStations::ListStations(QWidget *parent)
 	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
 
   RefreshList();
+  */
 }
 
 
 ListStations::~ListStations()
 {
-  delete list_box;
+  delete list_stations_view;
+  delete list_stations_model;
 }
 
 
@@ -107,52 +126,65 @@ QSizePolicy ListStations::sizePolicy() const
 
 void ListStations::addData()
 {
-  QString stationname;
+  QString hostname;
 
-  AddStation *add_station=new AddStation(&stationname,this);
-  if(add_station->exec()<0) {
-    RDStation::remove(stationname);
-    delete add_station;
-    return;
+  AddStation *d=new AddStation(&hostname,this);
+  if(d->exec()) {
+    QModelIndex row=list_stations_model->addStation(hostname);
+    if(row.isValid()) {
+      list_stations_view->selectRow(row.row());
+    }
   }
-  delete add_station;
-  RefreshList(stationname);
+  else {
+    RDStation::remove(hostname);
+  }
+  delete d;
 }
 
 
 void ListStations::editData()
 {
-  if(list_box->currentItem()<0) {
+  QModelIndexList rows=list_stations_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  EditStation *edit_station=new EditStation(list_box->currentText(),this);
-  edit_station->exec();
-  delete edit_station;
+
+  EditStation *d=
+    new EditStation(list_stations_model->stationName(rows.first()),this);
+  if(d->exec()) {
+    list_stations_model->refresh(rows.first());
+  }
+  delete d;
 }
 
 
 void ListStations::deleteData()
 {
+  QModelIndexList rows=list_stations_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
+    return;
+  }
+  QString hostname=list_stations_model->stationName(rows.first());
   if(QMessageBox::warning(this,"RDAdmin - "+tr("Delete Station"),
-			    tr("Are you sure you want to delete host")+
-			    " \""+list_box->currentText()+"\"?",
-			  QMessageBox::Yes,QMessageBox::No)==QMessageBox::Yes) {
-    RDStation::remove(list_box->currentText());
-    list_box->removeItem(list_box->currentItem());
-    if(list_box->currentItem()>=0) {
-      list_box->setSelected(list_box->currentItem(),true);
-    }
+			  tr("Are you sure you want to delete host")+
+			  " \""+hostname+"\"?",
+			  QMessageBox::Yes,QMessageBox::No)==
+     QMessageBox::Yes) {
+    RDStation::remove(hostname);
+    list_stations_model->removeStation(hostname);
   }
 }
 
 
 void ListStations::closeData()
 {
-  done(0);
+  done(true);
 }
 
 
-void ListStations::doubleClickedData(Q3ListBoxItem *item)
+void ListStations::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -164,10 +196,10 @@ void ListStations::resizeEvent(QResizeEvent *e)
   list_edit_button->setGeometry(size().width()-90,90,80,50);
   list_delete_button->setGeometry(size().width()-90,150,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
-  list_box->setGeometry(10,30,size().width()-110,size().height()-40);
+  list_stations_view->setGeometry(10,30,size().width()-110,size().height()-40);
 }
 
-
+/*
 void ListStations::RefreshList(QString stationname)
 {
   QString sql;
@@ -183,3 +215,4 @@ void ListStations::RefreshList(QString stationname)
   }
   delete q;
 }
+*/

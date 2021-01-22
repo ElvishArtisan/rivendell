@@ -5658,18 +5658,22 @@ Carts</source>
     </message>
     <message>
         <source>Ho&amp;sts:</source>
-        <translation>Ver&amp;tar:</translation>
+        <translation type="obsolete">Ver&amp;tar:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete host</source>
-        <translation>Er du sikker på at du vil sletta verten</translation>
+        <translation type="unfinished">Er du sikker på at du vil sletta verten</translation>
     </message>
     <message>
         <source>Delete Station</source>
-        <translation>Slett stasjonen</translation>
+        <translation type="unfinished">Slett stasjonen</translation>
     </message>
     <message>
         <source>Rivendell Host List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>H&amp;osts:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

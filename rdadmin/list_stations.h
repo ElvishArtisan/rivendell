@@ -2,7 +2,7 @@
 //
 // List Rivendell Workstations
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,14 @@
 #ifndef LIST_STATIONS_H
 #define LIST_STATIONS_H
 
-#include <q3listbox.h>
+//#include <q3listbox.h>
 
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QLabel>
+#include <QPushButton>
+#include <QTableView>
 
 #include <rddialog.h>
+#include <rdstationlistmodel.h>
 
 class ListStations : public RDDialog
 {
@@ -41,16 +43,18 @@ class ListStations : public RDDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListBoxItem *item);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
   
  private:
-  void RefreshList(QString stationname="");
+  //  void RefreshList(QString stationname="");
   QLabel *list_title_label;
-  Q3ListBox *list_box;
+  //  Q3ListBox *list_box;
+  QTableView *list_stations_view;
+  RDStationListModel *list_stations_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;

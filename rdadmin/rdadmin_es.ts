@@ -6055,18 +6055,22 @@ Cartuchos</translation>
     </message>
     <message>
         <source>Ho&amp;sts:</source>
-        <translation>C&amp;omputadores:</translation>
+        <translation type="obsolete">C&amp;omputadores:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete host</source>
-        <translation>Está seguro de querer eliminar este equipo</translation>
+        <translation type="unfinished">Está seguro de querer eliminar este equipo</translation>
     </message>
     <message>
         <source>Delete Station</source>
-        <translation>Eliminar equipo</translation>
+        <translation type="unfinished">Eliminar equipo</translation>
     </message>
     <message>
         <source>Rivendell Host List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>H&amp;osts:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

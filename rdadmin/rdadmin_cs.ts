@@ -6101,18 +6101,22 @@ vozíky</translation>
     </message>
     <message>
         <source>Ho&amp;sts:</source>
-        <translation>&amp;Servery:</translation>
+        <translation type="obsolete">&amp;Servery:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete host</source>
-        <translation>Opravdu chcete smazat tento server</translation>
+        <translation type="unfinished">Opravdu chcete smazat tento server</translation>
     </message>
     <message>
         <source>Delete Station</source>
-        <translation>Smazat stanici</translation>
+        <translation type="unfinished">Smazat stanici</translation>
     </message>
     <message>
         <source>Rivendell Host List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>H&amp;osts:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

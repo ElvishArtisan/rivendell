@@ -744,13 +744,13 @@ void EditStation::okData()
 
 void EditStation::okTimerData()
 {
-  done(0);
+  done(true);
 }
 
 
 void EditStation::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 
