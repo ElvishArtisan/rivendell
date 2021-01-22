@@ -20871,3 +20871,6 @@
 2021-01-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDIconEngine::stationIcon()' method.
 	* Added an icons for 'host' objects.
+2021-01-22 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Edit Host' dialog in rdadmin(1) to use the
+	model-based API.

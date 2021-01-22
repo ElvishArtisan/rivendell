@@ -22,9 +22,12 @@
 #include "rdescape_string.h"
 #include "rdstationlistmodel.h"
 
-RDStationListModel::RDStationListModel(QObject *parent)
+RDStationListModel::RDStationListModel(const QString &localhost_name,
+				       QObject *parent)
   : QAbstractTableModel(parent)
 {
+  d_localhost_name=localhost_name;
+
   //
   // Column Attributes
   //
@@ -167,7 +170,7 @@ QVariant RDStationListModel::data(const QModelIndex &index,int role) const
 
 QString RDStationListModel::stationName(const QModelIndex &row) const
 {
-  return d_texts.at(row.row()).at(0).toString();
+  return d_hostnames.at(row.row());
 }
 
 
@@ -178,7 +181,7 @@ QModelIndex RDStationListModel::addStation(const QString &hostname)
   //
   int offset=d_texts.size();
   for(int i=0;i<d_texts.size();i++) {
-    if(hostname.toLower()<d_texts.at(i).at(0).toString().toLower()) {
+    if(hostname.toLower()<d_hostnames.at(i).toLower()) {
       offset=i;
       break;
     }
@@ -188,7 +191,13 @@ QModelIndex RDStationListModel::addStation(const QString &hostname)
   for(int i=0;i<columnCount();i++) {
     list.push_back(QVariant());
   }
-  list[0]=hostname;
+  if(hostname==d_localhost_name) {
+    list[0]="localhost";
+  }
+  else {
+    list[0]=hostname;
+  }
+  d_hostnames.insert(offset,hostname);
   d_texts.insert(offset,list);
   d_icons.insert(offset,list);
   updateRowLine(offset);
@@ -202,6 +211,7 @@ void RDStationListModel::removeStation(const QModelIndex &row)
 {
   beginRemoveRows(QModelIndex(),row.row(),row.row());
 
+  d_hostnames.removeAt(row.row());
   d_texts.removeAt(row.row());
   d_icons.removeAt(row.row());
 
@@ -212,7 +222,7 @@ void RDStationListModel::removeStation(const QModelIndex &row)
 void RDStationListModel::removeStation(const QString &hostname)
 {
   for(int i=0;i<d_texts.size();i++) {
-    if(d_texts.at(i).at(0)==hostname) {
+    if(d_hostnames.at(i)==hostname) {
       removeStation(createIndex(i,0));
       return;
     }
@@ -224,9 +234,7 @@ void RDStationListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      "where STATIONS.NAME=\""+
-      RDEscapeString(d_texts.at(row.row()).at(0).toString())+
-      "\"";
+      "where STATIONS.NAME=\""+RDEscapeString(d_hostnames.at(0))+"\"";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -258,10 +266,12 @@ void RDStationListModel::updateModel()
   QString sql=sqlFields();
   sql+="order by NAME ";
   beginResetModel();
+  d_hostnames.clear();
   d_texts.clear();
   d_icons.clear();
   q=new RDSqlQuery(sql);
   while(q->next()) {
+    d_hostnames.push_back(QString());
     d_texts.push_back(texts);
     d_icons.push_back(texts);
     updateRow(d_texts.size()-1,q);
@@ -275,7 +285,7 @@ void RDStationListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      "where NAME=\""+RDEscapeString(d_texts.at(line).at(0).toString())+"\"";
+      "where NAME=\""+RDEscapeString(d_hostnames.at(0))+"\"";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -291,7 +301,13 @@ void RDStationListModel::updateRow(int row,RDSqlQuery *q)
   QList<QVariant> icons;
 
   // Hostname
-  texts.push_back(q->value(0));
+  d_hostnames[row]=q->value(0).toString();
+  if(q->value(0).toString()==d_localhost_name) {
+    texts.push_back("localhost");
+  }
+  else {
+    texts.push_back(q->value(0));
+  }
   icons.push_back(rda->iconEngine()->stationIcon());
 
   // Description

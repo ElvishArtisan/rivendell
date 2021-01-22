@@ -83,7 +83,7 @@ ListStations::ListStations(QWidget *parent)
   list_stations_view->setShowGrid(false);
   list_stations_view->setSortingEnabled(false);
   list_stations_view->setWordWrap(false);
-  list_stations_model=new RDStationListModel(this);
+  list_stations_model=new RDStationListModel("",this);
   list_stations_model->setFont(defaultFont());
   list_stations_model->setPalette(palette());
   list_stations_view->setModel(list_stations_model);

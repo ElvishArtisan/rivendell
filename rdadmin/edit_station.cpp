@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rdapplication.h>
 #include <rdcatch_connect.h>
@@ -48,9 +48,7 @@
 EditStation::EditStation(QString sname,QWidget *parent)
   : RDDialog(parent)
 {
-  RDSqlQuery *q;
-  QString sql;
-  char temp[256];
+  char temp[1024];
 
   //
   // Fix the Window Size
@@ -73,6 +71,12 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   RDTextValidator *validator=new RDTextValidator(this);
   QIntValidator *macro_validator=new QIntValidator(1,RD_MAX_CART_NUMBER,this);
+
+  //
+  // Models
+  //
+  station_username_model=new RDUserListModel(this);
+  station_station_model=new RDStationListModel(sname,this);
 
   //
   // Station Name
@@ -109,7 +113,6 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   station_username_box=new QComboBox(this);
   station_username_box->setEditable(false);
-  station_username_model=new RDUserListModel(this);
   station_username_model->setTypeFilter(RDUser::TypeUser);
   station_username_box->setModel(station_username_model);
   station_username_label=
@@ -319,6 +322,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   station_http_station_box=new QComboBox(this);
   station_http_station_box->setEditable(false);
+  station_http_station_box->setModel(station_station_model);
   station_http_station_label=
     new QLabel(station_http_station_box,tr("HTTP Xport:"),this);
   station_http_station_label->setFont(labelFont());
@@ -329,6 +333,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   station_cae_station_box=new QComboBox(this);
   station_cae_station_box->setEditable(false);
+  station_cae_station_box->setModel(station_station_model);
   connect(station_cae_station_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(caeStationActivatedData(const QString &)));
   station_cae_station_label=
@@ -342,7 +347,8 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_rdlibrary_button=new QPushButton(this);
   station_rdlibrary_button->setFont(buttonFont());
   station_rdlibrary_button->setText(tr("RD&Library"));
-  connect(station_rdlibrary_button,SIGNAL(clicked()),this,SLOT(editLibraryData()));
+  connect(station_rdlibrary_button,SIGNAL(clicked()),
+	  this,SLOT(editLibraryData()));
 
   //
   // RDCatch Configuration Button
@@ -549,25 +555,8 @@ EditStation::EditStation(QString sname,QWidget *parent)
     station_panel_enforce_label->setDisabled(true);
     station_panel_enforce_box->setDisabled(true);
   }
-
-  station_http_station_box->insertItem("localhost");
-  station_cae_station_box->insertItem("localhost");
-  sql=QString("select NAME from STATIONS where ")+
-    "NAME!=\""+RDEscapeString(sname)+"\" order by NAME";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    station_http_station_box->insertItem(q->value(0).toString());
-    if(q->value(0).toString()==station_station->httpStation()) {
-      station_http_station_box->
-	setCurrentItem(station_http_station_box->count()-1);
-    }
-    station_cae_station_box->insertItem(q->value(0).toString());
-    if(q->value(0).toString()==station_station->caeStation()) {
-      station_cae_station_box->
-	setCurrentItem(station_cae_station_box->count()-1);
-    }
-  }
-  delete q;
+  station_http_station_box->setCurrentText(station_station->httpStation());
+  station_cae_station_box->setCurrentText(station_station->caeStation());
   for(int i=0;i<station_http_station_box->count();i++) {
     if(station_http_station_box->text(i)==station_station->httpStation()) {
       station_http_station_box->setCurrentItem(i);
@@ -584,6 +573,7 @@ EditStation::~EditStation()
   delete station_station;
   delete station_cae_station;
   delete station_username_model;
+  delete station_station_model;
 }
 
 

@@ -21,19 +21,20 @@
 #ifndef EDIT_STATION_H
 #define EDIT_STATION_H
 
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qgroupbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qspinbox.h>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
 #include <rddialog.h>
 #include <rdcardselector.h>
 #include <rdcatch_connect.h>
 #include <rdripc.h>
 #include <rdstation.h>
+#include <rdstationlistmodel.h>
 #include <rduserlistmodel.h>
 
 class EditStation : public RDDialog
@@ -134,6 +135,7 @@ class EditStation : public RDDialog
    QComboBox *station_http_station_box;
    QLabel *station_cae_station_label;
    QComboBox *station_cae_station_box;
+   RDStationListModel *station_station_model;
    QPushButton *station_rdlibrary_button;
    QPushButton *station_rdcatch_button;
    QPushButton *station_rdairplay_button;
