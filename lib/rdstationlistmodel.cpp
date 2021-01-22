@@ -292,7 +292,7 @@ void RDStationListModel::updateRow(int row,RDSqlQuery *q)
 
   // Hostname
   texts.push_back(q->value(0));
-  icons.push_back(QVariant());
+  icons.push_back(rda->iconEngine()->stationIcon());
 
   // Description
   texts.push_back(q->value(1));
@@ -316,16 +316,26 @@ void RDStationListModel::updateRow(int row,RDSqlQuery *q)
   icons.push_back(QVariant());
 
   // Xport Host
-  texts.push_back(q->value(6));
-  icons.push_back(QVariant());
+  if(q->value(6).toString().toLower().trimmed()=="localhost") {
+    texts.push_back(q->value(0));
+  }
+  else {
+    texts.push_back(q->value(6));
+  }
+  icons.push_back(rda->iconEngine()->stationIcon());
 
   // CAE Host
-  texts.push_back(q->value(7));
-  icons.push_back(QVariant());
+  if(q->value(7).toString().toLower().trimmed()=="localhost") {
+    texts.push_back(q->value(0));
+  }
+  else {
+    texts.push_back(q->value(7));
+  }
+  icons.push_back(rda->iconEngine()->stationIcon());
 
   // Report Editor
   if(q->value(8).toString().isEmpty()) {
-    texts.push_back(tr("[none]"));
+    texts.push_back("vi");
   }
   else {
     texts.push_back(q->value(8).toString().

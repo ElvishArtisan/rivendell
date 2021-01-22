@@ -287,6 +287,8 @@ EXTRA_DIST = admin.xpm\
              greencheckmark.png\
              greenball.xpm\
              greencheckmark.xpm\
+             host-16x16.xpm\
+             host-48x48.xpm\
              localuser.xpm\
              marker.xpm\
              mic16.png\

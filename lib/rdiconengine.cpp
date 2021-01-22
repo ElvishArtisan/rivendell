@@ -30,6 +30,8 @@
 #include "../icons/redball.xpm"
 #include "../icons/whiteball.xpm"
 
+#include "../icons/host-16x16.xpm"
+
 #include "../icons/play.xpm"
 #include "../icons/rml5.xpm"
 #include "../icons/chain.xpm"
@@ -52,6 +54,11 @@ RDIconEngine::RDIconEngine()
   d_list_icons.push_back(QPixmap(redball_xpm));
   d_list_icons.push_back(QPixmap(whiteball_xpm));
   d_list_icons.push_back(QPixmap(blueball_xpm));
+
+  //
+  // Create Station Icon
+  //
+  d_station_icon=QPixmap(host_16x16_xpm);
 
   //
   // Create Type Icons
@@ -78,6 +85,12 @@ RDIconEngine::RDIconEngine()
 QPixmap RDIconEngine::listIcon(RDIconEngine::IconType type) const
 {
   return d_list_icons.at(type);
+}
+
+
+QPixmap RDIconEngine::stationIcon() const
+{
+  return d_station_icon;
 }
 
 

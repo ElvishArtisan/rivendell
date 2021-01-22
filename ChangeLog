@@ -20868,3 +20868,6 @@
 	* Added 'RDStationListModel' class
 	* Refactored the 'List Hosts' dialog in rdadmin(1) to use the
 	model-based API.
+2021-01-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDIconEngine::stationIcon()' method.
+	* Added an icons for 'host' objects.

@@ -34,12 +34,14 @@ class RDIconEngine
 		 BlueBall=5};
   RDIconEngine();
   QPixmap listIcon(IconType type) const;
+  QPixmap stationIcon() const;
   QPixmap typeIcon(RDLogLine::Type type,
 		   RDLogLine::Source src=RDLogLine::Manual) const;
   QPixmap userIcon(RDUser::Type type) const;
 
  private:
   QList<QPixmap> d_list_icons;
+  QPixmap d_station_icon;
   QMap<RDLogLine::Type,QPixmap> log_type_icons;
   QPixmap log_track_cart_icon;
   QMap<RDUser::Type,QPixmap> d_user_icons;
