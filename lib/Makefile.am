@@ -121,6 +121,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rddiscrecord.cpp rddiscrecord.h\
                         rddownload.cpp rddownload.h\
                         rddropbox.cpp rddropbox.h\
+                        rddropboxlistmodel.cpp rddropboxlistmodel.h\
                         rddummylookup.cpp rddummylookup.h\
                         rdedit_audio.cpp rdedit_audio.h\
                         rdedit_panel_name.cpp rdedit_panel_name.h\
@@ -298,6 +299,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rddialog.cpp\
                           moc_rddisclookup.cpp\
                           moc_rddownload.cpp\
+                          moc_rddropboxlistmodel.cpp\
                           moc_rddummylookup.cpp\
                           moc_rdedit_audio.cpp\
                           moc_rdedit_panel_name.cpp\

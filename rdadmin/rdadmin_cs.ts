@@ -5044,55 +5044,51 @@ Jste si jistý, že chcete pokračovat?</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation>Skupina</translation>
+        <translation type="obsolete">Skupina</translation>
     </message>
     <message>
         <source>Path</source>
-        <translation>Cesta</translation>
+        <translation type="obsolete">Cesta</translation>
     </message>
     <message>
         <source>Normalization Level</source>
-        <translation>Úroveň normalizace</translation>
+        <translation type="obsolete">Úroveň normalizace</translation>
     </message>
     <message>
         <source>Autotrim Level</source>
-        <translation>Úroveň automatického zastřižení</translation>
+        <translation type="obsolete">Úroveň automatického zastřižení</translation>
     </message>
     <message>
         <source>To Cart</source>
-        <translation>Do vozíku</translation>
+        <translation type="obsolete">Do vozíku</translation>
     </message>
     <message>
         <source>Use CartChunk ID</source>
-        <translation>Použít ID kousku vozík</translation>
+        <translation type="obsolete">Použít ID kousku vozík</translation>
     </message>
     <message>
         <source>Delete Cuts</source>
-        <translation>Smazat záběry</translation>
+        <translation type="obsolete">Smazat záběry</translation>
     </message>
     <message>
         <source>Metadata Pattern</source>
-        <translation>Vzor pro popisná data</translation>
+        <translation type="obsolete">Vzor pro popisná data</translation>
     </message>
     <message>
         <source>Fix Broken Formats</source>
-        <translation>Opravit poškozené formáty</translation>
+        <translation type="obsolete">Opravit poškozené formáty</translation>
     </message>
     <message>
         <source>[off]</source>
-        <translation>[vypnuto]</translation>
+        <translation type="obsolete">[vypnuto]</translation>
     </message>
     <message>
         <source>[auto]</source>
-        <translation>[automaticky]</translation>
+        <translation type="obsolete">[automaticky]</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[žádný]</translation>
-    </message>
-    <message>
-        <source>User Defined</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[žádný]</translation>
     </message>
     <message>
         <source>Rivendell Dropbox Configurations on</source>
@@ -5100,10 +5096,6 @@ Jste si jistý, že chcete pokračovat?</translation>
     </message>
     <message>
         <source>D&amp;uplicate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

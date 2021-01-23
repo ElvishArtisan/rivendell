@@ -3916,67 +3916,11 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Normalization Level</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Autotrim Level</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>To Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use CartChunk ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Cuts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Metadata Pattern</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Fix Broken Formats</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[off]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[auto]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User Defined</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Rivendell Dropbox Configurations on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>D&amp;uplicate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

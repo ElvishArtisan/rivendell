@@ -1741,6 +1741,61 @@ Cartucho</translation>
     </message>
 </context>
 <context>
+    <name>RDDropboxListModel</name>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Norm. Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Autotrim Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Force Mono</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use CC ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Cuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Metadata Pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[auto]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[off]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDEditAudio</name>
     <message>
         <source>&amp;Save</source>

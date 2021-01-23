@@ -2,7 +2,7 @@
 //
 // List Rivendell Dropboxes
 //
-//   (C) Copyright 2002-2019 Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,8 +28,6 @@
 ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   list_stationname=stationname;
 
   //
@@ -83,38 +81,23 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
-  // Group List
+  // Dropbox List
   //
-  list_dropboxes_view=new RDListView(this);
-  list_dropboxes_view->setAllColumnsShowFocus(true);
-  list_dropboxes_view->addColumn(tr("ID"));
-  list_dropboxes_view->setColumnAlignment(0,Qt::AlignRight);
-  list_dropboxes_view->addColumn(tr("Group"));
-  list_dropboxes_view->setColumnAlignment(1,Qt::AlignLeft);
-  list_dropboxes_view->addColumn(tr("Path"));
-  list_dropboxes_view->setColumnAlignment(2,Qt::AlignLeft);
-  list_dropboxes_view->addColumn(tr("Normalization Level"));
-  list_dropboxes_view->setColumnAlignment(3,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("Autotrim Level"));
-  list_dropboxes_view->setColumnAlignment(4,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("To Cart"));
-  list_dropboxes_view->setColumnAlignment(5,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("Use CartChunk ID"));
-  list_dropboxes_view->setColumnAlignment(6,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("Delete Cuts"));
-  list_dropboxes_view->setColumnAlignment(7,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("Metadata Pattern"));
-  list_dropboxes_view->setColumnAlignment(8,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("Fix Broken Formats"));
-  list_dropboxes_view->setColumnAlignment(9,Qt::AlignCenter);
-  list_dropboxes_view->addColumn(tr("User Defined"));
-  list_dropboxes_view->setColumnAlignment(10,Qt::AlignLeft);
-  connect(list_dropboxes_view,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-
-  RefreshList();
+  list_dropboxes_view=new QTableView(this);
+  list_dropboxes_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  list_dropboxes_view->setSelectionMode(QAbstractItemView::SingleSelection);
+  list_dropboxes_view->setShowGrid(false);
+  list_dropboxes_view->setSortingEnabled(false);
+  list_dropboxes_view->setWordWrap(false);
+  list_dropboxes_model=new RDDropboxListModel(stationname,this);
+  list_dropboxes_model->setFont(defaultFont());
+  list_dropboxes_model->setPalette(palette());
+  list_dropboxes_view->setModel(list_dropboxes_model);
+  connect(list_dropboxes_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_dropboxes_model,SIGNAL(modelReset()),
+	  list_dropboxes_view,SLOT(resizeColumnsToContents()));
+  list_dropboxes_view->resizeColumnsToContents();
 }
 
 
@@ -142,6 +125,10 @@ void ListDropboxes::addData()
   delete box;
   EditDropbox *edit_dropbox=new EditDropbox(id,false,this);
   if(edit_dropbox->exec()) {
+    QModelIndex row=list_dropboxes_model->addDropbox(id);
+    if(row.isValid()) {
+      list_dropboxes_view->selectRow(row.row());
+    }
     RDNotification *notify=new RDNotification(RDNotification::DropboxType,
 					      RDNotification::AddAction,
 					      list_stationname);
@@ -155,47 +142,48 @@ void ListDropboxes::addData()
     delete edit_dropbox;
     return;
   }
-  RDListViewItem *item=new RDListViewItem(list_dropboxes_view);
-  item->setId(id);
-  RefreshItem(item);
-  item->setSelected(true);
-  list_dropboxes_view->setCurrentItem(item);
-  list_dropboxes_view->ensureItemVisible(item);
 }
 
 
 void ListDropboxes::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_dropboxes_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_dropboxes_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  EditDropbox *edit_dropbox=new EditDropbox(item->id(),false,this);
-  if(edit_dropbox->exec()) {
+  EditDropbox *d=
+    new EditDropbox(list_dropboxes_model->dropboxId(rows.first()),false,this);
+  if(d->exec()) {
+    list_dropboxes_model->refresh(rows.first());
     RDNotification *notify=new RDNotification(RDNotification::DropboxType,
 					      RDNotification::ModifyAction,
 					      list_stationname);
     rda->ripc()->sendNotification(*notify);
     delete notify;
   }
-  delete edit_dropbox;
-  RefreshItem(item);
+  delete d;
 }
 
 
 void ListDropboxes::duplicateData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_dropboxes_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_dropboxes_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-
-  RDDropbox *src_box=new RDDropbox(item->id(),list_stationname);
+  int box_id=list_dropboxes_model->dropboxId(rows.first());
+  RDDropbox *src_box=new RDDropbox(box_id,list_stationname);
   int new_box_id=src_box->duplicate();
   delete src_box;
 
-  EditDropbox *edit_dropbox=new EditDropbox(new_box_id,true,this);
-  if(edit_dropbox->exec()) {
+  EditDropbox *d=new EditDropbox(new_box_id,true,this);
+  if(d->exec()) {
+    QModelIndex index=list_dropboxes_model->addDropbox(new_box_id);
+    if(index.isValid()) {
+      list_dropboxes_view->selectRow(index.row());
+    }
     RDNotification *notify=new RDNotification(RDNotification::DropboxType,
 					      RDNotification::AddAction,
 					      list_stationname);
@@ -203,50 +191,41 @@ void ListDropboxes::duplicateData()
     delete notify;
   }
   else {
-    QString sql=QString().sprintf("delete from DROPBOXES where ID=%d",new_box_id);
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    delete q;
-    delete edit_dropbox;
-    return;
+    QString sql=QString().sprintf("delete from DROPBOXES where ID=%d",
+				  new_box_id);
+    RDSqlQuery::apply(sql);
   }
-  item=new RDListViewItem(list_dropboxes_view);
-  item->setId(new_box_id);
-  RefreshItem(item);
-  item->setSelected(true);
-  list_dropboxes_view->setCurrentItem(item);
-  list_dropboxes_view->ensureItemVisible(item);
+  delete d;  
 }
 
 
 void ListDropboxes::deleteData()
 {
   QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item=(RDListViewItem *)list_dropboxes_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_dropboxes_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
+  int box_id=list_dropboxes_model->dropboxId(rows.first());
   sql=QString().sprintf("delete from DROPBOX_PATHS where DROPBOX_ID=%d",
-			item->id());
-  q=new RDSqlQuery(sql);
-  delete q;
+			box_id);
+  RDSqlQuery::apply(sql);
 
-  sql=QString().sprintf("delete from DROPBOXES where ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString().sprintf("delete from DROPBOXES where ID=%d",box_id);
+  RDSqlQuery::apply(sql);
+
+  list_dropboxes_model->removeDropbox(box_id);
 
   RDNotification *notify=new RDNotification(RDNotification::DropboxType,
 					    RDNotification::DeleteAction,
 					    list_stationname);
   rda->ripc()->sendNotification(*notify);
   delete notify;
-
-  delete item;
 }
 
 
-void ListDropboxes::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				   int col)
+void ListDropboxes::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -267,103 +246,4 @@ void ListDropboxes::resizeEvent(QResizeEvent *e)
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
   list_dropboxes_view->
     setGeometry(10,10,size().width()-120,size().height()-40);
-}
-
-
-void ListDropboxes::RefreshList()
-{
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item;
-
-  list_dropboxes_view->clear();
-  sql=QString("select ")+
-    "DROPBOXES.ID,"+                   // 00
-    "DROPBOXES.GROUP_NAME,"+           // 01
-    "DROPBOXES.PATH,"+                 // 02
-    "DROPBOXES.NORMALIZATION_LEVEL,"+  // 03
-    "DROPBOXES.AUTOTRIM_LEVEL,"+       // 04
-    "DROPBOXES.TO_CART,"+              // 05
-    "DROPBOXES.USE_CARTCHUNK_ID,"+     // 06
-    "DROPBOXES.DELETE_CUTS,"+          // 07
-    "DROPBOXES.METADATA_PATTERN,"+     // 08
-    "DROPBOXES.FIX_BROKEN_FORMATS,"+   // 09
-    "DROPBOXES.SET_USER_DEFINED,"+     // 10
-    "GROUPS.COLOR "+                   // 11
-    "from DROPBOXES left join GROUPS "+
-    "on DROPBOXES.GROUP_NAME=GROUPS.NAME where "+
-    "DROPBOXES.STATION_NAME=\""+RDEscapeString(list_stationname)+"\"";
-  q=new RDSqlQuery(sql);
-  while (q->next()) {
-    item=new RDListViewItem(list_dropboxes_view);
-    WriteItem(item,q);
-  }
-  delete q;
-}
-
-
-void ListDropboxes::RefreshItem(RDListViewItem *item)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("select ")+
-    "DROPBOXES.ID,"+                   // 00
-    "DROPBOXES.GROUP_NAME,"+           // 01
-    "DROPBOXES.PATH,"+                 // 02
-    "DROPBOXES.NORMALIZATION_LEVEL,"+  // 03
-    "DROPBOXES.AUTOTRIM_LEVEL,"+       // 04
-    "DROPBOXES.TO_CART,"+              // 05
-    "DROPBOXES.USE_CARTCHUNK_ID,"+     // 06
-    "DROPBOXES.DELETE_CUTS,"+          // 07
-    "DROPBOXES.METADATA_PATTERN,"+     // 08
-    "DROPBOXES.FIX_BROKEN_FORMATS,"+   // 09
-    "DROPBOXES.SET_USER_DEFINED,"+     // 10
-    "GROUPS.COLOR "+                   // 11
-    "from DROPBOXES left join GROUPS on "+
-    "DROPBOXES.GROUP_NAME=GROUPS.NAME where "+
-    QString().sprintf("DROPBOXES.ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  if(q->next()) {
-    WriteItem(item,q);
-  }
-  delete q;
-}
-
-
-void ListDropboxes::WriteItem(RDListViewItem *item,RDSqlQuery *q)
-{
-  item->setId(q->value(0).toInt());
-  item->setText(0,QString().sprintf("%d",q->value(0).toInt()));
-  item->setText(1,q->value(1).toString());
-  item->setTextColor(1,q->value(11).toString(),QFont::Bold);
-  item->setText(2,q->value(2).toString());
-  if(q->value(3).toInt()<0) {
-    item->setText(3,QString().sprintf("%d",q->value(3).toInt()/100));
-  }
-  else {
-    item->setText(3,tr("[off]"));
-  }
-  if(q->value(4).toInt()<0) {
-    item->setText(4,QString().sprintf("%d",q->value(4).toInt()/100));
-  }
-  else {
-    item->setText(4,tr("[off]"));
-  }
-  if(q->value(5).toUInt()>0) {
-    item->setText(5,QString().sprintf("%06u",q->value(5).toUInt()));
-  }
-  else {
-    item->setText(5,tr("[auto]"));
-  }
-  item->setText(6,q->value(6).toString());
-  item->setText(7,q->value(7).toString());
-  if(q->value(8).toString().isEmpty()) {
-    item->setText(8,tr("[none]"));
-  }
-  else {
-    item->setText(8,q->value(8).toString());
-  }
-  item->setText(9,q->value(9).toString());
-  item->setText(10,q->value(10).toString());
 }
