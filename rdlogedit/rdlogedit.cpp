@@ -2,7 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,11 +33,6 @@
 #include "globals.h"
 #include "rdlogedit.h"
 #include "voice_tracker.h"
-
-//
-// Icons
-//
-#include "../icons/rdlogedit-22x22.xpm"
 
 //
 // Global Resources
@@ -105,7 +100,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Create Icons
   //
-  setWindowIcon(QPixmap(rdlogedit_22x22_xpm));
+  setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdLogEdit,22));
 
   //
   // Log Filter

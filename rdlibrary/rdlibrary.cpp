@@ -54,11 +54,6 @@ bool audio_changed;
 //
 void SigHandler(int signo);
 
-//
-// Icons
-//
-#include "../icons/rivendell-22x22.xpm"
-
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   : RDWidget(c,parent)
 {
@@ -78,11 +73,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Initialize LibCurl
   //
   curl_global_init(CURL_GLOBAL_ALL);
-
-  //
-  // Create Icons
-  //
-  setWindowIcon(QPixmap(rivendell_22x22_xpm));
 
   //
   // Progress Dialog
@@ -106,6 +96,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     QMessageBox::critical(this,"RDLibrary - "+tr("Error"),err_msg);
     exit(1);
   }
+  setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdLibrary,22));
 
   //
   // Read Command Options

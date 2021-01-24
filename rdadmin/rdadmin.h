@@ -2,7 +2,7 @@
 //
 // The Administration Utility for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,14 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDADMIN_H
 #define RDADMIN_H
 
 #include <qsize.h>
 #include <qsizepolicy.h>
-#include <qsqldatabase.h>
-#include <qpixmap.h>
 
 #include <rdwidget.h>
 
@@ -56,7 +53,6 @@ class MainWidget : public RDWidget
   void ClearTables();
   QString admin_username;
   QString admin_password;
-  QPixmap *admin_rivendell_map;
   QString admin_filter;
   QString admin_group;
   QString admin_schedcode;

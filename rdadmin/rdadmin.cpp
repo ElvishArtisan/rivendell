@@ -2,7 +2,7 @@
 //
 // The Administrator Utility for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -55,11 +55,6 @@
 #include "rdadmin.h"
 
 //
-// Icons
-//
-#include "../icons/rdadmin-22x22.xpm"
-
-//
 // Global Classes
 //
 RDCartDialog *admin_cart_dialog;
@@ -86,16 +81,13 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create And Set Icon
   //
-  admin_rivendell_map=new QPixmap(rdadmin_22x22_xpm);
-  setWindowIcon(*admin_rivendell_map);
+  setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdAdmin,22));
 
   //
   // Open the Database

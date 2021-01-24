@@ -1,5 +1,5 @@
 /* XPM */
-static const char * rdairplay_128x128_xpm[] = {
+static const char * rdairplay_256x256_xpm[] = {
 "256 256 662 2",
 "  	c None",
 ". 	c #0F8F34",

@@ -21,8 +21,6 @@
 #ifndef RDAIRPLAY_H
 #define RDAIRPLAY_H
 
-#include <qsplashscreen.h>
-
 #include <rd3emptycart.h>
 #include <rdhotkeylist.h>
 #include <rdhotkeys.h>
@@ -96,7 +94,6 @@ class MainWidget : public RDWidget
   void masterTimerData();
   void transportChangedData();
   void timeModeData(RDAirPlayConf::TimeMode mode);
-  void clearSplashData();
   void keyPressEvent(QKeyEvent *e);
   void keyReleaseEvent(QKeyEvent *e);
   void closeEvent(QCloseEvent *);
@@ -166,7 +163,6 @@ class MainWidget : public RDWidget
   bool air_clear_filter;
   RDAirPlayConf::BarAction air_bar_action;
   bool air_pause_enabled;
-  QPixmap *air_rivendell_map;
   QString air_start_logname[RDAIRPLAY_LOG_QUANTITY];
   int air_start_line[RDAIRPLAY_LOG_QUANTITY];
   bool air_start_start[RDAIRPLAY_LOG_QUANTITY];
@@ -174,7 +170,7 @@ class MainWidget : public RDWidget
   QDateTime air_startup_datetime;
   QPixmap *air_refresh_pixmap;
   QString air_editor_cmd;
-  QSplashScreen *air_splash_screen;
+  //  QSplashScreen *air_splash_screen;
   int  keystrokecount;
   bool AltKeyHit ;
   bool CtrlKeyHit;

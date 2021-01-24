@@ -34,7 +34,6 @@
 //
 // Icons
 //
-#include "../icons/rdcastmanager-22x22.xpm"
 #include "../icons/greencheckmark.xpm"
 #include "../icons/redx.xpm"
 #include "../icons/rdcastmanager-32x32.xpm"
@@ -96,8 +95,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Create Icons
   //
-  cast_rivendell_map=new QPixmap(rdcastmanager_22x22_xpm);
-  setWindowIcon(*cast_rivendell_map);
+  setWindowIcon(rda->iconEngine()->
+		applicationIcon(RDIconEngine::RdCastManager,22));
   cast_greencheckmark_map=new QPixmap(greencheckmark_xpm);
   cast_redx_map=new QPixmap(redx_xpm);
   cast_rdcastmanager_32x32_map=new QPixmap(rdcastmanager_32x32_xpm);

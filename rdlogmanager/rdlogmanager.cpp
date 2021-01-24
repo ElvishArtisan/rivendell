@@ -2,7 +2,7 @@
 //
 // The Log Generator Utility for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,11 +32,6 @@
 #include "logobject.h"
 
 //
-// Icons
-//
-#include "../icons/rdlogmanager-22x22.xpm"
-
-//
 // Global Resources
 //
 QString *event_filter;
@@ -62,7 +57,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     QMessageBox::critical(this,"RDLogManager - "+tr("Error"),err_msg);
     exit(RDApplication::ExitNoDb);
   }
-
+  setWindowIcon(rda->iconEngine()->
+		applicationIcon(RDIconEngine::RdLogManager,22));
   setWindowTitle(tr("RDLogManager"));
 
   //
@@ -74,13 +70,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // RIPC Connection
   //
   connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
-  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
-
-  //
-  // Create And Set Icon
-  //
-  log_rivendell_map=new QPixmap(rdlogmanager_22x22_xpm);
-  setIcon(*log_rivendell_map);
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,
+			   rda->config()->password());
 
   //
   // Filters

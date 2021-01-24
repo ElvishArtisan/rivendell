@@ -63,7 +63,6 @@ class MainWidget : public RDWidget
   RDSoundPanel *panel_panel;
   RDEventPlayer *panel_player;
   bool meter_data_valid[PANEL_MAX_OUTPUTS];
-  QPixmap *lib_rivendell_map;
   QString panel_filter;
   QString panel_group;
   QString panel_schedcode;

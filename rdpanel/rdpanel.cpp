@@ -45,11 +45,6 @@
 RDAudioPort *rdaudioport_conf;
 RDCartDialog *panel_cart_dialog;
 
-//
-// Icons
-//
-#include "../icons/rdpanel-22x22.xpm"
-
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   : RDWidget(c,parent)
 {
@@ -65,12 +60,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 #endif  // RESIZABLE
 
   //
-  // Create Icons
-  //
-  lib_rivendell_map=new QPixmap(rdpanel_22x22_xpm);
-  setWindowIcon(*lib_rivendell_map);
-
-  //
   // Open the Database
   //
   rda=new RDApplication("RDPanel","rdpanel",RDPANEL_USAGE,this);
@@ -78,6 +67,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     QMessageBox::critical(this,"RDPanel - "+tr("Error"),err_msg);
     exit(1);
   }
+  setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdPanel,22));
 
   //
   // Read Command Options

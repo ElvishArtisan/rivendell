@@ -53,7 +53,6 @@ class MainWidget : public RDWidget
   void RefreshItem(RDListViewItem *item);
   void RefreshList();
   RDListView *cast_feed_list;
-  QPixmap *cast_rivendell_map;
   QPixmap *cast_greencheckmark_map;
   QPixmap *cast_redx_map;
   QPixmap *cast_rdcastmanager_32x32_map;

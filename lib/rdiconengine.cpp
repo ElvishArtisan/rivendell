@@ -23,6 +23,88 @@
 //
 // Icons
 //
+#include "../icons/rivendell-16x16.xpm"
+#include "../icons/rivendell-22x22.xpm"
+#include "../icons/rivendell-32x32.xpm"
+#include "../icons/rivendell-64x64.xpm"
+#include "../icons/rivendell-128x128.xpm"
+#include "../icons/rivendell-256x256.xpm"
+#include "../icons/rivendell-512x512.xpm"
+
+#include "../icons/rdadmin-16x16.xpm"
+#include "../icons/rdadmin-22x22.xpm"
+#include "../icons/rdadmin-32x32.xpm"
+#include "../icons/rdadmin-64x64.xpm"
+#include "../icons/rdadmin-128x128.xpm"
+#include "../icons/rdadmin-256x256.xpm"
+#include "../icons/rdadmin-512x512.xpm"
+
+#include "../icons/rdairplay-16x16.xpm"
+#include "../icons/rdairplay-22x22.xpm"
+#include "../icons/rdairplay-32x32.xpm"
+#include "../icons/rdairplay-64x64.xpm"
+#include "../icons/rdairplay-128x128.xpm"
+#include "../icons/rdairplay-256x256.xpm"
+#include "../icons/rdairplay-512x512.xpm"
+
+#include "../icons/rdcartslots-16x16.xpm"
+#include "../icons/rdcartslots-22x22.xpm"
+#include "../icons/rdcartslots-32x32.xpm"
+#include "../icons/rdcartslots-64x64.xpm"
+#include "../icons/rdcartslots-128x128.xpm"
+#include "../icons/rdcartslots-256x256.xpm"
+#include "../icons/rdcartslots-512x512.xpm"
+
+#include "../icons/rdcastmanager-16x16.xpm"
+#include "../icons/rdcastmanager-22x22.xpm"
+#include "../icons/rdcastmanager-32x32.xpm"
+#include "../icons/rdcastmanager-64x64.xpm"
+#include "../icons/rdcastmanager-128x128.xpm"
+#include "../icons/rdcastmanager-256x256.xpm"
+#include "../icons/rdcastmanager-512x512.xpm"
+
+#include "../icons/rdcatch-16x16.xpm"
+#include "../icons/rdcatch-22x22.xpm"
+#include "../icons/rdcatch-32x32.xpm"
+#include "../icons/rdcatch-64x64.xpm"
+#include "../icons/rdcatch-128x128.xpm"
+#include "../icons/rdcatch-256x256.xpm"
+#include "../icons/rdcatch-512x512.xpm"
+
+#include "../icons/rdlibrary-16x16.xpm"
+#include "../icons/rdlibrary-22x22.xpm"
+#include "../icons/rdlibrary-32x32.xpm"
+#include "../icons/rdlibrary-64x64.xpm"
+#include "../icons/rdlibrary-128x128.xpm"
+#include "../icons/rdlibrary-256x256.xpm"
+#include "../icons/rdlibrary-512x512.xpm"
+
+#include "../icons/rdlogedit-16x16.xpm"
+#include "../icons/rdlogedit-22x22.xpm"
+#include "../icons/rdlogedit-32x32.xpm"
+#include "../icons/rdlogedit-64x64.xpm"
+#include "../icons/rdlogedit-128x128.xpm"
+#include "../icons/rdlogedit-256x256.xpm"
+#include "../icons/rdlogedit-512x512.xpm"
+
+#include "../icons/rdlogmanager-16x16.xpm"
+#include "../icons/rdlogmanager-22x22.xpm"
+#include "../icons/rdlogmanager-32x32.xpm"
+#include "../icons/rdlogmanager-64x64.xpm"
+#include "../icons/rdlogmanager-128x128.xpm"
+#include "../icons/rdlogmanager-256x256.xpm"
+#include "../icons/rdlogmanager-512x512.xpm"
+
+#include "../icons/rdpanel-16x16.xpm"
+#include "../icons/rdpanel-22x22.xpm"
+#include "../icons/rdpanel-32x32.xpm"
+#include "../icons/rdpanel-64x64.xpm"
+#include "../icons/rdpanel-128x128.xpm"
+#include "../icons/rdpanel-256x256.xpm"
+#include "../icons/rdpanel-512x512.xpm"
+
+
+
 #include "../icons/greencheckmark.xpm"
 #include "../icons/redx.xpm"
 #include "../icons/blueball.xpm"
@@ -48,6 +130,126 @@
 
 RDIconEngine::RDIconEngine()
 {
+  //
+  // Application Icons
+  //
+  QMap<int,QPixmap> pixmap;
+
+  // Rivendell
+  pixmap.clear();
+  pixmap[16]=QPixmap(rivendell_16x16_xpm);
+  pixmap[22]=QPixmap(rivendell_22x22_xpm);
+  pixmap[32]=QPixmap(rivendell_32x32_xpm);
+  pixmap[64]=QPixmap(rivendell_64x64_xpm);
+  pixmap[128]=QPixmap(rivendell_128x128_xpm);
+  pixmap[256]=QPixmap(rivendell_256x256_xpm);
+  pixmap[512]=QPixmap(rivendell_512x512_xpm);
+  d_application_icons.push_back(pixmap);
+
+  // RDAdmin
+  pixmap.clear();
+  pixmap[16]=QPixmap(rdadmin_16x16_xpm);
+  pixmap[22]=QPixmap(rdadmin_22x22_xpm);
+  pixmap[32]=QPixmap(rdadmin_32x32_xpm);
+  pixmap[64]=QPixmap(rdadmin_64x64_xpm);
+  pixmap[128]=QPixmap(rdadmin_128x128_xpm);
+  pixmap[256]=QPixmap(rdadmin_256x256_xpm);
+  pixmap[512]=QPixmap(rdadmin_512x512_xpm);
+  d_application_icons.push_back(pixmap);
+
+  // RDAirPlay
+  pixmap.clear();
+  pixmap[16]=QPixmap(rdairplay_16x16_xpm);
+  pixmap[22]=QPixmap(rdairplay_22x22_xpm);
+  pixmap[32]=QPixmap(rdairplay_32x32_xpm);
+  pixmap[64]=QPixmap(rdairplay_64x64_xpm);
+  pixmap[128]=QPixmap(rdairplay_128x128_xpm);
+  pixmap[256]=QPixmap(rdairplay_256x256_xpm);
+  pixmap[512]=QPixmap(rdairplay_512x512_xpm);
+  d_application_icons.push_back(pixmap);
+
+  // RDCartSlots
+  pixmap.clear();
+  pixmap[16]=QPixmap(rdcartslots_16x16_xpm);
+  pixmap[22]=QPixmap(rdcartslots_22x22_xpm);
+  pixmap[32]=QPixmap(rdcartslots_32x32_xpm);
+  pixmap[64]=QPixmap(rdcartslots_64x64_xpm);
+  pixmap[128]=QPixmap(rdcartslots_128x128_xpm);
+  pixmap[256]=QPixmap(rdcartslots_256x256_xpm);
+  pixmap[512]=QPixmap(rdcartslots_512x512_xpm);
+  d_application_icons.push_back(pixmap);
+
+  // RDCastManager
+  pixmap.clear();
+  pixmap[16]=QPixmap(rdcastmanager_16x16_xpm);
+  pixmap[22]=QPixmap(rdcastmanager_22x22_xpm);
+  pixmap[32]=QPixmap(rdcastmanager_32x32_xpm);
+  pixmap[64]=QPixmap(rdcastmanager_64x64_xpm);
+  pixmap[128]=QPixmap(rdcastmanager_128x128_xpm);
+  pixmap[256]=QPixmap(rdcastmanager_256x256_xpm);
+  pixmap[512]=QPixmap(rdcastmanager_512x512_xpm);
+  d_application_icons.push_back(pixmap);
+
+  // RDCatch
+  pixmap.clear();
+  pixmap[16]=QPixmap(rdcatch_16x16_xpm);
+  pixmap[22]=QPixmap(rdcatch_22x22_xpm);
+  pixmap[32]=QPixmap(rdcatch_32x32_xpm);
+  pixmap[64]=QPixmap(rdcatch_64x64_xpm);
+  pixmap[128]=QPixmap(rdcatch_128x128_xpm);
+  pixmap[256]=QPixmap(rdcatch_256x256_xpm);
+  pixmap[512]=QPixmap(rdcatch_512x512_xpm);
+  d_application_icons.push_back(pixmap);
+
+  // RDLibrary
+  pixmap.clear();
+  pixmap[16]=QPixmap(rdlibrary_16x16_xpm);
+  pixmap[22]=QPixmap(rdlibrary_22x22_xpm);
+  pixmap[32]=QPixmap(rdlibrary_32x32_xpm);
+  pixmap[64]=QPixmap(rdlibrary_64x64_xpm);
+  pixmap[128]=QPixmap(rdlibrary_128x128_xpm);
+  pixmap[256]=QPixmap(rdlibrary_256x256_xpm);
+  pixmap[512]=QPixmap(rdlibrary_512x512_xpm);
+  d_application_icons.push_back(pixmap);
+
+  // RDLogEdit
+  pixmap.clear();
+  pixmap[16]=QPixmap(rdlogedit_16x16_xpm);
+  pixmap[22]=QPixmap(rdlogedit_22x22_xpm);
+  pixmap[32]=QPixmap(rdlogedit_32x32_xpm);
+  pixmap[64]=QPixmap(rdlogedit_64x64_xpm);
+  pixmap[128]=QPixmap(rdlogedit_128x128_xpm);
+  pixmap[256]=QPixmap(rdlogedit_256x256_xpm);
+  pixmap[512]=QPixmap(rdlogedit_512x512_xpm);
+  d_application_icons.push_back(pixmap);
+
+  // RdLogManager
+  pixmap.clear();
+  pixmap[16]=QPixmap(rdlogmanager_16x16_xpm);
+  pixmap[22]=QPixmap(rdlogmanager_22x22_xpm);
+  pixmap[32]=QPixmap(rdlogmanager_32x32_xpm);
+  pixmap[64]=QPixmap(rdlogmanager_64x64_xpm);
+  pixmap[128]=QPixmap(rdlogmanager_128x128_xpm);
+  pixmap[256]=QPixmap(rdlogmanager_256x256_xpm);
+  pixmap[512]=QPixmap(rdlogmanager_512x512_xpm);
+  d_application_icons.push_back(pixmap);
+
+  // RDPanel
+  pixmap.clear();
+  pixmap[16]=QPixmap(rdpanel_16x16_xpm);
+  pixmap[22]=QPixmap(rdpanel_22x22_xpm);
+  pixmap[32]=QPixmap(rdpanel_32x32_xpm);
+  pixmap[64]=QPixmap(rdpanel_64x64_xpm);
+  pixmap[128]=QPixmap(rdpanel_128x128_xpm);
+  pixmap[256]=QPixmap(rdpanel_256x256_xpm);
+  pixmap[512]=QPixmap(rdpanel_512x512_xpm);
+  d_application_icons.push_back(pixmap);
+
+
+
+  //
+  // List Icons
+  //
   d_list_icons.push_back(QPixmap(greencheckmark_xpm));
   d_list_icons.push_back(QPixmap(redx_xpm));
   d_list_icons.push_back(QPixmap(greenball_xpm));
@@ -79,6 +281,13 @@ RDIconEngine::RDIconEngine()
   d_user_icons[RDUser::TypeAdminRss]=QPixmap(rss_xpm);
   d_user_icons[RDUser::TypeLocalUser]=QPixmap(localuser_xpm);
   d_user_icons[RDUser::TypeExternalUser]=QPixmap(user_xpm);
+}
+
+
+QPixmap RDIconEngine::applicationIcon(RDIconEngine::Application app,
+				      int edge_size) const
+{
+  return d_application_icons.at((int)app).value(edge_size,QPixmap());
 }
 
 

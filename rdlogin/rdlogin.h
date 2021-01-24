@@ -60,7 +60,6 @@ class MainWidget : public RDWidget
   QLineEdit *login_username_edit;
   QLabel *login_password_label;
   QLineEdit *login_password_edit;
-  QPixmap *login_rivendell_map;
   QPushButton *login_button;
   QPushButton *logout_button;
   QPushButton *cancel_button;

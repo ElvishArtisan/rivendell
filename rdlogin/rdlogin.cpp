@@ -29,11 +29,6 @@
 
 #include "rdlogin.h"
 
-//
-// Icons
-//
-#include "../icons/rivendell-22x22.xpm"
-
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   : RDWidget(c,parent)
 {
@@ -51,17 +46,12 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   setMinimumSize(sizeHint());
   setMaximumHeight(sizeHint().height());
 
-  //
-  // Create And Set Icon
-  //
-  login_rivendell_map=new QPixmap(rivendell_22x22_xpm);
-  setWindowIcon(*login_rivendell_map);
-
   rda=new RDApplication("RDLogin","rdlogin",RDLOGIN_USAGE,this);
   if(!rda->open(&err_msg)) {
     QMessageBox::critical(this,"RDLogin - "+tr("Error"),err_msg);
     exit(1);
   }
+  setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::Rivendell,22));
 
   //
   // Read Command Options

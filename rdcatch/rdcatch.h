@@ -2,7 +2,7 @@
 //
 // The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -164,7 +164,6 @@ class MainWidget : public RDWidget
   QString catch_filter_string;
   QTimer *catch_midnight_timer;
   int catch_time_offset;
-  QPixmap *catch_rivendell_map;
   bool catch_host_warnings;
   bool catch_resize;
 };

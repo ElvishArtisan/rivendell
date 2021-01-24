@@ -2307,6 +2307,57 @@ Overwrite?</source>
     </message>
 </context>
 <context>
+    <name>RDFeedListModel</name>
+    <message>
+        <source>Cart</source>
+        <translation type="obsolete">Cartucho</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="obsolete">Longitud</translation>
+    </message>
+    <message>
+        <source>Talk</source>
+        <translation type="obsolete">Hablar</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="obsolete">Final</translation>
+    </message>
+    <message>
+        <source>Cuts</source>
+        <translation type="obsolete">Audios</translation>
+    </message>
+    <message>
+        <source>Key Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feed Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Casts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Public URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto Post</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Superfeed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDGetAth</name>
     <message>
         <source>ATH:</source>

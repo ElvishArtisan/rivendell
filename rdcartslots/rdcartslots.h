@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Slot Utility for Rivendell.
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -52,7 +52,6 @@ class MainWidget : public RDWidget
   void RunLocalMacros(RDMacro *rml);
   void SetCaption();
   RDEventPlayer *panel_player;
-  QPixmap *lib_rivendell_map;
   QString panel_filter;
   QString panel_group;
   QString panel_schedcode;

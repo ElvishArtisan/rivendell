@@ -26,11 +26,6 @@
 
 #include "rdcartslots.h"
 
-//
-// Icons
-//
-#include "../icons/rdcartslots-22x22.xpm"
-
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   : RDWidget(c,parent)
 {
@@ -60,8 +55,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Create Icons
   //
-  lib_rivendell_map=new QPixmap(rdcartslots_22x22_xpm);
-  setWindowIcon(*lib_rivendell_map);
+  setWindowIcon(rda->iconEngine()->
+		applicationIcon(RDIconEngine::RdCartSlots,22));
 
   //
   // CAE Connection

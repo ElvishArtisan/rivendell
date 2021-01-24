@@ -36,12 +36,6 @@
 #include "wall_clock.h"
 
 //
-// Icons
-//
-#include "../icons/rdairplay-128x128.xpm"
-#include "../icons/rdairplay-22x22.xpm"
-
-//
 // Prototypes
 //
 void SigHandler(int signo);
@@ -68,15 +62,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 			     tr("Multiple instances not allowed!"));
     exit(1);
   }
-
-  //
-  // Splash Screen
-  //
-  air_splash_screen=new QSplashScreen(QPixmap(rdairplay_128x128_xpm));
-  air_splash_screen->hide();
-  QTimer *timer=new QTimer(this);
-  connect(timer,SIGNAL(timeout()),this,SLOT(clearSplashData()));
-  timer->start(AIR_PLAY_SPLASH_TIME,true);
 
   //
   // Get the Startup Date/Time
@@ -157,8 +142,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Create And Set Icon
   //
-  air_rivendell_map=new QPixmap(rdairplay_22x22_xpm);
-  setIcon(*air_rivendell_map);
+  setIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdAirPlay,22));
 
   air_start_next=false;
   air_next_button=0;
@@ -486,7 +470,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Meter Timer
   //
-  timer=new QTimer(this);
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(meterData()));
   timer->start(RD_METER_UPDATE_INTERVAL);
 
@@ -1779,14 +1763,6 @@ void MainWidget::timeModeData(RDAirPlayConf::TimeMode mode)
   }
   air_stop_counter->setTimeMode(mode);
   air_post_counter->setTimeMode(mode);
-}
-
-
-void MainWidget::clearSplashData()
-{
-  air_splash_screen->hide();
-  delete air_splash_screen;
-  air_splash_screen=NULL;
 }
 
 

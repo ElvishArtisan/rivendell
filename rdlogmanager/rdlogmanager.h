@@ -2,7 +2,7 @@
 //
 // The Log Manager Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -67,7 +67,6 @@ class MainWidget : public RDWidget
   QPushButton *log_logs_button;
   QPushButton *log_reports_button;
   QPushButton *log_close_button;
-  QPixmap *log_rivendell_map;
 };
 
 

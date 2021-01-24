@@ -2,7 +2,7 @@
 //
 // The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -59,7 +59,6 @@ int catch_audition_port=-1;
 #include "../icons/switch3.xpm"
 #include "../icons/download.xpm"
 #include "../icons/upload.xpm"
-#include "../icons/rdcatch-22x22.xpm"
 
 CatchConnector::CatchConnector(RDCatchConnect *conn,const QString &station_name)
 {
@@ -134,8 +133,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   catch_type_maps[RDRecording::SwitchEvent]=new QPixmap(switch3_xpm);
   catch_type_maps[RDRecording::Download]=new QPixmap(download_xpm);
   catch_type_maps[RDRecording::Upload]=new QPixmap(upload_xpm);
-  catch_rivendell_map=new QPixmap(rdcatch_22x22_xpm);
-  setWindowIcon(*catch_rivendell_map);
+
+  setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdCatch,22));
 
   //
   // Generate Palettes

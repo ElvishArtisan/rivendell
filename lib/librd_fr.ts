@@ -1968,6 +1968,49 @@ Are you sure you want to save?</source>
     </message>
 </context>
 <context>
+    <name>RDFeedListModel</name>
+    <message>
+        <source>Cart</source>
+        <translation type="obsolete">Cart</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="obsolete">Début</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="obsolete">Fin</translation>
+    </message>
+    <message>
+        <source>Key Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feed Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Casts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Public URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto Post</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Superfeed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creation Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDGetAth</name>
     <message>
         <source>Enter ATH</source>
