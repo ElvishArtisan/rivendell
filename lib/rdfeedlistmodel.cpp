@@ -37,7 +37,7 @@ RDFeedListModel::RDFeedListModel(bool is_admin,QObject *parent)
   //
   unsigned left=Qt::AlignLeft|Qt::AlignVCenter;
   unsigned center=Qt::AlignCenter;
-  unsigned right=Qt::AlignRight|Qt::AlignVCenter;
+  //  unsigned right=Qt::AlignRight|Qt::AlignVCenter;
 
   d_headers.push_back(tr("Key Name"));       // 00
   d_alignments.push_back(left);
@@ -546,7 +546,9 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
       applicationIcon(RDIconEngine::RdCastManager,32);
   }
   else {
-    d_icons[row][0]=QImage::fromData(q->value(12).toByteArray());
+    d_icons[row][0]=
+      QImage::fromData(q->value(12).toByteArray()).
+      scaled(32,32,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
   }
   d_texts[row][1]=q->value(2);  // Title
   if(q->value(3).toString()=="Y") {

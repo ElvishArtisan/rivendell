@@ -20898,3 +20898,6 @@
 2021-01-25 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'List Feed' dialog in rdadmin(1) to use the
 	model-based API.
+2021-01-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDFeedListModel' that caused feed icons to fail
+	to be scaled correctly.
