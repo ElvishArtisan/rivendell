@@ -25,9 +25,10 @@
 #include "rdfeedlistmodel.h"
 #include "rdpodcast.h"
 
-RDFeedListModel::RDFeedListModel(QObject *parent)
+RDFeedListModel::RDFeedListModel(bool is_admin,QObject *parent)
   : QAbstractItemModel(parent)
 {
+  d_is_admin=is_admin;
   d_font_metrics=NULL;
   d_bold_font_metrics=NULL;
 
@@ -51,13 +52,17 @@ RDFeedListModel::RDFeedListModel(QObject *parent)
   d_alignments.push_back(center);
 
   d_headers.push_back(tr("Auto Post"));      // 04
-  d_alignments.push_back(right);
+  d_alignments.push_back(center);
 
   d_headers.push_back(tr("Superfeed"));      // 05
   d_alignments.push_back(center);
 
   d_headers.push_back(tr("Public URL"));     // 06
   d_alignments.push_back(left);
+
+  if(d_is_admin) {
+    changeUser();
+  }
 }
 
 
@@ -414,10 +419,17 @@ void RDFeedListModel::changeUser()
   RDSqlQuery *q=NULL;
   QString filter_sql="where ";
 
-  sql=QString("select ")+
-    "KEY_NAME "+  // 00
-    "from FEED_PERMS where "+
-    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
+  if(d_is_admin) {
+    sql=QString("select ")+
+      "KEY_NAME "+  // 00
+      "from FEEDS";
+  }
+  else {
+    sql=QString("select ")+
+      "KEY_NAME "+  // 00
+      "from FEED_PERMS where "+
+      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
+  }
   q=new RDSqlQuery(sql);
   while(q->next()) {
     filter_sql+="(KEY_NAME=\""+RDEscapeString(q->value(0).toString())+"\")||";
@@ -529,12 +541,12 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
   d_feed_ids[row]=q->value(0).toUInt();
   d_key_names[row]=q->value(1).toString();
   d_texts[row][0]=keyname;  // Key Name
-  if(q->value(11).isNull()) {
+  if(q->value(12).isNull()) {
     d_icons[row][0]=rda->iconEngine()->
       applicationIcon(RDIconEngine::RdCastManager,32);
   }
   else {
-    d_icons[row][0]=QImage::fromData(q->value(11).toByteArray());
+    d_icons[row][0]=QImage::fromData(q->value(12).toByteArray());
   }
   d_texts[row][1]=q->value(2);  // Title
   if(q->value(3).toString()=="Y") {
@@ -543,10 +555,10 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
   else {
     d_texts[row][2]="0 / 0";      // Casts
   }
-  d_texts[row][3]=q->value(6).toDate().toString("MM/dd/yyyy");  // Creation Date
-  d_texts[row][4]=q->value(3).toString();  // Superfeed
-  d_texts[row][5]=q->value(4).toString();  // Autopost
-  d_texts[row][6]=RDFeed::publicUrl(q->value(5).toString(),keyname);
+  d_texts[row][3]=q->value(7).toDate().toString("MM/dd/yyyy");  // Creation Date
+  d_texts[row][4]=q->value(3).toString();  // Autopost
+  d_texts[row][5]=q->value(4).toString();  // Superfeed
+  d_texts[row][6]=RDFeed::publicUrl(q->value(6).toString(),keyname);
 
   //
   // Cast Attributes
@@ -560,13 +572,13 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
   }
 
   do {
-    if(q->value(7).isNull()) {
+    if(q->value(8).isNull()) {
       return;  // No casts!
     }
     // Process
     total_casts++;
-    d_cast_ids[row].push_back(q->value(7).toUInt());
-    switch((RDPodcast::Status)q->value(9).toUInt()) {
+    d_cast_ids[row].push_back(q->value(8).toUInt());
+    switch((RDPodcast::Status)q->value(10).toUInt()) {
     case RDPodcast::StatusPending:
       d_cast_icons[row].push_back(rda->iconEngine()->
 				  listIcon(RDIconEngine::BlueBall));
@@ -584,9 +596,9 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
       break;
     }
     d_cast_texts[row].push_back(list);
-    d_cast_texts[row].back()[1]=q->value(8);  // Item Title
+    d_cast_texts[row].back()[1]=q->value(9);  // Item Title
     d_cast_texts[row].back()[3]=
-      q->value(10).toDateTime().toString("MM/dd/yyyy");
+      q->value(11).toDateTime().toString("MM/dd/yyyy");
   } while(q->next()&&(q->value(1).toString()==keyname));
   q->previous();
 
@@ -606,15 +618,17 @@ QString RDFeedListModel::sqlFields() const
     "FEEDS.ID,"+                      // 00
     "FEEDS.KEY_NAME,"+                // 01
     "FEEDS.CHANNEL_TITLE,"+           // 02
-    "FEEDS.IS_SUPERFEED,"+            // 03
-    "FEEDS.ID,"+                      // 04
-    "FEEDS.BASE_URL,"+                // 05
-    "FEEDS.ORIGIN_DATETIME,"+         // 06
-    "PODCASTS.ID,"+                   // 07
-    "PODCASTS.ITEM_TITLE,"+           // 08
-    "PODCASTS.STATUS,"+               // 09
-    "PODCASTS.ORIGIN_DATETIME,"+      // 10
-    "FEED_IMAGES.DATA "+              // 11
+    "FEEDS.ENABLE_AUTOPOST,"+         // 03
+
+    "FEEDS.IS_SUPERFEED,"+            // 04
+    "FEEDS.ID,"+                      // 05
+    "FEEDS.BASE_URL,"+                // 06
+    "FEEDS.ORIGIN_DATETIME,"+         // 07
+    "PODCASTS.ID,"+                   // 08
+    "PODCASTS.ITEM_TITLE,"+           // 09
+    "PODCASTS.STATUS,"+               // 10
+    "PODCASTS.ORIGIN_DATETIME,"+      // 11
+    "FEED_IMAGES.DATA "+              // 12
     "from FEEDS left join FEED_IMAGES "+
     "on FEEDS.CHANNEL_IMAGE_ID=FEED_IMAGES.ID left join PODCASTS "+
     "on FEEDS.ID=PODCASTS.FEED_ID ";

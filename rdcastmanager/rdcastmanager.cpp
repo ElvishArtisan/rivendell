@@ -89,19 +89,13 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
-  // Notifications
-  //
-  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
-	  this,SLOT(notificationReceivedData(RDNotification *)));
-
-  //
   // Feed List
   //
   cast_feed_view=new QTreeView(this);
   cast_feed_view->setSelectionBehavior(QAbstractItemView::SelectRows);
   cast_feed_view->setSortingEnabled(false);
   cast_feed_view->setWordWrap(false);
-  cast_feed_model=new RDFeedListModel(this);
+  cast_feed_model=new RDFeedListModel(false,this);
   cast_feed_model->setFont(font());
   cast_feed_model->setPalette(palette());
   cast_feed_view->setModel(cast_feed_model);

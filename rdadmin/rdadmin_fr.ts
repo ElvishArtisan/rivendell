@@ -4077,19 +4077,15 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Key</source>
+        <source>&amp;Repost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Title</source>
+        <source>&amp;Unpost</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>AutoPost</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Creation Date</source>
+        <source>Podcast Feeds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4101,11 +4097,7 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Superfeed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to delete remote feed XML.</source>
+        <source>Deleting remote audio...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4113,15 +4105,7 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Deleting remote audio...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Public URL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Repost</source>
+        <source>Failed to delete remote feed XML.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4137,11 +4121,11 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Continue?</source>
+        <source>take signficant time to complete.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>take signficant time to complete.</source>
+        <source>Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4153,15 +4137,11 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Unpost</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Posting RSS XML data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unposting RSS XML data...</source>
+        <source>This operation will unpost (remove) all XML, image and</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4169,7 +4149,7 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This operation will unpost (remove) all XML, image and</source>
+        <source>Unposting RSS XML data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4178,10 +4158,6 @@ Permissions</source>
     </message>
     <message>
         <source>Unposting images...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Podcast Feeds</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

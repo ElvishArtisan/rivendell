@@ -5325,15 +5325,15 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Key</source>
-        <translation>Klíč</translation>
+        <translation type="obsolete">Klíč</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Název</translation>
+        <translation type="obsolete">Název</translation>
     </message>
     <message>
         <source>AutoPost</source>
-        <translation>Automatické vyvěšení</translation>
+        <translation type="obsolete">Automatické vyvěšení</translation>
     </message>
     <message>
         <source>Keep Metadata</source>
@@ -5341,7 +5341,7 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Creation Date</source>
-        <translation>Datum vytvoření</translation>
+        <translation type="obsolete">Datum vytvoření</translation>
     </message>
     <message>
         <source>&amp;Feeds:</source>
@@ -5349,11 +5349,11 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete feed</source>
-        <translation>Opravdu chcete smazat tento přívod</translation>
+        <translation type="unfinished">Opravdu chcete smazat tento přívod</translation>
     </message>
     <message>
         <source>Delete Feed</source>
-        <translation>Smazat přívod</translation>
+        <translation type="unfinished">Smazat přívod</translation>
     </message>
     <message>
         <source>Deleting Audio...</source>
@@ -5368,28 +5368,28 @@ Stále ještě jej chcete smazat?</translation>
         <translation type="obsolete">Mazání</translation>
     </message>
     <message>
-        <source>Superfeed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to delete remote feed XML.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Warning</source>
         <translation type="unfinished">Varování</translation>
+    </message>
+    <message>
+        <source>&amp;Repost</source>
+        <translation type="unfinished">&amp;Vyvěsit znovu</translation>
+    </message>
+    <message>
+        <source>&amp;Unpost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Feeds</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Deleting remote audio...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Public URL</source>
+        <source>Failed to delete remote feed XML.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Repost</source>
-        <translation type="unfinished">&amp;Vyvěsit znovu</translation>
     </message>
     <message>
         <source>Feed Repost</source>
@@ -5404,11 +5404,11 @@ Stále ještě jej chcete smazat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Continue?</source>
+        <source>take signficant time to complete.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>take signficant time to complete.</source>
+        <source>Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5420,15 +5420,11 @@ Stále ještě jej chcete smazat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Unpost</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Posting RSS XML data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unposting RSS XML data...</source>
+        <source>This operation will unpost (remove) all XML, image and</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5436,7 +5432,7 @@ Stále ještě jej chcete smazat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This operation will unpost (remove) all XML, image and</source>
+        <source>Unposting RSS XML data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5445,10 +5441,6 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Unposting images...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Podcast Feeds</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

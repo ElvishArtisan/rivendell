@@ -36,7 +36,7 @@ class RDFeedListModel : public QAbstractItemModel
 {
   Q_OBJECT
  public:
-  RDFeedListModel(QObject *parent=0);
+  RDFeedListModel(bool is_admin,QObject *parent=0);
   ~RDFeedListModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
@@ -95,6 +95,7 @@ class RDFeedListModel : public QAbstractItemModel
   QList<QVariant> d_background_colors;
   QStringList d_key_names;
   QList<unsigned> d_feed_ids;
+  bool d_is_admin;
 };
 
 

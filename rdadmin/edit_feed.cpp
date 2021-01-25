@@ -724,13 +724,13 @@ void EditFeed::okData()
     return;
   }
 
-  done(0);
+  done(true);
 }
 
 
 void EditFeed::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

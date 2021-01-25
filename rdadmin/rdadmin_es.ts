@@ -5276,15 +5276,15 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Key</source>
-        <translation>Nombre</translation>
+        <translation type="obsolete">Nombre</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Título</translation>
+        <translation type="obsolete">Título</translation>
     </message>
     <message>
         <source>AutoPost</source>
-        <translation>AutoPublicar</translation>
+        <translation type="obsolete">AutoPublicar</translation>
     </message>
     <message>
         <source>Keep Metadata</source>
@@ -5292,7 +5292,7 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Creation Date</source>
-        <translation>Fecha de creación</translation>
+        <translation type="obsolete">Fecha de creación</translation>
     </message>
     <message>
         <source>&amp;Feeds:</source>
@@ -5300,11 +5300,11 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Are you sure you want to delete feed</source>
-        <translation>¿Está seguro de borrar el feed </translation>
+        <translation type="unfinished">¿Está seguro de borrar el feed </translation>
     </message>
     <message>
         <source>Delete Feed</source>
-        <translation>Eliminar Feed</translation>
+        <translation type="unfinished">Eliminar Feed</translation>
     </message>
     <message>
         <source>Deleting Audio...</source>
@@ -5319,28 +5319,28 @@ Do you still want to delete it?</source>
         <translation type="obsolete">Borrando</translation>
     </message>
     <message>
-        <source>Superfeed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to delete remote feed XML.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Warning</source>
         <translation type="unfinished">Advertencia</translation>
+    </message>
+    <message>
+        <source>&amp;Repost</source>
+        <translation type="unfinished">&amp;Republicar</translation>
+    </message>
+    <message>
+        <source>&amp;Unpost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Feeds</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Deleting remote audio...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Public URL</source>
+        <source>Failed to delete remote feed XML.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Repost</source>
-        <translation type="unfinished">&amp;Republicar</translation>
     </message>
     <message>
         <source>Feed Repost</source>
@@ -5355,11 +5355,11 @@ Do you still want to delete it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Continue?</source>
+        <source>take signficant time to complete.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>take signficant time to complete.</source>
+        <source>Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5371,15 +5371,11 @@ Do you still want to delete it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Unpost</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Posting RSS XML data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unposting RSS XML data...</source>
+        <source>This operation will unpost (remove) all XML, image and</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5387,7 +5383,7 @@ Do you still want to delete it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This operation will unpost (remove) all XML, image and</source>
+        <source>Unposting RSS XML data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5396,10 +5392,6 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Unposting images...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Podcast Feeds</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1,8 +1,8 @@
 // list_feeds.h
 //
-// List Rivendell Feeds
+// List Rivendell RSS Feeds
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,11 @@
 #ifndef LIST_FEEDS_H
 #define LIST_FEEDS_H
 
-#include <qpushbutton.h>
+#include <QPushButton>
+#include <QTableView>
 
 #include <rddialog.h>
+#include <rdfeedlistmodel.h>
 #include <rdlistviewitem.h>
 
 class ListFeeds : public RDDialog
@@ -39,20 +41,19 @@ class ListFeeds : public RDDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void repostData();
   void unpostData();
   void closeData();
+  void resetModelData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshItem(RDListViewItem *item);
-  QPixmap *list_rdcastmanager_32x32_map;
   QLabel *list_box_label;
-  RDListView *list_feeds_view;
+  QTableView *list_feeds_view;
+  RDFeedListModel *list_feeds_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;

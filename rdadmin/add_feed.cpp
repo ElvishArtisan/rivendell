@@ -2,7 +2,7 @@
 //
 // Add a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -125,7 +125,7 @@ void AddFeed::okData()
 			  &err_msg);
   if(*feed_id!=0) {
     *feed_keyname=feed_keyname_edit->text();
-    done(0);
+    done(true);
   }
   else {
     QMessageBox::warning(this,"RDAdmin - "+tr("Add Feed Error"),err_msg);
@@ -135,7 +135,7 @@ void AddFeed::okData()
 
 void AddFeed::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

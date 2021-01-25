@@ -2,7 +2,7 @@
 //
 // List Rivendell Feeds
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,11 +38,6 @@
 #include "globals.h"
 #include "list_feeds.h"
 
-//
-// Icons
-//
-#include "../icons/rdcastmanager-32x32.xpm"
-
 ListFeeds::ListFeeds(QWidget *parent)
   : RDDialog(parent)
 {
@@ -52,11 +47,6 @@ ListFeeds::ListFeeds(QWidget *parent)
   setMinimumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("Rivendell Feed List"));
-
-  //
-  // Create Icons
-  //
-  list_rdcastmanager_32x32_map=new QPixmap(rdcastmanager_32x32_xpm);
 
   //
   //  Add Button
@@ -110,33 +100,24 @@ ListFeeds::ListFeeds(QWidget *parent)
   //
   // Group List
   //
-  list_feeds_view=new RDListView(this);
-  list_feeds_view->setAllColumnsShowFocus(true);
-  list_feeds_view->setItemMargin(5);
-
-  list_feeds_view->addColumn(" ");
-  list_feeds_view->setColumnAlignment(0,Qt::AlignCenter|Qt::AlignVCenter);
-
-  list_feeds_view->addColumn(tr("Key"));
-  list_feeds_view->setColumnAlignment(1,Qt::AlignCenter|Qt::AlignVCenter);
-  list_feeds_view->addColumn(tr("Title"));
-  list_feeds_view->setColumnAlignment(2,Qt::AlignLeft);
-  list_feeds_view->addColumn(tr("Public URL"));
-  list_feeds_view->setColumnAlignment(3,Qt::AlignLeft);
-  list_feeds_view->addColumn(tr("Superfeed"));
-  list_feeds_view->setColumnAlignment(4,Qt::AlignCenter|Qt::AlignVCenter);
-  list_feeds_view->addColumn(tr("AutoPost"));
-  list_feeds_view->setColumnAlignment(5,Qt::AlignCenter|Qt::AlignVCenter);
-  list_feeds_view->addColumn(tr("Creation Date"));
-  list_feeds_view->setColumnAlignment(6,Qt::AlignCenter|Qt::AlignVCenter);
+  list_feeds_view=new QTableView(this);
+  list_feeds_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  list_feeds_view->setSelectionMode(QAbstractItemView::SingleSelection);
+  list_feeds_view->setShowGrid(false);
+  list_feeds_view->setSortingEnabled(false);
+  list_feeds_view->setSortingEnabled(false);
+  list_feeds_view->setWordWrap(false);
+  list_feeds_model=new RDFeedListModel(true,this);
+  list_feeds_model->setFont(font());
+  list_feeds_model->setPalette(palette());
+  list_feeds_view->setModel(list_feeds_model);
+  list_feeds_view->setColumnHidden(2,true);
   list_box_label=new QLabel(list_feeds_view,tr("Podcast Feeds"),this);
   list_box_label->setFont(bigLabelFont());
-  connect(list_feeds_view,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-
-  RefreshList();
+  connect(list_feeds_model,SIGNAL(modelReset()),this,SLOT(resetModelData()));
+  connect(list_feeds_view,SIGNAL(doubleClicked(const QModelIndex &)),
+  	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  resetModelData();
 }
 
 
@@ -163,82 +144,71 @@ void ListFeeds::addData()
   unsigned id;
   QString sql;
 
-  AddFeed *add_feed=new AddFeed(&id,&feed,this);
-  if(add_feed->exec()<0) {
-    delete add_feed;
-    return;
+  AddFeed *ad=new AddFeed(&id,&feed,this);
+  if(ad->exec()) {
+    EditFeed *d=new EditFeed(feed,this);
+    if(d->exec()) {
+      QModelIndex row=list_feeds_model->addFeed(feed);
+      if(row.isValid()) {
+	list_feeds_model->refreshRow(row);
+	list_feeds_view->selectRow(row.row());
+      }
+    }
+    else {
+      sql=QString("delete from FEED_PERMS where ")+
+	"KEY_NAME=\""+RDEscapeString(feed)+"\"";
+      RDSqlQuery::apply(sql);
+
+      sql=QString("delete from FEED_IMAGES where ")+
+	"FEED_KEY_NAME=\""+RDEscapeString(feed)+"\"";
+      RDSqlQuery::apply(sql);
+
+      sql=QString("delete from FEEDS where ")+
+	"KEY_NAME=\""+RDEscapeString(feed)+"\"";
+      RDSqlQuery::apply(sql);
+
+      return;
+    }
+    delete d;
   }
-  delete add_feed;
-  add_feed=NULL;
-
-  EditFeed *edit_feed=new EditFeed(feed,this);
-  if(edit_feed->exec()<0) {
-    sql=QString("delete from FEED_PERMS where ")+
-      "KEY_NAME=\""+RDEscapeString(feed)+"\"";
-    RDSqlQuery::apply(sql);
-
-    sql=QString("delete from FEED_IMAGES where ")+
-      "FEED_KEY_NAME=\""+RDEscapeString(feed)+"\"";
-    RDSqlQuery::apply(sql);
-
-    sql=QString("delete from FEEDS where ")+
-      "KEY_NAME=\""+RDEscapeString(feed)+"\"";
-    RDSqlQuery::apply(sql);
-
-    delete edit_feed;
-    return;
-  }
-  delete edit_feed;
-  RDListViewItem *item=new RDListViewItem(list_feeds_view);
-  item->setId(id);
-  item->setText(1,feed);
-  RefreshItem(item);
-  item->setSelected(true);
-  list_feeds_view->setCurrentItem(item);
-  list_feeds_view->ensureItemVisible(item);
+  delete ad;
 }
 
 
 void ListFeeds::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_feeds_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_feeds_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  EditFeed *edit_feed=new EditFeed(item->text(1),this);
-  edit_feed->exec();
-  delete edit_feed;
-  RefreshItem(item);
+  EditFeed *d=new EditFeed(list_feeds_model->keyName(rows.first()),this);
+  if(d->exec()) {
+    list_feeds_model->refreshRow(rows.first());
+ }
+  delete d;
 }
 
 
 void ListFeeds::deleteData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_feeds_view->selectedItem();
-  if(item==NULL) {
-    return;
-  }
-
   QString sql;
   RDSqlQuery *q;
   QString warning;
   QString str;
   RDFeed *feed;
   QString errs;
+  QModelIndexList rows=list_feeds_view->selectionModel()->selectedRows();
 
-  QString feedname=item->text(1);
-  if(feedname.isEmpty()) {
+  if(rows.size()!=1) {
     return;
   }
-  warning+=tr("Are you sure you want to delete feed")+" \""+feedname+"\"?";
-  switch(QMessageBox::warning(this,tr("Delete Feed"),warning,
-			      QMessageBox::Yes,QMessageBox::No)) {
-      case QMessageBox::No:
-      case QMessageBox::NoButton:
-	return;
 
-      default:
-	break;
+  QString feedname=list_feeds_model->keyName(rows.first());
+  warning+=tr("Are you sure you want to delete feed")+" \""+feedname+"\"?";
+  if(QMessageBox::warning(this,"RDAdmin - "+tr("Delete Feed"),warning,
+			  QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
+    return;
   }
   feed=new RDFeed(feedname,rda->config());
 
@@ -248,10 +218,13 @@ void ListFeeds::deleteData()
   // First, Delete Remote Audio
   //
   RDPodcast *cast;
-  sql=QString().sprintf("select ID from PODCASTS where FEED_ID=%d",item->id());
+  sql=QString("select ")+
+    "ID "+  // 00
+    "from PODCASTS where "+
+    QString().sprintf("FEED_ID=%u",list_feeds_model->feedId(rows.first()));
   q=new RDSqlQuery(sql);
-  QProgressDialog *pd=new QProgressDialog(tr("Deleting remote audio..."),"",
-					  0,q->size()+1,this);
+  QProgressDialog *pd=
+    new QProgressDialog(tr("Deleting remote audio..."),"",0,q->size()+1,this);
   pd->setWindowTitle("RDAdmin");
   pd->setValue(0);
   qApp->processEvents();
@@ -276,7 +249,8 @@ void ListFeeds::deleteData()
   //
   // Delete Cast Entries
   //
-  sql=QString().sprintf("delete from PODCASTS where FEED_ID=%d",item->id());
+  sql=QString("delete from PODCASTS where ")+
+    QString().sprintf("FEED_ID=%u",list_feeds_model->feedId(rows.first()));
   RDSqlQuery::apply(sql);
 
   //
@@ -300,18 +274,16 @@ void ListFeeds::deleteData()
   sql=QString("delete from FEEDS where ")+
     "KEY_NAME=\""+RDEscapeString(feedname)+"\"";
   RDSqlQuery::apply(sql);
-  item->setSelected(false);
+  list_feeds_model->removeFeed(feedname);
 
   pd->reset();
 
   delete pd;
   delete feed;
-  delete item;
 }
 
 
-void ListFeeds::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				   int col)
+void ListFeeds::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -323,15 +295,13 @@ void ListFeeds::repostData()
   RDSqlQuery *q=NULL;
   RDFeed *feed=NULL;
   int count;
+  QModelIndexList rows=list_feeds_view->selectionModel()->selectedRows();
 
-  RDListViewItem *item=(RDListViewItem *)list_feeds_view->selectedItem();
-  if(item==NULL) {
+  if(rows.size()!=1) {
     return;
   }
-  QString keyname=item->text(1);
-  if(keyname.isEmpty()) {
-    return;
-  }
+
+  QString keyname=list_feeds_model->keyName(rows.first());
 
   if(QMessageBox::question(this,"RDAdmin - "+tr("Feed Repost"),
 		      tr("This operation will repost all XML, image and")+"\n"+
@@ -401,15 +371,13 @@ void ListFeeds::unpostData()
   RDSqlQuery *q=NULL;
   RDFeed *feed=NULL;
   int count;
+  QModelIndexList rows=list_feeds_view->selectionModel()->selectedRows();
 
-  RDListViewItem *item=(RDListViewItem *)list_feeds_view->selectedItem();
-  if(item==NULL) {
+  if(rows.size()!=1) {
     return;
   }
-  QString keyname=item->text(1);
-  if(keyname.isEmpty()) {
-    return;
-  }
+
+  QString keyname=list_feeds_model->keyName(rows.first());
 
   if(QMessageBox::question(this,"RDAdmin - "+tr("Feed Repost"),
 	     tr("This operation will unpost (remove) all XML, image and")+"\n"+
@@ -482,6 +450,13 @@ void ListFeeds::closeData()
 }
 
 
+void ListFeeds::resetModelData()
+{
+  list_feeds_view->resizeColumnsToContents();
+  list_feeds_view->resizeRowsToContents();
+}
+
+
 void ListFeeds::resizeEvent(QResizeEvent *e)
 {
   list_add_button->setGeometry(size().width()-90,30,80,50);
@@ -492,82 +467,4 @@ void ListFeeds::resizeEvent(QResizeEvent *e)
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
   list_box_label->setGeometry(14,11,size().width()-28,19);
   list_feeds_view->setGeometry(10,30,size().width()-120,size().height()-40);
-}
-
-
-void ListFeeds::RefreshList()
-{
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item;
-
-  list_feeds_view->clear();
-  sql=QString("select ")+
-    "FEEDS.ID,"+               // 00
-    "FEEDS.KEY_NAME,"+         // 01
-    "FEEDS.CHANNEL_TITLE,"+    // 02
-    "FEEDS.IS_SUPERFEED,"+     // 03
-    "FEEDS.ENABLE_AUTOPOST,"+  // 04
-    "FEEDS.ORIGIN_DATETIME,"+  // 05
-    "FEEDS.BASE_URL,"+         // 06
-    "FEED_IMAGES.DATA "+       // 07
-    "from FEEDS left join FEED_IMAGES "+
-    "on FEEDS.CHANNEL_IMAGE_ID=FEED_IMAGES.ID";
-  q=new RDSqlQuery(sql);
-  while (q->next()) {
-    item=new RDListViewItem(list_feeds_view);
-    item->setId(q->value(0).toInt());
-    if(q->value(7).isNull()) {
-      item->setPixmap(0,*list_rdcastmanager_32x32_map);
-    }
-    else {
-      QImage img=QImage::fromData(q->value(7).toByteArray());
-      item->setPixmap(0,QPixmap::fromImage(img.scaled(32,32)));
-    }
-    item->setText(1,q->value(1).toString());
-    item->setText(2,q->value(2).toString());
-    item->setText(3,RDFeed::publicUrl(q->value(6).toString(),
-				      q->value(1).toString()));
-    item->setText(4,q->value(3).toString());
-    item->setText(5,q->value(4).toString());
-    item->setText(6,q->value(5).toDateTime().toString("MM/dd/yyyy"));
-  }
-  delete q;
-}
-
-
-void ListFeeds::RefreshItem(RDListViewItem *item)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("select ")+
-    "FEEDS.KEY_NAME,"+         // 00
-    "FEEDS.CHANNEL_TITLE,"+    // 01
-    "FEEDS.IS_SUPERFEED,"+     // 02
-    "FEEDS.ENABLE_AUTOPOST,"+  // 03
-    "FEEDS.ORIGIN_DATETIME,"+  // 04
-    "FEEDS.BASE_URL,"+         // 05
-    "FEED_IMAGES.DATA "+       // 06
-    "from FEEDS left join FEED_IMAGES "+
-    "on FEEDS.CHANNEL_IMAGE_ID=FEED_IMAGES.ID where "+
-    QString().sprintf("FEEDS.ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  if(q->next()) {
-    if(q->value(6).isNull()) {
-      item->setPixmap(0,*list_rdcastmanager_32x32_map);
-    }
-    else {
-      QImage img=QImage::fromData(q->value(6).toByteArray());
-      item->setPixmap(0,QPixmap::fromImage(img.scaled(32,32)));
-    }
-    item->setText(1,q->value(0).toString());
-    item->setText(2,q->value(1).toString());
-    item->setText(3,RDFeed::publicUrl(q->value(5).toString(),
-				      q->value(0).toString()));
-    item->setText(4,q->value(2).toString());
-    item->setText(5,q->value(3).toString());
-    item->setText(6,q->value(4).toDateTime().toString("MM/dd/yyyy"));
-  }
-  delete q;
 }

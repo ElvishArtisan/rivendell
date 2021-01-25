@@ -85,11 +85,6 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   setMaximumSize(sizeHint());
 
   //
-  // Create And Set Icon
-  //
-  setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdAdmin,22));
-
-  //
   // Open the Database
   //
   rda=new RDApplication("RDAdmin","rdadmin",RDADMIN_USAGE,this);
@@ -99,6 +94,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
       exit(1);
     }
   }
+  setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdAdmin,22));
   setWindowTitle(QString("RDAdmin v")+VERSION+" - "+
 		 tr("Host")+": "+rda->config()->stationName());
 
