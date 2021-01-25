@@ -20891,3 +20891,7 @@
 	model-based API.
 2021-01-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDIconEngine::applicationIcon()' method.
+2021-01-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDFeedListModel' class
+	* Refactored the top-level window in rdcastmanager(1) to use the
+	model-based API.

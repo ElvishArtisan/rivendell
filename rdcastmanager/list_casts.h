@@ -35,7 +35,7 @@ class ListCasts : public RDDialog
 {
   Q_OBJECT
  public:
-  ListCasts(unsigned feed_id,bool is_super,QWidget *parent=0);
+  ListCasts(unsigned feed_id,QWidget *parent=0);
   ~ListCasts();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -84,7 +84,6 @@ class ListCasts : public RDDialog
   QProgressDialog *list_progress_dialog;
   RenderDialog *list_render_dialog;
   RDFeed *list_feed;
-  bool list_is_superfeed;
 };
 
 

@@ -41,11 +41,10 @@
 #include "../icons/whiteball.xpm"
 #include "../icons/rdcastmanager-32x32.xpm"
 
-ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
+ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   : RDDialog(parent)
 {
   list_feed_id=feed_id;
-  list_is_superfeed=is_super;
 
   setWindowTitle("RDCastManager - "+tr("Podcast Item List")+
 		 "  [Feed ID: "+QString().sprintf("%u",feed_id)+"]");
@@ -486,7 +485,7 @@ void ListCasts::postProgressChangedData(int step)
 
 void ListCasts::closeData()
 {
-  done(0);
+  done(true);
 }
 
 
@@ -566,7 +565,7 @@ void ListCasts::RefreshList()
 
   list_casts_view->clear();
   sql=QString("select ID from PODCASTS ")+
-    RDCastSearch(list_feed->keyName(),list_is_superfeed,
+    RDCastSearch(list_feed->keyName(),false,
 		 list_filter_edit->text(),
 		 list_active_check->isChecked())+
 		 " order by ORIGIN_DATETIME";

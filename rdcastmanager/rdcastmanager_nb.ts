@@ -440,11 +440,11 @@ Log</source>
     </message>
     <message>
         <source>Key Name</source>
-        <translation>Lykjelnamn</translation>
+        <translation type="obsolete">Lykjelnamn</translation>
     </message>
     <message>
         <source>Feed Name</source>
-        <translation>Straumnamn</translation>
+        <translation type="obsolete">Straumnamn</translation>
     </message>
     <message>
         <source>Description</source>
@@ -452,7 +452,7 @@ Log</source>
     </message>
     <message>
         <source>Casts</source>
-        <translation>Kastar</translation>
+        <translation type="obsolete">Kastar</translation>
     </message>
     <message>
         <source>&amp;View
@@ -466,7 +466,7 @@ straum</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Brukar</translation>
+        <translation type="unfinished">Brukar</translation>
     </message>
     <message>
         <source>Host</source>
@@ -481,16 +481,17 @@ straum</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Public URL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Copy URL to
 Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[superfeed]</source>
+        <source>View
+Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -289,28 +289,12 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Key Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Feed Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Casts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;View
 Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -326,16 +310,21 @@ Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Public URL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Copy URL to
 Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[superfeed]</source>
+        <source>User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View
+Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

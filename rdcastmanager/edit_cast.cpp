@@ -384,13 +384,13 @@ void EditCast::okData()
     return;
   }
 
-  done(0);
+  done(true);
 }
 
 
 void EditCast::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

@@ -473,11 +473,11 @@ Log</source>
     </message>
     <message>
         <source>Key Name</source>
-        <translation>Název klíče</translation>
+        <translation type="obsolete">Název klíče</translation>
     </message>
     <message>
         <source>Feed Name</source>
-        <translation>Název přívodu</translation>
+        <translation type="obsolete">Název přívodu</translation>
     </message>
     <message>
         <source>Description</source>
@@ -485,7 +485,7 @@ Log</source>
     </message>
     <message>
         <source>Casts</source>
-        <translation>Podcasty</translation>
+        <translation type="obsolete">Podcasty</translation>
     </message>
     <message>
         <source>&amp;View
@@ -499,7 +499,7 @@ přívod</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Uživatel</translation>
+        <translation type="unfinished">Uživatel</translation>
     </message>
     <message>
         <source>Host</source>
@@ -514,16 +514,17 @@ přívod</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Public URL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Copy URL to
 Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[superfeed]</source>
+        <source>View
+Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

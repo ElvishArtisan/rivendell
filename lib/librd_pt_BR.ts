@@ -2349,6 +2349,10 @@ Sobreescrever?</translation>
         <source>Creation Date</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>[superfeed]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDGetAth</name>

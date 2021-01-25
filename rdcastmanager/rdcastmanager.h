@@ -2,7 +2,7 @@
 //
 // A RSS Feed Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,11 @@
 #ifndef RDCASTMANAGER_H
 #define RDCASTMANAGER_H
 
-#include <qpushbutton.h>
+#include <QPushButton>
+#include <QTreeView>
 
 #include <rdconfig.h>
+#include <rdfeedlistmodel.h>
 #include <rdlog_line.h>
 #include <rdwidget.h>
 
@@ -41,21 +43,19 @@ class MainWidget : public RDWidget
   void openData();
   void copyData();
   void userChangedData();
+  void modelResetData();
+  void selectionChangedData(const QItemSelection &before,
+			    const QItemSelection &after);
   void feedClickedData(Q3ListViewItem *item);
-  void feedDoubleclickedData(Q3ListViewItem *item,const QPoint &pt,int col);
-  void notificationReceivedData(RDNotification *notify);
+  void feedDoubleClickedData(const QModelIndex &index);
   void quitMainWidget();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshItem(RDListViewItem *item);
-  void RefreshList();
-  RDListView *cast_feed_list;
-  QPixmap *cast_greencheckmark_map;
-  QPixmap *cast_redx_map;
-  QPixmap *cast_rdcastmanager_32x32_map;
+  QTreeView *cast_feed_view;
+  RDFeedListModel *cast_feed_model;
   QPushButton *cast_open_button;
   QPushButton *cast_copy_button;
   QPushButton *cast_close_button;

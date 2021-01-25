@@ -418,11 +418,11 @@ Log</source>
     </message>
     <message>
         <source>Key Name</source>
-        <translation>Nome chave</translation>
+        <translation type="obsolete">Nome chave</translation>
     </message>
     <message>
         <source>Feed Name</source>
-        <translation>Nome do Feed</translation>
+        <translation type="obsolete">Nome do Feed</translation>
     </message>
     <message>
         <source>Description</source>
@@ -430,7 +430,7 @@ Log</source>
     </message>
     <message>
         <source>Casts</source>
-        <translation>Casts</translation>
+        <translation type="obsolete">Casts</translation>
     </message>
     <message>
         <source>&amp;View
@@ -444,7 +444,7 @@ Feed</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Usuário</translation>
+        <translation type="unfinished">Usuário</translation>
     </message>
     <message>
         <source>Host</source>
@@ -459,16 +459,17 @@ Feed</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Public URL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Copy URL to
 Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[superfeed]</source>
+        <source>View
+Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
