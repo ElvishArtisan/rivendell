@@ -58,6 +58,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         export_spincount.cpp\
                         export_technical.cpp\
                         export_textlog.cpp\
+                        rd.h\
                         rd3cartdrag.cpp rd3cartdrag.h\
                         rdadd_cart.cpp rdadd_cart.h\
                         rdadd_log.cpp rdadd_log.h\
@@ -156,7 +157,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdimagepickermodel.cpp rdimagepickermodel.h\
                         rdimport_audio.cpp rdimport_audio.h\
                         rdinstancelock.cpp rdinstancelock.h\
-                        rd.h\
+                        rdjackclientlistmodel.cpp rdjackclientlistmodel.h\
                         rdkernelgpio.cpp rdkernelgpio.h\
                         rdlibrary_conf.cpp rdlibrary_conf.h\
                         rdlibrarymodel.cpp rdlibrarymodel.h\
@@ -322,6 +323,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdimagepickerbox.cpp\
                           moc_rdimagepickermodel.cpp\
                           moc_rdimport_audio.cpp\
+                          moc_rdjackclientlistmodel.cpp\
                           moc_rdkernelgpio.cpp\
                           moc_rdlibrarymodel.cpp\
                           moc_rdlineedit.cpp\

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Jack Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,19 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <qstring.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qcolordialog.h>
-#include <qvalidator.h>
-#include <q3filedialog.h>
+#include <QHeaderView>
+#include <QMessageBox>
 
 #include <rdescape_string.h>
 
@@ -43,8 +32,6 @@
 EditJack::EditJack(RDStation *station,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   QString sql;
 
   edit_station=station;
@@ -103,19 +90,20 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   //
   // JACK Client List
   //
-  edit_jack_client_view=new RDListView(this);
+  edit_jack_client_view=new QTableView(this);
+  edit_jack_client_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  edit_jack_client_view->setSelectionMode(QAbstractItemView::SingleSelection);
+  edit_jack_client_view->setShowGrid(false);
+  edit_jack_client_view->setSortingEnabled(false);
+  edit_jack_client_view->setWordWrap(false);
   edit_jack_client_label=
     new QLabel(edit_jack_client_view,tr("JACK Clients to Start:"),this);
   edit_jack_client_label->setFont(labelFont());
-  edit_jack_client_view->setAllColumnsShowFocus(true);
-  edit_jack_client_view->setItemMargin(5);
-  edit_jack_client_view->addColumn(tr("Client"));
-  edit_jack_client_view->setColumnAlignment(0,Qt::AlignLeft);
-  edit_jack_client_view->addColumn(tr("Command Line"));
-  edit_jack_client_view->setColumnAlignment(1,Qt::AlignLeft);
-  connect(edit_jack_client_view,SIGNAL(doubleClicked(Q3ListViewItem *,
-						     const QPoint &,int)),
-	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+  edit_jack_client_model=new RDJackClientListModel(station->name(),this);
+  edit_jack_client_view->setModel(edit_jack_client_model);
+  connect(edit_jack_client_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  edit_jack_client_view->verticalHeader()->setVisible(false);
 
   //
   //  Add Button
@@ -169,8 +157,6 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
     edit_jack_server_name_edit->setText(EDITJACK_DEFAULT_SERVERNAME);
   }
   startJackData(edit_station->startJack());
-
-  RefreshList();
 }
 
 
@@ -196,50 +182,39 @@ void EditJack::startJackData(bool state)
 void EditJack::addData()
 {
   QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
-  RDListViewItem *item=NULL;
 
   sql=QString("insert into JACK_CLIENTS set ")+
     "STATION_NAME=\""+RDEscapeString(edit_station->name())+"\","+
-    "DESCRIPTION=\"\",COMMAND_LINE=\"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql="select last_insert_id() from JACK_CLIENTS";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    item=new RDListViewItem(edit_jack_client_view);
-    item->setId(q->value(0).toInt());
-    QString desc=tr("[New Client]");
-    QString cmd="";
-    EditJackClient *d=new EditJackClient(edit_station,this);
-    if(d->exec(&desc,&cmd)==0) {
-      item->setText(0,desc);
-      item->setText(1,cmd);
-    }
-    else {
-      sql=QString().sprintf("delete from JACK_CLIENTS where ID=%d",item->id());
-      q1=new RDSqlQuery(sql);
-      delete q1;
-      delete item;
-    }
+    "DESCRIPTION=\""+RDEscapeString(tr("[New client]"))+"\","+
+    "COMMAND_LINE=\"\"";
+  unsigned id=RDSqlQuery::run(sql).toUInt();
+
+  EditJackClient *d=new EditJackClient(edit_station,this);
+  if(d->exec(id)) {
+    QModelIndex row=edit_jack_client_model->addClient(id);
+    edit_jack_client_view->selectRow(row.row());
   }
-  delete q;
+  else {
+    sql=QString("delete from JACK_CLIENTS where ")+
+      QString().sprintf("ID=%u",id);
+    RDSqlQuery::apply(sql);
+  }
 }
 
 
 void EditJack::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)edit_jack_client_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=edit_jack_client_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  QString desc=item->text(0);
-  QString cmd=item->text(1);
+  unsigned id=edit_jack_client_model->clientId(rows.first());
+
   EditJackClient *d=new EditJackClient(edit_station,this);
-  if(d->exec(&desc,&cmd)==0) {
-    item->setText(0,desc);
-    item->setText(1,cmd);
+  if(d->exec(id)) {
+    edit_jack_client_model->refresh(rows.first());
+    edit_jack_client_view->selectRow(rows.first().row());
   }
   delete d;
 }
@@ -248,24 +223,25 @@ void EditJack::editData()
 void EditJack::deleteData()
 {
   QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item=(RDListViewItem *)edit_jack_client_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=edit_jack_client_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
+  unsigned id=edit_jack_client_model->clientId(rows.first());
   if(QMessageBox::question(this,tr("RDAdmin - JACK Clients"),
 			   tr("Are you sure you want to delete JACK Client")+
-			   " \""+item->text(0)+"\"?",QMessageBox::Yes,
+			   " \""+edit_jack_client_model->data(rows.first()).toString()+"\"?",QMessageBox::Yes,
 			   QMessageBox::No)==QMessageBox::Yes) {
-    sql=QString().sprintf("delete from JACK_CLIENTS where ID=%d",item->id());
-    q=new RDSqlQuery(sql);
-    delete q;
-    delete item;
+    sql=QString().sprintf("delete from JACK_CLIENTS where ")+
+      QString().sprintf("ID=%d",id);
+    RDSqlQuery::apply(sql);
+    edit_jack_client_model->removeClient(id);
   }
 }
 
 
-void EditJack::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col)
+void EditJack::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -273,10 +249,6 @@ void EditJack::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col)
 
 void EditJack::okData()
 {
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item=NULL;
-
   edit_station->setStartJack(edit_start_jack_box->isChecked());
   if(edit_jack_server_name_edit->text()==EDITJACK_DEFAULT_SERVERNAME) {
     edit_station->setJackServerName("");
@@ -286,24 +258,14 @@ void EditJack::okData()
   }
   edit_station->setJackCommandLine(edit_jack_command_line_edit->text());
   edit_station->setJackPorts(edit_jack_audio_ports_spin->value());
-  item=(RDListViewItem *)edit_jack_client_view->firstChild();
-  while(item!=NULL) {
-    sql=QString("update JACK_CLIENTS set DESCRIPTION=\"")+
-      RDEscapeString(item->text(0))+"\",COMMAND_LINE=\""+
-      RDEscapeString(item->text(1))+"\" where ID="+
-      QString().sprintf("%d",item->id());
-    q=new RDSqlQuery(sql);
-    delete q;
-    item=(RDListViewItem *)item->nextSibling();
-  }
 
-  done(0);
+  done(true);
 }
 
 
 void EditJack::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 
@@ -332,27 +294,3 @@ void EditJack::resizeEvent(QResizeEvent *e)
   edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
-
-
-void EditJack::RefreshList()
-{
-  RDListViewItem *l;
-
-  edit_jack_client_view->clear();
-  QString sql=QString("select ")+
-    "ID,"+            // 00
-    "DESCRIPTION,"+   // 01
-    "COMMAND_LINE "+  // 02
-    "from JACK_CLIENTS where "+
-    "STATION_NAME=\""+RDEscapeString(edit_station->name())+"\" "+
-    "order by DESCRIPTION";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    l=new RDListViewItem(edit_jack_client_view);
-    l->setId(q->value(0).toInt());
-    l->setText(0,q->value(1).toString());
-    l->setText(1,q->value(2).toString());
-  }
-  delete q;
-}
-

@@ -1920,15 +1920,11 @@ Do you still want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Client</source>
+        <source>Active Audio Ports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Command Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[New Client]</source>
+        <source>[New client]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1937,10 +1933,6 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>Are you sure you want to delete JACK Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Active Audio Ports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

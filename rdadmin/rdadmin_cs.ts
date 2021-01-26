@@ -2062,14 +2062,6 @@ Stále ještě chcete uložit?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Command Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished">&amp;Přidat</translation>
     </message>
@@ -2082,7 +2074,11 @@ Stále ještě chcete uložit?</translation>
         <translation type="unfinished">S&amp;mazat</translation>
     </message>
     <message>
-        <source>[New Client]</source>
+        <source>Active Audio Ports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[New client]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2091,10 +2087,6 @@ Stále ještě chcete uložit?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete JACK Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Active Audio Ports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2729,6 +2729,17 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
 </context>
 <context>
+    <name>RDJackClientListModel</name>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDLibraryModel</name>
     <message>
         <source>Cart</source>

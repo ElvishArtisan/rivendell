@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Jack Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,15 @@
 #ifndef EDIT_JACK_H
 #define EDIT_JACK_H
 
-#include <qcheckbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <q3listview.h>
-#include <qpixmap.h>
-#include <qpushbutton.h>
-#include <qspinbox.h>
-#include <q3textedit.h>
+#include <QCheckBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QTableView>
+#include <QSpinBox>
 
 #include <rddialog.h>
+#include <rdjackclientlistmodel.h>
 #include <rdlistview.h>
 #include <rdstation.h>
 
@@ -49,7 +48,7 @@ class EditJack : public RDDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void okData();
   void cancelData();
   
@@ -57,7 +56,6 @@ class EditJack : public RDDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
   QLabel *edit_start_jack_label;
   QCheckBox *edit_start_jack_box;
   QLabel *edit_jack_server_name_label;
@@ -67,7 +65,8 @@ class EditJack : public RDDialog
   QLabel *edit_jack_audio_ports_label;
   QSpinBox *edit_jack_audio_ports_spin;
   QLabel *edit_jack_client_label;
-  RDListView *edit_jack_client_view;
+  QTableView *edit_jack_client_view;
+  RDJackClientListModel *edit_jack_client_model;
   RDStation *edit_station;
   QPushButton *edit_add_button;
   QPushButton *edit_edit_button;
