@@ -20905,3 +20905,6 @@
 	* Added 'RDPodcastListModel'.
 	* Refactored the 'Podcast Item List' dialog in rdcastmanager(1) to
 	use the	model-based API.
+2021-01-26 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Encoder 'Profiles' dialog in rdadmin(1) to use
+	'QListWidget'.

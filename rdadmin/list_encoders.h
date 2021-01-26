@@ -2,7 +2,7 @@
 //
 // List Rivendell Encoder Profiles
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,7 +26,6 @@
 
 #include <rddialog.h>
 #include <rdexport_settings_dialog.h>
-#include <rdlistview.h>
 
 class ListEncoders : public RDDialog
 {
@@ -43,7 +42,7 @@ class ListEncoders : public RDDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &);
   void closeData();
 
  protected:
@@ -52,7 +51,7 @@ class ListEncoders : public RDDialog
  private:
   void RefreshList();
   QLabel *c_list_label;
-  RDListView *c_list;
+  QListWidget *c_list;
   QPushButton *c_add_button;
   QPushButton *c_edit_button;
   QPushButton *c_delete_button;

@@ -2,7 +2,7 @@
 //
 // List Rivendell Encoder Profiles
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,16 +44,10 @@ ListEncoders::ListEncoders(QWidget *parent)
   c_list_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   c_list_label->setFont(bigLabelFont());
 
-  c_list=new RDListView(this);
-  c_list->setAllColumnsShowFocus(true);
-  c_list->setItemMargin(5);
-
-  c_list->addColumn("Name");
-  c_list->setColumnAlignment(0,Qt::AlignLeft);
-  connect(c_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+  c_list=new QListWidget(this);
+  c_list->setSelectionMode(QAbstractItemView::SingleSelection);
+  connect(c_list,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
   RefreshList();
 
   c_add_button=new QPushButton(tr("Add"),this);
@@ -105,9 +99,9 @@ void ListEncoders::addData()
   if((id=s->addPreset())>0) {
     if(c_settings_dialog->exec(s,id)) {
       s->savePreset(id);
-      RDListViewItem *item=new RDListViewItem(c_list);
-      item->setId(id);
-      item->setText(0,s->name());
+      QListWidgetItem *item=new QListWidgetItem(c_list);
+      item->setData(Qt::UserRole,id);
+      item->setData(Qt::DisplayRole,s->name());
     }
     else {
       s->deletePreset(id);
@@ -119,13 +113,18 @@ void ListEncoders::addData()
 
 void ListEncoders::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)c_list->selectedItem();
+  QList<QListWidgetItem *> rows=c_list->selectedItems();
+
+  if(rows.size()!=1) {
+    return;
+  }
+  QListWidgetItem *item=rows.first();
   if(item!=NULL) {
     RDSettings *s=new RDSettings();
-    if(s->loadPreset(item->id())) {
-      if(c_settings_dialog->exec(s,item->id())) {
-	s->savePreset(item->id());
-	item->setText(0,s->name());
+    if(s->loadPreset(item->data(Qt::UserRole).toInt())) {
+      if(c_settings_dialog->exec(s,item->data(Qt::UserRole).toInt())) {
+	  s->savePreset(item->data(Qt::UserRole).toInt());
+	  item->setData(Qt::DisplayRole,s->name());
       }
     }
     delete s;
@@ -135,14 +134,19 @@ void ListEncoders::editData()
 
 void ListEncoders::deleteData()
 {
-  RDListViewItem *item=(RDListViewItem *)c_list->selectedItem();
+  QList<QListWidgetItem *> rows=c_list->selectedItems();
+
+  if(rows.size()!=1) {
+    return;
+  }
+  QListWidgetItem *item=rows.first();
   if(item!=NULL) {
     RDSettings *s=new RDSettings();
-    if(s->loadPreset(item->id())) {
+    if(s->loadPreset(item->data(Qt::UserRole).toInt())) {
       if(QMessageBox::question(this,"RDAdmin - "+tr("Delete Preset"),
 			       tr("Are you sure that you want to delete preset")+
 			       "\""+s->name()+"\"?",QMessageBox::Yes,QMessageBox::No)==QMessageBox::Yes) {
-	s->deletePreset(item->id());
+	s->deletePreset(item->data(Qt::UserRole).toInt());
 	delete item;
       }
       delete s;
@@ -151,8 +155,7 @@ void ListEncoders::deleteData()
 }
 
 
-void ListEncoders::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				     int col)
+void ListEncoders::doubleClickedData(const QModelIndex &)
 {
   editData();
 }
@@ -183,7 +186,7 @@ void ListEncoders::RefreshList()
 {
   QString sql;
   RDSqlQuery *q;
-  RDListViewItem *item;
+  QListWidgetItem *item;
 
   c_list->clear();
   sql=QString("select ")+
@@ -192,9 +195,9 @@ void ListEncoders::RefreshList()
     "from ENCODER_PRESETS order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    item=new RDListViewItem(c_list);
-    item->setId(q->value(0).toInt());
-    item->setText(0,q->value(1).toString());
+    item=new QListWidgetItem(c_list);
+    item->setData(Qt::UserRole,q->value(0).toInt());
+    item->setData(Qt::DisplayRole,q->value(1).toString());
   }
   delete q;
 }
