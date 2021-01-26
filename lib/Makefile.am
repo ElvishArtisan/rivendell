@@ -206,6 +206,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdprocess.cpp rdprocess.h\
                         rdprofile.cpp rdprofile.h\
                         rdpushbutton.cpp rdpushbutton.h\
+                        rdpypadlistmodel.cpp rdpypadlistmodel.h\
                         rdrecording.cpp rdrecording.h\
                         rdrehash.cpp rdrehash.h\
                         rdrenderer.cpp rdrenderer.h\
@@ -352,6 +353,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdpodcastlistmodel.cpp\
                           moc_rdprocess.cpp\
                           moc_rdpushbutton.cpp\
+                          moc_rdpypadlistmodel.cpp\
                           moc_rdrehash.cpp\
                           moc_rdrenderer.cpp\
                           moc_rdripc.cpp\

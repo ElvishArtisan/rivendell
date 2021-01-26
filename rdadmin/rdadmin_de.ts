@@ -5517,22 +5517,6 @@ Generieren</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Script Path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Exit Code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished">&amp;Hinzufügen</translation>
     </message>

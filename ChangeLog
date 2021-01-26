@@ -20912,3 +20912,7 @@
 	* Added 'RDJackClientListModel'.
 	* Refactored the 'Encoder 'Jack Configuration' dialog in rdadmin(1)
 	to use the model-based API.
+2021-01-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDPypadListModel'.
+	* Refactored the 'Encoder 'PyPAD Instances' dialog in rdadmin(1)
+	to use the model-based API.

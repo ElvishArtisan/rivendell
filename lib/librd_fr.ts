@@ -2772,6 +2772,25 @@ please try again!</source>
     </message>
 </context>
 <context>
+    <name>RDPypadListModel</name>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Script Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDRehash</name>
     <message>
         <source>OK</source>
