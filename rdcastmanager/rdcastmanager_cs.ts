@@ -207,7 +207,7 @@ Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n&gt;=2 &amp;&amp; n&lt;=4) ? 1 :
     </message>
     <message>
         <source>Title</source>
-        <translation>Název</translation>
+        <translation type="obsolete">Název</translation>
     </message>
     <message>
         <source>Origin</source>
@@ -219,7 +219,7 @@ Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n&gt;=2 &amp;&amp; n&lt;=4) ? 1 :
     </message>
     <message>
         <source>Length</source>
-        <translation>Délka</translation>
+        <translation type="obsolete">Délka</translation>
     </message>
     <message>
         <source>Description</source>
@@ -227,7 +227,7 @@ Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n&gt;=2 &amp;&amp; n&lt;=4) ? 1 :
     </message>
     <message>
         <source>Category</source>
-        <translation>Skupina</translation>
+        <translation type="obsolete">Skupina</translation>
     </message>
     <message>
         <source>Link</source>
@@ -279,7 +279,7 @@ Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n&gt;=2 &amp;&amp; n&lt;=4) ? 1 :
     </message>
     <message>
         <source>Remote Error</source>
-        <translation>Chyba u protistrany</translation>
+        <translation type="unfinished">Chyba u protistrany</translation>
     </message>
     <message>
         <source>Unable to delete remote audio!
@@ -289,7 +289,7 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation>Nikdy</translation>
+        <translation type="obsolete">Nikdy</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -309,11 +309,11 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source> </source>
-        <translation> </translation>
+        <translation type="obsolete"> </translation>
     </message>
     <message>
         <source>Filter:</source>
-        <translation>Filtr:</translation>
+        <translation type="obsolete">Filtr:</translation>
     </message>
     <message>
         <source>Only Show Unexpired Casts</source>
@@ -325,7 +325,7 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>Posting Error</source>
-        <translation>Chyba při vyvěšení</translation>
+        <translation type="unfinished">Chyba při vyvěšení</translation>
     </message>
     <message>
         <source>Unable to delete remote audio!
@@ -334,18 +334,14 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>The server said: &quot;</source>
-        <translation>Server hlásí: &quot;</translation>
+        <translation type="unfinished">Server hlásí: &quot;</translation>
     </message>
     <message>
         <source>Continue deleting cast?</source>
-        <translation>Pokračovat v mazání podcastu?</translation>
+        <translation type="unfinished">Pokračovat v mazání podcastu?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -355,34 +351,6 @@ Log</source>
     </message>
     <message>
         <source>Podcast Item List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Only Show Active Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Posted By</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Expiration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -398,18 +366,6 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select Audio File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SHA1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to drop remote audio!
 </source>
         <translation type="unfinished"></translation>
@@ -419,7 +375,7 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Status</source>
+        <source>Select Audio File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

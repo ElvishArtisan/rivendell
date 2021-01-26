@@ -22,7 +22,6 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include <rdcastsearch.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
 #include <rdlist_logs.h>
@@ -31,15 +30,6 @@
 #include "edit_cast.h"
 #include "globals.h"
 #include "list_casts.h"
-
-//
-// Icons
-//
-#include "../icons/blueball.xpm"
-#include "../icons/greenball.xpm"
-#include "../icons/redball.xpm"
-#include "../icons/whiteball.xpm"
-#include "../icons/rdcastmanager-32x32.xpm"
 
 ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   : RDDialog(parent)
@@ -53,21 +43,6 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   // Fix the Window Size
   //
   setMinimumSize(sizeHint());
-
-  //
-  // Create Icons
-  //
-  list_blueball_map=new QPixmap(blueball_xpm);
-  list_greenball_map=new QPixmap(greenball_xpm);
-  list_redball_map=new QPixmap(redball_xpm);
-  list_whiteball_map=new QPixmap(whiteball_xpm);
-  list_rdcastmanager_32x32_map=new QPixmap(rdcastmanager_32x32_xpm);
-
-  //
-  // Notifications
-  //
-  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
-	  this,SLOT(notificationReceivedData(RDNotification *)));
 
   //
   // The Feed
@@ -95,63 +70,35 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //
   // Filter
   //
-  list_filter_edit=new QLineEdit(this);
-  list_filter_label=
-    new QLabel(list_filter_edit,tr("Filter:"),this);
-  list_filter_label->setFont(labelFont());
-  list_filter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  connect(list_filter_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(filterChangedData(const QString &)));
+  list_casts_filter=new RDPodcastFilter(this);
 
   //
-  // Active Check Box
-  //
-  list_active_check=new QCheckBox(this);
-  list_active_label=
-    new QLabel(list_active_check,tr("Only Show Active Items"),this);
-  list_active_label->setFont(labelFont());
-  list_active_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  connect(list_active_check,SIGNAL(toggled(bool)),
-	  this,SLOT(activeToggledData(bool)));
-
-  //
-  // Group List
+  // Podcast List
   //
   list_casts_label=
     new QLabel(list_feed->channelTitle(),this);
   list_casts_label->setFont(bigLabelFont());
   list_casts_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  list_casts_view=new RDListView(this);
-  list_casts_view->setAllColumnsShowFocus(true);
-  list_casts_view->setItemMargin(5);
-  list_casts_view->addColumn(tr(" "));
-  list_casts_view->setColumnAlignment(0,Qt::AlignCenter);
-  list_casts_view->addColumn(tr("Title"));
-  list_casts_view->setColumnAlignment(1,Qt::AlignLeft);
-
-  list_casts_view->addColumn(tr("Status"));
-  list_casts_view->setColumnAlignment(2,Qt::AlignCenter);
-
-  list_casts_view->addColumn(tr("Start"));
-  list_casts_view->setColumnAlignment(3,Qt::AlignLeft);
-  list_casts_view->addColumn(tr("Expiration"));
-  list_casts_view->setColumnAlignment(4,Qt::AlignCenter);
-  list_casts_view->addColumn(tr("Length"));
-  list_casts_view->setColumnAlignment(5,Qt::AlignRight);
-  list_casts_view->addColumn(tr("Feed"));
-  list_casts_view->setColumnAlignment(6,Qt::AlignLeft);
-  list_casts_view->addColumn(tr("Category"));
-  list_casts_view->setColumnAlignment(7,Qt::AlignCenter);
-  list_casts_view->addColumn(tr("Posted By"));
-  list_casts_view->setColumnAlignment(8,Qt::AlignLeft);
-  list_casts_view->addColumn(tr("SHA1"));
-  list_casts_view->setColumnAlignment(9,Qt::AlignLeft);
-  if(!list_feed->isSuperfeed()) {
-    connect(list_casts_view,
-	    SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	    this,
-	    SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-  }
+  list_casts_view=new QTableView(this);
+  list_casts_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  list_casts_view->setSelectionMode(QAbstractItemView::SingleSelection);
+  list_casts_view->setShowGrid(false);
+  list_casts_view->setSortingEnabled(false);
+  list_casts_view->setSortingEnabled(false);
+  list_casts_view->setWordWrap(false);
+  list_casts_model=new RDPodcastListModel(feed_id,this);
+  list_casts_model->setFont(font());
+  list_casts_model->setPalette(palette());
+  list_casts_view->setModel(list_casts_model);
+  connect(list_casts_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
+  connect(list_casts_model,SIGNAL(rowsInserted(const QModelIndex &,int,int)),
+	  this,SLOT(rowsInsertedData(const QModelIndex &,int,int)));
+  connect(list_casts_view,SIGNAL(doubleClicked(const QModelIndex &)),
+  	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_casts_filter,SIGNAL(filterChanged(const QString &)),
+	  list_casts_model,SLOT(setFilterSql(const QString &)));
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  list_casts_model,SLOT(processNotification(RDNotification *)));
 
   //
   //  Post Cart Button
@@ -205,10 +152,11 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   list_close_button->setText(tr("&Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
-  RefreshList();
+  //  RefreshList();
 
   connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
 
+  modelResetData();
   userChangedData();
 }
 
@@ -247,14 +195,13 @@ void ListCasts::addCartData()
 			 RDFeed::errorString(err));
     return;
   }
-  EditCast *edit_cast=new EditCast(cast_id,this);
-  edit_cast->exec();
-  RDListViewItem *item=new RDListViewItem(list_casts_view);
-  item->setId(cast_id);
-  RefreshItem(item);
-  list_casts_view->setSelected(item,true);
-  list_casts_view->ensureItemVisible(item);
-  delete edit_cast;
+  EditCast *d=new EditCast(cast_id,this);
+  d->exec();
+  QModelIndex row=list_casts_model->addCast(cast_id);
+  if(row.isValid()) {
+    list_casts_view->selectRow(row.row());
+  }
+  delete d;
 
   rda->ripc()->sendNotification(RDNotification::FeedType,
 				RDNotification::ModifyAction,
@@ -280,14 +227,13 @@ void ListCasts::addFileData()
 			 RDFeed::errorString(err));
     return;
   }
-  EditCast *edit_cast=new EditCast(cast_id,this);
-  edit_cast->exec();
-  RDListViewItem *item=new RDListViewItem(list_casts_view);
-  item->setId(cast_id);
-  RefreshItem(item);
-  list_casts_view->setSelected(item,true);
-  list_casts_view->ensureItemVisible(item);
-  delete edit_cast;
+  EditCast *d=new EditCast(cast_id,this);
+  d->exec();
+  QModelIndex row=list_casts_model->addCast(cast_id);
+  if(row.isValid()) {
+    list_casts_view->selectRow(row.row());
+  }
+  delete d;
 
   rda->ripc()->sendNotification(RDNotification::FeedType,
 				RDNotification::ModifyAction,
@@ -303,9 +249,9 @@ void ListCasts::addLogData()
   RDFeed::Error err=RDFeed::ErrorOk; 
   unsigned cast_id=0;
 
-  RDListLogs *d=
+  RDListLogs *lld=
     new RDListLogs(&logname,RDLogFilter::UserFilter,"RDCastManager",this);
-  if(d->exec()) {
+  if(lld->exec()) {
     RDLogModel *model=new RDLogModel(logname,true,this);
     model->load();
     QTime start_time;
@@ -319,11 +265,10 @@ void ListCasts::addLogData()
 				     start_line,end_line,&err))!=0) {
 	EditCast *cast=new EditCast(cast_id,this);
 	cast->exec();
-	RDListViewItem *item=new RDListViewItem(list_casts_view);
-	item->setId(cast_id);
-	RefreshItem(item);
-	list_casts_view->setSelected(item,true);
-	list_casts_view->ensureItemVisible(item);
+	QModelIndex row=list_casts_model->addCast(cast_id);
+	if(row.isValid()) {
+	  list_casts_view->selectRow(row.row());
+	}
 	delete cast;
 	rda->ripc()->sendNotification(RDNotification::FeedType,
 				      RDNotification::ModifyAction,
@@ -334,7 +279,7 @@ void ListCasts::addLogData()
       else {
 	QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
 			     RDFeed::errorString(err));
-	delete d;
+	delete lld;
 	delete model;
 	return;
       }
@@ -344,41 +289,42 @@ void ListCasts::addLogData()
     else {  // Render dialog was canceled!
     }
   }
-  delete d;
+  delete lld;
 }
 
 
 void ListCasts::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_casts_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_casts_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  EditCast *edit_cast=new EditCast(item->id(),this);
-  if(edit_cast->exec()==0) {
-    RefreshItem(item);
-
+  EditCast *d=new EditCast(list_casts_model->castId(rows.first()),this);
+  if(d->exec()) {
+    list_casts_model->refresh(rows.first());
     rda->ripc()->sendNotification(RDNotification::FeedType,
 				  RDNotification::ModifyAction,
 				  list_feed->keyName());
     rda->ripc()->sendNotification(RDNotification::FeedItemType,
-				  RDNotification::ModifyAction,item->id());
+				  RDNotification::ModifyAction,
+				  list_casts_model->castId(rows.first()));
   }
-  delete edit_cast;
+  delete d;
 }
 
 
 void ListCasts::deleteData()
 {
   QString sql;
-  RDSqlQuery *q;
   QString err_text;
+  QModelIndexList rows=list_casts_view->selectionModel()->selectedRows();
 
-  RDListViewItem *item=(RDListViewItem *)list_casts_view->selectedItem();
-  if(item==NULL) {
+  if(rows.size()!=1) {
     return;
   }
-  unsigned cast_id=item->id();
+
+  unsigned cast_id=list_casts_model->castId(rows.first());
   if(QMessageBox::question(this,"RDCastManager - "+tr("Delete Item"),
 			   tr("Are you sure you want to delete this item?"),
 			   QMessageBox::Yes,QMessageBox::No)==
@@ -395,7 +341,7 @@ void ListCasts::deleteData()
   qApp->processEvents();
   sleep(1);
   qApp->processEvents();
-  RDPodcast *cast=new RDPodcast(rda->config(),item->id());
+  RDPodcast *cast=new RDPodcast(rda->config(),cast_id);
   if(!cast->dropAudio(list_feed,&err_text,rda->config()->logXloadDebugData())) {
     if(QMessageBox::warning(this,"RDCastManager - "+tr("Remote Error"),
 			    tr("Unable to drop remote audio!\n")+
@@ -409,13 +355,15 @@ void ListCasts::deleteData()
   }
   pd->setValue(1);
   qApp->processEvents();
-  sql=QString().sprintf("delete from PODCASTS where ID=%u",item->id());
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("update FEEDS set LAST_BUILD_DATETIME=now() \
-                        where ID=%u",list_feed_id);
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("delete from PODCASTS where ")+
+    QString().sprintf("ID=%u",cast_id);
+  RDSqlQuery::apply(sql);
+
+  sql=QString("update FEEDS set ")+
+    "LAST_BUILD_DATETIME=now() "+
+    "where "+
+    QString().sprintf("ID=%u",list_feed_id);
+  RDSqlQuery::apply(sql);
 
   if(!list_feed->postXml()) {
     QMessageBox::warning(this,"RDCastManager - "+tr("Remote Error"),
@@ -426,7 +374,8 @@ void ListCasts::deleteData()
 
   delete pd;
   delete cast;
-  delete item;
+
+  list_casts_model->removeCast(cast_id);
   rda->ripc()->sendNotification(RDNotification::FeedType,
 				RDNotification::ModifyAction,
 				list_feed->keyName());
@@ -435,8 +384,7 @@ void ListCasts::deleteData()
 }
 
 
-void ListCasts::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				   int col)
+void ListCasts::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -457,19 +405,22 @@ void ListCasts::userChangedData()
 
 void ListCasts::filterChangedData(const QString &str)
 {
-  RefreshList();
+  //  RefreshList();
 }
 
 
-void ListCasts::notexpiredToggledData(bool state)
+void ListCasts::modelResetData()
 {
-  RefreshList();
+  list_casts_view->resizeColumnsToContents();
+  list_casts_view->resizeRowsToContents();
 }
 
 
-void ListCasts::activeToggledData(bool state)
+void ListCasts::rowsInsertedData(const QModelIndex &parent,int start,int end)
 {
-  RefreshList();
+  for(int i=start;i<=end;i++) {
+    list_casts_view->resizeRowToContents(i);
+  }
 }
 
 
@@ -491,10 +442,8 @@ void ListCasts::closeData()
 
 void ListCasts::resizeEvent(QResizeEvent *e)
 {
-  list_filter_label->setGeometry(10,10,40,20);
-  list_filter_edit->setGeometry(55,10,size().width()-65,20);
-  list_active_check->setGeometry(60,35,15,15);
-  list_active_label->setGeometry(80,33,200,20);
+  list_casts_filter->
+    setGeometry(0,0,size().width(),list_casts_filter->sizeHint().height());
   list_casts_label->setGeometry(15,57,size().width()-25,20);
   list_casts_view->setGeometry(10,76,size().width()-20,size().height()-146);
   list_cart_button->setGeometry(10,size().height()-60,80,50);
@@ -503,159 +452,4 @@ void ListCasts::resizeEvent(QResizeEvent *e)
   list_edit_button->setGeometry(300,size().height()-60,80,50);
   list_delete_button->setGeometry(390,size().height()-60,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
-}
-
-
-void ListCasts::notificationReceivedData(RDNotification *notify)
-{
-  unsigned cast_id=0;
-  RDListViewItem *item=NULL;
-  RDPodcast *cast=NULL;
-
-  if(notify->type()==RDNotification::FeedItemType) {
-    cast_id=notify->id().toUInt();
-    switch(notify->action()) {
-    case RDNotification::AddAction:
-      cast=new RDPodcast(rda->config(),cast_id);
-      if(cast->keyName()==list_feed->keyName()) {
-	item=new RDListViewItem(list_casts_view);
-	item->setId(cast_id);
-	RefreshItem(item);
-	delete cast;
-	return;
-      }
-      delete cast;
-      break;
-
-    case RDNotification::DeleteAction:
-      item=(RDListViewItem *)list_casts_view->firstChild();
-      while(item!=NULL) {
-	if(item->id()==(int)cast_id) {
-	  delete item;
-	  return;
-	}
-	item=(RDListViewItem *)item->nextSibling();
-      }
-      break;
-
-    case RDNotification::ModifyAction:
-      item=(RDListViewItem *)list_casts_view->firstChild();
-      while(item!=NULL) {
-	if(item->id()==(int)cast_id) {
-	  RefreshItem(item);
-	}
-	item=(RDListViewItem *)item->nextSibling();
-      }
-      break;
-
-    case RDNotification::LastAction:
-    case RDNotification::NoAction:
-      break;
-
-    }
-  }
-}
-
-
-void ListCasts::RefreshList()
-{
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item;
-
-  list_casts_view->clear();
-  sql=QString("select ID from PODCASTS ")+
-    RDCastSearch(list_feed->keyName(),false,
-		 list_filter_edit->text(),
-		 list_active_check->isChecked())+
-		 " order by ORIGIN_DATETIME";
-  q=new RDSqlQuery(sql);
-  while (q->next()) {
-    item=new RDListViewItem(list_casts_view);
-    item->setId(q->value(0).toInt());
-    RefreshItem(item);
-  }
-  delete q;
-}
-
-
-void ListCasts::RefreshItem(RDListViewItem *item)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("select ")+
-    "PODCASTS.STATUS,"+               // 00
-    "PODCASTS.ITEM_TITLE,"+           // 01
-    "PODCASTS.EFFECTIVE_DATETIME,"+   // 02
-    "PODCASTS.EXPIRATION_DATETIME,"+  // 03
-    "PODCASTS.AUDIO_TIME,"+           // 04
-    "PODCASTS.ITEM_DESCRIPTION,"+     // 05
-    "FEEDS.KEY_NAME,"+                // 06
-    "PODCASTS.ITEM_CATEGORY,"+        // 07
-    "PODCASTS.ORIGIN_LOGIN_NAME,"+    // 08
-    "PODCASTS.ORIGIN_STATION,"+       // 09
-    "PODCASTS.ORIGIN_DATETIME,"+      // 10
-    "PODCASTS.SHA1_HASH,"+            // 11
-    "FEED_IMAGES.DATA "+              // 12
-    "from PODCASTS left join FEEDS "+
-    "on PODCASTS.FEED_ID=FEEDS.ID left join FEED_IMAGES "+
-    "on PODCASTS.ITEM_IMAGE_ID=FEED_IMAGES.ID where "+
-    QString().sprintf("PODCASTS.ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    if(q->value(12).isNull()) {
-      item->setPixmap(0,*list_rdcastmanager_32x32_map);
-    }
-    else {
-      QImage img=QImage::fromData(q->value(12).toByteArray());
-      item->setPixmap(0,QPixmap::fromImage(img.scaled(32,32)));
-    }
-    item->setText(1,q->value(1).toString());
-    switch((RDPodcast::Status)q->value(0).toUInt()) {
-      case RDPodcast::StatusActive:
-	if(q->value(2).toDateTime()<=QDateTime::currentDateTime()) {
-	  item->setPixmap(2,*list_greenball_map);
-	}
-	else {
-	  item->setPixmap(2,*list_blueball_map);
-	}
-	break;
-
-      case RDPodcast::StatusPending:
-	item->setPixmap(2,*list_redball_map);
-	break;
-
-      case RDPodcast::StatusExpired:
-	item->setPixmap(2,*list_whiteball_map);
-	break;
-    }
-    item->setText(3,q->value(2).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
-    if(q->value(3).isNull()) {
-      item->setText(4,tr("Never"));
-    }
-    else {
-      item->setText(4,q->value(3).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
-    }
-    item->setText(5,RDGetTimeLength(q->value(4).toInt(),false,false));
-
-    item->setText(6,q->value(6).toString());
-    item->setText(7,q->value(7).toString());
-    if(q->value(8).isNull()) {
-      item->setText(8,tr("unknown")+" "+tr("at")+" "+
-		    q->value(10).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
-    }
-    else {
-      item->setText(8,q->value(8).toString()+" "+tr("on")+" "+
-		    q->value(9).toString()+" "+tr("at")+" "+
-		    q->value(10).toDateTime().toString("MM/dd/yyyy hh:mm:ss"));
-    }
-    if(q->value(11).toString().isEmpty()) {
-      item->setText(9,tr("[none]"));
-    }
-    else {
-      item->setText(9,q->value(11).toString());
-    }
-  }
-  delete q;
 }

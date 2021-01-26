@@ -50,9 +50,6 @@ LogDialog::LogDialog(QWidget *parent)
 
 LogDialog::~LogDialog()
 {
-  if(d_model!=NULL) {
-    delete d_model;
-  }
 }
 
 

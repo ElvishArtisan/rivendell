@@ -166,7 +166,7 @@ Episodios</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Título</translation>
+        <translation type="obsolete">Título</translation>
     </message>
     <message>
         <source>Origin</source>
@@ -182,7 +182,7 @@ Episodios</translation>
     </message>
     <message>
         <source>Category</source>
-        <translation>Categoría</translation>
+        <translation type="obsolete">Categoría</translation>
     </message>
     <message>
         <source>Link</source>
@@ -190,7 +190,7 @@ Episodios</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation>Nunca</translation>
+        <translation type="obsolete">Nunca</translation>
     </message>
     <message>
         <source>Podcast List</source>
@@ -222,7 +222,7 @@ Car&amp;t./Audio</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Longitud</translation>
+        <translation type="obsolete">Longitud</translation>
     </message>
     <message>
         <source>Subscription
@@ -231,12 +231,8 @@ Car&amp;t./Audio</translation>
 Suscripción</translation>
     </message>
     <message>
-        <source> </source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Filter:</source>
-        <translation>Filtro:</translation>
+        <translation type="obsolete">Filtro:</translation>
     </message>
     <message>
         <source>Only Show Unexpired Casts</source>
@@ -248,7 +244,7 @@ Suscripción</translation>
     </message>
     <message>
         <source>Posting Error</source>
-        <translation>Error de Post</translation>
+        <translation type="unfinished">Error de Post</translation>
     </message>
     <message>
         <source>Delete Podcast</source>
@@ -264,7 +260,7 @@ Suscripción</translation>
     </message>
     <message>
         <source>Remote Error</source>
-        <translation>Error remoto</translation>
+        <translation type="unfinished">Error remoto</translation>
     </message>
     <message>
         <source>Unable to delete remote audio!
@@ -274,18 +270,14 @@ Suscripción</translation>
     </message>
     <message>
         <source>The server said: &quot;</source>
-        <translation>El servidor dio el error: &quot;</translation>
+        <translation type="unfinished">El servidor dio el error: &quot;</translation>
     </message>
     <message>
         <source>Continue deleting cast?</source>
-        <translation> ¿Continuar eliminando podcasts?</translation>
+        <translation type="unfinished"> ¿Continuar eliminando podcasts?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -295,34 +287,6 @@ Log</source>
     </message>
     <message>
         <source>Podcast Item List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Only Show Active Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Posted By</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Expiration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -338,18 +302,6 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select Audio File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SHA1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to drop remote audio!
 </source>
         <translation type="unfinished"></translation>
@@ -359,7 +311,7 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Status</source>
+        <source>Select Audio File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

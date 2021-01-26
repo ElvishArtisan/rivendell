@@ -200,6 +200,8 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdplaymeter.cpp rdplaymeter.h\
                         rdpeaksexport.cpp rdpeaksexport.h\
                         rdpodcast.cpp rdpodcast.h\
+                        rdpodcastfilter.cpp rdpodcastfilter.h\
+                        rdpodcastlistmodel.cpp rdpodcastlistmodel.h\
                         rdprocess.cpp rdprocess.h\
                         rdprofile.cpp rdprofile.h\
                         rdpushbutton.cpp rdpushbutton.h\
@@ -344,6 +346,8 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdpasswd.cpp\
                           moc_rdplay_deck.cpp\
                           moc_rdplaymeter.cpp\
+                          moc_rdpodcastfilter.cpp\
+                          moc_rdpodcastlistmodel.cpp\
                           moc_rdprocess.cpp\
                           moc_rdpushbutton.cpp\
                           moc_rdrehash.cpp\

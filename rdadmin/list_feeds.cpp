@@ -98,7 +98,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
-  // Group List
+  // Feed List
   //
   list_feeds_view=new QTableView(this);
   list_feeds_view->setSelectionBehavior(QAbstractItemView::SelectRows);

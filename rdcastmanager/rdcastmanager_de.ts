@@ -192,7 +192,7 @@ Car&amp;t/Cut</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Titel</translation>
+        <translation type="obsolete">Titel</translation>
     </message>
     <message>
         <source>Origin</source>
@@ -204,7 +204,7 @@ Car&amp;t/Cut</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Länge</translation>
+        <translation type="obsolete">Länge</translation>
     </message>
     <message>
         <source>Description</source>
@@ -212,7 +212,7 @@ Car&amp;t/Cut</translation>
     </message>
     <message>
         <source>Category</source>
-        <translation>Kategorie</translation>
+        <translation type="obsolete">Kategorie</translation>
     </message>
     <message>
         <source>Link</source>
@@ -264,7 +264,7 @@ Car&amp;t/Cut</translation>
     </message>
     <message>
         <source>Remote Error</source>
-        <translation>Fehler an Gegenstelle</translation>
+        <translation type="unfinished">Fehler an Gegenstelle</translation>
     </message>
     <message>
         <source>Unable to delete remote audio!
@@ -274,7 +274,7 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation>Nie</translation>
+        <translation type="obsolete">Nie</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -294,11 +294,11 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source> </source>
-        <translation> </translation>
+        <translation type="obsolete"> </translation>
     </message>
     <message>
         <source>Filter:</source>
-        <translation>Filter:</translation>
+        <translation type="obsolete">Filter:</translation>
     </message>
     <message>
         <source>Only Show Unexpired Casts</source>
@@ -310,7 +310,7 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>Posting Error</source>
-        <translation>Fehler beim posten</translation>
+        <translation type="unfinished">Fehler beim posten</translation>
     </message>
     <message>
         <source>Unable to delete remote audio!
@@ -319,18 +319,14 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>The server said: &quot;</source>
-        <translation>Der Server meldet: &quot;</translation>
+        <translation type="unfinished">Der Server meldet: &quot;</translation>
     </message>
     <message>
         <source>Continue deleting cast?</source>
-        <translation>Löschen des Podcasts fortsetzen?</translation>
+        <translation type="unfinished">Löschen des Podcasts fortsetzen?</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -340,34 +336,6 @@ Log</source>
     </message>
     <message>
         <source>Podcast Item List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Only Show Active Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Posted By</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Expiration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -383,18 +351,6 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select Audio File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SHA1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to drop remote audio!
 </source>
         <translation type="unfinished"></translation>
@@ -404,7 +360,7 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Status</source>
+        <source>Select Audio File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

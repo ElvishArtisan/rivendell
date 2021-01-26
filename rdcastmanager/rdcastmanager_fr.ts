@@ -129,18 +129,6 @@ Car&amp;t/Cut</source>
         <translation></translation>
     </message>
     <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Category</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Uploading Audio...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -149,39 +137,7 @@ Car&amp;t/Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Never</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Filter:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Posting Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remote Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The server said: &quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Continue deleting cast?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -194,31 +150,7 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Only Show Active Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Posted By</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Expiration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>on</source>
+        <source>Posting Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -234,15 +166,7 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select Audio File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SHA1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
+        <source>Remote Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -251,11 +175,19 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>The server said: &quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue deleting cast?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Unable to update remote XML data!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Status</source>
+        <source>Select Audio File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

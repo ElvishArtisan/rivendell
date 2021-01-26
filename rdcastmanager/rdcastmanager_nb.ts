@@ -183,11 +183,11 @@ Korg/Ku&amp;tt</translation>
     </message>
     <message>
         <source> </source>
-        <translation> </translation>
+        <translation type="obsolete"> </translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Tittel</translation>
+        <translation type="obsolete">Tittel</translation>
     </message>
     <message>
         <source>Origin</source>
@@ -199,7 +199,7 @@ Korg/Ku&amp;tt</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Lengd</translation>
+        <translation type="obsolete">Lengd</translation>
     </message>
     <message>
         <source>Description</source>
@@ -207,7 +207,7 @@ Korg/Ku&amp;tt</translation>
     </message>
     <message>
         <source>Category</source>
-        <translation>Kategori</translation>
+        <translation type="obsolete">Kategori</translation>
     </message>
     <message>
         <source>Link</source>
@@ -273,7 +273,7 @@ Vil du halda fram med å sletta podkasten?</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation>Aldri</translation>
+        <translation type="obsolete">Aldri</translation>
     </message>
     <message>
         <source>File Error</source>
@@ -292,27 +292,7 @@ Vil du halda fram med å sletta podkasten?</translation>
         <translation type="obsolete">Filtypen er ikkje støtta!</translation>
     </message>
     <message>
-        <source>Filter:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Posting Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The server said: &quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Continue deleting cast?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -325,31 +305,7 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Only Show Active Items</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Posted By</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Expiration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>on</source>
+        <source>Posting Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -365,20 +321,16 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select Audio File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SHA1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to drop remote audio!
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The server said: &quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue deleting cast?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -386,7 +338,7 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Status</source>
+        <source>Select Audio File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

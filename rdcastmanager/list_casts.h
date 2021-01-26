@@ -23,11 +23,13 @@
 
 #include <QCheckBox>
 #include <QProgressDialog>
+#include <QTableView>
 
 #include <rdcut_dialog.h>
 #include <rddialog.h>
 #include <rdfeed.h>
-#include <rdlistviewitem.h>
+#include <rdpodcastlistmodel.h>
+#include <rdpodcastfilter.h>
 
 #include "render_dialog.h"
 
@@ -46,41 +48,30 @@ class ListCasts : public RDDialog
   void addLogData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void userChangedData();
   void filterChangedData(const QString &str);
-  void notexpiredToggledData(bool state);
-  void activeToggledData(bool state);
+  void modelResetData();
+  void rowsInsertedData(const QModelIndex &parent,int start,int end);
   void postProgressChangedData(int step);
   void closeData();
-  void notificationReceivedData(RDNotification *notify);
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshItem(RDListViewItem *item);
-  void GetEncoderId();
   RDCutDialog *list_cut_dialog;
   QLabel *list_casts_label;
-  RDListView *list_casts_view;
+  QTableView *list_casts_view;
+  RDPodcastListModel *list_casts_model;
   QPushButton *list_cart_button;
   QPushButton *list_file_button;
   QPushButton *list_log_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;
   QPushButton *list_close_button;
-  QPixmap *list_blueball_map;
-  QPixmap *list_greenball_map;
-  QPixmap *list_redball_map;
-  QPixmap *list_whiteball_map;
-  QPixmap *list_rdcastmanager_32x32_map;
   unsigned list_feed_id;
-  QLabel *list_filter_label;
-  QLineEdit *list_filter_edit;
-  QLabel *list_active_label;
-  QCheckBox *list_active_check;
+  RDPodcastFilter *list_casts_filter;
   QProgressDialog *list_progress_dialog;
   RenderDialog *list_render_dialog;
   RDFeed *list_feed;
