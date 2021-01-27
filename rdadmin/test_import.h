@@ -2,7 +2,7 @@
 //
 // Test a Rivendell Log Import
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,14 +21,14 @@
 #ifndef TEST_IMPORT_H
 #define TEST_IMPORT_H
 
-#include <qpushbutton.h>
-#include <q3datetimeedit.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpixmap.h>
+#include <QDateTimeEdit>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QTableView>
 
 #include <rddialog.h>
-#include <rdlistview.h>
+#include <rdlogimportmodel.h>
 #include <rdsvc.h>
 
 class TestImport : public RDDialog
@@ -54,17 +54,14 @@ class TestImport : public RDDialog
   RDSvc *test_svc;
   RDSvc::ImportSource test_src;
   QLabel *test_date_label;
-  Q3DateEdit *test_date_edit;
+  QDateEdit *test_date_edit;
   QPushButton *test_import_button;
   QLabel *test_events_label;
-  RDListView *test_events_list;
+  QTableView *test_events_view;
+  RDLogImportModel *test_events_model;
   QLabel *test_filename_label;
   QLineEdit *test_filename_edit;
   QPushButton *test_close_button;
-  QPixmap *test_playout_map;
-  QPixmap *test_marker_map;
-  QPixmap *test_mic16_map;
-  QPixmap *test_traffic_map;
 };
 
 

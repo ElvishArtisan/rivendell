@@ -6737,19 +6737,19 @@ Chcete obě spojit?</translation>
     </message>
     <message>
         <source>Start Time</source>
-        <translation type="unfinished">Počáteční čas</translation>
+        <translation type="obsolete">Počáteční čas</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation type="unfinished">Vozík</translation>
+        <translation type="obsolete">Vozík</translation>
     </message>
     <message>
         <source>Len</source>
-        <translation type="unfinished">Délka</translation>
+        <translation type="obsolete">Délka</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Název</translation>
+        <translation type="obsolete">Název</translation>
     </message>
     <message>
         <source>Contract #</source>
@@ -6757,7 +6757,7 @@ Chcete obě spojit?</translation>
     </message>
     <message>
         <source>Event ID</source>
-        <translation type="unfinished">ID události</translation>
+        <translation type="obsolete">ID události</translation>
     </message>
     <message>
         <source>Announcement Type</source>
@@ -6773,37 +6773,17 @@ Chcete obě spojit?</translation>
     </message>
     <message>
         <source>Import Error</source>
-        <translation>Chyba při zavedení</translation>
+        <translation type="unfinished">Chyba při zavedení</translation>
     </message>
     <message>
         <source>There was an error during import
 please check your settings and try again.</source>
-        <translation>Během zavedení se vyskytla chyba.
+        <translation type="unfinished">Během zavedení se vyskytla chyba.
 Prověřte, prosím, svá nastavení a zkuste to znovu.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation type="unfinished">[přerušení místa]</translation>
-    </message>
-    <message>
-        <source>GUID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Annc Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[voice track]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>NOTE</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[přerušení místa]</translation>
     </message>
 </context>
 <context>

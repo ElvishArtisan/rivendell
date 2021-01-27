@@ -6247,19 +6247,19 @@ Wollen Sie die beiden kombinieren?</translation>
     </message>
     <message>
         <source>Start Time</source>
-        <translation type="unfinished">Startzeit</translation>
+        <translation type="obsolete">Startzeit</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation type="unfinished">Cart</translation>
+        <translation type="obsolete">Cart</translation>
     </message>
     <message>
         <source>Len</source>
-        <translation type="unfinished">Länge</translation>
+        <translation type="obsolete">Länge</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Titel</translation>
+        <translation type="obsolete">Titel</translation>
     </message>
     <message>
         <source>Contract #</source>
@@ -6267,7 +6267,7 @@ Wollen Sie die beiden kombinieren?</translation>
     </message>
     <message>
         <source>Event ID</source>
-        <translation type="unfinished">Event-ID</translation>
+        <translation type="obsolete">Event-ID</translation>
     </message>
     <message>
         <source>Announcement Type</source>
@@ -6283,37 +6283,17 @@ Wollen Sie die beiden kombinieren?</translation>
     </message>
     <message>
         <source>Import Error</source>
-        <translation>Importfehler</translation>
+        <translation type="unfinished">Importfehler</translation>
     </message>
     <message>
         <source>There was an error during import
 please check your settings and try again.</source>
-        <translation>Es gab einen Fehler während des Imports.
+        <translation type="unfinished">Es gab einen Fehler während des Imports.
 Bitte überprüfen Sie ihre Einstellungen und versuchen sie es erneut.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation type="unfinished">[spot break]</translation>
-    </message>
-    <message>
-        <source>GUID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Annc Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[voice track]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>NOTE</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[spot break]</translation>
     </message>
 </context>
 <context>

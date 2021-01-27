@@ -2,7 +2,7 @@
 //
 // Test a Rivendell Log Import
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
+#include <QHeaderView>
+#include <QMessageBox>
+#include <QPainter>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -35,16 +35,9 @@
 #include "globals.h"
 #include "test_import.h"
 
-#include "../icons/play.xpm"
-#include "../icons/marker.xpm"
-#include "../icons/mic16.xpm"
-#include "../icons/traffic.xpm"
-
 TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   QString sql;
   QDate current_date=QDate::currentDate();
 
@@ -67,22 +60,15 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   }
 
   //
-  // Create Icons
-  //
-  test_playout_map=new QPixmap(play_xpm);
-  test_marker_map=new QPixmap(marker_xpm);
-  test_mic16_map=new QPixmap(mic16_xpm);
-  test_traffic_map=new QPixmap(traffic_xpm);
-
-  //
   // Date Selector
   //
-  test_date_edit=new Q3DateEdit(this);
+  test_date_edit=new QDateEdit(this);
+  test_date_edit->setDisplayFormat("MM/dd/yyyy");
   test_date_label=new QLabel(test_date_edit,tr("Test Date:"),this);
   test_date_label->setFont(labelFont());
   test_date_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   test_date_edit->setDate(current_date);
-  connect(test_date_edit,SIGNAL(valueChanged(const QDate &)),
+  connect(test_date_edit,SIGNAL(dateChanged(const QDate &)),
 	  this,SLOT(dateChangedData(const QDate &)));
 
   //
@@ -115,33 +101,22 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   // Events List
   //
-  test_events_list=new RDListView(this);
-  test_events_list->setItemMargin(2);
-  test_events_list->setSortColumn(0);
-  test_events_list->setSortOrder(Qt::Ascending);
-  test_events_list->setAllColumnsShowFocus(true);
-  test_events_list->addColumn("");
-  test_events_list->setColumnAlignment(0,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Start Time"));
-  test_events_list->setColumnAlignment(1,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Cart"));
-  test_events_list->setColumnAlignment(2,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Len"));
-  test_events_list->setColumnAlignment(3,Qt::AlignRight);
-  test_events_list->addColumn(tr("Title"));
-  test_events_list->setColumnAlignment(4,Qt::AlignLeft);
-  test_events_list->addColumn(tr("GUID"));
-  test_events_list->setColumnAlignment(5,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Event ID"));
-  test_events_list->setColumnAlignment(6,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Annc Type"));
-  test_events_list->setColumnAlignment(7,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Line"));
-  test_events_list->setColumnAlignment(8,Qt::AlignRight);
-  test_events_list->setColumnSortType(0,RDListView::LineSort);
-  test_events_label=new QLabel(test_events_list,tr("Imported Events"),this);
+  test_events_view=new QTableView(this);
+  test_events_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  test_events_view->setSelectionMode(QAbstractItemView::NoSelection);
+  test_events_view->setShowGrid(false);
+  test_events_view->setSortingEnabled(false);
+  test_events_view->setWordWrap(false);
+  test_events_view->verticalHeader()->setVisible(false);
+  test_events_view->horizontalHeader()->setStretchLastSection(true);
+  test_events_model=new RDLogImportModel(rda->station()->name(),getpid(),this);
+  test_events_view->setModel(test_events_model);
+  test_events_label=new QLabel(test_events_view,tr("Imported Events"),this);
   test_events_label->setGeometry(15,160,sizeHint().width()-30,18);
   test_events_label->setFont(labelFont());
+  connect(test_events_model,SIGNAL(modelReset()),
+	  test_events_view,SLOT(resizeColumnsToContents()));
+  test_events_view->resizeColumnsToContents();
 
   //
   //  Close Button
@@ -162,13 +137,13 @@ TestImport::~TestImport()
 
 QSize TestImport::sizeHint() const
 {
-  return QSize(700,400);
+  return QSize(1000,600);
 } 
 
 
 QSizePolicy TestImport::sizePolicy() const
 {
-  return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+  return QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 }
 
 
@@ -189,81 +164,15 @@ void TestImport::selectData()
 
 void TestImport::importData()
 {
-  RDListViewItem *item;
-  int next_line=0;
-
-  test_events_list->clear();
   if(!test_svc->import(test_src,test_date_edit->date(),test_svc->breakString(),
 		       test_svc->trackString(test_src),true)) {
     QMessageBox::information(this,tr("Import Error"),
 			     tr("There was an error during import\nplease check your settings and try again."));
     return;
   }
-  QString sql=QString("select ")+
-    "START_HOUR,"+     // 00
-    "START_SECS,"+     // 01
-    "EXT_CART_NAME,"+  // 02
-    "LENGTH,"+         // 03
-    "EXT_DATA,"+       // 04
-    "EXT_EVENT_ID,"+   // 05
-    "EXT_ANNC_TYPE,"+  // 06
-    "TITLE,"+          // 07
-    "TYPE,"+           // 08
-    "FILE_LINE "+      // 09
-    "from IMPORTER_LINES where "+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
-    QString().sprintf("PROCESS_ID=%u ",getpid())+
-    "order by LINE_ID";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    item=new RDListViewItem(test_events_list);
-    item->setLine(next_line++);
-    if((!q->value(0).isNull())&&(!q->value(1).isNull())) {
-      item->setText(1,RDSvc::timeString(q->value(0).toInt(),
-					q->value(1).toInt()));
-    }
-    if(!q->value(3).isNull()) {
-      item->setText(3,RDGetTimeLength(q->value(3).toInt(),false,false));
-    }
-    item->setText(5,q->value(4).toString().trimmed());
-    item->setText(6,q->value(5).toString().trimmed());
-    item->setText(7,q->value(6).toString().trimmed());
-    item->setText(8,QString().sprintf("%u",1+q->value(9).toUInt()));
-    switch((RDLogLine::Type)q->value(8).toUInt()) {
-    case RDLogLine::Cart:
-      item->setPixmap(0,*test_playout_map);
-      item->setText(2,q->value(2).toString());
-      item->setText(4,q->value(7).toString().trimmed());
-      break;
+  test_events_model->refresh();
 
-    case RDLogLine::Marker:
-      item->setPixmap(0,*test_marker_map);
-      item->setText(2,tr("NOTE"));
-      item->setText(4,q->value(7).toString().trimmed());
-      break;
-
-    case RDLogLine::TrafficLink:
-      item->setPixmap(0,*test_traffic_map);
-      item->setText(4,tr("[spot break]"));
-      break;
-
-    case RDLogLine::Track:
-      item->setPixmap(0,*test_mic16_map);
-      item->setText(4,tr("[voice track]"));
-      break;
-
-    case RDLogLine::Macro:
-    case RDLogLine::OpenBracket:
-    case RDLogLine::CloseBracket:
-    case RDLogLine::Chain:
-    case RDLogLine::MusicLink:
-    case RDLogLine::UnknownType:
-      break;
-    }
-  }
-  delete q;
-
-  sql=QString("delete from IMPORTER_LINES where ")+
+  QString sql=QString("delete from IMPORTER_LINES where ")+
     "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
     QString().sprintf("PROCESS_ID=%u",getpid());
   //  printf("IMPORTER_LINES cleanup SQL: %s\n",(const char *)sql);
@@ -301,7 +210,7 @@ void TestImport::resizeEvent(QResizeEvent *e)
   test_date_label->setGeometry(5,10,85,20);
   test_filename_edit->setGeometry(10,133,size().width()-20,18);
   test_import_button->setGeometry(30,45,size().width()-60,50);
-  test_events_list->
+  test_events_view->
     setGeometry(10,178,size().width()-20,size().height()-248);
   test_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
