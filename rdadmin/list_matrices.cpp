@@ -63,23 +63,6 @@ ListMatrices::ListMatrices(QString station,QWidget *parent)
 	  list_view,SLOT(resizeColumnsToContents()));
   list_view->resizeColumnsToContents();
 
-  /*
-  list_view=new Q3ListView(this,"list_box");
-  list_title_label=new QLabel(list_view,tr("Switchers:"),this);
-  list_title_label->setFont(labelFont());
-  list_view->setAllColumnsShowFocus(true);
-  list_view->setItemMargin(5);
-  list_view->addColumn(tr("MATRIX"));
-  list_view->setColumnAlignment(0,Qt::AlignHCenter);
-  list_view->addColumn(tr("DESCRIPTION"));
-  list_view->setColumnAlignment(1,Qt::AlignLeft);
-  list_view->addColumn(tr("TYPE"));
-  list_view->setColumnAlignment(2,Qt::AlignLeft);
-  connect(list_view,SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-
-  RefreshList();
-  */
   //
   //  Add Button
   //
@@ -280,50 +263,3 @@ sql=QString("delete from VGUEST_RESOURCES where ")+
 
   list_model->removeMatrix(mtx->id());
 }
-
-/*
-void ListMatrices::RefreshList()
-{
-  Q3ListViewItem *l;
-
-  list_view->clear();
-  QString sql=QString("select ")+
-    "MATRIX,"+  // 00
-    "NAME,"+    // 01
-    "TYPE "+    // 02
-    "from MATRICES where "+
-    "STATION_NAME=\""+RDEscapeString(list_station)+"\" "+
-    "order by MATRIX";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    l=new Q3ListViewItem(list_view);
-    l->setText(0,q->value(0).toString());
-    l->setText(1,q->value(1).toString());
-    l->setText(2,RDMatrix::typeString((RDMatrix::Type)q->value(2).toInt()));
-  }
-  delete q;
-}
-*/
-
-void ListMatrices::AddList(int matrix_num)
-{
-  /*
-  RDMatrix *matrix=new RDMatrix(list_station,matrix_num);
-  Q3ListViewItem *item=new Q3ListViewItem(list_view);
-  item->setText(0,QString().sprintf("%d",matrix_num));
-  item->setText(1,matrix->name());
-  item->setText(2,RDMatrix::typeString(matrix->type()));
-  delete matrix;
-  list_view->setCurrentItem(item);
-  list_view->setSelected(item,true);
-  */
-}
-
-/*
-void ListMatrices::RefreshRecord(Q3ListViewItem *item)
-{
-  RDMatrix *matrix=new RDMatrix(list_station,item->text(0).toInt());
-  item->setText(1,matrix->name());
-  delete matrix;
-}
-*/

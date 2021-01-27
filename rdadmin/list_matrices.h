@@ -51,7 +51,6 @@ class ListMatrices : public RDDialog
 
   private:
    void DeleteMatrix(RDMatrix *mtx);
-   void AddList(int matrix_num);
    QLabel *list_title_label;
    RDTableView *list_view;
    RDMatrixListModel *list_model;
