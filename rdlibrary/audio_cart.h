@@ -22,10 +22,10 @@
 #define AUDIO_CART_H
 
 #include <QProgressDialog>
-#include <QTableView>
 
 #include <rdcart.h>
 #include <rdcutlistmodel.h>
+#include <rdtableview.h>
 #include <rdwidget.h>
 
 #include "audio_controls.h"
@@ -71,7 +71,7 @@ class AudioCart : public RDWidget
  private:
   QModelIndex SingleSelectedLine() const;
   RDCart *rdcart_cart;
-  QTableView *rdcart_cut_view;
+  RDTableView *rdcart_cut_view;
   RDCutListModel *rdcart_cut_model;
   unsigned rdcart_average_length;
   QString *rdcart_import_path;

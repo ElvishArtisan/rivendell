@@ -90,12 +90,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   //
   // JACK Client List
   //
-  edit_jack_client_view=new QTableView(this);
-  edit_jack_client_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  edit_jack_client_view->setSelectionMode(QAbstractItemView::SingleSelection);
-  edit_jack_client_view->setShowGrid(false);
-  edit_jack_client_view->setSortingEnabled(false);
-  edit_jack_client_view->setWordWrap(false);
+  edit_jack_client_view=new RDTableView(this);
   edit_jack_client_label=
     new QLabel(edit_jack_client_view,tr("JACK Clients to Start:"),this);
   edit_jack_client_label->setFont(labelFont());

@@ -22,12 +22,12 @@
 #define LIST_PYPADS_H
 
 #include <QPushButton>
-#include <QTableView>
 
 #include <rddialog.h>
 #include <rdlistviewitem.h>
 #include <rdpypadlistmodel.h>
 #include <rdstation.h>
+#include <rdtableview.h>
 
 class ListPypads : public RDDialog
 {
@@ -49,7 +49,7 @@ class ListPypads : public RDDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  QTableView *list_list_view;
+  RDTableView *list_list_view;
   RDPypadListModel *list_list_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;

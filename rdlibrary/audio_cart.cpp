@@ -100,13 +100,9 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Cart Cut List
   //
-  rdcart_cut_view=new QTableView(this);
-  rdcart_cut_view->setGeometry(100,0,430,sizeHint().height());
-  rdcart_cut_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  rdcart_cut_view=new RDTableView(this);
   rdcart_cut_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
-  rdcart_cut_view->setShowGrid(false);
-  rdcart_cut_view->setSortingEnabled(false);
-  rdcart_cut_view->setWordWrap(false);
+  rdcart_cut_view->setGeometry(100,0,430,sizeHint().height());
   rdcart_cut_model=NULL;
   connect(rdcart_cut_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));

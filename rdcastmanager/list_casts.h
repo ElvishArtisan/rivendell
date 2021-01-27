@@ -23,13 +23,13 @@
 
 #include <QCheckBox>
 #include <QProgressDialog>
-#include <QTableView>
 
 #include <rdcut_dialog.h>
 #include <rddialog.h>
 #include <rdfeed.h>
 #include <rdpodcastlistmodel.h>
 #include <rdpodcastfilter.h>
+#include <rdtableview.h>
 
 #include "render_dialog.h"
 
@@ -62,7 +62,7 @@ class ListCasts : public RDDialog
  private:
   RDCutDialog *list_cut_dialog;
   QLabel *list_casts_label;
-  QTableView *list_casts_view;
+  RDTableView *list_casts_view;
   RDPodcastListModel *list_casts_model;
   QPushButton *list_cart_button;
   QPushButton *list_file_button;

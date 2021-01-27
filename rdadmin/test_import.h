@@ -25,11 +25,11 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QTableView>
 
 #include <rddialog.h>
 #include <rdlogimportmodel.h>
 #include <rdsvc.h>
+#include <rdtableview.h>
 
 class TestImport : public RDDialog
 {
@@ -57,7 +57,7 @@ class TestImport : public RDDialog
   QDateEdit *test_date_edit;
   QPushButton *test_import_button;
   QLabel *test_events_label;
-  QTableView *test_events_view;
+  RDTableView *test_events_view;
   RDLogImportModel *test_events_model;
   QLabel *test_filename_label;
   QLineEdit *test_filename_edit;

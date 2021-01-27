@@ -89,7 +89,7 @@ RDCutDialog::RDCutDialog(QString *filter,QString *group,QString *schedcode,
   //
   // Cart List
   //
-  cart_cart_view=new QTreeView(this);
+  cart_cart_view=new RDTreeView(this);
   cart_cart_view->setSelectionBehavior(QAbstractItemView::SelectRows);
   cart_cart_view->setSelectionMode(QAbstractItemView::SingleSelection);
   cart_cart_view->setSortingEnabled(false);

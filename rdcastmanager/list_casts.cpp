@@ -79,13 +79,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
     new QLabel(list_feed->channelTitle(),this);
   list_casts_label->setFont(bigLabelFont());
   list_casts_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  list_casts_view=new QTableView(this);
-  list_casts_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  list_casts_view->setSelectionMode(QAbstractItemView::SingleSelection);
-  list_casts_view->setShowGrid(false);
-  list_casts_view->setSortingEnabled(false);
-  list_casts_view->setSortingEnabled(false);
-  list_casts_view->setWordWrap(false);
+  list_casts_view=new RDTableView(this);
   list_casts_model=new RDPodcastListModel(feed_id,this);
   list_casts_model->setFont(font());
   list_casts_model->setPalette(palette());

@@ -2,7 +2,7 @@
 //
 // Read-only log lister dialog for Rivendell
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,12 +30,8 @@ LogDialog::LogDialog(QWidget *parent)
 {
   setWindowTitle("RDCastManager - "+tr("List Log Events"));
 
-  d_log_view=new QTableView(this);
-  d_log_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  d_log_view=new RDTableView(this);
   d_log_view->setSelectionMode(QAbstractItemView::ContiguousSelection);
-  d_log_view->setShowGrid(false);
-  d_log_view->setSortingEnabled(false);
-  d_log_view->setWordWrap(false);
   d_model=NULL;
 
   d_ok_button=new QPushButton(tr("OK"),this);

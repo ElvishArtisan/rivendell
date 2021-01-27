@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,13 +22,13 @@
 #define LIST_LOGS_H
 
 #include <QPushButton>
-#include <QTableView>
 
 #include <rddialog.h>
 #include <rdlogfilter.h>
 #include <rdloglistmodel.h>
 #include <rdloglock.h>
 #include <rdlogplay.h>
+#include <rdtableview.h>
 
 class ListLogs : public RDDialog
 {
@@ -59,7 +59,7 @@ class ListLogs : public RDDialog
  private:
   bool TryLock(RDLogLock *lock);
   RDLogFilter *list_filter_widget;
-  QTableView *list_log_view;
+  RDTableView *list_log_view;
   RDLogListModel *list_log_model;
   QString *list_logname;
   QString *list_svcname;

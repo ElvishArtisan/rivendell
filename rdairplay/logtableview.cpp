@@ -25,7 +25,7 @@
 #include "logtableview.h"
 
 LogTableView::LogTableView(QWidget *parent)
-  : QTableView(parent)
+  : RDTableView(parent)
 {
   setAcceptDrops(true);
 }

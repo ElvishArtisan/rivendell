@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <QHeaderView>
 #include <QMessageBox>
 #include <QPainter>
 
@@ -101,14 +100,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   // Events List
   //
-  test_events_view=new QTableView(this);
-  test_events_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  test_events_view->setSelectionMode(QAbstractItemView::NoSelection);
-  test_events_view->setShowGrid(false);
-  test_events_view->setSortingEnabled(false);
-  test_events_view->setWordWrap(false);
-  test_events_view->verticalHeader()->setVisible(false);
-  test_events_view->horizontalHeader()->setStretchLastSection(true);
+  test_events_view=new RDTableView(this);
   test_events_model=new RDLogImportModel(rda->station()->name(),getpid(),this);
   test_events_view->setModel(test_events_model);
   test_events_label=new QLabel(test_events_view,tr("Imported Events"),this);

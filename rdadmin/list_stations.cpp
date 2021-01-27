@@ -74,15 +74,10 @@ ListStations::ListStations(QWidget *parent)
   //
   // Station List Box
   //
-  list_stations_view=new QTableView(this);
+  list_stations_view=new RDTableView(this);
   list_title_label=new QLabel(list_stations_view,tr("H&osts:"),this);
   list_title_label->setFont(labelFont());
   list_title_label->setGeometry(14,11,85,19);
-  list_stations_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  list_stations_view->setSelectionMode(QAbstractItemView::SingleSelection);
-  list_stations_view->setShowGrid(false);
-  list_stations_view->setSortingEnabled(false);
-  list_stations_view->setWordWrap(false);
   list_stations_model=new RDStationListModel(false,"",this);
   list_stations_model->setFont(defaultFont());
   list_stations_model->setPalette(palette());

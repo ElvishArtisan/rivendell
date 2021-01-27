@@ -20920,3 +20920,5 @@
 	* Added 'RDLogImportModel'.
 	* Refactored the 'Test Import' dialog in rdadmin(1) to use the
 	model-based API.
+2021-01-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDTableView' and 'RDTreeView' base viewer classes.

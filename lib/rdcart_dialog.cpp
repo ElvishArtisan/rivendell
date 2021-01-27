@@ -86,12 +86,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   //
   // Cart List
   //
-  cart_cart_view=new QTableView(this);
-  cart_cart_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  cart_cart_view->setSelectionMode(QAbstractItemView::SingleSelection);
-  cart_cart_view->setShowGrid(false);
-  cart_cart_view->setSortingEnabled(false);
-  cart_cart_view->setWordWrap(false);
+  cart_cart_view=new RDTableView(this);
   cart_cart_model=new RDLibraryModel(this);
   cart_cart_model->setFont(font());
   cart_cart_model->setPalette(palette());

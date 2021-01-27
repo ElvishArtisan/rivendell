@@ -91,10 +91,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Feed List
   //
-  cast_feed_view=new QTreeView(this);
-  cast_feed_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  cast_feed_view->setSortingEnabled(false);
-  cast_feed_view->setWordWrap(false);
+  cast_feed_view=new RDTreeView(this);
   cast_feed_model=new RDFeedListModel(false,this);
   cast_feed_model->setFont(font());
   cast_feed_model->setPalette(palette());

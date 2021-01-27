@@ -2,7 +2,7 @@
 //
 //   The Log TableView widget for RDLogEdit.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,11 +25,11 @@
 #include <QDropEvent>
 #include <QDragEnterEvent>
 #include <QMenu>
-#include <QTableView>
 
 #include <rdlog_line.h>
+#include <rdtableview.h>
 
-class LogTableView : public QTableView
+class LogTableView : public RDTableView
 {
   Q_OBJECT
  public:

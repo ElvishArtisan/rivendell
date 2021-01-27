@@ -2,7 +2,7 @@
 //
 // Read-only log lister dialog for Rivendell
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +21,11 @@
 #ifndef LOGDIALOG_H
 #define LOGDIALOG_H
 
-#include <qpushbutton.h>
-#include <qtableview.h>
+#include <QPushButton>
 
 #include <rddialog.h>
 #include <rdlogmodel.h>
+#include <rdtableview.h>
 
 class LogDialog : public RDDialog
 {
@@ -46,7 +46,7 @@ class LogDialog : public RDDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  QTableView *d_log_view;
+  RDTableView *d_log_view;
   QPushButton *d_ok_button;
   QPushButton *d_cancel_button;
   RDLogModel *d_model;

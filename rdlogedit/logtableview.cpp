@@ -25,7 +25,7 @@
 #include "logmodel.h"
 
 LogTableView::LogTableView(QWidget *parent)
-  : QTableView(parent)
+  : RDTableView(parent)
 {
   d_mouse_row=-1;
 

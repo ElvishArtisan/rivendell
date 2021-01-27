@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,12 +44,7 @@ RDListLogs::RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
   //
   // Log List
   //
-  list_log_view=new QTableView(this);
-  list_log_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  list_log_view->setSelectionMode(QAbstractItemView::SingleSelection);
-  list_log_view->setShowGrid(false);
-  list_log_view->setSortingEnabled(false);
-  list_log_view->setWordWrap(false);
+  list_log_view=new RDTableView(this);
   list_log_model=new RDLogListModel(this);
   list_log_model->setFont(defaultFont());
   list_log_model->setPalette(palette());

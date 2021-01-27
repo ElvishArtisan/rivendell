@@ -22,12 +22,12 @@
 #define RDLOGEDIT_H
 
 #include <QList>
-#include <QTableView>
 
 #include <rdlog_line.h>
 #include <rdlogfilter.h>
 #include <rdloglistmodel.h>
 #include <rdnotification.h>
+#include <rdtableview.h>
 #include <rdwidget.h>
 
 #define RDLOGEDIT_POSITION_FILENAME ".rdlogedit"
@@ -74,7 +74,7 @@ class MainWidget : public RDWidget
   int log_card_no;
   int log_stream_no;
   RDLogFilter *log_filter_widget;
-  QTableView *log_log_view;
+  RDTableView *log_log_view;
   RDLogListModel *log_log_model;
   QList<RDLogLine> log_clipboard;
   QPushButton *log_add_button;

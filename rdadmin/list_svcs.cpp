@@ -80,15 +80,10 @@ ListSvcs::ListSvcs(QWidget *parent)
   //
   // Services List Box
   //
-  list_services_view=new QTableView(this);
+  list_services_view=new RDTableView(this);
   list_title_label=new QLabel(list_services_view,tr("&Services:"),this);
   list_title_label->setFont(labelFont());
   list_title_label->setGeometry(14,11,85,19);
-  list_services_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  list_services_view->setSelectionMode(QAbstractItemView::SingleSelection);
-  list_services_view->setShowGrid(false);
-  list_services_view->setSortingEnabled(false);
-  list_services_view->setWordWrap(false);
   list_services_model=new RDServiceListModel(false,this);
   list_services_model->setFont(defaultFont());
   list_services_model->setPalette(palette());

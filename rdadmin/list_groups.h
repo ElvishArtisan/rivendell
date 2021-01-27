@@ -22,11 +22,11 @@
 #define LIST_GROUPS_H
 
 #include <QPushButton>
-#include <QTableView>
 
 #include <rddb.h>
 #include <rddialog.h>
 #include <rdgrouplistmodel.h>
+#include <rdtableview.h>
 
 class ListGroups : public RDDialog
 {
@@ -52,7 +52,7 @@ class ListGroups : public RDDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  QTableView *list_groups_view;
+  RDTableView *list_groups_view;
   RDGroupListModel *list_groups_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;

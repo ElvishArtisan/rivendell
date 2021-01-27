@@ -1,8 +1,8 @@
-//   logtableview.h
+// rdtableview.h
 //
-//   The Log TableView widget for RDAirPlay
+// QTableView widget with consistent Rivendell defaults
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,31 +17,18 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
-#ifndef LOGTABLEVIEW_H
-#define LOGTABLEVIEW_H
+#ifndef RDTABLEVIEW_H
+#define RDTABLEVIEW_H
 
-#include <QDropEvent>
-#include <QDragEnterEvent>
+#include <QTableView>
 
-#include <rdlog_line.h>
-#include <rdtableview.h>
-
-class LogTableView : public RDTableView
+class RDTableView : public QTableView
 {
   Q_OBJECT
  public:
-  LogTableView(QWidget *parent);
-
- signals:
-  void cartDropped(int line,RDLogLine *ll);
-
- protected:
-  void dragEnterEvent(QDragEnterEvent *e);
-  void dragMoveEvent(QDragMoveEvent *e);
-  void dropEvent(QDropEvent *e);
+  RDTableView(QWidget *parent=0);
 };
 
 
-#endif  // LOGTABLEVIEW_H
+#endif  // RDTABLEVIEW_H

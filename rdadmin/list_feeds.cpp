@@ -100,13 +100,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   //
   // Feed List
   //
-  list_feeds_view=new QTableView(this);
-  list_feeds_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  list_feeds_view->setSelectionMode(QAbstractItemView::SingleSelection);
-  list_feeds_view->setShowGrid(false);
-  list_feeds_view->setSortingEnabled(false);
-  list_feeds_view->setSortingEnabled(false);
-  list_feeds_view->setWordWrap(false);
+  list_feeds_view=new RDTableView(this);
   list_feeds_model=new RDFeedListModel(true,this);
   list_feeds_model->setFont(font());
   list_feeds_model->setPalette(palette());

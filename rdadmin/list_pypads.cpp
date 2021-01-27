@@ -50,13 +50,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   //
   // Instances List Box
   //
-  list_list_view=new QTableView(this);
-  list_list_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  list_list_view->setSelectionMode(QAbstractItemView::SingleSelection);
-  list_list_view->setShowGrid(false);
-  list_list_view->setSortingEnabled(false);
-  list_list_view->setWordWrap(false);
-  list_list_view->verticalHeader()->setVisible(false);
+  list_list_view=new RDTableView(this);
   list_list_model=new RDPypadListModel(station->name(),this);
   list_list_view->setModel(list_list_model);
   connect(list_list_view,SIGNAL(doubleClicked(const QModelIndex &)),

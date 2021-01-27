@@ -27,13 +27,13 @@
 #include <QProgressDialog>
 #include <QPushButton>
 #include <QStringList>
-#include <QTreeView>
 
 #include <rdbusydialog.h>
 #include <rdcart.h>
-#include <rddialog.h>
 #include <rdcartfilter.h>
+#include <rddialog.h>
 #include <rdlibrarymodel.h>
+#include <rdtreeview.h>
 
 #define RDCUT_DIALOG_STEP_SIZE 1000
 
@@ -70,7 +70,7 @@ class RDCutDialog : public RDDialog
   void SaveState();
   QString *cart_cutname;
   RDCartFilter *cart_cart_filter;
-  QTreeView *cart_cart_view;
+  RDTreeView *cart_cart_view;
   RDLibraryModel *cart_cart_model;
   QPushButton *cart_ok_button;
   QPushButton *cart_cancel_button;

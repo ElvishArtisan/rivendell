@@ -83,12 +83,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   //
   // Dropbox List
   //
-  list_dropboxes_view=new QTableView(this);
-  list_dropboxes_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  list_dropboxes_view->setSelectionMode(QAbstractItemView::SingleSelection);
-  list_dropboxes_view->setShowGrid(false);
-  list_dropboxes_view->setSortingEnabled(false);
-  list_dropboxes_view->setWordWrap(false);
+  list_dropboxes_view=new RDTableView(this);
   list_dropboxes_model=new RDDropboxListModel(stationname,this);
   list_dropboxes_model->setFont(defaultFont());
   list_dropboxes_model->setPalette(palette());

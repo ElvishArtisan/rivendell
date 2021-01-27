@@ -79,12 +79,7 @@ ListUsers::ListUsers(const QString &admin_name,QWidget *parent)
   //
   // User List
   //
-  list_users_view=new QTableView(this);
-  list_users_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  list_users_view->setSelectionMode(QAbstractItemView::SingleSelection);
-  list_users_view->setShowGrid(false);
-  list_users_view->setSortingEnabled(false);
-  list_users_view->setWordWrap(false);
+  list_users_view=new RDTableView(this);
   list_users_model=new RDUserListModel(this);
   list_users_model->setFont(defaultFont());
   list_users_model->setPalette(palette());

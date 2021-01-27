@@ -97,12 +97,7 @@ ListGroups::ListGroups(QWidget *parent)
   //
   // Group List
   //
-  list_groups_view=new QTableView(this);
-  list_groups_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  list_groups_view->setSelectionMode(QAbstractItemView::SingleSelection);
-  list_groups_view->setShowGrid(false);
-  list_groups_view->setSortingEnabled(false);
-  list_groups_view->setWordWrap(false);
+  list_groups_view=new RDTableView(this);
   list_groups_model=new RDGroupListModel(false,true,this);
   list_groups_model->setFont(defaultFont());
   list_groups_model->setPalette(palette());

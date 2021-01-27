@@ -22,11 +22,11 @@
 #define RDCASTMANAGER_H
 
 #include <QPushButton>
-#include <QTreeView>
 
 #include <rdconfig.h>
 #include <rdfeedlistmodel.h>
 #include <rdlog_line.h>
+#include <rdtreeview.h>
 #include <rdwidget.h>
 
 #define RDCASTMANAGER_USAGE "\n"
@@ -54,7 +54,7 @@ class MainWidget : public RDWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
-  QTreeView *cast_feed_view;
+  RDTreeView *cast_feed_view;
   RDFeedListModel *cast_feed_model;
   QPushButton *cast_open_button;
   QPushButton *cast_copy_button;

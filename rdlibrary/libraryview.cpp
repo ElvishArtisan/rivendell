@@ -2,7 +2,7 @@
 //
 // QTreeView widget that supports cart dragging.
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,7 @@
 #include "libraryview.h"
 
 LibraryView::LibraryView(QWidget *parent)
-  : QTreeView(parent)
+  : RDTreeView(parent)
 {
 }
 

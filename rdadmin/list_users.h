@@ -23,11 +23,11 @@
 
 #include <QPixmap>
 #include <QPushButton>
-#include <QTableView>
 
 #include <rddb.h>
 #include <rddialog.h>
 #include <rdlistviewitem.h>
+#include <rdtableview.h>
 #include <rduserlistmodel.h>
 
 class ListUsers : public RDDialog
@@ -50,7 +50,7 @@ class ListUsers : public RDDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  QTableView *list_users_view;
+  RDTableView *list_users_view;
   RDUserListModel *list_users_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;

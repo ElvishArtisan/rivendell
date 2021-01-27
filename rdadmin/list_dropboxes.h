@@ -22,11 +22,11 @@
 #define LIST_DROPBOXES_H
 
 #include <QPushButton>
-#include <QTableView>
 
 #include <rddb.h>
 #include <rddialog.h>
 #include <rddropboxlistmodel.h>
+#include <rdtableview.h>
 
 class ListDropboxes : public RDDialog
 {
@@ -49,7 +49,7 @@ class ListDropboxes : public RDDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  QTableView *list_dropboxes_view;
+  RDTableView *list_dropboxes_view;
   RDDropboxListModel *list_dropboxes_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;

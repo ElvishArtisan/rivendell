@@ -21,14 +21,12 @@
 #ifndef LIST_STATIONS_H
 #define LIST_STATIONS_H
 
-//#include <q3listbox.h>
-
 #include <QLabel>
 #include <QPushButton>
-#include <QTableView>
 
 #include <rddialog.h>
 #include <rdstationlistmodel.h>
+#include <rdtableview.h>
 
 class ListStations : public RDDialog
 {
@@ -50,10 +48,8 @@ class ListStations : public RDDialog
   void resizeEvent(QResizeEvent *e);
   
  private:
-  //  void RefreshList(QString stationname="");
   QLabel *list_title_label;
-  //  Q3ListBox *list_box;
-  QTableView *list_stations_view;
+  RDTableView *list_stations_view;
   RDStationListModel *list_stations_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;

@@ -18,9 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QMessageBox>
+#include <QTranslator>
 
 #include <rdadd_log.h>
 #include <rdconf.h>
@@ -113,12 +113,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Log List
   //
-  log_log_view=new QTableView(this);
-  log_log_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  log_log_view=new RDTableView(this);
   log_log_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
-  log_log_view->setShowGrid(false);
-  log_log_view->setSortingEnabled(false);
-  log_log_view->setWordWrap(false);
   log_log_model=new RDLogListModel(this);
   log_log_model->setFont(defaultFont());
   log_log_model->setPalette(palette());

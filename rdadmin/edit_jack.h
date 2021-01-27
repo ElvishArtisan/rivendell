@@ -25,13 +25,13 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QTableView>
 #include <QSpinBox>
 
 #include <rddialog.h>
 #include <rdjackclientlistmodel.h>
 #include <rdlistview.h>
 #include <rdstation.h>
+#include <rdtableview.h>
 
 #define EDITJACK_DEFAULT_SERVERNAME QObject::tr("(default)")
 
@@ -65,7 +65,7 @@ class EditJack : public RDDialog
   QLabel *edit_jack_audio_ports_label;
   QSpinBox *edit_jack_audio_ports_spin;
   QLabel *edit_jack_client_label;
-  QTableView *edit_jack_client_view;
+  RDTableView *edit_jack_client_view;
   RDJackClientListModel *edit_jack_client_model;
   RDStation *edit_station;
   QPushButton *edit_add_button;

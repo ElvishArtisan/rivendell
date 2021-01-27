@@ -23,10 +23,10 @@
 
 #include <QLabel>
 #include <QPushButton>
-#include <QTableView>
 
 #include <rddialog.h>
 #include <rdservicelistmodel.h>
+#include <rdtableview.h>
 
 class ListSvcs : public RDDialog
 {
@@ -49,7 +49,7 @@ class ListSvcs : public RDDialog
 
  private:
   QLabel *list_title_label;
-  QTableView *list_services_view;
+  RDTableView *list_services_view;
   RDServiceListModel *list_services_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
