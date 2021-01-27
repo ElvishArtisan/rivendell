@@ -31,7 +31,8 @@ class RDIconEngine
 {
  public:
   enum IconType {GreenCheck=0,RedX=1,GreenBall=2,RedBall=3,WhiteBall=4,
-		 BlueBall=5,Switcher=6,Record=7,Download=8,Upload=9};
+		 BlueBall=5,Switcher=6,Input=7,Output=8,Record=9,Download=10,
+		 Upload=11};
   enum Application {Rivendell=0,RdAdmin=1,RdAirPlay=2,RdCartSlots=3,
 		    RdCastManager=4,RdCatch=5,RdLibrary=6,RdLogEdit=7,
 		    RdLogManager=8,RdPanel=9,LastApplication=10};

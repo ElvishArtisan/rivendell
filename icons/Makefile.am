@@ -289,6 +289,7 @@ EXTRA_DIST = admin.xpm\
              greencheckmark.xpm\
              host-16x16.xpm\
              host-48x48.xpm\
+             input.xpm\
              localuser.xpm\
              marker.xpm\
              mic16.png\
@@ -304,6 +305,7 @@ EXTRA_DIST = admin.xpm\
              play.png\
              play.xpm\
              macro.xpm\
+             output.xpm\
              post.xpm\
              post2.xpm\
              post3.xpm\

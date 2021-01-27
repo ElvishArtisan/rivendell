@@ -20934,3 +20934,6 @@
 	* Added 'RDMatrixListModel'.
 	* Refactored the 'Rivendell Switcher List' dialog in rdadmin(1) to
 	use the	model-based API.
+2021-01-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDIconEngine::Input' and 'RDIconEngine::Output' icons
+	to 'RDIconEngine'.

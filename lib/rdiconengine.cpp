@@ -112,6 +112,8 @@
 #include "../icons/redball.xpm"
 #include "../icons/whiteball.xpm"
 #include "../icons/switch3.xpm"
+#include "../icons/input.xpm"
+#include "../icons/output.xpm"
 #include "../icons/record.xpm"
 #include "../icons/upload.xpm"
 #include "../icons/download.xpm"
@@ -261,6 +263,8 @@ RDIconEngine::RDIconEngine()
   d_list_icons.push_back(QPixmap(whiteball_xpm));
   d_list_icons.push_back(QPixmap(blueball_xpm));
   d_list_icons.push_back(QPixmap(switch3_xpm));
+  d_list_icons.push_back(QPixmap(input_xpm));
+  d_list_icons.push_back(QPixmap(output_xpm));
   d_list_icons.push_back(QPixmap(record_xpm));
   d_list_icons.push_back(QPixmap(rss_xpm));
   d_list_icons.push_back(QPixmap(upload_xpm));
