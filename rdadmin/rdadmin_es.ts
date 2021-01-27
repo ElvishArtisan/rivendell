@@ -5886,19 +5886,19 @@ Cartuchos</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOMBRE</translation>
+        <translation type="obsolete">NOMBRE</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TIPO</translation>
+        <translation type="obsolete">TIPO</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIPCIÓN</translation>
+        <translation type="obsolete">DESCRIPCIÓN</translation>
     </message>
     <message>
         <source>HOST</source>
-        <translation>COMPUTADOR</translation>
+        <translation type="obsolete">COMPUTADOR</translation>
     </message>
     <message>
         <source>&amp;Replicators:</source>
@@ -5906,11 +5906,11 @@ Cartuchos</translation>
     </message>
     <message>
         <source>Are you sure you want to delete replicator</source>
-        <translation>Desea eliminar el replicador  </translation>
+        <translation type="unfinished">Desea eliminar el replicador  </translation>
     </message>
     <message>
         <source>Delete Replicator</source>
-        <translation>Eliminar Replicador</translation>
+        <translation type="unfinished">Eliminar Replicador</translation>
     </message>
 </context>
 <context>

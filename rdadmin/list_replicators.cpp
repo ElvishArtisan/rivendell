@@ -2,7 +2,7 @@
 //
 // List Rivendell Replication Configurations
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
+#include <QMessageBox>
 
-#include <qmessagebox.h>
-
-#include <rdcart.h>
-#include <rddb.h>
-#include <rdtextfile.h>
 #include <rdescape_string.h>
 #include <rdreplicator.h>
 
@@ -36,13 +31,10 @@
 ListReplicators::ListReplicators(QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("Rivendell Replicators"));
 
@@ -90,23 +82,19 @@ ListReplicators::ListReplicators(QWidget *parent)
   //
   // Replicator List
   //
-  list_replicators_view=new RDListView(this);
-  list_replicators_view->setAllColumnsShowFocus(true);
-  list_replicators_view->setItemMargin(5);
-  list_replicators_view->addColumn(tr("NAME"));
-  list_replicators_view->addColumn(tr("TYPE"));
-  list_replicators_view->addColumn(tr("DESCRIPTION"));
-  list_replicators_view->addColumn(tr("HOST"));
-  QLabel *list_box_label=
+  list_replicators_view=new RDTableView(this);
+  list_replicators_model=new RDReplicatorListModel(this);
+  list_replicators_model->setFont(defaultFont());
+  list_replicators_model->setPalette(palette());
+  list_replicators_view->setModel(list_replicators_model);
+  list_replicators_label=
     new QLabel(list_replicators_view,tr("&Replicators:"),this);
-  list_box_label->setFont(labelFont());
-  list_box_label->setGeometry(14,11,85,19);
-  connect(list_replicators_view,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-
-  RefreshList();
+  list_replicators_label->setFont(labelFont());
+  connect(list_replicators_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_replicators_model,SIGNAL(modelReset()),
+	  list_replicators_view,SLOT(resizeColumnsToContents()));
+  list_replicators_view->resizeColumnsToContents();
 }
 
 
@@ -132,29 +120,27 @@ void ListReplicators::addData()
   QString name;
 
   AddReplicator *d=new AddReplicator(&name,this);
-  if(d->exec()<0) {
-    delete d;
-    return;
+  if(d->exec()) {
+    QModelIndex row=list_replicators_model->addReplicator(name);
+    if(row.isValid()) {
+      list_replicators_view->selectRow(row.row());
+    }
   }
   delete d;
-  RDListViewItem *item=new RDListViewItem(list_replicators_view);
-  item->setText(0,name);
-  RefreshItem(item);
-  item->setSelected(true);
-  list_replicators_view->setCurrentItem(item);
-  list_replicators_view->ensureItemVisible(item);
 }
 
 
 void ListReplicators::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_replicators_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_replicators_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  EditReplicator *d=new EditReplicator(item->text(0),this);
-  if(d->exec()==0) {
-    RefreshItem(item);
+  EditReplicator *d=new EditReplicator(list_replicators_model->
+				       replicatorName(rows.first()),this);
+  if(d->exec()) {
+    list_replicators_model->refresh(rows.first());
   }
   delete d;
 }
@@ -162,19 +148,17 @@ void ListReplicators::editData()
 
 void ListReplicators::deleteData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_replicators_view->selectedItem();
-  if(item==NULL) {
+  QString sql;
+  QString warning;
+  QModelIndexList rows=list_replicators_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-
-  QString sql;
-  RDSqlQuery *q;
-  QString warning;
-
-  QString name=RDEscapeString(item->text(0));
+  QString name=list_replicators_model->replicatorName(rows.first());
 
   warning+=tr("Are you sure you want to delete replicator")+
-    " \""+item->text(0)+"\"?";
+    " \""+name+"\"?";
   switch(QMessageBox::warning(this,tr("Delete Replicator"),warning,
 			      QMessageBox::Yes,QMessageBox::No)) {
   case QMessageBox::No:
@@ -190,46 +174,44 @@ void ListReplicators::deleteData()
   //
   sql=QString("delete from REPLICATOR_MAP  where ")+
     "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
   
   //
   // Delete State Records
   //
   sql=QString("delete from REPL_CART_STATE where ")+
     "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
   sql=QString("delete from REPL_CUT_STATE where ")+
     "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 
   //
   // Delete from Replicator List
   //
   sql=QString("delete from REPLICATORS where ")+
     "NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  delete item;
+  RDSqlQuery::apply(sql);
+
+  list_replicators_model->removeReplicator(name);
 }
 
 
 void ListReplicators::listData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_replicators_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_replicators_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
+  QString name=list_replicators_model->replicatorName(rows.first());
   ListReplicatorCarts *d=new ListReplicatorCarts(this);
-  d->exec(item->text(0));
+  d->exec(name);
   delete d;
 }
 
 
-void ListReplicators::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				   int col)
+void ListReplicators::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -237,7 +219,7 @@ void ListReplicators::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 
 void ListReplicators::closeData()
 {
-  done(0);
+  done(true);
 }
 
 
@@ -248,48 +230,6 @@ void ListReplicators::resizeEvent(QResizeEvent *e)
   list_delete_button->setGeometry(size().width()-90,150,80,50);
   list_list_button->setGeometry(size().width()-90,250,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
+  list_replicators_label->setGeometry(14,11,85,19);
   list_replicators_view->setGeometry(10,30,size().width()-120,size().height()-40);
-}
-
-
-void ListReplicators::RefreshList()
-{
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item;
-
-  list_replicators_view->clear();
-  sql="select NAME,TYPE_ID,DESCRIPTION,STATION_NAME from REPLICATORS";
-  q=new RDSqlQuery(sql);
-  while (q->next()) {
-    item=new RDListViewItem(list_replicators_view);
-    item->setText(0,q->value(0).toString());
-    item->setText(1,
-	   RDReplicator::typeString((RDReplicator::Type)q->value(1).toUInt()));
-    item->setText(2,q->value(2).toString());
-    item->setText(3,q->value(3).toString());
-  }
-  delete q;
-}
-
-
-void ListReplicators::RefreshItem(RDListViewItem *item)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("select ")+
-    "TYPE_ID,"+       // 00
-    "DESCRIPTION,"+   // 01
-    "STATION_NAME "+  // 02
-    "from REPLICATORS where "+
-    "NAME=\""+RDEscapeString(item->text(0))+"\"";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    item->setText(1,
-	   RDReplicator::typeString((RDReplicator::Type)q->value(0).toUInt()));
-    item->setText(2,q->value(1).toString());
-    item->setText(3,q->value(2).toString());
-  }
-  delete q;
 }

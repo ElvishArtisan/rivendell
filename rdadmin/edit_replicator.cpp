@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Replicator
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -342,11 +342,11 @@ void EditReplicator::okData()
   q=new RDSqlQuery(sql);
   delete q;
 
-  done(0);
+  done(true);
 }
 
 
 void EditReplicator::cancelData()
 {
-  done(-1);
+  done(false);
 }

@@ -5591,19 +5591,15 @@ Carts</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation type="unfinished">NOME</translation>
+        <translation type="obsolete">NOME</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation type="unfinished">TIPO</translation>
+        <translation type="obsolete">TIPO</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation type="unfinished">DESCRIÇÃO</translation>
-    </message>
-    <message>
-        <source>HOST</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">DESCRIÇÃO</translation>
     </message>
     <message>
         <source>&amp;Replicators:</source>

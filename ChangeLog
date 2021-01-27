@@ -20922,3 +20922,7 @@
 	model-based API.
 2021-01-26 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDTableView' and 'RDTreeView' base viewer classes.
+2021-01-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDReplicatorListModel'.
+	* Refactored the 'Rivendell Replicators' dialog in rdadmin(1) to
+	use the	model-based API.

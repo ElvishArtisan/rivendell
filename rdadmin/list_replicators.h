@@ -2,7 +2,7 @@
 //
 // List Rivendell Replication Configurations
 //
-//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +21,11 @@
 #ifndef LIST_REPLICATORS_H
 #define LIST_REPLICATORS_H
 
-#include <qpushbutton.h>
+#include <QPushButton>
 
-#include <rddb.h>
 #include <rddialog.h>
-#include <rdlistviewitem.h>
+#include <rdreplicatorlistmodel.h>
+#include <rdtableview.h>
 
 class ListReplicators : public RDDialog
 {
@@ -41,16 +41,16 @@ class ListReplicators : public RDDialog
   void editData();
   void deleteData();
   void listData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshItem(RDListViewItem *item);
-  RDListView *list_replicators_view;
+  QLabel *list_replicators_label;
+  RDTableView *list_replicators_view;
+  RDReplicatorListModel *list_replicators_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;
@@ -59,6 +59,4 @@ class ListReplicators : public RDDialog
 };
 
 
-#endif
-
-
+#endif  // LIST_REPLICATORS_H

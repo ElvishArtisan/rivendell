@@ -2952,6 +2952,25 @@ please try again!</source>
     </message>
 </context>
 <context>
+    <name>RDReplicatorListModel</name>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDServiceListModel</name>
     <message>
         <source>Description</source>

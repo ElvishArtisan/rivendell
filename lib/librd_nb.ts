@@ -3511,6 +3511,25 @@ prøv ein gong til!</translation>
     </message>
 </context>
 <context>
+    <name>RDReplicatorListModel</name>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDReport</name>
     <message>
         <source>CBSI DeltaFlex Traffic Reconciliation v2.01</source>

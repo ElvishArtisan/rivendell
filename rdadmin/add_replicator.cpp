@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Replicator Configuration
 //
-//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,18 +20,9 @@
 
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
 #include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <rddb.h>
 
 #include <rdescape_string.h>
-#include <rdpasswd.h>
 #include <rdtextvalidator.h>
 
 #include "edit_replicator.h"
@@ -47,10 +38,8 @@ AddReplicator::AddReplicator(QString *rname,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("Add Replicator"));
 
@@ -138,16 +127,16 @@ void AddReplicator::okData()
     q=new RDSqlQuery(sql);
     delete q;
     delete replicator;
-    done(-1);
+    done(false);
     return;
   }
   delete replicator;
   *repl_name=repl_name_edit->text();
-  done(0);
+  done(true);
 }
 
 
 void AddReplicator::cancelData()
 {
-  done(-1);
+  done(false);
 }

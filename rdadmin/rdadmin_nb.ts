@@ -5476,19 +5476,15 @@ Carts</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation type="unfinished">NAMN</translation>
+        <translation type="obsolete">NAMN</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation type="unfinished">TYPE</translation>
+        <translation type="obsolete">TYPE</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation type="unfinished">SKILDRING</translation>
-    </message>
-    <message>
-        <source>HOST</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>&amp;Replicators:</source>

@@ -4592,22 +4592,6 @@ Carts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TYPE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DESCRIPTION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>HOST</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Replicators:</source>
         <translation type="unfinished"></translation>
     </message>

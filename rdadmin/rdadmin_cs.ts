@@ -5975,19 +5975,19 @@ vozíky</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYP</translation>
+        <translation type="obsolete">TYP</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>HOST</source>
-        <translation>SERVER</translation>
+        <translation type="obsolete">SERVER</translation>
     </message>
     <message>
         <source>&amp;Replicators:</source>
@@ -5995,11 +5995,11 @@ vozíky</translation>
     </message>
     <message>
         <source>Are you sure you want to delete replicator</source>
-        <translation>Opravdu chcete smazat toto zopakování</translation>
+        <translation type="unfinished">Opravdu chcete smazat toto zopakování</translation>
     </message>
     <message>
         <source>Delete Replicator</source>
-        <translation>Smazat zopakování</translation>
+        <translation type="unfinished">Smazat zopakování</translation>
     </message>
 </context>
 <context>

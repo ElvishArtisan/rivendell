@@ -5619,19 +5619,15 @@ Carts</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation type="unfinished">NAME</translation>
+        <translation type="obsolete">NAME</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation type="unfinished">TYP</translation>
+        <translation type="obsolete">TYP</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation type="unfinished">BESCHREIBUNG</translation>
-    </message>
-    <message>
-        <source>HOST</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">BESCHREIBUNG</translation>
     </message>
     <message>
         <source>&amp;Replicators:</source>
