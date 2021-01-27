@@ -2,7 +2,7 @@
 //
 // List Rivendell Matrices
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,14 +21,14 @@
 #ifndef LIST_MATRICES_H
 #define LIST_MATRICES_H
 
-#include <q3listview.h>
-
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QLabel>
+#include <QPushButton>
 
 #include <rd.h>
 #include <rddialog.h>
 #include <rdmatrix.h>
+#include <rdmatrixlistmodel.h>
+#include <rdtableview.h>
 
 class ListMatrices : public RDDialog
 {
@@ -43,19 +43,18 @@ class ListMatrices : public RDDialog
    void addData();
    void editData();
    void deleteData();
-   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+   void doubleClickedData(const QModelIndex &);
    void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
   private:
-   void DeleteMatrix(int matrix);
-   void RefreshList();
+   void DeleteMatrix(RDMatrix *mtx);
    void AddList(int matrix_num);
-   void RefreshRecord(Q3ListViewItem *item);
    QLabel *list_title_label;
-   Q3ListView *list_view;
+   RDTableView *list_view;
+   RDMatrixListModel *list_model;
    QPushButton *list_add_button;
    QPushButton *list_edit_button;
    QPushButton *list_delete_button;
@@ -65,5 +64,4 @@ class ListMatrices : public RDDialog
 };
 
 
-#endif
-
+#endif  // LIST_MATRICES_H

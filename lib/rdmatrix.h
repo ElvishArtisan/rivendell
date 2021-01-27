@@ -62,6 +62,8 @@ class RDMatrix
 		DynamicGpioControl=26,GpioStepSize=27,
 		LivewireGpioButtonControl=28,LastControl=29};
   RDMatrix(const QString &station,int matrix);
+  RDMatrix(int matrix_id);
+  int id() const;
   QString station() const;
   int matrix() const;
   bool exists() const;
@@ -119,6 +121,7 @@ class RDMatrix
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,unsigned value) const;
+  int mx_id;
   QString mx_station;
   int mx_number;
 };

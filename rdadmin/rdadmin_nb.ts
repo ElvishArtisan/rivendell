@@ -5272,19 +5272,19 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
     <message>
         <source>Switchers:</source>
-        <translation>Svitsjarar:</translation>
+        <translation type="obsolete">Svitsjarar:</translation>
     </message>
     <message>
         <source>MATRIX</source>
-        <translation>MATRISE</translation>
+        <translation type="obsolete">MATRISE</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>SKILDRING</translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYPE</translation>
+        <translation type="obsolete">TYPE</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5304,19 +5304,19 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
     <message>
         <source>Are you sure you want to delete switcher</source>
-        <translation>Er du sikker på at du vil sletta svitsjaren</translation>
+        <translation type="unfinished">Er du sikker på at du vil sletta svitsjaren</translation>
     </message>
     <message>
         <source>on</source>
-        <translation>på</translation>
+        <translation type="unfinished">på</translation>
     </message>
     <message>
         <source>ALL references to this switcher will be deleted!</source>
-        <translation>ALLE referansar til denne svitsjaren blir sletta!</translation>
+        <translation type="unfinished">ALLE referansar til denne svitsjaren blir sletta!</translation>
     </message>
     <message>
         <source>Deleting Switcher</source>
-        <translation>Slettar svitsjar</translation>
+        <translation type="unfinished">Slettar svitsjar</translation>
     </message>
     <message>
         <source>Local GPIO</source>
@@ -5365,6 +5365,10 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     <message>
         <source>BroadcastTools SS4.4</source>
         <translation type="obsolete">BroadcastTools SS4.4</translation>
+    </message>
+    <message>
+        <source>&amp;Replicators:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

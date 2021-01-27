@@ -1167,13 +1167,13 @@ void EditMatrix::okData()
   if(!WriteMatrix()) {
     return;
   }
-  done(0);
+  done(true);
 }
 
 
 void EditMatrix::cancelData()
 {
-  done(1);
+  done(false);
 }
 
 

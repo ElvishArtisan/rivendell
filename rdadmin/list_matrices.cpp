@@ -2,7 +2,7 @@
 //
 // List Rivendell Matrices
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rdapplication.h>
-#include <rddb.h>
 #include <rdescape_string.h>
 
 #include "add_matrix.h"
@@ -32,8 +31,6 @@
 ListMatrices::ListMatrices(QString station,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -52,6 +49,21 @@ ListMatrices::ListMatrices(QString station,QWidget *parent)
   //
   // Matrix List Box
   //
+  list_view=new RDTableView(this);
+  list_model=new RDMatrixListModel(station,false,this);
+  list_model->setFont(defaultFont());
+  list_model->setPalette(palette());
+  list_view->setModel(list_model);
+  list_title_label=
+    new QLabel(list_view,tr("&Replicators:"),this);
+  list_title_label->setFont(labelFont());
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_model,SIGNAL(modelReset()),
+	  list_view,SLOT(resizeColumnsToContents()));
+  list_view->resizeColumnsToContents();
+
+  /*
   list_view=new Q3ListView(this,"list_box");
   list_title_label=new QLabel(list_view,tr("Switchers:"),this);
   list_title_label->setFont(labelFont());
@@ -67,7 +79,7 @@ ListMatrices::ListMatrices(QString station,QWidget *parent)
 	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   RefreshList();
-
+  */
   //
   //  Add Button
   //
@@ -131,47 +143,53 @@ void ListMatrices::addData()
     return;
   }
   delete add;
-  RDMatrix *matrix=new RDMatrix(list_station,matrix_num);
-  EditMatrix *edit=new EditMatrix(matrix,this);
-  if(edit->exec()!=0) {
-    DeleteMatrix(matrix_num);
+  RDMatrix *mtx=new RDMatrix(list_station,matrix_num);
+  EditMatrix *edit=new EditMatrix(mtx,this);
+  if(edit->exec()) {
+    list_matrix_modified[matrix_num]=true;
+    QModelIndex row=list_model->addMatrix(mtx);
+    if(row.isValid()) {
+      list_view->selectRow(row.row());
+    }
   }
   else {
-    list_matrix_modified[matrix_num]=true;
-    AddList(matrix_num);
+    DeleteMatrix(mtx);
   }
   delete edit;
-  delete matrix;
+  delete mtx;
 }
 
 
 void ListMatrices::editData()
 {
-  if(list_view->selectedItem()==NULL) {
+  QModelIndexList rows=list_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  int matrix_num=list_view->currentItem()->text(0).toInt();
-  RDMatrix *matrix=new RDMatrix(list_station,matrix_num);
-  Q3ListViewItem *item=list_view->selectedItem();
-  EditMatrix *edit=new EditMatrix(matrix,this);
-  if(edit->exec()==0) {
-    RefreshRecord(item);
-    list_matrix_modified[matrix_num]=true;
+  int matrix_id=list_model->matrixId(rows.first());
+  RDMatrix *mtx=new RDMatrix(matrix_id);
+  EditMatrix *d=new EditMatrix(mtx,this);
+  if(d->exec()) {
+    list_matrix_modified[mtx->matrix()]=true;
+    list_model->refresh(rows.first());
   }
-  delete edit;
-  delete matrix;
+  delete d;
+  delete mtx;
 }
 
 
 void ListMatrices::deleteData()
 {
-  if(list_view->currentItem()==NULL) {
+  QModelIndexList rows=list_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  int matrix=list_view->currentItem()->text(0).toInt();
-
+  RDMatrix *mtx=new RDMatrix(list_model->matrixId(rows.first()));
   QString msg=tr("Are you sure you want to delete switcher")+
-    " \""+list_view->currentItem()->text(0)+":"+list_view->currentItem()->text(1)+"\" "+
+    " \""+QString().sprintf("%d",mtx->matrix())+":"+
+    mtx->name()+"\" "+
     tr("on")+" \""+list_station+"\"?"+"\n"+
     tr("ALL references to this switcher will be deleted!");
   if(QMessageBox::warning(this,tr("Deleting Switcher"),msg,
@@ -179,14 +197,12 @@ void ListMatrices::deleteData()
      QMessageBox::Yes) {
     return;
   }
-  DeleteMatrix(matrix);
-  list_matrix_modified[matrix]=true;
-  RefreshList();
+  DeleteMatrix(mtx);
+  list_matrix_modified[mtx->matrix()]=true;
 }
 
 
-void ListMatrices::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				     int col)
+void ListMatrices::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -224,46 +240,48 @@ void ListMatrices::resizeEvent(QResizeEvent *e)
 }
 
 
-void ListMatrices::DeleteMatrix(int matrix)
+void ListMatrices::DeleteMatrix(RDMatrix *mtx)
 {
   QString sql=QString("delete from MATRICES where ")+
     "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-    QString().sprintf("MATRIX=%d",matrix);
+    QString().sprintf("MATRIX=%d",mtx->matrix());
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
   sql=QString("delete from INPUTS where ")+
     "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-    QString().sprintf("MATRIX=%d",matrix);
+    QString().sprintf("MATRIX=%d",mtx->matrix());
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString("delete from OUTPUTS where ")+
     "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-    QString().sprintf("MATRIX=%d",matrix);
+    QString().sprintf("MATRIX=%d",mtx->matrix());
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString("delete from SWITCHER_NODES where ")+
     "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-    QString().sprintf("MATRIX=%d",matrix);
+    QString().sprintf("MATRIX=%d",mtx->matrix());
   q=new RDSqlQuery(sql);
   delete q;
 sql=QString("delete from GPIS where ")+
   "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-  QString().sprintf("MATRIX=%d",matrix);
+  QString().sprintf("MATRIX=%d",mtx->matrix());
   q=new RDSqlQuery(sql);
   delete q;
 sql=QString("delete from GPOS where ")+
   "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-  QString().sprintf("MATRIX=%d",matrix);
+  QString().sprintf("MATRIX=%d",mtx->matrix());
   q=new RDSqlQuery(sql);
   delete q;
 sql=QString("delete from VGUEST_RESOURCES where ")+
   "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-  QString().sprintf("MATRIX_NUM=%d",matrix);
+  QString().sprintf("MATRIX_NUM=%d",mtx->matrix());
   q=new RDSqlQuery(sql);
   delete q;
+
+  list_model->removeMatrix(mtx->id());
 }
 
-
+/*
 void ListMatrices::RefreshList()
 {
   Q3ListViewItem *l;
@@ -285,10 +303,11 @@ void ListMatrices::RefreshList()
   }
   delete q;
 }
-
+*/
 
 void ListMatrices::AddList(int matrix_num)
 {
+  /*
   RDMatrix *matrix=new RDMatrix(list_station,matrix_num);
   Q3ListViewItem *item=new Q3ListViewItem(list_view);
   item->setText(0,QString().sprintf("%d",matrix_num));
@@ -297,12 +316,14 @@ void ListMatrices::AddList(int matrix_num)
   delete matrix;
   list_view->setCurrentItem(item);
   list_view->setSelected(item,true);
+  */
 }
 
-
+/*
 void ListMatrices::RefreshRecord(Q3ListViewItem *item)
 {
   RDMatrix *matrix=new RDMatrix(list_station,item->text(0).toInt());
   item->setText(1,matrix->name());
   delete matrix;
 }
+*/

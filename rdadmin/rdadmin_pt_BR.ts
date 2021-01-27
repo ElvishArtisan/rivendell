@@ -5387,19 +5387,19 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>Switchers:</source>
-        <translation>Switchers:</translation>
+        <translation type="obsolete">Switchers:</translation>
     </message>
     <message>
         <source>MATRIX</source>
-        <translation>MATRIX</translation>
+        <translation type="obsolete">MATRIX</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIÇÃO</translation>
+        <translation type="obsolete">DESCRIÇÃO</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TIPO</translation>
+        <translation type="obsolete">TIPO</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5419,19 +5419,19 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete switcher</source>
-        <translation>Tem certeza que quer deletar este switcher?</translation>
+        <translation type="unfinished">Tem certeza que quer deletar este switcher?</translation>
     </message>
     <message>
         <source>on</source>
-        <translation>Ligado</translation>
+        <translation type="unfinished">Ligado</translation>
     </message>
     <message>
         <source>ALL references to this switcher will be deleted!</source>
-        <translation>TODAS as referências deste switcher serão deletadas</translation>
+        <translation type="unfinished">TODAS as referências deste switcher serão deletadas</translation>
     </message>
     <message>
         <source>Deleting Switcher</source>
-        <translation>Deletando Switcher</translation>
+        <translation type="unfinished">Deletando Switcher</translation>
     </message>
     <message>
         <source>Local GPIO</source>
@@ -5480,6 +5480,10 @@ Você ainda quer Deletar?</translation>
     <message>
         <source>BroadcastTools SS4.4</source>
         <translation type="obsolete">BroadcastTools SS4.4</translation>
+    </message>
+    <message>
+        <source>&amp;Replicators:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

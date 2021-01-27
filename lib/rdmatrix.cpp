@@ -179,8 +179,56 @@ int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
 
 RDMatrix::RDMatrix(const QString &station,int matrix)
 {
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  sql=QString("select ")+
+    "ID "+  // 00
+    "from MATRICES where "+
+    "STATION_NAME=\""+RDEscapeString(station)+"\" && "+
+    QString().sprintf("MATRIX=%d",matrix);
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    mx_id=q->value(0).toInt();
+  }
+  else {
+    mx_id=-1;
+  }
+  delete q;
+
   mx_station=station;
   mx_number=matrix;
+
+}
+
+
+RDMatrix::RDMatrix(int matrix_id)
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  sql=QString("select ")+
+    "STATION_NAME,"  // 00
+    "MATRIX "+       /// 01
+    "from MATRICES where "+
+    QString().sprintf("ID=%d",matrix_id);
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    mx_station=q->value(0).toString();
+    mx_number=q->value(1).toInt();
+  }
+  else {
+    mx_number=-1;
+  }
+  delete q;
+
+  mx_id=matrix_id;
+}
+
+
+int RDMatrix::id() const
+{
+  return mx_id;
 }
 
 
@@ -198,12 +246,7 @@ int RDMatrix::matrix() const
 
 bool RDMatrix::exists() const
 {
-  QString sql=QString().sprintf("select TYPE from MATRICES where MATRIX=%d",
-				mx_number);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  bool result=q->first();
-  delete q;
-  return result;
+  return (mx_id>=0)&&(mx_number>=0);
 }
 
 

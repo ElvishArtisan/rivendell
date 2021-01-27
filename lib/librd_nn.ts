@@ -3175,6 +3175,41 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
     </message>
 </context>
 <context>
+    <name>RDMatrixListModel</name>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Matrix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GPIs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GPOs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDMbLookup</name>
     <message>
         <source>Connection Exception</source>

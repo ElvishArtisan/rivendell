@@ -5407,19 +5407,19 @@ Generieren</translation>
     </message>
     <message>
         <source>Switchers:</source>
-        <translation>Schalter:</translation>
+        <translation type="obsolete">Schalter:</translation>
     </message>
     <message>
         <source>MATRIX</source>
-        <translation>MATRIX</translation>
+        <translation type="obsolete">MATRIX</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>BESCHREIBUNG</translation>
+        <translation type="obsolete">BESCHREIBUNG</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYP</translation>
+        <translation type="obsolete">TYP</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5439,19 +5439,19 @@ Generieren</translation>
     </message>
     <message>
         <source>Are you sure you want to delete switcher</source>
-        <translation>Sind Sie sicher, daß sie diesen Schalter löschen wollen</translation>
+        <translation type="unfinished">Sind Sie sicher, daß sie diesen Schalter löschen wollen</translation>
     </message>
     <message>
         <source>on</source>
-        <translation>An</translation>
+        <translation type="unfinished">An</translation>
     </message>
     <message>
         <source>ALL references to this switcher will be deleted!</source>
-        <translation>ALLE Referenzen zu diesem Switcher werden gelöscht!</translation>
+        <translation type="unfinished">ALLE Referenzen zu diesem Switcher werden gelöscht!</translation>
     </message>
     <message>
         <source>Deleting Switcher</source>
-        <translation>Lösche Schalter</translation>
+        <translation type="unfinished">Lösche Schalter</translation>
     </message>
     <message>
         <source>Local GPIO</source>
@@ -5508,6 +5508,10 @@ Generieren</translation>
     <message>
         <source>BroadcastTools SRC-16</source>
         <translation type="obsolete">BroadcastTools SRC-16</translation>
+    </message>
+    <message>
+        <source>&amp;Replicators:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

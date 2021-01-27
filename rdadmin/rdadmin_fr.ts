@@ -4436,22 +4436,6 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Switchers:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MATRIX</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DESCRIPTION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TYPE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4465,6 +4449,10 @@ Permissions</source>
     </message>
     <message>
         <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Replicators:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

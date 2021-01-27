@@ -186,6 +186,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdmarker_button.cpp rdmarker_button.h\
                         rdmarker_edit.cpp rdmarker_edit.h\
                         rdmatrix.cpp rdmatrix.h\
+                        rdmatrixlistmodel.cpp rdmatrixlistmodel.h\
                         rdmblookup.cpp rdmblookup.h\
                         rdmeteraverage.cpp rdmeteraverage.h\
                         rdmixer.cpp rdmixer.h\
@@ -347,6 +348,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdmacro_event.cpp\
                           moc_rdmarker_bar.cpp\
                           moc_rdmarker_edit.cpp\
+                          moc_rdmatrixlistmodel.cpp\
                           moc_rdmblookup.cpp\
                           moc_rdmulticaster.cpp\
                           moc_rdoneshot.cpp\

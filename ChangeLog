@@ -20926,3 +20926,11 @@
 	* Added 'RDReplicatorListModel'.
 	* Refactored the 'Rivendell Replicators' dialog in rdadmin(1) to
 	use the	model-based API.
+2021-01-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDMatrix::id()' method.
+	* Added 'RDIconEngine::Switcher', 'RDIconEngine::Record',
+	'RDIconEngine::Download' and 'RDIconEngine::Upload' icons to
+	'RDIconEngine.
+	* Added 'RDMatrixListModel'.
+	* Refactored the 'Rivendell Switcher List' dialog in rdadmin(1) to
+	use the	model-based API.

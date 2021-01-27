@@ -111,6 +111,10 @@
 #include "../icons/greenball.xpm"
 #include "../icons/redball.xpm"
 #include "../icons/whiteball.xpm"
+#include "../icons/switch3.xpm"
+#include "../icons/record.xpm"
+#include "../icons/upload.xpm"
+#include "../icons/download.xpm"
 
 #include "../icons/host-16x16.xpm"
 
@@ -256,6 +260,11 @@ RDIconEngine::RDIconEngine()
   d_list_icons.push_back(QPixmap(redball_xpm));
   d_list_icons.push_back(QPixmap(whiteball_xpm));
   d_list_icons.push_back(QPixmap(blueball_xpm));
+  d_list_icons.push_back(QPixmap(switch3_xpm));
+  d_list_icons.push_back(QPixmap(record_xpm));
+  d_list_icons.push_back(QPixmap(rss_xpm));
+  d_list_icons.push_back(QPixmap(upload_xpm));
+  d_list_icons.push_back(QPixmap(download_xpm));
 
   //
   // Create Station Icon

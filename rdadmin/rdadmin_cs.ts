@@ -5761,19 +5761,19 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Switchers:</source>
-        <translation>Přepínače:</translation>
+        <translation type="obsolete">Přepínače:</translation>
     </message>
     <message>
         <source>MATRIX</source>
-        <translation>MATICE</translation>
+        <translation type="obsolete">MATICE</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYP</translation>
+        <translation type="obsolete">TYP</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5793,19 +5793,19 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete switcher</source>
-        <translation>Opravdu chcete smazat tento přepínač</translation>
+        <translation type="unfinished">Opravdu chcete smazat tento přepínač</translation>
     </message>
     <message>
         <source>on</source>
-        <translation>na</translation>
+        <translation type="unfinished">na</translation>
     </message>
     <message>
         <source>ALL references to this switcher will be deleted!</source>
-        <translation>VŠECHNY odkazy na tento přepínač budou smazány!</translation>
+        <translation type="unfinished">VŠECHNY odkazy na tento přepínač budou smazány!</translation>
     </message>
     <message>
         <source>Deleting Switcher</source>
-        <translation>Mazání přepínače</translation>
+        <translation type="unfinished">Mazání přepínače</translation>
     </message>
     <message>
         <source>Local GPIO</source>
@@ -5862,6 +5862,10 @@ Stále ještě jej chcete smazat?</translation>
     <message>
         <source>BroadcastTools SRC-16</source>
         <translation type="obsolete">BroadcastTools SRC-16</translation>
+    </message>
+    <message>
+        <source>&amp;Replicators:</source>
+        <translation type="unfinished">&amp;Zopakování:</translation>
     </message>
 </context>
 <context>

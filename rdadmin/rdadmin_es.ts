@@ -5712,19 +5712,15 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Switchers:</source>
-        <translation>Suicheras:</translation>
-    </message>
-    <message>
-        <source>MATRIX</source>
-        <translation></translation>
+        <translation type="obsolete">Suicheras:</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIPCIÓN</translation>
+        <translation type="obsolete">DESCRIPCIÓN</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TIPO</translation>
+        <translation type="obsolete">TIPO</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5744,19 +5740,19 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Are you sure you want to delete switcher</source>
-        <translation>¿Está seguro de borrar la suichera</translation>
+        <translation type="unfinished">¿Está seguro de borrar la suichera</translation>
     </message>
     <message>
         <source>on</source>
-        <translation>en</translation>
+        <translation type="unfinished">en</translation>
     </message>
     <message>
         <source>ALL references to this switcher will be deleted!</source>
-        <translation>¡TODAS las referencias a esta suichera serán borradas!</translation>
+        <translation type="unfinished">¡TODAS las referencias a esta suichera serán borradas!</translation>
     </message>
     <message>
         <source>Deleting Switcher</source>
-        <translation>Borrando suichera</translation>
+        <translation type="unfinished">Borrando suichera</translation>
     </message>
     <message>
         <source>Local GPIO</source>
@@ -5773,6 +5769,10 @@ Do you still want to delete it?</source>
     <message>
         <source>Local Audio Adapter</source>
         <translation type="obsolete">Adaptador de Audio Local</translation>
+    </message>
+    <message>
+        <source>&amp;Replicators:</source>
+        <translation type="unfinished">&amp;Replicadores:</translation>
     </message>
 </context>
 <context>
