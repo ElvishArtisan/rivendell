@@ -55,7 +55,7 @@ ListMatrices::ListMatrices(QString station,QWidget *parent)
   list_model->setPalette(palette());
   list_view->setModel(list_model);
   list_title_label=
-    new QLabel(list_view,tr("&Replicators:"),this);
+    new QLabel(list_view,tr("Switcher/GPIO Devices")+":",this);
   list_title_label->setFont(labelFont());
   connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));
@@ -215,7 +215,7 @@ void ListMatrices::closeData()
 void ListMatrices::resizeEvent(QResizeEvent *e)
 {
   list_view->setGeometry(10,24,size().width()-20,size().height()-94);
-  list_title_label->setGeometry(14,5,85,19);
+  list_title_label->setGeometry(14,5,size().width()-20,19);
   list_add_button->setGeometry(10,size().height()-60,80,50);
   list_edit_button->setGeometry(100,size().height()-60,80,50);
   list_delete_button->setGeometry(190,size().height()-60,80,50);

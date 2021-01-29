@@ -1238,11 +1238,11 @@ files, causing any whose files remain to be imported again.</source>
     <name>EditEndpoint</name>
     <message>
         <source>Edit Input</source>
-        <translation>Editar Entrada</translation>
+        <translation type="unfinished">Editar Entrada</translation>
     </message>
     <message>
         <source>Edit Output</source>
-        <translation>Editar Saída</translation>
+        <translation type="unfinished">Editar Saída</translation>
     </message>
     <message>
         <source>Name: </source>
@@ -1250,23 +1250,23 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Feed: </source>
-        <translation>Feed: </translation>
+        <translation type="obsolete">Feed: </translation>
     </message>
     <message>
         <source>Mode: </source>
-        <translation>Modo:</translation>
+        <translation type="obsolete">Modo:</translation>
     </message>
     <message>
         <source>Stereo</source>
-        <translation>Estéreo</translation>
+        <translation type="obsolete">Estéreo</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>Esquerda </translation>
+        <translation type="obsolete">Esquerda </translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>Direita</translation>
+        <translation type="obsolete">Direita</translation>
     </message>
     <message>
         <source>Engine (Hex): </source>
@@ -1274,7 +1274,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Provider ID:</source>
-        <translation>Identificação do Provedor: </translation>
+        <translation type="obsolete">Identificação do Provedor: </translation>
     </message>
     <message>
         <source>Device (Hex): </source>
@@ -1282,7 +1282,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Service ID:</source>
-        <translation>Identificação do Serviço:</translation>
+        <translation type="obsolete">Identificação do Serviço:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1294,23 +1294,23 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Invalid Number</source>
-        <translation>Número Inválido</translation>
+        <translation type="obsolete">Número Inválido</translation>
     </message>
     <message>
         <source>The Engine Number is Invalid!</source>
-        <translation>O Número do Mecanismo é inválido! </translation>
+        <translation type="obsolete">O Número do Mecanismo é inválido! </translation>
     </message>
     <message>
         <source>The Provider ID is Invalid!</source>
-        <translation>A Identificação do Provedor é inválida! </translation>
+        <translation type="obsolete">A Identificação do Provedor é inválida! </translation>
     </message>
     <message>
         <source>The Device Number is Invalid!</source>
-        <translation>O Número do Dispositivo é inválido! </translation>
+        <translation type="obsolete">O Número do Dispositivo é inválido! </translation>
     </message>
     <message>
         <source>The Service ID is Invalid!</source>
-        <translation>A Identificação do Serviçor é inválida! </translation>
+        <translation type="obsolete">A Identificação do Serviçor é inválida! </translation>
     </message>
 </context>
 <context>
@@ -4864,47 +4864,47 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>ENTRADA</translation>
+        <translation type="obsolete">ENTRADA</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>SAÍDA</translation>
+        <translation type="obsolete">SAÍDA</translation>
     </message>
     <message>
         <source>LABEL</source>
-        <translation>IDENTIFICAÇÃO</translation>
+        <translation type="obsolete">IDENTIFICAÇÃO</translation>
     </message>
     <message>
         <source>SOURCE</source>
-        <translation>FONTE</translation>
+        <translation type="obsolete">FONTE</translation>
     </message>
     <message>
         <source>MODE</source>
-        <translation>MODO</translation>
+        <translation type="obsolete">MODO</translation>
     </message>
     <message>
         <source>ENGINE (Hex)</source>
-        <translation>MECANISMO (Hex)</translation>
+        <translation type="obsolete">MECANISMO (Hex)</translation>
     </message>
     <message>
         <source>DEVICE (Hex)</source>
-        <translation>DISPOSITIVO (Hex)</translation>
+        <translation type="obsolete">DISPOSITIVO (Hex)</translation>
     </message>
     <message>
         <source>PROVIDER ID</source>
-        <translation>PROVEDOR DE  ID</translation>
+        <translation type="obsolete">PROVEDOR DE  ID</translation>
     </message>
     <message>
         <source>SERVICE ID</source>
-        <translation>ID DO SERVIÇO</translation>
+        <translation type="obsolete">ID DO SERVIÇO</translation>
     </message>
     <message>
         <source>NODE</source>
-        <translation>NÓDULO</translation>
+        <translation type="obsolete">NÓDULO</translation>
     </message>
     <message>
         <source>#</source>
-        <translation>#</translation>
+        <translation type="obsolete">#</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -4912,43 +4912,47 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Stereo</source>
-        <translation>Estéreo</translation>
+        <translation type="obsolete">Estéreo</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>Esquerda </translation>
+        <translation type="obsolete">Esquerda </translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>Direita</translation>
+        <translation type="obsolete">Direita</translation>
     </message>
     <message>
         <source>Input</source>
-        <translation>Entrada</translation>
+        <translation type="obsolete">Entrada</translation>
     </message>
     <message>
         <source>Output</source>
-        <translation>Saída</translation>
+        <translation type="obsolete">Saída</translation>
     </message>
     <message>
         <source>stereo</source>
-        <translation>Estéreo</translation>
+        <translation type="obsolete">Estéreo</translation>
     </message>
     <message>
         <source>left</source>
-        <translation>esquerda</translation>
+        <translation type="obsolete">esquerda</translation>
     </message>
     <message>
         <source>right</source>
-        <translation>direita</translation>
+        <translation type="obsolete">direita</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Fechar</translation>
     </message>
 </context>
 <context>
@@ -5482,7 +5486,7 @@ Você ainda quer Deletar?</translation>
         <translation type="obsolete">BroadcastTools SS4.4</translation>
     </message>
     <message>
-        <source>&amp;Replicators:</source>
+        <source>Switcher/GPIO Devices</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

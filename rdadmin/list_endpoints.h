@@ -2,7 +2,7 @@
 //
 // List Rivendell Endpoints
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,13 @@
 #ifndef LIST_ENDPOINTS_H
 #define LIST_ENDPOINTS_H
 
-#include <q3listview.h>
-
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QLabel>
+#include <QPushButton>
 
 #include <rddialog.h>
+#include <rdendpointlistmodel.h>
 #include <rdmatrix.h>
+#include <rdtableview.h>
 #include <rduser.h>
 
 class ListEndpoints : public RDDialog
@@ -40,9 +40,8 @@ class ListEndpoints : public RDDialog
 
  private slots:
   void editData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
-  void okData();
-  void cancelData();
+  void doubleClickedData(const QModelIndex &index);
+  void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
@@ -50,16 +49,15 @@ class ListEndpoints : public RDDialog
  private:
   RDMatrix *list_matrix;
   RDMatrix::Endpoint list_endpoint;
-  Q3ListView *list_list_view;
+  RDTableView *list_list_view;
+  RDEndpointListModel *list_list_model;
   QLabel *list_type_label;
   QPushButton *list_edit_button;
-  QPushButton *list_ok_button;
-  QPushButton *list_cancel_button;
+  QPushButton *list_close_button;
   int list_size;
   QString list_table;
   bool list_readonly;
 };
 
 
-#endif
-
+#endif  // LIST_ENDPOINTS_H

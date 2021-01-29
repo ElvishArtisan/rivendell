@@ -252,7 +252,7 @@ void RDUserListModel::updateModel()
   beginResetModel();
   d_texts.clear();
   d_icons.clear();
-  printf("SQL: %s\n",sql.toUtf8().constData());
+  //  printf("SQL: %s\n",sql.toUtf8().constData());
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_texts.push_back(texts);

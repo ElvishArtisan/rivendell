@@ -1228,11 +1228,11 @@ files, causing any whose files remain to be imported again.</source>
     <name>EditEndpoint</name>
     <message>
         <source>Edit Input</source>
-        <translation>Rediger inngang</translation>
+        <translation type="unfinished">Rediger inngang</translation>
     </message>
     <message>
         <source>Edit Output</source>
-        <translation>Rediger utgang</translation>
+        <translation type="unfinished">Rediger utgang</translation>
     </message>
     <message>
         <source>Name: </source>
@@ -1240,23 +1240,23 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Feed: </source>
-        <translation>Straum:</translation>
+        <translation type="obsolete">Straum:</translation>
     </message>
     <message>
         <source>Mode: </source>
-        <translation>Modus:</translation>
+        <translation type="obsolete">Modus:</translation>
     </message>
     <message>
         <source>Stereo</source>
-        <translation>Stereo</translation>
+        <translation type="obsolete">Stereo</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>Venstre</translation>
+        <translation type="obsolete">Venstre</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>Høgre</translation>
+        <translation type="obsolete">Høgre</translation>
     </message>
     <message>
         <source>Engine (Hex): </source>
@@ -1264,7 +1264,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Provider ID:</source>
-        <translation>Tilbydar-ID:</translation>
+        <translation type="obsolete">Tilbydar-ID:</translation>
     </message>
     <message>
         <source>Device (Hex): </source>
@@ -1272,7 +1272,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Service ID:</source>
-        <translation>Tenest-ID:</translation>
+        <translation type="obsolete">Tenest-ID:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1284,23 +1284,23 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Invalid Number</source>
-        <translation>Ugyldig nummer</translation>
+        <translation type="obsolete">Ugyldig nummer</translation>
     </message>
     <message>
         <source>The Engine Number is Invalid!</source>
-        <translation>Ugyldig nummer!</translation>
+        <translation type="obsolete">Ugyldig nummer!</translation>
     </message>
     <message>
         <source>The Provider ID is Invalid!</source>
-        <translation>Tilbydar-ID-en er ugyldig!</translation>
+        <translation type="obsolete">Tilbydar-ID-en er ugyldig!</translation>
     </message>
     <message>
         <source>The Device Number is Invalid!</source>
-        <translation>Einingsnummeret er ugyldig!</translation>
+        <translation type="obsolete">Einingsnummeret er ugyldig!</translation>
     </message>
     <message>
         <source>The Service ID is Invalid!</source>
-        <translation>Tenest-ID-en er ugyldig!</translation>
+        <translation type="obsolete">Tenest-ID-en er ugyldig!</translation>
     </message>
 </context>
 <context>
@@ -4741,47 +4741,47 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>INNGANG</translation>
+        <translation type="obsolete">INNGANG</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>UTGANG</translation>
+        <translation type="obsolete">UTGANG</translation>
     </message>
     <message>
         <source>LABEL</source>
-        <translation>MERKE</translation>
+        <translation type="obsolete">MERKE</translation>
     </message>
     <message>
         <source>SOURCE</source>
-        <translation>KJELDE</translation>
+        <translation type="obsolete">KJELDE</translation>
     </message>
     <message>
         <source>MODE</source>
-        <translation>MODUS</translation>
+        <translation type="obsolete">MODUS</translation>
     </message>
     <message>
         <source>ENGINE (Hex)</source>
-        <translation>MASKIN (heksadesimal)</translation>
+        <translation type="obsolete">MASKIN (heksadesimal)</translation>
     </message>
     <message>
         <source>DEVICE (Hex)</source>
-        <translation>EINING (heksadesimal)</translation>
+        <translation type="obsolete">EINING (heksadesimal)</translation>
     </message>
     <message>
         <source>PROVIDER ID</source>
-        <translation>TILBYDAR-ID</translation>
+        <translation type="obsolete">TILBYDAR-ID</translation>
     </message>
     <message>
         <source>SERVICE ID</source>
-        <translation>TENEST-ID</translation>
+        <translation type="obsolete">TENEST-ID</translation>
     </message>
     <message>
         <source>NODE</source>
-        <translation>NODE</translation>
+        <translation type="obsolete">NODE</translation>
     </message>
     <message>
         <source>#</source>
-        <translation>#</translation>
+        <translation type="obsolete">#</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -4789,43 +4789,47 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Stereo</source>
-        <translation>Stereo</translation>
+        <translation type="obsolete">Stereo</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>Venstre</translation>
+        <translation type="obsolete">Venstre</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>Høgre</translation>
+        <translation type="obsolete">Høgre</translation>
     </message>
     <message>
         <source>Input</source>
-        <translation>Inngang</translation>
+        <translation type="obsolete">Inngang</translation>
     </message>
     <message>
         <source>Output</source>
-        <translation>Utgang</translation>
+        <translation type="obsolete">Utgang</translation>
     </message>
     <message>
         <source>stereo</source>
-        <translation>stereo</translation>
+        <translation type="obsolete">stereo</translation>
     </message>
     <message>
         <source>left</source>
-        <translation>venstre</translation>
+        <translation type="obsolete">venstre</translation>
     </message>
     <message>
         <source>right</source>
-        <translation>høgre</translation>
+        <translation type="obsolete">høgre</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Lukk</translation>
     </message>
 </context>
 <context>
@@ -5367,7 +5371,7 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
         <translation type="obsolete">BroadcastTools SS4.4</translation>
     </message>
     <message>
-        <source>&amp;Replicators:</source>
+        <source>Switcher/GPIO Devices</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

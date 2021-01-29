@@ -933,35 +933,7 @@ files, causing any whose files remain to be imported again.</source>
 <context>
     <name>EditEndpoint</name>
     <message>
-        <source>Edit Input</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Output</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Name: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Feed: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mode: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stereo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -969,15 +941,7 @@ files, causing any whose files remain to be imported again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Provider ID:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Device (Hex): </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Service ID:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -989,23 +953,11 @@ files, causing any whose files remain to be imported again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Invalid Number</source>
+        <source>Edit Input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The Engine Number is Invalid!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The Provider ID is Invalid!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The Device Number is Invalid!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The Service ID is Invalid!</source>
+        <source>Edit Output</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3958,91 +3910,11 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>INPUT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OUTPUT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LABEL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SOURCE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MODE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ENGINE (Hex)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DEVICE (Hex)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PROVIDER ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SERVICE ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>NODE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>#</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stereo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Input</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Output</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>stereo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>right</source>
+        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4452,10 +4324,6 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Replicators:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Are you sure you want to delete switcher</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4469,6 +4337,10 @@ Permissions</source>
     </message>
     <message>
         <source>Deleting Switcher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switcher/GPIO Devices</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

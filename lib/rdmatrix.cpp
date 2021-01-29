@@ -815,6 +815,46 @@ QString RDMatrix::typeString(RDMatrix::Type type)
 }
 
 
+QString RDMatrix::modeString(RDMatrix::Mode mode)
+{
+  QString ret=QObject::tr("Unknown");
+
+  switch(mode) {
+  case RDMatrix::Left:
+    ret=QObject::tr("Left");
+    break;
+
+  case RDMatrix::Right:
+    ret=QObject::tr("Right");
+    break;
+
+  case RDMatrix::Stereo:
+    ret=QObject::tr("Stereo");
+    break;
+  }
+
+  return ret;
+}
+
+
+QString RDMatrix::endpointString(RDMatrix::Endpoint ep)
+{
+  QString ret=QObject::tr("Unknown");
+
+  switch(ep) {
+  case RDMatrix::Input:
+    ret=QObject::tr("Input");
+    break;
+
+  case RDMatrix::Output:
+    ret=QObject::tr("Output");
+    break;
+  }
+
+  return ret;
+}
+
+
 bool RDMatrix::controlActive(RDMatrix::Type type,RDMatrix::Role role,
 			     RDMatrix::Control control)
 {

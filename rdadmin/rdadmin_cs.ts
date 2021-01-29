@@ -1358,11 +1358,11 @@ files, causing any whose files remain to be imported again.</source>
     <name>EditEndpoint</name>
     <message>
         <source>Edit Input</source>
-        <translation>Upravit vstup</translation>
+        <translation type="unfinished">Upravit vstup</translation>
     </message>
     <message>
         <source>Edit Output</source>
-        <translation>Upravit výstup</translation>
+        <translation type="unfinished">Upravit výstup</translation>
     </message>
     <message>
         <source>Name: </source>
@@ -1370,23 +1370,23 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Feed: </source>
-        <translation>Přívod:</translation>
+        <translation type="obsolete">Přívod:</translation>
     </message>
     <message>
         <source>Mode: </source>
-        <translation>Režim: </translation>
+        <translation type="obsolete">Režim: </translation>
     </message>
     <message>
         <source>Stereo</source>
-        <translation>Stereo</translation>
+        <translation type="obsolete">Stereo</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>Vlevo</translation>
+        <translation type="obsolete">Vlevo</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>Vpravo</translation>
+        <translation type="obsolete">Vpravo</translation>
     </message>
     <message>
         <source>Engine (Hex): </source>
@@ -1394,7 +1394,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Provider ID:</source>
-        <translation>ID poskytovatele:</translation>
+        <translation type="obsolete">ID poskytovatele:</translation>
     </message>
     <message>
         <source>Device (Hex): </source>
@@ -1402,7 +1402,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Service ID:</source>
-        <translation>ID služby:</translation>
+        <translation type="obsolete">ID služby:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1414,23 +1414,23 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Invalid Number</source>
-        <translation>Neplatné číslo</translation>
+        <translation type="obsolete">Neplatné číslo</translation>
     </message>
     <message>
         <source>The Engine Number is Invalid!</source>
-        <translation>Číslo stroje je neplatné!</translation>
+        <translation type="obsolete">Číslo stroje je neplatné!</translation>
     </message>
     <message>
         <source>The Provider ID is Invalid!</source>
-        <translation>ID poskytovatele je neplatné!</translation>
+        <translation type="obsolete">ID poskytovatele je neplatné!</translation>
     </message>
     <message>
         <source>The Device Number is Invalid!</source>
-        <translation>Číslo zařízení je neplatné!</translation>
+        <translation type="obsolete">Číslo zařízení je neplatné!</translation>
     </message>
     <message>
         <source>The Service ID is Invalid!</source>
-        <translation>ID služby je neplatné!</translation>
+        <translation type="obsolete">ID služby je neplatné!</translation>
     </message>
 </context>
 <context>
@@ -5206,47 +5206,47 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>VSTUP</translation>
+        <translation type="obsolete">VSTUP</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>VÝSTUP</translation>
+        <translation type="obsolete">VÝSTUP</translation>
     </message>
     <message>
         <source>LABEL</source>
-        <translation>ŠTÍTEK</translation>
+        <translation type="obsolete">ŠTÍTEK</translation>
     </message>
     <message>
         <source>SOURCE</source>
-        <translation>ZDROJ</translation>
+        <translation type="obsolete">ZDROJ</translation>
     </message>
     <message>
         <source>MODE</source>
-        <translation>REŽIM</translation>
+        <translation type="obsolete">REŽIM</translation>
     </message>
     <message>
         <source>ENGINE (Hex)</source>
-        <translation>STROJ (Hex)</translation>
+        <translation type="obsolete">STROJ (Hex)</translation>
     </message>
     <message>
         <source>DEVICE (Hex)</source>
-        <translation>ZAŘÍZENÍ (Hex)</translation>
+        <translation type="obsolete">ZAŘÍZENÍ (Hex)</translation>
     </message>
     <message>
         <source>PROVIDER ID</source>
-        <translation>ID POSKYTOVATELE</translation>
+        <translation type="obsolete">ID POSKYTOVATELE</translation>
     </message>
     <message>
         <source>SERVICE ID</source>
-        <translation>ID SLUŽBY</translation>
+        <translation type="obsolete">ID SLUŽBY</translation>
     </message>
     <message>
         <source>NODE</source>
-        <translation>UZEL</translation>
+        <translation type="obsolete">UZEL</translation>
     </message>
     <message>
         <source>#</source>
-        <translation>#</translation>
+        <translation type="obsolete">#</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -5254,43 +5254,47 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Stereo</source>
-        <translation>Stereo</translation>
+        <translation type="obsolete">Stereo</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>Vlevo</translation>
+        <translation type="obsolete">Vlevo</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>Vpravo</translation>
+        <translation type="obsolete">Vpravo</translation>
     </message>
     <message>
         <source>Input</source>
-        <translation>Vstup</translation>
+        <translation type="obsolete">Vstup</translation>
     </message>
     <message>
         <source>Output</source>
-        <translation>Výstup</translation>
+        <translation type="obsolete">Výstup</translation>
     </message>
     <message>
         <source>stereo</source>
-        <translation>Stereo</translation>
+        <translation type="obsolete">Stereo</translation>
     </message>
     <message>
         <source>left</source>
-        <translation>Vlevo</translation>
+        <translation type="obsolete">Vlevo</translation>
     </message>
     <message>
         <source>right</source>
-        <translation>Vpravo</translation>
+        <translation type="obsolete">Vpravo</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
     </message>
 </context>
 <context>
@@ -5865,7 +5869,11 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Replicators:</source>
-        <translation type="unfinished">&amp;Zopakování:</translation>
+        <translation type="obsolete">&amp;Zopakování:</translation>
+    </message>
+    <message>
+        <source>Switcher/GPIO Devices</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

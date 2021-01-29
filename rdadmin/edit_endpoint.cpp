@@ -18,26 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
 #include <edit_endpoint.h>
 
 EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
-			   int pointnum,QString *pointname,QString *feedname,
-			   RDMatrix::Mode *mode,int *enginenum,int *devicenum,
-			   QWidget *parent)
+			   int pointnum,QString *pointname,int *enginenum,
+			   int *devicenum,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
+  /*
+  edit_mtx=NULL;
   edit_type=type;
   edit_endpoint=endpoint;
   edit_pointnum=pointnum;
   edit_pointname=pointname;
-  edit_feedname=feedname;
-  edit_mode=mode;
   edit_enginenum=enginenum;
   edit_devicenum=devicenum;
 
@@ -52,7 +50,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
     setWindowTitle("RDAdmin - "+tr("Edit Output"));
     break;
   }
-
+  */
   //
   // Fix the Window Size
   //
@@ -78,79 +76,24 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   label->setAlignment(Qt::AlignRight);
 
   //
-  // Unity Feed
-  //
-  edit_feed_edit=new QLineEdit(this);
-  edit_feed_edit->setGeometry(75,40,40,20);
-  edit_feed_edit->setValidator(validator);
-  label=new QLabel(edit_feed_edit,tr("Feed: "),this);
-  label->setGeometry(10,43,60,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight);
-  if((edit_type!=RDMatrix::Unity4000)||(edit_endpoint!=RDMatrix::Input)) {
-    edit_feed_edit->hide();
-    label->hide();
-  }
-
-  //
-  // Unity Mode
-  //
-  edit_mode_box=new QComboBox(this);
-  label=new QLabel(edit_mode_box,tr("Mode: "),this);
-  if(edit_type==RDMatrix::StarGuideIII) {
-    edit_mode_box->setGeometry(135,88,85,24);
-    label->setGeometry(10,93,120,20);
-  }
-  else {
-    edit_mode_box->setGeometry(195,40,85,24);
-    label->setGeometry(130,43,60,20);
-  }
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight);
-  if(((edit_type!=RDMatrix::Unity4000)&&(edit_type!=RDMatrix::StarGuideIII))||
-     (edit_endpoint!=RDMatrix::Input)) {
-    edit_mode_box->hide();
-    label->hide();
-  }
-  edit_mode_box->insertItem(tr("Stereo"));
-  edit_mode_box->insertItem(tr("Left"));
-  edit_mode_box->insertItem(tr("Right"));
-
-  //
-  // Logitek Engine Number / StarGuide Provider ID
+  // Logitek Engine Number
   //
   edit_enginenum_edit=new QLineEdit(this);
   edit_enginenum_edit->setGeometry(135,36,50,20);
-  label=new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),this);
-  if(edit_type==RDMatrix::StarGuideIII) {
-    label->setText(tr("Provider ID:"));
-  }
-  label->setGeometry(10,36,120,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  if((edit_type!=RDMatrix::LogitekVguest)&&
-     ((edit_type!=RDMatrix::StarGuideIII)||(edit_endpoint!=RDMatrix::Input))) {
-    edit_enginenum_edit->hide();
-    label->hide();
-  }
+  edit_enginenum_label=new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),this);
+  edit_enginenum_label->setGeometry(10,36,120,20);
+  edit_enginenum_label->setFont(labelFont());
+  edit_enginenum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
-  // Logitek Device Number / StarGuide Service ID
+  // Logitek Device Number
   //
   edit_devicenum_edit=new QLineEdit(this);
   edit_devicenum_edit->setGeometry(135,62,50,20);
-  label=new QLabel(edit_devicenum_edit,tr("Device (Hex): "),this);
-  if(edit_type==RDMatrix::StarGuideIII) {
-    label->setText(tr("Service ID:"));
-  }
-  label->setGeometry(10,62,120,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  if((edit_type!=RDMatrix::LogitekVguest)&&
-     ((edit_type!=RDMatrix::StarGuideIII)||(edit_endpoint!=RDMatrix::Input))) {
-    edit_devicenum_edit->hide();
-    label->hide();
-  }
+  edit_devicenum_label=new QLabel(edit_devicenum_edit,tr("Device (Hex): "),this);
+  edit_devicenum_label->setGeometry(10,62,120,20);
+  edit_devicenum_label->setFont(labelFont());
+  edit_devicenum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button
@@ -174,9 +117,8 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   // Load Data
   //
+  /*
   edit_endpoint_edit->setText(*edit_pointname);
-  edit_feed_edit->setText(*edit_feedname);
-  edit_mode_box->setCurrentItem(*edit_mode);
   if(*enginenum>=0) {
     if(edit_type==RDMatrix::LogitekVguest) {
       edit_enginenum_edit->setText(QString().sprintf("%04X",*enginenum));
@@ -193,17 +135,12 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
       edit_devicenum_edit->setText(QString().sprintf("%d",*devicenum));
     }
   }
+  */
 }
 
 
 QSize EditEndpoint::sizeHint() const
 {
-  if((edit_endpoint==RDMatrix::Input)&&(edit_type==RDMatrix::Unity4000)) {
-    return QSize(400,130);
-  }
-  if((edit_endpoint==RDMatrix::Input)&&(edit_type==RDMatrix::StarGuideIII)) {
-    return QSize(420,156);
-  }
   return QSize(400,100);
 }
 
@@ -214,8 +151,65 @@ QSizePolicy EditEndpoint::sizePolicy() const
 }
 
 
+int EditEndpoint::exec(RDMatrix *mtx,RDMatrix::Endpoint endpt_type,int endpt_id)
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  edit_mtx=mtx;
+  edit_endpoint_type=endpt_type;
+  edit_endpoint_id=endpt_id;
+  if(endpt_type==RDMatrix::Input) {
+    edit_table="INPUTS";
+    setWindowTitle("RDAdmin - "+tr("Edit Input"));
+  }
+  else {
+    edit_table="OUTPUTS";
+    setWindowTitle("RDAdmin - "+tr("Edit Output"));
+  }
+
+  sql=QString("select ")+
+    "NAME,"+        // 00
+    "ENGINE_NUM,"+  // 01
+    "DEVICE_NUM "+  // 02
+    "from "+edit_table+" where "+
+    QString().sprintf("ID=%d",endpt_id);
+  printf("SQL: %s\n",sql.toUtf8().constData());
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+
+
+    edit_endpoint_edit->setText(q->value(0).toString());
+    edit_enginenum_edit->setText(QString().sprintf("%d",q->value(1).toInt()));
+    edit_devicenum_edit->
+      setText(QString().sprintf("%04X",q->value(2).toInt()));
+  }
+  delete q;
+
+  if(mtx->type()!=RDMatrix::LogitekVguest) {
+    edit_enginenum_label->hide();
+    edit_enginenum_edit->hide();
+    edit_devicenum_label->hide();
+    edit_devicenum_edit->hide();
+  }
+
+  return QDialog::exec();
+}
+
+
 void EditEndpoint::okData()
 {
+  QString sql;
+
+  sql=QString("update ")+edit_table+" set "+
+    "NAME=\""+RDEscapeString(edit_endpoint_edit->text())+"\","+
+    QString().sprintf("ENGINE_NUM=%d,",edit_enginenum_edit->text().toInt())+
+    QString().
+    sprintf("DEVICE_NUM=%d ",edit_devicenum_edit->text().toInt(NULL,16))+
+    "where "+
+    QString().sprintf("ID=%d",edit_endpoint_id);
+  RDSqlQuery::apply(sql);
+  /*
   bool ok;
   int enginenum=-1;
   if(edit_type==RDMatrix::LogitekVguest) {
@@ -264,15 +258,14 @@ void EditEndpoint::okData()
     }
   }
   *edit_pointname=edit_endpoint_edit->text();
-  *edit_feedname=edit_feed_edit->text();
-  *edit_mode=(RDMatrix::Mode)edit_mode_box->currentItem();
   *edit_enginenum=enginenum;
   *edit_devicenum=devicenum;
-  done(0);
+  */
+  done(true);
 }
 
 
 void EditEndpoint::cancelData()
 {
-  done(1);
+  done(false);
 }

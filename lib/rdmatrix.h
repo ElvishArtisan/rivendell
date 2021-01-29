@@ -109,6 +109,8 @@ class RDMatrix
   int displays() const;
   void setDisplays(int quan) const;
   static QString typeString(RDMatrix::Type type);
+  static QString modeString(RDMatrix::Mode mode);
+  static QString endpointString(RDMatrix::Endpoint ep);
   static bool controlActive(RDMatrix::Type type,RDMatrix::Role role,
 			    RDMatrix::Control control);
   static bool controlActive(RDMatrix::Type type,RDMatrix::Control control);

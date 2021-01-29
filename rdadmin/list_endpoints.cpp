@@ -2,7 +2,7 @@
 //
 // List a Rivendell Endpoints
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,11 +30,6 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
 			     QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
-  QString sql;
-  RDSqlQuery *q;
-  Q3ListViewItem *l;
   QString str;
 
   list_matrix=matrix;
@@ -61,77 +56,19 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
   //
   // Endpoints List Box
   //
-  list_list_view=new Q3ListView(this);
+  list_list_view=new RDTableView(this);
+  list_list_model=new RDEndpointListModel(matrix,endpoint,false,this);
+  list_list_model->setFont(defaultFont());
+  list_list_model->setPalette(palette());
+  list_list_view->setModel(list_list_model);
   list_type_label=new QLabel(list_list_view,list_table,this);
   list_type_label->setFont(labelFont());
   list_type_label->setGeometry(14,5,85,19);
-  list_list_view->setAllColumnsShowFocus(true);
-  list_list_view->setItemMargin(5);
-  switch(list_endpoint) {
-      case RDMatrix::Input:
-	list_list_view->addColumn(tr("INPUT"));
-	break;
-
-      case RDMatrix::Output:
-	list_list_view->addColumn(tr("OUTPUT"));
-	break;
-  }
-  list_list_view->setColumnAlignment(0,Qt::AlignHCenter);
-  list_list_view->addColumn(tr("LABEL"));
-  list_list_view->setColumnAlignment(1,Qt::AlignLeft);
-  switch(matrix->type()) {
-    case RDMatrix::Unity4000:
-      list_readonly=false;
-      if(list_endpoint==RDMatrix::Input) {
-	list_list_view->addColumn(tr("SOURCE"));
-	list_list_view->setColumnAlignment(2,Qt::AlignHCenter);
-	list_list_view->addColumn(tr("MODE"));
-	list_list_view->setColumnAlignment(3,Qt::AlignHCenter);
-      }
-      break;
-      
-    case RDMatrix::LogitekVguest:
-      list_readonly=false;
-      list_list_view->addColumn(tr("ENGINE (Hex)"));
-      list_list_view->setColumnAlignment(2,Qt::AlignHCenter);	
-      list_list_view->addColumn(tr("DEVICE (Hex)"));
-      list_list_view->setColumnAlignment(2,Qt::AlignHCenter);	
-      break;
-      
-    case RDMatrix::StarGuideIII:
-      list_readonly=false;
-      if(list_endpoint==RDMatrix::Input) {
-	list_list_view->addColumn(tr("PROVIDER ID"));
-	list_list_view->setColumnAlignment(2,Qt::AlignHCenter);
-	list_list_view->addColumn(tr("SERVICE ID"));
-	list_list_view->setColumnAlignment(3,Qt::AlignHCenter);
-	list_list_view->addColumn(tr("MODE"));
-	list_list_view->setColumnAlignment(4,Qt::AlignHCenter);
-      }
-      break;
-      
-    case RDMatrix::LiveWireLwrpAudio:
-      list_readonly=true;
-      list_list_view->addColumn(tr("NODE"));
-      list_list_view->setColumnAlignment(2,Qt::AlignHCenter);
-      list_list_view->addColumn(tr("#"));
-      list_list_view->setColumnAlignment(3,Qt::AlignHCenter);
-      break;
-
-    case RDMatrix::SasUsi:
-      list_readonly=true;
-      break;
-
-    default:
-      list_readonly=false;
-      break;
-  }
-  if(!list_readonly) {
-    connect(list_list_view,
-	    SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	    this,
-	    SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-  }
+  connect(list_list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_list_model,SIGNAL(modelReset()),
+	  list_list_view,SLOT(resizeColumnsToContents()));
+  list_list_view->resizeColumnsToContents();
 
   //
   //  Edit Button
@@ -143,216 +80,12 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
   list_edit_button->setDisabled(list_readonly);
 
   //
-  //  Ok Button
-  //
-  list_ok_button=new QPushButton(this);
-  list_ok_button->setDefault(true);
-  list_ok_button->setFont(buttonFont());
-  list_ok_button->setText(tr("&OK"));
-  connect(list_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
-
-  //
   //  Cancel Button
   //
-  list_cancel_button=new QPushButton(this);
-  list_cancel_button->setFont(buttonFont());
-  list_cancel_button->setText(tr("&Cancel"));
-  connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  //
-  // Load Values
-  //
-  switch(list_matrix->type()) {
-      case RDMatrix::Unity4000:
-	if(list_endpoint==RDMatrix::Input) {
-	  sql=QString("select ")+
-	    "NUMBER,"+        // 00
-	    "NAME,"+          // 01
-	    "FEED_NAME,"+     // 02
-	    "CHANNEL_MODE "+  // 03
-	    "from `"+list_table+"` where "+
-	    "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
-	    QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
-	    "order by NUMBER";
-	}
-	else {
-	  sql=QString("select ")+
-	    "NUMBER,"+  // 00
-	    "NAME "+    // 01
-	    "from `"+list_table+"` where "+
-	    "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
-	    QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
-	    "order by NUMBER";
-	}
-	break;
-
-      case RDMatrix::LogitekVguest:
-	sql=QString("select ")+
-	  "NUMBER,"+      // 00
-	  "NAME,"+        // 01
-	  "ENGINE_NUM,"+  // 02
-	  "DEVICE_NUM "+  // 03
-	  "from `"+list_table+"` where "+
-	  "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
-	  QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
-	  "order by NUMBER";
-	break;
-
-      case RDMatrix::StarGuideIII:
-	if(list_endpoint==RDMatrix::Input) {
-	  sql=QString("select ")+
-	    "NUMBER,"+        // 00
-	    "NAME,"+          // 01
-	    "ENGINE_NUM,"+    // 02
-	    "DEVICE_NUM,"+    // 03
-	    "CHANNEL_MODE "+  // 04
-	    "from `"+list_table+"` where "+
-	    "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
-	    QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
-	    "order by NUMBER";
-	}
-	else {
-	  sql=QString("select ")+
-	    "NUMBER,"+  // 00
-	    "NAME "+    // 01
-	    "from `"+list_table+"` where "+
-	    "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
-	    QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
-	    "order by NUMBER";
-	}
-	break;
-
-    case RDMatrix::LiveWireLwrpAudio:
-      sql=QString("select ")+
-	"NUMBER,"+         // 00
-	"NAME,"+           // 01
-	"NODE_HOSTNAME,"+  // 02
-	"NODE_SLOT "+      // 03
-	"from `"+list_table+"` where "+
-	"STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
-	QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
-	"order by NUMBER";
-	break;
-
-      default:
-	sql=QString("select ")+
-	  "NUMBER,"+  // 00
-	  "NAME "+    // 01
-	  "from `"+list_table+"` where "+
-	  "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
-	  QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
-	  "order by NUMBER";
-	break;
-  }
-  q=new RDSqlQuery(sql);
-  if(list_matrix->type()==RDMatrix::LiveWireLwrpAudio) {
-    while(q->next()) {
-      l=new Q3ListViewItem(list_list_view); 
-      l->setText(0,QString().sprintf("%05d",q->value(0).toInt()));
-      l->setText(1,q->value(1).toString());
-      l->setText(2,q->value(2).toString());
-      l->setText(3,QString().sprintf("%d",q->value(3).toInt()));
-    }
-  }
-  else {
-    q->first();
-    for(int i=0;i<list_size;i++) {
-      l=new Q3ListViewItem(list_list_view); 
-      l->setText(0,QString().sprintf("%04d",i+1));
-      if(q->isValid()&&(q->value(0).toInt()==(i+1))){
-	l->setText(1,q->value(1).toString());
-	switch(list_matrix->type()) {
-	case RDMatrix::Unity4000:
-	  if(list_endpoint==RDMatrix::Input) {
-	    l->setText(2,q->value(2).toString());
-	    switch((RDMatrix::Mode)q->value(3).toInt()) {
-	    case RDMatrix::Stereo:
-	      l->setText(3,tr("Stereo"));
-	      break;
-		  
-	    case RDMatrix::Left:
-	      l->setText(3,tr("Left"));
-	      break;
-		  
-	    case RDMatrix::Right:
-	      l->setText(3,tr("Right"));
-	      break;
-	    }
-	  }
-	  break;
-	    
-	case RDMatrix::LogitekVguest:
-	  if(q->value(2).toInt()>=0) {
-	    l->setText(2,QString().sprintf("%04X",q->value(2).toInt()));
-	  }
-	  else {
-	    l->setText(2,"");
-	  }
-	  if(q->value(3).toInt()>=0) {
-	    l->setText(3,QString().sprintf("%04X",q->value(3).toInt()));
-	  }
-	  else {
-	    l->setText(3,"");
-	  }
-	  break;
-	    
-	case RDMatrix::StarGuideIII:
-	  if(list_endpoint==RDMatrix::Input) {
-	    if(q->value(2).toInt()>=0) {
-	      l->setText(2,q->value(2).toString());
-	    }
-	    if(q->value(3).toInt()>=0) {
-	      l->setText(3,q->value(3).toString());
-	    }
-	    switch((RDMatrix::Mode)q->value(4).toInt()) {
-	    case RDMatrix::Stereo:
-	      l->setText(4,tr("Stereo"));
-	      break;
-		  
-	    case RDMatrix::Left:
-	      l->setText(4,tr("Left"));
-	      break;
-		  
-	    case RDMatrix::Right:
-	      l->setText(4,tr("Right"));
-	      break;
-	    }
-	  }
-	  break;
-	    
-	default:
-	  break;
-	}
-	q->next();
-      }
-      else {
-	switch(list_endpoint) {
-	case RDMatrix::Input:
-	  str=QString(tr("Input"));
-	  l->setText(1,str+QString().sprintf(" %03d",i+1));
-	  switch(list_matrix->type()) {
-	  case RDMatrix::Unity4000:
-	    l->setText(3,tr("Stereo"));
-	    break;
-		
-	  case RDMatrix::StarGuideIII:
-	    l->setText(4,tr("Stereo"));
-	    break;
-		
-	  default:
-	    break;
-	  }
-	  break;
-	    
-	case RDMatrix::Output:
-	  str=QString(tr("Output"));
-	  l->setText(1,str+QString().sprintf(" %03d",i+1));
-	  break;
-	}
-      }
-    }
-  }
-  delete q;
+  list_close_button=new QPushButton(this);
+  list_close_button->setFont(buttonFont());
+  list_close_button->setText(tr("&Close"));
+  connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 
 
@@ -370,329 +103,36 @@ QSizePolicy ListEndpoints::sizePolicy() const
 
 void ListEndpoints::editData()
 {
-  Q3ListViewItem *item;
-  RDMatrix::Mode mode=RDMatrix::Stereo;
-  bool ok;
-  QString feedname;
-  int enginenum=-1;
-  int devicenum=-1;
+  QModelIndexList rows=list_list_view->selectionModel()->selectedRows();
 
-  if((item=list_list_view->selectedItem())==NULL) {
+  if(rows.size()!=1) {
     return;
   }
-  int pointnum=item->text(0).toInt()-1;
-  QString pointname=item->text(1);
-  switch(list_matrix->type()) {
-      case RDMatrix::Unity4000:
-	feedname=item->text(2);
-	if(item->text(3).lower()==QString(tr("stereo"))) {
-	  mode=RDMatrix::Stereo;
-	}
-	if(item->text(3).lower()==QString(tr("left"))) {
-	  mode=RDMatrix::Left;
-	}
-	if(item->text(3).lower()==QString(tr("right"))) {
-	  mode=RDMatrix::Right;
-	}
-	break;
 
-      case RDMatrix::LogitekVguest:
-	enginenum=item->text(2).toInt(&ok,16);
-	if(!ok) {
-	  enginenum=-1;
-	}
-	devicenum=item->text(3).toInt(&ok,16);
-	if(!ok) {
-	  devicenum=-1;
-	}
-	break;
-
-      case RDMatrix::StarGuideIII:
-	enginenum=item->text(2).toInt(&ok);
-	if(!ok) {
-	  enginenum=-1;
-	}
-	devicenum=item->text(3).toInt(&ok);
-	if(!ok) {
-	  devicenum=-1;
-	}
-	if(item->text(4).lower()==QString(tr("stereo"))) {
-	  mode=RDMatrix::Stereo;
-	}
-	if(item->text(4).lower()==QString(tr("left"))) {
-	  mode=RDMatrix::Left;
-	}
-	if(item->text(4).lower()==QString(tr("right"))) {
-	  mode=RDMatrix::Right;
-	}
-	break;
-
-      default:
-	break;
-  }
+  int pointnum=list_list_model->endpointNumber(rows.first())-1;
+  QString pointname=list_list_model->endpointName(rows.first());
+  int enginenum=list_list_model->engineNumber(rows.first());
+  int devicenum=list_list_model->deviceNumber(rows.first());
   EditEndpoint *edit=new EditEndpoint(list_matrix->type(),list_endpoint,
-				      pointnum,&pointname,&feedname,&mode,
+				      pointnum,&pointname,
 				      &enginenum,&devicenum,this);
-  if(edit->exec()==0) {
-    item->setText(1,pointname);
-    item->setText(2,feedname);
-    switch(list_matrix->type()) {
-	case RDMatrix::Unity4000:
-	  if(list_endpoint==RDMatrix::Input) {
-	    switch(mode) {
-		case RDMatrix::Stereo:
-		  item->setText(3,tr("Stereo"));
-		  break;
-		  
-		case RDMatrix::Left:
-		  item->setText(3,tr("Left"));
-		  break;
-		  
-		case RDMatrix::Right:
-		  item->setText(3,tr("Right"));
-		  break;
-	    }
-	  }
-	  break;
-
-	case RDMatrix::LogitekVguest:
-	  if(enginenum>=0) {
-	    item->setText(2,QString().sprintf("%04X",enginenum));
-	  }
-	  else {
-	    item->setText(2,"");
-	  }
-	  if(devicenum>=0) {
-	    item->setText(3,QString().sprintf("%04X",devicenum));
-	  }
-	  else {
-	    item->setText(3,"");
-	  }
-	  break;
-
-	case RDMatrix::StarGuideIII:
-	  if(enginenum>=0) {
-	    item->setText(2,QString().sprintf("%d",enginenum));
-	  }
-	  else {
-	    item->setText(2,"");
-	  }
-	  if(devicenum>=0) {
-	    item->setText(3,QString().sprintf("%d",devicenum));
-	  }
-	  else {
-	    item->setText(3,"");
-	  }
-	  if(list_endpoint==RDMatrix::Input) {
-	    switch(mode) {
-		case RDMatrix::Stereo:
-		  item->setText(4,tr("Stereo"));
-		  break;
-		  
-		case RDMatrix::Left:
-		  item->setText(4,tr("Left"));
-		  break;
-		  
-		case RDMatrix::Right:
-		  item->setText(4,tr("Right"));
-		  break;
-	    }
-	  }
-	  break;
-
-	default:
-	  break;
-    }
+  if(edit->exec(list_matrix,list_endpoint,
+		list_list_model->endpointId(rows.first()))) {
+    list_list_model->refresh(rows.first());
   }
   delete edit;
 }
 
 
-void ListEndpoints::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				      int col)
+void ListEndpoints::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
 
 
-void ListEndpoints::okData()
+void ListEndpoints::closeData()
 {
-  if(!list_readonly) {
-    Q3ListViewItem *item;
-    QString sql;
-    RDSqlQuery *q;
-    RDMatrix::Mode mode=RDMatrix::Stereo;
-    int enginenum;
-    int devicenum;
-    int modecol=3;
-    
-    if(list_matrix->type()==RDMatrix::StarGuideIII) {
-      modecol=4;
-    }
-    for(int i=0;i<list_size;i++) {
-      item=list_list_view->findItem(QString().sprintf("%04d",i+1),0);
-      if(item->text(modecol).lower()==QString(tr("stereo"))) {
-	mode=RDMatrix::Stereo;
-      }
-      if(item->text(modecol).lower()==QString(tr("left"))) {
-	mode=RDMatrix::Left;
-      }
-      if(item->text(modecol).lower()==QString(tr("right"))) {
-	mode=RDMatrix::Right;
-      }
-      sql=QString("select ID from `")+
-	list_table+"` where "+
-	"STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
-	QString().sprintf("MATRIX=%d && ",list_matrix->matrix())+
-	QString().sprintf("NUMBER=%d",i+1);
-      q=new RDSqlQuery(sql);
-      if(!q->first()) {
-	delete q;
-	sql=QString("insert into `")+list_table+"` set "+
-	  "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\","+
-	  QString().sprintf("MATRIX=%d,",list_matrix->matrix())+
-	  QString().sprintf("NUMBER=%d,",i+1)+
-	  "NAME=\""+RDEscapeString(item->text(1))+"\"";
-	switch(list_matrix->type()) {
-	case RDMatrix::Unity4000:
-	  if(list_endpoint==RDMatrix::Input) {
-	    sql+=QString(",FEED_NAME=\"")+RDEscapeString(item->text(2))+"\","+
-	      QString().sprintf("CHANNEL_MODE=%d",mode);
-	  }
-	  break;
-	    
-	case RDMatrix::LogitekVguest:
-	  if(item->text(2).isEmpty()) {
-	    sql+=",ENGINE_NUM=-1";
-	  }
-	  else {
-	    sql+=QString().sprintf(",ENGINE_NUM=%d",
-				   item->text(2).toInt(NULL,16));
-	  }
-	  if(item->text(3).isEmpty()) {
-	    sql+=",DEVICE_NUM=-1";
-	  }
-	  else {
-	    sql+=QString().sprintf(",DEVICE_NUM=%d",
-				   item->text(3).toInt(NULL,16));
-	  }
-	  break;
-	    
-	case RDMatrix::StarGuideIII:
-	  if(item->text(2).isEmpty()) {
-	    sql+=",ENGINE_NUM=-1";
-	  }
-	  else {
-	    sql+=QString().sprintf(",ENGINE_NUM=%d",
-				   item->text(2).toInt());
-	  }
-	  if(item->text(3).isEmpty()) {
-	    sql+=",DEVICE_NUM=-1";
-	  }
-	  else {
-	    sql+=QString().sprintf(",DEVICE_NUM=%d",
-				   item->text(3).toInt());
-	  }
-	  if(list_endpoint==RDMatrix::Input) {
-	    sql+=QString().sprintf(",CHANNEL_MODE=%d",mode);
-	  }
-	  break;
-	  
-	default:
-	  break;
-	}
-	q=new RDSqlQuery(sql);
-	delete q;
-      }
-      else {
-	delete q;
-	switch(list_matrix->type()) {
-	case RDMatrix::Unity4000:
-	  if(list_endpoint==RDMatrix::Input) {
-	    sql=QString("update `")+list_table+"` set "+
-	      "NAME=\""+RDEscapeString(item->text(1))+"\","+
-	      "FEED_NAME=\""+RDEscapeString(item->text(2))+"\","+
-	      QString().sprintf("CHANNEL_MODE=%d where ",mode)+
-	      "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
-	      QString().sprintf("MATRIX=%d && ",list_matrix->matrix())+
-	      QString().sprintf("NUMBER=%d",i+1);
-	  }
-	  else {
-	    sql=QString("update `")+list_table+"` set "+
-	      "NAME=\""+RDEscapeString(item->text(1))+"\" where "+
-	      "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
-	      QString().sprintf("MATRIX=%d &&	",list_matrix->matrix())+
-	      QString().sprintf("NUMBER=%d",i+1);
-	  }
-	  break;
- 
-	case RDMatrix::LogitekVguest:
-	  if(item->text(2).isEmpty()) {
-	    enginenum=-1;
-	  }
-	  else {
-	    enginenum=item->text(2).toInt(NULL,16);
-	  }
-	  if(item->text(3).isEmpty()) {
-	    devicenum=-1;
-	  }
-	  else {
-	    devicenum=item->text(3).toInt(NULL,16);
-	  }
-	  sql=QString("update `")+list_table+"` set "+
-	    "NAME=\""+RDEscapeString(item->text(1))+"\","+
-	    QString().sprintf("ENGINE_NUM=%d,",enginenum)+
-	    QString().sprintf("DEVICE_NUM=%d where ",devicenum)+
-	    "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
-	    QString().sprintf("MATRIX=%d && ",list_matrix->matrix())+
-	    QString().sprintf("NUMBER=%d",i+1);
-	  break;
-	    
-	case RDMatrix::StarGuideIII:
-	  if(list_endpoint==RDMatrix::Input) {
-	    if(item->text(2).isEmpty()) {
-	      enginenum=-1;
-	    }
-	    else {
-	      enginenum=item->text(2).toInt(NULL);
-	    }
-	    if(item->text(3).isEmpty()) {
-	      devicenum=-1;
-	    }
-	    else {
-	      devicenum=item->text(3).toInt(NULL);
-	    }
-	    sql=QString("update `")+list_table+"` set "+
-	      "NAME=\""+RDEscapeString(item->text(1))+"\","+
-	      QString().sprintf("ENGINE_NUM=%d,",enginenum)+
-	      QString().sprintf("DEVICE_NUM=%d,",devicenum)+
-	      QString().sprintf("CHANNEL_MODE=%d where ",mode)+
-	      "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
-	      QString().sprintf("MATRIX=%d && ",list_matrix->matrix())+
-	      QString().sprintf("NUMBER=%d",i+1);
-	  }
-	  break;
-	    
-	default:
-	  sql=QString("update `")+list_table+"` set "+
-	    "NAME=\""+RDEscapeString(item->text(1))+"\" where "+
-	    "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
-	    QString().sprintf("MATRIX=%d && ",list_matrix->matrix())+
-	    QString().sprintf("NUMBER=%d",i+1);
-	  break;
-	}
-	q=new RDSqlQuery(sql);
-	delete q;
-      }
-    }
-  }
-  done(0);
-}
-
-
-void ListEndpoints::cancelData()
-{
-  done(1);
+  done(true);
 }
 
 
@@ -701,6 +141,5 @@ void ListEndpoints::resizeEvent(QResizeEvent *e)
   list_list_view->
     setGeometry(10,24,size().width()-20,size().height()-94);
   list_edit_button->setGeometry(10,size().height()-60,80,50);
-  list_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
-  list_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+  list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

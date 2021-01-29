@@ -35,31 +35,34 @@ class EditEndpoint : public RDDialog
  Q_OBJECT
  public:
   EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
-	       int pointnum,QString *pointname,QString *feedname,
-	       RDMatrix::Mode *mode,int *enginenum,int *devicenum,
+	       int pointnum,QString *pointname,int *enginenum,int *devicenum,
 	       QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+
+ public slots:
+  int exec(RDMatrix *mtx,RDMatrix::Endpoint endpt_type,int endpt_id);
 
  private slots:
   void okData();
   void cancelData();
 
  private:
-  RDMatrix::Type edit_type;
-  RDMatrix::Endpoint edit_endpoint;
+  RDMatrix *edit_mtx;
+  RDMatrix::Endpoint edit_endpoint_type;
   int edit_pointnum;
+  /*
   QString *edit_pointname;
-  QString *edit_feedname;
-  RDMatrix::Mode *edit_mode;
   int *edit_enginenum;
   int *edit_devicenum;
+  */
   QString edit_table;
   QLineEdit *edit_endpoint_edit;
-  QLineEdit *edit_feed_edit;
+  QLabel *edit_enginenum_label;
   QLineEdit *edit_enginenum_edit;
+  QLabel *edit_devicenum_label;
   QLineEdit *edit_devicenum_edit;
-  QComboBox *edit_mode_box;
+  int edit_endpoint_id;
 };
 
 
