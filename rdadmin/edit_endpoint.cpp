@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Endpoint
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,27 +30,6 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
 			   int *devicenum,QWidget *parent)
   : RDDialog(parent)
 {
-  /*
-  edit_mtx=NULL;
-  edit_type=type;
-  edit_endpoint=endpoint;
-  edit_pointnum=pointnum;
-  edit_pointname=pointname;
-  edit_enginenum=enginenum;
-  edit_devicenum=devicenum;
-
-  switch(edit_endpoint) {
-  case RDMatrix::Input:
-    edit_table="INPUTS";
-    setWindowTitle("RDAdmin - "+tr("Edit Input"));
-    break;
-
-  case RDMatrix::Output:
-    edit_table="OUTPUTS";
-    setWindowTitle("RDAdmin - "+tr("Edit Output"));
-    break;
-  }
-  */
   //
   // Fix the Window Size
   //
@@ -80,7 +59,8 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   edit_enginenum_edit=new QLineEdit(this);
   edit_enginenum_edit->setGeometry(135,36,50,20);
-  edit_enginenum_label=new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),this);
+  edit_enginenum_label=
+    new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),this);
   edit_enginenum_label->setGeometry(10,36,120,20);
   edit_enginenum_label->setFont(labelFont());
   edit_enginenum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -113,29 +93,6 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  //
-  // Load Data
-  //
-  /*
-  edit_endpoint_edit->setText(*edit_pointname);
-  if(*enginenum>=0) {
-    if(edit_type==RDMatrix::LogitekVguest) {
-      edit_enginenum_edit->setText(QString().sprintf("%04X",*enginenum));
-    }
-    else {
-      edit_enginenum_edit->setText(QString().sprintf("%d",*enginenum));
-    }
-  }
-  if(*devicenum>=0) {
-    if(edit_type==RDMatrix::LogitekVguest) {
-      edit_devicenum_edit->setText(QString().sprintf("%04X",*devicenum));
-    }
-    else {
-      edit_devicenum_edit->setText(QString().sprintf("%d",*devicenum));
-    }
-  }
-  */
 }
 
 
@@ -209,58 +166,7 @@ void EditEndpoint::okData()
     "where "+
     QString().sprintf("ID=%d",edit_endpoint_id);
   RDSqlQuery::apply(sql);
-  /*
-  bool ok;
-  int enginenum=-1;
-  if(edit_type==RDMatrix::LogitekVguest) {
-    enginenum=edit_enginenum_edit->text().toInt(&ok,16);
-  }
-  else {
-    enginenum=edit_enginenum_edit->text().toInt(&ok);
-  }
-  if(!ok) {
-    if(edit_enginenum_edit->text().isEmpty()) {
-      enginenum=-1;
-    }
-    else {
-      if(edit_type==RDMatrix::LogitekVguest) {
-	QMessageBox::warning(this,tr("Invalid Number"),
-			     tr("The Engine Number is Invalid!"));
-      }
-      else {
-	QMessageBox::warning(this,tr("Invalid Number"),
-			     tr("The Provider ID is Invalid!"));
-      }
-      return;
-    }
-  }
-  int devicenum=-1;
-  if(edit_type==RDMatrix::LogitekVguest) {
-    devicenum=edit_devicenum_edit->text().toInt(&ok,16);
-  }
-  else {
-    devicenum=edit_devicenum_edit->text().toInt(&ok);
-  }
-  if(!ok) {
-    if(edit_devicenum_edit->text().isEmpty()) {
-      devicenum=-1;
-    }
-    else {
-      if(edit_type==RDMatrix::LogitekVguest) {
-	QMessageBox::warning(this,tr("Invalid Number"),
-			     tr("The Device Number is Invalid!"));
-      }
-      else {
-	QMessageBox::warning(this,tr("Invalid Number"),
-			     tr("The Service ID is Invalid!"));
-      }
-      return;
-    }
-  }
-  *edit_pointname=edit_endpoint_edit->text();
-  *edit_enginenum=enginenum;
-  *edit_devicenum=devicenum;
-  */
+
   done(true);
 }
 
