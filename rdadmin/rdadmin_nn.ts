@@ -1260,7 +1260,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Engine (Hex): </source>
-        <translation>Maskin (heksadesimal):</translation>
+        <translation type="obsolete">Maskin (heksadesimal):</translation>
     </message>
     <message>
         <source>Provider ID:</source>
@@ -1268,7 +1268,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Device (Hex): </source>
-        <translation>Eining (heksadesimal):</translation>
+        <translation type="obsolete">Eining (heksadesimal):</translation>
     </message>
     <message>
         <source>Service ID:</source>
@@ -1301,6 +1301,14 @@ files, causing any whose files remain to be imported again.</source>
     <message>
         <source>The Service ID is Invalid!</source>
         <translation type="obsolete">Tenest-ID-en er ugyldig!</translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (Hex)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2175,6 +2183,46 @@ GPIOs</source>
     </message>
     <message>
         <source>The backup serial device is not active!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Inngang</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Utgang</translation>
+    </message>
+    <message>
+        <source>Inputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>It appears that the</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This may result in configuration data for the &quot;orphaned&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>being deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>control has been changed to a lower value.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

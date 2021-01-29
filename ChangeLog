@@ -20941,3 +20941,7 @@
 	* Added 'RDEndpointListModel'.
 	* Refactored the 'List Inputs'/'List Outputs' dialogs in rdadmin(1) to
 	use the	model-based API.
+2021-01-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in rdadmin(1) that caused data in the 'INPUTS'
+	and 'OUTPUTS' table to fail to be kept in sync with data in the
+	'MATRICES' table.

@@ -45,8 +45,6 @@
 EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   QString str;
 
   edit_matrix=matrix;
@@ -1164,6 +1162,12 @@ void EditMatrix::stopCart2Data()
 
 void EditMatrix::okData()
 {
+  if((!ConfirmPruneEndpoints(RDMatrix::Input))||
+     (!ConfirmPruneEndpoints(RDMatrix::Output))) {
+    return;
+  }
+  PruneEndpoints(RDMatrix::Input);
+  PruneEndpoints(RDMatrix::Output);
   if(!WriteMatrix()) {
     return;
   }
@@ -1297,6 +1301,12 @@ bool EditMatrix::WriteMatrix()
   }
   
   //
+  // Update Endpoints
+  //
+  AddEndpoints(RDMatrix::Input);
+  AddEndpoints(RDMatrix::Output);
+
+  //
   // Update GPIO Tables
   //
   WriteGpioTable(RDMatrix::GpioInput);
@@ -1375,4 +1385,104 @@ void EditMatrix::WriteGpioTable(RDMatrix::GpioType type)
     q=new RDSqlQuery(sql);
     delete q;
   }
+}
+
+
+void EditMatrix::AddEndpoints(RDMatrix::Endpoint ep) const
+{
+  //
+  // Ensure that we have endpoint entries for at least the number of
+  // endpoints specified in the corresponding 'Inputs'/'Outputs'
+  // control. If we have "excess" entries, don't touch them!
+  //
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  QString table="INPUTS";
+  int endpoint_quan=edit_inputs_box->value();
+  QString name=tr("Input");
+  if(ep==RDMatrix::Output) {
+    table="OUTPUTS";
+    endpoint_quan=edit_outputs_box->value();
+    name=tr("Output");
+  }
+  for(int i=0;i<endpoint_quan;i++) {
+    sql=QString("select ")+
+      "NUMBER "+  // 00
+      "from "+table+" where "+
+      "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\" && "+
+      QString().sprintf("MATRIX=%d && ",edit_matrix->matrix())+
+      QString().sprintf("NUMBER=%d",i+1);
+    q=new RDSqlQuery(sql);
+    if(!q->first()) {
+      sql=QString("insert into ")+table+" set "+
+	"STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\","+
+	QString().sprintf("MATRIX=%d,",edit_matrix->matrix())+
+	QString().sprintf("NUMBER=%d,",i+1)+
+	"NAME=\""+RDEscapeString(name+QString().sprintf(" %03d",i+1))+"\"";
+      RDSqlQuery::apply(sql);
+    }
+  }
+  delete q;
+}
+
+
+void EditMatrix::PruneEndpoints(RDMatrix::Endpoint ep) const
+{
+  QString sql;
+
+  QString table="INPUTS";
+  int endpoint_quan=edit_inputs_box->value();
+  if(ep==RDMatrix::Output) {
+    table="OUTPUTS";
+    endpoint_quan=edit_outputs_box->value();
+  }
+
+  sql=QString("delete from ")+table+" where "+
+      "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\" && "+
+      QString().sprintf("MATRIX=%d && ",edit_matrix->matrix())+
+      QString().sprintf("NUMBER>%d",endpoint_quan);
+  RDSqlQuery::apply(sql);
+}
+
+
+bool EditMatrix::ConfirmPruneEndpoints(RDMatrix::Endpoint ep)
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  QString table="INPUTS";
+  int endpoint_quan=edit_inputs_box->value();
+  QString name=tr("Inputs");
+  if(ep==RDMatrix::Output) {
+    table="OUTPUTS";
+    endpoint_quan=edit_outputs_box->value();
+    name=tr("Outputs");
+  }
+
+  sql=QString("select ")+
+    "ID "+  // 00
+    "from "+table+" where "+
+      "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\" && "+
+      QString().sprintf("MATRIX=%d && ",edit_matrix->matrix())+
+      QString().sprintf("NUMBER>%d",endpoint_quan);
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(QMessageBox::warning(this,"RDAdmin - "+tr("Warning"),
+			    tr("It appears that the")+" "+name+" "+
+			    tr("control has been changed to a lower value.")+" "+
+			    tr("This may result in configuration data for the \"orphaned\"")+" "+name+" "+tr("being deleted.")+"\n"+
+			    "\n"+
+			    tr("Continue?"),
+			    QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
+      delete q;
+      return false;
+    }
+  }
+  else {
+    delete q;
+    return true;
+  }
+  delete q;
+  return true;
 }

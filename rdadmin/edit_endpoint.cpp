@@ -60,7 +60,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   edit_enginenum_edit=new QLineEdit(this);
   edit_enginenum_edit->setGeometry(135,36,50,20);
   edit_enginenum_label=
-    new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),this);
+    new QLabel(edit_enginenum_edit,tr("Engine")+":",this);
   edit_enginenum_label->setGeometry(10,36,120,20);
   edit_enginenum_label->setFont(labelFont());
   edit_enginenum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -70,7 +70,8 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   edit_devicenum_edit=new QLineEdit(this);
   edit_devicenum_edit->setGeometry(135,62,50,20);
-  edit_devicenum_label=new QLabel(edit_devicenum_edit,tr("Device (Hex): "),this);
+  edit_devicenum_label=
+    new QLabel(edit_devicenum_edit,tr("Device (Hex)")+":",this);
   edit_devicenum_label->setGeometry(10,62,120,20);
   edit_devicenum_label->setFont(labelFont());
   edit_devicenum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -131,15 +132,24 @@ int EditEndpoint::exec(RDMatrix *mtx,RDMatrix::Endpoint endpt_type,int endpt_id)
     "DEVICE_NUM "+  // 02
     "from "+edit_table+" where "+
     QString().sprintf("ID=%d",endpt_id);
-  printf("SQL: %s\n",sql.toUtf8().constData());
   q=new RDSqlQuery(sql);
   if(q->first()) {
 
 
     edit_endpoint_edit->setText(q->value(0).toString());
-    edit_enginenum_edit->setText(QString().sprintf("%d",q->value(1).toInt()));
-    edit_devicenum_edit->
-      setText(QString().sprintf("%04X",q->value(2).toInt()));
+    if(q->value(1).toInt()>=0) {
+      edit_enginenum_edit->setText(QString().sprintf("%d",q->value(1).toInt()));
+    }
+    else {
+      edit_enginenum_edit->setText("");
+    }
+    if(q->value(2).toInt()>=0) {
+      edit_devicenum_edit->
+	setText(QString().sprintf("%04X",q->value(2).toInt()));
+    }
+    else {
+      edit_enginenum_edit->setText("");
+    }
   }
   delete q;
 

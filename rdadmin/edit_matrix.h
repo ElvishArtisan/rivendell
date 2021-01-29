@@ -68,6 +68,9 @@ class EditMatrix : public RDDialog
  private:
   bool WriteMatrix();
   void WriteGpioTable(RDMatrix::GpioType type);
+  void AddEndpoints(RDMatrix::Endpoint ep) const;
+  void PruneEndpoints(RDMatrix::Endpoint ep) const;
+  bool ConfirmPruneEndpoints(RDMatrix::Endpoint ep);
   RDMatrix *edit_matrix;
   QString edit_stationname;
   int edit_matrix_number;
