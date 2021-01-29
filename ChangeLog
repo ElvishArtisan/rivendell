@@ -20937,7 +20937,7 @@
 2021-01-27 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDIconEngine::Input' and 'RDIconEngine::Output' icons
 	to 'RDIconEngine'.
-2021-01-27 Fred Gleason <fredg@paravelsystems.com>
+2021-01-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDEndpointListModel'.
-	* Refactored the 'List Inputs'/'List Outputs dialogs in rdadmin(1) to
+	* Refactored the 'List Inputs'/'List Outputs' dialogs in rdadmin(1) to
 	use the	model-based API.
