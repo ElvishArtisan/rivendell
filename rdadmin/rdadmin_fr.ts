@@ -1831,6 +1831,14 @@ GPIOs</source>
         <source>control has been changed to a lower value.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>GPIs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditPypad</name>
@@ -3773,19 +3781,7 @@ Permissions</source>
 <context>
     <name>EditVguestResource</name>
     <message>
-        <source>Engine (Hex): </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Device (Hex): </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Surface (Hex): </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bus/Relay (Hex): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3822,6 +3818,18 @@ Permissions</source>
     </message>
     <message>
         <source>The Bus/Relay Number is Invalid!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bus/Relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2,7 +2,7 @@
 //
 // List vGuest Resources
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,41 +21,45 @@
 #ifndef LIST_VGUEST_RESOURCES_H
 #define LIST_VGUEST_RESOURCES_H
 
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <q3listview.h>
+//#include <q3listview.h>
+#include <QLabel>
+#include <QPushButton>
 
 #include <rddialog.h>
 #include <rdmatrix.h>
+#include <rdtableview.h>
 #include <rduser.h>
+#include <rdvguestresourcelistmodel.h>
+
+#include "edit_vguest_resource.h"
 
 class ListVguestResources : public RDDialog
 {
  Q_OBJECT
  public:
- ListVguestResources(RDMatrix *matrix,RDMatrix::VguestType type,int size,
-		     QWidget *parent=0);
+  ListVguestResources(RDMatrix *matrix,RDMatrix::VguestType type,int size,
+		      QWidget *parent=0);
+  ~ListVguestResources();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
   void editData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
-  void okData();
-  void cancelData();
+  void doubleClickedData(const QModelIndex &);
+  void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
+  EditVguestResource *list_edit_resource_dialog;
   RDMatrix *list_matrix;
   RDMatrix::VguestType list_type;
   QLabel *list_title_label;
-  Q3ListView *list_list_view;
+  RDTableView *list_list_view;
+  RDVguestResourceListModel *list_list_model;
   QPushButton *list_edit_button;
-  QPushButton *list_ok_button;
-  QPushButton *list_cancel_button;
+  QPushButton *list_close_button;
   int list_size;
   QString list_table;
 };

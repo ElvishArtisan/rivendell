@@ -2403,6 +2403,14 @@ GPIOs</source>
         <source>control has been changed to a lower value.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>GPIs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditNowNext</name>
@@ -4859,7 +4867,7 @@ Permissions</source>
     <name>EditVguestResource</name>
     <message>
         <source>Engine (Hex): </source>
-        <translation>Stroj (Hex):</translation>
+        <translation type="obsolete">Stroj (Hex):</translation>
     </message>
     <message>
         <source>Device (Hex): </source>
@@ -4867,11 +4875,11 @@ Permissions</source>
     </message>
     <message>
         <source>Surface (Hex): </source>
-        <translation>Povrch (Hex):</translation>
+        <translation type="obsolete">Povrch (Hex):</translation>
     </message>
     <message>
         <source>Bus/Relay (Hex): </source>
-        <translation>Sběrnice/relé (hex):</translation>
+        <translation type="obsolete">Sběrnice/relé (hex):</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -4883,31 +4891,43 @@ Permissions</source>
     </message>
     <message>
         <source>Edit vGuest Switch</source>
-        <translation>Upravit přepínač vGuest</translation>
+        <translation type="unfinished">Upravit přepínač vGuest</translation>
     </message>
     <message>
         <source>Edit vGuest Display</source>
-        <translation>Upravit zobrazení vGuest</translation>
+        <translation type="unfinished">Upravit zobrazení vGuest</translation>
     </message>
     <message>
         <source>Invalid Number</source>
-        <translation>Neplatné číslo</translation>
+        <translation type="unfinished">Neplatné číslo</translation>
     </message>
     <message>
         <source>The Engine Number is Invalid!</source>
-        <translation>Číslo stroje je neplatné!</translation>
+        <translation type="unfinished">Číslo stroje je neplatné!</translation>
     </message>
     <message>
         <source>The Device Number is Invalid!</source>
-        <translation>Číslo zařízení je neplatné!</translation>
+        <translation type="unfinished">Číslo zařízení je neplatné!</translation>
     </message>
     <message>
         <source>The Surface Number is Invalid!</source>
-        <translation>Číslo povrchu je neplatné!</translation>
+        <translation type="unfinished">Číslo povrchu je neplatné!</translation>
     </message>
     <message>
         <source>The Bus/Relay Number is Invalid!</source>
-        <translation>Číslo sběrnice/relé je neplatné!</translation>
+        <translation type="unfinished">Číslo sběrnice/relé je neplatné!</translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bus/Relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

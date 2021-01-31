@@ -265,6 +265,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rduser.cpp rduser.h\
                         rduserlistmodel.cpp rduserlistmodel.h\
                         rdversion.cpp rdversion.h\
+                        rdvguestresourcelistmodel.cpp rdvguestresourcelistmodel.h\
                         rdwavedata.cpp rdwavedata.h\
                         rdwavedata_dialog.cpp rdwavedata_dialog.h\
                         rdwavefile.cpp rdwavefile.h\
@@ -392,6 +393,7 @@ nodist_librd_la_SOURCES = moc_rd3emptycart.cpp\
                           moc_rdunixsocket.cpp\
                           moc_rduserlistmodel.cpp\
                           moc_rdupload.cpp\
+                          moc_rdvguestresourcelistmodel.cpp\
                           moc_rdwavedata_dialog.cpp\
                           moc_rdwidget.cpp
 

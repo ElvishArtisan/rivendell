@@ -2225,6 +2225,14 @@ GPIOs</source>
         <source>control has been changed to a lower value.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>GPIs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditNowNext</name>
@@ -4509,7 +4517,7 @@ Permissions</source>
     <name>EditVguestResource</name>
     <message>
         <source>Engine (Hex): </source>
-        <translation>Maskin (heksadesimal):</translation>
+        <translation type="obsolete">Maskin (heksadesimal):</translation>
     </message>
     <message>
         <source>Device (Hex): </source>
@@ -4517,11 +4525,11 @@ Permissions</source>
     </message>
     <message>
         <source>Surface (Hex): </source>
-        <translation>Flate (heksadesimal):</translation>
+        <translation type="obsolete">Flate (heksadesimal):</translation>
     </message>
     <message>
         <source>Bus/Relay (Hex): </source>
-        <translation>Buss/rele (heksadesimal):</translation>
+        <translation type="obsolete">Buss/rele (heksadesimal):</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -4533,31 +4541,43 @@ Permissions</source>
     </message>
     <message>
         <source>Edit vGuest Switch</source>
-        <translation>Rediger vGuest-svitsj</translation>
+        <translation type="unfinished">Rediger vGuest-svitsj</translation>
     </message>
     <message>
         <source>Edit vGuest Display</source>
-        <translation>Rediger vGuest-vising</translation>
+        <translation type="unfinished">Rediger vGuest-vising</translation>
     </message>
     <message>
         <source>Invalid Number</source>
-        <translation>Ugyldig nummer</translation>
+        <translation type="unfinished">Ugyldig nummer</translation>
     </message>
     <message>
         <source>The Engine Number is Invalid!</source>
-        <translation>Maskinnummeret er ugyldig!</translation>
+        <translation type="unfinished">Maskinnummeret er ugyldig!</translation>
     </message>
     <message>
         <source>The Device Number is Invalid!</source>
-        <translation>Einingsnummeret er ugyldig!</translation>
+        <translation type="unfinished">Einingsnummeret er ugyldig!</translation>
     </message>
     <message>
         <source>The Surface Number is Invalid!</source>
-        <translation>Flatenummeret er ugyldig!</translation>
+        <translation type="unfinished">Flatenummeret er ugyldig!</translation>
     </message>
     <message>
         <source>The Bus/Relay Number is Invalid!</source>
-        <translation>Buss/relenummeret er ugyldig!</translation>
+        <translation type="unfinished">Buss/relenummeret er ugyldig!</translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bus/Relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

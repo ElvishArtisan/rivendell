@@ -20945,3 +20945,7 @@
 	* Fixed regressions in rdadmin(1) that caused data in the 'INPUTS'
 	and 'OUTPUTS' table to fail to be kept in sync with data in the
 	'MATRICES' table.
+2021-01-31 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDVguestResourceListModel'.
+	* Refactored the 'vGuest Switches'/'vGuest Displays' dialogs in
+	rdadmin(1) to use the model-based API.

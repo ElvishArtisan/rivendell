@@ -2,7 +2,7 @@
 //
 // Edit a vGuest Resource Record.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,8 @@
 #ifndef EDIT_VGUEST_RESOURCE_H
 #define EDIT_VGUEST_RESOURCE_H
 
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include <rddialog.h>
 #include <rdmatrix.h>
@@ -34,10 +32,12 @@ class EditVguestResource : public RDDialog
 {
  Q_OBJECT
  public:
- EditVguestResource(RDMatrix::VguestType type,int *enginenum,int *devicenum,
-		    int *surfacenum,int *relaynum,QWidget *parent=0);
+ EditVguestResource(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+
+ public slots:
+  int exec(RDMatrix::VguestType type,unsigned id);
 
  private slots:
   void okData();
@@ -45,10 +45,7 @@ class EditVguestResource : public RDDialog
 
  private:
   RDMatrix::VguestType edit_type;
-  int *edit_enginenum;
-  int *edit_devicenum;
-  int *edit_surfacenum;
-  int *edit_relaynum;
+  unsigned edit_id;
   QLineEdit *edit_enginenum_edit;
   QLineEdit *edit_devicenum_edit;
   QLineEdit *edit_surfacenum_edit;

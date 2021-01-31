@@ -2,7 +2,7 @@
 //
 // Edit a vGuest Resource Record.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,26 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rdtextvalidator.h>
 
 #include "edit_vguest_resource.h"
 
-EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
-				       int *enginenum,int *devicenum,
-				       int *surfacenum,int *relaynum,
-				       QWidget *parent)
+EditVguestResource::EditVguestResource(QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
-  edit_type=type;
-  edit_enginenum=enginenum;
-  edit_devicenum=devicenum;
-  edit_surfacenum=surfacenum;
-  edit_relaynum=relaynum;
-
   //
   // Fix the Window Size
   //
@@ -49,7 +38,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   //
   edit_enginenum_edit=new QLineEdit(this);
   edit_enginenum_edit->setGeometry(135,10,50,20);
-  QLabel *label=new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),this);
+  QLabel *label=new QLabel(edit_enginenum_edit,tr("Engine")+":",this);
   label->setGeometry(10,10,120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -69,7 +58,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   //
   edit_surfacenum_edit=new QLineEdit(this);
   edit_surfacenum_edit->setGeometry(135,62,50,20);
-  label=new QLabel(edit_surfacenum_edit,tr("Surface (Hex): "),this);
+  label=new QLabel(edit_surfacenum_edit,tr("Surface")+":",this);
   label->setGeometry(10,62,120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -80,7 +69,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   edit_relaynum_edit=new QLineEdit(this);
   edit_relaynum_edit->setGeometry(135,88,50,20);
   edit_relaynum_label=
-    new QLabel(edit_relaynum_edit,tr("Bus/Relay (Hex): "),this);
+    new QLabel(edit_relaynum_edit,tr("Bus/Relay")+":",this);
   edit_relaynum_label->setGeometry(10,88,120,20);
   edit_relaynum_label->setFont(labelFont());
   edit_relaynum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -104,32 +93,6 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  //
-  // Load Data
-  //
-  if(*enginenum>=0) {
-    edit_enginenum_edit->setText(QString().sprintf("%04X",*enginenum));
-  }
-  if(*devicenum>=0) {
-    edit_devicenum_edit->setText(QString().sprintf("%04X",*devicenum));
-  }
-  if(*surfacenum>=0) {
-    edit_surfacenum_edit->setText(QString().sprintf("%04X",*surfacenum));
-  }
-  switch(edit_type) {
-  case RDMatrix::VguestTypeRelay:
-    setWindowTitle("RDAdmin - "+tr("Edit vGuest Switch"));
-    if(*relaynum>=0) {
-      edit_relaynum_edit->setText(QString().sprintf("%04X",*relaynum));
-    }
-    break;
-
-  case RDMatrix::VguestTypeDisplay:
-    setWindowTitle("RDADmin - "+tr("Edit vGuest Display"));
-    edit_relaynum_edit->setDisabled(true);
-    break;
-  }
 }
 
 
@@ -145,10 +108,58 @@ QSizePolicy EditVguestResource::sizePolicy() const
 }
 
 
+int EditVguestResource::exec(RDMatrix::VguestType type,unsigned id)
+{
+  edit_type=type;
+  edit_id=id;
+
+  QString sql=QString("select ")+
+    "ENGINE_NUM,"+   // 00
+    "DEVICE_NUM,"+   // 01
+    "SURFACE_NUM,"+  // 02
+    "RELAY_NUM,"+    // 03
+    "BUSS_NUM "+     // 04
+    "from VGUEST_RESOURCES where "+
+    QString().sprintf("ID=%u",id);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(q->value(0).toInt()>=0) {
+      edit_enginenum_edit->
+	setText(QString().sprintf("%d",q->value(0).toInt()));
+    }
+    if(q->value(1).toInt()>=0) {
+      edit_devicenum_edit->
+	setText(QString().sprintf("%04X",q->value(1).toInt()));
+    }
+    if(q->value(2).toInt()>=0) {
+      edit_surfacenum_edit->
+	setText(QString().sprintf("%d",q->value(2).toInt()));
+    }
+    switch(edit_type) {
+    case RDMatrix::VguestTypeRelay:
+      setWindowTitle("RDAdmin - "+tr("Edit vGuest Switch"));
+      if(q->value(3).toInt()>=0) {
+	edit_relaynum_edit->
+	  setText(QString().sprintf("%d",q->value(3).toInt()));
+      }
+      break;
+
+    case RDMatrix::VguestTypeDisplay:
+      setWindowTitle("RDADmin - "+tr("Edit vGuest Display"));
+      edit_relaynum_edit->setDisabled(true);
+      break;
+    }
+  }
+  delete q;
+
+  return QDialog::exec();
+}
+
+
 void EditVguestResource::okData()
 {
   bool ok;
-  int enginenum=edit_enginenum_edit->text().toInt(&ok,16);
+  int enginenum=edit_enginenum_edit->text().toInt(&ok);
   if(!ok) {
     if(edit_enginenum_edit->text().isEmpty()) {
       enginenum=-1;
@@ -170,7 +181,7 @@ void EditVguestResource::okData()
       return;
     }
   }
-  int surfacenum=edit_surfacenum_edit->text().toInt(&ok,16);
+  int surfacenum=edit_surfacenum_edit->text().toInt(&ok);
   if(!ok) {
     if(edit_surfacenum_edit->text().isEmpty()) {
       surfacenum=-1;
@@ -181,7 +192,7 @@ void EditVguestResource::okData()
       return;
     }
   }
-  int relaynum=edit_relaynum_edit->text().toInt(&ok,16);
+  int relaynum=edit_relaynum_edit->text().toInt(&ok);
   if(!ok) {
     if(edit_relaynum_edit->text().isEmpty()) {
       relaynum=-1;
@@ -192,15 +203,19 @@ void EditVguestResource::okData()
       return;
     }
   }
-  *edit_enginenum=enginenum;
-  *edit_devicenum=devicenum;
-  *edit_surfacenum=surfacenum;
-  *edit_relaynum=relaynum;
-  done(0);
+  QString sql=QString("update VGUEST_RESOURCES set ")+
+    QString().sprintf("ENGINE_NUM=%d,",enginenum)+
+    QString().sprintf("DEVICE_NUM=%d,",devicenum)+
+    QString().sprintf("SURFACE_NUM=%d,",surfacenum)+
+    QString().sprintf("RELAY_NUM=%d ",relaynum)+
+    QString().sprintf("where ID=%u",edit_id);
+  RDSqlQuery::apply(sql);
+
+  done(true);
 }
 
 
 void EditVguestResource::cancelData()
 {
-  done(1);
+  done(false);
 }

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Matrix
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1077,6 +1077,7 @@ void EditMatrix::livewireGpioButtonData()
 
 void EditMatrix::vguestRelaysButtonData()
 {
+  AddVguest(RDMatrix::VguestTypeRelay);
   ListVguestResources *dialog=
     new ListVguestResources(edit_matrix,RDMatrix::VguestTypeRelay,
 			    edit_gpos_box->value(),this);
@@ -1087,6 +1088,7 @@ void EditMatrix::vguestRelaysButtonData()
 
 void EditMatrix::vguestDisplaysButtonData()
 {
+  AddVguest(RDMatrix::VguestTypeDisplay);
   ListVguestResources *dialog=
     new ListVguestResources(edit_matrix,RDMatrix::VguestTypeDisplay,
 			    edit_displays_box->value(),this);
@@ -1163,11 +1165,15 @@ void EditMatrix::stopCart2Data()
 void EditMatrix::okData()
 {
   if((!ConfirmPruneEndpoints(RDMatrix::Input))||
-     (!ConfirmPruneEndpoints(RDMatrix::Output))) {
+     (!ConfirmPruneEndpoints(RDMatrix::Output))||
+     (!ConfirmPruneVguest(RDMatrix::VguestTypeRelay))||
+     (!ConfirmPruneVguest(RDMatrix::VguestTypeDisplay))) {
     return;
   }
   PruneEndpoints(RDMatrix::Input);
   PruneEndpoints(RDMatrix::Output);
+  PruneVguest(RDMatrix::VguestTypeRelay);
+  PruneVguest(RDMatrix::VguestTypeDisplay);
   if(!WriteMatrix()) {
     return;
   }
@@ -1305,6 +1311,8 @@ bool EditMatrix::WriteMatrix()
   //
   AddEndpoints(RDMatrix::Input);
   AddEndpoints(RDMatrix::Output);
+  AddVguest(RDMatrix::VguestTypeRelay);
+  AddVguest(RDMatrix::VguestTypeDisplay);
 
   //
   // Update GPIO Tables
@@ -1466,6 +1474,101 @@ bool EditMatrix::ConfirmPruneEndpoints(RDMatrix::Endpoint ep)
       "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\" && "+
       QString().sprintf("MATRIX=%d && ",edit_matrix->matrix())+
       QString().sprintf("NUMBER>%d",endpoint_quan);
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(QMessageBox::warning(this,"RDAdmin - "+tr("Warning"),
+			    tr("It appears that the")+" "+name+" "+
+			    tr("control has been changed to a lower value.")+" "+
+			    tr("This may result in configuration data for the \"orphaned\"")+" "+name+" "+tr("being deleted.")+"\n"+
+			    "\n"+
+			    tr("Continue?"),
+			    QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
+      delete q;
+      return false;
+    }
+  }
+  else {
+    delete q;
+    return true;
+  }
+  delete q;
+  return true;
+}
+
+
+void EditMatrix::AddVguest(RDMatrix::VguestType type) const
+{
+  //
+  // Ensure that we have data entries for at least the number of
+  // entries specified in the corresponding 'GPIs'/'GPOs' or 'Displays'
+  // controls. If we have "excess" entries, don't touch them!
+  //
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  int entry_quan=edit_gpis_box->value();
+  if(type==RDMatrix::VguestTypeDisplay) {
+    entry_quan=edit_displays_box->value();
+  }
+  for(int i=0;i<entry_quan;i++) {
+    sql=QString("select ")+
+      "ID "+  // 00
+      "from VGUEST_RESOURCES where "+
+      "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\" && "+
+      QString().sprintf("MATRIX_NUM=%d && ",edit_matrix->matrix())+
+      QString().sprintf("VGUEST_TYPE=%d && ",type)+
+      QString().sprintf("NUMBER=%d",i+1);
+    q=new RDSqlQuery(sql);
+    if(!q->first()) {
+      sql=QString("insert into VGUEST_RESOURCES set ")+
+	"STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\","+
+	QString().sprintf("MATRIX_NUM=%d,",edit_matrix->matrix())+
+	QString().sprintf("VGUEST_TYPE=%d,",type)+
+	QString().sprintf("NUMBER=%d",i+1);
+      RDSqlQuery::apply(sql);
+    }
+  }
+  delete q;
+}
+
+
+void EditMatrix::PruneVguest(RDMatrix::VguestType type) const
+{
+  QString sql;
+
+  int entry_quan=edit_gpis_box->value();
+  if(type==RDMatrix::VguestTypeDisplay) {
+    entry_quan=edit_displays_box->value();
+  }
+
+  sql=QString("delete from VGUEST_RESOURCES where ")+
+    "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\" && "+
+    QString().sprintf("MATRIX_NUM=%d && ",edit_matrix->matrix())+
+    QString().sprintf("VGUEST_TYPE=%d && ",type)+
+    QString().sprintf("NUMBER>%d",entry_quan);
+  RDSqlQuery::apply(sql);
+}
+
+
+bool EditMatrix::ConfirmPruneVguest(RDMatrix::VguestType type)
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  int entry_quan=edit_gpis_box->value();
+  QString name=tr("GPIs");
+  if(type==RDMatrix::VguestTypeDisplay) {
+    entry_quan=edit_displays_box->value();
+    name=tr("Displays");
+  }
+
+  sql=QString("select ")+
+    "ID "+  // 00
+    "from VGUEST_RESOURCES where "+
+      "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\" && "+
+      QString().sprintf("MATRIX_NUM=%d && ",edit_matrix->matrix())+
+      QString().sprintf("VGUEST_TYPE=%d && ",type)+
+      QString().sprintf("NUMBER>%d",entry_quan);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(QMessageBox::warning(this,"RDAdmin - "+tr("Warning"),

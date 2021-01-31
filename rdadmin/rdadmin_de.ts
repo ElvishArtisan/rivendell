@@ -2249,6 +2249,14 @@ GPIOs</source>
         <source>control has been changed to a lower value.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>GPIs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditNowNext</name>
@@ -4604,7 +4612,7 @@ Permissions</source>
     <name>EditVguestResource</name>
     <message>
         <source>Engine (Hex): </source>
-        <translation>Engine (Hex):</translation>
+        <translation type="obsolete">Engine (Hex):</translation>
     </message>
     <message>
         <source>Device (Hex): </source>
@@ -4612,11 +4620,11 @@ Permissions</source>
     </message>
     <message>
         <source>Surface (Hex): </source>
-        <translation>Oberfläche (Hex):</translation>
+        <translation type="obsolete">Oberfläche (Hex):</translation>
     </message>
     <message>
         <source>Bus/Relay (Hex): </source>
-        <translation>Bus/Relay (hex):</translation>
+        <translation type="obsolete">Bus/Relay (hex):</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -4628,31 +4636,43 @@ Permissions</source>
     </message>
     <message>
         <source>Edit vGuest Switch</source>
-        <translation>vGuest-Schalter editieren</translation>
+        <translation type="unfinished">vGuest-Schalter editieren</translation>
     </message>
     <message>
         <source>Edit vGuest Display</source>
-        <translation>vGuest-Anzeige editieren</translation>
+        <translation type="unfinished">vGuest-Anzeige editieren</translation>
     </message>
     <message>
         <source>Invalid Number</source>
-        <translation>Ungültige Nummer</translation>
+        <translation type="unfinished">Ungültige Nummer</translation>
     </message>
     <message>
         <source>The Engine Number is Invalid!</source>
-        <translation>Die Engine-Nummer ist ungültig!</translation>
+        <translation type="unfinished">Die Engine-Nummer ist ungültig!</translation>
     </message>
     <message>
         <source>The Device Number is Invalid!</source>
-        <translation>Die Gerätenummer ist ungültig!</translation>
+        <translation type="unfinished">Die Gerätenummer ist ungültig!</translation>
     </message>
     <message>
         <source>The Surface Number is Invalid!</source>
-        <translation>Die Oberflächennummer ist ungültig!</translation>
+        <translation type="unfinished">Die Oberflächennummer ist ungültig!</translation>
     </message>
     <message>
         <source>The Bus/Relay Number is Invalid!</source>
-        <translation>Die Bus-/Relaynummer ist ungültig!</translation>
+        <translation type="unfinished">Die Bus-/Relaynummer ist ungültig!</translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bus/Relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
