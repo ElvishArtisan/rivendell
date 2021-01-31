@@ -1,6 +1,6 @@
-// rdvguestresourcelistmodel.cpp
+// rdresourcelistmodel.cpp
 //
-// Data model for Rivendell Logitek vGuest resource settings
+// Data model for Rivendell console router resource settings
 //
 //   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -21,11 +21,11 @@
 #include "rdapplication.h"
 #include "rdescape_string.h"
 #include "rdmatrix.h"
-#include "rdvguestresourcelistmodel.h"
+#include "rdresourcelistmodel.h"
 
-RDVguestResourceListModel::RDVguestResourceListModel(RDMatrix *mtx,
-						     RDMatrix::VguestType type,
-						     QObject *parent)
+RDResourceListModel::RDResourceListModel(RDMatrix *mtx,
+					 RDMatrix::VguestType type,
+					 QObject *parent)
   : QAbstractTableModel(parent)
 {
   d_mtx=mtx;
@@ -75,24 +75,24 @@ RDVguestResourceListModel::RDVguestResourceListModel(RDMatrix *mtx,
 }
 
 
-RDVguestResourceListModel::~RDVguestResourceListModel()
+RDResourceListModel::~RDResourceListModel()
 {
 }
 
 
-QPalette RDVguestResourceListModel::palette()
+QPalette RDResourceListModel::palette()
 {
   return d_palette;
 }
 
 
-void RDVguestResourceListModel::setPalette(const QPalette &pal)
+void RDResourceListModel::setPalette(const QPalette &pal)
 {
   d_palette=pal;
 }
 
 
-void RDVguestResourceListModel::setFont(const QFont &font)
+void RDResourceListModel::setFont(const QFont &font)
 {
   d_font=font;
   d_bold_font=font;
@@ -100,19 +100,19 @@ void RDVguestResourceListModel::setFont(const QFont &font)
 }
 
 
-int RDVguestResourceListModel::columnCount(const QModelIndex &parent) const
+int RDResourceListModel::columnCount(const QModelIndex &parent) const
 {
   return d_headers.size();
 }
 
 
-int RDVguestResourceListModel::rowCount(const QModelIndex &parent) const
+int RDResourceListModel::rowCount(const QModelIndex &parent) const
 {
   return d_texts.size();
 }
 
 
-QVariant RDVguestResourceListModel::headerData(int section,
+QVariant RDResourceListModel::headerData(int section,
 					       Qt::Orientation orient,
 					       int role) const
 {
@@ -123,7 +123,7 @@ QVariant RDVguestResourceListModel::headerData(int section,
 }
 
 
-QVariant RDVguestResourceListModel::data(const QModelIndex &index,int role) const
+QVariant RDResourceListModel::data(const QModelIndex &index,int role) const
 {
   QString str;
   int col=index.column();
@@ -164,19 +164,19 @@ QVariant RDVguestResourceListModel::data(const QModelIndex &index,int role) cons
 }
 
 
-int RDVguestResourceListModel::resourceId(const QModelIndex &row) const
+int RDResourceListModel::resourceId(const QModelIndex &row) const
 {
   return d_ids.at(row.row());
 }
 
 
-int RDVguestResourceListModel::resourceNumber(const QModelIndex &row) const
+int RDResourceListModel::resourceNumber(const QModelIndex &row) const
 {
   return d_texts.at(row.row()).at(0).toInt();
 }
 
 
-void RDVguestResourceListModel::refresh(const QModelIndex &row)
+void RDResourceListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
@@ -193,7 +193,7 @@ void RDVguestResourceListModel::refresh(const QModelIndex &row)
 }
 
 
-void RDVguestResourceListModel::refresh(int id)
+void RDResourceListModel::refresh(int id)
 {
   for(int i=0;i<d_texts.size();i++) {
     if(d_texts.at(i).at(0)==id) {
@@ -204,7 +204,7 @@ void RDVguestResourceListModel::refresh(int id)
 }
 
 
-void RDVguestResourceListModel::updateModel()
+void RDResourceListModel::updateModel()
 {
   QList<QVariant> texts; 
 
@@ -238,7 +238,7 @@ void RDVguestResourceListModel::updateModel()
 }
 
 
-void RDVguestResourceListModel::updateRowLine(int line)
+void RDResourceListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
@@ -253,7 +253,7 @@ void RDVguestResourceListModel::updateRowLine(int line)
 }
 
 
-void RDVguestResourceListModel::updateRow(int row,RDSqlQuery *q)
+void RDResourceListModel::updateRow(int row,RDSqlQuery *q)
 {
   QList<QVariant> texts;
 
@@ -305,7 +305,7 @@ void RDVguestResourceListModel::updateRow(int row,RDSqlQuery *q)
 }
 
 
-QString RDVguestResourceListModel::sqlFields() const
+QString RDResourceListModel::sqlFields() const
 {
   QString sql=QString("select ")+
     "ID,"+           // 00

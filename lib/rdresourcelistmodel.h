@@ -1,6 +1,6 @@
-// rdvguestresourcelistmodel.h
+// rdresourcelistmodel.h
 //
-// Data model for Rivendell Logitek vGuest resource settings
+// Data model for Rivendell console router resource settings
 //
 //   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDVGUESTRESOURCELISTMODEL_H
-#define RDVGUESTRESOURCELISTMODEL_H
+#ifndef RDRESOURCELISTMODEL_H
+#define RDRESOURCELISTMODEL_H
 
 #include <QAbstractTableModel>
 #include <QFont>
@@ -31,13 +31,13 @@
 #include <rdnotification.h>
 #include <rduser.h>
 
-class RDVguestResourceListModel : public QAbstractTableModel
+class RDResourceListModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  RDVguestResourceListModel(RDMatrix *mtx,RDMatrix::VguestType type,
+  RDResourceListModel(RDMatrix *mtx,RDMatrix::VguestType type,
 			    QObject *parent=0);
-  ~RDVguestResourceListModel();
+  ~RDResourceListModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
   void setFont(const QFont &font);
@@ -71,4 +71,4 @@ class RDVguestResourceListModel : public QAbstractTableModel
 };
 
 
-#endif  // RDVGUESTRESOURCELISTMODEL_H
+#endif  // RDRESOURCELISTMODEL_H

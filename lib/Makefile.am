@@ -216,6 +216,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdreplicator.cpp rdreplicator.h\
                         rdreplicatorlistmodel.cpp rdreplicatorlistmodel.h\
                         rdreport.cpp rdreport.h\
+                        rdresourcelistmodel.cpp rdresourcelistmodel.h\
                         rdringbuffer.cpp rdringbuffer.h\
                         rdripc.cpp rdripc.h\
                         rdrssschemas.cpp rdrssschemas.h\
@@ -265,7 +266,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rduser.cpp rduser.h\
                         rduserlistmodel.cpp rduserlistmodel.h\
                         rdversion.cpp rdversion.h\
-                        rdvguestresourcelistmodel.cpp rdvguestresourcelistmodel.h\
                         rdwavedata.cpp rdwavedata.h\
                         rdwavedata_dialog.cpp rdwavedata_dialog.h\
                         rdwavefile.cpp rdwavefile.h\
@@ -367,6 +367,7 @@ nodist_librd_la_SOURCES = moc_rd3emptycart.cpp\
                           moc_rdrehash.cpp\
                           moc_rdrenderer.cpp\
                           moc_rdreplicatorlistmodel.cpp\
+                          moc_rdresourcelistmodel.cpp\
                           moc_rdripc.cpp\
                           moc_rdschedcodes_dialog.cpp\
                           moc_rdrsscategorybox.cpp\
@@ -393,7 +394,6 @@ nodist_librd_la_SOURCES = moc_rd3emptycart.cpp\
                           moc_rdunixsocket.cpp\
                           moc_rduserlistmodel.cpp\
                           moc_rdupload.cpp\
-                          moc_rdvguestresourcelistmodel.cpp\
                           moc_rdwavedata_dialog.cpp\
                           moc_rdwidget.cpp
 

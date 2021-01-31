@@ -20949,3 +20949,6 @@
 	* Added 'RDVguestResourceListModel'.
 	* Refactored the 'vGuest Switches'/'vGuest Displays' dialogs in
 	rdadmin(1) to use the model-based API.
+2021-01-31 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'RDVguestResourceListModel' model class to
+	'RDResourceListModel'.

@@ -29,7 +29,7 @@
 #include <rdmatrix.h>
 #include <rdtableview.h>
 #include <rduser.h>
-#include <rdvguestresourcelistmodel.h>
+#include <rdresourcelistmodel.h>
 
 #include "edit_vguest_resource.h"
 
@@ -57,7 +57,7 @@ class ListVguestResources : public RDDialog
   RDMatrix::VguestType list_type;
   QLabel *list_title_label;
   RDTableView *list_list_view;
-  RDVguestResourceListModel *list_list_model;
+  RDResourceListModel *list_list_model;
   QPushButton *list_edit_button;
   QPushButton *list_close_button;
   int list_size;

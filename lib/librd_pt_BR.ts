@@ -3722,6 +3722,37 @@ por favor, tente novamente!</translation>
     </message>
 </context>
 <context>
+    <name>RDResourceListModel</name>
+    <message>
+        <source>GPIO Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (Hex)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bus/Relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDServiceListModel</name>
     <message>
         <source>Description</source>
@@ -3991,37 +4022,6 @@ por favor, tente novamente!</translation>
     </message>
     <message>
         <source>Local Auth</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>RDVguestResourceListModel</name>
-    <message>
-        <source>GPIO Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Engine</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Device (Hex)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Surface</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bus/Relay</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Display</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

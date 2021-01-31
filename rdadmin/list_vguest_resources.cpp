@@ -63,7 +63,7 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   // Resources List Box
   //
   list_list_view=new RDTableView(this);
-  list_list_model=new RDVguestResourceListModel(list_matrix,type,this);
+  list_list_model=new RDResourceListModel(list_matrix,type,this);
   list_list_model->setFont(defaultFont());
   list_list_model->setPalette(palette());
   list_list_view->setModel(list_list_model);
