@@ -24,12 +24,13 @@
 #include "rdresourcelistmodel.h"
 
 RDResourceListModel::RDResourceListModel(RDMatrix *mtx,
-					 RDMatrix::VguestType type,
+					 RDMatrix::VguestType vguest_type,
 					 QObject *parent)
   : QAbstractTableModel(parent)
 {
   d_mtx=mtx;
-  d_vguest_type=type;
+  d_type=mtx->type();
+  d_vguest_type=vguest_type;
 
   //
   // Column Attributes
@@ -38,37 +39,56 @@ RDResourceListModel::RDResourceListModel(RDMatrix *mtx,
   unsigned center=Qt::AlignCenter;
   //  unsigned right=Qt::AlignRight|Qt::AlignVCenter;
 
-  switch(d_vguest_type) {
-  case RDMatrix::VguestTypeRelay:
-    d_headers.push_back(tr("GPIO Line"));
-    d_alignments.push_back(center);
+  if(d_type==RDMatrix::LogitekVguest) {
+    switch(d_vguest_type) {
+    case RDMatrix::VguestTypeRelay:
+      d_headers.push_back(tr("GPIO Line"));
+      d_alignments.push_back(center);
 
-    d_headers.push_back(tr("Engine"));
-    d_alignments.push_back(center);
+      d_headers.push_back(tr("Engine"));
+      d_alignments.push_back(center);
 
-    d_headers.push_back(tr("Device (Hex)"));
-    d_alignments.push_back(center);
+      d_headers.push_back(tr("Device (Hex)"));
+      d_alignments.push_back(center);
 
-    d_headers.push_back(tr("Surface"));
-    d_alignments.push_back(center);
+      d_headers.push_back(tr("Surface"));
+      d_alignments.push_back(center);
 
-    d_headers.push_back(tr("Bus/Relay"));
-    d_alignments.push_back(center);
-    break;
+      d_headers.push_back(tr("Bus/Relay"));
+      d_alignments.push_back(center);
+      break;
       
     case RDMatrix::VguestTypeDisplay:
-    d_headers.push_back(tr("Display"));
+      d_headers.push_back(tr("Display"));
+      d_alignments.push_back(center);
+
+      d_headers.push_back(tr("Engine"));
+      d_alignments.push_back(center);
+
+      d_headers.push_back(tr("Device (Hex)"));
+      d_alignments.push_back(center);
+
+      d_headers.push_back(tr("Surface"));
+      d_alignments.push_back(center);
+      break;
+
+    case RDMatrix::VguestTypeNone:
+      break;
+    }
+  }
+
+  if(d_type==RDMatrix::SasUsi) {
+    d_headers.push_back(tr("Line"));
     d_alignments.push_back(center);
 
-    d_headers.push_back(tr("Engine"));
+    d_headers.push_back(tr("Console"));
     d_alignments.push_back(center);
 
-    d_headers.push_back(tr("Device (Hex)"));
+    d_headers.push_back(tr("Source"));
     d_alignments.push_back(center);
 
-    d_headers.push_back(tr("Surface"));
+    d_headers.push_back(tr("Opto/Relay"));
     d_alignments.push_back(center);
-    break;
   }
 
   updateModel();
@@ -207,25 +227,27 @@ void RDResourceListModel::refresh(int id)
 void RDResourceListModel::updateModel()
 {
   QList<QVariant> texts; 
+  QString sql;
 
   RDSqlQuery *q=NULL;
-  QString sql=sqlFields()+
-    "where "+
-    "STATION_NAME=\""+RDEscapeString(d_mtx->station())+"\" && "+
-    QString().sprintf("MATRIX_NUM=%d && ",d_mtx->matrix())+
-    QString().sprintf("VGUEST_TYPE=%u ",d_vguest_type)+
-    "order by NUMBER ";
+  if(d_type==RDMatrix::LogitekVguest) {
+    sql=sqlFields()+
+      "where "+
+      "STATION_NAME=\""+RDEscapeString(d_mtx->station())+"\" && "+
+      QString().sprintf("MATRIX_NUM=%d && ",d_mtx->matrix())+
+      QString().sprintf("VGUEST_TYPE=%u ",d_vguest_type)+
+      "order by NUMBER ";
+  }
+  if(d_type==RDMatrix::SasUsi) {
+    sql=sqlFields()+
+      "where "+
+      "STATION_NAME=\""+RDEscapeString(d_mtx->station())+"\" && "+
+      QString().sprintf("MATRIX_NUM=%d ",d_mtx->matrix())+
+      "order by NUMBER ";
+  }
   beginResetModel();
   d_ids.clear();
   d_texts.clear();
-  if(d_include_none) {
-    d_ids.push_back(-1);
-    d_texts.push_back(texts);
-    d_texts.back().push_back(tr("[none]"));
-    for(int i=1;i<columnCount();i++) {
-      d_texts.back().push_back(QVariant());
-    }
-  }
   //  printf("SQL: %s\n",sql.toUtf8().constData());
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -272,19 +294,54 @@ void RDResourceListModel::updateRow(int row,RDSqlQuery *q)
   }
 
   // Device Number
-  if(q->value(3).toInt()>=0) {
-    texts.push_back(QString().sprintf("%04X",q->value(3).toInt()));
-  }
-  else {
-    texts.push_back("");
+  if(d_type==RDMatrix::LogitekVguest) {
+    if(q->value(3).toInt()>=0) {
+      texts.push_back(QString().sprintf("%04X",q->value(3).toInt()));
+    }
+    else {
+      texts.push_back("");
+    }
   }
 
-  // Surface Number
-  if(q->value(4).toInt()>=0) {
-    texts.push_back(QString().sprintf("%d",q->value(4).toInt()));
-  }
-  else {
-    texts.push_back("");
+
+  switch(d_type) {
+  case RDMatrix::LogitekVguest:
+    // Device Number
+    if(q->value(3).toInt()>=0) {
+      texts.push_back(QString().sprintf("%04X",q->value(3).toInt()));
+    }
+    else {
+      texts.push_back("");
+    }
+
+    // Surface Number
+    if(q->value(4).toInt()>=0) {
+      texts.push_back(QString().sprintf("%d",q->value(4).toInt()));
+    }
+    else {
+      texts.push_back("");
+    }
+    break;
+
+  case RDMatrix::SasUsi:
+    // Source
+    if(q->value(3).toInt()>=0) {
+      texts.push_back(QString().sprintf("%d",q->value(3).toInt()));
+    }
+    else {
+      texts.push_back("");
+    }
+
+    if(q->value(5).toInt()>=0) {
+      texts.push_back(QString().sprintf("%d",q->value(5).toInt()));
+    }
+    else {
+      texts.push_back("");
+    }
+    break;
+
+  defaults:
+    break;
   }
 
   switch(d_vguest_type) {
@@ -298,6 +355,9 @@ void RDResourceListModel::updateRow(int row,RDSqlQuery *q)
     break;
 
   case RDMatrix::VguestTypeDisplay:
+    break;
+
+  case RDMatrix::VguestTypeNone:
     break;
   }
 

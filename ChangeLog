@@ -20952,3 +20952,8 @@
 2021-01-31 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed the 'RDVguestResourceListModel' model class to
 	'RDResourceListModel'.
+2021-01-31 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'VguestTypeNone' to the 'RDMatrix::VguestType' enumeration.
+2021-01-31 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'SAS Switches' dialog in rdadmin(1) to use the
+	model-based API.

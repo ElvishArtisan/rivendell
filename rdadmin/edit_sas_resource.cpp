@@ -2,7 +2,7 @@
 //
 // Edit an SAS Resource Record.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,21 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
-#include <rdtextvalidator.h>
+#include "edit_sas_resource.h"
 
-#include <edit_sas_resource.h>
-
-EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
-				 QWidget *parent)
+EditSasResource::EditSasResource(QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
-  edit_enginenum=enginenum;
-  edit_devicenum=devicenum;
-  edit_relaynum=relaynum;
   setWindowTitle("RDAdmin - "+tr("Edit SAS Switch"));
 
   //
@@ -91,19 +83,6 @@ EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
   button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  //
-  // Load Data
-  //
-  if(*enginenum>=0) {
-    edit_enginenum_edit->setText(QString().sprintf("%d",*enginenum));
-  }
-  if(*devicenum>=0) {
-    edit_devicenum_edit->setText(QString().sprintf("%d",*devicenum));
-  }
-  if(*relaynum>=0) {
-    edit_relaynum_edit->setText(QString().sprintf("%d",*relaynum));
-  }
 }
 
 
@@ -116,6 +95,43 @@ QSize EditSasResource::sizeHint() const
 QSizePolicy EditSasResource::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int EditSasResource::exec(unsigned id)
+{
+  edit_id=id;
+
+  QString sql=QString("select ")+
+    "NUMBER,"+      // 00
+    "ENGINE_NUM,"+  // 01
+    "DEVICE_NUM,"+  // 02
+    "RELAY_NUM "+   // 03
+    "from VGUEST_RESOURCES where "+
+    QString().sprintf("ID=%u",edit_id);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(q->value(1).toInt()>=0) {
+      edit_enginenum_edit->setText(QString().sprintf("%d",q->value(1).toInt()));
+    }
+    else {
+      edit_enginenum_edit->setText("");
+    }
+    if(q->value(2).toInt()>=0) {
+      edit_devicenum_edit->setText(QString().sprintf("%d",q->value(2).toInt()));
+    }
+    else {
+      edit_devicenum_edit->setText("");
+    }
+    if(q->value(3).toInt()>=0) {
+      edit_relaynum_edit->setText(QString().sprintf("%d",q->value(3).toInt()));
+    }
+    else {
+      edit_relaynum_edit->setText("");
+    }
+  }
+  delete q;
+  return QDialog::exec();
 }
 
 
@@ -155,14 +171,19 @@ void EditSasResource::okData()
       return;
     }
   }
-  *edit_enginenum=enginenum;
-  *edit_devicenum=devicenum;
-  *edit_relaynum=relaynum;
-  done(0);
+
+  QString sql=QString("update VGUEST_RESOURCES set ")+
+    QString().sprintf("ENGINE_NUM=%d,",enginenum)+
+    QString().sprintf("DEVICE_NUM=%d,",devicenum)+
+    QString().sprintf("RELAY_NUM=%d ",relaynum)+
+    QString().sprintf("where ID=%u",edit_id);
+  RDSqlQuery::apply(sql);
+
+  done(true);
 }
 
 
 void EditSasResource::cancelData()
 {
-  done(1);
+  done(false);
 }

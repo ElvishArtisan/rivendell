@@ -57,6 +57,9 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   case RDMatrix::VguestTypeRelay:
     setWindowTitle("RDAdmin - "+tr("vGuest Switches"));
     break;
+
+  case RDMatrix::VguestTypeNone:
+    break;
   }
 
   //

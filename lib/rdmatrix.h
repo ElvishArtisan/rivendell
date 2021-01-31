@@ -44,7 +44,7 @@ class RDMatrix
   enum Mode {Stereo=0,Left=1,Right=2};
   enum VguestAttribute {VguestEngine=0,VguestDevice=1,VguestSurface=2,
 			VguestRelay=3,VguestBuss=4};
-  enum VguestType {VguestTypeRelay=0,VguestTypeDisplay=2};
+  enum VguestType {VguestTypeRelay=0,VguestTypeDisplay=2,VguestTypeNone=255};
   enum GpioType {GpioInput=0,GpioOutput=1};
   enum Control {PortTypeControl=0,SerialPortControl=1,
 		IpAddressControl=2,IpPortControl=3,

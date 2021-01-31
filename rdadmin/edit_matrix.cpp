@@ -1077,7 +1077,7 @@ void EditMatrix::livewireGpioButtonData()
 
 void EditMatrix::vguestRelaysButtonData()
 {
-  AddVguest(RDMatrix::VguestTypeRelay);
+  AddResources(RDMatrix::VguestTypeRelay);
   ListVguestResources *dialog=
     new ListVguestResources(edit_matrix,RDMatrix::VguestTypeRelay,
 			    edit_gpos_box->value(),this);
@@ -1088,7 +1088,7 @@ void EditMatrix::vguestRelaysButtonData()
 
 void EditMatrix::vguestDisplaysButtonData()
 {
-  AddVguest(RDMatrix::VguestTypeDisplay);
+  AddResources(RDMatrix::VguestTypeDisplay);
   ListVguestResources *dialog=
     new ListVguestResources(edit_matrix,RDMatrix::VguestTypeDisplay,
 			    edit_displays_box->value(),this);
@@ -1164,16 +1164,29 @@ void EditMatrix::stopCart2Data()
 
 void EditMatrix::okData()
 {
-  if((!ConfirmPruneEndpoints(RDMatrix::Input))||
-     (!ConfirmPruneEndpoints(RDMatrix::Output))||
-     (!ConfirmPruneVguest(RDMatrix::VguestTypeRelay))||
-     (!ConfirmPruneVguest(RDMatrix::VguestTypeDisplay))) {
-    return;
+  if(edit_matrix->type()==RDMatrix::LogitekVguest) {
+    if((!ConfirmPruneEndpoints(RDMatrix::Input))||
+       (!ConfirmPruneEndpoints(RDMatrix::Output))||
+       (!ConfirmPruneResources(RDMatrix::VguestTypeRelay))||
+       (!ConfirmPruneResources(RDMatrix::VguestTypeDisplay))) {
+      return;
+    }
+    PruneEndpoints(RDMatrix::Input);
+    PruneEndpoints(RDMatrix::Output);
+    PruneResources(RDMatrix::VguestTypeRelay);
+    PruneResources(RDMatrix::VguestTypeDisplay);
   }
-  PruneEndpoints(RDMatrix::Input);
-  PruneEndpoints(RDMatrix::Output);
-  PruneVguest(RDMatrix::VguestTypeRelay);
-  PruneVguest(RDMatrix::VguestTypeDisplay);
+  if(edit_matrix->type()==RDMatrix::SasUsi) {
+    if((!ConfirmPruneEndpoints(RDMatrix::Input))||
+       (!ConfirmPruneEndpoints(RDMatrix::Output))||
+       (!ConfirmPruneResources(RDMatrix::VguestTypeNone))) {
+      return;
+    }
+    PruneEndpoints(RDMatrix::Input);
+    PruneEndpoints(RDMatrix::Output);
+    PruneResources(RDMatrix::VguestTypeNone);
+  }
+
   if(!WriteMatrix()) {
     return;
   }
@@ -1311,8 +1324,8 @@ bool EditMatrix::WriteMatrix()
   //
   AddEndpoints(RDMatrix::Input);
   AddEndpoints(RDMatrix::Output);
-  AddVguest(RDMatrix::VguestTypeRelay);
-  AddVguest(RDMatrix::VguestTypeDisplay);
+  AddResources(RDMatrix::VguestTypeRelay);
+  AddResources(RDMatrix::VguestTypeDisplay);
 
   //
   // Update GPIO Tables
@@ -1496,7 +1509,7 @@ bool EditMatrix::ConfirmPruneEndpoints(RDMatrix::Endpoint ep)
 }
 
 
-void EditMatrix::AddVguest(RDMatrix::VguestType type) const
+void EditMatrix::AddResources(RDMatrix::VguestType type) const
 {
   //
   // Ensure that we have data entries for at least the number of
@@ -1515,16 +1528,20 @@ void EditMatrix::AddVguest(RDMatrix::VguestType type) const
       "ID "+  // 00
       "from VGUEST_RESOURCES where "+
       "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\" && "+
-      QString().sprintf("MATRIX_NUM=%d && ",edit_matrix->matrix())+
-      QString().sprintf("VGUEST_TYPE=%d && ",type)+
-      QString().sprintf("NUMBER=%d",i+1);
+      QString().sprintf("MATRIX_NUM=%d && ",edit_matrix->matrix());
+    if(edit_matrix->type()==RDMatrix::LogitekVguest) {
+      sql+=QString().sprintf("VGUEST_TYPE=%d && ",type);
+    }
+    sql+=QString().sprintf("NUMBER=%d",i+1);
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       sql=QString("insert into VGUEST_RESOURCES set ")+
 	"STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\","+
-	QString().sprintf("MATRIX_NUM=%d,",edit_matrix->matrix())+
-	QString().sprintf("VGUEST_TYPE=%d,",type)+
-	QString().sprintf("NUMBER=%d",i+1);
+	QString().sprintf("MATRIX_NUM=%d,",edit_matrix->matrix());
+      if(edit_matrix->type()==RDMatrix::LogitekVguest) {
+	sql+=QString().sprintf("VGUEST_TYPE=%d,",type);
+      }
+      sql+=QString().sprintf("NUMBER=%d",i+1);
       RDSqlQuery::apply(sql);
     }
   }
@@ -1532,7 +1549,7 @@ void EditMatrix::AddVguest(RDMatrix::VguestType type) const
 }
 
 
-void EditMatrix::PruneVguest(RDMatrix::VguestType type) const
+void EditMatrix::PruneResources(RDMatrix::VguestType type) const
 {
   QString sql;
 
@@ -1543,14 +1560,16 @@ void EditMatrix::PruneVguest(RDMatrix::VguestType type) const
 
   sql=QString("delete from VGUEST_RESOURCES where ")+
     "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\" && "+
-    QString().sprintf("MATRIX_NUM=%d && ",edit_matrix->matrix())+
-    QString().sprintf("VGUEST_TYPE=%d && ",type)+
-    QString().sprintf("NUMBER>%d",entry_quan);
+    QString().sprintf("MATRIX_NUM=%d && ",edit_matrix->matrix());
+  if(edit_matrix->type()==RDMatrix::LogitekVguest) {
+    sql+=QString().sprintf("VGUEST_TYPE=%d && ",type);
+  }
+  sql+=QString().sprintf("NUMBER>%d",entry_quan);
   RDSqlQuery::apply(sql);
 }
 
 
-bool EditMatrix::ConfirmPruneVguest(RDMatrix::VguestType type)
+bool EditMatrix::ConfirmPruneResources(RDMatrix::VguestType type)
 {
   QString sql;
   RDSqlQuery *q=NULL;
@@ -1566,9 +1585,11 @@ bool EditMatrix::ConfirmPruneVguest(RDMatrix::VguestType type)
     "ID "+  // 00
     "from VGUEST_RESOURCES where "+
       "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\" && "+
-      QString().sprintf("MATRIX_NUM=%d && ",edit_matrix->matrix())+
-      QString().sprintf("VGUEST_TYPE=%d && ",type)+
-      QString().sprintf("NUMBER>%d",entry_quan);
+    QString().sprintf("MATRIX_NUM=%d && ",edit_matrix->matrix());
+  if(edit_matrix->type()==RDMatrix::LogitekVguest) {
+    sql+=QString().sprintf("VGUEST_TYPE=%d && ",type);
+  }
+  sql+=QString().sprintf("NUMBER>%d",entry_quan);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(QMessageBox::warning(this,"RDAdmin - "+tr("Warning"),

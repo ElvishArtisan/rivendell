@@ -2,7 +2,7 @@
 //
 // List SAS Resources
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,39 +21,38 @@
 #ifndef LIST_SAS_RESOURCES_H
 #define LIST_SAS_RESOURCES_H
 
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <q3listview.h>
-
 #include <rddialog.h>
 #include <rdmatrix.h>
-#include <rduser.h>
+#include <rdresourcelistmodel.h>
+#include <rdtableview.h>
+
+#include "edit_sas_resource.h"
 
 class ListSasResources : public RDDialog
 {
  Q_OBJECT
  public:
- ListSasResources(RDMatrix *matrix,int size,QWidget *parent=0);
+  ListSasResources(RDMatrix *matrix,int size,QWidget *parent=0);
+  ~ListSasResources();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
   void editData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
-  void okData();
-  void cancelData();
+  void doubleClickedData(const QModelIndex &index);
+  void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
+  EditSasResource *list_edit_resource_dialog;
   RDMatrix *list_matrix;
   QLabel *list_title_label;
-  Q3ListView *list_list_view;
+  RDTableView *list_list_view;
+  RDResourceListModel *list_list_model;
   QPushButton *list_edit_button;
-  QPushButton *list_ok_button;
-  QPushButton *list_cancel_button;
+  QPushButton *list_close_button;
   int list_size;
   QString list_table;
 };

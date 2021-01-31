@@ -73,9 +73,9 @@ class EditMatrix : public RDDialog
   void PruneEndpoints(RDMatrix::Endpoint ep) const;
   bool ConfirmPruneEndpoints(RDMatrix::Endpoint ep);
 
-  void AddVguest(RDMatrix::VguestType type) const;
-  void PruneVguest(RDMatrix::VguestType type) const;
-  bool ConfirmPruneVguest(RDMatrix::VguestType type);
+  void AddResources(RDMatrix::VguestType type) const;
+  void PruneResources(RDMatrix::VguestType type) const;
+  bool ConfirmPruneResources(RDMatrix::VguestType type);
 
   RDMatrix *edit_matrix;
   QString edit_stationname;

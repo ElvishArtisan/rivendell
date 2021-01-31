@@ -35,8 +35,8 @@ class RDResourceListModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  RDResourceListModel(RDMatrix *mtx,RDMatrix::VguestType type,
-			    QObject *parent=0);
+  RDResourceListModel(RDMatrix *mtx,RDMatrix::VguestType vguest_type,
+		      QObject *parent=0);
   ~RDResourceListModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
@@ -66,8 +66,8 @@ class RDResourceListModel : public QAbstractTableModel
   QList<QList<QVariant> > d_texts;
   QList<int> d_ids;
   RDMatrix *d_mtx;
+  RDMatrix::Type d_type;
   RDMatrix::VguestType d_vguest_type;
-  bool d_include_none;
 };
 
 

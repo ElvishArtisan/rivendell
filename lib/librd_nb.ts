@@ -3697,7 +3697,19 @@ prøv ein gong til!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[none]</source>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opto/Relay</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
