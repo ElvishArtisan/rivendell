@@ -2,7 +2,7 @@
 //
 // List Rivendell Livewire Nodes
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rd.h>
 #include <rddb.h>
@@ -32,8 +32,6 @@
 ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   list_matrix=matrix;
   setWindowTitle("RDAdmin - "+tr("Livewire Node List"));
 
@@ -45,21 +43,16 @@ ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent)
   //
   // Nodes List Box
   //
-  list_list_view=new RDListView(this);
-  list_list_view->setAllColumnsShowFocus(true);
-  list_list_view->setItemMargin(5);
-  list_list_view->addColumn(tr("HOSTNAME"));
-  list_list_view->setColumnAlignment(0,Qt::AlignLeft);
-  list_list_view->addColumn(tr("DESCRIPTION"));
-  list_list_view->setColumnAlignment(1,Qt::AlignLeft);
-  list_list_view->addColumn(tr("FIRST OUTPUT"));
-  list_list_view->setColumnAlignment(2,Qt::AlignLeft);
-  list_list_view->addColumn(tr("TCP PORT"));
-  list_list_view->setColumnAlignment(3,Qt::AlignCenter);
-  connect(list_list_view,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+  list_list_view=new RDTableView(this);
+  list_list_model=new RDNodeListModel(list_matrix,this);
+  list_list_model->setFont(defaultFont());
+  list_list_model->setPalette(palette());
+  list_list_view->setModel(list_list_model);
+  connect(list_list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_list_model,SIGNAL(modelReset()),
+	  list_list_view,SLOT(resizeColumnsToContents()));
+  list_list_view->resizeColumnsToContents();
 
   //
   //  Add Button
@@ -93,11 +86,6 @@ ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent)
   list_close_button->setFont(buttonFont());
   list_close_button->setText(tr("&Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
-
-  //
-  // Load Values
-  //
-  RefreshList();
 }
 
 
@@ -115,60 +103,55 @@ QSizePolicy ListNodes::sizePolicy() const
 
 void ListNodes::addData()
 {
-  RDListViewItem *item;
   int id=-1;
-  EditNode *node=new EditNode(&id,list_matrix,this);
-  if(node->exec()==0) {
-    item=new RDListViewItem(list_list_view);
-    item->setId(id);
-    RefreshItem(item);
-    list_list_view->setSelected(item,true);
-    list_list_view->ensureItemVisible(item);
+  EditNode *d=new EditNode(&id,list_matrix,this);
+  if(d->exec()) {
+    QModelIndex row=list_list_model->addNode(id);
+    if(row.isValid()) {
+      list_list_view->selectRow(row.row());
+    }
   }
-  delete node;
-}
+  delete d;
+                              }
 
 
 void ListNodes::editData()
 {
-  RDListViewItem *item;
+  QModelIndexList rows=list_list_view->selectionModel()->selectedRows();
 
-  if((item=(RDListViewItem *)list_list_view->selectedItem())==NULL) {
+  if(rows.size()!=1) {
     return;
   }
-  int id=item->id();
-  EditNode *node=new EditNode(&id,list_matrix,this);
-  if(node->exec()==0) {
-    RefreshItem(item);
+  int id=list_list_model->nodeId(rows.first());
+  EditNode *d=new EditNode(&id,list_matrix,this);
+  if(d->exec()) {
+    list_list_model->refresh(rows.first());
   }
-  delete node;
+  delete d;
 }
 
 
 void ListNodes::deleteData()
 {
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item;
+  QModelIndexList rows=list_list_view->selectionModel()->selectedRows();
 
-  if((item=(RDListViewItem *)list_list_view->selectedItem())==NULL) {
+  if(rows.size()!=1) {
     return;
   }
+  int id=list_list_model->nodeId(rows.first());
   if(QMessageBox::question(this,tr("Delete Node"),
 			   tr("Are your sure you want to delete this node?"),
-			   QMessageBox::Yes,QMessageBox::No)==
-     QMessageBox::No) {
+			   QMessageBox::Yes,QMessageBox::No)!=
+     QMessageBox::Yes) {
     return;
   }
-  sql=QString().sprintf("delete from SWITCHER_NODES where ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  delete q;
-  delete item;
+  QString sql=QString().sprintf("delete from SWITCHER_NODES where ID=%d",id);
+  RDSqlQuery::apply(sql);
+  list_list_model->removeNode(id);
 }
 
 
-void ListNodes::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				      int col)
+void ListNodes::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -192,63 +175,33 @@ void ListNodes::resizeEvent(QResizeEvent *e)
 }
 
 
-void ListNodes::RefreshList()
+void ListNodes::PurgeEndpoints(const QString &tablename)
 {
   QString sql;
   RDSqlQuery *q;
-  RDListViewItem *item;
 
-  list_list_view->clear();
   sql=QString("select ")+
-    "ID,"+
-    "HOSTNAME,"+
-    "DESCRIPTION,"+
-    "BASE_OUTPUT,"+
-    "TCP_PORT "+
+    "HOSTNAME,"+       // 00
+    "TCP_PORT "+  // 01
     "from SWITCHER_NODES where "+
     "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
     QString().sprintf("(MATRIX=%d)",list_matrix->matrix());
   q=new RDSqlQuery(sql);
+  sql=QString("delete from ")+tablename+" where "+
+    "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",list_matrix->matrix());
   while(q->next()) {
-    item=new RDListViewItem(list_list_view);
-    item->setId(q->value(0).toInt());
-    item->setText(0,q->value(1).toString());
-    item->setText(1,q->value(2).toString());
-    if(q->value(3).toInt()==0) {
-      item->setText(2,tr("[none]"));
-    }
-    else {
-      item->setText(2,QString().sprintf("%d",q->value(3).toInt()));
-    }
-    item->setText(3,q->value(4).toString());
+    sql+=QString("((NODE_HOSTNAME!=\"")+
+      RDEscapeString(q->value(0).toString())+"\")&&"+
+      QString().sprintf("(NODE_TCP_PORT!=%d))&&",q->value(1).toInt());
   }
+  sql=sql.left(sql.length()-2);
   delete q;
+  RDSqlQuery::apply(sql);
 }
 
 
-void ListNodes::RefreshItem(RDListViewItem *item)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString().sprintf("select HOSTNAME,DESCRIPTION,BASE_OUTPUT,TCP_PORT \
-                         from SWITCHER_NODES where ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    item->setText(0,q->value(0).toString());
-    item->setText(1,q->value(1).toString());
-    if(q->value(2).toInt()==0) {
-      item->setText(2,tr("[none]"));
-    }
-    else {
-      item->setText(2,QString().sprintf("%d",q->value(2).toInt()));
-    }
-    item->setText(3,q->value(3).toString());
-  }
-  delete q;
-}
-
-
+/*
 void ListNodes::PurgeEndpoints(const QString &tablename)
 {
   QString sql;
@@ -267,3 +220,4 @@ void ListNodes::PurgeEndpoints(const QString &tablename)
   q=new RDSqlQuery(sql);
   delete q;
 }
+*/

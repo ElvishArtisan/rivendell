@@ -20957,3 +20957,7 @@
 2021-01-31 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'SAS Switches' dialog in rdadmin(1) to use the
 	model-based API.
+2021-01-31 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDNodeListModel'.
+	* Refactored the 'LivewireNode List' dialog in rdadmin(1) to use the
+	model-based API.

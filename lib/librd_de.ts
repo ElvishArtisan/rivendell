@@ -3354,6 +3354,21 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
 </context>
 <context>
+    <name>RDNodeListModel</name>
+    <message>
+        <source>Hostname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDPanelButton</name>
     <message>
         <source>No Audio</source>

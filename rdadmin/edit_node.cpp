@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LiveWire Node
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -51,9 +51,9 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   // Node Hostname
   //
   edit_hostname_edit=new QLineEdit(this);
-  edit_hostname_edit->setGeometry(90,10,190,20);
+  edit_hostname_edit->setGeometry(100,10,180,20);
   QLabel *label=new QLabel(edit_hostname_edit,tr("Hostname: "),this);
-  label->setGeometry(10,10,80,20);
+  label->setGeometry(10,10,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -72,9 +72,9 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   // Node Description
   //
   edit_description_edit=new QLineEdit(this);
-  edit_description_edit->setGeometry(90,32,sizeHint().width()-100,20);
+  edit_description_edit->setGeometry(100,32,sizeHint().width()-110,20);
   label=new QLabel(edit_description_edit,tr("Description: "),this);
-  label->setGeometry(10,32,80,20);
+  label->setGeometry(10,32,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -82,11 +82,11 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   // Base Output
   //
   edit_output_spin=new QSpinBox(this);
-  edit_output_spin->setGeometry(90,54,60,20);
+  edit_output_spin->setGeometry(100,54,60,20);
   edit_output_spin->setRange(0,0x7FFF);
   edit_output_spin->setSpecialValueText(tr("None"));
   label=new QLabel(edit_output_spin,tr("First Output: "),this);
-  label->setGeometry(10,54,80,20);
+  label->setGeometry(10,54,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -94,13 +94,13 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   // Node Password
   //
   edit_password_edit=new QLineEdit(this);
-  edit_password_edit->setGeometry(245,54,90,20);
+  edit_password_edit->setGeometry(255,54,90,20);
   edit_password_edit->setEchoMode(QLineEdit::Password);
   edit_password_edit->setText("********");
   connect(edit_password_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(passwordChangedData(const QString &)));
   label=new QLabel(edit_password_edit,tr("Password: "),this);
-  label->setGeometry(160,54,80,20);
+  label->setGeometry(170,54,80,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -246,11 +246,11 @@ void EditNode::okData()
     delete q;
   }
 
-  done(0);
+  done(true);
 }
 
 
 void EditNode::cancelData()
 {
-  done(1);
+  done(false);
 }
