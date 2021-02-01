@@ -195,6 +195,7 @@ dist_librd_la_SOURCES = dbversion.h\
 			rdmp4.cpp rdmp4.h\
                         rdmulticaster.cpp rdmulticaster.h\
                         rdnodelistmodel.cpp rdnodelistmodelh\
+                        rdnodeslotsmodel.cpp rdnodeslotsmodel.h\
                         rdnotification.cpp rdnotification.h\
                         rdoneshot.cpp rdoneshot.h\
                         rdpam.cpp rdpam.h\
@@ -356,6 +357,7 @@ nodist_librd_la_SOURCES = moc_rd3emptycart.cpp\
                           moc_rdmblookup.cpp\
                           moc_rdmulticaster.cpp\
                           moc_rdnodelistmodel.cpp\
+                          moc_rdnodeslotsmodel.cpp\
                           moc_rdoneshot.cpp\
                           moc_rdpanel_button.cpp\
                           moc_rdpasswd.cpp\

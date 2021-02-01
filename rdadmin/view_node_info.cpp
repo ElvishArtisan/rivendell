@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LiveWire Node
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,8 +30,6 @@
 ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   setWindowTitle("RDAdmin - "+tr("Viewing Livewire Node"));
 
   //
@@ -46,12 +44,6 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_livewire=new RDLiveWire(0,this);
   connect(view_livewire,SIGNAL(connected(unsigned)),
 	  this,SLOT(connectedData(unsigned)));
-  connect(view_livewire,SIGNAL(sourceChanged(unsigned,RDLiveWireSource *)),
-	  this,SLOT(sourceChangedData(unsigned,RDLiveWireSource *)));
-  connect(view_livewire,
-	  SIGNAL(destinationChanged(unsigned,RDLiveWireDestination *)),
-	  this,
-	  SLOT(destinationChangedData(unsigned,RDLiveWireDestination *)));
 
   //
   // Node Hostname
@@ -159,25 +151,19 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   label->setGeometry(15,98,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  view_sources_view=new RDListView(this);
+  view_sources_view=new RDTableView(this);
   view_sources_view->setGeometry(10,118,sizeHint().width()-20,200);
-  view_sources_view->setAllColumnsShowFocus(true);
-  view_sources_view->setItemMargin(5);
-  view_sources_view->addColumn(tr("#"));
-  view_sources_view->setColumnAlignment(0,Qt::AlignCenter);
-  view_sources_view->setColumnSortType(0,RDListView::LineSort);
-  view_sources_view->addColumn(tr("Input #"));
-  view_sources_view->setColumnAlignment(1,Qt::AlignRight);
-  view_sources_view->addColumn(tr("Name"));
-  view_sources_view->setColumnAlignment(2,Qt::AlignLeft);
-  view_sources_view->addColumn(tr("Active"));
-  view_sources_view->setColumnAlignment(3,Qt::AlignCenter);
-  view_sources_view->addColumn(tr("Shareable"));
-  view_sources_view->setColumnAlignment(4,Qt::AlignCenter);
-  view_sources_view->addColumn(tr("Chans"));
-  view_sources_view->setColumnAlignment(5,Qt::AlignCenter);
-  view_sources_view->addColumn(tr("Gain"));
-  view_sources_view->setColumnAlignment(6,Qt::AlignCenter);
+  view_sources_model=new RDNodeSlotsModel(true,this);
+  view_sources_model->setFont(defaultFont());
+  view_sources_model->setPalette(palette());
+  view_sources_view->setModel(view_sources_model);
+  view_sources_view->resizeColumnsToContents();
+  connect(view_sources_model,
+	  SIGNAL(dataChanged(const QModelIndex &,const QModelIndex &)),
+	  this,
+	  SLOT(sourceChangedData(const QModelIndex &,const QModelIndex &)));
+  connect(view_livewire,SIGNAL(sourceChanged(unsigned,RDLiveWireSource *)),
+	  view_sources_model,SLOT(updateSource(unsigned,RDLiveWireSource *)));
 
   //
   // Destinations List
@@ -186,24 +172,22 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   label->setGeometry(15,325,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  view_destinations_view=new RDListView(this);
+  view_destinations_view=new RDTableView(this);
   view_destinations_view->
     setGeometry(10,345,sizeHint().width()-20,200);
-  view_destinations_view->setAllColumnsShowFocus(true);
-  view_destinations_view->setItemMargin(5);
-  view_destinations_view->addColumn(tr("#"));
-  view_destinations_view->setColumnAlignment(0,Qt::AlignCenter);
-  view_destinations_view->setColumnSortType(0,RDListView::LineSort);
-  view_destinations_view->addColumn(tr("Output #"));
-  view_destinations_view->setColumnAlignment(1,Qt::AlignRight);
-  view_destinations_view->addColumn(tr("Name"));
-  view_destinations_view->setColumnAlignment(2,Qt::AlignLeft);
-  view_destinations_view->addColumn(tr("Chans"));
-  view_destinations_view->setColumnAlignment(3,Qt::AlignCenter);
-  view_destinations_view->addColumn(tr("Load"));
-  view_destinations_view->setColumnAlignment(4,Qt::AlignCenter);
-  view_destinations_view->addColumn(tr("Gain"));
-  view_destinations_view->setColumnAlignment(5,Qt::AlignCenter);
+  view_destinations_model=new RDNodeSlotsModel(false,this);
+  view_destinations_model->setFont(defaultFont());
+  view_destinations_model->setPalette(palette());
+  view_destinations_view->setModel(view_destinations_model);
+  view_destinations_view->resizeColumnsToContents();
+  connect(view_destinations_model,
+	  SIGNAL(dataChanged(const QModelIndex &,const QModelIndex &)),
+	  this,
+	  SLOT(destinationChangedData(const QModelIndex &,const QModelIndex &)));
+  connect(view_livewire,
+	  SIGNAL(destinationChanged(unsigned,RDLiveWireDestination *)),
+	  view_destinations_model,
+	  SLOT(updateDestination(unsigned,RDLiveWireDestination *)));
 
   //
   //  Close Button
@@ -234,7 +218,7 @@ void ViewNodeInfo::exec(const QString &hostname,Q_UINT16 port,
 {
   view_hostname_edit->setText(hostname);
   view_tcpport_edit->setText(QString().sprintf("%u",(unsigned)port));
-  view_base_output=base_output;
+  view_destinations_model->setBaseOutput(base_output);
   view_livewire->connectToHost(hostname,port,passwd,base_output);
   QDialog::exec();
 }
@@ -242,6 +226,9 @@ void ViewNodeInfo::exec(const QString &hostname,Q_UINT16 port,
 
 void ViewNodeInfo::connectedData(unsigned id)
 {
+  view_sources_model->setSlotQuantity(view_livewire->sources());
+  view_destinations_model->setSlotQuantity(view_livewire->destinations());
+
   view_protocol_edit->setText(view_livewire->protocolVersion());
   view_system_edit->setText(view_livewire->systemVersion());
   view_sources_edit->setText(QString().sprintf("%d",view_livewire->sources()));
@@ -262,80 +249,21 @@ void ViewNodeInfo::connectedData(unsigned id)
 }
 
 
-void ViewNodeInfo::sourceChangedData(unsigned id,RDLiveWireSource *src)
+void ViewNodeInfo::sourceChangedData(const QModelIndex &first,
+				     const QModelIndex &last)
 {
-  RDListViewItem *item=(RDListViewItem *)view_sources_view->firstChild();
-  while(item!=NULL) {
-    if(item->text(0).toInt()==src->slotNumber()) {
-      WriteSourceItem(src,item);
-      return;
-    }
-    item=(RDListViewItem *)item->nextSibling();
-  }
-  item=new RDListViewItem(view_sources_view);
-  item->setText(0,QString().sprintf("%d",src->slotNumber()));
-  WriteSourceItem(src,item);
+  view_sources_view->resizeColumnsToContents();
 }
 
 
-void ViewNodeInfo::destinationChangedData(unsigned id,
-					  RDLiveWireDestination *dst)
+void ViewNodeInfo::destinationChangedData(const QModelIndex &first,
+					  const QModelIndex &last)
 {
-  RDListViewItem *item=(RDListViewItem *)view_destinations_view->firstChild();
-  while(item!=NULL) {
-    if(item->text(0).toInt()==dst->slotNumber()) {
-      WriteDestinationItem(dst,item);
-      return;
-    }
-    item=(RDListViewItem *)item->nextSibling();
-  }
-  item=new RDListViewItem(view_destinations_view);
-  item->setText(0,QString().sprintf("%d",dst->slotNumber()));
-  WriteDestinationItem(dst,item);
+  view_destinations_view->resizeColumnsToContents();
 }
 
 
 void ViewNodeInfo::closeData()
 {
   done(0);
-}
-
-
-void ViewNodeInfo::WriteSourceItem(RDLiveWireSource *src,RDListViewItem *item)
-{
-  item->setLine(src->slotNumber());
-  if(src->channelNumber()<=0) {
-    item->setText(1,tr("[unassigned]"));
-  }
-  else {
-    item->setText(1,QString().sprintf("%d",src->channelNumber()));
-  }
-  item->setText(2,src->primaryName());
-  if(src->rtpEnabled()) {
-    item->setText(3,tr("Yes"));
-  }
-  else {
-    item->setText(3,tr("No"));
-  }
-  if(src->shareable()) {
-    item->setText(4,tr("Yes"));
-  }
-  else {
-    item->setText(4,tr("No"));
-  }
-  item->setText(5,QString().sprintf("%d",src->channels()));
-  item->setText(6,QString().sprintf("%4.1f",(float)src->inputGain()/10.0));
-}
-
-
-void ViewNodeInfo::WriteDestinationItem(RDLiveWireDestination *dst,
-					RDListViewItem *item)
-{
-  item->setLine(dst->slotNumber());
-  item->
-    setText(1,QString().sprintf("%u",view_base_output+dst->slotNumber()-1));
-  item->setText(2,dst->primaryName());
-  item->setText(3,QString().sprintf("%d",dst->channels()));
-  item->setText(4,RDLiveWireDestination::loadString(dst->load()));
-  item->setText(5,QString().sprintf("%4.1f",(float)dst->outputGain()/10.0));
 }

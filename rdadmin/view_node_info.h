@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Livewire Node
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,11 @@
 #ifndef VIEW_NODE_INFO_H
 #define VIEW_NODE_INFO_H
 
-#include <qlineedit.h>
+#include <QLineEdit>
 
 #include <rddialog.h>
-#include <rdlistview.h>
-#include <rdlistviewitem.h>
-#include <rdlivewire.h>
+#include <rdnodeslotsmodel.h>
+#include <rdtableview.h>
 
 class ViewNodeInfo : public RDDialog
 {
@@ -42,13 +41,11 @@ class ViewNodeInfo : public RDDialog
 
  private slots:
   void connectedData(unsigned id);
-  void sourceChangedData(unsigned id,RDLiveWireSource *src);
-  void destinationChangedData(unsigned id,RDLiveWireDestination *dst);
+  void sourceChangedData(const QModelIndex &first,const QModelIndex &last);
+  void destinationChangedData(const QModelIndex &first,const QModelIndex &last);
   void closeData();
 
  private:
-  void WriteSourceItem(RDLiveWireSource *src,RDListViewItem *item);
-  void WriteDestinationItem(RDLiveWireDestination *dst,RDListViewItem *item);
   RDLiveWire *view_livewire;
   QLineEdit *view_hostname_edit;
   QLineEdit *view_tcpport_edit;
@@ -60,9 +57,10 @@ class ViewNodeInfo : public RDDialog
   QLineEdit *view_channels_edit;
   QLineEdit *view_gpis_edit;
   QLineEdit *view_gpos_edit;
-  RDListView *view_sources_view;
-  RDListView *view_destinations_view;
-  unsigned view_base_output;
+  RDTableView *view_sources_view;
+  RDNodeSlotsModel *view_sources_model;
+  RDTableView *view_destinations_view;
+  RDNodeSlotsModel *view_destinations_model;
 };
 
 
