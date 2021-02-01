@@ -1973,7 +1973,7 @@ Vil du framleis lagra?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The IP address is invalid!</source>
+        <source>The Surface Address is invalid!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5297,7 +5297,7 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     <name>ListLiveWireGpios</name>
     <message>
         <source>Switchers:</source>
-        <translation type="unfinished">Svitsjarar:</translation>
+        <translation type="obsolete">Svitsjarar:</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -5305,35 +5305,23 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="unfinished">[ingen]</translation>
-    </message>
-    <message>
-        <source>Lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Surface Address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[all]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Source #</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[ingen]</translation>
     </message>
     <message>
         <source>Livewire GPIO Source Assignments</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Lukk</translation>
     </message>
 </context>
 <context>

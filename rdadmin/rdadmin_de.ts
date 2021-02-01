@@ -1998,11 +1998,11 @@ Do you still want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The IP address is invalid!</source>
+        <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>None</source>
+        <source>The Surface Address is invalid!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5432,7 +5432,7 @@ Generieren</translation>
     <name>ListLiveWireGpios</name>
     <message>
         <source>Switchers:</source>
-        <translation type="unfinished">Schalter:</translation>
+        <translation type="obsolete">Schalter:</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -5440,35 +5440,23 @@ Generieren</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="unfinished">[keine]</translation>
-    </message>
-    <message>
-        <source>Lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Surface Address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[all]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Source #</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[keine]</translation>
     </message>
     <message>
         <source>Livewire GPIO Source Assignments</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Schliessen</translation>
     </message>
 </context>
 <context>

@@ -1068,8 +1068,9 @@ void EditMatrix::livewireButtonData()
 
 void EditMatrix::livewireGpioButtonData()
 {
-  ListLiveWireGpios *dialog=new ListLiveWireGpios(edit_matrix,
-		    edit_gpis_box->value()/RD_LIVEWIRE_GPIO_BUNDLE_SIZE,this);
+  AddGpioSlots();
+  ListLiveWireGpios *dialog=
+    new ListLiveWireGpios(edit_matrix,edit_gpis_box->value(),this);
   dialog->exec();
   delete dialog;
 }
@@ -1326,6 +1327,8 @@ bool EditMatrix::WriteMatrix()
   AddEndpoints(RDMatrix::Output);
   AddResources(RDMatrix::VguestTypeRelay);
   AddResources(RDMatrix::VguestTypeDisplay);
+  AddGpioSlots();
+  PurgeGpioSlots();
 
   //
   // Update GPIO Tables
@@ -1544,8 +1547,8 @@ void EditMatrix::AddResources(RDMatrix::VguestType type) const
       sql+=QString().sprintf("NUMBER=%d",i+1);
       RDSqlQuery::apply(sql);
     }
+    delete q;
   }
-  delete q;
 }
 
 
@@ -1609,4 +1612,41 @@ bool EditMatrix::ConfirmPruneResources(RDMatrix::VguestType type)
   }
   delete q;
   return true;
+}
+
+
+void EditMatrix::AddGpioSlots()
+{
+  if(edit_matrix->type()==RDMatrix::LiveWireMcastGpio) {
+    int bundle_end=edit_gpis_box->value()/5;
+    for(int i=0;i<bundle_end;i++) {
+      QString sql=QString("select ")+
+	"ID "+  // 00
+	"from LIVEWIRE_GPIO_SLOTS where "+
+	"STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\" && "+
+	QString().sprintf("MATRIX=%d && ",edit_matrix->matrix())+
+	QString().sprintf("SLOT=%d",i);
+      RDSqlQuery *q=new RDSqlQuery(sql);
+      if(!q->first()) {
+	sql=QString("insert into LIVEWIRE_GPIO_SLOTS set ")+
+	  "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\","+
+	  QString().sprintf("MATRIX=%d,",edit_matrix->matrix())+
+	  QString().sprintf("SLOT=%d",i);
+	RDSqlQuery::apply(sql);
+      }
+      delete q;
+    }
+  }
+}
+
+
+void EditMatrix::PurgeGpioSlots()
+{
+  if(edit_matrix->type()==RDMatrix::LiveWireMcastGpio) {
+    QString sql=QString("delete from LIVEWIRE_GPIO_SLOTS where ")+
+      "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\" && "+
+      QString().sprintf("MATRIX=%d && ",edit_matrix->matrix())+
+      QString().sprintf("SLOT>=%d",edit_gpis_box->value()/5);
+    RDSqlQuery::apply(sql);
+  }
 }

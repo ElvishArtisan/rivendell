@@ -2152,11 +2152,11 @@ Stále ještě chcete uložit?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The IP address is invalid!</source>
+        <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>None</source>
+        <source>The Surface Address is invalid!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5786,7 +5786,7 @@ Stále ještě jej chcete smazat?</translation>
     <name>ListLiveWireGpios</name>
     <message>
         <source>Switchers:</source>
-        <translation type="unfinished">Přepínače:</translation>
+        <translation type="obsolete">Přepínače:</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -5794,35 +5794,23 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="unfinished">[žádný]</translation>
-    </message>
-    <message>
-        <source>Lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Surface Address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[all]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Source #</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[žádný]</translation>
     </message>
     <message>
         <source>Livewire GPIO Source Assignments</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
     </message>
 </context>
 <context>

@@ -20965,3 +20965,7 @@
 	* Added 'RDNodeSlotsModel'.
 	* Refactored the 'Viewing Livewire Node' dialog in rdadmin(1) to use
 	the model-based API.
+2021-02-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDGpioSlotsModel'.
+	* Refactored the 'Livewire GPIO Source Assignments' dialog in
+	rdadmin(1) to use the model-based API.

@@ -1979,7 +1979,7 @@ Você ainda quer salvar?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The IP address is invalid!</source>
+        <source>The Surface Address is invalid!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5412,43 +5412,27 @@ Você ainda quer Deletar?</translation>
     <name>ListLiveWireGpios</name>
     <message>
         <source>Switchers:</source>
-        <translation type="unfinished">Switchers:</translation>
+        <translation type="obsolete">Switchers:</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
         <translation type="unfinished">&amp;Editar</translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="unfinished">[Nenhum]</translation>
-    </message>
-    <message>
-        <source>Lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Surface Address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[all]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Source #</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[Nenhum]</translation>
     </message>
     <message>
         <source>Livewire GPIO Source Assignments</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Fechar</translation>
     </message>
 </context>
 <context>

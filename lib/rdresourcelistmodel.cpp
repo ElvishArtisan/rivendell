@@ -340,7 +340,7 @@ void RDResourceListModel::updateRow(int row,RDSqlQuery *q)
     }
     break;
 
-  defaults:
+  default:
     break;
   }
 

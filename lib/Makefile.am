@@ -145,6 +145,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdgetpasswd.cpp rdgetpasswd.h\
                         rdgpio.cpp rdgpio.h\
                         rdgpioselector.cpp rdgpioselector.h\
+                        rdgpioslotsmodel.cpp rdgpioslotsmodel.h\
                         rdgrid.cpp rdgrid.h\
                         rdgroup.cpp rdgroup.h\
                         rdgroup_list.cpp rdgroup_list.h\
@@ -328,6 +329,7 @@ nodist_librd_la_SOURCES = moc_rd3emptycart.cpp\
                           moc_rdgetpasswd.cpp\
                           moc_rdgpio.cpp\
                           moc_rdgpioselector.cpp\
+                          moc_rdgpioslotsmodel.cpp\
                           moc_rdgrouplistmodel.cpp\
                           moc_rdhotkeys.cpp\
                           moc_rdhotkeylist.cpp\

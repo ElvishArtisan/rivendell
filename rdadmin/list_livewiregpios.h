@@ -2,7 +2,7 @@
 //
 // List Rivendell Livewire GPIO Slot Associations
 //
-//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,16 @@
 #ifndef LIST_LIVEWIREGPIOS_H
 #define LIST_LIVEWIREGPIOS_H
 
-#include <qlabel.h>
 #include <qpushbutton.h>
 
 #include <rd.h>
 #include <rddialog.h>
-#include <rdlistview.h>
+//#include <rdlistview.h>
+#include <rdgpioslotsmodel.h>
 #include <rdmatrix.h>
+#include <rdtableview.h>
+
+#include "edit_livewiregpio.h"
 
 class ListLiveWireGpios : public RDDialog
 {
@@ -40,22 +43,25 @@ class ListLiveWireGpios : public RDDialog
   
   private slots:
    void editData();
-   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
-   void okData();
-   void cancelData();
+   void doubleClickedData(const QModelIndex &index);
+   void closeData();
+   //   void cancelData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
   private:
-   void RefreshList();
-   QLabel *list_title_label;
+  //   void RefreshList();
+  //   QLabel *list_title_label;
    QPushButton *list_edit_button;
-   QPushButton *list_ok_button;
-   QPushButton *list_cancel_button;
-   RDListView *list_view;
+   QPushButton *list_close_button;
+   //   QPushButton *list_cancel_button;
+   //   RDListView *list_view;
+   RDTableView *list_view;
+   RDGpioSlotsModel *list_model;
    RDMatrix *list_matrix;
    int list_slot_quan;
+   EditLiveWireGpio *list_gpio_dialog;
 };
 
 

@@ -77,6 +77,9 @@ class EditMatrix : public RDDialog
   void PruneResources(RDMatrix::VguestType type) const;
   bool ConfirmPruneResources(RDMatrix::VguestType type);
 
+  void AddGpioSlots();
+  void PurgeGpioSlots();
+
   RDMatrix *edit_matrix;
   QString edit_stationname;
   int edit_matrix_number;
@@ -142,9 +145,7 @@ class EditMatrix : public RDDialog
   QSpinBox *edit_card_box;
   QLabel *edit_displays_label;
   QSpinBox *edit_displays_box;
-  
 };
 
 
-#endif
-
+#endif  // EDIT_MATRIX_H

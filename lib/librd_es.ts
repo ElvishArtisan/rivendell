@@ -2478,6 +2478,29 @@ para el período a reportar.
     </message>
 </context>
 <context>
+    <name>RDGpioSlotsModel</name>
+    <message>
+        <source>Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source #</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[all]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDGroupListModel</name>
     <message>
         <source>ALL</source>

@@ -2166,7 +2166,7 @@ Do you still want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The IP address is invalid!</source>
+        <source>The Surface Address is invalid!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5737,7 +5737,7 @@ Do you still want to delete it?</source>
     <name>ListLiveWireGpios</name>
     <message>
         <source>Switchers:</source>
-        <translation type="unfinished">Suicheras:</translation>
+        <translation type="obsolete">Suicheras:</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -5745,35 +5745,19 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Surface Address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[all]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Source #</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Livewire GPIO Source Assignments</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Cerrar</translation>
     </message>
 </context>
 <context>

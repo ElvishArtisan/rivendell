@@ -2,7 +2,7 @@
 //
 // List Rivendell Livewire GPIO Slot Associations
 //
-//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,8 +30,6 @@ ListLiveWireGpios::ListLiveWireGpios(RDMatrix *matrix,int slot_quan,
 				     QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -42,24 +40,23 @@ ListLiveWireGpios::ListLiveWireGpios(RDMatrix *matrix,int slot_quan,
   setWindowTitle("RDAdmin - "+tr("Livewire GPIO Source Assignments"));
 
   //
+  // Dialogs
+  //
+  list_gpio_dialog=new EditLiveWireGpio(this);
+
+  //
   // Matrix List Box
   //
-  list_view=new RDListView(this);
-  list_title_label=new QLabel(list_view,tr("Switchers:"),this);
-  list_title_label->setFont(labelFont());
-  list_view->setAllColumnsShowFocus(true);
-  list_view->setItemMargin(5);
-  list_view->addColumn(tr("Lines"));
-  list_view->setColumnAlignment(0,Qt::AlignHCenter);
-  list_view->addColumn(tr("Source #"));
-  list_view->setColumnAlignment(1,Qt::AlignCenter);
-  list_view->addColumn(tr("Surface Address"));
-  list_view->setColumnAlignment(2,Qt::AlignCenter);
-  list_view->setColumnSortType(0,RDListView::GpioSort);
-  connect(list_view,SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-
-  RefreshList();
+  list_view=new RDTableView(this);
+  list_model=new RDGpioSlotsModel(matrix,slot_quan,this);
+  list_model->setFont(defaultFont());
+  list_model->setPalette(palette());
+  list_view->setModel(list_model);
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_model,SIGNAL(modelReset()),
+	  list_view,SLOT(resizeColumnsToContents()));
+  list_view->resizeColumnsToContents();
 
   //
   //  Edit Button
@@ -70,28 +67,21 @@ ListLiveWireGpios::ListLiveWireGpios(RDMatrix *matrix,int slot_quan,
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
-  //  Ok Button
+  //  Close Button
   //
-  list_ok_button=new QPushButton(this);
-  list_ok_button->setDefault(true);
-  list_ok_button->setFont(buttonFont());
-  list_ok_button->setText(tr("&OK"));
-  connect(list_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
-
-  //
-  //  Cancel Button
-  //
-  list_cancel_button=new QPushButton(this);
-  list_cancel_button->setDefault(true);
-  list_cancel_button->setFont(buttonFont());
-  list_cancel_button->setText(tr("&Cancel"));
-  connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  list_close_button=new QPushButton(this);
+  list_close_button->setDefault(true);
+  list_close_button->setFont(buttonFont());
+  list_close_button->setText(tr("&Close"));
+  connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 
 
 ListLiveWireGpios::~ListLiveWireGpios()
 {
+  delete list_gpio_dialog;
   delete list_view;
+  delete list_model;
 }
 
 
@@ -109,129 +99,33 @@ QSizePolicy ListLiveWireGpios::sizePolicy() const
 
 void ListLiveWireGpios::editData()
 {
-  if(list_view->selectedItem()==NULL) {
+  QModelIndexList rows=list_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  int source=list_view->currentItem()->text(1).toInt();
-  QHostAddress addr;
-  addr.setAddress(list_view->currentItem()->text(2));
-  EditLiveWireGpio *d=
-    new EditLiveWireGpio(list_view->currentItem()->text(0).toInt(),
-			 &source,&addr);
-  if(d->exec()==0) {
-    if(source==0) {
-      list_view->currentItem()->setText(1,tr("[none]"));
-    }
-    else {
-      list_view->currentItem()->setText(1,QString().sprintf("%d",source));
-    }
-    if(addr.isNull()) {
-      list_view->currentItem()->setText(2,tr("[all]"));
-    }
-    else {
-      list_view->currentItem()->setText(2,addr.toString());
-    }
+  int id=list_model->slotId(rows.first());
+  if(list_gpio_dialog->exec(id)) {
+    list_model->refresh(rows.first());
   }
-  delete d;
 }
 
 
-void ListLiveWireGpios::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				     int col)
+void ListLiveWireGpios::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
 
 
-void ListLiveWireGpios::okData()
+void ListLiveWireGpios::closeData()
 {
-  QString sql;
-  RDSqlQuery *q;
-  int slot=0;
-  QString addr_str="NULL";
-
-  RDListViewItem *item=(RDListViewItem *)list_view->firstChild();
-  while(item!=NULL) {
-    QHostAddress addr;
-    addr_str="NULL";
-    addr.setAddress(item->text(2));
-    if(!addr.isNull()) {
-      addr_str="\""+addr.toString()+"\"";
-    }
-    sql=QString("update LIVEWIRE_GPIO_SLOTS set ")+
-      QString().sprintf("SOURCE_NUMBER=%d,",item->text(1).toInt())+
-      "IP_ADDRESS="+addr_str+" "+
-      "where (STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
-      QString().sprintf("(MATRIX=%d)&&",list_matrix->matrix())+
-      QString().sprintf("(SLOT=%d)",slot);
-    q=new RDSqlQuery(sql);
-    delete q;
-    slot++;
-    item=(RDListViewItem *)item->nextSibling();
-  }
-
-  done(0);
-}
-
-
-void ListLiveWireGpios::cancelData()
-{
-  done(-1);
+  done(true);
 }
 
 
 void ListLiveWireGpios::resizeEvent(QResizeEvent *e)
 {
-  list_view->setGeometry(10,24,size().width()-20,size().height()-94);
-  list_title_label->setGeometry(14,5,85,19);
+  list_view->setGeometry(10,3,size().width()-20,size().height()-73);
   list_edit_button->setGeometry(10,size().height()-60,80,50);
-  list_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
-  list_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
-}
-
-
-void ListLiveWireGpios::RefreshList()
-{
-  Q3ListViewItem *l;
-  QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
-
-  list_view->clear();
-  sql=QString("select SLOT,SOURCE_NUMBER,IP_ADDRESS from LIVEWIRE_GPIO_SLOTS ")+
-    "where (STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
-    QString().sprintf("(MATRIX=%d) ",list_matrix->matrix())+
-    "order by SLOT";
-  q=new RDSqlQuery(sql);
-  q->first();
-  for(int i=0;i<list_slot_quan;i++) {
-    l=new RDListViewItem(list_view);
-    l->setText(0,QString().sprintf("%d - %d",5*i+1,5*i+5));
-    if(q->isValid()&&(q->value(0).toInt()==i)) {
-      if(q->value(1).toInt()==0) {
-	l->setText(1,tr("[none]"));
-      }
-      else {
-	l->setText(1,QString().sprintf("%d",q->value(1).toInt()));
-      }
-      if(q->value(2).toString().isEmpty()) {
-	l->setText(2,tr("[all]"));
-      }
-      else {
-	l->setText(2,q->value(2).toString());
-      }
-      q->next();
-    }
-    else {
-      sql=QString("insert into LIVEWIRE_GPIO_SLOTS set ")+
-	"STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\","+
-	QString().sprintf("MATRIX=%d,",list_matrix->matrix())+
-	QString().sprintf("SLOT=%d",i);
-      q1=new RDSqlQuery(sql);
-      delete q1;
-      l->setText(1,tr("[none]"));
-      l->setText(2,tr("[all]"));
-    }
-  }
-  delete q;
+  list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
