@@ -25,7 +25,6 @@
 
 #include <rd.h>
 #include <rddialog.h>
-//#include <rdlistview.h>
 #include <rdgpioslotsmodel.h>
 #include <rdmatrix.h>
 #include <rdtableview.h>
@@ -45,18 +44,13 @@ class ListLiveWireGpios : public RDDialog
    void editData();
    void doubleClickedData(const QModelIndex &index);
    void closeData();
-   //   void cancelData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
   private:
-  //   void RefreshList();
-  //   QLabel *list_title_label;
    QPushButton *list_edit_button;
    QPushButton *list_close_button;
-   //   QPushButton *list_cancel_button;
-   //   RDListView *list_view;
    RDTableView *list_view;
    RDGpioSlotsModel *list_model;
    RDMatrix *list_matrix;
