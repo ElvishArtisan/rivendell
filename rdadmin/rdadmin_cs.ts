@@ -1961,71 +1961,63 @@ Stále ještě chcete uložit?</translation>
     <name>EditHotkeys</name>
     <message>
         <source>Hot Key Configuration for</source>
-        <translation>Nastavení klávesové zkratky pro</translation>
+        <translation type="obsolete">Nastavení klávesové zkratky pro</translation>
     </message>
     <message>
         <source>Host Hot Key Configurations</source>
-        <translation>Nastavení klávesových zkratek pro server</translation>
+        <translation type="obsolete">Nastavení klávesových zkratek pro server</translation>
     </message>
     <message>
         <source>Button / Function </source>
-        <translation>Tlačítko/Funkce</translation>
+        <translation type="obsolete">Tlačítko/Funkce</translation>
     </message>
     <message>
         <source>KeyStroke</source>
-        <translation>Klávesová zkratka</translation>
+        <translation type="obsolete">Klávesová zkratka</translation>
     </message>
     <message>
         <source>Set</source>
-        <translation>Nastavit</translation>
+        <translation type="obsolete">Nastavit</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation>Smazat</translation>
+        <translation type="obsolete">Smazat</translation>
     </message>
     <message>
         <source>Clear All Hotkeys</source>
-        <translation>Smazat všechny klávesové zkratky</translation>
+        <translation type="obsolete">Smazat všechny klávesové zkratky</translation>
     </message>
     <message>
         <source>Set From Host:</source>
-        <translation>Nastavit ze serveru:</translation>
+        <translation type="obsolete">Nastavit ze serveru:</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Uložit</translation>
+        <translation type="obsolete">Uložit</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation type="obsolete">Zrušit</translation>
     </message>
     <message>
         <source>Duplicate Entries</source>
-        <translation>Zdvojené záznamy</translation>
+        <translation type="obsolete">Zdvojené záznamy</translation>
     </message>
     <message>
         <source>Hotkeys Clear</source>
-        <translation>Smazání klávesových zkratek</translation>
+        <translation type="obsolete">Smazání klávesových zkratek</translation>
     </message>
     <message>
         <source>Hotkeys Updated</source>
-        <translation>Klávesové zkratky obnoveny</translation>
+        <translation type="obsolete">Klávesové zkratky obnoveny</translation>
     </message>
     <message>
         <source>No Items Selected</source>
-        <translation>Nevybrány žádné položky</translation>
+        <translation type="obsolete">Nevybrány žádné položky</translation>
     </message>
     <message>
         <source>Please Select an Item From the List</source>
-        <translation>Vyberte, prosím, položku ze seznamu</translation>
-    </message>
-    <message>
-        <source>Duplicate Hotkey defined</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No Duplicates allowed.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Vyberte, prosím, položku ze seznamu</translation>
     </message>
 </context>
 <context>
@@ -2893,7 +2885,7 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Configure Hot Keys</source>
-        <translation>Nastavit zkratkové klávesy</translation>
+        <translation type="obsolete">Nastavit zkratkové klávesy</translation>
     </message>
     <message>
         <source>Show Hour Selector</source>

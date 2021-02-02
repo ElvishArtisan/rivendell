@@ -20983,3 +20983,6 @@
 	model-based API.
 2021-02-02 Fred Gleason <fredg@paravelsystems.com>
 	* Removed dead code from 'rdadmin/list_groups.h'.
+2021-02-02 Fred Gleason <fredg@paravelsystems.com>
+	* Commented out support for editing hotkeys in the 'Configure
+	RDAirPlay' dialog in rdadmin(1).

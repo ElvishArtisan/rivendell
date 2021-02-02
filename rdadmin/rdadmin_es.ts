@@ -1959,71 +1959,63 @@ Do you still want to save?</source>
     <name>EditHotkeys</name>
     <message>
         <source>Host Hot Key Configurations</source>
-        <translation>Configuración de atajos de teclado</translation>
+        <translation type="obsolete">Configuración de atajos de teclado</translation>
     </message>
     <message>
         <source>Button / Function </source>
-        <translation>Botón / Función </translation>
+        <translation type="obsolete">Botón / Función </translation>
     </message>
     <message>
         <source>KeyStroke</source>
-        <translation>Teclas</translation>
+        <translation type="obsolete">Teclas</translation>
     </message>
     <message>
         <source>Set</source>
-        <translation>Asignar</translation>
+        <translation type="obsolete">Asignar</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation>Limpiar</translation>
+        <translation type="obsolete">Limpiar</translation>
     </message>
     <message>
         <source>Clear All Hotkeys</source>
-        <translation>Borrar todo</translation>
+        <translation type="obsolete">Borrar todo</translation>
     </message>
     <message>
         <source>Set From Host:</source>
-        <translation>Copiar desde:</translation>
+        <translation type="obsolete">Copiar desde:</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Guardar</translation>
+        <translation type="obsolete">Guardar</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation type="obsolete">Cancelar</translation>
     </message>
     <message>
         <source>Duplicate Entries</source>
-        <translation>Entradas duplicadas</translation>
+        <translation type="obsolete">Entradas duplicadas</translation>
     </message>
     <message>
         <source>Hotkeys Clear</source>
-        <translation>Borrar atajos de teclado</translation>
+        <translation type="obsolete">Borrar atajos de teclado</translation>
     </message>
     <message>
         <source>Hotkeys Updated</source>
-        <translation>Atajos de teclado actualizados</translation>
+        <translation type="obsolete">Atajos de teclado actualizados</translation>
     </message>
     <message>
         <source>No Items Selected</source>
-        <translation>No se han seleccionado ítems</translation>
+        <translation type="obsolete">No se han seleccionado ítems</translation>
     </message>
     <message>
         <source>Please Select an Item From the List</source>
-        <translation>Por favor, seleccione un ítem de la lista</translation>
+        <translation type="obsolete">Por favor, seleccione un ítem de la lista</translation>
     </message>
     <message>
         <source>Hot Key Configuration for</source>
-        <translation>Atajos de teclado para</translation>
-    </message>
-    <message>
-        <source>Duplicate Hotkey defined</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No Duplicates allowed.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Atajos de teclado para</translation>
     </message>
 </context>
 <context>
@@ -2891,7 +2883,7 @@ servicios de Rivendell en el equipo configurado para ejecutar el servicio CAE. <
     </message>
     <message>
         <source>Configure Hot Keys</source>
-        <translation>Configurar atajos de teclado</translation>
+        <translation type="obsolete">Configurar atajos de teclado</translation>
     </message>
     <message>
         <source>Show Hour Selector</source>

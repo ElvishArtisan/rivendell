@@ -39,7 +39,6 @@ x11 {
   SOURCES += edit_gpi.cpp
   SOURCES += edit_group.cpp
   SOURCES += edit_hostvar.cpp
-  SOURCES += edit_hotkeys.cpp
   SOURCES += edit_image.cpp
   SOURCES += edit_jack.cpp
   SOURCES += edit_jack_client.cpp
@@ -109,7 +108,6 @@ x11 {
   HEADERS += edit_gpi.h
   HEADERS += edit_group.h
   HEADERS += edit_hostvar.h
-  HEADERS += edit_hotkeys.h
   HEADERS += edit_image.h
   HEADERS += edit_jack.h
   HEADERS += edit_jack_client.h

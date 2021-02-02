@@ -58,7 +58,7 @@ class EditRDAirPlay : public RDDialog
   void virtualModeActivatedData(int vlognum);
   void startModeChangedData(int mode);
   void selectData();
-  void editHotKeys();
+  //  void editHotKeys();
   void selectSkinData();
   void modeControlActivatedData(int n);
   void logStartupModeActivatedData(int n);

@@ -1788,77 +1788,6 @@ Do you still want to save?</source>
     </message>
 </context>
 <context>
-    <name>EditHotkeys</name>
-    <message>
-        <source>Host Hot Key Configurations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Button / Function </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>KeyStroke</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear All Hotkeys</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set From Host:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate Entries</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hotkeys Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hotkeys Updated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No Items Selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Please Select an Item From the List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hot Key Configuration for</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Duplicate Hotkey defined</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No Duplicates allowed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>EditImage</name>
     <message>
         <source>Description</source>
@@ -2729,10 +2658,6 @@ Daemons auf diesem Host neu, indem sie als &apos;root&apos;-Benutzer den Befehl
         <source>Channel assignments will not be available for this host as audio resource data
 has not yet been generated.  Please start the Rivendell daemons on the host
 configured to run the CAE service in order to populate the audio resources database.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Configure Hot Keys</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

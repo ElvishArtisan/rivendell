@@ -148,6 +148,9 @@ int EditVguestResource::exec(RDMatrix::VguestType type,unsigned id)
       setWindowTitle("RDADmin - "+tr("Edit vGuest Display"));
       edit_relaynum_edit->setDisabled(true);
       break;
+
+    case RDMatrix::VguestTypeNone:
+      break;
     }
   }
   delete q;

@@ -70,7 +70,6 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        edit_gpi.cpp edit_gpi.h\
                        edit_group.cpp edit_group.h\
                        edit_hostvar.cpp edit_hostvar.h\
-                       edit_hotkeys.cpp edit_hotkeys.h\
                        edit_image.cpp edit_image.h\
                        edit_jack.cpp edit_jack.h\
                        edit_jack_client.cpp edit_jack_client.h\
@@ -153,7 +152,6 @@ nodist_rdadmin_SOURCES = global_credits.c\
                          moc_edit_gpi.cpp\
                          moc_edit_group.cpp\
                          moc_edit_hostvar.cpp\
-                         moc_edit_hotkeys.cpp\
                          moc_edit_image.cpp\
                          moc_edit_jack.cpp\
                          moc_edit_jack_client.cpp\

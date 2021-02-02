@@ -30,7 +30,7 @@
 #include <rdtextvalidator.h>
 
 #include "edit_rdairplay.h"
-#include "edit_hotkeys.h"
+//#include "edit_hotkeys.h"
 #include "edit_channelgpios.h"
 #include "globals.h"
 
@@ -280,11 +280,13 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   // HotKeys Configuration Button
   //
+  /*
   QPushButton *button=new QPushButton(this);
   button->setGeometry(10,385,180,50);
   button->setFont(buttonFont());
   button->setText(tr("Configure Hot Keys"));
   connect(button,SIGNAL(clicked()),this,SLOT(editHotKeys()));
+  */
 
   //
   // Sound Panel First Play Output
@@ -798,7 +800,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setFont(subLabelFont());
   label->setGeometry(435,403,115,20);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  button=new QPushButton(tr("Select"),this);
+  QPushButton *button=new QPushButton(tr("Select"),this);
   button->setFont(subButtonFont());
   button->setGeometry(745,400,50,25);
   connect(button,SIGNAL(clicked()),this,SLOT(selectSkinData()));
@@ -1157,7 +1159,7 @@ void EditRDAirPlay::selectData()
   delete ll;
 }
 
-
+/*
 void EditRDAirPlay::editHotKeys()
 {
   QString module_name = QString("airplay");
@@ -1166,7 +1168,7 @@ void EditRDAirPlay::editHotKeys()
   edit_hotkeys->exec();
   delete edit_hotkeys;
 }
-
+*/
 
 void EditRDAirPlay::selectSkinData()
 {
