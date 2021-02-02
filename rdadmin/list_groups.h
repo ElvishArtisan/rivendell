@@ -44,7 +44,6 @@ class ListGroups : public RDDialog
   void deleteData();
   void reportData();
   void doubleClickedData(const QModelIndex &index);
-  //  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void modelResetData();
   void closeData();
 

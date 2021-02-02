@@ -20981,3 +20981,5 @@
 2021-02-02 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Autofill Carts' dialog in rdadmin(1) to use the
 	model-based API.
+2021-02-02 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead code from 'rdadmin/list_groups.h'.
