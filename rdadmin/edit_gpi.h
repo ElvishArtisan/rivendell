@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell GPI
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,10 +35,12 @@ class EditGpi : public RDDialog
 {
  Q_OBJECT
  public:
-  EditGpi(int gpi,int *oncart,QString *ondesc,int *offcart,QString *offdesc,
-	  QWidget *parent=0);
+ EditGpi(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+
+ public slots:
+   int exec(RDMatrix::GpioType type,int id);
 
  private slots:
   void selectOnData();
@@ -49,19 +51,15 @@ class EditGpi : public RDDialog
   void cancelData();
 
  private:
-  int edit_gpi;
-  int *edit_oncart;
+  int edit_id;
+  RDMatrix::GpioType edit_type;
+  QString edit_table;
+  QGroupBox *edit_on_group;
   QLineEdit *edit_ondescription_edit;
   QLineEdit *edit_onmacro_edit;
-  int *edit_offcart;
+  QGroupBox *edit_off_group;
   QLineEdit *edit_offdescription_edit;
   QLineEdit *edit_offmacro_edit;
-  QString edit_filter;
-  QString edit_group;
-  QString *edit_ondescription;
-  QString *edit_offdescription;
-  QGroupBox *edit_on_group;
-  QGroupBox *edit_off_group;
 };
 
 

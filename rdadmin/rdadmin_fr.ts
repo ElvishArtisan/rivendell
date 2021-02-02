@@ -1228,11 +1228,15 @@ Clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Invalid Cart</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Invalid Cart Number!</source>
+        <source>Invalid ON Cart Number!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid OFF Cart Number!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4084,27 +4088,7 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>GPI</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[unassigned]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>GPO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4116,19 +4100,7 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ON MACRO CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ON DESCRIPTION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OFF MACRO CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OFF DESCRIPTION</source>
+        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

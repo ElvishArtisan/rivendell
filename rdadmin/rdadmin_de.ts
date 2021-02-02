@@ -1621,11 +1621,23 @@ Clipboard</source>
     </message>
     <message>
         <source>Invalid Cart</source>
-        <translation>Ungültiger Cart</translation>
+        <translation type="obsolete">Ungültiger Cart</translation>
     </message>
     <message>
         <source>Invalid Cart Number!</source>
-        <translation>Ungültige Cartnummer!</translation>
+        <translation type="obsolete">Ungültige Cartnummer!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid ON Cart Number!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid OFF Cart Number!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>ON Transition</source>
@@ -5166,7 +5178,7 @@ Wollen Sie ihn immernoch löschen?</translation>
     </message>
     <message>
         <source>GPI</source>
-        <translation>GPI</translation>
+        <translation type="obsolete">GPI</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -5174,19 +5186,19 @@ Wollen Sie ihn immernoch löschen?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>[unassigned]</source>
-        <translation>[nicht zugewiesen]</translation>
+        <translation type="obsolete">[nicht zugewiesen]</translation>
     </message>
     <message>
         <source>GPO</source>
-        <translation>GPO</translation>
+        <translation type="obsolete">GPO</translation>
     </message>
     <message>
         <source>List GPOs</source>
@@ -5198,19 +5210,23 @@ Wollen Sie ihn immernoch löschen?</translation>
     </message>
     <message>
         <source>ON MACRO CART</source>
-        <translation>AN-MAKROCART</translation>
+        <translation type="obsolete">AN-MAKROCART</translation>
     </message>
     <message>
         <source>ON DESCRIPTION</source>
-        <translation>AN-BESCHREIBUNG</translation>
+        <translation type="obsolete">AN-BESCHREIBUNG</translation>
     </message>
     <message>
         <source>OFF MACRO CART</source>
-        <translation>AUS MAKROCART</translation>
+        <translation type="obsolete">AUS MAKROCART</translation>
     </message>
     <message>
         <source>OFF DESCRIPTION</source>
-        <translation>AUS BESCHREIBUNG</translation>
+        <translation type="obsolete">AUS BESCHREIBUNG</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Schliessen</translation>
     </message>
 </context>
 <context>

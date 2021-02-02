@@ -1591,11 +1591,23 @@ Clipboard</source>
     </message>
     <message>
         <source>Invalid Cart</source>
-        <translation>Ugyldig korg</translation>
+        <translation type="obsolete">Ugyldig korg</translation>
     </message>
     <message>
         <source>Invalid Cart Number!</source>
-        <translation>Ugyldig korgnummer!</translation>
+        <translation type="obsolete">Ugyldig korgnummer!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid ON Cart Number!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid OFF Cart Number!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>ON Transition</source>
@@ -5023,7 +5035,7 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
     <message>
         <source>GPI</source>
-        <translation>GI</translation>
+        <translation type="obsolete">GI</translation>
     </message>
     <message>
         <source>MACRO CART</source>
@@ -5039,15 +5051,15 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>[unassigned]</source>
-        <translation>[ikkje kopla til]</translation>
+        <translation type="obsolete">[ikkje kopla til]</translation>
     </message>
     <message>
         <source>GPO Lines</source>
@@ -5058,24 +5070,8 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>GPO</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ON MACRO CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ON DESCRIPTION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OFF MACRO CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OFF DESCRIPTION</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Lukk</translation>
     </message>
 </context>
 <context>

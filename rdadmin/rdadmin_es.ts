@@ -1785,11 +1785,23 @@ Clipboard</source>
     </message>
     <message>
         <source>Invalid Cart</source>
-        <translation>Cartucho inválido</translation>
+        <translation type="obsolete">Cartucho inválido</translation>
     </message>
     <message>
         <source>Invalid Cart Number!</source>
-        <translation>¡Número de cartucho inválido!</translation>
+        <translation type="obsolete">¡Número de cartucho inválido!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid ON Cart Number!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid OFF Cart Number!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>ON Transition</source>
@@ -5471,7 +5483,7 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>GPI</source>
-        <translation>GPI</translation>
+        <translation type="obsolete">GPI</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -5479,19 +5491,19 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>[unassigned]</source>
-        <translation>[no asignado]</translation>
+        <translation type="obsolete">[no asignado]</translation>
     </message>
     <message>
         <source>GPO</source>
-        <translation>GPO</translation>
+        <translation type="obsolete">GPO</translation>
     </message>
     <message>
         <source>List GPOs</source>
@@ -5503,19 +5515,23 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>ON MACRO CART</source>
-        <translation>CART MACRO ON</translation>
+        <translation type="obsolete">CART MACRO ON</translation>
     </message>
     <message>
         <source>ON DESCRIPTION</source>
-        <translation>DESCRIPCIÓN ON</translation>
+        <translation type="obsolete">DESCRIPCIÓN ON</translation>
     </message>
     <message>
         <source>OFF MACRO CART</source>
-        <translation>CART MACRO OFF</translation>
+        <translation type="obsolete">CART MACRO OFF</translation>
     </message>
     <message>
         <source>OFF DESCRIPTION</source>
-        <translation>DESCRIPCIÓN OFF</translation>
+        <translation type="obsolete">DESCRIPCIÓN OFF</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Cerrar</translation>
     </message>
 </context>
 <context>

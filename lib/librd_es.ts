@@ -2471,6 +2471,37 @@ para el período a reportar.
     </message>
 </context>
 <context>
+    <name>RDGpioListModel</name>
+    <message>
+        <source>Gpi</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gpo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ON Macro Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ON Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Macro Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[unassigned]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDGpioSelector</name>
     <message>
         <source>Pin:</source>

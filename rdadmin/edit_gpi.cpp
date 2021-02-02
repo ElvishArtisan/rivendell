@@ -28,16 +28,17 @@
 #include "edit_gpi.h"
 #include "globals.h"
 
-EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
-		 int *offcart,QString *offdesc,QWidget *parent)
+EditGpi::EditGpi(QWidget *parent)
   : RDDialog(parent)
 {
+  edit_id=-1;
+  /*
   edit_gpi=gpi;
   edit_oncart=oncart;
   edit_offcart=offcart;
   edit_ondescription=ondesc;
   edit_offdescription=offdesc;
-  setWindowTitle("RDAdmin - "+tr("Edit GPI")+QString().sprintf(" %d",gpi));
+  */
 
   //
   // Fix the Window Size
@@ -171,18 +172,6 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   // Load Data
   //
-  if(*edit_oncart>0) {
-    RDCart *rdcart=new RDCart(*oncart);
-    edit_onmacro_edit->setText(QString().sprintf("%06d",*oncart));
-    edit_ondescription_edit->setText(rdcart->title());
-    delete rdcart;
-  }
-  if(*edit_offcart>0) {
-    RDCart *rdcart=new RDCart(*offcart);
-    edit_offmacro_edit->setText(QString().sprintf("%06d",*offcart));
-    edit_offdescription_edit->setText(rdcart->title());
-    delete rdcart;
-  }
 }
 
 
@@ -195,6 +184,78 @@ QSize EditGpi::sizeHint() const
 QSizePolicy EditGpi::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int EditGpi::exec(RDMatrix::GpioType type,int id)
+{
+  edit_id=id;
+  edit_type=type;
+  edit_table="GPIS";
+  if(type==RDMatrix::GpioOutput) {
+    edit_table="GPOS";
+  }
+
+  //
+  // ON Values
+  //
+  QString sql=QString("select ")+
+    edit_table+".NUMBER,"+      // 00
+    edit_table+".MACRO_CART,"+  // 01
+    "CART.TITLE "+              // 02
+    "from "+edit_table+" "+
+    "left join CART "+
+    "on "+edit_table+".MACRO_CART=CART.NUMBER where "+
+    edit_table+QString().sprintf(".ID=%d",id);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    setWindowTitle("RDAdmin - "+tr("Edit GPI")+
+		   QString().sprintf(" %d",q->value(0).toInt()));
+    if(q->value(1).toUInt()>0) {
+      edit_onmacro_edit->
+	setText(QString().sprintf("%06u",q->value(1).toUInt()));
+      edit_ondescription_edit->setText(q->value(2).toString());
+    }
+    else {
+      edit_onmacro_edit->setText("");
+      edit_ondescription_edit->setText("");
+    }
+  }
+
+  //
+  // OFF Values
+  //
+  sql=QString("select ")+
+    edit_table+".NUMBER,"+      // 00
+    edit_table+".OFF_MACRO_CART,"+  // 01
+    "CART.TITLE "+              // 02
+    "from "+edit_table+" "+
+    "left join CART "+
+    "on "+edit_table+".OFF_MACRO_CART=CART.NUMBER where "+
+    edit_table+QString().sprintf(".ID=%d",id);
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(q->value(1).toUInt()>0) {
+      edit_offmacro_edit->
+	setText(QString().sprintf("%06u",q->value(1).toUInt()));
+      edit_offdescription_edit->setText(q->value(2).toString());
+    }
+    else {
+      edit_offmacro_edit->setText("");
+      edit_offdescription_edit->setText("");
+    }
+  }
+
+  /*
+  if(*edit_offcart>0) {
+    RDCart *rdcart=new RDCart(*offcart);
+    edit_offmacro_edit->setText(QString().sprintf("%06d",*offcart));
+    edit_offdescription_edit->setText(rdcart->title());
+    delete rdcart;
+  }
+  */
+
+  return QDialog::exec();
 }
 
 
@@ -251,45 +312,38 @@ void EditGpi::clearOffData()
 void EditGpi::okData()
 {
   bool ok;
+  unsigned oncart=0;
+  unsigned offcart=0;
+
   if(!edit_onmacro_edit->text().isEmpty()) {
-    int oncart=edit_onmacro_edit->text().toInt(&ok);
-    if(ok) {
-      *edit_oncart=oncart;
-      RDCart *rdcart=new RDCart(oncart);
-      *edit_ondescription=rdcart->title();
-      delete rdcart;
-      done(0);
-    }
-    else {
-      QMessageBox::warning(this,tr("Invalid Cart"),tr("Invalid Cart Number!"));
+    oncart=edit_onmacro_edit->text().toInt(&ok);
+    if((!ok)||(oncart==0)||(oncart>RD_MAX_CART_NUMBER)) {
+      QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			   tr("Invalid ON Cart Number!"));
+      return;
     }
   }
-  else {
-    *edit_oncart=-1;
-    *edit_ondescription="";
-  }
+
   if(!edit_offmacro_edit->text().isEmpty()) {
-    int offcart=edit_offmacro_edit->text().toInt(&ok);
-    if(ok) {
-      *edit_offcart=offcart;
-      RDCart *rdcart=new RDCart(offcart);
-      *edit_offdescription=rdcart->title();
-      delete rdcart;
-      done(0);
-    }
-    else {
-      QMessageBox::warning(this,tr("Invalid Cart"),tr("Invalid Cart Number!"));
+    offcart=edit_offmacro_edit->text().toInt(&ok);
+    if((!ok)||(offcart==0)||(offcart>RD_MAX_CART_NUMBER)) {
+      QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			   tr("Invalid OFF Cart Number!"));
+      return;
     }
   }
-  else {
-    *edit_offcart=-1;
-    *edit_offdescription="";
-  }
-  done(0);
+
+  QString sql=QString("update ")+edit_table+" set "+
+    QString().sprintf("MACRO_CART=%u,",oncart)+
+    QString().sprintf("OFF_MACRO_CART=%u ",offcart)+
+    QString().sprintf("where ID=%d",edit_id);
+  RDSqlQuery::apply(sql);
+
+  done(true);
 }
 
 
 void EditGpi::cancelData()
 {
-  done(-1);
+  done(false);
 }

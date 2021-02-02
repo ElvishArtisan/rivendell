@@ -1597,11 +1597,23 @@ Clipboard</source>
     </message>
     <message>
         <source>Invalid Cart</source>
-        <translation>Cartão  Inválido</translation>
+        <translation type="obsolete">Cartão  Inválido</translation>
     </message>
     <message>
         <source>Invalid Cart Number!</source>
-        <translation>Númerodo Cartão Inválido!</translation>
+        <translation type="obsolete">Númerodo Cartão Inválido!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid ON Cart Number!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid OFF Cart Number!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>ON Transition</source>
@@ -5154,27 +5166,27 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>GPI</source>
-        <translation>GPI</translation>
+        <translation type="obsolete">GPI</translation>
     </message>
     <message>
         <source>GPO</source>
-        <translation>GPO</translation>
+        <translation type="obsolete">GPO</translation>
     </message>
     <message>
         <source>ON MACRO CART</source>
-        <translation>CARTÃO MACRO PARA LIGAR</translation>
+        <translation type="obsolete">CARTÃO MACRO PARA LIGAR</translation>
     </message>
     <message>
         <source>ON DESCRIPTION</source>
-        <translation>DESCRIÇÃO DE LIGAR</translation>
+        <translation type="obsolete">DESCRIÇÃO DE LIGAR</translation>
     </message>
     <message>
         <source>OFF MACRO CART</source>
-        <translation>CARTÃO MACRO PARA DESLIGAR</translation>
+        <translation type="obsolete">CARTÃO MACRO PARA DESLIGAR</translation>
     </message>
     <message>
         <source>OFF DESCRIPTION</source>
-        <translation>DESCRIÇÃO DE DESLIGAR</translation>
+        <translation type="obsolete">DESCRIÇÃO DE DESLIGAR</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -5182,15 +5194,19 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>[unassigned]</source>
-        <translation>Não Configurado</translation>
+        <translation type="obsolete">Não Configurado</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Fechar</translation>
     </message>
 </context>
 <context>
