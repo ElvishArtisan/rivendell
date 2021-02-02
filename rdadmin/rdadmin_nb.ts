@@ -531,19 +531,19 @@ oppdatert til versjon </translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Korg</translation>
+        <translation type="obsolete">Korg</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Lengd</translation>
+        <translation type="obsolete">Lengd</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Tittel</translation>
+        <translation type="obsolete">Tittel</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation>Artist</translation>
+        <translation type="obsolete">Artist</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -551,15 +551,23 @@ oppdatert til versjon </translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Slett</translation>
+        <translation type="obsolete">&amp;Slett</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>&amp;Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Lukk</translation>
     </message>
 </context>
 <context>

@@ -420,6 +420,24 @@ QModelIndex RDLibraryModel::addCart(unsigned cartnum)
 }
 
 
+void RDLibraryModel::removeCart(const QModelIndex &index)
+{
+  beginRemoveRows(QModelIndex(),index.row(),index.row());
+
+  d_texts.removeAt(index.row());
+  d_notes.removeAt(index.row());
+  d_cart_numbers.removeAt(index.row());
+  d_cut_texts.removeAt(index.row());
+  d_cut_cutnames.removeAt(index.row());
+  d_background_colors.removeAt(index.row());
+  d_cart_types.removeAt(index.row());
+  d_icons.removeAt(index.row());
+
+  endRemoveRows();
+  emit rowCountChanged(d_texts.size());
+}
+
+
 void RDLibraryModel::removeCart(unsigned cartnum)
 {
   for(int i=0;i<d_texts.size();i++) {

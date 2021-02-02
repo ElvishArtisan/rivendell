@@ -627,19 +627,19 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Vozík</translation>
+        <translation type="obsolete">Vozík</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Délka</translation>
+        <translation type="obsolete">Délka</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Název</translation>
+        <translation type="obsolete">Název</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation>Umělec</translation>
+        <translation type="obsolete">Umělec</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -647,15 +647,23 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>&amp;Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
     </message>
 </context>
 <context>

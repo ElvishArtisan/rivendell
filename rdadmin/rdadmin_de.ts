@@ -549,19 +549,19 @@ worden. Aktuelle Version</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Cart</translation>
+        <translation type="obsolete">Cart</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Länge</translation>
+        <translation type="obsolete">Länge</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Titel</translation>
+        <translation type="obsolete">Titel</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation>Künstler</translation>
+        <translation type="obsolete">Künstler</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -569,15 +569,23 @@ worden. Aktuelle Version</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Löschen</translation>
+        <translation type="obsolete">&amp;Löschen</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
+    </message>
+    <message>
+        <source>&amp;Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Schliessen</translation>
     </message>
 </context>
 <context>

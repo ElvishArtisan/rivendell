@@ -524,19 +524,19 @@ atualizada para a Versão</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Cartão</translation>
+        <translation type="obsolete">Cartão</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Duração</translation>
+        <translation type="obsolete">Duração</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Título</translation>
+        <translation type="obsolete">Título</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation>Artista</translation>
+        <translation type="obsolete">Artista</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -544,15 +544,23 @@ atualizada para a Versão</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Deletar</translation>
+        <translation type="obsolete">&amp;Deletar</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>&amp;Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Fechar</translation>
     </message>
 </context>
 <context>

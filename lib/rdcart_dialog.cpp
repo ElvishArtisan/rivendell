@@ -182,7 +182,6 @@ QSize RDCartDialog::sizeHint() const
 int RDCartDialog::exec(int *cartnum,RDCart::Type type,const QString &svc,
 		       bool *temp_allowed)
 {
-  printf("RDCartDialog service: %s\n",svc.toUtf8().constData());
   LoadState();
   cart_cart_filter->setShowCartType(type);
   cart_cart_filter->setService(svc);
@@ -416,7 +415,7 @@ void RDCartDialog::loadFileData()
     delete conv;
     delete cart;
     delete cut;
-    done(0);
+    done(true);
   }
 }
 
@@ -438,7 +437,7 @@ void RDCartDialog::okData()
     }
   }
 
-  done(0);
+  done(true);
 }
 
 
@@ -448,7 +447,7 @@ void RDCartDialog::cancelData()
   if(cart_player!=NULL) {
     cart_player->stop();
   }
-  done(-1);
+  done(false);
 }
 
 

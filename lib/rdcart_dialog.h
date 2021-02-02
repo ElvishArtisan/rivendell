@@ -51,11 +51,6 @@ class RDCartDialog : public RDDialog
  public slots:
   int exec(int *cartnum,RDCart::Type type,const QString &svc,
 	   bool *temp_allowed);
-  //  int exec(int *cartnum,RDCart::Type type,QString *svcname,int svc_quan,
-  //	   bool *temp_allowed);
-  //  int exec(int *cartnum,RDCart::Type type,QString *svcname,int svc_quan,
-  //	   const QString &username,const QString &passwd,
-  //	   bool *temp_allowed=NULL);
 
  private slots:
   void modelResetData();
