@@ -2584,6 +2584,21 @@ figure for the report period.
     </message>
 </context>
 <context>
+    <name>RDHostvarListModel</name>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remark</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDImagePickerModel</name>
     <message>
         <source>Image</source>

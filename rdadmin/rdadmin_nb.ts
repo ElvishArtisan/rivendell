@@ -214,35 +214,31 @@ oppdatert til versjon </translation>
     <name>AddHostvar</name>
     <message>
         <source>Add Host Variable</source>
-        <translation>Legg til tenarvariabel</translation>
+        <translation type="obsolete">Legg til tenarvariabel</translation>
     </message>
     <message>
         <source>Variable Name:</source>
-        <translation>Namn på variabelen:</translation>
+        <translation type="obsolete">Namn på variabelen:</translation>
     </message>
     <message>
         <source>Variable Value:</source>
-        <translation>Variabelverdi:</translation>
+        <translation type="obsolete">Variabelverdi:</translation>
     </message>
     <message>
         <source>Remark:</source>
-        <translation>Merknad:</translation>
+        <translation type="obsolete">Merknad:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Invalid Name</source>
-        <translation type="unfinished">Ugyldig namn</translation>
-    </message>
-    <message>
-        <source>The variable name is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Ugyldig namn</translation>
     </message>
 </context>
 <context>
@@ -5171,15 +5167,15 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NAMN</translation>
+        <translation type="obsolete">NAMN</translation>
     </message>
     <message>
         <source>VALUE</source>
-        <translation>VERDI</translation>
+        <translation type="obsolete">VERDI</translation>
     </message>
     <message>
         <source>REMARK</source>
-        <translation>MERKNAD</translation>
+        <translation type="obsolete">MERKNAD</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5195,11 +5191,15 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Lukk</translation>
     </message>
     <message>
         <source>Delete Host Variable</source>

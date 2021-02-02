@@ -294,35 +294,35 @@ a záloha původní databáze uložena v </translation>
     <name>AddHostvar</name>
     <message>
         <source>Add Host Variable</source>
-        <translation>Přidat proměnnou serveru</translation>
+        <translation type="obsolete">Přidat proměnnou serveru</translation>
     </message>
     <message>
         <source>Variable Name:</source>
-        <translation>Název proměnné:</translation>
+        <translation type="obsolete">Název proměnné:</translation>
     </message>
     <message>
         <source>Variable Value:</source>
-        <translation>Hodnota proměnné:</translation>
+        <translation type="obsolete">Hodnota proměnné:</translation>
     </message>
     <message>
         <source>Remark:</source>
-        <translation>Poznámka:</translation>
+        <translation type="obsolete">Poznámka:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Name</source>
-        <translation>Neplatný název</translation>
+        <translation type="obsolete">Neplatný název</translation>
     </message>
     <message>
         <source>The variable name is invalid.</source>
-        <translation>Název proměnné je neplatný.</translation>
+        <translation type="obsolete">Název proměnné je neplatný.</translation>
     </message>
 </context>
 <context>
@@ -5680,15 +5680,15 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>VALUE</source>
-        <translation>HODNOTA</translation>
+        <translation type="obsolete">HODNOTA</translation>
     </message>
     <message>
         <source>REMARK</source>
-        <translation>POZNÁMKA</translation>
+        <translation type="obsolete">POZNÁMKA</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5704,11 +5704,15 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Delete Host Variable</source>

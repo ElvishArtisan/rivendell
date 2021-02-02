@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/rdadmin
 ##
-## (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -51,7 +51,6 @@ bin_PROGRAMS = rdadmin
 
 dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        add_group.cpp add_group.h\
-                       add_hostvar.cpp add_hostvar.h\
                        add_matrix.cpp add_matrix.h\
                        add_replicator.cpp add_replicator.h\
                        add_report.cpp add_report.h\
@@ -135,7 +134,6 @@ nodist_rdadmin_SOURCES = global_credits.c\
                          global_gpl2.c\
                          moc_add_feed.cpp\
                          moc_add_group.cpp\
-                         moc_add_hostvar.cpp\
                          moc_add_matrix.cpp\
                          moc_add_replicator.cpp\
                          moc_add_report.cpp\

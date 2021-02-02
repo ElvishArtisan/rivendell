@@ -224,35 +224,31 @@ worden. Aktuelle Version</translation>
     <name>AddHostvar</name>
     <message>
         <source>Add Host Variable</source>
-        <translation>Hostvariable hinzufügen</translation>
+        <translation type="obsolete">Hostvariable hinzufügen</translation>
     </message>
     <message>
         <source>Variable Name:</source>
-        <translation>Variablenname:</translation>
+        <translation type="obsolete">Variablenname:</translation>
     </message>
     <message>
         <source>Variable Value:</source>
-        <translation>Variablenwert:</translation>
+        <translation type="obsolete">Variablenwert:</translation>
     </message>
     <message>
         <source>Remark:</source>
-        <translation>Bemerkung:</translation>
+        <translation type="obsolete">Bemerkung:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>Invalid Name</source>
-        <translation type="unfinished">Ungültiger Name</translation>
-    </message>
-    <message>
-        <source>The variable name is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Ungültiger Name</translation>
     </message>
 </context>
 <context>
@@ -5326,15 +5322,15 @@ Generieren</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NAME</translation>
+        <translation type="obsolete">NAME</translation>
     </message>
     <message>
         <source>VALUE</source>
-        <translation>WERT</translation>
+        <translation type="obsolete">WERT</translation>
     </message>
     <message>
         <source>REMARK</source>
-        <translation>BEMERKUNG</translation>
+        <translation type="obsolete">BEMERKUNG</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5350,11 +5346,15 @@ Generieren</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Schliessen</translation>
     </message>
     <message>
         <source>Delete Host Variable</source>

@@ -152,6 +152,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdgroup_list.cpp rdgroup_list.h\
                         rdgrouplistmodel.cpp rdgrouplistmodel.h\
                         rdhash.cpp rdhash.h\
+                        rdhostvarlistmodel.cpp rdhostvarlistmodel.h\
                         rdhotkeys.cpp rdhotkeys.h\
                         rdhotkeylist.cpp rdhotkeylist.h\
                         rdidvalidator.cpp rdidvalidator.h\
@@ -333,6 +334,7 @@ nodist_librd_la_SOURCES = moc_rd3emptycart.cpp\
                           moc_rdgpioselector.cpp\
                           moc_rdgpioslotsmodel.cpp\
                           moc_rdgrouplistmodel.cpp\
+                          moc_rdhostvarlistmodel.cpp\
                           moc_rdhotkeys.cpp\
                           moc_rdhotkeylist.cpp\
                           moc_rdimagepickerbox.cpp\

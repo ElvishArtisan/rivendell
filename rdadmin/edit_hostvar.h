@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Host Variable
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,41 +21,32 @@
 #ifndef EDIT_HOSTVAR_H
 #define EDIT_HOSTVAR_H
 
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qcheckbox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
+#include <QLineEdit>
 
-#include <rdcatch_connect.h>
 #include <rddialog.h>
-#include <rdstation.h>
 
 class EditHostvar : public RDDialog
 {
   Q_OBJECT
  public:
-  EditHostvar(QString station,QString var,QString *varvalue,QString *remark,
-	      QWidget *parent=0);
+  EditHostvar(QWidget *parent=0);
   ~EditHostvar();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
+
+ public slots:  
+  int exec(int id);
+
  private slots:
   void okData();
   void cancelData();
 
  private:
+  int edit_id;
   QLineEdit *edit_name_edit;
   QLineEdit *edit_varvalue_edit;
   QLineEdit *edit_remark_edit;
-  QString *edit_varvalue;
-  QString *edit_remark;
 };
 
 
-#endif
-
+#endif  // EDIT_HOSTVAR_H

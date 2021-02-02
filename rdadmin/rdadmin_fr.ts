@@ -72,41 +72,6 @@
     </message>
 </context>
 <context>
-    <name>AddHostvar</name>
-    <message>
-        <source>Add Host Variable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Variable Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Variable Value:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remark:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The variable name is invalid.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>AddMatrix</name>
     <message>
         <source>&amp;New Matrix Number:</source>
@@ -4159,18 +4124,6 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>VALUE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>REMARK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4183,11 +4136,7 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
+        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

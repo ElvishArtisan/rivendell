@@ -2,7 +2,7 @@
 //
 // List Rivendell Host Variables
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,14 +21,14 @@
 #ifndef LIST_HOSTVARS_H
 #define LIST_HOSTVARS_H
 
-#include <q3listview.h>
-
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 
 #include <rd.h>
 #include <rddialog.h>
-#include <rdmatrix.h>
+#include <rdhostvarlistmodel.h>
+#include <rdtableview.h>
+
+#include "edit_hostvar.h"
 
 class ListHostvars : public RDDialog
 {
@@ -43,25 +43,23 @@ class ListHostvars : public RDDialog
    void addData();
    void editData();
    void deleteData();
-   void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
-   void okData();
-   void cancelData();
+   void doubleClickedData(const QModelIndex &index);
+   void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
   private:
-   void RefreshList();
+   EditHostvar *list_edit_hostvar_dialog;
    QLabel *list_title_label;
-   Q3ListView *list_view;
+   RDTableView *list_view;
+   RDHostvarListModel *list_model;
    QPushButton *list_add_button;
    QPushButton *list_edit_button;
    QPushButton *list_delete_button;
-   QPushButton *list_ok_button;
-   QPushButton *list_cancel_button;
+   QPushButton *list_close_button;
    QString list_station;
 };
 
 
-#endif
-
+#endif  // LIST_HOSTVARS_H

@@ -2,7 +2,7 @@
 //
 // List Rivendell Host Variables
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,21 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rddb.h>
 #include <rdescape_string.h>
 
-#include "add_hostvar.h"
-#include "edit_hostvar.h"
 #include "globals.h"
 #include "list_hostvars.h"
 
 ListHostvars::ListHostvars(QString station,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   QString str;
 
   //
@@ -45,24 +41,27 @@ ListHostvars::ListHostvars(QString station,QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("Host Variables for")+" "+station);
 
   //
+  // Dialogs
+  //
+  list_edit_hostvar_dialog=new EditHostvar(this);
+
+  //
   // Matrix List Box
   //
-  list_view=new Q3ListView(this);
-  list_title_label=new QLabel(list_view,tr("Host Variables"),this);
+  list_view=new RDTableView(this);
+  list_model=new RDHostvarListModel(station,this);
+  list_model->setFont(defaultFont());
+  list_model->setPalette(palette());
+  list_view->setModel(list_model);
+  list_title_label=
+    new QLabel(list_view,tr("Host Variables")+":",this);
   list_title_label->setFont(labelFont());
   list_title_label->setGeometry(14,5,sizeHint().width()-28,19);
-  list_view->setAllColumnsShowFocus(true);
-  list_view->setItemMargin(5);
-  list_view->addColumn(tr("NAME"));
-  list_view->setColumnAlignment(0,Qt::AlignHCenter);
-  list_view->addColumn(tr("VALUE"));
-  list_view->setColumnAlignment(1,Qt::AlignLeft);
-  list_view->addColumn(tr("REMARK"));
-  list_view->setColumnAlignment(2,Qt::AlignLeft);
-  connect(list_view,SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-
-  RefreshList();
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(list_model,SIGNAL(modelReset()),
+	  list_view,SLOT(resizeColumnsToContents()));
+  list_view->resizeColumnsToContents();
 
   //
   //  Add Button
@@ -89,27 +88,19 @@ ListHostvars::ListHostvars(QString station,QWidget *parent)
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
-  //  OK Button
+  //  Close Button
   //
-  list_ok_button=new QPushButton(this);
-  list_ok_button->setDefault(true);
-  list_ok_button->setFont(buttonFont());
-  list_ok_button->setText(tr("&OK"));
-  connect(list_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
-
-  //
-  //  Cancel Button
-  //
-  list_cancel_button=new QPushButton(this);
-  list_cancel_button->setDefault(true);
-  list_cancel_button->setFont(buttonFont());
-  list_cancel_button->setText(tr("&Cancel"));
-  connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  list_close_button=new QPushButton(this);
+  list_close_button->setDefault(true);
+  list_close_button->setFont(buttonFont());
+  list_close_button->setText(tr("&Close"));
+  connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 
 
 ListHostvars::~ListHostvars()
 {
+  delete list_edit_hostvar_dialog;
   delete list_view;
 }
 
@@ -128,88 +119,68 @@ QSizePolicy ListHostvars::sizePolicy() const
 
 void ListHostvars::addData()
 {
-  QString varname;
-  QString varvalue;
-  QString varremark;
-  AddHostvar *var_dialog=
-    new AddHostvar(list_station,&varname,&varvalue,&varremark,this);
-  if(var_dialog->exec()==0) {
-    Q3ListViewItem *item=new Q3ListViewItem(list_view);
-    item->setText(0,varname);
-    item->setText(1,varvalue);
-    item->setText(2,varremark);
+  QString sql=QString("insert into HOSTVARS set ")+
+    "STATION_NAME=\""+RDEscapeString(list_station)+"\","+
+    "NAME=\""+RDEscapeString("%NEW_VAR%")+"\"";
+  int id=RDSqlQuery::run(sql).toInt();
+  if(list_edit_hostvar_dialog->exec(id)) {
+    QModelIndex row=list_model->addVar(id);
+    if(row.isValid()) {
+      list_view->selectRow(row.row());
+    }
+    else {
+      sql=QString("delete from HOSTVARS ")+
+	QString().sprintf("where ID=%d",id);
+      RDSqlQuery::apply(sql);
+    }
   }
-  delete var_dialog;
 }
 
 
 void ListHostvars::editData()
 {
-  Q3ListViewItem *item=list_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  QString varvalue=item->text(1);
-  QString varremark=item->text(2);
-  EditHostvar *var_dialog=
-    new EditHostvar(list_station,item->text(0),&varvalue,&varremark,this);
-  if(var_dialog->exec()==0) {
-    item->setText(1,varvalue);
-    item->setText(2,varremark);
+  if(list_edit_hostvar_dialog->exec(list_model->varId(rows.first()))) {
+    list_model->refresh(rows.first());
   }
-  delete var_dialog;
 }
 
 
 void ListHostvars::deleteData()
 {
-  Q3ListViewItem *item=list_view->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
+  
   if(QMessageBox::question(this,"RDAdmin - "+tr("Delete Host Variable"),
 			   tr("Are you sure you want to delete the variable")+
-			   " \""+item->text(0)+"\"?",
+			   " \""+list_model->data(rows.first()).toString()+
+			   "\"?",
 		      QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
     return;
   }
-  delete item;
+  QString sql=QString("delete from HOSTVARS ")+
+    QString().sprintf("where ID=%d",list_model->varId(rows.first()));
+  RDSqlQuery::apply(sql);
+  list_model->removeVar(rows.first());
 }
 
 
-void ListHostvars::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
+void ListHostvars::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
 
 
-void ListHostvars::okData()
+void ListHostvars::closeData()
 {
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("delete from HOSTVARS where ")+
-    "STATION_NAME=\""+RDEscapeString(list_station)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  Q3ListViewItem *item=list_view->firstChild();
-  while(item!=NULL) {
-    sql=QString("insert into HOSTVARS set ")+
-      "STATION_NAME=\""+RDEscapeString(list_station)+"\","+
-      "NAME=\""+RDEscapeString(item->text(0))+"\","+
-      "VARVALUE=\""+RDEscapeString(item->text(1))+"\","+
-      "REMARK=\""+RDEscapeString(item->text(2))+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
-    item=item->nextSibling();
-  }
-  done(0);
-}
-
-
-void ListHostvars::cancelData()
-{
-  done(-1);
+  done(true);
 }
 
 
@@ -219,29 +190,5 @@ void ListHostvars::resizeEvent(QResizeEvent *e)
   list_add_button->setGeometry(10,size().height()-80,80,50);
   list_edit_button->setGeometry(100,size().height()-80,80,50);
   list_delete_button->setGeometry(190,size().height()-80,80,50);
-  list_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
-  list_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
-}
-
-
-void ListHostvars::RefreshList()
-{
-  Q3ListViewItem *l;
-
-  list_view->clear();
-  QString sql=QString("select ")+
-    "NAME,"+      // 00
-    "VARVALUE,"+  // 01
-    "REMARK "     // 02
-    "from HOSTVARS where "+
-    "STATION_NAME=\""+RDEscapeString(list_station)+"\" "+
-    "order by NAME";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    l=new Q3ListViewItem(list_view);
-    l->setText(0,q->value(0).toString());
-    l->setText(1,q->value(1).toString());
-    l->setText(2,q->value(2).toString());
-  }
-  delete q;
+  list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

@@ -20973,3 +20973,8 @@
 	* Added 'RDGpioListModel'.
 	* Refactored the 'List GPIs'/'List GPOs' dialog in
 	rdadmin(1) to use the model-based API.
+2021-02-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDVarhostListModel'.
+	* Refactored the 'Host Variables' dialog in rdadmin(1) to use the
+	model-based API.
+	* Removed the 'Add Host Variable' dialog from rdadmin(1).

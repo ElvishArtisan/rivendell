@@ -207,35 +207,31 @@ atualizada para a Versão</translation>
     <name>AddHostvar</name>
     <message>
         <source>Add Host Variable</source>
-        <translation>Adicionar Variável do Cliente</translation>
+        <translation type="obsolete">Adicionar Variável do Cliente</translation>
     </message>
     <message>
         <source>Variable Name:</source>
-        <translation>Nome da Variável:</translation>
+        <translation type="obsolete">Nome da Variável:</translation>
     </message>
     <message>
         <source>Variable Value:</source>
-        <translation>Valor da Variável:</translation>
+        <translation type="obsolete">Valor da Variável:</translation>
     </message>
     <message>
         <source>Remark:</source>
-        <translation>Observação:</translation>
+        <translation type="obsolete">Observação:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Invalid Name</source>
-        <translation type="unfinished">Nome Inválido</translation>
-    </message>
-    <message>
-        <source>The variable name is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Nome Inválido</translation>
     </message>
 </context>
 <context>
@@ -5306,15 +5302,15 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOME</translation>
+        <translation type="obsolete">NOME</translation>
     </message>
     <message>
         <source>VALUE</source>
-        <translation>VALOR</translation>
+        <translation type="obsolete">VALOR</translation>
     </message>
     <message>
         <source>REMARK</source>
-        <translation>OBSERVAÇÃO</translation>
+        <translation type="obsolete">OBSERVAÇÃO</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5330,11 +5326,15 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Fechar</translation>
     </message>
     <message>
         <source>Delete Host Variable</source>

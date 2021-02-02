@@ -2,7 +2,7 @@
 #
 # The QMake project file for RDAdmin.
 #
-# (C) Copyright 2003-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+# (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,6 @@ TEMPLATE = app
 x11 {
   SOURCES += add_feed.cpp
   SOURCES += add_group.cpp
-  SOURCES += add_hostvar.cpp
   SOURCES += add_matrix.cpp
   SOURCES += add_replicator.cpp
   SOURCES += add_report.cpp
@@ -93,7 +92,6 @@ x11 {
 x11 {
   HEADERS += add_feed.h
   HEADERS += add_group.h
-  HEADERS += add_hostvar.h
   HEADERS += add_matrix.h
   HEADERS += add_replicator.h
   HEADERS += add_report.h

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Host Variable
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,45 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
+#include <QPushButton>
 
-#include <rdcatch_connect.h>
+#include <rdescape_string.h>
 
-#include <edit_hostvar.h>
-#include <edit_rdlibrary.h>
-#include <edit_rdairplay.h>
-#include <edit_decks.h>
-#include <edit_audios.h>
-#include <edit_ttys.h>
-#include <list_matrices.h>
-#include <list_hostvars.h>
+#include "edit_hostvar.h"
 
-EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
-			 QString *remark,QWidget *parent)
+EditHostvar::EditHostvar(QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-  edit_varvalue=varvalue;
-  edit_remark=remark;
+  edit_id=-1;
 
   setWindowTitle("RDAdmin - "+tr("Edit Host Variable"));
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Variable Name
@@ -110,13 +89,6 @@ EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
   cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  //
-  // Load Values
-  //
-  edit_name_edit->setText(var);
-  edit_varvalue_edit->setText(*varvalue);
-  edit_remark_edit->setText(*remark);
 }
 
 
@@ -137,17 +109,42 @@ QSizePolicy EditHostvar::sizePolicy() const
 }
 
 
+int EditHostvar::exec(int id)
+{
+  edit_id=id;
+
+  QString sql=QString("select ")+
+    "NAME,"+      // 00
+    "VARVALUE,"+  // 01
+    "REMARK "+    // 02
+    "from HOSTVARS where "+
+    QString().sprintf("ID=%d",id);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    edit_name_edit->setText(q->value(0).toString());
+    edit_varvalue_edit->setText(q->value(1).toString());
+    edit_remark_edit->setText(q->value(2).toString());
+  }
+  delete q;
+
+  return QDialog::exec();
+}
+
+
 void EditHostvar::okData()
 {
-  *edit_varvalue=edit_varvalue_edit->text();
-  *edit_remark=edit_remark_edit->text();
-  done(0);
+  QString sql=QString("update HOSTVARS set ")+
+    "NAME=\""+RDEscapeString(edit_name_edit->text())+"\","+
+    "VARVALUE=\""+RDEscapeString(edit_varvalue_edit->text())+"\","+
+    "REMARK=\""+RDEscapeString(edit_remark_edit->text())+"\" "+
+    QString().sprintf("where ID=%d",edit_id);
+  RDSqlQuery::apply(sql);
+
+  done(true);
 }
 
 
 void EditHostvar::cancelData()
 {
-  done(-1);
+  done(false);
 }
-
-
