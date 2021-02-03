@@ -20,7 +20,7 @@
 
 #include <QApplication>
 #include <QFileDialog>
-#include <QMap>
+#include <QMultiMap>
 #include <QMessageBox>
 #include <QProgressDialog>
 
@@ -347,7 +347,8 @@ void EditSystem::okData()
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
-  std::map<unsigned,QString> dups;
+  //  std::map<unsigned,QString> dups;
+  QMultiMap<unsigned,QString> dups;
 
   if(edit_duplicate_carts_box->isChecked()!=
      edit_system->allowDuplicateCartTitles()) {
@@ -375,7 +376,7 @@ void EditSystem::okData()
 	  QString().sprintf("(NUMBER!=%u)",q->value(0).toUInt());
 	q1=new RDSqlQuery(sql);
 	while(q1->next()) {
-	  dups[q1->value(0).toUInt()]=q->value(1).toString();
+	  dups.insert(q1->value(0).toUInt(),q->value(1).toString());
 	}
 	delete q1;
 	count++;
@@ -401,9 +402,9 @@ void EditSystem::okData()
 	edit_cancel_button->
 	  setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
 	QString filter_sql="where (";
-	for(std::map<unsigned,QString>::const_iterator ci=dups.begin();
+	for(QMultiMap<unsigned,QString>::const_iterator ci=dups.begin();
 	    ci!=dups.end();ci++) {
-	  filter_sql+=QString().sprintf("CART.NUMBER=%u||",ci->first);
+	  filter_sql+=QString().sprintf("CART.NUMBER=%u||",ci.key());
 	}
 	filter_sql=filter_sql.left(filter_sql.length()-2)+
 	  ") order by CART.TITLE ";
