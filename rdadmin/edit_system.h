@@ -79,7 +79,6 @@ class EditSystem : public RDDialog
   QComboBox *edit_rss_processor_station_box;
   QLabel *edit_show_user_list_label;
   QCheckBox *edit_show_user_list_box;
-  //  Q3ListView *edit_duplicate_list;
   RDTableView *edit_duplicate_view;
   RDLibraryModel *edit_duplicate_model;
   QLabel *edit_notification_address_label;
