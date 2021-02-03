@@ -21000,3 +21000,5 @@
 	* Added 'RDReplCartListModel'.
 	* Refactored the 'XDS Replicator Carts' dialog in rdadmin(1) to use
 	the model-based API.
+2021-02-03 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead code from 'rdadmin/list_nodes.cpp'.

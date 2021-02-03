@@ -199,25 +199,3 @@ void ListNodes::PurgeEndpoints(const QString &tablename)
   delete q;
   RDSqlQuery::apply(sql);
 }
-
-
-/*
-void ListNodes::PurgeEndpoints(const QString &tablename)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("delete from ")+tablename+" where "+
-    "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",list_matrix->matrix());
-  RDListViewItem *item=(RDListViewItem *)list_list_view->firstChild();
-  while(item!=NULL) {
-    sql+=QString("((NODE_HOSTNAME!=\"")+RDEscapeString(item->text(0))+"\")&&"+
-      QString().sprintf("(NODE_TCP_PORT!=%d))&&",item->text(3).toInt());
-    item=(RDListViewItem *)item->nextSibling();
-  }
-  sql=sql.left(sql.length()-2);
-  q=new RDSqlQuery(sql);
-  delete q;
-}
-*/
