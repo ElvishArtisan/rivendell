@@ -2,7 +2,7 @@
 //
 // Edit Rivendell System-wide Settings.
 //
-//   (C) Copyright 2009-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,41 +21,40 @@
 #ifndef EDIT_SYSTEM_H
 #define EDIT_SYSTEM_H
 
-#include <q3listview.h>
-
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qdialog.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qspinbox.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
 #include <rdaudiosettings.h>
 #include <rddialog.h>
+#include <rdlibrarymodel.h>
 #include <rdsystem.h>
+#include <rdtableview.h>
 
 #include "list_encoders.h"
 
 class EditSystem : public RDDialog
 {
   Q_OBJECT
-  public:
-   EditSystem(QWidget *parent=0);
-   ~EditSystem();
-   QSize sizeHint() const;
-   QSizePolicy sizePolicy() const;
+ public:
+  EditSystem(QWidget *parent=0);
+  ~EditSystem();
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
 
-  private slots:
-   void BuildDuplicatesList(std::map<unsigned,QString> *dups);
-   void duplicatesCheckedData(bool state);
-   void saveData();
-   void encodersData();
-   void okData();
-   void cancelData();
+ private slots:
+  void BuildDuplicatesList(std::map<unsigned,QString> *dups);
+  void duplicatesCheckedData(bool state);
+  void saveData();
+  void encodersData();
+  void okData();
+  void cancelData();
 
  protected:
-   void resizeEvent(QResizeEvent *e);
+  void resizeEvent(QResizeEvent *e);
 
  private:
   QLabel *edit_sample_rate_label;
@@ -78,7 +77,9 @@ class EditSystem : public RDDialog
   QComboBox *edit_rss_processor_station_box;
   QLabel *edit_show_user_list_label;
   QCheckBox *edit_show_user_list_box;
-  Q3ListView *edit_duplicate_list;
+  //  Q3ListView *edit_duplicate_list;
+  RDTableView *edit_duplicate_view;
+  RDLibraryModel *edit_duplicate_model;
   QLabel *edit_notification_address_label;
   QLineEdit *edit_notification_address_edit;
   QLabel *edit_rss_processor_label;

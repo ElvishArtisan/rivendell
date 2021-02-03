@@ -20990,3 +20990,6 @@
 	* Added 'RDSchedCodeListModel'.
 	* Refactored the 'Rivendell Scheduler Codes List' dialog in
 	rdadmin(1) to use the model-based API.
+2021-02-02 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'System-Wide Settings' dialog in rdadmin(1) to use
+	the model-based API.

@@ -4066,11 +4066,11 @@ Custom</source>
     </message>
     <message>
         <source>Cart</source>
-        <translation type="unfinished">Korg</translation>
+        <translation type="obsolete">Korg</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Tittel</translation>
+        <translation type="obsolete">Tittel</translation>
     </message>
     <message>
         <source>&amp;Save List</source>
@@ -4083,32 +4083,6 @@ Custom</source>
     <message>
         <source>&amp;Cancel</source>
         <translation type="unfinished">&amp;Avbryt</translation>
-    </message>
-    <message>
-        <source>Save text file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The file &quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&quot; exists.
-
-Overwrite?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to write file &quot;</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Progress</source>
@@ -4137,6 +4111,32 @@ List</source>
     </message>
     <message>
         <source>Attempt to disallow duplicate cart titles anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save text file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The file &quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&quot; exists.
+
+Overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to write file &quot;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

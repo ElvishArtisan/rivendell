@@ -2,7 +2,7 @@
 //
 // Edit Rivendell System-Wide Configuration
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qfiledialog.h>
-#include <qmessagebox.h>
-#include <qprogressdialog.h>
+#include <QApplication>
+#include <QFileDialog>
+#include <QMap>
+#include <QMessageBox>
+#include <QProgressDialog>
 
 #include <rdconf.h>
 #include <rddb.h>
@@ -187,14 +188,15 @@ EditSystem::EditSystem(QWidget *parent)
   edit_duplicate_hidden_label->setWordWrap(true);
   edit_duplicate_hidden_label->setFont(subLabelFont());
   edit_duplicate_hidden_label->hide();
-  edit_duplicate_list=new Q3ListView(this);
-  edit_duplicate_list->setItemMargin(5);
-  edit_duplicate_list->setAllColumnsShowFocus(true);
-  edit_duplicate_list->addColumn(tr("Cart"));
-  edit_duplicate_list->setColumnAlignment(0,Qt::AlignCenter);
-  edit_duplicate_list->addColumn(tr("Title"));
-  edit_duplicate_list->setColumnAlignment(1,Qt::AlignLeft);
-  edit_duplicate_list->hide();
+
+  edit_duplicate_view=new RDTableView(this);
+  edit_duplicate_model=new RDLibraryModel(this);
+  edit_duplicate_model->setFont(defaultFont());
+  edit_duplicate_model->setPalette(palette());
+  edit_duplicate_view->setModel(edit_duplicate_model);
+  connect(edit_duplicate_model,SIGNAL(modelReset()),
+	  edit_duplicate_view,SLOT(resizeColumnsToContents()));
+  edit_duplicate_view->hide();
   edit_save_button=new QPushButton(this);
   edit_save_button->setFont(buttonFont());
   edit_save_button->setText(tr("&Save List"));
@@ -245,7 +247,6 @@ EditSystem::EditSystem(QWidget *parent)
     }
   }
 
-
   for(int i=0;i<edit_sample_rate_box->count();i++) {
     if(edit_sample_rate_box->text(i).toUInt()==edit_system->sampleRate()) {
       edit_sample_rate_box->setCurrentItem(i);
@@ -265,7 +266,8 @@ EditSystem::~EditSystem()
   delete edit_encoders_dialog;
   delete edit_duplicate_carts_box;
   delete edit_duplicate_label;
-  delete edit_duplicate_list;
+  delete edit_duplicate_view;
+  delete edit_duplicate_model;
 }
 
 
@@ -332,11 +334,11 @@ void EditSystem::saveData()
   fprintf(f,"\n");
   fprintf(f,"Cart    Title\n");
   fprintf(f,"----    -----\n");
-  Q3ListViewItem *item=edit_duplicate_list->firstChild();
-  while(item!=NULL) {
-    fprintf(f,"%s  %s\n",(const char *)item->text(0),
-	    (const char *)item->text(1));
-    item=item->nextSibling();
+
+  for(int i=0;i<edit_duplicate_model->rowCount();i++) {
+    fprintf(f,"%s  %s\n",
+	    edit_duplicate_model->data(edit_duplicate_model->index(i,0)).toString().toUtf8().constData(),
+	    edit_duplicate_model->data(edit_duplicate_model->index(i,4)).toString().toUtf8().constData());
   }
   fclose(f);
 }
@@ -394,26 +396,26 @@ void EditSystem::okData()
       delete q;
       pd->reset();
       if(dups.size()>0) {
-	Q3ListViewItem *item;
 	y_pos=305;
 	setMinimumWidth(sizeHint().width());
 	setMinimumHeight(sizeHint().height());
 	edit_duplicate_carts_box->setChecked(true);
 	edit_duplicate_hidden_label->show();
-	edit_duplicate_list->show();
+	edit_duplicate_view->show();
 	edit_save_button->show();
-	edit_duplicate_list->clear();
 	edit_ok_button->setGeometry(sizeHint().width()-180,
 				    sizeHint().height()-60,
 				    80,50);
 	edit_cancel_button->
 	  setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
+	QString filter_sql="where (";
 	for(std::map<unsigned,QString>::const_iterator ci=dups.begin();
 	    ci!=dups.end();ci++) {
-	  item=new Q3ListViewItem(edit_duplicate_list);
-	  item->setText(0,QString().sprintf("%06u",ci->first));
-	  item->setText(1,ci->second);
+	  filter_sql+=QString().sprintf("CART.NUMBER=%u||",ci->first);
 	}
+	filter_sql=filter_sql.left(filter_sql.length()-2)+
+	  ") order by CART.TITLE ";
+	edit_duplicate_model->setFilterSql(filter_sql);
 	return;
       }
 
@@ -524,7 +526,7 @@ void EditSystem::resizeEvent(QResizeEvent *e)
   edit_rss_processor_box->setGeometry(250,207,200,20);
 
   edit_duplicate_hidden_label->setGeometry(15,229,size().width()-30,50);
-  edit_duplicate_list->setGeometry(10,277,size().width()-20,215);
+  edit_duplicate_view->setGeometry(10,277,size().width()-20,215);
   edit_save_button->setGeometry(size().width()-85,497,70,25);
 
   edit_encoders_button->setGeometry(10,size().height()-60,120,50);

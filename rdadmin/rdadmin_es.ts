@@ -4426,11 +4426,11 @@ Custom</source>
     </message>
     <message>
         <source>Cart</source>
-        <translation type="unfinished">Cartucho</translation>
+        <translation type="obsolete">Cartucho</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Título</translation>
+        <translation type="obsolete">Título</translation>
     </message>
     <message>
         <source>&amp;Save List</source>
@@ -4443,10 +4443,6 @@ Custom</source>
     <message>
         <source>&amp;Cancel</source>
         <translation type="unfinished">&amp;Cancelar</translation>
-    </message>
-    <message>
-        <source>Save text file</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File Exists</source>
@@ -4467,10 +4463,6 @@ Overwrite?</source>
     <message>
         <source>File Error</source>
         <translation type="unfinished">Error de archivo</translation>
-    </message>
-    <message>
-        <source>Unable to write file &quot;</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Progress</source>
@@ -4499,6 +4491,14 @@ List</source>
     </message>
     <message>
         <source>Attempt to disallow duplicate cart titles anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save text file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to write file &quot;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

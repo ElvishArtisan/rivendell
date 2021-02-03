@@ -4485,11 +4485,11 @@ Custom</source>
     </message>
     <message>
         <source>Cart</source>
-        <translation type="unfinished">Vozík</translation>
+        <translation type="obsolete">Vozík</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Název</translation>
+        <translation type="obsolete">Název</translation>
     </message>
     <message>
         <source>&amp;Save List</source>
@@ -4502,10 +4502,6 @@ Custom</source>
     <message>
         <source>&amp;Cancel</source>
         <translation type="unfinished">Z&amp;rušit</translation>
-    </message>
-    <message>
-        <source>Save text file</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File Exists</source>
@@ -4558,6 +4554,10 @@ List</source>
     </message>
     <message>
         <source>Attempt to disallow duplicate cart titles anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save text file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
