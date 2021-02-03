@@ -3838,6 +3838,25 @@ bitte erneut versuchen!</translation>
     </message>
 </context>
 <context>
+    <name>RDReplCartListModel</name>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Cart</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Posted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Posted Filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDReplicatorListModel</name>
     <message>
         <source>Name</source>

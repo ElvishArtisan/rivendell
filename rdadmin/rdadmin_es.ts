@@ -5913,19 +5913,19 @@ Log</source>
     </message>
     <message>
         <source>CART</source>
-        <translation>CARTUCHO</translation>
+        <translation type="obsolete">CARTUCHO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>LAST POSTED</source>
-        <translation>ÚLTIMO COLOCADO</translation>
+        <translation type="obsolete">ÚLTIMO COLOCADO</translation>
     </message>
     <message>
         <source>POSTED FILENAME</source>
-        <translation>NOMBRE DEL ARCHIVO</translation>
+        <translation type="obsolete">NOMBRE DEL ARCHIVO</translation>
     </message>
     <message>
         <source>&amp;Active Carts:</source>

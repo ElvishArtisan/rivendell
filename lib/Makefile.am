@@ -218,6 +218,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdrecording.cpp rdrecording.h\
                         rdrehash.cpp rdrehash.h\
                         rdrenderer.cpp rdrenderer.h\
+                        rdreplcartlistmodel.cpp rdreplcartlistmodel.h\
                         rdreplicator.cpp rdreplicator.h\
                         rdreplicatorlistmodel.cpp rdreplicatorlistmodel.h\
                         rdreport.cpp rdreport.h\
@@ -377,6 +378,7 @@ nodist_librd_la_SOURCES = moc_rd3emptycart.cpp\
                           moc_rdpypadlistmodel.cpp\
                           moc_rdrehash.cpp\
                           moc_rdrenderer.cpp\
+                          moc_rdreplcartlistmodel.cpp\
                           moc_rdreplicatorlistmodel.cpp\
                           moc_rdresourcelistmodel.cpp\
                           moc_rdripc.cpp\

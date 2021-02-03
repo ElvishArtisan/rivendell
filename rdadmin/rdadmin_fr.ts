@@ -4238,27 +4238,11 @@ Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TITLE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LAST POSTED</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Active Carts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source> Replicator Carts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>POSTED FILENAME</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

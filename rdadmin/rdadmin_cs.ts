@@ -6010,15 +6010,15 @@ znovu</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>VOZÍK</translation>
+        <translation type="obsolete">VOZÍK</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>LAST POSTED</source>
-        <translation>NAPOSLEDY VYVĚŠENO</translation>
+        <translation type="obsolete">NAPOSLEDY VYVĚŠENO</translation>
     </message>
     <message>
         <source>&amp;Active Carts:</source>
@@ -6030,7 +6030,7 @@ znovu</translation>
     </message>
     <message>
         <source>POSTED FILENAME</source>
-        <translation>VYVĚŠENÝ NÁZEV SOUBORU</translation>
+        <translation type="obsolete">VYVĚŠENÝ NÁZEV SOUBORU</translation>
     </message>
 </context>
 <context>

@@ -2,7 +2,7 @@
 //
 // List Rivendell Replicator Carts
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,11 @@
 #ifndef LIST_REPLICATOR_CARTS_H
 #define LIST_REPLICATOR_CARTS_H
 
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 
-#include <rddb.h>
 #include <rddialog.h>
-#include <rdlistviewitem.h>
+#include <rdreplcartlistmodel.h>
+#include <rdtableview.h>
 
 class ListReplicatorCarts : public RDDialog
 {
@@ -44,24 +43,17 @@ class ListReplicatorCarts : public RDDialog
   void repostData();
   void repostAllData();
   void closeData();
-  void refreshTimeoutData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  RDListView *list_view;
+  RDTableView *list_view;
+  RDReplCartListModel *list_model;
   QPushButton *list_repost_button;
   QPushButton *list_repost_all_button;
   QPushButton *list_close_button;
-  QString list_replicator_name;
-  QPixmap *list_playout_map;
-  QPixmap *list_macro_map;
-  QTimer *list_refresh_timer;
 };
 
 
-#endif
-
-
+#endif  // LIST_REPLICATOR_CARTS_H
