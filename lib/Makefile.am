@@ -228,6 +228,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdrsscategorybox.cpp rdrsscategorybox.h\
                         rdschedcartlist.cpp rdschedcartlist.h\
                         rdschedcode.cpp rdschedcode.h\
+                        rdschedcodelistmodel.cpp rdschedcodelistmodel.h\
                         rdschedcodes_dialog.cpp rdschedcodes_dialog.h\
                         rdschedruleslist.cpp rdschedruleslist.h\
                         rdsegmeter.cpp rdsegmeter.h\
@@ -379,6 +380,7 @@ nodist_librd_la_SOURCES = moc_rd3emptycart.cpp\
                           moc_rdreplicatorlistmodel.cpp\
                           moc_rdresourcelistmodel.cpp\
                           moc_rdripc.cpp\
+                          moc_rdschedcodelistmodel.cpp\
                           moc_rdschedcodes_dialog.cpp\
                           moc_rdrsscategorybox.cpp\
                           moc_rdsegmeter.cpp\

@@ -2,8 +2,8 @@
 //
 // Edit scheduler codes dialog
 //
-//   Stefan Gabriel <stg@st-gabriel.de>
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   Based on original code by Stefan Gabriel <stg@st-gabriel.de>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,7 @@
 #ifndef EDIT_SCHEDCODES_H
 #define EDIT_SCHEDCODES_H
 
-#include <qlineedit.h>
+#include <QLineEdit>
 
 #include <rddialog.h>
 
@@ -30,20 +30,21 @@ class EditSchedCode : public RDDialog
 {
   Q_OBJECT
   public:
-   EditSchedCode(QString schedcode,QString description,QWidget *parent=0);
+   EditSchedCode(QWidget *parent=0);
    ~EditSchedCode();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
+
+  public slots:
+   int exec(const QString &scode);
 
   private slots:
    void okData();
    void cancelData();
 
   private:
-   QString *schedcode_code;
-   QString *schedcode_description;
-   QLineEdit *schedcode_name_edit;
-   QLineEdit *schedcode_description_edit;
+   QLineEdit *d_code_edit;
+   QLineEdit *d_description_edit;
 };
 
 

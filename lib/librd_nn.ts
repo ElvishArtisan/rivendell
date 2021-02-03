@@ -3849,6 +3849,17 @@ prøv ein gong til!</translation>
     </message>
 </context>
 <context>
+    <name>RDSchedCodeListModel</name>
+    <message>
+        <source>Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDServiceListModel</name>
     <message>
         <source>Description</source>
