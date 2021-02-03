@@ -30,6 +30,7 @@
 
 #include <rdaudiosettings.h>
 #include <rddialog.h>
+#include <rdgrouplistmodel.h>
 #include <rdlibrarymodel.h>
 #include <rdsystem.h>
 #include <rdtableview.h>
@@ -74,6 +75,7 @@ class EditSystem : public RDDialog
   QLineEdit *edit_origin_email_addr_edit;
   QLabel *edit_temp_cart_group_label;
   QComboBox *edit_temp_cart_group_box;
+  RDGroupListModel *edit_temp_cart_group_model;
   QComboBox *edit_rss_processor_station_box;
   QLabel *edit_show_user_list_label;
   QCheckBox *edit_show_user_list_box;

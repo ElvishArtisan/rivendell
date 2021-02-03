@@ -140,12 +140,8 @@ EditSystem::EditSystem(QWidget *parent)
   // Temporary Cart Group
   //
   edit_temp_cart_group_box=new QComboBox(this);
-  sql="select NAME from GROUPS order by NAME";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    edit_temp_cart_group_box->insertItem(q->value(0).toString());
-  }
-  delete q;
+  edit_temp_cart_group_model=new RDGroupListModel(false,true,this);
+  edit_temp_cart_group_box->setModel(edit_temp_cart_group_model);
   edit_temp_cart_group_label=
     new QLabel(edit_temp_cart_group_box,tr("Temporary Cart Group:"),this);
   edit_temp_cart_group_label->setFont(labelFont());
@@ -252,11 +248,7 @@ EditSystem::EditSystem(QWidget *parent)
       edit_sample_rate_box->setCurrentItem(i);
     }
   }
-  for(int i=0;i<edit_temp_cart_group_box->count();i++) {
-    if(edit_temp_cart_group_box->text(i)==edit_system->tempCartGroup()) {
-      edit_temp_cart_group_box->setCurrentItem(i);
-    }
-  }
+  edit_temp_cart_group_box->setCurrentText(edit_system->tempCartGroup());
 }
 
 
@@ -519,7 +511,7 @@ void EditSystem::resizeEvent(QResizeEvent *e)
   edit_maxpost_label->setGeometry(10,164,235,20);
   edit_maxpost_unit_label->setGeometry(315,164,60,20);
 
-  edit_temp_cart_group_box->setGeometry(250,185,100,20);
+  edit_temp_cart_group_box->setGeometry(250,185,140,20);
   edit_temp_cart_group_label->setGeometry(10,185,235,20);
 
   edit_rss_processor_label->setGeometry(10,207,235,20);
