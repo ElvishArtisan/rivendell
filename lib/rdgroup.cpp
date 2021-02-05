@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Group.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -292,9 +292,9 @@ int RDGroup::freeCartQuantity() const
   return free;
 }
 
-bool RDGroup::reserveCarts(std::vector<unsigned> *cart_nums,
+bool RDGroup::reserveCarts(QList<unsigned> *cart_nums,
 			   const QString &station_name,RDCart::Type type,
-			   unsigned quan) const
+			   int quan) const
 {
   unsigned next;
   QString sql;
@@ -310,7 +310,7 @@ bool RDGroup::reserveCarts(std::vector<unsigned> *cart_nums,
       next++;
     }
     else {
-      for(unsigned i=0;i<cart_nums->size();i++) {
+      for(int i=0;i<cart_nums->size();i++) {
 	sql=QString().sprintf("delete from CART where NUMBER=%u",
 			      cart_nums->at(i));
 	q=new RDSqlQuery(sql);

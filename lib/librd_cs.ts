@@ -1791,6 +1791,49 @@ ze &amp;souboru</translation>
     </message>
 </context>
 <context>
+    <name>RDDiscModel</name>
+    <message>
+        <source>Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Délka</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Záběr</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[continued]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDDropboxListModel</name>
     <message>
         <source>ID</source>

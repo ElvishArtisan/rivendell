@@ -436,27 +436,27 @@ Track</source>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>STOPA</translation>
+        <translation type="obsolete">STOPA</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DÉLKA</translation>
+        <translation type="obsolete">DÉLKA</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>OTHER</source>
-        <translation>JINÉ</translation>
+        <translation type="obsolete">JINÉ</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYP</translation>
+        <translation type="obsolete">TYP</translation>
     </message>
     <message>
         <source>CUT</source>
-        <translation>ZÁBĚR</translation>
+        <translation type="obsolete">ZÁBĚR</translation>
     </message>
     <message>
         <source>Disk Progress</source>
@@ -504,30 +504,30 @@ Track</source>
     </message>
     <message>
         <source>Cut Conflict</source>
-        <translation>Střet záběru</translation>
+        <translation type="unfinished">Střet záběru</translation>
     </message>
     <message>
         <source>That cut has already been assigned a track!</source>
-        <translation>Tento záběr již byl přiřazen ke stopě!</translation>
+        <translation type="unfinished">Tento záběr již byl přiřazen ke stopě!</translation>
     </message>
     <message>
         <source>Cut Exists</source>
-        <translation>Záběr existuje</translation>
+        <translation type="unfinished">Záběr existuje</translation>
     </message>
     <message>
         <source>A recording already exists.
 Do you want to overwrite it?</source>
-        <translation>Nahrávka již existuje.
+        <translation type="unfinished">Nahrávka již existuje.
 Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Vyprázdnit schránku</translation>
+        <translation type="unfinished">Vyprázdnit schránku</translation>
     </message>
     <message>
         <source>Ripping this cut will also empty the clipboard.
 Do you still want to proceed?</source>
-        <translation>Vytažení tohoto záběru vyprázdní také schránku.
+        <translation type="unfinished">Vytažení tohoto záběru vyprázdní také schránku.
 Přesto smazat?</translation>
     </message>
     <message>
@@ -540,19 +540,19 @@ Přesto smazat?</translation>
     </message>
     <message>
         <source>Audio Track</source>
-        <translation>Zvuková stopa</translation>
+        <translation type="obsolete">Zvuková stopa</translation>
     </message>
     <message>
         <source>Data Track</source>
-        <translation>Datová stopa</translation>
+        <translation type="obsolete">Datová stopa</translation>
     </message>
     <message>
         <source>Rip Complete</source>
-        <translation>Vytažení dokončeno</translation>
+        <translation type="obsolete">Vytažení dokončeno</translation>
     </message>
     <message>
         <source>Rip complete!</source>
-        <translation>Vytažení dokončeno!</translation>
+        <translation type="unfinished">Vytažení dokončeno!</translation>
     </message>
     <message>
         <source>Rip Aborted</source>
@@ -574,7 +574,7 @@ Bitte überprüfen sie ihre Ripperkonfiguration und versuchen sie es erneut.</tr
     </message>
     <message>
         <source>Total Progress</source>
-        <translation>Celkový postup</translation>
+        <translation type="unfinished">Celkový postup</translation>
     </message>
     <message>
         <source>No Access</source>
@@ -605,18 +605,18 @@ z CD</translation>
     <message>
         <source>Abort
 Rip</source>
-        <translation>Zrušit
+        <translation type="unfinished">Zrušit
 vytahování</translation>
     </message>
     <message>
         <source>Rip
 Disk</source>
-        <translation>Vytáhnout
+        <translation type="unfinished">Vytáhnout
 z CD</translation>
     </message>
     <message>
         <source>Rip aborted!</source>
-        <translation>Vytažení
+        <translation type="unfinished">Vytažení
 zrušeno!</translation>
     </message>
     <message>
@@ -639,10 +639,6 @@ Cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[continued]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Modify
 Cart Label</source>
         <translation type="unfinished"></translation>
@@ -650,18 +646,6 @@ Cart Label</source>
     <message>
         <source>Clear
 Selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to allocate carts in group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to allocate cart in group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -674,6 +658,18 @@ Selection</source>
     </message>
     <message>
         <source>Lookup Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to allocate carts in group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to allocate cart in group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

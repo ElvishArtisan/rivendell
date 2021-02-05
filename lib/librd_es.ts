@@ -1761,6 +1761,57 @@ Cartucho</translation>
     </message>
 </context>
 <context>
+    <name>RDDiscModel</name>
+    <message>
+        <source>Track</source>
+        <translation type="unfinished">Pista</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Longitud</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation type="obsolete">Otro</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Cortar</translation>
+    </message>
+    <message>
+        <source>Audio</source>
+        <translation type="obsolete">Audio</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[continued]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDDropboxListModel</name>
     <message>
         <source>ID</source>

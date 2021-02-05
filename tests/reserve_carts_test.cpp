@@ -2,7 +2,7 @@
 //
 // Test the Rivendell db connection routines.
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <vector>
-
-#include <qapplication.h>
-#include <qvariant.h>
+#include <QApplication>
+#include <QVariant>
 
 #include <rdconfig.h>
 #include <rdgroup.h>
@@ -38,10 +36,10 @@ MainObject::MainObject(QObject *parent)
 {
   RDConfig *config;
   QString group_name;
-  unsigned quantity=0;
+  int quantity=0;
   bool ok=false;
   RDGroup *group=NULL;
-  std::vector<unsigned> cart_nums;
+  QList<unsigned> cart_nums;
   int schema=0;
 
   //
@@ -111,7 +109,7 @@ MainObject::MainObject(QObject *parent)
   if(group->reserveCarts(&cart_nums,config->stationName(),RDCart::Audio,
 			 quantity)) {
     printf("reserved the following carts:\n");
-    for(unsigned i=0;i<cart_nums.size();i++) {
+    for(int i=0;i<cart_nums.size();i++) {
       printf("%06u\n",cart_nums[i]);
     }
   }

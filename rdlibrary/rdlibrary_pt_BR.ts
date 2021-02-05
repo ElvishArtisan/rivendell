@@ -427,27 +427,27 @@ Track</source>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>FAIXA</translation>
+        <translation type="obsolete">FAIXA</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DURAÇÃO</translation>
+        <translation type="obsolete">DURAÇÃO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>OTHER</source>
-        <translation>OUTRO</translation>
+        <translation type="obsolete">OUTRO</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TIPO</translation>
+        <translation type="obsolete">TIPO</translation>
     </message>
     <message>
         <source>CUT</source>
-        <translation>CONTEÚDO</translation>
+        <translation type="obsolete">CONTEÚDO</translation>
     </message>
     <message>
         <source>Disk Progress</source>
@@ -501,30 +501,30 @@ Disco</translation>
     </message>
     <message>
         <source>Cut Conflict</source>
-        <translation>Confllito de Conteúdo</translation>
+        <translation type="unfinished">Confllito de Conteúdo</translation>
     </message>
     <message>
         <source>That cut has already been assigned a track!</source>
-        <translation>Este conteúdo já foi destinado a uma faixa!</translation>
+        <translation type="unfinished">Este conteúdo já foi destinado a uma faixa!</translation>
     </message>
     <message>
         <source>Cut Exists</source>
-        <translation>COnteúdo Existente</translation>
+        <translation type="unfinished">COnteúdo Existente</translation>
     </message>
     <message>
         <source>A recording already exists.
 Do you want to overwrite it?</source>
-        <translation>Uma gravação já existe.
+        <translation type="unfinished">Uma gravação já existe.
 Você quer sobrescrevê-la?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Esvaziar Clipboard</translation>
+        <translation type="unfinished">Esvaziar Clipboard</translation>
     </message>
     <message>
         <source>Ripping this cut will also empty the clipboard.
 Do you still want to proceed?</source>
-        <translation>Extrair este Conteúdo também esvaziará o clipboard.
+        <translation type="unfinished">Extrair este Conteúdo também esvaziará o clipboard.
 Você ainda quer proceder?</translation>
     </message>
     <message>
@@ -537,19 +537,19 @@ Você ainda quer proceder?</translation>
     </message>
     <message>
         <source>Audio Track</source>
-        <translation>Faixa de Áudio</translation>
+        <translation type="obsolete">Faixa de Áudio</translation>
     </message>
     <message>
         <source>Data Track</source>
-        <translation>Faixa de Dados</translation>
+        <translation type="obsolete">Faixa de Dados</translation>
     </message>
     <message>
         <source>Rip Complete</source>
-        <translation>Extração Completa</translation>
+        <translation type="obsolete">Extração Completa</translation>
     </message>
     <message>
         <source>Rip complete!</source>
-        <translation>Extração Completa!</translation>
+        <translation type="unfinished">Extração Completa!</translation>
     </message>
     <message>
         <source>Rip Aborted</source>
@@ -571,7 +571,7 @@ Por Favor, cheque suas configurações e tente novamente.</translation>
     </message>
     <message>
         <source>Total Progress</source>
-        <translation>Progresso Total</translation>
+        <translation type="unfinished">Progresso Total</translation>
     </message>
     <message>
         <source>No Access</source>
@@ -588,20 +588,6 @@ Por Favor, cheque suas configurações e tente novamente.</translation>
     <message>
         <source>&amp;Rip
 Disc</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Abort
-Rip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rip
-Disk</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rip aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -632,10 +618,6 @@ Cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[continued]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Modify
 Cart Label</source>
         <translation type="unfinished"></translation>
@@ -643,18 +625,6 @@ Cart Label</source>
     <message>
         <source>Clear
 Selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to allocate carts in group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to allocate cart in group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -667,6 +637,32 @@ Selection</source>
     </message>
     <message>
         <source>Lookup Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Abort
+Rip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip
+Disk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to allocate carts in group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to allocate cart in group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

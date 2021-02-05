@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Service
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-#include <qcolor.h>
 
 #include <rdcart.h>
 
@@ -62,9 +60,8 @@ class RDGroup
   void setNotifyEmailAddress(const QString &addr) const;
   unsigned nextFreeCart(unsigned startcart=0) const;
   int freeCartQuantity() const;
-  bool reserveCarts(std::vector<unsigned> *cart_nums,
-		    const QString &station_name,RDCart::Type type,
-		    unsigned quan) const;
+  bool reserveCarts(QList<unsigned> *cart_nums,const QString &station_name,
+		    RDCart::Type type,int quan) const;
   bool cartNumberValid(unsigned cartnum) const;
   QString xml() const;
   

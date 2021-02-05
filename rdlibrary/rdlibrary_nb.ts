@@ -426,27 +426,27 @@ Track</source>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>SPOR</translation>
+        <translation type="obsolete">SPOR</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>LENGD</translation>
+        <translation type="obsolete">LENGD</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TITTEL</translation>
+        <translation type="obsolete">TITTEL</translation>
     </message>
     <message>
         <source>OTHER</source>
-        <translation>ANNA</translation>
+        <translation type="obsolete">ANNA</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYPE</translation>
+        <translation type="obsolete">TYPE</translation>
     </message>
     <message>
         <source>CUT</source>
-        <translation>Kutt</translation>
+        <translation type="obsolete">Kutt</translation>
     </message>
     <message>
         <source>Disk Progress</source>
@@ -500,30 +500,30 @@ plata</translation>
     </message>
     <message>
         <source>Cut Conflict</source>
-        <translation>Konflikt mellom kutt</translation>
+        <translation type="unfinished">Konflikt mellom kutt</translation>
     </message>
     <message>
         <source>That cut has already been assigned a track!</source>
-        <translation>Dette kuttet er alt tildelt eit spor!</translation>
+        <translation type="unfinished">Dette kuttet er alt tildelt eit spor!</translation>
     </message>
     <message>
         <source>Cut Exists</source>
-        <translation>Kuttet eksisterer</translation>
+        <translation type="unfinished">Kuttet eksisterer</translation>
     </message>
     <message>
         <source>A recording already exists.
 Do you want to overwrite it?</source>
-        <translation>Det finst alt eit opptak.
+        <translation type="unfinished">Det finst alt eit opptak.
 Vil du byta det ut?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Tøm utklyppstavla</translation>
+        <translation type="unfinished">Tøm utklyppstavla</translation>
     </message>
     <message>
         <source>Ripping this cut will also empty the clipboard.
 Do you still want to proceed?</source>
-        <translation>Viss du rippar dette kuttet, vil du òg tøma utklyppstavla.
+        <translation type="unfinished">Viss du rippar dette kuttet, vil du òg tøma utklyppstavla.
 Vil du halda fram?</translation>
     </message>
     <message>
@@ -536,19 +536,19 @@ Vil du halda fram?</translation>
     </message>
     <message>
         <source>Audio Track</source>
-        <translation>Lydspor</translation>
+        <translation type="obsolete">Lydspor</translation>
     </message>
     <message>
         <source>Data Track</source>
-        <translation>Dataspor</translation>
+        <translation type="obsolete">Dataspor</translation>
     </message>
     <message>
         <source>Rip Complete</source>
-        <translation>Ferdig å rippa</translation>
+        <translation type="obsolete">Ferdig å rippa</translation>
     </message>
     <message>
         <source>Rip complete!</source>
-        <translation>Ferdig å rippa!</translation>
+        <translation type="unfinished">Ferdig å rippa!</translation>
     </message>
     <message>
         <source>Rip Aborted</source>
@@ -598,20 +598,6 @@ Disc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Abort
-Rip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rip
-Disk</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rip aborted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Track</source>
         <translation type="unfinished"></translation>
     </message>
@@ -631,10 +617,6 @@ Cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[continued]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Modify
 Cart Label</source>
         <translation type="unfinished"></translation>
@@ -642,18 +624,6 @@ Cart Label</source>
     <message>
         <source>Clear
 Selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to allocate carts in group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to allocate cart in group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -666,6 +636,32 @@ Selection</source>
     </message>
     <message>
         <source>Lookup Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Abort
+Rip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip
+Disk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip aborted!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to allocate carts in group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to allocate cart in group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

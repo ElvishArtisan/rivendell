@@ -303,30 +303,6 @@ Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TRACK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LENGTH</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TITLE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OTHER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TYPE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CUT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Disk Progress</source>
         <translation type="unfinished"></translation>
     </message>
@@ -359,6 +335,60 @@ Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>&amp;Rip
+Disc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDLibrary - Importer Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDLibrary - Ripper Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Cart
+Per Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Single
+Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set
+&amp;Cart/Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify
+Cart Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear
+Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Values to Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lookup Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Cut Conflict</source>
         <translation type="unfinished"></translation>
     </message>
@@ -385,39 +415,6 @@ Do you still want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Audio Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Data Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rip Complete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rip complete!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Rip
-Disc</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDLibrary - Importer Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDLibrary - Ripper Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Total Progress</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Abort
 Rip</source>
         <translation type="unfinished"></translation>
@@ -428,40 +425,15 @@ Disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Total Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Rip aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Cart
-Per Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Single
-Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set
-&amp;Cart/Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[continued]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Modify
-Cart Label</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear
-Selection</source>
+        <source>Rip complete!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -474,18 +446,6 @@ Selection</source>
     </message>
     <message>
         <source>Unable to allocate cart in group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Apply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Values to Carts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Lookup Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

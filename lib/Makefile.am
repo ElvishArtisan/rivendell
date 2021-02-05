@@ -121,6 +121,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rddisclookup.cpp rddisclookup.h\
                         rddisclookup_factory.cpp rddisclookup_factory.h\
                         rddiscrecord.cpp rddiscrecord.h\
+                        rddiscmodel.cpp rddiscmodel.h\
                         rddownload.cpp rddownload.h\
                         rddropbox.cpp rddropbox.h\
                         rddropboxlistmodel.cpp rddropboxlistmodel.h\
@@ -318,6 +319,7 @@ nodist_librd_la_SOURCES = moc_rd3emptycart.cpp\
                           moc_rddelete.cpp\
                           moc_rddialog.cpp\
                           moc_rddisclookup.cpp\
+                          moc_rddiscmodel.cpp\
                           moc_rddownload.cpp\
                           moc_rddropboxlistmodel.cpp\
                           moc_rddummylookup.cpp\

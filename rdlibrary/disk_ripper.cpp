@@ -19,6 +19,7 @@
 //
 
 #include <QApplication>
+#include <QList>
 #include <QMessageBox>
 
 #include <rdaudioimport.h>
@@ -159,31 +160,23 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   // Track List
   //
-  rip_track_list=new Q3ListView(this);
-  rip_track_list->setAllColumnsShowFocus(true);
-  rip_track_list->setItemMargin(5);
-  rip_track_list->setSorting(-1);
-  rip_track_list->setSelectionMode(Q3ListView::Extended);
-  connect(rip_track_list,SIGNAL(selectionChanged()),
-	  this,SLOT(selectionChangedData()));
-  connect(rip_track_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-  rip_track_label=new QLabel(rip_track_list,tr("Tracks"),this);
+  rip_track_view=new RDTableView(this);
+  rip_track_view->setSelectionMode(QAbstractItemView::ExtendedSelection);
+  rip_track_model=new RDDiscModel(this);
+  rip_track_model->setFont(defaultFont());
+  rip_track_model->setPalette(palette());
+  rip_track_view->setModel(rip_track_model);
+  rip_track_label=new QLabel(rip_track_view,tr("Tracks"),this);
   rip_track_label->setFont(sectionLabelFont());
-  rip_track_list->addColumn(tr("TRACK"));
-  rip_track_list->setColumnAlignment(0,Qt::AlignHCenter);
-  rip_track_list->addColumn(tr("LENGTH"));
-  rip_track_list->setColumnAlignment(1,Qt::AlignRight);
-  rip_track_list->addColumn(tr("TITLE"));
-  rip_track_list->setColumnAlignment(2,Qt::AlignLeft);
-  rip_track_list->addColumn(tr("OTHER"));
-  rip_track_list->setColumnAlignment(3,Qt::AlignLeft);
-  rip_track_list->addColumn(tr("TYPE"));
-  rip_track_list->setColumnAlignment(4,Qt::AlignLeft);
-  rip_track_list->addColumn(tr("CUT"));
-  rip_track_list->setColumnAlignment(5,Qt::AlignLeft);
+  connect(rip_track_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(rip_track_view->selectionModel(),
+	  SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
+	  this,
+	  SLOT(selectionChangedData(const QItemSelection &,const QItemSelection &)));
+  connect(rip_track_model,SIGNAL(modelReset()),
+	  rip_track_view,SLOT(resizeColumnsToContents()));
+  rip_track_view->resizeColumnsToContents();
 
   //
   // Progress Bars
@@ -346,7 +339,8 @@ DiskRipper::~DiskRipper()
 {
   rip_cdrom->close();
   delete rip_cdrom;
-  delete rip_track_list;
+  delete rip_track_view;
+  delete rip_track_model;
   delete rip_rip_button;
   delete rip_close_button;
   delete rip_eject_button;
@@ -378,11 +372,14 @@ void DiskRipper::ejectButtonData()
 
 void DiskRipper::playButtonData()
 {
-  if(rip_track_list->currentItem()!=NULL) {
-    rip_cdrom->play(rip_track_list->currentItem()->text(0).toInt());
-    rip_play_button->on();
-    rip_stop_button->off();
+  QModelIndexList rows=rip_track_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
+    return;
   }
+  rip_cdrom->play(1+rows.first().row());
+  rip_play_button->on();
+  rip_stop_button->off();
 }
 
 
@@ -396,17 +393,13 @@ void DiskRipper::stopButtonData()
 
 void DiskRipper::ripDiskButtonData()
 {
-  RDListViewItem *item=(RDListViewItem *)rip_track_list->selectedItem();
-  if(item!=NULL) {
-    rip_track_list->setSelected(item,false);
-  }
   rip_aborting=false;
 
   //
   // Calculate number of tracks to rip
   //
   int tracks=0;
-  for(unsigned i=0;i<rip_cutnames.size();i++) {
+  for(int i=0;i<rip_cutnames.size();i++) {
     if(!rip_cutnames[i].isEmpty()) {
       tracks++;
     }
@@ -422,9 +415,9 @@ void DiskRipper::ripDiskButtonData()
   // Rip
   //
   tracks=0;
-  item=(RDListViewItem *)rip_track_list->firstChild();
-  while((item!=NULL)&&(!rip_aborting)) {
-    if(!rip_cutnames[item->text(0).toInt()-1].isEmpty()) {
+  for(int i=0;i<rip_track_model->rowCount();i++) {
+    QString cutname=rip_track_model->cutName(rip_track_model->index(i,0));
+     if(!cutname.isEmpty()) {
       rip_eject_button->setDisabled(true);
       rip_play_button->setDisabled(true);
       rip_stop_button->setDisabled(true);
@@ -442,12 +435,11 @@ void DiskRipper::ripDiskButtonData()
       rip_autotrim_box->setDisabled(true);
       rip_autotrim_spin->setDisabled(true);
       rip_disk_bar->setValue(tracks++);
-      int start_track=item->text(0).toInt();
-      int end_track=rip_end_track[item->text(0).toInt()-1];
-      RipTrack(start_track,end_track,rip_cutnames[item->text(0).toInt()-1],
+      int start_track=i+1;
+      int end_track=rip_end_track[i];
+      RipTrack(start_track,end_track,rip_cutnames[i],
 	       BuildTrackName(start_track,end_track));
     }
-    item=(RDListViewItem *)item->nextSibling();
   }
   rip_eject_button->setEnabled(true);
   rip_play_button->setEnabled(true);
@@ -471,24 +463,19 @@ void DiskRipper::ripDiskButtonData()
   rip_trackbar_label->setDisabled(true);
   rip_diskbar_label->setText(tr("Total Progress"));
   rip_trackbar_label->setText(tr("Track Progress"));
-  item=(RDListViewItem *)rip_track_list->firstChild();
-  while(item!=NULL) {
-    item->setText(5,"");
-    item=(RDListViewItem *)item->nextSibling();
-  }
-
+  rip_track_model->clearCutNames();
   if(rip_aborting) {
-    QMessageBox::information(this,tr("Rip Complete"),tr("Rip aborted!"));
+    QMessageBox::information(this,"RDLibrary",tr("Rip aborted!"));
   }
   else {
-    QMessageBox::information(this,tr("Rip Complete"),tr("Rip complete!"));
+    QMessageBox::information(this,"RDLibrary",tr("Rip complete!"));
   }
 }
 
 
 void DiskRipper::ejectedData()
 {
-  rip_track_list->clear();
+  rip_track_model->clear();
   rip_track=-1;
   rip_artist_edit->clear();
   rip_album_edit->clear();
@@ -503,24 +490,19 @@ void DiskRipper::ejectedData()
 
 void DiskRipper::setCutButtonData()
 {
-  RDListViewItem *item=(RDListViewItem *)rip_track_list->firstChild();
-  while(item!=NULL) {
-    if(item->isSelected()) {
-      break;
-    }
-    item=(RDListViewItem *)item->nextSibling();
-  }
-  if(item==NULL) {
+  QModelIndexList rows=rip_track_view->selectionModel()->selectedRows();
+  
+  if(rows.size()!=1) {
     return;
   }
-  QString cutname=rip_cutnames[item->text(0).toUInt()-1];
+  QString cutname=rip_cutnames[rows.first().row()];
   if(rip_cut_dialog->exec(&cutname)) {
     if(cutname.isEmpty()) {
-      rip_cutnames[item->text(0).toUInt()-1]="";
-      item->setText(5,"");
+      rip_cutnames[rows.first().row()]="";
+      rip_track_model->setCutName(rows.first(),"");
     }
     else {
-      for(unsigned i=0;i<rip_cutnames.size();i++) {
+      for(int i=0;i<rip_cutnames.size();i++) {
 	if(cutname==rip_cutnames[i]) {
 	  QMessageBox::warning(this,tr("Cut Conflict"),
 			 tr("That cut has already been assigned a track!"));
@@ -557,24 +539,20 @@ void DiskRipper::setCutButtonData()
 	  cut_clipboard=NULL;
 	}
       }
-      rip_cutnames[item->text(0).toUInt()-1]=cutname;
-      rip_end_track[item->text(0).toUInt()-1]=item->text(0).toInt();
-      RDCart *cart=new RDCart(cutname.left(6).toUInt());
-      RDCut *cut=new RDCut(cutname);
-      item->setId(cart->number());
-      item->setText(5,cart->title()+" -> "+cut->description());
-      delete cut;
-      delete cart;
+      rip_cutnames[rows.first().row()]=cutname;
+      rip_end_track[rows.first().row()]=1+rows.first().row();
+      rip_track_model->setCutName(rows.first(),cutname);
     }
+  }
+  else {
+    return;
   }
 
   bool track_selected=false;
-  item=(RDListViewItem *)rip_track_list->firstChild();
-  while(item!=NULL) {
-    if(!item->text(5).isEmpty()) {
+  for(int i=0;i<rip_track_model->rowCount();i++) {
+    if(!rip_track_model->cutName(rip_track_model->index(i,0)).isEmpty()) {
       track_selected=true;
     }
-    item=(RDListViewItem *)item->nextSibling();
   }
   rip_setcut_button->setEnabled(false);
   rip_setall_button->setEnabled(false);
@@ -602,17 +580,10 @@ void DiskRipper::setMultiButtonData()
   //
   // Reserve Carts
   //
-  unsigned count=0;
-  std::vector<unsigned> cart_nums;
-  RDListViewItem *item=(RDListViewItem *)rip_track_list->firstChild();
-  while(item!=NULL) {
-    if(item->isSelected()) {
-      count++;
-    }
-    item=(RDListViewItem *)item->nextSibling();
-  }
+  QList<unsigned> cart_nums;
+  QModelIndexList rows=rip_track_view->selectionModel()->selectedRows();
   if(!group->reserveCarts(&cart_nums,rda->station()->name(),RDCart::Audio,
-			  count)) {
+			  rows.size())) {
     QMessageBox::warning(this,"RDLibrary - "+tr("Error"),
 			 tr("Unable to allocate carts in group")+" \""+
 			 group->name()+"\".");
@@ -622,19 +593,10 @@ void DiskRipper::setMultiButtonData()
   //
   // Schedule Rips
   //
-  count=0;
-  item=(RDListViewItem *)rip_track_list->firstChild();
-  while(item!=NULL) {
-    if(item->isSelected()) {
-      rip_cutnames[item->text(0).toUInt()-1]=
-	QString().sprintf("%06u_001",cart_nums[count]);
-      rip_end_track[item->text(0).toUInt()-1]=item->text(0).toInt();
-      item->setId(cart_nums[count]);
-      item->setText(5,QString().sprintf("[New Cart %06u] -> Cut 001",
-					cart_nums[count]));
-      count++;
-    }
-    item=(RDListViewItem *)item->nextSibling();
+  for(int i=0;i<rows.size();i++) {
+    rip_cutnames[rows.at(i).row()]=RDCut::cutName(cart_nums[i],1);
+    rip_end_track[rows.at(i).row()]=1+rows.at(i).row();
+    rip_track_model->setCutName(rows.at(i),rip_cutnames[rows.at(i).row()]);
   }
   rip_setcut_button->setEnabled(false);
   rip_setall_button->setEnabled(false);
@@ -658,7 +620,7 @@ void DiskRipper::setSingleButtonData()
   }
   delete list_groups;
   RDGroup *group=new RDGroup(*rip_group_text);
-  std::vector<unsigned> cart_nums;
+  QList<unsigned> cart_nums;
   unsigned new_cart=0;
   int first_track=-1;
 
@@ -675,26 +637,19 @@ void DiskRipper::setSingleButtonData()
   //
   // Schedule Rips
   //
-  RDListViewItem *item=(RDListViewItem *)rip_track_list->firstChild();
-  while(item!=NULL) {
-    if(item->isSelected()) {
-      if(new_cart==0) {
-	first_track=item->text(0).toUInt()-1;
-	new_cart=group->nextFreeCart(cart_nums[0]);
-	rip_cutnames[item->text(0).toUInt()-1]=
-	  QString().sprintf("%06u_001",cart_nums[0]);
-	item->setId(cart_nums[0]);
-	item->
-	  setText(5,QString().sprintf("[New Cart %06u] -> Cut 001",
-				      cart_nums[0]));
-      }
-      else {
-	rip_end_track[first_track]=item->text(0).toUInt();
-	item->setId(cart_nums[0]);
-	item->setText(5,tr("[continued]"));
-      }
+  QModelIndexList rows=
+    SortRows(rip_track_view->selectionModel()->selectedRows());
+  for(int i=0;i<rows.size();i++) {
+    if(new_cart==0) {
+      first_track=rows.at(i).row();
+      new_cart=group->nextFreeCart(cart_nums[0]);
+      rip_cutnames[rows.at(i).row()]=RDCut::cutName(cart_nums[0],1);
+      rip_track_model->setCutName(rows.at(i),RDCut::cutName(cart_nums[0],1));
     }
-    item=(RDListViewItem *)item->nextSibling();
+    else {
+      rip_end_track[first_track]=1+rows.at(i).row();
+      rip_track_model->setLeadTrack(rows.at(i),first_track);
+    }
   }
   rip_setcut_button->setEnabled(false);
   rip_setall_button->setEnabled(false);
@@ -708,34 +663,27 @@ void DiskRipper::setSingleButtonData()
 void DiskRipper::modifyCartLabelData()
 {
   SetArtistAlbum();
+  QModelIndexList rows=rip_track_view->selectionModel()->selectedRows();
 
-  RDListViewItem *item=(RDListViewItem *)rip_track_list->firstChild();
-
-  while(item!=NULL) {
-    if(item->isSelected()) {
-      int track=item->text(0).toInt()-1;
-      if(rip_wavedata_dialog->exec(rip_wave_datas[track])==0) {
-	item->setText(2,rip_wave_datas[track]->title());
-      }
-      return;
-    }
-    item=(RDListViewItem *)item->nextSibling();
+  if(rows.size()!=1) {
+    return;
+  }
+  if(rip_wavedata_dialog->exec(rip_wave_datas[rows.first().row()])==0) {
+    rip_track_model->
+      setTrackTitle(rows.first(),rip_wave_datas[rows.first().row()]->title());
   }
 }
 
 
 void DiskRipper::clearSelectionData()
 {
-  RDListViewItem *item=(RDListViewItem *)rip_track_list->firstChild();
-  while(item!=NULL) {
-    if(item->isSelected()) {
-      rip_cutnames[item->text(0).toInt()-1]="";
-      rip_end_track[item->text(0).toInt()-1]=-1;
-      item->setId(0);
-      item->setText(5,"");
-      item->setSelected(false);
-    }
-    item=(RDListViewItem *)item->nextSibling();
+  rip_track_view->clearSelection();
+  rip_track_model->clearCutNames();
+  for(int i=0;i<rip_cutnames.size();i++) {
+    rip_cutnames[i]="";
+  }
+  for(int i=0;i<rip_end_track.size();i++) {
+    rip_end_track[i]=-1;
   }
   rip_setcut_button->setDisabled(true);
   rip_setall_button->setDisabled(true);
@@ -748,15 +696,13 @@ void DiskRipper::clearSelectionData()
 
 void DiskRipper::mediaChangedData()
 {
-  RDListViewItem *l;
-
   rip_cutnames.clear();
   rip_end_track.clear();
-  for(unsigned i=0;i<rip_wave_datas.size();i++) {
+  for(int i=0;i<rip_wave_datas.size();i++) {
     delete rip_wave_datas[i];
   }
   rip_wave_datas.clear();
-  rip_track_list->clear();
+  rip_track_model->clear();
   rip_track=-1;
   rip_setcut_button->setDisabled(true);
   rip_setall_button->setDisabled(true);
@@ -767,21 +713,13 @@ void DiskRipper::mediaChangedData()
     rip_cutnames.push_back(QString());
     rip_end_track.push_back(-1);
     rip_wave_datas.push_back(new RDWaveData());
-    rip_wave_datas.back()->setTitle(tr("Track")+QString().sprintf(" %d",rip_cdrom->tracks()-i+1));
-    l=new RDListViewItem(rip_track_list);
-    l->setText(0,QString().sprintf("%d",i));
-    if(rip_cdrom->isAudio(i)) {
-      l->setText(4,tr("Audio Track"));
-    }
-    else {
-      l->setText(4,tr("Data Track"));
-    }
-    l->setText(1,RDGetTimeLength(rip_cdrom->trackLength(i)));
+    rip_wave_datas.back()->
+      setTitle(tr("Track")+QString().sprintf(" %d",rip_cdrom->tracks()-i+1));
   }
   rip_disc_record.clear();
   rip_cdrom->setCddbRecord(&rip_disc_record);
   rip_disc_lookup->setCddbRecord(&rip_disc_record);
-
+  rip_track_model->setDisc(rip_cdrom);
   rip_disc_lookup->lookup();
 }
 
@@ -811,11 +749,8 @@ void DiskRipper::lookupDoneData(RDDiscLookup::Result result,
     rip_artist_edit->setText(rip_disc_record.discArtist());
     rip_album_edit->setText(rip_disc_record.discAlbum());
     rip_other_edit->setText(rip_disc_record.discExtended());
+    rip_track_model->refresh(&rip_disc_record);
     for(int i=0;i<rip_disc_record.tracks();i++) {
-      rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	setText(2,rip_disc_record.trackTitle(i));
-      rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	setText(3,rip_disc_record.trackExtended(i));
       rip_wave_datas[i]->setTitle(rip_disc_record.trackTitle(i));
       rip_wave_datas[i]->setArtist(rip_disc_record.discArtist());
       rip_wave_datas[i]->setAlbum(rip_disc_record.discAlbum());
@@ -857,46 +792,28 @@ void DiskRipper::autotrimCheckData(bool state)
 }
 
 
-void DiskRipper::selectionChangedData()
+void DiskRipper::selectionChangedData(const QItemSelection &before,
+				      const QItemSelection &after)
 {
-  int count=0;
-  int last_track=0;
-  bool contiguous=true;
-  RDListViewItem *item=(RDListViewItem *)rip_track_list->firstChild();
-
-  while(item!=NULL) {
-    int track=item->text(0).toInt();
-    if(item->isSelected()) {
-      if(item->text(4)==tr("Data Track")) {
-	rip_setcut_button->setEnabled(false);
-	rip_setall_button->setEnabled(false);
-	rip_setsingle_button->setEnabled(false);
-	rip_cartlabel_button->setEnabled(false);
-	rip_clear_button->setEnabled(true);
-	return;
-      }
-      if(item->id()>0) {
-	FocusSelection(item->id());
-	rip_setcut_button->setEnabled(false);
-	rip_setall_button->setEnabled(false);
-	rip_setsingle_button->setEnabled(false);
-	rip_cartlabel_button->setEnabled(true);
-	rip_clear_button->setEnabled(true);
-	return;
-      }
-      if((last_track!=0)&&(last_track!=(track-1))) {
-	contiguous=false;
-      }
-      last_track=track;
-      count++;
+  QModelIndexList rows=rip_track_view->selectionModel()->selectedRows();
+  int count=rows.size();
+  bool contiguous=IsContiguous(rows);
+  
+  for(int i=0;i<rows.size();i++) {
+    if(rip_track_model->trackContainsData(rows.at(i))) {
+      rip_setcut_button->setEnabled(false);
+      rip_setall_button->setEnabled(false);
+      rip_setsingle_button->setEnabled(false);
+      rip_cartlabel_button->setEnabled(false);
+      rip_clear_button->setEnabled(true);
+      return;
     }
-    item=(RDListViewItem *)item->nextSibling();
   }
   rip_setcut_button->setEnabled(count==1);
   rip_setall_button->setEnabled(count>0);
   rip_setsingle_button->setEnabled((count>1)&&contiguous);
   rip_cartlabel_button->setEnabled(false);
-  rip_clear_button->setEnabled(false);
+  rip_clear_button->setEnabled(count>0);
 }
 
 
@@ -906,8 +823,7 @@ void DiskRipper::openBrowserData()
 }
 
 
-void DiskRipper::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				   int col)
+void DiskRipper::doubleClickedData(const QModelIndex &index)
 {
   setCutButtonData();
 }
@@ -935,7 +851,7 @@ void DiskRipper::resizeEvent(QResizeEvent *e)
   rip_browser_button->setGeometry(size().width()-260,117,200,35);
   rip_browser_label->setGeometry(size().width()-260,117,200,35);
   rip_track_label->setGeometry(100,140,100,14);
-  rip_track_list->setGeometry(100,156,size().width()-202,size().height()-342);
+  rip_track_view->setGeometry(100,156,size().width()-202,size().height()-342);
   rip_diskbar_label->setGeometry(10,size().height()-174,size().width()-110,20);
   rip_disk_bar->setGeometry(10,size().height()-154,size().width()-110,20); 
   rip_trackbar_label->setGeometry(10,size().height()-126,size().width()-110,20);
@@ -969,16 +885,6 @@ void DiskRipper::closeEvent(QCloseEvent *e)
 {
   if(!ripper_running) {
     closeData();
-  }
-}
-
-
-void DiskRipper::FocusSelection(int cart_num)
-{
-  RDListViewItem *item=(RDListViewItem *)rip_track_list->firstChild();
-  while(item!=NULL) {
-    item->setSelected(item->id()==cart_num);
-    item=(RDListViewItem *)item->nextSibling();
   }
 }
 
@@ -1105,57 +1011,57 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
 
 void DiskRipper::UpdateRipButton()
 {
-  bool ready=false;
-  RDListViewItem *item=(RDListViewItem *)rip_track_list->firstChild();
-  while(item!=NULL) {
-    ready=ready||(!item->text(5).isEmpty());
-    item=(RDListViewItem *)item->nextSibling();
+  for(int i=0;i<rip_track_model->rowCount();i++) {
+    if(!rip_track_model->cutName(rip_track_model->index(i,0)).isEmpty()) {
+      rip_rip_button->setEnabled(true);
+      return;
+    }
   }
-  rip_rip_button->setEnabled(ready);
+  rip_rip_button->setDisabled(true);
 }
 
 
 QString DiskRipper::BuildTrackName(int start_track,int end_track) const
 {
   QString ret;
-  RDListViewItem *item=(RDListViewItem *)rip_track_list->firstChild();
-  while(item!=NULL) {
-    if(item->text(0).toInt()==start_track) {
-      ret=item->text(2);
+
+  for(int i=0;i<rip_track_model->rowCount();i++) {
+    int track=i+1;
+    QModelIndex row=rip_track_model->index(i,0);
+    if(track==start_track) {
+      ret=rip_track_model->data(row.sibling(row.row(),2)).toString();
       if(ret.isEmpty()) {
-	ret=tr("Track")+" "+item->text(0);
+	ret=tr("Track")+QString().sprintf(" %d",start_track);
       }
     }
     else {
-      if((item->text(0).toInt()>start_track)&&
-	 (item->text(0).toInt()<=end_track)) {
-	if(item->text(2).isEmpty()) {
-	  ret+=" / "+tr("Track")+" "+item->text(0);
+      if((track>start_track)&&
+	 (track<=end_track)) {
+	if(rip_track_model->data(row.sibling(row.row(),2)).toString().
+	   isEmpty()) {
+	  ret+=" / "+tr("Track")+
+	    QString().sprintf(" %d",track);
 	}
 	else {
-	  ret+=" / "+item->text(2);
+	  ret+=" / "+rip_track_model->data(row.sibling(row.row(),2)).toString();
 	}
       }
     }
-    item=(RDListViewItem *)item->nextSibling();
   }
+
   return ret;
 }
 
 
 void DiskRipper::SetArtistAlbum()
 {
-  RDListViewItem *item=(RDListViewItem *)rip_track_list->firstChild();
-
-  while(item!=NULL) {
-    int track=item->text(0).toInt()-1;
-    if(rip_wave_datas[track]->artist().isEmpty()) {
-      rip_wave_datas[track]->setArtist(rip_artist_edit->text());
+  for(int i=0;i<rip_track_model->rowCount();i++) {
+    if(rip_wave_datas[i]->artist().isEmpty()) {
+      rip_wave_datas[i]->setArtist(rip_artist_edit->text());
     }
-    if(rip_wave_datas[track]->album().isEmpty()) {
-      rip_wave_datas[track]->setAlbum(rip_album_edit->text());
+    if(rip_wave_datas[i]->album().isEmpty()) {
+      rip_wave_datas[i]->setAlbum(rip_album_edit->text());
     }
-    item=(RDListViewItem *)item->nextSibling();
   }
 }
 
@@ -1169,3 +1075,44 @@ void DiskRipper::SendNotification(RDNotification::Action action,
   qApp->processEvents();
   delete notify;
 }
+
+
+bool DiskRipper::IsContiguous(const QModelIndexList &rows) const
+{
+  QModelIndexList sorted_rows=SortRows(rows);
+
+  for(int i=1;i<sorted_rows.size();i++) {
+    if(sorted_rows.at(i-1).row()!=(sorted_rows.at(i).row()-1)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+
+QModelIndexList DiskRipper::SortRows(const QModelIndexList &rows) const
+{
+  QModelIndexList ret;
+  QList<int> index;
+  bool modified;
+
+  for(int i=0;i<rows.size();i++) {
+    index.push_back(i);
+  }
+  do {
+    modified=false;
+    for(int i=1;i<rows.size();i++) {
+      if(rows.at(index.at(i-1)).row()>rows.at(index.at(i)).row()) {
+	index.swap(i-1,i);
+	modified=true;
+      }
+    }
+  } while(modified);
+
+  for(int i=0;i<rows.size();i++) {
+    ret.push_back(rows.at(index.at(i)));
+  }
+
+  return ret;
+}
+

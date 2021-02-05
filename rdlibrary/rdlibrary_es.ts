@@ -432,27 +432,27 @@ Track</source>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>PISTA</translation>
+        <translation type="obsolete">PISTA</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DURACIÓN</translation>
+        <translation type="obsolete">DURACIÓN</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>OTHER</source>
-        <translation>OTROS</translation>
+        <translation type="obsolete">OTROS</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TIPO</translation>
+        <translation type="obsolete">TIPO</translation>
     </message>
     <message>
         <source>CUT</source>
-        <translation>AUDIO</translation>
+        <translation type="obsolete">AUDIO</translation>
     </message>
     <message>
         <source>Disk Progress</source>
@@ -494,47 +494,47 @@ Track</source>
     </message>
     <message>
         <source>Cut Conflict</source>
-        <translation>Conflicto en los audios</translation>
+        <translation type="unfinished">Conflicto en los audios</translation>
     </message>
     <message>
         <source>That cut has already been assigned a track!</source>
-        <translation>Este audio ya había sido asignado a una pista</translation>
+        <translation type="unfinished">Este audio ya había sido asignado a una pista</translation>
     </message>
     <message>
         <source>Cut Exists</source>
-        <translation>El audio ya existe</translation>
+        <translation type="unfinished">El audio ya existe</translation>
     </message>
     <message>
         <source>A recording already exists.
 Do you want to overwrite it?</source>
-        <translation>Ya hay una grabación.
+        <translation type="unfinished">Ya hay una grabación.
 ¿Desea sobreescribirla?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Portapapeles vacío</translation>
+        <translation type="unfinished">Portapapeles vacío</translation>
     </message>
     <message>
         <source>Ripping this cut will also empty the clipboard.
 Do you still want to proceed?</source>
-        <translation>Al leer el disco se vaciará el portapapeles.
+        <translation type="unfinished">Al leer el disco se vaciará el portapapeles.
 ¿Desea continuar?</translation>
     </message>
     <message>
         <source>Audio Track</source>
-        <translation>Pista de audio</translation>
+        <translation type="obsolete">Pista de audio</translation>
     </message>
     <message>
         <source>Data Track</source>
-        <translation>Pista de datos</translation>
+        <translation type="obsolete">Pista de datos</translation>
     </message>
     <message>
         <source>Rip Complete</source>
-        <translation>Lectura completada</translation>
+        <translation type="obsolete">Lectura completada</translation>
     </message>
     <message>
         <source>Rip complete!</source>
-        <translation>¡Lectura completada!</translation>
+        <translation type="unfinished">¡Lectura completada!</translation>
     </message>
     <message>
         <source>Rip Aborted</source>
@@ -556,7 +556,7 @@ Por favor, chequee la configuración e intente de nuevo.</translation>
     </message>
     <message>
         <source>Total Progress</source>
-        <translation>Progreso total</translation>
+        <translation type="unfinished">Progreso total</translation>
     </message>
     <message>
         <source>No Access</source>
@@ -605,18 +605,18 @@ disco</translation>
     <message>
         <source>Abort
 Rip</source>
-        <translation>Abortar
+        <translation type="unfinished">Abortar
 Lectura</translation>
     </message>
     <message>
         <source>Rip
 Disk</source>
-        <translation>Leer
+        <translation type="unfinished">Leer
 Disco</translation>
     </message>
     <message>
         <source>Rip aborted!</source>
-        <translation>¡Lectura
+        <translation type="unfinished">¡Lectura
 Abortada!</translation>
     </message>
     <message>
@@ -639,10 +639,6 @@ Cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[continued]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Modify
 Cart Label</source>
         <translation type="unfinished"></translation>
@@ -650,18 +646,6 @@ Cart Label</source>
     <message>
         <source>Clear
 Selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to allocate carts in group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to allocate cart in group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -674,6 +658,18 @@ Selection</source>
     </message>
     <message>
         <source>Lookup Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to allocate carts in group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to allocate cart in group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

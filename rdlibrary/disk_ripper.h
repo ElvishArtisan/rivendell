@@ -21,16 +21,17 @@
 #ifndef DISK_RIPPER_H
 #define DISK_RIPPER_H
 
+#include <QList>
 #include <QProgressBar>
+#include <QStringList>
 #include <QTextEdit>
 
-#include <qcheckbox.h>
-#include <rdcut_dialog.h>
-#include <qdir.h>
-
 #include <rdcddblookup.h>
+#include <rdcut_dialog.h>
 #include <rdcdplayer.h>
 #include <rddialog.h>
+#include <rddiscmodel.h>
+#include <rdtableview.h>
 #include <rdtransportbutton.h>
 #include <rdwavedata_dialog.h>
 
@@ -61,9 +62,10 @@ class DiskRipper : public RDDialog
   void lookupDoneData(RDDiscLookup::Result,const QString &err_msg);
   void normalizeCheckData(bool);
   void autotrimCheckData(bool);
-  void selectionChangedData();
+  void selectionChangedData(const QItemSelection &before,
+			    const QItemSelection &after);
   void openBrowserData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
   
  protected:
@@ -71,18 +73,20 @@ class DiskRipper : public RDDialog
   void closeEvent(QCloseEvent *e);
   
  private:
-  void FocusSelection(int cart_num);
   void RipTrack(int track,int end_track,QString cutname,QString title);
   void UpdateRipButton();
   QString BuildTrackName(int start_track,int end_track) const;
   void SetArtistAlbum();
   void SendNotification(RDNotification::Action action,unsigned cartnum);
+  bool IsContiguous(const QModelIndexList &rows) const;
+  QModelIndexList SortRows(const QModelIndexList &rows) const;
   RDCutDialog *rip_cut_dialog;
   RDCdPlayer *rip_cdrom;
   RDDiscRecord rip_disc_record;
   RDDiscLookup *rip_disc_lookup;
   QLabel *rip_track_label;
-  Q3ListView *rip_track_list;
+  RDTableView *rip_track_view;
+  RDDiscModel *rip_track_model;
   QPushButton *rip_rip_button;
   bool rip_rip_aborted;
   QPushButton *rip_close_button;
@@ -125,9 +129,9 @@ class DiskRipper : public RDDialog
   QString *rip_filter_text;
   QString *rip_group_text;
   QString *rip_schedcode_text;
-  std::vector<QString> rip_cutnames;
-  std::vector<int> rip_end_track;
-  std::vector<RDWaveData *> rip_wave_datas;
+  QStringList rip_cutnames;
+  QList<int> rip_end_track;
+  QList<RDWaveData *> rip_wave_datas;
   bool rip_aborting;
   bool rip_profile_rip;
   RDWaveDataDialog *rip_wavedata_dialog;

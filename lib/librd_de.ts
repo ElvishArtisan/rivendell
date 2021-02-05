@@ -1771,6 +1771,57 @@ senden</translation>
     </message>
 </context>
 <context>
+    <name>RDDiscModel</name>
+    <message>
+        <source>Track</source>
+        <translation type="unfinished">Track</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Länge</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation type="obsolete">Andere</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Cut</translation>
+    </message>
+    <message>
+        <source>Audio</source>
+        <translation type="obsolete">Audio</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Data Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[continued]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDDropboxListModel</name>
     <message>
         <source>ID</source>
