@@ -207,12 +207,6 @@ void RDMacroCartModel::refresh(const QModelIndex &row,const QString &rml)
 
 void RDMacroCartModel::save() const
 {
-  /*
-  QString macro;
-  for(int i=0;i<lineCount();i++) {
-    macro+=d_texts.at(i).at(1).toString();
-  }
-  */
   QString sql=QString("update CART set ")+
     "MACROS=\""+RDEscapeString(allCode())+"\" where "+
     QString().sprintf("NUMBER=%u",d_cart_number);
