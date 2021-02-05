@@ -21006,6 +21006,6 @@
 	* Added 'RDDiscModel'
 	* Refactored the full disc ripper in rdlibrary(1) to use the
 	model-based API.
-2021-02-04 Fred Gleason <fredg@paravelsystems.com>
+2021-02-05 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the CD track ripper in rdlibrary(1) to use the
 	model-based API.
