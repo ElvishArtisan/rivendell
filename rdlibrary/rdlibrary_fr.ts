@@ -148,26 +148,6 @@ Do you still want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TRACK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LENGTH</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TITLE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OTHER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TYPE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Rip
 Track</source>
         <translation type="unfinished"></translation>
@@ -193,6 +173,34 @@ Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Title:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip CD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Values to Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lookup Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Audio Exists</source>
         <translation type="unfinished"></translation>
     </message>
@@ -211,19 +219,8 @@ Do you still want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Audio Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Data Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDLibrary - Importer Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDLibrary - Ripper Error</source>
+        <source>Abort
+Rip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -235,41 +232,16 @@ Do you still want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Abort
-Rip</source>
+        <source>RDLibrary - Importer Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Title:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rip CD</source>
+        <source>RDLibrary - Ripper Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Rip
 Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Apply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Values to Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Lookup Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

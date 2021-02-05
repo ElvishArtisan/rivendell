@@ -235,23 +235,23 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>FAIXAS</translation>
+        <translation type="obsolete">FAIXAS</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DURAÇÃO</translation>
+        <translation type="obsolete">DURAÇÃO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>OTHER</source>
-        <translation>OUTRO</translation>
+        <translation type="obsolete">OUTRO</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TIPO</translation>
+        <translation type="obsolete">TIPO</translation>
     </message>
     <message>
         <source>&amp;Rip
@@ -281,22 +281,22 @@ Faixa</translation>
     </message>
     <message>
         <source>Audio Exists</source>
-        <translation>Áudio Existe</translation>
+        <translation type="unfinished">Áudio Existe</translation>
     </message>
     <message>
         <source>This will overwrite the existing recording.
 Do you want to proceed?</source>
-        <translation>Esta ação sobrescreverá a gravação existente.
+        <translation type="unfinished">Esta ação sobrescreverá a gravação existente.
 Você quer proceder?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Esvaziar Clipboard</translation>
+        <translation type="unfinished">Esvaziar Clipboard</translation>
     </message>
     <message>
         <source>Ripping this cut will also empty the clipboard.
 Do you still want to proceed?</source>
-        <translation>Extrair este Conteúdo também esvaziará o clipboard.
+        <translation type="unfinished">Extrair este Conteúdo também esvaziará o clipboard.
 Você ainda quer proceder?</translation>
     </message>
     <message>
@@ -313,19 +313,19 @@ Você ainda quer proceder?</translation>
     </message>
     <message>
         <source>Audio Track</source>
-        <translation>Faixa de Áudio</translation>
+        <translation type="obsolete">Faixa de Áudio</translation>
     </message>
     <message>
         <source>Data Track</source>
-        <translation>Faixa de Dados</translation>
+        <translation type="obsolete">Faixa de Dados</translation>
     </message>
     <message>
         <source>Rip Complete</source>
-        <translation>Extração Completa</translation>
+        <translation type="unfinished">Extração Completa</translation>
     </message>
     <message>
         <source>Rip complete!</source>
-        <translation>Extração Completa!</translation>
+        <translation type="unfinished">Extração Completa!</translation>
     </message>
     <message>
         <source>Rip Aborted</source>
@@ -346,6 +346,34 @@ Please check your ripper configuration and try again.</source>
 Por Favor, cheque suas configurações e tente novamente.</translation>
     </message>
     <message>
+        <source>Title:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip CD</source>
+        <translation type="unfinished">Extrair CD</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Values to Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lookup Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Abort
 Rip</source>
         <translation type="unfinished"></translation>
@@ -359,36 +387,8 @@ Rip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Title:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rip CD</source>
-        <translation type="unfinished">Extrair CD</translation>
-    </message>
-    <message>
         <source>Rip
 Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Apply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Values to Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Lookup Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Label:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -239,23 +239,23 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>TRACK</translation>
+        <translation type="obsolete">TRACK</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>LÄNGE</translation>
+        <translation type="obsolete">LÄNGE</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TITEL</translation>
+        <translation type="obsolete">TITEL</translation>
     </message>
     <message>
         <source>OTHER</source>
-        <translation>ANDERE</translation>
+        <translation type="obsolete">ANDERE</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYP</translation>
+        <translation type="obsolete">TYP</translation>
     </message>
     <message>
         <source>&amp;Rip
@@ -285,22 +285,22 @@ Track</source>
     </message>
     <message>
         <source>Audio Exists</source>
-        <translation>Audio existiert</translation>
+        <translation type="unfinished">Audio existiert</translation>
     </message>
     <message>
         <source>This will overwrite the existing recording.
 Do you want to proceed?</source>
-        <translation>Dies wird die derzeitige Aufnahme löschen.
+        <translation type="unfinished">Dies wird die derzeitige Aufnahme löschen.
 Trotzdem fortfahren?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Zwischenablage leeren</translation>
+        <translation type="unfinished">Zwischenablage leeren</translation>
     </message>
     <message>
         <source>Ripping this cut will also empty the clipboard.
 Do you still want to proceed?</source>
-        <translation>Diesen Cut zu rippen wird auch die Zwischenablage
+        <translation type="unfinished">Diesen Cut zu rippen wird auch die Zwischenablage
 leeren. Trotzdem fortfahren?</translation>
     </message>
     <message>
@@ -317,19 +317,19 @@ leeren. Trotzdem fortfahren?</translation>
     </message>
     <message>
         <source>Audio Track</source>
-        <translation>Audio Track</translation>
+        <translation type="obsolete">Audio Track</translation>
     </message>
     <message>
         <source>Data Track</source>
-        <translation>Datentrack</translation>
+        <translation type="obsolete">Datentrack</translation>
     </message>
     <message>
         <source>Rip Complete</source>
-        <translation>Rip vollständig</translation>
+        <translation type="unfinished">Rip vollständig</translation>
     </message>
     <message>
         <source>Rip complete!</source>
-        <translation>Rip vollständig!</translation>
+        <translation type="unfinished">Rip vollständig!</translation>
     </message>
     <message>
         <source>Rip Aborted</source>
@@ -351,16 +351,16 @@ Bitte überprüfen sie ihre Ripperkonfiguration und versuchen sie es erneut.</tr
     </message>
     <message>
         <source>RDLibrary - Importer Error</source>
-        <translation>RDLibrary - Importfehler</translation>
+        <translation type="unfinished">RDLibrary - Importfehler</translation>
     </message>
     <message>
         <source>RDLibrary - Ripper Error</source>
-        <translation>RDLibrary - Ripperfehler</translation>
+        <translation type="unfinished">RDLibrary - Ripperfehler</translation>
     </message>
     <message>
         <source>Abort
 Rip</source>
-        <translation>Rippen
+        <translation type="unfinished">Rippen
 abbrechen</translation>
     </message>
     <message>
@@ -380,11 +380,6 @@ abbrechen</translation>
         <translation type="unfinished">CD rippen</translation>
     </message>
     <message>
-        <source>Rip
-Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -393,11 +388,16 @@ Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Label:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Lookup Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Label:</source>
+        <source>Rip
+Track</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -239,23 +239,23 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>PISTA</translation>
+        <translation type="obsolete">PISTA</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DURACIÓN</translation>
+        <translation type="obsolete">DURACIÓN</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>OTHER</source>
-        <translation>OTROS</translation>
+        <translation type="obsolete">OTROS</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TIPO</translation>
+        <translation type="obsolete">TIPO</translation>
     </message>
     <message>
         <source>&amp;Rip
@@ -285,12 +285,12 @@ Pista</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Vaciar portapapeles</translation>
+        <translation type="unfinished">Vaciar portapapeles</translation>
     </message>
     <message>
         <source>Ripping this cut will also empty the clipboard.
 Do you still want to proceed?</source>
-        <translation>Leyendo este audio también vaciará el portapapeles.
+        <translation type="unfinished">Leyendo este audio también vaciará el portapapeles.
 ¿Desea continuar?</translation>
     </message>
     <message>
@@ -307,19 +307,19 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>Audio Track</source>
-        <translation>Pista de audio</translation>
+        <translation type="obsolete">Pista de audio</translation>
     </message>
     <message>
         <source>Data Track</source>
-        <translation>Pista de datos</translation>
+        <translation type="obsolete">Pista de datos</translation>
     </message>
     <message>
         <source>Rip Complete</source>
-        <translation>Lectura completada</translation>
+        <translation type="unfinished">Lectura completada</translation>
     </message>
     <message>
         <source>Rip complete!</source>
-        <translation>¡Lectura completada!</translation>
+        <translation type="unfinished">¡Lectura completada!</translation>
     </message>
     <message>
         <source>Rip Aborted</source>
@@ -342,25 +342,25 @@ Por favor, chequee la configuración e intente de nuevo.</translation>
     <message>
         <source>This will overwrite the existing recording.
 Do you want to proceed?</source>
-        <translation>Esta acción sobreescribirá la grabación existente.
+        <translation type="unfinished">Esta acción sobreescribirá la grabación existente.
 ¿Desea continuar?</translation>
     </message>
     <message>
         <source>Audio Exists</source>
-        <translation>El audio ya existe</translation>
+        <translation type="unfinished">El audio ya existe</translation>
     </message>
     <message>
         <source>RDLibrary - Importer Error</source>
-        <translation>RDLibrary - Error al importar</translation>
+        <translation type="unfinished">RDLibrary - Error al importar</translation>
     </message>
     <message>
         <source>RDLibrary - Ripper Error</source>
-        <translation>RDLibrary - Error al leer</translation>
+        <translation type="unfinished">RDLibrary - Error al leer</translation>
     </message>
     <message>
         <source>Abort
 Rip</source>
-        <translation>Abortar
+        <translation type="unfinished">Abortar
 Lectura</translation>
     </message>
     <message>
@@ -380,11 +380,6 @@ Lectura</translation>
         <translation type="unfinished">Leer CD</translation>
     </message>
     <message>
-        <source>Rip
-Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -393,11 +388,16 @@ Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Label:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Lookup Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Label:</source>
+        <source>Rip
+Track</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2,7 +2,7 @@
 //
 // CD Track Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,18 +18,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rdaudioimport.h>
 #include <rdcdripper.h>
-#include <rdconf.h>
 #include <rddisclookup_factory.h>
 #include <rdtempdirectory.h>
 #include <rdtextfile.h>
 
 #include "cdripper.h"
 #include "globals.h"
-#include "rdconfig.h"
 
 //
 // Global Variables
@@ -128,7 +126,7 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
   rip_other_label=new QLabel(tr("Other:"),this);
   rip_other_label->setFont(labelFont());
   rip_other_label->setAlignment(Qt::AlignRight);
-  rip_other_edit=new Q3TextEdit(this);
+  rip_other_edit=new QTextEdit(this);
   rip_other_edit->setReadOnly(true);
 
   //
@@ -173,25 +171,24 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
   //
   // Track List
   //
-  rip_track_list=new RDListView(this);
-  rip_track_list->setAllColumnsShowFocus(true);
-  rip_track_list->setSelectionMode(Q3ListView::Extended);
-  rip_track_list->setItemMargin(5);
-  rip_track_list->setSorting(-1);
-  connect(rip_track_list,SIGNAL(selectionChanged()),
-	  this,SLOT(trackSelectionChangedData()));
-  rip_track_label=new QLabel(rip_track_list,tr("Tracks"),this);
-  rip_track_label->setFont(labelFont());
-  rip_track_list->addColumn(tr("TRACK"));
-  rip_track_list->setColumnAlignment(0,Qt::AlignHCenter);
-  rip_track_list->addColumn(tr("LENGTH"));
-  rip_track_list->setColumnAlignment(1,Qt::AlignRight);
-  rip_track_list->addColumn(tr("TITLE"));
-  rip_track_list->setColumnAlignment(2,Qt::AlignLeft);
-  rip_track_list->addColumn(tr("OTHER"));
-  rip_track_list->setColumnAlignment(3,Qt::AlignLeft);
-  rip_track_list->addColumn(tr("TYPE"));
-  rip_track_list->setColumnAlignment(4,Qt::AlignLeft);
+  rip_track_view=new RDTableView(this);
+  rip_track_view->setSelectionMode(QAbstractItemView::ContiguousSelection);
+  rip_track_model=new RDDiscModel(this);
+  rip_track_model->setFont(defaultFont());
+  rip_track_model->setPalette(palette());
+  rip_track_view->setModel(rip_track_model);
+  rip_track_view->hideColumn(5);
+  rip_track_label=new QLabel(rip_track_view,tr("Tracks"),this);
+  rip_track_label->setFont(sectionLabelFont());
+  connect(rip_track_view->selectionModel(),
+	  SIGNAL(selectionChanged(const QItemSelection &,
+				  const QItemSelection &)),
+	  this,
+	  SLOT(trackSelectionChangedData(const QItemSelection &,
+					 const QItemSelection &)));
+  connect(rip_track_model,SIGNAL(modelReset()),
+	  rip_track_view,SLOT(resizeColumnsToContents()));
+  rip_track_view->resizeColumnsToContents();
 
   //
   // Progress Bar
@@ -303,7 +300,8 @@ CdRipper::~CdRipper()
 {
   rip_cdrom->close();
   delete rip_cdrom;
-  delete rip_track_list;
+  delete rip_track_view;
+  delete rip_track_model;
   delete rip_rip_button;
   delete rip_close_button;
   delete rip_eject_button;
@@ -335,21 +333,20 @@ int CdRipper::exec(QString *title,QString *artist,QString *album,QString *label)
 }
 
 
-void CdRipper::trackSelectionChangedData()
+void CdRipper::trackSelectionChangedData(const QItemSelection &before,
+					 const QItemSelection &after)
 {
-  Q3ListViewItem *item=rip_track_list->firstChild();
+  QModelIndexList rows=rip_track_view->selectionModel()->selectedRows();
   QStringList titles;
-
-  while(item!=NULL) {
-    if(item->isSelected()) {
-      if(item->text(4)==tr("Data Track")) {
-	rip_rip_button->setDisabled(true);
-	return;
-      }
-      titles.push_back(item->text(2));
+  for(int i=0;i<rows.size();i++) {
+    if(rip_track_model->trackContainsData(rows.at(i))) {
+      break;
     }
-    item=item->nextSibling();
+    titles.push_back(rip_track_model->trackTitle(rows.at(i)));
   }
+  
+  rip_rip_button->setDisabled((rows.size()==0)||
+			      rip_track_model->trackContainsData(rows.first()));
   rip_title_box->clear();
   switch(titles.size()) {
   case 0:
@@ -379,11 +376,14 @@ void CdRipper::ejectButtonData()
 
 void CdRipper::playButtonData()
 {
-  if(rip_track_list->currentItem()!=NULL) {
-    rip_cdrom->play(rip_track_list->currentItem()->text(0).toInt());
-    rip_play_button->on();
-    rip_stop_button->off();
+  QModelIndexList rows=rip_track_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
+    return;
   }
+  rip_cdrom->play(rows.first().row()+1);
+  rip_play_button->on();
+  rip_stop_button->off();
 }
 
 
@@ -398,6 +398,7 @@ void CdRipper::stopButtonData()
 void CdRipper::ripTrackButtonData()
 {
   RDCdRipper *ripper=NULL;
+  QModelIndexList rows=rip_track_view->selectionModel()->selectedRows();
 
   rip_done=false;
   rip_rip_aborted=false;
@@ -469,19 +470,15 @@ void CdRipper::ripTrackButtonData()
   ripper->setDevice(rip_conf->ripperDevice());
   ripper->setDestinationFile(tmpfile);
 
-
   rip_track[0]=-1;
   rip_track[1]=-1;
-  Q3ListViewItem *item=rip_track_list->firstChild();
-  while(item!=NULL) {
-    if(item->isSelected()) {
-      if(rip_track[0]<0) {
-	rip_track[0]=item->text(0).toInt()-1;
-      }
-      rip_track[1]=item->text(0).toInt()-1;
+  for(int i=0;i<rows.size();i++) {
+    if(rip_track[0]<0) {
+      rip_track[0]=rows.at(i).row();
     }
-    item=item->nextSibling();
+    rip_track[1]=rows.at(i).row();
   }
+
   switch((ripper_err=ripper->rip(rip_track[0],rip_track[1]))) {
   case RDCdRipper::ErrorOk:
     conv=new RDAudioImport(this);
@@ -549,7 +546,7 @@ void CdRipper::ripTrackButtonData()
 
 void CdRipper::ejectedData()
 {
-  rip_track_list->clear();
+  rip_track_model->clear();
   rip_artist_edit->clear();
   rip_album_edit->clear();
   rip_other_edit->clear();
@@ -561,25 +558,13 @@ void CdRipper::ejectedData()
 
 void CdRipper::mediaChangedData()
 {
-  Q3ListViewItem *l;
-
-  rip_track_list->clear();
+  rip_track_model->clear();
   rip_track[0]=-1;
   rip_track[1]=-1;
-  for(int i=rip_cdrom->tracks();i>0;i--) {
-    l=new Q3ListViewItem(rip_track_list);
-    l->setText(0,QString().sprintf("%d",i));
-    if(rip_cdrom->isAudio(i)) {
-      l->setText(4,tr("Audio Track"));
-    }
-    else {
-      l->setText(4,tr("Data Track"));
-    }
-    l->setText(1,RDGetTimeLength(rip_cdrom->trackLength(i)));
-  }
   rip_disc_record->clear();
   rip_cdrom->setCddbRecord(rip_disc_record);
   rip_disc_lookup->setCddbRecord(rip_disc_record);
+  rip_track_model->setDisc(rip_cdrom);
   Profile("starting metadata lookup");
   rip_disc_lookup->lookup();
   Profile("metadata lookup finished");
@@ -611,18 +596,13 @@ void CdRipper::lookupDoneData(RDDiscLookup::Result result,const QString &err_msg
     rip_album_edit->setText(rip_disc_record->discAlbum());
     rip_label_edit->setText(rip_disc_record->discLabel());
     rip_other_edit->setText(rip_disc_record->discExtended());
-    for(int i=0;i<rip_disc_record->tracks();i++) {
-      rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	setText(2,rip_disc_record->trackTitle(i));
-      rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	setText(3,rip_disc_record->trackExtended(i));
-    }
+    rip_track_model->refresh(rip_disc_record);
     rip_apply_box->setChecked(true);
     rip_apply_box->setEnabled(true);
     rip_apply_label->setEnabled(true);
     rip_browser_button->setDisabled(rip_disc_lookup->sourceUrl().isNull());
     rip_browser_label->setDisabled(rip_disc_lookup->sourceUrl().isNull());
-    trackSelectionChangedData();
+    trackSelectionChangedData(QItemSelection(),QItemSelection());
     break;
 
   case RDDiscLookup::NoMatch:
@@ -689,7 +669,7 @@ void CdRipper::resizeEvent(QResizeEvent *e)
   rip_apply_label->setGeometry(85,162,250,20);
   rip_browser_button->setGeometry(size().width()-260,161,200,35);
   rip_browser_label->setGeometry(size().width()-260,161,200,35);
-  rip_track_list->setGeometry(10,200,size().width()-110,size().height()-305);
+  rip_track_view->setGeometry(10,200,size().width()-110,size().height()-305);
   rip_track_label->setGeometry(10,184,100,14);
   rip_bar->setGeometry(10,size().height()-100,size().width()-110,20);
   rip_eject_button->setGeometry(size().width()-90,200,80,50);

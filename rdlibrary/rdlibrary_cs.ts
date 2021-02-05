@@ -239,23 +239,23 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>STOPA</translation>
+        <translation type="obsolete">STOPA</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DÉLKA</translation>
+        <translation type="obsolete">DÉLKA</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>OTHER</source>
-        <translation>JINÉ</translation>
+        <translation type="obsolete">JINÉ</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYP</translation>
+        <translation type="obsolete">TYP</translation>
     </message>
     <message>
         <source>&amp;Rip
@@ -285,22 +285,22 @@ stopu</translation>
     </message>
     <message>
         <source>Audio Exists</source>
-        <translation>Zvuk existuje</translation>
+        <translation type="unfinished">Zvuk existuje</translation>
     </message>
     <message>
         <source>This will overwrite the existing recording.
 Do you want to proceed?</source>
-        <translation>Toto přepíše (smaže) stávající nahrávku.
+        <translation type="unfinished">Toto přepíše (smaže) stávající nahrávku.
 Přesto pokračovat?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Vyprázdnit schránku</translation>
+        <translation type="unfinished">Vyprázdnit schránku</translation>
     </message>
     <message>
         <source>Ripping this cut will also empty the clipboard.
 Do you still want to proceed?</source>
-        <translation>Vytažení tohoto záběru vyprázdní také schránku.
+        <translation type="unfinished">Vytažení tohoto záběru vyprázdní také schránku.
 Přesto smazat?</translation>
     </message>
     <message>
@@ -317,19 +317,19 @@ Přesto smazat?</translation>
     </message>
     <message>
         <source>Audio Track</source>
-        <translation>Zvuková stopa</translation>
+        <translation type="obsolete">Zvuková stopa</translation>
     </message>
     <message>
         <source>Data Track</source>
-        <translation>Datová stopa</translation>
+        <translation type="obsolete">Datová stopa</translation>
     </message>
     <message>
         <source>Rip Complete</source>
-        <translation>Vytažení dokončeno</translation>
+        <translation type="unfinished">Vytažení dokončeno</translation>
     </message>
     <message>
         <source>Rip complete!</source>
-        <translation>Vytažení dokončeno!</translation>
+        <translation type="unfinished">Vytažení dokončeno!</translation>
     </message>
     <message>
         <source>Rip Aborted</source>
@@ -351,16 +351,16 @@ Bitte überprüfen sie ihre Ripperkonfiguration und versuchen sie es erneut.</tr
     </message>
     <message>
         <source>RDLibrary - Importer Error</source>
-        <translation>RDLibrary - Chyba při zavedení</translation>
+        <translation type="unfinished">RDLibrary - Chyba při zavedení</translation>
     </message>
     <message>
         <source>RDLibrary - Ripper Error</source>
-        <translation>RDLibrary - Chyba ve vytahovači</translation>
+        <translation type="unfinished">RDLibrary - Chyba ve vytahovači</translation>
     </message>
     <message>
         <source>Abort
 Rip</source>
-        <translation>Zrušit
+        <translation type="unfinished">Zrušit
 vytahování</translation>
     </message>
     <message>
@@ -380,11 +380,6 @@ vytahování</translation>
         <translation type="unfinished">Vytáhnout z CD</translation>
     </message>
     <message>
-        <source>Rip
-Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -393,11 +388,16 @@ Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Label:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Lookup Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Label:</source>
+        <source>Rip
+Track</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

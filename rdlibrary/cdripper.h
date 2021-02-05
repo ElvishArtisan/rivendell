@@ -2,7 +2,7 @@
 //
 // CD Ripper Dialog for Rivendell
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,18 +21,17 @@
 #ifndef CDRIPPER_H
 #define CDRIPPER_H
 
-#include <q3textedit.h>
-
-#include <qcheckbox.h>
-#include <qdir.h>
-#include <qlineedit.h>
-#include <qpixmap.h>
-#include <qprogressbar.h>
-#include <qspinbox.h>
+#include <QCheckBox>
+#include <QLineEdit>
+#include <QProgressBar>
+#include <QSpinBox>
+#include <QTextEdit>
 
 #include <rddialog.h>
 #include <rdcddblookup.h>
 #include <rdcdplayer.h>
+#include <rddiscmodel.h>
+#include <rdtableview.h>
 #include <rdtransportbutton.h>
 
 class CdRipper : public RDDialog
@@ -49,7 +48,8 @@ class CdRipper : public RDDialog
    int exec(QString *title,QString *artist,QString *album,QString *label);
 
  private slots:
-  void trackSelectionChangedData();
+  void trackSelectionChangedData(const QItemSelection &before,
+				 const QItemSelection &after);
   void ejectButtonData();
   void playButtonData();
   void stopButtonData();
@@ -76,7 +76,8 @@ class CdRipper : public RDDialog
   RDDiscLookup *rip_disc_lookup;
   RDCut *rip_cut;
   QLabel *rip_track_label;
-  RDListView *rip_track_list;
+  RDTableView *rip_track_view;
+  RDDiscModel *rip_track_model;
   QPushButton *rip_rip_button;
   bool rip_rip_aborted;
   QPushButton *rip_close_button;
@@ -93,7 +94,7 @@ class CdRipper : public RDDialog
   QLabel *rip_artist_label;
   QLineEdit *rip_artist_edit;
   QLabel *rip_other_label;
-  Q3TextEdit *rip_other_edit;
+  QTextEdit *rip_other_edit;
   QCheckBox *rip_apply_box;
   QLabel *rip_apply_label;
   QPushButton *rip_browser_button;

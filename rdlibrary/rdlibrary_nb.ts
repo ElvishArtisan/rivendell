@@ -234,23 +234,23 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>TRACK</source>
-        <translation>SPOR</translation>
+        <translation type="obsolete">SPOR</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>LENGD</translation>
+        <translation type="obsolete">LENGD</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TITTEL</translation>
+        <translation type="obsolete">TITTEL</translation>
     </message>
     <message>
         <source>OTHER</source>
-        <translation>ANNA</translation>
+        <translation type="obsolete">ANNA</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYPE</translation>
+        <translation type="obsolete">TYPE</translation>
     </message>
     <message>
         <source>&amp;Rip
@@ -280,22 +280,22 @@ sporet</translation>
     </message>
     <message>
         <source>Audio Exists</source>
-        <translation>Lyd eksisterer</translation>
+        <translation type="unfinished">Lyd eksisterer</translation>
     </message>
     <message>
         <source>This will overwrite the existing recording.
 Do you want to proceed?</source>
-        <translation>Dette byter ut opptaket du alt har.
+        <translation type="unfinished">Dette byter ut opptaket du alt har.
 Vil du halda fram?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
-        <translation>Tøm utklyppstavla</translation>
+        <translation type="unfinished">Tøm utklyppstavla</translation>
     </message>
     <message>
         <source>Ripping this cut will also empty the clipboard.
 Do you still want to proceed?</source>
-        <translation>Viss du rippar dette sporet, tømer du utklyppstavla.
+        <translation type="unfinished">Viss du rippar dette sporet, tømer du utklyppstavla.
 Vil du halda fram?</translation>
     </message>
     <message>
@@ -312,11 +312,11 @@ Vil du halda fram?</translation>
     </message>
     <message>
         <source>Audio Track</source>
-        <translation>Lydspor</translation>
+        <translation type="obsolete">Lydspor</translation>
     </message>
     <message>
         <source>Data Track</source>
-        <translation>Dataspor</translation>
+        <translation type="obsolete">Dataspor</translation>
     </message>
     <message>
         <source>Rip Complete</source>
@@ -345,19 +345,6 @@ Please check your ripper configuration and try again.</source>
 Sjå over innstillingane for ripping, og prøv ein gong til.</translation>
     </message>
     <message>
-        <source>RDLibrary - Importer Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDLibrary - Ripper Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Abort
-Rip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Title:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -370,11 +357,6 @@ Rip</source>
         <translation type="unfinished">Ripp CD</translation>
     </message>
     <message>
-        <source>Rip
-Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
@@ -383,11 +365,29 @@ Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Label:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Lookup Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Label:</source>
+        <source>Abort
+Rip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDLibrary - Importer Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDLibrary - Ripper Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip
+Track</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
