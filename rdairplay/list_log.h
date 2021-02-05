@@ -26,7 +26,6 @@
 
 #include "edit_event.h"
 #include "hourselector.h"
-#include "lib_listview.h"
 #include "list_logs.h"
 #include "logtableview.h"
 

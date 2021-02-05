@@ -45,7 +45,6 @@ bin_PROGRAMS = rdairplay
 dist_rdairplay_SOURCES = button_log.cpp button_log.h\
                          edit_event.cpp edit_event.h\
                          hourselector.cpp hourselector.h\
-                         lib_listview.cpp lib_listview.h\
                          list_log.cpp list_log.h\
                          list_logs.cpp list_logs.h\
                          local_macros.cpp colors.h\
@@ -63,7 +62,6 @@ dist_rdairplay_SOURCES = button_log.cpp button_log.h\
 nodist_rdairplay_SOURCES = moc_button_log.cpp\
                            moc_edit_event.cpp\
                            moc_hourselector.cpp\
-                           moc_lib_listview.cpp\
                            moc_list_log.cpp\
                            moc_list_logs.cpp\
                            moc_loglinebox.cpp\
