@@ -3383,6 +3383,21 @@ Do you still want to proceed?</source>
     </message>
 </context>
 <context>
+    <name>RDMacroCartModel</name>
+    <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>--- End of Cart ---</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDMatrixListModel</name>
     <message>
         <source>Description</source>

@@ -1048,7 +1048,7 @@ Notes</source>
     </message>
     <message>
         <source>Macros</source>
-        <translation>Makros</translation>
+        <translation type="obsolete">Makros</translation>
     </message>
     <message>
         <source>Edit</source>
@@ -1069,18 +1069,6 @@ starten</translation>
     <message>
         <source>--- End of cart ---</source>
         <translation type="obsolete">--- Ende des Carts ---</translation>
-    </message>
-    <message>
-        <source>Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Command</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>--- End of Cart ---</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

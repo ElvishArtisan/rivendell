@@ -1040,7 +1040,7 @@ Notes</source>
     </message>
     <message>
         <source>Macros</source>
-        <translation>Makroar</translation>
+        <translation type="obsolete">Makroar</translation>
     </message>
     <message>
         <source>Edit</source>
@@ -1061,18 +1061,6 @@ korg</translation>
     <message>
         <source>--- End of cart ---</source>
         <translation type="obsolete">--- Slutten på korga ---</translation>
-    </message>
-    <message>
-        <source>Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Command</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>--- End of Cart ---</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

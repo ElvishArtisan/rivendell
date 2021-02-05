@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Macro
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,26 +18,23 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
+#include <QPushButton>
 
 #include "edit_macro.h"
 
-EditMacro::EditMacro(RDMacro *cmd,bool highlight,QWidget *parent)
+EditMacro::EditMacro(QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
   setMinimumSize(sizeHint());
-  setMaximumSize(sizeHint());
+  setMaximumHeight(sizeHint().height());
+  setWindowTitle("RDLibrary - Edit Macro");
 
   //
   // Macro
   //
-  edit_macro=cmd;
-
   edit_macro_edit=new QLineEdit(this);
   edit_macro_edit->setMaxLength(RD_RML_MAX_LENGTH-1);
 
@@ -57,11 +54,6 @@ EditMacro::EditMacro(RDMacro *cmd,bool highlight,QWidget *parent)
   edit_cancel_button->setFont(buttonFont());
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  edit_macro_edit->setText(edit_macro->toString());
-  if(highlight) {
-    edit_macro_edit->selectAll();
-  }
 }
 
 
@@ -77,16 +69,29 @@ QSizePolicy EditMacro::sizePolicy() const
 }
 
 
+int EditMacro::exec(QString *code,bool highlight)
+{
+  edit_code=code;
+
+  edit_macro_edit->setText(*code);
+  if(highlight) {
+    edit_macro_edit->selectAll();
+  }
+
+  return QDialog::exec();
+}
+
+
 void EditMacro::okData()
 {
-  *edit_macro=RDMacro::fromString(edit_macro_edit->text());
-  done(0);
+  *edit_code=edit_macro_edit->text();
+  done(true);
 }
 
 
 void EditMacro::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 
@@ -99,6 +104,7 @@ void EditMacro::closeEvent(QCloseEvent *e)
 void EditMacro::resizeEvent(QResizeEvent *e)
 {
   edit_macro_edit->setGeometry(10,11,size().width()-20,19);
+
   edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

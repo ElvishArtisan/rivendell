@@ -2,7 +2,7 @@
 //
 // The macro cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,8 +25,11 @@
 #include <qpushbutton.h>
 
 #include <rdmacro_event.h>
+#include <rdmacrocartmodel.h>
+#include <rdtableview.h>
 #include <rdwidget.h>
 
+#include "edit_macro.h"
 #include "globals.h"
 
 class MacroCart : public RDWidget
@@ -34,6 +37,7 @@ class MacroCart : public RDWidget
   Q_OBJECT
  public:
   MacroCart(RDCart *cart,QWidget *parent=0);
+  ~MacroCart();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   unsigned length();
@@ -50,21 +54,19 @@ class MacroCart : public RDWidget
   void editMacroData();
   void runLineMacroData();
   void runCartMacroData();
-  void selectionChangedData(Q3ListViewItem *);
-  void doubleClickedData(Q3ListViewItem *);  
+  void selectionChangedData(const QItemSelection &before,
+			    const QItemSelection &after);
+  void doubleClickedData(const QModelIndex &index);  
 
  private:
-  void RefreshList();
-  void RefreshLine(Q3ListViewItem *item);
-  void AddLine(unsigned line,RDMacro *cmd);
-  void DeleteLine(Q3ListViewItem *item);
   void UpdateLength();
-  void SortLines();
   RDCart *rdcart_cart;
-  Q3ListView *rdcart_macro_list;
+  EditMacro *rdcart_edit_macro_dialog;
+  RDTableView *rdcart_macro_view;
+  RDMacroCartModel *rdcart_macro_model;
   QLabel *rdcart_macro_list_label;
   RDMacroEvent *rdcart_events;
-  RDMacro rdcart_clipboard;
+  QString rdcart_clipboard;
   QPushButton *paste_macro_button;
   QPushButton *rdcart_add_button;
   QPushButton *rdcart_delete_button;
@@ -77,5 +79,4 @@ class MacroCart : public RDWidget
 };
 
 
-#endif
-
+#endif  // MACRO_CART_H

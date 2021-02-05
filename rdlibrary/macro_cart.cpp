@@ -2,7 +2,7 @@
 //
 // The macro cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,9 +31,15 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
 {
   rdcart_length=0;
   rdcart_cart=cart;
-  setCaption(QString().sprintf("%u",rdcart_cart->number())+" - "+
-    rdcart_cart->title());
   rdcart_allow_modification=rda->user()->modifyCarts();
+
+  setWindowTitle(QString().sprintf("%u",rdcart_cart->number())+" - "+
+    rdcart_cart->title());
+
+  //
+  // Dialogs
+  //
+  rdcart_edit_macro_dialog=new EditMacro(this);
 
   //
   // Add Macro Button
@@ -80,33 +86,26 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   // Cart Macro List
   //
   rdcart_events=new RDMacroEvent(rda->station()->address(),rda->ripc(),this);
-  rdcart_events->load(rdcart_cart->macros());
+  //  rdcart_events->load(rdcart_cart->macros());
 
-  rdcart_macro_list=new Q3ListView(this);
-  rdcart_macro_list->setGeometry(100,0,430,sizeHint().height());
-  rdcart_macro_list->setAllColumnsShowFocus(true);
-  rdcart_macro_list->setItemMargin(5);
-  rdcart_macro_list->setSorting(-1);
-  connect(rdcart_macro_list,
-	  SIGNAL(selectionChanged(Q3ListViewItem *)),
+  rdcart_macro_view=new RDTableView(this);
+  rdcart_macro_view->setSelectionMode(QAbstractItemView::SingleSelection);
+  rdcart_macro_view->setGeometry(100,0,430,sizeHint().height());
+  rdcart_macro_model=new RDMacroCartModel(cart->number(),this);
+  rdcart_macro_model->setFont(defaultFont());
+  rdcart_macro_model->setPalette(palette());
+  rdcart_macro_view->setModel(rdcart_macro_model);
+  connect(rdcart_macro_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(rdcart_macro_view->selectionModel(),
+	  SIGNAL(selectionChanged(const QItemSelection &,
+				  const QItemSelection &)),
 	  this,
-	  SLOT(selectionChangedData(Q3ListViewItem *)));
-  connect(rdcart_macro_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *)));
-
-  rdcart_macro_list->addColumn(tr("Line"));
-  rdcart_macro_list->setColumnAlignment(0,Qt::AlignHCenter);
-
-  rdcart_macro_list->addColumn(tr("Command"));
-  rdcart_macro_list->setColumnAlignment(1,Qt::AlignLeft);
-
-  rdcart_macro_list_label=new QLabel(rdcart_macro_list,tr("Macros"),this);
-  rdcart_macro_list_label->setGeometry(105,345,430,22);
-  rdcart_macro_list_label->setFont(progressFont());
-
-  RefreshList();
+	  SLOT(selectionChangedData(const QItemSelection &,
+				    const QItemSelection &)));
+  connect(rdcart_macro_model,SIGNAL(modelReset()),
+	  rdcart_macro_view,SLOT(resizeColumnsToContents()));
+  rdcart_macro_view->resizeColumnsToContents();
 
   //
   // Edit Macro Button
@@ -141,6 +140,12 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
 }
 
 
+MacroCart::~MacroCart()
+{
+  delete rdcart_edit_macro_dialog;
+}
+
+
 QSize MacroCart::sizeHint() const
 {
   return QSize(640,290);
@@ -161,116 +166,110 @@ unsigned MacroCart::length()
 
 void MacroCart::save()
 {
-  rdcart_cart->setMacros(rdcart_events->save());
+  rdcart_macro_model->save();
 }
 
 
 void MacroCart::addMacroData()
 {
-  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
-  RDMacro cmd;
-  unsigned line;
+  QString code;
+  QModelIndexList rows=rdcart_macro_view->selectionModel()->selectedRows();
 
-  if(item==NULL||item->text(0).isEmpty()) {
-    line=rdcart_events->size();
+  if((rows.size()!=1)||(!rdcart_allow_modification)) {
+    return;
   }
-  else {
-    line=item->text(0).toUInt()-1;
-  }
-  EditMacro *edit=new EditMacro(&cmd,true,this);
-  if(edit->exec()!=-1) {
-    AddLine(line,&cmd);
+
+  if(rdcart_edit_macro_dialog->exec(&code,true)) {
+    rdcart_macro_model->addLine(rows.first(),code);
     UpdateLength();
   }
-  delete edit;
 }
 
 
 void MacroCart::deleteMacroData()
 {
-  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
+  QModelIndexList rows=rdcart_macro_view->selectionModel()->selectedRows();
 
-  if((item==NULL)||(item->text(0).isEmpty())) {
+  if((rows.size()!=1)||(!rdcart_allow_modification)) {
     return;
   }
-  DeleteLine(item);
+  rdcart_macro_model->removeLine(rows.first());
   UpdateLength();
 }
 
 
 void MacroCart::copyMacroData()
 {
-  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
+  QModelIndexList rows=rdcart_macro_view->selectionModel()->selectedRows();
 
-  if((item==NULL)||(item->text(0).isEmpty())) {
+  if((rows.size()!=1)||(!rdcart_allow_modification)) {
     return;
   }
-  rdcart_clipboard=*rdcart_events->command(item->text(0).toUInt()-1);
+  rdcart_clipboard=rdcart_macro_model->code(rows.first());
   paste_macro_button->setEnabled(rdcart_allow_modification);
 }
 
 
 void MacroCart::pasteMacroData()
 {
-  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
-  unsigned line;
+  QModelIndexList rows=rdcart_macro_view->selectionModel()->selectedRows();
 
-  if(item==NULL) {
+  if((rows.size()!=1)||(!rdcart_allow_modification)) {
     return;
   }
-  if(item->text(0).isEmpty()) {
-    line=rdcart_events->size();
+  QModelIndex row=
+    rdcart_macro_model->addLine(rows.first(),rdcart_clipboard);
+  if(row.isValid()) {
+    rdcart_macro_view->selectRow(row.row());
   }
-  else {
-    line=item->text(0).toUInt()-1;
-  }
-  AddLine(line,&rdcart_clipboard);
   UpdateLength();
 }
 
 
 void MacroCart::editMacroData()
 {
-  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
-
-  if((item==NULL)||(item->text(0).isEmpty())) {
+  QModelIndexList rows=rdcart_macro_view->selectionModel()->selectedRows();
+  if((rows.size()!=1)||(!rdcart_allow_modification)||
+     rdcart_macro_model->isEndHandle(rows.first())) {
     return;
   }
-  unsigned line=item->text(0).toUInt()-1;
-  EditMacro *edit=new EditMacro(rdcart_events->command(line),false,this);
-  if(edit->exec()!=-1) {
-    RefreshLine(item);
+  QString code=rdcart_macro_model->code(rows.first());
+  if(rdcart_edit_macro_dialog->exec(&code,false)) {
+    rdcart_macro_model->refresh(rows.first(),code);
     UpdateLength();
   }
-  delete edit;
 }
 
 
 void MacroCart::runLineMacroData()
 {
-  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
+  QModelIndexList rows=rdcart_macro_view->selectionModel()->selectedRows();
 
-  if((item==NULL)||(item->text(0).isEmpty())) {
+  if(rows.size()!=1) {
     return;
   }
-  unsigned line=item->text(0).toUInt()-1;
-  rdcart_events->exec(line);
+  rdcart_events->load(rdcart_macro_model->code(rows.first()));
+  rdcart_events->exec();
 }
 
 
 void MacroCart::runCartMacroData()
 {
+  rdcart_events->load(rdcart_macro_model->allCode());
   rdcart_events->exec();
 }
 
 
-void MacroCart::selectionChangedData(Q3ListViewItem *item)
+void MacroCart::selectionChangedData(const QItemSelection &before,
+				     const QItemSelection &after)
 {
-  rdcart_add_button->setEnabled(rdcart_allow_modification);
+  QModelIndexList rows=rdcart_macro_view->selectionModel()->selectedRows();
+
+  rdcart_add_button->setEnabled((rows.size()==1)&&rdcart_allow_modification);
   if(!rdcart_clipboard.isNull()) {
-    paste_macro_button->setEnabled(rdcart_allow_modification);
+    paste_macro_button->setEnabled((rows.size()==1)&&rdcart_allow_modification);
   }
-  if(!item->text(0).isEmpty()) {
+  if((rows.size()>0)&&(!rdcart_macro_model->isEndHandle(rows.first()))) {
     rdcart_runline_button->setEnabled(rdcart_allow_modification);
     rdcart_delete_button->setEnabled(rdcart_allow_modification);
     rdcart_copy_button->setEnabled(rdcart_allow_modification);
@@ -285,106 +284,16 @@ void MacroCart::selectionChangedData(Q3ListViewItem *item)
 }
 
 
-void MacroCart::doubleClickedData(Q3ListViewItem *item)
+void MacroCart::doubleClickedData(const QModelIndex &index)
 {
   if(rdcart_allow_modification) {
-    if((item==NULL)||(item->text(0).isEmpty())) {
+    QModelIndexList rows=rdcart_macro_view->selectionModel()->selectedRows();
+    if((rows.size()==1)&&rdcart_macro_model->isEndHandle(rows.first())) {
       addMacroData();
     }
     else {
       editMacroData();
     }
-  }
-}
-
-
-void MacroCart::RefreshList()
-{
-  Q3ListViewItem *item=NULL;
-  Q3ListViewItem *selected;
-  QString line;
-
-  selected=rdcart_macro_list->selectedItem();
-  if(selected!=NULL) {
-    line=selected->text(0);
-  }
-
-  rdcart_macro_list->clear();
-  for(int i=0;i<rdcart_events->size();i++) {
-    item=new Q3ListViewItem(rdcart_macro_list);
-    item->setText(0,QString().sprintf("%03d",i+1));
-    item->setText(1,rdcart_events->command(i)->toString());
-  }
-  SortLines();
-  if(item!=NULL) {
-    item=new Q3ListViewItem(rdcart_macro_list,item);
-  }
-  else {
-    item=new Q3ListViewItem(rdcart_macro_list);
-  }
-  item->setText(1,tr("--- End of Cart ---"));
-
-  if (!line.isEmpty()) {
-    selected=rdcart_macro_list->findItem(line,0);
-    if(selected!=NULL) {
-      rdcart_macro_list->setSelected(selected,true);
-    }
-  }
-}
-
-
-void MacroCart::RefreshLine(Q3ListViewItem *item)
-{
-  int line=item->text(0).toInt()-1;
-  item->setText(1,rdcart_events->command(line)->toString());
-}
-
-
-void MacroCart::SortLines()
-{
-  rdcart_macro_list->setSorting(0);
-  rdcart_macro_list->sort();
-  rdcart_macro_list->setSorting(-1);
-}
-
-void MacroCart::AddLine(unsigned line,RDMacro *cmd)
-{
-  unsigned curr_line;
-
-  Q3ListViewItem *item=rdcart_macro_list->firstChild();
-  for(int i=0;i<rdcart_macro_list->childCount();i++) {
-    if(((curr_line=(item->text(0).toUInt()-1))>=line)&&
-      (!item->text(0).isEmpty())) {
-      item->setText(0,QString().sprintf("%03u",curr_line+2));
-    }
-    item=item->nextSibling();
-  }
-  rdcart_events->insert(line,cmd);
-  item=new Q3ListViewItem(rdcart_macro_list);
-  item->setText(0,QString().sprintf("%03u",line+1));
-  item->setText(1,rdcart_events->command(line)->toString());
-  rdcart_macro_list->setSelected(item,true);
-  RefreshList();
-}
-
-
-void MacroCart::DeleteLine(Q3ListViewItem *item)
-{
-  unsigned line=item->text(0).toUInt()-1;
-  unsigned curr_line;
-  Q3ListViewItem *next=item->nextSibling();
-  rdcart_macro_list->removeItem(item);
-  rdcart_events->remove(line);
-  Q3ListViewItem *l=rdcart_macro_list->firstChild();
-  for(int i=0;i<rdcart_macro_list->childCount();i++) {
-    if(((curr_line=(l->text(0).toUInt()-1))>line)&&
-      (!l->text(0).isEmpty())) {
-      l->setText(0,QString().sprintf("%03u",curr_line));
-    }
-    l=l->nextSibling();
-  }
-  if(next!=NULL) {
-    rdcart_macro_list->setSelected(next,true);
   }
 }
 

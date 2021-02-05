@@ -1060,7 +1060,7 @@ poznámky</translation>
     </message>
     <message>
         <source>Macros</source>
-        <translation>Makra</translation>
+        <translation type="obsolete">Makra</translation>
     </message>
     <message>
         <source>Edit</source>
@@ -1081,18 +1081,6 @@ vozík</translation>
     <message>
         <source>--- End of cart ---</source>
         <translation type="obsolete">--- Konec vozíku ---</translation>
-    </message>
-    <message>
-        <source>Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Command</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>--- End of Cart ---</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

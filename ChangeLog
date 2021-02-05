@@ -21009,3 +21009,7 @@
 2021-02-05 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the CD track ripper in rdlibrary(1) to use the
 	model-based API.
+2021-02-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDMacroCartModel'
+	* Refactored the macro cart editor dialog in rdlibrary(1) to use the
+	model-based API.
