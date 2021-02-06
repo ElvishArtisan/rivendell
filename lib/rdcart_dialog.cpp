@@ -245,23 +245,6 @@ QSizePolicy RDCartDialog::sizePolicy() const
 }
 
 
-void RDCartDialog::clickedData(Q3ListViewItem *item)
-{
-  RDListViewItem *i=(RDListViewItem *)item;
-  if (i==NULL) {
-    return;
-  }
-  cart_ok_button->setEnabled(true);
-  bool audio=((RDCart::Type)i->id())==RDCart::Audio;
-  if(cart_player!=NULL) {
-    cart_player->playButton()->setEnabled(audio);
-    cart_player->stopButton()->setEnabled(audio);
-    cart_player->setCart(i->text(1).toUInt());
-  }
-  cart_editor_button->setEnabled(audio);
-}
-
-
 void RDCartDialog::cartDoubleClickedData(const QModelIndex &index)
 {
   okData();

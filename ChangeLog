@@ -21020,3 +21020,7 @@
 2021-02-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDGpioLogModel'.
 	* Refactored rdgpimon(1) to use the model-based API.
+2021-02-05 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead method from 'RDCartDialog'.
+	* Fixed a bug in rdlogedit(1) that made it impossible to select
+	a cart in the 'Select Cart' dialog.

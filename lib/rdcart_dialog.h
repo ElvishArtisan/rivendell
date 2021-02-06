@@ -54,7 +54,6 @@ class RDCartDialog : public RDDialog
 
  private slots:
   void modelResetData();
-  void clickedData(Q3ListViewItem *item);
   void cartDoubleClickedData(const QModelIndex &index);
   void selectionChangedData(const QItemSelection &before,
 			    const QItemSelection &after);
