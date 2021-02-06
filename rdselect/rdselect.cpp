@@ -2,7 +2,7 @@
 //
 // System Selector for Rivendell
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,12 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qdesktopwidget.h>
-#include <qdir.h>
-#include <qmessagebox.h>
-#include <qprocess.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QDir>
+#include <QMessageBox>
+#include <QProcess>
+#include <QTranslator>
 
 #include <dbversion.h>
 #include <rdpaths.h>
@@ -138,11 +138,12 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Selector Box
   //
-  select_box=new Q3ListBox(this);
-  connect(select_box,SIGNAL(doubleClicked(Q3ListBoxItem *)),
-	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
+  select_box=new QListWidget(this);
+  select_box->setSelectionMode(QAbstractItemView::SingleSelection);
+  connect(select_box,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
   for(unsigned i=0;i<select_configs.size();i++) {
-    select_box->insertItem(select_configs[i]->label());
+    select_box->insertItem(select_box->count(),select_configs[i]->label());
   }
   select_label=new QLabel(select_box,tr("Available Systems"),this);
   select_label->setFont(labelFont());
@@ -166,18 +167,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   SetSystem(select_current_id);
   SetCurrentItem(select_current_id);
   select_box->clearSelection();
-
-  //
-  // Check for Root User 
-  //
-  /*
-  setuid(geteuid());  // So the SETUID bit works as expected
-  if(getuid()!=0) {
-    QMessageBox::information(this,tr("RDSelect"),
-			     tr("Only root can run this utility!"));
-    exit(256);
-  }
-  */
 }
 
 
@@ -193,7 +182,7 @@ QSizePolicy MainWidget::sizePolicy() const
 }
 
 
-void MainWidget::doubleClickedData(Q3ListBoxItem *item)
+void MainWidget::doubleClickedData(const QModelIndex &index)
 {
   okData();
 }
@@ -204,7 +193,13 @@ void MainWidget::okData()
   QStringList args;
   QProcess *proc=NULL;
 
-  QStringList f0=select_configs[select_box->currentItem()]->filename().
+  QModelIndexList rows=select_box->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
+    return;
+  }
+
+  QStringList f0=select_configs[rows.first().row()]->filename().
     split("/",QString::SkipEmptyParts);
   args.push_back(f0.last());
   proc=new QProcess(this);
@@ -266,12 +261,14 @@ void MainWidget::SetCurrentItem(int id)
   if(db_ok&(schema==RD_VERSION_DATABASE)&&snd_ok) {
     pix=greencheckmark_map;
   }
-  for(unsigned i=0;i<select_box->count();i++) {
-    if((int)i==id) {
-      select_box->changeItem(*pix,select_configs[i]->label(),i);
+  for(int i=0;i<select_box->count();i++) {
+    QListWidgetItem *item=select_box->item(i);
+    if(i==id) {
+      item->setData(Qt::DisplayRole,select_configs[i]->label());
+      item->setData(Qt::DecorationRole,*pix);
     }
     else {
-      select_box->changeItem(select_configs[i]->label(),i);
+      item->setData(Qt::DisplayRole,select_configs[i]->label());
     }
   }
 }
