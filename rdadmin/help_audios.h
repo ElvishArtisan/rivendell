@@ -2,7 +2,7 @@
 //
 // Display help for audio ports (edit_audios.*)
 //
-// (C) Copyright 2006-2019 Fred Gleason <fredg@paravelsystems.com>
+// (C) Copyright 2006-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,7 @@
 #ifndef HELP_AUDIOS_H
 #define HELP_AUDIOS_H
 
-#include <q3textedit.h>
+#include <QTextEdit>
 
 #include <rddialog.h>
 
@@ -37,7 +37,7 @@ class HelpAudioPorts : public RDDialog
   void closeData();
 
  private:
-  Q3TextEdit *help_edit;
+  QTextEdit *help_edit;
 };
 
 

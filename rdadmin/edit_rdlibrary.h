@@ -21,9 +21,8 @@
 #ifndef EDIT_RDLIBRARY_H
 #define EDIT_RDLIBRARY_H
 
-#include <q3datetimeedit.h>
-
 #include <QComboBox>
+#include <QDateTimeEdit>
 #include <QLineEdit>
 #include <QSpinBox>
 
@@ -60,7 +59,7 @@ class EditRDLibrary : public RDDialog
   QSpinBox *lib_vox_spin;
   QSpinBox *lib_trim_spin;
   QSpinBox *lib_preroll_spin;
-  Q3TimeEdit *lib_maxlength_time;
+  QTimeEdit *lib_maxlength_time;
   QLineEdit *lib_ripdev_edit;
   QComboBox *lib_paranoia_box;
   QComboBox *lib_isrc_box;

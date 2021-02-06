@@ -21050,3 +21050,7 @@
 	* Removed the 'RDHPISoundSelector' widget.
 2021-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'Q3Frame' dependencies from rdairplay(1).
+2021-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'Q3DateTimeEdit' dependencies from rdadmin(1).
+	* Removed 'Q3ListBox' dependencies from rdadmin(1).
+	* Removed 'Q3TextEdit' dependencies from rdadmin(1).

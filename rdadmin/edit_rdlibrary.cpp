@@ -2,7 +2,7 @@
 //
 // Edit an RDLibrary Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,18 +20,8 @@
 
 #include <samplerate.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qsqldatabase.h>
+#include <QMessageBox>
+#include <QPushButton>
 
 #include <rd.h>
 #include <edit_rdlibrary.h>
@@ -41,8 +31,6 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -68,7 +56,6 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_input_card->setGeometry(sizeHint().width()/5,29,120,117);
   QLabel *label=new QLabel(lib_input_card,tr("Input"),this);
   label->setGeometry(sizeHint().width()/5,10,120,19);
-  //  label->setGeometry(10,10,110,19);
   label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
 
@@ -93,7 +80,8 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   //
   // Maximum Record Length
   //
-  lib_maxlength_time=new Q3TimeEdit(this);
+  lib_maxlength_time=new QTimeEdit(this);
+  lib_maxlength_time->setDisplayFormat("hh:mm:ss");
   lib_maxlength_time->setGeometry(190,100,85,19);
   QLabel *lib_maxlength_label=
     new QLabel(lib_maxlength_time,tr("&Max Record Time:"),this);
@@ -663,82 +651,5 @@ void EditRDLibrary::ShowBitRates(int layer,int rate)
       break;
     }
     break;
-
-    /*
-  case 2:  // MPEG-1 Layer 3
-    lib_bitrate_box->setEnabled(true);
-    lib_bitrate_box->insertItem(tr("32 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("40 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("48 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("56 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("64 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("80 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("96 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("112 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("128 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("160 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("192 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("224 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("256 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("320 kbps/chan"));
-    switch(lib_lib->defaultLayer()) {
-    case 32000:
-      lib_bitrate_box->setCurrentItem(0);
-      break;
-
-    case 40000:
-      lib_bitrate_box->setCurrentItem(1);
-      break;
-
-    case 48000:
-      lib_bitrate_box->setCurrentItem(2);
-      break;
-
-    case 56000:
-      lib_bitrate_box->setCurrentItem(3);
-      break;
-
-    case 64000:
-      lib_bitrate_box->setCurrentItem(4);
-      break;
-
-    case 80000:
-      lib_bitrate_box->setCurrentItem(5);
-      break;
-
-    case 96000:
-      lib_bitrate_box->setCurrentItem(6);
-      break;
-
-    case 112000:
-      lib_bitrate_box->setCurrentItem(7);
-      break;
-
-    case 128000:
-      lib_bitrate_box->setCurrentItem(8);
-      break;
-
-    case 160000:
-      lib_bitrate_box->setCurrentItem(9);
-      break;
-
-    case 192000:
-      lib_bitrate_box->setCurrentItem(10);
-      break;
-
-    case 224000:
-      lib_bitrate_box->setCurrentItem(11);
-      break;
-
-    case 256000:
-      lib_bitrate_box->setCurrentItem(12);
-      break;
-
-    case 320000:
-      lib_bitrate_box->setCurrentItem(13);
-      break;
-    }
-    break;
-    */
   }
 }

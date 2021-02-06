@@ -2,7 +2,7 @@
 //
 // Display Audio Adapter Information
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,7 +47,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   //
   // Resource List
   //
-  view_text_edit=new Q3TextEdit(this,"adapter_edit");
+  view_text_edit=new QTextEdit(this,"adapter_edit");
   view_text_edit->setReadOnly(true);
   QString text;
   if(rdstation->scanned()) {

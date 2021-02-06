@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Report
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -258,18 +258,21 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_daypart_check->setGeometry(60,273,15,15);
   edit_daypart_label=
     new QLabel(edit_daypart_check,tr("Filter by Daypart"),this);
-  edit_daypart_label->setGeometry(edit_daypart_check->geometry().x()+20,273,155,19);
+  edit_daypart_label->
+    setGeometry(edit_daypart_check->geometry().x()+20,273,155,19);
   edit_daypart_label->setFont(labelFont());
   edit_daypart_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
-  edit_starttime_edit=new Q3TimeEdit(this);
+  edit_starttime_edit=new QTimeEdit(this);
+  edit_starttime_edit->setDisplayFormat("hh:mm:ss");
   edit_starttime_edit->setGeometry(150,294,80,20);
   edit_starttime_label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   edit_starttime_label->setGeometry(65,294,80,20);
   edit_starttime_label->setFont(labelFont());
   edit_starttime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
-  edit_endtime_edit=new Q3TimeEdit(this);
+  edit_endtime_edit=new QTimeEdit(this);
+  edit_endtime_edit->setDisplayFormat("hh:mm:ss");
   edit_endtime_edit->setGeometry(335,294,80,20);
   edit_endtime_label=new QLabel(edit_endtime_edit,tr("End Time:"),this);
   edit_endtime_label->setGeometry(250,294,80,20);

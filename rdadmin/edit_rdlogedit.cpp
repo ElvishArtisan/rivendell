@@ -81,7 +81,8 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   // Maximum Record Length
   //
-  lib_maxlength_time=new Q3TimeEdit(this);
+  lib_maxlength_time=new QTimeEdit(this);
+  lib_maxlength_time->setDisplayFormat("hh:mm:ss");
   lib_maxlength_time->setGeometry(180,100,85,19);
   QLabel *lib_maxlength_label=
     new QLabel(lib_maxlength_time,tr("&Max Record Time:"),this);

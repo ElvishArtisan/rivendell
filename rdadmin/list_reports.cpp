@@ -2,7 +2,7 @@
 //
 // List Rivendell Reports
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -30,8 +30,6 @@
 ListReports::ListReports(QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -75,12 +73,12 @@ ListReports::ListReports(QWidget *parent)
   //
   // Report List Box
   //
-  list_box=new Q3ListBox(this);
+  list_box=new QListWidget(this);
   QLabel *list_box_label=new QLabel(list_box,tr("R&eports:"),this);
   list_box_label->setFont(labelFont());
   list_box_label->setGeometry(14,10,85,19);
-  connect(list_box,SIGNAL(doubleClicked(Q3ListBoxItem *)),
-	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
+  connect(list_box,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
 
   RefreshList();
 }
@@ -126,10 +124,13 @@ void ListReports::addData()
 
 void ListReports::editData()
 {
-  if(list_box->currentItem()<0) {
+  QModelIndexList rows=list_box->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  EditReport *edit_report=new EditReport(list_box->currentText(),this);
+  EditReport *edit_report
+    =new EditReport(list_box->item(rows.first().row())->text(),this);
   edit_report->exec();
   delete edit_report;
 }
@@ -137,20 +138,20 @@ void ListReports::editData()
 
 void ListReports::deleteData()
 {
-  if(list_box->currentText().isEmpty()) {
+  QModelIndexList rows=list_box->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
+  QString name=list_box->item(rows.first().row())->text();
   if(QMessageBox::warning(this,"RDAdmin - "+tr("Delete Report"),
 			  tr("Are you sure you want to delete report")+
-			  " \""+list_box->currentText()+"\"?",
+			  " \""+name+"\"?",
 			  QMessageBox::Yes,QMessageBox::No)==
      QMessageBox::Yes) {
-    DeleteReport(list_box->currentText());
+    DeleteReport(name);
 
-    list_box->removeItem(list_box->currentItem());
-    if(list_box->currentItem()>=0) {
-      list_box->setSelected(list_box->currentItem(),true);
-    }
+    list_box->model()->removeRow(rows.first().row());
   }
 }
 
@@ -161,7 +162,7 @@ void ListReports::closeData()
 }
 
 
-void ListReports::doubleClickedData(Q3ListBoxItem *item)
+void ListReports::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -201,14 +202,17 @@ void ListReports::RefreshList(QString rptname)
 {
   QString sql;
   RDSqlQuery *q;
+  int count=0;
 
   list_box->clear();
   q=new RDSqlQuery("select NAME from REPORTS");
   while (q->next()) {
-    list_box->insertItem(q->value(0).toString());
-    if(rptname==list_box->text(list_box->count()-1)) {
-      list_box->setCurrentItem(list_box->count()-1);
+    list_box->insertItem(list_box->count(),q->value(0).toString());
+    if(rptname==q->value(0).toString()) {
+      list_box->selectionModel()->select(list_box->model()->index(count,0),
+					 QItemSelectionModel::ClearAndSelect);
     }
+    count++;
   }
   delete q;
 }

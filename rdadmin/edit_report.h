@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Report
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,12 @@
 #ifndef EDIT_REPORT_H
 #define EDIT_REPORT_H
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
-#include <q3datetimeedit.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDateTimeEdit>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rddialog.h>
 #include <rdlistselector.h>
@@ -77,11 +77,10 @@ class EditReport : public RDDialog
   QCheckBox *edit_daypart_check;
   QLabel *edit_daypart_label;
   QLabel *edit_starttime_label;
-  Q3TimeEdit *edit_starttime_edit;
+  QTimeEdit *edit_starttime_edit;
   QLabel *edit_endtime_label;
-  Q3TimeEdit *edit_endtime_edit;
+  QTimeEdit *edit_endtime_edit;
 };
 
 
-#endif
-
+#endif  // EDIT_REPORT_H
