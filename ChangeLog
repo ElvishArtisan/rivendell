@@ -21032,3 +21032,6 @@
 	* Removed 'Q3SocketDevice' dependencies from rdsoftkeys(1).
 2021-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'Q3TextStream' dependencies from 'RDProfile'.
+2021-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'Q3DateEdit'  dependencies from rddgimport(1).
+	* Removed 'Q3TextEdit' dependencies from rddgimport(1).

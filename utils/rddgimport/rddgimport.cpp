@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing Dial Global CDN downloads
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,11 +20,10 @@
 
 #include <errno.h>
 
-#include <qfiledialog.h>
-
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QTranslator>
 
 #include <rdaudioimport.h>
 #include <rdconf.h>
@@ -115,7 +114,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Date Selector
   //
-  dg_date_edit=new Q3DateEdit(this);
+  dg_date_edit=new QDateEdit(this);
+  dg_date_edit->setDisplayFormat("MM/dd/yyyy");
   dg_date_edit->setDate(QDate::currentDate());
   dg_date_label=new QLabel(dg_date_edit,tr("Date:"),this);
   dg_date_label->setFont(labelFont());
@@ -134,7 +134,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Messages Area
   //
-  dg_messages_text=new Q3TextEdit(this);
+  dg_messages_text=new QTextEdit(this);
   dg_messages_text->setReadOnly(true);
   dg_messages_label=new QLabel(dg_service_box,tr("Messages"),this);
   dg_messages_label->setFont(labelFont());
@@ -611,7 +611,8 @@ QString MainWidget::GetIsci(const QString &str) const
 void MainWidget::LogMessage(const QString &str)
 {
   dg_messages_text->append(str+"\n");
-  dg_messages_text->scrollToBottom();
+  dg_messages_text->verticalScrollBar()->
+    setValue(dg_messages_text->verticalScrollBar()->maximum());
 }
 
 

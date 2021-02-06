@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing Dial Global CDN downloads
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,13 @@
 #ifndef RDDGIMPORT_H
 #define RDDGIMPORT_H
 
-#include <q3datetimeedit.h>
-#include <q3textedit.h>
+//#include <q3textedit.h>
 
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
+#include <QComboBox>
+#include <QDateTimeEdit>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QTextEdit>
 
 #include <rdbusybar.h>
 #include <rdgroup.h>
@@ -77,10 +78,10 @@ class MainWidget : public RDWidget
   QLineEdit *dg_filename_edit;
   QPushButton *dg_filename_button;
   QLabel *dg_date_label;
-  Q3DateEdit *dg_date_edit;
+  QDateEdit *dg_date_edit;
   QPushButton *dg_date_button;
   QLabel *dg_messages_label;
-  Q3TextEdit *dg_messages_text;
+  QTextEdit *dg_messages_text;
   RDBusyBar *dg_bar;
   QPushButton *dg_process_button;
   QPushButton *dg_close_button;
