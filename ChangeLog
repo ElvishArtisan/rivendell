@@ -21037,3 +21037,6 @@
 	* Removed 'Q3TextEdit' dependencies from rddgimport(1).
 2021-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3ListBox' dependencies from rdalsaconfig(1).
+2021-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dependencies on 'std::vector' from the SAS USI driver
+	in ripcd(8).

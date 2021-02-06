@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS USI Protocol
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,8 @@
 #ifndef SASUSI_H
 #define SASUSI_H
 
-#include <vector>
-
-//#include <q3socket.h>
-#include <qhostaddress.h>
-#include <qtcpsocket.h>
-#include <qtimer.h>
+#include <QList>
+#include <QTcpSocket>
 
 #include <rd.h>
 #include <rdmatrix.h>
@@ -64,7 +60,6 @@ class SasUsi : public Switcher
   QString PrettifyCommand(const char *cmd) const;
   RDTTYDevice *sas_device;
   QTcpSocket *sas_socket;
-  //  Q3Socket *sas_socket;
   char sas_buffer[SASUSI_MAX_LENGTH];
   unsigned sas_ptr;
   QHostAddress sas_ipaddress;
@@ -78,9 +73,9 @@ class SasUsi : public Switcher
   unsigned sas_start_cart;
   unsigned sas_stop_cart;
   RDMatrix::PortType sas_porttype;
-  std::vector<int> sas_console_numbers;
-  std::vector<int> sas_source_numbers;
-  std::vector<int> sas_relay_numbers;
+  QList<int> sas_console_numbers;
+  QList<int> sas_source_numbers;
+  QList<int> sas_relay_numbers;
 };
 
 

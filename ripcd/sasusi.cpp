@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS USI Protocol
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,10 +22,8 @@
 #include <syslog.h>
 
 #include <rdapplication.h>
-#include <rddb.h>
 #include <rdescape_string.h>
 
-#include "globals.h"
 #include "sasusi.h"
 
 SasUsi::SasUsi(RDMatrix *matrix,QObject *parent)
@@ -296,7 +294,7 @@ void SasUsi::processCommand(RDMacro *cmd)
 	  }
 	  cmd_byte=0x01;
 	}
-	if(cmd->arg(2).toUInt()<=sas_relay_numbers.size()) {
+	if(cmd->arg(2).toInt()<=sas_relay_numbers.size()) {
 	  if(sas_relay_numbers[cmd->arg(2).toUInt()-1]>=0) {
 	    snprintf(str,256,"\x05R%d%04d\x0D\x0A",cmd_byte,
 		    sas_relay_numbers[cmd->arg(2).toUInt()-1]);
@@ -564,7 +562,7 @@ void SasUsi::DispatchCommand()
     if(!ok) {
       return;
     }
-    for(unsigned i=0;i<sas_console_numbers.size();i++) {
+    for(int i=0;i<sas_console_numbers.size();i++) {
       if((console==sas_console_numbers[i])&&(source==sas_source_numbers[i])) {
 	action=cmd.mid(1,1).toUInt(&ok);
 	if(!ok) {
@@ -602,7 +600,7 @@ void SasUsi::DispatchCommand()
     if(!ok) {
       return;
     }
-    for(unsigned i=0;i<sas_relay_numbers.size();i++) {
+    for(int i=0;i<sas_relay_numbers.size();i++) {
       if(line==sas_relay_numbers[i]) {
 	switch(cmd.mid(1,2).toInt()) {
 	case 0:   // Opto
