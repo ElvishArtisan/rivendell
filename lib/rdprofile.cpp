@@ -2,7 +2,7 @@
 //
 // A class to read an ini formatted configuration file.
 //
-// (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+// (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,9 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qfile.h>
-#include <qstringlist.h>
-#include <q3textstream.h>
+#include <QFile>
+#include <QStringList>
+#include <QTextStream>
 
 #include "rdprofile.h"
 
@@ -137,8 +137,8 @@ bool RDProfile::setSource(const QString &filename)
     delete file;
     return false;
   }
-  Q3TextStream *text=new Q3TextStream(file);
-  QString line=text->readLine().stripWhiteSpace();
+  QTextStream *text=new QTextStream(file);
+  QString line=text->readLine().trimmed();
   while(!line.isNull()) {
     if((line.left(1)!=";")&&(line.left(1)!="#")) {
       if((line.left(1)=="[")&&(line.right(1)=="]")) {
