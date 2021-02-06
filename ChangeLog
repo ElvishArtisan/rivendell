@@ -21042,3 +21042,5 @@
 	in ripcd(8).
 2021-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3ListBox' dependencies from rdselect(1).
+2021-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3Url' dependencies from rdrepld(8).
