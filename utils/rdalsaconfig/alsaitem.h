@@ -2,7 +2,7 @@
 //
 // QListBoxItem for ALSA PCM devices. 
 //
-//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,22 +18,21 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef ALSAITEM_H
 #define ALSAITEM_H
 
-#include <q3listbox.h>
+#include <QListWidget>
 
-class AlsaItem : public Q3ListBoxText
+class AlsaItem : public QListWidgetItem
 {
  public:
-  AlsaItem(Q3ListBox *listbox,const QString &text=QString::null);
-  AlsaItem(const QString &text=QString::null);
+  AlsaItem(const QString &text);
   AlsaItem(const AlsaItem &item);
   int cardNumber() const;
   void setCardNumber(int cardnum);
   int pcmNumber() const;
   void setPcmNumber(int pcmnum);
+
  private:
   int alsa_card_number;
   int alsa_pcm_number;
