@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,12 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <rdprofile.h>
-#include <qsignalmapper.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QMessageBox>
+#include <QSignalMapper>
+#include <QTranslator>
 
-#include <rdfontengine.h>
+#include <rdprofile.h>
 #include <rdpushbutton.h>
 
 #include "rdsoftkeys.h"
@@ -67,7 +66,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // RML Send Socket
   //
-  key_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
+  key_socket=new QUdpSocket(this);
 
   //
   // Create Buttons
@@ -89,7 +88,7 @@ MainWidget::MainWidget(QWidget *parent)
   profile->setSource(map_filename);
   key_columns=
     profile->intValue("SoftKeys","Columns",RDSOFTKEYS_DEFAULT_COLUMNS);
-  unsigned col=0;
+  int col=0;
   unsigned row=0;
   while(!(rmlcmd=profile->stringValue("SoftKeys",QString().
 				   sprintf("Command%d",n+1),"")).isEmpty()) {
@@ -162,7 +161,7 @@ MainWidget::MainWidget(QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  unsigned x=0;
+  int x=0;
 
   if(key_macros.size()>=key_columns) {
     x=10+90*key_columns;
@@ -196,8 +195,8 @@ void MainWidget::buttonData(int id)
   else {
     addr.setAddress(key_addrs[id]);
   }
-  key_socket->writeBlock(key_macros[id],key_macros[id].length(),
-			 addr,(Q_UINT16)RD_RML_NOECHO_PORT);
+  key_socket->
+    writeDatagram(key_macros[id].toUtf8(),addr,(Q_UINT16)RD_RML_NOECHO_PORT);
 }
 
   

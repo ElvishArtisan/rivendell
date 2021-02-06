@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,9 @@
 #ifndef RDSOFTKEYS_H
 #define RDSOFTKEYS_H
 
-#include <q3socketdevice.h>
-#include <qwidget.h>
+#include <QStringList>
+#include <QUdpSocket>
+#include <QWidget>
 
 //
 // Settings
@@ -44,11 +45,11 @@ class MainWidget : public QWidget
 
  private:
   QPixmap *key_icon_map;
-  Q3SocketDevice *key_socket;
-  unsigned key_columns;
+  QUdpSocket *key_socket;
+  int key_columns;
   unsigned key_ysize;
-  std::vector<QString> key_macros;
-  std::vector<QString> key_addrs;
+  QStringList key_macros;
+  QStringList key_addrs;
 };
 
 

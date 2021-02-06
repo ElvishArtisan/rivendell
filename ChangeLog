@@ -21028,3 +21028,5 @@
 	* Removed 'Q3SocketDevice' dependencies from rmlsend(1).
 2021-02-05 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'Q3TextStream' dependencies from rmlsend(1).
+2021-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'Q3SocketDevice' dependencies from rdsoftkeys(1).
