@@ -374,7 +374,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   air_message_label->setWordWrap(true);
   air_message_label->setLineWidth(1);
   air_message_label->setMidLineWidth(1);
-  air_message_label->setFrameStyle(Q3Frame::Box|Q3Frame::Raised);
+  air_message_label->setFrameStyle(QFrame::Box|QFrame::Raised);
   air_message_label->setAlignment(Qt::AlignCenter);
   air_message_label->setFocusPolicy(Qt::NoFocus);
 
