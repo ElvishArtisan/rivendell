@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,12 @@
 #ifndef RMLSEND_H
 #define RMLSEND_H
 
-#include <q3socketdevice.h>
 #include <q3textstream.h>
 
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QComboBox>
+#include <QLabel>
+#include <QPushButton>
+#include <QUdpSocket>
 
 #include <rd.h>
 #include <rdwidget.h>
@@ -59,9 +59,8 @@ class MainWidget : public RDWidget
   QLabel *port_edit_label;
   QComboBox *port_box;
   QLineEdit *port_edit;
-  Q3SocketDevice *udp_command,*udp_response;
+  QUdpSocket *udp_command,*udp_response;
   QHostAddress host_addr;
-  QTimer *timer;
   int countdown;
   QFont main_font;
   QPixmap *rivendell_map;

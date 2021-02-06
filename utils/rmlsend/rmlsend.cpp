@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -116,16 +116,11 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   quit->setDefault(true);
   connect(quit,SIGNAL(clicked()),qApp,SLOT(quit()));
 
-  udp_command=new Q3SocketDevice(Q3SocketDevice::Datagram);
+  udp_command=new QUdpSocket(this);
 
-  udp_response=new Q3SocketDevice(Q3SocketDevice::Datagram);
+  udp_response=new QUdpSocket(this);
   udp_response->bind(QHostAddress(),RD_RML_REPLY_PORT);
-  udp_response->setBlocking(false);
-
-  timer=new QTimer(this,"timer");
-  connect(timer,SIGNAL(timeout()),this,SLOT(readResponse()));
-  countdown=-1;
-  timer->start(100);
+  connect(udp_response,SIGNAL(readyRead()),this,SLOT(readResponse()));
 
   //
   // Populate Data
@@ -208,8 +203,7 @@ void MainWidget::sendCommand()
     host_addr.setAddress(host->text());
   }
   dcl_command=command->text();
-  if(!udp_command->writeBlock(dcl_command.utf8(),dcl_command.utf8().length(),
-			      host_addr,(Q_UINT16)port)) {
+  if(!udp_command->writeDatagram(dcl_command.utf8(),host_addr,(Q_UINT16)port)) {
     QMessageBox::warning(this,tr("RMLSend"),tr("Connection Failed!"));
     return;
   }
@@ -251,7 +245,6 @@ void MainWidget::destChangedData(int id)
     port_edit_label->setDisabled(true);
     response->setEnabled(true);
     response_label->setEnabled(true);
-    timer->start(100);
     break;
 
   case MainWidget::RmlNoEcho:
@@ -260,7 +253,6 @@ void MainWidget::destChangedData(int id)
     response->setText("");
     response->setDisabled(true);
     response_label->setDisabled(true);
-    timer->stop();
     break;
 
   case MainWidget::Manual:
@@ -269,7 +261,6 @@ void MainWidget::destChangedData(int id)
     response->setText("");
     response->setDisabled(true);
     response_label->setDisabled(true);
-    timer->stop();
     break;
   }
 }
@@ -398,7 +389,7 @@ bool MainObject::GetNextChar(QChar *c)
 void MainObject::ProcessCommands()
 {
   QChar c;
-  Q3SocketDevice *udp_command=new Q3SocketDevice(Q3SocketDevice::Datagram);
+  QUdpSocket *udp_command=new QUdpSocket(this);
   QString rml="";
   bool active=false;
 
@@ -406,10 +397,10 @@ void MainObject::ProcessCommands()
     if(active) {
       if(c=='!') {
 	rml+=c;
-	udp_command->writeBlock(rml.utf8(),rml.utf8().length(),
-				*dest_addr,dest_port);
+	udp_command->writeDatagram(rml.utf8(),*dest_addr,dest_port);
 	rml="";
 	active=false;
+	qApp->processEvents();
       }
       else {
 	rml+=c;
