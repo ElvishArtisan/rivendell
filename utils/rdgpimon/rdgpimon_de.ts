@@ -57,10 +57,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>State</source>
         <translation type="unfinished"></translation>
     </message>

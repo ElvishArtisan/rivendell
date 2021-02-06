@@ -21017,3 +21017,6 @@
 	* Removed vestigal 'LibListview' class from rdairplay(1).
 2021-02-05 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the rddiscimport(1) utility.
+2021-02-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDGpioLogModel'.
+	* Refactored rdgpimon(1) to use the model-based API.

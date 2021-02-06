@@ -1,8 +1,8 @@
 // rdgpimon.h
 //
-// A Qt-based application for testing general purpose input (GPI) devices.
+// A Qt-based application for monitoring general purpose input (GPI) devices.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,13 @@
 #ifndef RDGPIMON_H
 #define RDGPIMON_H
 
-#include <q3datetimeedit.h>
-
-#include <qcombobox.h>
+#include <QComboBox>
+#include <QDateTimeEdit>
 
 #include <rdmatrix.h>
 #include <rdtransportbutton.h>
+#include <rdgpiologmodel.h>
+#include <rdtableview.h>
 #include <rdwidget.h>
 
 #include "gpi_label.h"
@@ -49,10 +50,9 @@ class MainWidget : public RDWidget
   void userData();
   void typeActivatedData(int index);
   void matrixActivatedData(int index);
-  void eventsDateChangedData(const QDate &date);
-  void eventsStateChangedData(int n);
   void eventsScrollData();
   void eventsReportData();
+  void rowsInsertedData(const QModelIndex &parent,int start,int end);
   void gpiStateChangedData(int matrix,int line,bool state);
   void gpoStateChangedData(int matrix,int line,bool state);
   void gpiMaskChangedData(int matrix,int line,bool state);
@@ -68,23 +68,22 @@ class MainWidget : public RDWidget
   void UpdateLabelsUp(int last_line);
   void UpdateLabelsDown(int first_line);
   void RefreshGpioStates();
-  void RefreshEventsList();
   void AddEventsItem(int line,bool state);
   RDMatrix *gpi_matrix;
   QComboBox *gpi_type_box;
   QComboBox *gpi_matrix_box;
-  QPixmap *gpi_rivendell_map;
   GpiLabel *gpi_labels[GPIMON_ROWS*GPIMON_COLS];
   RDTransportButton *gpi_up_button;
   RDTransportButton *gpi_down_button;
   int gpi_first_line;
   int gpi_last_line;
   QLabel *gpi_events_date_label;
-  Q3DateEdit *gpi_events_date_edit;
+  QDateEdit *gpi_events_date_edit;
   QLabel *gpi_events_state_label;
   QComboBox *gpi_events_state_box;
   QPushButton *gpi_events_scroll_button;
-  RDListView *gpi_events_list;
+  RDTableView *gpi_events_view;
+  RDGpioLogModel *gpi_events_model;
   QTimer *gpi_events_startup_timer;
   bool gpi_scroll_mode;
   QPalette gpi_scroll_color;

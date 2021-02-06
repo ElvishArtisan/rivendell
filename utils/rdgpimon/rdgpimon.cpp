@@ -2,7 +2,7 @@
 //
 // A Qt-based application for testing General Purpose Input (GPI) devices.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,11 +27,6 @@
 #include <rdtextfile.h>
 
 #include "rdgpimon.h"
-
-//
-// Icons
-//
-#include "../icons/rivendell-22x22.xpm"
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   : RDWidget(c,parent)
@@ -66,12 +61,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   setMinimumSize(sizeHint());
   setMaximumSize(sizeHint());
-
-  //
-  // Create And Set Icon
-  //
-  gpi_rivendell_map=new QPixmap(rivendell_22x22_xpm);
-  setWindowIcon(*gpi_rivendell_map);
+  setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::Rivendell,22));
 
   //
   // RIPC Connection
@@ -186,11 +176,10 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   label->setAlignment(Qt::AlignCenter);
   label->setGeometry(110,423,sizeHint().width()-220,30);
 
-  gpi_events_date_edit=new Q3DateEdit(this);
+  gpi_events_date_edit=new QDateEdit(this);
+  gpi_events_date_edit->setDisplayFormat("dd/MM/yyyy");
   gpi_events_date_edit->setGeometry(155,453,100,20);
   gpi_events_date_edit->setDate(QDate::currentDate());
-  connect(gpi_events_date_edit,SIGNAL(valueChanged(const QDate &)),
-	  this,SLOT(eventsDateChangedData(const QDate &)));
   gpi_events_date_label=new QLabel(gpi_events_date_edit,tr("Date")+":",this);
   gpi_events_date_label->setGeometry(100,453,50,20);
   gpi_events_date_label->setFont(labelFont());
@@ -201,29 +190,27 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   gpi_events_state_box->insertItem(tr("On"));
   gpi_events_state_box->insertItem(tr("Off"));
   gpi_events_state_box->insertItem(tr("Both"));
-  connect(gpi_events_state_box,SIGNAL(activated(int)),
-	  this,SLOT(eventsStateChangedData(int)));
   gpi_events_state_label=new QLabel(gpi_events_state_box,tr("State")+":",this);
   gpi_events_state_label->setGeometry(275,453,50,20);
   gpi_events_state_label->setFont(labelFont());
   gpi_events_state_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
-  gpi_events_list=new RDListView(this);
-  gpi_events_list->setGeometry(110,480,sizeHint().width()-220,230);
-  gpi_events_list->setItemMargin(5);
-  gpi_events_list->setSelectionMode(Q3ListView::NoSelection);
-
-  gpi_events_list->addColumn("Time");
-  gpi_events_list->setColumnAlignment(0,Qt::AlignHCenter);
-  gpi_events_list->setColumnSortType(1,RDListView::TimeSort);
-
-  gpi_events_list->addColumn(tr("Line"));
-  gpi_events_list->setColumnAlignment(1,Qt::AlignHCenter);
-  gpi_events_list->setColumnSortType(1,RDListView::GpioSort);
-
-  gpi_events_list->addColumn(tr("State"));
-  gpi_events_list->setColumnAlignment(2,Qt::AlignHCenter);
-
+  gpi_events_view=new RDTableView(this);
+  gpi_events_view->setGeometry(110,480,sizeHint().width()-220,230);
+  gpi_events_view->setSelectionMode(QAbstractItemView::NoSelection);
+  gpi_events_model=new RDGpioLogModel(this);
+  gpi_events_model->setFont(defaultFont());
+  gpi_events_model->setPalette(palette());
+  gpi_events_view->setModel(gpi_events_model);
+  connect(gpi_events_model,SIGNAL(modelReset()),
+	  gpi_events_view,SLOT(resizeColumnsToContents()));
+  connect(gpi_events_date_edit,SIGNAL(dateChanged(const QDate &)),
+	  gpi_events_model,SLOT(setDateFilter(const QDate &)));
+  connect(gpi_events_state_box,SIGNAL(activated(const QString &)),
+	  gpi_events_model,SLOT(setStateFilter(const QString &)));
+  connect(gpi_events_model,SIGNAL(rowsInserted(const QModelIndex &,int,int)),
+	  this,SLOT(rowsInsertedData(const QModelIndex &,int,int)));
+  gpi_events_view->resizeColumnsToContents();
   gpi_events_scroll_button=new QPushButton(tr("Scroll"),this);
   gpi_events_scroll_button->setGeometry(sizeHint().width()-100,510,80,50);
   gpi_events_scroll_button->setFont(buttonFont());
@@ -298,20 +285,12 @@ void MainWidget::matrixActivatedData(int index)
     new RDMatrix(rda->config()->stationName(),gpi_matrix_box->currentItem());
   UpdateLabelsDown(0);
   gpi_up_button->setDisabled(true);
-  RefreshEventsList();
+  //  RefreshEventsList();
+  gpi_events_model->
+    setGpioType((RDMatrix::GpioType)gpi_type_box->currentIndex());
+  gpi_events_model->setMatrixNumber(index);
+
   gpi_events_startup_timer->start(1000,true);
-}
-
-
-void MainWidget::eventsDateChangedData(const QDate &date)
-{
-  RefreshEventsList();
-}
-
-
-void MainWidget::eventsStateChangedData(int n)
-{
-  RefreshEventsList();
 }
 
 
@@ -324,15 +303,8 @@ void MainWidget::eventsScrollData()
   else {
     gpi_events_scroll_button->setPalette(gpi_scroll_color);
     gpi_scroll_mode=true;
-    RDListViewItem *item=(RDListViewItem *)gpi_events_list->firstChild();
-    RDListViewItem *last=NULL;
-    while(item!=NULL) {
-      last=item;
-      item=(RDListViewItem *)item->nextSibling();
-    }
-    if(last!=NULL) {
-      gpi_events_list->ensureItemVisible(last);
-    }
+    gpi_events_view->
+      scrollTo(gpi_events_model->index(gpi_events_model->rowCount()-1,0));
   }
 }
 
@@ -387,6 +359,14 @@ void MainWidget::eventsReportData()
   }
   delete q;
   RDTextFile(report);
+}
+
+
+void MainWidget::rowsInsertedData(const QModelIndex &parent,int start,int end)
+{
+  if(gpi_scroll_mode) {
+    gpi_events_view->scrollTo(gpi_events_model->index(end,0));
+  }
 }
 
 
@@ -669,48 +649,6 @@ void MainWidget::RefreshGpioStates()
 }
 
 
-void MainWidget::RefreshEventsList()
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("select EVENT_DATETIME,NUMBER,EDGE from GPIO_EVENTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",gpi_matrix_box->currentItem())+
-    QString().sprintf("(TYPE=%d)&&",gpi_type_box->currentItem())+
-    "(EVENT_DATETIME>=\""+gpi_events_date_edit->date().toString("yyyy-MM-dd")+
-    " 00:00:00\")&&"+
-    "(EVENT_DATETIME<\""+gpi_events_date_edit->date().addDays(1).
-    toString("yyyy-MM-dd")+" 00:00:00\")";
-  if(gpi_events_state_box->currentItem()==0) {
-    sql+="&&(EDGE=1)";
-  }
-  if(gpi_events_state_box->currentItem()==1) {
-    sql+="&&(EDGE=0)";
-  }
-  q=new RDSqlQuery(sql);
-  gpi_events_list->clear();
-  RDListViewItem *item=NULL;
-  while(q->next()) {
-    item=new RDListViewItem(gpi_events_list);
-    item->setText(0,q->value(0).toDateTime().toString("hh:mm:ss"));
-    item->setText(1,QString().sprintf("%d",q->value(1).toInt()));
-    if(q->value(2).toInt()==0) {
-      item->setText(2,tr("Off"));
-      item->setTextColor(Qt::darkRed);
-    }
-    else {
-      item->setText(2,tr("On"));
-      item->setTextColor(Qt::darkGreen);
-    }
-  }
-  if(gpi_scroll_mode&&(item!=NULL)) {
-    gpi_events_list->ensureItemVisible(item);
-  }
-  delete q;
-}
-
-
 void MainWidget::AddEventsItem(int line,bool state)
 {
   if(gpi_events_startup_timer->isActive()) {
@@ -722,20 +660,7 @@ void MainWidget::AddEventsItem(int line,bool state)
   if((gpi_events_state_box->currentItem()==1)&&state) {
     return;
   }
-  RDListViewItem *item=new RDListViewItem(gpi_events_list);
-  item->setText(0,QTime::currentTime().toString("hh:mm:ss"));
-  item->setText(1,QString().sprintf("%d",line+1));
-  if(state) {
-    item->setText(2,tr("On"));
-    item->setTextColor(Qt::darkGreen);
-  }
-  else {
-    item->setText(2,tr("Off"));
-    item->setTextColor(Qt::darkRed);
-  }  
-  if(gpi_scroll_mode) {
-    gpi_events_list->ensureItemVisible(item);
-  }
+  gpi_events_model->addEvent(line,state);
 }
 
 
