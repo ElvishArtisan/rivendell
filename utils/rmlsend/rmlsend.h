@@ -21,11 +21,10 @@
 #ifndef RMLSEND_H
 #define RMLSEND_H
 
-#include <q3textstream.h>
-
 #include <QComboBox>
 #include <QLabel>
 #include <QPushButton>
+#include <QTextStream>
 #include <QUdpSocket>
 
 #include <rd.h>
@@ -83,7 +82,7 @@ class MainObject : public QObject
   void ProcessCommands();
   int input_fd;
   QString input_file;
-  Q3TextStream *input_stream;
+  QTextStream *input_stream;
   QString dest_hostname;
   QHostAddress *dest_addr;
   unsigned dest_port;

@@ -356,8 +356,8 @@ void MainObject::InitStream()
       exit(1);
     }
   }
-  input_stream=new Q3TextStream(f,QIODevice::ReadOnly);
-  input_stream->setEncoding(Q3TextStream::UnicodeUTF8);
+  input_stream=new QTextStream(f,QIODevice::ReadOnly);
+  input_stream->setEncoding(QTextStream::UnicodeUTF8);
 }
 
 

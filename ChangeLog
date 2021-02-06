@@ -21026,3 +21026,5 @@
 	a cart in the 'Select Cart' dialog.
 2021-02-05 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'Q3SocketDevice' dependencies from rmlsend(1).
+2021-02-05 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'Q3TextStream' dependencies from rmlsend(1).
