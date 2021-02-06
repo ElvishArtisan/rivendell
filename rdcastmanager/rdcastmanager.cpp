@@ -186,13 +186,6 @@ void MainWidget::selectionChangedData(const QItemSelection &before,
 }
 
 
-void MainWidget::feedClickedData(Q3ListViewItem *item)
-{
-  cast_open_button->setDisabled(item==NULL);
-  cast_copy_button->setDisabled(item==NULL);
-}
-
-
 void MainWidget::openData()
 {
   QModelIndexList rows=cast_feed_view->selectionModel()->selectedRows();

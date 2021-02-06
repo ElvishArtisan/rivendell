@@ -46,7 +46,6 @@ class MainWidget : public RDWidget
   void modelResetData();
   void selectionChangedData(const QItemSelection &before,
 			    const QItemSelection &after);
-  void feedClickedData(Q3ListViewItem *item);
   void feedDoubleClickedData(const QModelIndex &index);
   void quitMainWidget();
 
