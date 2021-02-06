@@ -53,14 +53,11 @@ lib_LTLIBRARIES = librdhpi.la
 dist_librdhpi_la_SOURCES = rdhpiinformation.cpp rdhpiinformation.h\
                            rdhpiplaystream.cpp rdhpiplaystream.h\
                            rdhpirecordstream.cpp rdhpirecordstream.h\
-                           rdhpisoundcard.cpp rdhpisoundcard.h\
-                           rdhpisoundselector.cpp rdhpisoundselector.h
+                           rdhpisoundcard.cpp rdhpisoundcard.h
 
 nodist_librdhpi_la_SOURCES = moc_rdhpiplaystream.cpp\
                              moc_rdhpirecordstream.cpp\
-                             moc_rdhpisoundcard.cpp\
-                             moc_rdhpisoundselector.cpp
-
+                             moc_rdhpisoundcard.cpp
 
 librdhpi_la_LDFLAGS = -release $(VERSION)
 

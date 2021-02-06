@@ -2,7 +2,7 @@
 #
 # The rdhpi/ QMake project file for Rivendell.
 #
-# (C) Copyright 2003-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+# (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -28,13 +28,11 @@ SOURCES += rdhpiinformation.cpp
 SOURCES += rdhpiplaystream.cpp
 SOURCES += rdhpirecordstream.cpp
 SOURCES += rdhpisoundcard.cpp
-SOURCES += rdhpisoundselector.cpp
 
 HEADERS += rdhpiinformation.h
 HEADERS += rdhpiplaystream.h
 HEADERS += rdhpirecordstream.h
 HEADERS += rdhpisoundcard.h
-HEADERS += rdhpisoundselector.h
 
 TRANSLATIONS += rdhpi_cs.ts
 TRANSLATIONS += rdhpi_de.ts
