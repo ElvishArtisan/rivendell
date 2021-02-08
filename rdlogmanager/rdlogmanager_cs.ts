@@ -285,7 +285,7 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>VŠE</translation>
+        <translation type="obsolete">VŠE</translation>
     </message>
     <message>
         <source>PRE-POSITION LOG</source>
@@ -477,11 +477,11 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>Audio</source>
-        <translation>Zvuk</translation>
+        <translation type="obsolete">Zvuk</translation>
     </message>
     <message>
         <source>Macro</source>
-        <translation>Makro</translation>
+        <translation type="obsolete">Makro</translation>
     </message>
     <message>
         <source>Cue</source>
@@ -576,20 +576,12 @@ Chcete ji přepsat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Start</source>
-        <translation type="unfinished">Začátek</translation>
+        <translation type="obsolete">Začátek</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Konec</translation>
-    </message>
-    <message>
-        <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Konec</translation>
     </message>
     <message>
         <source>Transition</source>

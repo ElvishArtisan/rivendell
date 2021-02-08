@@ -287,7 +287,7 @@ horario</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>TODO</translation>
+        <translation type="obsolete">TODO</translation>
     </message>
     <message>
         <source>PRE-POSITION LOG</source>
@@ -441,11 +441,11 @@ List</source>
     </message>
     <message>
         <source>Audio</source>
-        <translation>Audio</translation>
+        <translation type="obsolete">Audio</translation>
     </message>
     <message>
         <source>Macro</source>
-        <translation>Macro</translation>
+        <translation type="obsolete">Macro</translation>
     </message>
     <message>
         <source>Cue</source>
@@ -578,20 +578,12 @@ Do you want to overwrite it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Start</source>
-        <translation type="unfinished">Inicio</translation>
+        <translation type="obsolete">Inicio</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Fin</translation>
-    </message>
-    <message>
-        <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Fin</translation>
     </message>
     <message>
         <source>Transition</source>

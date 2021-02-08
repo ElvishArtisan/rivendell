@@ -22,6 +22,7 @@
 #include <qmessagebox.h>
 #include <qpainter.h>
 
+#include <rdcartfilter.h>
 #include <rdcart_search_text.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
@@ -96,6 +97,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   event_group_box=new QComboBox(this);
   event_group_box->setGeometry(55,25,CENTER_LINE-70,20);
+  event_group_model=new RDGroupListModel(true,false,this);
+  event_group_model->changeUser();
+  event_group_box->setModel(event_group_model);
   connect(event_group_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(filterActivatedData(const QString &)));
   label=new QLabel(event_group_box,tr("Group:"),this);
@@ -137,23 +141,22 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   // Cart List
   //
-  event_lib_list=new LibListView(this);
-  event_lib_list->setGeometry(10,80,CENTER_LINE-20,sizeHint().height()-300);
-  event_lib_list->setAllColumnsShowFocus(true);
-  event_lib_list->setItemMargin(5);
-  event_lib_list->addColumn("");
-  event_lib_list->addColumn(tr("Cart"));
-  event_lib_list->addColumn(tr("Group"));
-  event_lib_list->addColumn(tr("Length"));
-  event_lib_list->setColumnAlignment(3,Qt::AlignRight);
-  event_lib_list->addColumn(tr("Title"));
-  event_lib_list->addColumn(tr("Artist"));
-  event_lib_list->addColumn(tr("Start"));
-  event_lib_list->addColumn(tr("End"));
-  event_lib_list->addColumn(tr("Type"));
-  connect(event_lib_list,SIGNAL(clicked(Q3ListViewItem *)),
-	  this,SLOT(cartClickedData(Q3ListViewItem *)));
-  
+  event_lib_view=new LibraryTableView(this);
+  event_lib_view->setGeometry(10,80,CENTER_LINE-20,sizeHint().height()-300);
+  event_lib_view->setDragEnabled(true);
+  event_lib_model=new RDLibraryModel(this);
+  event_lib_model->setFont(font());
+  event_lib_model->setPalette(palette());
+  event_lib_view->setModel(event_lib_model);
+  event_lib_view->hideColumn(3);
+  connect(event_lib_view->selectionModel(),
+       SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
+       this,
+       SLOT(selectionChangedData(const QItemSelection &,
+				 const QItemSelection &)));
+  connect(event_lib_model,SIGNAL(modelReset()),
+	  event_lib_view,SLOT(resizeColumnsToContents()));
+
   //
   // Empty Cart Source
   //
@@ -202,14 +205,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   // Load Group List
   //
-  sql="select NAME from GROUPS order by NAME";
-  q=new RDSqlQuery(sql);
-  event_group_box->insertItem(tr("ALL"));
-  while(q->next()) {
-    event_group_box->insertItem(q->value(0).toString());
-  }
-  delete q;
-
   RefreshLibrary();
 
   // *******************************
@@ -448,8 +443,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_preimport_list->addColumn(tr("Title"));
   event_preimport_list->addColumn(tr("Transition"));
   event_preimport_list->addColumn(tr("Count"));
-  connect(event_preimport_list,SIGNAL(clicked(Q3ListViewItem *)),
-	  this,SLOT(cartClickedData(Q3ListViewItem *)));
   connect(event_preimport_list,SIGNAL(lengthChanged(int)),
 	  this,SLOT(preimportLengthChangedData(int)));
   event_preimport_up_button=new RDTransportButton(RDTransportButton::Up,this);
@@ -668,8 +661,8 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_postimport_list->addColumn(tr("Title"));
   event_postimport_list->addColumn(tr("Transition"));
   event_postimport_list->addColumn(tr("Count"));
-  connect(event_postimport_list,SIGNAL(clicked(Q3ListViewItem *)),
-	  this,SLOT(cartClickedData(Q3ListViewItem *)));
+  //  connect(event_postimport_list,SIGNAL(clicked(Q3ListViewItem *)),
+  //	  this,SLOT(cartClickedData(Q3ListViewItem *)));
   connect(event_postimport_list,SIGNAL(lengthChanged(int)),
 	  this,SLOT(postimportLengthChangedData(int)));
   connect(event_postimport_list,SIGNAL(validationNeeded()),
@@ -865,7 +858,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 
 EditEvent::~EditEvent()
 {
-  delete event_lib_list;
+  delete event_lib_view;
   delete event_preimport_list;
   delete event_postimport_list;
 }
@@ -923,14 +916,19 @@ void EditEvent::searchData()
 }
 
 
-void EditEvent::cartClickedData(Q3ListViewItem *item)
+void EditEvent::selectionChangedData(const QItemSelection &before,
+				     const QItemSelection &after)
 {
-  if (!event_player) return;
-  if(item==NULL) {
+  QModelIndexList rows=event_lib_view->selectionModel()->selectedRows();
+
+  if(event_player==NULL) {
+    return;
+  }
+  if(rows.size()!=1) {
     event_player->setCart(0);
     return;
   }
-  event_player->setCart(item->text(1).toUInt());
+  event_player->setCart(event_lib_model->cartNumber(rows.first()));
 }
 
 
@@ -1355,77 +1353,20 @@ void EditEvent::paintEvent(QPaintEvent *e)
   p->end();
 }
 
-
 void EditEvent::RefreshLibrary()
 {
-  QString type_filter;
-
-  switch(event_lib_type_group->checkedId()) {
-  case 0:
-    type_filter="((TYPE=1)||(TYPE=2)||(TYPE=3))";
-    break;
-
-  case 1:
-    type_filter="((TYPE=1)||(TYPE=3))";
-    break;
-
-  case 2:
-    type_filter="(TYPE=2)";
-    break;
-  }
-  QString sql=QString("select ")+
-    "TYPE,"+            // 00
-    "NUMBER,"+          // 01
-    "GROUP_NAME,"+      // 02
-    "FORCED_LENGTH,"+   // 03
-    "TITLE,"+           // 04
-    "ARTIST,"+          // 05
-    "START_DATETIME,"+  // 06
-    "END_DATETIME "+    // 07
-    "from CART ";
-  QString group=event_group_box->currentText();
-  if(group==QString(tr("ALL"))) {
-    group="";
-  }
-  sql+=RDCartSearchText(event_lib_filter_edit->text(),group,"",false)+" && "+
-    type_filter;
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  Q3ListViewItem *item;
-  event_lib_list->clear();
-  while(q->next()) {
-    item=new Q3ListViewItem(event_lib_list);
-    switch((RDCart::Type)q->value(0).toInt()) {
-    case RDCart::Audio:
-      item->setPixmap(0,*event_playout_map);
-      item->setText(8,tr("Audio"));
-      break;
-
-    case RDCart::Macro:
-      item->setPixmap(0,*event_macro_map);
-      item->setText(8,tr("Macro"));
-      break;
-
-    case RDCart::All:
-      break;
-    }
-    item->setText(1,QString().sprintf("%06u",q->value(1).toInt()));
-    item->setText(2,q->value(2).toString());
-    item->setText(3,RDGetTimeLength(q->value(3).toInt(),false,false));
-    item->setText(4,q->value(4).toString());
-    item->setText(5,q->value(5).toString());
-    if(!q->value(6).toDateTime().isNull()) {
-      item->setText(6,q->value(7).toDateTime().toString("MM/dd/yyyy"));
-    }
-    if(!q->value(7).toDateTime().isNull()) {
-      item->setText(7,q->value(7).toDateTime().toString("MM/dd/yyyy"));
-    }
-    else {
-      item->setText(7,"TFN");
-    }
-  }
-  delete q;
+  QString sql=QString("where ")+
+    RDCartFilter::typeFilter(event_lib_type_group->button(0)->isChecked()||
+			     event_lib_type_group->button(1)->isChecked(),
+			     event_lib_type_group->button(0)->isChecked()||
+			     event_lib_type_group->button(2)->isChecked(),
+			     RDCart::All)+
+    RDCartFilter::phraseFilter(event_lib_filter_edit->text(),false)+
+    RDCartFilter::groupFilter(event_group_box->currentText(),
+			      event_group_model->allGroupNames());
+  sql=sql.left(sql.length()-3);
+  event_lib_model->setFilterSql(sql);
 }
-
 
 void EditEvent::Save()
 {

@@ -282,7 +282,7 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>ALT</translation>
+        <translation type="obsolete">ALT</translation>
     </message>
     <message>
         <source>PRE-POSITION LOG</source>
@@ -478,11 +478,11 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>Audio</source>
-        <translation>Lyd</translation>
+        <translation type="obsolete">Lyd</translation>
     </message>
     <message>
         <source>Macro</source>
-        <translation>Makro</translation>
+        <translation type="obsolete">Makro</translation>
     </message>
     <message>
         <source>Cue</source>
@@ -577,20 +577,12 @@ Vil du byta henne ut?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Start</source>
-        <translation type="unfinished">Start</translation>
+        <translation type="obsolete">Start</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Slutt</translation>
-    </message>
-    <message>
-        <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Slutt</translation>
     </message>
     <message>
         <source>Transition</source>

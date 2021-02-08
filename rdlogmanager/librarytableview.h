@@ -1,8 +1,8 @@
-//   lib_listview.cpp
+// librarytableview.h
 //
-//   The Library ListView widget for RDLogManager.
+// QTableView widget that supports cart dragging.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,28 +17,21 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
-#include <rd3cartdrag.h>
+#ifndef LIBRARYTABLEVIEW_H
+#define LIBRARYTABLEVIEW_H
 
-#include <lib_listview.h>
+#include <rdtableview.h>
 
-LibListView::LibListView(QWidget *parent)
-  : Q3ListView(parent)
+class LibraryTableView : public RDTableView
 {
-}
+  Q_OBJECT
+ public:
+  LibraryTableView(QWidget *parent);
+
+ protected:
+  void mousePressEvent(QMouseEvent *e);
+};
 
 
-void LibListView::contentsMousePressEvent(QMouseEvent *e)
-{
-  Q3ListView::contentsMousePressEvent(e);
-  Q3ListViewItem *item=selectedItem();
-  if(item==NULL) {
-    return;
-  }
-  RD3CartDrag *d=new RD3CartDrag(item->text(1).toUInt(),item->pixmap(0),
-				 Qt::lightGray,this);
-  d->dragCopy();
-
-  emit clicked(item);
-}
+#endif  // LIBRARYTABLEVIEW

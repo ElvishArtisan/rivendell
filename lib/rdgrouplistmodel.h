@@ -44,6 +44,7 @@ class RDGroupListModel : public QAbstractTableModel
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
   QString groupName(const QModelIndex &row) const;
+  QStringList allGroupNames() const;
   QModelIndex addGroup(const QString &name);
   QModelIndex renameGroup(const QString &oldname,const QString &newname);
   void removeGroup(const QModelIndex &row);

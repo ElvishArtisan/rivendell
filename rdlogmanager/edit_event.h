@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,23 +22,26 @@
 #define EDIT_EVENT_H
 
 
-#include <qbuttongroup.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qdatetimeedit.h>
-#include <qgroupbox.h>
-#include <qlineedit.h>
-#include <qradiobutton.h>
-#include <qspinbox.h>
-#include <qtextedit.h>
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDateTimeEdit>
+#include <QGroupBox>
+#include <QLineEdit>
+#include <QRadioButton>
+#include <QSpinBox>
+#include <QTextEdit>
 
 #include <rddialog.h>
 #include <rd3emptycart.h>
 #include <rdevent.h>
+#include <rdgrouplistmodel.h>
+#include <rdlibrarymodel.h>
 #include <rdsimpleplayer.h>
+#include <rdtableview.h>
 
 #include "import_listview.h"
-#include "lib_listview.h"
+#include "librarytableview.h"
 
 //
 // Layout
@@ -60,7 +63,8 @@ class EditEvent : public RDDialog
   void filterActivatedData(const QString &str);
   void filterClickedData(int id);
   void searchData();
-  void cartClickedData(Q3ListViewItem *item);
+  void selectionChangedData(const QItemSelection &before,
+			    const QItemSelection &after);
   void prepositionToggledData(bool state);
   void timeToggledData(bool);
   void graceClickedData(int);
@@ -99,6 +103,7 @@ class EditEvent : public RDDialog
   QLineEdit *event_lib_filter_edit;
   QButtonGroup *event_lib_type_group;
   QComboBox *event_group_box;
+  RDGroupListModel *event_group_model;
   QComboBox *event_sched_group_box;
   QSpinBox* event_artist_sep_spinbox;
   QLabel *event_artist_sep_label;
@@ -110,7 +115,8 @@ class EditEvent : public RDDialog
   QLabel *event_have_code_label;
   QComboBox* event_have_code2_box;
   QLabel *event_have_code2_label;
-  LibListView *event_lib_list;
+  LibraryTableView *event_lib_view;
+  RDLibraryModel *event_lib_model;
   QPushButton *event_search_button;
   QPixmap *event_playout_map;
   QPixmap *event_macro_map;

@@ -228,10 +228,6 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ALL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>PRE-POSITION LOG</source>
         <translation type="unfinished"></translation>
     </message>
@@ -386,14 +382,6 @@ Do you want to overwrite it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Audio</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Len:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -423,22 +411,6 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>End</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -168,6 +168,25 @@ QString RDGroupListModel::groupName(const QModelIndex &row) const
 }
 
 
+QStringList RDGroupListModel::allGroupNames() const
+{
+  QStringList ret;
+
+  if(d_show_all) {
+    for(int i=1;i<d_texts.size();i++) {
+      ret.push_back(d_texts.at(i).at(0).toString());
+    }
+  }
+  else {
+    for(int i=0;i<d_texts.size();i++) {
+      ret.push_back(d_texts.at(i).at(0).toString());
+    }
+  }
+
+  return ret;
+}
+
+
 QModelIndex RDGroupListModel::addGroup(const QString &grpname)
 {
   //

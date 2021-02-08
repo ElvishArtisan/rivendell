@@ -291,7 +291,7 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation>TODOS</translation>
+        <translation type="obsolete">TODOS</translation>
     </message>
     <message>
         <source>PRE-POSITION LOG</source>
@@ -487,11 +487,11 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>Audio</source>
-        <translation>Áudio</translation>
+        <translation type="obsolete">Áudio</translation>
     </message>
     <message>
         <source>Macro</source>
-        <translation>Macro</translation>
+        <translation type="obsolete">Macro</translation>
     </message>
     <message>
         <source>Cue</source>
@@ -578,20 +578,12 @@ Você quer sobreescrêve-lo?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Artist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Start</source>
-        <translation type="unfinished">Início</translation>
+        <translation type="obsolete">Início</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Fim</translation>
-    </message>
-    <message>
-        <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Fim</translation>
     </message>
     <message>
         <source>Transition</source>
