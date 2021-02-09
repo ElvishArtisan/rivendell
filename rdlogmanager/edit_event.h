@@ -38,9 +38,10 @@
 #include <rdgrouplistmodel.h>
 #include <rdlibrarymodel.h>
 #include <rdsimpleplayer.h>
-#include <rdtableview.h>
 
 #include "import_listview.h"
+#include "importcartsmodel.h"
+#include "importcartsview.h"
 #include "librarytableview.h"
 
 //
@@ -84,7 +85,6 @@ class EditEvent : public RDDialog
   void saveAsData();
   void svcData();
   void colorData();
-  void validate();
   void okData();
   void cancelData();
 
@@ -118,8 +118,6 @@ class EditEvent : public RDDialog
   LibraryTableView *event_lib_view;
   RDLibraryModel *event_lib_model;
   QPushButton *event_search_button;
-  QPixmap *event_playout_map;
-  QPixmap *event_macro_map;
   QGroupBox *event_position_group;
   QLabel *event_position_label;
   QLabel *event_position_unit;
@@ -142,7 +140,8 @@ class EditEvent : public RDDialog
   QTimeEdit *event_autofill_slop_edit;
   QCheckBox *event_timescale_box;
   QGroupBox *event_stack_group;
-  ImportListView *event_preimport_list;
+  ImportCartsView *event_preimport_view;
+  ImportCartsModel *event_preimport_model;
   QLineEdit *event_preimport_length_edit;
   RDTransportButton *event_preimport_up_button;
   RDTransportButton *event_preimport_down_button;
@@ -162,7 +161,8 @@ class EditEvent : public RDDialog
   QLabel *event_defaulttrans_unit;
   QLabel *event_nestevent_label;
   QComboBox *event_nestevent_box;
-  ImportListView *event_postimport_list;
+  ImportCartsView *event_postimport_view;
+  ImportCartsModel *event_postimport_model;
   QLineEdit *event_postimport_length_edit;
   RDTransportButton *event_postimport_up_button;
   RDTransportButton *event_postimport_down_button;

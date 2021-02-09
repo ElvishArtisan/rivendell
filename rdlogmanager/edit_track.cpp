@@ -72,13 +72,13 @@ QSizePolicy EditTrack::sizePolicy() const
 void EditTrack::okData()
 {
   *edit_text=edit_text_edit->text();
-  done(0);
+  done(true);
 }
 
 
 void EditTrack::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

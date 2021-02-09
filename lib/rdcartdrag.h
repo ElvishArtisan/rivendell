@@ -35,6 +35,13 @@ class RDCartDrag : public QMimeData
   RDCartDrag(unsigned cartnum,const QString &title,const QColor &color);
   QStringList formats() const;
   bool hasFormat(const QString &mimetype) const;
+  static bool canDecode(QMimeSource *e);
+  static bool decode(QMimeSource *e,unsigned *cartnum,QColor *color=NULL,
+		     QString *title=NULL);
+  static bool decode(QMimeSource *e,RDLogLine *ll,
+		     RDLogLine::TransType next_trans=RDLogLine::Segue,
+		     int log_mach=0,bool timescale=false,
+		     RDLogLine::TransType trans=RDLogLine::NoTrans);
 
  protected:
   QVariant retrieveData(const QString &mimetype,QVariant::Type type) const;

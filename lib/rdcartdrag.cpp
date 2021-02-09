@@ -18,10 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QMimeSource>
 #include <QPixmap>
 
 #include "rd.h"
 #include "rdcartdrag.h"
+#include "rdprofile.h"
 
 RDCartDrag::RDCartDrag(unsigned cartnum,const QString &title,
 		       const QColor &color)
@@ -41,6 +43,42 @@ QStringList RDCartDrag::formats() const
 bool RDCartDrag::hasFormat(const QString &mimetype) const
 {
   return d_formats.contains(mimetype);
+}
+
+
+bool RDCartDrag::canDecode(QMimeSource *e)
+{
+  return e->provides(RDMIMETYPE_CART);
+}
+
+
+bool RDCartDrag::decode(QMimeSource *e,unsigned *cartnum,QColor *color,
+			QString *title)
+{
+  RDProfile *p=new RDProfile();
+  p->setSourceString(QString::fromUtf8(e->encodedData(RDMIMETYPE_CART)));
+  *cartnum=p->intValue("Rivendell-Cart","Number");
+  if(color!=NULL) {
+    color->setNamedColor(p->stringValue("Rivendell-Cart","Color"));
+  }
+  if(title!=NULL) {
+    *title=p->stringValue("Rivendell-Cart","ButtonText");
+  }
+
+  return true;
+}
+
+
+bool RDCartDrag::decode(QMimeSource *e,RDLogLine *ll,
+			RDLogLine::TransType next_trans,int log_mach,
+			bool timescale,RDLogLine::TransType trans)
+{
+  unsigned cartnum;
+
+  RDCartDrag::decode(e,&cartnum);
+  ll->loadCart(cartnum,next_trans,log_mach,timescale,trans);
+
+  return true;
 }
 
 

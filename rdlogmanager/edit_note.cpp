@@ -72,13 +72,13 @@ QSizePolicy EditNote::sizePolicy() const
 void EditNote::okData()
 {
   *edit_text=edit_text_edit->text();
-  done(0);
+  done(true);
 }
 
 
 void EditNote::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

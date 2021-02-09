@@ -275,6 +275,7 @@ class RDLogLine
 				  int cutnum=-1);
   static QString startSourceText(RDLogLine::StartSource src);
   static QString transText(RDLogLine::TransType trans);
+  static TransType transTypeFromString(const QString &str);
   static QString typeText(RDLogLine::Type type);
   static QString timeTypeText(RDLogLine::TimeType type);
   static QString sourceText(RDLogLine::Source src);

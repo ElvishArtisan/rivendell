@@ -2542,6 +2542,22 @@ QString RDLogLine::transText(RDLogLine::TransType trans)
 }
 
 
+RDLogLine::TransType RDLogLine::transTypeFromString(const QString &str)
+{
+  if(str.toUpper().trimmed()==QObject::tr("PLAY")) {
+    return RDLogLine::Play;
+  }
+  if(str.toUpper().trimmed()==QObject::tr("SEGUE")) {
+    return RDLogLine::Segue;
+  }
+  if(str.toUpper().trimmed()==QObject::tr("STOP")) {
+    return RDLogLine::Stop;
+  }
+
+  return RDLogLine::NoTrans;
+}
+
+
 QString RDLogLine::typeText(RDLogLine::Type type)
 {
   switch(type) {

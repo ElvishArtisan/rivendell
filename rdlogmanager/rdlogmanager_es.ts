@@ -562,20 +562,8 @@ Do you want to overwrite it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Length</source>
-        <translation type="unfinished">Duración</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Duración</translation>
     </message>
     <message>
         <source>Start</source>
@@ -586,12 +574,8 @@ Do you want to overwrite it?</source>
         <translation type="obsolete">Fin</translation>
     </message>
     <message>
-        <source>Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Count</source>
-        <translation type="unfinished">Cuenta</translation>
+        <translation type="obsolete">Cuenta</translation>
     </message>
     <message>
         <source>Artist Separation</source>
@@ -1060,6 +1044,96 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>Traffic schedule import failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImportCartsModel</name>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Duración</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="obsolete">[ninguno]</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation type="unfinished">Marcador</translation>
+    </message>
+    <message>
+        <source>[Log Note]</source>
+        <translation type="unfinished">[Nota de lista]</translation>
+    </message>
+    <message>
+        <source>Track</source>
+        <translation type="unfinished">Pista</translation>
+    </message>
+    <message>
+        <source>[Voice Track]</source>
+        <translation type="unfinished">[Pista de voz]</translation>
+    </message>
+    <message>
+        <source>-- End of List --</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PLAY</source>
+        <translation type="unfinished">REPROD</translation>
+    </message>
+    <message>
+        <source>[auto]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImportCartsView</name>
+    <message>
+        <source>Insert Log Note</source>
+        <translation type="unfinished">Insertar nota de la lista</translation>
+    </message>
+    <message>
+        <source>Edit Log Note</source>
+        <translation type="obsolete">Editar nota de la lista</translation>
+    </message>
+    <message>
+        <source>Insert Voice Track</source>
+        <translation type="unfinished">Insertar pista de voz</translation>
+    </message>
+    <message>
+        <source>Edit Voice Track</source>
+        <translation type="obsolete">Editar pista de voz</translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Borrar</translation>
+    </message>
+    <message>
+        <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

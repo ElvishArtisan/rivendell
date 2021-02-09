@@ -561,20 +561,8 @@ Vil du byta henne ut?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Length</source>
-        <translation type="unfinished">Lengd</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Lengd</translation>
     </message>
     <message>
         <source>Start</source>
@@ -585,12 +573,8 @@ Vil du byta henne ut?</translation>
         <translation type="obsolete">Slutt</translation>
     </message>
     <message>
-        <source>Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Count</source>
-        <translation type="unfinished">Tellign</translation>
+        <translation type="obsolete">Tellign</translation>
     </message>
     <message>
         <source>Artist Separation</source>
@@ -1055,6 +1039,96 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>Traffic schedule import failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImportCartsModel</name>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Lengd</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="obsolete">[ingen]</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation type="unfinished">Markør</translation>
+    </message>
+    <message>
+        <source>[Log Note]</source>
+        <translation type="unfinished">[Loggnote]</translation>
+    </message>
+    <message>
+        <source>Track</source>
+        <translation type="unfinished">Spor</translation>
+    </message>
+    <message>
+        <source>[Voice Track]</source>
+        <translation type="unfinished">[Røystspor]</translation>
+    </message>
+    <message>
+        <source>-- End of List --</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PLAY</source>
+        <translation type="unfinished">SPEL</translation>
+    </message>
+    <message>
+        <source>[auto]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImportCartsView</name>
+    <message>
+        <source>Insert Log Note</source>
+        <translation type="unfinished">Set inn loggnote</translation>
+    </message>
+    <message>
+        <source>Edit Log Note</source>
+        <translation type="obsolete">Rediger loggnote</translation>
+    </message>
+    <message>
+        <source>Insert Voice Track</source>
+        <translation type="unfinished">Set inn røystspor</translation>
+    </message>
+    <message>
+        <source>Edit Voice Track</source>
+        <translation type="obsolete">Rediger røystspor</translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Slett</translation>
+    </message>
+    <message>
+        <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

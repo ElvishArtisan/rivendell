@@ -560,20 +560,8 @@ Chcete ji přepsat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Length</source>
-        <translation type="unfinished">Délka</translation>
-    </message>
-    <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Délka</translation>
     </message>
     <message>
         <source>Start</source>
@@ -584,12 +572,8 @@ Chcete ji přepsat?</translation>
         <translation type="obsolete">Konec</translation>
     </message>
     <message>
-        <source>Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Count</source>
-        <translation type="unfinished">Počet</translation>
+        <translation type="obsolete">Počet</translation>
     </message>
     <message>
         <source>Artist Separation</source>
@@ -1058,6 +1042,96 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>Traffic schedule import failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImportCartsModel</name>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Délka</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="obsolete">[žádný]</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation type="unfinished">Značka</translation>
+    </message>
+    <message>
+        <source>[Log Note]</source>
+        <translation type="unfinished">[Poznámka k zápisu]</translation>
+    </message>
+    <message>
+        <source>Track</source>
+        <translation type="unfinished">Stopa</translation>
+    </message>
+    <message>
+        <source>[Voice Track]</source>
+        <translation type="unfinished">[Stopa hlasu]</translation>
+    </message>
+    <message>
+        <source>-- End of List --</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PLAY</source>
+        <translation type="unfinished">PŘEHRÁT</translation>
+    </message>
+    <message>
+        <source>[auto]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImportCartsView</name>
+    <message>
+        <source>Insert Log Note</source>
+        <translation type="unfinished">Vložit poznámku k zápisu</translation>
+    </message>
+    <message>
+        <source>Edit Log Note</source>
+        <translation type="obsolete">Upravit poznámku k zápisu</translation>
+    </message>
+    <message>
+        <source>Insert Voice Track</source>
+        <translation type="unfinished">Vložit stopu hlasu</translation>
+    </message>
+    <message>
+        <source>Edit Voice Track</source>
+        <translation type="obsolete">Upravit stopu hlasu</translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
