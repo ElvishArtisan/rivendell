@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include "rdcartdrag.h"
 #include "rdconf.h"
 #include "rdslotbox.h"
 
@@ -497,11 +498,14 @@ void RDSlotBox::mousePressEvent(QMouseEvent *e)
 
   if((line_logline!=NULL)&&(line_mode==RDSlotOptions::CartDeckMode)&&
      line_allow_drags) {
-    RD3CartDrag *d=new RD3CartDrag(line_logline->cartNumber(),
-				 line_icon_label->pixmap(),
-				 line_group_label->palette().
-				 color(QColorGroup::Foreground),this);
-    d->dragCopy();
+    QDrag *drag=new QDrag(this);
+    RDCartDrag *cd=
+      new RDCartDrag(line_logline->cartNumber(),line_logline->title(),
+		     line_group_label->
+		     palette().color(QColorGroup::Foreground));
+    drag->setMimeData(cd);
+    drag->setPixmap(*line_icon_label->pixmap());
+    drag->exec();
   }
 }
 
@@ -526,7 +530,7 @@ void RDSlotBox::paintEvent(QPaintEvent *e)
 
 void RDSlotBox::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RD3CartDrag::canDecode(e)&&
+  e->accept(RDCartDrag::canDecode(e)&&
 	    (line_mode==RDSlotOptions::CartDeckMode)&&
 	    (line_deck->state()==RDPlayDeck::Stopped));
 }
@@ -536,7 +540,7 @@ void RDSlotBox::dropEvent(QDropEvent *e)
 {
   unsigned cartnum;
 
-  if(RD3CartDrag::decode(e,&cartnum)) {
+  if(RDCartDrag::decode(e,&cartnum)) {
     emit cartDropped(cartnum);
   }
 }

@@ -26,7 +26,6 @@
 #include <qprogressbar.h>
 
 #include <rdairplay_conf.h>
-#include <rd3cartdrag.h>
 #include <rdlog_line.h>
 #include <rdwidget.h>
 

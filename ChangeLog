@@ -21071,3 +21071,9 @@
 	* Removed 'RD3EmptyCart' dependency from rdlogmanager(1).
 	* Removed 'RD3EmptyCart' dependency from rdpanel(1).
 	* Removed the 'RD3EmptyCart' widget.
+2021-02-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'RD3CartDrag' dependency from rdairplay(1).
+	* Removed 'RD3CartDrag' dependency from rdcartslots(1).
+	* Removed 'RD3CartDrag' dependency from rdlogedit(1).
+	* Removed 'RD3CartDrag' dependency from rdpanel(1).
+	* Removed 'RD3CartDrag'.

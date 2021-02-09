@@ -19,7 +19,7 @@
 //
 //
 
-#include <rd3cartdrag.h>
+#include <rdcartdrag.h>
 
 #include "logtableview.h"
 #include "logmodel.h"
@@ -52,13 +52,13 @@ LogTableView::LogTableView(QWidget *parent)
 
 void LogTableView::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RD3CartDrag::canDecode(e));
+  e->accept(RDCartDrag::canDecode(e));
 }
 
 
 void LogTableView::dragMoveEvent(QDragMoveEvent *e)
 {
-  e->accept(RD3CartDrag::canDecode(e));
+  e->accept(RDCartDrag::canDecode(e));
 }
 
 
@@ -68,7 +68,7 @@ void LogTableView::dropEvent(QDropEvent *e)
   int line=-1;
   int y_pos=e->pos().y();
 
-  if(RD3CartDrag::decode(e,&ll)) {
+  if(RDCartDrag::decode(e,&ll)) {
     line=rowAt(y_pos);
     emit cartDropped(line,&ll);
   }

@@ -21,7 +21,7 @@
 
 #include <qpainter.h>
 
-#include <rd3cartdrag.h>
+#include <rdcartdrag.h>
 #include <rdconf.h>
 
 #include "rdpanel_button.h"
@@ -366,10 +366,23 @@ void RDPanelButton::mouseMoveEvent(QMouseEvent *e)
   button_move_count--;
   if(button_move_count==0) {
     QPushButton::mouseReleaseEvent(e);
-    if(button_allow_drags) {
-      RD3CartDrag *d=new RD3CartDrag(button_cart,button_text,button_color,this);
-      d->dragCopy();
+    QDrag *drag=new QDrag(this);
+    RDCartDrag *cd=new RDCartDrag(button_cart,button_text,button_color);
+    drag->setMimeData(cd);
+    RDCart *cart=new RDCart(button_cart);
+    switch(cart->type()) {
+    case RDCart::Audio:
+      drag->setPixmap(rda->iconEngine()->typeIcon(RDLogLine::Cart));
+      break;
+
+    case RDCart::Macro:
+      drag->setPixmap(rda->iconEngine()->typeIcon(RDLogLine::Macro));
+      break;
+
+    case RDCart::All:
+      break;
     }
+    drag->exec();
   }
 }
 
@@ -383,7 +396,7 @@ void RDPanelButton::mouseReleaseEvent(QMouseEvent *e)
 
 void RDPanelButton::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RD3CartDrag::canDecode(e)&&button_allow_drags&&
+  e->accept(RDCartDrag::canDecode(e)&&button_allow_drags&&
   ((button_play_deck==NULL)||(button_play_deck->state()==RDPlayDeck::Stopped)));
 }
 
@@ -394,7 +407,7 @@ void RDPanelButton::dropEvent(QDropEvent *e)
   QColor color;
   QString title;
 
-  if(RD3CartDrag::decode(e,&cartnum,&color,&title)) {
+  if(RDCartDrag::decode(e,&cartnum,&color,&title)) {
     emit cartDropped(button_row,button_col,cartnum,color,title);
   }
 }

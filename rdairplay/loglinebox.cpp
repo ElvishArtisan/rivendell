@@ -21,6 +21,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 
+#include <rdcartdrag.h>
 #include <rdconf.h>
 
 #include "colors.h"
@@ -793,11 +794,14 @@ void LogLineBox::mouseMoveEvent(QMouseEvent *e)
     line_move_count--;
     if(line_move_count==0) {
       if(line_allow_drags&&(line_logline!=NULL)) {
-	RD3CartDrag *d=
-	  new RD3CartDrag(line_logline->cartNumber(),line_icon_label->pixmap(),
-			 line_group_label->palette().
-			 color(QColorGroup::Foreground),this);
-	d->dragCopy();
+	QDrag *drag=new QDrag(this);
+	RDCartDrag *cd=new RDCartDrag(line_logline->cartNumber(),
+				      line_logline->title(),
+				      line_group_label->palette().
+				      color(QColorGroup::Foreground));
+	drag->setMimeData(cd);
+	drag->setPixmap(*(line_icon_label->pixmap()));
+	drag->exec();
       }
     }
   }
@@ -834,7 +838,7 @@ void LogLineBox::paintEvent(QPaintEvent *e)
 
 void LogLineBox::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RD3CartDrag::canDecode(e)&&
+  e->accept(RDCartDrag::canDecode(e)&&
 	    ((line_status==RDLogLine::Scheduled)||
 	     (line_status==RDLogLine::Paused)));
 }
@@ -844,7 +848,7 @@ void LogLineBox::dropEvent(QDropEvent *e)
 {
   RDLogLine ll;
 
-  if(RD3CartDrag::decode(e,&ll)) {
+  if(RDCartDrag::decode(e,&ll)) {
     emit cartDropped(log_line,&ll);
   }
 }

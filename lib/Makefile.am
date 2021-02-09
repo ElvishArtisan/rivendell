@@ -59,7 +59,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         export_technical.cpp\
                         export_textlog.cpp\
                         rd.h\
-                        rd3cartdrag.cpp rd3cartdrag.h\
                         rdadd_cart.cpp rdadd_cart.h\
                         rdadd_log.cpp rdadd_log.h\
                         rdairplay_conf.cpp rdairplay_conf.h\
