@@ -147,7 +147,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   // Empty Cart Source
   //
-  event_empty_cart=new RD3EmptyCart(this);
+  event_empty_cart=new RDEmptyCart(this);
   event_empty_cart->setGeometry(CENTER_LINE-227,sizeHint().height()-202,32,32);
 
   //

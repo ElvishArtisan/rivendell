@@ -256,7 +256,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Empty Cart
   //
-  panel_empty_cart=new RD3EmptyCart(this);
+  panel_empty_cart=new RDEmptyCart(this);
   panel_empty_cart->setGeometry(373,sizeHint().height()-52,32,32);
   if(!rda->station()->enableDragdrop()) {
     panel_empty_cart->hide();

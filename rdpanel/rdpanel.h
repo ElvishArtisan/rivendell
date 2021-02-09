@@ -21,7 +21,7 @@
 #ifndef RDPANEL_H
 #define RDPANEL_H
 
-#include <rd3emptycart.h>
+#include <rdemptycart.h>
 #include <rdsound_panel.h>
 #include <rdstereometer.h>
 #include <rdwidget.h>
@@ -66,7 +66,7 @@ class MainWidget : public RDWidget
   QString panel_filter;
   QString panel_group;
   QString panel_schedcode;
-  RD3EmptyCart *panel_empty_cart;
+  RDEmptyCart *panel_empty_cart;
 };
 
 

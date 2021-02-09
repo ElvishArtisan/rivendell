@@ -1,4 +1,4 @@
-// rdemptycart.cpp
+// rdemptycart.h
 //
 // A drag source for an empty cart.
 //
@@ -18,47 +18,30 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include "rd3emptycart.h"
+#ifndef RDEMPTYCART_H
+#define RDEMPTYCART_H
 
-//
-// Icons
-//
-#include "../icons/trashcan-32x32.xpm"
-//Added by qt3to4:
-#include <QPixmap>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QWidget>
 
-RD3EmptyCart::RD3EmptyCart(QWidget *parent)
-  : QWidget(parent)
+#include <rdcartdrag.h>
+
+class RDEmptyCart : public QWidget
 {
-  empty_label=new QLabel(this);
-  empty_label->setPixmap(QPixmap(trashcan_xpm));
-  empty_label->setGeometry(0,0,32,32);
-}
+  Q_OBJECT
+ public:
+  RDEmptyCart(QWidget *parent=0);
+  ~RDEmptyCart();
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
+
+ protected:
+  void mousePressEvent(QMouseEvent *e);
+
+ private:
+  QLabel *empty_label;
+};
 
 
-RD3EmptyCart::~RD3EmptyCart()
-{
-  delete empty_label;
-}
-
-
-QSize RD3EmptyCart::sizeHint() const
-{
-  return QSize(32,32);
-}
-
-
-QSizePolicy RD3EmptyCart::sizePolicy() const
-{
-  return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-}
-
-
-void RD3EmptyCart::mousePressEvent(QMouseEvent *e)
-{
-  QWidget::mousePressEvent(e);
-  RD3CartDrag *d=new RD3CartDrag(0,"",Qt::lightGray,this);
-  d->dragCopy();
-}
+#endif  // RDEMPTYCART_H

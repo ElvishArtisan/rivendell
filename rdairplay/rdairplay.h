@@ -21,7 +21,7 @@
 #ifndef RDAIRPLAY_H
 #define RDAIRPLAY_H
 
-#include <rd3emptycart.h>
+#include <rdemptycart.h>
 #include <rdhotkeylist.h>
 #include <rdhotkeys.h>
 #include <rdinstancelock.h>
@@ -187,7 +187,7 @@ class MainWidget : public RDWidget
   int air_stop_gpo_lines[RDAirPlayConf::LastChannel];
   RDAirPlayConf::GpioType air_channel_gpio_types[RDAirPlayConf::LastChannel];
   std::map<unsigned,QTimer *> air_channel_timers[2];
-  RD3EmptyCart *air_empty_cart;
+  RDEmptyCart *air_empty_cart;
   RDCartDialog *air_cart_dialog;
   RDEventPlayer *air_event_player;
   RDHotKeyList *air_keylist;

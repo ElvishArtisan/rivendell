@@ -32,6 +32,7 @@
 //
 #include "../icons/play.xpm"
 #include "../icons/rml5.xpm"
+#include "../icons/trashcan-32x32.xpm"
 #include "../icons/trashcan-16x16.xpm"
 
 RD3CartDrag::RD3CartDrag(unsigned cartnum,const QPixmap *icon,const QColor &color,
@@ -67,7 +68,7 @@ RD3CartDrag::RD3CartDrag(unsigned cartnum,const QString &title,
 {
   SetData(cartnum,color,title);
   if(cartnum==0) {
-    setPixmap(QPixmap(trashcan_xpm));
+    setPixmap(QPixmap(trashcan_32x32_xpm));
   }
   else {
     RDCart *cart=new RDCart(cartnum);

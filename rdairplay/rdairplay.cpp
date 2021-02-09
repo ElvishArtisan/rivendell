@@ -634,7 +634,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Empty Cart
   //
-  air_empty_cart=new RD3EmptyCart(this);
+  air_empty_cart=new RDEmptyCart(this);
   air_empty_cart->setGeometry(520,sizeHint().height()-51,32,32);
   if(!rda->station()->enableDragdrop()) {
     air_empty_cart->hide();

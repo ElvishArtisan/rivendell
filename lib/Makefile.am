@@ -60,7 +60,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         export_textlog.cpp\
                         rd.h\
                         rd3cartdrag.cpp rd3cartdrag.h\
-                        rd3emptycart.cpp rd3emptycart.h\
                         rdadd_cart.cpp rdadd_cart.h\
                         rdadd_log.cpp rdadd_log.h\
                         rdairplay_conf.cpp rdairplay_conf.h\
@@ -128,6 +127,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rddummylookup.cpp rddummylookup.h\
                         rdedit_audio.cpp rdedit_audio.h\
                         rdedit_panel_name.cpp rdedit_panel_name.h\
+                        rdemptycart.cpp rdemptycart.h\
                         rdendpointlistmodel.cpp rdendpointlistmodel.h\
                         rdescape_string.cpp rdescape_string.h\
                         rdevent.cpp rdevent.h\
@@ -286,8 +286,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdxport_interface.h
 
 
-nodist_librd_la_SOURCES = moc_rd3emptycart.cpp\
-                          moc_rdadd_cart.cpp\
+nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdadd_log.cpp\
                           moc_rdapplication.cpp\
                           moc_rdaudioconvert.cpp\
@@ -327,6 +326,7 @@ nodist_librd_la_SOURCES = moc_rd3emptycart.cpp\
                           moc_rddummylookup.cpp\
                           moc_rdedit_audio.cpp\
                           moc_rdedit_panel_name.cpp\
+                          moc_rdemptycart.cpp\
                           moc_rdendpointlistmodel.cpp\
                           moc_rdevent_player.cpp\
                           moc_rdexport_settings_dialog.cpp\

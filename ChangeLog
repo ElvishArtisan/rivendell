@@ -21065,3 +21065,9 @@
 	rdlogmanger(1) to use the model based API.
 2021-02-09 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'ImportListView' from rdlogmanager(1).
+2021-02-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDEmptyCart' widget.
+	* Removed 'RD3EmptyCart' dependency from rdairplay(1).
+	* Removed 'RD3EmptyCart' dependency from rdlogmanager(1).
+	* Removed 'RD3EmptyCart' dependency from rdpanel(1).
+	* Removed the 'RD3EmptyCart' widget.
