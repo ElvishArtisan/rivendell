@@ -1141,11 +1141,11 @@ removerá estos datos.  ¿Remezclar?</translation>
     <name>ImportListView</name>
     <message>
         <source>Insert Log Note</source>
-        <translation>Insertar nota de la lista</translation>
+        <translation type="obsolete">Insertar nota de la lista</translation>
     </message>
     <message>
         <source>Edit Log Note</source>
-        <translation>Editar nota de la lista</translation>
+        <translation type="obsolete">Editar nota de la lista</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
@@ -1161,55 +1161,43 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation type="obsolete">Borrar</translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation>Marcador</translation>
+        <translation type="obsolete">Marcador</translation>
     </message>
     <message>
         <source>[Log Note]</source>
-        <translation>[Nota de lista]</translation>
+        <translation type="obsolete">[Nota de lista]</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>REPROD</translation>
+        <translation type="obsolete">REPROD</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>SEGUE</translation>
+        <translation type="obsolete">SEGUE</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>PARAR</translation>
+        <translation type="obsolete">PARAR</translation>
     </message>
     <message>
         <source>Track</source>
-        <translation>Pista</translation>
+        <translation type="obsolete">Pista</translation>
     </message>
     <message>
         <source>[Voice Track]</source>
-        <translation>[Pista de voz]</translation>
+        <translation type="obsolete">[Pista de voz]</translation>
     </message>
     <message>
         <source>Insert Voice Track</source>
-        <translation>Insertar pista de voz</translation>
+        <translation type="obsolete">Insertar pista de voz</translation>
     </message>
     <message>
         <source>Edit Voice Track</source>
-        <translation>Editar pista de voz</translation>
-    </message>
-    <message>
-        <source>PLAY Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SEGUE Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[auto]</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Editar pista de voz</translation>
     </message>
 </context>
 <context>

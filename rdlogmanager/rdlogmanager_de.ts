@@ -1139,19 +1139,19 @@ Einbinden wird diese entfernen. Fortfahren?</translation>
     <name>ImportListView</name>
     <message>
         <source>Insert Log Note</source>
-        <translation>Log-Notiz einfügen</translation>
+        <translation type="obsolete">Log-Notiz einfügen</translation>
     </message>
     <message>
         <source>Edit Log Note</source>
-        <translation>Log Notiz editieren</translation>
+        <translation type="obsolete">Log Notiz editieren</translation>
     </message>
     <message>
         <source>Insert Voice Track</source>
-        <translation>Voice Track einfügen</translation>
+        <translation type="obsolete">Voice Track einfügen</translation>
     </message>
     <message>
         <source>Edit Voice Track</source>
-        <translation>Voice Track editieren</translation>
+        <translation type="obsolete">Voice Track editieren</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
@@ -1167,47 +1167,35 @@ Einbinden wird diese entfernen. Fortfahren?</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>löschen</translation>
+        <translation type="obsolete">löschen</translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation>Marker</translation>
+        <translation type="obsolete">Marker</translation>
     </message>
     <message>
         <source>[Log Note]</source>
-        <translation>[log notiz]</translation>
+        <translation type="obsolete">[log notiz]</translation>
     </message>
     <message>
         <source>Track</source>
-        <translation>Track</translation>
+        <translation type="obsolete">Track</translation>
     </message>
     <message>
         <source>[Voice Track]</source>
-        <translation>[Voice Track]</translation>
+        <translation type="obsolete">[Voice Track]</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>PLAY</translation>
+        <translation type="obsolete">PLAY</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>ÜBERGANG</translation>
+        <translation type="obsolete">ÜBERGANG</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>STOP</translation>
-    </message>
-    <message>
-        <source>PLAY Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SEGUE Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[auto]</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">STOP</translation>
     </message>
 </context>
 <context>

@@ -1136,19 +1136,19 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     <name>ImportListView</name>
     <message>
         <source>Insert Log Note</source>
-        <translation>Set inn loggnote</translation>
+        <translation type="obsolete">Set inn loggnote</translation>
     </message>
     <message>
         <source>Edit Log Note</source>
-        <translation>Rediger loggnote</translation>
+        <translation type="obsolete">Rediger loggnote</translation>
     </message>
     <message>
         <source>Insert Voice Track</source>
-        <translation>Set inn røystspor</translation>
+        <translation type="obsolete">Set inn røystspor</translation>
     </message>
     <message>
         <source>Edit Voice Track</source>
-        <translation>Rediger røystspor</translation>
+        <translation type="obsolete">Rediger røystspor</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
@@ -1168,51 +1168,39 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Slett</translation>
+        <translation type="obsolete">Slett</translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation>Markør</translation>
+        <translation type="obsolete">Markør</translation>
     </message>
     <message>
         <source>[Log Note]</source>
-        <translation>[Loggnote]</translation>
+        <translation type="obsolete">[Loggnote]</translation>
     </message>
     <message>
         <source>Track</source>
-        <translation>Spor</translation>
+        <translation type="obsolete">Spor</translation>
     </message>
     <message>
         <source>[Voice Track]</source>
-        <translation>[Røystspor]</translation>
+        <translation type="obsolete">[Røystspor]</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>SPEL</translation>
+        <translation type="obsolete">SPEL</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>KRYSSTON</translation>
+        <translation type="obsolete">KRYSSTON</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>STOPP</translation>
+        <translation type="obsolete">STOPP</translation>
     </message>
     <message>
         <source>OVERLAP</source>
         <translation type="obsolete">OVERLAPP</translation>
-    </message>
-    <message>
-        <source>PLAY Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SEGUE Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[auto]</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

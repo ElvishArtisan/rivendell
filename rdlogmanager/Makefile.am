@@ -54,7 +54,6 @@ dist_rdlogmanager_SOURCES = add_clock.cpp add_clock.h\
                             edit_schedcoderules.cpp edit_schedcoderules.h\
                             edit_track.cpp edit_track.h\
                             generate_log.cpp generate_log.h\
-                            import_listview.cpp import_listview.h\
                             importcartsmodel.cpp importcartsmodel.h\
                             importcartsview.cpp importcartsview.h\
                             librarytableview.cpp librarytableview.h\
@@ -83,7 +82,6 @@ nodist_rdlogmanager_SOURCES = moc_add_clock.cpp\
                               moc_edit_schedcoderules.cpp\
                               moc_edit_track.cpp\
                               moc_generate_log.cpp\
-                              moc_import_listview.cpp\
                               moc_importcartsmodel.cpp\
                               moc_importcartsview.cpp\
                               moc_librarytableview.cpp\

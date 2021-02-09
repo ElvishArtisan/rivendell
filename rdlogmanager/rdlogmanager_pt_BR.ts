@@ -1141,19 +1141,19 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
     <name>ImportListView</name>
     <message>
         <source>Insert Log Note</source>
-        <translation>Inserir nota de Lista</translation>
+        <translation type="obsolete">Inserir nota de Lista</translation>
     </message>
     <message>
         <source>Edit Log Note</source>
-        <translation>Editar nota de Lista</translation>
+        <translation type="obsolete">Editar nota de Lista</translation>
     </message>
     <message>
         <source>Insert Voice Track</source>
-        <translation>Inserir Faixa de Voz</translation>
+        <translation type="obsolete">Inserir Faixa de Voz</translation>
     </message>
     <message>
         <source>Edit Voice Track</source>
-        <translation>Editar Faixa de Voz</translation>
+        <translation type="obsolete">Editar Faixa de Voz</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
@@ -1169,47 +1169,35 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Deletar</translation>
+        <translation type="obsolete">Deletar</translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation>Marcador</translation>
+        <translation type="obsolete">Marcador</translation>
     </message>
     <message>
         <source>[Log Note]</source>
-        <translation>[Nota de Lista] </translation>
+        <translation type="obsolete">[Nota de Lista] </translation>
     </message>
     <message>
         <source>Track</source>
-        <translation>Faixa</translation>
+        <translation type="obsolete">Faixa</translation>
     </message>
     <message>
         <source>[Voice Track]</source>
-        <translation>[Faixa de Voz]</translation>
+        <translation type="obsolete">[Faixa de Voz]</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>SIMPLES</translation>
+        <translation type="obsolete">SIMPLES</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>SOBRE</translation>
+        <translation type="obsolete">SOBRE</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>PARE</translation>
-    </message>
-    <message>
-        <source>PLAY Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SEGUE Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[auto]</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">PARE</translation>
     </message>
 </context>
 <context>

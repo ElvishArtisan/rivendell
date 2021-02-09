@@ -39,7 +39,6 @@
 #include <rdlibrarymodel.h>
 #include <rdsimpleplayer.h>
 
-#include "import_listview.h"
 #include "importcartsmodel.h"
 #include "importcartsview.h"
 #include "librarytableview.h"

@@ -1139,19 +1139,19 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     <name>ImportListView</name>
     <message>
         <source>Insert Log Note</source>
-        <translation>Vložit poznámku k zápisu</translation>
+        <translation type="obsolete">Vložit poznámku k zápisu</translation>
     </message>
     <message>
         <source>Edit Log Note</source>
-        <translation>Upravit poznámku k zápisu</translation>
+        <translation type="obsolete">Upravit poznámku k zápisu</translation>
     </message>
     <message>
         <source>Insert Voice Track</source>
-        <translation>Vložit stopu hlasu</translation>
+        <translation type="obsolete">Vložit stopu hlasu</translation>
     </message>
     <message>
         <source>Edit Voice Track</source>
-        <translation>Upravit stopu hlasu</translation>
+        <translation type="obsolete">Upravit stopu hlasu</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
@@ -1167,47 +1167,35 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Smazat</translation>
+        <translation type="obsolete">Smazat</translation>
     </message>
     <message>
         <source>Marker</source>
-        <translation>Značka</translation>
+        <translation type="obsolete">Značka</translation>
     </message>
     <message>
         <source>[Log Note]</source>
-        <translation>[Poznámka k zápisu]</translation>
+        <translation type="obsolete">[Poznámka k zápisu]</translation>
     </message>
     <message>
         <source>Track</source>
-        <translation>Stopa</translation>
+        <translation type="obsolete">Stopa</translation>
     </message>
     <message>
         <source>[Voice Track]</source>
-        <translation>[Stopa hlasu]</translation>
+        <translation type="obsolete">[Stopa hlasu]</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>PŘEHRÁT</translation>
+        <translation type="obsolete">PŘEHRÁT</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>PŘECHOD</translation>
+        <translation type="obsolete">PŘECHOD</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>ZASTAVIT</translation>
-    </message>
-    <message>
-        <source>PLAY Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SEGUE Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[auto]</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">ZASTAVIT</translation>
     </message>
 </context>
 <context>

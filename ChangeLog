@@ -21063,3 +21063,5 @@
 	* Added a 'RDLogLine::transTypeFromString()' method.
 	* Refactored the cart stack lists in the 'Edit Event' dialog in
 	rdlogmanger(1) to use the model based API.
+2021-02-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'ImportListView' from rdlogmanager(1).

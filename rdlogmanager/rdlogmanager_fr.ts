@@ -908,69 +908,6 @@ Do you want to save?</source>
     </message>
 </context>
 <context>
-    <name>ImportListView</name>
-    <message>
-        <source>Insert Log Note</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Log Note</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Insert Voice Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Voice Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[Log Note]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[Voice Track]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PLAY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SEGUE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>STOP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PLAY Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SEGUE Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[auto]</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ListClocks</name>
     <message>
         <source>Filter:</source>
