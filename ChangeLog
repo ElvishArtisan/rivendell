@@ -21090,8 +21090,8 @@
 	* Added a 'RDClockModel' model.
 	* Refactored the 'Edit Clock' dialog in rdlogmanager(1) to use
 	the model base API.
-2021-02-09 Fred Gleason <fredg@paravelsystems.com>
+2021-02-10 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Log Grids' dialog in rdlogmanager(1) to use
 	the model based API.
-2021-02-09 Fred Gleason <fredg@paravelsystems.com>
+2021-02-10 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3PopupMenu' dependency from rdlogmanager(1).
