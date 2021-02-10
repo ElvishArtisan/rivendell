@@ -676,10 +676,6 @@ ei anna hending som finst frå før.</translation>
         <translation>&amp;Lukk</translation>
     </message>
     <message>
-        <source>Clear Hour</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Change
 &amp;All</source>
         <translation type="unfinished"></translation>

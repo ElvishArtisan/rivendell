@@ -2,7 +2,7 @@
 //
 // Edit A Rivendell Log Grid
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,9 @@
 #ifndef EDIT_GRID_H
 #define EDIT_GRID_H
 
-#include <qgroupbox.h>
-#include <q3popupmenu.h>
+#include <QAction>
+#include <QGroupBox>
+#include <QMenu>
 
 #include <rddialog.h>
 #include <rdpushbutton.h>
@@ -45,7 +46,6 @@ class EditGrid : public RDDialog
   void closeData();
 
  protected:
-  void paintEvent(QPaintEvent *e);
   void closeEvent(QCloseEvent *e);
 
  private:
@@ -56,8 +56,9 @@ class EditGrid : public RDDialog
   QString current_clockname;
   QGroupBox *edit_day_boxes[7];
   RDPushButton *edit_hour_button[7][24];
-  Q3PopupMenu *edit_right_menu;
   int edit_rightclick_id;
+  QMenu *edit_mouse_menu;
+  QAction *edit_edit_clock_action;
 };
 
 

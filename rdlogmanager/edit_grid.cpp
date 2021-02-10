@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Log Grid
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,7 +45,6 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
   //
   // Hour Buttons
   //
-  //  QLabel *label;
   QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(hourButtonData(int)));
   for(int i=0;i<5;i++) {
@@ -84,12 +83,12 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
   //
   // Right Button Menu
   //
-  edit_right_menu=new Q3PopupMenu(this);
-  connect(edit_right_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
-  edit_right_menu->
-    insertItem(tr("Edit Clock"),this,SLOT(editClockData()),0,0);
-  edit_right_menu->
-    insertItem(tr("Clear Hour"),this,SLOT(clearHourData()),0,1);
+  edit_mouse_menu=new QMenu(this);
+
+  edit_edit_clock_action=edit_mouse_menu->
+    addAction(tr("Edit Clock"),this,SLOT(editClockData()));
+  edit_edit_clock_action->setCheckable(false);
+  connect(edit_mouse_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
 
   //
   // Change All Button
@@ -191,14 +190,15 @@ void EditGrid::rightHourButtonData(int id,const QPoint &pt)
   edit_rightclick_id=id;
   int dayofweek=edit_rightclick_id/24+1;
   int hour=edit_rightclick_id-24*(dayofweek-1);
-  edit_right_menu->
+  
+  edit_mouse_menu->
     setGeometry(edit_hour_button[dayofweek-1][hour]->geometry().x()+
 		geometry().x()+pt.x()+2,
 		edit_hour_button[dayofweek-1][hour]->geometry().y()+
 		geometry().y()+pt.y(),
-		edit_right_menu->sizeHint().width(),
-		edit_right_menu->sizeHint().height());
-  edit_right_menu->exec();
+		edit_mouse_menu->sizeHint().width(),
+		edit_mouse_menu->sizeHint().height());
+  edit_mouse_menu->exec();
 }
 
 
@@ -206,8 +206,8 @@ void EditGrid::aboutToShowData()
 {
   int dayofweek=edit_rightclick_id/24+1;
   int hour=edit_rightclick_id-24*(dayofweek-1);
-  edit_right_menu->setItemEnabled(0,!GetClock(dayofweek,hour).isEmpty());
-  edit_right_menu->setItemEnabled(1,!GetClock(dayofweek,hour).isEmpty());
+
+  edit_edit_clock_action->setEnabled(!GetClock(dayofweek,hour).isEmpty());
 }
 
 
@@ -248,22 +248,6 @@ void EditGrid::clearHourData()
 void EditGrid::closeData()
 {
   done(-1);
-}
-
-
-void EditGrid::paintEvent(QPaintEvent *e)
-{
-  /*
-  QPainter *p=new QPainter(this);
-  p->setPen(Qt::black);
-  for(int i=0;i<5;i++) {
-    p->drawRect(5,21+75*i,sizeHint().width()-10,55);
-  }
-  for(int i=5;i<7;i++) {
-    p->drawRect(5,51+75*i,sizeHint().width()-10,55);
-  }
-  p->end();
-  */
 }
 
 

@@ -676,7 +676,7 @@ einem bereits existierendem Event.</translation>
     </message>
     <message>
         <source>Clear Hour</source>
-        <translation>Stunde löschen</translation>
+        <translation type="obsolete">Stunde löschen</translation>
     </message>
     <message>
         <source>Change

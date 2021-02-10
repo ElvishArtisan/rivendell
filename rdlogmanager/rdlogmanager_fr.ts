@@ -480,10 +480,6 @@ already existing event.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear Hour</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Change
 &amp;All</source>
         <translation type="unfinished"></translation>

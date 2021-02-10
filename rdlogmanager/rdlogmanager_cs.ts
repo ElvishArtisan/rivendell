@@ -676,7 +676,7 @@ existující událostí.</translation>
     </message>
     <message>
         <source>Clear Hour</source>
-        <translation>Smazat hodiny</translation>
+        <translation type="obsolete">Smazat hodiny</translation>
     </message>
     <message>
         <source>Change

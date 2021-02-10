@@ -678,7 +678,7 @@ un evento ya existente.</translation>
     </message>
     <message>
         <source>Clear Hour</source>
-        <translation>Limpiar tortas</translation>
+        <translation type="obsolete">Limpiar tortas</translation>
     </message>
     <message>
         <source>Change

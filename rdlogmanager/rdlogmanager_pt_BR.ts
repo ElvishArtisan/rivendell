@@ -674,7 +674,7 @@ evento existente.</translation>
     </message>
     <message>
         <source>Clear Hour</source>
-        <translation>Limpar Hora</translation>
+        <translation type="obsolete">Limpar Hora</translation>
     </message>
     <message>
         <source>&amp;Close</source>
