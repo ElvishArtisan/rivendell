@@ -1206,15 +1206,15 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Název</translation>
+        <translation type="obsolete">Název</translation>
     </message>
     <message>
         <source>Code</source>
-        <translation>Kód</translation>
+        <translation type="obsolete">Kód</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Barva</translation>
+        <translation type="obsolete">Barva</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1258,11 +1258,11 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation>Hodiny existují</translation>
+        <translation type="unfinished">Hodiny existují</translation>
     </message>
     <message>
         <source>An clock with that name already exists!</source>
-        <translation>Hodiny s tímto názvem již existují!</translation>
+        <translation type="unfinished">Hodiny s tímto názvem již existují!</translation>
     </message>
     <message>
         <source>Are you sure you want to
@@ -1271,7 +1271,7 @@ delete</source>
     </message>
     <message>
         <source>Delete Clock</source>
-        <translation>Smazat hodiny</translation>
+        <translation type="unfinished">Smazat hodiny</translation>
     </message>
     <message>
         <source>is in use in the following grid(s):</source>
@@ -1279,11 +1279,11 @@ delete</source>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
-        <translation>Stále ještě chcete smazat?</translation>
+        <translation type="unfinished">Stále ještě chcete smazat?</translation>
     </message>
     <message>
         <source>Clock In Use</source>
-        <translation>Používané hodiny</translation>
+        <translation type="unfinished">Používané hodiny</translation>
     </message>
     <message>
         <source>Log Clocks - User: </source>

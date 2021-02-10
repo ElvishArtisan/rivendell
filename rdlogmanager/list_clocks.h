@@ -2,7 +2,7 @@
 //
 // List Rivendell Log Clocks
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,13 @@
 #ifndef LIST_CLOCKS_H
 #define LIST_CLOCKS_H
 
-#include <q3listview.h>
-
-#include <qcombobox.h>
-#include <qlabel.h>
+#include <QComboBox>
 
 #include <rddialog.h>
 #include <rddb.h>
+#include <rdtableview.h>
+
+#include "clocklistmodel.h"
 
 class ListClocks : public RDDialog
 {
@@ -42,7 +42,7 @@ class ListClocks : public RDDialog
   void editData();
   void deleteData();
   void renameData();
-  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
+  void doubleClickedData(const QModelIndex &index);
   void filterActivatedData(int id);
   void closeData();
   void clearData();
@@ -54,15 +54,12 @@ class ListClocks : public RDDialog
   void closeEvent(QCloseEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshItem(Q3ListViewItem *item,std::vector<QString> *new_clocks=NULL);
-  void UpdateItem(Q3ListViewItem *item,QString name);
-  void WriteItem(Q3ListViewItem *item,RDSqlQuery *q);
   int ActiveClocks(QString clockname,QString *svc_list);
   void DeleteClock(QString clockname);
   QString GetClockFilter(QString svc_name);
   QString GetNoneFilter();
-  Q3ListView *edit_clocks_list;
+  RDTableView *edit_clocks_view;
+  ClockListModel *edit_clocks_model;
   QString *edit_clockname;
   QLabel *edit_filter_label;
   QComboBox *edit_filter_box;

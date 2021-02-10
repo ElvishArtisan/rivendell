@@ -1215,15 +1215,15 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Namn</translation>
+        <translation type="obsolete">Namn</translation>
     </message>
     <message>
         <source>Code</source>
-        <translation>Kode</translation>
+        <translation type="obsolete">Kode</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Farge</translation>
+        <translation type="obsolete">Farge</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1267,11 +1267,11 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation>Klokka eksisterer</translation>
+        <translation type="unfinished">Klokka eksisterer</translation>
     </message>
     <message>
         <source>An clock with that name already exists!</source>
-        <translation>Det finst alt ei klokke med dette namnet!</translation>
+        <translation type="unfinished">Det finst alt ei klokke med dette namnet!</translation>
     </message>
     <message>
         <source>Are you sure you want to
@@ -1281,7 +1281,7 @@ sletta</translation>
     </message>
     <message>
         <source>Delete Clock</source>
-        <translation>Slett klokka</translation>
+        <translation type="unfinished">Slett klokka</translation>
     </message>
     <message>
         <source>is in use in the following grid(s):</source>
@@ -1289,11 +1289,11 @@ sletta</translation>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
-        <translation>Vil du framleis sletta?</translation>
+        <translation type="unfinished">Vil du framleis sletta?</translation>
     </message>
     <message>
         <source>Clock In Use</source>
-        <translation>Klokka er i bruk</translation>
+        <translation type="unfinished">Klokka er i bruk</translation>
     </message>
     <message>
         <source>Are you sure you want to delete</source>

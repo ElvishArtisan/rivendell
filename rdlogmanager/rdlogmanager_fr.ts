@@ -914,18 +914,6 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -966,6 +954,10 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Log Clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Clock Exists</source>
         <translation type="unfinished"></translation>
     </message>
@@ -978,7 +970,7 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Do you still want to delete it?</source>
+        <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -986,15 +978,11 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Log Clocks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>is in use in the following grid(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to delete it?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

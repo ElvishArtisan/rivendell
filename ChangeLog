@@ -21080,3 +21080,9 @@
 2021-02-09 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Log Events' dialog in rdlogmanager(1) to use
 	the model based API.
+2021-02-09 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Log Events' dialog in rdlogmanager(1) to use
+	the model based API.
+2021-02-09 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Log Clocks' dialog in rdlogmanager(1) to use
+	the model based API.

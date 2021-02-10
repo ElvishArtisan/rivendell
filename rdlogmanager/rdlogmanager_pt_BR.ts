@@ -1212,15 +1212,15 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Nome:</translation>
+        <translation type="obsolete">Nome:</translation>
     </message>
     <message>
         <source>Code</source>
-        <translation>Código</translation>
+        <translation type="obsolete">Código</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Cor</translation>
+        <translation type="obsolete">Cor</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1264,11 +1264,11 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation>Relógio Existente</translation>
+        <translation type="unfinished">Relógio Existente</translation>
     </message>
     <message>
         <source>An clock with that name already exists!</source>
-        <translation>Um Relógio com este nome já existe!</translation>
+        <translation type="unfinished">Um Relógio com este nome já existe!</translation>
     </message>
     <message>
         <source>Are you sure you want to
@@ -1278,7 +1278,7 @@ deletar</translation>
     </message>
     <message>
         <source>Delete Clock</source>
-        <translation>Deletar Relógio</translation>
+        <translation type="unfinished">Deletar Relógio</translation>
     </message>
     <message>
         <source>is in use in the following grid(s):</source>
@@ -1286,11 +1286,11 @@ deletar</translation>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
-        <translation>Tem certeza que quer deletá-lo?</translation>
+        <translation type="unfinished">Tem certeza que quer deletá-lo?</translation>
     </message>
     <message>
         <source>Clock In Use</source>
-        <translation>Relógio em Uso</translation>
+        <translation type="unfinished">Relógio em Uso</translation>
     </message>
     <message>
         <source>Log Clocks</source>

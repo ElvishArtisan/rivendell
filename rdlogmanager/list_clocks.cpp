@@ -2,7 +2,7 @@
 //
 // List Rivendell Log Clocks
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-#include <qpainter.h>
+#include <QMessageBox>
 
 #include <rdescape_string.h>
 
@@ -55,16 +54,16 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //
   // Clocks List
   //
-  edit_clocks_list=new Q3ListView(this);
-  edit_clocks_list->setAllColumnsShowFocus(true);
-  edit_clocks_list->setItemMargin(5);
-  edit_clocks_list->addColumn(tr("Name"));
-  edit_clocks_list->addColumn(tr("Code"));
-  edit_clocks_list->addColumn(tr("Color"));
-  edit_clocks_list->setColumnAlignment(2,Qt::AlignCenter);
-  connect(edit_clocks_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+  edit_clocks_view=new RDTableView(this);
+  edit_clocks_model=new ClockListModel(this);
+  edit_clocks_model->setFont(font());
+  edit_clocks_model->setPalette(palette());
+  edit_clocks_view->setModel(edit_clocks_model);
+  connect(edit_clocks_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(edit_clocks_model,SIGNAL(modelReset()),
+	  edit_clocks_view,SLOT(resizeColumnsToContents()));
+  edit_clocks_view->resizeColumnsToContents();
 
   //
   //  Add Button
@@ -166,15 +165,10 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
       edit_filter_box->setCurrentItem(edit_filter_box->count()-1);
     }
   }
-  RefreshList();
-
   if(edit_clockname!=NULL) {
-    Q3ListViewItem *item=edit_clocks_list->firstChild();
-    while(item!=NULL) {
-      if(item->text(0)==*edit_clockname) {
-	edit_clocks_list->setSelected(item,true);
-      }
-      item=item->nextSibling();
+    QModelIndex row=edit_clocks_model->clockIndex(*edit_clockname);
+    if(row.isValid()) {
+      edit_clocks_view->selectRow(row.row());
     }
   }
 }
@@ -258,10 +252,10 @@ void ListClocks::addData()
 	"SERVICE_NAME=\""+RDEscapeString(edit_filter_box->currentText())+"\"";
       RDSqlQuery::apply(sql);
     }
-    Q3ListViewItem *item=new Q3ListViewItem(edit_clocks_list);
-    item->setText(0,clockname);
-    RefreshItem(item,&new_clocks);
-    edit_clocks_list->setSelected(item,true);
+    QModelIndex row=edit_clocks_model->addClock(clockname);
+    if(row.isValid()) {
+      edit_clocks_view->selectRow(row.row());
+    }
   }
   delete clock_dialog;
 }
@@ -270,17 +264,23 @@ void ListClocks::addData()
 void ListClocks::editData()
 {
   std::vector<QString> new_clocks;
-  Q3ListViewItem *item=edit_clocks_list->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=edit_clocks_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  EditClock *clock_dialog=new EditClock(item->text(0),false,&new_clocks,this);
+  EditClock *clock_dialog=
+    new EditClock(edit_clocks_model->clockName(rows.first()),false,
+		  &new_clocks,this);
   if(clock_dialog->exec()<0) {
     delete clock_dialog;
     return;
   }
   delete clock_dialog;
-  RefreshItem(item,&new_clocks);
+  edit_clocks_model->refresh(rows.first());
+  for(unsigned i=0;i<new_clocks.size();i++) {
+    edit_clocks_model->addClock(new_clocks.at(i));
+  }
 }
 
 
@@ -288,20 +288,21 @@ void ListClocks::deleteData()
 {
   int n;
   QString svc_list;
-  Q3ListViewItem *item=edit_clocks_list->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=edit_clocks_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
   if(QMessageBox::question(this,"RDLogManager - "+tr("Delete Clock"),
 			   tr("Are you sure you want to delete")+" \""+
-			   item->text(0)+"\"?",
+			   edit_clocks_model->clockName(rows.first())+"\"?",
 			  QMessageBox::Yes,QMessageBox::No)
      !=QMessageBox::Yes) {
     return;
   }
-  if((n=ActiveClocks(item->text(0),&svc_list))>0) {
+  if((n=ActiveClocks(edit_clocks_model->clockName(rows.first()),&svc_list))>0) {
     if(QMessageBox::warning(this,"RDLogManager - "+tr("Clock In Use"),
-			    "\""+item->text(0)+"\" "+
+			    "\""+edit_clocks_model->clockName(rows.first())+"\" "+
 			    tr("is in use in the following grid(s)")+":\n\n"+
 			    svc_list+"\n"+
 			    tr("Do you still want to delete it?"),
@@ -310,8 +311,8 @@ void ListClocks::deleteData()
       return;
     }
   }
-  DeleteClock(item->text(0));
-  RefreshList();
+  DeleteClock(edit_clocks_model->clockName(rows.first()));
+  edit_clocks_model->removeClock(rows.first());
 }
 
 
@@ -319,12 +320,13 @@ void ListClocks::renameData()
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
-  Q3ListViewItem *item=edit_clocks_list->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=edit_clocks_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  QString new_name=item->text(0);
+  QString old_name=edit_clocks_model->clockName(rows.first());
+  QString new_name=old_name;
   RenameItem *rename_dialog=new RenameItem(&new_name,"CLOCKS",this);
   if(rename_dialog->exec()<-1) {
     delete rename_dialog;
@@ -343,9 +345,8 @@ void ListClocks::renameData()
     for(int i=0;i<168;i++) {
       sql=QString("update SERVICE_CLOCKS set ")+
 	"CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
-	"CLOCK_NAME=\""+RDEscapeString(item->text(0))+"\"";
-      q1=new RDSqlQuery(sql);
-      delete q1;
+	"CLOCK_NAME=\""+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"\"";
+      RDSqlQuery::apply(sql);
     }
   }
   delete q;
@@ -355,13 +356,12 @@ void ListClocks::renameData()
   //
   sql=QString("update CLOCK_LINES set ")+
     "CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "CLOCK_NAME=\""+RDEscapeString(item->text(0))+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+    "CLOCK_NAME=\""+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"\"";
+  RDSqlQuery::apply(sql);
 
   sql=QString("update RULE_LINES set ")+
     "CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "CLOCK_NAME=\""+RDEscapeString(item->text(0))+"\"";
+    "CLOCK_NAME=\""+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"\"";
   RDSqlQuery::apply(sql);
 
   //
@@ -369,31 +369,42 @@ void ListClocks::renameData()
   //
   sql=QString("update CLOCK_PERMS set ")+
     "CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "CLOCK_NAME=\""+RDEscapeString(item->text(0))+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+    "CLOCK_NAME=\""+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"\"";
+  RDSqlQuery::apply(sql);
 
   //
   // Rename Primary Key
   //
   sql=QString("update CLOCKS set ")+
     "NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "NAME=\""+RDEscapeString(item->text(0))+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+    "NAME=\""+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"\"";
+  RDSqlQuery::apply(sql);
 
-  item->setText(0,new_name);
-  RefreshItem(item);
+  edit_clocks_model->removeClock(old_name);
+  QModelIndex row=edit_clocks_model->addClock(new_name);
+  if(row.isValid()) {
+    edit_clocks_view->selectRow(row.row());
+  }
 }
 
 
 void ListClocks::filterActivatedData(int id)
 {
-  RefreshList();
+  QString filter;
+
+  if(id==1) {
+    filter=GetNoneFilter();
+  }
+  else {
+    if(id>1) {
+      filter=GetClockFilter(edit_filter_box->currentText());
+    }
+  }
+  edit_clocks_model->setFilterSql(filter);
 }
 
 
-void ListClocks::doubleClickedData(Q3ListViewItem *item,const QPoint &,int)
+void ListClocks::doubleClickedData(const QModelIndex &index)
 {
   if(edit_clockname==NULL) {
     editData();
@@ -413,22 +424,19 @@ void ListClocks::closeData()
 
 void ListClocks::clearData()
 {
-  Q3ListViewItem *item=edit_clocks_list->selectedItem();
-  if(item!=NULL) {
-    edit_clocks_list->setSelected(item,false);
-  }
+  edit_clocks_view->clearSelection();
 }
 
 
 void ListClocks::okData()
 {
-  Q3ListViewItem *item=edit_clocks_list->selectedItem();
   *clock_filter=edit_filter_box->currentText();
-  if(item==NULL) {
-    *edit_clockname="";
+  QModelIndexList rows=edit_clocks_view->selectionModel()->selectedRows();
+  if(rows.size()==1) {
+    *edit_clockname=edit_clocks_model->clockName(rows.first());
   }
   else {
-    *edit_clockname=item->text(0);
+    *edit_clockname="";
   }
   done(0);
 }
@@ -444,7 +452,7 @@ void ListClocks::resizeEvent(QResizeEvent *e)
 {
   edit_filter_box->setGeometry(65,10,size().width()-75,20);
   edit_filter_label->setGeometry(10,10,50,20);
-  edit_clocks_list->setGeometry(10,45,
+  edit_clocks_view->setGeometry(10,45,
 				size().width()-20,size().height()-115);
   edit_add_button->setGeometry(10,size().height()-60,80,50);
   edit_edit_button->setGeometry(100,size().height()-60,80,50);
@@ -463,86 +471,6 @@ void ListClocks::resizeEvent(QResizeEvent *e)
 void ListClocks::closeEvent(QCloseEvent *e)
 {
   cancelData();
-}
-
-
-void ListClocks::RefreshList()
-{
-  QString filter;
-
-  if(edit_filter_box->currentItem()==1) {
-    filter=GetNoneFilter();
-  }
-  else {
-    if(edit_filter_box->currentItem()>1) {
-      filter=GetClockFilter(edit_filter_box->currentText());
-    }
-  }
-
-  edit_clocks_list->clear();
-  QString sql=QString("select ")+
-    "NAME,"+        // 00
-    "SHORT_NAME,"+  // 01
-    "COLOR "+       // 02
-    "from CLOCKS "+filter;
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  Q3ListViewItem *item=NULL;
-  while(q->next()) {
-    item=new Q3ListViewItem(edit_clocks_list);
-    WriteItem(item,q);
-  }
-  delete q;
-}
-
-
-void ListClocks::RefreshItem(Q3ListViewItem *item,
-			     std::vector<QString> *new_clocks)
-{
-  Q3ListViewItem *new_item;
-  UpdateItem(item,item->text(0));
-
-  if(new_clocks!=NULL) {
-    for(unsigned i=0;i<new_clocks->size();i++) {
-      if((new_item=edit_clocks_list->findItem(new_clocks->at(i),0))==NULL) {
-	new_item=new Q3ListViewItem(edit_clocks_list);
-      }
-      UpdateItem(new_item,new_clocks->at(i));
-    }
-  }
-}
-
-
-void ListClocks::UpdateItem(Q3ListViewItem *item,QString name)
-{
-  QString sql=QString("select ")+
-    "NAME,"+        // 00
-    "SHORT_NAME,"+  // 01
-    "COLOR "+       // 02
-    "from CLOCKS where "+
-    "NAME=\""+RDEscapeString(name)+"\"";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->next()) {
-    item->setText(0,name);
-    WriteItem(item,q);
-  }
-  delete q;
-}
-
-
-void ListClocks::WriteItem(Q3ListViewItem *item,RDSqlQuery *q)
-{
-  QPixmap *pix;
-  QPainter *p=new QPainter();
-
-  item->setText(0,q->value(0).toString());
-  item->setText(1,q->value(1).toString());
-  pix=new QPixmap(QSize(15,15));
-  p->begin(pix);
-  p->fillRect(0,0,15,15,QColor(q->value(2).toString()));
-  p->end();
-  item->setPixmap(2,*pix);
-
-  delete p;
 }
 
 

@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Log Clock
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -173,6 +173,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   button->setFont(buttonFont());
   button->setText(tr("Save &As"));
   connect(button,SIGNAL(clicked()),this,SLOT(saveAsData()));
+  button->setDisabled(new_clock);
 
   //
   //  Service Associations Button

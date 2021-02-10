@@ -1206,15 +1206,15 @@ Einbinden wird diese entfernen. Fortfahren?</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Name</translation>
+        <translation type="obsolete">Name</translation>
     </message>
     <message>
         <source>Code</source>
-        <translation>Code</translation>
+        <translation type="obsolete">Code</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Farbe</translation>
+        <translation type="obsolete">Farbe</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1258,11 +1258,11 @@ Einbinden wird diese entfernen. Fortfahren?</translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation>Uhr existiert</translation>
+        <translation type="unfinished">Uhr existiert</translation>
     </message>
     <message>
         <source>An clock with that name already exists!</source>
-        <translation>Eine Uhr mit diesem Namen existiert bereits!</translation>
+        <translation type="unfinished">Eine Uhr mit diesem Namen existiert bereits!</translation>
     </message>
     <message>
         <source>Are you sure you want to
@@ -1271,7 +1271,7 @@ delete</source>
     </message>
     <message>
         <source>Delete Clock</source>
-        <translation>Uhr löschen</translation>
+        <translation type="unfinished">Uhr löschen</translation>
     </message>
     <message>
         <source>is in use in the following grid(s):</source>
@@ -1279,11 +1279,11 @@ delete</source>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
-        <translation>Wollen Sie immernoch löschen?</translation>
+        <translation type="unfinished">Wollen Sie immernoch löschen?</translation>
     </message>
     <message>
         <source>Clock In Use</source>
-        <translation>Uhr in Verwendung</translation>
+        <translation type="unfinished">Uhr in Verwendung</translation>
     </message>
     <message>
         <source>Log Clocks - User: </source>

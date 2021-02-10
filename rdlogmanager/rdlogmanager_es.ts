@@ -1208,15 +1208,15 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Nombre</translation>
+        <translation type="obsolete">Nombre</translation>
     </message>
     <message>
         <source>Code</source>
-        <translation>Código</translation>
+        <translation type="obsolete">Código</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Color</translation>
+        <translation type="obsolete">Color</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1252,11 +1252,11 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation>Ya existe una torta</translation>
+        <translation type="unfinished">Ya existe una torta</translation>
     </message>
     <message>
         <source>An clock with that name already exists!</source>
-        <translation>¡Una torta con ese nombre ya existe!</translation>
+        <translation type="unfinished">¡Una torta con ese nombre ya existe!</translation>
     </message>
     <message>
         <source>Are you sure you want to
@@ -1266,7 +1266,7 @@ eliminar</translation>
     </message>
     <message>
         <source>Delete Clock</source>
-        <translation>Eliminar torta</translation>
+        <translation type="unfinished">Eliminar torta</translation>
     </message>
     <message>
         <source>is in use in the following grid(s):</source>
@@ -1274,11 +1274,11 @@ eliminar</translation>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
-        <translation>¿Desea eliminarla de cualquier forma?</translation>
+        <translation type="unfinished">¿Desea eliminarla de cualquier forma?</translation>
     </message>
     <message>
         <source>Clock In Use</source>
-        <translation>Torta en uso</translation>
+        <translation type="unfinished">Torta en uso</translation>
     </message>
     <message>
         <source>&amp;Rename</source>
