@@ -1388,6 +1388,40 @@ Cor</translation>
     </message>
 </context>
 <context>
+    <name>RDClock</name>
+    <message>
+        <source>End</source>
+        <translation type="obsolete">Fim</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="obsolete">Duração</translation>
+    </message>
+</context>
+<context>
+    <name>RDClockModel</name>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Fim</translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Duração</translation>
+    </message>
+</context>
+<context>
     <name>RDCoreApplication</name>
     <message>
         <source>unknown</source>

@@ -858,7 +858,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
     q=new RDSqlQuery(sql);
     if(q->first()) {
       if((!q->value(0).isNull())&&(!q->value(0).toString().isEmpty())) {
-	clock.setName(q->value(0).toString());
+	clock.setClockName(q->value(0).toString());
 	clock.load();
 	clock.generateLog(i,logname,svc_name,report);
 	clock.clear();

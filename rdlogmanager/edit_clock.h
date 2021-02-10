@@ -2,7 +2,7 @@
 //
 // Edit A Rivendell Log Clock
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,15 +21,13 @@
 #ifndef EDIT_CLOCK_H
 #define EDIT_CLOCK_H
 
+#include <QTextEdit>
 
-#include <qlabel.h>
-#include <qtextedit.h>
-
-#include <rdclock.h>
+#include <rdclockmodel.h>
 #include <rddialog.h>
 #include <rdschedruleslist.h>
 
-#include "clock_listview.h"
+#include "clocklistview.h"
 
 //
 // Layout
@@ -48,7 +46,8 @@ class EditClock : public RDDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void selectionChangedData(Q3ListViewItem *);
+  void selectionChangedData(const QItemSelection &before,
+			    const QItemSelection &after);
   void addData();
   void cloneData();
   void editData();
@@ -57,7 +56,7 @@ class EditClock : public RDDialog
   void schedRules();
   void saveData();
   void saveAsData();
-  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
+  void doubleClickedData(const QModelIndex &index);
   void colorData();
   void editEventData(int line);
   void okData();
@@ -69,14 +68,12 @@ class EditClock : public RDDialog
 
  private:
   void Save();
-  void RefreshList(int select_line=-1);
-  void RefreshNames();
   void UpdateClock(int line=-1);
   void CopyClockPerms(QString old_name,QString new_name);
   void AbandonClock(QString name);
   bool ValidateCode();
-  ClockListView *edit_clocks_list;
-  RDClock *edit_clock;
+  ClockListView *edit_clocks_view;
+  RDClockModel *edit_clocks_model;
   QPushButton *edit_add_button;
   QPushButton *edit_clone_button;
   QPushButton *edit_edit_button;

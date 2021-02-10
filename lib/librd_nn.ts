@@ -1383,6 +1383,40 @@ farge</translation>
     </message>
 </context>
 <context>
+    <name>RDClock</name>
+    <message>
+        <source>End</source>
+        <translation type="obsolete">Slutten</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="obsolete">Lengd</translation>
+    </message>
+</context>
+<context>
+    <name>RDClockModel</name>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Slutten</translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Lengd</translation>
+    </message>
+</context>
+<context>
     <name>RDCoreApplication</name>
     <message>
         <source>unknown</source>

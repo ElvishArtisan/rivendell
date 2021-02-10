@@ -44,6 +44,17 @@
     </message>
 </context>
 <context>
+    <name>ClockListModel</name>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Namn</translation>
+    </message>
+    <message>
+        <source>Code</source>
+        <translation type="unfinished">Kode</translation>
+    </message>
+</context>
+<context>
     <name>ClockListView</name>
     <message>
         <source>Edit Event</source>
@@ -62,23 +73,23 @@
     </message>
     <message>
         <source>Start</source>
-        <translation>Start</translation>
+        <translation type="obsolete">Start</translation>
     </message>
     <message>
         <source>End</source>
-        <translation>Slutt</translation>
+        <translation type="obsolete">Slutt</translation>
     </message>
     <message>
         <source>Event</source>
-        <translation>Hending</translation>
+        <translation type="obsolete">Hending</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Lengd</translation>
+        <translation type="obsolete">Lengd</translation>
     </message>
     <message>
         <source>Count</source>
-        <translation>Tellign</translation>
+        <translation type="obsolete">Tellign</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -132,7 +143,7 @@ sletta</translation>
     </message>
     <message>
         <source>Delete Event</source>
-        <translation>Slett hending</translation>
+        <translation type="unfinished">Slett hending</translation>
     </message>
     <message>
         <source>Clock Modified</source>
@@ -193,17 +204,8 @@ Vil du lagra?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit Clock</source>
         <translation type="unfinished">Rediger klokke</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error</source>
@@ -218,7 +220,12 @@ Vil du lagra?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Trans</source>
+        <source>Are you sure you want to delete
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

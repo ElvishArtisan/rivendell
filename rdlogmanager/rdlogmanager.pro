@@ -27,6 +27,8 @@
 SOURCES += add_clock.cpp
 SOURCES += add_event.cpp
 SOURCES += clock_listview.cpp
+SOURCES += clocklistmodel.cpp
+SOURCES += clocklistview.cpp
 SOURCES += commandline_ops.cpp
 SOURCES += edit_clock.cpp
 SOURCES += edit_event.cpp
@@ -54,6 +56,8 @@ SOURCES += svc_rec_dialog.cpp
 HEADERS += add_clock.h
 HEADERS += add_event.h
 HEADERS += clock_listview.h
+HEADERS += clocklistmodel.h
+HEADERS += clocklistview.h
 HEADERS += edit_clock.h
 HEADERS += edit_event.h
 HEADERS += edit_eventline.h

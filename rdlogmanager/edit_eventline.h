@@ -2,7 +2,7 @@
 //
 // Edit A Rivendell Log Clock Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +23,7 @@
 
 #include <qlineedit.h>
 
-#include <rdclock.h>
+#include <rdclockmodel.h>
 #include <rddialog.h>
 #include <rdtimeedit.h>
 
@@ -31,7 +31,7 @@ class EditEventLine : public RDDialog
 {
  Q_OBJECT
  public:
-  EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
+  EditEventLine(RDEventLine *eventline,RDClockModel *clock,int line,
 		QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -50,9 +50,8 @@ class EditEventLine : public RDDialog
   RDTimeEdit *edit_starttime_edit;
   RDTimeEdit *edit_endtime_edit;
   int edit_line;
-  RDClock *edit_clock;
+  RDClockModel *edit_clock_model;
 };
 
 
-#endif
-
+#endif  // EDIT_EVENTLINE_H

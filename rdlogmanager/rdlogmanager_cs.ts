@@ -44,6 +44,17 @@
     </message>
 </context>
 <context>
+    <name>ClockListModel</name>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Název</translation>
+    </message>
+    <message>
+        <source>Code</source>
+        <translation type="unfinished">Kód</translation>
+    </message>
+</context>
+<context>
     <name>ClockListView</name>
     <message>
         <source>Edit Event</source>
@@ -62,23 +73,23 @@
     </message>
     <message>
         <source>Start</source>
-        <translation>Začátek</translation>
+        <translation type="obsolete">Začátek</translation>
     </message>
     <message>
         <source>End</source>
-        <translation>Konec</translation>
+        <translation type="obsolete">Konec</translation>
     </message>
     <message>
         <source>Event</source>
-        <translation>Událost</translation>
+        <translation type="obsolete">Událost</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Délka</translation>
+        <translation type="obsolete">Délka</translation>
     </message>
     <message>
         <source>Count</source>
-        <translation>Počet</translation>
+        <translation type="obsolete">Počet</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -131,7 +142,7 @@ delete</source>
     </message>
     <message>
         <source>Delete Event</source>
-        <translation>Smazat událost</translation>
+        <translation type="unfinished">Smazat událost</translation>
     </message>
     <message>
         <source>Clock Modified</source>
@@ -196,17 +207,8 @@ Chcete je uložit?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit Clock</source>
         <translation type="unfinished">Upravit hodiny</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error</source>
@@ -221,7 +223,12 @@ Chcete je uložit?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Trans</source>
+        <source>Are you sure you want to delete
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

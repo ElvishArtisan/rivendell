@@ -92,6 +92,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdcdripper.cpp rdcdripper.h\
                         rdcheck_version.cpp rdcheck_version.h\
                         rdclock.cpp rdclock.h\
+                        rdclockmodel.cpp rdclockmodel.h\
                         rdcmd_cache.cpp rdcmd_cache.h\
                         rdcmd_switch.cpp rdcmd_switch.h\
                         rdcodetrap.cpp rdcodetrap.h\
@@ -305,6 +306,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdcddblookup.cpp\
                           moc_rdcdplayer.cpp\
                           moc_rdcdripper.cpp\
+                          moc_rdclockmodel.cpp\
                           moc_rdcodetrap.cpp\
                           moc_rdcombobox.cpp\
                           moc_rdcoreapplication.cpp\

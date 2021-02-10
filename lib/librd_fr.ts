@@ -1203,6 +1203,40 @@ La Couleur</translation>
     </message>
 </context>
 <context>
+    <name>RDClock</name>
+    <message>
+        <source>Start</source>
+        <translation type="obsolete">Début</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="obsolete">Fin</translation>
+    </message>
+</context>
+<context>
+    <name>RDClockModel</name>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished">Début</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Fin</translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDCoreApplication</name>
     <message>
         <source>unknown</source>

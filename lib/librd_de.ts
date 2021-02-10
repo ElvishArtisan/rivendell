@@ -1396,6 +1396,40 @@ senden</translation>
     </message>
 </context>
 <context>
+    <name>RDClock</name>
+    <message>
+        <source>End</source>
+        <translation type="obsolete">Ende</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="obsolete">Länge</translation>
+    </message>
+</context>
+<context>
+    <name>RDClockModel</name>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Ende</translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Länge</translation>
+    </message>
+</context>
+<context>
     <name>RDCoreApplication</name>
     <message>
         <source>unknown</source>

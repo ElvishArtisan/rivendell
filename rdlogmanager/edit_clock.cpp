@@ -18,9 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
-#include <qmessagebox.h>
-#include <qcolordialog.h>
+#include <QColorDialog>
+#include <QMessageBox>
+#include <QPainter>
 
 #include <rdconf.h>
 #include <rdescape_string.h>
@@ -56,7 +56,6 @@ EditClock::EditClock(QString clockname,bool new_clock,
   // Create Fonts
   //
   edit_title_font=new QFont(labelFont().family(),24,QFont::Bold);
-  edit_title_font->setPixelSize(24);
   edit_title_metrics=new QFontMetrics(*edit_title_font);
 
   //
@@ -76,29 +75,25 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   // Clock List
   //
-  edit_clocks_list=new ClockListView(this);
-  edit_clocks_list->setGeometry(10,35,CENTER_LINE-20,sizeHint().height()-250);
-  edit_clocks_list->setAllColumnsShowFocus(true);
-  edit_clocks_list->setItemMargin(5);
-  edit_clocks_list->setSorting(-1);
-  edit_clocks_list->addColumn(tr("Start"));
-  edit_clocks_list->addColumn(tr("End"));
-  edit_clocks_list->addColumn(tr("Trans"));
-  edit_clocks_list->setColumnAlignment(2,Qt::AlignCenter);
-  edit_clocks_list->addColumn(tr("Event"));
-  edit_clocks_list->addColumn(tr("Length"));
-  edit_clocks_list->setColumnAlignment(4,Qt::AlignRight);
-  edit_clocks_list->addColumn(tr("Count"));
-  edit_clocks_list->setColumnAlignment(5,Qt::AlignCenter);
-  edit_clocks_list->setColumnSortType(4,RDListView::LineSort);
-  edit_clocks_list->setHardSortColumn(4);
-  connect(edit_clocks_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-  connect(edit_clocks_list,SIGNAL(selectionChanged(Q3ListViewItem *)),
-	  this,SLOT(selectionChangedData(Q3ListViewItem *)));
-  connect(edit_clocks_list,SIGNAL(editLine(int)),
+  edit_clocks_view=new ClockListView(this);
+  edit_clocks_view->setGeometry(10,35,CENTER_LINE-20,sizeHint().height()-250);
+  edit_clocks_model=new RDClockModel(rda->station(),this);
+  edit_clocks_model->setFont(font());
+  edit_clocks_model->setPalette(palette());
+  edit_clocks_view->setModel(edit_clocks_model);
+  connect(edit_clocks_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(edit_clocks_view->selectionModel(),
+	  SIGNAL(selectionChanged(const QItemSelection &,
+				  const QItemSelection &)),
+	  this,
+	  SLOT(selectionChangedData(const QItemSelection &,
+				    const QItemSelection &)));
+  connect(edit_clocks_view,SIGNAL(editEventAtLine(int)),
 	  this,SLOT(editEventData(int)));
+  connect(edit_clocks_model,SIGNAL(modelReset()),
+	  edit_clocks_view,SLOT(resizeColumnsToContents()));
+  edit_clocks_view->resizeColumnsToContents();
 
   //
   //  Add Button
@@ -227,17 +222,17 @@ EditClock::EditClock(QString clockname,bool new_clock,
   // Populate Data
   //
   sched_rules_list = new RDSchedRulesList(clockname,rda->config());
-  edit_clock=new RDClock(rda->station());
-  edit_clock->setName(clockname);
-  edit_clock->load();
-  edit_shortname_edit->setText(edit_clock->shortName());
-  if(edit_clock->color().isValid()) {
+  edit_clocks_model->setClockName(clockname);
+  edit_clocks_model->load();
+  edit_shortname_edit->setText(edit_clocks_model->shortName());
+  if(edit_clocks_model->color().isValid()) {
     edit_color_button->
-      setPalette(QPalette(edit_clock->color(),backgroundColor()));
+      setPalette(QPalette(edit_clocks_model->color(),backgroundColor()));
   }
-  edit_remarks_edit->setText(edit_clock->remarks());
+  edit_remarks_edit->setText(edit_clocks_model->remarks());
   edit_modified=false;
-  RefreshList();
+
+  UpdateClock();
 }
 
 
@@ -253,18 +248,17 @@ QSizePolicy EditClock::sizePolicy() const
 }
 
 
-void EditClock::selectionChangedData(Q3ListViewItem *l)
+void EditClock::selectionChangedData(const QItemSelection &before,
+				     const QItemSelection &after)
 {
-  if(l==NULL) {
+  QModelIndexList rows=edit_clocks_view->selectionModel()->selectedRows();
+
+  if(rows.size()==0) {
     UpdateClock();
-    return;
   }
-  RDListViewItem *item=(RDListViewItem *)l;
-  if(item->text(4).isEmpty()) {
-    UpdateClock();
-    return;
+  else {
+    UpdateClock(rows.first().row());
   }
-  UpdateClock(item->text(5).toInt());
 }
 
 
@@ -273,15 +267,15 @@ void EditClock::addData()
   int line=0;
   RDEventLine eventline(rda->station());
   EditEventLine *edit_eventline=
-    new EditEventLine(&eventline,edit_clock,-1,this);
+    new EditEventLine(&eventline,edit_clocks_model,-1,this);
   if(edit_eventline->exec()<0) {
     return;
   }
   delete edit_eventline;
   if(line<0) {
-    line=edit_clock->size();
+    line=edit_clocks_model->size();
   }
-  line=edit_clock->
+  line=edit_clocks_model->
     insert(eventline.name(),eventline.startTime(),eventline.length());
   if(line<0) {
     QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
@@ -289,47 +283,39 @@ void EditClock::addData()
     return;
   }
   edit_modified=true;
-  RefreshList(line);
+  UpdateClock(line);
 }
 
 
 void EditClock::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)edit_clocks_list->selectedItem();
-  if(item==NULL) {
-    return;
-  }
-  if(item->text(5).isEmpty()) {
-    return;
-  }
-  int line=item->text(5).toInt();
-  if(line<0) {
+  QModelIndexList rows=edit_clocks_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
   EditEventLine *edit_eventline=
-    new EditEventLine(edit_clock->eventLine(line),edit_clock,line,this);
+    new EditEventLine(edit_clocks_model->eventLine(rows.first()),
+		      edit_clocks_model,rows.first().row(),this);
   if(edit_eventline->exec()<0) {
     delete edit_eventline;
     return;
   }
   delete edit_eventline;
-  edit_clock->eventLine(line)->load();
+  edit_clocks_model->eventLine(rows.first())->load();
+  edit_clocks_model->refresh(rows.first());
   edit_modified=true;
-  RefreshList();
+  UpdateClock(rows.first().row());
 }
 
 void EditClock::cloneData()
 {
-  RDListViewItem *item=(RDListViewItem *)edit_clocks_list->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=edit_clocks_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  if(item->text(5).isEmpty()) {
-    return;
-  }
-  int line=item->text(5).toInt();
-  
-  RDEventLine *selectedEventLine = edit_clock->eventLine(line);
+  RDEventLine *selectedEventLine = edit_clocks_model->eventLine(rows.first());
 
   RDEventLine eventline(rda->station());
   eventline.setName(selectedEventLine->name());
@@ -340,71 +326,75 @@ void EditClock::cloneData()
   }
   
   EditEventLine *edit_eventline=
-    new EditEventLine(&eventline,edit_clock,-1,this);
+    new EditEventLine(&eventline,edit_clocks_model,-1,this);
   if(edit_eventline->exec()<0) {
     delete edit_eventline;
     return;
   }
   delete edit_eventline;
-  line=edit_clock->
+  int line=edit_clocks_model->
     insert(eventline.name(),eventline.startTime(),eventline.length());
   if(line<0) {
     QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
 			 tr("That event does not exist."));
     return;
   }
+  edit_clocks_model->refresh(edit_clocks_model->index(line,0));
   edit_modified=true;
-  RefreshList(line);
+  UpdateClock(line);
 }
 
 
 void EditClock::deleteData()
 {
   QString str;
+  QModelIndexList rows=edit_clocks_view->selectionModel()->selectedRows();
 
-  RDListViewItem *item=(RDListViewItem *)edit_clocks_list->selectedItem();
-  if(item==NULL) {
+  if(rows.size()!=1) {
     return;
   }
-  if(item->text(5).isEmpty()) {
-    return;
-  }
+  RDEventLine *el=edit_clocks_model->eventLine(rows.first());
   str=QString(tr("Are you sure you want to delete\n"));
-  if(QMessageBox::question(this,"RDLogManager - "+tr("Delete Event"),
-			   tr("Are you sure you want to delete")+
-			   "\n \"("+item->text(0)+") "+item->text(3)+"\"?",
-			  QMessageBox::Yes,QMessageBox::No)!=
+  if(QMessageBox::
+     question(this,"RDLogManager - "+tr("Delete Event"),
+	      tr("Are you sure you want to delete")+
+	      "\n \"("+el->startTime().toString("mm:ss.zzz").left(7)+") "+
+	      el->name()+"\"?",QMessageBox::Yes,QMessageBox::No)!=
      QMessageBox::Yes) {
     return;
   }
-  edit_clock->remove(item->text(5).toInt());
+  edit_clocks_model->remove(rows.first().row());
   edit_modified=true;
-  RefreshList();
+  rows=edit_clocks_view->selectionModel()->selectedRows();
+  if(rows.size()==0) {
+    UpdateClock();
+  }
+  else {
+    UpdateClock(rows.first().row());
+  }
 }
 
 
 void EditClock::schedRules()
 {
-  unsigned edit_artistsep = edit_clock->getArtistSep();
-  QString clock_name = edit_clock->name();
-  bool rules_modified = edit_clock->getRulesModified();
+  unsigned edit_artistsep=edit_clocks_model->getArtistSep();
+  QString clock_name=edit_clocks_model->clockName();
+  bool rules_modified=edit_clocks_model->getRulesModified();
 
   EditSchedRules *dialog=
     new EditSchedRules(clock_name,&edit_artistsep,sched_rules_list,
 		       &rules_modified,this);
   dialog->exec();
   
-  if (edit_clock->getArtistSep()!=edit_artistsep)
-    {
+  if(edit_clocks_model->getArtistSep()!=edit_artistsep) {
     edit_modified=true;
-    }
-  edit_clock->setArtistSep(edit_artistsep);  
+  }
+  edit_clocks_model->setArtistSep(edit_artistsep);  
 
-  edit_clock->setRulesModified(rules_modified);
-  if(rules_modified)
-    {
+  edit_clocks_model->setRulesModified(rules_modified);
+  if(rules_modified) {
     edit_modified=true;
-    }
+  }
 
   delete dialog;
 }
@@ -486,7 +476,7 @@ void EditClock::saveAsData()
     }
   }
   delete q;
-  edit_clock->setName(clockname);
+  edit_clocks_model->setClockName(clockname);
 
   Save();
   edit_new_clocks->push_back(clockname);
@@ -500,7 +490,7 @@ void EditClock::saveAsData()
 }
 
 
-void EditClock::doubleClickedData(Q3ListViewItem *item,const QPoint &,int)
+void EditClock::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -520,7 +510,7 @@ void EditClock::editEventData(int line)
 {
   std::vector<QString> new_events;
 
-  RDEventLine *event=edit_clock->eventLine(line);
+  RDEventLine *event=edit_clocks_model->eventLine(line);
   if(event==NULL) {
     return;
   }
@@ -530,7 +520,7 @@ void EditClock::editEventData(int line)
     return;
   }
   delete dialog;
-  RefreshNames();
+  edit_clocks_model->refresh(edit_clocks_model->index(line,0));
 }
 
 
@@ -586,60 +576,16 @@ void EditClock::closeEvent(QCloseEvent *e)
 
 void EditClock::Save()
 {
-  edit_clock->setColor(edit_color_button->backgroundColor());
-  edit_clock->setShortName(edit_shortname_edit->text());
-  edit_clock->setRemarks(edit_remarks_edit->text());
-  edit_clock->save();
-  if(edit_clock->getRulesModified())
+  edit_clocks_model->setColor(edit_color_button->backgroundColor());
+  edit_clocks_model->setShortName(edit_shortname_edit->text());
+  edit_clocks_model->setRemarks(edit_remarks_edit->text());
+  edit_clocks_model->save();
+  if(edit_clocks_model->getRulesModified())
      {
-     sched_rules_list->Save(edit_clock->name());
-     edit_clock->setRulesModified(false);
+     sched_rules_list->Save(edit_clocks_model->clockName());
+     edit_clocks_model->setRulesModified(false);
      }
   edit_modified=false;
-}
-
-
-void EditClock::RefreshList(int select_line)
-{
-  UpdateClock();
-  RDListViewItem *item;
-  RDEventLine *eventline;
-
-  edit_clocks_list->clear();
-  for(int i=edit_clock->size()-1;i>=0;i--) {
-    if((eventline=edit_clock->eventLine(i))!=NULL) {
-      item=new RDListViewItem(edit_clocks_list);
-      item->setText(0,eventline->startTime().toString("mm:ss.zzz").left(7));
-      item->setText(1,eventline->startTime().
-		    addMSecs(eventline->length()).toString("mm:ss.zzz").
-		    left(7));
-      item->setText(2,RDLogLine::transText(eventline->firstTransType()));
-      item->setText(3,eventline->name()+" ["+eventline->propertiesText()+"]");
-      item->setText(4,RDGetTimeLength(eventline->length(),false,true));
-      item->setText(5,QString().sprintf("%d",i));
-      if(eventline->color().isValid()) {
-	item->setBackgroundColor(eventline->color());
-      }
-      if(i==select_line) {
-	edit_clocks_list->setSelected(item,true);
-      }
-    }
-  }
-}
-
-
-void EditClock::RefreshNames()
-{
-  RDEventLine *eventline=NULL;
-  RDListViewItem *item=(RDListViewItem *)edit_clocks_list->firstChild();
-  while(item!=NULL) {
-    if(!item->text(5).isEmpty()) {
-      if((eventline=edit_clock->eventLine(item->text(5).toInt()))!=NULL) {
-	item->setText(3,eventline->name()+" ["+eventline->propertiesText()+"]");
-      }
-    }
-    item=(RDListViewItem *)item->nextSibling();
-  }
 }
 
 
@@ -657,8 +603,8 @@ void EditClock::UpdateClock(int line)
   // Title
   //
   p->drawText((edit_clock_label->size().width()-
-	       edit_title_metrics->width(edit_clock->name()))/2,
-	      50,edit_clock->name());
+	       edit_title_metrics->width(edit_clocks_model->clockName()))/2,
+	      50,edit_clocks_model->clockName());
 
   //
   // Pie Circle
@@ -673,24 +619,24 @@ void EditClock::UpdateClock(int line)
   //
   // Segments
   //
-  for(int i=0;i<edit_clock->size();i++) {
+  for(int i=0;i<edit_clocks_model->size();i++) {
     if(i==line) {
-      p->setBrush(edit_clocks_list->palette().
+      p->setBrush(edit_clocks_view->palette().
 		  color(QPalette::Active,QColorGroup::Highlight));
       p->drawPie(-size_x/2,-size_y/2,size_x,size_y,
-	  -QTime().secsTo(edit_clock->eventLine(line)->startTime())*5760/3600,
-	  -(edit_clock->eventLine(line)->length()/1000)*5760/3600);
+	  -QTime().secsTo(edit_clocks_model->eventLine(line)->startTime())*5760/3600,
+	  -(edit_clocks_model->eventLine(line)->length()/1000)*5760/3600);
     }
     else {
-      if(edit_clock->eventLine(i)->color().isValid()) {
-	p->setBrush(edit_clock->eventLine(i)->color());
+      if(edit_clocks_model->eventLine(i)->color().isValid()) {
+	p->setBrush(edit_clocks_model->eventLine(i)->color());
       }
       else {
 	p->setBrush(palette().color(QPalette::Active,QColorGroup::Base));
       }
       p->drawPie(-size_x/2,-size_y/2,size_x,size_y,
-	     -QTime().secsTo(edit_clock->eventLine(i)->startTime())*5760/3600,
-	     -(edit_clock->eventLine(i)->length()/1000)*5760/3600);
+	     -QTime().secsTo(edit_clocks_model->eventLine(i)->startTime())*5760/3600,
+	     -(edit_clocks_model->eventLine(i)->length()/1000)*5760/3600);
     }
   }
   p->end();
@@ -756,6 +702,5 @@ bool EditClock::ValidateCode()
     return false;
   }
   delete q;
-
   return true;
 }

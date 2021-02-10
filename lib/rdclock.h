@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Clock
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,8 +30,8 @@ class RDClock
 {
   public:
    RDClock(RDStation *station);
-   QString name() const;
-   void setName(const QString &name);
+   QString clockName() const;
+   void setClockName(const QString &name);
    QString shortName() const;
    void setShortName(const QString &name);
    QColor color() const;
@@ -43,18 +43,23 @@ class RDClock
    bool getRulesModified();
    void setRulesModified(bool modified);
 
-   RDEventLine *eventLine(int line);
+   RDEventLine *eventLine(int line) const;
    void clear();
    int size() const;
    bool load();
    bool save();
-   int insert(const QString &event_name,const QTime &start,int len);
+   virtual int insert(const QString &event_name,const QTime &start,int len);
    void remove(int line);
    bool validate(const QTime &start_time,int length,int except_line=-1);
    bool generateLog(int hour,const QString &logname,const QString &svc_name,
 		    QString *errors);
 
-  private:
+ protected:
+  virtual int preInsert(const QString &event_name,const QTime &time) const;
+  virtual void execInsert(int line,const QString &event_name,const QTime &time,
+			  int len);
+
+ private:
    QString clock_name;
    QString clock_short_name;
    QColor clock_color;

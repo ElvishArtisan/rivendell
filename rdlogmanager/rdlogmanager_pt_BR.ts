@@ -44,6 +44,17 @@
     </message>
 </context>
 <context>
+    <name>ClockListModel</name>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code</source>
+        <translation type="unfinished">Código</translation>
+    </message>
+</context>
+<context>
     <name>ClockListView</name>
     <message>
         <source>Edit Event</source>
@@ -62,23 +73,23 @@
     </message>
     <message>
         <source>Start</source>
-        <translation>Início</translation>
+        <translation type="obsolete">Início</translation>
     </message>
     <message>
         <source>End</source>
-        <translation>Fim</translation>
+        <translation type="obsolete">Fim</translation>
     </message>
     <message>
         <source>Event</source>
-        <translation>Evento</translation>
+        <translation type="obsolete">Evento</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Duração</translation>
+        <translation type="obsolete">Duração</translation>
     </message>
     <message>
         <source>Count</source>
-        <translation>Contador</translation>
+        <translation type="obsolete">Contador</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -137,7 +148,7 @@ deletar</translation>
     </message>
     <message>
         <source>Delete Event</source>
-        <translation>Deletar Evento</translation>
+        <translation type="unfinished">Deletar Evento</translation>
     </message>
     <message>
         <source>Clock Modified</source>
@@ -198,17 +209,8 @@ Você quer salvar?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit Clock</source>
         <translation type="unfinished">Editar Relógio</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error</source>
@@ -223,7 +225,12 @@ Você quer salvar?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Trans</source>
+        <source>Are you sure you want to delete
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

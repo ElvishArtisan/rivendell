@@ -30,8 +30,6 @@
 #include <rddialog.h>
 #include <rdschedruleslist.h>
 
-#include "clock_listview.h"
-
 class EditSchedCodeRules : public RDDialog
 {
   Q_OBJECT

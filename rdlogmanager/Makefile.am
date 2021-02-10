@@ -42,8 +42,8 @@ bin_PROGRAMS = rdlogmanager
 
 dist_rdlogmanager_SOURCES = add_clock.cpp add_clock.h\
                             add_event.cpp add_event.h\
-                            clock_listview.cpp clock_listview.h\
                             clocklistmodel.cpp clocklistmodel.h\
+                            clocklistview.cpp clocklist.h\
                             commandline_ops.cpp globals.h\
                             edit_clock.cpp edit_clock.h\
                             edit_event.cpp edit_event.h\
@@ -73,8 +73,8 @@ dist_rdlogmanager_SOURCES = add_clock.cpp add_clock.h\
 
 nodist_rdlogmanager_SOURCES = moc_add_clock.cpp\
                               moc_add_event.cpp\
-                              moc_clock_listview.cpp\
                               moc_clocklistmodel.cpp\
+                              moc_clocklistview.cpp\
                               moc_edit_clock.cpp\
                               moc_edit_event.cpp\
                               moc_edit_eventline.cpp\

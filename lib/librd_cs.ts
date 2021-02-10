@@ -1409,6 +1409,40 @@ ze &amp;souboru</translation>
     </message>
 </context>
 <context>
+    <name>RDClock</name>
+    <message>
+        <source>End</source>
+        <translation type="obsolete">Konec</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="obsolete">Délka</translation>
+    </message>
+</context>
+<context>
+    <name>RDClockModel</name>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Konec</translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Délka</translation>
+    </message>
+</context>
+<context>
     <name>RDCoreApplication</name>
     <message>
         <source>unknown</source>

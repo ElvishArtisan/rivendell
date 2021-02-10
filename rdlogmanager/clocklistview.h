@@ -1,8 +1,8 @@
-//   clock_listview.h
+// clocklistview.h
 //
-//   The Clock ListView widget for RDLogManager.
+// RDTableView widget for clock events in rdlogmanager.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,39 +17,36 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
-#ifndef CLOCK_LISTVIEW_H
-#define CLOCK_LISTVIEW_H
+#ifndef CLOCKLISTVIEW_H
+#define CLOCKLISTVIEW_H
 
-#include <q3listview.h>
-#include <qpixmap.h>
-#include <q3popupmenu.h>
+#include <QAction>
+#include <QMenu>
 
-#include <rdlistviewitem.h>
+#include <rdtableview.h>
 
-class ClockListView : public RDListView
+class ClockListView : public RDTableView
 {
   Q_OBJECT
-
  public:
-  ClockListView(QWidget *parent);
+  ClockListView(QWidget *parent=0);
 
  signals:
-  void editLine(int count);
+  void editEventAtLine(int line);
 
  private slots:
-  void aboutToShowData();
+  void aboutToShowMenuData();
   void editEventData();
 
  protected:
-  void contentsMousePressEvent(QMouseEvent *e);
+  void mousePressEvent(QMouseEvent *e);
 
  private:
-  Q3PopupMenu *clock_menu;
-  RDListViewItem *clock_menu_item;
-  QWidget *clock_parent;
+  int d_mouse_row;
+  QMenu *d_mouse_menu;
+  QAction *d_edit_event_action;
 };
 
 
-#endif  // CLOCK_LISTVIEW_H
+#endif  // CLOCKLISTVIEW_H

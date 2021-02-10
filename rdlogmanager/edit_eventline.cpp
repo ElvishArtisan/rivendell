@@ -2,7 +2,7 @@
 //
 // Edit A Rivendell Log Clock Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,12 +25,12 @@
 #include "edit_eventline.h"
 #include "list_events.h"
 
-EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
-			     QWidget *parent)
+EditEventLine::EditEventLine(RDEventLine *eventline,RDClockModel *clock,
+			     int line,QWidget *parent)
   : RDDialog(parent)
 {
   edit_eventline=eventline;
-  edit_clock=clock;
+  edit_clock_model=clock;
   edit_line=line;
 
   setWindowTitle("RDLogManager - "+tr("Edit Event Assignment"));
@@ -196,10 +196,10 @@ void EditEventLine::okData()
   }
   edit_eventname_edit->setText(q->value(0).toString());
   delete q;
-  if(!edit_clock->validate(edit_starttime_edit->time(),
-			   edit_starttime_edit->time().
-			   msecsTo(edit_endtime_edit->time()),
-			   edit_line)) {
+  if(!edit_clock_model->validate(edit_starttime_edit->time(),
+				 edit_starttime_edit->time().
+				 msecsTo(edit_endtime_edit->time()),
+				 edit_line)) {
     QMessageBox::information(this,tr("Invalid Event"),
 		 tr("This event overlaps with an\nalready existing event."));
     return;

@@ -32,13 +32,13 @@ RDClock::RDClock(RDStation *station)
 }
 
 
-QString RDClock::name() const
+QString RDClock::clockName() const
 {
   return clock_name;
 }
 
 
-void RDClock::setName(const QString &name)
+void RDClock::setClockName(const QString &name)
 {
   clock_name=name;
 }
@@ -114,7 +114,7 @@ void RDClock::clear()
 }
 
 
-RDEventLine *RDClock::eventLine(int line)
+RDEventLine *RDClock::eventLine(int line) const
 {
   if((line<0)||(line>=clock_events.size())) {
     return NULL;
@@ -228,6 +228,15 @@ bool RDClock::save()
 
 int RDClock::insert(const QString &event_name,const QTime &time,int len)
 {
+  int line=preInsert(event_name,time);
+
+  if(line<0) {
+    return -1;
+  }
+  execInsert(line,event_name,time,len);
+
+  return line;
+  /*
   int line=-1;
 
   QString sql=QString("select NAME from EVENTS where ")+
@@ -262,6 +271,7 @@ int RDClock::insert(const QString &event_name,const QTime &time,int len)
   clock_events.at(line)->load();
 
   return line;
+  */
 }
 
 
@@ -321,3 +331,86 @@ bool RDClock::generateLog(int hour,const QString &logname,
   delete q;
   return true;
 }
+
+
+int RDClock::preInsert(const QString &event_name,const QTime &time) const
+{
+  int line=-1;
+
+  QString sql=QString("select NAME from EVENTS where ")+
+    "NAME=\""+RDEscapeString(event_name)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(!q->first()) {
+    delete q;
+    return -1;
+  }
+  delete q;
+  if((clock_events.size()==0)||(time<clock_events.at(0)->startTime())) {
+    return 0;
+  }
+  else {
+    for(int i=0;i<clock_events.size()-1;i++) {
+      if((time>clock_events.at(i)->startTime())&&
+	 (time<clock_events.at(i+1)->startTime())) {
+	return i+1;
+      }
+    }
+    if(line<0) {
+      return clock_events.size();
+    }
+  }
+  return -1;
+}
+
+
+void RDClock::execInsert(int line,const QString &event_name,const QTime &time,
+			 int len)
+{
+  if(line>=clock_events.size()) {
+    clock_events.push_back(new RDEventLine(clock_station));
+  }
+  else {
+    clock_events.insert(line,new RDEventLine(clock_station));
+  }
+  clock_events.at(line)->setName(event_name);
+  clock_events.at(line)->setStartTime(time);
+  clock_events.at(line)->setLength(len);
+  clock_events.at(line)->load();
+}
+
+/*
+  int line=-1;
+
+  QString sql=QString("select NAME from EVENTS where ")+
+    "NAME=\""+RDEscapeString(event_name)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(!q->first()) {
+    delete q;
+    return -1;
+  }
+  delete q;
+  if((clock_events.size()==0)||(time<clock_events.at(0)->startTime())) {
+    line=0;
+    clock_events.insert(0,new RDEventLine(clock_station));
+  }
+  else {
+    for(int i=0;i<clock_events.size()-1;i++) {
+      if((time>clock_events.at(i)->startTime())&&
+	 (time<clock_events.at(i+1)->startTime())) {
+	line=i+1;
+	clock_events.insert(line,new RDEventLine(clock_station));
+	break;
+      }
+    }
+    if(line<0) {
+      line=clock_events.size();
+      clock_events.push_back(new RDEventLine(clock_station));
+    }
+  }
+  clock_events.at(line)->setName(event_name);
+  clock_events.at(line)->setStartTime(time);
+  clock_events.at(line)->setLength(len);
+  clock_events.at(line)->load();
+
+  return line;
+*/
