@@ -1416,11 +1416,11 @@ sletta</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Namn</translation>
+        <translation type="obsolete">Namn</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Skildring</translation>
+        <translation type="obsolete">Skildring</translation>
     </message>
     <message>
         <source>&amp;Edit</source>

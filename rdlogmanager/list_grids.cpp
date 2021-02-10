@@ -2,7 +2,7 @@
 //
 // List Rivendell Log Grids
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,16 +36,21 @@ ListGrids::ListGrids(QWidget *parent)
   //
   // Grids List
   //
-  edit_grids_list=new Q3ListView(this);
-  edit_grids_list->setGeometry(10,10,
-				sizeHint().width()-20,sizeHint().height()-80);
-  edit_grids_list->setAllColumnsShowFocus(true);
-  edit_grids_list->setItemMargin(5);
-  edit_grids_list->addColumn(tr("Name"));
-  edit_grids_list->addColumn(tr("Description"));
-  connect(edit_grids_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+  edit_grids_view=new RDTableView(this);
+  edit_grids_view->
+    setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-80);
+  edit_grids_model=new RDServiceListModel(false,this);
+  edit_grids_model->setFont(font());
+  edit_grids_model->setPalette(palette());
+  edit_grids_view->setModel(edit_grids_model);
+  for(int i=2;i<edit_grids_model->columnCount();i++) {
+    edit_grids_view->hideColumn(i);
+  }
+  connect(edit_grids_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(edit_grids_model,SIGNAL(modelReset()),
+	  edit_grids_view,SLOT(resizeColumnsToContents()));
+  edit_grids_view->resizeColumnsToContents();
 
   //
   //  Edit Button
@@ -65,8 +70,6 @@ ListGrids::ListGrids(QWidget *parent)
   button->setFont(buttonFont());
   button->setText(tr("C&lose"));
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
-
-  RefreshList();
 }
 
 
@@ -84,17 +87,18 @@ QSizePolicy ListGrids::sizePolicy() const
 
 void ListGrids::editData()
 {
-  Q3ListViewItem *item=edit_grids_list->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=edit_grids_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  EditGrid *grid_dialog=new EditGrid(item->text(0),this);
-  grid_dialog->exec();
-  delete grid_dialog;
+  EditGrid *d=new EditGrid(edit_grids_model->serviceName(rows.first()),this);
+  d->exec();
+  delete d;
 }
 
 
-void ListGrids::doubleClickedData(Q3ListViewItem *item,const QPoint &,int)
+void ListGrids::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -102,25 +106,5 @@ void ListGrids::doubleClickedData(Q3ListViewItem *item,const QPoint &,int)
 
 void ListGrids::closeData()
 {
-  done(0);
-}
-
-
-void ListGrids::RefreshList()
-{
-  Q3ListViewItem *prev_item=edit_grids_list->selectedItem();
-  QString sql="select NAME,DESCRIPTION from SERVICES";
-
-  edit_grids_list->clear();
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  Q3ListViewItem *item=NULL;
-  while(q->next()) {
-    item=new Q3ListViewItem(edit_grids_list);
-    item->setText(0,q->value(0).toString());
-    item->setText(1,q->value(1).toString());
-  }
-  delete q;
-  if(prev_item!=NULL) {
-    edit_grids_list->setSelected(item,true);
-  }
+  done(true);
 }

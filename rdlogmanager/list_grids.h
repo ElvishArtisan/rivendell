@@ -2,7 +2,7 @@
 //
 // List Rivendell Log Grids
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,9 @@
 #ifndef LIST_GRIDS_H
 #define LIST_GRIDS_H
 
-#include <q3listview.h>
-
 #include <rddialog.h>
+#include <rdservicelistmodel.h>
+#include <rdtableview.h>
 
 class ListGrids : public RDDialog
 {
@@ -35,14 +35,13 @@ class ListGrids : public RDDialog
 
  private slots:
   void editData();
-  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
 
  private:
-  void RefreshList();
-  Q3ListView *edit_grids_list;
+  RDTableView *edit_grids_view;
+  RDServiceListModel *edit_grids_model;
 };
 
 
-#endif
-
+#endif  // LIST_GRIDS_H
