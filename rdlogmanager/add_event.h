@@ -21,7 +21,8 @@
 #ifndef ADD_EVENT_H
 #define ADD_EVENT_H
 
-#include <qlineedit.h>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include <rddialog.h>
 
@@ -36,6 +37,7 @@ class AddEvent : public RDDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void nameChangedData(const QString &str);
   void okData();
   void cancelData();
 
@@ -45,8 +47,9 @@ class AddEvent : public RDDialog
  private:
   QLineEdit *event_name_edit;
   QString *event_name;
+  QPushButton *event_ok_button;
+  QPushButton *event_cancel_button;
 };
 
 
-#endif
-
+#endif  // ADD_EVENT_H

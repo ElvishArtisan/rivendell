@@ -695,6 +695,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   button->setFont(buttonFont());
   button->setText(tr("Save &As"));
   connect(button,SIGNAL(clicked()),this,SLOT(saveAsData()));
+  button->setDisabled(new_event);
 
   //
   //  Service Association Button

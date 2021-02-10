@@ -2,7 +2,7 @@
 //
 // List Rivendell Log Events
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,13 @@
 #ifndef LIST_EVENTS_H
 #define LIST_EVENTS_H
 
-#include <q3listview.h>
-
-#include <qlabel.h>
-#include <qcombobox.h>
+#include <QComboBox>
 
 #include <rddb.h>
 #include <rddialog.h>
+#include <rdtableview.h>
+
+#include "eventlistmodel.h"
 
 class ListEvents : public RDDialog
 {
@@ -42,7 +42,7 @@ class ListEvents : public RDDialog
   void editData();
   void deleteData();
   void renameData();
-  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
+  void doubleClickedData(const QModelIndex &index);
   void filterActivatedData(int id);
   void closeData();
   void okData();
@@ -53,16 +53,12 @@ class ListEvents : public RDDialog
   void closeEvent(QCloseEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshItem(Q3ListViewItem *item,std::vector<QString> *new_events=NULL);
-  void UpdateItem(Q3ListViewItem *item,QString name);
-  void WriteItem(Q3ListViewItem *item,RDSqlQuery *q);
-  QString WriteItemSql() const;
   int ActiveEvents(QString event_name,QString *clock_list);
   void DeleteEvent(QString event_name);
   QString GetEventFilter(QString svc_name);
   QString GetNoneFilter();
-  Q3ListView *edit_events_list;
+  RDTableView *edit_events_view;
+  EventListModel *edit_events_model;
   QString *edit_eventname;
   QLabel *edit_filter_label;
   QComboBox *edit_filter_box;
@@ -76,5 +72,4 @@ class ListEvents : public RDDialog
 };
 
 
-#endif
-
+#endif  // LIST_EVENTS_H

@@ -1310,11 +1310,11 @@ delete</source>
     </message>
     <message>
         <source>Name</source>
-        <translation>Název</translation>
+        <translation type="obsolete">Název</translation>
     </message>
     <message>
         <source>Properties</source>
-        <translation>Vlastnosti</translation>
+        <translation type="obsolete">Vlastnosti</translation>
     </message>
     <message>
         <source>Color</source>
@@ -1358,11 +1358,11 @@ delete</source>
     </message>
     <message>
         <source>Event Exists</source>
-        <translation>Událost existuje</translation>
+        <translation type="unfinished">Událost existuje</translation>
     </message>
     <message>
         <source>An event with that name already exists!</source>
-        <translation>Událost s tímto názvem již existuje!</translation>
+        <translation type="unfinished">Událost s tímto názvem již existuje!</translation>
     </message>
     <message>
         <source>Are you sure you want to
@@ -1371,7 +1371,7 @@ delete</source>
     </message>
     <message>
         <source>Delete Event</source>
-        <translation>Smazat událost</translation>
+        <translation type="unfinished">Smazat událost</translation>
     </message>
     <message>
         <source>is in use in the following clocks:</source>
@@ -1379,11 +1379,11 @@ delete</source>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
-        <translation>Stále ještě chcete smazat?</translation>
+        <translation type="unfinished">Stále ještě chcete smazat?</translation>
     </message>
     <message>
         <source>Event In Use</source>
-        <translation>Používaná událost</translation>
+        <translation type="unfinished">Používaná událost</translation>
     </message>
     <message>
         <source>Log Events - User: </source>
@@ -1399,10 +1399,6 @@ delete</source>
     </message>
     <message>
         <source>is in use in the following clocks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

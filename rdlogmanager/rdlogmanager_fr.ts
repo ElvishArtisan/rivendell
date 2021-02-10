@@ -1005,14 +1005,6 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1049,6 +1041,10 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Log Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Event Exists</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1061,7 +1057,7 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Do you still want to delete it?</source>
+        <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1069,19 +1065,11 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Log Events</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>is in use in the following clocks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Trans</source>
+        <source>Do you still want to delete it?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

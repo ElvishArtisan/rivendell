@@ -83,26 +83,30 @@ AddEvent::AddEvent(QString *logname,QWidget *parent)
   event_name_label->setGeometry(10,11,130,19);
   event_name_label->setFont(labelFont());
   event_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  connect(event_name_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(nameChangedData(const QString &)));
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this);
-  ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  ok_button->setDefault(true);
-  ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
-  connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
+  event_ok_button=new QPushButton(this);
+  event_ok_button->
+    setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
+  event_ok_button->setDefault(true);
+  event_ok_button->setFont(buttonFont());
+  event_ok_button->setText(tr("&OK"));
+  connect(event_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
+  event_ok_button->setDisabled(true);
 
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this);
-  cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
-  connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  event_cancel_button=new QPushButton(this);
+  event_cancel_button->
+    setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
+  event_cancel_button->setFont(buttonFont());
+  event_cancel_button->setText(tr("&Cancel"));
+  connect(event_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Populate Data
@@ -127,6 +131,12 @@ QSize AddEvent::sizeHint() const
 QSizePolicy AddEvent::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void AddEvent::nameChangedData(const QString &str)
+{
+  event_ok_button->setDisabled(str.isEmpty());
 }
 
 

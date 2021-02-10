@@ -21077,3 +21077,6 @@
 	* Removed 'RD3CartDrag' dependency from rdlogedit(1).
 	* Removed 'RD3CartDrag' dependency from rdpanel(1).
 	* Removed 'RD3CartDrag'.
+2021-02-09 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Log Events' dialog in rdlogmanager(1) to use
+	the model based API.

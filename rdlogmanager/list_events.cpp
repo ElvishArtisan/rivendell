@@ -2,7 +2,7 @@
 //
 // List a Rivendell Log Event
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-#include <qpainter.h>
+#include <QMessageBox>
 
 #include <rdconf.h>
 #include <rdescape_string.h>
@@ -57,16 +56,16 @@ ListEvents::ListEvents(QString *eventname,QWidget *parent)
   //
   // Events List
   //
-  edit_events_list=new Q3ListView(this);
-  edit_events_list->setAllColumnsShowFocus(true);
-  edit_events_list->setItemMargin(5);
-  edit_events_list->addColumn(tr("Name"));
-  edit_events_list->addColumn(tr("Trans"));
-  edit_events_list->setColumnAlignment(1,Qt::AlignCenter);
-  edit_events_list->addColumn(tr("Properties"));
-  connect(edit_events_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+  edit_events_view=new RDTableView(this);
+  edit_events_model=new EventListModel(this);
+  edit_events_model->setFont(font());
+  edit_events_model->setPalette(palette());
+  edit_events_view->setModel(edit_events_model);
+  connect(edit_events_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(edit_events_model,SIGNAL(modelReset()),
+	  edit_events_view,SLOT(resizeColumnsToContents()));
+  edit_events_view->resizeColumnsToContents();
 
   //
   //  Add Button
@@ -159,8 +158,6 @@ ListEvents::ListEvents(QString *eventname,QWidget *parent)
       edit_filter_box->setCurrentItem(edit_filter_box->count()-1);
     }
   }
-
-  RefreshList();
 }
 
 
@@ -237,31 +234,39 @@ void ListEvents::addData()
 	"SERVICE_NAME=\""+RDEscapeString(edit_filter_box->currentText())+"\"";
       RDSqlQuery::apply(sql);
     }
+    QModelIndex row=edit_events_model->addEvent(logname);
+    if(row.isValid()) {
+      edit_events_view->selectRow(row.row());
+    }      
   }
   delete event_dialog;
-  Q3ListViewItem *item=new Q3ListViewItem(edit_events_list);
-  item->setText(0,logname);
-  RefreshItem(item,&new_events);
-  edit_events_list->setSelected(item,true);
-  edit_events_list->ensureItemVisible(item);
+  for(unsigned i=0;i<new_events.size();i++) {
+    QModelIndex row=edit_events_model->addEvent(new_events.at(i));
+    if(row.isValid()) {
+      edit_events_view->selectRow(row.row());
+    }
+  }
 }
 
 
 void ListEvents::editData()
 {
   std::vector<QString> new_events;
+  QModelIndexList rows=edit_events_view->selectionModel()->selectedRows();
 
-  Q3ListViewItem *item=edit_events_list->selectedItem();
-  if(item==NULL) {
+  if(rows.size()!=1) {
     return;
   }
-  EditEvent *event_dialog=new EditEvent(item->text(0),false,&new_events,this);
-  if(event_dialog->exec()<-1) {
-    delete event_dialog;
-    return;
+  EditEvent *event_dialog=
+    new EditEvent(edit_events_model->eventName(rows.first()),false,&new_events,
+		  this);
+  if(event_dialog->exec()>=-1) {
+    edit_events_model->refresh(rows.first());
+  }
+  for(unsigned i=0;i<new_events.size();i++) {
+    edit_events_model->addEvent(new_events.at(i));
   }
   delete event_dialog;
-  RefreshItem(item,&new_events);
 }
 
 
@@ -269,21 +274,21 @@ void ListEvents::deleteData()
 {
   int n;
   QString clock_list;
+  QModelIndexList rows=edit_events_view->selectionModel()->selectedRows();
 
-  Q3ListViewItem *item=edit_events_list->selectedItem();
-  if(item==NULL) {
+  if(rows.size()!=1) {
     return;
   }
   if(QMessageBox::question(this,"RDLogManager - "+tr("Delete Event"),
 			   tr("Are you sure you want to delete")+" \""+
-			   item->text(0)+"\"?",
+			   edit_events_model->eventName(rows.first())+"\"?",
 			  QMessageBox::Yes,QMessageBox::No)
      !=QMessageBox::Yes) {
     return;
   }
-  if((n=ActiveEvents(item->text(0),&clock_list))>0) {
+  if((n=ActiveEvents(edit_events_model->eventName(rows.first()),&clock_list))>0) {
     if(QMessageBox::warning(this,"RDLogManager - "+tr("Event In Use"),
-			    "\""+item->text(0)+"\" "+
+			    "\""+edit_events_model->eventName(rows.first())+"\" "+
 			    tr("is in use in the following clocks")+":\n\n"+
 			    clock_list+"\n"+
 			    tr("Do you still want to delete it?"),
@@ -292,77 +297,88 @@ void ListEvents::deleteData()
       return;
     }
   }
-  DeleteEvent(item->text(0));
-  delete item;
-  RefreshList();
+  DeleteEvent(edit_events_model->eventName(rows.first()));
+  edit_events_model->removeEvent(rows.first());
 }
 
 
 void ListEvents::renameData()
 {
   QString sql;
-  RDSqlQuery *q;
-  Q3ListViewItem *item=edit_events_list->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=edit_events_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  QString new_name=item->text(0);
+  QString old_name=edit_events_model->eventName(rows.first());
+  QString new_name=old_name;
   RenameItem *rename_dialog=new RenameItem(&new_name,"EVENTS",this);
   if(rename_dialog->exec()<-1) {
     delete rename_dialog;
     return;
   }
   delete rename_dialog;
+  if(old_name==new_name) {
+    return;
+  }
   
   //
   // Rename Clock References
   //
   sql=QString("update CLOCK_LINES set ")+
     "EVENT_NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "EVENT_NAME=\""+RDEscapeString(item->text(0))+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+    "EVENT_NAME=\""+RDEscapeString(old_name)+"\"";
+  RDSqlQuery::apply(sql);
 
   //
   // Rename Event Line References
   //
   sql=QString("update EVENT_LINES set ")+
     "EVENT_NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "EVENT_NAME=\""+RDEscapeString(item->text(0))+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+    "EVENT_NAME=\""+RDEscapeString(old_name)+"\"";
+  RDSqlQuery::apply(sql);
 
   //
   // Rename Service Permissions
   //
-  sql=QString().sprintf("update EVENT_PERMS set EVENT_NAME=\"%s\"\
-                         where EVENT_NAME=\"%s\"",
-			(const char *)new_name,
-			(const char *)item->text(0));
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update EVENT_PERMS set ")+
+    "EVENT_NAME=\""+RDEscapeString(new_name)+"\" "+
+    "where EVENT_NAME=\""+RDEscapeString(old_name)+"\"";
+  RDSqlQuery::apply(sql);
 
   //
   // Rename Primary Key
   //
-  sql=QString().sprintf("update EVENTS set NAME=\"%s\" where NAME=\"%s\"",
-			(const char *)new_name,
-			(const char *)item->text(0));
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update EVENTS set ")+
+    "NAME=\""+RDEscapeString(new_name)+"\" where "+
+    "NAME=\""+RDEscapeString(old_name)+"\"";
+  RDSqlQuery::apply(sql);
 
-  item->setText(0,new_name);
-  RefreshItem(item);
+  edit_events_model->removeEvent(old_name);
+  QModelIndex row=edit_events_model->addEvent(new_name);
+  if(row.isValid()) {
+    edit_events_view->selectRow(row.row());
+  }
 }
 
 
 void ListEvents::filterActivatedData(int id)
 {
-  RefreshList();
+  QString filter;
+
+  if(id==1) {  // NONE Filter
+    filter=GetNoneFilter();
+  }
+  else {
+    if(id>1) {
+      filter=GetEventFilter(edit_filter_box->currentText());
+    }
+  }
+  edit_events_model->setFilterSql(filter);
 }
 
 
-void ListEvents::doubleClickedData(Q3ListViewItem *item,const QPoint &,int)
+void ListEvents::doubleClickedData(const QModelIndex &index)
 {
   if(edit_eventname==NULL) {
     editData();
@@ -381,13 +397,13 @@ void ListEvents::closeData()
 
 void ListEvents::okData()
 {
-  Q3ListViewItem *item=edit_events_list->selectedItem();
   *event_filter=edit_filter_box->currentText();
-  if(item==NULL) {
+  QModelIndexList rows=edit_events_view->selectionModel()->selectedRows();
+  if(rows.size()!=1) {
     done(-1);
-    return;
   }
-  *edit_eventname=item->text(0);
+  *edit_eventname=edit_events_model->eventName(rows.first());
+
   done(0);
 }
 
@@ -401,7 +417,7 @@ void ListEvents::cancelData()
 void ListEvents::resizeEvent(QResizeEvent *e)
 {
   edit_filter_box->setGeometry(65,10,size().width()-75,20);
-  edit_events_list->setGeometry(10,45,size().width()-20,size().height()-125);
+  edit_events_view->setGeometry(10,45,size().width()-20,size().height()-125);
   edit_add_button->setGeometry(10,size().height()-60,80,50);
   edit_edit_button->setGeometry(100,size().height()-60,80,50);
   edit_delete_button->setGeometry(190,size().height()-60,80,50);
@@ -415,104 +431,6 @@ void ListEvents::resizeEvent(QResizeEvent *e)
 void ListEvents::closeEvent(QCloseEvent *e)
 {
   cancelData();
-}
-
-
-void ListEvents::RefreshList()
-{
-  QString filter;
-
-  if(edit_filter_box->currentItem()==1) {  // NONE Filter
-    filter=GetNoneFilter();
-  }
-  else {
-    if(edit_filter_box->currentItem()>1) {
-      filter=GetEventFilter(edit_filter_box->currentText());
-    }
-  }
-
-  edit_events_list->clear();
-  QString sql=WriteItemSql()+" "+filter;
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  Q3ListViewItem *item=NULL;
-  while(q->next()) {
-    item=new Q3ListViewItem(edit_events_list);
-    WriteItem(item,q);
-  }
-  delete q;
-}
-
-
-void ListEvents::RefreshItem(Q3ListViewItem *item,
-			     std::vector<QString> *new_events)
-{
-  Q3ListViewItem *new_item;
-  UpdateItem(item,item->text(0));
-
-  if(new_events!=NULL) {
-    for(unsigned i=0;i<new_events->size();i++) {
-      if((new_item=edit_events_list->findItem(new_events->at(i),0))==NULL) {
-	new_item=new Q3ListViewItem(edit_events_list);
-      }
-      UpdateItem(new_item,new_events->at(i));
-    }
-  }
-}
-
-
-void ListEvents::UpdateItem(Q3ListViewItem *item,QString name)
-{
-  QString sql=WriteItemSql()+"where NAME=\""+RDEscapeString(name)+"\"";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->next()) {
-    item->setText(0,name);
-    WriteItem(item,q);
-  }
-  delete q;
-}
-
-
-void ListEvents::WriteItem(Q3ListViewItem *item,RDSqlQuery *q)
-{
-  QPixmap *pix;
-  QPainter *p=new QPainter();
-
-  item->setText(0,q->value(0).toString());
-  item->setText(1,
-	RDLogLine::transText((RDLogLine::TransType)q->value(3).toUInt()));
-  item->setText(2,RDEventLine::
-		propertiesText(q->value(2).toInt(),
-			       (RDLogLine::TransType)q->value(3).toUInt(),
-			       (RDLogLine::TimeType)q->value(4).toUInt(),
-			       q->value(5).toInt(),
-			       RDBool(q->value(6).toString()),
-			       (RDEventLine::ImportSource)q->value(7).toUInt(),
-			       !q->value(8).toString().isEmpty()));
-  pix=new QPixmap(QSize(15,15));
-  p->begin(pix);
-  p->fillRect(0,0,15,15,QColor(q->value(1).toString()));
-  p->end();
-  item->setPixmap(0,*pix);
-
-  delete p;
-}
-
-
-QString ListEvents::WriteItemSql() const
-{
-  QString sql=QString("select ")+
-    "NAME,"+              // 00
-    "COLOR,"+             // 01
-    "PREPOSITION,"+       // 02
-    "FIRST_TRANS_TYPE,"+  // 03
-    "TIME_TYPE,"+         // 04
-    "GRACE_TIME,"+        // 05
-    "USE_AUTOFILL,"+      // 06
-    "IMPORT_SOURCE,"+     // 07
-    "NESTED_EVENT "+      // 08
-    "from EVENTS ";
-
-  return sql;
 }
 
 

@@ -1313,11 +1313,11 @@ eliminar</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Nombre</translation>
+        <translation type="obsolete">Nombre</translation>
     </message>
     <message>
         <source>Properties</source>
-        <translation>Propiedades</translation>
+        <translation type="obsolete">Propiedades</translation>
     </message>
     <message>
         <source>Color</source>
@@ -1353,11 +1353,11 @@ eliminar</translation>
     </message>
     <message>
         <source>Event Exists</source>
-        <translation>El evento ya existe</translation>
+        <translation type="unfinished">El evento ya existe</translation>
     </message>
     <message>
         <source>An event with that name already exists!</source>
-        <translation>¡Un evento con ese nombre ya existe!</translation>
+        <translation type="unfinished">¡Un evento con ese nombre ya existe!</translation>
     </message>
     <message>
         <source>Are you sure you want to
@@ -1367,7 +1367,7 @@ eliminar</translation>
     </message>
     <message>
         <source>Delete Event</source>
-        <translation>Eliminar Evento</translation>
+        <translation type="unfinished">Eliminar Evento</translation>
     </message>
     <message>
         <source>is in use in the following clocks:</source>
@@ -1375,11 +1375,11 @@ eliminar</translation>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
-        <translation>¿Aún así desea eliminarla?</translation>
+        <translation type="unfinished">¿Aún así desea eliminarla?</translation>
     </message>
     <message>
         <source>Event In Use</source>
-        <translation>El evento está en uso</translation>
+        <translation type="unfinished">El evento está en uso</translation>
     </message>
     <message>
         <source>&amp;Rename</source>
@@ -1403,10 +1403,6 @@ eliminar</translation>
     </message>
     <message>
         <source>is in use in the following clocks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
