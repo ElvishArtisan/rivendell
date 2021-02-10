@@ -1079,18 +1079,6 @@ Data</source>
         <source>C&amp;lose</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Oldest Report</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>MainWidget</name>

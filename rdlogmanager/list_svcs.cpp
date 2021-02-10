@@ -2,7 +2,7 @@
 //
 // List Rivendell Services and Report Ages
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,17 +38,19 @@ ListSvcs::ListSvcs(QWidget *parent)
   //
   // Log List
   //
-  list_log_list=new Q3ListView(this);
-  list_log_list->setAllColumnsShowFocus(true);
-  list_log_list->setItemMargin(5);
-  list_log_list->addColumn(tr("Service"));
-  list_log_list->setColumnAlignment(0,Qt::AlignLeft);
-  list_log_list->addColumn(tr("Oldest Report"));
-  list_log_list->setColumnAlignment(1,Qt::AlignCenter);
-  connect(list_log_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(listDoubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+  list_log_view=new RDTableView(this);
+  list_log_model=new RDServiceListModel(false,this);
+  list_log_model->setFont(font());
+  list_log_model->setPalette(palette());
+  list_log_view->setModel(list_log_model);
+  for(int i=2;i<list_log_model->columnCount();i++) {
+    list_log_view->hideColumn(i);
+  }
+  connect(list_log_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(listDoubleClickedData(const QModelIndex &)));
+  connect(list_log_model,SIGNAL(modelReset()),
+	  list_log_view,SLOT(resizeColumnsToContents()));
+  list_log_view->resizeColumnsToContents();
 
   //
   //  Generate Report Button
@@ -74,8 +76,6 @@ ListSvcs::ListSvcs(QWidget *parent)
   list_close_button->setFont(buttonFont());
   list_close_button->setText(tr("C&lose"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
-
-  RefreshList();
 }
 
 
@@ -93,31 +93,33 @@ QSizePolicy ListSvcs::sizePolicy() const
 
 void ListSvcs::generateData()
 {
-  Q3ListViewItem *item=list_log_list->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_log_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  PickReportDates *dialog=new PickReportDates(item->text(0),this);
-  dialog->exec();
-  delete dialog;
+  PickReportDates *d=
+    new PickReportDates(list_log_model->serviceName(rows.first()),this);
+  d->exec();
+  delete d;
 }
 
 
 void ListSvcs::purgeData()
 {
-  Q3ListViewItem *item=list_log_list->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=list_log_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  SvcRecDialog *dialog=new SvcRecDialog(item->text(0),this);
-  dialog->exec();
-  delete dialog;
-  RefreshLine(item);
+  SvcRecDialog *d=
+    new SvcRecDialog(list_log_model->serviceName(rows.first()),this);
+  d->exec();
+  delete d;
 }
 
 
-void ListSvcs::listDoubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				     int c)
+void ListSvcs::listDoubleClickedData(const QModelIndex &index)
 {
   generateData();
 }
@@ -131,53 +133,8 @@ void ListSvcs::closeData()
 
 void ListSvcs::resizeEvent(QResizeEvent *e)
 {
-  list_log_list->setGeometry(10,10,size().width()-20,size().height()-80);
+  list_log_view->setGeometry(10,10,size().width()-20,size().height()-80);
   list_generate_button->setGeometry(10,size().height()-60,80,50);
   list_purge_button->setGeometry(100,size().height()-60,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
-}
-
-
-void ListSvcs::RefreshList()
-{
-  RDSqlQuery *q1;
-  Q3ListViewItem *item;
-  list_log_list->clear();
-  QString sql="select NAME from SERVICES order by NAME";
-
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    item=new Q3ListViewItem(list_log_list);
-    item->setText(0,q->value(0).toString());
-    sql=QString("select EVENT_DATETIME from ELR_LINES where ")+
-      "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\" "+
-      "order by EVENT_DATETIME";
-    q1=new RDSqlQuery(sql);
-    if(q1->first()) {
-      item->setText(1,q1->value(0).toDate().toString("MM/dd/yyyy"));
-    }
-    else {
-      item->setText(1,tr("[none]"));
-    }
-    delete q1;
-  }
-  delete q;
-}
-
-
-void ListSvcs::RefreshLine(Q3ListViewItem *item)
-{
-  QString sql;
-  RDSqlQuery *q;
-    sql=QString("select EVENT_DATETIME from ELR_LINES where ")+
-      "SERVICE_NAME=\""+RDEscapeString(item->text(0))+"\" "+
-      "order by EVENT_DATETIME";
-    q=new RDSqlQuery(sql);
-    if(q->first()) {
-      item->setText(1,q->value(0).toDate().toString("MM/dd/yyyy"));
-    }
-    else {
-      item->setText(1,tr("[none]"));
-    }
-    delete q;
 }

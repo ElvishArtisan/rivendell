@@ -1459,15 +1459,7 @@ data</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ingen]</translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Oldest Report</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[ingen]</translation>
     </message>
 </context>
 <context>

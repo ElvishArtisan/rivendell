@@ -1464,15 +1464,7 @@ data</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[žádný]</translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Oldest Report</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[žádný]</translation>
     </message>
 </context>
 <context>

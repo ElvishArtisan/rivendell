@@ -21095,3 +21095,6 @@
 	the model based API.
 2021-02-10 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3PopupMenu' dependency from rdlogmanager(1).
+2021-02-10 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Rivendell Services' dialog in rdlogmanager(1)
+	to use the model based API.

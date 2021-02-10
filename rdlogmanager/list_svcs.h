@@ -2,7 +2,7 @@
 //
 // List Rivendell Services and Report Ages
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,11 @@
 #ifndef LIST_SVCS_H
 #define LIST_SVCS_H
 
-#include <q3listview.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 
 #include <rddialog.h>
+#include <rdservicelistmodel.h>
+#include <rdtableview.h>
 
 class ListSvcs : public RDDialog
 {
@@ -37,21 +38,19 @@ class ListSvcs : public RDDialog
  private slots:
   void generateData();
   void purgeData();
-  void listDoubleClickedData(Q3ListViewItem *item,const QPoint &pt,int c);
+  void listDoubleClickedData(const QModelIndex &);
   void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshLine(Q3ListViewItem *item);
-  Q3ListView *list_log_list;
+  RDTableView *list_log_view;
+  RDServiceListModel *list_log_model;
   QPushButton *list_generate_button;
   QPushButton *list_purge_button;
   QPushButton *list_close_button;
 };
 
 
-#endif
-
+#endif  // LIST_SVCS_H

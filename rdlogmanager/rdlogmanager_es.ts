@@ -1456,7 +1456,7 @@ eliminar</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ninguno]</translation>
+        <translation type="obsolete">[ninguno]</translation>
     </message>
     <message>
         <source>&amp;Purge
@@ -1468,14 +1468,6 @@ Data</source>
 Reports</source>
         <translation>&amp;Generar 
 Reportes</translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Oldest Report</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

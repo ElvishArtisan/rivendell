@@ -1468,15 +1468,7 @@ Dados</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[nenhum]</translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Oldest Report</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[nenhum]</translation>
     </message>
 </context>
 <context>
