@@ -87,6 +87,15 @@ bool MainObject::Check(QString *err_msg)
   }
 
   //
+  // Check Schedule Code Rules
+  //
+  if(db_check_all) {
+    printf("Checking schedule code rules...\n");
+    CheckSchedCodeRules(true);
+    printf("done.\n\n");
+  }
+    
+  //
   // Check for orphaned carts
   //
   if(db_check_all||db_check_orphaned_carts) {
@@ -1004,4 +1013,76 @@ bool MainObject::CopyToAudioStore(const QString &destfile,
   close(src_fd);
 
   return true;
+}
+
+
+void MainObject::CheckSchedCodeRules(bool prompt_user) const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  //
+  // Check for orphaned rules
+  //
+  sql=QString("select ")+
+    "NAME "+  // 00
+    "from CLOCKS order by NAME";
+  q=new RDSqlQuery(sql);
+  QString where_sql="";
+  while(q->next()) {
+    where_sql+="(CLOCK_NAME!=\""+RDEscapeString(q->value(0).toString())+"\")&&";
+  }
+  where_sql=where_sql.left(where_sql.length()-2);
+  delete q;
+
+  sql=QString("select ")+
+    "ID "  // 00
+    "from RULE_LINES where "+
+    where_sql;
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(prompt_user) {
+      printf("  Found orphaned scheduler code rules. Fix? (y/N) ");
+      fflush(stdout);
+    }
+    if((!prompt_user)||UserResponse()) {
+      sql=QString("delete from RULE_LINES where ")+
+	where_sql;
+      RDSqlQuery::apply(sql);
+    }
+  }
+  //      printf("FIXUP SQL: %s\n",sql.toUtf8().constData());
+
+  //
+  // Check for missing rules
+  //
+  sql=QString("select ")+
+    "NAME "+  // 00
+    "from CLOCKS order by NAME";
+  RDSqlQuery *clock_q=new RDSqlQuery(sql);
+  while(clock_q->next()) {
+    QString clkname=clock_q->value(0).toString();
+    sql=QString("select ")+
+      "CODE "+  // 00
+      "from SCHED_CODES order by CODE";
+    RDSqlQuery *code_q=new RDSqlQuery(sql);
+    while(code_q->next()) {
+      QString code=code_q->value(0).toString();
+      sql=QString("select ")+
+	"ID "+  // 00
+	"from RULE_LINES where "+
+	"CLOCK_NAME=\""+RDEscapeString(clkname)+"\" && "+
+	"CODE=\""+RDEscapeString(code)+"\"";
+      q=new RDSqlQuery(sql);
+      if(!q->first()) {
+	sql=QString("insert into RULE_LINES set ")+
+	  "CLOCK_NAME=\""+RDEscapeString(clkname)+"\","+
+	  "CODE=\""+RDEscapeString(code)+"\"";
+	RDSqlQuery::apply(sql);
+      }
+      delete q;
+    }
+    delete code_q;
+  }
+  delete clock_q;
 }

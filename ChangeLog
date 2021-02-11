@@ -21098,3 +21098,11 @@
 2021-02-10 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Rivendell Services' dialog in rdlogmanager(1)
 	to use the model based API.
+2021-02-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDSchedRulesModel'.
+	* Added a pseudo-schema change to force checking of schedule code
+	rules.
+	* Incremented the database version to 348.
+	* Added a check for scheduler code rules to rddbmgr(8).
+	* Refactored the 'Scheduler Rules' dialog in rdlogmanager(1) to
+	use the model based API.

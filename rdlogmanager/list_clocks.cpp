@@ -214,20 +214,42 @@ void ListClocks::addData()
   sql=QString("insert into CLOCKS set ")+
     "NAME=\""+RDEscapeString(clockname)+"\","+
     "ARTISTSEP=15";
+  RDSqlQuery::apply(sql);
+
+  //
+  // Create default schedcode rules
+  //
+  sql=QString("select ")+
+    "CODE "+  // 00
+    "from SCHED_CODES "+
+    "order by CODE";
   q=new RDSqlQuery(sql);
+  while(q->next()) {
+    sql=QString("insert into RULE_LINES set ")+
+      "CLOCK_NAME=\""+RDEscapeString(clockname)+"\","+
+      "CODE=\""+RDEscapeString(q->value(0).toString())+"\"";
+    RDSqlQuery::apply(sql);
+  }
   delete q;
+
   EditClock *clock_dialog=new EditClock(clockname,true,&new_clocks,this);
   if(clock_dialog->exec()<0) {
+    // Back everything out!
+    sql=QString("delete from RULE_LINES where ")+
+      "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+    RDSqlQuery::apply(sql);
     sql=QString("delete from CLOCK_LINES where ")+
       "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
     RDSqlQuery::apply(sql);
     sql=QString("delete from CLOCKS where ")+
       "NAME=\""+RDEscapeString(clockname)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    RDSqlQuery::apply(sql);
   }
   else {
     if(edit_filter_box->currentItem()==0) {
+      //
+      // Create default clock permissions
+      //
       sql=QString("select ")+
 	"ID "+  // 00
 	"from CLOCK_PERMS where "+
@@ -533,7 +555,6 @@ void ListClocks::DeleteClock(QString clockname)
   sql=QString("delete from CLOCK_LINES where ")+
     "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
   RDSqlQuery::apply(sql);
-
   sql=QString("delete from RULE_LINES where ")+
     "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
   RDSqlQuery::apply(sql);

@@ -83,7 +83,7 @@ ListSchedCodes::ListSchedCodes(QWidget *parent)
   // Schedule Codes List
   //
   list_schedcodes_view=new RDTableView(this);
-  list_schedcodes_model=new RDSchedCodeListModel(this);
+  list_schedcodes_model=new RDSchedCodeListModel(false,this);
   list_schedcodes_model->setFont(defaultFont());
   list_schedcodes_model->setPalette(palette());
   list_schedcodes_view->setModel(list_schedcodes_model);
@@ -122,13 +122,18 @@ void ListSchedCodes::addData()
   QString scode;
 
   if(list_add_schedcode_dialog->exec(&scode)) {
-    QModelIndex index=list_schedcodes_model->addSchedCode(scode);
-    if(index.isValid()) {
-      list_schedcodes_view->selectRow(index.row());
+    if(list_edit_schedcode_dialog->exec(scode)) {
+      QModelIndex index=list_schedcodes_model->addSchedCode(scode);
+      if(index.isValid()) {
+	list_schedcodes_view->selectRow(index.row());
+      }
     }
   }
   else {
     QString sql=QString("delete from SCHED_CODES where ")+
+      "CODE=\""+RDEscapeString(scode)+"\"";
+    RDSqlQuery::apply(sql);
+    sql=QString("delete from RULE_LINES where ")+
       "CODE=\""+RDEscapeString(scode)+"\"";
     RDSqlQuery::apply(sql);
   }
@@ -173,6 +178,10 @@ void ListSchedCodes::deleteData()
 
   sql=QString("delete from DROPBOX_SCHED_CODES where ")+
     "SCHED_CODE=\""+RDEscapeString(codename)+"\"";
+  RDSqlQuery::apply(sql);
+
+  sql=QString("delete from RULE_LINES where ")+
+    "CODE=\""+RDEscapeString(codename)+"\"";
   RDSqlQuery::apply(sql);
 
   sql=QString("delete from SCHED_CODES where ")+

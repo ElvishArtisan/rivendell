@@ -756,7 +756,7 @@ evento existente.</translation>
     </message>
     <message>
         <source>Code:</source>
-        <translation type="unfinished">Código:</translation>
+        <translation type="obsolete">Código:</translation>
     </message>
     <message>
         <source>Max. in a row:</source>
@@ -774,6 +774,10 @@ evento existente.</translation>
         <source>Or after:</source>
         <translation type="unfinished">Ou depois de:</translation>
     </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished">[nenhum]</translation>
+    </message>
 </context>
 <context>
     <name>EditSchedRules</name>
@@ -787,35 +791,35 @@ evento existente.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>CODE</source>
-        <translation>CÓDIGO</translation>
+        <translation type="obsolete">CÓDIGO</translation>
     </message>
     <message>
         <source>MAX. IN A ROW</source>
-        <translation>MAX NA SEQUÊNCIA</translation>
+        <translation type="obsolete">MAX NA SEQUÊNCIA</translation>
     </message>
     <message>
         <source>MIN. WAIT</source>
-        <translation>MIN. ESPERA</translation>
+        <translation type="obsolete">MIN. ESPERA</translation>
     </message>
     <message>
         <source>DO NOT SCHEDULE AFTER</source>
-        <translation>NÃO AGENDE DEPOIS DE</translation>
+        <translation type="obsolete">NÃO AGENDE DEPOIS DE</translation>
     </message>
     <message>
         <source>OR AFTER</source>
-        <translation>OU APÓS</translation>
+        <translation type="obsolete">OU APÓS</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIÇÃO</translation>
+        <translation type="obsolete">DESCRIÇÃO</translation>
     </message>
     <message>
         <source>Scheduler Codes:</source>
@@ -823,12 +827,12 @@ evento existente.</translation>
     </message>
     <message>
         <source>Rules Modified</source>
-        <translation>Regras Modificadas</translation>
+        <translation type="obsolete">Regras Modificadas</translation>
     </message>
     <message>
         <source>The rules have been modified.
 Do you want to save?</source>
-        <translation>As Regras froam modificadas.
+        <translation type="obsolete">As Regras froam modificadas.
 Você quer salvar?</translation>
     </message>
     <message>
@@ -836,20 +840,12 @@ Você quer salvar?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Artist Separation:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import Rules from Clock</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>None</source>
         <translation type="obsolete">Nenhum</translation>
     </message>
     <message>
-        <source>(This setting is deprecated and has been moved to events)</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Fechar</translation>
     </message>
 </context>
 <context>
@@ -1612,6 +1608,44 @@ Relatório</translation>
     <message>
         <source>That name already exists!</source>
         <translation>Este nome nome já existe!</translation>
+    </message>
+</context>
+<context>
+    <name>SchedRulesModel</name>
+    <message>
+        <source>Code</source>
+        <translation type="unfinished">Código</translation>
+    </message>
+    <message>
+        <source>Max In A Row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Min Wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Schedule After</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Or After</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished">Descrição</translation>
+    </message>
+</context>
+<context>
+    <name>SchedRulesModell</name>
+    <message>
+        <source>Code</source>
+        <translation type="obsolete">Código</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">Descrição</translation>
     </message>
 </context>
 <context>

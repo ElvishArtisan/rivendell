@@ -554,10 +554,6 @@ already existing event.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Code:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Max. in a row:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -573,6 +569,10 @@ already existing event.</source>
         <source>Or after:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditSchedRules</name>
@@ -585,48 +585,7 @@ already existing event.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CODE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MAX. IN A ROW</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MIN. WAIT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DO NOT SCHEDULE AFTER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OR AFTER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DESCRIPTION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Scheduler Codes:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rules Modified</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The rules have been modified.
-Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -634,15 +593,7 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Artist Separation:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import Rules from Clock</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>(This setting is deprecated and has been moved to events)</source>
+        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1203,6 +1154,33 @@ Report</source>
     </message>
     <message>
         <source>That name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SchedRulesModel</name>
+    <message>
+        <source>Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max In A Row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Min Wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Schedule After</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Or After</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

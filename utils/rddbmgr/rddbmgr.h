@@ -70,6 +70,7 @@ class MainObject : public QObject
   void SetCutLength(const QString &cutname,int len) const;
   void RemoveCart(unsigned cartnum);
   bool CopyToAudioStore(const QString &destfile,const QString &srcfile) const;
+  void CheckSchedCodeRules(bool prompt_user) const;
   bool UserResponse() const;
 
   //

@@ -1,6 +1,6 @@
-// rdschedcodelistmodel.h
+// schedrulesmodel.h
 //
-// Data model for Rivendell schedule codes
+// Data model for Rivendell schedule code rules.
 //
 //   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDSCHEDCODELISTMODEL_H
-#define RDSCHEDCODELISTMODEL_H
+#ifndef SCHEDRULESMODEL_H
+#define SCHEDRULESMODEL_H
 
 #include <QAbstractTableModel>
 #include <QFont>
@@ -27,15 +27,13 @@
 #include <QPalette>
 
 #include <rddb.h>
-#include <rdnotification.h>
-#include <rduser.h>
 
-class RDSchedCodeListModel : public QAbstractTableModel
+class SchedRulesModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  RDSchedCodeListModel(bool incl_none,QObject *parent=0);
-  ~RDSchedCodeListModel();
+  SchedRulesModel(const QString &clk_name,QObject *parent=0);
+  ~SchedRulesModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
   void setFont(const QFont &font);
@@ -44,12 +42,9 @@ class RDSchedCodeListModel : public QAbstractTableModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
-  QString schedCode(const QModelIndex &row) const;
-  QModelIndex addSchedCode(const QString &scode);
-  void removeSchedCode(const QModelIndex &row);
-  void removeSchedCode(const QString &scode);
+  unsigned ruleId(const QModelIndex &row) const;
   void refresh(const QModelIndex &row);
-  void refresh(const QString &scode);
+  void refresh(unsigned id);
 
  protected:
   void updateModel();
@@ -64,8 +59,9 @@ class RDSchedCodeListModel : public QAbstractTableModel
   QList<QVariant> d_headers;
   QList<QVariant> d_alignments;
   QList<QList<QVariant> > d_texts;
-  bool d_include_none;
+  QList<unsigned> d_ids;
+  QString d_clock_name;
 };
 
 
-#endif  // RDSCHEDCODELISTMODEL_H
+#endif  // SCHEDRULESMODEL_H

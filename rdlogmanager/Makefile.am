@@ -67,6 +67,7 @@ dist_rdlogmanager_SOURCES = add_clock.cpp add_clock.h\
                             pick_report_dates.cpp pick_report_dates.h\
                             rdlogmanager.cpp rdlogmanager.h\
                             rename_item.cpp rename_item.h\
+                            schedrulesmodel.cpp schedrulesmodel.h\
                             svc_rec.cpp svc_rec.h\
                             svc_rec_dialog.cpp svc_rec_dialog.h\
                             viewreportdialog.cpp viewreportdialog.h
@@ -97,6 +98,7 @@ nodist_rdlogmanager_SOURCES = moc_add_clock.cpp\
                               moc_pick_report_dates.cpp\
                               moc_rdlogmanager.cpp\
                               moc_rename_item.cpp\
+                              moc_schedrulesmodel.cpp\
                               moc_svc_rec.cpp\
                               moc_svc_rec_dialog.cpp\
                               moc_viewreportdialog.cpp

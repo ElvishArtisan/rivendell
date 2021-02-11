@@ -4051,6 +4051,10 @@ por favor, tente novamente!</translation>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDServiceListModel</name>

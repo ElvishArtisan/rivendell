@@ -115,6 +115,23 @@ void AddSchedCode::okData()
 			 tr("Schedule Code Already Exists!"));
     return;
   }
+
+  //
+  // Add schedcode rules
+  //
+  sql=QString("select ")+
+    "NAME "  // 00
+    "from CLOCKS "+
+    "order by NAME";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    sql=QString("insert into RULE_LINES set ")+
+      "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+      "CODE=\""+RDEscapeString(d_code_edit->text())+"\"";
+    RDSqlQuery::apply(sql);
+  }
+  delete q;
+
   *d_sched_code=d_code_edit->text();
 
   done(true);

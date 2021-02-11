@@ -2,7 +2,7 @@
 //
 // Update Rivendell DB schema.
 //
-//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -10453,6 +10453,11 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       return false;
     }
 
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<348)&&(set_schema>cur_schema)) {
+    CheckSchedCodeRules(false);
     WriteSchemaVersion(++cur_schema);
   }
 

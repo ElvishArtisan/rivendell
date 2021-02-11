@@ -1,6 +1,6 @@
-// rdschedcodelistmodel.cpp
+// schedrulesmodel.cpp
 //
-// Data model for Rivendell schedule codes
+// Data model for Rivendell schedule code rules.
 //
 //   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -20,22 +20,37 @@
 
 #include "rdapplication.h"
 #include "rdescape_string.h"
-#include "rdschedcodelistmodel.h"
+#include "schedrulesmodel.h"
 
-RDSchedCodeListModel::RDSchedCodeListModel(bool incl_none,QObject *parent)
+SchedRulesModel::SchedRulesModel(const QString &clk_name,QObject *parent)
   : QAbstractTableModel(parent)
 {
-  d_include_none=incl_none;
+  d_clock_name=clk_name;
 
   //
   // Column Attributes
   //
   unsigned left=Qt::AlignLeft|Qt::AlignVCenter;
-  //  unsigned center=Qt::AlignCenter;
-  //  unsigned right=Qt::AlignRight|Qt::AlignVCenter;
+  unsigned center=Qt::AlignCenter;
+  unsigned right=Qt::AlignRight|Qt::AlignVCenter;
 
   d_headers.push_back(tr("Code"));
   d_alignments.push_back(left);
+
+  d_headers.push_back(tr("Max In A Row"));
+  d_alignments.push_back(right);
+
+  d_headers.push_back(tr("Min Wait"));
+  d_alignments.push_back(right);
+
+  d_headers.push_back(tr("Do Not Schedule After"));
+  d_alignments.push_back(center);
+
+  d_headers.push_back(tr("Or After"));
+  d_alignments.push_back(center);
+
+  d_headers.push_back(tr("Or After"));
+  d_alignments.push_back(center);
 
   d_headers.push_back(tr("Description"));
   d_alignments.push_back(left);
@@ -44,24 +59,24 @@ RDSchedCodeListModel::RDSchedCodeListModel(bool incl_none,QObject *parent)
 }
 
 
-RDSchedCodeListModel::~RDSchedCodeListModel()
+SchedRulesModel::~SchedRulesModel()
 {
 }
 
 
-QPalette RDSchedCodeListModel::palette()
+QPalette SchedRulesModel::palette()
 {
   return d_palette;
 }
 
 
-void RDSchedCodeListModel::setPalette(const QPalette &pal)
+void SchedRulesModel::setPalette(const QPalette &pal)
 {
   d_palette=pal;
 }
 
 
-void RDSchedCodeListModel::setFont(const QFont &font)
+void SchedRulesModel::setFont(const QFont &font)
 {
   d_font=font;
   d_bold_font=font;
@@ -69,19 +84,19 @@ void RDSchedCodeListModel::setFont(const QFont &font)
 }
 
 
-int RDSchedCodeListModel::columnCount(const QModelIndex &parent) const
+int SchedRulesModel::columnCount(const QModelIndex &parent) const
 {
   return d_headers.size();
 }
 
 
-int RDSchedCodeListModel::rowCount(const QModelIndex &parent) const
+int SchedRulesModel::rowCount(const QModelIndex &parent) const
 {
   return d_texts.size();
 }
 
 
-QVariant RDSchedCodeListModel::headerData(int section,Qt::Orientation orient,
+QVariant SchedRulesModel::headerData(int section,Qt::Orientation orient,
 					  int role) const
 {
   if((orient==Qt::Horizontal)&&(role==Qt::DisplayRole)) {
@@ -91,7 +106,7 @@ QVariant RDSchedCodeListModel::headerData(int section,Qt::Orientation orient,
 }
 
 
-QVariant RDSchedCodeListModel::data(const QModelIndex &index,int role) const
+QVariant SchedRulesModel::data(const QModelIndex &index,int role) const
 {
   QString str;
   int col=index.column();
@@ -132,66 +147,17 @@ QVariant RDSchedCodeListModel::data(const QModelIndex &index,int role) const
 }
 
 
-QString RDSchedCodeListModel::schedCode(const QModelIndex &row) const
+unsigned SchedRulesModel::ruleId(const QModelIndex &row) const
 {
-  return d_texts.at(row.row()).at(0).toString();
+  return d_ids.at(row.row());
 }
 
 
-QModelIndex RDSchedCodeListModel::addSchedCode(const QString &scode)
-{
-  //
-  // Find the insertion offset
-  //
-  int offset=d_texts.size();
-  for(int i=0;i<d_texts.size();i++) {
-    if(scode.toLower()<d_texts.at(i).at(0).toString().toLower()) {
-      offset=i;
-      break;
-    }
-  }
-  beginInsertRows(QModelIndex(),offset,offset);
-  QList<QVariant> list;
-  for(int i=0;i<columnCount();i++) {
-    list.push_back(QVariant());
-  }
-  list[0]=scode;
-  d_texts.insert(offset,list);
-  updateRowLine(offset);
-  endInsertRows();
-
-  return createIndex(offset,0);
-}
-
-
-void RDSchedCodeListModel::removeSchedCode(const QModelIndex &row)
-{
-  beginRemoveRows(QModelIndex(),row.row(),row.row());
-
-  d_texts.removeAt(row.row());
-
-  endRemoveRows();
-}
-
-
-void RDSchedCodeListModel::removeSchedCode(const QString &scode)
-{
-  for(int i=0;i<d_texts.size();i++) {
-    if(d_texts.at(i).at(0)==scode) {
-      removeSchedCode(createIndex(i,0));
-      return;
-    }
-  }
-}
-
-
-void RDSchedCodeListModel::refresh(const QModelIndex &row)
+void SchedRulesModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      "where CODE=\""+
-      RDEscapeString(d_texts.at(row.row()).at(0).toString())+
-      "\"";
+      QString().sprintf("where RULE_LINES.ID=%u",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -203,10 +169,10 @@ void RDSchedCodeListModel::refresh(const QModelIndex &row)
 }
 
 
-void RDSchedCodeListModel::refresh(const QString &scode)
+void SchedRulesModel::refresh(unsigned id)
 {
-  for(int i=0;i<d_texts.size();i++) {
-    if(d_texts.at(i).at(0)==scode) {
+  for(int i=0;i<d_ids.size();i++) {
+    if(d_ids.at(i)==id) {
       updateRowLine(i);
       return;
     }
@@ -214,25 +180,21 @@ void RDSchedCodeListModel::refresh(const QString &scode)
 }
 
 
-void RDSchedCodeListModel::updateModel()
+void SchedRulesModel::updateModel()
 {
   QList<QVariant> texts; 
 
   RDSqlQuery *q=NULL;
-  QString sql=sqlFields();
-  sql+="order by CODE ";
+  QString sql=sqlFields()+"where "+
+    "RULE_LINES.CLOCK_NAME=\""+RDEscapeString(d_clock_name)+"\" "+
+    "order by RULE_LINES.CODE ";
   beginResetModel();
   d_texts.clear();
-
-  if(d_include_none) {
-    d_texts.push_back(texts);
-    d_texts.back().push_back(tr("[none]"));
-    d_texts.back().push_back(QString());
-  }
-
+  d_ids.clear();
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_texts.push_back(texts);
+    d_ids.push_back(0);
     updateRow(d_texts.size()-1,q);
   }
   delete q;
@@ -240,11 +202,11 @@ void RDSchedCodeListModel::updateModel()
 }
 
 
-void RDSchedCodeListModel::updateRowLine(int line)
+void SchedRulesModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      "where CODE=\""+RDEscapeString(d_texts.at(line).at(0).toString())+"\"";
+      QString().sprintf("where RULE_LINES.ID=%u",d_ids.at(line)); 
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -254,26 +216,50 @@ void RDSchedCodeListModel::updateRowLine(int line)
 }
 
 
-void RDSchedCodeListModel::updateRow(int row,RDSqlQuery *q)
+void SchedRulesModel::updateRow(int row,RDSqlQuery *q)
 {
   QList<QVariant> texts;
 
+  d_ids[row]=q->value(0).toUInt();
+
   // Code
-  texts.push_back(q->value(0));
+  texts.push_back(q->value(1));
+
+  // Max in a Row
+  texts.push_back(QString().sprintf("%u",q->value(2).toUInt()));
+
+  // Min. Wait
+  texts.push_back(QString().sprintf("%u",q->value(3).toUInt()));
+
+  // Do not schedule after
+  texts.push_back(q->value(4));
+
+  // Or after
+  texts.push_back(q->value(5));
+
+  // Or after
+  texts.push_back(q->value(6));
 
   // Description
-  texts.push_back(q->value(1));
+  texts.push_back(q->value(7));
 
   d_texts[row]=texts;
 }
 
 
-QString RDSchedCodeListModel::sqlFields() const
+QString SchedRulesModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "CODE,"+         // 00
-    "DESCRIPTION "+  // 01
-    "from SCHED_CODES ";
+    "RULE_LINES.ID,"+            // 00
+    "SCHED_CODES.CODE,"+         // 01
+    "RULE_LINES.MAX_ROW,"+       // 02
+    "RULE_LINES.MIN_WAIT,"+      // 03
+    "RULE_LINES.NOT_AFTER,"+     // 04
+    "RULE_LINES.OR_AFTER,"+      // 05
+    "RULE_LINES.OR_AFTER_II,"+   // 06
+    "SCHED_CODES.DESCRIPTION "+  // 07
+    "from SCHED_CODES left join RULE_LINES "+
+    "on SCHED_CODES.CODE=RULE_LINES.CODE ";
 
     return sql;
 }

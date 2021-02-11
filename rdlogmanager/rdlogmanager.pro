@@ -50,6 +50,7 @@ SOURCES += list_svcs.cpp
 SOURCES += pick_report_dates.cpp
 SOURCES += rdlogmanager.cpp
 SOURCES += rename_item.cpp
+SOURCES += schedrulesmodel.cpp
 SOURCES += svc_rec.cpp
 SOURCES += svc_rec_dialog.cpp
 
@@ -79,6 +80,7 @@ HEADERS += list_svcs.h
 HEADERS += pick_report_dates.h
 HEADERS += rdlogmanager.h
 HEADERS += rename_item.h
+HEADERS += schedrulesmodel.h
 HEADERS += svc_rec.h
 HEADERS += svc_rec_dialog.h
 

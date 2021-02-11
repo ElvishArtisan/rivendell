@@ -751,7 +751,7 @@ ei anna hending som finst frå før.</translation>
     </message>
     <message>
         <source>Code:</source>
-        <translation type="unfinished">Kode:</translation>
+        <translation type="obsolete">Kode:</translation>
     </message>
     <message>
         <source>Max. in a row:</source>
@@ -769,6 +769,10 @@ ei anna hending som finst frå før.</translation>
         <source>Or after:</source>
         <translation type="unfinished">Eller etter:</translation>
     </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished">[ingen]</translation>
+    </message>
 </context>
 <context>
     <name>EditSchedRules</name>
@@ -782,35 +786,35 @@ ei anna hending som finst frå før.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>CODE</source>
-        <translation>KODE</translation>
+        <translation type="obsolete">KODE</translation>
     </message>
     <message>
         <source>MAX. IN A ROW</source>
-        <translation>MAKS PÅ EI RAD</translation>
+        <translation type="obsolete">MAKS PÅ EI RAD</translation>
     </message>
     <message>
         <source>MIN. WAIT</source>
-        <translation>MINSTE VENTING</translation>
+        <translation type="obsolete">MINSTE VENTING</translation>
     </message>
     <message>
         <source>DO NOT SCHEDULE AFTER</source>
-        <translation>IKKJE PLANLEGG ETTER</translation>
+        <translation type="obsolete">IKKJE PLANLEGG ETTER</translation>
     </message>
     <message>
         <source>OR AFTER</source>
-        <translation>ELLER ETTER</translation>
+        <translation type="obsolete">ELLER ETTER</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>SKILDRING</translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>Scheduler Codes:</source>
@@ -818,12 +822,12 @@ ei anna hending som finst frå før.</translation>
     </message>
     <message>
         <source>Rules Modified</source>
-        <translation>Reglane er endra</translation>
+        <translation type="obsolete">Reglane er endra</translation>
     </message>
     <message>
         <source>The rules have been modified.
 Do you want to save?</source>
-        <translation>Reglane er endra.
+        <translation type="obsolete">Reglane er endra.
 Vil du lagra?</translation>
     </message>
     <message>
@@ -831,20 +835,12 @@ Vil du lagra?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Artist Separation:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import Rules from Clock</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>None</source>
         <translation type="obsolete">Ingen</translation>
     </message>
     <message>
-        <source>(This setting is deprecated and has been moved to events)</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Lukk</translation>
     </message>
 </context>
 <context>
@@ -1599,6 +1595,44 @@ rapport</translation>
     <message>
         <source>That name already exists!</source>
         <translation>Det namnet finst frå før!</translation>
+    </message>
+</context>
+<context>
+    <name>SchedRulesModel</name>
+    <message>
+        <source>Code</source>
+        <translation type="unfinished">Kode</translation>
+    </message>
+    <message>
+        <source>Max In A Row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Min Wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Schedule After</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Or After</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished">Skildring</translation>
+    </message>
+</context>
+<context>
+    <name>SchedRulesModell</name>
+    <message>
+        <source>Code</source>
+        <translation type="obsolete">Kode</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">Skildring</translation>
     </message>
 </context>
 <context>

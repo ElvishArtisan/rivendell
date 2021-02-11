@@ -754,7 +754,7 @@ existující událostí.</translation>
     </message>
     <message>
         <source>Code:</source>
-        <translation type="unfinished">Kód:</translation>
+        <translation type="obsolete">Kód:</translation>
     </message>
     <message>
         <source>Max. in a row:</source>
@@ -772,6 +772,10 @@ existující událostí.</translation>
         <source>Or after:</source>
         <translation type="unfinished">nebo po:</translation>
     </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished">[žádný]</translation>
+    </message>
 </context>
 <context>
     <name>EditSchedRules</name>
@@ -785,35 +789,35 @@ existující událostí.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>CODE</source>
-        <translation>KÓD</translation>
+        <translation type="obsolete">KÓD</translation>
     </message>
     <message>
         <source>MAX. IN A ROW</source>
-        <translation>NEJVÍCE ZA SEBOU</translation>
+        <translation type="obsolete">NEJVÍCE ZA SEBOU</translation>
     </message>
     <message>
         <source>MIN. WAIT</source>
-        <translation>NEJMENŠÍ DOBA ČEKÁNÍ</translation>
+        <translation type="obsolete">NEJMENŠÍ DOBA ČEKÁNÍ</translation>
     </message>
     <message>
         <source>DO NOT SCHEDULE AFTER</source>
-        <translation>NEHRÁT PO</translation>
+        <translation type="obsolete">NEHRÁT PO</translation>
     </message>
     <message>
         <source>OR AFTER</source>
-        <translation>NEBO PO</translation>
+        <translation type="obsolete">NEBO PO</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>Scheduler Codes:</source>
@@ -821,12 +825,12 @@ existující událostí.</translation>
     </message>
     <message>
         <source>Rules Modified</source>
-        <translation>Pravidla změněna</translation>
+        <translation type="obsolete">Pravidla změněna</translation>
     </message>
     <message>
         <source>The rules have been modified.
 Do you want to save?</source>
-        <translation>Pravidla byla změněna.
+        <translation type="obsolete">Pravidla byla změněna.
 Chcete je uložit?</translation>
     </message>
     <message>
@@ -834,20 +838,12 @@ Chcete je uložit?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Artist Separation:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import Rules from Clock</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>None</source>
         <translation type="obsolete">Žádný</translation>
     </message>
     <message>
-        <source>(This setting is deprecated and has been moved to events)</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
     </message>
 </context>
 <context>
@@ -1618,6 +1614,44 @@ zprávu</translation>
     <message>
         <source>That name already exists!</source>
         <translation>Název již existuje!</translation>
+    </message>
+</context>
+<context>
+    <name>SchedRulesModel</name>
+    <message>
+        <source>Code</source>
+        <translation type="unfinished">Kód</translation>
+    </message>
+    <message>
+        <source>Max In A Row</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Min Wait</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Schedule After</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Or After</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished">Popis</translation>
+    </message>
+</context>
+<context>
+    <name>SchedRulesModell</name>
+    <message>
+        <source>Code</source>
+        <translation type="obsolete">Kód</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="obsolete">Popis</translation>
     </message>
 </context>
 <context>

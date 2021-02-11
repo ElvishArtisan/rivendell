@@ -3,7 +3,7 @@
 // Edit scheduler rules of a clock
 //
 //   (C) Copyright Stefan Gabriel <stg@st-gabriel.de>
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,12 +22,13 @@
 #ifndef EDIT_SCHEDRULES_H
 #define EDIT_SCHEDRULES_H
 
-#include <qlabel.h>
-#include <qspinbox.h>
-
 #include <rddialog.h>
 #include <rdlistview.h>
 #include <rdschedruleslist.h>
+#include <rdtableview.h>
+
+#include "edit_schedcoderules.h"
+#include "schedrulesmodel.h"
 
 class EditSchedRules : public RDDialog
 {
@@ -43,24 +44,28 @@ class EditSchedRules : public RDDialog
  private slots:
   void editData();
   void importData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
-  void okData();
-  void cancelData();
+  void doubleClickedData(const QModelIndex &index);
+  void closeData();
 
  protected:
   void closeEvent(QCloseEvent *e);
+  void resizeEvent(QResizeEvent *e);
 
  private:
-  void Load();
-  void Close();
-  QLabel* edit_artist_sep_label;
-  QSpinBox* edit_artist_sep_spin;
-  RDListView *edit_schedcodes_view;
+  //  void Load();
+  QLabel *list_box_label;
+  //  RDListView *edit_schedcodes_view;
+  RDTableView *edit_schedcodes_view;
+  SchedRulesModel *edit_schedcodes_model;
   QString edit_clockname;
   unsigned* edit_artistsep;
   bool* edit_rules_modified;
   RDSchedRulesList* edit_sched_rules_list;
   bool edit_modified;
+  QPushButton *list_edit_button;
+  QPushButton *list_import_button;
+  QPushButton *list_close_button;
+  EditSchedCodeRules *list_editrules_dialog;
 };
 
 
