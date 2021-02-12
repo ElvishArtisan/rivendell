@@ -162,7 +162,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rdcatchd","rdcatchd",RDCATCHD_USAGE,this);
+  rda=static_cast<RDApplication *>(new RDCoreApplication("rdcatchd","rdcatchd",
+							 RDCATCHD_USAGE,this));
   if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"rdcatchd: %s\n",(const char *)err_msg);
     exit(1);
