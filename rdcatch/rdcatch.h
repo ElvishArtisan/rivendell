@@ -21,16 +21,18 @@
 #ifndef RDCATCH_H
 #define RDCATCH_H
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
+#include <QCheckBox>
+#include <QComboBox>
 
 #include <rdcatch_connect.h>
+#include <rdtableview.h>
 #include <rdtransportbutton.h>
 #include <rdwidget.h>
 
-#include "catch_listview.h"
 #include "catch_monitor.h"
+#include "catchtableview.h"
 #include "deckmon.h"
+#include "recordlistmodel.h"
 #include "vbox.h"
 
 /*
@@ -88,8 +90,9 @@ class MainWidget : public RDWidget
   void meterLevelData(int,int,int,int);
   void abortData(int);
   void monitorData(int);
-  void selectionChangedData(Q3ListViewItem *item);
-  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
+  void selectionChangedData(const QItemSelection &before,
+			    const QItemSelection &after);
+  void doubleClickedData(const QModelIndex &index);
   void filterChangedData(bool state);
   void filterActivatedData(int id);
   void clockData();
@@ -104,22 +107,11 @@ class MainWidget : public RDWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void ShowEvent(RDListViewItem *item);
   int ShowNextEvents(int day,QTime time,QTime *next);
-  int AddRecord();
+  unsigned AddRecord();
   void ProcessNewRecords(std::vector<int> *adds);
   void EnableScroll(bool state);
   void UpdateScroll();
-  QString RefreshSql() const;
-  void RefreshRow(RDSqlQuery *q,RDListViewItem *item);
-  void RefreshList();
-  void RefreshLine(RDListViewItem *item);
-  void UpdateExitCode(RDListViewItem *item);
-  void DisplayExitCode(RDListViewItem *item,RDRecording::ExitCode code,
-		       const QString &err_text);
-  QString GetSourceName(QString station,int matrix,int input);
-  QString GetDestinationName(QString station,int matrix,int output);
-  RDListViewItem *GetItem(int id);
   int GetMonitor(int serial,int chan);
   int GetConnection(QString station,unsigned chan=0);
   QString GeometryFile();
@@ -132,7 +124,8 @@ class MainWidget : public RDWidget
   QSqlDatabase *catch_db;
   int catch_audition_stream;
   int catch_play_handle;
-  CatchListView *catch_recordings_list;
+  CatchTableView *catch_recordings_view;
+  RecordListModel *catch_recordings_model;
   RDTransportButton *catch_head_button;
   RDTransportButton *catch_tail_button;
   RDTransportButton *catch_stop_button;
@@ -147,7 +140,6 @@ class MainWidget : public RDWidget
   QString catch_filter;
   QString catch_group;
   QString catch_schedcode;
-  QPixmap *catch_type_maps[RDRecording::LastType];
   QTimer *catch_next_timer;
   QPalette catch_scroll_color[2];
   bool catch_scroll;

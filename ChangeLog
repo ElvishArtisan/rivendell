@@ -21109,4 +21109,7 @@
 2021-02-12 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatchd(8) that caused segfaults upon
 	startup.
-	
+2021-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDIconEngine::catchIcon()' method.
+	* Refactored the the main window in rdcatch(1) to use the model
+	based API.

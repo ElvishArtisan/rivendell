@@ -44,6 +44,13 @@
     </message>
 </context>
 <context>
+    <name>CatchTableView</name>
+    <message>
+        <source>Edit Cue Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DeckMon</name>
     <message>
         <source>MON</source>
@@ -1004,10 +1011,6 @@ New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1032,22 +1035,6 @@ New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Event Active</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You cannot edit an active event!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Can&apos;t Connect</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1057,6 +1044,77 @@ New</source>
     </message>
     <message>
         <source>Control connection timed out to host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Event Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Types</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You cannot edit an active event!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RecordListModel</name>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1088,119 +1146,7 @@ New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>dB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hard</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Gpi</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Len</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PCM16</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MPEG Layer 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MPEG Layer 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MPEG Layer 3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>FLAC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OggVorbis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Host</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PCM24</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Event Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All Types</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unknown command option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connection Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Location</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>End</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Source</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Destination</source>
+        <source>RSS Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1240,7 +1186,23 @@ New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Deck</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1257,6 +1219,58 @@ New</source>
     </message>
     <message>
         <source>State</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gpi</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PCM16</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MPEG Layer 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MPEG Layer 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MPEG Layer 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FLAC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OggVorbis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

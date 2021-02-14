@@ -44,6 +44,13 @@
     </message>
 </context>
 <context>
+    <name>CatchTableView</name>
+    <message>
+        <source>Edit Cue Markers</source>
+        <translation type="unfinished">Editar marcadores Cue</translation>
+    </message>
+</context>
+<context>
     <name>DeckMon</name>
     <message>
         <source>MON</source>
@@ -1099,7 +1106,7 @@ como Nuevo</translation>
     </message>
     <message>
         <source>ID</source>
-        <translation>ID</translation>
+        <translation type="obsolete">ID</translation>
     </message>
     <message>
         <source>TYPE</source>
@@ -1127,11 +1134,11 @@ como Nuevo</translation>
     </message>
     <message>
         <source>Are you sure you want to delete event</source>
-        <translation>Desea borrar el evento</translation>
+        <translation type="obsolete">Desea borrar el evento</translation>
     </message>
     <message>
         <source>Delete Event</source>
-        <translation>Borrar evento</translation>
+        <translation type="unfinished">Borrar evento</translation>
     </message>
     <message>
         <source>Control connection timed out to host</source>
@@ -1139,55 +1146,55 @@ como Nuevo</translation>
     </message>
     <message>
         <source>Su</source>
-        <translation>Do</translation>
+        <translation type="obsolete">Do</translation>
     </message>
     <message>
         <source>Mo</source>
-        <translation>Lu</translation>
+        <translation type="obsolete">Lu</translation>
     </message>
     <message>
         <source>Tu</source>
-        <translation>Ma</translation>
+        <translation type="obsolete">Ma</translation>
     </message>
     <message>
         <source>We</source>
-        <translation>Mi</translation>
+        <translation type="obsolete">Mi</translation>
     </message>
     <message>
         <source>Th</source>
-        <translation>Ju</translation>
+        <translation type="obsolete">Ju</translation>
     </message>
     <message>
         <source>Fr</source>
-        <translation>Vi</translation>
+        <translation type="obsolete">Vi</translation>
     </message>
     <message>
         <source>Sa</source>
-        <translation>Sa</translation>
+        <translation type="obsolete">Sa</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>Hard</source>
-        <translation>Estricto</translation>
+        <translation type="obsolete">Estricto</translation>
     </message>
     <message>
         <source>Gpi</source>
-        <translation>Gpi</translation>
+        <translation type="obsolete">Gpi</translation>
     </message>
     <message>
         <source>Len</source>
-        <translation>Lon</translation>
+        <translation type="obsolete">Lon</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Audio</translation>
+        <translation type="obsolete">Audio</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Cartucho</translation>
+        <translation type="obsolete">Cartucho</translation>
     </message>
     <message>
         <source>ORIGIN</source>
@@ -1198,40 +1205,16 @@ como Nuevo</translation>
         <translation type="obsolete">ESTADO</translation>
     </message>
     <message>
-        <source>PCM16</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>MPEG Layer 1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>MPEG Layer 2</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>MPEG Layer 3</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>FLAC</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>OggVorbis</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>STATE</source>
         <translation type="obsolete">ESTADO</translation>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Evento activo</translation>
+        <translation type="unfinished">Evento activo</translation>
     </message>
     <message>
         <source>You cannot edit an active event!</source>
-        <translation>¡No puede editar un evento activo!</translation>
+        <translation type="unfinished">¡No puede editar un evento activo!</translation>
     </message>
     <message>
         <source>EXIT CODE</source>
@@ -1247,7 +1230,7 @@ como Nuevo</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ninguno]</translation>
+        <translation type="obsolete">[ninguno]</translation>
     </message>
     <message>
         <source>rdcatch : </source>
@@ -1255,7 +1238,7 @@ como Nuevo</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Desconocido</translation>
+        <translation type="obsolete">Desconocido</translation>
     </message>
     <message>
         <source>Host</source>
@@ -1263,10 +1246,6 @@ como Nuevo</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PCM24</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1286,13 +1265,16 @@ como Nuevo</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Connection Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RecordListModel</name>
     <message>
         <source>Description</source>
         <translation type="unfinished"></translation>
@@ -1315,6 +1297,38 @@ como Nuevo</translation>
     </message>
     <message>
         <source>Destination</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Su</source>
+        <translation type="unfinished">Do</translation>
+    </message>
+    <message>
+        <source>Mo</source>
+        <translation type="unfinished">Lu</translation>
+    </message>
+    <message>
+        <source>Tu</source>
+        <translation type="unfinished">Ma</translation>
+    </message>
+    <message>
+        <source>We</source>
+        <translation type="unfinished">Mi</translation>
+    </message>
+    <message>
+        <source>Th</source>
+        <translation type="unfinished">Ju</translation>
+    </message>
+    <message>
+        <source>Fr</source>
+        <translation type="unfinished">Vi</translation>
+    </message>
+    <message>
+        <source>Sa</source>
+        <translation type="unfinished">Sa</translation>
+    </message>
+    <message>
+        <source>RSS Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1354,8 +1368,24 @@ como Nuevo</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Deck</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Audio</translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Cartucho</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished">ID</translation>
     </message>
     <message>
         <source>Type</source>
@@ -1372,6 +1402,58 @@ como Nuevo</translation>
     <message>
         <source>State</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished">[ninguno]</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
+    <message>
+        <source>Hard</source>
+        <translation type="unfinished">Estricto</translation>
+    </message>
+    <message>
+        <source>Gpi</source>
+        <translation type="unfinished">Gpi</translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished">Lon</translation>
+    </message>
+    <message>
+        <source>PCM16</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MPEG Layer 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MPEG Layer 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MPEG Layer 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FLAC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OggVorbis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished">Desconocido</translation>
     </message>
 </context>
 </TS>

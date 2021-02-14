@@ -50,16 +50,6 @@ RDCartDialog *catch_cart_dialog;
 int catch_audition_card=-1;
 int catch_audition_port=-1;
 
-//
-// Icons
-//
-#include "../icons/record.xpm"
-#include "../icons/play.xpm"
-#include "../icons/rml5.xpm"
-#include "../icons/switch3.xpm"
-#include "../icons/download.xpm"
-#include "../icons/upload.xpm"
-
 CatchConnector::CatchConnector(RDCatchConnect *conn,const QString &station_name)
 {
   catch_connect=conn;
@@ -123,17 +113,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
-
-  //
-  // Create Icons
-  //
-  catch_type_maps[RDRecording::Recording]=new QPixmap(record_xpm);
-  catch_type_maps[RDRecording::Playout]=new QPixmap(play_xpm);
-  catch_type_maps[RDRecording::MacroEvent]=new QPixmap(rml5_xpm);
-  catch_type_maps[RDRecording::SwitchEvent]=new QPixmap(switch3_xpm);
-  catch_type_maps[RDRecording::Download]=new QPixmap(download_xpm);
-  catch_type_maps[RDRecording::Upload]=new QPixmap(upload_xpm);
-
   setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdCatch,22));
 
   //
@@ -319,7 +298,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   catch_type_label->setFont(labelFont());
   catch_type_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   for(int i=0;i<RDRecording::LastType;i++) {
-    catch_type_box->insertItem(*(catch_type_maps[i]),
+    catch_type_box->insertItem(rda->iconEngine()->
+			       catchIcon((RDRecording::Type)i),
 			       RDRecording::typeString((RDRecording::Type)i));
   }
   catch_type_box->insertItem(tr("All Types"));
@@ -334,83 +314,21 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Cart List
   //
-  catch_recordings_list=new CatchListView(this);
-  catch_recordings_list->setAllColumnsShowFocus(true);
-  catch_recordings_list->setItemMargin(5);
-  connect(catch_recordings_list,SIGNAL(selectionChanged(Q3ListViewItem *)),
-	  this,SLOT(selectionChangedData(Q3ListViewItem *)));
-  connect(catch_recordings_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+  catch_recordings_view=new CatchTableView(this);
+  catch_recordings_model=new RecordListModel(this);
+  catch_recordings_model->setFont(defaultFont());
+  catch_recordings_model->setPalette(palette());
+  catch_recordings_view->setModel(catch_recordings_model);
+  catch_recordings_view->resizeColumnsToContents();
+  connect(catch_recordings_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  connect(catch_recordings_view->selectionModel(),
+	  SIGNAL(selectionChanged(const QItemSelection &,
+				  const QItemSelection &)),
 	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-
-  catch_recordings_list->addColumn("");
-  catch_recordings_list->setColumnAlignment(0,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("Description"));
-  catch_recordings_list->setColumnAlignment(1,Qt::AlignLeft);
-  catch_recordings_list->addColumn(tr("Location"));
-  catch_recordings_list->setColumnAlignment(2,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("Start"));
-  catch_recordings_list->setColumnAlignment(3,Qt::AlignLeft);
-  catch_recordings_list->addColumn(tr("End"));
-  catch_recordings_list->setColumnAlignment(4,Qt::AlignLeft);
-  catch_recordings_list->addColumn(tr("Source"));
-  catch_recordings_list->setColumnAlignment(5,Qt::AlignLeft);
-  catch_recordings_list->addColumn(tr("Destination"));
-  catch_recordings_list->setColumnAlignment(6,Qt::AlignLeft);
-  catch_recordings_list->addColumn("");
-  catch_recordings_list->setColumnAlignment(7,Qt::AlignHCenter);
-  catch_recordings_list->addColumn("");
-  catch_recordings_list->setColumnAlignment(8,Qt::AlignHCenter);
-  catch_recordings_list->addColumn("");
-  catch_recordings_list->setColumnAlignment(9,Qt::AlignHCenter);
-  catch_recordings_list->addColumn("");
-  catch_recordings_list->setColumnAlignment(10,Qt::AlignHCenter);
-  catch_recordings_list->addColumn("");
-  catch_recordings_list->setColumnAlignment(11,Qt::AlignHCenter);
-  catch_recordings_list->addColumn("");
-  catch_recordings_list->setColumnAlignment(12,Qt::AlignHCenter);
-  catch_recordings_list->addColumn("");
-  catch_recordings_list->setColumnAlignment(13,Qt::AlignHCenter);
-  catch_recordings_list->addColumn("RSS Feed");
-  catch_recordings_list->setColumnAlignment(14,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("Origin"));
-  catch_recordings_list->setColumnAlignment(15,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("One Shot"));
-  catch_recordings_list->setColumnAlignment(16,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("Trim Threshold"));
-  catch_recordings_list->setColumnAlignment(17,Qt::AlignRight);
-  catch_recordings_list->addColumn(tr("StartDate Offset"));
-  catch_recordings_list->setColumnAlignment(18,Qt::AlignRight);
-  catch_recordings_list->addColumn(tr("EndDate Offset"));
-  catch_recordings_list->setColumnAlignment(19,Qt::AlignRight);
-  catch_recordings_list->addColumn(tr("Format"));
-  catch_recordings_list->setColumnAlignment(20,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("Channels"));
-  catch_recordings_list->setColumnAlignment(21,Qt::AlignRight);
-  catch_recordings_list->addColumn(tr("Sample Rate"));
-  catch_recordings_list->setColumnAlignment(22,Qt::AlignRight);
-  catch_recordings_list->addColumn(tr("Bit Rate"));
-  catch_recordings_list->setColumnAlignment(23,Qt::AlignRight);
-  catch_recordings_list->addColumn(tr("Host"));
-  catch_recordings_list->setColumnAlignment(24,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("Deck"));
-  catch_recordings_list->setColumnAlignment(25,Qt::AlignRight);
-  catch_recordings_list->addColumn(tr("Cut"));
-  catch_recordings_list->setColumnAlignment(26,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("Cart"));
-  catch_recordings_list->setColumnAlignment(27,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("ID"));
-  catch_recordings_list->setColumnAlignment(28,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("Type"));
-  catch_recordings_list->setColumnAlignment(29,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("Status"));
-  catch_recordings_list->setColumnAlignment(30,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("Exit Code"));
-  catch_recordings_list->setColumnAlignment(31,Qt::AlignHCenter);
-  catch_recordings_list->addColumn(tr("State"));
-  catch_recordings_list->setColumnAlignment(32,Qt::AlignHCenter);
-  catch_recordings_list->setSorting(3);  // Start Time
+	  SLOT(selectionChangedData(const QItemSelection &,
+				    const QItemSelection &)));
+  catch_recordings_view->resizeColumnsToContents();
 
   //
   // Add Button
@@ -509,8 +427,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   midnightData();
   LoadGeometry();
 
-  RefreshList();
-
   QTime current_time=QTime::currentTime().addMSecs(catch_time_offset);
   QDate current_date=QDate::currentDate();
   QTime next_time;
@@ -564,14 +480,8 @@ void MainWidget::connectedData(int serial,bool state)
 void MainWidget::nextEventData()
 {
   QTime next_time;
-  RDListViewItem *item=(RDListViewItem *)catch_recordings_list->firstChild();
-  if(item!=NULL) {
-    do {
-      if(item->backgroundColor()==EVENT_NEXT_COLOR) {
-	item->setBackgroundColor(catch_recordings_list->palette().color(QPalette::Active,QColorGroup::Base));
-      }
-    } while((item=(RDListViewItem *)item->nextSibling())!=NULL);
-  }
+
+  catch_recordings_model->clearNextRecords();
   QTime current_time=QTime::currentTime().addMSecs(catch_time_offset);
   QDate current_date=QDate::currentDate();
   if(ShowNextEvents(current_date.dayOfWeek(),current_time,&next_time)>0) {
@@ -614,46 +524,37 @@ void MainWidget::nextEventData()
 void MainWidget::addData()
 {
   RDSqlQuery *q;
-  RDListViewItem *item;
   int conn;
   RDNotification *notify=NULL;
+  QModelIndex row;
+  RDRecording::Type type=RDRecording::Recording;
 
   if(!rda->user()->editCatches()) {
     return;
   }
   EnableScroll(false);
-  int n=AddRecord();
-  AddRecording *recording=new AddRecording(n,&catch_filter,this);
-  switch((RDRecording::Type)recording->exec()) {
-      case RDRecording::Recording:
-      case RDRecording::Playout:
-      case RDRecording::MacroEvent:
-      case RDRecording::SwitchEvent:
-      case RDRecording::Download:
-      case RDRecording::Upload:
-	notify=new RDNotification(RDNotification::CatchEventType,
-				  RDNotification::AddAction,n);
-	rda->ripc()->sendNotification(*notify);
-	delete notify;
-	item=new RDListViewItem(catch_recordings_list);
-	item->setBackgroundColor(catch_recordings_list->palette().color(QPalette::Active,QColorGroup::Base));
-	item->setText(28,QString().sprintf("%d",n));
-	RefreshLine(item);
-	conn=GetConnection(item->text(24));
-	if(conn<0) {
-	  fprintf(stderr,"rdcatch: invalid connection index!\n");
-	  return;
-	}
-	catch_recordings_list->setSelected(item,true);
-	catch_recordings_list->ensureItemVisible(item);
-	nextEventData();
-	break;
-
-      default:
-	q=new RDSqlQuery(QString().
-			sprintf("delete from RECORDINGS where ID=%d",n));
-	delete q;
-	break;
+  unsigned rec_id=AddRecord();
+  AddRecording *recording=new AddRecording(&catch_filter,this);
+  if(recording->exec(&type,rec_id)) {
+    notify=new RDNotification(RDNotification::CatchEventType,
+			      RDNotification::AddAction,rec_id);
+    rda->ripc()->sendNotification(*notify);
+    delete notify;
+    row=catch_recordings_model->addRecord(rec_id);
+    if(row.isValid()) {
+      catch_recordings_view->selectRow(row.row());
+    }
+    conn=GetConnection(catch_recordings_model->hostName(row));
+    if(conn<0) {
+      fprintf(stderr,"rdcatch: invalid connection index!\n");
+      return;
+    }
+    nextEventData();
+  }
+  else {
+    q=new RDSqlQuery(QString().
+		     sprintf("delete from RECORDINGS where ID=%d",rec_id));
+    delete q;
   }
   delete recording;
 }
@@ -662,8 +563,6 @@ void MainWidget::addData()
 void MainWidget::editData()
 {
   std::vector<int> new_events;
-
-  RDListViewItem *item=(RDListViewItem *)catch_recordings_list->selectedItem();
   EditRecording *recording;
   EditPlayout *playout;
   EditCartEvent *event;
@@ -671,14 +570,16 @@ void MainWidget::editData()
   EditDownload *download;
   EditUpload *upload;
   bool updated=false;
+  QModelIndexList rows=catch_recordings_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
+    return;
+  }
 
   if(!rda->user()->editCatches()) {
     return;
   }
-  if(item==NULL) {
-    return;
-  }
-  switch((RDRecording::ExitCode)item->text(31).toUInt()) {
+  switch(catch_recordings_model->recordExitCode(rows.first())) {
       case RDRecording::Downloading:
       case RDRecording::Uploading:
       case RDRecording::RecordActive:
@@ -692,8 +593,8 @@ void MainWidget::editData()
 	break;
   }
   EnableScroll(false);
-  int id=item->text(28).toInt();
-  switch((RDRecording::Type)item->text(29).toInt()) {
+  int id=catch_recordings_model->recordId(rows.first());
+  switch(catch_recordings_model->recordType(rows.first())) {
   case RDRecording::Recording:
     recording=new EditRecording(id,&new_events,&catch_filter,this);
     updated=recording->exec();
@@ -738,7 +639,7 @@ void MainWidget::editData()
 					      RDNotification::ModifyAction,id);
     rda->ripc()->sendNotification(*notify);
     delete notify;
-    RefreshLine(item);
+    catch_recordings_model->refresh(rows.first());
     nextEventData();
   }
   ProcessNewRecords(&new_events);
@@ -749,47 +650,38 @@ void MainWidget::deleteData()
 {
   QString warning;
   QString filename;
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item=(RDListViewItem *)catch_recordings_list->selectedItem();
   int conn;
+  QString sql;
+  QModelIndexList rows=catch_recordings_view->selectionModel()->selectedRows();
 
-  if(!rda->user()->editCatches()||(item==NULL)) {
+  if(rows.size()!=1) {
+    return;
+  }
+  if(!rda->user()->editCatches()) {
     return;
   }
   EnableScroll(false);
-  if(item->text(1).isEmpty()) {
-    warning=tr("Are you sure you want to delete event")+"\n"+
-      tr("at")+" "+item->text(3);
-  }
-  else {
-    warning=tr("Are you sure you want to delete event")+
-      "\n\""+item->text(3)+"\"?";
-  }
+  warning=tr("Are you sure you want to delete this event?");
   if(QMessageBox::warning(this,tr("Delete Event"),warning,
 			  QMessageBox::Yes,QMessageBox::No)!=
      QMessageBox::Yes) {
     return;
   }
-  conn=GetConnection(item->text(24));
+  conn=GetConnection(catch_recordings_model->hostName(rows.first()));
   if(conn<0) {
     fprintf(stderr,"rdcatch: invalid connection index!\n");
     return;
   }
   sql=QString("delete from RECORDINGS where ")+
-    "ID="+item->text(28);
-  q=new RDSqlQuery(sql);
-  delete q;
+    QString().sprintf("ID=%u",catch_recordings_model->recordId(rows.first()));
+  RDSqlQuery::apply(sql);
   RDNotification *notify=new RDNotification(RDNotification::CatchEventType,
 					    RDNotification::DeleteAction,
-					    item->text(28).toInt());
+					    catch_recordings_model->recordId(rows.first()));
   rda->ripc()->sendNotification(*notify);
   delete notify;
-  RDListViewItem *next=(RDListViewItem *)item->nextSibling();
-  catch_recordings_list->removeItem(item);
-  if(next!=NULL) {
-    catch_recordings_list->setSelected(next,true);
-  }
+  catch_recordings_model->removeRecord(rows.first());
+
   nextEventData();
 }
 
@@ -827,68 +719,13 @@ void MainWidget::statusChangedData(int serial,unsigned chan,
 {
   // printf("statusChangedData(%d,%u,%d,%d)\n",serial,chan,status,id);
   int mon=GetMonitor(serial,chan);
-  if(id>0) {
-    RDListViewItem *item=GetItem(id);
-    if(item!=NULL) {
-      switch(status) {
-	case RDDeck::Offline:
-	  item->setBackgroundColor(EVENT_ERROR_COLOR);
-	  break;
-	  
-	case RDDeck::Idle:
-	  item->setBackgroundColor(catch_recordings_list->palette().
-				   color(QPalette::Active,QColorGroup::Base));
-	  break;
-	  
-	case RDDeck::Ready:
-	  item->setBackgroundColor(EVENT_READY_COLOR);
-	  break;
-	  
-	case RDDeck::Waiting:
-	  item->setBackgroundColor(EVENT_WAITING_COLOR);
-	  break;
-	  
-	case RDDeck::Recording:
-	  item->setBackgroundColor(EVENT_ACTIVE_COLOR);
-	  break;
-      }
-      item->setText(32,QString().sprintf("%u",status));
-      UpdateExitCode(item);
-    }
-    else {
-      if(id<RDCATCHD_DYNAMIC_BASE_ID) {
-	fprintf(stderr,
-		"rdcatch: received status update for nonexistent ID %d\n",id);
-	return;
-      }
-    }
-  }
+  catch_recordings_model->setRecordStatus(id,status);
   if(mon>=0) {
     int waiting_count=0;
     int active_count=0;
-    int waiting_id=0;
-    RDListViewItem *item=
-      (RDListViewItem *)catch_recordings_list->firstChild();
-    while(item!=NULL) {
-      if(item->text(25).toUInt()==chan) {
-	switch((RDDeck::Status)item->text(32).toUInt()) {
-	    case RDDeck::Waiting:
-	      active_count++;
-	      waiting_count++;
-	      waiting_id=item->text(28).toInt();
-	      break;
-
-	    case RDDeck::Ready:
-	    case RDDeck::Recording:
-	      active_count++;
-	      break;
-
-	    default:
-	      break;
-	}
-      }
-      item=(RDListViewItem *)item->nextSibling();
-    }
+    unsigned waiting_id=0;
+    catch_recordings_model->
+      channelCounts(chan,&waiting_count,&active_count,&waiting_id);
     if(waiting_count>1) {
       catch_monitor[mon]->deckMon()->setStatus(status,-1,cutname);
     }
@@ -943,14 +780,15 @@ void MainWidget::reportsButtonData()
 
 void MainWidget::headButtonData()
 {
-  RDListViewItem *item=(RDListViewItem *)catch_recordings_list->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=catch_recordings_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
   EnableScroll(false);
   if((!head_playing)&&(!tail_playing)) {  // Start Head Play
-    RDCut *cut=new RDCut(item->text(26));
-    rda->cae()->loadPlay(catch_audition_card,item->text(26),
+    RDCut *cut=new RDCut(catch_recordings_model->cutName(rows.first()));
+    rda->cae()->loadPlay(catch_audition_card,cut->cutName(),
 			&catch_audition_stream,&catch_play_handle);
     if(catch_audition_stream<0) {
       return;
@@ -971,14 +809,15 @@ void MainWidget::headButtonData()
 
 void MainWidget::tailButtonData()
 {
-  RDListViewItem *item=(RDListViewItem *)catch_recordings_list->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=catch_recordings_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
   EnableScroll(false);
   if((!head_playing)&&(!tail_playing)) {  // Start Tail Play
-    RDCut *cut=new RDCut(item->text(26));
-    rda->cae()->loadPlay(catch_audition_card,item->text(26),
+    RDCut *cut=new RDCut(catch_recordings_model->cutName(rows.first()));
+    rda->cae()->loadPlay(catch_audition_card,cut->cutName(),
 			&catch_audition_stream,&catch_play_handle);
     if(catch_audition_stream<0) {
       return;
@@ -1014,7 +853,12 @@ void MainWidget::stopButtonData()
 
 void MainWidget::initData(bool state)
 {
-  if(!state) {
+  if(state) {
+    QList<int> cards;
+    cards.push_back(rda->station()->cueCard());
+    rda->cae()->enableMetering(&cards);
+  }
+  else {
     QMessageBox::warning(this,tr("Can't Connect"),
 			 tr("Unable to connect to Core AudioEngine"));
     exit(1);
@@ -1078,34 +922,42 @@ void MainWidget::monitorData(int id)
 }
 
 
-void MainWidget::selectionChangedData(Q3ListViewItem *item)
+void MainWidget::selectionChangedData(const QItemSelection &before,
+				      const QItemSelection &after)
 {
-  if(item==NULL) {
+  QModelIndexList rows=catch_recordings_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     catch_head_button->setDisabled(true);
     catch_tail_button->setDisabled(true);
     catch_stop_button->setDisabled(true);
     catch_edit_button->setDisabled(true);
     return;
   }
-  if(((item->text(29).toInt()==RDRecording::Recording)||
-      (item->text(29).toInt()==RDRecording::Playout)||
-      (item->text(29).toInt()==RDRecording::Upload)||
-      (item->text(29).toInt()==RDRecording::Download))) {
+  switch(catch_recordings_model->recordType(rows.first())) {
+  case RDRecording::Recording:
+  case RDRecording::Playout:
+  case RDRecording::Upload:
+  case RDRecording::Download:
     catch_head_button->
       setEnabled((catch_audition_card>=0)&&(catch_audition_port>=0));
     catch_tail_button->
       setEnabled((catch_audition_card>=0)&&(catch_audition_port>=0));
     catch_stop_button->setEnabled(true);
-  }
-  else {
+    break;
+
+  case RDRecording::MacroEvent:
+  case RDRecording::SwitchEvent:
+  case RDRecording::LastType:
     catch_head_button->setDisabled(true);
     catch_tail_button->setDisabled(true);
     catch_stop_button->setDisabled(true);
+    break;
   }
 }
 
 
-void MainWidget::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
+void MainWidget::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -1114,23 +966,16 @@ void MainWidget::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 void MainWidget::eventUpdatedData(int id)
 {
   // printf("eventUpdatedData(%d)\n",id);
-  RDListViewItem *item=GetItem(id);
-  if(item==NULL) {  // New Event
-    item=new RDListViewItem(catch_recordings_list);
-    item->setText(28,QString().sprintf("%d",id));
+  if(!catch_recordings_model->refresh(id)) {
+    catch_recordings_model->addRecord(id);
   }
-  RefreshLine(item);
   nextEventData();
 }
 
 
 void MainWidget::eventPurgedData(int id)
 {
-  RDListViewItem *item=GetItem(id);
-  if(item==NULL) {
-    return;
-  }
-  catch_recordings_list->removeItem(item);
+  catch_recordings_model->removeRecord(id);
 }
 
 
@@ -1153,88 +998,99 @@ void MainWidget::quitMainWidget()
 }
 
 
-void MainWidget::filterChangedData(bool)
+void MainWidget::filterChangedData(bool state)
 {
-  RDListViewItem *item=(RDListViewItem *)catch_recordings_list->firstChild();
-  int day=QDate::currentDate().dayOfWeek();
-  int day_column=0;
-  switch(day) {
-  case 1:
-  case 2:
-  case 3:
-  case 4:
-  case 5:
-  case 6:
-    day_column=day+7;
+  //  printf("filterChangedData(%d)\n",state);
+
+  QString sql;
+
+  if(catch_show_active_box->isChecked()) {
+    sql+="(RECORDINGS.IS_ACTIVE=\"Y\")&&";
+  }
+  if(catch_show_today_box->isChecked()) {
+    QDate today=QDate::currentDate();
+
+    switch(today.dayOfWeek()) {
+    case 1:
+      sql+="(RECORDINGS.MON=\"Y\")&&";
+      break;
+
+    case 2:
+      sql+="(RECORDINGS.TUE=\"Y\")&&";
+      break;
+
+    case 3:
+      sql+="(RECORDINGS.WED=\"Y\")&&";
+      break;
+
+    case 4:
+      sql+="(RECORDINGS.THU=\"Y\")&&";
+      break;
+
+    case 5:
+      sql+="(RECORDINGS.FRI=\"Y\")&&";
+      break;
+
+    case 6:
+      sql+="(RECORDINGS.SAT=\"Y\")&&";
+      break;
+
+    case 7:
+      sql+="(RECORDINGS.SUN=\"Y\")&&";
+      break;
+    }
+  }
+  switch(catch_dow_box->currentIndex()) {
+  case 0:  // All
     break;
 
-  case 7:
-    day_column=7;
+  case 1:  // Weekdays
+    sql+=QString("((RECORDINGS.MON=\"Y\")||")+
+      "(RECORDINGS.TUE=\"Y\")||"+
+      "(RECORDINGS.WED=\"Y\")||"+
+      "(RECORDINGS.THU=\"Y\")||"+
+      "(RECORDINGS.FRI=\"Y\"))&&";
+    break;
+
+  case 2:  // Sunday
+    sql+="(RECORDINGS.SUN=\"Y\")&&";
+    break;
+
+  case 3:  // Monday
+    sql+="(RECORDINGS.MON=\"Y\")&&";
+    break;
+
+  case 4:  // Tuesday
+    sql+="(RECORDINGS.TUE=\"Y\")&&";
+    break;
+
+  case 5:  // Wednesday
+    sql+="(RECORDINGS.WED=\"Y\")&&";
+    break;
+
+  case 6:  // Thursday
+    sql+="(RECORDINGS.THU=\"Y\")&&";
+    break;
+
+  case 7:  // Friday
+    sql+="(RECORDINGS.FRI=\"Y\")&&";
+    break;
+
+  case 8:  // Saturday
+    sql+="(RECORDINGS.SAT=\"Y\")&&";
+    break;
   }
-  RDRecording::Type filter_type=
-    (RDRecording::Type)catch_type_box->currentItem();
-  if(catch_show_active_box->isChecked()) {
-    if(catch_show_today_box->isChecked()) {
-      while(item!=NULL) {
-	RDRecording::Type event_type=
-	  (RDRecording::Type)item->text(29).toInt();
-	if((item->textColor(1)==EVENT_ACTIVE_TEXT_COLOR)&&
-	  (!item->text(day_column).isEmpty())) {
-	  if((event_type==filter_type)||(filter_type==RDRecording::LastType)) {
-	    ShowEvent(item);
-	  }
-	}
-	else {
-	  item->setVisible(false);
-	}
-	item=(RDListViewItem *)item->nextSibling();
-      }
-    }
-    else {
-      if(catch_show_active_box->isChecked()) {
-	while(item!=NULL) {
-	  RDRecording::Type event_type=
-	    (RDRecording::Type)item->text(29).toInt();
-	  if((item->textColor(1)==EVENT_ACTIVE_TEXT_COLOR)&&
-	     ((event_type==filter_type)||(filter_type==RDRecording::LastType))) {
-	    ShowEvent(item);
-	  }
-	  else {
-	    item->setVisible(false);
-	  }
-	  item=(RDListViewItem *)item->nextSibling();
-	}
-      }
-    }
+  if(catch_type_box->currentIndex()<RDRecording::LastType) {
+    sql+=QString().sprintf("(RECORDINGS.TYPE=%d)&&",
+			   catch_type_box->currentIndex());
+  }
+
+  if(sql.isEmpty()) {
+    catch_recordings_model->setFilterSql("");
   }
   else {
-    if(catch_show_today_box->isChecked()) {
-      while(item!=NULL) {
-	RDRecording::Type event_type=
-	  (RDRecording::Type)item->text(29).toInt();
-	if((!item->text(day_column).isEmpty())&&
-	   ((event_type==filter_type)||(filter_type==RDRecording::LastType))) {
-	  ShowEvent(item);
-	}
-	else {
-	  item->setVisible(false);
-	}
-	item=(RDListViewItem *)item->nextSibling();
-      }
-    }
-    else {
-      while(item!=NULL) {
-	RDRecording::Type event_type=
-	  (RDRecording::Type)item->text(29).toInt();
-	if((event_type==filter_type)||(filter_type==RDRecording::LastType)) {
-	  ShowEvent(item);
-	}
-	else {
-	  item->setVisible(false);
-	}
-	item=(RDListViewItem *)item->nextSibling();
-      }
-    }
+    sql=sql.left(sql.length()-2);
+    catch_recordings_model->setFilterSql("where "+sql);
   }
 }
 
@@ -1302,7 +1158,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   catch_dow_box->setGeometry(530,deck_height+4,120,20);
   catch_type_label->setGeometry(660,deck_height+4,125,20);
   catch_type_box->setGeometry(790,deck_height+4,140,20);
-  catch_recordings_list->
+  catch_recordings_view->
     setGeometry(10,deck_height+25,e->size().width()-20,
 		e->size().height()-90-deck_height);
   catch_add_button->setGeometry(10,e->size().height()-55,80,50);
@@ -1323,95 +1179,9 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 }
 
 
-void MainWidget::ShowEvent(RDListViewItem *item)
-{
-  switch(catch_dow_box->currentItem()) {
-  case 0:   // All Days
-    item->setVisible(true);
-    break;
-	
-  case 1:   // Weekdays
-    if(item->text(8).isEmpty()&&
-       item->text(9).isEmpty()&&
-       item->text(10).isEmpty()&&
-       item->text(11).isEmpty()&&
-       item->text(12).isEmpty()) {
-      item->setVisible(false);
-    }
-    else {
-      item->setVisible(true);
-    }
-    break;
-	
-  case 2:   // Sunday
-    if(item->text(7).isEmpty()) {
-      item->setVisible(false);
-    }
-    else {
-      item->setVisible(true);
-    }
-    break;
-	
-  case 3:   // Monday
-    if(item->text(8).isEmpty()) {
-      item->setVisible(false);
-    }
-    else {
-      item->setVisible(true);
-    }
-    break;
-	
-  case 4:   // Tuesday
-    if(item->text(9).isEmpty()) {
-      item->setVisible(false);
-    }
-    else {
-      item->setVisible(true);
-    }
-    break;
-	
-  case 5:   // Wednesday
-    if(item->text(10).isEmpty()) {
-      item->setVisible(false);
-    }
-    else {
-      item->setVisible(true);
-    }
-    break;
-	
-  case 6:   // Thursday
-    if(item->text(11).isEmpty()) {
-      item->setVisible(false);
-    }
-    else {
-      item->setVisible(true);
-    }
-    break;
-	
-  case 7:   // Friday
-    if(item->text(12).isEmpty()) {
-      item->setVisible(false);
-    }
-    else {
-      item->setVisible(true);
-    }
-    break;
-	
-  case 8:   // Saturday
-    if(item->text(13).isEmpty()) {
-      item->setVisible(false);
-    }
-    else {
-      item->setVisible(true);
-    }
-    break;
-  }
-}
-
-
 int MainWidget::ShowNextEvents(int day,QTime time,QTime *next)
 {
-  RDListViewItem *item=NULL;
+  //  RDListViewItem *item=NULL;
   QString sql;
   int count=0;
   if(time.isNull()) {
@@ -1440,73 +1210,33 @@ int MainWidget::ShowNextEvents(int day,QTime time,QTime *next)
     return count;
   }
   *next=q->value(1).toTime();
-  if((item=GetItem(q->value(0).toInt()))!=NULL) {
-    if((item->backgroundColor()!=EVENT_ACTIVE_COLOR)&&
-       (item->backgroundColor()!=EVENT_WAITING_COLOR)){
-      item->setBackgroundColor(QColor(EVENT_NEXT_COLOR));
-    }
-    count++;
-  }
+
+  catch_recordings_model->setRecordIsNext(q->value(0).toUInt(),true);
+  count++;
   while(q->next()&&(q->value(1).toTime()==*next)) {
-    if((item=GetItem(q->value(0).toInt()))!=NULL) {
-      if((item->backgroundColor()!=EVENT_ACTIVE_COLOR)&&
-	 (item->backgroundColor()!=EVENT_WAITING_COLOR)){
-	item->setBackgroundColor(QColor(EVENT_NEXT_COLOR));
-      }
-      count++;
-    }
+    catch_recordings_model->setRecordIsNext(q->value(0).toInt(),true);
+    count++;
   }
   delete q;
   return count;
 }
 
 
-int MainWidget::AddRecord()
+unsigned MainWidget::AddRecord()
 {
   QString sql;
-  RDSqlQuery *q;
-  int n;
 
-  sql=QString("select ID from RECORDINGS order by ID desc limit 1");
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    n=q->value(0).toInt()+1;
-  }
-  else {
-    n=1;
-  }
-  delete q;
   sql=QString("insert into RECORDINGS set ")+
-    QString().sprintf("ID=%d,",n)+
     "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  return n;
+  return RDSqlQuery::run(sql).toUInt();
 }
 
 
 void MainWidget::ProcessNewRecords(std::vector<int> *adds)
 {
-  int conn=0;
-  RDListViewItem *item;
-
   for(unsigned i=0;i<adds->size();i++) {
-    item=new RDListViewItem(catch_recordings_list);
-    item->setBackgroundColor(catch_recordings_list->palette().color(QPalette::Active,QColorGroup::Base));
-    item->setText(28,QString().sprintf("%d",adds->at(i)));
-    RefreshLine(item);
-    conn=GetConnection(item->text(24));
-    if(conn<0) {
-      fprintf(stderr,"rdcatch: invalid connection index!\n");
-      return;
-    }
-    RDNotification *notify=new RDNotification(RDNotification::CatchEventType,
-					      RDNotification::AddAction,
-					      adds->at(i));
-    rda->ripc()->sendNotification(*notify);
-    delete notify;
+    catch_recordings_model->addRecord(adds->at(i));
   }
-  nextEventData();
 }
 
 
@@ -1526,509 +1256,27 @@ void MainWidget::EnableScroll(bool state)
 
 void MainWidget::UpdateScroll()
 {
-  RDListViewItem *item=(RDListViewItem *)catch_recordings_list->firstChild();
-
   //
-  // Search for active event
+  // Current Event
   //
-  while(item!=NULL) {
-    if(item->backgroundColor()==EVENT_ACTIVE_COLOR) {
-      catch_recordings_list->
-	ensureVisible(0,catch_recordings_list->itemPos(item),
-		      0,catch_recordings_list->size().height()/2);
-      catch_recordings_list->setCurrentItem(item);
-      catch_recordings_list->clearSelection();
+  for(int i=0;i<catch_recordings_model->rowCount();i++) {
+    QModelIndex row=catch_recordings_model->index(i,0);
+    if(catch_recordings_model->recordStatus(row)==RDDeck::Recording) {
+      catch_recordings_view->scrollTo(row,QAbstractItemView::PositionAtCenter);
       return;
     }
-    item=(RDListViewItem *)item->nextSibling();
   }
 
   //
-  // Search for next event
+  // Next Event
   //
-  item=(RDListViewItem *)catch_recordings_list->firstChild();
-  while(item!=NULL) {
-    if(item->backgroundColor()==EVENT_NEXT_COLOR) {
-      catch_recordings_list->
-	ensureVisible(0,catch_recordings_list->itemPos(item),
-		      0,catch_recordings_list->size().height()/2);
-      catch_recordings_list->setCurrentItem(item);
-      catch_recordings_list->clearSelection();
+  for(int i=0;i<catch_recordings_model->rowCount();i++) {
+    QModelIndex row=catch_recordings_model->index(i,0);
+    if(catch_recordings_model->recordIsNext(row)) {
+      catch_recordings_view->scrollTo(row,QAbstractItemView::PositionAtCenter);
       return;
     }
-    item=(RDListViewItem *)item->nextSibling();
   }
-}
-
-
-QString MainWidget::RefreshSql() const
-{
-  QString sql=QString("select ")+
-    "RECORDINGS.ID,"+                // 00
-    "RECORDINGS.DESCRIPTION,"+       // 01
-    "RECORDINGS.IS_ACTIVE,"+         // 02
-    "RECORDINGS.STATION_NAME,"+      // 03
-    "RECORDINGS.START_TIME,"+        // 04
-    "RECORDINGS.LENGTH,"+            // 05
-    "RECORDINGS.CUT_NAME,"+          // 06
-    "RECORDINGS.SUN,"+               // 07
-    "RECORDINGS.MON,"+               // 08
-    "RECORDINGS.TUE,"+               // 09
-    "RECORDINGS.WED,"+               // 10
-    "RECORDINGS.THU,"+               // 11
-    "RECORDINGS.FRI,"+               // 12
-    "RECORDINGS.SAT,"+               // 13
-    "RECORDINGS.SWITCH_INPUT,"+      // 14
-    "RECORDINGS.START_GPI,"+         // 15
-    "RECORDINGS.END_GPI,"+           // 16
-    "RECORDINGS.TRIM_THRESHOLD,"+    // 17
-    "RECORDINGS.STARTDATE_OFFSET,"+  // 18
-    "RECORDINGS.ENDDATE_OFFSET,"+    // 19
-    "RECORDINGS.FORMAT,"+            // 20
-    "RECORDINGS.CHANNELS,"+          // 21
-    "RECORDINGS.SAMPRATE,"+          // 22
-    "RECORDINGS.BITRATE,"+           // 23
-    "RECORDINGS.CHANNEL,"+           // 24
-    "RECORDINGS.MACRO_CART,"+        // 25
-    "RECORDINGS.TYPE,"+              // 26
-    "RECORDINGS.SWITCH_OUTPUT,"+     // 27
-    "RECORDINGS.EXIT_CODE,"+         // 28
-    "RECORDINGS.ONE_SHOT,"+          // 29
-    "RECORDINGS.START_TYPE,"+        // 30
-    "RECORDINGS.START_LENGTH,"+      // 31
-    "RECORDINGS.START_MATRIX,"+      // 32
-    "RECORDINGS.START_LINE,"+        // 33
-    "RECORDINGS.START_OFFSET,"+      // 34
-    "RECORDINGS.END_TYPE,"+          // 35
-    "RECORDINGS.END_TIME,"+          // 36
-    "RECORDINGS.END_LENGTH,"+        // 37
-    "RECORDINGS.END_MATRIX,"+        // 38
-    "RECORDINGS.END_LINE,"+          // 39
-    "CUTS.ORIGIN_NAME,"+             // 40
-    "CUTS.ORIGIN_DATETIME,"+         // 41
-    "RECORDINGS.URL,"+               // 42
-    "RECORDINGS.QUALITY,"+           // 43
-    "FEEDS.KEY_NAME,"+               // 44
-    "EXIT_TEXT "+                    // 45
-    "from RECORDINGS left join CUTS "+
-    "on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS "+
-    "on (RECORDINGS.FEED_ID=FEEDS.ID) ";
-
-  return sql;
-}
-
-
-void MainWidget::RefreshRow(RDSqlQuery *q,RDListViewItem *item)
-{
-  RDCut *cut=NULL;
-  QString sql;
-  RDSqlQuery *q1;
-
-  item->setBackgroundColor(catch_recordings_list->palette().color(QPalette::Active,QColorGroup::Base));
-  if(RDBool(q->value(2).toString())) {
-    item->setTextColor(QColor(EVENT_ACTIVE_TEXT_COLOR));
-  }
-  else {
-    item->setTextColor(QColor(EVENT_INACTIVE_TEXT_COLOR));
-  }
-  item->setText(1,q->value(1).toString());     // Description
-  if(RDBool(q->value(7).toString())) {       // Sun
-    item->setText(7,tr("Su"));
-  }
-  else {
-    item->setText(7,"");
-  }
-  if(RDBool(q->value(8).toString())) {       // Mon
-    item->setText(8,tr("Mo"));
-  }
-  else {
-    item->setText(8,"");
-  }
-  if(RDBool(q->value(9).toString())) {       // Tue
-    item->setText(9,tr("Tu"));
-  }
-  else {
-    item->setText(9,"");
-  }
-  if(RDBool(q->value(10).toString())) {       // Wed
-    item->setText(10,tr("We"));
-  }
-  else {
-    item->setText(10,"");
-  }
-  if(RDBool(q->value(11).toString())) {      // Thu
-    item->setText(11,tr("Th"));
-  }
-  else {
-    item->setText(11,"");
-  }
-  if(RDBool(q->value(12).toString())) {      // Fri
-    item->setText(12,tr("Fr"));
-  }
-  else {
-    item->setText(12,"");
-  }
-  if(RDBool(q->value(13).toString())) {      // Sat
-    item->setText(13,tr("Sa"));
-  }
-  else {
-    item->setText(13,"");
-  }
-  switch((RDRecording::Type)q->value(26).toInt()) {
-  case RDRecording::Recording:
-  case RDRecording::Playout:
-  case RDRecording::Download:
-  case RDRecording::Upload:
-    item->setText(15,q->value(40).toString()+" - "+
-	       q->value(41).toDateTime().
-	       toString("M/dd/yyyy hh:mm:ss"));
-    break;
-    
-  default:
-    item->setText(15,"");
-    break;
-  }
-  item->setText(16,q->value(29).toString());   // One Shot
-  item->setText(17,QString().sprintf("%d ",  // Trim Threshold
-				     -q->value(17).toInt())+tr("dB"));
-  item->setText(18,q->value(18).toString());   // Startdate Offset
-  item->setText(19,q->value(19).toString());   // Enddate Offset
-  item->setText(24,q->value(3).toString());    // Station
-  item->setText(25,q->value(24).toString());   // Deck
-  item->setText(26,q->value(6).toString());    // Cut Name
-  if(q->value(24).toInt()>=0) {
-    item->setText(27,q->value(25).toString()); // Macro Cart
-  }
-  else {
-    item->setText(27,"");
-  }
-  item->setText(28,q->value(0).toString());   // Id
-  item->setText(29,q->value(26).toString());   // Type
-  item->setText(32,QString().sprintf("%u",RDDeck::Idle));
-  item->setPixmap(0,*(catch_type_maps[q->value(26).toInt()]));
-  switch((RDRecording::Type)q->value(26).toInt()) {
-  case RDRecording::Recording:
-    item->setText(2,q->value(3).toString()+
-	       QString().sprintf(" : %dR",q->value(24).toInt()));
-    switch((RDRecording::StartType)q->value(30).toUInt()) {
-    case RDRecording::HardStart:
-      item->setText(3,tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss"));
-      break;
-
-    case RDRecording::GpiStart:
-      item->setText(3,tr("Gpi")+": "+q->value(4).toTime().toString("hh:mm:ss")+
-		 ","+q->value(4).toTime().addMSecs(q->value(31).toInt()).
-		 toString("hh:mm:ss")+","+
-		 QString().sprintf("%d:%d,",q->value(32).toInt(),q->value(33).toInt())+
-		 QTime().addMSecs(q->value(34).toUInt()).toString("mm:ss"));
-      break;
-    }
-    switch((RDRecording::EndType)q->value(35).toUInt()) {
-    case RDRecording::LengthEnd:
-      item->setText(4,tr("Len")+": "+
-		 RDGetTimeLength(q->value(5).toUInt(),false,false));
-      break;
-
-    case RDRecording::HardEnd:
-      item->setText(4,tr("Hard")+": "+
-		 q->value(36).toTime().toString("hh:mm:ss"));
-      break;
-
-    case RDRecording::GpiEnd:
-      item->setText(4,tr("Gpi")+": "+q->value(36).toTime().toString("hh:mm:ss")+
-		 ","+q->value(36).toTime().addMSecs(q->value(37).toInt()).
-		 toString("hh:mm:ss")+
-		 QString().sprintf(",%d:%d",q->value(38).toInt(),
-				   q->value(39).toInt()));
-      break;
-    }
-    item->setText(6,tr("Cut")+" "+q->value(6).toString());
-    sql=QString("select ")+
-      "SWITCH_STATION,"+  // 00
-      "SWITCH_MATRIX "+   // 01
-      "from DECKS where "+
-      "(STATION_NAME=\""+RDEscapeString(q->value(3).toString())+"\")&&"+
-      QString().sprintf("(CHANNEL=%d)",q->value(24).toInt());
-    q1=new RDSqlQuery(sql);
-    if(q1->first()) {  // Source
-      item->setText(5,GetSourceName(q1->value(0).toString(),  
-				 q1->value(1).toInt(),
-				 q->value(14).toInt()));
-    }
-    delete q1;
-    switch((RDSettings::Format)q->value(20).toInt()) {    // Format
-    case RDSettings::Pcm16:
-      item->setText(20,tr("PCM16"));
-      break;
-
-    case RDSettings::Pcm24:
-      item->setText(20,tr("PCM24"));
-      break;
-
-    case RDSettings::MpegL1:
-      item->setText(20,tr("MPEG Layer 1"));
-      break;
-
-    case RDSettings::MpegL2:
-    case RDSettings::MpegL2Wav:
-      item->setText(20,tr("MPEG Layer 2"));
-      break;
-
-    case RDSettings::MpegL3:
-      item->setText(20,tr("MPEG Layer 3"));
-      break;
-
-    case RDSettings::Flac:
-      item->setText(20,tr("FLAC"));
-      break;
-
-    case RDSettings::OggVorbis:
-      item->setText(20,tr("OggVorbis"));
-      break;
-    }
-    item->setText(21,q->value(21).toString());   // Channels
-    item->setText(22,q->value(22).toString());   // Sample Rate
-    item->setText(23,q->value(23).toString());   // Bit Rate
-    break;
-
-  case RDRecording::Playout:
-    item->setText(2,q->value(3).toString()+QString().sprintf(" : %dP",
-							  q->value(24).toInt()-128));
-    item->setText(3,tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss"));
-    cut=new RDCut(q->value(6).toString());
-    if(cut->exists()) {
-      item->setText(4,tr("Len")+": "+RDGetTimeLength(cut->length(),false,false));
-    }
-    delete cut;
-    item->setText(5,tr("Cut")+" "+q->value(6).toString());
-    break;
-
-  case RDRecording::MacroEvent:
-    item->setText(2,q->value(3).toString());
-    item->setText(3,tr("Hard")+": "+q->value(4).toTime().
-	       toString(QString().sprintf("hh:mm:ss")));
-    item->setText(5,tr("Cart")+QString().sprintf(" %06d",q->value(25).toInt()));
-    break;
-
-  case RDRecording::SwitchEvent:
-    item->setText(2,q->value(3).toString());
-    item->setText(3,tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss"));
-    item->setText(5,GetSourceName(q->value(3).toString(),  // Source
-			       q->value(24).toInt(),
-			       q->value(14).toInt()));
-    item->setText(6,GetDestinationName(q->value(3).toString(),  // Dest
-				    q->value(24).toInt(),
-				    q->value(27).toInt()));
-    break;
-
-  case RDRecording::Download:
-    item->setText(2,q->value(3).toString());
-    item->setText(3,tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss"));
-    item->setText(5,q->value(42).toString());
-    item->setText(6,tr("Cut")+" "+q->value(6).toString());
-    break;
-
-  case RDRecording::Upload:
-    item->setText(2,q->value(3).toString());
-    item->setText(3,tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss"));
-    item->setText(5,tr("Cut")+" "+q->value(6).toString());
-    item->setText(6,q->value(42).toString());
-    switch((RDSettings::Format)q->value(20).toInt()) {    // Format
-    case RDSettings::Pcm16:
-      item->setText(20,tr("PCM16"));
-      break;
-
-    case RDSettings::Pcm24:
-      item->setText(20,tr("PCM24"));
-      break;
-
-    case RDSettings::MpegL1:
-      item->setText(20,tr("MPEG Layer 1"));
-      break;
-
-    case RDSettings::MpegL2:
-    case RDSettings::MpegL2Wav:
-      item->setText(20,tr("MPEG Layer 2"));
-      break;
-
-    case RDSettings::MpegL3:
-      item->setText(20,tr("MPEG Layer 3"));
-      break;
-
-    case RDSettings::Flac:
-      item->setText(20,tr("FLAC"));
-      break;
-
-    case RDSettings::OggVorbis:
-      item->setText(20,tr("OggVorbis"));
-      break;
-    }
-    if(q->value(44).toString().isEmpty()) {
-      item->setText(14,tr("[none]"));
-    }
-    else {
-      item->setText(14,q->value(44).toString());    // Feed Key Name
-    }
-    item->setText(21,q->value(21).toString());   // Channels
-    item->setText(22,q->value(22).toString());   // Sample Rate
-    if(q->value(23).toInt()==0) {     // Bit Rate/Quality
-      item->setText(23,QString().sprintf("Qual %d",q->value(43).toInt()));
-    }
-    else {
-      item->setText(23,QString().sprintf("%d kb/sec",
-				      q->value(23).toInt()/1000));
-    }
-    break;
-
-  case RDRecording::LastType:
-    break;
-  }
-  DisplayExitCode(item,(RDRecording::ExitCode)q->value(28).toInt(),
-		  q->value(45).toString());
-}
-
-
-void MainWidget::RefreshList()
-{
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *l;
-
-  catch_recordings_list->clear();
-  sql=RefreshSql();
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    l=new RDListViewItem(catch_recordings_list);
-    RefreshRow(q,l);
-  }
-  delete q;
-}
-
-
-void MainWidget::RefreshLine(RDListViewItem *item)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  int id=item->text(28).toInt();
-  sql=RefreshSql()+"where "+
-    QString().sprintf("RECORDINGS.ID=%d",id);
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    RefreshRow(q,item);
-  }
-  else {  // Event removed
-    delete item;
-  }
-  delete q;
-}
-
-
-void MainWidget::UpdateExitCode(RDListViewItem *item)
-{
-  RDRecording::ExitCode code=RDRecording::InternalError;
-  QString err_text=tr("Unknown");
-  QString sql=QString().sprintf("select RECORDINGS.EXIT_CODE,\
-                                 CUTS.ORIGIN_NAME,CUTS.ORIGIN_DATETIME,\
-                                 RECORDINGS.EXIT_TEXT \
-                                 from RECORDINGS left join CUTS \
-                                 on RECORDINGS.CUT_NAME=CUTS.CUT_NAME \
-                                 where RECORDINGS.ID=%d",
-				item->text(28).toInt());
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    code=(RDRecording::ExitCode)q->value(0).toInt();
-    err_text=q->value(3).toString();
-    item->setText(15,q->value(1).toString()+" - "+q->value(2).toDateTime().
-		  toString("M/dd/yyyy hh:mm:ss"));
-  }
-  else {
-    item->setText(15,"");
-  }
-  delete q; 
-  DisplayExitCode(item,code,err_text);
-}
-
-
-void MainWidget::DisplayExitCode(RDListViewItem *item,
-				 RDRecording::ExitCode code,
-				 const QString &err_text)
-{
-  item->setText(31,QString().sprintf("%u",code));
-  switch(code) {
-      case RDRecording::Ok:
-      case RDRecording::Downloading:
-      case RDRecording::Uploading:
-      case RDRecording::RecordActive:
-      case RDRecording::PlayActive:
-      case RDRecording::Waiting:
-	item->setText(30,RDRecording::exitString(code));
-	break;
-	
-      case RDRecording::Short:
-      case RDRecording::LowLevel:
-      case RDRecording::HighLevel:
-      case RDRecording::Interrupted:
-      case RDRecording::DeviceBusy:
-      case RDRecording::NoCut:
-      case RDRecording::UnknownFormat:
-	item->setText(30,RDRecording::exitString(code));
-	item->setBackgroundColor(EVENT_ERROR_COLOR);
-	break;
-	
-      case RDRecording::ServerError:
-      case RDRecording::InternalError:
-	item->setText(30,RDRecording::exitString(code)+": "+err_text);
-	item->setBackgroundColor(EVENT_ERROR_COLOR);
-	break;
-  }
-}
-
-
-QString MainWidget::GetSourceName(QString station,int matrix,int input)
-{
-  QString input_name;
-  QString sql=QString("select NAME from INPUTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",matrix)+
-    QString().sprintf("(NUMBER=%d)",input);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    input_name=q->value(0).toString();
-  }
-  delete q;
-  return input_name;
-}
-
-
-QString MainWidget::GetDestinationName(QString station,int matrix,int output)
-{
-  QString output_name;
-  QString sql=QString("select NAME from OUTPUTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",matrix)+
-    QString().sprintf("(NUMBER=%d)",output);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    output_name=q->value(0).toString();
-  }
-  delete q;
-  return output_name;
-}
-
-
-RDListViewItem *MainWidget::GetItem(int id)
-{
-  RDListViewItem *item=(RDListViewItem *)catch_recordings_list->firstChild();
-  if(item==NULL) {
-    return NULL;
-  }
-  do {
-    if(item->text(28).toInt()==id) {
-      return item;
-    }
-  } while ((item=(RDListViewItem *)item->nextSibling())!=NULL);
-  return NULL;
 }
 
 

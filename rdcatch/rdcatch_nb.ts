@@ -44,6 +44,13 @@
     </message>
 </context>
 <context>
+    <name>CatchTableView</name>
+    <message>
+        <source>Edit Cue Markers</source>
+        <translation type="unfinished">Rediger cue-markørar</translation>
+    </message>
+</context>
+<context>
     <name>DeckMon</name>
     <message>
         <source>MON</source>
@@ -1100,7 +1107,7 @@ ny</translation>
     </message>
     <message>
         <source>ID</source>
-        <translation>ID</translation>
+        <translation type="obsolete">ID</translation>
     </message>
     <message>
         <source>TYPE</source>
@@ -1144,19 +1151,19 @@ ny</translation>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Hendinga aktiv</translation>
+        <translation type="unfinished">Hendinga aktiv</translation>
     </message>
     <message>
         <source>You cannot edit an active event!</source>
-        <translation>Du kan ikkje redigera ei aktiv hending!</translation>
+        <translation type="unfinished">Du kan ikkje redigera ei aktiv hending!</translation>
     </message>
     <message>
         <source>Are you sure you want to delete event</source>
-        <translation>Er du sikker på at du vil sletta hendinga</translation>
+        <translation type="obsolete">Er du sikker på at du vil sletta hendinga</translation>
     </message>
     <message>
         <source>Delete Event</source>
-        <translation>Slett hending</translation>
+        <translation type="unfinished">Slett hending</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
@@ -1172,83 +1179,83 @@ ny</translation>
     </message>
     <message>
         <source>Su</source>
-        <translation>Su</translation>
+        <translation type="obsolete">Su</translation>
     </message>
     <message>
         <source>Mo</source>
-        <translation>Må</translation>
+        <translation type="obsolete">Må</translation>
     </message>
     <message>
         <source>Tu</source>
-        <translation>Ty</translation>
+        <translation type="obsolete">Ty</translation>
     </message>
     <message>
         <source>We</source>
-        <translation>On</translation>
+        <translation type="obsolete">On</translation>
     </message>
     <message>
         <source>Th</source>
-        <translation>To</translation>
+        <translation type="obsolete">To</translation>
     </message>
     <message>
         <source>Fr</source>
-        <translation>Fr</translation>
+        <translation type="obsolete">Fr</translation>
     </message>
     <message>
         <source>Sa</source>
-        <translation>La</translation>
+        <translation type="obsolete">La</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>Hard</source>
-        <translation>Hard</translation>
+        <translation type="obsolete">Hard</translation>
     </message>
     <message>
         <source>Gpi</source>
-        <translation>Gpi</translation>
+        <translation type="obsolete">Gpi</translation>
     </message>
     <message>
         <source>Len</source>
-        <translation>Len</translation>
+        <translation type="obsolete">Len</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Klipp</translation>
+        <translation type="obsolete">Klipp</translation>
     </message>
     <message>
         <source>PCM16</source>
-        <translation>PCM16</translation>
+        <translation type="obsolete">PCM16</translation>
     </message>
     <message>
         <source>MPEG Layer 1</source>
-        <translation>MPEG lag 1</translation>
+        <translation type="obsolete">MPEG lag 1</translation>
     </message>
     <message>
         <source>MPEG Layer 2</source>
-        <translation>MPEG lag 2</translation>
+        <translation type="obsolete">MPEG lag 2</translation>
     </message>
     <message>
         <source>MPEG Layer 3</source>
-        <translation>MPEG lag 3</translation>
+        <translation type="obsolete">MPEG lag 3</translation>
     </message>
     <message>
         <source>FLAC</source>
-        <translation>FLAC</translation>
+        <translation type="obsolete">FLAC</translation>
     </message>
     <message>
         <source>OggVorbis</source>
-        <translation>Ogg Vorbis</translation>
+        <translation type="obsolete">Ogg Vorbis</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Korg</translation>
+        <translation type="obsolete">Korg</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[inga]</translation>
+        <translation type="obsolete">[inga]</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1307,10 +1314,6 @@ ny</translation>
         <translation type="obsolete">Inga slik korg/klipp</translation>
     </message>
     <message>
-        <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Host</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1320,7 +1323,7 @@ ny</translation>
     </message>
     <message>
         <source>PCM24</source>
-        <translation type="unfinished">PCM24</translation>
+        <translation type="obsolete">PCM24</translation>
     </message>
     <message>
         <source>Show Event Type</source>
@@ -1339,13 +1342,16 @@ ny</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Connection Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RecordListModel</name>
     <message>
         <source>Description</source>
         <translation type="unfinished"></translation>
@@ -1368,6 +1374,38 @@ ny</translation>
     </message>
     <message>
         <source>Destination</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Su</source>
+        <translation type="unfinished">Su</translation>
+    </message>
+    <message>
+        <source>Mo</source>
+        <translation type="unfinished">Må</translation>
+    </message>
+    <message>
+        <source>Tu</source>
+        <translation type="unfinished">Ty</translation>
+    </message>
+    <message>
+        <source>We</source>
+        <translation type="unfinished">On</translation>
+    </message>
+    <message>
+        <source>Th</source>
+        <translation type="unfinished">To</translation>
+    </message>
+    <message>
+        <source>Fr</source>
+        <translation type="unfinished">Fr</translation>
+    </message>
+    <message>
+        <source>Sa</source>
+        <translation type="unfinished">La</translation>
+    </message>
+    <message>
+        <source>RSS Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1407,8 +1445,24 @@ ny</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Deck</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Klipp</translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Korg</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished">ID</translation>
     </message>
     <message>
         <source>Type</source>
@@ -1424,6 +1478,58 @@ ny</translation>
     </message>
     <message>
         <source>State</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
+    <message>
+        <source>Hard</source>
+        <translation type="unfinished">Hard</translation>
+    </message>
+    <message>
+        <source>Gpi</source>
+        <translation type="unfinished">Gpi</translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished">Len</translation>
+    </message>
+    <message>
+        <source>PCM16</source>
+        <translation type="unfinished">PCM16</translation>
+    </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished">PCM24</translation>
+    </message>
+    <message>
+        <source>MPEG Layer 1</source>
+        <translation type="unfinished">MPEG lag 1</translation>
+    </message>
+    <message>
+        <source>MPEG Layer 2</source>
+        <translation type="unfinished">MPEG lag 2</translation>
+    </message>
+    <message>
+        <source>MPEG Layer 3</source>
+        <translation type="unfinished">MPEG lag 3</translation>
+    </message>
+    <message>
+        <source>FLAC</source>
+        <translation type="unfinished">FLAC</translation>
+    </message>
+    <message>
+        <source>OggVorbis</source>
+        <translation type="unfinished">Ogg Vorbis</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

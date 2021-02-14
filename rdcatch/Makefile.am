@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/rdcatch
 ##
-## (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -45,6 +45,7 @@ bin_PROGRAMS = rdcatch
 dist_rdcatch_SOURCES = add_recording.cpp add_recording.h\
                        catch_monitor.cpp catch_monitor.h\
                        catch_listview.cpp catch_listview.h\
+                       catchtableview.cpp catchtableview.h\
                        colors.h\
                        deckmon.cpp deckmon.h\
                        edit_cartevent.cpp edit_cartevent.h\
@@ -56,10 +57,12 @@ dist_rdcatch_SOURCES = add_recording.cpp add_recording.h\
                        globals.h\
                        list_reports.cpp list_reports.h\
                        rdcatch.cpp rdcatch.h\
+                       recordlistmodel.cpp recordlistmodel.h\
                        vbox.cpp vbox.h
 
 nodist_rdcatch_SOURCES = moc_add_recording.cpp\
                          moc_catch_listview.cpp\
+                         moc_catchtableview.cpp\
                          moc_deckmon.cpp\
                          moc_edit_cartevent.cpp\
                          moc_edit_download.cpp\
@@ -69,6 +72,7 @@ nodist_rdcatch_SOURCES = moc_add_recording.cpp\
                          moc_edit_upload.cpp\
                          moc_list_reports.cpp\
                          moc_rdcatch.cpp\
+                         moc_recordlistmodel.cpp\
                          moc_vbox.cpp
 
 

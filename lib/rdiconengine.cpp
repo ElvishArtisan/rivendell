@@ -252,6 +252,15 @@ RDIconEngine::RDIconEngine()
   d_application_icons.push_back(pixmap);
 
 
+  //
+  // Catch Icons
+  //
+  d_catch_icons.push_back(QPixmap(record_xpm));
+  d_catch_icons.push_back(QPixmap(rml5_xpm));
+  d_catch_icons.push_back(QPixmap(switch3_xpm));
+  d_catch_icons.push_back(QPixmap(play_xpm));
+  d_catch_icons.push_back(QPixmap(download_xpm));
+  d_catch_icons.push_back(QPixmap(upload_xpm));
 
   //
   // List Icons
@@ -301,6 +310,12 @@ QPixmap RDIconEngine::applicationIcon(RDIconEngine::Application app,
 				      int edge_size) const
 {
   return d_application_icons.at((int)app).value(edge_size,QPixmap());
+}
+
+
+QPixmap RDIconEngine::catchIcon(RDRecording::Type type)
+{
+  return d_catch_icons.at((int)type);
 }
 
 

@@ -44,6 +44,13 @@
     </message>
 </context>
 <context>
+    <name>CatchTableView</name>
+    <message>
+        <source>Edit Cue Markers</source>
+        <translation type="unfinished">&amp;Upravit značky CUE</translation>
+    </message>
+</context>
+<context>
     <name>DeckMon</name>
     <message>
         <source>MON</source>
@@ -1103,7 +1110,7 @@ nové</translation>
     </message>
     <message>
         <source>ID</source>
-        <translation>ID</translation>
+        <translation type="obsolete">ID</translation>
     </message>
     <message>
         <source>TYPE</source>
@@ -1147,19 +1154,19 @@ nové</translation>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Událost činná</translation>
+        <translation type="unfinished">Událost činná</translation>
     </message>
     <message>
         <source>You cannot edit an active event!</source>
-        <translation>Nemůžete upravovat činnou událost!</translation>
+        <translation type="unfinished">Nemůžete upravovat činnou událost!</translation>
     </message>
     <message>
         <source>Are you sure you want to delete event</source>
-        <translation>Jste si jistý, že chcete smazat událost</translation>
+        <translation type="obsolete">Jste si jistý, že chcete smazat událost</translation>
     </message>
     <message>
         <source>Delete Event</source>
-        <translation>Smazat událost</translation>
+        <translation type="unfinished">Smazat událost</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
@@ -1175,83 +1182,83 @@ nové</translation>
     </message>
     <message>
         <source>Su</source>
-        <translation>Ne</translation>
+        <translation type="obsolete">Ne</translation>
     </message>
     <message>
         <source>Mo</source>
-        <translation>Po</translation>
+        <translation type="obsolete">Po</translation>
     </message>
     <message>
         <source>Tu</source>
-        <translation>Út</translation>
+        <translation type="obsolete">Út</translation>
     </message>
     <message>
         <source>We</source>
-        <translation>St</translation>
+        <translation type="obsolete">St</translation>
     </message>
     <message>
         <source>Th</source>
-        <translation>Čt</translation>
+        <translation type="obsolete">Čt</translation>
     </message>
     <message>
         <source>Fr</source>
-        <translation>Pá</translation>
+        <translation type="obsolete">Pá</translation>
     </message>
     <message>
         <source>Sa</source>
-        <translation>So</translation>
+        <translation type="obsolete">So</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>Hard</source>
-        <translation>Ostré</translation>
+        <translation type="obsolete">Ostré</translation>
     </message>
     <message>
         <source>Gpi</source>
-        <translation>GPI</translation>
+        <translation type="obsolete">GPI</translation>
     </message>
     <message>
         <source>Len</source>
-        <translation>Délka</translation>
+        <translation type="obsolete">Délka</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Záběr</translation>
+        <translation type="obsolete">Záběr</translation>
     </message>
     <message>
         <source>PCM16</source>
-        <translation>PCM16</translation>
+        <translation type="obsolete">PCM16</translation>
     </message>
     <message>
         <source>MPEG Layer 1</source>
-        <translation>MPEG Layer 1</translation>
+        <translation type="obsolete">MPEG Layer 1</translation>
     </message>
     <message>
         <source>MPEG Layer 2</source>
-        <translation>MPEG Layer 2</translation>
+        <translation type="obsolete">MPEG Layer 2</translation>
     </message>
     <message>
         <source>MPEG Layer 3</source>
-        <translation>MPEG Layer 3</translation>
+        <translation type="obsolete">MPEG Layer 3</translation>
     </message>
     <message>
         <source>FLAC</source>
-        <translation>FLAC</translation>
+        <translation type="obsolete">FLAC</translation>
     </message>
     <message>
         <source>OggVorbis</source>
-        <translation>OggVorbis</translation>
+        <translation type="obsolete">OggVorbis</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Vozík</translation>
+        <translation type="obsolete">Vozík</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[žádný]</translation>
+        <translation type="obsolete">[žádný]</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1311,7 +1318,7 @@ nové</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Neznámý</translation>
+        <translation type="obsolete">Neznámý</translation>
     </message>
     <message>
         <source>Host</source>
@@ -1323,7 +1330,7 @@ nové</translation>
     </message>
     <message>
         <source>PCM24</source>
-        <translation type="unfinished">PCM24</translation>
+        <translation type="obsolete">PCM24</translation>
     </message>
     <message>
         <source>Show Event Type</source>
@@ -1342,13 +1349,16 @@ nové</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Connection Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RecordListModel</name>
     <message>
         <source>Description</source>
         <translation type="unfinished"></translation>
@@ -1371,6 +1381,38 @@ nové</translation>
     </message>
     <message>
         <source>Destination</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Su</source>
+        <translation type="unfinished">Ne</translation>
+    </message>
+    <message>
+        <source>Mo</source>
+        <translation type="unfinished">Po</translation>
+    </message>
+    <message>
+        <source>Tu</source>
+        <translation type="unfinished">Út</translation>
+    </message>
+    <message>
+        <source>We</source>
+        <translation type="unfinished">St</translation>
+    </message>
+    <message>
+        <source>Th</source>
+        <translation type="unfinished">Čt</translation>
+    </message>
+    <message>
+        <source>Fr</source>
+        <translation type="unfinished">Pá</translation>
+    </message>
+    <message>
+        <source>Sa</source>
+        <translation type="unfinished">So</translation>
+    </message>
+    <message>
+        <source>RSS Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1410,8 +1452,24 @@ nové</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Deck</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Vozík</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished">ID</translation>
     </message>
     <message>
         <source>Type</source>
@@ -1428,6 +1486,58 @@ nové</translation>
     <message>
         <source>State</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished">[žádný]</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
+    <message>
+        <source>Hard</source>
+        <translation type="unfinished">Ostré</translation>
+    </message>
+    <message>
+        <source>Gpi</source>
+        <translation type="unfinished">GPI</translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished">Délka</translation>
+    </message>
+    <message>
+        <source>PCM16</source>
+        <translation type="unfinished">PCM16</translation>
+    </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished">PCM24</translation>
+    </message>
+    <message>
+        <source>MPEG Layer 1</source>
+        <translation type="unfinished">MPEG Layer 1</translation>
+    </message>
+    <message>
+        <source>MPEG Layer 2</source>
+        <translation type="unfinished">MPEG Layer 2</translation>
+    </message>
+    <message>
+        <source>MPEG Layer 3</source>
+        <translation type="unfinished">MPEG Layer 3</translation>
+    </message>
+    <message>
+        <source>FLAC</source>
+        <translation type="unfinished">FLAC</translation>
+    </message>
+    <message>
+        <source>OggVorbis</source>
+        <translation type="unfinished">OggVorbis</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished">Neznámý</translation>
     </message>
 </context>
 </TS>

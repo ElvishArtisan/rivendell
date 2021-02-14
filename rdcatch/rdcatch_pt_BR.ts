@@ -44,6 +44,13 @@
     </message>
 </context>
 <context>
+    <name>CatchTableView</name>
+    <message>
+        <source>Edit Cue Markers</source>
+        <translation type="unfinished">Editar Marcadores</translation>
+    </message>
+</context>
+<context>
     <name>DeckMon</name>
     <message>
         <source>MON</source>
@@ -1103,7 +1110,7 @@ Novo</translation>
     </message>
     <message>
         <source>ID</source>
-        <translation>ID</translation>
+        <translation type="obsolete">ID</translation>
     </message>
     <message>
         <source>TYPE</source>
@@ -1147,19 +1154,19 @@ Novo</translation>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Evento Ativo</translation>
+        <translation type="unfinished">Evento Ativo</translation>
     </message>
     <message>
         <source>You cannot edit an active event!</source>
-        <translation>Você não pode editar um evento ativo!</translation>
+        <translation type="unfinished">Você não pode editar um evento ativo!</translation>
     </message>
     <message>
         <source>Are you sure you want to delete event</source>
-        <translation>Tem certeza que quer deletar este evento</translation>
+        <translation type="obsolete">Tem certeza que quer deletar este evento</translation>
     </message>
     <message>
         <source>Delete Event</source>
-        <translation>Deletar Evento</translation>
+        <translation type="unfinished">Deletar Evento</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
@@ -1175,83 +1182,83 @@ Novo</translation>
     </message>
     <message>
         <source>Su</source>
-        <translation>Dom</translation>
+        <translation type="obsolete">Dom</translation>
     </message>
     <message>
         <source>Mo</source>
-        <translation>Seg</translation>
+        <translation type="obsolete">Seg</translation>
     </message>
     <message>
         <source>Tu</source>
-        <translation>Ter</translation>
+        <translation type="obsolete">Ter</translation>
     </message>
     <message>
         <source>We</source>
-        <translation>Qua</translation>
+        <translation type="obsolete">Qua</translation>
     </message>
     <message>
         <source>Th</source>
-        <translation>Qui</translation>
+        <translation type="obsolete">Qui</translation>
     </message>
     <message>
         <source>Fr</source>
-        <translation>Sex</translation>
+        <translation type="obsolete">Sex</translation>
     </message>
     <message>
         <source>Sa</source>
-        <translation>Sab</translation>
+        <translation type="obsolete">Sab</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>Hard</source>
-        <translation>Certa</translation>
+        <translation type="obsolete">Certa</translation>
     </message>
     <message>
         <source>Gpi</source>
-        <translation>Gpi</translation>
+        <translation type="obsolete">Gpi</translation>
     </message>
     <message>
         <source>Len</source>
-        <translation>Dur</translation>
+        <translation type="obsolete">Dur</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Conteúdo</translation>
+        <translation type="obsolete">Conteúdo</translation>
     </message>
     <message>
         <source>PCM16</source>
-        <translation>PCM16</translation>
+        <translation type="obsolete">PCM16</translation>
     </message>
     <message>
         <source>MPEG Layer 1</source>
-        <translation>MPEG Layer 1</translation>
+        <translation type="obsolete">MPEG Layer 1</translation>
     </message>
     <message>
         <source>MPEG Layer 2</source>
-        <translation>MPEG Layer 2</translation>
+        <translation type="obsolete">MPEG Layer 2</translation>
     </message>
     <message>
         <source>MPEG Layer 3</source>
-        <translation>MPEG Layer 3</translation>
+        <translation type="obsolete">MPEG Layer 3</translation>
     </message>
     <message>
         <source>FLAC</source>
-        <translation>FLAC</translation>
+        <translation type="obsolete">FLAC</translation>
     </message>
     <message>
         <source>OggVorbis</source>
-        <translation>OggVorbis</translation>
+        <translation type="obsolete">OggVorbis</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Cartão</translation>
+        <translation type="obsolete">Cartão</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[nenhum]</translation>
+        <translation type="obsolete">[nenhum]</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1310,10 +1317,6 @@ Novo</translation>
         <translation type="obsolete">Este Cartão não existe</translation>
     </message>
     <message>
-        <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Host</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1323,7 +1326,7 @@ Novo</translation>
     </message>
     <message>
         <source>PCM24</source>
-        <translation type="unfinished">PCM24</translation>
+        <translation type="obsolete">PCM24</translation>
     </message>
     <message>
         <source>Show Event Type</source>
@@ -1342,13 +1345,16 @@ Novo</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Connection Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RecordListModel</name>
     <message>
         <source>Description</source>
         <translation type="unfinished"></translation>
@@ -1371,6 +1377,38 @@ Novo</translation>
     </message>
     <message>
         <source>Destination</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Su</source>
+        <translation type="unfinished">Dom</translation>
+    </message>
+    <message>
+        <source>Mo</source>
+        <translation type="unfinished">Seg</translation>
+    </message>
+    <message>
+        <source>Tu</source>
+        <translation type="unfinished">Ter</translation>
+    </message>
+    <message>
+        <source>We</source>
+        <translation type="unfinished">Qua</translation>
+    </message>
+    <message>
+        <source>Th</source>
+        <translation type="unfinished">Qui</translation>
+    </message>
+    <message>
+        <source>Fr</source>
+        <translation type="unfinished">Sex</translation>
+    </message>
+    <message>
+        <source>Sa</source>
+        <translation type="unfinished">Sab</translation>
+    </message>
+    <message>
+        <source>RSS Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1410,8 +1448,24 @@ Novo</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Deck</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Conteúdo</translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Cartão</translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished">ID</translation>
     </message>
     <message>
         <source>Type</source>
@@ -1427,6 +1481,58 @@ Novo</translation>
     </message>
     <message>
         <source>State</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished">[nenhum]</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
+    <message>
+        <source>Hard</source>
+        <translation type="unfinished">Certa</translation>
+    </message>
+    <message>
+        <source>Gpi</source>
+        <translation type="unfinished">Gpi</translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished">Dur</translation>
+    </message>
+    <message>
+        <source>PCM16</source>
+        <translation type="unfinished">PCM16</translation>
+    </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished">PCM24</translation>
+    </message>
+    <message>
+        <source>MPEG Layer 1</source>
+        <translation type="unfinished">MPEG Layer 1</translation>
+    </message>
+    <message>
+        <source>MPEG Layer 2</source>
+        <translation type="unfinished">MPEG Layer 2</translation>
+    </message>
+    <message>
+        <source>MPEG Layer 3</source>
+        <translation type="unfinished">MPEG Layer 3</translation>
+    </message>
+    <message>
+        <source>FLAC</source>
+        <translation type="unfinished">FLAC</translation>
+    </message>
+    <message>
+        <source>OggVorbis</source>
+        <translation type="unfinished">OggVorbis</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

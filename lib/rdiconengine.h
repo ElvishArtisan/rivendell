@@ -24,6 +24,7 @@
 #include <QMap>
 #include <QPixmap>
 
+#include <rdrecording.h>
 #include <rdlog_line.h>
 #include <rduser.h>
 
@@ -38,6 +39,7 @@ class RDIconEngine
 		    RdLogManager=8,RdPanel=9,LastApplication=10};
   RDIconEngine();
   QPixmap applicationIcon(Application app,int edge_size) const;
+  QPixmap catchIcon(RDRecording::Type type);
   QPixmap listIcon(IconType type) const;
   QPixmap stationIcon() const;
   QPixmap typeIcon(RDLogLine::Type type,
@@ -46,6 +48,7 @@ class RDIconEngine
 
  private:
   QList<QMap<int,QPixmap> > d_application_icons;
+  QList<QPixmap> d_catch_icons;
   QList<QPixmap> d_list_icons;
   QPixmap d_station_icon;
   QMap<RDLogLine::Type,QPixmap> log_type_icons;

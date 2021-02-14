@@ -2,7 +2,7 @@
 //
 // Add a Rivendell RDCatch Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qevent.h>
+#include <QKeyEvent>
 
 #include "add_recording.h"
 #include "edit_recording.h"
@@ -31,10 +30,10 @@
 
 extern RDStation *rdstation_conf;
 
-AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
+AddRecording::AddRecording(QString *filter,QWidget *parent)
   : RDDialog(parent,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
 {
-  add_id=id;
+  add_id=-1;
   add_filter=filter;
 
   setWindowTitle("RDCatch");
@@ -48,7 +47,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   // Title Label
   //
-  QLabel *label=new QLabel(tr("Schedule a:"),this,"title_label");
+  QLabel *label=new QLabel(tr("Schedule a:"),this);
   label->setGeometry(0,0,sizeHint().width(),30);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
@@ -56,7 +55,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   //  Recording Button
   //
-  QPushButton *button=new QPushButton(this,"recording_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(10,30,sizeHint().width()-20,50);
   button->setFont(buttonFont());
   button->setText(tr("&Recording"));
@@ -73,7 +72,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   //  Playout Button
   //
-  button=new QPushButton(this,"playout_button");
+  button=new QPushButton(this);
   button->setGeometry(10,80,sizeHint().width()-20,50);
   button->setFont(buttonFont());
   button->setText(tr("&Playout"));
@@ -90,7 +89,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   //  Download Event Button
   //
-  button=new QPushButton(this,"download_button");
+  button=new QPushButton(this);
   button->setGeometry(10,130,sizeHint().width()-20,50);
   button->setFont(buttonFont());
   button->setText(tr("&Download"));
@@ -99,7 +98,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   //  Upload Event Button
   //
-  button=new QPushButton(this,"upload_button");
+  button=new QPushButton(this);
   button->setGeometry(10,180,sizeHint().width()-20,50);
   button->setFont(buttonFont());
   button->setText(tr("&Upload"));
@@ -108,7 +107,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   //  Macro Event Cart Button
   //
-  button=new QPushButton(this,"macro_button");
+  button=new QPushButton(this);
   button->setGeometry(10,230,sizeHint().width()-20,50);
   button->setFont(buttonFont());
   button->setText(tr("&Macro Cart"));
@@ -117,7 +116,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   //  Switch Event Cart Button
   //
-  button=new QPushButton(this,"switch_button");
+  button=new QPushButton(this);
   button->setGeometry(10,280,sizeHint().width()-20,50);
   button->setFont(buttonFont());
   button->setText(tr("&Switch Event"));
@@ -126,7 +125,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(10,350,sizeHint().width()-20,50);
   button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
@@ -152,6 +151,15 @@ QSizePolicy AddRecording::sizePolicy() const
 }
 
 
+int AddRecording::exec(RDRecording::Type *type,int rec_id)
+{
+  add_id=rec_id;
+  add_type=type;
+
+  return QDialog::exec();
+}
+
+
 void AddRecording::closeEvent(QCloseEvent *e)
 {
   cancelData();
@@ -163,11 +171,12 @@ void AddRecording::recordingData()
   EditRecording *recording=new EditRecording(add_id,NULL,add_filter,this);
   if(!recording->exec()) {
     delete recording;
-    done(-1);
+    done(false);
     return;
   }
   delete recording;
-  done((int)RDRecording::Recording);
+  *add_type=RDRecording::Recording;
+  done(true);
 }
 
 
@@ -176,11 +185,12 @@ void AddRecording::playoutData()
   EditPlayout *playout=new EditPlayout(add_id,NULL,add_filter,this);
   if(!playout->exec()) {
     delete playout;
-    done(-1);
+    done(false);
     return;
   }
   delete playout;
-  done((int)RDRecording::Playout);
+  *add_type=RDRecording::Playout;
+  done(true);
 }
 
 
@@ -190,11 +200,12 @@ void AddRecording::downloadData()
     new EditDownload(add_id,NULL,add_filter,this);
   if(!recording->exec()) {
     delete recording;
-    done(-1);
+    done(false);
     return;
   }
   delete recording;
-  done((int)RDRecording::Download);
+  *add_type=RDRecording::Download;
+  done(true);
 }
 
 
@@ -203,11 +214,12 @@ void AddRecording::uploadData()
   EditUpload *recording=new EditUpload(add_id,NULL,add_filter,this);
   if(!recording->exec()) {
     delete recording;
-    done(-1);
+    done(false);
     return;
   }
   delete recording;
-  done((int)RDRecording::Upload);
+  *add_type=RDRecording::Upload;
+  done(true);
 }
 
 
@@ -216,11 +228,12 @@ void AddRecording::macroData()
   EditCartEvent *recording=new EditCartEvent(add_id,NULL,this);
   if(!recording->exec()) {
     delete recording;
-    done(-1);
+    done(false);
     return;
   }
   delete recording;
-  done((int)RDRecording::MacroEvent);
+  *add_type=RDRecording::MacroEvent;
+  done(true);
 }
 
 
@@ -229,17 +242,18 @@ void AddRecording::switchData()
   EditSwitchEvent *recording=new EditSwitchEvent(add_id,NULL,this);
   if(!recording->exec()) {
     delete recording;
-    done(-1);
+    done(false);
     return;
   }
   delete recording;
-  done((int)RDRecording::SwitchEvent);
+  *add_type=RDRecording::SwitchEvent;
+  done(true);
 }
 
 
 void AddRecording::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 
