@@ -21121,3 +21121,5 @@
 2021-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Reenabled the 'Import' button on the 'Scheduler Rules' dialog
 	in rdlogmanager(1).
+2021-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead code from rdcatch(1).

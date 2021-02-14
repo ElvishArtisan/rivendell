@@ -1181,7 +1181,6 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 
 int MainWidget::ShowNextEvents(int day,QTime time,QTime *next)
 {
-  //  RDListViewItem *item=NULL;
   QString sql;
   int count=0;
   if(time.isNull()) {
