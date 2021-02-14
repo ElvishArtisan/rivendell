@@ -40,7 +40,7 @@
     <name>CatchListView</name>
     <message>
         <source>Edit Cue Markers</source>
-        <translation>Editar marcadores Cue</translation>
+        <translation type="obsolete">Editar marcadores Cue</translation>
     </message>
 </context>
 <context>

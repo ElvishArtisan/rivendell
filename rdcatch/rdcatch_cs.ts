@@ -40,7 +40,7 @@
     <name>CatchListView</name>
     <message>
         <source>Edit Cue Markers</source>
-        <translation>&amp;Upravit značky CUE</translation>
+        <translation type="obsolete">&amp;Upravit značky CUE</translation>
     </message>
 </context>
 <context>

@@ -21,7 +21,6 @@ TEMPLATE = app
 
 x11 {
   SOURCES += add_recording.cpp
-  SOURCES += catch_listview.cpp
   SOURCES += catchtableview.cpp
   SOURCES += deckmon.cpp
   SOURCES += edit_cartevent.cpp
@@ -37,7 +36,6 @@ x11 {
 
 x11 {
   HEADERS += add_recording.h
-  HEADERS += catch_listview.h
   HEADERS += catchtableview.h
   HEADERS += deckmon.h
   HEADERS += edit_cartevent.h

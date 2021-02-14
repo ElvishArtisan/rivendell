@@ -37,13 +37,6 @@
     </message>
 </context>
 <context>
-    <name>CatchListView</name>
-    <message>
-        <source>Edit Cue Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CatchTableView</name>
     <message>
         <source>Edit Cue Markers</source>

@@ -44,7 +44,6 @@ bin_PROGRAMS = rdcatch
 
 dist_rdcatch_SOURCES = add_recording.cpp add_recording.h\
                        catch_monitor.cpp catch_monitor.h\
-                       catch_listview.cpp catch_listview.h\
                        catchtableview.cpp catchtableview.h\
                        colors.h\
                        deckmon.cpp deckmon.h\
@@ -61,7 +60,6 @@ dist_rdcatch_SOURCES = add_recording.cpp add_recording.h\
                        vbox.cpp vbox.h
 
 nodist_rdcatch_SOURCES = moc_add_recording.cpp\
-                         moc_catch_listview.cpp\
                          moc_catchtableview.cpp\
                          moc_deckmon.cpp\
                          moc_edit_cartevent.cpp\
