@@ -847,6 +847,10 @@ Você quer salvar?</translation>
         <source>&amp;Close</source>
         <translation type="unfinished">&amp;Fechar</translation>
     </message>
+    <message>
+        <source>Import Rules from Clock</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditTrack</name>

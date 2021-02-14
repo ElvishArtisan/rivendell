@@ -43,6 +43,7 @@ class SchedRulesModel : public QAbstractTableModel
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
   unsigned ruleId(const QModelIndex &row) const;
+  void refresh();
   void refresh(const QModelIndex &row);
   void refresh(unsigned id);
 

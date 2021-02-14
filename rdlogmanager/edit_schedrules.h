@@ -52,9 +52,7 @@ class EditSchedRules : public RDDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  //  void Load();
   QLabel *list_box_label;
-  //  RDListView *edit_schedcodes_view;
   RDTableView *edit_schedcodes_view;
   SchedRulesModel *edit_schedcodes_model;
   QString edit_clockname;

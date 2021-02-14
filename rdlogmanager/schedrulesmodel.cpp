@@ -153,6 +153,12 @@ unsigned SchedRulesModel::ruleId(const QModelIndex &row) const
 }
 
 
+void SchedRulesModel::refresh()
+{
+  updateModel();
+}
+
+
 void SchedRulesModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {

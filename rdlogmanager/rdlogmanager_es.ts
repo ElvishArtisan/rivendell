@@ -845,7 +845,7 @@ Do you want to save?</source>
     </message>
     <message>
         <source>Import Rules from Clock</source>
-        <translation type="obsolete">Importar reglas desde Torta</translation>
+        <translation type="unfinished">Importar reglas desde Torta</translation>
     </message>
     <message>
         <source>None</source>

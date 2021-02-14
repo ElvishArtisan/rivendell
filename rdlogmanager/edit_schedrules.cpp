@@ -90,23 +90,10 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,
 	  edit_schedcodes_view,SLOT(resizeColumnsToContents()));
   edit_schedcodes_view->resizeColumnsToContents();
 
-  /*
-  edit_schedcodes_view=new RDListView(this);
-  edit_schedcodes_view->setAllColumnsShowFocus(true);
-  edit_schedcodes_view->addColumn(tr("CODE"));
-  edit_schedcodes_view->addColumn(tr("MAX. IN A ROW"));
-  edit_schedcodes_view->addColumn(tr("MIN. WAIT"));
-  edit_schedcodes_view->addColumn(tr("DO NOT SCHEDULE AFTER"));
-  edit_schedcodes_view->addColumn(tr("OR AFTER"));
-  edit_schedcodes_view->addColumn(tr("OR AFTER"));
-  edit_schedcodes_view->addColumn(tr("DESCRIPTION"));
-  */
-  
   list_box_label=
     new QLabel(edit_schedcodes_view,tr("Scheduler Codes:"),this);
   list_box_label->setFont(labelFont());
   edit_modified=false;
- // Load();
 }
 
 
@@ -139,76 +126,79 @@ void EditSchedRules::editData()
   if(list_editrules_dialog->exec(edit_schedcodes_model->ruleId(rows.first()))) {
     edit_schedcodes_model->refresh(rows.first());
   }
-  /*
-  RDListViewItem *item=(RDListViewItem *)edit_schedcodes_view->selectedItem();
-  if(item==NULL) {
-    return;
-  }
-  EditSchedCodeRules *edit_CodeRules=
-    new EditSchedCodeRules(item,edit_sched_rules_list,this);
-  if(edit_CodeRules->exec()>=0)
-    {
-    edit_modified=true; 
-    }
-  delete edit_CodeRules;
-  edit_CodeRules=NULL;
-  */
 }
 
 
 void EditSchedRules::importData()
 {
-  /*
-  QModelIndexList rows=edit_schedcodes_view->selectionModel()->selectedRows();
-
-  if(rows.size()!=1) {
-    return;
-  }
-  
-  //  RDListViewItem *item;
+  QString src_clockname;
   QString sql;
   RDSqlQuery *q;
 
-  ListClocks *listclocks=new ListClocks(&clockname,this);
+  ListClocks *listclocks=new ListClocks(&src_clockname,this);
   listclocks->setWindowTitle("RDLogManager - "+tr("Import Rules from Clock"));
-  if(!listclocks->exec()) {
+  if(!listclocks->exec()<0) {
     delete listclocks;
     return;
   }
   delete listclocks;
 
   sql=QString("select ")+
-    "
-  RDSchedRulesList *import_list=new RDSchedRulesList(clockname,rda->config()); 
+    "ID,"+           // 00
+    "CODE,"+         // 01
+    "MAX_ROW,"+      // 02
+    "MIN_WAIT,"+     // 03
+    "NOT_AFTER,"+    // 04
+    "OR_AFTER,"+     // 05
+    "OR_AFTER_II "+  // 06
+    "from RULE_LINES where "+
+    "CLOCK_NAME=\""+RDEscapeString(src_clockname)+"\" "+
+    "order by CODE";
 
-  edit_schedcodes_view->clear();
-  for (int i=0; i<import_list->getNumberOfItems(); i++)  
-    {
-    item=new RDListViewItem(edit_schedcodes_view);
-    item->setId(i);
-    item->setText(0,import_list->getItemSchedCode(i));
-    str=QString().sprintf("%d",import_list->getItemMaxRow(i));
-    item->setText(1,str);
-    str=QString().sprintf("%d",import_list->getItemMinWait(i));
-    item->setText(2,str);
-    item->setText(3,import_list->getItemNotAfter(i));
-    item->setText(4,import_list->getItemOrAfter(i));
-    item->setText(5,import_list->getItemOrAfterII(i));
-    item->setText(6,import_list->getItemDescription(i));
-    }
-  delete import_list;
-
-  sql=QString("select ARTISTSEP from CLOCKS where ")+
-    "NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
-  if (q->first())
-    {
-    *edit_artistsep=q->value(0).toUInt();
-    //    edit_artist_sep_spin->setValue(*edit_artistsep);
+  while(q->next()) {
+    sql=QString("update RULE_LINES set ");
+    if(q->value(2).isNull()) {
+      sql+="MAX_ROW=null,";
     }
-  delete q; 
-  edit_modified=true;
-  */
+    else {
+      sql+=QString().sprintf("MAX_ROW=%u,",q->value(2).toUInt());
+    }
+    if(q->value(3).isNull()) {
+      sql+="MIN_WAIT=null,";
+    }
+    else {
+      sql+=QString().sprintf("MIN_WAIT=%u,",q->value(3).toUInt());
+    }
+    if(q->value(4).isNull()) {
+      sql+="NOT_AFTER=null,";
+    }
+    else {
+      sql+="NOT_AFTER=\""+RDEscapeString(q->value(4).toString())+"\",";
+    }
+    
+    if(q->value(5).isNull()) {
+      sql+="OR_AFTER=null,";
+    }
+    else {
+      sql+="OR_AFTER=\""+RDEscapeString(q->value(5).toString())+"\",";
+    }
+    
+    if(q->value(6).isNull()) {
+      sql+="OR_AFTER_II=null ";
+    }
+    else {
+      sql+="OR_AFTER_II=\""+RDEscapeString(q->value(6).toString())+"\" ";
+    }
+    sql+=QString("where ")+
+      "CLOCK_NAME=\""+RDEscapeString(edit_clockname)+"\" && "+
+      "CODE=\""+RDEscapeString(q->value(1).toString())+"\"";
+
+    RDSqlQuery::apply(sql);
+  }
+  delete q;
+
+  edit_schedcodes_model->refresh();
 }
 
 
@@ -242,26 +232,3 @@ void EditSchedRules::resizeEvent(QResizeEvent *e)
 
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
-
-/*
-void EditSchedRules::Load()
-{
-  QString str;
-  RDListViewItem *item;
-
-  edit_schedcodes_view->clear();
-  for (int i=0; i<edit_sched_rules_list->getNumberOfItems(); i++) {
-    item=new RDListViewItem(edit_schedcodes_view);
-    item->setId(i);
-    item->setText(0,edit_sched_rules_list->getItemSchedCode(i));
-    str=QString().sprintf("%d",edit_sched_rules_list->getItemMaxRow(i));
-    item->setText(1,str);
-    str=QString().sprintf("%d",edit_sched_rules_list->getItemMinWait(i));
-    item->setText(2,str);
-    item->setText(3,edit_sched_rules_list->getItemNotAfter(i));
-    item->setText(4,edit_sched_rules_list->getItemOrAfter(i));
-    item->setText(5,edit_sched_rules_list->getItemOrAfterII(i));
-    item->setText(6,edit_sched_rules_list->getItemDescription(i));
-  }
-}
-*/

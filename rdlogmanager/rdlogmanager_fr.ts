@@ -596,6 +596,10 @@ already existing event.</source>
         <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Import Rules from Clock</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditTrack</name>
