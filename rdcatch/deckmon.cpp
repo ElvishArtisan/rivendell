@@ -94,7 +94,7 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   mon_event_label=new QLabel(this);
   mon_event_label->setFont(labelFont());
   mon_event_label->setAlignment(Qt::AlignCenter);
-  mon_event_label->setFrameStyle(Q3Frame::Panel|Q3Frame::Sunken);
+  mon_event_label->setFrameStyle(QFrame::Panel|QFrame::Sunken);
   mon_event_label->setPalette(mon_dark_palette);
   mon_event_label->setText("--");
   mon_event_timer=new QTimer(this);

@@ -20,9 +20,9 @@
 
 #include <assert.h>
 
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QMessageBox>
+#include <QTranslator>
 
 #include <rdprofile.h>
 #include <rdconf.h>
@@ -172,10 +172,10 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Deck Monitors
   //
-  catch_monitor_view=new Q3ScrollView(this,"",Qt::WNoAutoErase);
-  catch_monitor_vbox=new VBox(catch_monitor_view);
+  catch_monitor_area=new QScrollArea(this);
+  catch_monitor_vbox=new VBox(catch_monitor_area);
   catch_monitor_vbox->setSpacing(2);
-  catch_monitor_view->addChild(catch_monitor_vbox);
+  catch_monitor_area->setWidget(catch_monitor_vbox);
 
   QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(abortData(int)));
@@ -255,7 +255,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   }
   delete q;
   if(catch_monitor.size()==0) {
-    catch_monitor_view->hide();
+    catch_monitor_area->hide();
   }
 
   //
@@ -1130,25 +1130,25 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     return;
   }
   assert (e);
-  assert (catch_monitor_view);
+  assert (catch_monitor_area);
   if(catch_monitor.size()<=RDCATCH_MAX_VISIBLE_MONITORS) {
-    catch_monitor_view->
+    catch_monitor_area->
       setGeometry(10,10,e->size().width()-20,32*catch_monitor.size()+4);
     catch_monitor_vbox->
       setGeometry(0,0,e->size().width()-25,32*catch_monitor.size());
   }
   else {
-    catch_monitor_view->
+    catch_monitor_area->
       setGeometry(10,10,e->size().width()-20,32*RDCATCH_MAX_VISIBLE_MONITORS);
     catch_monitor_vbox->
       setGeometry(0,0,e->size().width()-
-		  catch_monitor_view->verticalScrollBar()->geometry().width()-
+		  catch_monitor_area->verticalScrollBar()->geometry().width()-
 		  25,32*catch_monitor.size());
   }
   int deck_height=0;  
   if (catch_monitor.size()>0){
-    deck_height=catch_monitor_view->geometry().y()+
-      catch_monitor_view->geometry().height();
+    deck_height=catch_monitor_area->geometry().y()+
+      catch_monitor_area->geometry().height();
   }
   catch_show_active_label->setGeometry(35,deck_height+4,155,20);
   catch_show_active_box->setGeometry(15,deck_height+7,15,15);

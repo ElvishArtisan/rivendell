@@ -23,6 +23,7 @@
 
 #include <QCheckBox>
 #include <QComboBox>
+#include <QScrollArea>
 
 #include <rdcatch_connect.h>
 #include <rdtableview.h>
@@ -118,7 +119,7 @@ class MainWidget : public RDWidget
   void LoadGeometry();
   void SaveGeometry();
   std::vector<CatchMonitor *> catch_monitor;
-  Q3ScrollView *catch_monitor_view;
+  QScrollArea *catch_monitor_area;
   VBox *catch_monitor_vbox;
   std::vector<CatchConnector *> catch_connect;
   QSqlDatabase *catch_db;

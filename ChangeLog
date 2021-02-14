@@ -21115,3 +21115,6 @@
 	based API.
 2021-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'CatchListView' widget from rdcatch(1).
+2021-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'Q3Frame' dependencies from rdcatch(1).
+	* Removed 'Q3ScrollView' dependencies from rdcatch(1).
