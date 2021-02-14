@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Report to CBSI DeltaFlex
 //
-//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,9 +25,9 @@
 #define CBSI_STATION_ID 1
 #define CBSI_SCHED_FLAG "C"
 
-#include <qfile.h>
-#include <qmessagebox.h>
-#include <q3textstream.h>
+#include <QFile>
+#include <QMessageBox>
+#include <QTextStream>
 
 #include "rddatedecode.h"
 #include "rddb.h"
@@ -47,8 +47,8 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
     delete file;
     return false;
   }
-  Q3TextStream *strm=new Q3TextStream(file);
-  strm->setEncoding(Q3TextStream::UnicodeUTF8);
+  QTextStream *strm=new QTextStream(file);
+  strm->setEncoding(QTextStream::UnicodeUTF8);
   if(useLeadingZeros()) {
     air_fmt=QString().sprintf("%%0%uu",cartDigits());
   }

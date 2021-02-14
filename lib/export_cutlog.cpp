@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Cut Report.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,10 +20,9 @@
 
 #include <stdio.h>
 
-#include <qfile.h>
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <Q3TextStream>
+#include <QFile>
+#include <QMessageBox>
+#include <QTextStream>
 
 #include <rdairplay_conf.h>
 #include <rdconf.h>
@@ -49,8 +48,8 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
     delete file;
     return false;
   }
-  Q3TextStream *strm=new Q3TextStream(file);
-  strm->setEncoding(Q3TextStream::UnicodeUTF8);
+  QTextStream *strm=new QTextStream(file);
+  strm->setEncoding(QTextStream::UnicodeUTF8);
   if(useLeadingZeros()) {
     cart_fmt=QString().sprintf("%%0%uu",cartDigits());
   }

@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Classical Music Playout report
 //
-//   (C) Copyright 2014,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2014-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qfile.h>
-#include <qmessagebox.h>
-#include <q3textstream.h>
+#include <QFile>
+#include <QMessageBox>
+#include <QTextStream>
 
 #include "rdairplay_conf.h"
 #include "rdconf.h"
@@ -36,7 +36,6 @@ bool RDReport::ExportMusicClassical(const QString &filename,
 {
   QString sql;
   RDSqlQuery *q;
-  //  FILE *f;
   QString cut;
   QString str;
   QString cart_fmt;
@@ -47,8 +46,8 @@ bool RDReport::ExportMusicClassical(const QString &filename,
     delete file;
     return false;
   }
-  Q3TextStream *strm=new Q3TextStream(file);
-  strm->setEncoding(Q3TextStream::UnicodeUTF8);
+  QTextStream *strm=new QTextStream(file);
+  strm->setEncoding(QTextStream::UnicodeUTF8);
   if(useLeadingZeros()) {
     cart_fmt=QString().sprintf("%%0%uu",cartDigits());
   }

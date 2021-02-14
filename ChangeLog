@@ -21129,3 +21129,5 @@
 2021-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'RDListView' class.
 	* Removed the 'RDListViewItem' class.
+2021-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'Q3TextStream' dependencies from 'librd'.

@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qfile.h>
-#include <q3textstream.h>
+#include <QFile>
+#include <QTextStream>
 
 #include "rdairplay_conf.h"
 #include "rdconf.h"
@@ -50,8 +50,8 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
     delete file;
     return false;
   }
-  Q3TextStream *strm=new Q3TextStream(file);
-  strm->setEncoding(Q3TextStream::UnicodeUTF8);
+  QTextStream *strm=new QTextStream(file);
+  strm->setEncoding(QTextStream::UnicodeUTF8);
   if(useLeadingZeros()) {
     cart_fmt=QString().sprintf("%%0%uu",cartDigits());
   }
