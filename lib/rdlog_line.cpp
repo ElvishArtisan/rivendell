@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Log Line.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,8 +19,6 @@
 //
 
 #include <syslog.h>
-
-#include <qobject.h>
 
 #include "rdapplication.h"
 #include "rddb.h"
@@ -189,7 +187,7 @@ void RDLogLine::clear()
   log_marker_comment="";
   log_marker_label="";
   log_marker_post_time=QTime();
-  log_listview=NULL;
+  //  log_listview=NULL;
   log_grace_time=0;
   log_forced_stop=false;
   log_play_position_changed=false;
@@ -1252,18 +1250,6 @@ QDateTime RDLogLine::endDatetime() const
 void RDLogLine::setEndDatetime(const QDateTime &datetime)
 {
   log_end_datetime=datetime;
-}
-
-
-RDListViewItem *RDLogLine::listViewItem() const
-{
-  return log_listview;
-}
-
-
-void RDLogLine::setListViewItem(RDListViewItem *listview)
-{
-  log_listview=listview;
 }
 
 

@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Log Line.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,12 @@
 #ifndef RDLOG_LINE_H
 #define RDLOG_LINE_H
 
-#include <qcolor.h>
-#include <qdatetime.h>
-#include <qmap.h>
-#include <qobject.h>
+#include <QColor>
+#include <QDateTime>
+#include <QMap>
+#include <QObject>
 
 #include <rdcart.h>
-#include <rdlistviewitem.h>
 
 class RDLogLine
 {
@@ -188,8 +187,6 @@ class RDLogLine
   void setStartDatetime(const QDateTime &datetime);
   QDateTime endDatetime() const;
   void setEndDatetime(const QDateTime &datetime);
-  RDListViewItem *listViewItem() const;
-  void setListViewItem(RDListViewItem *);
   RDLogLine::Type type() const;
   void setType(RDLogLine::Type type);
   QString markerComment() const;
@@ -354,7 +351,6 @@ class RDLogLine
   QString log_marker_comment;
   QString log_marker_label;
   QTime log_marker_post_time;
-  RDListViewItem *log_listview;
   QString log_port_name;
   int log_grace_time;
   bool log_forced_stop;

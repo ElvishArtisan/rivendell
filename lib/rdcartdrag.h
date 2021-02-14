@@ -24,6 +24,7 @@
 #include <QColor>
 #include <QMap>
 #include <QMimeData>
+#include <QMimeSource>
 #include <QPixmap>
 
 #include <rdcart.h>

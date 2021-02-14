@@ -21123,3 +21123,6 @@
 	in rdlogmanager(1).
 2021-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Removed dead code from rdcatch(1).
+2021-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDLogLine::listViewItem()' and
+	'RDLogLine::setListViewItem()' methods.

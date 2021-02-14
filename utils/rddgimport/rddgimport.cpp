@@ -23,6 +23,7 @@
 #include <QApplication>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QScrollBar>
 #include <QTranslator>
 
 #include <rdaudioimport.h>

@@ -22,6 +22,7 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QScrollBar>
 #include <QTranslator>
 
 #include <rdprofile.h>
