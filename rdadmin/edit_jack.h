@@ -29,7 +29,6 @@
 
 #include <rddialog.h>
 #include <rdjackclientlistmodel.h>
-#include <rdlistview.h>
 #include <rdstation.h>
 #include <rdtableview.h>
 

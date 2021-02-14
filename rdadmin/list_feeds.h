@@ -25,7 +25,6 @@
 
 #include <rddialog.h>
 #include <rdfeedlistmodel.h>
-#include <rdlistviewitem.h>
 #include <rdtableview.h>
 
 class ListFeeds : public RDDialog

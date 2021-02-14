@@ -21126,3 +21126,6 @@
 2021-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'RDLogLine::listViewItem()' and
 	'RDLogLine::setListViewItem()' methods.
+2021-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDListView' class.
+	* Removed the 'RDListViewItem' class.

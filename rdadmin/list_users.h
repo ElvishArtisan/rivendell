@@ -26,7 +26,6 @@
 
 #include <rddb.h>
 #include <rddialog.h>
-#include <rdlistviewitem.h>
 #include <rdtableview.h>
 #include <rduserlistmodel.h>
 

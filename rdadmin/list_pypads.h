@@ -24,7 +24,6 @@
 #include <QPushButton>
 
 #include <rddialog.h>
-#include <rdlistviewitem.h>
 #include <rdpypadlistmodel.h>
 #include <rdstation.h>
 #include <rdtableview.h>

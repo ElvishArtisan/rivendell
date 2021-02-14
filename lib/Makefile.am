@@ -172,8 +172,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdlist_groups.cpp rdlist_groups.h\
                         rdlist_logs.cpp rdlist_logs.h\
                         rdlistsvcs.cpp rdlistsvcs.h\
-                        rdlistview.cpp rdlistview.h\
-                        rdlistviewitem.cpp rdlistviewitem.h\
                         rdlivewire.cpp rdlivewire.h\
                         rdlivewiredestination.cpp rdlivewiredestination.h\
                         rdlivewiresource.cpp rdlivewiresource.h\
@@ -356,7 +354,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdlist_logs.cpp\
                           moc_rdlistselector.cpp\
                           moc_rdlistsvcs.cpp\
-                          moc_rdlistview.cpp\
                           moc_rdlivewire.cpp\
                           moc_rdlogfilter.cpp\
                           moc_rdlogimportmodel.cpp\

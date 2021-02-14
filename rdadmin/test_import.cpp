@@ -28,7 +28,6 @@
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <rdevent_line.h>
-#include <rdlistviewitem.h>
 #include <rdpasswd.h>
 
 #include "globals.h"

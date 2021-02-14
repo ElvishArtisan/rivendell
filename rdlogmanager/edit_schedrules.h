@@ -23,7 +23,6 @@
 #define EDIT_SCHEDRULES_H
 
 #include <rddialog.h>
-#include <rdlistview.h>
 #include <rdschedruleslist.h>
 #include <rdtableview.h>
 
