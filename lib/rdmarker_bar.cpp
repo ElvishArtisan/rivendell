@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
-#include <q3pointarray.h>
+#include <QPainter>
+#include <QPolygon>
 
 #include <rdmarker_bar.h>
 
@@ -83,14 +83,14 @@ void RDMarkerBar::DrawMap()
 {
   QPixmap *pix=new QPixmap(size());
   QPainter *p=new QPainter(pix);
-  Q3PointArray *pt;
+  QPolygon *pt;
   p->fillRect(0,0,size().width(),size().height(),backgroundColor());
   if(marker_length>0) {
     p->setPen(RD_CUEEDITOR_START_MARKER);
     p->setBrush(RD_CUEEDITOR_START_MARKER);
     p->fillRect(size().width()*marker_pos[RDMarkerBar::Start]/marker_length-2,0,
 		4,size().height(),RD_CUEEDITOR_START_MARKER);
-    pt=new Q3PointArray(3);
+    pt=new QPolygon(3);
     pt->setPoint(0,size().width()*marker_pos[RDMarkerBar::Start]/marker_length-2,
 		 size().height()/2-1);
     pt->setPoint(1,size().width()*marker_pos[RDMarkerBar::Start]/marker_length-12,
