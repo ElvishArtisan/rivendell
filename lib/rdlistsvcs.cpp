@@ -2,7 +2,7 @@
 //
 // Service Picker dialog
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,9 +35,18 @@ RDListSvcs::RDListSvcs(const QString &caption,QWidget *parent)
   //
   // Services
   //
-  edit_svc_list=new Q3ListBox(this);
-  connect(edit_svc_list,SIGNAL(doubleClicked(Q3ListBoxItem *)),
-	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
+  edit_svc_view=new RDTableView(this);
+  edit_svc_model=new RDServiceListModel(false,this);
+  edit_svc_model->setFont(font());
+  edit_svc_model->setPalette(palette());
+  edit_svc_view->setModel(edit_svc_model);
+  for(int i=2;i<edit_svc_model->columnCount();i++) {
+    edit_svc_view->hideColumn(i);
+  }
+  connect(edit_svc_model,SIGNAL(modelReset()),
+	  edit_svc_view,SLOT(resizeColumnsToContents()));
+  connect(edit_svc_view,SIGNAL(doubleClicked(const QModelIndex &)),
+  	  this,SLOT(cartDoubleClickedData(const QModelIndex &)));
 
   //
   //  Ok Button
@@ -77,26 +86,13 @@ QSizePolicy RDListSvcs::sizePolicy() const
 
 int RDListSvcs::exec(QString *svcname)
 {
-  QString sql;
-  RDSqlQuery *q;
-
   edit_svcname=svcname;
-  edit_svc_list->clear();
-  sql="select NAME from SERVICES order by NAME";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    edit_svc_list->insertItem(q->value(0).toString());
-    if(q->value(0).toString()==*edit_svcname) {
-      edit_svc_list->setCurrentItem(edit_svc_list->count()-1);
-    }
-  }
-  delete q;
 
   return QDialog::exec();
 }
 
 
-void RDListSvcs::doubleClickedData(Q3ListBoxItem *item)
+void RDListSvcs::doubleClickedData(const QModelIndex &index)
 {
   okData();
 }
@@ -104,9 +100,13 @@ void RDListSvcs::doubleClickedData(Q3ListBoxItem *item)
 
 void RDListSvcs::okData()
 {
-  if(edit_svc_list->currentItem()>=0) {
-    *edit_svcname=edit_svc_list->currentText();
+  QModelIndexList rows=edit_svc_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
+    return;
   }
+  *edit_svcname=edit_svc_model->serviceName(rows.first());
+
   done(0);
 }
 
@@ -119,7 +119,7 @@ void RDListSvcs::cancelData()
 
 void RDListSvcs::resizeEvent(QResizeEvent *e)
 {
-  edit_svc_list->setGeometry(10,10,size().width()-20,size().height()-80);
+  edit_svc_view->setGeometry(10,10,size().width()-20,size().height()-80);
   edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
