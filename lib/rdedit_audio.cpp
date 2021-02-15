@@ -586,7 +586,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //
   // Cut Gain Control
   //
-  edit_gain_control=new Q3RangeControl();
+  edit_gain_control=new QAbstractSlider(this);
   edit_gain_control->setRange(-1000,1000);
   edit_gain_control->setSteps(10,10);
   edit_gain_edit=new RDMarkerEdit(this);

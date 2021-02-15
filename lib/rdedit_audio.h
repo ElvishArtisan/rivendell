@@ -22,8 +22,8 @@
 #define RDEDIT_AUDIO_H
 
 #include <q3pointarray.h>
-#include <q3rangecontrol.h>
 
+#include <QAbstractSlider>
 #include <QAction>
 #include <QCheckBox>
 #include <QMenu>
@@ -184,7 +184,7 @@ class RDEditAudio : public RDDialog
   RDTransportButton *edit_pause_button;
   RDTransportButton *edit_stop_button;
   RDStereoMeter *edit_meter;
-  Q3RangeControl *edit_gain_control;
+  QAbstractSlider *edit_gain_control;
   RDMarkerEdit *edit_gain_edit;
   QTimer *edit_gain_timer;
   QTimer *edit_meter_timer;
