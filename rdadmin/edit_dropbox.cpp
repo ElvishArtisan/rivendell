@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Dropbox Configuration
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,21 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <q3buttongroup.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-
-#include <qcheckbox.h>
-#include <qcolordialog.h>
-#include <qevent.h>
-#include <qfiledialog.h>
-#include <qmessagebox.h>
-#include <qpainter.h>
-#include <qpushbutton.h>
-#include <qstring.h>
-#include <qvalidator.h>
+#include <QFileDialog>
+#include <QMessageBox>
 
 #include <rdapplication.h>
 #include <rdcart_dialog.h>

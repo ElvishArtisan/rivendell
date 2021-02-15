@@ -21153,3 +21153,5 @@
 	* Refactored the 'Select Group' dialog to use the model based API.
 2021-02-15 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3RangeControl' dependency from 'RDSlider'.
+2021-02-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ListBox' dependency from 'RDListSelector'.
