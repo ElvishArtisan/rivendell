@@ -2,7 +2,7 @@
 //
 //   An audio- and touchscreen-friendly slider widget.
 //
-//   (C) Copyright 2009,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,28 +18,21 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
-
 #include <QPainter>
-#include <QSize>
-#include <QRect>
-#include <QPaintEvent>
 #include <QMouseEvent>
-#include <QPixmap>
 
 #include "rdslider.h"
 
 RDSlider::RDSlider(QWidget *parent=0)
-  : QWidget(parent),Q3RangeControl()
+  : QAbstractSlider(parent)
 {
   init(RDSlider::Right);
-  update();
+  QWidget::update();
 }
 
 
 RDSlider::RDSlider(RDSlider::Orientation orient,QWidget *parent)
-  : QWidget(parent),Q3RangeControl()
+  : QAbstractSlider(parent)
 {
   init(orient);
   setOrientation(orient);
@@ -48,7 +41,7 @@ RDSlider::RDSlider(RDSlider::Orientation orient,QWidget *parent)
 
 RDSlider::RDSlider(int minValue,int maxValue,int pageStep,int value,
 	   RDSlider::Orientation orient,QWidget *parent)
-  : QWidget(parent),Q3RangeControl()
+  : QAbstractSlider(parent)
 {
   init(orient);
   setOrientation(orient);
@@ -111,7 +104,7 @@ void RDSlider::setMaxValue(int max_value)
 
 void RDSlider::setRange(int min_value,int max_value)
 {
-  Q3RangeControl::setRange(min_value,max_value);
+  QAbstractSlider::setRange(min_value,max_value);
   calcKnob();
   update(prev_knob);
   update(curr_knob);
@@ -178,7 +171,7 @@ void RDSlider::setValue(int setting)
 {
   if(!rdslider_moving) { 
    if(setting!=value()) {
-      Q3RangeControl::setValue(setting);
+      QAbstractSlider::setValue(setting);
       calcKnob();
       update(prev_knob);
       update(curr_knob);
@@ -351,7 +344,7 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 	  switch(rdslider_orient) {
 	      case RDSlider::Up:
 		if(value()!=maxValue()) {
-		  Q3RangeControl::setValue(maxValue());
+		  QAbstractSlider::setValue(maxValue());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -362,7 +355,7 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 		break;
 	      case RDSlider::Down:
 		if(value()!=minValue()) {
-		  Q3RangeControl::setValue(minValue());
+		  QAbstractSlider::setValue(minValue());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -388,7 +381,7 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 	  switch(rdslider_orient) {
 	      case RDSlider::Up:
 		if(value()!=minValue()) {
-		  Q3RangeControl::setValue(minValue());
+		  QAbstractSlider::setValue(minValue());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -399,7 +392,7 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 		break;
 	      case RDSlider::Down:
 		if(value()!=maxValue()) {
-		  Q3RangeControl::setValue(maxValue());
+		  QAbstractSlider::setValue(maxValue());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -436,7 +429,7 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 				    (geometry().height()-curr_knob.height())
 				    +minValue();
 	    if(value()!=knob_value) {
-	      Q3RangeControl::setValue(knob_value);
+	      QAbstractSlider::setValue(knob_value);
 	      if(tracking_enabled) {
 		emit valueChanged(value());
 	      }
@@ -452,7 +445,7 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 				    (curr_knob.height()-geometry().height())
 				    +minValue();
 	    if(value()!=knob_value) {
-	      Q3RangeControl::setValue(knob_value);
+	      QAbstractSlider::setValue(knob_value);
 	      if(tracking_enabled) {
 		emit valueChanged(value());
 	      }
@@ -477,7 +470,7 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 	  switch(rdslider_orient) {
 	      case RDSlider::Left:
 		if(value()!=maxValue()) {
-		  Q3RangeControl::setValue(maxValue());
+		  QAbstractSlider::setValue(maxValue());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -488,7 +481,7 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 		break;
 	      case RDSlider::Right:
 		if(value()!=minValue()) {
-		  Q3RangeControl::setValue(minValue());
+		  QAbstractSlider::setValue(minValue());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -514,7 +507,7 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 	  switch(rdslider_orient) {
 	      case RDSlider::Left:
 		if(value()!=minValue()) {
-		  Q3RangeControl::setValue(minValue());
+		  QAbstractSlider::setValue(minValue());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -525,7 +518,7 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 		break;
 	      case RDSlider::Right:
 		if(value()!=maxValue()) {
-		  Q3RangeControl::setValue(maxValue());
+		  QAbstractSlider::setValue(maxValue());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -562,7 +555,7 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 				    (geometry().width()-curr_knob.width())
 				    +minValue();
 	    if(value()!=knob_value) {
-	      Q3RangeControl::setValue(knob_value);
+	      QAbstractSlider::setValue(knob_value);
 	      if(tracking_enabled) {
 		emit valueChanged(value());
 	      }
@@ -577,7 +570,7 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 	      (curr_knob.width()-geometry().width())
 	      +minValue();
 	    if(value()!=knob_value) {
-	      Q3RangeControl::setValue(knob_value);
+	      QAbstractSlider::setValue(knob_value);
 	      if(tracking_enabled) {
 		emit valueChanged(value());
 	      }

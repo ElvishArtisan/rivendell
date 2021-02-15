@@ -2,7 +2,7 @@
 //
 //   An audio- and touchscreen-friendly slider widget.
 //
-//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -21,17 +21,9 @@
 #ifndef RDSLIDER_H
 #define RDSLIDER_H
 
-#include <Q3RangeControl>
-#include <QWidget>
-#include <QSlider>
-#include <QColor>
-#include <QPalette>
-#include <QSize>
-#include <QPixmap>
-#include <QMouseEvent>
-#include <QPaintEvent>
+#include <QAbstractSlider>
 
-class RDSlider : public QWidget,public Q3RangeControl
+class RDSlider : public QAbstractSlider
 {
   Q_OBJECT
  public:
