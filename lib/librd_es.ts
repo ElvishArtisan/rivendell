@@ -2047,23 +2047,23 @@ marcador</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation>Eliminar marcadores de hablar</translation>
+        <translation type="unfinished">Eliminar marcadores de hablar</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation>Eliminar marcadores Segue</translation>
+        <translation type="unfinished">Eliminar marcadores Segue</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation>Eliminar marcadores Hook</translation>
+        <translation type="unfinished">Eliminar marcadores Hook</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation>Eliminar marcador Fade entrada</translation>
+        <translation type="unfinished">Eliminar marcador Fade entrada</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation>Eliminar marcador Fade salida</translation>
+        <translation type="unfinished">Eliminar marcador Fade salida</translation>
     </message>
     <message>
         <source>dB</source>

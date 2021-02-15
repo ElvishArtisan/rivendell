@@ -2038,23 +2038,23 @@ markør</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation>Slett talemarkørar</translation>
+        <translation type="unfinished">Slett talemarkørar</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation>Slett overgangsmarkørar</translation>
+        <translation type="unfinished">Slett overgangsmarkørar</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation>Slett knaggmarkørar</translation>
+        <translation type="unfinished">Slett knaggmarkørar</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation>Slett Ton inn-markør</translation>
+        <translation type="unfinished">Slett Ton inn-markør</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation>Slett Ton ut-markør</translation>
+        <translation type="unfinished">Slett Ton ut-markør</translation>
     </message>
     <message>
         <source>dB</source>

@@ -1775,26 +1775,6 @@ Marker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete Talk Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Segue Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Hook Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Fade Up Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Fade Down Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>dB</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1859,6 +1839,26 @@ Are you sure you want to save?</source>
     <message>
         <source>More than half of the audio will be faded with these marker settings.
 Are you sure you want to save?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Fade Down Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Talk Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Segue Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Hook Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Fade Up Marker</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2069,23 +2069,23 @@ značku</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation>Smazat značky hovoru</translation>
+        <translation type="unfinished">Smazat značky hovoru</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation>Smazat značky přechodu</translation>
+        <translation type="unfinished">Smazat značky přechodu</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation>Smazat značky háčku (hook)</translation>
+        <translation type="unfinished">Smazat značky háčku (hook)</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation>Smazat značku zesílení</translation>
+        <translation type="unfinished">Smazat značku zesílení</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation>Smazat značku zeslabení</translation>
+        <translation type="unfinished">Smazat značku zeslabení</translation>
     </message>
     <message>
         <source>dB</source>

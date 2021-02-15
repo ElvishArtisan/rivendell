@@ -2,7 +2,7 @@
 //
 // Rivendell Audio Marker Editor
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,19 +22,13 @@
 #define RDEDIT_AUDIO_H
 
 #include <q3pointarray.h>
-#include <q3popupmenu.h>
 #include <q3rangecontrol.h>
 
-#include <qscrollbar.h>
-#include <qpixmap.h>
-#include <qimage.h>
-#include <qlineedit.h>
-#include <qcursor.h>
-#include <qlabel.h>
-#include <qspinbox.h>
-#include <qtimer.h>
-#include <qnamespace.h>
-#include <qcheckbox.h>
+#include <QAction>
+#include <QCheckBox>
+#include <QMenu>
+#include <QScrollBar>
+#include <QSpinBox>
 
 #include <rdcart.h>
 #include <rdcut.h>
@@ -143,13 +137,11 @@ class RDEditAudio : public RDDialog
   void DrawMaps();
   void UpdateCursors();
   void DrawCursors(int xpos,int ypos,int xsize,int ysize,int chan);
-  //  int DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
-  //		 int samp,int prev,QColor color,Arrow arrow,int apos,
-  //		 RDEditAudio::CuePoints pt,Qt::RasterOp op=Qt::CopyROP);
   int DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 		 int samp,int prev,QColor color,Arrow arrow,int apos,
 		 RDEditAudio::CuePoints pt,
-		 QPainter::CompositionMode op=QPainter::CompositionMode_SourceOver);
+		 QPainter::CompositionMode op=
+		 QPainter::CompositionMode_SourceOver);
   void EraseCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 		   int samp,int prev,QColor color,Arrow arrow,int apos);
   void DrawWave(int xsize,int ysize,int chan,QString label,QPixmap *pix);
@@ -161,7 +153,13 @@ class RDEditAudio : public RDDialog
   unsigned edit_sample_rate;
   unsigned edit_sample_length;
   unsigned edit_channels;
-  Q3PopupMenu *edit_menu;
+  int d_mouse_row;
+  QMenu *edit_menu;
+  QAction *edit_delete_fadedown_action;
+  QAction *edit_delete_fadeup_action;
+  QAction *edit_delete_hook_action;
+  QAction *edit_delete_segue_action;
+  QAction *edit_delete_talk_action;
   QScrollBar *edit_hscroll;
   QImage edit_left_ref_image;
   QImage edit_right_ref_image;

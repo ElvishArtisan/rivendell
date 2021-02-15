@@ -21143,3 +21143,5 @@
 	* Removed the 'Q3Frame' dependency from 'RDTimeEdit'.
 2021-02-15 Fred Gleason <fredg@paravelsystems.com>
 	* Reverted the removal of 'Q3SocketDevice' from 'RDCae'.
+2021-02-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3PopupMenu' dependency from 'RDEditAudio'.

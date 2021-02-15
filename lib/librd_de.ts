@@ -2057,23 +2057,23 @@ entfernen</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation>Mod.-Marker entfernen</translation>
+        <translation type="unfinished">Mod.-Marker entfernen</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation>Segue-Marker entfernen</translation>
+        <translation type="unfinished">Segue-Marker entfernen</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation>Hook-Marker entfernen</translation>
+        <translation type="unfinished">Hook-Marker entfernen</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation>Ein-Fade Marker entfernen</translation>
+        <translation type="unfinished">Ein-Fade Marker entfernen</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation>Aus-Fade Marker entfernen</translation>
+        <translation type="unfinished">Aus-Fade Marker entfernen</translation>
     </message>
     <message>
         <source>dB</source>

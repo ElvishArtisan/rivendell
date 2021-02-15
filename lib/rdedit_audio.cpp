@@ -2,7 +2,7 @@
 //
 // Rivendell Audio Marker Editor
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
 #include <math.h>
 
-#include <qgroupbox.h>
-#include <qpainter.h>
-#include <qsignalmapper.h>
-#include <qmessagebox.h>
+#include <QGroupBox>
+#include <QMessageBox>
+#include <QSignalMapper>
 
 #include "rd.h"
 #include "rdapplication.h"
@@ -51,10 +49,6 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //
   setMinimumSize(sizeHint());
   setMaximumSize(sizeHint());
-
-  //
-  // Generate Fonts
-  //
 
   is_playing=false;
   is_paused=false;
@@ -705,20 +699,20 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   DrawMaps();
 
   //
-  // The Edit Menu
+  // The Mouse Menu
   //
-  edit_menu=new Q3PopupMenu(this);
+  edit_menu=new QMenu(this);
   connect(edit_menu,SIGNAL(aboutToShow()),this,SLOT(updateMenuData()));
-  edit_menu->insertItem(tr("Delete Talk Markers"),this,
-			SLOT(deleteTalkData()),0,RDEditAudio::TalkStart);
-  edit_menu->insertItem(tr("Delete Segue Markers"),this,
-			SLOT(deleteSegueData()),0,RDEditAudio::SegueStart);
-  edit_menu->insertItem(tr("Delete Hook Markers"),this,
-			SLOT(deleteHookData()),0,RDEditAudio::HookStart);
-  edit_menu->insertItem(tr("Delete Fade Up Marker"),this,
-			SLOT(deleteFadeupData()),0,RDEditAudio::FadeUp);
-  edit_menu->insertItem(tr("Delete Fade Down Marker"),this,
-			SLOT(deleteFadedownData()),0,RDEditAudio::FadeDown);
+  edit_delete_talk_action=edit_menu->
+    addAction(tr("Delete Talk Markers"),this,SLOT(deleteTalkData()));
+  edit_delete_segue_action=edit_menu->
+    addAction(tr("Delete Segue Markers"),this,SLOT(deleteSegueData()));
+  edit_delete_hook_action=edit_menu->
+    addAction(tr("Delete Hook Markers"),this,SLOT(deleteHookData()));
+  edit_delete_fadeup_action=edit_menu->
+    addAction(tr("Delete Fade Up Marker"),this,SLOT(deleteFadeupData()));
+  edit_delete_fadedown_action=edit_menu->
+    addAction(tr("Delete Fade Down Marker"),this,SLOT(deleteFadedownData()));
 
   //
   // Populate Counter Fields
@@ -1346,66 +1340,16 @@ void RDEditAudio::cueEscData(int id)
 
 void RDEditAudio::updateMenuData()
 {
-  if(edit_cursors[RDEditAudio::Start]!=-1) {
-    edit_menu->setItemEnabled(RDEditAudio::Start,true);
-  }
-  else {
-    edit_menu->setItemEnabled(RDEditAudio::Start,false);
-  } 
-  if(edit_cursors[RDEditAudio::End]!=-1) {
-    edit_menu->setItemEnabled(RDEditAudio::End,true);
-  }
-  else {
-    edit_menu->setItemEnabled(RDEditAudio::End,false);
-  }
-  if(edit_cursors[RDEditAudio::SegueStart]!=-1) {
-    edit_menu->setItemEnabled(RDEditAudio::SegueStart,true);
-  }
-  else {
-    edit_menu->setItemEnabled(RDEditAudio::SegueStart,false);
-  }
-  if(edit_cursors[RDEditAudio::SegueEnd]!=-1) {
-    edit_menu->setItemEnabled(RDEditAudio::SegueEnd,true);
-  }
-  else {
-    edit_menu->setItemEnabled(RDEditAudio::SegueEnd,false);
-  }
-  if(edit_cursors[RDEditAudio::TalkStart]!=-1) {
-    edit_menu->setItemEnabled(RDEditAudio::TalkStart,true);
-  }
-  else {
-    edit_menu->setItemEnabled(RDEditAudio::TalkStart,false);
-  }
-  if(edit_cursors[RDEditAudio::TalkEnd]!=-1) {
-    edit_menu->setItemEnabled(RDEditAudio::TalkEnd,true);
-  }
-  else {
-    edit_menu->setItemEnabled(RDEditAudio::TalkEnd,false);
-  }
-  if(edit_cursors[RDEditAudio::FadeUp]!=-1) {
-    edit_menu->setItemEnabled(RDEditAudio::FadeUp,true);
-  }
-  else {
-    edit_menu->setItemEnabled(RDEditAudio::FadeUp,false);
-  }
-  if(edit_cursors[RDEditAudio::FadeDown]!=-1) {
-    edit_menu->setItemEnabled(RDEditAudio::FadeDown,true);
-  }
-  else {
-    edit_menu->setItemEnabled(RDEditAudio::FadeDown,false);
-  }
-  if(edit_cursors[RDEditAudio::HookStart]!=-1) {
-    edit_menu->setItemEnabled(RDEditAudio::HookStart,true);
-  }
-  else {
-    edit_menu->setItemEnabled(RDEditAudio::HookStart,false);
-  }
-  if(edit_cursors[RDEditAudio::HookEnd]!=-1) {
-    edit_menu->setItemEnabled(RDEditAudio::HookEnd,true);
-  }
-  else {
-    edit_menu->setItemEnabled(RDEditAudio::HookEnd,false);
-  }
+  edit_delete_fadedown_action->
+    setEnabled(edit_cursors[RDEditAudio::FadeDown]!=-1);
+  edit_delete_fadeup_action->
+    setEnabled(edit_cursors[RDEditAudio::FadeUp]!=-1);
+  edit_delete_hook_action->
+    setEnabled(edit_cursors[RDEditAudio::HookEnd]!=-1);
+  edit_delete_segue_action->
+    setEnabled(edit_cursors[RDEditAudio::SegueEnd]!=-1);
+  edit_delete_talk_action->
+    setEnabled(edit_cursors[RDEditAudio::TalkEnd]!=-1);
 }
 
 
@@ -1697,7 +1641,7 @@ void RDEditAudio::mousePressEvent(QMouseEvent *e)
       break;
 
     case Qt::RightButton:
-      edit_menu->setGeometry(e->x(),e->y()+53,
+      edit_menu->setGeometry(e->globalX(),e->globalY(),
 			     edit_menu->sizeHint().width(),
 			     edit_menu->sizeHint().height());
       edit_menu->exec();

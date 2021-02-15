@@ -2043,23 +2043,23 @@ Marcador</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation>Deletar Marcadores de Locução</translation>
+        <translation type="unfinished">Deletar Marcadores de Locução</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation>Deletar Marcadores de Sobre</translation>
+        <translation type="unfinished">Deletar Marcadores de Sobre</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation>Deletar Marcadores de Trechos</translation>
+        <translation type="unfinished">Deletar Marcadores de Trechos</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation>Deletar Marcadores de Fade Up</translation>
+        <translation type="unfinished">Deletar Marcadores de Fade Up</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation>Deletar Marcadores de Fade Down</translation>
+        <translation type="unfinished">Deletar Marcadores de Fade Down</translation>
     </message>
     <message>
         <source>dB</source>
