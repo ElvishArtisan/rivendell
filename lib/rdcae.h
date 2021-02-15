@@ -91,8 +91,10 @@ class RDCae : public QObject
   void playPositionChanged(int handle,unsigned sample);
   void timescalingSupported(int card,bool state);
 
- private slots:
+ public slots:
   void connectHost();
+
+ private slots:
   void caeSocketConnected();
   void caeSocketTimeout();
   void readyData();
