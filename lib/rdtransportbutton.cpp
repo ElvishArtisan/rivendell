@@ -2,7 +2,7 @@
 //
 //   An audio transport button widget.
 //
-//   (C) Copyright 2002,2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,13 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <q3pointarray.h>
-#include <qbitmap.h>
-#include <qpainter.h>
-#include <qpalette.h>
-#include <qpixmap.h>
-#include <qpushbutton.h>
-#include <qtimer.h>
+//#include <q3pointarray.h>
+
+#include <QBitmap>
+#include <QPainter>
+#include <QPolygon>
+#include <QTimer>
 
 #include "rdtransportbutton.h"
 
@@ -213,7 +212,7 @@ void RDTransportButton::updateCaps()
 
 void RDTransportButton::drawMask(QPixmap *cap)
 {
-  Q3PointArray triangle=Q3PointArray(3);
+  QPolygon triangle=QPolygon(3);
   QPainter b;
   QBitmap *bitmap=new QBitmap(capSize());
   int edge;
@@ -356,7 +355,7 @@ void RDTransportButton::drawMask(QPixmap *cap)
 void RDTransportButton::drawOnCap()
 {
   QPainter p;
-  Q3PointArray triangle=Q3PointArray(3);
+  QPolygon triangle=QPolygon(3);
   int edge;
 
   if(capSize().height()<capSize().width()) {
@@ -636,7 +635,7 @@ void RDTransportButton::drawOnCap()
 void RDTransportButton::drawOffCap()
 {
   QPainter p;
-  Q3PointArray triangle=Q3PointArray(3);
+  QPolygon triangle=QPolygon(3);
   int edge;
 
   if(capSize().height()<capSize().width()) {
