@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,7 @@
 #ifndef RDCAE_H
 #define RDCAE_H
 
-#include <QUdpSocket>
-#include <QTcpSocket>
+#include <q3socketdevice.h>
 
 #include <qlabel.h>
 #include <qobject.h>
@@ -43,6 +42,7 @@ class RDCae : public QObject
   enum AudioCoding {Pcm16=0,MpegL1=1,MpegL2=2,MpegL3=3,Pcm24=4};
   RDCae(RDStation *station,RDConfig *config,QObject *parent=0);
   ~RDCae();
+  void connectHost();
   void enableMetering(QList<int> *cards);
   bool loadPlay(int card,QString name,int *stream,int *handle);
   void unloadPlay(int handle);
@@ -91,12 +91,7 @@ class RDCae : public QObject
   void playPositionChanged(int handle,unsigned sample);
   void timescalingSupported(int card,bool state);
 
- public slots:
-  void connectHost();
-
  private slots:
-  void caeSocketConnected();
-  void caeSocketTimeout();
   void readyData();
   void readyData(int *stream,int *handle,QString name);
   void clockData();
@@ -108,9 +103,7 @@ class RDCae : public QObject
   int StreamNumber(const char *arg);
   int GetHandle(const char *arg);
   void UpdateMeters();
-  QTcpSocket *cae_socket;
-  QTimer *cae_socket_timer;
-  int cae_socket_count;
+  Q3SocketDevice *cae_socket;
   bool debug;
   char args[CAE_MAX_ARGS][CAE_MAX_LENGTH];
   int argnum;
@@ -119,7 +112,7 @@ class RDCae : public QObject
   bool input_status[RD_MAX_CARDS][RD_MAX_PORTS];
   int cae_handle[RD_MAX_CARDS][RD_MAX_STREAMS];
   unsigned cae_pos[RD_MAX_CARDS][RD_MAX_STREAMS];
-  QUdpSocket *cae_meter_socket;
+  Q3SocketDevice *cae_meter_socket;
   short cae_input_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_stream_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];

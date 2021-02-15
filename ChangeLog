@@ -21141,3 +21141,5 @@
 	* Removed the 'Q3Frame' dependency from 'RDCueEdit'.
 	* Removed the 'Q3Frame' dependency from 'RDMarkerBar'.
 	* Removed the 'Q3Frame' dependency from 'RDTimeEdit'.
+2021-02-15 Fred Gleason <fredg@paravelsystems.com>
+	* Reverted the removal of 'Q3SocketDevice' from 'RDCae'.

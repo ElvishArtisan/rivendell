@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,19 +48,16 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   //
   // TCP Connection
   //
-  cae_socket=new QTcpSocket(this);
-  connect(cae_socket,SIGNAL(connected()),this,SLOT(caeSocketConnected()));
-  cae_socket_count=10;
-  cae_socket_timer=new QTimer(this);
-  cae_socket_timer->setSingleShot(true);
-  connect(cae_socket_timer,SIGNAL(timeout()),this,SLOT(caeSocketTimeout()));
+  cae_socket=new Q3SocketDevice(Q3SocketDevice::Stream);
+  cae_socket->setBlocking(false);
 
   //
   // Meter Connection
   //
-  cae_meter_socket=new QUdpSocket(this);
+  cae_meter_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
+  cae_meter_socket->setBlocking(false);
   for(Q_INT16 i=30000;i<30100;i++) {
-    if(cae_meter_socket->bind(i)) {
+    if(cae_meter_socket->bind(QHostAddress(),i)) {
       i=31000;
     }
   }
@@ -100,9 +97,35 @@ RDCae::~RDCae() {
 }
 
 
+void RDCae::connectHost()
+{
+  int count=10;
+  //  QHostAddress addr;
+  QTimer *timer=new QTimer(this,"read_timer");
+
+  connect(timer,SIGNAL(timeout()),this,SLOT(readyData()));
+  timer->start(CAE_POLL_INTERVAL);
+  while((!cae_socket->connect(cae_station->caeAddress(cae_config),
+			      CAED_TCP_PORT))&&(--count>0)) {
+    usleep(100000);
+  } 
+  usleep(100000);
+  if(count>0) {
+    SendCommand(QString().sprintf("PW %s!",
+				  (const char *)cae_config->password()));
+    for(int i=0;i<RD_MAX_CARDS;i++) {
+      SendCommand(QString().sprintf("TS %d!",i));
+      for(int j=0;j<RD_MAX_PORTS;j++) {
+	SendCommand(QString().sprintf("IS %d %d!",i,j));
+      }
+    }
+  }
+}
+
+
 void RDCae::enableMetering(QList<int> *cards)
 {
-  QString cmd=QString().sprintf("ME %u",cae_meter_socket->localPort());
+  QString cmd=QString().sprintf("ME %u",cae_meter_socket->port());
   for(int i=0;i<cards->size();i++) {
     if(cards->at(i)>=0) {
       bool found=false;
@@ -351,42 +374,6 @@ bool RDCae::playPortActive(int card,int port,int except_stream)
 void RDCae::setPlayPortActive(int card,int port,int stream)
 {
   cae_output_status_flags[card][port][stream]=true;
-}
-
-
-void RDCae::connectHost()
-{
-  cae_socket_count=100;
-  cae_socket_timer->start(100000);
-  cae_socket->connectToHost(cae_station->caeAddress(cae_config),CAED_TCP_PORT);
-}
-
-
-void RDCae::caeSocketConnected()
-{
-  cae_socket_timer->stop();
-  SendCommand("PW "+cae_config->password()+"!");
-  for(int i=0;i<RD_MAX_CARDS;i++) {
-    SendCommand(QString().sprintf("TS %d!",i));
-    for(int j=0;j<RD_MAX_PORTS;j++) {
-      SendCommand(QString().sprintf("IS %d %d!",i,j));
-    }
-  }
-}
-
-
-void RDCae::caeSocketTimeout()
-{
-  cae_socket->disconnectFromHost();
-  if(--cae_socket_count==0) {
-    emit isConnected(false);
-    return;
-  }
-  delete cae_socket;
-  cae_socket=new QTcpSocket(this);
-  connect(cae_socket,SIGNAL(connected()),this,SLOT(caeSocketConnected()));
-  cae_socket_timer->start(100000);
-  cae_socket->connectToHost(cae_station->caeAddress(cae_config),CAED_TCP_PORT);
 }
 
 
@@ -655,7 +642,7 @@ void RDCae::UpdateMeters()
   int n;
   QStringList args;
 
-  while((n=cae_meter_socket->readDatagram(msg,1500))>0) {
+  while((n=cae_meter_socket->readBlock(msg,1500))>0) {
     msg[n]=0;
     args=QString(msg).split(" ");
     if(args[0]=="ML") {
