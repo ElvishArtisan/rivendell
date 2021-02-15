@@ -21,8 +21,6 @@
 #ifndef RDEDIT_AUDIO_H
 #define RDEDIT_AUDIO_H
 
-#include <q3pointarray.h>
-
 #include <QAbstractSlider>
 #include <QAction>
 #include <QCheckBox>
@@ -172,7 +170,7 @@ class RDEditAudio : public RDDialog
   RDMarkerEdit *edit_cursor_edit[RDEditAudio::LastMarker];
   QCursor *edit_arrow_cursor;
   QCursor *edit_cross_cursor;
-  Q3PointArray *edit_wave_array;
+  QPolygon *edit_wave_array;
   QSpinBox *edit_trim_box;
   RDMarkerButton *edit_cue_button[RDEditAudio::LastMarker];
   QString edit_cue_string;

@@ -695,7 +695,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
 			 tr("Unable to download peak data, error was:\n\"")+
 			 RDPeaksExport::errorText(conv_err)+"\".");
   }
-  edit_wave_array=new Q3PointArray(EDITAUDIO_WAVEFORM_WIDTH-2);
+  edit_wave_array=new QPolygon(EDITAUDIO_WAVEFORM_WIDTH-2);
   DrawMaps();
 
   //
@@ -2542,7 +2542,7 @@ int RDEditAudio::DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 			    QPainter::CompositionMode op)
 {
   int x;
-  Q3PointArray *point;
+  QPolygon *point;
 
   if((samp<0)||(prev<0)) {
     return 0;
@@ -2559,7 +2559,7 @@ int RDEditAudio::DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
       if(arrow==RDEditAudio::Left) {
 	p->setClipRect(0,0,xsize+xpos+10,ysize+ypos);
 	p->setBrush(color);
-	point=new Q3PointArray(3);
+	point=new QPolygon(3);
 	point->setPoint(0,x,apos);
 	point->setPoint(1,x+10,apos-5);
 	point->setPoint(2,x+10,apos+5);
@@ -2573,7 +2573,7 @@ int RDEditAudio::DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
       if(arrow==RDEditAudio::Right) {
 	p->setClipRect(-10,0,xsize+10,ysize+ypos);
 	p->setBrush(color);
-	point=new Q3PointArray(3);
+	point=new QPolygon(3);
 	point->setPoint(0,x,apos);
 	point->setPoint(1,x-10,apos-5);
 	point->setPoint(2,x-10,apos+5);
