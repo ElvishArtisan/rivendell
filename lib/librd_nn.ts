@@ -3046,12 +3046,8 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>DESCRIPTION</source>
-        <translation type="unfinished">SKILDRING</translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>&amp;OK</source>

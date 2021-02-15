@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Group.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,22 +21,22 @@
 #ifndef RDLIST_GROUPS_H
 #define RDLIST_GROUPS_H
 
-#include <q3listview.h>
-
-#include <qpushbutton.h>
+#include <QPushButton>
 
 #include <rddialog.h>
+#include <rdgrouplistmodel.h>
+#include <rdtableview.h>
 
 class RDListGroups : public RDDialog
 {
  Q_OBJECT
  public:
- RDListGroups(QString *groupname,const QString &username,QWidget *parent=0);
+ RDListGroups(QString *groupname,const QString &caption,QWidget *parent=0);
  QSize sizeHint() const;
  QSizePolicy sizePolicy() const;
 
  private slots:
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void okData();
   void cancelData();
 
@@ -46,7 +46,8 @@ class RDListGroups : public RDDialog
  private:
   void BuildGroupList(const QString &username);
   QString *group_name;
-  Q3ListView *group_group_list;
+  RDTableView *group_group_view;
+  RDGroupListModel *group_group_model;
 };
 
 

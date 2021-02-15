@@ -3080,11 +3080,11 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOMBRE</translation>
+        <translation type="obsolete">NOMBRE</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIPCIÓN</translation>
+        <translation type="obsolete">DESCRIPCIÓN</translation>
     </message>
     <message>
         <source>&amp;OK</source>

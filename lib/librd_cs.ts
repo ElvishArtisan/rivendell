@@ -3100,11 +3100,11 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>&amp;OK</source>

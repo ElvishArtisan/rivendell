@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Group.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,7 @@
 #include "rdescape_string.h"
 #include "rdlist_groups.h"
 
-RDListGroups::RDListGroups(QString *groupname,const QString &username,
+RDListGroups::RDListGroups(QString *groupname,const QString &caption,
 			   QWidget *parent)
   : RDDialog(parent)
 {
@@ -34,25 +34,26 @@ RDListGroups::RDListGroups(QString *groupname,const QString &username,
 
   group_name=groupname;
 
-  setWindowTitle(tr("Select Group"));
+  setWindowTitle(caption+" - "+tr("Select Group"));
 
   //
   // Cart List
   //
-  group_group_list=new Q3ListView(this,"group_group_list");
-  group_group_list->setSelectionMode(Q3ListView::Single);
-  group_group_list->setGeometry(10,10,
+  group_group_view=new RDTableView(this);
+  group_group_view->setGeometry(10,10,
 			      sizeHint().width()-20,sizeHint().height()-80);
-  group_group_list->setAllColumnsShowFocus(true);
-  group_group_list->setItemMargin(5);
-  connect(group_group_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-  group_group_list->addColumn(tr("NAME"));
-  group_group_list->setColumnAlignment(0,Qt::AlignHCenter);
-  group_group_list->addColumn(tr("DESCRIPTION"));
-  group_group_list->setColumnAlignment(1,Qt::AlignLeft);
+  group_group_model=new RDGroupListModel(false,false,this);
+  group_group_model->setFont(font());
+  group_group_model->setPalette(palette());
+  group_group_view->setModel(group_group_model);
+  for(int i=2;i<group_group_model->columnCount();i++) {
+    group_group_view->hideColumn(i);
+  }
+  connect(group_group_model,SIGNAL(modelReset()),
+	  group_group_view,SLOT(resizeColumnsToContents()));
+  connect(group_group_view,SIGNAL(doubleClicked(const QModelIndex &)),
+  	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  group_group_model->changeUser();
 
   //
   // OK Button
@@ -70,11 +71,6 @@ RDListGroups::RDListGroups(QString *groupname,const QString &username,
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  //
-  // Populate Data
-  //
-  BuildGroupList(username);
 }
 
 
@@ -90,8 +86,7 @@ QSizePolicy RDListGroups::sizePolicy() const
 }
 
 
-void RDListGroups::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				     int col)
+void RDListGroups::doubleClickedData(const QModelIndex &index)
 {
   okData();
 }
@@ -99,53 +94,24 @@ void RDListGroups::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 
 void RDListGroups::okData()
 {
-  Q3ListViewItem *item=group_group_list->selectedItem();
-  if(item==NULL) {
+  QModelIndexList rows=group_group_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
     return;
   }
-  *group_name=item->text(0);
-  done(0);
+  *group_name=group_group_model->groupName(rows.first());
+
+  done(true);
 }
 
 
 void RDListGroups::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 
 void RDListGroups::closeEvent(QCloseEvent *e)
 {
   cancelData();
-}
-
-
-void RDListGroups::BuildGroupList(const QString &username)
-{
-  QString sql;
-  RDSqlQuery *q;
-  Q3ListViewItem *item=NULL;
-  Q3ListViewItem *cur_item=NULL;
-
-  group_group_list->clear();
-  sql=QString("select ")+
-    "USER_PERMS.GROUP_NAME,"+  // 00
-    "GROUPS.DESCRIPTION "+     // 01
-    "from USER_PERMS left join GROUPS "+
-    "on USER_PERMS.GROUP_NAME=GROUPS.NAME where "+
-    "USER_NAME=\""+RDEscapeString(username)+"\"";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    item=new Q3ListViewItem(group_group_list);
-    item->setText(0,q->value(0).toString());
-    item->setText(1,q->value(1).toString());
-    if(q->value(0).toString()==*group_name) {
-      cur_item=item;
-    }
-  }
-  delete q;
-  if(cur_item!=NULL) {
-    group_group_list->setSelected(cur_item,true);
-    group_group_list->ensureItemVisible(item);
-  }
 }

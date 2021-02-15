@@ -3073,11 +3073,11 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOME</translation>
+        <translation type="obsolete">NOME</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIÇÃO</translation>
+        <translation type="obsolete">DESCRIÇÃO</translation>
     </message>
     <message>
         <source>&amp;OK</source>

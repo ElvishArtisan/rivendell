@@ -568,9 +568,8 @@ void DiskRipper::setMultiButtonData()
   //
   // Get Destination Group
   //
-  RDListGroups *list_groups=new RDListGroups(rip_group_text,rda->user()->name(),
-					     this);
-  if(list_groups->exec()<0) {
+  RDListGroups *list_groups=new RDListGroups(rip_group_text,"RDLibrary",this);
+  if(!list_groups->exec()) {
     delete list_groups;
     return;
   }
