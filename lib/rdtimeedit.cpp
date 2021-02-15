@@ -2,7 +2,7 @@
 //
 // A QTimeEdit with tenth-second precision.
 //
-//   (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,26 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qfontmetrics.h>
-//Added by qt3to4:
-#include <QWheelEvent>
-#include <QFocusEvent>
-#include <Q3Frame>
-#include <QLabel>
-#include <QMouseEvent>
-#include <QKeyEvent>
-
-#include <rdtimeedit.h>
+#include "rdtimeedit.h"
 
 RDTimeEdit::RDTimeEdit(QWidget *parent)
-  : Q3Frame(parent)
+  : QFrame(parent)
 {
   edit_display=0;
   edit_section=0;
   edit_read_only=false;
   edit_digit=0;
   GetSizeHint();
-  setFrameStyle(Q3Frame::StyledPanel|Q3Frame::Sunken);
+  setFrameStyle(QFrame::StyledPanel|QFrame::Sunken);
   setLineWidth(1);
   setMidLineWidth(3);
   setFocusPolicy(Qt::StrongFocus);
@@ -117,7 +108,7 @@ bool RDTimeEdit::isReadOnly() const
 
 void RDTimeEdit::setFont(const QFont &f)
 {
-  Q3Frame::setFont(f);
+  QFrame::setFont(f);
   GetSizeHint();
 }
 
@@ -158,7 +149,7 @@ void RDTimeEdit::setDisplay(uint disp)
 
 void RDTimeEdit::setGeometry(int x,int y,int w,int h)
 {
-  Q3Frame::setGeometry(x,y,w,h);
+  QFrame::setGeometry(x,y,w,h);
   QFontMetrics fm(font());
   int fy=h-fm.height();
   int fx=contentsRect().x()+fy;
@@ -230,7 +221,7 @@ void RDTimeEdit::setFocus()
   p.setColor(QPalette::Active,QColorGroup::Foreground,
 	     p.color(QPalette::Active,QColorGroup::HighlightedText));
   edit_labels[edit_section]->setPalette(p);
-  Q3Frame::setFocus();
+  QFrame::setFocus();
 }
 
 
@@ -431,18 +422,18 @@ void RDTimeEdit::keyPressEvent(QKeyEvent *e)
 
 void RDTimeEdit::focusInEvent(QFocusEvent *e)
 {
-  Q3Frame::focusInEvent(e);
+  QFrame::focusInEvent(e);
 }
 
 
 void RDTimeEdit::focusOutEvent(QFocusEvent *e)
 {
-  Q3Frame::focusOutEvent(e);
+  QFrame::focusOutEvent(e);
   QPalette p=palette();
   for(int i=0;i<4;i++) {
     edit_labels[i]->setPalette(p);
   }
-  Q3Frame::focusOutEvent(e);
+  QFrame::focusOutEvent(e);
 }
 
 

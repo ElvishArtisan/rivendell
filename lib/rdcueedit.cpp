@@ -18,10 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
-#include <qmessagebox.h>
-
-#include <q3frame.h>
+//#include <q3frame.h>
 
 #include "rdconf.h"
 #include "rdcueedit.h"
@@ -50,7 +47,7 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   edit_position_label->setBackgroundColor(QColor(Qt::white));
   edit_position_label->setLineWidth(1);
   edit_position_label->setMidLineWidth(0);
-  edit_position_label->setFrameStyle(Q3Frame::Box|Q3Frame::Plain);
+  edit_position_label->setFrameStyle(QFrame::Box|QFrame::Plain);
 
   edit_position_bar=new RDMarkerBar(this);
   edit_position_bar->setGeometry(85,8,sizeHint().width()-200,14);
@@ -88,7 +85,7 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   label->setBackgroundColor(QColor(Qt::gray));
   label->setLineWidth(1);
   label->setMidLineWidth(0);
-  label->setFrameStyle(Q3Frame::Box|Q3Frame::Plain);
+  label->setFrameStyle(QFrame::Box|QFrame::Plain);
 
   //
   //  Audition Button

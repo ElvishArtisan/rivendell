@@ -2,7 +2,7 @@
 //
 // A marker widget for the RDCueEdit widget.
 //
-//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,10 +20,6 @@
 
 #include <qpainter.h>
 #include <q3pointarray.h>
-//Added by qt3to4:
-#include <Q3Frame>
-#include <QPixmap>
-#include <QLabel>
 
 #include <rdmarker_bar.h>
 
@@ -35,7 +31,7 @@ RDMarkerBar::RDMarkerBar(QWidget *parent)
   }
   setLineWidth(1);
   setMidLineWidth(0);
-  setFrameStyle(Q3Frame::Box|Q3Frame::Plain);
+  setFrameStyle(QFrame::Box|QFrame::Plain);
 }
 
 

@@ -2,7 +2,7 @@
 //
 // A QTimeEdit with tenth-second precision.
 //
-//   (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,18 +21,12 @@
 #ifndef RDTIMEEDIT_H
 #define RDTIMEEDIT_H
 
-#include <q3frame.h>
-#include <qdatetime.h>
-#include <qlabel.h>
-//Added by qt3to4:
-#include <QWheelEvent>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QFocusEvent>
+#include <QDateTime>
+#include <QLabel>
 
 #include <rdtransportbutton.h>
 
-class RDTimeEdit : public Q3Frame
+class RDTimeEdit : public QFrame
 {
   Q_OBJECT
  public:
@@ -86,4 +80,4 @@ class RDTimeEdit : public Q3Frame
 };
 
 
-#endif  // RDTimeEdit
+#endif  // RDTIMEEDIT_H
