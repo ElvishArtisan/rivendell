@@ -21135,3 +21135,5 @@
 	* Removed 'Q3SocketDevice' dependencies from 'RDCae'.
 2021-02-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'RDCae' that broke the build.
+2021-02-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'Q3SocketDevice' dependencies from 'RDMulticaster'.

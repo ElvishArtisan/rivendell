@@ -2,7 +2,7 @@
 //
 // Multi-interface multicast transciever
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -23,12 +23,7 @@
 
 #include <stdint.h>
 
-#include <vector>
-
-#include <qhostaddress.h>
-#include <qobject.h>
-#include <q3socketdevice.h>
-#include <qsocketnotifier.h>
+#include <QUdpSocket>
 
 class RDMulticaster : public QObject
 {
@@ -47,13 +42,12 @@ class RDMulticaster : public QObject
   void send(const QString &msg,const QHostAddress &m_addr,uint16_t port);
 
  private slots:
-  void activatedData(int sock);
+  void readyReadData();
 
  private:
   void GetInterfaces();
-  Q3SocketDevice *multi_socket;
-  QSocketNotifier *multi_notifier;
-  std::vector<QHostAddress> multi_iface_addresses;
+  QUdpSocket *multi_socket;
+  QList<QHostAddress> multi_iface_addresses;
 };
 
 

@@ -2,7 +2,7 @@
 //
 // Multi-interface multicast transciever
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -30,10 +30,8 @@
 RDMulticaster::RDMulticaster(QObject *parent)
   : QObject(parent)
 {
-  multi_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
-  multi_notifier=new QSocketNotifier(multi_socket->socket(),
-				     QSocketNotifier::Read,this);
-  connect(multi_notifier,SIGNAL(activated(int)),this,SLOT(activatedData(int)));
+  multi_socket=new QUdpSocket(this);
+  connect(multi_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
 
   GetInterfaces();
 }
@@ -58,7 +56,7 @@ void RDMulticaster::subscribe(const QHostAddress &addr)
 {
   struct ip_mreqn mreq;
 
-  for(unsigned i=0;i<multi_iface_addresses.size();i++) {
+  for(int i=0;i<multi_iface_addresses.size();i++) {
     memset(&mreq,0,sizeof(mreq));
     mreq.imr_multiaddr.s_addr=htonl(addr.toIPv4Address());
     mreq.imr_address.s_addr=htonl(multi_iface_addresses[i].toIPv4Address());
@@ -78,7 +76,7 @@ void RDMulticaster::unsubscribe(const QHostAddress &addr)
 {
   struct ip_mreqn mreq;
 
-  for(unsigned i=0;i<multi_iface_addresses.size();i++) {
+  for(int i=0;i<multi_iface_addresses.size();i++) {
     memset(&mreq,0,sizeof(mreq));
     mreq.imr_multiaddr.s_addr=htonl(addr.toIPv4Address());
     mreq.imr_address.s_addr=htonl(multi_iface_addresses[i].toIPv4Address());
@@ -97,11 +95,11 @@ void RDMulticaster::unsubscribe(const QHostAddress &addr)
 void RDMulticaster::send(const QString &msg,const QHostAddress &m_addr,
 			 uint16_t port)
 {
-  multi_socket->writeBlock(msg.utf8(),msg.utf8().length(),m_addr,port);
+  multi_socket->writeDatagram(msg.utf8(),msg.utf8().length(),m_addr,port);
 }
 
 
-void RDMulticaster::activatedData(int sock)
+void RDMulticaster::readyReadData()
 {
   struct sockaddr_in sa;
   socklen_t sa_len=sizeof(struct sockaddr_in);
@@ -109,7 +107,8 @@ void RDMulticaster::activatedData(int sock)
   int n;
 
   memset(&sa,0,sizeof(sa));
-  while((n=recvfrom(multi_socket->socket(),data,1500,MSG_DONTWAIT,(sockaddr *)&sa,&sa_len))>0) {
+  while((n=recvfrom(multi_socket->socketDescriptor(),data,1500,MSG_DONTWAIT,
+		    (sockaddr *)&sa,&sa_len))>0) {
     data[n]=0;
     QString msg(data);
     emit received(msg,QHostAddress(ntohl(sa.sin_addr.s_addr)));
