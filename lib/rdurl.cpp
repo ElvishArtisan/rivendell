@@ -2,7 +2,7 @@
 //
 //   A URL Handling Class with Support for SMB URLs.
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,16 +18,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rdurl.h>
+#include "rdurl.h"
 
 RDUrl::RDUrl()
-  : Q3Url()
+  : QUrl()
 {
 }
 
 
 RDUrl::RDUrl(const QString &url)
-  : Q3Url(url)
+  : QUrl(url)
 {
 }
 

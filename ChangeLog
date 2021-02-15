@@ -21162,3 +21162,5 @@
 	* Removed the 'Q3PointArray' dependency from 'RDTransportButton'.
 2021-02-15 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3PointArray' dependency from 'RDMarkerBar'.
+2021-02-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3Url' dependency from 'RDUrl'.
