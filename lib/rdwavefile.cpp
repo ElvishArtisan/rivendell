@@ -2,7 +2,7 @@
 //
 //   A class for handling audio files.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -47,13 +47,6 @@
 #ifdef HAVE_FLAC
 #include <FLAC/metadata.h>
 #endif  // HAVE_FLAC
-
-#include <qobject.h>
-#include <qstring.h>
-#include <qtextcodec.h>
-#include <qdatetime.h>
-//Added by qt3to4:
-#include <Q3CString>
 
 #include <rd.h>
 #include <rdcart.h>
@@ -2429,7 +2422,7 @@ bool RDWaveFile::IsFlac(int fd)
 #ifdef HAVE_FLAC
   char buffer[5];
 
-  ID3_Tag id3_tag(Q3CString().sprintf("%s",(const char *)wave_file_name.utf8()));
+  ID3_Tag id3_tag(wave_file_name.toUtf8());
   lseek(fd,id3_tag.GetPrependedBytes(),SEEK_SET);
   if(read(fd,buffer,4)!=4) {
     return false;
@@ -4233,7 +4226,7 @@ bool RDWaveFile::GetFlacStreamInfo()
 {
 #if HAVE_FLAC
   FLAC__StreamMetadata sinfo;
-  if(!FLAC__metadata_get_streaminfo(Q3CString().sprintf("%s",(const char *)wave_file_name.utf8()),&sinfo)) {
+  if(!FLAC__metadata_get_streaminfo(wave_file_name.toUtf8(),&sinfo)) {
     return false;
   }
   samples_per_sec=sinfo.data.stream_info.sample_rate;
@@ -4255,8 +4248,7 @@ void RDWaveFile::ReadFlacMetadata()
   QString artist;
   QString composer;
   FLAC__StreamMetadata* tags;
-  if(!FLAC__metadata_get_tags(Q3CString().
-	    sprintf("%s",(const char *)wave_file_name.utf8()),&tags)) {
+  if(!FLAC__metadata_get_tags(wave_file_name.toUtf8(),&tags)) {
     return;
   }
   for(unsigned iCommentIndex=0;
