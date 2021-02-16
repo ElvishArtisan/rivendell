@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Cut
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-#include <q3signal.h>
-#include <qobject.h>
+#include <QObject>
 
 #include <rdconfig.h>
 #include <rddb.h>
@@ -145,8 +143,6 @@ class RDCut
   void autoSegue(int level,int length,RDStation *station,RDUser *user,
 		 RDConfig *config);
   void reset() const;
-  void connect(QObject *receiver,const char *member) const;
-  void disconnect(QObject *receiver,const char *member) const;
   static QString xml(RDSqlQuery *q,bool absolute,RDSettings *settings=NULL);
   static QString cutName(unsigned cartnum,unsigned cutnum);
   static unsigned cartNumber(const QString &cutname);
@@ -169,7 +165,6 @@ class RDCut
   void SetRow(const QString &param) const;
   static void GetDefaultDateTimes(QString *start_dt,QString *end_dt,
 				  const QString &cutname);
-  Q3Signal *cut_signal;
   QString cut_name;
   unsigned cart_number;
   unsigned cut_number;

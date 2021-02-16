@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Cut.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -46,8 +46,6 @@ RDCut::RDCut(const QString &name,bool create)
 {
   cut_name=name;
 
-  cut_signal=new Q3Signal();
-
   if(name.isEmpty()) {
     cut_number=0;
     cart_number=0;
@@ -66,8 +64,6 @@ RDCut::RDCut(unsigned cartnum,int cutnum,bool create)
 {
   cut_name=RDCut::cutName(cartnum,cutnum);
 
-  cut_signal=new Q3Signal();
-
   if(create) {
     RDCut::create(cut_name);
   }
@@ -78,7 +74,6 @@ RDCut::RDCut(unsigned cartnum,int cutnum,bool create)
 
 RDCut::~RDCut()
 {
-  delete cut_signal;
 }
 
 
@@ -1519,18 +1514,6 @@ void RDCut::reset() const
 }
 
 
-void RDCut::connect(QObject *receiver,const char *member) const
-{
-  cut_signal->connect(receiver,member);
-}
-
-
-void RDCut::disconnect(QObject *receiver,const char *member) const
-{
-  cut_signal->disconnect(receiver,member);
-}
-
-
 QString RDCut::xml(RDSqlQuery *q,bool absolute,RDSettings *settings)
 {
   //
@@ -1822,14 +1805,10 @@ bool RDCut::FileCopy(const QString &srcfile,const QString &destfile) const
     write(dest_fd,buf,dest_stat.st_blksize);
     bytes+=dest_stat.st_blksize;
     if((step=10*bytes/src_stat.st_size)!=previous_step) {
-      cut_signal->setValue(step);
-      cut_signal->activate();
       previous_step=step;
     }
   }
   write(dest_fd,buf,n);
-  cut_signal->setValue(10);
-  cut_signal->activate();
   free(buf);
   close(src_fd);
   close(dest_fd);

@@ -388,10 +388,8 @@ void AudioCart::pasteCutData()
       return;
     }
   }
-  cut_clipboard->connect(this,SLOT(copyProgressData(const QVariant &)));
   cut_clipboard->copyTo(rda->station(),rda->user(),
 			rdcart_cut_model->cutName(row),rda->config());
-  cut_clipboard->disconnect(this,SLOT(copyProgressData(const QVariant &)));
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			    QTime().msecsTo(rdcart_controls->
 					    forced_length_edit->time()));

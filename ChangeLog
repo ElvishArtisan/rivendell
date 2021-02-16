@@ -21166,3 +21166,5 @@
 	* Removed the 'Q3Url' dependency from 'RDUrl'.
 2021-02-15 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3CString' dependency from 'RDWaveFile'.
+2021-02-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3Signal' dependency from 'RDCut'.
