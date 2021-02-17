@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,23 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <unistd.h>
+#include <ctype.h>
 #include <errno.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <syslog.h>
 
-#include <qobject.h>
-#include <ctype.h>
-
-#include <q3socketdevice.h>
-#include <qtimer.h>
-#include <qstringlist.h>
-
-#include <rdapplication.h>
-#include <rddb.h>
-#include <rdcae.h>
-#include <rddebug.h>
-#include <rdescape_string.h>
+#include "rdapplication.h"
+#include "rdcae.h"
+#include "rddb.h"
+#include "rddebug.h"
+#include "rdescape_string.h"
 
 RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   : QObject(parent)
@@ -54,10 +48,9 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   //
   // Meter Connection
   //
-  cae_meter_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
-  cae_meter_socket->setBlocking(false);
+  cae_meter_socket=new QUdpSocket(this);
   for(Q_INT16 i=30000;i<30100;i++) {
-    if(cae_meter_socket->bind(QHostAddress(),i)) {
+    if(cae_meter_socket->bind(i)) {
       i=31000;
     }
   }
@@ -125,7 +118,7 @@ void RDCae::connectHost()
 
 void RDCae::enableMetering(QList<int> *cards)
 {
-  QString cmd=QString().sprintf("ME %u",cae_meter_socket->port());
+  QString cmd=QString().sprintf("ME %u",cae_meter_socket->localPort());
   for(int i=0;i<cards->size();i++) {
     if(cards->at(i)>=0) {
       bool found=false;
@@ -642,7 +635,7 @@ void RDCae::UpdateMeters()
   int n;
   QStringList args;
 
-  while((n=cae_meter_socket->readBlock(msg,1500))>0) {
+  while((n=cae_meter_socket->readDatagram(msg,1500))>0) {
     msg[n]=0;
     args=QString(msg).split(" ");
     if(args[0]=="ML") {

@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,9 +23,9 @@
 
 #include <q3socketdevice.h>
 
-#include <qlabel.h>
-#include <qobject.h>
-#include <qlist.h>
+#include <QList>
+#include <QObject>
+#include <QUdpSocket>
 
 #include <rd.h>
 #include <rdcmd_cache.h>
@@ -112,7 +112,7 @@ class RDCae : public QObject
   bool input_status[RD_MAX_CARDS][RD_MAX_PORTS];
   int cae_handle[RD_MAX_CARDS][RD_MAX_STREAMS];
   unsigned cae_pos[RD_MAX_CARDS][RD_MAX_STREAMS];
-  Q3SocketDevice *cae_meter_socket;
+  QUdpSocket *cae_meter_socket;
   short cae_input_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_stream_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];

@@ -21168,3 +21168,5 @@
 	* Removed the 'Q3CString' dependency from 'RDWaveFile'.
 2021-02-15 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3Signal' dependency from 'RDCut'.
+2021-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the Q3SocketDevice dependency for metering data 'RDCae'.
