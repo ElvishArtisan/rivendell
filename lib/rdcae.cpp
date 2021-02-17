@@ -19,8 +19,11 @@
 //
 
 #include <ctype.h>
+#include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
 #include <sys/types.h>
 #include <syslog.h>
 
@@ -33,6 +36,8 @@
 RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
+  int flags=-1;
+
   cae_station=station;
   cae_config=config;
   cae_connected=false;
@@ -42,8 +47,17 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   //
   // TCP Connection
   //
-  cae_socket=new Q3SocketDevice(Q3SocketDevice::Stream);
-  cae_socket->setBlocking(false);
+  if((cae_socket=socket(AF_INET,SOCK_STREAM,0))<0) {
+    rda->syslog(LOG_WARNING,"unable to allocate TCP socket [%s]",
+		strerror(errno));
+  }
+  if((flags=fcntl(cae_socket,F_GETFL,NULL))>=0) {
+    flags=flags|O_NONBLOCK;
+    if(fcntl(cae_socket,F_SETFL,flags)<0) {
+      rda->syslog(LOG_WARNING,"unable to set TCP socket to non-blocking [%s]",
+		  strerror(errno));
+    }
+  }
 
   //
   // Meter Connection
@@ -86,20 +100,24 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
 
 
 RDCae::~RDCae() {
-  delete cae_socket;
+  close(cae_socket);
 }
 
 
 void RDCae::connectHost()
 {
   int count=10;
-  //  QHostAddress addr;
-  QTimer *timer=new QTimer(this,"read_timer");
+  QTimer *timer=new QTimer(this);
+  struct sockaddr_in sa;
 
   connect(timer,SIGNAL(timeout()),this,SLOT(readyData()));
   timer->start(CAE_POLL_INTERVAL);
-  while((!cae_socket->connect(cae_station->caeAddress(cae_config),
-			      CAED_TCP_PORT))&&(--count>0)) {
+  memset(&sa,0,sizeof(sa));
+  sa.sin_family=AF_INET;
+  sa.sin_port=htons(CAED_TCP_PORT);
+  sa.sin_addr.s_addr=htonl(cae_station->caeAddress(cae_config).toIPv4Address());
+  while((::connect(cae_socket,(struct sockaddr *)(&sa),sizeof(sa))!=0)&&
+	(--count>0)) {
     usleep(100000);
   } 
   usleep(100000);
@@ -389,7 +407,7 @@ void RDCae::readyData(int *stream,int *handle,QString name)
     delayed_cmds.clear();
   }
 
-  while((c=cae_socket->readBlock(buf,256))>0) {
+  while((c=read(cae_socket,buf,256))>0) {
     buf[c]=0;
     for(int i=0;i<c;i++) {
       if(buf[i]==' ') {
@@ -433,7 +451,7 @@ void RDCae::readyData(int *stream,int *handle,QString name)
 	}
 	argnum=0;
 	argptr=0;
-	if(cae_socket==NULL) {
+	if(cae_socket==-1) {
 	  return;
 	}
       }
@@ -471,7 +489,7 @@ void RDCae::clockData()
 
 void RDCae::SendCommand(QString cmd)
 {
-  cae_socket->writeBlock((const char *)cmd,cmd.length());
+  write(cae_socket,cmd.toUtf8(),cmd.toUtf8().length());
 }
 
 

@@ -21,8 +21,6 @@
 #ifndef RDCAE_H
 #define RDCAE_H
 
-#include <q3socketdevice.h>
-
 #include <QList>
 #include <QObject>
 #include <QUdpSocket>
@@ -103,7 +101,7 @@ class RDCae : public QObject
   int StreamNumber(const char *arg);
   int GetHandle(const char *arg);
   void UpdateMeters();
-  Q3SocketDevice *cae_socket;
+  int cae_socket;
   bool debug;
   char args[CAE_MAX_ARGS][CAE_MAX_LENGTH];
   int argnum;
