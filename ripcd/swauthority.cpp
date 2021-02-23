@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for systems using Software Authority Protocol
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,11 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
-#include <syslog.h>
-
-#include <qstringlist.h>
 
 #include <rdapplication.h>
 #include <rdescape_string.h>
@@ -59,6 +54,7 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent)
   // Reconnection Timer
   //
   swa_reconnect_timer=new QTimer(this);
+  swa_reconnect_timer->setSingleShot(true);
   connect(swa_reconnect_timer,SIGNAL(timeout()),this,SLOT(ipConnect()));
 
   //
@@ -125,14 +121,14 @@ void SoftwareAuthority::processCommand(RDMacro *cmd)
 	break;
 
       case RDMacro::GO:
-	if(((cmd->arg(1).lower()!="i")&&
-	    (cmd->arg(1).lower()!="o"))||
+	if(((cmd->arg(1).toLower()!="i")&&
+	    (cmd->arg(1).toLower()!="o"))||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(2).toInt()>swa_gpos)) {
 	  cmd->acknowledge(false);
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	if(cmd->arg(1).lower()=="i") {
+	if(cmd->arg(1).toLower()=="i") {
 	  str="triggergpi";
 	}
 	else {
@@ -180,7 +176,7 @@ void SoftwareAuthority::connectionClosedData()
   if(swa_stop_cart>0) {
     ExecuteMacroCart(swa_stop_cart);
   }
-  swa_reconnect_timer->start(SWAUTHORITY_RECONNECT_INTERVAL,true);
+  swa_reconnect_timer->start(SWAUTHORITY_RECONNECT_INTERVAL);
 }
 
 
@@ -189,7 +185,7 @@ void SoftwareAuthority::readyReadData()
   char buffer[256];
   unsigned n;
 
-  while((n=swa_socket->readBlock(buffer,255))>0) {
+  while((n=swa_socket->read(buffer,255))>0) {
     buffer[n]=0;
     ///    printf("RECV: %s\n",buffer);
     for(unsigned i=0;i<n;i++) {
@@ -217,7 +213,7 @@ void SoftwareAuthority::errorData(QAbstractSocket::SocketError err)
 		"connection to SoftwareAuthority device at %s:%d refused, attempting reconnect",
 		(const char *)swa_ipaddress.toString().toUtf8(),
 		swa_ipport);
-    swa_reconnect_timer->start(SWAUTHORITY_RECONNECT_INTERVAL,true);
+    swa_reconnect_timer->start(SWAUTHORITY_RECONNECT_INTERVAL);
     break;
 
   case QAbstractSocket::HostNotFoundError:
@@ -238,12 +234,12 @@ void SoftwareAuthority::errorData(QAbstractSocket::SocketError err)
 }
 
 
-void SoftwareAuthority::SendCommand(const char *str)
+void SoftwareAuthority::SendCommand(const QString &str)
 {
   //  LogLine(RDConfig::LogDebug,QString().sprintf("sending SA cmd: %s",(const char *)PrettifyCommand(str)));
-  rda->syslog(LOG_DEBUG,"%p - sending \"%s\"",this,str);
-  QString cmd=QString().sprintf("%s\x0d\x0a",(const char *)str);
-  swa_socket->writeBlock((const char *)cmd,strlen(cmd));
+  rda->syslog(LOG_DEBUG,"%p - sending \"%s\"",this,str.toUtf8().constData());
+  QString cmd=QString().sprintf("%s\x0d\x0a",str.toUtf8().constData());
+  swa_socket->write(cmd.toUtf8());
 }
 
 
@@ -260,7 +256,7 @@ void SoftwareAuthority::DispatchCommand()
   //  LogLine(RDConfig::LogNotice,QString().sprintf("RECEIVED: %s",(const char *)swa_buffer));
 
   QString line_in=swa_buffer;
-  QString section=line_in.lower().replace(">>","");
+  QString section=line_in.toLower().replace(">>","");
   rda->syslog(LOG_DEBUG,"%p - received \"%s\"",this,
 	      section.toUtf8().constData());
 
@@ -419,7 +415,7 @@ void SoftwareAuthority::DispatchCommand()
   // GPIO State Parser
   //
   f0=section.split(" ");
-  if((f0.size()==4)&&(f0[0].lower()=="gpistat")&&(f0[1].toInt()==swa_card)) {
+  if((f0.size()==4)&&(f0[0].toLower()=="gpistat")&&(f0[1].toInt()==swa_card)) {
     if(swa_gpi_states[f0[2].toInt()].isEmpty()) {
       swa_gpi_states[f0[2].toInt()]=f0[3];
     }
@@ -434,7 +430,7 @@ void SoftwareAuthority::DispatchCommand()
     }
     swa_is_gpio=true;
   }
-  if((f0.size()==4)&&(f0[0].lower()=="gpostat")&&(f0[1].toInt()==swa_card)) {
+  if((f0.size()==4)&&(f0[0].toLower()=="gpostat")&&(f0[1].toInt()==swa_card)) {
     if(swa_gpo_states[f0[2].toInt()].isEmpty()) {
       swa_gpo_states[f0[2].toInt()]=f0[3];
     }

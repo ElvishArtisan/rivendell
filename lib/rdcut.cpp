@@ -52,8 +52,8 @@ RDCut::RDCut(const QString &name,bool create)
     return;
   }
 
-  sscanf((const char *)name+7,"%u",&cut_number);
-  sscanf((const char *)name.left(6),"%u",&cart_number);
+  cut_number=RDCut::cutNumber(name);
+  cart_number=RDCut::cartNumber(name);
   if(create) {
     RDCut::create(cut_name);
   }
@@ -364,14 +364,14 @@ void RDCut::setStartDaypart(const QTime &time,bool valid) const
 bool RDCut::weekPart(int dayofweek) const
 {
   return RDBool(RDGetSqlValue("CUTS","CUT_NAME",cut_name,
-			    RDGetShortDayNameEN(dayofweek).upper()).
+			    RDGetShortDayNameEN(dayofweek).toUpper()).
 	       toString());
 }
 
 
 void RDCut::setWeekPart(int dayofweek,bool state) const
 {
-  SetRow(RDGetShortDayNameEN(dayofweek).upper(),RDYesNo(state));
+  SetRow(RDGetShortDayNameEN(dayofweek).toUpper(),RDYesNo(state));
 }
 
 
@@ -1271,7 +1271,7 @@ bool RDCut::checkInRecording(const QString &station_name,
   // Attempt to resolve IP address
   //
   if(addr.setAddress(src_hostname)) {
-    if(addr.isIPv4Address()) {
+    if(addr.protocol()==QAbstractSocket::IPv4Protocol) {
       QStringList f0=addr.toString().split(".");
       if(f0[0]=="127") {
 	src_hostname=station_name;
@@ -1285,7 +1285,7 @@ bool RDCut::checkInRecording(const QString &station_name,
 	}
       }
     }
-    if(addr.isIPv6Address()) {
+    if(addr.protocol()==QAbstractSocket::IPv6Protocol) {
       QStringList f0=addr.toString().split(":");
       if(f0.back()=="1") {
 	src_hostname=station_name;
@@ -1783,14 +1783,14 @@ bool RDCut::FileCopy(const QString &srcfile,const QString &destfile) const
   int previous_step=0;
   int step=0;
 
-  if((src_fd=open((const char *)srcfile.utf8(),O_RDONLY))<0) {
+  if((src_fd=open((const char *)srcfile.toUtf8(),O_RDONLY))<0) {
     return false;
   }
   if(fstat(src_fd,&src_stat)<0) {
     close(src_fd);
     return false;
   }
-  if((dest_fd=open((const char *)destfile.utf8(),O_RDWR|O_CREAT,src_stat.st_mode))
+  if((dest_fd=open((const char *)destfile.toUtf8(),O_RDWR|O_CREAT,src_stat.st_mode))
      <0) {
     close(src_fd);
     return false;

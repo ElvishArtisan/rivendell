@@ -48,11 +48,12 @@ RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,QWidget *parent)
   filter_service_label->setBuddy(filter_service_box);
   switch(mode) {
   case RDLogFilter::NoFilter:
-    filter_service_box->insertItem(tr("ALL"));
+    filter_service_box->insertItem(filter_service_box->count(),tr("ALL"));
     sql=QString("select NAME from SERVICES order by NAME");
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      filter_service_box->insertItem(q->value(0).toString());
+      filter_service_box->
+	insertItem(filter_service_box->count(),q->value(0).toString());
     }
     delete q;
     break;
@@ -62,12 +63,13 @@ RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,QWidget *parent)
     break;
 
   case RDLogFilter::StationFilter:
-    filter_service_box->insertItem(tr("ALL"));
+    filter_service_box->insertItem(filter_service_box->count(),tr("ALL"));
     sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
       "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      filter_service_box->insertItem(q->value(0).toString());
+      filter_service_box->
+	insertItem(filter_service_box->count(),q->value(0).toString());
     }
     delete q;
     break;
@@ -125,21 +127,21 @@ QString RDLogFilter::whereSql() const
 {
   QString sql="";
   
-  if(filter_service_box->currentItem()!=0) {
+  if(filter_service_box->currentIndex()!=0) {
     sql+="&&(LOGS.SERVICE=\""+
       RDEscapeString(filter_service_box->currentText())+"\")";
   }
   else {
     sql+="&&(";
     for(int i=1;i<filter_service_box->count();i++) {
-      sql+="(SERVICE=\""+RDEscapeString(filter_service_box->text(i))+"\")||";
+      sql+="(SERVICE=\""+RDEscapeString(filter_service_box->itemData(i).toString())+"\")||";
     }
     sql=sql.left(sql.length()-2);
     sql+=")";
   }
   QString filter=filter_filter_edit->text();
   if(!filter.isEmpty()) {
-    if(filter_service_box->currentItem()==0) {
+    if(filter_service_box->currentIndex()==0) {
       sql+="&&((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
       sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\")||";
       sql+="(LOGS.SERVICE like \"%%"+RDEscapeString(filter)+"%%\"))";
@@ -162,12 +164,13 @@ void RDLogFilter::changeUser()
 {
   if(filter_filter_mode==RDLogFilter::UserFilter) {
     filter_service_box->clear();
-    filter_service_box->insertItem(tr("ALL"));
+    filter_service_box->insertItem(filter_service_box->count(),tr("ALL"));
     QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
       "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
     RDSqlQuery *q=new RDSqlQuery(sql);
     while(q->next()) {
-      filter_service_box->insertItem(q->value(0).toString());
+      filter_service_box->
+	insertItem(filter_service_box->count(),q->value(0).toString());
     }
     delete q;
   }

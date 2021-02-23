@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- DeleteAudio service
 //
-//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -58,8 +58,8 @@ void Xport::DeleteAudio()
     delete cut;
     XmlExit("No such cut",404,"deleteaudio.cpp",LINE_NUMBER);
   }
-  unlink(RDCut::pathName(cartnum,cutnum));
-  unlink(RDCut::pathName(cartnum,cutnum)+".energy");
+  unlink(RDCut::pathName(cartnum,cutnum).toUtf8());
+  unlink((RDCut::pathName(cartnum,cutnum)+".energy").toUtf8());
   QString sql=QString("delete from CUT_EVENTS where ")+
     "CUT_NAME=\""+RDCut::cutName(cartnum,cutnum)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -67,7 +67,7 @@ void Xport::DeleteAudio()
   SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
 		   QVariant(cartnum));
   rda->syslog(LOG_DEBUG,"unlink(%s): %s",
-	      (const char *)RDCut::pathName(cartnum,cutnum).utf8(),
+	      (const char *)RDCut::pathName(cartnum,cutnum).toUtf8(),
 	      strerror(errno));
   delete cut;
   XmlExit("OK",200,"deleteaudio.cpp",LINE_NUMBER);

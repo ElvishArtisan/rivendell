@@ -2,7 +2,7 @@
 //
 // Display System Information for Rivendell
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,10 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <qpushbutton.h>
-
-#include <qlabel.h>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -58,7 +54,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   //
   // Banners
   //
-  QImage *image=new QImage(460,35,16);
+  QImage *image=new QImage(460,35,QImage::Format_Invalid);
   image->loadFromData(xpm_info_banner1,strlen((const char *)xpm_info_banner1),
 		      "XPM");
   QLabel *label=new QLabel(this);

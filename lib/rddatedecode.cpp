@@ -107,22 +107,22 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
       //
       // Wildcard Lookup
       //
-      switch(str.at(i).latin1()) {
+      switch(str.at(i).toLatin1()) {
       case 'a':   // Abbreviated weekday name
-	field=QDate::shortDayName(dt.dayOfWeek()).lower();
+	field=QDate::shortDayName(dt.dayOfWeek()).toLower();
 	break;
 
       case 'A':   // Full weekday name
-	field=QDate::longDayName(dt.dayOfWeek()).lower();
+	field=QDate::longDayName(dt.dayOfWeek()).toLower();
 	break;
 
       case 'b':   // Abbreviated month name
       case 'h':
-	field=QDate::shortMonthName(dt.month()).lower();
+	field=QDate::shortMonthName(dt.month()).toLower();
       break;
 
       case 'B':   // Full month name
-	field=QDate::longMonthName(dt.month()).lower();
+	field=QDate::longMonthName(dt.month()).toLower();
 	break;
 
       case 'C':   // Century
@@ -220,10 +220,10 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
 	break;
       }
       if(upper_case) {
-	field=field.upper();
+	field=field.toUpper();
       }
       if(initial_case) {
-	field=field.left(1).upper()+field.right(field.length()-1);
+	field=field.left(1).toUpper()+field.right(field.length()-1);
       }
       string+=field;
     }
@@ -320,20 +320,20 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
       //
       switch(str.at(i).toLatin1()) {
       case 'a':   // Abbreviated weekday name
-	field=QDate::shortDayName(dt.date().dayOfWeek()).lower();
+	field=QDate::shortDayName(dt.date().dayOfWeek()).toLower();
 	break;
 
       case 'A':   // Full weekday name
-	field=QDate::longDayName(dt.date().dayOfWeek()).lower();
+	field=QDate::longDayName(dt.date().dayOfWeek()).toLower();
 	break;
 
       case 'b':   // Abbreviated month name
       case 'h':
-	field=QDate::shortMonthName(dt.date().month()).lower();
+	field=QDate::shortMonthName(dt.date().month()).toLower();
       break;
 
       case 'B':   // Full month name
-	field=QDate::longMonthName(dt.date().month()).lower();
+	field=QDate::longMonthName(dt.date().month()).toLower();
 	break;
 
       case 'C':   // Century
@@ -463,10 +463,10 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
 	break;
       }
       if(upper_case) {
-	field=field.upper();
+	field=field.toUpper();
       }
       if(initial_case) {
-	field=field.left(1).upper()+field.right(field.length()-1);
+	field=field.left(1).toUpper()+field.right(field.length()-1);
       }
       string+=field;
     }

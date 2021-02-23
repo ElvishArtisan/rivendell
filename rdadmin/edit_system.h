@@ -22,13 +22,13 @@
 #define EDIT_SYSTEM_H
 
 #include <QCheckBox>
-#include <QComboBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QSpinBox>
 
 #include <rdaudiosettings.h>
+#include <rdcombobox.h>
 #include <rddialog.h>
 #include <rdgrouplistmodel.h>
 #include <rdlibrarymodel.h>
@@ -74,7 +74,7 @@ class EditSystem : public RDDialog
   QLabel *edit_origin_email_addr_label;
   QLineEdit *edit_origin_email_addr_edit;
   QLabel *edit_temp_cart_group_label;
-  QComboBox *edit_temp_cart_group_box;
+  RDComboBox *edit_temp_cart_group_box;
   RDGroupListModel *edit_temp_cart_group_model;
   QComboBox *edit_rss_processor_station_box;
   QLabel *edit_show_user_list_label;

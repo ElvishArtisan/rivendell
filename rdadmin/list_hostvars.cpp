@@ -53,8 +53,7 @@ ListHostvars::ListHostvars(QString station,QWidget *parent)
   list_model->setFont(defaultFont());
   list_model->setPalette(palette());
   list_view->setModel(list_model);
-  list_title_label=
-    new QLabel(list_view,tr("Host Variables")+":",this);
+  list_title_label=new QLabel(tr("Host Variables")+":",this);
   list_title_label->setFont(labelFont());
   list_title_label->setGeometry(14,5,sizeHint().width()-28,19);
   connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),

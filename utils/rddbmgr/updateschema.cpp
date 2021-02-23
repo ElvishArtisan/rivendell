@@ -18,8 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdatetime.h>
-
 #include <rdcart.h>
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -4539,7 +4537,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       tablename.replace(" ","_");
       sql=QString().
 	sprintf("alter table %s_LOG modify column ORIGIN_USER char(255)",
-		(const char *)tablename);
+		tablename.toUtf8().constData());
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
@@ -4553,13 +4551,13 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       tablename.replace(" ","_");
       sql=QString().
 	sprintf("alter table %s_PRE modify column ORIGIN_USER char(255)",
-		(const char *)tablename);
+		tablename.toUtf8().constData());
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
       sql=QString().
 	sprintf("alter table %s_POST modify column ORIGIN_USER char(255)",
-		(const char *)tablename);
+		tablename.toUtf8().constData());
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
@@ -5164,7 +5162,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     sql="select NAME from STATIONS";
     q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      if (!InsertRDAirplayHotkeys((const char *)q->value(0).toString(),err_msg)) {
+      if (!InsertRDAirplayHotkeys(q->value(0).toString().toUtf8().constData(),
+				  err_msg)) {
 	return false;
       }
     }
@@ -7128,7 +7127,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       if(DropTable(q->value(0).toString(),err_msg)) {
 	fprintf(stderr,"rddbmgr: dropping orphaned LOG table \"%s\"\n",
-		(const char *)q->value(0).toString());
+		q->value(0).toString().toUtf8().constData());
       }
     }
     delete q;
@@ -7280,7 +7279,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       if(DropTable(q->value(0).toString(),err_msg)) {
 	fprintf(stderr,"rddbmgr: dropping orphaned SRT table \"%s\"\n",
-		(const char *)q->value(0).toString());
+		q->value(0).toString().toUtf8().constData());
       }
     }
     delete q;
@@ -7395,7 +7394,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       if(DropTable(q->value(0).toString(),err_msg)) {
 	fprintf(stderr,"rddbmgr: dropping orphaned PRE table \"%s\"\n",
-		(const char *)q->value(0).toString());
+		q->value(0).toString().toUtf8().constData());
       }
     }
     delete q;
@@ -7406,7 +7405,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       if(DropTable(q->value(0).toString(),err_msg)) {
 	fprintf(stderr,"rddbmgr: dropping orphaned POST table \"%s\"\n",
-		(const char *)q->value(0).toString());
+		q->value(0).toString().toUtf8().constData());
       }
     }
     delete q;
@@ -7511,7 +7510,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       if(DropTable(q->value(0).toString(),err_msg)) {
 	fprintf(stderr,"rddbmgr: dropping orphaned CLK table \"%s\"\n",
-		(const char *)q->value(0).toString());
+		q->value(0).toString().toUtf8().constData());
       }
     }
     delete q;
@@ -7583,7 +7582,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       if(DropTable(q->value(0).toString(),err_msg)) {
 	fprintf(stderr,"rddbmgr: dropping orphaned RULES table \"%s\"\n",
-		(const char *)q->value(0).toString());
+		q->value(0).toString().toUtf8().constData());
       }
     }
     delete q;
@@ -7659,7 +7658,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       if(DropTable(q->value(0).toString(),err_msg)) {
 	fprintf(stderr,"rddbmgr: dropping orphaned STACK table \"%s\"\n",
-		(const char *)q->value(0).toString());
+		q->value(0).toString().toUtf8().constData());
       }
     }
     delete q;
@@ -9574,7 +9573,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     q=new RDSqlQuery("select NUMBER,SCHED_CODES from CART where TYPE=1",false);
     while(q->next()) {
       for(int i=0;i<255;i+=11) {
-        QString code=q->value(1).toString().mid(i,11).stripWhiteSpace();
+        QString code=q->value(1).toString().mid(i,11).trimmed();
         if((!code.isEmpty())&&(code!=".")) {
           sql=QString("insert into CART_SCHED_CODES set ")+
             "CART_NUMBER="+q->value(0).toString()+","+
@@ -10745,7 +10744,7 @@ bool MainObject::StackLineTitles347(QString *err_msg) const
   while(q->next()) {
     if(!q->value(1).isNull()) {
       sql=QString("update STACK_LINES set ")+
-	"TITLE=\""+RDEscapeString(q->value(1).toString().lower().replace(" ",""))+"\" "+
+	"TITLE=\""+RDEscapeString(q->value(1).toString().toLower().replace(" ",""))+"\" "+
 	"where CART=\""+RDEscapeString(q->value(0).toString())+"\"";
       if(!RDSqlQuery::apply(sql,err_msg)) {
         delete q;

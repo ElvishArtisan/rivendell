@@ -2,7 +2,7 @@
 //
 // Routines for --create for rddbmgr(8)
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -2110,7 +2110,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     "DESCRIPTION=\"Workstation "+RDEscapeString(station_name)+"\","+
     "USER_NAME=\"user\","+
     "DEFAULT_NAME=\"user\"";
-  struct hostent *hostent=gethostbyname((const char *)station_name);
+  struct hostent *hostent=gethostbyname(station_name.toUtf8());
   if(hostent!=NULL) {
     sql+=QString().sprintf(",IPV4_ADDRESS=\"%d.%d.%d.%d\"",
 			   0xFF&hostent->h_addr[0],0xFF&hostent->h_addr[1],
@@ -2317,9 +2317,9 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   while(q->next()) {
     sql=QString().sprintf("insert into AUDIO_PERMS set\
                            GROUP_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			  (const char *)
-			  RDEscapeString(q->value(0).toString()),
-			  (const char *)RDEscapeString(RD_SERVICE_NAME));
+			  RDEscapeString(q->value(0).toString()).
+			  toUtf8().constData(),
+			  RDEscapeString(RD_SERVICE_NAME).toUtf8().constData());
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -2483,15 +2483,17 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   if(gen_audio) {
     QString filename=
       QString().sprintf("%s/999999_001.%s",
-			RDConfiguration()->audioRoot().ascii(),
-			RDConfiguration()->audioExtension().ascii());
+			RDConfiguration()->audioRoot().toAscii().constData(),
+			RDConfiguration()->audioExtension().toAscii().
+			constData());
 
     QString cmd=QString().sprintf("rdgen -t 10 -l 16 %s",
-				  (const char *)filename);
-    system((const char *)cmd);
+				  filename.toUtf8().constData());
+    system(cmd.toUtf8());
     if(getuid()==0) {
-      chown(filename,RDConfiguration()->uid(),RDConfiguration()->gid());
-      chmod (filename,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
+      chown(filename.toUtf8(),RDConfiguration()->uid(),
+	    RDConfiguration()->gid());
+      chmod (filename.toUtf8(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
     }
   }
 

@@ -69,7 +69,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("nexgen_filter","nexgen_filter",NEXGEN_FILTER_USAGE,this));
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"nexgen_filter: %s\n",(const char *)err_msg);
+    fprintf(stderr,"nexgen_filter: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -145,19 +145,19 @@ MainObject::MainObject(QObject *parent)
   filter_group=new RDGroup(group_name);
   if(!filter_group->exists()) {
     fprintf(stderr,"nexgen_filter: group \"%s\" does not exist\n",
-	    (const char *)group_name);
+	    group_name.toUtf8().constData());
     exit(256);
   }
   filter_audio_dir=new QDir(audio_dir);
   if(!audio_dir.isEmpty()) {
     if(!filter_audio_dir->exists()) {
       fprintf(stderr,"nexgen_filter: audio directory \"%s\" does not exist\n",
-	      (const char *)audio_dir);
+	      audio_dir.toUtf8().constData());
       exit(256);
     }
     if(!filter_audio_dir->isReadable()) {
       fprintf(stderr,"nexgen_filter: audio directory \"%s\" is not readable\n",
-	      (const char *)audio_dir);
+	      audio_dir.toUtf8().constData());
       exit(256);
     }
   }
@@ -172,7 +172,7 @@ MainObject::MainObject(QObject *parent)
     filter_reject_dir=new QDir(reject_dir);
     if(!filter_reject_dir->exists()) {
       fprintf(stderr,"nexgen_filter: reject directory \"%s\" does not exist\n",
-	      (const char *)reject_dir);
+	      reject_dir.toUtf8().constData());
       exit(256);
     }
   }
@@ -180,7 +180,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Create Temp Directory
   //
-  strncpy(tempdir,RDTempDirectory::basePath()+"/nexgen_filterXXXXXX",PATH_MAX);
+  strncpy(tempdir,(RDTempDirectory::basePath()+"/nexgen_filterXXXXXX").toUtf8(),
+	  PATH_MAX);
   filter_temp_dir=new QDir(mkdtemp(tempdir));
   filter_temp_audiofile=filter_temp_dir->canonicalPath()+"/audio.dat";
 
@@ -191,7 +192,7 @@ MainObject::MainObject(QObject *parent)
     if(IsXmlFile(xml_files[i])) {
       if(audio_dir.isEmpty()) {
 	fprintf(stderr,"unable to process \"%s\" [no --audio-dir specified]\n",
-		(const char *)xml_files[i]);
+		xml_files[i].toUtf8().constData());
       }
       else {
 	ProcessXmlFile(xml_files[i]);
@@ -205,7 +206,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Clean Up
   //
-  rmdir(filter_temp_dir->canonicalPath());
+  rmdir(filter_temp_dir->canonicalPath().toUtf8());
 
   exit(0);
 }
@@ -235,7 +236,8 @@ void MainObject::ProcessArchive(const QString &filename)
   //
   // Create temporary directory
   //
-  snprintf(tempdir,PATH_MAX,"%s/XXXXXX",(const char *)RDTempDirectory::basePath());
+  snprintf(tempdir,PATH_MAX,"%s/XXXXXX",
+	   RDTempDirectory::basePath().toUtf8().constData());
   if(mkdtemp(tempdir)==NULL) {
     return;
   }
@@ -244,7 +246,7 @@ void MainObject::ProcessArchive(const QString &filename)
   //
   // Open Archive
   //
-  if((fd_in=open(filename,O_RDONLY))<0) {
+  if((fd_in=open(filename.toUtf8(),O_RDONLY))<0) {
     return;
   }
 
@@ -253,17 +255,17 @@ void MainObject::ProcessArchive(const QString &filename)
   //
   while((read(fd_in,header,104)==104)&&(strncmp(header,"FR:",3)==0)) {
     files.push_back(dir+"/"+RDGetBasePart(QString(header+3).replace("\\","/")));
-    if(files.back().right(4).lower()==".xml") {
+    if(files.back().right(4).toLower()==".xml") {
       xmlfile=files.back();
     }
-    if(files.back().right(4).lower()==".wav") {
+    if(files.back().right(4).toLower()==".wav") {
       wavfile=files.back();
     }
     len=((0xFF&header[103])<<24)+((0xFF&header[102])<<16)+
       ((0xFF&header[101])<<8)+(0xFF&header[100]);
-    if((fd_out=open(files.back(),O_CREAT|O_WRONLY|O_TRUNC,S_IRUSR|S_IWUSR))<0) {
+    if((fd_out=open(files.back().toUtf8(),O_CREAT|O_WRONLY|O_TRUNC,S_IRUSR|S_IWUSR))<0) {
       fprintf(stderr,"unable to write temporary file \"%s\" [%s].\n",
-	      (const char *)files.back(),strerror(errno));
+	      files.back().toUtf8().constData(),strerror(errno));
       return;
     }
     if(fstat(fd_out,&stat)==0) {
@@ -291,7 +293,7 @@ void MainObject::ProcessArchive(const QString &filename)
   // Clean Up
   //
   for(int i=0;i<files.size();i++) {
-    unlink(files[i]);
+    unlink(files[i].toUtf8());
   }
   rmdir(tempdir);
   free(data);
@@ -314,7 +316,8 @@ void MainObject::ProcessXmlFile(const QString &xml,const QString &wavname,
   // Read Metadata
   //
   if(!OpenXmlFile(xml,&data,&cartnum,&filename)) {
-    fprintf(stderr,"unable to parse XML file \"%s\"\n",(const char *)xml);
+    fprintf(stderr,"unable to parse XML file \"%s\"\n",
+	    xml.toUtf8().constData());
     WriteReject(xml);
     return;
   }
@@ -335,7 +338,7 @@ void MainObject::ProcessXmlFile(const QString &xml,const QString &wavname,
        (cartnum>(int)filter_group->defaultHighCart())) {
       fprintf(stderr,
 	      "calculated cart number [%d] is invalid for group \"%s\"\n",
-	      cartnum,(const char *)filter_group->name());
+	      cartnum,filter_group->name().toUtf8().constData());
       WriteReject(xml);
       return;
     }
@@ -354,17 +357,17 @@ void MainObject::ProcessXmlFile(const QString &xml,const QString &wavname,
   //
   Print(QString().sprintf("Importing cart %06d",cartnum));
   if(!data.title().isEmpty()) {
-    Print(QString().sprintf(" [%s",(const char *)data.title()));
+    Print(QString().sprintf(" [%s",data.title().toUtf8().constData()));
     if(!data.artist().isEmpty()) {
-      Print(QString().sprintf("/%s",(const char *)data.artist()));
+      Print(QString().sprintf("/%s",data.artist().toUtf8().constData()));
     }
     Print(QString().sprintf("]"));
   }
   if(arcname.isEmpty()) {
-    Print(QString().sprintf(" from %s ...",(const char *)filename));
+    Print(QString().sprintf(" from %s ...",filename.toUtf8().constData()));
   }
   else {
-    Print(QString().sprintf(" from %s ...",(const char *)arcname));
+    Print(QString().sprintf(" from %s ...",arcname.toUtf8().constData()));
   }
   if(filter_delete_cuts) {
     delete_cuts_switch="--delete-cuts ";
@@ -378,12 +381,12 @@ void MainObject::ProcessXmlFile(const QString &xml,const QString &wavname,
     filter_temp_audiofile;
   if(system(cmd.toUtf8())!=0) {
     Print(QString().sprintf(" aborted.\n"));
-    fprintf(stderr,"import of \"%s\" failed\n",(const char *)filename);
+    fprintf(stderr,"import of \"%s\" failed\n",filename.toUtf8().constData());
     WriteReject(xml);
     return;
   }
   Print(QString().sprintf(" done.\n"));
-  unlink(filter_temp_audiofile);
+  unlink(filter_temp_audiofile.toUtf8());
 
   //
   // Apply Metadata
@@ -413,7 +416,7 @@ bool MainObject::OpenXmlFile(const QString &xml,RDWaveData *data,
   int fadeup_start=-1;
   int fadeup_len=-1;
 
-  if((f=fopen(xml,"r"))==NULL) {
+  if((f=fopen(xml.toUtf8(),"r"))==NULL) {
     return false;
   }
   if(fgets(line,1024,f)==NULL) {
@@ -449,14 +452,14 @@ void MainObject::ProcessXmlLine(const QString &line,RDWaveData *data,
 				int *fadeup_len)
 {
   QString tag=
-    line.mid(line.find("<")+1,line.find(">")-line.find("<")-1).lower();
-  QString value=line.mid(line.find(">")+1,line.findRev("<")-line.find(">")-1);
+    line.mid(line.indexOf("<")+1,line.indexOf(">")-line.indexOf("<")-1).toLower();
+  QString value=line.mid(line.indexOf(">")+1,line.lastIndexOf("<")-line.indexOf(">")-1);
 
   //  printf("%s: %s\n",(const char *)tag,(const char *)value);
 
   if(tag=="file_name") {
     *filename=filter_audio_dir->canonicalPath()+"/"+
-      value.right(value.length()-value.findRev('\\')-1);
+      value.right(value.length()-value.lastIndexOf('\\')-1);
   }
   if(tag=="cart") {
     *cartnum=value.toUInt()+filter_cart_offset;
@@ -567,11 +570,11 @@ bool MainObject::PreprocessAudio(QString filename)
   int fd=-1;
   char c;
 
-  if((fd=open(filename,O_RDONLY))<0) {
+  if((fd=open(filename.toUtf8(),O_RDONLY))<0) {
     filename=SwapCase(filename);
-    if((fd=open(filename,O_RDONLY))<0) {
+    if((fd=open(filename.toUtf8(),O_RDONLY))<0) {
       fprintf(stderr,"unable to open audio file \"%s\"\n",
-	      (const char *)filename);
+	      filename.toUtf8().constData());
       return false;
     }
     
@@ -579,21 +582,22 @@ bool MainObject::PreprocessAudio(QString filename)
   lseek(fd,20,SEEK_SET);
   if(read(fd,&c,1)!=1) {
     close(fd);
-    fprintf(stderr,"truncated audio file \"%s\"\n",(const char *)filename);
+    fprintf(stderr,"truncated audio file \"%s\"\n",filename.toUtf8().
+	    constData());
     return false;
   }
   close(fd);
   if(c==80) {   // MPEG Audio
-    if(system(QString("madplay -Q -o wave:")+filter_temp_audiofile+" "+filename)!=0) {
+    if(system((QString("madplay -Q -o wave:")+filter_temp_audiofile+" "+filename).toUtf8())!=0) {
       fprintf(stderr,"MPEG converter error with file \"%s\"\n",
-	      (const char *)filename);
+	      filename.toUtf8().constData());
       return false;
     }
   }
   else {    // PCM Audio
-    if(symlink(filename,filter_temp_audiofile)!=0) {
+    if(symlink(filename.toUtf8(),filter_temp_audiofile.toUtf8())!=0) {
       fprintf(stderr,"unable to create symlink \"%s\"\n",
-	      (const char *)filter_temp_audiofile);
+	      filter_temp_audiofile.toUtf8().constData());
       return false;
     }
   }
@@ -608,7 +612,7 @@ void MainObject::WriteReject(const QString &filename)
       if(!RDCopy(filename,filter_reject_dir->canonicalPath()+"/"+
 		 RDGetBasePart(filename))) {
 	fprintf(stderr,"Unable to write to \"%s\"\n",
-		(const char *)filter_reject_dir->path());
+		filter_reject_dir->path().toUtf8().constData());
       }
     }
   }
@@ -641,11 +645,12 @@ QDateTime MainObject::GetDateTime(const QString &str) const
 QString MainObject::SwapCase(const QString &str) const
 {
   QStringList parts=str.split(".");
-  if(parts[parts.size()-1].contains(QRegExp("*[a-z]*",true,true))>0) {
-    parts[parts.size()-1]=parts[parts.size()-1].upper();
+  if(parts[parts.size()-1].
+     contains(QRegExp("*[a-z]*",Qt::CaseSensitive,QRegExp::Wildcard))>0) {
+    parts[parts.size()-1]=parts[parts.size()-1].toUpper();
   }
   else {
-    parts[parts.size()-1]=parts[parts.size()-1].lower();
+    parts[parts.size()-1]=parts[parts.size()-1].toLower();
   }
   return parts.join(".");
 }
@@ -656,7 +661,7 @@ bool MainObject::IsXmlFile(const QString &filename)
   int fd=-1;
   char data[10];
 
-  if((fd=open(filename,O_RDONLY))<0) {
+  if((fd=open(filename.toUtf8(),O_RDONLY))<0) {
     return false;
   }
   if(read(fd,data,8)!=8) {
@@ -672,7 +677,7 @@ bool MainObject::IsXmlFile(const QString &filename)
 void MainObject::Print(const QString &msg) const
 {
   if(filter_verbose) {
-    printf("%s",(const char *)msg);
+    printf("%s",msg.toUtf8().constData());
     fflush(stdout);
   }
 }

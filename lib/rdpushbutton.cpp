@@ -2,7 +2,7 @@
 //
 //   A flashing button widget.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -21,7 +21,6 @@
 #include <qpushbutton.h>
 #include <qpainter.h>
 #include <qpixmap.h>
-#include <q3pointarray.h>
 #include <qtimer.h>
 #include <qpalette.h>
 //Added by qt3to4:
@@ -94,7 +93,7 @@ void RDPushButton::setFlashColor(QColor color)
   int v=0;
 
   flash_color=color;  
-  flash_palette=QPalette(QColor(flash_color),backgroundColor());
+  flash_palette=QPalette(QColor(flash_color),palette().color(QPalette::Background));
 
   color.getHsv(&h,&s,&v);
   if((h>180)&&(h<300)) {
@@ -110,8 +109,8 @@ void RDPushButton::setFlashColor(QColor color)
   }
   s=0;
   color.setHsv(h,s,v);
-  flash_palette.setColor(QPalette::Active,QColorGroup::ButtonText,color);
-  flash_palette.setColor(QPalette::Inactive,QColorGroup::ButtonText,color);
+  flash_palette.setColor(QPalette::Active,QPalette::ButtonText,color);
+  flash_palette.setColor(QPalette::Inactive,QPalette::ButtonText,color);
 }
 
 
@@ -216,7 +215,8 @@ void RDPushButton::setFlashPeriod(int period)
 {
   flash_period=period;
   if(flash_timer->isActive()) {
-    flash_timer->changeInterval(flash_period);
+    flash_timer->stop();
+    flash_timer->start(flash_period);
   }
 }
 
@@ -247,7 +247,6 @@ void RDPushButton::tickClock()
   if(!flashing_enabled) {
     return;
   }
-  QKeySequence a=accel();
   if(flash_state) {
     flash_state=false;
     QPushButton::setPalette(flash_palette);
@@ -256,7 +255,6 @@ void RDPushButton::tickClock()
     flash_state=true;
     QPushButton::setPalette(off_palette);
   }
-  setAccel(a);
 }
 
 
@@ -265,7 +263,6 @@ void RDPushButton::tickClock(bool state)
   if(!flashing_enabled) {
     return;
   }
-  QKeySequence a=accel();
   if(state) {
     flash_state=false;
     QPushButton::setPalette(flash_palette);
@@ -274,7 +271,6 @@ void RDPushButton::tickClock(bool state)
     flash_state=true;
     QPushButton::setPalette(off_palette);
   }
-  setAccel(a);
 }
 
 

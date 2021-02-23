@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Quartz Type 1 Switcher Protocol
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,9 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
-#include <syslog.h>
 
 #include <qsignalmapper.h>
 
@@ -59,6 +56,7 @@ Quartz1::Quartz1(RDMatrix *matrix,QObject *parent)
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(ipConnect(int)));
   for(int i=0;i<2;i++) {
     sas_reconnect_timer[i]=new QTimer(this);
+    sas_reconnect_timer[i]->setSingleShot(true);
     mapper->setMapping(sas_reconnect_timer[i],i);
     connect(sas_reconnect_timer[i],SIGNAL(timeout()),mapper,SLOT(map()));
   }
@@ -206,7 +204,7 @@ void Quartz1::connectionClosedData(int conn)
 	 "connection to Quartz1 device at %s:%d closed unexpectedly, attempting reconnect",
 	      (const char *)sas_ipaddress[conn].toString().toUtf8(),
 	      sas_ipport[conn]);
-  sas_reconnect_timer[conn]->start(QUARTZ1_RECONNECT_INTERVAL,true);
+  sas_reconnect_timer[conn]->start(QUARTZ1_RECONNECT_INTERVAL);
 }
 
 
@@ -218,7 +216,7 @@ void Quartz1::errorData(int conn,QAbstractSocket::SocketError err)
 	  "connection to Quartz1 device at %s:%d refused, attempting reconnect",
 		(const char *)sas_ipaddress[conn].toString().toUtf8(),
 		sas_ipport[conn]);
-    sas_reconnect_timer[conn]->start(QUARTZ1_RECONNECT_INTERVAL,true);
+    sas_reconnect_timer[conn]->start(QUARTZ1_RECONNECT_INTERVAL);
     break;
 
   case QAbstractSocket::HostNotFoundError:
@@ -261,7 +259,7 @@ void Quartz1::SendCommand(const char *str)
       break;
       
     case RDMatrix::TcpPort:
-      sas_socket[i]->writeBlock(str,strlen(str));
+      sas_socket[i]->write(str,strlen(str));
       break;
 
     case RDMatrix::NoPort:

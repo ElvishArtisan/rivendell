@@ -41,7 +41,7 @@ RDGetAth::RDGetAth(double *ath,QWidget *parent)
   //
   // Validator
   //
-  QDoubleValidator *validator=new QDoubleValidator(this,"validator");
+  QDoubleValidator *validator=new QDoubleValidator(this);
   validator->setBottom(0.0);
 
   //
@@ -53,19 +53,18 @@ RDGetAth::RDGetAth(double *ath,QWidget *parent)
   //
   // ATH
   //
-  ath_ath_edit=new QLineEdit(this,"ath_ath_edit");
+  ath_ath_edit=new QLineEdit(this);
   ath_ath_edit->setGeometry(55,70,50,19);
   ath_ath_edit->setValidator(validator);
-  QLabel *ath_ath_label=new QLabel(ath_ath_edit,tr("ATH:"),this,
-				       "ath_ath_label");
+  QLabel *ath_ath_label=new QLabel(tr("ATH:"),this);
   ath_ath_label->setGeometry(10,70,40,19);
   ath_ath_label->setFont(labelFont());
-  ath_ath_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  ath_ath_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
@@ -75,7 +74,7 @@ RDGetAth::RDGetAth(double *ath,QWidget *parent)
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   cancel_button->setFont(buttonFont());

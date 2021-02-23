@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools 16x2
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-
-#include <qtimer.h>
+#include <QTimer>
 
 #include <rdapplication.h>
 
@@ -73,7 +71,7 @@ Bt16x2::Bt16x2(RDMatrix *matrix,QObject *parent)
   //
   // The Poll Timer
   //
-  QTimer *timer=new QTimer(this,"poll_timer");
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(processStatus()));
   timer->start(BT16X2_POLL_INTERVAL);
 }
@@ -124,14 +122,14 @@ void Bt16x2::processCommand(RDMacro *cmd)
   switch(cmd->command()) {
       case RDMacro::GO:
 	if((cmd->argQuantity()!=5)||
-	   ((cmd->arg(1).lower()!="i")&&
-	    (cmd->arg(1).lower()!="o"))||
+	   ((cmd->arg(1).toLower()!="i")&&
+	    (cmd->arg(1).toLower()!="o"))||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(3).toInt()>bt_gpos)||
 	   (cmd->arg(2).toInt()>bt_gpos)||
 	   ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	    (cmd->arg(1).lower()!="i"))||
+	    (cmd->arg(1).toLower()!="i"))||
 	   ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	    (cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).lower()=="i"))||
+	    (cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).toLower()=="i"))||
 	   (cmd->arg(4).toInt()<0)) {
 	  cmd->acknowledge(false);
 	  emit rmlEcho(cmd);
@@ -139,14 +137,14 @@ void Bt16x2::processCommand(RDMacro *cmd)
 	}
 	if(cmd->arg(3).toInt()==0) {  // Turn OFF
 	  if(cmd->arg(4).toInt()==0) {
-	    if(cmd->arg(1).lower()=="i") {
+	    if(cmd->arg(1).toLower()=="i") {
 	      if(bt_gpi_state[cmd->arg(2).toInt()-1]) {
 		emit gpiChanged(bt_matrix,cmd->arg(2).toInt()-1,false);
 		bt_gpi_state[cmd->arg(2).toInt()-1]=false;
 	      }
 	      bt_gpi_mask[cmd->arg(2).toInt()-1]=true;
 	    }
-	    if(cmd->arg(1).lower()=="o") {
+	    if(cmd->arg(1).toLower()=="o") {
 	      sprintf(str,"*%dOR%02dF",BT16X2_UNIT_ID,cmd->arg(2).toInt());
 	      bt_device->write(str,6);
 	      emit gpoChanged(bt_matrix,cmd->arg(2).toInt()-1,false);
@@ -167,21 +165,21 @@ void Bt16x2::processCommand(RDMacro *cmd)
 	  }
 	  else { 
 	    if(cmd->arg(4).toInt()==0) {  // Turn ON
-	      if(cmd->arg(1).lower()=="i") {
+	      if(cmd->arg(1).toLower()=="i") {
 		if(!bt_gpi_state[cmd->arg(2).toInt()-1]) {
 		  emit gpiChanged(bt_matrix,cmd->arg(2).toInt()-1,true);
 		  bt_gpi_state[cmd->arg(2).toInt()-1]=true;
 		}
 		bt_gpi_mask[cmd->arg(2).toInt()-1]=true;
 	      }
-	      if(cmd->arg(1).lower()=="o") {
+	      if(cmd->arg(1).toLower()=="o") {
 		sprintf(str,"*%dOR%02dL",BT16X2_UNIT_ID,cmd->arg(2).toInt());
 		bt_device->write(str,6);
 		emit gpoChanged(bt_matrix,cmd->arg(2).toInt()-1,true);
 	      }
 	    }
 	    else {  // Pulse
-	      if(cmd->arg(1).lower()=="i") {
+	      if(cmd->arg(1).toLower()=="i") {
 		if(!bt_gpi_state[cmd->arg(2).toInt()-1]) {
 		  emit gpiChanged(bt_matrix,cmd->arg(2).toInt()-1,true);
 		  bt_gpi_state[cmd->arg(2).toInt()-1]=true;
@@ -189,7 +187,7 @@ void Bt16x2::processCommand(RDMacro *cmd)
 		bt_gpi_mask[cmd->arg(2).toInt()-1]=true;
 		bt_gpi_oneshot->start(cmd->arg(2).toInt()-1,500);
 	      }
-	      if(cmd->arg(1).lower()=="o") {
+	      if(cmd->arg(1).toLower()=="o") {
 		sprintf(str,"*%dOR%02dP",BT16X2_UNIT_ID,cmd->arg(2).toInt());
 		bt_device->write(str,6);
 		emit gpoChanged(bt_matrix,cmd->arg(2).toInt()-1,true);

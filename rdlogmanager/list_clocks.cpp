@@ -45,7 +45,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   // Event Filter
   //
   edit_filter_box=new QComboBox(this);
-  edit_filter_label=new QLabel(edit_filter_box,tr("Filter:"),this);
+  edit_filter_label=new QLabel(tr("Filter:"),this);
   edit_filter_label->setFont(labelFont());
   edit_filter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(edit_filter_box,SIGNAL(activated(int)),
@@ -147,8 +147,8 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //
   // Populate Data
   //
-  edit_filter_box->insertItem(tr("ALL"));
-  edit_filter_box->insertItem(tr("NONE"));
+  edit_filter_box->insertItem(0,tr("ALL"));
+  edit_filter_box->insertItem(1,tr("NONE"));
 
   QString sql="select NAME from SERVICES";
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -160,9 +160,9 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   for ( QStringList::Iterator it = services_list.begin(); 
         it != services_list.end();
         ++it ) {
-    edit_filter_box->insertItem(*it);
+    edit_filter_box->insertItem(edit_filter_box->count(),*it);
     if(*clock_filter==*it) {
-      edit_filter_box->setCurrentItem(edit_filter_box->count()-1);
+      edit_filter_box->setCurrentIndex(edit_filter_box->count()-1);
     }
   }
   if(edit_clockname!=NULL) {
@@ -246,7 +246,7 @@ void ListClocks::addData()
     RDSqlQuery::apply(sql);
   }
   else {
-    if(edit_filter_box->currentItem()==0) {
+    if(edit_filter_box->currentIndex()==0) {
       //
       // Create default clock permissions
       //

@@ -73,8 +73,8 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   // Render To Type
   //
   render_to_box=new QComboBox(this);
-  render_to_box->insertItem(tr("Cart/Cut"));
-  render_to_box->insertItem(tr("File"));
+  render_to_box->insertItem(0,tr("Cart/Cut"));
+  render_to_box->insertItem(1,tr("File"));
   connect(render_to_box,SIGNAL(activated(int)),this,SLOT(toChangedData(int)));
   render_to_label=new QLabel(tr("Render To")+":",this);
   render_to_label->setFont(labelFont());
@@ -110,8 +110,8 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   // Start Time
   //
   render_starttime_box=new QComboBox(this);
-  render_starttime_box->insertItem(tr("[now]"));
-  render_starttime_box->insertItem(tr("As Specified"));
+  render_starttime_box->insertItem(0,tr("[now]"));
+  render_starttime_box->insertItem(1,tr("As Specified"));
   connect(render_starttime_box,SIGNAL(activated(int)),
 	  this,SLOT(starttimeSourceData(int)));
   render_starttime_label=new QLabel(tr("Virtual Start Time")+":",this);
@@ -125,8 +125,8 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   // Include Events
   //
   render_events_box=new QComboBox(this);
-  render_events_box->insertItem(tr("All Events"));
-  render_events_box->insertItem(tr("Only Selected Events"));
+  render_events_box->insertItem(0,tr("All Events"));
+  render_events_box->insertItem(1,tr("Only Selected Events"));
   render_events_label=new QLabel(tr("Include")+":",this);
   render_events_label->setFont(labelFont());
   render_events_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -135,8 +135,8 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   // Ignore STOP
   //
   render_ignorestop_box=new QComboBox(this);
-  render_ignorestop_box->insertItem(tr("Stop Rendering"));
-  render_ignorestop_box->insertItem(tr("Treat as PLAY"));
+  render_ignorestop_box->insertItem(0,tr("Stop Rendering"));
+  render_ignorestop_box->insertItem(1,tr("Treat as PLAY"));
   render_ignorestop_label=new QLabel(tr("At STOP transition")+":",this);
   render_ignorestop_label->setFont(labelFont());
   render_ignorestop_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -213,7 +213,7 @@ void RenderDialog::filenameChangedData(const QString &str)
 
 void RenderDialog::selectData()
 {
-  if(render_to_box->currentItem()) {
+  if(render_to_box->currentIndex()) {
     QString filename=
       QFileDialog::getSaveFileName(this,tr("Render Log"),
 				   render_save_path,RD_AUDIO_FILE_FILTER);
@@ -265,28 +265,28 @@ void RenderDialog::renderData()
 
   int first_line=0;
   int last_line=render_model->lineCount();
-  if(render_events_box->currentItem()) {
+  if(render_events_box->currentIndex()) {
     first_line=render_first_line;
     last_line=render_last_line;
   }
   QTime start_time=QTime::currentTime();
-  if(render_starttime_box->currentItem()) {
+  if(render_starttime_box->currentIndex()) {
     start_time=render_starttime_edit->time();
   }
   RDRenderer *r=new RDRenderer(this);
   connect(r,SIGNAL(lineStarted(int,int)),this,SLOT(lineStartedData(int,int)));
   connect(render_progress_dialog,SIGNAL(canceled()),r,SLOT(abort()));
-  if(render_to_box->currentItem()) {
+  if(render_to_box->currentIndex()) {
     result=
       r->renderToFile(render_filename_edit->text(),render_model,render_settings,
-		      start_time,render_ignorestop_box->currentItem(),
+		      start_time,render_ignorestop_box->currentIndex(),
 		      &err_msg,first_line,last_line);
   }
   else {
     result=
       r->renderToCart(render_to_cartnum,render_to_cutnum,render_model,
 		      render_settings,start_time,
-		      render_ignorestop_box->currentItem(),
+		      render_ignorestop_box->currentIndex(),
 		      &err_msg,first_line,last_line);
   }
   if(!result) {

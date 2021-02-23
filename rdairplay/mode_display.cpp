@@ -2,7 +2,7 @@
 //
 // The mode display widget for RDAirPlay in Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
+#include <QPainter>
 
 #include "colors.h"
 #include "mode_display.h"
@@ -34,11 +34,11 @@ ModeDisplay::ModeDisplay(QWidget *parent)
   // Create Palettes
   //
   auto_color=
-    QPalette(QColor(BUTTON_MODE_AUTO_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_MODE_AUTO_COLOR),palette().color(QPalette::Background));
   live_assist_color=
-    QPalette(QColor(BUTTON_MODE_LIVE_ASSIST_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_MODE_LIVE_ASSIST_COLOR),palette().color(QPalette::Background));
   manual_color=
-    QPalette(QColor(BUTTON_MODE_MANUAL_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_MODE_MANUAL_COLOR),palette().color(QPalette::Background));
 
   setPalette(live_assist_color);
 }
@@ -189,6 +189,6 @@ void ModeDisplay::WriteMap()
   p->end();
   delete p;
 
-  setPixmap(*pix);
+  setIcon(*pix);
   delete pix;
 }

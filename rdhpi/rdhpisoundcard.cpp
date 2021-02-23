@@ -750,14 +750,15 @@ void RDHPISoundCard::HPIProbe()
     str=QString(tr("Input Stream"));
     for(int j=0;j<card_input_streams[i];j++) {
       input_stream_description[i][j]=
-	QString().sprintf("%s - %s %d",(const char *)card_description[i],
-			  (const char *)str,j+1);
+	QString().sprintf("%s - %s %d",card_description[i].toUtf8().constData(),
+			  str.toUtf8().constData(),j+1);
     }
     str=QString(tr("Output Stream"));
     for(int j=0;j<card_output_streams[i];j++) {
       output_stream_description[i][j]=
-	QString().sprintf("%s - %s %d",(const char *)card_description[i],
-			  (const char *)str,j+1);
+	QString().sprintf("%s - %s %d",
+			  card_description[i].toUtf8().constData(),
+			  str.toUtf8().constData(),j+1);
     }
   }
 
@@ -779,9 +780,9 @@ void RDHPISoundCard::HPIProbe()
 			     &input_stream_volume_control[i][0][k])==0) {
 	card_input_ports[i]++;
 	input_port_description[i][k]=
-	  QString().sprintf("%s - %s %d",(const char *)card_description[i],
-			    (const char *)str,
-			    card_input_ports[i]);
+	  QString().sprintf("%s - %s %d",
+			    card_description[i].toUtf8().constData(),
+			    str.toUtf8().constData(),card_input_ports[i]);
       }
 
       //
@@ -813,9 +814,9 @@ void RDHPISoundCard::HPIProbe()
 	output_stream_volume[i][0][k]=true;
 	card_output_ports[i]++;
 	output_port_description[i][k]=
-	  QString().sprintf("%s - %s %d",(const char *)card_description[i],
-			    (const char *)str,
-			    card_output_ports[i]);
+	  QString().sprintf("%s - %s %d",
+			    card_description[i].toUtf8().constData(),
+			    str.toUtf8().constData(),card_output_ports[i]);
       }
     }
     LogHpi(HPI_MixerGetControl(NULL,hpi_mixer[i],
@@ -1033,7 +1034,7 @@ void RDHPISoundCard::HPIProbe()
       }
     }
   }
-  clock_timer=new QTimer(this,"clock_timer");
+  clock_timer=new QTimer(this);
   connect(clock_timer,SIGNAL(timeout()),this,SLOT(clock()));
   clock_timer->start(METER_INTERVAL);
 }

@@ -57,11 +57,11 @@ AddGroup::AddGroup(QString *group,QWidget *parent)
   group_name_edit->setGeometry(145,11,sizeHint().width()-150,19);
   group_name_edit->setMaxLength(10);
   group_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(group_name_edit,tr("&New Group Name:"),this);
+  QLabel *label=new QLabel(tr("&New Group Name:"),this);
   label->setFont(labelFont());
   label->setGeometry(10,11,130,19);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Enable Users Checkbox
@@ -69,10 +69,10 @@ AddGroup::AddGroup(QString *group,QWidget *parent)
   group_users_box=new QCheckBox(this);
   group_users_box->setGeometry(40,40,15,15);
   group_users_box->setChecked(true);
-  label=new QLabel(group_users_box,tr("Enable Group for All Users"),this);
+  label=new QLabel(tr("Enable Group for All Users"),this);
   label->setFont(subLabelFont());
   label->setGeometry(60,38,sizeHint().width()-60,19);
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Enable Services Checkbox
@@ -80,10 +80,10 @@ AddGroup::AddGroup(QString *group,QWidget *parent)
   group_svcs_box=new QCheckBox(this);
   group_svcs_box->setGeometry(40,61,15,15);
   group_svcs_box->setChecked(true);
-  label=new QLabel(group_svcs_box,tr("Enable Group for All Services"),this);
+  label=new QLabel(tr("Enable Group for All Services"),this);
   label->setFont(subLabelFont());
   label->setGeometry(60,58,sizeHint().width()-60,19);
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   //  Ok Button

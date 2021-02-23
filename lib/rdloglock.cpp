@@ -147,7 +147,7 @@ void RDLogLock::updateLock(const QString &log_name,const QString &guid)
   q=new RDSqlQuery(sql);
   if(q->numRowsAffected()==0) {
     rda->syslog(LOG_WARNING,"lock on log \"%s\" has evaporated!",
-		(const char *)log_name);
+		log_name.toUtf8().constData());
   }
   delete q;
 }

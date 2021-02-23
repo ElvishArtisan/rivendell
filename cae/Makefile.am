@@ -19,7 +19,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -Wno-strict-aliasing @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -Wno-strict-aliasing @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 
@@ -45,8 +45,7 @@ caed_LDADD = @LIB_RDLIBS@\
              @LIBSRC@\
              @LIBVORBIS@\
              @QT4_LIBS@\
-             @MUSICBRAINZ_LIBS@\
-             -lQt3Support
+             @MUSICBRAINZ_LIBS@
 
 CLEANFILES = *~\
              moc_*

@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -160,8 +160,8 @@ class MainObject : public QObject
   void SendDeckEvent(int deck,int number);
   void ParseCommand(int);
   void DispatchCommand(ServerConnection *conn);
-  void EchoCommand(int,const char *);
-  void BroadcastCommand(const char *,int except_ch=-1);
+  void EchoCommand(int,const QString &cmd);
+  void BroadcastCommand(const QString &cmd,int except_ch=-1);
   void EchoArgs(int,const char);
   void LoadEngine(bool adv_day=false);
   QString LoadEventSql();
@@ -202,7 +202,7 @@ class MainObject : public QObject
   QString catch_host;
   bool debug;
   RDTimeEngine *catch_engine;
-  Q_INT16 tcp_port;
+  int16_t tcp_port;
   QTcpServer *server;
   RDCatchConnect *catch_connect;
 

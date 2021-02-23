@@ -49,7 +49,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   edit_endpoint_edit=new QLineEdit(this);
   edit_endpoint_edit->setGeometry(75,10,sizeHint().width()-85,20);
   edit_endpoint_edit->setValidator(validator);
-  QLabel *label=new QLabel(edit_endpoint_edit,tr("Name: "),this);
+  QLabel *label=new QLabel(tr("Name: "),this);
   label->setGeometry(10,13,60,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
@@ -59,8 +59,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   edit_enginenum_edit=new QLineEdit(this);
   edit_enginenum_edit->setGeometry(135,36,50,20);
-  edit_enginenum_label=
-    new QLabel(edit_enginenum_edit,tr("Engine")+":",this);
+  edit_enginenum_label=new QLabel(tr("Engine")+":",this);
   edit_enginenum_label->setGeometry(10,36,120,20);
   edit_enginenum_label->setFont(labelFont());
   edit_enginenum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -70,8 +69,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   edit_devicenum_edit=new QLineEdit(this);
   edit_devicenum_edit->setGeometry(135,62,50,20);
-  edit_devicenum_label=
-    new QLabel(edit_devicenum_edit,tr("Device (Hex)")+":",this);
+  edit_devicenum_label=new QLabel(tr("Device (Hex)")+":",this);
   edit_devicenum_label->setGeometry(10,62,120,20);
   edit_devicenum_label->setFont(labelFont());
   edit_devicenum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

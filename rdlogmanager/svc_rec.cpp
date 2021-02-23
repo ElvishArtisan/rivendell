@@ -2,7 +2,7 @@
 //
 // Calendar widget.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -61,7 +61,7 @@ SvcRec::SvcRec(const QString &svcname,QWidget *parent)
   pick_month_box=new QComboBox(this);
   pick_month_box->setGeometry(0,0,120,26);
   for(int i=1;i<13;i++) {
-    pick_month_box->insertItem(QDate::longMonthName(i));
+    pick_month_box->insertItem(pick_month_box->count(),QDate::longMonthName(i));
   }
   connect(pick_month_box,SIGNAL(activated(int)),
 	  this,SLOT(monthActivatedData(int)));
@@ -72,7 +72,8 @@ SvcRec::SvcRec(const QString &svcname,QWidget *parent)
   pick_year_box=new QComboBox(this);
   pick_year_box->setGeometry(130,0,90,26);
   for(int i=pick_low_year;i<(pick_high_year+1);i++) {
-    pick_year_box->insertItem(QString().sprintf("%04d",i));
+    pick_year_box->
+      insertItem(pick_year_box->count(),QString().sprintf("%04d",i));
   }
   connect(pick_year_box,SIGNAL(activated(int)),
 	  this,SLOT(yearActivatedData(int)));
@@ -82,12 +83,12 @@ SvcRec::SvcRec(const QString &svcname,QWidget *parent)
   // Date Labels
   //
   QPalette weekend_palette=palette();
-  weekend_palette.setColor(QPalette::Active,QColorGroup::Background,
+  weekend_palette.setColor(QPalette::Active,QPalette::Background,
 			   palette().color(QPalette::Active,
-					   QColorGroup::Mid));
-  weekend_palette.setColor(QPalette::Inactive,QColorGroup::Background,
+					   QPalette::Mid));
+  weekend_palette.setColor(QPalette::Inactive,QPalette::Background,
 			   palette().color(QPalette::Active,
-					   QColorGroup::Mid));
+					   QPalette::Mid));
 
   QLabel *label=new QLabel(tr("Mo"),this);
   label->setGeometry(SVC_REC_X_ORIGIN,30,30,30);
@@ -185,9 +186,9 @@ bool SvcRec::setDate(QDate date)
     return false;
   }
   pick_date=date;
-  pick_month_box->setCurrentItem(date.month()-1);
+  pick_month_box->setCurrentIndex(date.month()-1);
   if(pick_year_box!=NULL) {
-    pick_year_box->setCurrentItem(date.year()-pick_low_year);
+    pick_year_box->setCurrentIndex(date.year()-pick_low_year);
   }
   else {
     pick_year_spin->setValue(date.year());
@@ -236,14 +237,14 @@ void SvcRec::monthActivatedData(int id)
 
 void SvcRec::yearActivatedData(int id)
 {
-  QDate date=QDate(pick_low_year+pick_year_box->currentItem(),
+  QDate date=QDate(pick_low_year+pick_year_box->currentIndex(),
 		   pick_date.month(),1);
   if(pick_date.day()<=date.daysInMonth()) {
-    pick_date=QDate(pick_low_year+pick_year_box->currentItem(),
+    pick_date=QDate(pick_low_year+pick_year_box->currentIndex(),
 		    pick_date.month(),pick_date.day());
   }
   else {
-    pick_date=QDate(pick_low_year+pick_year_box->currentItem(),
+    pick_date=QDate(pick_low_year+pick_year_box->currentIndex(),
 		    pick_date.month(),date.daysInMonth());
   }
   GetActiveDays(pick_date);
@@ -299,12 +300,12 @@ void SvcRec::PrintDays()
   // Clear Days
   //
   QPalette weekend_palette=palette();
-  weekend_palette.setColor(QPalette::Active,QColorGroup::Background,
+  weekend_palette.setColor(QPalette::Active,QPalette::Background,
 			   palette().color(QPalette::Active,
-					   QColorGroup::Mid));
-  weekend_palette.setColor(QPalette::Inactive,QColorGroup::Background,
+					   QPalette::Mid));
+  weekend_palette.setColor(QPalette::Inactive,QPalette::Background,
 			   palette().color(QPalette::Active,
-					   QColorGroup::Mid));
+					   QPalette::Mid));
   for(int i=0;i<6;i++) {
     for(int j=0;j<5;j++) {
       pick_date_label[i][j]->clear();
@@ -322,11 +323,11 @@ void SvcRec::PrintDays()
   // Get Top of Month
   //
   if(pick_year_box!=NULL) {
-    top_date=QDate(pick_low_year+pick_year_box->currentItem(),
-		   pick_month_box->currentItem()+1,1);
+    top_date=QDate(pick_low_year+pick_year_box->currentIndex(),
+		   pick_month_box->currentIndex()+1,1);
   }
   else {
-    top_date=QDate(pick_year_spin->value(),pick_month_box->currentItem()+1,1);
+    top_date=QDate(pick_year_spin->value(),pick_month_box->currentIndex()+1,1);
   }
 
   //
@@ -364,26 +365,26 @@ void SvcRec::SelectDay(int day,int dow_offset,bool state)
   int dow=slot-7*week;
   QPalette pal=palette();
   if(state) {
-    pal.setColor(QPalette::Active,QColorGroup::Foreground,
+    pal.setColor(QPalette::Active,QPalette::Foreground,
 		 palette().
-		 color(QPalette::Active,QColorGroup::HighlightedText));
-    pal.setColor(QPalette::Active,QColorGroup::Background,
-		 palette().color(QPalette::Active,QColorGroup::Highlight));
-    pal.setColor(QPalette::Inactive,QColorGroup::Foreground,
+		 color(QPalette::Active,QPalette::HighlightedText));
+    pal.setColor(QPalette::Active,QPalette::Background,
+		 palette().color(QPalette::Active,QPalette::Highlight));
+    pal.setColor(QPalette::Inactive,QPalette::Foreground,
 		 palette().
-		 color(QPalette::Active,QColorGroup::HighlightedText));
-    pal.setColor(QPalette::Inactive,QColorGroup::Background,
-		 palette().color(QPalette::Active,QColorGroup::Highlight));
+		 color(QPalette::Active,QPalette::HighlightedText));
+    pal.setColor(QPalette::Inactive,QPalette::Background,
+		 palette().color(QPalette::Active,QPalette::Highlight));
   }
   else {
-    pal.setColor(QPalette::Active,QColorGroup::Foreground,
-		 palette().color(QPalette::Active,QColorGroup::Text));
-    pal.setColor(QPalette::Active,QColorGroup::Background,
-		 palette().color(QPalette::Active,QColorGroup::Background));
-    pal.setColor(QPalette::Inactive,QColorGroup::Foreground,
-		 palette().color(QPalette::Active,QColorGroup::Text));
-    pal.setColor(QPalette::Inactive,QColorGroup::Background,
-		 palette().color(QPalette::Active,QColorGroup::Background));
+    pal.setColor(QPalette::Active,QPalette::Foreground,
+		 palette().color(QPalette::Active,QPalette::Text));
+    pal.setColor(QPalette::Active,QPalette::Background,
+		 palette().color(QPalette::Active,QPalette::Background));
+    pal.setColor(QPalette::Inactive,QPalette::Foreground,
+		 palette().color(QPalette::Active,QPalette::Text));
+    pal.setColor(QPalette::Inactive,QPalette::Background,
+		 palette().color(QPalette::Active,QPalette::Background));
   }
   pick_date_label[week][dow]->setPalette(pal);
 }

@@ -43,11 +43,11 @@ User</source>
     </message>
     <message>
         <source>&amp;Username:</source>
-        <translation>&amp;Usuario:</translation>
+        <translation type="obsolete">&amp;Usuario:</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>&amp;Contraseña:</translation>
+        <translation type="obsolete">&amp;Contraseña:</translation>
     </message>
     <message>
         <source>rdlogin : </source>
@@ -67,6 +67,14 @@ User</source>
     </message>
     <message>
         <source>Current User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -45,8 +45,8 @@ class RDSlider : public QAbstractSlider
   void setRange(int min_value,int max_value);
   void setLineStep(int step);
   void setPageStep(int step);
-  void setKnobColor(QColorGroup group);
-  void setKnobColor(QColor color);
+  void setKnobColor(const QPalette &pal);
+  void setKnobColor(const QColor &color);
   void setKnobSize(QSize size);
   void setKnobSize(int w,int h);
 
@@ -72,7 +72,7 @@ class RDSlider : public QAbstractSlider
   void calcKnob();
   void calcKnob(int x,int y,int w,int h);
   RDSlider::Orientation rdslider_orient;
-  QColorGroup knob_color;
+  QPalette knob_color;
   QRect curr_knob;
   QRect prev_knob;
   QRect page_up;

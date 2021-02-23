@@ -2,7 +2,7 @@
 //
 // System Monitor for Rivendell
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,12 +20,12 @@
 
 #include <signal.h>
 
-#include <qapplication.h>
-#include <qdir.h>
-#include <qmessagebox.h>
-#include <qpainter.h>
-#include <qprocess.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QDir>
+#include <QMessageBox>
+#include <QPainter>
+#include <QProcess>
+#include <QTranslator>
 
 #include <dbversion.h>
 #include <rdstatus.h>
@@ -50,7 +50,7 @@ void SigHandler(int signo)
 }
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
-  : RDWidget(c,parent,(Qt::WindowFlags)(Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop))
+  : RDWidget(c,parent,Qt::CustomizeWindowHint|Qt::WindowStaysOnTopHint)
 {
   QString str;
   mon_dialog_x=0;
@@ -77,7 +77,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Create And Set Icon
   //
-  setIcon(QPixmap(rivendell_22x22_xpm));
+  setWindowIcon(QPixmap(rivendell_22x22_xpm));
 
   //
   // Dialogs
@@ -115,9 +115,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Status Label
   //
   mon_status_label=new QLabel(tr("Status: unknown"),NULL,
-			      (Qt::WindowFlags)(Qt::WStyle_Customize|
-						Qt::WStyle_NoBorder|
-						Qt::WStyle_StaysOnTop));
+			      Qt::CustomizeWindowHint|Qt::WindowStaysOnTopHint);
   mon_status_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
   mon_status_label->
     setStyleSheet(QString("background-color:")+RD_STATUS_BACKGROUND_COLOR);
@@ -129,8 +127,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   mon_validate_timer=new QTimer(this);
   connect(mon_validate_timer,SIGNAL(timeout()),this,SLOT(validate()));
   mon_validate_timer->start(5000);
-
-  //  mon_tooltip=new StatusTip(this);
 
   mon_name_label->setText(mon_rdconfig->label());
   SetPosition();
@@ -226,7 +222,9 @@ void MainWidget::mouseDoubleClickEvent(QMouseEvent *e)
   e->accept();
   QDir dir(RD_DEFAULT_RDSELECT_DIR);
   dir.setFilter(QDir::Files|QDir::Readable);
-  dir.setNameFilter("*.conf");
+  QStringList filters;
+  filters.push_back("*.conf");
+  dir.setNameFilters(filters);
   if(dir.entryList().size()>1) {
     QProcess *proc=new QProcess(this);
     QStringList args;
@@ -480,25 +478,24 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
-  QTranslator qt(0);
-  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),
-	  ".");
-  a.installTranslator(&qt);
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    QTranslator qt(0);
+    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,".");
+    a.installTranslator(&qt);
 
-  QTranslator rd(0);
-  rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+    QTranslator rd(0);
+    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(QString(PREFIX)+QString("/share/rivendell/rdmonitor_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(QString(PREFIX)+QString("/share/rivendell/rdmonitor_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   //
   // Start Event Loop
@@ -506,7 +503,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->show();
   return a.exec();
 }

@@ -1058,10 +1058,6 @@ configured to run the CAE service in order to populate the audio resources datab
         <source>Event Carts</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>RDAdmin - </source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>EditDropbox</name>
@@ -4231,7 +4227,7 @@ Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to write file &quot;</source>
+        <source>Unable to write file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -75,7 +75,7 @@ ListStations::ListStations(QWidget *parent)
   // Station List Box
   //
   list_stations_view=new RDTableView(this);
-  list_title_label=new QLabel(list_stations_view,tr("H&osts:"),this);
+  list_title_label=new QLabel(tr("H&osts:"),this);
   list_title_label->setFont(labelFont());
   list_title_label->setGeometry(14,11,85,19);
   list_stations_model=new RDStationListModel(false,"",this);

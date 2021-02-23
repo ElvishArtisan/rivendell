@@ -74,7 +74,7 @@ ListReports::ListReports(QWidget *parent)
   // Report List Box
   //
   list_box=new QListWidget(this);
-  QLabel *list_box_label=new QLabel(list_box,tr("R&eports:"),this);
+  QLabel *list_box_label=new QLabel(tr("R&eports:"),this);
   list_box_label->setFont(labelFont());
   list_box_label->setGeometry(14,10,85,19);
   connect(list_box,SIGNAL(doubleClicked(const QModelIndex &)),

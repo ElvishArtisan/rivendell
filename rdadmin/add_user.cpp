@@ -50,10 +50,10 @@ AddUser::AddUser(QString *username,QWidget *parent)
   user_name_edit=new QLineEdit(this);
   user_name_edit->setGeometry(125,11,sizeHint().width()-135,19);
   user_name_edit->setMaxLength(255);
-  QLabel *user_name_label=new QLabel(user_name_edit,tr("&New User Name:"),this);
+  QLabel *user_name_label=new QLabel(tr("&New User Name:"),this);
   user_name_label->setGeometry(10,13,110,19);
   user_name_label->setFont(labelFont());
-  user_name_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
+  user_name_label->setAlignment(Qt::AlignRight);
 
   //
   //  Ok Button

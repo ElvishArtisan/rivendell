@@ -113,7 +113,7 @@ bool __RDRenderLogLine::open(const QTime &time)
 	QString filename;
 	if(GetCutFile(cutname,ll_cut->startPoint(),ll_cut->endPoint(),
 		      &filename)) {
-	  ll_handle=sf_open(filename,SFM_READ,&sf_info);
+	  ll_handle=sf_open(filename.toUtf8(),SFM_READ,&sf_info);
 	  if(ll_handle!=NULL) {
  	    DeleteCutFile(filename);
 	    return true;
@@ -182,7 +182,8 @@ bool __RDRenderLogLine::GetCutFile(const QString &cutname,int start_pt,
   RDAudioExport::ErrorCode export_err;
   char tempdir[PATH_MAX];
   
-  strncpy(tempdir,RDTempDirectory::basePath()+"/rdrenderXXXXXX",PATH_MAX);
+  strncpy(tempdir,(RDTempDirectory::basePath()+"/rdrenderXXXXXX").toUtf8(),
+	  PATH_MAX);
   *dest_filename=QString(mkdtemp(tempdir))+"/"+cutname+".wav";
   RDAudioExport *conv=new RDAudioExport();
   conv->setDestinationFile(*dest_filename);
@@ -216,10 +217,10 @@ bool __RDRenderLogLine::GetCutFile(const QString &cutname,int start_pt,
 
 void __RDRenderLogLine::DeleteCutFile(const QString &dest_filename) const
 {
-  unlink(dest_filename);
+  unlink(dest_filename.toUtf8());
   QStringList f0=dest_filename.split("/");
-  f0.erase(f0.fromLast());
-  rmdir("/"+f0.join("/"));
+  f0.erase(f0.end());
+  rmdir(("/"+f0.join("/")).toUtf8());
 }
 
 
@@ -258,7 +259,7 @@ bool RDRenderer::renderToFile(const QString &outfile,RDLogModel *model,
   //
   // Verify Destination
   //
-  if((f=fopen(outfile,"w"))==NULL) {
+  if((f=fopen(outfile.toUtf8(),"w"))==NULL) {
     *err_msg=tr("unable to open output file")+" ["+QString(strerror(errno))+"]";
     return false;
   }
@@ -272,7 +273,8 @@ bool RDRenderer::renderToFile(const QString &outfile,RDLogModel *model,
     //
     // Get Temporary File
     //
-    strncpy(tempdir,RDTempDirectory::basePath()+"/rdrenderXXXXXX",PATH_MAX);
+    strncpy(tempdir,(RDTempDirectory::basePath()+"/rdrenderXXXXXX").toUtf8(),
+      PATH_MAX);
     temp_output_filename=QString(mkdtemp(tempdir))+"/log.wav";
     ProgressMessage(tr("Using temporary file")+" \""+temp_output_filename+"\".");
 
@@ -354,7 +356,8 @@ bool RDRenderer::renderToCart(unsigned cartnum,int cutnum,RDLogModel *model,
   //
   // Get Temporary File
   //
-  strncpy(tempdir,RDTempDirectory::basePath()+"/rdrenderXXXXXX",PATH_MAX);
+  strncpy(tempdir,(RDTempDirectory::basePath()+"/rdrenderXXXXXX").toUtf8(),
+    PATH_MAX);
   temp_output_filename=QString(mkdtemp(tempdir))+"/log.wav";
   ProgressMessage(tr("Using temporary file")+" \""+temp_output_filename+"\".");
 
@@ -428,7 +431,7 @@ bool RDRenderer::Render(const QString &outfile,RDLogModel *model,RDSettings *s,
   else {
     sf_info.format=SF_FORMAT_WAV|SF_FORMAT_PCM_24;
   }
-  sf_out=sf_open(outfile,SFM_WRITE,&sf_info);
+  sf_out=sf_open(outfile.toUtf8(),SFM_WRITE,&sf_info);
   if(sf_out==NULL) {
     fprintf(stderr,"rdrender: unable to open output file [%s]\n",
 	    sf_strerror(sf_out));
@@ -631,10 +634,10 @@ bool RDRenderer::ImportCart(const QString &srcfile,unsigned cartnum,int cutnum,
 
 void RDRenderer::DeleteTempFile(const QString &filename) const
 {
-  unlink(filename);
+  unlink(filename.toUtf8());
   QStringList f0=filename.split("/");
-  f0.erase(f0.fromLast());
-  rmdir("/"+f0.join("/"));
+  f0.erase(f0.end());
+  rmdir(("/"+f0.join("/")).toUtf8());
 }
 
 
@@ -655,6 +658,6 @@ void RDRenderer::ProgressMessage(const QTime &time,int line,
 {
   QString str=QString().sprintf("%04d : ",line)+
     time.toString("hh:mm:ss")+" : "+
-    QString().sprintf("%-5s",(const char *)trans)+msg;
+    QString().sprintf("%-5s",trans.toUtf8().constData())+msg;
   emit progressMessageSent(str);
 }

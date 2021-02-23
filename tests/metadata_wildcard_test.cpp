@@ -2,7 +2,7 @@
 //
 // Test the Rivendell multicast receiver routines
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdint.h>
-#include <stdlib.h>
-
-#include <qapplication.h>
+#include <QApplication>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -71,7 +68,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"metadata_wildcard_test: unknown option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->value(i));
+	      rda->cmdSwitch()->value(i).toUtf8().constData());
       exit(256);
     }
   }

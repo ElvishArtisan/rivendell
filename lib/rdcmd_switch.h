@@ -27,7 +27,8 @@
 class RDCmdSwitch
 {
  public:
-  RDCmdSwitch(int argc,char *argv[],const char *modname,const char *usage);
+  RDCmdSwitch(int argc,char *argv[],const QString &modname,
+	      const QString &usage);
   unsigned keys() const;
   QString key(unsigned n) const;
   QString value(unsigned n) const;

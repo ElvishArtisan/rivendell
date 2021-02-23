@@ -2,7 +2,7 @@
 //
 // Local RML Macros for the Rivendell's RDAirPlay
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,8 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <qfontmetrics.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -61,8 +59,8 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       str+=rml->arg(rml->argQuantity()-1);
       pal=air_message_label->palette();
-      pal.setColor(QPalette::Active,QColorGroup::Foreground,QColor(Qt::black));
-      pal.setColor(QPalette::Inactive,QColorGroup::Foreground,
+      pal.setColor(QPalette::Active,QPalette::Foreground,QColor(Qt::black));
+      pal.setColor(QPalette::Inactive,QPalette::Foreground,
 		   QColor(Qt::black));
       air_message_label->setPalette(pal);
       air_message_label->setFont(MessageFont(str));
@@ -88,8 +86,8 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       str+=rml->arg(rml->argQuantity()-1);
       pal=air_message_label->palette();
-      pal.setColor(QPalette::Active,QColorGroup::Foreground,color);
-      pal.setColor(QPalette::Inactive,QColorGroup::Foreground,color);
+      pal.setColor(QPalette::Active,QPalette::Foreground,color);
+      pal.setColor(QPalette::Inactive,QPalette::Foreground,color);
       air_message_label->setPalette(pal);
       air_message_label->setFont(MessageFont(str));
       air_message_label->setText(str);
@@ -888,8 +886,8 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).lower()!="now")&&
-       (rml->arg(0).lower()!="next")) {
+    if((rml->arg(0).toLower()!="now")&&
+       (rml->arg(0).toLower()!="next")) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -910,7 +908,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if(rml->arg(0).lower()=="now") {
+    if(rml->arg(0).toLower()=="now") {
       air_log[rml->arg(1).toInt()-1]->setNowCart(rml->arg(2).toUInt());
     }
     else {
@@ -942,7 +940,9 @@ QFont MainWidget::MessageFont(QString str)
 bool MainWidget::GetPanel(QString str,RDAirPlayConf::PanelType *type,
 			  int *panel)
 {
-  switch(((const char *)str)[0]) {
+  bool ok=false;
+
+  switch(str.at(0).cell()) {
       case 's':
       case 'S':
 	*type=RDAirPlayConf::StationPanel;
@@ -964,7 +964,8 @@ bool MainWidget::GetPanel(QString str,RDAirPlayConf::PanelType *type,
       default:
 	return false;
   }
-  if(sscanf(((const char *)str)+1,"%d",panel)!=1) {
+  *panel=str.right(str.length()-1).toInt(&ok);
+  if(!ok) {
     return false;
   }
   if((*panel<=0)||(*panel>rda->airplayConf()->panels(*type))) {

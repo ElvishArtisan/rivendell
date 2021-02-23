@@ -606,6 +606,10 @@ Chcete ji přepsat?</translation>
         <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>[None]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>

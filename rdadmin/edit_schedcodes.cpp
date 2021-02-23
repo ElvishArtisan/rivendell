@@ -42,8 +42,7 @@ EditSchedCode::EditSchedCode(QWidget *parent)
   d_code_edit->setGeometry(125,11,100,19);
   d_code_edit->setMaxLength(10);
   d_code_edit->setReadOnly(true);
-  QLabel *schedcode_name_label=
-    new QLabel(d_code_edit,tr("Scheduler Code:"),this);
+  QLabel *schedcode_name_label=new QLabel(tr("Scheduler Code:"),this);
   schedcode_name_label->setGeometry(10,11,110,19);
   schedcode_name_label->setFont(labelFont());
   schedcode_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -54,8 +53,7 @@ EditSchedCode::EditSchedCode(QWidget *parent)
   d_description_edit=new QLineEdit(this);
   d_description_edit->setGeometry(125,32,sizeHint().width()-135,19);
   d_description_edit->setMaxLength(255);
-  QLabel *schedcode_description_label=
-    new QLabel(d_description_edit,tr("Code Description:"),this);
+  QLabel *schedcode_description_label=new QLabel(tr("Code Description:"),this);
   schedcode_description_label->setGeometry(10,32,110,19);
   schedcode_description_label->setFont(labelFont());
   schedcode_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

@@ -28,16 +28,12 @@ QString RDSocketStrings(QAbstractSocket::SocketError err)
   QString ret="unknown socket error";
 
   switch(err) {
-  case QAbstractSocket::ErrConnectionRefused:
+  case QAbstractSocket::ConnectionRefusedError:
     ret="connection refused";
     break;
 
-  case QAbstractSocket::ErrHostNotFound:
+  case QAbstractSocket::HostNotFoundError:
     ret="host not found";
-    break;
-
-  case QAbstractSocket::ErrSocketRead:
-    ret="socket read error";
     break;
 
   case QAbstractSocket::RemoteHostClosedError:
@@ -108,6 +104,8 @@ QString RDSocketStrings(QAbstractSocket::SocketError err)
     ret="proxy protocol error";
     break;
 
+  case QAbstractSocket::UnknownSocketError:
+    break;
   }
 
   return ret;

@@ -2,7 +2,7 @@
 //
 // Event Editor for RDAirPlay
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
+#include <QPainter>
 
 #include "edit_event.h"
 
@@ -34,7 +34,7 @@ EditEvent::EditEvent(RDLogPlay *log,QWidget *parent)
   // Time Type
   //
   edit_timetype_box=new QCheckBox(this);
-  edit_timetype_label=new QLabel(edit_timetype_box,tr("Start at:"),this);
+  edit_timetype_label=new QLabel(tr("Start at:"),this);
   edit_timetype_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -77,18 +77,16 @@ EditEvent::EditEvent(RDLogPlay *log,QWidget *parent)
   //
   edit_transtype_box=new QComboBox(this);
   edit_timetype_label->setFont(labelFont());
-  edit_transtype_box->insertItem(tr("Play"));
-  edit_transtype_box->insertItem(tr("Segue"));
-  edit_transtype_box->insertItem(tr("Stop"));  
-  edit_transtype_label=
-    new QLabel(edit_transtype_box,tr("Start Transition Type:"),this);
+  edit_transtype_box->insertItem(0,tr("Play"));
+  edit_transtype_box->insertItem(1,tr("Segue"));
+  edit_transtype_box->insertItem(2,tr("Stop"));  
+  edit_transtype_label=new QLabel(tr("Start Transition Type:"),this);
   edit_transtype_label->setFont(labelFont());
   edit_transtype_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   // Overlap Box
   edit_overlap_box=new QCheckBox(this);
-  edit_overlap_label=
-    new QLabel(edit_overlap_box,tr("No Fade at Segue Out"),this);
+  edit_overlap_label=new QLabel(tr("No Fade at Segue Out"),this);
   edit_overlap_label->setFont(labelFont());
   edit_overlap_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   
@@ -101,7 +99,7 @@ EditEvent::EditEvent(RDLogPlay *log,QWidget *parent)
   QPainter *p=new QPainter(pix);
   p->setPen(Qt::black);
   p->setBrush(Qt::black);
-  p->fillRect(0,0,sizeHint().width(),3,backgroundColor());
+  p->fillRect(0,0,sizeHint().width(),3,palette().color(QPalette::Background));
   p->drawLine(10,1,sizeHint().width()-10,1);
   p->end();
   edit_horizrule_label->setPixmap(*pix);
@@ -193,7 +191,7 @@ int EditEvent::exec(int line)
 	edit_grace_edit->setTime(QTime().addMSecs(edit_logline->graceTime()));
 	break;
   }
-  edit_transtype_box->setCurrentItem((int)edit_logline->transType());
+  edit_transtype_box->setCurrentIndex((int)edit_logline->transType());
   if(edit_logline->segueStartPoint(RDLogLine::LogPointer)<0
      && edit_logline->segueEndPoint(RDLogLine::LogPointer)<0
      && edit_logline->endPoint(RDLogLine::LogPointer)<0
@@ -269,7 +267,7 @@ int EditEvent::exec(int line)
     break;
 
   case RDLogLine::Marker:
-    setCaption(tr("Edit Marker"));
+    setWindowTitle(tr("Edit Marker"));
     edit_cue_edit->hide();
     edit_cart_notes_label->hide();
     edit_cart_notes_text->hide();
@@ -277,7 +275,7 @@ int EditEvent::exec(int line)
     break;
 
   case RDLogLine::Track:
-    setCaption(tr("Edit Track"));
+    setWindowTitle(tr("Edit Track"));
     edit_cue_edit->hide();
     edit_cart_notes_label->hide();
     edit_cart_notes_text->hide();
@@ -285,7 +283,7 @@ int EditEvent::exec(int line)
     break;
 
   case RDLogLine::Chain:
-    setCaption(tr("Edit Log Track"));
+    setWindowTitle(tr("Edit Log Track"));
     edit_cue_edit->hide();
     edit_cart_notes_label->hide();
     edit_cart_notes_text->hide();
@@ -393,7 +391,7 @@ void EditEvent::okData()
 				 startTime(RDLogLine::Imported));
     }
     edit_logline->
-      setTransType((RDLogLine::TransType)edit_transtype_box->currentItem());
+      setTransType((RDLogLine::TransType)edit_transtype_box->currentIndex());
     if(edit_logline->segueStartPoint(RDLogLine::LogPointer)<0
        && edit_logline->segueEndPoint(RDLogLine::LogPointer)<0
        && edit_logline->endPoint(RDLogLine::LogPointer)<0
@@ -459,7 +457,7 @@ void EditEvent::resizeEvent(QResizeEvent *e)
 
   edit_cue_edit->setGeometry(20,132,edit_cue_edit->sizeHint().width(),
 			     edit_cue_edit->sizeHint().height());
-  if(edit_cue_edit->isShown()) {
+  if(edit_cue_edit->isVisible()) {
     edit_cart_notes_label->
       setGeometry(15,127+edit_cue_edit->sizeHint().height(),
 		  size().width()-20,20);

@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Macro Language Command
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,14 @@
 #ifndef RDMACRO_H
 #define RDMACRO_H
 
+#include <stdint.h>
+
 #include <vector>
 
-#include <qhostaddress.h>
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qvariant.h>
+#include <QHostAddress>
+#include <QString>
+#include <QStringList>
+#include <QVariant>
 
 #include <rd.h>
 
@@ -53,8 +55,8 @@ class RDMacro
   void setCommand(const QString &str);
   QHostAddress address() const;
   void setAddress(QHostAddress addr);
-  Q_UINT16 port() const;
-  void setPort(Q_UINT16 port);
+  uint16_t port() const;
+  void setPort(uint16_t port);
   bool echoRequested() const;
   void setEchoRequested(bool state);
   QString arg(int n) const;
@@ -77,7 +79,7 @@ class RDMacro
   RDMacro::Role rml_role;
   RDMacro::Command rml_cmd;
   QHostAddress rml_addr;
-  Q_UINT16 rml_port;
+  uint16_t rml_port;
   bool rml_echo_requested;
   QStringList rml_args;
 };

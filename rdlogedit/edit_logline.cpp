@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Entry
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include "edit_logline.h"
 
@@ -53,12 +53,10 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   //
   edit_overlap_box=new QCheckBox(this);
   edit_overlap_box->setGeometry(30,94,15,15);
-  edit_overlap_label=
-    new QLabel(edit_overlap_box,tr("No Fade on Segue Out"),this);
+  edit_overlap_label=new QLabel(tr("No Fade on Segue Out"),this);
   edit_overlap_label->setGeometry(50,90,sizeHint().width()-60,26);
   edit_overlap_label->setFont(labelFont());
-  edit_overlap_label->
-    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  edit_overlap_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   
   //
   // Cart Number

@@ -42,10 +42,11 @@ void RDOneShot::start(int value,int msecs)
 {
   shot_values[shot_count]=value;
   shot_timers[shot_count]=new QTimer(this);
+  shot_timers[shot_count]->setSingleShot(true);
   shot_mapper->setMapping(shot_timers[shot_count],shot_count);
   connect(shot_timers[shot_count],SIGNAL(timeout()),
 	  shot_mapper,SLOT(map()));
-  shot_timers[shot_count]->start(msecs,true);
+  shot_timers[shot_count]->start(msecs);
   shot_count++;
 }
 
@@ -53,7 +54,7 @@ void RDOneShot::start(int value,int msecs)
 void RDOneShot::timeoutData(int id)
 {
   emit timeout(shot_values[id]);
-  shot_zombie_timer->start(10,true);
+  shot_zombie_timer->start(10);
 }
 
 

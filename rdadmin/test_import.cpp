@@ -62,7 +62,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   test_date_edit=new QDateEdit(this);
   test_date_edit->setDisplayFormat("MM/dd/yyyy");
-  test_date_label=new QLabel(test_date_edit,tr("Test Date:"),this);
+  test_date_label=new QLabel(tr("Test Date:"),this);
   test_date_label->setFont(labelFont());
   test_date_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   test_date_edit->setDate(current_date);
@@ -91,8 +91,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   test_filename_edit=new QLineEdit(this);
   test_filename_edit->setReadOnly(true);
-  test_filename_label=
-    new QLabel(test_filename_edit,tr("Using source file:"),this);
+  test_filename_label=new QLabel(tr("Using source file:"),this);
   test_filename_label->setGeometry(15,115,sizeHint().width()-30,18);
   test_filename_label->setFont(labelFont());
 
@@ -102,7 +101,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   test_events_view=new RDTableView(this);
   test_events_model=new RDLogImportModel(rda->station()->name(),getpid(),this);
   test_events_view->setModel(test_events_model);
-  test_events_label=new QLabel(test_events_view,tr("Imported Events"),this);
+  test_events_label=new QLabel(tr("Imported Events"),this);
   test_events_label->setGeometry(15,160,sizeHint().width()-30,18);
   test_events_label->setFont(labelFont());
   connect(test_events_model,SIGNAL(modelReset()),

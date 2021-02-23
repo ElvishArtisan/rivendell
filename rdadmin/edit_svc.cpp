@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Service
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -77,7 +77,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_name_edit->setGeometry(185,31,80,19);
   svc_name_edit->setMaxLength(10);
   svc_name_edit->setReadOnly(true);
-  label=new QLabel(svc_name_edit,tr("&Service Name:"),this);
+  label=new QLabel(tr("&Service Name:"),this);
   label->setGeometry(10,31,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -88,7 +88,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_description_edit->setGeometry(185,52,240,19);
   svc_description_edit->setMaxLength(255);
   svc_description_edit->setValidator(validator);
-  label=new QLabel(svc_description_edit,tr("Service &Description:"),this);
+  label=new QLabel(tr("Service &Description:"),this);
   label->setGeometry(10,52,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -99,7 +99,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_program_code_edit->setGeometry(185,73,240,19);
   svc_program_code_edit->setMaxLength(255);
   svc_program_code_edit->setValidator(validator);
-  label=new QLabel(svc_program_code_edit,tr("&Program Code:"),this);
+  label=new QLabel(tr("&Program Code:"),this);
   label->setGeometry(10,73,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -110,7 +110,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_name_template_edit->setGeometry(185,94,240,19);
   svc_name_template_edit->setMaxLength(255);
   svc_name_template_edit->setValidator(log_validator);
-  label=new QLabel(svc_name_template_edit,tr("Log Name &Template:"),this);
+  label=new QLabel(tr("Log Name &Template:"),this);
   label->setGeometry(10,94,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -120,8 +120,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_description_template_edit=new QLineEdit(this);
   svc_description_template_edit->setGeometry(185,115,240,19);
   svc_description_template_edit->setMaxLength(255);
-  label=new QLabel(svc_description_template_edit,
-		   tr("Log &Description Template:"),this);
+  label=new QLabel(tr("Log &Description Template:"),this);
   label->setGeometry(10,115,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -136,8 +135,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
     insertItem((int)RDSvc::SchedFile,tr("From Scheduler File"));
   connect(svc_sub_event_inheritance_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
-  label=new QLabel(svc_sub_event_inheritance_box,
-		   tr("Inline Event Start/Length")+":",this);
+  label=new QLabel(tr("Inline Event Start/Length")+":",this);
   label->setGeometry(10,136,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -146,8 +144,8 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   svc_voice_group_box=new QComboBox(this);
   svc_voice_group_box->setGeometry(185,157,240,19);
-  svc_voice_group_box->insertItem(tr("[none]"));
-  label=new QLabel(svc_voice_group_box,tr("Voicetrack Group:"),this);
+  svc_voice_group_box->insertItem(0,tr("[none]"));
+  label=new QLabel(tr("Voicetrack Group:"),this);
   label->setGeometry(10,157,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -156,8 +154,8 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   svc_autospot_group_box=new QComboBox(this);
   svc_autospot_group_box->setGeometry(185,178,240,19);
-  svc_autospot_group_box->insertItem(tr("[none]"));
-  label=new QLabel(svc_autospot_group_box,tr("AutoSpot Group:"),this);
+  svc_autospot_group_box->insertItem(0,tr("[none]"));
+  label=new QLabel(tr("AutoSpot Group:"),this);
   label->setGeometry(10,178,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -166,7 +164,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   svc_chain_box=new QCheckBox(this);
   svc_chain_box->setGeometry(30,201,15,15);
-  label=new QLabel(svc_chain_box,tr("Insert CHAIN TO at log end"),this);
+  label=new QLabel(tr("Insert CHAIN TO at log end"),this);
   label->setGeometry(50,201,170,19);
   label->setAlignment(Qt::AlignLeft);
 
@@ -175,8 +173,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   svc_autorefresh_box=new QCheckBox(this);
   svc_autorefresh_box->setGeometry(230,201,15,15);
-  label=
-    new QLabel(svc_autorefresh_box,tr("Enable AutoRefresh By Default"),this);
+  label=new QLabel(tr("Enable AutoRefresh By Default"),this);
   label->setGeometry(250,201,200,19);
   label->setAlignment(Qt::AlignLeft);
 
@@ -194,7 +191,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   svc_loglife_box=new QCheckBox(this);
   svc_loglife_box->setGeometry(460,95,15,15);
-  label=new QLabel(svc_loglife_box,tr("Set Logs to auto-delete"),this);
+  label=new QLabel(tr("Set Logs to auto-delete"),this);
   label->setGeometry(480,95,240,19);
   label->setAlignment(Qt::AlignLeft);
   svc_loglife_spin=new QSpinBox(this);
@@ -202,14 +199,14 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_loglife_spin->setRange(0,365);
   connect(svc_loglife_box,SIGNAL(toggled(bool)),
 	  svc_loglife_spin,SLOT(setEnabled(bool)));
-  svc_loglifeorigin_label=new QLabel(svc_loglife_box,tr("days after"),this);
+  svc_loglifeorigin_label=new QLabel(tr("days after"),this);
   svc_loglifeorigin_label->setGeometry(685,95,100,19);
   svc_loglifeorigin_label->setAlignment(Qt::AlignLeft);
   connect(svc_loglife_box,SIGNAL(toggled(bool)),
 	  svc_loglifeorigin_label,SLOT(setEnabled(bool)));
   svc_loglifeorigin_box=new QComboBox(this);
-  svc_loglifeorigin_box->insertItem(tr("air date"));
-  svc_loglifeorigin_box->insertItem(tr("creation"));
+  svc_loglifeorigin_box->insertItem(0,tr("air date"));
+  svc_loglifeorigin_box->insertItem(1,tr("creation"));
   svc_loglifeorigin_box->setGeometry(750,93,100,19);
   connect(svc_loglife_box,SIGNAL(toggled(bool)),
 	  svc_loglifeorigin_box,SLOT(setEnabled(bool)));
@@ -219,7 +216,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   svc_shelflife_box=new QCheckBox(this);
   svc_shelflife_box->setGeometry(460,117,15,15);
-  label=new QLabel(svc_shelflife_box,tr("Purge ELR Data"),this);
+  label=new QLabel(tr("Purge ELR Data"),this);
   label->setGeometry(480,117,170,19);
   label->setAlignment(Qt::AlignLeft);
   svc_shelflife_spin=new QSpinBox(this);
@@ -227,7 +224,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_shelflife_spin->setRange(0,365);
   connect(svc_shelflife_box,SIGNAL(toggled(bool)),
 	  svc_shelflife_spin,SLOT(setEnabled(bool)));
-  label=new QLabel(svc_shelflife_box,tr("days after airing"),this);
+  label=new QLabel(tr("days after airing"),this);
   label->setGeometry(640,117,200,19);
   label->setAlignment(Qt::AlignLeft);
 
@@ -236,9 +233,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   svc_import_markers_check=new QCheckBox(this);
   svc_import_markers_check->setGeometry(460,140,15,15);
-  label=
-    new QLabel(svc_shelflife_box,tr("Include Import Markers in Finished Logs"),
-	       this);
+  label=new QLabel(tr("Include Import Markers in Finished Logs"),this);
   label->setGeometry(480,140,sizeHint().width()-490,19);
   label->setAlignment(Qt::AlignLeft);
 
@@ -266,7 +261,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_tfc_path_edit->setGeometry(185,255,240,19);
   svc_tfc_path_edit->setMaxLength(191);
   svc_tfc_path_edit->setValidator(validator);
-  label=new QLabel(svc_tfc_path_edit,tr("Import Path:"),this);
+  label=new QLabel(tr("Import Path:"),this);
   label->setGeometry(10,255,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_tfc_path_edit,SIGNAL(textChanged(const QString &)),
@@ -278,8 +273,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_tfc_preimport_cmd_edit=new QLineEdit(this);
   svc_tfc_preimport_cmd_edit->setGeometry(185,276,240,19);
   svc_tfc_preimport_cmd_edit->setValidator(validator);
-  label=
-    new QLabel(svc_tfc_preimport_cmd_edit,tr("Preimport Command:"),this);
+  label=new QLabel(tr("Preimport Command:"),this);
   label->setGeometry(10,276,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_tfc_preimport_cmd_edit,SIGNAL(textChanged(const QString &)),
@@ -291,7 +285,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_tfc_label_cart_edit=new QLineEdit(this);
   svc_tfc_label_cart_edit->setGeometry(185,297,240,19);
   svc_tfc_label_cart_edit->setMaxLength(32);
-  label=new QLabel(svc_tfc_label_cart_edit,tr("Insert Marker String")+":",this);
+  label=new QLabel(tr("Insert Marker String")+":",this);
   label->setGeometry(10,297,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_tfc_label_cart_edit,SIGNAL(textChanged(const QString &)),
@@ -303,7 +297,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_tfc_track_edit=new QLineEdit(this);
   svc_tfc_track_edit->setGeometry(185,318,240,19);
   svc_tfc_track_edit->setMaxLength(32);
-  label=new QLabel(svc_tfc_track_edit,tr("Insert Voice Track String:"),this);
+  label=new QLabel(tr("Insert Voice Track String:"),this);
   label->setGeometry(10,318,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_tfc_track_edit,SIGNAL(textChanged(const QString &)),
@@ -314,7 +308,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   svc_tfc_import_template_box=new QComboBox(this);
   svc_tfc_import_template_box->setGeometry(185,339,240,19);
-  label=new QLabel(svc_tfc_import_template_box,tr("Import Template:"),this);
+  label=new QLabel(tr("Import Template:"),this);
   label->setGeometry(10,339,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_tfc_import_template_box,SIGNAL(activated(int)),
@@ -360,7 +354,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_mus_path_edit->setGeometry(620,256,240,19);
   svc_mus_path_edit->setMaxLength(191);
   svc_mus_path_edit->setValidator(validator);
-  label=new QLabel(svc_mus_path_edit,tr("Import Path:"),this);
+  label=new QLabel(tr("Import Path:"),this);
   label->setGeometry(450,256,165,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_mus_path_edit,SIGNAL(textChanged(const QString &)),
@@ -373,7 +367,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_mus_preimport_cmd_edit->setGeometry(620,276,240,19);
   svc_mus_preimport_cmd_edit->setValidator(validator);
   label=
-    new QLabel(svc_mus_preimport_cmd_edit,tr("Preimport Command:"),this);
+    new QLabel(tr("Preimport Command:"),this);
   label->setGeometry(450,276,165,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_mus_preimport_cmd_edit,SIGNAL(textChanged(const QString &)),
@@ -385,7 +379,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_mus_label_cart_edit=new QLineEdit(this);
   svc_mus_label_cart_edit->setGeometry(620,297,240,19);
   svc_mus_label_cart_edit->setMaxLength(32);
-  label=new QLabel(svc_mus_label_cart_edit,tr("Insert Marker String")+":",this);
+  label=new QLabel(tr("Insert Marker String")+":",this);
   label->setGeometry(450,297,165,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_mus_label_cart_edit,SIGNAL(textChanged(const QString &)),
@@ -397,7 +391,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_mus_track_edit=new QLineEdit(this);
   svc_mus_track_edit->setGeometry(620,318,240,19);
   svc_mus_track_edit->setMaxLength(255);
-  label=new QLabel(svc_mus_track_edit,tr("Insert Voice Track String:"),this);
+  label=new QLabel(tr("Insert Voice Track String:"),this);
   label->setGeometry(450,318,165,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_mus_track_edit,SIGNAL(textChanged(const QString &)),
@@ -409,7 +403,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_mus_break_edit=new QLineEdit(this);
   svc_mus_break_edit->setGeometry(620,339,240,19);
   svc_mus_break_edit->setMaxLength(255);
-  label=new QLabel(svc_mus_break_edit,tr("Insert Traffic Break String:"),this);
+  label=new QLabel(tr("Insert Traffic Break String:"),this);
   label->setGeometry(450,339,165,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_mus_break_edit,SIGNAL(textChanged(const QString &)),
@@ -420,7 +414,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   svc_mus_import_template_box=new QComboBox(this);
   svc_mus_import_template_box->setGeometry(620,360,240,19);
-  label=new QLabel(svc_mus_import_template_box,tr("Import Template:"),this);
+  label=new QLabel(tr("Import Template:"),this);
   label->setGeometry(450,360,165,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(svc_mus_import_template_box,SIGNAL(activated(int)),
@@ -479,13 +473,15 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   sql="select NAME from GROUPS order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    svc_voice_group_box->insertItem(q->value(0).toString());
+    svc_voice_group_box->insertItem(svc_voice_group_box->count(),
+				    q->value(0).toString());
     if(q->value(0).toString()==group) {
-      svc_voice_group_box->setCurrentItem(svc_voice_group_box->count()-1);
+      svc_voice_group_box->setCurrentIndex(svc_voice_group_box->count()-1);
     }
-    svc_autospot_group_box->insertItem(q->value(0).toString());
+    svc_autospot_group_box->insertItem(svc_autospot_group_box->count(),
+				       q->value(0).toString());
     if(q->value(0).toString()==autospot) {
-      svc_autospot_group_box->setCurrentItem(svc_autospot_group_box->count()-1);
+      svc_autospot_group_box->setCurrentIndex(svc_autospot_group_box->count()-1);
     }
   }
   delete q;
@@ -505,7 +501,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   if(svc_svc->defaultLogShelflife()>=0) {
     svc_loglife_box->setChecked(true);
     svc_loglife_spin->setValue(svc_svc->defaultLogShelflife());
-    svc_loglifeorigin_box->setCurrentItem(svc_svc->logShelflifeOrigin());
+    svc_loglifeorigin_box->setCurrentIndex(svc_svc->logShelflifeOrigin());
     svc_loglifeorigin_label->setEnabled(true); 
  }
   else {
@@ -524,20 +520,22 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_tfc_path_edit->setText(svc_svc->importPath(RDSvc::Traffic));
   svc_tfc_preimport_cmd_edit->
     setText(svc_svc->preimportCommand(RDSvc::Traffic));
-  svc_tfc_import_template_box->insertItem(tr("[custom]"));
-  svc_mus_import_template_box->insertItem(tr("[custom]"));
+  svc_tfc_import_template_box->insertItem(0,tr("[custom]"));
+  svc_mus_import_template_box->insertItem(0,tr("[custom]"));
   sql="select NAME from IMPORT_TEMPLATES order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    svc_tfc_import_template_box->insertItem(q->value(0).toString());
+    svc_tfc_import_template_box->
+      insertItem(svc_tfc_import_template_box->count(),q->value(0).toString());
     if(q->value(0).toString()==svc_svc->importTemplate(RDSvc::Traffic)) {
       svc_tfc_import_template_box->
-	setCurrentItem(svc_tfc_import_template_box->count()-1);
+	setCurrentIndex(svc_tfc_import_template_box->count()-1);
     }
-    svc_mus_import_template_box->insertItem(q->value(0).toString());
+    svc_mus_import_template_box->
+      insertItem(svc_mus_import_template_box->count(),q->value(0).toString());
     if(q->value(0).toString()==svc_svc->importTemplate(RDSvc::Music)) {
       svc_mus_import_template_box->
-	setCurrentItem(svc_mus_import_template_box->count()-1);
+	setCurrentIndex(svc_mus_import_template_box->count()-1);
     }
   }
   delete q;
@@ -551,8 +549,8 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
     setText(svc_svc->breakString());
   svc_mus_track_edit->
     setText(svc_svc->trackString(RDSvc::Music));
-  tfcTemplateActivatedData(svc_tfc_import_template_box->currentItem());
-  musTemplateActivatedData(svc_mus_import_template_box->currentItem());
+  tfcTemplateActivatedData(svc_tfc_import_template_box->currentIndex());
+  musTemplateActivatedData(svc_mus_import_template_box->currentIndex());
   import_changed=false;
 }
 
@@ -606,7 +604,7 @@ void EditSvc::trafficCopyData()
     return;
   }
   svc_svc->setImportTemplate(RDSvc::Traffic,"");
-  svc_tfc_import_template_box->setCurrentItem(0);
+  svc_tfc_import_template_box->setCurrentIndex(0);
   svc_tfc_fields->setEnabled(1);
   svc_tfc_copy_button->setEnabled(0);
 }
@@ -626,7 +624,7 @@ void EditSvc::musicCopyData()
     return;
   }
   svc_svc->setImportTemplate(RDSvc::Music,"");
-  svc_mus_import_template_box->setCurrentItem(0);
+  svc_mus_import_template_box->setCurrentIndex(0);
   svc_mus_fields->setEnabled(1);
   svc_mus_copy_button->setEnabled(0);
 }
@@ -650,7 +648,7 @@ void EditSvc::tfcTemplateActivatedData(int index)
   //
   // Temporarily set selected template
   //
-  if(svc_tfc_import_template_box->currentItem()==0) {
+  if(svc_tfc_import_template_box->currentIndex()==0) {
     svc_svc->setImportTemplate(RDSvc::Traffic,"");
   }
   else {
@@ -683,7 +681,7 @@ void EditSvc::musTemplateActivatedData(int index)
   //
   // Temporarily set selected template
   //
-  if(svc_mus_import_template_box->currentItem()==0) {
+  if(svc_mus_import_template_box->currentIndex()==0) {
     svc_svc->setImportTemplate(RDSvc::Music,"");
   }
   else {
@@ -742,7 +740,7 @@ void EditSvc::Save()
 {
   svc_svc->setDescription(svc_description_edit->text());
   svc_svc->setProgramCode(svc_program_code_edit->text());
-  svc_svc->setNameTemplate(svc_name_template_edit->text().stripWhiteSpace());
+  svc_svc->setNameTemplate(svc_name_template_edit->text().trimmed());
   svc_svc->setDescriptionTemplate(svc_description_template_edit->text());
   svc_svc-> setSubEventInheritance((RDSvc::SubEventInheritance)
 			       svc_sub_event_inheritance_box->currentIndex());
@@ -751,7 +749,7 @@ void EditSvc::Save()
   if(svc_loglife_box->isChecked()) {
     svc_svc->setDefaultLogShelflife(svc_loglife_spin->value());
     svc_svc->setLogShelflifeOrigin((RDSvc::ShelflifeOrigin)
-				   svc_loglifeorigin_box->currentItem());
+				   svc_loglifeorigin_box->currentIndex());
   }
   else {
     svc_svc->setDefaultLogShelflife(-1);
@@ -766,7 +764,7 @@ void EditSvc::Save()
   svc_svc->setImportPath(RDSvc::Traffic,svc_tfc_path_edit->text());
   svc_svc->
     setPreimportCommand(RDSvc::Traffic,svc_tfc_preimport_cmd_edit->text());
-  if(svc_tfc_import_template_box->currentItem()==0) {
+  if(svc_tfc_import_template_box->currentIndex()==0) {
     svc_svc->setImportTemplate(RDSvc::Traffic,"");
     svc_tfc_fields->readFields(svc_svc,RDSvc::Traffic);
   }
@@ -778,7 +776,7 @@ void EditSvc::Save()
   svc_svc->setTrackString(RDSvc::Traffic,svc_tfc_track_edit->text());
   svc_svc->setImportPath(RDSvc::Music,svc_mus_path_edit->text());
   svc_svc->setPreimportCommand(RDSvc::Music,svc_mus_preimport_cmd_edit->text());
-  if(svc_mus_import_template_box->currentItem()==0) {
+  if(svc_mus_import_template_box->currentIndex()==0) {
     svc_svc->setImportTemplate(RDSvc::Music,"");
     svc_mus_fields->readFields(svc_svc,RDSvc::Music);
   }
@@ -790,13 +788,13 @@ void EditSvc::Save()
   svc_svc->setTrackString(RDSvc::Music,svc_mus_track_edit->text());
   svc_svc->setLabelCart(RDSvc::Music,svc_mus_label_cart_edit->text());
   import_changed=false;
-  if(svc_voice_group_box->currentItem()==0) {
+  if(svc_voice_group_box->currentIndex()==0) {
     svc_svc->setTrackGroup("");
   }
   else {
     svc_svc->setTrackGroup(svc_voice_group_box->currentText());
   }
-  if(svc_autospot_group_box->currentItem()==0) {
+  if(svc_autospot_group_box->currentIndex()==0) {
     svc_svc->setAutospotGroup("");
   }
   else {

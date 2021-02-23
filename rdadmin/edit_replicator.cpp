@@ -53,7 +53,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_name_edit->setGeometry(105,11,sizeHint().width()-115,19);
   repl_name_edit->setMaxLength(32);
   repl_name_edit->setReadOnly(true);
-  QLabel *repl_name_label=new QLabel(repl_name_edit,tr("Name:"),this);
+  QLabel *repl_name_label=new QLabel(tr("Name:"),this);
   repl_name_label->setFont(labelFont());
   repl_name_label->setGeometry(10,11,90,19);
   repl_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -64,8 +64,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_description_edit=new QLineEdit(this);
   repl_description_edit->setGeometry(105,33,sizeHint().width()-115,19);
   repl_description_edit->setMaxLength(64);
-  QLabel *repl_description_label=
-    new QLabel(repl_description_edit,tr("Description:"),this);
+  QLabel *repl_description_label=new QLabel(tr("Description:"),this);
   repl_description_label->setFont(labelFont());
   repl_description_label->setGeometry(10,33,90,19);
   repl_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -76,12 +75,13 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_type_box=new QComboBox(this);
   repl_type_box->setGeometry(105,55,sizeHint().width()-115,19);
   for(unsigned i=0;i<(int)RDReplicator::TypeLast;i++) {
-    repl_type_box->insertItem(RDReplicator::typeString((RDReplicator::Type)i));
+    repl_type_box->insertItem(repl_type_box->count(),
+			      RDReplicator::typeString((RDReplicator::Type)i));
     if(repl_replicator->type()==(RDReplicator::Type)i) {
-      repl_type_box->setCurrentItem(i);
+      repl_type_box->setCurrentIndex(i);
     }
   }
-  QLabel *repl_type_label=new QLabel(repl_type_box,tr("Type:"),this);
+  QLabel *repl_type_label=new QLabel(tr("Type:"),this);
   repl_type_label->setFont(labelFont());
   repl_type_label->setGeometry(10,55,90,19);
   repl_type_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -94,14 +94,14 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   sql="select NAME from STATIONS order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    repl_station_box->insertItem(q->value(0).toString());
+    repl_station_box->insertItem(repl_station_box->count(),
+				 q->value(0).toString());
     if(repl_replicator->stationName()==q->value(0).toString()) {
-      repl_station_box->setCurrentItem(repl_station_box->count()-1);
+      repl_station_box->setCurrentIndex(repl_station_box->count()-1);
     }
   }
   delete q;
-  QLabel *repl_station_label=
-    new QLabel(repl_station_box,tr("Host System:"),this);
+  QLabel *repl_station_label=new QLabel(tr("Host System:"),this);
   repl_station_label->setFont(labelFont());
   repl_station_label->setGeometry(10,77,140,19);
   repl_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -112,7 +112,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_url_edit=new QLineEdit(this);
   repl_url_edit->setGeometry(155,99,335,19);
   repl_url_edit->setMaxLength(255);
-  repl_url_label=new QLabel(repl_url_edit,tr("Audio Upload URL:"),this);
+  repl_url_label=new QLabel(tr("Audio Upload URL:"),this);
   repl_url_label->setFont(labelFont());
   repl_url_label->setGeometry(20,99,130,19);
   repl_url_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -123,7 +123,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_username_edit=new QLineEdit(this);
   repl_username_edit->setGeometry(225,121,95,19);
   repl_username_edit->setMaxLength(64);
-  repl_username_label=new QLabel(repl_username_edit,tr("Username:"),this);
+  repl_username_label=new QLabel(tr("Username:"),this);
   repl_username_label->setFont(labelFont());
   repl_username_label->setGeometry(40,121,180,19);
   repl_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -135,7 +135,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_password_edit->setGeometry(395,121,95,19);
   repl_password_edit->setMaxLength(64);
   repl_password_edit->setEchoMode(QLineEdit::Password);
-  repl_password_label=new QLabel(repl_password_edit,tr("Password:"),this);
+  repl_password_label=new QLabel(tr("Password:"),this);
   repl_password_label->setFont(labelFont());
   repl_password_label->setGeometry(320,121,70,19);
   repl_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -146,7 +146,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_format_edit=new QLineEdit(this);
   repl_format_edit->setGeometry(155,143,285,20);
   repl_format_edit->setReadOnly(true);
-  repl_format_label=new QLabel(repl_format_edit,tr("Upload Format:"),this);
+  repl_format_label=new QLabel(tr("Upload Format:"),this);
   repl_format_label->setFont(labelFont());
   repl_format_label->setGeometry(5,143,145,20);
   repl_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -162,8 +162,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_normalize_box=new QCheckBox(this);
   repl_normalize_box->setGeometry(155,167,15,15);
   repl_normalize_box->setChecked(true);
-  repl_normalize_check_label=
-    new QLabel(repl_normalize_box,tr("Normalize"),this);
+  repl_normalize_check_label=new QLabel(tr("Normalize"),this);
   repl_normalize_check_label->setFont(labelFont());
   repl_normalize_check_label->setGeometry(175,165,83,20);
   repl_normalize_check_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -176,7 +175,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_normalize_spin=new QSpinBox(this);
   repl_normalize_spin->setGeometry(295,165,40,20);
   repl_normalize_spin->setRange(-30,-1);
-  repl_normalize_label=new QLabel(repl_normalize_spin,tr("Level:"),this);
+  repl_normalize_label=new QLabel(tr("Level:"),this);
   repl_normalize_label->setFont(labelFont());
   repl_normalize_label->setGeometry(245,165,45,20);
   repl_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -295,7 +294,7 @@ void EditReplicator::okData()
   RDSqlQuery *q;
 
   repl_replicator->setDescription(repl_description_edit->text());
-  repl_replicator->setType((RDReplicator::Type)repl_type_box->currentItem());
+  repl_replicator->setType((RDReplicator::Type)repl_type_box->currentIndex());
   repl_replicator->setStationName(repl_station_box->currentText());
   repl_replicator->setUrl(repl_url_edit->text());
   repl_replicator->setUrlUsername(repl_username_edit->text());

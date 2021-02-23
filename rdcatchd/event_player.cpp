@@ -2,7 +2,7 @@
 //
 // A player class for Deck Events
 //
-//   (C) Copyright 2016-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,9 +20,8 @@
 
 #include <syslog.h>
 
-#include "rdapplication.h"
-#include "rddb.h"
-#include "rdescape_string.h"
+#include <rdapplication.h>
+#include <rdescape_string.h>
 
 #include "event_player.h"
 
@@ -32,6 +31,7 @@ EventPlayer::EventPlayer(RDStation *station,int chan,QObject *parent)
   event_channel=chan;
 
   event_timer=new QTimer(this);
+  event_timer->setSingleShot(true);
   connect(event_timer,SIGNAL(timeout()),this,SLOT(timeoutData()));
 }
 
@@ -81,8 +81,7 @@ void EventPlayer::start(int start_ptr)
   for(unsigned i=0;i<event_points.size();i++) {
     if(event_points[i]>=event_start_point) {
       event_current_event=i;
-      event_timer->
-	start(event_points[event_current_event]-event_start_point,true);
+      event_timer->start(event_points[event_current_event]-event_start_point);
       return;
     }
   }
@@ -117,6 +116,6 @@ void EventPlayer::timeoutData()
     if(msec<0) {
       msec=0;
     }
-    event_timer->start(msec,true);
+    event_timer->start(msec);
   }  
 }

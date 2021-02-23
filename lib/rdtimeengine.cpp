@@ -26,7 +26,8 @@ RDTimeEngine::RDTimeEngine(QObject *parent)
   : QObject(parent)
 {
   engine_pending_id=-1;
-  engine_timer=new QTimer(this,"engine_timer");
+  engine_timer=new QTimer(this);
+  engine_timer->setSingleShot(true);
   engine_time_offset=0;
   connect(engine_timer,SIGNAL(timeout()),this,SLOT(timerData()));
 }
@@ -147,13 +148,13 @@ void RDTimeEngine::SetTimer()
   QTime current_time=QTime::currentTime().addMSecs(engine_time_offset);
   int diff=GetNextDiff(current_time,&engine_pending_id);
   if(diff!=86400001) {
-    engine_timer->start(diff,true);
+    engine_timer->start(diff);
     return;
   }
   diff=GetNextDiff(QTime(),&engine_pending_id);
   if(diff!=86400001) {
     diff+=(current_time.msecsTo(QTime(23,59,59))+1000);
-    engine_timer->start(diff,true);
+    engine_timer->start(diff);
     return;
   }
 }

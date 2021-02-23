@@ -2,7 +2,7 @@
 //
 // Test PAM Authentication Service
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,11 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <unistd.h>
-
 #include <security/pam_appl.h>
 
-#include <qapplication.h>
+#include <QApplication>
 
 #include <rdcmd_switch.h>
 
@@ -94,7 +92,7 @@ MainObject::MainObject(QObject *parent)
 
   memset(&conv,0,sizeof(conv));
   conv.conv=ConversationResponseCallback;
-  if((err=pam_start(service_name,NULL,&conv,&pamh))!=PAM_SUCCESS) {
+  if((err=pam_start(service_name.toUtf8(),NULL,&conv,&pamh))!=PAM_SUCCESS) {
     perror(pam_strerror(pamh,err));
     exit(256);
   }

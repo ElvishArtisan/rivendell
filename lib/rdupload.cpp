@@ -131,7 +131,7 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
   //
   // Validate User for file: transfers
   //
-  if((getuid()==0)&&(conv_dst_url.protocol().lower()=="file")) {
+  if((getuid()==0)&&(conv_dst_url.scheme().toLower()=="file")) {
     user=new RDSystemUser(username);
     if(!user->validatePassword(password)) {
       delete user;
@@ -142,7 +142,7 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
   if((curl=curl_easy_init())==NULL) {
     return RDUpload::ErrorInternal;
   }
-  if((f=fopen(conv_src_filename,"r"))==NULL) {
+  if((f=fopen(conv_src_filename.toUtf8(),"r"))==NULL) {
     curl_easy_cleanup(curl);
     return RDUpload::ErrorNoSource;
   }
@@ -169,7 +169,7 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
     curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
   }
   else {
-    strncpy(userpwd,(username+":"+password).utf8(),256);
+    strncpy(userpwd,(username+":"+password).toUtf8(),256);
     curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   }
 
@@ -182,7 +182,7 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,0);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent().utf8());
+		   (const char *)rda->config()->userAgent().toUtf8());
   if(log_debug) {
     curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,UploadErrorCallback);
@@ -233,8 +233,8 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
   }
   if((curl_err!=CURLE_OK)&&log_debug) {
     rda->syslog(LOG_WARNING,"CURL upload failed: url: %s  username: %s",
-		(const char *)conv_dst_url.toString(),
-	   (const char *)username);
+		conv_dst_url.toString().toUtf8().constData(),
+		username.toUtf8().constData());
   }
   curl_easy_cleanup(curl);
   fclose(f);

@@ -2,7 +2,7 @@
 //
 // Test the Rivendell db connection routines.
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,11 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
-
-#include <qapplication.h>
-#include <qvariant.h>
+#include <QApplication>
 
 #include <rdcmd_switch.h>
 #include <rddatedecode.h>
@@ -59,7 +55,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"datedecode_test: unknown option \"%s\"\n",
-	      (const char *)cmd->value(i));
+	      cmd->value(i).toUtf8().constData());
       exit(256);
     }
   }
@@ -85,7 +81,7 @@ MainObject::MainObject(QObject *parent)
   //
   QString err (tr("datedecode_test: "));
   if(!RDOpenDb(&schema,&err,config)) {
-    fprintf(stderr,err.ascii());
+    fprintf(stderr,err.toAscii());
     delete cmd;
     exit(256);
   }
@@ -96,13 +92,13 @@ MainObject::MainObject(QObject *parent)
   //
   if(!date.isNull()) {
     printf("%s\n",
-	   (const char *)RDDateDecode(date,QDate::currentDate(),station,config,
-				      service));
+	   RDDateDecode(date,QDate::currentDate(),station,config,service).
+	   toUtf8().constData());;
   }
   if(!datetime.isNull()) {
-    printf("%s\n",(const char *)RDDateTimeDecode(datetime,
-		  QDateTime(QDate::currentDate(),QTime::currentTime()),station,
-						 config,service));
+    printf("%s\n",RDDateTimeDecode(datetime,QDateTime(QDate::currentDate(),
+						      QTime::currentTime()),
+				   station,config,service).toUtf8().constData());
   }
   exit(0);
 }

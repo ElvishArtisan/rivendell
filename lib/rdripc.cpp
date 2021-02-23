@@ -90,7 +90,7 @@ void RDRipc::setIgnoreMask(bool state)
 }
 
 
-void RDRipc::connectHost(QString hostname,Q_UINT16 hostport,QString password)
+void RDRipc::connectHost(QString hostname,uint16_t hostport,QString password)
 {
   ripc_password=password;
   ripc_socket->connectToHost(hostname,hostport);
@@ -163,7 +163,7 @@ void RDRipc::sendOnairFlag()
 void RDRipc::sendRml(RDMacro *macro)
 {
   QString cmd;
-  Q_UINT16 port=RD_RML_NOECHO_PORT;
+  uint16_t port=RD_RML_NOECHO_PORT;
   QDateTime now=QDateTime::currentDateTime();
 
   if(macro->echoRequested()) {
@@ -221,12 +221,12 @@ void RDRipc::readyData()
     QString line=QString::fromUtf8(data);
     for(int i=0;i<line.length();i++) {
       QChar c=line.at(i);
-      if(c.ascii()=='!') {
+      if(c.toAscii()=='!') {
 	DispatchCommand();
 	ripc_accum="";
       }
       else {
-	if((c.ascii()!='\r')&&(c.ascii()!='\n')) {
+	if((c.toAscii()!='\r')&&(c.toAscii()!='\n')) {
 	  ripc_accum+=c;
 	}
       }

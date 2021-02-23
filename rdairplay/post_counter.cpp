@@ -40,11 +40,11 @@ PostCounter::PostCounter(QWidget *parent)
   //
   post_idle_palette=palette();
   post_early_palette=
-    QPalette(QColor(POSTPOINT_EARLY_COLOR),backgroundColor());
+    QPalette(QColor(POSTPOINT_EARLY_COLOR),palette().color(QPalette::Background));
   post_ontime_palette=
-    QPalette(QColor(POSTPOINT_ONTIME_COLOR),backgroundColor());
+    QPalette(QColor(POSTPOINT_ONTIME_COLOR),palette().color(QPalette::Background));
   post_late_palette=
-    QPalette(QColor(POSTPOINT_LATE_COLOR),backgroundColor());
+    QPalette(QColor(POSTPOINT_LATE_COLOR),palette().color(QPalette::Background));
 
   post_offset = 0;
   UpdateDisplay();
@@ -117,8 +117,8 @@ void PostCounter::keyPressEvent(QKeyEvent *e)
 
 void PostCounter::UpdateDisplay()
 {
-  QColor color=backgroundColor();
-  QColor system_button_text_color=palette().active().buttonText();
+  QColor color=palette().color(QPalette::Background);
+  QColor system_button_text_color=palette().buttonText().color();
   QString str;
   QString point;
   QString state;
@@ -174,5 +174,5 @@ void PostCounter::UpdateDisplay()
 	       fontMetrics().width(state))/2,48,state);
   p->end();
   delete p;
-  setPixmap(pix);    
+  setIcon(pix);    
 }

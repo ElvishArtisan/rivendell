@@ -2,7 +2,7 @@
 //
 // Connect to the Rivendell Netcatcher Daemon.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qlabel.h>
-#include <qobject.h>
-#include <qstring.h>
-#include <qtcpsocket.h>
+#include <stdint.h>
+
+#include <QLabel>
+#include <QObject>
+#include <QString>
+#include <QTcpSocket>
 
 #include <rd.h>
 #include <rddeck.h>
@@ -40,7 +42,7 @@ class RDCatchConnect : public QObject
  public:
   RDCatchConnect(int serial,QObject *parent=0);
   ~RDCatchConnect();
-  void connectHost(QString hostname,Q_UINT16 hostport,QString password);
+  void connectHost(QString hostname,uint16_t hostport,QString password);
   RDDeck::Status status(unsigned chan) const;
   int currentId(unsigned chan) const;
   void enableMetering(bool state);

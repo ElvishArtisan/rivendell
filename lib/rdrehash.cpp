@@ -68,7 +68,6 @@ RDRehash::ErrorCode RDRehash::runRehash(const QString &username,
 {
   long response_code;
   CURL *curl=NULL;
-  char url[1024];
   CURLcode curl_err;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
@@ -78,36 +77,34 @@ RDRehash::ErrorCode RDRehash::runRehash(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",RDXPORT_COMMAND_REHASH),
+	       QString().sprintf("%u",RDXPORT_COMMAND_REHASH).toUtf8().
+	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
-	       CURLFORM_COPYCONTENTS,(const char *)username.utf8(),CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,username.toUtf8().constData(),
+	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
-	       CURLFORM_COPYCONTENTS,(const char *)password.utf8(),CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,password.toUtf8().constData(),
+	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_cart_number),
+	       QString().sprintf("%u",conv_cart_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_cut_number),
+	       QString().sprintf("%u",conv_cut_number).toUtf8().constData(),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     curl_formfree(first);
     return RDRehash::ErrorInternal;
   }
 
-  //
-  // Write out URL as a C string before passing to curl_easy_setopt(), 
-  // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
-  // error.
-  //
-  strncpy(url,conv_station->webServiceUrl(conv_config),1024);
-  curl_easy_setopt(curl,CURLOPT_URL,url);
+  curl_easy_setopt(curl,CURLOPT_URL,
+		conv_station->webServiceUrl(conv_config).toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__RDRehashCallback);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)conv_config->userAgent());
+		   conv_config->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
 
   switch(curl_err=curl_easy_perform(curl)) {

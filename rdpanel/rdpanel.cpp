@@ -18,17 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
 #include <math.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 
-#include <qmessagebox.h>
-#include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qtranslator.h>
-#include <qtextcodec.h>
-#include <qpainter.h>
+#include <QApplication>
+#include <QMessageBox>
+#include <QTranslator>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -373,29 +367,28 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
-  QTranslator qt(0);
-  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),".");
-  a.installTranslator(&qt);
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    QTranslator qt(0);
+    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,".");
+    a.installTranslator(&qt);
 
-  QTranslator rd(0);
-  rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+    QTranslator rd(0);
+    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(QString(PREFIX)+QString("/share/rivendell/rdpanel_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(QString(PREFIX)+QString("/share/rivendell/rdpanel_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();

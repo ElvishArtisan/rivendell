@@ -18,9 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
+#include <QPushButton>
 
-#include <rdcart_search_text.h>
 #include <rdconf.h>
 #include <rdreport.h>
 #include <rdtextfile.h>
@@ -48,10 +47,10 @@ ListReports::ListReports(const QString &filter,const QString &grpname,
   //
   list_reports_box=new QComboBox(this);
   list_reports_box->setGeometry(50,10,sizeHint().width()-60,19);
-  list_reports_box->insertItem(tr("Cart Report"));
-  list_reports_box->insertItem(tr("Cut Report"));
-  list_reports_box->insertItem(tr("Cart Data Dump (CSV)"));
-  list_reports_label=new QLabel(list_reports_box,tr("Type:"),this);
+  list_reports_box->insertItem(0,tr("Cart Report"));
+  list_reports_box->insertItem(1,tr("Cut Report"));
+  list_reports_box->insertItem(2,tr("Cart Data Dump (CSV)"));
+  list_reports_label=new QLabel(tr("Type:"),this);
   list_reports_label->setGeometry(10,10,35,19);
   list_reports_label->setFont(labelFont());
   list_reports_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -65,8 +64,7 @@ ListReports::ListReports(const QString &filter,const QString &grpname,
   list_fieldnames_check->setGeometry(55,34,15,15);
   list_fieldnames_check->setChecked(true);
   list_fieldnames_check->setDisabled(true);
-  list_fieldnames_label=
-    new QLabel(list_fieldnames_check,tr("Prepend Field Names"),this);
+  list_fieldnames_label=new QLabel(tr("Prepend Field Names"),this);
   list_fieldnames_label->setGeometry(75,32,sizeHint().width()-75,19);
   list_fieldnames_label->setFont(labelFont());
   list_fieldnames_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -123,7 +121,7 @@ void ListReports::generateData()
 {
   QString report;
 
-  switch(list_reports_box->currentItem()) {
+  switch(list_reports_box->currentIndex()) {
   case 0:  // Cart Report
     GenerateCartReport(&report);
     break;
@@ -626,7 +624,7 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
       *report+=CsvField(q->value(2).toString()+".wav")+",";
     }
     *report+=
-      RDGetTimeLength(q->value(20).toInt(),false,false).stripWhiteSpace()+",";
+      RDGetTimeLength(q->value(20).toInt(),false,false).trimmed()+",";
     if(type==RDCart::Macro) {
       *report+="-1,";
       *report+="-1,";

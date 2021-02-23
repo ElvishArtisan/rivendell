@@ -2,7 +2,7 @@
 //
 // Accessor Methods for LiveWire Source Parameters
 //
-//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2007-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,9 @@
 #ifndef RDLIVEWIRESOURCE_H
 #define RDLIVEWIRESOURCE_H
 
-#include <qhostaddress.h>
+#include <stdint.h>
+
+#include <QHostAddress>
 
 class RDLiveWireSource
 {
@@ -39,8 +41,8 @@ class RDLiveWireSource
   void setRtpEnabled(bool state);
   QHostAddress streamAddress() const;
   void setStreamAddress(const QHostAddress &addr);
-  Q_UINT16 streamUdpPort() const;
-  void setStreamUdpPort(Q_UINT16 port);
+  uint16_t streamUdpPort() const;
+  void setStreamUdpPort(uint16_t port);
   bool shareable() const;
   void setShareable(bool state);
   int inputGain() const;
@@ -56,7 +58,7 @@ class RDLiveWireSource
   QString live_label_name;
   bool live_rtp_enabled;
   QHostAddress live_stream_address;
-  Q_UINT16 live_stream_udp_port;
+  uint16_t live_stream_udp_port;
   bool live_shareable;
   int live_input_gain;
   int live_channels;

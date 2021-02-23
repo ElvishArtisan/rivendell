@@ -2,7 +2,7 @@
 //
 // Select a Set of Dates for a Rivendell Report
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qmessagebox.h>
-#include <qfile.h>
+#include <QFile>
+#include <QMessageBox>
 
 #include <rddatedialog.h>
 #include <rddatedecode.h>
@@ -56,7 +55,7 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   //
   edit_report_box=new QComboBox(this);
   edit_report_box->setGeometry(75,11,sizeHint().width()-85,19);
-  QLabel *label=new QLabel(edit_report_box,tr("&Report:"),this);
+  QLabel *label=new QLabel(tr("&Report:"),this);
   label->setGeometry(10,11,60,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -65,7 +64,8 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
     "order by REPORT_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    edit_report_box->insertItem(q->value(0).toString());
+    edit_report_box->
+      insertItem(edit_report_box->count(),q->value(0).toString());
   }
   delete q;
 
@@ -76,7 +76,7 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   edit_startdate_edit->setGeometry(150,35,100,22);
   edit_startdate_edit->setDisplayFormat("MM/dd/yyyy");
   edit_startdate_edit->setDate(yesterday_date);
-  label=new QLabel(edit_startdate_edit,tr("&Start Date:"),this);
+  label=new QLabel(tr("&Start Date:"),this);
   label->setGeometry(75,36,70,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -93,7 +93,7 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   edit_enddate_edit->setGeometry(150,65,100,22);
   edit_enddate_edit->setDisplayFormat("MM/dd/yyyy");
   edit_enddate_edit->setDate(yesterday_date);
-  label=new QLabel(edit_enddate_edit,tr("&End Date:"),this);
+  label=new QLabel(tr("&End Date:"),this);
   label->setGeometry(75,66,70,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

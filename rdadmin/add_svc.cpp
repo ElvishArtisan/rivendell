@@ -58,8 +58,7 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
   svc_name_edit->setGeometry(155,11,sizeHint().width()-165,19);
   svc_name_edit->setMaxLength(10);
   svc_name_edit->setValidator(validator);
-  QLabel *svc_name_label=
-    new QLabel(svc_name_edit,tr("&New Service Name:"),this);
+  QLabel *svc_name_label=new QLabel(tr("&New Service Name:"),this);
   svc_name_label->setGeometry(10,11,140,19);
   svc_name_label->setFont(labelFont());
   svc_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -70,7 +69,7 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
   svc_exemplar_box=new QComboBox(this);
   svc_exemplar_box->setGeometry(155,36,sizeHint().width()-165,19);
   QLabel *svc_exemplar_label=
-    new QLabel(svc_exemplar_box,tr("Base Service On:"),this);
+    new QLabel(tr("Base Service On:"),this);
   svc_exemplar_label->setGeometry(10,36,140,19);
   svc_exemplar_label->setFont(labelFont());
   svc_exemplar_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -98,11 +97,12 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
   //
   // Populate Exemplar List
   //
-  svc_exemplar_box->insertItem(tr("Empty Host Config"));
+  svc_exemplar_box->insertItem(0,tr("Empty Host Config"));
   QString sql="select NAME from SERVICES";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    svc_exemplar_box->insertItem(q->value(0).toString());
+    svc_exemplar_box->
+      insertItem(svc_exemplar_box->count(),q->value(0).toString());
   }
   delete q;
 }
@@ -137,29 +137,13 @@ void AddSvc::okData()
     return;
   }
 
-  if(svc_exemplar_box->currentItem()>0) {
+  if(svc_exemplar_box->currentIndex()>0) {
     exemplar=svc_exemplar_box->currentText();
   }
   if(!RDSvc::create(svc_name_edit->text(),&err_msg,exemplar,rda->config())) {
     QMessageBox::warning(this,"RDAdmin - "+tr("Error"),err_msg);
     return;
   }
-  /*
-  RDSvc *svc=new RDSvc(svc_name_edit->text(),admin_station,admin_config,this);
-  if(svc->exists()) {
-    QMessageBox::warning(this,tr("Service Exists"),
-			 tr("Service Already Exists!"));
-    delete svc;
-    return;
-  }
-  if(svc_exemplar_box->currentItem()==0) {  // Create Empty Service
-    svc->create("",admin_config);
-  }
-  else {
-    svc->create(svc_exemplar_box->currentText(),admin_config);
-  }
-  delete svc;
-  */
   *svc_name=svc_name_edit->text();
 
   EditSvc *edit_svc=new EditSvc(svc_name_edit->text(),this);

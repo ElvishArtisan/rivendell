@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Logitek vGuest Protocol
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,11 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
-#include <syslog.h>
-
-#include <qsignalmapper.h>
 
 #include <rdapplication.h>
 #include <rdescape_string.h>
@@ -193,6 +188,7 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
 	  this,SLOT(pingResponseData(int)));
   for(int i=0;i<2;i++) {
     vguest_ping_timer[i]=new QTimer(this);
+    vguest_ping_timer[i]->setSingleShot(true);
     vguest_ping_mapper->setMapping(vguest_ping_timer[i],i);
     connect(vguest_ping_timer[i],SIGNAL(timeout()),
 	    vguest_ping_mapper,SLOT(map()));
@@ -211,6 +207,7 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
 	  this,SLOT(ipConnect(int)));
   for(int i=0;i<2;i++) {
     vguest_reconnect_timer[i]=new QTimer(this);
+    vguest_reconnect_timer[i]->setSingleShot(true);
     reconnect_mapper->setMapping(vguest_reconnect_timer[i],i);
     connect(vguest_reconnect_timer[i],SIGNAL(timeout()),
 	    reconnect_mapper,SLOT(map()));
@@ -337,7 +334,7 @@ void VGuest::processCommand(RDMacro *cmd)
 		(char)(0xFF&cmd->arg(2).toInt()),
 		(char)(0xFF&cmd->arg(3).toInt()),
 		(char)(0xFF&cmd->arg(4).toInt()),
-		(const char *)label);
+		label.toUtf8().constData());
 	SendCommand(buffer,10+label.length());
 	break;
 
@@ -370,8 +367,8 @@ void VGuest::processCommand(RDMacro *cmd)
 	break;
 
       case RDMacro::GO:
-	if(((cmd->arg(1).lower()!="i")&&
-	    (cmd->arg(1).lower()!="o"))||
+	if(((cmd->arg(1).toLower()!="i")&&
+	    (cmd->arg(1).toLower()!="o"))||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(2).toInt()>vguest_gpos)||
 	   (cmd->arg(3).toInt()<0)||(cmd->arg(3).toInt()>1)||
 	   (cmd->arg(4).toInt()<0)) {
@@ -473,7 +470,7 @@ void VGuest::connectionClosedData(int id)
   }
   vguest_ping_timer[id]->stop();
   vguest_ping_response_timer[id]->stop();
-  vguest_reconnect_timer[id]->start(interval,true);
+  vguest_reconnect_timer[id]->start(interval);
 }
 
 
@@ -482,7 +479,7 @@ void VGuest::readyReadData(int id)
   char buffer[255];
   int n=0;
 
-  while((n=vguest_socket[id]->readBlock(buffer,255))>0) {
+  while((n=vguest_socket[id]->read(buffer,255))>0) {
     for(int i=0;i<n;i++) {
       switch(vguest_istate[id]) {
       case 0:   // STX Command Start
@@ -548,7 +545,7 @@ void VGuest::errorData(QAbstractSocket::SocketError err,int id)
 		  vguest_ipport[id]);
       vguest_error_notified[id]=true;
     }
-    vguest_reconnect_timer[id]->start(interval,true);
+    vguest_reconnect_timer[id]->start(interval);
     break;
 
   case QAbstractSocket::HostNotFoundError:
@@ -589,17 +586,18 @@ void VGuest::pingData(int id)
   buffer[0]=0x04;
   buffer[1]=0x01;
   buffer[2]=0x03;   // LPCore Connection Ping
-  vguest_socket[id]->writeBlock(buffer,3);
-  vguest_ping_response_timer[id]->start(VGUEST_PING_INTERVAL,true);
+  vguest_socket[id]->write(buffer,3);
+  vguest_ping_response_timer[id]->start(VGUEST_PING_INTERVAL);
 }
 
 
 void VGuest::pingResponseData(int id)
 {
   vguest_socket[id]->close();
-  rda->syslog(LOG_WARNING,"vGuest connection to "+
-	      vguest_ipaddress[id].toString()+
-	      " timed out, restarting connection");
+  rda->syslog(LOG_WARNING,"%s",
+	      ("vGuest connection to "+
+	       vguest_ipaddress[id].toString()+
+	       " timed out, restarting connection").toUtf8().constData());
 }
 
 
@@ -616,7 +614,7 @@ void VGuest::SendCommand(char *str,int len)
 	
       case RDMatrix::TcpPort:
 	if(vguest_socket[i]!=NULL) {
-	  vguest_socket[i]->writeBlock(str,len);
+	  vguest_socket[i]->write(str,len);
 	}
 	break;
 
@@ -643,8 +641,8 @@ void VGuest::DispatchCommand(char *cmd,int len,int id)
     buffer[2]=0xF9;
     buffer[3]=VGUEST_ID_BYTE;
     sprintf(buffer+4,"%s%s",
-	    (const char *)vguest_username[id],
-	    (const char *)vguest_password[id]);
+	    vguest_username[id].toUtf8().constData(),
+	    vguest_password[id].toUtf8().constData());
     SendCommand(buffer,36);
     break;
 
@@ -664,7 +662,7 @@ void VGuest::DispatchCommand(char *cmd,int len,int id)
 	buffer[0]=0x04;
 	buffer[1]=0x01;
 	buffer[2]=0x03;   // LPCore Connection Ping
-	vguest_socket[id]->writeBlock(buffer,3);
+	vguest_socket[id]->write(buffer,3);
       }
       break;
 
@@ -765,7 +763,7 @@ void VGuest::MetadataCommand(char *cmd,int len,int id)
 	  "vGuest system at %s understands ping, activating timeout monitoring",
 		  (const char *)vguest_ipaddress[id].toString().toUtf8());
     }
-    vguest_ping_timer[id]->start(VGUEST_PING_INTERVAL,true);
+    vguest_ping_timer[id]->start(VGUEST_PING_INTERVAL);
     break;
   }
 }

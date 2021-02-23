@@ -24,7 +24,6 @@
 
 #include <QButtonGroup>
 #include <QCheckBox>
-#include <QComboBox>
 #include <QDateTimeEdit>
 #include <QGroupBox>
 #include <QLineEdit>
@@ -32,6 +31,7 @@
 #include <QSpinBox>
 #include <QTextEdit>
 
+#include <rdcombobox.h>
 #include <rddialog.h>
 #include <rdemptycart.h>
 #include <rdevent.h>
@@ -103,16 +103,16 @@ class EditEvent : public RDDialog
   QButtonGroup *event_lib_type_group;
   QComboBox *event_group_box;
   RDGroupListModel *event_group_model;
-  QComboBox *event_sched_group_box;
+  RDComboBox *event_sched_group_box;
   QSpinBox* event_artist_sep_spinbox;
   QLabel *event_artist_sep_label;
   QPushButton *event_artist_none_button;
   QSpinBox* event_title_sep_spinbox;
   QLabel *event_title_sep_label;
   QPushButton *event_title_none_button;
-  QComboBox* event_have_code_box;
+  RDComboBox* event_have_code_box;
   QLabel *event_have_code_label;
-  QComboBox* event_have_code2_box;
+  RDComboBox* event_have_code2_box;
   QLabel *event_have_code2_label;
   LibraryTableView *event_lib_view;
   RDLibraryModel *event_lib_model;

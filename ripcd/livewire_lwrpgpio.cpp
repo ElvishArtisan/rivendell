@@ -2,7 +2,7 @@
 //
 // A Rivendell LWRP GPIO driver for LiveWire networks.
 //
-//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -100,15 +100,15 @@ void LiveWireLwrpGpio::processCommand(RDMacro *cmd)
   case RDMacro::GO:
     if((cmd->argQuantity()!=5)||
        (cmd->arg(2).toInt()<1)||
-       ((cmd->arg(1).lower()!="i")&&
-	(cmd->arg(1).lower()!="o"))) {
+       ((cmd->arg(1).toLower()!="i")&&
+	(cmd->arg(1).toLower()!="o"))) {
       cmd->acknowledge(false);
       emit rmlEcho(cmd);
       return;
     }
-    if(((cmd->arg(1).lower()=="i")&&
+    if(((cmd->arg(1).toLower()=="i")&&
 	(cmd->arg(2).toUInt()>gpio_gpi_limit))||
-       ((cmd->arg(1).lower()=="o")&&
+       ((cmd->arg(1).toLower()=="o")&&
 	(cmd->arg(2).toUInt()>gpio_gpo_limit))) {
       cmd->acknowledge(false);
       emit rmlEcho(cmd);
@@ -116,7 +116,7 @@ void LiveWireLwrpGpio::processCommand(RDMacro *cmd)
     }
     slot=(cmd->arg(2).toInt()-1)/5;
     line=(cmd->arg(2).toInt()-1)%5;
-    if(cmd->arg(1).lower()=="i") {
+    if(cmd->arg(1).toLower()=="i") {
       if(cmd->arg(3).toInt()==0) {
 	if(gpio_is_virtual) {
 	  gpio_livewire->gpoReset(slot,line,cmd->arg(4).toInt());
@@ -134,7 +134,7 @@ void LiveWireLwrpGpio::processCommand(RDMacro *cmd)
 	}
       }
     }
-    if(cmd->arg(1).lower()=="o") {
+    if(cmd->arg(1).toLower()=="o") {
       if(cmd->arg(3).toInt()==0) {
 	if(gpio_is_virtual) {
 	  gpio_livewire->gpiReset(slot,line,cmd->arg(4).toInt());
@@ -207,8 +207,8 @@ void LiveWireLwrpGpio::connectedData(unsigned id)
   }
 
   rda->syslog(LOG_DEBUG,"livewire LWRP gpio driver connected to %s at %s:%d",
-	      (const char *)gpio_livewire->deviceName(),
-	      (const char *)gpio_livewire->hostname(),
+	      gpio_livewire->deviceName().toUtf8().constData(),
+	      gpio_livewire->hostname().toUtf8().constData(),
 	      0xFFFF&gpio_livewire->tcpPort());
 }
 
@@ -217,8 +217,8 @@ void LiveWireLwrpGpio::watchdogStateChangedData(unsigned id,const QString &msg)
 {
   rda->syslog(LOG_WARNING,
 	      "livewire LWRP driver watchdog update for device %s at %s:%d: %s",
-	      (const char *)gpio_livewire->deviceName(),
-	      (const char *)gpio_livewire->hostname(),
+	      gpio_livewire->deviceName().toUtf8().constData(),
+	      gpio_livewire->hostname().toUtf8().constData(),
 	      0xFFFF&gpio_livewire->tcpPort(),
-	      (const char *)msg);
+	      msg.toUtf8().constData());
 }

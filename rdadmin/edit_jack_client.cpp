@@ -48,21 +48,19 @@ EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
   // JACK Client Description
   //
   edit_jack_description_edit=new QLineEdit(this);
-  edit_jack_description_label=
-    new QLabel(edit_jack_description_edit,tr("Description:"),this);
+  edit_jack_description_label=new QLabel(tr("Description:"),this);
   edit_jack_description_label->setFont(labelFont());
   edit_jack_description_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // JACK Client Description
   //
   edit_jack_command_line_edit=new QLineEdit(this);
-  edit_jack_command_line_label=
-    new QLabel(edit_jack_command_line_edit,tr("Command Line:"),this);
+  edit_jack_command_line_label=new QLabel(tr("Command Line:"),this);
   edit_jack_command_line_label->setFont(labelFont());
   edit_jack_command_line_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button

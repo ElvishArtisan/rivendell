@@ -33,13 +33,17 @@ LogTableView::LogTableView(QWidget *parent)
 
 void LogTableView::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RDCartDrag::canDecode(e));
+  if(RDCartDrag::canDecode(e)) {
+    e->accept();
+  }
 }
 
 
 void LogTableView::dragMoveEvent(QDragMoveEvent *e)
 {
-  e->accept(RDCartDrag::canDecode(e));
+  if(RDCartDrag::canDecode(e)) {
+    e->accept();
+  }
 }
 
 

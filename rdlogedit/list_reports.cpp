@@ -2,7 +2,7 @@
 //
 // List and Generate Log Reports
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-#include <qpushbutton.h>
+#include <QMessageBox>
+#include <QPushButton>
 
 #include <rdconf.h>
 #include <rddatedialog.h>
@@ -56,10 +56,9 @@ ListReports::ListReports(const QString &logname,const QString &description,
   //
   list_reports_box=new QComboBox(this);
   list_reports_box->setGeometry(50,10,sizeHint().width()-60,19);
-  list_reports_box->insertItem(tr("Log Listing"));
-  list_reports_box->insertItem(tr("Log Exception Report"));
-  QLabel *list_reports_label=
-    new QLabel(list_reports_box,tr("Type:"),this);
+  list_reports_box->insertItem(0,tr("Log Listing"));
+  list_reports_box->insertItem(1,tr("Log Exception Report"));
+  QLabel *list_reports_label=new QLabel(tr("Type:"),this);
   list_reports_label->setGeometry(10,10,35,19);
   list_reports_label->setFont(labelFont());
   list_reports_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -70,7 +69,7 @@ ListReports::ListReports(const QString &logname,const QString &description,
   list_date_edit=new QDateEdit(this);
   list_date_edit->setDisplayFormat("MM/dd/yyyy");
   list_date_edit->setGeometry(110,34,100,19);
-  QLabel *list_date_label=new QLabel(list_date_edit,tr("Effective Date:"),this);
+  QLabel *list_date_label=new QLabel(tr("Effective Date:"),this);
   list_date_label->setGeometry(10,34,95,19);
   list_date_label->setFont(labelFont());
   list_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -135,7 +134,7 @@ void ListReports::generateData()
 {
   QString report;
 
-  switch(list_reports_box->currentItem()) {
+  switch(list_reports_box->currentIndex()) {
   case 0:  // Event Report
     GenerateLogReport(&report);
     break;

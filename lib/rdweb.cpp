@@ -563,7 +563,7 @@ extern void RDXMLResult(const char *str,int resp_code,
   printf("Content-type: application/xml\n");
   printf("Status: %d\n",resp_code);
   printf("\n");
-  printf("%s",(const char *)we->xml());
+  printf("%s",we->xml().toUtf8().constData());
   delete we;
 
   exit(0);
@@ -790,7 +790,7 @@ bool RDParsePost(std::map<QString,QString> *vars)
   if(getenv("REQUEST_METHOD")==NULL) {
     return false;
   }
-  if(QString(getenv("REQUEST_METHOD")).lower()!="post") {
+  if(QString(getenv("REQUEST_METHOD")).toLower()!="post") {
     return false;
   }
   if((f=fdopen(0,"r"))==NULL) {
@@ -799,13 +799,13 @@ bool RDParsePost(std::map<QString,QString> *vars)
   if((n=getline(&data,(size_t *)&n,f))<=0) {
     return false;
   }
-  sep=QString(data).stripWhiteSpace();
+  sep=QString(data).trimmed();
 
   //
   // Get message parts
   //
   while((n=getline(&data,(size_t *)&n,f))>0) {
-    if(QString(data).stripWhiteSpace().contains(sep)>0) {  // End of part
+    if(QString(data).trimmed().contains(sep)>0) {  // End of part
       if(fd>=0) {
 	ftruncate(fd,lseek(fd,0,SEEK_CUR)-2);  // Remove extraneous final CR/LF
 	::close(fd);
@@ -818,29 +818,29 @@ bool RDParsePost(std::map<QString,QString> *vars)
       continue;
     }
     if(header) {  // Read header
-      if(QString(data).stripWhiteSpace().isEmpty()) {
+      if(QString(data).trimmed().isEmpty()) {
 	if(!headers["content-disposition"].isNull()) {
 	  QStringList fields;
 	  fields=headers["content-disposition"].split(";");
 	  if(fields.size()>0) {
-	    if(fields[0].lower().stripWhiteSpace()=="form-data") {
+	    if(fields[0].toLower().trimmed()=="form-data") {
 	      for(int i=1;i<fields.size();i++) {
 		QStringList pairs;
-		pairs=pairs.split("=",fields[i]);
-		if(pairs[0].lower().stripWhiteSpace()=="name") {
-		  name=pairs[1].stripWhiteSpace();
+		pairs=fields.at(i).split("=",QString::KeepEmptyParts);
+		if(pairs[0].toLower().trimmed()=="name") {
+		  name=pairs[1].trimmed();
 		  name.replace("\"","");
 		}
-		if(pairs[0].lower().stripWhiteSpace()=="filename") {
+		if(pairs[0].toLower().trimmed()=="filename") {
 		  if(tempdir.right(6)=="XXXXXX") {
 		    char dir[PATH_MAX];
-		    strcpy(dir,tempdir);
+		    strcpy(dir,tempdir.toUtf8());
 		    mkdtemp(dir);
 		    tempdir=dir;
 		  }
-		  filename=tempdir+"/"+pairs[1].stripWhiteSpace();
+		  filename=tempdir+"/"+pairs[1].trimmed();
 		  filename.replace("\"","");
-		  fd=open(filename,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
+		  fd=open(filename.toUtf8(),O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
 		}
 	      }
 	    }
@@ -851,7 +851,7 @@ bool RDParsePost(std::map<QString,QString> *vars)
       else {
 	QStringList hdr;
 	hdr=QString(data).trimmed().split(":");
-	headers[hdr[0].lower()]=hdr[1];
+	headers[hdr[0].toLower()]=hdr[1];
       }
     }
     else {  // Read data
@@ -1158,7 +1158,7 @@ QString RDUrlUnescape(const QString &str)
   QString ret="";
 
   for(int i=0;i<str.length();i++) {
-    if((str.at(i).ascii()=='%')&&(i<str.length()-2)) {
+    if((str.at(i).toAscii()=='%')&&(i<str.length()-2)) {
       ret+=QString().sprintf("%c",str.mid(i+1,2).toInt(NULL,16));
       i+=2;
     }

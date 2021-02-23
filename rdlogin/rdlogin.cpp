@@ -18,11 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QMessageBox>
+#include <QTranslator>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -108,9 +106,9 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   if(login_user_width>900) {
     login_user_width=900;
   }
-  login_username_label=new QLabel(login_username_box,tr("&Username:"),this);
+  login_username_label=new QLabel(tr("Username:"),this);
   login_username_label->setFont(labelFont());
-  login_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  login_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   if(rda->system()->showUserList()) {
     login_username_edit->hide();
   }
@@ -124,9 +122,9 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   login_password_edit=new QLineEdit(this);
   login_password_edit->setMaxLength(RD_MAX_PASSWORD_LENGTH);
   login_password_edit->setEchoMode(QLineEdit::Password);
-  login_password_label=new QLabel(login_password_edit,tr("&Password:"),this);
+  login_password_label=new QLabel(tr("Password:"),this);
   login_password_label->setFont(labelFont());
-  login_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  login_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(login_password_edit,SIGNAL(returnPressed()),this,SLOT(loginData()));
 
   //
@@ -226,8 +224,8 @@ void MainWidget::logoutData()
   rda->ripc()->setUser(default_name);
   login_password_edit->clear();
   for(int i=0;i<login_username_box->count();i++) {
-    if(login_username_box->text(i)==default_name) {
-      login_username_box->setCurrentItem(i);
+    if(login_username_box->itemData(i).toString()==default_name) {
+      login_username_box->setCurrentIndex(i);
       qApp->processEvents();
       cancelData();
       return;
@@ -272,25 +270,24 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
-  QTranslator qt(0);
-  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),
-	  ".");
-  a.installTranslator(&qt);
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    QTranslator qt(0);
+    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,".");
+    a.installTranslator(&qt);
 
-  QTranslator rd(0);
-  rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+    QTranslator rd(0);
+    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(QString(PREFIX)+QString("/share/rivendell/rdlogin_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(QString(PREFIX)+QString("/share/rivendell/rdlogin_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   //
   // Start Event Loop
@@ -298,7 +295,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();

@@ -2,7 +2,7 @@
 //
 // DB schema version <==> Rivendell version map
 //
-//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,9 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <qmap.h>
-#include <qstringlist.h>
 
 #include "rddbmgr.h"
 
@@ -53,7 +50,7 @@ VersionString::VersionString()
 VersionString::VersionString(const char *str)
   : QString(str)
 {
-  QStringList f0=f0.split(".",str);
+  QStringList f0=QString(str).split(".",QString::KeepEmptyParts);
   ver_major=f0[0].toInt();
   if(f0.size()>=2) {
     ver_minor=f0[1].toInt();
@@ -174,10 +171,10 @@ int MainObject::GetVersionSchema(const QString &ver) const
   //
   // Normalize String
   //
-  if(version.left(1).lower()=="v") {
+  if(version.left(1).toLower()=="v") {
     version=version.right(version.length()-1);
   }
-  QStringList f0=f0.split(".",version);
+  QStringList f0=version.split(".",QString::KeepEmptyParts);
   if(f0.size()!=3) {
     return 0;
   }
@@ -191,11 +188,11 @@ int MainObject::GetVersionSchema(const QString &ver) const
   //
   // Lookup Schema
   //
-  if(global_version_map.count(VersionString(f0[0]+"."+f0[1]))==0) {
+  if(global_version_map.count(VersionString((f0[0]+"."+f0[1]).toUtf8()))==0) {
     return 0;
   }
 
-  return global_version_map.value(VersionString(f0[0]+"."+f0[1]));
+  return global_version_map.value(VersionString((f0[0]+"."+f0[1]).toUtf8()));
 }
 
 
@@ -205,10 +202,10 @@ QString MainObject::GetSchemaVersion(int schema) const
 
   for(QMap<VersionString,int>::const_iterator it=global_version_map.begin();
       it!=global_version_map.end();it++) {
-    if(it.data()==schema) {
+    if(it.value()==schema) {
       return "v"+it.key()+".x";
     }
-    if(it.data()>schema) {
+    if(it.value()>schema) {
       return tr("between")+" v"+prev_version+".x "+tr("and")+
 	" v"+it.key()+".x";
     } 

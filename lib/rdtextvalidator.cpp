@@ -20,8 +20,8 @@
 
 #include <rdtextvalidator.h>
 
-RDTextValidator::RDTextValidator(QObject *parent,const char *name,bool allow_quote)
-  : QValidator(parent,name)
+RDTextValidator::RDTextValidator(QObject *parent,bool allow_quote)
+  : QValidator(parent)
 {
   if(!allow_quote) {
     banned_chars.push_back(34);  // Double Quote

@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal
 //
-//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,9 +29,7 @@
 
 #include <map>
 
-#include <qapplication.h>
-#include <qdatetime.h>
-#include <qstringlist.h>
+#include <QApplication>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -56,7 +54,7 @@ Xport::Xport(QObject *parent)
     printf("Content-type: text/html\n");
     printf("Status: 500\n");
     printf("\n");
-    printf("rdxport.cgi: %s\n",(const char *)err_msg.utf8());
+    printf("rdxport.cgi: %s\n",(const char *)err_msg.toUtf8());
     Exit(0);
   }
 
@@ -69,7 +67,7 @@ Xport::Xport(QObject *parent)
       printf("Status: 500\n");
       printf("\n");
       printf("rdxport.cgi: unknown command option \"%s\"\n",
-	     (const char *)rda->cmdSwitch()->key(i).utf8());
+	     (const char *)rda->cmdSwitch()->key(i).toUtf8());
       Exit(0);
     }
   }
@@ -96,7 +94,7 @@ Xport::Xport(QObject *parent)
     printf("rdxport: missing REQUEST_METHOD\n");
     Exit(0);
   }
-  if(QString(getenv("REQUEST_METHOD")).lower()!="post") {
+  if(QString(getenv("REQUEST_METHOD")).toLower()!="post") {
     printf("Content-type: text/html\n\n");
     printf("rdxport: invalid web method\n");
     Exit(0);
@@ -413,9 +411,9 @@ void Xport::TryCreateTicket(const QString &name)
 	printf("Content-type: application/xml\n\n");
 	printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
 	printf("<ticketInfo>\n");
-	printf("  %s\n",RDXmlField("ticket",ticket).utf8().constData());
+	printf("  %s\n",RDXmlField("ticket",ticket).toUtf8().constData());
 	printf("  %s\n",
-	       (const char *)RDXmlField("expires",expire_datetime).utf8());
+	       (const char *)RDXmlField("expires",expire_datetime).toUtf8());
 	printf("</ticketInfo>\n");
 	exit(0);
       }
@@ -460,11 +458,11 @@ void Xport::XmlExit(const QString &str,int code,const QString &srcfile,
   }
 #ifdef RDXPORT_DEBUG
   if(srcline>0) {
-    RDXMLResult(str+" \""+srcfile+"\" "+QString().sprintf("line %d",srcline),
+    RDXMLResult((str+" \""+srcfile+"\" "+QString().sprintf("line %d",srcline)).toUtf8(),
 		code,err);
   }
   else {
-    RDXMLResult(str,code,err);
+    RDXMLResult(str.toUtf8(),code,err);
   }
 #else
   RDXMLResult(str,code,err);

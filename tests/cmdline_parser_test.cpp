@@ -37,7 +37,7 @@ MainObject::MainObject(QObject *parent)
     new RDCmdSwitch(qApp->argc(),qApp->argv(),"cmdline_parser_test",
 		    CMDLINE_PARSER_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
-    printf("  key[%d]: %s\n",i,cmd->key(i).utf8().constData());
+    printf("  key[%d]: %s\n",i,cmd->key(i).toUtf8().constData());
     printf("value[%d]: %s\n",i,cmd->value(i).toUtf8().constData());
   }
   exit(0);

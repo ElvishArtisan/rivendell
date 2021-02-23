@@ -3,7 +3,7 @@
 // A Qt-based application to configure, backup, and restore
 // the Rivendell database.
 //
-//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,10 +24,9 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#include <qapplication.h>
-#include <qfiledialog.h>
-#include <qmessagebox.h>
-#include <qprocess.h>
+#include <QApplication>
+#include <QFileDialog>
+#include <QProcess>
 
 #include <dbversion.h>
 #include <rdapplication.h>
@@ -87,19 +86,19 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   label->setAlignment(Qt::AlignCenter);
 
   label_hostname=new QLabel(QString().sprintf("SQL Server: %s",
-    (const char *)rd_config->mysqlHostname()),this);
+	 rd_config->mysqlHostname().toUtf8().constData()),this);
   label_hostname->setGeometry(0,5,sizeHint().width(),16);
   label_hostname->setFont(day_font);
   label_hostname->setAlignment(Qt::AlignCenter);
 
   label_username=new QLabel(QString().sprintf("SQL Usename: %s",
-    (const char *)rd_config->mysqlUsername()),this);
+	 rd_config->mysqlUsername().toUtf8().constData()),this);
   label_username->setGeometry(0,20,sizeHint().width(),16);
   label_username->setFont(day_font);
   label_username->setAlignment(Qt::AlignCenter);
 
   label_dbname=new QLabel(QString().sprintf("SQL Database: %s",
-    (const char *)rd_config->mysqlDbname()),this);
+	 rd_config->mysqlDbname().toUtf8().constData()),this);
   label_dbname->setGeometry(0,35,sizeHint().width(),16);
   label_dbname->setFont(day_font);
   label_dbname->setAlignment(Qt::AlignCenter);
@@ -191,7 +190,7 @@ void MainWidget::mismatchData()
       if(!stderr.isEmpty()) {
         QMessageBox::information(this,"Database Modified with Warnings",
           QString().sprintf("Modified database to version %d with warnings:\n\n%s",
-            RD_VERSION_DATABASE,(const char *)stderr));
+			    RD_VERSION_DATABASE,stderr.toUtf8().constData()));
       }
       else {
         QMessageBox::information(this,"Database Modified Successfully",
@@ -296,7 +295,7 @@ void MainWidget::backupData()
   if (!db->isOpen()) {
     QMessageBox::critical(this,tr("RDDbConfig Error"),
       QString().sprintf("Could not open %s database.",
-      (const char *)rd_config->mysqlDbname()));
+			rd_config->mysqlDbname().toUtf8().constData()));
     return;
   }
   filename=QFileDialog::getSaveFileName(this,"RDDbConfig - "+
@@ -307,9 +306,9 @@ void MainWidget::backupData()
   if (!filename.isEmpty()) {
     QProcess backupProcess(this);
     QStringList args;
-    args << QString().sprintf("--user=%s",(const char *)rd_config->mysqlUsername())
-      << QString().sprintf("--password=%s",(const char *)rd_config->mysqlPassword())
-      << QString().sprintf("--host=%s",(const char *)rd_config->mysqlHostname())
+    args << QString().sprintf("--user=%s",rd_config->mysqlUsername().toUtf8().constData())
+	 << QString().sprintf("--password=%s",rd_config->mysqlPassword().toUtf8().constData())
+	 << QString().sprintf("--host=%s",rd_config->mysqlHostname().toUtf8().constData())
       << rd_config->mysqlDbname();
     backupProcess.setStandardOutputFile(filename);
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -323,11 +322,11 @@ void MainWidget::backupData()
     else {
       QMessageBox::information(this,"Database Backed Up Successfully",
         QString().sprintf("Backed up %s database to %s",
-          (const char *)rd_config->mysqlDbname(),
-          (const char *)filename));
+			  rd_config->mysqlDbname().toUtf8().constData(),
+			  filename.toUtf8().constData()));
       RDApplication::syslog(rd_config,LOG_INFO,"backed up %s database to %s",
-			    (const char *)rd_config->mysqlDbname(),
-			    (const char *)filename);
+			    rd_config->mysqlDbname().toUtf8().constData(),
+			    filename.toUtf8().constData());
     }
   }
 }
@@ -357,9 +356,9 @@ void MainWidget::restoreData()
 
     QProcess restoreProcess(this);
     QStringList args;
-    args << QString().sprintf("--user=%s",(const char *)rd_config->mysqlUsername())
-      << QString().sprintf("--password=%s",(const char *)rd_config->mysqlPassword())
-      << QString().sprintf("--host=%s",(const char *)rd_config->mysqlHostname())
+    args << QString().sprintf("--user=%s",rd_config->mysqlUsername().toUtf8().constData())
+	 << QString().sprintf("--password=%s",rd_config->mysqlPassword().toUtf8().constData())
+	 << QString().sprintf("--host=%s",rd_config->mysqlHostname().toUtf8().constData())
       << rd_config->mysqlDbname();
     restoreProcess.setStandardInputFile(filename);
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -374,11 +373,11 @@ void MainWidget::restoreData()
     else {
       QMessageBox::information(this,"Database Restored Successfully",
         QString().sprintf("Restored %s database from %s",
-          (const char *)rd_config->mysqlDbname(),
-          (const char *)filename));
+			  rd_config->mysqlDbname().toUtf8().constData(),
+			  filename.toUtf8().constData()));
       RDApplication::syslog(rd_config,LOG_INFO,"restored %s database from %s",
-			    (const char *)rd_config->mysqlDbname(),
-			    (const char *)filename);
+			    rd_config->mysqlDbname().toUtf8().constData(),
+			    filename.toUtf8().constData());
     }
     emit updateLabels();
     startDaemons();
@@ -448,7 +447,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   QApplication a(argc,argv);
-  MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
+  new MainWidget(config);
   return a.exec();
 }

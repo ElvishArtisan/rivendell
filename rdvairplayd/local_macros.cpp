@@ -545,8 +545,8 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).lower()!="now")&&
-       (rml->arg(0).lower()!="next")) {
+    if((rml->arg(0).toLower()!="now")&&
+       (rml->arg(0).toLower()!="next")) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -567,7 +567,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       }
       return;
     }
-    if(rml->arg(0).lower()=="now") {
+    if(rml->arg(0).toLower()=="now") {
       air_logs[index]->setNowCart(rml->arg(2).toUInt());
       rda->syslog(LOG_INFO,"set default \"now\" cart to %06u on log machine %d",
 		  rml->arg(2).toUInt(),rml->arg(1).toInt());

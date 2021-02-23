@@ -74,14 +74,14 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_start_rml_edit[0]=new QLineEdit(this);
   air_start_rml_edit[0]->setGeometry(205,50,160,19);
   air_start_rml_edit[0]->setValidator(validator);
-  label=new QLabel(air_start_rml_edit[0],tr("Start RML:"),this);
+  label=new QLabel(tr("Start RML:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(135,50,65,19);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[0]=new QLineEdit(this);
   air_stop_rml_edit[0]->setGeometry(205,71,160,19);
   air_stop_rml_edit[0]->setValidator(validator);
-  label=new QLabel(air_start_rml_edit[0],tr("Stop RML:"),this);
+  label=new QLabel(tr("Stop RML:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(135,71,65,19);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -97,14 +97,14 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_start_rml_edit[1]=new QLineEdit(this);
   air_start_rml_edit[1]->setGeometry(205,118,160,19);
   air_start_rml_edit[1]->setValidator(validator);
-  label=new QLabel(air_start_rml_edit[1],tr("Start RML:"),this);
+  label=new QLabel(tr("Start RML:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(135,118,65,19);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[1]=new QLineEdit(this);
   air_stop_rml_edit[1]->setGeometry(205,139,160,19);
   air_stop_rml_edit[1]->setValidator(validator);
-  label=new QLabel(air_start_rml_edit[1],tr("Stop RML:"),this);
+  label=new QLabel(tr("Stop RML:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(135,139,65,19);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -120,14 +120,14 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_start_rml_edit[2]=new QLineEdit(this);
   air_start_rml_edit[2]->setGeometry(205,186,160,19);
   air_start_rml_edit[2]->setValidator(validator);
-  label=new QLabel(air_start_rml_edit[2],tr("Start RML:"),this);
+  label=new QLabel(tr("Start RML:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(135,186,65,19);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[2]=new QLineEdit(this);
   air_stop_rml_edit[2]->setGeometry(205,207,160,19);
   air_stop_rml_edit[2]->setValidator(validator);
-  label=new QLabel(air_start_rml_edit[2],tr("Stop RML:"),this);
+  label=new QLabel(tr("Stop RML:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(135,207,65,19);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -143,14 +143,14 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_start_rml_edit[3]=new QLineEdit(this);
   air_start_rml_edit[3]->setGeometry(205,254,160,19);
   air_start_rml_edit[3]->setValidator(validator);
-  label=new QLabel(air_start_rml_edit[3],tr("Start RML:"),this);
+  label=new QLabel(tr("Start RML:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(135,254,65,19);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[3]=new QLineEdit(this);
   air_stop_rml_edit[3]->setGeometry(205,275,160,19);
   air_stop_rml_edit[3]->setValidator(validator);
-  label=new QLabel(air_start_rml_edit[3],tr("Stop RML:"),this);
+  label=new QLabel(tr("Stop RML:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(135,275,65,19);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -166,14 +166,14 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_start_rml_edit[4]=new QLineEdit(this);
   air_start_rml_edit[4]->setGeometry(205,322,160,19);
   air_start_rml_edit[4]->setValidator(validator);
-  label=new QLabel(air_start_rml_edit[4],tr("Start RML:"),this);
+  label=new QLabel(tr("Start RML:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(135,322,65,19);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[4]=new QLineEdit(this);
   air_stop_rml_edit[4]->setGeometry(205,343,160,19);
   air_stop_rml_edit[4]->setValidator(validator);
-  label=new QLabel(air_start_rml_edit[4],tr("Stop RML:"),this);
+  label=new QLabel(tr("Stop RML:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(135,343,65,19);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -189,14 +189,14 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_start_rml_edit[5]=new QLineEdit(this);
   air_start_rml_edit[5]->setGeometry(205,390,160,19);
   air_start_rml_edit[5]->setValidator(validator);
-  label=new QLabel(air_start_rml_edit[5],tr("Start RML:"),this);
+  label=new QLabel(tr("Start RML:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(135,390,65,19);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[5]=new QLineEdit(this);
   air_stop_rml_edit[5]->setGeometry(205,411,160,19);
   air_stop_rml_edit[5]->setValidator(validator);
-  label=new QLabel(air_start_rml_edit[5],tr("Stop RML:"),this);
+  label=new QLabel(tr("Stop RML:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(135,411,65,19);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -213,7 +213,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   //
   air_skin_edit=new QLineEdit(this);
   air_skin_edit->setGeometry(135,460,180,20);
-  label=new QLabel(air_skin_edit,tr("Background Image:"),this);
+  label=new QLabel(tr("Background Image:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(10,460,115,20);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -235,7 +235,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_station_box->setGeometry(510,35,50,20);
   air_station_box->setRange(0,MAX_PANELS);
   air_station_box->setSpecialValueText(tr("None"));
-  air_station_label=new QLabel(air_station_box,tr("Host Panels:"),this);
+  air_station_label=new QLabel(tr("Host Panels:"),this);
   air_station_label->setFont(subLabelFont());
   air_station_label->setGeometry(405,35,100,20);
   air_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -247,7 +247,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_user_box->setGeometry(510,57,50,20);
   air_user_box->setRange(0,MAX_PANELS);
   air_user_box->setSpecialValueText(tr("None"));
-  air_user_label=new QLabel(air_user_box,tr("User Panels:"),this);
+  air_user_label=new QLabel(tr("User Panels:"),this);
   air_user_label->setFont(subLabelFont());
   air_user_label->setGeometry(405,57,100,20);
   air_user_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -257,7 +257,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   //
   air_flash_box=new QCheckBox(this);
   air_flash_box->setGeometry(435,85,15,15);
-  label=new QLabel(air_flash_box,tr("Flash Active Buttons"),this);
+  label=new QLabel(tr("Flash Active Buttons"),this);
   label->setFont(subLabelFont());
   label->setGeometry(455,85,150,15);
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -267,7 +267,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   //
   air_panel_pause_box=new QCheckBox(this);
   air_panel_pause_box->setGeometry(435,107,15,15);
-  label=new QLabel(air_panel_pause_box,tr("Enable Button Pausing"),this);
+  label=new QLabel(tr("Enable Button Pausing"),this);
   label->setFont(subLabelFont());
   label->setGeometry(455,107,150,15);
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -277,7 +277,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   //
   air_clearfilter_box=new QCheckBox(this);
   air_clearfilter_box->setGeometry(435,129,15,15);
-  label=new QLabel(air_clearfilter_box,tr("Clear Cart Search Filter"),this);
+  label=new QLabel(tr("Clear Cart Search Filter"),this);
   label->setFont(subLabelFont());
   label->setGeometry(455,129,150,15);
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -285,10 +285,10 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   //
   // Default Service
   //
-  air_defaultsvc_box=new QComboBox(this);
+  air_defaultsvc_box=new RDComboBox(this);
   air_defaultsvc_box->setGeometry(520,151,100,20);
   air_defaultsvc_box->setModel(air_service_model);
-  label=new QLabel(air_defaultsvc_box,tr("Default Service:"),this);
+  label=new QLabel(tr("Default Service:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(385,151,130,20);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -298,7 +298,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   //
   air_label_template_edit=new QLineEdit(this);
   air_label_template_edit->setGeometry(520,173,sizeHint().width()-530,20);
-  label=new QLabel(air_label_template_edit,tr("Label Template:"),this);
+  label=new QLabel(tr("Label Template:"),this);
   label->setFont(subLabelFont());
   label->setGeometry(415,173,100,20);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -468,7 +468,7 @@ void EditRDPanel::okData()
   air_conf->setCard(RDAirPlayConf::CueChannel,air_card_sel[5]->card());
   air_conf->setPort(RDAirPlayConf::CueChannel,air_card_sel[5]->port());
   air_conf->setSkinPath(air_skin_edit->text());
-  if(air_defaultsvc_box->currentItem()==0) {
+  if(air_defaultsvc_box->currentIndex()==0) {
     air_conf->setDefaultSvc("");
   }
   else {

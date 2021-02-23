@@ -52,7 +52,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   //
   edit_hostname_edit=new QLineEdit(this);
   edit_hostname_edit->setGeometry(100,10,180,20);
-  QLabel *label=new QLabel(edit_hostname_edit,tr("Hostname: "),this);
+  QLabel *label=new QLabel(tr("Hostname: "),this);
   label->setGeometry(10,10,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -63,7 +63,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   edit_tcpport_spin=new QSpinBox(this);
   edit_tcpport_spin->setGeometry(335,10,sizeHint().width()-345,20);
   edit_tcpport_spin->setRange(0,0xFFFF);
-  label=new QLabel(edit_tcpport_spin,tr("Port: "),this);
+  label=new QLabel(tr("Port: "),this);
   label->setGeometry(290,10,45,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -73,7 +73,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   //
   edit_description_edit=new QLineEdit(this);
   edit_description_edit->setGeometry(100,32,sizeHint().width()-110,20);
-  label=new QLabel(edit_description_edit,tr("Description: "),this);
+  label=new QLabel(tr("Description: "),this);
   label->setGeometry(10,32,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -85,7 +85,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   edit_output_spin->setGeometry(100,54,60,20);
   edit_output_spin->setRange(0,0x7FFF);
   edit_output_spin->setSpecialValueText(tr("None"));
-  label=new QLabel(edit_output_spin,tr("First Output: "),this);
+  label=new QLabel(tr("First Output: "),this);
   label->setGeometry(10,54,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -99,7 +99,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   edit_password_edit->setText("********");
   connect(edit_password_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(passwordChangedData(const QString &)));
-  label=new QLabel(edit_password_edit,tr("Password: "),this);
+  label=new QLabel(tr("Password: "),this);
   label->setGeometry(170,54,80,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

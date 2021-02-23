@@ -142,7 +142,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Create And Set Icon
   //
-  setIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdAirPlay,22));
+  setWindowIcon(rda->iconEngine()->applicationIcon(RDIconEngine::RdAirPlay,22));
 
   air_start_next=false;
   air_next_button=0;
@@ -199,7 +199,9 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 	AudioChannel(rda->airplayConf()->card(chan),rda->airplayConf()->port(chan));
       if(air_channel_timers[0][achan]==NULL) {
 	air_channel_timers[0][achan]=new QTimer(this);
+	air_channel_timers[0][achan]->setSingleShot(true);
 	air_channel_timers[1][achan]=new QTimer(this);
+	air_channel_timers[1][achan]->setSingleShot(true);
       }
     }
   }
@@ -407,22 +409,22 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Create Palettes
   //
   auto_color=
-    QPalette(QColor(BUTTON_MODE_AUTO_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_MODE_AUTO_COLOR),palette().color(QPalette::Background));
   manual_color=
-    QPalette(QColor(BUTTON_MODE_MANUAL_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_MODE_MANUAL_COLOR),palette().color(QPalette::Background));
   active_color=palette();
-  active_color.setColor(QPalette::Active,QColorGroup::ButtonText,
+  active_color.setColor(QPalette::Active,QPalette::ButtonText,
 			BUTTON_LOG_ACTIVE_TEXT_COLOR);
-  active_color.setColor(QPalette::Active,QColorGroup::Button,
+  active_color.setColor(QPalette::Active,QPalette::Button,
 			BUTTON_LOG_ACTIVE_BACKGROUND_COLOR);
-  active_color.setColor(QPalette::Active,QColorGroup::Background,
-			backgroundColor());
-  active_color.setColor(QPalette::Inactive,QColorGroup::ButtonText,
+  active_color.setColor(QPalette::Active,QPalette::Background,
+			palette().color(QPalette::Background));
+  active_color.setColor(QPalette::Inactive,QPalette::ButtonText,
 			BUTTON_LOG_ACTIVE_TEXT_COLOR);
-  active_color.setColor(QPalette::Inactive,QColorGroup::Button,
+  active_color.setColor(QPalette::Inactive,QPalette::Button,
 			BUTTON_LOG_ACTIVE_BACKGROUND_COLOR);
-  active_color.setColor(QPalette::Inactive,QColorGroup::Background,
-			backgroundColor());
+  active_color.setColor(QPalette::Inactive,QPalette::Background,
+			palette().color(QPalette::Background));
 
   //
   // Add Button
@@ -849,7 +851,7 @@ void MainWidget::ripcConnectedData(bool state)
       }
       else {
 	fprintf(stderr,"rdairplay: log \"%s\" doesn't exist\n",
-		(const char *)air_start_logname[i]);
+		air_start_logname[i].toUtf8().constData());
       }
       delete q;
     }
@@ -897,7 +899,7 @@ void MainWidget::gpiStateChangedData(int matrix,int line,bool state)
 	}
 	else {
 	  air_channel_timers[1][air_audio_channels[i]]->
-	    start(AIR_CHANNEL_LOCKOUT_INTERVAL,true);
+	    start(AIR_CHANNEL_LOCKOUT_INTERVAL);
 	  air_log[i-3]->channelPlay(0);
 	}
       }
@@ -1259,7 +1261,7 @@ void MainWidget::logReloadedData(int log)
   }
   else {
     fprintf(stderr,"rdairplay: line %d doesn't exist in log \"%s\"\n",
-	    air_start_line[log],(const char *)air_start_logname[log]);
+	    air_start_line[log],air_start_logname[log].toUtf8().constData());
   }
   air_start_logname[log]="";
 }
@@ -1776,8 +1778,9 @@ void MainWidget::keyPressEvent(QKeyEvent *e)
    break;
 
  case Qt::Key_X:
-   if(((e->state()&Qt::AltModifier)!=0)&&
-      ((e->state()&Qt::ShiftModifier)==0)&&((e->state()&Qt::ControlModifier)==0)) {
+   if(((e->modifiers()&Qt::AltModifier)!=0)&&
+      ((e->modifiers()&Qt::ShiftModifier)==0)&&
+      ((e->modifiers()&Qt::ControlModifier)==0)) {
      QCloseEvent *ce=new QCloseEvent();
      closeEvent(ce);
      delete ce;
@@ -1876,56 +1879,56 @@ void MainWidget::keyReleaseEvent(QKeyEvent *e)
   if (hotkeystrokes.length() > 0)  {
 
     hot_label=(*air_hotkeys).GetRowLabel(RDEscapeString(rda->config()->stationName()),
-                        (const char *)"airplay",(const char *)hotkeystrokes);
+					 "airplay",hotkeystrokes.toUtf8().constData());
 
     if (hot_label.length()>0) {
 
         // "we found a keystroke label
  
-        if (strcmp(hot_label,"Add") == 0)
+        if (hot_label=="Add")
         {
             addButtonData();
             return;
         }
 
-        if (strcmp(hot_label,"Delete") == 0)
+        if (hot_label=="Delete")
         {
             deleteButtonData();
             return;
         }
 
-        if (strcmp(hot_label,"Copy") == 0)
+        if (hot_label=="Copy")
         {
             copyButtonData();
             return;
         }
 
-        if (strcmp(hot_label,"Move") == 0)
+        if (hot_label=="Move")
         {
             moveButtonData();
             return;
         }
     
-        if (strcmp(hot_label,"Sound Panel") == 0)
+        if (hot_label=="Sound Panel")
         {
             panelButtonData();
             return;
         }
     
-        if (strcmp(hot_label,"Main Log") == 0)
+        if (hot_label=="Main Log")
         {
             fullLogButtonData(0);
             return;
         }
     
-        if ((strcmp(hot_label,"Aux Log 1") == 0) &&
+        if ((hot_label=="Aux Log 1") &&
              (rda->airplayConf()->showAuxButton(0) ) )
         {
             fullLogButtonData(1);
             return;
         }
     
-        if ( (strcmp(hot_label,"Aux Log 2") == 0) &&
+        if ((hot_label=="Aux Log 2") &&
              (rda->airplayConf()->showAuxButton(1) ) )
         {
             fullLogButtonData(2);
@@ -1935,15 +1938,15 @@ void MainWidget::keyReleaseEvent(QKeyEvent *e)
         for (int i = 1; i < 8 ; i++)
         {
             temp_string = QString().sprintf("Start Line %d",i);
-            if (strcmp(hot_label,temp_string) == 0)
+            if (hot_label==temp_string)
                 air_button_list->startButton(i-1);
     
             temp_string = QString().sprintf("Stop Line %d",i);
-            if (strcmp(hot_label,temp_string) == 0)
+            if (hot_label==temp_string)
                 air_button_list->stopButtonHotkey(i-1);
     
             temp_string = QString().sprintf("Pause Line %d",i);
-            if (strcmp(hot_label,temp_string) == 0)
+            if (hot_label==temp_string)
                 air_button_list->pauseButtonHotkey(i-1);
         }
       }
@@ -2315,25 +2318,24 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
-  QTranslator qt(0);
-  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),
-	  ".");
-  a.installTranslator(&qt);
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    QTranslator qt(0);
+    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,".");
+    a.installTranslator(&qt);
 
-  QTranslator rd(0);
-  rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+    QTranslator rd(0);
+    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(QString(PREFIX)+QString("/share/rivendell/rdairplay_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(QString(PREFIX)+QString("/share/rivendell/rdairplay_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   //
   // Start Event Loop
@@ -2341,7 +2343,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();
@@ -2377,7 +2378,7 @@ bool MainWidget::AssertChannelLock(int dir,int achan)
       air_channel_timers[odir][achan]->stop();
       return false;
     }
-    air_channel_timers[dir][achan]->start(AIR_CHANNEL_LOCKOUT_INTERVAL,true);
+    air_channel_timers[dir][achan]->start(AIR_CHANNEL_LOCKOUT_INTERVAL);
     return true;
   }
   return false;

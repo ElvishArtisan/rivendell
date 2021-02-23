@@ -58,7 +58,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_group_name_box=new QComboBox(this);
   box_group_name_box->setGeometry(140,10,100,20);
-  QLabel *label=new QLabel(box_group_name_box,tr("Default Group:"),this);
+  QLabel *label=new QLabel(tr("Default Group:"),this);
   label->setGeometry(10,10,125,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -69,7 +69,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_path_edit=new QLineEdit(this);
   box_path_edit->setGeometry(140,32,sizeHint().width()-210,19);
   box_path_edit->setMaxLength(255);
-  label=new QLabel(box_path_edit,tr("&Path Spec:"),this);
+  label=new QLabel(tr("&Path Spec:"),this);
   label->setGeometry(10,32,125,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -86,7 +86,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_to_cart_edit->setGeometry(140,54,60,19);
   box_to_cart_edit->setValidator(new QIntValidator(1,999999,this));
   box_to_cart_edit->setMaxLength(6);
-  label=new QLabel(box_to_cart_edit,tr("To &Cart:"),this);
+  label=new QLabel(tr("To &Cart:"),this);
   label->setGeometry(10,54,125,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -102,8 +102,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_delete_cuts_box=new QCheckBox(this);
   box_delete_cuts_box->setGeometry(280,56,15,15);
-  box_delete_cuts_label=
-    new QLabel(box_delete_cuts_box,tr("Delete cuts before importing"),this);
+  box_delete_cuts_label=new QLabel(tr("Delete cuts before importing"),this);
   box_delete_cuts_label->setGeometry(300,54,sizeHint().width()-150,20);
   box_delete_cuts_label->setFont(labelFont());
   box_delete_cuts_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -114,7 +113,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_metadata_pattern_edit=new QLineEdit(this);
   box_metadata_pattern_edit->setGeometry(140,76,sizeHint().width()-170,19);
   box_metadata_pattern_edit->setMaxLength(64);
-  label=new QLabel(box_metadata_pattern_edit,tr("&Metadata Pattern:"),this);
+  label=new QLabel(tr("&Metadata Pattern:"),this);
   label->setGeometry(10,76,125,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -125,7 +124,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_user_defined_edit=new QLineEdit(this);
   box_user_defined_edit->setGeometry(140,98,sizeHint().width()-170,19);
   box_user_defined_edit->setMaxLength(255);
-  label=new QLabel(box_user_defined_edit,tr("&User Defined:"),this);
+  label=new QLabel(tr("&User Defined:"),this);
   label->setGeometry(10,98,125,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -135,7 +134,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_log_to_syslog_check=new QCheckBox(this);
   box_log_to_syslog_check->setGeometry(50,124,15,15);
-  label=new QLabel(box_log_to_syslog_check,tr("Log events in Syslog"),this);
+  label=new QLabel(tr("Log events in Syslog"),this);
   label->setGeometry(70,122,250,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -145,8 +144,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_log_path_edit->setMaxLength(255);
   connect(box_log_to_syslog_check,SIGNAL(toggled(bool)),
 	  box_log_path_edit,SLOT(setDisabled(bool)));
-  box_log_path_label=
-    new QLabel(box_log_path_edit,tr("&Log File:"),this);
+  box_log_path_label=new QLabel(tr("&Log File:"),this);
   box_log_path_label->setGeometry(10,141,125,19);
   box_log_path_label->setFont(labelFont());
   box_log_path_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -173,8 +171,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_delete_source_box=new QCheckBox(this);
   box_delete_source_box->setGeometry(90,199,15,15);
-  label=new QLabel(box_delete_source_box,tr("Delete source files after import"),
-		   this);
+  label=new QLabel(tr("Delete source files after import"),this);
   label->setGeometry(110,197,sizeHint().width()-120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -184,7 +181,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_send_email_box=new QCheckBox(this);
   box_send_email_box->setGeometry(90,221,15,15);
-  label=new QLabel(box_send_email_box,tr("Send e-mail reports"),this);
+  label=new QLabel(tr("Send e-mail reports"),this);
   label->setGeometry(110,219,sizeHint().width()-120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -194,7 +191,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_force_to_mono_box=new QCheckBox(this);
   box_force_to_mono_box->setGeometry(90,243,15,15);
-  label=new QLabel(box_force_to_mono_box,tr("Force to Monaural"),this);
+  label=new QLabel(tr("Force to Monaural"),this);
   label->setGeometry(110,241,sizeHint().width()-120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -204,7 +201,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_normalization_box=new QCheckBox(this);
   box_normalization_box->setGeometry(90,264,15,15);
-  label=new QLabel(box_normalization_box,tr("Normalize Levels"),this);
+  label=new QLabel(tr("Normalize Levels"),this);
   label->setGeometry(110,262,100,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -227,7 +224,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_autotrim_box=new QCheckBox(this);
   box_autotrim_box->setGeometry(90,289,15,15);
-  label=new QLabel(box_autotrim_box,tr("Autotrim Cuts"),this);
+  label=new QLabel(tr("Autotrim Cuts"),this);
   label->setGeometry(110,287,100,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -250,19 +247,18 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_segue_box=new QCheckBox(this);
   box_segue_box->setGeometry(90,315,15,15);
-  label=new QLabel(box_segue_box,tr("Insert Segue Markers"),this);
+  label=new QLabel(tr("Insert Segue Markers"),this);
   label->setGeometry(110,313,sizeHint().width()-40,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   box_segue_level_spin=new QSpinBox(this);
   box_segue_level_spin->setGeometry(285,339,50,20);
   box_segue_level_spin->setRange(-100,0);
-  box_segue_level_label=
-    new QLabel(box_segue_level_spin,tr("Segue Level:"),this);
+  box_segue_level_label=new QLabel(tr("Segue Level:"),this);
   box_segue_level_label->setGeometry(120,339,160,20);
   box_segue_level_label->setFont(labelFont());
   box_segue_level_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  box_segue_level_unit=new QLabel(box_segue_level_spin,("dBFS"),this);
+  box_segue_level_unit=new QLabel("dBFS",this);
   box_segue_level_unit->setFont(labelFont());
   box_segue_level_unit->setGeometry(360,340,60,20);
   box_segue_level_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -270,12 +266,11 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_segue_length_spin=new QSpinBox(this);
   box_segue_length_spin->setGeometry(285,364,70,20);
   box_segue_length_spin->setRange(0,180000);
-  box_segue_length_label=
-    new QLabel(box_segue_length_spin,tr("Segue Length:"),this);
+  box_segue_length_label=new QLabel(tr("Segue Length:"),this);
   box_segue_length_label->setGeometry(120,364,160,20);
   box_segue_length_label->setFont(labelFont());
   box_segue_length_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  box_segue_length_unit=new QLabel(box_segue_length_spin,("msec"),this);
+  box_segue_length_unit=new QLabel("msec",this);
   box_segue_length_unit->setFont(labelFont());
   box_segue_length_unit->setGeometry(375,365,60,20);
   box_segue_length_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -287,8 +282,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_use_cartchunk_id_box=new QCheckBox(this);
   box_use_cartchunk_id_box->setGeometry(90,394,15,15);
-  label=new QLabel(box_use_cartchunk_id_box,
-		   tr("Get cart number from CartChunk CutID"),this);
+  label=new QLabel(tr("Get cart number from CartChunk CutID"),this);
   label->setGeometry(110,392,sizeHint().width()-40,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -298,8 +292,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_title_from_cartchunk_id_box=new QCheckBox(this);
   box_title_from_cartchunk_id_box->setGeometry(90,418,15,15);
-  label=new QLabel(box_title_from_cartchunk_id_box,
-		   tr("Get cart title from CartChunk CutID"),this);
+  label=new QLabel(tr("Get cart title from CartChunk CutID"),this);
   label->setGeometry(110,416,sizeHint().width()-40,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -309,8 +302,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_fix_broken_formats_box=new QCheckBox(this);
   box_fix_broken_formats_box->setGeometry(90,442,15,15);
-  label=new QLabel(box_fix_broken_formats_box,
-		   tr("Attempt to work around malformatted input files"),this);
+  label=new QLabel(tr("Attempt to work around malformatted input files"),this);
   label->setGeometry(110,440,sizeHint().width()-40,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -321,11 +313,11 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_startoffset_spin=new QSpinBox(this);
   box_startoffset_spin->setGeometry(215,466,50,20);
   box_startoffset_spin->setRange(-7,7);
-  label=new QLabel(box_startoffset_spin,tr("Offset start date by"),this);
+  label=new QLabel(tr("Offset start date by"),this);
   label->setGeometry(90,466,120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  label=new QLabel(box_startoffset_spin,tr("days"),this);
+  label=new QLabel(tr("days"),this);
   label->setGeometry(275,468,100,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -336,11 +328,11 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_endoffset_spin=new QSpinBox(this);
   box_endoffset_spin->setGeometry(215,490,50,20);
   box_endoffset_spin->setRange(-7,7);
-  label=new QLabel(box_endoffset_spin,tr("Offset end date by"),this);
+  label=new QLabel(tr("Offset end date by"),this);
   label->setGeometry(90,490,120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  label=new QLabel(box_endoffset_spin,tr("days"),this);
+  label=new QLabel(tr("days"),this);
   label->setGeometry(275,490,100,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -350,8 +342,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_create_dates_box=new QCheckBox(this);
   box_create_dates_box->setGeometry(90,514,15,15);
-  label=new QLabel(box_create_dates_box,tr("Create Dates when no Dates Exist"),
-		   this);
+  label=new QLabel(tr("Create Dates when no Dates Exist"),this);
   label->setGeometry(110,512,sizeHint().width()-40,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -359,13 +350,11 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_create_startdate_offset_spin->setGeometry(285,538,50,20);
   box_create_startdate_offset_spin->setRange(-180,180);
   box_create_startdate_label= 
-    new QLabel(box_create_startdate_offset_spin,tr("Create start date offset:"),
-	       this);
+    new QLabel(tr("Create start date offset:"),this);
   box_create_startdate_label->setGeometry(120,538,160,20);
   box_create_startdate_label->setFont(labelFont());
   box_create_startdate_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  box_create_startdate_unit=
-    new QLabel(box_create_startdate_offset_spin,("days"),this);
+  box_create_startdate_unit=new QLabel(tr("days"),this);
   box_create_startdate_unit->setFont(labelFont());
   box_create_startdate_unit->setGeometry(345,539,60,20);
   box_create_startdate_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -373,14 +362,12 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_create_enddate_offset_spin=new QSpinBox(this);
   box_create_enddate_offset_spin->setGeometry(285,560,50,20);
   box_create_enddate_offset_spin->setRange(-180,180);
-  box_create_enddate_label= 
-     new QLabel(box_create_enddate_offset_spin,tr("Create end date offset:"),
-		this);
+  box_create_enddate_label=new QLabel(tr("Create end date offset:"),this);
   box_create_enddate_label->setGeometry(120,558,160,20);
   box_create_enddate_label->setFont(labelFont());
   box_create_enddate_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   box_create_enddate_unit=
-    new QLabel(box_create_enddate_offset_spin,("days"),this);
+    new QLabel(("days"),this);
   box_create_enddate_unit->setFont(labelFont());
   box_create_enddate_unit->setGeometry(345,558,60,20);
   box_create_enddate_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -425,9 +412,10 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   q=new RDSqlQuery(sql);
   QString groupname=box_dropbox->groupName();
   while(q->next()) {
-    box_group_name_box->insertItem(q->value(0).toString());
+    box_group_name_box->
+      insertItem(box_group_name_box->count(),q->value(0).toString());
     if(q->value(0).toString()==groupname) {
-      box_group_name_box->setCurrentItem(box_group_name_box->count()-1);
+      box_group_name_box->setCurrentIndex(box_group_name_box->count()-1);
     }
   }
   delete q;

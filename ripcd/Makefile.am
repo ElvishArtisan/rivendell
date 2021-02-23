@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -I/usr/include/Qt3Support
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 
@@ -134,8 +134,7 @@ ripcd_LDADD = @LIB_RDLIBS@\
               @QT4_LIBS@\
               @LIBHPI@\
               @LIBJACK@\
-              @MUSICBRAINZ_LIBS@\
-              -lQt3Support
+              @MUSICBRAINZ_LIBS@
 
 CLEANFILES = *~\
              *.idb\

@@ -2,7 +2,7 @@
 //
 // The JACK Driver for the Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,7 @@
 
 #include <samplerate.h>
 
-#include <qsignalmapper.h>
+#include <QSignalMapper>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -517,11 +517,12 @@ void MainObject::jackInit(RDStation *station)
   //
   jackopts=JackNoStartServer;
   if(station->jackServerName().isEmpty()) {
-    jack_client=jack_client_open(name,jackopts,&jackstat);
+    jack_client=jack_client_open(name.toUtf8(),jackopts,&jackstat);
   }
   else {
-    jack_client=jack_client_open(name,jackopts,&jackstat,
-				 (const char *)station->jackServerName());
+    jack_client=
+      jack_client_open(name.toUtf8(),jackopts,&jackstat,
+		       station->jackServerName().toUtf8().constData());
   }
   if(jack_client==NULL) {
     if((jackstat&JackInvalidOption)!=0) {
@@ -607,9 +608,10 @@ void MainObject::jackInit(RDStation *station)
   // Start JACK Clients
   //
   jack_client_start_timer=new QTimer(this);
+  jack_client_start_timer->setSingleShot(true);
   connect(jack_client_start_timer,SIGNAL(timeout()),
 	  this,SLOT(jackClientStartData()));
-  jack_client_start_timer->start(6000,true);
+  jack_client_start_timer->start(6000);
 
   //
   // Tell the database about us
@@ -656,6 +658,7 @@ void MainObject::jackInit(RDStation *station)
 	  this,SLOT(jackRecordTimerData(int)));
   for(int i=0;i<RD_MAX_STREAMS;i++) {
     jack_stop_timer[i]=new QTimer(this);
+    jack_stop_timer[i]->setSingleShot(true);
     stop_mapper->setMapping(jack_stop_timer[i],i);
     connect(jack_stop_timer[i],SIGNAL(timeout()),stop_mapper,SLOT(map()));
     jack_fade_timer[i]=new QTimer(this);
@@ -680,22 +683,22 @@ void MainObject::jackInit(RDStation *station)
   for(int i=0;i<station->jackPorts();i++) {
     name=QString().sprintf("playout_%dL",i);
     jack_output_port[i][0]=
-      jack_port_register(jack_client,(const char *)name,
+      jack_port_register(jack_client,name.toUtf8(),
 			 JACK_DEFAULT_AUDIO_TYPE,
 			 JackPortIsOutput|JackPortIsTerminal,0);
     name=QString().sprintf("playout_%dR",i);
     jack_output_port[i][1]=
-      jack_port_register(jack_client,(const char *)name,
+      jack_port_register(jack_client,name.toUtf8(),
 			 JACK_DEFAULT_AUDIO_TYPE,
 			 JackPortIsOutput|JackPortIsTerminal,0);
     name=QString().sprintf("record_%dL",i);
     jack_input_port[i][0]=
-      jack_port_register(jack_client,(const char *)name,
+      jack_port_register(jack_client,name.toUtf8(),
 			 JACK_DEFAULT_AUDIO_TYPE,
 			 JackPortIsInput|JackPortIsTerminal,0);
     name=QString().sprintf("record_%dR",i);
     jack_input_port[i][1]=
-      jack_port_register(jack_client,(const char *)name,
+      jack_port_register(jack_client,name.toUtf8(),
 			 JACK_DEFAULT_AUDIO_TYPE,
 			 JackPortIsInput|JackPortIsTerminal,0);
   }
@@ -865,7 +868,7 @@ bool MainObject::jackPlaybackPosition(int card,int stream,unsigned pos)
   if(jack_playing[stream]) {
     jack_stop_timer[stream]->stop();
     jack_stop_timer[stream]->
-      start(jack_play_wave[stream]->getExtTimeLength()-pos,true);
+      start(jack_play_wave[stream]->getExtTimeLength()-pos);
   }
   return true;
 #else
@@ -890,7 +893,7 @@ bool MainObject::jackPlay(int card,int stream,int length,int speed,bool pitch,
   }
   jack_playing[stream]=true;
   if(length>0) {
-    jack_stop_timer[stream]->start(length,true);
+    jack_stop_timer[stream]->start(length);
   }
   statePlayUpdate(card,stream,1);
   return true;
@@ -1010,7 +1013,7 @@ bool MainObject::jackLoadRecord(int card,int stream,int coding,int chans,
     jack_record_wave[stream]=NULL;
     return false;
   }
-  chown((const char *)wavename,rd_config->uid(),rd_config->gid());
+  chown(wavename.toUtf8(),rd_config->uid(),rd_config->gid());
   jack_input_channels[stream]=chans;
   jack_record_ring[stream]=new RDRingBuffer(RINGBUFFER_SIZE);
   jack_record_ring[stream]->reset();
@@ -1082,7 +1085,7 @@ bool MainObject::jackRecord(int card,int stream,int length,int thres)
   jack_recording[stream]=true;
   if(jack_input_vox[stream]==0.0) {
     if(length>0) {
-      jack_record_timer[stream]->start(length,true);
+      jack_record_timer[stream]->start(length);
     }
     stateRecordUpdate(card,stream,4);
   }
@@ -1675,7 +1678,7 @@ void MainObject::JackSessionSetup()
   QString src=profile->stringValue("JackSession",src_tag,"",&src_ok);
   QString dest=profile->stringValue("JackSession",dest_tag,"",&dest_ok);
   while(src_ok&&dest_ok) {
-    if(jack_connect(jack_client,(const char *)src,(const char *)dest)!=0) {
+    if(jack_connect(jack_client,src.toUtf8(),dest.toUtf8())!=0) {
       RDApplication::syslog(rd_config,LOG_WARNING,"unable to connect %s to %s",
 	     (const char *)src.toUtf8(),(const char *)dest.toUtf8());
     }

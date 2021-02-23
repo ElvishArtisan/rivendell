@@ -2,7 +2,7 @@
 //
 // Test SHA1 hash generation
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
+#include <QApplication>
 
 #include <rdcmd_switch.h>
 #include <rdconfig.h>
@@ -52,10 +52,10 @@ MainObject::MainObject(QObject *parent)
   QString hash=RDSha1Hash(filename);
   if(hash.isEmpty()) {
     fprintf(stderr,"test_hash: unable to open \"%s\"\n",
-	    (const char *)filename);
+	    filename.toUtf8().constData());
     exit(256);
   }
-  printf("%s\n",(const char *)hash);
+  printf("%s\n",hash.toUtf8().constData());
 
   exit(0);
 }

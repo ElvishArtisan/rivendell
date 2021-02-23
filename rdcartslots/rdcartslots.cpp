@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Slot Utility for Rivendell.
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QMessageBox>
+#include <QTranslator>
 
 #include <rdescape_string.h>
 
@@ -214,28 +214,27 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
-  QTranslator qt(0);
-  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),".");
-  a.installTranslator(&qt);
-  QTranslator rd(0);
-  rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    QTranslator qt(0);
+    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,".");
+    a.installTranslator(&qt);
+    QTranslator rd(0);
+    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(QString(PREFIX)+QString("/share/rivendell/rdcartslots_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(QString(PREFIX)+QString("/share/rivendell/rdcartslots_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();

@@ -808,7 +808,8 @@ bool RDFeed::postPodcast(unsigned cast_id) const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_POST_PODCAST),
+	       QString().sprintf("%u",RDXPORT_COMMAND_POST_PODCAST).toUtf8().
+	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
@@ -818,7 +819,7 @@ bool RDFeed::postPodcast(unsigned cast_id) const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",cast_id),
+	       QString().sprintf("%u",cast_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -831,7 +832,7 @@ bool RDFeed::postPodcast(unsigned cast_id) const
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
+		   rda->config()->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
@@ -912,7 +913,8 @@ bool RDFeed::postXml()
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_POST_RSS),
+	       QString().sprintf("%u",RDXPORT_COMMAND_POST_RSS).toUtf8().
+	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
@@ -922,7 +924,7 @@ bool RDFeed::postXml()
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",feed_id),
+	       QString().sprintf("%u",feed_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -935,7 +937,7 @@ bool RDFeed::postXml()
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
+		   rda->config()->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
@@ -994,7 +996,8 @@ bool RDFeed::removeRss()
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_RSS),
+	       QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_RSS).toUtf8().
+	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
@@ -1004,7 +1007,7 @@ bool RDFeed::removeRss()
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",feed_id),
+	       QString().sprintf("%u",feed_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -1017,7 +1020,7 @@ bool RDFeed::removeRss()
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
+		   rda->config()->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
@@ -1065,7 +1068,8 @@ bool RDFeed::postImage(int img_id) const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_POST_IMAGE),
+	       QString().sprintf("%u",RDXPORT_COMMAND_POST_IMAGE).toUtf8().
+	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
@@ -1075,7 +1079,7 @@ bool RDFeed::postImage(int img_id) const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",img_id),
+	       QString().sprintf("%u",img_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -1088,7 +1092,7 @@ bool RDFeed::postImage(int img_id) const
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
+		   rda->config()->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
@@ -1136,7 +1140,8 @@ bool RDFeed::removeImage(int img_id) const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_IMAGE),
+	       QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_IMAGE).toUtf8().
+	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
@@ -1146,7 +1151,7 @@ bool RDFeed::removeImage(int img_id) const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",img_id),
+	       QString().sprintf("%u",img_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -1159,7 +1164,7 @@ bool RDFeed::removeImage(int img_id) const
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
+		   rda->config()->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
@@ -1256,7 +1261,7 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
     delete settings;
     delete conv;
     *err=RDFeed::ErrorUnsupportedType;
-    unlink(tmpfile);
+    unlink(tmpfile.toUtf8());
     emit postProgressChanged(5);
     return 0;
 
@@ -1271,7 +1276,7 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
     delete settings;
     delete conv;
     *err=RDFeed::ErrorGeneral;
-    unlink(tmpfile);
+    unlink(tmpfile.toUtf8());
     emit postProgressChanged(5);
     return 0;
   }
@@ -1287,7 +1292,7 @@ unsigned RDFeed::postCut(const QString &cutname,Error *err)
   unsigned cast_id=CreateCast(&destfile,length,cut->length());
   cast=new RDPodcast(feed_config,cast_id);
   SavePodcast(cast_id,tmpfile);
-  unlink(tmpfile);
+  unlink(tmpfile.toUtf8());
 
   //
   // Upload to remote archive
@@ -1362,7 +1367,7 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
     delete settings;
     delete conv;
     *err=RDFeed::ErrorUnsupportedType;
-    unlink(tmpfile);
+    unlink(tmpfile.toUtf8());
     emit postProgressChanged(6);
     return 0;
 
@@ -1378,7 +1383,7 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
     delete settings;
     delete conv;
     *err=RDFeed::ErrorGeneral;
-    unlink(tmpfile);
+    unlink(tmpfile.toUtf8());
     emit postProgressChanged(6);
     return 0;
   }
@@ -1394,8 +1399,8 @@ unsigned RDFeed::postFile(const QString &srcfile,Error *err)
   unsigned cast_id=CreateCast(&destfile,length,time_length);
   RDPodcast *cast=new RDPodcast(feed_config,cast_id);
   SavePodcast(cast_id,tmpfile);
-  unlink(QString(tmpfile)+".wav");
-  unlink(tmpfile);
+  unlink((QString(tmpfile)+".wav").toUtf8());
+  unlink(tmpfile.toUtf8());
   emit postProgressChanged(3);
 
   //
@@ -1481,7 +1486,7 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
     delete renderer;
     delete settings;
     delete log_model;
-    unlink(tmpfile);
+    unlink(tmpfile.toUtf8());
     return 0;
   }
   delete renderer;
@@ -1495,7 +1500,7 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
     CreateCast(&destfile,f.size(),log_model->length(0,log_model->lineCount()));
   RDPodcast *cast=new RDPodcast(feed_config,cast_id);
   SavePodcast(cast_id,tmpfile);
-  unlink(tmpfile);
+  unlink(tmpfile.toUtf8());
   emit postProgressChanged(2+(end_line-start_line));
 
   //
@@ -1525,7 +1530,7 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   delete cast;
   delete settings;
   delete log_model;
-  unlink(tmpfile);
+  unlink(tmpfile.toUtf8());
 
   return cast_id;
 }
@@ -1841,7 +1846,8 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_SAVE_PODCAST),
+	       QString().sprintf("%u",RDXPORT_COMMAND_SAVE_PODCAST).toUtf8().
+	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
@@ -1851,7 +1857,7 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",cast_id),
+	       QString().sprintf("%u",cast_id).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"FILENAME",
 	       CURLFORM_FILE,src_filename.toUtf8().constData(),
@@ -1867,7 +1873,7 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
+		   rda->config()->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
@@ -2090,7 +2096,8 @@ QString RDFeed::GetTempFilename() const
 {
   char tempname[PATH_MAX];
 
-  sprintf(tempname,"%s/podcastXXXXXX",(const char *)RDTempDirectory::basePath());
+  sprintf(tempname,"%s/podcastXXXXXX",
+	  RDTempDirectory::basePath().toUtf8().constData());
   if(mkstemp(tempname)<0) {
     return QString();
   }

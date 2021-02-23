@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qobject.h>
-#include <q3textstream.h>
+#include <QObject>
 
 #include "rdconf.h"
 #include "rdcart.h"
@@ -323,7 +322,7 @@ bool RDEventLine::load()
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     fprintf(stderr,"RDEventLine::load() EVENT NOT FOUND: %s\n",
-	    (const char *)event_name);
+	    event_name.toUtf8().constData());
     delete q;
     return false;
   }

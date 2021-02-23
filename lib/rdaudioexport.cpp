@@ -133,7 +133,6 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   long response_code;
   CURL *curl=NULL;
   FILE *f=NULL;
-  char url[1024];
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
   RDAudioExport::ErrorCode ret;
@@ -144,57 +143,58 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",RDXPORT_COMMAND_EXPORT),
-	       CURLFORM_END);
+	       QString().sprintf("%u",RDXPORT_COMMAND_EXPORT).toUtf8().
+	       constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
-	       CURLFORM_COPYCONTENTS,(const char *)username.utf8(),CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,username.toUtf8().constData(),
+	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
-	       CURLFORM_COPYCONTENTS,(const char *)password.utf8(),CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,password.toUtf8().constData(),
+	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_cart_number),
+	       QString().sprintf("%u",conv_cart_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_cut_number),
+	       QString().sprintf("%u",conv_cut_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"FORMAT",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_settings->format()),
-	       CURLFORM_END);
+	       QString().sprintf("%u",conv_settings->format()).
+	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CHANNELS",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_settings->channels()),
-	       CURLFORM_END);
+	       QString().sprintf("%u",conv_settings->channels()).
+	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"SAMPLE_RATE",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_settings->sampleRate()),
-	       CURLFORM_END);
+	       QString().sprintf("%u",conv_settings->sampleRate()).
+	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"BIT_RATE",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_settings->bitRate()),
-	       CURLFORM_END);
+	       QString().sprintf("%u",conv_settings->bitRate()).
+	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"QUALITY",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_settings->quality()),
-	       CURLFORM_END);
+	       QString().sprintf("%u",conv_settings->quality()).
+	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"START_POINT",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%d",conv_start_point),
+	       QString().sprintf("%d",conv_start_point).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"END_POINT",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%d",conv_end_point),
+	       QString().sprintf("%d",conv_end_point).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"NORMALIZATION_LEVEL",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%d",conv_settings->
-					       normalizationLevel()),
-	       CURLFORM_END);
+	       QString().sprintf("%d",conv_settings->normalizationLevel()).
+	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ENABLE_METADATA",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_enable_metadata),
-	       CURLFORM_END);
+	       QString().sprintf("%u",conv_enable_metadata).
+	       toUtf8().constData(),CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     curl_formfree(first);
     return RDAudioExport::ErrorInternal;
@@ -209,12 +209,12 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
   // error.
   //
-  strncpy(url,rda->station()->webServiceUrl(rda->config()),1024);
-  curl_easy_setopt(curl,CURLOPT_URL,url);
+  //  strncpy(url,rda->station()->webServiceUrl(rda->config()),1024);
+  curl_easy_setopt(curl,CURLOPT_URL,rda->station()->webServiceUrl(rda->config()).toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,f);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
+		   rda->config()->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,ExportProgressCallback);
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);

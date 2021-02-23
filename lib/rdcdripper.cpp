@@ -88,7 +88,7 @@ RDCdRipper::ErrorCode RDCdRipper::rip(int first_track,int last_track)
   //
   // Open the CD
   //
-  if((drive=cdda_identify(conv_device,1,&msg))==NULL) {
+  if((drive=cdda_identify(conv_device.toUtf8(),1,&msg))==NULL) {
     return RDCdRipper::ErrorNoDevice;
   }
   if((err=cdda_open(drive))!=0) {
@@ -111,7 +111,7 @@ RDCdRipper::ErrorCode RDCdRipper::rip(int first_track,int last_track)
   sf_dst_info.format=SF_FORMAT_WAV|SF_FORMAT_PCM_32;
   sf_dst_info.channels=cdda_track_channels(drive,first_track+1);
   sf_dst_info.samplerate=44100;
-  if((sf_dst=sf_open(conv_dst_filename,SFM_WRITE,&sf_dst_info))==NULL) {
+  if((sf_dst=sf_open(conv_dst_filename.toUtf8(),SFM_WRITE,&sf_dst_info))==NULL) {
     cdda_close(drive);
     return RDCdRipper::ErrorNoDestination;
   }
@@ -133,7 +133,7 @@ RDCdRipper::ErrorCode RDCdRipper::rip(int first_track,int last_track)
       qApp->processEvents();
       if(conv_aborting) {
 	sf_close(sf_dst);
-	unlink(conv_dst_filename);
+	unlink(conv_dst_filename.toUtf8());
 	cdda_close(drive);
 	return RDCdRipper::ErrorAborted;
       }
@@ -197,7 +197,7 @@ void RDCdRipper::Profile(const QString &msg)
 {
   if(conv_profile_msgs!=NULL) {
     fprintf(conv_profile_msgs,"%s | RDCdPlayer::%s\n",
-	    (const char *)QTime::currentTime().toString("hh:mm:ss.zzz"),
-	    (const char *)msg.toUtf8());
+	    QTime::currentTime().toString("hh:mm:ss.zzz").toUtf8().constData(),
+	    msg.toUtf8().constData());
   }
 }

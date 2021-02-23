@@ -2,7 +2,7 @@
 //
 // Monitor a Rivendell RDCatch Deck
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,12 +38,12 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   // Generate Palettes
   //
   mon_red_palette=palette();
-  mon_red_palette.setColor(QColorGroup::Background,Qt::darkRed);
-  mon_red_palette.setColor(QColorGroup::Foreground,Qt::white);
+  mon_red_palette.setColor(QPalette::Background,Qt::darkRed);
+  mon_red_palette.setColor(QPalette::Foreground,Qt::white);
   mon_dark_palette=palette();
   mon_dark_palette.
-    setColor(QColorGroup::Background,palette().color(QPalette::Active,QColorGroup::Mid));
-  mon_dark_palette.setColor(QColorGroup::Foreground,Qt::white);
+    setColor(QPalette::Background,palette().color(QPalette::Active,QPalette::Mid));
+  mon_dark_palette.setColor(QPalette::Foreground,Qt::white);
 
   //
   // Station/Channel
@@ -66,7 +66,7 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   mon_monitor_button->setFont(subButtonFont());
   mon_monitor_button->setText(tr("MON"));
   mon_monitor_palette=new QPalette(QColor(BUTTON_MONITOR_FLASHING_COLOR),
-				   backgroundColor());
+				   palette().color(QPalette::Background));
   if((mon_channel>128)&&(mon_channel<(MAX_DECKS+129))) {
     mon_monitor_button->hide();
   }
@@ -98,6 +98,7 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   mon_event_label->setPalette(mon_dark_palette);
   mon_event_label->setText("--");
   mon_event_timer=new QTimer(this);
+  mon_event_timer->setSingleShot(true);
   connect(mon_event_timer,SIGNAL(timeout()),this,SLOT(eventResetData()));
 
   //
@@ -220,7 +221,7 @@ void DeckMon::setEvent(int number)
 {
   mon_event_label->setText(QString().sprintf("%d",number));
   mon_event_label->setPalette(mon_red_palette);
-  mon_event_timer->start(1000,true);
+  mon_event_timer->start(1000);
 }
 
 

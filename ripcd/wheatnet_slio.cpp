@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for WheatNet SLIO
 //
-//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,6 +41,7 @@ WheatnetSlio::WheatnetSlio(RDMatrix *matrix,QObject *parent)
   slio_socket->connectToHost(slio_ip_address.toString(),slio_ip_port);
 
   slio_poll_timer=new QTimer(this);
+  slio_poll_timer->setSingleShot(true);
   connect(slio_poll_timer,SIGNAL(timeout()),this,SLOT(pollData()));
 
   slio_reset_mapper=new QSignalMapper(this);
@@ -48,12 +49,14 @@ WheatnetSlio::WheatnetSlio(RDMatrix *matrix,QObject *parent)
 	  this,SLOT(resetStateData(int)));
   for(int i=0;i<slio_gpios;i++) {
     slio_reset_timers.push_back(new QTimer(this));
+    slio_reset_timers.back()->setSingleShot(true);
     connect(slio_reset_timers.back(),SIGNAL(timeout()),
 	    slio_reset_mapper,SLOT(map()));
     slio_reset_mapper->setMapping(slio_reset_timers.back(),i);
     slio_reset_states.push_back(false);
   }
   slio_watchdog_timer=new QTimer(this);
+  slio_watchdog_timer->setSingleShot(true);
   connect(slio_watchdog_timer,SIGNAL(timeout()),this,SLOT(watchdogData()));
 }
 
@@ -105,14 +108,14 @@ void WheatnetSlio::processCommand(RDMacro *cmd)
   switch(cmd->command()) {
   case RDMacro::GO:
     if((cmd->argQuantity()!=5)||
-       ((cmd->arg(1).lower()!="i")&&
-	(cmd->arg(1).lower()!="o"))||
+       ((cmd->arg(1).toLower()!="i")&&
+	(cmd->arg(1).toLower()!="o"))||
        (cmd->arg(2).toInt()<1)||(cmd->arg(3).toInt()>slio_gpios)||
        (cmd->arg(2).toInt()>slio_gpios)||
        ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	(cmd->arg(1).lower()!="i"))||
+	(cmd->arg(1).toLower()!="i"))||
        ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	(cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).lower()=="i"))||
+	(cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).toLower()=="i"))||
        (cmd->arg(4).toInt()<0)) {
       cmd->acknowledge(false);
       emit rmlEcho(cmd);
@@ -120,7 +123,7 @@ void WheatnetSlio::processCommand(RDMacro *cmd)
     }
     if(cmd->arg(3).toInt()==0) {  // Turn OFF
       if(cmd->arg(4).toInt()==0) {
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  SendCommand(QString().sprintf("<SLIO:%d|LVL:0>",cmd->arg(2).toInt()));
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,false);
 	}
@@ -135,19 +138,19 @@ void WheatnetSlio::processCommand(RDMacro *cmd)
     }
     else {
       if(cmd->arg(4).toInt()==0) {  // Turn ON
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  SendCommand(QString().sprintf("<SLIO:%d|LVL:1>",cmd->arg(2).toInt()));
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,true);
 	}
       }
       else {  // Pulse
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  SendCommand(QString().sprintf("<SLIO:%d|LVL:%d>",
 					cmd->arg(2).toInt(),
 					cmd->arg(3).toInt()!=0));
 	  slio_reset_states[cmd->arg(2).toInt()-1]=cmd->arg(3).toInt()==0;
 	  slio_reset_timers[cmd->arg(2).toInt()-1]->
-	    start(cmd->arg(4).toInt(),true);
+	    start(cmd->arg(4).toInt());
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,
 			  cmd->arg(3).toInt()!=0);
 	}
@@ -170,7 +173,8 @@ void WheatnetSlio::connectedData()
 {
   rda->syslog(LOG_INFO,
 	      "connection to WheatNet SLIO device at %s:%u established",
-	      (const char *)slio_ip_address.toString(),0xffff&slio_ip_port);
+	      slio_ip_address.toString().toUtf8().constData(),
+	      0xffff&slio_ip_port);
   slio_watchdog_active=false;
   SendCommand("<SYS?SLIO>");
 }
@@ -181,7 +185,7 @@ void WheatnetSlio::readyReadData()
   char data[1501];
   int n=0;
 
-  while((n=slio_socket->readBlock(data,1500))>0) {
+  while((n=slio_socket->read(data,1500))>0) {
     data[n]=0;
     for(int i=0;i<n;i++) {
       switch(0xff&data[i]) {
@@ -227,7 +231,8 @@ void WheatnetSlio::watchdogData()
   if(!slio_watchdog_active) {
     rda->syslog(LOG_WARNING,
       "connection to Wheatnet SLIO device at %s:%u lost, attempting reconnect",
-		(const char *)slio_ip_address.toString(),0xffff&slio_ip_port);
+		slio_ip_address.toString().toUtf8().constData(),
+		0xffff&slio_ip_port);
     slio_watchdog_active=true;
   }
   slio_socket->close();
@@ -306,14 +311,14 @@ void WheatnetSlio::ProcessSys(const QString &cmd)
 	QString().sprintf("(MATRIX=%d)",matrixNumber());
       q=new RDSqlQuery(sql);
       delete q;
-      slio_watchdog_timer->start(WHEATNET_SLIO_WATCHDOG_INTERVAL,true);
-      slio_poll_timer->start(WHEATNET_SLIO_POLL_INTERVAL,true);
+      slio_watchdog_timer->start(WHEATNET_SLIO_WATCHDOG_INTERVAL);
+      slio_poll_timer->start(WHEATNET_SLIO_POLL_INTERVAL);
     }
   }
   if((f0[0]=="BLID")&&(f0.size()==2)) {
     slio_watchdog_timer->stop();
-    slio_watchdog_timer->start(WHEATNET_SLIO_WATCHDOG_INTERVAL,true);
-    slio_poll_timer->start(WHEATNET_SLIO_POLL_INTERVAL,true);
+    slio_watchdog_timer->start(WHEATNET_SLIO_WATCHDOG_INTERVAL);
+    slio_poll_timer->start(WHEATNET_SLIO_POLL_INTERVAL);
   }
 }
 
@@ -333,13 +338,13 @@ void WheatnetSlio::ProcessSlioevent(int chan,QString &cmd)
     else {
       rda->syslog(LOG_WARNING,
 	     "WheatNet device at %s:%d sent invalid SLIOEVENT LVL update [%s]",
-		  (const char *)slio_ip_address.toString(),
-		  slio_ip_port,(const char *)cmd);
+		  slio_ip_address.toString().toUtf8().constData(),
+		  slio_ip_port,cmd.toUtf8().constData());
     }
     if(chan==slio_gpios) {
-      slio_poll_timer->start(50,true);
+      slio_poll_timer->start(50);
       slio_watchdog_timer->stop();
-      slio_watchdog_timer->start(1000,true);
+      slio_watchdog_timer->start(1000);
     }
   }
 }
@@ -370,5 +375,5 @@ void WheatnetSlio::ProcessCommand(const QString &cmd)
 
 void WheatnetSlio::SendCommand(const QString &cmd)
 {
-  slio_socket->writeBlock(cmd+"\r\n",cmd.length()+2);
+  slio_socket->write((cmd+"\r\n").toUtf8());
 }

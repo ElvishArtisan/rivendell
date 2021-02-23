@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for local audio cards.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,9 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
-#include <syslog.h>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -102,14 +99,14 @@ void LocalAudio::processCommand(RDMacro *cmd)
   switch(cmd->command()) {
   case RDMacro::GO:
     if((cmd->argQuantity()!=5)||
-       ((cmd->arg(1).lower()!="i")&&
-	(cmd->arg(1).lower()!="o"))||
+       ((cmd->arg(1).toLower()!="i")&&
+	(cmd->arg(1).toLower()!="o"))||
        (cmd->arg(2).toInt()<1)||(cmd->arg(3).toInt()>bt_gpos)||
        (cmd->arg(2).toInt()>bt_gpos)||
        ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	(cmd->arg(1).lower()!="i"))||
+	(cmd->arg(1).toLower()!="i"))||
        ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	(cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).lower()=="i"))||
+	(cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).toLower()=="i"))||
        (cmd->arg(4).toInt()<0)) {
       cmd->acknowledge(false);
       emit rmlEcho(cmd);
@@ -117,7 +114,7 @@ void LocalAudio::processCommand(RDMacro *cmd)
     }
     if(cmd->arg(3).toInt()==0) {  // Turn OFF
       if(cmd->arg(4).toInt()==0) {
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  SetGpo(cmd->arg(2).toInt()-1,false);
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,false);
 	}
@@ -133,13 +130,13 @@ void LocalAudio::processCommand(RDMacro *cmd)
     else {
       if(cmd->arg(3).toInt()!=-1) {
 	if(cmd->arg(4).toInt()==0) {  // Turn ON
-	  if(cmd->arg(1).lower()=="o") {
+	  if(cmd->arg(1).toLower()=="o") {
 	    SetGpo(cmd->arg(2).toInt()-1,true);
 	    emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,true);
 	  }
 	}
 	else {  // Pulse
-	  if(cmd->arg(1).lower()=="o") {
+	  if(cmd->arg(1).toLower()=="o") {
 	    SetGpo(cmd->arg(2).toInt()-1,true);
 	    emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,true);
 	    bt_gpo_oneshot->

@@ -94,7 +94,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   dg_service_box=new QComboBox(this);
   connect(dg_service_box,SIGNAL(activated(int)),
 	  this,SLOT(serviceActivatedData(int)));
-  dg_service_label=new QLabel(dg_service_box,tr("Service:"),this);
+  dg_service_label=new QLabel(tr("Service:"),this);
   dg_service_label->setFont(labelFont());
   dg_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -104,7 +104,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   dg_filename_edit=new QLineEdit(this);
   connect(dg_filename_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filenameChangedData(const QString &)));
-  dg_filename_label=new QLabel(dg_filename_edit,tr("Filename:"),this);
+  dg_filename_label=new QLabel(tr("Filename:"),this);
   dg_filename_label->setFont(labelFont());
   dg_filename_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   dg_filename_button=new QPushButton(tr("Select"),this);
@@ -118,7 +118,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   dg_date_edit=new QDateEdit(this);
   dg_date_edit->setDisplayFormat("MM/dd/yyyy");
   dg_date_edit->setDate(QDate::currentDate());
-  dg_date_label=new QLabel(dg_date_edit,tr("Date:"),this);
+  dg_date_label=new QLabel(tr("Date:"),this);
   dg_date_label->setFont(labelFont());
   dg_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   dg_date_button=new QPushButton(tr("Select"),this);
@@ -137,7 +137,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   dg_messages_text=new QTextEdit(this);
   dg_messages_text->setReadOnly(true);
-  dg_messages_label=new QLabel(dg_service_box,tr("Messages"),this);
+  dg_messages_label=new QLabel(tr("Messages"),this);
   dg_messages_label->setFont(labelFont());
   dg_messages_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -163,7 +163,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(!q->value(1).toString().isEmpty()) {
-      dg_service_box->insertItem(q->value(0).toString());
+      dg_service_box->
+	insertItem(dg_service_box->count(),q->value(0).toString());
     }
   }
   delete q;
@@ -294,7 +295,7 @@ bool MainWidget::LoadEvents()
   QString isci;
 
   dg_events.clear();
-  if((f=fopen(dg_filename_edit->text(),"r"))==NULL) {
+  if((f=fopen(dg_filename_edit->text().toUtf8(),"r"))==NULL) {
     QMessageBox::warning(this,tr("RDDgImport"),
 			 tr("Unable to open source file")+"["+
 			 QString(strerror(errno))+"].");
@@ -366,7 +367,7 @@ bool MainWidget::WriteTrafficFile()
   outname=RDDateDecode(dg_svc->importPath(RDSvc::Traffic),
 		       dg_date_edit->date(),rda->station(),
 		       rda->config(),dg_svc->name());
-  if((f=fopen(outname,"w"))==NULL) {
+  if((f=fopen(outname.toUtf8(),"w"))==NULL) {
     LogMessage(tr("WARNING: Unable to open traffic output file")+" \""+
 	       outname+"\" ["+QString(strerror(errno))+"].");
     return false;
@@ -377,14 +378,15 @@ bool MainWidget::WriteTrafficFile()
   //
   for(unsigned i=0;i<dg_events.size();i++) {
     Event *evt=dg_events[i];
-    fprintf(f,"%s  ",(const char *)evt->time().toString("hh:mm:ss"));
+    fprintf(f,"%s  ",evt->time().toString("hh:mm:ss").toUtf8().constData());
     fprintf(f,"%06u         ",dg_carts[evt->isci()]);
-    fprintf(f,"%-34s ",(const char *)evt->title());
+    fprintf(f,"%-34s ",evt->title().toUtf8().constData());
     if(evt->length()<600000) {
       fprintf(f,"0");
     }
-    fprintf(f,"%s ",(const char *)RDGetTimeLength(evt->length(),true,false));
-    fprintf(f,"%-32s ",(const char *)evt->isci());
+    fprintf(f,"%s ",RDGetTimeLength(evt->length(),true,false).toUtf8().
+	    constData());
+    fprintf(f,"%-32s ",evt->isci().toUtf8().constData());
     fprintf(f,"%032u",i);
     fprintf(f,"\n");
   }
@@ -454,10 +456,11 @@ bool MainWidget::ImportSpot(Event *evt,QString *err_msg)
   //
   // Find File
   //
-  audiofile=dir+"/"+evt->isci()+"."+QString(RDDGIMPORT_FILE_EXTENSION).lower();
+  audiofile=dir+"/"+evt->isci()+"."+QString(RDDGIMPORT_FILE_EXTENSION).
+    toLower();
   if(!QFile::exists(audiofile)) {
     audiofile=dir+"/"+evt->isci()+"."+
-      QString(RDDGIMPORT_FILE_EXTENSION).upper();
+      QString(RDDGIMPORT_FILE_EXTENSION).toUpper();
     if(!QFile::exists(audiofile)) {
       LogMessage(tr("Missing audio for")+" "+evt->isci()+" ["+evt->title()+
 		 " / "+evt->client()+"].");
@@ -602,8 +605,8 @@ QString MainWidget::GetIsci(const QString &str) const
 {
   QString ret;
 
-  if(str.stripWhiteSpace().length()==15) {
-    ret=str.stripWhiteSpace();
+  if(str.trimmed().length()==15) {
+    ret=str.trimmed();
   }
   return ret;
 }
@@ -625,25 +628,25 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
-  QTranslator qt(0);
-  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),
-	  ".");
-  a.installTranslator(&qt);
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    QTranslator qt(0);
+    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,
+	    ".");
+    a.installTranslator(&qt);
 
-  QTranslator rd(0);
-  rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+    QTranslator rd(0);
+    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(QString(PREFIX)+QString("/share/rivendell/rdgpimon_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(QString(PREFIX)+QString("/share/rivendell/rdgpimon_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   //
   // Start Event Loop
@@ -651,7 +654,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();

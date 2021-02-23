@@ -25,7 +25,6 @@
 #include <qapplication.h>
 #include <qdatetime.h>
 #include <qmessagebox.h>
-#include <q3process.h>
 #include <qregexp.h>
 #include <qtimer.h>
 
@@ -191,8 +190,8 @@ void RDDiscLookup::profile(const QString &msg)
 {
   if(lookup_profile_msgs!=NULL) {
     printf("%s | RDDiscLookup::%s\n",
-	    (const char *)QTime::currentTime().toString("hh:mm:ss.zzz"),
-	   (const char *)msg.toUtf8());
+	   QTime::currentTime().toString("hh:mm:ss.zzz").toUtf8().constData(),
+	   msg.toUtf8().constData());
   }
 }
 

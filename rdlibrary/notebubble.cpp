@@ -24,9 +24,7 @@
 #include "notebubble.h"
 
 NoteBubble::NoteBubble(QWidget *parent)
-  : QLabel(parent,(Qt::WindowFlags)(Qt::WStyle_Customize|
-				    Qt::WStyle_NoBorder|
-				    Qt::WStyle_StaysOnTop))
+  : QLabel(parent)
 {
   note_cart_number=0;
 

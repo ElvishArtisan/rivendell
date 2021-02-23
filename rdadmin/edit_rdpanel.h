@@ -30,6 +30,7 @@
 #include <rd.h>
 #include <rdairplay_conf.h>
 #include <rdcardselector.h>
+#include <rdcombobox.h>
 #include <rddialog.h>
 #include <rdservicelistmodel.h>
 #include <rdstation.h>
@@ -67,7 +68,7 @@ class EditRDPanel : public RDDialog
   QCheckBox *air_flash_box;
   QCheckBox *air_panel_pause_box;
   QLineEdit *air_label_template_edit;
-  QComboBox *air_defaultsvc_box;
+  RDComboBox *air_defaultsvc_box;
   QLineEdit *air_skin_edit;
   RDServiceListModel *air_service_model;
 };

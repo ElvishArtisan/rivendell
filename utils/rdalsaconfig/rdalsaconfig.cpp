@@ -90,8 +90,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   alsa_system_list=new QListView(this);
   alsa_system_list->setSelectionMode(QAbstractItemView::MultiSelection);
-  alsa_system_label=
-    new QLabel(alsa_system_list,tr("ALSA Sound Devices"),this);
+  alsa_system_label=new QLabel(tr("ALSA Sound Devices"),this);
   alsa_system_label->setFont(labelFont());
   alsa_system_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   alsa_description_label=new QLabel(this);
@@ -432,7 +431,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();

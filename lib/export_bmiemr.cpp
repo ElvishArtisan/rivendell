@@ -48,7 +48,7 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
     return false;
   }
   QTextStream *strm=new QTextStream(file);
-  strm->setEncoding(QTextStream::UnicodeUTF8);
+  strm->setCodec("UTF-8");
 
   //
   // Station Type

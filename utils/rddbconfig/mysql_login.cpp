@@ -2,7 +2,7 @@
 //
 // mySQL Administrative Login widget for RDDbConfig
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 
 #include "mysql_login.h"
 
@@ -46,10 +45,10 @@ MySqlLogin::MySqlLogin(QString *username,QString *password, QWidget *parent)
   login_name_edit->setGeometry(sizeHint().width()/2-125+90,50,140,19);
   login_name_edit->setMaxLength(16);
   login_name_edit->setFocus();
-  QLabel *login_name_label=new QLabel(login_name_edit,tr("&Username:"),this);
+  QLabel *login_name_label=new QLabel(tr("Username:"),this);
   login_name_label->setFont(labelFont());
   login_name_label->setGeometry(sizeHint().width()/2-125,50,85,19);
-  login_name_label->setAlignment(Qt::AlignRight|Qt::ShowPrefix);
+  login_name_label->setAlignment(Qt::AlignRight);
 
   //
   // MySql Login Password
@@ -58,11 +57,10 @@ MySqlLogin::MySqlLogin(QString *username,QString *password, QWidget *parent)
   login_password_edit->setGeometry(sizeHint().width()/2-125+90,70,140,19);
   login_password_edit->setMaxLength(16);
   login_password_edit->setEchoMode(QLineEdit::Password);
-  QLabel *login_password_label=
-    new QLabel(login_password_edit,tr("&Password:"),this);
+  QLabel *login_password_label=new QLabel(tr("Password:"),this);
   login_password_label->setFont(labelFont());
   login_password_label->setGeometry(sizeHint().width()/2-125,70,85,19);
-  login_password_label->setAlignment(Qt::AlignRight|Qt::ShowPrefix);
+  login_password_label->setAlignment(Qt::AlignRight);
 
   //
   // OK Button

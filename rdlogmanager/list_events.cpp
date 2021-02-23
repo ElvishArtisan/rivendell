@@ -46,7 +46,7 @@ ListEvents::ListEvents(QString *eventname,QWidget *parent)
   // Event Filter
   //
   edit_filter_box=new QComboBox(this);
-  edit_filter_label=new QLabel(edit_filter_box,tr("Filter:"),this);
+  edit_filter_label=new QLabel(tr("Filter:"),this);
   edit_filter_label->setGeometry(10,10,50,20);
   edit_filter_label->setFont(labelFont());
   edit_filter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -140,8 +140,8 @@ ListEvents::ListEvents(QString *eventname,QWidget *parent)
   //
   // Populate Data
   //
-  edit_filter_box->insertItem(tr("ALL"));
-  edit_filter_box->insertItem(tr("NONE"));
+  edit_filter_box->insertItem(0,tr("ALL"));
+  edit_filter_box->insertItem(1,tr("NONE"));
 
   QString sql="select NAME from SERVICES";
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -153,9 +153,9 @@ ListEvents::ListEvents(QString *eventname,QWidget *parent)
   for ( QStringList::Iterator it = services_list.begin(); 
         it != services_list.end();
         ++it ) {
-    edit_filter_box->insertItem(*it);
+    edit_filter_box->insertItem(edit_filter_box->count(),*it);
     if(*event_filter==*it) {
-      edit_filter_box->setCurrentItem(edit_filter_box->count()-1);
+      edit_filter_box->setCurrentIndex(edit_filter_box->count()-1);
     }
   }
 }
@@ -187,8 +187,10 @@ void ListEvents::addData()
     return;
   }
   delete add_dialog;
-  QString sql=QString().sprintf("select NAME from EVENTS where NAME=\"%s\"",
-				(const char *)logname);
+  QString sql=QString("select ")+
+    "NAME "+
+    "from EVENTS where "+
+    "NAME=\""+RDEscapeString(logname)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::
@@ -202,14 +204,14 @@ void ListEvents::addData()
   delete event;
   EditEvent *event_dialog=new EditEvent(logname,true,&new_events,this);
   if(event_dialog->exec()<-1) {
-    sql=QString().sprintf("delete from EVENTS where NAME=\"%s\"",
-			  (const char *)logname);
+    sql=QString("delete from EVENTS where ")+
+      "NAME=\""+RDEscapeString(logname)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     return;
   }
   else {
-    if(edit_filter_box->currentItem()==0) {
+    if(edit_filter_box->currentIndex()==0) {
       sql=QString(" select ")+
 	"ID "+  // 00
 	"from EVENT_PERMS where "+
@@ -443,13 +445,16 @@ int ListEvents::ActiveEvents(QString event_name,QString *clock_list)
   sql="select NAME from CLOCKS";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString("select EVENT_NAME from CLOCK_LINES where ")+
+    sql=QString("select ")+
+      "EVENT_NAME "+
+      "from CLOCK_LINES where "+
       "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
       "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
     q1=new RDSqlQuery(sql);
     if(q1->first()) {
       *clock_list+=
-	QString().sprintf("    %s\n",(const char *)q->value(0).toString());
+	QString().sprintf("    %s\n",
+			  q->value(0).toString().toUtf8().constData());
       n++;
     }
     delete q1;
@@ -483,16 +488,16 @@ void ListEvents::DeleteEvent(QString event_name)
   //
   // Delete Service Associations
   //
-  sql=QString().sprintf("delete from EVENT_PERMS where EVENT_NAME=\"%s\"",
-			(const char *)event_name);
+  sql=QString("delete from EVENT_PERMS where ")+
+    "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Delete Event Definition
   //
-  sql=QString().sprintf("delete from EVENTS where NAME=\"%s\"",
-			(const char *)event_name);
+  sql=QString("delete from EVENTS where ")+
+    "NAME=\""+RDEscapeString(event_name)+"\"";
   RDSqlQuery::apply(sql);
   sql=QString("delete from EVENT_LINES where ")+
     "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
@@ -509,7 +514,7 @@ QString ListEvents::GetEventFilter(QString svc_name)
   if(q->size()>0) {
     while(q->next()) {
       filter+=QString().sprintf("(NAME=\"%s\")||",
-				(const char *)q->value(0).toString());
+				q->value(0).toString().toUtf8().constData());
     }
     filter=filter.left(filter.length()-2);
   }
@@ -535,7 +540,7 @@ QString ListEvents::GetNoneFilter()
   }
   while(q->next()) {
     filter+=QString().sprintf("(NAME!=\"%s\")&&",
-			      (const char *)q->value(0).toString());
+			      RDEscapeString(q->value(0).toString()).toUtf8().constData());
   }
   if(q->size()>0) {
     filter=filter.left(filter.length()-2);

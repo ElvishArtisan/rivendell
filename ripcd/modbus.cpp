@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for Modbus TCP
 //
-//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -49,6 +49,7 @@ Modbus::Modbus(RDMatrix *matrix,QObject *parent)
   modbus_socket->connectToHost(modbus_ip_address.toString(),modbus_ip_port);
 
   modbus_poll_timer=new QTimer(this);
+  modbus_poll_timer->setSingleShot(true);
   connect(modbus_poll_timer,SIGNAL(timeout()),this,SLOT(pollInputs()));
 
   modbus_reset_mapper=new QSignalMapper(this);
@@ -56,6 +57,7 @@ Modbus::Modbus(RDMatrix *matrix,QObject *parent)
 	  this,SLOT(resetStateData(int)));
   for(int i=0;i<modbus_gpos;i++) {
     modbus_reset_timers.push_back(new QTimer(this));
+    modbus_reset_timers.back()->setSingleShot(true);
     connect(modbus_reset_timers.back(),SIGNAL(timeout()),
 	    modbus_reset_mapper,SLOT(map()));
     modbus_reset_mapper->setMapping(modbus_reset_timers.back(),i);
@@ -63,6 +65,7 @@ Modbus::Modbus(RDMatrix *matrix,QObject *parent)
   }
 
   modbus_watchdog_timer=new QTimer(this);
+  modbus_watchdog_timer->setSingleShot(true);
   connect(modbus_watchdog_timer,SIGNAL(timeout()),this,SLOT(watchdogData()));
 }
 
@@ -114,14 +117,14 @@ void Modbus::processCommand(RDMacro *cmd)
   switch(cmd->command()) {
   case RDMacro::GO:
     if((cmd->argQuantity()!=5)||
-       ((cmd->arg(1).lower()!="i")&&
-	(cmd->arg(1).lower()!="o"))||
+       ((cmd->arg(1).toLower()!="i")&&
+	(cmd->arg(1).toLower()!="o"))||
        (cmd->arg(2).toInt()<1)||(cmd->arg(3).toInt()>modbus_gpos)||
        (cmd->arg(2).toInt()>modbus_gpos)||
        ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	(cmd->arg(1).lower()!="i"))||
+	(cmd->arg(1).toLower()!="i"))||
        ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	(cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).lower()=="i"))||
+	(cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).toLower()=="i"))||
        (cmd->arg(4).toInt()<0)) {
       cmd->acknowledge(false);
       emit rmlEcho(cmd);
@@ -129,7 +132,7 @@ void Modbus::processCommand(RDMacro *cmd)
     }
     if(cmd->arg(3).toInt()==0) {  // Turn OFF
       if(cmd->arg(4).toInt()==0) {
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  SetCoil(cmd->arg(2).toInt()-1,false);
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,false);
 	}
@@ -144,17 +147,17 @@ void Modbus::processCommand(RDMacro *cmd)
     }
     else {
       if(cmd->arg(4).toInt()==0) {  // Turn ON
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  SetCoil(cmd->arg(2).toInt()-1,true);
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,true);
 	}
       }
       else {  // Pulse
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  SetCoil(cmd->arg(2).toInt()-1,cmd->arg(3).toInt()!=0);
 	  modbus_reset_states[cmd->arg(2).toInt()-1]=cmd->arg(3).toInt()==0;
 	  modbus_reset_timers[cmd->arg(2).toInt()-1]->
-	    start(cmd->arg(4).toInt(),true);
+	    start(cmd->arg(4).toInt());
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,
 			  cmd->arg(3).toInt()!=0);
 	}
@@ -177,7 +180,8 @@ void Modbus::connectedData()
 {
   rda->syslog(LOG_INFO,
 	      "connection to Modbus device at %s:%u established",
-	      (const char *)modbus_ip_address.toString(),0xffff&modbus_ip_port);
+	      modbus_ip_address.toString().toUtf8().constData(),
+	      0xffff&modbus_ip_port);
   modbus_watchdog_active=false;
   modbus_busy=false;
   pollInputs();
@@ -194,9 +198,9 @@ void Modbus::readyReadData()
   int base=0;
 
   modbus_watchdog_timer->stop();
-  modbus_watchdog_timer->start(MODBUS_WATCHDOG_INTERVAL,true);
+  modbus_watchdog_timer->start(MODBUS_WATCHDOG_INTERVAL);
 
-  while((n=modbus_socket->readBlock(data,1500))>0) {
+  while((n=modbus_socket->read(data,1500))>0) {
     //    logBytes((uint8_t *)data,n);
     for(int i=0;i<n;i++) {
       printf("istate: %d\n",modbus_istate);
@@ -265,7 +269,7 @@ void Modbus::readyReadData()
 	base=modbus_input_bytes-count;
 	ProcessInputByte(byte,base);
 	if(--count==0) {
-	  modbus_poll_timer->start(MODBUS_POLL_INTERVAL,true);
+	  modbus_poll_timer->start(MODBUS_POLL_INTERVAL);
 	  modbus_istate=0;
 	  modbus_busy=false;
 	  if(modbus_coil_lines.size()>0) {
@@ -312,7 +316,7 @@ void Modbus::errorData(QAbstractSocket::SocketError err)
 void Modbus::pollInputs()
 {
   if(modbus_busy) {
-    modbus_poll_timer->start(MODBUS_POLL_INTERVAL,true);
+    modbus_poll_timer->start(MODBUS_POLL_INTERVAL);
     return;
   }
 
@@ -336,7 +340,7 @@ void Modbus::pollInputs()
   msg[10]=0xff&(modbus_gpis>>8);  // Quantity of Inputs
   msg[11]=0xff&modbus_gpis;
 
-  modbus_socket->writeBlock(msg,12);
+  modbus_socket->write(msg,12);
   modbus_busy=true;
 }
 
@@ -353,7 +357,8 @@ void Modbus::watchdogData()
   if(!modbus_watchdog_active) {
     rda->syslog(LOG_WARNING,
 	      "connection to Modbus device at %s:%u lost, attempting reconnect",
-	      (const char *)modbus_ip_address.toString(),0xffff&modbus_ip_port);
+		modbus_ip_address.toString().toUtf8().constData(),
+		0xffff&modbus_ip_port);
     modbus_watchdog_active=true;
   }
   modbus_socket->close();
@@ -410,7 +415,7 @@ void Modbus::SetCoil(int line,bool state)
     msg[10]=0xff;
   }
 
-  modbus_socket->writeBlock(msg,12);
+  modbus_socket->write(msg,12);
 }
 
 

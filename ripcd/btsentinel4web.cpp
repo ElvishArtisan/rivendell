@@ -2,7 +2,7 @@
 //
 // Rivendell switcher driver for the BroadcastTools Sentinel4Web AES switcher
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,9 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
-#include <syslog.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -49,11 +46,12 @@ BtSentinel4Web::BtSentinel4Web(RDMatrix *matrix,QObject *parent)
   connect(bt_watchdog_timer,SIGNAL(timeout()),this,SLOT(watchdogData()));
 
   bt_watchdog_reset_timer=new QTimer(this);
+  bt_watchdog_reset_timer->setSingleShot(true);
   connect(bt_watchdog_reset_timer,SIGNAL(timeout()),this,SLOT(watchdogResetData()));
 
 
   bt_socket->connectToHost(bt_address.toString(),bt_port);
-  bt_watchdog_timer->start(BTSENTINEL4WEB_WATCHDOG_INTERVAL,true);
+  bt_watchdog_timer->start(BTSENTINEL4WEB_WATCHDOG_INTERVAL);
 }
 
 
@@ -119,7 +117,7 @@ void BtSentinel4Web::processCommand(RDMacro *cmd)
 	else {
 	  msg=QString().sprintf("*0%02u",input);
 	}	
-	bt_socket->writeBlock(msg,msg.length());
+	bt_socket->write(msg.toUtf8());
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
 	break;
@@ -134,7 +132,7 @@ void BtSentinel4Web::processCommand(RDMacro *cmd)
 
 void BtSentinel4Web::connectedData()
 {
-  bt_socket->writeBlock("*0U",3);
+  bt_socket->write("*0U",3);
   rda->syslog(LOG_INFO,"connected to BT Sentinel4Web device at %s",
 	      (const char *)bt_socket->peerAddress().toString().toUtf8());
 }
@@ -150,10 +148,10 @@ void BtSentinel4Web::readyReadData()
 {
   char data[1500];
 
-  while(bt_socket->readBlock(data,1500)>0);
+  while(bt_socket->read(data,1500)>0);
   bt_watchdog_timer->stop();
-  bt_socket->writeBlock("*0U",3);
-  bt_watchdog_timer->start(BTSENTINEL4WEB_WATCHDOG_INTERVAL,true);
+  bt_socket->write("*0U",3);
+  bt_watchdog_timer->start(BTSENTINEL4WEB_WATCHDOG_INTERVAL);
 }
 
 
@@ -161,7 +159,7 @@ void BtSentinel4Web::watchdogData()
 {
   rda->syslog(LOG_WARNING,"lost connection to BT Sentinel4Web device at %s",
 	      (const char *)bt_socket->peerAddress().toString().toUtf8());
-  bt_watchdog_reset_timer->start(BTSENTINEL4WEB_WATCHDOG_INTERVAL,true);
+  bt_watchdog_reset_timer->start(BTSENTINEL4WEB_WATCHDOG_INTERVAL);
 }
 
 
@@ -175,5 +173,5 @@ void BtSentinel4Web::watchdogResetData()
   connect(bt_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
 
   bt_socket->connectToHost(bt_address.toString(),bt_port);
-  bt_watchdog_timer->start(BTSENTINEL4WEB_WATCHDOG_INTERVAL,true);
+  bt_watchdog_timer->start(BTSENTINEL4WEB_WATCHDOG_INTERVAL);
 }

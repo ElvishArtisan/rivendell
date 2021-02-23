@@ -64,7 +64,7 @@ RDWaveFile::RDWaveFile(QString file_name)
   // Initialize Class Structures
   //
   wave_file_name=file_name;
-  wave_file.setName(file_name);
+  wave_file.setFileName(file_name);
   wave_data=NULL;
   recordable=false;
   format_chunk=false;
@@ -198,7 +198,7 @@ void RDWaveFile::nameWave(QString file_name)
   if(wave_file.isOpen()) {
     return;
   }
-  wave_file.setName(file_name);
+  wave_file.setFileName(file_name);
   wave_file_name=file_name;
 }
 
@@ -536,7 +536,7 @@ bool RDWaveFile::createWave(RDWaveData *data,unsigned ptr_offset)
 	}
         prev_mask = umask(0113);      // Set umask so files are user and group writable.
         rc=wave_file.open(QIODevice::ReadWrite|QIODevice::Truncate);
-	unlink((wave_file_name+".energy").ascii());
+	unlink((wave_file_name+".energy").toAscii());
         umask(prev_mask);
 	if(rc==false) {
 	  return false;
@@ -2592,15 +2592,15 @@ void RDWaveFile::WriteChunk(int fd,const char *cname,unsigned char *buf,
 void RDWaveFile::WriteChunk(int fd,const char *cname,const QString &contents)
 {
   unsigned char size_buf[4];
-  size_buf[0]=contents.utf8().length()&0xff;
-  size_buf[1]=(contents.utf8().length()>>8)&0xff;
-  size_buf[2]=(contents.utf8().length()>>16)&0xff;
-  size_buf[3]=(contents.utf8().length()>>24)&0xff;
+  size_buf[0]=contents.toUtf8().length()&0xff;
+  size_buf[1]=(contents.toUtf8().length()>>8)&0xff;
+  size_buf[2]=(contents.toUtf8().length()>>16)&0xff;
+  size_buf[3]=(contents.toUtf8().length()>>24)&0xff;
 
   lseek(fd,0,SEEK_END);
   write(fd,cname,4);
   write(fd,size_buf,4);
-  write(fd,contents.utf8(),contents.utf8().length());
+  write(fd,contents.toUtf8(),contents.toUtf8().length());
 }
 
 
@@ -3098,7 +3098,7 @@ bool RDWaveFile::GetAv10(int fd)
 	if(av10_chunk_data[i]==0) {  // Found a label/value pair, see if we can
                                      // use it
 	  if(label=="1") {  // Start/end markers
-	    if((n=arg.find(","))>0) {
+	    if((n=arg.indexOf(","))>0) {
 	      pos=arg.left(n).toInt(&ok);
 	      if(ok) {
 		offset=arg.right(arg.length()-n-1).toInt(&ok);
@@ -3113,7 +3113,7 @@ bool RDWaveFile::GetAv10(int fd)
 	    }
 	  }
 	  if(label=="2") {  // Segue markers
-	    if((n=arg.find(","))>0) {
+	    if((n=arg.indexOf(","))>0) {
 	      pos=arg.left(n).toInt(&ok);
 	      if(ok) {
 		offset=arg.right(arg.length()-n-1).toInt(&ok);
@@ -4265,7 +4265,7 @@ void RDWaveFile::ReadFlacMetadata()
 	   
     // every entry is a name=value pair. Name is not allowed to contain a '='
     // so we just scan to the first instance of it.
-    int nameLength = entry.find('=');
+    int nameLength = entry.indexOf('=');
     if(nameLength < 0) continue; // malformed comment, it would seem
     QString name = entry.left(nameLength), value = entry.mid(nameLength + 1);
 	   
@@ -4422,31 +4422,31 @@ bool RDWaveFile::MakeCart(unsigned ptr_offset)
 	  CART_VERSION);
   if(!cart_title.isEmpty()) {
     sprintf((char *)cart_chunk_data+4,"%s",
-	    (const char *)cart_title.left(64));
+	    cart_title.left(64).toAscii().constData());
   }
   if(!cart_artist.isEmpty()) {
     sprintf((char *)cart_chunk_data+68,"%s",
-	    (const char *)cart_artist.left(64));
+	    cart_artist.left(64).toAscii().constData());
   }
   if(!cart_cut_id.isEmpty()) {
     sprintf((char *)cart_chunk_data+132,"%s",
-	    (const char *)cart_cut_id.left(64));
+	    cart_cut_id.left(64).toAscii().constData());
   }
   if(!cart_client_id.isEmpty()) {
     sprintf((char *)cart_chunk_data+196,"%s",
-	    (const char *)cart_client_id.left(64));
+	    cart_client_id.left(64).toAscii().constData());
   }
   if(!cart_category.isEmpty()) {
     sprintf((char *)cart_chunk_data+260,"%s",
-	    (const char *)cart_category.left(64));
+	    cart_category.left(64).toAscii().constData());
   }
   if(!cart_classification.isEmpty()) {
     sprintf((char *)cart_chunk_data+324,"%s",
-	    (const char *)cart_classification.left(64));
+	    cart_classification.left(64).toAscii().constData());
   }
   if(!cart_out_cue.isEmpty()) {
     sprintf((char *)cart_chunk_data+388,"%s",
-	    (const char *)cart_out_cue.left(64));
+	    cart_out_cue.left(64).toAscii().constData());
   }
   if(cart_start_date.isValid()) {
     sprintf((char *)cart_chunk_data+452,"%04d-%02d-%02d",
@@ -4488,7 +4488,7 @@ bool RDWaveFile::MakeCart(unsigned ptr_offset)
   snprintf((char *)cart_chunk_data+552,64,"%s",VERSION);
   if(!cart_user_def.isEmpty()) {
     sprintf((char *)cart_chunk_data+616,"%s",
-	    (const char *)cart_user_def.left(64));
+	    cart_user_def.left(64).toAscii().constData());
   }
   WriteDword(cart_chunk_data,680,cart_level_ref);
   if(wave_data!=NULL) {
@@ -4529,7 +4529,7 @@ bool RDWaveFile::MakeCart(unsigned ptr_offset)
   }
   if(!cart_url.isEmpty()) {
     sprintf((char *)cart_chunk_data+1020,"%s",
-	    (const char *)cart_url.left(1024));
+	    cart_url.left(1024).toAscii().constData());
   }
   return true;
 }
@@ -4545,15 +4545,15 @@ bool RDWaveFile::MakeBext()
   }
   if(!bext_description.isEmpty()) {
     sprintf((char *)bext_coding_data,"%s",
-	    (const char *)bext_description.left(256));
+	    bext_description.left(256).toAscii().constData());
   }
   if(!bext_originator.isEmpty()) {
     sprintf((char *)bext_coding_data+256,"%s",
-	    (const char *)bext_originator.left(32));
+	    bext_originator.left(32).toAscii().constData());
   }
   if(!bext_originator_ref.isEmpty()) {
     sprintf((char *)bext_coding_data+288,"%s",
-	    (const char *)bext_originator_ref.left(32));
+	    bext_originator_ref.left(32).toAscii().constData());
   }
   sprintf((char *)bext_coding_data+320,"%04d-%02d-%02d",
 	  bext_origination_date.year(),
@@ -4571,7 +4571,7 @@ bool RDWaveFile::MakeBext()
   }
   if(!bext_coding_history.isEmpty()) {
     sprintf((char *)bext_coding_data+602,"%s",
-	    (const char *)bext_coding_history);
+	    bext_coding_history.toAscii().constData());
   }
   return true;
 }
@@ -4625,7 +4625,8 @@ bool RDWaveFile::MakeLevl()
   WriteDword(levl_chunk_data,24,levl_peak_offset); // Offset to Peak-of-Peaks
   WriteDword(levl_chunk_data,28,132);              // Offset to Peak Data
   sprintf((char *)levl_chunk_data+32,"%s",
-	  (const char *)levl_timestamp.toString("yyyy:MM:dd:hh:mm:ss:000"));
+	  levl_timestamp.toString("yyyy:MM:dd:hh:mm:ss:000").toAscii().
+	  constData());
 
   return true;
 }
@@ -4905,7 +4906,7 @@ bool RDWaveFile::ReadNormalizeLevel(QString wave_file_name)
   //
   // FIXME: This is really evil!
   //
-  energy_file.setName(wave_file_name+".energy");
+  energy_file.setFileName(wave_file_name+".energy");
   if(!energy_file.open(QIODevice::ReadOnly)) 
     return false;
   if((n=energy_file.readLine(str,20)) <= 0)

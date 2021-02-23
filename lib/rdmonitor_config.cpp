@@ -109,7 +109,7 @@ bool RDMonitorConfig::save()
 {
   FILE *f=NULL;
 
-  if((f=fopen(mon_filename,"w"))==NULL) {
+  if((f=fopen(mon_filename.toUtf8(),"w"))==NULL) {
     return false;
   }
   fprintf(f,"[Monitor]\n");

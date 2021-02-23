@@ -18,8 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
 #include "edit_eventline.h"
@@ -84,7 +85,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClockModel *clock,
   edit_eventname_edit->setGeometry(65,12,sizeHint().width()-140,18);
   edit_eventname_edit->setMaxLength(64);
   edit_eventname_edit->setValidator(validator);
-  QLabel *label=new QLabel(edit_eventname_edit,tr("Event:"),this);
+  QLabel *label=new QLabel(tr("Event:"),this);
   label->setGeometry(10,12,50,18);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -105,7 +106,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClockModel *clock,
   edit_starttime_edit->setGeometry(150,40,70,20);
   edit_starttime_edit->
     setDisplay(RDTimeEdit::Minutes|RDTimeEdit::Seconds|RDTimeEdit::Tenths);
-  label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
+  label=new QLabel(tr("Start Time:"),this);
   label->setGeometry(65,42,80,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -117,7 +118,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClockModel *clock,
   edit_endtime_edit->setGeometry(325,40,70,20);
   edit_endtime_edit->
     setDisplay(RDTimeEdit::Minutes|RDTimeEdit::Seconds|RDTimeEdit::Tenths);
-  label=new QLabel(edit_endtime_edit,tr("End Time:"),this);
+  label=new QLabel(tr("End Time:"),this);
   label->setGeometry(250,42,70,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -185,8 +186,10 @@ void EditEventLine::okData()
 	    tr("The event end time cannot be earlier than the start time."));
     return;
   }
-  QString sql=QString().sprintf("select NAME from EVENTS where NAME=\"%s\"",
-				(const char *)edit_eventname_edit->text());
+  QString sql=QString("select ")+
+    "NAME "+
+    "from EVENTS where "+
+    "NAME=\""+RDEscapeString(edit_eventname_edit->text())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     QMessageBox::information(this,tr("No Such Event"),

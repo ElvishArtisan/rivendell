@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Audio Port Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,24 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qsqldatabase.h>
-#include <qsignalmapper.h>
+#include <QPushButton>
+#include <QSignalMapper>
 
 #include "edit_audios.h"
 
 EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   QString str;
 
   //
@@ -57,10 +47,9 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   //
   edit_card_box=new QComboBox(this);
   edit_card_box->setGeometry(75,10,60,26);
-  edit_card_box->setInsertionPolicy(QComboBox::NoInsert);
   connect(edit_card_box,SIGNAL(activated(int)),
 	  this,SLOT(cardSelectedData(int)));
-  QLabel *label=new QLabel(edit_card_box,tr("Card:"),this);
+  QLabel *label=new QLabel(tr("Card:"),this);
   label->setGeometry(10,16,60,22);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
@@ -71,7 +60,7 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   card_driver_edit=new QLineEdit(this);
   card_driver_edit->setGeometry(225,15,170,19);//FIXME: size
   card_driver_edit->setReadOnly(true);
-  label=new QLabel(edit_card_box,tr("Card Driver:"),this);
+  label=new QLabel(tr("Card Driver:"),this);
   label->setGeometry(140,16,80,22);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
@@ -81,8 +70,7 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   //
   edit_clock_box=new QComboBox(this);
   edit_clock_box->setGeometry(500,10,150,26);
-  edit_clock_box->setInsertionPolicy(QComboBox::NoInsert);
-  edit_clock_label=new QLabel(edit_clock_box,tr("Clock Source:"),this);
+  edit_clock_label=new QLabel(tr("Clock Source:"),this);
   edit_clock_label->setGeometry(395,16,100,22);
   edit_clock_label->setFont(labelFont());
   edit_clock_label->setAlignment(Qt::AlignRight);
@@ -101,25 +89,32 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
       connect(mapper,SIGNAL(mapped(int)),this,SLOT(inputMapData(int)));
       edit_type_box[j*4+i]=new QComboBox(this);
       edit_type_box[j*4+i]->setGeometry(95+170*i,75+j*180,110,26);
-      edit_type_box[j*4+i]->insertItem(tr("Analog"));
-      edit_type_box[j*4+i]->insertItem(tr("AES/EBU"));
-      edit_type_box[j*4+i]->insertItem(tr("SP/DIFF"));
+      edit_type_box[j*4+i]->
+	insertItem(edit_type_box[j*4+i]->count(),tr("Analog"));
+      edit_type_box[j*4+i]->
+	insertItem(edit_type_box[j*4+i]->count(),tr("AES/EBU"));
+      edit_type_box[j*4+i]->
+	insertItem(edit_type_box[j*4+i]->count(),tr("SP/DIFF"));
       mapper->setMapping(edit_type_box[j*4+i],j*4+i);
       connect(edit_type_box[j*4+i],SIGNAL(activated(int)),mapper,SLOT(map()));
-      edit_type_label[j*4+i]=new QLabel(edit_type_box[j*4+i],tr("Type:"),this);
+      edit_type_label[j*4+i]=new QLabel(tr("Type:"),this);
       edit_type_label[j*4+i]->setFont(labelFont());
       edit_type_label[j*4+i]->setGeometry(50+170*i,81+j*180,40,22);
       edit_type_label[j*4+i]->setAlignment(Qt::AlignRight);
       edit_mode_box[j*4+i]=new QComboBox(this);
       edit_mode_box[j*4+i]->setGeometry(95+170*i,105+j*180,110,26);
       // NOTE: this drop down list box is populated to match RDCae::ChannelMode
-      edit_mode_box[j*4+i]->insertItem(tr("Normal"));
-      edit_mode_box[j*4+i]->insertItem(tr("Swap"));
-      edit_mode_box[j*4+i]->insertItem(tr("Left only"));
-      edit_mode_box[j*4+i]->insertItem(tr("Right only"));
+      edit_mode_box[j*4+i]->
+	insertItem(edit_mode_box[j*4+i]->count(),tr("Normal"));
+      edit_mode_box[j*4+i]->
+	insertItem(edit_mode_box[j*4+i]->count(),tr("Swap"));
+      edit_mode_box[j*4+i]->
+	insertItem(edit_mode_box[j*4+i]->count(),tr("Left only"));
+      edit_mode_box[j*4+i]->
+	insertItem(edit_mode_box[j*4+i]->count(),tr("Right only"));
       mapper->setMapping(edit_mode_box[j*4+i],j*4+i);
       connect(edit_mode_box[j*4+i],SIGNAL(activated(int)),mapper,SLOT(map()));
-      edit_mode_label[j*4+i]=new QLabel(edit_type_box[j*4+i],tr("Mode:"),this);
+      edit_mode_label[j*4+i]=new QLabel(tr("Mode:"),this);
       edit_mode_label[j*4+i]->setFont(labelFont());
       edit_mode_label[j*4+i]->setGeometry(50+170*i,111+j*180,40,22);
       edit_mode_label[j*4+i]->setAlignment(Qt::AlignRight);
@@ -128,8 +123,7 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
       edit_input_box[j*4+i]->setGeometry(95+170*i,135+j*180,60,24);
       edit_input_box[j*4+i]->setRange(-26,6);
       edit_input_box[j*4+i]->setSuffix(tr(" dB"));
-      edit_input_label[j*4+i]=
-	new QLabel(edit_type_box[j*4+i],tr("Ref. Level:"),this);
+      edit_input_label[j*4+i]=new QLabel(tr("Ref. Level:"),this);
       edit_input_label[j*4+i]->setFont(labelFont());
       edit_input_label[j*4+i]->setGeometry(10+170*i,140+j*180,80,22);
       edit_input_label[j*4+i]->setAlignment(Qt::AlignRight);
@@ -147,8 +141,7 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
       edit_output_box[j*4+i]->setGeometry(95+170*i,190+j*180,60,24);
       edit_output_box[j*4+i]->setRange(-26,6);
       edit_output_box[j*4+i]->setSuffix(tr(" dB"));
-      edit_output_label[j*4+i]=
-	new QLabel(edit_type_box[j*4+i],tr("Ref. Level:"),this);
+      edit_output_label[j*4+i]=new QLabel(tr("Ref. Level:"),this);
       edit_output_label[j*4+i]->setFont(labelFont());
       edit_output_label[j*4+i]->setGeometry(10+170*i,195+j*180,80,22);
       edit_output_label[j*4+i]->setAlignment(Qt::AlignRight);
@@ -179,13 +172,13 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   //
   //  for(int i=0;i<RD_MAX_PORTS;i++) {
   for(int i=0;i<8;i++) {
-    edit_card_box->insertItem(QString().sprintf("%d",i));
+    edit_card_box->insertItem(edit_card_box->count(),QString().sprintf("%d",i));
   }
-  edit_clock_box->insertItem(tr("Internal"));
-  edit_clock_box->insertItem(tr("AES/EBU Signal"));
-  edit_clock_box->insertItem(tr("SP/DIFF Signal"));
-  edit_clock_box->insertItem(tr("Word Clock"));
-  edit_card_num=edit_card_box->currentItem();
+  edit_clock_box->insertItem(edit_clock_box->count(),tr("Internal"));
+  edit_clock_box->insertItem(edit_clock_box->count(),tr("AES/EBU Signal"));
+  edit_clock_box->insertItem(edit_clock_box->count(),tr("SP/DIFF Signal"));
+  edit_clock_box->insertItem(edit_clock_box->count(),tr("Word Clock"));
+  edit_card_num=edit_card_box->currentIndex();
   ReadRecord(edit_card_num);
 }
 
@@ -210,7 +203,7 @@ QSizePolicy EditAudioPorts::sizePolicy() const
 void EditAudioPorts::cardSelectedData(int card)
 {
   WriteRecord();
-  edit_card_num=edit_card_box->currentItem();
+  edit_card_num=edit_card_box->currentIndex();
   ReadRecord(edit_card_num);
 }
 
@@ -221,7 +214,7 @@ void EditAudioPorts::inputMapData(int id)
     rdstation=new RDStation(edit_station);
   }
   if( (rdstation->cardDriver(edit_card_num)==RDStation::Hpi) &&
-      (edit_type_box[id]->currentItem()==RDAudioPort::Analog) ) {
+      (edit_type_box[id]->currentIndex()==RDAudioPort::Analog) ) {
     edit_input_label[id]->setEnabled(true);
     edit_input_box[id]->setEnabled(true);
   }
@@ -332,12 +325,12 @@ void EditAudioPorts::ReadRecord(int card)
         }
         break;
   }
-  edit_clock_box->setCurrentItem(edit_card->clockSource());
+  edit_clock_box->setCurrentIndex(edit_card->clockSource());
   //  for(int i=0;i<RD_MAX_PORTS;i++) {
   for(int i=0;i<8;i++) {
-    edit_type_box[i]->setCurrentItem((int)edit_card->inputPortType(i));
+    edit_type_box[i]->setCurrentIndex((int)edit_card->inputPortType(i));
     if( (rdstation->cardDriver(card)==RDStation::Hpi) &&
-        ((RDAudioPort::PortType)edit_type_box[i]->currentItem()==
+        ((RDAudioPort::PortType)edit_type_box[i]->currentIndex()==
           RDAudioPort::Analog) ) {
       edit_input_label[i]->setEnabled(true);
       edit_input_box[i]->setEnabled(true);
@@ -346,7 +339,7 @@ void EditAudioPorts::ReadRecord(int card)
       edit_input_label[i]->setDisabled(true);
       edit_input_box[i]->setDisabled(true);
     }
-    edit_mode_box[i]->setCurrentItem((int)edit_card->inputPortMode(i));
+    edit_mode_box[i]->setCurrentIndex((int)edit_card->inputPortMode(i));
     edit_input_box[i]->setValue(edit_card->inputPortLevel(i)/100);
     edit_output_box[i]->setValue(edit_card->outputPortLevel(i)/100);
   }
@@ -356,13 +349,13 @@ void EditAudioPorts::ReadRecord(int card)
 void EditAudioPorts::WriteRecord()
 {
   edit_card->
-    setClockSource((RDCae::ClockSource)edit_clock_box->currentItem());
+    setClockSource((RDCae::ClockSource)edit_clock_box->currentIndex());
   //  for(int i=0;i<RD_MAX_PORTS;i++) {
   for(int i=0;i<8;i++) {
     edit_card->setInputPortType(i,
-		 (RDAudioPort::PortType)edit_type_box[i]->currentItem());
+		 (RDAudioPort::PortType)edit_type_box[i]->currentIndex());
     edit_card->setInputPortMode(i,
-		 (RDCae::ChannelMode)edit_mode_box[i]->currentItem());
+		 (RDCae::ChannelMode)edit_mode_box[i]->currentIndex());
     edit_card->setInputPortLevel(i,edit_input_box[i]->value()*100);
     edit_card->setOutputPortLevel(i,edit_output_box[i]->value()*100);
   }

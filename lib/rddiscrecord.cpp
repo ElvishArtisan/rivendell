@@ -158,7 +158,7 @@ void RDDiscRecord::setDiscTitle(QString title)
   int n;
 
   disc_disc_title=title;
-  if((n=title.find(" / "))!=-1) {
+  if((n=title.indexOf(" / "))!=-1) {
     disc_disc_artist=title.left(n);
     disc_disc_album=title.right(title.length()-n-3);
     disc_disc_author="";

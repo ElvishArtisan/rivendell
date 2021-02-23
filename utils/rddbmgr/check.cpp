@@ -2,7 +2,7 @@
 //
 // Routines for --check for rddbmgr(8)
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,19 +25,14 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include <qdir.h>
-#include <qprocess.h>
+#include <QDir>
+#include <QProcess>
 
 #include <dbversion.h>
-#include <rdcart.h>
-#include <rdclock.h>
 #include <rdconf.h>
-#include <rdcut.h>
-#include <rddb.h>
 #include <rdescape_string.h>
 #include <rdhash.h>
 #include <rdlog.h>
-#include <rdwavefile.h>
 
 #include "rddbmgr.h"
 
@@ -344,7 +339,7 @@ void MainObject::RewriteTable(const QString &tblname,
   unlink(temp2_filename.toUtf8());
   unlink(temp3_filename.toUtf8());
   unlink(out_filename.toUtf8());
-  rmdir(tempdir);
+  rmdir(tempdir.toUtf8());
 }
 
 
@@ -435,7 +430,7 @@ void MainObject::RelinkAudio(const QString &srcdir) const
     // (Perhaps) delete the source file
     //
     if(db_relink_audio_move&&delete_source) {
-      unlink(filename);
+      unlink(filename.toUtf8());
     }
   }
 }
@@ -451,8 +446,8 @@ void MainObject::RelinkCut(const QString &src_filename,const QString &cutname,
   fflush(stdout);
 
   if(db_relink_audio_move) {
-    unlink(RDCut::pathName(cutname));
-    if(link(src_filename,RDCut::pathName(cutname))<0) {
+    unlink(RDCut::pathName(cutname).toUtf8());
+    if(link(src_filename.toUtf8(),RDCut::pathName(cutname).toUtf8())<0) {
       if(errno==EXDEV) {  // We're crossing filesystems, so do a copy
 	if(firstdest->isEmpty()) {
 	  if(CopyToAudioStore(RDCut::pathName(cutname),src_filename)) {
@@ -460,24 +455,25 @@ void MainObject::RelinkCut(const QString &src_filename,const QString &cutname,
 	  }
 	  else {
 	    fprintf(stderr,"unable to copy file \"%s\"\n",
-		    (const char *)src_filename);
+		    src_filename.toUtf8().constData());
 	    *delete_src=false;
 	  }
 	}
 	else {
-	  unlink(RDCut::pathName(cutname));
-	  link(*firstdest,RDCut::pathName(cutname));
+	  unlink(RDCut::pathName(cutname).toUtf8());
+	  link((*firstdest).toUtf8(),RDCut::pathName(cutname).toUtf8());
 	}
       }
       else {
 	fprintf(stderr,"unable to move file \"%s\" [%s]\n",
-		(const char *)src_filename,strerror(errno));
+		src_filename.toUtf8().constData(),strerror(errno));
 	*delete_src=false;
       }
     }
     else {
-      chown(RDCut::pathName(cutname),db_config->uid(),db_config->gid());
-      chmod(RDCut::pathName(cutname),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP);
+      chown(RDCut::pathName(cutname).toUtf8(),db_config->uid(),
+	    db_config->gid());
+      chmod(RDCut::pathName(cutname).toUtf8(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP);
     }
   }
   else {
@@ -487,12 +483,12 @@ void MainObject::RelinkCut(const QString &src_filename,const QString &cutname,
       }
       else {
 	fprintf(stderr,"unable to copy file \"%s\"\n",
-		(const char *)src_filename);
+		src_filename.toUtf8().constData());
       }
     }
     else {
-      unlink(RDCut::pathName(cutname));
-      link(*firstdest,RDCut::pathName(cutname));
+      unlink(RDCut::pathName(cutname).toUtf8());
+      link((*firstdest).toUtf8(),RDCut::pathName(cutname).toUtf8());
     }
   }
   printf("  done.\n");
@@ -511,8 +507,8 @@ void MainObject::RelinkCast(const QString &src_filename,const QString &keyname,
   fflush(stdout);
 
   if(db_relink_audio_move) {
-    unlink(destpath);
-    if(link(src_filename,destpath)<0) {
+    unlink(destpath.toUtf8());
+    if(link(src_filename.toUtf8(),destpath.toUtf8())<0) {
       if(errno==EXDEV) {  // We're crossing filesystems, so do a copy
 	if(firstdest->isEmpty()) {
 	  if(CopyToAudioStore(destpath,src_filename)) {
@@ -520,40 +516,40 @@ void MainObject::RelinkCast(const QString &src_filename,const QString &keyname,
 	  }
 	  else {
 	    fprintf(stderr,"unable to copy file \"%s\"\n",
-		    (const char *)src_filename);
+		    src_filename.toUtf8().constData());
 	    *delete_src=false;
 	  }
 	}
 	else {
-	  unlink(destpath);
-	  link(*firstdest,destpath);
+	  unlink(destpath.toUtf8());
+	  link((*firstdest).toUtf8(),destpath.toUtf8());
 	}
       }
       else {
 	fprintf(stderr,"unable to move file \"%s\" [%s]\n",
-		(const char *)src_filename,strerror(errno));
+		src_filename.toUtf8().constData(),strerror(errno));
 	*delete_src=false;
       }
     }
     else {
-      chown(destpath,db_config->uid(),db_config->gid());
-      chmod(destpath,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP);
+      chown(destpath.toUtf8(),db_config->uid(),db_config->gid());
+      chmod(destpath.toUtf8(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP);
     }
   }
   else {
     if(firstdest->isEmpty()) {
-      unlink(destpath);
+      unlink(destpath.toUtf8());
       if(CopyToAudioStore(destpath,src_filename)) {
 	*firstdest=destpath;
       }
       else {
 	fprintf(stderr,"unable to copy file \"%s\" [%s]\n",
-		(const char *)src_filename,strerror(errno));
+		src_filename.toUtf8().constData(),strerror(errno));
       }
     }
     else {
-      unlink(destpath);
-      link(*firstdest,destpath);
+      unlink(destpath.toUtf8());
+      link((*firstdest).toUtf8(),destpath.toUtf8());
     }
   }
   printf("  done.\n");
@@ -573,7 +569,7 @@ void MainObject::CheckOrphanedTracks() const
     q1=new QSqlQuery(sql);
     if(!q1->first()) {
       printf("  Found orphaned track %u - \"%s\".  Delete? (y/N) ",
-	     q->value(0).toUInt(),(const char *)q->value(1).toString());
+	     q->value(0).toUInt(),q->value(1).toString().toUtf8().constData());
       fflush(NULL);
       if(UserResponse()) {
 	RDCart *cart=new RDCart(q->value(0).toUInt());
@@ -607,7 +603,7 @@ void MainObject::CheckCutCounts() const
     q1=new QSqlQuery(sql);
     if(q1->size()!=q->value(1).toInt()) {
       printf("  Cart %u [%s] has invalid cut count, fix (y/N)?",
-	     q->value(0).toUInt(),(const char *)q->value(2).toString());
+	     q->value(0).toUInt(),q->value(2).toString().toUtf8().constData());
       if(UserResponse()) {
 	RDCart *cart=new RDCart(q->value(0).toUInt());
 	cart->updateLength();
@@ -654,16 +650,17 @@ void MainObject::CheckOrphanedCarts() const
   q=new QSqlQuery(sql);
   while(q->next()) {
     printf("  Cart %06u [%s] has missing/invalid group.\n",
-	   q->value(0).toUInt(),(const char *)q->value(1).toString());
+	   q->value(0).toUInt(),q->value(1).toString().toUtf8().constData());
     if(db_orphan_group_name.isEmpty()) {
       printf("  Rerun rddbcheck with the --orphan-group= switch to fix.\n\n");
     }
     else {
-      printf("  Assign to group \"%s\" (y/N)?",(const char *)db_orphan_group_name);
+      printf("  Assign to group \"%s\" (y/N)?",
+	     db_orphan_group_name.toUtf8().constData());
       if(UserResponse()) {
 	sql=QString().
 	  sprintf("update CART set GROUP_NAME=\"%s\" where NUMBER=%u",
-		  (const char *)RDEscapeString(db_orphan_group_name),
+		  RDEscapeString(db_orphan_group_name).toUtf8().constData(),
 		  q->value(0).toUInt());
 	q1=new QSqlQuery(sql);
 	delete q1;
@@ -688,8 +685,8 @@ void MainObject::CheckOrphanedCuts() const
   q=new QSqlQuery(sql);
   while(q->next()) {
     printf("  Cut %s [%s] is orphaned.\n",
-	   (const char *)q->value(0).toString(),
-	   (const char *)q->value(1).toString());
+	   q->value(0).toString().toUtf8().constData(),
+	   q->value(1).toString().toUtf8().constData());
     //
     // Try to repair it
     //
@@ -705,7 +702,7 @@ void MainObject::CheckOrphanedCuts() const
 	sql=QString().
 	  sprintf("update CUTS set CART_NUMBER=%u where CUT_NAME=\"%s\"",
 		  q1->value(0).toUInt(),
-		  (const char *)q->value(0).toString());
+		  q->value(0).toString().toUtf8().constData());
 	q2=new QSqlQuery(sql);
 	delete q2;
 	delete q1;
@@ -724,7 +721,7 @@ void MainObject::CheckOrphanedCuts() const
       printf("  Clear it (y/N)?");
       if(UserResponse()) {
 	sql=QString().sprintf("delete from CUTS where CUT_NAME=\"%s\"",
-			      (const char *)q->value(0).toString());
+			      q->value(0).toString().toUtf8().constData());
 	q1=new QSqlQuery(sql);
 	delete q1;
       }
@@ -736,13 +733,14 @@ void MainObject::CheckOrphanedCuts() const
       else {
 	printf("  Clear it (y/N)?");
 	if(UserResponse()) {
-	  system("mv "+file->filePath()+" "+db_dump_cuts_dir+"/");
+	  system(("mv "+file->filePath()+" "+db_dump_cuts_dir+"/").toUtf8());
 	  sql=QString().sprintf("delete from CUTS where CUT_NAME=\"%s\"",
-				(const char *)q->value(0).toString());
+				q->value(0).toString().toUtf8().constData());
 	  q1=new QSqlQuery(sql);
 	  delete q1;
-	  printf("  Saved audio in \"%s/%s\"\n",(const char *)db_dump_cuts_dir,
-		 (const char *)file->fileName());
+	  printf("  Saved audio in \"%s/%s\"\n",
+		 db_dump_cuts_dir.toUtf8().constData(),
+		 file->fileName().toUtf8().constData());
 	}
       }
     }
@@ -757,33 +755,41 @@ void MainObject::CheckOrphanedCuts() const
 void MainObject::CheckOrphanedAudio() const
 {
   QDir dir(db_config->audioRoot());
-  QStringList list=dir.entryList("??????_???.wav",QDir::Files);
+  QStringList filters;
+  filters.push_back("??????_???.wav");
+  QStringList list=dir.entryList(filters);
   for(int i=0;i<list.size();i++) {
     bool ok=false;
     list[i].left(6).toUInt(&ok);
     if(ok) {
       list[i].mid(7,3).toInt(&ok);
       if(ok) {
-	QString sql=QString().sprintf("select CUT_NAME from CUTS \
-                                       where CUT_NAME=\"%s\"",
-				      (const char *)list[i].left(10));
+	QString sql=QString("select ")+
+	  "CUT_NAME "+
+	  "from CUTS where "+
+	  "CUT_NAME=\""+RDEscapeString(list.at(i).left(10))+"\"";
 	QSqlQuery *q=new QSqlQuery(sql);
 	if(!q->first()) {
 	  printf("  File \"%s/%s\" is orphaned.\n",
-		 (const char *)db_config->audioRoot(),(const char *)list[i]);
+		 db_config->audioRoot().toUtf8().constData(),
+		 list.at(i).toUtf8().constData());
 	  if(db_dump_cuts_dir.isEmpty()) {
 	    printf(
 	     "  Rerun rddbcheck with the --dump-cuts-dir= switch to fix.\n\n");
 	  }
 	  else {
-	    printf("  Move to \"%s\" (y/N)? ",(const char *)db_dump_cuts_dir);
+	    printf("  Move to \"%s\" (y/N)? ",
+		   db_dump_cuts_dir.toUtf8().constData());
 	    if(UserResponse()) {
 	      system(QString().sprintf("mv %s/%s %s/",
-				       (const char *)db_config->audioRoot(),
-				       (const char *)list[i],
-				       (const char *)db_dump_cuts_dir));
-	      printf("  Saved audio in \"%s/%s\"\n",(const char *)db_dump_cuts_dir,
-		     (const char *)list[i]);
+				       db_config->audioRoot().toUtf8().
+				       constData(),
+				       list.at(i).toUtf8().constData(),
+				       db_dump_cuts_dir.toUtf8().constData()).
+		     toUtf8());
+	      printf("  Saved audio in \"%s/%s\"\n",
+		     db_dump_cuts_dir.toUtf8().constData(),
+		     list.at(i).toUtf8().constData());
 	    }
 	  }
 	}
@@ -827,7 +833,7 @@ void MainObject::Rehash(const QString &arg) const
   unsigned cartnum;
   bool ok=false;
 
-  if(arg.lower()=="all") {
+  if(arg.toLower()=="all") {
     sql=QString("select NUMBER from CART where ")+
       QString().sprintf("TYPE=%d ",RDCart::Audio)+
       "order by NUMBER";
@@ -877,7 +883,7 @@ void MainObject::RehashCut(const QString &cutnum) const
   QString hash=RDSha1Hash(RDCut::pathName(cutnum),true);
   if(hash.isEmpty()) {
     printf("  Unable to generate hash for \"%s\"\n",
-	    (const char *)RDCut::pathName(cutnum));
+	   RDCut::pathName(cutnum).toUtf8().constData());
   }
   else {
     RDCut *cut=new RDCut(cutnum);
@@ -890,9 +896,9 @@ void MainObject::RehashCut(const QString &cutnum) const
 	  RDCart *cart=new RDCart(RDCut::cartNumber(cutnum));
 	  printf("  Cut %d [%s] in cart %06u [%s] has inconsistent SHA1 hash.  Fix? (y/N) ",
 		 cut->cutNumber(),
-		 (const char *)cut->description(),
+		 cut->description().toUtf8().constData(),
 		 cart->number(),
-		 (const char *)cart->title());
+		 cart->title().toUtf8().constData());
 	  fflush(NULL);
 	  if(UserResponse()) {
 	    cut->setSha1Hash(hash);
@@ -902,7 +908,7 @@ void MainObject::RehashCut(const QString &cutnum) const
       }
     }
     else {
-      printf("  Cut \"%s\" does not exist.\n",(const char *)cutnum);
+      printf("  Cut \"%s\" does not exist.\n",cutnum.toUtf8().constData());
     }
     delete cut;
   }
@@ -918,9 +924,9 @@ void MainObject::SetCutLength(const QString &cutname,int len) const
 
   printf("  Cut %d [%s] in cart %06u [%s] has invalid length.  Correct? (y/N) ",
 	 cut->cutNumber(),
-	 (const char *)cut->description(),
+	 cut->description().toUtf8().constData(),
 	 cart->number(),
-	 (const char *)cart->title());
+	 cart->title().toUtf8().constData());
   fflush(NULL);
   if(UserResponse()) {
     fflush(NULL);
@@ -986,12 +992,12 @@ bool MainObject::CopyToAudioStore(const QString &destfile,
   int blksize;
   char *data=NULL;
 
-  if((src_fd=open(srcfile,O_RDONLY))<0) {
+  if((src_fd=open(srcfile.toUtf8(),O_RDONLY))<0) {
     return false;
   }
   fstat(src_fd,&src_stat);
   mode_t mask=umask(S_IRWXO);
-  if((dest_fd=open(destfile,O_WRONLY|O_CREAT|O_TRUNC,
+  if((dest_fd=open(destfile.toUtf8(),O_WRONLY|O_CREAT|O_TRUNC,
 		   S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP))<0) {
     close(src_fd);
     return false;

@@ -87,8 +87,7 @@ ListReplicators::ListReplicators(QWidget *parent)
   list_replicators_model->setFont(defaultFont());
   list_replicators_model->setPalette(palette());
   list_replicators_view->setModel(list_replicators_model);
-  list_replicators_label=
-    new QLabel(list_replicators_view,tr("&Replicators:"),this);
+  list_replicators_label=new QLabel(tr("&Replicators:"),this);
   list_replicators_label->setFont(labelFont());
   connect(list_replicators_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));

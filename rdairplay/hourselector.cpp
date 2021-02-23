@@ -2,7 +2,7 @@
 //
 // Hour Selector widget for RDAirPlay
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,7 +27,7 @@ HourSelector::HourSelector(QWidget *parent)
   // Palettes
   //
   hour_active_palette=
-    QPalette(QColor(BUTTON_STOPPED_BACKGROUND_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_STOPPED_BACKGROUND_COLOR),palette().color(QPalette::Background));
 
   //
   // Buttons

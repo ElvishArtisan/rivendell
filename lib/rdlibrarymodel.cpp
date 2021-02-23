@@ -673,7 +673,7 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
 
     case RDCart::AlwaysValid:
       d_background_colors[row]=
-	QColor(palette().color(QPalette::Active,QColorGroup::Base));
+	QColor(palette().color(QPalette::Active,QPalette::Base));
       break;
 
     case RDCart::EvergreenValid:
@@ -683,7 +683,7 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
   }
   if(q->value(15).toUInt()==RDCart::Macro) {
     d_background_colors[row]=
-      QColor(palette().color(QPalette::Active,QColorGroup::Base));
+      QColor(palette().color(QPalette::Active,QPalette::Base));
   }
 
   //

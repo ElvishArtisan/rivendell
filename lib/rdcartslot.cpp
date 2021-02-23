@@ -63,9 +63,11 @@ RDCartSlot::RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
   // Palettes
   //
   slot_ready_color=
-    QPalette(QColor(BUTTON_STOPPED_BACKGROUND_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_STOPPED_BACKGROUND_COLOR),
+	     palette().color(QPalette::Background));
   slot_playing_color=
-    QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),
+	     palette().color(QPalette::Background));
 
   //
   // Slot Options

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Recording
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qradiobutton.h>
-#include <qgroupbox.h>
-#include <qmessagebox.h>
+#include <QGroupBox>
+#include <QMessageBox>
+#include <QRadioButton>
 
 #include <rdcut_path.h>
 #include <rdescape_string.h>
@@ -76,7 +76,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   edit_station_box=new QComboBox(this);
   edit_station_box->setGeometry(200,10,140,23);
-  QLabel * label=new QLabel(edit_station_box,tr("Location:"),this);
+  QLabel * label=new QLabel(tr("Location:"),this);
   label->setGeometry(125,10,70,23);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -102,8 +102,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_starttime_edit=new QTimeEdit(this);
   edit_starttime_edit->setGeometry(255,53,80,20);
   edit_starttime_edit->setDisplayFormat("hh:mm:ss");
-  edit_starttime_label=new QLabel(edit_starttime_edit,tr("Record Start Time:"),
-				  this);
+  edit_starttime_label=new QLabel(tr("Record Start Time:"),this);
   edit_starttime_label->setGeometry(135,57,115,15);
   edit_starttime_label->setFont(subLabelFont());
   edit_starttime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -115,8 +114,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_start_startwindow_edit=new QTimeEdit(this);
   edit_start_startwindow_edit->setGeometry(255,77,80,20);
   edit_start_startwindow_edit->setDisplayFormat("hh:mm:ss");
-  edit_start_startwindow_label=
-    new QLabel(edit_start_startwindow_edit,tr("Window Start Time:"),this);
+  edit_start_startwindow_label=new QLabel(tr("Window Start Time:"),this);
   edit_start_startwindow_label->setGeometry(135,81,115,15);
   edit_start_startwindow_label->setFont(subLabelFont());
   edit_start_startwindow_label->
@@ -125,8 +123,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_start_endwindow_edit=new QTimeEdit(this);
   edit_start_endwindow_edit->setGeometry(455,77,80,20);
   edit_start_endwindow_edit->setDisplayFormat("hh:mm:ss");
-  edit_start_endwindow_label=
-    new QLabel(edit_start_endwindow_edit,"Window End Time:",this);
+  edit_start_endwindow_label=new QLabel(tr("Window End Time:"),this);
   edit_start_endwindow_label->setGeometry(345,81,105,15);
   edit_start_endwindow_label->setFont(subLabelFont());
   edit_start_endwindow_label->
@@ -135,8 +132,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_startmatrix_spin=new QSpinBox(this);
   edit_startmatrix_spin->setGeometry(185,99,30,20);
   edit_startmatrix_spin->setRange(0,MAX_MATRICES-1);
-  edit_startmatrix_label=
-    new QLabel(edit_startmatrix_spin,tr("GPI Matrix:"),this);
+  edit_startmatrix_label=new QLabel(tr("GPI Matrix:"),this);
   edit_startmatrix_label->setGeometry(100,100,80,20);
   edit_startmatrix_label->setFont(subLabelFont());
   edit_startmatrix_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -144,7 +140,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_startline_spin=new QSpinBox(this);
   edit_startline_spin->setGeometry(305,99,30,20);
   edit_startline_spin->setRange(1,MAX_GPIO_PINS);
-  edit_startline_label=new QLabel(edit_startline_spin,tr("GPI Line:"),this);
+  edit_startline_label=new QLabel(tr("GPI Line:"),this);
   edit_startline_label->setGeometry(240,100,60,20);
   edit_startline_label->setFont(subLabelFont());
   edit_startline_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -152,8 +148,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_startoffset_edit=new QTimeEdit(this);
   edit_startoffset_edit->setGeometry(455,99,80,20);
   edit_startoffset_edit->setDisplayFormat("hh:mm:ss");
-  edit_startoffset_label=
-    new QLabel(edit_startoffset_edit,tr("Start Delay:"),this);
+  edit_startoffset_label=new QLabel(tr("Start Delay:"),this);
   edit_startoffset_label->setGeometry(345,100,105,20);
   edit_startoffset_label->setFont(subLabelFont());
   edit_startoffset_label->
@@ -195,7 +190,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_endtime_edit=new QTimeEdit(this);
   edit_endtime_edit->setGeometry(245,177,80,20);
   edit_endtime_edit->setDisplayFormat("hh:mm:ss");
-  edit_endtime_label=new QLabel(edit_endtime_edit,tr("Record End Time:"),this);
+  edit_endtime_label=new QLabel(tr("Record End Time:"),this);
   edit_endtime_label->setGeometry(125,181,115,15);
   edit_endtime_label->setFont(subLabelFont());
   edit_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -206,8 +201,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_end_startwindow_edit=new QTimeEdit(this);
   edit_end_startwindow_edit->setGeometry(245,225,80,20);
   edit_end_startwindow_edit->setDisplayFormat("hh:mm:ss");
-  edit_end_startwindow_label=
-    new QLabel(edit_end_startwindow_edit,tr("Window Start Time:"),this);
+  edit_end_startwindow_label=new QLabel(tr("Window Start Time:"),this);
   edit_end_startwindow_label->setGeometry(125,229,115,15);
   edit_end_startwindow_label->setFont(subLabelFont());
   edit_end_startwindow_label->
@@ -216,8 +210,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_end_endwindow_edit=new QTimeEdit(this);
   edit_end_endwindow_edit->setGeometry(455,225,80,20);
   edit_end_endwindow_edit->setDisplayFormat("hh:mm:ss");
-  edit_end_endwindow_label=
-    new QLabel(edit_end_endwindow_edit,tr("Window End Time:"),this);
+  edit_end_endwindow_label=new QLabel(tr("Window End Time:"),this);
   edit_end_endwindow_label->setGeometry(345,229,105,15);
   edit_end_endwindow_label->setFont(subLabelFont());
   edit_end_endwindow_label->
@@ -226,7 +219,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_endmatrix_spin=new QSpinBox(this);
   edit_endmatrix_spin->setGeometry(185,247,30,20);
   edit_endmatrix_spin->setRange(0,MAX_MATRICES-1);
-  edit_endmatrix_label=new QLabel(edit_endmatrix_spin,tr("GPI Matrix:"),this);
+  edit_endmatrix_label=new QLabel(tr("GPI Matrix:"),this);
   edit_endmatrix_label->setGeometry(100,248,80,20);
   edit_endmatrix_label->setFont(subLabelFont());
   edit_endmatrix_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -234,7 +227,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_endline_spin=new QSpinBox(this);
   edit_endline_spin->setGeometry(295,247,30,20);
   edit_endline_spin->setRange(1,MAX_GPIO_PINS);
-  edit_endline_label=new QLabel(edit_endline_spin,tr("GPI Line:"),this);
+  edit_endline_label=new QLabel(tr("GPI Line:"),this);
   edit_endline_label->setGeometry(230,248,60,20);
   edit_endline_label->setFont(subLabelFont());
   edit_endline_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -242,8 +235,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_maxlength_edit=new QTimeEdit(this);
   edit_maxlength_edit->setGeometry(455,247,80,20);
   edit_maxlength_edit->setDisplayFormat("hh:mm:ss");
-  edit_maxlength_label=
-    new QLabel(edit_maxlength_edit,tr("Max Record Length:"),this);
+  edit_maxlength_label=new QLabel(tr("Max Record Length:"),this);
   edit_maxlength_label->setGeometry(325,248,125,20);
   edit_maxlength_label->setFont(subLabelFont());
   edit_maxlength_label->
@@ -257,7 +249,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_description_edit=new QLineEdit(this);
   edit_description_edit->setGeometry(105,291,sizeHint().width()-115,20);
   edit_description_edit->setValidator(validator);
-  label=new QLabel(edit_description_edit,tr("Description:"),this);
+  label=new QLabel(tr("Description:"),this);
   label->setGeometry(10,291,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -267,7 +259,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   edit_source_box=new QComboBox(this);
   edit_source_box->setGeometry(105,317,sizeHint().width()-115,24);
-  label=new QLabel(edit_source_box,tr("Source:"),this);
+  label=new QLabel(tr("Source:"),this);
   label->setGeometry(10,317,90,24);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -278,7 +270,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_destination_edit=new QLineEdit(this);
   edit_destination_edit->setGeometry(105,345,sizeHint().width()-185,20);
   edit_destination_edit->setReadOnly(true);
-  label=new QLabel(edit_destination_edit,tr("Destination:"),this);
+  label=new QLabel(tr("Destination:"),this);
   label->setGeometry(10,345,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -293,9 +285,9 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   edit_channels_box=new QComboBox(this);
   edit_channels_box->setGeometry(190,370,40,20);
-  edit_channels_box->insertItem("1");
-  edit_channels_box->insertItem("2");
-  label=new QLabel(edit_channels_box,tr("Channels:"),this);
+  edit_channels_box->insertItem(0,"1");
+  edit_channels_box->insertItem(1,"2");
+  label=new QLabel(tr("Channels:"),this);
   label->setGeometry(120,370,70,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -311,13 +303,11 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_autotrim_spin=new QSpinBox(this);
   edit_autotrim_spin->setGeometry(265,393,40,20);
   edit_autotrim_spin->setRange(-99,-1);
-  edit_autotrim_label=
-    new QLabel(edit_autotrim_spin,tr("Level:"),this);
+  edit_autotrim_label=new QLabel(tr("Level:"),this);
   edit_autotrim_label->setGeometry(220,393,40,20);
   edit_autotrim_label->setFont(labelFont());
   edit_autotrim_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  edit_autotrim_unit=
-    new QLabel(edit_autotrim_spin,tr("dBFS"),this);
+  edit_autotrim_unit=new QLabel(tr("dBFS"),this);
   edit_autotrim_unit->setGeometry(310,393,40,20);
   edit_autotrim_unit->setFont(labelFont());
   edit_autotrim_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -333,13 +323,11 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_normalize_spin=new QSpinBox(this);
   edit_normalize_spin->setGeometry(265,418,40,20);
   edit_normalize_spin->setRange(-99,-1);
-  edit_normalize_label=
-    new QLabel(edit_normalize_spin,tr("Level:"),this);
+  edit_normalize_label=new QLabel(tr("Level:"),this);
   edit_normalize_label->setGeometry(220,418,40,20);
   edit_normalize_label->setFont(labelFont());
   edit_normalize_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  edit_normalize_unit=
-    new QLabel(edit_normalize_spin,tr("dBFS"),this);
+  edit_normalize_unit=new QLabel(tr("dBFS"),this);
   edit_normalize_unit->setGeometry(310,418,40,20);
   edit_normalize_unit->setFont(labelFont());
   edit_normalize_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -407,7 +395,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_startoffset_box->setGeometry(140,516,55,24);
   edit_startoffset_box->setRange(0,355);
   edit_startoffset_box->setSpecialValueText(tr("None"));
-  label=new QLabel(edit_startoffset_box,tr("Start Date Offset:"),this);
+  label=new QLabel(tr("Start Date Offset:"),this);
   label->setGeometry(10,516,125,24);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -419,7 +407,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_endoffset_box->setGeometry(440,516,55,24);
   edit_endoffset_box->setRange(0,355);
   edit_endoffset_box->setSpecialValueText(tr("None"));
-  label=new QLabel(edit_endoffset_box,tr("End Date Offset:"),this);
+  label=new QLabel(tr("End Date Offset:"),this);
   label->setGeometry(310,516,125,24);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -525,12 +513,12 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_sun_button->setChecked(edit_recording->sun());
   edit_startoffset_box->setValue(edit_recording->startdateOffset());
   edit_endoffset_box->setValue(edit_recording->enddateOffset());
-  activateStationData(edit_station_box->currentItem(),false);
+  activateStationData(edit_station_box->currentIndex(),false);
 
   QString source=GetSourceName(edit_recording->switchSource());
   for(int i=0;i<edit_source_box->count();i++) {
-    if(edit_source_box->text(i)==source) {
-      edit_source_box->setCurrentItem(i);
+    if(edit_source_box->itemData(i).toString()==source) {
+      edit_source_box->setCurrentIndex(i);
     }
   }
   if(edit_recording->trimThreshold()>0) {
@@ -555,9 +543,9 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   // deck exists, use the deck default for num. channels.  Otherwise use the
   // previously entered (or DB default) recording num. channels.
   if( (edit_recording->station().length() == 0) && (edit_deck!=NULL) ) {
-    edit_channels_box->setCurrentItem(edit_deck->defaultChannels()-1);
+    edit_channels_box->setCurrentIndex(edit_deck->defaultChannels()-1);
   } else {
-    edit_channels_box->setCurrentItem(edit_recording->channels()-1);
+    edit_channels_box->setCurrentIndex(edit_recording->channels()-1);
   }
   edit_oneshot_box->setChecked(edit_recording->oneShot());
 }
@@ -601,7 +589,7 @@ void EditRecording::activateStationData(int id,bool use_temp)
   }
   edit_deck=new RDDeck(f0[0],f0[1].left(f0[1].length()-1).toInt());
   if(edit_channels_box->count()>0) {
-    edit_channels_box->setCurrentItem(edit_deck->defaultChannels()-1);
+    edit_channels_box->setCurrentIndex(edit_deck->defaultChannels()-1);
   }
   edit_source_box->clear();
   sql=QString("select NAME from INPUTS where ")+
@@ -609,7 +597,8 @@ void EditRecording::activateStationData(int id,bool use_temp)
     QString().sprintf("(MATRIX=%d)",edit_deck->switchMatrix());
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    edit_source_box->insertItem(q->value(0).toString());
+    edit_source_box->
+      insertItem(edit_source_box->count(),q->value(0).toString());
   }
   delete q;
 }
@@ -780,11 +769,11 @@ void EditRecording::PopulateDecks(QComboBox *box)
     "order by STATION_NAME,CHANNEL";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    box->insertItem(q->value(0).toString()+
+    box->insertItem(box->count(),q->value(0).toString()+
 		    QString().sprintf(" : %dR",q->value(1).toInt()));
     if((q->value(0).toString()==edit_recording->station())&&
        (q->value(1).toUInt()==edit_recording->channel())) {
-      box->setCurrentItem(count);
+      box->setCurrentIndex(count);
     }
     count++;
   }
@@ -795,12 +784,12 @@ void EditRecording::PopulateDecks(QComboBox *box)
     q->first();
     edit_deck=new RDDeck(q->value(0).toString(),q->value(1).toUInt()); 
     if(edit_channels_box->count()>0) {
-      edit_channels_box->setCurrentItem(edit_deck->defaultChannels()-1);
+      edit_channels_box->setCurrentIndex(edit_deck->defaultChannels()-1);
     }
  }
   delete q;
   if(box->count()==0) {  // In case the deck has been disabled
-    box->insertItem(edit_recording->station()+
+    box->insertItem(box->count(),edit_recording->station()+
 		    QString().sprintf(" : %dR",edit_recording->channel()));
   }
 }
@@ -829,12 +818,12 @@ void EditRecording::Save()
   edit_recording->setFormat(edit_deck->defaultFormat());
   if(edit_deck->defaultFormat()>0) {
     edit_recording->setBitrate(edit_deck->defaultBitrate()*
-			       (edit_channels_box->currentItem()+1));
+			       (edit_channels_box->currentIndex()+1));
   }
   else {
     edit_recording->setBitrate(0);
   }
-  edit_recording->setChannels(edit_channels_box->currentItem()+1);
+  edit_recording->setChannels(edit_channels_box->currentIndex()+1);
   if(edit_autotrim_box->isChecked()) {
     edit_recording->setTrimThreshold(-100*edit_autotrim_spin->value());
   }

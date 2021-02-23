@@ -61,7 +61,7 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
   list_list_model->setFont(defaultFont());
   list_list_model->setPalette(palette());
   list_list_view->setModel(list_list_model);
-  list_type_label=new QLabel(list_list_view,list_table,this);
+  list_type_label=new QLabel(list_table,this);
   list_type_label->setFont(labelFont());
   list_type_label->setGeometry(14,5,85,19);
   connect(list_list_view,SIGNAL(doubleClicked(const QModelIndex &)),

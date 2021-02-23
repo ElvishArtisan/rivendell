@@ -2,7 +2,7 @@
 //
 // Rivendell file format converter.
 //
-//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
+#include <QApplication>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -44,7 +44,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdconvert","rdconvert",RDCONVERT_USAGE,this));
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdconvert: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdconvert: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -184,7 +184,8 @@ MainObject::MainObject(QObject *parent)
   conv->setSpeedRatio(speed_ratio);
   conv_err=conv->convert();
   if(conv_err!=RDAudioConvert::ErrorOk) {
-    fprintf(stderr,"%s\n",(const char *)RDAudioConvert::errorText(conv_err));
+    fprintf(stderr,"%s\n",
+	    RDAudioConvert::errorText(conv_err).toUtf8().constData());
     exit(256);
   }
 

@@ -2,7 +2,7 @@
 //
 // A container class for a list of RML macros.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,9 +35,8 @@ class RDMacroEvent : public QObject
 {
   Q_OBJECT
  public:
-  RDMacroEvent(RDRipc *ripc=0,QObject *parent=0,const char *name=0);
-  RDMacroEvent(QHostAddress addr,RDRipc *ripc=0,
-	       QObject *parent=0,const char *name=0);
+  RDMacroEvent(RDRipc *ripc=0,QObject *parent=0);
+  RDMacroEvent(QHostAddress addr,RDRipc *ripc=0,QObject *parent=0);
   ~RDMacroEvent();
   int line() const;
   void setLine(int line);

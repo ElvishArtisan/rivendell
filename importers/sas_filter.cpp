@@ -45,7 +45,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=new RDApplication("sas_filter","sas_filter",SAS_FILTER_USAGE,this);
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"sas_filter: %s\n",(const char *)err_msg);
+    fprintf(stderr,"sas_filter: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -164,8 +164,8 @@ void MainObject::InjectLine(char *line)
   // Title
   //
   line[60]=0;
-  temp=QString(line+19).stripWhiteSpace();
-  base_sql+=QString().sprintf("DESCRIPTION=\"%s\",",(const char *)temp);
+  temp=QString(line+19).trimmed();
+  base_sql+=QString("DESCRIPTION=\"")+RDEscapeString(temp)+"\",";
 
   //
   // Active Flag

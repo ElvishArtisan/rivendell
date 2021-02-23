@@ -165,7 +165,7 @@ MainObject::MainObject(QObject *parent)
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdcatchd","rdcatchd",
 							 RDCATCHD_USAGE,this));
   if(!rda->open(&err_msg,&err_type,false)) {
-    fprintf(stderr,"rdcatchd: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdcatchd: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -183,7 +183,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rdcatchdd: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }
@@ -224,7 +224,7 @@ MainObject::MainObject(QObject *parent)
   catch_event_mapper=new QSignalMapper(this);
   connect(catch_event_mapper,SIGNAL(mapped(int)),
 	  this,SLOT(eventFinishedData(int)));
-  QTimer *timer=new QTimer(this,"free_events_timer");
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(freeEventsData()));
   timer->start(RDCATCHD_FREE_EVENTS_INTERVAL);
 
@@ -411,9 +411,10 @@ MainObject::MainObject(QObject *parent)
   //
   // Schedule Startup Cart
   //
-  timer=new QTimer(this,"startup_cart_timer");
+  timer=new QTimer(this);
+  timer->setSingleShot(true);
   connect(timer,SIGNAL(timeout()),this,SLOT(startupCartData()));
-  timer->start(10000,true);
+  timer->start(10000);
 
   //
   // Set Realtime Permissions
@@ -504,12 +505,12 @@ void MainObject::gpiStateChangedData(int matrix,int line,bool state)
 	 (catch_events[i].gpiStartTimer()->isActive())) {
 	if(catch_events[i].startOffset()>0) {
 	  catch_events[i].gpiOffsetTimer()->
-	    start(catch_events[i].startOffset(),true);
+	    start(catch_events[i].startOffset());
 	  catch_events[i].gpiStartTimer()->stop();
 	  BroadcastCommand(QString().sprintf("RE %d %d %d!",
 					     catch_events[i].channel(),
 					     RDDeck::Ready,
-					     catch_events[i].id()));
+					     catch_events[i].id()).toUtf8());
 	}
 	else {
 	  if(StartRecording(i)) {
@@ -559,7 +560,7 @@ void MainObject::startTimerData(int id)
   catch_record_id[deck]=0;
   BroadcastCommand(QString().sprintf("RE %d %d %d!",
 				     deck+1,catch_record_deck_status[deck],
-				     id));
+				     id).toUtf8());
   rda->syslog(LOG_INFO,"gpi start window closes: event: %d, gpi: %d:%d",
 	      id,catch_events[event].startMatrix(),
 	      catch_events[event].startLine());
@@ -620,7 +621,8 @@ void MainObject::engineData(int id)
       WriteExitCode(event,RDRecording::DeviceBusy);
       BroadcastCommand(QString().sprintf("RE 0 %d %d %s!",RDDeck::Recording,
 					 catch_events[event].id(),
-				(const char *)catch_events[event].cutName()));
+					 catch_events[event].cutName().
+					 toUtf8().constData()).toUtf8());
       return;
     }
   }
@@ -637,10 +639,10 @@ void MainObject::engineData(int id)
 			       catch_events[event].channel(),
 			       catch_record_deck_status[catch_events[event].
 							channel()-1],
-			       catch_events[event].id()));
+			       catch_events[event].id()).toUtf8());
       rda->syslog(LOG_WARNING,"record aborted: no such cut: %s, id: %d",
-		  (const char *)catch_events[event].cutName(),
-	     catch_events[event].id());
+		  catch_events[event].cutName().toUtf8().constData(),
+		  catch_events[event].id());
       return;
     }
     catch_record_card[catch_events[event].channel()-1]=-1;
@@ -696,7 +698,7 @@ void MainObject::engineData(int id)
       catch_events[event].gpiStartTimer()->
 	start(catch_events[event].startLength()-
 	      (QTime().msecsTo(current_time)-
-	       QTime().msecsTo(catch_events[event].startTime())),true);
+	       QTime().msecsTo(catch_events[event].startTime())));
       catch_record_deck_status[catch_events[event].channel()-1]=
 	RDDeck::Waiting;
       catch_record_id[catch_events[event].channel()-1]=
@@ -707,7 +709,7 @@ void MainObject::engineData(int id)
 		       catch_events[event].channel(),
 		       catch_record_deck_status[catch_events[event].
 						channel()-1],
-					 catch_events[event].id()));
+					 catch_events[event].id()).toUtf8());
       rda->syslog(LOG_INFO,"gpi start window opens: event: %d, gpi: %d:%d",
 		  id,catch_events[event].startMatrix(),
 		  catch_events[event].startLine());
@@ -723,7 +725,7 @@ void MainObject::engineData(int id)
 			       catch_events[event].channel(),
 			       catch_playout_deck_status[catch_events[event].
 							 channel()-129],
-			       catch_events[event].id()));
+			       catch_events[event].id()).toUtf8());
       rda->syslog(LOG_WARNING,"playout aborted: no such cut: %s, id: %d",
 		  (const char *)catch_events[event].cutName().toUtf8(),
 		  catch_events[event].id());
@@ -762,7 +764,7 @@ void MainObject::engineData(int id)
     if(!RDCart::exists(catch_events[event].macroCart())) {
       WriteExitCode(event,RDRecording::NoCut);
       BroadcastCommand(QString().
-		       sprintf("RE 0 0 %d!",catch_events[event].id()));
+		       sprintf("RE 0 0 %d!",catch_events[event].id()).toUtf8());
       rda->syslog(LOG_WARNING,"macro aborted: no such cart: %u, id: %d",
 		  catch_events[event].macroCart(),
 		  catch_events[event].id());
@@ -779,7 +781,7 @@ void MainObject::engineData(int id)
     if(!RDCut::exists(catch_events[event].cutName())) {
       WriteExitCode(event,RDRecording::NoCut);
       BroadcastCommand(QString().
-		       sprintf("RE 0 0 %d!",catch_events[event].id()));
+		       sprintf("RE 0 0 %d!",catch_events[event].id()).toUtf8());
       rda->syslog(LOG_WARNING,"download aborted: no such cut: %s, id: %d",
 		  (const char *)catch_events[event].cutName().toUtf8(),
 		  catch_events[event].id());
@@ -823,7 +825,7 @@ void MainObject::engineData(int id)
     if(!RDCut::exists(catch_events[event].cutName())) {
       WriteExitCode(event,RDRecording::NoCut);
       BroadcastCommand(QString().
-		       sprintf("RE 0 0 %d!",catch_events[event].id()));
+		       sprintf("RE 0 0 %d!",catch_events[event].id()).toUtf8());
       rda->syslog(LOG_WARNING,"upload aborted: no such cut: %s, id: %d",
 		  (const char *)catch_events[event].cutName().toUtf8(),
 		  catch_events[event].id());
@@ -896,7 +898,7 @@ void MainObject::recordLoadedData(int card,int stream)
   catch_record_deck_status[deck-1]=RDDeck::Ready;
   BroadcastCommand(QString().sprintf("RE %d %d %d!",
 				     deck,catch_record_deck_status[deck-1],
-				     catch_record_id[deck-1]));
+				     catch_record_id[deck-1]).toUtf8());
   rda->syslog(LOG_DEBUG,"Loaded - Card: %d  Stream: %d\n",card,stream);
 }
 
@@ -914,7 +916,7 @@ void MainObject::recordingData(int card,int stream)
   BroadcastCommand(QString().sprintf("RE %d %d %d %s!",
 				     deck,catch_record_deck_status[deck-1],
 				     catch_record_id[deck-1],
-				     (const char *)cutname));
+				     cutname.toUtf8().constData()).toUtf8());
   catch_record_status[deck-1]=true;
   if(debug) {
     printf("Recording - Card: %d  Stream: %d,  Id: %d\n",card,stream,
@@ -974,7 +976,7 @@ void MainObject::recordUnloadedData(int card,int stream,unsigned msecs)
   }
   BroadcastCommand(QString().sprintf("RE %d %d %d!",
 				     deck,RDDeck::Idle,
-				     catch_record_id[deck-1]));
+				     catch_record_id[deck-1]).toUtf8());
   catch_record_id[deck-1]=0;
   if(debug) {
     printf("Unloaded - Card: %d  Stream: %d\n",card,stream);
@@ -1011,7 +1013,7 @@ void MainObject::playLoadedData(int handle)
   catch_playout_deck_status[deck-129]=RDDeck::Ready;
   BroadcastCommand(QString().sprintf("RE %d %d %d!",
 				     deck,catch_playout_deck_status[deck-129],
-				     catch_playout_id[deck-129]));
+				     catch_playout_id[deck-129]).toUtf8());
   if(debug) {
     printf("Play Loaded - Card: %d  Stream: %d\n",
 	   catch_playout_card[deck-129],
@@ -1028,7 +1030,7 @@ void MainObject::playingData(int handle)
 		    RDRecording::PlayActive);
   BroadcastCommand(QString().sprintf("RE %d %d %d!",
 				     deck,catch_playout_deck_status[deck-129],
-				     catch_playout_id[deck-129]));
+				     catch_playout_id[deck-129]).toUtf8());
   catch_playout_status[GetPlayoutDeck(handle)]=true;
   if(debug) {
     printf("Playing - Card: %d  Stream: %d\n",
@@ -1067,7 +1069,7 @@ void MainObject::playUnloadedData(int handle)
   WriteExitCodeById(catch_playout_id[deck-129],RDRecording::Ok);
   BroadcastCommand(QString().sprintf("RE %d %d %d!",deck,
 				     catch_playout_deck_status[deck-129],
-				     catch_playout_id[deck-129]));
+				     catch_playout_id[deck-129]).toUtf8());
   if(debug) {
     printf("Play unloaded - Card: %d  Stream: %d\n",
 	   catch_playout_card[deck-129],catch_playout_stream[deck-129]);
@@ -1125,7 +1127,7 @@ void MainObject::eventFinishedData(int id)
       catch_events[event].setStatus(RDDeck::Idle);
       BroadcastCommand(QString().sprintf("RE 0 %d %d!",
 					 RDDeck::Idle,
-					 catch_macro_event_id[id]));
+					 catch_macro_event_id[id]).toUtf8());
       if(catch_events[event].oneShot()) {
 	PurgeEvent(event);
       }
@@ -1174,7 +1176,8 @@ void MainObject::updateXloadsData()
 	  it=catch_active_xloads.begin()+i;
 	  BroadcastCommand(QString().
 			   sprintf("RE 0 %d %d!",RDDeck::Idle,
-				   catch_events[catch_active_xloads[i]].id()));
+				   catch_events[catch_active_xloads[i]].id()).
+			   toUtf8());
 	  catch_active_xloads.erase(it,it+1);
 	  break;
 
@@ -1225,7 +1228,7 @@ bool MainObject::StartRecording(int event)
     WriteExitCodeById(catch_events[event].id(),RDRecording::InternalError);
     BroadcastCommand(QString().sprintf("RE %d %d %d!",
 				       deck,catch_record_deck_status[deck-1],
-				       catch_events[event].id()));
+				       catch_events[event].id()).toUtf8());
     rda->syslog(LOG_WARNING,"invalid audio device for deck: %d, event: %d",
 		deck,catch_events[event].id());
     return false;
@@ -1239,7 +1242,7 @@ bool MainObject::StartRecording(int event)
     WriteExitCodeById(catch_events[event].id(),RDRecording::DeviceBusy);
     BroadcastCommand(QString().sprintf("RE %d %d %d!",
 				       deck,catch_record_deck_status[deck-1],
-				       catch_events[event].id()));
+				       catch_events[event].id()).toUtf8());
     rda->syslog(LOG_WARNING,
 		"device busy for deck: %d, event: %d | in use by event: %d",
 		deck,catch_events[event].id(),catch_record_id[deck-1]);
@@ -1322,8 +1325,8 @@ bool MainObject::StartRecording(int event)
   str+=QString().sprintf(" card: %d, stream: %d, cut: %s length: %d",
 			 catch_record_card[deck-1],
 			 catch_record_stream[deck-1],
-			 (const char *)cut_name,length);
-  rda->syslog(LOG_INFO,str);
+			 cut_name.toUtf8().constData(),length);
+  rda->syslog(LOG_INFO,"%s",str.toUtf8().constData());
 
   //
   // Cache Selected Fields
@@ -1497,7 +1500,7 @@ void MainObject::StartDownloadEvent(int event)
   } 
   BroadcastCommand(QString().sprintf("RE 0 %d %d!",
 				     RDDeck::Recording,
-				     catch_events[event].id()));
+				     catch_events[event].id()).toUtf8());
   StartBatch(catch_events[event].id());
 }
 
@@ -1510,7 +1513,7 @@ void MainObject::StartUploadEvent(int event)
     catch_xload_timer->start(XLOAD_UPDATE_INTERVAL);
   } 
   BroadcastCommand(QString().sprintf("RE 0 %d %d!",RDDeck::Recording,
-				     catch_events[event].id()));
+				     catch_events[event].id()).toUtf8());
   StartBatch(catch_events[event].id());
 }
 
@@ -1526,11 +1529,12 @@ bool MainObject::ExecuteMacroCart(RDCart *cart,int id,int event)
     catch_events[event].setStatus(RDDeck::Recording);
   }
   if(id!=-1) {
-    BroadcastCommand(QString().sprintf("RE 0 %d %d!",RDDeck::Recording,id));
+    BroadcastCommand(QString().sprintf("RE 0 %d %d!",RDDeck::Recording,id).
+		     toUtf8());
   }
   catch_macro_event_id[event_id]=id;
   catch_event_pool[event_id]=
-    new RDMacroEvent(rda->station()->address(),rda->ripc(),this,"event");
+    new RDMacroEvent(rda->station()->address(),rda->ripc(),this);
   catch_event_mapper->setMapping(catch_event_pool[event_id],event_id);
   connect(catch_event_pool[event_id],SIGNAL(finished()),
 	  catch_event_mapper,SLOT(map()));
@@ -1811,23 +1815,23 @@ void MainObject::DispatchCommand(ServerConnection *conn)
 }
 
 
-void MainObject::EchoCommand(int ch,const char *command)
+void MainObject::EchoCommand(int ch,const QString &cmd)
 {
 //  LogLine(RDConfig::LogDebug,QString().sprintf("rdcatchd: EchoCommand(%d,%s)",ch,command));
   ServerConnection *conn=catch_connections.at(ch);
   if(conn->socket()->state()==QAbstractSocket::ConnectedState) {
-    conn->socket()->write(command,strlen(command));
+    conn->socket()->write(cmd.toUtf8());
   }
 }
 
 
-void MainObject::BroadcastCommand(const char *command,int except_ch)
+void MainObject::BroadcastCommand(const QString &cmd,int except_ch)
 {
 //  LogLine(RDConfig::LogDebug,QString().sprintf("rdcatchd: BroadcastCommand(%s)",command));
   for(int i=0;i<catch_connections.size();i++) {
     if(catch_connections.at(i)!=NULL) {
       if(i!=except_ch) {
-	EchoCommand(i,command);
+	EchoCommand(i,cmd);
       }
     }
   }
@@ -1995,11 +1999,16 @@ void MainObject::LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add)
 
   if(add) {
     if(e->startType()==RDRecording::GpiStart) {
-      e->setGpiStartTimer(new QTimer(this));
+      QTimer *timer;
+      timer=new QTimer(this);
+      timer->setSingleShot(true);
+      e->setGpiStartTimer(timer);
       catch_gpi_start_mapper->setMapping(e->gpiStartTimer(),e->id());
       connect(e->gpiStartTimer(),SIGNAL(timeout()),
 	      catch_gpi_start_mapper,SLOT(map()));
-      e->setGpiOffsetTimer(new QTimer(this));
+      timer=new QTimer(this);
+      timer->setSingleShot(true);
+      e->setGpiOffsetTimer(timer);
       catch_gpi_offset_mapper->setMapping(e->gpiOffsetTimer(),e->id());
       connect(e->gpiOffsetTimer(),SIGNAL(timeout()),
 	      catch_gpi_offset_mapper,SLOT(map()));
@@ -2343,7 +2352,8 @@ void MainObject::CheckInRecording(QString cutname,CatchEvent *evt,
   cart->updateLength();
   delete cart;
   delete cut;
-  chown(RDCut::pathName(cutname),rda->config()->uid(),rda->config()->gid());
+  chown(RDCut::pathName(cutname).toUtf8(),rda->config()->uid(),
+	rda->config()->gid());
 }
 
 
@@ -2383,7 +2393,7 @@ void MainObject::CheckInPodcast(CatchEvent *e) const
   // Add the Cast Entry
   //
   RDPodcast::Status status=RDPodcast::StatusPending;
-  if(q->value(0).toString().lower()=="y") {
+  if(q->value(0).toString().toLower()=="y") {
     status=RDPodcast::StatusActive;
   }
   sql=QString("insert into PODCASTS set ")+
@@ -2490,10 +2500,10 @@ QString MainObject::BuildTempName(CatchEvent *evt,QString str)
 QString MainObject::GetFileExtension(QString filename)
 {
   for(int i=filename.length()-1;i>=0;i--) {
-    if(((const char *)filename)[i]=='/') {
+    if(filename.at(i)==QChar('/')) {
       return QString();
     }
-    if(((const char *)filename)[i]=='.') {
+    if(filename.at(i)==QChar('.')) {
       return filename.right(filename.length()-i-1);
     }
   }
@@ -2525,7 +2535,7 @@ bool MainObject::SendErrorMessage(CatchEvent *event,const QString &err_desc,
   }
   catch_macro_event_id[event_id]=event->id()+RDCATCHD_ERROR_ID_OFFSET;
   catch_event_pool[event_id]=
-    new RDMacroEvent(rda->station()->address(),rda->ripc(),this,"event");
+    new RDMacroEvent(rda->station()->address(),rda->ripc(),this);
   catch_event_mapper->setMapping(catch_event_pool[event_id],event_id);
   connect(catch_event_pool[event_id],SIGNAL(finished()),
 	  catch_event_mapper,SLOT(map()));
@@ -2645,11 +2655,11 @@ void MainObject::StartBatch(int id)
 {
   if((fork())==0) {
     QString bin=QString(RD_PREFIX)+"/"+"sbin/rdcatchd";
-    execl(bin,(const char *)bin,
-	  (const char *)QString().sprintf("--event-id=%d",id),
+    execl(bin.toUtf8(),bin.toUtf8().constData(),
+	  QString().sprintf("--event-id=%d",id).toUtf8().constData(),
 	  (char *)NULL);
     rda->syslog(LOG_ERR,"failed to exec %s --event-id=%d: %s",
-		(const char *)bin,
+		bin.toUtf8().constData(),
 		id,strerror(errno));
     exit(0);
   }
@@ -2669,8 +2679,10 @@ void MainObject::SendNotification(RDNotification::Type type,
 QString MainObject::GetTempRecordingName(int id) const
 {
   return QString().sprintf("%s/rdcatchd-record-%d.%s",
-			   RDConfiguration()->audioRoot().ascii(),id,
-			   RDConfiguration()->audioExtension().ascii());
+			   RDConfiguration()->audioRoot().toAscii().constData(),
+			   id,
+			   RDConfiguration()->audioExtension().toAscii().
+			   constData());
 }
 
 

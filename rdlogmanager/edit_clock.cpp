@@ -67,7 +67,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_shortname_edit=new QLineEdit(this);
   edit_shortname_edit->setGeometry(350,10,40,20);
   edit_shortname_edit->setMaxLength(3);
-  QLabel *label=new QLabel(edit_shortname_edit,tr("Code:"),this);
+  QLabel *label=new QLabel(tr("Code:"),this);
   label->setGeometry(295,10,50,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -136,8 +136,8 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   edit_remarks_edit=new QTextEdit(this);
   edit_remarks_edit->setGeometry(10,sizeHint().height()-140,CENTER_LINE-20,130);
-  edit_remarks_edit->setTextFormat(Qt::PlainText);
-  label=new QLabel(edit_remarks_edit,tr("USER NOTES"),this);
+  edit_remarks_edit->setAcceptRichText(false);
+  label=new QLabel(tr("USER NOTES"),this);
   label->setGeometry(15,sizeHint().height()-155,CENTER_LINE-20,15);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -227,7 +227,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_shortname_edit->setText(edit_clocks_model->shortName());
   if(edit_clocks_model->color().isValid()) {
     edit_color_button->
-      setPalette(QPalette(edit_clocks_model->color(),backgroundColor()));
+      setPalette(QPalette(edit_clocks_model->color(),palette().color(QPalette::Background)));
   }
   edit_remarks_edit->setText(edit_clocks_model->remarks());
   edit_modified=false;
@@ -486,7 +486,7 @@ void EditClock::saveAsData()
   }
   edit_clockname_label->setText(clockname);
   UpdateClock();
-  setCaption("RDLogManager - "+tr("Edit Clock")+": "+edit_name);
+  setWindowTitle("RDLogManager - "+tr("Edit Clock")+": "+edit_name);
 }
 
 
@@ -499,9 +499,9 @@ void EditClock::doubleClickedData(const QModelIndex &index)
 void EditClock::colorData()
 {
   QColor color=
-    QColorDialog::getColor(edit_color_button->backgroundColor(),this);
+    QColorDialog::getColor(edit_color_button->palette().color(QPalette::Background),this);
   if(color.isValid()) {
-    edit_color_button->setPalette(QPalette(color,backgroundColor()));
+    edit_color_button->setPalette(QPalette(color,palette().color(QPalette::Background)));
   }
 }
 
@@ -576,9 +576,9 @@ void EditClock::closeEvent(QCloseEvent *e)
 
 void EditClock::Save()
 {
-  edit_clocks_model->setColor(edit_color_button->backgroundColor());
+  edit_clocks_model->setColor(edit_color_button->palette().color(QPalette::Background));
   edit_clocks_model->setShortName(edit_shortname_edit->text());
-  edit_clocks_model->setRemarks(edit_remarks_edit->text());
+  edit_clocks_model->setRemarks(edit_remarks_edit->toPlainText());
   edit_clocks_model->save();
   if(edit_clocks_model->getRulesModified())
      {
@@ -622,7 +622,7 @@ void EditClock::UpdateClock(int line)
   for(int i=0;i<edit_clocks_model->size();i++) {
     if(i==line) {
       p->setBrush(edit_clocks_view->palette().
-		  color(QPalette::Active,QColorGroup::Highlight));
+		  color(QPalette::Active,QPalette::Highlight));
       p->drawPie(-size_x/2,-size_y/2,size_x,size_y,
 	  -QTime().secsTo(edit_clocks_model->eventLine(line)->startTime())*5760/3600,
 	  -(edit_clocks_model->eventLine(line)->length()/1000)*5760/3600);
@@ -632,7 +632,7 @@ void EditClock::UpdateClock(int line)
 	p->setBrush(edit_clocks_model->eventLine(i)->color());
       }
       else {
-	p->setBrush(palette().color(QPalette::Active,QColorGroup::Base));
+	p->setBrush(palette().color(QPalette::Active,QPalette::Base));
       }
       p->drawPie(-size_x/2,-size_y/2,size_x,size_y,
 	     -QTime().secsTo(edit_clocks_model->eventLine(i)->startTime())*5760/3600,

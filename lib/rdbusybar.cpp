@@ -26,16 +26,16 @@ RDBusyBar::RDBusyBar(QWidget *parent,Qt::WFlags f)
   bar_pos=0;
   setFrameStyle(QFrame::StyledPanel|QFrame::Sunken);
   QPalette p=palette();
-  p.setColor(QPalette::Active,QColorGroup::Background,
-	     p.color(QPalette::Active,QColorGroup::Base));
+  p.setColor(QPalette::Active,QPalette::Background,
+	     p.color(QPalette::Active,QPalette::Base));
   setPalette(p);
 
   bar_label=new QLabel(this);
-  p.setColor(QPalette::Active,QColorGroup::Background,
-	     p.color(QPalette::Active,QColorGroup::Highlight));
+  p.setColor(QPalette::Active,QPalette::Background,
+	     p.color(QPalette::Active,QPalette::Highlight));
   bar_label->setPalette(p);
   bar_label->setStyleSheet("background-color:"+
-		      p.color(QPalette::Active,QColorGroup::Highlight).name());
+		      p.color(QPalette::Active,QPalette::Highlight).name());
   bar_label->hide();
 
   bar_timer=new QTimer(this);

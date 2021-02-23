@@ -335,8 +335,7 @@ QString RDGetPathPart(QString path)
 {
   int c;
 
-  //  c=path.findRev('/');
-  c=path.findRev(RDCONF_FILE_SEPARATOR);
+  c=path.lastIndexOf(RDCONF_FILE_SEPARATOR);
   if(c<0) {
     return QString("");
   }
@@ -349,8 +348,7 @@ QString RDGetBasePart(QString path)
 {
   int c;
 
-  //  c=path.findRev('/');
-  c=path.findRev(RDCONF_FILE_SEPARATOR);
+  c=path.lastIndexOf(RDCONF_FILE_SEPARATOR);
   if(c<0) {
     return path;
   }
@@ -390,19 +388,19 @@ QString RDGetShortDayNameEN(int weekday)
 
 QFont::Weight RDGetFontWeight(QString string)
 {
-  if(string.contains("Light",false)) {
+  if(string.contains("Light",Qt::CaseInsensitive)) {
     return QFont::Light;
   }
-  if(string.contains("Normal",false)) {
+  if(string.contains("Normal",Qt::CaseInsensitive)) {
     return QFont::Normal;
   }
-  if(string.contains("DemiBold",false)) {
+  if(string.contains("DemiBold",Qt::CaseInsensitive)) {
     return QFont::DemiBold;
   }
-  if(string.contains("Bold",false)) {
+  if(string.contains("Bold",Qt::CaseInsensitive)) {
     return QFont::Bold;
   }
-  if(string.contains("Black",false)) {
+  if(string.contains("Black",Qt::CaseInsensitive)) {
     return QFont::Black;
   }
   return QFont::Normal;
@@ -412,7 +410,7 @@ QFont::Weight RDGetFontWeight(QString string)
 bool RDDetach(const QString &coredir)
 {
   if(!coredir.isEmpty()) {
-    chdir(coredir);
+    chdir(coredir.toUtf8());
   }
   if(daemon(coredir.isEmpty(),0)) {
     return false;
@@ -423,7 +421,7 @@ bool RDDetach(const QString &coredir)
 
 bool RDBool(QString string)
 {
-  if(string.contains("Y",false)) {
+  if(string.contains("Y",Qt::CaseInsensitive)) {
     return true;
   }
   return false;
@@ -459,7 +457,7 @@ QHostAddress RDGetHostAddr()
     65536*(host_ent->h_addr_list[0][1]&0xff)+
     256*(host_ent->h_addr_list[0][2]&0xff)+
     (host_ent->h_addr_list[0][3]&0xff);
-  return QHostAddress((Q_UINT32)host_address);
+  return QHostAddress((uint32_t)host_address);
 }
 
 
@@ -784,10 +782,10 @@ bool RDCopy(const QString &srcfile,const QString &destfile)
   int src_fd;
   int dest_fd;
 
-  if((src_fd=open((const char *)srcfile,O_RDONLY))<0) {
+  if((src_fd=open(srcfile.toUtf8(),O_RDONLY))<0) {
     return false;
   }
-  if((dest_fd=open((const char *)destfile,O_WRONLY|O_CREAT,S_IWUSR))<0) {
+  if((dest_fd=open(destfile.toUtf8(),O_WRONLY|O_CREAT,S_IWUSR))<0) {
     close(src_fd);
     return false;
   }
@@ -803,7 +801,7 @@ bool RDCopy(const QString &srcfile,int dest_fd)
 {
   int src_fd;
 
-  if((src_fd=open((const char *)srcfile,O_RDONLY))<0) {
+  if((src_fd=open(srcfile.toUtf8(),O_RDONLY))<0) {
     return false;
   }
   bool ret=RDCopy(src_fd,dest_fd);
@@ -817,7 +815,7 @@ bool RDCopy(int src_fd,const QString &destfile)
 {
   int dest_fd;
 
-  if((dest_fd=open((const char *)destfile,O_WRONLY|O_CREAT,S_IWUSR))<0) {
+  if((dest_fd=open(destfile.toUtf8(),O_WRONLY|O_CREAT,S_IWUSR))<0) {
     return false;
   }
   bool ret=RDCopy(src_fd,dest_fd);
@@ -862,14 +860,14 @@ bool RDWritePid(const QString &dirname,const QString &filename,int owner,
   QString pathname=dirname+"/"+filename;
 
   prev_mask = umask(0113);      // Set umask so pid files are user and group writable.
-  file=fopen((const char *)pathname,"w");
+  file=fopen(pathname.toUtf8(),"w");
   umask(prev_mask);
   if(file==NULL) {
     return false;
   }
   fprintf(file,"%d",getpid());
   fclose(file);
-  chown((const char *)pathname,owner,group);
+  chown(pathname.toUtf8(),owner,group);
 
   return true;
 }
@@ -878,7 +876,7 @@ bool RDWritePid(const QString &dirname,const QString &filename,int owner,
 void RDDeletePid(const QString &dirname,const QString &filename)
 {
   QString pid=dirname+"/"+filename;
-  unlink((const char *)pid);
+  unlink(pid.toUtf8());
 }
 
 
@@ -898,7 +896,7 @@ pid_t RDGetPid(const QString &pidfile)
   FILE *handle;
   pid_t ret;
 
-  if((handle=fopen((const char *)pidfile,"r"))==NULL) {
+  if((handle=fopen(pidfile.toUtf8(),"r"))==NULL) {
     return -1;
   }
   if(fscanf(handle,"%d",&ret)!=1) {
@@ -938,7 +936,7 @@ QString RDGetHomeDir(bool *found)
 
 QString RDTruncateAfterWord(QString str,int word,bool add_dots)
 {
-  QString simple=str.simplifyWhiteSpace();
+  QString simple=str.simplified();
   int quan=0;
   int point;
 
@@ -1124,7 +1122,7 @@ bool RDProcessActive(const QStringList &cmds)
   for(int i=0;i<dirs.size();i++) {
     dirs[i].toInt(&ok);
     if(ok) {
-      if((f=fopen(QString("/proc/")+dirs[i]+"/cmdline","r"))!=NULL) {
+      if((f=fopen((QString("/proc/")+dirs[i]+"/cmdline").toUtf8(),"r"))!=NULL) {
 	if(fgets(line,1024,f)!=NULL) {
 	  QStringList f1=QString(line).split(" ",QString::SkipEmptyParts);
 	  QStringList f2=f1[0].split("/",QString::SkipEmptyParts);

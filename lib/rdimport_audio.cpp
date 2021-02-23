@@ -91,8 +91,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_in_filename_edit->setGeometry(85,30,sizeHint().width()-180,20);
   connect(import_in_filename_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filenameChangedData(const QString &)));
-  import_in_filename_label=
-    new QLabel(import_in_filename_edit,tr("Filename:"),this);
+  import_in_filename_label=new QLabel(tr("Filename:"),this);
   import_in_filename_label->setGeometry(10,30,70,20);
   import_in_filename_label->setFont(labelFont());
   import_in_filename_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -118,8 +117,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   //
   import_channels_box=new QComboBox(this);
   import_channels_box->setGeometry(310,54,50,20);
-  import_channels_label=
-    new QLabel(import_channels_box,tr("Channels:"),this);
+  import_channels_label=new QLabel(tr("Channels:"),this);
   import_channels_label->setGeometry(230,54,75,20);
   import_channels_label->setFont(labelFont());
   import_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -140,7 +138,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_autotrim_spin=new QSpinBox(this);
   import_autotrim_spin->setGeometry(235,80,40,20);
   import_autotrim_spin->setRange(-99,0);
-  import_autotrim_label=new QLabel(import_autotrim_spin,tr("Level:"),this);
+  import_autotrim_label=new QLabel(tr("Level:"),this);
   import_autotrim_label->setGeometry(185,80,45,20);
   import_autotrim_label->setFont(labelFont());
   import_autotrim_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -165,8 +163,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   connect(import_out_filename_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filenameChangedData(const QString &)));
   import_out_filename_edit->setReadOnly(true);
-  import_out_filename_label=
-    new QLabel(import_out_filename_edit,tr("Filename:"),this);
+  import_out_filename_label=new QLabel(tr("Filename:"),this);
   import_out_filename_label->setGeometry(10,140,70,20);
   import_out_filename_label->setFont(labelFont());
   import_out_filename_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -194,7 +191,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_format_edit->setGeometry(85,181,sizeHint().width()-180,20);
   import_format_edit->setReadOnly(true);
   import_format_edit->setText(import_settings->description());
-  import_format_label=new QLabel(import_out_filename_edit,tr("Format:"),this);
+  import_format_label=new QLabel(tr("Format:"),this);
   import_format_label->setGeometry(10,181,70,20);
   import_format_label->setFont(labelFont());
   import_format_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -229,7 +226,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_normalize_spin=new QSpinBox(this);
   import_normalize_spin->setGeometry(160,260,40,20);
   import_normalize_spin->setRange(-30,0);
-  import_normalize_label=new QLabel(import_normalize_spin,tr("Level:"),this);
+  import_normalize_label=new QLabel(tr("Level:"),this);
   import_normalize_label->setGeometry(110,260,45,20);
   import_normalize_label->setFont(labelFont());
   import_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -262,9 +259,9 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   //
   import_normalize_spin->setValue(settings->normalizationLevel()/100);
   import_autotrim_spin->setValue(settings->autotrimLevel()/100);
-  import_channels_box->insertItem("1");
-  import_channels_box->insertItem("2");
-  import_channels_box->setCurrentItem(settings->channels()-1);
+  import_channels_box->insertItem(import_channels_box->count(),"1");
+  import_channels_box->insertItem(import_channels_box->count(),"2");
+  import_channels_box->setCurrentIndex(settings->channels()-1);
 
   filenameChangedData("");
   modeClickedData(import_mode_group->checkedId());
@@ -316,7 +313,7 @@ void RDImportAudio::setNormalizationLevel(int lvl)
 
 void RDImportAudio::setChannels(int chans)
 {
-  import_channels_box->setCurrentItem(chans-1);
+  import_channels_box->setCurrentIndex(chans-1);
 }
 
 
@@ -530,7 +527,7 @@ void RDImportAudio::Import()
   import_import_conv->setCartNumber(cut->cartNumber());
   import_import_conv->setCutNumber(cut->cutNumber());
   import_import_conv->setSourceFile(import_in_filename_edit->text());
-  settings.setChannels(import_channels_box->currentItem()+1);
+  settings.setChannels(import_channels_box->currentIndex()+1);
   if(import_normalize_box->isChecked()) {
     settings.setNormalizationLevel(import_normalize_spin->value());
   }

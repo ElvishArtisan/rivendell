@@ -2,7 +2,7 @@
 //
 //   A class for recording Microsoft WAV files.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,10 +25,6 @@
 #include <sys/stat.h>
 #include <syslog.h>
 #include <fcntl.h>
-#include <qobject.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qdatetime.h>
 
 #include <rdapplication.h>
 
@@ -100,6 +96,7 @@ RDHPIRecordStream::RDHPIRecordStream(RDHPISoundCard *card,QWidget *parent)
   connect(clock,SIGNAL(timeout()),this,SLOT(tickClock()));
 
   length_timer=new QTimer(this);
+  length_timer->setSingleShot(true);
   connect(length_timer,SIGNAL(timeout()),this,SLOT(pause()));
 }
 
@@ -135,7 +132,7 @@ QString RDHPIRecordStream::errorString(RDHPIRecordStream::Error err)
 
   default:
     str=QString(tr("Unknown RDHpiRecordStream Error:"));
-    return QString().sprintf("%s %d\n",(const char *)str,err);
+    return QString().sprintf("%s %d\n",str.toUtf8().constData(),err);
     break;
   }
 }
@@ -163,7 +160,7 @@ RDHPIRecordStream::Error RDHPIRecordStream::createWave(QString filename)
   if(is_open) {
     return RDHPIRecordStream::AlreadyOpen;
   }
-  setName(filename);
+  nameWave(filename);
   return createWave();
 }
 
@@ -664,7 +661,7 @@ void RDHPIRecordStream::tickClock()
   if((!record_started)&&(is_recording)) {
     if(samples_recorded>0) {
       if(record_length>0) {
-        length_timer->start(record_length,true);
+        length_timer->start(record_length);
       }
       emit recordStart();
       emit stateChanged(card_number,stream_number,4);  // RecordStarted

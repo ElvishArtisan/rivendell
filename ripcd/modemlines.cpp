@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for using TTY modem lines for GPIO
 //
-//   (C) Copyright 2015-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -58,9 +58,9 @@ ModemLines::ModemLines(RDMatrix *matrix,QObject *parent)
   // Open TTY
   //
   gpio_tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
-  if((gpio_fd=open(gpio_tty->port(),O_RDONLY))<0) {
+  if((gpio_fd=open(gpio_tty->port().toUtf8(),O_RDONLY))<0) {
     rda->syslog(LOG_WARNING,"unable to open tty \"%s\"",
-		(const char *)gpio_tty->port());
+		gpio_tty->port().toUtf8().constData());
     return;
   }
   for(int i=0;i<gpio_gpos;i++) {  // So we don't false trigger
@@ -83,6 +83,7 @@ ModemLines::ModemLines(RDMatrix *matrix,QObject *parent)
   connect(gpio_gpo_mapper,SIGNAL(mapped(int)),this,SLOT(gpoResetData(int)));
   for(int i=0;i<gpio_gpos;i++) {
     gpio_gpo_timers[i]=new QTimer(this);
+    gpio_gpo_timers[i]->setSingleShot(true);
     gpio_gpo_mapper->setMapping(gpio_gpo_timers[i],i);
     connect(gpio_gpo_timers[i],SIGNAL(timeout()),gpio_gpo_mapper,SLOT(map()));
     gpio_gpo_pending_states[i]=false;
@@ -139,8 +140,8 @@ void ModemLines::processCommand(RDMacro *cmd)
   switch(cmd->command()) {
       case RDMacro::GO:
 	if((gpio_fd<0)||(cmd->argQuantity()!=5)||
-	   ((cmd->arg(1).lower()!="i")&&
-	    (cmd->arg(1).lower()!="o"))||
+	   ((cmd->arg(1).toLower()!="i")&&
+	    (cmd->arg(1).toLower()!="o"))||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(2).toInt()>gpio_gpos)||
 	   ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
 	    (cmd->arg(3).toInt()!=-1))||(cmd->arg(4).toInt()<0)) {
@@ -148,7 +149,7 @@ void ModemLines::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	if(cmd->arg(1).lower()=="i") {
+	if(cmd->arg(1).toLower()=="i") {
 	  if(cmd->arg(3).toInt()==0) {
 	    emit gpiChanged(gpio_matrix,cmd->arg(2).toInt()-1,false);
 	    gpio_gpi_mask[cmd->arg(2).toInt()-1]=true;
@@ -174,12 +175,12 @@ void ModemLines::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  if(cmd->arg(3).toInt()==0) {
 	    ioctl(gpio_fd,TIOCMBIC,&gpio_gpo_table[cmd->arg(2).toInt()-1]);
 	    if(cmd->arg(4).toInt()>0) {
 	      gpio_gpo_timers[cmd->arg(2).toInt()-1]->
-		start(cmd->arg(4).toInt(),true);
+		start(cmd->arg(4).toInt());
 	      gpio_gpo_pending_states[cmd->arg(2).toInt()-1]=true;
 	    }
 	  }
@@ -188,7 +189,7 @@ void ModemLines::processCommand(RDMacro *cmd)
 	      ioctl(gpio_fd,TIOCMBIS,&gpio_gpo_table[cmd->arg(2).toInt()-1]);
 	      if(cmd->arg(4).toInt()>0) {
 		gpio_gpo_timers[cmd->arg(2).toInt()-1]->
-		  start(cmd->arg(4).toInt(),true);
+		  start(cmd->arg(4).toInt());
 		gpio_gpo_pending_states[cmd->arg(2).toInt()-1]=false;
 	      }
 	    }

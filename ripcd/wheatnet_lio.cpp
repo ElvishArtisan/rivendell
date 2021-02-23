@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for WheatNet LIO
 //
-//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,6 +42,7 @@ WheatnetLio::WheatnetLio(RDMatrix *matrix,QObject *parent)
   lio_socket->connectToHost(lio_ip_address.toString(),lio_ip_port);
 
   lio_poll_timer=new QTimer(this);
+  lio_poll_timer->setSingleShot(true);
   connect(lio_poll_timer,SIGNAL(timeout()),this,SLOT(pollData()));
 
   lio_reset_mapper=new QSignalMapper(this);
@@ -49,12 +50,14 @@ WheatnetLio::WheatnetLio(RDMatrix *matrix,QObject *parent)
 	  this,SLOT(resetStateData(int)));
   for(int i=0;i<lio_gpios;i++) {
     lio_reset_timers.push_back(new QTimer(this));
+    lio_reset_timers.back()->setSingleShot(true);
     connect(lio_reset_timers.back(),SIGNAL(timeout()),
 	    lio_reset_mapper,SLOT(map()));
     lio_reset_mapper->setMapping(lio_reset_timers.back(),i);
     lio_reset_states.push_back(false);
   }
   lio_watchdog_timer=new QTimer(this);
+  lio_watchdog_timer->setSingleShot(true);
   connect(lio_watchdog_timer,SIGNAL(timeout()),this,SLOT(watchdogData()));
 }
 
@@ -106,14 +109,14 @@ void WheatnetLio::processCommand(RDMacro *cmd)
   switch(cmd->command()) {
   case RDMacro::GO:
     if((cmd->argQuantity()!=5)||
-       ((cmd->arg(1).lower()!="i")&&
-	(cmd->arg(1).lower()!="o"))||
+       ((cmd->arg(1).toLower()!="i")&&
+	(cmd->arg(1).toLower()!="o"))||
        (cmd->arg(2).toInt()<1)||(cmd->arg(3).toInt()>lio_gpios)||
        (cmd->arg(2).toInt()>lio_gpios)||
        ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	(cmd->arg(1).lower()!="i"))||
+	(cmd->arg(1).toLower()!="i"))||
        ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	(cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).lower()=="i"))||
+	(cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).toLower()=="i"))||
        (cmd->arg(4).toInt()<0)) {
       cmd->acknowledge(false);
       emit rmlEcho(cmd);
@@ -121,7 +124,7 @@ void WheatnetLio::processCommand(RDMacro *cmd)
     }
     if(cmd->arg(3).toInt()==0) {  // Turn OFF
       if(cmd->arg(4).toInt()==0) {
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  SendCommand(QString().sprintf("<LIO:%d|LVL:0>",
 					cmd->arg(2).toInt()-1));
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,false);
@@ -137,20 +140,20 @@ void WheatnetLio::processCommand(RDMacro *cmd)
     }
     else {
       if(cmd->arg(4).toInt()==0) {  // Turn ON
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  SendCommand(QString().sprintf("<LIO:%d|LVL:1>",
 					cmd->arg(2).toInt()-1));
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,true);
 	}
       }
       else {  // Pulse
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  SendCommand(QString().sprintf("<LIO:%d|LVL:%d>",
 					cmd->arg(2).toInt()-1,
 					cmd->arg(3).toInt()!=0));
 	  lio_reset_states[cmd->arg(2).toInt()-1]=cmd->arg(3).toInt()==0;
 	  lio_reset_timers[cmd->arg(2).toInt()-1]->
-	    start(cmd->arg(4).toInt(),true);
+	    start(cmd->arg(4).toInt());
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,
 			  cmd->arg(3).toInt()!=0);
 	}
@@ -173,7 +176,7 @@ void WheatnetLio::connectedData()
 {
   rda->syslog(LOG_INFO,
 	      "connection to WheatNet LIO device at %s:%u established",
-	      (const char *)lio_ip_address.toString(),0xffff&lio_ip_port);
+	      lio_ip_address.toString().toUtf8().constData(),0xffff&lio_ip_port);
   lio_watchdog_active=false;
   SendCommand("<SYS?LIO>");
 }
@@ -184,7 +187,7 @@ void WheatnetLio::readyReadData()
   char data[1501];
   int n=0;
 
-  while((n=lio_socket->readBlock(data,1500))>0) {
+  while((n=lio_socket->read(data,1500))>0) {
     data[n]=0;
     for(int i=0;i<n;i++) {
       switch(0xff&data[i]) {
@@ -230,7 +233,8 @@ void WheatnetLio::watchdogData()
   if(!lio_watchdog_active) {
     rda->syslog(LOG_WARNING,
        "connection to Wheatnet LIO device at %s:%u lost, attempting reconnect",
-		(const char *)lio_ip_address.toString(),0xffff&lio_ip_port);
+		lio_ip_address.toString().toUtf8().constData(),
+		0xffff&lio_ip_port);
     lio_watchdog_active=true;
   }
   lio_socket->close();
@@ -309,14 +313,14 @@ void WheatnetLio::ProcessSys(const QString &cmd)
 	QString().sprintf("(MATRIX=%d)",matrixNumber());
       q=new RDSqlQuery(sql);
       delete q;
-      lio_watchdog_timer->start(WHEATNET_LIO_WATCHDOG_INTERVAL,true);
-      lio_poll_timer->start(WHEATNET_LIO_POLL_INTERVAL,true);
+      lio_watchdog_timer->start(WHEATNET_LIO_WATCHDOG_INTERVAL);
+      lio_poll_timer->start(WHEATNET_LIO_POLL_INTERVAL);
     }
   }
   if((f0[0]=="BLID")&&(f0.size()==2)) {
     lio_watchdog_timer->stop();
-    lio_watchdog_timer->start(WHEATNET_LIO_WATCHDOG_INTERVAL,true);
-    lio_poll_timer->start(WHEATNET_LIO_POLL_INTERVAL,true);
+    lio_watchdog_timer->start(WHEATNET_LIO_WATCHDOG_INTERVAL);
+    lio_poll_timer->start(WHEATNET_LIO_POLL_INTERVAL);
   }
 }
 
@@ -336,12 +340,12 @@ void WheatnetLio::ProcessLioevent(int chan,QString &cmd)
     else {
       rda->syslog(LOG_WARNING,
 	     "WheatNet device at %s:%d sent invalid LIOEVENT LVL update [%s]",
-		  (const char *)lio_ip_address.toString(),
-		  lio_ip_port,(const char *)cmd);
+		  lio_ip_address.toString().toUtf8().constData(),
+		  lio_ip_port,cmd.toUtf8().constData());
     }
     if((chan+1)==lio_gpios) {
       lio_watchdog_timer->stop();
-      lio_watchdog_timer->start(1000,true);
+      lio_watchdog_timer->start(1000);
     }
   }
 }
@@ -375,5 +379,5 @@ void WheatnetLio::ProcessCommand(const QString &cmd)
 
 void WheatnetLio::SendCommand(const QString &cmd)
 {
-  lio_socket->writeBlock(cmd+"\r\n",cmd.length()+2);
+  lio_socket->write((cmd+"\r\n").toUtf8());
 }

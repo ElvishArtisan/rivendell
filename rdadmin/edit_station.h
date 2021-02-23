@@ -32,6 +32,7 @@
 #include <rddialog.h>
 #include <rdcardselector.h>
 #include <rdcatch_connect.h>
+#include <rdcombobox.h>
 #include <rdripc.h>
 #include <rdstation.h>
 #include <rdstationlistmodel.h>
@@ -87,7 +88,7 @@ class EditStation : public RDDialog
    QLabel *station_description_label;
    QLineEdit *station_description_edit;
    QLabel *station_username_label;
-   QComboBox *station_username_box;
+   RDComboBox *station_username_box;
    RDUserListModel *station_username_model;
    QLabel *station_address_label;
    QLineEdit *station_address_edit;
@@ -132,9 +133,9 @@ class EditStation : public RDDialog
    QCheckBox *station_panel_enforce_box;
    QGroupBox *station_systemservices_groupbox;
    QLabel *station_http_station_label;
-   QComboBox *station_http_station_box;
+   RDComboBox *station_http_station_box;
    QLabel *station_cae_station_label;
-   QComboBox *station_cae_station_box;
+   RDComboBox *station_cae_station_box;
    RDStationListModel *station_station_model;
    QPushButton *station_rdlibrary_button;
    QPushButton *station_rdcatch_button;

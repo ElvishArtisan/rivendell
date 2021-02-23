@@ -48,10 +48,9 @@ RDPasswd::RDPasswd(QString *password,QWidget *parent)
   passwd_password_1_edit->setEchoMode(QLineEdit::Password);
   passwd_password_1_edit->setFocus();
   passwd_password_1_edit->setValidator(validator);
-  passwd_password_1_label=
-    new QLabel(passwd_password_1_edit,tr("&Password:"),this);
+  passwd_password_1_label=new QLabel(tr("&Password:"),this);
   passwd_password_1_label->setFont(labelFont());
-  passwd_password_1_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
+  passwd_password_1_label->setAlignment(Qt::AlignRight);
 
   //
   // Confirm Password
@@ -60,10 +59,9 @@ RDPasswd::RDPasswd(QString *password,QWidget *parent)
   passwd_password_2_edit->setMaxLength(RD_MAX_PASSWORD_LENGTH);
   passwd_password_2_edit->setEchoMode(QLineEdit::Password);
   passwd_password_2_edit->setValidator(validator);
-  passwd_password_2_label=
-    new QLabel(passwd_password_2_edit,tr("C&onfirm:"),this);
+  passwd_password_2_label=new QLabel(tr("C&onfirm:"),this);
   passwd_password_2_label->setFont(labelFont());
-  passwd_password_2_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
+  passwd_password_2_label->setAlignment(Qt::AlignRight);
 
   //
   // OK Button

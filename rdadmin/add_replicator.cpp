@@ -55,7 +55,7 @@ AddReplicator::AddReplicator(QString *rname,QWidget *parent)
   repl_name_edit->setGeometry(145,11,sizeHint().width()-150,19);
   repl_name_edit->setMaxLength(10);
   repl_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(repl_name_edit,tr("Replicator Name:"),this);
+  QLabel *label=new QLabel(tr("Replicator Name:"),this);
   label->setGeometry(10,11,130,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

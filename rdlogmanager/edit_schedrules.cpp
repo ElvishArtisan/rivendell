@@ -90,8 +90,7 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,
 	  edit_schedcodes_view,SLOT(resizeColumnsToContents()));
   edit_schedcodes_view->resizeColumnsToContents();
 
-  list_box_label=
-    new QLabel(edit_schedcodes_view,tr("Scheduler Codes:"),this);
+  list_box_label=new QLabel(tr("Scheduler Codes:"),this);
   list_box_label->setFont(labelFont());
   edit_modified=false;
 }

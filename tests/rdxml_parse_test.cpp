@@ -2,7 +2,7 @@
 //
 // Test the Rivendell RDXML parser routines.
 //
-//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
-
-#include <vector>
-
-#include <qapplication.h>
-#include <qfile.h>
+#include <QApplication>
+#include <QFile>
 
 #include <rdcart.h>
 #include <rdcmd_switch.h>
@@ -53,7 +48,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"rdxml_parse_test: unknown option \"%s\"\n",
-	      (const char *)cmd->value(i));
+	      cmd->value(i).toUtf8().constData());
       exit(256);
     }
   }
@@ -68,7 +63,7 @@ MainObject::MainObject(QObject *parent)
   file=new QFile(filename);
   if(!file->open(QIODevice::ReadOnly)) {
     fprintf(stderr,"rdxml_parse_test: unable to open \"%s\"\n",
-	    (const char *)filename);
+	    filename.toUtf8().constData());
     exit(256);
   }
   while(file->readLine(line,1024)>=0) {
@@ -87,12 +82,12 @@ MainObject::MainObject(QObject *parent)
     exit(256);
   }
   printf("*** CART DATA ***\n");
-  printf("%s\n",(const char *)data[0].dump());
+  printf("%s\n",data[0].dump().toUtf8().constData());
   printf("\n");
 
   for(unsigned i=1;i<data.size();i++) {
     printf("*** CUT %u DATA ***\n",i);
-    printf("%s\n",(const char *)data[i].dump());
+    printf("%s\n",data[i].dump().toUtf8().constData());
     printf("\n");
   }
 

@@ -25,8 +25,6 @@
 ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -47,7 +45,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   //
   // Resource List
   //
-  view_text_edit=new QTextEdit(this,"adapter_edit");
+  view_text_edit=new QTextEdit(this);
   view_text_edit->setReadOnly(true);
   QString text;
   if(rdstation->scanned()) {

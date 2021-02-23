@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Clock
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,8 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <qpushbutton.h>
 
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
@@ -82,11 +80,10 @@ AddClock::AddClock(QString *logname,QWidget *parent)
   clock_name_edit->setGeometry(145,11,sizeHint().width()-155,19);
   clock_name_edit->setMaxLength(58);  // MySQL limitation!
   clock_name_edit->setValidator(validator);
-  QLabel *clock_name_label=
-    new QLabel(clock_name_edit,tr("&New Clock Name:"),this);
+  QLabel *clock_name_label=new QLabel(tr("&New Clock Name:"),this);
   clock_name_label->setGeometry(10,11,130,19);
   clock_name_label->setFont(labelFont());
-  clock_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  clock_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button

@@ -2,7 +2,7 @@
 //
 // Export peak data using the RdXport Web Service
 //
-//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,9 +28,6 @@
 #include <math.h>
 
 #include <curl/curl.h>
-
-#include <qapplication.h>
-#include <qobject.h>
 
 #include "rd.h"
 #include "rdapplication.h"
@@ -91,7 +88,6 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
   long response_code;
   CURL *curl=NULL;
   CURLcode curl_err;
-  char url[1024];
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
 
@@ -100,19 +96,22 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",RDXPORT_COMMAND_EXPORT_PEAKS),
+	       QString().sprintf("%u",RDXPORT_COMMAND_EXPORT_PEAKS).toUtf8().
+	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
-	       CURLFORM_COPYCONTENTS,(const char *)username.utf8(),CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,username.toUtf8().constData(),
+	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
-	       CURLFORM_COPYCONTENTS,(const char *)password.utf8(),CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,password.toUtf8().constData(),
+	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_cart_number),
+	       QString().sprintf("%u",conv_cart_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_cut_number),
+	       QString().sprintf("%u",conv_cut_number).toUtf8().constData(),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     curl_formfree(first);
@@ -121,18 +120,13 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,this);
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,RDPeaksExportWrite);
 
-  //
-  // Write out URL as a C string before passing to curl_easy_setopt(), 
-  // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
-  // error.
-  //
-  strncpy(url,rda->station()->webServiceUrl(rda->config()),1024);
-  curl_easy_setopt(curl,CURLOPT_URL,url);
+  curl_easy_setopt(curl,CURLOPT_URL,rda->station()->
+		   webServiceUrl(rda->config()).toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
+		   rda->config()->userAgent().toUtf8().constData());
   //curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
 
   switch((curl_err=curl_easy_perform(curl))) {

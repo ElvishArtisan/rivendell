@@ -51,10 +51,9 @@ RDButtonDialog::RDButtonDialog(QString station_name,const QString &caption,
   //
   // Button Label
   //
-  edit_label_edit=new QLineEdit(this,"edit_label_edit");
+  edit_label_edit=new QLineEdit(this);
   edit_label_edit->setGeometry(60,10,300,20);
-  QLabel *label=new QLabel(edit_label_edit,tr("Label:"),
-			   this,"edit_label_label");
+  QLabel *label=new QLabel(tr("Label:"),this);
   label->setGeometry(10,12,45,16);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
@@ -62,10 +61,10 @@ RDButtonDialog::RDButtonDialog(QString station_name,const QString &caption,
   //
   // Button Cart
   //
-  edit_cart_edit=new QLineEdit(this,"edit_cart_edit");
+  edit_cart_edit=new QLineEdit(this);
   edit_cart_edit->setGeometry(60,34,300,20);
   edit_cart_edit->setReadOnly(true);
-  label=new QLabel(edit_cart_edit,tr("Cart:"),this,"edit_cart_label");
+  label=new QLabel(tr("Cart:"),this);
   label->setGeometry(10,36,45,16);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
@@ -73,7 +72,7 @@ RDButtonDialog::RDButtonDialog(QString station_name,const QString &caption,
   //
   // Set Cart Button
   //
-  QPushButton *button=new QPushButton(this,"cart_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(55,60,80,50);
   button->setFont(buttonFont());
   button->setText(tr("Set\nCart"));
@@ -82,7 +81,7 @@ RDButtonDialog::RDButtonDialog(QString station_name,const QString &caption,
   //
   // Clear Button
   //
-  button=new QPushButton(this,"cart_button");
+  button=new QPushButton(this);
   button->setGeometry(145,60,80,50);
   button->setFont(buttonFont());
   button->setText(tr("Clear"));
@@ -91,7 +90,7 @@ RDButtonDialog::RDButtonDialog(QString station_name,const QString &caption,
   //
   // Color Button
   //
-  edit_color_button=new QPushButton(this,"edit_color_button");
+  edit_color_button=new QPushButton(this);
   edit_color_button->setGeometry(sizeHint().width()-135,60,80,50);
   edit_color_button->setFont(buttonFont());
   edit_color_button->setText(tr("Set\nColor"));
@@ -100,7 +99,7 @@ RDButtonDialog::RDButtonDialog(QString station_name,const QString &caption,
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
@@ -110,7 +109,7 @@ RDButtonDialog::RDButtonDialog(QString station_name,const QString &caption,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
@@ -144,8 +143,8 @@ int RDButtonDialog::exec(RDPanelButton *button,bool hookmode,
   edit_user_password=passwd;
   edit_cart=edit_button->cart();
   edit_color=edit_button->defaultColor();
-  QPalette p=QPalette(edit_color,backgroundColor());
-  p.setColor(QColorGroup::ButtonText,RDGetTextColor(edit_color));
+  QPalette p=QPalette(edit_color,palette().color(QPalette::Background));
+  p.setColor(QPalette::ButtonText,RDGetTextColor(edit_color));
   edit_color_button->setPalette(p);
   edit_label_edit->setText(edit_button->text());
   DisplayCart(edit_cart);
@@ -165,7 +164,7 @@ void RDButtonDialog::clearCartData()
 {
   edit_cart=0;
   edit_color=Qt::lightGray;
-  edit_color_button->setPalette(QPalette(edit_color,backgroundColor()));
+  edit_color_button->setPalette(QPalette(edit_color,palette().color(QPalette::Background)));
   edit_label_edit->setText("");
   edit_cart_edit->setText("");
 }
@@ -176,8 +175,8 @@ void RDButtonDialog::setColorData()
   QColor new_color=QColorDialog::getColor(edit_color,this,"edit_color_dialog");
   if(new_color.isValid()) {
     edit_color=new_color;
-    QPalette p=QPalette(edit_color,backgroundColor());
-    p.setColor(QColorGroup::ButtonText,RDGetTextColor(edit_color));
+    QPalette p=QPalette(edit_color,palette().color(QPalette::Background));
+    p.setColor(QPalette::ButtonText,RDGetTextColor(edit_color));
     edit_color_button->setPalette(p);
   }
 }

@@ -37,7 +37,7 @@ HelpAudioPorts::HelpAudioPorts(QWidget *parent)
   help_edit=new QTextEdit(this);
   help_edit->
     setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-80);
-  help_edit->setTextFormat(Qt::RichText);
+  help_edit->setAcceptRichText(true);
   help_edit->setReadOnly(true);
 // FIXME: add context sensitive help for other options on the Audio Port screen.
   help_edit->setText(tr("Mode - short for Channel Mode, configures the Left and Right behaviour when recording.<BR>\

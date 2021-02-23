@@ -52,7 +52,8 @@ RDSlotDialog::RDSlotDialog(const QString &caption,QWidget *parent)
   connect(edit_mode_box,SIGNAL(activated(int)),
 	  this,SLOT(modeActivatedData(int)));
   for(int i=0;i<RDSlotOptions::LastMode;i++) {
-    edit_mode_box->insertItem(RDSlotOptions::modeText((RDSlotOptions::Mode)i));
+    edit_mode_box->insertItem(edit_mode_box->count(),
+			      RDSlotOptions::modeText((RDSlotOptions::Mode)i));
   }
   edit_mode_label=new QLabel(tr("Slot Mode:"),this);
   edit_mode_label->setFont(labelFont());
@@ -62,8 +63,8 @@ RDSlotDialog::RDSlotDialog(const QString &caption,QWidget *parent)
   // Hook Mode
   //
   edit_hook_box=new QComboBox(this);
-  edit_hook_box->insertItem(tr("Full Cart"));
-  edit_hook_box->insertItem(tr("Hook"));
+  edit_hook_box->insertItem(edit_hook_box->count(),tr("Full Cart"));
+  edit_hook_box->insertItem(edit_hook_box->count(),tr("Hook"));
   edit_hook_label=new QLabel(tr("Play Mode:"),this);
   edit_hook_label->setFont(labelFont());
   edit_hook_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -74,7 +75,8 @@ RDSlotDialog::RDSlotDialog(const QString &caption,QWidget *parent)
   edit_stop_action_box=new QComboBox(this);
   for(int i=0;i<RDSlotOptions::LastStop;i++) {
     edit_stop_action_box->
-      insertItem(RDSlotOptions::stopActionText((RDSlotOptions::StopAction)i));
+      insertItem(edit_stop_action_box->count(),
+		 RDSlotOptions::stopActionText((RDSlotOptions::StopAction)i));
   }
   edit_stop_action_label=new QLabel(tr("At Playout End:"),this);
   edit_stop_action_label->setFont(labelFont());
@@ -119,10 +121,10 @@ QSizePolicy RDSlotDialog::sizePolicy() const
 int RDSlotDialog::exec(RDSlotOptions *opt)
 {
   edit_options=opt;
-  edit_mode_box->setCurrentItem(edit_options->mode());
-  edit_hook_box->setCurrentItem(edit_options->hookMode());
-  edit_stop_action_box->setCurrentItem(edit_options->stopAction());
-  modeActivatedData(edit_mode_box->currentItem());
+  edit_mode_box->setCurrentIndex(edit_options->mode());
+  edit_hook_box->setCurrentIndex(edit_options->hookMode());
+  edit_stop_action_box->setCurrentIndex(edit_options->stopAction());
+  modeActivatedData(edit_mode_box->currentIndex());
   return QDialog::exec();
 }
 
@@ -139,10 +141,10 @@ void RDSlotDialog::modeActivatedData(int index)
 
 void RDSlotDialog::okData()
 {
-  edit_options->setMode((RDSlotOptions::Mode)edit_mode_box->currentItem());
-  edit_options->setHookMode(edit_hook_box->currentItem());
+  edit_options->setMode((RDSlotOptions::Mode)edit_mode_box->currentIndex());
+  edit_options->setHookMode(edit_hook_box->currentIndex());
   edit_options->setStopAction((RDSlotOptions::StopAction)edit_stop_action_box->
-			      currentItem());
+			      currentIndex());
   done(0);
 }
 

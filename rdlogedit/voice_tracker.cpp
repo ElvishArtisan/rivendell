@@ -2,7 +2,7 @@
 //
 // Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -79,12 +79,12 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Create Palettes
   //
-  d_record_palette=QPalette(TRACKER_RECORD_BUTTON_COLOR,backgroundColor());
-  d_start_palette=QPalette(TRACKER_START_BUTTON_COLOR,backgroundColor());
-  d_done_palette=QPalette(TRACKER_DONE_BUTTON_COLOR,backgroundColor());
-  d_abort_palette=QPalette(TRACKER_ABORT_BUTTON_COLOR,backgroundColor());
-  QColor system_mid_color = colorGroup().mid();
-  QColor system_button_color = palette().active().button();
+  d_record_palette=QPalette(TRACKER_RECORD_BUTTON_COLOR,palette().color(QPalette::Background));
+  d_start_palette=QPalette(TRACKER_START_BUTTON_COLOR,palette().color(QPalette::Background));
+  d_done_palette=QPalette(TRACKER_DONE_BUTTON_COLOR,palette().color(QPalette::Background));
+  d_abort_palette=QPalette(TRACKER_ABORT_BUTTON_COLOR,palette().color(QPalette::Background));
+  QColor system_mid_color = palette().mid().color();
+  QColor system_button_color = palette().button().color();
 
   //
   // Create Track and Target Region
@@ -319,7 +319,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   d_length_label->setText("-:--:--.-");
   d_length_label->
     setStyleSheet("background-color: "+
-		  palette().color(QColorGroup::Background).name());
+		  palette().color(QPalette::Background).name());
   d_length_label->setGeometry(565,255,110,25);
   d_length_label->setAlignment(Qt::AlignCenter);
   d_length_label->setFont(timerFont());
@@ -331,12 +331,12 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   label->setGeometry(555,288,116,14);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignHCenter);
-  label->setPalette(QPalette(backgroundColor(),colorGroup().mid()));  
+  label->setPalette(QPalette(palette().color(QPalette::Background),palette().mid().color()));  
   d_tracks_remaining_label=new QLabel(this);
   d_tracks_remaining_label->setText("0");
   d_tracks_remaining_label->
     setStyleSheet("background-color: "+
-		  palette().color(QColorGroup::Background).name());
+		  palette().color(QPalette::Background).name());
   d_tracks_remaining_label->setGeometry(555,313,40,18);
   d_tracks_remaining_label->setAlignment(Qt::AlignCenter);
   d_tracks_remaining_label->setFont(labelFont());
@@ -344,27 +344,27 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   label->setGeometry(555,300,40,14);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignHCenter);
-  label->setPalette(QPalette(backgroundColor(),colorGroup().mid()));  
+  label->setPalette(QPalette(palette().color(QPalette::Background),palette().mid().color()));  
 
   d_time_remaining_label=new QLabel(this);
   d_time_remaining_label->setText("0:00:00.0");
   d_time_remaining_label->
     setStyleSheet("background-color: "+
-		  palette().color(QColorGroup::Background).name());
+		  palette().color(QPalette::Background).name());
   d_time_remaining_label->setGeometry(600,313,80,18);
   d_time_remaining_label->setAlignment(Qt::AlignCenter);
   d_time_remaining_label->setFont(labelFont());
   d_time_remaining_palette[0]=d_time_remaining_label->palette();
   d_time_remaining_palette[1]=d_time_remaining_label->palette();
   d_time_remaining_palette[1].
-    setColor(QPalette::Active,QColorGroup::Foreground,Qt::red);
+    setColor(QPalette::Active,QPalette::Foreground,Qt::red);
   d_time_remaining_palette[1].
-    setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::red);
+    setColor(QPalette::Inactive,QPalette::Foreground,Qt::red);
   label=new QLabel(tr("Time"),this);
   label->setGeometry(605,300,60,14);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignHCenter);
-  label->setPalette(QPalette(backgroundColor(),colorGroup().mid()));  
+  label->setPalette(QPalette(palette().color(QPalette::Background),palette().mid().color()));  
 
   //
   // Log List
@@ -1858,7 +1858,7 @@ void VoiceTracker::paintEvent(QPaintEvent *e)
     for(int i=0;i<3;i++) {
       p->begin(d_wave_map[i]);
       p->setPen(TRACKER_TEXT_COLOR);
-      p->setBackgroundColor(Qt::gray);
+      p->setBackground(Qt::gray);
       p->eraseRect(0,0,d_wave_map[i]->size().width(),
 		   d_wave_map[i]->size().height());
       p->end();
@@ -1872,7 +1872,7 @@ void VoiceTracker::paintEvent(QPaintEvent *e)
   p->fillRect(TRACKER_X_ORIGIN,TRACKER_Y_ORIGIN,TRACKER_X_WIDTH-1-2,238,
 	      Qt::white);
   p->fillRect(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1,
-	      TRACKER_X_WIDTH+2,TRACKER_Y_HEIGHT+6,colorGroup().mid());
+	      TRACKER_X_WIDTH+2,TRACKER_Y_HEIGHT+6,palette().mid());
 
   p->drawLine(TRACKER_X_ORIGIN-2,TRACKER_Y_ORIGIN-2,
 	      TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,TRACKER_Y_ORIGIN-2);
@@ -2778,7 +2778,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
   case 0:
     if(d_wave_name[0].isEmpty()) {
       p=new QPainter(d_wave_map[0]);
-      p->setBackgroundColor(Qt::gray);
+      p->setBackground(Qt::gray);
       p->eraseRect(0,0,d_wave_map[0]->size().width(),
 		   d_wave_map[0]->size().height());
       p->end();
@@ -2788,7 +2788,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
       d_wpg[0]->begin(d_wave_map[0]);
       d_wpg[0]->setFont(labelFont());
       d_wpg[0]->setPen(TRACKER_TEXT_COLOR);
-      d_wpg[0]->setBackgroundColor(backgroundColor());
+      d_wpg[0]->setBackground(palette().color(QPalette::Background));
       d_wpg[0]->eraseRect(0,0,d_wave_map[0]->size().width(),
 			d_wave_map[0]->size().height());
       if(!d_wave_name[0].isEmpty()) {
@@ -2867,7 +2867,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
     if(d_wave_name[1].isEmpty()) {
       p=new QPainter(d_wave_map[1]);
       if(d_loaded) {
-	p->setBackgroundColor(backgroundColor());
+	p->setBackground(palette().color(QPalette::Background));
 	p->setFont(labelFont());
 	p->setPen(TRACKER_TEXT_COLOR);
 	p->eraseRect(0,0,d_wave_map[1]->size().width(),
@@ -2875,7 +2875,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	p->drawText(5,14,d_loglines[1]->markerComment());
       }
       else {
-	p->setBackgroundColor(Qt::gray);
+	p->setBackground(Qt::gray);
 	p->eraseRect(0,0,d_wave_map[1]->size().width(),
 		     d_wave_map[1]->size().height());
       }
@@ -2890,7 +2890,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
     }
     else {
       if((d_loglines[1]->transType()==RDLogLine::Segue)) {
-	back_color=backgroundColor();
+	back_color=palette().color(QPalette::Background);
       }
       else {
 	back_color=Qt::lightGray;
@@ -2901,7 +2901,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	p=new QPainter(d_wave_map[1]);
 	p->setPen(TRACKER_RECORD_COLOR);
 	p->setBrush(TRACKER_RECORD_COLOR);
-	p->setBackgroundColor(back_color);
+	p->setBackground(back_color);
 	p->eraseRect(0,0,d_wave_map[1]->size().width(),
 		     d_wave_map[1]->size().height());
 	p->fillRect(-d_wave_origin[1]/
@@ -2925,7 +2925,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	d_wpg[1]->begin(d_wave_map[1]);
 	d_wpg[1]->setFont(labelFont());
 	d_wpg[1]->setPen(TRACKER_TEXT_COLOR);
-	d_wpg[1]->setBackgroundColor(back_color);
+	d_wpg[1]->setBackground(back_color);
 	d_wpg[1]->eraseRect(0,0,d_wave_map[1]->size().width(),
 			  d_wave_map[1]->size().height());
 	if(!d_wave_name[1].isEmpty()) {
@@ -3020,7 +3020,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
   case 2:
     if(d_wave_name[2].isEmpty()) {
       p=new QPainter(d_wave_map[2]);
-      p->setBackgroundColor(Qt::gray);
+      p->setBackground(Qt::gray);
       p->eraseRect(0,0,d_wave_map[2]->size().width(),
 		   d_wave_map[2]->size().height());
       p->end();
@@ -3028,14 +3028,14 @@ void VoiceTracker::DrawTrackMap(int trackno)
     }
     else {
       if((d_loglines[2]->transType()==RDLogLine::Segue)) {
-	back_color=backgroundColor();
+	back_color=palette().color(QPalette::Background);
       }
       else {
 	back_color=Qt::lightGray;
       }
       d_wpg[2]->begin(d_wave_map[2]);
       d_wpg[2]->setFont(labelFont());
-      d_wpg[2]->setBackgroundColor(back_color);
+      d_wpg[2]->setBackground(back_color);
       d_wpg[2]->eraseRect(0,0,d_wave_map[2]->size().width(),
 			d_wave_map[2]->size().height());
       if(!d_wave_name[2].isEmpty()) {
@@ -3662,8 +3662,8 @@ bool VoiceTracker::TrackAvailable()
 void VoiceTracker::LogLine(const QString &line)
 {
   fprintf(stderr,"%s: %s\n",
-	  (const char *)QTime::currentTime().toString("hh:mm:ss.zzz"),
-	  (const char *)line);
+	  QTime::currentTime().toString("hh:mm:ss.zzz").toUtf8().constData(),
+	  line.toUtf8().constData());
 }
 
 
@@ -3688,7 +3688,7 @@ bool VoiceTracker::InitTrack()
 
   d_track_cart=new RDCart(next_cart);
   d_track_cart->setOwner(d_log->name());
-  d_track_cart->setTitle(d_loglines[1]->markerComment().stripWhiteSpace());
+  d_track_cart->setTitle(d_loglines[1]->markerComment().trimmed());
   if(d_track_cuts[1]!=NULL) {
     delete d_track_cuts[1];
   }

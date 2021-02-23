@@ -47,15 +47,16 @@ RDCdPlayer::RDCdPlayer(FILE *profile_msgs,QWidget *parent)
   //
   // The Button Timer
   //
-  cdrom_button_timer=new QTimer(this,"cdrom_button_timer");
+  cdrom_button_timer=new QTimer(this);
   connect(cdrom_button_timer,SIGNAL(timeout()),this,SLOT(buttonTimerData()));
 
   //
   // The Clock
   //
-  cdrom_clock=new QTimer(this,"cdrom_clock");
+  cdrom_clock=new QTimer(this);
+  cdrom_clock->setSingleShot(true);
   connect(cdrom_clock,SIGNAL(timeout()),this,SLOT(clockData()));
-  cdrom_clock->start(RDCDPLAYER_CLOCK_INTERVAL,true);
+  cdrom_clock->start(RDCDPLAYER_CLOCK_INTERVAL);
 }
 
 
@@ -91,7 +92,7 @@ void RDCdPlayer::setDevice(QString device)
 
 bool RDCdPlayer::open()
 {
-  if((cdrom_fd=::open((const char *)cdrom_device,O_RDONLY|O_NONBLOCK))<0) {
+  if((cdrom_fd=::open(cdrom_device.toUtf8(),O_RDONLY|O_NONBLOCK))<0) {
     return false;
   }
   return true;
@@ -220,13 +221,13 @@ void RDCdPlayer::lock()
 
 void RDCdPlayer::unlock()
 {
-  system("eject -i off "+cdrom_device);
+  system(("eject -i off "+cdrom_device).toUtf8());
 }
 
 
 void RDCdPlayer::eject()
 {
-  system("eject "+cdrom_device);
+  system(("eject "+cdrom_device).toUtf8());
 }
 
 
@@ -366,7 +367,7 @@ void RDCdPlayer::buttonTimerData()
   cdrom_button_queue.pop();
   cdrom_track_queue.pop();
   if(cdrom_button_queue.size()>0) {
-    cdrom_button_timer->start(RDCDPLAYER_BUTTON_DELAY,true);
+    cdrom_button_timer->start(RDCDPLAYER_BUTTON_DELAY);
   }
 }
 
@@ -449,7 +450,7 @@ void RDCdPlayer::clockData()
       emit stopped();
     }
   }
-  cdrom_clock->start(RDCDPLAYER_CLOCK_INTERVAL,true);
+  cdrom_clock->start(RDCDPLAYER_CLOCK_INTERVAL);
 }
 
 
@@ -543,7 +544,7 @@ void RDCdPlayer::PushButton(RDCdPlayer::ButtonOp op,int track)
   cdrom_button_queue.push(op);
   cdrom_track_queue.push(track);
   if(!cdrom_button_timer->isActive()) {
-    cdrom_button_timer->start(RDCDPLAYER_BUTTON_DELAY,true);
+    cdrom_button_timer->start(RDCDPLAYER_BUTTON_DELAY);
   }
 }
 
@@ -552,8 +553,8 @@ void RDCdPlayer::Profile(const QString &msg)
 {
   if(cdrom_profile_msgs!=NULL) {
     fprintf(cdrom_profile_msgs,"%s | RDCdPlayer::%s\n",
-	    (const char *)QTime::currentTime().toString("hh:mm:ss.zzz"),
-	    (const char *)msg.toUtf8());
+	    QTime::currentTime().toString("hh:mm:ss.zzz").toUtf8().constData(),
+	    msg.toUtf8().constData());
   }
 }
 

@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- AudioStore service
 //
-//   (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2014-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,7 +39,7 @@ void Xport::AudioStore()
   struct statvfs stat;
 
   memset(&stat,0,sizeof(stat));
-  if(statvfs(rda->config()->audioRoot(),&stat)<0) {
+  if(statvfs(rda->config()->audioRoot().toUtf8(),&stat)<0) {
     XmlExit("Internal Error",400,"audiostore.cpp",LINE_NUMBER);
   }
   printf("Content-type: application/xml\n");

@@ -2,7 +2,7 @@
 //
 // Abstract a set of marker parameters.
 //
-//   (C) Copyright 2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2014-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +19,6 @@
 //
 
 #include <stdio.h>
-#include <stdlib.h>
 
 #include "markerset.h"
 
@@ -81,7 +80,7 @@ void MarkerSet::loadMarker(RDCmdSwitch *cmd,const QString &marker)
       marker_start_value=cmd->value(i).toInt(&marker_start_valid);
       if(!marker_start_valid) {
 	fprintf(stderr,"rdimport: invalid argment to %s\n",
-		(const char *)start_key);
+		start_key.toUtf8().constData());
 	exit(255);
       }
       cmd->setProcessed(i,true);
@@ -90,7 +89,7 @@ void MarkerSet::loadMarker(RDCmdSwitch *cmd,const QString &marker)
       marker_end_value=cmd->value(i).toInt(&marker_end_valid);
       if(!marker_end_valid) {
 	fprintf(stderr,"rdimport: invalid argment to %s\n",
-		(const char *)end_key);
+		end_key.toUtf8().constData());
 	exit(255);
       }
       cmd->setProcessed(i,true);
@@ -112,7 +111,7 @@ void MarkerSet::loadFade(RDCmdSwitch *cmd,const QString &marker)
       marker_fade_value=cmd->value(i).toInt(&marker_fade_valid);
       if(!marker_fade_valid) {
 	fprintf(stderr,"rdimport: invalid argment to %s\n",
-		(const char *)key);
+		key.toUtf8().constData());
 	exit(255);
       }
       cmd->setProcessed(i,true);
@@ -134,15 +133,15 @@ void MarkerSet::setAudioLength(int msecs)
 void MarkerSet::dump()
 {
   if(marker_start_valid) {
-    printf(" Marker Start %s: ",(const char *)marker_marker);
+    printf(" Marker Start %s: ",marker_marker.toUtf8().constData());
     printf("%d mS\n",marker_start_value);
   }
   if(marker_end_valid) {
-  printf(" Marker End %s: ",(const char *)marker_marker);
+    printf(" Marker End %s: ",marker_marker.toUtf8().constData());
     printf("%d mS\n",marker_end_value);
   }
   if(marker_fade_valid) {
-  printf(" Marker %s: ",(const char *)marker_marker);
+    printf(" Marker %s: ",marker_marker.toUtf8().constData());
     printf("%d mS\n",marker_fade_value);
   }
 }

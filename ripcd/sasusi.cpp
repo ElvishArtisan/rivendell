@@ -18,9 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <syslog.h>
-
 #include <rdapplication.h>
 #include <rdescape_string.h>
 
@@ -72,6 +69,7 @@ SasUsi::SasUsi(RDMatrix *matrix,QObject *parent)
   // Reconnection Timer
   //
   sas_reconnect_timer=new QTimer(this);
+  sas_reconnect_timer->setSingleShot(true);
   connect(sas_reconnect_timer,SIGNAL(timeout()),this,SLOT(ipConnect()));
 
   //
@@ -164,7 +162,8 @@ void SasUsi::processCommand(RDMacro *cmd)
 	  label+=" ";
 	}
 	snprintf(str,256,"%c21%03d%04d%s\x0D\x0A",26,
-		cmd->arg(1).toInt(),cmd->arg(2).toInt(),(const char *)label);
+		 cmd->arg(1).toInt(),cmd->arg(2).toInt(),
+		 label.toUtf8().constData());
 	SendCommand(str);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
@@ -272,7 +271,7 @@ void SasUsi::processCommand(RDMacro *cmd)
 	break;
 
       case RDMacro::GO:
-	if((cmd->arg(1).lower()!="o")||
+	if((cmd->arg(1).toLower()!="o")||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(2).toInt()>sas_gpos)) {
 	  cmd->acknowledge(false);
 	  emit rmlEcho(cmd);
@@ -299,7 +298,7 @@ void SasUsi::processCommand(RDMacro *cmd)
 	    snprintf(str,256,"\x05R%d%04d\x0D\x0A",cmd_byte,
 		    sas_relay_numbers[cmd->arg(2).toUInt()-1]);
 	    rda->syslog(LOG_DEBUG,"USI: %s",
-			(const char *)PrettifyCommand(str));
+			PrettifyCommand(str).toUtf8().constData());
 	    SendCommand(str);
 	    cmd->acknowledge(true);
 	    emit rmlEcho(cmd);
@@ -359,7 +358,7 @@ void SasUsi::connectionClosedData()
   if(sas_stop_cart>0) {
     ExecuteMacroCart(sas_stop_cart);
   }
-  sas_reconnect_timer->start(SASUSI_RECONNECT_INTERVAL,true);
+  sas_reconnect_timer->start(SASUSI_RECONNECT_INTERVAL);
 }
 
 
@@ -368,7 +367,7 @@ void SasUsi::readyReadData()
   char buffer[256];
   unsigned n;
 
-  while((n=sas_socket->readBlock(buffer,255))>0) {
+  while((n=sas_socket->read(buffer,255))>0) {
     buffer[n]=0;
     for(unsigned i=0;i<n;i++) {
       if(buffer[i]==10) {  // End of line
@@ -395,7 +394,7 @@ void SasUsi::errorData(QAbstractSocket::SocketError err)
 	   "connection to SasUsi device at %s:%d refused, attempting reconnect",
 		(const char *)sas_ipaddress.toString().toUtf8(),
 		sas_ipport);
-    sas_reconnect_timer->start(SASUSI_RECONNECT_INTERVAL,true);
+    sas_reconnect_timer->start(SASUSI_RECONNECT_INTERVAL);
     break;
 
   case QAbstractSocket::HostNotFoundError:
@@ -418,14 +417,14 @@ void SasUsi::errorData(QAbstractSocket::SocketError err)
 void SasUsi::SendCommand(char *str)
 {
   rda->syslog(LOG_INFO,"sending USI cmd: %s",
-	      (const char *)PrettifyCommand(str));
+	      PrettifyCommand(str).toUtf8().constData());
   switch(sas_porttype) {
   case RDMatrix::TtyPort:
     sas_device->write(str,strlen(str));
     break;
 
   case RDMatrix::TcpPort:
-    sas_socket->writeBlock(str,strlen(str));
+    sas_socket->write(str,strlen(str));
     break;
 
   case RDMatrix::NoPort:
@@ -456,7 +455,7 @@ void SasUsi::DispatchCommand()
   // Startup Sequence.  Get the input and output lists.  The response
   // to the ^EI command lets us know when the lists are done.
   //
-  if(QString("login sucessful")==(QString(sas_buffer).lower())) {
+  if(QString("login sucessful")==(QString(sas_buffer).toLower())) {
     sprintf(buffer,"%cX9999\x0D\x0A",5);  // Request Input List
     SendCommand(buffer);
     sprintf(buffer,"%cY9999\x0D\x0A",5);  // Request Output List
@@ -476,7 +475,7 @@ void SasUsi::DispatchCommand()
   }
 
   rda->syslog(LOG_INFO,"received USI cmd: %s",
-	      (const char *)PrettifyCommand(sas_buffer));
+	      PrettifyCommand(sas_buffer).toUtf8().constData());
 
 
   //

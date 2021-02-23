@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Cart.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -123,7 +123,7 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
       "(((START_DAYPART<=\""+time_str+"\")&&"+
       "(END_DAYPART>=\""+time_str+"\")||"+
       "START_DAYPART is null))&&"+
-      "("+RDGetShortDayNameEN(current_date.dayOfWeek()).upper()+"=\"Y\")&&"+
+      "("+RDGetShortDayNameEN(current_date.dayOfWeek()).toUpper()+"=\"Y\")&&"+
       QString().sprintf("(CART_NUMBER=%u)&&(EVERGREEN=\"N\")&&",cart_number)+
       "(LENGTH>0)";
     if(useWeighting()) {
@@ -270,7 +270,7 @@ QString RDCart::schedCodes() const
   QStringList list = schedCodesList();
 
   for(int i=0;i<list.size();i++) {
-    sched_codes+=QString().sprintf("%-11s",(const char *)list.at(i));
+    sched_codes+=QString().sprintf("%-11s",list.at(i).toUtf8().constData());
   }
   sched_codes+=".";
   return sched_codes;
@@ -283,8 +283,8 @@ void RDCart::setSchedCodes(const QString &sched_codes) const
 
   for(int i=0;i<255;i+=11) {
     QString code=sched_codes.mid(i,11);
-    if((!code.isEmpty())&&(code.stripWhiteSpace()!=".")) {
-      list.push_back(code.stripWhiteSpace());
+    if((!code.isEmpty())&&(code.trimmed()!=".")) {
+      list.push_back(code.trimmed());
     }
   }
   setSchedCodesList(list);
@@ -317,7 +317,7 @@ void RDCart::setSchedCodesList(const QStringList &codes) const
   delete q;
 
   for(int i=0;i<codes.size();i++) {
-    sql=QString().sprintf("insert into CART_SCHED_CODES set CART_NUMBER=%u,SCHED_CODE='%s'",cart_number,(const char *)codes.at(i));
+    sql=QString().sprintf("insert into CART_SCHED_CODES set CART_NUMBER=%u,SCHED_CODE='%s'",cart_number,codes.at(i).toUtf8().constData());
     q=new RDSqlQuery(sql);
     delete q;
   }
@@ -338,7 +338,7 @@ void RDCart::removeSchedCode(const QString &code) const
   QStringList new_codes;
 
   for(int i=0;i<codes.size();i++) {
-    if(codes[i].lower()!=code.lower()) {
+    if(codes[i].toLower()!=code.toLower()) {
       new_codes.push_back(codes[i]);
     }
   }
@@ -363,7 +363,7 @@ void RDCart::updateSchedCodes(const QString &add_codes,const QString &remove_cod
   	wstr+="          ";
         wstr=wstr.left(11);
   	if((sched_codes.contains(wstr)>0||add_codes.contains(wstr)>0)&&remove_codes.contains(wstr)==0) {
-          save_codes.push_back(wstr.stripWhiteSpace());
+          save_codes.push_back(wstr.trimmed());
   	}
   }
   delete q;
@@ -1533,7 +1533,7 @@ QString RDCart::xml(RDSqlQuery *q,bool include_cuts,
 	      xml+="  "+RDCut::xml(q,absolute,settings);
 	    }
 	    else {
-	      q->prev();
+	      q->previous();
 	      break;
 	    }
 	  }
@@ -1700,14 +1700,13 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
   long response_code=0;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
-  char url[1024];
   QString xml="";
   QString sql;
   RDSqlQuery *q;
 
   if(user==NULL) { 
-    unlink(RDCut::pathName(cutname));
-    unlink(RDCut::pathName(cutname)+".energy");
+    unlink(RDCut::pathName(cutname).toUtf8());
+    unlink((RDCut::pathName(cutname)+".energy").toUtf8());
     sql=QString("delete from CUT_EVENTS where ")+
       "CUT_NAME=\""+cutname+"\"";
     q=new RDSqlQuery(sql);
@@ -1719,35 +1718,31 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
     //
     curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 		 CURLFORM_COPYCONTENTS,
-		 (const char *)QString().sprintf("%u",RDXPORT_COMMAND_DELETEAUDIO),
-	       CURLFORM_END);
+		 QString().sprintf("%u",RDXPORT_COMMAND_DELETEAUDIO).
+		 toUtf8().constData(),CURLFORM_END);
     curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
-		 CURLFORM_COPYCONTENTS,(const char *)user->name().utf8(),CURLFORM_END);
+		 CURLFORM_COPYCONTENTS,user->name().toUtf8().constData(),
+		 CURLFORM_END);
     curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
-		 CURLFORM_COPYCONTENTS,(const char *)user->password().utf8(),
+		 CURLFORM_COPYCONTENTS,user->password().toUtf8().constData(),
 		 CURLFORM_END);
     curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 		 CURLFORM_COPYCONTENTS,
-		 (const char *)QString().sprintf("%u",cart_num),
+		 QString().sprintf("%u",cart_num).toUtf8().constData(),
 		 CURLFORM_END);
     curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
 		 CURLFORM_COPYCONTENTS,
-		 (const char *)QString().sprintf("%u",RDCut::cutNumber(cutname)),
-		 CURLFORM_END);
+		 QString().sprintf("%u",RDCut::cutNumber(cutname)).
+		 toUtf8().constData(),CURLFORM_END);
     if((curl=curl_easy_init())==NULL) {
       curl_formfree(first);
       return false;
     }
-    //
-    // Write out URL as a C string before passing to curl_easy_setopt(), 
-    // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
-    // error.
-    //
-    strncpy(url,station->webServiceUrl(config),1024);
-    curl_easy_setopt(curl,CURLOPT_URL,url);
+    curl_easy_setopt(curl,CURLOPT_URL,station->webServiceUrl(config).
+		     toUtf8().constData());
     curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
     curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		     (const char *)rda->config()->userAgent());
+		     rda->config()->userAgent().toUtf8().constData());
     curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
     curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,CartWriteCallback);
     curl_easy_setopt(curl,CURLOPT_WRITEDATA,&xml);

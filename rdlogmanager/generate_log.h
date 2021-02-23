@@ -2,7 +2,7 @@
 //
 // Generate a Rivendell Log
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,10 +22,10 @@
 #define GENERATE_LOG_H
 
 
-#include <qcombobox.h>
-#include <qdatetimeedit.h>
-#include <qprogressdialog.h>
+#include <QDateTimeEdit>
+#include <QProgressDialog>
 
+#include <rdcombobox.h>
 #include <rddialog.h>
 #include <rdnotification.h>
 
@@ -56,7 +56,7 @@ class GenerateLog : public RDDialog
   void UpdateControls();
   void SendNotification(RDNotification::Action action,const QString &logname);
   QLabel *gen_service_label;
-  QComboBox *gen_service_box;
+  RDComboBox *gen_service_box;
   QLabel *gen_date_label;
   QDateEdit *gen_date_edit;
   QPushButton *gen_select_button;

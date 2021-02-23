@@ -23,8 +23,7 @@
 #include <stdio.h>
 #include <syslog.h>
 
-#include <qcoreapplication.h>
-#include <qstringlist.h>
+#include <QCoreApplication>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -57,7 +56,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdpadengined","rdpadengined",RDPADENGINED_USAGE,this));
   if(!rda->open(&err_msg,&err_type,false)) {
-    fprintf(stderr,"rdpadengined: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdpadengined: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -272,8 +271,8 @@ void MainObject::StartScript(unsigned id)
     args.push_back(QString().sprintf("%u",RD_PAD_CLIENT_TCP_PORT));
     args.push_back(QString().sprintf("$%u",id));
     pad_instances.value(id)->start(RD_PYPAD_PYTHON_PATH,args);
-    rda->syslog(LOG_INFO,"starting: "+proc->program()+" "+
-		proc->arguments().join(" ").toUtf8());
+    rda->syslog(LOG_INFO,"%s",(QString("starting: ")+proc->program()+" "+
+			       proc->arguments().join(" ")).toUtf8().constData());
   }
   delete q;
 }

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LogManager Note
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
 #include "rename_item.h"
@@ -115,9 +116,10 @@ void RenameItem::okData()
     done(-1);
     return;
   }
-  QString sql=QString().sprintf("select NAME from %s where NAME=\"%s\"",
-				(const char *)edit_tablename,
-				(const char *)edit_name_edit->text());
+  QString sql=QString("select ")+
+    "NAME "+
+    "from "+edit_tablename+" where "+
+    "NAME=\""+RDEscapeString(edit_name_edit->text())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->next()) {
     delete q;

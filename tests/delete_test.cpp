@@ -2,7 +2,7 @@
 //
 // Test Rivendell file deletion routines.
 //
-//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-
-#include <qapplication.h>
+#include <QApplication>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -43,7 +41,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=new RDApplication("delete_test","delete_test",DELETE_TEST_USAGE,this);
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"delete_test: %s\n",(const char *)err_msg);
+    fprintf(stderr,"delete_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -81,7 +79,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"delete_test: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }
@@ -102,12 +100,12 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"delete_test: unsupported URL scheme\n");
     exit(1);
   }
-  conv->setTargetUrl(target_url);
+  conv->setTargetUrl(target_url.toString());
   printf("Deleting...\n");
   conv_err=conv->
     runDelete(username,password,ssh_identity_filename,use_identity_file,
 	      rda->config()->logXloadDebugData());
-  printf("Result: %s\n",(const char *)RDDelete::errorText(conv_err));
+  printf("Result: %s\n",RDDelete::errorText(conv_err).toUtf8().constData());
   delete conv;
 
   exit(0);

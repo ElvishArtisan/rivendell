@@ -22,12 +22,12 @@
 #ifndef EDIT_SCHEDCODERULES_H
 #define EDIT_SCHEDCODERULES_H
 
-#include <QComboBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QSpinBox>
 
+#include <rdcombobox.h>
 #include <rddialog.h>
 #include <rdschedcodelistmodel.h>
 #include <rdschedruleslist.h>
@@ -62,7 +62,7 @@ class EditSchedCodeRules : public RDDialog
   QLabel *edit_or_after_label_II;
   QSpinBox *edit_max_row_spin;
   QSpinBox *edit_min_wait_spin;
-  QComboBox *edit_notafter_boxes[3];
+  RDComboBox *edit_notafter_boxes[3];
   RDSchedCodeListModel *edit_schedcodes_model;
   QLabel *edit_code_label;
   unsigned edit_rule_id;

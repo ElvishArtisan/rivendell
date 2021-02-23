@@ -294,12 +294,12 @@ bool RDSettings::deletePreset(unsigned id) const
 QString RDSettings::pathName(QString pathname,RDSettings::Format fmt)
 {
   QString ext;
-  int index=pathname.findRev(".");
+  int index=pathname.lastIndexOf(".");
   if(index<0) {
     return pathname+"."+defaultExtension(fmt);
   }
   ext=pathname.right(pathname.length()-index);
-  if(ext.lower()==defaultExtension(fmt)) {
+  if(ext.toLower()==defaultExtension(fmt)) {
     return pathname;
   }
   return pathname.replace(index,ext.length(),"."+defaultExtension(fmt));

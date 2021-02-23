@@ -336,7 +336,7 @@ nové</translation>
     </message>
     <message>
         <source>Unsupported URL protocol!</source>
-        <translation>Nepodporovaný protokol URL!</translation>
+        <translation type="obsolete">Nepodporovaný protokol URL!</translation>
     </message>
     <message>
         <source>Event Offset:</source>
@@ -357,6 +357,10 @@ nové</translation>
     <message>
         <source>Update Library Metadata</source>
         <translation>Obnovit knihovní popisná data</translation>
+    </message>
+    <message>
+        <source>Unsupported URL scheme!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -924,7 +928,7 @@ nové</translation>
     </message>
     <message>
         <source>Unsupported URL protocol!</source>
-        <translation>Nepodporovaný protokol URL!</translation>
+        <translation type="obsolete">Nepodporovaný protokol URL!</translation>
     </message>
     <message>
         <source>Event Offset:</source>
@@ -945,6 +949,10 @@ nové</translation>
     <message>
         <source>Export Library Metadata</source>
         <translation>Vyvést knihovní popisná data</translation>
+    </message>
+    <message>
+        <source>Unsupported URL scheme!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

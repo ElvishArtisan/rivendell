@@ -2,7 +2,7 @@
 //
 // Accessor Methods for LiveWire Destination Parameters
 //
-//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2007-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,6 +21,8 @@
 #ifndef RDLIVEWIREDESTINATION_H
 #define RDLIVEWIREDESTINATION_H
 
+#include <stdint.h>
+
 #include <qhostaddress.h>
 
 class RDLiveWireDestination
@@ -34,8 +36,8 @@ class RDLiveWireDestination
   void setPrimaryName(const QString &name);
   QHostAddress streamAddress() const;
   void setStreamAddress(const QHostAddress &addr);
-  Q_UINT16 streamUdpPort() const;
-  void setStreamUdpPort(Q_UINT16 port);
+  uint16_t streamUdpPort() const;
+  void setStreamUdpPort(uint16_t port);
   int channels() const;
   void setChannels(int chans);
   RDLiveWireDestination::Load load() const;
@@ -49,7 +51,7 @@ class RDLiveWireDestination
   int live_slot_number;
   QString live_primary_name;
   QHostAddress live_stream_address;
-  Q_UINT16 live_stream_udp_port;
+  uint16_t live_stream_udp_port;
   int live_channels;
   RDLiveWireDestination::Load live_load;
   int live_output_gain;

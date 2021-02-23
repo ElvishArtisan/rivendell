@@ -52,19 +52,17 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   //
   cart_group_box=new QComboBox(this);
   cart_group_box->setGeometry(145,11,160,19);
-  QLabel *cart_group_label=
-    new QLabel(cart_group_box,tr("&Group:"),this,
-	       "cart_group_label");
+  QLabel *cart_group_label=new QLabel(tr("&Group:"),this);
   cart_group_label->setGeometry(10,11,130,19);
-  cart_group_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  cart_group_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cart_group_label->setFont(labelFont());
   sql=QString("select GROUP_NAME from USER_PERMS where ")+
     "USER_NAME=\""+RDEscapeString(username)+"\" order by GROUP_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    cart_group_box->insertItem(q->value(0).toString());
+    cart_group_box->insertItem(cart_group_box->count(),q->value(0).toString());
     if(q->value(0).toString()==*cart_group) {
-      cart_group_box->setCurrentItem(cart_group_box->count()-1);
+      cart_group_box->setCurrentIndex(cart_group_box->count()-1);
     }
   }
   delete q;
@@ -77,37 +75,35 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   cart_number_edit=new QLineEdit(this);
   cart_number_edit->setGeometry(145,32,60,19);
   cart_number_edit->setMaxLength(6);
-  QIntValidator *validator=new QIntValidator(this,"validator");
+  QIntValidator *validator=new QIntValidator(this);
   validator->setRange(1,999999);
   cart_number_edit->setValidator(validator);
-  QLabel *cart_number_label=
-    new QLabel(cart_number_edit,tr("&New Cart Number:"),this);
+  QLabel *cart_number_label=new QLabel(tr("&New Cart Number:"),this);
   cart_number_label->setGeometry(10,32,130,19);
   cart_number_label->setFont(labelFont());
-  cart_number_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  cart_number_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Cart Type
   //
   cart_type_box=new QComboBox(this);
   cart_type_box->setGeometry(145,53,100,19);
-  QLabel *cart_type_label=
-    new QLabel(cart_type_box,tr("&New Cart Type:"),this);
+  QLabel *cart_type_label=new QLabel(tr("&New Cart Type:"),this);
   cart_type_label->setGeometry(10,53,130,19);
   cart_type_label->setFont(labelFont());
-  cart_type_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  cart_type_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   if((*cart_type==RDCart::All)||(*cart_type==RDCart::Audio)) {
-    cart_type_box->insertItem(tr("Audio"));
+    cart_type_box->insertItem(cart_type_box->count(),tr("Audio"));
   }
   if((*cart_type==RDCart::All)||(*cart_type==RDCart::Macro)) {
-    cart_type_box->insertItem(tr("Macro"));
+    cart_type_box->insertItem(cart_type_box->count(),tr("Macro"));
   }
   if(*cart_type==RDCart::All) {
     sql=QString("select DEFAULT_CART_TYPE from GROUPS where ")+
       "NAME=\""+RDEscapeString(*cart_group)+"\"";
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      cart_type_box->setCurrentItem(q->value(0).toUInt()-1);
+      cart_type_box->setCurrentIndex(q->value(0).toUInt()-1);
     }
     delete q;
   }
@@ -120,11 +116,10 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   cart_title_edit->setMaxLength(255);
   //  cart_title_edit->setValidator(text_validator);
   cart_title_edit->setText(tr("[new cart]"));
-  QLabel *cart_title_label=
-    new QLabel(cart_title_edit,tr("&New Cart Title:"),this);
+  QLabel *cart_title_label=new QLabel(tr("&New Cart Title:"),this);
   cart_title_label->setGeometry(10,73,130,19);
   cart_title_label->setFont(labelFont());
-  cart_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  cart_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button
@@ -187,9 +182,10 @@ void RDAddCart::okData()
   QString sql;
   unsigned num;
   RDGroup *group=new RDGroup(cart_group_box->currentText());
+  bool ok=false;
 
-  if((sscanf((const char *)cart_number_edit->text(),"%d",&num)!=1)||
-     (num<=0)) {
+  num=cart_number_edit->text().toUInt(&ok);
+  if((!ok)||(num==0)) {
     QMessageBox::warning(this,tr("Invalid Number"),tr("Invalid Cart Number!"));
     return;
   }
@@ -234,7 +230,7 @@ void RDAddCart::okData()
   delete group;
   *cart_group=cart_group_box->currentText();
   if(*cart_type==RDCart::All) {
-    *cart_type=(RDCart::Type)(cart_type_box->currentItem()+1);
+    *cart_type=(RDCart::Type)(cart_type_box->currentIndex()+1);
   }
   *cart_title=cart_title_edit->text();
   done(num);

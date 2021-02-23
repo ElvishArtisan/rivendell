@@ -2,7 +2,7 @@
 //
 // Command-line tool for setting Rivendell Cut Markers
 //
-//   (C) Copyright 2014,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2014-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,11 +26,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#include <qapplication.h>
-#include <qdir.h>
-#include <qfileinfo.h>
-//Added by qt3to4:
-#include <QSqlQuery>
+#include <QApplication>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -63,7 +59,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdmarkerset","rdmarkerset",RDMARKERSET_USAGE,this));
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdmarkerset: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdmarkerset: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -101,7 +97,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rdmarkerset: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }
@@ -136,7 +132,7 @@ MainObject::MainObject(QObject *parent)
   //  set_station=new RDStation(set_config->stationName());
   if(!rda->station()->exists()) {
     fprintf(stderr,"rdmarkerset: no such host [\"%s\"]\n",
-	    (const char *)rda->config()->stationName());
+	    rda->config()->stationName().toUtf8().constData());
     exit(256);
   }  
 
@@ -157,7 +153,7 @@ MainObject::MainObject(QObject *parent)
       RDGroup *grp=new RDGroup(set_group_names[i]);
       if(!grp->exists()) {
 	fprintf(stderr,"rdmarkerset: no such group named \"%s\"\n",
-		(const char *)set_group_names[i]);
+		set_group_names[i].toUtf8().constData());
 	bad=true;
       }
       delete grp;
@@ -293,7 +289,7 @@ void MainObject::SetAutoTrim(unsigned cartnum,int cutnum,const QString &title,
   else {
     if(err!=RDTrimAudio::ErrorNoAudio) {
       fprintf(stderr,"rdmarkerset: cart %06u, cut %d trimmer error [%s]\n",
-	      cartnum,cutnum,(const char *)RDTrimAudio::errorText(err));
+	      cartnum,cutnum,RDTrimAudio::errorText(err).toUtf8().constData());
       exit(256);
     }
   }
@@ -324,7 +320,7 @@ void MainObject::ClearAutoTrim(unsigned cartnum,int cutnum,const QString &title,
   else {
     if(err!=RDAudioInfo::ErrorNoAudio) {
       fprintf(stderr,"rdmarkerset: cart %06u, cut %d info error [%s]\n",
-	      cartnum,cutnum,(const char *)RDAudioInfo::errorText(err));
+	      cartnum,cutnum,RDAudioInfo::errorText(err).toUtf8().constData());
       exit(256);
     }
   }
@@ -363,7 +359,7 @@ void MainObject::SetAutoSegue(unsigned cartnum,int cutnum,const QString &title,
   else {
     if(err!=RDTrimAudio::ErrorNoAudio) {
       fprintf(stderr,"rdmarkerset: cart %06u, cut %d trimmer error [%s]\n",
-	      cartnum,cutnum,(const char *)RDTrimAudio::errorText(err));
+	      cartnum,cutnum,RDTrimAudio::errorText(err).toUtf8().constData());
       exit(256);
     }
   }
@@ -386,7 +382,7 @@ void MainObject::ClearAutoSegue(unsigned cartnum,int cutnum,
 void MainObject::Print(const QString &msg)
 {
   if(set_verbose) {
-    printf("%s\n",(const char *)msg);
+    printf("%s\n",msg.toUtf8().constData());
   }
 }
 

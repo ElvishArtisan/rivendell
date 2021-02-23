@@ -64,9 +64,8 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Progress Dialog
   //
   cart_progress_dialog=
-    new QProgressDialog(tr("Please Wait..."),tr("Cancel"),0,10,this,
-			Qt::WStyle_Customize|Qt::WStyle_NormalBorder);
-  cart_progress_dialog->setCaption(" ");
+    new QProgressDialog(tr("Please Wait..."),tr("Cancel"),0,10,this);
+  cart_progress_dialog->setWindowTitle(" ");
   QLabel *label=new QLabel(tr("Please Wait..."),cart_progress_dialog);
   label->setAlignment(Qt::AlignCenter);
   label->setFont(progressFont());
@@ -313,7 +312,7 @@ void RDCartDialog::editorData()
   delete q;
 
   if(fork()==0) {
-    system(cmd+" &");
+    system((cmd+" &").toUtf8());
     exit(0);
   }
 }
@@ -499,7 +498,7 @@ void RDCartDialog::SaveState()
     return;
   }
 
-  if((f=fopen(state_file,"w"))==NULL) {
+  if((f=fopen(state_file.toUtf8(),"w"))==NULL) {
     return;
   }
   fprintf(f,"[RDCartDialog]\n");

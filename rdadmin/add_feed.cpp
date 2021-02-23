@@ -60,7 +60,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   feed_keyname_edit->setValidator(validator);
   connect(feed_keyname_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(keynameChangedData(const QString &)));
-  feed_keyname_label=new QLabel(feed_keyname_edit,tr("&New Feed Name:"),this);
+  feed_keyname_label=new QLabel(tr("&New Feed Name:"),this);
   feed_keyname_label->setFont(labelFont());
   feed_keyname_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -70,7 +70,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   feed_users_box=new QCheckBox(this);
   feed_users_box->setChecked(true);
   feed_users_label=
-    new QLabel(feed_users_box,tr("Enable Feed for All Users"),this);
+    new QLabel(tr("Enable Feed for All Users"),this);
   feed_users_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //

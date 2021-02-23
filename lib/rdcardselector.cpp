@@ -48,13 +48,13 @@ RDCardSelector::RDCardSelector(QWidget *parent)
   card_card_box=new QSpinBox(this);
   card_card_box->setGeometry(60,yoffset,50,19);
   card_card_box->setSpecialValueText("None");
-  card_card_box->setMinValue(-1);
-  card_card_box->setMaxValue(RD_MAX_CARDS-1);
+  card_card_box->setMinimum(-1);
+  card_card_box->setMaximum(RD_MAX_CARDS-1);
   card_card_box->setValue(-1);
   connect(card_card_box,SIGNAL(valueChanged(int)),this,SLOT(cardData(int)));
-  card_card_label=new QLabel(card_card_box,tr("Card:"),this);
+  card_card_label=new QLabel(tr("Card:"),this);
   card_card_label->setGeometry(0,yoffset+2,55,19);
-  card_card_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
+  card_card_label->setAlignment(Qt::AlignRight);
 
   //
   // Port
@@ -62,13 +62,13 @@ RDCardSelector::RDCardSelector(QWidget *parent)
   card_port_box=new QSpinBox(this);
   card_port_box->setGeometry(60,yoffset+22,50,19);
   card_port_box->setSpecialValueText("None");
-  card_port_box->setMinValue(-1);
-  card_port_box->setMaxValue(RD_MAX_PORTS-1);
+  card_port_box->setMinimum(-1);
+  card_port_box->setMaximum(RD_MAX_PORTS-1);
   card_port_box->setValue(-1);
   connect(card_port_box,SIGNAL(valueChanged(int)),this,SLOT(portData(int)));
-  card_port_label=new QLabel(card_port_box,tr("Port:"),this);
+  card_port_label=new QLabel(tr("Port:"),this);
   card_port_label->setGeometry(0,yoffset+24,55,19);
-  card_port_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
+  card_port_label->setAlignment(Qt::AlignRight);
   for(int i=0;i<RD_MAX_CARDS;i++) {
     card_max_ports[i] = 0;
     cardData(i);
@@ -165,13 +165,13 @@ void RDCardSelector::setPort(int port)
 
 int RDCardSelector::maxCards() const
 {
-  return card_card_box->maxValue()+1;
+  return card_card_box->maximum()+1;
 }
 
 
 void RDCardSelector::setMaxCards(int num)
 {
-  card_card_box->setMaxValue(num-1);
+  card_card_box->setMaximum(num-1);
 }
 
 
@@ -189,7 +189,7 @@ void RDCardSelector::setMaxPorts(int card,int num)
   if(card>=0) {
     card_max_ports[card]=num;
     if (card == this->card()){
-      card_port_box->setMaxValue(num-1);
+      card_port_box->setMaximum(num-1);
       if (num == 0){
 	card_port_box->setValue(-1);
 	card_port_box->setDisabled(true);
@@ -205,7 +205,7 @@ void RDCardSelector::cardData(int card)
   int c;
   if(card>=0) {
     c = card_max_ports[card]-1;
-    card_port_box->setMaxValue(c);
+    card_port_box->setMaximum(c);
     if (c <0){
       card_port_box->setValue(-1);
     }

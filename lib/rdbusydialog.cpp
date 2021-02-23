@@ -47,7 +47,7 @@ QSize RDBusyDialog::sizeHint() const
 
 void RDBusyDialog::show(const QString &caption,const QString &label)
 {
-  setCaption(caption);
+  setWindowTitle(caption);
   bar_label->setText(label);
   bar_bar->activate(true);
   QDialog::show();

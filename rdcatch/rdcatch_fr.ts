@@ -326,10 +326,6 @@ New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unsupported URL protocol!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Event Offset:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -347,6 +343,10 @@ New</source>
     </message>
     <message>
         <source>Update Library Metadata</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsupported URL scheme!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -902,10 +902,6 @@ New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unsupported URL protocol!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Event Offset:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -923,6 +919,10 @@ New</source>
     </message>
     <message>
         <source>Export Library Metadata</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsupported URL scheme!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

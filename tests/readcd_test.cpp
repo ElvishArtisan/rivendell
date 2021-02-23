@@ -2,7 +2,7 @@
 //
 // Test the Rivendell CD reader routines
 //
-//   (C) Copyright 2013-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
-
-#include <qapplication.h>
+#include <QApplication>
 
 #include <discid/discid.h>
 
@@ -53,7 +50,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"readcd_test: unknown option \"%s\"\n",
-	      (const char *)cmd->key(i));
+	      cmd->key(i).toUtf8().constData());
       exit(1);
     }
   }

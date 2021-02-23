@@ -367,7 +367,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Flac(const QString &dstfile,
   sf_dst_info.format=SF_FORMAT_WAV|SF_FORMAT_FLOAT;
   sf_dst_info.channels=wave->getChannels();
   sf_dst_info.samplerate=wave->getSamplesPerSec();
-  if((sf_dst=sf_open(dstfile,SFM_WRITE,&sf_dst_info))==NULL) {
+  if((sf_dst=sf_open(dstfile.toUtf8(),SFM_WRITE,&sf_dst_info))==NULL) {
     return RDAudioConvert::ErrorNoDestination;
   }
 
@@ -422,7 +422,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Vorbis(const QString &dstfile,
   sf_dst_info.format=SF_FORMAT_WAV|SF_FORMAT_FLOAT;
   sf_dst_info.channels=wave->getChannels();
   sf_dst_info.samplerate=wave->getSamplesPerSec();
-  if((sf_dst=sf_open(dstfile,SFM_WRITE,&sf_dst_info))==NULL) {
+  if((sf_dst=sf_open(dstfile.toUtf8(),SFM_WRITE,&sf_dst_info))==NULL) {
     return RDAudioConvert::ErrorNoDestination;
   }
 
@@ -577,7 +577,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Mpeg(const QString &dstfile,
   sf_dst_info.format=SF_FORMAT_WAV|SF_FORMAT_FLOAT;
   sf_dst_info.channels=wave->getChannels();
   sf_dst_info.samplerate=wave->getSamplesPerSec();
-  if((sf_dst=sf_open(dstfile,SFM_WRITE,&sf_dst_info))==NULL) {
+  if((sf_dst=sf_open(dstfile.toUtf8(),SFM_WRITE,&sf_dst_info))==NULL) {
     return RDAudioConvert::ErrorNoDestination;
   }
   sf_command(sf_dst,SFC_SET_NORM_DOUBLE,NULL,SF_FALSE);
@@ -872,7 +872,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1SndFile(const QString &dstfile,
   //
   sf_dst_info=*sf_src_info;
   sf_dst_info.format=SF_FORMAT_WAV|SF_FORMAT_FLOAT;
-  if((sf_dst=sf_open(dstfile,SFM_WRITE,&sf_dst_info))==NULL) {
+  if((sf_dst=sf_open(dstfile.toUtf8(),SFM_WRITE,&sf_dst_info))==NULL) {
     return RDAudioConvert::ErrorNoDestination;
   }
 
@@ -925,7 +925,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage2Convert(const QString &srcfile,
   // Open Files
   //
   memset(&src_info,0,sizeof(src_info));
-  if((src_sf=sf_open(srcfile,SFM_READ,&src_info))==NULL) {
+  if((src_sf=sf_open(srcfile.toUtf8(),SFM_READ,&src_info))==NULL) {
     rda->syslog(LOG_WARNING,"Could not open %s",(const char *)srcfile.toUtf8());
     return RDAudioConvert::ErrorInternal;
   }
@@ -935,7 +935,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage2Convert(const QString &srcfile,
   dst_info.format=SF_FORMAT_WAV|SF_FORMAT_PCM_32;
   dst_info.channels=conv_settings->channels();
   dst_info.samplerate=conv_settings->sampleRate();
-  if((dst_sf=sf_open(dstfile,SFM_WRITE,&dst_info))==NULL) {
+  if((dst_sf=sf_open(dstfile.toUtf8(),SFM_WRITE,&dst_info))==NULL) {
     sf_close(src_sf);
     rda->syslog(LOG_WARNING,"Could not open %s",(const char *)dstfile.toUtf8());
     return RDAudioConvert::ErrorInternal;
@@ -1146,7 +1146,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Convert(const QString &srcfile,
   //
   // Open Source File
   //
-  if((src_sf=sf_open(srcfile,SFM_READ,&src_sf_info))==NULL) {
+  if((src_sf=sf_open(srcfile.toUtf8(),SFM_READ,&src_sf_info))==NULL) {
     rda->syslog(LOG_WARNING,"%s",sf_strerror(NULL));
     return RDAudioConvert::ErrorInternal;
   }
@@ -1207,7 +1207,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Flac(SNDFILE *src_sf,
   flac->set_sample_rate(src_sf_info->samplerate);
   //flac->set_compression_level(8);
   flac->set_blocksize(0);
-  unlink(dstfile);
+  unlink(dstfile.toUtf8());
   /*
    * FLAC <1.2.x
    *
@@ -1225,7 +1225,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Flac(SNDFILE *src_sf,
   /*
    * FLAC 1.2.x
    */
-  switch(flac->init(dstfile.ascii())) {
+  switch(flac->init(dstfile.toAscii())) {
   case FLAC__STREAM_ENCODER_INIT_STATUS_OK:
     break;
 
@@ -1297,8 +1297,8 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Vorbis(SNDFILE *src_sf,
   //
   // Open Destination File
   //
-  unlink(dstfile);
-  if((dst_fd=open(dstfile,O_WRONLY|O_CREAT|O_TRUNC,
+  unlink(dstfile.toUtf8());
+  if((dst_fd=open(dstfile.toUtf8(),O_WRONLY|O_CREAT|O_TRUNC,
 		  S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH))<0) {
     return RDAudioConvert::ErrorNoDestination;
   } 
@@ -1492,8 +1492,8 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer3(SNDFILE *src_sf,
   //
   // Open Destination File
   //
-  unlink(dstfile);
-  if((dst_fd=open(dstfile,O_WRONLY|O_CREAT|O_TRUNC,
+  unlink(dstfile.toUtf8());
+  if((dst_fd=open(dstfile.toUtf8(),O_WRONLY|O_CREAT|O_TRUNC,
 		  S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH))<0) {
     return RDAudioConvert::ErrorNoDestination;
   } 
@@ -1633,7 +1633,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2Wav(SNDFILE *src_sf,
   wave->setCartChunk(conv_dst_wavedata!=NULL);
   wave->setLevlChunk(true);
   wave->setRdxlContents(conv_dst_rdxl);
-  unlink(dstfile);
+  unlink(dstfile.toUtf8());
   if(!wave->createWave(conv_dst_wavedata,conv_start_point)) {
     return RDAudioConvert::ErrorNoDestination;
   }
@@ -1737,8 +1737,8 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2(SNDFILE *src_sf,
   //
   // Open Destination File
   //
-  unlink(dstfile);
-  if((dst_fd=open(dstfile,O_WRONLY|O_CREAT|O_TRUNC,
+  unlink(dstfile.toUtf8());
+  if((dst_fd=open(dstfile.toUtf8(),O_WRONLY|O_CREAT|O_TRUNC,
 		  S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH))<0) {
     return RDAudioConvert::ErrorNoDestination;
   } 
@@ -1831,7 +1831,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm16(SNDFILE *src_sf,
   }
   wave->setLevlChunk(true);
   sf_buffer=new int16_t[2048*src_sf_info->channels];
-  unlink(dstfile);
+  unlink(dstfile.toUtf8());
   if(!wave->createWave(conv_dst_wavedata,conv_start_point)) {
     return RDAudioConvert::ErrorNoDestination;
   }
@@ -1876,7 +1876,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm24(SNDFILE *src_sf,
   wave->setLevlChunk(true);
   sf_buffer=new int[2048*src_sf_info->channels];
   pcm24=new uint8_t[2048*src_sf_info->channels*sizeof(int)];
-  unlink(dstfile);
+  unlink(dstfile.toUtf8());
   if(!wave->createWave(conv_dst_wavedata,conv_start_point)) {
     return RDAudioConvert::ErrorNoDestination;
   }

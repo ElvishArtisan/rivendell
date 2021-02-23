@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SRC-8 III
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,10 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
-
-#include <qtimer.h>
 
 #include <rdapplication.h>
 
@@ -116,14 +112,14 @@ void BtSrc8Iii::processCommand(RDMacro *cmd)
   switch(cmd->command()) {
       case RDMacro::GO:
 	if((cmd->argQuantity()!=5)||
-	   ((cmd->arg(1).lower()!="i")&&
-	    (cmd->arg(1).lower()!="o"))||
+	   ((cmd->arg(1).toLower()!="i")&&
+	    (cmd->arg(1).toLower()!="o"))||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(3).toInt()>bt_gpos)||
 	   (cmd->arg(2).toInt()>bt_gpos)||
 	   ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	    (cmd->arg(1).lower()!="i"))||
+	    (cmd->arg(1).toLower()!="i"))||
 	   ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	    (cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).lower()=="i"))||
+	    (cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).toLower()=="i"))||
 	   (cmd->arg(4).toInt()<0)) {
 	  cmd->acknowledge(false);
 	  emit rmlEcho(cmd);
@@ -131,14 +127,14 @@ void BtSrc8Iii::processCommand(RDMacro *cmd)
 	}
 	if(cmd->arg(3).toInt()==0) {  // Turn OFF
 	  if(cmd->arg(4).toInt()==0) {
-	    if(cmd->arg(1).lower()=="i") {
+	    if(cmd->arg(1).toLower()=="i") {
 	      if(bt_gpi_state[cmd->arg(2).toInt()-1]) {
 		emit gpiChanged(bt_matrix,cmd->arg(2).toInt()-1,false);
 		bt_gpi_state[cmd->arg(2).toInt()-1]=false;
 	      }
 	      bt_gpi_mask[cmd->arg(2).toInt()-1]=true;
 	    }
-	    if(cmd->arg(1).lower()=="o") {
+	    if(cmd->arg(1).toLower()=="o") {
 	      sprintf(str,"*%dOR%dF\r\n",BTSRC8III_UNIT_ID,cmd->arg(2).toInt());
 	      bt_device->write(str,8);
 	      emit gpoChanged(bt_matrix,cmd->arg(2).toInt()-1,false);
@@ -159,14 +155,14 @@ void BtSrc8Iii::processCommand(RDMacro *cmd)
 	  }
 	  else { 
 	    if(cmd->arg(4).toInt()==0) {  // Turn ON
-	      if(cmd->arg(1).lower()=="i") {
+	      if(cmd->arg(1).toLower()=="i") {
 		if(!bt_gpi_state[cmd->arg(2).toInt()-1]) {
 		  emit gpiChanged(bt_matrix,cmd->arg(2).toInt()-1,true);
 		  bt_gpi_state[cmd->arg(2).toInt()-1]=true;
 		}
 		bt_gpi_mask[cmd->arg(2).toInt()-1]=true;
 	      }
-	      if(cmd->arg(1).lower()=="o") {
+	      if(cmd->arg(1).toLower()=="o") {
 		sprintf(str,"*%dOR%dL\r\n",
 			BTSRC8III_UNIT_ID,cmd->arg(2).toInt());
 		bt_device->write(str,8);
@@ -174,7 +170,7 @@ void BtSrc8Iii::processCommand(RDMacro *cmd)
 	      }
 	    }
 	    else {  // Pulse
-	      if(cmd->arg(1).lower()=="i") {
+	      if(cmd->arg(1).toLower()=="i") {
 		if(!bt_gpi_state[cmd->arg(2).toInt()-1]) {
 		  emit gpiChanged(bt_matrix,cmd->arg(2).toInt()-1,true);
 		  bt_gpi_state[cmd->arg(2).toInt()-1]=true;
@@ -182,7 +178,7 @@ void BtSrc8Iii::processCommand(RDMacro *cmd)
 		bt_gpi_mask[cmd->arg(2).toInt()-1]=true;
 		bt_gpi_oneshot->start(cmd->arg(2).toInt()-1,500);
 	      }
-	      if(cmd->arg(1).lower()=="o") {
+	      if(cmd->arg(1).toLower()=="o") {
 		sprintf(str,"*%dOR%dP%02d\r\n",
 			BTSRC8III_UNIT_ID,cmd->arg(2).toInt(),
 			cmd->arg(4).toInt()/100+1);

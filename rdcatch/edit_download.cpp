@@ -33,8 +33,6 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
 			   QWidget *parent)
   : RDDialog(parent)
 {
-  QString sql;
-  RDSqlQuery *q;
   QString temp;
 
   edit_deck=NULL;
@@ -70,7 +68,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   edit_active_button=new QCheckBox(this);
   edit_active_button->setGeometry(10,11,20,20);
-  QLabel *label=new QLabel(edit_active_button,tr("Event Active"),this);
+  QLabel *label=new QLabel(tr("Event Active"),this);
   label->setGeometry(30,11,125,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -78,9 +76,11 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   // Station
   //
-  edit_station_box=new QComboBox(this);
+  edit_station_box=new RDComboBox(this);
+  edit_station_model=new RDStationListModel(false,"",this);
+  edit_station_box->setModel(edit_station_model);
   edit_station_box->setGeometry(200,10,140,23);
-  label=new QLabel(edit_station_box,tr("Location:"),this);
+  label=new QLabel(tr("Location:"),this);
   label->setGeometry(125,10,70,23);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -91,7 +91,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   edit_starttime_edit=new QTimeEdit(this);
   edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
   edit_starttime_edit->setDisplayFormat("hh:mm:ss");
-  label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
+  label=new QLabel(tr("Start Time:"),this);
   label->setGeometry(sizeHint().width()-175,12,80,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -102,7 +102,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   edit_description_edit=new QLineEdit(this);
   edit_description_edit->setGeometry(115,43,sizeHint().width()-125,20);
   edit_description_edit->setValidator(validator);
-  label=new QLabel(edit_description_edit,tr("Description:"),this);
+  label=new QLabel(tr("Description:"),this);
   label->setGeometry(10,43,100,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -116,7 +116,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   edit_url_edit->setValidator(validator);
   connect(edit_url_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(urlChangedData(const QString &)));
-  label=new QLabel(edit_url_edit,tr("Url:"),this);
+  label=new QLabel(tr("Url:"),this);
   label->setGeometry(10,70,100,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -128,7 +128,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   edit_username_edit->setGeometry(115,97,150,20);
   edit_username_edit->setMaxLength(64);
   edit_username_edit->setValidator(validator);
-  edit_username_label=new QLabel(edit_username_edit,tr("Username:"),this);
+  edit_username_label=new QLabel(tr("Username:"),this);
   edit_username_label->setGeometry(10,97,100,20);
   edit_username_label->setFont(labelFont());
   edit_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -141,7 +141,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   edit_password_edit->setEchoMode(QLineEdit::Password);
   edit_password_edit->setMaxLength(64);
   edit_username_edit->setValidator(validator);
-  edit_password_label=new QLabel(edit_password_edit,tr("Password:"),this);
+  edit_password_label=new QLabel(tr("Password:"),this);
   edit_password_label->setGeometry(275,97,80,20);
   edit_password_label->setFont(labelFont());
   edit_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -152,7 +152,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   edit_destination_edit=new QLineEdit(this);
   edit_destination_edit->setGeometry(115,124,sizeHint().width()-195,20);
   edit_destination_edit->setReadOnly(true);
-  label=new QLabel(edit_destination_edit,tr("Destination:"),this);
+  label=new QLabel(tr("Destination:"),this);
   label->setGeometry(10,127,100,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
@@ -167,9 +167,9 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   edit_channels_box=new QComboBox(this);
   edit_channels_box->setGeometry(190,149,40,20);
-  edit_channels_box->insertItem("1");
-  edit_channels_box->insertItem("2");
-  label=new QLabel(edit_channels_box,tr("Channels:"),this);
+  edit_channels_box->insertItem(0,"1");
+  edit_channels_box->insertItem(1,"2");
+  label=new QLabel(tr("Channels:"),this);
   label->setGeometry(120,149,70,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -181,18 +181,18 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   edit_autotrim_box->setGeometry(120,175,15,15);
   connect(edit_autotrim_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autotrimToggledData(bool)));
-  label=new QLabel(edit_autotrim_box,tr("Autotrim"),this);
+  label=new QLabel(tr("Autotrim"),this);
   label->setGeometry(140,173,80,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   edit_autotrim_spin=new QSpinBox(this);
   edit_autotrim_spin->setGeometry(265,173,40,20);
   edit_autotrim_spin->setRange(-99,-1);
-  edit_autotrim_label=new QLabel(edit_autotrim_spin,tr("Level:"),this);
+  edit_autotrim_label=new QLabel(tr("Level:"),this);
   edit_autotrim_label->setGeometry(220,173,40,20);
   edit_autotrim_label->setFont(labelFont());
   edit_autotrim_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  edit_autotrim_unit=new QLabel(edit_autotrim_spin,tr("dBFS"),this);
+  edit_autotrim_unit=new QLabel(tr("dBFS"),this);
   edit_autotrim_unit->setGeometry(310,173,40,20);
   edit_autotrim_unit->setFont(labelFont());
   edit_autotrim_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -204,18 +204,18 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   edit_normalize_box->setGeometry(120,199,15,15);
   connect(edit_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeToggledData(bool)));
-  label=new QLabel(edit_normalize_box,tr("Normalize"),this);
+  label=new QLabel(tr("Normalize"),this);
   label->setGeometry(140,197,80,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   edit_normalize_spin=new QSpinBox(this);
   edit_normalize_spin->setGeometry(265,197,40,20);
   edit_normalize_spin->setRange(-99,-1);
-  edit_normalize_label=new QLabel(edit_normalize_spin,tr("Level:"),this);
+  edit_normalize_label=new QLabel(tr("Level:"),this);
   edit_normalize_label->setGeometry(220,197,40,20);
   edit_normalize_label->setFont(labelFont());
   edit_normalize_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  edit_normalize_unit=new QLabel(edit_normalize_spin,tr("dBFS"),this);
+  edit_normalize_unit=new QLabel(tr("dBFS"),this);
   edit_normalize_unit->setGeometry(310,197,40,20);
   edit_normalize_unit->setFont(labelFont());
   edit_normalize_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -225,7 +225,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   edit_metadata_box=new QCheckBox(this);
   edit_metadata_box->setGeometry(120,222,15,15);
-  label=new QLabel(edit_metadata_box,tr("Update Library Metadata"),this);
+  label=new QLabel(tr("Update Library Metadata"),this);
   label->setGeometry(140,222,160,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -242,7 +242,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   edit_mon_button=new QCheckBox(this);
   edit_mon_button->setGeometry(20,273,20,20);
-  label=new QLabel(edit_mon_button,tr("Monday"),this);
+  label=new QLabel(tr("Monday"),this);
   label->setGeometry(40,273,115,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -252,7 +252,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   edit_tue_button=new QCheckBox(this);
   edit_tue_button->setGeometry(115,273,20,20);
-  label=new QLabel(edit_tue_button,tr("Tuesday"),this);
+  label=new QLabel(tr("Tuesday"),this);
   label->setGeometry(135,273,115,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -262,7 +262,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   edit_wed_button=new QCheckBox(this);
   edit_wed_button->setGeometry(215,273,20,20);
-  label=new QLabel(edit_wed_button,tr("Wednesday"),this);
+  label=new QLabel(tr("Wednesday"),this);
   label->setGeometry(235,273,115,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -272,7 +272,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   edit_thu_button=new QCheckBox(this);
   edit_thu_button->setGeometry(335,273,20,20);
-  label=new QLabel(edit_thu_button,tr("Thursday"),this);
+  label=new QLabel(tr("Thursday"),this);
   label->setGeometry(355,273,115,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -282,7 +282,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   edit_fri_button=new QCheckBox(this);
   edit_fri_button->setGeometry(440,273,20,20);
-  label=new QLabel(edit_fri_button,tr("Friday"),this);
+  label=new QLabel(tr("Friday"),this);
   label->setGeometry(460,273,40,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -292,7 +292,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   edit_sat_button=new QCheckBox(this);
   edit_sat_button->setGeometry(130,298,20,20);
-  label=new QLabel(edit_sat_button,tr("Saturday"),this);
+  label=new QLabel(tr("Saturday"),this);
   label->setGeometry(150,298,60,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -302,7 +302,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   edit_sun_button=new QCheckBox(this);
   edit_sun_button->setGeometry(300,298,20,20);
-  label=new QLabel(edit_sun_button,tr("Sunday"),this);
+  label=new QLabel(tr("Sunday"),this);
   label->setGeometry(320,298,60,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -312,7 +312,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   edit_oneshot_box=new QCheckBox(this);
   edit_oneshot_box->setGeometry(20,335,15,15);
-  label=new QLabel(edit_oneshot_box,tr("Make OneShot"),this);
+  label=new QLabel(tr("Make OneShot"),this);
   label->setGeometry(40,333,115,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -323,11 +323,11 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   edit_eventoffset_spin=new QSpinBox(this);
   edit_eventoffset_spin->setGeometry(245,333,45,20);
   edit_eventoffset_spin->setRange(-30,30);
-  label=new QLabel(edit_eventoffset_spin,tr("Event Offset:"),this);
+  label=new QLabel(tr("Event Offset:"),this);
   label->setGeometry(140,333,100,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  label=new QLabel(edit_eventoffset_spin,tr("days"),this);
+  label=new QLabel(tr("days"),this);
   label->setGeometry(295,333,40,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -366,14 +366,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   // Populate Data
   //
-  q=new RDSqlQuery("select NAME from STATIONS where NAME!=\"DEFAULT\"");
-  while(q->next()) {
-    edit_station_box->insertItem(q->value(0).toString());
-    if(edit_recording->station()==q->value(0).toString()) {
-      edit_station_box->setCurrentItem(edit_station_box->count()-1);
-    }
-  }
-  delete q;
+  edit_station_box->setCurrentText(edit_recording->station());
   edit_active_button->setChecked(edit_recording->isActive());
   edit_starttime_edit->setTime(edit_recording->startTime());
   edit_description_edit->setText(edit_recording->description());
@@ -382,7 +375,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   edit_password_edit->setText(edit_recording->urlPassword());
   edit_cutname=edit_recording->cutName();
   edit_destination_edit->setText("Cut "+edit_cutname);
-  edit_channels_box->setCurrentItem(edit_recording->channels()-1);
+  edit_channels_box->setCurrentIndex(edit_recording->channels()-1);
   if(edit_recording->trimThreshold()>0) {
     edit_autotrim_box->setChecked(true);
     edit_autotrim_spin->setValue(-(edit_recording->trimThreshold()/100));
@@ -438,9 +431,9 @@ QSizePolicy EditDownload::sizePolicy() const
 void EditDownload::urlChangedData(const QString &str)
 {
   QUrl url(str);
-  QString protocol=url.protocol();
-  if((protocol=="ftp")||(protocol=="ftps")||(protocol=="http")||(protocol=="file")||
-     (protocol=="scp")||(protocol=="sftp")) {
+  QString scheme=url.scheme();
+  if((scheme=="ftp")||(scheme=="ftps")||(scheme=="http")||(scheme=="file")||
+     (scheme=="scp")||(scheme=="sftp")) {
     edit_username_label->setEnabled(true);
     edit_username_edit->setEnabled(true);
     edit_password_label->setEnabled(true);
@@ -496,20 +489,19 @@ void EditDownload::saveasData()
 
 void EditDownload::okData()
 {
-  if(QUrl::isRelativeUrl(edit_url_edit->text())||
-     (edit_url_edit->text().right(1)=="/")) {
+  QUrl url(edit_url_edit->text());
+  if(url.isRelative()||(edit_url_edit->text().right(1)=="/")) {
     QMessageBox::warning(this,tr("Invalid URL"),tr("The URL is invalid!"));
     return;
   }
-  QUrl url(edit_url_edit->text());
-  QString protocol=url.protocol();
-  if((protocol!="ftp")&&(protocol!="ftps")&&(protocol!="http")&&(protocol!="https")&&
-     (protocol!="file")&&(protocol!="scp")&&(protocol!="sftp")) {
+  QString scheme=url.scheme();
+  if((scheme!="ftp")&&(scheme!="ftps")&&(scheme!="http")&&(scheme!="https")&&
+     (scheme!="file")&&(scheme!="scp")&&(scheme!="sftp")) {
     QMessageBox::warning(this,
-			 tr("Invalid URL"),tr("Unsupported URL protocol!"));
+			 tr("Invalid URL"),tr("Unsupported URL scheme!"));
     return;
   }
-  if((protocol=="file")&&(edit_username_edit->text().isEmpty())) {
+  if((scheme=="file")&&(edit_username_edit->text().isEmpty())) {
     QMessageBox::warning(this,tr("Missing Username"),
 			 tr("You must specify a username!"));
     return;
@@ -558,7 +550,7 @@ void EditDownload::Save()
   edit_recording->setType(RDRecording::Download);
   edit_recording->setStartTime(edit_starttime_edit->time());
   edit_recording->setDescription(edit_description_edit->text());
-  edit_recording->setChannels(edit_channels_box->currentItem()+1);
+  edit_recording->setChannels(edit_channels_box->currentIndex()+1);
   if(edit_autotrim_box->isChecked()) {
     edit_recording->setTrimThreshold(-100*edit_autotrim_spin->value());
   }

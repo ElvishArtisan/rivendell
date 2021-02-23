@@ -146,13 +146,13 @@ bool RDProfile::setSource(const QString &filename)
 	profile_section.push_back(RDProfileSection());
 	profile_section.back().setName(section);
       }
-      else if(((offset=line.find('='))!=-1)) {
+      else if(((offset=line.indexOf('='))!=-1)) {
 	profile_section.back().
 	  addValue(line.left(offset),
-		   line.right(line.length()-offset-1).stripWhiteSpace());
+		   line.right(line.length()-offset-1).trimmed());
       }
     }
-    line=text->readLine().stripWhiteSpace();
+    line=text->readLine().trimmed();
   }
   delete text;
   delete file;
@@ -179,10 +179,10 @@ void RDProfile::setSourceString(const QString &str)
 	profile_section.push_back(RDProfileSection());
 	profile_section.back().setName(section);
       }
-      else if(((offset=line.find('='))!=-1)) {
+      else if(((offset=line.indexOf('='))!=-1)) {
 	profile_section.back().
 	  addValue(line.left(offset),
-		   line.right(line.length()-offset-1).stripWhiteSpace());
+		   line.right(line.length()-offset-1).trimmed());
       }
     }
   }
@@ -240,7 +240,7 @@ int RDProfile::hexValue(QString section,QString tag,
   bool valid;
 
   QString str=stringValue(section,tag);
-  if(str.left(2).lower()=="0x") {
+  if(str.left(2).toLower()=="0x") {
     str=str.right(str.length()-2);
   }
   int result=str.toInt(&valid,16);
@@ -300,7 +300,7 @@ bool RDProfile::boolValue(QString section,QString tag,
 {
   bool valid;
 
-  QString str=stringValue(section,tag,"",&valid).lower();
+  QString str=stringValue(section,tag,"",&valid).toLower();
   if(!valid) {
     if(ok!=NULL) {
       *ok=false;

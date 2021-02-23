@@ -31,7 +31,7 @@
 extern RDStation *rdstation_conf;
 
 AddRecording::AddRecording(QString *filter,QWidget *parent)
-  : RDDialog(parent,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
+  : RDDialog(parent,Qt::CustomizeWindowHint|Qt::WindowTitleHint)
 {
   add_id=-1;
   add_filter=filter;

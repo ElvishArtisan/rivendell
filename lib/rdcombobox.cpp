@@ -38,7 +38,7 @@ void RDComboBox::insertItem(const QString &str,bool unique)
       return;
     }
   }
-  QComboBox::insertItem(str);
+  QComboBox::insertItem(count(),str);
 }
 
 
@@ -51,6 +51,18 @@ void RDComboBox::setSetupMode(bool state)
 void RDComboBox::addIgnoredKey(int key)
 {
   ignored_keys.push_back(key);
+}
+
+
+bool RDComboBox::setCurrentText(const QString &str)
+{
+  for(int i=0;i<count();i++) {
+    if(itemData(i).toString()==str) {
+      setCurrentIndex(i);
+      return true;
+    }
+  }
+  return false;
 }
 
 
@@ -80,7 +92,7 @@ void RDComboBox::keyPressEvent(QKeyEvent *e)
 bool RDComboBox::IsItemUnique(const QString &str)
 {
   for(int i=0;i<count();i++) {
-    if(str==text(i)) {
+    if(str==itemData(i).toString()) {
       return false;
     }
   }

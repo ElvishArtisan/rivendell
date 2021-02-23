@@ -883,8 +883,10 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
     q=new RDSqlQuery("select CART_NUMBER,SCHED_CODE from CART_SCHED_CODES order by CART_NUMBER",false);
     while(q->next()) {
-      schedcode=QString().sprintf("%-11s",(const char *)q->value(1).toString());
-      q1=new RDSqlQuery(QString().sprintf("update CART set SCHED_CODES=CONCAT(\"%s\",SCHED_CODES) where NUMBER=%d",(const char *)schedcode,q->value(0).toUInt()),false);
+      schedcode=QString().sprintf("%-11s",
+				  q->value(1).toString().toUtf8().constData());
+      q1=new RDSqlQuery(QString().sprintf("update CART set SCHED_CODES=CONCAT(\"%s\",SCHED_CODES) where NUMBER=%d",schedcode.toUtf8().constData(),
+					  q->value(0).toUInt()),false);
       delete q1;
     }
     delete q;

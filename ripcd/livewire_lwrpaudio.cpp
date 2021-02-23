@@ -2,7 +2,7 @@
 //
 // A Rivendell LWRP audio switcher driver for LiveWire networks.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,9 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
-#include <syslog.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -233,5 +230,5 @@ void LiveWireLwrpAudio::destinationChangedData(unsigned id,RDLiveWireDestination
 
 void LiveWireLwrpAudio::watchdogStateChangedData(unsigned id,const QString &msg)
 {
-  rda->syslog(LOG_WARNING,msg);
+  rda->syslog(LOG_WARNING,"%s",msg.toUtf8().constData());
 }

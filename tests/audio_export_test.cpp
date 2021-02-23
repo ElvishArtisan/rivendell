@@ -18,8 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-
 #include <qapplication.h>
 
 #include <rdapplication.h>
@@ -48,7 +46,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("audio_export_test","audio_export_test",AUDIO_EXPORT_TEST_USAGE,this));
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"audio_export_test: %s\n",(const char *)err_msg);
+    fprintf(stderr,"audio_export_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -170,7 +168,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"audio_export_test: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }
@@ -205,7 +203,8 @@ MainObject::MainObject(QObject *parent)
   printf("Exporting...\n");
   conv_err=conv->runExport(username,password,&audio_conv_err);
   printf("Result: %s\n",
-	 (const char *)RDAudioExport::errorText(conv_err,audio_conv_err));
+	 RDAudioExport::errorText(conv_err,audio_conv_err).toUtf8().
+	 constData());
   delete conv;
 
   exit(0);

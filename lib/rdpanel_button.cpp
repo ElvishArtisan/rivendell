@@ -143,7 +143,7 @@ void RDPanelButton::setColor(QColor color)
   }
   button_color=color;
   if(button_flash) {
-    if(color==button_parent->backgroundColor()) {
+    if(color==palette().color(QPalette::Background)) {
       button_flashing=false;
     }
     else {
@@ -396,8 +396,10 @@ void RDPanelButton::mouseReleaseEvent(QMouseEvent *e)
 
 void RDPanelButton::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RDCartDrag::canDecode(e)&&button_allow_drags&&
-  ((button_play_deck==NULL)||(button_play_deck->state()==RDPlayDeck::Stopped)));
+  if(RDCartDrag::canDecode(e)&&button_allow_drags&&
+     ((button_play_deck==NULL)||(button_play_deck->state()==RDPlayDeck::Stopped))) {
+    e->accept();
+  }
 }
 
 
@@ -490,7 +492,7 @@ void RDPanelButton::WriteKeycap(int secs)
     }
   }
   p->end();
-  setPixmap(*pix);
+  setIcon(*pix);
   delete p;
   delete pix;
   update();
@@ -561,7 +563,7 @@ QString RDPanelButton::GetNextLine(QString *str,const QFontMetrics &m,int len)
       while((!str->at(l--).isSpace())&&(l>=0));
       if(l>0) {
 	ret=str->left(l+1);
-	*str=str->right(str->length()-l-1).stripWhiteSpace();
+	*str=str->right(str->length()-l-1).trimmed();
 	return ret;
       }
     }

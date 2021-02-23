@@ -83,11 +83,11 @@ MainObject::MainObject(QObject *parent)
     rda->logAuthenticationFailure(webget_post->clientAddress());
     TextExit("missing REQUEST_METHOD",500,LINE_NUMBER);
   }
-  if(QString(getenv("REQUEST_METHOD")).lower()=="get") {
+  if(QString(getenv("REQUEST_METHOD")).toLower()=="get") {
     ServeLogin(200);
     Exit(0);
   }
-  if(QString(getenv("REQUEST_METHOD")).lower()!="post") {
+  if(QString(getenv("REQUEST_METHOD")).toLower()!="post") {
     rda->syslog(LOG_WARNING,"unsupported web method \"%s\"",
 		getenv("REQUEST_METHOD"));
     rda->logAuthenticationFailure(webget_post->clientAddress());
@@ -292,13 +292,13 @@ void MainObject::GetAudio()
       break;
     }
     fflush(NULL);
-    if((fd=open(tmpfile,O_RDONLY))>=0) {
+    if((fd=open(tmpfile.toUtf8(),O_RDONLY))>=0) {
       while((n=read(fd,data,2048))>0) {
 	write(1,data,n);
       }
     }
     close(fd);
-    unlink(tmpfile);
+    unlink(tmpfile.toUtf8());
     delete tempdir;
     Exit(0);
     break;

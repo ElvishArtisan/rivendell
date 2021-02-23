@@ -22,9 +22,6 @@
 #include <QEvent>
 #include <QMessageBox>
 
-#include <q3textedit.h>
-#include <q3buttongroup.h>
-
 #include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -81,7 +78,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   // Services List Box
   //
   list_services_view=new RDTableView(this);
-  list_title_label=new QLabel(list_services_view,tr("&Services:"),this);
+  list_title_label=new QLabel(tr("&Services:"),this);
   list_title_label->setFont(labelFont());
   list_title_label->setGeometry(14,11,85,19);
   list_services_model=new RDServiceListModel(false,this);

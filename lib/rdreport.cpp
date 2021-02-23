@@ -666,7 +666,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 			 report_config,serviceName());
   QString post_cmd=RDDateDecode(postExportCommand(RDReport::Linux),startdate,
 				report_station,report_config,serviceName());
-  system(post_cmd);
+  system(post_cmd.toUtf8());
   sql=QString("delete from ELR_LINES where ")+
     "SERVICE_NAME=\""+RDEscapeString(mixname)+"\"";
   RDSqlQuery::apply(sql);

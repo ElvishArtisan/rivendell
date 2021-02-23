@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cast
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rdconf.h>
 #include <rddatedialog.h>
@@ -38,8 +38,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   // Active Checkbox
   //
   cast_active_check=new QCheckBox(this);
-  cast_active_label=
-    new QLabel(cast_active_check,tr("Item Active"),this);
+  cast_active_label=new QLabel(tr("Item Active"),this);
   cast_active_label->setFont(labelFont());
   cast_active_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -57,8 +56,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   cast_item_title_edit=new QLineEdit(this);
   cast_item_title_edit->setMaxLength(255);
-  cast_item_title_label=
-    new QLabel(cast_item_title_edit,tr("Title:"),this);
+  cast_item_title_label=new QLabel(tr("Title:"),this);
   cast_item_title_label->setFont(labelFont());
   cast_item_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -67,8 +65,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   cast_item_author_edit=new QLineEdit(this);
   cast_item_author_edit->setMaxLength(255);
-  cast_item_author_label=
-    new QLabel(cast_item_author_edit,tr("Author E-Mail:"),this);
+  cast_item_author_label=new QLabel(tr("Author E-Mail:"),this);
   cast_item_author_label->setFont(labelFont());
   cast_item_author_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -77,8 +74,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   cast_item_category_edit=new QLineEdit(this);
   cast_item_category_edit->setMaxLength(64);
-  cast_item_category_label=
-    new QLabel(cast_item_category_edit,tr("Category:"),this);
+  cast_item_category_label=new QLabel(tr("Category:"),this);
   cast_item_category_label->setFont(labelFont());
   cast_item_category_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -90,8 +86,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_link_edit->setMaxLength(255);
   cast_item_link_edit->
     setVisible(rda->rssSchemas()->supportsItemLinks(cast_schema));
-  cast_item_link_label=
-    new QLabel(cast_item_link_edit,tr("Link URL:"),this);
+  cast_item_link_label=new QLabel(tr("Link URL:"),this);
   cast_item_link_label->setFont(labelFont());
   cast_item_link_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cast_item_link_label->
@@ -105,8 +100,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_comments_edit->setMaxLength(64);
   cast_item_comments_edit->
     setVisible(rda->rssSchemas()->supportsItemComments(cast_schema));
-  cast_item_comments_label=
-    new QLabel(cast_item_comments_edit,tr("Comments URL:"),this);
+  cast_item_comments_label=new QLabel(tr("Comments URL:"),this);
   cast_item_comments_label->setFont(labelFont());
   cast_item_comments_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cast_item_comments_label->
@@ -116,8 +110,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   // Item Description
   //
   cast_item_description_edit=new QTextEdit(this);
-  cast_item_description_label=
-    new QLabel(cast_item_description_edit,tr("Description:"),this);
+  cast_item_description_label=new QLabel(tr("Description:"),this);
   cast_item_description_label->setFont(labelFont());
   cast_item_description_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -126,13 +119,13 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   // Item Explicit
   //
   cast_item_explicit_check=new QCheckBox(this);
-  cast_item_explicit_label=new QLabel(cast_item_explicit_check,
-				     tr("Item contains explicit content"),this);
+  cast_item_explicit_label=
+    new QLabel(tr("Item contains explicit content"),this);
   cast_item_explicit_label->setFont(labelFont());
   cast_item_explicit_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   cast_item_image_box=new RDImagePickerBox("FEED_IMAGES","FEED_ID","ID",this);
-  cast_item_image_label=new QLabel(cast_item_image_box,tr("Image")+":",this);
+  cast_item_image_label=new QLabel(tr("Image")+":",this);
   cast_item_image_label->setFont(labelFont());
   cast_item_image_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -141,8 +134,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   cast_item_effective_edit=new QDateTimeEdit(this);
   cast_item_effective_edit->setDisplayFormat("MM/dd/yyyy hh:mm:ss");
-  cast_item_effective_label=
-    new QLabel(cast_item_effective_edit,tr("Air Date/Time:"),this);
+  cast_item_effective_label=new QLabel(tr("Air Date/Time:"),this);
   cast_item_effective_label->setFont(labelFont());
   cast_item_effective_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cast_item_effective_label->
@@ -157,12 +149,11 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   // Item Expiration
   //
   cast_item_expiration_box=new QComboBox(this);
-  cast_item_expiration_box->insertItem(tr("No"));
-  cast_item_expiration_box->insertItem(tr("Yes"));
+  cast_item_expiration_box->insertItem(0,tr("No"));
+  cast_item_expiration_box->insertItem(1,tr("Yes"));
   connect(cast_item_expiration_box,SIGNAL(activated(int)),
 	  this,SLOT(expirationSelectedData(int)));
-  cast_item_expiration_box_label=
-    new QLabel(cast_item_expiration_box,tr("Item Expires")+":",this);
+  cast_item_expiration_box_label=new QLabel(tr("Item Expires")+":",this);
   cast_item_expiration_box_label->setFont(labelFont());
   cast_item_expiration_box_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -172,8 +163,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
 
   cast_item_expiration_edit=new QDateTimeEdit(this);
   cast_item_expiration_edit->setDisplayFormat("MM/dd/yyyy hh:mm:ss");
-  cast_item_expiration_label=
-    new QLabel(cast_item_expiration_edit,tr("at"),this);
+  cast_item_expiration_label=new QLabel(tr("at"),this);
   cast_item_expiration_label->setFont(labelFont());
   cast_item_expiration_label->setAlignment(Qt::AlignCenter);
   cast_item_expiration_button=new QPushButton(this);
@@ -239,15 +229,15 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_comments_edit->setText(cast_cast->itemComments());
   cast_item_effective_edit->setDateTime(cast_cast->effectiveDateTime());
   if(!cast_cast->expirationDateTime().isNull()) {
-    cast_item_expiration_box->setCurrentItem(1);
+    cast_item_expiration_box->setCurrentIndex(1);
   }
   cast_item_expiration_edit->setDateTime(cast_cast->expirationDateTime());
   cast_item_expiration_edit->
-    setEnabled(cast_item_expiration_box->currentItem());
+    setEnabled(cast_item_expiration_box->currentIndex());
   cast_item_expiration_button->
-    setEnabled(cast_item_expiration_box->currentItem());
+    setEnabled(cast_item_expiration_box->currentIndex());
   cast_item_expiration_label->
-    setEnabled(cast_item_expiration_box->currentItem());
+    setEnabled(cast_item_expiration_box->currentIndex());
 
   switch(cast_status) {
   case RDPodcast::StatusActive:
@@ -337,7 +327,7 @@ void EditCast::okData()
   //
   // Sanity Checks
   //
-  if(cast_item_expiration_box->currentItem()) {
+  if(cast_item_expiration_box->currentIndex()) {
     if(cast_item_effective_edit->dateTime()>
       cast_item_expiration_edit->dateTime()) {
       QMessageBox::warning(this,"RDCastManager - "+tr("Error"),
@@ -355,13 +345,13 @@ void EditCast::okData()
   cast_cast->setItemAuthor(cast_item_author_edit->text());
   cast_cast->setItemCategory(cast_item_category_edit->text());
   cast_cast->setItemLink(cast_item_link_edit->text());
-  cast_cast->setItemDescription(cast_item_description_edit->text());
+  cast_cast->setItemDescription(cast_item_description_edit->toPlainText());
   cast_cast->setItemExplicit(cast_item_explicit_check->isChecked());
   cast_cast->setItemImageId(cast_item_image_box->currentImageId());
   cast_cast->setItemComments(cast_item_comments_edit->text());
   cast_cast->setEffectiveDateTime(cast_item_effective_edit->dateTime());
   if(cast_active_check->isEnabled()) {
-    if(cast_item_expiration_box->currentItem()) {
+    if(cast_item_expiration_box->currentIndex()) {
       int shelf_life=cast_cast->originDateTime().date().
 	daysTo(cast_item_expiration_edit->date());
       if(shelf_life<1) {

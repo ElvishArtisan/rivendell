@@ -44,7 +44,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdrssd","rdrssd",RDRSSD_USAGE,this));
   if(!rda->open(&err_msg,&err_type,false)) {
-    fprintf(stderr,"rdrssd: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdrssd: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 

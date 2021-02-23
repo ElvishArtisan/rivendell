@@ -55,7 +55,7 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
     return false;
   }
   QTextStream *strm=new QTextStream(file);
-  strm->setEncoding(QTextStream::UnicodeUTF8);
+  strm->setCodec("UTF-8");
   if(useLeadingZeros()) {
     air_fmt=QString().sprintf("%%0%uu ",cartDigits());
   }
@@ -101,7 +101,7 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
     else {
       *strm << "00:00:00 ";
     }
-    *strm << QString().sprintf(air_fmt,q->value(1).toUInt());
+    *strm << QString().sprintf(air_fmt.toUtf8(),q->value(1).toUInt());
     *strm << RDReport::leftJustify(q->value(9).toString(),34)+" ";
     *strm << RDReport::leftJustify(q->value(6).toString(),32);
     *strm << "\x0d\x0a";

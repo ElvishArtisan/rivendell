@@ -2,7 +2,7 @@
 //
 // A Rivendell multicast GPIO driver for LiveWire networks.
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,17 +21,7 @@
 #ifndef LIVEWIRE_MCASTGPIO_H
 #define LIVEWIRE_MCASTGPIO_H
 
-#include <stdint.h>
-#include <sys/socket.h>
-
-#include <map>
-#include <vector>
-
-#include <q3socket.h>
-#include <qhostaddress.h>
-#include <qsignalmapper.h>
-#include <qtimer.h>
-#include <qsocketnotifier.h>
+#include <QSocketNotifier>
 
 #include <rd.h>
 #include <rdmatrix.h>

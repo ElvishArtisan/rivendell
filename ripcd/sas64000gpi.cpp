@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS64000 connected via a GPI-1600
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,8 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
 
 #include <rdapplication.h>
 
@@ -122,7 +120,7 @@ void Sas64000Gpi::processCommand(RDMacro *cmd)
 	break;
 
       case RDMacro::GO:
-	if((cmd->arg(1).lower()!="o")||
+	if((cmd->arg(1).toLower()!="o")||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(2).toInt()>sas_gpos)) {
 	  cmd->acknowledge(false);
 	  emit rmlEcho(cmd);

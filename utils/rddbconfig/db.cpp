@@ -2,7 +2,7 @@
 //
 // Create Rivendell MySQL database RDDbConfig
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-#include <qsqlquery.h>
+#include <QSqlQuery>
 
 #include "db.h"
 
@@ -42,7 +41,7 @@ Db::Db(QString *err_str,RDConfig *config)
   db.setPassword(config->mysqlPassword());
   if(!db.open()) {
     *err_str+=QString().sprintf("Couldn't open MySQL connection on %s",
-      (const char *)config->mysqlHostname());
+				config->mysqlHostname().toUtf8().constData());
     return;
   }
 
@@ -69,10 +68,12 @@ void Db::clearDatabase(QString name)
   QSqlDatabase db=QSqlDatabase::database("Rivendell");
 
   if(db.isOpen()){
-    q=new QSqlQuery(QString().sprintf("drop database if exists `%s`",(const char *)name),db);
+    q=new QSqlQuery(QString().sprintf("drop database if exists `%s`",
+				      name.toUtf8().constData()),db);
     delete q;
 
-    q=new QSqlQuery(QString().sprintf("create database `%s`",(const char *)name),db);
+    q=new QSqlQuery(QString().sprintf("create database `%s`",
+				      name.toUtf8().constData()),db);
     delete q;
   }
 }

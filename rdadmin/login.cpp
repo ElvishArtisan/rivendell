@@ -2,7 +2,7 @@
 //
 // Login widget for RDAdmin.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,12 +20,8 @@
 
 #include <math.h>
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
+#include <QPushButton>
+#include <QPainter>
 
 #include <rdtextvalidator.h>
 
@@ -76,10 +72,10 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   login_name_edit->setMaxLength(RD_MAX_PASSWORD_LENGTH);
   login_name_edit->setFocus();
   login_name_edit->setValidator(validator);
-  QLabel *login_name_label=new QLabel(login_name_edit,tr("User &Name:"),this);
+  QLabel *login_name_label=new QLabel(tr("User &Name:"),this);
   login_name_label->setFont(labelFont());
   login_name_label->setGeometry(10,10,85,19);
-  login_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  login_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Login Password
@@ -89,12 +85,10 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   login_password_edit->setMaxLength(16);
   login_password_edit->setEchoMode(QLineEdit::Password);
   login_password_edit->setValidator(validator);
-  QLabel *login_password_label=
-    new QLabel(login_password_edit,tr("&Password:"),this);
+  QLabel *login_password_label=new QLabel(tr("&Password:"),this);
   login_password_label->setGeometry(10,31,85,19);
   login_password_label->setFont(labelFont());
-  login_password_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  login_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 }
 
 

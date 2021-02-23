@@ -2,7 +2,7 @@
 //
 // The Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,13 +27,9 @@
 
 #include <soundtouch/SoundTouch.h>
 
-#include <qobject.h>
-#include <qstring.h>
-#include <qsignalmapper.h>
-#include <qtimer.h>
-//#include <q3process.h>
-#include <qprocess.h>
-#include <qudpsocket.h>
+#include <QObject>
+#include <QProcess>
+#include <QUdpSocket>
 
 #include <rdwavefile.h>
 
@@ -105,7 +101,7 @@ class MainObject : public QObject
 {
   Q_OBJECT
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private slots:
   void loadPlaybackData(int id,unsigned card,const QString &name);
@@ -168,7 +164,7 @@ class MainObject : public QObject
   bool debug;
   unsigned system_sample_rate;
   CaeServer *cae_server;
-  Q_INT16 tcp_port;
+  int16_t tcp_port;
   QUdpSocket *meter_socket;
   RDStation::AudioDriver cae_driver[RD_MAX_CARDS];
   int record_owner[RD_MAX_CARDS][RD_MAX_STREAMS];

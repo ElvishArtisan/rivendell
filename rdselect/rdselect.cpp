@@ -114,7 +114,9 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   }
   QDir config_dir(RD_DEFAULT_RDSELECT_DIR);
   config_dir.setFilter(QDir::Files|QDir::Readable);
-  config_dir.setNameFilter("*.conf");
+  QStringList filters;
+  filters.push_back("*.conf");
+  config_dir.setNameFilters(filters);
   select_filenames=config_dir.entryList();
   for(int i=0;i<select_filenames.size();i++) {
     select_filenames[i]=
@@ -145,7 +147,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   for(unsigned i=0;i<select_configs.size();i++) {
     select_box->insertItem(select_box->count(),select_configs[i]->label());
   }
-  select_label=new QLabel(select_box,tr("Available Systems"),this);
+  select_label=new QLabel(tr("Available Systems"),this);
   select_label->setFont(labelFont());
 
   //
@@ -159,7 +161,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Cancel Button
   //
-  cancel_button=new QPushButton(this,"cancel_button");
+  cancel_button=new QPushButton(this);
   cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
@@ -282,25 +284,25 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
-  QTranslator qt(0);
-  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),
-	  ".");
-  a.installTranslator(&qt);
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    QTranslator qt(0);
+    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,
+	    ".");
+    a.installTranslator(&qt);
 
-  QTranslator rd(0);
-  rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+    QTranslator rd(0);
+    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(QString(PREFIX)+QString("/share/rivendell/rdselect_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(QString(PREFIX)+QString("/share/rivendell/rdselect_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   //
   // Start Event Loop
@@ -308,7 +310,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->show();
   return a.exec();
 }

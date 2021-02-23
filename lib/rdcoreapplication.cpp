@@ -156,10 +156,10 @@ bool RDCoreApplication::open(QString *err_msg,RDCoreApplication::ErrorType *err_
   // Initialize Logging
   //
   if(app_cmd_switch->debugActive()) {
-    openlog(app_command_name,LOG_PERROR,app_config->syslogFacility());
+    openlog(app_command_name.toUtf8(),LOG_PERROR,app_config->syslogFacility());
   }
   else {
-    openlog(app_command_name,0,app_config->syslogFacility());
+    openlog(app_command_name.toUtf8(),0,app_config->syslogFacility());
   }
 
   //

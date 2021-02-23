@@ -18,11 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
-
 #include <QApplication>
-#include <QVariant>
 
 #include <rdconfig.h>
 #include <rdgroup.h>
@@ -63,7 +59,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"reserve_carts_test: unknown option \"%s\"\n",
-	      (const char *)cmd->value(i));
+	      cmd->value(i).toUtf8().constData());
       exit(256);
     }
   }
@@ -92,7 +88,7 @@ MainObject::MainObject(QObject *parent)
   //
   QString err (tr("upload_test: "));
   if(!RDOpenDb(&schema,&err,config)) {
-    fprintf(stderr,err.ascii());
+    fprintf(stderr,err.toAscii());
     delete cmd;
     exit(256);
   }
@@ -103,7 +99,7 @@ MainObject::MainObject(QObject *parent)
   group=new RDGroup(group_name);
   if(!group->exists()) {
     fprintf(stderr,"group \"%s\" does not exist\n",
-	    (const char *)group_name.utf8());
+	    (const char *)group_name.toUtf8());
     exit(256);
   }
   if(group->reserveCarts(&cart_nums,config->stationName(),RDCart::Audio,

@@ -2,7 +2,7 @@
 //
 // A command-line log editor for Rivendell
 //
-//   (C) Copyright 2016-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,11 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-
 #include <rdapplication.h>
 #include <rdweb.h>
-
 #include <rddatetime.h>
 
 #include "rdclilogedit.h"
@@ -37,13 +34,13 @@ void MainObject::DispatchCommand(QString cmd)
   QStringList cmds;
   QString verb;
 
-  cmd=cmd.stripWhiteSpace();
+  cmd=cmd.trimmed();
   if(cmd.right(1)=="!") {
     overwrite=true;
-    cmd=cmd.left(cmd.length()-1).stripWhiteSpace();
+    cmd=cmd.left(cmd.length()-1).trimmed();
   }
   cmds=cmd.split(" ",QString::SkipEmptyParts);
-  verb=cmds[0].lower();
+  verb=cmds[0].toLower();
 
   //
   // No loaded log needed for these
@@ -278,7 +275,7 @@ void MainObject::DispatchCommand(QString cmd)
     if(verb=="setautorefresh") {
       if(rda->user()->arrangeLog()) {
 	if(cmds.size()==2) {
-	  QString arg=cmds[1].lower();
+	  QString arg=cmds[1].toLower();
 	  if((arg=="yes")||(arg=="true")||(arg=="y")) {
 	    Setautorefresh(true);
 	    processed=true;
@@ -335,8 +332,8 @@ void MainObject::DispatchCommand(QString cmd)
 	if(cmds.size()>=3) {
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)&&(line<edit_log_model->lineCount())) {
-	    cmds.remove(cmds.begin());
-	    cmds.remove(cmds.begin());
+	    cmds.removeFirst();
+	    cmds.removeFirst();
 	    Setcomment(line,cmds.join(" "));
 	  }
 	  else {
@@ -496,10 +493,10 @@ void MainObject::DispatchCommand(QString cmd)
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)&&(line<edit_log_model->lineCount())) {
 	    RDLogLine::TimeType ttype=RDLogLine::NoTime;
-	    if(cmds[2].lower()=="hard") {
+	    if(cmds[2].toLower()=="hard") {
 	      ttype=RDLogLine::Hard;
 	    }
-	    if(cmds[2].lower()=="none") {
+	    if(cmds[2].toLower()=="none") {
 	      ttype=RDLogLine::Relative;
 	    }
 	    switch(ttype) {
@@ -548,13 +545,13 @@ void MainObject::DispatchCommand(QString cmd)
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)&&(line<edit_log_model->lineCount())) {
 	    RDLogLine::TransType trans=RDLogLine::NoTrans;
-	    if(cmds[2].lower()=="play") {
+	    if(cmds[2].toLower()=="play") {
 	      trans=RDLogLine::Play;
 	    }
-	    if(cmds[2].lower()=="segue") {
+	    if(cmds[2].toLower()=="segue") {
 	      trans=RDLogLine::Segue;
 	    }
-	    if(cmds[2].lower()=="stop") {
+	    if(cmds[2].toLower()=="stop") {
 	      trans=RDLogLine::Stop;
 	    }
 	    if(trans!=RDLogLine::NoTrans) {
@@ -590,7 +587,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
   }
   else {
-    fprintf(stderr,"%s: no log loaded\n",(const char *)verb);
+    fprintf(stderr,"%s: no log loaded\n",verb.toUtf8().constData());
     processed=true;
   }
 

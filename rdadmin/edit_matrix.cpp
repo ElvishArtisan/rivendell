@@ -18,10 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
+#include <QPainter>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -93,7 +91,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_name_edit=new QLineEdit(this);
   edit_name_edit->setGeometry(135,50,240,19);
   edit_name_edit->setValidator(validator);
-  label=new QLabel(edit_name_edit,tr("Description:"),this);
+  label=new QLabel(tr("Description:"),this);
   label->setGeometry(10,50,120,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -111,12 +109,12 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_porttype_box=new QComboBox(this);
   edit_porttype_box->setGeometry(90,96,70,19);
-  edit_porttype_label=new QLabel(edit_porttype_box,tr("Type:"),this);
+  edit_porttype_label=new QLabel(tr("Type:"),this);
   edit_porttype_label->setGeometry(15,96,70,19);
   edit_porttype_label->setFont(labelFont());
   edit_porttype_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  edit_porttype_box->insertItem(tr("Serial"));
-  edit_porttype_box->insertItem(tr("TCP/IP"));
+  edit_porttype_box->insertItem(0,tr("Serial"));
+  edit_porttype_box->insertItem(1,tr("TCP/IP"));
   connect(edit_porttype_box,SIGNAL(activated(int)),
 	  this,SLOT(portTypeActivatedData(int)));
 
@@ -126,8 +124,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_port_box=new QComboBox(this);
   edit_port_box->setGeometry(290,96,90,19);
   edit_port_box->setEditable(false);
-  edit_port_label=
-    new QLabel(edit_port_box,tr("Serial Port:"),this);
+  edit_port_label=new QLabel(tr("Serial Port:"),this);
   edit_port_label->setGeometry(195,96,90,19);
   edit_port_label->setFont(labelFont());
   edit_port_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -137,7 +134,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_ipaddress_edit=new QLineEdit(this);
   edit_ipaddress_edit->setGeometry(90,118,115,19);
-  edit_ipaddress_label=new QLabel(edit_ipaddress_edit,tr("IP Address:"),this);
+  edit_ipaddress_label=new QLabel(tr("IP Address:"),this);
   edit_ipaddress_label->setGeometry(15,118,70,19);
   edit_ipaddress_label->setFont(labelFont());
   edit_ipaddress_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -148,7 +145,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_ipport_spin=new QSpinBox(this);
   edit_ipport_spin->setGeometry(290,118,65,19);
   edit_ipport_spin->setRange(0,0xFFFF);
-  edit_ipport_label=new QLabel(edit_ipport_spin,tr("IP Port:"),this);
+  edit_ipport_label=new QLabel(tr("IP Port:"),this);
   edit_ipport_label->setGeometry(215,118,70,19);
   edit_ipport_label->setFont(labelFont());
   edit_ipport_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -158,7 +155,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_username_edit=new QLineEdit(this);
   edit_username_edit->setGeometry(90,140,115,19);
-  edit_username_label=new QLabel(edit_username_edit,tr("Username:"),this);
+  edit_username_label=new QLabel(tr("Username:"),this);
   edit_username_label->setGeometry(15,140,70,19);
   edit_username_label->setFont(labelFont());
   edit_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -169,7 +166,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_password_edit=new QLineEdit(this);
   edit_password_edit->setGeometry(290,140,115,19);
   edit_password_edit->setEchoMode(QLineEdit::Password);
-  edit_password_label=new QLabel(edit_password_edit,tr("Password:"),this);
+  edit_password_label=new QLabel(tr("Password:"),this);
   edit_password_label->setGeometry(215,140,70,19);
   edit_password_label->setFont(labelFont());
   edit_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -179,8 +176,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_start_cart_edit=new QLineEdit(this);
   edit_start_cart_edit->setGeometry(120,164,80,19);
-  edit_start_cart_label=
-    new QLabel(edit_start_cart_edit,tr("Startup Cart:"),this);
+  edit_start_cart_label=new QLabel(tr("Startup Cart:"),this);
   edit_start_cart_label->setGeometry(15,164,100,19);
   edit_start_cart_label->setFont(labelFont());
   edit_start_cart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -194,8 +190,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_stop_cart_edit=new QLineEdit(this);
   edit_stop_cart_edit->setGeometry(120,188,80,19);
-  edit_stop_cart_label=
-    new QLabel(edit_stop_cart_edit,tr("Shutdown Cart:"),this);
+  edit_stop_cart_label=new QLabel(tr("Shutdown Cart:"),this);
   edit_stop_cart_label->setGeometry(15,188,100,19);
   edit_stop_cart_label->setFont(labelFont());
   edit_stop_cart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -217,13 +212,13 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_porttype2_box=new QComboBox(this);
   edit_porttype2_box->setGeometry(90,243,70,19);
-  edit_porttype2_label=new QLabel(edit_porttype2_box,tr("Type:"),this);
+  edit_porttype2_label=new QLabel(tr("Type:"),this);
   edit_porttype2_label->setGeometry(15,243,70,19);
   edit_porttype2_label->setFont(labelFont());
   edit_porttype2_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  edit_porttype2_box->insertItem(tr("Serial"));
-  edit_porttype2_box->insertItem(tr("TCP/IP"));
-  edit_porttype2_box->insertItem(tr("None"));
+  edit_porttype2_box->insertItem(0,tr("Serial"));
+  edit_porttype2_box->insertItem(1,tr("TCP/IP"));
+  edit_porttype2_box->insertItem(2,tr("None"));
   connect(edit_porttype2_box,SIGNAL(activated(int)),
 	  this,SLOT(portType2ActivatedData(int)));
 
@@ -233,7 +228,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_port2_box=new QComboBox(this);
   edit_port2_box->setGeometry(290,243,90,19);
   edit_port2_box->setEditable(false);
-  edit_port2_label=new QLabel(edit_port2_box,tr("Serial Port:"),this);
+  edit_port2_label=new QLabel(tr("Serial Port:"),this);
   edit_port2_label->setGeometry(195,243,90,19);
   edit_port2_label->setFont(labelFont());
   edit_port2_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -243,7 +238,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_ipaddress2_edit=new QLineEdit(this);
   edit_ipaddress2_edit->setGeometry(90,265,115,19);
-  edit_ipaddress2_label=new QLabel(edit_ipaddress2_edit,tr("IP Address:"),this);
+  edit_ipaddress2_label=new QLabel(tr("IP Address:"),this);
   edit_ipaddress2_label->setGeometry(15,265,70,19);
   edit_ipaddress2_label->setFont(labelFont());
   edit_ipaddress2_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -254,7 +249,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_ipport2_spin=new QSpinBox(this);
   edit_ipport2_spin->setGeometry(290,265,65,19);
   edit_ipport2_spin->setRange(0,0xFFFF);
-  edit_ipport2_label=new QLabel(edit_ipport2_spin,tr("IP Port:"),this);
+  edit_ipport2_label=new QLabel(tr("IP Port:"),this);
   edit_ipport2_label->setGeometry(215,265,70,19);
   edit_ipport2_label->setFont(labelFont());
   edit_ipport2_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -264,7 +259,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_username2_edit=new QLineEdit(this);
   edit_username2_edit->setGeometry(90,288,115,19);
-  edit_username2_label=new QLabel(edit_username2_edit,tr("Username:"),this);
+  edit_username2_label=new QLabel(tr("Username:"),this);
   edit_username2_label->setGeometry(15,288,70,19);
   edit_username2_label->setFont(labelFont());
   edit_username2_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -275,7 +270,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_password2_edit=new QLineEdit(this);
   edit_password2_edit->setGeometry(290,288,115,19);
   edit_password2_edit->setEchoMode(QLineEdit::Password);
-  edit_password2_label=new QLabel(edit_password2_edit,tr("Password:"),this);
+  edit_password2_label=new QLabel(tr("Password:"),this);
   edit_password2_label->setGeometry(215,288,70,19);
   edit_password2_label->setFont(labelFont());
   edit_password2_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -285,8 +280,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_start_cart2_edit=new QLineEdit(this);
   edit_start_cart2_edit->setGeometry(120,312,80,19);
-  edit_start_cart2_label=new QLabel(edit_start_cart2_edit,tr("Startup Cart:"),
-				    this);
+  edit_start_cart2_label=new QLabel(tr("Startup Cart:"),this);
   edit_start_cart2_label->setGeometry(15,312,100,19);
   edit_start_cart2_label->setFont(labelFont());
   edit_start_cart2_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -301,8 +295,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_stop_cart2_edit=new QLineEdit(this);
   edit_stop_cart2_edit->setGeometry(120,336,80,19);
-  edit_stop_cart2_label=new QLabel(edit_stop_cart2_edit,tr("Shutdown Cart:"),
-				   this);
+  edit_stop_cart2_label=new QLabel(tr("Shutdown Cart:"),this);
   edit_stop_cart2_label->setGeometry(15,336,100,19);
   edit_stop_cart2_label->setFont(labelFont());
   edit_stop_cart2_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -317,7 +310,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_card_box=new QSpinBox(this);
   edit_card_box->setGeometry(75,371,60,19);
   edit_card_box->setRange(0,9999);
-  edit_card_label=new QLabel(edit_card_box,tr("Card:"),this);
+  edit_card_label=new QLabel(tr("Card:"),this);
   edit_card_label->setGeometry(10,371,60,19);
   edit_card_label->setFont(labelFont());
   edit_card_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -328,7 +321,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_inputs_box=new QSpinBox(this);
   edit_inputs_box->setGeometry(230,371,50,19);
   edit_inputs_box->setRange(0,MAX_ENDPOINTS);
-  edit_inputs_label=new QLabel(edit_inputs_box,tr("Inputs:"),this);
+  edit_inputs_label=new QLabel(tr("Inputs:"),this);
   edit_inputs_label->setGeometry(175,371,50,19);
   edit_inputs_label->setFont(labelFont());
   edit_inputs_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -341,7 +334,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_outputs_box=new QSpinBox(this);
   edit_outputs_box->setGeometry(355,371,50,19);
   edit_outputs_box->setRange(0,MAX_ENDPOINTS);
-  edit_outputs_label=new QLabel(edit_outputs_box,tr("Outputs:"),this);
+  edit_outputs_label=new QLabel(tr("Outputs:"),this);
   edit_outputs_label->setGeometry(280,371,70,19);
   edit_outputs_label->setFont(labelFont());
   edit_outputs_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -352,7 +345,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_device_edit=new QLineEdit(this);
   edit_device_edit->setGeometry(75,396,90,19);
   edit_device_edit->setValidator(validator);
-  edit_device_label=new QLabel(edit_device_edit,tr("Device:"),this);
+  edit_device_label=new QLabel(tr("Device:"),this);
   edit_device_label->setGeometry(5,396,65,19);
   edit_device_label->setFont(labelFont());
   edit_device_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -363,7 +356,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_gpis_box=new QSpinBox(this);
   edit_gpis_box->setGeometry(230,396,50,19);
   edit_gpis_box->setRange(0,MAX_GPIO_PINS);
-  edit_gpis_label=new QLabel(edit_gpis_box,tr("GPIs:"),this);
+  edit_gpis_label=new QLabel(tr("GPIs:"),this);
   edit_gpis_label->setGeometry(175,396,50,19);
   edit_gpis_label->setFont(labelFont());
   edit_gpis_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -376,7 +369,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_gpos_box=new QSpinBox(this);
   edit_gpos_box->setGeometry(355,396,50,19);
   edit_gpos_box->setRange(0,MAX_GPIO_PINS);
-  edit_gpos_label=new QLabel(edit_gpos_box,tr("GPOs:"),this);
+  edit_gpos_label=new QLabel(tr("GPOs:"),this);
   edit_gpos_label->setGeometry(280,396,70,19);
   edit_gpos_label->setFont(labelFont());
   edit_gpos_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -388,26 +381,26 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_layer_box=new QComboBox(this);
   edit_layer_box->setGeometry(75,421,50,19);
-  edit_layer_label=new QLabel(edit_layer_box,tr("Layer:"),this);
+  edit_layer_label=new QLabel(tr("Layer:"),this);
   edit_layer_label->setGeometry(10,421,60,19);
   edit_layer_label->setFont(labelFont());
   edit_layer_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  edit_layer_box->insertItem("V");
-  edit_layer_box->insertItem("A");
-  edit_layer_box->insertItem("B");
-  edit_layer_box->insertItem("C");
-  edit_layer_box->insertItem("D");
-  edit_layer_box->insertItem("E");
-  edit_layer_box->insertItem("F");
-  edit_layer_box->insertItem("G");
-  edit_layer_box->insertItem("H");
-  edit_layer_box->insertItem("I");
-  edit_layer_box->insertItem("J");
-  edit_layer_box->insertItem("K");
-  edit_layer_box->insertItem("L");
-  edit_layer_box->insertItem("M");
-  edit_layer_box->insertItem("N");
-  edit_layer_box->insertItem("O");
+  edit_layer_box->insertItem(0,"V");
+  edit_layer_box->insertItem(1,"A");
+  edit_layer_box->insertItem(2,"B");
+  edit_layer_box->insertItem(3,"C");
+  edit_layer_box->insertItem(4,"D");
+  edit_layer_box->insertItem(5,"E");
+  edit_layer_box->insertItem(6,"F");
+  edit_layer_box->insertItem(7,"G");
+  edit_layer_box->insertItem(8,"H");
+  edit_layer_box->insertItem(9,"I");
+  edit_layer_box->insertItem(10,"J");
+  edit_layer_box->insertItem(11,"K");
+  edit_layer_box->insertItem(12,"L");
+  edit_layer_box->insertItem(13,"M");
+  edit_layer_box->insertItem(14,"N");
+  edit_layer_box->insertItem(15,"O");
 
   //
   // Displays
@@ -415,7 +408,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_displays_box=new QSpinBox(this);
   edit_displays_box->setGeometry(355,421,50,19);
   edit_displays_box->setRange(0,1024);
-  edit_displays_label=new QLabel(edit_displays_box,tr("Displays:"),this);
+  edit_displays_label=new QLabel(tr("Displays:"),this);
   edit_displays_label->setGeometry(280,421,70,19);
   edit_displays_label->setFont(labelFont());
   edit_displays_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -534,17 +527,19 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_name_edit->setText(edit_matrix->name());
   str=QString(tr("Serial"));
   for(int i=0;i<MAX_TTYS;i++) {
-    edit_port_box->insertItem(str+QString().sprintf("%d",i));
-    edit_port2_box->insertItem(str+QString().sprintf("%d",i));
+    edit_port_box->
+      insertItem(edit_port_box->count(),str+QString().sprintf("%d",i));
+    edit_port2_box->
+      insertItem(edit_port2_box->count(),str+QString().sprintf("%d",i));
   }
   edit_porttype_box->
-    setCurrentItem((int)edit_matrix->portType(RDMatrix::Primary));
+    setCurrentIndex((int)edit_matrix->portType(RDMatrix::Primary));
   edit_porttype2_box->
-    setCurrentItem((int)edit_matrix->portType(RDMatrix::Backup));
-  switch((RDMatrix::PortType)edit_porttype_box->currentItem()) {
+    setCurrentIndex((int)edit_matrix->portType(RDMatrix::Backup));
+  switch((RDMatrix::PortType)edit_porttype_box->currentIndex()) {
   case RDMatrix::TtyPort:
-    edit_port_box->setCurrentItem(edit_matrix->port(RDMatrix::Primary));
-    edit_port2_box->setCurrentItem(edit_matrix->port(RDMatrix::Backup));
+    edit_port_box->setCurrentIndex(edit_matrix->port(RDMatrix::Primary));
+    edit_port2_box->setCurrentIndex(edit_matrix->port(RDMatrix::Backup));
     break;
 
   case RDMatrix::TcpPort:
@@ -591,10 +586,10 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   }
   edit_displays_box->setValue(edit_matrix->displays());
   if(edit_matrix->layer()=='V') {
-    edit_layer_box->setCurrentItem(0);
+    edit_layer_box->setCurrentIndex(0);
   }
   else {
-    edit_layer_box->setCurrentItem(edit_matrix->layer()-'@');
+    edit_layer_box->setCurrentIndex(edit_matrix->layer()-'@');
   }
 
   RDMatrix::Type type=edit_matrix->type();
@@ -753,14 +748,14 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_gpis_box->
     setEnabled(RDMatrix::controlActive(type,RDMatrix::GpisControl));
   edit_gpis_box->
-    setLineStep(RDMatrix::defaultControlValue(type,RDMatrix::GpioStepSize));
+    setSingleStep(RDMatrix::defaultControlValue(type,RDMatrix::GpioStepSize));
 
   edit_gpos_label->
     setEnabled(RDMatrix::controlActive(type,RDMatrix::GposControl));
   edit_gpos_box->
     setEnabled(RDMatrix::controlActive(type,RDMatrix::GposControl));
   edit_gpos_box->
-    setLineStep(RDMatrix::defaultControlValue(type,RDMatrix::GpioStepSize));
+    setSingleStep(RDMatrix::defaultControlValue(type,RDMatrix::GpioStepSize));
 
   edit_displays_label->
     setEnabled(RDMatrix::controlActive(type,RDMatrix::DisplaysControl));
@@ -792,8 +787,8 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
     setEnabled(RDMatrix::controlActive(type,
 				       RDMatrix::SasSwitchesButtonControl));
 
-  portTypeActivatedData(edit_porttype_box->currentItem());
-  portType2ActivatedData(edit_porttype2_box->currentItem());
+  portTypeActivatedData(edit_porttype_box->currentIndex());
+  portType2ActivatedData(edit_porttype2_box->currentIndex());
   gpisChangedData(edit_gpis_box->value());
   gposChangedData(edit_gpos_box->value());
 }
@@ -836,7 +831,7 @@ void EditMatrix::portTypeActivatedData(int index)
 {
   RDMatrix::Type type=edit_matrix->type();
 
-  switch((RDMatrix::PortType)edit_porttype_box->currentItem()) {
+  switch((RDMatrix::PortType)edit_porttype_box->currentIndex()) {
   case RDMatrix::TtyPort:
     edit_port_box->setEnabled(RDMatrix::controlActive(type,
 		    RDMatrix::Primary,RDMatrix::SerialPortControl));
@@ -897,7 +892,7 @@ void EditMatrix::portType2ActivatedData(int index)
 {
   RDMatrix::Type type=edit_matrix->type();
 
-  switch((RDMatrix::PortType)edit_porttype2_box->currentItem()) {
+  switch((RDMatrix::PortType)edit_porttype2_box->currentIndex()) {
   case RDMatrix::TtyPort:
     edit_port2_box->setEnabled(RDMatrix::controlActive(type,
 		     RDMatrix::Backup,RDMatrix::SerialPortControl));
@@ -1211,7 +1206,7 @@ bool EditMatrix::WriteMatrix()
   //
   // Ensure Sane Values
   //
-  switch((RDMatrix::PortType)edit_porttype_box->currentItem()) {
+  switch((RDMatrix::PortType)edit_porttype_box->currentIndex()) {
   case RDMatrix::TcpPort:
     if(!addr.setAddress(edit_ipaddress_edit->text())) {
       QMessageBox::warning(this,"RDAdmin - "+tr("Invalid Address"),
@@ -1236,14 +1231,14 @@ bool EditMatrix::WriteMatrix()
   }
 
   if(RDMatrix::controlActive(type,RDMatrix::Backup,RDMatrix::PortTypeControl)) {
-    switch((RDMatrix::PortType)edit_porttype2_box->currentItem()) {
+    switch((RDMatrix::PortType)edit_porttype2_box->currentIndex()) {
     case RDMatrix::TcpPort:
       if(!addr2.setAddress(edit_ipaddress2_edit->text())) {
 	QMessageBox::warning(this,tr("Invalid Address"),
 			     tr("The backup IP address is invalid!"));
 	return false;
       }
-      if(edit_porttype_box->currentItem()==RDMatrix::TcpPort) {
+      if(edit_porttype_box->currentIndex()==RDMatrix::TcpPort) {
 	if((addr==addr2)&&
 	   (edit_ipport_spin->value()==edit_ipport2_spin->value())) {
 	  QMessageBox::warning(this,tr("Duplicate Connections"),
@@ -1254,8 +1249,8 @@ bool EditMatrix::WriteMatrix()
       break;
 		  
     case RDMatrix::TtyPort:
-      if(edit_porttype_box->currentItem()==RDMatrix::TtyPort) {
-	if(edit_port_box->currentItem()==edit_port2_box->currentItem()) {
+      if(edit_porttype_box->currentIndex()==RDMatrix::TtyPort) {
+	if(edit_port_box->currentIndex()==edit_port2_box->currentIndex()) {
 	  QMessageBox::warning(this,tr("Duplicate Connections"),
 		   tr("The primary and backup connections must be different!"));
 	  return false;
@@ -1276,10 +1271,10 @@ bool EditMatrix::WriteMatrix()
     }
   }
 
-  switch((RDMatrix::PortType)edit_porttype_box->currentItem()) {
+  switch((RDMatrix::PortType)edit_porttype_box->currentIndex()) {
   case RDMatrix::TtyPort:
     edit_matrix->setPortType(RDMatrix::Primary,RDMatrix::TtyPort);
-    edit_matrix->setPort(RDMatrix::Primary,edit_port_box->currentItem());
+    edit_matrix->setPort(RDMatrix::Primary,edit_port_box->currentIndex());
     edit_matrix->setIpAddress(RDMatrix::Primary,QHostAddress());
     edit_matrix->setIpPort(RDMatrix::Primary,0);
     break;
@@ -1294,10 +1289,10 @@ bool EditMatrix::WriteMatrix()
   case RDMatrix::NoPort:
     break;
 }
-  switch((RDMatrix::PortType)edit_porttype2_box->currentItem()) {
+  switch((RDMatrix::PortType)edit_porttype2_box->currentIndex()) {
   case RDMatrix::TtyPort:
     edit_matrix->setPortType(RDMatrix::Backup,RDMatrix::TtyPort);
-    edit_matrix->setPort(RDMatrix::Backup,edit_port2_box->currentItem());
+    edit_matrix->setPort(RDMatrix::Backup,edit_port2_box->currentIndex());
     edit_matrix->setIpAddress(RDMatrix::Backup,QHostAddress());
     edit_matrix->setIpPort(RDMatrix::Backup,0);
     break;
@@ -1313,11 +1308,11 @@ bool EditMatrix::WriteMatrix()
     edit_matrix->setPortType(RDMatrix::Backup,RDMatrix::NoPort);
     break;
   }
-  if(edit_layer_box->currentItem()==0) {
+  if(edit_layer_box->currentIndex()==0) {
     edit_matrix->setLayer('V');
   }
   else {
-    edit_matrix->setLayer('@'+edit_layer_box->currentItem());
+    edit_matrix->setLayer('@'+edit_layer_box->currentIndex());
   }
   
   //

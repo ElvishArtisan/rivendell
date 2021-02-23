@@ -23,15 +23,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <q3filedialog.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QMessageBox>
+#include <QTranslator>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -66,7 +60,7 @@ void PrintError(const QString &str,bool interactive)
     QMessageBox::warning(NULL,QObject::tr("RDAdmin Error"),str);
   }
   else {
-    fprintf(stderr,QString().sprintf("rdadmin: %s\n",(const char *)str));
+    fprintf(stderr,(QString("rdadmin: ")+str).toUtf8().constData());
   }
 }
 
@@ -369,28 +363,27 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
-  QTranslator qt(0);
-  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),".");
-  a.installTranslator(&qt);
-  QTranslator rd(0);
-  rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    QTranslator qt(0);
+    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,".");
+    a.installTranslator(&qt);
+    QTranslator rd(0);
+    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(QString(PREFIX)+QString("/share/rivendell/rdadmin_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(QString(PREFIX)+QString("/share/rivendell/rdadmin_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();

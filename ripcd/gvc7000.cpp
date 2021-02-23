@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for Grass Valley Series 7000 Protocol
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,11 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
-#include <syslog.h>
-
-#include <qsignalmapper.h>
 
 #include <rdapplication.h>
 
@@ -151,7 +146,7 @@ void Gvc7000::disconnectedData()
   rda->syslog(LOG_WARNING,
 	 "connection to Gvc7000 device at %s:%d closed unexpectedly, attempting reconnect",
 	      (const char *)gvc_ipaddress.toString().toUtf8(),gvc_ipport);
-  gvc_reconnect_timer->start(GVC7000_RECONNECT_INTERVAL,true);
+  gvc_reconnect_timer->start(GVC7000_RECONNECT_INTERVAL);
 }
 
 
@@ -162,7 +157,7 @@ void Gvc7000::errorData(QAbstractSocket::SocketError err)
     rda->syslog(LOG_WARNING,
 	  "connection to Gvc7000 device at %s:%d refused, attempting reconnect",
 		(const char *)gvc_ipaddress.toString().toUtf8(),gvc_ipport);
-    gvc_reconnect_timer->start(GVC7000_RECONNECT_INTERVAL,true);
+    gvc_reconnect_timer->start(GVC7000_RECONNECT_INTERVAL);
     break;
 
   case QAbstractSocket::HostNotFoundError:

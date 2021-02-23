@@ -23,6 +23,7 @@
 
 #include <QList>
 
+#include <rdcombobox.h>
 #include <rddialog.h>
 #include <rdgrouplistmodel.h>
 
@@ -61,7 +62,7 @@ class EditCart : public RDDialog
   RDCart *rdcart_cart;
   QLineEdit *rdcart_type_edit;
   QLineEdit *rdcart_number_edit;
-  QComboBox *rdcart_group_box;
+  RDComboBox *rdcart_group_box;
   RDGroupListModel *rdcart_group_model;
   QLineEdit *rdcart_group_edit;
   AudioControls rdcart_controls;

@@ -130,8 +130,8 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
 		PANEL_BUTTON_SIZE_X+10,50);
   connect(panel_playmode_box,SIGNAL(activated(int)),
 	  this,SLOT(playmodeActivatedData(int)));
-  panel_playmode_box->insertItem(tr("Play All"));
-  panel_playmode_box->insertItem(tr("Play Hook"));
+  panel_playmode_box->insertItem(panel_playmode_box->count(),tr("Play All"));
+  panel_playmode_box->insertItem(panel_playmode_box->count(),tr("Play Hook"));
 
   //
   // Reset Button
@@ -308,7 +308,7 @@ void RDSoundPanel::play(RDAirPlayConf::PanelType type,int panel,
 			int row, int col,RDLogLine::StartSource src,int mport,
                         bool pause_when_finished)
 {
-  PlayButton(type,panel,row,col,src,panel_playmode_box->currentItem()==1,
+  PlayButton(type,panel,row,col,src,panel_playmode_box->currentIndex()==1,
 	     mport,pause_when_finished);
 }
 
@@ -507,7 +507,7 @@ void RDSoundPanel::setButton(RDAirPlayConf::PanelType type,int panel,
       else {
 	button->setLength(true,cart->forcedLength());
       }
-      button->setHookMode(panel_playmode_box->currentItem()==1);
+      button->setHookMode(panel_playmode_box->currentIndex()==1);
       switch(cart->type()) {
       case RDCart::Audio:
 	if(button->length(button->hookMode())==0) {
@@ -560,7 +560,7 @@ void RDSoundPanel::changeUser()
   //
   // Remove Old Panel Names
   //
-  int current_item=panel_selector_box->currentItem();
+  int current_item=panel_selector_box->currentIndex();
   for(int i=0;i<panel_user_panels;i++) {
     panel_selector_box->removeItem(panel_station_panels);
   }
@@ -587,7 +587,7 @@ void RDSoundPanel::changeUser()
     }
   }
   delete q;
-  panel_selector_box->setCurrentItem(current_item);
+  panel_selector_box->setCurrentIndex(current_item);
 }
 
 
@@ -745,7 +745,7 @@ void RDSoundPanel::buttonMapperData(int id)
       }
       if(panel_button_dialog->
 	 exec(panel_buttons[PanelOffset(panel_type,panel_number)]->
-	      panelButton(row,col),panel_playmode_box->currentItem()==1,
+	      panelButton(row,col),panel_playmode_box->currentIndex()==1,
 	      rda->user()->name(),rda->user()->password())
 	 ==0) {
 	SaveButton(panel_type,panel_number,row,col);
@@ -763,7 +763,7 @@ void RDSoundPanel::buttonMapperData(int id)
 	if(deck==NULL) {
 	  PlayButton(panel_type,panel_number,row,col,
 		     RDLogLine::StartManual,
-		     panel_playmode_box->currentItem()==1);
+		     panel_playmode_box->currentIndex()==1);
 	}
 	else {
 	  if(panel_pause_enabled) {
@@ -844,7 +844,7 @@ void RDSoundPanel::panelSetupData()
   if(rda->user()->configPanels()||(panel_type==RDAirPlayConf::UserPanel)) {
     QString sql;
     RDSqlQuery *q;
-    int cutpt=panel_selector_box->currentText().find(" ");
+    int cutpt=panel_selector_box->currentText().indexOf(" ");
     if(panel_selector_box->currentText().left(5)==tr("Panel")) {
       cutpt=-1;
     }
@@ -853,8 +853,9 @@ void RDSoundPanel::panelSetupData()
     RDEditPanelName *edn=new RDEditPanelName(&panel_name);
     if(edn->exec()==0) {
       panel_selector_box->
-	setCurrentText("["+PanelTag(panel_selector_box->currentItem())+"] "+
-		       panel_name);
+	setCurrentIndex(panel_selector_box->
+			findText("["+PanelTag(panel_selector_box->
+					      currentIndex())+"] "+panel_name));
       sql=QString("delete from ")+panel_name_tablename+" where "+
 	QString().sprintf("(TYPE=%d)&&",panel_type)+
 	"(OWNER=\""+RDEscapeString(PanelOwner(panel_type))+"\")&&"+
@@ -1283,7 +1284,7 @@ void RDSoundPanel::LoadPanel(RDAirPlayConf::PanelType type,int panel)
       panel_buttons[offset]->
 	panelButton(q->value(0).toInt(),q->value(1).toInt())->
 	setLength(true,q->value(6).toInt());
-      if((panel_playmode_box!=NULL)&&(panel_playmode_box->currentItem()==1)&&
+      if((panel_playmode_box!=NULL)&&(panel_playmode_box->currentIndex()==1)&&
 	 (q->value(6).toUInt()>0)) {
 	panel_buttons[offset]->
 	  panelButton(q->value(0).toInt(),q->value(1).toInt())->
@@ -1311,10 +1312,10 @@ void RDSoundPanel::LoadPanel(RDAirPlayConf::PanelType type,int panel)
       if(q->value(4).toString().isEmpty()) {
 	panel_buttons[offset]->
 	  panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	  setColor(palette().active().background());
+	  setColor(palette().color(QPalette::Background));
 	panel_buttons[offset]->
 	  panelButton(q->value(0).toInt(),q->value(1).toInt())->
-	  setDefaultColor(palette().active().background());
+	  setDefaultColor(palette().color(QPalette::Background));
       }
       else {
 	panel_buttons[offset]->
@@ -1498,7 +1499,7 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
       "SERVICE_NAME=\""+RDEscapeString(panel_svcname)+"\","+
       QString().sprintf("LENGTH=%d,",button->startTime().msecsTo(now.time()))+
       QString().sprintf("CART_NUMBER=%u,",button->cart())+
-      "STATION_NAME=\""+RDEscapeString(rda->station()->name().utf8())+"\","+
+      "STATION_NAME=\""+RDEscapeString(rda->station()->name().toUtf8())+"\","+
       "EVENT_DATETIME="+
       RDCheckDateTime(QDateTime(now.date(),button->startTime()),
 		      "yyyy-MM-dd hh:mm:ss")+","+
@@ -1506,21 +1507,21 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
       QString().sprintf("EVENT_SOURCE=%d,",RDLogLine::SoundPanel)+
       QString().sprintf("PLAY_SOURCE=%d,",RDLogLine::SoundPanel)+
       QString().sprintf("CUT_NUMBER=%d,",button->cutName().right(3).toInt())+
-      "TITLE=\""+RDEscapeString(q->value(0).toString().utf8())+"\","+
-      "ARTIST=\""+RDEscapeString(q->value(1).toString().utf8())+"\","+
-      "PUBLISHER=\""+RDEscapeString(q->value(2).toString().utf8())+"\","+
-      "COMPOSER=\""+RDEscapeString(q->value(3).toString().utf8())+"\","+
+      "TITLE=\""+RDEscapeString(q->value(0).toString().toUtf8())+"\","+
+      "ARTIST=\""+RDEscapeString(q->value(1).toString().toUtf8())+"\","+
+      "PUBLISHER=\""+RDEscapeString(q->value(2).toString().toUtf8())+"\","+
+      "COMPOSER=\""+RDEscapeString(q->value(3).toString().toUtf8())+"\","+
       QString().sprintf("USAGE_CODE=%d,",q->value(4).toInt())+
-      "ISRC=\""+RDEscapeString(q->value(5).toString().utf8())+"\","+
+      "ISRC=\""+RDEscapeString(q->value(5).toString().toUtf8())+"\","+
       QString().sprintf("START_SOURCE=%d,",button->startSource())+
-      "ALBUM=\""+RDEscapeString(q->value(6).toString().utf8())+"\","+
-      "LABEL=\""+RDEscapeString(q->value(7).toString().utf8())+"\","+
-      "ISCI=\""+RDEscapeString(q->value(8).toString().utf8())+"\","+
-      "DESCRIPTION=\""+RDEscapeString(q->value(12).toString().utf8())+"\","+
-      "OUTCUE=\""+RDEscapeString(q->value(13).toString().utf8())+"\","+
-      "CONDUCTOR=\""+RDEscapeString(q->value(9).toString().utf8())+"\","+
-      "USER_DEFINED=\""+RDEscapeString(q->value(10).toString().utf8())+"\","+
-      "SONG_ID=\""+RDEscapeString(q->value(11).toString().utf8())+"\","+
+      "ALBUM=\""+RDEscapeString(q->value(6).toString().toUtf8())+"\","+
+      "LABEL=\""+RDEscapeString(q->value(7).toString().toUtf8())+"\","+
+      "ISCI=\""+RDEscapeString(q->value(8).toString().toUtf8())+"\","+
+      "DESCRIPTION=\""+RDEscapeString(q->value(12).toString().toUtf8())+"\","+
+      "OUTCUE=\""+RDEscapeString(q->value(13).toString().toUtf8())+"\","+
+      "CONDUCTOR=\""+RDEscapeString(q->value(9).toString().toUtf8())+"\","+
+      "USER_DEFINED=\""+RDEscapeString(q->value(10).toString().toUtf8())+"\","+
+      "SONG_ID=\""+RDEscapeString(q->value(11).toString().toUtf8())+"\","+
       "ONAIR_FLAG=\""+RDYesNo(panel_onair_flag)+"\"";
     delete q;
     q=new RDSqlQuery(sql);
@@ -1544,19 +1545,19 @@ void RDSoundPanel::LogTrafficMacro(RDPanelButton *button)
       "SERVICE_NAME=\""+RDEscapeString(panel_svcname)+"\","+
       QString().sprintf("LENGTH=%d,",q->value(5).toUInt())+
       QString().sprintf("CART_NUMBER=%u,",button->cart())+
-      "STATION_NAME=\""+RDEscapeString(rda->station()->name().utf8())+"\","+
+      "STATION_NAME=\""+RDEscapeString(rda->station()->name().toUtf8())+"\","+
       "EVENT_DATETIME=\""+datetime.toString("yyyy-MM-dd hh:mm:ss")+"\","+
       QString().sprintf("EVENT_TYPE=%d,",RDAirPlayConf::TrafficMacro)+
       QString().sprintf("EVENT_SOURCE=%d,",RDLogLine::SoundPanel)+
       QString().sprintf("PLAY_SOURCE=%d,",RDLogLine::SoundPanel)+
-      "TITLE=\""+RDEscapeString(q->value(0).toString().utf8())+"\","+
-      "ARTIST=\""+RDEscapeString(q->value(1).toString().utf8())+"\","+
-      "PUBLISHER=\""+RDEscapeString(q->value(2).toString().utf8())+"\","+
-      "COMPOSER=\""+RDEscapeString(q->value(3).toString().utf8())+"\","+
+      "TITLE=\""+RDEscapeString(q->value(0).toString().toUtf8())+"\","+
+      "ARTIST=\""+RDEscapeString(q->value(1).toString().toUtf8())+"\","+
+      "PUBLISHER=\""+RDEscapeString(q->value(2).toString().toUtf8())+"\","+
+      "COMPOSER=\""+RDEscapeString(q->value(3).toString().toUtf8())+"\","+
       QString().sprintf("USAGE_CODE=%d,",q->value(4).toInt())+
       QString().sprintf("START_SOURCE=%d,",button->startSource())+
-      "ALBUM=\""+RDEscapeString(q->value(6).toString().utf8())+"\","+
-      "LABEL=\""+RDEscapeString(q->value(7).toString().utf8())+"\","+
+      "ALBUM=\""+RDEscapeString(q->value(6).toString().toUtf8())+"\","+
+      "LABEL=\""+RDEscapeString(q->value(7).toString().toUtf8())+"\","+
       "ONAIR_FLAG=\""+RDYesNo(panel_onair_flag)+"\"";
     delete q;
     q=new RDSqlQuery(sql);
@@ -1574,7 +1575,7 @@ void RDSoundPanel::LogLine(QString str)
   }
 
   QDateTime current=QDateTime::currentDateTime();
-  if((file=fopen(panel_logfile,"a"))==NULL) {
+  if((file=fopen(panel_logfile.toUtf8(),"a"))==NULL) {
     return;
   }
   fprintf(file,"%02d/%02d/%4d - %02d:%02d:%02d.%03d : RDSoundPanel: %s\n",
@@ -1585,7 +1586,7 @@ void RDSoundPanel::LogLine(QString str)
 	  current.time().minute(),
 	  current.time().second(),
 	  current.time().msec(),
-	  (const char *)str);
+	  str.toUtf8().constData());
   fclose(file);
 }
 
@@ -1640,7 +1641,7 @@ void RDSoundPanel::Stopped(int id)
     }
   else {
     panel_active_buttons[id]->setState(false);
-    panel_active_buttons[id]->setHookMode(panel_playmode_box->currentItem()==1);
+    panel_active_buttons[id]->setHookMode(panel_playmode_box->currentIndex()==1);
   }
   disconnect(this,SIGNAL(tick()),panel_active_buttons[id],SLOT(tickClock()));
   panel_active_buttons[id]->playDeck()->disconnect();

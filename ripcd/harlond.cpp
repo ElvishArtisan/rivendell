@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Harlond Virtual Mixer
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,8 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <qstringlist.h>
 
 #include <rdapplication.h>
 
@@ -50,6 +48,7 @@ Harlond::Harlond(RDMatrix *matrix,QObject *parent)
   for(int i=0;i<bt_inputs;i++) {
     bt_reset_states.push_back(false);
     bt_reset_timers.push_back(new QTimer(this));
+    bt_reset_timers.back()->setSingleShot(true);
     bt_reset_mapper->setMapping(bt_reset_timers.back(),i);
     connect(bt_reset_timers.back(),SIGNAL(timeout()),
 	    bt_reset_mapper,SLOT(map()));
@@ -65,8 +64,9 @@ Harlond::Harlond(RDMatrix *matrix,QObject *parent)
   connect(bt_socket,SIGNAL(error(QAbstractSocket::SocketError)),
 	  this,SLOT(socketErrorData(QAbstractSocket::SocketError)));
   bt_watchdog_timer=new QTimer(this);
+  bt_watchdog_timer->setSingleShot(true);
   connect(bt_watchdog_timer,SIGNAL(timeout()),this,SLOT(watchdogTimeoutData()));
-  bt_watchdog_timer->start(5000,true);
+  bt_watchdog_timer->start(5000);
 }
 
 
@@ -193,7 +193,7 @@ void Harlond::resetTimeoutData(int line)
 void Harlond::socketConnectedData()
 {
   QString str=QString("PW ")+bt_password+"!";
-  bt_socket->writeBlock(str,str.length());
+  bt_socket->write(str.toUtf8());
   if(bt_start_cart>0) {
     executeMacroCart(bt_start_cart);
   }
@@ -202,7 +202,7 @@ void Harlond::socketConnectedData()
 
 void Harlond::socketDisconnectedData()
 {
-  bt_watchdog_timer->start(HARLOND_RECONNECT_INTERVAL,true);
+  bt_watchdog_timer->start(HARLOND_RECONNECT_INTERVAL);
   rda->syslog(LOG_WARNING,
 	 "connection to harlond device at %s:%d closed, attempting reconnect",
 	      (const char *)bt_ip_address.toString().toUtf8(),
@@ -217,7 +217,7 @@ void Harlond::socketReadyReadData()
 {
   char data[1500];
   int n;
-  while((n=bt_socket->readBlock(data,1500))>0) {
+  while((n=bt_socket->read(data,1500))>0) {
     for(int i=0;i<n;i++) {
       if(data[i]=='!') {
 	ProcessResponse(bt_recv_buffer);
@@ -233,7 +233,7 @@ void Harlond::socketReadyReadData()
 
 void Harlond::socketErrorData(QAbstractSocket::SocketError err)
 {
-  bt_watchdog_timer->start(HARLOND_RECONNECT_INTERVAL,true);
+  bt_watchdog_timer->start(HARLOND_RECONNECT_INTERVAL);
   switch(err) {
   case QAbstractSocket::ConnectionRefusedError:
     rda->syslog(LOG_WARNING,
@@ -255,7 +255,7 @@ void Harlond::socketErrorData(QAbstractSocket::SocketError err)
 
 void Harlond::watchdogTimeoutData()
 {
-  if(bt_socket->state()!=QAbstractSocket::Connected) {
+  if(bt_socket->state()!=QAbstractSocket::ConnectedState) {
     bt_socket->connectToHost(bt_ip_address.toString(),bt_tcp_port);
   }
 }
@@ -273,7 +273,7 @@ void Harlond::ProcessResponse(const QString &str)
 		    "connection to harlond device at %s:%d established",
 		    (const char *)bt_ip_address.toString().toUtf8(),
 	       bt_tcp_port);
-	bt_socket->writeBlock("SS!",3);
+	bt_socket->write("SS!",3);
 	return;
       }
     }
@@ -300,7 +300,7 @@ void Harlond::ProcessResponse(const QString &str)
 bool Harlond::ProcessSalvo(const QString &str)
 {
   QString arg=QString("LL ")+str+"!";
-  bt_socket->writeBlock(arg,arg.length());
+  bt_socket->write(arg.toUtf8());
   return true;
 }
 
@@ -318,10 +318,10 @@ bool Harlond::ProcessGpo(int line,bool state,int msecs)
   }
   bt_reset_states[line]=state;
   str=code+QString().sprintf(" %02d!",line);
-  bt_socket->writeBlock(str,str.length());
+  bt_socket->write(str.toUtf8());
   bt_reset_timers[line]->stop();
   if(msecs>0) {
-    bt_reset_timers[line]->start(msecs,true);
+    bt_reset_timers[line]->start(msecs);
   }
 
   return true;
@@ -336,7 +336,7 @@ bool Harlond::SetInputLevel(int input,int db)
     return false;
   }
   str=QString().sprintf("VL %02d %04d!",input,db);
-  bt_socket->writeBlock(str,str.length());
+  bt_socket->write(str.toUtf8());
 
   return true;
 }
@@ -399,7 +399,7 @@ bool Harlond::AddCrosspoint(int input,int output)
     return false;
   }
   str=code+QString().sprintf(" %02d +!",input);
-  bt_socket->writeBlock(str,str.length());
+  bt_socket->write(str.toUtf8());
   return true;
 }
 
@@ -413,7 +413,7 @@ bool Harlond::RemoveCrosspoint(int input,int output)
     return false;
   }
   str=code+QString().sprintf(" %02d -!",input);
-  bt_socket->writeBlock(str,str.length());
+  bt_socket->write(str.toUtf8());
   return true;
 }
 

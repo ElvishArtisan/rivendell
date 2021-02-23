@@ -21,10 +21,10 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#include <qapplication.h>
-#include <qlineedit.h>
-#include <qmessagebox.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QLineEdit>
+#include <QMessageBox>
+#include <QTranslator>
 
 #include "rmlsend.h"
 
@@ -58,7 +58,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 
   host=new QLineEdit(this);
   host->setGeometry(80,10,180,25);
-  QLabel *label=new QLabel(host,"Sent To:",this);
+  QLabel *label=new QLabel("Sent To:",this);
   label->setGeometry(10,16,65,14);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
@@ -72,20 +72,20 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   port_box=new QComboBox(this);
   port_box->setGeometry(305,10,130,25);
   port_box->setEditable(false);
-  label=new QLabel(port_box,"Dest:",this);
+  label=new QLabel("Dest:",this);
   label->setGeometry(265,16,35,14);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
-  port_box->insertItem(tr("RML"));
-  port_box->insertItem(tr("RML (no echo)"));
-  port_box->insertItem(tr("Set Port"));
-  port_box->setCurrentItem(1);
+  port_box->insertItem(0,tr("RML"));
+  port_box->insertItem(1,tr("RML (no echo)"));
+  port_box->insertItem(2,tr("Set Port"));
+  port_box->setCurrentIndex(1);
   connect(port_box,SIGNAL(activated(int)),this,SLOT(destChangedData(int)));
 
   port_edit=new QLineEdit(this);
   port_edit->setGeometry(sizeHint().width()-60,10,50,25);
   port_edit->setDisabled(true);
-  port_edit_label=new QLabel(port_edit,tr("UDP Port:"),this);
+  port_edit_label=new QLabel(tr("UDP Port:"),this);
   port_edit_label->setGeometry(sizeHint().width()-130,16,65,14);
   port_edit_label->setFont(labelFont());
   port_edit_label->setAlignment(Qt::AlignRight);
@@ -93,14 +93,14 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 
   command=new QLineEdit(this);
   command->setGeometry(80,40,sizeHint().width()-90,25);
-  label=new QLabel(command,tr("Command:"),this);
+  label=new QLabel(tr("Command:"),this);
   label->setGeometry(10,46,65,14);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
 
   response=new QLineEdit(this);
   response->setGeometry(80,70,sizeHint().width()-90,25);
-  response_label=new QLabel(response,tr("Response:"),this);
+  response_label=new QLabel(tr("Response:"),this);
   response_label->setGeometry(10,76,65,14);
   response_label->setFont(labelFont());
   response_label->setAlignment(Qt::AlignRight);
@@ -110,7 +110,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   send->setFont(buttonFont());
   connect(send,SIGNAL(clicked()),this,SLOT(sendCommand()));
 
-  quit=new QPushButton("&Quit",this,"quit");
+  quit=new QPushButton("&Quit",this);
   quit->setGeometry(sizeHint().width()-80,sizeHint().height()-50,70,40);
   quit->setFont(buttonFont());
   quit->setDefault(true);
@@ -134,22 +134,22 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
       if(ok&&(port<0xFFFF)) {
 	switch(rdcmdswitch->value(i).toUInt()) {
 	case RD_RML_ECHO_PORT:
-	  port_box->setCurrentItem(0);
+	  port_box->setCurrentIndex(0);
 	  break;
 	      
 	case RD_RML_NOECHO_PORT:
-	  port_box->setCurrentItem(1);
+	  port_box->setCurrentIndex(1);
 	  break;
 	      
 	default:
-	  port_box->setCurrentItem(2);
+	  port_box->setCurrentIndex(2);
 	  port_edit->setText(rdcmdswitch->value(i));
 	  break;
 	}
       }
     }
   }
-  destChangedData(port_box->currentItem());
+  destChangedData(port_box->currentIndex());
 }
 
 
@@ -171,7 +171,7 @@ void MainWidget::sendCommand()
   unsigned port=0;
   bool ok=true;
 
-  switch((MainWidget::DestMode)port_box->currentItem()) {
+  switch((MainWidget::DestMode)port_box->currentIndex()) {
   case MainWidget::Rml:
     port=RD_RML_ECHO_PORT;
     break;
@@ -189,7 +189,7 @@ void MainWidget::sendCommand()
     break;
   }
   response->setText("");
-  struct hostent *hostent=gethostbyname(host->text());
+  struct hostent *hostent=gethostbyname(host->text().toUtf8());
   if(hostent==NULL) {
     QMessageBox::warning(this,tr("RMLSend"),hstrerror(h_errno));
     return;
@@ -203,7 +203,7 @@ void MainWidget::sendCommand()
     host_addr.setAddress(host->text());
   }
   dcl_command=command->text();
-  if(!udp_command->writeDatagram(dcl_command.utf8(),host_addr,(Q_UINT16)port)) {
+  if(!udp_command->writeDatagram(dcl_command.toUtf8(),host_addr,(uint16_t)port)) {
     QMessageBox::warning(this,tr("RMLSend"),tr("Connection Failed!"));
     return;
   }
@@ -220,7 +220,7 @@ void MainWidget::readResponse()
   int n;
   QHostAddress peer_addr;
 
-  n=udp_response->readBlock(buffer,RD_RML_MAX_LENGTH);
+  n=udp_response->read(buffer,RD_RML_MAX_LENGTH);
   if(n<=0) {
     if(countdown==0) {
       response->setText(tr("no response"));
@@ -323,7 +323,7 @@ void MainObject::ReadSwitches()
 
 void MainObject::ResolveName()
 {
-  struct hostent *hostent=gethostbyname(dest_hostname);
+  struct hostent *hostent=gethostbyname(dest_hostname.toUtf8());
   if(hostent==NULL) {
     fprintf(stderr,"rmlsend: %s\n",hstrerror(h_errno));
     exit(256);
@@ -351,13 +351,13 @@ void MainObject::InitStream()
     f=stdin;
   }
   else {
-    if((f=fopen(input_file,"r"))==NULL) {
+    if((f=fopen(input_file.toUtf8(),"r"))==NULL) {
       perror("rmlsend");
       exit(1);
     }
   }
   input_stream=new QTextStream(f,QIODevice::ReadOnly);
-  input_stream->setEncoding(QTextStream::UnicodeUTF8);
+  input_stream->setCodec("UTF-8");
 }
 
 
@@ -397,7 +397,7 @@ void MainObject::ProcessCommands()
     if(active) {
       if(c=='!') {
 	rml+=c;
-	udp_command->writeDatagram(rml.utf8(),*dest_addr,dest_port);
+	udp_command->writeDatagram(rml.toUtf8(),*dest_addr,dest_port);
 	rml="";
 	active=false;
 	qApp->processEvents();
@@ -445,24 +445,27 @@ int main(int argc,char *argv[])
     QString tr_path;
     QString qt_path;
 
-    tr_path=QString(PREFIX)+QString("/share/rivendell/");
-    qt_path=QString("/usr/share/qt4/translation/");
+    QString loc=RDApplication::locale();
+    if(!loc.isEmpty()) {
+      tr_path=QString(PREFIX)+QString("/share/rivendell/");
+      qt_path=QString("/usr/share/qt4/translation/");
 
-    QTranslator qt(0);
-    qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");
-    a.installTranslator(&qt);
+      QTranslator qt(0);
+      qt.load(qt_path+QString("qt_")+loc,".");
+      a.installTranslator(&qt);
     
-    QTranslator rd(0);
-    rd.load(tr_path+QString("librd_")+QTextCodec::locale(),".");
-    a.installTranslator(&rd);
+      QTranslator rd(0);
+      rd.load(tr_path+QString("librd_")+loc,".");
+      a.installTranslator(&rd);
 
-    QTranslator rdhpi(0);
-    rdhpi.load(tr_path+QString("librdhpi_")+QTextCodec::locale(),".");
-    a.installTranslator(&rdhpi);
+      QTranslator rdhpi(0);
+      rdhpi.load(tr_path+QString("librdhpi_")+loc,".");
+      a.installTranslator(&rdhpi);
 
-    QTranslator tr(0);
-    tr.load(tr_path+QString("rmlsend_")+QTextCodec::locale(),".");
-    a.installTranslator(&tr);
+      QTranslator tr(0);
+      tr.load(tr_path+QString("rmlsend_")+loc,".");
+      a.installTranslator(&tr);
+    }
 
     //
     // Start Event Loop
@@ -470,7 +473,6 @@ int main(int argc,char *argv[])
     RDConfig *config=new RDConfig();
     config->load();
     MainWidget *w=new MainWidget(config);
-    a.setMainWidget(w);
     w->show();
     return a.exec();
   }

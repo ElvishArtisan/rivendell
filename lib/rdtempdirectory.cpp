@@ -61,9 +61,9 @@ bool RDTempDirectory::create(QString *err_msg)
 {
   char tempdir[PATH_MAX];
 
-  strncpy(tempdir,RDTempDirectory::basePath(),PATH_MAX);
+  strncpy(tempdir,RDTempDirectory::basePath().toUtf8(),PATH_MAX);
   strncat(tempdir,"/",PATH_MAX-strlen(tempdir));
-  strncat(tempdir,temp_base_name,PATH_MAX-strlen(tempdir));
+  strncat(tempdir,temp_base_name.toUtf8(),PATH_MAX-strlen(tempdir));
   strncat(tempdir,"XXXXXX",PATH_MAX-strlen(tempdir));
   if(mkdtemp(tempdir)==NULL) {
     *err_msg=strerror(errno);

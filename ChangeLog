@@ -21172,3 +21172,5 @@
 	* Removed the Q3SocketDevice dependency for metering data 'RDCae'.
 2021-02-17 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the Q3SocketDevice dependency from 'RDCae'.
+2021-02-23 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the Qt3Support library from the build system.

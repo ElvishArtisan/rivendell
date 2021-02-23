@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-##   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +36,7 @@ nodist_rdselect_helper_SOURCES = moc_rdselect_helper.cpp\
                                  rdconfig.cpp rdconfig.h\
                                  rdprofile.cpp rdprofile.h
 
-rdselect_helper_LDADD = -lQtCore -lQtNetwork -lQt3Support @MUSICBRAINZ_LIBS@
+rdselect_helper_LDADD = -lQtCore -lQtNetwork @MUSICBRAINZ_LIBS@
 
 CLEANFILES = *~\
              *.idb\

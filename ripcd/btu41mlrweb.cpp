@@ -2,7 +2,7 @@
 //
 // Rivendell switcher driver for the BroadcastTools Universal 4.1 MLR>>Web
 //
-//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -115,7 +115,7 @@ void BtU41MlrWeb::connectedData()
 {
   rda->syslog(LOG_INFO,
 	      "connection to BroadcastTools device at %s:%u established",
-	      (const char *)bt_ip_address.toString(),0xffff&bt_ip_port);
+	      bt_ip_address.toString().toUtf8().constData(),0xffff&bt_ip_port);
   bt_watchdog_active=false;
   SendCommand("*0SPA");
   bt_keepalive_timer->start(BTU41MLRWEB_KEEPALIVE_INTERVAL);
@@ -128,7 +128,7 @@ void BtU41MlrWeb::readyReadData()
   char data[1501];
   int n=0;
 
-  while((n=bt_socket->readBlock(data,1500))>0) {
+  while((n=bt_socket->read(data,1500))>0) {
     data[n]=0;
     for(int i=0;i<n;i++) {
       switch(0xff&data[i]) {
@@ -165,7 +165,8 @@ void BtU41MlrWeb::watchdogData()
   if(!bt_watchdog_active) {
     rda->syslog(LOG_WARNING,
       "connection to BroadcastTools device at %s:%u lost, attempting reconnect",
-		(const char *)bt_ip_address.toString(),0xffff&bt_ip_port);
+		bt_ip_address.toString().toUtf8().constData(),
+		0xffff&bt_ip_port);
     bt_keepalive_timer->stop();
     bt_watchdog_active=true;
   }
@@ -198,5 +199,5 @@ void BtU41MlrWeb::ProcessCommand(const QString &cmd)
 
 void BtU41MlrWeb::SendCommand(const QString &cmd)
 {
-  bt_socket->writeBlock(cmd,cmd.length());
+  bt_socket->write(cmd.toUtf8());
 }

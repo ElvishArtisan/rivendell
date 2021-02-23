@@ -37,7 +37,7 @@ RDGpio::RDGpio(QObject *parent)
   //
   // Input Timer
   //
-  gpio_input_timer=new QTimer(this,"input_timer");
+  gpio_input_timer=new QTimer(this);
   connect(gpio_input_timer,SIGNAL(timeout()),this,SLOT(inputTimerData()));
   gpio_revert_mapper=NULL;
   for(int i=0;i<GPIO_MAX_LINES;i++) {
@@ -106,7 +106,7 @@ bool RDGpio::open()
   if(gpio_open) {
     return false;
   }
-  if((gpio_fd=::open((const char *)gpio_device,O_RDONLY|O_NONBLOCK))<0) {
+  if((gpio_fd=::open(gpio_device.toUtf8(),O_RDONLY|O_NONBLOCK))<0) {
     return false;
   }
   if(ioctl(gpio_fd,GPIO_GETINFO,&gpio_info)==0) {
@@ -344,10 +344,11 @@ void RDGpio::RemapTimers()
   // Create New Timers
   //
   ioctl(gpio_fd,GPIO_GETINFO,&info);
-  gpio_revert_mapper=new QSignalMapper(this,"gpio_revert_mapper");
+  gpio_revert_mapper=new QSignalMapper(this);
   connect(gpio_revert_mapper,SIGNAL(mapped(int)),this,SLOT(revertData(int)));
   for(int i=0;i<info.outputs;i++) {
     gpio_revert_timer[i]=new QTimer(this);
+    gpio_revert_timer[i]->setSingleShot(true);
     gpio_revert_mapper->setMapping(gpio_revert_timer[i],i);
     connect(gpio_revert_timer[i],SIGNAL(timeout()),
 	    gpio_revert_mapper,SLOT(map()));
@@ -364,10 +365,11 @@ void RDGpio::SetReversion(int line,unsigned interval)
     return;
   }
   if(gpio_revert_timer[line]->isActive()) {
-    gpio_revert_timer[line]->changeInterval(interval);
+    gpio_revert_timer[line]->stop();
+    gpio_revert_timer[line]->start(interval);
   }
   else {
-    gpio_revert_timer[line]->start(interval,true);
+    gpio_revert_timer[line]->start(interval);
   }
 }
 

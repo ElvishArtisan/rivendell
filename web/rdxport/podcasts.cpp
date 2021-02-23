@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Podcast services
 //
-//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -397,7 +397,7 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent().utf8());
+		   (const char *)rda->config()->userAgent().toUtf8());
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errstr);
 
   //
@@ -616,7 +616,7 @@ void Xport::PostImage()
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent().utf8());
+		   (const char *)rda->config()->userAgent().toUtf8());
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errstr);
 
   //

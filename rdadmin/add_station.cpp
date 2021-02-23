@@ -58,7 +58,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   add_name_edit->setGeometry(130,10,sizeHint().width()-140,19);
   add_name_edit->setMaxLength(64);
   add_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(add_name_edit,tr("New &Host Name:"),this);
+  QLabel *label=new QLabel(tr("New &Host Name:"),this);
   label->setGeometry(10,10,115,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -68,7 +68,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   //
   add_exemplar_box=new QComboBox(this);
   add_exemplar_box->setGeometry(130,35,sizeHint().width()-140,19);
-  label=new QLabel(add_exemplar_box,tr("Base Host On:"),this);
+  label=new QLabel(tr("Base Host On:"),this);
   label->setGeometry(10,35,115,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -97,11 +97,12 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   //
   // Fill Exemplar List
   //
-  add_exemplar_box->insertItem(tr("Empty Host Config"));
+  add_exemplar_box->insertItem(0,tr("Empty Host Config"));
   QString sql="select NAME from STATIONS";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    add_exemplar_box->insertItem(q->value(0).toString());
+    add_exemplar_box->
+      insertItem(add_exemplar_box->count(),q->value(0).toString());
   }
   delete q;
 }
@@ -136,7 +137,7 @@ void AddStation::okData()
     return;
   }
 
-  if(add_exemplar_box->currentItem()==0) {  // Create Blank Host Config
+  if(add_exemplar_box->currentIndex()==0) {  // Create Blank Host Config
     ok=RDStation::create(add_name_edit->text(),&err_msg);
   }
   else {

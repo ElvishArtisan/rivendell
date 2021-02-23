@@ -2,7 +2,7 @@
 //
 // Add a Rivendell LogManager Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -78,11 +78,10 @@ AddEvent::AddEvent(QString *logname,QWidget *parent)
   event_name_edit->setGeometry(145,11,sizeHint().width()-155,19);
   event_name_edit->setMaxLength(58);  // MySQL limitation!
   event_name_edit->setValidator(validator);
-  QLabel *event_name_label=
-    new QLabel(event_name_edit,tr("&New Event Name:"),this);
+  QLabel *event_name_label=new QLabel(tr("&New Event Name:"),this);
   event_name_label->setGeometry(10,11,130,19);
   event_name_label->setFont(labelFont());
-  event_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  event_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(event_name_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(nameChangedData(const QString &)));
 

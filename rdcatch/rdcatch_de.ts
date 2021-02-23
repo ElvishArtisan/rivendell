@@ -336,7 +336,7 @@ Neu</translation>
     </message>
     <message>
         <source>Unsupported URL protocol!</source>
-        <translation>Nicht unterstütztes URL-Protokoll!</translation>
+        <translation type="obsolete">Nicht unterstütztes URL-Protokoll!</translation>
     </message>
     <message>
         <source>Event Offset:</source>
@@ -357,6 +357,10 @@ Neu</translation>
     <message>
         <source>Update Library Metadata</source>
         <translation>Bibliotheksmetadaten updaten</translation>
+    </message>
+    <message>
+        <source>Unsupported URL scheme!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -924,7 +928,7 @@ Neu</translation>
     </message>
     <message>
         <source>Unsupported URL protocol!</source>
-        <translation>Nicht unterstütztes URL-Protokoll!</translation>
+        <translation type="obsolete">Nicht unterstütztes URL-Protokoll!</translation>
     </message>
     <message>
         <source>Event Offset:</source>
@@ -945,6 +949,10 @@ Neu</translation>
     <message>
         <source>Export Library Metadata</source>
         <translation>Bibliotheksmetadaten exportieren</translation>
+    </message>
+    <message>
+        <source>Unsupported URL scheme!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

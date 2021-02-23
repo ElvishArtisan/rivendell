@@ -3,7 +3,7 @@
 // Command-line tool for setting Rivendell Cart Metadata
 //
 //   Patrick Linstruth <patrick@deltecent.com>
-//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,9 +28,6 @@
 #include <sys/types.h>
 
 #include <QApplication>
-#include <QDir>
-#include <QFileInfo>
-#include <QSqlQuery>
 
 #include "rd.h"
 #include "rdapplication.h"
@@ -54,7 +51,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdmetadata","rdmetadata",RDMETADATA_USAGE,this));
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdmetadata: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdmetadata: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -125,7 +122,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rdmetadata: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }
@@ -299,7 +296,7 @@ void MainObject::SendNotification(RDNotification::Action action,unsigned cartnum
 void MainObject::Print(const QString &msg)
 {
   if(verbose) {
-    printf("%s\n",(const char *)msg);
+    printf("%s\n",msg.toUtf8().constData());
   }
 }
 

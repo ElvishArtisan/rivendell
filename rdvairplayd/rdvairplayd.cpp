@@ -25,7 +25,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#include <qapplication.h>
+#include <QCoreApplication>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -66,7 +66,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdvairplayd","rdvairplayd",RDVAIRPLAYD_USAGE,this));
   if(!rda->open(&err_msg,&err_type,false)) {
-    fprintf(stderr,"rdvairplayd: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdvairplayd: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
   air_previous_exit_code=rda->airplayConf()->virtualExitCode();
@@ -78,7 +78,7 @@ MainObject::MainObject(QObject *parent)
   for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rdvairplayd: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }

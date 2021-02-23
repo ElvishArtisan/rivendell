@@ -2,7 +2,7 @@
 //
 //   A class for playing Microsoft WAV file on AudioScience HPI devices.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,13 +25,10 @@
 #include <sys/stat.h>
 #include <syslog.h>
 #include <fcntl.h>
-#include <qobject.h>
-#include <qwidget.h>
-#include <qstring.h>
-#include <qdatetime.h>
 
 #include <rd.h>
 #include <rdapplication.h>
+
 #include "rdhpiplaystream.h"
 #include "rdhpisoundcard.h"
 
@@ -120,6 +117,7 @@ RDHPIPlayStream::RDHPIPlayStream(RDHPISoundCard *card,QWidget *parent)
   connect(clock,SIGNAL(timeout()),this,SLOT(tickClock()));
 
   play_timer=new QTimer(this);
+  play_timer->setSingleShot(true);
   connect(play_timer,SIGNAL(timeout()),this,SLOT(pause()));
 }
 
@@ -160,7 +158,7 @@ QString RDHPIPlayStream::errorString(RDHPIPlayStream::Error err)
 
   default:
     str=QString(tr("Unknown RDHpiPlayStream Error:"));
-    return QString().sprintf("%s %d\n",(const char *)str,err);
+    return QString().sprintf("%s %d\n",str.toUtf8().constData(),err);
     break;
   }
 }
@@ -527,7 +525,7 @@ bool RDHPIPlayStream::play()
     is_paused=false;
     stopping=false;
     if(play_length>0) {
-      play_timer->start(play_length,true);
+      play_timer->start(play_length);
       start_time=QTime::currentTime();
     }
     stream_state=RDHPIPlayStream::Playing;
@@ -699,7 +697,8 @@ void RDHPIPlayStream::setPlayLength(int length)
     if((diff=length-start_time.msecsTo(current_time))<=0) {
       diff=0;
     }
-    play_timer->changeInterval(diff);
+    play_timer->stop();
+    play_timer->start(diff);
     start_time=current_time;
   }
   play_length=length;

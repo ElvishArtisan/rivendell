@@ -2,7 +2,7 @@
 //
 // Test Rivendell file uploading.
 //
-//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <qapplication.h>
+#include <QApplication>
 
 #include <rdcmd_switch.h>
 
@@ -68,7 +68,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Open File
   //
-  if((file_fd=open(filename,O_RDONLY))<0) {
+  if((file_fd=open(filename.toUtf8(),O_RDONLY))<0) {
     fprintf(stderr,"wav_chunk_test: unable to open file [%s]\n",
 	    strerror(errno));
     exit(256);
@@ -126,7 +126,9 @@ MainObject::MainObject(QObject *parent)
   QString name;
   uint32_t start_pos;
   while((start_pos=NextChunk(name,&chunk_length))>0) {
-    printf("Chunk: %s  Start: %u [0x%X]  Length: %u [0x%X]\n",(const char *)name,start_pos,start_pos,chunk_length+8,chunk_length+8);
+    printf("Chunk: %s  Start: %u [0x%X]  Length: %u [0x%X]\n",
+	   name.toUtf8().constData(),start_pos,start_pos,chunk_length+8,
+	   chunk_length+8);
     lseek(file_fd,chunk_length,SEEK_CUR);
   }
 

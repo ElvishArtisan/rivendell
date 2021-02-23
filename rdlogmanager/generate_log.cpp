@@ -2,7 +2,7 @@
 //
 // Generate a Rivendell Log
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rddatedecode.h>
 #include <rddatedialog.h>
@@ -70,16 +70,16 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   gen_progress_dialog=
     new QProgressDialog(tr("Generating Log..."),tr("Cancel"),0,24,this);
-  gen_progress_dialog->setCaption("Progress");
+  gen_progress_dialog->setWindowTitle("Progress");
   gen_progress_dialog->setCancelButton(NULL);
 
   //
   // Service Name
   //
-  gen_service_box=new QComboBox(this);
+  gen_service_box=new RDComboBox(this);
   connect(gen_service_box,SIGNAL(activated(int)),
 	  this,SLOT(serviceActivatedData(int)));
-  gen_service_label=new QLabel(gen_service_box,tr("Service:"),this);
+  gen_service_label=new QLabel(tr("Service:"),this);
   gen_service_label->setFont(labelFont());
   gen_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -102,7 +102,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   gen_date_edit=new QDateEdit(this);
   gen_date_edit->setDisplayFormat("MM/dd/yyyy");
-  gen_date_label=new QLabel(gen_date_edit,tr("Date:"),this);
+  gen_date_label=new QLabel(tr("Date:"),this);
   gen_date_label->setFont(labelFont());
   gen_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   if (cmdswitch==0)

@@ -26,19 +26,20 @@
 
 #include <rdcmd_switch.h>
 
-RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
-			 const char *usage)
+RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const QString &modname,
+			 const QString &usage)
 {
   switch_debug=false;
 
   for(int i=1;i<argc;i++) {
     QString value=QString::fromUtf8(argv[i]);
     if(value=="--version") {
-      printf("Rivendell v%s [%s]\n",VERSION,modname);
+      printf("Rivendell v%s [%s]\n",VERSION,modname.toUtf8().constData());
       exit(0);
     }
     if(value=="--help") {
-      printf("\n%s %s\n",modname,usage);
+      printf("\n%s %s\n",modname.toUtf8().constData(),
+	     usage.toUtf8().constData());
       exit(0);
     }
     if(value=="-d") {

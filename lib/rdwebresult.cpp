@@ -143,7 +143,7 @@ bool RDWebResult::readXmlFromFile(const QString &filename)
   char line[1024];
   QString xml="";
 
-  if((f=fopen(filename,"r"))==NULL) {
+  if((f=fopen(filename.toUtf8(),"r"))==NULL) {
     return false;
   }
   while(fgets(line,1024,f)!=NULL) {

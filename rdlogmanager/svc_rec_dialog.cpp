@@ -2,7 +2,7 @@
 //
 // A Services/Reports Management Dialog.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,18 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qwidget.h>
-#include <qpushbutton.h>
-#include <qrect.h>
-#include <qpoint.h>
-#include <qpainter.h>
-#include <qstring.h>
-#include <qmessagebox.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qsignalmapper.h>
-#include <qfile.h>
+#include <QMessageBox>
+#include <QPushButton>
 
 #include <rdapplication.h>
 #include <rddatedecode.h>
@@ -108,10 +98,11 @@ void SvcRecDialog::dateSelectedData(const QDate &,bool active)
 void SvcRecDialog::deleteData()
 {
   if(QMessageBox::question(this,tr("Delete Report Data"),
-			   QString().sprintf("%s %s?",
-         (const char *)tr("Are you sure you want to delete report data for"),
-	 (const char *)date_picker->date().toString("MM/dd/yyyy")),
-			QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
+			 tr("Are you sure you want to delete report data for")+
+			 " "+
+			   date_picker->date().toString("MM/dd/yyyy"),
+			   QMessageBox::Yes,QMessageBox::No)!=
+     QMessageBox::Yes) {
     return;
   }
   date_picker->deleteDay();

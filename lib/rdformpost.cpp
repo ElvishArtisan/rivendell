@@ -58,7 +58,7 @@ RDFormPost::RDFormPost(RDFormPost::Encoding encoding,unsigned maxsize,
     post_error=RDFormPost::ErrorNotPost;
     return;
   }
-  if(QString(getenv("REQUEST_METHOD")).lower()!="post") {
+  if(QString(getenv("REQUEST_METHOD")).toLower()!="post") {
     post_error=RDFormPost::ErrorNotPost;
     return;
   }
@@ -128,7 +128,7 @@ RDFormPost::~RDFormPost()
     for(QMap<QString,bool>::const_iterator ci=post_filenames.begin();
 	ci!=post_filenames.end();ci++) {
       if(ci.value()) {
-	unlink(post_values.value(ci.key()).toString());
+	unlink(post_values.value(ci.key()).toString().toUtf8());
       }
     }
     if(post_tempdir!=NULL) {
@@ -488,7 +488,7 @@ QString RDFormPost::urlEncode(const QString &str)
       ret+=str.mid(i,1);
     }
     else {
-      ret+=QString().sprintf("%%%02X",str.at(i).latin1());
+      ret+=QString().sprintf("%%%02X",str.at(i).toLatin1());
     }
   }
 
@@ -657,7 +657,7 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
     line=QString::fromUtf8(GetLine());
     QStringList f0=line.split(":");
     if(f0.size()==2) {
-      if(f0[0].lower()=="content-disposition") {
+      if(f0[0].toLower()=="content-disposition") {
 	QStringList f1=f0[1].split(";");
 	for(int i=0;i<f1.size();i++) {
 	  QStringList f2=f1[i].trimmed().split("=",QString::KeepEmptyParts);
@@ -673,7 +673,7 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
 	    }
 	    if(f2[0]=="filename") {
 	      *value=post_tempdir->path()+"/"+f2[1].replace("\"","");
-	      fd=open(value->utf8(),O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
+	      fd=open(value->toUtf8(),O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
 	      *is_file=true;
 	    }
 	  }

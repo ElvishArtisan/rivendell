@@ -47,7 +47,7 @@ bool RDReport::ExportTextLog(const QString &filename,const QDate &startdate,
     return false;
   }
   QTextStream *strm=new QTextStream(file);
-  strm->setEncoding(QTextStream::UnicodeUTF8);
+  strm->setCodec("UTF-8");
   if(useLeadingZeros()) {
     cart_fmt=QString().sprintf("%%0%uu",cartDigits());
   }
@@ -105,7 +105,7 @@ bool RDReport::ExportTextLog(const QString &filename,const QDate &startdate,
 	cut="   ";
       }
     }
-    cart_num=QString().sprintf(cart_fmt,q->value(1).toUInt());
+    cart_num=QString().sprintf(cart_fmt.toUtf8(),q->value(1).toUInt());
     *strm << q->value(2).toTime().toString("hh:mm:ss")+"  ";
     *strm << RDReport::rightJustify(cart_num,6)+"  ";
     *strm << cut+"  ";

@@ -49,21 +49,19 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   // Start JACK Server
   //
   edit_start_jack_box=new QCheckBox(this);
-  edit_start_jack_label=
-    new QLabel(edit_start_jack_box,tr("Start JACK Server"),this);
+  edit_start_jack_label=new QLabel(tr("Start JACK Server"),this);
   edit_start_jack_label->setFont(labelFont());
   edit_start_jack_label->
-    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // JACK Server Name
   //
   edit_jack_server_name_edit=new QLineEdit(this);
-  edit_jack_server_name_label=
-    new QLabel(edit_jack_server_name_edit,tr("JACK Server Name:"),this);
+  edit_jack_server_name_label=new QLabel(tr("JACK Server Name:"),this);
   edit_jack_server_name_label->setFont(labelFont());
   edit_jack_server_name_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // JACK Command Line
@@ -71,28 +69,25 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   edit_jack_command_line_edit=new QLineEdit(this);
   connect(edit_start_jack_box,SIGNAL(toggled(bool)),
 	  this,SLOT(startJackData(bool)));
-  edit_jack_command_line_label=
-    new QLabel(edit_jack_command_line_edit,tr("JACK Command Line:"),this);
+  edit_jack_command_line_label=new QLabel(tr("JACK Command Line:"),this);
   edit_jack_command_line_label->setFont(labelFont());
   edit_jack_command_line_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Active Audio Ports
   //
   edit_jack_audio_ports_spin=new QSpinBox(this);
   edit_jack_audio_ports_spin->setRange(0,24);
-  edit_jack_audio_ports_label=
-    new QLabel(edit_jack_audio_ports_spin,tr("Active Audio Ports")+":",this);
+  edit_jack_audio_ports_label=new QLabel(tr("Active Audio Ports")+":",this);
   edit_jack_audio_ports_label->setFont(labelFont());
-  edit_jack_audio_ports_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  edit_jack_audio_ports_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // JACK Client List
   //
   edit_jack_client_view=new RDTableView(this);
-  edit_jack_client_label=
-    new QLabel(edit_jack_client_view,tr("JACK Clients to Start:"),this);
+  edit_jack_client_label=new QLabel(tr("JACK Clients to Start:"),this);
   edit_jack_client_label->setFont(labelFont());
   edit_jack_client_model=new RDJackClientListModel(station->name(),this);
   edit_jack_client_view->setModel(edit_jack_client_model);

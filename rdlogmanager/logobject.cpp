@@ -2,7 +2,7 @@
 //
 // Generate/merge logs from the command line.
 //
-//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-
-#include <qapplication.h>
+#include <QApplication>
 
 #include <rdapplication.h>
 #include <rddatedecode.h>
@@ -87,7 +85,7 @@ void LogObject::userData()
     if(log_generate_log) {
       if(log_protect_existing&&log->exists()) {
 	fprintf(stderr,"log \"%s\" already exists\n",
-		log->name().utf8().constData());
+		log->name().toUtf8().constData());
 	exit(RDApplication::ExitOutputProtected);
       }
       SendNotification(RDNotification::DeleteAction,log->name());
@@ -113,7 +111,8 @@ void LogObject::userData()
       model->load();
       if((model->validate(&report,start_date)!=0)||
 	 (!unused_report.isEmpty())) {
-	printf("%s\n\n%s",(const char*)report,(const char*)unused_report);
+	printf("%s\n\n%s",report.toUtf8().constData(),
+	       unused_report.toUtf8().constData());
       }
       delete model;
     }
@@ -130,14 +129,14 @@ void LogObject::userData()
 	 (log->linkState(RDLog::SourceMusic)==RDLog::LinkDone)) {
 	fprintf(stderr,
 		"rdlogmanager: music for log \"%s\" is already imported\n",
-		log->name().utf8().constData());
+		log->name().toUtf8().constData());
 	exit(RDApplication::ExitLogLinkFailed);
       }
       if((!log->includeImportMarkers())&&
 	 (log->linkState(RDLog::SourceMusic)!=RDLog::LinkMissing)) {
 	fprintf(stderr,
 		"rdlogmanager: music for log \"%s\" cannot be reimported\n",
-		log->name().utf8().constData());
+		log->name().toUtf8().constData());
 	exit(RDApplication::ExitLogLinkFailed);
       }
       report="";
@@ -154,7 +153,7 @@ void LogObject::userData()
       }
       if(svc->linkLog(RDSvc::Music,start_date,logname,&report,rda->user(),
 		      &err_msg)) {
-	printf("%s\n",(const char*)report);
+	printf("%s\n",report.toUtf8().constData());
       }
       else {
 	fprintf(stderr,"rdlogmanager: music import failed\n");
@@ -176,14 +175,14 @@ void LogObject::userData()
 	 (log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone)) {
 	fprintf(stderr,
 		"rdlogmanager: traffic for log \"%s\" is already imported\n",
-		(const char *)log->name().utf8());
+		(const char *)log->name().toUtf8());
 	exit(RDApplication::ExitLogLinkFailed);
       }
       if((!log->includeImportMarkers())&&
 	 (log->linkState(RDLog::SourceTraffic)!=RDLog::LinkMissing)) {
 	fprintf(stderr,
 		"rdlogmanager: traffic for log \"%s\" cannot be reimported\n",
-		log->name().utf8().constData());
+		log->name().toUtf8().constData());
 	exit(RDApplication::ExitLogLinkFailed);
       }
       report="";

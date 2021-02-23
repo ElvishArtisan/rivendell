@@ -1,8 +1,8 @@
-## automake.am
+## Makefile.am
 ##
 ## rdcatchd/ Makefile.am for Rivendell
 ##
-## (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -I/usr/include/Qt3Support
+AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -39,7 +39,7 @@ dist_rdcatchd_SOURCES = batch.cpp\
 nodist_rdcatchd_SOURCES = moc_event_player.cpp\
                           moc_rdcatchd.cpp
 
-rdcatchd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
+rdcatchd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@
 
 CLEANFILES = *~\
              moc_*

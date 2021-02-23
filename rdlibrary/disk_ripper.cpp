@@ -124,8 +124,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_apply_box=new QCheckBox(this);
   rip_apply_box->setChecked(true);
   rip_apply_box->setDisabled(true);
-  rip_apply_label=new QLabel(rip_apply_box,tr("Apply")+" "+
-			     rip_disc_lookup->sourceName()+" "+
+  rip_apply_label=new QLabel(tr("Apply")+" "+rip_disc_lookup->sourceName()+" "+
 			     tr("Values to Carts"),this);
   rip_apply_label->setFont(labelFont());
   rip_apply_label->setAlignment(Qt::AlignLeft);
@@ -138,7 +137,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Web Browser Button/Label
   //
   rip_browser_button=new QPushButton(this);
-  rip_browser_button->setPixmap(rip_disc_lookup->sourceLogo());
+  rip_browser_button->setIcon(rip_disc_lookup->sourceLogo());
   rip_browser_button->setDisabled(true);
   rip_browser_label=new QLabel(this);
   rip_browser_label->setPixmap(rip_disc_lookup->sourceLogo());
@@ -166,7 +165,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_track_model->setFont(defaultFont());
   rip_track_model->setPalette(palette());
   rip_track_view->setModel(rip_track_model);
-  rip_track_label=new QLabel(rip_track_view,tr("Tracks"),this);
+  rip_track_label=new QLabel(tr("Tracks"),this);
   rip_track_label->setFont(sectionLabelFont());
   connect(rip_track_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));
@@ -259,7 +258,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   rip_normalize_box=new QCheckBox(this);
   rip_normalize_box->setChecked(true);
-  rip_normalizebox_label=new QLabel(rip_normalize_box,tr("Normalize"),this);
+  rip_normalizebox_label=new QLabel(tr("Normalize"),this);
   rip_normalizebox_label->setFont(labelFont());
   rip_normalizebox_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(rip_normalize_box,SIGNAL(toggled(bool)),
@@ -270,7 +269,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   rip_normalize_spin=new QSpinBox(this);
   rip_normalize_spin->setRange(-30,0);
-  rip_normalize_label=new QLabel(rip_normalize_spin,tr("Level:"),this);
+  rip_normalize_label=new QLabel(tr("Level:"),this);
   rip_normalize_label->setFont(labelFont());
   rip_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_normalize_unit=new QLabel(tr("dBFS"),this);
@@ -282,7 +281,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   rip_autotrim_box=new QCheckBox(this);
   rip_autotrim_box->setChecked(true);
-  rip_autotrimbox_label=new QLabel(rip_autotrim_box,tr("Autotrim"),this);
+  rip_autotrimbox_label=new QLabel(tr("Autotrim"),this);
   rip_autotrimbox_label->setFont(labelFont());
   rip_autotrimbox_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(rip_autotrim_box,SIGNAL(toggled(bool)),
@@ -293,7 +292,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   rip_autotrim_spin=new QSpinBox(this);
   rip_autotrim_spin->setRange(-99,0);
-  rip_autotrim_label=new QLabel(rip_autotrim_spin,tr("Level:"),this);
+  rip_autotrim_label=new QLabel(tr("Level:"),this);
   rip_autotrim_label->setFont(labelFont());
   rip_autotrim_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_autotrim_unit=new QLabel(tr("dBFS"),this);
@@ -304,7 +303,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Channels
   //
   rip_channels_box=new QComboBox(this);
-  rip_channels_label=new QLabel(rip_channels_box,tr("Channels:"),this);
+  rip_channels_label=new QLabel(tr("Channels:"),this);
   rip_channels_label->setFont(labelFont());
   rip_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -328,9 +327,9 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   rip_normalize_spin->setValue(rda->libraryConf()->ripperLevel()/100);
   rip_autotrim_spin->setValue(rda->libraryConf()->trimThreshold()/100);
-  rip_channels_box->insertItem("1");
-  rip_channels_box->insertItem("2");
-  rip_channels_box->setCurrentItem(rda->libraryConf()->defaultChannels()-1);
+  rip_channels_box->insertItem(0,"1");
+  rip_channels_box->insertItem(1,"2");
+  rip_channels_box->setCurrentIndex(rda->libraryConf()->defaultChannels()-1);
   rip_done=false;
 }
 
@@ -999,8 +998,8 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
     break;
   }
   delete ripper;
-  unlink(tmpfile);
-  rmdir(tmpdir);
+  unlink(tmpfile.toUtf8());
+  rmdir(tmpdir.toUtf8());
   rip_track_bar->setValue(0);
 
   delete cart;

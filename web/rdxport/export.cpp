@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Export service
 //
-//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -178,13 +178,13 @@ void Xport::Export()
       break;
     }
     fflush(NULL);
-    if((fd=open(tmpfile,O_RDONLY))>=0) {
+    if((fd=open(tmpfile.toUtf8(),O_RDONLY))>=0) {
       while((n=read(fd,data,2048))>0) {
 	write(1,data,n);
       }
     }
     close(fd);
-    unlink(tmpfile);
+    unlink(tmpfile.toUtf8());
     //    rmdir(tmpdir);
     delete tempdir;
     Exit(0);

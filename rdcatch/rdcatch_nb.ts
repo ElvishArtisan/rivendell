@@ -334,7 +334,7 @@ New</source>
     </message>
     <message>
         <source>Unsupported URL protocol!</source>
-        <translation>Ikkje støtta adresseprotokoll!</translation>
+        <translation type="obsolete">Ikkje støtta adresseprotokoll!</translation>
     </message>
     <message>
         <source>Event Offset:</source>
@@ -354,6 +354,10 @@ New</source>
     </message>
     <message>
         <source>Update Library Metadata</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsupported URL scheme!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -921,7 +925,7 @@ ny</translation>
     </message>
     <message>
         <source>Unsupported URL protocol!</source>
-        <translation>Ikkje støtta adresseprotokoll!</translation>
+        <translation type="obsolete">Ikkje støtta adresseprotokoll!</translation>
     </message>
     <message>
         <source>Event Offset:</source>
@@ -941,6 +945,10 @@ ny</translation>
     </message>
     <message>
         <source>Export Library Metadata</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsupported URL scheme!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

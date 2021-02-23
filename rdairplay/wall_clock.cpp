@@ -2,7 +2,7 @@
 //
 // A wall-clock widget with date.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
+#include <QPainter>
 
 #include <rdconf.h>
 
@@ -94,7 +94,7 @@ void WallClock::tickClock()
 {
   static QString date;
   QString accum;
-  QColor system_button_text_color = palette().active().buttonText();
+  QColor system_button_text_color = palette().buttonText().color();
   static QPixmap *pix=new QPixmap(sizeHint().width()-2,sizeHint().height()-2);
   static bool synced=true;
 
@@ -140,7 +140,7 @@ void WallClock::tickClock()
     p.setPen(Qt::color1);
   }
   else {
-    p.fillRect(0,0,width()-2,height()-2,backgroundColor());
+    p.fillRect(0,0,width()-2,height()-2,palette().color(QPalette::Background));
     p.setPen(QColor(system_button_text_color));
   }
   p.setFont(subLabelFont());
@@ -148,7 +148,7 @@ void WallClock::tickClock()
   p.setFont(bannerFont());
   p.drawText((size().width()-2-p.fontMetrics().width(accum))/2,48,accum);
   p.end();
-  setPixmap(*pix);
+  setIcon(*pix);
 }
 
 

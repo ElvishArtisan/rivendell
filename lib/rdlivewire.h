@@ -55,11 +55,11 @@ class RDLiveWire : public QObject
   RDLiveWire(unsigned id,QObject *parent=0);
   unsigned id() const;
   QString hostname() const;
-  Q_UINT16 tcpPort() const;
+  uint16_t tcpPort() const;
   unsigned baseOutput();
-  void connectToHost(const QString &hostname,Q_UINT16 port,
+  void connectToHost(const QString &hostname,uint16_t port,
 		     const QString &passwd,unsigned base_output);
-  bool loadSettings(const QString &hostname,Q_UINT16 port,
+  bool loadSettings(const QString &hostname,uint16_t port,
 		    const QString &passwd,unsigned base_output);
   QString deviceName() const;
   QString protocolVersion() const;
@@ -115,7 +115,7 @@ class RDLiveWire : public QObject
   unsigned live_id;
   unsigned live_base_output;
   QString live_hostname;
-  Q_UINT16 live_tcp_port;
+  uint16_t live_tcp_port;
   QString live_password;
   QString live_device_name;
   QString live_protocol_version;

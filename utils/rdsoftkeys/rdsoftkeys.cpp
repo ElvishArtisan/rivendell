@@ -61,7 +61,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Create And Set Icon
   //
   key_icon_map=new QPixmap(rivendell_22x22_xpm);
-  setIcon(*key_icon_map);
+  setWindowIcon(*key_icon_map);
 
   //
   // RML Send Socket
@@ -106,7 +106,7 @@ MainWidget::MainWidget(QWidget *parent)
 					QString().sprintf("Color%d",n+1),"")).
 	   isEmpty()) {
 	  color=QColor(color_name);
-	  QPalette pal=QPalette(color,backgroundColor());
+	  QPalette pal=QPalette(color,palette().color(QPalette::Background));
 	  color.getHsv(&h,&s,&v);
 	  if((h>180)&&(h<300)) {
 	    v=255;
@@ -121,8 +121,8 @@ MainWidget::MainWidget(QWidget *parent)
 	  }
 	  s=0;
 	  color.setHsv(h,s,v);
-	  pal.setColor(QPalette::Active,QColorGroup::ButtonText,color);
-	  pal.setColor(QPalette::Inactive,QColorGroup::ButtonText,color);
+	  pal.setColor(QPalette::Active,QPalette::ButtonText,color);
+	  pal.setColor(QPalette::Inactive,QPalette::ButtonText,color);
 	  button->setPalette(pal);
 	}
 	mapper->setMapping(button,n);
@@ -142,8 +142,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   if (!key_macros.size()) {
     QMessageBox::critical(this, tr("RDSoftKeys"),
-       tr(QString("No SoftKey definitions found in file\n%1")
-       .arg(map_filename)));
+		tr("No SoftKey definitions found in file")+"\n"+map_filename);
     exit(1);
   }
 
@@ -182,7 +181,7 @@ QSizePolicy MainWidget::sizePolicy() const
 void MainWidget::buttonData(int id)
 {
   QHostAddress addr;
-  struct hostent *hostent=gethostbyname(key_addrs[id]);
+  struct hostent *hostent=gethostbyname(key_addrs[id].toUtf8().constData());
   if(hostent==NULL) {
     QMessageBox::warning(this,tr("RDSoftKeys"),hstrerror(h_errno));
     return;
@@ -196,7 +195,7 @@ void MainWidget::buttonData(int id)
     addr.setAddress(key_addrs[id]);
   }
   key_socket->
-    writeDatagram(key_macros[id].toUtf8(),addr,(Q_UINT16)RD_RML_NOECHO_PORT);
+    writeDatagram(key_macros[id].toUtf8(),addr,(uint16_t)RD_RML_NOECHO_PORT);
 }
 
   
@@ -217,26 +216,28 @@ int main(int argc,char *argv[])
   QString tr_path;
   QString qt_path;
 
-  tr_path=QString(PREFIX)+QString("/share/srlabs/");
-  qt_path=QString("/usr/share/qt4/translation/");
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    tr_path=QString(PREFIX)+QString("/share/srlabs/");
+    qt_path=QString("/usr/share/qt4/translation/");
 
-  QTranslator qt(0);
-  qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");
-  a.installTranslator(&qt);
+    QTranslator qt(0);
+    qt.load(qt_path+QString("qt_")+loc,".");
+    a.installTranslator(&qt);
 
-  QTranslator libradio(0);
-  libradio.load(tr_path+QString("librd_")+QTextCodec::locale(),".");
-  a.installTranslator(&libradio);
+    QTranslator libradio(0);
+    libradio.load(tr_path+QString("librd_")+loc,".");
+    a.installTranslator(&libradio);
 
-  QTranslator tests(0);
-  tests.load(tr_path+QString("rdsoftkeys_")+QTextCodec::locale(),".");
-  a.installTranslator(&tests);
+    QTranslator tests(0);
+    tests.load(tr_path+QString("rdsoftkeys_")+loc,".");
+    a.installTranslator(&tests);
+  }
 
   //
   // Start Event Loop
   //
   MainWidget *w=new MainWidget();
-  a.setMainWidget(w);
   w->setGeometry(w->geometry().x(),w->geometry().y(),w->sizeHint().width(),w->sizeHint().height());
   w->show();
   return a.exec();

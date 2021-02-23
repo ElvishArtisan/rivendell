@@ -45,7 +45,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Create Log"));
+  setWindowTitle(tr("Create Log"));
 
   //
   // Validator
@@ -60,7 +60,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   add_name_edit->setGeometry(115,11,sizeHint().width()-125,19);
   add_name_edit->setMaxLength(64);
   add_name_edit->setValidator(v);
-  QLabel *label=new QLabel(add_name_edit,tr("&New Log Name:"),this);
+  QLabel *label=new QLabel(tr("&New Log Name:"),this);
   label->setGeometry(10,13,100,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
@@ -72,7 +72,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   //
   add_service_box=new QComboBox(this);
   add_service_box->setGeometry(115,33,100,19);
-  label=new QLabel(add_name_edit,tr("&Service:"),this);
+  label=new QLabel(tr("&Service:"),this);
   label->setGeometry(10,33,100,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
@@ -121,7 +121,8 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   }
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    add_service_box->insertItem(q->value(0).toString());
+    add_service_box->
+      insertItem(add_service_box->count(),q->value(0).toString());
   }
 }
 
@@ -151,7 +152,7 @@ void RDAddLog::okData()
     return;
   }
 
-  *log_name=add_name_edit->text().stripWhiteSpace();
+  *log_name=add_name_edit->text().trimmed();
   *log_svc=add_service_box->currentText();
   done(0);
 }

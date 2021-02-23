@@ -2,7 +2,7 @@
 //
 // Validate a string as being valid for a SQL text datatype.
 //
-//   (C) Copyright 2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2004-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,7 @@
 class RDTextValidator : public QValidator
 {
  public:
-  RDTextValidator(QObject *parent=0,const char *name=0,bool allow_quote=false);
+  RDTextValidator(QObject *parent=0,bool allow_quote=false);
   QValidator::State validate(QString &input,int &pos) const;
   void addBannedChar(char c);
   void addBannedChar(const QChar &c);

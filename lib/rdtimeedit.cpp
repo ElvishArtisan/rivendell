@@ -33,8 +33,8 @@ RDTimeEdit::RDTimeEdit(QWidget *parent)
   setMidLineWidth(3);
   setFocusPolicy(Qt::StrongFocus);
   QPalette p=palette();
-  p.setColor(QPalette::Active,QColorGroup::Background,
-	     p.color(QPalette::Active,QColorGroup::Base));
+  p.setColor(QPalette::Active,QPalette::Background,
+	     p.color(QPalette::Active,QPalette::Base));
   setPalette(p);
   edit_labels[0]=new QLabel("00",this);
   edit_labels[0]->setAlignment(Qt::AlignCenter);
@@ -216,10 +216,10 @@ void RDTimeEdit::setFocus()
   for(int i=0;i<4;i++) {
     edit_labels[i]->setPalette(p);
   }
-  p.setColor(QPalette::Active,QColorGroup::Background,
-	     p.color(QPalette::Active,QColorGroup::Highlight));
-  p.setColor(QPalette::Active,QColorGroup::Foreground,
-	     p.color(QPalette::Active,QColorGroup::HighlightedText));
+  p.setColor(QPalette::Active,QPalette::Background,
+	     p.color(QPalette::Active,QPalette::Highlight));
+  p.setColor(QPalette::Active,QPalette::Foreground,
+	     p.color(QPalette::Active,QPalette::HighlightedText));
   edit_labels[edit_section]->setPalette(p);
   QFrame::setFocus();
 }
@@ -383,7 +383,7 @@ void RDTimeEdit::keyPressEvent(QKeyEvent *e)
   case Qt::Key_7:
   case Qt::Key_8:
   case Qt::Key_9:
-    ProcessKey(e->ascii());
+    ProcessKey(e->text().at(0).toAscii());
     e->accept();
     break;
 

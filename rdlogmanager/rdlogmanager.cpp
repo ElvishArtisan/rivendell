@@ -18,9 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QMessageBox>
+#include <QTranslator>
 
 #include "generate_log.h"
 #include "globals.h"
@@ -233,24 +233,27 @@ int gui_main(int argc,char *argv[])
   //
   QString tr_path;
   QString qt_path;
-  tr_path=QString(PREFIX)+QString("/share/rivendell/");
-  qt_path=QString("/usr/share/qt4/translation/");
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    tr_path=QString(PREFIX)+QString("/share/rivendell/");
+    qt_path=QString("/usr/share/qt4/translation/");
 
-  QTranslator qt(0);
-  qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");
-  a.installTranslator(&qt);
+    QTranslator qt(0);
+    qt.load(qt_path+QString("qt_")+loc,".");
+    a.installTranslator(&qt);
 
-  QTranslator rd(0);
-  rd.load(tr_path+QString("librd_")+QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+    QTranslator rd(0);
+    rd.load(tr_path+QString("librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(tr_path+QString("librdhpi_")+QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(tr_path+QString("librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(tr_path+QString("rdlogmanager_")+QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(tr_path+QString("rdlogmanager_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   //
   // Start Event Loop
@@ -258,7 +261,6 @@ int gui_main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(w->geometry().x(),w->geometry().y()),
 		       w->sizeHint()));
   w->show();
@@ -349,7 +351,7 @@ int main(int argc,char *argv[])
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"rdlogmanager: unknown command option \"%s\"\n",
-	      (const char *)cmd->key(i));
+	      cmd->key(i).toUtf8().constData());
       exit(RDApplication::ExitInvalidOption);
     }
   }

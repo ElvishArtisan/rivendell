@@ -52,7 +52,7 @@ class MainWidget : public RDWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
-  Q_UINT16 login_ripc_hostport;
+  uint16_t login_ripc_hostport;
   QLabel *login_label;
   QLabel *login_username_label;
   QComboBox *login_username_box;

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Netcatch Cart Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qgroupbox.h>
-#include <qmessagebox.h>
+#include <QGroupBox>
+#include <QMessageBox>
 
 #include <rdcart_dialog.h>
 #include <rdescape_string.h>
@@ -31,7 +31,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   : RDDialog(parent)
 {
   QString sql;
-  RDSqlQuery *q;
+  RDSqlQuery *q=NULL;
   QString temp;
   edit_matrix=NULL;
   edit_added_events=adds;
@@ -61,20 +61,25 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   edit_active_button=new QCheckBox(this);
   edit_active_button->setGeometry(10,11,20,20);
-  QLabel *label=new QLabel(edit_active_button,tr("Event Active"),this);
+  QLabel *label=new QLabel(tr("Event Active"),this);
   label->setGeometry(30,11,125,20);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Station
   //
-  edit_station_box=new QComboBox(this);
+  edit_station_box=new RDComboBox(this);
+  //
+  // FIXME: Make this work with a model
+  //
+  //  edit_station_model=new RDStationListModel(false,"",this);
+  //  edit_station_box->setModel(edit_station_model);
   edit_station_box->setGeometry(200,10,140,23);
-  label=new QLabel(edit_station_box,tr("Location:"),this);
+  label=new QLabel(tr("Location:"),this);
   label->setGeometry(125,10,70,23);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(edit_station_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(activateStationData(const QString &)));
 
@@ -84,10 +89,10 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   edit_starttime_edit=new QTimeEdit(this);
   edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
   edit_starttime_edit->setDisplayFormat("hh:mm:ss");
-  label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
+  label=new QLabel(tr("Start Time:"),this);
   label->setGeometry(sizeHint().width()-175,12,80,20);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Description
@@ -95,32 +100,32 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   edit_description_edit=new QLineEdit(this);
   edit_description_edit->setGeometry(120,43,sizeHint().width()-130,20);
   edit_description_edit->setValidator(validator);
-  label=new QLabel(edit_description_edit,tr("Description:"),this);
+  label=new QLabel(tr("Description:"),this);
   label->setGeometry(10,43,105,20);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Switch Matrix
   //
-  edit_matrix_box=new QComboBox(this,"matrix");
+  edit_matrix_box=new RDComboBox(this);
   edit_matrix_box->setGeometry(120,70,sizeHint().width()-130,20);
-  label=new QLabel(edit_matrix_box,tr("Switch Matrix:"),this);
+  label=new QLabel(tr("Switch Matrix:"),this);
   label->setGeometry(10,70,105,20);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(edit_matrix_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(activateMatrixData(const QString &)));
 
   //
   // Switch Input
   //
-  edit_input_box=new QComboBox(this,"input");
+  edit_input_box=new RDComboBox(this);
   edit_input_box->setGeometry(120,100,sizeHint().width()-130,20);
-  label=new QLabel(edit_input_box,tr("Switch Input:"),this);
+  label=new QLabel(tr("Switch Input:"),this);
   label->setGeometry(10,100,105,20);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_input_spin=new QSpinBox(this);
   edit_input_spin->setGeometry(140,125,50,20);
   connect(edit_input_box,SIGNAL(activated(const QString &)),
@@ -129,12 +134,12 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   // Switch Output
   //
-  edit_output_box=new QComboBox(this,"output");
+  edit_output_box=new RDComboBox(this);
   edit_output_box->setGeometry(120,155,sizeHint().width()-130,20);
-  label=new QLabel(edit_output_box,tr("Switch Output:"),this);
+  label=new QLabel(tr("Switch Output:"),this);
   label->setGeometry(10,155,105,20);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_output_spin=new QSpinBox(this);
   edit_output_spin->setGeometry(140,180,50,20);
   connect(edit_output_box,SIGNAL(activated(const QString &)),
@@ -152,80 +157,80 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   edit_mon_button=new QCheckBox(this);
   edit_mon_button->setGeometry(20,228,20,20);
-  label=new QLabel(edit_mon_button,tr("Monday"),this);
+  label=new QLabel(tr("Monday"),this);
   label->setGeometry(40,228,115,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Tuesday Button
   //
   edit_tue_button=new QCheckBox(this);
   edit_tue_button->setGeometry(115,228,20,20);
-  label=new QLabel(edit_tue_button,tr("Tuesday"),this);
+  label=new QLabel(tr("Tuesday"),this);
   label->setGeometry(135,228,115,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Wednesday Button
   //
   edit_wed_button=new QCheckBox(this);
   edit_wed_button->setGeometry(215,228,20,20);
-  label=new QLabel(edit_wed_button,tr("Wednesday"),this);
+  label=new QLabel(tr("Wednesday"),this);
   label->setGeometry(235,228,115,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Thursday Button
   //
   edit_thu_button=new QCheckBox(this);
   edit_thu_button->setGeometry(335,228,20,20);
-  label=new QLabel(edit_thu_button,tr("Thursday"),this);
+  label=new QLabel(tr("Thursday"),this);
   label->setGeometry(355,228,115,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Friday Button
   //
   edit_fri_button=new QCheckBox(this);
   edit_fri_button->setGeometry(440,228,20,20);
-  label=new QLabel(edit_fri_button,tr("Friday"),this);
+  label=new QLabel(tr("Friday"),this);
   label->setGeometry(460,228,40,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Saturday Button
   //
   edit_sat_button=new QCheckBox(this);
   edit_sat_button->setGeometry(130,253,20,20);
-  label=new QLabel(edit_sat_button,tr("Saturday"),this);
+  label=new QLabel(tr("Saturday"),this);
   label->setGeometry(150,253,60,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Sunday Button
   //
   edit_sun_button=new QCheckBox(this);
   edit_sun_button->setGeometry(300,253,20,20);
-  label=new QLabel(edit_sun_button,tr("Sunday"),this);
+  label=new QLabel(tr("Sunday"),this);
   label->setGeometry(320,253,60,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // OneShot Button
   //
   edit_oneshot_box=new QCheckBox(this);
   edit_oneshot_box->setGeometry(20,290,15,15);
-  label=new QLabel(edit_oneshot_box,tr("Make OneShot"),this);
+  label=new QLabel(tr("Make OneShot"),this);
   label->setGeometry(40,288,115,20);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   //  Save As Button
@@ -266,10 +271,11 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   while(q->next()) {
     edit_station_box->insertItem(q->value(0).toString());
     if(edit_recording->station()==q->value(0).toString()) {
-      edit_station_box->setCurrentItem(edit_station_box->count()-1);
+      edit_station_box->setCurrentIndex(edit_station_box->count()-1);
     }
   }
   delete q;
+  //  edit_station_box->setCurrentText(edit_recording->station());
   edit_starttime_edit->setTime(edit_recording->startTime());
   edit_description_edit->setText(edit_recording->description());
   edit_mon_button->setChecked(edit_recording->mon());
@@ -330,7 +336,7 @@ void EditSwitchEvent::activateStationData(const QString &str)
   while(q->next()) {
     edit_matrix_box->insertItem(q->value(0).toString());
     if(q->value(1).toInt()==matrix) {
-      edit_matrix_box->setCurrentItem(edit_matrix_box->count()-1);
+      edit_matrix_box->setCurrentIndex(edit_matrix_box->count()-1);
     }
   }
   delete q;
@@ -370,7 +376,7 @@ void EditSwitchEvent::activateMatrixData(const QString &str)
   while(q->next()) {
     edit_input_box->insertItem(q->value(0).toString());
     if(q->value(1).toInt()==input) {
-      edit_input_box->setCurrentItem(edit_input_box->count()-1);
+      edit_input_box->setCurrentIndex(edit_input_box->count()-1);
     }
   }
   delete q;
@@ -397,7 +403,7 @@ void EditSwitchEvent::activateMatrixData(const QString &str)
   while(q->next()) {
     edit_output_box->insertItem(q->value(0).toString());
     if(q->value(1).toInt()==output) {
-      edit_output_box->setCurrentItem(edit_output_box->count()-1);
+      edit_output_box->setCurrentIndex(edit_output_box->count()-1);
     }
   }
   delete q;

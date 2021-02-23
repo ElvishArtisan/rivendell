@@ -2,7 +2,7 @@
 //
 // A command-line log editor for Rivendell
 //
-//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,7 +37,7 @@ void MainObject::Help(const QStringList &cmds) const
     processed=true;
   }
   else {
-    QString verb=cmds[1].lower();
+    QString verb=cmds[1].toLower();
     if(verb=="addcart") {
       printf("\n");
       printf("  addcart <line> <cart-num>\n");
@@ -72,7 +72,7 @@ void MainObject::Help(const QStringList &cmds) const
     }
     if((verb=="bye")||(verb=="exit")||(verb=="quit")) {
       printf("\n");
-      printf("  %s\n",(const char *)cmds[1]);
+      printf("  %s\n",cmds[1].toUtf8().constData());
       printf("\n");
       printf("Exit the program.\n");
       printf("\n");
@@ -88,7 +88,7 @@ void MainObject::Help(const QStringList &cmds) const
     }
     if((verb=="?")||(verb=="help")) {
       printf("\n");
-      printf("  %s <cmd-name>\n",(const char *)cmds[1]);
+      printf("  %s <cmd-name>\n",cmds[1].toUtf8().constData());
       printf("\n");
       printf("Print help about command <cmd-name>\n");
       printf("\n");

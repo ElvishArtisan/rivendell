@@ -57,8 +57,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_description_edit=new QLineEdit(this);
   edit_description_edit->setGeometry(200,10,sizeHint().width()-210,19);
   edit_description_edit->setMaxLength(64);
-  QLabel *label=
-    new QLabel(edit_description_edit,tr("&Report Description:"),this);
+  QLabel *label=new QLabel(tr("&Report Description:"),this);
   label->setGeometry(10,10,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -70,9 +69,9 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_filter_box->setGeometry(200,31,sizeHint().width()-210,19);
   for(int i=0;i<(int)RDReport::LastFilter;i++) {
     edit_filter_box->
-      insertItem(RDReport::filterText((RDReport::ExportFilter)i));
+      insertItem(i,RDReport::filterText((RDReport::ExportFilter)i));
   }
-  label=new QLabel(edit_description_edit,tr("Export &Filter:"),this);
+  label=new QLabel(tr("Export &Filter:"),this);
   label->setGeometry(10,31,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -84,7 +83,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_stationid_edit->setGeometry(200,52,180,19);
   edit_stationid_edit->setMaxLength(16);
   edit_stationid_edit->setValidator(validator);
-  label=new QLabel(edit_stationid_edit,tr("Station ID:"),this);
+  label=new QLabel(tr("Station ID:"),this);
   label->setGeometry(10,52,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -101,7 +100,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_cartzeros_box->setGeometry(200,75,15,15);
   connect(edit_cartzeros_box,SIGNAL(toggled(bool)),
 	  this,SLOT(leadingZerosToggled(bool)));
-  label=new QLabel(edit_cartzeros_box,tr("Use Leading Zeros"),this);
+  label=new QLabel(tr("Use Leading Zeros"),this);
   label->setGeometry(217,73,120,19);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -109,7 +108,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_cartdigits_spin=new QSpinBox(this);
   edit_cartdigits_spin->setGeometry(380,73,40,19);
   edit_cartdigits_spin->setRange(1,6);
-  edit_cartdigits_label=new QLabel(edit_cartdigits_spin,tr("Digits:"),this);
+  edit_cartdigits_label=new QLabel(tr("Digits:"),this);
   edit_cartdigits_label->setGeometry(330,73,45,19);
   edit_cartdigits_label->setFont(subLabelFont());
   edit_cartdigits_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -121,9 +120,10 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_stationtype_box->setGeometry(200,94,70,19);
   for(int i=0;i<RDReport::TypeLast;i++) {
     edit_stationtype_box->
-      insertItem(RDReport::stationTypeText((RDReport::StationType)i));
+      insertItem(edit_stationtype_box->count(),
+		 RDReport::stationTypeText((RDReport::StationType)i));
   }
-  label=new QLabel(edit_stationtype_box,tr("Station Type:"),this);
+  label=new QLabel(tr("Station Type:"),this);
   label->setGeometry(10,94,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -134,7 +134,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_linesperpage_spin=new QSpinBox(this);
   edit_linesperpage_spin->setGeometry(360,94,50,19);
   edit_linesperpage_spin->setRange(10,200);
-  label=new QLabel(edit_linesperpage_spin,tr("Lines per Page:"),this);
+  label=new QLabel(tr("Lines per Page:"),this);
   label->setGeometry(255,94,100,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -147,7 +147,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_servicename_edit=new QLineEdit(this);
   edit_servicename_edit->setGeometry(200,115,sizeHint().width()-210,19);
   edit_servicename_edit->setMaxLength(64);
-  label=new QLabel(edit_servicename_edit,tr("Ser&vice Name:"),this);
+  label=new QLabel(tr("Ser&vice Name:"),this);
   label->setGeometry(10,115,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -158,7 +158,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_stationformat_edit=new QLineEdit(this);
   edit_stationformat_edit->setGeometry(200,136,sizeHint().width()-210,19);
   edit_stationformat_edit->setMaxLength(64);
-  label=new QLabel(edit_stationformat_edit,tr("Station &Format:"),this);
+  label=new QLabel(tr("Station &Format:"),this);
   label->setGeometry(10,136,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -170,7 +170,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_path_edit->setGeometry(200,157,sizeHint().width()-210,19);
   edit_path_edit->setMaxLength(255);
   edit_path_edit->setValidator(validator);
-  label=new QLabel(edit_path_edit,tr("Export Path:"),this);
+  label=new QLabel(tr("Export Path:"),this);
   label->setGeometry(10,157,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -181,7 +181,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_postexport_cmd_edit=new QLineEdit(this);
   edit_postexport_cmd_edit->setGeometry(200,178,sizeHint().width()-210,19);
   edit_postexport_cmd_edit->setValidator(validator);
-  label=new QLabel(edit_path_edit,tr("Post Export Cmd:"),this);
+  label=new QLabel(tr("Post Export Cmd:"),this);
   label->setGeometry(10,178,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -244,9 +244,9 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   //
   edit_onairflag_box=new QComboBox(this);
   edit_onairflag_box->setGeometry(200,243,60,19);
-  edit_onairflag_box->insertItem(tr("No"));
-  edit_onairflag_box->insertItem(tr("Yes"));
-  label=new QLabel(edit_onairflag_box,tr("Include Only OnAir Events:"),this);
+  edit_onairflag_box->insertItem(0,tr("No"));
+  edit_onairflag_box->insertItem(1,tr("Yes"));
+  label=new QLabel(tr("Include Only OnAir Events:"),this);
   label->setGeometry(10,243,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -257,7 +257,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_daypart_check=new QCheckBox(this);
   edit_daypart_check->setGeometry(60,273,15,15);
   edit_daypart_label=
-    new QLabel(edit_daypart_check,tr("Filter by Daypart"),this);
+    new QLabel(tr("Filter by Daypart"),this);
   edit_daypart_label->
     setGeometry(edit_daypart_check->geometry().x()+20,273,155,19);
   edit_daypart_label->setFont(labelFont());
@@ -266,7 +266,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_starttime_edit=new QTimeEdit(this);
   edit_starttime_edit->setDisplayFormat("hh:mm:ss");
   edit_starttime_edit->setGeometry(150,294,80,20);
-  edit_starttime_label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
+  edit_starttime_label=new QLabel(tr("Start Time:"),this);
   edit_starttime_label->setGeometry(65,294,80,20);
   edit_starttime_label->setFont(labelFont());
   edit_starttime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -274,7 +274,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_endtime_edit=new QTimeEdit(this);
   edit_endtime_edit->setDisplayFormat("hh:mm:ss");
   edit_endtime_edit->setGeometry(335,294,80,20);
-  edit_endtime_label=new QLabel(edit_endtime_edit,tr("End Time:"),this);
+  edit_endtime_label=new QLabel(tr("End Time:"),this);
   edit_endtime_label->setGeometry(250,294,80,20);
   edit_endtime_label->setFont(labelFont());
   edit_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -324,7 +324,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
 
   edit_group_box=new QCheckBox(this);
   edit_group_box->setGeometry(60,531,15,15);
-  label=new QLabel(edit_group_box,tr("Filter by Groups"),this);
+  label=new QLabel(tr("Filter by Groups"),this);
   label->setGeometry(edit_group_box->geometry().x()+20,532,155,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -355,12 +355,12 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   // Populate Fields
   //
   edit_description_edit->setText(edit_report->description());
-  edit_filter_box->setCurrentItem((int)edit_report->filter());
+  edit_filter_box->setCurrentIndex((int)edit_report->filter());
   edit_stationid_edit->setText(edit_report->stationId());
   edit_cartzeros_box->setChecked(edit_report->useLeadingZeros());
   leadingZerosToggled(edit_cartzeros_box->isChecked());
   edit_cartdigits_spin->setValue(edit_report->cartDigits());
-  edit_stationtype_box->setCurrentItem((int)edit_report->stationType());
+  edit_stationtype_box->setCurrentIndex((int)edit_report->stationType());
   edit_servicename_edit->setText(edit_report->serviceName());
   edit_stationformat_edit->setText(edit_report->stationFormat());
   edit_linesperpage_spin->setValue(edit_report->linesPerPage());
@@ -379,10 +379,10 @@ EditReport::EditReport(QString rptname,QWidget *parent)
     setChecked(edit_report->exportTypeForced(RDReport::Music));
   genericEventsToggledData(edit_generic_box->isChecked());
   if(edit_report->filterOnairFlag()) {
-    edit_onairflag_box->setCurrentItem(1);
+    edit_onairflag_box->setCurrentIndex(1);
   }
   else {
-    edit_onairflag_box->setCurrentItem(0);
+    edit_onairflag_box->setCurrentIndex(0);
   }
   edit_starttime_edit->setTime(edit_report->startTime(&ok));
   edit_starttime_label->setDisabled(ok);
@@ -487,13 +487,13 @@ void EditReport::okData()
 
   edit_report->setDescription(edit_description_edit->text());
   edit_report->
-    setFilter((RDReport::ExportFilter)edit_filter_box->currentItem());
+    setFilter((RDReport::ExportFilter)edit_filter_box->currentIndex());
   edit_report->setStationId(edit_stationid_edit->text());
   edit_report->setCartDigits(edit_cartdigits_spin->value());
   edit_report->setUseLeadingZeros(edit_cartzeros_box->isChecked());
   edit_report->setLinesPerPage(edit_linesperpage_spin->value());
   edit_report->
-    setStationType((RDReport::StationType)edit_stationtype_box->currentItem());
+    setStationType((RDReport::StationType)edit_stationtype_box->currentIndex());
   edit_report->setServiceName(edit_servicename_edit->text());
   edit_report->setStationFormat(edit_stationformat_edit->text());
   edit_report->setExportPath(RDReport::Linux,edit_path_edit->text());
@@ -509,7 +509,7 @@ void EditReport::okData()
     setExportTypeForced(RDReport::Music,edit_forcemusic_box->isChecked());
   edit_report->
     setExportTypeEnabled(RDReport::Generic,edit_generic_box->isChecked());
-  edit_report->setFilterOnairFlag(edit_onairflag_box->currentItem()==1);
+  edit_report->setFilterOnairFlag(edit_onairflag_box->currentIndex()==1);
   edit_report->setFilterGroups(edit_group_box->isChecked());
   if(edit_daypart_check->isChecked()) {
     edit_report->setStartTime(edit_starttime_edit->time());

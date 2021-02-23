@@ -40,3 +40,14 @@ RDIconEngine *RDApplication::iconEngine() const
 {
   return app_icon_engine;
 }
+
+
+QString RDApplication::locale()
+{
+  QString ret;
+
+  if(getenv("LANG")!=NULL) {
+    ret=getenv("LANG");
+  }
+  return ret;
+}

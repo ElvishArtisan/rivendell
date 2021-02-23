@@ -2,7 +2,7 @@
 //
 // A Rivendell LWRP audio switcher driver for LiveWire networks.
 //
-//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,12 +20,6 @@
 
 #ifndef LIVEWIRE_LWRPAUDIO_H
 #define LIVEWIRE_LWRPAUDIO_H
-
-#include <vector>
-
-#include <q3socket.h>
-#include <qhostaddress.h>
-#include <qtimer.h>
 
 #include <rd.h>
 #include <rdmatrix.h>

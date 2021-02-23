@@ -47,7 +47,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("audio_import_test","audio_import_test",AUDIO_IMPORT_TEST_USAGE,this));
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"audio_import_test: %s\n",(const char *)err_msg);
+    fprintf(stderr,"audio_import_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -116,7 +116,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"audio_import_test: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }
@@ -149,7 +149,8 @@ MainObject::MainObject(QObject *parent)
   printf("Importing...\n");
   conv_err=conv->runImport(username,password,&audio_conv_err);
   printf("Result: %s\n",
-	 (const char *)RDAudioImport::errorText(conv_err,audio_conv_err));
+	 RDAudioImport::errorText(conv_err,audio_conv_err).toUtf8().
+	 constData());
   delete conv;
 
   exit(0);

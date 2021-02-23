@@ -180,7 +180,7 @@ QString RDGroup::generateTitle(const QString &pathname)
 {
   QString title=defaultTitle();
   QString basename=RDGetBasePart(pathname);
-  int ptr=basename.findRev(".");
+  int ptr=basename.lastIndexOf(".");
   title.replace("%p",RDGetPathPart(pathname));
   title.replace("%f",basename.left(ptr));
   title.replace("%e",basename.right(basename.length()-ptr-1));

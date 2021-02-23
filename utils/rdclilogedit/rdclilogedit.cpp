@@ -2,7 +2,7 @@
 //
 // A command-line log editor for Rivendell
 //
-//   (C) Copyright 2016-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,9 +24,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <qapplication.h>
-#include <qfile.h>
-#include <qstringlist.h>
+#include <QApplication>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -52,7 +50,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdclilogedit","rdclilogedit",RDCLILOGEDIT_USAGE,this));
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdclilogedit: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdclilogedit: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -67,7 +65,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rdclilogedit: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }
@@ -135,7 +133,7 @@ bool MainObject::TryLock(RDLogLock *lock,const QString &logname)
     if(stationname!=addr.toString()) {
       msg+=" ["+addr.toString()+"]";
     }
-    fprintf(stderr,"%s\n",(const char *)msg);
+    fprintf(stderr,"%s\n",msg.toUtf8().constData());
   }
   return ret;
 }
@@ -144,7 +142,7 @@ bool MainObject::TryLock(RDLogLock *lock,const QString &logname)
 void MainObject::OverwriteError(const QString &cmd) const
 {
   fprintf(stderr,"%s: buffer not saved (append \"!\" to override)\n",
-	  (const char *)cmd);
+	  cmd.toUtf8().constData());
 }
 
 
@@ -156,10 +154,10 @@ void MainObject::PrintPrompt() const
     }
     else {
       if(edit_modified) {
-	printf("logedit[%s*]> ",(const char *)edit_log->name());
+	printf("logedit[%s*]> ",edit_log->name().toUtf8().constData());
       }
       else {
-	printf("logedit[%s]> ",(const char *)edit_log->name());
+	printf("logedit[%s]> ",edit_log->name().toUtf8().constData());
       }
     }
     fflush(stdout);

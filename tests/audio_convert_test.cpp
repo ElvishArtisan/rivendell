@@ -192,7 +192,8 @@ MainObject::MainObject(QObject *parent)
   conv->setSpeedRatio(speed_ratio);
   printf("Converting...\n");
   conv_err=conv->convert();
-  printf("Result: %s\n",(const char *)RDAudioConvert::errorText(conv_err));
+  printf("Result: %s\n",RDAudioConvert::errorText(conv_err).toUtf8().
+	 constData());
   delete conv;
 
   exit(0);

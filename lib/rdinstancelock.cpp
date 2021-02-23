@@ -54,7 +54,7 @@ bool RDInstanceLock::lock()
     lock_locked=true;
     return true;
   }
-  if((file=fopen((const char *)lock_path,"r"))==NULL) {
+  if((file=fopen(lock_path.toUtf8(),"r"))==NULL) {
     lock_locked=false;
     return false;
   }
@@ -62,7 +62,7 @@ bool RDInstanceLock::lock()
   fclose(file);
   dir.setPath(QString().sprintf("/proc/%u",pid));
   if(!dir.exists()) {
-    unlink((const char *)lock_path);
+    unlink(lock_path.toUtf8());
     if(MakeLock()) {
       lock_locked=true;
       return true;
@@ -76,7 +76,7 @@ bool RDInstanceLock::lock()
 void RDInstanceLock::unlock()
 {
   if(lock_locked) {
-    unlink((const char *)lock_path);
+    unlink(lock_path.toUtf8());
   }
   lock_locked=false;
 }
@@ -91,7 +91,7 @@ bool RDInstanceLock::locked()
 bool RDInstanceLock::MakeLock()
 {
   FILE *file;
-  int fd=open((const char *)lock_path,O_WRONLY|O_CREAT|O_EXCL,S_IRUSR|S_IWUSR);
+  int fd=open(lock_path.toUtf8(),O_WRONLY|O_CREAT|O_EXCL,S_IRUSR|S_IWUSR);
   if(fd<0) {
     return false;
   }

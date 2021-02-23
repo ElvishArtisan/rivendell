@@ -49,7 +49,7 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
     return false;
   }
   QTextStream *strm=new QTextStream(file);
-  strm->setEncoding(QTextStream::UnicodeUTF8);
+  strm->setCodec("UTF-8");
   if(useLeadingZeros()) {
     cart_fmt=QString().sprintf("%%0%uu",cartDigits());
   }
@@ -108,7 +108,7 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
 	cut="   ";
       }
     }
-    cart_num=QString().sprintf(cart_fmt,q->value(1).toUInt());
+    cart_num=QString().sprintf(cart_fmt.toUtf8(),q->value(1).toUInt());
     QString desc=q->value(13).toString();
     if(desc.isEmpty()) {
       desc="                    ";

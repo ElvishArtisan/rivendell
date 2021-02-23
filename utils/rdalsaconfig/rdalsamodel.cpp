@@ -2,7 +2,7 @@
 //
 // Abstract an ALSA configuration. 
 //
-//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,12 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <alsa/asoundlib.h>
-
-#include <qstringlist.h>
 
 #include <rdapplication.h>
 #include <rdalsamodel.h>
@@ -277,7 +271,7 @@ bool RDAlsaModel::saveConfig(const QString &filename)
     return false;
   }
   for(int i=0;i<model_other_lines.size();i++) {
-    fprintf(f,model_other_lines.at(i));
+    fprintf(f,"%s\n",model_other_lines.at(i).toUtf8().constData());
   }
   fprintf(f,"%s\n",START_MARKER);
   for(int i=0;i<model_alsa_cards.size();i++) {
@@ -315,7 +309,7 @@ void RDAlsaModel::LoadSystemConfig()
   snd_ctl_t *snd_ctl=NULL;
   int index=0;
 
-  while(snd_ctl_open(&snd_ctl,QString().sprintf("hw:%d",index),0)>=0) {
+  while(snd_ctl_open(&snd_ctl,QString().sprintf("hw:%d",index).toUtf8(),0)>=0) {
     model_alsa_cards.push_back(new RDAlsaCard(snd_ctl,index));
     for(int i=0;i<model_alsa_cards.back()->pcmQuantity();i++) {
       model_card_index.push_back(index);

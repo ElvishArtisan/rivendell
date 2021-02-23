@@ -31,7 +31,7 @@ QString RDBaseSearchText(QString filter,bool incl_cuts)
   int pos=0;
   char find;
 
-  edit_filter=edit_filter.stripWhiteSpace();
+  edit_filter=edit_filter.trimmed();
   if(edit_filter.isEmpty()) {
     ret=QString(" ((CART.TITLE like \"%%\")||")+
       "(CART.ARTIST like \"%%\")||"+
@@ -62,14 +62,14 @@ QString RDBaseSearchText(QString filter,bool incl_cuts)
       else {
 	find=' '; 
       }
-      pos=edit_filter.find(find);
+      pos=edit_filter.indexOf(find);
       if(pos>=0) {
 	str=edit_filter.left(pos);
 	edit_filter=edit_filter.remove(0,pos);
 	if(find=='\"') {
 	  edit_filter=edit_filter.remove(0,1);
 	}
-	edit_filter=edit_filter.stripWhiteSpace();
+	edit_filter=edit_filter.trimmed();
       }
       else {
 	str=edit_filter;
@@ -121,9 +121,8 @@ QString RDSchedSearchText(const QStringList &schedcodes)
   QString ret="";
 
   for(int i=0;i<schedcodes.size();i++) {
-    ret+=QString().sprintf(" inner join CART_SCHED_CODES as S%d on (CART.NUMBER=S%d.CART_NUMBER and S%d.SCHED_CODE='%s')",i,i,i,(const char *)schedcodes.at(i));
+    ret+=QString().sprintf(" inner join CART_SCHED_CODES as S%d on (CART.NUMBER=S%d.CART_NUMBER and S%d.SCHED_CODE='%s')",i,i,i,schedcodes.at(i).toUtf8().constData());
   }
-
   return ret;
 }
 

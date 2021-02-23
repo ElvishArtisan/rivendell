@@ -3,7 +3,7 @@
 // Edit the scheduler codes of a cart
 //
 //   (C) Copyright Stefan Gabriel <stg@st-gabriel.de>
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,8 +19,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
+#include <QPainter>
 
 #include "edit_schedulercodes.h"
 
@@ -98,11 +98,11 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,
 
 
   for(int i=0;i<edit_sched_codes->length()/11;i++) {
-    codes_sel->destInsertItem(edit_sched_codes->mid(i*11,11).stripWhiteSpace());
+    codes_sel->destInsertItem(edit_sched_codes->mid(i*11,11).trimmed());
     } 
   if(edit_remove_codes!=NULL) {
     for(int i=0;i<edit_remove_codes->length()/11;i++) {
-      remove_codes_sel->destInsertItem(remove_codes->mid(i*11,11).stripWhiteSpace());
+      remove_codes_sel->destInsertItem(remove_codes->mid(i*11,11).trimmed());
       } 
     }
        

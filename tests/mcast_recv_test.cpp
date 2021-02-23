@@ -2,7 +2,7 @@
 //
 // Test the Rivendell multicast receiver routines
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,12 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdint.h>
-#include <stdlib.h>
-
-#include <qapplication.h>
-#include <qhostaddress.h>
-#include <qstringlist.h>
+#include <QApplication>
+#include <QStringList>
 
 #include <rdcmd_switch.h>
 
@@ -63,7 +59,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"mcast_recv_test: unknown option \"%s\"\n",
-	      (const char *)cmd->value(i));
+	      cmd->value(i).toUtf8().constData());
       exit(256);
     }
   }
@@ -84,15 +80,15 @@ MainObject::MainObject(QObject *parent)
     exit(1);
   }
   mcast_multicaster->subscribe(from_addr);
-  printf("listening for %s at %u\n",(const char *)from_addr.toString(),
+  printf("listening for %s at %u\n",from_addr.toString().toUtf8().constData(),
 	 0xFFFF&from_port);
 }
 
 
 void MainObject::receivedData(const QString &msg,const QHostAddress &src_addr)
 {
-  printf("%15s: %s\n",(const char *)src_addr.toString(),
-	 (const char *)msg);
+  printf("%15s: %s\n",src_addr.toString().toUtf8().constData(),
+	 msg.toUtf8().constData());
 }
 
 

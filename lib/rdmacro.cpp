@@ -56,7 +56,7 @@ void RDMacro::setCommand(RDMacro::Command cmd)
 void RDMacro::setCommand(const QString &str)
 {
   RDMacro::Command cmd=RDMacro::NN;
-  cmd=(RDMacro::Command)((str.at(0).latin1()<<8)+str.at(1).latin1());
+  cmd=(RDMacro::Command)((str.at(0).toLatin1()<<8)+str.at(1).toLatin1());
   switch(cmd) {
   case RDMacro::AG:
   case RDMacro::AL:
@@ -141,13 +141,13 @@ void RDMacro::setAddress(QHostAddress addr)
 }
 
 
-Q_UINT16 RDMacro::port() const
+uint16_t RDMacro::port() const
 {
   return rml_port;
 }
 
 
-void RDMacro::setPort(Q_UINT16 port)
+void RDMacro::setPort(uint16_t port)
 {
   rml_port=port;
 }
@@ -282,7 +282,7 @@ RDMacro RDMacro::fromString(const QString &str,RDMacro::Role role)
   //
   // Check for bang
   //
-  QString str2=str.stripWhiteSpace();
+  QString str2=str.trimmed();
   if(str2.right(1)!="!") {
     ret.setCommand(RDMacro::NN);
     return ret;
@@ -296,7 +296,7 @@ RDMacro RDMacro::fromString(const QString &str,RDMacro::Role role)
     ret.setCommand(RDMacro::NN);
     return ret;
   }
-  cmd=(RDMacro::Command)((f0[0].at(0).latin1()<<8)+f0[0].at(1).latin1());
+  cmd=(RDMacro::Command)((f0[0].at(0).toLatin1()<<8)+f0[0].at(1).toLatin1());
   switch(cmd) {
   case RDMacro::AG:
   case RDMacro::AL:

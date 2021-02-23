@@ -84,7 +84,7 @@ void RDMarkerBar::DrawMap()
   QPixmap *pix=new QPixmap(size());
   QPainter *p=new QPainter(pix);
   QPolygon *pt;
-  p->fillRect(0,0,size().width(),size().height(),backgroundColor());
+  p->fillRect(0,0,size().width(),size().height(),palette().color(QPalette::Background));
   if(marker_length>0) {
     p->setPen(RD_CUEEDITOR_START_MARKER);
     p->setBrush(RD_CUEEDITOR_START_MARKER);

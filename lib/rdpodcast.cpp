@@ -384,7 +384,8 @@ bool RDPodcast::removePodcast() const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	   (const char *)QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_PODCAST),
+	       QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_PODCAST).toUtf8().
+	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
@@ -394,7 +395,7 @@ bool RDPodcast::removePodcast() const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",podcast_id),
+	       QString().sprintf("%u",podcast_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -407,7 +408,7 @@ bool RDPodcast::removePodcast() const
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
+		   rda->config()->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,
@@ -469,7 +470,8 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	     (const char *)QString().sprintf("%u",RDXPORT_COMMAND_DELETE_PODCAST),
+	       QString().sprintf("%u",RDXPORT_COMMAND_DELETE_PODCAST).toUtf8().
+	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,rda->user()->name().toUtf8().constData(),
@@ -479,7 +481,7 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",cast_id),
+	       QString().sprintf("%u",cast_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -492,7 +494,7 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
+		   rda->config()->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_URL,

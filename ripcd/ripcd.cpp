@@ -18,15 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <syslog.h>
-
-#include <qapplication.h>
-#include <qobject.h>
-#include <qtimer.h>
-#include <qdir.h>
-#include <qsessionmanager.h>
-#include <qsignalmapper.h>
-#include <qstringlist.h>
+#include <QApplication>
 
 #include <unistd.h>
 #include <stdio.h>
@@ -81,7 +73,7 @@ MainObject::MainObject(QObject *parent)
 
   rda=static_cast<RDApplication *>(new RDCoreApplication("ripcd","ripcd",RIPCD_USAGE,this));
   if(!rda->open(&err_msg,&err_type,false)) {
-    fprintf(stderr,"ripcd: %s\n",(const char *)err_msg.utf8());
+    fprintf(stderr,"ripcd: %s\n",(const char *)err_msg.toUtf8());
     exit(1);
   }
 
@@ -121,6 +113,7 @@ MainObject::MainObject(QObject *parent)
   for(int i=0;i<RD_MAX_MACRO_TIMERS;i++) {
     ripc_macro_cart[i]=0;
     ripc_macro_timer[i]=new QTimer(this);
+    ripc_macro_timer[i]->setSingleShot(true);
     mapper->setMapping(ripc_macro_timer[i],i);
     connect(ripc_macro_timer[i],SIGNAL(timeout()),mapper,SLOT(map()));
   }
@@ -193,6 +186,7 @@ MainObject::MainObject(QObject *parent)
   // Garbage Timer
   //
   ripcd_garbage_timer=new QTimer(this);
+  ripcd_garbage_timer->setSingleShot(true);
   connect(ripcd_garbage_timer,SIGNAL(timeout()),this,SLOT(garbageData()));
 
   //
@@ -269,13 +263,13 @@ void MainObject::sendRml(RDMacro *rml)
   str=rml->toString();
   switch(rml->role()) {
   case RDMacro::Cmd:
-    ripcd_rml_send->writeDatagram(str.utf8(),str.utf8().length(),
+    ripcd_rml_send->writeDatagram(str.toUtf8(),str.toUtf8().length(),
 				  rml->address(),rml->port());
     break;
 
   case RDMacro::Reply:
     if(!(ripcd_host_addr==rml->address())) {
-      ripcd_rml_send->writeDatagram(str.utf8(),str.utf8().length(),
+      ripcd_rml_send->writeDatagram(str.toUtf8(),str.toUtf8().length(),
 				    rml->address(),RD_RML_REPLY_PORT);
     }
     break;
@@ -311,7 +305,7 @@ void MainObject::readyReadData(int conn_id)
   RipcdConnection *conn=ripcd_conns[conn_id];
   QChar c;
 
-  while((n=conn->socket()->readBlock(data,1500))>0) {
+  while((n=conn->socket()->read(data,1500))>0) {
     data[n]=0;
     QString line=QString::fromUtf8(data);
     for(int i=0;i<line.length();i++) {
@@ -335,7 +329,7 @@ void MainObject::readyReadData(int conn_id)
 void MainObject::killData(int conn_id)
 {
   ripcd_conns[conn_id]->close();
-  ripcd_garbage_timer->start(1,true);
+  ripcd_garbage_timer->start(1);
   rda->syslog(LOG_DEBUG,"closed connection %d",conn_id);
 }
 
@@ -391,7 +385,7 @@ void MainObject::startJackData()
   else {
     ripcd_jack_client=
       jack_client_open("rivendell-ripcd",jackopts,&jackstat,
-		       (const char *)rda->station()->jackServerName());
+		       rda->station()->jackServerName().toUtf8().constData());
   }
   if(ripcd_jack_client==NULL) {
     if((jackstat&JackInvalidOption)!=0) {
@@ -516,7 +510,8 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
     return true;
   }
   if(cmds[0]=="RU") {  // Request User
-    EchoCommand(conn->id(),(const char *)QString("RU ")+rda->station()->userName()+"!");
+    EchoCommand(conn->id(),(QString("RU ")+rda->station()->userName()+"!").
+		toUtf8());
     return true;
   }
 
@@ -644,9 +639,9 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
 
 void MainObject::EchoCommand(int ch,const QString &cmd)
 {
-  //  printf("EchoCommand(%d,%s)\n",ch,(const char *)cmd.utf8());
+  //  printf("EchoCommand(%d,%s)\n",ch,(const char *)cmd.toUtf8());
   if(ripcd_conns[ch]->socket()->state()==QAbstractSocket::ConnectedState) {
-    ripcd_conns[ch]->socket()->writeBlock(cmd.utf8(),cmd.utf8().length());
+    ripcd_conns[ch]->socket()->write(cmd.toUtf8(),cmd.toUtf8().length());
   }
 }
 

@@ -46,7 +46,7 @@ bool RDReport::ExportMusicSummary(const QString &filename,
     return false;
   }
   QTextStream *strm=new QTextStream(file);
-  strm->setEncoding(QTextStream::UnicodeUTF8);
+  strm->setCodec("UTF-8");
   sql=QString("select ")+
     "ELR_LINES.ARTIST,"+  // 00
     "ELR_LINES.TITLE,"+   // 01

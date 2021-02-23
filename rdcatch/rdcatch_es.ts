@@ -302,7 +302,7 @@ como nuevo</translation>
     </message>
     <message>
         <source>Unsupported URL protocol!</source>
-        <translation>¡Protocolo de URL no soportado!</translation>
+        <translation type="obsolete">¡Protocolo de URL no soportado!</translation>
     </message>
     <message>
         <source>Duplicate Event</source>
@@ -357,6 +357,10 @@ como Nuevo</translation>
     <message>
         <source>Update Library Metadata</source>
         <translation>Actualizar metadatos en biblioteca</translation>
+    </message>
+    <message>
+        <source>Unsupported URL scheme!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -874,7 +878,7 @@ como Nuevo</translation>
     </message>
     <message>
         <source>Unsupported URL protocol!</source>
-        <translation>¡Protocolo de URL no soportado!</translation>
+        <translation type="obsolete">¡Protocolo de URL no soportado!</translation>
     </message>
     <message>
         <source>Export Format:</source>
@@ -945,6 +949,10 @@ como Nuevo</translation>
     <message>
         <source>Export Library Metadata</source>
         <translation>Exportar Bibliot. Metadatos</translation>
+    </message>
+    <message>
+        <source>Unsupported URL scheme!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

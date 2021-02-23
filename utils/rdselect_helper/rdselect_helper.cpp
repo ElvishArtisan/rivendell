@@ -2,7 +2,7 @@
 //
 // SETUID helper script for rdselect(1)
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -135,7 +135,7 @@ void MainObject::Startup()
   // Start the rivendell service
   //
   unlink(RD_CONF_FILE);
-  if(symlink(helper_config_filename,RD_CONF_FILE)!=0) {
+  if(symlink(helper_config_filename.toUtf8(),RD_CONF_FILE)!=0) {
     fprintf(stderr,"rdselect_helper: unable to create new symlink [%s]\n",
 	    strerror(errno));
     exit(RDConfig::RDSelectSymlinkFailed);
@@ -189,10 +189,10 @@ void MainObject::Shutdown()
   //
   // Unmount the audio store
   //
-  if(umount(helper_prev_config->audioRoot())!=0) {
+  if(umount(helper_prev_config->audioRoot().toUtf8())!=0) {
     if(errno!=EINVAL) {  // Ignore the error if we're already unmounted
       fprintf(stderr,"rdselect_helper: unmount of \"%s\" failed [%s]\n",
-	      (const char *)helper_prev_config->audioRoot(),
+	      helper_prev_config->audioRoot().toUtf8().constData(),
 	      strerror(errno));
       exit(RDConfig::RDSelectAudioUnmountFailed);
     }
@@ -254,7 +254,7 @@ bool MainObject::ProcessActive(const QStringList &cmds) const
   for(int i=0;i<dirs.size();i++) {
     dirs[i].toInt(&ok);
     if(ok) {
-      if((f=fopen(QString("/proc/")+dirs[i]+"/cmdline","r"))!=NULL) {
+      if((f=fopen((QString("/proc/")+dirs[i]+"/cmdline").toUtf8(),"r"))!=NULL) {
 	if(fgets(line,1024,f)!=NULL) {
 	  QStringList f1=QString(line).split(" ",QString::SkipEmptyParts);
 	  QStringList f2=f1[0].split("/",QString::SkipEmptyParts);

@@ -57,7 +57,7 @@ class SoftwareAuthority : public Switcher
   void errorData(QAbstractSocket::SocketError err);
 
  private:
-  void SendCommand(const char *str);
+  void SendCommand(const QString &str);
   void DispatchCommand();
   void ExecuteMacroCart(unsigned cartnum);
   QString PrettifyCommand(const char *cmd) const;

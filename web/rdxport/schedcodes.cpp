@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal
 //
-//   (C) Copyright 2015-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,8 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <qstringlist.h>
 
 #include <rdapplication.h>
 #include <rdcart.h>
@@ -48,7 +46,7 @@ void Xport::ListSchedCodes()
   printf("<schedCodeList>\n");
   while(q->next()) {
     schedcode=new RDSchedCode(q->value(0).toString());
-    printf("%s",(const char *)schedcode->xml().utf8());
+    printf("%s",(const char *)schedcode->xml().toUtf8());
     delete schedcode;
   }
   printf("</schedCodeList>\n");
@@ -178,7 +176,7 @@ void Xport::ListCartSchedCodes()
   printf("<schedCodeList>\n");
   for(int i=0;i<codes.size();i++) {
     schedcode=new RDSchedCode(codes[i]);
-    printf("%s",(const char *)schedcode->xml().utf8());
+    printf("%s",(const char *)schedcode->xml().toUtf8());
     delete schedcode;
   }
   printf("</schedCodeList>\n");

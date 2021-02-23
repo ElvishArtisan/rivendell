@@ -92,13 +92,13 @@ void RDSlider::setTickmarks(RDSlider::TickSetting s)
 
 void RDSlider::setMinValue(int min_value)
 {
-  setRange(min_value,maxValue());
+  setRange(min_value,maximum());
 }
 
 
 void RDSlider::setMaxValue(int max_value)
 {
-  setRange(minValue(),max_value);
+  setRange(minimum(),max_value);
 }
 
 
@@ -123,17 +123,17 @@ void RDSlider::setPageStep(int step)
 }
 
 
-void RDSlider::setKnobColor(QColorGroup group)
+void RDSlider::setKnobColor(const QPalette &pal)
 {
-  knob_color=group;
+  knob_color=pal;
   calcKnob();
   update();
 }
 
 
-void RDSlider::setKnobColor(QColor color)
+void RDSlider::setKnobColor(const QColor &color)
 {
-  knob_color.setColor(QColorGroup::Background,color);
+  knob_color.setColor(QPalette::Background,color);
   calcKnob();
   update();
 }
@@ -201,9 +201,9 @@ void RDSlider::paintEvent(QPaintEvent *paintEvent)
     //
     // The groove
     //
-    p->setPen(QColor(colorGroup().dark()));
+    p->setPen(QColor(palette().dark().color()));
     p->drawLine(width()/2,knob_size.height()/2,width()/2,height()-knob_size.height()/2);
-    p->setPen(QColor(colorGroup().shadow()));
+    p->setPen(QColor(palette().shadow().color()));
     p->drawLine(width()/2-1,height()-knob_size.height()/2+1,width()/2-1,knob_size.height()/2-1);
     p->drawLine(width()/2-1,knob_size.height()/2-1,width()/2+1,knob_size.height()/2-1);
     
@@ -213,20 +213,20 @@ void RDSlider::paintEvent(QPaintEvent *paintEvent)
     switch(rdslider_orient) {
     case RDSlider::Up:
       if((tick_setting==RDSlider::TicksLeft)||(tick_setting==RDSlider::TicksBothSides)) {
-	p->setPen(colorGroup().shadow());
-	for(int i=minValue();i<=maxValue();i+=tick_interval) {
+	p->setPen(palette().shadow().color());
+	for(int i=minimum();i<=maximum();i+=tick_interval) {
 	  tick_y=(geometry().height()-curr_knob.height())-
-	    ((geometry().height()-curr_knob.height())*(i-minValue()))/
-	    (maxValue()-minValue())+curr_knob.height()/2;
+	    ((geometry().height()-curr_knob.height())*(i-minimum()))/
+	    (maximum()-minimum())+curr_knob.height()/2;
 	  p->drawLine(0,tick_y,width()/2-2,tick_y);
 	}
       }
       if((tick_setting==RDSlider::TicksRight)||(tick_setting==RDSlider::TicksBothSides)) {
-	p->setPen(colorGroup().shadow());
-	for(int i=minValue();i<=maxValue();i+=tick_interval) {
+	p->setPen(palette().shadow().color());
+	for(int i=minimum();i<=maximum();i+=tick_interval) {
 	  tick_y=(geometry().height()-curr_knob.height())-
-	    ((geometry().height()-curr_knob.height())*(i-minValue()))/
-	    (maxValue()-minValue())+curr_knob.height()/2;
+	    ((geometry().height()-curr_knob.height())*(i-minimum()))/
+	    (maximum()-minimum())+curr_knob.height()/2;
 	  p->drawLine(width()/2+2,tick_y,width(),tick_y);
 	}
       }
@@ -234,20 +234,20 @@ void RDSlider::paintEvent(QPaintEvent *paintEvent)
 
     case RDSlider::Down:
       if((tick_setting==RDSlider::TicksLeft)||(tick_setting==RDSlider::TicksBothSides)) {
-	p->setPen(colorGroup().shadow());
-	for(int i=minValue();i<=maxValue();i+=tick_interval) {
+	p->setPen(palette().shadow().color());
+	for(int i=minimum();i<=maximum();i+=tick_interval) {
 	  tick_y=(geometry().height()-curr_knob.height()/2)-
 	    abs((geometry().height()-curr_knob.height())*i)/
-	    (maxValue()-minValue());
+	    (maximum()-minimum());
 	  p->drawLine(0,tick_y,width()/2-2,tick_y);
 	}
       }
       if((tick_setting==RDSlider::TicksRight)||(tick_setting==RDSlider::TicksBothSides)) {
-	p->setPen(colorGroup().shadow());
-	for(int i=minValue();i<=maxValue();i+=tick_interval) {
+	p->setPen(palette().shadow().color());
+	for(int i=minimum();i<=maximum();i+=tick_interval) {
 	  tick_y=(geometry().height()-curr_knob.height()/2)-
 	    abs((geometry().height()-curr_knob.height())*i)/
-	    (maxValue()-minValue());
+	    (maximum()-minimum());
 	  p->drawLine(width()/2+2,tick_y,width(),tick_y);
 	}
       }
@@ -261,13 +261,13 @@ void RDSlider::paintEvent(QPaintEvent *paintEvent)
     //
     // The groove
     //
-    p->setPen(QColor(colorGroup().light()));
+    p->setPen(QColor(palette().light().color()));
     p->drawLine(knob_size.width()/2,height()/2+1,
 		width()-knob_size.width()/2,height()/2+1);
-    p->setPen(QColor(colorGroup().dark()));
+    p->setPen(QColor(palette().dark().color()));
     p->drawLine(knob_size.width()/2,height()/2,
 		width()-knob_size.width()/2,height()/2);
-    p->setPen(QColor(colorGroup().shadow()));
+    p->setPen(QColor(palette().shadow().color()));
     p->drawLine(width()-knob_size.width()/2+1,height()/2-1,
 		knob_size.width()/2-1,height()/2-1);
 
@@ -277,40 +277,40 @@ void RDSlider::paintEvent(QPaintEvent *paintEvent)
     switch(rdslider_orient) {
 	case RDSlider::Left:
 	  if((tick_setting==RDSlider::TicksAbove)||(tick_setting==RDSlider::TicksBothSides)) {
-	    p->setPen(colorGroup().shadow());
-	    for(int i=minValue();i<=maxValue();i+=tick_interval) {
+	    p->setPen(palette().shadow().color());
+	    for(int i=minimum();i<=maximum();i+=tick_interval) {
 	      tick_x=(geometry().width()-curr_knob.width())-
-		((geometry().width()-curr_knob.width())*(i-minValue()))/
-		(maxValue()-minValue())+curr_knob.width()/2;
+		((geometry().width()-curr_knob.width())*(i-minimum()))/
+		(maximum()-minimum())+curr_knob.width()/2;
 	      p->drawLine(tick_x,0,tick_x,height()/2-2);
 	    }
 	  }
 	  if((tick_setting==RDSlider::TicksBelow)||(tick_setting==RDSlider::TicksBothSides)) {
-	    p->setPen(colorGroup().shadow());
-	    for(int i=minValue();i<=maxValue();i+=tick_interval) {
+	    p->setPen(palette().shadow().color());
+	    for(int i=minimum();i<=maximum();i+=tick_interval) {
 	      tick_x=(geometry().width()-curr_knob.width())-
-		((geometry().width()-curr_knob.width())*(i-minValue()))/
-		(maxValue()-minValue())+curr_knob.width()/2;
+		((geometry().width()-curr_knob.width())*(i-minimum()))/
+		(maximum()-minimum())+curr_knob.width()/2;
 	      p->drawLine(tick_x,height()/2+2,tick_x,height());
 	    }
 	  }
 	  break;
 	case RDSlider::Right:
 	  if((tick_setting==RDSlider::TicksAbove)||(tick_setting==RDSlider::TicksBothSides)) {
-	    p->setPen(colorGroup().shadow());
-	    for(int i=minValue();i<=maxValue();i+=tick_interval) {
+	    p->setPen(palette().shadow().color());
+	    for(int i=minimum();i<=maximum();i+=tick_interval) {
 	      tick_x=(geometry().width()-curr_knob.width()/2)-
 		abs((geometry().width()-curr_knob.width())*i)/
-		(maxValue()-minValue());
+		(maximum()-minimum());
 	      p->drawLine(tick_x,0,tick_x,height()/2-2);
 	    }
 	  }
 	  if((tick_setting==RDSlider::TicksBelow)||(tick_setting==RDSlider::TicksBothSides)) {
-	    p->setPen(colorGroup().shadow());
-	    for(int i=minValue();i<=maxValue();i+=tick_interval) {
+	    p->setPen(palette().shadow().color());
+	    for(int i=minimum();i<=maximum();i+=tick_interval) {
 	      tick_x=(geometry().width()-curr_knob.width()/2)-
 		abs((geometry().width()-curr_knob.width())*i)/
-		(maxValue()-minValue());
+		(maximum()-minimum());
 	      p->drawLine(tick_x,height()/2+2,tick_x,height());
 	    }
 	  }
@@ -343,8 +343,8 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 	if(prev_knob!=curr_knob) {
 	  switch(rdslider_orient) {
 	      case RDSlider::Up:
-		if(value()!=maxValue()) {
-		  QAbstractSlider::setValue(maxValue());
+		if(value()!=maximum()) {
+		  QAbstractSlider::setValue(maximum());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -354,8 +354,8 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 		}
 		break;
 	      case RDSlider::Down:
-		if(value()!=minValue()) {
-		  QAbstractSlider::setValue(minValue());
+		if(value()!=minimum()) {
+		  QAbstractSlider::setValue(minimum());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -380,8 +380,8 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 	if(prev_knob!=curr_knob) {
 	  switch(rdslider_orient) {
 	      case RDSlider::Up:
-		if(value()!=minValue()) {
-		  QAbstractSlider::setValue(minValue());
+		if(value()!=minimum()) {
+		  QAbstractSlider::setValue(minimum());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -391,8 +391,8 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 		}
 		break;
 	      case RDSlider::Down:
-		if(value()!=maxValue()) {
-		  QAbstractSlider::setValue(maxValue());
+		if(value()!=maximum()) {
+		  QAbstractSlider::setValue(maximum());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -423,11 +423,11 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
       base_y=mouse->y();
       switch(rdslider_orient) {
 	  case RDSlider::Up:
-	    knob_value=(maxValue()-minValue())*
+	    knob_value=(maximum()-minimum())*
 				    (geometry().height()-curr_knob.y()
 				     -curr_knob.height())/
 				    (geometry().height()-curr_knob.height())
-				    +minValue();
+				    +minimum();
 	    if(value()!=knob_value) {
 	      QAbstractSlider::setValue(knob_value);
 	      if(tracking_enabled) {
@@ -439,11 +439,11 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 	    }
 	    break;
 	  case RDSlider::Down:
-	    knob_value=((minValue()-maxValue())*
+	    knob_value=((minimum()-maximum())*
 				     curr_knob.y()
 				     +curr_knob.height()-geometry().height())/
 				    (curr_knob.height()-geometry().height())
-				    +minValue();
+				    +minimum();
 	    if(value()!=knob_value) {
 	      QAbstractSlider::setValue(knob_value);
 	      if(tracking_enabled) {
@@ -469,8 +469,8 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 	if(prev_knob!=curr_knob) {
 	  switch(rdslider_orient) {
 	      case RDSlider::Left:
-		if(value()!=maxValue()) {
-		  QAbstractSlider::setValue(maxValue());
+		if(value()!=maximum()) {
+		  QAbstractSlider::setValue(maximum());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -480,8 +480,8 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 		}
 		break;
 	      case RDSlider::Right:
-		if(value()!=minValue()) {
-		  QAbstractSlider::setValue(minValue());
+		if(value()!=minimum()) {
+		  QAbstractSlider::setValue(minimum());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -506,8 +506,8 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 	if(prev_knob!=curr_knob) {
 	  switch(rdslider_orient) {
 	      case RDSlider::Left:
-		if(value()!=minValue()) {
-		  QAbstractSlider::setValue(minValue());
+		if(value()!=minimum()) {
+		  QAbstractSlider::setValue(minimum());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -517,8 +517,8 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 		}
 		break;
 	      case RDSlider::Right:
-		if(value()!=maxValue()) {
-		  QAbstractSlider::setValue(maxValue());
+		if(value()!=maximum()) {
+		  QAbstractSlider::setValue(maximum());
 		  if(tracking_enabled) {
 		    emit valueChanged(value());
 		  }
@@ -549,11 +549,11 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
       base_x=mouse->x();
       switch(rdslider_orient) {
 	  case RDSlider::Left:
-	    knob_value=(maxValue()-minValue())*
+	    knob_value=(maximum()-minimum())*
 				    (geometry().width()-curr_knob.x()
 				     -curr_knob.width())/
 				    (geometry().width()-curr_knob.width())
-				    +minValue();
+				    +minimum();
 	    if(value()!=knob_value) {
 	      QAbstractSlider::setValue(knob_value);
 	      if(tracking_enabled) {
@@ -565,10 +565,10 @@ void RDSlider::mouseMoveEvent(QMouseEvent *mouse)
 	    }
 	    break;
 	  case RDSlider::Right:
-	    knob_value=((minValue()-maxValue())*curr_knob.x()
+	    knob_value=((minimum()-maximum())*curr_knob.x()
 			+curr_knob.width()-geometry().width())/
 	      (curr_knob.width()-geometry().width())
-	      +minValue();
+	      +minimum();
 	    if(value()!=knob_value) {
 	      QAbstractSlider::setValue(knob_value);
 	      if(tracking_enabled) {
@@ -632,7 +632,7 @@ void RDSlider::init(RDSlider::Orientation orient)
 {
   rdslider_orient=orient;
   knob_map=NULL;
-  knob_color=colorGroup();
+  knob_color=palette();
   rdslider_moving=false;
   page_step=10;
   line_step=1;
@@ -669,12 +669,12 @@ void RDSlider::calcKnob(int x,int y,int w,int h)
     knob_x=w/2-knob_w/2;
     switch(rdslider_orient) {
 	case RDSlider::Up:
-	  knob_y=(h-knob_h)-((h-knob_h)*(value()-minValue()))/
-	    (maxValue()-minValue());
+	  knob_y=(h-knob_h)-((h-knob_h)*(value()-minimum()))/
+	    (maximum()-minimum());
 	  break;
 	case RDSlider::Down:
-	  knob_y=-(h-knob_h-((h-knob_h)*(value()-minValue())))/
-	    (maxValue()-minValue());
+	  knob_y=-(h-knob_h-((h-knob_h)*(value()-minimum())))/
+	    (maximum()-minimum());
 	  break;
 
 	default:
@@ -710,18 +710,18 @@ void RDSlider::calcKnob(int x,int y,int w,int h)
       delete knob_map;
     }
     knob_map=new QPixmap(curr_knob.size());
-    knob_map->fill(knob_color.background());
+    knob_map->fill(knob_color.color(QPalette::Background));
     p.begin(knob_map);
     
     //
     // The outline
     //
-    p.setPen(knob_color.light());
+    p.setPen(knob_color.light().color());
     p.drawLine(0,curr_knob.height()-1,0,0);
     p.drawLine(0,0,curr_knob.width()-1,0);
     p.drawLine(1,curr_knob.height()-1,1,1);
     p.drawLine(1,1,curr_knob.width()-1,1);
-    p.setPen(knob_color.dark());
+    p.setPen(knob_color.dark().color());
     p.drawLine(curr_knob.width()-1,1,curr_knob.width()-1,curr_knob.height()-1);
     p.drawLine(curr_knob.width()-1,curr_knob.height()-1,0,curr_knob.height()-1);
     p.drawLine(curr_knob.width()-2,1,curr_knob.width()-2,curr_knob.height()-2);
@@ -731,12 +731,12 @@ void RDSlider::calcKnob(int x,int y,int w,int h)
     // The centerline
     //
     if(curr_knob.height()>=40) {
-      p.setPen(knob_color.dark());
+      p.setPen(knob_color.dark().color());
       p.drawLine(2,curr_knob.height()/2,curr_knob.width()-2,curr_knob.height()/2);
-      p.setPen(knob_color.shadow());
+      p.setPen(knob_color.shadow().color());
       p.drawLine(2,curr_knob.height()/2-1,
 		 curr_knob.width()-2,curr_knob.height()/2-1);
-      p.setPen(knob_color.light());
+      p.setPen(knob_color.light().color());
       p.drawLine(2,curr_knob.height()/2+1,
 		 curr_knob.width()-2,curr_knob.height()/2+1);
     }
@@ -751,12 +751,12 @@ void RDSlider::calcKnob(int x,int y,int w,int h)
     knob_y=h/2-knob_h/2;
     switch(rdslider_orient) {
 	case RDSlider::Left:
-	  knob_x=(w-knob_w)-((w-knob_w)*(value()-minValue()))/
-	    (maxValue()-minValue());
+	  knob_x=(w-knob_w)-((w-knob_w)*(value()-minimum()))/
+	    (maximum()-minimum());
 	  break;
 	case RDSlider::Right:
-	  knob_x=-(w-knob_w-((w-knob_w)*(value()-minValue())))/
-	    (maxValue()-minValue());
+	  knob_x=-(w-knob_w-((w-knob_w)*(value()-minimum())))/
+	    (maximum()-minimum());
 	  break;
 
 	default:
@@ -789,18 +789,18 @@ void RDSlider::calcKnob(int x,int y,int w,int h)
       delete knob_map;
     }
     knob_map=new QPixmap(curr_knob.size());
-    knob_map->fill(knob_color.background());
+    knob_map->fill(knob_color.color(QPalette::Background));
     p.begin(knob_map);
     
     //
     // The outline
     //
-    p.setPen(knob_color.light());
+    p.setPen(knob_color.light().color());
     p.drawLine(0,curr_knob.height()-1,0,0);
     p.drawLine(0,0,curr_knob.width()-1,0);
     p.drawLine(1,curr_knob.height()-1,1,1);
     p.drawLine(1,1,curr_knob.width()-1,1);
-    p.setPen(knob_color.dark());
+    p.setPen(knob_color.dark().color());
     p.drawLine(curr_knob.width()-1,1,curr_knob.width()-1,curr_knob.height()-1);
     p.drawLine(curr_knob.width()-1,curr_knob.height()-1,0,curr_knob.height()-1);
     p.drawLine(curr_knob.width()-2,1,curr_knob.width()-2,curr_knob.height()-2);
@@ -810,13 +810,13 @@ void RDSlider::calcKnob(int x,int y,int w,int h)
     // The centerline
     //
     if(curr_knob.width()>=40) {
-      p.setPen(knob_color.dark());
+      p.setPen(knob_color.dark().color());
       p.drawLine(curr_knob.width()/2,2,
 		 curr_knob.width()/2,curr_knob.height()-2);
-      p.setPen(knob_color.shadow());
+      p.setPen(knob_color.shadow().color());
       p.drawLine(curr_knob.width()/2-1,2,
 		 curr_knob.width()/2-1,curr_knob.height()-2);
-      p.setPen(knob_color.light());
+      p.setPen(knob_color.light().color());
       p.drawLine(curr_knob.width()/2+1,2,
 		 curr_knob.width()/2+1,curr_knob.height()-2);
     }

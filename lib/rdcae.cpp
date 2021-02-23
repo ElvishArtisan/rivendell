@@ -63,7 +63,7 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   // Meter Connection
   //
   cae_meter_socket=new QUdpSocket(this);
-  for(Q_INT16 i=30000;i<30100;i++) {
+  for(int16_t i=30000;i<30100;i++) {
     if(cae_meter_socket->bind(i)) {
       i=31000;
     }
@@ -93,7 +93,7 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   //
   // The Clock Timer
   //
-  QTimer *timer=new QTimer(this,"clock_timer");
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(clockData()));
   timer->start(RD_METER_UPDATE_INTERVAL);
 }
@@ -122,8 +122,7 @@ void RDCae::connectHost()
   } 
   usleep(100000);
   if(count>0) {
-    SendCommand(QString().sprintf("PW %s!",
-				  (const char *)cae_config->password()));
+    SendCommand("PW "+cae_config->password()+"!");
     for(int i=0;i<RD_MAX_CARDS;i++) {
       SendCommand(QString().sprintf("TS %d!",i));
       for(int j=0;j<RD_MAX_PORTS;j++) {
@@ -158,8 +157,7 @@ bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
 {
   int count=0;
 
-  SendCommand(QString().sprintf("LP %d %s!",
-				card,(const char *)name));
+  SendCommand("LP "+QString().sprintf(" %d ",card)+name);
 
   //
   // This is really warty, but needed to make the method 'synchronous'
@@ -175,7 +173,7 @@ bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
   if(count>1000) {
     rda->syslog(LOG_ERR,
 		"*** LoadPlay: CAE took %d mS to return stream for %s ***",
-	   count,(const char *)name);
+		count,name.toUtf8().constData());
   }
   cae_handle[card][*stream]=*handle;
   cae_pos[card][*stream]=0xFFFFFFFF;
@@ -231,7 +229,7 @@ void RDCae::loadRecord(int card,int stream,QString name,
   //	 card,stream,(const char *)name,coding,chan,samp_rate,bit_rate);
   SendCommand(QString().sprintf("LR %d %d %d %d %d %d %s!",
 				card,stream,(int)coding,chan,samp_rate,
-				bit_rate,(const char *)name));
+				bit_rate,name.toUtf8().constData()));
 }
 
 

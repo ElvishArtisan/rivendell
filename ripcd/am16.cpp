@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the 360 Systems AM16
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,9 +44,9 @@ Am16::Am16(RDMatrix *matrix,QObject *parent)
   bt_sysex_active=false;
   bt_data_ptr=0;
 
-  if((bt_midi_socket=open(matrix->gpioDevice(),O_RDWR))<0) {
+  if((bt_midi_socket=open(matrix->gpioDevice().toUtf8(),O_RDWR))<0) {
     rda->syslog(LOG_WARNING,"unable to open MIDI device at \"%s\"",
-		(const char *)matrix->gpioDevice());
+		matrix->gpioDevice().toUtf8().constData());
     return;
   }
   sockopt=O_NONBLOCK;
@@ -59,6 +59,7 @@ Am16::Am16(RDMatrix *matrix,QObject *parent)
   // Timeout Timer
   //
   bt_timeout_timer=new QTimer(this);
+  bt_timeout_timer->setSingleShot(true);
   connect(bt_timeout_timer,SIGNAL(timeout()),this,SLOT(timeoutData()));
 }
 
@@ -137,7 +138,7 @@ void Am16::processCommand(RDMacro *cmd)
       data[7]=AM16_PATCH_NUMBER;
       data[8]=AM16_SYSEX_END;
       write(bt_midi_socket,data,9);
-      bt_timeout_timer->start(AM16_TIMEOUT_INTERVAL,true);
+      bt_timeout_timer->start(AM16_TIMEOUT_INTERVAL);
     }
     cmd->acknowledge(true);
     emit rmlEcho(cmd);
@@ -256,7 +257,7 @@ void Am16::ProcessMessage(char *msg,int len)
     }
     rda->syslog(LOG_DEBUG,
 		"AM16 driver: received unrecognized MIDI message [%s]",
-		(const char *)str);
+		str.toUtf8().constData());
     break;
   }
 }

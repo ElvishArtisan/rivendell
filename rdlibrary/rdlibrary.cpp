@@ -78,9 +78,11 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Progress Dialog
   //
   lib_progress_dialog=
-    new QProgressDialog(tr("Please Wait..."),tr("Cancel"),0,10,this,
-			Qt::WStyle_Customize|Qt::WStyle_NormalBorder);
-  lib_progress_dialog->setCaption(" ");
+    new QProgressDialog(tr("Please Wait..."),tr("Cancel"),0,10,this);
+  //  lib_progress_dialog=
+  //    new QProgressDialog(tr("Please Wait..."),tr("Cancel"),0,10,this,
+  //			Qt::WStyle_Customize|Qt::WStyle_NormalBorder);
+  lib_progress_dialog->setWindowTitle(" ");
   QLabel *label=new QLabel(tr("Please Wait..."),lib_progress_dialog);
   label->setAlignment(Qt::AlignCenter);
   label->setFont(progressFont());
@@ -129,6 +131,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
   cut_clipboard=NULL;
   lib_user_timer=new QTimer(this);
+  lib_user_timer->setSingleShot(true);
   connect(lib_user_timer,SIGNAL(timeout()),this,SLOT(userData()));
 
   //
@@ -862,7 +865,7 @@ void MainWidget::LoadGeometry()
 void MainWidget::SaveGeometry()
 {
   QString geometry_file=GeometryFile();
-  FILE *file=fopen(geometry_file,"w");
+  FILE *file=fopen(geometry_file.toUtf8(),"w");
   if(file==NULL) {
     return;
   }
@@ -898,7 +901,7 @@ bool MainWidget::UnlockUser()
   bool ret=lib_user_changed;
   lib_edit_pending=false;
   if(lib_user_changed) {
-    lib_user_timer->start(0,true);
+    lib_user_timer->start(0);
     lib_user_changed=false;
   }
 
@@ -948,25 +951,24 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
-  QTranslator qt(0);
-  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),
-	  ".");
-  a.installTranslator(&qt);
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    QTranslator qt(0);
+    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,".");
+    a.installTranslator(&qt);
 
-  QTranslator rd(0);
-  rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+    QTranslator rd(0);
+    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(QString(PREFIX)+QString("/share/rivendell/rdlibrary_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(QString(PREFIX)+QString("/share/rivendell/rdlibrary_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   //
   // Start Event Loop
@@ -974,7 +976,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->show();
   return a.exec();
 }

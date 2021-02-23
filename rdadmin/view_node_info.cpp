@@ -51,7 +51,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_hostname_edit=new QLineEdit(this);
   view_hostname_edit->setGeometry(90,10,190,20);
   view_hostname_edit->setReadOnly(true);
-  QLabel *label=new QLabel(view_hostname_edit,tr("Hostname:"),this);
+  QLabel *label=new QLabel(tr("Hostname:"),this);
   label->setGeometry(10,10,80,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -62,7 +62,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_tcpport_edit=new QLineEdit(this);
   view_tcpport_edit->setGeometry(335,10,sizeHint().width()-345,20);
   view_tcpport_edit->setReadOnly(true);
-  label=new QLabel(view_tcpport_edit,tr("Port:"),this);
+  label=new QLabel(tr("Port:"),this);
   label->setGeometry(305,10,30,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -73,7 +73,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_system_edit=new QLineEdit(this);
   view_system_edit->setGeometry(135,32,70,20);
   view_system_edit->setReadOnly(true);
-  label=new QLabel(view_system_edit,tr("System Version:"),this);
+  label=new QLabel(tr("System Version:"),this);
   label->setGeometry(10,32,120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -84,7 +84,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_protocol_edit=new QLineEdit(this);
   view_protocol_edit->setGeometry(335,32,40,20);
   view_protocol_edit->setReadOnly(true);
-  label=new QLabel(view_protocol_edit,tr("Protocol Version:"),this);
+  label=new QLabel(tr("Protocol Version:"),this);
   label->setGeometry(210,32,120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -95,7 +95,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_sources_edit=new QLineEdit(this);
   view_sources_edit->setGeometry(75,54,30,20);
   view_sources_edit->setReadOnly(true);
-  label=new QLabel(view_sources_edit,tr("Sources:"),this);
+  label=new QLabel(tr("Sources:"),this);
   label->setGeometry(10,54,60,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -106,7 +106,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_destinations_edit=new QLineEdit(this);
   view_destinations_edit->setGeometry(225,54,30,20);
   view_destinations_edit->setReadOnly(true);
-  label=new QLabel(view_destinations_edit,tr("Destinations:"),this);
+  label=new QLabel(tr("Destinations:"),this);
   label->setGeometry(120,54,100,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -117,7 +117,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_channels_edit=new QLineEdit(this);
   view_channels_edit->setGeometry(360,54,30,20);
   view_channels_edit->setReadOnly(true);
-  label=new QLabel(view_channels_edit,tr("Channels:"),this);
+  label=new QLabel(tr("Channels:"),this);
   label->setGeometry(260,54,95,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -128,7 +128,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_gpis_edit=new QLineEdit(this);
   view_gpis_edit->setGeometry(135,76,70,20);
   view_gpis_edit->setReadOnly(true);
-  label=new QLabel(view_gpis_edit,tr("GPIs:"),this);
+  label=new QLabel(tr("GPIs:"),this);
   label->setGeometry(10,76,120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -139,7 +139,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_gpos_edit=new QLineEdit(this);
   view_gpos_edit->setGeometry(305,76,70,20);
   view_gpos_edit->setReadOnly(true);
-  label=new QLabel(view_gpos_edit,tr("GPOs:"),this);
+  label=new QLabel(tr("GPOs:"),this);
   label->setGeometry(210,76,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -147,7 +147,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   //
   // Sources List
   //
-  label=new QLabel(view_gpos_edit,tr("Sources"),this);
+  label=new QLabel(tr("Sources"),this);
   label->setGeometry(15,98,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -168,7 +168,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   //
   // Destinations List
   //
-  label=new QLabel(view_gpos_edit,tr("Destinations"),this);
+  label=new QLabel(tr("Destinations"),this);
   label->setGeometry(15,325,90,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -213,7 +213,7 @@ QSizePolicy ViewNodeInfo::sizePolicy() const
 }
 
 
-void ViewNodeInfo::exec(const QString &hostname,Q_UINT16 port,
+void ViewNodeInfo::exec(const QString &hostname,uint16_t port,
 			const QString &passwd,unsigned base_output)
 {
   view_hostname_edit->setText(hostname);

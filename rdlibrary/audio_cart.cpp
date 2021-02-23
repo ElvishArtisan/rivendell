@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qmessagebox.h>
+#include <QApplication>
+#include <QMessageBox>
 
 #include <rdaudio_exists.h>
 #include <rdconf.h>
@@ -50,7 +50,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_use_weighting=true;
 
 
-  QColor system_button_text_color = palette().active().buttonText();
+  QColor system_button_text_color = palette().buttonText().color();
 
   //
   // Progress Dialog
@@ -113,7 +113,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   QPixmap *pix=new QPixmap(QSize(70,40));
   QPainter *p=new QPainter(pix);
   QFontMetrics *m=new QFontMetrics(buttonFont());
-  p->fillRect(0,0,70,40,palette().color(QPalette::Active,QColorGroup::Button));
+  p->fillRect(0,0,70,40,palette().color(QPalette::Active,QPalette::Button));
   p->setPen(QColor(system_button_text_color));
   p->setFont(buttonFont());
   p->drawText((70-m->width(tr("Cut Info")))/2,15,tr("Cut Info"));
@@ -122,7 +122,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   p->end();
   QPushButton *record_cut_button=new QPushButton(this);
   record_cut_button->setGeometry(550,0,80,50);
-  record_cut_button->setPixmap(*pix);
+  record_cut_button->setIcon(*pix);
   connect(record_cut_button,SIGNAL(clicked()),this,SLOT(recordCutData()));
   
   //
@@ -155,7 +155,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   p=new QPainter(pix);
   m=new QFontMetrics(buttonFont());
-  p->fillRect(0,0,70,40,palette().color(QPalette::Active,QColorGroup::Button));
+  p->fillRect(0,0,70,40,palette().color(QPalette::Active,QPalette::Button));
   p->setPen(QColor(system_button_text_color));
   p->setFont(buttonFont());
   p->drawText((70-m->width(tr("Import")))/2,15,tr("Import"));
@@ -163,7 +163,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   p->drawText((70-m->width(tr("Export")))/2,33,tr("Export"));
   p->end();
   QPushButton *import_cut_button=new QPushButton(this);
-  import_cut_button->setPixmap(*pix);
+  import_cut_button->setIcon(*pix);
   import_cut_button->setGeometry(550,120+yoffset,80,50);
   connect(import_cut_button,SIGNAL(clicked()),this,SLOT(importCutData()));
 
@@ -417,7 +417,7 @@ void AudioCart::extEditorCutData()
   //        and possibly also add some tooltips with help advice
 
   if(fork()==0) {
-    system(cmd+" &");
+    system((cmd+" &").toUtf8());
     exit(0);
   }
 }

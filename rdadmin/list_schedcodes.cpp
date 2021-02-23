@@ -87,8 +87,7 @@ ListSchedCodes::ListSchedCodes(QWidget *parent)
   list_schedcodes_model->setFont(defaultFont());
   list_schedcodes_model->setPalette(palette());
   list_schedcodes_view->setModel(list_schedcodes_model);
-  list_schedcodes_label=
-    new QLabel(list_schedcodes_view,tr("Replicators:"),this);
+  list_schedcodes_label=new QLabel(tr("Replicators:"),this);
   list_schedcodes_label->setFont(labelFont());
   connect(list_schedcodes_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));

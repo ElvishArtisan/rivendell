@@ -35,8 +35,8 @@ void RDSchedCartList::insertItem(unsigned cartnumber,int cartlength,int stack_id
   list_cartnum.push_back(cartnumber);
   list_cartlen.push_back(cartlength);
   list_stackid.push_back(stack_id);
-  list_artist.push_back(stack_artist.lower().replace(" ",""));
-  list_title.push_back(stack_title.lower().replace(" ",""));
+  list_artist.push_back(stack_artist.toLower().replace(" ",""));
+  list_title.push_back(stack_title.toLower().replace(" ",""));
   list_schedcodes.push_back(stack_schedcodes);  
 }
 

@@ -32,7 +32,6 @@
 #include <QPaintEvent>
 #include <stdio.h>
 #include <qslider.h>
-#include <q3buttongroup.h>
 #include <qsizepolicy.h>
 #include <qmessagebox.h>
 
@@ -47,7 +46,9 @@ RDStereoMeter::RDStereoMeter(QWidget *parent)
   clip_light_on=false;
   label_x=0;
   meter_label=QString("");
-  setBackgroundColor(Qt::black);
+  QPalette pal=palette();
+  pal.setColor(QPalette::Background,Qt::black);
+  setPalette(pal);
   left_meter=new RDSegMeter(RDSegMeter::Right,this);
   left_meter->setGeometry(25,10,300,10);
   left_meter->setRange(-4600,-800);

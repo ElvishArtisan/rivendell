@@ -18,9 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-#include <qpainter.h>
-#include <qsignalmapper.h>
+#include <QMessageBox>
+#include <QPainter>
+#include <QSignalMapper>
 
 #include <rdescape_string.h>
 
@@ -270,7 +270,7 @@ void EditGrid::LoadButtons()
 void EditGrid::LabelButton(int dayofweek,int hour,QString clockname)
 {
   QString code=QString("---");
-  QColor color=backgroundColor();
+  QColor color=palette().color(QPalette::Background);
 
   QString sql=QString("select ")+
     "SHORT_NAME,"+  // 00
@@ -287,7 +287,7 @@ void EditGrid::LabelButton(int dayofweek,int hour,QString clockname)
   edit_hour_button[dayofweek-1][hour]->
     setText(QString().sprintf("%02d-%02d\n",hour,hour+1)+code);
   edit_hour_button[dayofweek-1][hour]->
-    setPalette(QPalette(color,backgroundColor()));
+    setPalette(QPalette(color,palette().color(QPalette::Background)));
 }
 
 

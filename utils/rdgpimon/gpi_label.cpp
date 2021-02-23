@@ -2,7 +2,7 @@
 //
 // A Qt-based application for testing general purpose input (GPI) devices.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,8 +39,8 @@ GpiLabel::GpiLabel(QWidget *parent)
   // On Cart Label
   //
   QPalette p=palette();
-  p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkGreen);
-  p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkGreen);
+  p.setColor(QPalette::Active,QPalette::Foreground,Qt::darkGreen);
+  p.setColor(QPalette::Inactive,QPalette::Foreground,Qt::darkGreen);
   gpi_oncart_label=new QLabel(this);
   gpi_oncart_label->setGeometry(0,33,59,16);
   gpi_oncart_label->setFont(labelFont());
@@ -50,8 +50,8 @@ GpiLabel::GpiLabel(QWidget *parent)
   //
   // Off Cart Label
   //
-  p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkRed);
-  p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkRed);
+  p.setColor(QPalette::Active,QPalette::Foreground,Qt::darkRed);
+  p.setColor(QPalette::Inactive,QPalette::Foreground,Qt::darkRed);
   gpi_offcart_label=new QLabel(this);
   gpi_offcart_label->setGeometry(0,49,59,16);
   gpi_offcart_label->setFont(labelFont());

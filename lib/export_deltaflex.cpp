@@ -48,7 +48,7 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
     return false;
   }
   QTextStream *strm=new QTextStream(file);
-  strm->setEncoding(QTextStream::UnicodeUTF8);
+  strm->setCodec("UTF-8");
   if(useLeadingZeros()) {
     air_fmt=QString().sprintf("%%0%uu",cartDigits());
   }
@@ -115,14 +115,14 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
     ext_data="";
     if(q->value(6).toString().length()>0) {
       if(q->value(6).toString().length()<=8) {
-	for(int i=0;i<(8-q->value(6).toString().stripWhiteSpace().length());
+	for(int i=0;i<(8-q->value(6).toString().trimmed().length());
 	    i++) {
 	  ext_data+="0";
 	}
-	ext_data+=q->value(6).toString().stripWhiteSpace();
+	ext_data+=q->value(6).toString().trimmed();
       }
       else {
-	ext_data+=q->value(6).toString().stripWhiteSpace().left(8);
+	ext_data+=q->value(6).toString().trimmed().left(8);
       }
     }
     if(q->value(0).toUInt()<=999000) {
@@ -148,7 +148,7 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
     else {
       tfc_time="";
     }
-    air_cartnum=QString().sprintf(air_fmt,q->value(1).toUInt());
+    air_cartnum=QString().sprintf(air_fmt.toUtf8(),q->value(1).toUInt());
     tfc_cartnum=q->value(10).toString();
 
     *strm << q->value(2).toDateTime().toString("hhmm")+"|";

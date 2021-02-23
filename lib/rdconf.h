@@ -2,7 +2,7 @@
 //
 // The header file for the rconf package
 //
-//   (C) Copyright 1996-2004 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 1996-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -26,17 +26,15 @@
 #include <stdio.h>
 #include <sys/types.h>
 
-#include <qcolor.h>
-#include <qdatetime.h>
-#include <qfont.h>
-#include <qhostaddress.h>
-#include <qlist.h>
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qsqldatabase.h>
-#include <qvariant.h>
-
-#include <q3cstring.h>
+#include <QColor>
+#include <QDateTime>
+#include <QFont>
+#include <QHostAddress>
+#include <QList>
+#include <QString>
+#include <QStringList>
+#include <QSqlDatabase>
+#include <QVariant>
 
 /* Function Prototypes */
 int GetPrivateProfileBool(const char *,const char *,const char *,bool);

@@ -2,7 +2,7 @@
 //
 // GPIO Pin selector widget for Rivendell
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,21 +20,8 @@
 
 #include <math.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qlineedit.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
-
-
-#include <rd.h>
-#include <rdgpioselector.h>
+#include "rd.h"
+#include "rdgpioselector.h"
 
 
 RDGpioSelector::RDGpioSelector(QWidget *parent)
@@ -43,17 +30,16 @@ RDGpioSelector::RDGpioSelector(QWidget *parent)
   //
   // Pin
   //
-  gpio_pin_box=new QSpinBox(this,"gpio_pin_box");
+  gpio_pin_box=new QSpinBox(this);
   gpio_pin_box->setGeometry(60,22,50,19);
   gpio_pin_box->setSpecialValueText("None");
-  gpio_pin_box->setMinValue(-1);
-  gpio_pin_box->setMaxValue(MAX_GPIO_PINS-1);
+  gpio_pin_box->setMinimum(-1);
+  gpio_pin_box->setMaximum(MAX_GPIO_PINS-1);
   gpio_pin_box->setValue(-1);
   connect(gpio_pin_box,SIGNAL(valueChanged(int)),this,SLOT(pinData(int)));
-  QLabel *gpio_pin_label=new QLabel(gpio_pin_box,tr("Pin:"),this,
-				       "gpio_pin_label");
+  QLabel *gpio_pin_label=new QLabel(tr("Pin:"),this);
   gpio_pin_label->setGeometry(0,24,55,19);
-  gpio_pin_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
+  gpio_pin_label->setAlignment(Qt::AlignRight);
 }
 
 

@@ -35,7 +35,7 @@ RDDatePicker::RDDatePicker(int low_year,int high_year,QWidget *parent)
   pick_month_box=new QComboBox(this);
   pick_month_box->setGeometry(0,0,120,26);
   for(int i=1;i<13;i++) {
-    pick_month_box->insertItem(QDate::longMonthName(i));
+    pick_month_box->insertItem(pick_month_box->count(),QDate::longMonthName(i));
   }
   connect(pick_month_box,SIGNAL(activated(int)),
 	  this,SLOT(monthActivatedData(int)));
@@ -47,7 +47,8 @@ RDDatePicker::RDDatePicker(int low_year,int high_year,QWidget *parent)
     pick_year_box=new QComboBox(this);
     pick_year_box->setGeometry(130,0,90,26);
     for(int i=low_year;i<(high_year+1);i++) {
-      pick_year_box->insertItem(QString().sprintf("%04d",i));
+      pick_year_box->
+	insertItem(pick_year_box->count(),QString().sprintf("%04d",i));
     }
     connect(pick_year_box,SIGNAL(activated(int)),
 	    this,SLOT(yearActivatedData(int)));
@@ -165,9 +166,9 @@ bool RDDatePicker::setDate(QDate date)
     return false;
   }
   pick_date=date;
-  pick_month_box->setCurrentItem(date.month()-1);
+  pick_month_box->setCurrentIndex(date.month()-1);
   if(pick_year_box!=NULL) {
-    pick_year_box->setCurrentItem(date.year()-pick_low_year);
+    pick_year_box->setCurrentIndex(date.year()-pick_low_year);
   }
   else {
     pick_year_spin->setValue(date.year());
@@ -192,14 +193,14 @@ void RDDatePicker::monthActivatedData(int id)
 
 void RDDatePicker::yearActivatedData(int id)
 {
-  QDate date=QDate(pick_low_year+pick_year_box->currentItem(),
+  QDate date=QDate(pick_low_year+pick_year_box->currentIndex(),
 		   pick_date.month(),1);
   if(pick_date.day()<=date.daysInMonth()) {
-    pick_date=QDate(pick_low_year+pick_year_box->currentItem(),
+    pick_date=QDate(pick_low_year+pick_year_box->currentIndex(),
 		    pick_date.month(),pick_date.day());
   }
   else {
-    pick_date=QDate(pick_low_year+pick_year_box->currentItem(),
+    pick_date=QDate(pick_low_year+pick_year_box->currentIndex(),
 		    pick_date.month(),date.daysInMonth());
   }
   PrintDays();
@@ -275,11 +276,11 @@ void RDDatePicker::PrintDays()
   // Get Top of Month
   //
   if(pick_year_box!=NULL) {
-    top_date=QDate(pick_low_year+pick_year_box->currentItem(),
-		   pick_month_box->currentItem()+1,1);
+    top_date=QDate(pick_low_year+pick_year_box->currentIndex(),
+		   pick_month_box->currentIndex()+1,1);
   }
   else {
-    top_date=QDate(pick_year_spin->value(),pick_month_box->currentItem()+1,1);
+    top_date=QDate(pick_year_spin->value(),pick_month_box->currentIndex()+1,1);
   }
 
   //

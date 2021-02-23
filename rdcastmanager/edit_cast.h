@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cast
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,15 +21,11 @@
 #ifndef EDIT_CAST_H
 #define EDIT_CAST_H
 
-#include <qbuttongroup.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qdatetimeedit.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qtextedit.h>
+#include <QCheckBox>
+#include <QDateTimeEdit>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QTextEdit>
 
 #include <rddialog.h>
 #include <rdfeed.h>

@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Log services
 //
-//   (C) Copyright 2013-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -126,7 +126,7 @@ void Xport::ListLogs()
   xport_post->getValue("LOG_NAME",&log_name);
   xport_post->getValue("TRACKABLE",&trackable);
   xport_post->getValue("FILTER",&filter);
-  filter=filter.stripWhiteSpace();
+  filter=filter.trimmed();
   xport_post->getValue("RECENT",&recent);
 
   //
@@ -166,11 +166,11 @@ void Xport::ListLogs()
       sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\"))&&";
     }
   }
-  sql=sql.stripWhiteSpace();
+  sql=sql.trimmed();
   if(sql.right(2)=="&&") {
     sql=sql.left(sql.length()-2);
   }
-  sql=sql.stripWhiteSpace();
+  sql=sql.trimmed();
   if(sql.right(5)=="where") {
     sql=sql.left(sql.length()-5);
   }
@@ -192,7 +192,7 @@ void Xport::ListLogs()
   printf("<logList>\n");
   while(q->next()) {
     log=new RDLog(q->value(0).toString());
-    printf("%s",(const char *)log->xml().utf8());
+    printf("%s",(const char *)log->xml().toUtf8());
     delete log;
   }
   printf("</logList>\n");
@@ -233,7 +233,7 @@ void Xport::ListLog()
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("%s\n",(const char *)log_model->xml().utf8());
+  printf("%s\n",(const char *)log_model->xml().toUtf8());
 
   Exit(0);
 }
@@ -346,13 +346,13 @@ void Xport::SaveLog()
       XmlExit("Missing "+line+"_TRANS_TYPE",400,"logs.cpp",LINE_NUMBER);
     }
     integer1=-1;
-    if(str.lower()=="play") {
+    if(str.toLower()=="play") {
       integer1=RDLogLine::Play;
     }
-    if(str.lower()=="segue") {
+    if(str.toLower()=="segue") {
       integer1=RDLogLine::Segue;
     }
-    if(str.lower()=="stop") {
+    if(str.toLower()=="stop") {
       integer1=RDLogLine::Stop;
     }
     if(integer1<0) {
@@ -565,15 +565,15 @@ void Xport::LockLog()
   if(!xport_post->getValue("OPERATION",&op_string)) {
     XmlExit("Missing OPERATION",400,"logs.cpp",LINE_NUMBER);
   }
-  if(op_string.lower()=="create") {
+  if(op_string.toLower()=="create") {
     op_type=Xport::LockLogCreate;
   }
   else {
-    if(op_string.lower()=="update") {
+    if(op_string.toLower()=="update") {
       op_type=Xport::LockLogUpdate;
     }
     else {
-      if(op_string.lower()=="clear") {
+      if(op_string.toLower()=="clear") {
 	op_type=Xport::LockLogClear;
       }
       else {
@@ -603,24 +603,24 @@ void Xport::LockLog()
     addr=xport_remote_address;
     lock_guid=RDLogLock::makeGuid(xport_remote_hostname);
     if(RDLogLock::tryLock(&username,&stationname,&addr,log_name,lock_guid)) {
-      printf("%s",(const char *)LogLockXml(true,log_name,lock_guid,"","",addr).utf8());
+      printf("%s",(const char *)LogLockXml(true,log_name,lock_guid,"","",addr).toUtf8());
     }
     else {
       printf("%s",(const char *)LogLockXml(false,log_name,"",username,
-					   stationname,addr).utf8());
+					   stationname,addr).toUtf8());
     }
     Exit(0);
     break;
 
   case Xport::LockLogUpdate:
     RDLogLock::updateLock(log_name,lock_guid);
-    printf("%s",(const char *)LogLockXml(true,log_name,lock_guid,"","",addr).utf8());
+    printf("%s",(const char *)LogLockXml(true,log_name,lock_guid,"","",addr).toUtf8());
     Exit(0);
     break;
 
   case Xport::LockLogClear:
     RDLogLock::clearLock(lock_guid);
-    printf("%s",(const char *)LogLockXml(true,log_name,lock_guid,"","",addr).utf8());
+    printf("%s",(const char *)LogLockXml(true,log_name,lock_guid,"","",addr).toUtf8());
     Exit(0);
     break;
   }

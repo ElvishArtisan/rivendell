@@ -467,8 +467,8 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     return false;
   }
   QString infilename=q->value(0).toString();
-  QString label_cart=q->value(1).toString().stripWhiteSpace();
-  QString track_cart=q->value(2).toString().stripWhiteSpace();
+  QString label_cart=q->value(1).toString().trimmed();
+  QString track_cart=q->value(2).toString().trimmed();
   QString preimport_cmd=q->value(3).toString();
   RDSvc::SubEventInheritance inherit=
     (RDSvc::SubEventInheritance)q->value(4).toUInt();
@@ -478,7 +478,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   // Open Source File
   //
   if((infile=
-     fopen(RDDateDecode(infilename,date,svc_station,svc_config,svc_name),"r"))==
+      fopen(RDDateDecode(infilename.toUtf8(),date,svc_station,svc_config,svc_name).toUtf8(),"r"))==
      NULL) {
     return false;
   }
@@ -487,7 +487,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   // Run Preimport Command
   //
   if(!preimport_cmd.isEmpty()) {
-    system(RDDateDecode(preimport_cmd,date,svc_station,svc_config,svc_name));
+    system(RDDateDecode(preimport_cmd,date,svc_station,svc_config,svc_name).toUtf8());
   }
 
   QString parser_table;

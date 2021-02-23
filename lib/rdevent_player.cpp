@@ -30,10 +30,11 @@ RDEventPlayer::RDEventPlayer(RDRipc *ripc,QObject *parent)
     player_events[i]=NULL;
     player_state[i]=false;
   }
-  player_mapper=new QSignalMapper(this,"player_mapper");
+  player_mapper=new QSignalMapper(this);
   connect(player_mapper,SIGNAL(mapped(int)),
 	  this,SLOT(macroFinishedData(int)));
-  player_timer=new QTimer(this,"player_timer");
+  player_timer=new QTimer(this);
+  player_timer->setSingleShot(true);
   connect(player_timer,SIGNAL(timeout()),this,SLOT(macroTimerData()));
 }
 
@@ -77,7 +78,7 @@ bool RDEventPlayer::exec(unsigned cartnum)
 void RDEventPlayer::macroFinishedData(int id)
 {
   player_state[id]=false;
-  player_timer->start(1,true);
+  player_timer->start(1);
 }
 
 

@@ -43,10 +43,10 @@ EditHostvar::EditHostvar(QWidget *parent)
   edit_name_edit=new QLineEdit(this);
   edit_name_edit->setGeometry(125,11,120,19);
   edit_name_edit->setReadOnly(true);
-  QLabel *label=new QLabel(edit_name_edit,tr("Variable Name:"),this);
+  QLabel *label=new QLabel(tr("Variable Name:"),this);
   label->setGeometry(10,11,110,19);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Variable Value
@@ -54,10 +54,10 @@ EditHostvar::EditHostvar(QWidget *parent)
   edit_varvalue_edit=new QLineEdit(this);
   edit_varvalue_edit->setGeometry(125,33,sizeHint().width()-135,19);
   edit_varvalue_edit->setMaxLength(255);
-  label=new QLabel(edit_varvalue_edit,tr("Variable Value:"),this);
+  label=new QLabel(tr("Variable Value:"),this);
   label->setGeometry(10,33,110,19);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Remark
@@ -65,10 +65,10 @@ EditHostvar::EditHostvar(QWidget *parent)
   edit_remark_edit=new QLineEdit(this);
   edit_remark_edit->setGeometry(125,55,sizeHint().width()-135,19);
   edit_remark_edit->setMaxLength(255);
-  label=new QLabel(edit_remark_edit,tr("Remark:"),this);
+  label=new QLabel(tr("Remark:"),this);
   label->setGeometry(10,55,110,19);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button

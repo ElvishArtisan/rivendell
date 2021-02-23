@@ -2,7 +2,7 @@
 //
 // Login Widget for RDAdmin.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,7 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
-#include <qlineedit.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
+#include <QLineEdit>
 
 #include <rddialog.h>
 

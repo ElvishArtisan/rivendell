@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT @MUSICBRAINZ_CFLAGS@ -I/usr/include/Qt3Support
+AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -32,7 +32,7 @@ dist_rdrepld_SOURCES = rdrepld.cpp rdrepld.h \
                        replfactory.cpp replfactory.h\
                        citadelxds.cpp citadelxds.h
 nodist_rdrepld_SOURCES = moc_rdrepld.cpp
-rdrepld_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
+rdrepld_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@
 
 CLEANFILES = *~ moc_*
 DISTCLEANFILES = moc_*

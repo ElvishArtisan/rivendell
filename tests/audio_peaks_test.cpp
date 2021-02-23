@@ -2,7 +2,7 @@
 //
 // Test the Rivendell audio peak routines.
 //
-//   (C) Copyright 2015-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,11 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
-
-#include <qapplication.h>
-#include <qvariant.h>
+#include <QApplication>
 
 #include <rdcmd_switch.h>
 #include <rdwavefile.h>
@@ -59,7 +55,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"audio_peaks_test: unknown option \"%s\"\n",
-	      (const char *)cmd->value(i));
+	      cmd->value(i).toUtf8().constData());
       exit(256);
     }
   }
@@ -72,11 +68,11 @@ MainObject::MainObject(QObject *parent)
   wave->nameWave(filename);
   if(!wave->openWave()) {
     fprintf(stderr,"audio_peaks_test: unable to open \"%s\"\n",
-	    (const char *)filename);
+	    filename.toUtf8().constData());
     exit(256);
   }
   if(wave->hasEnergy()) {
-    printf("\"%s\" has energy, size: %u\n",(const char *)filename,
+    printf("\"%s\" has energy, size: %u\n",filename.toUtf8().constData(),
 	   wave->energySize());
     if(frame_used) {
       if(wave->getChannels()==1) {
@@ -90,7 +86,7 @@ MainObject::MainObject(QObject *parent)
     }
   }
   else {
-    printf("\"%s\" does NOT have energy\n",(const char *)filename);
+    printf("\"%s\" does NOT have energy\n",filename.toUtf8().constData());
   }
   wave->closeWave();
   delete wave;

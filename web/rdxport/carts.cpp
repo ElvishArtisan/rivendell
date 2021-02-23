@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Cart services
 //
-//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -55,11 +55,11 @@ void Xport::AddCart()
   if(!xport_post->getValue("TYPE",&type)) {
     XmlExit("Missing TYPE",400,"carts.cpp",LINE_NUMBER);
   }
-  if(type.lower()=="audio") {
+  if(type.toLower()=="audio") {
     cart_type=RDCart::Audio;
   }
   else {
-    if(type.lower()=="macro") {
+    if(type.toLower()=="macro") {
       cart_type=RDCart::Macro;
     }
     else {
@@ -107,7 +107,7 @@ void Xport::AddCart()
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartAdd>\n");
   if(cart->exists()) {
-    printf("%s",(const char *)cart->xml(false,true).utf8());
+    printf("%s",(const char *)cart->xml(false,true).toUtf8());
     SendNotification(RDNotification::CartType,RDNotification::AddAction,
 		     QVariant(cart->number()));
   }
@@ -137,10 +137,10 @@ void Xport::ListCarts()
   xport_post->getValue("FILTER",&filter);
   xport_post->getValue("INCLUDE_CUTS",&include_cuts);
   xport_post->getValue("TYPE",&type);
-  if(type.lower()=="audio") {
+  if(type.toLower()=="audio") {
     cart_type=RDCart::Audio;
   }
-  if(type.lower()=="macro") {
+  if(type.toLower()=="macro") {
     cart_type=RDCart::Macro;
   }
 
@@ -174,7 +174,7 @@ void Xport::ListCarts()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
-  printf("%s\n",(const char *)RDCart::xml(q,include_cuts,true).utf8()); 
+  printf("%s\n",(const char *)RDCart::xml(q,include_cuts,true).toUtf8()); 
   printf("</cartList>\n");
   delete q;
   Exit(0);
@@ -213,7 +213,7 @@ void Xport::ListCart()
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
   cart=new RDCart(cart_number);
-  printf("%s",(const char *)cart->xml(include_cuts,true).utf8());
+  printf("%s",(const char *)cart->xml(include_cuts,true).toUtf8());
   delete cart;
   printf("</cartList>\n");
 
@@ -298,7 +298,7 @@ void Xport::EditCart()
   case RDCart::Macro:
     line=0;
     while(xport_post->getValue(QString().sprintf("MACRO%d",line++),&value)) {
-      value.stripWhiteSpace();
+      value.trimmed();
       if(value.right(1)!="!") {
 	delete cart;
 	XmlExit("Invalid macro data",400,"carts.cpp",LINE_NUMBER);
@@ -399,7 +399,7 @@ void Xport::EditCart()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
-  printf("%s",(const char *)cart->xml(include_cuts,true).utf8());
+  printf("%s",(const char *)cart->xml(include_cuts,true).toUtf8());
   SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
 		   QVariant(cart->number()));
   delete cart;
@@ -493,7 +493,7 @@ void Xport::AddCut()
   cut=new RDCut(cart_number,cut_number);
   if(cut->exists()) {
     printf("%s",
-	   (const char *)RDCart::cutXml(cart_number,cut_number,true).utf8());
+	   (const char *)RDCart::cutXml(cart_number,cut_number,true).toUtf8());
     SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
 		     QVariant(cart->number()));
   }
@@ -536,7 +536,7 @@ void Xport::ListCuts()
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
   while(q->next()) {
-    printf("%s\n",(const char *)RDCut::xml(q,false).utf8());
+    printf("%s\n",(const char *)RDCut::xml(q,false).toUtf8());
   }
   printf("</cutList>\n");
   delete q;
@@ -580,7 +580,7 @@ void Xport::ListCut()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
-  printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true).utf8());
+  printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true).toUtf8());
   printf("</cutList>\n");
   delete cut;
 
@@ -860,7 +860,7 @@ void Xport::EditCut()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
-  printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true).utf8());
+  printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true).toUtf8());
   printf("</cutList>\n");
   SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
 		   QVariant(cut->cartNumber()));

@@ -58,7 +58,7 @@ AddReport::AddReport(QString *rptname,QWidget *parent)
   add_name_edit->setGeometry(170,10,sizeHint().width()-180,19);
   add_name_edit->setMaxLength(64);
   add_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(add_name_edit,tr("&Report Name:"),this);
+  QLabel *label=new QLabel(tr("&Report Name:"),this);
   label->setGeometry(10,10,155,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

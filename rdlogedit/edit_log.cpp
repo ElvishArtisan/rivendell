@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +20,6 @@
 
 #include <QMessageBox>
 #include <QPainter>
-#include <QItemSelectionModel>
 
 #include <rdadd_log.h>
 #include <rdconf.h>
@@ -43,8 +42,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   QString sql;
   RDSqlQuery *q;
   QStringList services_list;
-  QColor system_mid_color = colorGroup().mid();
-  QColor system_button_color = palette().active().button();
+  QColor system_mid_color=palette().mid().color();
+  QColor system_button_color=palette().button().color();
 
   edit_logname=logname;
   edit_filter=filter;
@@ -100,14 +99,14 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   // Log Name
   //
   edit_modified_label=new QLabel(this);
-  edit_modified_label->setBackgroundColor(QColor(system_mid_color));
+  //  edit_modified_label->setBackgroundColor(QColor(system_mid_color));
   edit_modified_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
   edit_modified_label->setFont(progressFont());
   edit_logname_label=new QLabel(logname,this);
-  edit_logname_label->setBackgroundColor(QColor(system_mid_color));
+  //  edit_logname_label->setBackgroundColor(QColor(system_mid_color));
   edit_logname_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_logname_label_label=new QLabel(tr("Log Name:"),this);
-  edit_logname_label_label->setBackgroundColor(QColor(system_mid_color));
+  //  edit_logname_label_label->setBackgroundColor(QColor(system_mid_color));
   edit_logname_label_label->setFont(labelFont());
   edit_logname_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -115,10 +114,10 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   // Track Counts
   //
   edit_track_label=new QLabel(this);
-  edit_track_label->setBackgroundColor(QColor(system_mid_color));
+  //  edit_track_label->setBackgroundColor(QColor(system_mid_color));
   edit_track_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_track_label_label=new QLabel(tr("Tracks:"),this);
-  edit_track_label_label->setBackgroundColor(QColor(system_mid_color));
+  //  edit_track_label_label->setBackgroundColor(QColor(system_mid_color));
   edit_track_label_label->setFont(labelFont());
   edit_track_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -129,10 +128,10 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
     new QLabel(edit_log->originUser()+QString(" - ")+
 	       edit_log->originDatetime().toString("MM/dd/yyyy - hh:mm:ss"),
 	       this);
-  edit_origin_label->setBackgroundColor(QColor(system_mid_color));
+  //  edit_origin_label->setBackgroundColor(QColor(system_mid_color));
   edit_origin_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_origin_label_label=new QLabel(tr("Origin:"),this);
-  edit_origin_label_label->setBackgroundColor(QColor(system_mid_color));
+  //  edit_origin_label_label->setBackgroundColor(QColor(system_mid_color));
   edit_origin_label_label->setFont(labelFont());
   edit_origin_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -143,8 +142,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_description_edit->setValidator(validator);
   connect(edit_description_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(descriptionChangedData(const QString &)));
-  edit_description_label=
-    new QLabel(edit_description_edit,tr("Description:"),this);
+  edit_description_label=new QLabel(tr("Description:"),this);
   edit_description_label->setFont(labelFont());
   edit_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -152,7 +150,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   // Purge Date
   //
   edit_purgedate_box=new QCheckBox(this);
-  edit_purgedate_label=new QLabel(edit_purgedate_box,tr("Delete on"),this);
+  edit_purgedate_label=new QLabel(tr("Delete on"),this);
   edit_purgedate_label->setFont(labelFont());
   edit_purgedate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_purgedate_edit=new QDateEdit(this);
@@ -176,7 +174,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_service_box=new QComboBox(this);
   edit_service_edit=new QLineEdit(this);
   edit_service_edit->setReadOnly(true);
-  edit_service_label=new QLabel(edit_service_box,tr("Service:"),this);
+  edit_service_label=new QLabel(tr("Service:"),this);
   edit_service_label->setFont(labelFont());
   edit_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   connect(edit_service_box,SIGNAL(activated(const QString &)),
@@ -186,12 +184,11 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   // Auto Refresh
   //
   edit_autorefresh_box=new QComboBox(this);
-  edit_autorefresh_box->insertItem(tr("Yes"));
-  edit_autorefresh_box->insertItem(tr("No"));
+  edit_autorefresh_box->insertItem(0,tr("Yes"));
+  edit_autorefresh_box->insertItem(1,tr("No"));
   edit_autorefresh_edit=new QLineEdit(this);
   edit_autorefresh_edit->setReadOnly(true);
-  edit_autorefresh_label=
-    new QLabel(edit_autorefresh_box,tr("Enable AutoRefresh:"),this);
+  edit_autorefresh_label=new QLabel(tr("Enable AutoRefresh:"),this);
   edit_autorefresh_label->setFont(labelFont());
   edit_autorefresh_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   connect(edit_autorefresh_box,SIGNAL(activated(int)),
@@ -202,7 +199,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_startdate_edit=new QDateEdit(this);
   edit_startdate_edit->setDisplayFormat("MM/dd/yyyy");
-  edit_startdate_label=new QLabel(edit_startdate_edit,tr("Start Date:"),this);
+  edit_startdate_label=new QLabel(tr("Start Date:"),this);
   edit_startdate_label->setFont(labelFont());
   edit_startdate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   connect(edit_startdate_edit,SIGNAL(dateChanged(const QDate &)),
@@ -214,7 +211,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_enddate_edit=new QDateEdit(this);
   edit_enddate_edit->setDisplayFormat("MM/dd/yyyy");
-  edit_enddate_label=new QLabel(edit_startdate_edit,tr("End Date:"),this);
+  edit_enddate_label=new QLabel(tr("End Date:"),this);
   edit_enddate_label->setFont(labelFont());
   edit_enddate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   connect(edit_enddate_edit,SIGNAL(dateChanged(const QDate &)),
@@ -226,8 +223,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_startdate_box=new QCheckBox(this);
   connect(edit_startdate_box,SIGNAL(toggled(bool)),
 	  this,SLOT(startDateEnabledData(bool)));
-  edit_startdate_box_label=
-    new QLabel(edit_startdate_box,tr("Start Date Enabled"),this);
+  edit_startdate_box_label=new QLabel(tr("Start Date Enabled"),this);
   edit_startdate_box_label->setFont(labelFont());
   edit_startdate_box_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -237,8 +233,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_enddate_box=new QCheckBox(this);
   connect(edit_enddate_box,SIGNAL(toggled(bool)),
 	  this,SLOT(endDateEnabledData(bool)));
-  edit_enddate_box_label=
-    new QLabel(edit_enddate_box,tr("End Date Enabled"),this);
+  edit_enddate_box_label=new QLabel(tr("End Date Enabled"),this);
   edit_enddate_box_label->setFont(labelFont());
   edit_enddate_box_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);  
 
@@ -252,7 +247,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   // Stop Time Counter
   //
   edit_stoptime_edit=new QLineEdit(this);
-  edit_stoptime_label=new QLabel(edit_stoptime_edit,tr("Next Stop:"),this);
+  edit_stoptime_label=new QLabel(tr("Next Stop:"),this);
   edit_stoptime_label->setFont(labelFont());
   edit_stoptime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
 
@@ -260,7 +255,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   // End Time Counter
   //
   edit_endtime_edit=new QLineEdit(this);
-  edit_endtime_label=new QLabel(edit_endtime_edit,tr("Log End:"),this);
+  edit_endtime_label=new QLabel(tr("Log End:"),this);
   edit_endtime_label->setFont(labelFont());
   edit_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
 
@@ -433,8 +428,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_timestyle_box->setCurrentIndex(global_start_time_style);
   connect(edit_timestyle_box,SIGNAL(activated(int)),
 	  this,SLOT(timestyleChangedData(int)));
-  edit_timestyle_label=
-    new QLabel(edit_timestyle_box,tr("Show Start Times As"),this);
+  edit_timestyle_label=new QLabel(tr("Show Start Times As"),this);
   edit_timestyle_label->setFont(labelFont());
   edit_timestyle_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
 
@@ -482,7 +476,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   QString service=edit_log->service();
   for ( QStringList::Iterator it = services_list.begin(); 
         it != services_list.end(); ++it ) {
-    edit_service_box->insertItem(*it);
+    edit_service_box->insertItem(edit_service_box->count(),*it);
     if(*it==service) {
       n=ncounter;
       edit_service_edit->setText(*it);
@@ -490,14 +484,14 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
     ncounter++;
   }
   if(n>=0) {
-    edit_service_box->setCurrentItem(n);
+    edit_service_box->setCurrentIndex(n);
   }
   if(edit_log->autoRefresh()) {
-    edit_autorefresh_box->setCurrentItem(0);
+    edit_autorefresh_box->setCurrentIndex(0);
     edit_autorefresh_edit->setText(tr("Yes"));
   }
   else {
-    edit_autorefresh_box->setCurrentItem(1);
+    edit_autorefresh_box->setCurrentIndex(1);
     edit_autorefresh_edit->setText(tr("No"));
   }
   if(!edit_log->startDate().isNull()) {
@@ -1015,7 +1009,7 @@ void EditLog::saveData()
   }
   SaveLog();
   SetLogModified(false);
-  edit_log->setAutoRefresh(edit_autorefresh_box->currentItem()==0);
+  edit_log->setAutoRefresh(edit_autorefresh_box->currentIndex()==0);
   edit_log->
     setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
 }
@@ -1051,8 +1045,8 @@ void EditLog::saveasData()
     edit_log=new RDLog(logname);
     edit_log_model->setLogName(logname);
     for(int i=0;i<edit_service_box->count();i++) {
-      if(edit_service_box->text(i)==svcname) {
-	edit_service_box->setCurrentItem(i);
+      if(edit_service_box->itemData(i).toString()==svcname) {
+	edit_service_box->setCurrentIndex(i);
       }
     }
     SaveLog();
@@ -1097,7 +1091,7 @@ void EditLog::reportsData()
   ListReports *lr=
     new ListReports(edit_log->name(),edit_description_edit->text(),
 		    edit_service_box->currentText(),start_date,end_date,
-		    edit_autorefresh_box->currentItem()==0,
+		    edit_autorefresh_box->currentIndex()==0,
 		    edit_log_model,this);
   lr->exec();
   delete lr;
@@ -1230,7 +1224,7 @@ void EditLog::resizeEvent(QResizeEvent *e)
 
 void EditLog::paintEvent(QPaintEvent *e)
 {
-  QColor system_mid_color = colorGroup().mid();
+  QColor system_mid_color = palette().mid().color();
   QPainter *p=new QPainter(this);
   p->fillRect(60,8,size().width()-120,24,QColor(system_mid_color));
   p->fillRect(9,size().height()-130,size().width()-20,60,
@@ -1270,7 +1264,7 @@ void EditLog::SaveLog()
   else {
     edit_log->setEndDate(QDate());
   }
-  edit_log->setAutoRefresh(edit_autorefresh_box->currentItem()==0);
+  edit_log->setAutoRefresh(edit_autorefresh_box->currentIndex()==0);
   edit_log_model->save(rda->config());
   edit_log->
     setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));

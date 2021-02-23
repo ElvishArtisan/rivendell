@@ -1,4 +1,4 @@
-## automake.am
+## Makefile.am
 ##
 ## Automake.am for rivendell/rdairplay
 ##
@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib  -Wno-strict-aliasing @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib  -Wno-strict-aliasing @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -74,7 +74,7 @@ nodist_rdairplay_SOURCES = moc_button_log.cpp\
                            moc_stop_counter.cpp\
                            moc_wall_clock.cpp
 
-rdairplay_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
+rdairplay_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@
 rdairplay_LDFLAGS = -rdynamic
 
 EXTRA_DIST = rdairplay.pro\

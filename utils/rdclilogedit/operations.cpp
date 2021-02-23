@@ -2,7 +2,7 @@
 //
 // A command-line log editor for Rivendell
 //
-//   (C) Copyright 2016-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -137,8 +137,8 @@ void MainObject::Deletelog(QString logname)
 
 void MainObject::Header() const
 {
-  printf(" Description: %s\n",(const char *)edit_description);
-  printf("     Service: %s\n",(const char *)edit_service);
+  printf(" Description: %s\n",edit_description.toUtf8().constData());
+  printf("     Service: %s\n",edit_service.toUtf8().constData());
   if(edit_auto_refresh) {
     printf("Auto Refresh: Yes\n");
   }
@@ -150,21 +150,21 @@ void MainObject::Header() const
   }
   else {
     printf("  Start Date: %s\n",
-	   (const char *)edit_start_date.toString("yyyy-MM-dd"));
+	   edit_start_date.toString("yyyy-MM-dd").toUtf8().constData());
   }
   if(edit_end_date.isNull()) {
     printf("    End Date: None\n");
   }
   else {
     printf("    End Date: %s\n",
-	   (const char *)edit_end_date.toString("yyyy-MM-dd"));
+	   edit_end_date.toString("yyyy-MM-dd").toUtf8().constData());
   }
   if(edit_purge_date.isNull()) {
     printf("  Purge Date: None\n");
   }
   else {
     printf("  Purge Date: %s\n",
-	   (const char *)edit_purge_date.toString("yyyy-MM-dd"));
+	   edit_purge_date.toString("yyyy-MM-dd").toUtf8().constData());
   }
 }
 
@@ -172,7 +172,7 @@ void MainObject::Header() const
 void MainObject::List()
 {
   for(int i=0;i<edit_log_model->lineCount();i++) {
-    printf("%4d %s\n",i,(const char *)ListLine(edit_log_model,i));
+    printf("%4d %s\n",i,ListLine(edit_log_model,i).toUtf8().constData());
   }
   printf("%4d  --- end of log ---\n",edit_log_model->lineCount());
 }
@@ -186,7 +186,7 @@ void MainObject::ListLogs() const
   sql=QString("select NAME from LOGS order by NAME");
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    printf("%s\n",(const char *)q->value(0).toString());
+    printf("%s\n",q->value(0).toString().toUtf8().constData());
   }
   delete q;
 }
@@ -200,7 +200,7 @@ void MainObject::Listservices() const
   sql=QString("select NAME from SERVICES order by NAME");
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    printf("%s\n",(const char *)q->value(0).toString());
+    printf("%s\n",q->value(0).toString().toUtf8().constData());
   }
   delete q;
 }
@@ -261,7 +261,7 @@ void MainObject::Load(QString logname)
     edit_modified=false;
   }
   else {
-    fprintf(stderr,"log \"%s\" does not exist\n",(const char *)logname);
+    fprintf(stderr,"log \"%s\" does not exist\n",logname.toUtf8().constData());
     delete edit_log;
     edit_log=NULL;
   }
@@ -276,29 +276,29 @@ QString MainObject::ListLine(RDLogModel *model,int line) const
   switch(logline->timeType()) {
   case RDLogLine::Hard:
     ret+=QString().
-      sprintf("T%s  ",(const char *)logline->startTime(RDLogLine::Logged).
-	      toString("hh:mm:ss"));
+      sprintf("T%s  ",logline->startTime(RDLogLine::Logged).
+	      toString("hh:mm:ss").toUtf8().constData());
     break;
 
   case RDLogLine::Relative:
     ret+=QString().
-      sprintf(" %s  ",(const char *)model->blockStartTime(line).
-	      toString("hh:mm:ss"));
+      sprintf(" %s  ",model->blockStartTime(line).
+	      toString("hh:mm:ss").toUtf8().constData());
     break;
 
   case RDLogLine::NoTime:
     ret+="          ";
     break;
   }
-  ret+=QString().sprintf("%-7s",
-		(const char *)RDLogLine::transText(logline->transType()));
+  ret+=QString().sprintf("%-7s",RDLogLine::transText(logline->transType()).
+			 toUtf8().constData());
   switch(logline->type()) {
   case RDLogLine::Cart:
   case RDLogLine::Macro:
     ret+=QString().sprintf("%06u   ",logline->cartNumber());
-    ret+=QString().sprintf("%-12s",(const char *)logline->groupName());
-    ret+=QString().sprintf("%5s",
-      (const char *)RDGetTimeLength(logline->forcedLength(),false,false))+"  ";
+    ret+=QString().sprintf("%-12s",logline->groupName().toUtf8().constData());
+    ret+=QString().sprintf("%5s",RDGetTimeLength(logline->forcedLength(),false,
+					    false).toUtf8().constData())+"  ";
     ret+=logline->title();
     break;
 

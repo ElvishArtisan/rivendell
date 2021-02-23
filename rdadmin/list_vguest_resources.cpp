@@ -70,7 +70,7 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   list_list_model->setFont(defaultFont());
   list_list_model->setPalette(palette());
   list_list_view->setModel(list_list_model);
-  list_title_label=new QLabel(list_list_view,list_table,this);
+  list_title_label=new QLabel(list_table,this);
   list_title_label->setFont(labelFont());
   connect(list_list_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));

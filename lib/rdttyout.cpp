@@ -38,19 +38,19 @@ bool RDTtyOut(const QString &station,unsigned port_id,const QString &str)
     delete tty_entry;
     return false;
   }
-  tty_device->write((const char *)str,strlen((const char *)str));
+  tty_device->write(str.toUtf8());
   switch(tty_entry->termination()) {
   case RDTty::CrTerm:
-    tty_device->putch(13);
+    tty_device->putChar(13);
     break;
 
   case RDTty::LfTerm:
-    tty_device->putch(10);
+    tty_device->putChar(10);
     break;
 
   case RDTty::CrLfTerm:
-    tty_device->putch(13);
-    tty_device->putch(10);
+    tty_device->putChar(13);
+    tty_device->putChar(10);
     break;
 
   case RDTty::NoTerm:

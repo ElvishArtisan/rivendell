@@ -76,7 +76,6 @@ RDCopyAudio::ErrorCode RDCopyAudio::runCopy(const QString &username,
 {
   long response_code;
   CURL *curl=NULL;
-  char url[1024];
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
 
@@ -85,43 +84,45 @@ RDCopyAudio::ErrorCode RDCopyAudio::runCopy(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",RDXPORT_COMMAND_COPYAUDIO),
+	       QString().sprintf("%u",RDXPORT_COMMAND_COPYAUDIO).
+	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
-	       CURLFORM_COPYCONTENTS,(const char *)username.utf8(),CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,
+	       username.toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
-	       CURLFORM_COPYCONTENTS,(const char *)password.utf8(),CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,
+	       password.toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"SOURCE_CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_source_cart_number),
+	       QString().sprintf("%u",conv_source_cart_number).
+	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"SOURCE_CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_source_cut_number),
+	       QString().sprintf("%u",conv_source_cut_number).
+	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"DESTINATION_CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_destination_cart_number),
+	       QString().sprintf("%u",conv_destination_cart_number).
+	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"DESTINATION_CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_destination_cut_number),
+	       QString().sprintf("%u",conv_destination_cut_number).
+	       toUtf8().constData(),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     curl_formfree(first);
     return RDCopyAudio::ErrorInternal;
   }
 
-  //
-  // Write out URL as a C string before passing to curl_easy_setopt(), 
-  // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
-  // error.
-  //
-  strncpy(url,conv_station->webServiceUrl(conv_config),1024);
-  curl_easy_setopt(curl,CURLOPT_URL,url);
+  curl_easy_setopt(curl,CURLOPT_URL,conv_station->
+		   webServiceUrl(conv_config).toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)conv_config->userAgent());
+		   conv_config->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
 
   switch(curl_easy_perform(curl)) {

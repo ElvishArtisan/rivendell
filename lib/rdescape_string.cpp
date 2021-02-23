@@ -80,7 +80,7 @@ QString RDEscapeString(QString const &str)
   QString res;
 
   for(int i=0;i<str.length();i++) {
-    QChar c=orig.ref(i);
+    QChar c=orig[i];
     switch(c.toAscii()) {
     case '"':
       res+=QString("\\\"");

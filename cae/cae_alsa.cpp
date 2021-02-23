@@ -2,7 +2,7 @@
 //
 // The ALSA Driver for the Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -657,16 +657,17 @@ void MainObject::alsaInit(RDStation *station)
   //
   // Stop & Fade Timers
   //
-  QSignalMapper *stop_mapper=new QSignalMapper(this,"stop_mapper");
+  QSignalMapper *stop_mapper=new QSignalMapper(this);
   connect(stop_mapper,SIGNAL(mapped(int)),this,SLOT(alsaStopTimerData(int)));
-  QSignalMapper *fade_mapper=new QSignalMapper(this,"fade_mapper");
+  QSignalMapper *fade_mapper=new QSignalMapper(this);
   connect(fade_mapper,SIGNAL(mapped(int)),this,SLOT(alsaFadeTimerData(int)));
-  QSignalMapper *record_mapper=new QSignalMapper(this,"record_mapper");
+  QSignalMapper *record_mapper=new QSignalMapper(this);
   connect(record_mapper,SIGNAL(mapped(int)),
 	  this,SLOT(alsaRecordTimerData(int)));
   for(int i=0;i<RD_MAX_CARDS;i++) {
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       alsa_stop_timer[i][j]=new QTimer(this);
+      alsa_stop_timer[i][j]->setSingleShot(true);
       stop_mapper->setMapping(alsa_stop_timer[i][j],i*RD_MAX_STREAMS+j);
       connect(alsa_stop_timer[i][j],SIGNAL(timeout()),stop_mapper,SLOT(map()));
       alsa_fade_timer[i][j]=new QTimer(this);
@@ -675,6 +676,7 @@ void MainObject::alsaInit(RDStation *station)
     }
     for(int j=0;j<RD_MAX_PORTS;j++) {
       alsa_record_timer[i][j]=new QTimer(this);
+      alsa_record_timer[i][j]->setSingleShot(true);
       record_mapper->setMapping(alsa_record_timer[i][j],i*RD_MAX_PORTS+j);
       connect(alsa_record_timer[i][j],SIGNAL(timeout()),
 	      record_mapper,SLOT(map()));
@@ -700,7 +702,7 @@ void MainObject::alsaInit(RDStation *station)
       alsa_play_format[i].exiting = true;
       alsa_capture_format[i].exiting = true;
       dev=QString().sprintf("rd%d",card);
-      if(snd_pcm_open(&pcm_play_handle,(const char *)dev,
+      if(snd_pcm_open(&pcm_play_handle,dev.toUtf8(),
 		      SND_PCM_STREAM_PLAYBACK,0)==0){
 	pcm_opened=true;
 	if(AlsaStartPlayDevice(dev,i,pcm_play_handle)) {
@@ -710,7 +712,7 @@ void MainObject::alsaInit(RDStation *station)
 	  snd_pcm_close(pcm_play_handle);
 	}
       }
-      if(snd_pcm_open(&pcm_capture_handle,(const char *)dev,
+      if(snd_pcm_open(&pcm_capture_handle,dev.toUtf8(),
 		      SND_PCM_STREAM_CAPTURE,0)==0) {
 	pcm_opened=true;
 	if(AlsaStartCaptureDevice(dev,i,pcm_capture_handle)) {
@@ -722,13 +724,11 @@ void MainObject::alsaInit(RDStation *station)
       }
       if(cae_driver[i]==RDStation::Alsa) {
 	station->setCardDriver(i,RDStation::Alsa);
-	if(snd_ctl_open(&snd_ctl,dev,0)<0) {
+	if(snd_ctl_open(&snd_ctl,dev.toUtf8(),0)<0) {
 	  RDApplication::syslog(rd_config,LOG_INFO,
 				"no control device found for %s",
-		 (const char *)dev);
-	  station->
-	    setCardName(i,
-			QString().sprintf("ALSA Device %s",(const char *)dev));
+				dev.toUtf8().constData());
+	  station->setCardName(i,tr("ALSA Device")+" "+dev);
 	}
 	else {
 	  snd_ctl_card_info_malloc(&card_info);
@@ -900,7 +900,7 @@ bool MainObject::alsaPlaybackPosition(int card,int stream,unsigned pos)
   if(alsa_playing[card][stream]) {
     alsa_stop_timer[card][stream]->stop();
     alsa_stop_timer[card][stream]->
-      start(alsa_play_wave[card][stream]->getExtTimeLength()-pos,true);
+      start(alsa_play_wave[card][stream]->getExtTimeLength()-pos);
   }
   return true;
 #else
@@ -919,7 +919,7 @@ bool MainObject::alsaPlay(int card,int stream,int length,int speed,bool pitch,
   }
   alsa_playing[card][stream]=true;
   if(length>0) {
-    alsa_stop_timer[card][stream]->start(length,true);
+    alsa_stop_timer[card][stream]->start(length);
   }
   statePlayUpdate(card,stream,1);
   return true;
@@ -1039,7 +1039,7 @@ bool MainObject::alsaLoadRecord(int card,int stream,int coding,int chans,
     alsa_record_wave[card][stream]=NULL;
     return false;
   }
-  chown((const char *)wavename,rd_config->uid(),rd_config->gid());
+  chown(wavename.toUtf8(),rd_config->uid(),rd_config->gid());
   alsa_input_channels[card][stream]=chans;
   alsa_record_ring[card][stream]=new RDRingBuffer(RINGBUFFER_SIZE);
   alsa_record_ring[card][stream]->reset();
@@ -1081,7 +1081,7 @@ bool MainObject::alsaRecord(int card,int stream,int length,int thres)
   alsa_recording[card][stream]=true;
   if(alsa_input_vox[card][stream]==0.0) {
     if(length>0) {
-      alsa_record_timer[card][stream]->start(length,true);
+      alsa_record_timer[card][stream]->start(length);
     }
     stateRecordUpdate(card,stream,4);
   }

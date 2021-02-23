@@ -2,7 +2,7 @@
 //
 // Batch Routines for the Rivendell netcatcher daemon
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,13 +33,7 @@
 #include <sched.h>
 #include <errno.h>
 
-#include <vector>
-
-#include <qapplication.h>
-#include <qtimer.h>
-#include <qsignalmapper.h>
-#include <qsessionmanager.h>
-#include <qurl.h>
+#include <QApplication>
 
 #include <rdapplication.h>
 #include <rdaudioconvert.h>
@@ -208,7 +202,7 @@ void MainObject::RunDownload(CatchEvent *evt)
   QString url_username=evt->urlUsername();
   QString url_password=evt->urlPassword();
   if(url_username.isEmpty()&&
-     (QUrl(evt->resolvedUrl()).scheme().lower()=="ftp")) {
+     (QUrl(evt->resolvedUrl()).scheme().toLower()=="ftp")) {
     url_username=RD_ANON_FTP_USERNAME;
     url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
   }
@@ -233,7 +227,7 @@ void MainObject::RunDownload(CatchEvent *evt)
 		(const char *)RDDownload::errorText(conv_err).toUtf8(),
 		evt->id());
     delete conv;
-    unlink(evt->tempName());
+    unlink(evt->tempName().toUtf8());
     exit(0);
 
   default:
@@ -245,7 +239,7 @@ void MainObject::RunDownload(CatchEvent *evt)
 		(const char *)RDDownload::errorText(conv_err).toUtf8(),
 		evt->id());
     delete conv;
-    unlink(evt->tempName());
+    unlink(evt->tempName().toUtf8());
     exit(0);
   }
   delete conv;
@@ -259,7 +253,7 @@ void MainObject::RunDownload(CatchEvent *evt)
   }
   rda->syslog(LOG_INFO,"deleting file %s, id=%d",
 	      (const char *)evt->tempName().toUtf8(),evt->id());
-  unlink(evt->tempName());
+  unlink(evt->tempName().toUtf8());
   catch_connect->setExitCode(evt->id(),RDRecording::Ok,"OK");
 }
 
@@ -323,7 +317,7 @@ void MainObject::RunUpload(CatchEvent *evt)
   QString url_username=evt->urlUsername();
   QString url_password=evt->urlPassword();
   if(url_username.isEmpty()&&
-     (QUrl(evt->resolvedUrl()).scheme().lower()=="ftp")) {
+     (QUrl(evt->resolvedUrl()).scheme().toLower()=="ftp")) {
     url_username=RD_ANON_FTP_USERNAME;
     url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
   }
@@ -370,12 +364,12 @@ void MainObject::RunUpload(CatchEvent *evt)
     CheckInPodcast(evt);
   }
   if(evt->deleteTempFile()) {
-    unlink(evt->tempName());
+    unlink(evt->tempName().toUtf8());
     rda->syslog(LOG_INFO,"deleted file %s",
 		(const char *)evt->tempName().toUtf8());
   }
   else {
-    chown(evt->tempName(),rda->config()->uid(),rda->config()->gid());
+    chown(evt->tempName().toUtf8(),rda->config()->uid(),rda->config()->gid());
   }
 }
 
@@ -525,7 +519,7 @@ bool MainObject::Import(CatchEvent *evt)
 	      (const char *)evt->cutName().toUtf8(),
 	      evt->id());
   if(evt->deleteTempFile()) {
-    unlink(evt->tempName());
+    unlink(evt->tempName().toUtf8());
     rda->syslog(LOG_DEBUG,"deleted file \"%s\"",
 		(const char *)evt->tempName().toUtf8());
   }

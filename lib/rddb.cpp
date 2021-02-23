@@ -58,9 +58,9 @@ RDSqlQuery::RDSqlQuery (const QString &query,bool reconnect):
       +"["+db.lastError().text()+"]";
     }
 
-    fprintf(stderr,"%s\n",(const char *)err);
+    fprintf(stderr,"%s\n",err.toUtf8().constData());
     if(rda!=NULL) {
-      rda->syslog(LOG_ERR,(const char *)err);
+      rda->syslog(LOG_ERR,err.toUtf8().constData());
     }
   }
 
@@ -85,9 +85,9 @@ RDSqlQuery::RDSqlQuery (const QString &query,bool reconnect):
     err=QObject::tr("invalid SQL or failed DB connection")+
       +"["+lastError().text()+"]: "+query;
 
-    fprintf(stderr,"%s\n",(const char *)err);
+    fprintf(stderr,"%s\n",err.toUtf8().constData());
     if(rda!=NULL) {
-      rda->syslog(LOG_ERR,(const char *)err);
+      rda->syslog(LOG_ERR,err.toUtf8().constData());
     }
   }
 }

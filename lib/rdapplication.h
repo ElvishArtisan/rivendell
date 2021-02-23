@@ -32,6 +32,7 @@ class RDApplication : public RDCoreApplication
 		const QString &usage,QObject *parent=0);
   ~RDApplication();
   RDIconEngine *iconEngine() const;
+  static QString locale();
 
  private:
   RDIconEngine *app_icon_engine;

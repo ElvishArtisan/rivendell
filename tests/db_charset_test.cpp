@@ -18,9 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-
-#include <qapplication.h>
+#include <QApplication>
 
 #include <rdapplication.h>
 
@@ -38,7 +36,7 @@ MainObject::MainObject(QObject *parent)
   for(unsigned i=0;i<cmd->keys();i++) {
     if(!cmd->processed(i)) {
       fprintf(stderr,"db_charset_test: unknown option \"%s\"\n",
-	      (const char *)cmd->value(i));
+	      cmd->value(i).toUtf8().constData());
       exit(256);
     }
   }
@@ -48,23 +46,23 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDApplication("db_charset_test","rdvairplayd",DB_CHARSET_TEST_USAGE,this));
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"db_charset_test: %s\n",(const char *)err_msg);
+    fprintf(stderr,"db_charset_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
   sql=QString("show variables like '%character_set%'");
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    printf("%s: %s\n",(const char *)q->value(0).toString(),
-	   (const char *)q->value(1).toString());
+    printf("%s: %s\n",q->value(0).toString().toUtf8().constData(),
+	   q->value(1).toString().toUtf8().constData());
   }
   delete q;
 
   sql=QString("show variables like '%collation%'");
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    printf("%s: %s\n",(const char *)q->value(0).toString(),
-	   (const char *)q->value(1).toString());
+    printf("%s: %s\n",q->value(0).toString().toUtf8().constData(),
+	   q->value(1).toString().toUtf8().constData());
   }
   delete q;
 

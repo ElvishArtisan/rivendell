@@ -38,7 +38,7 @@ EditVguestResource::EditVguestResource(QWidget *parent)
   //
   edit_enginenum_edit=new QLineEdit(this);
   edit_enginenum_edit->setGeometry(135,10,50,20);
-  QLabel *label=new QLabel(edit_enginenum_edit,tr("Engine")+":",this);
+  QLabel *label=new QLabel(tr("Engine")+":",this);
   label->setGeometry(10,10,120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -48,7 +48,7 @@ EditVguestResource::EditVguestResource(QWidget *parent)
   //
   edit_devicenum_edit=new QLineEdit(this);
   edit_devicenum_edit->setGeometry(135,36,50,20);
-  label=new QLabel(edit_devicenum_edit,tr("Device (Hex): "),this);
+  label=new QLabel(tr("Device (Hex): "),this);
   label->setGeometry(10,36,120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -58,7 +58,7 @@ EditVguestResource::EditVguestResource(QWidget *parent)
   //
   edit_surfacenum_edit=new QLineEdit(this);
   edit_surfacenum_edit->setGeometry(135,62,50,20);
-  label=new QLabel(edit_surfacenum_edit,tr("Surface")+":",this);
+  label=new QLabel(tr("Surface")+":",this);
   label->setGeometry(10,62,120,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -68,8 +68,7 @@ EditVguestResource::EditVguestResource(QWidget *parent)
   //
   edit_relaynum_edit=new QLineEdit(this);
   edit_relaynum_edit->setGeometry(135,88,50,20);
-  edit_relaynum_label=
-    new QLabel(edit_relaynum_edit,tr("Bus/Relay")+":",this);
+  edit_relaynum_label=new QLabel(tr("Bus/Relay")+":",this);
   edit_relaynum_label->setGeometry(10,88,120,20);
   edit_relaynum_label->setFont(labelFont());
   edit_relaynum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

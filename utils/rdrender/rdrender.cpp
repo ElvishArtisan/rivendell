@@ -2,7 +2,7 @@
 //
 // Render a Rivendell log.
 //
-//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,9 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <qapplication.h>
-#include <qdir.h>
-#include <qfile.h>
+#include <QApplication>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -108,33 +106,33 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--format") {
       QString format=rda->cmdSwitch()->value(i);
       ok=false;
-      if(format.lower()=="flac") {
+      if(format.toLower()=="flac") {
 	render_settings.setFormat(RDSettings::Flac);
 	ok=true;
       }
-      if(format.lower()=="mp2") {
+      if(format.toLower()=="mp2") {
 	render_settings.setFormat(RDSettings::MpegL2);
 	ok=true;
       }
-      if(format.lower()=="mp3") {
+      if(format.toLower()=="mp3") {
 	render_settings.setFormat(RDSettings::MpegL3);
 	ok=true;
       }
-      if(format.lower()=="pcm16") {
+      if(format.toLower()=="pcm16") {
 	render_settings.setFormat(RDSettings::Pcm16);
 	ok=true;
       }
-      if(format.lower()=="pcm24") {
+      if(format.toLower()=="pcm24") {
 	render_settings.setFormat(RDSettings::Pcm24);
 	ok=true;
       }
-      if(format.lower()=="vorbis") {
+      if(format.toLower()=="vorbis") {
 	render_settings.setFormat(RDSettings::OggVorbis);
 	ok=true;
       }
       if(!ok) {
 	fprintf(stderr,"rdrender: unknown --format \"%s\"\n",
-		(const char *)format);
+		format.toUtf8().constData());
 	exit(1);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -231,7 +229,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rdrepld: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }
@@ -304,7 +302,7 @@ void MainObject::userData()
 			&render_settings,render_start_time,
 			render_ignore_stops,&err_msg,render_first_line,
 			render_last_line,render_first_time,render_last_time)) {
-      fprintf(stderr,"rdrender: %s\n",(const char *)err_msg);
+      fprintf(stderr,"rdrender: %s\n",err_msg.toUtf8().constData());
       exit(1);
     }
   }
@@ -313,14 +311,14 @@ void MainObject::userData()
 			render_start_time,render_ignore_stops,
 			&err_msg,render_first_line,render_last_line,
 			render_first_time,render_last_time)) {
-      fprintf(stderr,"rdrender: %s\n",(const char *)err_msg);
+      fprintf(stderr,"rdrender: %s\n",err_msg.toUtf8().constData());
       exit(1);
     }
   }
   QStringList warnings=r->warnings();
   for(int i=0;i<warnings.size();i++) {
-    fprintf(stderr,"%s: %s\n",(const char *)tr("WARNING"),
-	    (const char *)warnings[i]);
+    fprintf(stderr,"%s: %s\n",tr("WARNING").toUtf8().constData(),
+	    warnings[i].toUtf8().constData());
   }
 
   exit(0);

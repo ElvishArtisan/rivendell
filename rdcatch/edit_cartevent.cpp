@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Macro Cart Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qgroupbox.h>
-#include <qmessagebox.h>
+#include <QGroupBox>
+#include <QMessageBox>
 
 #include <rdescape_string.h>
 #include <rdtextvalidator.h>
@@ -30,8 +30,6 @@
 EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   : RDDialog(parent)
 {
-  QString sql;
-  RDSqlQuery *q;
   QString temp;
   int cartnum;
 
@@ -67,7 +65,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   edit_active_button=new QCheckBox(this);
   edit_active_button->setGeometry(10,11,20,20);
-  QLabel *label=new QLabel(edit_active_button,tr("Event Active"),this);
+  QLabel *label=new QLabel(tr("Event Active"),this);
   label->setGeometry(30,11,125,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -75,9 +73,11 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   // Station
   //
-  edit_station_box=new QComboBox(this);
+  edit_station_box=new RDComboBox(this);
+  edit_station_model=new RDStationListModel(false,"",this);
+  edit_station_box->setModel(edit_station_model);
   edit_station_box->setGeometry(200,10,140,23);
-  label=new QLabel(edit_station_box,tr("Location:"),this);
+  label=new QLabel(tr("Location:"),this);
   label->setGeometry(125,10,70,23);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -88,7 +88,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   edit_starttime_edit=new QTimeEdit(this);
   edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
   edit_starttime_edit->setDisplayFormat("hh:mm:ss");
-  label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
+  label=new QLabel(tr("Start Time:"),this);
   label->setGeometry(sizeHint().width()-175,12,80,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -99,7 +99,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   edit_description_edit=new QLineEdit(this);
   edit_description_edit->setGeometry(115,43,sizeHint().width()-125,20);
   edit_description_edit->setValidator(validator);
-  label=new QLabel(edit_description_edit,tr("Description:"),this);
+  label=new QLabel(tr("Description:"),this);
   label->setGeometry(10,43,100,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -110,7 +110,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   edit_destination_edit=new QLineEdit(this);
   edit_destination_edit->setGeometry(115,70,60,20);
   edit_destination_edit->setReadOnly(false);
-  label=new QLabel(edit_destination_edit,tr("Cart Number:"),this);
+  label=new QLabel(tr("Cart Number:"),this);
   label->setGeometry(10,73,100,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
@@ -132,7 +132,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   edit_mon_button=new QCheckBox(this);
   edit_mon_button->setGeometry(20,120,20,20);
-  label=new QLabel(edit_mon_button,tr("Monday"),this);
+  label=new QLabel(tr("Monday"),this);
   label->setGeometry(40,120,115,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -142,7 +142,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   edit_tue_button=new QCheckBox(this);
   edit_tue_button->setGeometry(115,120,20,20);
-  label=new QLabel(edit_tue_button,tr("Tuesday"),this);
+  label=new QLabel(tr("Tuesday"),this);
   label->setGeometry(135,120,115,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -152,7 +152,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   edit_wed_button=new QCheckBox(this);
   edit_wed_button->setGeometry(215,120,20,20);
-  label=new QLabel(edit_wed_button,tr("Wednesday"),this);
+  label=new QLabel(tr("Wednesday"),this);
   label->setGeometry(235,120,115,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -162,7 +162,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   edit_thu_button=new QCheckBox(this);
   edit_thu_button->setGeometry(335,120,20,20);
-  label=new QLabel(edit_thu_button,tr("Thursday"),this);
+  label=new QLabel(tr("Thursday"),this);
   label->setGeometry(355,120,115,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -172,7 +172,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   edit_fri_button=new QCheckBox(this);
   edit_fri_button->setGeometry(440,120,20,20);
-  label=new QLabel(edit_fri_button,tr("Friday"),this);
+  label=new QLabel(tr("Friday"),this);
   label->setGeometry(460,120,40,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -182,7 +182,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   edit_sat_button=new QCheckBox(this);
   edit_sat_button->setGeometry(130,145,20,20);
-  label=new QLabel(edit_sat_button,tr("Saturday"),this);
+  label=new QLabel(tr("Saturday"),this);
   label->setGeometry(150,145,60,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -192,7 +192,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   edit_sun_button=new QCheckBox(this);
   edit_sun_button->setGeometry(300,145,20,20);
-  label=new QLabel(edit_sun_button,tr("Sunday"),this);
+  label=new QLabel(tr("Sunday"),this);
   label->setGeometry(320,145,60,20);
   label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -202,7 +202,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   edit_oneshot_box=new QCheckBox(this);
   edit_oneshot_box->setGeometry(20,180,15,15);
-  label=new QLabel(edit_oneshot_box,tr("Make OneShot"),this);
+  label=new QLabel(tr("Make OneShot"),this);
   label->setGeometry(40,178,115,20);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -241,14 +241,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   // Populate Data
   //
-  q=new RDSqlQuery("select NAME from STATIONS where NAME!=\"DEFAULT\"");
-  while(q->next()) {
-    edit_station_box->insertItem(q->value(0).toString());
-    if(edit_recording->station()==q->value(0).toString()) {
-      edit_station_box->setCurrentItem(edit_station_box->count()-1);
-    }
-  }
-  delete q;
+  edit_station_box->setCurrentText(edit_recording->station());
   edit_active_button->setChecked(edit_recording->isActive());
   edit_starttime_edit->setTime(edit_recording->startTime());
   edit_description_edit->setText(edit_recording->description());

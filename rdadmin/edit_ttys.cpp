@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell TTY Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -59,9 +59,8 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   //
   edit_port_box=new QComboBox(this);
   edit_port_box->setGeometry(75,10,100,24);
-  edit_port_box->setInsertionPolicy(QComboBox::NoInsertion);
   connect(edit_port_box,SIGNAL(activated(int)),this,SLOT(idSelectedData()));
-  QLabel *label=new QLabel(edit_port_box,tr("Port ID:"),this);
+  QLabel *label=new QLabel(tr("Port ID:"),this);
   label->setGeometry(10,10,60,24);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -73,7 +72,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_enable_button->setGeometry(265,14,15,15);
   connect(edit_enable_button,SIGNAL(stateChanged(int)),
 	  this,SLOT(enableButtonData(int)));
-  label=new QLabel(edit_enable_button,tr("Enabled"),this);
+  label=new QLabel(tr("Enabled"),this);
   label->setGeometry(200,10,60,22);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -84,7 +83,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_port_edit=new QLineEdit(this);
   edit_port_edit->setGeometry(145,54,100,20);
   edit_port_edit->setValidator(validator);
-  edit_port_label=new QLabel(edit_port_edit,tr("TTY Device:"),this);
+  edit_port_label=new QLabel(tr("TTY Device:"),this);
   edit_port_label->setGeometry(20,54,120,20);
   edit_port_label->setFont(labelFont());
   edit_port_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -94,8 +93,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   //
   edit_baudrate_box=new QComboBox(this);
   edit_baudrate_box->setGeometry(145,80,90,24);
-  edit_baudrate_box->setInsertionPolicy(QComboBox::NoInsertion);
-  edit_baudrate_label=new QLabel(edit_baudrate_box,tr("Baud Rate:"),this);
+  edit_baudrate_label=new QLabel(tr("Baud Rate:"),this);
   edit_baudrate_label->setGeometry(20,80,120,24);
   edit_baudrate_label->setFont(labelFont());
   edit_baudrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -105,8 +103,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   //
   edit_parity_box=new QComboBox(this);
   edit_parity_box->setGeometry(145,108,90,24); 
-  edit_parity_box->setInsertionPolicy(QComboBox::NoInsertion);
-  edit_parity_label=new QLabel(edit_parity_box,tr("Parity:"),this);
+  edit_parity_label=new QLabel(tr("Parity:"),this);
   edit_parity_label->setGeometry(20,108,120,24);
   edit_parity_label->setFont(labelFont());
   edit_parity_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -116,8 +113,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   //
   edit_databits_box=new QComboBox(this);
   edit_databits_box->setGeometry(145,136,60,24);
-  edit_databits_box->setInsertionPolicy(QComboBox::NoInsertion);
-  edit_databits_label=new QLabel(edit_databits_box,tr("Data Bits:"),this);
+  edit_databits_label=new QLabel(tr("Data Bits:"),this);
   edit_databits_label->setGeometry(20,136,120,24);
   edit_databits_label->setFont(labelFont());
   edit_databits_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -127,8 +123,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   //
   edit_stopbits_box=new QComboBox(this);
   edit_stopbits_box->setGeometry(145,164,60,24);
-  edit_stopbits_box->setInsertionPolicy(QComboBox::NoInsertion);
-  edit_stopbits_label=new QLabel(edit_stopbits_box,tr("Stop Bits:"),this);
+  edit_stopbits_label=new QLabel(tr("Stop Bits:"),this);
   edit_stopbits_label->setGeometry(20,164,120,24);
   edit_stopbits_label->setFont(labelFont());
   edit_stopbits_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -138,9 +133,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   //
   edit_termination_box=new QComboBox(this);
   edit_termination_box->setGeometry(145,192,90,24);
-  edit_termination_box->setInsertionPolicy(QComboBox::NoInsertion);
-  edit_termination_label=
-    new QLabel(edit_termination_box,tr("Terminator:"),this);
+  edit_termination_label=new QLabel(tr("Terminator:"),this);
   edit_termination_label->setGeometry(20,192,120,24);
   edit_termination_label->setFont(labelFont());
   edit_termination_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -158,45 +151,46 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   // Populate Data
   //
   for(int i=0;i<MAX_TTYS;i++) {
-    edit_port_box->insertItem(tr("Serial")+QString().sprintf("%d",i));
+    edit_port_box->
+      insertItem(edit_port_box->count(),tr("Serial")+QString().sprintf("%d",i));
   }
-  edit_baudrate_box->insertItem("50");
-  edit_baudrate_box->insertItem("75");
-  edit_baudrate_box->insertItem("110");
-  edit_baudrate_box->insertItem("134");
-  edit_baudrate_box->insertItem("150");
-  edit_baudrate_box->insertItem("200");
-  edit_baudrate_box->insertItem("300");
-  edit_baudrate_box->insertItem("600");
-  edit_baudrate_box->insertItem("1200");
-  edit_baudrate_box->insertItem("1800");
-  edit_baudrate_box->insertItem("2400");
-  edit_baudrate_box->insertItem("4800");
-  edit_baudrate_box->insertItem("9600");
-  edit_baudrate_box->insertItem("19200");
-  edit_baudrate_box->insertItem("38400");
-  edit_baudrate_box->insertItem("57600");
-  edit_baudrate_box->insertItem("115200");
-  edit_baudrate_box->insertItem("230400");
+  edit_baudrate_box->insertItem(0,"50");
+  edit_baudrate_box->insertItem(1,"75");
+  edit_baudrate_box->insertItem(2,"110");
+  edit_baudrate_box->insertItem(3,"134");
+  edit_baudrate_box->insertItem(4,"150");
+  edit_baudrate_box->insertItem(5,"200");
+  edit_baudrate_box->insertItem(6,"300");
+  edit_baudrate_box->insertItem(7,"600");
+  edit_baudrate_box->insertItem(8,"1200");
+  edit_baudrate_box->insertItem(9,"1800");
+  edit_baudrate_box->insertItem(10,"2400");
+  edit_baudrate_box->insertItem(11,"4800");
+  edit_baudrate_box->insertItem(12,"9600");
+  edit_baudrate_box->insertItem(13,"19200");
+  edit_baudrate_box->insertItem(14,"38400");
+  edit_baudrate_box->insertItem(15,"57600");
+  edit_baudrate_box->insertItem(16,"115200");
+  edit_baudrate_box->insertItem(17,"230400");
 
-  edit_parity_box->insertItem(tr("None"));
-  edit_parity_box->insertItem(tr("Even"));
-  edit_parity_box->insertItem(tr("Odd"));
+  edit_parity_box->insertItem(0,tr("None"));
+  edit_parity_box->insertItem(1,tr("Even"));
+  edit_parity_box->insertItem(2,tr("Odd"));
 
-  edit_databits_box->insertItem("5");
-  edit_databits_box->insertItem("6");
-  edit_databits_box->insertItem("7");
-  edit_databits_box->insertItem("8");
+  edit_databits_box->insertItem(0,"5");
+  edit_databits_box->insertItem(1,"6");
+  edit_databits_box->insertItem(2,"7");
+  edit_databits_box->insertItem(3,"8");
 
-  edit_stopbits_box->insertItem("1");
-  edit_stopbits_box->insertItem("2");
+  edit_stopbits_box->insertItem(0,"1");
+  edit_stopbits_box->insertItem(1,"2");
 
-  edit_termination_box->insertItem(tr("None"));
-  edit_termination_box->insertItem(tr("CR"));
-  edit_termination_box->insertItem(tr("LF"));
-  edit_termination_box->insertItem(tr("CR/LF"));
+  edit_termination_box->insertItem(0,tr("None"));
+  edit_termination_box->insertItem(1,tr("CR"));
+  edit_termination_box->insertItem(2,tr("LF"));
+  edit_termination_box->insertItem(3,tr("CR/LF"));
 
-  edit_id=edit_port_box->currentItem();
+  edit_id=edit_port_box->currentIndex();
   edit_tty=NULL;
   ReadRecord(edit_id);
 }
@@ -235,7 +229,7 @@ QSizePolicy EditTtys::sizePolicy() const
 void EditTtys::idSelectedData()
 {
   WriteRecord(edit_id);
-  edit_id=edit_port_box->currentItem();
+  edit_id=edit_port_box->currentIndex();
   ReadRecord(edit_id);
 }
 
@@ -326,85 +320,85 @@ void EditTtys::ReadRecord(int id)
   edit_port_edit->setText(edit_tty->port());
   switch(edit_tty->baudRate()) {
   case 50:
-    edit_baudrate_box->setCurrentItem(0);
+    edit_baudrate_box->setCurrentIndex(0);
     break;
 
   case 75:
-    edit_baudrate_box->setCurrentItem(1);
+    edit_baudrate_box->setCurrentIndex(1);
     break;
 
   case 110:
-    edit_baudrate_box->setCurrentItem(2);
+    edit_baudrate_box->setCurrentIndex(2);
     break;
 
   case 134:
-    edit_baudrate_box->setCurrentItem(3);
+    edit_baudrate_box->setCurrentIndex(3);
     break;
 
   case 150:
-    edit_baudrate_box->setCurrentItem(4);
+    edit_baudrate_box->setCurrentIndex(4);
     break;
 
   case 200:
-    edit_baudrate_box->setCurrentItem(5);
+    edit_baudrate_box->setCurrentIndex(5);
     break;
 
   case 300:
-    edit_baudrate_box->setCurrentItem(6);
+    edit_baudrate_box->setCurrentIndex(6);
     break;
 
   case 600:
-    edit_baudrate_box->setCurrentItem(7);
+    edit_baudrate_box->setCurrentIndex(7);
     break;
 
   case 1200:
-    edit_baudrate_box->setCurrentItem(8);
+    edit_baudrate_box->setCurrentIndex(8);
     break;
 
   case 1800:
-    edit_baudrate_box->setCurrentItem(9);
+    edit_baudrate_box->setCurrentIndex(9);
     break;
 
   case 2400:
-    edit_baudrate_box->setCurrentItem(10);
+    edit_baudrate_box->setCurrentIndex(10);
     break;
 
   case 4800:
-    edit_baudrate_box->setCurrentItem(11);
+    edit_baudrate_box->setCurrentIndex(11);
     break;
 
   case 9600:
-    edit_baudrate_box->setCurrentItem(12);
+    edit_baudrate_box->setCurrentIndex(12);
     break;
 
   case 19200:
-    edit_baudrate_box->setCurrentItem(13);
+    edit_baudrate_box->setCurrentIndex(13);
     break;
 
   case 38400:
-    edit_baudrate_box->setCurrentItem(14);
+    edit_baudrate_box->setCurrentIndex(14);
     break;
 
   case 57600:
-    edit_baudrate_box->setCurrentItem(15);
+    edit_baudrate_box->setCurrentIndex(15);
     break;
 
   case 115200:
-    edit_baudrate_box->setCurrentItem(16);
+    edit_baudrate_box->setCurrentIndex(16);
     break;
 
   case 230400:
-    edit_baudrate_box->setCurrentItem(17);
+    edit_baudrate_box->setCurrentIndex(17);
     break;
 
   default:
-    edit_baudrate_box->setCurrentItem(12);
+    edit_baudrate_box->setCurrentIndex(12);
     break;	
   }
-  edit_parity_box->setCurrentItem(edit_tty->parity());
-  edit_databits_box->setCurrentItem(edit_tty->dataBits()-5);
-  edit_stopbits_box->setCurrentItem(edit_tty->stopBits()-1);
-  edit_termination_box->setCurrentItem(edit_tty->termination());
+  edit_parity_box->setCurrentIndex(edit_tty->parity());
+  edit_databits_box->setCurrentIndex(edit_tty->dataBits()-5);
+  edit_stopbits_box->setCurrentIndex(edit_tty->stopBits()-1);
+  edit_termination_box->setCurrentIndex(edit_tty->termination());
   edit_enable_button->setChecked(edit_tty->active());
   SetEnable(edit_tty->active());
 }
@@ -416,13 +410,13 @@ void EditTtys::WriteRecord(int id)
 
   edit_tty->setActive(edit_enable_button->isChecked());
   edit_tty->setPort(edit_port_edit->text());
-  sscanf((const char *)edit_baudrate_box->currentText(),"%d",&baud);
+  baud=edit_baudrate_box->currentText().toInt();
   edit_tty->setBaudRate(baud);
-  edit_tty->setParity((RDTTYDevice::Parity)edit_parity_box->currentItem());
-  edit_tty->setDataBits(edit_databits_box->currentItem()+5);
-  edit_tty->setStopBits(edit_stopbits_box->currentItem()+1);
+  edit_tty->setParity((RDTTYDevice::Parity)edit_parity_box->currentIndex());
+  edit_tty->setDataBits(edit_databits_box->currentIndex()+5);
+  edit_tty->setStopBits(edit_stopbits_box->currentIndex()+1);
   edit_tty->
-    setTermination((RDTty::Termination)edit_termination_box->currentItem());
+    setTermination((RDTty::Termination)edit_termination_box->currentIndex());
   edit_port_modified[id]=true;
 }
 

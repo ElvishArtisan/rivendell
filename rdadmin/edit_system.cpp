@@ -56,19 +56,18 @@ EditSystem::EditSystem(QWidget *parent)
   // System Sample Rate
   //
   edit_sample_rate_box=new QComboBox(this);
-  edit_sample_rate_box->insertItem("32000");
-  edit_sample_rate_box->insertItem("44100");
-  edit_sample_rate_box->insertItem("48000");
-  edit_sample_rate_label=
-    new QLabel(edit_sample_rate_box,tr("System Sample Rate:"),this);
+  edit_sample_rate_box->insertItem(0,"32000");
+  edit_sample_rate_box->insertItem(1,"44100");
+  edit_sample_rate_box->insertItem(2,"48000");
+  edit_sample_rate_label=new QLabel(tr("System Sample Rate:"),this);
   edit_sample_rate_label->setFont(labelFont());
   edit_sample_rate_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_sample_rate_unit_label=new QLabel(tr("samples/second"),this);
   edit_sample_rate_unit_label->setGeometry(325,10,sizeHint().width()-285,20);
   edit_sample_rate_unit_label->setFont(labelFont());
   edit_sample_rate_unit_label->
-    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Allow Duplicate Cart Titles Box
@@ -77,49 +76,46 @@ EditSystem::EditSystem(QWidget *parent)
   connect(edit_duplicate_carts_box,SIGNAL(toggled(bool)),
 	  this,SLOT(duplicatesCheckedData(bool)));
   edit_duplicate_label=
-    new QLabel(edit_duplicate_carts_box,tr("Allow Duplicate Cart Titles"),this);
+    new QLabel(tr("Allow Duplicate Cart Titles"),this);
   edit_duplicate_label->setFont(labelFont());
   edit_duplicate_label->
-    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   edit_fix_duplicate_carts_box=new QCheckBox(this);
-  edit_fix_duplicate_carts_label=new QLabel(edit_fix_duplicate_carts_box,
-			 tr("Auto-Correct Duplicate Cart Titles"),this);
+  edit_fix_duplicate_carts_label=
+    new QLabel(tr("Auto-Correct Duplicate Cart Titles"),this);
   edit_fix_duplicate_carts_label->setFont(labelFont());
   edit_fix_duplicate_carts_label->
-    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // ISCI Cross Reference Path
   //
   edit_isci_path_edit=new QLineEdit(this);
-  edit_isci_path_label=
-    new QLabel(edit_isci_path_edit,tr("ISCI Cross Reference Path:"),this);
+  edit_isci_path_label=new QLabel(tr("ISCI Cross Reference Path:"),this);
   edit_isci_path_label->setFont(labelFont());
   edit_isci_path_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Origin Email Address
   //
   edit_origin_email_addr_edit=new QLineEdit(this);
   edit_origin_email_addr_edit->setMaxLength(64);
-  edit_origin_email_addr_label=
-    new QLabel(edit_origin_email_addr_edit,tr("Origin E-Mail Address")+":",this);
+  edit_origin_email_addr_label=new QLabel(tr("Origin E-Mail Address")+":",this);
   edit_origin_email_addr_label->setFont(labelFont());
   edit_origin_email_addr_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Notification Address
   //
   edit_notification_address_edit=new QLineEdit(this);
   edit_notification_address_label=
-    new QLabel(edit_notification_address_edit,
-	       tr("Multicast Address for Notifications"),this);
+    new QLabel(tr("Multicast Address for Notifications"),this);
   edit_notification_address_label->setFont(labelFont());
   edit_notification_address_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Maximum POST Size
@@ -127,36 +123,34 @@ EditSystem::EditSystem(QWidget *parent)
   edit_maxpost_spin=new QSpinBox(this);
   edit_maxpost_spin->setRange(1,1000);
   edit_maxpost_label=
-    new QLabel(edit_maxpost_spin,tr("Maximum Remote Post Length:"),this);
+    new QLabel(tr("Maximum Remote Post Length:"),this);
   edit_maxpost_label->setFont(labelFont());
   edit_maxpost_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_maxpost_unit_label=new QLabel(tr("Mbytes"),this);
   edit_maxpost_unit_label->setFont(labelFont());
   edit_maxpost_unit_label->
-    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Temporary Cart Group
   //
-  edit_temp_cart_group_box=new QComboBox(this);
+  edit_temp_cart_group_box=new RDComboBox(this);
   edit_temp_cart_group_model=new RDGroupListModel(false,true,this);
   edit_temp_cart_group_box->setModel(edit_temp_cart_group_model);
-  edit_temp_cart_group_label=
-    new QLabel(edit_temp_cart_group_box,tr("Temporary Cart Group:"),this);
+  edit_temp_cart_group_label=new QLabel(tr("Temporary Cart Group:"),this);
   edit_temp_cart_group_label->setFont(labelFont());
   edit_temp_cart_group_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Show User List
   //
   edit_show_user_list_box=new QCheckBox(this);
-  edit_show_user_list_label=
-    new QLabel(edit_show_user_list_box,tr("Show User List in RDLogin"),this);
+  edit_show_user_list_label=new QLabel(tr("Show User List in RDLogin"),this);
   edit_show_user_list_label->setFont(labelFont());
   edit_show_user_list_label->
-    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // RSS Processor Host
@@ -170,11 +164,10 @@ EditSystem::EditSystem(QWidget *parent)
 				       q->value(0).toString());
   }
   delete q;
-  edit_rss_processor_label=
-    new QLabel(edit_rss_processor_box,tr("Process RSS Updates On")+":",this);
+  edit_rss_processor_label=new QLabel(tr("Process RSS Updates On")+":",this);
   edit_rss_processor_label->setFont(labelFont());
   edit_rss_processor_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Duplicate List (initially hidden)
@@ -238,14 +231,15 @@ EditSystem::EditSystem(QWidget *parent)
 
   QString station=edit_system->rssProcessorStation();
   for(int i=0;i<edit_rss_processor_box->count();i++) {
-    if(edit_rss_processor_box->text(i)==station) {
+    if(edit_rss_processor_box->itemData(i).toString()==station) {
       edit_rss_processor_box->setCurrentIndex(i);
     }
   }
 
   for(int i=0;i<edit_sample_rate_box->count();i++) {
-    if(edit_sample_rate_box->text(i).toUInt()==edit_system->sampleRate()) {
-      edit_sample_rate_box->setCurrentItem(i);
+    if(edit_sample_rate_box->itemData(i).toString().toUInt()==
+       edit_system->sampleRate()) {
+      edit_sample_rate_box->setCurrentIndex(i);
     }
   }
   edit_temp_cart_group_box->setCurrentText(edit_system->tempCartGroup());
@@ -301,7 +295,7 @@ void EditSystem::saveData()
   if(filename.isNull()) {
     return;
   }
-  if(filename.find(".")<0) {
+  if(filename.indexOf(".")<0) {
     filename+=".txt";
   }
   if(QFile::exists(filename)) {
@@ -313,16 +307,16 @@ void EditSystem::saveData()
       return;
     }
   }
-  FILE *f=fopen(filename,"w");
+  FILE *f=fopen(filename.toUtf8(),"w");
   if(f==NULL) {
     QMessageBox::warning(this,tr("File Error"),
-			 tr("Unable to write file \""+filename+"\"."));
+			 tr("Unable to write file")+" \""+filename+"\".");
     return;
   }
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
   fprintf(f,"Rivendell Duplicate Cart Title List\n");
   fprintf(f,"Generated %s\n",
-	  (const char *)dt.toString("hh:mm:ss - MM/dd/yyyy"));
+	  dt.toString("hh:mm:ss - MM/dd/yyyy").toUtf8().constData());
   fprintf(f,"\n");
   fprintf(f,"Cart    Title\n");
   fprintf(f,"----    -----\n");

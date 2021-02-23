@@ -57,7 +57,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_name_edit=new QLineEdit(this);
   group_name_edit->setMaxLength(10);
   group_name_edit->setReadOnly(true);
-  group_name_label=new QLabel(group_name_edit,tr("&Group Name:"),this);
+  group_name_label=new QLabel(tr("&Group Name:"),this);
   group_name_label->setFont(labelFont());
   group_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -67,8 +67,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_description_edit=new QLineEdit(this);
   group_description_edit->setMaxLength(255);
   group_description_edit->setValidator(validator);
-  group_description_label=
-    new QLabel(group_description_edit,tr("Group &Description:"),this);
+  group_description_label=new QLabel(tr("Group &Description:"),this);
   group_description_label->setFont(labelFont());
   group_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -78,8 +77,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_title_edit=new QLineEdit(this);
   group_title_edit->setMaxLength(255);
   group_title_edit->setValidator(validator);
-  group_title_label=
-    new QLabel(group_title_edit,tr("Default Import &Title:"),this);
+  group_title_label=new QLabel(tr("Default Import &Title:"),this);
   group_title_label->setFont(labelFont());
   group_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -88,8 +86,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   //
   group_notify_email_addrs_edit=new QLineEdit(this);
   group_notify_email_addrs_label=
-    new QLabel(group_notify_email_addrs_edit,
-	       tr("Notification E-Mail Addresses")+":",this);
+    new QLabel(tr("Notification E-Mail Addresses")+":",this);
   group_notify_email_addrs_label->setFont(labelFont());
   group_notify_email_addrs_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -97,10 +94,9 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   // Default Cart Type
   //
   group_carttype_box=new QComboBox(this);
-  group_carttype_box->insertItem(tr("Audio"));
-  group_carttype_box->insertItem(tr("Macro"));
-  group_carttype_label=
-    new QLabel(group_carttype_box,tr("Default Cart &Type:"),this);
+  group_carttype_box->insertItem(0,tr("Audio"));
+  group_carttype_box->insertItem(1,tr("Macro"));
+  group_carttype_label=new QLabel(tr("Default Cart &Type:"),this);
   group_carttype_label->setFont(labelFont());
   group_carttype_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -110,14 +106,12 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_lowcart_box=new QSpinBox(this);
   group_lowcart_box->setRange(0,999999);
   group_lowcart_box->setSpecialValueText(tr("None"));
-  group_cartrange_label=
-    new QLabel(group_lowcart_box,tr("Default Cart Number:"),this);
+  group_cartrange_label=new QLabel(tr("Default Cart Number:"),this);
   group_cartrange_label->setFont(labelFont());
   group_cartrange_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   group_highcart_box=new QSpinBox(this);
   group_highcart_box->setRange(1,999999);
-  group_highcart_label=
-    new QLabel(group_highcart_box,tr("to"),this);
+  group_highcart_label=new QLabel(tr("to"),this);
   group_highcart_label->setFont(labelFont());
   group_highcart_label->setAlignment(Qt::AlignCenter);
   connect(group_lowcart_box,SIGNAL(valueChanged(int)),
@@ -127,8 +121,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   // Enforce Cart Range Checkbox
   //
   group_enforcerange_box=new QCheckBox(this);
-  group_enforcerange_label=
-    new QLabel(group_enforcerange_box,tr("Enforce Cart Range"),this);
+  group_enforcerange_label=new QLabel(tr("Enforce Cart Range"),this);
   group_enforcerange_label->setFont(labelFont());
   group_enforcerange_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -137,8 +130,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   //
   group_traffic_check=new QCheckBox(this);
   group_traffic_label=
-    new QLabel(group_traffic_check,tr("Include this group in Traffic reports"),
-	       this);
+    new QLabel(tr("Include this group in Traffic reports"),this);
   group_traffic_label->setFont(labelFont());
   group_traffic_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -146,9 +138,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   // Music Report Checkbox
   //
   group_music_check=new QCheckBox(this);
-  group_music_label=
-    new QLabel(group_music_check,tr("Include this group in Music reports"),
-	       this);
+  group_music_label=new QLabel(tr("Include this group in Music reports"),this);
   group_music_label->setFont(labelFont());
   group_music_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -160,12 +150,10 @@ EditGroup::EditGroup(QString group,QWidget *parent)
 	  this,SLOT(cutLifeEnabledData(bool)));
   group_cutlife_spin=new QSpinBox(this);
   group_cutlife_spin->setRange(0,999);
-  group_cutlife_label=
-    new QLabel(group_cutlife_check,tr("Set End Date/Time to"),this);
+  group_cutlife_label=new QLabel(tr("Set End Date/Time to"),this);
   group_cutlife_label->setFont(labelFont());
   group_cutlife_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  group_cutlife_unit=
-    new QLabel(group_cutlife_check,tr("days after cut creation"),this);
+  group_cutlife_unit=new QLabel(tr("days after cut creation"),this);
   group_cutlife_unit->setFont(labelFont());
   group_cutlife_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -177,18 +165,15 @@ EditGroup::EditGroup(QString group,QWidget *parent)
 	  this,SLOT(purgeEnabledData(bool)));
   group_shelflife_spin=new QSpinBox(this);
   group_shelflife_spin->setRange(0,30);
-  group_shelflife_label=
-    new QLabel(group_shelflife_check,tr("Purge expired cuts after"),this);
+  group_shelflife_label=new QLabel(tr("Purge expired cuts after"),this);
   group_shelflife_label->setFont(labelFont());
   group_shelflife_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  group_shelflife_unit=
-    new QLabel(group_shelflife_check,tr("days"),this);
+  group_shelflife_unit=new QLabel(tr("days"),this);
   group_shelflife_unit->setFont(labelFont());
   group_shelflife_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   group_delete_carts_check=new QCheckBox(this);
-  group_delete_carts_label=
-    new QLabel(group_delete_carts_check,tr("Delete cart if empty"),this);
+  group_delete_carts_label=new QLabel(tr("Delete cart if empty"),this);
   group_delete_carts_label->setFont(labelFont());
   group_delete_carts_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -196,8 +181,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   // Now & Next Data Checkbox
   //
   group_nownext_check=new QCheckBox(this);
-  group_nownext_label=
-    new QLabel(group_nownext_check,tr("Transmit Now && Next data"),this);
+  group_nownext_label=new QLabel(tr("Transmit Now && Next data"),this);
   group_nownext_label->setFont(labelFont());
   group_nownext_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -238,7 +222,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_description_edit->setText(group_group->description());
   group_title_edit->setText(group_group->defaultTitle());
   group_notify_email_addrs_edit->setText(group_group->notifyEmailAddress());
-  group_carttype_box->setCurrentItem(group_group->defaultCartType()-1);
+  group_carttype_box->setCurrentIndex(group_group->defaultCartType()-1);
   group_lowcart_box->setValue(group_group->defaultLowCart());
   group_highcart_box->setValue(group_group->defaultHighCart());
   lowCartChangedData(group_group->defaultLowCart());
@@ -320,7 +304,7 @@ void EditGroup::colorData()
 {
   QColor color=
     QColorDialog::getColor(group_color_button->palette().color(QPalette::Active,
-			   QColorGroup::ButtonText),this);
+			   QPalette::ButtonText),this);
   if(color.isValid()) {
     SetButtonColor(color);
   }
@@ -356,7 +340,7 @@ void EditGroup::okData()
   group_group->setDefaultTitle(group_title_edit->text());
   group_group->setNotifyEmailAddress(group_notify_email_addrs_edit->text());
   group_group->
-    setDefaultCartType((RDCart::Type)(group_carttype_box->currentItem()+1));
+    setDefaultCartType((RDCart::Type)(group_carttype_box->currentIndex()+1));
   group_group->setDefaultLowCart(group_lowcart_box->value());
   group_group->setDefaultHighCart(group_highcart_box->value());
   if(group_lowcart_box->value()==0) {
@@ -385,7 +369,7 @@ void EditGroup::okData()
   group_group->setEnableNowNext(group_nownext_check->isChecked());
   group_group->setColor(group_color_button->
 			palette().color(QPalette::Active,
-					QColorGroup::ButtonText));
+					QPalette::ButtonText));
 
   //
   // Add New Services
@@ -535,6 +519,6 @@ bool EditGroup::CheckRange()
 void EditGroup::SetButtonColor(const QColor &color)
 {
   QPalette p=group_color_button->palette();
-  p.setColor(QColorGroup::ButtonText,color);
+  p.setColor(QPalette::ButtonText,color);
   group_color_button->setPalette(p);
 }

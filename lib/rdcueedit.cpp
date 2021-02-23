@@ -38,13 +38,14 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   // Create Palettes
   //
   edit_play_color=
-    QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),
+	     palette().color(QPalette::Background));
   edit_start_color=palette();
-  edit_start_color.setColor(QColorGroup::Foreground,RD_CUEEDITOR_START_MARKER);
+  edit_start_color.setColor(QPalette::Foreground,RD_CUEEDITOR_START_MARKER);
 
   edit_position_label=new QLabel(this);
   edit_position_label->setGeometry(0,0,sizeHint().width()-30,30);
-  edit_position_label->setBackgroundColor(QColor(Qt::white));
+  edit_position_label->setStyleSheet("background-color: #FFFFFF");
   edit_position_label->setLineWidth(1);
   edit_position_label->setMidLineWidth(0);
   edit_position_label->setFrameStyle(QFrame::Box|QFrame::Plain);
@@ -54,13 +55,13 @@ RDCueEdit::RDCueEdit(QWidget *parent)
 
   edit_up_label=new QLabel("00:00:00",this);
   edit_up_label->setGeometry(5,8,70,14);
-  edit_up_label->setBackgroundColor(Qt::white);
+  edit_up_label->setStyleSheet("background-color: #FFFFFF");
   edit_up_label->setFont(labelFont());
   edit_up_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_down_label=new QLabel("00:00:00",this);
   edit_down_label->setGeometry(sizeHint().width()-110,8,70,14);
-  edit_down_label->setBackgroundColor(Qt::white);
+  edit_down_label->setStyleSheet("background-color: #FFFFFF");
   edit_down_label->setFont(labelFont());
   edit_down_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -82,7 +83,7 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   //
   QLabel *label=new QLabel(this);
   label->setGeometry(0,85,sizeHint().width()-30,60);
-  label->setBackgroundColor(QColor(Qt::gray));
+  label->setStyleSheet("background-color: "+QColor(Qt::gray).name());
   label->setLineWidth(1);
   label->setMidLineWidth(0);
   label->setFrameStyle(QFrame::Box|QFrame::Plain);
@@ -94,7 +95,7 @@ RDCueEdit::RDCueEdit(QWidget *parent)
     new RDTransportButton(RDTransportButton::PlayBetween,this);
   edit_audition_button->setGeometry(sizeHint().width()/2-130,90,80,50);
   edit_audition_button->
-    setPalette(QPalette(backgroundColor(),QColor(Qt::gray)));
+    setStyleSheet("background-color: "+QColor(Qt::gray).name());
   edit_audition_button->setFont(buttonFont());
   edit_audition_button->
     setDisabled((rda->station()->cueCard()<0)||(rda->station()->cuePort()<0));
@@ -107,7 +108,8 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   edit_pause_button=new RDTransportButton(RDTransportButton::Pause,this);
   edit_pause_button->setGeometry(sizeHint().width()/2-40,90,80,50);
   edit_pause_button->
-    setPalette(QPalette(backgroundColor(),QColor(Qt::gray)));
+    setPalette(QPalette(palette().color(QPalette::Background),
+			QColor(Qt::gray)));
   edit_pause_button->setFont(buttonFont());
   edit_pause_button->
     setDisabled((rda->station()->cueCard()<0)||(rda->station()->cuePort()<0));
@@ -120,7 +122,8 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   edit_stop_button->setGeometry(sizeHint().width()/2+50,90,80,50);
   edit_stop_button->setOnColor(QColor(Qt::red));
   edit_stop_button->
-    setPalette(QPalette(backgroundColor(),QColor(Qt::gray)));
+    setPalette(QPalette(palette().color(QPalette::Background),
+			QColor(Qt::gray)));
   edit_stop_button->setFont(buttonFont());
   edit_stop_button->
     setDisabled((rda->station()->cueCard()<0)||(rda->station()->cuePort()<0));
@@ -130,12 +133,13 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   // Start Marker Control
   //
   edit_start_button=new RDPushButton(this);
-  edit_start_button->setToggleButton(true);
+  edit_start_button->setCheckable(true);
   edit_start_button->setGeometry(0,155,66,45);
-  edit_start_button->setFlashColor(backgroundColor());
+  edit_start_button->setFlashColor(palette().color(QPalette::Background));
   edit_start_button->setFlashPeriod(RD_CUEEDITOR_BUTTON_FLASH_PERIOD);
-  edit_start_button->setPalette(QPalette(QColor(RD_CUEEDITOR_START_MARKER),
-					   backgroundColor()));
+  edit_start_button->
+    setPalette(QPalette(QColor(RD_CUEEDITOR_START_MARKER),
+			palette().color(QPalette::Background)));
   edit_start_button->setFont(buttonFont());
   edit_start_button->setText(tr("Start"));
   connect(edit_start_button,SIGNAL(clicked()),this,SLOT(startClickedData()));
@@ -144,12 +148,12 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   // End Marker Control
   //
   edit_end_button=new RDPushButton(this);
-  edit_end_button->setToggleButton(true);
+  edit_end_button->setCheckable(true);
   edit_end_button->setGeometry(90,155,66,45);
-  edit_end_button->setFlashColor(backgroundColor());
+  edit_end_button->setFlashColor(palette().color(QPalette::Background));
   edit_end_button->setFlashPeriod(RD_CUEEDITOR_BUTTON_FLASH_PERIOD);
   edit_end_button->setPalette(QPalette(QColor(RD_CUEEDITOR_START_MARKER),
-				       backgroundColor()));
+				       palette().color(QPalette::Background)));
   edit_end_button->setFont(buttonFont());
   edit_end_button->setText(tr("End"));
   connect(edit_end_button,SIGNAL(clicked()),this,SLOT(endClickedData()));
@@ -158,12 +162,13 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   // Recue Marker Control
   //
   edit_recue_button=new RDPushButton(this);
-  edit_recue_button->setToggleButton(true);
+  edit_recue_button->setCheckable(true);
   edit_recue_button->setGeometry(180,155,66,45);
-  edit_recue_button->setFlashColor(backgroundColor());
+  edit_recue_button->setFlashColor(palette().color(QPalette::Background));
   edit_recue_button->setFlashPeriod(RD_CUEEDITOR_BUTTON_FLASH_PERIOD);
-  edit_recue_button->setPalette(QPalette(QColor(RD_CUEEDITOR_START_MARKER),
-				       backgroundColor()));
+  edit_recue_button->
+    setPalette(QPalette(QColor(RD_CUEEDITOR_START_MARKER),
+			palette().color(QPalette::Background)));
   edit_recue_button->setFont(buttonFont());
   edit_recue_button->setText(tr("&Recue"));
   connect(edit_recue_button,SIGNAL(clicked()),this,SLOT(recue()));
@@ -172,6 +177,7 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   // Audition Stop Timer
   //
   edit_audition_timer=new QTimer(this);
+  edit_audition_timer->setSingleShot(true);
   connect(edit_audition_timer,SIGNAL(timeout()),this,SLOT(auditionTimerData()));
 
   //
@@ -215,7 +221,7 @@ bool RDCueEdit::initialize(RDLogLine *logline)
 {
   edit_logline=logline;
   edit_position_bar->setLength(edit_logline->forcedLength());
-  edit_start_button->setOn(false);
+  edit_start_button->setChecked(false);
   if(!(edit_logline->status()==RDLogLine::Scheduled) && 
      !(edit_logline->status()==RDLogLine::Paused)) {
     edit_start_button->hide();
@@ -259,7 +265,7 @@ void RDCueEdit::stop()
 void RDCueEdit::recue()
 {
   edit_position_bar->setMarker(RDMarkerBar::Start,0);
-  if(edit_start_button->isOn()) {
+  if(edit_start_button->isChecked()) {
     edit_slider->setValue(0);
   }
   UpdateCounters();
@@ -268,11 +274,11 @@ void RDCueEdit::recue()
 
 void RDCueEdit::sliderChangedData(int pos)
 {
-  if(edit_start_button->isOn()) {
+  if(edit_start_button->isChecked()) {
     edit_position_bar->setMarker(RDMarkerBar::Start,pos);
   }
   else {
-    if(edit_end_button->isOn()) {
+    if(edit_end_button->isChecked()) {
       edit_position_bar->setMarker(RDMarkerBar::End,pos);
     }
     else {
@@ -314,7 +320,7 @@ void RDCueEdit::auditionButtonData()
   if(!edit_play_deck->setCart(edit_logline,false)) {
     return;
   }
-  if(edit_start_button->isOn()) {
+  if(edit_start_button->isChecked()) {
     if(edit_play_deck->state()==RDPlayDeck::Stopped) {
       start_pos=edit_position_bar->marker(RDMarkerBar::Start);
     }
@@ -324,7 +330,7 @@ void RDCueEdit::auditionButtonData()
     play_len=edit_position_bar->marker(RDMarkerBar::End)-start_pos;
   }
   else {
-    if(edit_end_button->isOn()) {
+    if(edit_end_button->isChecked()) {
       if(edit_play_deck->state()==RDPlayDeck::Stopped) {
 	play_len=RD_CUEEDITOR_AUDITION_PREROLL;
 	if(play_len>(edit_position_bar->marker(RDMarkerBar::End)-
@@ -344,7 +350,7 @@ void RDCueEdit::auditionButtonData()
   }
   edit_play_deck->play(start_pos);
   if(play_len>=0) {
-    edit_audition_timer->start(play_len,true);
+    edit_audition_timer->start(play_len);
   }
   if((!edit_start_rml.isEmpty())&&(edit_event_player!=NULL)) {
     edit_event_player->exec(edit_logline->resolveWildcards(edit_start_rml));
@@ -408,7 +414,7 @@ void RDCueEdit::positionData(int id,int msecs)
     return;
   }
   edit_position_bar->setMarker(RDMarkerBar::Play,msecs);
-  if((!edit_start_button->isOn())&&(!edit_end_button->isOn())) {
+  if((!edit_start_button->isChecked())&&(!edit_end_button->isChecked())) {
     edit_slider->setValue(msecs);
   }
   UpdateCounters();
@@ -423,21 +429,21 @@ void RDCueEdit::auditionTimerData()
 
 void RDCueEdit::startClickedData()
 {
-  if(edit_end_button->isOn()) {
+  if(edit_end_button->isChecked()) {
     edit_end_button->toggle();
     SetEndMode(false);
   }
-  SetStartMode(edit_start_button->isOn());
+  SetStartMode(edit_start_button->isChecked());
 }
 
 
 void RDCueEdit::endClickedData()
 {
-  if(edit_start_button->isOn()) {
+  if(edit_start_button->isChecked()) {
     edit_start_button->toggle();
     SetStartMode(false);
   }
-  SetEndMode(edit_end_button->isOn());
+  SetEndMode(edit_end_button->isChecked());
 }
 
 
@@ -452,7 +458,7 @@ void RDCueEdit::SetStartMode(bool state)
 					 (double)edit_logline->
 					 forcedLength())),50);
     edit_slider->setValue(edit_position_bar->marker(RDMarkerBar::Start));
-    edit_slider->setKnobColor(RD_CUEEDITOR_START_MARKER);
+    edit_slider->setKnobColor(QColor(RD_CUEEDITOR_START_MARKER));
     edit_audition_button->setAccentColor(RD_CUEEDITOR_START_MARKER);
     edit_start_button->setFlashingEnabled(true);
     edit_up_label->setPalette(edit_start_color);
@@ -463,7 +469,7 @@ void RDCueEdit::SetStartMode(bool state)
     edit_slider->setRange(0,edit_logline->forcedLength());
     edit_slider->setGeometry(60,30,sizeHint().width()-150,50);
     edit_slider->setValue(edit_position_bar->marker(RDMarkerBar::Play));
-    edit_slider->setKnobColor(RD_CUEEDITOR_PLAY_MARKER); 
+    edit_slider->setKnobColor(QColor(RD_CUEEDITOR_PLAY_MARKER)); 
     edit_audition_button->setAccentColor(RD_CUEEDITOR_PLAY_MARKER);
     edit_start_button->setFlashingEnabled(false);
     edit_up_label->setPalette(palette());
@@ -490,7 +496,7 @@ void RDCueEdit::SetEndMode(bool state)
 					     (double)edit_logline->
 					     forcedLength())),50);
     edit_slider->setValue(edit_position_bar->marker(RDMarkerBar::End));
-    edit_slider->setKnobColor(RD_CUEEDITOR_START_MARKER);
+    edit_slider->setKnobColor(QColor(RD_CUEEDITOR_START_MARKER));
     edit_audition_button->setAccentColor(RD_CUEEDITOR_START_MARKER);
     edit_end_button->setFlashingEnabled(true);
     edit_up_label->setPalette(edit_start_color);
@@ -501,7 +507,7 @@ void RDCueEdit::SetEndMode(bool state)
     edit_slider->setRange(0,edit_logline->forcedLength());
     edit_slider->setGeometry(60,30,sizeHint().width()-150,50);
     edit_slider->setValue(edit_position_bar->marker(RDMarkerBar::Play));
-    edit_slider->setKnobColor(RD_CUEEDITOR_PLAY_MARKER); 
+    edit_slider->setKnobColor(QColor(RD_CUEEDITOR_PLAY_MARKER)); 
     edit_audition_button->setAccentColor(RD_CUEEDITOR_PLAY_MARKER);
     edit_end_button->setFlashingEnabled(false);
     edit_up_label->setPalette(palette());
@@ -566,13 +572,13 @@ void RDCueEdit::Stopped(int id)
     ClearChannel();
     edit_right_click_stop=false;
   }
-  if(edit_start_button->isOn()) {
+  if(edit_start_button->isChecked()) {
     edit_position_bar->
       setMarker(RDMarkerBar::Play,edit_position_bar->marker(RDMarkerBar::Start));
     edit_slider->setValue(edit_position_bar->marker(RDMarkerBar::Start));
   }
   else {
-    if(edit_end_button->isOn()) {
+    if(edit_end_button->isChecked()) {
       edit_slider->setValue(edit_position_bar->marker(RDMarkerBar::End));
     }
     else {
@@ -585,7 +591,7 @@ void RDCueEdit::Stopped(int id)
 
 void RDCueEdit::UpdateCounters()
 {
-  if(edit_start_button->isOn()) {
+  if(edit_start_button->isChecked()) {
    edit_up_label->
      setText(RDGetTimeLength(edit_position_bar->marker(RDMarkerBar::Start),true));
    edit_down_label->
@@ -594,7 +600,7 @@ void RDCueEdit::UpdateCounters()
 			    marker(RDMarkerBar::Start),true));
   }
   else {
-    if(edit_end_button->isOn()) {
+    if(edit_end_button->isChecked()) {
       edit_up_label->
 	setText(RDGetTimeLength(edit_position_bar->marker(RDMarkerBar::End),
 				true));
@@ -630,7 +636,7 @@ void RDCueEdit::ClearChannel()
 
 void RDCueEdit::wheelEvent(QWheelEvent *e)
 {
-  if(edit_audition_button->isShown()) {
+  if(edit_audition_button->isVisible()) {
     if(edit_play_deck->state()==RDPlayDeck::Playing) {
       edit_play_deck->pause();
     }
@@ -649,7 +655,7 @@ void RDCueEdit::mousePressEvent(QMouseEvent *e)
 {
   switch(e->button()) {
       case Qt::RightButton:
-        if(edit_audition_button->isShown()) {
+        if(edit_audition_button->isVisible()) {
           if(edit_right_click_stop) {
             stopButtonData();
             }
@@ -660,7 +666,7 @@ void RDCueEdit::mousePressEvent(QMouseEvent *e)
         break;
 
       case Qt::MidButton:
-        if(edit_audition_button->isShown()) {
+        if(edit_audition_button->isVisible()) {
           if(edit_logline->forcedLength()>10000) {
             if(edit_play_deck->state()==RDPlayDeck::Playing) {
               edit_play_deck->pause();

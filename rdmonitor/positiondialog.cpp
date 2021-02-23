@@ -2,7 +2,7 @@
 //
 // Dialog to set RDMonitor screen position.
 //
-//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,8 +33,7 @@ PositionDialog::PositionDialog(QDesktopWidget *dw,RDMonitorConfig *mconfig,
   // Screen Number
   //
   pos_screen_number_box=new QComboBox(this);
-  pos_screen_number_label=
-    new QLabel(pos_screen_number_box,tr("Screen")+":",this);
+  pos_screen_number_label=new QLabel(tr("Screen")+":",this);
   pos_screen_number_label->setFont(labelFont());
   pos_screen_number_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -42,13 +41,12 @@ PositionDialog::PositionDialog(QDesktopWidget *dw,RDMonitorConfig *mconfig,
   // Position
   //
   pos_position_box=new QComboBox(this);
-  pos_position_label=
-    new QLabel(pos_position_box,tr("Position")+":",this);
+  pos_position_label=new QLabel(tr("Position")+":",this);
   pos_position_label->setFont(labelFont());
   pos_position_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   for(int i=0;i<RDMonitorConfig::LastPosition;i++) {
     pos_position_box->
-      insertItem(RDMonitorConfig::positionText((RDMonitorConfig::Position)i));
+      insertItem(i,RDMonitorConfig::positionText((RDMonitorConfig::Position)i));
   }
 
   //
@@ -56,7 +54,7 @@ PositionDialog::PositionDialog(QDesktopWidget *dw,RDMonitorConfig *mconfig,
   //
   pos_x_offset_spin=new QSpinBox(this);
   pos_x_offset_spin->setRange(0,99);
-  pos_x_offset_label=new QLabel(pos_x_offset_spin,tr("X Offset")+":",this);
+  pos_x_offset_label=new QLabel(tr("X Offset")+":",this);
   pos_x_offset_label->setFont(labelFont());
   pos_x_offset_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -65,7 +63,7 @@ PositionDialog::PositionDialog(QDesktopWidget *dw,RDMonitorConfig *mconfig,
   //
   pos_y_offset_spin=new QSpinBox(this);
   pos_y_offset_spin->setRange(0,99);
-  pos_y_offset_label=new QLabel(pos_y_offset_spin,tr("Y Offset")+":",this);
+  pos_y_offset_label=new QLabel(tr("Y Offset")+":",this);
   pos_y_offset_label->setFont(labelFont());
   pos_y_offset_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -104,12 +102,12 @@ int PositionDialog::exec()
 {
   pos_screen_number_box->clear();
   for(int i=0;i<pos_desktop_widget->numScreens();i++) {
-    pos_screen_number_box->insertItem(QString().sprintf("%d",i));
+    pos_screen_number_box->insertItem(i,QString().sprintf("%d",i));
     if(i==pos_config->screenNumber()) {
-      pos_screen_number_box->setCurrentItem(i);
+      pos_screen_number_box->setCurrentIndex(i);
     }
   }
-  pos_position_box->setCurrentItem((int)pos_config->position());
+  pos_position_box->setCurrentIndex((int)pos_config->position());
   pos_x_offset_spin->setValue(pos_config->xOffset());
   pos_y_offset_spin->setValue(pos_config->yOffset());
 
@@ -119,9 +117,9 @@ int PositionDialog::exec()
 
 void PositionDialog::okData()
 {
-  pos_config->setScreenNumber(pos_screen_number_box->currentItem());
+  pos_config->setScreenNumber(pos_screen_number_box->currentIndex());
   pos_config->
-    setPosition((RDMonitorConfig::Position)pos_position_box->currentItem());
+    setPosition((RDMonitorConfig::Position)pos_position_box->currentIndex());
   pos_config->setXOffset(pos_x_offset_spin->value());
   pos_config->setYOffset(pos_y_offset_spin->value());
 

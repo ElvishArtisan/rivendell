@@ -23,7 +23,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <qapplication.h>
+#include <QApplication>
 
 #include <dbversion.h>
 #include <rdapplication.h>
@@ -72,7 +72,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdrepld","rdrepld",RDREPLD_USAGE,this));
   if(!rda->open(&err_msg,&err_type,false)) {
-    fprintf(stderr,"rdrepld: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdrepld: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -86,7 +86,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rdrepld: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }
@@ -116,8 +116,9 @@ MainObject::MainObject(QObject *parent)
   // Start the Main Loop
   //
   repl_loop_timer=new QTimer(this);
+  repl_loop_timer->setSingleShot(true);
   connect(repl_loop_timer,SIGNAL(timeout()),this,SLOT(mainLoop()));
-  repl_loop_timer->start(RD_RDREPL_SCAN_INTERVAL,true);
+  repl_loop_timer->start(RD_RDREPL_SCAN_INTERVAL);
 
   rda->syslog(LOG_INFO,"started");
 }
@@ -128,7 +129,7 @@ void MainObject::mainLoop()
   LoadReplicators();
   ProcessCarts();
   FreeReplicators();
-  repl_loop_timer->start(RD_RDREPL_SCAN_INTERVAL,true);
+  repl_loop_timer->start(RD_RDREPL_SCAN_INTERVAL);
 }
 
 

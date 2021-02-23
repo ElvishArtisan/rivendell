@@ -2,7 +2,7 @@
 //
 // The Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <syslog.h>
-
-#include <qcoreapplication.h>
-#include <qobject.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
@@ -36,7 +32,8 @@
 #include <errno.h>
 #include <dlfcn.h>
 
-#include <qdir.h>
+#include <QCoreApplication>
+#include <QDir>
 
 #include <rdapplication.h>
 #include <rdaudio_port.h>
@@ -88,8 +85,8 @@ void SigHandler(int signum)
 }
 
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   //
   // Read Command Options
@@ -731,8 +728,8 @@ void MainObject::loadRecordingData(int id,unsigned card,unsigned port,
 
   if(record_owner[card][port]==-1) {
     wavename=rd_config->audioFileName(name);
-    unlink(wavename);  // So we don't trainwreck any current playouts!
-    unlink(wavename+".energy");
+    unlink(wavename.toUtf8());  // So we don't trainwreck any current playouts!
+    unlink((wavename+".energy").toUtf8());
     switch(cae_driver[card]) {
     case RDStation::Hpi:
       if(!hpiLoadRecord(card,port,coding,channels,samprate,bitrate,
@@ -1458,20 +1455,20 @@ void MainObject::statePlayUpdate(int card,int stream,int state)
     switch(state) {
 	case 1:   // Playing
 	  cae_server->sendCommand(play_owner[card][stream],
-				  (const char *)QString().
+				  QString().
 				  sprintf("PY %d %d %d +!",handle,
 					  play_length[card][stream],
-					  play_speed[card][stream]));
+					  play_speed[card][stream]).toUtf8());
 	  break;
 	case 2:   // Paused
 	  cae_server->
 	    sendCommand(play_owner[card][stream],(const char *)QString().
-			sprintf("SP %d +!",handle));
+			sprintf("SP %d +!",handle).toUtf8());
 	  break;
 	case 0:   // Stopped
 	  cae_server->
 	    sendCommand(play_owner[card][stream],(const char *)QString().
-		      sprintf("SP %d +!",handle));
+			sprintf("SP %d +!",handle).toUtf8());
 	  break;
     }
   }
@@ -1487,20 +1484,20 @@ void MainObject::stateRecordUpdate(int card,int stream,int state)
 	    sendCommand(record_owner[card][stream],(const char *)QString().
 		      sprintf("RD %d %d %d %d +!",card,stream,
 			      record_length[card][stream],
-			      record_threshold[card][stream]));
+			      record_threshold[card][stream]).toUtf8());
 	  break;
 
 	case 4:    // Record Started
 	  cae_server->
 	    sendCommand(record_owner[card][stream],(const char *)QString().
-		      sprintf("RS %d %d +!",card,stream));
+			sprintf("RS %d %d +!",card,stream).toUtf8());
 	  break;
 
 	case 2:    // Paused
 	case 3:    // Stopped
 	  cae_server->
 	    sendCommand(record_owner[card][stream],(const char *)QString().
-			sprintf("SR %d %d +!",card,stream));
+			sprintf("SR %d %d +!",card,stream).toUtf8());
 	  break;
     }
   }
@@ -1623,7 +1620,7 @@ void MainObject::InitProvisioning() const
 	if(RDStation::create(rd_config->stationName(),&err_msg,rd_config->provisioningHostTemplate(),rd_config->provisioningHostIpAddress())) {
 	  RDApplication::syslog(rd_config,LOG_INFO,
 				"created new host entry \"%s\"",
-				(const char *)rd_config->stationName());
+				rd_config->stationName().toUtf8().constData());
 	  if(!rd_config->provisioningHostShortName(rd_config->stationName()).
 	     isEmpty()) {
 	    RDStation *station=new RDStation(rd_config->stationName());
@@ -1634,7 +1631,7 @@ void MainObject::InitProvisioning() const
 	}
 	else {
 	  fprintf(stderr,"caed: unable to provision host [%s]\n",
-		  (const char *)err_msg);
+		  err_msg.toUtf8().constData());
 	  exit(256);
 	}
       }
@@ -1657,11 +1654,11 @@ void MainObject::InitProvisioning() const
 			 rd_config->provisioningServiceTemplate(),rd_config)) {
 	  RDApplication::syslog(rd_config,LOG_INFO,
 				"created new service entry \"%s\"",
-				(const char *)svcname);
+				svcname.toUtf8().constData());
 	}
 	else {
 	  fprintf(stderr,"caed: unable to provision service [%s]\n",
-		  (const char *)err_msg);
+		  err_msg.toUtf8().constData());
 	  exit(256);
 	}
       }
@@ -1803,7 +1800,7 @@ pid_t MainObject::GetPid(QString pidfile)
   FILE *handle;
   pid_t ret;
 
-  if((handle=fopen((const char *)pidfile,"r"))==NULL) {
+  if((handle=fopen(pidfile.toUtf8(),"r"))==NULL) {
     return -1;
   }
   if(fscanf(handle,"%d",&ret)!=1) {
@@ -2103,7 +2100,8 @@ void MainObject::SendMeterLevelUpdate(const QString &type,int cardnum,
     if((cae_server->meterPort(ids.at(l))>0)&&
        cae_server->metersEnabled(ids.at(l),cardnum)) {
       SendMeterUpdate(QString().sprintf("ML %s %d %d %d %d",
-		      (const char *)type,cardnum,portnum,levels[0],levels[1]),
+					type.toUtf8().constData(),
+					cardnum,portnum,levels[0],levels[1]),
 		      ids.at(l));
     }
   }
@@ -2178,7 +2176,7 @@ void MainObject::SendMeterOutputStatusUpdate(int card,int port,int stream)
 
 void MainObject::SendMeterUpdate(const QString &msg,int conn_id)
 {
-  meter_socket->writeDatagram(msg,msg.length(),cae_server->peerAddress(conn_id),
+  meter_socket->writeDatagram(msg.toUtf8(),cae_server->peerAddress(conn_id),
 			      cae_server->meterPort(conn_id));
 }
 
@@ -2187,7 +2185,7 @@ int main(int argc,char *argv[])
 {
   int rc;
   QCoreApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   rc=a.exec();
   RDApplication::syslog(rd_config,LOG_DEBUG,"cae post a.exec() rc: %d",rc);
   return rc;

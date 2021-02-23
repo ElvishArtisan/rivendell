@@ -22,9 +22,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <qapplication.h>
-#include <qdir.h>
-#include <qfile.h>
+#include <QApplication>
+#include <QDir>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -129,27 +128,27 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--format") {
       export_format=rda->cmdSwitch()->value(i);
       bool ok=false;
-      if(export_format.lower()=="flac") {
+      if(export_format.toLower()=="flac") {
 	export_set_format=RDSettings::Flac;
 	ok=true;
       }
-      if(export_format.lower()=="mp2") {
+      if(export_format.toLower()=="mp2") {
 	export_set_format=RDSettings::MpegL2;
 	ok=true;
       }
-      if(export_format.lower()=="mp3") {
+      if(export_format.toLower()=="mp3") {
 	export_set_format=RDSettings::MpegL3;
 	ok=true;
       }
-      if(export_format.lower()=="pcm16") {
+      if(export_format.toLower()=="pcm16") {
 	export_set_format=RDSettings::Pcm16;
 	ok=true;
       }
-      if(export_format.lower()=="pcm24") {
+      if(export_format.toLower()=="pcm24") {
 	export_set_format=RDSettings::Pcm24;
 	ok=true;
       }
-      if(export_format.lower()=="vorbis") {
+      if(export_format.toLower()=="vorbis") {
 	export_set_format=RDSettings::OggVorbis;
 	ok=true;
       }
@@ -491,7 +490,7 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
 	filename+=f0[i]+".";
       }
       filename+="xml";
-      if((f=fopen(filename,"w"))!=NULL) {
+      if((f=fopen(filename.toUtf8(),"w"))!=NULL) {
 	fprintf(f,"%s\n",
 		(const char *)cart->xml(true,true,&settings,cut->cutNumber()).
 		toUtf8());

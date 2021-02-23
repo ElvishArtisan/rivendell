@@ -2,7 +2,7 @@
 //
 //   An audio meter display widget.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,28 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qwidget.h>
-#include <qstring.h>
-#include <qcolor.h>
-#include <qpainter.h>
-#include <qpushbutton.h>
-#include <qsize.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QPaintEvent>
-#include <stdio.h>
-#include <qslider.h>
-#include <q3buttongroup.h>
-#include <qsizepolicy.h>
-#include <qmessagebox.h>
-
-#include <rdsegmeter.h>
+#include "rdsegmeter.h"
 
 RDSegMeter::RDSegMeter(RDSegMeter::Orientation o,QWidget *parent)
   : QWidget(parent)
 {
   orient=o;
-  setBackgroundColor(Qt::black);
+  QPalette pal=palette();
+  pal.setColor(QPalette::Background,Qt::black);
+  setPalette(pal);
   dark_low_color=QColor(DEFAULT_DARK_LOW_COLOR);
   dark_high_color=QColor(DEFAULT_DARK_HIGH_COLOR);
   dark_clip_color=QColor(DEFAULT_DARK_CLIP_COLOR);
@@ -56,7 +43,7 @@ RDSegMeter::RDSegMeter(RDSegMeter::Orientation o,QWidget *parent)
   floating_bar=-10000;
   seg_mode=RDSegMeter::Independent;
 
-  peak_timer=new QTimer(this,"peak_timer");
+  peak_timer=new QTimer(this);
   connect(peak_timer,SIGNAL(timeout()),this,SLOT(peakData()));
 }
 
@@ -77,7 +64,7 @@ void RDSegMeter::setRange(int min,int max)
 {
   range_min=min;
   range_max=max;
-  repaint(false);
+  repaint();
 }
 
 
@@ -85,7 +72,7 @@ void RDSegMeter::setDarkLowColor(QColor color)
 {
   if(dark_low_color!=color) {
     dark_low_color=color;
-    repaint(false);
+    repaint();
   }
 }
 
@@ -94,7 +81,7 @@ void RDSegMeter::setDarkHighColor(QColor color)
 {
   if(dark_high_color!=color) {
     dark_high_color=color;
-    repaint(false);
+    repaint();
   }
 }
 
@@ -103,7 +90,7 @@ void RDSegMeter::setDarkClipColor(QColor color)
 {
   if(dark_clip_color!=color) {
     dark_clip_color=color;
-    repaint(false);
+    repaint();
   }
 }
 
@@ -112,7 +99,7 @@ void RDSegMeter::setLowColor(QColor color)
 {
   if(low_color!=color) {
     low_color=color;
-    repaint(false);
+    repaint();
   }
 }
 
@@ -121,7 +108,7 @@ void RDSegMeter::setHighColor(QColor color)
 {
   if(high_color!=color) {
     high_color=color;
-    repaint(false);
+    repaint();
   }
 }
 
@@ -130,7 +117,7 @@ void RDSegMeter::setClipColor(QColor color)
 {
   if(clip_color!=color) {
     clip_color=color;
-    repaint(false);
+    repaint();
   }
 }
 
@@ -139,7 +126,7 @@ void RDSegMeter::setHighThreshold(int level)
 {
   if(high_threshold!=level) {
     high_threshold=level;
-    repaint(false);
+    repaint();
   }
 }
 
@@ -148,7 +135,7 @@ void RDSegMeter::setClipThreshold(int level)
 {
   if(clip_threshold!=level) {
     clip_threshold=level;
-    repaint(false);
+    repaint();
   }
 }
 
@@ -181,7 +168,7 @@ void RDSegMeter::setSolidBar(int level)
 {
   if((seg_mode==RDSegMeter::Independent)&&(solid_bar!=level)) {
     solid_bar=level;
-    repaint(false);
+    repaint();
   }
 }
 
@@ -190,7 +177,7 @@ void RDSegMeter::setFloatingBar(int level)
 {
   if((seg_mode==RDSegMeter::Independent)&&(solid_bar!=level)) {
     floating_bar=level;
-    repaint(false);
+    repaint();
   }
 }
 
@@ -206,7 +193,7 @@ void RDSegMeter::setPeakBar(int level)
     if(solid_bar<range_min) {
       floating_bar=solid_bar;
     }
-    repaint(false);
+    repaint();
   }
 }
 
@@ -215,7 +202,7 @@ void RDSegMeter::setSegmentSize(int size)
 {
   if(seg_size!=size) {
     seg_size=size;
-    repaint(false);
+    repaint();
   }
 }
 
@@ -224,7 +211,7 @@ void RDSegMeter::setSegmentGap(int gap)
 {
   if(seg_gap!=gap) {
     seg_gap=gap;
-    repaint(false);
+    repaint();
   }
 }
 
@@ -499,7 +486,7 @@ void RDSegMeter::paintEvent(QPaintEvent *paintEvent)
 void RDSegMeter::peakData()
 {
   floating_bar=solid_bar;
-  repaint(false);
+  repaint();
 }
 
 

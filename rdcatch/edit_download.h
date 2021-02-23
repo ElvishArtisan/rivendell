@@ -23,15 +23,16 @@
 
 
 #include <QCheckBox>
-#include <QComboBox>
 #include <QDateTimeEdit>
 #include <QLabel>
 #include <QSpinBox>
 
+#include <rdcombobox.h>
 #include <rdcut_dialog.h>
 #include <rddeck.h>
 #include <rddialog.h>
 #include <rdrecording.h>
+#include <rdstationlistmodel.h>
 
 class EditDownload : public RDDialog
 {
@@ -63,7 +64,8 @@ class EditDownload : public RDDialog
   RDCutDialog *edit_cut_dialog;
   RDRecording *edit_recording;
   QCheckBox *edit_active_button;
-  QComboBox *edit_station_box;
+  RDComboBox *edit_station_box;
+  RDStationListModel *edit_station_model;
   QTimeEdit *edit_starttime_edit;
   QLineEdit *edit_description_edit;
   QLineEdit *edit_url_edit;

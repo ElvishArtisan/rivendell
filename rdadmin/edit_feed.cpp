@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Feed
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,14 +20,9 @@
 
 #include <math.h>
 
-#include <qapplication.h>
-#include <qclipboard.h>
-#include <qdatetime.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qpainter.h>
-#include <qpushbutton.h>
-#include <qurl.h>
+#include <QApplication>
+#include <QClipboard>
+#include <QMessageBox>
 
 #include <rdapplication.h>
 #include <rddelete.h>
@@ -93,8 +88,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_channel_title_edit=new QLineEdit(this);
   feed_channel_title_edit->setMaxLength(191);
-  feed_channel_title_label=
-    new QLabel(feed_channel_title_edit,tr("Title:"),this);
+  feed_channel_title_label=new QLabel(tr("Title:"),this);
   feed_channel_title_label->setFont(labelFont());
   feed_channel_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -111,8 +105,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_channel_link_edit=new QLineEdit(this);
   feed_channel_link_edit->setMaxLength(191);
-  feed_channel_link_label=
-    new QLabel(feed_channel_link_edit,tr("Link:"),this);
+  feed_channel_link_label=new QLabel(tr("Link:"),this);
   feed_channel_link_label->setFont(labelFont());
   feed_channel_link_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -121,8 +114,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_channel_copyright_edit=new QLineEdit(this);
   feed_channel_copyright_edit->setMaxLength(64);
-  feed_channel_copyright_label=
-    new QLabel(feed_channel_copyright_edit,tr("Copyright:"),this);
+  feed_channel_copyright_label=new QLabel(tr("Copyright:"),this);
   feed_channel_copyright_label->setFont(labelFont());
   feed_channel_copyright_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -132,8 +124,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_channel_editor_edit=new QLineEdit(this);
   feed_channel_editor_edit->setMaxLength(64);
-  feed_channel_editor_label=
-    new QLabel(feed_channel_editor_edit,tr("Editor:"),this);
+  feed_channel_editor_label=new QLabel(tr("Editor:"),this);
   feed_channel_editor_label->setFont(labelFont());
   feed_channel_editor_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -144,7 +135,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_channel_author_edit=new QLineEdit(this);
   feed_channel_author_edit->setMaxLength(64);
   feed_channel_author_label=
-    new QLabel(feed_channel_author_edit,tr("Author:"),this);
+    new QLabel(tr("Author:"),this);
   feed_channel_author_label->setFont(labelFont());
   feed_channel_author_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -161,8 +152,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_channel_owner_name_edit=new QLineEdit(this);
   feed_channel_owner_name_edit->setMaxLength(64);
-  feed_channel_owner_name_label=
-    new QLabel(feed_channel_owner_name_edit,tr("Owner Name:"),this);
+  feed_channel_owner_name_label=new QLabel(tr("Owner Name:"),this);
   feed_channel_owner_name_label->setFont(labelFont());
   feed_channel_owner_name_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -172,8 +162,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_channel_owner_email_edit=new QLineEdit(this);
   feed_channel_owner_email_edit->setMaxLength(64);
-  feed_channel_owner_email_label=
-    new QLabel(feed_channel_owner_email_edit,tr("Owner E-Mail:"),this);
+  feed_channel_owner_email_label=new QLabel(tr("Owner E-Mail:"),this);
   feed_channel_owner_email_label->setFont(labelFont());
   feed_channel_owner_email_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -183,8 +172,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_channel_webmaster_edit=new QLineEdit(this);
   feed_channel_webmaster_edit->setMaxLength(64);
-  feed_channel_webmaster_label=
-    new QLabel(feed_channel_webmaster_edit,tr("Webmaster:"),this);
+  feed_channel_webmaster_label=new QLabel(tr("Webmaster:"),this);
   feed_channel_webmaster_label->setFont(labelFont());
   feed_channel_webmaster_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -194,8 +182,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_channel_language_edit=new QLineEdit(this);
   feed_channel_language_edit->setMaxLength(8);
-  feed_channel_language_label=
-    new QLabel(feed_channel_language_edit,tr("Language:"),this);
+  feed_channel_language_label=new QLabel(tr("Language:"),this);
   feed_channel_language_label->setFont(labelFont());
   feed_channel_language_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -203,8 +190,8 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   // Channel is Explicit
   //
   feed_channel_explicit_check=new QCheckBox(this);
-  feed_channel_explicit_label=new QLabel(feed_channel_explicit_check,
-			       tr("Channel contains explicit content"),this);
+  feed_channel_explicit_label=
+    new QLabel(tr("Channel contains explicit content"),this);
   feed_channel_explicit_label->setFont(labelFont());
   feed_channel_explicit_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -214,8 +201,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_channel_image_box=
     new RDImagePickerBox("FEED_IMAGES","FEED_ID","ID",this);
   feed_channel_image_box->setCategoryId(feed_feed->id());
-  feed_channel_image_label=
-    new QLabel(feed_channel_image_box,tr("Image")+":",this);
+  feed_channel_image_label=new QLabel(tr("Image")+":",this);
   feed_channel_image_label->setFont(labelFont());
   feed_channel_image_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -224,8 +210,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_channel_description_edit=new QTextEdit(this);
   feed_channel_description_edit->setAcceptRichText(false);
-  feed_channel_description_label=
-    new QLabel(feed_channel_description_edit,tr("Description:"),this);
+  feed_channel_description_label=new QLabel(tr("Description:"),this);
   feed_channel_description_label->setFont(labelFont());
   feed_channel_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -236,8 +221,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_purge_url_edit->setMaxLength(191);
   connect(feed_purge_url_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(purgeUrlChangedData(const QString &)));
-  feed_purge_url_label=
-    new QLabel(feed_purge_url_edit,tr("Upload URL")+":",this);
+  feed_purge_url_label=new QLabel(tr("Upload URL")+":",this);
   feed_purge_url_label->setFont(labelFont());
   feed_purge_url_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -248,8 +232,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_purge_username_edit->setMaxLength(64);
   connect(feed_purge_username_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(lineeditChangedData(const QString &)));
-  feed_purge_username_label=
-    new QLabel(feed_purge_username_edit,tr("Username:"),this);
+  feed_purge_username_label=new QLabel(tr("Username:"),this);
   feed_purge_username_label->setFont(labelFont());
   feed_purge_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -259,8 +242,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_purge_password_edit=new QLineEdit(this);
   feed_purge_password_edit->setMaxLength(64);
   feed_purge_password_edit->setEchoMode(QLineEdit::Password);
-  feed_purge_password_label=
-    new QLabel(feed_purge_password_edit,tr("Password:"),this);
+  feed_purge_password_label=new QLabel(tr("Password:"),this);
   feed_purge_password_label->setFont(labelFont());
   feed_purge_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -269,8 +251,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_purge_use_id_file_check=new QCheckBox(this);
   feed_purge_use_id_file_label=
-    new QLabel(feed_purge_use_id_file_check,
-	       tr("Authenticate with local identity file"),this);
+    new QLabel(tr("Authenticate with local identity file"),this);
   feed_purge_use_id_file_label->setFont(labelFont());
   feed_purge_use_id_file_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -279,7 +260,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_format_edit=new QLineEdit(this);
   feed_format_edit->setReadOnly(true);
-  feed_format_label=new QLabel(feed_format_edit,tr("Audio Format:"),this);
+  feed_format_label=new QLabel(tr("Audio Format:"),this);
   feed_format_label->setFont(labelFont());
   feed_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   feed_format_button=new QPushButton(this);
@@ -292,8 +273,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_normalize_check=new QCheckBox(this);
   feed_normalize_check->setChecked(true);
-  feed_normalize_check_label=
-    new QLabel(feed_normalize_check,tr("Normalize"),this);
+  feed_normalize_check_label=new QLabel(tr("Normalize"),this);
   feed_normalize_check_label->setFont(labelFont());
   feed_normalize_check_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(feed_normalize_check,SIGNAL(toggled(bool)),
@@ -304,7 +284,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_normalize_spin=new QSpinBox(this);
   feed_normalize_spin->setRange(-30,-1);
-  feed_normalize_label=new QLabel(feed_normalize_spin,tr("Level:"),this);
+  feed_normalize_label=new QLabel(tr("Level:"),this);
   feed_normalize_label->setFont(labelFont());
   feed_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   feed_normalize_unit_label=new QLabel(tr("dBFS"),this);
@@ -316,8 +296,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_base_url_edit=new QLineEdit(this);
   feed_base_url_edit->setMaxLength(191);
-  feed_base_url_label=
-    new QLabel(feed_base_url_edit,tr("Download URL")+":",this);
+  feed_base_url_label=new QLabel(tr("Download URL")+":",this);
   feed_base_url_label->setFont(labelFont());
   feed_base_url_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -327,8 +306,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_autopost_box=new QComboBox(this);
   feed_autopost_box->insertItem(feed_autopost_box->count(),tr("No"));
   feed_autopost_box->insertItem(feed_autopost_box->count(),tr("Yes"));
-  feed_autopost_label=
-    new QLabel(feed_autopost_box,tr("Enable AutoPost")+":",this);
+  feed_autopost_label=new QLabel(tr("Enable AutoPost")+":",this);
   feed_autopost_label->setFont(labelFont());
   feed_autopost_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
  
@@ -337,8 +315,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_base_preamble_edit=new QLineEdit(this);
   feed_base_preamble_edit->setMaxLength(191);
-  feed_base_preamble_label=
-    new QLabel(feed_base_preamble_edit,tr("Enclosure Preamble:"),this);
+  feed_base_preamble_label=new QLabel(tr("Enclosure Preamble:"),this);
   feed_base_preamble_label->setFont(labelFont());
   feed_base_preamble_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -347,8 +324,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_extension_edit=new QLineEdit(this);
   feed_extension_edit->setMaxLength(16);
-  feed_extension_label=
-    new QLabel(feed_extension_edit,tr("Audio Extension:"),this);
+  feed_extension_label=new QLabel(tr("Audio Extension:"),this);
   feed_extension_label->setFont(labelFont());
   feed_extension_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -358,12 +334,10 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_max_shelf_life_spin=new QSpinBox(this);
   feed_max_shelf_life_spin->setRange(0,365);
   feed_max_shelf_life_spin->setSpecialValueText(tr("Unlimited"));
-  feed_max_shelf_life_label=
-    new QLabel(feed_max_shelf_life_spin,tr("Default Shelf Life")+":",this);
+  feed_max_shelf_life_label=new QLabel(tr("Default Shelf Life")+":",this);
   feed_max_shelf_life_label->setFont(labelFont());
   feed_max_shelf_life_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  feed_max_shelf_life_unit_label=
-    new QLabel(feed_max_shelf_life_spin,tr("days"),this);
+  feed_max_shelf_life_unit_label=new QLabel(tr("days"),this);
   feed_max_shelf_life_unit_label->setFont(labelFont());
   feed_max_shelf_life_unit_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -371,10 +345,9 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   // Episode Order
   //
   feed_castorder_box=new QComboBox(this);
-  feed_castorder_box->insertItem(tr("Descending"));
-  feed_castorder_box->insertItem(tr("Ascending"));
-  feed_castorder_label=
-    new QLabel(feed_castorder_box,tr("Episode Sort Order:"),this);
+  feed_castorder_box->insertItem(0,tr("Descending"));
+  feed_castorder_box->insertItem(1,tr("Ascending"));
+  feed_castorder_label=new QLabel(tr("Episode Sort Order:"),this);
   feed_castorder_label->setFont(labelFont());
   feed_castorder_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -383,8 +356,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_item_image_box=new RDImagePickerBox("FEED_IMAGES","FEED_ID","ID",this);
   feed_item_image_box->setCategoryId(feed_feed->id());
-  feed_item_image_label=
-    new QLabel(feed_item_image_box,tr("Default Item Image")+":",this);
+  feed_item_image_label=new QLabel(tr("Default Item Image")+":",this);
   feed_item_image_label->setFont(labelFont());
   feed_item_image_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -408,7 +380,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_header_xml_edit=new QTextEdit(this);
   feed_header_xml_edit->setAcceptRichText(false);
-  feed_header_xml_label=new QLabel(feed_header_xml_edit,tr("Header XML:"),this);
+  feed_header_xml_label=new QLabel(tr("Header XML:"),this);
   feed_header_xml_label->setFont(labelFont());
   feed_header_xml_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   feed_header_xml_button=new QPushButton(tr("Copy to\nClipboard"),this);
@@ -421,8 +393,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_channel_xml_edit=new QTextEdit(this);
   feed_channel_xml_edit->setAcceptRichText(false);
-  feed_channel_xml_label=
-    new QLabel(feed_channel_xml_edit,tr("Channel XML:"),this);
+  feed_channel_xml_label=new QLabel(tr("Channel XML:"),this);
   feed_channel_xml_label->setFont(labelFont());
   feed_channel_xml_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   feed_channel_xml_button=new QPushButton(tr("Copy to\nClipboard"),this);
@@ -435,7 +406,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_item_xml_edit=new QTextEdit(this);
   feed_item_xml_edit->setAcceptRichText(false);
-  feed_item_xml_label=new QLabel(feed_item_xml_edit,tr("Item XML:"),this);
+  feed_item_xml_label=new QLabel(tr("Item XML:"),this);
   feed_item_xml_label->setFont(labelFont());
   feed_item_xml_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   feed_item_xml_button=new QPushButton(tr("Copy to\nClipboard"),this);
@@ -491,7 +462,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   RDRssSchemas::RssSchema schema=feed_feed->rssSchema();
   for(int i=0;i<feed_rss_schema_box->count();i++) {
     if(feed_rss_schema_box->itemData(i).toInt()==schema) {
-      feed_rss_schema_box->setCurrentItem(i);
+      feed_rss_schema_box->setCurrentIndex(i);
       continue;
     }
   }
@@ -514,7 +485,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     feed_normalize_check->setChecked(true);
     feed_normalize_spin->setValue(feed_feed->normalizeLevel()/1000);
   }
-  feed_castorder_box->setCurrentItem(feed_feed->castOrder());
+  feed_castorder_box->setCurrentIndex(feed_feed->castOrder());
   feed_item_image_box->setCurrentImageId(feed_feed->defaultItemImageId());
 
   UpdateControlState();
@@ -614,7 +585,7 @@ void EditFeed::copyHeaderXmlData()
     (RDRssSchemas::RssSchema)feed_rss_schema_box->currentIndex();
 
   if(schema==RDRssSchemas::CustomSchema) {
-    QApplication::clipboard()->setText(feed_header_xml_edit->text());
+    QApplication::clipboard()->setText(feed_header_xml_edit->toPlainText());
   }
   else {
     QApplication::clipboard()->
@@ -629,7 +600,7 @@ void EditFeed::copyChannelXmlData()
     (RDRssSchemas::RssSchema)feed_rss_schema_box->currentIndex();
 
   if(schema==RDRssSchemas::CustomSchema) {
-    QApplication::clipboard()->setText(feed_channel_xml_edit->text());
+    QApplication::clipboard()->setText(feed_channel_xml_edit->toPlainText());
   }
   else {
     QApplication::clipboard()->
@@ -644,7 +615,7 @@ void EditFeed::copyItemXmlData()
     (RDRssSchemas::RssSchema)feed_rss_schema_box->currentIndex();
 
   if(schema==RDRssSchemas::CustomSchema) {
-    QApplication::clipboard()->setText(feed_item_xml_edit->text());
+    QApplication::clipboard()->setText(feed_item_xml_edit->toPlainText());
   }
   else {
     QApplication::clipboard()->
@@ -655,7 +626,7 @@ void EditFeed::copyItemXmlData()
 
 void EditFeed::okData()
 {
-  if(feed_is_superfeed_box->currentItem()&&
+  if(feed_is_superfeed_box->currentIndex()&&
      feed_feed->subfeedNames().size()==0) {
     QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
 		      tr("Superfeed must have at least one subfeed assigned!"));
@@ -673,7 +644,7 @@ void EditFeed::okData()
   }
   delete d;
   delete u;
-  feed_feed->setIsSuperfeed(feed_is_superfeed_box->currentItem());
+  feed_feed->setIsSuperfeed(feed_is_superfeed_box->currentIndex());
   feed_feed->setChannelTitle(feed_channel_title_edit->text());
   feed_feed->setChannelCategory(feed_channel_category_box->category());
   feed_feed->setChannelSubCategory(feed_channel_category_box->subCategory());
@@ -686,7 +657,8 @@ void EditFeed::okData()
   feed_feed->setChannelOwnerName(feed_channel_owner_name_edit->text());
   feed_feed->setChannelOwnerEmail(feed_channel_owner_email_edit->text());
   feed_feed->setChannelWebmaster(feed_channel_webmaster_edit->text());
-  feed_feed->setChannelDescription(feed_channel_description_edit->text());
+  feed_feed->
+    setChannelDescription(feed_channel_description_edit->toPlainText());
   feed_feed->setChannelLanguage(feed_channel_language_edit->text());
   feed_feed->setChannelExplicit(feed_channel_explicit_check->isChecked());
   feed_feed->setChannelImageId(feed_channel_image_box->currentImageId());
@@ -701,9 +673,9 @@ void EditFeed::okData()
   feed_feed->
     setRssSchema((RDRssSchemas::RssSchema)feed_rss_schema_box->
 		 itemData(feed_rss_schema_box->currentIndex()).toUInt());
-  feed_feed->setHeaderXml(feed_header_xml_edit->text());
-  feed_feed->setChannelXml(feed_channel_xml_edit->text());
-  feed_feed->setItemXml(feed_item_xml_edit->text());
+  feed_feed->setHeaderXml(feed_header_xml_edit->toPlainText());
+  feed_feed->setChannelXml(feed_channel_xml_edit->toPlainText());
+  feed_feed->setItemXml(feed_item_xml_edit->toPlainText());
   feed_feed->setMaxShelfLife(feed_max_shelf_life_spin->value());
   feed_feed->setEnableAutopost(feed_autopost_box->currentIndex());
   feed_feed->setUploadFormat(feed_settings.format());
@@ -718,7 +690,7 @@ void EditFeed::okData()
   else {
     feed_feed->setNormalizeLevel(1);
   }
-  feed_feed->setCastOrder(feed_castorder_box->currentItem());
+  feed_feed->setCastOrder(feed_castorder_box->currentIndex());
 
   if(!feed_feed->postXmlConditional("RDAdmin",this)) {
     return;

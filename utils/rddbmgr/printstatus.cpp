@@ -2,7 +2,7 @@
 //
 // Print the status of a database.
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,10 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
-
-#include <rddb.h>
 
 #include "rddbmgr.h"
 
@@ -45,7 +41,7 @@ bool MainObject::PrintStatus(QString *err_msg) const
   }
 
   printf("Rivendell database, schema %d [%s]\n",schema,
-	 (const char *)GetSchemaVersion(schema));
+	 GetSchemaVersion(schema).toUtf8().constData());
 
   *err_msg="ok";
   return true;

@@ -215,7 +215,9 @@ void ImportCartsView::setSegueData()
 
 void ImportCartsView::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RDCartDrag::canDecode(e));
+  if(RDCartDrag::canDecode(e)) {
+    e->accept();
+  }
 }
 
 

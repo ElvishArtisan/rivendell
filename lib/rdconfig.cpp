@@ -252,7 +252,7 @@ QString RDConfig::provisioningHostShortName(const QString &hostname) const
 {
   QRegExp exp(conf_provisioning_host_short_name_regex);
 
-  exp.search(hostname);
+  exp.indexIn(hostname);
   QStringList texts=exp.capturedTexts();
   if((unsigned)texts.size()<conf_provisioning_host_short_name_group) {
     return QString();
@@ -277,7 +277,7 @@ QString RDConfig::provisioningServiceName(const QString &hostname) const
 {
   QRegExp exp(conf_provisioning_service_name_regex);
 
-  exp.search(hostname);
+  exp.indexIn(hostname);
   QStringList texts=exp.capturedTexts();
   if((unsigned)texts.size()<conf_provisioning_service_name_group) {
     return QString();
@@ -502,7 +502,7 @@ bool RDConfig::load()
   }
   gethostname(sname,255);
   QStringList list=QString(sname).split(".");  // Strip domain name parts
-  strncpy(sname,list[0],256);
+  strncpy(sname,list.at(0).toUtf8(),256);
   conf_station_name=
     profile->stringValue("Identity","StationName",sname);
   conf_password=profile->stringValue("Identity","Password","");
@@ -590,27 +590,27 @@ bool RDConfig::load()
     profile->boolValue("Hacks","DisableMaintChecks",false);
   conf_lock_rdairplay_memory=
     profile->boolValue("Hacks","LockRdairplayMemory",false);
-  if((user=getpwnam(profile->stringValue("Identity","AudioOwner")))!=NULL) {
+  if((user=getpwnam(profile->stringValue("Identity","AudioOwner").toUtf8()))!=NULL) {
     conf_uid=user->pw_uid;
   }
-  if((groups=getgrnam(profile->stringValue("Identity","AudioGroup")))!=NULL) {
+  if((groups=getgrnam(profile->stringValue("Identity","AudioGroup").toUtf8()))!=NULL) {
     conf_gid=groups->gr_gid;
   }
   if((user=getpwnam(profile->stringValue("Identity","PypadOwner",
-					 RD_DEFAULT_PYPAD_OWNER)))!=NULL) {
+					 RD_DEFAULT_PYPAD_OWNER).toUtf8()))!=NULL) {
     conf_pypad_uid=user->pw_uid;
   }
   if((groups=getgrnam(profile->stringValue("Identity","PypadGroup",
-					   RD_DEFAULT_PYPAD_GROUP)))!=NULL) {
+					   RD_DEFAULT_PYPAD_GROUP).toUtf8()))!=NULL) {
     conf_pypad_gid=groups->gr_gid;
   }
 
   if((user=getpwnam(profile->stringValue("Identity","RnRmlOwner",
-					 RD_DEFAULT_RN_RML_OWNER)))!=NULL) {
+					 RD_DEFAULT_RN_RML_OWNER).toUtf8()))!=NULL) {
     conf_rn_rml_uid=user->pw_uid;
   }
   if((groups=getgrnam(profile->stringValue("Identity","RnRmlGroup",
-					   RD_DEFAULT_RN_RML_GROUP)))!=NULL) {
+					   RD_DEFAULT_RN_RML_GROUP).toUtf8()))!=NULL) {
     conf_rn_rml_gid=groups->gr_gid;
   }
   conf_syslog_facility=profile->intValue("Identity","SyslogFacility",LOG_USER);

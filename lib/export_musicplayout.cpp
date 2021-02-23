@@ -48,7 +48,7 @@ bool RDReport::ExportMusicPlayout(const QString &filename,
     return false;
   }
   QTextStream *strm=new QTextStream(file);
-  strm->setEncoding(QTextStream::UnicodeUTF8);
+  strm->setCodec("UTF-8");
   if(useLeadingZeros()) {
     cart_fmt=QString().sprintf("%%0%uu",cartDigits());
   }
@@ -102,7 +102,7 @@ bool RDReport::ExportMusicPlayout(const QString &filename,
 	cut="   ";
       }
     }
-    cart_num=QString().sprintf(cart_fmt,q->value(1).toUInt());
+    cart_num=QString().sprintf(cart_fmt.toUtf8(),q->value(1).toUInt());
     *strm << q->value(2).toDateTime().time().toString("hh:mm:ss")+"  ";
     *strm << cart_num+"  ";
     *strm << cut+"  ";

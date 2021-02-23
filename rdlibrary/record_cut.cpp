@@ -2,7 +2,7 @@
 //
 // Record a Rivendell Cut
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rdconf.h>
 #include <rdmixer.h>
@@ -104,8 +104,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   cut_description_edit=new QLineEdit(this);
   cut_description_edit->setMaxLength(64);
-  cut_description_label=
-    new QLabel(cut_description_edit,tr("&Description")+":",this);
+  cut_description_label=new QLabel(tr("&Description")+":",this);
   cut_description_label->setFont(labelFont());
   cut_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -114,7 +113,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   cut_outcue_edit=new QLineEdit(this);
   cut_outcue_edit->setMaxLength(64);
-  cut_outcue_label=new QLabel(cut_outcue_edit,tr("&Outcue")+":",this);
+  cut_outcue_label=new QLabel(tr("&Outcue")+":",this);
   cut_outcue_label->setFont(labelFont());
   cut_outcue_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -123,7 +122,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   cut_isci_edit=new QLineEdit(this);
   cut_isci_edit->setMaxLength(32);
-  cut_isci_label=new QLabel(cut_isci_edit,tr("&ISCI Code")+":",this);
+  cut_isci_label=new QLabel(tr("&ISCI Code")+":",this);
   cut_isci_label->setFont(labelFont());
   cut_isci_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -132,7 +131,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   cut_isrc_edit=new QLineEdit(this);
   cut_isrc_edit->setMaxLength(64);
-  cut_isrc_label=new QLabel(cut_isrc_edit,tr("ISRC")+":",this);
+  cut_isrc_label=new QLabel(tr("ISRC")+":",this);
   cut_isrc_label->setFont(labelFont());
   cut_isrc_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -141,7 +140,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   cut_source_edit=new QLineEdit(this);
   cut_source_edit->setReadOnly(true);
-  cut_source_label=new QLabel(cut_source_edit,tr("Source")+":",this);
+  cut_source_label=new QLabel(tr("Source")+":",this);
   cut_source_label->setFont(labelFont());
   cut_source_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -150,7 +149,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   cut_ingest_edit=new QLineEdit(this);
   cut_ingest_edit->setReadOnly(true);
-  cut_ingest_label=new QLabel(cut_ingest_edit,tr("Ingest")+":",this);
+  cut_ingest_label=new QLabel(tr("Ingest")+":",this);
   cut_ingest_label->setFont(labelFont());
   cut_ingest_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -160,7 +159,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   cut_playdate_edit=new QLineEdit(this);
   cut_playdate_edit->setReadOnly(true);
   cut_playdate_edit->setMaxLength(64);
-  cut_playdate_label=new QLabel(cut_playdate_edit,tr("Last Played")+":",this);
+  cut_playdate_label=new QLabel(tr("Last Played")+":",this);
   cut_playdate_label->setFont(labelFont());
   cut_playdate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -171,8 +170,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   cut_playcounter_edit->setAlignment(Qt::AlignRight);
   cut_playcounter_edit->setReadOnly(true);
   cut_playcounter_edit->setMaxLength(64);
-  cut_playcounter_label=
-    new QLabel(cut_playcounter_edit,tr("# of Plays")+":",this);
+  cut_playcounter_label=new QLabel(tr("# of Plays")+":",this);
   cut_playcounter_label->setFont(labelFont());
   cut_playcounter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -180,8 +178,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   // Evergreen Checkbox
   //
   rec_evergreen_box=new QCheckBox(this);
-  rec_evergreen_label=new 
-    QLabel(rec_evergreen_box,tr("Cut is EVERGREEN")+":",this);
+  rec_evergreen_label=new QLabel(tr("Cut is EVERGREEN")+":",this);
   rec_evergreen_label->setFont(labelFont());
   rec_evergreen_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(rec_evergreen_box,SIGNAL(toggled(bool)),
@@ -192,7 +189,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   cut_weight_box=new QSpinBox(this);
   cut_weight_box->setRange(0,100);
-  cut_weight_label=new QLabel(cut_weight_box,tr("Weight")+":",this);
+  cut_weight_label=new QLabel(tr("Weight")+":",this);
   cut_weight_label->setFont(labelFont());
   cut_weight_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -211,12 +208,12 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
 
   cut_startdatetime_edit=new QDateTimeEdit(this);
   cut_startdatetime_edit->setDisplayFormat("MM/dd/yyyy - hh:mm:ss");
-  cut_startdatetime_label=new QLabel(cut_startdatetime_edit,tr("&Start"),this);
+  cut_startdatetime_label=new QLabel(tr("&Start"),this);
   cut_startdatetime_label->setFont(subLabelFont());
   cut_startdatetime_label->setAlignment(Qt::AlignRight);
   cut_enddatetime_edit=new QDateTimeEdit(this);
   cut_enddatetime_edit->setDisplayFormat("MM/dd/yyyy - hh:mm:ss");
-  cut_enddatetime_label=new QLabel(cut_enddatetime_edit,tr("End"),this);
+  cut_enddatetime_label=new QLabel(tr("End"),this);
   cut_enddatetime_label->setFont(subLabelFont());
   cut_enddatetime_label->setAlignment(Qt::AlignRight);
 
@@ -235,13 +232,13 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
 
   cut_starttime_edit=new QTimeEdit(this);
   cut_starttime_edit->setDisplayFormat("hh:mm:ss");
-  cut_starttime_label=new QLabel(cut_starttime_edit,tr("&Start Time"),this);
+  cut_starttime_label=new QLabel(tr("&Start Time"),this);
   cut_starttime_label->setFont(subLabelFont());
   cut_starttime_label->setAlignment(Qt::AlignRight);
 
   cut_endtime_edit=new QTimeEdit(this);
   cut_endtime_edit->setDisplayFormat("hh:mm:ss");
-  cut_endtime_label=new QLabel(cut_endtime_edit,tr("End Time"),this);
+  cut_endtime_label=new QLabel(tr("End Time"),this);
   cut_endtime_label->setFont(subLabelFont());
   cut_endtime_label->setAlignment(Qt::AlignRight);
 
@@ -251,37 +248,37 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   rec_dayofweek_groupbox=new QGroupBox(tr("Day of the Week"),this);
   rec_dayofweek_groupbox->setFont(labelFont());
   rec_weekpart_button[0]=new QCheckBox(this);
-  rec_weekpart_label[0]=new QLabel(rec_weekpart_button[0],tr("Monday"),this);
+  rec_weekpart_label[0]=new QLabel(tr("Monday"),this);
   rec_weekpart_label[0]->setFont(subLabelFont());
   rec_weekpart_label[0]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_weekpart_button[1]=new QCheckBox(this);
-  rec_weekpart_label[1]=new QLabel(rec_weekpart_button[1],tr("Tuesday"),this);
+  rec_weekpart_label[1]=new QLabel(tr("Tuesday"),this);
   rec_weekpart_label[1]->setFont(subLabelFont());
   rec_weekpart_label[1]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_weekpart_button[2]=new QCheckBox(this);
-  rec_weekpart_label[2]=new QLabel(rec_weekpart_button[2],tr("Wednesday"),this);
+  rec_weekpart_label[2]=new QLabel(tr("Wednesday"),this);
   rec_weekpart_label[2]->setFont(subLabelFont());
   rec_weekpart_label[2]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_weekpart_button[3]=new QCheckBox(this);
-  rec_weekpart_label[3]=new QLabel(rec_weekpart_button[3],tr("Thursday"),this);
+  rec_weekpart_label[3]=new QLabel(tr("Thursday"),this);
   rec_weekpart_label[3]->setFont(subLabelFont());
   rec_weekpart_label[3]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_weekpart_button[4]=new QCheckBox(this);
-  rec_weekpart_label[4]=new QLabel(rec_weekpart_button[4],tr("Friday"),this);
+  rec_weekpart_label[4]=new QLabel(tr("Friday"),this);
   rec_weekpart_label[4]->setFont(subLabelFont());
   rec_weekpart_label[4]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_weekpart_button[5]=new QCheckBox(this);
-  rec_weekpart_label[5]=new QLabel(rec_weekpart_button[5],tr("Saturday"),this);
+  rec_weekpart_label[5]=new QLabel(tr("Saturday"),this);
   rec_weekpart_label[5]->setFont(subLabelFont());
   rec_weekpart_label[5]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_weekpart_button[6]=new QCheckBox(this);
-  rec_weekpart_label[6]=new QLabel(rec_weekpart_button[6],tr("Sunday"),this);
+  rec_weekpart_label[6]=new QLabel(tr("Sunday"),this);
   rec_weekpart_label[6]->setFont(subLabelFont());
   rec_weekpart_label[6]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
@@ -328,7 +325,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   rec_channels_box=new QComboBox(this);
   rec_channels_edit=new QLineEdit(this);
-  rec_channels_box_label=new QLabel(rec_channels_box,tr("Channels"),this);
+  rec_channels_box_label=new QLabel(tr("Channels"),this);
   rec_channels_box_label->setAlignment(Qt::AlignHCenter);
   rec_channels_box_label->setFont(labelFont());
   connect(rec_channels_box,SIGNAL(activated(int)),
@@ -361,7 +358,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   // Record Mode 
   //
   rec_mode_box=new QComboBox(this);
-  rec_mode_box_label=new QLabel(rec_mode_box,tr("Record Mode"),this);
+  rec_mode_box_label=new QLabel(tr("Record Mode"),this);
   rec_mode_box_label->setAlignment(Qt::AlignHCenter);
   rec_mode_box_label->setFont(labelFont());
 
@@ -369,7 +366,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   // AutoTrim Mode 
   //
   rec_trim_box=new QComboBox(this);
-  rec_trim_box_label=new QLabel(rec_trim_box,tr("AutoTrim"),this);
+  rec_trim_box_label=new QLabel(tr("AutoTrim"),this);
   rec_trim_box_label->setAlignment(Qt::AlignHCenter);
   rec_trim_box_label->setFont(labelFont());
 
@@ -441,28 +438,28 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
       rec_weekpart_button[i]->setChecked(true);
     }
   }
-  rec_channels_box->insertItem("1");
-  rec_channels_box->insertItem("2");
-  rec_channels_box->setCurrentItem(rec_cut->channels()-1);
+  rec_channels_box->insertItem(0,"1");
+  rec_channels_box->insertItem(1,"2");
+  rec_channels_box->setCurrentIndex(rec_cut->channels()-1);
   rec_channels_edit->setText(QString().sprintf("%d",rec_cut->channels()));
-  rec_mode_box->insertItem(tr("Manual"));
-  rec_mode_box->insertItem(tr("VOX"));
+  rec_mode_box->insertItem(0,tr("Manual"));
+  rec_mode_box->insertItem(1,tr("VOX"));
   switch(rda->libraryConf()->defaultRecordMode()) {
       case RDLibraryConf::Manual:
-	rec_mode_box->setCurrentItem(0);
+	rec_mode_box->setCurrentIndex(0);
 	break;
 
       case RDLibraryConf::Vox:
-	rec_mode_box->setCurrentItem(1);
+	rec_mode_box->setCurrentIndex(1);
 	break;
   }
-  rec_trim_box->insertItem(tr("On"));
-  rec_trim_box->insertItem(tr("Off"));
+  rec_trim_box->insertItem(0,tr("On"));
+  rec_trim_box->insertItem(1,tr("Off"));
   if(rda->libraryConf()->defaultTrimState()) {
-    rec_trim_box->setCurrentItem(0);
+    rec_trim_box->setCurrentIndex(0);
   }
   else {
-    rec_trim_box->setCurrentItem(1);
+    rec_trim_box->setCurrentIndex(1);
   }
   aesAlarmData(rec_card_no[0],rec_port_no[0],
 	       rda->cae()->inputStatus(rec_card_no[0],rec_port_no[0]));
@@ -651,7 +648,7 @@ void RecordCut::recordData()
     rec_cut->setSampleRate(rec_samprate);
     rec_bitrate=rda->libraryConf()->defaultBitrate();
     rec_cut->setBitRate(rec_bitrate);
-    rec_channels=rec_channels_box->currentItem()+1;
+    rec_channels=rec_channels_box->currentIndex()+1;
     rec_cut->setChannels(rec_channels);
     rec_cut->setOriginDatetime(QDateTime::currentDateTime());
     rec_cut->setOriginName(rda->station()->name());
@@ -681,7 +678,7 @@ void RecordCut::playData()
     rda->cae()->play(rec_play_handle,end-start,RD_TIMESCALE_DIVISOR,false);
   }
   if(is_ready&&(!is_recording)) {
-    if(rec_mode_box->currentItem()==1) {
+    if(rec_mode_box->currentIndex()==1) {
       rda->cae()->
 	record(rec_card_no[0],rec_port_no[0],rda->libraryConf()->maxLength(),
 	       rda->libraryConf()->voxThreshold());
@@ -796,7 +793,7 @@ void RecordCut::recordUnloadedData(int card,int stream,unsigned len)
 			    rda->station()->name(),s,len);
   RDRehash::rehash(rda->station(),rda->user(),rda->config(),rec_cut->cartNumber(),
 		   rec_cut->cutNumber());
-  if(rec_trim_box->currentItem()==0) {
+  if(rec_trim_box->currentIndex()==0) {
     rec_cut->autoTrim(RDCut::AudioBoth,rda->libraryConf()->trimThreshold());
   }
   rec_length=rec_cut->length();

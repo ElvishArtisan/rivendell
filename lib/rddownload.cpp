@@ -132,7 +132,7 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   //
   // Validate User for file: transfers
   //
-  if((getuid()==0)&&(conv_src_url.protocol().lower()=="file")) {
+  if((getuid()==0)&&(conv_src_url.scheme().toLower()=="file")) {
     user=new RDSystemUser(username);
     if(!user->validatePassword(password)) {
       delete user;
@@ -143,7 +143,7 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   if((curl=curl_easy_init())==NULL) {
     return RDDownload::ErrorInternal;
   }
-  if((f=fopen(conv_dst_filename,"w"))==NULL) {
+  if((f=fopen(conv_dst_filename.toUtf8(),"w"))==NULL) {
     curl_easy_cleanup(curl);
     return RDDownload::ErrorNoDestination;
   }
@@ -170,7 +170,7 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
     curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
   }
   else {
-    strncpy(userpwd,(username+":"+password).utf8(),256);
+    strncpy(userpwd,(username+":"+password).toUtf8(),256);
     curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   }
 
@@ -194,7 +194,7 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   }
   switch((curl_err=curl_easy_perform(curl))) {
   case CURLE_OK:
-    if(conv_src_url.protocol().lower()=="http") {
+    if(conv_src_url.scheme().toLower()=="http") {
       curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
       if(response_code!=200) {
 	ret=RDDownload::ErrorUrlInvalid;
@@ -238,8 +238,8 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   }
   if((curl_err!=CURLE_OK)&&log_debug) {
     rda->syslog(LOG_WARNING,"CURL download failed: url: %s  username: %s",
-		(const char *)conv_src_url.toString(),
-		(const char *)username);
+		conv_src_url.toString().toUtf8().constData(),
+		username.toUtf8().constData());
   }
   curl_easy_cleanup(curl);
   fclose(f);

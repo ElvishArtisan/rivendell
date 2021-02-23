@@ -2,7 +2,7 @@
 //
 // Collect and combine log exports into a single file.
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,8 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#include <qapplication.h>
-#include <qdir.h>
+#include <QApplication>
+#include <QDir>
 
 #include <rdcmd_switch.h>
 #include <rdconf.h>
@@ -120,7 +120,7 @@ void MainObject::LoadSourceFiles(const QString &src_name,
 
 void MainObject::LoadSourceFile(const QString &filename,QStringList *lines)
 {
-  Q_LONG n;
+  long n;
   char line[1025];
   QFile file(filename);
   if(!file.open(QIODevice::ReadOnly|QIODevice::Text)) {
@@ -171,11 +171,11 @@ int MainObject::WriteOutputFile(const QString &filename,
 				std::vector<unsigned> *index)
 {
   FILE *f=NULL;
-  if((f=fopen(filename,"w"))==NULL) {
+  if((f=fopen(filename.toUtf8(),"w"))==NULL) {
     return errno;
   }
   for(int i=0;i<lines.size();i++) {
-    fprintf(f,"%s\n",(const char *)lines[index->at(i)]);
+    fprintf(f,"%s\n",lines[index->at(i)].toUtf8().constData());
   }
   fclose(f);
   return 0;

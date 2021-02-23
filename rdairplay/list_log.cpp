@@ -2,7 +2,7 @@
 //
 // The full log widget for RDAirPlay
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -44,62 +44,62 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   //
   // Create Palettes
   //
-  QColor system_button_text_color = palette().active().buttonText();
-  QColor system_button_color = palette().active().button();
-  QColor system_mid_color = colorGroup().mid();
+  QColor system_button_text_color = palette().buttonText().color();
+  QColor system_button_color = palette().button().color();
+  QColor system_mid_color = palette().mid().color();
   list_from_color=
     QPalette(QColor(BUTTON_FROM_BACKGROUND_COLOR),QColor(system_mid_color));
   list_from_color.
-    setColor(QColorGroup::ButtonText,QColor(BUTTON_FROM_TEXT_COLOR));
+    setColor(QPalette::ButtonText,QColor(BUTTON_FROM_TEXT_COLOR));
 
   list_to_color=
     QPalette(QColor(BUTTON_TO_BACKGROUND_COLOR),QColor(system_mid_color));
   list_to_color.
-    setColor(QColorGroup::ButtonText,QColor(BUTTON_TO_TEXT_COLOR));
+    setColor(QPalette::ButtonText,QColor(BUTTON_TO_TEXT_COLOR));
   list_list_to_color=palette();
-  list_list_to_color.setColor(QPalette::Active,QColorGroup::Highlight,
+  list_list_to_color.setColor(QPalette::Active,QPalette::Highlight,
 			      BUTTON_TO_BACKGROUND_COLOR);
-  list_list_to_color.setColor(QPalette::Active,QColorGroup::HighlightedText,
+  list_list_to_color.setColor(QPalette::Active,QPalette::HighlightedText,
 			      BUTTON_TO_TEXT_COLOR);
-  list_list_to_color.setColor(QPalette::Inactive,QColorGroup::Highlight,
+  list_list_to_color.setColor(QPalette::Inactive,QPalette::Highlight,
 			      BUTTON_TO_BACKGROUND_COLOR);
-  list_list_to_color.setColor(QPalette::Inactive,QColorGroup::HighlightedText,
+  list_list_to_color.setColor(QPalette::Inactive,QPalette::HighlightedText,
 			      BUTTON_TO_TEXT_COLOR);
   list_list_from_color=palette();
-  list_list_from_color.setColor(QPalette::Active,QColorGroup::Highlight,
+  list_list_from_color.setColor(QPalette::Active,QPalette::Highlight,
 				BUTTON_FROM_BACKGROUND_COLOR);
-  list_list_from_color.setColor(QPalette::Active,QColorGroup::HighlightedText,
+  list_list_from_color.setColor(QPalette::Active,QPalette::HighlightedText,
 				BUTTON_FROM_TEXT_COLOR);
-  list_list_from_color.setColor(QPalette::Inactive,QColorGroup::Highlight,
+  list_list_from_color.setColor(QPalette::Inactive,QPalette::Highlight,
 				BUTTON_FROM_BACKGROUND_COLOR);
   list_list_from_color.
-    setColor(QPalette::Inactive,QColorGroup::HighlightedText,
+    setColor(QPalette::Inactive,QPalette::HighlightedText,
 	     BUTTON_FROM_TEXT_COLOR);
   list_scroll_color[0]=palette();
-  list_scroll_color[0].setColor(QPalette::Active,QColorGroup::ButtonText,
+  list_scroll_color[0].setColor(QPalette::Active,QPalette::ButtonText,
 			BUTTON_LOG_ACTIVE_TEXT_COLOR);
-  list_scroll_color[0].setColor(QPalette::Active,QColorGroup::Button,
+  list_scroll_color[0].setColor(QPalette::Active,QPalette::Button,
 			BUTTON_LOG_ACTIVE_BACKGROUND_COLOR);
-  list_scroll_color[0].setColor(QPalette::Active,QColorGroup::Background,
+  list_scroll_color[0].setColor(QPalette::Active,QPalette::Background,
 			system_mid_color);
-  list_scroll_color[0].setColor(QPalette::Inactive,QColorGroup::ButtonText,
+  list_scroll_color[0].setColor(QPalette::Inactive,QPalette::ButtonText,
 			BUTTON_LOG_ACTIVE_TEXT_COLOR);
-  list_scroll_color[0].setColor(QPalette::Inactive,QColorGroup::Button,
+  list_scroll_color[0].setColor(QPalette::Inactive,QPalette::Button,
 			BUTTON_LOG_ACTIVE_BACKGROUND_COLOR);
-  list_scroll_color[0].setColor(QPalette::Inactive,QColorGroup::Background,
+  list_scroll_color[0].setColor(QPalette::Inactive,QPalette::Background,
 			system_mid_color);
   list_scroll_color[1]=palette();
-  list_scroll_color[1].setColor(QPalette::Active,QColorGroup::ButtonText,
+  list_scroll_color[1].setColor(QPalette::Active,QPalette::ButtonText,
                        system_button_text_color);
-  list_scroll_color[1].setColor(QPalette::Active,QColorGroup::Button,
+  list_scroll_color[1].setColor(QPalette::Active,QPalette::Button,
                        system_button_color);
-  list_scroll_color[1].setColor(QPalette::Active,QColorGroup::Background,
+  list_scroll_color[1].setColor(QPalette::Active,QPalette::Background,
 			system_mid_color);
-  list_scroll_color[1].setColor(QPalette::Inactive,QColorGroup::ButtonText,
+  list_scroll_color[1].setColor(QPalette::Inactive,QPalette::ButtonText,
                        system_button_text_color);
-  list_scroll_color[1].setColor(QPalette::Inactive,QColorGroup::Button,
+  list_scroll_color[1].setColor(QPalette::Inactive,QPalette::Button,
                        system_button_color);
-  list_scroll_color[1].setColor(QPalette::Inactive,QColorGroup::Background,
+  list_scroll_color[1].setColor(QPalette::Inactive,QPalette::Background,
 			system_mid_color);
 
   //
@@ -172,11 +172,11 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   //
   list_stoptime_edit=new QLineEdit(this);
   list_stoptime_edit->setGeometry(407,sizeHint().height()-100,70,18);
-  list_stoptime_label=new QLabel(list_stoptime_edit,tr("Next Stop:"),this);
+  list_stoptime_label=new QLabel(tr("Next Stop:"),this);
   list_stoptime_label->setGeometry(337,sizeHint().height()-100,65,18);
   list_stoptime_label->setFont(labelFont());
   list_stoptime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
-  list_stoptime_label->setBackgroundColor(QColor(system_mid_color));
+  //  list_stoptime_label->setBackgroundColor(QColor(system_mid_color));
   if(!rda->airplayConf()->showCounters()) {
     list_stoptime_edit->hide();
     list_stoptime_label->hide();
@@ -187,11 +187,11 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   //
   list_endtime_edit=new QLineEdit(this);
   list_endtime_edit->setGeometry(407,sizeHint().height()-80,70,18);
-  list_endtime_label=new QLabel(list_endtime_edit,tr("Log End:"),this);
+  list_endtime_label=new QLabel(tr("Log End:"),this);
   list_endtime_label->setGeometry(337,sizeHint().height()-80,65,18);
   list_endtime_label->setFont(labelFont());
   list_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
-  list_endtime_label->setBackgroundColor(QColor(system_mid_color));
+  //  list_endtime_label->setBackgroundColor(QColor(system_mid_color));
   if(!rda->airplayConf()->showCounters()) {
     list_endtime_edit->hide();
     list_endtime_label->hide();
@@ -346,7 +346,7 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   connect(list_log,SIGNAL(auditionStopped(int)),
 	  this,SLOT(auditionStoppedData(int)));
 
-  setBackgroundColor(QColor(system_mid_color));
+  //  setBackgroundColor(QColor(system_mid_color));
 }
 
 

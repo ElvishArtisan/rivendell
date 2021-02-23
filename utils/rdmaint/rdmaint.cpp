@@ -28,9 +28,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <qapplication.h>
-#include <qdir.h>
-#include <qfile.h>
+#include <QApplication>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -61,7 +59,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdmaint","rdmaint",RDMAINT_USAGE,this));
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdmaint: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdmaint: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -85,7 +83,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rdmaint: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }
@@ -404,7 +402,7 @@ void MainObject::RehashCuts()
     else {
       if(maint_verbose) {
 	fprintf(stderr,"rehashed cut \"%s\"\n",
-		(const char *)q->value(0).toString());
+		q->value(0).toString().toUtf8().constData());
       }
     }
     sleep(1);

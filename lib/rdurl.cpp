@@ -34,14 +34,14 @@ RDUrl::RDUrl(const QString &url)
 
 bool RDUrl::validSmbShare() const
 {
-  return (protocol()=="smb")&&(!host().isEmpty())&&(path()!="/"); 
+  return (scheme()=="smb")&&(!host().isEmpty())&&(path()!="/"); 
 }
 
 
 QString RDUrl::smbShare() const
 {
   int offset=0;
-  if((offset=path().right(path().length()-1).find("/"))<0) {
+  if((offset=path().right(path().length()-1).indexOf("/"))<0) {
     offset=path().length();
   }
   return QString("//")+host()+path().left(offset+1);
@@ -51,7 +51,7 @@ QString RDUrl::smbShare() const
 QString RDUrl::smbPath() const
 {
   int offset=0;
-  if((offset=path().right(path().length()-1).find("/"))<0) {
+  if((offset=path().right(path().length()-1).indexOf("/"))<0) {
     return QString("/");
   }
   return path().right(path().length()-offset-1);

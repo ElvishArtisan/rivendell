@@ -59,8 +59,7 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   // Gpis List Box
   //
   list_list_view=new RDTableView(this);
-  list_list_label=
-    new QLabel(list_list_view,list_label,this);
+  list_list_label=new QLabel(list_label,this);
   list_list_label->setFont(labelFont());
   list_list_model=new RDGpioListModel(matrix,type,this);
   list_list_model->setFont(defaultFont());

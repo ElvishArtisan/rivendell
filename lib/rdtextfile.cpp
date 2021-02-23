@@ -57,13 +57,13 @@ bool RDTextFile(const QString &data,bool delete_on_exit)
     args[i]=(char *)malloc(f0.at(i).toUtf8().size()+1);
     strcpy(args[i],f0.at(i).toUtf8());
   }
-  strcpy(tmpfile,RDTempDirectory::basePath()+"/rdreportXXXXXX");
+  strcpy(tmpfile,(RDTempDirectory::basePath()+"/rdreportXXXXXX").toUtf8());
   int fd=mkstemp(tmpfile);
   if(fd<0) {
     QMessageBox::warning(NULL,"File Error","Unable to create temporary file");
     return false;
   }
-  write(fd,data.utf8(),data.utf8().length());
+  write(fd,data.toUtf8(),data.toUtf8().length());
   ::close(fd);
   if(delete_on_exit) {
     rda->addTempFile(tmpfile);

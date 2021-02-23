@@ -40,6 +40,6 @@ void Xport::ListSystemSettings()
   //
   printf("Content-type: application/xml\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("%s\n",(const char *)sys->xml().utf8());
+  printf("%s\n",(const char *)sys->xml().toUtf8());
   Exit(0);
 }

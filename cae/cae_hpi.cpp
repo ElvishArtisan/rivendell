@@ -225,7 +225,7 @@ bool MainObject::hpiLoadRecord(int card,int stream,int coding,int chans,
     record[card][stream]=NULL;
     return false;
   }
-  chown((const char *)wavename,rd_config->uid(),rd_config->gid());
+  chown(wavename.toUtf8(),rd_config->uid(),rd_config->gid());
   if(!record[card][stream]->recordReady()) {
     delete record[card][stream];
     record[card][stream]=NULL;

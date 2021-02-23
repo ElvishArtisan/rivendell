@@ -44,7 +44,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdcheckcuts","rdcheckcuts",RDCHECKCUTS_USAGE,this));
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdcheckcuts: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdcheckcuts: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -58,7 +58,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rdcheckcuts: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }
@@ -100,9 +100,9 @@ void MainObject::RenderCut(const QString &cutname)
 
   printf("Cut %03d [%s] in cart %06u [%s] is missing audio\n",
 	 cut->cutNumber(),
-	 (const char *)cut->description(),
+	 cut->description().toUtf8().constData(),
 	 cart->number(),
-	 (const char *)cart->title());
+	 cart->title().toUtf8().constData());
   delete cart;
   delete cut;
 }

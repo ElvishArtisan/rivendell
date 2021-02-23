@@ -2,7 +2,7 @@
 //
 // A LiveWire Node Driver for Rivendell
 //
-//   (C) Copyright 2007-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2007-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,13 +22,13 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#include <qapplication.h>
-#include <qsignalmapper.h>
+#include <QApplication>
+#include <QSignalMapper>
 
-#include <rd.h>
-#include <rdapplication.h>
-#include <rdlivewire.h>
-#include <rdsocketstrings.h>
+#include "rd.h"
+#include "rdapplication.h"
+#include "rdlivewire.h"
+#include "rdsocketstrings.h"
 
 AString::AString()
   : QString()
@@ -51,6 +51,28 @@ AString::AString(const QString &lhs)
 QStringList AString::split(const QString &sep,const QString &esc) const
 {
   if(esc.isEmpty()) {
+    return QString::split(sep);
+  }
+  QStringList list;
+  bool escape=false;
+  QChar e=esc.at(0);
+  list.push_back(QString());
+  for(int i=0;i<length();i++) {
+    if(at(i)==e) {
+      escape=!escape;
+    }
+    else {
+      if((!escape)&&(mid(i,1)==sep)) {
+	list.push_back(QString());
+      }
+      else {
+	list.back()+=at(i);
+      }
+    }
+  }
+  return list;
+  /*
+  if(esc.isEmpty()) {
     return QStringList::split(sep,*this);
   }
   QStringList list;
@@ -71,6 +93,7 @@ QStringList AString::split(const QString &sep,const QString &esc) const
     }
   }
   return list;
+  */
 }
 
 
@@ -106,6 +129,7 @@ RDLiveWire::RDLiveWire(unsigned id,QObject *parent)
   // Watchdog Timers
   //
   live_watchdog_timer=new QTimer(this);
+  live_watchdog_timer->setSingleShot(true);
   connect(live_watchdog_timer,SIGNAL(timeout()),this,SLOT(watchdogData()));
 
   live_watchdog_timeout_timer=new QTimer(this);
@@ -113,6 +137,7 @@ RDLiveWire::RDLiveWire(unsigned id,QObject *parent)
   	  this,SLOT(watchdogTimeoutData()));
 
   live_holdoff_timer=new QTimer(this);
+  live_holdoff_timer->setSingleShot(true);
   connect(live_holdoff_timer,SIGNAL(timeout()),this,SLOT(holdoffData()));
 }
 
@@ -129,7 +154,7 @@ QString RDLiveWire::hostname() const
 }
 
 
-Q_UINT16 RDLiveWire::tcpPort() const
+uint16_t RDLiveWire::tcpPort() const
 {
   return live_tcp_port;
 }
@@ -141,7 +166,7 @@ unsigned RDLiveWire::baseOutput()
 }
 
 
-void RDLiveWire::connectToHost(const QString &hostname,Q_UINT16 port,
+void RDLiveWire::connectToHost(const QString &hostname,uint16_t port,
 			       const QString &passwd,unsigned base_output)
 {
   live_hostname=hostname;
@@ -152,7 +177,7 @@ void RDLiveWire::connectToHost(const QString &hostname,Q_UINT16 port,
 }
 
 
-bool RDLiveWire::loadSettings(const QString &hostname,Q_UINT16 port,
+bool RDLiveWire::loadSettings(const QString &hostname,uint16_t port,
 			      const QString &passwd,unsigned base_output)
 {
   int passes=50;
@@ -263,7 +288,7 @@ void RDLiveWire::gpiSet(int slot,int line,unsigned interval)
   live_gpi_states[slot][line]=true;
   if(interval>0) {
     live_gpi_timers[slot*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+line]->
-      start(interval,true);
+      start(interval);
   }
   emit gpiChanged(live_id,slot,line,true);
 }
@@ -290,7 +315,7 @@ void RDLiveWire::gpiReset(int slot,int line,unsigned interval)
   live_gpi_states[slot][line]=false;
   if(interval>0) {
     live_gpi_timers[slot*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+line]->
-      start(interval,true);
+      start(interval);
   }
   emit gpiChanged(live_id,slot,line,false);
 }
@@ -315,8 +340,7 @@ void RDLiveWire::gpoSet(int slot,int line,unsigned interval)
   SendCommand(cmd);
   live_gpo_states[slot][line]=true;
   if(interval>0) {
-    live_gpo_timers[slot*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+line]->
-      start(interval,true);
+    live_gpo_timers[slot*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+line]->start(interval);
   }
   emit gpoChanged(live_id,slot,line,true);
 }
@@ -342,7 +366,7 @@ void RDLiveWire::gpoReset(int slot,int line,unsigned interval)
   live_gpo_states[slot][line]=false;
   if(interval>0) {
     live_gpo_timers[slot*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+line]->
-      start(interval,true);
+      start(interval);
   }
   emit gpoChanged(live_id,slot,line,false);
 }
@@ -375,8 +399,8 @@ void RDLiveWire::connectionClosedData()
     int holdoff=GetHoldoff();
     emit watchdogStateChanged(live_id,QString().sprintf(
        "connection to LiveWire node at %s:%d closed, attempting reconnect, holdoff = %d mS",
-       (const char *)live_hostname,live_tcp_port,holdoff));
-    live_holdoff_timer->start(holdoff,true);
+       live_hostname.toUtf8().constData(),live_tcp_port,holdoff));
+    live_holdoff_timer->start(holdoff);
   }
 }
 
@@ -387,7 +411,7 @@ void RDLiveWire::readyReadData()
 
   int n;
 
-  while((n=live_socket->readBlock(buf,RD_LIVEWIRE_MAX_CMD_LENGTH))>0) {
+  while((n=live_socket->read(buf,RD_LIVEWIRE_MAX_CMD_LENGTH))>0) {
     buf[n]=0;
     for(int i=0;i<n;i++) {
       if(buf[i]=='\n') {
@@ -414,22 +438,22 @@ void RDLiveWire::errorData(QAbstractSocket::SocketError err)
   int interval=RDLIVEWIRE_RECONNECT_MIN_INTERVAL;
 
   switch(err) {
-  case QAbstractSocket::ErrConnectionRefused:
+  case QAbstractSocket::ConnectionRefusedError:
     live_watchdog_state=true;
     interval=GetHoldoff();
     emit watchdogStateChanged(live_id,QString().sprintf(
       "connection to LiveWire node at %s:%d refused, attempting reconnect, holdoff = %d mS",
-      (const char *)live_hostname,
+      live_hostname.toUtf8().constData(),
       live_tcp_port,interval));
-    live_holdoff_timer->start(interval,true);
+    live_holdoff_timer->start(interval);
     break;
 
   default:
     rda->syslog(LOG_WARNING,
 		"socket error on connection to LiveWire node at %s:%d: %s",
-		(const char *)live_hostname,
+		live_hostname.toUtf8().constData(),
 		live_tcp_port,
-		(const char *)RDSocketStrings(err));
+		RDSocketStrings(err).toUtf8().constData());
     break;
   }
 }
@@ -511,8 +535,8 @@ void RDLiveWire::watchdogTimeoutData()
   int holdoff=GetHoldoff();
   emit watchdogStateChanged(live_id,QString().sprintf(
 	 "connection to LiveWire node at %s:%d lost, attempting reconnect, holdoff = %d mS",
-	 (const char *)live_hostname,live_tcp_port,holdoff));
-  live_holdoff_timer->start(holdoff,true);
+	 live_hostname.toUtf8().constData(),live_tcp_port,holdoff));
+  live_holdoff_timer->start(holdoff);
 }
 
 
@@ -531,7 +555,7 @@ void RDLiveWire::resetConnectionData()
 
 void RDLiveWire::DespatchCommand(const QString &cmd)
 {
-  int offset=cmd.find(" ");
+  int offset=cmd.indexOf(" ");
   QString opcode=cmd.left(offset);
   QString str;
   if(opcode=="VER") {
@@ -559,7 +583,7 @@ void RDLiveWire::DespatchCommand(const QString &cmd)
 
   if(opcode=="CFG") {
     str=cmd.right(cmd.length()-offset-1);
-    offset=str.find(" ");
+    offset=str.indexOf(" ");
     if(str.left(offset)=="GPO") {
       ReadGpioConfig(str.right(str.length()-offset-1));
     }
@@ -569,7 +593,7 @@ void RDLiveWire::DespatchCommand(const QString &cmd)
 
 void RDLiveWire::SendCommand(const QString &cmd) const
 {
-  live_socket->writeBlock((cmd+"\r\n").ascii(),cmd.length()+2);
+  live_socket->write((cmd+"\r\n").toAscii(),cmd.length()+2);
 }
 
 
@@ -581,7 +605,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
   if(!live_connected) {
     f0=AString(cmd).split(" ","\"");
     for(int i=0;i<f0.size();i++) {
-      f1=f1.split(":",f0[i]);
+      f1=f0.at(i).split(":",QString::KeepEmptyParts);
       if(f1.size()==2) {
 	if(f1[0]=="LWRP") {
 	  live_protocol_version=f1[1];
@@ -593,7 +617,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	  live_system_version=f1[1];
 	}
 	if(f1[0]=="NSRC") {
-	  int delimiter=f1[1].find("/");
+	  int delimiter=f1[1].indexOf("/");
 	  if(delimiter<0) {
 	    live_sources=f1[1].toInt();
 	  }
@@ -606,7 +630,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	  }
 	}
 	if(f1[0]=="NDST") {
-	  int delimiter=f1[1].find("/");
+	  int delimiter=f1[1].indexOf("/");
 	  if(delimiter<0) {
 	    live_destinations=f1[1].toInt();
 	  }
@@ -630,6 +654,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	      live_gpi_states.back()[j]=false;
 	      live_gpi_channels.back()[j]=i*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+j;
 	      live_gpi_timers.push_back(new QTimer(this));
+	      live_gpi_timers.back()->setSingleShot(true);
 	      mapper->setMapping(live_gpi_timers.back(),
 				 i*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+j);
 	      connect(live_gpi_timers.back(),SIGNAL(timeout()),mapper,SLOT(map()));
@@ -654,6 +679,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	      live_gpo_states.back()[j]=false;
 	      live_gpo_channels.back()[j]=i*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+j;
 	      live_gpo_timers.push_back(new QTimer(this));
+	      live_gpo_timers.back()->setSingleShot(true);
 	      mapper->setMapping(live_gpo_timers.back(),
 				 i*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+j);
 	      connect(live_gpo_timers.back(),SIGNAL(timeout()),mapper,SLOT(map()));
@@ -679,11 +705,11 @@ void RDLiveWire::ReadVersion(const QString &cmd)
     live_watchdog_state=false;
     emit watchdogStateChanged(live_id,QString().sprintf(
 	    "connection to LiveWire node at %s:%d restored",
-	 (const char *)live_hostname,live_tcp_port));
+	    live_hostname.toUtf8().constData(),live_tcp_port));
   }
-  live_watchdog_timer->start(RDLIVEWIRE_WATCHDOG_INTERVAL,true);
+  live_watchdog_timer->start(RDLIVEWIRE_WATCHDOG_INTERVAL);
   live_watchdog_timeout_timer->stop();
-  live_watchdog_timeout_timer->start(RDLIVEWIRE_WATCHDOG_TIMEOUT,true);
+  live_watchdog_timeout_timer->start(RDLIVEWIRE_WATCHDOG_TIMEOUT);
 }
 
 
@@ -695,7 +721,7 @@ void RDLiveWire::ReadSources(const QString &cmd)
   QStringList f0=AString(cmd).split(" ","\"");
   src->setSlotNumber(f0[0].toInt());
   for(int i=1;i<f0.size();i++) {
-    f1=f1.split(":",f0[i]);
+    f1=f0.at(i).split(":",QString::KeepEmptyParts);
     if(f1.size()==2) {
       if(f1[0]=="PSNM") {
 	src->setPrimaryName(f1[1]);
@@ -740,7 +766,7 @@ void RDLiveWire::ReadDestinations(const QString &cmd)
   QStringList f0=AString(cmd).split(" ","\"");
   dst->setSlotNumber(f0[0].toInt());
   for(int i=1;i<f0.size();i++) {
-    f1=f1.split(":",f0[i]);
+    f1=f0.at(i).split(":",QString::KeepEmptyParts);
     if(f1.size()==2) {
       if(f1[0]=="NAME") {
 	dst->setPrimaryName(f1[1]);
@@ -774,9 +800,9 @@ void RDLiveWire::ReadGpis(const QString &cmd)
 
 //  printf("GPI: %s\n",(const char *)cmd);
 
-  int offset=cmd.find(" ");
+  int offset=cmd.indexOf(" ");
   int slot=cmd.left(offset).toInt()-1;
-  QString str=cmd.right(cmd.length()-offset-1).lower();
+  QString str=cmd.right(cmd.length()-offset-1).toLower();
   for(int i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
     if((str[i]=='h')&&live_gpi_states[slot][i]) {
       live_gpi_states[slot][i]=false;
@@ -799,9 +825,9 @@ void RDLiveWire::ReadGpos(const QString &cmd)
 
 //  printf("GPO: %s\n",(const char *)cmd);
 
-  int offset=cmd.find(" ");
+  int offset=cmd.indexOf(" ");
   int slot=cmd.left(offset).toInt()-1;
-  QString str=cmd.right(cmd.length()-offset-1).lower();
+  QString str=cmd.right(cmd.length()-offset-1).toLower();
   for(int i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
     if((str.mid(i,1)=="h")&&live_gpo_states[slot][i]) {
       live_gpo_states[slot][i]=false;
@@ -823,7 +849,7 @@ void RDLiveWire::ReadGpioConfig(const QString &cmd)
   f0=AString(cmd).split(" ","\"");
   int slot=f0[0].toInt()-1;
   for(int i=1;i<f0.size();i++) {
-    f1=f1.split(":",f0[i]);
+    f1=f0.at(i).split(":",QString::KeepEmptyParts);
     if(f1.size()==2) {
       if(f1[0]=="SRCA") {
 	int chan=PruneUrl(f1[1]).toInt();
@@ -841,7 +867,7 @@ void RDLiveWire::ReadGpioConfig(const QString &cmd)
 QString RDLiveWire::PruneUrl(const QString &str)
 {
   QString ret=str;
-  int offset=str.find("<");
+  int offset=str.indexOf("<");
   if(offset>=0) {
     ret=str.left(offset);
   }

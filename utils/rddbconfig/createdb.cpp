@@ -2,7 +2,7 @@
 //
 // Create Rivendell MySQL database RDDbConfig
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qprocess.h>
-#include <qmessagebox.h>
+#include <QApplication>
+#include <QProcess>
+#include <QMessageBox>
 
 #include <rdconfig.h>
 #include <rdpaths.h>
@@ -53,13 +53,15 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *rd_config)
   db.setUserName(db_user);
   db.setPassword(db_pass);
   if(!db.open()) {
-    *err_str+=QString().sprintf("Couldn't open MySQL connection on %s",(const char *)db_host);
+    *err_str+=QString().sprintf("Couldn't open MySQL connection on %s",
+				db_host.toUtf8().constData());
     return true;
   }
 
   QSqlQuery *q;
 
-  sql=QString().sprintf("drop database if exists `%s`",(const char *)db_name);
+  sql=QString().sprintf("drop database if exists `%s`",
+			db_name.toUtf8().constData());
   q=new QSqlQuery(sql,db);
   if (!q->isActive()) {
     *err_str+=QString(QObject::tr("Could not remove old database"));
@@ -67,7 +69,8 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *rd_config)
   }
   delete q;
 
-  sql=QString().sprintf("create database if not exists `%s`",(const char *)db_name);
+  sql=QString().sprintf("create database if not exists `%s`",
+			db_name.toUtf8().constData());
   q=new QSqlQuery(sql,db);
   if (!q->isActive()) {
     *err_str+=QString(QObject::tr("Could not create new database"));
@@ -78,10 +81,12 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *rd_config)
   //
   // Drop any existing 'rduser'@'%' and 'rduser'@'localhost' users
   //
-  sql=QString().sprintf("drop user '%s'@'%%'",(const char *)rd_config->mysqlUsername());
+  sql=QString().sprintf("drop user '%s'@'%%'",
+			rd_config->mysqlUsername().toUtf8().constData());
   q=new QSqlQuery(sql,db);
   delete q;
-  sql=QString().sprintf("drop user '%s'@'localhost'",(const char *)rd_config->mysqlUsername());
+  sql=QString().sprintf("drop user '%s'@'localhost'",
+			rd_config->mysqlUsername().toUtf8().constData());
   q=new QSqlQuery(sql,db);
   delete q;
 
@@ -90,29 +95,35 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *rd_config)
   delete q;
 
   sql=QString().sprintf("create user '%s'@'%%' identified by \"%s\"",
-    (const char *)rd_config->mysqlUsername(),(const char *)rd_config->mysqlPassword());
+			rd_config->mysqlUsername().toUtf8().constData(),
+			rd_config->mysqlPassword().toUtf8().constData());
   q=new QSqlQuery(sql,db);
   if (!q->isActive()) {
-    *err_str+=QString().sprintf("Could not create user: '%s'@'%%'",(const char *)sql);
+    *err_str+=QString().sprintf("Could not create user: '%s'@'%%'",
+				sql.toUtf8().constData());
     return true;
   }
   delete q;
 
   sql=QString().sprintf("create user '%s'@'localhost' identified by \"%s\"",
-    (const char *)rd_config->mysqlUsername(),(const char *)rd_config->mysqlPassword());
+			rd_config->mysqlUsername().toUtf8().constData(),
+			rd_config->mysqlPassword().toUtf8().constData());
   q=new QSqlQuery(sql,db);
   if (!q->isActive()) {
-    *err_str+=QString().sprintf("Could not create user: '%s'@'localhost'",(const char *)sql);
+    *err_str+=QString().sprintf("Could not create user: '%s'@'localhost'",
+				sql.toUtf8().constData());
     return true;
   }
   delete q;
 
   sql=QString().sprintf("grant SELECT, INSERT, UPDATE, DELETE, CREATE, DROP,\
     INDEX, ALTER, LOCK TABLES on %s.* to %s", 
-    (const char *)db_name, (const char *)rd_config->mysqlUsername());
+			db_name.toUtf8().constData(),
+			rd_config->mysqlUsername().toUtf8().constData());
   q=new QSqlQuery(sql,db);
   if (!q->isActive()) {
-    *err_str+=QString().sprintf("Could not set permissions: %s",(const char *)sql);
+    *err_str+=QString().sprintf("Could not set permissions: %s",
+				sql.toUtf8().constData());
     return true;
   }
   delete q;
@@ -129,8 +140,10 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *rd_config)
   rddbmgrProcess.waitForFinished();
   QApplication::restoreOverrideCursor();
   if (rddbmgrProcess.exitCode()) {
-    *err_str+=QString().sprintf("Failed to create %s database. Rddbmgr exit code=%d", 
-      (const char *)db_name,rddbmgrProcess.exitCode());
+    *err_str+=
+      QString().sprintf("Failed to create %s database. Rddbmgr exit code=%d", 
+			db_name.toUtf8().constData(),
+			rddbmgrProcess.exitCode());
     return true;
   }
 

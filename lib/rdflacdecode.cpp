@@ -60,7 +60,7 @@ void RDFlacDecode::decode(RDWaveFile *wave,float *peak)
       (double)flac_end_point*(double)wave->getSamplesPerSec()/1000.0;
   }
   flac_total_frames=0;
-  init(wave->getName().ascii());
+  init(wave->getName().toAscii());
   //set_filename(wave->getName().ascii());
   //init();
 

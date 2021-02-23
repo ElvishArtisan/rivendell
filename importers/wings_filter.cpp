@@ -52,7 +52,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("wings_filter","wings_filter",WINGS_FILTER_USAGE,this));
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"wings_filter: %s\n",(const char *)err_msg);
+    fprintf(stderr,"wings_filter: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -88,7 +88,7 @@ MainObject::MainObject(QObject *parent)
     }
   }
 
-  FILE *file=fopen((const char *)dbname,"r");
+  FILE *file=fopen(dbname.toUtf8(),"r");
   if(file==NULL) {
     perror("wings_filter");
     exit(1);
@@ -101,18 +101,19 @@ MainObject::MainObject(QObject *parent)
     exit(256);
   }
   while(ReadLine(file,&wr)) {
-    strcpy(wr.extension,audio_extension);
-    audioname=QString().sprintf("%s/%s.%s",(const char *)audiodir,
-				wr.filename,(const char *)audio_extension);
+    strcpy(wr.extension,audio_extension.toUtf8());
+    audioname=QString().sprintf("%s/%s.%s",audiodir.toUtf8().constData(),
+				wr.filename,
+				audio_extension.toUtf8().constData());
     wavefile=new RDWaveFile(audioname);
     if(!wavefile->openWave()) {
       fprintf(stderr,"Unable to open %s, skipping...\n",
-	      (const char *)audioname);
+	      audioname.toUtf8().constData());
     }
     else {
       if(wavefile->type()!=RDWaveFile::Atx) {
 	fprintf(stderr,"ATX header in %s appears corrupt, skipping...\n",
-	       (const char *)audioname);
+		audioname.toUtf8().constData());
       }
       else {
 	RDGroup *group=new RDGroup(wr.group);
@@ -200,7 +201,7 @@ bool MainObject::ImportCut(RDGroup *group,struct WingsRecord *rec,
   destfile->closeWave();
 
   printf("Importing %s - %s to cart %u, group %s\n",
-	 rec->filename,rec->title,cartnum,(const char *)group->name());
+	 rec->filename,rec->title,cartnum,group->name().toUtf8().constData());
   
   sql=QString("insert into CART set ")+
     QString().sprintf("NUMBER=%u,",cartnum)+

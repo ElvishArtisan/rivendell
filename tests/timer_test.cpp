@@ -2,7 +2,7 @@
 //
 // Test QTimer Accuracy
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <errno.h>
 #include <stdio.h>
 
-#include <qapplication.h>
+#include <QApplication>
 
 #include <timer_test.h>
 
@@ -32,6 +31,7 @@ MainObject::MainObject(QObject *parent)
   // Timer
   //
   test_timer=new QTimer(this);
+  test_timer->setSingleShot(true);
   connect(test_timer,SIGNAL(timeout()),this,SLOT(timeoutData()));
 
   //
@@ -41,7 +41,7 @@ MainObject::MainObject(QObject *parent)
   if(gettimeofday(&test_start_tv,NULL) !=0) {
     perror("gettimeofday");
   }
-  test_timer->start(test_interval,true);
+  test_timer->start(test_interval);
 }
 
 
@@ -66,7 +66,7 @@ void MainObject::timeoutData()
   if(gettimeofday(&test_start_tv,NULL) !=0) {
     perror("gettimeofday");
   }
-  test_timer->start(test_interval,true);
+  test_timer->start(test_interval);
 }
 
 

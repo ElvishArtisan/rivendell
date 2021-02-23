@@ -41,47 +41,47 @@ EditSchedCodeRules::EditSchedCodeRules(QWidget* parent)
   edit_max_row_label=new QLabel(this);
   edit_max_row_label->setText(tr("Max. in a row:"));
   edit_max_row_label->setFont(labelFont()); 
-  edit_max_row_label->setAlignment(int(Qt::AlignVCenter | Qt::AlignRight));
+  edit_max_row_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   edit_min_wait_label=new QLabel(this);
   edit_min_wait_label->setText(tr("Min. wait:"));
   edit_min_wait_label->setFont(labelFont()); 
-  edit_min_wait_label->setAlignment(int(Qt::AlignVCenter | Qt::AlignRight));
+  edit_min_wait_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   edit_not_after_label=new QLabel(this);
   edit_not_after_label->setText(tr("Do not schedule after:"));
   edit_not_after_label->setFont(labelFont()); 
-  edit_not_after_label->setAlignment(int(Qt::AlignVCenter | Qt::AlignRight));
+  edit_not_after_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   edit_or_after_label=new QLabel(this);
   edit_or_after_label->setText(tr("Or after:"));
   edit_or_after_label->setFont(labelFont()); 
-  edit_or_after_label->setAlignment(int(Qt::AlignVCenter | Qt::AlignRight));
+  edit_or_after_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   edit_or_after_label_II=new QLabel(this);
   edit_or_after_label_II->setText(tr("Or after:"));
   edit_or_after_label_II->setFont(labelFont()); 
-  edit_or_after_label_II->setAlignment(int(Qt::AlignVCenter | Qt::AlignRight));
+  edit_or_after_label_II->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   
   edit_max_row_spin=new QSpinBox(this);
-  edit_max_row_spin->setMaxValue(999);
-  edit_max_row_spin->setLineStep(1);
+  edit_max_row_spin->setMaximum(999);
+  edit_max_row_spin->setSingleStep(1);
 
   edit_min_wait_spin=new QSpinBox(this);
-  edit_min_wait_spin->setMaxValue(999);
-  edit_max_row_spin->setLineStep(1);
+  edit_min_wait_spin->setMaximum(999);
+  edit_max_row_spin->setSingleStep(1);
   
   edit_schedcodes_model=new RDSchedCodeListModel(true,this);
-  edit_notafter_boxes[0]=new QComboBox(FALSE,this);
-  edit_notafter_boxes[0]->setDuplicatesEnabled(FALSE);
+  edit_notafter_boxes[0]=new RDComboBox(this);
+  edit_notafter_boxes[0]->setDuplicatesEnabled(false);
   edit_notafter_boxes[0]->setModel(edit_schedcodes_model);
 
-  edit_notafter_boxes[1]=new QComboBox(FALSE,this);
-  edit_notafter_boxes[1]->setDuplicatesEnabled(FALSE);
+  edit_notafter_boxes[1]=new RDComboBox(this);
+  edit_notafter_boxes[1]->setDuplicatesEnabled(false);
   edit_notafter_boxes[1]->setModel(edit_schedcodes_model);
 
-  edit_notafter_boxes[2]=new QComboBox(FALSE,this);
-  edit_notafter_boxes[2]->setDuplicatesEnabled(FALSE);
+  edit_notafter_boxes[2]=new RDComboBox(this);
+  edit_notafter_boxes[2]->setDuplicatesEnabled(false);
   edit_notafter_boxes[2]->setModel(edit_schedcodes_model);
 
   //

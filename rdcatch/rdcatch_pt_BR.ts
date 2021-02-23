@@ -344,7 +344,7 @@ Novo</translation>
     </message>
     <message>
         <source>Unsupported URL protocol!</source>
-        <translation>Protocolo URL sem suporte!</translation>
+        <translation type="obsolete">Protocolo URL sem suporte!</translation>
     </message>
     <message>
         <source>Update Library Metadata</source>
@@ -356,6 +356,10 @@ Novo</translation>
     </message>
     <message>
         <source>You must specify a username!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsupported URL scheme!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -932,7 +936,7 @@ Novo</translation>
     </message>
     <message>
         <source>Unsupported URL protocol!</source>
-        <translation>Protocolo URL sem suporte!</translation>
+        <translation type="obsolete">Protocolo URL sem suporte!</translation>
     </message>
     <message>
         <source>Export Library Metadata</source>
@@ -944,6 +948,10 @@ Novo</translation>
     </message>
     <message>
         <source>You must specify a username!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsupported URL scheme!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -68,18 +68,18 @@ void RDHotKeyList::BuildKeyList( )
     if (p != NULL) {
       while ( ( fgets(line,256,hkeyfile) != NULL) && (!(strstr(line,"}")) ) ) {
 	QString buf = cleanStrings(line);
-	int acomment = buf.find("//");
-	int eqsign = buf.find("=");
+	int acomment = buf.indexOf("//");
+	int eqsign = buf.indexOf("=");
 	if ((eqsign != -1) && (acomment != 0) ) {
 	  KeyString = buf.left((eqsign ));
 	  KeyString = KeyString.mid(4);   // Remove 'Key_'
-	  int comma = buf.find(",");
+	  int comma = buf.indexOf(",");
 	  if (comma != -1)  {
 	    KeyHex = buf.mid((eqsign + 1),
 			     (comma - eqsign)-1 );
 	  }
 	  else {
-	    int comment = buf.find("//");
+	    int comment = buf.indexOf("//");
 	    if (comment != -1) {
 	      KeyHex = buf.mid( (eqsign+1),
 				(comment - eqsign) );
@@ -108,7 +108,7 @@ QString RDHotKeyList::cleanStrings( const QString sent)
 {
   QString cleanstring;
   for (int i=0 ; i<sent.length(); i++) {
-    switch(((const char *)sent)[i]) {
+    switch(sent[i].toAscii()) {
     case '\n':
       break;
     case '\t':
@@ -116,7 +116,7 @@ QString RDHotKeyList::cleanStrings( const QString sent)
     case ' ':
       break;
     default:
-      cleanstring+=((const char *)sent)[i];
+      cleanstring+=sent[i];
       break;
     }
   }

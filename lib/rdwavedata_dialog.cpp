@@ -68,7 +68,8 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   wave_usage_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_usage_box=new QComboBox(this);
   for(int i=0;i<(int)RDCart::UsageLast;i++) {
-    wave_usage_box->insertItem(RDCart::usageText((RDCart::UsageCode)i));
+    wave_usage_box->insertItem(wave_usage_box->count(),
+			       RDCart::usageText((RDCart::UsageCode)i));
   }
 
   //
@@ -212,7 +213,7 @@ int RDWaveDataDialog::exec(RDWaveData *data)
   if(wave_data->releaseYear()>0) {
     wave_year_edit->setText(QString().sprintf("%d",wave_data->releaseYear()));
   }
-  wave_usage_box->setCurrentItem(wave_data->usageCode());
+  wave_usage_box->setCurrentIndex(wave_data->usageCode());
   wave_songid_edit->setText(wave_data->tmciSongId());
   wave_bpm_spin->setValue(wave_data->beatsPerMinute());
   wave_album_edit->setText(wave_data->album());
@@ -247,7 +248,8 @@ void RDWaveDataDialog::okData()
   else {
     wave_data->setReleaseYear(wave_year_edit->text().toInt());
   }
-  wave_data->setUsageCode((RDWaveData::UsageCode)wave_usage_box->currentItem());
+  wave_data->setUsageCode((RDWaveData::UsageCode)wave_usage_box->
+			  currentIndex());
   wave_data->setTmciSongId(wave_songid_edit->text());
   wave_data->setBeatsPerMinute(wave_bpm_spin->value());
   wave_data->setAlbum(wave_album_edit->text());

@@ -68,7 +68,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
   connect(list_model,SIGNAL(modelReset()),
 	  list_view,SLOT(resizeColumnsToContents()));
 
-  QLabel *list_box_label=new QLabel(list_view,tr("&Active Carts:"),this);
+  QLabel *list_box_label=new QLabel(tr("&Active Carts:"),this);
   list_box_label->setFont(labelFont());
   list_box_label->setGeometry(14,11,85,19);
 }

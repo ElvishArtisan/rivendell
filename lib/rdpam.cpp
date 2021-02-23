@@ -44,7 +44,7 @@ int RDPamCallback(int num_msg, const struct pam_message **msg,
     memset(resp[i]->resp,0,256);
     switch(msg[i]->msg_style) {
     case PAM_PROMPT_ECHO_OFF:
-      strncpy(resp[i]->resp,pam->system_token,255);
+      strncpy(resp[i]->resp,pam->system_token.toUtf8(),255);
       break;
 
     case PAM_PROMPT_ECHO_ON:
@@ -79,7 +79,7 @@ bool RDPam::authenticate(const QString &username,const QString &token)
   memset(&conv,0,sizeof(conv));
   conv.conv=RDPamCallback;
   conv.appdata_ptr=(RDPam *)this;
-  if((err=pam_start(system_pam_service,username,&conv,&pamh))!=PAM_SUCCESS) {
+  if((err=pam_start(system_pam_service.toUtf8(),username.toUtf8(),&conv,&pamh))!=PAM_SUCCESS) {
     rda->syslog(LOG_WARNING,"PAM error [%s]",pam_strerror(pamh,err));
     pam_end(pamh,err);
     CleanupPam();

@@ -37,6 +37,9 @@ class RDComboBox : public QComboBox
   void setSetupMode(bool state);
   void addIgnoredKey(int key);
 
+ public slots:
+  bool setCurrentText(const QString &str);
+
  signals:
   void setupClicked();
 

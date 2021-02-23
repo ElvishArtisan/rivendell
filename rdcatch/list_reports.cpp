@@ -2,7 +2,7 @@
 //
 // List and Generate RDCatch Reports
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,10 +50,9 @@ ListReports::ListReports(bool today_only,bool active_only,int dow,
   //
   list_reports_box=new QComboBox(this);
   list_reports_box->setGeometry(50,10,sizeHint().width()-60,19);
-  list_reports_box->insertItem(tr("Event Report"));
-  list_reports_box->insertItem(tr("Upload/Download Report"));
-  QLabel *list_reports_label=
-    new QLabel(list_reports_box,tr("Type:"),this);
+  list_reports_box->insertItem(0,tr("Event Report"));
+  list_reports_box->insertItem(1,tr("Upload/Download Report"));
+  QLabel *list_reports_label=new QLabel(tr("Type:"),this);
   list_reports_label->setGeometry(10,10,35,19);
   list_reports_label->setFont(labelFont());
   list_reports_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -102,7 +101,7 @@ void ListReports::generateData()
 {
   QString report;
 
-  switch(list_reports_box->currentItem()) {
+  switch(list_reports_box->currentIndex()) {
   case 0:  // Event Report
     GenerateEventReport(&report);
     break;

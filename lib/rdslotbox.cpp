@@ -18,6 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QDrag>
+#include <QDragEnterEvent>
+
 #include "rdcartdrag.h"
 #include "rdconf.h"
 #include "rdslotbox.h"
@@ -45,44 +48,44 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   // Create Palettes
   //
   line_unchanged_stop_palette=palette();
-  line_unchanged_stop_palette.setColor(QPalette::Active,QColorGroup::Highlight,
+  line_unchanged_stop_palette.setColor(QPalette::Active,QPalette::Highlight,
 				       QColor(BAR_UNCHANGED_STOPPING_COLOR));
   line_unchanged_stop_palette.setColor(QPalette::Inactive,
-				       QColorGroup::Highlight,
+				       QPalette::Highlight,
 				       QColor(BAR_UNCHANGED_STOPPING_COLOR));
   line_unchanged_play_palette=palette();
-  line_unchanged_play_palette.setColor(QPalette::Active,QColorGroup::Highlight,
+  line_unchanged_play_palette.setColor(QPalette::Active,QPalette::Highlight,
 				       QColor(BAR_UNCHANGED_TRANSITION_COLOR));
   line_unchanged_play_palette.setColor(QPalette::Inactive,
-				       QColorGroup::Highlight,
+				       QPalette::Highlight,
 				       QColor(BAR_UNCHANGED_TRANSITION_COLOR));
   line_changed_stop_palette=palette();
-  line_changed_stop_palette.setColor(QPalette::Active,QColorGroup::Highlight,
+  line_changed_stop_palette.setColor(QPalette::Active,QPalette::Highlight,
 				     QColor(BAR_CHANGED_STOPPING_COLOR));
-  line_changed_stop_palette.setColor(QPalette::Inactive,QColorGroup::Highlight,
+  line_changed_stop_palette.setColor(QPalette::Inactive,QPalette::Highlight,
 				     QColor(BAR_CHANGED_STOPPING_COLOR));
   line_changed_play_palette=palette();
-  line_changed_play_palette.setColor(QPalette::Active,QColorGroup::Highlight,
+  line_changed_play_palette.setColor(QPalette::Active,QPalette::Highlight,
 				     QColor(BAR_CHANGED_TRANSITION_COLOR));
-  line_changed_play_palette.setColor(QPalette::Inactive,QColorGroup::Highlight,
+  line_changed_play_palette.setColor(QPalette::Inactive,QPalette::Highlight,
 				     QColor(BAR_CHANGED_TRANSITION_COLOR));
   line_time_palette=palette();
   line_hard_palette=palette();
-  line_hard_palette.setColor(QPalette::Active,QColorGroup::Foreground,
+  line_hard_palette.setColor(QPalette::Active,QPalette::Foreground,
 			     QColor(LOG_HARDTIME_TEXT_COLOR));
-  line_hard_palette.setColor(QPalette::Inactive,QColorGroup::Foreground,
+  line_hard_palette.setColor(QPalette::Inactive,QPalette::Foreground,
 			     QColor(LOG_HARDTIME_TEXT_COLOR));
 
   line_timescale_palette=palette();
-  line_timescale_palette.setColor(QPalette::Active,QColorGroup::Foreground,
+  line_timescale_palette.setColor(QPalette::Active,QPalette::Foreground,
 				  QColor(LABELBOX_TIMESCALE_COLOR));
-  line_timescale_palette.setColor(QPalette::Inactive,QColorGroup::Foreground,
+  line_timescale_palette.setColor(QPalette::Inactive,QPalette::Foreground,
 				  QColor(LABELBOX_TIMESCALE_COLOR));
 
   line_text_palette=palette();
-  line_text_palette.setColor(QPalette::Active,QColorGroup::Foreground,
+  line_text_palette.setColor(QPalette::Active,QPalette::Foreground,
 				  QColor(Qt::black));
-  line_text_palette.setColor(QPalette::Inactive,QColorGroup::Foreground,
+  line_text_palette.setColor(QPalette::Inactive,QPalette::Foreground,
 				  QColor(Qt::black));
 
   //
@@ -300,7 +303,7 @@ void RDSlotBox::setCart(RDLogLine *logline)
 	}
 	line_group_label->setText(cart->groupName());
 	p=line_group_label->palette();
-	p.setColor(QColorGroup::Foreground,line_logline->groupColor());
+	p.setColor(QPalette::Foreground,line_logline->groupColor());
 	line_group_label->setPalette(p);
 	if(line_logline->talkLength()<=0) {
 	  line_talktime_label->setText(":00");
@@ -391,7 +394,7 @@ void RDSlotBox::setCart(RDLogLine *logline)
     line_cut_label->setText("");
     line_group_label->setText(cart->groupName());
     p=line_group_label->palette();
-    p.setColor(QColorGroup::Foreground,line_logline->groupColor());
+    p.setColor(QPalette::Foreground,line_logline->groupColor());
     line_group_label->setPalette(p);
     line_length_label->
       setText(RDGetTimeLength(line_logline->effectiveLength(),
@@ -502,7 +505,7 @@ void RDSlotBox::mousePressEvent(QMouseEvent *e)
     RDCartDrag *cd=
       new RDCartDrag(line_logline->cartNumber(),line_logline->title(),
 		     line_group_label->
-		     palette().color(QColorGroup::Foreground));
+		     palette().color(QPalette::Foreground));
     drag->setMimeData(cd);
     drag->setPixmap(*line_icon_label->pixmap());
     drag->exec();
@@ -522,7 +525,7 @@ void RDSlotBox::paintEvent(QPaintEvent *e)
   QPainter *p=new QPainter(this);
   p->drawRect(0,0,sizeHint().width()-1,sizeHint().height()-1);
   p->fillRect(1,1,sizeHint().width()-3,sizeHint().height()-3,
-	      backgroundColor());
+	      palette().color(QPalette::Background));
   p->end();
   delete p;
 }
@@ -530,9 +533,11 @@ void RDSlotBox::paintEvent(QPaintEvent *e)
 
 void RDSlotBox::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RDCartDrag::canDecode(e)&&
-	    (line_mode==RDSlotOptions::CartDeckMode)&&
-	    (line_deck->state()==RDPlayDeck::Stopped));
+  if(RDCartDrag::canDecode(e)&&
+     (line_mode==RDSlotOptions::CartDeckMode)&&
+     (line_deck->state()==RDPlayDeck::Stopped)) {
+    e->accept();
+  }
 }
 
 
@@ -548,7 +553,11 @@ void RDSlotBox::dropEvent(QDropEvent *e)
 
 void RDSlotBox::SetColor(QColor color)
 {
-  setBackgroundColor(color);
+  QPalette pal=palette();
+  pal.setColor(QPalette::Background,color);
+  setPalette(pal);
+  //  setBackgroundColor(color);
+  /*
   line_cart_label->setBackgroundColor(color);
   line_cart_label->setPalette(line_text_palette);
   line_cut_label->setBackgroundColor(color);
@@ -572,4 +581,5 @@ void RDSlotBox::SetColor(QColor color)
   line_down_label->setBackgroundColor(color);
   line_down_label->setPalette(line_text_palette);
   line_icon_label->setBackgroundColor(color);
+  */
 }

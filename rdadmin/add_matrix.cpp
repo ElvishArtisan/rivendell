@@ -54,7 +54,7 @@ AddMatrix::AddMatrix(QString station,QWidget *parent)
   add_matrix_box=new QSpinBox(this);
   add_matrix_box->setGeometry(165,11,30,19);
   add_matrix_box->setRange(0,MAX_MATRICES-1);
-  QLabel *label=new QLabel(add_matrix_box,tr("&New Matrix Number:"),this);
+  QLabel *label=new QLabel(tr("&New Matrix Number:"),this);
   label->setGeometry(10,11,150,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -65,9 +65,10 @@ AddMatrix::AddMatrix(QString station,QWidget *parent)
   add_type_box=new QComboBox(this);
   add_type_box->setGeometry(165,36,200,19);
   for(int i=0;i<RDMatrix::LastType;i++) {
-    add_type_box->insertItem(RDMatrix::typeString((RDMatrix::Type)i));
+    add_type_box->
+      insertItem(add_type_box->count(),RDMatrix::typeString((RDMatrix::Type)i));
   }
-  label=new QLabel(add_type_box,tr("&Switcher Type:"),this);
+  label=new QLabel(tr("&Switcher Type:"),this);
   label->setGeometry(10,36,150,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -143,16 +144,21 @@ void AddMatrix::okData()
              PORT_TYPE=%d,\
              PORT_TYPE_2=%d",
 	    add_matrix_box->value(),
-	    add_type_box->currentItem(),
-      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->currentItem(),
+	    add_type_box->currentIndex(),
+      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
+				    currentIndex(),
 				    RDMatrix::InputsControl),
-      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->currentItem(),
+      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
+				    currentIndex(),
 				    RDMatrix::OutputsControl),
-      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->currentItem(),
+      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
+				    currentIndex(),
 				    RDMatrix::GpisControl),
-      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->currentItem(),
+      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
+				    currentIndex(),
 				    RDMatrix::GposControl),
-      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->currentItem(),
+      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
+				    currentIndex(),
 				    RDMatrix::PortTypeControl),
 	    RDMatrix::NoPort);
   q=new RDSqlQuery(sql);

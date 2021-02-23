@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Kernel GPIO interface. 
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,10 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
-
-#include <globals.h>
 
 #include "kernelgpio.h"
 
@@ -54,6 +50,7 @@ KernelGpio::KernelGpio(RDMatrix *matrix,QObject *parent)
     gpio_gpi_mask.push_back(false);
     gpio_reset_states.push_back(false);
     gpio_reset_timers.push_back(new QTimer(this));
+    gpio_reset_timers.back()->setSingleShot(true);
     connect(gpio_reset_timers.back(),SIGNAL(timeout()),
 	    gpio_reset_mapper,SLOT(map()));
     gpio_reset_mapper->setMapping(gpio_reset_timers.back(),i);
@@ -113,8 +110,8 @@ void KernelGpio::processCommand(RDMacro *cmd)
   switch(cmd->command()) {
       case RDMacro::GO:
 	if((cmd->argQuantity()!=5)||
-	   ((cmd->arg(1).lower()!="i")&&
-	    (cmd->arg(1).lower()!="o"))||
+	   ((cmd->arg(1).toLower()!="i")&&
+	    (cmd->arg(1).toLower()!="o"))||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(2).toInt()>gpio_gpos)||
 	   ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
 	    (cmd->arg(3).toInt()!=-1))||(cmd->arg(4).toInt()<0)) {
@@ -122,7 +119,7 @@ void KernelGpio::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	if(cmd->arg(1).lower()=="i") {
+	if(cmd->arg(1).toLower()=="i") {
 	  if(cmd->arg(3).toInt()==0) {
 	    emit gpiChanged(gpio_matrix,cmd->arg(2).toInt()-1,false);
 	    gpio_gpi_mask[cmd->arg(2).toInt()-1]=true;
@@ -148,13 +145,13 @@ void KernelGpio::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  if(cmd->arg(3).toInt()==0) {
 	    gpio_gpio->setValue(gpio_gpis+cmd->arg(2).toInt()-1,false);
 	    if(cmd->arg(4).toInt()>0) {
 	      gpio_reset_states[cmd->arg(2).toInt()-1]=true;
 	      gpio_reset_timers[cmd->arg(2).toInt()-1]->
-		start(cmd->arg(4).toInt(),true);
+		start(cmd->arg(4).toInt());
 	    }
 	  }
 	  else {
@@ -163,7 +160,7 @@ void KernelGpio::processCommand(RDMacro *cmd)
 	      if(cmd->arg(4).toInt()>0) {
 		gpio_reset_states[cmd->arg(2).toInt()-1]=false;
 		gpio_reset_timers[cmd->arg(2).toInt()-1]->
-		  start(cmd->arg(4).toInt(),true);
+		  start(cmd->arg(4).toInt());
 	      }
 	    }
 	    else {

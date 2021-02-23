@@ -18,17 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qvalidator.h>
-#include <qmessagebox.h>
-#include <qsignalmapper.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qstringlist.h>
+#include <QMessageBox>
+#include <QPainter>
 
 #include <rd.h>
 #include <rddb.h>
@@ -36,7 +27,7 @@
 #include <rdlivewire.h>
 #include <rdmatrix.h>
 
-#include <edit_decks.h>
+#include "edit_decks.h"
 #include "globals.h"
 
 EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
@@ -62,10 +53,9 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_record_deck_box=new QComboBox(this);
   edit_record_deck_box->setGeometry(140,10,60,24);
-  edit_record_deck_box->setInsertionPolicy(QComboBox::NoInsert);
   connect(edit_record_deck_box,SIGNAL(activated(int)),
 	  this,SLOT(recordDeckActivatedData(int)));
-  QLabel *label=new QLabel(edit_record_deck_box,tr("Record Deck"),this);
+  QLabel *label=new QLabel(tr("Record Deck"),this);
   label->setFont(sectionLabelFont());
   label->setGeometry(35,14,100,22);
   label->setAlignment(Qt::AlignRight);
@@ -99,17 +89,16 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_monitor_box->setSpecialValueText(tr("None"));
   connect(edit_monitor_box,SIGNAL(valueChanged(int)),
 	  this,SLOT(monitorPortChangedData(int)));
-  edit_monitor_label=new QLabel(edit_monitor_box,tr("Monitor Port:"),this);
+  edit_monitor_label=new QLabel(tr("Monitor Port:"),this);
   edit_monitor_label->setFont(labelFont());
   edit_monitor_label->setGeometry(10,112,112,19);
   edit_monitor_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_default_on_box=new QComboBox(this);
   edit_default_on_box->setGeometry(305,112,60,19);
-  edit_default_on_box->insertItem(tr("Off"));
-  edit_default_on_box->insertItem(tr("On"));
-  edit_default_on_label=
-    new QLabel(edit_default_on_box,tr("Monitor defaults to"),this);
+  edit_default_on_box->insertItem(0,tr("Off"));
+  edit_default_on_box->insertItem(1,tr("On"));
+  edit_default_on_label=new QLabel(tr("Monitor defaults to"),this);
   edit_default_on_label->setFont(labelFont());
   edit_default_on_label->setGeometry(195,112,105,19);
   edit_default_on_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -119,10 +108,9 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_format_box=new QComboBox(this);
   edit_format_box->setGeometry(125,136,150,24);
-  edit_format_box->setInsertionPolicy(QComboBox::NoInsert);
   connect(edit_format_box,SIGNAL(activated(int)),
 	  this,SLOT(formatActivatedData(int)));
-  label=new QLabel(edit_format_box,tr("Format:"),this);
+  label=new QLabel(tr("Format:"),this);
   label->setFont(labelFont());
   label->setGeometry(10,136,110,24);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -130,10 +118,9 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   // Bit Rate
   //
-  edit_bitrate_box=new QComboBox(this,"edit_bitrate_box");
+  edit_bitrate_box=new QComboBox(this);
   edit_bitrate_box->setGeometry(125,160,140,24);
-  edit_bitrate_box->setInsertionPolicy(QComboBox::NoInsert);
-  edit_bitrate_label=new QLabel(edit_bitrate_box,tr("Bit Rate:"),this);
+  edit_bitrate_label=new QLabel(tr("Bit Rate:"),this);
   edit_bitrate_label->setFont(labelFont());
   edit_bitrate_label->setGeometry(10,160,110,24);
   edit_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -144,7 +131,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_swstation_box=new QComboBox(this);
   edit_swstation_box->setGeometry(125,190,250,24);
   edit_swstation_box->setModel(edit_station_model);
-  edit_swstation_label=new QLabel(edit_swstation_box,tr("Switcher Host:"),this);
+  edit_swstation_label=new QLabel(tr("Switcher Host:"),this);
   edit_swstation_label->setFont(labelFont());
   edit_swstation_label->setGeometry(10,190,110,24);
   edit_swstation_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -156,9 +143,8 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_swmatrix_box=new QComboBox(this);
   edit_swmatrix_box->setGeometry(125,214,250,24);
-  edit_swmatrix_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_swmatrix_box->setDisabled(true);
-  edit_swmatrix_label=new QLabel(edit_swmatrix_box,tr("Switcher Matrix:"),this);
+  edit_swmatrix_label=new QLabel(tr("Switcher Matrix:"),this);
   edit_swmatrix_label->setFont(labelFont());
   edit_swmatrix_label->setGeometry(10,214,110,24);
   edit_swmatrix_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -171,9 +157,8 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_swoutput_box=new QComboBox(this);
   edit_swoutput_box->setGeometry(125,238,250,24);
-  edit_swoutput_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_swoutput_box->setDisabled(true);
-  edit_swoutput_label=new QLabel(edit_swoutput_box,tr("Switcher Output:"),this);
+  edit_swoutput_label=new QLabel(tr("Switcher Output:"),this);
   edit_swoutput_label->setFont(labelFont());
   edit_swoutput_label->setGeometry(10,238,110,24);
   edit_swoutput_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -186,12 +171,12 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_swdelay_box->setGeometry(125,262,40,24);
   edit_swdelay_box->setRange(0,20);
   edit_swdelay_box->setDisabled(true);
-  edit_swdelay_label=new QLabel(edit_swdelay_box,tr("Switcher Delay:"),this);
+  edit_swdelay_label=new QLabel(tr("Switcher Delay:"),this);
   edit_swdelay_label->setFont(labelFont());
   edit_swdelay_label->setGeometry(10,262,110,24);
   edit_swdelay_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_swdelay_label->setDisabled(true);
-  edit_swdelay_unit=new QLabel(edit_swdelay_box,tr("1/10 sec"),this);
+  edit_swdelay_unit=new QLabel(tr("1/10 sec"),this);
   edit_swdelay_unit->setFont(labelFont());
   edit_swdelay_unit->setGeometry(170,262,60,24);
   edit_swdelay_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -212,8 +197,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_channels_box=new QComboBox(this);
   edit_channels_box->setGeometry(125,300,60,24);
-  edit_channels_box->setInsertionPolicy(QComboBox::NoInsert);
-  label=new QLabel(edit_channels_box,tr("Channels:"),this);
+  label=new QLabel(tr("Channels:"),this);
   label->setFont(labelFont());
   label->setGeometry(10,300,110,24);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -225,7 +209,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_threshold_box->setGeometry(125,324,70,24);
   edit_threshold_box->setSuffix(" dB");
   edit_threshold_box->setRange(-100,0);
-  label=new QLabel(edit_threshold_box,tr("Trim Threshold:"),this);
+  label=new QLabel(tr("Trim Threshold:"),this);
   label->setFont(labelFont());
   label->setGeometry(10,324,110,24);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -239,7 +223,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
 
   edit_errorrml_edit=new QLineEdit(this);
   edit_errorrml_edit->setGeometry(125,393,248,24);
-  label=new QLabel(edit_errorrml_edit,tr("Error RML:"),this);
+  label=new QLabel(tr("Error RML:"),this);
   label->setFont(labelFont());
   label->setGeometry(10,393,110,24);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -249,10 +233,9 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_play_deck_box=new QComboBox(this);
   edit_play_deck_box->setGeometry(475,10,60,24);
-  edit_play_deck_box->setInsertionPolicy(QComboBox::NoInsert);
   connect(edit_play_deck_box,SIGNAL(activated(int)),
 	  this,SLOT(playDeckActivatedData(int)));
-  label=new QLabel(edit_play_deck_box,tr("Play Deck"),this);
+  label=new QLabel(tr("Play Deck"),this);
   label->setFont(sectionLabelFont());
   label->setGeometry(390,14,80,22);
   label->setAlignment(Qt::AlignRight);
@@ -330,26 +313,28 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_play_deck=NULL;
   edit_audition_deck=NULL;
   for(int i=0;i<MAX_DECKS;i++) {
-    edit_record_deck_box->insertItem(QString().sprintf("%d",i+1));
-    edit_play_deck_box->insertItem(QString().sprintf("%d",i+1));
+    edit_record_deck_box->
+      insertItem(edit_record_deck_box->count(),QString().sprintf("%d",i+1));
+    edit_play_deck_box->
+      insertItem(edit_play_deck_box->count(),QString().sprintf("%d",i+1));
   }
-  edit_record_channel=edit_record_deck_box->currentItem()+1;
-  edit_play_channel=edit_play_deck_box->currentItem()+129;
-  edit_format_box->insertItem(tr("PCM16"));
-  edit_format_box->insertItem(tr("PCM24"));
-  edit_format_box->insertItem(tr("MPEG Layer 2"));
-  edit_channels_box->insertItem("1");
-  edit_channels_box->insertItem("2");
-  edit_bitrate_box->insertItem(tr("32 kbps/chan"));
-  edit_bitrate_box->insertItem(tr("48 kbps/chan"));
-  edit_bitrate_box->insertItem(tr("56 kbps/chan"));
-  edit_bitrate_box->insertItem(tr("64 kbps/chan"));
-  edit_bitrate_box->insertItem(tr("80 kbps/chan"));
-  edit_bitrate_box->insertItem(tr("96 kbps/chan"));
-  edit_bitrate_box->insertItem(tr("112 kbps/chan"));
-  edit_bitrate_box->insertItem(tr("128 kbps/chan"));
-  edit_bitrate_box->insertItem(tr("160 kbps/chan"));
-  edit_bitrate_box->insertItem(tr("192 kbps/chan"));
+  edit_record_channel=edit_record_deck_box->currentIndex()+1;
+  edit_play_channel=edit_play_deck_box->currentIndex()+129;
+  edit_format_box->insertItem(edit_format_box->count(),tr("PCM16"));
+  edit_format_box->insertItem(edit_format_box->count(),tr("PCM24"));
+  edit_format_box->insertItem(edit_format_box->count(),tr("MPEG Layer 2"));
+  edit_channels_box->insertItem(0,"1");
+  edit_channels_box->insertItem(1,"2");
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("32 kbps/chan"));
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("48 kbps/chan"));
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("56 kbps/chan"));
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("64 kbps/chan"));
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("80 kbps/chan"));
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("96 kbps/chan"));
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("112 kbps/chan"));
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("128 kbps/chan"));
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("160 kbps/chan"));
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("192 kbps/chan"));
   ReadRecord(edit_record_channel);
   ReadRecord(edit_play_channel);
   ReadRecord(0);
@@ -405,7 +390,7 @@ void EditDecks::recordCardChangedData(int card)
 {
   if((card>=0)&&edit_monitor_label->isEnabled()) {
     edit_monitor_box->setEnabled(true);
-    edit_monitor_box->setMaxValue(edit_station->cardOutputs(card)-1);
+    edit_monitor_box->setMaximum(edit_station->cardOutputs(card)-1);
     monitorPortChangedData(edit_monitor_box->value());
   }
   else {
@@ -463,10 +448,10 @@ void EditDecks::stationActivatedData(const QString &str)
   edit_swdelay_box->setEnabled(true);
 
   edit_swmatrix_box->clear();
-  edit_swmatrix_box->insertStringList(GetActiveOutputMatrices());
+  edit_swmatrix_box->insertItems(0,GetActiveOutputMatrices());
   for(unsigned i=0;i<edit_matrix_ids.size();i++) {
     if(edit_matrix_ids[i]==edit_record_deck->switchMatrix()) {
-      edit_swmatrix_box->setCurrentItem(i);
+      edit_swmatrix_box->setCurrentIndex(i);
     }
   }
   matrixActivatedData(edit_swmatrix_box->currentText());
@@ -493,10 +478,10 @@ void EditDecks::matrixActivatedData(const QString &str)
   edit_swdelay_box->setEnabled(true);
 
   edit_swoutput_box->clear();
-  if(edit_swmatrix_box->currentItem()>=(int)edit_matrix_ids.size()) {
+  if(edit_swmatrix_box->currentIndex()>=(int)edit_matrix_ids.size()) {
     return;
   }
-  int matrix=edit_matrix_ids[edit_swmatrix_box->currentItem()];
+  int matrix=edit_matrix_ids[edit_swmatrix_box->currentIndex()];
   sql=QString("select NAME from OUTPUTS where ")+
     "(STATION_NAME=\""+RDEscapeString(edit_swstation_box->currentText())+
     "\")&&"+
@@ -504,7 +489,8 @@ void EditDecks::matrixActivatedData(const QString &str)
     "(NAME!=\"\")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    edit_swoutput_box->insertItem(q->value(0).toString());
+    edit_swoutput_box->
+      insertItem(edit_swoutput_box->count(),q->value(0).toString());
   }
   delete q;
 }
@@ -581,25 +567,25 @@ void EditDecks::ReadRecord(int chan)
     edit_record_selector->setPort(edit_record_deck->portNumber());
     edit_monitor_box->setValue(edit_record_deck->monitorPortNumber());
     if(edit_record_deck->defaultMonitorOn()) {
-      edit_default_on_box->setCurrentItem(1);
+      edit_default_on_box->setCurrentIndex(1);
     }
     else {
-      edit_default_on_box->setCurrentItem(0);
+      edit_default_on_box->setCurrentIndex(0);
     }
     switch(edit_record_deck->defaultFormat()) {
 	case RDSettings::Pcm16:
-	  edit_format_box->setCurrentItem(0);
+	  edit_format_box->setCurrentIndex(0);
 	  edit_bitrate_box->setDisabled(true);
 	  break;
 
 	case RDSettings::Pcm24:
-	  edit_format_box->setCurrentItem(1);
+	  edit_format_box->setCurrentIndex(1);
 	  edit_bitrate_box->setDisabled(true);
 	  break;
 
 	case RDSettings::MpegL2:
 	case RDSettings::MpegL2Wav:
-	  edit_format_box->setCurrentItem(2);
+	  edit_format_box->setCurrentIndex(2);
 	  edit_bitrate_box->setEnabled(true);
 	  break;
 
@@ -609,71 +595,72 @@ void EditDecks::ReadRecord(int chan)
 	case RDSettings::OggVorbis:
 	  break;
     }
-    edit_channels_box->setCurrentItem(edit_record_deck->defaultChannels()-1);
+    edit_channels_box->setCurrentIndex(edit_record_deck->defaultChannels()-1);
     switch(edit_record_deck->defaultBitrate()) {
 	case 32000:
-	  edit_bitrate_box->setCurrentItem(0);
+	  edit_bitrate_box->setCurrentIndex(0);
 	  break;
 	case 48000:
-	  edit_bitrate_box->setCurrentItem(1);
+	  edit_bitrate_box->setCurrentIndex(1);
 	  break;
 	case 56000:
-	  edit_bitrate_box->setCurrentItem(2);
+	  edit_bitrate_box->setCurrentIndex(2);
 	  break;
 	case 64000:
-	  edit_bitrate_box->setCurrentItem(3);
+	  edit_bitrate_box->setCurrentIndex(3);
 	  break;
 	case 80000:
-	  edit_bitrate_box->setCurrentItem(4);
+	  edit_bitrate_box->setCurrentIndex(4);
 	  break;
 	case 96000:
-	  edit_bitrate_box->setCurrentItem(5);
+	  edit_bitrate_box->setCurrentIndex(5);
 	  break;
 	case 112000:
-	  edit_bitrate_box->setCurrentItem(6);
+	  edit_bitrate_box->setCurrentIndex(6);
 	  break;
 	case 128000:
-	  edit_bitrate_box->setCurrentItem(7);
+	  edit_bitrate_box->setCurrentIndex(7);
 	  break;
 	case 160000:
-	  edit_bitrate_box->setCurrentItem(8);
+	  edit_bitrate_box->setCurrentIndex(8);
 	  break;
 	case 192000:
-	  edit_bitrate_box->setCurrentItem(9);
+	  edit_bitrate_box->setCurrentIndex(9);
 	  break;
 	case 224000:
-	  edit_bitrate_box->setCurrentItem(10);
+	  edit_bitrate_box->setCurrentIndex(10);
 	  break;
 	case 256000:
-	  edit_bitrate_box->setCurrentItem(11);
+	  edit_bitrate_box->setCurrentIndex(11);
 	  break;
 	case 320000:
-	  edit_bitrate_box->setCurrentItem(12);
+	  edit_bitrate_box->setCurrentIndex(12);
 	  break;
 	case 384000:
-	  edit_bitrate_box->setCurrentItem(13);
+	  edit_bitrate_box->setCurrentIndex(13);
 	  break;
 	default:
-	  edit_bitrate_box->setCurrentItem(7);    // 128 kbps/chan
+	  edit_bitrate_box->setCurrentIndex(7);    // 128 kbps/chan
 	  break;
     }
     for(int i=0;i<edit_swstation_box->count();i++) {
-      if(edit_record_deck->switchStation()==edit_swstation_box->text(i)) {
-	edit_swstation_box->setCurrentItem(i);
+      if(edit_record_deck->switchStation()==
+	 edit_swstation_box->itemData(i).toString()) {
+	edit_swstation_box->setCurrentIndex(i);
 	stationActivatedData(edit_swstation_box->currentText());
       }
     }
     QString matrix_name=edit_record_deck->switchMatrixName();
     for(int i=0;i<edit_swmatrix_box->count();i++) {
-      if(edit_swmatrix_box->text(i)==matrix_name) {
-	edit_swmatrix_box->setCurrentItem(i);
+      if(edit_swmatrix_box->itemData(i).toString()==matrix_name) {
+	edit_swmatrix_box->setCurrentIndex(i);
 	matrixActivatedData(edit_swmatrix_box->currentText());
       }
     }
     QString output_name=edit_record_deck->switchOutputName();
     for(int i=0;i<edit_swoutput_box->count();i++) {
-      if(edit_swoutput_box->text(i)==output_name) {
-	edit_swoutput_box->setCurrentItem(i);
+      if(edit_swoutput_box->itemData(i).toString()==output_name) {
+	edit_swoutput_box->setCurrentIndex(i);
       }
     }
     edit_swdelay_box->setValue(edit_record_deck->switchDelay()/100);
@@ -721,14 +708,14 @@ void EditDecks::WriteRecord(int chan)
       edit_record_deck->setDefaultMonitorOn(false);
     }
     else {
-      if(edit_default_on_box->currentItem()==0) {
+      if(edit_default_on_box->currentIndex()==0) {
 	edit_record_deck->setDefaultMonitorOn(false);
       }
       else {
 	edit_record_deck->setDefaultMonitorOn(true);
       }
     }
-    switch(edit_format_box->currentItem()) {
+    switch(edit_format_box->currentIndex()) {
     case 0:
       edit_record_deck->setDefaultFormat(RDSettings::Pcm16);
       break;
@@ -741,8 +728,8 @@ void EditDecks::WriteRecord(int chan)
       edit_record_deck->setDefaultFormat(RDSettings::MpegL2);
       break;
     }
-    edit_record_deck->setDefaultChannels(edit_channels_box->currentItem()+1);
-    sscanf((const char *)edit_bitrate_box->currentText(),"%d",&temp);
+    edit_record_deck->setDefaultChannels(edit_channels_box->currentIndex()+1);
+    temp=edit_bitrate_box->currentText().toInt();
     edit_record_deck->setDefaultBitrate(temp*1000);
     edit_record_deck->setSwitchStation(edit_swstation_box->currentText());
     edit_record_deck->setSwitchMatrix(GetMatrix());
@@ -773,9 +760,9 @@ void EditDecks::WriteRecord(int chan)
 
 int EditDecks::GetMatrix()
 {
-  if(edit_swmatrix_box->currentItem()>=0) {
-    if(edit_swmatrix_box->currentItem()<(int)edit_matrix_ids.size()) {
-      return edit_matrix_ids[edit_swmatrix_box->currentItem()];
+  if(edit_swmatrix_box->currentIndex()>=0) {
+    if(edit_swmatrix_box->currentIndex()<(int)edit_matrix_ids.size()) {
+      return edit_matrix_ids[edit_swmatrix_box->currentIndex()];
     }
   }
   return -1;
@@ -823,7 +810,7 @@ QStringList EditDecks::GetActiveOutputMatrices()
 	RDLiveWire *lw=new RDLiveWire(0,this);
 	if(!lw->loadSettings(q1->value(0).toString(),q1->value(2).toUInt(),
 			     q1->value(1).toString(),q1->value(3).toInt())) {
-	  QMessageBox::warning(this,tr("RDAdmin - "+tr("Connection Error")),
+	  QMessageBox::warning(this,"RDAdmin - "+tr("Connection Error"),
 			       tr("Unable to connect to node at")+" \""+
 			       q1->value(0).toString()+"\"."+
 			    tr("Check that the unit is online and try again."));

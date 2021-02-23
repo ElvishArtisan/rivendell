@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- save string test
 //
-//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,11 +50,11 @@ void Xport::SaveString()
   //
   // Process Request
   //
-  rda->syslog(LOG_INFO,"SAVESTRING: |%s|",(const char *)string.utf8());
+  rda->syslog(LOG_INFO,"SAVESTRING: |%s|",(const char *)string.toUtf8());
   printf("Content-type: application/xml; charset: UTF-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("%s\n",(const char *)RDXmlField("string",string).utf8());
+  printf("%s\n",(const char *)RDXmlField("string",string).toUtf8());
 
   Exit(0);
 }
@@ -81,7 +81,7 @@ void Xport::SaveFile()
 
   printf("Content-type: text/html; charset: UTF-8\n");
   printf("Status: 200\n\n");
-  printf("%s\n",(const char *)msg.utf8());
+  printf("%s\n",(const char *)msg.toUtf8());
 
   Exit(0);
 }

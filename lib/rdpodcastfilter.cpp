@@ -34,7 +34,7 @@ RDPodcastFilter::RDPodcastFilter(QWidget *parent)
   // Filter Phrase
   //
   d_filter_edit=new QLineEdit(this);
-  d_filter_label=new QLabel(d_filter_edit,tr("Filter:"),this);
+  d_filter_label=new QLabel(tr("Filter:"),this);
   d_filter_label->setFont(labelFont());
   d_filter_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(d_filter_edit,SIGNAL(textChanged(const QString &)),
@@ -44,8 +44,7 @@ RDPodcastFilter::RDPodcastFilter(QWidget *parent)
   // Show Audio Carts Checkbox
   //
   d_showactive_check=new QCheckBox(this);
-  d_showactive_label=
-    new QLabel(d_showactive_check,tr("Only Show Active Items"),this);
+  d_showactive_label=new QLabel(tr("Only Show Active Items"),this);
   d_showactive_label->setFont(labelFont());
   d_showactive_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(d_showactive_check,SIGNAL(stateChanged(int)),

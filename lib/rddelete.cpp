@@ -133,7 +133,7 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
     curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
   }
   else {
-    strncpy(userpwd,(username+":"+password).utf8(),256);
+    strncpy(userpwd,(username+":"+password).toUtf8(),256);
     curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   }
 

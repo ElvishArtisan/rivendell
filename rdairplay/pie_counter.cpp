@@ -2,7 +2,7 @@
 //
 // The pie counter widget for Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qtimer.h>
-#include <qpixmap.h>
-#include <qpainter.h>
+#include <QPainter>
 
 #include <rd.h>
 
@@ -220,7 +218,7 @@ void PieCounter::tickCounter()
     }
     else {
       pie_time_label->setText(QString().sprintf(":%02d",(1000+pie_time)/1000));
-      repaint(false);
+      repaint();
     }
   }
 }

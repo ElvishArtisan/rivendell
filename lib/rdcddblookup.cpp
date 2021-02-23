@@ -2,7 +2,7 @@
 //
 //   RDDiscLookup instance class for accessing the FreeDB CD Database.
 //
-//   (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -21,8 +21,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-
-#include <q3process.h>
 
 #include <qapplication.h>
 #include <qdatetime.h>
@@ -98,10 +96,10 @@ void RDCddbLookup::readyReadData()
     case 0:    // Login Banner
       if((code==200)||(code==201)) {
 	snprintf(buffer,2048,"cddb hello %s %s %s %s",
-		 (const char *)lookup_username.utf8(),
-		 (const char *)lookup_hostname.utf8(),
-		 (const char *)lookup_appname.utf8(),
-		 (const char *)lookup_appver.utf8());
+		 (const char *)lookup_username.toUtf8(),
+		 (const char *)lookup_hostname.toUtf8(),
+		 (const char *)lookup_appname.toUtf8(),
+		 (const char *)lookup_appver.toUtf8());
 	SendToServer(buffer);
 	lookup_state=1;
       }
@@ -157,7 +155,7 @@ void RDCddbLookup::readyReadData()
 	  f0.erase(f0.begin());
 	  discRecord()->setDiscTitle(f0.join(" "));
 	  snprintf(buffer,2048,"cddb read %s %08x\n",
-		   (const char *)discRecord()->discGenre().utf8(),
+		   (const char *)discRecord()->discGenre().toUtf8(),
 		   discRecord()->discId());
 	  SendToServer(buffer);
 	  lookup_state=5;		
@@ -210,7 +208,7 @@ void RDCddbLookup::readyReadData()
 	    discRecord()->setDiscTitle(titlesBox()->currentText().trimmed());
 	  }
 	  snprintf(buffer,2048,"cddb read %s %08x\n",
-		   (const char *)discRecord()->discGenre().utf8(),
+		   (const char *)discRecord()->discGenre().toUtf8(),
 		   discRecord()->discId());
 	  SendToServer(buffer);
 	  lookup_state=5;	
@@ -279,16 +277,12 @@ void RDCddbLookup::errorData(QAbstractSocket::SocketError err)
 {
   QString err_msg="Network error";
   switch(err) {
-  case QTcpSocket::ErrConnectionRefused:
+  case QAbstractSocket::ConnectionRefusedError:
     err_msg="Connection to \""+rda->libraryConf()->cddbServer()+"\" refused";
     break;
 
-  case QTcpSocket::ErrHostNotFound:
+  case QAbstractSocket::HostNotFoundError:
     err_msg="Host \""+rda->libraryConf()->cddbServer()+"\" not found";
-    break;
-
-  case QTcpSocket::ErrSocketRead:
-    err_msg="Socket read error";
     break;
 
   default:
@@ -362,6 +356,6 @@ int RDCddbLookup::GetIndex(QString *tag)
 
 void RDCddbLookup::SendToServer(const QString &msg)
 {
-  lookup_socket->writeBlock(msg+"\n",msg.length()+1);
+  lookup_socket->write((msg+"\n").toUtf8());
   profile("sent to server: \""+msg+"\"");
 }

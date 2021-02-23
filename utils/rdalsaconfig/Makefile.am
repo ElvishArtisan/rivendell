@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2009-2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 ##   Use automake to process this into a Makefile.in
 ##
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 
@@ -36,7 +36,7 @@ dist_rdalsaconfig_SOURCES = alsaitem.cpp alsaitem.h\
 nodist_rdalsaconfig_SOURCES = moc_rdalsamodel.cpp\
                               moc_rdalsaconfig.cpp
 
-rdalsaconfig_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
+rdalsaconfig_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@
 
 EXTRA_DIST = rdalsaconfig.pro
 

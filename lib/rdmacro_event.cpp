@@ -2,7 +2,7 @@
 //
 // A container class for a list of RML macros.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,8 +25,8 @@
 #include <rdmacro_event.h>
 #include <rdstation.h>
 
-RDMacroEvent::RDMacroEvent(RDRipc *ripc,QObject *parent,const char *name)
-  : QObject(parent,name)
+RDMacroEvent::RDMacroEvent(RDRipc *ripc,QObject *parent)
+  : QObject(parent)
 {
   QHostAddress addr;
   addr.setAddress("127.0.0.1");
@@ -35,21 +35,22 @@ RDMacroEvent::RDMacroEvent(RDRipc *ripc,QObject *parent,const char *name)
   event_whole_list=false;
   event_line=-1;
 
-  event_sleep_timer=new QTimer(this,"event_sleep_timer");
+  event_sleep_timer=new QTimer(this);
+  event_sleep_timer->setSingleShot(true);
   connect(event_sleep_timer,SIGNAL(timeout()),this,SLOT(sleepTimerData()));
 }
 
 
-RDMacroEvent::RDMacroEvent(QHostAddress addr,RDRipc *ripc,
-			   QObject *parent,const char *name)
-  : QObject(parent,name)
+RDMacroEvent::RDMacroEvent(QHostAddress addr,RDRipc *ripc,QObject *parent)
+  : QObject(parent)
 {
   event_ripc=ripc;
   event_address=addr;
   event_whole_list=false;
   event_line=-1;
 
-  event_sleep_timer=new QTimer(this,"event_sleep_timer");
+  event_sleep_timer=new QTimer(this);
+  event_sleep_timer->setSingleShot(true);
   connect(event_sleep_timer,SIGNAL(timeout()),this,SLOT(sleepTimerData()));
 }
 
@@ -217,7 +218,7 @@ void RDMacroEvent::exec(int line)
   RDSqlQuery *q;
   QString stationname;
   QStringList args;
-  Q_UINT16 port=0;
+  uint16_t port=0;
 
   if(event_ripc==NULL) {
     return;
@@ -229,16 +230,16 @@ void RDMacroEvent::exec(int line)
   switch(event_cmds[line]->command()) {
   case RDMacro::SP:   // Sleep
     event_sleeping_line=line;
-    event_sleep_timer->start(event_cmds[line]->arg(0).toInt(),true);
+    event_sleep_timer->start(event_cmds[line]->arg(0).toInt());
     break;
 
   case RDMacro::CC:   // Send Command
-    args=args.split(":",event_cmds[line]->arg(0));
+    args=event_cmds[line]->arg(0).split(":",QString::KeepEmptyParts);
     stationname=args[0];
     if(args.size()==2) {
       port=args[1].toUInt();
     }
-    if(stationname.lower()=="localhost") {
+    if(stationname.toLower()=="localhost") {
       addr.setAddress("127.0.0.2");
       rml.setAddress(addr);
     }

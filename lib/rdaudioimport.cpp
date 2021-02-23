@@ -113,7 +113,6 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
   CURLcode curl_err;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
-  char url[1024];
   QString xml;
   RDWebResult web_result;
 
@@ -124,39 +123,42 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",RDXPORT_COMMAND_IMPORT),
-	       CURLFORM_END);
+	       QString().sprintf("%u",RDXPORT_COMMAND_IMPORT).
+	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
-	       CURLFORM_COPYCONTENTS,(const char *)username.utf8(),CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,username.toUtf8().constData(),
+	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
-	       CURLFORM_COPYCONTENTS,(const char *)password.utf8(),CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,password.toUtf8().constData(),
+	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_cart_number),
+	       QString().sprintf("%u",conv_cart_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_cut_number),
+	       QString().sprintf("%u",conv_cut_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CHANNELS",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_settings->channels()),
+	       QString().sprintf("%u",conv_settings->channels()).
+	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"NORMALIZATION_LEVEL",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%d",conv_settings->
-					       normalizationLevel()),
+	       QString().sprintf("%d",conv_settings->normalizationLevel()).
+	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"AUTOTRIM_LEVEL",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%d",conv_settings->
-					       autotrimLevel()),CURLFORM_END);
+	       QString().sprintf("%d",conv_settings->autotrimLevel()).
+	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"USE_METADATA",
 	       CURLFORM_COPYCONTENTS,
-	       (const char *)QString().sprintf("%u",conv_use_metadata),
+	       QString().sprintf("%u",conv_use_metadata).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"FILENAME",
-	       CURLFORM_FILE,(const char *)(conv_src_filename.utf8()),
+	       CURLFORM_FILE,conv_src_filename.toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -169,20 +171,15 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
+		   rda->config()->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,ImportProgressCallback);
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,0);
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,ImportReadCallback);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,&xml);
-  //
-  // Write out URL as a C string before passing to curl_easy_setopt(), 
-  // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
-  // error.
-  //
-  strncpy(url,rda->station()->webServiceUrl(rda->config()),1024);
-  curl_easy_setopt(curl,CURLOPT_URL,url);
+  curl_easy_setopt(curl,CURLOPT_URL,rda->station()->
+		   webServiceUrl(rda->config()).toUtf8().constData());
 
   //
   // Send it

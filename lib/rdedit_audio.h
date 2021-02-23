@@ -58,7 +58,7 @@
 #define EDITAUDIO_PLAY_COLOR Qt::white
 #define EDITAUDIO_REMOVE_FLASH_COLOR Qt::blue
 #define EDITAUDIO_WAVEFORM_COLOR Qt::black
-#define EDITAUDIO_HIGHLIGHT_COLOR colorGroup().mid()
+#define EDITAUDIO_HIGHLIGHT_COLOR palette().mid().color()
 
 class RDEditAudio : public RDDialog
 {

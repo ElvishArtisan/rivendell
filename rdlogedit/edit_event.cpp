@@ -18,9 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qmessagebox.h>
-
 #include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -39,7 +36,7 @@ EditEvent::EditEvent(RDLogLine *line,QWidget *parent)
   // Time Type
   //
   edit_timetype_box=new QCheckBox(this);
-  edit_timetype_label=new QLabel(edit_timetype_box,tr("Start at:"),this);
+  edit_timetype_label=new QLabel(tr("Start at:"),this);
   edit_timetype_label->setGeometry(30,21,85,17);
   edit_timetype_label->setFont(labelFont());
   edit_timetype_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -83,10 +80,10 @@ EditEvent::EditEvent(RDLogLine *line,QWidget *parent)
   // Transition Type
   //
   edit_transtype_box=new QComboBox(this);
-  edit_transtype_box->insertItem(tr("Play"));
-  edit_transtype_box->insertItem(tr("Segue"));
-  edit_transtype_box->insertItem(tr("Stop"));  
-  edit_time_label=new QLabel(edit_transtype_box,tr("Transition Type:"),this);
+  edit_transtype_box->insertItem(0,tr("Play"));
+  edit_transtype_box->insertItem(1,tr("Segue"));
+  edit_transtype_box->insertItem(2,tr("Stop"));  
+  edit_time_label=new QLabel(tr("Transition Type:"),this);
   edit_time_label->setGeometry(10,68,370,26);
   edit_time_label->setFont(labelFont());
   edit_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -137,7 +134,7 @@ EditEvent::EditEvent(RDLogLine *line,QWidget *parent)
     graceClickedData(2);
     break;
   }
-  edit_transtype_box->setCurrentItem(edit_logline->transType());
+  edit_transtype_box->setCurrentIndex(edit_logline->transType());
 }
 
 
@@ -229,7 +226,7 @@ void EditEvent::okData()
       edit_logline->setGraceTime(0);
     }
     edit_logline->
-      setTransType((RDLogLine::TransType)edit_transtype_box->currentItem());
+      setTransType((RDLogLine::TransType)edit_transtype_box->currentIndex());
     done(edit_logline->id());
   }
 }

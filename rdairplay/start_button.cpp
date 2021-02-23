@@ -2,7 +2,7 @@
 //
 // The Start Button for RDAirPlay Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
+#include <QPainter>
 
 #include "colors.h"
 #include "start_button.h"
@@ -42,35 +42,35 @@ StartButton::StartButton(bool allow_pause,QWidget *parent)
   // Create Palettes
   //
   start_stop_color=
-    QPalette(QColor(BUTTON_STOPPED_BACKGROUND_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_STOPPED_BACKGROUND_COLOR),palette().color(QPalette::Background));
   start_play_color=
-    QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),palette().color(QPalette::Background));
   start_play_color.
-    setColor(QColorGroup::ButtonText,QColor(BUTTON_PLAY_TEXT_COLOR));
+    setColor(QPalette::ButtonText,QColor(BUTTON_PLAY_TEXT_COLOR));
   start_pause_color=
-    QPalette(QColor(BUTTON_PAUSE_BACKGROUND_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_PAUSE_BACKGROUND_COLOR),palette().color(QPalette::Background));
   start_pause_color.
-    setColor(QColorGroup::ButtonText,QColor(BUTTON_PAUSE_TEXT_COLOR));
+    setColor(QPalette::ButtonText,QColor(BUTTON_PAUSE_TEXT_COLOR));
 
   start_from_color=
-    QPalette(QColor(BUTTON_FROM_BACKGROUND_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_FROM_BACKGROUND_COLOR),palette().color(QPalette::Background));
   start_from_color.
-    setColor(QColorGroup::ButtonText,QColor(BUTTON_FROM_TEXT_COLOR));
+    setColor(QPalette::ButtonText,QColor(BUTTON_FROM_TEXT_COLOR));
 
   start_to_color=
-    QPalette(QColor(BUTTON_TO_BACKGROUND_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_TO_BACKGROUND_COLOR),palette().color(QPalette::Background));
   start_to_color.
-    setColor(QColorGroup::ButtonText,QColor(BUTTON_TO_TEXT_COLOR));
+    setColor(QPalette::ButtonText,QColor(BUTTON_TO_TEXT_COLOR));
 
   start_disabled_color=
-    QPalette(QColor(BUTTON_DISABLED_BACKGROUND_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_DISABLED_BACKGROUND_COLOR),palette().color(QPalette::Background));
   start_disabled_color.
-    setColor(QColorGroup::ButtonText,QColor(BUTTON_DISABLED_TEXT_COLOR));
+    setColor(QPalette::ButtonText,QColor(BUTTON_DISABLED_TEXT_COLOR));
 
   start_error_color=
-    QPalette(QColor(BUTTON_ERROR_BACKGROUND_COLOR),backgroundColor());
+    QPalette(QColor(BUTTON_ERROR_BACKGROUND_COLOR),palette().color(QPalette::Background));
   start_error_color.
-    setColor(QColorGroup::ButtonText,QColor(BUTTON_ERROR_TEXT_COLOR));
+    setColor(QPalette::ButtonText,QColor(BUTTON_ERROR_TEXT_COLOR));
 
   start_mode=StartButton::Stop;
   setMode(StartButton::Disabled,RDCart::All);
@@ -208,7 +208,7 @@ void StartButton::Resize(int x,int y,int w,int h)
   QPixmap *pix=new QPixmap(w,h);
   QPainter *p=new QPainter();
   p->begin(pix);
-  p->fillRect(0,0,w,h,palette().color(QPalette::Active,QColorGroup::Button));
+  p->fillRect(0,0,w,h,palette().color(QPalette::Active,QPalette::Button));
   if(start_mode!=StartButton::Disabled) {
     p->setPen(QColor(Qt::color1));
     p->setFont(labelFont());
@@ -235,7 +235,7 @@ void StartButton::Resize(int x,int y,int w,int h)
     p->drawText(15,70,start_port);
   }
   p->end();
-  setPixmap(*pix);
+  setIcon(*pix);
   delete p;
   delete pix;
 }

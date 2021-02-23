@@ -21,12 +21,12 @@
 #ifndef EDIT_UPLOAD_H
 #define EDIT_UPLOAD_H
 
-#include <QComboBox>
 #include <QCheckBox>
 #include <QDateTimeEdit>
 #include <QLabel>
 #include <QSpinBox>
 
+#include <rdcombobox.h>
 #include <rdcut_dialog.h>
 #include <rddeck.h>
 #include <rddialog.h>
@@ -64,7 +64,7 @@ class EditUpload : public RDDialog
   RDRecording *edit_recording;
   RDSettings edit_settings;
   QCheckBox *edit_active_button;
-  QComboBox *edit_station_box;
+  RDComboBox *edit_station_box;
   QTimeEdit *edit_starttime_edit;
   QComboBox *edit_feed_box;
   QLineEdit *edit_description_edit;

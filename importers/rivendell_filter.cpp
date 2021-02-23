@@ -190,8 +190,10 @@ MainObject::MainObject(QObject *parent)
   //
   // Verify that default group exists
   //
-  sql=QString().sprintf("select NAME from GROUPS where NAME=\"%s\"",
-			(const char *)default_group);
+  sql=QString("select ")+
+    "NAME "+
+    "from GROUPS where "+
+    "NAME=\""+RDEscapeString(default_group)+"\"";
   q=new QSqlQuery(sql,filter_db);
   if(!q->next()) {
     fprintf(stderr,"rivendell_filter: default group does not exist\n");
@@ -237,7 +239,7 @@ MainObject::MainObject(QObject *parent)
   q=new QSqlQuery(sql,ext_db);
   while(q->next()) {
     printf("Transferring cart %06u [%s]...",q->value(0).toUInt(),
-	   (const char *)q->value(3).toString());
+	   q->value(3).toString().toUtf8().constData());
     fflush(stdout);
 
     //
@@ -261,7 +263,7 @@ MainObject::MainObject(QObject *parent)
 			  q->value(0).toUInt());
     q1=new QSqlQuery(sql,filter_db);
     while(q1->next()) {
-      unlink(RDCut::pathName(q1->value(0).toString()));
+      unlink(RDCut::pathName(q1->value(0).toString()).toUtf8());
     }
     delete q1;
     sql=QString().sprintf("delete from CUTS where CART_NUMBER=%u",
@@ -359,33 +361,27 @@ MainObject::MainObject(QObject *parent)
 	start_datetime="null";
       }
       else {
-	start_datetime=QString().sprintf("%s",
-			(const char *)RDCheckDateTime(q1->value(7).
-			toDateTime(),"yyyy-MM-dd hh:mm:ss"));//Could be invalid (0000-00-00)
+	start_datetime=
+	  RDCheckDateTime(q1->value(7).toDateTime(),"yyyy-MM-dd hh:mm:ss");
       }
       if(q1->value(8).isNull()) {
 	end_datetime="null";
       }
       else {
-	end_datetime=QString().sprintf("%s",
-			(const char *)RDCheckDateTime(q1->value(8).
-			toDateTime(),"yyyy-MM-dd hh:mm:ss"));//Could be invalid (0000-00-00)
+	end_datetime=
+	  RDCheckDateTime(q1->value(8).toDateTime(),"yyyy-MM-dd hh:mm:ss");
       }
       if(q1->value(16).isNull()) {
 	start_daypart="null";
       }
       else {
-	start_daypart=QString().sprintf("%s",
-					(const char *)RDCheckDateTime(q1->value(16).
-					toTime(),"hh:mm:ss"));//Invalid possible?
+	start_daypart=RDCheckDateTime(q1->value(16).toTime(),"hh:mm:ss");
       }
       if(q1->value(17).isNull()) {
 	end_daypart="null";
       }
       else {
-	end_daypart=QString().sprintf("%s",
-					(const char *)RDCheckDateTime(q1->value(17).
-					toTime(),"hh:mm:ss"));//Invalid possible?
+	end_daypart=RDCheckDateTime(q1->value(17).toTime(),"hh:mm:ss");
       }
       sql=QString("insert into CUTS set ")+
 	"CUT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\","+

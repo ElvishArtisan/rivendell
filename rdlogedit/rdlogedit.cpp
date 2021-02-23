@@ -532,8 +532,8 @@ void MainWidget::reportData()
     }
     else {
       report+=q->value(10).toDate().toString("MM/dd/yyyy")+" ";
-      report+=QString().sprintf("%s ",
-	(const char *)q->value(10).toDate().toString("MM/dd/yyyy"));
+      report+=QString().sprintf("%s ",q->value(10).toDate().
+				toString("MM/dd/yyyy").toUtf8().constData());
     }
     
     //
@@ -681,24 +681,27 @@ int main(int argc,char *argv[])
   QString tr_path;
   QString qt_path;
 
-  tr_path=QString(PREFIX)+QString("/share/rivendell/");
-  qt_path=QString("/usr/share/qt4/translation/");
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    tr_path=QString(PREFIX)+QString("/share/rivendell/");
+    qt_path=QString("/usr/share/qt4/translation/");
 
-  QTranslator qt(0);
-  qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");
-  a.installTranslator(&qt);
+    QTranslator qt(0);
+    qt.load(qt_path+QString("qt_")+loc,".");
+    a.installTranslator(&qt);
 
-  QTranslator rd(0);
-  rd.load(tr_path+QString("librd_")+QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+    QTranslator rd(0);
+    rd.load(tr_path+QString("librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(tr_path+QString("librdhpi_")+QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(tr_path+QString("librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(tr_path+QString("rdlogedit_")+QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(tr_path+QString("rdlogedit_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   //
   // Start Event Loop
@@ -706,7 +709,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(w->geometry().x(),w->geometry().y()),
 		 w->sizeHint()));
   w->show();

@@ -2,7 +2,7 @@
 //
 // Local RML Macros for the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -273,7 +273,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       return;
     }
     for(int i=1;i<(rml->argQuantity());i++) {
-      sscanf((const char *)rml->arg(i),"%x",&d);
+      d=rml->arg(i).toInt(NULL,16);
       bin_buf[i-1]=0xFF&d;
     }
     ripcd_tty_dev[tty_port]->write(bin_buf,rml->argQuantity()-1);
@@ -291,11 +291,11 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       return;
     }
     matrix_num=rml->arg(0).toInt();
-    if(rml->arg(1).lower()=="i") {
+    if(rml->arg(1).toLower()=="i") {
       gpio_type=RDMatrix::GpioInput;
     }
     else {
-      if(rml->arg(1).lower()=="o") {
+      if(rml->arg(1).toLower()=="o") {
 	gpio_type=RDMatrix::GpioOutput;
       }
       else {
@@ -350,11 +350,11 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       return;
     }
     matrix_num=rml->arg(0).toInt();
-    if(rml->arg(1).lower()=="i") {
+    if(rml->arg(1).toLower()=="i") {
       gpio_type=RDMatrix::GpioInput;
     }
     else {
-      if(rml->arg(1).lower()=="o") {
+      if(rml->arg(1).toLower()=="o") {
 	gpio_type=RDMatrix::GpioOutput;
       }
       else {
@@ -621,9 +621,9 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       }
       if(system(QString().
 		sprintf("rdpopup -display %s %s %s",
-			(const char *)rml->arg(0),
-			(const char *)rml->arg(1),
-			(const char *)RDEscapeString(rml->rollupArgs(2))))<0) {
+			rml->arg(0).toUtf8().constData(),
+			rml->arg(1).toUtf8().constData(),
+			RDEscapeString(rml->rollupArgs(2)).toUtf8().constData()).toUtf8().constData())<0) {
 	rda->syslog(LOG_WARNING,"RDPopup returned an error");
       }
       exit(0);
@@ -664,7 +664,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     ripc_macro_cart[rml->arg(0).toUInt()-1]=rml->arg(2).toUInt();
     ripc_macro_timer[rml->arg(0).toUInt()-1]->stop();
     ripc_macro_timer[rml->arg(0).toUInt()-1]->
-      start(rml->arg(1).toInt(),true);
+      start(rml->arg(1).toInt());
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       sendRml(rml);
@@ -709,7 +709,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     }
     str+=rml->arg(rml->argQuantity()-1);
     ripcd_tty_trap[tty_port]->addTrap(rml->arg(1).toInt(),
-				      str,str.length());
+				      str.toUtf8(),str.toUtf8().length());
     rda->syslog(LOG_DEBUG,"added trap \"%s\" to tty port %d",
 		(const char *)str.toUtf8(),rml->arg(1).toInt());
     rml->acknowledge(true);
@@ -752,8 +752,8 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 	  
     case 3:
       ripcd_tty_trap[tty_port]->removeTrap(rml->arg(1).toInt(),
-					   (const char *)rml->arg(2),
-					   rml->arg(2).length());
+					   rml->arg(2).toUtf8(),
+					   rml->arg(2).toUtf8().length());
       if(rml->echoRequested()) {
 	rml->acknowledge(true);
 	sendRml(rml);
@@ -984,7 +984,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     rda->syslog(LOG_INFO,"sending \"%s\" to %s:%d",(const char *)str.toUtf8(),
 		(const char *)addr.toString().toUtf8(),rml->arg(1).toInt());
     data=RDStringToData(str);
-    ripcd_rml_send->writeDatagram(data,addr,(Q_UINT16)(rml->arg(1).toInt()));
+    ripcd_rml_send->writeDatagram(data,addr,(uint16_t)(rml->arg(1).toInt()));
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       sendRml(rml);

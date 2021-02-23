@@ -2184,18 +2184,18 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
       play_macro_deck->
 	load(QString().sprintf("LL %d %s -2!",
 			       play_id+1,
-			       (const char *)logline->markerLabel()));
+			       logline->markerLabel().toUtf8().constData()));
     }
     else {
       play_macro_deck->
 	load(QString().sprintf("LL %d %s -2!",
 			       play_id+1,
-			       (const char *)logline->markerLabel()));
+			       logline->markerLabel().toUtf8().constData()));
     }
     play_macro_deck->setLine(line);
     play_macro_deck->exec();
     rda->syslog(LOG_INFO,"log engine: chained to log: Line: %d  Log: %s",
-		line,(const char *)logline->markerLabel());
+		line,logline->markerLabel().toUtf8().constData());
     break;
 
   default:
@@ -3167,10 +3167,10 @@ void RDLogPlay::SendNowNext()
     write(RDJsonField("hostName",rda->station()->name(),8).toUtf8());
   play_pad_socket->
     write(RDJsonField("shortHostName",rda->station()->shortName(),8).toUtf8());
-  play_pad_socket->write(RDJsonField("machine",play_id+1,8));
-  play_pad_socket->write(RDJsonField("onairFlag",play_onair_flag,8));
+  play_pad_socket->write(RDJsonField("machine",play_id+1,8).toUtf8());
+  play_pad_socket->write(RDJsonField("onairFlag",play_onair_flag,8).toUtf8());
   play_pad_socket->
-    write(RDJsonField("mode",RDAirPlayConf::logModeText(play_op_mode),8));
+    write(RDJsonField("mode",RDAirPlayConf::logModeText(play_op_mode),8).toUtf8());
 
   //
   // Service

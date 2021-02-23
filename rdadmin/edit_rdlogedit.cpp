@@ -2,7 +2,7 @@
 //
 // Edit an RDLogedit Configuration
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -55,7 +54,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   lib_input_card=new RDCardSelector(this);
   lib_input_card->setGeometry(sizeHint().width()/5,29,120,117);
-  QLabel *label=new QLabel(lib_input_card,tr("Input"),this);
+  QLabel *label=new QLabel(tr("Input"),this);
   label->setGeometry(sizeHint().width()/5,10,120,19);
   label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
@@ -65,7 +64,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   lib_output_card=new RDCardSelector(this);
   lib_output_card->setGeometry(4*sizeHint().width()/5-120,29,120,87);
-  label=new QLabel(lib_output_card,tr("Output"),this);
+  label=new QLabel(tr("Output"),this);
   label->setGeometry(4*sizeHint().width()/5-120,10,120,19);
   label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignCenter);
@@ -85,7 +84,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_maxlength_time->setDisplayFormat("hh:mm:ss");
   lib_maxlength_time->setGeometry(180,100,85,19);
   QLabel *lib_maxlength_label=
-    new QLabel(lib_maxlength_time,tr("&Max Record Time:"),this);
+    new QLabel(tr("&Max Record Time:"),this);
   lib_maxlength_label->setFont(labelFont());
   lib_maxlength_label->setGeometry(25,101,150,19);
   lib_maxlength_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -95,9 +94,9 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   lib_threshold_spin=new QSpinBox(this);
   lib_threshold_spin->setGeometry(180,124,50,19);
-  lib_threshold_spin->setMinValue(-99);
-  lib_threshold_spin->setMaxValue(0);
-  label=new QLabel(lib_threshold_spin,tr("&AutoTrim Threshold:"),this);
+  lib_threshold_spin->setMinimum(-99);
+  lib_threshold_spin->setMaximum(0);
+  label=new QLabel(tr("&AutoTrim Threshold:"),this);
   label->setFont(labelFont());
   label->setGeometry(25,124,150,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -111,9 +110,9 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   lib_normalization_spin=new QSpinBox(this);
   lib_normalization_spin->setGeometry(180,148,50,19);
-  lib_normalization_spin->setMinValue(-99);
-  lib_normalization_spin->setMaxValue(0);
-  label=new QLabel(lib_normalization_spin,tr("&Normalization Level:"),this);
+  lib_normalization_spin->setMinimum(-99);
+  lib_normalization_spin->setMaximum(0);
+  label=new QLabel(tr("&Normalization Level:"),this);
   label->setFont(labelFont());
   label->setGeometry(25,148,150,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -127,11 +126,10 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   lib_preroll_spin=new QSpinBox(this);
   lib_preroll_spin->setGeometry(180,172,60,19);
-  lib_preroll_spin->setMinValue(0);
-  lib_preroll_spin->setMaxValue(10000);
-  lib_preroll_spin->setLineStep(100);
-  QLabel *lib_preroll_spin_label=
-    new QLabel(lib_preroll_spin,tr("&Audio Margin:"),this);
+  lib_preroll_spin->setMinimum(0);
+  lib_preroll_spin->setMaximum(10000);
+  lib_preroll_spin->setSingleStep(100);
+  QLabel *lib_preroll_spin_label=new QLabel(tr("&Audio Margin:"),this);
   lib_preroll_spin_label->setFont(labelFont());
   lib_preroll_spin_label->setGeometry(25,172,150,19);
   lib_preroll_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -146,7 +144,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_format_box=new QComboBox(this);
   lib_format_box->setGeometry(180,196,150,19);
   connect(lib_format_box,SIGNAL(activated(int)),this,SLOT(formatData(int)));
-  QLabel *lib_format_label=new QLabel(lib_format_box,tr("&Format:"),this);
+  QLabel *lib_format_label=new QLabel(tr("&Format:"),this);
   lib_format_label->setFont(labelFont());
   lib_format_label->setGeometry(25,196,150,19);
   lib_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -156,7 +154,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   lib_bitrate_box=new QComboBox(this);
   lib_bitrate_box->setGeometry(180,220,130,19);
-  QLabel *lib_bitrate_label=new QLabel(lib_bitrate_box,tr("&Bitrate:"),this);
+  QLabel *lib_bitrate_label=new QLabel(tr("&Bitrate:"),this);
   lib_bitrate_label->setFont(labelFont());
   lib_bitrate_label->setGeometry(25,220,150,19);
   lib_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -166,14 +164,13 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   lib_enable_second_start_box=new QComboBox(this);
   lib_enable_second_start_box->setGeometry(180,244,60,19);
-  lib_enable_second_start_box->insertItem(tr("No"));
-  lib_enable_second_start_box->insertItem(tr("Yes"));
+  lib_enable_second_start_box->insertItem(0,tr("No"));
+  lib_enable_second_start_box->insertItem(1,tr("Yes"));
   QLabel *lib_enable_second_start_label=
-   new QLabel(lib_enable_second_start_box,tr("Enable &2nd Start Button:"),this);
+   new QLabel(tr("Enable &2nd Start Button:"),this);
   lib_enable_second_start_label->setFont(labelFont());
   lib_enable_second_start_label->setGeometry(10,244,165,19);
-  lib_enable_second_start_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  lib_enable_second_start_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Validator
@@ -186,8 +183,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   lib_waveform_caption_edit=new QLineEdit(this);
   lib_waveform_caption_edit->setGeometry(180,268,sizeHint().width()-190,19);
-  QLabel *lib_waveform_caption_label=
-    new QLabel(lib_waveform_caption_edit,tr("WaveForm Caption:"),this);
+  QLabel *lib_waveform_caption_label=new QLabel(tr("WaveForm Caption:"),this);
   lib_waveform_caption_label->setFont(labelFont());
   lib_waveform_caption_label->setGeometry(25,268,150,19);
   lib_waveform_caption_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -198,8 +194,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_startcart_edit=new QLineEdit(this);
   lib_startcart_edit->setGeometry(180,290,70,19);
   lib_startcart_edit->setValidator(validator);
-  QLabel *lib_startcart_label=
-    new QLabel(lib_startcart_edit,tr("Play &Start Cart:"),this);
+  QLabel *lib_startcart_label=new QLabel(tr("Play &Start Cart:"),this);
   lib_startcart_label->setFont(labelFont());
   lib_startcart_label->setGeometry(25,290,150,19);
   lib_startcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -215,8 +210,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_endcart_edit=new QLineEdit(this);
   lib_endcart_edit->setGeometry(180,314,70,19);
   lib_endcart_edit->setValidator(validator);
-  QLabel *lib_endcart_label=
-    new QLabel(lib_endcart_edit,tr("Play &End Cart:"),this);
+  QLabel *lib_endcart_label=new QLabel(tr("Play &End Cart:"),this);
   lib_endcart_label->setFont(labelFont());
   lib_endcart_label->setGeometry(25,314,150,19);
   lib_endcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -232,8 +226,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_recstartcart_edit=new QLineEdit(this);
   lib_recstartcart_edit->setGeometry(180,338,70,19);
   lib_recstartcart_edit->setValidator(validator);
-  QLabel *lib_recstartcart_label=
-    new QLabel(lib_recstartcart_edit,tr("&Record Start Cart:"),this);
+  QLabel *lib_recstartcart_label=new QLabel(tr("&Record Start Cart:"),this);
   lib_recstartcart_label->setFont(labelFont());
   lib_recstartcart_label->setGeometry(25,338,150,19);
   lib_recstartcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -249,8 +242,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_recendcart_edit=new QLineEdit(this);
   lib_recendcart_edit->setGeometry(180,362,70,19);
   lib_recendcart_edit->setValidator(validator);
-  QLabel *lib_recendcart_label=
-    new QLabel(lib_recendcart_edit,tr("Re&cord End Cart:"),this);
+  QLabel *lib_recendcart_label=new QLabel(tr("Re&cord End Cart:"),this);
   lib_recendcart_label->setFont(labelFont());
   lib_recendcart_label->setGeometry(25,362,150,19);
   lib_recendcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -265,7 +257,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   lib_channels_box=new QComboBox(this);
   lib_channels_box->setGeometry(180,386,60,19);
-  QLabel *lib_channels_label=new QLabel(lib_channels_box,tr("&Channels:"),this);
+  QLabel *lib_channels_label=new QLabel(tr("&Channels:"),this);
   lib_channels_label->setFont(labelFont());
   lib_channels_label->setGeometry(25,386,150,19);
   lib_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -276,14 +268,14 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_default_transtype_box=new QComboBox(this);
   lib_default_transtype_box->setGeometry(180,410,100,19);
   QLabel *lib_default_transtype_label=
-    new QLabel(lib_default_transtype_box,tr("Default Transition:"),this);
+    new QLabel(tr("Default Transition:"),this);
   lib_default_transtype_label->setFont(labelFont());
   lib_default_transtype_label->setGeometry(25,410,150,19);
   lib_default_transtype_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  lib_default_transtype_box->insertItem(tr("Play"));
-  lib_default_transtype_box->insertItem(tr("Segue"));
-  lib_default_transtype_box->insertItem(tr("Stop"));
+  lib_default_transtype_box->insertItem(0,tr("Play"));
+  lib_default_transtype_box->insertItem(1,tr("Segue"));
+  lib_default_transtype_box->insertItem(2,tr("Stop"));
 
   //
   //  Ok Button
@@ -345,29 +337,29 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
     lib_recendcart_edit->setText(QString().sprintf("%06u",cart));
   }  
   lib_preroll_spin->setValue(lib_lib->tailPreroll());
-  lib_format_box->insertItem(tr("PCM16"));
-  lib_format_box->insertItem(tr("PCM24"));
-  lib_format_box->insertItem(tr("MPEG Layer 2"));
+  lib_format_box->insertItem(0,tr("PCM16"));
+  lib_format_box->insertItem(1,tr("PCM24"));
+  lib_format_box->insertItem(2,tr("MPEG Layer 2"));
   switch(lib_lib->format()) {
   case 0:  // PCM16
-    lib_format_box->setCurrentItem(0);
+    lib_format_box->setCurrentIndex(0);
     break;
 
   case 1:  // MPEG L2
-    lib_format_box->setCurrentItem(2);
+    lib_format_box->setCurrentIndex(2);
     break;
 
   case 2:  // PCM24
-    lib_format_box->setCurrentItem(1);
+    lib_format_box->setCurrentIndex(1);
     break;
 
   }
-  lib_channels_box->insertItem("1");
-  lib_channels_box->insertItem("2");
-  lib_channels_box->setCurrentItem(lib_lib->defaultChannels()-1);
-  ShowBitRates(lib_format_box->currentItem(),lib_lib->bitrate());
-  lib_enable_second_start_box->setCurrentItem(lib_lib->enableSecondStart());
-  lib_default_transtype_box->setCurrentItem(lib_lib->defaultTransType());
+  lib_channels_box->insertItem(0,"1");
+  lib_channels_box->insertItem(1,"2");
+  lib_channels_box->setCurrentIndex(lib_lib->defaultChannels()-1);
+  ShowBitRates(lib_format_box->currentIndex(),lib_lib->bitrate());
+  lib_enable_second_start_box->setCurrentIndex(lib_lib->enableSecondStart());
+  lib_default_transtype_box->setCurrentIndex(lib_lib->defaultTransType());
 }
 
 
@@ -474,7 +466,7 @@ void EditRDLogedit::okData()
   else {
     lib_lib->setRecEndCart(lib_recendcart_edit->text().toUInt());
   }
-  switch(lib_format_box->currentItem()) {
+  switch(lib_format_box->currentIndex()) {
   case 0:  // PCM16
     lib_lib->setFormat(0);
     break;
@@ -487,15 +479,15 @@ void EditRDLogedit::okData()
     lib_lib->setFormat(1);
     break;
   }
-  lib_lib->setDefaultChannels(lib_channels_box->currentItem()+1);
+  lib_lib->setDefaultChannels(lib_channels_box->currentIndex()+1);
   rate=0;
-  if(lib_format_box->currentItem()==2) {
-    sscanf(lib_bitrate_box->currentText(),"%d",&rate);
+  if(lib_format_box->currentIndex()==2) {
+    rate=lib_bitrate_box->currentText().toInt();
   }
   lib_lib->setBitrate(rate*1000);
-  lib_lib->setEnableSecondStart(lib_enable_second_start_box->currentItem());
+  lib_lib->setEnableSecondStart(lib_enable_second_start_box->currentIndex());
   lib_lib->setDefaultTransType(
-    (RDLogLine::TransType)lib_default_transtype_box->currentItem());
+    (RDLogLine::TransType)lib_default_transtype_box->currentIndex());
   done(0);
 }
 
@@ -517,59 +509,59 @@ void EditRDLogedit::ShowBitRates(int index,int rate)
 
   case 2:  // MPEG-1 Layer 2
     lib_bitrate_box->setEnabled(true);
-    lib_bitrate_box->insertItem(tr("32 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("48 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("56 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("64 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("80 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("96 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("112 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("128 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("160 kbps/chan"));
-    lib_bitrate_box->insertItem(tr("192 kbps/chan"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("32 kbps/chan"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("48 kbps/chan"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("56 kbps/chan"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("64 kbps/chan"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("80 kbps/chan"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("96 kbps/chan"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("112 kbps/chan"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("128 kbps/chan"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("160 kbps/chan"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("192 kbps/chan"));
     switch(lib_lib->bitrate()) {
     case 32000:
-      lib_bitrate_box->setCurrentItem(0);
+      lib_bitrate_box->setCurrentIndex(0);
       break;
 
     case 48000:
-      lib_bitrate_box->setCurrentItem(1);
+      lib_bitrate_box->setCurrentIndex(1);
       break;
 
     case 56000:
-      lib_bitrate_box->setCurrentItem(2);
+      lib_bitrate_box->setCurrentIndex(2);
       break;
 
     case 64000:
-      lib_bitrate_box->setCurrentItem(3);
+      lib_bitrate_box->setCurrentIndex(3);
       break;
 
     case 80000:
-      lib_bitrate_box->setCurrentItem(4);
+      lib_bitrate_box->setCurrentIndex(4);
       break;
 
     case 96000:
-      lib_bitrate_box->setCurrentItem(5);
+      lib_bitrate_box->setCurrentIndex(5);
       break;
 
     case 112000:
-      lib_bitrate_box->setCurrentItem(6);
+      lib_bitrate_box->setCurrentIndex(6);
       break;
 
     case 128000:
-      lib_bitrate_box->setCurrentItem(7);
+      lib_bitrate_box->setCurrentIndex(7);
       break;
 
     case 160000:
-      lib_bitrate_box->setCurrentItem(8);
+      lib_bitrate_box->setCurrentIndex(8);
       break;
 
     case 192000:
-      lib_bitrate_box->setCurrentItem(9);
+      lib_bitrate_box->setCurrentIndex(9);
       break;
 
     default:
-      lib_bitrate_box->setCurrentItem(7);   // 128 kbps/chan
+      lib_bitrate_box->setCurrentIndex(7);   // 128 kbps/chan
       break;
     }
     break;

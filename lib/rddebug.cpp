@@ -24,6 +24,6 @@
 
 void RDTimePoint(QString label)
 {
-  printf("RDTimePoint - %s: %s\n",(const char *)label,
-	 (const char *)QTime::currentTime().toString("hh:mm:ss.zzz"));
+  printf("RDTimePoint - %s: %s\n",label.toUtf8().constData(),
+	 QTime::currentTime().toString("hh:mm:ss.zzz").toUtf8().constData());
 }

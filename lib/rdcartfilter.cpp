@@ -41,7 +41,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   // Filter Phrase
   //
   d_filter_edit=new QLineEdit(this);
-  d_filter_label=new QLabel(d_filter_edit,tr("Filter:"),this);
+  d_filter_label=new QLabel(tr("Filter:"),this);
   d_filter_label->setFont(labelFont());
   d_filter_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(d_filter_edit,SIGNAL(textChanged(const QString &)),
@@ -77,7 +77,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   //
   d_group_box=new QComboBox(this);
   d_group_box->setModel(d_group_model);
-  d_group_label=new QLabel(d_group_box,tr("Group:"),this);
+  d_group_label=new QLabel(tr("Group:"),this);
   d_group_label->setFont(labelFont());
   d_group_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(d_group_box,SIGNAL(activated(const QString &)),
@@ -87,7 +87,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   // Scheduler Codes Filter
   //
   d_codes_box=new QComboBox(this);
-  d_codes_label=new QLabel(d_codes_box,tr("Scheduler Code:"),this);
+  d_codes_label=new QLabel(tr("Scheduler Code:"),this);
   d_codes_label->setFont(labelFont());
   d_codes_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(d_codes_box,SIGNAL(activated(const QString &)),
@@ -98,7 +98,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   //
   d_matches_edit=new QLineEdit(this);
   d_matches_edit->setReadOnly(true);
-  d_matches_label=new QLabel(d_matches_edit,tr("Matching Carts:"),this);
+  d_matches_label=new QLabel(tr("Matching Carts:"),this);
   d_matches_label->setFont(labelFont());
 
   //
@@ -106,8 +106,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   //
   d_allowdrag_box=new QCheckBox(this);
   d_allowdrag_box->setChecked(false);
-  d_allowdrag_label=
-    new QLabel(d_allowdrag_box,tr("Allow Cart Dragging"),this);
+  d_allowdrag_label=new QLabel(tr("Allow Cart Dragging"),this);
   d_allowdrag_label->setFont(labelFont());
   d_allowdrag_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(d_allowdrag_box,SIGNAL(stateChanged(int)),
@@ -122,7 +121,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   //
   d_showaudio_check=new QCheckBox(this);
   d_showaudio_check->setChecked(true);
-  d_showaudio_label=new QLabel(d_showaudio_check,tr("Show Audio Carts"),this);
+  d_showaudio_label=new QLabel(tr("Show Audio Carts"),this);
   d_showaudio_label->setFont(labelFont());
   d_showaudio_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(d_showaudio_check,SIGNAL(stateChanged(int)),
@@ -133,7 +132,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   //
   d_showmacro_check=new QCheckBox(this);
   d_showmacro_check->setChecked(true);
-  d_showmacro_label=new QLabel(d_showmacro_check,tr("Show Macro Carts"),this);
+  d_showmacro_label=new QLabel(tr("Show Macro Carts"),this);
   d_showmacro_label->setFont(labelFont());
   d_showmacro_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(d_showmacro_check,SIGNAL(stateChanged(int)),
@@ -145,7 +144,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   d_shownotes_box=new QCheckBox(this);
   d_shownotes_box->setChecked(true);
   d_shownotes_label=
-    new QLabel(d_shownotes_box,tr("Show Note Bubbles"),this);
+    new QLabel(tr("Show Note Bubbles"),this);
   d_shownotes_label->setFont(labelFont());
   d_shownotes_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
@@ -154,7 +153,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
   //
   d_showmatches_box=new QCheckBox(this);
   d_showmatches_label=
-    new QLabel(d_showmatches_box,tr("Show Only First ")+
+    new QLabel(tr("Show Only First ")+
 	       QString().sprintf("%d",RD_LIMITED_CART_SEARCH_QUANTITY)+
 	       tr(" Matches"),this);
   d_showmatches_label->setFont(labelFont());
@@ -234,7 +233,7 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   sql+=RDCartFilter::phraseFilter(d_filter_edit->text().trimmed(),true);
   QStringList groups;
   for(int i=0;i<d_group_box->count();i++) {
-    groups.push_back(d_group_box->text(i));
+    groups.push_back(d_group_box->itemData(i).toString());
   }
   sql+=RDCartFilter::groupFilter(d_group_box->currentText(),groups);
   if(d_show_track_carts) {
@@ -433,8 +432,8 @@ void RDCartFilter::setFilterText(const QString &str)
 void RDCartFilter::setSelectedGroup(const QString &grpname)
 {
   for(int i=0;i<d_group_box->count();i++) {
-    if(d_group_box->text(i)==grpname) {
-      d_group_box->setCurrentItem(i);
+    if(d_group_box->itemData(i).toString()==grpname) {
+      d_group_box->setCurrentIndex(i);
       groupChangedData(d_group_box->currentText());
     }
   }
@@ -449,15 +448,16 @@ void RDCartFilter::changeUser()
   if(d_service.isEmpty()) {
     //    LoadUserGroups();
     d_group_model->changeUser();
-    d_group_box->setCurrentText(tr("ALL"));
+    //    d_group_box->setCurrentText(tr("ALL"));
+    d_group_box->setCurrentIndex(0);
   }
 
   d_codes_box->clear();
-  d_codes_box->insertItem(tr("ALL"));
-  sql=QString().sprintf("select CODE from SCHED_CODES");
+  d_codes_box->insertItem(0,tr("ALL"));
+  sql=QString().sprintf("select CODE from SCHED_CODES order by CODE");
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    d_codes_box->insertItem(q->value(0).toString());
+    d_codes_box->insertItem(d_codes_box->count(),q->value(0).toString());
   }
   delete q;
   d_search_button->setDisabled(true);
@@ -661,7 +661,7 @@ void RDCartFilter::LoadUserGroups()
   RDSqlQuery *q;
 
   d_group_box->clear();
-  d_group_box->insertItem(tr("ALL"));
+  d_group_box->insertItem(0,tr("ALL"));
   if(d_user_is_admin) {
     sql=QString("select NAME from GROUPS order by NAME ");
   }
@@ -672,7 +672,7 @@ void RDCartFilter::LoadUserGroups()
   }
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    d_group_box->insertItem(q->value(0).toString());
+    d_group_box->insertItem(d_group_box->count(),q->value(0).toString());
   }
   delete q;
 

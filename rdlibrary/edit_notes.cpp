@@ -2,7 +2,7 @@
 //
 // Edit Cart Notes.
 //
-//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +36,7 @@ EditNotes::EditNotes(RDCart *cart,QWidget *parent)
   // Variable Name
   //
   notes_view=new QTextEdit(this);
-  notes_view->setTextFormat(Qt::PlainText);
+  notes_view->setAcceptRichText(false);
   notes_view->setReadOnly(false);
 
   //
@@ -86,7 +86,7 @@ void EditNotes::resizeEvent(QResizeEvent *e)
 
 void EditNotes::okData()
 {
-  notes_cart->setNotes(notes_view->text().stripWhiteSpace());
+  notes_cart->setNotes(notes_view->toPlainText().trimmed());
   done(0);
 }
 

@@ -18,10 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-
-#include <qapplication.h>
-#include <qfile.h>
+#include <QApplication>
 
 #include <dbversion.h>
 #include <rdapplication.h>
@@ -68,15 +65,15 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
   QDate yesterday=QDate::currentDate().addDays(-1);
   if(protect_existing&&report->outputExists(yesterday.addDays(start_offset))) {
     fprintf(stderr,"report \"%s\" for %s already exists\n",
-	    (const char *)rptname.utf8(),
-	    (const char *)yesterday.addDays(start_offset).toString());
+	    rptname.toUtf8().constData(),
+	    yesterday.addDays(start_offset).toString().toUtf8().constData());
     exit(RDApplication::ExitOutputProtected);
   }
   if(!report->generateReport(yesterday.addDays(start_offset),
 			     yesterday.addDays(end_offset),rda->station(),
 			     &out_path)) {
     fprintf(stderr,"rdlogmanager: report generation failed [%s]\n",
-	    (const char *)RDReport::errorText(report->errorCode()));
+	    RDReport::errorText(report->errorCode()).toUtf8().constData());
     return RDApplication::ExitReportFailed;
   }
   return RDApplication::ExitOk;

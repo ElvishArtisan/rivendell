@@ -2,7 +2,7 @@
 //
 // Accessor Methods for LiveWire Destination Parameters
 //
-//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2007-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -63,13 +63,13 @@ void RDLiveWireDestination::setStreamAddress(const QHostAddress &addr)
 }
 
 
-Q_UINT16 RDLiveWireDestination::streamUdpPort() const
+uint16_t RDLiveWireDestination::streamUdpPort() const
 {
   return live_stream_udp_port;
 }
 
 
-void RDLiveWireDestination::setStreamUdpPort(Q_UINT16 port)
+void RDLiveWireDestination::setStreamUdpPort(uint16_t port)
 {
   live_stream_udp_port=port;
 }

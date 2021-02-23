@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Import service
 //
-//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -271,8 +271,8 @@ void Xport::Import()
     printf("</RDWebResult>\r\n");
     SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
 		     QVariant(cartnum));
-    unlink(filename);
-    rmdir(xport_post->tempDir());
+    unlink(filename.toUtf8());
+    rmdir(xport_post->tempDir().toUtf8());
     exit(0);
   }
   XmlExit(RDAudioConvert::errorText(conv_err),resp_code,"import.cpp",

@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the UNITY4000
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,8 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -152,7 +150,7 @@ void Unity4000::processCommand(RDMacro *cmd)
 	  sprintf(str,"\x0DSETAUDIO %d %c %s\x0D",
 		  output+1,
 		  route,
-		  (const char *)unity_feed[input].feed());
+		  unity_feed[input].feed().toUtf8().constData());
 	  unity_device->write(str,strlen(str));
 	}
 	cmd->acknowledge(true);

@@ -1856,7 +1856,7 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
       delete cart;
       rda->syslog(LOG_DEBUG,
 		  "RDLogLine::setEvent(): no cut record found, SQL=%s",
-		  (const char *)sql);
+		  sql.toUtf8().constData());
       log_state=RDLogLine::NoCut;
       return RDLogLine::NoCut;
     }
@@ -1865,7 +1865,7 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
       delete cart;
       rda->syslog(LOG_DEBUG,
 		  "RDLogLine::setEvent(): zero length cut audio, SQL=%s",
-		  (const char *)sql);
+		  sql.toUtf8().constData());
       log_state=RDLogLine::NoCut;
       return RDLogLine::NoCut;
     }
@@ -2446,7 +2446,7 @@ QString RDLogLine::resolveNowNextDateTime(const QString &str,
   std::vector<QString> dts;
   QString ret=str;
 
-  while((ptr=ret.find(code,ptr))>=0) {
+  while((ptr=ret.indexOf(code,ptr))>=0) {
     for(int i=ptr+3;i<ret.length();i++) {
       if(ret.at(i)==')') {
 	dts.push_back(ret.mid(ptr+3,i-ptr-3));

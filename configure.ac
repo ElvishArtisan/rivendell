@@ -118,7 +118,7 @@ AC_ARG_ENABLE(rdxport-debug,[  --enable-rdxport-debug  enable DEBUG support for 
 #
 # Check for Qt4 (Mandatory)
 #
-PKG_CHECK_MODULES(QT4,QtCore QtGui QtNetwork QtSql QtXml Qt3Support,,[AC_MSG_ERROR([*** Qt4 not found ***])])
+PKG_CHECK_MODULES(QT4,QtCore QtGui QtNetwork QtSql QtXml,,[AC_MSG_ERROR([*** Qt4 not found ***])])
 AC_CHECK_PROG(MOC_NAME,moc-qt4,[moc-qt4],[moc])
 AC_SUBST(QT_MOC,$MOC_NAME)
 

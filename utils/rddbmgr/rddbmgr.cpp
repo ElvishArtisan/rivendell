@@ -157,7 +157,7 @@ MainObject::MainObject(QObject *parent)
     if(cmd->key(i)=="--set-version") {
       bool ok2=false;
       set_version=cmd->value(i);
-      QStringList f0=f0.split(".",set_version);
+      QStringList f0=set_version.split(".",QString::KeepEmptyParts);
       if(f0.size()==3) {
 	ok2=true;
 	for(int i=0;i<3;i++) {
@@ -234,7 +234,7 @@ MainObject::MainObject(QObject *parent)
 
     if(!cmd->processed(i)) {
       fprintf(stderr,"rddbmgr: unrecognized option \"%s\"\n",
-	      (const char *)cmd->key(i));
+	      cmd->key(i).toUtf8().constData());
       exit(1);
     }
   }
@@ -261,17 +261,17 @@ MainObject::MainObject(QObject *parent)
       QFileInfo file(db_dump_cuts_dir);
       if(!file.exists()) {
 	fprintf(stderr,"rddbmgr: directory \"%s\" does not exist.\n",
-		(const char *)db_dump_cuts_dir);
+		db_dump_cuts_dir.toUtf8().constData());
 	exit(1);
       }
       if(!file.isDir()) {
 	fprintf(stderr,"rddbmgr: \"%s\" is not a directory.\n",
-		(const char *)db_dump_cuts_dir);
+		db_dump_cuts_dir.toUtf8().constData());
 	exit(1);
       }
       if(!file.isWritable()) {
 	fprintf(stderr,"rddbmgr: \"%s\" is not writable.\n",
-		(const char *)db_dump_cuts_dir);
+		db_dump_cuts_dir.toUtf8().constData());
 	exit(1);
       }
     }
@@ -283,7 +283,7 @@ MainObject::MainObject(QObject *parent)
       RDSqlQuery *q=new RDSqlQuery(sql,false);
       if(!q->first()) {
 	fprintf(stderr,"rddbmgr: invalid group \"%s\"\n",
-		(const char *)db_orphan_group_name);
+		db_orphan_group_name.toUtf8().constData());
 	delete q;
 	exit(1);
       }
@@ -293,12 +293,12 @@ MainObject::MainObject(QObject *parent)
 
   if(db_verbose) {
     fprintf(stderr,"Using DB Credentials:\n");
-    fprintf(stderr,"  Hostname: %s\n",(const char *)db_mysql_hostname);
-    fprintf(stderr,"  Loginname: %s\n",(const char *)db_mysql_loginname);
-    fprintf(stderr,"  Password: %s\n",(const char *)db_mysql_password);
-    fprintf(stderr,"  Database: %s\n",(const char *)db_mysql_database);
-    fprintf(stderr,"  Driver: %s\n",(const char *)db_mysql_driver);
-    fprintf(stderr,"  Engine: %s\n",(const char *)db_mysql_engine);
+    fprintf(stderr,"  Hostname: %s\n",db_mysql_hostname.toUtf8().constData());
+    fprintf(stderr,"  Loginname: %s\n",db_mysql_loginname.toUtf8().constData());
+    fprintf(stderr,"  Password: %s\n",db_mysql_password.toUtf8().constData());
+    fprintf(stderr,"  Database: %s\n",db_mysql_database.toUtf8().constData());
+    fprintf(stderr,"  Driver: %s\n",db_mysql_driver.toUtf8().constData());
+    fprintf(stderr,"  Engine: %s\n",db_mysql_engine.toUtf8().constData());
   }
 
   //
@@ -311,7 +311,7 @@ MainObject::MainObject(QObject *parent)
   db.setHostName(db_mysql_hostname);
   if(!db.open()) {
     fprintf(stderr,"rddbmgr: unable to open database [%s]\n",
-	    (const char *)db.lastError().text());
+	    db.lastError().text().toUtf8().constData());
     exit(1);
   }
   db_table_create_postfix=RDConfig::createTablePostfix(db_mysql_engine);
@@ -372,7 +372,7 @@ MainObject::MainObject(QObject *parent)
   }
 
   if(!ok) {
-    fprintf(stderr,"rddbmgr: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rddbmgr: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
   exit(0);

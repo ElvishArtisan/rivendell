@@ -48,9 +48,10 @@ RDCatchConnect::RDCatchConnect(int serial,QObject *parent)
   // Start the heartbeat timer
   //
   cc_heartbeat_timer=new QTimer(this);
+  cc_heartbeat_timer->setSingleShot(true);
   connect(cc_heartbeat_timer,SIGNAL(timeout()),
 	  this,SLOT(heartbeatTimeoutData()));
-  cc_heartbeat_timer->start(CC_HEARTBEAT_INTERVAL,true);
+  cc_heartbeat_timer->start(CC_HEARTBEAT_INTERVAL);
   cc_heartbeat_valid=true;
 }
 
@@ -61,7 +62,7 @@ RDCatchConnect::~RDCatchConnect()
 }
 
 
-void RDCatchConnect::connectHost(QString hostname,Q_UINT16 hostport,
+void RDCatchConnect::connectHost(QString hostname,uint16_t hostport,
 			       QString password)
 {
   cc_password=password;
@@ -156,13 +157,13 @@ void RDCatchConnect::setExitCode(int id,RDRecording::ExitCode code,
 				 const QString &msg)
 {
   SendCommand(QString().sprintf("SC %d %d %s!",id,code,
-				(const char *)msg.simplifyWhiteSpace()));
+				msg.trimmed().toUtf8().constData()));
 }
 
 
 void RDCatchConnect::connectedData()
 {
-  SendCommand(QString().sprintf("PW %s!",(const char *)cc_password));
+  SendCommand(QString("PW ")+cc_password+"!");
 }
 
 
@@ -171,7 +172,7 @@ void RDCatchConnect::readyData()
   char buf[1024];
   int c;
 
-  while((c=cc_socket->readBlock(buf,254))>0) {
+  while((c=cc_socket->read(buf,254))>0) {
     buf[c]=0;
     // printf("readyData: %s\n",buf);
     for(int i=0;i<c;i++) {
@@ -224,7 +225,7 @@ void RDCatchConnect::heartbeatTimeoutData()
 void RDCatchConnect::SendCommand(QString cmd)
 {
   // printf("SendCommand(%s)\n",(const char *)cmd);
-  cc_socket->writeBlock((const char *)cmd,cmd.length());
+  cc_socket->write(cmd.toUtf8());
 }
 
 
@@ -327,7 +328,7 @@ void RDCatchConnect::DispatchCommand()
 
   if(!strcmp(args[0],"HB")) {   // Heartbeat
     cc_heartbeat_timer->stop();
-    cc_heartbeat_timer->start(CC_HEARTBEAT_INTERVAL,true);
+    cc_heartbeat_timer->start(CC_HEARTBEAT_INTERVAL);
   }
 
   if(!strcmp(args[0],"MN")) {  // Monitor State

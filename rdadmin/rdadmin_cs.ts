@@ -1142,10 +1142,6 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <source>Event Carts</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>RDAdmin - </source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>EditDropbox</name>
@@ -4525,7 +4521,7 @@ Přepsat?</translation>
     </message>
     <message>
         <source>Unable to write file &quot;</source>
-        <translation type="unfinished">Nelze zapsat soubor &quot;</translation>
+        <translation type="obsolete">Nelze zapsat soubor &quot;</translation>
     </message>
     <message>
         <source>Progress</source>
@@ -4558,6 +4554,10 @@ List</source>
     </message>
     <message>
         <source>Save text file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to write file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

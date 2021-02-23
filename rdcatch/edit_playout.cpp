@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Playout
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qgroupbox.h>
+#include <QGroupBox>
 
 #include <rdcut_path.h>
 #include <rdtextvalidator.h>
@@ -65,20 +65,25 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   //
   edit_active_button=new QCheckBox(this);
   edit_active_button->setGeometry(10,11,20,20);
-  QLabel *label=new QLabel(edit_active_button,tr("Event Active"),this);
+  QLabel *label=new QLabel(tr("Event Active"),this);
   label->setGeometry(30,11,125,20);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Station
   //
-  edit_station_box=new QComboBox(this);
+  edit_station_box=new RDComboBox(this);
+  //
+  // FIXME: Make this work with a model
+  //
+  //  edit_station_model=new RDStationListModel(false,"",this);
+  //  edit_station_box->setModel(edit_station_model);
   edit_station_box->setGeometry(200,10,140,23);
-  label=new QLabel(edit_station_box,tr("Location:"),this);
+  label=new QLabel(tr("Location:"),this);
   label->setGeometry(125,10,70,23);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(edit_station_box,SIGNAL(activated(int)),
 	  this,SLOT(activateStationData(int)));
 
@@ -88,10 +93,10 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   edit_starttime_edit=new QTimeEdit(this);
   edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
   edit_starttime_edit->setDisplayFormat("hh:mm:ss");
-  label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
+  label=new QLabel(tr("Start Time:"),this);
   label->setGeometry(sizeHint().width()-175,12,80,20);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Description
@@ -99,10 +104,10 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   edit_description_edit=new QLineEdit(this);
   edit_description_edit->setGeometry(105,43,sizeHint().width()-115,20);
   edit_description_edit->setValidator(validator);
-  label=new QLabel(edit_description_edit,tr("Description:"),this);
+  label=new QLabel(tr("Description:"),this);
   label->setGeometry(10,43,90,20);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Destination
@@ -110,10 +115,10 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   edit_destination_edit=new QLineEdit(this);
   edit_destination_edit->setGeometry(105,70,sizeHint().width()-185,20);
   edit_destination_edit->setReadOnly(true);
-  label=new QLabel(edit_destination_edit,tr("Destination:"),this);
+  label=new QLabel(tr("Destination:"),this);
   label->setGeometry(10,70,90,20);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-70,65,60,30);
   button->setFont(subButtonFont());
@@ -132,80 +137,80 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   //
   edit_mon_button=new QCheckBox(this);
   edit_mon_button->setGeometry(20,120,20,20);
-  label=new QLabel(edit_mon_button,tr("Monday"),this);
+  label=new QLabel(tr("Monday"),this);
   label->setGeometry(40,120,115,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Tuesday Button
   //
   edit_tue_button=new QCheckBox(this);
   edit_tue_button->setGeometry(115,120,20,20);
-  label=new QLabel(edit_tue_button,tr("Tuesday"),this);
+  label=new QLabel(tr("Tuesday"),this);
   label->setGeometry(135,120,115,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Wednesday Button
   //
   edit_wed_button=new QCheckBox(this);
   edit_wed_button->setGeometry(215,120,20,20);
-  label=new QLabel(edit_wed_button,tr("Wednesday"),this);
+  label=new QLabel(tr("Wednesday"),this);
   label->setGeometry(235,120,115,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Thursday Button
   //
   edit_thu_button=new QCheckBox(this);
   edit_thu_button->setGeometry(335,120,20,20);
-  label=new QLabel(edit_thu_button,tr("Thursday"),this);
+  label=new QLabel(tr("Thursday"),this);
   label->setGeometry(355,120,115,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Friday Button
   //
   edit_fri_button=new QCheckBox(this);
   edit_fri_button->setGeometry(440,120,20,20);
-  label=new QLabel(edit_fri_button,tr("Friday"),this);
+  label=new QLabel(tr("Friday"),this);
   label->setGeometry(460,120,40,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Saturday Button
   //
   edit_sat_button=new QCheckBox(this);
   edit_sat_button->setGeometry(130,145,20,20);
-  label=new QLabel(edit_sat_button,tr("Saturday"),this);
+  label=new QLabel(tr("Saturday"),this);
   label->setGeometry(150,145,60,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Sunday Button
   //
   edit_sun_button=new QCheckBox(this);
   edit_sun_button->setGeometry(300,145,20,20);
-  label=new QLabel(edit_sun_button,tr("Sunday"),this);
+  label=new QLabel(tr("Sunday"),this);
   label->setGeometry(320,145,60,20);
   label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // OneShot Button
   //
   edit_oneshot_box=new QCheckBox(this);
   edit_oneshot_box->setGeometry(20,180,15,15);
-  label=new QLabel(edit_oneshot_box,tr("Make OneShot"),this);
+  label=new QLabel(tr("Make OneShot"),this);
   label->setGeometry(40,178,115,20);
   label->setFont(labelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   //  Save As Button
@@ -255,7 +260,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   edit_sat_button->setChecked(edit_recording->sat());
   edit_sun_button->setChecked(edit_recording->sun());
   edit_oneshot_box->setChecked(edit_recording->oneShot());
-  activateStationData(edit_station_box->currentItem(),false);
+  activateStationData(edit_station_box->currentIndex(),false);
 }
 
 
@@ -360,11 +365,11 @@ void EditPlayout::PopulateDecks(QComboBox *box)
     "(CHANNEL>128) order by STATION_NAME,CHANNEL";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    box->insertItem(q->value(0).toString()+
+    box->insertItem(box->count(),q->value(0).toString()+
 		    QString().sprintf(" : %dP",q->value(1).toInt()-128));
     if((q->value(0).toString()==edit_recording->station())&&
        (q->value(1).toUInt()==edit_recording->channel())) {
-      box->setCurrentItem(count);
+      box->setCurrentIndex(count);
     }
     count++;
   }

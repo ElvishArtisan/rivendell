@@ -2,7 +2,7 @@
 //
 // A Batch Deleter for Rivendell.
 //
-//   (C) Copyright 2013,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
+#include <QApplication>
 
 #include <dbversion.h>
 #include <rdapplication.h>
@@ -45,11 +45,9 @@ MainObject::MainObject(QObject *parent)
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rddelete","rddelete",RDDELETE_USAGE,this));
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rddelete: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rddelete: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
-  //  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-  //	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
   //
   // Read Command Options
@@ -90,7 +88,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rddelete: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }
@@ -156,7 +154,7 @@ void MainObject::userData()
   if(del_carts) {
     if(!rda->user()->editAudio()) {
       fprintf(stderr,"rdimport: user \"%s\" has no edit audio permission\n",
-	      (const char *)rda->user()->name());
+	      rda->user()->name().toUtf8().constData());
       exit(256);
     }
     DeleteCarts();
@@ -165,7 +163,7 @@ void MainObject::userData()
   if(del_logs) {
     if(!rda->user()->deleteLog()) {
       fprintf(stderr,"rdimport: user \"%s\" has no delete log permission\n",
-	      (const char *)rda->user()->name());
+	      rda->user()->name().toUtf8().constData());
       exit(256);
     }
     DeleteLogs();
@@ -191,23 +189,25 @@ void MainObject::DeleteCarts()
 	QString title=cart->title();
 	if(!cart->owner().isEmpty()) {
 	  fprintf(stderr,"rddelete: cart %06u [%s] is a voice track\n",
-		  cartnum,(const char *)title);
+		  cartnum,title.toUtf8().constData());
 	  return;
 	}
 	if(del_dry_run) {
 	  if(del_verbose) {
-	    printf("would delete cart %06u [%s]\n",cartnum,(const char *)title);
+	    printf("would delete cart %06u [%s]\n",cartnum,
+		   title.toUtf8().constData());
 	  }
 	}
 	else {
 	  if(cart->remove(rda->station(),rda->user(),rda->config())) {
 	    if(del_verbose) {
-	      printf("deleted cart %06u [%s]\n",cartnum,(const char *)title);
+	      printf("deleted cart %06u [%s]\n",cartnum,
+		     title.toUtf8().constData());
 	    }
 	  }
 	  else {
 	    fprintf(stderr,"unable to delete cart %06u [%s]\n",cartnum,
-		    (const char *)title);
+		    title.toUtf8().constData());
 	  }
 	}
       }
@@ -236,24 +236,24 @@ void MainObject::DeleteLogs()
       if(log->exists()) {
 	if(del_dry_run) {
 	  if(del_verbose) {
-	    printf("would delete log \"%s\"\n",(const char *)logname);
+	    printf("would delete log \"%s\"\n",logname.toUtf8().constData());
 	  }
 	}
 	else {
 	  if(log->remove(rda->station(),rda->user(),rda->config())) {
 	    if(del_verbose) {
-	      printf("deleted log \"%s\"\n",(const char *)logname);
+	      printf("deleted log \"%s\"\n",logname.toUtf8().constData());
 	    }
 	  }
 	  else {
 	    fprintf(stderr,"unable to delete log \"%s\".",
-		    (const char *)logname);
+		    logname.toUtf8().constData());
 	  }
 	}
       }
       else {
 	fprintf(stderr,"rddelete: log \"%s\" does not exist\n",
-		(const char *)logname);
+		logname.toUtf8().constData());
 	if(!del_continue_after_error) {
 	  exit(256);
 	}
@@ -274,7 +274,7 @@ bool MainObject::GetNextObject(unsigned *cartnum)
   }
   *cartnum=id.toUInt(&ok);
   if((!ok)||(*cartnum==0)||(*cartnum>RD_MAX_CART_NUMBER)) {
-    fprintf(stderr,"invalid cart id: %s\n",(const char *)id);
+    fprintf(stderr,"invalid cart id: %s\n",id.toUtf8().constData());
     *cartnum=0;
   }
 
@@ -321,7 +321,7 @@ bool MainObject::GetNextStdinObject(QString *logname)
     }
     *logname+=c;
   }
-  *logname=logname->stripWhiteSpace();
+  *logname=logname->trimmed();
 
   return true;
 }

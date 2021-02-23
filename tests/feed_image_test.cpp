@@ -47,7 +47,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=new RDApplication("feed_image_test","feed_image_test",FEED_IMAGE_TEST_USAGE,this);
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"feed_image_test: %s\n",(const char *)err_msg);
+    fprintf(stderr,"feed_image_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 
@@ -104,7 +104,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"feed_image_test: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(2);
     }
   }

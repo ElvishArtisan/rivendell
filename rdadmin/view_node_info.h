@@ -36,7 +36,7 @@ class ViewNodeInfo : public RDDialog
   QSizePolicy sizePolicy() const;
 
  public slots:
-  void exec(const QString &hostname,Q_UINT16 port,const QString &passwd,
+  void exec(const QString &hostname,uint16_t port,const QString &passwd,
 	    unsigned base_output);
 
  private slots:

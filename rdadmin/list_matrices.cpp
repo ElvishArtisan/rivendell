@@ -54,8 +54,7 @@ ListMatrices::ListMatrices(QString station,QWidget *parent)
   list_model->setFont(defaultFont());
   list_model->setPalette(palette());
   list_view->setModel(list_model);
-  list_title_label=
-    new QLabel(list_view,tr("Switcher/GPIO Devices")+":",this);
+  list_title_label=new QLabel(tr("Switcher/GPIO Devices")+":",this);
   list_title_label->setFont(labelFont());
   connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));

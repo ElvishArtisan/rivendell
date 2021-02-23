@@ -48,7 +48,7 @@ class RDRipc : public QObject
   bool onairFlag() const;
   void setUser(QString user);
   void setIgnoreMask(bool state);
-  void connectHost(QString hostname,Q_UINT16 hostport,QString password);
+  void connectHost(QString hostname,uint16_t hostport,QString password);
   void sendGpiStatus(int matrix);
   void sendGpoStatus(int matrix);
   void sendGpiMask(int matrix);

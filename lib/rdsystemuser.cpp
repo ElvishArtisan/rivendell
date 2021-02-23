@@ -40,7 +40,7 @@ RDSystemUser::RDSystemUser(const QString &username)
   system_username=username;
   system_exists=false;
 
-  if((user=getpwnam(username))==NULL) {
+  if((user=getpwnam(username.toUtf8()))==NULL) {
     return;
   }
   system_uid=user->pw_uid;

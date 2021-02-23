@@ -47,7 +47,7 @@ void RDMulticaster::enableLoopback(bool state)
 {
   int var=state;
 
-  setsockopt(multi_socket->socket(),IPPROTO_IP,IP_MULTICAST_LOOP,
+  setsockopt(multi_socket->socketDescriptor(),IPPROTO_IP,IP_MULTICAST_LOOP,
 	     &var,sizeof(var));
 }
 
@@ -61,7 +61,7 @@ void RDMulticaster::subscribe(const QHostAddress &addr)
     mreq.imr_multiaddr.s_addr=htonl(addr.toIPv4Address());
     mreq.imr_address.s_addr=htonl(multi_iface_addresses[i].toIPv4Address());
     mreq.imr_ifindex=0;
-    if(setsockopt(multi_socket->socket(),IPPROTO_IP,IP_ADD_MEMBERSHIP,
+    if(setsockopt(multi_socket->socketDescriptor(),IPPROTO_IP,IP_ADD_MEMBERSHIP,
 		  &mreq,sizeof(mreq))<0) {
       fprintf(stderr,"%s\n",(tr("Unable to subscribe to multicast address")+
 			     " \""+addr.toString()+"\" ["+
@@ -81,7 +81,7 @@ void RDMulticaster::unsubscribe(const QHostAddress &addr)
     mreq.imr_multiaddr.s_addr=htonl(addr.toIPv4Address());
     mreq.imr_address.s_addr=htonl(multi_iface_addresses[i].toIPv4Address());
     mreq.imr_ifindex=0;
-    if(setsockopt(multi_socket->socket(),IPPROTO_IP,IP_DROP_MEMBERSHIP,
+    if(setsockopt(multi_socket->socketDescriptor(),IPPROTO_IP,IP_DROP_MEMBERSHIP,
 		  &mreq,sizeof(mreq))<0) {
       fprintf(stderr,"%s\n",(tr("Unable to subscribe to multicast address")+
 			     " \""+addr.toString()+"\" ["+
@@ -95,7 +95,7 @@ void RDMulticaster::unsubscribe(const QHostAddress &addr)
 void RDMulticaster::send(const QString &msg,const QHostAddress &m_addr,
 			 uint16_t port)
 {
-  multi_socket->writeDatagram(msg.utf8(),msg.utf8().length(),m_addr,port);
+  multi_socket->writeDatagram(msg.toUtf8(),m_addr,port);
 }
 
 

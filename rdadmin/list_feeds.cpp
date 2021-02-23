@@ -22,10 +22,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#include <qapplication.h>
-#include <qlabel.h>
-#include <qmessagebox.h>
-#include <qprogressdialog.h>
+#include <QApplication>
+#include <QMessageBox>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -106,7 +104,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   list_feeds_model->setPalette(palette());
   list_feeds_view->setModel(list_feeds_model);
   list_feeds_view->setColumnHidden(2,true);
-  list_box_label=new QLabel(list_feeds_view,tr("Podcast Feeds"),this);
+  list_box_label=new QLabel(tr("Podcast Feeds"),this);
   list_box_label->setFont(bigLabelFont());
   connect(list_feeds_model,SIGNAL(modelReset()),this,SLOT(resetModelData()));
   connect(list_feeds_view,SIGNAL(doubleClicked(const QModelIndex &)),

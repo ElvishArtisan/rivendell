@@ -2,7 +2,7 @@
 //
 // Render Log Dialog for Rivendell.
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,12 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <qfiledialog.h>
-
-#include <qlineedit.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
 
 #include <rdconf.h>
 
@@ -53,8 +47,8 @@ RenderDialog::RenderDialog(QWidget *parent)
   d_start_time_box=new QComboBox(this);
   connect(d_start_time_box,SIGNAL(activated(int)),
 	  this,SLOT(startTimeActivatedData(int)));
-  d_start_time_box->insertItem(tr("[now]"));
-  d_start_time_box->insertItem(tr("As Specified"));
+  d_start_time_box->insertItem(0,tr("[now]"));
+  d_start_time_box->insertItem(1,tr("As Specified"));
   d_start_time_label=new QLabel(tr("Virtual Start Time")+":",this);
   d_start_time_label->setFont(labelFont());
   d_start_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

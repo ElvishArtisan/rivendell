@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 4.1 MLR
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,11 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <stdlib.h>
-
-#include <qstringlist.h>
-#include <qtimer.h>
 
 #include <rdapplication.h>
 
@@ -126,12 +121,12 @@ void BtSs41Mlr::processCommand(RDMacro *cmd)
 	}
 	if(cmd->arg(1).toInt()==0) {
 	  str=QString().sprintf("*%dMA",BTSS41MLR_UNIT_ID);
-	  bt_device->write(str,str.length());
+	  bt_device->write(str.toUtf8());
 	}
 	else {
 	  str=QString().sprintf("*%d%02d",BTSS41MLR_UNIT_ID,
 				cmd->arg(1).toInt());
-	  bt_device->write(str,str.length());
+	  bt_device->write(str.toUtf8());
 	}
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);

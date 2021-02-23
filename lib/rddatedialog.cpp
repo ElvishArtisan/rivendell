@@ -52,7 +52,7 @@ RDDateDialog::RDDateDialog(int low_year,int high_year,QWidget *parent)
   //
   // OK Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-130,sizeHint().height()-40,50,30);
   button->setFont(buttonFont());
   button->setText(tr("&OK"));
@@ -61,7 +61,7 @@ RDDateDialog::RDDateDialog(int low_year,int high_year,QWidget *parent)
   //
   // Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-65,sizeHint().height()-40,55,30);
   button->setFont(buttonFont());
   button->setText(tr("&Cancel"));

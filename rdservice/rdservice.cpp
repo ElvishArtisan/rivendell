@@ -25,7 +25,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#include <qcoreapplication.h>
+#include <QCoreApplication>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -74,7 +74,7 @@ MainObject::MainObject(QObject *parent)
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdservice","rdservice","\n\n",this));
   if(!rda->open(&err_msg,&err_type,false)) {
     rda->syslog(LOG_ERR,"unable to open database [%s]",
-		(const char *)err_msg.utf8());
+		err_msg.toUtf8().constData());
     exit(RDApplication::ExitNoDb);
   }
 

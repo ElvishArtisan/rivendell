@@ -1,8 +1,8 @@
-## automake.am
+## Makefile.am
 ##
 ## Automake.am for rivendell/rdcartslots
 ##
-## (C) Copyright 2012-2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -47,7 +47,7 @@ dist_rdcartslots_SOURCES = local_macros.cpp\
 
 nodist_rdcartslots_SOURCES = moc_rdcartslots.cpp
 
-rdcartslots_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
+rdcartslots_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@
 
 EXTRA_DIST = rdcartslots.pro\
              rdcartslots_de.ts\

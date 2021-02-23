@@ -2,7 +2,7 @@
 //
 // Accessor Methods for LiveWire Source Parameters
 //
-//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2007-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +20,8 @@
 
 #include <stdio.h>
 
-#include <rd.h>
-#include <rdlivewiresource.h>
+#include "rd.h"
+#include "rdlivewiresource.h"
 
 RDLiveWireSource::RDLiveWireSource()
 {
@@ -103,13 +103,13 @@ void RDLiveWireSource::setStreamAddress(const QHostAddress &addr)
 }
 
 
-Q_UINT16 RDLiveWireSource::streamUdpPort() const
+uint16_t RDLiveWireSource::streamUdpPort() const
 {
   return live_stream_udp_port;
 }
 
 
-void RDLiveWireSource::setStreamUdpPort(Q_UINT16 port)
+void RDLiveWireSource::setStreamUdpPort(uint16_t port)
 {
   live_stream_udp_port=port;
 }

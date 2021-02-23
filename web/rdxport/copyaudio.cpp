@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- CopyAudio service
 //
-//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -72,9 +72,9 @@ void Xport::CopyAudio()
   //
   // Make the copy
   //
-  unlink(RDCut::pathName(destination_cartnum,destination_cutnum));
-  if(link(RDCut::pathName(source_cartnum,source_cutnum),
-	  RDCut::pathName(destination_cartnum,destination_cutnum))!=0) {
+  unlink(RDCut::pathName(destination_cartnum,destination_cutnum).toUtf8());
+  if(link(RDCut::pathName(source_cartnum,source_cutnum).toUtf8(),
+	 RDCut::pathName(destination_cartnum,destination_cutnum).toUtf8())!=0) {
     XmlExit(strerror(errno),400,"copyaudio.cpp",LINE_NUMBER);
   }
   SendNotification(RDNotification::CartType,RDNotification::ModifyAction,

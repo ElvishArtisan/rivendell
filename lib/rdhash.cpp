@@ -2,7 +2,7 @@
 //
 // Functions for generating hashes.
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,7 +38,7 @@ QString RDSha1Hash(const QString &filename,bool throttle)
   char data[1024];
   unsigned char md[SHA_DIGEST_LENGTH];
 
-  if((fd=open(filename,O_RDONLY))<0) {
+  if((fd=open(filename.toUtf8(),O_RDONLY))<0) {
     return ret;
   }
   SHA1_Init(&ctx);

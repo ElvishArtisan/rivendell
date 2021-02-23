@@ -89,7 +89,7 @@ QTime RDParseXmlTime(const QString &str,bool *ok,int *day_offset)
     return ret;
   }
 
-  if(f0[0].right(1).lower()=="z") {  // GMT
+  if(f0[0].right(1).toLower()=="z") {  // GMT
     tz=-RDTimeZoneOffset();
     f0[0]=f0[0].left(f0[0].length()-1);
     f2=f0[0].split(":");

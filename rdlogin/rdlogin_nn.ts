@@ -21,11 +21,11 @@
     </message>
     <message>
         <source>&amp;Username:</source>
-        <translation>Br&amp;ukarnamn</translation>
+        <translation type="obsolete">Br&amp;ukarnamn</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>&amp;Passord:</translation>
+        <translation type="obsolete">&amp;Passord:</translation>
     </message>
     <message>
         <source>&amp;Set User</source>
@@ -67,6 +67,14 @@ brukar</translation>
     </message>
     <message>
         <source>Current User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

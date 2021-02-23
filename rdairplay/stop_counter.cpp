@@ -2,7 +2,7 @@
 //
 // The stop counter widget for Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
+#include <QPainter>
 
 #include "stop_counter.h"
 
@@ -116,7 +116,7 @@ void StopCounter::tickCounter()
 void StopCounter::UpdateTime()
 {
   QString text;
-  QColor system_button_text_color = palette().active().buttonText();
+  QColor system_button_text_color = palette().buttonText().color();
   int msecs=QTime::currentTime().
     addMSecs(rda->station()->timeOffset()).msecsTo(stop_time);
 
@@ -127,7 +127,7 @@ void StopCounter::UpdateTime()
     old_msecs = msecs;
 	  
     p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
-		backgroundColor());
+		palette().color(QPalette::Background));
     p->setPen(QColor(system_button_text_color));
     p->setFont(subLabelFont());
     p->drawText((sizeHint().width()-2-p->fontMetrics().width(stop_text))/2,22,
@@ -152,6 +152,6 @@ void StopCounter::UpdateTime()
     }
     p->end();
     delete p;
-    setPixmap(pix);
+    setIcon(pix);
   }
 }

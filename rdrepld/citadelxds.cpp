@@ -24,8 +24,6 @@
 #include <syslog.h>
 #include <errno.h>
 
-#include <QUrl>
-
 #include <rdapplication.h>
 #include <rdaudioconvert.h>
 #include <rdcart.h>
@@ -120,7 +118,7 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
   bool ok=false;
   unsigned linenum=3;
 
-  if((f=fopen(filename,"r"))==NULL) {
+  if((f=fopen(filename.toUtf8(),"r"))==NULL) {
     rda->syslog(LOG_WARNING,
 		"unable to load ISCI cross reference file \"%s\" [%s]",
 		(const char *)rda->system()->isciXreferencePath().toUtf8(),
@@ -148,7 +146,7 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
     fields=fields.split(',',line,"\"");
     if(fields.size()==9) {
       for(int i=0;i<fields.size();i++) {
-	fields[i]=fields[i].replace("\"","").stripWhiteSpace();
+	fields[i]=fields[i].replace("\"","").trimmed();
       }
       cartnum=fields[3].right(fields[3].length()-1).toUInt(&ok);
       if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
@@ -219,26 +217,26 @@ bool CitadelXds::ValidateFilename(const QString &filename)
   // List of illegal characters taken from 'Illegal Characters4.doc'
   // from Citadel
   //
-  ret=ret&&(filename.find(" ")<0);
-  ret=ret&&(filename.find("\"")<0);
-  ret=ret&&(filename.find("%")<0);
-  ret=ret&&(filename.find("*")<0);
-  ret=ret&&(filename.find("+")<0);
-  ret=ret&&(filename.find("/")<0);
-  ret=ret&&(filename.find(":")<0);
-  ret=ret&&(filename.find(";")<0);
-  ret=ret&&(filename.find("<")<0);
-  ret=ret&&(filename.find("=")<0);
-  ret=ret&&(filename.find(">")<0);
-  ret=ret&&(filename.find("?")<0);
-  ret=ret&&(filename.find("@")<0);
-  ret=ret&&(filename.find("[")<0);
-  ret=ret&&(filename.find("\\")<0);
-  ret=ret&&(filename.find("]")<0);
-  ret=ret&&(filename.find("^")<0);
-  ret=ret&&(filename.find("{")<0);
-  ret=ret&&(filename.find("|")<0);
-  ret=ret&&(filename.find("}")<0);
+  ret=ret&&(filename.indexOf(" ")<0);
+  ret=ret&&(filename.indexOf("\"")<0);
+  ret=ret&&(filename.indexOf("%")<0);
+  ret=ret&&(filename.indexOf("*")<0);
+  ret=ret&&(filename.indexOf("+")<0);
+  ret=ret&&(filename.indexOf("/")<0);
+  ret=ret&&(filename.indexOf(":")<0);
+  ret=ret&&(filename.indexOf(";")<0);
+  ret=ret&&(filename.indexOf("<")<0);
+  ret=ret&&(filename.indexOf("=")<0);
+  ret=ret&&(filename.indexOf(">")<0);
+  ret=ret&&(filename.indexOf("?")<0);
+  ret=ret&&(filename.indexOf("@")<0);
+  ret=ret&&(filename.indexOf("[")<0);
+  ret=ret&&(filename.indexOf("\\")<0);
+  ret=ret&&(filename.indexOf("]")<0);
+  ret=ret&&(filename.indexOf("^")<0);
+  ret=ret&&(filename.indexOf("{")<0);
+  ret=ret&&(filename.indexOf("|")<0);
+  ret=ret&&(filename.indexOf("}")<0);
 
   return ret;
 }
@@ -378,16 +376,16 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   default:
     rda->syslog(LOG_WARNING,"CitadelXds: audio upload failed: %s",
 		(const char *)RDUpload::errorText(upload_err).toUtf8());
-    unlink(tempfile);
+    unlink(tempfile.toUtf8());
     delete upload;
     return false;
   }
-  unlink(tempfile);
+  unlink(tempfile.toUtf8());
   delete upload;
   rda->syslog(LOG_INFO,"CitadelXds: uploaded cut %s to %s/%s",
-	      (const char *)cutname.toUtf8(),
-	      (const char *)config()->url().toUtf8(),
-	      (const char *)filename.toUtf8());
+	      cutname.toUtf8().constData(),
+	      config()->url().toUtf8().constData(),
+	      filename.toUtf8().constData());
 
   return true;
 }
@@ -419,7 +417,7 @@ void CitadelXds::PurgeCuts()
       }
       QUrl url(path+q->value(1).toString());
       conv=new RDDelete(rda->config());
-      conv->setTargetUrl(url);
+      conv->setTargetUrl(url.toString());
       //
       // FIXME: Finish implementing ssh(1) key support!
       //

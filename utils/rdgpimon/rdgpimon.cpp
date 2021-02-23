@@ -18,9 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QMessageBox>
+#include <QTranslator>
 
 #include <rdescape_string.h>
 #include <rdreport.h>
@@ -92,9 +92,9 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   gpi_type_box=new QComboBox(this);
   gpi_type_box->setGeometry(80,10,120,21);
-  gpi_type_box->insertItem(tr("GPI (Inputs)"));
-  gpi_type_box->insertItem(tr("GPO (Outputs)"));
-  QLabel *label=new QLabel(gpi_type_box,tr("Show:"),this);
+  gpi_type_box->insertItem(0,tr("GPI (Inputs)"));
+  gpi_type_box->insertItem(1,tr("GPO (Outputs)"));
+  QLabel *label=new QLabel(tr("Show:"),this);
   label->setGeometry(20,10,55,21);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -107,9 +107,10 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   gpi_matrix_box=new QComboBox(this);
   gpi_matrix_box->setGeometry(280,10,80,21);
   for(int i=0;i<MAX_MATRICES;i++) {
-    gpi_matrix_box->insertItem(QString().sprintf("%d",i));
+    gpi_matrix_box->
+      insertItem(gpi_matrix_box->count(),QString().sprintf("%d",i));
   }
-  label=new QLabel(gpi_matrix_box,tr("Matrix:"),this);
+  label=new QLabel(tr("Matrix:"),this);
   label->setGeometry(220,10,55,21);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -154,18 +155,18 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   QPalette p=palette();
-  p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkGreen);
-  p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkGreen);
-  p.setColor(QPalette::Disabled,QColorGroup::Foreground,Qt::darkGreen);
+  p.setColor(QPalette::Active,QPalette::Foreground,Qt::darkGreen);
+  p.setColor(QPalette::Inactive,QPalette::Foreground,Qt::darkGreen);
+  p.setColor(QPalette::Disabled,QPalette::Foreground,Qt::darkGreen);
   label->setPalette(p);
 
   label=new QLabel(tr("Red = OFF Cart"),this);
   label->setGeometry(200,392,300,12);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkRed);
-  p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkRed);
-  p.setColor(QPalette::Disabled,QColorGroup::Foreground,Qt::darkRed);
+  p.setColor(QPalette::Active,QPalette::Foreground,Qt::darkRed);
+  p.setColor(QPalette::Inactive,QPalette::Foreground,Qt::darkRed);
+  p.setColor(QPalette::Disabled,QPalette::Foreground,Qt::darkRed);
   label->setPalette(p);
 
   //
@@ -180,17 +181,17 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   gpi_events_date_edit->setDisplayFormat("dd/MM/yyyy");
   gpi_events_date_edit->setGeometry(155,453,100,20);
   gpi_events_date_edit->setDate(QDate::currentDate());
-  gpi_events_date_label=new QLabel(gpi_events_date_edit,tr("Date")+":",this);
+  gpi_events_date_label=new QLabel(tr("Date")+":",this);
   gpi_events_date_label->setGeometry(100,453,50,20);
   gpi_events_date_label->setFont(labelFont());
   gpi_events_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   gpi_events_state_box=new QComboBox(this);
   gpi_events_state_box->setGeometry(330,453,55,20);
-  gpi_events_state_box->insertItem(tr("On"));
-  gpi_events_state_box->insertItem(tr("Off"));
-  gpi_events_state_box->insertItem(tr("Both"));
-  gpi_events_state_label=new QLabel(gpi_events_state_box,tr("State")+":",this);
+  gpi_events_state_box->insertItem(0,tr("On"));
+  gpi_events_state_box->insertItem(1,tr("Off"));
+  gpi_events_state_box->insertItem(2,tr("Both"));
+  gpi_events_state_label=new QLabel(tr("State")+":",this);
   gpi_events_state_label->setGeometry(275,453,50,20);
   gpi_events_state_label->setFont(labelFont());
   gpi_events_state_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -217,17 +218,17 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   connect(gpi_events_scroll_button,SIGNAL(clicked()),
 	  this,SLOT(eventsScrollData()));
   gpi_scroll_color=palette();
-  gpi_scroll_color.setColor(QPalette::Active,QColorGroup::ButtonText,
+  gpi_scroll_color.setColor(QPalette::Active,QPalette::ButtonText,
 			    Qt::white);
-  gpi_scroll_color.setColor(QPalette::Active,QColorGroup::Button,
+  gpi_scroll_color.setColor(QPalette::Active,QPalette::Button,
 			    Qt::blue);
-  gpi_scroll_color.setColor(QPalette::Active,QColorGroup::Background,
+  gpi_scroll_color.setColor(QPalette::Active,QPalette::Background,
 			    Qt::lightGray);
-  gpi_scroll_color.setColor(QPalette::Inactive,QColorGroup::ButtonText,
+  gpi_scroll_color.setColor(QPalette::Inactive,QPalette::ButtonText,
 			    Qt::white);
-  gpi_scroll_color.setColor(QPalette::Inactive,QColorGroup::Button,
+  gpi_scroll_color.setColor(QPalette::Inactive,QPalette::Button,
 			    Qt::blue);
-  gpi_scroll_color.setColor(QPalette::Inactive,QColorGroup::Background,
+  gpi_scroll_color.setColor(QPalette::Inactive,QPalette::Background,
 			    Qt::lightGray);
 
   gpi_events_report_button=new QPushButton(tr("Report"),this);
@@ -240,8 +241,9 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Start Up Timer
   //
   gpi_events_startup_timer=new QTimer(this);
+  gpi_events_startup_timer->setSingleShot(true);
   connect(gpi_events_startup_timer,SIGNAL(timeout()),this,SLOT(startUpData()));
-  gpi_events_startup_timer->start(GPIMON_START_UP_DELAY,true);
+  gpi_events_startup_timer->start(GPIMON_START_UP_DELAY);
 }
 
 
@@ -282,7 +284,7 @@ void MainWidget::matrixActivatedData(int index)
     delete gpi_matrix;
   }
   gpi_matrix=
-    new RDMatrix(rda->config()->stationName(),gpi_matrix_box->currentItem());
+    new RDMatrix(rda->config()->stationName(),gpi_matrix_box->currentIndex());
   UpdateLabelsDown(0);
   gpi_up_button->setDisabled(true);
   //  RefreshEventsList();
@@ -290,7 +292,7 @@ void MainWidget::matrixActivatedData(int index)
     setGpioType((RDMatrix::GpioType)gpi_type_box->currentIndex());
   gpi_events_model->setMatrixNumber(index);
 
-  gpi_events_startup_timer->start(1000,true);
+  gpi_events_startup_timer->start(1000);
 }
 
 
@@ -320,7 +322,7 @@ void MainWidget::eventsReportData()
     RDReport::center(QString("Date: ")+
 		     gpi_events_date_edit->date().toString("MM/dd/yyyy")+
 		     "       "+rda->station()->name()+":"+
-		     QString().sprintf("%d     ",gpi_matrix_box->currentItem())+
+		     QString().sprintf("%d     ",gpi_matrix_box->currentIndex())+
 		     " State Filter: "+
 		     gpi_events_state_box->currentText(),78)+"\n";
   report+="\n";
@@ -331,16 +333,16 @@ void MainWidget::eventsReportData()
     "EDGE "+            // 02
     "from GPIO_EVENTS where "+
     "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",gpi_matrix_box->currentItem())+
-    QString().sprintf("(TYPE=%d)&&",gpi_type_box->currentItem())+
+    QString().sprintf("(MATRIX=%d)&&",gpi_matrix_box->currentIndex())+
+    QString().sprintf("(TYPE=%d)&&",gpi_type_box->currentIndex())+
     "(EVENT_DATETIME>=\""+gpi_events_date_edit->date().toString("yyyy-MM-dd")+
     " 00:00:00\")&&"+
     "(EVENT_DATETIME<\""+gpi_events_date_edit->date().addDays(1).
     toString("yyyy-MM-dd")+" 00:00:00\")";
-  if(gpi_events_state_box->currentItem()==0) {
+  if(gpi_events_state_box->currentIndex()==0) {
     sql+="&&(EDGE=1)";
   }
-  if(gpi_events_state_box->currentItem()==1) {
+  if(gpi_events_state_box->currentIndex()==1) {
     sql+="&&(EDGE=0)";
   }
   report+="                       -- Time --   - Line -   - State -\n";
@@ -374,7 +376,7 @@ void MainWidget::gpiStateChangedData(int matrix,int line,bool state)
 {
   //  printf("gpiStateChanged(%d,%d,%d)\n",matrix,line,state);
 
-  if(gpi_type_box->currentItem()!=RDMatrix::GpioInput) {
+  if(gpi_type_box->currentIndex()!=RDMatrix::GpioInput) {
     return;
   }
   if(matrix!=gpi_matrix->matrix()) {
@@ -393,7 +395,7 @@ void MainWidget::gpoStateChangedData(int matrix,int line,bool state)
 {
   //  printf("gpoStateChanged(%d,%d,%d)\n",matrix,line,state);
 
-  if(gpi_type_box->currentItem()!=RDMatrix::GpioOutput) {
+  if(gpi_type_box->currentIndex()!=RDMatrix::GpioOutput) {
     return;
   }
   if(matrix!=gpi_matrix->matrix()) {
@@ -410,7 +412,7 @@ void MainWidget::gpoStateChangedData(int matrix,int line,bool state)
 
 void MainWidget::gpiMaskChangedData(int matrix,int line,bool state)
 {
-  if(gpi_type_box->currentItem()!=RDMatrix::GpioInput) {
+  if(gpi_type_box->currentIndex()!=RDMatrix::GpioInput) {
     return;
   }
   if(matrix!=gpi_matrix->matrix()) {
@@ -427,7 +429,7 @@ void MainWidget::gpiMaskChangedData(int matrix,int line,bool state)
 void MainWidget::gpoMaskChangedData(int matrix,int line,bool state)
 {
   //  printf("gpoMaskChangedData(%d,%d,%d)\n",matrix,line,state);
-  if(gpi_type_box->currentItem()!=RDMatrix::GpioOutput) {
+  if(gpi_type_box->currentIndex()!=RDMatrix::GpioOutput) {
     return;
   }
   if(matrix!=gpi_matrix->matrix()) {
@@ -447,7 +449,7 @@ void MainWidget::gpiCartChangedData(int matrix,int line,int off_cartnum,
 //  printf("gpiCartChangedData(%d,%d,%d,%d)\n",matrix,line,off_cartnum,
 //	 on_cartnum);
 
-  if(gpi_type_box->currentItem()!=RDMatrix::GpioInput) {
+  if(gpi_type_box->currentIndex()!=RDMatrix::GpioInput) {
     return;
   }
   if(off_cartnum<0) {
@@ -472,7 +474,7 @@ void MainWidget::gpoCartChangedData(int matrix,int line,int off_cartnum,
 {
   //  printf("gpoCartChangedData(%d,%d,%d,%d)\n",matrix,line,off_cartnum,
   //	 on_cartnum);
-  if(gpi_type_box->currentItem()!=RDMatrix::GpioOutput) {
+  if(gpi_type_box->currentIndex()!=RDMatrix::GpioOutput) {
     return;
   }
   if(off_cartnum<0) {
@@ -531,7 +533,7 @@ void MainWidget::UpdateLabelsUp(int last_line)
   for(int i=0;i<(GPIMON_ROWS*GPIMON_COLS);i++) {
     gpi_labels[i]->hide();
   }
-  switch((RDMatrix::GpioType)gpi_type_box->currentItem()) {
+  switch((RDMatrix::GpioType)gpi_type_box->currentIndex()) {
     case RDMatrix::GpioInput:
       tablename="GPIS";
       break;
@@ -583,7 +585,7 @@ void MainWidget::UpdateLabelsDown(int first_line)
   for(int i=0;i<(GPIMON_ROWS*GPIMON_COLS);i++) {
     gpi_labels[i]->hide();
   }
-  switch((RDMatrix::GpioType)gpi_type_box->currentItem()) {
+  switch((RDMatrix::GpioType)gpi_type_box->currentIndex()) {
     case RDMatrix::GpioInput:
       tablename="GPIS";
       break;
@@ -654,10 +656,10 @@ void MainWidget::AddEventsItem(int line,bool state)
   if(gpi_events_startup_timer->isActive()) {
     return;
   }
-  if((gpi_events_state_box->currentItem()==0)&&(!state)) {
+  if((gpi_events_state_box->currentIndex()==0)&&(!state)) {
     return;
   }
-  if((gpi_events_state_box->currentItem()==1)&&state) {
+  if((gpi_events_state_box->currentIndex()==1)&&state) {
     return;
   }
   gpi_events_model->addEvent(line,state);
@@ -672,24 +674,24 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
-  QTranslator qt(0);
-  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),".");
-  a.installTranslator(&qt);
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    QTranslator qt(0);
+    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,".");
+    a.installTranslator(&qt);
 
-  QTranslator rd(0);
-  rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+    QTranslator rd(0);
+    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(QString(PREFIX)+QString("/share/rivendell/rdgpimon_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(QString(PREFIX)+QString("/share/rivendell/rdgpimon_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   //
   // Start Event Loop
@@ -697,7 +699,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();

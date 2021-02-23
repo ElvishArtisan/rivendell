@@ -20,7 +20,6 @@
 
 #include <math.h>
 
-#include <q3pointarray.h>
 #include <qpixmap.h>
 #include <qfile.h>
 #include <qmessagebox.h>
@@ -121,7 +120,7 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
     break;
   }
   save();
-  resetXForm();
+  resetTransform();
   setPen(color);
   setBrush(color);
   QPolygon array(w+2);

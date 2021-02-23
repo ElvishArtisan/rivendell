@@ -2,7 +2,7 @@
 //
 // A Rivendell multicast GPIO driver for LiveWire networks.
 //
-//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -67,6 +67,7 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
 	  this,SLOT(gpiTimeoutData(int)));
   for(unsigned i=0;i<livewire_gpios;i++) {
     livewire_gpi_timers.push_back(new QTimer(this));
+    livewire_gpi_timers.back()->setSingleShot(true);
     livewire_gpi_timer_mapper->setMapping(livewire_gpi_timers.back(),i);
     connect(livewire_gpi_timers.back(),SIGNAL(timeout()),
 	    livewire_gpi_timer_mapper,SLOT(map()));
@@ -76,6 +77,7 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
 	  this,SLOT(gpoOutTimeoutData(int)));
   for(unsigned i=0;i<livewire_gpios;i++) {
     livewire_gpo_out_timers.push_back(new QTimer(this));
+    livewire_gpo_out_timers.back()->setSingleShot(true);
     livewire_gpo_out_timer_mapper->setMapping(livewire_gpo_out_timers.back(),i);
     connect(livewire_gpo_out_timers.back(),SIGNAL(timeout()),
 	    livewire_gpo_out_timer_mapper,SLOT(map()));
@@ -87,6 +89,7 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
 	  this,SLOT(gpoInTimeoutData(int)));
   for(unsigned i=0;i<livewire_gpios;i++) {
     livewire_gpo_in_timers.push_back(new QTimer(this));
+    livewire_gpo_in_timers.back()->setSingleShot(true);
     livewire_gpo_in_timer_mapper->setMapping(livewire_gpo_in_timers.back(),i);
     connect(livewire_gpo_in_timers.back(),SIGNAL(timeout()),
 	    livewire_gpo_in_timer_mapper,SLOT(map()));
@@ -107,7 +110,7 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
   sa.sin_family=AF_INET;
   sa.sin_port=htons(htons(RD_LIVEWIRE_GPIO_SEND_PORT));
   sa.sin_addr.s_addr=
-    htonl(matrix->ipAddress(RDMatrix::Primary).ip4Addr());
+    htonl(matrix->ipAddress(RDMatrix::Primary).toIPv4Address());
   if(bind(livewire_gpio_write_socket,(struct sockaddr *)&sa,sizeof(sa))<0) {
     rda->syslog(LOG_ERR,"unable to bind GPIO write socket [%s]",
 		strerror(errno));
@@ -220,14 +223,14 @@ void LiveWireMcastGpio::processCommand(RDMacro *cmd)
 	if((cmd->argQuantity()!=5)||
 	   (cmd->arg(2).toInt()<1)||
 	   (cmd->arg(2).toInt()>(int)livewire_gpios)||
-	   ((cmd->arg(1).lower()!="i")&&
-	    (cmd->arg(1).lower()!="o"))) {
+	   ((cmd->arg(1).toLower()!="i")&&
+	    (cmd->arg(1).toLower()!="o"))) {
 	  cmd->acknowledge(false);
 	  emit rmlEcho(cmd);
 	  return;
 	}
 
-	if(cmd->arg(1).lower()=="i") {
+	if(cmd->arg(1).toLower()=="i") {
 	  slot=(cmd->arg(2).toInt()-1)/5;
 	  line=(cmd->arg(2).toInt()-1)%5;
 	  if(livewire_source_numbers[slot]<=0) {
@@ -237,12 +240,12 @@ void LiveWireMcastGpio::processCommand(RDMacro *cmd)
 	  }
 	  if(cmd->arg(4).toInt()>0) {
 	    livewire_gpo_in_timers[cmd->arg(2).toInt()-1]->
-	      start(cmd->arg(4).toInt(),true);
+	      start(cmd->arg(4).toInt());
 	  }
 	  ProcessGpoIn(livewire_source_numbers[slot],line,cmd->arg(3).toInt());
 	  livewire_gpo_in_states[cmd->arg(2).toInt()-1]=cmd->arg(3).toInt();
 	}
-	if(cmd->arg(1).lower()=="o") {
+	if(cmd->arg(1).toLower()=="o") {
 	  slot=(cmd->arg(2).toInt()-1)/5;
 	  line=(cmd->arg(2).toInt()-1)%5;
 	  if(livewire_source_numbers[slot]<=0) {
@@ -252,7 +255,7 @@ void LiveWireMcastGpio::processCommand(RDMacro *cmd)
 	  }
 	  if(cmd->arg(4).toInt()>0) {
 	    livewire_gpo_out_timers[cmd->arg(2).toInt()-1]->
-	      start(cmd->arg(4).toInt(),true);
+	      start(cmd->arg(4).toInt());
 	  }
 	  ProcessGpoOut(livewire_source_numbers[slot],line,cmd->arg(3).toInt());
 	  livewire_gpo_out_states[cmd->arg(2).toInt()-1]=cmd->arg(3).toInt();
@@ -333,7 +336,7 @@ void LiveWireMcastGpio::ProcessGpi(const QHostAddress &src_addr,int chan,
       emit gpiChanged(livewire_matrix,5*it->first+line,state);
       if(pulse) {
 	livewire_gpi_timers[5*it->first+line]->
-	  start(RD_LIVEWIRE_GPIO_PULSE_WIDTH,true);
+	  start(RD_LIVEWIRE_GPIO_PULSE_WIDTH);
       }
     }
   }
@@ -469,8 +472,8 @@ void LiveWireMcastGpio::subscribe(const uint32_t addr) const
 		sizeof(mreq))!=0) {
     if(errno!=EADDRINUSE) {
       rda->syslog(LOG_WARNING,"unable to subscribe to %s on %s [%s]",
-		  (const char *)AddressString(addr),
-		  (const char *)livewire_interface_addr.toString(),
+		  AddressString(addr).toUtf8().constData(),
+		  livewire_interface_addr.toString().toUtf8().constData(),
 		  strerror(errno));
     }
   }
@@ -495,8 +498,8 @@ void LiveWireMcastGpio::unsubscribe(const uint32_t addr) const
 		sizeof(mreq))!=0) {
     if(errno!=ENODEV) {
       rda->syslog(LOG_WARNING,"unable to unsubscribe from %s on %s [%s]",
-		  (const char *)AddressString(addr),
-		  (const char *)livewire_interface_addr.toString(),
+		  AddressString(addr).toUtf8().constData(),
+		  livewire_interface_addr.toString().toUtf8().constData(),
 		  strerror(errno));
     }
   }

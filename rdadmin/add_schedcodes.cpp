@@ -45,7 +45,7 @@ AddSchedCode::AddSchedCode(QWidget *parent)
   d_code_edit=new QLineEdit(this);
   d_code_edit->setGeometry(105,11,sizeHint().width()-150,19);
   d_code_edit->setMaxLength(10);
-  QLabel *label=new QLabel(d_code_edit,tr("&New Code:"),this);
+  QLabel *label=new QLabel(tr("&New Code:"),this);
   label->setGeometry(10,11,90,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

@@ -120,19 +120,19 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Generate Palettes
   //
   catch_scroll_color[0]=palette();
-  catch_scroll_color[0].setColor(QPalette::Active,QColorGroup::ButtonText,
+  catch_scroll_color[0].setColor(QPalette::Active,QPalette::ButtonText,
 			BUTTON_ACTIVE_TEXT_COLOR);
-  catch_scroll_color[0].setColor(QPalette::Active,QColorGroup::Button,
+  catch_scroll_color[0].setColor(QPalette::Active,QPalette::Button,
 			BUTTON_ACTIVE_BACKGROUND_COLOR);
-  catch_scroll_color[0].setColor(QPalette::Active,QColorGroup::Background,
-			backgroundColor());
-  catch_scroll_color[0].setColor(QPalette::Inactive,QColorGroup::ButtonText,
+  catch_scroll_color[0].setColor(QPalette::Active,QPalette::Background,
+			palette().color(QPalette::Background));
+  catch_scroll_color[0].setColor(QPalette::Inactive,QPalette::ButtonText,
 			BUTTON_ACTIVE_TEXT_COLOR);
-  catch_scroll_color[0].setColor(QPalette::Inactive,QColorGroup::Button,
+  catch_scroll_color[0].setColor(QPalette::Inactive,QPalette::Button,
 			BUTTON_ACTIVE_BACKGROUND_COLOR);
-  catch_scroll_color[0].setColor(QPalette::Inactive,QColorGroup::Background,
-			backgroundColor());
-  catch_scroll_color[1]=QPalette(backgroundColor(),backgroundColor());
+  catch_scroll_color[0].setColor(QPalette::Inactive,QPalette::Background,
+			palette().color(QPalette::Background));
+  catch_scroll_color[1]=QPalette(palette().color(QPalette::Background),palette().color(QPalette::Background));
 
   str=QString("RDCatch")+" v"+VERSION+" - "+tr("Host")+":";
   setWindowTitle(str+" "+rda->config()->stationName());
@@ -188,7 +188,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     new RDSqlQuery("select NAME,IPV4_ADDRESS from STATIONS\
                    where NAME!=\"DEFAULT\"");
   while(q->next()) {
-    catch_connect.push_back(new CatchConnector(new RDCatchConnect(catch_connect.size(),this),q->value(0).toString().lower()));
+    catch_connect.push_back(new CatchConnector(new RDCatchConnect(catch_connect.size(),this),q->value(0).toString().toLower()));
     connect(catch_connect.back()->connector(),
       SIGNAL(statusChanged(int,unsigned,RDDeck::Status,int,const QString &)),
       this,
@@ -222,7 +222,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
       "MON_PORT_NUMBER "+  // 01
       "from DECKS where "+
       "(CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&(CHANNEL>0)&&"+
-      "(STATION_NAME=\""+RDEscapeString(q->value(0).toString().lower())+"\") "+
+      "(STATION_NAME=\""+RDEscapeString(q->value(0).toString().toLower())+"\") "+
       "order by CHANNEL";
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
@@ -240,8 +240,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 
       catch_monitor.back()->deckMon()->
 	enableMonitorButton((q1->value(1).toInt()>=0)&&
-			    (rda->config()->stationName().lower()==
-			     q->value(0).toString().lower()));
+			    (rda->config()->stationName().toLower()==
+			     q->value(0).toString().toLower()));
       catch_monitor.back()->deckMon()->show();
       mapper->setMapping(catch_monitor.back()->deckMon(),
 			 catch_monitor.size()-1);
@@ -262,49 +262,46 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Filter Selectors
   //
-  catch_show_active_box=new QCheckBox(this,"catch_show_active_box");
-  catch_show_active_label=new QLabel(catch_show_active_box,
-				     tr("Show Only Active Events"),
-				     this,"catch_show_active_label");
+  catch_show_active_box=new QCheckBox(this);
+  catch_show_active_label=new QLabel(tr("Show Only Active Events"),this);
   catch_show_active_label->setFont(labelFont());
   catch_show_active_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(catch_show_active_box,SIGNAL(toggled(bool)),
 	  this,SLOT(filterChangedData(bool)));
   catch_show_today_box=new QCheckBox(this);
-  catch_show_today_label=
-    new QLabel(catch_show_active_box,tr("Show Only Today's Events"),this);
+  catch_show_today_label=new QLabel(tr("Show Only Today's Events"),this);
   catch_show_today_label->setFont(labelFont());
   catch_show_today_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(catch_show_today_box,SIGNAL(toggled(bool)),
 	  this,SLOT(filterChangedData(bool)));
 
   catch_dow_box=new QComboBox(this);
-  catch_dow_label=new QLabel(catch_dow_box,tr("Show DayOfWeek:"),this);
+  catch_dow_label=new QLabel(tr("Show DayOfWeek:"),this);
   catch_dow_label->setFont(labelFont());
   catch_dow_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  catch_dow_box->insertItem(tr("All"));
-  catch_dow_box->insertItem(tr("Weekdays"));
-  catch_dow_box->insertItem(tr("Sunday"));
-  catch_dow_box->insertItem(tr("Monday"));
-  catch_dow_box->insertItem(tr("Tuesday"));
-  catch_dow_box->insertItem(tr("Wednesday"));
-  catch_dow_box->insertItem(tr("Thursday"));
-  catch_dow_box->insertItem(tr("Friday"));
-  catch_dow_box->insertItem(tr("Saturday"));
+  catch_dow_box->insertItem(0,tr("All"));
+  catch_dow_box->insertItem(1,tr("Weekdays"));
+  catch_dow_box->insertItem(2,tr("Sunday"));
+  catch_dow_box->insertItem(3,tr("Monday"));
+  catch_dow_box->insertItem(4,tr("Tuesday"));
+  catch_dow_box->insertItem(5,tr("Wednesday"));
+  catch_dow_box->insertItem(6,tr("Thursday"));
+  catch_dow_box->insertItem(7,tr("Friday"));
+  catch_dow_box->insertItem(8,tr("Saturday"));
   connect(catch_dow_box,SIGNAL(activated(int)),this,SLOT(filterActivatedData(int)));
 
   catch_type_box=new QComboBox(this);
   connect(catch_type_box,SIGNAL(activated(int)),this,SLOT(filterActivatedData(int)));
-  catch_type_label=new QLabel(catch_type_box,tr("Show Event Type")+":",this);
+  catch_type_label=new QLabel(tr("Show Event Type")+":",this);
   catch_type_label->setFont(labelFont());
   catch_type_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   for(int i=0;i<RDRecording::LastType;i++) {
-    catch_type_box->insertItem(rda->iconEngine()->
+    catch_type_box->insertItem(catch_type_box->count(),rda->iconEngine()->
 			       catchIcon((RDRecording::Type)i),
 			       RDRecording::typeString((RDRecording::Type)i));
   }
-  catch_type_box->insertItem(tr("All Types"));
-  catch_type_box->setCurrentItem(catch_type_box->count()-1);
+  catch_type_box->insertItem(catch_type_box->count(),tr("All Types"));
+  catch_type_box->setCurrentIndex(catch_type_box->count()-1);
 
   //
   // Cart Picker
@@ -378,6 +375,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   catch_clock_label->setFont(progressFont());
   catch_clock_label->setAlignment(Qt::AlignCenter);
   catch_clock_timer=new QTimer(this);
+  catch_clock_timer->setSingleShot(true);
   connect(catch_clock_timer,SIGNAL(timeout()),this,SLOT(clockData()));
   clockData();
 
@@ -418,12 +416,14 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Next Event Timer
   //
   catch_next_timer=new QTimer(this);
+  catch_next_timer->setSingleShot(true);
   connect(catch_next_timer,SIGNAL(timeout()),this,SLOT(nextEventData()));
 
   //
   // Midnight Timer
   //
   catch_midnight_timer=new QTimer(this);
+  catch_midnight_timer->setSingleShot(true);
   connect(catch_midnight_timer,SIGNAL(timeout()),this,SLOT(midnightData()));
   midnightData();
   LoadGeometry();
@@ -432,7 +432,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   QDate current_date=QDate::currentDate();
   QTime next_time;
   if(ShowNextEvents(current_date.dayOfWeek(),current_time,&next_time)>0) {
-    catch_next_timer->start(current_time.msecsTo(next_time),true);
+    catch_next_timer->start(current_time.msecsTo(next_time));
   }
   nextEventData();
 
@@ -442,7 +442,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(resizeData()));
-  timer->start(1,true);
+  timer->start(1);
 
   catch_resize=true;
 }
@@ -486,7 +486,7 @@ void MainWidget::nextEventData()
   QTime current_time=QTime::currentTime().addMSecs(catch_time_offset);
   QDate current_date=QDate::currentDate();
   if(ShowNextEvents(current_date.dayOfWeek(),current_time,&next_time)>0) {
-    catch_next_timer->start(current_time.msecsTo(next_time),true);
+    catch_next_timer->start(current_time.msecsTo(next_time));
     if(catch_scroll) {
       UpdateScroll();
     }
@@ -498,7 +498,7 @@ void MainWidget::nextEventData()
       int interval=current_time.msecsTo(QTime(23,59,59))+1000+
 	86400000*extra_day+
 	QTime().msecsTo(next_time);
-      catch_next_timer->start(interval,true);
+      catch_next_timer->start(interval);
       if(catch_scroll) {
 	UpdateScroll();
       }
@@ -511,7 +511,7 @@ void MainWidget::nextEventData()
       int interval=current_time.msecsTo(QTime(23,59,59))+1000+
 	86400000*extra_day+
 	QTime().msecsTo(next_time);
-      catch_next_timer->start(interval,true);
+      catch_next_timer->start(interval);
       if(catch_scroll) {
 	UpdateScroll();
       }
@@ -701,8 +701,8 @@ void MainWidget::ripcUserData()
   QString str;
 
   str=QString("RDCatch")+" v"+VERSION+" - "+tr("Host")+":";
-  setCaption(str+" "+rda->config()->stationName()+", "+tr("User")+": "+
-	     rda->ripc()->user());
+  setWindowTitle(str+" "+rda->config()->stationName()+", "+tr("User")+": "+
+		 rda->ripc()->user());
 
   //
   // Set Control Perms
@@ -773,7 +773,7 @@ void MainWidget::reportsButtonData()
 {
   ListReports *lr=new ListReports(catch_show_today_box->isChecked(),
 				  catch_show_active_box->isChecked(),
-				  catch_dow_box->currentItem(),this);
+				  catch_dow_box->currentIndex(),this);
   lr->exec();
   delete lr;
 }
@@ -1106,7 +1106,7 @@ void MainWidget::clockData()
 {
   QTime current_time=QTime::currentTime().addMSecs(catch_time_offset);
   catch_clock_label->setText(current_time.toString("hh:mm:ss"));
-  catch_clock_timer->start(1000-current_time.msec(),true);
+  catch_clock_timer->start(1000-current_time.msec());
 }
 
 
@@ -1115,7 +1115,7 @@ void MainWidget::midnightData()
   filterChangedData(false);
   catch_midnight_timer->
     start(86400000+QTime::currentTime().addMSecs(catch_time_offset).
-	  msecsTo(QTime()),true);
+	  msecsTo(QTime()));
 }
 
 
@@ -1190,7 +1190,7 @@ int MainWidget::ShowNextEvents(int day,QTime time,QTime *next)
       "START_TIME "+  // 01
       "from RECORDINGS where "+
       "(IS_ACTIVE=\"Y\")&&"+
-      "("+RDGetShortDayNameEN(day).upper()+"=\"Y\") "+
+      "("+RDGetShortDayNameEN(day).toUpper()+"=\"Y\") "+
       "order by START_TIME";
   }
   else {
@@ -1201,7 +1201,7 @@ int MainWidget::ShowNextEvents(int day,QTime time,QTime *next)
       "(IS_ACTIVE=\"Y\")&&"+
       "(time_to_sec(START_TIME)>time_to_sec(\""+
       RDEscapeString(time.toString("hh:mm:ss"))+"\"))&&"+
-      "("+RDGetShortDayNameEN(day).upper()+"=\"Y\")"+
+      "("+RDGetShortDayNameEN(day).toUpper()+"=\"Y\")"+
       "order by START_TIME";
   }
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -1295,7 +1295,7 @@ int MainWidget::GetMonitor(int serial,int chan)
 int MainWidget::GetConnection(QString station,unsigned chan)
 {
   for(unsigned i=0;i<catch_connect.size();i++) {
-    if(catch_connect[i]->stationName()==station.lower()) {
+    if(catch_connect[i]->stationName()==station.toLower()) {
       if(chan==0) {
 	return i;
       }
@@ -1342,7 +1342,7 @@ void MainWidget::SaveGeometry()
   if(geometry_file.isEmpty()) {
     return;
   }
-  FILE *file=fopen(geometry_file,"w");
+  FILE *file=fopen(geometry_file.toUtf8(),"w");
   if(file==NULL) {
     return;
   }
@@ -1361,25 +1361,24 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
-  QTranslator qt(0);
-  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),
-	  ".");
-  a.installTranslator(&qt);
+  QString loc=RDApplication::locale();
+  if(!loc.isEmpty()) {
+    QTranslator qt(0);
+    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,".");
+    a.installTranslator(&qt);
 
-  QTranslator rd(0);
-  rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rd);
+    QTranslator rd(0);
+    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
+    a.installTranslator(&rd);
 
-  QTranslator rdhpi(0);
-  rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&rdhpi);
+    QTranslator rdhpi(0);
+    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
+    a.installTranslator(&rdhpi);
 
-  QTranslator tr(0);
-  tr.load(QString(PREFIX)+QString("/share/rivendell/rdcatch_")+
-	     QTextCodec::locale(),".");
-  a.installTranslator(&tr);
+    QTranslator tr(0);
+    tr.load(QString(PREFIX)+QString("/share/rivendell/rdcatch_")+loc,".");
+    a.installTranslator(&tr);
+  }
 
   //
   // Start Event Loop
@@ -1387,7 +1386,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  a.setMainWidget(w);
   w->show();
   return a.exec();
 }

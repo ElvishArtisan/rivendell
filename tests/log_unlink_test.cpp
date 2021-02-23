@@ -2,7 +2,7 @@
 //
 // Test the Rivendell log unlinker methods.
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,11 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
-
-#include <qapplication.h>
-#include <qvariant.h>
+#include <QApplication>
 
 #include <rdcmd_switch.h>
 #include <rdconfig.h>
@@ -52,11 +48,11 @@ MainObject::MainObject(QObject *parent)
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--source") {
-      if(cmd->value(i).lower()=="traffic") {
+      if(cmd->value(i).toLower()=="traffic") {
 	test_import_source=RDSvc::Traffic;
       }
       else {
-	if(cmd->value(i).lower()=="music") {
+	if(cmd->value(i).toLower()=="music") {
 	  test_import_source=RDSvc::Music;
 	}
 	else {
@@ -69,7 +65,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"log_unlink_test: unknown option \"%s\"\n",
-	      (const char *)cmd->value(i));
+	      cmd->value(i).toUtf8().constData());
       exit(256);
     }
   }
@@ -90,7 +86,7 @@ MainObject::MainObject(QObject *parent)
   //
   QString err (tr("upload_test: "));
   if(!RDOpenDb(&schema,&err,test_config)) {
-    fprintf(stderr,err.ascii());
+    fprintf(stderr,err.toAscii());
     delete cmd;
     exit(256);
   }
@@ -116,7 +112,7 @@ void MainObject::userData()
   RDSvc *svc=new RDSvc(log->service(),test_station,test_config,this);
   if(!svc->clearLogLinks(test_import_source,test_log_name,
 			 new RDUser(test_ripc->user()),&err_msg)) {
-    fprintf(stderr,"log_unlink_test: %s\n",(const char *)err_msg);
+    fprintf(stderr,"log_unlink_test: %s\n",err_msg.toUtf8().constData());
     exit(1);
   }
 

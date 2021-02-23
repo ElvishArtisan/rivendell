@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Channel GPIO Settings
 //
-//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <edit_channelgpios.h>
+#include "edit_channelgpios.h"
 
 EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
 				   RDAirPlayConf::Channel chan,QWidget *parent)
@@ -121,8 +121,8 @@ EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
   edit_gpio_type_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   edit_gpio_type_box=new QComboBox(this);
-  edit_gpio_type_box->insertItem(tr("Edge"));
-  edit_gpio_type_box->insertItem(tr("Level"));
+  edit_gpio_type_box->insertItem(0,tr("Edge"));
+  edit_gpio_type_box->insertItem(1,tr("Level"));
 
   //
   // Buttons
@@ -162,7 +162,7 @@ EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
   edit_stop_gpo_line_spin->
     setValue(edit_airplay_conf->stopGpoLine(edit_channel));
 
-  edit_gpio_type_box->setCurrentItem(edit_airplay_conf->gpioType(edit_channel));
+  edit_gpio_type_box->setCurrentIndex(edit_airplay_conf->gpioType(edit_channel));
 }
 
 
@@ -247,7 +247,7 @@ void EditChannelGpios::okData()
     setStopGpoLine(edit_channel,edit_stop_gpo_line_spin->value());
 
   edit_airplay_conf->setGpioType(edit_channel,
-		  (RDAirPlayConf::GpioType)edit_gpio_type_box->currentItem());
+		  (RDAirPlayConf::GpioType)edit_gpio_type_box->currentIndex());
 
   done(0);
 }

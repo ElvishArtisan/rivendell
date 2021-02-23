@@ -18,10 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <qpushbutton.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -56,11 +53,10 @@ RenameGroup::RenameGroup(QString group,QWidget *parent)
   group_name_edit->setGeometry(165,11,sizeHint().width()-175,19);
   group_name_edit->setMaxLength(10);
   group_name_edit->setReadOnly(true);
-  QLabel *group_name_label=
-    new QLabel(group_name_edit,tr("Current Group Name:"),this);
+  QLabel *group_name_label=new QLabel(tr("Current Group Name:"),this);
   group_name_label->setGeometry(10,11,150,19);
   group_name_label->setFont(labelFont());
-  group_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  group_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // New Group Name
@@ -69,11 +65,10 @@ RenameGroup::RenameGroup(QString group,QWidget *parent)
   group_newname_edit->setGeometry(165,33,sizeHint().width()-175,19);
   group_newname_edit->setMaxLength(10);
   group_newname_edit->setValidator(validator);
-  QLabel *group_newname_label=
-    new QLabel(group_newname_edit,tr("New &Group Name:"),this);
+  QLabel *group_newname_label=new QLabel(tr("New &Group Name:"),this);
   group_newname_label->setGeometry(10,33,150,19);
   group_newname_label->setFont(labelFont());
-  group_newname_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  group_newname_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button

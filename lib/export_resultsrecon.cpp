@@ -43,7 +43,7 @@ bool RDReport::ExportResultsReport(const QString &filename,
     return false;
   }
   QTextStream *strm=new QTextStream(file);
-  strm->setEncoding(QTextStream::UnicodeUTF8);
+  strm->setCodec("UTF-8");
   sql=QString("select ")+
     "ELR_LINES.EVENT_DATETIME,"+  // 00
     "ELR_LINES.EVENT_TYPE,"+      // 01

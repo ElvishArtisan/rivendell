@@ -2,7 +2,7 @@
 //
 // Test the Rivendell date/time parser routines.
 //
-//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,11 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
-
-#include <qapplication.h>
-#include <qvariant.h>
+#include <QApplication>
 
 #include <rdcmd_switch.h>
 #include <rddatetime.h>
@@ -91,7 +87,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"dateparse_test: unknown option \"%s\"\n",
-	      (const char *)cmd->value(i));
+	      cmd->value(i).toUtf8().constData());
       exit(256);
     }
   }
@@ -111,7 +107,7 @@ MainObject::MainObject(QObject *parent)
 	exit(1);
       }
       printf("XML xs:date: %s\n",
-	     (const char *)RDWriteXmlDate(QDate::currentDate()));
+	     RDWriteXmlDate(QDate::currentDate()).toUtf8().constData());
       break;
 
     case MainObject::Time:
@@ -120,19 +116,21 @@ MainObject::MainObject(QObject *parent)
 	exit(1);
       }
       printf("XML xs:time: %s\n",
-	     (const char *)RDWriteXmlTime(QTime::currentTime()));
+	     RDWriteXmlTime(QTime::currentTime()).toUtf8().constData());
       break;
 
     case MainObject::DateTime:
       switch(format) {
       case MainObject::Xml:
 	printf("XML xs:dateTime: %s\n",
-	       (const char *)RDWriteXmlDateTime(QDateTime::currentDateTime()));
+	       RDWriteXmlDateTime(QDateTime::currentDateTime()).toUtf8().
+	       constData());
 	break;
 
       case MainObject::Rfc822:
 	printf("RFC822: %s\n",
-	       (const char *)RDWriteRfc822DateTime(QDateTime::currentDateTime()));
+	       RDWriteRfc822DateTime(QDateTime::currentDateTime()).
+	       toUtf8().constData());
 	break;
 
       case MainObject::Auto:
