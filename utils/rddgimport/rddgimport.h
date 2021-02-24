@@ -21,8 +21,6 @@
 #ifndef RDDGIMPORT_H
 #define RDDGIMPORT_H
 
-//#include <q3textedit.h>
-
 #include <QComboBox>
 #include <QDateTimeEdit>
 #include <QLineEdit>

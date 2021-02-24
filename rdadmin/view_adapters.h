@@ -21,8 +21,6 @@
 #ifndef VIEW_ADAPTER_H
 #define VIEW_ADAPTER_H
 
-//#include <q3textedit.h>
-
 #include <QPushButton>
 #include <QTextEdit>
 

@@ -21,7 +21,6 @@
 #ifndef LIST_VGUEST_RESOURCES_H
 #define LIST_VGUEST_RESOURCES_H
 
-//#include <q3listview.h>
 #include <QLabel>
 #include <QPushButton>
 
