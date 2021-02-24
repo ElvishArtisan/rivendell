@@ -1225,7 +1225,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Flac(SNDFILE *src_sf,
   /*
    * FLAC 1.2.x
    */
-  switch(flac->init(dstfile.toAscii())) {
+  switch(flac->init(dstfile.toUtf8())) {
   case FLAC__STREAM_ENCODER_INIT_STATUS_OK:
     break;
 

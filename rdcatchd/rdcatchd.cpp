@@ -359,7 +359,7 @@ MainObject::MainObject(QObject *parent)
   connect(catch_engine,SIGNAL(timeout(int)),this,SLOT(engineData(int)));
   LoadEngine();
 
-  if(qApp->argc()!=1) {
+  if(qApp->arguments().size()!=1) {
     debug=true;
   }
 
@@ -1603,19 +1603,14 @@ void MainObject::ParseCommand(int ch)
       QString line=QString::fromUtf8(data);
       for(int i=0;i<line.length();i++) {
 	QChar c=line.at(i);
-	switch(c.toAscii()) {
-	case '!':
+	bool modified=false;
+	if(c==QChar('!')) {
 	  DispatchCommand(conn);
 	  conn->accum="";
-	  break;
-
-	case '\r':
-	case '\n':
-	  break;
-
-	default:
+	  modified=true;
+	}
+	if((!modified)&&(c!=QChar('\r'))&&(c!=QChar('\n'))) {
 	  conn->accum+=c;
-	  break;
 	}
       }
     }
@@ -2511,11 +2506,12 @@ QString MainObject::GetFileExtension(QString filename)
 }
 
 /* This is an overloaded virtual function to tell a session manager not to restart this daemon. */
+/*
 void QApplication::saveState(QSessionManager &sm) {
   sm.setRestartHint(QSessionManager::RestartNever);
   return;
 };
-
+*/
 
 bool MainObject::SendErrorMessage(CatchEvent *event,const QString &err_desc,
 				  QString rml)
@@ -2679,9 +2675,9 @@ void MainObject::SendNotification(RDNotification::Type type,
 QString MainObject::GetTempRecordingName(int id) const
 {
   return QString().sprintf("%s/rdcatchd-record-%d.%s",
-			   RDConfiguration()->audioRoot().toAscii().constData(),
+			   RDConfiguration()->audioRoot().toUtf8().constData(),
 			   id,
-			   RDConfiguration()->audioExtension().toAscii().
+			   RDConfiguration()->audioExtension().toUtf8().
 			   constData());
 }
 

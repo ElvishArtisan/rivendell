@@ -17,7 +17,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC @QT5_CLI_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -36,7 +36,7 @@ nodist_rdselect_helper_SOURCES = moc_rdselect_helper.cpp\
                                  rdconfig.cpp rdconfig.h\
                                  rdprofile.cpp rdprofile.h
 
-rdselect_helper_LDADD = -lQtCore -lQtNetwork @MUSICBRAINZ_LIBS@
+rdselect_helper_LDADD = @QT5_CLI_LIBS@ @MUSICBRAINZ_LIBS@
 
 CLEANFILES = *~\
              *.idb\

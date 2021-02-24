@@ -143,7 +143,7 @@ void CaeServer::sendCommand(int id,const QString &cmd)
   RDApplication::syslog(cae_config,LOG_DEBUG,
 			"send[%d]: %s",id,(const char *)cmd.toUtf8());
 #endif  // __CAE_SERVER_LOG_PROTOCOL_MESSAGES
-  cae_connections.value(id)->socket->write(cmd.toAscii());
+  cae_connections.value(id)->socket->write(cmd.toUtf8());
 }
 
 

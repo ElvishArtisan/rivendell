@@ -28,7 +28,7 @@ class RDBusyDialog : public RDDialog
 {
   Q_OBJECT;
  public:
-  RDBusyDialog(QWidget *parent=0,Qt::WFlags f=0);
+  RDBusyDialog(QWidget *parent=0,Qt::WindowFlags f=0);
   ~RDBusyDialog();
   QSize sizeHint() const;
   void show(const QString &caption,const QString &label);

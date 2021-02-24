@@ -37,9 +37,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"dateparse_test",
-		    DATEPARSE_TEST_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("dateparse_test",DATEPARSE_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--datetime") {
       datetime=cmd->value(i);

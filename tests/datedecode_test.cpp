@@ -37,9 +37,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"datedecode_test",
-		    DATEDECODE_TEST_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("datedecode_test",DATEDECODE_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--date") {
       date=cmd->value(i);
@@ -81,7 +79,7 @@ MainObject::MainObject(QObject *parent)
   //
   QString err (tr("datedecode_test: "));
   if(!RDOpenDb(&schema,&err,config)) {
-    fprintf(stderr,err.toAscii());
+    fprintf(stderr,err.toUtf8());
     delete cmd;
     exit(256);
   }

@@ -38,9 +38,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdxml_parse_test",
-		    RDXML_PARSE_TEST_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("rdxml_parse_test",RDXML_PARSE_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--filename") {
       filename=cmd->value(i);

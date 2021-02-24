@@ -113,7 +113,6 @@ RDAudioInfo::ErrorCode RDAudioInfo::runInfo(const QString &username,
 {
   long response_code;
   CURL *curl=NULL;
-  char url[1024];
   CURLcode curl_err;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;

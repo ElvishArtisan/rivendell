@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include <qapplication.h>
+#include <QApplication>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -48,8 +48,7 @@ MainObject::MainObject(QObject *parent)
   // Read Command Options
   //
   RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"panel_copy",
-		    PANEL_COPY_USAGE);
+    new RDCmdSwitch("panel_copy",PANEL_COPY_USAGE);
   delete cmd;
 
   rd_config=new RDConfig(RD_CONF_FILE);
@@ -59,22 +58,22 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Switches
   //
-  for(int i=1;i<qApp->argc();i+=2) {
+  for(int i=1;i<qApp->arguments().size();i+=2) {
     found=false;
-    if(QString(qApp->argv()[i])=="-h") {  // Source mySQL Hostname
-      if((i+1)==qApp->argc()) {
+    if(QString(qApp->arguments().at(i))=="-h") {  // Source mySQL Hostname
+      if((i+1)==qApp->arguments().size()) {
 	fprintf(stderr,"panel_copy: invalid argument\n");
 	exit(256);
       }
-      src_hostname=qApp->argv()[i+1];
+      src_hostname=qApp->arguments().at(i+1);
       found=true;
     }
-    if(QString(qApp->argv()[i])=="-H") {  // Source mySQL Hostname
-      if((i+1)==qApp->argc()) {
+    if(QString(qApp->arguments().at(i))=="-H") {  // Source mySQL Hostname
+      if((i+1)==qApp->arguments().size()) {
 	fprintf(stderr,"panel_copy: invalid argument\n");
 	exit(256);
       }
-      dest_hostname=qApp->argv()[i+1];
+      dest_hostname=qApp->arguments().at(i+1);
       found=true;
     }
     if(!found) {

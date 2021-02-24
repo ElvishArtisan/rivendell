@@ -32,7 +32,7 @@ MainObject::MainObject(QObject *parent)
 {
   QString err_msg;
 
-  int obj_start=qApp->argc();
+  int obj_start=qApp->arguments().size();
   del_carts=false;
   del_logs=false;
   del_verbose=false;
@@ -96,8 +96,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Object List
   //
-  for(int i=obj_start;i<qApp->argc();i++) {
-    del_obj_ids.push_back(qApp->argv()[i]);
+  for(int i=obj_start;i<qApp->arguments().size();i++) {
+    del_obj_ids.push_back(qApp->arguments().at(i));
     if((del_obj_ids.back()=="--carts")||(del_obj_ids.back()=="--logs")) {
       fprintf(stderr,
 	      "rddelete: --carts and --logs switches are mutually exclusive\n");

@@ -17,7 +17,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -33,7 +33,7 @@ dist_rdimport_SOURCES = journal.cpp journal.h\
 
 nodist_rdimport_SOURCES = moc_rdimport.cpp
 
-rdimport_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@
+rdimport_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 
 CLEANFILES = *~\
              *.idb\

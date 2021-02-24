@@ -20,7 +20,7 @@
 
 #include "rdbusybar.h"
 
-RDBusyBar::RDBusyBar(QWidget *parent,Qt::WFlags f)
+RDBusyBar::RDBusyBar(QWidget *parent,Qt::WindowFlags f)
   : QFrame(parent,f)
 {
   bar_pos=0;

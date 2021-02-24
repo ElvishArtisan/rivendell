@@ -76,7 +76,7 @@ bool RDTTYDevice::open(QIODevice::OpenMode mode)
     flags|=O_TRUNC;
   }
 
-  if((tty_fd=::open(tty_name.toAscii(),flags))<0) {
+  if((tty_fd=::open(tty_name.toUtf8(),flags))<0) {
     return false;
   }
   tty_open=true;

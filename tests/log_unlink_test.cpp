@@ -39,9 +39,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"log_unlink_test",
-		    LOG_UNLINK_TEST_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("log_unlink_test",LOG_UNLINK_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--log") {
       test_log_name=cmd->value(i);
@@ -86,7 +84,7 @@ MainObject::MainObject(QObject *parent)
   //
   QString err (tr("upload_test: "));
   if(!RDOpenDb(&schema,&err,test_config)) {
-    fprintf(stderr,err.toAscii());
+    fprintf(stderr,err.toUtf8());
     delete cmd;
     exit(256);
   }

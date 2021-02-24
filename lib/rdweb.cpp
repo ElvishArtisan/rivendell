@@ -1158,7 +1158,7 @@ QString RDUrlUnescape(const QString &str)
   QString ret="";
 
   for(int i=0;i<str.length();i++) {
-    if((str.at(i).toAscii()=='%')&&(i<str.length()-2)) {
+    if((str.at(i)==QChar('%'))&&(i<str.length()-2)) {
       ret+=QString().sprintf("%c",str.mid(i+1,2).toInt(NULL,16));
       i+=2;
     }

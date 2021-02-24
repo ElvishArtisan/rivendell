@@ -2,7 +2,7 @@
 //
 // Rivendell PAD Consolidation Server
 //
-//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <qcoreapplication.h>
-#include <qhostaddress.h>
+#include <QCoreApplication>
+#include <QHostAddress>
 
 #include <rd.h>
 #include <rdcmd_switch.h>
@@ -73,7 +73,7 @@ QTcpSocket *MetadataSource::socket() const
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
 {
-  new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdpadd",RDPADD_USAGE);
+  new RDCmdSwitch("rdpadd",RDPADD_USAGE);
 
   //
   // Client Server

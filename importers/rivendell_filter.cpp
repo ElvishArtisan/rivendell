@@ -2,7 +2,7 @@
 //
 // A Library import filter for an external Rivendell system
 //
-//   (C) Copyright 2002-2005,2008 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,10 +24,8 @@
 #include <string.h>
 #include <ctype.h>
 
-#include <qapplication.h>
-#include <qdir.h>
-//Added by qt3to4:
-#include <QSqlQuery>
+#include <QApplication>
+#include <QDir>
 
 #include <rddb.h>
 #include <rd.h>
@@ -75,8 +73,7 @@ MainObject::MainObject(QObject *parent)
   // Read Command Options
   //
   RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rivendell_filter",
-		    RIVENDELL_FILTER_USAGE);
+    new RDCmdSwitch("rivendell_filter",RIVENDELL_FILTER_USAGE);
   delete cmd;
 
   rdconfig=new RDConfig(RD_CONF_FILE);
@@ -100,38 +97,38 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Arguments
   //
-  for(int i=1;i<(qApp->argc()-1);i+=2) {
+  for(int i=1;i<(qApp->arguments().size()-1);i+=2) {
     found=false;
-    if(!strcmp("-h",qApp->argv()[i])) {
-      ext_hostname=qApp->argv()[i+1];
+    if(qApp->arguments().at(i)=="-h") {
+      ext_hostname=qApp->arguments().at(i+1);
       found=true;
     }
-    if(!strcmp("-u",qApp->argv()[i])) {
-      ext_username=qApp->argv()[i+1];
+    if(qApp->arguments().at(i)=="-u") {
+      ext_username=qApp->arguments().at(i+1);
       found=true;
     }
-    if(!strcmp("-p",qApp->argv()[i])) {
-      ext_password=qApp->argv()[i+1];
+    if(qApp->arguments().at(i)=="-p") {
+      ext_password=qApp->arguments().at(i+1);
       found=true;
     }
-    if(!strcmp("-A",qApp->argv()[i])) {
-      ext_audiodir=qApp->argv()[i+1];
+    if(qApp->arguments().at(i)=="-A") {
+      ext_audiodir=qApp->arguments().at(i+1);
       found=true;
     }
-    if(!strcmp("-g",qApp->argv()[i])) {
-      default_group=qApp->argv()[i+1];
+    if(qApp->arguments().at(i)=="-g") {
+      default_group=qApp->arguments().at(i+1);
       found=true;
     }
-    if(!strcmp("-s",qApp->argv()[i])) {
-      start_cartnum=QString(qApp->argv()[i+1]).toUInt(&ok);
+    if(qApp->arguments().at(i)=="-s") {
+      start_cartnum=QString(qApp->arguments().at(i+1)).toUInt(&ok);
       if(!ok) {
 	fprintf(stderr,"\nrivendell_filter: invalid group number\n");
 	exit(256);
       }
       found=true;
     }
-    if(!strcmp("-e",qApp->argv()[i])) {
-      end_cartnum=QString(qApp->argv()[i+1]).toUInt(&ok);
+    if(qApp->arguments().at(i)=="-e") {
+      end_cartnum=QString(qApp->arguments().at(i+1)).toUInt(&ok);
       if(!ok) {
 	fprintf(stderr,"\nrivendell_filter: invalid group number\n");
 	exit(256);

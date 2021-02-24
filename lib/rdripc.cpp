@@ -221,12 +221,12 @@ void RDRipc::readyData()
     QString line=QString::fromUtf8(data);
     for(int i=0;i<line.length();i++) {
       QChar c=line.at(i);
-      if(c.toAscii()=='!') {
+      if(c==QChar('!')) {
 	DispatchCommand();
 	ripc_accum="";
       }
       else {
-	if((c.toAscii()!='\r')&&(c.toAscii()!='\n')) {
+	if((c!=QChar('\r'))&&(c!=QChar('\n'))) {
 	  ripc_accum+=c;
 	}
       }

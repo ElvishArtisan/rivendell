@@ -77,8 +77,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"test_pam",TEST_PAM_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("test_pam",TEST_PAM_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--service-name") {
       service_name=cmd->value(i);

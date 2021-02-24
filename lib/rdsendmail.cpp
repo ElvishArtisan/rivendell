@@ -55,7 +55,7 @@ QByteArray __RDSendMail_EncodeBody(QString *charset,QString *encoding,
     //
     // Ensure no naked CR or LF characters (RFC5322 Section 2.3)
     //
-    ret=str.toAscii();
+    ret=str.toUtf8();
     index=0;
     while((index=ret.indexOf("/r",index))>=0) {
       if(ret.mid(index+1,1)!="/n") {
@@ -89,7 +89,7 @@ QByteArray __RDSendMail_EncodeBody(QString *charset,QString *encoding,
 QByteArray __RDSendMail_EncodeHeader(const QString &str)
 {
   if(__RDSendMail_IsAscii(str)) {
-    return str.toAscii();
+    return str.toUtf8();
   }
   return QByteArray("=?utf-8?B?")+str.toUtf8().toBase64()+"?=";
 }
@@ -135,9 +135,9 @@ QByteArray __RDSendMail_EncodeAddress(const QString &str,bool *ok)
   // FIXME: Add support for IDNA (see RFC5891)
   //
   if(name.isEmpty()) {
-    return addr.toAscii();
+    return addr.toUtf8();
   }
-  return __RDSendMail_EncodeHeader(name)+" <"+addr.toAscii()+">";
+  return __RDSendMail_EncodeHeader(name)+" <"+addr.toUtf8()+">";
 }
 
 
@@ -243,7 +243,7 @@ bool RDSendMail(QString *err_msg,const QString &subject,const QString &body,
 
   if(dry_run) {
     printf("*** MESSAGE STARTS ***\n");
-    printf("%s",msg.toAscii().constData());
+    printf("%s",msg.toUtf8().constData());
     printf("*** MESSAGE ENDS ***\n");
     return true;
   }

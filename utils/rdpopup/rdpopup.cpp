@@ -2,7 +2,7 @@
 //
 // A utility for displaying messages on the desktop
 //
-//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <qwindowsstyle.h>
+#include <QApplication>
+#include <QIcon>
+#include <QMessageBox>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -62,8 +61,7 @@ int main(int argc,char *argv[])
   QApplication::setStyle(RD_GUI_STYLE);
   QApplication a(argc,argv);
 
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdpopup",RDPOPUP_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("rdpopup",RDPOPUP_USAGE);
   delete cmd;
 
   if(argc<2) {
@@ -119,7 +117,7 @@ int main(int argc,char *argv[])
 		       QMessageBox::NoButton);
     break;
   }
-  mb->setWindowIcon(QPixmap(rivendell_22x22_xpm));
+  mb->setWindowIcon(QIcon(QPixmap(rivendell_22x22_xpm)));
 
   RDFontEngine *fs=new RDFontEngine(config);
   mb->setFont(fs->progressFont());

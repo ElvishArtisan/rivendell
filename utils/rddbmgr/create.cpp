@@ -2483,8 +2483,8 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   if(gen_audio) {
     QString filename=
       QString().sprintf("%s/999999_001.%s",
-			RDConfiguration()->audioRoot().toAscii().constData(),
-			RDConfiguration()->audioExtension().toAscii().
+			RDConfiguration()->audioRoot().toUtf8().constData(),
+			RDConfiguration()->audioExtension().toUtf8().
 			constData());
 
     QString cmd=QString().sprintf("rdgen -t 10 -l 16 %s",

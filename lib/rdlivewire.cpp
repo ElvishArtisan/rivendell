@@ -593,7 +593,7 @@ void RDLiveWire::DespatchCommand(const QString &cmd)
 
 void RDLiveWire::SendCommand(const QString &cmd) const
 {
-  live_socket->write((cmd+"\r\n").toAscii(),cmd.length()+2);
+  live_socket->write((cmd+"\r\n").toUtf8(),cmd.length()+2);
 }
 
 

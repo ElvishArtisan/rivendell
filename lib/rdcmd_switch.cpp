@@ -2,7 +2,7 @@
 //
 // Process Rivendell Command-Line Switches
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,9 +22,59 @@
 #include <syslog.h>
 #include <stdlib.h>
 
-#include <qmessagebox.h>
+#include <QCoreApplication>
+#include <QMessageBox>
 
 #include <rdcmd_switch.h>
+
+RDCmdSwitch::RDCmdSwitch(const QString &modname,const QString &usage)
+{
+  switch_debug=false;
+
+  QStringList args=qApp->arguments();
+
+  for(int i=1;i<args.size();i++) {
+    QString value=args.at(i);
+    if(value=="--version") {
+      printf("Rivendell v%s [%s]\n",VERSION,modname.toUtf8().constData());
+      exit(0);
+    }
+    if(value=="--help") {
+      printf("\n%s %s\n",modname.toUtf8().constData(),
+	     usage.toUtf8().constData());
+      exit(0);
+    }
+    if(value=="-d") {
+      switch_debug=true;
+    }
+    QStringList f0=value.split("=",QString::KeepEmptyParts);
+    if(f0.size()>=2) {
+      if(f0.at(0).left(1)=="-") {
+	switch_keys.push_back(f0.at(0));
+	for(int i=2;i<f0.size();i++) {
+	  f0[1]+="="+f0.at(i);
+	}
+	if(f0.at(1).isEmpty()) {
+	  switch_values.push_back("");
+	}
+	else {
+	  switch_values.push_back(f0.at(1));
+	}
+      }
+      else {
+	switch_keys.push_back(f0.join("="));
+	switch_values.push_back("");
+      }
+      switch_processed.push_back(false);
+    }
+    else {
+      switch_keys.push_back(value);
+      switch_values.push_back("");
+      switch_processed.push_back(false);
+    }
+  }
+}
+
 
 RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const QString &modname,
 			 const QString &usage)

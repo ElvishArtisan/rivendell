@@ -31,7 +31,7 @@ class VBox : public QWidget
 {
   Q_OBJECT
  public:
-  VBox(QWidget *parent=0,Qt::WFlags f=0);
+  VBox(QWidget *parent=0,Qt::WindowFlags f=0);
   void addWidget(QWidget *widget);
   void setSpacing(int space);
 

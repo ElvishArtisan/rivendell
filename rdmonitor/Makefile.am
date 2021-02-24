@@ -18,7 +18,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -46,7 +46,7 @@ dist_rdmonitor_SOURCES = positiondialog.cpp positiondialog.h\
 nodist_rdmonitor_SOURCES = moc_positiondialog.cpp\
                            moc_rdmonitor.cpp
 
-rdmonitor_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@
+rdmonitor_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 
 EXTRA_DIST = rdmonitor.pro\
              rdmonitor_cs.ts\

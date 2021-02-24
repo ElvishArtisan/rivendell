@@ -36,8 +36,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"test_hash",TEST_HASH_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("test_hash",TEST_HASH_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--filename") {
       filename=cmd->value(i);

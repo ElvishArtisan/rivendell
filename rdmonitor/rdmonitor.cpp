@@ -61,7 +61,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdmonitor","\n");
+  RDCmdSwitch *cmd=new RDCmdSwitch("rdmonitor","\n");
   delete cmd;
 
   //

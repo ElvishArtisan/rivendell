@@ -85,8 +85,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Process Command Switches
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rddbmgr",RDDBMGR_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("rddbmgr",RDDBMGR_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--check") {
       MainObject::Command command=MainObject::CheckCommand;

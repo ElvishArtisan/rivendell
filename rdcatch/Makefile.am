@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -74,7 +74,7 @@ nodist_rdcatch_SOURCES = moc_add_recording.cpp\
                          moc_vbox.cpp
 
 
-rdcatch_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@
+rdcatch_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 
 
 EXTRA_DIST = rdcatch.pro\

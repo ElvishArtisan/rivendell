@@ -24,7 +24,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#include <qapplication.h>
+#include <QApplication>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -64,22 +64,22 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Arguments
   //
-  for(int i=1;i<(qApp->argc()-1);i+=2) {
+  for(int i=1;i<(qApp->arguments().size()-1);i+=2) {
     found=false;
-    if(!strcmp("-d",qApp->argv()[i])) {
-      dbname=qApp->argv()[i+1];
+    if(qApp->arguments().at(i)=="-d") {
+      dbname=qApp->arguments().at(i+1);
       found=true;
     }
-    if(!strcmp("-A",qApp->argv()[i])) {
-      audiodir=qApp->argv()[i+1];
+    if(qApp->arguments().at(i)=="-A") {
+      audiodir=qApp->arguments().at(i+1);
       found=true;
     }
-    if(!strcmp("-g",qApp->argv()[i])) {
-      groupname=qApp->argv()[i+1];
+    if(qApp->arguments().at(i)=="-g") {
+      groupname=qApp->arguments().at(i+1);
       found=true;
     }
-    if(!strcmp("-e",qApp->argv()[i])) {
-      audio_extension=qApp->argv()[i+1];
+    if(qApp->arguments().at(i)=="-e") {
+      audio_extension=qApp->arguments().at(i+1);
       found=true;
     }
     if(!found) {

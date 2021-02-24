@@ -536,7 +536,7 @@ bool RDWaveFile::createWave(RDWaveData *data,unsigned ptr_offset)
 	}
         prev_mask = umask(0113);      // Set umask so files are user and group writable.
         rc=wave_file.open(QIODevice::ReadWrite|QIODevice::Truncate);
-	unlink((wave_file_name+".energy").toAscii());
+	unlink((wave_file_name+".energy").toUtf8());
         umask(prev_mask);
 	if(rc==false) {
 	  return false;
@@ -3452,7 +3452,7 @@ void RDWaveFile::ReadTmcTag(const QString tag,const QString value)
     wave_data->setMetadataFound(true);
   }
   if(tag=="END") {
-    wave_data->setEndType((RDWaveData::EndType)((char)value.at(0).toAscii()));
+    wave_data->setEndType((RDWaveData::EndType)((char)value.at(0).cell()));
     wave_data->setMetadataFound(true);
   }
   if(tag=="TMCIREF") {
@@ -4422,31 +4422,31 @@ bool RDWaveFile::MakeCart(unsigned ptr_offset)
 	  CART_VERSION);
   if(!cart_title.isEmpty()) {
     sprintf((char *)cart_chunk_data+4,"%s",
-	    cart_title.left(64).toAscii().constData());
+	    cart_title.left(64).toUtf8().constData());
   }
   if(!cart_artist.isEmpty()) {
     sprintf((char *)cart_chunk_data+68,"%s",
-	    cart_artist.left(64).toAscii().constData());
+	    cart_artist.left(64).toUtf8().constData());
   }
   if(!cart_cut_id.isEmpty()) {
     sprintf((char *)cart_chunk_data+132,"%s",
-	    cart_cut_id.left(64).toAscii().constData());
+	    cart_cut_id.left(64).toUtf8().constData());
   }
   if(!cart_client_id.isEmpty()) {
     sprintf((char *)cart_chunk_data+196,"%s",
-	    cart_client_id.left(64).toAscii().constData());
+	    cart_client_id.left(64).toUtf8().constData());
   }
   if(!cart_category.isEmpty()) {
     sprintf((char *)cart_chunk_data+260,"%s",
-	    cart_category.left(64).toAscii().constData());
+	    cart_category.left(64).toUtf8().constData());
   }
   if(!cart_classification.isEmpty()) {
     sprintf((char *)cart_chunk_data+324,"%s",
-	    cart_classification.left(64).toAscii().constData());
+	    cart_classification.left(64).toUtf8().constData());
   }
   if(!cart_out_cue.isEmpty()) {
     sprintf((char *)cart_chunk_data+388,"%s",
-	    cart_out_cue.left(64).toAscii().constData());
+	    cart_out_cue.left(64).toUtf8().constData());
   }
   if(cart_start_date.isValid()) {
     sprintf((char *)cart_chunk_data+452,"%04d-%02d-%02d",
@@ -4488,7 +4488,7 @@ bool RDWaveFile::MakeCart(unsigned ptr_offset)
   snprintf((char *)cart_chunk_data+552,64,"%s",VERSION);
   if(!cart_user_def.isEmpty()) {
     sprintf((char *)cart_chunk_data+616,"%s",
-	    cart_user_def.left(64).toAscii().constData());
+	    cart_user_def.left(64).toUtf8().constData());
   }
   WriteDword(cart_chunk_data,680,cart_level_ref);
   if(wave_data!=NULL) {
@@ -4529,7 +4529,7 @@ bool RDWaveFile::MakeCart(unsigned ptr_offset)
   }
   if(!cart_url.isEmpty()) {
     sprintf((char *)cart_chunk_data+1020,"%s",
-	    cart_url.left(1024).toAscii().constData());
+	    cart_url.left(1024).toUtf8().constData());
   }
   return true;
 }
@@ -4545,15 +4545,15 @@ bool RDWaveFile::MakeBext()
   }
   if(!bext_description.isEmpty()) {
     sprintf((char *)bext_coding_data,"%s",
-	    bext_description.left(256).toAscii().constData());
+	    bext_description.left(256).toUtf8().constData());
   }
   if(!bext_originator.isEmpty()) {
     sprintf((char *)bext_coding_data+256,"%s",
-	    bext_originator.left(32).toAscii().constData());
+	    bext_originator.left(32).toUtf8().constData());
   }
   if(!bext_originator_ref.isEmpty()) {
     sprintf((char *)bext_coding_data+288,"%s",
-	    bext_originator_ref.left(32).toAscii().constData());
+	    bext_originator_ref.left(32).toUtf8().constData());
   }
   sprintf((char *)bext_coding_data+320,"%04d-%02d-%02d",
 	  bext_origination_date.year(),
@@ -4571,7 +4571,7 @@ bool RDWaveFile::MakeBext()
   }
   if(!bext_coding_history.isEmpty()) {
     sprintf((char *)bext_coding_data+602,"%s",
-	    bext_coding_history.toAscii().constData());
+	    bext_coding_history.toUtf8().constData());
   }
   return true;
 }
@@ -4625,7 +4625,7 @@ bool RDWaveFile::MakeLevl()
   WriteDword(levl_chunk_data,24,levl_peak_offset); // Offset to Peak-of-Peaks
   WriteDword(levl_chunk_data,28,132);              // Offset to Peak Data
   sprintf((char *)levl_chunk_data+32,"%s",
-	  levl_timestamp.toString("yyyy:MM:dd:hh:mm:ss:000").toAscii().
+	  levl_timestamp.toString("yyyy:MM:dd:hh:mm:ss:000").toUtf8().
 	  constData());
 
   return true;

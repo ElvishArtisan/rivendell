@@ -17,7 +17,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -44,7 +44,7 @@ dist_rddgimport_SOURCES = event.cpp event.h\
 
 nodist_rddgimport_SOURCES = moc_rddgimport.cpp
 
-rddgimport_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@
+rddgimport_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 
 EXTRA_DIST = rddgimport.pro\
              rddgimport_de.ts\

@@ -2,7 +2,7 @@
 //
 // An RDCatch event copier.
 //
-//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include <qapplication.h>
+#include <QCoreApplication>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -48,8 +48,7 @@ MainObject::MainObject(QObject *parent)
   // Read Command Options
   //
   RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcatch_copy",
-		    RDCATCH_COPY_USAGE);
+    new RDCmdSwitch("rdcatch_copy",RDCATCH_COPY_USAGE);
   delete cmd;
 
   rd_config=new RDConfig(RD_CONF_FILE);
@@ -59,38 +58,38 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Switches
   //
-  for(int i=1;i<qApp->argc();i+=2) {
+  for(int i=1;i<qApp->arguments().size();i+=2) {
     found=false;
-    if(QString(qApp->argv()[i])=="-h") {  // Source mySQL Hostname
-      if((i+1)==qApp->argc()) {
+    if(QString(qApp->arguments().at(i))=="-h") {  // Source mySQL Hostname
+      if((i+1)==qApp->arguments().size()) {
 	fprintf(stderr,"rdcatch_copy: invalid argument\n");
 	exit(256);
       }
-      src_hostname=qApp->argv()[i+1];
+      src_hostname=qApp->arguments().at(i+1);
       found=true;
     }
-    if(QString(qApp->argv()[i])=="-s") {  // Source Rivendell Host
-      if((i+1)==qApp->argc()) {
+    if(QString(qApp->arguments().at(i))=="-s") {  // Source Rivendell Host
+      if((i+1)==qApp->arguments().size()) {
 	fprintf(stderr,"rdcatch_copy: invalid argument\n");
 	exit(256);
       }
-      src_station=qApp->argv()[i+1];
+      src_station=qApp->arguments().at(i+1);
       found=true;
     }
-    if(QString(qApp->argv()[i])=="-H") {  // Source mySQL Hostname
-      if((i+1)==qApp->argc()) {
+    if(QString(qApp->arguments().at(i))=="-H") {  // Source mySQL Hostname
+      if((i+1)==qApp->arguments().size()) {
 	fprintf(stderr,"rdcatch_copy: invalid argument\n");
 	exit(256);
       }
-      dest_hostname=qApp->argv()[i+1];
+      dest_hostname=qApp->arguments().at(i+1);
       found=true;
     }
-    if(QString(qApp->argv()[i])=="-S") {  // Source Rivendell Host
-      if((i+1)==qApp->argc()) {
+    if(QString(qApp->arguments().at(i))=="-S") {  // Source Rivendell Host
+      if((i+1)==qApp->arguments().size()) {
 	fprintf(stderr,"rdcatch_copy: invalid argument\n");
 	exit(256);
       }
-      dest_station=qApp->argv()[i+1];
+      dest_station=qApp->arguments().at(i+1);
       found=true;
     }
     if(!found) {

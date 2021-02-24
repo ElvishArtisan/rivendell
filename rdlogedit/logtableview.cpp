@@ -52,7 +52,7 @@ LogTableView::LogTableView(QWidget *parent)
 
 void LogTableView::dragEnterEvent(QDragEnterEvent *e)
 {
-  if(RDCartDrag::canDecode(e)) {
+  if(RDCartDrag::canDecode(e->mimeData())) {
     e->accept();
   }
 }
@@ -60,7 +60,7 @@ void LogTableView::dragEnterEvent(QDragEnterEvent *e)
 
 void LogTableView::dragMoveEvent(QDragMoveEvent *e)
 {
-  if(RDCartDrag::canDecode(e)) {
+  if(RDCartDrag::canDecode(e->mimeData())) {
     e->accept();
   }
 }
@@ -72,7 +72,7 @@ void LogTableView::dropEvent(QDropEvent *e)
   int line=-1;
   int y_pos=e->pos().y();
 
-  if(RDCartDrag::decode(e,&ll)) {
+  if(RDCartDrag::decode(e->mimeData(),&ll)) {
     line=rowAt(y_pos);
     emit cartDropped(line,&ll);
   }

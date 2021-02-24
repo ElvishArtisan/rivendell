@@ -37,7 +37,11 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
 			 int port,int preroll,int trim_level,QWidget *parent)
   : RDDialog(parent)
 {
-  setAttribute(Qt::WA_PaintOutsidePaintEvent);
+  //
+  // FIXME
+  // This entire dialog likely needs a rewrite!
+  //
+  //  setAttribute(Qt::WA_PaintOutsidePaintEvent);
   edit_card=card;
   edit_port=port;
   edit_stream=-1;

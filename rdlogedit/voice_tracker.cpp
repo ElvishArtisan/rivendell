@@ -37,7 +37,10 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
 			   QWidget *parent)
   : RDDialog(parent)
 {
-  setAttribute(Qt::WA_PaintOutsidePaintEvent);
+  //
+  // FIXME
+  //
+  //  setAttribute(Qt::WA_PaintOutsidePaintEvent);
 
   d_import_path=import_path;
   d_coding=RDCae::Pcm16;

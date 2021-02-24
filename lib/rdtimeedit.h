@@ -64,7 +64,7 @@ class RDTimeEdit : public QFrame
 
  private:
   void GetSizeHint();
-  void ProcessKey(int key);
+  void ProcessNumericKey(int num);
   QLabel *edit_labels[4];
   QLabel *edit_sep_labels[3];
   RDTransportButton *edit_up_button;

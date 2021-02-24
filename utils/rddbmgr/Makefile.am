@@ -17,7 +17,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -fno-var-tracking-assignments -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
+AM_CPPFLAGS = -Wall -fno-var-tracking-assignments -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -36,7 +36,7 @@ dist_rddbmgr_SOURCES = check.cpp\
                        schemamap.cpp\
                        updateschema.cpp
 
-rddbmgr_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@
+rddbmgr_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 
 CLEANFILES = *~\
              *.exe\

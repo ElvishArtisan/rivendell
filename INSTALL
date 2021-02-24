@@ -69,7 +69,7 @@ Requests, v2.12.5 or later
 HTTP transfer library for Python. Available at 
 http://docs.python-requests.org/.
 
-Qt4 Toolkit, v4.6 or better
+Qt5 Toolkit, v5.9 or better
 Most modern Linux distros include this. It can also be downloaded directly
 at http://www.qt.io/.
 

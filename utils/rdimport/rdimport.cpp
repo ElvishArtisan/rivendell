@@ -1836,7 +1836,7 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
     if(macro_active) {
       if((i==filename.length())||
 	 ((!delimiter.isNull())&&(filename.at(i)==delimiter))) {
-	switch(field.toAscii()) {
+	switch(field.cell()) {
 	case 'a':
 	  wavedata->setArtist(value);
 	  wavedata->setMetadataFound(true);
@@ -1960,7 +1960,7 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 	  break;
 
 	case 'w':
-	  switch(subfield.toAscii()) {
+	  switch(subfield.cell()) {
 	  case 'c':
 	    wavedata->setIsci(value);
 	    wavedata->setMetadataFound(true);
@@ -2089,7 +2089,7 @@ bool MainObject::VerifyPattern(const QString &pattern)
       if(i>=(pattern.length()-1)) {
 	return false;
       }
-      switch(pattern.at(++i).toAscii()) {
+      switch(pattern.at(++i).cell()) {
       case 'a':
       case 'b':
       case 'c':
@@ -2117,7 +2117,7 @@ bool MainObject::VerifyPattern(const QString &pattern)
 	if(i>=(pattern.length()-1)) {
 	  return false;
 	}
-	switch(pattern.at(++i).toAscii()) {
+	switch(pattern.at(++i).cell()) {
 	case 'i':
 	case 'm':
 	case 'r':

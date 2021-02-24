@@ -533,7 +533,7 @@ void RDSlotBox::paintEvent(QPaintEvent *e)
 
 void RDSlotBox::dragEnterEvent(QDragEnterEvent *e)
 {
-  if(RDCartDrag::canDecode(e)&&
+  if(RDCartDrag::canDecode(e->mimeData())&&
      (line_mode==RDSlotOptions::CartDeckMode)&&
      (line_deck->state()==RDPlayDeck::Stopped)) {
     e->accept();
@@ -545,7 +545,7 @@ void RDSlotBox::dropEvent(QDropEvent *e)
 {
   unsigned cartnum;
 
-  if(RDCartDrag::decode(e,&cartnum)) {
+  if(RDCartDrag::decode(e->mimeData(),&cartnum)) {
     emit cartDropped(cartnum);
   }
 }

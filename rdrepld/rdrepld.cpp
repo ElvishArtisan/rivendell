@@ -100,7 +100,7 @@ MainObject::MainObject(QObject *parent)
   //	  SIGNAL(logText(RDConfig::LogPriority,const QString &)),
   //	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
-  if(qApp->argc()!=1) {
+  if(qApp->arguments().size()!=1) {
     debug=true;
   }
 

@@ -17,7 +17,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -51,7 +51,7 @@ dist_rdxport_cgi_SOURCES = audioinfo.cpp\
 
 nodist_rdxport_cgi_SOURCES = moc_rdxport.cpp
 
-rdxport_cgi_LDADD = @LIB_RDLIBS@ -lsndfile @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@
+rdxport_cgi_LDADD = @LIB_RDLIBS@ -lsndfile @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 
 EXTRA_DIST = rdxport.pro
 

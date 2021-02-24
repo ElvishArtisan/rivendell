@@ -2,7 +2,7 @@
 //
 // Escape non-valid characters in a string.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -74,34 +74,36 @@ QString RDCheckDateTime(QDate const &date, QString const &format)
   
 }
 
+
 QString RDEscapeString(QString const &str)
 {
-  QString orig=str;
   QString res;
 
   for(int i=0;i<str.length();i++) {
-    QChar c=orig[i];
-    switch(c.toAscii()) {
-    case '"':
+    bool modified=false;
+    if(str.at(i)==QChar('"')) {
       res+=QString("\\\"");
-      break;
+      modified=true;
+    }
 
-    case '`':
+    if(str.at(i)==QChar('`')) {
       res+=QString("\\`");
-      break;
+      modified=true;
+    }
 
-    case '\'':
+    if(str.at(i)==QChar('\'')) {
       res+=QString("\\\'");
-      break;
+      modified=true;
+    }
 
-    case '\\':
+    if(str.at(i)==QChar('\\')) {
       res+=QString("\\");
       res+=QString("\\");
-      break;
+      modified=true;
+    }
 
-    default:
-      res+=c;
-      break;
+    if(!modified) {
+      res+=str.at(i);
     }
   }
 

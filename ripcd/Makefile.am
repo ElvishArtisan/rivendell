@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 
@@ -131,7 +131,7 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
 
 ripcd_LDADD = @LIB_RDLIBS@\
               @LIBVORBIS@\
-              @QT4_LIBS@\
+              @QT5_LIBS@\
               @LIBHPI@\
               @LIBJACK@\
               @MUSICBRAINZ_LIBS@

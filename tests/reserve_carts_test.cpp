@@ -42,8 +42,7 @@ MainObject::MainObject(QObject *parent)
   // Read Command Options
   //
   RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"reserve_carts_test",
-		    RESERVE_CARTS_TEST_USAGE);
+    new RDCmdSwitch("reserve_carts_test",RESERVE_CARTS_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--group") {
       group_name=cmd->value(i);
@@ -88,7 +87,7 @@ MainObject::MainObject(QObject *parent)
   //
   QString err (tr("upload_test: "));
   if(!RDOpenDb(&schema,&err,config)) {
-    fprintf(stderr,err.toAscii());
+    fprintf(stderr,err.toUtf8());
     delete cmd;
     exit(256);
   }

@@ -42,8 +42,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcollect",RDCOLLECT_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("rdcollect",RDCOLLECT_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--source-file") {
       source_files.push_back(cmd->value(i));

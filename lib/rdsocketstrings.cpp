@@ -2,7 +2,7 @@
 //
 //   Human-readable strings for QAbstractSocket::SocketError
 //
-//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -102,6 +102,22 @@ QString RDSocketStrings(QAbstractSocket::SocketError err)
 
   case QAbstractSocket::ProxyProtocolError:
     ret="proxy protocol error";
+    break;
+
+  case QAbstractSocket::OperationError:
+    ret="operation error";
+    break;
+
+  case QAbstractSocket::SslInternalError:
+    ret="SSL internal error";
+    break;
+
+  case QAbstractSocket::SslInvalidUserDataError:
+    ret="SSL invalid user data error";
+    break;
+
+  case QAbstractSocket::TemporaryError:
+    ret="temporary error";
     break;
 
   case QAbstractSocket::UnknownSocketError:

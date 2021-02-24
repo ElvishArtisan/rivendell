@@ -38,9 +38,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"stringcode_test",
-		    STRINGCODE_TEST_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("stringcode_test",STRINGCODE_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--xml-encode") {
       xml_encode=true;

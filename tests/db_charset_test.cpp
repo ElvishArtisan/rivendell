@@ -30,9 +30,7 @@ MainObject::MainObject(QObject *parent)
   QString err_msg;
   QString sql;
   RDSqlQuery *q;
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"db_charset_test",
-		    DB_CHARSET_TEST_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("db_charset_test",DB_CHARSET_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(!cmd->processed(i)) {
       fprintf(stderr,"db_charset_test: unknown option \"%s\"\n",

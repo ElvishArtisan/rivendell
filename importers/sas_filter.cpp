@@ -2,7 +2,7 @@
 //
 // An RDCatch event import filter for the SAS64000
 //
-//   (C) Copyright 2002-2004,2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include <qapplication.h>
+#include <QApplication>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -64,12 +64,14 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Switches
   //
-  if((qApp->argc()==2)&&(!strcmp(qApp->argv()[1],"-d"))) {   // Delete List
+  if((qApp->arguments().size()==2)&&   // Delete List
+     (qApp->arguments().at(1)=="-d")) {
     DeleteList();
     filter_connect->reset();
     exit(0);
   }
-  if((qApp->argc()==3)&&(!strcmp(qApp->argv()[1],"-i"))) {   // Insert List
+  if((qApp->arguments().size()==3)&&   // Insert List
+     (qApp->arguments().at(1)=="-i")) {
     InsertList();
     filter_connect->reset();
     exit(0);
@@ -84,12 +86,13 @@ void MainObject::InsertList()
   char line[256];
   int count=0;
 
-  FILE *fh=fopen(qApp->argv()[2],"r");
+  FILE *fh=fopen(qApp->arguments().at(2).toUtf8(),"r");
   if(fh==NULL) {
     perror("sas_filter");
     exit(1);
   }
-  printf("Importing events from %s...",qApp->argv()[2]);
+  printf("Importing events from %s...",
+	 qApp->arguments().at(2).toUtf8().constData());
   fflush(0);
   while(fgets(line,256,fh)!=NULL) {
     if(strlen(line)==79) {

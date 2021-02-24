@@ -180,11 +180,11 @@ void RDGpioLogModel::addEvent(int line,bool state)
   // State
   if(state) {
     texts.push_back(tr("On"));
-    d_text_colors.push_back(Qt::darkGreen);
+    d_text_colors.push_back(QColor(Qt::darkGreen));
   }
   else {
     texts.push_back(tr("Off"));
-    d_text_colors.push_back(Qt::darkRed);
+    d_text_colors.push_back(QColor(Qt::darkRed));
   }
   
   d_texts.push_back(texts);
@@ -277,11 +277,11 @@ void RDGpioLogModel::updateRow(int row,RDSqlQuery *q)
   // State
   if(q->value(2).toUInt()==0) {
     texts.push_back(tr("Off"));
-    d_text_colors[row]=Qt::darkRed;
+    d_text_colors[row]=QColor(Qt::darkRed);
   }
   else {
     texts.push_back(tr("On"));
-    d_text_colors[row]=Qt::darkGreen;
+    d_text_colors[row]=QColor(Qt::darkGreen);
   }
 
   d_texts[row]=texts;

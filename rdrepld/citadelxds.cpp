@@ -152,8 +152,8 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
       if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
 	datelist=fields[6].split("/");
 	if(datelist.size()==3) {
-	  date.setYMD(datelist[2].toInt()+2000,datelist[0].toInt(),
-		      datelist[1].toInt());
+	  date.setDate(datelist[2].toInt()+2000,datelist[0].toInt(),
+		       datelist[1].toInt());
 	  if(ValidateFilename(fields[8])) {
 	    if(date.isValid()) {
 	      sql=QString("insert into ISCI_XREFERENCE set ")+

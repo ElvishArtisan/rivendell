@@ -36,9 +36,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"readcd_test",
-		    READCD_TEST_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("readcd_test",READCD_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--device") {
       device=cmd->value(i);

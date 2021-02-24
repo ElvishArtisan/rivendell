@@ -46,8 +46,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   RDConfig *config=new RDConfig();
   QString map_filename=config->filename();
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdsoftkeys",RDSOFTKEYS_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("rdsoftkeys",RDSOFTKEYS_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--map-file") {
       map_filename=cmd->value(i);

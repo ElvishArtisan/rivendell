@@ -2,7 +2,7 @@
 //
 // An Abstract of the rdhotkeylist
 //
-//   (C) Copyright 2002-2004,2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,10 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include<vector>
-
-#include <stdlib.h>
 
 #include<rdhotkeylist.h>
 
@@ -106,21 +102,15 @@ void RDHotKeyList::BuildKeyList( )
 
 QString RDHotKeyList::cleanStrings( const QString sent)
 {
-  QString cleanstring;
-  for (int i=0 ; i<sent.length(); i++) {
-    switch(sent[i].toAscii()) {
-    case '\n':
-      break;
-    case '\t':
-      break;
-    case ' ':
-      break;
-    default:
-      cleanstring+=sent[i];
-      break;
+  QString ret;
+
+  for(int i=0;i<sent.length();i++) {
+    if((sent.at(i)!=QChar('\n'))&&(sent.at(i)!=QChar('\t'))) {
+      ret+=sent.at(i);
     }
   }
-  return cleanstring;
+
+  return ret;
 }
 
 

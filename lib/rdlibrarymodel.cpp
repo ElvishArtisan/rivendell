@@ -140,10 +140,10 @@ QModelIndex RDLibraryModel::index(int row,int col,
 				  const QModelIndex &parent) const
 {
   if(!parent.isValid()) {
-    return createIndex(row,col,(quint32)0);
+    return createIndex(row,col,(quintptr)0);
   }
   if((parent.column()==0)&&(parent.internalId()==0)) {
-    return createIndex(row,col,(quint32)(1+parent.row()));
+    return createIndex(row,col,(quintptr)(1+parent.row()));
   }
   return QModelIndex();
 }
@@ -152,7 +152,7 @@ QModelIndex RDLibraryModel::index(int row,int col,
 QModelIndex RDLibraryModel::parent(const QModelIndex &index) const
 {
   if(index.isValid()&&(index.internalId()>0)) {
-    return createIndex(index.internalId()-1,0,(quint32)0);
+    return createIndex(index.internalId()-1,0,(quintptr)0);
   }
   return QModelIndex();
 }
@@ -328,7 +328,7 @@ QModelIndex RDLibraryModel::cartRow(unsigned cartnum) const
   if(pos<0) {
     return QModelIndex();
   }
-  return createIndex(pos,0,0);
+  return createIndex(pos,0,(quintptr)0);
 }
 
 
@@ -416,7 +416,7 @@ QModelIndex RDLibraryModel::addCart(unsigned cartnum)
   endInsertRows();
   emit rowCountChanged(d_texts.size());
 
-  return createIndex(offset,0,0);
+  return createIndex(offset,0,(quintptr)0);
 }
 
 
@@ -465,7 +465,7 @@ void RDLibraryModel::refreshRow(const QModelIndex &index)
 {
   if(isCart(index)) {
     updateCartLine(index.row());
-    emit dataChanged(index,createIndex(index.row(),columnCount(),0));
+    emit dataChanged(index,createIndex(index.row(),columnCount(),(quintptr)0));
   }
 }
 
@@ -476,7 +476,8 @@ void RDLibraryModel::refreshCart(unsigned cartnum)
   for(int i=0;i<d_texts.size();i++) {
     if(d_texts.at(i).at(0).toString()==cartnum_str) {
       updateCartLine(i);
-      emit dataChanged(createIndex(i,0,0),createIndex(i,columnCount(),0));
+      emit dataChanged(createIndex(i,0,(quintptr)0),
+		       createIndex(i,columnCount(),(quintptr)0));
     }
   }
 }
@@ -574,8 +575,8 @@ void RDLibraryModel::updateCartLine(int cartline)
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     updateRow(cartline,q);
-    emit dataChanged(createIndex(cartline,0,0),
-		     createIndex(cartline,columnCount(),(quint32)0));
+    emit dataChanged(createIndex(cartline,0,(quintptr)0),
+		     createIndex(cartline,columnCount(),(quintptr)0));
   }
   delete q;
 }

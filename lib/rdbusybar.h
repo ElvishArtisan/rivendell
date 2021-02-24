@@ -32,7 +32,7 @@ class RDBusyBar : public QFrame
   Q_OBJECT
 
  public:
-  RDBusyBar(QWidget *parent=0,Qt::WFlags f=0);
+  RDBusyBar(QWidget *parent=0,Qt::WindowFlags f=0);
 
  public slots:
   void activate(bool state);

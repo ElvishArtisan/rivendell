@@ -47,9 +47,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"sendmail_test",
-		    SENDMAIL_TEST_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("sendmail_test",SENDMAIL_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--from-addr") {
       from_addr=cmd->value(i);

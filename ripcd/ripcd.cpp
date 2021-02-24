@@ -132,7 +132,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda->cae()->connectHost();
 
-  if(qApp->argc()!=1) {
+  if(qApp->arguments().size()!=1) {
     debug=true;
   }
   ::signal(SIGCHLD,SigHandler);
@@ -310,14 +310,14 @@ void MainObject::readyReadData(int conn_id)
     QString line=QString::fromUtf8(data);
     for(int i=0;i<line.length();i++) {
       QChar c=line.at(i);
-      if(c.toAscii()=='!') {
+      if(c==QChar('!')) {
 	if(!DispatchCommand(conn)) {
 	  return;
 	}
 	conn->accum="";
       }
       else {
-	if((c.toAscii()!='\r')&&(c.toAscii()!='\n')) {
+	if((c!=QChar('\r'))&&(c!=QChar('\n'))) {
 	  conn->accum+=c;
 	}
       }

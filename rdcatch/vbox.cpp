@@ -22,7 +22,7 @@
 
 #include <vbox.h>
 
-VBox::VBox(QWidget *parent,Qt::WFlags f)
+VBox::VBox(QWidget *parent,Qt::WindowFlags f)
   : QWidget(parent,f)
 {
   box_spacing=0;

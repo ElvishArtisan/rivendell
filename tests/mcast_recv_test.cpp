@@ -32,9 +32,7 @@ MainObject::MainObject(QObject *parent)
   unsigned from_port=0;
   bool ok=false;
 
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"mcast_recv_test",
-		    MCAST_RECV_TEST_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("mcast_recv_test",MCAST_RECV_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--from") {
       QStringList f0=cmd->value(i).split(":");

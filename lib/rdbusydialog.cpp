@@ -21,7 +21,7 @@
 
 #include "rdbusydialog.h"
 
-RDBusyDialog::RDBusyDialog(QWidget *parent,Qt::WFlags f)
+RDBusyDialog::RDBusyDialog(QWidget *parent,Qt::WindowFlags f)
   : RDDialog(parent)
 {
   bar_label=new QLabel(this);

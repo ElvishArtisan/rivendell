@@ -19,7 +19,8 @@
 //
 
 
-#include <qpainter.h>
+#include <QDrag>
+#include <QPainter>
 
 #include <rdcartdrag.h>
 #include <rdconf.h>
@@ -396,7 +397,7 @@ void RDPanelButton::mouseReleaseEvent(QMouseEvent *e)
 
 void RDPanelButton::dragEnterEvent(QDragEnterEvent *e)
 {
-  if(RDCartDrag::canDecode(e)&&button_allow_drags&&
+  if(RDCartDrag::canDecode(e->mimeData())&&button_allow_drags&&
      ((button_play_deck==NULL)||(button_play_deck->state()==RDPlayDeck::Stopped))) {
     e->accept();
   }
@@ -409,7 +410,7 @@ void RDPanelButton::dropEvent(QDropEvent *e)
   QColor color;
   QString title;
 
-  if(RDCartDrag::decode(e,&cartnum,&color,&title)) {
+  if(RDCartDrag::decode(e->mimeData(),&cartnum,&color,&title)) {
     emit cartDropped(button_row,button_col,cartnum,color,title);
   }
 }

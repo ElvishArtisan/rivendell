@@ -43,17 +43,17 @@ MainObject::MainObject(QObject *parent)
   //
   // Process argument
   //
-  if(qApp->argc()!=2) {
+  if(qApp->arguments().size()!=2) {
     fprintf(stderr,"rdselect_helper: you must pass exactly one argument\n");
     exit(RDConfig::RDSelectInvalidArguments);
   }
-  if(QString(qApp->argv()[1]).contains("/")||
-     QString(qApp->argv()[1]).contains("..")) {
+  if(QString(qApp->arguments().at(1)).contains("/")||
+     QString(qApp->arguments().at(1)).contains("..")) {
     fprintf(stderr,"rdselect_helper: invalid configuration name\n");
     exit(RDConfig::RDSelectInvalidName);
   }
   helper_config_filename=
-    QString(RD_DEFAULT_RDSELECT_DIR)+"/"+QString(qApp->argv()[1]);
+    QString(RD_DEFAULT_RDSELECT_DIR)+"/"+QString(qApp->arguments().at(1));
 
   //
   // Load Configurations

@@ -21176,3 +21176,5 @@
 	* Removed the Qt3Support library from the build system.
 2021-02-24 Fred Gleason <fredg@paravelsystems.com>
 	* Removed stray include lines.
+2021-02-24 Fred Gleason <fredg@paravelsystems.com>
+	* Updated build system to use Qt5 instead of Qt4.

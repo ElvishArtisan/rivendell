@@ -65,7 +65,7 @@ RDMbLookup::RDMbLookup(const QString &caption,FILE *profile_msgs,
 {
   setWindowTitle(caption+" - MusicBrainz "+tr("Lookup"));
 
-  cover_art_default_icon=new QIcon(cover_art_default_60x60_xpm);
+  cover_art_default_icon=new QIcon(QPixmap(cover_art_default_60x60_xpm));
 
   titlesBox()->setIconSize(QSize(60,60));
 

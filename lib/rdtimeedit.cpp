@@ -383,7 +383,7 @@ void RDTimeEdit::keyPressEvent(QKeyEvent *e)
   case Qt::Key_7:
   case Qt::Key_8:
   case Qt::Key_9:
-    ProcessKey(e->text().at(0).toAscii());
+    ProcessNumericKey(e->text().left(1).toInt());
     e->accept();
     break;
 
@@ -474,7 +474,7 @@ void RDTimeEdit::GetSizeHint()
 }
 
 
-void RDTimeEdit::ProcessKey(int key)
+void RDTimeEdit::ProcessNumericKey(int num)
 {
   int ten;
 
@@ -483,7 +483,7 @@ void RDTimeEdit::ProcessKey(int key)
   case 1:
   case 2:
     if(edit_digit==0) {
-      edit_labels[edit_section]->setText(QString().sprintf("0%c",key));
+      edit_labels[edit_section]->setText(QString().sprintf("0%d",num));
       edit_digit=1;
     }
     else {
@@ -491,12 +491,12 @@ void RDTimeEdit::ProcessKey(int key)
       if(ten>5) {
 	ten=0;
       }
-      edit_labels[edit_section]->setText(QString().sprintf("%d%c",ten,key));
+      edit_labels[edit_section]->setText(QString().sprintf("%d%d",ten,num));
     }
     break;
 
   case 3:
-    edit_labels[3]->setText(QString().sprintf("%c",key));
+    edit_labels[3]->setText(QString().sprintf("%d",num));
     break;
   }
   emit valueChanged(time());

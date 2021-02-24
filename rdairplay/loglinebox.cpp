@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QDrag>
 #include <QMouseEvent>
 #include <QPainter>
 
@@ -838,7 +839,7 @@ void LogLineBox::paintEvent(QPaintEvent *e)
 
 void LogLineBox::dragEnterEvent(QDragEnterEvent *e)
 {
-  if(RDCartDrag::canDecode(e)&&
+  if(RDCartDrag::canDecode(e->mimeData())&&
      ((line_status==RDLogLine::Scheduled)||
       (line_status==RDLogLine::Paused))) {
     e->accept();
@@ -850,7 +851,7 @@ void LogLineBox::dropEvent(QDropEvent *e)
 {
   RDLogLine ll;
 
-  if(RDCartDrag::decode(e,&ll)) {
+  if(RDCartDrag::decode(e->mimeData(),&ll)) {
     emit cartDropped(log_line,&ll);
   }
 }

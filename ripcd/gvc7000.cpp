@@ -109,7 +109,7 @@ void Gvc7000::processCommand(RDMacro *cmd)
       emit rmlEcho(cmd);
       return;
     }
-    gvc_pacer->send(ToSeries7000Native(QString().sprintf("TI,%04X,%04X",cmd->arg(2).toInt()-1,cmd->arg(1).toInt()-1)).toAscii());
+    gvc_pacer->send(ToSeries7000Native(QString().sprintf("TI,%04X,%04X",cmd->arg(2).toInt()-1,cmd->arg(1).toInt()-1)).toUtf8());
     cmd->acknowledge(true);
     emit rmlEcho(cmd);
     break;
@@ -130,7 +130,7 @@ void Gvc7000::ipConnect()
 
 void Gvc7000::keepaliveData()
 {
-  gvc_pacer->send(ToSeries7000Native("QJ").toAscii());
+  gvc_pacer->send(ToSeries7000Native("QJ").toUtf8());
 }
 
 
@@ -189,8 +189,8 @@ void Gvc7000::sendCommandData(const QByteArray &data)
 /*
 void Gvc7000::SendCommand(const QString &str)
 {
-  syslog(LOG_DEBUG,"gvc7000 sending \"%s\"",(const char *)str.toAscii());
-  gvc_socket->write(str.toAscii());
+  syslog(LOG_DEBUG,"gvc7000 sending \"%s\"",(const char *)str.toUtf8());
+  gvc_socket->write(str.toUtf8());
 }
 */
 
@@ -207,9 +207,10 @@ QString Gvc7000::ToSeries7000Native(const QString &str) const
     "0"+                     // Sequence Flag
     ret;                     // Data
 
+  QByteArray data=msg.toUtf8();
   uint8_t sum=0;
-  for(int i=0;i<msg.length();i++) {
-    sum+=msg.at(i).toAscii();
+  for(int i=0;i<data.length();i++) {
+    sum+=data.at(i);
   }
   sum=0x100-sum;
 

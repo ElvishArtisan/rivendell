@@ -18,7 +18,7 @@
 ##   Use automake to process this into a Makefile.in
 ##
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 
@@ -36,7 +36,7 @@ dist_rdalsaconfig_SOURCES = alsaitem.cpp alsaitem.h\
 nodist_rdalsaconfig_SOURCES = moc_rdalsamodel.cpp\
                               moc_rdalsaconfig.cpp
 
-rdalsaconfig_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@
+rdalsaconfig_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 
 EXTRA_DIST = rdalsaconfig.pro
 

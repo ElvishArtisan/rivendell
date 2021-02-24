@@ -47,9 +47,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"wav_chunk_test",
-  		    WAV_CHUNK_TEST_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("wav_chunk_test",WAV_CHUNK_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--filename") {
       filename=cmd->value(i);

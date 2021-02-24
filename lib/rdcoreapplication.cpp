@@ -125,8 +125,7 @@ bool RDCoreApplication::open(QString *err_msg,RDCoreApplication::ErrorType *err_
   //
   // Read command switches
   //
-  app_cmd_switch=new RDCmdSwitch(qApp->argc(),qApp->argv(),app_command_name,
-				 app_usage);
+  app_cmd_switch=new RDCmdSwitch(app_command_name,app_usage);
   for(unsigned i=0;i<app_cmd_switch->keys();i++) {
     if(app_cmd_switch->key(i)=="--skip-db-check") {
       skip_db_check=true;
@@ -477,7 +476,7 @@ void RDCoreApplication::userChangedData()
     delete q;
   }
   fprintf(stderr,"%s: %s\n",
-	  QString(qApp->argv()[0]).split("/",QString::SkipEmptyParts).last().toUtf8().constData(),
+	  QString(qApp->arguments().at(0)).split("/",QString::SkipEmptyParts).last().toUtf8().constData(),
 	  RDCoreApplication::exitCodeText(RDCoreApplication::ExitBadTicket).
 	  toUtf8().constData());
   exit(RDCoreApplication::ExitBadTicket);

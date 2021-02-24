@@ -91,7 +91,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  new RDCmdSwitch(qApp->argc(),qApp->argv(),"caed",CAED_USAGE);
+  new RDCmdSwitch("caed",CAED_USAGE);
 
   //
   // LogLine references rd_config
@@ -108,9 +108,9 @@ MainObject::MainObject(QObject *parent)
   debug=false;
   twolame_handle=NULL;
   mad_handle=NULL;
-  if(qApp->argc()>1) {
-    for(int i=1;i<qApp->argc();i++) {
-      if(!strcmp(qApp->argv()[i],"-d")) {
+  if(qApp->arguments().size()>1) {
+    for(int i=1;i<qApp->arguments().size();i++) {
+      if(qApp->arguments().at(i)=="-d") {
 	debug=true;
       }
     }
