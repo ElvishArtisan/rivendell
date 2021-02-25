@@ -119,7 +119,7 @@ RDLiveWire::RDLiveWire(unsigned id,QObject *parent)
   //
   live_socket=new QTcpSocket(this);
   connect(live_socket,SIGNAL(connected()),this,SLOT(connectedData()));
-  connect(live_socket,SIGNAL(connectionClosed()),
+  connect(live_socket,SIGNAL(disconnected()),
 	  this,SLOT(connectionClosedData()));
   connect(live_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
   connect(live_socket,SIGNAL(error(QAbstractSocket::SocketError)),

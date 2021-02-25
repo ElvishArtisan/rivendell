@@ -101,6 +101,7 @@ class RDCoreApplication : public QObject
   RDDbHeartbeat *app_heartbeat;
   QString app_ticket;
   QString app_module_name;
+  char app_syslog_name[PATH_MAX];
   QString app_command_name;
   QString app_usage;
 };

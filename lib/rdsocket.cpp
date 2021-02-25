@@ -2,7 +2,7 @@
 //
 //   A QTcpSocket object with connection-ID.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -31,10 +31,7 @@ RDSocket::RDSocket(int id,QObject *parent)
   connect(this,SIGNAL(hostFound()),this,SLOT(hostFoundData()));
   connect(this,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(this,SIGNAL(disconnected()),this,SLOT(connectionClosedData()));
-  connect(this,SIGNAL(delayedCloseFinished()),
-	  this,SLOT(delayedCloseFinishedData()));
   connect(this,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(this,SIGNAL(bytesWritten(int)),this,SLOT(bytesWrittenData(int)));
   connect(this,SIGNAL(error(QAbstractSocket::SocketError)),
 	  this,SLOT(errorData(QAbstractSocket::SocketError)));
 }
@@ -58,21 +55,9 @@ void RDSocket::connectionClosedData()
 }
 
 
-void RDSocket::delayedCloseFinishedData()
-{
-  emit delayedCloseFinishedID(id_num);
-}
-
-
 void RDSocket::readyReadData()
 {
   emit readyReadID(id_num);
-}
-
-
-void RDSocket::bytesWrittenData(int nbytes)
-{
-  emit bytesWrittenID(nbytes,id_num);
 }
 
 

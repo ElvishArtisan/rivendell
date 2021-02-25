@@ -2,7 +2,7 @@
 //
 //   A QSocket object with connection-ID.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -21,8 +21,7 @@
 #ifndef RDSOCKET_H
 #define RDSOCKET_H
 
-#include <qobject.h>
-#include <qtcpsocket.h>
+#include <QTcpSocket>
 
 class RDSocket : public QTcpSocket
 {
@@ -34,18 +33,14 @@ class RDSocket : public QTcpSocket
   void hostFoundID(int id);
   void connectedID(int id);
   void connectionClosedID(int id);
-  void delayedCloseFinishedID(int id);
   void readyReadID(int id);
-  void bytesWrittenID(int nbytes,int id);
   void errorID(QAbstractSocket::SocketError error,int id);
   
  private slots:
   void hostFoundData();
   void connectedData();
   void connectionClosedData();
-  void delayedCloseFinishedData();
   void readyReadData();
-  void bytesWrittenData(int nbytes);
   void errorData(QAbstractSocket::SocketError error);
   
  private:

@@ -51,6 +51,15 @@ RDCoreApplication::RDCoreApplication(const QString &module_name,
   app_command_name=cmdname;
   app_usage=usage;
 
+  //
+  // Maintainer's Note
+  //
+  // This for the 'ident' value passed to openlog(1). It *must*
+  // an actual (const char *) string stored on the heap. *Don't* pass
+  // a QByteArray!
+  //
+  strncpy(app_syslog_name,cmdname.toUtf8(),PATH_MAX-1);
+
   app_heartbeat=NULL;
   app_airplay_conf=NULL;
   app_cae=NULL;
@@ -155,10 +164,10 @@ bool RDCoreApplication::open(QString *err_msg,RDCoreApplication::ErrorType *err_
   // Initialize Logging
   //
   if(app_cmd_switch->debugActive()) {
-    openlog(app_command_name.toUtf8(),LOG_PERROR,app_config->syslogFacility());
+    openlog(app_syslog_name,LOG_PERROR,app_config->syslogFacility());
   }
   else {
-    openlog(app_command_name.toUtf8(),0,app_config->syslogFacility());
+    openlog(app_syslog_name,0,app_config->syslogFacility());
   }
 
   //

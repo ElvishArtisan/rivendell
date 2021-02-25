@@ -21210,3 +21210,7 @@
 2021-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in rdairplay(1) that caused incorrect color
 	rendering.
+2021-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed vestigal signals from 'RDSocket'.
+	* Fixed a bug in 'RDApplication' that could cause 'openlog(3)'
+	to receive a corrupt 'ident' value.
