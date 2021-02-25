@@ -34,10 +34,7 @@ RDTransportButton::RDTransportButton(RDTransportButton::TransType type,
   on_color=QColor(RDTRANSPORTBUTTON_DEFAULT_ON_COLOR);
   accent_color=QColor(palette().shadow().color());
   on_cap=new QPixmap();
-  drawOnCap();
   off_cap=new QPixmap();
-  drawOffCap();
-  setIcon(*off_cap);
   setFocusPolicy(Qt::NoFocus);
 
   flash_timer=new QTimer(this);
@@ -135,18 +132,22 @@ void RDTransportButton::flash()
 
 void RDTransportButton::resizeEvent(QResizeEvent *event)
 {
+  setIconSize(capSize());
+
   drawOnCap();
   drawOffCap();
   switch(button_state) {
-      case RDTransportButton::Off:
-	setIcon(*off_cap);
-	break;
-      case RDTransportButton::On:
-	setIcon(*on_cap);
-	break;
-      default:
-	setIcon(*off_cap);
-	break;
+  case RDTransportButton::Off:
+    setIcon(*off_cap);
+    break;
+    
+  case RDTransportButton::On:
+    setIcon(*on_cap);
+    break;
+    
+  default:
+    setIcon(*off_cap);
+    break;
   }
 }
 
@@ -203,7 +204,7 @@ void RDTransportButton::updateCaps()
 void RDTransportButton::drawMask(QPixmap *cap)
 {
   QPolygon triangle=QPolygon(3);
-  QPainter b;
+  QPainter *p;
   QBitmap *bitmap=new QBitmap(capSize());
   int edge;
 
@@ -213,139 +214,165 @@ void RDTransportButton::drawMask(QPixmap *cap)
   else {
     edge=capSize().width();
   }
-  cap=new QPixmap(cap->copy(0,0,capSize().width(),capSize().height()));
-  //  cap->resize(capSize());
-  b.begin(bitmap);
-  b.fillRect(0,0,capSize().width(),capSize().height(),QColor(Qt::color0));
-  b.setPen(QColor(Qt::color1));
-  b.setBrush(QColor(Qt::color1));
+  p=new QPainter(bitmap);
+  p->fillRect(0,0,capSize().width(),capSize().height(),QColor(Qt::color0));
+  p->setPen(QColor(Qt::color1));
+  p->setBrush(QColor(Qt::color1));
 
   switch(button_type) {
   case RDTransportButton::Play:
-    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    b.drawPolygon(triangle);
+    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
     break;
 
   case RDTransportButton::Stop:
-    b.fillRect(capSize().width()/2-edge*3/10,capSize().height()/2-edge*3/10,
+    p->fillRect(capSize().width()/2-edge*3/10,capSize().height()/2-edge*3/10,
 	       edge*3/5,edge*3/5,QColor(Qt::color1));
     break;
 
   case RDTransportButton::Record:
-    b.drawEllipse(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-		  (3*edge)/5,(3*edge)/5);
+    p->drawEllipse(capSize().width()/2-(3*edge)/10,
+		   capSize().height()/2-(3*edge)/10,(3*edge)/5,(3*edge)/5);
     break;
 
   case RDTransportButton::FastForward:
-    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    b.drawPolygon(triangle);
+    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
     triangle.setPoint(0,capSize().width()/2,capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10,capSize().height()/2);
     triangle.setPoint(2,capSize().width()/2,capSize().height()/2+(3*edge)/10);
-    b.drawPolygon(triangle);
+    p->drawPolygon(triangle);
     break;
 
   case RDTransportButton::Rewind:
-    triangle.setPoint(0,capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(0,capSize().width()/2+(3*edge)/10,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2+(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    b.drawPolygon(triangle);
+    triangle.setPoint(2,capSize().width()/2+(3*edge)/10,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
     triangle.setPoint(0,capSize().width()/2,capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2-(3*edge)/10,capSize().height()/2);
     triangle.setPoint(2,capSize().width()/2,capSize().height()/2+(3*edge)/10);
-    b.drawPolygon(triangle);
+    p->drawPolygon(triangle);
     break;
 
   case RDTransportButton::Eject:
     triangle.setPoint(0,capSize().width()/2,capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10,capSize().height()/2);
     triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()/2);
-    b.drawPolygon(triangle);
-    b.fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2+edge/10,
+    p->drawPolygon(triangle);
+    p->fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2+edge/10,
 	       (3*edge)/5,edge/5,QColor(Qt::color1));
     break;
 
   case RDTransportButton::Pause:
-    b.fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       (3*edge)/15,(3*edge)/5,QColor(Qt::color1));
-    b.fillRect(capSize().width()/2+(3*edge)/30,capSize().height()/2-(3*edge)/10,
-	       (3*edge)/15,(3*edge)/5,QColor(Qt::color1));
+    p->fillRect(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		(3*edge)/15,(3*edge)/5,QColor(Qt::color1));
+    p->fillRect(capSize().width()/2+(3*edge)/30,
+		capSize().height()/2-(3*edge)/10,
+		(3*edge)/15,(3*edge)/5,QColor(Qt::color1));
     break;
 
   case RDTransportButton::PlayFrom:
-    b.fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       3,(3*edge)/5,QBrush(Qt::color1));
-    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10);
+    p->fillRect(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		3,(3*edge)/5,QBrush(Qt::color1));
+    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10+1,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10);
-    b.drawPolygon(triangle);
+    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
     break;
 
   case RDTransportButton::PlayBetween:
-    b.fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       3,(3*edge)/5,QBrush(Qt::color1));
-    b.fillRect(capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       3,(3*edge)/5,QBrush(Qt::color1));
-    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10);
+    p->fillRect(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		3,(3*edge)/5,QBrush(Qt::color1));
+    p->fillRect(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		3,(3*edge)/5,QBrush(Qt::color1));
+    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10);
-    b.drawPolygon(triangle);
+    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
     break;
 
   case RDTransportButton::Loop:
     /*
-      b.moveTo(width()/2-(2*edge)/10+1,height()/2+(edge)/4);
-      b.moveTo(width()/2+(edge)/10+1,height()/2-edge/10);
-      b.moveTo(width()/2-(2*edge)/10+1,height()/2+(edge)/4);
+      p->moveTo(width()/2-(2*edge)/10+1,height()/2+(edge)/4);
+      p->moveTo(width()/2+(edge)/10+1,height()/2-edge/10);
+      p->moveTo(width()/2-(2*edge)/10+1,height()/2+(edge)/4);
     */
-    b.drawArc(capSize().width()/6,capSize().height()/2-edge/9,2*capSize().width()/3,
-	      capSize().height()/3+edge/10,1440,5760);
-    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(edge)/4);
-    triangle.setPoint(1,capSize().width()/2+(edge)/10+1,capSize().height()/2-edge/10);
-    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,capSize().height()/2+edge/20);
-    b.drawPolygon(triangle);
+    p->drawArc(capSize().width()/6,capSize().height()/2-edge/9,
+	       2*capSize().width()/3,
+	       capSize().height()/3+edge/10,1440,5760);
+    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2-(edge)/4);
+    triangle.setPoint(1,capSize().width()/2+(edge)/10+1,
+		      capSize().height()/2-edge/10);
+    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2+edge/20);
+    p->drawPolygon(triangle);
     break;
 
   case RDTransportButton::Up:
     triangle.setPoint(0,capSize().width()/2,(3*edge)/10);
-    triangle.setPoint(1,capSize().width()/2+(3*edge)/10,capSize().height()-(3*edge)/10);
-    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()-(3*edge)/10);
-    b.drawPolygon(triangle);
+    triangle.setPoint(1,capSize().width()/2+(3*edge)/10,
+		      capSize().height()-(3*edge)/10);
+    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,
+		      capSize().height()-(3*edge)/10);
+    p->drawPolygon(triangle);
     break;
 
   case RDTransportButton::Down:
     triangle.setPoint(0,capSize().width()/2,capSize().height()-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10,(3*edge)/10);
     triangle.setPoint(2,capSize().width()/2-(3*edge)/10,(3*edge)/10);
-    b.drawPolygon(triangle);
+    p->drawPolygon(triangle);
     break;
 
   case RDTransportButton::PlayTo:
-    b.fillRect(capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       3,(3*edge)/5,QBrush(Qt::color1));
-    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    p->fillRect(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		3,(3*edge)/5,QBrush(Qt::color1));
+    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    b.drawPolygon(triangle);
+    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
     break;
 
   default:
-    b.fillRect(0,0,capSize().width(),capSize().height(),QColor(Qt::color1));
+    p->fillRect(0,0,capSize().width(),capSize().height(),QColor(Qt::color1));
   }
-  b.end();
+  p->end();
   cap->setMask(*bitmap);
-
   delete bitmap;
+  delete p;
 }
 
 
 void RDTransportButton::drawOnCap()
 {
-  QPainter p;
+  if(capSize()==QSize(0,0)) {
+    return;
+  }
+
+  QPainter *p;
   QPolygon triangle=QPolygon(3);
   int edge;
 
@@ -355,105 +382,126 @@ void RDTransportButton::drawOnCap()
   else {
     edge=capSize().width();
   }
+  delete on_cap;
+  on_cap=new QPixmap(capSize());
+  on_cap->fill(palette().color(QPalette::Background));
   drawMask(on_cap);
-  p.begin(on_cap);
-  p.setPen(on_color);
-  p.setBrush(on_color);
+  p=new QPainter(on_cap);
+  p->setPen(on_color);
+  p->setBrush(on_color);
   switch(button_type) {
   case RDTransportButton::Play:
-    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
+    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
 	       capSize().width()/2+(3*edge)/10,capSize().height()/2);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10);
     break;
 
   case RDTransportButton::Stop:
-    p.fillRect(capSize().width()/2-edge*3/10,capSize().height()/2-edge*3/10,
+    p->fillRect(capSize().width()/2-edge*3/10,capSize().height()/2-edge*3/10,
     	       edge*3/5,edge*3/5,QColor(on_color));
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-edge*3/10,capSize().height()/2+edge*3/10,
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-edge*3/10,capSize().height()/2+edge*3/10,
 	       capSize().width()/2-edge*3/10,capSize().height()/2-edge*3/10);
-    p.drawLine(capSize().width()/2-edge*3/10,capSize().height()/2-edge*3/10,
+    p->drawLine(capSize().width()/2-edge*3/10,capSize().height()/2-edge*3/10,
 	       capSize().width()/2+edge*3/10,capSize().height()/2-edge*3/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+edge*3/10,capSize().height()/2-edge*3/10,
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+edge*3/10,capSize().height()/2-edge*3/10,
 	       capSize().width()/2+edge*3/10,capSize().height()/2+edge*3/10);
-    p.drawLine(capSize().width()/2+edge*3/10,capSize().height()/2+edge*3/10,
+    p->drawLine(capSize().width()/2+edge*3/10,capSize().height()/2+edge*3/10,
 	       capSize().width()/2-edge*3/10,capSize().height()/2+edge*3/10);
     break;
 
   case RDTransportButton::Record:
-    p.setPen(QColor(Qt::red));
-    p.setBrush(QColor(Qt::red));
-    p.drawEllipse(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-		  (3*edge)/5,(3*edge)/5);
+    p->setPen(QColor(Qt::red));
+    p->setBrush(QColor(Qt::red));
+    p->drawEllipse(capSize().width()/2-(3*edge)/10,
+		   capSize().height()/2-(3*edge)/10,(3*edge)/5,(3*edge)/5);
     break;
 
   case RDTransportButton::FastForward:
-    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
+    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
 	       capSize().width()/2,capSize().height()/2);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2,
+	       capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10);
     triangle.setPoint(0,capSize().width()/2,capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10,capSize().height()/2);
     triangle.setPoint(2,capSize().width()/2,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2+(3*edge)/10,
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2+(3*edge)/10,
 	       capSize().width()/2,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2-(3*edge)/10,
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2-(3*edge)/10,
 	       capSize().width()/2+(3*edge)/10,capSize().height()/2);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2,
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2,
 	       capSize().width()/2,capSize().height()/2+(3*edge)/10);
     break;
 
   case RDTransportButton::Rewind:
-    triangle.setPoint(0,capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(0,capSize().width()/2+(3*edge)/10,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2+(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2,capSize().height()/2);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2,
-	       capSize().width()/2+(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(2,capSize().width()/2+(3*edge)/10,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2,capSize().height()/2);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2,
+	       capSize().width()/2+(3*edge)/10,
+		capSize().height()/2+(3*edge)/10);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10);
     triangle.setPoint(0,capSize().width()/2,capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2-(3*edge)/10,capSize().height()/2);
     triangle.setPoint(2,capSize().width()/2,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2-(3*edge)/10,
+    p->drawPolygon(triangle);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2-(3*edge)/10,
 	       capSize().width()/2-(3*edge)/10,capSize().height()/2);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2,
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2,
 	       capSize().width()/2,capSize().height()/2+(3*edge)/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2+(3*edge)/10,
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2+(3*edge)/10,
 	       capSize().width()/2,capSize().height()/2-(3*edge)/10);
     break;
 
@@ -461,125 +509,170 @@ void RDTransportButton::drawOnCap()
     triangle.setPoint(0,capSize().width()/2,capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10,capSize().height()/2);
     triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()/2);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2,
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2,
 	       capSize().width()/2,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2-(3*edge)/10,
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2-(3*edge)/10,
 	       capSize().width()/2+(3*edge)/10,capSize().height()/2);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2,
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2,
 	       capSize().width()/2-(3*edge)/10,capSize().height()/2);
-    p.fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2+edge/10,
+    p->fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2+edge/10,
 	       (3*edge)/5,edge/5,on_color);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2+edge/10+edge/5,
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+edge/10+edge/5,
 	       capSize().width()/2-(3*edge)/10,capSize().height()/2+edge/10);
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2+edge/10,
+    p->drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2+edge/10,
 	       capSize().width()/2+(3*edge)/10,capSize().height()/2+edge/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2+edge/10,
-	       capSize().width()/2+(3*edge)/10,capSize().height()/2+edge/10+edge/5);
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2+edge/10+edge/5,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2+edge/10+edge/5);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2+edge/10,
+		capSize().width()/2+(3*edge)/10,
+		capSize().height()/2+edge/10+edge/5);
+    p->drawLine(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2+edge/10+edge/5,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+edge/10+edge/5);
     break;
 
   case RDTransportButton::Pause:
-    p.fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
+    p->fillRect(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
 	       (3*edge)/15,(3*edge)/5,on_color);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10+(3*edge)/15,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10+(3*edge)/15,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10+(3*edge)/15,capSize().height()/2+(3*edge)/10);
-    p.drawLine(capSize().width()/2-(3*edge)/10+(3*edge)/15,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.fillRect(capSize().width()/2+(3*edge)/30,capSize().height()/2-(3*edge)/10,
-	       (3*edge)/15,(3*edge)/5,on_color);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/30,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2+(3*edge)/30,capSize().height()/2-(3*edge)/10);
-    p.drawLine(capSize().width()/2+(3*edge)/30,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2+(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2+(3*edge)/30,capSize().height()/2+(3*edge)/10);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10,
+	       capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10);
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2-(3*edge)/10+(3*edge)/15,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10+(3*edge)/15,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2-(3*edge)/10+(3*edge)/15,
+		capSize().height()/2+(3*edge)/10);
+    p->drawLine(capSize().width()/2-(3*edge)/10+(3*edge)/15,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10);
+    p->fillRect(capSize().width()/2+(3*edge)/30,
+		capSize().height()/2-(3*edge)/10,
+		(3*edge)/15,(3*edge)/5,on_color);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/30,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2+(3*edge)/30,
+		capSize().height()/2-(3*edge)/10);
+    p->drawLine(capSize().width()/2+(3*edge)/30,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2+(3*edge)/10,
+		capSize().height()/2+(3*edge)/10);
+    p->drawLine(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2+(3*edge)/30,
+		capSize().height()/2+(3*edge)/10);
     break;
 
   case RDTransportButton::PlayFrom:
-    p.fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       3,(3*edge)/5,QBrush(accent_color));
-    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10);
-    triangle.setPoint(1,capSize().width()/2+(3*edge)/10+1,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2+(3*edge)/10+1,capSize().height()/2);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10+1,capSize().height()/2,
-	       capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10);
+    p->fillRect(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		3,(3*edge)/5,QBrush(accent_color));
+    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(1,capSize().width()/2+(3*edge)/10+1,
+		      capSize().height()/2);
+    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2+(3*edge)/10,
+	       capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2+(3*edge)/10+1,capSize().height()/2);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10+1,capSize().height()/2,
+		capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2+(3*edge)/10);
     break;
 
   case RDTransportButton::PlayBetween:
-    p.fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       3,(3*edge)/5,QBrush(accent_color));
-    p.fillRect(capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       3,(3*edge)/5,QBrush(accent_color));
-    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10);
-    triangle.setPoint(1,capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(2*edge)/10+1,capSize().height()/2,
-	       capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10);
+    p->fillRect(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		3,(3*edge)/5,QBrush(accent_color));
+    p->fillRect(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		3,(3*edge)/5,QBrush(accent_color));
+    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(1,capSize().width()/2+(2*edge)/10+1,
+		      capSize().height()/2);
+    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(2*edge)/10+1,capSize().height()/2,
+		capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2+(3*edge)/10);
     break;
 
   case RDTransportButton::Loop:
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(edge)/4,
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(edge)/4,
 	       capSize().width()/2+(edge)/10+1,capSize().height()/2-edge/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(edge)/10+1,capSize().height()/2-edge/10,
+    p->setPen(QColor(palette().dark().color()));
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(edge)/10+1,capSize().height()/2-edge/10,
 	       capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(edge)/4);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawArc(capSize().width()/6,capSize().height()/2-edge/9,2*capSize().width()/3,
-	      capSize().height()/3+edge/10,1440,5760);
-    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(edge)/4);
-    triangle.setPoint(1,capSize().width()/2+(edge)/10+1,capSize().height()/2-edge/10);
-    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,capSize().height()/2+edge/20);
-    p.drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawArc(capSize().width()/6,
+	       capSize().height()/2-edge/9,2*capSize().width()/3,
+	       capSize().height()/3+edge/10,1440,5760);
+    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2-(edge)/4);
+    triangle.setPoint(1,capSize().width()/2+(edge)/10+1,
+		      capSize().height()/2-edge/10);
+    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2+edge/20);
+    p->drawPolygon(triangle);
     break;
 
   case RDTransportButton::Up:
     triangle.setPoint(0,capSize().width()/2,(3*edge)/10);
-    triangle.setPoint(1,capSize().width()/2+(3*edge)/10,capSize().height()-(3*edge)/10);
-    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()-(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()-(3*edge)/10,
+    triangle.setPoint(1,capSize().width()/2+(3*edge)/10,
+		      capSize().height()-(3*edge)/10);
+    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,
+		      capSize().height()-(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,capSize().height()-(3*edge)/10,
 	       capSize().width()/2,(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2,(3*edge)/10,
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2,(3*edge)/10,
 	       capSize().width()/2+(3*edge)/10,capSize().height()-(3*edge)/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()-(3*edge)/10,
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,capSize().height()-(3*edge)/10,
 	       capSize().width()/2-(3*edge)/10,capSize().height()-(3*edge)/10);
     break;
 
@@ -587,45 +680,58 @@ void RDTransportButton::drawOnCap()
     triangle.setPoint(0,capSize().width()/2,capSize().height()-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10,(3*edge)/10);
     triangle.setPoint(2,capSize().width()/2-(3*edge)/10,(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,(3*edge)/10,
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,(3*edge)/10,
 	       capSize().width()/2,capSize().height()-(3*edge)/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2,capSize().height()-(3*edge)/10,
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2,capSize().height()-(3*edge)/10,
 	       capSize().width()/2+(3*edge)/10,(3*edge)/10);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,(3*edge)/10,
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,(3*edge)/10,
 	       capSize().width()/2-(3*edge)/10,(3*edge)/10);
     break;
 
   case RDTransportButton::PlayTo:
-    p.fillRect(capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10,
+    p->fillRect(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
 	       3,(3*edge)/5,QBrush(accent_color));
-    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10);
     
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
     
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(2*edge)/10+1,capSize().height()/2,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(2*edge)/10+1,capSize().height()/2,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10);
     break;
   }  
-  p.end();
+  p->end();
+
+  delete p;
 }
 
 
 void RDTransportButton::drawOffCap()
 {
-  QPainter p;
+  if(capSize()==QSize(0,0)) {
+    return;
+  }
+
+  QPainter *p;
   QPolygon triangle=QPolygon(3);
   int edge;
 
@@ -635,105 +741,127 @@ void RDTransportButton::drawOffCap()
   else {
     edge=capSize().width();
   }
+  delete off_cap;
+  off_cap=new QPixmap(capSize());
+  off_cap->fill(palette().color(QPalette::Background));
   drawMask(off_cap);
-  p.begin(off_cap);
-  p.setPen(QColor(Qt::black));
-  p.setBrush(QColor(Qt::black));
+  p=new QPainter(off_cap);
+  p->setPen(QColor(Qt::black));
+  p->setBrush(QColor(Qt::black));
   switch(button_type) {
   case RDTransportButton::Play:
-    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2+(3*edge)/10,capSize().height()/2);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
+    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2+(3*edge)/10,capSize().height()/2);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2,
+	       capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10);
     break;
 
   case RDTransportButton::Stop:
-    p.fillRect(capSize().width()/2-edge*3/10,capSize().height()/2-edge*3/10,
+    p->fillRect(capSize().width()/2-edge*3/10,capSize().height()/2-edge*3/10,
 	       edge*3/5,edge*3/5,QColor(Qt::black));
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-edge*3/10,capSize().height()/2+edge*3/10,
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-edge*3/10,capSize().height()/2+edge*3/10,
 	       capSize().width()/2-edge*3/10,capSize().height()/2-edge*3/10);
-    p.drawLine(capSize().width()/2-edge*3/10,capSize().height()/2-edge*3/10,
+    p->drawLine(capSize().width()/2-edge*3/10,capSize().height()/2-edge*3/10,
 	       capSize().width()/2+edge*3/10,capSize().height()/2-edge*3/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+edge*3/10,capSize().height()/2-edge*3/10,
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+edge*3/10,capSize().height()/2-edge*3/10,
 	       capSize().width()/2+edge*3/10,capSize().height()/2+edge*3/10);
-    p.drawLine(capSize().width()/2+edge*3/10,capSize().height()/2+edge*3/10,
+    p->drawLine(capSize().width()/2+edge*3/10,capSize().height()/2+edge*3/10,
 	       capSize().width()/2-edge*3/10,capSize().height()/2+edge*3/10);
     break;
 
   case RDTransportButton::Record:
-    p.setPen(QColor(Qt::darkRed));
-    p.setBrush(QColor(Qt::darkRed));
-    p.drawEllipse(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-		  (3*edge)/5,(3*edge)/5);
+    p->setPen(QColor(Qt::darkRed));
+    p->setBrush(QColor(Qt::darkRed));
+    p->drawEllipse(capSize().width()/2-(3*edge)/10,
+		   capSize().height()/2-(3*edge)/10,
+		   (3*edge)/5,(3*edge)/5);
     break;
 
   case RDTransportButton::FastForward:
-    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2,capSize().height()/2);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
+    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2,capSize().height()/2);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10);
     triangle.setPoint(0,capSize().width()/2,capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10,capSize().height()/2);
     triangle.setPoint(2,capSize().width()/2,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2+(3*edge)/10,
+    p->drawPolygon(triangle);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2+(3*edge)/10,
 	       capSize().width()/2,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2-(3*edge)/10,
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2-(3*edge)/10,
 	       capSize().width()/2+(3*edge)/10,capSize().height()/2);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2,
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2,
 	       capSize().width()/2,capSize().height()/2+(3*edge)/10);
     break;
     
   case RDTransportButton::Rewind:
-    triangle.setPoint(0,capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(0,capSize().width()/2+(3*edge)/10,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2+(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2,capSize().height()/2);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2,
-	       capSize().width()/2+(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    triangle.setPoint(2,capSize().width()/2+(3*edge)/10,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2,capSize().height()/2);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2,
+		capSize().width()/2+(3*edge)/10,
+		capSize().height()/2+(3*edge)/10);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10);
     triangle.setPoint(0,capSize().width()/2,capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2-(3*edge)/10,capSize().height()/2);
     triangle.setPoint(2,capSize().width()/2,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2-(3*edge)/10,
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2-(3*edge)/10,
 	       capSize().width()/2-(3*edge)/10,capSize().height()/2);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2,
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2,
 	       capSize().width()/2,capSize().height()/2+(3*edge)/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2,capSize().height()/2+(3*edge)/10,
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2,capSize().height()/2+(3*edge)/10,
 	       capSize().width()/2,capSize().height()/2-(3*edge)/10);
     break;
 
@@ -741,126 +869,174 @@ void RDTransportButton::drawOffCap()
     triangle.setPoint(0,capSize().width()/2,capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10,capSize().height()/2);
     triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()/2);
-    p.drawPolygon(triangle);
-    p.fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2+edge/10,
+    p->drawPolygon(triangle);
+    p->fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2+edge/10,
 	       (3*edge)/5,edge/5,QColor(Qt::black));		   
     break;
     
   case RDTransportButton::Pause:
-    p.fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       (3*edge)/15,(3*edge)/5,QColor(Qt::black));
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10+(3*edge)/15,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10+(3*edge)/15,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10+(3*edge)/15,capSize().height()/2+(3*edge)/10);
-    p.drawLine(capSize().width()/2-(3*edge)/10+(3*edge)/15,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.fillRect(capSize().width()/2+(3*edge)/30,capSize().height()/2-(3*edge)/10,
-	       (3*edge)/15,(3*edge)/5,QColor(Qt::black));
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/30,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2+(3*edge)/30,capSize().height()/2-(3*edge)/10);
-    p.drawLine(capSize().width()/2+(3*edge)/30,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2+(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.drawLine(capSize().width()/2+(3*edge)/10,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2+(3*edge)/30,capSize().height()/2+(3*edge)/10);
+    p->fillRect(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		(3*edge)/15,(3*edge)/5,QColor(Qt::black));
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10);
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2-(3*edge)/10+(3*edge)/15,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10+(3*edge)/15,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2-(3*edge)/10+(3*edge)/15,
+		capSize().height()/2+(3*edge)/10);
+    p->drawLine(capSize().width()/2-(3*edge)/10+(3*edge)/15,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10);
+    p->fillRect(capSize().width()/2+(3*edge)/30,
+		capSize().height()/2-(3*edge)/10,
+		(3*edge)/15,(3*edge)/5,QColor(Qt::black));
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/30,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2+(3*edge)/30,
+		capSize().height()/2-(3*edge)/10);
+    p->drawLine(capSize().width()/2+(3*edge)/30,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2+(3*edge)/10,
+		capSize().height()/2+(3*edge)/10);
+    p->drawLine(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2+(3*edge)/30,
+		capSize().height()/2+(3*edge)/10);
     break;
 
   case RDTransportButton::PlayFrom:
-    p.fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       3,(3*edge)/5,QBrush(accent_color));
-    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10);
+    p->fillRect(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		3,(3*edge)/5,QBrush(accent_color));
+    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10+1,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2+(3*edge)/10+1,capSize().height()/2);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(3*edge)/10+1,capSize().height()/2,
-	       capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10);
+    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2+(3*edge)/10+1,capSize().height()/2);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(3*edge)/10+1,capSize().height()/2,
+		capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2+(3*edge)/10);
     break;
 
   case RDTransportButton::PlayBetween:
-    p.fillRect(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       3,(3*edge)/5,QBrush(accent_color));
-    p.fillRect(capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       3,(3*edge)/5,QBrush(accent_color));
-    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10);
+    p->fillRect(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		3,(3*edge)/5,QBrush(accent_color));
+    p->fillRect(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		3,(3*edge)/5,QBrush(accent_color));
+    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(2*edge)/10+1,capSize().height()/2,
-	       capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(3*edge)/10);
+    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(2*edge)/10+1,capSize().height()/2,
+		capSize().width()/2-(2*edge)/10+1,
+		capSize().height()/2+(3*edge)/10);
     break;
 
   case RDTransportButton::Loop:
-    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,capSize().height()/2-(edge)/4);
-    triangle.setPoint(1,capSize().width()/2+(edge)/10+1,capSize().height()/2-edge/10);
-    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,capSize().height()/2+edge/20);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(edge)/4,
+    triangle.setPoint(0,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2-(edge)/4);
+    triangle.setPoint(1,capSize().width()/2+(edge)/10+1,
+		      capSize().height()/2-edge/10);
+    triangle.setPoint(2,capSize().width()/2-(2*edge)/10+1,
+		      capSize().height()/2+edge/20);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(edge)/4,
 	       capSize().width()/2+(edge)/10+1,capSize().height()/2-edge/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(edge)/10+1,capSize().height()/2-edge/10,
+    p->setPen(QColor(palette().dark().color()));
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(edge)/10+1,capSize().height()/2-edge/10,
 	       capSize().width()/2-(2*edge)/10+1,capSize().height()/2+(edge)/4);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawArc(capSize().width()/6,capSize().height()/2-edge/9,2*capSize().width()/3,
-	      capSize().height()/3+edge/10,1440,5760);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawArc(capSize().width()/6,capSize().height()/2-edge/9,
+	       2*capSize().width()/3,
+	       capSize().height()/3+edge/10,1440,5760);
     break;
 
   case RDTransportButton::Up:
     triangle.setPoint(0,capSize().width()/2,(3*edge)/10);
-    triangle.setPoint(1,capSize().width()/2+(3*edge)/10,capSize().height()-(3*edge)/10);
-    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()-(3*edge)/10);
-    p.drawPolygon(triangle);
+    triangle.setPoint(1,capSize().width()/2+(3*edge)/10,
+		      capSize().height()-(3*edge)/10);
+    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,
+		      capSize().height()-(3*edge)/10);
+    p->drawPolygon(triangle);
     break;
 
   case RDTransportButton::Down:
     triangle.setPoint(0,capSize().width()/2,capSize().height()-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(3*edge)/10,(3*edge)/10);
     triangle.setPoint(2,capSize().width()/2-(3*edge)/10,(3*edge)/10);
-    p.drawPolygon(triangle);
+    p->drawPolygon(triangle);
     break;
 
   case RDTransportButton::PlayTo:
-    p.fillRect(capSize().width()/2+(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       3,(3*edge)/5,QBrush(accent_color));
-    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
+    p->fillRect(capSize().width()/2+(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		3,(3*edge)/5,QBrush(accent_color));
+    triangle.setPoint(0,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2-(3*edge)/10);
     triangle.setPoint(1,capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
-    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
-    p.drawPolygon(triangle);
-    p.setPen(QColor(palette().shadow().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10);
-    p.setPen(QColor(palette().dark().color()));
-    p.drawLine(capSize().width()/2-(3*edge)/10,capSize().height()/2-(3*edge)/10,
-	       capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
-    p.setPen(QColor(palette().light().color()));
-    p.drawLine(capSize().width()/2+(2*edge)/10+1,capSize().height()/2,
-	       capSize().width()/2-(3*edge)/10,capSize().height()/2+(3*edge)/10);
+    triangle.setPoint(2,capSize().width()/2-(3*edge)/10,
+		      capSize().height()/2+(3*edge)/10);
+    p->drawPolygon(triangle);
+    p->setPen(QColor(palette().shadow().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10);
+    p->setPen(QColor(palette().dark().color()));
+    p->drawLine(capSize().width()/2-(3*edge)/10,
+		capSize().height()/2-(3*edge)/10,
+		capSize().width()/2+(2*edge)/10+1,capSize().height()/2);
+    p->setPen(QColor(palette().light().color()));
+    p->drawLine(capSize().width()/2+(2*edge)/10+1,capSize().height()/2,
+		capSize().width()/2-(3*edge)/10,
+		capSize().height()/2+(3*edge)/10);
     break;
   }  
-  p.end();
+  p->end();
+
+  delete p;
 }
 
 void RDTransportButton::flashOn()
@@ -882,7 +1058,7 @@ void RDTransportButton::flashOff()
 QSize RDTransportButton::capSize() const
 {
   if(text().isEmpty()) {
-    return size();
+    return QSize(size().width()-2,size().height()-2);
   }
   return QSize(size().width()/2,size().height()/2);
 }

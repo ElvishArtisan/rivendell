@@ -21178,3 +21178,8 @@
 	* Removed stray include lines.
 2021-02-24 Fred Gleason <fredg@paravelsystems.com>
 	* Updated build system to use Qt5 instead of Qt4.
+2021-02-24 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up accelerator shortcuts in rdadmin(1).
+2021-02-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDTransportButton' that caused keycaps
+	to be invisible.
