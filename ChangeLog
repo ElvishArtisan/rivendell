@@ -21191,3 +21191,5 @@
 2021-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlibrary that broke searching for 'ALL'
 	groups.
+2021-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogin(1) that broke account logout.

@@ -224,7 +224,7 @@ void MainWidget::logoutData()
   rda->ripc()->setUser(default_name);
   login_password_edit->clear();
   for(int i=0;i<login_username_box->count();i++) {
-    if(login_username_box->itemData(i).toString()==default_name) {
+    if(login_username_box->itemText(i)==default_name) {
       login_username_box->setCurrentIndex(i);
       qApp->processEvents();
       cancelData();
