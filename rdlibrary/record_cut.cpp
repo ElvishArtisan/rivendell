@@ -305,7 +305,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   rec_aes_alarm_label=new QLabel(this);
   rec_aes_alarm_label->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
-  rec_aes_alarm_label->setFont(progressFont());
+ rec_aes_alarm_label->setFont(progressFont());
   rec_aes_alarm_label->setPalette(QColor(Qt::red));
   rec_aes_alarm_label->setText(tr("AES ALARM"));
   rec_aes_alarm_label->hide();

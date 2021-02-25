@@ -21,8 +21,6 @@
 #ifndef AUDIO_CART_H
 #define AUDIO_CART_H
 
-#include <QProgressDialog>
-
 #include <rdcart.h>
 #include <rdcutlistmodel.h>
 #include <rdtableview.h>
@@ -62,7 +60,6 @@ class AudioCart : public RDWidget
    * cut of audio.
    **/
   void extEditorCutData();
-  void copyProgressData(const QVariant &step);
   
  signals:
   void cartDataChanged();
@@ -78,7 +75,6 @@ class AudioCart : public RDWidget
   bool rdcart_select_cut;
   AudioControls *rdcart_controls;
   QPushButton *paste_cut_button;
-  QProgressDialog *rdcart_progress_dialog;
   bool rdcart_modification_allowed;
   bool rdcart_import_metadata;
   bool rdcart_profile_rip;

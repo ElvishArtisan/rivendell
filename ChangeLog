@@ -21186,3 +21186,5 @@
 2021-02-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a memory leak in 'RDSchedCodesDialog'.
 	* Fixed a memory leaks in rdadmin(1).
+2021-02-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed various regression in rdlibrary(1).

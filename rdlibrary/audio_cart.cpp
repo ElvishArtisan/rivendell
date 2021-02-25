@@ -53,15 +53,6 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   QColor system_button_text_color = palette().buttonText().color();
 
   //
-  // Progress Dialog
-  //
-  rdcart_progress_dialog=new QProgressDialog(this);
-  rdcart_progress_dialog->setLabelText(tr("Copying audio..."));
-  rdcart_progress_dialog->setCancelButton(NULL);
-  rdcart_progress_dialog->setMaximum(10);
-  rdcart_progress_dialog->setMinimumDuration(1000);
-
-  //
   // Add Cut Button
   //
   QPushButton *add_cut_button=new QPushButton(this);
@@ -122,6 +113,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   p->end();
   QPushButton *record_cut_button=new QPushButton(this);
   record_cut_button->setGeometry(550,0,80,50);
+  record_cut_button->setIconSize(QSize(78,48));
   record_cut_button->setIcon(*pix);
   connect(record_cut_button,SIGNAL(clicked()),this,SLOT(recordCutData()));
   
@@ -164,6 +156,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   p->end();
   QPushButton *import_cut_button=new QPushButton(this);
   import_cut_button->setIcon(*pix);
+  import_cut_button->setIconSize(QSize(78,48));
   import_cut_button->setGeometry(550,120+yoffset,80,50);
   connect(import_cut_button,SIGNAL(clicked()),this,SLOT(importCutData()));
 
@@ -604,13 +597,6 @@ void AudioCart::importCutData()
 			    QTime().msecsTo(rdcart_controls->
 					    forced_length_edit->time()));
   rdcart_cut_model->refresh(row);
-}
-
-
-void AudioCart::copyProgressData(const QVariant &step)
-{
-  rdcart_progress_dialog->setValue(step.toInt());
-  qApp->processEvents();
 }
 
 

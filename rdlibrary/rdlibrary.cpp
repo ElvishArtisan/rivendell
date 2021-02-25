@@ -79,10 +79,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   lib_progress_dialog=
     new QProgressDialog(tr("Please Wait..."),tr("Cancel"),0,10,this);
-  //  lib_progress_dialog=
-  //    new QProgressDialog(tr("Please Wait..."),tr("Cancel"),0,10,this,
-  //			Qt::WStyle_Customize|Qt::WStyle_NormalBorder);
   lib_progress_dialog->setWindowTitle(" ");
+  lib_progress_dialog->setValue(10);
   QLabel *label=new QLabel(tr("Please Wait..."),lib_progress_dialog);
   label->setAlignment(Qt::AlignCenter);
   label->setFont(progressFont());

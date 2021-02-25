@@ -5,7 +5,7 @@
     <name>AudioCart</name>
     <message>
         <source>Copying audio...</source>
-        <translation>Kopierer lyd...</translation>
+        <translation type="obsolete">Kopierer lyd...</translation>
     </message>
     <message>
         <source>Add</source>
@@ -697,27 +697,27 @@ Disk</source>
     </message>
     <message>
         <source>&amp;Title:</source>
-        <translation>&amp;Tittel:</translation>
+        <translation type="obsolete">&amp;Tittel:</translation>
     </message>
     <message>
         <source>&amp;Start Date:</source>
-        <translation>&amp;Startdato:</translation>
+        <translation type="obsolete">&amp;Startdato:</translation>
     </message>
     <message>
         <source>&amp;End Date:</source>
-        <translation>Slu&amp;ttdato:</translation>
+        <translation type="obsolete">Slu&amp;ttdato:</translation>
     </message>
     <message>
         <source>&amp;Artist:</source>
-        <translation>&amp;Artist:</translation>
+        <translation type="obsolete">&amp;Artist:</translation>
     </message>
     <message>
         <source>&amp;Year Released:</source>
-        <translation>&amp;Utgjevingsår:</translation>
+        <translation type="obsolete">&amp;Utgjevingsår:</translation>
     </message>
     <message>
         <source>U&amp;sage:</source>
-        <translation>&amp;Bruk:</translation>
+        <translation type="obsolete">&amp;Bruk:</translation>
     </message>
     <message>
         <source>Scheduler Codes</source>
@@ -725,31 +725,31 @@ Disk</source>
     </message>
     <message>
         <source>Al&amp;bum:</source>
-        <translation>A&amp;lbum:</translation>
+        <translation type="obsolete">A&amp;lbum:</translation>
     </message>
     <message>
         <source>Re&amp;cord Label:</source>
-        <translation>&amp;Plateselskap:</translation>
+        <translation type="obsolete">&amp;Plateselskap:</translation>
     </message>
     <message>
         <source>C&amp;lient:</source>
-        <translation>K&amp;lient:</translation>
+        <translation type="obsolete">K&amp;lient:</translation>
     </message>
     <message>
         <source>A&amp;gency:</source>
-        <translation>A&amp;gent:</translation>
+        <translation type="obsolete">A&amp;gent:</translation>
     </message>
     <message>
         <source>&amp;Publisher:</source>
-        <translation>Ut&amp;gjevar:</translation>
+        <translation type="obsolete">Ut&amp;gjevar:</translation>
     </message>
     <message>
         <source>Compos&amp;er:</source>
-        <translation>&amp;Komponist:</translation>
+        <translation type="obsolete">&amp;Komponist:</translation>
     </message>
     <message>
         <source>&amp;User Defined:</source>
-        <translation>Br&amp;ukardefinert:</translation>
+        <translation type="obsolete">Br&amp;ukardefinert:</translation>
     </message>
     <message>
         <source>Schedule Cuts:</source>
@@ -841,19 +841,7 @@ Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cond&amp;uctor:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Song &amp;ID:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Beats per Minute:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -886,6 +874,70 @@ Notes</source>
     </message>
     <message>
         <source>Duplicate Cut Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Date:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Date:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist:</source>
+        <translation type="unfinished">Artist:</translation>
+    </message>
+    <message>
+        <source>Year Released:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Song ID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Beats per Minute:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Album:</source>
+        <translation type="unfinished">Album:</translation>
+    </message>
+    <message>
+        <source>Record Label:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Publisher:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Composer:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conductor:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Defined:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

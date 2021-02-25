@@ -205,7 +205,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.title_edit=new QLineEdit(this);
   rdcart_controls.title_edit->setGeometry(135,60,480,21);
   rdcart_controls.title_edit->setMaxLength(255);
-  QLabel *rdcart_title_label=new QLabel(tr("&Title:"),this);
+  QLabel *rdcart_title_label=new QLabel(tr("Title:"),this);
   rdcart_title_label->setGeometry(10,62,120,21);
   rdcart_title_label->setFont(labelFont());
   rdcart_title_label->
@@ -217,7 +217,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_start_date_edit=new QLineEdit(this);
   rdcart_start_date_edit->setGeometry(135,84,100,21);
   rdcart_start_date_edit->setMaxLength(255);
-  QLabel *rdcart_start_date_label=new QLabel(tr("&Start Date:"),this);
+  QLabel *rdcart_start_date_label=new QLabel(tr("Start Date:"),this);
   rdcart_start_date_label->setGeometry(10,86,120,21);
   rdcart_start_date_label->setFont(labelFont());
   rdcart_start_date_label->
@@ -231,7 +231,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_end_date_edit=new QLineEdit(this);
   rdcart_end_date_edit->setGeometry(350,84,100,21);
   rdcart_end_date_edit->setMaxLength(255);
-  QLabel *rdcart_end_date_label=new QLabel(tr("&End Date:"),this);
+  QLabel *rdcart_end_date_label=new QLabel(tr("End Date:"),this);
   rdcart_end_date_label->setGeometry(260,86,85,21);
   rdcart_end_date_label->setFont(labelFont());
   rdcart_end_date_label->
@@ -245,7 +245,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.artist_edit=new QLineEdit(this);
   rdcart_controls.artist_edit->setGeometry(135,84,480,21);
   rdcart_controls.artist_edit->setMaxLength(255);
-  QLabel *rdcart_artist_label=new QLabel(tr("&Artist:"),this);
+  QLabel *rdcart_artist_label=new QLabel(tr("Artist:"),this);
   rdcart_artist_label->setGeometry(10,86,120,21);
   rdcart_artist_label->setFont(labelFont());
   rdcart_artist_label->
@@ -260,7 +260,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.year_edit->setGeometry(135,110,50,21);
   rdcart_controls.year_edit->setValidator(val);
   rdcart_controls.year_edit->setMaxLength(255);
-  QLabel *rdcart_year_label=new QLabel(tr("&Year Released:"),this);
+  QLabel *rdcart_year_label=new QLabel(tr("Year Released:"),this);
   rdcart_year_label->setGeometry(10,112,120,21);
   rdcart_year_label->setFont(labelFont());
   rdcart_year_label->
@@ -278,7 +278,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
     rdcart_usage_box->insertItem(rdcart_usage_box->count(),
 				 RDCart::usageText((RDCart::UsageCode)i));
   }
-  QLabel *label=new QLabel(tr("U&sage:"),this);
+  QLabel *label=new QLabel(tr("Usage:"),this);
   label->setGeometry(195,112,70,21);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -302,7 +302,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.song_id_edit=new QLineEdit(this);
   rdcart_controls.song_id_edit->setGeometry(135,135,240,21);
   rdcart_controls.song_id_edit->setMaxLength(32);
-  QLabel *rdcart_song_id_label=new QLabel(tr("Song &ID:"),this);
+  QLabel *rdcart_song_id_label=new QLabel(tr("Song ID:"),this);
   rdcart_song_id_label->setGeometry(10,135,120,21);
   rdcart_song_id_label->setFont(labelFont());
   rdcart_song_id_label->
@@ -315,7 +315,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.bpm_spin->setGeometry(515,135,100,21);
   rdcart_controls.bpm_spin->setRange(0,300);
   rdcart_controls.bpm_spin->setSpecialValueText(tr("Unknown"));
-  QLabel *rdcart_bpm_label=new QLabel(tr("&Beats per Minute:"),this);
+  QLabel *rdcart_bpm_label=new QLabel(tr("Beats per Minute:"),this);
   rdcart_bpm_label->setGeometry(390,135,120,21);
   rdcart_bpm_label->setFont(labelFont());
   rdcart_bpm_label->
@@ -327,7 +327,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.album_edit=new QLineEdit(this);
   rdcart_controls.album_edit->setGeometry(135,158,480,21);
   rdcart_controls.album_edit->setMaxLength(255);
-  QLabel *rdcart_album_label=new QLabel(tr("Al&bum:"),this);
+  QLabel *rdcart_album_label=new QLabel(tr("Album:"),this);
   rdcart_album_label->setGeometry(10,158,120,21);
   rdcart_album_label->setFont(labelFont());
   rdcart_album_label->
@@ -339,7 +339,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.label_edit=new QLineEdit(this);
   rdcart_controls.label_edit->setGeometry(135,182,480,21);
   rdcart_controls.label_edit->setMaxLength(64);
-  QLabel *rdcart_label_label=new QLabel(tr("Re&cord Label:"),this);
+  QLabel *rdcart_label_label=new QLabel(tr("Record Label:"),this);
   rdcart_label_label->setGeometry(10,182,120,21);
   rdcart_label_label->setFont(labelFont());
   rdcart_label_label->
@@ -351,7 +351,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.client_edit=new QLineEdit(this);
   rdcart_controls.client_edit->setGeometry(135,206,480,21);
   rdcart_controls.client_edit->setMaxLength(64);
-  QLabel *rdcart_client_label=new QLabel(tr("C&lient:"),this);
+  QLabel *rdcart_client_label=new QLabel(tr("Client:"),this);
   rdcart_client_label->setGeometry(10,206,120,21);
   rdcart_client_label->setFont(labelFont());
   rdcart_client_label->
@@ -363,7 +363,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.agency_edit=new QLineEdit(this);
   rdcart_controls.agency_edit->setGeometry(135,230,480,21);
   rdcart_controls.agency_edit->setMaxLength(64);
-  QLabel *rdcart_agency_label=new QLabel(tr("A&gency:"),this);
+  QLabel *rdcart_agency_label=new QLabel(tr("Agency:"),this);
   rdcart_agency_label->setGeometry(10,230,120,21);
   rdcart_agency_label->setFont(labelFont());
   rdcart_agency_label->
@@ -375,7 +375,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.publisher_edit=new QLineEdit(this);
   rdcart_controls.publisher_edit->setGeometry(135,254,480,21);
   rdcart_controls.publisher_edit->setMaxLength(64);
-  QLabel *rdcart_publisher_label=new QLabel(tr("&Publisher:"),this);
+  QLabel *rdcart_publisher_label=new QLabel(tr("Publisher:"),this);
   rdcart_publisher_label->setGeometry(10,254,120,21);
   rdcart_publisher_label->setFont(labelFont());
   rdcart_publisher_label->
@@ -387,7 +387,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.composer_edit=new QLineEdit(this);
   rdcart_controls.composer_edit->setGeometry(135,278,480,21);
   rdcart_controls.composer_edit->setMaxLength(64);
-  QLabel *rdcart_composer_label=new QLabel(tr("Compos&er:"),this);
+  QLabel *rdcart_composer_label=new QLabel(tr("Composer:"),this);
   rdcart_composer_label->setGeometry(10,278,120,21);
   rdcart_composer_label->setFont(labelFont());
   rdcart_composer_label->
@@ -399,7 +399,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.conductor_edit=new QLineEdit(this);
   rdcart_controls.conductor_edit->setGeometry(135,302,480,21);
   rdcart_controls.conductor_edit->setMaxLength(255);
-  QLabel *rdcart_conductor_label=new QLabel(tr("Cond&uctor:"),this);
+  QLabel *rdcart_conductor_label=new QLabel(tr("Conductor:"),this);
   rdcart_conductor_label->setGeometry(10,302,120,21);
   rdcart_conductor_label->setFont(labelFont());
   rdcart_conductor_label->
@@ -411,7 +411,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_controls.user_defined_edit=new QLineEdit(this);
   rdcart_controls.user_defined_edit->setGeometry(135,325,480,21);
   rdcart_controls.user_defined_edit->setMaxLength(255);
-  QLabel *rdcart_user_defined_label=new QLabel(tr("&User Defined:"),this);
+  QLabel *rdcart_user_defined_label=new QLabel(tr("User Defined:"),this);
   rdcart_user_defined_label->setGeometry(10,325,120,21);
   rdcart_user_defined_label->setFont(labelFont());
   rdcart_user_defined_label->

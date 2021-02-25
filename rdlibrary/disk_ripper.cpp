@@ -847,6 +847,7 @@ void DiskRipper::resizeEvent(QResizeEvent *e)
   rip_apply_box->setGeometry(65,118,15,15);
   rip_apply_label->setGeometry(85,118,250,20);
   rip_browser_button->setGeometry(size().width()-260,117,200,35);
+  rip_browser_button->setIconSize(QSize(198,33));
   rip_browser_label->setGeometry(size().width()-260,117,200,35);
   rip_track_label->setGeometry(100,140,100,14);
   rip_track_view->setGeometry(100,156,size().width()-202,size().height()-342);

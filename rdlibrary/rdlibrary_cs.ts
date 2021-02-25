@@ -5,7 +5,7 @@
     <name>AudioCart</name>
     <message>
         <source>Copying audio...</source>
-        <translation>Kopíruje se zvuk...</translation>
+        <translation type="obsolete">Kopíruje se zvuk...</translation>
     </message>
     <message>
         <source>Add</source>
@@ -705,27 +705,27 @@ Selection</source>
     </message>
     <message>
         <source>&amp;Title:</source>
-        <translation>&amp;Název:</translation>
+        <translation type="obsolete">&amp;Název:</translation>
     </message>
     <message>
         <source>&amp;Start Date:</source>
-        <translation>&amp;Počáteční datum:</translation>
+        <translation type="obsolete">&amp;Počáteční datum:</translation>
     </message>
     <message>
         <source>&amp;End Date:</source>
-        <translation>&amp;Koncové datum:</translation>
+        <translation type="obsolete">&amp;Koncové datum:</translation>
     </message>
     <message>
         <source>&amp;Artist:</source>
-        <translation>&amp;Umělec:</translation>
+        <translation type="obsolete">&amp;Umělec:</translation>
     </message>
     <message>
         <source>&amp;Year Released:</source>
-        <translation>&amp;Rok vydání:</translation>
+        <translation type="obsolete">&amp;Rok vydání:</translation>
     </message>
     <message>
         <source>U&amp;sage:</source>
-        <translation>Po&amp;užití:</translation>
+        <translation type="obsolete">Po&amp;užití:</translation>
     </message>
     <message>
         <source>Scheduler Codes</source>
@@ -733,31 +733,31 @@ Selection</source>
     </message>
     <message>
         <source>Al&amp;bum:</source>
-        <translation>Al&amp;bum:</translation>
+        <translation type="obsolete">Al&amp;bum:</translation>
     </message>
     <message>
         <source>Re&amp;cord Label:</source>
-        <translation>Označení &amp;nahrávky:</translation>
+        <translation type="obsolete">Označení &amp;nahrávky:</translation>
     </message>
     <message>
         <source>C&amp;lient:</source>
-        <translation>&amp;Zákazník:</translation>
+        <translation type="obsolete">&amp;Zákazník:</translation>
     </message>
     <message>
         <source>A&amp;gency:</source>
-        <translation>A&amp;gentura:</translation>
+        <translation type="obsolete">A&amp;gentura:</translation>
     </message>
     <message>
         <source>&amp;Publisher:</source>
-        <translation>Vy&amp;davatel:</translation>
+        <translation type="obsolete">Vy&amp;davatel:</translation>
     </message>
     <message>
         <source>Compos&amp;er:</source>
-        <translation>Skladat&amp;el:</translation>
+        <translation type="obsolete">Skladat&amp;el:</translation>
     </message>
     <message>
         <source>&amp;User Defined:</source>
-        <translation>Stanoveno už&amp;ivatelem:</translation>
+        <translation type="obsolete">Stanoveno už&amp;ivatelem:</translation>
     </message>
     <message>
         <source>Schedule Cuts:</source>
@@ -861,19 +861,7 @@ poznámky</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cond&amp;uctor:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Song &amp;ID:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Beats per Minute:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -906,6 +894,70 @@ poznámky</translation>
     </message>
     <message>
         <source>Duplicate Cut Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Date:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Date:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist:</source>
+        <translation type="unfinished">Umělec:</translation>
+    </message>
+    <message>
+        <source>Year Released:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Usage:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Song ID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Beats per Minute:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Album:</source>
+        <translation type="unfinished">Album:</translation>
+    </message>
+    <message>
+        <source>Record Label:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Publisher:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Composer:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conductor:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Defined:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

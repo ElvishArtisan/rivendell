@@ -667,6 +667,7 @@ void CdRipper::resizeEvent(QResizeEvent *e)
   rip_apply_box->setGeometry(65,162,15,15);
   rip_apply_label->setGeometry(85,162,250,20);
   rip_browser_button->setGeometry(size().width()-260,161,200,35);
+  rip_browser_button->setIconSize(QSize(198,33));
   rip_browser_label->setGeometry(size().width()-260,161,200,35);
   rip_track_view->setGeometry(10,200,size().width()-110,size().height()-305);
   rip_track_label->setGeometry(10,184,100,14);
