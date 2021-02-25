@@ -2323,7 +2323,7 @@ void MainObject::ErrorExit(RDApplication::ExitCode code) const
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv,false);
   new MainObject();
   return a.exec();
 }

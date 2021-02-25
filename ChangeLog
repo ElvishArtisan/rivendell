@@ -21217,3 +21217,6 @@
 2021-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatchd(8) that caused it to fail to
 	start properly.
+2021-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdimport(1) that caused it to fail to
+	start in dropbox mode.
