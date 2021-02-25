@@ -21204,3 +21204,6 @@
 	* Fixed a regression in 'RDCae' that broke audio play-out.
 2021-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in metering code that caused visual artifacts.
+2021-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions that caused progress dialogs to appear when
+	starting up applications.

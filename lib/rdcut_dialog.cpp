@@ -67,6 +67,7 @@ RDCutDialog::RDCutDialog(QString *filter,QString *group,QString *schedcode,
   cart_progress_dialog=
     new QProgressDialog(tr("Please Wait..."),tr("Cancel"),0,10,this);
   cart_progress_dialog->setWindowTitle(" ");
+  cart_progress_dialog->setValue(10);
   QLabel *label=new QLabel(tr("Please Wait..."),cart_progress_dialog);
   label->setAlignment(Qt::AlignCenter);
   label->setFont(progressFont());
