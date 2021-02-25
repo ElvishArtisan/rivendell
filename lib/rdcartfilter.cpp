@@ -233,7 +233,7 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   sql+=RDCartFilter::phraseFilter(d_filter_edit->text().trimmed(),true);
   QStringList groups;
   for(int i=0;i<d_group_box->count();i++) {
-    groups.push_back(d_group_box->itemData(i).toString());
+    groups.push_back(d_group_box->itemText(i));
   }
   sql+=RDCartFilter::groupFilter(d_group_box->currentText(),groups);
   if(d_show_track_carts) {
