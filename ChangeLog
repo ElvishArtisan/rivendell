@@ -21214,3 +21214,6 @@
 	* Removed vestigal signals from 'RDSocket'.
 	* Fixed a bug in 'RDApplication' that could cause 'openlog(3)'
 	to receive a corrupt 'ident' value.
+2021-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatchd(8) that caused it to fail to
+	start properly.
