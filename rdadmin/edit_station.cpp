@@ -76,7 +76,6 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // Models
   //
   station_username_model=new RDUserListModel(this);
-  station_station_model=new RDStationListModel(false,sname,this);
 
   //
   // Station Name
@@ -303,7 +302,8 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   station_http_station_box=new RDComboBox(this);
   station_http_station_box->setEditable(false);
-  station_http_station_box->setModel(station_station_model);
+  station_http_station_model=new RDStationListModel(false,sname,this);
+  station_http_station_box->setModel(station_http_station_model);
   station_http_station_label=new QLabel(tr("HTTP Xport:"),this);
   station_http_station_label->setFont(labelFont());
   station_http_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -313,7 +313,8 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   station_cae_station_box=new RDComboBox(this);
   station_cae_station_box->setEditable(false);
-  station_cae_station_box->setModel(station_station_model);
+  station_cae_station_model=new RDStationListModel(false,sname,this);
+  station_cae_station_box->setModel(station_cae_station_model);
   connect(station_cae_station_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(caeStationActivatedData(const QString &)));
   station_cae_station_label=new QLabel(tr("Core Audio Engine:"),this);
@@ -537,12 +538,10 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_http_station_box->setCurrentText(station_station->httpStation());
   station_cae_station_box->setCurrentText(station_station->caeStation());
   for(int i=0;i<station_http_station_box->count();i++) {
-    if(station_http_station_box->itemData(i).toString()==
-       station_station->httpStation()) {
+    if(station_http_station_box->itemText(i)==station_station->httpStation()) {
       station_http_station_box->setCurrentIndex(i);
     }
-    if(station_cae_station_box->itemData(i).toString()==
-       station_station->caeStation()) {
+    if(station_cae_station_box->itemText(i)==station_station->caeStation()) {
       station_cae_station_box->setCurrentIndex(i);
     }
   }
@@ -554,7 +553,8 @@ EditStation::~EditStation()
   delete station_station;
   delete station_cae_station;
   delete station_username_model;
-  delete station_station_model;
+  delete station_http_station_model;
+  delete station_cae_station_model;
 }
 
 

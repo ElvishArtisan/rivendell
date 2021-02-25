@@ -34,9 +34,6 @@
 EditSystem::EditSystem(QWidget *parent)
   : RDDialog(parent)
 {
-  QString sql;
-  RDSqlQuery *q;
-
   y_pos=0;
 
   //
@@ -51,6 +48,7 @@ EditSystem::EditSystem(QWidget *parent)
 
   edit_system=new RDSystem();
   edit_encoders_dialog=new ListEncoders(this);
+  edit_station_list_model=new RDStationListModel(true,"",this);
 
   //
   // System Sample Rate
@@ -156,14 +154,7 @@ EditSystem::EditSystem(QWidget *parent)
   // RSS Processor Host
   //
   edit_rss_processor_box=new QComboBox(this);
-  sql=QString("select NAME from STATIONS order by NAME");
-  q=new RDSqlQuery(sql);
-  edit_rss_processor_box->insertItem(0,tr("[none]"));
-  while(q->next()) {
-    edit_rss_processor_box->insertItem(edit_rss_processor_box->count(),
-				       q->value(0).toString());
-  }
-  delete q;
+  edit_rss_processor_box->setModel(edit_station_list_model);
   edit_rss_processor_label=new QLabel(tr("Process RSS Updates On")+":",this);
   edit_rss_processor_label->setFont(labelFont());
   edit_rss_processor_label->
@@ -231,13 +222,13 @@ EditSystem::EditSystem(QWidget *parent)
 
   QString station=edit_system->rssProcessorStation();
   for(int i=0;i<edit_rss_processor_box->count();i++) {
-    if(edit_rss_processor_box->itemData(i).toString()==station) {
+    if(edit_rss_processor_box->itemText(i)==station) {
       edit_rss_processor_box->setCurrentIndex(i);
     }
   }
 
   for(int i=0;i<edit_sample_rate_box->count();i++) {
-    if(edit_sample_rate_box->itemData(i).toString().toUInt()==
+    if(edit_sample_rate_box->itemText(i).toUInt()==
        edit_system->sampleRate()) {
       edit_sample_rate_box->setCurrentIndex(i);
     }
@@ -248,6 +239,7 @@ EditSystem::EditSystem(QWidget *parent)
 
 EditSystem::~EditSystem()
 {
+  delete edit_station_list_model;
   delete edit_system;
   delete edit_encoders_dialog;
   delete edit_duplicate_carts_box;

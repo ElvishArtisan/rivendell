@@ -418,7 +418,7 @@ void EditCartSlots::ReadSlot(unsigned slotnum)
     cartActionData(edit_cartaction_box->currentIndex());
     modeData(edit_mode_box->currentIndex());
     for(int i=0;i<edit_service_box->count();i++) {
-      if(q->value(7).toString()==edit_service_box->itemData(i).toString()) {
+      if(q->value(7).toString()==edit_service_box->itemText(i)) {
 	edit_service_box->setCurrentIndex(i);
       }
     }

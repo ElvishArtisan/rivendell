@@ -3268,10 +3268,6 @@ Custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Process RSS Updates On</source>
         <translation type="unfinished"></translation>
     </message>

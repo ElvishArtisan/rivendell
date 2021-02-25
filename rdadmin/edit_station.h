@@ -134,9 +134,10 @@ class EditStation : public RDDialog
    QGroupBox *station_systemservices_groupbox;
    QLabel *station_http_station_label;
    RDComboBox *station_http_station_box;
+   RDStationListModel *station_http_station_model;
    QLabel *station_cae_station_label;
    RDComboBox *station_cae_station_box;
-   RDStationListModel *station_station_model;
+   RDStationListModel *station_cae_station_model;
    QPushButton *station_rdlibrary_button;
    QPushButton *station_rdcatch_button;
    QPushButton *station_rdairplay_button;

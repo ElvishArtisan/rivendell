@@ -32,6 +32,7 @@
 #include <rddialog.h>
 #include <rdgrouplistmodel.h>
 #include <rdlibrarymodel.h>
+#include <rdstationlistmodel.h>
 #include <rdsystem.h>
 #include <rdtableview.h>
 
@@ -92,6 +93,7 @@ class EditSystem : public RDDialog
   RDSystem *edit_system;
   ListEncoders *edit_encoders_dialog;
   int y_pos;
+  RDStationListModel *edit_station_list_model;
 };
 
 

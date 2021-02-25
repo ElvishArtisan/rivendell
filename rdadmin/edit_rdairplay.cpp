@@ -950,7 +950,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_countto_box->setCurrentIndex(air_conf->pieEndPoint());
   air_default_transtype_box->setCurrentIndex(air_conf->defaultTransType());
   for(int i=0;i<air_defaultsvc_box->count();i++) {
-    if(air_defaultsvc_box->itemData(i).toString()==air_conf->defaultSvc()) {
+    if(air_defaultsvc_box->itemText(i)==air_conf->defaultSvc()) {
       air_defaultsvc_box->setCurrentIndex(i);
       break;
     }

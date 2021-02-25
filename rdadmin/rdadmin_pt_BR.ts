@@ -4125,7 +4125,7 @@ Custom</source>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="unfinished">[Nenhum]</translation>
+        <translation type="obsolete">[Nenhum]</translation>
     </message>
     <message>
         <source>Process RSS Updates On</source>

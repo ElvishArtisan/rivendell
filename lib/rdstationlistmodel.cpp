@@ -236,7 +236,7 @@ void RDStationListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      "where STATIONS.NAME=\""+RDEscapeString(d_hostnames.at(0))+"\"";
+      "where STATIONS.NAME=\""+RDEscapeString(d_hostnames.at(row.row()))+"\"";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);

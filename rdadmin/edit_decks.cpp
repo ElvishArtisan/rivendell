@@ -645,22 +645,21 @@ void EditDecks::ReadRecord(int chan)
 	  break;
     }
     for(int i=0;i<edit_swstation_box->count();i++) {
-      if(edit_record_deck->switchStation()==
-	 edit_swstation_box->itemData(i).toString()) {
+      if(edit_record_deck->switchStation()==edit_swstation_box->itemText(i)) {
 	edit_swstation_box->setCurrentIndex(i);
 	stationActivatedData(edit_swstation_box->currentText());
       }
     }
     QString matrix_name=edit_record_deck->switchMatrixName();
     for(int i=0;i<edit_swmatrix_box->count();i++) {
-      if(edit_swmatrix_box->itemData(i).toString()==matrix_name) {
+      if(edit_swmatrix_box->itemText(i)==matrix_name) {
 	edit_swmatrix_box->setCurrentIndex(i);
 	matrixActivatedData(edit_swmatrix_box->currentText());
       }
     }
     QString output_name=edit_record_deck->switchOutputName();
     for(int i=0;i<edit_swoutput_box->count();i++) {
-      if(edit_swoutput_box->itemData(i).toString()==output_name) {
+      if(edit_swoutput_box->itemText(i)==output_name) {
 	edit_swoutput_box->setCurrentIndex(i);
       }
     }

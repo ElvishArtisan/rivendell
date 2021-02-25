@@ -4050,7 +4050,7 @@ Custom</source>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="unfinished">[ingen]</translation>
+        <translation type="obsolete">[ingen]</translation>
     </message>
     <message>
         <source>Process RSS Updates On</source>
