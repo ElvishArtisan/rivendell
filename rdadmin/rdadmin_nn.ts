@@ -5672,19 +5672,35 @@ Er du sikker på at du vil halda fram?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>User &amp;Name:</source>
-        <translation>Br&amp;ukarnamn:</translation>
+        <translation type="obsolete">Br&amp;ukarnamn:</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>&amp;Passord:</translation>
+        <translation type="obsolete">&amp;Passord:</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished">Passord:</translation>
     </message>
 </context>
 <context>

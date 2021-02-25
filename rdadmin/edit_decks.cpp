@@ -537,6 +537,7 @@ void EditDecks::paintEvent(QPaintEvent *e)
   p->setPen(QColor(Qt::black));
   p->drawLine(385,10,385,sizeHint().height()-10);
   p->end();
+  delete p;
 }
 
 

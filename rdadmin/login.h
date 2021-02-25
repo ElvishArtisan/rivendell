@@ -34,9 +34,6 @@ class Login : public RDDialog
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
 
-  protected:
-   void paintEvent(QPaintEvent *);
-
   private slots:
    void okData();
    void cancelData();

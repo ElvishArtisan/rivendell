@@ -4451,19 +4451,19 @@ Carts</source>
 <context>
     <name>Login</name>
     <message>
-        <source>&amp;OK</source>
+        <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Cancel</source>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>User &amp;Name:</source>
+        <source>User Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Password:</source>
+        <source>Password:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -18,10 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
 #include <QPushButton>
-#include <QPainter>
 
 #include <rdtextvalidator.h>
 
@@ -51,17 +48,17 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(10,60,100,55);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   ok_button->setDefault(true);
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
-  // CANCEL Button
+  // Cancel Button
   //
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(120,60,100,55);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
@@ -72,7 +69,7 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   login_name_edit->setMaxLength(RD_MAX_PASSWORD_LENGTH);
   login_name_edit->setFocus();
   login_name_edit->setValidator(validator);
-  QLabel *login_name_label=new QLabel(tr("User &Name:"),this);
+  QLabel *login_name_label=new QLabel(tr("User Name:"),this);
   login_name_label->setFont(labelFont());
   login_name_label->setGeometry(10,10,85,19);
   login_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -85,7 +82,7 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   login_password_edit->setMaxLength(16);
   login_password_edit->setEchoMode(QLineEdit::Password);
   login_password_edit->setValidator(validator);
-  QLabel *login_password_label=new QLabel(tr("&Password:"),this);
+  QLabel *login_password_label=new QLabel(tr("Password:"),this);
   login_password_label->setGeometry(10,31,85,19);
   login_password_label->setFont(labelFont());
   login_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -122,12 +119,4 @@ void Login::okData()
 void Login::cancelData()
 {
   done(false);
-}
-
-
-void Login::paintEvent(QPaintEvent *paintevent)
-{
-  QPainter *p=new QPainter(this);
-    
-  p->end();
 }

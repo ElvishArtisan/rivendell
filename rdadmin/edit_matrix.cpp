@@ -824,6 +824,7 @@ void EditMatrix::paintEvent(QPaintEvent *e)
   p->drawLine(10,232,10,364);
 
   p->end();
+  delete p;
 }
 
 

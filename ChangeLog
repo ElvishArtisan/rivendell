@@ -21183,3 +21183,6 @@
 2021-02-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'RDTransportButton' that caused keycaps
 	to be invisible.
+2021-02-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a memory leak in 'RDSchedCodesDialog'.
+	* Fixed a memory leaks in rdadmin(1).

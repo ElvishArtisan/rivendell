@@ -143,6 +143,7 @@ void RDSchedCodesDialog::paintEvent(QPaintEvent *e)
   p->setPen(QColor(Qt::black));
   p->drawLine(sizeHint().width(),10,sizeHint().width(),210);
   p->end();
+  delete p;
 }
 
 
