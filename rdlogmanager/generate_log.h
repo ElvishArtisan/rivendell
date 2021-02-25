@@ -72,9 +72,6 @@ class GenerateLog : public RDDialog
   QLabel *gen_tfc_merged_label;
   QLabel *gen_mus_avail_label;
   QLabel *gen_mus_merged_label;
-  QPixmap *gen_whiteball_map;
-  QPixmap *gen_greenball_map;
-  QPixmap *gen_redball_map;
   bool gen_music_enabled;
   bool gen_traffic_enabled;
   int cmdswitch;
@@ -83,5 +80,4 @@ class GenerateLog : public RDDialog
 };
 
 
-#endif
-
+#endif  // GENERATE_LOG_H

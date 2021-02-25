@@ -18,7 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QApplication>
+#include <QMessageBox>
 
 #include "rdapplication.h"
 #include "rdclock.h"
@@ -822,6 +823,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   }
 
   emit generationProgress(0);
+  qApp->processEvents();
 
   //
   // Generate Log Structure
@@ -847,6 +849,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   log->setIncludeImportMarkers(includeImportMarkers());
 
   emit generationProgress(1);
+  qApp->processEvents();
 
   //
   // Generate Events
@@ -866,6 +869,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
     }
     delete q;
     emit generationProgress(1+i);
+    qApp->processEvents();
   }
 
   //
@@ -956,6 +960,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   int total_links=log->linkQuantity(link_src);
 
   emit generationProgress(0);
+  qApp->processEvents();
 
   //
   // Load ParserStrings
@@ -1003,6 +1008,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
 		 track_cart,&autofill_errors);
       delete e;
       emit generationProgress(1+(24*current_link++)/total_links);
+      qApp->processEvents();
     }
     else {
       dst_model->insert(dst_model->lineCount(),1,true);
@@ -1109,6 +1115,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   // Clean Up
   //
   emit generationProgress(24);
+  qApp->processEvents();
   delete src_model;
   delete dst_model;
 

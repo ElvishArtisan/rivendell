@@ -30,19 +30,12 @@
 #include "generate_log.h"
 #include "globals.h"
 
-//
-// Icons
-//
-#include "../icons/whiteball.xpm"
-#include "../icons/greenball.xpm"
-#include "../icons/redball.xpm"
-
 GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
 			 QDate *cmd_date)
   : RDDialog(parent)
 {
   QStringList services_list;
-  bool  cmdservicefit=false;
+  bool cmdservicefit=false;
   cmdswitch=cmd_switch;
   cmdservice = cmd_service;
   cmddate = cmd_date;
@@ -59,19 +52,13 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   setMaximumSize(sizeHint());
 
   //
-  // Create Icons
-  //
-  gen_whiteball_map=new QPixmap(whiteball_xpm);
-  gen_greenball_map=new QPixmap(greenball_xpm);
-  gen_redball_map=new QPixmap(redball_xpm);
-
-  //
   // Progress Dialog
   //
   gen_progress_dialog=
     new QProgressDialog(tr("Generating Log..."),tr("Cancel"),0,24,this);
   gen_progress_dialog->setWindowTitle("Progress");
   gen_progress_dialog->setCancelButton(NULL);
+  gen_progress_dialog->setValue(24);
 
   //
   // Service Name
@@ -166,12 +153,14 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   // Music Indicators
   //
   gen_mus_avail_label=new QLabel(this);
-  gen_mus_avail_label->setPixmap(*gen_whiteball_map);
+  gen_mus_avail_label->
+    setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
   gen_mus_avail_label->setFont(subLabelFont());
   gen_mus_avail_label->setAlignment(Qt::AlignCenter);
 
   gen_mus_merged_label=new QLabel(this);
-  gen_mus_merged_label->setPixmap(*gen_whiteball_map);
+  gen_mus_merged_label->
+    setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
   gen_mus_merged_label->setFont(subLabelFont());
   gen_mus_merged_label->setAlignment(Qt::AlignCenter);
 
@@ -179,12 +168,14 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   // Traffic Indicators
   //
   gen_tfc_avail_label=new QLabel(this);
-  gen_tfc_avail_label->setPixmap(*gen_whiteball_map);
+  gen_tfc_avail_label->
+    setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
   gen_tfc_avail_label->setFont(subLabelFont());
   gen_tfc_avail_label->setAlignment(Qt::AlignCenter);
 
   gen_tfc_merged_label=new QLabel(this);
-  gen_tfc_merged_label->setPixmap(*gen_whiteball_map);
+  gen_tfc_merged_label->
+    setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
   gen_tfc_merged_label->setFont(subLabelFont());
   gen_tfc_merged_label->setAlignment(Qt::AlignCenter);
 
@@ -521,15 +512,18 @@ void GenerateLog::fileScanData()
       gen_music_button->setEnabled(log->includeImportMarkers()||
 				   (log->linkState(RDLog::SourceMusic)==
 				    RDLog::LinkMissing));
-      gen_mus_avail_label->setPixmap(*gen_greenball_map);
+      gen_mus_avail_label->
+	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
     }
     else {
       gen_music_button->setDisabled(true);
-      gen_mus_avail_label->setPixmap(*gen_redball_map);
+      gen_mus_avail_label->
+	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
     }
   }
   else {
-    gen_mus_avail_label->setPixmap(*gen_whiteball_map);
+    gen_mus_avail_label->
+      setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
   }
   if(gen_traffic_enabled) {
     if(QFile::exists(svc->
@@ -540,15 +534,18 @@ void GenerateLog::fileScanData()
 		   (log->includeImportMarkers()||
 		    (log->linkState(RDLog::SourceTraffic)==
 		     RDLog::LinkMissing)));
-      gen_tfc_avail_label->setPixmap(*gen_greenball_map);
+      gen_tfc_avail_label->
+	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
     }
     else {
       gen_traffic_button->setDisabled(true);
-      gen_tfc_avail_label->setPixmap(*gen_redball_map);
+      gen_tfc_avail_label->
+	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
     }
   }
   else {
-    gen_tfc_avail_label->setPixmap(*gen_whiteball_map);
+    gen_tfc_avail_label->
+      setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
   }
   delete log;
   delete svc;
@@ -594,37 +591,45 @@ void GenerateLog::UpdateControls()
     if(log->linkQuantity(RDLog::SourceMusic)>0) {
       gen_music_enabled=true;
       if(log->linkState(RDLog::SourceMusic)==RDLog::LinkDone) {
-	gen_mus_merged_label->setPixmap(*gen_greenball_map);
+	gen_mus_merged_label->
+	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
       }
       else {
-	gen_mus_merged_label->setPixmap(*gen_redball_map);
+	gen_mus_merged_label->
+	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
       }
     }
     else {
       gen_music_enabled=false;
       gen_music_button->setDisabled(true);
-      gen_mus_merged_label->setPixmap(*gen_whiteball_map);
+      gen_mus_merged_label->
+	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
     }
     if(log->linkQuantity(RDLog::SourceTraffic)>0) {
       gen_traffic_enabled=true;
       if(log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone) {
-	gen_tfc_merged_label->setPixmap(*gen_greenball_map);
+	gen_tfc_merged_label->
+	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
       }
       else {
-	gen_tfc_merged_label->setPixmap(*gen_redball_map);
+	gen_tfc_merged_label->
+	  setPixmap(rda->iconEngine()->listIcon(RDIconEngine::RedBall));
       }
     }
     else {
       gen_traffic_enabled=false;
       gen_traffic_button->setDisabled(true);
-      gen_tfc_merged_label->setPixmap(*gen_whiteball_map);
+      gen_tfc_merged_label->
+	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
     }
   }
   else {
     gen_music_button->setDisabled(true);
-    gen_mus_merged_label->setPixmap(*gen_whiteball_map);
+    gen_mus_merged_label->
+      setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
     gen_traffic_button->setDisabled(true);
-    gen_tfc_merged_label->setPixmap(*gen_whiteball_map);
+    gen_tfc_merged_label->
+      setPixmap(rda->iconEngine()->listIcon(RDIconEngine::WhiteBall));
     gen_music_enabled=false;
     gen_traffic_enabled=false;
   }
