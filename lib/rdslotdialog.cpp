@@ -145,13 +145,13 @@ void RDSlotDialog::okData()
   edit_options->setHookMode(edit_hook_box->currentIndex());
   edit_options->setStopAction((RDSlotOptions::StopAction)edit_stop_action_box->
 			      currentIndex());
-  done(0);
+  done(true);
 }
 
 
 void RDSlotDialog::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

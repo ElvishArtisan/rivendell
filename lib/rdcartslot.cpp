@@ -413,7 +413,7 @@ void RDCartSlot::doubleClickedData()
     loadData();
   }
   else {
-    if(slot_cue_dialog->exec(slot_logline)==0) {
+    if(slot_cue_dialog->exec(slot_logline)) {
       slot_box->setBarMode(true);
       slot_box->setCart(slot_logline);
     }
@@ -431,7 +431,7 @@ void RDCartSlot::loadData()
     cartnum=slot_logline->cartNumber();
     if(cartnum==0) {
       if(slot_cart_dialog->exec(&cartnum,RDCart::All,QString(),
-				&slot_temp_cart)==0) {
+				&slot_temp_cart)) {
 	load(cartnum);
       }
     }
@@ -441,7 +441,7 @@ void RDCartSlot::loadData()
     break;
 
   case RDSlotOptions::BreakawayMode:
-    if(slot_svcs_dialog->exec(&slot_svcname)==0) {
+    if(slot_svcs_dialog->exec(&slot_svcname)) {
       slot_box->setService(slot_svcname);
       slot_box->setStatusLine(tr("Waiting for break..."));
     }
@@ -456,7 +456,7 @@ void RDCartSlot::loadData()
 void RDCartSlot::optionsData()
 {
   RDSlotOptions::Mode old_mode=slot_options->mode();
-  if(slot_slot_dialog->exec(slot_options)==0) {
+  if(slot_slot_dialog->exec(slot_options)) {
     if(old_mode!=slot_options->mode()) {
       slot_box->clear();
     }

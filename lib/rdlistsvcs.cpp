@@ -107,13 +107,13 @@ void RDListSvcs::okData()
   }
   *edit_svcname=edit_svc_model->serviceName(rows.first());
 
-  done(0);
+  done(true);
 }
 
 
 void RDListSvcs::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 
