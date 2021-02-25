@@ -157,7 +157,7 @@ bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
 {
   int count=0;
 
-  SendCommand("LP "+QString().sprintf(" %d ",card)+name);
+  SendCommand("LP "+QString().sprintf(" %d ",card)+name+"!");
 
   //
   // This is really warty, but needed to make the method 'synchronous'

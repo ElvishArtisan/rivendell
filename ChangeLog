@@ -21200,3 +21200,7 @@
 	groups.
 2021-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed various regressions in rdadmin(1).
+2021-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDCae' that broke audio play-out.
+2021-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in metering code that caused visual artifacts.

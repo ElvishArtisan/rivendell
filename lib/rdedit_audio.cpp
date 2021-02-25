@@ -909,7 +909,7 @@ void RDEditAudio::xFullIn()
 				   (1.0-edit_factor_x/edit_max_factor_x)));
     CenterDisplay();
     DrawMaps();
-    repaint();
+    update();
   }
 }
 
@@ -928,7 +928,7 @@ void RDEditAudio::xUp()
     }
     CenterDisplay();
     DrawMaps();
-    repaint();
+    update();
   }
 }
 
@@ -947,7 +947,7 @@ void RDEditAudio::xDown()
     }
     CenterDisplay();
     DrawMaps();
-    repaint();
+    update();
   }
 }
 
@@ -959,7 +959,7 @@ void RDEditAudio::xFullOut()
     edit_hscroll->setRange(0,0);
     CenterDisplay();
     DrawMaps();
-    repaint();
+    update();
   }
 }
 
@@ -969,7 +969,7 @@ void RDEditAudio::yUp()
   if(edit_gain>-21) {
     edit_gain-=3;
     DrawMaps();
-    repaint();
+    update();
   }
 }
 
@@ -979,7 +979,7 @@ void RDEditAudio::yDown()
   if(edit_gain<0) {
     edit_gain+=3;
     DrawMaps();
-    repaint();
+    update();
   }
 
 }
@@ -1007,7 +1007,7 @@ void RDEditAudio::gotoEndData()
 void RDEditAudio::hscrollData(int value)
 {
   DrawMaps();
-  repaint();
+  update();
 }
 
 
@@ -1489,7 +1489,7 @@ void RDEditAudio::gainChangedData()
     setText(QString().sprintf("%4.1f ",
 		     (double)edit_gain_control->value()/100.0)+tr("dB"));
   DrawMaps();
-  repaint();
+  update();
 }
 
 
@@ -1529,7 +1529,7 @@ void RDEditAudio::gainTimerData()
     setText(QString().sprintf("%4.1f ",
 		      (double)edit_gain_control->value()/100.0)+tr("dB"));
   DrawMaps();
-  repaint();
+  update();
 }
 
 

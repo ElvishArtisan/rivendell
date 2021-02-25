@@ -159,7 +159,7 @@ void PieCounter::start(int offset)
 {
   pie_time=pie_length-offset;
   pie_running=true;
-  repaint();
+  update();
 }
 
 void PieCounter::setLogline(RDLogLine *logline)
@@ -173,7 +173,7 @@ void PieCounter::stop()
   pie_running=false;
   pie_time_label->hide();
   pie_talk_label->hide();
-  repaint();
+  update();
 }
 
 
@@ -218,7 +218,7 @@ void PieCounter::tickCounter()
     }
     else {
       pie_time_label->setText(QString().sprintf(":%02d",(1000+pie_time)/1000));
-      repaint();
+      update();
     }
   }
 }

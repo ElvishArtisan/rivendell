@@ -3,7 +3,7 @@
 // This implements a widget that represents a stereo audio level meter,
 // complete with labels and scale.
 //
-// (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+// (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,24 +19,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qwidget.h>
-#include <qstring.h>
-#include <qfont.h>
-#include <qfontmetrics.h>
-#include <qcolor.h>
-#include <qpainter.h>
-#include <qpushbutton.h>
-#include <qsize.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QPaintEvent>
 #include <stdio.h>
-#include <qslider.h>
-#include <qsizepolicy.h>
-#include <qmessagebox.h>
 
-#include <rdsegmeter.h>
-#include <rdstereometer.h>
+#include "rdsegmeter.h"
+#include "rdstereometer.h"
 
 RDStereoMeter::RDStereoMeter(QWidget *parent)
   : QWidget(parent)
@@ -46,9 +32,6 @@ RDStereoMeter::RDStereoMeter(QWidget *parent)
   clip_light_on=false;
   label_x=0;
   meter_label=QString("");
-  QPalette pal=palette();
-  pal.setColor(QPalette::Background,Qt::black);
-  setPalette(pal);
   left_meter=new RDSegMeter(RDSegMeter::Right,this);
   left_meter->setGeometry(25,10,300,10);
   left_meter->setRange(-4600,-800);
@@ -76,6 +59,13 @@ RDStereoMeter::RDStereoMeter(QWidget *parent)
   meter_label_font.setPixelSize(18);
   meter_scale_font=QFont("System",12,QFont::Bold);
   meter_scale_font.setPixelSize(12);
+
+  //
+  // Set Colors
+  // 
+  QPalette p=palette();
+  p.setColor(QPalette::Window,Qt::black);
+  setPalette(p);
 }
 
 
@@ -286,21 +276,21 @@ void RDStereoMeter::paintEvent(QPaintEvent *paintEvent)
   // Setup
   //
   QPixmap pix(this->size());
-  pix.fill(this,0,0);
   QPainter *p=new QPainter(&pix);
+  p->fillRect(0,0,width(),height(),Qt::black);
   p->setBrush(QColor(Qt::white));
   p->setPen(QColor(Qt::white));
   p->setFont(meter_scale_font);
   p->drawText(10,20,tr("L"));
   p->drawText(10,50,tr("R"));
-  p->drawText(12,35,"-30");
-  p->drawText(48,35,"-25");
-  p->drawText(88,35,"-20");
-  p->drawText(126,35,"-15");
-  p->drawText(167,35,"-10");
-  p->drawText(207,35,"-5");
-  p->drawText(255,35,"0");
-  p->drawText(314,35,"+8");
+  p->drawText(38,35,"-35");
+  p->drawText(77,35,"-30");
+  p->drawText(116,35,"-25");
+  p->drawText(153,35,"-20");
+  p->drawText(191,35,"-15");
+  p->drawText(229,35,"-10");
+  p->drawText(267,35,"-5");
+  p->drawText(317,35,"0");
   if(meter_label!=QString("")) {
     p->setFont(meter_label_font);
     p->drawText(label_x,72,meter_label);

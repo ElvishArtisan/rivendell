@@ -2,7 +2,7 @@
 //
 //   A playback audio meter widget.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -21,10 +21,12 @@
 #ifndef RDPLAYMETER_H
 #define RDPLAYMETER_H
 
-#include <rdsegmeter.h>
-#include <rdwidget.h>
+#include <QWidget>
 
-class RDPlayMeter : public RDWidget
+#include <rdsegmeter.h>
+
+
+class RDPlayMeter : public QWidget
 {
  Q_OBJECT
  public:

@@ -17,11 +17,15 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+//
 
 #ifndef RDSEGMETER_H
 #define RDSEGMETER_H
 
+#include <QColor>
 #include <QPainter>
+#include <QPaintEvent>
+#include <QSizePolicy>
 #include <QTimer>
 #include <QWidget>
 
@@ -39,7 +43,6 @@
  * Global Settings
  */
 #define PEAK_HOLD_TIME 750
-
 
 class RDSegMeter : public QWidget
 {
