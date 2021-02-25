@@ -746,8 +746,7 @@ void RDSoundPanel::buttonMapperData(int id)
       if(panel_button_dialog->
 	 exec(panel_buttons[PanelOffset(panel_type,panel_number)]->
 	      panelButton(row,col),panel_playmode_box->currentIndex()==1,
-	      rda->user()->name(),rda->user()->password())
-	 ==0) {
+	      rda->user()->name(),rda->user()->password())) {
 	SaveButton(panel_type,panel_number,row,col);
       }
     }
@@ -843,15 +842,18 @@ void RDSoundPanel::panelSetupData()
 {
   if(rda->user()->configPanels()||(panel_type==RDAirPlayConf::UserPanel)) {
     QString sql;
-    RDSqlQuery *q;
     int cutpt=panel_selector_box->currentText().indexOf(" ");
     if(panel_selector_box->currentText().left(5)==tr("Panel")) {
       cutpt=-1;
     }
+    QString tag=panel_selector_box->currentText().left(cutpt);
+    
     QString panel_name=panel_selector_box->currentText().
       right(panel_selector_box->currentText().length()-cutpt-1);
     RDEditPanelName *edn=new RDEditPanelName(&panel_name);
-    if(edn->exec()==0) {
+    if(edn->exec()) {
+      panel_selector_box->
+	setItemText(panel_selector_box->currentIndex(),tag+" "+panel_name);
       panel_selector_box->
 	setCurrentIndex(panel_selector_box->
 			findText("["+PanelTag(panel_selector_box->
@@ -860,15 +862,14 @@ void RDSoundPanel::panelSetupData()
 	QString().sprintf("(TYPE=%d)&&",panel_type)+
 	"(OWNER=\""+RDEscapeString(PanelOwner(panel_type))+"\")&&"+
 	QString().sprintf("(PANEL_NO=%d)",panel_number);
-      q=new RDSqlQuery(sql);
-      delete q;
+      RDSqlQuery::apply(sql);
+
       sql=QString("insert into ")+panel_name_tablename+" set "+
 	QString().sprintf("TYPE=%d,",panel_type)+
 	"OWNER=\""+RDEscapeString(PanelOwner(panel_type))+"\","+
 	QString().sprintf("PANEL_NO=%d,",panel_number)+
 	"NAME=\""+RDEscapeString(panel_name)+"\"";
-      q=new RDSqlQuery(sql);
-      delete q;
+      RDSqlQuery::apply(sql);
     }
     delete edn;
   }

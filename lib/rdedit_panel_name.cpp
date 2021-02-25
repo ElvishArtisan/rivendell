@@ -2,7 +2,7 @@
 //
 // Edit a SoundPanel Panel Name
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 
 #include <rdedit_panel_name.h>
 
@@ -85,11 +84,11 @@ QSizePolicy RDEditPanelName::sizePolicy() const
 void RDEditPanelName::okData()
 {
   *panel_name=panel_name_edit->text();
-  done(0);
+  done(true);
 }
 
 
 void RDEditPanelName::cancelData()
 {
-  done(-1);
+  done(false);
 }

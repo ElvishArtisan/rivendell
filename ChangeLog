@@ -21223,3 +21223,8 @@
 2021-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in rdcartslots(1) that caused widgets to fail
 	to update properly after reloading slots.
+2021-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in sound panels where changing the name of
+	a panel would fail to be reflected in the panel selector.
+	* Fixed regressions in sound panels where configuration changes
+	would not be updated properly.

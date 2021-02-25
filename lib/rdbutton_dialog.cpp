@@ -2,7 +2,7 @@
 //
 // Button Editor for SoundPanel
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,15 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qcolordialog.h>
-#include <rddb.h>
-#include <rdcart.h>
-#include <rdcart_dialog.h>
-#include <rd.h>
-#include <rdbutton_dialog.h>
-#include <rdconf.h>
+#include <QColorDialog>
+
+#include "rdbutton_dialog.h"
+#include "rdcart.h"
+#include "rdcart_dialog.h"
+#include "rdconf.h"
+#include "rd.h"
+#include "rddb.h"
 
 RDButtonDialog::RDButtonDialog(QString station_name,const QString &caption,
 			       const QString &label_template,
@@ -154,7 +153,7 @@ int RDButtonDialog::exec(RDPanelButton *button,bool hookmode,
 
 void RDButtonDialog::setCartData()
 {
-  if(edit_cart_dialog->exec(&edit_cart,RDCart::All,edit_svcname,NULL)==0) {
+  if(edit_cart_dialog->exec(&edit_cart,RDCart::All,edit_svcname,NULL)) {
     DisplayCart(edit_cart);
   }
 }
@@ -205,13 +204,13 @@ void RDButtonDialog::okData()
   edit_button->setActiveLength(edit_button->length(edit_hookmode));
   edit_button->setHookMode(edit_hookmode);
   delete cart;
-  done(0);
+  done(true);
 }
 
 
 void RDButtonDialog::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 
