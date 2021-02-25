@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QGuiApplication>
 #include <QPainter>
 
 #include <rdconf.h>
@@ -94,7 +95,7 @@ void WallClock::tickClock()
 {
   static QString date;
   QString accum;
-  QColor system_button_text_color = palette().buttonText().color();
+  QColor text_color = QGuiApplication::palette().buttonText().color();
   static QPixmap *pix=new QPixmap(sizeHint().width()-2,sizeHint().height()-2);
   static bool synced=true;
 
@@ -140,8 +141,9 @@ void WallClock::tickClock()
     p.setPen(Qt::color1);
   }
   else {
-    p.fillRect(0,0,width()-2,height()-2,palette().color(QPalette::Background));
-    p.setPen(QColor(system_button_text_color));
+    p.fillRect(0,0,width()-2,height()-2,QGuiApplication::palette().color(QPalette::Inactive,
+							QPalette::Background));
+    p.setPen(QColor(text_color));
   }
   p.setFont(subLabelFont());
   p.drawText((size().width()-2-p.fontMetrics().width(date))/2,22,date);
@@ -163,3 +165,10 @@ void WallClock::keyPressEvent(QKeyEvent *e)
 {
   e->ignore();
 }
+
+
+void WallClock::resizeEvent(QResizeEvent *e)
+{
+  setIconSize(QSize(size().width()-2,size().height()-2));
+}
+

@@ -40,6 +40,9 @@ class ModeDisplay : public RDPushButton
   void setOpMode(int mach,RDAirPlayConf::OpMode mode);
   void setOpModeStyle(RDAirPlayConf::OpModeStyle style);
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
   void WriteMap();
   RDAirPlayConf::OpMode mode_mode[RDAIRPLAY_LOG_QUANTITY];

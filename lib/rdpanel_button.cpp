@@ -355,6 +355,12 @@ void RDPanelButton::keyReleaseEvent(QKeyEvent *e)
 }
 
 
+void RDPanelButton::resizeEvent(QResizeEvent *e)
+{
+  setIconSize(QSize(size().width()-2,size().height()-2));
+}
+
+
 void RDPanelButton::mousePressEvent(QMouseEvent *e)
 {
   button_move_count=10;

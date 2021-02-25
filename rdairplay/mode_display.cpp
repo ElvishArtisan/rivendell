@@ -79,6 +79,12 @@ void ModeDisplay::setOpModeStyle(RDAirPlayConf::OpModeStyle style)
 }
 
 
+void ModeDisplay::resizeEvent(QResizeEvent *e)
+{
+  setIconSize(QSize(size().width()-2,size().height()-2));
+}
+
+
 void ModeDisplay::WriteMap()
 {
   QString str;

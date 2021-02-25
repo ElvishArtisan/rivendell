@@ -19,6 +19,7 @@
 //
 
 #include <QDrag>
+#include <QGuiApplication>
 #include <QMouseEvent>
 #include <QPainter>
 
@@ -82,48 +83,48 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   //
   // Create Palettes
   //
-  line_unchanged_stop_palette=palette();
+  line_unchanged_stop_palette=QGuiApplication::palette();
   line_unchanged_stop_palette.setColor(QPalette::Active,QPalette::Highlight,
 			     QColor(BAR_UNCHANGED_STOPPING_COLOR));
   line_unchanged_stop_palette.setColor(QPalette::Inactive,
 				       QPalette::Highlight,
 			     QColor(BAR_UNCHANGED_STOPPING_COLOR));
-  line_unchanged_play_palette=palette();
+  line_unchanged_play_palette=QGuiApplication::palette();
   line_unchanged_play_palette.setColor(QPalette::Active,QPalette::Highlight,
 			     QColor(BAR_UNCHANGED_TRANSITION_COLOR));
   line_unchanged_play_palette.setColor(QPalette::Inactive,
 				       QPalette::Highlight,
 			     QColor(BAR_UNCHANGED_TRANSITION_COLOR));
-  line_changed_stop_palette=palette();
+  line_changed_stop_palette=QGuiApplication::palette();
   line_changed_stop_palette.setColor(QPalette::Active,QPalette::Highlight,
 			     QColor(BAR_CHANGED_STOPPING_COLOR));
   line_changed_stop_palette.setColor(QPalette::Inactive,QPalette::Highlight,
 			     QColor(BAR_CHANGED_STOPPING_COLOR));
-  line_changed_play_palette=palette();
+  line_changed_play_palette=QGuiApplication::palette();
   line_changed_play_palette.setColor(QPalette::Active,QPalette::Highlight,
 			     QColor(BAR_CHANGED_TRANSITION_COLOR));
   line_changed_play_palette.setColor(QPalette::Inactive,QPalette::Highlight,
 			     QColor(BAR_CHANGED_TRANSITION_COLOR));
-  line_time_palette=palette();
-  line_hard_palette=palette();
+  line_time_palette=QGuiApplication::palette();
+  line_hard_palette=QGuiApplication::palette();
   line_hard_palette.setColor(QPalette::Active,QPalette::Foreground,
 			     QColor(LOG_HARDTIME_TEXT_COLOR));
   line_hard_palette.setColor(QPalette::Inactive,QPalette::Foreground,
 			     QColor(LOG_HARDTIME_TEXT_COLOR));
 
-  line_timescale_palette=palette();
+  line_timescale_palette=QGuiApplication::palette();
   line_timescale_palette.setColor(QPalette::Active,QPalette::Foreground,
 				  QColor(LOGLINEBOX_TIMESCALE_COLOR));
   line_timescale_palette.setColor(QPalette::Inactive,QPalette::Foreground,
 				  QColor(LOGLINEBOX_TIMESCALE_COLOR));
 
-  line_transition_palette=palette();
+  line_transition_palette=QGuiApplication::palette();
   line_transition_palette.setColor(QPalette::Active,QPalette::Foreground,
 				  QColor(RD_CUSTOM_TRANSITION_COLOR));
   line_transition_palette.setColor(QPalette::Inactive,QPalette::Foreground,
 				  QColor(RD_CUSTOM_TRANSITION_COLOR));
 
-  line_text_palette=palette();
+  line_text_palette=QGuiApplication::palette();
   line_text_palette.setColor(QPalette::Active,QPalette::Foreground,
 				  QColor(Qt::black));
   line_text_palette.setColor(QPalette::Inactive,QPalette::Foreground,
@@ -400,12 +401,12 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
   switch(line_logline->transType()) {
   case RDLogLine::Stop:
     line_trans_label->setText(tr("STOP"));
-    line_trans_label->setPalette(palette());
+    line_trans_label->setPalette(QGuiApplication::palette());
     break;
 	
   case RDLogLine::Play:
     line_trans_label->setText(tr("PLAY"));
-    line_trans_label->setPalette(palette());
+    line_trans_label->setPalette(QGuiApplication::palette());
     break;
 	
   case RDLogLine::Segue:
@@ -414,7 +415,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
       line_trans_label->setPalette(line_transition_palette);
     }
     else {
-      line_trans_label->setPalette(palette());
+      line_trans_label->setPalette(QGuiApplication::palette());
     }
     break;
 
@@ -830,7 +831,7 @@ void LogLineBox::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
   p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
-	      palette().color(QPalette::Background));
+	      QGuiApplication::palette().color(QPalette::Background));
   p->drawRect(0,0,sizeHint().width()-2,sizeHint().height()-2);
   p->end();
   delete p;

@@ -80,6 +80,7 @@ class RDPanelButton : public RDPushButton
  private slots:
   void keyPressEvent(QKeyEvent *e);
   void keyReleaseEvent(QKeyEvent *e);
+  void resizeEvent(QResizeEvent *e);
 
  protected:
   void mousePressEvent(QMouseEvent *e);

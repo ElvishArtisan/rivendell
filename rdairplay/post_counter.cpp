@@ -2,7 +2,7 @@
 //
 // The post counter widget for Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpixmap.h>
-#include <qpainter.h>
+#include <QGuiApplication>
+#include <QPainter>
 
 #include <rdapplication.h>
 
@@ -38,13 +38,19 @@ PostCounter::PostCounter(QWidget *parent)
   //
   // Generate Palettes
   //
-  post_idle_palette=palette();
+  post_idle_palette=QGuiApplication::palette();
   post_early_palette=
-    QPalette(QColor(POSTPOINT_EARLY_COLOR),palette().color(QPalette::Background));
+    QPalette(QColor(POSTPOINT_EARLY_COLOR),
+	     QGuiApplication::palette().color(QPalette::Inactive,
+					      QPalette::Background));
   post_ontime_palette=
-    QPalette(QColor(POSTPOINT_ONTIME_COLOR),palette().color(QPalette::Background));
+    QPalette(QColor(POSTPOINT_ONTIME_COLOR),
+	     QGuiApplication::palette().color(QPalette::Inactive,
+					      QPalette::Background));
   post_late_palette=
-    QPalette(QColor(POSTPOINT_LATE_COLOR),palette().color(QPalette::Background));
+    QPalette(QColor(POSTPOINT_LATE_COLOR),
+	     QGuiApplication::palette().color(QPalette::Inactive,
+					      QPalette::Background));
 
   post_offset = 0;
   UpdateDisplay();
@@ -115,10 +121,17 @@ void PostCounter::keyPressEvent(QKeyEvent *e)
 }
 
 
+void PostCounter::resizeEvent(QResizeEvent *e)
+{
+  setIconSize(QSize(size().width()-2,size().height()-2));
+}
+
+
 void PostCounter::UpdateDisplay()
 {
-  QColor color=palette().color(QPalette::Background);
-  QColor system_button_text_color=palette().buttonText().color();
+  QColor color=QGuiApplication::palette().color(QPalette::Inactive,
+						QPalette::Background);
+  QColor text_color=QGuiApplication::palette().buttonText().color();
   QString str;
   QString point;
   QString state;
@@ -150,7 +163,7 @@ void PostCounter::UpdateDisplay()
 	  color=POSTPOINT_ONTIME_COLOR;
 	}
       }
-      system_button_text_color=Qt::color1;
+      text_color=Qt::color1;
     }
     else {
       state="--------";
@@ -165,7 +178,7 @@ void PostCounter::UpdateDisplay()
   QPixmap pix(size().width()-2,size().height()-2);
   QPainter *p=new QPainter(&pix);
   p->fillRect(0,0,size().width()-2,size().height()-2,color);
-  p->setPen(QColor(system_button_text_color));
+  p->setPen(QColor(text_color));
   p->setFont(subLabelFont());
   p->drawText((size().width()-2-p->
 	       fontMetrics().width(point))/2,22,point);

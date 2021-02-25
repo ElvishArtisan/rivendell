@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QGuiApplication>
 #include <QPainter>
 
 #include "stop_counter.h"
@@ -113,10 +114,16 @@ void StopCounter::tickCounter()
 }
 
 
+void StopCounter::resizeEvent(QResizeEvent *e)
+{
+  setIconSize(QSize(size().width()-2,size().height()-2));
+}
+
+
 void StopCounter::UpdateTime()
 {
   QString text;
-  QColor system_button_text_color = palette().buttonText().color();
+  QColor text_color = QGuiApplication::palette().buttonText().color();
   int msecs=QTime::currentTime().
     addMSecs(rda->station()->timeOffset()).msecsTo(stop_time);
 
@@ -127,8 +134,9 @@ void StopCounter::UpdateTime()
     old_msecs = msecs;
 	  
     p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
-		palette().color(QPalette::Background));
-    p->setPen(QColor(system_button_text_color));
+		QGuiApplication::palette().color(QPalette::Inactive,
+						 QPalette::Background));
+    p->setPen(QColor(text_color));
     p->setFont(subLabelFont());
     p->drawText((sizeHint().width()-2-p->fontMetrics().width(stop_text))/2,22,
 		stop_text);

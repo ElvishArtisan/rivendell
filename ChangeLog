@@ -21207,3 +21207,6 @@
 2021-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions that caused progress dialogs to appear when
 	starting up applications.
+2021-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in rdairplay(1) that caused incorrect color
+	rendering.

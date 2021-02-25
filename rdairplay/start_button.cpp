@@ -236,6 +236,7 @@ void StartButton::Resize(int x,int y,int w,int h)
   }
   p->end();
   setIcon(*pix);
+  setIconSize(QSize(w-2,h-2));
   delete p;
   delete pix;
 }

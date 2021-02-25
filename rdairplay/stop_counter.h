@@ -38,6 +38,9 @@ class StopCounter : public RDPushButton
   void setTime(QTime time);
   void tickCounter();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
   void UpdateTime();
   QTime stop_time;

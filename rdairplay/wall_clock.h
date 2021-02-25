@@ -47,6 +47,7 @@ class WallClock : public RDPushButton
  protected:
   void flashButton(bool state);
   void keyPressEvent(QKeyEvent *e);
+  void resizeEvent(QResizeEvent *e);
 
  private:
   QTime previous_time,current_time;
