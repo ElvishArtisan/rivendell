@@ -21228,3 +21228,6 @@
 	a panel would fail to be reflected in the panel selector.
 	* Fixed regressions in sound panels where configuration changes
 	would not be updated properly.
+2021-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in rdairplay(1), rdcastmanager(1) and
+	rdcatch(1) where configuration changes would not be updated properly.

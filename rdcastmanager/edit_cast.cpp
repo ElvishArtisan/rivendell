@@ -313,7 +313,7 @@ void EditCast::expirationSelectData()
 
   RDDateDialog *dd=
     new RDDateDialog(1970,current_date.year()+10,this);
-  if(dd->exec(&date)==0) {
+  if(dd->exec(&date)) {
     cast_item_expiration_edit->setDate(date);
   }
   delete dd;

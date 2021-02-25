@@ -81,7 +81,7 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   //
   edit_station_box=new RDComboBox(this);
   edit_station_box->setGeometry(200,10,140,23);
-  connect(edit_station_box,SIGNAL(textChanged(const QString &)),
+  connect(edit_station_box,SIGNAL(editTextChanged(const QString &)),
 	  this,SLOT(stationChangedData(const QString &)));
   label=new QLabel(tr("Location:"),this);
   label->setGeometry(125,10,70,23);

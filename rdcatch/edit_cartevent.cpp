@@ -287,15 +287,13 @@ void EditCartEvent::selectCartData()
   if(edit_cart!=NULL) {
     cartnum=edit_cart->number();
   }
-  switch(catch_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)) {
-      case 0:
-	if(edit_cart!=NULL) {
-	  delete edit_cart;
-	}
-	edit_cart=new RDCart(cartnum);
-	edit_destination_edit->setText(QString().sprintf("%d",cartnum));
-	edit_description_edit->setText(edit_cart->title());
-	break;
+  if(catch_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)) {
+    if(edit_cart!=NULL) {
+      delete edit_cart;
+    }
+    edit_cart=new RDCart(cartnum);
+    edit_destination_edit->setText(QString().sprintf("%d",cartnum));
+    edit_description_edit->setText(edit_cart->title());
   }
 }
 

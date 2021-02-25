@@ -2206,7 +2206,7 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
       air_panel->setActionMode(RDAirPlayConf::Normal);
     }
     if(air_cart_dialog->
-       exec(&air_add_cart,RDCart::All,air_log[0]->serviceName(),NULL)==0) {
+       exec(&air_add_cart,RDCart::All,air_log[0]->serviceName(),NULL)) {
       SetActionMode(StartButton::AddTo);
     }
     else {

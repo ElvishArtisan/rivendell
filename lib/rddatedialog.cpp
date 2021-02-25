@@ -2,7 +2,7 @@
 //
 // A Dialog Box for using an RDDatePicker widget.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,20 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-#include <qwidget.h>
-#include <qpushbutton.h>
-#include <qrect.h>
-#include <qpoint.h>
-#include <qpainter.h>
-#include <qstring.h>
-#include <qmessagebox.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qsignalmapper.h>
+#include <QPushButton>
 
-#include <rdconf.h>
-#include <rddatedialog.h>
+#include "rdconf.h"
+#include "rddatedialog.h"
 
 //
 // Global Classes
@@ -93,11 +83,11 @@ int RDDateDialog::exec(QDate *date)
 void RDDateDialog::okData()
 {
   *date_date=date_picker->date();
-  done(0);
+  done(true);
 }
 
 
 void RDDateDialog::cancelData()
 {
-  done(-1);
+  done(false);
 }
