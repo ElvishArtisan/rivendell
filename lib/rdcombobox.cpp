@@ -57,7 +57,7 @@ void RDComboBox::addIgnoredKey(int key)
 bool RDComboBox::setCurrentText(const QString &str)
 {
   for(int i=0;i<count();i++) {
-    if(itemData(i).toString()==str) {
+    if(itemText(i)==str) {
       setCurrentIndex(i);
       return true;
     }
@@ -92,7 +92,7 @@ void RDComboBox::keyPressEvent(QKeyEvent *e)
 bool RDComboBox::IsItemUnique(const QString &str)
 {
   for(int i=0;i<count();i++) {
-    if(str==itemData(i).toString()) {
+    if(str==itemText(i)) {
       return false;
     }
   }

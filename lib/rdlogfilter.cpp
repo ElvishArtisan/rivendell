@@ -134,7 +134,7 @@ QString RDLogFilter::whereSql() const
   else {
     sql+="&&(";
     for(int i=1;i<filter_service_box->count();i++) {
-      sql+="(SERVICE=\""+RDEscapeString(filter_service_box->itemData(i).toString())+"\")||";
+      sql+="(SERVICE=\""+RDEscapeString(filter_service_box->itemText(i))+"\")||";
     }
     sql=sql.left(sql.length()-2);
     sql+=")";

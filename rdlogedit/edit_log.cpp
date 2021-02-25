@@ -1045,7 +1045,7 @@ void EditLog::saveasData()
     edit_log=new RDLog(logname);
     edit_log_model->setLogName(logname);
     for(int i=0;i<edit_service_box->count();i++) {
-      if(edit_service_box->itemData(i).toString()==svcname) {
+      if(edit_service_box->itemText(i)==svcname) {
 	edit_service_box->setCurrentIndex(i);
       }
     }

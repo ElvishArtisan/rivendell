@@ -432,7 +432,7 @@ void RDCartFilter::setFilterText(const QString &str)
 void RDCartFilter::setSelectedGroup(const QString &grpname)
 {
   for(int i=0;i<d_group_box->count();i++) {
-    if(d_group_box->itemData(i).toString()==grpname) {
+    if(d_group_box->itemText(i)==grpname) {
       d_group_box->setCurrentIndex(i);
       groupChangedData(d_group_box->currentText());
     }

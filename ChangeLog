@@ -21193,3 +21193,8 @@
 	groups.
 2021-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlogin(1) that broke account logout.
+2021-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogedit(1) that broke searching for 'ALL'
+	services.
+	* Fixed a regression in rdlibrary(1) that broke searching for 'ALL'
+	groups.
