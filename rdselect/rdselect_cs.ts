@@ -5,7 +5,7 @@
     <name>MainWidget</name>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="obsolete">&amp;Zrušit</translation>
     </message>
     <message>
         <source>RDSelect</source>
@@ -53,6 +53,10 @@
     </message>
     <message>
         <source>Unable to select configuration:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
