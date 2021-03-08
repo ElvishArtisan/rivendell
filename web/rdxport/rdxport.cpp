@@ -473,6 +473,7 @@ void Xport::XmlExit(const QString &str,int code,const QString &srcfile,
 
 int main(int argc,char *argv[])
 {
+  QCoreApplication::setSetuidAllowed(true);
   QCoreApplication a(argc,argv,false);
   new Xport();
   return a.exec();

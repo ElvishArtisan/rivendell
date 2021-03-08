@@ -21255,3 +21255,6 @@
 	* Removed Qt3-style accelerators from rdlogmanager(1).
 	* Removed Qt3-style accelerators from rdselect(1).
 	* Removed Qt3-style accelerators from rddbconfig(8).
+2021-03-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression rdxport.cgi that caused early termination
+	of CGI processes.
