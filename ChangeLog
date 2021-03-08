@@ -21236,3 +21236,8 @@
 	operation of the progress dialog during log generation.
 2021-03-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/rdconfig.cpp' that broke the build.
+2021-03-08 Fred Gleason <fredg@paravelsystems.com>
+	* Commented out code to initialize the 'NEXUS_STATIONS' table
+	in rddbmgr(8).
+	* Fixed a bug in 'CheckSchedCodeRules()' in rddbmgr(8) that
+	would throw a SQL error when no schedule codes were defined.

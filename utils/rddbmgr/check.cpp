@@ -1028,6 +1028,19 @@ void MainObject::CheckSchedCodeRules(bool prompt_user) const
   RDSqlQuery *q;
 
   //
+  // Check that we have at least one schedule code
+  //
+  sql=QString("select ")+
+    "CODE "+  // 00
+    "from SCHED_CODES";
+  q=new RDSqlQuery(sql);
+  if(!q->first()) {
+    delete q;
+    return;
+  }
+  delete q;
+
+  //
   // Check for orphaned rules
   //
   sql=QString("select ")+

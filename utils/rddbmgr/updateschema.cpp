@@ -9805,15 +9805,15 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       return false;
     }
 
-    q=new RDSqlQuery("select NAME from SERVICES",false);
-    while(q->next()) {
-      sql=QString("insert into NEXUS_STATIONS set ")+
-	  "RD_SERVICE=\""+RDEscapeString(q->value(0).toString())+"\"";
-      if(!RDSqlQuery::apply(sql,err_msg)) {
-        return false;
-      }
-    }
-    delete q;
+    //    q=new RDSqlQuery("select NAME from SERVICES",false);
+    //    while(q->next()) {
+    //      sql=QString("insert into NEXUS_STATIONS set ")+
+    //	  "RD_SERVICE=\""+RDEscapeString(q->value(0).toString())+"\"";
+    //      if(!RDSqlQuery::apply(sql,err_msg)) {
+    //        return false;
+    //      }
+    //    }
+    //    delete q;
 
     sql=QString("insert into IMPORT_TEMPLATES set ")+
       "NAME='MusicMaster Nexus',"+
