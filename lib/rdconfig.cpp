@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,12 +28,11 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include <qdatetime.h>
-#include <qmessagebox.h>
-#include <qobject.h>
-#include <qregexp.h>
-#include <qsettings.h>
-#include <qstringlist.h>
+#include <QDateTime>
+#include <QObject>
+#include <QRegExp>
+#include <QSettings>
+#include <QStringList>
 
 #include "rdconfig.h"
 #include "rdprofile.h"

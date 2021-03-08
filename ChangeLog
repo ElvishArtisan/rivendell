@@ -21234,3 +21234,5 @@
 2021-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlogmanager(1) that caused incorrect
 	operation of the progress dialog during log generation.
+2021-03-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdconfig.cpp' that broke the build.
