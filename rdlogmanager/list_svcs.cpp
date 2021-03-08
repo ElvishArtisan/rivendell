@@ -57,7 +57,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   //
   list_generate_button=new QPushButton(this);
   list_generate_button->setFont(buttonFont());
-  list_generate_button->setText(tr("&Generate\nReports"));
+  list_generate_button->setText(tr("Generate\nReports"));
   connect(list_generate_button,SIGNAL(clicked()),this,SLOT(generateData()));
 
   //
@@ -65,7 +65,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   //
   list_purge_button=new QPushButton(this);
   list_purge_button->setFont(buttonFont());
-  list_purge_button->setText(tr("&Purge\nData"));
+  list_purge_button->setText(tr("Purge\nData"));
   connect(list_purge_button,SIGNAL(clicked()),this,SLOT(purgeData()));
 
   //
@@ -74,7 +74,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(buttonFont());
-  list_close_button->setText(tr("C&lose"));
+  list_close_button->setText(tr("Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 

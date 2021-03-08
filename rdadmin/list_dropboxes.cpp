@@ -44,7 +44,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   //
   list_add_button=new QPushButton(this);
   list_add_button->setFont(buttonFont());
-  list_add_button->setText(tr("&Add"));
+  list_add_button->setText(tr("Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
@@ -52,7 +52,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   //
   list_edit_button=new QPushButton(this);
   list_edit_button->setFont(buttonFont());
-  list_edit_button->setText(tr("&Edit"));
+  list_edit_button->setText(tr("Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -60,7 +60,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   //
   list_duplicate_button=new QPushButton(this);
   list_duplicate_button->setFont(buttonFont());
-  list_duplicate_button->setText(tr("D&uplicate"));
+  list_duplicate_button->setText(tr("Duplicate"));
   connect(list_duplicate_button,SIGNAL(clicked()),this,SLOT(duplicateData()));
 
   //
@@ -68,7 +68,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   //
   list_delete_button=new QPushButton(this);
   list_delete_button->setFont(buttonFont());
-  list_delete_button->setText(tr("&Delete"));
+  list_delete_button->setText(tr("Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -77,7 +77,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(buttonFont());
-  list_close_button->setText(tr("&Close"));
+  list_close_button->setText(tr("Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //

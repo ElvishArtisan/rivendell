@@ -9,19 +9,35 @@
     </message>
     <message>
         <source>&amp;Marker</source>
-        <translation>&amp;Značka</translation>
+        <translation type="obsolete">&amp;Značka</translation>
     </message>
     <message>
         <source>Voice &amp;Track</source>
-        <translation>Stopa &amp;hlasu</translation>
+        <translation type="obsolete">Stopa &amp;hlasu</translation>
     </message>
     <message>
         <source>Log C&amp;hain</source>
-        <translation>Ř&amp;etězec zápisu</translation>
+        <translation type="obsolete">Ř&amp;etězec zápisu</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voice Track</source>
+        <translation type="unfinished">Stopa hlasu</translation>
+    </message>
+    <message>
+        <source>Log Chain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -231,7 +247,7 @@ popisná data</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Uložit</translation>
+        <translation type="obsolete">&amp;Uložit</translation>
     </message>
     <message>
         <source>Save
@@ -241,15 +257,15 @@ popisná data</translation>
     </message>
     <message>
         <source>&amp;Reports</source>
-        <translation>Z&amp;právy</translation>
+        <translation type="obsolete">Z&amp;právy</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Carts</source>
@@ -457,6 +473,18 @@ jež jsou pro vybranou službu zakázány!</translation>
     </message>
     <message>
         <source>This log contains one or more carts that are invalid for the selected service!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -732,11 +760,11 @@ vybrané služby!</translation>
     </message>
     <message>
         <source>&amp;Generate</source>
-        <translation>Vy&amp;tvořit</translation>
+        <translation type="obsolete">Vy&amp;tvořit</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>[none]</source>
@@ -756,10 +784,22 @@ vybrané služby!</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
     <message>
         <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Vybrat</translation>
+    </message>
+    <message>
+        <source>Generate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -842,20 +882,20 @@ vybrané služby!</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>Voice
 &amp;Tracker</source>
-        <translation>&amp;Rozdělovač
+        <translation type="obsolete">&amp;Rozdělovač
 hlasu</translation>
     </message>
     <message>
@@ -866,7 +906,7 @@ o zápisu</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>User</source>
@@ -1000,6 +1040,27 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
         <source>is in use by</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Voice
+Tracker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RenderDialog</name>
@@ -1080,12 +1141,8 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Render</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Filename</source>
@@ -1093,6 +1150,10 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
     </message>
     <message>
         <source>Rendering Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1112,16 +1173,6 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Previous
-Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Next
-Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1184,7 +1235,7 @@ Track</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>No VoiceTrack Group</source>
@@ -1337,6 +1388,20 @@ therefore only existing transitions will be editable.</source>
     </message>
     <message>
         <source>Set to Hook Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

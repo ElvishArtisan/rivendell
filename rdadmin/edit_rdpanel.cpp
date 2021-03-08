@@ -310,7 +310,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -319,7 +319,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

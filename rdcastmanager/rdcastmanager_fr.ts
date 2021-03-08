@@ -36,14 +36,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Air Date/Time:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -53,10 +45,6 @@
     </message>
     <message>
         <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Select Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -99,31 +87,21 @@
         <source>Item expiration must be in the future!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>
-    <message>
-        <source>Post From
-Car&amp;t/Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Post From
-&amp;File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source></source>
         <translation></translation>
@@ -190,6 +168,28 @@ Log</source>
         <source>Select Audio File</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Post From
+Cart/Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post From
+File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LogDialog</name>
@@ -218,15 +218,6 @@ Log</source>
     <name>MainWidget</name>
     <message>
         <source>User: [Unknown]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;View
-Feed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -259,6 +250,10 @@ Feed</source>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RenderDialog</name>
@@ -284,10 +279,6 @@ Feed</source>
     </message>
     <message>
         <source>At STOP transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -320,6 +311,10 @@ Feed</source>
     </message>
     <message>
         <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

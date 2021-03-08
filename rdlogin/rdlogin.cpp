@@ -132,7 +132,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   login_button=new QPushButton(this);
   login_button->setFont(buttonFont());
-  login_button->setText(tr("&Set User"));
+  login_button->setText(tr("Set User"));
   connect(login_button,SIGNAL(clicked()),this,SLOT(loginData()));
 
   //
@@ -140,7 +140,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   logout_button=new QPushButton(this);
   logout_button->setFont(buttonFont());
-  logout_button->setText(tr("&Default\nUser"));
+  logout_button->setText(tr("Default\nUser"));
   connect(logout_button,SIGNAL(clicked()),this,SLOT(logoutData()));
 
   //
@@ -148,7 +148,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   cancel_button=new QPushButton(this);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   login_resize=true;

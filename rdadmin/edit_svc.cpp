@@ -77,7 +77,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_name_edit->setGeometry(185,31,80,19);
   svc_name_edit->setMaxLength(10);
   svc_name_edit->setReadOnly(true);
-  label=new QLabel(tr("&Service Name:"),this);
+  label=new QLabel(tr("Service Name:"),this);
   label->setGeometry(10,31,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -88,7 +88,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_description_edit->setGeometry(185,52,240,19);
   svc_description_edit->setMaxLength(255);
   svc_description_edit->setValidator(validator);
-  label=new QLabel(tr("Service &Description:"),this);
+  label=new QLabel(tr("Service Description:"),this);
   label->setGeometry(10,52,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -99,7 +99,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_program_code_edit->setGeometry(185,73,240,19);
   svc_program_code_edit->setMaxLength(255);
   svc_program_code_edit->setValidator(validator);
-  label=new QLabel(tr("&Program Code:"),this);
+  label=new QLabel(tr("Program Code:"),this);
   label->setGeometry(10,73,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -110,7 +110,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_name_template_edit->setGeometry(185,94,240,19);
   svc_name_template_edit->setMaxLength(255);
   svc_name_template_edit->setValidator(log_validator);
-  label=new QLabel(tr("Log Name &Template:"),this);
+  label=new QLabel(tr("Log Name Template:"),this);
   label->setGeometry(10,94,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -120,7 +120,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_description_template_edit=new QLineEdit(this);
   svc_description_template_edit->setGeometry(185,115,240,19);
   svc_description_template_edit->setMaxLength(255);
-  label=new QLabel(tr("Log &Description Template:"),this);
+  label=new QLabel(tr("Log Description Template:"),this);
   label->setGeometry(10,115,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -183,7 +183,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(455,31,150,50);
   button->setFont(buttonFont());
-  button->setText(tr("Configure \n&Autofill Carts"));
+  button->setText(tr("Configure \nAutofill Carts"));
   connect(button,SIGNAL(clicked()),this,SLOT(autofillData()));
 
   //
@@ -243,7 +243,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(625,31,150,50);
   button->setFont(buttonFont());
-  button->setText(tr("Enable &Hosts"));
+  button->setText(tr("Enable Hosts"));
   connect(button,SIGNAL(clicked()),this,SLOT(enableHostsData()));
 
   //
@@ -327,7 +327,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(360,360,60,40);
   button->setFont(buttonFont());
-  button->setText(tr("Test \n&Traffic"));
+  button->setText(tr("Test \nTraffic"));
   connect(button,SIGNAL(clicked()),this,SLOT(trafficData()));
 
   //
@@ -433,7 +433,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(795,381,60,40);
   button->setFont(buttonFont());
-  button->setText(tr("Test \n&Music"));
+  button->setText(tr("Test \nMusic"));
   connect(button,SIGNAL(clicked()),this,SLOT(musicData()));
 
   //
@@ -452,7 +452,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -462,7 +462,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

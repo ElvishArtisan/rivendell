@@ -104,7 +104,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   cut_description_edit=new QLineEdit(this);
   cut_description_edit->setMaxLength(64);
-  cut_description_label=new QLabel(tr("&Description")+":",this);
+  cut_description_label=new QLabel(tr("Description")+":",this);
   cut_description_label->setFont(labelFont());
   cut_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -113,7 +113,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   cut_outcue_edit=new QLineEdit(this);
   cut_outcue_edit->setMaxLength(64);
-  cut_outcue_label=new QLabel(tr("&Outcue")+":",this);
+  cut_outcue_label=new QLabel(tr("Outcue")+":",this);
   cut_outcue_label->setFont(labelFont());
   cut_outcue_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -122,7 +122,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   cut_isci_edit=new QLineEdit(this);
   cut_isci_edit->setMaxLength(32);
-  cut_isci_label=new QLabel(tr("&ISCI Code")+":",this);
+  cut_isci_label=new QLabel(tr("ISCI Code")+":",this);
   cut_isci_label->setFont(labelFont());
   cut_isci_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -208,7 +208,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
 
   cut_startdatetime_edit=new QDateTimeEdit(this);
   cut_startdatetime_edit->setDisplayFormat("MM/dd/yyyy - hh:mm:ss");
-  cut_startdatetime_label=new QLabel(tr("&Start"),this);
+  cut_startdatetime_label=new QLabel(tr("Start"),this);
   cut_startdatetime_label->setFont(subLabelFont());
   cut_startdatetime_label->setAlignment(Qt::AlignRight);
   cut_enddatetime_edit=new QDateTimeEdit(this);
@@ -232,7 +232,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
 
   cut_starttime_edit=new QTimeEdit(this);
   cut_starttime_edit->setDisplayFormat("hh:mm:ss");
-  cut_starttime_label=new QLabel(tr("&Start Time"),this);
+  cut_starttime_label=new QLabel(tr("Start Time"),this);
   cut_starttime_label->setFont(subLabelFont());
   cut_starttime_label->setAlignment(Qt::AlignRight);
 
@@ -376,7 +376,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   close_button=new QPushButton(this);
   close_button->setDefault(true);
   close_button->setFont(buttonFont());
-  close_button->setText(tr("&Close"));
+  close_button->setText(tr("Close"));
   connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //

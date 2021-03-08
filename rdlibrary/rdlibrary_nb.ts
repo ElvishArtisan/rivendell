@@ -255,7 +255,7 @@ Do you still want to delete?</source>
     <message>
         <source>&amp;Rip
 Track</source>
-        <translation>&amp;Ripp
+        <translation type="obsolete">&amp;Ripp
 sporet</translation>
     </message>
     <message>
@@ -496,7 +496,7 @@ plata</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>Cut Conflict</source>
@@ -585,11 +585,6 @@ Sjå over innstillingane for ripping, og prøv ein gong til.</translation>
         <translation type="obsolete">OK</translation>
     </message>
     <message>
-        <source>&amp;Rip
-Disc</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>RDLibrary - Importer Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -609,11 +604,6 @@ Per Track</source>
     <message>
         <source>Add Single
 Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set
-&amp;Cart/Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -662,6 +652,20 @@ Disk</source>
     </message>
     <message>
         <source>Unable to allocate cart in group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set
+Cart/Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip
+Disc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -762,16 +766,16 @@ Disk</source>
     <message>
         <source>&amp;Edit
 Script</source>
-        <translation>&amp;Rediger
+        <translation type="obsolete">&amp;Rediger
 skript</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>AUDIO</source>
@@ -818,11 +822,6 @@ skript</translation>
 limits of the system!  Do you still want to save?</source>
         <translation>Eitt eller fleire kutt er lenger enn det systemet
 kan handtera! Vil du lagra likevel?</translation>
-    </message>
-    <message>
-        <source>&amp;Edit
-Notes</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Duplicate Title</source>
@@ -940,6 +939,24 @@ Notes</source>
         <source>User Defined:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit
+Notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit
+Script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMacro</name>
@@ -949,11 +966,19 @@ Notes</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -964,11 +989,19 @@ Notes</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -995,11 +1028,19 @@ Notes</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1040,12 +1081,8 @@ Notes</source>
         <translation type="unfinished">Type:</translation>
     </message>
     <message>
-        <source>&amp;Generate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1061,6 +1098,14 @@ Notes</source>
     </message>
     <message>
         <source>Select Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1227,29 +1272,29 @@ korg</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>L&amp;egg til</translation>
+        <translation type="obsolete">L&amp;egg til</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Rediger</translation>
+        <translation type="obsolete">&amp;Rediger</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Slett</translation>
+        <translation type="obsolete">&amp;Slett</translation>
     </message>
     <message>
         <source>&amp;Rip
 CD</source>
-        <translation>&amp;Ripp
+        <translation type="obsolete">&amp;Ripp
 CD</translation>
     </message>
     <message>
         <source>Re&amp;ports</source>
-        <translation>Ra&amp;pportar</translation>
+        <translation type="obsolete">Ra&amp;pportar</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1340,11 +1385,6 @@ Vil du sletta ho likevel?</translation>
         <translation type="obsolete">Hald tonehøgd</translation>
     </message>
     <message>
-        <source>Run
-&amp;Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1392,6 +1432,36 @@ Vil du sletta ho likevel?</translation>
         <source>Unable to delete audio!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Legg til</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Rediger</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Slett</translation>
+    </message>
+    <message>
+        <source>Run
+Macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip
+CD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RecordCut</name>
@@ -1401,11 +1471,11 @@ Vil du sletta ho likevel?</translation>
     </message>
     <message>
         <source>&amp;Description</source>
-        <translation>Skil&amp;dring</translation>
+        <translation type="obsolete">Skil&amp;dring</translation>
     </message>
     <message>
         <source>&amp;Outcue</source>
-        <translation>&amp;Utspor</translation>
+        <translation type="obsolete">&amp;Utspor</translation>
     </message>
     <message>
         <source>Origin</source>
@@ -1445,7 +1515,7 @@ Vil du sletta ho likevel?</translation>
     </message>
     <message>
         <source>&amp;Start</source>
-        <translation>&amp;Start</translation>
+        <translation type="obsolete">&amp;Start</translation>
     </message>
     <message>
         <source>End</source>
@@ -1457,7 +1527,7 @@ Vil du sletta ho likevel?</translation>
     </message>
     <message>
         <source>&amp;Start Time</source>
-        <translation>&amp;Starttid</translation>
+        <translation type="obsolete">&amp;Starttid</translation>
     </message>
     <message>
         <source>End Time</source>
@@ -1521,7 +1591,7 @@ Vil du sletta ho likevel?</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>Manual</source>
@@ -1622,10 +1692,6 @@ Vil du lagra likevel?</translation>
         <translation>Greier ikkje kopla til CoreAudioEnginge</translation>
     </message>
     <message>
-        <source>&amp;ISCI Code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>AES ALARM</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1647,6 +1713,30 @@ Vil du lagra likevel?</translation>
     </message>
     <message>
         <source>Cut Info / Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outcue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISCI Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

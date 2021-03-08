@@ -383,7 +383,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_save_button=new QPushButton(this);
   edit_save_button->setFont(buttonFont());
-  edit_save_button->setText(tr("&Save"));
+  edit_save_button->setText(tr("Save"));
   edit_save_button->setDisabled(true);
   connect(edit_save_button,SIGNAL(clicked()),this,SLOT(saveData()));
 
@@ -408,7 +408,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_reports_button=new QPushButton(this);
   edit_reports_button->setFont(buttonFont());
-  edit_reports_button->setText(tr("&Reports"));
+  edit_reports_button->setText(tr("Reports"));
   connect(edit_reports_button,SIGNAL(clicked()),this,SLOT(reportsData()));
 
   //
@@ -438,7 +438,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_ok_button=new QPushButton(this);
   edit_ok_button->setDefault(true);
   edit_ok_button->setFont(buttonFont());
-  edit_ok_button->setText(tr("&OK"));
+  edit_ok_button->setText(tr("OK"));
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -446,7 +446,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_cancel_button=new QPushButton(this);
   edit_cancel_button->setFont(buttonFont());
-  edit_cancel_button->setText(tr("&Cancel"));
+  edit_cancel_button->setText(tr("Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

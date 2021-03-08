@@ -112,7 +112,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   cast_open_button=new QPushButton(this);
   cast_open_button->setFont(buttonFont());
-  cast_open_button->setText(tr("&View\nFeed"));
+  cast_open_button->setText(tr("View\nFeed"));
   cast_open_button->setDisabled(true);
   connect(cast_open_button,SIGNAL(clicked()),this,SLOT(openData()));
 
@@ -130,7 +130,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   cast_close_button=new QPushButton(this);
   cast_close_button->setFont(buttonFont());
-  cast_close_button->setText(tr("&Close"));
+  cast_close_button->setText(tr("Close"));
   connect(cast_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
   cast_resize=true;

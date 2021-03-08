@@ -64,7 +64,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   //
   list_add_button=new QPushButton(this);
   list_add_button->setFont(buttonFont());
-  list_add_button->setText(tr("&Add"));
+  list_add_button->setText(tr("Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
@@ -72,7 +72,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   //
   list_edit_button=new QPushButton(this);
   list_edit_button->setFont(buttonFont());
-  list_edit_button->setText(tr("&Edit"));
+  list_edit_button->setText(tr("Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -80,7 +80,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   //
   list_delete_button=new QPushButton(this);
   list_delete_button->setFont(buttonFont());
-  list_delete_button->setText(tr("&Delete"));
+  list_delete_button->setText(tr("Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -88,7 +88,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   //
   list_error_button=new QPushButton(this);
   list_error_button->setFont(buttonFont());
-  list_error_button->setText(tr("&Error\nLog"));
+  list_error_button->setText(tr("Error\nLog"));
   connect(list_error_button,SIGNAL(clicked()),this,SLOT(errorData()));
 
   //
@@ -97,7 +97,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(buttonFont());
-  list_close_button->setText(tr("&Close"));
+  list_close_button->setText(tr("Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 

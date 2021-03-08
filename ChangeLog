@@ -21244,3 +21244,14 @@
 2021-03-08 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'RDCartFilter::userIsAdmin()' and
 	'RDCartFilter::setUserIsAdmin()' methods.
+2021-03-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3-style accelerators from rdadmin(1).
+	* Removed Qt3-style accelerators from rdairplay(1).
+	* Removed Qt3-style accelerators from rdcastmanager(1).
+	* Removed Qt3-style accelerators from rdcatch(1).
+	* Removed Qt3-style accelerators from rdlibrary(1).
+	* Removed Qt3-style accelerators from rdlogedit(1).
+	* Removed Qt3-style accelerators from rdlogin(1).
+	* Removed Qt3-style accelerators from rdlogmanager(1).
+	* Removed Qt3-style accelerators from rdselect(1).
+	* Removed Qt3-style accelerators from rddbconfig(8).

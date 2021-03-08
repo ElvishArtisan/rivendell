@@ -271,7 +271,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   d_previous_button->
     setGeometry(sizeHint().width()-290,sizeHint().height()-60,80,50);
   d_previous_button->setFont(buttonFont());
-  d_previous_button->setText(tr("&Previous\nTrack"));
+  d_previous_button->setText(tr("Previous\nTrack"));
   connect(d_previous_button,SIGNAL(clicked()),this,SLOT(previousData()));
 
   //
@@ -281,7 +281,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   d_next_button->
     setGeometry(sizeHint().width()-200,sizeHint().height()-60,80,50);
   d_next_button->setFont(buttonFont());
-  d_next_button->setText(tr("&Next\nTrack"));
+  d_next_button->setText(tr("Next\nTrack"));
   connect(d_next_button,SIGNAL(clicked()),this,SLOT(nextData()));
 
   //
@@ -439,7 +439,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   d_close_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   d_close_button->setFont(buttonFont());
-  d_close_button->setText(tr("&Close"));
+  d_close_button->setText(tr("Close"));
   connect(d_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //

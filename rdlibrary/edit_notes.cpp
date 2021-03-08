@@ -45,7 +45,7 @@ EditNotes::EditNotes(RDCart *cart,QWidget *parent)
   notes_ok_button=new QPushButton(this);
   notes_ok_button->setDefault(true);
   notes_ok_button->setFont(buttonFont());
-  notes_ok_button->setText(tr("&OK"));
+  notes_ok_button->setText(tr("OK"));
   notes_ok_button->setDefault(true);
   connect(notes_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -54,7 +54,7 @@ EditNotes::EditNotes(RDCart *cart,QWidget *parent)
   //
   notes_cancel_button=new QPushButton(this);
   notes_cancel_button->setFont(buttonFont());
-  notes_cancel_button->setText(tr("&Cancel"));
+  notes_cancel_button->setText(tr("Cancel"));
   connect(notes_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

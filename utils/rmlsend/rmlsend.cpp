@@ -105,12 +105,12 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   response_label->setFont(labelFont());
   response_label->setAlignment(Qt::AlignRight);
 
-  send=new QPushButton(tr("&Send Command"),this);
+  send=new QPushButton(tr("Send Command"),this);
   send->setGeometry(10,sizeHint().height()-50,120,40);
   send->setFont(buttonFont());
   connect(send,SIGNAL(clicked()),this,SLOT(sendCommand()));
 
-  quit=new QPushButton("&Quit",this);
+  quit=new QPushButton("Quit",this);
   quit->setGeometry(sizeHint().width()-80,sizeHint().height()-50,70,40);
   quit->setFont(buttonFont());
   quit->setDefault(true);

@@ -773,7 +773,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_startlog_button=new QPushButton(this);
   air_startlog_button->setGeometry(350,567,50,24);
   air_startlog_button->setFont(subButtonFont());
-  air_startlog_button->setText(tr("&Select"));
+  air_startlog_button->setText(tr("Select"));
   connect(air_startlog_button,SIGNAL(clicked()),this,SLOT(selectData()));
 
   //
@@ -906,7 +906,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -915,7 +915,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

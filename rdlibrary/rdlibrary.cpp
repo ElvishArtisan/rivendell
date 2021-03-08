@@ -176,7 +176,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   lib_add_button=new QPushButton(this);
   lib_add_button->setFont(buttonFont());
-  lib_add_button->setText(tr("&Add"));
+  lib_add_button->setText(tr("Add"));
   connect(lib_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
@@ -184,7 +184,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   lib_edit_button=new QPushButton(this);
   lib_edit_button->setFont(buttonFont());
-  lib_edit_button->setText(tr("&Edit"));
+  lib_edit_button->setText(tr("Edit"));
   lib_edit_button->setEnabled(false);
   connect(lib_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
@@ -193,7 +193,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   lib_delete_button=new QPushButton(this);
   lib_delete_button->setFont(buttonFont());
-  lib_delete_button->setText(tr("&Delete"));
+  lib_delete_button->setText(tr("Delete"));
   lib_delete_button->setEnabled(false);
   connect(lib_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
@@ -202,7 +202,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   lib_macro_button=new QPushButton(this);
   lib_macro_button->setFont(buttonFont());
-  lib_macro_button->setText(tr("Run\n&Macro"));
+  lib_macro_button->setText(tr("Run\nMacro"));
   lib_macro_button->setEnabled(false);
   lib_macro_button->setVisible(false);
   connect(lib_macro_button,SIGNAL(clicked()),this,SLOT(macroData()));
@@ -218,7 +218,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   lib_rip_button=new QPushButton(this);
   lib_rip_button->setFont(buttonFont());
-  lib_rip_button->setText(tr("&Rip\nCD"));
+  lib_rip_button->setText(tr("Rip\nCD"));
   connect(lib_rip_button,SIGNAL(clicked()),this,SLOT(ripData()));
 
   //
@@ -226,7 +226,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   lib_reports_button=new QPushButton(this);
   lib_reports_button->setFont(buttonFont());
-  lib_reports_button->setText(tr("Re&ports"));
+  lib_reports_button->setText(tr("Reports"));
   connect(lib_reports_button,SIGNAL(clicked()),this,SLOT(reportsData()));
 
   //
@@ -234,7 +234,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   lib_close_button=new QPushButton(this);
   lib_close_button->setFont(buttonFont());
-  lib_close_button->setText(tr("&Close"));
+  lib_close_button->setText(tr("Close"));
   connect(lib_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
 

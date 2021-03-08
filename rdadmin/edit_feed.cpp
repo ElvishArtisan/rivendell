@@ -265,7 +265,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   feed_format_button=new QPushButton(this);
   feed_format_button->setFont(subButtonFont());
-  feed_format_button->setText(tr("S&et"));
+  feed_format_button->setText(tr("Set"));
   connect(feed_format_button,SIGNAL(clicked()),this,SLOT(setFormatData()));
 
   //
@@ -420,7 +420,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_ok_button=new QPushButton(this);
   feed_ok_button->setDefault(true);
   feed_ok_button->setFont(buttonFont());
-  feed_ok_button->setText(tr("&OK"));
+  feed_ok_button->setText(tr("OK"));
   connect(feed_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -428,7 +428,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_cancel_button=new QPushButton(this);
   feed_cancel_button->setFont(buttonFont());
-  feed_cancel_button->setText(tr("&Cancel"));
+  feed_cancel_button->setText(tr("Cancel"));
   connect(feed_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

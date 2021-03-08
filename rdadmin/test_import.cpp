@@ -75,7 +75,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(200,5,60,30);
   button->setFont(subButtonFont());
-  button->setText(tr("&Select"));
+  button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectData()));
 
   //
@@ -83,7 +83,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   test_import_button=new QPushButton(this);
   test_import_button->setFont(buttonFont());
-  test_import_button->setText(tr("&Import"));
+  test_import_button->setText(tr("Import"));
   connect(test_import_button,SIGNAL(clicked()),this,SLOT(importData()));
 
   //
@@ -113,7 +113,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   test_close_button=new QPushButton(this);
   test_close_button->setFont(buttonFont());
-  test_close_button->setText(tr("&Close"));
+  test_close_button->setText(tr("Close"));
   connect(test_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   dateChangedData(current_date);

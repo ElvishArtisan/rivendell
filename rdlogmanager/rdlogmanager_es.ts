@@ -9,19 +9,31 @@
     </message>
     <message>
         <source>&amp;New Clock Name:</source>
-        <translation>&amp;Nombre de la Torta:</translation>
+        <translation type="obsolete">&amp;Nombre de la Torta:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Add Clock</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Clock Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -32,15 +44,27 @@
     </message>
     <message>
         <source>&amp;New Event Name:</source>
-        <translation>&amp;Nombre del Evento:</translation>
+        <translation type="obsolete">&amp;Nombre del Evento:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>New Event Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -93,42 +117,42 @@
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Añadir</translation>
+        <translation type="obsolete">&amp;Añadir</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Borrar</translation>
+        <translation type="obsolete">&amp;Borrar</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Guardar</translation>
+        <translation type="obsolete">&amp;Guardar</translation>
     </message>
     <message>
         <source>Save &amp;As</source>
-        <translation>Guardar
+        <translation type="obsolete">Guardar
 &amp;como</translation>
     </message>
     <message>
         <source>&amp;Services
 List</source>
-        <translation>Lista de
+        <translation type="obsolete">Lista de
 &amp;Servicios</translation>
     </message>
     <message>
         <source>Colo&amp;r</source>
-        <translation>Colo&amp;r</translation>
+        <translation type="obsolete">Colo&amp;r</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Are you sure you want to
@@ -205,10 +229,6 @@ horario</translation>
         <translation type="obsolete">Comentarios</translation>
     </message>
     <message>
-        <source>&amp;Clone</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit Clock</source>
         <translation type="unfinished">Editar Torta</translation>
     </message>
@@ -232,6 +252,47 @@ horario</translation>
     <message>
         <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Borrar</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Services
+List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Color</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -414,29 +475,29 @@ horario</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Guardar</translation>
+        <translation type="obsolete">&amp;Guardar</translation>
     </message>
     <message>
         <source>Save &amp;As</source>
-        <translation>Guardar &amp;como</translation>
+        <translation type="obsolete">Guardar &amp;como</translation>
     </message>
     <message>
         <source>&amp;Services
 List</source>
-        <translation>Lista de
+        <translation type="obsolete">Lista de
 &amp;Servicios</translation>
     </message>
     <message>
         <source>C&amp;olor</source>
-        <translation>C&amp;olor</translation>
+        <translation type="obsolete">C&amp;olor</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>RDLogManager</source>
@@ -612,6 +673,31 @@ Do you want to overwrite it?</source>
         <source>[None]</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Services
+List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Color</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>
@@ -637,11 +723,11 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Invalid Event</source>
@@ -665,6 +751,14 @@ already existing event.</source>
         <translation>Este evento se superpone con
 un evento ya existente.</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
 </context>
 <context>
     <name>EditGrid</name>
@@ -674,7 +768,7 @@ un evento ya existente.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>Edit Clock</source>
@@ -683,11 +777,6 @@ un evento ya existente.</translation>
     <message>
         <source>Clear Hour</source>
         <translation type="obsolete">Limpiar tortas</translation>
-    </message>
-    <message>
-        <source>Change
-&amp;All</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Clear Clocks</source>
@@ -705,6 +794,15 @@ un evento ya existente.</translation>
         <source>Edit Grid</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Change
+All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditNote</name>
@@ -714,11 +812,19 @@ un evento ya existente.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -737,11 +843,19 @@ un evento ya existente.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -752,11 +866,11 @@ un evento ya existente.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Code:</source>
@@ -782,16 +896,24 @@ un evento ya existente.</translation>
         <source>[none]</source>
         <translation type="unfinished">[ninguno]</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
 </context>
 <context>
     <name>EditSchedRules</name>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>&amp;Import</source>
-        <translation>&amp;Importar</translation>
+        <translation type="obsolete">&amp;Importar</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -857,7 +979,19 @@ Do you want to save?</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -868,11 +1002,19 @@ Do you want to save?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -895,11 +1037,11 @@ Do you want to save?</source>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Elegir</translation>
+        <translation type="obsolete">&amp;Elegir</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>The log for</source>
@@ -933,15 +1075,15 @@ Continue?</source>
     </message>
     <message>
         <source>&amp;Create New Log</source>
-        <translation>&amp;Crear nueva lista</translation>
+        <translation type="obsolete">&amp;Crear nueva lista</translation>
     </message>
     <message>
         <source>Merge &amp;Music</source>
-        <translation>Fusionar &amp;Música</translation>
+        <translation type="obsolete">Fusionar &amp;Música</translation>
     </message>
     <message>
         <source>Merge &amp;Traffic</source>
-        <translation>Fusionar &amp;Tráfico</translation>
+        <translation type="obsolete">Fusionar &amp;Tráfico</translation>
     </message>
     <message>
         <source>already exists.  Recreating it
@@ -1059,6 +1201,26 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>Traffic schedule import failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Elegir</translation>
+    </message>
+    <message>
+        <source>Create New Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge Music</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge Traffic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1235,31 +1397,31 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Añadir</translation>
+        <translation type="obsolete">&amp;Añadir</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Borrar</translation>
+        <translation type="obsolete">&amp;Borrar</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Limpiar</translation>
+        <translation type="obsolete">&amp;Limpiar</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1297,7 +1459,7 @@ eliminar</translation>
     </message>
     <message>
         <source>&amp;Rename</source>
-        <translation>&amp;Renombrar</translation>
+        <translation type="obsolete">&amp;Renombrar</translation>
     </message>
     <message>
         <source>NONE</source>
@@ -1318,6 +1480,38 @@ eliminar</translation>
     <message>
         <source>is in use in the following grid(s)</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Borrar</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Renombrar</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1340,27 +1534,27 @@ eliminar</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Añadir</translation>
+        <translation type="obsolete">&amp;Añadir</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Borrar</translation>
+        <translation type="obsolete">&amp;Borrar</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1398,7 +1592,7 @@ eliminar</translation>
     </message>
     <message>
         <source>&amp;Rename</source>
-        <translation>&amp;Renombrar</translation>
+        <translation type="obsolete">&amp;Renombrar</translation>
     </message>
     <message>
         <source>NONE</source>
@@ -1420,6 +1614,34 @@ eliminar</translation>
         <source>is in use in the following clocks</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Borrar</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Renombrar</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
 </context>
 <context>
     <name>ListGrids</name>
@@ -1437,11 +1659,19 @@ eliminar</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1460,7 +1690,7 @@ eliminar</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>[none]</source>
@@ -1469,13 +1699,27 @@ eliminar</translation>
     <message>
         <source>&amp;Purge
 Data</source>
-        <translation>&amp;Purgar datos</translation>
+        <translation type="obsolete">&amp;Purgar datos</translation>
     </message>
     <message>
         <source>&amp;Generate
 Reports</source>
-        <translation>&amp;Generar 
+        <translation type="obsolete">&amp;Generar 
 Reportes</translation>
+    </message>
+    <message>
+        <source>Generate
+Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Purge
+Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1494,27 +1738,27 @@ Reportes</translation>
     </message>
     <message>
         <source>Edit &amp;Events</source>
-        <translation>Editar &amp;Eventos</translation>
+        <translation type="obsolete">Editar &amp;Eventos</translation>
     </message>
     <message>
         <source>Edit C&amp;locks</source>
-        <translation>Editar &amp;Tortas</translation>
+        <translation type="obsolete">Editar &amp;Tortas</translation>
     </message>
     <message>
         <source>Edit G&amp;rids</source>
-        <translation>Edtar &amp;Parrillas</translation>
+        <translation type="obsolete">Edtar &amp;Parrillas</translation>
     </message>
     <message>
         <source>&amp;Generate Logs</source>
-        <translation>&amp;Generar Listas</translation>
+        <translation type="obsolete">&amp;Generar Listas</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>Manage &amp;Reports</source>
-        <translation>Admin. &amp;Reportes</translation>
+        <translation type="obsolete">Admin. &amp;Reportes</translation>
     </message>
     <message>
         <source>RDLogManager - User: </source>
@@ -1532,6 +1776,30 @@ See your system administrator for an update!</source>
     </message>
     <message>
         <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Grids</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1616,11 +1884,11 @@ Reporte</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Name Conflict</source>
@@ -1629,6 +1897,14 @@ Reporte</translation>
     <message>
         <source>That name already exists!</source>
         <translation>¡Ese nombre ya existe!</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1708,7 +1984,7 @@ Reporte</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>Delete Report Data</source>
@@ -1721,8 +1997,17 @@ Reporte</translation>
     <message>
         <source>&amp;Purge
 Data</source>
-        <translation>&amp;Borrar
+        <translation type="obsolete">&amp;Borrar
 Datos</translation>
+    </message>
+    <message>
+        <source>Purge
+Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

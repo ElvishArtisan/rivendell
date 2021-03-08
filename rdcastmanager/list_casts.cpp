@@ -99,7 +99,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //
   list_cart_button=new QPushButton(this);
   list_cart_button->setFont(buttonFont());
-  list_cart_button->setText(tr("Post From\nCar&t/Cut"));
+  list_cart_button->setText(tr("Post From\nCart/Cut"));
   list_cart_button->setDisabled(list_feed->isSuperfeed());
   connect(list_cart_button,SIGNAL(clicked()),this,SLOT(addCartData()));
 
@@ -108,7 +108,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //
   list_file_button=new QPushButton(this);
   list_file_button->setFont(buttonFont());
-  list_file_button->setText(tr("Post From\n&File"));
+  list_file_button->setText(tr("Post From\nFile"));
   list_file_button->setDisabled(list_feed->isSuperfeed());
   connect(list_file_button,SIGNAL(clicked()),this,SLOT(addFileData()));
 
@@ -126,7 +126,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //
   list_edit_button=new QPushButton(this);
   list_edit_button->setFont(buttonFont());
-  list_edit_button->setText(tr("&Edit"));
+  list_edit_button->setText(tr("Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -134,7 +134,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //
   list_delete_button=new QPushButton(this);
   list_delete_button->setFont(buttonFont());
-  list_delete_button->setText(tr("&Delete"));
+  list_delete_button->setText(tr("Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -143,7 +143,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(buttonFont());
-  list_close_button->setText(tr("&Close"));
+  list_close_button->setText(tr("Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //  RefreshList();

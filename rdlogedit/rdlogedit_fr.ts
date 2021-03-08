@@ -8,19 +8,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Marker</source>
+        <source>Marker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Voice &amp;Track</source>
+        <source>Voice Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Log C&amp;hain</source>
+        <source>Log Chain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Cancel</source>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -128,22 +128,6 @@ Meta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Reports</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Invalid Carts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -244,6 +228,18 @@ for the selected service!</source>
         <source>This log contains one or more carts that are invalid for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>
@@ -331,14 +327,6 @@ group for the specified service!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Generate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>[none]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -355,11 +343,19 @@ group for the specified service!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Select</source>
+        <source>Reports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reports</source>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -381,29 +377,8 @@ group for the specified service!</source>
 <context>
     <name>MainWidget</name>
     <message>
-        <source>&amp;Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Voice
-&amp;Tracker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Log
 Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -486,6 +461,27 @@ Report</source>
         <source>is in use by</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voice
+Tracker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RenderDialog</name>
@@ -566,19 +562,15 @@ Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Render</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Filename</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Rendering Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -598,16 +590,6 @@ Report</source>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Previous
-Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Next
-Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -638,10 +620,6 @@ Track</source>
     <message>
         <source>Delete
 Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -735,6 +713,20 @@ therefore only existing transitions will be editable.</source>
     </message>
     <message>
         <source>Set to Hook Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

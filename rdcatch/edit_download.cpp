@@ -159,7 +159,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-70,122,60,24);
   button->setFont(subLabelFont());
-  button->setText(tr("&Select"));
+  button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectCartData()));
 
   //
@@ -338,7 +338,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-300,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Save As\nNew"));
+  button->setText(tr("Save As\nNew"));
   connect(button,SIGNAL(clicked()),this,SLOT(saveasData()));
   if(adds==NULL) {
     button->hide();
@@ -351,7 +351,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -360,7 +360,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

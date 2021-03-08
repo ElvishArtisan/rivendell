@@ -33,7 +33,7 @@
     </message>
     <message>
         <source>&amp;Send Command</source>
-        <translation>&amp;Send kommando</translation>
+        <translation type="obsolete">&amp;Send kommando</translation>
     </message>
     <message>
         <source>RMLSend</source>
@@ -53,6 +53,10 @@
     </message>
     <message>
         <source>Macro Command Utility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send Command</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -97,7 +97,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   log_events_button=new QPushButton(this);
   log_events_button->setGeometry(10,45,sizeHint().width()-20,50);
   log_events_button->setFont(buttonFont());
-  log_events_button->setText(tr("Edit &Events"));
+  log_events_button->setText(tr("Edit Events"));
   connect(log_events_button,SIGNAL(clicked()),this,SLOT(eventsData()));
 
   //
@@ -106,7 +106,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   log_clocks_button=new QPushButton(this);
   log_clocks_button->setGeometry(10,95,sizeHint().width()-20,50);
   log_clocks_button->setFont(buttonFont());
-  log_clocks_button->setText(tr("Edit C&locks"));
+  log_clocks_button->setText(tr("Edit Clocks"));
   connect(log_clocks_button,SIGNAL(clicked()),this,SLOT(clocksData()));
 
   //
@@ -115,7 +115,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   log_grids_button=new QPushButton(this);
   log_grids_button->setGeometry(10,145,sizeHint().width()-20,50);
   log_grids_button->setFont(buttonFont());
-  log_grids_button->setText(tr("Edit G&rids"));
+  log_grids_button->setText(tr("Edit Grids"));
   connect(log_grids_button,SIGNAL(clicked()),this,SLOT(gridsData()));
 
   //
@@ -124,7 +124,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   log_logs_button=new QPushButton(this);
   log_logs_button->setGeometry(10,195,sizeHint().width()-20,50);
   log_logs_button->setFont(buttonFont());
-  log_logs_button->setText(tr("&Generate Logs"));
+  log_logs_button->setText(tr("Generate Logs"));
   connect(log_logs_button,SIGNAL(clicked()),this,SLOT(generateData()));
 
   //
@@ -133,7 +133,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   log_reports_button=new QPushButton(this);
   log_reports_button->setGeometry(10,245,sizeHint().width()-20,50);
   log_reports_button->setFont(buttonFont());
-  log_reports_button->setText(tr("Manage &Reports"));
+  log_reports_button->setText(tr("Manage Reports"));
   connect(log_reports_button,SIGNAL(clicked()),this,SLOT(reportsData()));
 
   //
@@ -143,7 +143,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   log_close_button->setGeometry(10,sizeHint().height()-60,
 				sizeHint().width()-20,50);
   log_close_button->setFont(buttonFont());
-  log_close_button->setText(tr("&Close"));
+  log_close_button->setText(tr("Close"));
   log_close_button->setDefault(true);
   connect(log_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 }

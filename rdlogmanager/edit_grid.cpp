@@ -97,7 +97,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
   all_button->setGeometry(10,sizeHint().height()-60,80,50);
   all_button->setDefault(false);
   all_button->setFont(buttonFont());
-  all_button->setText(tr("Change\n&All"));
+  all_button->setText(tr("Change\nAll"));
   connect(all_button,SIGNAL(clicked()),this,SLOT(allHourButtonData()));
                       
   //
@@ -107,7 +107,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&Close"));
+  button->setText(tr("Close"));
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //

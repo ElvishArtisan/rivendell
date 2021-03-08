@@ -144,7 +144,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   //
   // Render Button
   //
-  render_render_button=new QPushButton(tr("&Render"),this);
+  render_render_button=new QPushButton(tr("Render"),this);
   render_render_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   render_render_button->setFont(buttonFont());
@@ -154,7 +154,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   //
   // Cancel Button
   //
-  render_cancel_button=new QPushButton(tr("&Cancel"),this);
+  render_cancel_button=new QPushButton(tr("Cancel"),this);
   render_cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   render_cancel_button->setFont(buttonFont());

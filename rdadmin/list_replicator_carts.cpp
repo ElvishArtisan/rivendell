@@ -37,7 +37,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
   //
   list_repost_button=new QPushButton(this);
   list_repost_button->setFont(buttonFont());
-  list_repost_button->setText(tr("&Repost"));
+  list_repost_button->setText(tr("Repost"));
   connect(list_repost_button,SIGNAL(clicked()),this,SLOT(repostData()));
 
   //
@@ -45,7 +45,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
   //
   list_repost_all_button=new QPushButton(this);
   list_repost_all_button->setFont(buttonFont());
-  list_repost_all_button->setText(tr("Repost\n&All"));
+  list_repost_all_button->setText(tr("Repost\nAll"));
   connect(list_repost_all_button,SIGNAL(clicked()),this,SLOT(repostAllData()));
 
   //
@@ -54,7 +54,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(buttonFont());
-  list_close_button->setText(tr("&Close"));
+  list_close_button->setText(tr("Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
@@ -68,7 +68,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
   connect(list_model,SIGNAL(modelReset()),
 	  list_view,SLOT(resizeColumnsToContents()));
 
-  QLabel *list_box_label=new QLabel(tr("&Active Carts:"),this);
+  QLabel *list_box_label=new QLabel(tr("Active Carts:"),this);
   list_box_label->setFont(labelFont());
   list_box_label->setGeometry(14,11,85,19);
 }

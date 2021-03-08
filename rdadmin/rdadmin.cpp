@@ -143,7 +143,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   QPushButton *users_button=new QPushButton(this);
   users_button->setGeometry(10,50,80,60);
   users_button->setFont(buttonFont());
-  users_button->setText(tr("Manage\n&Users"));
+  users_button->setText(tr("Manage\nUsers"));
   users_button->setEnabled(config_priv);
   connect(users_button,SIGNAL(clicked()),this,SLOT(manageUsersData()));
 
@@ -153,7 +153,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   QPushButton *groups_button=new QPushButton(this);
   groups_button->setGeometry(10,120,80,60);
   groups_button->setFont(buttonFont());
-  groups_button->setText(tr("Manage\n&Groups"));
+  groups_button->setText(tr("Manage\nGroups"));
   groups_button->setEnabled(config_priv);
   connect(groups_button,SIGNAL(clicked()),this,SLOT(manageGroupsData()));
   
@@ -163,7 +163,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   QPushButton *services_button=new QPushButton(this);
   services_button->setGeometry(100,50,80,60);
   services_button->setFont(buttonFont());
-  services_button->setText(tr("Manage\n&Services"));
+  services_button->setText(tr("Manage\nServices"));
   services_button->setEnabled(config_priv);
   connect(services_button,SIGNAL(clicked()),this,SLOT(manageServicesData()));
   
@@ -173,7 +173,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   QPushButton *stations_button=new QPushButton(this);
   stations_button->setGeometry(100,120,80,60);
   stations_button->setFont(buttonFont());
-  stations_button->setText(tr("Manage\nHo&sts"));
+  stations_button->setText(tr("Manage\nHosts"));
   stations_button->setEnabled(config_priv);
   connect(stations_button,SIGNAL(clicked()),this,SLOT(manageStationsData()));
   
@@ -183,7 +183,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   QPushButton *reports_button=new QPushButton(this);
   reports_button->setGeometry(190,50,80,60);
   reports_button->setFont(buttonFont());
-  reports_button->setText(tr("Manage\nR&eports"));
+  reports_button->setText(tr("Manage\nReports"));
   reports_button->setEnabled(config_priv);
   connect(reports_button,SIGNAL(clicked()),this,SLOT(reportsData()));
 
@@ -193,7 +193,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   QPushButton *podcasts_button=new QPushButton(this);
   podcasts_button->setGeometry(280,50,80,60);
   podcasts_button->setFont(buttonFont());
-  podcasts_button->setText(tr("Manage\n&Feeds"));
+  podcasts_button->setText(tr("Manage\nFeeds"));
   podcasts_button->setEnabled(config_priv||rss_priv);
   connect(podcasts_button,SIGNAL(clicked()),this,SLOT(podcastsData()));
 
@@ -243,7 +243,7 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   QPushButton *quit_button=new QPushButton(this);
   quit_button->setGeometry(10,sizeHint().height()-70,sizeHint().width()-20,60);
   quit_button->setFont(buttonFont());
-  quit_button->setText(tr("&Quit"));
+  quit_button->setText(tr("Quit"));
   connect(quit_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 }
 

@@ -679,7 +679,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   QPushButton *button=new QPushButton(this);
   button->setGeometry(CENTER_LINE+10,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Save"));
+  button->setText(tr("Save"));
   connect(button,SIGNAL(clicked()),this,SLOT(saveData()));
 
   //
@@ -688,7 +688,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   button=new QPushButton(this);
   button->setGeometry(CENTER_LINE+100,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("Save &As"));
+  button->setText(tr("Save As"));
   connect(button,SIGNAL(clicked()),this,SLOT(saveAsData()));
   button->setDisabled(new_event);
 
@@ -699,7 +699,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   button->setGeometry(CENTER_LINE+(sizeHint().width()-CENTER_LINE)/2-85,
 		      sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Services\nList"));
+  button->setText(tr("Services\nList"));
   connect(button,SIGNAL(clicked()),this,SLOT(svcData()));
 
   //
@@ -710,7 +710,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     setGeometry(CENTER_LINE+(sizeHint().width()-CENTER_LINE)/2+5,
 		sizeHint().height()-60,80,50);
   event_color_button->setFont(buttonFont());
-  event_color_button->setText(tr("C&olor"));
+  event_color_button->setText(tr("Color"));
   connect(event_color_button,SIGNAL(clicked()),this,SLOT(colorData()));
 
   //
@@ -722,7 +722,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     button->setDefault(true);
   }
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -731,7 +731,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

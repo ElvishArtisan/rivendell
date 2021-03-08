@@ -256,7 +256,7 @@ Do you still want to delete?</source>
     <message>
         <source>&amp;Rip
 Track</source>
-        <translation>&amp;Extrair
+        <translation type="obsolete">&amp;Extrair
 Faixa</translation>
     </message>
     <message>
@@ -497,7 +497,7 @@ Disco</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Fechar</translation>
+        <translation type="obsolete">&amp;Fechar</translation>
     </message>
     <message>
         <source>Cut Conflict</source>
@@ -586,11 +586,6 @@ Por Favor, cheque suas configurações e tente novamente.</translation>
         <translation type="obsolete">OK</translation>
     </message>
     <message>
-        <source>&amp;Rip
-Disc</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>RDLibrary - Importer Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -610,11 +605,6 @@ Per Track</source>
     <message>
         <source>Add Single
 Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set
-&amp;Cart/Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -663,6 +653,20 @@ Disk</source>
     </message>
     <message>
         <source>Unable to allocate cart in group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set
+Cart/Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip
+Disc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -763,22 +767,22 @@ Disk</source>
     <message>
         <source>&amp;Edit
 Notes</source>
-        <translation>&amp;Editar
+        <translation type="obsolete">&amp;Editar
 Notas</translation>
     </message>
     <message>
         <source>&amp;Edit
 Script</source>
-        <translation>&amp;Editar
+        <translation type="obsolete">&amp;Editar
 Script</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>AUDIO</source>
@@ -942,6 +946,24 @@ limite do sistema!   Você ainda quer salvar?</translation>
         <source>User Defined:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit
+Notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit
+Script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMacro</name>
@@ -951,11 +973,19 @@ limite do sistema!   Você ainda quer salvar?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -966,11 +996,19 @@ limite do sistema!   Você ainda quer salvar?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -997,11 +1035,19 @@ limite do sistema!   Você ainda quer salvar?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1042,12 +1088,8 @@ limite do sistema!   Você ainda quer salvar?</translation>
         <translation type="unfinished">Tipo:</translation>
     </message>
     <message>
-        <source>&amp;Generate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Fechar</translation>
+        <translation type="obsolete">&amp;Fechar</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1063,6 +1105,14 @@ limite do sistema!   Você ainda quer salvar?</translation>
     </message>
     <message>
         <source>Select Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1229,29 +1279,29 @@ Cartão</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Adicionar</translation>
+        <translation type="obsolete">&amp;Adicionar</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Deletar</translation>
+        <translation type="obsolete">&amp;Deletar</translation>
     </message>
     <message>
         <source>&amp;Rip
 CD</source>
-        <translation>&amp;Extrair
+        <translation type="obsolete">&amp;Extrair
 CD</translation>
     </message>
     <message>
         <source>Re&amp;ports</source>
-        <translation>&amp;Relatórios</translation>
+        <translation type="obsolete">&amp;Relatórios</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Fechar</translation>
+        <translation type="obsolete">&amp;Fechar</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1342,11 +1392,6 @@ Você ainda quer deletá-lo?</translation>
         <translation type="obsolete">Preservar Pitch</translation>
     </message>
     <message>
-        <source>Run
-&amp;Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1394,6 +1439,36 @@ Você ainda quer deletá-lo?</translation>
         <source>Unable to delete audio!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Adicionar</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Editar</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Deletar</translation>
+    </message>
+    <message>
+        <source>Run
+Macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip
+CD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RecordCut</name>
@@ -1403,11 +1478,11 @@ Você ainda quer deletá-lo?</translation>
     </message>
     <message>
         <source>&amp;Description</source>
-        <translation>&amp;Descrição</translation>
+        <translation type="obsolete">&amp;Descrição</translation>
     </message>
     <message>
         <source>&amp;Outcue</source>
-        <translation>&amp;Comentário</translation>
+        <translation type="obsolete">&amp;Comentário</translation>
     </message>
     <message>
         <source>Origin</source>
@@ -1447,7 +1522,7 @@ Você ainda quer deletá-lo?</translation>
     </message>
     <message>
         <source>&amp;Start</source>
-        <translation>&amp;Início</translation>
+        <translation type="obsolete">&amp;Início</translation>
     </message>
     <message>
         <source>End</source>
@@ -1459,7 +1534,7 @@ Você ainda quer deletá-lo?</translation>
     </message>
     <message>
         <source>&amp;Start Time</source>
-        <translation>&amp;Início</translation>
+        <translation type="obsolete">&amp;Início</translation>
     </message>
     <message>
         <source>End Time</source>
@@ -1523,7 +1598,7 @@ Você ainda quer deletá-lo?</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Fechar</translation>
+        <translation type="obsolete">&amp;Fechar</translation>
     </message>
     <message>
         <source>Manual</source>
@@ -1624,10 +1699,6 @@ Você ainda quer salvar?</translation>
         <translation>Não foi possível conectar ao Sistema de Áudio</translation>
     </message>
     <message>
-        <source>&amp;ISCI Code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>AES ALARM</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1649,6 +1720,30 @@ Você ainda quer salvar?</translation>
     </message>
     <message>
         <source>Cut Info / Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outcue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISCI Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -333,7 +333,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   catch_add_button=new QPushButton(this);
   catch_add_button->setFont(buttonFont());
-  catch_add_button->setText(tr("&Add"));
+  catch_add_button->setText(tr("Add"));
   connect(catch_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
@@ -341,7 +341,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   catch_edit_button=new QPushButton(this);
   catch_edit_button->setFont(buttonFont());
-  catch_edit_button->setText(tr("&Edit"));
+  catch_edit_button->setText(tr("Edit"));
   connect(catch_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -349,7 +349,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   catch_delete_button=new QPushButton(this);
   catch_delete_button->setFont(buttonFont());
-  catch_delete_button->setText(tr("&Delete"));
+  catch_delete_button->setText(tr("Delete"));
   connect(catch_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -407,7 +407,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   catch_close_button=new QPushButton(this);
   catch_close_button->setFont(buttonFont());
-  catch_close_button->setText(tr("&Close"));
+  catch_close_button->setText(tr("Close"));
   catch_close_button->setFocus();
   catch_close_button->setDefault(true);
   connect(catch_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));

@@ -141,7 +141,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cast_item_effective_button=new QPushButton(this);
   cast_item_effective_button->setFont(subButtonFont());
-  cast_item_effective_button->setText(tr("&Select Date"));
+  cast_item_effective_button->setText(tr("Select Date"));
   connect(cast_item_effective_button,SIGNAL(clicked()),
 	  this,SLOT(effectiveSelectData()));
 
@@ -168,7 +168,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_expiration_label->setAlignment(Qt::AlignCenter);
   cast_item_expiration_button=new QPushButton(this);
   cast_item_expiration_button->setFont(subButtonFont());
-  cast_item_expiration_button->setText(tr("&Select Date"));
+  cast_item_expiration_button->setText(tr("Select Date"));
   connect(cast_item_expiration_button,SIGNAL(clicked()),
 	  this,SLOT(expirationSelectData()));
   cast_item_expiration_edit->setEnabled(cast_status!=RDPodcast::StatusExpired);
@@ -183,7 +183,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_ok_button=new QPushButton(this);
   cast_ok_button->setDefault(true);
   cast_ok_button->setFont(buttonFont());
-  cast_ok_button->setText(tr("&OK"));
+  cast_ok_button->setText(tr("OK"));
   connect(cast_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -191,7 +191,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   cast_cancel_button=new QPushButton(this);
   cast_cancel_button->setFont(buttonFont());
-  cast_cancel_button->setText(tr("&Cancel"));
+  cast_cancel_button->setText(tr("Cancel"));
   connect(cast_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //******** END ***********

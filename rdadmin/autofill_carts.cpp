@@ -58,7 +58,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
   //
   svc_add_button=new QPushButton(this);
   svc_add_button->setFont(buttonFont());
-  svc_add_button->setText(tr("&Add"));
+  svc_add_button->setText(tr("Add"));
   connect(svc_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
@@ -66,7 +66,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
   //
   svc_remove_button=new QPushButton(this);
   svc_remove_button->setFont(buttonFont());
-  svc_remove_button->setText(tr("&Remove"));
+  svc_remove_button->setText(tr("Remove"));
   connect(svc_remove_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -74,7 +74,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
   //
   svc_close_button=new QPushButton(this);
   svc_close_button->setFont(buttonFont());
-  svc_close_button->setText(tr("&Close"));
+  svc_close_button->setText(tr("Close"));
   connect(svc_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   QString sql=QString("left join AUTOFILLS ")+

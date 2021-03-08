@@ -9,19 +9,31 @@
     </message>
     <message>
         <source>&amp;New Clock Name:</source>
-        <translation>&amp;Název nových hodin:</translation>
+        <translation type="obsolete">&amp;Název nových hodin:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Add Clock</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Clock Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -32,15 +44,27 @@
     </message>
     <message>
         <source>&amp;New Event Name:</source>
-        <translation>&amp;Název nové události:</translation>
+        <translation type="obsolete">&amp;Název nové události:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>New Event Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -93,15 +117,15 @@
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>Scheduler
@@ -111,29 +135,29 @@ rozvrhovač</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Uložit</translation>
+        <translation type="obsolete">&amp;Uložit</translation>
     </message>
     <message>
         <source>Save &amp;As</source>
-        <translation>Uložit &amp;jako</translation>
+        <translation type="obsolete">Uložit &amp;jako</translation>
     </message>
     <message>
         <source>&amp;Services
 List</source>
-        <translation>Seznam
+        <translation type="obsolete">Seznam
 &amp;služeb</translation>
     </message>
     <message>
         <source>Colo&amp;r</source>
-        <translation>&amp;Barva</translation>
+        <translation type="obsolete">&amp;Barva</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Are you sure you want to
@@ -203,10 +227,6 @@ Chcete je uložit?</translation>
         <translation type="obsolete">Poznámky</translation>
     </message>
     <message>
-        <source>&amp;Clone</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit Clock</source>
         <translation type="unfinished">Upravit hodiny</translation>
     </message>
@@ -230,6 +250,47 @@ Chcete je uložit?</translation>
     <message>
         <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Services
+List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Barva</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -444,29 +505,29 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Uložit</translation>
+        <translation type="obsolete">&amp;Uložit</translation>
     </message>
     <message>
         <source>Save &amp;As</source>
-        <translation>Uložit &amp;jako</translation>
+        <translation type="obsolete">Uložit &amp;jako</translation>
     </message>
     <message>
         <source>&amp;Services
 List</source>
-        <translation>Seznam
+        <translation type="obsolete">Seznam
 &amp;služeb</translation>
     </message>
     <message>
         <source>C&amp;olor</source>
-        <translation>&amp;Barva</translation>
+        <translation type="obsolete">&amp;Barva</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>RDLogManager</source>
@@ -610,6 +671,31 @@ Chcete ji přepsat?</translation>
         <source>[None]</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Services
+List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Barva</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>
@@ -635,11 +721,11 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Event</source>
@@ -663,6 +749,14 @@ already existing event.</source>
         <translation>Tato událost se překrývá s již
 existující událostí.</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>EditGrid</name>
@@ -676,16 +770,11 @@ existující událostí.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Clear Hour</source>
         <translation type="obsolete">Smazat hodiny</translation>
-    </message>
-    <message>
-        <source>Change
-&amp;All</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Clear Clocks</source>
@@ -703,6 +792,15 @@ existující událostí.</translation>
         <source>Edit Grid</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Change
+All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditNote</name>
@@ -712,11 +810,19 @@ existující událostí.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -735,11 +841,19 @@ existující událostí.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -750,11 +864,11 @@ existující událostí.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Code:</source>
@@ -780,16 +894,24 @@ existující událostí.</translation>
         <source>[none]</source>
         <translation type="unfinished">[žádný]</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>EditSchedRules</name>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Import</source>
-        <translation>&amp;Zavést</translation>
+        <translation type="obsolete">&amp;Zavést</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -847,10 +969,22 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Import Rules from Clock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -862,11 +996,19 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -889,19 +1031,19 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
     <message>
         <source>&amp;Create New Log</source>
-        <translation>&amp;Vytvořit nový zápis</translation>
+        <translation type="obsolete">&amp;Vytvořit nový zápis</translation>
     </message>
     <message>
         <source>Merge &amp;Music</source>
-        <translation>Sloučit &amp;hudbu</translation>
+        <translation type="obsolete">Sloučit &amp;hudbu</translation>
     </message>
     <message>
         <source>Merge &amp;Traffic</source>
-        <translation>Sloučit &amp;přenos</translation>
+        <translation type="obsolete">Sloučit &amp;přenos</translation>
     </message>
     <message>
         <source>Import Data</source>
@@ -917,7 +1059,7 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>The log for</source>
@@ -1053,6 +1195,26 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>Traffic schedule import failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Vybrat</translation>
+    </message>
+    <message>
+        <source>Create New Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge Music</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge Traffic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1229,35 +1391,35 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;Rename</source>
-        <translation>&amp;Přejmenovat</translation>
+        <translation type="obsolete">&amp;Přejmenovat</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Vyprázdnit</translation>
+        <translation type="obsolete">&amp;Vyprázdnit</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1312,6 +1474,38 @@ delete</source>
         <source>is in use in the following grid(s)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Přejmenovat</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>ListEvents</name>
@@ -1333,31 +1527,31 @@ delete</source>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;Rename</source>
-        <translation>&amp;Přejmenovat</translation>
+        <translation type="obsolete">&amp;Přejmenovat</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1412,6 +1606,34 @@ delete</source>
         <source>is in use in the following clocks</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Přejmenovat</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>ListGrids</name>
@@ -1429,11 +1651,19 @@ delete</source>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1453,22 +1683,36 @@ delete</source>
     <message>
         <source>&amp;Generate
 Reports</source>
-        <translation>&amp;Vytvořit
+        <translation type="obsolete">&amp;Vytvořit
 zprávy</translation>
     </message>
     <message>
         <source>&amp;Purge
 Data</source>
-        <translation>&amp;Smazat
+        <translation type="obsolete">&amp;Smazat
 data</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>[none]</source>
         <translation type="obsolete">[žádný]</translation>
+    </message>
+    <message>
+        <source>Generate
+Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Purge
+Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1487,27 +1731,27 @@ data</translation>
     </message>
     <message>
         <source>Edit &amp;Events</source>
-        <translation>Upravit &amp;události</translation>
+        <translation type="obsolete">Upravit &amp;události</translation>
     </message>
     <message>
         <source>Edit C&amp;locks</source>
-        <translation>Upravit &amp;hodiny</translation>
+        <translation type="obsolete">Upravit &amp;hodiny</translation>
     </message>
     <message>
         <source>Edit G&amp;rids</source>
-        <translation>Upravit &amp;mřížky</translation>
+        <translation type="obsolete">Upravit &amp;mřížky</translation>
     </message>
     <message>
         <source>&amp;Generate Logs</source>
-        <translation>&amp;Vytvořit zápisy</translation>
+        <translation type="obsolete">&amp;Vytvořit zápisy</translation>
     </message>
     <message>
         <source>Manage &amp;Reports</source>
-        <translation>Spravovat zpráv&amp;y</translation>
+        <translation type="obsolete">Spravovat zpráv&amp;y</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>RDLogManager - User: </source>
@@ -1525,6 +1769,30 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
     </message>
     <message>
         <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Grids</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1609,11 +1877,11 @@ zprávu</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Name Conflict</source>
@@ -1622,6 +1890,14 @@ zprávu</translation>
     <message>
         <source>That name already exists!</source>
         <translation>Název již existuje!</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -1702,12 +1978,12 @@ zprávu</translation>
     <message>
         <source>&amp;Purge
 Data</source>
-        <translation>&amp;Smazat
+        <translation type="obsolete">&amp;Smazat
 data</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Delete Report Data</source>
@@ -1716,6 +1992,15 @@ data</translation>
     <message>
         <source>Are you sure you want to delete report data for</source>
         <translation>Jste si jistý, že chcete smazat data zprávy pro</translation>
+    </message>
+    <message>
+        <source>Purge
+Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

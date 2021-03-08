@@ -94,7 +94,7 @@ RenderDialog::RenderDialog(QWidget *parent)
   //
   // Cancel Button
   //
-  d_cancel_button=new QPushButton(tr("&Cancel"),this);
+  d_cancel_button=new QPushButton(tr("Cancel"),this);
   d_cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   d_cancel_button->setFont(buttonFont());

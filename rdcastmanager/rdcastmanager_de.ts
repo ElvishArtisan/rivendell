@@ -83,11 +83,11 @@
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>Air Date/Time:</source>
@@ -103,10 +103,6 @@
     </message>
     <message>
         <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Select Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -149,6 +145,18 @@
         <source>Item expiration must be in the future!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>
@@ -159,22 +167,22 @@
     <message>
         <source>Post From
 Car&amp;t/Cut</source>
-        <translation>Poste von
+        <translation type="obsolete">Poste von
 Car&amp;t/Cut</translation>
     </message>
     <message>
         <source>Post From
 &amp;File</source>
-        <translation>Poste von
+        <translation type="obsolete">Poste von
 &amp;Datei</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editieren</translation>
+        <translation type="obsolete">&amp;Editieren</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Löschen</translation>
+        <translation type="obsolete">&amp;Löschen</translation>
     </message>
     <message>
         <source>Subscription
@@ -184,7 +192,7 @@ Car&amp;t/Cut</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>S&amp;chliessen</translation>
+        <translation type="obsolete">S&amp;chliessen</translation>
     </message>
     <message>
         <source></source>
@@ -363,6 +371,28 @@ Log</source>
         <source>Select Audio File</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Post From
+Cart/Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post From
+File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LogDialog</name>
@@ -431,12 +461,12 @@ Log</source>
     <message>
         <source>&amp;View
 Feed</source>
-        <translation>&amp;Zeige
+        <translation type="obsolete">&amp;Zeige
 Feed</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>S&amp;chliessen</translation>
+        <translation type="obsolete">S&amp;chliessen</translation>
     </message>
     <message>
         <source>User</source>
@@ -466,6 +496,10 @@ Feed</source>
     </message>
     <message>
         <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -504,7 +538,7 @@ Feed</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>Log Render Options</source>
@@ -536,6 +570,10 @@ Feed</source>
     </message>
     <message>
         <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

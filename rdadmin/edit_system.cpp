@@ -179,7 +179,7 @@ EditSystem::EditSystem(QWidget *parent)
   edit_duplicate_view->hide();
   edit_save_button=new QPushButton(this);
   edit_save_button->setFont(buttonFont());
-  edit_save_button->setText(tr("&Save List"));
+  edit_save_button->setText(tr("Save List"));
   connect(edit_save_button,SIGNAL(clicked()),this,SLOT(saveData()));
   edit_save_button->hide();
 
@@ -196,7 +196,7 @@ EditSystem::EditSystem(QWidget *parent)
   //
   edit_ok_button=new QPushButton(this);
   edit_ok_button->setFont(buttonFont());
-  edit_ok_button->setText(tr("&OK"));
+  edit_ok_button->setText(tr("OK"));
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -204,7 +204,7 @@ EditSystem::EditSystem(QWidget *parent)
   //
   edit_cancel_button=new QPushButton(this);
   edit_cancel_button->setFont(buttonFont());
-  edit_cancel_button->setText(tr("&Cancel"));
+  edit_cancel_button->setText(tr("Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   edit_duplicate_carts_box->setChecked(edit_system->allowDuplicateCartTitles());

@@ -2,7 +2,7 @@
 //
 // Add a Rivendell RDCatch Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
+#include <QPushButton>
 
 #include <rd.h>
 #include <rdlog_line.h>
@@ -50,7 +50,7 @@ AddMeta::AddMeta(QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(10,30,sizeHint().width()-20,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Marker"));
+  button->setText(tr("Marker"));
   connect(button,SIGNAL(clicked()),this,SLOT(markerData()));
 
   //
@@ -59,7 +59,7 @@ AddMeta::AddMeta(QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(10,80,sizeHint().width()-20,50);
   button->setFont(buttonFont());
-  button->setText(tr("Voice &Track"));
+  button->setText(tr("Voice Track"));
   connect(button,SIGNAL(clicked()),this,SLOT(trackData()));
 
   //
@@ -68,7 +68,7 @@ AddMeta::AddMeta(QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(10,130,sizeHint().width()-20,50);
   button->setFont(buttonFont());
-  button->setText(tr("Log C&hain"));
+  button->setText(tr("Log Chain"));
   connect(button,SIGNAL(clicked()),this,SLOT(chainData()));
 
   //
@@ -77,7 +77,7 @@ AddMeta::AddMeta(QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,sizeHint().width()-20,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   button->setDefault(true);
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

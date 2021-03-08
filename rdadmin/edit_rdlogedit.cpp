@@ -84,7 +84,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_maxlength_time->setDisplayFormat("hh:mm:ss");
   lib_maxlength_time->setGeometry(180,100,85,19);
   QLabel *lib_maxlength_label=
-    new QLabel(tr("&Max Record Time:"),this);
+    new QLabel(tr("Max Record Time:"),this);
   lib_maxlength_label->setFont(labelFont());
   lib_maxlength_label->setGeometry(25,101,150,19);
   lib_maxlength_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -96,7 +96,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_threshold_spin->setGeometry(180,124,50,19);
   lib_threshold_spin->setMinimum(-99);
   lib_threshold_spin->setMaximum(0);
-  label=new QLabel(tr("&AutoTrim Threshold:"),this);
+  label=new QLabel(tr("AutoTrim Threshold:"),this);
   label->setFont(labelFont());
   label->setGeometry(25,124,150,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -112,7 +112,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_normalization_spin->setGeometry(180,148,50,19);
   lib_normalization_spin->setMinimum(-99);
   lib_normalization_spin->setMaximum(0);
-  label=new QLabel(tr("&Normalization Level:"),this);
+  label=new QLabel(tr("Normalization Level:"),this);
   label->setFont(labelFont());
   label->setGeometry(25,148,150,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -129,7 +129,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_preroll_spin->setMinimum(0);
   lib_preroll_spin->setMaximum(10000);
   lib_preroll_spin->setSingleStep(100);
-  QLabel *lib_preroll_spin_label=new QLabel(tr("&Audio Margin:"),this);
+  QLabel *lib_preroll_spin_label=new QLabel(tr("Audio Margin:"),this);
   lib_preroll_spin_label->setFont(labelFont());
   lib_preroll_spin_label->setGeometry(25,172,150,19);
   lib_preroll_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -144,7 +144,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_format_box=new QComboBox(this);
   lib_format_box->setGeometry(180,196,150,19);
   connect(lib_format_box,SIGNAL(activated(int)),this,SLOT(formatData(int)));
-  QLabel *lib_format_label=new QLabel(tr("&Format:"),this);
+  QLabel *lib_format_label=new QLabel(tr("Format:"),this);
   lib_format_label->setFont(labelFont());
   lib_format_label->setGeometry(25,196,150,19);
   lib_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -154,7 +154,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   lib_bitrate_box=new QComboBox(this);
   lib_bitrate_box->setGeometry(180,220,130,19);
-  QLabel *lib_bitrate_label=new QLabel(tr("&Bitrate:"),this);
+  QLabel *lib_bitrate_label=new QLabel(tr("Bitrate:"),this);
   lib_bitrate_label->setFont(labelFont());
   lib_bitrate_label->setGeometry(25,220,150,19);
   lib_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -167,7 +167,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_enable_second_start_box->insertItem(0,tr("No"));
   lib_enable_second_start_box->insertItem(1,tr("Yes"));
   QLabel *lib_enable_second_start_label=
-   new QLabel(tr("Enable &2nd Start Button:"),this);
+   new QLabel(tr("Enable 2nd Start Button:"),this);
   lib_enable_second_start_label->setFont(labelFont());
   lib_enable_second_start_label->setGeometry(10,244,165,19);
   lib_enable_second_start_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -194,7 +194,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_startcart_edit=new QLineEdit(this);
   lib_startcart_edit->setGeometry(180,290,70,19);
   lib_startcart_edit->setValidator(validator);
-  QLabel *lib_startcart_label=new QLabel(tr("Play &Start Cart:"),this);
+  QLabel *lib_startcart_label=new QLabel(tr("Play Start Cart:"),this);
   lib_startcart_label->setFont(labelFont());
   lib_startcart_label->setGeometry(25,290,150,19);
   lib_startcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -210,7 +210,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_endcart_edit=new QLineEdit(this);
   lib_endcart_edit->setGeometry(180,314,70,19);
   lib_endcart_edit->setValidator(validator);
-  QLabel *lib_endcart_label=new QLabel(tr("Play &End Cart:"),this);
+  QLabel *lib_endcart_label=new QLabel(tr("Play End Cart:"),this);
   lib_endcart_label->setFont(labelFont());
   lib_endcart_label->setGeometry(25,314,150,19);
   lib_endcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -226,7 +226,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_recstartcart_edit=new QLineEdit(this);
   lib_recstartcart_edit->setGeometry(180,338,70,19);
   lib_recstartcart_edit->setValidator(validator);
-  QLabel *lib_recstartcart_label=new QLabel(tr("&Record Start Cart:"),this);
+  QLabel *lib_recstartcart_label=new QLabel(tr("Record Start Cart:"),this);
   lib_recstartcart_label->setFont(labelFont());
   lib_recstartcart_label->setGeometry(25,338,150,19);
   lib_recstartcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -242,7 +242,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_recendcart_edit=new QLineEdit(this);
   lib_recendcart_edit->setGeometry(180,362,70,19);
   lib_recendcart_edit->setValidator(validator);
-  QLabel *lib_recendcart_label=new QLabel(tr("Re&cord End Cart:"),this);
+  QLabel *lib_recendcart_label=new QLabel(tr("Record End Cart:"),this);
   lib_recendcart_label->setFont(labelFont());
   lib_recendcart_label->setGeometry(25,362,150,19);
   lib_recendcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -257,7 +257,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   lib_channels_box=new QComboBox(this);
   lib_channels_box->setGeometry(180,386,60,19);
-  QLabel *lib_channels_label=new QLabel(tr("&Channels:"),this);
+  QLabel *lib_channels_label=new QLabel(tr("Channels:"),this);
   lib_channels_label->setFont(labelFont());
   lib_channels_label->setGeometry(25,386,150,19);
   lib_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -284,7 +284,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -294,7 +294,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

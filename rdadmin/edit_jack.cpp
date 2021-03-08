@@ -100,7 +100,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   //
   edit_add_button=new QPushButton(this);
   edit_add_button->setFont(buttonFont());
-  edit_add_button->setText(tr("&Add"));
+  edit_add_button->setText(tr("Add"));
   connect(edit_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
@@ -108,7 +108,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   //
   edit_edit_button=new QPushButton(this);
   edit_edit_button->setFont(buttonFont());
-  edit_edit_button->setText(tr("&Edit"));
+  edit_edit_button->setText(tr("Edit"));
   connect(edit_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -116,7 +116,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   //
   edit_delete_button=new QPushButton(this);
   edit_delete_button->setFont(buttonFont());
-  edit_delete_button->setText(tr("&Delete"));
+  edit_delete_button->setText(tr("Delete"));
   connect(edit_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -125,7 +125,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   edit_ok_button=new QPushButton(this);
   edit_ok_button->setDefault(true);
   edit_ok_button->setFont(buttonFont());
-  edit_ok_button->setText(tr("&OK"));
+  edit_ok_button->setText(tr("OK"));
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -133,7 +133,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   //
   edit_cancel_button=new QPushButton(this);
   edit_cancel_button->setFont(buttonFont());
-  edit_cancel_button->setText(tr("&Cancel"));
+  edit_cancel_button->setText(tr("Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

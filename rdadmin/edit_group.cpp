@@ -57,7 +57,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_name_edit=new QLineEdit(this);
   group_name_edit->setMaxLength(10);
   group_name_edit->setReadOnly(true);
-  group_name_label=new QLabel(tr("&Group Name:"),this);
+  group_name_label=new QLabel(tr("Group Name:"),this);
   group_name_label->setFont(labelFont());
   group_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -67,7 +67,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_description_edit=new QLineEdit(this);
   group_description_edit->setMaxLength(255);
   group_description_edit->setValidator(validator);
-  group_description_label=new QLabel(tr("Group &Description:"),this);
+  group_description_label=new QLabel(tr("Group Description:"),this);
   group_description_label->setFont(labelFont());
   group_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -77,7 +77,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_title_edit=new QLineEdit(this);
   group_title_edit->setMaxLength(255);
   group_title_edit->setValidator(validator);
-  group_title_label=new QLabel(tr("Default Import &Title:"),this);
+  group_title_label=new QLabel(tr("Default Import Title:"),this);
   group_title_label->setFont(labelFont());
   group_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -96,7 +96,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_carttype_box=new QComboBox(this);
   group_carttype_box->insertItem(0,tr("Audio"));
   group_carttype_box->insertItem(1,tr("Macro"));
-  group_carttype_label=new QLabel(tr("Default Cart &Type:"),this);
+  group_carttype_label=new QLabel(tr("Default Cart Type:"),this);
   group_carttype_label->setFont(labelFont());
   group_carttype_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -195,7 +195,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   //
   group_color_button=new QPushButton(this);
   group_color_button->setFont(buttonFont());
-  group_color_button->setText(tr("C&olor"));
+  group_color_button->setText(tr("Color"));
   connect(group_color_button,SIGNAL(clicked()),this,SLOT(colorData()));
 
   //
@@ -204,7 +204,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_ok_button=new QPushButton(this);
   group_ok_button->setDefault(true);
   group_ok_button->setFont(buttonFont());
-  group_ok_button->setText(tr("&OK"));
+  group_ok_button->setText(tr("OK"));
   connect(group_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -212,7 +212,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   //
   group_cancel_button=new QPushButton(this);
   group_cancel_button->setFont(buttonFont());
-  group_cancel_button->setText(tr("&Cancel"));
+  group_cancel_button->setText(tr("Cancel"));
   connect(group_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

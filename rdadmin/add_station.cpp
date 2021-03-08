@@ -58,7 +58,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   add_name_edit->setGeometry(130,10,sizeHint().width()-140,19);
   add_name_edit->setMaxLength(64);
   add_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(tr("New &Host Name:"),this);
+  QLabel *label=new QLabel(tr("New Host Name:"),this);
   label->setGeometry(10,10,115,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -81,7 +81,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
 			 80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -91,7 +91,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

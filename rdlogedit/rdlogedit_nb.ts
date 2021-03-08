@@ -9,19 +9,35 @@
     </message>
     <message>
         <source>&amp;Marker</source>
-        <translation>ein &amp;markør</translation>
+        <translation type="obsolete">ein &amp;markør</translation>
     </message>
     <message>
         <source>Voice &amp;Track</source>
-        <translation>eit røys&amp;t-spor</translation>
+        <translation type="obsolete">eit røys&amp;t-spor</translation>
     </message>
     <message>
         <source>Log C&amp;hain</source>
-        <translation>Ei logg&amp;kjede</translation>
+        <translation type="obsolete">Ei logg&amp;kjede</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voice Track</source>
+        <translation type="unfinished">Røyst-spor</translation>
+    </message>
+    <message>
+        <source>Log Chain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -235,7 +251,7 @@ meta</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Lagra</translation>
+        <translation type="obsolete">&amp;Lagra</translation>
     </message>
     <message>
         <source>Save
@@ -244,15 +260,15 @@ meta</translation>
     </message>
     <message>
         <source>&amp;Reports</source>
-        <translation>Ra&amp;pportar</translation>
+        <translation type="obsolete">Ra&amp;pportar</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Invalid Carts</source>
@@ -464,6 +480,18 @@ skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>This log contains one or more carts that are invalid for the selected service!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -746,11 +774,11 @@ som er skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>&amp;Generate</source>
-        <translation>La&amp;g</translation>
+        <translation type="obsolete">La&amp;g</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>[none]</source>
@@ -769,11 +797,19 @@ som er skrudd av for denne tenesta!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Select</source>
+        <source>Reports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reports</source>
+        <source>Select</source>
+        <translation type="unfinished">Vel</translation>
+    </message>
+    <message>
+        <source>Generate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -856,20 +892,20 @@ som er skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Legg til</translation>
+        <translation type="obsolete">&amp;Legg til</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>R&amp;ediger</translation>
+        <translation type="obsolete">R&amp;ediger</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Slett</translation>
+        <translation type="obsolete">&amp;Slett</translation>
     </message>
     <message>
         <source>Voice
 &amp;Tracker</source>
-        <translation>Røys&amp;t-
+        <translation type="obsolete">Røys&amp;t-
 sporar</translation>
     </message>
     <message>
@@ -880,7 +916,7 @@ rapport</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>User</source>
@@ -1000,6 +1036,27 @@ Vil du halda fram?</translation>
         <source>is in use by</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Rediger</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Slett</translation>
+    </message>
+    <message>
+        <source>Voice
+Tracker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RenderDialog</name>
@@ -1080,12 +1137,8 @@ Vil du halda fram?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Render</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Filename</source>
@@ -1093,6 +1146,10 @@ Vil du halda fram?</translation>
     </message>
     <message>
         <source>Rendering Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1112,16 +1169,6 @@ Vil du halda fram?</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Previous
-Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Next
-Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1184,7 +1231,7 @@ Track</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>No VoiceTrack Group</source>
@@ -1337,6 +1384,20 @@ therefore only existing transitions will be editable.</source>
     </message>
     <message>
         <source>Set to Hook Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

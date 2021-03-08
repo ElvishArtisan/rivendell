@@ -28,10 +28,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Send Command</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>RMLSend</source>
         <translation type="unfinished"></translation>
     </message>
@@ -49,6 +45,10 @@
     </message>
     <message>
         <source>Macro Command Utility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send Command</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

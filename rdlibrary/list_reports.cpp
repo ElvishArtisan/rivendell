@@ -78,7 +78,7 @@ ListReports::ListReports(const QString &filter,const QString &grpname,
     setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   generate_button->setDefault(true);
   generate_button->setFont(buttonFont());
-  generate_button->setText(tr("&Generate"));
+  generate_button->setText(tr("Generate"));
   connect(generate_button,SIGNAL(clicked()),this,SLOT(generateData()));
 
   //
@@ -88,7 +88,7 @@ ListReports::ListReports(const QString &filter,const QString &grpname,
   close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   close_button->setFont(buttonFont());
-  close_button->setText(tr("&Close"));
+  close_button->setText(tr("Close"));
   connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 

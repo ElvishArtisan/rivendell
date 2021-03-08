@@ -43,7 +43,7 @@ ListReplicators::ListReplicators(QWidget *parent)
   //
   list_add_button=new QPushButton(this);
   list_add_button->setFont(buttonFont());
-  list_add_button->setText(tr("&Add"));
+  list_add_button->setText(tr("Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
@@ -51,7 +51,7 @@ ListReplicators::ListReplicators(QWidget *parent)
   //
   list_edit_button=new QPushButton(this);
   list_edit_button->setFont(buttonFont());
-  list_edit_button->setText(tr("&Edit"));
+  list_edit_button->setText(tr("Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -59,7 +59,7 @@ ListReplicators::ListReplicators(QWidget *parent)
   //
   list_delete_button=new QPushButton(this);
   list_delete_button->setFont(buttonFont());
-  list_delete_button->setText(tr("&Delete"));
+  list_delete_button->setText(tr("Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -67,7 +67,7 @@ ListReplicators::ListReplicators(QWidget *parent)
   //
   list_list_button=new QPushButton(this);
   list_list_button->setFont(buttonFont());
-  list_list_button->setText(tr("&List\nCarts"));
+  list_list_button->setText(tr("List\nCarts"));
   connect(list_list_button,SIGNAL(clicked()),this,SLOT(listData()));
 
   //
@@ -76,7 +76,7 @@ ListReplicators::ListReplicators(QWidget *parent)
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(buttonFont());
-  list_close_button->setText(tr("&Close"));
+  list_close_button->setText(tr("Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
@@ -87,7 +87,7 @@ ListReplicators::ListReplicators(QWidget *parent)
   list_replicators_model->setFont(defaultFont());
   list_replicators_model->setPalette(palette());
   list_replicators_view->setModel(list_replicators_model);
-  list_replicators_label=new QLabel(tr("&Replicators:"),this);
+  list_replicators_label=new QLabel(tr("Replicators:"),this);
   list_replicators_label->setFont(labelFont());
   connect(list_replicators_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));

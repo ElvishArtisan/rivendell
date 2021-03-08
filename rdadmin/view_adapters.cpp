@@ -145,7 +145,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   //
   view_close_button=new QPushButton(this);
   view_close_button->setFont(buttonFont());
-  view_close_button->setText(tr("&Close"));
+  view_close_button->setText(tr("Close"));
   view_close_button->setDefault(true);
   connect(view_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }

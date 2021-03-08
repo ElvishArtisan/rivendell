@@ -55,7 +55,7 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,
   //
   list_edit_button=new QPushButton(this);
   list_edit_button->setFont(buttonFont());
-  list_edit_button->setText(tr("&Edit"));
+  list_edit_button->setText(tr("Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -63,7 +63,7 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,
   //
   list_import_button=new QPushButton(this);
   list_import_button->setFont(buttonFont());
-  list_import_button->setText(tr("&Import"));
+  list_import_button->setText(tr("Import"));
   connect(list_import_button,SIGNAL(clicked()),this,SLOT(importData()));
 
   //
@@ -71,7 +71,7 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,
   //
   list_close_button=new QPushButton(this);
   list_close_button->setFont(buttonFont());
-  list_close_button->setText(tr("&Close"));
+  list_close_button->setText(tr("Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //

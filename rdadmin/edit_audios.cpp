@@ -154,7 +154,7 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   QPushButton *help_button=new QPushButton(this);
   help_button->setGeometry(10,sizeHint().height()-60, 80,50);
   help_button->setFont(buttonFont());
-  help_button->setText(tr("&Help"));
+  help_button->setText(tr("Help"));
   connect(help_button,SIGNAL(clicked()),this,SLOT(helpData()));
 
   //
@@ -164,7 +164,7 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			    80,50);
   close_button->setFont(buttonFont());
-  close_button->setText(tr("&Close"));
+  close_button->setText(tr("Close"));
   connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //

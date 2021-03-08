@@ -101,7 +101,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_add_button=new QPushButton(this);
   edit_add_button->setGeometry(10,sizeHint().height()-210,80,50);
   edit_add_button->setFont(buttonFont());
-  edit_add_button->setText(tr("&Add"));
+  edit_add_button->setText(tr("Add"));
   connect(edit_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
@@ -110,7 +110,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_clone_button=new QPushButton(this);
   edit_clone_button->setGeometry(110,sizeHint().height()-210,80,50);
   edit_clone_button->setFont(buttonFont());
-  edit_clone_button->setText(tr("&Clone"));
+  edit_clone_button->setText(tr("Clone"));
   connect(edit_clone_button,SIGNAL(clicked()),this,SLOT(cloneData()));
   
   //
@@ -119,7 +119,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_edit_button=new QPushButton(this);
   edit_edit_button->setGeometry(210,sizeHint().height()-210,80,50);
   edit_edit_button->setFont(buttonFont());
-  edit_edit_button->setText(tr("&Edit"));
+  edit_edit_button->setText(tr("Edit"));
   connect(edit_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -128,7 +128,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_delete_button=new QPushButton(this);
   edit_delete_button->setGeometry(310,sizeHint().height()-210,80,50);
   edit_delete_button->setFont(buttonFont());
-  edit_delete_button->setText(tr("&Delete"));
+  edit_delete_button->setText(tr("Delete"));
   connect(edit_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -157,7 +157,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   button=new QPushButton(this);
   button->setGeometry(CENTER_LINE+110,sizeHint().height()-60,70,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Save"));
+  button->setText(tr("Save"));
   connect(button,SIGNAL(clicked()),this,SLOT(saveData()));
 
   //
@@ -166,7 +166,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   button=new QPushButton(this);
   button->setGeometry(CENTER_LINE+190,sizeHint().height()-60,70,50);
   button->setFont(buttonFont());
-  button->setText(tr("Save &As"));
+  button->setText(tr("Save As"));
   connect(button,SIGNAL(clicked()),this,SLOT(saveAsData()));
   button->setDisabled(new_clock);
 
@@ -177,7 +177,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   button->setGeometry(CENTER_LINE+(sizeHint().width()-CENTER_LINE)/2-25,
 		      sizeHint().height()-60,70,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Services\nList"));
+  button->setText(tr("Services\nList"));
   connect(button,SIGNAL(clicked()),this,SLOT(svcData()));
 
   //
@@ -188,7 +188,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
     setGeometry(CENTER_LINE+(sizeHint().width()-CENTER_LINE)/2+55,
 		sizeHint().height()-60,70,50);
   edit_color_button->setFont(buttonFont());
-  edit_color_button->setText(tr("Colo&r"));
+  edit_color_button->setText(tr("Color"));
   connect(edit_color_button,SIGNAL(clicked()),this,SLOT(colorData()));
 
   //
@@ -206,7 +206,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   button->setGeometry(sizeHint().width()-160,sizeHint().height()-60,70,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -215,7 +215,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-80,sizeHint().height()-60,70,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

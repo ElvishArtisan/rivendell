@@ -9,31 +9,59 @@
     </message>
     <message>
         <source>&amp;Recording</source>
-        <translation>&amp;Nahrávat</translation>
+        <translation type="obsolete">&amp;Nahrávat</translation>
     </message>
     <message>
         <source>&amp;Playout</source>
-        <translation>&amp;Přehrávat</translation>
+        <translation type="obsolete">&amp;Přehrávat</translation>
     </message>
     <message>
         <source>&amp;Download</source>
-        <translation>&amp;Stáhnout</translation>
+        <translation type="obsolete">&amp;Stáhnout</translation>
     </message>
     <message>
         <source>&amp;Upload</source>
-        <translation>&amp;Nahrát</translation>
+        <translation type="obsolete">&amp;Nahrát</translation>
     </message>
     <message>
         <source>&amp;Macro Cart</source>
-        <translation>&amp;Makro vozík</translation>
+        <translation type="obsolete">&amp;Makro vozík</translation>
     </message>
     <message>
         <source>&amp;Switch Event</source>
-        <translation>Událost &amp;přepnutí</translation>
+        <translation type="obsolete">Událost &amp;přepnutí</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation type="unfinished">Aufnehmen</translation>
+    </message>
+    <message>
+        <source>Playout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Upload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Macro Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -133,7 +161,7 @@
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
     <message>
         <source>Active Days</source>
@@ -174,16 +202,16 @@
     <message>
         <source>&amp;Save As
 New</source>
-        <translation>&amp;Uložit jako
+        <translation type="obsolete">&amp;Uložit jako
 nové</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Duplicate Event</source>
@@ -200,6 +228,23 @@ nové</translation>
     <message>
         <source>That cart doesn&apos;t exist!</source>
         <translation>Vozík neexistuje!</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As
+New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -242,7 +287,7 @@ nové</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
     <message>
         <source>Channels:</source>
@@ -303,16 +348,16 @@ nové</translation>
     <message>
         <source>&amp;Save As
 New</source>
-        <translation>&amp;Uložit jako
+        <translation type="obsolete">&amp;Uložit jako
 nové</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Cut</source>
@@ -362,6 +407,23 @@ nové</translation>
         <source>Unsupported URL scheme!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As
+New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditPlayout</name>
@@ -391,7 +453,7 @@ nové</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
     <message>
         <source>Active Days</source>
@@ -432,16 +494,16 @@ nové</translation>
     <message>
         <source>&amp;Save As
 New</source>
-        <translation>&amp;Uložit jako
+        <translation type="obsolete">&amp;Uložit jako
 nové</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Duplicate Event</source>
@@ -450,6 +512,23 @@ nové</translation>
     <message>
         <source>An event with these parameters already exists!</source>
         <translation type="obsolete">Událost s těmito parametry již existuje!</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As
+New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -540,7 +619,7 @@ nové</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
     <message>
         <source>Channels:</source>
@@ -613,16 +692,16 @@ nové</translation>
     <message>
         <source>&amp;Save As
 New</source>
-        <translation>&amp;Uložit jako
+        <translation type="obsolete">&amp;Uložit jako
 nové</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Cut</source>
@@ -675,6 +754,23 @@ nové</translation>
     <message>
         <source>An event with these parameters already exists!</source>
         <translation>Událost s těmito parametry již existuje!</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As
+New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -750,16 +846,16 @@ nové</translation>
     <message>
         <source>&amp;Save As
 New</source>
-        <translation>&amp;Uložit jako
+        <translation type="obsolete">&amp;Uložit jako
 nové</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>--OFF--</source>
@@ -772,6 +868,19 @@ nové</translation>
     <message>
         <source>An event with these parameters already exists!</source>
         <translation>Událost s těmito parametry již existuje!</translation>
+    </message>
+    <message>
+        <source>Save As
+New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -806,7 +915,7 @@ nové</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -830,7 +939,7 @@ nové</translation>
     </message>
     <message>
         <source>S&amp;et</source>
-        <translation>&amp;Nastavit</translation>
+        <translation type="obsolete">&amp;Nastavit</translation>
     </message>
     <message>
         <source>Normalize</source>
@@ -883,16 +992,16 @@ nové</translation>
     <message>
         <source>&amp;Save As
 New</source>
-        <translation>&amp;Uložit jako
+        <translation type="obsolete">&amp;Uložit jako
 nové</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Unsupported Format</source>
@@ -954,6 +1063,27 @@ nové</translation>
         <source>Unsupported URL scheme!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As
+New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListReports</name>
@@ -975,11 +1105,19 @@ nové</translation>
     </message>
     <message>
         <source>&amp;Generate</source>
-        <translation>Vy&amp;tvořit:</translation>
+        <translation type="obsolete">Vy&amp;tvořit:</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>Generate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1138,15 +1276,15 @@ nové</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>Scroll</source>
@@ -1158,7 +1296,7 @@ nové</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Event Active</source>
@@ -1362,6 +1500,22 @@ nové</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

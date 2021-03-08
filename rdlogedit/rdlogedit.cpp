@@ -134,7 +134,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   log_add_button=new QPushButton(this);
   log_add_button->setFont(buttonFont());
-  log_add_button->setText(tr("&Add"));
+  log_add_button->setText(tr("Add"));
   connect(log_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
@@ -142,7 +142,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   log_edit_button=new QPushButton(this);
   log_edit_button->setFont(buttonFont());
-  log_edit_button->setText(tr("&Edit"));
+  log_edit_button->setText(tr("Edit"));
   connect(log_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
   log_edit_button->setDisabled(true);
 
@@ -151,7 +151,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   log_delete_button=new QPushButton(this);
   log_delete_button->setFont(buttonFont());
-  log_delete_button->setText(tr("&Delete"));
+  log_delete_button->setText(tr("Delete"));
   connect(log_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -159,7 +159,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   log_track_button=new QPushButton(this);
   log_track_button->setFont(buttonFont());
-  log_track_button->setText(tr("Voice\n&Tracker"));
+  log_track_button->setText(tr("Voice\nTracker"));
   connect(log_track_button,SIGNAL(clicked()),this,SLOT(trackData()));
 
   //
@@ -175,7 +175,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   log_close_button=new QPushButton(this);
   log_close_button->setFont(buttonFont());
-  log_close_button->setText(tr("&Close"));
+  log_close_button->setText(tr("Close"));
   connect(log_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
   setWindowTitle(QString("RDLogEdit")+"v"+VERSION+" - "+tr("Host")+": "+

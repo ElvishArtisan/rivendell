@@ -83,11 +83,11 @@
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Air Date/Time:</source>
@@ -99,10 +99,6 @@
     </message>
     <message>
         <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Select Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -145,6 +141,18 @@
         <source>Item expiration must be in the future!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>
@@ -155,22 +163,22 @@
     <message>
         <source>Post From
 Car&amp;t/Cut</source>
-        <translation>Post frå
+        <translation type="obsolete">Post frå
 Korg/Ku&amp;tt</translation>
     </message>
     <message>
         <source>Post From
 &amp;File</source>
-        <translation>Post frå
+        <translation type="obsolete">Post frå
 &amp;fil</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>R&amp;ediger</translation>
+        <translation type="obsolete">R&amp;ediger</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Slett</translation>
+        <translation type="obsolete">&amp;Slett</translation>
     </message>
     <message>
         <source>Subscription
@@ -179,7 +187,7 @@ Korg/Ku&amp;tt</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source> </source>
@@ -341,6 +349,28 @@ Log</source>
         <source>Select Audio File</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Post From
+Cart/Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post From
+File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LogDialog</name>
@@ -409,12 +439,12 @@ Log</source>
     <message>
         <source>&amp;View
 Feed</source>
-        <translation>&amp;Sjå
+        <translation type="obsolete">&amp;Sjå
 straum</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>User</source>
@@ -444,6 +474,10 @@ Feed</source>
     </message>
     <message>
         <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -482,7 +516,7 @@ Feed</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Log Render Options</source>
@@ -514,6 +548,10 @@ Feed</source>
     </message>
     <message>
         <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

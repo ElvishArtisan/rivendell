@@ -88,7 +88,7 @@ EditSchedCodeRules::EditSchedCodeRules(QWidget* parent)
   // OK Button
   //
   edit_ok_button=new QPushButton(this);
-  edit_ok_button->setText(tr("&OK"));
+  edit_ok_button->setText(tr("OK"));
   edit_ok_button->setDefault(true);
   edit_ok_button->setFont(buttonFont());
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
@@ -97,7 +97,7 @@ EditSchedCodeRules::EditSchedCodeRules(QWidget* parent)
   // Cancel Button
   //
   edit_cancel_button=new QPushButton(this);
-  edit_cancel_button->setText(tr("&Cancel"));
+  edit_cancel_button->setText(tr("Cancel"));
   edit_cancel_button->setFont(buttonFont());
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

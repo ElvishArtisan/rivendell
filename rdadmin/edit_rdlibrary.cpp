@@ -83,7 +83,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_maxlength_time=new QTimeEdit(this);
   lib_maxlength_time->setDisplayFormat("hh:mm:ss");
   lib_maxlength_time->setGeometry(190,100,85,19);
-  QLabel *lib_maxlength_label=new QLabel(tr("&Max Record Time:"),this);
+  QLabel *lib_maxlength_label=new QLabel(tr("Max Record Time:"),this);
   lib_maxlength_label->setFont(labelFont());
   lib_maxlength_label->setGeometry(25,101,160,19);
   lib_maxlength_label->
@@ -96,7 +96,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_vox_spin->setGeometry(190,122,40,19);
   lib_vox_spin->setMinimum(-99);
   lib_vox_spin->setMaximum(0);
-  QLabel *lib_vox_spin_label=new QLabel(tr("&VOX Threshold:"),this);
+  QLabel *lib_vox_spin_label=new QLabel(tr("VOX Threshold:"),this);
   lib_vox_spin_label->setFont(labelFont());
   lib_vox_spin_label->setGeometry(25,122,160,19);
   lib_vox_spin_label->
@@ -114,7 +114,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_trim_spin->setGeometry(190,144,40,19);
   lib_trim_spin->setMinimum(-99);
   lib_trim_spin->setMaximum(0);
-  QLabel *lib_trim_spin_label=new QLabel(tr("&AutoTrim Threshold:"),this);
+  QLabel *lib_trim_spin_label=new QLabel(tr("AutoTrim Threshold:"),this);
   lib_trim_spin_label->setFont(labelFont());
   lib_trim_spin_label->setGeometry(25,144,160,19);
   lib_trim_spin_label->
@@ -133,7 +133,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_preroll_spin->setMinimum(0);
   lib_preroll_spin->setMaximum(10000);
   lib_preroll_spin->setSingleStep(100);
-  QLabel *lib_preroll_spin_label=new QLabel(tr("&Tail Preroll:"),this);
+  QLabel *lib_preroll_spin_label=new QLabel(tr("Tail Preroll:"),this);
   lib_preroll_spin_label->setFont(labelFont());
   lib_preroll_spin_label->setGeometry(25,166,160,19);
   lib_preroll_spin_label->
@@ -150,7 +150,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_ripdev_edit=new QLineEdit(this);
   lib_ripdev_edit->setGeometry(190,188,100,19);
   lib_ripdev_edit->setValidator(validator);
-  QLabel *lib_ripdev_label=new QLabel(tr("&Ripper Device:"),this);
+  QLabel *lib_ripdev_label=new QLabel(tr("Ripper Device:"),this);
   lib_ripdev_label->setFont(labelFont());
   lib_ripdev_label->setGeometry(25,188,160,19);
   lib_ripdev_label->
@@ -161,7 +161,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   //
   lib_paranoia_box=new QComboBox(this);
   lib_paranoia_box->setGeometry(190,210,100,19);
-  QLabel *lib_paranoia_label=new QLabel(tr("&Paranoia Level:"),this);
+  QLabel *lib_paranoia_label=new QLabel(tr("Paranoia Level:"),this);
   lib_paranoia_label->setFont(labelFont());
   lib_paranoia_label->setGeometry(25,210,160,19);
   lib_paranoia_label->
@@ -172,7 +172,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   //
   lib_isrc_box=new QComboBox(this);
   lib_isrc_box->setGeometry(190,232,60,19);
-  QLabel *lib_isrc_label=new QLabel(tr("&Read ISRCs from CD:"),this);
+  QLabel *lib_isrc_label=new QLabel(tr("Read ISRCs from CD:"),this);
   lib_isrc_label->setFont(labelFont());
   lib_isrc_label->setGeometry(25,232,160,19);
   lib_isrc_label->
@@ -191,7 +191,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   connect(lib_cd_server_type_box,SIGNAL(activated(int)),
 	  this,SLOT(cdServerTypeData(int)));
   lib_cd_server_label=
-    new QLabel(tr("&CD Metadata Source:"),this);
+    new QLabel(tr("CD Metadata Source:"),this);
   lib_cd_server_label->setFont(labelFont());
   lib_cd_server_label->setGeometry(25,256,160,19);
   lib_cd_server_label->
@@ -206,7 +206,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_mb_server_edit=new QLineEdit(this);
   lib_mb_server_edit->setGeometry(190,278,160,19);
   lib_mb_server_edit->setValidator(validator);
-  lib_cd_server_label=new QLabel(tr("&FreeDB Server:"),this);
+  lib_cd_server_label=new QLabel(tr("FreeDB Server:"),this);
   lib_cd_server_label->setFont(labelFont());
   lib_cd_server_label->setGeometry(25,278,160,19);
   lib_cd_server_label->
@@ -218,7 +218,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_format_box=new QComboBox(this);
   lib_format_box->setGeometry(190,302,150,19);
   connect(lib_format_box,SIGNAL(activated(int)),this,SLOT(formatData(int)));
-  QLabel *lib_format_label=new QLabel(tr("&Format:"),this);
+  QLabel *lib_format_label=new QLabel(tr("Format:"),this);
   lib_format_label->setFont(labelFont());
   lib_format_label->setGeometry(25,302,160,19);
   lib_format_label->
@@ -229,7 +229,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   //
   lib_bitrate_box=new QComboBox(this);
   lib_bitrate_box->setGeometry(190,326,130,19);
-  QLabel *lib_bitrate_label=new QLabel(tr("&Bitrate:"),this);
+  QLabel *lib_bitrate_label=new QLabel(tr("Bitrate:"),this);
   lib_bitrate_label->setFont(labelFont());
   lib_bitrate_label->setGeometry(25,326,160,19);
   lib_bitrate_label->
@@ -242,7 +242,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_editor_box->setGeometry(190,350,60,19);
   lib_editor_box->insertItem(0,tr("No"));
   lib_editor_box->insertItem(1,tr("Yes"));
-  QLabel *lib_editor_label=new QLabel(tr("Allow E&xternal Editing:"),this);
+  QLabel *lib_editor_label=new QLabel(tr("Allow External Editing:"),this);
   lib_editor_label->setFont(labelFont());
   lib_editor_label->setGeometry(25,350,160,19);
   lib_editor_label->
@@ -292,7 +292,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   //
   lib_channels_box=new QComboBox(this);
   lib_channels_box->setGeometry(190,454,60,19);
-  QLabel *lib_channels_label=new QLabel(tr("&Channels:"),this);
+  QLabel *lib_channels_label=new QLabel(tr("Channels:"),this);
   lib_channels_label->setFont(labelFont());
   lib_channels_label->setGeometry(25,454,160,19);
   lib_channels_label->
@@ -345,7 +345,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -355,7 +355,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

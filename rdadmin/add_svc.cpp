@@ -58,7 +58,7 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
   svc_name_edit->setGeometry(155,11,sizeHint().width()-165,19);
   svc_name_edit->setMaxLength(10);
   svc_name_edit->setValidator(validator);
-  QLabel *svc_name_label=new QLabel(tr("&New Service Name:"),this);
+  QLabel *svc_name_label=new QLabel(tr("New Service Name:"),this);
   svc_name_label->setGeometry(10,11,140,19);
   svc_name_label->setFont(labelFont());
   svc_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -81,7 +81,7 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -91,7 +91,7 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

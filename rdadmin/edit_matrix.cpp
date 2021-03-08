@@ -419,7 +419,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_inputs_button=new QPushButton(this);
   edit_inputs_button->setGeometry(35,446,80,50);
   edit_inputs_button->setFont(buttonFont());
-  edit_inputs_button->setText(tr("Configure\n&Inputs"));
+  edit_inputs_button->setText(tr("Configure\nInputs"));
   connect(edit_inputs_button,SIGNAL(clicked()),this,SLOT(inputsButtonData()));
 
   //
@@ -428,7 +428,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_outputs_button=new QPushButton(this);
   edit_outputs_button->setGeometry(125,446,80,50);
   edit_outputs_button->setFont(buttonFont());
-  edit_outputs_button->setText(tr("Configure\n&Outputs"));
+  edit_outputs_button->setText(tr("Configure\nOutputs"));
   connect(edit_outputs_button,SIGNAL(clicked()),
 	  this,SLOT(outputsButtonData()));
 
@@ -439,7 +439,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_gpis_button->setGeometry(215,446,80,50);
   edit_gpis_button->setDefault(true);
   edit_gpis_button->setFont(buttonFont());
-  edit_gpis_button->setText(tr("Configure\n&GPIs"));
+  edit_gpis_button->setText(tr("Configure\nGPIs"));
   connect(edit_gpis_button,SIGNAL(clicked()),this,SLOT(gpisButtonData()));
 
   //
@@ -449,7 +449,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_gpos_button->setGeometry(305,446,80,50);
   edit_gpos_button->setDefault(true);
   edit_gpos_button->setFont(buttonFont());
-  edit_gpos_button->setText(tr("Configure\nG&POs"));
+  edit_gpos_button->setText(tr("Configure\nGPOs"));
   connect(edit_gpos_button,SIGNAL(clicked()),this,SLOT(gposButtonData()));
 
   //
@@ -509,7 +509,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -518,7 +518,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

@@ -144,7 +144,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   QPushButton *close_button=new QPushButton(this);
   close_button->setGeometry(210,230,80,50);
   close_button->setFont(buttonFont());
-  close_button->setText(tr("&Close"));
+  close_button->setText(tr("Close"));
   connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //

@@ -260,7 +260,7 @@ Do you still want to delete?</source>
     <message>
         <source>&amp;Rip
 Track</source>
-        <translation>&amp;Vytáhnout
+        <translation type="obsolete">&amp;Vytáhnout
 stopu</translation>
     </message>
     <message>
@@ -500,7 +500,7 @@ Track</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Cut Conflict</source>
@@ -591,7 +591,7 @@ Bitte überprüfen sie ihre Ripperkonfiguration und versuchen sie es erneut.</tr
     <message>
         <source>&amp;Rip
 Disc</source>
-        <translation>Vytáhnout
+        <translation type="obsolete">Vytáhnout
 z CD</translation>
     </message>
     <message>
@@ -634,11 +634,6 @@ Cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Set
-&amp;Cart/Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Modify
 Cart Label</source>
         <translation type="unfinished"></translation>
@@ -670,6 +665,20 @@ Selection</source>
     </message>
     <message>
         <source>Unable to allocate cart in group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set
+Cart/Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip
+Disc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -770,16 +779,16 @@ Selection</source>
     <message>
         <source>&amp;Edit
 Script</source>
-        <translation>&amp;Upravit
+        <translation type="obsolete">&amp;Upravit
 skript</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>AUDIO</source>
@@ -849,7 +858,7 @@ systému! Přesto chcete uložit?</translation>
     <message>
         <source>&amp;Edit
 Notes</source>
-        <translation>&amp;Upravit
+        <translation type="obsolete">&amp;Upravit
 poznámky</translation>
     </message>
     <message>
@@ -960,6 +969,24 @@ poznámky</translation>
         <source>User Defined:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit
+Notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit
+Script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMacro</name>
@@ -969,11 +996,19 @@ poznámky</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -984,11 +1019,19 @@ poznámky</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1015,11 +1058,19 @@ poznámky</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1060,12 +1111,8 @@ poznámky</translation>
         <translation type="unfinished">Typ:</translation>
     </message>
     <message>
-        <source>&amp;Generate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1081,6 +1128,14 @@ poznámky</translation>
     </message>
     <message>
         <source>Select Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1247,29 +1302,29 @@ vozík</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;Rip
 CD</source>
-        <translation>&amp;Vytáhnout
+        <translation type="obsolete">&amp;Vytáhnout
 z CD</translation>
     </message>
     <message>
         <source>Re&amp;ports</source>
-        <translation>Z&amp;právy</translation>
+        <translation type="obsolete">Z&amp;právy</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1391,11 +1446,6 @@ Přesto smazat?</translation>
         <translation type="obsolete">Zachovat výšku tónu</translation>
     </message>
     <message>
-        <source>Run
-&amp;Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1435,6 +1485,36 @@ Přesto smazat?</translation>
         <source>Voicetrack Found</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Run
+Macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip
+CD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RecordCut</name>
@@ -1444,11 +1524,11 @@ Přesto smazat?</translation>
     </message>
     <message>
         <source>&amp;Description</source>
-        <translation>&amp;Popis</translation>
+        <translation type="obsolete">&amp;Popis</translation>
     </message>
     <message>
         <source>&amp;Outcue</source>
-        <translation>&amp;OUTCUE</translation>
+        <translation type="obsolete">&amp;OUTCUE</translation>
     </message>
     <message>
         <source>Origin</source>
@@ -1488,7 +1568,7 @@ Přesto smazat?</translation>
     </message>
     <message>
         <source>&amp;Start</source>
-        <translation>&amp;Začátek</translation>
+        <translation type="obsolete">&amp;Začátek</translation>
     </message>
     <message>
         <source>End</source>
@@ -1500,7 +1580,7 @@ Přesto smazat?</translation>
     </message>
     <message>
         <source>&amp;Start Time</source>
-        <translation>&amp;Počáteční čas</translation>
+        <translation type="obsolete">&amp;Počáteční čas</translation>
     </message>
     <message>
         <source>End Time</source>
@@ -1564,7 +1644,7 @@ Přesto smazat?</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Manual</source>
@@ -1666,7 +1746,7 @@ Přesto uložit?</translation>
     </message>
     <message>
         <source>&amp;ISCI Code</source>
-        <translation>Kód &amp;ISCI</translation>
+        <translation type="obsolete">Kód &amp;ISCI</translation>
     </message>
     <message>
         <source>AES ALARM</source>
@@ -1690,6 +1770,30 @@ Přesto uložit?</translation>
     </message>
     <message>
         <source>Cut Info / Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outcue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ISCI Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -9,19 +9,35 @@
     </message>
     <message>
         <source>&amp;Marker</source>
-        <translation>&amp;Marcador</translation>
+        <translation type="obsolete">&amp;Marcador</translation>
     </message>
     <message>
         <source>Log C&amp;hain</source>
-        <translation>Enca&amp;denar a Lista</translation>
+        <translation type="obsolete">Enca&amp;denar a Lista</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Voice &amp;Track</source>
-        <translation>Pista de &amp;voz</translation>
+        <translation type="obsolete">Pista de &amp;voz</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voice Track</source>
+        <translation type="unfinished">Pista de voz</translation>
+    </message>
+    <message>
+        <source>Log Chain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -211,7 +227,7 @@ Meta</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Guardar</translation>
+        <translation type="obsolete">&amp;Guardar</translation>
     </message>
     <message>
         <source>Save
@@ -221,11 +237,11 @@ Meta</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Invalid Carts</source>
@@ -369,7 +385,7 @@ desactivados para el servicio actual!
     </message>
     <message>
         <source>&amp;Reports</source>
-        <translation>&amp;Reportes</translation>
+        <translation type="obsolete">&amp;Reportes</translation>
     </message>
     <message>
         <source>Next Stop:</source>
@@ -461,6 +477,18 @@ desactivados para el servicio actual!
     </message>
     <message>
         <source>This log contains one or more carts that are invalid for the selected service!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -736,11 +764,11 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>&amp;Generate</source>
-        <translation>&amp;Generar</translation>
+        <translation type="obsolete">&amp;Generar</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>Log Check</source>
@@ -760,10 +788,22 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Seleccionar</translation>
+        <translation type="obsolete">&amp;Seleccionar</translation>
     </message>
     <message>
         <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Seleccionar</translation>
+    </message>
+    <message>
+        <source>Generate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -822,19 +862,19 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Añadir</translation>
+        <translation type="obsolete">&amp;Añadir</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Borrar</translation>
+        <translation type="obsolete">&amp;Borrar</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>User</source>
@@ -877,7 +917,7 @@ Continue?</source>
     <message>
         <source>Voice
 &amp;Tracker</source>
-        <translation>Pistas
+        <translation type="obsolete">Pistas
 de &amp;Voz</translation>
     </message>
     <message>
@@ -1000,6 +1040,27 @@ See your system administrator for an update!</source>
         <source>is in use by</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Editar</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Eliminar</translation>
+    </message>
+    <message>
+        <source>Voice
+Tracker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RenderDialog</name>
@@ -1080,12 +1141,8 @@ See your system administrator for an update!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Render</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Filename</source>
@@ -1093,6 +1150,10 @@ See your system administrator for an update!</source>
     </message>
     <message>
         <source>Rendering Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1137,13 +1198,13 @@ See your system administrator for an update!</source>
     <message>
         <source>&amp;Previous
 Track</source>
-        <translation>Pista 
+        <translation type="obsolete">Pista 
 &amp;Anterior</translation>
     </message>
     <message>
         <source>&amp;Next
 Track</source>
-        <translation>Pista
+        <translation type="obsolete">Pista
 &amp;Siguiente</translation>
     </message>
     <message>
@@ -1213,7 +1274,7 @@ Pista</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>No VoiceTrack Group</source>
@@ -1352,6 +1413,20 @@ sólo podrás editar transiciones ya existentes.</translation>
     <message>
         <source>Label</source>
         <translation type="obsolete">Etiqueta</translation>
+    </message>
+    <message>
+        <source>Previous
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

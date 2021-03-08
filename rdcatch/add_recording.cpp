@@ -58,7 +58,7 @@ AddRecording::AddRecording(QString *filter,QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(10,30,sizeHint().width()-20,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Recording"));
+  button->setText(tr("Recording"));
   button->setDisabled(true);
   QString sql=QString("select CHANNEL from DECKS \
                        where (CARD_NUMBER>=0)&&(CHANNEL>0)&&(CHANNEL<=9)");
@@ -75,7 +75,7 @@ AddRecording::AddRecording(QString *filter,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(10,80,sizeHint().width()-20,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Playout"));
+  button->setText(tr("Playout"));
   button->setDisabled(true);
   sql=QString("select CHANNEL from DECKS where (CARD_NUMBER>=0)&&")+
     "(PORT_NUMBER>=0)&&(CHANNEL>128)&&(CHANNEL<=137)";
@@ -92,7 +92,7 @@ AddRecording::AddRecording(QString *filter,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(10,130,sizeHint().width()-20,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Download"));
+  button->setText(tr("Download"));
   connect(button,SIGNAL(clicked()),this,SLOT(downloadData()));
 
   //
@@ -101,7 +101,7 @@ AddRecording::AddRecording(QString *filter,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(10,180,sizeHint().width()-20,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Upload"));
+  button->setText(tr("Upload"));
   connect(button,SIGNAL(clicked()),this,SLOT(uploadData()));
 
   //
@@ -110,7 +110,7 @@ AddRecording::AddRecording(QString *filter,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(10,230,sizeHint().width()-20,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Macro Cart"));
+  button->setText(tr("Macro Cart"));
   connect(button,SIGNAL(clicked()),this,SLOT(macroData()));
 
   //
@@ -119,7 +119,7 @@ AddRecording::AddRecording(QString *filter,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(10,280,sizeHint().width()-20,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Switch Event"));
+  button->setText(tr("Switch Event"));
   connect(button,SIGNAL(clicked()),this,SLOT(switchData()));
 
   //
@@ -128,7 +128,7 @@ AddRecording::AddRecording(QString *filter,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(10,350,sizeHint().width()-20,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   button->setDefault(true);
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

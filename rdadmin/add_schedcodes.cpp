@@ -45,7 +45,7 @@ AddSchedCode::AddSchedCode(QWidget *parent)
   d_code_edit=new QLineEdit(this);
   d_code_edit->setGeometry(105,11,sizeHint().width()-150,19);
   d_code_edit->setMaxLength(10);
-  QLabel *label=new QLabel(tr("&New Code:"),this);
+  QLabel *label=new QLabel(tr("New Code:"),this);
   label->setGeometry(10,11,90,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -57,7 +57,7 @@ AddSchedCode::AddSchedCode(QWidget *parent)
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -67,7 +67,7 @@ AddSchedCode::AddSchedCode(QWidget *parent)
   cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 

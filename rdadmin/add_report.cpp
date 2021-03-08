@@ -58,7 +58,7 @@ AddReport::AddReport(QString *rptname,QWidget *parent)
   add_name_edit->setGeometry(170,10,sizeHint().width()-180,19);
   add_name_edit->setMaxLength(64);
   add_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(tr("&Report Name:"),this);
+  QLabel *label=new QLabel(tr("Report Name:"),this);
   label->setGeometry(10,10,155,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -70,7 +70,7 @@ AddReport::AddReport(QString *rptname,QWidget *parent)
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -80,7 +80,7 @@ AddReport::AddReport(QString *rptname,QWidget *parent)
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 

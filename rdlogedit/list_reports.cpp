@@ -76,7 +76,7 @@ ListReports::ListReports(const QString &logname,const QString &description,
   QPushButton *button=new QPushButton(this);
   button->setGeometry(215,32,60,24);
   button->setFont(subButtonFont());
-  button->setText(tr("&Select"));
+  button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectDateData()));
   list_date_edit->setDate(QDate::currentDate());
 
@@ -87,7 +87,7 @@ ListReports::ListReports(const QString &logname,const QString &description,
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&Generate"));
+  button->setText(tr("Generate"));
   connect(button,SIGNAL(clicked()),this,SLOT(generateData()));
 
   //
@@ -96,7 +96,7 @@ ListReports::ListReports(const QString &logname,const QString &description,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Close"));
+  button->setText(tr("Close"));
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 

@@ -58,7 +58,7 @@ ListGrids::ListGrids(QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Edit"));
+  button->setText(tr("Edit"));
   connect(button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -68,7 +68,7 @@ ListGrids::ListGrids(QWidget *parent)
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("C&lose"));
+  button->setText(tr("Close"));
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 

@@ -60,7 +60,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   feed_keyname_edit->setValidator(validator);
   connect(feed_keyname_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(keynameChangedData(const QString &)));
-  feed_keyname_label=new QLabel(tr("&New Feed Name:"),this);
+  feed_keyname_label=new QLabel(tr("New Feed Name:"),this);
   feed_keyname_label->setFont(labelFont());
   feed_keyname_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -79,7 +79,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   feed_ok_button=new QPushButton(this);
   feed_ok_button->setDefault(true);
   feed_ok_button->setFont(buttonFont());
-  feed_ok_button->setText(tr("&OK"));
+  feed_ok_button->setText(tr("OK"));
   feed_ok_button->setDisabled(true);
   connect(feed_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -88,7 +88,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   //
   feed_cancel_button=new QPushButton(this);
   feed_cancel_button->setFont(buttonFont());
-  feed_cancel_button->setText(tr("&Cancel"));
+  feed_cancel_button->setText(tr("Cancel"));
   connect(feed_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 

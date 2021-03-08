@@ -78,7 +78,7 @@ AddEvent::AddEvent(QString *logname,QWidget *parent)
   event_name_edit->setGeometry(145,11,sizeHint().width()-155,19);
   event_name_edit->setMaxLength(58);  // MySQL limitation!
   event_name_edit->setValidator(validator);
-  QLabel *event_name_label=new QLabel(tr("&New Event Name:"),this);
+  QLabel *event_name_label=new QLabel(tr("New Event Name:"),this);
   event_name_label->setGeometry(10,11,130,19);
   event_name_label->setFont(labelFont());
   event_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -93,7 +93,7 @@ AddEvent::AddEvent(QString *logname,QWidget *parent)
     setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   event_ok_button->setDefault(true);
   event_ok_button->setFont(buttonFont());
-  event_ok_button->setText(tr("&OK"));
+  event_ok_button->setText(tr("OK"));
   connect(event_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
   event_ok_button->setDisabled(true);
 
@@ -104,7 +104,7 @@ AddEvent::AddEvent(QString *logname,QWidget *parent)
   event_cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   event_cancel_button->setFont(buttonFont());
-  event_cancel_button->setText(tr("&Cancel"));
+  event_cancel_button->setText(tr("Cancel"));
   connect(event_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

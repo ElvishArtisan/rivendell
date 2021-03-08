@@ -9,31 +9,59 @@
     </message>
     <message>
         <source>&amp;Recording</source>
-        <translation>&amp;Gravação</translation>
+        <translation type="obsolete">&amp;Gravação</translation>
     </message>
     <message>
         <source>&amp;Playout</source>
-        <translation>&amp;Execução</translation>
+        <translation type="obsolete">&amp;Execução</translation>
     </message>
     <message>
         <source>&amp;Download</source>
-        <translation>&amp;Download</translation>
+        <translation type="obsolete">&amp;Download</translation>
     </message>
     <message>
         <source>&amp;Upload</source>
-        <translation>&amp;Upload</translation>
+        <translation type="obsolete">&amp;Upload</translation>
     </message>
     <message>
         <source>&amp;Macro Cart</source>
-        <translation>&amp;Cartão Macro</translation>
+        <translation type="obsolete">&amp;Cartão Macro</translation>
     </message>
     <message>
         <source>&amp;Switch Event</source>
-        <translation>&amp;Evento de Switch</translation>
+        <translation type="obsolete">&amp;Evento de Switch</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Recording</source>
+        <translation type="unfinished">Gravando</translation>
+    </message>
+    <message>
+        <source>Playout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Upload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Macro Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -133,7 +161,7 @@
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Selecionar</translation>
+        <translation type="obsolete">&amp;Selecionar</translation>
     </message>
     <message>
         <source>Active Days</source>
@@ -174,16 +202,16 @@
     <message>
         <source>&amp;Save As
 New</source>
-        <translation>&amp;Salvar como
+        <translation type="obsolete">&amp;Salvar como
 Novo</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Duplicate Event</source>
@@ -200,6 +228,23 @@ Novo</translation>
     <message>
         <source>That cart doesn&apos;t exist!</source>
         <translation>O Cartão não existe!</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As
+New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -242,7 +287,7 @@ Novo</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Selecionar</translation>
+        <translation type="obsolete">&amp;Selecionar</translation>
     </message>
     <message>
         <source>Channels:</source>
@@ -311,16 +356,16 @@ Novo</translation>
     <message>
         <source>&amp;Save As
 New</source>
-        <translation>&amp;Salvar como
+        <translation type="obsolete">&amp;Salvar como
 Novo</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Cut</source>
@@ -362,6 +407,23 @@ Novo</translation>
         <source>Unsupported URL scheme!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As
+New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditPlayout</name>
@@ -391,7 +453,7 @@ Novo</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Selecionar</translation>
+        <translation type="obsolete">&amp;Selecionar</translation>
     </message>
     <message>
         <source>Active Days</source>
@@ -432,16 +494,16 @@ Novo</translation>
     <message>
         <source>&amp;Save As
 New</source>
-        <translation>&amp;Salvar como
+        <translation type="obsolete">&amp;Salvar como
 Novo</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Duplicate Event</source>
@@ -450,6 +512,23 @@ Novo</translation>
     <message>
         <source>An event with these parameters already exists!</source>
         <translation type="obsolete">Um Evento com estes parâmetros já existe!</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As
+New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -540,7 +619,7 @@ Novo</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Selecionar</translation>
+        <translation type="obsolete">&amp;Selecionar</translation>
     </message>
     <message>
         <source>Channels:</source>
@@ -613,16 +692,16 @@ Novo</translation>
     <message>
         <source>&amp;Save As
 New</source>
-        <translation>&amp;Salvar como
+        <translation type="obsolete">&amp;Salvar como
 Novo</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Cut</source>
@@ -675,6 +754,23 @@ Novo</translation>
     <message>
         <source>An event with these parameters already exists!</source>
         <translation>Um Evento com estes parâmetros já existe!</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As
+New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -750,16 +846,16 @@ Novo</translation>
     <message>
         <source>&amp;Save As
 New</source>
-        <translation>&amp;Salvar como
+        <translation type="obsolete">&amp;Salvar como
 Novo</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>--OFF--</source>
@@ -772,6 +868,19 @@ Novo</translation>
     <message>
         <source>An event with these parameters already exists!</source>
         <translation>Um Evento com estes parâmetros já existe!</translation>
+    </message>
+    <message>
+        <source>Save As
+New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -806,7 +915,7 @@ Novo</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Selecionar</translation>
+        <translation type="obsolete">&amp;Selecionar</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -830,7 +939,7 @@ Novo</translation>
     </message>
     <message>
         <source>S&amp;et</source>
-        <translation>&amp;Ajustar</translation>
+        <translation type="obsolete">&amp;Ajustar</translation>
     </message>
     <message>
         <source>Normalize</source>
@@ -891,16 +1000,16 @@ Novo</translation>
     <message>
         <source>&amp;Save As
 New</source>
-        <translation>&amp;Salvar como
+        <translation type="obsolete">&amp;Salvar como
 Novo</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Unsupported Format</source>
@@ -954,6 +1063,27 @@ Novo</translation>
         <source>Unsupported URL scheme!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As
+New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListReports</name>
@@ -975,11 +1105,19 @@ Novo</translation>
     </message>
     <message>
         <source>&amp;Generate</source>
-        <translation>&amp;Gerar</translation>
+        <translation type="obsolete">&amp;Gerar</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Fechar</translation>
+        <translation type="obsolete">&amp;Fechar</translation>
+    </message>
+    <message>
+        <source>Generate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1138,15 +1276,15 @@ Novo</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Adicionar</translation>
+        <translation type="obsolete">&amp;Adicionar</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Deletar</translation>
+        <translation type="obsolete">&amp;Deletar</translation>
     </message>
     <message>
         <source>Scroll</source>
@@ -1158,7 +1296,7 @@ Novo</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Fechar</translation>
+        <translation type="obsolete">&amp;Fechar</translation>
     </message>
     <message>
         <source>Event Active</source>
@@ -1358,6 +1496,22 @@ Novo</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this event?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

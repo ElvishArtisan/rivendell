@@ -105,7 +105,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   gen_select_button=new QPushButton(this);
   gen_select_button->setFont(subButtonFont());
-  gen_select_button->setText(tr("&Select"));
+  gen_select_button->setText(tr("Select"));
   connect(gen_select_button,SIGNAL(clicked()),this,SLOT(selectDateData()));
 
   //
@@ -113,7 +113,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   gen_create_button=new QPushButton(this);
   gen_create_button->setFont(buttonFont());
-  gen_create_button->setText(tr("&Create New Log"));
+  gen_create_button->setText(tr("Create New Log"));
   connect(gen_create_button,SIGNAL(clicked()),this,SLOT(createData()));
 
   //
@@ -121,7 +121,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   gen_music_button=new QPushButton(this);
   gen_music_button->setFont(buttonFont());
-  gen_music_button->setText(tr("Merge &Music"));
+  gen_music_button->setText(tr("Merge Music"));
   connect(gen_music_button,SIGNAL(clicked()),this,SLOT(musicData()));
 
   //
@@ -129,7 +129,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   gen_traffic_button=new QPushButton(this);
   gen_traffic_button->setFont(buttonFont());
-  gen_traffic_button->setText(tr("Merge &Traffic"));
+  gen_traffic_button->setText(tr("Merge Traffic"));
   connect(gen_traffic_button,SIGNAL(clicked()),this,SLOT(trafficData()));
 
   //
@@ -186,7 +186,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   gen_close_button=new QPushButton(this);
   gen_close_button->setDefault(true);
   gen_close_button->setFont(buttonFont());
-  gen_close_button->setText(tr("C&lose"));
+  gen_close_button->setText(tr("Close"));
   connect(gen_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   UpdateControls();

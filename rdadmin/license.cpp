@@ -43,7 +43,7 @@ License::License(QWidget *parent)
   //
   close_button=new QPushButton(this);
   close_button->setFont(buttonFont());
-  close_button->setText(tr("&Close"));
+  close_button->setText(tr("Close"));
   connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 

@@ -117,7 +117,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(185,68,60,24);
   button->setFont(subLabelFont());
-  button->setText(tr("&Select"));
+  button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectCartData()));
 
   //
@@ -213,7 +213,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-300,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Save As\nNew"));
+  button->setText(tr("Save As\nNew"));
   connect(button,SIGNAL(clicked()),this,SLOT(saveasData()));
   if(adds==NULL) {
     button->hide();
@@ -226,7 +226,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -235,7 +235,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

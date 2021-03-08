@@ -214,7 +214,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   // Set Cut Button
   //
-  rip_setcut_button=new QPushButton(tr("Set\n&Cart/Cut"),this);
+  rip_setcut_button=new QPushButton(tr("Set\nCart/Cut"),this);
   rip_setcut_button->setFont(buttonFont());
   rip_setcut_button->setDisabled(true);
   connect(rip_setcut_button,SIGNAL(clicked()),this,SLOT(setCutButtonData()));
@@ -310,7 +310,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   // Rip Disc Button
   //
-  rip_rip_button=new QPushButton(tr("&Rip\nDisc"),this);
+  rip_rip_button=new QPushButton(tr("Rip\nDisc"),this);
   rip_rip_button->setFont(buttonFont());
   connect(rip_rip_button,SIGNAL(clicked()),this,SLOT(ripDiskButtonData()));
   rip_rip_button->setDisabled(true);
@@ -318,7 +318,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   // Close Button
   //
-  rip_close_button=new QPushButton(tr("&Close"),this);
+  rip_close_button=new QPushButton(tr("Close"),this);
   rip_close_button->setFont(buttonFont());
   connect(rip_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 

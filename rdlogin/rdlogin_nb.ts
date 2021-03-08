@@ -29,17 +29,17 @@
     </message>
     <message>
         <source>&amp;Set User</source>
-        <translation>&amp;Set brukar</translation>
+        <translation type="obsolete">&amp;Set brukar</translation>
     </message>
     <message>
         <source>&amp;Default
 User</source>
-        <translation>Stan&amp;dard-
+        <translation type="obsolete">Stan&amp;dard-
 brukar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Current User:</source>
@@ -75,6 +75,19 @@ brukar</translation>
     </message>
     <message>
         <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default
+User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

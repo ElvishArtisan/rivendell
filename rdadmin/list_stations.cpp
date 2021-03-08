@@ -43,7 +43,7 @@ ListStations::ListStations(QWidget *parent)
   //
   list_add_button=new QPushButton(this);
   list_add_button->setFont(buttonFont());
-  list_add_button->setText(tr("&Add"));
+  list_add_button->setText(tr("Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
@@ -51,7 +51,7 @@ ListStations::ListStations(QWidget *parent)
   //
   list_edit_button=new QPushButton(this);
   list_edit_button->setFont(buttonFont());
-  list_edit_button->setText(tr("&Edit"));
+  list_edit_button->setText(tr("Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -59,7 +59,7 @@ ListStations::ListStations(QWidget *parent)
   //
   list_delete_button=new QPushButton(this);
   list_delete_button->setFont(buttonFont());
-  list_delete_button->setText(tr("&Delete"));
+  list_delete_button->setText(tr("Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -68,14 +68,14 @@ ListStations::ListStations(QWidget *parent)
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(buttonFont());
-  list_close_button->setText(tr("&Close"));
+  list_close_button->setText(tr("Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
   // Station List Box
   //
   list_stations_view=new RDTableView(this);
-  list_title_label=new QLabel(tr("H&osts:"),this);
+  list_title_label=new QLabel(tr("Hosts:"),this);
   list_title_label->setFont(labelFont());
   list_title_label->setGeometry(14,11,85,19);
   list_stations_model=new RDStationListModel(false,"",this);

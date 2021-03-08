@@ -153,7 +153,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_format_button=new QPushButton(this);
   repl_format_button->setGeometry(450,142,40,24);
   repl_format_button->setFont(subButtonFont());
-  repl_format_button->setText(tr("S&et"));
+  repl_format_button->setText(tr("Set"));
   connect(repl_format_button,SIGNAL(clicked()),this,SLOT(setFormatData()));
 
   //
@@ -199,7 +199,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -209,7 +209,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

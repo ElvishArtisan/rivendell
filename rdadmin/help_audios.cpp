@@ -60,7 +60,7 @@ HelpAudioPorts::HelpAudioPorts(QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Close"));
+  button->setText(tr("Close"));
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 

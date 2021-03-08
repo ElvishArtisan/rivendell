@@ -224,15 +224,15 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;New Feed Name:</source>
-        <translation>Název nového &amp;přívodu:</translation>
+        <translation type="obsolete">Název nového &amp;přívodu:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Add Feed Error</source>
@@ -246,6 +246,18 @@ a záloha původní databáze uložena v </translation>
         <source>Add RSS Feed</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>New Feed Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>AddGroup</name>
@@ -255,7 +267,7 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;New Group Name:</source>
-        <translation>Název &amp;nové skupiny:</translation>
+        <translation type="obsolete">Název &amp;nové skupiny:</translation>
     </message>
     <message>
         <source>Enable Group for All Users</source>
@@ -267,11 +279,11 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Name</source>
@@ -288,6 +300,18 @@ a záloha původní databáze uložena v </translation>
     <message>
         <source>Group Already Exists!</source>
         <translation>Skupina již existuje!</translation>
+    </message>
+    <message>
+        <source>New Group Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -333,7 +357,7 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;New Matrix Number:</source>
-        <translation>Č&amp;íslo nové matice:</translation>
+        <translation type="obsolete">Č&amp;íslo nové matice:</translation>
     </message>
     <message>
         <source>Local GPIO</source>
@@ -377,15 +401,15 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;Switcher Type:</source>
-        <translation>Typ &amp;přepínače:</translation>
+        <translation type="obsolete">Typ &amp;přepínače:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Matrix</source>
@@ -411,6 +435,22 @@ a záloha původní databáze uložena v </translation>
         <source>New Switcher</source>
         <translation>Nový přepínač</translation>
     </message>
+    <message>
+        <source>New Matrix Number:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switcher Type:</source>
+        <translation type="unfinished">Typ přepínače:</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>AddReplicator</name>
@@ -424,11 +464,11 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Name</source>
@@ -450,6 +490,14 @@ a záloha původní databáze uložena v </translation>
         <source>Replicator Name:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>AddReport</name>
@@ -459,15 +507,15 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;Report Name:</source>
-        <translation>&amp;Název zprávy:</translation>
+        <translation type="obsolete">&amp;Název zprávy:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Name</source>
@@ -485,6 +533,18 @@ a záloha původní databáze uložena v </translation>
         <source>A report with that name already exists!</source>
         <translation>Zpráva s tímto názvem již existuje!</translation>
     </message>
+    <message>
+        <source>Report Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>AddStation</name>
@@ -494,7 +554,7 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>New &amp;Host Name:</source>
-        <translation>Název nového &amp;serveru:</translation>
+        <translation type="obsolete">Název nového &amp;serveru:</translation>
     </message>
     <message>
         <source>Base Host On:</source>
@@ -502,11 +562,11 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Empty Host Config</source>
@@ -536,6 +596,18 @@ a záloha původní databáze uložena v </translation>
         <source>Unable to create host!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>New Host Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>AddSvc</name>
@@ -545,7 +617,7 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;New Service Name:</source>
-        <translation>Název nové &amp;služby:</translation>
+        <translation type="obsolete">Název nové &amp;služby:</translation>
     </message>
     <message>
         <source>Base Service On:</source>
@@ -553,11 +625,11 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Empty Host Config</source>
@@ -583,6 +655,18 @@ a záloha původní databáze uložena v </translation>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>New Service Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>AddUser</name>
@@ -592,15 +676,15 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;New User Name:</source>
-        <translation>Jméno nového &amp;uživatele:</translation>
+        <translation type="obsolete">Jméno nového &amp;uživatele:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Name</source>
@@ -617,6 +701,18 @@ a záloha původní databáze uložena v </translation>
     <message>
         <source>User Already Exists!</source>
         <translation>Uživatel již existuje!</translation>
+    </message>
+    <message>
+        <source>New User Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -643,7 +739,7 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
@@ -658,12 +754,20 @@ a záloha původní databáze uložena v </translation>
         <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
-        <source>&amp;Remove</source>
+        <source>&amp;Close</source>
+        <translation type="obsolete">&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -730,11 +834,11 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation>&amp;Nápověda</translation>
+        <translation type="obsolete">&amp;Nápověda</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Internal</source>
@@ -766,6 +870,14 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Edit AudioScience Audio Ports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1030,7 +1142,7 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>No Audio Configuration Data</source>
@@ -1142,6 +1254,10 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <source>Event Carts</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditDropbox</name>
@@ -1155,7 +1271,7 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>&amp;Path Spec:</source>
-        <translation>Zadání &amp;cesty:</translation>
+        <translation type="obsolete">Zadání &amp;cesty:</translation>
     </message>
     <message>
         <source>Select</source>
@@ -1163,7 +1279,7 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>To &amp;Cart:</source>
-        <translation>Do &amp;vozíku:</translation>
+        <translation type="obsolete">Do &amp;vozíku:</translation>
     </message>
     <message>
         <source>Delete cuts before importing</source>
@@ -1171,11 +1287,11 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>&amp;Metadata Pattern:</source>
-        <translation>Vzor pro &amp;popisná data:</translation>
+        <translation type="obsolete">Vzor pro &amp;popisná data:</translation>
     </message>
     <message>
         <source>&amp;Log File:</source>
-        <translation>Soubor se &amp;zápisem:</translation>
+        <translation type="obsolete">Soubor se &amp;zápisem:</translation>
     </message>
     <message>
         <source>Delete source files after import</source>
@@ -1235,11 +1351,11 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Offsets</source>
@@ -1254,19 +1370,11 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <translation type="obsolete">Posun koncového data je menší než Posun počátečního data!</translation>
     </message>
     <message>
-        <source>&amp;User Defined:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Scheduler Codes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Force to Monaural</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1317,6 +1425,38 @@ files, causing any whose files remain to be imported again.</source>
     <message>
         <source>Send e-mail reports</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path Spec:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To Cart:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Metadata Pattern:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Defined:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log File:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -1410,11 +1550,11 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Number</source>
@@ -1443,6 +1583,14 @@ files, causing any whose files remain to be imported again.</source>
     <message>
         <source>Device (Hex)</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -1505,7 +1653,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>S&amp;et</source>
-        <translation>&amp;Nastavit</translation>
+        <translation type="obsolete">&amp;Nastavit</translation>
     </message>
     <message>
         <source>Normalize</source>
@@ -1603,11 +1751,11 @@ pole popisných dat</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Edit Feed - Redirect</source>
@@ -1734,6 +1882,18 @@ Clipboard</source>
         <source>Authenticate with local identity file</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Set</source>
+        <translation type="unfinished">Nastavit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
@@ -1751,11 +1911,19 @@ Clipboard</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -1774,19 +1942,19 @@ Clipboard</source>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>Sma&amp;zat</translation>
+        <translation type="obsolete">Sma&amp;zat</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Cart</source>
@@ -1816,6 +1984,22 @@ Clipboard</source>
         <source>OFF Transition</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Vybrat</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>EditGroup</name>
@@ -1825,11 +2009,11 @@ Clipboard</source>
     </message>
     <message>
         <source>&amp;Group Name:</source>
-        <translation>Název &amp;skupiny:</translation>
+        <translation type="obsolete">Název &amp;skupiny:</translation>
     </message>
     <message>
         <source>Group &amp;Description:</source>
-        <translation>&amp;Popis skupiny:</translation>
+        <translation type="obsolete">&amp;Popis skupiny:</translation>
     </message>
     <message>
         <source>Audio</source>
@@ -1841,7 +2025,7 @@ Clipboard</source>
     </message>
     <message>
         <source>Default Cart &amp;Type:</source>
-        <translation>Výchozí &amp;typ vozíku:</translation>
+        <translation type="obsolete">Výchozí &amp;typ vozíku:</translation>
     </message>
     <message>
         <source>None</source>
@@ -1873,15 +2057,15 @@ Clipboard</source>
     </message>
     <message>
         <source>C&amp;olor</source>
-        <translation>&amp;Barva</translation>
+        <translation type="obsolete">&amp;Barva</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>The selected cart range conflicts with the following groups:
@@ -1899,7 +2083,7 @@ Stále ještě chcete uložit?</translation>
     </message>
     <message>
         <source>Default Import &amp;Title:</source>
-        <translation>Výchozí &amp;název zavedení:</translation>
+        <translation type="obsolete">Výchozí &amp;název zavedení:</translation>
     </message>
     <message>
         <source>Purge expired cuts after</source>
@@ -1925,6 +2109,34 @@ Stále ještě chcete uložit?</translation>
         <source>Notification E-Mail Addresses</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Group Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group Description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Import Title:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Cart Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>EditHostvar</name>
@@ -1946,11 +2158,19 @@ Stále ještě chcete uložit?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2063,11 +2283,11 @@ Stále ještě chcete uložit?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>JACK Command Line:</source>
@@ -2079,15 +2299,15 @@ Stále ještě chcete uložit?</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished">&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation type="unfinished">S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>Active Audio Ports</source>
@@ -2104,6 +2324,26 @@ Stále ještě chcete uložit?</translation>
     <message>
         <source>Are you sure you want to delete JACK Client</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2122,22 +2362,30 @@ Stále ještě chcete uložit?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
     <name>EditLiveWireGpio</name>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Edit GPIO Source</source>
@@ -2166,6 +2414,14 @@ Stále ještě chcete uložit?</translation>
     <message>
         <source>The Surface Address is invalid!</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2265,13 +2521,13 @@ Stále ještě chcete uložit?</translation>
     <message>
         <source>Configure
 &amp;Inputs</source>
-        <translation>Nastavit
+        <translation type="obsolete">Nastavit
 &amp;vstupy</translation>
     </message>
     <message>
         <source>Configure
 &amp;Outputs</source>
-        <translation>Nastavit
+        <translation type="obsolete">Nastavit
 vý&amp;stupy</translation>
     </message>
     <message>
@@ -2298,11 +2554,11 @@ vGuest</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Address</source>
@@ -2327,13 +2583,13 @@ vGuest</translation>
     <message>
         <source>Configure
 &amp;GPIs</source>
-        <translation>Nastavit
+        <translation type="obsolete">Nastavit
 &amp;GPIs</translation>
     </message>
     <message>
         <source>Configure
 G&amp;POs</source>
-        <translation>Nastavit
+        <translation type="obsolete">Nastavit
 G&amp;POs</translation>
     </message>
     <message>
@@ -2418,6 +2674,34 @@ GPIOs</source>
     <message>
         <source>Displays</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure
+Inputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure
+Outputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure
+GPIs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure
+GPOs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2807,15 +3091,15 @@ Nyní &amp;&amp; Další</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>No Audio Configuration Data</source>
@@ -2952,6 +3236,14 @@ GPIOs</source>
         <source>Log Machine</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>EditRDLibrary</name>
@@ -2973,11 +3265,11 @@ GPIOs</source>
     </message>
     <message>
         <source>&amp;Max Record Time:</source>
-        <translation>&amp;Největší čas nahrávání:</translation>
+        <translation type="obsolete">&amp;Největší čas nahrávání:</translation>
     </message>
     <message>
         <source>&amp;VOX Threshold:</source>
-        <translation>Práh &amp;VOX:</translation>
+        <translation type="obsolete">Práh &amp;VOX:</translation>
     </message>
     <message>
         <source>dbFS</source>
@@ -2985,11 +3277,11 @@ GPIOs</source>
     </message>
     <message>
         <source>&amp;AutoTrim Threshold:</source>
-        <translation>Práh pro &amp;automatické zastřižení:</translation>
+        <translation type="obsolete">Práh pro &amp;automatické zastřižení:</translation>
     </message>
     <message>
         <source>&amp;Tail Preroll:</source>
-        <translation>Předtočení &amp;ocasu:</translation>
+        <translation type="obsolete">Předtočení &amp;ocasu:</translation>
     </message>
     <message>
         <source>milliseconds</source>
@@ -2997,11 +3289,11 @@ GPIOs</source>
     </message>
     <message>
         <source>&amp;Ripper Device:</source>
-        <translation>Zařízení &amp;trhače:</translation>
+        <translation type="obsolete">Zařízení &amp;trhače:</translation>
     </message>
     <message>
         <source>&amp;Paranoia Level:</source>
-        <translation>Úroveň &amp;Paranoia:</translation>
+        <translation type="obsolete">Úroveň &amp;Paranoia:</translation>
     </message>
     <message>
         <source>Ripper Level:</source>
@@ -3009,11 +3301,11 @@ GPIOs</source>
     </message>
     <message>
         <source>&amp;FreeDB Server:</source>
-        <translation>Server &amp;FreeDB:</translation>
+        <translation type="obsolete">Server &amp;FreeDB:</translation>
     </message>
     <message>
         <source>&amp;Format:</source>
-        <translation>&amp;Formát:</translation>
+        <translation type="obsolete">&amp;Formát:</translation>
     </message>
     <message>
         <source>&amp;Sample Rate:</source>
@@ -3021,7 +3313,7 @@ GPIOs</source>
     </message>
     <message>
         <source>&amp;Bitrate:</source>
-        <translation>&amp;Datový tok:</translation>
+        <translation type="obsolete">&amp;Datový tok:</translation>
     </message>
     <message>
         <source>No</source>
@@ -3033,7 +3325,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Allow E&amp;xternal Editing:</source>
-        <translation>Povolit &amp;vnější úpravy:</translation>
+        <translation type="obsolete">Povolit &amp;vnější úpravy:</translation>
     </message>
     <message>
         <source>Defaults</source>
@@ -3041,7 +3333,7 @@ GPIOs</source>
     </message>
     <message>
         <source>&amp;Channels:</source>
-        <translation>&amp;Kanály:</translation>
+        <translation type="obsolete">&amp;Kanály:</translation>
     </message>
     <message>
         <source>Record Mode:</source>
@@ -3053,11 +3345,11 @@ GPIOs</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>No Audio Configuration Data</source>
@@ -3182,10 +3474,6 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <translation type="unfinished">PCM24</translation>
     </message>
     <message>
-        <source>&amp;Read ISRCs from CD:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Configure RDLibrary</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3202,16 +3490,72 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <translation type="unfinished">Výstup</translation>
     </message>
     <message>
-        <source>&amp;CD Metadata Source:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>FreeDB Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>MusicBrainz Server</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max Record Time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>VOX Threshold:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AutoTrim Threshold:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tail Preroll:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ripper Device:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paranoia Level:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CD Metadata Source:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeDB Server:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation type="unfinished">Formát:</translation>
+    </message>
+    <message>
+        <source>Bitrate:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow External Editing:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channels:</source>
+        <translation type="unfinished">Kanály:</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -3234,11 +3578,11 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>&amp;Max Record Time:</source>
-        <translation>&amp;Největší čas nahrávání:</translation>
+        <translation type="obsolete">&amp;Největší čas nahrávání:</translation>
     </message>
     <message>
         <source>&amp;AutoTrim Threshold:</source>
-        <translation>Práh pro &amp;automatické zastřižení:</translation>
+        <translation type="obsolete">Práh pro &amp;automatické zastřižení:</translation>
     </message>
     <message>
         <source>dbFS</source>
@@ -3246,11 +3590,11 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>&amp;Normalization Level:</source>
-        <translation>Úroveň &amp;normalizace:</translation>
+        <translation type="obsolete">Úroveň &amp;normalizace:</translation>
     </message>
     <message>
         <source>&amp;Audio Margin:</source>
-        <translation>Okraj &amp;zvuku:</translation>
+        <translation type="obsolete">Okraj &amp;zvuku:</translation>
     </message>
     <message>
         <source>milliseconds</source>
@@ -3258,15 +3602,15 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>&amp;Format:</source>
-        <translation>&amp;Formát:</translation>
+        <translation type="obsolete">&amp;Formát:</translation>
     </message>
     <message>
         <source>&amp;Bitrate:</source>
-        <translation>&amp;Datový tok:</translation>
+        <translation type="obsolete">&amp;Datový tok:</translation>
     </message>
     <message>
         <source>Play &amp;Start Cart:</source>
-        <translation>Přehrát &amp;počáteční vozík:</translation>
+        <translation type="obsolete">Přehrát &amp;počáteční vozík:</translation>
     </message>
     <message>
         <source>Select</source>
@@ -3274,19 +3618,19 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Play &amp;End Cart:</source>
-        <translation>Přehrát &amp;koncový vozík:</translation>
+        <translation type="obsolete">Přehrát &amp;koncový vozík:</translation>
     </message>
     <message>
         <source>&amp;Record Start Cart:</source>
-        <translation>&amp;Nahrát počátečníí vozík:</translation>
+        <translation type="obsolete">&amp;Nahrát počátečníí vozík:</translation>
     </message>
     <message>
         <source>Re&amp;cord End Cart:</source>
-        <translation>Na&amp;hrát koncový vozík:</translation>
+        <translation type="obsolete">Na&amp;hrát koncový vozík:</translation>
     </message>
     <message>
         <source>&amp;Channels:</source>
-        <translation>&amp;Kanály:</translation>
+        <translation type="obsolete">&amp;Kanály:</translation>
     </message>
     <message>
         <source>Default Transition:</source>
@@ -3306,11 +3650,11 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>No Audio Configuration Data</source>
@@ -3397,10 +3741,6 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <translation type="unfinished">Ano</translation>
     </message>
     <message>
-        <source>Enable &amp;2nd Start Button:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>PCM24</source>
         <translation type="unfinished">PCM24</translation>
     </message>
@@ -3419,6 +3759,62 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     <message>
         <source>WaveForm Caption:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max Record Time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AutoTrim Threshold:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normalization Level:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Margin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation type="unfinished">Formát:</translation>
+    </message>
+    <message>
+        <source>Bitrate:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable 2nd Start Button:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play Start Cart:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play End Cart:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Record Start Cart:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Record End Cart:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channels:</source>
+        <translation type="unfinished">Kanály:</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -3513,11 +3909,11 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>No Audio Configuration Data</source>
@@ -3551,6 +3947,14 @@ has not yet been generated.  Please start the Rivendell daemons on this host
 (by executing, as user &apos;root&apos;,  the command &quot;systemctl start rivendell&quot;)
 in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -3593,7 +3997,7 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>S&amp;et</source>
-        <translation>&amp;Nastavit</translation>
+        <translation type="obsolete">&amp;Nastavit</translation>
     </message>
     <message>
         <source>Normalize</source>
@@ -3617,11 +4021,23 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation type="unfinished">Nastavit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -3632,11 +4048,11 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>&amp;Report Description:</source>
-        <translation>&amp;Popis zprávy:</translation>
+        <translation type="obsolete">&amp;Popis zprávy:</translation>
     </message>
     <message>
         <source>Export &amp;Filter:</source>
-        <translation>&amp;Filter pro vyvedení:</translation>
+        <translation type="obsolete">&amp;Filter pro vyvedení:</translation>
     </message>
     <message>
         <source>Station ID:</source>
@@ -3664,11 +4080,11 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>Ser&amp;vice Name:</source>
-        <translation>Název &amp;služby:</translation>
+        <translation type="obsolete">Název &amp;služby:</translation>
     </message>
     <message>
         <source>Station &amp;Format:</source>
-        <translation>&amp;Formát stanice:</translation>
+        <translation type="obsolete">&amp;Formát stanice:</translation>
     </message>
     <message>
         <source>Linux Export Path:</source>
@@ -3736,11 +4152,11 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Available Groups</source>
@@ -3773,6 +4189,30 @@ in order to populate the audio resources database.</source>
     <message>
         <source>Post Export Cmd:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report Description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export Filter:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Station Format:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -3878,19 +4318,19 @@ Přepsat?</translation>
     </message>
     <message>
         <source>Ho&amp;st Name:</source>
-        <translation>Název &amp;serveru:</translation>
+        <translation type="obsolete">Název &amp;serveru:</translation>
     </message>
     <message>
         <source>&amp;Description:</source>
-        <translation>&amp;Popis:</translation>
+        <translation type="obsolete">&amp;Popis:</translation>
     </message>
     <message>
         <source>Default &amp;User:</source>
-        <translation>Výchozí &amp;uživatel:</translation>
+        <translation type="obsolete">Výchozí &amp;uživatel:</translation>
     </message>
     <message>
         <source>&amp;IP Address:</source>
-        <translation>Adresa &amp;IP:</translation>
+        <translation type="obsolete">Adresa &amp;IP:</translation>
     </message>
     <message>
         <source>Editor &amp;Command:</source>
@@ -3902,11 +4342,11 @@ Přepsat?</translation>
     </message>
     <message>
         <source>&amp;Time Offset:</source>
-        <translation>Č&amp;asový odstup:</translation>
+        <translation type="obsolete">Č&amp;asový odstup:</translation>
     </message>
     <message>
         <source>&amp;Startup Cart:</source>
-        <translation>Vozík &amp;spuštění:</translation>
+        <translation type="obsolete">Vozík &amp;spuštění:</translation>
     </message>
     <message>
         <source>Select</source>
@@ -3934,7 +4374,7 @@ Přepsat?</translation>
     </message>
     <message>
         <source>RD&amp;Library</source>
-        <translation>RD&amp;Library</translation>
+        <translation type="obsolete">RD&amp;Library</translation>
     </message>
     <message>
         <source>RDCatch</source>
@@ -3992,11 +4432,11 @@ serveru</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Address</source>
@@ -4063,10 +4503,6 @@ Settings</source>
 pro JACK</translation>
     </message>
     <message>
-        <source>Cue &amp;Output:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>RDCart
 Slots</source>
         <translation type="unfinished"></translation>
@@ -4082,10 +4518,6 @@ configured to run the CAE service in order to populate the audio resources datab
         <translation type="unfinished">Přiřazení kanálů nebudou dostupná pro tento server jako zdroj zvuku, data
 ještě nebyla vytvořena. Spusťte, prosím, démony Rivendell na serveru
 nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</translation>
-    </message>
-    <message>
-        <source>Enable Drag &amp;&amp; Drop</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Allow Drops on Panels not in Setup Mode</source>
@@ -4129,6 +4561,50 @@ Instances</source>
         <source>SSH Ident. File</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Host Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description:</source>
+        <translation type="unfinished">Popis:</translation>
+    </message>
+    <message>
+        <source>Default User:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IP Address:</source>
+        <translation type="unfinished">Adresa IP:</translation>
+    </message>
+    <message>
+        <source>Time Offset:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup Cart:</source>
+        <translation type="unfinished">Spouštěcí vozík:</translation>
+    </message>
+    <message>
+        <source>Cue Output:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable Drag &amp; Drop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDLibrary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>EditSvc</name>
@@ -4138,11 +4614,11 @@ Instances</source>
     </message>
     <message>
         <source>&amp;Service Name:</source>
-        <translation>Název &amp;služby:</translation>
+        <translation type="obsolete">Název &amp;služby:</translation>
     </message>
     <message>
         <source>Service &amp;Description:</source>
-        <translation>&amp;Popis služby:</translation>
+        <translation type="obsolete">&amp;Popis služby:</translation>
     </message>
     <message>
         <source>Log &amp;Template Name:</source>
@@ -4167,12 +4643,12 @@ Instances</source>
     <message>
         <source>Configure 
 &amp;Autofill Carts</source>
-        <translation>Nastavit
+        <translation type="obsolete">Nastavit
 &amp;automatické naplnění vozíků</translation>
     </message>
     <message>
         <source>Enable &amp;Hosts</source>
-        <translation>Povolit &amp;servery</translation>
+        <translation type="obsolete">Povolit &amp;servery</translation>
     </message>
     <message>
         <source>Traffic Data Import</source>
@@ -4249,7 +4725,7 @@ Instances</source>
     <message>
         <source>Test 
 &amp;Traffic</source>
-        <translation>Vyzkoušet
+        <translation type="obsolete">Vyzkoušet
 &amp;přenos</translation>
     </message>
     <message>
@@ -4263,16 +4739,16 @@ Instances</source>
     <message>
         <source>Test 
 &amp;Music</source>
-        <translation>Vyzkoušet
+        <translation type="obsolete">Vyzkoušet
 &amp;hudbu</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Save Import Data</source>
@@ -4314,18 +4790,10 @@ uloženo. Uložit nyní?</translation>
     </message>
     <message>
         <source>&amp;Program Code:</source>
-        <translation>&amp;Programový kód:</translation>
+        <translation type="obsolete">&amp;Programový kód:</translation>
     </message>
     <message>
         <source>AutoSpot Group:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log Name &amp;Template:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log &amp;Description Template:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4397,6 +4865,53 @@ Custom</source>
         <source>Insert Marker String</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Service Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service Description:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Program Code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Name Template:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Description Template:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure 
+Autofill Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable Hosts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test 
+Traffic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test 
+Music</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>EditSvcPerms</name>
@@ -4414,11 +4929,19 @@ Custom</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -4489,15 +5012,15 @@ Custom</source>
     </message>
     <message>
         <source>&amp;Save List</source>
-        <translation type="unfinished">&amp;Uložit seznam</translation>
+        <translation type="obsolete">&amp;Uložit seznam</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>File Exists</source>
@@ -4560,6 +5083,18 @@ List</source>
         <source>Unable to write file</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Save List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>EditTtys</name>
@@ -4601,7 +5136,7 @@ List</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Serial</source>
@@ -4655,6 +5190,10 @@ List</source>
         <source>This port is currently in use by the following Switcher/GPIO device</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditUser</name>
@@ -4664,19 +5203,19 @@ List</source>
     </message>
     <message>
         <source>&amp;User Name:</source>
-        <translation>&amp;Uživatelské jméno:</translation>
+        <translation type="obsolete">&amp;Uživatelské jméno:</translation>
     </message>
     <message>
         <source>&amp;Full Name:</source>
-        <translation>&amp;Celé jméno:</translation>
+        <translation type="obsolete">&amp;Celé jméno:</translation>
     </message>
     <message>
         <source>&amp;Description:</source>
-        <translation>&amp;Popis:</translation>
+        <translation type="obsolete">&amp;Popis:</translation>
     </message>
     <message>
         <source>&amp;Phone:</source>
-        <translation>&amp;Telefon:</translation>
+        <translation type="obsolete">&amp;Telefon:</translation>
     </message>
     <message>
         <source>Allow Web Logins</source>
@@ -4685,7 +5224,7 @@ List</source>
     <message>
         <source>Change
 &amp;Password</source>
-        <translation>Změnit
+        <translation type="obsolete">Změnit
 &amp;heslo</translation>
     </message>
     <message>
@@ -4694,7 +5233,7 @@ List</source>
     </message>
     <message>
         <source>Administer S&amp;ystem</source>
-        <translation>Spravovat s&amp;ystém</translation>
+        <translation type="obsolete">Spravovat s&amp;ystém</translation>
     </message>
     <message>
         <source>Production Rights</source>
@@ -4702,27 +5241,27 @@ List</source>
     </message>
     <message>
         <source>&amp;Create Carts</source>
-        <translation>&amp;Vytvořit vozíky</translation>
+        <translation type="obsolete">&amp;Vytvořit vozíky</translation>
     </message>
     <message>
         <source>&amp;Delete Carts</source>
-        <translation>&amp;Smazat vozíky</translation>
+        <translation type="obsolete">&amp;Smazat vozíky</translation>
     </message>
     <message>
         <source>&amp;Modify Carts</source>
-        <translation>&amp;Upravit vozíky</translation>
+        <translation type="obsolete">&amp;Upravit vozíky</translation>
     </message>
     <message>
         <source>&amp;Edit Audio</source>
-        <translation>U&amp;pravit zvuk</translation>
+        <translation type="obsolete">U&amp;pravit zvuk</translation>
     </message>
     <message>
         <source>&amp;Edit Netcatch Schedule</source>
-        <translation>U&amp;pravit rozvrh zachycení sítě</translation>
+        <translation type="obsolete">U&amp;pravit rozvrh zachycení sítě</translation>
     </message>
     <message>
         <source>&amp;Voicetrack Logs</source>
-        <translation>Zápisy &amp;hlasové stopy</translation>
+        <translation type="obsolete">Zápisy &amp;hlasové stopy</translation>
     </message>
     <message>
         <source>Traffic Rights</source>
@@ -4730,19 +5269,19 @@ List</source>
     </message>
     <message>
         <source>Create &amp;Log</source>
-        <translation>Vytvořit &amp;zápis</translation>
+        <translation type="obsolete">Vytvořit &amp;zápis</translation>
     </message>
     <message>
         <source>De&amp;lete Log</source>
-        <translation>&amp;Smazat zápis</translation>
+        <translation type="obsolete">&amp;Smazat zápis</translation>
     </message>
     <message>
         <source>Delete &amp;Report Data</source>
-        <translation>Smazat data zprávy</translation>
+        <translation type="obsolete">Smazat data zprávy</translation>
     </message>
     <message>
         <source>&amp;Modify Template</source>
-        <translation>Up&amp;ravit předlohu</translation>
+        <translation type="obsolete">Up&amp;ravit předlohu</translation>
     </message>
     <message>
         <source>OnAir Rights</source>
@@ -4750,19 +5289,19 @@ List</source>
     </message>
     <message>
         <source>&amp;Playout Logs</source>
-        <translation>Zápisy o &amp;hraní</translation>
+        <translation type="obsolete">Zápisy o &amp;hraní</translation>
     </message>
     <message>
         <source>&amp;Rearrange Log Items</source>
-        <translation>&amp;Přeuspořádat položky zápisu</translation>
+        <translation type="obsolete">&amp;Přeuspořádat položky zápisu</translation>
     </message>
     <message>
         <source>Add Log &amp;Items</source>
-        <translation>Přidat po&amp;ložky zápisu</translation>
+        <translation type="obsolete">Přidat po&amp;ložky zápisu</translation>
     </message>
     <message>
         <source>Delete Lo&amp;g Items</source>
-        <translation>Smazat položky záp&amp;isu</translation>
+        <translation type="obsolete">Smazat položky záp&amp;isu</translation>
     </message>
     <message>
         <source>Configure System Panels</source>
@@ -4774,15 +5313,15 @@ List</source>
     </message>
     <message>
         <source>Cre&amp;ate Podcast</source>
-        <translation>Vytvořit podc&amp;ast</translation>
+        <translation type="obsolete">Vytvořit podc&amp;ast</translation>
     </message>
     <message>
         <source>E&amp;dit Podcast</source>
-        <translation>Upr&amp;avit podcast</translation>
+        <translation type="obsolete">Upr&amp;avit podcast</translation>
     </message>
     <message>
         <source>Dele&amp;te Podcast</source>
-        <translation>Smaza&amp;t podcast</translation>
+        <translation type="obsolete">Smaza&amp;t podcast</translation>
     </message>
     <message>
         <source>Assign Group
@@ -4798,11 +5337,11 @@ pro přívod pro podcast</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Disabled</source>
@@ -4840,16 +5379,117 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Allow &amp;WebGet Login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>E-Mail Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Administer RSS Feeds</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description:</source>
+        <translation type="unfinished">Popis:</translation>
+    </message>
+    <message>
+        <source>Phone:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change
+Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Administer System</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow WebGet Login</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Netcatch Schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voicetrack Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Report Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modify Template</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Playout Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rearrange Log Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Log Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Log Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Podcast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Podcast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Podcast</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -4868,11 +5508,19 @@ Permissions</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -4895,11 +5543,11 @@ Permissions</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Edit vGuest Switch</source>
@@ -4940,6 +5588,14 @@ Permissions</source>
     <message>
         <source>Surface</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -5003,12 +5659,12 @@ GNU Library General Public License. Klepněte na tlačítko pro zobrazení povol
     <message>
         <source>View
 &amp;License</source>
-        <translation>Zobrazit
+        <translation type="obsolete">Zobrazit
 &amp;povolení</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Copyright 2002-2008</source>
@@ -5031,12 +5687,21 @@ GNU Library General Public License. Klepněte na tlačítko pro zobrazení povol
         <translation type="obsolete">Autorské právo 2002-2019</translation>
     </message>
     <message>
-        <source>View
-&amp;Credits</source>
+        <source>This program is free software, and comes with ABSOLUTELY NO WARRANTY, not even the implied warranties of MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE. Touch the &quot;View License&quot; button for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This program is free software, and comes with ABSOLUTELY NO WARRANTY, not even the implied warranties of MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE. Touch the &quot;View License&quot; button for details.</source>
+        <source>View
+Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View
+License</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5044,7 +5709,7 @@ GNU Library General Public License. Klepněte na tlačítko pro zobrazení povol
     <name>License</name>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Rivendell Credits</source>
@@ -5052,6 +5717,10 @@ GNU Library General Public License. Klepněte na tlačítko pro zobrazení povol
     </message>
     <message>
         <source>GNU Public License v2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5100,19 +5769,19 @@ Jste si jistý, že chcete pokračovat?</translation>
     <name>ListDropboxes</name>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Group</source>
@@ -5167,7 +5836,23 @@ Jste si jistý, že chcete pokračovat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>D&amp;uplicate</source>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5330,7 +6015,7 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -5374,7 +6059,15 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5385,19 +6078,19 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Key</source>
@@ -5449,11 +6142,7 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Repost</source>
-        <translation type="unfinished">&amp;Vyvěsit znovu</translation>
-    </message>
-    <message>
-        <source>&amp;Unpost</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Vyvěsit znovu</translation>
     </message>
     <message>
         <source>Podcast Feeds</source>
@@ -5519,6 +6208,30 @@ Stále ještě jej chcete smazat?</translation>
         <source>Unposting images...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Repost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unpost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListGpis</name>
@@ -5536,7 +6249,7 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -5580,7 +6293,15 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5591,29 +6312,29 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Rename</source>
-        <translation>&amp;Přejmenovat</translation>
+        <translation type="obsolete">&amp;Přejmenovat</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>Generate
 &amp;Report</source>
-        <translation>Vytvořit
+        <translation type="obsolete">Vytvořit
 &amp;zprávu</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>NAME</source>
@@ -5667,6 +6388,31 @@ Stále ještě jej chcete smazat?</translation>
         <source>Delete Group</source>
         <translation type="unfinished">Smazat skupinu</translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Generate
+Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListHostvars</name>
@@ -5692,15 +6438,15 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -5712,7 +6458,7 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Delete Host Variable</source>
@@ -5720,6 +6466,22 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete the variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5810,7 +6572,7 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished">&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -5830,7 +6592,15 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5857,19 +6627,19 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Are you sure you want to delete switcher</source>
@@ -5951,6 +6721,22 @@ Stále ještě jej chcete smazat?</translation>
         <source>Switcher/GPIO Devices</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListPypads</name>
@@ -5960,24 +6746,19 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished">&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation type="unfinished">S&amp;mazat</translation>
-    </message>
-    <message>
-        <source>&amp;Error
-Log</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Select PyPAD Script</source>
@@ -5991,22 +6772,43 @@ Log</source>
         <source>Are your sure you want to delete this instance?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Error
+Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListReplicatorCarts</name>
     <message>
         <source>&amp;Repost</source>
-        <translation>&amp;Vyvěsit znovu</translation>
+        <translation type="obsolete">&amp;Vyvěsit znovu</translation>
     </message>
     <message>
         <source>Repost
 &amp;All</source>
-        <translation>Vyvěsit &amp;vše
+        <translation type="obsolete">Vyvěsit &amp;vše
 znovu</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>CART</source>
@@ -6022,7 +6824,7 @@ znovu</translation>
     </message>
     <message>
         <source>&amp;Active Carts:</source>
-        <translation>Č&amp;inné vozíky:</translation>
+        <translation type="obsolete">Č&amp;inné vozíky:</translation>
     </message>
     <message>
         <source> Replicator Carts</source>
@@ -6031,6 +6833,23 @@ znovu</translation>
     <message>
         <source>POSTED FILENAME</source>
         <translation type="obsolete">VYVĚŠENÝ NÁZEV SOUBORU</translation>
+    </message>
+    <message>
+        <source>Repost</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Repost
+All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active Carts:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6041,25 +6860,25 @@ znovu</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;List
 Carts</source>
-        <translation>&amp;Vypsat
+        <translation type="obsolete">&amp;Vypsat
 vozíky</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>NAME</source>
@@ -6079,7 +6898,7 @@ vozíky</translation>
     </message>
     <message>
         <source>&amp;Replicators:</source>
-        <translation>&amp;Zopakování:</translation>
+        <translation type="obsolete">&amp;Zopakování:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete replicator</source>
@@ -6088,6 +6907,31 @@ vozíky</translation>
     <message>
         <source>Delete Replicator</source>
         <translation type="unfinished">Smazat zopakování</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>List
+Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replicators:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6098,23 +6942,23 @@ vozíky</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>R&amp;eports:</source>
-        <translation>Z&amp;právy:</translation>
+        <translation type="obsolete">Z&amp;právy:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete report</source>
@@ -6123,6 +6967,26 @@ vozíky</translation>
     <message>
         <source>Delete Report</source>
         <translation>Smazat zprávu</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reports:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6133,19 +6997,19 @@ vozíky</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Ho&amp;sts:</source>
@@ -6164,7 +7028,23 @@ vozíky</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>H&amp;osts:</source>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hosts:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6176,23 +7056,23 @@ vozíky</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>&amp;Services:</source>
-        <translation>&amp;Služby:</translation>
+        <translation type="obsolete">&amp;Služby:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete service</source>
@@ -6224,6 +7104,26 @@ Stále ještě chcete pokračovat?</translation>
         <source>Do you still want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Services:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListUsers</name>
@@ -6233,19 +7133,19 @@ Stále ještě chcete pokračovat?</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>&amp;Users:</source>
@@ -6286,6 +7186,22 @@ Stále ještě chcete pokračovat?</translation>
     <message>
         <source>You cannot delete yourself!</source>
         <translation type="unfinished">Nemůžete vymazat sám sebe!</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Upravit</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6352,37 +7268,37 @@ Stále ještě chcete pokračovat?</translation>
     <message>
         <source>Manage
 &amp;Users</source>
-        <translation>Spravovat
+        <translation type="obsolete">Spravovat
 &amp;uživatele</translation>
     </message>
     <message>
         <source>Manage
 &amp;Groups</source>
-        <translation>Spravovat
+        <translation type="obsolete">Spravovat
 &amp;skupiny</translation>
     </message>
     <message>
         <source>Manage
 &amp;Services</source>
-        <translation>Spravovat
+        <translation type="obsolete">Spravovat
 s&amp;lužby</translation>
     </message>
     <message>
         <source>Manage
 Ho&amp;sts</source>
-        <translation>Spravovat
+        <translation type="obsolete">Spravovat
 se&amp;rvery</translation>
     </message>
     <message>
         <source>Manage
 R&amp;eports</source>
-        <translation>Spravovat
+        <translation type="obsolete">Spravovat
 &amp;zprávy</translation>
     </message>
     <message>
         <source>Manage
 &amp;Feeds</source>
-        <translation>Spravovat
+        <translation type="obsolete">Spravovat
 &amp;přívody</translation>
     </message>
     <message>
@@ -6411,7 +7327,7 @@ databázi</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation>&amp;Ukončit</translation>
+        <translation type="obsolete">&amp;Ukončit</translation>
     </message>
     <message>
         <source>Rivendell Database Backup (*.sql)</source>
@@ -6488,6 +7404,40 @@ zopakování</translation>
     <message>
         <source>User</source>
         <translation type="unfinished">Uživatel</translation>
+    </message>
+    <message>
+        <source>Manage
+Users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage
+Groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage
+Services</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage
+Hosts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage
+Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage
+Feeds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6772,15 +7722,15 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>New &amp;Group Name:</source>
-        <translation>Název &amp;nové skupiny:</translation>
+        <translation type="obsolete">Název &amp;nové skupiny:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Invalid Group</source>
@@ -6812,6 +7762,18 @@ Chcete obě spojit?</translation>
         <source>group already exists.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>New Group Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>TestImport</name>
@@ -6829,11 +7791,11 @@ Chcete obě spojit?</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
     <message>
         <source>&amp;Import</source>
-        <translation>&amp;Zavést</translation>
+        <translation type="obsolete">&amp;Zavést</translation>
     </message>
     <message>
         <source>Using source file:</source>
@@ -6873,7 +7835,7 @@ Chcete obě spojit?</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Import Error</source>
@@ -6888,6 +7850,18 @@ Prověřte, prosím, svá nastavení a zkuste to znovu.</translation>
     <message>
         <source>[spot break]</source>
         <translation type="obsolete">[přerušení místa]</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Vybrat</translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -7014,7 +7988,7 @@ pro naplnění databáze zdroji zvuku.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>    MP-4/AAC
@@ -7037,6 +8011,10 @@ pro naplnění databáze zdroji zvuku.</translation>
     </message>
     <message>
         <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;systemctl start rivendell&quot;) in order to populate the audio resources database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

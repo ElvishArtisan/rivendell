@@ -217,7 +217,7 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
   //
   // Rip Track Button
   //
-  rip_rip_button=new QPushButton(tr("&Rip\nTrack"),this);
+  rip_rip_button=new QPushButton(tr("Rip\nTrack"),this);
   rip_rip_button->setFont(buttonFont());
   rip_rip_button->setDisabled(true);
   connect(rip_rip_button,SIGNAL(clicked()),this,SLOT(ripTrackButtonData()));
@@ -279,7 +279,7 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
   //
   // Close Button
   //
-  rip_close_button=new QPushButton("&Close",this);
+  rip_close_button=new QPushButton("Close",this);
   rip_close_button->setFont(buttonFont());
   connect(rip_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 

@@ -91,11 +91,11 @@ Episódio</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Image</source>
@@ -103,10 +103,6 @@ Episódio</translation>
     </message>
     <message>
         <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Select Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -147,6 +143,18 @@ Episódio</translation>
     </message>
     <message>
         <source>Item expiration must be in the future!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -212,22 +220,22 @@ Episódio</translation>
     <message>
         <source>Post From
 Car&amp;t/Cut</source>
-        <translation>Postar  
+        <translation type="obsolete">Postar  
 &amp;Cartão</translation>
     </message>
     <message>
         <source>Post From
 &amp;File</source>
-        <translation>Postar 
+        <translation type="obsolete">Postar 
 &amp;Arquivo</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Deletar</translation>
+        <translation type="obsolete">&amp;Deletar</translation>
     </message>
     <message>
         <source>Subscription
@@ -237,7 +245,7 @@ Assinaturas</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Fechar</translation>
+        <translation type="obsolete">&amp;Fechar</translation>
     </message>
     <message>
         <source>Posting Error</source>
@@ -323,6 +331,28 @@ Log</source>
         <source>Select Audio File</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Post From
+Cart/Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post From
+File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LogDialog</name>
@@ -391,12 +421,12 @@ Log</source>
     <message>
         <source>&amp;View
 Feed</source>
-        <translation>&amp;Ver 
+        <translation type="obsolete">&amp;Ver 
 Feed</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Fechar</translation>
+        <translation type="obsolete">&amp;Fechar</translation>
     </message>
     <message>
         <source>User</source>
@@ -426,6 +456,10 @@ Feed</source>
     </message>
     <message>
         <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -464,7 +498,7 @@ Feed</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Log Render Options</source>
@@ -496,6 +530,10 @@ Feed</source>
     </message>
     <message>
         <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

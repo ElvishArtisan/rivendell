@@ -42,7 +42,7 @@ ListReports::ListReports(QWidget *parent)
   //
   list_add_button=new QPushButton(this);
   list_add_button->setFont(buttonFont());
-  list_add_button->setText(tr("&Add"));
+  list_add_button->setText(tr("Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
@@ -50,7 +50,7 @@ ListReports::ListReports(QWidget *parent)
   //
   list_edit_button=new QPushButton(this);
   list_edit_button->setFont(buttonFont());
-  list_edit_button->setText(tr("&Edit"));
+  list_edit_button->setText(tr("Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -58,7 +58,7 @@ ListReports::ListReports(QWidget *parent)
   //
   list_delete_button=new QPushButton(this);
   list_delete_button->setFont(buttonFont());
-  list_delete_button->setText(tr("&Delete"));
+  list_delete_button->setText(tr("Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -67,14 +67,14 @@ ListReports::ListReports(QWidget *parent)
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(buttonFont());
-  list_close_button->setText(tr("&Close"));
+  list_close_button->setText(tr("Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
   // Report List Box
   //
   list_box=new QListWidget(this);
-  QLabel *list_box_label=new QLabel(tr("R&eports:"),this);
+  QLabel *list_box_label=new QLabel(tr("Reports:"),this);
   list_box_label->setFont(labelFont());
   list_box_label->setGeometry(14,10,85,19);
   connect(list_box,SIGNAL(doubleClicked(const QModelIndex &)),

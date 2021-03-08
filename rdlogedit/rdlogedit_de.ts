@@ -9,19 +9,35 @@
     </message>
     <message>
         <source>&amp;Marker</source>
-        <translation>&amp;Marker</translation>
+        <translation type="obsolete">&amp;Marker</translation>
     </message>
     <message>
         <source>Voice &amp;Track</source>
-        <translation>Voice &amp;Track</translation>
+        <translation type="obsolete">Voice &amp;Track</translation>
     </message>
     <message>
         <source>Log C&amp;hain</source>
-        <translation>Log C&amp;hain</translation>
+        <translation type="obsolete">Log C&amp;hain</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voice Track</source>
+        <translation type="unfinished">Voice Track</translation>
+    </message>
+    <message>
+        <source>Log Chain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -231,7 +247,7 @@ einfügen</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Speichern</translation>
+        <translation type="obsolete">&amp;Speichern</translation>
     </message>
     <message>
         <source>Save
@@ -241,15 +257,15 @@ einfügen</translation>
     </message>
     <message>
         <source>&amp;Reports</source>
-        <translation>&amp;Reporte</translation>
+        <translation type="obsolete">&amp;Reporte</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>Invalid Carts</source>
@@ -457,6 +473,18 @@ die für den gewählten Service ungültig sind!</translation>
     </message>
     <message>
         <source>This log contains one or more carts that are invalid for the selected service!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -732,11 +760,11 @@ Gruppe des ausgewählten Service!</translation>
     </message>
     <message>
         <source>&amp;Generate</source>
-        <translation>&amp;Generieren</translation>
+        <translation type="obsolete">&amp;Generieren</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
+        <translation type="obsolete">&amp;Schliessen</translation>
     </message>
     <message>
         <source>[none]</source>
@@ -756,10 +784,22 @@ Gruppe des ausgewählten Service!</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>Au&amp;swählen</translation>
+        <translation type="obsolete">Au&amp;swählen</translation>
     </message>
     <message>
         <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Auswählen</translation>
+    </message>
+    <message>
+        <source>Generate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -842,20 +882,20 @@ Gruppe des ausgewählten Service!</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Hinzufügen</translation>
+        <translation type="obsolete">&amp;Hinzufügen</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editieren</translation>
+        <translation type="obsolete">&amp;Editieren</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Löschen</translation>
+        <translation type="obsolete">&amp;Löschen</translation>
     </message>
     <message>
         <source>Voice
 &amp;Tracker</source>
-        <translation>Voice
+        <translation type="obsolete">Voice
 &amp;Tracker</translation>
     </message>
     <message>
@@ -866,7 +906,7 @@ Report</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
+        <translation type="obsolete">&amp;Schliessen</translation>
     </message>
     <message>
         <source>User</source>
@@ -990,6 +1030,27 @@ Fortfahren?</translation>
         <source>is in use by</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">editieren</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">löschen</translation>
+    </message>
+    <message>
+        <source>Voice
+Tracker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RenderDialog</name>
@@ -1070,12 +1131,8 @@ Fortfahren?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Render</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>Filename</source>
@@ -1083,6 +1140,10 @@ Fortfahren?</translation>
     </message>
     <message>
         <source>Rendering Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1102,16 +1163,6 @@ Fortfahren?</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Previous
-Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Next
-Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1174,7 +1225,7 @@ Track</source>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Schliessen</translation>
+        <translation type="obsolete">&amp;Schliessen</translation>
     </message>
     <message>
         <source>No VoiceTrack Group</source>
@@ -1327,6 +1378,20 @@ therefore only existing transitions will be editable.</source>
     </message>
     <message>
         <source>Set to Hook Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -57,7 +57,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_description_edit=new QLineEdit(this);
   edit_description_edit->setGeometry(200,10,sizeHint().width()-210,19);
   edit_description_edit->setMaxLength(64);
-  QLabel *label=new QLabel(tr("&Report Description:"),this);
+  QLabel *label=new QLabel(tr("Report Description:"),this);
   label->setGeometry(10,10,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -71,7 +71,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
     edit_filter_box->
       insertItem(i,RDReport::filterText((RDReport::ExportFilter)i));
   }
-  label=new QLabel(tr("Export &Filter:"),this);
+  label=new QLabel(tr("Export Filter:"),this);
   label->setGeometry(10,31,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -147,7 +147,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_servicename_edit=new QLineEdit(this);
   edit_servicename_edit->setGeometry(200,115,sizeHint().width()-210,19);
   edit_servicename_edit->setMaxLength(64);
-  label=new QLabel(tr("Ser&vice Name:"),this);
+  label=new QLabel(tr("Service Name:"),this);
   label->setGeometry(10,115,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -158,7 +158,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_stationformat_edit=new QLineEdit(this);
   edit_stationformat_edit->setGeometry(200,136,sizeHint().width()-210,19);
   edit_stationformat_edit->setMaxLength(64);
-  label=new QLabel(tr("Station &Format:"),this);
+  label=new QLabel(tr("Station Format:"),this);
   label->setGeometry(10,136,185,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -339,7 +339,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -348,7 +348,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

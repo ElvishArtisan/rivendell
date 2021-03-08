@@ -121,7 +121,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()/2-145,174,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("View\n&Credits"));
+  button->setText(tr("View\nCredits"));
   connect(button,SIGNAL(clicked()),this,SLOT(viewCreditsData()));
 
   //
@@ -130,7 +130,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()/2-45,174,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("View\n&License"));
+  button->setText(tr("View\nLicense"));
   connect(button,SIGNAL(clicked()),this,SLOT(viewLicenseData()));
 
   //
@@ -139,7 +139,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-90,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Close"));
+  button->setText(tr("Close"));
   button->setDefault(true);
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
 }

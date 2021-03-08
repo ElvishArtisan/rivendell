@@ -50,7 +50,7 @@ AddUser::AddUser(QString *username,QWidget *parent)
   user_name_edit=new QLineEdit(this);
   user_name_edit->setGeometry(125,11,sizeHint().width()-135,19);
   user_name_edit->setMaxLength(255);
-  QLabel *user_name_label=new QLabel(tr("&New User Name:"),this);
+  QLabel *user_name_label=new QLabel(tr("New User Name:"),this);
   user_name_label->setGeometry(10,13,110,19);
   user_name_label->setFont(labelFont());
   user_name_label->setAlignment(Qt::AlignRight);
@@ -62,7 +62,7 @@ AddUser::AddUser(QString *username,QWidget *parent)
   ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -71,7 +71,7 @@ AddUser::AddUser(QString *username,QWidget *parent)
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 

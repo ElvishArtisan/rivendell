@@ -53,7 +53,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_name_edit->setGeometry(130,11,sizeHint().width()-140,19);
   user_name_edit->setMaxLength(191);
   user_name_edit->setValidator(validator);
-  QLabel *user_name_label=new QLabel(tr("&User Name:"),this);
+  QLabel *user_name_label=new QLabel(tr("User Name:"),this);
   user_name_label->setGeometry(5,11,120,19);
   user_name_label->setFont(labelFont());
   user_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -65,7 +65,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_full_name_edit->setGeometry(130,32,sizeHint().width()-140,19);
   user_full_name_edit->setMaxLength(191);
   user_full_name_edit->setValidator(validator);
-  QLabel *user_full_name_label=new QLabel(tr("&Full Name:"),this);
+  QLabel *user_full_name_label=new QLabel(tr("Full Name:"),this);
   user_full_name_label->setGeometry(10,32,115,19);
   user_full_name_label->setFont(labelFont());
   user_full_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -77,7 +77,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_description_edit->setGeometry(130,53,sizeHint().width()-140,19);
   user_description_edit->setMaxLength(191);
   user_description_edit->setValidator(validator);
-  QLabel *user_description_label=new QLabel(tr("&Description:"),this);
+  QLabel *user_description_label=new QLabel(tr("Description:"),this);
   user_description_label->setGeometry(5,53,120,19);
   user_description_label->setFont(labelFont());
   user_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -101,7 +101,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_phone_edit->setGeometry(130,95,sizeHint().width()-140,19);
   user_phone_edit->setMaxLength(20);
   user_phone_edit->setValidator(validator);
-  QLabel *user_phone_label=new QLabel(tr("&Phone:"),this);
+  QLabel *user_phone_label=new QLabel(tr("Phone:"),this);
   user_phone_label->setGeometry(10,95,115,19);
   user_phone_label->setFont(labelFont());
   user_phone_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -135,7 +135,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_password_button=new QPushButton(this);
   user_password_button->setGeometry(sizeHint().width()-90,118,80,50);
   user_password_button->setFont(buttonFont());
-  user_password_button->setText(tr("Change\n&Password"));
+  user_password_button->setText(tr("Change\nPassword"));
   connect(user_password_button,SIGNAL(clicked()),this,SLOT(passwordData()));
 
   //
@@ -161,7 +161,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_admin_config_button->setGeometry(10,21,15,15);
   connect(user_admin_config_button,SIGNAL(toggled(bool)),
 	  this,SLOT(adminConfigToggledData(bool)));
-  user_admin_config_label=new QLabel(tr("Administer S&ystem"),user_admin_group);
+  user_admin_config_label=new QLabel(tr("Administer System"),user_admin_group);
   user_admin_config_label->setGeometry(30,21,150,19);
   user_admin_config_label->setFont(subLabelFont());
   user_admin_config_label->setAlignment(Qt::AlignLeft);
@@ -185,28 +185,28 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 
   user_create_carts_button=new QCheckBox(user_prod_group);
   user_create_carts_button->setGeometry(10,21,15,15);
-  user_create_carts_label=new QLabel(tr("&Create Carts"),user_prod_group);
+  user_create_carts_label=new QLabel(tr("Create Carts"),user_prod_group);
   user_create_carts_label->setGeometry(30,21,150,19);
   user_create_carts_label->setFont(subLabelFont());
   user_create_carts_label->setAlignment(Qt::AlignLeft);
 
   user_delete_carts_button=new QCheckBox(user_prod_group);
   user_delete_carts_button->setGeometry(172,21,15,15);
-  user_delete_carts_label=new QLabel(tr("&Delete Carts"),user_prod_group);
+  user_delete_carts_label=new QLabel(tr("Delete Carts"),user_prod_group);
   user_delete_carts_label->setGeometry(192,21,150,19);
   user_delete_carts_label->setFont(subLabelFont());
   user_delete_carts_label->setAlignment(Qt::AlignLeft);
 
   user_modify_carts_button=new QCheckBox(user_prod_group);
   user_modify_carts_button->setGeometry(10,42,15,15);
-  user_modify_carts_label=new QLabel(tr("&Modify Carts"),user_prod_group);
+  user_modify_carts_label=new QLabel(tr("Modify Carts"),user_prod_group);
   user_modify_carts_label->setGeometry(30,41,150,19);
   user_modify_carts_label->setFont(subLabelFont());
   user_modify_carts_label->setAlignment(Qt::AlignLeft);
 
   user_edit_audio_button=new QCheckBox(user_prod_group);
   user_edit_audio_button->setGeometry(10,63,15,15);
-  user_edit_audio_label=new QLabel(tr("&Edit Audio"),user_prod_group);
+  user_edit_audio_label=new QLabel(tr("Edit Audio"),user_prod_group);
   user_edit_audio_label->setGeometry(30,62,150,19);
   user_edit_audio_label->setFont(subLabelFont());
   user_edit_audio_label->setAlignment(Qt::AlignLeft);
@@ -214,7 +214,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_webget_login_button=new QCheckBox(user_prod_group);
   user_webget_login_button->setGeometry(10,84,15,15);
   user_webget_login_label=
-    new QLabel(tr("Allow &WebGet Login"),user_prod_group);
+    new QLabel(tr("Allow WebGet Login"),user_prod_group);
   user_webget_login_label->setGeometry(30,83,150,19);
   user_webget_login_label->setFont(subLabelFont());
   user_webget_login_label->setAlignment(Qt::AlignLeft);
@@ -222,14 +222,14 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_edit_catches_button=new QCheckBox(user_prod_group);
   user_edit_catches_button->setGeometry(172,42,15,15);
   user_edit_catches_label=
-    new QLabel(tr("&Edit Netcatch Schedule"),user_prod_group);
+    new QLabel(tr("Edit Netcatch Schedule"),user_prod_group);
   user_edit_catches_label->setGeometry(192,41,150,19);
   user_edit_catches_label->setFont(subLabelFont());
   user_edit_catches_label->setAlignment(Qt::AlignLeft);
 
   user_voicetrack_log_button=new QCheckBox(user_prod_group);
   user_voicetrack_log_button->setGeometry(172,63,15,15);
-  user_voicetrack_log_label=new QLabel(tr("&Voicetrack Logs"),user_prod_group);
+  user_voicetrack_log_label=new QLabel(tr("Voicetrack Logs"),user_prod_group);
   user_voicetrack_log_label->setGeometry(192,62,150,19);
   user_voicetrack_log_label->setFont(subLabelFont());
   user_voicetrack_log_label->setAlignment(Qt::AlignLeft);
@@ -243,14 +243,14 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 
   user_create_log_button=new QCheckBox(user_traffic_group);
   user_create_log_button->setGeometry(10,21,15,15);
-  user_create_log_label=new QLabel(tr("Create &Log"),user_traffic_group);
+  user_create_log_label=new QLabel(tr("Create Log"),user_traffic_group);
   user_create_log_label->setGeometry(30,21,150,19);
   user_create_log_label->setFont(subLabelFont());
   user_create_log_label->setAlignment(Qt::AlignLeft);
 
   user_delete_log_button=new QCheckBox(user_traffic_group);
   user_delete_log_button->setGeometry(172,21,15,15);
-  user_delete_log_label=new QLabel(tr("De&lete Log"),user_traffic_group);
+  user_delete_log_label=new QLabel(tr("Delete Log"),user_traffic_group);
   user_delete_log_label->setGeometry(192,21,150,19);
   user_delete_log_label->setFont(subLabelFont());
   user_delete_log_label->setAlignment(Qt::AlignLeft);
@@ -258,7 +258,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_delete_rec_button=new QCheckBox(user_traffic_group);
   user_delete_rec_button->setGeometry(172,42,15,15);
   user_delete_rec_label=
-    new QLabel(tr("Delete &Report Data"),user_traffic_group);
+    new QLabel(tr("Delete Report Data"),user_traffic_group);
   user_delete_rec_label->setGeometry(192,42,150,19);
   user_delete_rec_label->setFont(subLabelFont());
   user_delete_rec_label->setAlignment(Qt::AlignLeft);
@@ -266,7 +266,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_modify_template_button=new QCheckBox(user_traffic_group);
   user_modify_template_button->setGeometry(10,42,15,15);
   user_modify_template_label=
-    new QLabel(tr("&Modify Template"),user_traffic_group);
+    new QLabel(tr("Modify Template"),user_traffic_group);
   user_modify_template_label->setGeometry(30,42,100,19);
   user_modify_template_label->setFont(subLabelFont());
   user_modify_template_label->setAlignment(Qt::AlignLeft);
@@ -280,7 +280,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 
   user_playout_log_button=new QCheckBox(user_onair_group);
   user_playout_log_button->setGeometry(10,21,15,15);
-  user_playout_log_label=new QLabel(tr("&Playout Logs"),user_onair_group);
+  user_playout_log_label=new QLabel(tr("Playout Logs"),user_onair_group);
   user_playout_log_label->setGeometry(30,21,150,19);
   user_playout_log_label->setFont(subLabelFont());
   user_playout_log_label->setAlignment(Qt::AlignLeft);
@@ -288,14 +288,14 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_arrange_log_button=new QCheckBox(user_onair_group);
   user_arrange_log_button->setGeometry(172,21,15,15);
   user_arrange_log_label=
-    new QLabel(tr("&Rearrange Log Items"),user_onair_group);
+    new QLabel(tr("Rearrange Log Items"),user_onair_group);
   user_arrange_log_label->setGeometry(192,21,150,19);
   user_arrange_log_label->setFont(subLabelFont());
   user_arrange_log_label->setAlignment(Qt::AlignLeft);
 
   user_addto_log_button=new QCheckBox(user_onair_group);
   user_addto_log_button->setGeometry(10,42,15,15);
-  user_addto_log_label=new QLabel(tr("Add Log &Items"),user_onair_group);
+  user_addto_log_label=new QLabel(tr("Add Log Items"),user_onair_group);
   user_addto_log_label->setGeometry(30,42,150,19);
   user_addto_log_label->setFont(subLabelFont());
   user_addto_log_label->setAlignment(Qt::AlignLeft);
@@ -303,7 +303,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_removefrom_log_button=new QCheckBox(user_onair_group);
   user_removefrom_log_button->setGeometry(172,42,15,15);
   user_removefrom_log_label=
-    new QLabel(tr("Delete Lo&g Items"),user_onair_group);
+    new QLabel(tr("Delete Log Items"),user_onair_group);
   user_removefrom_log_label->setGeometry(192,42,150,19);
   user_removefrom_log_label->setFont(subLabelFont());
   user_removefrom_log_label->setAlignment(Qt::AlignLeft);
@@ -325,14 +325,14 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 
   user_add_podcast_button=new QCheckBox(user_podcast_group);
   user_add_podcast_button->setGeometry(10,21,15,15);
-  user_add_podcast_label=new QLabel(tr("Cre&ate Podcast"),user_podcast_group);
+  user_add_podcast_label=new QLabel(tr("Create Podcast"),user_podcast_group);
   user_add_podcast_label->setGeometry(30,21,150,19);
   user_add_podcast_label->setFont(subLabelFont());
   user_add_podcast_label->setAlignment(Qt::AlignLeft);
 
   user_edit_podcast_button=new QCheckBox(user_podcast_group);
   user_edit_podcast_button->setGeometry(172,21,15,15);
-  user_edit_podcast_label=new QLabel(tr("E&dit Podcast"),user_podcast_group);
+  user_edit_podcast_label=new QLabel(tr("Edit Podcast"),user_podcast_group);
   user_edit_podcast_label->setGeometry(192,21,150,19);
   user_edit_podcast_label->setFont(subLabelFont());
   user_edit_podcast_label->setAlignment(Qt::AlignLeft);
@@ -340,7 +340,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_delete_podcast_button=new QCheckBox(user_podcast_group);
   user_delete_podcast_button->setGeometry(10,42,15,15);
   user_delete_podcast_label=
-    new QLabel(tr("Dele&te Podcast"),user_podcast_group);
+    new QLabel(tr("Delete Podcast"),user_podcast_group);
   user_delete_podcast_label->setGeometry(30,42,150,19);
   user_delete_podcast_label->setFont(subLabelFont());
   user_delete_podcast_label->setAlignment(Qt::AlignLeft);
@@ -387,7 +387,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -397,7 +397,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

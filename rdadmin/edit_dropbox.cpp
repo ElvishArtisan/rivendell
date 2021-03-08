@@ -69,7 +69,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_path_edit=new QLineEdit(this);
   box_path_edit->setGeometry(140,32,sizeHint().width()-210,19);
   box_path_edit->setMaxLength(255);
-  label=new QLabel(tr("&Path Spec:"),this);
+  label=new QLabel(tr("Path Spec:"),this);
   label->setGeometry(10,32,125,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -86,7 +86,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_to_cart_edit->setGeometry(140,54,60,19);
   box_to_cart_edit->setValidator(new QIntValidator(1,999999,this));
   box_to_cart_edit->setMaxLength(6);
-  label=new QLabel(tr("To &Cart:"),this);
+  label=new QLabel(tr("To Cart:"),this);
   label->setGeometry(10,54,125,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -113,7 +113,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_metadata_pattern_edit=new QLineEdit(this);
   box_metadata_pattern_edit->setGeometry(140,76,sizeHint().width()-170,19);
   box_metadata_pattern_edit->setMaxLength(64);
-  label=new QLabel(tr("&Metadata Pattern:"),this);
+  label=new QLabel(tr("Metadata Pattern:"),this);
   label->setGeometry(10,76,125,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -124,7 +124,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_user_defined_edit=new QLineEdit(this);
   box_user_defined_edit->setGeometry(140,98,sizeHint().width()-170,19);
   box_user_defined_edit->setMaxLength(255);
-  label=new QLabel(tr("&User Defined:"),this);
+  label=new QLabel(tr("User Defined:"),this);
   label->setGeometry(10,98,125,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -144,7 +144,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_log_path_edit->setMaxLength(255);
   connect(box_log_to_syslog_check,SIGNAL(toggled(bool)),
 	  box_log_path_edit,SLOT(setDisabled(bool)));
-  box_log_path_label=new QLabel(tr("&Log File:"),this);
+  box_log_path_label=new QLabel(tr("Log File:"),this);
   box_log_path_label->setGeometry(10,141,125,19);
   box_log_path_label->setFont(labelFont());
   box_log_path_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -382,7 +382,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   reset_button->setGeometry(10,sizeHint().height()-60,80,50);
   reset_button->setDefault(true);
   reset_button->setFont(buttonFont());
-  reset_button->setText(tr("&Reset"));
+  reset_button->setText(tr("Reset"));
   connect(reset_button,SIGNAL(clicked()),this,SLOT(resetData()));
 
   //
@@ -392,7 +392,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -402,7 +402,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

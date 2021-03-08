@@ -83,7 +83,7 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   //
   list_edit_button=new QPushButton(this);
   list_edit_button->setFont(buttonFont());
-  list_edit_button->setText(tr("&Edit"));
+  list_edit_button->setText(tr("Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -91,7 +91,7 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   //
   list_close_button=new QPushButton(this);
   list_close_button->setFont(buttonFont());
-  list_close_button->setText(tr("&Close"));
+  list_close_button->setText(tr("Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 

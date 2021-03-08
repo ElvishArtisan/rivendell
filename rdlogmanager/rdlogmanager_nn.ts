@@ -9,19 +9,31 @@
     </message>
     <message>
         <source>&amp;New Clock Name:</source>
-        <translation>&amp;Namn på ny klokke:</translation>
+        <translation type="obsolete">&amp;Namn på ny klokke:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Add Clock</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Clock Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avbryt</translation>
     </message>
 </context>
 <context>
@@ -32,15 +44,27 @@
     </message>
     <message>
         <source>&amp;New Event Name:</source>
-        <translation>&amp;Namn på ny hending:</translation>
+        <translation type="obsolete">&amp;Namn på ny hending:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>New Event Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avbryt</translation>
     </message>
 </context>
 <context>
@@ -93,15 +117,15 @@
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>Legg &amp;til</translation>
+        <translation type="obsolete">Legg &amp;til</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>R&amp;ediger</translation>
+        <translation type="obsolete">R&amp;ediger</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Slett</translation>
+        <translation type="obsolete">&amp;Slett</translation>
     </message>
     <message>
         <source>Scheduler
@@ -111,29 +135,29 @@ reglar</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Lagra</translation>
+        <translation type="obsolete">&amp;Lagra</translation>
     </message>
     <message>
         <source>Save &amp;As</source>
-        <translation>Lagra &amp;som</translation>
+        <translation type="obsolete">Lagra &amp;som</translation>
     </message>
     <message>
         <source>&amp;Services
 List</source>
-        <translation>Liste over
+        <translation type="obsolete">Liste over
 tene&amp;ster</translation>
     </message>
     <message>
         <source>Colo&amp;r</source>
-        <translation>Fa&amp;rge</translation>
+        <translation type="obsolete">Fa&amp;rge</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Are you sure you want to
@@ -200,10 +224,6 @@ Vil du lagra?</translation>
         <translation>Denne koden er alt i bruk!</translation>
     </message>
     <message>
-        <source>&amp;Clone</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit Clock</source>
         <translation type="unfinished">Rediger klokke</translation>
     </message>
@@ -227,6 +247,47 @@ Vil du lagra?</translation>
     <message>
         <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Slett</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Services
+List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Farge</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avbryt</translation>
     </message>
 </context>
 <context>
@@ -445,29 +506,29 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Lagra</translation>
+        <translation type="obsolete">&amp;Lagra</translation>
     </message>
     <message>
         <source>Save &amp;As</source>
-        <translation>Lagra &amp;som</translation>
+        <translation type="obsolete">Lagra &amp;som</translation>
     </message>
     <message>
         <source>&amp;Services
 List</source>
-        <translation>Liste over
+        <translation type="obsolete">Liste over
 tene&amp;ster</translation>
     </message>
     <message>
         <source>C&amp;olor</source>
-        <translation>Far&amp;ge</translation>
+        <translation type="obsolete">Far&amp;ge</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>RDLogManager</source>
@@ -611,6 +672,31 @@ Vil du byta henne ut?</translation>
         <source>[None]</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Services
+List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Farge</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avbryt</translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>
@@ -636,11 +722,11 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Invalid Event</source>
@@ -664,6 +750,14 @@ already existing event.</source>
         <translation>Denne hendinga overlappar
 ei anna hending som finst frå før.</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avbryt</translation>
+    </message>
 </context>
 <context>
     <name>EditGrid</name>
@@ -677,12 +771,7 @@ ei anna hending som finst frå før.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Lukk</translation>
-    </message>
-    <message>
-        <source>Change
-&amp;All</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>Clear Clocks</source>
@@ -700,6 +789,15 @@ ei anna hending som finst frå før.</translation>
         <source>Edit Grid</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Change
+All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditNote</name>
@@ -709,11 +807,19 @@ ei anna hending som finst frå før.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avbryt</translation>
     </message>
 </context>
 <context>
@@ -732,11 +838,19 @@ ei anna hending som finst frå før.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avbryt</translation>
     </message>
 </context>
 <context>
@@ -747,11 +861,11 @@ ei anna hending som finst frå før.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Code:</source>
@@ -777,16 +891,24 @@ ei anna hending som finst frå før.</translation>
         <source>[none]</source>
         <translation type="unfinished">[ingen]</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avbryt</translation>
+    </message>
 </context>
 <context>
     <name>EditSchedRules</name>
     <message>
         <source>&amp;Edit</source>
-        <translation>R&amp;ediger</translation>
+        <translation type="obsolete">R&amp;ediger</translation>
     </message>
     <message>
         <source>&amp;Import</source>
-        <translation>&amp;Importer</translation>
+        <translation type="obsolete">&amp;Importer</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -844,10 +966,22 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>Import Rules from Clock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -859,11 +993,19 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avbryt</translation>
     </message>
 </context>
 <context>
@@ -890,19 +1032,19 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vel</translation>
+        <translation type="obsolete">&amp;Vel</translation>
     </message>
     <message>
         <source>&amp;Create New Log</source>
-        <translation>Lag &amp;Ny logg</translation>
+        <translation type="obsolete">Lag &amp;Ny logg</translation>
     </message>
     <message>
         <source>Merge &amp;Music</source>
-        <translation>Flett &amp;Musikk</translation>
+        <translation type="obsolete">Flett &amp;Musikk</translation>
     </message>
     <message>
         <source>Merge &amp;Traffic</source>
-        <translation>Flett &amp;Trafikk</translation>
+        <translation type="obsolete">Flett &amp;Trafikk</translation>
     </message>
     <message>
         <source>Import Data</source>
@@ -918,7 +1060,7 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>The log for</source>
@@ -1046,6 +1188,26 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>Traffic schedule import failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Vel</translation>
+    </message>
+    <message>
+        <source>Create New Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge Music</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge Traffic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1234,35 +1396,35 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>Legg &amp;til</translation>
+        <translation type="obsolete">Legg &amp;til</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>R&amp;ediger</translation>
+        <translation type="obsolete">R&amp;ediger</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Slett</translation>
+        <translation type="obsolete">&amp;Slett</translation>
     </message>
     <message>
         <source>&amp;Rename</source>
-        <translation>&amp;Døyp om</translation>
+        <translation type="obsolete">&amp;Døyp om</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Reinsk</translation>
+        <translation type="obsolete">&amp;Reinsk</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1310,6 +1472,38 @@ sletta</translation>
         <source>is in use in the following grid(s)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Slett</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Døyp om</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avbryt</translation>
+    </message>
 </context>
 <context>
     <name>ListEvents</name>
@@ -1335,31 +1529,31 @@ sletta</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>Legg &amp;til</translation>
+        <translation type="obsolete">Legg &amp;til</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>R&amp;ediger</translation>
+        <translation type="obsolete">R&amp;ediger</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Slett</translation>
+        <translation type="obsolete">&amp;Slett</translation>
     </message>
     <message>
         <source>&amp;Rename</source>
-        <translation>&amp;Døyp om</translation>
+        <translation type="obsolete">&amp;Døyp om</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation>&amp;Ok</translation>
+        <translation type="obsolete">&amp;Ok</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1407,6 +1601,34 @@ sletta</translation>
         <source>is in use in the following clocks</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Slett</translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Døyp om</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avbryt</translation>
+    </message>
 </context>
 <context>
     <name>ListGrids</name>
@@ -1424,11 +1646,19 @@ sletta</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>R&amp;ediger</translation>
+        <translation type="obsolete">R&amp;ediger</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1448,22 +1678,36 @@ sletta</translation>
     <message>
         <source>&amp;Generate
 Reports</source>
-        <translation>La&amp;g
+        <translation type="obsolete">La&amp;g
 rapportar</translation>
     </message>
     <message>
         <source>&amp;Purge
 Data</source>
-        <translation>&amp;Tøm
+        <translation type="obsolete">&amp;Tøm
 data</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>[none]</source>
         <translation type="obsolete">[ingen]</translation>
+    </message>
+    <message>
+        <source>Generate
+Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Purge
+Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1482,30 +1726,54 @@ data</translation>
     </message>
     <message>
         <source>Edit &amp;Events</source>
-        <translation>Redig&amp;er hendingar</translation>
+        <translation type="obsolete">Redig&amp;er hendingar</translation>
     </message>
     <message>
         <source>Edit C&amp;locks</source>
-        <translation>Rediger &amp;klokker</translation>
+        <translation type="obsolete">Rediger &amp;klokker</translation>
     </message>
     <message>
         <source>Edit G&amp;rids</source>
-        <translation>Rediger &amp;gitter</translation>
+        <translation type="obsolete">Rediger &amp;gitter</translation>
     </message>
     <message>
         <source>&amp;Generate Logs</source>
-        <translation>Lag lo&amp;ggar</translation>
+        <translation type="obsolete">Lag lo&amp;ggar</translation>
     </message>
     <message>
         <source>Manage &amp;Reports</source>
-        <translation>Handter &amp;Rapportar</translation>
+        <translation type="obsolete">Handter &amp;Rapportar</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Grids</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1590,11 +1858,11 @@ rapport</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Name Conflict</source>
@@ -1603,6 +1871,14 @@ rapport</translation>
     <message>
         <source>That name already exists!</source>
         <translation>Det namnet finst frå før!</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Avbryt</translation>
     </message>
 </context>
 <context>
@@ -1683,12 +1959,12 @@ rapport</translation>
     <message>
         <source>&amp;Purge
 Data</source>
-        <translation>&amp;Tøm
+        <translation type="obsolete">&amp;Tøm
 data</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Lukk</translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>Delete Report Data</source>
@@ -1697,6 +1973,15 @@ data</translation>
     <message>
         <source>Are you sure you want to delete report data for</source>
         <translation>Er du sikker på at du vil sletta rapportdata for</translation>
+    </message>
+    <message>
+        <source>Purge
+Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

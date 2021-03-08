@@ -29,17 +29,17 @@
     </message>
     <message>
         <source>&amp;Set User</source>
-        <translation>&amp;Nastavit uživatele</translation>
+        <translation type="obsolete">&amp;Nastavit uživatele</translation>
     </message>
     <message>
         <source>&amp;Default
 User</source>
-        <translation>&amp;Výchozí
+        <translation type="obsolete">&amp;Výchozí
 uživatel</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Current User:</source>
@@ -75,6 +75,19 @@ uživatel</translation>
     </message>
     <message>
         <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default
+User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -110,7 +110,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&View Node\nInfo"));
+  button->setText(tr("View Node\nInfo"));
   connect(button,SIGNAL(clicked()),this,SLOT(viewData()));
 
   //
@@ -120,7 +120,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -129,7 +129,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

@@ -53,7 +53,7 @@ SvcRecDialog::SvcRecDialog(const QString &svcname,QWidget *parent)
   date_delete_button->
     setGeometry(10,sizeHint().height()-60,80,50);
   date_delete_button->setFont(buttonFont());
-  date_delete_button->setText(tr("&Purge\nData"));
+  date_delete_button->setText(tr("Purge\nData"));
   connect(date_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
   date_delete_button->setEnabled(rda->user()->deleteRec()&&
     date_picker->dayActive(date_picker->date().day()));
@@ -64,7 +64,7 @@ SvcRecDialog::SvcRecDialog(const QString &svcname,QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Close"));
+  button->setText(tr("Close"));
   button->setDefault(true);
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
 }

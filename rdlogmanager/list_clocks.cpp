@@ -70,7 +70,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //
   edit_add_button=new QPushButton(this);
   edit_add_button->setFont(buttonFont());
-  edit_add_button->setText(tr("&Add"));
+  edit_add_button->setText(tr("Add"));
   connect(edit_add_button,SIGNAL(clicked()),this,SLOT(addData()));
     
   //
@@ -78,7 +78,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //
   edit_edit_button=new QPushButton(this);
   edit_edit_button->setFont(buttonFont());
-  edit_edit_button->setText(tr("&Edit"));
+  edit_edit_button->setText(tr("Edit"));
   connect(edit_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
     
   //
@@ -86,7 +86,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //
   edit_delete_button=new QPushButton(this);
   edit_delete_button->setFont(buttonFont());
-  edit_delete_button->setText(tr("&Delete"));
+  edit_delete_button->setText(tr("Delete"));
   connect(edit_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
     
   //
@@ -94,7 +94,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //
   edit_rename_button=new QPushButton(this);
   edit_rename_button->setFont(buttonFont());
-  edit_rename_button->setText(tr("&Rename"));
+  edit_rename_button->setText(tr("Rename"));
   connect(edit_rename_button,SIGNAL(clicked()),this,SLOT(renameData()));
     
   //
@@ -102,7 +102,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //
   edit_close_button=new QPushButton(this);
   edit_close_button->setFont(buttonFont());
-  edit_close_button->setText(tr("C&lose"));
+  edit_close_button->setText(tr("Close"));
   connect(edit_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
@@ -110,7 +110,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //
   edit_clear_button=new QPushButton(this);
   edit_clear_button->setFont(buttonFont());
-  edit_clear_button->setText(tr("C&lear"));
+  edit_clear_button->setText(tr("Clear"));
   connect(edit_clear_button,SIGNAL(clicked()),this,SLOT(clearData()));
 
   //
@@ -118,7 +118,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //
   edit_ok_button=new QPushButton(this);
   edit_ok_button->setFont(buttonFont());
-  edit_ok_button->setText(tr("&OK"));
+  edit_ok_button->setText(tr("OK"));
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -126,7 +126,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //
   edit_cancel_button=new QPushButton(this);
   edit_cancel_button->setFont(buttonFont());
-  edit_cancel_button->setText(tr("&Cancel"));
+  edit_cancel_button->setText(tr("Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   if(edit_clockname==NULL) {

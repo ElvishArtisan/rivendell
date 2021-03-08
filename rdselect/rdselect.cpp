@@ -163,7 +163,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   cancel_button=new QPushButton(this);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   SetSystem(select_current_id);

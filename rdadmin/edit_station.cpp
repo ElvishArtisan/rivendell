@@ -82,7 +82,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   station_name_edit=new QLineEdit(this);
   station_name_edit->setReadOnly(true);
-  station_name_label=new QLabel(tr("Ho&st Name:"),this);
+  station_name_label=new QLabel(tr("Host Name:"),this);
   station_name_label->setFont(labelFont());
   station_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -101,7 +101,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_description_edit=new QLineEdit(this);
   station_description_edit->setMaxLength(64);
   station_description_edit->setValidator(validator);
-  station_description_label=new QLabel(tr("&Description:"),this);
+  station_description_label=new QLabel(tr("Description:"),this);
   station_description_label->setFont(labelFont());
   station_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -112,7 +112,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_username_box->setEditable(false);
   station_username_model->setTypeFilter(RDUser::TypeUser);
   station_username_box->setModel(station_username_model);
-  station_username_label=new QLabel(tr("Default &User:"),this);
+  station_username_label=new QLabel(tr("Default User:"),this);
   station_username_label->setFont(labelFont());
   station_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -122,7 +122,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_address_edit=new QLineEdit(this);
   station_address_edit->setMaxLength(15);
   station_address_edit->setValidator(validator);
-  station_address_label=new QLabel(tr("&IP Address:"),this);
+  station_address_label=new QLabel(tr("IP Address:"),this);
   station_address_label->setFont(labelFont());
   station_address_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -169,7 +169,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_timeoffset_box=new QSpinBox(this);
   station_timeoffset_box->setRange(-RD_MAX_TIME_OFFSET,RD_MAX_TIME_OFFSET);
   station_timeoffset_box->setSuffix(tr(" mS"));
-  station_timeoffset_label=new QLabel(tr("&Time Offset:"),this);
+  station_timeoffset_label=new QLabel(tr("Time Offset:"),this);
   station_timeoffset_label->setFont(labelFont());
   station_timeoffset_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -179,7 +179,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_startup_cart_edit=new QLineEdit(this);
   station_startup_cart_edit->setMaxLength(15);
   station_startup_cart_edit->setValidator(macro_validator);
-  station_startup_cart_label=new QLabel(tr("&Startup Cart:"),this);
+  station_startup_cart_label=new QLabel(tr("Startup Cart:"),this);
   station_startup_cart_label->setFont(labelFont());
   station_startup_cart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -192,7 +192,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // Cue Output
   //
   station_cue_sel=new RDCardSelector(this);
-  station_cue_sel_label=new QLabel(tr("Cue &Output:"),this);
+  station_cue_sel_label=new QLabel(tr("Cue Output:"),this);
   station_cue_sel_label->setFont(labelFont());
   station_cue_sel_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -274,7 +274,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // Enable Drag & Drop Checkbox
   //
   station_dragdrop_box=new QCheckBox(this);
-  station_dragdrop_label=new QLabel(tr("Enable Drag && Drop"),this);
+  station_dragdrop_label=new QLabel(tr("Enable Drag & Drop"),this);
   station_dragdrop_label->setFont(labelFont());
   station_dragdrop_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -326,7 +326,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   station_rdlibrary_button=new QPushButton(this);
   station_rdlibrary_button->setFont(buttonFont());
-  station_rdlibrary_button->setText(tr("RD&Library"));
+  station_rdlibrary_button->setText(tr("RDLibrary"));
   connect(station_rdlibrary_button,SIGNAL(clicked()),
 	  this,SLOT(editLibraryData()));
 
@@ -449,7 +449,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_ok_button=new QPushButton(this);
   station_ok_button->setDefault(true);
   station_ok_button->setFont(buttonFont());
-  station_ok_button->setText(tr("&OK"));
+  station_ok_button->setText(tr("OK"));
   connect(station_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -457,7 +457,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   station_cancel_button=new QPushButton(this);
   station_cancel_button->setFont(buttonFont());
-  station_cancel_button->setText(tr("&Cancel"));
+  station_cancel_button->setText(tr("Cancel"));
   connect(station_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

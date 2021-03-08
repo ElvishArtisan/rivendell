@@ -80,7 +80,7 @@ AddClock::AddClock(QString *logname,QWidget *parent)
   clock_name_edit->setGeometry(145,11,sizeHint().width()-155,19);
   clock_name_edit->setMaxLength(58);  // MySQL limitation!
   clock_name_edit->setValidator(validator);
-  QLabel *clock_name_label=new QLabel(tr("&New Clock Name:"),this);
+  QLabel *clock_name_label=new QLabel(tr("New Clock Name:"),this);
   clock_name_label->setGeometry(10,11,130,19);
   clock_name_label->setFont(labelFont());
   clock_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -92,7 +92,7 @@ AddClock::AddClock(QString *logname,QWidget *parent)
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -102,7 +102,7 @@ AddClock::AddClock(QString *logname,QWidget *parent)
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

@@ -83,11 +83,11 @@ dílu</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Air Date/Time:</source>
@@ -107,10 +107,6 @@ dílu</translation>
     </message>
     <message>
         <source>at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Select Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -153,6 +149,18 @@ dílu</translation>
         <source>Item expiration must be in the future!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>
@@ -163,22 +171,22 @@ dílu</translation>
     <message>
         <source>Post From
 Car&amp;t/Cut</source>
-        <translation>Vyvěsit z
+        <translation type="obsolete">Vyvěsit z
 vozí&amp;ku/záběru</translation>
     </message>
     <message>
         <source>Post From
 &amp;File</source>
-        <translation>Vyvěsit ze
+        <translation type="obsolete">Vyvěsit ze
 &amp;souboru</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>Subscription
@@ -188,7 +196,7 @@ vozí&amp;ku/záběru</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source></source>
@@ -378,6 +386,28 @@ Log</source>
         <source>Select Audio File</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Post From
+Cart/Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post From
+File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LogDialog</name>
@@ -446,12 +476,12 @@ Log</source>
     <message>
         <source>&amp;View
 Feed</source>
-        <translation>&amp;Zobrazit
+        <translation type="obsolete">&amp;Zobrazit
 přívod</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>User</source>
@@ -481,6 +511,10 @@ Feed</source>
     </message>
     <message>
         <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -519,7 +553,7 @@ Feed</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Log Render Options</source>
@@ -551,6 +585,10 @@ Feed</source>
     </message>
     <message>
         <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

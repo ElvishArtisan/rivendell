@@ -29,18 +29,18 @@
     </message>
     <message>
         <source>&amp;Set User</source>
-        <translation>&amp;Escolher 
+        <translation type="obsolete">&amp;Escolher 
 Usuário</translation>
     </message>
     <message>
         <source>&amp;Default
 User</source>
-        <translation>&amp;Usuário
+        <translation type="obsolete">&amp;Usuário
 Padrão</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Current User:</source>
@@ -76,6 +76,19 @@ Padrão</translation>
     </message>
     <message>
         <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default
+User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

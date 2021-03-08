@@ -32,13 +32,6 @@ EditGpi::EditGpi(QWidget *parent)
   : RDDialog(parent)
 {
   edit_id=-1;
-  /*
-  edit_gpi=gpi;
-  edit_oncart=oncart;
-  edit_offcart=offcart;
-  edit_ondescription=ondesc;
-  edit_offdescription=offdesc;
-  */
 
   //
   // Fix the Window Size
@@ -78,7 +71,7 @@ EditGpi::EditGpi(QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(190,30,60,20);
   button->setFont(subButtonFont());
-  button->setText(tr("&Select"));
+  button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectOnData()));
 
   //
@@ -87,7 +80,7 @@ EditGpi::EditGpi(QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(270,30,60,20);
   button->setFont(subButtonFont());
-  button->setText(tr("C&lear"));
+  button->setText(tr("Clear"));
   connect(button,SIGNAL(clicked()),this,SLOT(clearOnData()));
 
   //
@@ -126,7 +119,7 @@ EditGpi::EditGpi(QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(190,110,60,20);
   button->setFont(subButtonFont());
-  button->setText(tr("&Select"));
+  button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectOffData()));
 
   //
@@ -135,7 +128,7 @@ EditGpi::EditGpi(QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(270,110,60,20);
   button->setFont(subButtonFont());
-  button->setText(tr("C&lear"));
+  button->setText(tr("Clear"));
   connect(button,SIGNAL(clicked()),this,SLOT(clearOffData()));
 
   //
@@ -156,7 +149,7 @@ EditGpi::EditGpi(QWidget *parent)
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -166,7 +159,7 @@ EditGpi::EditGpi(QWidget *parent)
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
