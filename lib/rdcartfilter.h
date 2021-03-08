@@ -37,7 +37,7 @@ class RDCartFilter : public RDWidget
 {
   Q_OBJECT;
  public:
-  RDCartFilter(bool show_drag_box,QWidget *parent=0);
+  RDCartFilter(bool show_drag_box,bool user_is_admin,QWidget *parent);
   ~RDCartFilter();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -54,8 +54,6 @@ class RDCartFilter : public RDWidget
   void setShowTrackCarts(bool state);
   bool limitSearch() const;
   void setLimitSearch(bool state);
-  bool userIsAdmin() const;
-  void setUserIsAdmin(bool state);
   QString service() const;
   void setService(const QString &svc);
   RDLibraryModel *model() const;

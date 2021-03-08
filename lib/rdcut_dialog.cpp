@@ -80,8 +80,7 @@ RDCutDialog::RDCutDialog(QString *filter,QString *group,QString *schedcode,
   //
   // Cart Filter
   //
-  cart_cart_filter=new RDCartFilter(false,this);
-  cart_cart_filter->setUserIsAdmin(user_is_admin);
+  cart_cart_filter=new RDCartFilter(false,user_is_admin,this);
   cart_cart_filter->setShowCartType(RDCart::Audio);
   cart_cart_filter->setShowTrackCarts(!exclude_tracks);
   connect(rda,SIGNAL(userChanged()),cart_cart_filter,SLOT(changeUser()));

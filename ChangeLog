@@ -21241,3 +21241,6 @@
 	in rddbmgr(8).
 	* Fixed a bug in 'CheckSchedCodeRules()' in rddbmgr(8) that
 	would throw a SQL error when no schedule codes were defined.
+2021-03-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDCartFilter::userIsAdmin()' and
+	'RDCartFilter::setUserIsAdmin()' methods.

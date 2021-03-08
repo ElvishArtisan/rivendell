@@ -142,7 +142,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Filter
   //
-  lib_cart_filter=new RDCartFilter(true,this);
+  lib_cart_filter=new RDCartFilter(true,false,this);
   connect(rda,SIGNAL(userChanged()),lib_cart_filter,SLOT(changeUser()));
   connect(lib_cart_filter,SIGNAL(selectedGroupChanged(const QString &)),
 	  this,SLOT(selectedGroupChangedData(const QString &)));

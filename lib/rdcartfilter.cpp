@@ -26,16 +26,17 @@
 #include "rdcartfilter.h"
 #include "rdescape_string.h"
 
-RDCartFilter::RDCartFilter(bool show_drag_box,QWidget *parent)
+RDCartFilter::RDCartFilter(bool show_drag_box,bool user_is_admin,
+			   QWidget *parent)
   : RDWidget(parent)
 {
   d_show_cart_type=RDCart::All;
   d_show_track_carts=true;
-  d_user_is_admin=false;
+  d_user_is_admin=user_is_admin;
   d_cart_model=NULL;
   d_show_drag_box=show_drag_box;
 
-  d_group_model=new RDGroupListModel(true,false,this);
+  d_group_model=new RDGroupListModel(true,user_is_admin,this);
 
   //
   // Filter Phrase
@@ -246,50 +247,9 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   if(d_showmatches_box->isChecked()) {
     sql+=QString().sprintf("limit %d ",RD_LIMITED_CART_SEARCH_QUANTITY);
   }
-
   //  printf("FILTER SQL: %s\n",sql.toUtf8().constData());
 
   return sql;
-
-  /*
-
-  if(type_filter.isEmpty()) {
-    return QString("where CART.NUMBER=0 ");
-  }
-
-  QStringList schedcodes;
-  if(d_codes_box->currentText()!=tr("ALL")) {
-    schedcodes << d_codes_box->currentText();
-  }
-  if(d_codes2_box->currentText()!=tr("ALL")) {
-    schedcodes << d_codes2_box->currentText();
-  }
-  if(d_group_box->currentText()==QString(tr("ALL"))) {
-    if(d_user_is_admin) {
-      // sql=" where ";
-    }
-    else {
-      sql+=RDAllCartSearchText(d_filter_edit->text(),schedcodes,
-			       rda->user()->name(),true)+" "+type_filter;
-    }
-  }
-  else {
-    sql+=RDCartSearchText(d_filter_edit->text(),d_group_box->currentText(),
-		       schedcodes,true)+" "+type_filter;      
-  }
-  for(int i=0;i<and_fields.size();i++) {
-    sql+="&& "+and_fields.at(i)+" ";
-  }
-  //  sql+=" group by CART.NUMBER order by CART.NUMBER ";
-  sql+=" order by CART.NUMBER ";
-  if(d_showmatches_box->isChecked()) {
-    sql+=QString().sprintf("limit %d ",RD_LIMITED_CART_SEARCH_QUANTITY);
-  }
-
-  //  printf("SQL: %s\n",sql.toUtf8().constData());
-
-  return sql;
-  */
 }
 
 
@@ -372,21 +332,6 @@ void RDCartFilter::setLimitSearch(bool state)
 }
 
 
-bool RDCartFilter::userIsAdmin() const
-{
-  return d_user_is_admin;
-}
-
-
-void RDCartFilter::setUserIsAdmin(bool state)
-{
-  if(state!=d_user_is_admin) {
-    d_user_is_admin=state;
-    changeUser();
-  }
-}
-
-
 QString RDCartFilter::service() const
 {
   return d_service;
@@ -446,9 +391,7 @@ void RDCartFilter::changeUser()
   RDSqlQuery *q;
 
   if(d_service.isEmpty()) {
-    //    LoadUserGroups();
     d_group_model->changeUser();
-    //    d_group_box->setCurrentText(tr("ALL"));
     d_group_box->setCurrentIndex(0);
   }
 
