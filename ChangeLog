@@ -21258,3 +21258,5 @@
 2021-03-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression rdxport.cgi that caused early termination
 	of CGI processes.
+2021-03-09 Fred Gleason <fredg@paravelsystems.com>
+	* Stubbed out a 'RDWaveScene' class.

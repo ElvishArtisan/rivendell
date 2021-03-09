@@ -277,6 +277,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdwavedata.cpp rdwavedata.h\
                         rdwavedata_dialog.cpp rdwavedata_dialog.h\
                         rdwavefile.cpp rdwavefile.h\
+                        rdwavescene.cpp rdwavescene.h\
                         rdwavepainter.cpp rdwavepainter.h\
                         rdweb.cpp rdweb.h\
                         rdwebresult.cpp rdwebresult.h\
@@ -413,6 +414,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rduserlistmodel.cpp\
                           moc_rdupload.cpp\
                           moc_rdwavedata_dialog.cpp\
+                          moc_rdwavescene.cpp\
                           moc_rdwidget.cpp
 
 librd_la_LDFLAGS = -release $(VERSION)

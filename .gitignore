@@ -138,6 +138,7 @@ tests/test_pam
 tests/timer_test
 tests/upload_test
 tests/wav_chunk_test
+tests/wavescene_test
 utils/rdauth/rdauth
 utils/rdconvert/rdconvert
 utils/rdhpiinfo/rdhpiinfo
