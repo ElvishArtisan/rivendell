@@ -1,6 +1,6 @@
-// wavescene_test.h
+// wavewidget_test.h
 //
-// Test harness for RDWaveScene
+// Test harness for RDWaveWidget
 //
 //   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef WAVESCENE_TEST_H
-#define WAVESCENE_TEST_H
+#ifndef WAVEWIDGET_TEST_H
+#define WAVEWIDGET_TEST_H
 
 #include <QGraphicsView>
 #include <QGroupBox>
@@ -30,9 +30,9 @@
 
 #include <rdfontengine.h>
 #include <rdtransportbutton.h>
-#include <rdwavescene.h>
+#include <rdwavewidget.h>
 
-#define WAVESCENE_TEST_USAGE "[options]\n"
+#define WAVEWIDGET_TEST_USAGE "--cart-number=<cartnum> --cut-number=<cutnum> --track-mode=single|multi\n"
 
 class MainWidget : public QWidget
 {
@@ -51,15 +51,11 @@ class MainWidget : public QWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void LoadWave();
-  void LoadEnergy();
-  RDWaveScene *d_scene;
-  QGraphicsView *d_view;
+  RDWaveWidget *d_wave_widget;
   RDCut *d_cut;
   unsigned d_cart_number;
   int d_cut_number;
-  QList<uint16_t> d_energy_data;
-  RDWaveScene::Channel d_channel;
+  RDWaveWidget::TrackMode d_track_mode;
   RDFontEngine *d_font_engine;
   RDTransportButton *d_up_button;
   RDTransportButton *d_down_button;
@@ -71,4 +67,4 @@ class MainWidget : public QWidget
 };
 
 
-#endif  // WAVESCENE_TEST_H
+#endif  // WAVEWIDGET_TEST_H

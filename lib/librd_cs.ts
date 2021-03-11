@@ -4405,4 +4405,15 @@ Zkuste to, prosím, znovu!</translation>
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>RDWaveWidget</name>
+    <message>
+        <source>No such cart/cut!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Energy export failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

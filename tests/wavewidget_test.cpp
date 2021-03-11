@@ -1,6 +1,6 @@
-// wavescene_test.cpp
+// wavewidget_test.cpp
 //
-// Test harness for RDWaveScene
+// Test harness for RDWaveWidget
 //
 //   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -25,7 +25,7 @@
 #include <rdapplication.h>
 #include <rdpeaksexport.h>
 
-#include "wavescene_test.h"
+#include "wavewidget_test.h"
 
 MainWidget::MainWidget(QWidget *parent)
   : QWidget(parent)
@@ -35,16 +35,15 @@ MainWidget::MainWidget(QWidget *parent)
 
   d_cart_number=0;
   d_cut_number=-1;
-  d_scene=NULL;
-  d_view=NULL;
+  bool track_mode_set=false;
 
   //
   // Open the database
   //
-  rda=new RDApplication("wavescene_test","wavescene_test",WAVESCENE_TEST_USAGE,
+  rda=new RDApplication("wavewidget_test","wavewidget_test",WAVEWIDGET_TEST_USAGE,
 			this);
   if(!rda->open(&err_msg)) {
-    QMessageBox::critical(this,"wavescene_test - "+tr("Error"),err_msg);
+    QMessageBox::critical(this,"wavewidget_test - "+tr("Error"),err_msg);
     exit(RDApplication::ExitNoDb);
   }
   d_font_engine=new RDFontEngine(font(),rda->config());
@@ -56,7 +55,7 @@ MainWidget::MainWidget(QWidget *parent)
     if(rda->cmdSwitch()->key(i)=="--cart-number") {
       d_cart_number=rda->cmdSwitch()->value(i).toUInt(&ok);
       if((!ok)||(d_cart_number>RD_MAX_CART_NUMBER)) {
-	fprintf(stderr,"wavescene_test: invalid cart number\n");
+	fprintf(stderr,"wavewidget_test: invalid cart number\n");
 	exit(RDApplication::ExitInvalidOption);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -64,28 +63,50 @@ MainWidget::MainWidget(QWidget *parent)
     if(rda->cmdSwitch()->key(i)=="--cut-number") {
       d_cut_number=rda->cmdSwitch()->value(i).toInt(&ok);
       if((!ok)||(d_cut_number>RD_MAX_CUT_NUMBER)||(d_cut_number<1)) {
-	fprintf(stderr,"wavescene_test: invalid cut number\n");
+	fprintf(stderr,"wavewidget_test: invalid cut number\n");
+	exit(RDApplication::ExitInvalidOption);
+      }
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--track-mode") {
+      if(rda->cmdSwitch()->value(i)=="single") {
+	d_track_mode=RDWaveWidget::SingleTrack;
+	track_mode_set=true;
+      }
+      if(rda->cmdSwitch()->value(i)=="multi") {
+	d_track_mode=RDWaveWidget::MultiTrack;
+	track_mode_set=true;
+      }
+      if(!track_mode_set) {
+	fprintf(stderr,"wavewidget_test: invalid --track-mode argument\n");
 	exit(RDApplication::ExitInvalidOption);
       }
       rda->cmdSwitch()->setProcessed(i,true);
     }
 
     if(!rda->cmdSwitch()->processed(i)) {
-      fprintf(stderr,"wavescene_test: unknown option \"%s\"\"\n",
+      fprintf(stderr,"wavewidget_test: unknown option \"%s\"\"\n",
 	      rda->cmdSwitch()->key(i).toUtf8().constData());
       exit(RDApplication::ExitInvalidOption);
     }
   }
   if(d_cart_number==0) {
-    fprintf(stderr,"wavescene_test: you must specify a cart number\n");
+    fprintf(stderr,"wavewidget_test: you must specify a cart number\n");
     exit(RDApplication::ExitInvalidOption);
   }
   if(d_cut_number==-1) {
-    fprintf(stderr,"wavescene_test: you must specify a cut number\n");
+    fprintf(stderr,"wavewidget_test: you must specify a cut number\n");
     exit(RDApplication::ExitInvalidOption);
   }
-
-  d_view=new QGraphicsView(this);
+  if(!track_mode_set) {
+    fprintf(stderr,"wavewidget_test: you must specify a track mode\n");
+    exit(RDApplication::ExitInvalidOption);
+  }
+    
+  //
+  // Widget
+  //
+  d_wave_widget=new RDWaveWidget(d_track_mode,200,this);
 
   //
   // X Shrink Factor
@@ -137,18 +158,20 @@ QSize MainWidget::sizeHint() const
 
 void MainWidget::userData()
 {
-  setWindowTitle("wavescene_test User: "+rda->user()->name());
+  QString err_msg;
+
+  setWindowTitle("wavewidget_test User: "+rda->user()->name());
 
   d_cut=new RDCut(d_cart_number,d_cut_number);
   if(!d_cut->exists()) {
-    fprintf(stderr,"wavescene_test: no such cart/cut\n");
+    fprintf(stderr,"wavewidget_test: no such cart/cut\n");
     exit(RDApplication::ExitInvalidCart);
   }
-  d_channel=RDWaveScene::Left;
 
-  LoadEnergy();
-
-  LoadWave();
+  if(!d_wave_widget->setCut(&err_msg,d_cart_number,d_cut_number)) {
+    QMessageBox::critical(this,"wavewidget_test - "+tr("Error"),err_msg);
+    exit(256);
+  }
 }
 
 
@@ -158,7 +181,7 @@ void MainWidget::upShrinkData()
 
   x_shrink=x_shrink*2;
   d_shrink_factor_edit->setText(QString().sprintf("%d",x_shrink));
-  LoadWave();
+  d_wave_widget->setShrinkFactor(x_shrink);
 }
 
 
@@ -169,25 +192,23 @@ void MainWidget::downShrinkData()
   if(x_shrink>1) {
     x_shrink=x_shrink/2;
     d_shrink_factor_edit->setText(QString().sprintf("%d",x_shrink));
-    LoadWave();
+    d_wave_widget->setShrinkFactor(x_shrink);
   }
 }
 
 
 void MainWidget::gainChangedData(int db)
 {
-  LoadWave();
+  d_wave_widget->setAudioGain((qreal)db);
 }
 
 
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
-  //  int w=size().height();
+  int w=size().width();
   int h=size().height();
 
-  if(d_view!=NULL) {
-    d_view->setGeometry(0,0,size().width(),h-155);
-  }
+  d_wave_widget->setGeometry(0,0,w,d_wave_widget->sizeHint().height());
 
   d_shrink_factor_group->setGeometry(10,h-150,155,145);
   d_up_button->setGeometry(10,25,80,50);
@@ -197,53 +218,6 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   d_audio_gain_label->setGeometry(200,h-120,100,20);
   d_audio_gain_spin->setGeometry(305,h-120,50,20);
   d_audio_gain_unit->setGeometry(360,h-120,50,20);
-}
-
-
-void MainWidget::LoadWave()
-{
-  int x_shrink=d_shrink_factor_edit->text().toInt();
-
-  if(d_scene!=NULL) {
-    d_scene->deleteLater();
-  }
-  d_scene=new RDWaveScene(d_energy_data,x_shrink,
-			  (qreal)d_audio_gain_spin->value(),size().height()-175,
-			  this);
-
-  QGraphicsTextItem *t_item=
-    d_scene->addText(QString().sprintf("%d frames/pixel",1152*x_shrink),
-		     d_font_engine->bigLabelFont());
-  t_item->setDefaultTextColor(Qt::red);
-  //  t_item->setPos(10.0,-35.0);
-  d_view->setScene(d_scene);
-  d_view->show();
-  //  d_view->setGeometry(0,0,size().width(),size().height()-
-  //		      175+d_view->scrollBarWidgets(Qt::AlignBottom).at(0)->size().height());
-  d_view->setGeometry(0,0,size().width(),size().height()-155);
-}
-
-
-void MainWidget::LoadEnergy()
-{
-  RDPeaksExport::ErrorCode err_code;
-  RDPeaksExport *conv=new RDPeaksExport(this);
-
-  conv->setCartNumber(d_cut->cartNumber());
-  conv->setCutNumber(d_cut->cutNumber());
-  if((err_code=conv->runExport(rda->user()->name(),rda->user()->password()))!=RDPeaksExport::ErrorOk) {
-    QMessageBox::critical(this,"wavescene_test - "+tr("Error"),
-			  tr("Energy export failed")+": "+
-			  RDPeaksExport::errorText(err_code));
-    exit(255);
-  }
-  d_energy_data.clear();
-  for(unsigned i=0;i<conv->energySize();i+=2) {
-    //    d_energy_data.push_back(conv->energy(i)/256);
-    d_energy_data.push_back(conv->energy(i));
-  }
-
-  delete conv;
 }
 
 

@@ -31,15 +31,15 @@ class RDWaveScene : public QGraphicsScene
   Q_OBJECT;
  public:
   enum Channel {Mono=0,Left=1,Right=2};
-  RDWaveScene(RDCut *cut,Channel chan,const QList<uint16_t> &energy,
-	      int x_shrink,QObject *parent=0);
+  RDWaveScene(const QList<uint16_t> &energy,int x_shrink,qreal gain,int height,
+	      QObject *parent=0);
   ~RDWaveScene();
 
  private:
-  RDCut *d_cut;
-  Channel d_channel;
   QList<uint16_t> d_energy_data;
   int d_x_shrink_factor;
+  qreal d_audio_gain;
+  qreal d_height;
 };
 
 

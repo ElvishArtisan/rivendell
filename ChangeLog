@@ -21260,3 +21260,5 @@
 	of CGI processes.
 2021-03-09 Fred Gleason <fredg@paravelsystems.com>
 	* Stubbed out a 'RDWaveScene' class.
+2021-03-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDWaveWidget' class.

@@ -205,6 +205,7 @@ SOURCES += rdversion.cpp
 SOURCES += rdwavedata.cpp
 SOURCES += rdwavefile.cpp
 SOURCES += rdwavescene.cpp
+SOURCES += rdwavewidget.cpp
 SOURCES += rdweb.cpp
 SOURCES += rdwidget.cpp
 SOURCES += schedcartlist.cpp
@@ -382,6 +383,7 @@ HEADERS += rduserlistmodel.h
 HEADERS += rdversion.h
 HEADERS += rdwavedata.h
 HEADERS += rdwavescene.h
+HEADERS += rdwavewidget.h
 HEADERS += rdweb.h
 HEADERS += rdwidget.h
 

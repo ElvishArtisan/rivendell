@@ -53,7 +53,8 @@ noinst_PROGRAMS = audio_convert_test\
                   timer_test\
                   upload_test\
                   wav_chunk_test\
-                  wavescene_test
+                  wavescene_test\
+                  wavewidget_test
 
 dist_audio_convert_test_SOURCES = audio_convert_test.cpp audio_convert_test.h
 audio_convert_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ 
@@ -144,6 +145,10 @@ wav_chunk_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 dist_wavescene_test_SOURCES = wavescene_test.cpp wavescene_test.h
 nodist_wavescene_test_SOURCES = moc_wavescene_test.cpp
 wavescene_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ 
+
+dist_wavewidget_test_SOURCES = wavewidget_test.cpp wavewidget_test.h
+nodist_wavewidget_test_SOURCES = moc_wavewidget_test.cpp
+wavewidget_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ 
 
 EXTRA_DIST = rivendell_standard.txt\
              visualtraffic.txt
