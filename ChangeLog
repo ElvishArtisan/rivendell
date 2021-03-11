@@ -21262,3 +21262,5 @@
 	* Stubbed out a 'RDWaveScene' class.
 2021-03-11 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDWaveWidget' class.
+2021-03-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDWaveFactory' class.

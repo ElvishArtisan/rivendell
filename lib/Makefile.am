@@ -276,6 +276,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdversion.cpp rdversion.h\
                         rdwavedata.cpp rdwavedata.h\
                         rdwavedata_dialog.cpp rdwavedata_dialog.h\
+                        rdwavefactory.cpp rdwavefactory.h\
                         rdwavefile.cpp rdwavefile.h\
                         rdwavescene.cpp rdwavescene.h\
                         rdwavepainter.cpp rdwavepainter.h\

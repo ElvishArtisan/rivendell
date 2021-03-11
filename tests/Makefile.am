@@ -53,6 +53,7 @@ noinst_PROGRAMS = audio_convert_test\
                   timer_test\
                   upload_test\
                   wav_chunk_test\
+                  wavefactory_test\
                   wavescene_test\
                   wavewidget_test
 
@@ -141,6 +142,10 @@ upload_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 
 dist_wav_chunk_test_SOURCES = wav_chunk_test.cpp wav_chunk_test.h
 wav_chunk_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ 
+
+dist_wavefactory_test_SOURCES = wavefactory_test.cpp wavefactory_test.h
+nodist_wavefactory_test_SOURCES = moc_wavefactory_test.cpp
+wavefactory_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ 
 
 dist_wavescene_test_SOURCES = wavescene_test.cpp wavescene_test.h
 nodist_wavescene_test_SOURCES = moc_wavescene_test.cpp
