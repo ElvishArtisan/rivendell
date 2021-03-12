@@ -3463,6 +3463,52 @@ Do you still want to proceed?</source>
     </message>
 </context>
 <context>
+    <name>RDMarkerDialog</name>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>Edit Audio</source>
+        <translation type="unfinished">Editar Audio</translation>
+    </message>
+    <message>
+        <source>Amplitude</source>
+        <translation type="unfinished">Amplitud</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full
+In</source>
+        <translation type="unfinished">Acercar
+Máximo</translation>
+    </message>
+    <message>
+        <source>Full
+Out</source>
+        <translation type="unfinished">Ver
+Todo</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RDMarkerView</name>
+    <message>
+        <source>No such cart/cut!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDMatrixListModel</name>
     <message>
         <source>Description</source>

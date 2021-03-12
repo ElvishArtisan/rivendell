@@ -22,6 +22,7 @@
 #include <QPainter>
 
 #include "rdapplication.h"
+#include "rdconf.h"
 #include "rdcut.h"
 #include "rdpeaksexport.h"
 #include "rdwavefactory.h"
@@ -31,6 +32,14 @@ RDWaveFactory::RDWaveFactory(RDWaveFactory::TrackMode mode)
   d_track_mode=mode;
   d_cart_number=0;
   d_cut_number=-1;
+
+  d_font_engine=new RDFontEngine();
+}
+
+
+RDWaveFactory::~RDWaveFactory()
+{
+  delete d_font_engine;
 }
 
 
@@ -52,12 +61,31 @@ int RDWaveFactory::cutNumber() const
 }
 
 
-QPixmap RDWaveFactory::generate(int height,int x_shrink,int gain)
+QPixmap RDWaveFactory::generate(int height,int x_shrink,int gain,
+				bool incl_scale)
 {
   QPixmap pix(d_energy.size()/(x_shrink*d_energy_channels),height);
   pix.fill(Qt::white);  // FIXME: make the background transparent
   QPainter *p=new QPainter(&pix);
-  p->setPen(Qt::black);
+  p->setFont(d_font_engine->defaultFont());
+
+  //
+  // Time Scale
+  //
+  if(incl_scale) {
+    int interval=2*rda->system()->sampleRate()/1152;
+    int msec=2000;
+    for(int i=interval;i<(d_energy.size()/x_shrink);i+=interval) {
+      p->setPen(Qt::green);
+      p->drawLine(i,0,i,height);
+      p->setPen(Qt::red);
+      for(int j=0;j<d_energy_channels;j++) {
+	p->drawText(i+5,(j+1)*height/d_energy_channels-2,
+		    RDGetTimeLength(msec*x_shrink,false,false));
+      }
+      msec+=2000;
+    }
+  }
 
   //
   // Gain Ratio
@@ -67,8 +95,22 @@ QPixmap RDWaveFactory::generate(int height,int x_shrink,int gain)
   //
   // Waveform
   //
+  p->setPen(Qt::black);
+  int ref_line=exp10((double)(-REFERENCE_LEVEL)/2000.00)*height*ratio/
+    ((double)d_energy_channels*2.0);
+  int clip_line=height/(2*d_energy_channels);
   for(unsigned i=0;i<d_energy_channels;i++) {
     int zero_line=height/(d_energy_channels*2)+i*height/(d_energy_channels);
+    if(incl_scale) {
+      if(ref_line<clip_line) {
+	p->setPen(Qt::red);
+	p->drawLine(0,zero_line+ref_line,
+		    d_energy.size()/x_shrink,zero_line+ref_line);
+	p->drawLine(0,zero_line-ref_line,
+		    d_energy.size()/x_shrink,zero_line-ref_line);
+	p->setPen(Qt::black);
+      }
+    }
     p->drawLine(0,zero_line,d_energy.size()/x_shrink,zero_line);
     for(int j=i;j<d_energy.size();j+=(d_energy_channels*x_shrink)) {
       uint16_t lvl=d_energy.at(j);
@@ -79,9 +121,12 @@ QPixmap RDWaveFactory::generate(int height,int x_shrink,int gain)
       }
       int rlvl=(int)(ratio*(double)lvl*(double)height/
 		     (65534.0*(double)d_energy_channels));
+      if(rlvl>clip_line) {
+	rlvl=clip_line;
+      }
       // Bottom half
       p->fillRect(j/(x_shrink*d_energy_channels),zero_line,1,rlvl,Qt::black);
-      
+
       // Top half
       p->fillRect(j/(x_shrink*d_energy_channels),zero_line,1,-rlvl,Qt::black);
     }
@@ -155,4 +200,17 @@ bool RDWaveFactory::setCut(QString *err_msg,unsigned cartnum,int cutnum)
   delete conv;
 
   return true;
+}
+
+
+int RDWaveFactory::energySize() const
+{
+  return d_energy.size()/d_energy_channels;
+}
+
+
+int RDWaveFactory::referenceHeight(int height,int gain)
+{
+  return (int)((double)height*32767.0*
+	       exp10((double)(gain-REFERENCE_LEVEL)/2000.0));
 }

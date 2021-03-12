@@ -3476,6 +3476,52 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
 </context>
 <context>
+    <name>RDMarkerDialog</name>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbrechen</translation>
+    </message>
+    <message>
+        <source>Edit Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Amplitude</source>
+        <translation type="unfinished">Amplitude</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished">Zeit</translation>
+    </message>
+    <message>
+        <source>Full
+In</source>
+        <translation type="unfinished">Full
+In</translation>
+    </message>
+    <message>
+        <source>Full
+Out</source>
+        <translation type="unfinished">Full
+Out</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RDMarkerView</name>
+    <message>
+        <source>No such cart/cut!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDMatrixListModel</name>
     <message>
         <source>Description</source>

@@ -23,6 +23,7 @@
 
 #include <rdcart.h>
 #include <rdcutlistmodel.h>
+#include <rdmarkerdialog.h>
 #include <rdtableview.h>
 #include <rdwidget.h>
 
@@ -37,6 +38,7 @@ class AudioCart : public RDWidget
  public:
   AudioCart(AudioControls *controls,RDCart *cart,QString *path,bool select_cut,
 	    bool profile_rip,QWidget *parent=0);
+  ~AudioCart();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   RDCutListModel *cutListModel();
@@ -79,6 +81,8 @@ class AudioCart : public RDWidget
   bool rdcart_import_metadata;
   bool rdcart_profile_rip;
   bool rdcart_use_weighting;
+
+  RDMarkerDialog *rdcart_marker_dialog;
 };
 
 

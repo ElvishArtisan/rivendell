@@ -37,6 +37,7 @@ MainWidget::MainWidget(QWidget *parent)
   d_cut_number=-1;
   d_scene=NULL;
   bool track_mode_set=false;
+  d_show_scale=false;
 
   //
   // Open the database
@@ -67,6 +68,10 @@ MainWidget::MainWidget(QWidget *parent)
 	fprintf(stderr,"wavefactory_test: invalid cut number\n");
 	exit(RDApplication::ExitInvalidOption);
       }
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--show-scale") {
+      d_show_scale=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--track-mode") {
@@ -219,7 +224,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 void MainWidget::UpdateWave()
 {
   QPixmap pix=d_factory->generate(200,d_shrink_factor_edit->text().toInt(),
-				  100*d_audio_gain_spin->value());
+				  100*d_audio_gain_spin->value(),d_show_scale);
 
   if(d_scene!=NULL) {
     d_scene->deleteLater();

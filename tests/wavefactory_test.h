@@ -32,7 +32,7 @@
 #include <rdtransportbutton.h>
 #include <rdwavefactory.h>
 
-#define WAVEFACTORY_TEST_USAGE "--cart-number=<cartnum> --cut-number=<cutnum> --track-mode=single|multi\n"
+#define WAVEFACTORY_TEST_USAGE "--cart-number=<cartnum> --cut-number=<cutnum> --track-mode=single|multi [--show-scale]\n"
 
 class MainWidget : public QWidget
 {
@@ -58,6 +58,7 @@ class MainWidget : public QWidget
   unsigned d_cart_number;
   int d_cut_number;
   RDWaveFactory::TrackMode d_track_mode;
+  bool d_show_scale;
   RDFontEngine *d_font_engine;
   RDTransportButton *d_up_button;
   RDTransportButton *d_down_button;

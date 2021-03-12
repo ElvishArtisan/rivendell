@@ -46,9 +46,12 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_profile_rip=profile_rip;
   rdcart_modification_allowed=rda->user()->editAudio()&&cart->owner().isEmpty();
 
-
   rdcart_use_weighting=true;
 
+  //
+  // Dialogs
+  //
+  rdcart_marker_dialog=new RDMarkerDialog("RDLibrary",this);
 
   QColor system_button_text_color = palette().buttonText().color();
 
@@ -180,6 +183,12 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rip_cut_button->setEnabled(rdcart_modification_allowed);
   import_cut_button->setEnabled(rdcart_modification_allowed);
   ext_editor_cut_button->setEnabled(rdcart_modification_allowed);
+}
+
+
+AudioCart::~AudioCart()
+{
+  delete rdcart_marker_dialog;
 }
 
 
@@ -429,6 +438,29 @@ void AudioCart::editCutData()
                             tr("No audio is present in the cut!"));
     return;
   }
+  if(rdcart_marker_dialog->exec(RDCut::cartNumber(cutname),RDCut::cutNumber(cutname))) {
+    emit cartDataChanged();
+    rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
+			      QTime().msecsTo(rdcart_controls->
+					      forced_length_edit->time()));
+    rdcart_cut_model->refresh(row);
+  }
+}
+
+/*
+void AudioCart::editCutData()
+{
+  QModelIndex row=SingleSelectedLine();
+
+  if(!row.isValid()) {
+    return;
+  }
+  QString cutname=rdcart_cut_model->cutName(row);
+  if(!RDAudioExists(cutname)) {
+    QMessageBox::information(this,"RDLibrary",
+                            tr("No audio is present in the cut!"));
+    return;
+  }
   RDEditAudio *edit=
     new RDEditAudio(rdcart_cart,cutname,rda->libraryConf()->outputCard(),
 		    rda->libraryConf()->outputPort(),
@@ -443,7 +475,7 @@ void AudioCart::editCutData()
   }
   delete edit;
 }
-
+*/
 
 void AudioCart::recordCutData()
 {

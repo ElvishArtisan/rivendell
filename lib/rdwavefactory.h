@@ -24,16 +24,21 @@
 #include <QList>
 #include <QPixmap>
 
+#include <rdfontengine.h>
+
 class RDWaveFactory
 {
  public:
   enum TrackMode {SingleTrack=0,MultiTrack=1};
   RDWaveFactory(TrackMode mode);
+  ~RDWaveFactory();
   TrackMode trackMode() const;
   unsigned cartNumber() const;
   int cutNumber() const;
-  QPixmap generate(int height,int x_shrink,int gain);
+  QPixmap generate(int height,int x_shrink,int gain,bool incl_scale);
   bool setCut(QString *err_msg,unsigned cartnum,int cutnum);
+  int energySize() const;
+  static int referenceHeight(int height,int gain);
 
  private:
   TrackMode d_track_mode;
@@ -42,6 +47,7 @@ class RDWaveFactory
   QList<uint16_t> d_energy;
   unsigned d_channels;
   unsigned d_energy_channels;
+  RDFontEngine *d_font_engine;
 };
 
 

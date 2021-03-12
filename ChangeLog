@@ -21264,3 +21264,6 @@
 	* Added a 'RDWaveWidget' class.
 2021-03-11 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDWaveFactory' class.
+2021-03-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDMarkerView' class.
+	* Added a 'RDMarkerDialog' class.
