@@ -21,12 +21,51 @@
 #ifndef RDMARKERVIEW_H
 #define RDMARKERVIEW_H
 
+#include <QGraphicsPolygonItem>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QList>
 
 #include <rdcut.h>
 #include <rdwavefactory.h>
+
+class RDMarkerHandle : public QGraphicsPolygonItem
+{
+ public:
+  enum PointerType {Start=0,End=1};
+  enum PointerRole {CutStart=0,CutEnd=1,
+		    TalkStart=2,TalkEnd=3,
+		    SegueStart=4,SegueEnd=5,
+		    HookStart=6,HookEnd=7,
+		    FadeUp=8,FadeDown=9,
+		    LastRole=10};
+  RDMarkerHandle(RDMarkerHandle::PointerRole role,PointerType type,
+		 void *mkrview,QGraphicsItem *parent=nullptr);
+  QString name() const;
+  PointerRole role() const;
+  int minimum() const;
+  void setMinimum(int pos);
+  int maximum() const;
+  void setMaximum(int pos);
+  void setRange(int min,int max);
+  static QString pointerRoleText(PointerRole role);
+  static QString pointerRoleTypeText(PointerRole role);
+  static QColor pointerRoleColor(PointerRole role);
+
+ protected:
+  void mousePressEvent(QGraphicsSceneMouseEvent *e);
+  void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
+  void mouseReleaseEvent(QGraphicsSceneMouseEvent *e);
+
+ private:
+  QString d_name;
+  PointerRole d_role;
+  QList<QGraphicsItem *> d_peers;
+  void *d_marker_view;
+  int d_minimum;
+  int d_maximum;
+};
+
 
 class RDMarkerView : public QWidget
 {
@@ -38,29 +77,46 @@ class RDMarkerView : public QWidget
   QSizePolicy sizePolicy() const;
   int audioGain() const;
   int shrinkFactor() const;
+  int pointerValue(RDMarkerHandle::PointerRole role);
+  bool hasUnsavedChanges() const;
+  void updatePosition(RDMarkerHandle::PointerRole role, int offset);
 
  public slots:
   void setAudioGain(int lvl);
   void setShrinkFactor(int sf);
   void setMaximumShrinkFactor();
   bool setCut(QString *err_msg,unsigned cartnum,int cutnum);
+  void save();
   void clear();
+
+ signals:
+  void pointerValueChanged(RDMarkerHandle::PointerRole role,int msec);
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
+  int Frame(int msec) const;
+  bool LoadCutData();
   void WriteWave();
+  void DrawMarker(RDMarkerHandle::PointerType type,
+		  RDMarkerHandle::PointerRole role,int handle_pos);
   QGraphicsView *d_view;
   QGraphicsScene *d_scene;
-  RDCut *d_cut;
+  unsigned d_cart_number;
+  int d_cut_number;
   int d_width;
   int d_height;
   int d_shrink_factor;
   int d_max_shrink_factor;
   int d_pad_size;
   int d_audio_gain;
+  unsigned d_sample_rate;
+  unsigned d_channels;
+  QStringList d_pointer_fields;
   RDWaveFactory *d_wave_factory;
+  bool d_has_unsaved_changes;
+  int d_pointers[RDMarkerHandle::LastRole];
 };
 
 

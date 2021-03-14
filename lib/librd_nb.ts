@@ -925,6 +925,58 @@
         <source>Energy export failed</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Lengd</translation>
+    </message>
+    <message>
+        <source>Talk</source>
+        <translation type="unfinished">Tale</translation>
+    </message>
+    <message>
+        <source>Hook</source>
+        <translation type="unfinished">Knagg</translation>
+    </message>
+    <message>
+        <source>Fade Up</source>
+        <translation type="unfinished">Ton inn</translation>
+    </message>
+    <message>
+        <source>Fade Down</source>
+        <translation type="unfinished">Ton ut</translation>
+    </message>
+    <message>
+        <source>Cut Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Segue Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Segue End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hook Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hook End</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -3463,12 +3515,40 @@ ut</translation>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished">Posisjon</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Lengd</translation>
+    </message>
+    <message>
+        <source>Unsaved Changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are unsaved changes!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to save them?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDMarkerView</name>
     <message>
         <source>No such cart/cut!</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fade Up</source>
+        <translation type="obsolete">Ton inn</translation>
+    </message>
+    <message>
+        <source>Fade Down</source>
+        <translation type="obsolete">Ton ut</translation>
     </message>
 </context>
 <context>

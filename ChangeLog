@@ -21267,3 +21267,5 @@
 2021-03-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDMarkerView' class.
 	* Added a 'RDMarkerDialog' class.
+2021-03-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDMarkerReadout' class.

@@ -79,7 +79,7 @@ QPixmap RDWaveFactory::generate(int height,int x_shrink,int gain,
       p->setPen(Qt::green);
       p->drawLine(i,0,i,height);
       p->setPen(Qt::red);
-      for(int j=0;j<d_energy_channels;j++) {
+      for(unsigned j=0;j<d_energy_channels;j++) {
 	p->drawText(i+5,(j+1)*height/d_energy_channels-2,
 		    RDGetTimeLength(msec*x_shrink,false,false));
       }

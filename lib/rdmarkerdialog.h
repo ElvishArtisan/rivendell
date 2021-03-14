@@ -23,39 +23,44 @@
 
 #include <QGroupBox>
 #include <QLabel>
+#include <QLineEdit>
 #include <QPushButton>
+#include <QTimer>
 
 #include <rddialog.h>
+#include <rdmarkerreadout.h>
 #include <rdmarkerview.h>
+#include <rdstereometer.h>
 #include <rdtransportbutton.h>
 
 //
 // Widget Settings
 //
-/*
-#define EDITAUDIO_WIDGET_WIDTH 834
-#define EDITAUDIO_WIDGET_HEIGHT 680
-#define EDITAUDIO_WAVEFORM_WIDTH 717
-#define EDITAUDIO_WAVEFORM_HEIGHT 352
-#define EDITAUDIO_PAN_SIZE 300
-#define EDITAUDIO_TAIL_PREROLL 1500
-#define EDITAUDIO_DEFAULT_GAIN -12
-#define EDITAUDIO_BUTTON_FLASH_PERIOD 200
-#define EDITAUDIO_START_GAP 10
+//#define RDMARKERDIALOG_WIDGET_WIDTH 834
+//#define RDMARKERDIALOG_WIDGET_HEIGHT 680
+#define RDMARKERDIALOG_WAVEFORM_WIDTH 717
+#define RDMARKERDIALOG_WAVEFORM_HEIGHT 352
+//#define RDMARKERDIALOG_PAN_SIZE 300
+//#define RDMARKERDIALOG_TAIL_PREROLL 1500
+//#define RDMARKERDIALOG_DEFAULT_GAIN -12
+//#define RDMARKERDIALOG_BUTTON_FLASH_PERIOD 200
+//#define RDMARKERDIALOG_START_GAP 10
 
 //
 // Widget Colors
 //
-#define EDITAUDIO_PLAY_COLOR Qt::white
-#define EDITAUDIO_REMOVE_FLASH_COLOR Qt::blue
-#define EDITAUDIO_WAVEFORM_COLOR Qt::black
-#define EDITAUDIO_HIGHLIGHT_COLOR palette().mid().color()
-*/
+//#define RDMARKERDIALOG_PLAY_COLOR Qt::white
+//#define RDMARKERDIALOG_REMOVE_FLASH_COLOR Qt::blue
+//#define RDMARKERDIALOG_WAVEFORM_COLOR Qt::black
+#define RDMARKERDIALOG_HIGHLIGHT_COLOR palette().mid().color()
+
 class RDMarkerDialog : public RDDialog
 {
   Q_OBJECT
  public:
-  RDMarkerDialog(const QString &caption,QWidget *parent=0);
+  enum PlayMode {FromStart=1,FromCursor=2,Region=3};
+  enum GainChange {GainNone=0,GainUp=1,GainDown=2};
+  RDMarkerDialog(const QString &caption,int card,int port,QWidget *parent=0);
   ~RDMarkerDialog();
   QSize sizeHint() const;
 
@@ -68,12 +73,14 @@ class RDMarkerDialog : public RDDialog
   void timeFullInData();
   void timeInData();
   void timeOutData();
+
   void okData();
   void cancelData();
 
  protected:
   void closeEvent(QCloseEvent *e);
   void resizeEvent(QResizeEvent *e);
+  void paintEvent(QPaintEvent *e);
 
  private:
   RDMarkerView *d_marker_view;
@@ -87,6 +94,27 @@ class RDMarkerDialog : public RDDialog
   RDTransportButton *d_time_in_button;
   RDTransportButton *d_time_out_button;
   QPushButton *d_time_fullout_button;
+
+  //  QGroupBox *d_transport_group;
+  QLabel *d_overall_label;
+  QLineEdit *d_overall_edit;
+  QLabel *d_region_edit_label;
+  QLineEdit *d_region_edit;
+  QLabel *d_size_label;
+  QLineEdit *d_size_edit;
+  RDTransportButton *d_loop_button;
+  RDTransportButton *d_play_start_button;
+  RDTransportButton *d_play_cursor_button;
+  RDTransportButton *d_pause_button;
+  RDTransportButton *d_stop_button;
+  RDStereoMeter *d_meter;
+
+  RDMarkerReadout *d_cut_readout;
+  RDMarkerReadout *d_fadeup_readout;
+  RDMarkerReadout *d_fadedown_readout;
+  RDMarkerReadout *d_talk_readout;
+  RDMarkerReadout *d_segue_readout;
+  RDMarkerReadout *d_hook_readout;
 
   QPushButton *d_ok_button;
   QPushButton *d_cancel_button;

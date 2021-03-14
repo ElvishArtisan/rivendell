@@ -51,7 +51,9 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Dialogs
   //
-  rdcart_marker_dialog=new RDMarkerDialog("RDLibrary",this);
+  rdcart_marker_dialog=
+    new RDMarkerDialog("RDLibrary",rda->libraryConf()->outputCard(),
+		       rda->libraryConf()->outputPort(),this);
 
   QColor system_button_text_color = palette().buttonText().color();
 
