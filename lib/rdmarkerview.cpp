@@ -36,7 +36,7 @@ RDMarkerHandle::RDMarkerHandle(RDMarkerHandle::PointerRole role,
 {
   setFlags(QGraphicsItem::ItemIsMovable);
   d_marker_view=mkrview;
-  d_minimum=-1;
+  d_minimum=0;
   d_maximum=-1;
 
   QPolygonF triangle;
@@ -124,18 +124,34 @@ void RDMarkerHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
   RDMarkerView *view=static_cast<RDMarkerView *>(d_marker_view);
 
   //
+  // Check Limits
+  //
+  int corr=0;
+  int x=pos().x()-LEFT_MARGIN;
+  if(x<d_minimum) {
+    corr=d_minimum-x;
+  }
+
+  //
   // Update the Marker Graphics
   //
+  int dx=e->pos().x()-e->lastPos().x()+corr;
+  for(int i=0;i<d_peers.size();i++) {
+    QGraphicsItem *peer=d_peers.at(i);
+    peer->setPos(peer->pos().x()+dx,peer->pos().y());
+  }
+  /*
   qreal dx=e->pos().rx()-e->lastPos().rx();
   for(int i=0;i<d_peers.size();i++) {
     QGraphicsItem *peer=d_peers.at(i);
     peer->setPos(peer->pos().rx()+dx,peer->pos().ry());
   }
-
+  */
   //
   // Send Position
   //
-  view->updatePosition(d_role,pos().x()-LEFT_MARGIN);
+  view->updatePosition(d_role,x-corr);
+  //  view->updatePosition(d_role,pos().x()-LEFT_MARGIN);
 }
 
 
@@ -146,7 +162,7 @@ void RDMarkerHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *e)
   //
   // Send Position
   //
-  view->updatePosition(d_role,pos().x()-LEFT_MARGIN);
+  //  view->updatePosition(d_role,pos().x()-LEFT_MARGIN);
 }
 
 
@@ -363,6 +379,8 @@ void RDMarkerView::updatePosition(RDMarkerHandle::PointerRole role, int offset)
   d_pointers[role]=(int)((int64_t)1000*pframes/(int64_t)d_sample_rate);
   d_has_unsaved_changes=true;
 
+  updateInterlocks();
+
   emit pointerValueChanged(role,d_pointers[role]);
 }
 
@@ -410,6 +428,8 @@ bool RDMarkerView::setCut(QString *err_msg,unsigned cartnum,int cutnum)
   d_shrink_factor=d_max_shrink_factor;
   WriteWave();
 
+  updateInterlocks();
+
   return true;
 }
 
@@ -444,6 +464,21 @@ void RDMarkerView::clear()
   d_pad_size=0;
   d_audio_gain=900;
   d_has_unsaved_changes=false;
+}
+
+
+void RDMarkerView::updateInterlocks()
+{
+  for(int i=0;i<2;i++) {
+    d_handles[RDMarkerHandle::CutStart][i]->setMinimum(0);
+    d_handles[RDMarkerHandle::CutStart][i]->
+      setMaximum(d_handles[RDMarkerHandle::CutEnd][i]->pos().x()-LEFT_MARGIN);
+
+    d_handles[RDMarkerHandle::CutEnd][i]->
+      setMinimum(d_handles[RDMarkerHandle::CutStart][i]->pos().x()-LEFT_MARGIN);
+    //    d_handles[RDMarkerHandle::CutStart][i]->
+    //      setMaximum();
+  }
 }
 
 
@@ -534,9 +569,11 @@ void RDMarkerView::DrawMarker(RDMarkerHandle::PointerType type,
     m_item=new RDMarkerHandle(role,type,this);
     d_scene->addItem(m_item);
     m_item->setPos(LEFT_MARGIN+Frame(d_pointers[role]),handle_pos-12);
+    d_handles[role][0]=m_item;
 
     m_item=new RDMarkerHandle(role,type,this);
     d_scene->addItem(m_item);
     m_item->setPos(LEFT_MARGIN+Frame(d_pointers[role]),d_height-handle_pos-8);
+    d_handles[role][1]=m_item;
   }
 }

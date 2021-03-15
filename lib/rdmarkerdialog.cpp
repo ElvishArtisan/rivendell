@@ -297,14 +297,16 @@ void RDMarkerDialog::cancelData()
       break;
 
     default:
-      break;
+      return;
     }
   }
+  done(false);
 }
 
 
 void RDMarkerDialog::closeEvent(QCloseEvent *e)
 {
+  e->ignore();
   cancelData();
 }
 

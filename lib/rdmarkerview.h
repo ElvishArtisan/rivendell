@@ -93,6 +93,7 @@ class RDMarkerView : public QWidget
   void pointerValueChanged(RDMarkerHandle::PointerRole role,int msec);
 
  protected:
+  virtual void updateInterlocks();
   void resizeEvent(QResizeEvent *e);
 
  private:
@@ -117,6 +118,7 @@ class RDMarkerView : public QWidget
   RDWaveFactory *d_wave_factory;
   bool d_has_unsaved_changes;
   int d_pointers[RDMarkerHandle::LastRole];
+  RDMarkerHandle *d_handles[RDMarkerHandle::LastRole][2];
 };
 
 

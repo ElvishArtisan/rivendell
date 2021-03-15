@@ -21269,3 +21269,5 @@
 	* Added a 'RDMarkerDialog' class.
 2021-03-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDMarkerReadout' class.
+2021-03-15 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented saving marker positions in 'RDMarkerDialog'.
