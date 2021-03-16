@@ -25,6 +25,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QList>
+#include <QMenu>
 
 #include <rdcut.h>
 #include <rdwavefactory.h>
@@ -79,7 +80,10 @@ class RDMarkerView : public QWidget
   int shrinkFactor() const;
   int pointerValue(RDMarkerHandle::PointerRole role);
   bool hasUnsavedChanges() const;
-  void updatePosition(RDMarkerHandle::PointerRole role, int offset);
+
+  void processRightClick(RDMarkerHandle::PointerRole role,
+			 const QPointF &pos);
+  void updatePosition(RDMarkerHandle::PointerRole role,int offset);
 
  public slots:
   void setAudioGain(int lvl);
@@ -92,16 +96,29 @@ class RDMarkerView : public QWidget
  signals:
   void pointerValueChanged(RDMarkerHandle::PointerRole role,int msec);
 
+ private slots:
+  void updateMenuData();
+  void addTalkData();
+  void addSegueData();
+  void addHookData();
+  void addFadeupData();
+  void addFadedownData();
+  void deleteMarkerData();
+
  protected:
   virtual void updateInterlocks();
   void resizeEvent(QResizeEvent *e);
+  void mousePressEvent(QMouseEvent *e);
 
  private:
   int Frame(int msec) const;
+  int Msec(int frame) const;
+  void InterlockMarkerPair(RDMarkerHandle::PointerRole start_marker);
   bool LoadCutData();
   void WriteWave();
   void DrawMarker(RDMarkerHandle::PointerType type,
 		  RDMarkerHandle::PointerRole role,int handle_pos);
+  void RemoveMarker(RDMarkerHandle::PointerRole role);
   QGraphicsView *d_view;
   QGraphicsScene *d_scene;
   unsigned d_cart_number;
@@ -114,11 +131,23 @@ class RDMarkerView : public QWidget
   int d_audio_gain;
   unsigned d_sample_rate;
   unsigned d_channels;
+  int d_mouse_pos;
+  int d_right_margin;
   QStringList d_pointer_fields;
   RDWaveFactory *d_wave_factory;
   bool d_has_unsaved_changes;
   int d_pointers[RDMarkerHandle::LastRole];
   RDMarkerHandle *d_handles[RDMarkerHandle::LastRole][2];
+  int d_audio_end;
+  QMenu *d_main_menu;
+  QAction *d_add_fadedown_action;
+  QAction *d_add_fadeup_action;
+  QAction *d_add_hook_action;
+  QAction *d_add_segue_action;
+  QAction *d_add_talk_action;
+  QList<RDMarkerHandle::PointerRole> d_deleting_roles;
+  QAction *d_delete_marker_action;
+  bool d_marker_menu_used;
 };
 
 

@@ -3550,6 +3550,30 @@ ut</translation>
         <source>Fade Down</source>
         <translation type="obsolete">Ton ut</translation>
     </message>
+    <message>
+        <source>Add Talk Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Segue Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Hook Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Fade Up Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Fade Down Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDMatrixListModel</name>

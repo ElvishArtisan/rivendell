@@ -21271,3 +21271,5 @@
 	* Added a 'RDMarkerReadout' class.
 2021-03-15 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented saving marker positions in 'RDMarkerDialog'.
+2021-03-16 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented basic marker limit interlocking in 'RDMarkerView'.
