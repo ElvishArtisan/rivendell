@@ -21273,3 +21273,6 @@
 	* Implemented saving marker positions in 'RDMarkerDialog'.
 2021-03-16 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented basic marker limit interlocking in 'RDMarkerView'.
+2021-03-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDMarkerView' that could cause marker positions
+	to lose precision when sliding against a limit stop.

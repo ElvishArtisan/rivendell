@@ -44,11 +44,8 @@ class RDMarkerHandle : public QGraphicsPolygonItem
 		 void *mkrview,QGraphicsItem *parent=nullptr);
   QString name() const;
   PointerRole role() const;
-  int minimum() const;
-  void setMinimum(int pos);
-  int maximum() const;
-  void setMaximum(int pos);
-  void setRange(int min,int max);
+  void setMinimum(int pos,int ptr);
+  void setMaximum(int pos,int ptr);
   static QString pointerRoleText(PointerRole role);
   static QString pointerRoleTypeText(PointerRole role);
   static QColor pointerRoleColor(PointerRole role);
@@ -63,8 +60,10 @@ class RDMarkerHandle : public QGraphicsPolygonItem
   PointerRole d_role;
   QList<QGraphicsItem *> d_peers;
   void *d_marker_view;
-  int d_minimum;
-  int d_maximum;
+  int d_minimum_pos;
+  int d_minimum_ptr;
+  int d_maximum_pos;
+  int d_maximum_ptr;
 };
 
 
@@ -77,13 +76,15 @@ class RDMarkerView : public QWidget
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   int audioGain() const;
+  unsigned sampleRate() const;
   int shrinkFactor() const;
   int pointerValue(RDMarkerHandle::PointerRole role);
   bool hasUnsavedChanges() const;
 
   void processRightClick(RDMarkerHandle::PointerRole role,
 			 const QPointF &pos);
-  void updatePosition(RDMarkerHandle::PointerRole role,int offset);
+  void updatePosition(RDMarkerHandle::PointerRole role,int ptr);
+  //  void updatePosition(RDMarkerHandle::PointerRole role,int offset);
 
  public slots:
   void setAudioGain(int lvl);
@@ -92,6 +93,8 @@ class RDMarkerView : public QWidget
   bool setCut(QString *err_msg,unsigned cartnum,int cutnum);
   void save();
   void clear();
+  int Frame(int msec) const;
+  int Msec(int frame) const;
 
  signals:
   void pointerValueChanged(RDMarkerHandle::PointerRole role,int msec);
@@ -111,8 +114,6 @@ class RDMarkerView : public QWidget
   void mousePressEvent(QMouseEvent *e);
 
  private:
-  int Frame(int msec) const;
-  int Msec(int frame) const;
   void InterlockMarkerPair(RDMarkerHandle::PointerRole start_marker);
   bool LoadCutData();
   void WriteWave();
