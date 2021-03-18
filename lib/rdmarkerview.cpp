@@ -392,6 +392,8 @@ bool RDMarkerView::hasUnsavedChanges() const
 void RDMarkerView::processRightClick(RDMarkerHandle::PointerRole role,
 				     const QPointF &pos)
 {
+  d_deleting_roles.clear();
+
   d_deleting_roles.push_back(role);
   if((role==RDMarkerHandle::SegueStart)||
      (role==RDMarkerHandle::TalkStart)||
@@ -515,21 +517,23 @@ void RDMarkerView::clear()
 void RDMarkerView::updateMenuData()
 {
   bool can_add=
+    (d_deleting_roles.size()==0)&&
     (Msec(d_mouse_pos)>=d_pointers[RDMarkerHandle::CutStart])&&
     (Msec(d_mouse_pos)<d_pointers[RDMarkerHandle::CutEnd]);
   bool can_delete=
     d_marker_menu_used&&
     (!d_deleting_roles.contains(RDMarkerHandle::CutStart))&&
     (!d_deleting_roles.contains(RDMarkerHandle::CutEnd));
-  if(can_delete) {
-    can_add=false;
-  }
 
   d_delete_marker_action->setEnabled(can_delete);
   d_add_fadedown_action->
-    setEnabled(can_add&&(d_pointers[RDMarkerHandle::FadeDown]<0));
+    setEnabled(can_add&&(d_pointers[RDMarkerHandle::FadeDown]<0)&&
+	       ((d_pointers[RDMarkerHandle::FadeUp]<0)||
+		(d_pointers[RDMarkerHandle::FadeUp]<Msec(d_mouse_pos))));
   d_add_fadeup_action->
-    setEnabled(can_add&&(d_pointers[RDMarkerHandle::FadeUp]<0));
+    setEnabled(can_add&&(d_pointers[RDMarkerHandle::FadeUp]<0)&&
+	       ((d_pointers[RDMarkerHandle::FadeDown]<0)||
+		(d_pointers[RDMarkerHandle::FadeDown]>Msec(d_mouse_pos))));
   d_add_hook_action->
     setEnabled(can_add&&(d_pointers[RDMarkerHandle::HookStart]<0));
   d_add_segue_action->
@@ -760,6 +764,8 @@ void RDMarkerView::mousePressEvent(QMouseEvent *e)
       d_marker_menu_used=false;
       return;
     }
+    d_deleting_roles.clear();
+
     d_main_menu->setGeometry(e->globalX(),e->globalY(),
 			d_main_menu->sizeHint().width(),
 			d_main_menu->sizeHint().height());
