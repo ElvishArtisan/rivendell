@@ -465,7 +465,7 @@ void Xport::XmlExit(const QString &str,int code,const QString &srcfile,
     RDXMLResult(str.toUtf8(),code,err);
   }
 #else
-  RDXMLResult(str,code,err);
+  RDXMLResult(str.toUtf8(),code,err);
 #endif  // RDXPORT_DEBUG
   exit(0);
 }
