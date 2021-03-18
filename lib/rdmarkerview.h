@@ -64,6 +64,7 @@ class RDMarkerHandle : public QGraphicsPolygonItem
   int d_minimum_ptr;
   int d_maximum_pos;
   int d_maximum_ptr;
+  int d_x_diff;
 };
 
 
@@ -84,7 +85,6 @@ class RDMarkerView : public QWidget
   void processRightClick(RDMarkerHandle::PointerRole role,
 			 const QPointF &pos);
   void updatePosition(RDMarkerHandle::PointerRole role,int ptr);
-  //  void updatePosition(RDMarkerHandle::PointerRole role,int offset);
 
  public slots:
   void setAudioGain(int lvl);
@@ -132,6 +132,7 @@ class RDMarkerView : public QWidget
   int d_audio_gain;
   unsigned d_sample_rate;
   unsigned d_channels;
+  int d_audio_length;
   int d_mouse_pos;
   int d_right_margin;
   QStringList d_pointer_fields;

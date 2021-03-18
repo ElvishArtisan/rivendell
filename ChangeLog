@@ -21276,3 +21276,6 @@
 2021-03-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDMarkerView' that could cause marker positions
 	to lose precision when sliding against a limit stop.
+2021-03-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs with ensuring consistent position interlocks between
+	markers in 'RDMarkerView'.

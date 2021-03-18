@@ -37,6 +37,7 @@ RDMarkerHandle::RDMarkerHandle(RDMarkerHandle::PointerRole role,
 {
   setFlags(QGraphicsItem::ItemIsMovable);
   d_marker_view=mkrview;
+  d_x_diff=0;
 
   QPolygonF triangle;
 
@@ -90,6 +91,7 @@ void RDMarkerHandle::mousePressEvent(QGraphicsSceneMouseEvent *e)
 
   if(e->button()==Qt::LeftButton) {
     e->accept();
+    d_x_diff=pos().x()-e->scenePos().x();
     if(d_peers.size()==0) {
       QGraphicsScene *s=scene();
       QList<QGraphicsItem *> items=s->items();
@@ -113,44 +115,38 @@ void RDMarkerHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
   RDMarkerView *view=static_cast<RDMarkerView *>(d_marker_view);
 
   //
-  // Check Limits
+  // Check Limit Stops
   //
-  int corr=0;
-  int limit_ptr=0;
-  int x=pos().x()-LEFT_MARGIN;
+  int limit_ptr=-1;
+  int x=e->scenePos().x()+d_x_diff-LEFT_MARGIN;
+
   if((d_minimum_pos>=0)&&(x<d_minimum_pos)) {
-    corr=d_minimum_pos-x;
+    d_x_diff=d_minimum_pos-e->scenePos().x()+LEFT_MARGIN;
+    x=d_minimum_pos;
     limit_ptr=d_minimum_ptr;
   }
   else {
     if((d_maximum_pos>=0)&&(x>d_maximum_pos)) {
-      corr=d_maximum_pos-x;
+      d_x_diff=d_maximum_pos-e->scenePos().x()+LEFT_MARGIN;
+      x=d_maximum_pos;
       limit_ptr=d_maximum_ptr;
     }
   }
 
   //
-  // Send Position
+  // Update Marker Graphic
   //
-  if(corr==0) {  // Generate new pointer value
-    int dx=e->pos().x()-e->lastPos().x()+corr;
-    for(int i=0;i<d_peers.size();i++) {
-      QGraphicsItem *peer=d_peers.at(i);
-      peer->setPos(peer->pos().x()+dx,peer->pos().y());
-    }
+  for(int i=0;i<d_peers.size();i++) {
+    QGraphicsItem *peer=d_peers.at(i);
+    peer->setPos(e->scenePos().x()+d_x_diff,peer->pos().y());
+  }
+
+  if(limit_ptr<0) {  // Generate new pointer value
     int64_t pframes=(int64_t)(1152*x*view->shrinkFactor());
     view->updatePosition(d_role,(int)((int64_t)1000*pframes/
 				      (int64_t)view->sampleRate()));
   }
   else {  // We're against a limit stop, so use the pointer value of the stop
-    int x=LEFT_MARGIN+view->Frame(limit_ptr);
-    QGraphicsLineItem *line=static_cast<QGraphicsLineItem *>(d_peers.at(2));
-    line->setLine(line->line().x1()+x-d_peers.at(0)->pos().x(),
-		  line->line().y1(),
-		  line->line().x2()+x-d_peers.at(0)->pos().x(),
-		  line->line().y2());
-    d_peers.at(0)->setPos(x,d_peers.at(0)->pos().y());
-    d_peers.at(1)->setPos(x,d_peers.at(1)->pos().y());
     view->updatePosition(d_role,limit_ptr);
   }
 }
@@ -424,21 +420,7 @@ void RDMarkerView::updatePosition(RDMarkerHandle::PointerRole role, int ptr)
 
   emit pointerValueChanged(role,d_pointers[role]);
 }
-/*
-void RDMarkerView::updatePosition(RDMarkerHandle::PointerRole role, int offset)
-{
-  //
-  // Careful! Don't overflow 32 bits.
-  //
-  int64_t pframes=(int64_t)(1152*offset*d_shrink_factor);
-  d_pointers[role]=(int)((int64_t)1000*pframes/(int64_t)d_sample_rate);
-  d_has_unsaved_changes=true;
 
-  updateInterlocks();
-
-  emit pointerValueChanged(role,d_pointers[role]);
-}
-*/
 
 void RDMarkerView::setAudioGain(int lvl)
 {
@@ -476,6 +458,8 @@ bool RDMarkerView::setCut(QString *err_msg,unsigned cartnum,int cutnum)
   if(!d_wave_factory->setCut(err_msg,cartnum,cutnum)) {
     return false;
   }
+  d_audio_length=(int)((int64_t)d_wave_factory->energySize()*1152000/
+		       ((int64_t)d_sample_rate));
   d_max_shrink_factor=1;
   while(d_wave_factory->energySize()>=(d_width*d_max_shrink_factor)) {
     d_max_shrink_factor=d_max_shrink_factor*2;
@@ -522,6 +506,7 @@ void RDMarkerView::clear()
   d_max_shrink_factor=1;
   d_pad_size=0;
   d_audio_gain=900;
+  d_audio_length=0;
   d_has_unsaved_changes=false;
   d_marker_menu_used=false;
 }
@@ -561,6 +546,7 @@ void RDMarkerView::addTalkData()
 
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::TalkStart,60);
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::TalkEnd,60);
+  InterlockMarkerPair(RDMarkerHandle::TalkStart);
 
   emit pointerValueChanged(RDMarkerHandle::TalkStart,
 			   d_pointers[RDMarkerHandle::TalkStart]);
@@ -576,6 +562,7 @@ void RDMarkerView::addSegueData()
 
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::SegueStart,40);
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::SegueEnd,40);
+  InterlockMarkerPair(RDMarkerHandle::SegueStart);
 
   emit pointerValueChanged(RDMarkerHandle::SegueStart,
 			   d_pointers[RDMarkerHandle::SegueStart]);
@@ -591,6 +578,7 @@ void RDMarkerView::addHookData()
 
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::HookStart,100);
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::HookEnd,100);
+  InterlockMarkerPair(RDMarkerHandle::HookStart);
 
   emit pointerValueChanged(RDMarkerHandle::HookStart,
 			   d_pointers[RDMarkerHandle::HookStart]);
@@ -604,6 +592,7 @@ void RDMarkerView::addFadeupData()
   d_pointers[RDMarkerHandle::FadeUp]=Msec(d_mouse_pos);
 
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::FadeUp,80);
+  InterlockMarkerPair(RDMarkerHandle::FadeUp);
 
   emit pointerValueChanged(RDMarkerHandle::FadeUp,
 			   d_pointers[RDMarkerHandle::FadeUp]);
@@ -615,6 +604,7 @@ void RDMarkerView::addFadedownData()
   d_pointers[RDMarkerHandle::FadeDown]=Msec(d_mouse_pos);
 
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::FadeDown,80);
+  InterlockMarkerPair(RDMarkerHandle::FadeUp);
 
   emit pointerValueChanged(RDMarkerHandle::FadeDown,
 			   d_pointers[RDMarkerHandle::FadeDown]);
@@ -632,6 +622,42 @@ void RDMarkerView::deleteMarkerData()
 
 void RDMarkerView::updateInterlocks()
 {
+  /*
+  //
+  // Check for "swiped" markers and remove them
+  //
+  for(int i=2;i<(RDMarkerHandle::LastRole);i++) {
+    RDMarkerHandle::PointerRole role=(RDMarkerHandle::PointerRole)i;
+    if((d_pointers[i]>=0)&&
+       ((d_pointers[i]<d_pointers[RDMarkerHandle::CutStart])||
+	(d_pointers[i]>d_pointers[RDMarkerHandle::CutEnd]))) {
+      RemoveMarker(role);
+      switch(role) {
+      case RDMarkerHandle::TalkStart:
+      case RDMarkerHandle::SegueStart:
+      case RDMarkerHandle::HookStart:
+	RemoveMarker((RDMarkerHandle::PointerRole)(i+1));
+	break;
+
+      case RDMarkerHandle::TalkEnd:
+      case RDMarkerHandle::SegueEnd:
+      case RDMarkerHandle::HookEnd:
+	RemoveMarker((RDMarkerHandle::PointerRole)(i-1));
+	break;
+
+      case RDMarkerHandle::CutStart:
+      case RDMarkerHandle::CutEnd:
+      case RDMarkerHandle::FadeUp:
+      case RDMarkerHandle::FadeDown:
+      case RDMarkerHandle::LastRole:
+	break;
+      }
+    }
+  }
+  */
+  //
+  // Update the limit stops
+  //
   for(int i=0;i<2;i++) {
     d_handles[RDMarkerHandle::CutStart][i]->setMinimum(0,0);
     d_handles[RDMarkerHandle::CutStart][i]->
@@ -642,7 +668,7 @@ void RDMarkerView::updateInterlocks()
       setMinimum(d_handles[RDMarkerHandle::CutStart][i]->pos().x()-LEFT_MARGIN,
 		 d_pointers[RDMarkerHandle::CutStart]);
     d_handles[RDMarkerHandle::CutEnd][i]->
-      setMaximum(d_right_margin-LEFT_MARGIN,Msec(d_wave_factory->energySize()));
+      setMaximum(d_right_margin-LEFT_MARGIN,d_audio_length);
   }
   InterlockMarkerPair(RDMarkerHandle::TalkStart);
   InterlockMarkerPair(RDMarkerHandle::SegueStart);
@@ -817,6 +843,8 @@ void RDMarkerView::WriteWave()
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::CutEnd,20);
 
   d_view->setScene(d_scene);
+
+  updateInterlocks();
 }
 
 
@@ -827,10 +855,12 @@ void RDMarkerView::DrawMarker(RDMarkerHandle::PointerType type,
   RDMarkerHandle *m_item=NULL;
 
   if(d_pointers[role]>=0) {
-    l_item=d_scene->addLine(LEFT_MARGIN+Frame(d_pointers[role]),0,
-    			    LEFT_MARGIN+Frame(d_pointers[role]),d_height,
-			    QPen(RDMarkerHandle::pointerRoleColor(role)));
+    l_item=new QGraphicsLineItem(0,0,0,d_height);
+    l_item->setPen(QPen(RDMarkerHandle::pointerRoleColor(role)));
     l_item->setToolTip(RDMarkerHandle::pointerRoleTypeText(role));
+    d_scene->addItem(l_item);
+    l_item->setPos(LEFT_MARGIN+Frame(d_pointers[role]),0);
+
     m_item=new RDMarkerHandle(role,type,this);
     d_scene->addItem(m_item);
     m_item->setPos(LEFT_MARGIN+Frame(d_pointers[role]),handle_pos-12);
@@ -858,5 +888,6 @@ void RDMarkerView::RemoveMarker(RDMarkerHandle::PointerRole role)
   for(int i=0;i<2;i++) {
     d_handles[role][i]=NULL;
   }
+
   emit pointerValueChanged(role,-1);
 }
