@@ -21258,3 +21258,7 @@
 2021-03-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression rdxport.cgi that caused early termination
 	of CGI processes.
+2021-03-18 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed the code that initializes the 'NEXUS_STATIONS' table in
+	rddbmgr(8).
+	* Fixed a regression in rdxport.cgi that broke the build.
