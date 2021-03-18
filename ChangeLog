@@ -21282,3 +21282,5 @@
 2021-03-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs with enabling correct choices in the right-click menu
 	in 'RDMarkerView'.
+2021-03-18 Fred Gleason <fredg@paravelsystems.com>
+	* Enabled marker swiping in 'RDMarkerView'.

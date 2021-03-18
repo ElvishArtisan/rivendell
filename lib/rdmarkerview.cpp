@@ -626,7 +626,6 @@ void RDMarkerView::deleteMarkerData()
 
 void RDMarkerView::updateInterlocks()
 {
-  /*
   //
   // Check for "swiped" markers and remove them
   //
@@ -658,7 +657,7 @@ void RDMarkerView::updateInterlocks()
       }
     }
   }
-  */
+
   //
   // Update the limit stops
   //
