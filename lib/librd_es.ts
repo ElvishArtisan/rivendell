@@ -3554,11 +3554,11 @@ Todo</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Posición</translation>
+        <translation type="obsolete">Posición</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Longitud</translation>
+        <translation type="obsolete">Longitud</translation>
     </message>
     <message>
         <source>Unsaved Changes</source>
@@ -3571,6 +3571,21 @@ Todo</translation>
     <message>
         <source>Do you want to save them?</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open cut in audio player!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RDMarkerPlayer</name>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished">Posición</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Longitud</translation>
     </message>
 </context>
 <context>

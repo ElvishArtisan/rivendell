@@ -194,12 +194,12 @@ void RDCae::unloadPlay(int handle)
 }
 
 
-void RDCae::positionPlay(int handle,int pos)
+void RDCae::positionPlay(int handle,int msec)
 {
-  if(pos<0) {
+  if(msec<0) {
     return;
   }
-  SendCommand(QString().sprintf("PP %d %u!",handle,pos));
+  SendCommand(QString().sprintf("PP %d %u!",handle,msec));
 }
 
 

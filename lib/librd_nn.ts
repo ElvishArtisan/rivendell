@@ -3517,11 +3517,11 @@ ut</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Posisjon</translation>
+        <translation type="obsolete">Posisjon</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Lengd</translation>
+        <translation type="obsolete">Lengd</translation>
     </message>
     <message>
         <source>Unsaved Changes</source>
@@ -3534,6 +3534,21 @@ ut</translation>
     <message>
         <source>Do you want to save them?</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open cut in audio player!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RDMarkerPlayer</name>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished">Posisjon</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Lengd</translation>
     </message>
 </context>
 <context>

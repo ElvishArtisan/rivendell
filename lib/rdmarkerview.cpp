@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <QGraphicsLineItem>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
@@ -450,6 +449,8 @@ void RDMarkerView::setMaximumShrinkFactor()
 
 bool RDMarkerView::setCut(QString *err_msg,unsigned cartnum,int cutnum)
 {
+  clear();
+
   d_cart_number=cartnum;
   d_cut_number=cutnum;
   d_right_margin=LEFT_MARGIN;  // Default value
@@ -473,6 +474,14 @@ bool RDMarkerView::setCut(QString *err_msg,unsigned cartnum,int cutnum)
   updateInterlocks();
 
   return true;
+}
+
+
+void RDMarkerView::setCursorPosition(unsigned msec)
+{
+  qreal x=(qreal)msec*(qreal)d_sample_rate/(1152000*(qreal)d_shrink_factor)+
+    (qreal)LEFT_MARGIN;
+  d_cursor->setPos(x,d_cursor->pos().y());
 }
 
 
@@ -504,6 +513,7 @@ void RDMarkerView::clear()
       d_handles[i][j]=NULL;
     }
   }
+  d_cursor=NULL;
   d_shrink_factor=1;
   d_max_shrink_factor=1;
   d_pad_size=0;
@@ -552,6 +562,8 @@ void RDMarkerView::addTalkData()
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::TalkEnd,60);
   InterlockMarkerPair(RDMarkerHandle::TalkStart);
 
+  d_has_unsaved_changes=true;
+
   emit pointerValueChanged(RDMarkerHandle::TalkStart,
 			   d_pointers[RDMarkerHandle::TalkStart]);
   emit pointerValueChanged(RDMarkerHandle::TalkEnd,
@@ -567,6 +579,8 @@ void RDMarkerView::addSegueData()
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::SegueStart,40);
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::SegueEnd,40);
   InterlockMarkerPair(RDMarkerHandle::SegueStart);
+
+  d_has_unsaved_changes=true;
 
   emit pointerValueChanged(RDMarkerHandle::SegueStart,
 			   d_pointers[RDMarkerHandle::SegueStart]);
@@ -584,6 +598,8 @@ void RDMarkerView::addHookData()
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::HookEnd,100);
   InterlockMarkerPair(RDMarkerHandle::HookStart);
 
+  d_has_unsaved_changes=true;
+
   emit pointerValueChanged(RDMarkerHandle::HookStart,
 			   d_pointers[RDMarkerHandle::HookStart]);
   emit pointerValueChanged(RDMarkerHandle::HookEnd,
@@ -598,6 +614,8 @@ void RDMarkerView::addFadeupData()
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::FadeUp,80);
   InterlockMarkerPair(RDMarkerHandle::FadeUp);
 
+  d_has_unsaved_changes=true;
+
   emit pointerValueChanged(RDMarkerHandle::FadeUp,
 			   d_pointers[RDMarkerHandle::FadeUp]);
 }
@@ -610,6 +628,8 @@ void RDMarkerView::addFadedownData()
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::FadeDown,80);
   InterlockMarkerPair(RDMarkerHandle::FadeUp);
 
+  d_has_unsaved_changes=true;
+
   emit pointerValueChanged(RDMarkerHandle::FadeDown,
 			   d_pointers[RDMarkerHandle::FadeDown]);
 }
@@ -621,6 +641,8 @@ void RDMarkerView::deleteMarkerData()
     RemoveMarker(d_deleting_roles.at(i));
   }
   d_deleting_roles.clear();
+
+  d_has_unsaved_changes=true;
 }
 
 
@@ -846,6 +868,10 @@ void RDMarkerView::WriteWave()
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::SegueEnd,40);
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::CutStart,20);
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::CutEnd,20);
+
+  d_cursor=new QGraphicsLineItem(0,0,0,d_height);
+  d_cursor->setPen(QPen(Qt::black));
+  d_scene->addItem(d_cursor);
 
   d_view->setScene(d_scene);
 

@@ -2971,14 +2971,6 @@ Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unsaved Changes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2988,6 +2980,21 @@ Out</source>
     </message>
     <message>
         <source>Do you want to save them?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open cut in audio player!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RDMarkerPlayer</name>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -75,80 +75,12 @@ RDMarkerDialog::RDMarkerDialog(const QString &caption,int card,int port,
   /**************************************************************************
    * Transport Section
    **************************************************************************/
-  //
-  // Time Counters
-  //
-  d_overall_label=new QLabel(tr("Position"),this);
-  d_overall_label->setFont(subLabelFont());
-  d_overall_label->setAlignment(Qt::AlignHCenter);
-  d_overall_label->
-    setPalette(QPalette(palette().color(QPalette::Background),
-			QColor(RDMARKERDIALOG_HIGHLIGHT_COLOR)));
-  d_overall_edit=new QLineEdit(this);
-  d_overall_edit->setAcceptDrops(false);
-  d_overall_edit->setReadOnly(true);
-
-  d_region_edit_label=new QLabel("Region",this);
-  d_region_edit_label->setFont(subLabelFont());
-  d_region_edit_label->setAlignment(Qt::AlignHCenter);
-  d_region_edit_label->
-    setPalette(QPalette(palette().color(QPalette::Background),QColor(RDMARKERDIALOG_HIGHLIGHT_COLOR)));
-  d_region_edit=new QLineEdit(this);
-  d_region_edit->setAcceptDrops(false);
-  d_region_edit->setReadOnly(true);
-
-  d_size_label=new QLabel(tr("Length"),this);
-  d_size_label->setFont(subLabelFont());
-  d_size_label->setAlignment(Qt::AlignHCenter);
-  d_size_label->
-    setPalette(QPalette(palette().color(QPalette::Background),QColor(RDMARKERDIALOG_HIGHLIGHT_COLOR)));
-  d_size_edit=new QLineEdit(this);
-  d_size_edit->setAcceptDrops(false);
-  d_size_edit->setReadOnly(true);
-
-  //
-  // Transport Buttons
-  //
-  d_play_cursor_button=
-    new RDTransportButton(RDTransportButton::PlayBetween,this);
-  d_play_cursor_button->setFocusPolicy(Qt::NoFocus);
-  //  d_play_cursor_button->setEnabled((d_card>=0)&&(d_port>=0));
-  //  connect(d_play_cursor_button,SIGNAL(clicked()),
-  //	  this,SLOT(playCursorData()));
-
-  d_play_start_button=
-    new RDTransportButton(RDTransportButton::Play,this);
-  d_play_start_button->setFocusPolicy(Qt::NoFocus);
-  //  d_play_start_button->setEnabled((d_card>=0)&&(d_port>=0));
-  //  connect(d_play_start_button,SIGNAL(clicked()),
-  //	  this,SLOT(playStartData()));
-
-  d_pause_button=new RDTransportButton(RDTransportButton::Pause,this);
-  d_pause_button->setFocusPolicy(Qt::NoFocus);
-  d_pause_button->setOnColor(QColor(Qt::red));
-  //  d_pause_button->setEnabled((d_card>=0)&&(d_port>=0));
-  //  connect(d_pause_button,SIGNAL(clicked()),this,SLOT(pauseData()));
-
-  d_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
-  d_stop_button->setFocusPolicy(Qt::NoFocus);
-  d_stop_button->on();
-  d_stop_button->setOnColor(QColor(Qt::red));
-  //  d_stop_button->setEnabled((d_card>=0)&&(d_port>=0));
-  //  connect(d_stop_button,SIGNAL(clicked()),this,SLOT(stopData()));
-
-  d_loop_button=new RDTransportButton(RDTransportButton::Loop,this);
-  d_loop_button->off();
-  //  d_loop_button->setEnabled((d_card>=0)&&(d_port>=0));
-  //  connect(d_loop_button,SIGNAL(clicked()),this,SLOT(loopData()));
-
-  //
-  // The Audio Meter
-  //
-  d_meter=new RDStereoMeter(this);
-  d_meter->setSegmentSize(5);
-  d_meter->setMode(RDSegMeter::Peak);
-  //  d_meter_timer=new QTimer(this);
-  //  connect(d_meter_timer,SIGNAL(timeout()),this,SLOT(meterData()));
+  d_player=new RDMarkerPlayer(card,port,this);
+  connect(d_player,SIGNAL(cursorPositionChanged(unsigned)),
+	  d_marker_view,SLOT(setCursorPosition(unsigned)));
+  connect(d_marker_view,
+	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
+	  d_player,SLOT(setPointerValue(RDMarkerHandle::PointerRole,int)));
 
   //
   // Marker Readouts
@@ -205,6 +137,8 @@ RDMarkerDialog::RDMarkerDialog(const QString &caption,int card,int port,
 
 RDMarkerDialog::~RDMarkerDialog()
 {
+  delete d_player;
+  delete d_marker_view;
 }
 
 
@@ -227,6 +161,11 @@ int RDMarkerDialog::exec(unsigned cartnum,int cutnum)
     QMessageBox::critical(this,d_caption+" - "+tr("Error"),err_msg);
     return false;
   }
+  if(!d_player->setCut(cartnum,cutnum)) {
+    QMessageBox::critical(this,d_caption+" - "+tr("Error"),
+			  tr("Unable to open cut in audio player!"));
+    return false;
+  }
   for(int i=0;i<RDMarkerHandle::LastRole;i++) {
     RDMarkerHandle::PointerRole role=(RDMarkerHandle::PointerRole)i;
     d_cut_readout->setValue(role,d_marker_view->pointerValue(role));
@@ -235,6 +174,7 @@ int RDMarkerDialog::exec(unsigned cartnum,int cutnum)
     d_hook_readout->setValue(role,d_marker_view->pointerValue(role));
     d_fadeup_readout->setValue(role,d_marker_view->pointerValue(role));
     d_fadedown_readout->setValue(role,d_marker_view->pointerValue(role));
+    d_player->setPointerValue(role,d_marker_view->pointerValue(role));
   }
   return QDialog::exec();
 }
@@ -276,6 +216,7 @@ void RDMarkerDialog::timeOutData()
 void RDMarkerDialog::okData()
 {
   d_marker_view->save();
+  d_player->clearCut();
   done(true);
 }
 
@@ -293,6 +234,7 @@ void RDMarkerDialog::cancelData()
       break;
 
     case QMessageBox::No:
+      d_player->clearCut();
       done(false);
       break;
 
@@ -300,6 +242,7 @@ void RDMarkerDialog::cancelData()
       return;
     }
   }
+  d_player->clearCut();
   done(false);
 }
 
@@ -330,9 +273,6 @@ void RDMarkerDialog::resizeEvent(QResizeEvent *e)
   d_time_in_button->setGeometry(5,74,80,50);
   d_time_out_button->setGeometry(5,124,80,50);
   d_time_fullout_button->setGeometry(5,174,80,50);
-
-  d_meter->setGeometry(380,398,
-		     d_meter->sizeHint().width(),d_meter->sizeHint().height());
 
   //
   // Readout Section
@@ -371,35 +311,10 @@ void RDMarkerDialog::resizeEvent(QResizeEvent *e)
   //
   // Transport Section
   //
-  d_overall_label->setGeometry(60,385,70,20);
-  d_overall_edit->setGeometry(60,400,70,21);
-  d_region_edit_label->setGeometry(158,385,70,20);
-  d_region_edit->setGeometry(158,400,70,21);
-  d_size_label->setGeometry(256,385,70,20);
-  d_size_edit->setGeometry(256,400,70,21);
-
-  d_play_cursor_button->setGeometry(20,425,65,45);
-  d_play_start_button->setGeometry(90,425,65,45);
-  d_pause_button->setGeometry(160,425,65,45);
-  d_stop_button->setGeometry(230,425,65,45);
-  d_loop_button->setGeometry(300,425,65,45);
+  d_player->setGeometry(2,2+d_marker_view->sizeHint().height(),
+			d_player->sizeHint().width(),
+			d_player->sizeHint().height());
 
   d_ok_button->setGeometry(w-180,h-60,80,50);
   d_cancel_button->setGeometry(w-90,h-60,80,50);
-}
-
-
-void RDMarkerDialog::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-
-  //
-  // Transport Control Area
-  //
-  p->setPen(QColor(palette().shadow().color()));
-  p->fillRect(11,30+RDMARKERDIALOG_WAVEFORM_HEIGHT,RDMARKERDIALOG_WAVEFORM_WIDTH,92,
-	      QColor(RDMARKERDIALOG_HIGHLIGHT_COLOR));
-  p->drawRect(11,30+RDMARKERDIALOG_WAVEFORM_HEIGHT,RDMARKERDIALOG_WAVEFORM_WIDTH,92);
-
-  delete p;
 }

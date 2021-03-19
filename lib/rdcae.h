@@ -44,7 +44,7 @@ class RDCae : public QObject
   void enableMetering(QList<int> *cards);
   bool loadPlay(int card,QString name,int *stream,int *handle);
   void unloadPlay(int handle);
-  void positionPlay(int handle,int pos);
+  void positionPlay(int handle,int msec);
   void play(int handle,unsigned length,int speed,bool pitch);
   void stopPlay(int handle);
   void loadRecord(int card,int stream,QString name,AudioCoding coding,
@@ -75,7 +75,7 @@ class RDCae : public QObject
  signals:
   void isConnected(bool state);
   void playLoaded(int handle);
-  void playPositioned(int handle,unsigned pos);
+  void playPositioned(int handle,unsigned msec);
   void playing(int handle);
   void playStopped(int handle);
   void playUnloaded(int handle);

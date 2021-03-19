@@ -28,6 +28,7 @@
 #include <QTimer>
 
 #include <rddialog.h>
+#include <rdmarkerplayer.h>
 #include <rdmarkerreadout.h>
 #include <rdmarkerview.h>
 #include <rdstereometer.h>
@@ -80,7 +81,6 @@ class RDMarkerDialog : public RDDialog
  protected:
   void closeEvent(QCloseEvent *e);
   void resizeEvent(QResizeEvent *e);
-  void paintEvent(QPaintEvent *e);
 
  private:
   RDMarkerView *d_marker_view;
@@ -95,19 +95,7 @@ class RDMarkerDialog : public RDDialog
   RDTransportButton *d_time_out_button;
   QPushButton *d_time_fullout_button;
 
-  //  QGroupBox *d_transport_group;
-  QLabel *d_overall_label;
-  QLineEdit *d_overall_edit;
-  QLabel *d_region_edit_label;
-  QLineEdit *d_region_edit;
-  QLabel *d_size_label;
-  QLineEdit *d_size_edit;
-  RDTransportButton *d_loop_button;
-  RDTransportButton *d_play_start_button;
-  RDTransportButton *d_play_cursor_button;
-  RDTransportButton *d_pause_button;
-  RDTransportButton *d_stop_button;
-  RDStereoMeter *d_meter;
+  RDMarkerPlayer *d_player;
 
   RDMarkerReadout *d_cut_readout;
   RDMarkerReadout *d_fadeup_readout;

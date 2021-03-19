@@ -3557,11 +3557,11 @@ Mínimo</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Posição</translation>
+        <translation type="obsolete">Posição</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Duração</translation>
+        <translation type="obsolete">Duração</translation>
     </message>
     <message>
         <source>Unsaved Changes</source>
@@ -3574,6 +3574,21 @@ Mínimo</translation>
     <message>
         <source>Do you want to save them?</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open cut in audio player!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RDMarkerPlayer</name>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished">Posição</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Duração</translation>
     </message>
 </context>
 <context>

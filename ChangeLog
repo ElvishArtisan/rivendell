@@ -21284,3 +21284,7 @@
 	in 'RDMarkerView'.
 2021-03-18 Fred Gleason <fredg@paravelsystems.com>
 	* Enabled marker swiping in 'RDMarkerView'.
+2021-03-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs with detecting unsaved changes in 'RDMarkerView'.
+2021-03-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDMarkerPlayer'.

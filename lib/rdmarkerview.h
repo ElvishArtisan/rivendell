@@ -21,6 +21,7 @@
 #ifndef RDMARKERVIEW_H
 #define RDMARKERVIEW_H
 
+#include <QGraphicsLineItem>
 #include <QGraphicsPolygonItem>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -86,18 +87,18 @@ class RDMarkerView : public QWidget
 			 const QPointF &pos);
   void updatePosition(RDMarkerHandle::PointerRole role,int ptr);
 
+ signals:
+  void positionClicked(int msec);
+  void pointerValueChanged(RDMarkerHandle::PointerRole role,int msec);
+
  public slots:
   void setAudioGain(int lvl);
   void setShrinkFactor(int sf);
   void setMaximumShrinkFactor();
   bool setCut(QString *err_msg,unsigned cartnum,int cutnum);
+  void setCursorPosition(unsigned msec);
   void save();
   void clear();
-  int Frame(int msec) const;
-  int Msec(int frame) const;
-
- signals:
-  void pointerValueChanged(RDMarkerHandle::PointerRole role,int msec);
 
  private slots:
   void updateMenuData();
@@ -114,6 +115,8 @@ class RDMarkerView : public QWidget
   void mousePressEvent(QMouseEvent *e);
 
  private:
+  int Frame(int msec) const;
+  int Msec(int frame) const;
   void InterlockMarkerPair(RDMarkerHandle::PointerRole start_marker);
   bool LoadCutData();
   void WriteWave();
@@ -140,6 +143,7 @@ class RDMarkerView : public QWidget
   bool d_has_unsaved_changes;
   int d_pointers[RDMarkerHandle::LastRole];
   RDMarkerHandle *d_handles[RDMarkerHandle::LastRole][2];
+  QGraphicsLineItem *d_cursor;
   int d_audio_end;
   QMenu *d_main_menu;
   QAction *d_add_fadedown_action;
