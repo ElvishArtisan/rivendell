@@ -21295,3 +21295,5 @@
 	* Fixed a bug in 'RDMarkerView' that caused an incorrect limit
 	stop to be applied to the 'Fade Down' marker after deletion of
 	the 'Fade Up' marker'.
+2021-03-20 Fred Gleason <fredg@paravelsystems.com>
+	* Got digital readouts working in 'RDMarkerPlayer'.

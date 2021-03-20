@@ -119,7 +119,7 @@ void RDMarkerHandle::mousePressEvent(QGraphicsSceneMouseEvent *e)
 	}
       }
     }
-    view->processLeftClick(d_role);
+    view->setSelectedMarker(d_role);
   }
 
   if(e->button()==Qt::RightButton) {
@@ -328,11 +328,11 @@ RDMarkerHandle::PointerType RDMarkerHandle::pointerType(RDMarkerHandle::PointerR
   case RDMarkerHandle::TalkStart:
   case RDMarkerHandle::SegueStart:
   case RDMarkerHandle::HookStart:
-  case RDMarkerHandle::CutEnd:
   case RDMarkerHandle::FadeDown:
     ret=RDMarkerHandle::Start;
     break;
 
+  case RDMarkerHandle::CutEnd:
   case RDMarkerHandle::TalkEnd:
   case RDMarkerHandle::SegueEnd:
   case RDMarkerHandle::HookEnd:
@@ -453,7 +453,7 @@ bool RDMarkerView::hasUnsavedChanges() const
 }
 
 
-void RDMarkerView::processLeftClick(RDMarkerHandle::PointerRole role)
+void RDMarkerView::setSelectedMarker(RDMarkerHandle::PointerRole role)
 {
   if(role!=d_selected_marker) {
     for(int i=0;i<RDMarkerHandle::LastRole;i++) {
@@ -781,8 +781,6 @@ void RDMarkerView::updateInterlocks()
   InterlockMarkerPair(RDMarkerHandle::SegueStart);
   InterlockMarkerPair(RDMarkerHandle::HookStart);
   InterlockFadeMarkerPair();
-
-  //  printf("d_right_margin: %d\n",d_right_margin);
 }
 
 
@@ -1024,11 +1022,13 @@ void RDMarkerView::DrawMarker(RDMarkerHandle::PointerType type,
     d_scene->addItem(m_item);
     m_item->setPos(LEFT_MARGIN+Frame(d_pointers[role]),handle_pos-12);
     d_handles[role][0]=m_item;
+    m_item->setSelected(d_selected_marker==role);
 
     m_item=new RDMarkerHandle(role,type,this);
     d_scene->addItem(m_item);
     m_item->setPos(LEFT_MARGIN+Frame(d_pointers[role]),d_height-handle_pos-8);
     d_handles[role][1]=m_item;
+    m_item->setSelected(d_selected_marker==role);
   }
 }
 

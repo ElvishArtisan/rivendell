@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include "rdconf.h"
 #include "rdmixer.h"
 #include "rdmarkerplayer.h"
 
@@ -42,33 +43,41 @@ RDMarkerPlayer::RDMarkerPlayer(int card,int port,QWidget *parent)
   //
   // Time Counters
   //
-  d_overall_label=new QLabel(tr("Position"),this);
-  d_overall_label->setFont(subLabelFont());
-  d_overall_label->setAlignment(Qt::AlignHCenter);
-  d_overall_label->
+  d_position_label=new QLabel(tr("Position"),this);
+  d_position_label->setFont(subLabelFont());
+  d_position_label->setAlignment(Qt::AlignCenter);
+  d_position_label->
     setPalette(QPalette(palette().color(QPalette::Background),
-			QColor(RDMARKERPLAYER_HIGHLIGHT_COLOR)));
-  d_overall_edit=new QLineEdit(this);
-  d_overall_edit->setAcceptDrops(false);
-  d_overall_edit->setReadOnly(true);
+  			QColor(RDMARKERPLAYER_HIGHLIGHT_COLOR)));
+  d_position_edit=new QLabel(this);
+  d_position_edit->setAcceptDrops(false);
+  d_position_edit->setAlignment(Qt::AlignCenter);
+  d_position_edit->
+    setStyleSheet("background-color: "+palette().color(QPalette::Base).name());
 
   d_region_edit_label=new QLabel("Region",this);
   d_region_edit_label->setFont(subLabelFont());
-  d_region_edit_label->setAlignment(Qt::AlignHCenter);
+  d_region_edit_label->setAlignment(Qt::AlignCenter);
   d_region_edit_label->
-    setPalette(QPalette(palette().color(QPalette::Background),QColor(RDMARKERPLAYER_HIGHLIGHT_COLOR)));
-  d_region_edit=new QLineEdit(this);
+    setPalette(QPalette(palette().color(QPalette::Background),
+			QColor(RDMARKERPLAYER_HIGHLIGHT_COLOR)));
+  d_region_edit=new QLabel(this);
   d_region_edit->setAcceptDrops(false);
-  d_region_edit->setReadOnly(true);
+  d_region_edit->setAlignment(Qt::AlignCenter);
+  d_region_edit->
+    setStyleSheet("background-color: "+palette().color(QPalette::Base).name());
 
-  d_size_label=new QLabel(tr("Length"),this);
-  d_size_label->setFont(subLabelFont());
-  d_size_label->setAlignment(Qt::AlignHCenter);
-  d_size_label->
-    setPalette(QPalette(palette().color(QPalette::Background),QColor(RDMARKERPLAYER_HIGHLIGHT_COLOR)));
-  d_size_edit=new QLineEdit(this);
-  d_size_edit->setAcceptDrops(false);
-  d_size_edit->setReadOnly(true);
+  d_length_label=new QLabel(tr("Length"),this);
+  d_length_label->setFont(subLabelFont());
+  d_length_label->setAlignment(Qt::AlignCenter);
+  d_length_label->
+    setPalette(QPalette(palette().color(QPalette::Background),
+			QColor(RDMARKERPLAYER_HIGHLIGHT_COLOR)));
+  d_length_edit=new QLabel(this);
+  d_length_edit->setAcceptDrops(false);
+  d_length_edit->setAlignment(Qt::AlignCenter);
+  d_length_edit->
+    setStyleSheet("background-color: "+palette().color(QPalette::Base).name());
 
   //
   // Transport Buttons
@@ -164,25 +173,29 @@ void RDMarkerPlayer::clearCut()
 
 void RDMarkerPlayer::setPlayPosition(int msec)
 {
+  rda->cae()->positionPlay(d_cae_handle,msec);
 }
 
 
 void RDMarkerPlayer::setPointerValue(RDMarkerHandle::PointerRole role,int ptr)
 {
-  d_pointers[role]=ptr;
+  if(ptr!=d_pointers[role]) {
+    d_pointers[role]=ptr;
+    UpdateReadouts();
+  }
 }
 
 
 void RDMarkerPlayer::setSelectedMarker(RDMarkerHandle::PointerRole role)
 {
-  if(d_selected_marker!=role) {
-    d_region_edit_label->
-      setStyleSheet("background-color: "+
-		    RDMarkerHandle::pointerRoleColor(role).name());
-    d_play_cursor_button->
-      setAccentColor(RDMarkerHandle::pointerRoleColor(role));
-    d_selected_marker=role;
-  }
+  d_region_edit_label->
+    setStyleSheet("background-color: "+
+		  RDMarkerHandle::pointerRoleColor(role).name());
+  d_play_cursor_button->
+    setAccentColor(RDMarkerHandle::pointerRoleColor(role));
+  d_selected_marker=role;
+
+  UpdateReadouts();
 }
 
 
@@ -197,13 +210,16 @@ void RDMarkerPlayer::playCursorData()
       rda->cae()->stopPlay(d_cae_handle);
     }
   }
+  printf("selected: %u\n",d_selected_marker);
   switch(RDMarkerHandle::pointerType(d_selected_marker)) {
   case RDMarkerHandle::Start:
+    printf("START\n");
     start=d_pointers[d_selected_marker];
     len=d_pointers[d_selected_marker+1]-d_pointers[d_selected_marker];
     break;
 
   case RDMarkerHandle::End:
+    printf("END\n");
     start=d_pointers[d_selected_marker]-2000;
     len=2000;
     if(start<0) {
@@ -212,6 +228,7 @@ void RDMarkerPlayer::playCursorData()
     }
     break;
   }
+  printf("start: %d  len: %d\n",start,len);
   rda->cae()->positionPlay(d_cae_handle,start);
   rda->cae()->play(d_cae_handle,len,100000,false);
   rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
@@ -310,6 +327,7 @@ void RDMarkerPlayer::caePausedData(int handle)
 void RDMarkerPlayer::caePositionData(int handle,unsigned msec)
 {
   if(handle==d_cae_handle) {
+    d_position_edit->setText(RDGetTimeLength(msec-d_pointers[RDMarkerHandle::CutStart],true,true));
     emit cursorPositionChanged(msec);
   }
 }
@@ -317,12 +335,12 @@ void RDMarkerPlayer::caePositionData(int handle,unsigned msec)
 
 void RDMarkerPlayer::resizeEvent(QResizeEvent *)
 {
-  d_overall_label->setGeometry(50,3,70,20);
-  d_overall_edit->setGeometry(50,18,70,21);
-  d_region_edit_label->setGeometry(148,3,70,20);
-  d_region_edit->setGeometry(148,18,70,21);
-  d_size_label->setGeometry(246,3,70,20);
-  d_size_edit->setGeometry(246,18,70,21);
+  d_position_label->setGeometry(50,3,70,16);
+  d_position_edit->setGeometry(50,20,70,18);
+  d_region_edit_label->setGeometry(148,3,70,16);
+  d_region_edit->setGeometry(148,20,70,18);
+  d_length_label->setGeometry(246,3,70,16);
+  d_length_edit->setGeometry(246,20,70,18);
 
   d_play_cursor_button->setGeometry(10,42,65,45);
   d_play_start_button->setGeometry(80,42,65,45);
@@ -348,4 +366,53 @@ void RDMarkerPlayer::paintEvent(QPaintEvent *e)
   p->drawRect(0,0,size().width(),size().height());
 
   delete p;
+}
+
+
+void RDMarkerPlayer::UpdateReadouts()
+{
+  //
+  // Region
+  //
+  switch(d_selected_marker) {
+  case RDMarkerHandle::CutStart:
+  case RDMarkerHandle::TalkStart:
+  case RDMarkerHandle::SegueStart:
+  case RDMarkerHandle::HookStart:
+    d_region_edit->
+      setText(RDGetTimeLength(d_pointers[d_selected_marker+1]-
+			      d_pointers[d_selected_marker],true,true));
+    break;
+
+  case RDMarkerHandle::CutEnd:
+  case RDMarkerHandle::TalkEnd:
+  case RDMarkerHandle::SegueEnd:
+  case RDMarkerHandle::HookEnd:
+    d_region_edit->
+      setText(RDGetTimeLength(d_pointers[d_selected_marker]-
+			      d_pointers[d_selected_marker-1],true,true));
+    break;
+
+  case RDMarkerHandle::FadeUp:
+    d_region_edit->
+      setText(RDGetTimeLength(d_pointers[d_selected_marker]-
+			      d_pointers[RDMarkerHandle::CutStart],true,true));
+    break;
+
+  case RDMarkerHandle::FadeDown:
+    d_region_edit->
+      setText(RDGetTimeLength(d_pointers[RDMarkerHandle::CutEnd]-
+			      d_pointers[d_selected_marker],true,true));
+    break;
+
+  case RDMarkerHandle::LastRole:
+    break;
+  }
+
+  //
+  // Length
+  //
+  d_length_edit->
+    setText(RDGetTimeLength(d_pointers[RDMarkerHandle::CutEnd]-
+			    d_pointers[RDMarkerHandle::CutStart],true,true));
 }

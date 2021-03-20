@@ -206,6 +206,8 @@ int RDMarkerDialog::exec(unsigned cartnum,int cutnum)
     d_player->setPointerValue(role,d_marker_view->pointerValue(role));
     d_player->setSelectedMarker(RDMarkerHandle::LastRole);
   }
+  d_marker_view->setSelectedMarker(RDMarkerHandle::CutStart);
+
   return QDialog::exec();
 }
 

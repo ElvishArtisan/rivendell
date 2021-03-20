@@ -92,7 +92,7 @@ class RDMarkerView : public QWidget
   RDMarkerHandle::PointerRole selectedMarker() const;
   bool hasUnsavedChanges() const;
 
-  void processLeftClick(RDMarkerHandle::PointerRole role);
+  void setSelectedMarker(RDMarkerHandle::PointerRole role);
   void processRightClick(RDMarkerHandle::PointerRole role,
 			 const QPointF &pos);
   void updatePosition(RDMarkerHandle::PointerRole role,int ptr);

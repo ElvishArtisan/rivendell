@@ -67,12 +67,16 @@ class RDMarkerPlayer : public RDWidget
   void paintEvent(QPaintEvent *e);
 
  private:
-  QLabel *d_overall_label;
-  QLineEdit *d_overall_edit;
+  void UpdateReadouts();
+  QLabel *d_position_label;
+  //  QLineEdit *d_position_edit;
+  QLabel *d_position_edit;
   QLabel *d_region_edit_label;
-  QLineEdit *d_region_edit;
-  QLabel *d_size_label;
-  QLineEdit *d_size_edit;
+  //  QLineEdit *d_region_edit;
+  QLabel *d_region_edit;
+  QLabel *d_length_label;
+  //  QLineEdit *d_length_edit;
+  QLabel *d_length_edit;
   RDTransportButton *d_play_cursor_button;
   RDTransportButton *d_play_start_button;
   RDTransportButton *d_active_play_button;
