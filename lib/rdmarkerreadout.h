@@ -38,6 +38,7 @@ class RDMarkerReadout : public RDWidget
 
  public slots:
   void setValue(RDMarkerHandle::PointerRole role,int value);
+  void setSelectedMarker(RDMarkerHandle::PointerRole role);
   void setEnabled(bool state);
   void setDisabled(bool state);
 
@@ -48,6 +49,7 @@ class RDMarkerReadout : public RDWidget
   QLabel *d_label;
   QList <QLabel *> d_edits;
   QList<RDMarkerHandle::PointerRole> d_roles;
+  RDMarkerHandle::PointerRole d_selected_marker;
 };
 
 

@@ -21288,3 +21288,6 @@
 	* Fixed bugs with detecting unsaved changes in 'RDMarkerView'.
 2021-03-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDMarkerPlayer'.
+2021-03-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDMarkerView' that transposed the handle direction
+	for the 'Fade Up' and 'Fade Down' markers.

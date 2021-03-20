@@ -22,7 +22,6 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
 #include <QPen>
-#include <QPolygonF>
 
 #include "rdescape_string.h"
 #include "rdmarkerview.h"
@@ -38,18 +37,18 @@ RDMarkerHandle::RDMarkerHandle(RDMarkerHandle::PointerRole role,
   d_marker_view=mkrview;
   d_x_diff=0;
 
-  QPolygonF triangle;
-
   switch(type) {
   case RDMarkerHandle::Start:
-    triangle << QPointF(0.0,0.0) << QPointF(-16,8) << QPointF(-16,-8);
+    d_triangle << QPointF(0.0,0.0) << QPointF(-16,8) << QPointF(-16,-8);
+    d_big_triangle << QPointF(0.0,0.0) << QPointF(-32,16) << QPointF(-32,-16);
     break;
 
   case RDMarkerHandle::End:
-    triangle << QPointF(0.0,0.0) << QPointF(16,8) << QPointF(16,-8);
+    d_triangle << QPointF(0.0,0.0) << QPointF(16,8) << QPointF(16,-8);
+    d_big_triangle << QPointF(0.0,0.0) << QPointF(32,16) << QPointF(32,-16);
     break;
   }
-  setPolygon(triangle);
+  setPolygon(d_triangle);
   setPen(QPen(RDMarkerHandle::pointerRoleColor(role)));
   setBrush(RDMarkerHandle::pointerRoleColor(role));
   d_name=RDMarkerHandle::pointerRoleTypeText(role);
@@ -84,6 +83,26 @@ void RDMarkerHandle::setMaximum(int pos,int ptr)
 }
 
 
+bool RDMarkerHandle::isSelected() const
+{
+  return d_is_selected;
+}
+
+
+void RDMarkerHandle::setSelected(bool state)
+{
+  if(d_is_selected!=state) {
+    if(state) {
+      setPolygon(d_big_triangle);
+    }
+    else {
+      setPolygon(d_triangle);
+    }
+    d_is_selected=state;
+  }
+}
+
+
 void RDMarkerHandle::mousePressEvent(QGraphicsSceneMouseEvent *e)
 {
   RDMarkerView *view=static_cast<RDMarkerView *>(d_marker_view);
@@ -100,6 +119,7 @@ void RDMarkerHandle::mousePressEvent(QGraphicsSceneMouseEvent *e)
 	}
       }
     }
+    view->processLeftClick(d_role);
   }
 
   if(e->button()==Qt::RightButton) {
@@ -148,6 +168,16 @@ void RDMarkerHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
   else {  // We're against a limit stop, so use the pointer value of the stop
     view->updatePosition(d_role,limit_ptr);
   }
+}
+
+
+void RDMarkerHandle::wheelEvent(QGraphicsSceneWheelEvent *e)
+{
+  /*
+  if((e->buttons()&Qt::MiddleButton)!=0) {
+    printf("wheelEvent(%d)\n",e->delta());
+  }
+  */
 }
 
 
@@ -289,6 +319,35 @@ QColor RDMarkerHandle::pointerRoleColor(RDMarkerHandle::PointerRole role)
 }
 
 
+RDMarkerHandle::PointerType RDMarkerHandle::pointerType(RDMarkerHandle::PointerRole role)
+{
+  RDMarkerHandle::PointerType ret=RDMarkerHandle::Start;
+
+  switch(role) {
+  case RDMarkerHandle::CutStart:
+  case RDMarkerHandle::TalkStart:
+  case RDMarkerHandle::SegueStart:
+  case RDMarkerHandle::HookStart:
+  case RDMarkerHandle::CutEnd:
+  case RDMarkerHandle::FadeDown:
+    ret=RDMarkerHandle::Start;
+    break;
+
+  case RDMarkerHandle::TalkEnd:
+  case RDMarkerHandle::SegueEnd:
+  case RDMarkerHandle::HookEnd:
+  case RDMarkerHandle::FadeUp:
+    ret=RDMarkerHandle::End;
+    break;
+
+  case RDMarkerHandle::LastRole:
+    break;
+  }
+
+  return ret;
+}
+
+
 RDMarkerView::RDMarkerView(int width,int height,QWidget *parent)
   : QWidget(parent)
 {
@@ -382,9 +441,31 @@ int RDMarkerView::pointerValue(RDMarkerHandle::PointerRole role)
 }
 
 
+RDMarkerHandle::PointerRole RDMarkerView::selectedMarker() const
+{
+  return d_selected_marker;
+}
+
+
 bool RDMarkerView::hasUnsavedChanges() const
 {
   return d_has_unsaved_changes;
+}
+
+
+void RDMarkerView::processLeftClick(RDMarkerHandle::PointerRole role)
+{
+  if(role!=d_selected_marker) {
+    for(int i=0;i<RDMarkerHandle::LastRole;i++) {
+      for(int j=0;j<2;j++) {
+	if(d_handles[i][j]!=NULL) {
+	  d_handles[i][j]->setSelected(role==(RDMarkerHandle::PointerRole)i);
+	}
+      }
+    }
+  }
+  d_selected_marker=role;
+  emit selectedMarkerChanged(role);
 }
 
 
@@ -521,6 +602,7 @@ void RDMarkerView::clear()
   d_audio_length=0;
   d_has_unsaved_changes=false;
   d_marker_menu_used=false;
+  d_selected_marker=RDMarkerHandle::LastRole;
 }
 
 
@@ -611,8 +693,9 @@ void RDMarkerView::addFadeupData()
 {
   d_pointers[RDMarkerHandle::FadeUp]=Msec(d_mouse_pos);
 
-  DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::FadeUp,80);
-  InterlockMarkerPair(RDMarkerHandle::FadeUp);
+  DrawMarker(RDMarkerHandle::End,RDMarkerHandle::FadeUp,80);
+  InterlockFadeMarkerPair();
+  //  InterlockMarkerPair(RDMarkerHandle::FadeUp);
 
   d_has_unsaved_changes=true;
 
@@ -625,8 +708,9 @@ void RDMarkerView::addFadedownData()
 {
   d_pointers[RDMarkerHandle::FadeDown]=Msec(d_mouse_pos);
 
-  DrawMarker(RDMarkerHandle::End,RDMarkerHandle::FadeDown,80);
-  InterlockMarkerPair(RDMarkerHandle::FadeUp);
+  DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::FadeDown,80);
+  InterlockFadeMarkerPair();
+  //  InterlockMarkerPair(RDMarkerHandle::FadeDown);
 
   d_has_unsaved_changes=true;
 
@@ -651,6 +735,7 @@ void RDMarkerView::updateInterlocks()
   //
   // Check for "swiped" markers and remove them
   //
+  /*
   for(int i=2;i<(RDMarkerHandle::LastRole);i++) {
     RDMarkerHandle::PointerRole role=(RDMarkerHandle::PointerRole)i;
     if((d_pointers[i]>=0)&&
@@ -679,7 +764,7 @@ void RDMarkerView::updateInterlocks()
       }
     }
   }
-
+  */
   //
   // Update the limit stops
   //
@@ -698,9 +783,55 @@ void RDMarkerView::updateInterlocks()
   InterlockMarkerPair(RDMarkerHandle::TalkStart);
   InterlockMarkerPair(RDMarkerHandle::SegueStart);
   InterlockMarkerPair(RDMarkerHandle::HookStart);
-  InterlockMarkerPair(RDMarkerHandle::FadeUp);
+  InterlockFadeMarkerPair();
 
   //  printf("d_right_margin: %d\n",d_right_margin);
+}
+
+
+void RDMarkerView::InterlockFadeMarkerPair()
+{
+  //
+  // FadeUp
+  //
+  for(int i=0;i<2;i++) {
+    if(d_handles[RDMarkerHandle::FadeUp][i]!=NULL) {
+      d_handles[RDMarkerHandle::FadeUp][i]->
+	setMinimum(d_handles[RDMarkerHandle::CutStart][i]->pos().x()-LEFT_MARGIN,
+		   d_pointers[RDMarkerHandle::CutStart]);
+      if(d_handles[RDMarkerHandle::FadeDown][i]!=NULL) {
+	d_handles[RDMarkerHandle::FadeUp][i]->
+	  setMaximum(d_handles[RDMarkerHandle::FadeDown][i]->pos().x()-LEFT_MARGIN,
+		   d_pointers[RDMarkerHandle::FadeDown]);
+      }
+      else {
+	d_handles[RDMarkerHandle::FadeUp][i]->
+	  setMaximum(d_handles[RDMarkerHandle::CutEnd][i]->pos().x()-LEFT_MARGIN,
+		     d_pointers[RDMarkerHandle::CutEnd]);	  
+      }
+    }
+  }
+
+  //
+  // FadeDown
+  //
+  for(int i=0;i<2;i++) {
+    if(d_handles[RDMarkerHandle::FadeDown][i]!=NULL) {
+      d_handles[RDMarkerHandle::FadeDown][i]->
+	setMaximum(d_handles[RDMarkerHandle::CutEnd][i]->pos().x()-LEFT_MARGIN,
+		   d_pointers[RDMarkerHandle::CutEnd]);
+      if(d_handles[RDMarkerHandle::FadeUp][i]!=NULL) {
+	d_handles[RDMarkerHandle::FadeDown][i]->
+	  setMinimum(d_handles[RDMarkerHandle::FadeUp][i]->pos().x()-LEFT_MARGIN,
+		   d_pointers[RDMarkerHandle::FadeUp]);
+      }
+      else {
+	d_handles[RDMarkerHandle::FadeUp][i]->
+	  setMinimum(d_handles[RDMarkerHandle::CutStart][i]->pos().x()-LEFT_MARGIN,
+		     d_pointers[RDMarkerHandle::CutStart]);	  
+      }
+    }
+  }
 }
 
 
@@ -858,8 +989,8 @@ void RDMarkerView::WriteWave()
   //
   // Markers
   //
-  DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::FadeUp,100);
-  DrawMarker(RDMarkerHandle::End,RDMarkerHandle::FadeDown,100);
+  DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::FadeDown,100);
+  DrawMarker(RDMarkerHandle::End,RDMarkerHandle::FadeUp,100);
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::HookStart,80);
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::HookEnd,80);
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::TalkStart,60);

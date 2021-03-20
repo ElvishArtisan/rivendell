@@ -27,6 +27,7 @@
 #include <QGraphicsView>
 #include <QList>
 #include <QMenu>
+#include <QPolygonF>
 
 #include <rdcut.h>
 #include <rdwavefactory.h>
@@ -39,7 +40,7 @@ class RDMarkerHandle : public QGraphicsPolygonItem
 		    TalkStart=2,TalkEnd=3,
 		    SegueStart=4,SegueEnd=5,
 		    HookStart=6,HookEnd=7,
-		    FadeUp=8,FadeDown=9,
+		    FadeDown=8,FadeUp=9,
 		    LastRole=10};
   RDMarkerHandle(RDMarkerHandle::PointerRole role,PointerType type,
 		 void *mkrview,QGraphicsItem *parent=nullptr);
@@ -47,18 +48,23 @@ class RDMarkerHandle : public QGraphicsPolygonItem
   PointerRole role() const;
   void setMinimum(int pos,int ptr);
   void setMaximum(int pos,int ptr);
+  bool isSelected() const;
+  void setSelected(bool state);
   static QString pointerRoleText(PointerRole role);
   static QString pointerRoleTypeText(PointerRole role);
   static QColor pointerRoleColor(PointerRole role);
+  static PointerType pointerType(PointerRole role);
 
  protected:
   void mousePressEvent(QGraphicsSceneMouseEvent *e);
   void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
+  void wheelEvent(QGraphicsSceneWheelEvent *e);
   void mouseReleaseEvent(QGraphicsSceneMouseEvent *e);
 
  private:
   QString d_name;
   PointerRole d_role;
+  bool d_is_selected;
   QList<QGraphicsItem *> d_peers;
   void *d_marker_view;
   int d_minimum_pos;
@@ -66,6 +72,8 @@ class RDMarkerHandle : public QGraphicsPolygonItem
   int d_maximum_pos;
   int d_maximum_ptr;
   int d_x_diff;
+  QPolygonF d_triangle;
+  QPolygonF d_big_triangle;
 };
 
 
@@ -81,8 +89,10 @@ class RDMarkerView : public QWidget
   unsigned sampleRate() const;
   int shrinkFactor() const;
   int pointerValue(RDMarkerHandle::PointerRole role);
+  RDMarkerHandle::PointerRole selectedMarker() const;
   bool hasUnsavedChanges() const;
 
+  void processLeftClick(RDMarkerHandle::PointerRole role);
   void processRightClick(RDMarkerHandle::PointerRole role,
 			 const QPointF &pos);
   void updatePosition(RDMarkerHandle::PointerRole role,int ptr);
@@ -90,6 +100,7 @@ class RDMarkerView : public QWidget
  signals:
   void positionClicked(int msec);
   void pointerValueChanged(RDMarkerHandle::PointerRole role,int msec);
+  void selectedMarkerChanged(RDMarkerHandle::PointerRole role);
 
  public slots:
   void setAudioGain(int lvl);
@@ -118,6 +129,8 @@ class RDMarkerView : public QWidget
   int Frame(int msec) const;
   int Msec(int frame) const;
   void InterlockMarkerPair(RDMarkerHandle::PointerRole start_marker);
+  void InterlockFadeMarkerPair();
+  //  void InterlockFadeUp();
   bool LoadCutData();
   void WriteWave();
   void DrawMarker(RDMarkerHandle::PointerType type,
@@ -154,6 +167,7 @@ class RDMarkerView : public QWidget
   QList<RDMarkerHandle::PointerRole> d_deleting_roles;
   QAction *d_delete_marker_action;
   bool d_marker_menu_used;
+  RDMarkerHandle::PointerRole d_selected_marker;
 };
 
 

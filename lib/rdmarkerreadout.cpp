@@ -28,6 +28,7 @@ RDMarkerReadout::RDMarkerReadout(RDMarkerHandle::PointerRole role,
   : RDWidget(parent)
 {
   d_roles.push_back(role);
+  d_selected_marker=RDMarkerHandle::LastRole;
 
   d_label=new QLabel(RDMarkerHandle::pointerRoleText(role),this);
   d_label->setAlignment(Qt::AlignCenter);
@@ -83,7 +84,8 @@ RDMarkerReadout::~RDMarkerReadout()
 
 QSize RDMarkerReadout::sizeHint() const
 {
-  return QSize(60,20+20*d_edits.size());
+  return QSize(labelFontMetrics()->width("00:00:00")+10,20+20*d_edits.size());
+  //  return QSize(60,20+20*d_edits.size());
 }
 
 
@@ -105,6 +107,42 @@ void RDMarkerReadout::setValue(RDMarkerHandle::PointerRole role,int value)
       }
       setEnabled(value>=0);
     }
+  }
+}
+
+
+void RDMarkerReadout::setSelectedMarker(RDMarkerHandle::PointerRole role)
+{
+  if(d_selected_marker!=role) {
+    for(int i=0;i<d_edits.size();i++) {
+      d_edits.at(i)->setFont(defaultFont());
+    }
+    if(d_roles.contains(role)) {
+      switch(role) {
+      case RDMarkerHandle::CutStart:
+      case RDMarkerHandle::TalkStart:
+      case RDMarkerHandle::SegueStart:
+      case RDMarkerHandle::HookStart:
+	d_edits.at(0)->setFont(labelFont());
+	break;
+
+      case RDMarkerHandle::CutEnd:
+      case RDMarkerHandle::TalkEnd:
+      case RDMarkerHandle::SegueEnd:
+      case RDMarkerHandle::HookEnd:
+	d_edits.at(1)->setFont(labelFont());
+	break;
+
+      case RDMarkerHandle::FadeUp:
+      case RDMarkerHandle::FadeDown:
+	d_edits.at(0)->setFont(labelFont());
+	break;
+
+      case RDMarkerHandle::LastRole:
+	break;
+      }
+    }
+    d_selected_marker=role;
   }
 }
 

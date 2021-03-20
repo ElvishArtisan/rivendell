@@ -81,6 +81,9 @@ RDMarkerDialog::RDMarkerDialog(const QString &caption,int card,int port,
   connect(d_marker_view,
 	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
 	  d_player,SLOT(setPointerValue(RDMarkerHandle::PointerRole,int)));
+  connect(d_marker_view,
+	  SIGNAL(selectedMarkerChanged(RDMarkerHandle::PointerRole)),
+	  d_player,SLOT(setSelectedMarker(RDMarkerHandle::PointerRole)));
 
   //
   // Marker Readouts
@@ -89,32 +92,52 @@ RDMarkerDialog::RDMarkerDialog(const QString &caption,int card,int port,
   connect(d_marker_view,
 	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
 	  d_cut_readout,SLOT(setValue(RDMarkerHandle::PointerRole,int)));
+  connect(d_marker_view,
+	  SIGNAL(selectedMarkerChanged(RDMarkerHandle::PointerRole)),
+	  d_cut_readout,SLOT(setSelectedMarker(RDMarkerHandle::PointerRole)));
   d_cut_readout->setEnabled(true);
 
   d_talk_readout=new RDMarkerReadout(RDMarkerHandle::TalkStart,this);
   connect(d_marker_view,
 	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
 	  d_talk_readout,SLOT(setValue(RDMarkerHandle::PointerRole,int)));
+  connect(d_marker_view,
+	  SIGNAL(selectedMarkerChanged(RDMarkerHandle::PointerRole)),
+	  d_talk_readout,SLOT(setSelectedMarker(RDMarkerHandle::PointerRole)));
 
   d_segue_readout=new RDMarkerReadout(RDMarkerHandle::SegueStart,this);
   connect(d_marker_view,
 	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
 	  d_segue_readout,SLOT(setValue(RDMarkerHandle::PointerRole,int)));
+  connect(d_marker_view,
+	  SIGNAL(selectedMarkerChanged(RDMarkerHandle::PointerRole)),
+	  d_segue_readout,SLOT(setSelectedMarker(RDMarkerHandle::PointerRole)));
 
   d_hook_readout=new RDMarkerReadout(RDMarkerHandle::HookStart,this);
   connect(d_marker_view,
 	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
 	  d_hook_readout,SLOT(setValue(RDMarkerHandle::PointerRole,int)));
+  connect(d_marker_view,
+	  SIGNAL(selectedMarkerChanged(RDMarkerHandle::PointerRole)),
+	  d_hook_readout,SLOT(setSelectedMarker(RDMarkerHandle::PointerRole)));
 
   d_fadeup_readout=new RDMarkerReadout(RDMarkerHandle::FadeUp,this);
   connect(d_marker_view,
 	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
 	  d_fadeup_readout,SLOT(setValue(RDMarkerHandle::PointerRole,int)));
+  connect(d_marker_view,
+	  SIGNAL(selectedMarkerChanged(RDMarkerHandle::PointerRole)),
+	  d_fadeup_readout,
+	  SLOT(setSelectedMarker(RDMarkerHandle::PointerRole)));
 
   d_fadedown_readout=new RDMarkerReadout(RDMarkerHandle::FadeDown,this);
   connect(d_marker_view,
 	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
 	  d_fadedown_readout,SLOT(setValue(RDMarkerHandle::PointerRole,int)));
+  connect(d_marker_view,
+	  SIGNAL(selectedMarkerChanged(RDMarkerHandle::PointerRole)),
+	  d_fadedown_readout,
+	  SLOT(setSelectedMarker(RDMarkerHandle::PointerRole)));
 
   /**************************************************************************
    * Navigation Section
@@ -169,12 +192,19 @@ int RDMarkerDialog::exec(unsigned cartnum,int cutnum)
   for(int i=0;i<RDMarkerHandle::LastRole;i++) {
     RDMarkerHandle::PointerRole role=(RDMarkerHandle::PointerRole)i;
     d_cut_readout->setValue(role,d_marker_view->pointerValue(role));
+    d_cut_readout->setSelectedMarker(RDMarkerHandle::LastRole);
     d_talk_readout->setValue(role,d_marker_view->pointerValue(role));
+    d_talk_readout->setSelectedMarker(RDMarkerHandle::LastRole);
     d_segue_readout->setValue(role,d_marker_view->pointerValue(role));
+    d_segue_readout->setSelectedMarker(RDMarkerHandle::LastRole);
     d_hook_readout->setValue(role,d_marker_view->pointerValue(role));
+    d_hook_readout->setSelectedMarker(RDMarkerHandle::LastRole);
     d_fadeup_readout->setValue(role,d_marker_view->pointerValue(role));
+    d_fadeup_readout->setSelectedMarker(RDMarkerHandle::LastRole);
     d_fadedown_readout->setValue(role,d_marker_view->pointerValue(role));
+    d_fadedown_readout->setSelectedMarker(RDMarkerHandle::LastRole);
     d_player->setPointerValue(role,d_marker_view->pointerValue(role));
+    d_player->setSelectedMarker(RDMarkerHandle::LastRole);
   }
   return QDialog::exec();
 }

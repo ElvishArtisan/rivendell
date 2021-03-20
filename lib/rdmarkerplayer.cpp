@@ -173,28 +173,75 @@ void RDMarkerPlayer::setPointerValue(RDMarkerHandle::PointerRole role,int ptr)
 }
 
 
+void RDMarkerPlayer::setSelectedMarker(RDMarkerHandle::PointerRole role)
+{
+  if(d_selected_marker!=role) {
+    d_region_edit_label->
+      setStyleSheet("background-color: "+
+		    RDMarkerHandle::pointerRoleColor(role).name());
+    d_play_cursor_button->
+      setAccentColor(RDMarkerHandle::pointerRoleColor(role));
+    d_selected_marker=role;
+  }
+}
+
+
 void RDMarkerPlayer::playCursorData()
 {
+  d_active_play_button=d_play_cursor_button;
+
+  int start=0;
+  int len=0;
+  if(d_cae_handle>=0) {
+    if(d_is_playing) {
+      rda->cae()->stopPlay(d_cae_handle);
+    }
+  }
+  switch(RDMarkerHandle::pointerType(d_selected_marker)) {
+  case RDMarkerHandle::Start:
+    start=d_pointers[d_selected_marker];
+    len=d_pointers[d_selected_marker+1]-d_pointers[d_selected_marker];
+    break;
+
+  case RDMarkerHandle::End:
+    start=d_pointers[d_selected_marker]-2000;
+    len=2000;
+    if(start<0) {
+      start=0;
+      len=d_pointers[d_selected_marker];
+    }
+    break;
+  }
+  rda->cae()->positionPlay(d_cae_handle,start);
+  rda->cae()->play(d_cae_handle,len,100000,false);
+  rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
+  // FIXME: Implement variable gain here!
+  rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,0);
+  //    rda->cae()->
+  //      setOutputVolume(d_cards.first(),d_cae_stream,d_port,0+edit_gain_control->value());
+  d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
 }
 
 
 void RDMarkerPlayer::playStartData()
 {
+  d_active_play_button=d_play_start_button;
+
   if(d_cae_handle>=0) {
     if(d_is_playing) {
       rda->cae()->stopPlay(d_cae_handle);
     }
-    rda->cae()->positionPlay(d_cae_handle,d_pointers[RDMarkerHandle::CutStart]);
-    rda->cae()->play(d_cae_handle,
-		     d_pointers[RDMarkerHandle::CutEnd]-
-		     d_pointers[RDMarkerHandle::CutStart],100000,false);
-    rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
-    // FIXME: Implement variable gain here!
-    rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,0);
-    //    rda->cae()->
-    //      setOutputVolume(d_cards.first(),d_cae_stream,d_port,0+edit_gain_control->value());
-    d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
   }
+  rda->cae()->positionPlay(d_cae_handle,d_pointers[RDMarkerHandle::CutStart]);
+  rda->cae()->play(d_cae_handle,
+		   d_pointers[RDMarkerHandle::CutEnd]-
+		   d_pointers[RDMarkerHandle::CutStart],100000,false);
+  rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
+  // FIXME: Implement variable gain here!
+  rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,0);
+  //    rda->cae()->
+  //      setOutputVolume(d_cards.first(),d_cae_stream,d_port,0+edit_gain_control->value());
+  d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
 }
 
 
@@ -232,7 +279,7 @@ void RDMarkerPlayer::caePlayedData(int handle)
 {
   if(handle==d_cae_handle) {
     if(!d_is_playing) {
-      d_play_start_button->setState(RDTransportButton::On);
+      d_active_play_button->setState(RDTransportButton::On);
       d_pause_button->setState(RDTransportButton::Off);
       d_stop_button->setState(RDTransportButton::Off);
       d_is_playing=true;
@@ -250,6 +297,7 @@ void RDMarkerPlayer::caePausedData(int handle)
 	d_meter->setLeftPeakBar(-10000);
 	d_meter->setRightPeakBar(-10000);
       }
+      d_play_cursor_button->setState(RDTransportButton::Off);
       d_play_start_button->setState(RDTransportButton::Off);
       d_pause_button->setState(RDTransportButton::Off);
       d_stop_button->setState(RDTransportButton::On);

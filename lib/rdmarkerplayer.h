@@ -46,6 +46,7 @@ class RDMarkerPlayer : public RDWidget
  public slots:
   void setPlayPosition(int msec);
   void setPointerValue(RDMarkerHandle::PointerRole role,int ptr);
+  void setSelectedMarker(RDMarkerHandle::PointerRole role);
 
  signals:
   void cursorPositionChanged(unsigned msec);
@@ -74,6 +75,7 @@ class RDMarkerPlayer : public RDWidget
   QLineEdit *d_size_edit;
   RDTransportButton *d_play_cursor_button;
   RDTransportButton *d_play_start_button;
+  RDTransportButton *d_active_play_button;
   RDTransportButton *d_pause_button;
   RDTransportButton *d_stop_button;
   RDTransportButton *d_loop_button;
@@ -84,6 +86,7 @@ class RDMarkerPlayer : public RDWidget
   int d_cae_stream;
   int d_cae_handle;
   bool d_is_playing;
+  RDMarkerHandle::PointerRole d_selected_marker;
 
   int d_pointers[RDMarkerHandle::LastRole];
 };
