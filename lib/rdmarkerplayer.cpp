@@ -82,37 +82,36 @@ RDMarkerPlayer::RDMarkerPlayer(int card,int port,QWidget *parent)
   //
   // Transport Buttons
   //
-  d_play_cursor_button=
-    new RDTransportButton(RDTransportButton::PlayBetween,this);
-  d_play_cursor_button->setFocusPolicy(Qt::NoFocus);
-  d_play_cursor_button->setEnabled((d_cards.first()>=0)&&(d_port>=0));
-  connect(d_play_cursor_button,SIGNAL(clicked()),
-  	  this,SLOT(playCursorData()));
-
-  d_play_start_button=
+  d_play_button=
     new RDTransportButton(RDTransportButton::Play,this);
-  d_play_start_button->setFocusPolicy(Qt::NoFocus);
-  d_play_start_button->setEnabled((d_cards.first()>=0)&&(d_port>=0));
-  connect(d_play_start_button,SIGNAL(clicked()),
-  	  this,SLOT(playStartData()));
+  d_play_button->setFocusPolicy(Qt::NoFocus);
+  d_play_button->setEnabled((d_cards.first()>=0)&&(d_port>=0));
+  connect(d_play_button,SIGNAL(clicked()),
+  	  this,SLOT(buttonPlayData()));
 
-  d_pause_button=new RDTransportButton(RDTransportButton::Pause,this);
-  d_pause_button->setFocusPolicy(Qt::NoFocus);
-  d_pause_button->setOnColor(QColor(Qt::red));
-  d_pause_button->setEnabled((d_cards.first()>=0)&&(d_port>=0));
-  connect(d_pause_button,SIGNAL(clicked()),this,SLOT(pauseData()));
+  d_play_from_button=
+    new RDTransportButton(RDTransportButton::PlayFrom,this);
+  d_play_from_button->setFocusPolicy(Qt::NoFocus);
+  d_play_from_button->setEnabled((d_cards.first()>=0)&&(d_port>=0));
+  connect(d_play_from_button,SIGNAL(clicked()),
+  	  this,SLOT(buttonPlayFromData()));
+
+  d_play_to_button=new RDTransportButton(RDTransportButton::PlayTo,this);
+  d_play_to_button->setFocusPolicy(Qt::NoFocus);
+  d_play_to_button->setEnabled((d_cards.first()>=0)&&(d_port>=0));
+  connect(d_play_to_button,SIGNAL(clicked()),this,SLOT(buttonPlayToData()));
 
   d_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
   d_stop_button->setFocusPolicy(Qt::NoFocus);
   d_stop_button->on();
   d_stop_button->setOnColor(QColor(Qt::red));
   d_stop_button->setEnabled((d_cards.first()>=0)&&(d_port>=0));
-  connect(d_stop_button,SIGNAL(clicked()),this,SLOT(stopData()));
+  connect(d_stop_button,SIGNAL(clicked()),this,SLOT(buttonStopData()));
 
   d_loop_button=new RDTransportButton(RDTransportButton::Loop,this);
   d_loop_button->off();
   d_loop_button->setEnabled((d_cards.first()>=0)&&(d_port>=0));
-  connect(d_loop_button,SIGNAL(clicked()),this,SLOT(loopData()));
+  connect(d_loop_button,SIGNAL(clicked()),this,SLOT(buttonLoopData()));
 
   //
   // The Audio Meter
@@ -186,70 +185,36 @@ void RDMarkerPlayer::setPointerValue(RDMarkerHandle::PointerRole role,int ptr)
 }
 
 
-void RDMarkerPlayer::setSelectedMarker(RDMarkerHandle::PointerRole role)
+void RDMarkerPlayer::setSelectedMarkers(RDMarkerHandle::PointerRole start_role,
+					RDMarkerHandle::PointerRole end_role)
 {
+  QColor color=RDMarkerHandle::pointerRoleColor(start_role);
+  if(start_role==RDMarkerHandle::LastRole) {
+    color=RDMarkerHandle::pointerRoleColor(end_role);
+  }
   d_region_edit_label->
-    setStyleSheet("background-color: "+
-		  RDMarkerHandle::pointerRoleColor(role).name());
-  d_play_cursor_button->
-    setAccentColor(RDMarkerHandle::pointerRoleColor(role));
-  d_selected_marker=role;
+    setStyleSheet("background-color: "+color.name());
+  d_play_from_button->setAccentColor(color);
+  d_play_to_button->setAccentColor(color);
+  d_selected_markers[0]=start_role;
+  d_selected_markers[1]=end_role;
+
+  d_play_from_button->setDisabled(start_role==RDMarkerHandle::LastRole);
+  d_play_to_button->setDisabled(end_role==RDMarkerHandle::LastRole);
 
   UpdateReadouts();
 }
 
 
-void RDMarkerPlayer::playCursorData()
+void RDMarkerPlayer::buttonPlayData()
 {
-  d_active_play_button=d_play_cursor_button;
-
-  int start=0;
-  int len=0;
-  if(d_cae_handle>=0) {
-    if(d_is_playing) {
-      rda->cae()->stopPlay(d_cae_handle);
-    }
-  }
-  printf("selected: %u\n",d_selected_marker);
-  switch(RDMarkerHandle::pointerType(d_selected_marker)) {
-  case RDMarkerHandle::Start:
-    printf("START\n");
-    start=d_pointers[d_selected_marker];
-    len=d_pointers[d_selected_marker+1]-d_pointers[d_selected_marker];
-    break;
-
-  case RDMarkerHandle::End:
-    printf("END\n");
-    start=d_pointers[d_selected_marker]-2000;
-    len=2000;
-    if(start<0) {
-      start=0;
-      len=d_pointers[d_selected_marker];
-    }
-    break;
-  }
-  printf("start: %d  len: %d\n",start,len);
-  rda->cae()->positionPlay(d_cae_handle,start);
-  rda->cae()->play(d_cae_handle,len,100000,false);
-  rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
-  // FIXME: Implement variable gain here!
-  rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,0);
-  //    rda->cae()->
-  //      setOutputVolume(d_cards.first(),d_cae_stream,d_port,0+edit_gain_control->value());
-  d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
-}
-
-
-void RDMarkerPlayer::playStartData()
-{
-  d_active_play_button=d_play_start_button;
+  d_active_play_button=d_play_button;
 
   if(d_cae_handle>=0) {
     if(d_is_playing) {
       rda->cae()->stopPlay(d_cae_handle);
     }
   }
-  rda->cae()->positionPlay(d_cae_handle,d_pointers[RDMarkerHandle::CutStart]);
   rda->cae()->play(d_cae_handle,
 		   d_pointers[RDMarkerHandle::CutEnd]-
 		   d_pointers[RDMarkerHandle::CutStart],100000,false);
@@ -262,12 +227,55 @@ void RDMarkerPlayer::playStartData()
 }
 
 
-void RDMarkerPlayer::pauseData()
+void RDMarkerPlayer::buttonPlayFromData()
 {
+  d_active_play_button=d_play_from_button;
+  if(d_cae_handle>=0) {
+    if(d_is_playing) {
+      rda->cae()->stopPlay(d_cae_handle);
+    }
+  }
+  if(d_selected_markers[RDMarkerHandle::Start]!=RDMarkerHandle::LastRole) {
+    rda->cae()->positionPlay(d_cae_handle,d_pointers[d_selected_markers[0]]);
+    rda->cae()->play(d_cae_handle,0,100000,false);
+    rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
+    // FIXME: Implement variable gain here!
+    rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,0);
+    //    rda->cae()->
+    //      setOutputVolume(d_cards.first(),d_cae_stream,d_port,0+edit_gain_control->value());
+    d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
+  }
 }
 
 
-void RDMarkerPlayer::stopData()
+void RDMarkerPlayer::buttonPlayToData()
+{
+  d_active_play_button=d_play_to_button;
+  if(d_cae_handle>=0) {
+    if(d_is_playing) {
+      rda->cae()->stopPlay(d_cae_handle);
+    }
+  }
+  if(d_selected_markers[RDMarkerHandle::End]!=RDMarkerHandle::LastRole) {
+    int start=d_pointers[d_selected_markers[1]]-2000;
+    int len=2000;
+    if(start<0) {
+      start=0;
+      len=d_selected_markers[1];
+    }
+    rda->cae()->positionPlay(d_cae_handle,start);
+    rda->cae()->play(d_cae_handle,len,100000,false);
+    rda->cae()->setPlayPortActive(d_cards.first(),d_port,d_cae_stream);
+    // FIXME: Implement variable gain here!
+    rda->cae()->setOutputVolume(d_cards.first(),d_cae_stream,d_port,0);
+    //    rda->cae()->
+    //      setOutputVolume(d_cards.first(),d_cae_stream,d_port,0+edit_gain_control->value());
+    d_meter_timer->start(RD_METER_UPDATE_INTERVAL);
+  }
+}
+
+
+void RDMarkerPlayer::buttonStopData()
 {
   if(d_cae_handle>=0) {
     if(d_is_playing) {
@@ -277,7 +285,7 @@ void RDMarkerPlayer::stopData()
 }
 
 
-void RDMarkerPlayer::loopData()
+void RDMarkerPlayer::buttonLoopData()
 {
 }
 
@@ -297,7 +305,6 @@ void RDMarkerPlayer::caePlayedData(int handle)
   if(handle==d_cae_handle) {
     if(!d_is_playing) {
       d_active_play_button->setState(RDTransportButton::On);
-      d_pause_button->setState(RDTransportButton::Off);
       d_stop_button->setState(RDTransportButton::Off);
       d_is_playing=true;
     }
@@ -314,9 +321,9 @@ void RDMarkerPlayer::caePausedData(int handle)
 	d_meter->setLeftPeakBar(-10000);
 	d_meter->setRightPeakBar(-10000);
       }
-      d_play_cursor_button->setState(RDTransportButton::Off);
-      d_play_start_button->setState(RDTransportButton::Off);
-      d_pause_button->setState(RDTransportButton::Off);
+      d_play_from_button->setState(RDTransportButton::Off);
+      d_play_button->setState(RDTransportButton::Off);
+      d_play_to_button->setState(RDTransportButton::Off);
       d_stop_button->setState(RDTransportButton::On);
       d_is_playing=false;
     }
@@ -342,9 +349,9 @@ void RDMarkerPlayer::resizeEvent(QResizeEvent *)
   d_length_label->setGeometry(246,3,70,16);
   d_length_edit->setGeometry(246,20,70,18);
 
-  d_play_cursor_button->setGeometry(10,42,65,45);
-  d_play_start_button->setGeometry(80,42,65,45);
-  d_pause_button->setGeometry(150,42,65,45);
+  d_play_button->setGeometry(10,42,65,45);
+  d_play_from_button->setGeometry(80,42,65,45);
+  d_play_to_button->setGeometry(150,42,65,45);
   d_stop_button->setGeometry(220,42,65,45);
   d_loop_button->setGeometry(290,42,65,45);
 
@@ -374,38 +381,37 @@ void RDMarkerPlayer::UpdateReadouts()
   //
   // Region
   //
-  switch(d_selected_marker) {
+  switch(d_selected_markers[0]) {
   case RDMarkerHandle::CutStart:
   case RDMarkerHandle::TalkStart:
   case RDMarkerHandle::SegueStart:
   case RDMarkerHandle::HookStart:
     d_region_edit->
-      setText(RDGetTimeLength(d_pointers[d_selected_marker+1]-
-			      d_pointers[d_selected_marker],true,true));
+      setText(RDGetTimeLength(d_pointers[d_selected_markers[1]]-
+			      d_pointers[d_selected_markers[0]],true,true));
     break;
 
   case RDMarkerHandle::CutEnd:
   case RDMarkerHandle::TalkEnd:
   case RDMarkerHandle::SegueEnd:
   case RDMarkerHandle::HookEnd:
-    d_region_edit->
-      setText(RDGetTimeLength(d_pointers[d_selected_marker]-
-			      d_pointers[d_selected_marker-1],true,true));
-    break;
-
-  case RDMarkerHandle::FadeUp:
-    d_region_edit->
-      setText(RDGetTimeLength(d_pointers[d_selected_marker]-
-			      d_pointers[RDMarkerHandle::CutStart],true,true));
     break;
 
   case RDMarkerHandle::FadeDown:
     d_region_edit->
       setText(RDGetTimeLength(d_pointers[RDMarkerHandle::CutEnd]-
-			      d_pointers[d_selected_marker],true,true));
+			      d_pointers[d_selected_markers[0]],true,true));
     break;
 
   case RDMarkerHandle::LastRole:
+    if(d_selected_markers[1]==RDMarkerHandle::FadeUp) {
+      d_region_edit->
+	setText(RDGetTimeLength(d_pointers[d_selected_markers[1]]-
+       			d_pointers[RDMarkerHandle::CutStart],true,true));
+    }
+    break;
+
+  case RDMarkerHandle::FadeUp:
     break;
   }
 

@@ -442,9 +442,10 @@ int RDMarkerView::pointerValue(RDMarkerHandle::PointerRole role)
 }
 
 
-RDMarkerHandle::PointerRole RDMarkerView::selectedMarker() const
+RDMarkerHandle::PointerRole 
+RDMarkerView::selectedMarker(RDMarkerHandle::PointerType type) const
 {
-  return d_selected_marker;
+  return d_selected_markers[type];
 }
 
 
@@ -456,17 +457,59 @@ bool RDMarkerView::hasUnsavedChanges() const
 
 void RDMarkerView::setSelectedMarker(RDMarkerHandle::PointerRole role)
 {
-  if(role!=d_selected_marker) {
-    for(int i=0;i<RDMarkerHandle::LastRole;i++) {
-      for(int j=0;j<2;j++) {
-	if(d_handles[i][j]!=NULL) {
-	  d_handles[i][j]->setSelected(role==(RDMarkerHandle::PointerRole)i);
+  switch(role) {
+  case RDMarkerHandle::CutEnd:
+  case RDMarkerHandle::TalkEnd:
+  case RDMarkerHandle::SegueEnd:
+  case RDMarkerHandle::HookEnd:
+    d_selected_markers[0]=(RDMarkerHandle::PointerRole)((int)role-1);
+    d_selected_markers[1]=role;
+    break;
+
+  case RDMarkerHandle::CutStart:
+  case RDMarkerHandle::TalkStart:
+  case RDMarkerHandle::SegueStart:
+  case RDMarkerHandle::HookStart:
+    d_selected_markers[0]=role;
+    d_selected_markers[1]=(RDMarkerHandle::PointerRole)((int)role+1);
+    break;
+
+  case RDMarkerHandle::FadeUp:
+    d_selected_markers[0]=RDMarkerHandle::LastRole;
+    d_selected_markers[1]=RDMarkerHandle::FadeUp;
+    break;
+
+  case RDMarkerHandle::FadeDown:
+    if(role!=d_selected_markers[0]) {
+      for(int i=0;i<RDMarkerHandle::LastRole;i++) {
+	for(int j=0;j<2;j++) {
+	  if(d_handles[i][j]!=NULL) {
+	    d_handles[i][j]->
+	      setSelected(role==(RDMarkerHandle::PointerRole)i);
+	  }
 	}
       }
     }
+    d_selected_markers[0]=RDMarkerHandle::FadeDown;
+    d_selected_markers[1]=RDMarkerHandle::LastRole;
+    break;
+
+  case RDMarkerHandle::LastRole:
+    d_selected_markers[0]=RDMarkerHandle::LastRole;
+    d_selected_markers[1]=RDMarkerHandle::LastRole;
+    break;
   }
-  d_selected_marker=role;
-  emit selectedMarkerChanged(role);
+  for(int i=0;i<RDMarkerHandle::LastRole;i+=2) {
+    for(int j=0;j<2;j++) {
+      if(d_handles[i][j]!=NULL) {
+	d_handles[i][j]->
+	  setSelected(d_selected_markers[0]==(RDMarkerHandle::PointerRole)i);
+	d_handles[i+1][j]->
+	  setSelected(d_selected_markers[1]==(RDMarkerHandle::PointerRole)i+1);
+      }
+    }
+  }
+  emit selectedMarkersChanged(d_selected_markers[0],d_selected_markers[1]);
 }
 
 
@@ -604,7 +647,8 @@ void RDMarkerView::clear()
   d_audio_length=0;
   d_has_unsaved_changes=false;
   d_marker_menu_used=false;
-  d_selected_marker=RDMarkerHandle::LastRole;
+  d_selected_markers[0]=RDMarkerHandle::LastRole;
+  d_selected_markers[1]=RDMarkerHandle::LastRole;
 }
 
 
@@ -925,7 +969,6 @@ void RDMarkerView::mousePressEvent(QMouseEvent *e)
 void RDMarkerView::wheelEvent(QWheelEvent *e)
 {
   d_wheel_angle+=e->angleDelta().y();
-  //  printf("Angle: %d\n",d_wheel_angle);
 
   if(d_wheel_angle>=360) {
     if(shrinkFactor()>1) {
@@ -1039,13 +1082,15 @@ void RDMarkerView::DrawMarker(RDMarkerHandle::PointerType type,
     d_scene->addItem(m_item);
     m_item->setPos(LEFT_MARGIN+Frame(d_pointers[role]),handle_pos-12);
     d_handles[role][0]=m_item;
-    m_item->setSelected(d_selected_marker==role);
+    m_item->
+      setSelected((d_selected_markers[0]==role)||(d_selected_markers[1]==role));
 
     m_item=new RDMarkerHandle(role,type,this);
     d_scene->addItem(m_item);
     m_item->setPos(LEFT_MARGIN+Frame(d_pointers[role]),d_height-handle_pos-8);
     d_handles[role][1]=m_item;
-    m_item->setSelected(d_selected_marker==role);
+    m_item->
+      setSelected((d_selected_markers[0]==role)||(d_selected_markers[1]==role));
   }
 }
 

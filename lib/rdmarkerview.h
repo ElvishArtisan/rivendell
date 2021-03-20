@@ -89,7 +89,8 @@ class RDMarkerView : public QWidget
   unsigned sampleRate() const;
   int shrinkFactor() const;
   int pointerValue(RDMarkerHandle::PointerRole role);
-  RDMarkerHandle::PointerRole selectedMarker() const;
+  RDMarkerHandle::PointerRole selectedMarker(RDMarkerHandle::PointerType type)
+    const;
   bool hasUnsavedChanges() const;
 
   void setSelectedMarker(RDMarkerHandle::PointerRole role);
@@ -100,7 +101,8 @@ class RDMarkerView : public QWidget
  signals:
   void positionClicked(int msec);
   void pointerValueChanged(RDMarkerHandle::PointerRole role,int msec);
-  void selectedMarkerChanged(RDMarkerHandle::PointerRole role);
+  void selectedMarkersChanged(RDMarkerHandle::PointerRole start_role,
+			      RDMarkerHandle::PointerRole end_role);
 
  public slots:
   void setAudioGain(int lvl);
@@ -167,7 +169,7 @@ class RDMarkerView : public QWidget
   QList<RDMarkerHandle::PointerRole> d_deleting_roles;
   QAction *d_delete_marker_action;
   bool d_marker_menu_used;
-  RDMarkerHandle::PointerRole d_selected_marker;
+  RDMarkerHandle::PointerRole d_selected_markers[2];
   int d_wheel_angle;
 };
 

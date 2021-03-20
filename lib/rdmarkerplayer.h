@@ -46,17 +46,18 @@ class RDMarkerPlayer : public RDWidget
  public slots:
   void setPlayPosition(int msec);
   void setPointerValue(RDMarkerHandle::PointerRole role,int ptr);
-  void setSelectedMarker(RDMarkerHandle::PointerRole role);
+  void setSelectedMarkers(RDMarkerHandle::PointerRole start_role,
+			  RDMarkerHandle::PointerRole end_role);
 
  signals:
   void cursorPositionChanged(unsigned msec);
 
  private slots:
-  void playCursorData();
-  void playStartData();
-  void pauseData();
-  void stopData();
-  void loopData();
+  void buttonPlayData();
+  void buttonPlayFromData();
+  void buttonPlayToData();
+  void buttonStopData();
+  void buttonLoopData();
   void meterData();
   void caePlayedData(int handle);
   void caePausedData(int handle);
@@ -69,18 +70,17 @@ class RDMarkerPlayer : public RDWidget
  private:
   void UpdateReadouts();
   QLabel *d_position_label;
-  //  QLineEdit *d_position_edit;
   QLabel *d_position_edit;
   QLabel *d_region_edit_label;
-  //  QLineEdit *d_region_edit;
   QLabel *d_region_edit;
   QLabel *d_length_label;
-  //  QLineEdit *d_length_edit;
   QLabel *d_length_edit;
-  RDTransportButton *d_play_cursor_button;
-  RDTransportButton *d_play_start_button;
+
+  RDTransportButton *d_play_button;
+  RDTransportButton *d_play_from_button;
+  RDTransportButton *d_play_to_button;
   RDTransportButton *d_active_play_button;
-  RDTransportButton *d_pause_button;
+
   RDTransportButton *d_stop_button;
   RDTransportButton *d_loop_button;
   RDStereoMeter *d_meter;
@@ -90,8 +90,7 @@ class RDMarkerPlayer : public RDWidget
   int d_cae_stream;
   int d_cae_handle;
   bool d_is_playing;
-  RDMarkerHandle::PointerRole d_selected_marker;
-
+  RDMarkerHandle::PointerRole d_selected_markers[2];
   int d_pointers[RDMarkerHandle::LastRole];
 };
 

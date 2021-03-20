@@ -35,7 +35,6 @@ RDMarkerReadout::RDMarkerReadout(RDMarkerHandle::PointerRole role,
   d_label->setFont(labelFont());
   d_label->setStyleSheet("background-color: "+
 			 RDMarkerHandle::pointerRoleColor(role).name());
-  //  d_label->setDisabled(true);
 
   switch(role) {
   case RDMarkerHandle::CutStart:
@@ -85,7 +84,6 @@ RDMarkerReadout::~RDMarkerReadout()
 QSize RDMarkerReadout::sizeHint() const
 {
   return QSize(labelFontMetrics()->width("00:00:00")+10,20+20*d_edits.size());
-  //  return QSize(60,20+20*d_edits.size());
 }
 
 
@@ -111,38 +109,18 @@ void RDMarkerReadout::setValue(RDMarkerHandle::PointerRole role,int value)
 }
 
 
-void RDMarkerReadout::setSelectedMarker(RDMarkerHandle::PointerRole role)
+void RDMarkerReadout::setSelectedMarkers(RDMarkerHandle::PointerRole start_role,
+					 RDMarkerHandle::PointerRole end_role)
 {
-  if(d_selected_marker!=role) {
+  if(d_roles.contains(start_role)||d_roles.contains(end_role)) {
+    for(int i=0;i<d_edits.size();i++) {
+      d_edits.at(i)->setFont(labelFont());
+    }
+  }
+  else {
     for(int i=0;i<d_edits.size();i++) {
       d_edits.at(i)->setFont(defaultFont());
     }
-    if(d_roles.contains(role)) {
-      switch(role) {
-      case RDMarkerHandle::CutStart:
-      case RDMarkerHandle::TalkStart:
-      case RDMarkerHandle::SegueStart:
-      case RDMarkerHandle::HookStart:
-	d_edits.at(0)->setFont(labelFont());
-	break;
-
-      case RDMarkerHandle::CutEnd:
-      case RDMarkerHandle::TalkEnd:
-      case RDMarkerHandle::SegueEnd:
-      case RDMarkerHandle::HookEnd:
-	d_edits.at(1)->setFont(labelFont());
-	break;
-
-      case RDMarkerHandle::FadeUp:
-      case RDMarkerHandle::FadeDown:
-	d_edits.at(0)->setFont(labelFont());
-	break;
-
-      case RDMarkerHandle::LastRole:
-	break;
-      }
-    }
-    d_selected_marker=role;
   }
 }
 

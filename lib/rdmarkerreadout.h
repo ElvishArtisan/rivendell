@@ -38,7 +38,8 @@ class RDMarkerReadout : public RDWidget
 
  public slots:
   void setValue(RDMarkerHandle::PointerRole role,int value);
-  void setSelectedMarker(RDMarkerHandle::PointerRole role);
+  void setSelectedMarkers(RDMarkerHandle::PointerRole start_role,
+			  RDMarkerHandle::PointerRole end_role);
   void setEnabled(bool state);
   void setDisabled(bool state);
 
