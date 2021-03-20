@@ -124,6 +124,7 @@ class RDMarkerView : public QWidget
   virtual void updateInterlocks();
   void resizeEvent(QResizeEvent *e);
   void mousePressEvent(QMouseEvent *e);
+  void wheelEvent(QWheelEvent *e);
 
  private:
   int Frame(int msec) const;
@@ -167,6 +168,7 @@ class RDMarkerView : public QWidget
   QAction *d_delete_marker_action;
   bool d_marker_menu_used;
   RDMarkerHandle::PointerRole d_selected_marker;
+  int d_wheel_angle;
 };
 
 

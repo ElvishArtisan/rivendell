@@ -22,6 +22,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QMouseEvent>
 #include <QPen>
+#include <QScrollBar>
 
 #include "rdescape_string.h"
 #include "rdmarkerview.h"
@@ -584,6 +585,7 @@ void RDMarkerView::save()
 
 void RDMarkerView::clear()
 {
+  d_wheel_angle=0;
   if(d_scene!=NULL) {
     delete d_scene;
     d_scene=NULL;
@@ -878,39 +880,34 @@ void RDMarkerView::resizeEvent(QResizeEvent *e)
 
 void RDMarkerView::mousePressEvent(QMouseEvent *e)
 {
+  int origin=0;
+  int msec=0;
+
   if((e->x()<=LEFT_MARGIN)||(e->x()>d_right_margin)) {
     QWidget::mousePressEvent(e);
     return;
   }
   d_mouse_pos=e->x()-LEFT_MARGIN;
+
+  if(d_marker_menu_used) {
+    d_marker_menu_used=false;
+    return;
+  }
+
   switch(e->button()) {
-    /*
   case Qt::LeftButton:
-    left_button_pressed=true;
-    if(edit_cue_point!=RDEditAudio::Play) {
-      ignore_pause=true;
-      PositionCursor(cursor);
-      ignore_pause=false;
+    if(d_view->horizontalScrollBar()!=NULL) {
+      origin=d_view->horizontalScrollBar()->value();
     }
-    else {
-      ignore_pause=true;
-      rda->cae()->positionPlay(edit_handle,GetTime(cursor));
-      ignore_pause=false;
-    }
+    msec=(int64_t)(d_mouse_pos+origin)*(int64_t)d_shrink_factor*1152000/
+      (int64_t)d_sample_rate;
+    emit positionClicked(msec);
     break;
 
   case Qt::MidButton:
-    center_button_pressed=true;
-    ignore_pause=true;
-    rda->cae()->positionPlay(edit_handle,GetTime(cursor));
-    ignore_pause=false;
     break;
-    */
+
   case Qt::RightButton:
-    if(d_marker_menu_used) {
-      d_marker_menu_used=false;
-      return;
-    }
     d_deleting_roles.clear();
 
     d_main_menu->setGeometry(e->globalX(),e->globalY(),
@@ -921,6 +918,26 @@ void RDMarkerView::mousePressEvent(QMouseEvent *e)
 
   default:
     break;
+  }
+}
+
+
+void RDMarkerView::wheelEvent(QWheelEvent *e)
+{
+  d_wheel_angle+=e->angleDelta().y();
+  //  printf("Angle: %d\n",d_wheel_angle);
+
+  if(d_wheel_angle>=360) {
+    if(shrinkFactor()>1) {
+      setShrinkFactor(shrinkFactor()/2);
+    }
+    d_wheel_angle=0;
+  }
+  if(d_wheel_angle<=-360) {
+    if(shrinkFactor()<d_max_shrink_factor) {
+      setShrinkFactor(shrinkFactor()*2);
+    }
+    d_wheel_angle=0;
   }
 }
 
