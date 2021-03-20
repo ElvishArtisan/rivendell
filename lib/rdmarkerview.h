@@ -130,7 +130,6 @@ class RDMarkerView : public QWidget
   int Msec(int frame) const;
   void InterlockMarkerPair(RDMarkerHandle::PointerRole start_marker);
   void InterlockFadeMarkerPair();
-  //  void InterlockFadeUp();
   bool LoadCutData();
   void WriteWave();
   void DrawMarker(RDMarkerHandle::PointerType type,

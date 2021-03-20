@@ -695,7 +695,6 @@ void RDMarkerView::addFadeupData()
 
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::FadeUp,80);
   InterlockFadeMarkerPair();
-  //  InterlockMarkerPair(RDMarkerHandle::FadeUp);
 
   d_has_unsaved_changes=true;
 
@@ -710,7 +709,6 @@ void RDMarkerView::addFadedownData()
 
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::FadeDown,80);
   InterlockFadeMarkerPair();
-  //  InterlockMarkerPair(RDMarkerHandle::FadeDown);
 
   d_has_unsaved_changes=true;
 
@@ -735,7 +733,6 @@ void RDMarkerView::updateInterlocks()
   //
   // Check for "swiped" markers and remove them
   //
-  /*
   for(int i=2;i<(RDMarkerHandle::LastRole);i++) {
     RDMarkerHandle::PointerRole role=(RDMarkerHandle::PointerRole)i;
     if((d_pointers[i]>=0)&&
@@ -764,7 +761,7 @@ void RDMarkerView::updateInterlocks()
       }
     }
   }
-  */
+
   //
   // Update the limit stops
   //
@@ -826,7 +823,7 @@ void RDMarkerView::InterlockFadeMarkerPair()
 		   d_pointers[RDMarkerHandle::FadeUp]);
       }
       else {
-	d_handles[RDMarkerHandle::FadeUp][i]->
+	d_handles[RDMarkerHandle::FadeDown][i]->
 	  setMinimum(d_handles[RDMarkerHandle::CutStart][i]->pos().x()-LEFT_MARGIN,
 		     d_pointers[RDMarkerHandle::CutStart]);	  
       }
