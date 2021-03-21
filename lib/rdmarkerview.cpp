@@ -442,6 +442,18 @@ int RDMarkerView::pointerValue(RDMarkerHandle::PointerRole role)
 }
 
 
+bool RDMarkerView::noSegueFade() const
+{
+  return d_no_segue_fade;
+}
+
+
+int RDMarkerView::playGain() const
+{
+  return d_play_gain;
+}
+
+
 RDMarkerHandle::PointerRole 
 RDMarkerView::selectedMarker(RDMarkerHandle::PointerType type) const
 {
@@ -548,6 +560,20 @@ void RDMarkerView::updatePosition(RDMarkerHandle::PointerRole role, int ptr)
 }
 
 
+void RDMarkerView::setNoSegueFade(bool state)
+{
+  d_has_unsaved_changes=state==d_no_segue_fade;
+  d_no_segue_fade=state;
+}
+
+
+void RDMarkerView::setPlayGain(int db)
+{
+  d_has_unsaved_changes=db==d_play_gain;
+  d_play_gain=db;
+}
+
+
 void RDMarkerView::setAudioGain(int lvl)
 {
   if(d_audio_gain!=lvl) {
@@ -638,7 +664,14 @@ void RDMarkerView::save()
   for(int i=0;i<RDMarkerHandle::PointerRole::LastRole;i++) {
     sql+=d_pointer_fields.at(i)+QString().sprintf("=%d,",d_pointers[i]);
   }
-  sql=sql.left(sql.length()-1)+" where "+
+  if(d_no_segue_fade) {
+    sql+="SEGUE_GAIN=0,";
+  }
+  else {
+    sql+=QString().sprintf("SEGUE_GAIN=%d,",RD_FADE_DEPTH);
+  }
+  sql+=QString().sprintf("PLAY_GAIN=%d ",100*d_play_gain);
+  sql+=QString(" where ")+
     "CUT_NAME=\""+RDEscapeString(RDCut::cutName(d_cart_number,d_cut_number))+
     "\"";
   RDSqlQuery::apply(sql);
@@ -659,6 +692,8 @@ void RDMarkerView::clear()
       d_handles[i][j]=NULL;
     }
   }
+  d_no_segue_fade=false;
+  d_play_gain=0;
   d_cursor=NULL;
   d_shrink_factor=1;
   d_max_shrink_factor=1;
@@ -1025,7 +1060,9 @@ bool RDMarkerView::LoadCutData()
 
   sql=QString("select ")+
     d_pointer_fields.join(",")+","+  // 00 - 09
-    "CHANNELS "+                     // 10
+    "CHANNELS,"+                     // 10
+    "SEGUE_GAIN,"+                   // 11
+    "PLAY_GAIN "+                    // 12
     "from CUTS where "+
     "CUT_NAME=\""+
     RDEscapeString(RDCut::cutName(d_cart_number,d_cut_number))+"\"";
@@ -1036,6 +1073,8 @@ bool RDMarkerView::LoadCutData()
       d_pointers[i]=q->value(i).toInt();
     }
     d_channels=q->value(10).toInt();
+    d_no_segue_fade=q->value(11).toInt()==0;
+    d_play_gain=q->value(12).toInt()/100;
   }
   delete q;
 

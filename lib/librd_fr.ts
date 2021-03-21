@@ -2998,6 +2998,18 @@ Out</source>
         <source>End</source>
         <translation type="unfinished">Fin</translation>
     </message>
+    <message>
+        <source>No Fade on Segue Out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut Gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDMarkerPlayer</name>

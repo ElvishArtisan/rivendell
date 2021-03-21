@@ -3595,6 +3595,18 @@ Mínimo</translation>
         <source>End</source>
         <translation type="unfinished">Fim</translation>
     </message>
+    <message>
+        <source>No Fade on Segue Out</source>
+        <translation type="unfinished">Sem Fade na Saída</translation>
+    </message>
+    <message>
+        <source>Cut Gain</source>
+        <translation type="unfinished">Ganho</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
 </context>
 <context>
     <name>RDMarkerPlayer</name>

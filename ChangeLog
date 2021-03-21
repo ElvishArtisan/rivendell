@@ -21312,3 +21312,6 @@
 2021-03-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Goto' section to 'RDMarkerDialog', with 'Cursor',
 	'Home' and 'End' buttons.
+2021-03-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Cut Gain' control to 'RDMarkerDialog'.
+	* Added a 'No Fade on Segue Out' checkbox to 'RDMarkerDialog'.

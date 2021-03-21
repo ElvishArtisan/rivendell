@@ -3592,6 +3592,19 @@ Todo</translation>
         <source>End</source>
         <translation type="unfinished">Final</translation>
     </message>
+    <message>
+        <source>No Fade on Segue Out</source>
+        <translation type="unfinished">Quitar fade en Segue</translation>
+    </message>
+    <message>
+        <source>Cut Gain</source>
+        <translation type="unfinished">Ganancia
+del audio</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
 </context>
 <context>
     <name>RDMarkerPlayer</name>

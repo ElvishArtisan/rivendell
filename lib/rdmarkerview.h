@@ -91,6 +91,8 @@ class RDMarkerView : public QWidget
   int pointerValue(RDMarkerHandle::PointerRole role);
   RDMarkerHandle::PointerRole selectedMarker(RDMarkerHandle::PointerType type)
     const;
+  bool noSegueFade() const;
+  int playGain() const;
   bool hasUnsavedChanges() const;
 
   void setSelectedMarker(RDMarkerHandle::PointerRole role);
@@ -105,6 +107,8 @@ class RDMarkerView : public QWidget
 			      RDMarkerHandle::PointerRole end_role);
 
  public slots:
+  void setNoSegueFade(bool state);
+  void setPlayGain(int db);
   void setAudioGain(int lvl);
   void setShrinkFactor(int sf);
   void setMaximumShrinkFactor();
@@ -160,6 +164,8 @@ class RDMarkerView : public QWidget
   RDWaveFactory *d_wave_factory;
   bool d_has_unsaved_changes;
   int d_pointers[RDMarkerHandle::LastRole];
+  bool d_no_segue_fade;
+  int d_play_gain;
   RDMarkerHandle *d_handles[RDMarkerHandle::LastRole][2];
   QGraphicsLineItem *d_cursor;
   int d_audio_end;

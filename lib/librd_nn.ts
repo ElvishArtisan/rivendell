@@ -3555,6 +3555,18 @@ ut</translation>
         <source>End</source>
         <translation type="unfinished">Slutten</translation>
     </message>
+    <message>
+        <source>No Fade on Segue Out</source>
+        <translation type="unfinished">Inga uttoning ved Overgang ut</translation>
+    </message>
+    <message>
+        <source>Cut Gain</source>
+        <translation type="unfinished">Dempevolum</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
 </context>
 <context>
     <name>RDMarkerPlayer</name>

@@ -3605,6 +3605,18 @@ Out</translation>
         <source>End</source>
         <translation type="unfinished">Ende</translation>
     </message>
+    <message>
+        <source>No Fade on Segue Out</source>
+        <translation type="unfinished">Kein Fade bei Seque Out</translation>
+    </message>
+    <message>
+        <source>Cut Gain</source>
+        <translation type="unfinished">Cut Gain</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
 </context>
 <context>
     <name>RDMarkerPlayer</name>

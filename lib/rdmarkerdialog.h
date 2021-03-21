@@ -21,10 +21,12 @@
 #ifndef RDMARKERDIALOG_H
 #define RDMARKERDIALOG_H
 
+#include <QCheckBox>
 #include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSpinBox>
 #include <QTimer>
 
 #include <rddialog.h>
@@ -108,6 +110,13 @@ class RDMarkerDialog : public RDDialog
   QPushButton *d_goto_cursor_button;
   QPushButton *d_goto_home_button;
   QPushButton *d_goto_end_button;
+
+  QCheckBox *d_no_segue_fade_check;
+  QLabel *d_no_segue_fade_label;
+
+  QLabel *d_play_gain_label;
+  QSpinBox *d_play_gain_spin;
+  QLabel *d_play_gain_unit_label;
 
   QPushButton *d_ok_button;
   QPushButton *d_cancel_button;

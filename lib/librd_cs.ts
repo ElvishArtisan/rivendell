@@ -3616,6 +3616,18 @@ Out</translation>
         <source>End</source>
         <translation type="unfinished">Konec</translation>
     </message>
+    <message>
+        <source>No Fade on Segue Out</source>
+        <translation type="unfinished">Žádné prolínání při přechodu ven</translation>
+    </message>
+    <message>
+        <source>Cut Gain</source>
+        <translation type="unfinished">Zesílení záběru</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
 </context>
 <context>
     <name>RDMarkerPlayer</name>
