@@ -21317,3 +21317,6 @@
 	* Added a 'No Fade on Segue Out' checkbox to 'RDMarkerDialog'.
 2021-03-21 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the color of the audio cursor in 'RDMarkerDialog' to green.
+2021-03-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDMarkerView' that caused a save prompt to
+	appear when no data had been changed.

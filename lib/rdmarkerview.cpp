@@ -27,7 +27,7 @@
 #include "rdescape_string.h"
 #include "rdmarkerview.h"
 
-#define LEFT_MARGIN 20
+#define LEFT_MARGIN 30
 
 RDMarkerHandle::RDMarkerHandle(RDMarkerHandle::PointerRole role,
 			       PointerType type,void *mkrview,
@@ -562,14 +562,14 @@ void RDMarkerView::updatePosition(RDMarkerHandle::PointerRole role, int ptr)
 
 void RDMarkerView::setNoSegueFade(bool state)
 {
-  d_has_unsaved_changes=state==d_no_segue_fade;
+  d_has_unsaved_changes=state!=d_no_segue_fade;
   d_no_segue_fade=state;
 }
 
 
 void RDMarkerView::setPlayGain(int db)
 {
-  d_has_unsaved_changes=db==d_play_gain;
+  d_has_unsaved_changes=db!=d_play_gain;
   d_play_gain=db;
 }
 
