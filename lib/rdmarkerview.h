@@ -110,6 +110,9 @@ class RDMarkerView : public QWidget
   void setMaximumShrinkFactor();
   bool setCut(QString *err_msg,unsigned cartnum,int cutnum);
   void setCursorPosition(unsigned msec);
+  void gotoCursor();
+  void gotoHome();
+  void gotoEnd();
   void save();
   void clear();
 

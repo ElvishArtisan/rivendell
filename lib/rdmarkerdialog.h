@@ -104,6 +104,11 @@ class RDMarkerDialog : public RDDialog
   RDMarkerReadout *d_segue_readout;
   RDMarkerReadout *d_hook_readout;
 
+  QGroupBox *d_goto_group;
+  QPushButton *d_goto_cursor_button;
+  QPushButton *d_goto_home_button;
+  QPushButton *d_goto_end_button;
+
   QPushButton *d_ok_button;
   QPushButton *d_cancel_button;
   unsigned d_cart_number;

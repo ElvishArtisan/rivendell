@@ -2982,6 +2982,22 @@ Out</source>
         <source>Unable to open cut in audio player!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Goto</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Fin</translation>
+    </message>
 </context>
 <context>
     <name>RDMarkerPlayer</name>

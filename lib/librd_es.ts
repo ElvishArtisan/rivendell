@@ -3576,6 +3576,22 @@ Todo</translation>
         <source>Unable to open cut in audio player!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Goto</source>
+        <translation type="unfinished">Ir a</translation>
+    </message>
+    <message>
+        <source>Cursor</source>
+        <translation type="unfinished">Cursor</translation>
+    </message>
+    <message>
+        <source>Home</source>
+        <translation type="unfinished">Principio</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Final</translation>
+    </message>
 </context>
 <context>
     <name>RDMarkerPlayer</name>

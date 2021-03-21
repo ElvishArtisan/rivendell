@@ -21309,3 +21309,6 @@
 2021-03-21 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the marker readouts to show a yellow background when the
 	parent markers have been selected.
+2021-03-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Goto' section to 'RDMarkerDialog', with 'Cursor',
+	'Home' and 'End' buttons.

@@ -3600,6 +3600,22 @@ Out</translation>
         <source>Unable to open cut in audio player!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Goto</source>
+        <translation type="unfinished">Přejít na</translation>
+    </message>
+    <message>
+        <source>Cursor</source>
+        <translation type="unfinished">Ukazovátko</translation>
+    </message>
+    <message>
+        <source>Home</source>
+        <translation type="unfinished">Domov</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Konec</translation>
+    </message>
 </context>
 <context>
     <name>RDMarkerPlayer</name>

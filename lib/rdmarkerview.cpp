@@ -610,6 +610,26 @@ void RDMarkerView::setCursorPosition(unsigned msec)
 }
 
 
+void RDMarkerView::gotoCursor()
+{
+  d_view->horizontalScrollBar()->
+    setValue(d_cursor->pos().x()-d_view->width()/2);
+}
+
+
+void RDMarkerView::gotoHome()
+{
+  d_view->horizontalScrollBar()->setValue(0);
+}
+
+
+void RDMarkerView::gotoEnd()
+{
+  d_view->horizontalScrollBar()->
+    setValue(d_view->horizontalScrollBar()->maximum());
+}
+
+
 void RDMarkerView::save()
 {
   QString sql;

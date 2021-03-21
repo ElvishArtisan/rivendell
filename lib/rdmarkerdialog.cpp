@@ -72,6 +72,28 @@ RDMarkerDialog::RDMarkerDialog(const QString &caption,int card,int port,
   connect(d_time_fullout_button,SIGNAL(clicked()),
 	  d_marker_view,SLOT(setMaximumShrinkFactor()));
 
+  //
+  // Goto Buttons
+  //
+  d_goto_group=new QGroupBox(tr("Goto"),this);
+  d_goto_group->setFont(labelFont());
+
+  d_goto_cursor_button=new QPushButton(tr("Cursor"),d_goto_group);
+  d_goto_cursor_button->setFont(buttonFont());
+  connect(d_goto_cursor_button,SIGNAL(clicked()),
+	  d_marker_view,SLOT(gotoCursor()));
+
+  d_goto_home_button=new QPushButton(tr("Home"),d_goto_group);
+  d_goto_home_button->setFont(buttonFont());
+  connect(d_goto_home_button,SIGNAL(clicked()),
+	  d_marker_view,SLOT(gotoHome()));
+
+  d_goto_end_button=new QPushButton(tr("End"),d_goto_group);
+  d_goto_end_button->setFont(buttonFont());
+  connect(d_goto_end_button,SIGNAL(clicked()),
+	  d_marker_view,SLOT(gotoEnd()));
+
+
   /**************************************************************************
    * Transport Section
    **************************************************************************/
@@ -322,38 +344,32 @@ void RDMarkerDialog::resizeEvent(QResizeEvent *e)
   //
   d_cut_readout->setGeometry(2,
 			     2+d_marker_view->sizeHint().height(),
-			     //30+RDMARKERDIALOG_WAVEFORM_HEIGHT+94,
 			     d_cut_readout->sizeHint().width(),
 			     d_cut_readout->sizeHint().height());
 
   d_talk_readout->setGeometry(2+1*(d_talk_readout->sizeHint().width()-2),
 			      2+d_marker_view->sizeHint().height(),
-			      //30+RDMARKERDIALOG_WAVEFORM_HEIGHT+94,
 			      d_talk_readout->sizeHint().width(),
 			      d_talk_readout->sizeHint().height());
 
   d_segue_readout->setGeometry(2+2*(d_segue_readout->sizeHint().width()-2),
 			       2+d_marker_view->sizeHint().height(),
-			       //30+RDMARKERDIALOG_WAVEFORM_HEIGHT+94,
 			       d_segue_readout->sizeHint().width(),
 			       d_segue_readout->sizeHint().height());
 
   d_hook_readout->setGeometry(2+3*(d_hook_readout->sizeHint().width()-2),
 			      2+d_marker_view->sizeHint().height(),
-			      //30+RDMARKERDIALOG_WAVEFORM_HEIGHT+94,
 			      d_hook_readout->sizeHint().width(),
 			      d_hook_readout->sizeHint().height());
 
   d_fadeup_readout->setGeometry(2,
 				d_marker_view->sizeHint().height()-2+
-				//30+RDMARKERDIALOG_WAVEFORM_HEIGHT+90+
 				d_hook_readout->sizeHint().height(),
 				2*d_fadeup_readout->sizeHint().width()-2,
 				d_fadeup_readout->sizeHint().height());
 
   d_fadedown_readout->setGeometry(2*d_fadedown_readout->sizeHint().width()-2,
 				  d_marker_view->sizeHint().height()-2+
-				  //30+RDMARKERDIALOG_WAVEFORM_HEIGHT+90+
 				  d_hook_readout->sizeHint().height(),
 				  2*d_fadedown_readout->sizeHint().width()-2,
 				  d_fadedown_readout->sizeHint().height());
@@ -366,11 +382,16 @@ void RDMarkerDialog::resizeEvent(QResizeEvent *e)
 			2+d_marker_view->sizeHint().height(),
 			d_player->sizeHint().width(),
 			d_player->sizeHint().height());
-  /*
-  d_player->setGeometry(2,2+d_marker_view->sizeHint().height(),
-			d_player->sizeHint().width(),
-			d_player->sizeHint().height());
-  */
+
+  d_goto_group->setGeometry(10,
+			    2+d_marker_view->sizeHint().height()+
+			    d_player->sizeHint().height()+5,
+			    90*3,
+			    80);
+  d_goto_cursor_button->setGeometry(5,25,80,50);
+  d_goto_home_button->setGeometry(95,25,80,50);
+  d_goto_end_button->setGeometry(185,25,80,50);
+
   d_ok_button->setGeometry(w-180,h-60,80,50);
   d_cancel_button->setGeometry(w-90,h-60,80,50);
 }
