@@ -21304,3 +21304,5 @@
 2021-03-20 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'RDMarkerDialog' dialog to select markers by pairs
 	rather than singly.
+2021-03-20 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented loop mode in 'RDMarkerDialog'.

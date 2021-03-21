@@ -87,7 +87,7 @@ RDMarkerDialog::RDMarkerDialog(const QString &caption,int card,int port,
 	  d_player,SLOT(setSelectedMarkers(RDMarkerHandle::PointerRole,
 					  RDMarkerHandle::PointerRole)));
   connect(d_marker_view,SIGNAL(positionClicked(int)),
-	  d_player,SLOT(setPlayPosition(int)));
+	  d_player,SLOT(setCursorPosition(int)));
 
   //
   // Marker Readouts

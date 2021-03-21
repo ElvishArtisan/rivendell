@@ -42,9 +42,10 @@ class RDMarkerPlayer : public RDWidget
   QSizePolicy sizePolicy() const;
   bool setCut(unsigned cartnum,int cutnum);
   void clearCut();
+  int cursorPosition() const;
 
  public slots:
-  void setPlayPosition(int msec);
+  void setCursorPosition(int msec);
   void setPointerValue(RDMarkerHandle::PointerRole role,int ptr);
   void setSelectedMarkers(RDMarkerHandle::PointerRole start_role,
 			  RDMarkerHandle::PointerRole end_role);
@@ -92,6 +93,11 @@ class RDMarkerPlayer : public RDWidget
   bool d_is_playing;
   RDMarkerHandle::PointerRole d_selected_markers[2];
   int d_pointers[RDMarkerHandle::LastRole];
+  bool d_looping;
+  bool d_stopping;
+  int d_loop_start_msec;
+  int d_loop_start_length;
+  int d_cursor_position;
 };
 
 
