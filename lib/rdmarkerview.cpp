@@ -1115,7 +1115,10 @@ void RDMarkerView::WriteWave()
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::CutEnd,20);
 
   d_cursor=new QGraphicsLineItem(0,0,0,d_height);
-  d_cursor->setPen(QPen(Qt::black));
+  QPen pen(Qt::green);
+  pen.setWidth(2);
+  d_cursor->setPen(pen);
+
   d_scene->addItem(d_cursor);
 
   d_view->setScene(d_scene);

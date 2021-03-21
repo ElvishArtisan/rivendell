@@ -37,6 +37,7 @@ class RDWaveFactory
   int cutNumber() const;
   QPixmap generate(int height,int x_shrink,int gain,bool incl_scale);
   bool setCut(QString *err_msg,unsigned cartnum,int cutnum);
+  QList<uint16_t> energy() const;
   int energySize() const;
   static int referenceHeight(int height,int gain);
 

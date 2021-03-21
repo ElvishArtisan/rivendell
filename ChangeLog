@@ -21315,3 +21315,5 @@
 2021-03-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Cut Gain' control to 'RDMarkerDialog'.
 	* Added a 'No Fade on Segue Out' checkbox to 'RDMarkerDialog'.
+2021-03-21 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the color of the audio cursor in 'RDMarkerDialog' to green.

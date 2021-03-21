@@ -76,7 +76,7 @@ QPixmap RDWaveFactory::generate(int height,int x_shrink,int gain,
     int interval=2*rda->system()->sampleRate()/1152;
     int msec=2000;
     for(int i=interval;i<(d_energy.size()/x_shrink);i+=interval) {
-      p->setPen(Qt::green);
+      p->setPen(Qt::gray);
       p->drawLine(i,0,i,height);
       p->setPen(Qt::red);
       for(unsigned j=0;j<d_energy_channels;j++) {
@@ -200,6 +200,12 @@ bool RDWaveFactory::setCut(QString *err_msg,unsigned cartnum,int cutnum)
   delete conv;
 
   return true;
+}
+
+
+QList<uint16_t> RDWaveFactory::energy() const
+{
+  return d_energy;
 }
 
 
