@@ -21320,3 +21320,7 @@
 2021-03-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDMarkerView' that caused a save prompt to
 	appear when no data had been changed.
+2021-03-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDMarkerView' that caused PlayTo operations to
+	fail if the target marker was within 2 seconds of the start of the
+	cut.

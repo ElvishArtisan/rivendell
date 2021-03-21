@@ -273,7 +273,7 @@ void RDMarkerPlayer::buttonPlayToData()
     d_loop_start_length=2000;
     if(d_loop_start_msec<0) {
       d_loop_start_msec=0;
-      d_loop_start_length=d_selected_markers[1];
+      d_loop_start_length=d_pointers[d_selected_markers[1]];
     }
     rda->cae()->positionPlay(d_cae_handle,d_loop_start_msec);
     rda->cae()->play(d_cae_handle,d_loop_start_length,100000,false);
