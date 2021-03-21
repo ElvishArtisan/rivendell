@@ -150,6 +150,7 @@ bool RDMarkerPlayer::setCut(unsigned cartnum,int cutnum)
 			   &d_cae_stream,&d_cae_handle)) {
     return false;
   }
+  rda->cae()->positionPlay(d_cae_handle,0);
   RDSetMixerOutputPort(rda->cae(),d_cards.first(),d_cae_stream,d_port);
 
   return true;

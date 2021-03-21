@@ -21324,3 +21324,6 @@
 	* Fixed a bug in 'RDMarkerView' that caused PlayTo operations to
 	fail if the target marker was within 2 seconds of the start of the
 	cut.
+2021-03-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDMarkerPlayer' that would cause the play cursor
+	position to fail to be properly initialized when opening a new cut.
