@@ -927,7 +927,7 @@
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Duração</translation>
+        <translation type="obsolete">Duração</translation>
     </message>
     <message>
         <source>Talk</source>

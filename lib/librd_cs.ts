@@ -931,7 +931,7 @@
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Délka</translation>
+        <translation type="obsolete">Délka</translation>
     </message>
     <message>
         <source>Talk</source>

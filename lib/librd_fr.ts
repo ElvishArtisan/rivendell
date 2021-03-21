@@ -896,10 +896,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Talk</source>
         <translation type="unfinished"></translation>
     </message>

@@ -33,8 +33,6 @@ RDMarkerReadout::RDMarkerReadout(RDMarkerHandle::PointerRole role,
   d_label=new QLabel(RDMarkerHandle::pointerRoleText(role),this);
   d_label->setAlignment(Qt::AlignCenter);
   d_label->setFont(labelFont());
-  d_label->setStyleSheet("background-color: "+
-			 RDMarkerHandle::pointerRoleColor(role).name());
 
   switch(role) {
   case RDMarkerHandle::CutStart:
@@ -115,11 +113,13 @@ void RDMarkerReadout::setSelectedMarkers(RDMarkerHandle::PointerRole start_role,
   if(d_roles.contains(start_role)||d_roles.contains(end_role)) {
     for(int i=0;i<d_edits.size();i++) {
       d_edits.at(i)->setFont(labelFont());
+      d_edits.at(i)->setStyleSheet("background-color:#FFFF00");
     }
   }
   else {
     for(int i=0;i<d_edits.size();i++) {
       d_edits.at(i)->setFont(defaultFont());
+      d_edits.at(i)->setStyleSheet("");
     }
   }
 }
@@ -130,7 +130,11 @@ void RDMarkerReadout::setEnabled(bool state)
   if(state) {
     d_label->
       setStyleSheet("background-color: "+
-		    RDMarkerHandle::pointerRoleColor(d_roles.first()).name());
+		    RDMarkerHandle::
+		    pointerRoleColor(d_roles.first()).name()+";"+
+		    "color: "+
+		    RDGetTextColor(RDMarkerHandle::
+				   pointerRoleColor(d_roles.first())).name());
   }
   else {
     d_label->setStyleSheet("background-color: "+LABEL_DISABLED_COLOR);

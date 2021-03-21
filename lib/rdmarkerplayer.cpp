@@ -132,7 +132,7 @@ RDMarkerPlayer::~RDMarkerPlayer()
 
 QSize RDMarkerPlayer::sizeHint() const
 {
-  return QSize(717,92);
+  return QSize(736,96);
 }
 
 
@@ -201,8 +201,9 @@ void RDMarkerPlayer::setSelectedMarkers(RDMarkerHandle::PointerRole start_role,
   if(start_role==RDMarkerHandle::LastRole) {
     color=RDMarkerHandle::pointerRoleColor(end_role);
   }
-  d_region_edit_label->
-    setStyleSheet("background-color: "+color.name());
+  QString ss=
+    "color:"+RDGetTextColor(color).name()+";background-color:"+color.name();
+  d_region_edit_label->setStyleSheet(ss);
   d_play_from_button->setAccentColor(color);
   d_play_to_button->setAccentColor(color);
   d_selected_markers[0]=start_role;

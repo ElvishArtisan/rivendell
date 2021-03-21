@@ -195,7 +195,7 @@ QString RDMarkerHandle::pointerRoleText(PointerRole role)
   switch(role) {
   case RDMarkerHandle::CutStart:
   case RDMarkerHandle::CutEnd:
-    ret=QObject::tr("Length");
+    ret=QObject::tr("Cut");
     break;
 
   case RDMarkerHandle::TalkStart:
