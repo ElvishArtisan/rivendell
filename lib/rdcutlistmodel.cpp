@@ -217,20 +217,22 @@ void RDCutListModel::removeCut(const QString &cutname)
 }
 
 
-void RDCutListModel::refresh(const QModelIndex &row)
+QModelIndex RDCutListModel::refresh(const QModelIndex &row)
 {
   updateCutLine(row.row());
+  return row;
 }
 
 
-void RDCutListModel::refresh(const QString &cutname)
+QModelIndex RDCutListModel::refresh(const QString &cutname)
 {
   for(int i=0;i<d_texts.size();i++) {
     if(d_texts.at(d_row_index.at(i)).at(12)==cutname) {
       updateCutLine(i);
-      return;
+      return createIndex(i,0);
     }
   }
+  return QModelIndex();
 }
 
 

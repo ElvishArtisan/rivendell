@@ -222,7 +222,20 @@ void AudioCart::changeCutScheduling(int sched)
   rdcart_cut_model->setCartNumber(rdcart_cart->number());
   rdcart_cut_view->setModel(rdcart_cut_model);
   rdcart_cut_view->resizeColumnsToContents();
-  delete old_model;
+
+  if(old_model==NULL) {  // Set default cut selection
+    if(rdcart_cut_model->rowCount()>0) {
+      RDCut *cut=
+	new RDCut(rdcart_cut_model->cutName(rdcart_cut_model->index(0,0)));
+      if(cut->validity()==RDCut::AlwaysValid) {
+	rdcart_cut_view->selectRow(0);
+      }
+      delete cut;
+    }
+  }
+  else {
+    delete old_model;
+  }
 
   if(sched) {
     rdcart_cut_view->sortByColumn(12,Qt::AscendingOrder);
@@ -445,39 +458,13 @@ void AudioCart::editCutData()
     rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			      QTime().msecsTo(rdcart_controls->
 					      forced_length_edit->time()));
-    rdcart_cut_model->refresh(row);
-  }
+    QModelIndex index=rdcart_cut_model->refresh(row);
+    if(index.isValid()) {
+      rdcart_cut_view->selectRow(index.row());
+    }
+  }  
 }
 
-/*
-void AudioCart::editCutData()
-{
-  QModelIndex row=SingleSelectedLine();
-
-  if(!row.isValid()) {
-    return;
-  }
-  QString cutname=rdcart_cut_model->cutName(row);
-  if(!RDAudioExists(cutname)) {
-    QMessageBox::information(this,"RDLibrary",
-                            tr("No audio is present in the cut!"));
-    return;
-  }
-  RDEditAudio *edit=
-    new RDEditAudio(rdcart_cart,cutname,rda->libraryConf()->outputCard(),
-		    rda->libraryConf()->outputPort(),
-		    rda->libraryConf()->tailPreroll(),
-		    rda->libraryConf()->trimThreshold(),this);
-  if(edit->exec()!=-1) {
-    emit cartDataChanged();
-    rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
-                             QTime().msecsTo(rdcart_controls->
-                                             forced_length_edit->time()));
-    rdcart_cut_model->refresh(row);
-  }
-  delete edit;
-}
-*/
 
 void AudioCart::recordCutData()
 {
@@ -552,7 +539,10 @@ void AudioCart::ripCutData()
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			    QTime().msecsTo(rdcart_controls->
 					    forced_length_edit->time()));
-  rdcart_cut_model->refresh(row);
+  row=rdcart_cut_model->refresh(row);
+  if(row.isValid()) {
+    rdcart_cut_view->selectRow(row.row());
+  }
 }
 
 
@@ -630,7 +620,10 @@ void AudioCart::importCutData()
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			    QTime().msecsTo(rdcart_controls->
 					    forced_length_edit->time()));
-  rdcart_cut_model->refresh(row);
+  row=rdcart_cut_model->refresh(row);
+  if(row.isValid()) {
+    rdcart_cut_view->selectRow(row.row());
+  }
 }
 
 

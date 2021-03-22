@@ -48,8 +48,8 @@ class RDCutListModel : public QAbstractTableModel
   QModelIndex addCut(const QString &name);
   void removeCut(const QModelIndex &index);
   void removeCut(const QString &cutname);
-  void refresh(const QModelIndex &index);
-  void refresh(const QString &cutname);
+  QModelIndex refresh(const QModelIndex &index);
+  QModelIndex refresh(const QString &cutname);
   unsigned cartNumber() const;
   QModelIndex row(const QString &cutname) const;
   bool playOrderDuplicates(QList<int> *values) const;
