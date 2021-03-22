@@ -145,6 +145,7 @@ class RDMarkerView : public QWidget
   void DrawMarker(RDMarkerHandle::PointerType type,
 		  RDMarkerHandle::PointerRole role,int handle_pos);
   void RemoveMarker(RDMarkerHandle::PointerRole role);
+  void SetReferenceLines();
   QGraphicsView *d_view;
   QGraphicsScene *d_scene;
   unsigned d_cart_number;
@@ -180,6 +181,7 @@ class RDMarkerView : public QWidget
   bool d_marker_menu_used;
   RDMarkerHandle::PointerRole d_selected_markers[2];
   int d_wheel_angle;
+  QGraphicsLineItem *d_reference_line_items[2][2];
 };
 
 

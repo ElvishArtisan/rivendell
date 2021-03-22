@@ -21327,3 +21327,6 @@
 2021-03-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDMarkerPlayer' that would cause the play cursor
 	position to fail to be properly initialized when opening a new cut.
+2021-03-22 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented movable reference lines for 'Cut Gain' adjustments
+	in 'RDMarkerDialog'.

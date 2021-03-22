@@ -96,12 +96,13 @@ QPixmap RDWaveFactory::generate(int height,int x_shrink,int gain,
   // Waveform
   //
   p->setPen(Qt::black);
-  int ref_line=exp10((double)(-REFERENCE_LEVEL)/2000.00)*height*ratio/
-    ((double)d_energy_channels*2.0);
+  //  int ref_line=exp10((double)(-REFERENCE_LEVEL)/2000.00)*height*ratio/
+  //    ((double)d_energy_channels*2.0);
   int clip_line=height/(2*d_energy_channels);
   for(unsigned i=0;i<d_energy_channels;i++) {
     int zero_line=height/(d_energy_channels*2)+i*height/(d_energy_channels);
     if(incl_scale) {
+      /*
       if(ref_line<clip_line) {
 	p->setPen(Qt::red);
 	p->drawLine(0,zero_line+ref_line,
@@ -110,6 +111,7 @@ QPixmap RDWaveFactory::generate(int height,int x_shrink,int gain,
 		    d_energy.size()/x_shrink,zero_line-ref_line);
 	p->setPen(Qt::black);
       }
+      */
     }
     p->drawLine(0,zero_line,d_energy.size()/x_shrink,zero_line);
     for(int j=i;j<d_energy.size();j+=(d_energy_channels*x_shrink)) {

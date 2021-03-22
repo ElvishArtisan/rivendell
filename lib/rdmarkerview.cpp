@@ -569,8 +569,11 @@ void RDMarkerView::setNoSegueFade(bool state)
 
 void RDMarkerView::setPlayGain(int db)
 {
-  d_has_unsaved_changes=db!=d_play_gain;
-  d_play_gain=db;
+  if(db!=d_play_gain) {
+    d_play_gain=db;
+    d_has_unsaved_changes=true;
+    SetReferenceLines();
+  }
 }
 
 
@@ -1101,6 +1104,18 @@ void RDMarkerView::WriteWave()
   d_right_margin=LEFT_MARGIN+wavemap.width();
 
   //
+  // Reference Level Lines
+  //
+  for(unsigned i=0;i<d_channels;i++) {
+    for(unsigned j=0;j<2;j++) {
+      d_reference_line_items[i][j]=new QGraphicsLineItem(0,0,d_right_margin,0);
+      d_reference_line_items[i][j]->setPen(QPen(Qt::red));
+      d_scene->addItem(d_reference_line_items[i][j]);
+    }
+  }
+  SetReferenceLines();
+
+  //
   // Markers
   //
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::FadeDown,100);
@@ -1173,4 +1188,18 @@ void RDMarkerView::RemoveMarker(RDMarkerHandle::PointerRole role)
   }
 
   emit pointerValueChanged(role,-1);
+}
+
+
+void RDMarkerView::SetReferenceLines()
+{
+  int sh=d_scene->height();
+  double ratio=exp10((double)(d_audio_gain-100*d_play_gain)/2000.0);
+  int ref_line=exp10((double)(-REFERENCE_LEVEL)/2000.00)*sh*ratio/
+    ((double)d_channels*2.0);
+  for(unsigned i=0;i<d_channels;i++) {
+    int zero_line=sh/(d_channels*2)+i*sh/(d_channels);
+    d_reference_line_items[i][0]->setPos(0,zero_line+ref_line);
+    d_reference_line_items[i][1]->setPos(0,zero_line-ref_line);
+  }
 }
