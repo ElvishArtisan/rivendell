@@ -350,7 +350,7 @@ RDMarkerHandle::PointerType RDMarkerHandle::pointerType(RDMarkerHandle::PointerR
 
 
 RDMarkerView::RDMarkerView(int width,int height,QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   d_width=width;
   d_height=height;
@@ -1114,6 +1114,23 @@ void RDMarkerView::WriteWave()
     }
   }
   SetReferenceLines();
+
+  //
+  // Channel Labels
+  //
+  if(d_channels==2) {
+    QGraphicsTextItem *t_item=new QGraphicsTextItem("L");
+    t_item->setFont(QFont(font().family(),24,QFont::Normal));
+    t_item->setDefaultTextColor(Qt::red);
+    d_scene->addItem(t_item);
+    t_item->setPos(LEFT_MARGIN,-5);
+
+    t_item=new QGraphicsTextItem("R");
+    t_item->setFont(QFont(font().family(),24,QFont::Normal));
+    t_item->setDefaultTextColor(Qt::red);
+    d_scene->addItem(t_item);
+    t_item->setPos(LEFT_MARGIN,d_scene->height()/2-5);
+  }
 
   //
   // Markers

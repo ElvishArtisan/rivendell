@@ -21330,3 +21330,6 @@
 2021-03-22 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented movable reference lines for 'Cut Gain' adjustments
 	in 'RDMarkerDialog'.
+2021-03-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'L' and 'R' channel labels when viewing a stereo cut to the
+	waveform display in 'RDMarkerDialog'.

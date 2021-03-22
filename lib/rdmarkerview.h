@@ -31,6 +31,7 @@
 
 #include <rdcut.h>
 #include <rdwavefactory.h>
+#include <rdwidget.h>
 
 class RDMarkerHandle : public QGraphicsPolygonItem
 {
@@ -77,7 +78,7 @@ class RDMarkerHandle : public QGraphicsPolygonItem
 };
 
 
-class RDMarkerView : public QWidget
+class RDMarkerView : public RDWidget
 {
   Q_OBJECT;
  public:
