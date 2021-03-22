@@ -1227,7 +1227,9 @@ unsigned MainWidget::AddRecord()
   QString sql;
 
   sql=QString("insert into RECORDINGS set ")+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
+    "CHANNEL=0,"+
+    "CUT_NAME=\"\"";
   return RDSqlQuery::run(sql).toUInt();
 }
 
