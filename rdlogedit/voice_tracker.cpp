@@ -25,7 +25,6 @@
 
 #include <rdconf.h>
 #include <rdsvc.h>
-#include <rdedit_audio.h>
 #include <rdimport_audio.h>
 #include <rdrehash.h>
 
@@ -164,6 +163,12 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   d_svc=new RDSvc(d_log->service(),rda->station(),rda->config());
   d_group=new RDGroup(d_svc->trackGroup());
   d_tracks=d_log->scheduledTracks()-d_log->completedTracks();
+
+  //
+  // Dialogs
+  //
+  d_marker_dialog=
+    new RDMarkerDialog("RDLogEdit",d_output_card,d_output_port,this);
 
   //
   // Play Decks
@@ -471,6 +476,7 @@ VoiceTracker::~VoiceTracker()
     delete d_wpg[i];
     d_wpg[i]=NULL;
   }
+  delete d_marker_dialog;
   delete d_log_lock;
   delete d_svc;
   delete d_log;
@@ -1154,39 +1160,42 @@ void VoiceTracker::nextData()
 void VoiceTracker::editAudioData()
 {
   RDCart *rdcart=new RDCart(d_loglines[d_rightclick_track]->cartNumber());
-  RDEditAudio *edit=
-    new RDEditAudio(rdcart,d_loglines[d_rightclick_track]->cutName(),
-		    d_output_card,d_output_port,d_tail_preroll,
-		    d_threshold_level,this);
-  if(edit->exec()!=-1) {
+
+  if(d_marker_dialog->
+     exec(RDCut::cartNumber(d_loglines[d_rightclick_track]->cutName()),
+	  RDCut::cutNumber(d_loglines[d_rightclick_track]->cutName()))) {
     rdcart->updateLength();
     d_loglines[d_rightclick_track]->refreshPointers();
-  if(d_loglines[d_rightclick_track]->fadeupPoint()<
-     d_loglines[d_rightclick_track]->startPoint() &&
-     d_loglines[d_rightclick_track]->fadeupPoint()>=0) {
-   d_loglines[d_rightclick_track]->setFadeupPoint(
-       d_loglines[d_rightclick_track]->startPoint(),RDLogLine::LogPointer);
-  }    
-  if(d_loglines[d_rightclick_track]->fadeupPoint()>
-     d_loglines[d_rightclick_track]->endPoint()) {
-   d_loglines[d_rightclick_track]->setFadeupPoint(
-       d_loglines[d_rightclick_track]->endPoint(),RDLogLine::LogPointer);
-  }    
-  if(d_loglines[d_rightclick_track]->fadedownPoint()<
-     d_loglines[d_rightclick_track]->startPoint() &&
-     d_loglines[d_rightclick_track]->fadedownPoint()>=0) {
-   d_loglines[d_rightclick_track]->setFadedownPoint(
-       d_loglines[d_rightclick_track]->startPoint(),RDLogLine::LogPointer);
-  }    
-  if(d_loglines[d_rightclick_track]->fadedownPoint()>
-     d_loglines[d_rightclick_track]->endPoint()) {
-   d_loglines[d_rightclick_track]->setFadedownPoint(
-       d_loglines[d_rightclick_track]->endPoint(),RDLogLine::LogPointer);
-  }    
+    if(d_loglines[d_rightclick_track]->fadeupPoint()<
+       d_loglines[d_rightclick_track]->startPoint() &&
+       d_loglines[d_rightclick_track]->fadeupPoint()>=0) {
+      d_loglines[d_rightclick_track]->
+	setFadeupPoint(d_loglines[d_rightclick_track]->startPoint(),
+		       RDLogLine::LogPointer);
+    }    
+    if(d_loglines[d_rightclick_track]->fadeupPoint()>
+       d_loglines[d_rightclick_track]->endPoint()) {
+      d_loglines[d_rightclick_track]->
+	setFadeupPoint(d_loglines[d_rightclick_track]->endPoint(),
+		       RDLogLine::LogPointer);
+    }    
+    if(d_loglines[d_rightclick_track]->fadedownPoint()<
+       d_loglines[d_rightclick_track]->startPoint() &&
+       d_loglines[d_rightclick_track]->fadedownPoint()>=0) {
+      d_loglines[d_rightclick_track]->
+	setFadedownPoint(d_loglines[d_rightclick_track]->startPoint(),
+			 RDLogLine::LogPointer);
+    }    
+    if(d_loglines[d_rightclick_track]->fadedownPoint()>
+       d_loglines[d_rightclick_track]->endPoint()) {
+      d_loglines[d_rightclick_track]->
+	setFadedownPoint(d_loglines[d_rightclick_track]->endPoint(),
+			 RDLogLine::LogPointer);
+    }    
     DrawTrackMap(d_rightclick_track);
     WriteTrackMap(d_rightclick_track);
   }
-  delete edit;
+
   delete rdcart;
 }
 

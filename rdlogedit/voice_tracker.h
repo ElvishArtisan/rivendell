@@ -26,6 +26,7 @@
 #include <rdgroup.h>
 #include <rdlog.h>
 #include <rdloglock.h>
+#include <rdmarkerdialog.h>
 #include <rdplay_deck.h>
 #include <rdsvc.h>
 #include <rdstereometer.h>
@@ -268,6 +269,7 @@ class VoiceTracker : public RDDialog
   QAction *d_set_start_action;
   QAction *d_set_end_action;
   QAction *d_set_hook_action;
+  RDMarkerDialog *d_marker_dialog;
 };
 
 
