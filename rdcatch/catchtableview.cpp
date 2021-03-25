@@ -36,6 +36,11 @@ CatchTableView::CatchTableView(QWidget *parent)
   d_cue_port=rda->station()->cuePort();
 
   //
+  // Dialogs
+  //
+  d_marker_dialog=new RDMarkerDialog("RDCatch",d_cue_card,d_cue_port,this);
+
+  //
   // Mouse menu
   //
   d_mouse_menu=new QMenu(this);
@@ -68,12 +73,12 @@ void CatchTableView::editAudioMenuData()
   RecordListModel *mod=(RecordListModel *)model();
   QString cutname=mod->cutName(mod->index(d_mouse_row,0));
   RDCart *rdcart=new RDCart(RDCut::cartNumber(cutname));
-  RDEditAudio *edit=
-    new RDEditAudio(rdcart,cutname,d_cue_card,d_cue_port,1500,-400,this);
-  if(edit->exec()!=-1) {
+
+  if(d_marker_dialog->
+     exec(RDCut::cartNumber(cutname),RDCut::cutNumber(cutname))) {
     rdcart->updateLength();
   }
-  delete edit;
+
   delete rdcart;
 }
 

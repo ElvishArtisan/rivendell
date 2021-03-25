@@ -21349,3 +21349,6 @@
 	available 'In' and 'Out' possibilities.
 2021-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up 'RDMarkerDialog', 'RDMarkerPlayer' and 'RDMarkerView'.
+2021-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdcatch(1) to use 'RDMarkerDialog' instead of
+	'RDEditAudio'.

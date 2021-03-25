@@ -24,6 +24,7 @@
 #include <QAction>
 #include <QMenu>
 
+#include <rdmarkerdialog.h>
 #include <rdtableview.h>
 
 class CatchTableView : public RDTableView
@@ -48,6 +49,7 @@ class CatchTableView : public RDTableView
   int d_mouse_row;
   int d_cue_card;
   int d_cue_port;
+  RDMarkerDialog *d_marker_dialog;
 };
 
 
