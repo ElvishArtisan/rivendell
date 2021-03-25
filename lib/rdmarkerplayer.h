@@ -21,10 +21,13 @@
 #ifndef RDMARKERPLAYER_H
 #define RDMARKERPLAYER_H
 
+#include <QCheckBox>
 #include <QLabel>
 #include <QLineEdit>
+#include <QSpinBox>
 #include <QTimer>
 
+#include <rdmarkerreadout.h>
 #include <rdmarkerview.h>
 #include <rdstereometer.h>
 #include <rdtransportbutton.h>
@@ -52,40 +55,78 @@ class RDMarkerPlayer : public RDWidget
 
  signals:
   void cursorPositionChanged(unsigned msec);
+  void selectedMarkersChanged(RDMarkerHandle::PointerRole start_role,
+			      RDMarkerHandle::PointerRole end_role);
+  void gotoStartClicked();
+  void gotoCursorClicked();
+  void gotoEndClicked();
+  void noFadeOnSegueChanged(bool state);
+  void playGainSet(int db);
+  void startTrimClicked(int dbfs);
+  void endTrimClicked(int dbfs);
 
  private slots:
+  void buttonGotoStartData();
+  void buttonGotoCursorData();
+  void buttonGotoEndData();
   void buttonPlayData();
   void buttonPlayFromData();
   void buttonPlayToData();
   void buttonStopData();
   void buttonLoopData();
+  void playGainData(int db);
+  void noFadeOnSegueData(bool state);
+  void buttonTrimStartData();
+  void buttonTrimEndData();
+  void readoutClickedData(int role);
   void meterData();
   void caePlayedData(int handle);
   void caePausedData(int handle);
   void caePositionData(int handle,unsigned pos);
+  void trimThresholdChanged(int dbfs);
 
  protected:
   void resizeEvent(QResizeEvent *);
   void paintEvent(QPaintEvent *e);
 
  private:
-  void UpdateReadouts();
+  QLabel *d_readout_labels[7];
+  QSignalMapper *d_readout_mapper;
+  RDMarkerReadout *d_cut_readout;
+  RDMarkerReadout *d_fadeup_readout;
+  RDMarkerReadout *d_fadedown_readout;
+  RDMarkerReadout *d_talk_readout;
+  RDMarkerReadout *d_segue_readout;
+  RDMarkerReadout *d_hook_readout;
+
   QLabel *d_position_label;
   QLabel *d_position_edit;
-  QLabel *d_region_edit_label;
-  QLabel *d_region_edit;
-  QLabel *d_length_label;
-  QLabel *d_length_edit;
+
+  QPushButton *d_goto_start_button;
+  QPushButton *d_goto_cursor_button;
+  QPushButton *d_goto_end_button;
 
   RDTransportButton *d_play_button;
   RDTransportButton *d_play_from_button;
   RDTransportButton *d_play_to_button;
   RDTransportButton *d_active_play_button;
-
   RDTransportButton *d_stop_button;
   RDTransportButton *d_loop_button;
   RDStereoMeter *d_meter;
   QTimer *d_meter_timer;
+
+  QCheckBox *d_no_segue_fade_check;
+  QLabel *d_no_segue_fade_label;
+
+  QLabel *d_play_gain_label;
+  QSpinBox *d_play_gain_spin;
+  QLabel *d_play_gain_unit_label;
+
+  QPushButton *d_trim_start_button;
+  QPushButton *d_trim_end_button;
+  QLabel *d_trim_label;
+  QSpinBox *d_trim_spin;
+
   QList<int> d_cards;
   int d_port;
   int d_cae_stream;

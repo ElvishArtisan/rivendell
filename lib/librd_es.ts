@@ -3578,32 +3578,32 @@ Todo</translation>
     </message>
     <message>
         <source>Goto</source>
-        <translation type="unfinished">Ir a</translation>
+        <translation type="obsolete">Ir a</translation>
     </message>
     <message>
         <source>Cursor</source>
-        <translation type="unfinished">Cursor</translation>
+        <translation type="obsolete">Cursor</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished">Principio</translation>
+        <translation type="obsolete">Principio</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Final</translation>
+        <translation type="obsolete">Final</translation>
     </message>
     <message>
         <source>No Fade on Segue Out</source>
-        <translation type="unfinished">Quitar fade en Segue</translation>
+        <translation type="obsolete">Quitar fade en Segue</translation>
     </message>
     <message>
         <source>Cut Gain</source>
-        <translation type="unfinished">Ganancia
+        <translation type="obsolete">Ganancia
 del audio</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation type="unfinished">dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
 </context>
 <context>
@@ -3615,6 +3615,58 @@ del audio</translation>
     <message>
         <source>Length</source>
         <translation type="unfinished">Longitud</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Final</translation>
+    </message>
+    <message>
+        <source>Cursor Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+Cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut Gain</source>
+        <translation type="unfinished">Ganancia
+del audio</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
+    <message>
+        <source>No Fade on Segue Out</source>
+        <translation type="unfinished">Quitar fade en Segue</translation>
+    </message>
+    <message>
+        <source>Trim Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trim End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Threshold</source>
+        <translation type="unfinished">Nivel</translation>
     </message>
 </context>
 <context>
@@ -3654,6 +3706,10 @@ del audio</translation>
     <message>
         <source>Delete Marker</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Audio</source>
+        <translation type="unfinished">Editar Audio</translation>
     </message>
 </context>
 <context>

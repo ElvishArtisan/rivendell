@@ -3591,31 +3591,31 @@ Out</translation>
     </message>
     <message>
         <source>Goto</source>
-        <translation type="unfinished">Gehe zu</translation>
+        <translation type="obsolete">Gehe zu</translation>
     </message>
     <message>
         <source>Cursor</source>
-        <translation type="unfinished">Cursor</translation>
+        <translation type="obsolete">Cursor</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished">Home</translation>
+        <translation type="obsolete">Home</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Ende</translation>
+        <translation type="obsolete">Ende</translation>
     </message>
     <message>
         <source>No Fade on Segue Out</source>
-        <translation type="unfinished">Kein Fade bei Seque Out</translation>
+        <translation type="obsolete">Kein Fade bei Seque Out</translation>
     </message>
     <message>
         <source>Cut Gain</source>
-        <translation type="unfinished">Cut Gain</translation>
+        <translation type="obsolete">Cut Gain</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation type="unfinished">dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
 </context>
 <context>
@@ -3627,6 +3627,57 @@ Out</translation>
     <message>
         <source>Length</source>
         <translation type="unfinished">Länge</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Ende</translation>
+    </message>
+    <message>
+        <source>Cursor Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+Cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut Gain</source>
+        <translation type="unfinished">Cut Gain</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
+    <message>
+        <source>No Fade on Segue Out</source>
+        <translation type="unfinished">Kein Fade bei Seque Out</translation>
+    </message>
+    <message>
+        <source>Trim Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trim End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Threshold</source>
+        <translation type="unfinished">Threshold</translation>
     </message>
 </context>
 <context>
@@ -3665,6 +3716,10 @@ Out</translation>
     </message>
     <message>
         <source>Delete Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Audio</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -25,9 +25,9 @@
 #include <QList>
 
 #include <rdmarkerview.h>
-#include <rdwidget.h>
+#include <rdpushbutton.h>
 
-class RDMarkerReadout : public RDWidget
+class RDMarkerReadout : public RDPushButton
 {
   Q_OBJECT;
  public:
@@ -51,6 +51,7 @@ class RDMarkerReadout : public RDWidget
   QList <QLabel *> d_edits;
   QList<RDMarkerHandle::PointerRole> d_roles;
   RDMarkerHandle::PointerRole d_selected_marker;
+  int d_pointers[RDMarkerHandle::LastRole];
 };
 
 

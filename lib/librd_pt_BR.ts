@@ -3581,31 +3581,31 @@ Mínimo</translation>
     </message>
     <message>
         <source>Goto</source>
-        <translation type="unfinished">Ir Até</translation>
+        <translation type="obsolete">Ir Até</translation>
     </message>
     <message>
         <source>Cursor</source>
-        <translation type="unfinished">Cursor</translation>
+        <translation type="obsolete">Cursor</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished">Casa</translation>
+        <translation type="obsolete">Casa</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Fim</translation>
+        <translation type="obsolete">Fim</translation>
     </message>
     <message>
         <source>No Fade on Segue Out</source>
-        <translation type="unfinished">Sem Fade na Saída</translation>
+        <translation type="obsolete">Sem Fade na Saída</translation>
     </message>
     <message>
         <source>Cut Gain</source>
-        <translation type="unfinished">Ganho</translation>
+        <translation type="obsolete">Ganho</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation type="unfinished">dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
 </context>
 <context>
@@ -3617,6 +3617,57 @@ Mínimo</translation>
     <message>
         <source>Length</source>
         <translation type="unfinished">Duração</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Fim</translation>
+    </message>
+    <message>
+        <source>Cursor Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+Cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut Gain</source>
+        <translation type="unfinished">Ganho</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
+    <message>
+        <source>No Fade on Segue Out</source>
+        <translation type="unfinished">Sem Fade na Saída</translation>
+    </message>
+    <message>
+        <source>Trim Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trim End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Threshold</source>
+        <translation type="unfinished">Valor Mínimo</translation>
     </message>
 </context>
 <context>
@@ -3655,6 +3706,10 @@ Mínimo</translation>
     </message>
     <message>
         <source>Delete Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Audio</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

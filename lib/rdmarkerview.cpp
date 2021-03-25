@@ -20,12 +20,14 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+#include <QMessageBox>
 #include <QMouseEvent>
 #include <QPen>
 #include <QScrollBar>
 
 #include "rdescape_string.h"
 #include "rdmarkerview.h"
+#include "rdtrimaudio.h"
 
 #define LEFT_MARGIN 30
 
@@ -55,6 +57,8 @@ RDMarkerHandle::RDMarkerHandle(RDMarkerHandle::PointerRole role,
   d_name=RDMarkerHandle::pointerRoleTypeText(role);
   d_role=role;
   setToolTip(RDMarkerHandle::pointerRoleTypeText(role));
+
+  setAcceptHoverEvents(true);
 }
 
 
@@ -104,6 +108,22 @@ void RDMarkerHandle::setSelected(bool state)
 }
 
 
+void RDMarkerHandle::hoverEnterEvent(QGraphicsSceneHoverEvent *e)
+{
+  RDMarkerView *view=static_cast<RDMarkerView *>(d_marker_view);
+
+  view->setCursor(Qt::PointingHandCursor);
+}
+
+
+void RDMarkerHandle::hoverLeaveEvent(QGraphicsSceneHoverEvent *e)
+{
+  RDMarkerView *view=static_cast<RDMarkerView *>(d_marker_view);
+
+  view->unsetCursor();
+}
+
+
 void RDMarkerHandle::mousePressEvent(QGraphicsSceneMouseEvent *e)
 {
   RDMarkerView *view=static_cast<RDMarkerView *>(d_marker_view);
@@ -120,7 +140,7 @@ void RDMarkerHandle::mousePressEvent(QGraphicsSceneMouseEvent *e)
 	}
       }
     }
-    view->setSelectedMarker(d_role);
+    view->setSelectedMarkers(d_role,RDMarkerHandle::LastRole);
   }
 
   if(e->button()==Qt::RightButton) {
@@ -466,65 +486,6 @@ bool RDMarkerView::hasUnsavedChanges() const
   return d_has_unsaved_changes;
 }
 
-
-void RDMarkerView::setSelectedMarker(RDMarkerHandle::PointerRole role)
-{
-  switch(role) {
-  case RDMarkerHandle::CutEnd:
-  case RDMarkerHandle::TalkEnd:
-  case RDMarkerHandle::SegueEnd:
-  case RDMarkerHandle::HookEnd:
-    d_selected_markers[0]=(RDMarkerHandle::PointerRole)((int)role-1);
-    d_selected_markers[1]=role;
-    break;
-
-  case RDMarkerHandle::CutStart:
-  case RDMarkerHandle::TalkStart:
-  case RDMarkerHandle::SegueStart:
-  case RDMarkerHandle::HookStart:
-    d_selected_markers[0]=role;
-    d_selected_markers[1]=(RDMarkerHandle::PointerRole)((int)role+1);
-    break;
-
-  case RDMarkerHandle::FadeUp:
-    d_selected_markers[0]=RDMarkerHandle::LastRole;
-    d_selected_markers[1]=RDMarkerHandle::FadeUp;
-    break;
-
-  case RDMarkerHandle::FadeDown:
-    if(role!=d_selected_markers[0]) {
-      for(int i=0;i<RDMarkerHandle::LastRole;i++) {
-	for(int j=0;j<2;j++) {
-	  if(d_handles[i][j]!=NULL) {
-	    d_handles[i][j]->
-	      setSelected(role==(RDMarkerHandle::PointerRole)i);
-	  }
-	}
-      }
-    }
-    d_selected_markers[0]=RDMarkerHandle::FadeDown;
-    d_selected_markers[1]=RDMarkerHandle::LastRole;
-    break;
-
-  case RDMarkerHandle::LastRole:
-    d_selected_markers[0]=RDMarkerHandle::LastRole;
-    d_selected_markers[1]=RDMarkerHandle::LastRole;
-    break;
-  }
-  for(int i=0;i<RDMarkerHandle::LastRole;i+=2) {
-    for(int j=0;j<2;j++) {
-      if(d_handles[i][j]!=NULL) {
-	d_handles[i][j]->
-	  setSelected(d_selected_markers[0]==(RDMarkerHandle::PointerRole)i);
-	d_handles[i+1][j]->
-	  setSelected(d_selected_markers[1]==(RDMarkerHandle::PointerRole)i+1);
-      }
-    }
-  }
-  emit selectedMarkersChanged(d_selected_markers[0],d_selected_markers[1]);
-}
-
-
 void RDMarkerView::processRightClick(RDMarkerHandle::PointerRole role,
 				     const QPointF &pos)
 {
@@ -560,6 +521,74 @@ void RDMarkerView::updatePosition(RDMarkerHandle::PointerRole role, int ptr)
 }
 
 
+void RDMarkerView::setSelectedMarkers(RDMarkerHandle::PointerRole start_role,
+				      RDMarkerHandle::PointerRole end_role)
+{
+  switch(start_role) {
+  case RDMarkerHandle::CutEnd:
+  case RDMarkerHandle::TalkEnd:
+  case RDMarkerHandle::SegueEnd:
+  case RDMarkerHandle::HookEnd:
+    d_selected_markers[0]=(RDMarkerHandle::PointerRole)((int)start_role-1);
+    d_selected_markers[1]=start_role;
+    break;
+
+  case RDMarkerHandle::CutStart:
+  case RDMarkerHandle::TalkStart:
+  case RDMarkerHandle::SegueStart:
+  case RDMarkerHandle::HookStart:
+    d_selected_markers[0]=start_role;
+    d_selected_markers[1]=(RDMarkerHandle::PointerRole)((int)start_role+1);
+    break;
+
+  case RDMarkerHandle::FadeUp:
+    d_selected_markers[0]=RDMarkerHandle::LastRole;
+    d_selected_markers[1]=RDMarkerHandle::FadeUp;
+    break;
+
+  case RDMarkerHandle::FadeDown:
+    if(start_role!=d_selected_markers[0]) {
+      for(int i=0;i<RDMarkerHandle::LastRole;i++) {
+	for(int j=0;j<2;j++) {
+	  if(d_handles[i][j]!=NULL) {
+	    d_handles[i][j]->
+	      setSelected(start_role==(RDMarkerHandle::PointerRole)i);
+	  }
+	}
+      }
+    }
+    d_selected_markers[0]=RDMarkerHandle::FadeDown;
+    d_selected_markers[1]=RDMarkerHandle::LastRole;
+    break;
+
+  case RDMarkerHandle::LastRole:
+    d_selected_markers[0]=RDMarkerHandle::LastRole;
+    d_selected_markers[1]=RDMarkerHandle::FadeUp;
+    break;
+  }
+  for(int i=0;i<RDMarkerHandle::LastRole;i+=2) {
+    for(int j=0;j<2;j++) {
+      if(d_handles[i][j]!=NULL) {
+	d_handles[i][j]->
+	  setSelected(d_selected_markers[0]==(RDMarkerHandle::PointerRole)i);
+      }
+      if(d_handles[i+1][j]!=NULL) {
+	d_handles[i+1][j]->
+	  setSelected(d_selected_markers[1]==(RDMarkerHandle::PointerRole)i+1);
+      }
+    }
+  }
+  for(int j=0;j<2;j++) {  // And the FadeUp marker
+    if(d_handles[RDMarkerHandle::FadeUp][j]!=NULL) {
+      d_handles[RDMarkerHandle::FadeUp][j]->
+	setSelected(d_selected_markers[1]==RDMarkerHandle::FadeUp);
+    }
+  }
+
+  emit selectedMarkersChanged(d_selected_markers[0],d_selected_markers[1]);
+}
+
+
 void RDMarkerView::setNoSegueFade(bool state)
 {
   d_has_unsaved_changes=state!=d_no_segue_fade;
@@ -574,6 +603,54 @@ void RDMarkerView::setPlayGain(int db)
     d_has_unsaved_changes=true;
     SetReferenceLines();
   }
+}
+
+
+void RDMarkerView::trimStart(int dbfs)
+{
+  RDTrimAudio::ErrorCode conv_err;
+  RDTrimAudio *conv=new RDTrimAudio(rda->station(),rda->config(),this);
+  conv->setCartNumber(d_cart_number);
+  conv->setCutNumber(d_cut_number);
+  conv->setTrimLevel(100*dbfs);
+  switch(conv_err=conv->runTrim(rda->user()->name(),rda->user()->password())) {
+  case RDTrimAudio::ErrorOk:
+    if(conv->startPoint()>=0) {
+      updatePosition(RDMarkerHandle::CutStart,conv->startPoint());
+      PositionMarker(RDMarkerHandle::CutStart,conv->startPoint());
+    }
+    break;
+
+  default:
+    QMessageBox::warning(this,tr("Edit Audio"),
+			 RDTrimAudio::errorText(conv_err));
+    break;
+  }
+  delete conv;
+}
+
+
+void RDMarkerView::trimEnd(int dbfs)
+{
+  RDTrimAudio::ErrorCode conv_err;
+  RDTrimAudio *conv=new RDTrimAudio(rda->station(),rda->config(),this);
+  conv->setCartNumber(d_cart_number);
+  conv->setCutNumber(d_cut_number);
+  conv->setTrimLevel(100*dbfs);
+  switch(conv_err=conv->runTrim(rda->user()->name(),rda->user()->password())) {
+  case RDTrimAudio::ErrorOk:
+    if(conv->endPoint()>=0) {
+      updatePosition(RDMarkerHandle::CutEnd,conv->endPoint());
+      PositionMarker(RDMarkerHandle::CutEnd,conv->endPoint());
+    }
+    break;
+
+  default:
+    QMessageBox::warning(this,tr("Edit Audio"),
+			 RDTrimAudio::errorText(conv_err));
+    break;
+  }
+  delete conv;
 }
 
 
@@ -1205,6 +1282,18 @@ void RDMarkerView::RemoveMarker(RDMarkerHandle::PointerRole role)
   }
 
   emit pointerValueChanged(role,-1);
+}
+
+
+void RDMarkerView::PositionMarker(RDMarkerHandle::PointerRole role,int ptr)
+{
+  QList<QGraphicsItem *> items=d_scene->items();
+
+  for(int i=0;i<items.size();i++) {
+    if(items.at(i)->toolTip()==RDMarkerHandle::pointerRoleTypeText(role)) {
+      items.at(i)->setPos(LEFT_MARGIN+Frame(ptr),items.at(i)->pos().y());
+    }
+  }
 }
 
 

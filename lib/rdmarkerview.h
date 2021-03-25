@@ -57,6 +57,8 @@ class RDMarkerHandle : public QGraphicsPolygonItem
   static PointerType pointerType(PointerRole role);
 
  protected:
+  void hoverEnterEvent(QGraphicsSceneHoverEvent *e);
+  void hoverLeaveEvent(QGraphicsSceneHoverEvent *e);
   void mousePressEvent(QGraphicsSceneMouseEvent *e);
   void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
   void wheelEvent(QGraphicsSceneWheelEvent *e);
@@ -96,7 +98,6 @@ class RDMarkerView : public RDWidget
   int playGain() const;
   bool hasUnsavedChanges() const;
 
-  void setSelectedMarker(RDMarkerHandle::PointerRole role);
   void processRightClick(RDMarkerHandle::PointerRole role,
 			 const QPointF &pos);
   void updatePosition(RDMarkerHandle::PointerRole role,int ptr);
@@ -108,8 +109,12 @@ class RDMarkerView : public RDWidget
 			      RDMarkerHandle::PointerRole end_role);
 
  public slots:
+  void setSelectedMarkers(RDMarkerHandle::PointerRole start_role,
+			  RDMarkerHandle::PointerRole end_role);
   void setNoSegueFade(bool state);
   void setPlayGain(int db);
+  void trimStart(int dbfs);
+  void trimEnd(int dbfs);
   void setAudioGain(int lvl);
   void setShrinkFactor(int sf);
   void setMaximumShrinkFactor();
@@ -146,6 +151,7 @@ class RDMarkerView : public RDWidget
   void DrawMarker(RDMarkerHandle::PointerType type,
 		  RDMarkerHandle::PointerRole role,int handle_pos);
   void RemoveMarker(RDMarkerHandle::PointerRole role);
+  void PositionMarker(RDMarkerHandle::PointerRole role,int ptr);
   void SetReferenceLines();
   QGraphicsView *d_view;
   QGraphicsScene *d_scene;

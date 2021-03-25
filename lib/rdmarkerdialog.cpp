@@ -72,50 +72,6 @@ RDMarkerDialog::RDMarkerDialog(const QString &caption,int card,int port,
   connect(d_time_fullout_button,SIGNAL(clicked()),
 	  d_marker_view,SLOT(setMaximumShrinkFactor()));
 
-  //
-  // Goto Buttons
-  //
-  d_goto_group=new QGroupBox(tr("Goto"),this);
-  d_goto_group->setFont(labelFont());
-
-  d_goto_cursor_button=new QPushButton(tr("Cursor"),d_goto_group);
-  d_goto_cursor_button->setFont(buttonFont());
-  connect(d_goto_cursor_button,SIGNAL(clicked()),
-	  d_marker_view,SLOT(gotoCursor()));
-
-  d_goto_home_button=new QPushButton(tr("Home"),d_goto_group);
-  d_goto_home_button->setFont(buttonFont());
-  connect(d_goto_home_button,SIGNAL(clicked()),
-	  d_marker_view,SLOT(gotoHome()));
-
-  d_goto_end_button=new QPushButton(tr("End"),d_goto_group);
-  d_goto_end_button->setFont(buttonFont());
-  connect(d_goto_end_button,SIGNAL(clicked()),
-	  d_marker_view,SLOT(gotoEnd()));
-
-  //
-  // Fade on Segue Out
-  //
-  d_no_segue_fade_check=new QCheckBox(this);
-  d_no_segue_fade_label=new QLabel(tr("No Fade on Segue Out"),this);
-  d_no_segue_fade_label->setFont(labelFont());
-  connect(d_no_segue_fade_check,SIGNAL(toggled(bool)),
-	  d_marker_view,SLOT(setNoSegueFade(bool)));
-
-  //
-  // Cut Gain
-  //
-  d_play_gain_spin=new QSpinBox(this);
-  d_play_gain_spin->setRange(-10,10);
-  connect(d_play_gain_spin,SIGNAL(valueChanged(int)),
-	  d_marker_view,SLOT(setPlayGain(int)));
-  d_play_gain_label=new QLabel(tr("Cut Gain")+":",this);
-  d_play_gain_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  d_play_gain_label->setFont(labelFont());
-  d_play_gain_unit_label=new QLabel(tr("dB"),this);
-  d_play_gain_unit_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  d_play_gain_unit_label->setFont(labelFont());
-
   /**************************************************************************
    * Transport Section
    **************************************************************************/
@@ -132,72 +88,22 @@ RDMarkerDialog::RDMarkerDialog(const QString &caption,int card,int port,
 					  RDMarkerHandle::PointerRole)));
   connect(d_marker_view,SIGNAL(positionClicked(int)),
 	  d_player,SLOT(setCursorPosition(int)));
-
-  //
-  // Marker Readouts
-  //
-  d_cut_readout=new RDMarkerReadout(RDMarkerHandle::CutStart,this);
-  connect(d_marker_view,
-	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
-	  d_cut_readout,SLOT(setValue(RDMarkerHandle::PointerRole,int)));
-  connect(d_marker_view,
-	  SIGNAL(selectedMarkersChanged(RDMarkerHandle::PointerRole,
-					RDMarkerHandle::PointerRole)),
-	  d_cut_readout,SLOT(setSelectedMarkers(RDMarkerHandle::PointerRole,
+  connect(d_player,SIGNAL(selectedMarkersChanged(RDMarkerHandle::PointerRole,
+						 RDMarkerHandle::PointerRole)),
+	  d_marker_view,SLOT(setSelectedMarkers(RDMarkerHandle::PointerRole,
 						RDMarkerHandle::PointerRole)));
-  d_cut_readout->setEnabled(true);
-
-  d_talk_readout=new RDMarkerReadout(RDMarkerHandle::TalkStart,this);
-  connect(d_marker_view,
-	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
-	  d_talk_readout,SLOT(setValue(RDMarkerHandle::PointerRole,int)));
-  connect(d_marker_view,
-	  SIGNAL(selectedMarkersChanged(RDMarkerHandle::PointerRole,
-					RDMarkerHandle::PointerRole)),
-	  d_talk_readout,SLOT(setSelectedMarkers(RDMarkerHandle::PointerRole,
-						 RDMarkerHandle::PointerRole)));
-
-  d_segue_readout=new RDMarkerReadout(RDMarkerHandle::SegueStart,this);
-  connect(d_marker_view,
-	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
-	  d_segue_readout,SLOT(setValue(RDMarkerHandle::PointerRole,int)));
-  connect(d_marker_view,
-	  SIGNAL(selectedMarkersChanged(RDMarkerHandle::PointerRole,
-					RDMarkerHandle::PointerRole)),
-	  d_segue_readout,SLOT(setSelectedMarkers(RDMarkerHandle::PointerRole,
-						  RDMarkerHandle::PointerRole)));
-
-  d_hook_readout=new RDMarkerReadout(RDMarkerHandle::HookStart,this);
-  connect(d_marker_view,
-	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
-	  d_hook_readout,SLOT(setValue(RDMarkerHandle::PointerRole,int)));
-  connect(d_marker_view,
-	  SIGNAL(selectedMarkersChanged(RDMarkerHandle::PointerRole,
-					RDMarkerHandle::PointerRole)),
-	  d_hook_readout,SLOT(setSelectedMarkers(RDMarkerHandle::PointerRole,
-						 RDMarkerHandle::PointerRole)));
-
-  d_fadeup_readout=new RDMarkerReadout(RDMarkerHandle::FadeUp,this);
-  connect(d_marker_view,
-	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
-	  d_fadeup_readout,SLOT(setValue(RDMarkerHandle::PointerRole,int)));
-  connect(d_marker_view,
-	  SIGNAL(selectedMarkersChanged(RDMarkerHandle::PointerRole,
-					RDMarkerHandle::PointerRole)),
-	  d_fadeup_readout,
-	  SLOT(setSelectedMarkers(RDMarkerHandle::PointerRole,
-				  RDMarkerHandle::PointerRole)));
-
-  d_fadedown_readout=new RDMarkerReadout(RDMarkerHandle::FadeDown,this);
-  connect(d_marker_view,
-	  SIGNAL(pointerValueChanged(RDMarkerHandle::PointerRole,int)),
-	  d_fadedown_readout,SLOT(setValue(RDMarkerHandle::PointerRole,int)));
-  connect(d_marker_view,
-	  SIGNAL(selectedMarkersChanged(RDMarkerHandle::PointerRole,
-					RDMarkerHandle::PointerRole)),
-	  d_fadedown_readout,
-	  SLOT(setSelectedMarkers(RDMarkerHandle::PointerRole,
-				  RDMarkerHandle::PointerRole)));
+  connect(d_player,SIGNAL(gotoStartClicked()),d_marker_view,SLOT(gotoHome()));
+  connect(d_player,SIGNAL(gotoCursorClicked()),
+	  d_marker_view,SLOT(gotoCursor()));
+  connect(d_player,SIGNAL(gotoEndClicked()),d_marker_view,SLOT(gotoEnd()));
+  connect(d_player,SIGNAL(playGainSet(int)),
+	  d_marker_view,SLOT(setPlayGain(int)));
+  connect(d_player,SIGNAL(noFadeOnSegueChanged(bool)),
+	  d_marker_view,SLOT(setNoSegueFade(bool)));
+  connect(d_player,SIGNAL(startTrimClicked(int)),
+	  d_marker_view,SLOT(trimStart(int)));
+  connect(d_player,SIGNAL(endTrimClicked(int)),
+	  d_marker_view,SLOT(trimEnd(int)));
 
   /**************************************************************************
    * Navigation Section
@@ -227,7 +133,7 @@ RDMarkerDialog::~RDMarkerDialog()
 
 QSize RDMarkerDialog::sizeHint() const
 {
-  return QSize(1000,600);
+  return QSize(1050,600);
 }
 
 
@@ -249,21 +155,8 @@ int RDMarkerDialog::exec(unsigned cartnum,int cutnum)
 			  tr("Unable to open cut in audio player!"));
     return false;
   }
-  for(int i=0;i<RDMarkerHandle::LastRole;i++) {
-    RDMarkerHandle::PointerRole role=(RDMarkerHandle::PointerRole)i;
-    d_cut_readout->setValue(role,d_marker_view->pointerValue(role));
-    d_talk_readout->setValue(role,d_marker_view->pointerValue(role));
-    d_segue_readout->setValue(role,d_marker_view->pointerValue(role));
-    d_hook_readout->setValue(role,d_marker_view->pointerValue(role));
-    d_fadeup_readout->setValue(role,d_marker_view->pointerValue(role));
-    d_fadedown_readout->setValue(role,d_marker_view->pointerValue(role));
-    d_player->setPointerValue(role,d_marker_view->pointerValue(role));
-    d_player->
-      setSelectedMarkers(RDMarkerHandle::LastRole,RDMarkerHandle::LastRole);
-  }
-  d_marker_view->setSelectedMarker(RDMarkerHandle::CutStart);
-  d_no_segue_fade_check->setChecked(d_marker_view->noSegueFade());
-  d_play_gain_spin->setValue(d_marker_view->playGain());
+  d_marker_view->
+    setSelectedMarkers(RDMarkerHandle::CutStart,RDMarkerHandle::CutEnd);
 
   return QDialog::exec();
 }
@@ -366,82 +259,10 @@ void RDMarkerDialog::resizeEvent(QResizeEvent *e)
   //
   // Readout Section
   //
-  d_cut_readout->setGeometry(2,
-			     2+d_marker_view->sizeHint().height(),
-			     d_cut_readout->sizeHint().width(),
-			     d_cut_readout->sizeHint().height());
-
-  d_talk_readout->setGeometry(2+1*(d_talk_readout->sizeHint().width()-2),
-			      2+d_marker_view->sizeHint().height(),
-			      d_talk_readout->sizeHint().width(),
-			      d_talk_readout->sizeHint().height());
-
-  d_segue_readout->setGeometry(2+2*(d_segue_readout->sizeHint().width()-2),
-			       2+d_marker_view->sizeHint().height(),
-			       d_segue_readout->sizeHint().width(),
-			       d_segue_readout->sizeHint().height());
-
-  d_hook_readout->setGeometry(2+3*(d_hook_readout->sizeHint().width()-2),
-			      2+d_marker_view->sizeHint().height(),
-			      d_hook_readout->sizeHint().width(),
-			      d_hook_readout->sizeHint().height());
-
-  d_fadeup_readout->setGeometry(2,
-				d_marker_view->sizeHint().height()-2+
-				d_hook_readout->sizeHint().height(),
-				2*d_fadeup_readout->sizeHint().width()-2,
-				d_fadeup_readout->sizeHint().height());
-
-  d_fadedown_readout->setGeometry(2*d_fadedown_readout->sizeHint().width()-2,
-				  d_marker_view->sizeHint().height()-2+
-				  d_hook_readout->sizeHint().height(),
-				  2*d_fadedown_readout->sizeHint().width()-2,
-				  d_fadedown_readout->sizeHint().height());
-
-  //
-  // Transport Section
-  //
-  d_player->setGeometry(2*d_fadedown_readout->sizeHint().width()+
-			2*d_fadedown_readout->sizeHint().width()-6,
+  d_player->setGeometry(2,
 			2+d_marker_view->sizeHint().height(),
 			d_player->sizeHint().width(),
 			d_player->sizeHint().height());
-
-  d_goto_group->setGeometry(10,
-			    2+d_marker_view->sizeHint().height()+
-			    d_player->sizeHint().height()+5,
-			    90*3,
-			    80);
-  d_goto_cursor_button->setGeometry(5,25,80,50);
-  d_goto_home_button->setGeometry(95,25,80,50);
-  d_goto_end_button->setGeometry(185,25,80,50);
-
-  d_no_segue_fade_check->setGeometry(200+90*3,
-				     4+d_marker_view->sizeHint().height()+
-				     d_player->sizeHint().height()+5,
-				     15,
-				     15);
-  d_no_segue_fade_label->setGeometry(220+90*3,
-				     2+d_marker_view->sizeHint().height()+
-				     d_player->sizeHint().height()+5,
-				     200,
-				     20);
-
-  d_play_gain_label->setGeometry(220+90*3,
-				 2+d_marker_view->sizeHint().height()+
-				 d_player->sizeHint().height()+5+22,
-				 100,
-				 20);
-  d_play_gain_spin->setGeometry(220+90*3+105,
-				 2+d_marker_view->sizeHint().height()+
-				 d_player->sizeHint().height()+5+22,
-				 40,
-				 20);
-  d_play_gain_unit_label->setGeometry(220+90*3+105+45,
-				      2+d_marker_view->sizeHint().height()+
-				      d_player->sizeHint().height()+5+22,
-				      60,
-				      20);
 
   d_ok_button->setGeometry(w-180,h-60,80,50);
   d_cancel_button->setGeometry(w-90,h-60,80,50);

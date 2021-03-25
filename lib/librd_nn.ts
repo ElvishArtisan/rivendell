@@ -3541,31 +3541,31 @@ ut</translation>
     </message>
     <message>
         <source>Goto</source>
-        <translation type="unfinished">Gå til</translation>
+        <translation type="obsolete">Gå til</translation>
     </message>
     <message>
         <source>Cursor</source>
-        <translation type="unfinished">Markør</translation>
+        <translation type="obsolete">Markør</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished">Heim</translation>
+        <translation type="obsolete">Heim</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Slutten</translation>
+        <translation type="obsolete">Slutten</translation>
     </message>
     <message>
         <source>No Fade on Segue Out</source>
-        <translation type="unfinished">Inga uttoning ved Overgang ut</translation>
+        <translation type="obsolete">Inga uttoning ved Overgang ut</translation>
     </message>
     <message>
         <source>Cut Gain</source>
-        <translation type="unfinished">Dempevolum</translation>
+        <translation type="obsolete">Dempevolum</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation type="unfinished">dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
 </context>
 <context>
@@ -3577,6 +3577,57 @@ ut</translation>
     <message>
         <source>Length</source>
         <translation type="unfinished">Lengd</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Slutten</translation>
+    </message>
+    <message>
+        <source>Cursor Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+Cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut Gain</source>
+        <translation type="unfinished">Dempevolum</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
+    <message>
+        <source>No Fade on Segue Out</source>
+        <translation type="unfinished">Inga uttoning ved Overgang ut</translation>
+    </message>
+    <message>
+        <source>Trim Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trim End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Threshold</source>
+        <translation type="unfinished">Terskel</translation>
     </message>
 </context>
 <context>
@@ -3615,6 +3666,10 @@ ut</translation>
     </message>
     <message>
         <source>Delete Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Audio</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

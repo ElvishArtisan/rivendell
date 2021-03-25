@@ -26,6 +26,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSignalMapper>
 #include <QSpinBox>
 #include <QTimer>
 
@@ -76,7 +77,6 @@ class RDMarkerDialog : public RDDialog
   void timeFullInData();
   void timeInData();
   void timeOutData();
-
   void okData();
   void cancelData();
 
@@ -98,25 +98,6 @@ class RDMarkerDialog : public RDDialog
   QPushButton *d_time_fullout_button;
 
   RDMarkerPlayer *d_player;
-
-  RDMarkerReadout *d_cut_readout;
-  RDMarkerReadout *d_fadeup_readout;
-  RDMarkerReadout *d_fadedown_readout;
-  RDMarkerReadout *d_talk_readout;
-  RDMarkerReadout *d_segue_readout;
-  RDMarkerReadout *d_hook_readout;
-
-  QGroupBox *d_goto_group;
-  QPushButton *d_goto_cursor_button;
-  QPushButton *d_goto_home_button;
-  QPushButton *d_goto_end_button;
-
-  QCheckBox *d_no_segue_fade_check;
-  QLabel *d_no_segue_fade_label;
-
-  QLabel *d_play_gain_label;
-  QSpinBox *d_play_gain_spin;
-  QLabel *d_play_gain_unit_label;
 
   QPushButton *d_ok_button;
   QPushButton *d_cancel_button;

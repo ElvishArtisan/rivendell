@@ -25,7 +25,7 @@
 
 RDMarkerReadout::RDMarkerReadout(RDMarkerHandle::PointerRole role,
 				 QWidget *parent)
-  : RDWidget(parent)
+  : RDPushButton(parent)
 {
   d_roles.push_back(role);
   d_selected_marker=RDMarkerHandle::LastRole;
@@ -40,7 +40,7 @@ RDMarkerReadout::RDMarkerReadout(RDMarkerHandle::PointerRole role,
   case RDMarkerHandle::SegueStart:
   case RDMarkerHandle::HookStart:
     d_roles.push_back((RDMarkerHandle::PointerRole)(role+1));
-    for(int i=0;i<2;i++) {
+    for(int i=0;i<3;i++) {
       d_edits.push_back(new QLabel(this));
       d_edits.back()->setFrameShape(QFrame::Box);
       d_edits.back()->setFrameShadow(QFrame::Sunken);
@@ -51,11 +51,13 @@ RDMarkerReadout::RDMarkerReadout(RDMarkerHandle::PointerRole role,
 
   case RDMarkerHandle::FadeUp:
   case RDMarkerHandle::FadeDown:
-    d_edits.push_back(new QLabel(this));
-    d_edits.back()->setFrameShape(QFrame::Box);
-    d_edits.back()->setFrameShadow(QFrame::Sunken);
-    d_edits.back()->setAlignment(Qt::AlignCenter);
-    d_edits.back()->setText("0:00:00");
+    for(int i=0;i<2;i++) {
+      d_edits.push_back(new QLabel(this));
+      d_edits.back()->setFrameShape(QFrame::Box);
+      d_edits.back()->setFrameShadow(QFrame::Sunken);
+      d_edits.back()->setAlignment(Qt::AlignCenter);
+      d_edits.back()->setText("0:00:00");
+    }
   break;
 
   case RDMarkerHandle::CutEnd:
@@ -81,7 +83,7 @@ RDMarkerReadout::~RDMarkerReadout()
 
 QSize RDMarkerReadout::sizeHint() const
 {
-  return QSize(labelFontMetrics()->width("00:00:00")+10,20+20*d_edits.size());
+  return QSize(65,21+18*d_edits.size());
 }
 
 
@@ -93,15 +95,56 @@ QSizePolicy RDMarkerReadout::sizePolicy() const
 
 void RDMarkerReadout::setValue(RDMarkerHandle::PointerRole role,int value)
 {
-  for(int i=0;i<d_roles.size();i++) {
-    if(d_roles.at(i)==role) {
-      if(value>=0) {
-	d_edits.at(i)->setText(RDGetTimeLength(value,true,true));
+  if(d_pointers[role]!=value) {
+    d_pointers[role]=value;
+    for(int i=0;i<d_roles.size();i++) {
+      if(d_roles.at(i)==role) {
+	if(value>=0) {
+	  d_edits.at(i)->setText(RDGetTimeLength(value,true,true));
+	}
+	else {
+	  d_edits.at(i)->setText("0:00:00");
+	}
+	setEnabled(value>=0);
+      }
+    }
+    switch(d_roles.first()) {
+    case RDMarkerHandle::CutStart:
+    case RDMarkerHandle::TalkStart:
+    case RDMarkerHandle::SegueStart:
+    case RDMarkerHandle::HookStart:
+      if((d_pointers[d_roles.first()]<0)||(d_pointers[d_roles.last()]<0)) {
+	d_edits.last()->setText("0:00:00");
       }
       else {
-	d_edits.at(i)->setText("0:00:00");
+	d_edits.last()->setText(RDGetTimeLength(d_pointers[d_roles.last()]-d_pointers[d_roles.first()],true,true));
       }
-      setEnabled(value>=0);
+      break;
+
+    case RDMarkerHandle::FadeUp:
+      if(d_pointers[d_roles.first()]<0) {
+	d_edits.last()->setText("0:00:00");
+      }
+      else {
+	d_edits.last()->setText(RDGetTimeLength(d_pointers[d_roles.first()]-d_pointers[RDMarkerHandle::CutStart],true,true));
+      }
+      break;
+
+    case RDMarkerHandle::FadeDown:
+      if(d_pointers[d_roles.first()]<0) {
+	d_edits.last()->setText("0:00:00");
+      }
+      else {
+	d_edits.last()->setText(RDGetTimeLength(d_pointers[RDMarkerHandle::CutEnd]-d_pointers[d_roles.first()],true,true));
+      }
+      break;
+
+    case RDMarkerHandle::CutEnd:
+    case RDMarkerHandle::TalkEnd:
+    case RDMarkerHandle::LastRole:
+    case RDMarkerHandle::SegueEnd:
+    case RDMarkerHandle::HookEnd:
+      break;
     }
   }
 }
@@ -135,13 +178,19 @@ void RDMarkerReadout::setEnabled(bool state)
 		    "color: "+
 		    RDGetTextColor(RDMarkerHandle::
 				   pointerRoleColor(d_roles.first())).name());
+    setCursor(Qt::PointingHandCursor);
   }
   else {
     d_label->setStyleSheet("background-color: "+LABEL_DISABLED_COLOR);
+    unsetCursor();
   }
   for(int i=0;i<d_edits.size();i++) {
+    if(!state) {
+      d_edits.at(i)->setStyleSheet("");
+    }
     d_edits.at(i)->setEnabled(state);
   }
+  QPushButton::setEnabled(state);
 }
 
 

@@ -3602,31 +3602,31 @@ Out</translation>
     </message>
     <message>
         <source>Goto</source>
-        <translation type="unfinished">Přejít na</translation>
+        <translation type="obsolete">Přejít na</translation>
     </message>
     <message>
         <source>Cursor</source>
-        <translation type="unfinished">Ukazovátko</translation>
+        <translation type="obsolete">Ukazovátko</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation type="unfinished">Domov</translation>
+        <translation type="obsolete">Domov</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Konec</translation>
+        <translation type="obsolete">Konec</translation>
     </message>
     <message>
         <source>No Fade on Segue Out</source>
-        <translation type="unfinished">Žádné prolínání při přechodu ven</translation>
+        <translation type="obsolete">Žádné prolínání při přechodu ven</translation>
     </message>
     <message>
         <source>Cut Gain</source>
-        <translation type="unfinished">Zesílení záběru</translation>
+        <translation type="obsolete">Zesílení záběru</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation type="unfinished">dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
 </context>
 <context>
@@ -3638,6 +3638,57 @@ Out</translation>
     <message>
         <source>Length</source>
         <translation type="unfinished">Délka</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Konec</translation>
+    </message>
+    <message>
+        <source>Cursor Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+Cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go To
+End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut Gain</source>
+        <translation type="unfinished">Zesílení záběru</translation>
+    </message>
+    <message>
+        <source>dB</source>
+        <translation type="unfinished">dB</translation>
+    </message>
+    <message>
+        <source>No Fade on Segue Out</source>
+        <translation type="unfinished">Žádné prolínání při přechodu ven</translation>
+    </message>
+    <message>
+        <source>Trim Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trim End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Threshold</source>
+        <translation type="unfinished">Prahová hodnota</translation>
     </message>
 </context>
 <context>
@@ -3677,6 +3728,10 @@ Out</translation>
     <message>
         <source>Delete Marker</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Audio</source>
+        <translation type="unfinished">Upravit zvuk</translation>
     </message>
 </context>
 <context>

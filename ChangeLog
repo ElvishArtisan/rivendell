@@ -21342,3 +21342,5 @@
 	* Fixed regressions in the 'Edit Cart' dialog in rdlibrary(1) that
 	caused focus on the Cut entry to be lost after modifying cut
 	attributes.
+2021-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored layout of 'RDMarkerDialog'
