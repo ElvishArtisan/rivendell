@@ -91,6 +91,8 @@ class RDMarkerView : public RDWidget
   int audioGain() const;
   unsigned sampleRate() const;
   int shrinkFactor() const;
+  bool canShrinkTime() const;
+  bool canGrowTime() const;
   int pointerValue(RDMarkerHandle::PointerRole role);
   RDMarkerHandle::PointerRole selectedMarker(RDMarkerHandle::PointerType type)
     const;
@@ -107,6 +109,8 @@ class RDMarkerView : public RDWidget
   void pointerValueChanged(RDMarkerHandle::PointerRole role,int msec);
   void selectedMarkersChanged(RDMarkerHandle::PointerRole start_role,
 			      RDMarkerHandle::PointerRole end_role);
+  void canShrinkTimeChanged(bool state);
+  void canGrowTimeChanged(bool state);
 
  public slots:
   void setSelectedMarkers(RDMarkerHandle::PointerRole start_role,
@@ -116,13 +120,15 @@ class RDMarkerView : public RDWidget
   void trimStart(int dbfs);
   void trimEnd(int dbfs);
   void setAudioGain(int lvl);
-  void setShrinkFactor(int sf);
-  void setMaximumShrinkFactor();
   bool setCut(QString *err_msg,unsigned cartnum,int cutnum);
   void setCursorPosition(unsigned msec);
   void gotoCursor();
   void gotoHome();
   void gotoEnd();
+  void maxShrinkTime();
+  void shrinkTime();
+  void growTime();
+  void maxGrowTime();
   void save();
   void clear();
 
@@ -144,6 +150,7 @@ class RDMarkerView : public RDWidget
  private:
   int Frame(int msec) const;
   int Msec(int frame) const;
+  void SetShrinkFactor(int sf);
   void InterlockMarkerPair(RDMarkerHandle::PointerRole start_marker);
   void InterlockFadeMarkerPair();
   bool LoadCutData();

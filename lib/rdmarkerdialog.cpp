@@ -53,24 +53,33 @@ RDMarkerDialog::RDMarkerDialog(const QString &caption,int card,int port,
 	  this,SLOT(amplitudeDownData()));
 
   //
-  // Time
+  // Time Scaling Buttons
   //
   d_time_box=new QGroupBox(tr("Time"),this);
   d_time_box->setFont(labelFont());
   d_time_fullin_button=new QPushButton(tr("Full\nIn"),d_time_box);
   d_time_fullin_button->setFont(buttonFont());
-  connect(d_time_fullin_button,SIGNAL(clicked()),this,SLOT(timeFullInData()));
+  connect(d_time_fullin_button,SIGNAL(clicked()),
+	  d_marker_view,SLOT(maxShrinkTime()));
+  connect(d_marker_view,SIGNAL(canShrinkTimeChanged(bool)),
+	  d_time_fullin_button,SLOT(setEnabled(bool)));
 
   d_time_in_button=new RDTransportButton(RDTransportButton::Up,d_time_box);
-  connect(d_time_in_button,SIGNAL(clicked()),this,SLOT(timeInData()));
+  connect(d_time_in_button,SIGNAL(clicked()),d_marker_view,SLOT(shrinkTime()));
+  connect(d_marker_view,SIGNAL(canShrinkTimeChanged(bool)),
+	  d_time_in_button,SLOT(setEnabled(bool)));
 
   d_time_out_button=new RDTransportButton(RDTransportButton::Down,d_time_box);
-  connect(d_time_out_button,SIGNAL(clicked()),this,SLOT(timeOutData()));
+  connect(d_time_out_button,SIGNAL(clicked()),d_marker_view,SLOT(growTime()));
+  connect(d_marker_view,SIGNAL(canGrowTimeChanged(bool)),
+	  d_time_out_button,SLOT(setEnabled(bool)));
 
   d_time_fullout_button=new QPushButton(tr("Full\nOut"),d_time_box);
   d_time_fullout_button->setFont(buttonFont());
   connect(d_time_fullout_button,SIGNAL(clicked()),
-	  d_marker_view,SLOT(setMaximumShrinkFactor()));
+	  d_marker_view,SLOT(maxGrowTime()));
+  connect(d_marker_view,SIGNAL(canGrowTimeChanged(bool)),
+	  d_time_fullout_button,SLOT(setEnabled(bool)));
 
   /**************************************************************************
    * Transport Section
@@ -157,6 +166,10 @@ int RDMarkerDialog::exec(unsigned cartnum,int cutnum)
   }
   d_marker_view->
     setSelectedMarkers(RDMarkerHandle::CutStart,RDMarkerHandle::CutEnd);
+  d_time_fullin_button->setEnabled(d_marker_view->canShrinkTime());
+  d_time_in_button->setEnabled(d_marker_view->canShrinkTime());
+  d_time_out_button->setEnabled(d_marker_view->canGrowTime());
+  d_time_fullout_button->setEnabled(d_marker_view->canGrowTime());
 
   return QDialog::exec();
 }
@@ -171,27 +184,6 @@ void RDMarkerDialog::amplitudeUpData()
 void RDMarkerDialog::amplitudeDownData()
 {
   d_marker_view->setAudioGain(d_marker_view->audioGain()-300);
-}
-
-
-void RDMarkerDialog::timeFullInData()
-{
-  d_marker_view->setShrinkFactor(1);
-}
-
-
-void RDMarkerDialog::timeInData()
-{
-  int sf=d_marker_view->shrinkFactor();
-  if(sf>1) {
-    d_marker_view->setShrinkFactor(sf/2);
-  }
-}
-
-
-void RDMarkerDialog::timeOutData()
-{
-  d_marker_view->setShrinkFactor(2*d_marker_view->shrinkFactor());
 }
 
 

@@ -74,9 +74,6 @@ class RDMarkerDialog : public RDDialog
  private slots:
   void amplitudeUpData();
   void amplitudeDownData();
-  void timeFullInData();
-  void timeInData();
-  void timeOutData();
   void okData();
   void cancelData();
 

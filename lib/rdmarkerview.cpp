@@ -456,6 +456,18 @@ int RDMarkerView::shrinkFactor() const
 }
 
 
+bool RDMarkerView::canShrinkTime() const
+{
+  return d_shrink_factor>1;
+}
+
+
+bool RDMarkerView::canGrowTime() const
+{
+  return d_shrink_factor<d_max_shrink_factor;
+}
+
+
 int RDMarkerView::pointerValue(RDMarkerHandle::PointerRole role)
 {
   return d_pointers[role];
@@ -663,21 +675,6 @@ void RDMarkerView::setAudioGain(int lvl)
 }
 
 
-void RDMarkerView::setShrinkFactor(int sf)
-{
-  if((d_shrink_factor!=sf)&&(sf<=d_max_shrink_factor)) {
-    d_shrink_factor=sf;
-    WriteWave();
-  }
-}
-
-
-void RDMarkerView::setMaximumShrinkFactor()
-{
-  setShrinkFactor(d_max_shrink_factor);
-}
-
-
 bool RDMarkerView::setCut(QString *err_msg,unsigned cartnum,int cutnum)
 {
   clear();
@@ -733,6 +730,38 @@ void RDMarkerView::gotoEnd()
 {
   d_view->horizontalScrollBar()->
     setValue(d_view->horizontalScrollBar()->maximum());
+}
+
+
+void RDMarkerView::maxShrinkTime()
+{
+  if(canShrinkTime()) {
+    SetShrinkFactor(1);
+  }    
+}
+
+
+void RDMarkerView::shrinkTime()
+{
+  if(canShrinkTime()) {
+    SetShrinkFactor(d_shrink_factor/2);
+  }    
+}
+
+
+void RDMarkerView::growTime()
+{
+  if(canGrowTime()) {
+    SetShrinkFactor(d_shrink_factor*2);
+  }    
+}
+
+
+void RDMarkerView::maxGrowTime()
+{
+  if(canGrowTime()) {
+    SetShrinkFactor(d_max_shrink_factor);
+  }    
 }
 
 
@@ -1107,13 +1136,13 @@ void RDMarkerView::wheelEvent(QWheelEvent *e)
 
   if(d_wheel_angle>=360) {
     if(shrinkFactor()>1) {
-      setShrinkFactor(shrinkFactor()/2);
+      SetShrinkFactor(shrinkFactor()/2);
     }
     d_wheel_angle=0;
   }
   if(d_wheel_angle<=-360) {
     if(shrinkFactor()<d_max_shrink_factor) {
-      setShrinkFactor(shrinkFactor()*2);
+      SetShrinkFactor(shrinkFactor()*2);
     }
     d_wheel_angle=0;
   }
@@ -1129,6 +1158,17 @@ int RDMarkerView::Frame(int msec) const
 int RDMarkerView::Msec(int frame) const
 {
   return (int)((int64_t)frame*d_shrink_factor*1152000/(int64_t)d_sample_rate);
+}
+
+
+void RDMarkerView::SetShrinkFactor(int sf)
+{
+  if((d_shrink_factor!=sf)&&(sf<=d_max_shrink_factor)) {
+    d_shrink_factor=sf;
+    WriteWave();
+    emit canShrinkTimeChanged(canShrinkTime());
+    emit canGrowTimeChanged(canGrowTime());
+  }
 }
 
 
