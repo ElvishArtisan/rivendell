@@ -125,7 +125,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rddropbox.cpp rddropbox.h\
                         rddropboxlistmodel.cpp rddropboxlistmodel.h\
                         rddummylookup.cpp rddummylookup.h\
-                        rdedit_audio.cpp rdedit_audio.h\
                         rdedit_panel_name.cpp rdedit_panel_name.h\
                         rdemptycart.cpp rdemptycart.h\
                         rdendpointlistmodel.cpp rdendpointlistmodel.h\
@@ -188,8 +187,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdmacro_event.cpp rdmacro_event.h\
                         rdmacrocartmodel.cpp rdmacrocartmodel.h\
                         rdmarker_bar.cpp rdmarker_bar.h\
-                        rdmarker_button.cpp rdmarker_button.h\
-                        rdmarker_edit.cpp rdmarker_edit.h\
                         rdmarkerdialog.cpp rdmarkerdialog.h\
                         rdmarkerplayer.cpp rdmarkerplayer.h\
                         rdmarkerreadout.cpp rdmarkerreadout.h\
@@ -330,7 +327,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rddownload.cpp\
                           moc_rddropboxlistmodel.cpp\
                           moc_rddummylookup.cpp\
-                          moc_rdedit_audio.cpp\
                           moc_rdedit_panel_name.cpp\
                           moc_rdemptycart.cpp\
                           moc_rdendpointlistmodel.cpp\
@@ -371,7 +367,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdmacro_event.cpp\
                           moc_rdmacrocartmodel.cpp\
                           moc_rdmarker_bar.cpp\
-                          moc_rdmarker_edit.cpp\
                           moc_rdmarkerdialog.cpp\
                           moc_rdmarkerplayer.cpp\
                           moc_rdmarkerreadout.cpp\

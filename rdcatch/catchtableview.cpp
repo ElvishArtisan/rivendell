@@ -23,7 +23,6 @@
 #include <rdapplication.h>
 #include <rdcart.h>
 #include <rdcut.h>
-#include <rdedit_audio.h>
 
 #include "catchtableview.h"
 #include "recordlistmodel.h"

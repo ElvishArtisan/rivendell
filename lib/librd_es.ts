@@ -1964,15 +1964,15 @@ Cartucho</translation>
     <name>RDEditAudio</name>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Guardar</translation>
+        <translation type="obsolete">&amp;Guardar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Amplitude</source>
-        <translation>Amplitud</translation>
+        <translation type="obsolete">Amplitud</translation>
     </message>
     <message>
         <source>Zoom
@@ -1988,214 +1988,200 @@ Zoom</translation>
     </message>
     <message>
         <source>Time</source>
-        <translation>Tiemp</translation>
+        <translation type="obsolete">Tiemp</translation>
     </message>
     <message>
         <source>Full
 In</source>
-        <translation>Acercar
+        <translation type="obsolete">Acercar
 Máximo</translation>
     </message>
     <message>
         <source>Full
 Out</source>
-        <translation>Ver
+        <translation type="obsolete">Ver
 Todo</translation>
     </message>
     <message>
         <source>Goto</source>
-        <translation>Ir a</translation>
+        <translation type="obsolete">Ir a</translation>
     </message>
     <message>
         <source>Cursor</source>
-        <translation>Cursor</translation>
+        <translation type="obsolete">Cursor</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>Principio</translation>
+        <translation type="obsolete">Principio</translation>
     </message>
     <message>
         <source>End</source>
-        <translation>Final</translation>
+        <translation type="obsolete">Final</translation>
     </message>
     <message>
         <source>Cut
 Start</source>
-        <translation>Inicio del
+        <translation type="obsolete">Inicio del
 audio</translation>
     </message>
     <message>
         <source>Cut
 End</source>
-        <translation>Fin del
+        <translation type="obsolete">Fin del
 audio</translation>
     </message>
     <message>
         <source>Talk
 Start</source>
-        <translation>Inicio
+        <translation type="obsolete">Inicio
 Hablar</translation>
     </message>
     <message>
         <source>Segue
 Start</source>
-        <translation>Inicio
+        <translation type="obsolete">Inicio
 Segue</translation>
     </message>
     <message>
         <source>Segue
 End</source>
-        <translation>Fin
+        <translation type="obsolete">Fin
 Segue</translation>
     </message>
     <message>
         <source>Fade
 Up</source>
-        <translation>Fade
+        <translation type="obsolete">Fade
 entrada</translation>
     </message>
     <message>
         <source>Hook
 Start</source>
-        <translation>Inicio
+        <translation type="obsolete">Inicio
 Hook</translation>
     </message>
     <message>
         <source>Hook
 End</source>
-        <translation>Fin 
+        <translation type="obsolete">Fin 
 Hook</translation>
     </message>
     <message>
         <source> dB</source>
-        <translation> dB</translation>
+        <translation type="obsolete"> dB</translation>
     </message>
     <message>
         <source>Threshold</source>
-        <translation>Nivel</translation>
+        <translation type="obsolete">Nivel</translation>
     </message>
     <message>
         <source>Trim
 Start</source>
-        <translation>Inicio
+        <translation type="obsolete">Inicio
 Recorte</translation>
     </message>
     <message>
         <source>Trim
 End</source>
-        <translation>Fin del
+        <translation type="obsolete">Fin del
 recorte</translation>
     </message>
     <message>
         <source>Cut Gain</source>
-        <translation>Ganancia
+        <translation type="obsolete">Ganancia
 del audio</translation>
     </message>
     <message>
         <source>Remove
 Marker</source>
-        <translation>Eliminar
+        <translation type="obsolete">Eliminar
 marcador</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation>Posición</translation>
+        <translation type="obsolete">Posición</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Longitud</translation>
+        <translation type="obsolete">Longitud</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation type="unfinished">Eliminar marcadores de hablar</translation>
+        <translation type="obsolete">Eliminar marcadores de hablar</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation type="unfinished">Eliminar marcadores Segue</translation>
+        <translation type="obsolete">Eliminar marcadores Segue</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation type="unfinished">Eliminar marcadores Hook</translation>
+        <translation type="obsolete">Eliminar marcadores Hook</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation type="unfinished">Eliminar marcador Fade entrada</translation>
+        <translation type="obsolete">Eliminar marcador Fade entrada</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation type="unfinished">Eliminar marcador Fade salida</translation>
+        <translation type="obsolete">Eliminar marcador Fade salida</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation>&lt;ninguno&gt;</translation>
+        <translation type="obsolete">&lt;ninguno&gt;</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Cortar</translation>
+        <translation type="obsolete">Cortar</translation>
     </message>
     <message>
         <source>Talk</source>
-        <translation>Hablar</translation>
+        <translation type="obsolete">Hablar</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Segue</translation>
+        <translation type="obsolete">Segue</translation>
     </message>
     <message>
         <source>Hook</source>
-        <translation>Hook</translation>
+        <translation type="obsolete">Hook</translation>
     </message>
     <message>
         <source>Fade Up</source>
-        <translation>Fade de entrada</translation>
+        <translation type="obsolete">Fade de entrada</translation>
     </message>
     <message>
         <source>Fade Down</source>
-        <translation>Fade de salida</translation>
+        <translation type="obsolete">Fade de salida</translation>
     </message>
     <message>
         <source>L</source>
-        <translation>Iz</translation>
+        <translation type="obsolete">Iz</translation>
     </message>
     <message>
         <source>R</source>
-        <translation>De</translation>
+        <translation type="obsolete">De</translation>
     </message>
     <message>
         <source>No Fade on Segue Out</source>
-        <translation>Quitar fade en Segue</translation>
+        <translation type="obsolete">Quitar fade en Segue</translation>
     </message>
     <message>
         <source>Rivendell Web Service</source>
-        <translation>Servicio web Rivendell</translation>
+        <translation type="obsolete">Servicio web Rivendell</translation>
     </message>
     <message>
         <source>Unable to download peak data, error was:
 &quot;</source>
-        <translation>No fue posible descargar datos de picos, el error fue:
+        <translation type="obsolete">No fue posible descargar datos de picos, el error fue:
 &quot;</translation>
     </message>
     <message>
         <source>Edit Audio</source>
-        <translation>Editar Audio</translation>
-    </message>
-    <message>
-        <source>Marker Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Less than half of the audio is playable with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>More than half of the audio will be faded with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Editar Audio</translation>
     </message>
 </context>
 <context>

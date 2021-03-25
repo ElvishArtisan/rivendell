@@ -23,7 +23,6 @@
 
 #include <rdaudio_exists.h>
 #include <rdconf.h>
-#include <rdedit_audio.h>
 #include <rdescape_string.h>
 #include <rdimport_audio.h>
 

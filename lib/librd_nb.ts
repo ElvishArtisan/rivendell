@@ -1952,15 +1952,15 @@ Cart</source>
     <name>RDEditAudio</name>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Lagra</translation>
+        <translation type="obsolete">&amp;Lagra</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Amplitude</source>
-        <translation>Lydstyrke</translation>
+        <translation type="obsolete">Lydstyrke</translation>
     </message>
     <message>
         <source>Zoom
@@ -1976,212 +1976,185 @@ ut</translation>
     </message>
     <message>
         <source>Time</source>
-        <translation>Tid</translation>
+        <translation type="obsolete">Tid</translation>
     </message>
     <message>
         <source>Full
 In</source>
-        <translation>Heilt
+        <translation type="obsolete">Heilt
 inn</translation>
     </message>
     <message>
         <source>Full
 Out</source>
-        <translation>Heilt
+        <translation type="obsolete">Heilt
 ut</translation>
     </message>
     <message>
         <source>Goto</source>
-        <translation>Gå til</translation>
+        <translation type="obsolete">Gå til</translation>
     </message>
     <message>
         <source>Cursor</source>
-        <translation>Markør</translation>
+        <translation type="obsolete">Markør</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>Heim</translation>
+        <translation type="obsolete">Heim</translation>
     </message>
     <message>
         <source>End</source>
-        <translation>Slutten</translation>
+        <translation type="obsolete">Slutten</translation>
     </message>
     <message>
         <source>Cut
 Start</source>
-        <translation>Klypp-
+        <translation type="obsolete">Klypp-
 start</translation>
     </message>
     <message>
         <source>Cut
 End</source>
-        <translation>Klypp-
+        <translation type="obsolete">Klypp-
 slutt</translation>
     </message>
     <message>
         <source>Talk
 Start</source>
-        <translation>Tale- 
+        <translation type="obsolete">Tale- 
 start</translation>
     </message>
     <message>
         <source>Segue
 Start</source>
-        <translation>Overgang-
+        <translation type="obsolete">Overgang-
 start</translation>
     </message>
     <message>
         <source>Segue
 End</source>
-        <translation>Overgang-
+        <translation type="obsolete">Overgang-
 slutt</translation>
     </message>
     <message>
         <source>Fade
 Up</source>
-        <translation>Ton
+        <translation type="obsolete">Ton
 inn</translation>
     </message>
     <message>
         <source>Hook
 Start</source>
-        <translation>Knagg-
+        <translation type="obsolete">Knagg-
 start</translation>
     </message>
     <message>
         <source>Hook
 End</source>
-        <translation>Knagg-
+        <translation type="obsolete">Knagg-
 slutt</translation>
     </message>
     <message>
         <source> dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>Threshold</source>
-        <translation>Terskel</translation>
+        <translation type="obsolete">Terskel</translation>
     </message>
     <message>
         <source>Trim
 Start</source>
-        <translation>Skjere-
+        <translation type="obsolete">Skjere-
 start</translation>
     </message>
     <message>
         <source>Trim
 End</source>
-        <translation>Skjere-
+        <translation type="obsolete">Skjere-
 slutt</translation>
     </message>
     <message>
         <source>Cut Gain</source>
-        <translation>Dempevolum</translation>
+        <translation type="obsolete">Dempevolum</translation>
     </message>
     <message>
         <source>Remove
 Marker</source>
-        <translation>Fjern
+        <translation type="obsolete">Fjern
 markør</translation>
     </message>
     <message>
         <source>No Fade on Segue Out</source>
-        <translation>Inga uttoning ved Overgang ut</translation>
+        <translation type="obsolete">Inga uttoning ved Overgang ut</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation>Posisjon</translation>
+        <translation type="obsolete">Posisjon</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Lengd</translation>
+        <translation type="obsolete">Lengd</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation type="unfinished">Slett talemarkørar</translation>
+        <translation type="obsolete">Slett talemarkørar</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation type="unfinished">Slett overgangsmarkørar</translation>
+        <translation type="obsolete">Slett overgangsmarkørar</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation type="unfinished">Slett knaggmarkørar</translation>
+        <translation type="obsolete">Slett knaggmarkørar</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation type="unfinished">Slett Ton inn-markør</translation>
+        <translation type="obsolete">Slett Ton inn-markør</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation type="unfinished">Slett Ton ut-markør</translation>
+        <translation type="obsolete">Slett Ton ut-markør</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation>&lt;ingen&gt;</translation>
+        <translation type="obsolete">&lt;ingen&gt;</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Klypp</translation>
+        <translation type="obsolete">Klypp</translation>
     </message>
     <message>
         <source>Talk</source>
-        <translation>Tale</translation>
+        <translation type="obsolete">Tale</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Overgang</translation>
+        <translation type="obsolete">Overgang</translation>
     </message>
     <message>
         <source>Hook</source>
-        <translation>Knagg</translation>
+        <translation type="obsolete">Knagg</translation>
     </message>
     <message>
         <source>Fade Up</source>
-        <translation>Ton inn</translation>
+        <translation type="obsolete">Ton inn</translation>
     </message>
     <message>
         <source>Fade Down</source>
-        <translation>Ton ut</translation>
+        <translation type="obsolete">Ton ut</translation>
     </message>
     <message>
         <source>L</source>
-        <translation>V</translation>
+        <translation type="obsolete">V</translation>
     </message>
     <message>
         <source>R</source>
-        <translation>H</translation>
-    </message>
-    <message>
-        <source>Rivendell Web Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to download peak data, error was:
-&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Audio</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Less than half of the audio is playable with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>More than half of the audio will be faded with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">H</translation>
     </message>
 </context>
 <context>

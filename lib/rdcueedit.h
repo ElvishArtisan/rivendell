@@ -28,7 +28,6 @@
 #include <rdslider.h>
 #include <rdtransportbutton.h>
 #include <rdmarker_bar.h>
-#include <rdmarker_edit.h>
 #include <rdtimeedit.h>
 #include <rdwidget.h>
 

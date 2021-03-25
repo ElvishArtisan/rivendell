@@ -21355,3 +21355,6 @@
 2021-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdlogedit(1) to use 'RDMarkerDialog' instead of
 	'RDEditAudio'.
+2021-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'RDEditAudio', 'RDMarkerEdit' and 'RDMarkerPlayer'
+	classes.
