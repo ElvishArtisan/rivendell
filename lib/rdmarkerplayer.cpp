@@ -45,7 +45,7 @@ RDMarkerPlayer::RDMarkerPlayer(int card,int port,QWidget *parent)
   //
   // Marker Readouts
   //
-  for(int i=0;i<7;i++) {
+  for(int i=0;i<RDMARKERPLAYER_READOUT_QUAN;i++) {
     d_readout_labels[i]=new QLabel(this);
     d_readout_labels[i]->setFont(labelFont());
     d_readout_labels[i]->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -84,7 +84,8 @@ RDMarkerPlayer::RDMarkerPlayer(int card,int port,QWidget *parent)
 
   d_fadedown_readout=new RDMarkerReadout(RDMarkerHandle::FadeDown,this);
   connect(d_fadedown_readout,SIGNAL(clicked()),d_readout_mapper,SLOT(map()));
-  d_readout_mapper->setMapping(d_fadedown_readout,(int)RDMarkerHandle::FadeDown);
+  d_readout_mapper->
+    setMapping(d_fadedown_readout,(int)RDMarkerHandle::FadeDown);
 
   //
   // Time Counters
@@ -94,7 +95,7 @@ RDMarkerPlayer::RDMarkerPlayer(int card,int port,QWidget *parent)
   d_position_label->setAlignment(Qt::AlignCenter);
   d_position_label->
     setPalette(QPalette(palette().color(QPalette::Background),
-  			QColor(RDMARKERPLAYER_HIGHLIGHT_COLOR)));
+  			palette().mid().color()));
   d_position_edit=new QLabel(this);
   d_position_edit->setAcceptDrops(false);
   d_position_edit->setAlignment(Qt::AlignCenter);
@@ -589,7 +590,7 @@ void RDMarkerPlayer::trimThresholdChanged(int dbfs)
 
 void RDMarkerPlayer::resizeEvent(QResizeEvent *)
 {
-  for(int i=0;i<7;i++) {
+  for(int i=0;i<RDMARKERPLAYER_READOUT_QUAN;i++) {
     d_readout_labels[i]->setGeometry(2,
 				     i*(d_cut_readout->sizeHint().height()/4-1),
 				     15+50,
@@ -642,42 +643,19 @@ void RDMarkerPlayer::resizeEvent(QResizeEvent *)
   d_meter->setGeometry(695,15,d_meter->sizeHint().width(),
 		       d_meter->sizeHint().height());
 
-  d_no_segue_fade_check->setGeometry(695,
-				     25+d_meter->sizeHint().height(),
-				     15,
-				     15);
-  d_no_segue_fade_label->setGeometry(715,
-				     23+d_meter->sizeHint().height(),
-				     200,
-				     20);
+  d_no_segue_fade_check->setGeometry(695,25+d_meter->sizeHint().height(),15,15);
+  d_no_segue_fade_label->
+    setGeometry(715,23+d_meter->sizeHint().height(),200,20);
 
-  d_play_gain_label->setGeometry(655,
-				 47+d_meter->sizeHint().height(),
-				 100,
-				 20);
-  d_play_gain_spin->setGeometry(760,
-				47+d_meter->sizeHint().height(),
-				40,
-				20);
-  d_play_gain_unit_label->setGeometry(805,
-				      47+d_meter->sizeHint().height(),
-				      60,
-				      20);
+  d_play_gain_label->setGeometry(655,47+d_meter->sizeHint().height(),100,20);
+  d_play_gain_spin->setGeometry(760,47+d_meter->sizeHint().height(),40,20);
+  d_play_gain_unit_label->
+    setGeometry(805,47+d_meter->sizeHint().height(),60,20);
 
-  d_trim_start_button->setGeometry(870,
-				   25+d_meter->sizeHint().height(),
-				   80,25);
-  d_trim_end_button->setGeometry(870,
-				 55+d_meter->sizeHint().height(),
-				 80,25);
-  d_trim_label->setGeometry(960,
-			    30+d_meter->sizeHint().height(),
-			    80,
-			    20);
-  d_trim_spin->setGeometry(960,
-			   47+d_meter->sizeHint().height(),
-			   80,
-			   20);
+  d_trim_start_button->setGeometry(870,25+d_meter->sizeHint().height(),80,25);
+  d_trim_end_button->setGeometry(870,55+d_meter->sizeHint().height(),80,25);
+  d_trim_label->setGeometry(960,30+d_meter->sizeHint().height(),80,20);
+  d_trim_spin->setGeometry(960,47+d_meter->sizeHint().height(),80,20);
 }
 
 
@@ -689,8 +667,7 @@ void RDMarkerPlayer::paintEvent(QPaintEvent *e)
   // Transport Control Area
   //
   p->setPen(QColor(palette().shadow().color()));
-  p->fillRect(1,1,size().width()-2,size().height()-2,
-	      QColor(RDMARKERPLAYER_HIGHLIGHT_COLOR));
+  p->fillRect(1,1,size().width()-2,size().height()-2,palette().mid().color());
   p->drawRect(0,0,size().width(),size().height());
 
   delete p;

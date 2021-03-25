@@ -37,27 +37,6 @@
 #include <rdstereometer.h>
 #include <rdtransportbutton.h>
 
-//
-// Widget Settings
-//
-//#define RDMARKERDIALOG_WIDGET_WIDTH 834
-//#define RDMARKERDIALOG_WIDGET_HEIGHT 680
-#define RDMARKERDIALOG_WAVEFORM_WIDTH 717
-#define RDMARKERDIALOG_WAVEFORM_HEIGHT 352
-//#define RDMARKERDIALOG_PAN_SIZE 300
-//#define RDMARKERDIALOG_TAIL_PREROLL 1500
-//#define RDMARKERDIALOG_DEFAULT_GAIN -12
-//#define RDMARKERDIALOG_BUTTON_FLASH_PERIOD 200
-//#define RDMARKERDIALOG_START_GAP 10
-
-//
-// Widget Colors
-//
-//#define RDMARKERDIALOG_PLAY_COLOR Qt::white
-//#define RDMARKERDIALOG_REMOVE_FLASH_COLOR Qt::blue
-//#define RDMARKERDIALOG_WAVEFORM_COLOR Qt::black
-#define RDMARKERDIALOG_HIGHLIGHT_COLOR palette().mid().color()
-
 class RDMarkerDialog : public RDDialog
 {
   Q_OBJECT
@@ -83,19 +62,15 @@ class RDMarkerDialog : public RDDialog
 
  private:
   RDMarkerView *d_marker_view;
-
   QGroupBox *d_amplitude_box;
   RDTransportButton *d_amplitude_up_button;
   RDTransportButton *d_amplitude_down_button;
-
   QGroupBox *d_time_box;
   QPushButton *d_time_fullin_button;
   RDTransportButton *d_time_in_button;
   RDTransportButton *d_time_out_button;
   QPushButton *d_time_fullout_button;
-
   RDMarkerPlayer *d_player;
-
   QPushButton *d_ok_button;
   QPushButton *d_cancel_button;
   unsigned d_cart_number;

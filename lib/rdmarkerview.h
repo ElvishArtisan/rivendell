@@ -61,8 +61,6 @@ class RDMarkerHandle : public QGraphicsPolygonItem
   void hoverLeaveEvent(QGraphicsSceneHoverEvent *e);
   void mousePressEvent(QGraphicsSceneMouseEvent *e);
   void mouseMoveEvent(QGraphicsSceneMouseEvent *e);
-  void wheelEvent(QGraphicsSceneWheelEvent *e);
-  void mouseReleaseEvent(QGraphicsSceneMouseEvent *e);
 
  private:
   QString d_name;
@@ -99,7 +97,6 @@ class RDMarkerView : public RDWidget
   bool noSegueFade() const;
   int playGain() const;
   bool hasUnsavedChanges() const;
-
   void processRightClick(RDMarkerHandle::PointerRole role,
 			 const QPointF &pos);
   void updatePosition(RDMarkerHandle::PointerRole role,int ptr);

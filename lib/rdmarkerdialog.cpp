@@ -33,13 +33,13 @@ RDMarkerDialog::RDMarkerDialog(const QString &caption,int card,int port,
   setMinimumSize(sizeHint());
   setMaximumSize(sizeHint());
 
+  //
+  // Waveform Display
+  //
   d_marker_view=new RDMarkerView(sizeHint().width()-104,374,this);
 
-  /**************************************************************************
-   * Waveform Section
-   **************************************************************************/
   //
-  // Amplitude
+  // Amplitude Scaling Buttons
   //
   d_amplitude_box=new QGroupBox(tr("Amplitude"),this);
   d_amplitude_box->setFont(labelFont());
@@ -81,9 +81,9 @@ RDMarkerDialog::RDMarkerDialog(const QString &caption,int card,int port,
   connect(d_marker_view,SIGNAL(canGrowTimeChanged(bool)),
 	  d_time_fullout_button,SLOT(setEnabled(bool)));
 
-  /**************************************************************************
-   * Transport Section
-   **************************************************************************/
+  //
+  // Operator Controls
+  //
   d_player=new RDMarkerPlayer(card,port,this);
   connect(d_player,SIGNAL(cursorPositionChanged(unsigned)),
 	  d_marker_view,SLOT(setCursorPosition(unsigned)));
@@ -114,9 +114,6 @@ RDMarkerDialog::RDMarkerDialog(const QString &caption,int card,int port,
   connect(d_player,SIGNAL(endTrimClicked(int)),
 	  d_marker_view,SLOT(trimEnd(int)));
 
-  /**************************************************************************
-   * Navigation Section
-   **************************************************************************/
   //
   // OK Button
   //

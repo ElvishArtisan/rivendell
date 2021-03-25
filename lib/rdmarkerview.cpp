@@ -186,25 +186,13 @@ void RDMarkerHandle::mouseMoveEvent(QGraphicsSceneMouseEvent *e)
     view->updatePosition(d_role,(int)((int64_t)1000*pframes/
 				      (int64_t)view->sampleRate()));
   }
-  else {  // We're against a limit stop, so use the pointer value of the stop
+  //
+  // We're against a limit stop, so use the pointer value of the stop
+  // rather than generating a new one as not to risk losing precision.
+  //
+  else {
     view->updatePosition(d_role,limit_ptr);
   }
-}
-
-
-void RDMarkerHandle::wheelEvent(QGraphicsSceneWheelEvent *e)
-{
-  /*
-  if((e->buttons()&Qt::MiddleButton)!=0) {
-    printf("wheelEvent(%d)\n",e->delta());
-  }
-  */
-}
-
-
-void RDMarkerHandle::mouseReleaseEvent(QGraphicsSceneMouseEvent *e)
-{
-  //  RDMarkerView *view=static_cast<RDMarkerView *>(d_marker_view);
 }
 
 

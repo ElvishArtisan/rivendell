@@ -21347,3 +21347,5 @@
 2021-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'Time' buttons in 'RDMarkerDialog' to show currently
 	available 'In' and 'Out' possibilities.
+2021-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up 'RDMarkerDialog', 'RDMarkerPlayer' and 'RDMarkerView'.

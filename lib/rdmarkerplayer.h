@@ -33,7 +33,7 @@
 #include <rdtransportbutton.h>
 #include <rdwidget.h>
 
-#define RDMARKERPLAYER_HIGHLIGHT_COLOR palette().mid().color()
+#define RDMARKERPLAYER_READOUT_QUAN 7
 
 class RDMarkerPlayer : public RDWidget
 {
@@ -90,7 +90,7 @@ class RDMarkerPlayer : public RDWidget
   void paintEvent(QPaintEvent *e);
 
  private:
-  QLabel *d_readout_labels[7];
+  QLabel *d_readout_labels[RDMARKERPLAYER_READOUT_QUAN];
   QSignalMapper *d_readout_mapper;
   RDMarkerReadout *d_cut_readout;
   RDMarkerReadout *d_fadeup_readout;
@@ -98,14 +98,11 @@ class RDMarkerPlayer : public RDWidget
   RDMarkerReadout *d_talk_readout;
   RDMarkerReadout *d_segue_readout;
   RDMarkerReadout *d_hook_readout;
-
   QLabel *d_position_label;
   QLabel *d_position_edit;
-
   QPushButton *d_goto_start_button;
   QPushButton *d_goto_cursor_button;
   QPushButton *d_goto_end_button;
-
   RDTransportButton *d_play_button;
   RDTransportButton *d_play_from_button;
   RDTransportButton *d_play_to_button;
@@ -114,19 +111,15 @@ class RDMarkerPlayer : public RDWidget
   RDTransportButton *d_loop_button;
   RDStereoMeter *d_meter;
   QTimer *d_meter_timer;
-
   QCheckBox *d_no_segue_fade_check;
   QLabel *d_no_segue_fade_label;
-
   QLabel *d_play_gain_label;
   QSpinBox *d_play_gain_spin;
   QLabel *d_play_gain_unit_label;
-
   QPushButton *d_trim_start_button;
   QPushButton *d_trim_end_button;
   QLabel *d_trim_label;
   QSpinBox *d_trim_spin;
-
   QList<int> d_cards;
   int d_port;
   int d_cae_stream;
