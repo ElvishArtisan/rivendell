@@ -21358,3 +21358,5 @@
 2021-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'RDEditAudio', 'RDMarkerEdit' and 'RDMarkerPlayer'
 	classes.
+2021-03-31 Fred Gleason <fredg@paravelsystems.com>
+	* Modernized indentation style of all switch() statements in caed(8).

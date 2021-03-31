@@ -2,7 +2,7 @@
 //
 // The HPI Driver for the Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -195,16 +195,18 @@ bool MainObject::hpiLoadRecord(int card,int stream,int coding,int chans,
     record[card][stream]->setHeadBitRate(bitrate);
     record[card][stream]->setMextChunk(true);
     switch(chans) {
-	case 1:
-	  record[card][stream]->setHeadMode(ACM_MPEG_SINGLECHANNEL);
-	  break;
-	case 2:
-	  record[card][stream]->setHeadMode(ACM_MPEG_STEREO);
-	  break;
-	default:
-	  delete record[card][stream];
-	  record[card][stream]=NULL;
-	  return false;
+    case 1:
+      record[card][stream]->setHeadMode(ACM_MPEG_SINGLECHANNEL);
+      break;
+
+    case 2:
+      record[card][stream]->setHeadMode(ACM_MPEG_STEREO);
+      break;
+
+    default:
+      delete record[card][stream];
+      record[card][stream]=NULL;
+      return false;
     }
     record[card][stream]->setHeadFlags(ACM_MPEG_ID_MPEG1);
   }
@@ -367,24 +369,24 @@ bool MainObject::hpiSetInputMode(int card,int stream,int mode)
 {
 #ifdef HPI
   switch(mode) {
-      case 0:
-	sound_card->setInputMode(card,stream,RDHPISoundCard::Normal);
-	break;
+  case 0:
+    sound_card->setInputMode(card,stream,RDHPISoundCard::Normal);
+    break;
 
-      case 1:
-	sound_card->setInputMode(card,stream,RDHPISoundCard::Swap);
-	break;
+  case 1:
+    sound_card->setInputMode(card,stream,RDHPISoundCard::Swap);
+    break;
 
-      case 2:
-	sound_card->setInputMode(card,stream,RDHPISoundCard::LeftOnly);
-	break;
+  case 2:
+    sound_card->setInputMode(card,stream,RDHPISoundCard::LeftOnly);
+    break;
 
-      case 3:
-	sound_card->setInputMode(card,stream,RDHPISoundCard::RightOnly);
-	break;
+  case 3:
+    sound_card->setInputMode(card,stream,RDHPISoundCard::RightOnly);
+    break;
 
-      default:
-	return false;
+  default:
+    return false;
   }
   return true;
 #else
@@ -397,24 +399,24 @@ bool MainObject::hpiSetOutputMode(int card,int stream,int mode)
 {
 #ifdef HPI
   switch(mode) {
-      case 0:
-	sound_card->setOutputMode(card,stream,RDHPISoundCard::Normal);
-	break;
+  case 0:
+    sound_card->setOutputMode(card,stream,RDHPISoundCard::Normal);
+    break;
 
-      case 1:
-	sound_card->setOutputMode(card,stream,RDHPISoundCard::Swap);
-	break;
+  case 1:
+    sound_card->setOutputMode(card,stream,RDHPISoundCard::Swap);
+    break;
 
-      case 2:
-	sound_card->setOutputMode(card,stream,RDHPISoundCard::LeftOnly);
-	break;
+  case 2:
+    sound_card->setOutputMode(card,stream,RDHPISoundCard::LeftOnly);
+    break;
 
-      case 3:
-	sound_card->setOutputMode(card,stream,RDHPISoundCard::RightOnly);
-	break;
+  case 3:
+    sound_card->setOutputMode(card,stream,RDHPISoundCard::RightOnly);
+    break;
 
-      default:
-	return false;
+  default:
+    return false;
   }
   return true;
 #else
@@ -438,16 +440,16 @@ bool MainObject::hpiSetInputType(int card,int port,int type)
 {
 #ifdef HPI
   switch(type) {
-      case 0:
-	sound_card->setInputPortMux(card,port,RDHPISoundCard::LineIn);
-	break;
+  case 0:
+    sound_card->setInputPortMux(card,port,RDHPISoundCard::LineIn);
+    break;
 
-      case 1:
-	sound_card->setInputPortMux(card,port,RDHPISoundCard::AesEbuIn);
-	break;
+  case 1:
+    sound_card->setInputPortMux(card,port,RDHPISoundCard::AesEbuIn);
+    break;
 
-      default:
-	return false;
+  default:
+    return false;
   }
   return true;
 #else

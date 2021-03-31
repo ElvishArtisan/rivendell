@@ -1468,20 +1468,20 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
   }
   RDApplication::syslog(rd_config,LOG_INFO,"  Device started successfully");
   switch(alsa_capture_format[card].format) {
-      case SND_PCM_FORMAT_S16_LE:
-	alsa_capture_format[card].card_buffer_size=
-	  alsa_capture_format[card].buffer_size*
-	  alsa_capture_format[card].channels*2;
-	break;
+  case SND_PCM_FORMAT_S16_LE:
+    alsa_capture_format[card].card_buffer_size=
+      alsa_capture_format[card].buffer_size*
+      alsa_capture_format[card].channels*2;
+    break;
 
-      case SND_PCM_FORMAT_S32_LE:
-	alsa_capture_format[card].card_buffer_size=
-	  alsa_capture_format[card].buffer_size*
-	  alsa_capture_format[card].channels*4;
-	break;
+  case SND_PCM_FORMAT_S32_LE:
+    alsa_capture_format[card].card_buffer_size=
+      alsa_capture_format[card].buffer_size*
+      alsa_capture_format[card].channels*4;
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
   alsa_capture_format[card].card_buffer=
     new char[alsa_capture_format[card].card_buffer_size];
@@ -1628,18 +1628,18 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   }
   RDApplication::syslog(rd_config,LOG_INFO,"  Device started successfully");
   switch(alsa_play_format[card].format) {
-      case SND_PCM_FORMAT_S16_LE:
-	alsa_play_format[card].card_buffer_size=
-	  alsa_play_format[card].buffer_size*alsa_play_format[card].channels*2;
-	break;
+  case SND_PCM_FORMAT_S16_LE:
+    alsa_play_format[card].card_buffer_size=
+      alsa_play_format[card].buffer_size*alsa_play_format[card].channels*2;
+    break;
 
-      case SND_PCM_FORMAT_S32_LE:
-	alsa_play_format[card].card_buffer_size=
-	  alsa_play_format[card].buffer_size*alsa_play_format[card].channels*4;
-	break;
+  case SND_PCM_FORMAT_S32_LE:
+    alsa_play_format[card].card_buffer_size=
+      alsa_play_format[card].buffer_size*alsa_play_format[card].channels*4;
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
   alsa_play_format[card].card_buffer=
     new char[alsa_play_format[card].card_buffer_size];

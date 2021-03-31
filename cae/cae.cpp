@@ -76,11 +76,11 @@ void src_float_to_int_array (const float *in, int *out, int len)
 void SigHandler(int signum)
 {
   switch(signum) {
-      case SIGINT:
-      case SIGTERM:
-      case SIGHUP:
-	exiting=true;
-	break;
+  case SIGINT:
+  case SIGTERM:
+  case SIGHUP:
+    exiting=true;
+    break;
   }
 }
 
@@ -1453,23 +1453,25 @@ void MainObject::statePlayUpdate(int card,int stream,int state)
   }
   if(play_owner[card][stream]!=-1) {
     switch(state) {
-	case 1:   // Playing
-	  cae_server->sendCommand(play_owner[card][stream],
-				  QString().
-				  sprintf("PY %d %d %d +!",handle,
-					  play_length[card][stream],
-					  play_speed[card][stream]).toUtf8());
-	  break;
-	case 2:   // Paused
-	  cae_server->
-	    sendCommand(play_owner[card][stream],(const char *)QString().
-			sprintf("SP %d +!",handle).toUtf8());
-	  break;
-	case 0:   // Stopped
-	  cae_server->
-	    sendCommand(play_owner[card][stream],(const char *)QString().
-			sprintf("SP %d +!",handle).toUtf8());
-	  break;
+    case 1:   // Playing
+      cae_server->sendCommand(play_owner[card][stream],
+			      QString().
+			      sprintf("PY %d %d %d +!",handle,
+				      play_length[card][stream],
+				      play_speed[card][stream]).toUtf8());
+      break;
+
+    case 2:   // Paused
+      cae_server->
+	sendCommand(play_owner[card][stream],(const char *)QString().
+		    sprintf("SP %d +!",handle).toUtf8());
+      break;
+
+    case 0:   // Stopped
+      cae_server->
+	sendCommand(play_owner[card][stream],(const char *)QString().
+		    sprintf("SP %d +!",handle).toUtf8());
+      break;
     }
   }
 }
@@ -1479,26 +1481,26 @@ void MainObject::stateRecordUpdate(int card,int stream,int state)
 {
   if(record_owner[card][stream]!=-1) {
     switch(state) {
-	case 0:    // Recording
-	  cae_server->
-	    sendCommand(record_owner[card][stream],(const char *)QString().
-		      sprintf("RD %d %d %d %d +!",card,stream,
-			      record_length[card][stream],
-			      record_threshold[card][stream]).toUtf8());
-	  break;
+    case 0:    // Recording
+      cae_server->
+	sendCommand(record_owner[card][stream],(const char *)QString().
+		    sprintf("RD %d %d %d %d +!",card,stream,
+			    record_length[card][stream],
+			    record_threshold[card][stream]).toUtf8());
+      break;
 
-	case 4:    // Record Started
-	  cae_server->
-	    sendCommand(record_owner[card][stream],(const char *)QString().
-			sprintf("RS %d %d +!",card,stream).toUtf8());
-	  break;
+    case 4:    // Record Started
+      cae_server->
+	sendCommand(record_owner[card][stream],(const char *)QString().
+		    sprintf("RS %d %d +!",card,stream).toUtf8());
+      break;
 
-	case 2:    // Paused
-	case 3:    // Stopped
-	  cae_server->
-	    sendCommand(record_owner[card][stream],(const char *)QString().
-			sprintf("SR %d %d +!",card,stream).toUtf8());
-	  break;
+    case 2:    // Paused
+    case 3:    // Stopped
+      cae_server->
+	sendCommand(record_owner[card][stream],(const char *)QString().
+		    sprintf("SR %d %d +!",card,stream).toUtf8());
+      break;
     }
   }
 }
@@ -1522,81 +1524,81 @@ void MainObject::updateMeters()
 
   for(int i=0;i<RD_MAX_CARDS;i++) {
     switch(cae_driver[i]) {
-	case RDStation::Hpi:
-	  for(int j=0;j<RD_MAX_PORTS;j++) {
-	    if(hpiGetInputStatus(i,j)!=port_status[i][j]) {
-	      port_status[i][j]=hpiGetInputStatus(i,j);
-	      if(port_status[i][j]) {
-		cae_server->sendCommand(QString().sprintf("IS %d %d 0!",i,j));
-	      }
-	      else {
-		cae_server->sendCommand(QString().sprintf("IS %d %d 1!",i,j));
-	      }
-	    }
-	    if(hpiGetInputMeters(i,j,levels)) {
-	      SendMeterLevelUpdate("I",i,j,levels);
-	    }
-	    if(hpiGetOutputMeters(i,j,levels)) {
-	      SendMeterLevelUpdate("O",i,j,levels);
-	    }      
+    case RDStation::Hpi:
+      for(int j=0;j<RD_MAX_PORTS;j++) {
+	if(hpiGetInputStatus(i,j)!=port_status[i][j]) {
+	  port_status[i][j]=hpiGetInputStatus(i,j);
+	  if(port_status[i][j]) {
+	    cae_server->sendCommand(QString().sprintf("IS %d %d 0!",i,j));
 	  }
-	  hpiGetOutputPosition(i,positions);
-	  SendMeterPositionUpdate(i,positions);
-	  for(int j=0;j<RD_MAX_STREAMS;j++) {
-	    if(hpiGetStreamOutputMeters(i,j,levels)) {
-	      SendStreamMeterLevelUpdate(i,j,levels);
-	    }      
+	  else {
+	    cae_server->sendCommand(QString().sprintf("IS %d %d 1!",i,j));
 	  }
-	  break;
+	}
+	if(hpiGetInputMeters(i,j,levels)) {
+	  SendMeterLevelUpdate("I",i,j,levels);
+	}
+	if(hpiGetOutputMeters(i,j,levels)) {
+	  SendMeterLevelUpdate("O",i,j,levels);
+	}      
+      }
+      hpiGetOutputPosition(i,positions);
+      SendMeterPositionUpdate(i,positions);
+      for(int j=0;j<RD_MAX_STREAMS;j++) {
+	if(hpiGetStreamOutputMeters(i,j,levels)) {
+	  SendStreamMeterLevelUpdate(i,j,levels);
+	}      
+      }
+      break;
 
-	case RDStation::Jack:
-	  for(int j=0;j<RD_MAX_PORTS;j++) {
-	    if(jackGetInputStatus(i,j)!=port_status[i][j]) {
-	      port_status[i][j]=!port_status[i][j];
-	      cae_server->sendCommand(QString().sprintf("IS %d %d %d",i,j,
-						 port_status[i][j]));
-	    }
-	    if(jackGetInputMeters(i,j,levels)) {
-	      SendMeterLevelUpdate("I",i,j,levels);
-	    }
-	    if(jackGetOutputMeters(i,j,levels)) {
-	      SendMeterLevelUpdate("O",i,j,levels);
-	    }
-	  }
-	  jackGetOutputPosition(i,positions);
-	  SendMeterPositionUpdate(i,positions);
-	  for(int j=0;j<RD_MAX_STREAMS;j++) {
-	    if(jackGetStreamOutputMeters(i,j,levels)) {
-	      SendStreamMeterLevelUpdate(i,j,levels);
-	    }      
-	  }
-	  break;
+    case RDStation::Jack:
+      for(int j=0;j<RD_MAX_PORTS;j++) {
+	if(jackGetInputStatus(i,j)!=port_status[i][j]) {
+	  port_status[i][j]=!port_status[i][j];
+	  cae_server->sendCommand(QString().sprintf("IS %d %d %d",i,j,
+						    port_status[i][j]));
+	}
+	if(jackGetInputMeters(i,j,levels)) {
+	  SendMeterLevelUpdate("I",i,j,levels);
+	}
+	if(jackGetOutputMeters(i,j,levels)) {
+	  SendMeterLevelUpdate("O",i,j,levels);
+	}
+      }
+      jackGetOutputPosition(i,positions);
+      SendMeterPositionUpdate(i,positions);
+      for(int j=0;j<RD_MAX_STREAMS;j++) {
+	if(jackGetStreamOutputMeters(i,j,levels)) {
+	  SendStreamMeterLevelUpdate(i,j,levels);
+	}      
+      }
+      break;
 
-	case RDStation::Alsa:
-	  for(int j=0;j<RD_MAX_PORTS;j++) {
-	    if(alsaGetInputStatus(i,j)!=port_status[i][j]) {
-	      port_status[i][j]=!port_status[i][j];
-	      cae_server->sendCommand(QString().sprintf("IS %d %d %d",i,j,
-							port_status[i][j]));
-	    }
-	    if(alsaGetInputMeters(i,j,levels)) {
-	      SendMeterLevelUpdate("I",i,j,levels);
-	    }
-	    if(alsaGetOutputMeters(i,j,levels)) {
-	      SendMeterLevelUpdate("O",i,j,levels);
-	    }
-	  }
-	  alsaGetOutputPosition(i,positions);
-	  SendMeterPositionUpdate(i,positions);
-	  for(int j=0;j<RD_MAX_STREAMS;j++) {
-	    if(alsaGetStreamOutputMeters(i,j,levels)) {
-	      SendStreamMeterLevelUpdate(i,j,levels);
-	    }      
-	  }
-	  break;
+    case RDStation::Alsa:
+      for(int j=0;j<RD_MAX_PORTS;j++) {
+	if(alsaGetInputStatus(i,j)!=port_status[i][j]) {
+	  port_status[i][j]=!port_status[i][j];
+	  cae_server->sendCommand(QString().sprintf("IS %d %d %d",i,j,
+						    port_status[i][j]));
+	}
+	if(alsaGetInputMeters(i,j,levels)) {
+	  SendMeterLevelUpdate("I",i,j,levels);
+	}
+	if(alsaGetOutputMeters(i,j,levels)) {
+	  SendMeterLevelUpdate("O",i,j,levels);
+	}
+      }
+      alsaGetOutputPosition(i,positions);
+      SendMeterPositionUpdate(i,positions);
+      for(int j=0;j<RD_MAX_STREAMS;j++) {
+	if(alsaGetStreamOutputMeters(i,j,levels)) {
+	  SendStreamMeterLevelUpdate(i,j,levels);
+	}      
+      }
+      break;
 
-	case RDStation::None:
-	  break;
+    case RDStation::None:
+      break;
     }
   }
 }
@@ -1673,60 +1675,60 @@ void MainObject::InitMixers()
   for(int i=0;i<RD_MAX_CARDS;i++) {
     RDAudioPort *port=new RDAudioPort(rd_config->stationName(),i);
     switch(cae_driver[i]) {
-      case RDStation::Hpi:
-        hpiSetClockSource(i,port->clockSource());
-        for(int j=0;j<RD_MAX_PORTS;j++) {
-          for(int k=0;k<RD_MAX_PORTS;k++) {
-            hpiSetPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
-          }
-          if(port->inputPortType(j)==RDAudioPort::Analog) {
-            hpiSetInputType(i,j,RDCae::Analog);
-          }
-          else {
-            hpiSetInputType(i,j,RDCae::AesEbu);
-          }
-          hpiSetInputLevel(i,j,RD_BASE_ANALOG+port->inputPortLevel(j));
-          hpiSetOutputLevel(i,j,RD_BASE_ANALOG+port->outputPortLevel(j));
-          hpiSetInputMode(i,j,port->inputPortMode(j));
-        }
-        break;
+    case RDStation::Hpi:
+      hpiSetClockSource(i,port->clockSource());
+      for(int j=0;j<RD_MAX_PORTS;j++) {
+	for(int k=0;k<RD_MAX_PORTS;k++) {
+	  hpiSetPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
+	}
+	if(port->inputPortType(j)==RDAudioPort::Analog) {
+	  hpiSetInputType(i,j,RDCae::Analog);
+	}
+	else {
+	  hpiSetInputType(i,j,RDCae::AesEbu);
+	}
+	hpiSetInputLevel(i,j,RD_BASE_ANALOG+port->inputPortLevel(j));
+	hpiSetOutputLevel(i,j,RD_BASE_ANALOG+port->outputPortLevel(j));
+	hpiSetInputMode(i,j,port->inputPortMode(j));
+      }
+      break;
 
-      case RDStation::Jack:
-        for(int j=0;j<RD_MAX_PORTS;j++) {
-          for(int k=0;k<RD_MAX_PORTS;k++) {
-            jackSetPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
-          }
-          if(port->inputPortType(j)==RDAudioPort::Analog) {
-            jackSetInputType(i,j,RDCae::Analog);
-          }
-          else {
-            jackSetInputType(i,j,RDCae::AesEbu);
-          }
-          jackSetInputLevel(i,j,RD_BASE_ANALOG+port->inputPortLevel(j));
-          jackSetOutputLevel(i,j,RD_BASE_ANALOG+port->outputPortLevel(j));
-          jackSetInputMode(i,j,port->inputPortMode(j));
-        }
-        break;
+    case RDStation::Jack:
+      for(int j=0;j<RD_MAX_PORTS;j++) {
+	for(int k=0;k<RD_MAX_PORTS;k++) {
+	  jackSetPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
+	}
+	if(port->inputPortType(j)==RDAudioPort::Analog) {
+	  jackSetInputType(i,j,RDCae::Analog);
+	}
+	else {
+	  jackSetInputType(i,j,RDCae::AesEbu);
+	}
+	jackSetInputLevel(i,j,RD_BASE_ANALOG+port->inputPortLevel(j));
+	jackSetOutputLevel(i,j,RD_BASE_ANALOG+port->outputPortLevel(j));
+	jackSetInputMode(i,j,port->inputPortMode(j));
+      }
+      break;
 
-      case RDStation::Alsa:
-        for(int j=0;j<RD_MAX_PORTS;j++) {
-          for(int k=0;k<RD_MAX_PORTS;k++) {
-            alsaSetPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
-          }
-          if(port->inputPortType(j)==RDAudioPort::Analog) {
-            alsaSetInputType(i,j,RDCae::Analog);
-          }
-          else {
-            alsaSetInputType(i,j,RDCae::AesEbu);
-          }
-          alsaSetInputLevel(i,j,RD_BASE_ANALOG+port->inputPortLevel(j));
-          alsaSetOutputLevel(i,j,RD_BASE_ANALOG+port->outputPortLevel(j));
-          alsaSetInputMode(i,j,port->inputPortMode(j));
-        }
-        break;
+    case RDStation::Alsa:
+      for(int j=0;j<RD_MAX_PORTS;j++) {
+	for(int k=0;k<RD_MAX_PORTS;k++) {
+	  alsaSetPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
+	}
+	if(port->inputPortType(j)==RDAudioPort::Analog) {
+	  alsaSetInputType(i,j,RDCae::Analog);
+	}
+	else {
+	  alsaSetInputType(i,j,RDCae::AesEbu);
+	}
+	alsaSetInputLevel(i,j,RD_BASE_ANALOG+port->inputPortLevel(j));
+	alsaSetOutputLevel(i,j,RD_BASE_ANALOG+port->outputPortLevel(j));
+	alsaSetInputMode(i,j,port->inputPortMode(j));
+      }
+      break;
 
-      case RDStation::None:
-        break;
+    case RDStation::None:
+      break;
     }
     delete port;
   }
@@ -1740,22 +1742,22 @@ void MainObject::KillSocket(int ch)
       if(record_owner[i][j]==ch) {
 	unsigned len=0;
 	switch(cae_driver[i]) {
-	    case RDStation::Hpi:
-	      hpiUnloadRecord(i,j,&len);
-	      break;
+	case RDStation::Hpi:
+	  hpiUnloadRecord(i,j,&len);
+	  break;
 
-	    case RDStation::Jack:
-	      jackUnloadRecord(i,j,&len);
-	      break;
+	case RDStation::Jack:
+	  jackUnloadRecord(i,j,&len);
+	  break;
 
-	    case RDStation::Alsa:
-	      alsaUnloadRecord(i,j,&len);
-	      break;
+	case RDStation::Alsa:
+	  alsaUnloadRecord(i,j,&len);
+	  break;
 
-	    default:
-	      RDApplication::syslog(rd_config,LOG_DEBUG,
-				    "tried to kill unowned socket!");
-	      break;
+	default:
+	  RDApplication::syslog(rd_config,LOG_DEBUG,
+				"tried to kill unowned socket!");
+	  break;
 	}
 	record_length[i][j]=0;
 	record_threshold[i][j]=-10000;
@@ -1763,20 +1765,20 @@ void MainObject::KillSocket(int ch)
       }
       if(play_owner[i][j]==ch) {
 	switch(cae_driver[i]) {
-	    case RDStation::Hpi:
-	      hpiUnloadPlayback(i,j);
-	      break;
+	case RDStation::Hpi:
+	  hpiUnloadPlayback(i,j);
+	  break;
 
-	    case RDStation::Jack:
-	      jackUnloadPlayback(i,j);
-	      break;
+	case RDStation::Jack:
+	  jackUnloadPlayback(i,j);
+	  break;
 
-	    case RDStation::Alsa:
-	      alsaUnloadPlayback(i,j);
-	      break;
+	case RDStation::Alsa:
+	  alsaUnloadPlayback(i,j);
+	  break;
 
-	    case RDStation::None:
-	      break;
+	case RDStation::None:
+	  break;
 	}
 	play_owner[i][j]=-1;
 	play_length[i][j]=0;
