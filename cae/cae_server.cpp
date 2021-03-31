@@ -2,7 +2,7 @@
 //
 // Network server for caed(8).
 //
-//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -160,7 +160,9 @@ void CaeServer::newConnectionData()
   cae_connections[sock->socketDescriptor()]=new CaeServerConnection(sock);
 
   RDApplication::syslog(cae_config,LOG_DEBUG,
-			"added connection %d",sock->socketDescriptor());
+			"added connection %d [%s:%u]",sock->socketDescriptor(),
+			sock->peerAddress().toString().toUtf8().constData(),
+			0xFFFF&sock->peerPort());
 }
 
 
@@ -190,12 +192,26 @@ void CaeServer::readyReadData(int id)
 
 void CaeServer::connectionClosedData(int id)
 {
+  QString logmsg=
+    QString().sprintf("removed connection %d [%s:%u]",
+		      id,
+		      peerAddress(id).toString().toUtf8().constData(),
+		      0xFFFF&peerPort(id));
+  int priority=LOG_DEBUG;
+  if(!cae_connections.value(id)->authenticated) {
+    logmsg=
+      QString().sprintf("removed never authenticated connection %d [%s:%u]",
+			id,
+			peerAddress(id).toString().toUtf8().constData(),
+			0xFFFF&peerPort(id));
+    priority=LOG_WARNING;
+  }
   emit connectionDropped(id);
   cae_connections.value(id)->socket->disconnect();
   delete cae_connections.value(id);
   cae_connections.remove(id);
 
-  RDApplication::syslog(cae_config,LOG_DEBUG,"removed connection %d",id);
+  RDApplication::syslog(cae_config,priority,"%s",logmsg.toUtf8().constData());
 }
 
 
@@ -203,6 +219,7 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
 {
   CaeServerConnection *conn=cae_connections.value(id);
   bool ok=false;
+  QString cmdstr=cmd;
   QStringList f0=cmd.split(" ",QString::SkipEmptyParts);
 
   if(f0.size()==0) {
@@ -227,10 +244,22 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
     if((f0.size()==2)&&(f0.at(1)==cae_config->password())) {
       conn->authenticated=true;
       sendCommand(id,"PW +!");
+      RDApplication::syslog(cae_config,LOG_DEBUG,
+			    "PASSED authentication: connection %d [%s:%u]",
+			    id,
+			    peerAddress(id).toString().toUtf8().constData(),
+			    0xFFFF&peerPort(id));
     }
     else {
       conn->authenticated=false;
       sendCommand(id,"PW -!");
+      RDApplication::syslog(cae_config,LOG_WARNING,
+			    "FAILED authentication: connection %d [%s:%u]",
+			    id,
+			    peerAddress(id).toString().toUtf8().constData(),
+			    0xFFFF&peerPort(id));
+      connectionClosedData(id);
+      return true;
     }
     return false;
   }  
@@ -240,7 +269,14 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
   // Authentication required to execute these!
   //
   if(!conn->authenticated) {
-    return false;
+    RDApplication::syslog(cae_config,LOG_WARNING,
+			  "unauthenticated connection %d [%s:%u] sent command \"%s\"",
+			  id,
+			  peerAddress(id).toString().toUtf8().constData(),
+			  0xFFFF&peerPort(id),
+			  cmdstr.toUtf8().constData());
+    connectionClosedData(id);
+    return true;
   }
   bool was_processed=false;
 
@@ -557,6 +593,12 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
 
   if(!was_processed) {  // Send generic error response
     sendCommand(id,f0.join(" ")+"-!");
+    RDApplication::syslog(cae_config,LOG_WARNING,
+			  "connection %d [%s:%u] sent unrecognized command \"%s\"",
+			  id,
+			  peerAddress(id).toString().toUtf8().constData(),
+			  0xFFFF&peerPort(id),
+			  cmdstr.toUtf8().constData());
   }
 
   return false;

@@ -21360,3 +21360,5 @@
 	classes.
 2021-03-31 Fred Gleason <fredg@paravelsystems.com>
 	* Modernized indentation style of all switch() statements in caed(8).
+2021-03-31 Fred Gleason <fredg@paravelsystems.com>
+	* Added syslog messages for tracking connection states in caed(8).

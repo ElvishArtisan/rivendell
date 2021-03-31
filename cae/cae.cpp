@@ -1740,6 +1740,10 @@ void MainObject::KillSocket(int ch)
   for(int i=0;i<RD_MAX_CARDS;i++) {
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       if(record_owner[i][j]==ch) {
+	RDApplication::syslog(rd_config,LOG_DEBUG,"force unloading record context for connection %s:%u: Card: %d  Stream: %d  Handle: %d",
+			      cae_server->peerAddress(ch).toString().toUtf8().constData(),
+			      0xFFFF&cae_server->peerPort(ch),
+			      i,j,GetHandle(i,j));
 	unsigned len=0;
 	switch(cae_driver[i]) {
 	case RDStation::Hpi:
@@ -1764,6 +1768,11 @@ void MainObject::KillSocket(int ch)
 	record_owner[i][j]=-1;
       }
       if(play_owner[i][j]==ch) {
+	RDApplication::syslog(rd_config,LOG_DEBUG,"force unloading play context for connection %d [%s:%u]: Card: %d  Stream: %d  Handle: %d",
+			      ch,
+			      cae_server->peerAddress(ch).toString().toUtf8().constData(),
+			      0xFFFF&cae_server->peerPort(ch),
+			      i,j,GetHandle(i,j));
 	switch(cae_driver[i]) {
 	case RDStation::Hpi:
 	  hpiUnloadPlayback(i,j);
