@@ -19949,3 +19949,6 @@
 2020-10-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'Test Import' dialog in rdadmin(1) that caused
 	the sort of events in the 'Imported Events' list to be incorrect.
+2020-10-04 Eric Adler <tonsofpcs@gmail.com>
+	* Created pypad_ino713_tcp based upon pypad_ino713, converting from UDP to TCP. Added an adjustable delay to account for broadcast air delays.
+	* Created pypad_nautel based upon pypad_ino713_tcp, including RDS parameters from documentation. Includes delay.
