@@ -20712,3 +20712,9 @@
 	* Added code to print the value of the detected CartChunk CutID
 	when using both the '--use-cartchunk-cutid' and '--verbose' flags
 	in rdimport(1).
+2021-04-05 Eric Adler <tonsofpcs@gmail.com>
+	* Created pypad_ino713_tcp based upon pypad_ino713, converting from
+	UDP to TCP. Added an adjustable delay to account for broadcast air
+	delays.
+	* Created pypad_nautel based upon pypad_ino713_tcp, including RDS
+	parameters from documentation. Includes delay.
