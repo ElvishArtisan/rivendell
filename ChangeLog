@@ -21397,3 +21397,5 @@
 2021-04-05 Fred Gleason <fredg@paravelsystems.com>
 	* Integrated the 'pypad_ino713_tcp' and 'pypad_nautel' PyPAD
 	scripts into the build system.
+2021-04-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions that broke the 'make dist' target.

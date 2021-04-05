@@ -115,10 +115,14 @@ EXTRA_DIST = pypad_ando.exemplar\
              pypad_icecast2.py\
              pypad_inno713.exemplar\
              pypad_inno713.py\
+             pypad_ino713_tcp.exemplar\
+             pypad_ino713_tcp.py\
              pypad_liqcomp.exemplar\
              pypad_liqcomp.py\
              pypad_live365.exemplar\
              pypad_live365.py\
+             pypad_nautel.exemplar\
+             pypad_nautel.py\
              pypad_serial.exemplar\
              pypad_serial.py\
              pypad_shoutcast1.exemplar\

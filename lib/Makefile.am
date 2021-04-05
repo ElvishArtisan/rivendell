@@ -199,7 +199,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdmonitor_config.cpp rdmonitor_config.h\
 			rdmp4.cpp rdmp4.h\
                         rdmulticaster.cpp rdmulticaster.h\
-                        rdnodelistmodel.cpp rdnodelistmodelh\
+                        rdnodelistmodel.cpp rdnodelistmodel.h\
                         rdnodeslotsmodel.cpp rdnodeslotsmodel.h\
                         rdnotification.cpp rdnotification.h\
                         rdoneshot.cpp rdoneshot.h\
