@@ -1,0 +1,100 @@
+; This is the configuration for the 'pypad_ino713_tcp.py' script for
+; Rivendell, which can be used to output Now & Next data to one or more
+; Inovonics model 713 RDS encoders or Nautel VS transmitters in TCP mode.
+
+; Section Header
+;
+; One section per remote RDS unit is configured, starting with 'Rds1' and
+; working up consecutively
+[Rds1]
+
+; *****************************************************************************
+; TCP/IP Connection Settings
+;  IP Address
+;
+; The IP address of the TCP port to send updates to, in dotted-quad notation.
+; If using a serial connection, leave this entry blank!
+IpAddress=127.0.0.1
+
+; TCP Port
+;
+; The TCP port number to send updates to, in the range 0 - 65,535.  
+TcpPort=10001
+
+; *****************************************************************************
+
+; Delay in seconds before sending the update
+Delay=30
+
+; *****************************************************************************
+
+; Output Strings.  The PAD data to output each time RDAirPlay changes
+; play state, including any wildcards as placeholders for metadata values.
+;
+; For the list of supported wildcards. see the 'Metadata Wildcards' section
+; of the Rivendell Operations Guide.
+PsString=
+DynamicPsString=%t - %a
+RadiotextString=%t - %a
+
+; Log Selection
+;
+; Set the status for each log to 'Yes', 'No' or 'Onair' to indicate whether
+; state changes on that log should be output on this udp port.  If set
+; to 'Onair', then output will be generated only if RDAirPlays OnAir flag
+; is active.
+MasterLog=Onair
+Aux1Log=No
+Aux2Log=No
+VLog101=No
+VLog102=No
+VLog103=No
+VLog104=No
+VLog105=No
+VLog106=No
+VLog107=No
+VLog108=No
+VLog109=No
+VLog110=No
+VLog111=No
+VLog112=No
+VLog113=No
+VLog114=No
+VLog115=No
+VLog116=No
+VLog117=No
+VLog118=No
+VLog119=No
+VLog120=No
+
+; Additional RDS encoders can be configured by adding new sections...
+;[Rds2]
+;IpAddress=192.168.10.22
+;TcpPort=6789
+;Delay=20
+;PsString=
+;DynamicPsString=%t
+;RadiotextString=%a
+;MasterLog=Yes
+;Aux1Log=No
+;Aux2Log=Onair
+;VLog101=No
+;VLog102=No
+;VLog103=No
+;VLog104=No
+;VLog105=No
+;VLog106=No
+;VLog107=No
+;VLog108=No
+;VLog109=No
+;VLog110=No
+;VLog111=No
+;VLog112=No
+;VLog113=No
+;VLog114=No
+;VLog115=No
+;VLog116=No
+;VLog117=No
+;VLog118=No
+;VLog119=No
+;VLog120=No
