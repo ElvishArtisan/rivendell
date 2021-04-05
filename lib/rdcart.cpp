@@ -1100,6 +1100,13 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
       setForcedLength(0);
     }
   }
+  //
+  // FIXME: CART.MINIMUM_TALK_LENGTH is an unsigned int in the DB, yet we
+  //        sometime try to assign -1. Why?
+  //
+  if(min_talk_len<0) {
+    min_talk_len=0;
+  }
   setMinimumTalkLength(min_talk_len);
   setMaximumTalkLength(max_talk_len);
   setCutQuantity(q->size());
@@ -1887,9 +1894,14 @@ unsigned RDCart::readXml(std::vector<RDWaveData> *data,const QString &xml)
 	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<minimumTalkLength>")) {
-	cartdata.
-	  setMinimumTalkLength(RDSetTimeLength(GetXmlValue("minimumTalkLength",f0[i]).
-					   toString()));
+	if(RDSetTimeLength(GetXmlValue("minimumTalkLength",f0[i]).toString())<0) {
+	  cartdata.setMinimumTalkLength(0);
+	}
+	else {
+	  cartdata.
+	    setMinimumTalkLength(RDSetTimeLength(GetXmlValue("minimumTalkLength",f0[i]).
+						 toString()));
+	}
 	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<maximumTalkLength>")) {

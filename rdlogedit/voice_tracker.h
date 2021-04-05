@@ -2,7 +2,7 @@
 //
 // Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -140,7 +140,6 @@ class VoiceTracker : public RDDialog
   void DrawRubberBand(RDWavePainter *wp,int trackno);
   void DrawTarget(RDWavePainter *wp,VoiceTracker::Target target,
 		  int trackno,int xpos,int ypos);
-  void WriteTrackMap(int trackno);
   bool TransportActive();
   bool PlayoutActive();
   void UpdateControls();
@@ -153,7 +152,6 @@ class VoiceTracker : public RDDialog
   bool IsTrack(int line,bool *offset);
   bool CanInsertTrack();
   bool CanDeleteTrack();
-  void ClearCursor(QPainter *p);
   void CheckChanges();
   void PushSegues();
   void PopSegues();
@@ -186,7 +184,6 @@ class VoiceTracker : public RDDialog
   DeckState d_deck_state;
   RDPlayDeck *d_deck[3];
   int d_wave_width;
-  int d_cursor_pos;
   int d_input_card;
   int d_input_port;
   int d_output_card;
@@ -270,6 +267,7 @@ class VoiceTracker : public RDDialog
   QAction *d_set_end_action;
   QAction *d_set_hook_action;
   RDMarkerDialog *d_marker_dialog;
+  int d_cursor_xpos;
 };
 
 

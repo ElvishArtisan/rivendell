@@ -36,10 +36,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
 			   QWidget *parent)
   : RDDialog(parent)
 {
-  //
-  // FIXME
-  //
-  //  setAttribute(Qt::WA_PaintOutsidePaintEvent);
+  d_cursor_xpos=-1;
 
   d_import_path=import_path;
   d_coding=RDCae::Pcm16;
@@ -641,7 +638,7 @@ void VoiceTracker::updateMenuData()
   }
   d_menu_clicked_point=d_rightclick_pos;
   DrawTrackMap(d_rightclick_track);
-  WriteTrackMap(d_rightclick_track);
+  update();
 }
 
 
@@ -649,7 +646,7 @@ void VoiceTracker::hideMenuData()
 {
   d_menu_clicked_point=-1;
   DrawTrackMap(d_rightclick_track);
-  WriteTrackMap(d_rightclick_track);
+  update();
 }
 
 
@@ -809,13 +806,11 @@ void VoiceTracker::recordData()
 			   d_track_cuts[1]->cutName(),
 			   d_coding,d_chans,d_samprate,d_bitrate);
     d_sliding=true;
-    d_cursor_pos=-d_wave_origin[2]/TRACKER_MSECS_PER_PIXEL;
   }
   if(!d_sliding) {
     d_wave_origin[2]=d_wave_origin[0]-d_deck[0]->currentPosition()-
       d_loglines[0]->startPoint()+d_loglines[2]->startPoint();
     DrawTrackMap(2);
-    WriteTrackMap(2);
     d_sliding=true;
   }
   d_event_player->exec(d_record_start_macro);
@@ -854,7 +849,6 @@ void VoiceTracker::track2Data()
   if(!d_sliding) {
     d_wave_origin[2]=d_wave_origin[0]-d_deck[0]->currentPosition();
     DrawTrackMap(2);
-    WriteTrackMap(2);
   }
   else {
     d_sliding=false;
@@ -1014,8 +1008,8 @@ void VoiceTracker::resetData()
   LoadTrack(d_track_line);
   for(int i=0;i<3;i++) {
     DrawTrackMap(i);
-    WriteTrackMap(i);
   }
+
   int real_line=SingleSelectionLine();
   int line=-1;
   if(d_offset) {
@@ -1193,7 +1187,7 @@ void VoiceTracker::editAudioData()
 			 RDLogLine::LogPointer);
     }    
     DrawTrackMap(d_rightclick_track);
-    WriteTrackMap(d_rightclick_track);
+    update();
   }
 
   delete rdcart;
@@ -1516,9 +1510,8 @@ void VoiceTracker::positionData(int id,int msecs)
 {
   int edit_scroll_diff;
   if(msecs<=0) {
-    QPainter *p=new QPainter(this);
-    ClearCursor(p);
-    delete p;
+    d_cursor_xpos=-1;
+    update();
     return;
   }
 
@@ -1533,6 +1526,7 @@ void VoiceTracker::positionData(int id,int msecs)
   }
   for(int i=id-1;i>=0;i--) {
     if(d_deck[i]->state()==RDPlayDeck::Playing) {
+      update();
       return;
     }
   }
@@ -1584,6 +1578,7 @@ void VoiceTracker::positionData(int id,int msecs)
       d_redraw[1]=true;
     }
     else {
+      update();
       return;
     }
     break;
@@ -1609,33 +1604,27 @@ void VoiceTracker::positionData(int id,int msecs)
     for(unsigned i=0;i<3;i++) {
       if(d_redraw[i]) {
 	DrawTrackMap(i);
-	WriteTrackMap(i);
 	d_redraw[i]=false;
       }
     }
     d_redraw_count=0;
   }
-  QPainter *p=new QPainter(this);
-  p->setPen(Qt::black);
-  p->setBrush(Qt::black);
-  ClearCursor(p);
-  //  p->setCompositionMode(QPainter::RasterOp_SourceXorDestination);
+
   int x=-1;
   if(msecs>=0) {
-    if((msecs>d_wave_origin[id])&&
+    if((msecs>=d_wave_origin[id])&&
        (msecs<(d_wave_origin[id]+d_wave_width))) {
       x=(int)(((double)(msecs-d_wave_origin[id]))*
 	      ((double)(d_wave_map[id]->size().width()))/
 	      ((double)TRACKER_START_WIDTH))+10;
-      p->drawLine(x,10,x,248);
       if(x>d_scroll_threshold) {
 	d_scrolling=true;
       }
     }
   }
-  p->end();
-  delete p;
-  d_cursor_pos=x;
+  d_cursor_xpos=x;
+
+  update();
 }
 
 
@@ -1824,7 +1813,7 @@ void VoiceTracker::recordUnloadedData(int card,int stream,unsigned msecs)
       (d_loglines[0]->segueStartPoint()-
        d_wave_origin[0]);
     DrawTrackMap(1);
-    WriteTrackMap(1);
+    update();
     int line=SingleSelectionLine();
     if(d_offset) {
       line--;
@@ -1938,9 +1927,22 @@ void VoiceTracker::paintEvent(QPaintEvent *e)
   p->drawLine(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*4+TRACKER_Y_ORIGIN-5+10,
 	      TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
 
-  WriteTrackMap(0);
-  WriteTrackMap(1);
-  WriteTrackMap(2);
+  //
+  // Draw the tracks
+  //
+  p->drawPixmap(TRACKER_X_ORIGIN,TRACKER_Y_ORIGIN,*d_wave_map[0]);
+  p->drawPixmap(TRACKER_X_ORIGIN,TRACKER_Y_HEIGHT+TRACKER_Y_ORIGIN,
+		*d_wave_map[1]);
+  p->drawPixmap(TRACKER_X_ORIGIN,TRACKER_Y_HEIGHT*2+TRACKER_Y_ORIGIN,
+		  *d_wave_map[2]);
+
+  //
+  // Draw the cursor
+  //
+  if(d_cursor_xpos>=0) {
+    p->setPen(Qt::green);
+    p->drawLine(d_cursor_xpos,10,d_cursor_xpos,248);
+  }
 
   delete p;
 }
@@ -2079,7 +2081,6 @@ void VoiceTracker::closeEvent(QCloseEvent *e)
 void VoiceTracker::LoadTrack(int line)
 {
   d_deck_state=DeckIdle;
-  d_cursor_pos=-1;
 
   if(line<0) {
     for(int i=0;i<3;i++) {
@@ -2311,9 +2312,7 @@ bool VoiceTracker::ImportTrack(int line)
   postData();
   SaveTrack(d_track_line);
   LoadTrack(d_track_line);
-  WriteTrackMap(0);
-  WriteTrackMap(1);
-  WriteTrackMap(2);
+  update();
 
   RefreshLine(line);
   if(!d_wave_name[2].isEmpty()) {
@@ -2345,7 +2344,6 @@ void VoiceTracker::RenderTransition(int line)
   LoadTrack(d_track_line);
   LoadBlockLength(line);
   UpdateRemaining();
-  update();
   UpdateControls();
 }
 
@@ -2546,8 +2544,8 @@ void VoiceTracker::DragTrack(int trackno,int xdiff)
   d_start_time=d_log_model->blockStartTime(d_track_line);
   for(int i=0;i<3;i++) {
     DrawTrackMap(i);
-    WriteTrackMap(i);
   }
+  update();
   if((!state)||(tdiff==0)) {
     return;
   }
@@ -2650,7 +2648,6 @@ void VoiceTracker::DragTarget(int trackno,const QPoint &pt)
 			 RDLogLine::LogPointer);
     }
     DrawTrackMap(trackno);
-    WriteTrackMap(trackno);
     d_meter->setLeftPeakBar(d_loglines[trackno]->duckDownGain()-1600);
     d_meter->setRightPeakBar(d_loglines[trackno]->duckDownGain()-1600);
     if(d_loglines[trackno+1]!=NULL) {
@@ -2680,7 +2677,6 @@ void VoiceTracker::DragTarget(int trackno,const QPoint &pt)
       d_loglines[trackno]->setFadedownGain(RD_FADE_DEPTH);
     }  
     DrawTrackMap(trackno);
-    WriteTrackMap(trackno);
        d_meter->setLeftPeakBar(d_loglines[trackno]->fadedownGain()-1600);
        d_meter->setRightPeakBar(d_loglines[trackno]->fadedownGain()-1600);
     if(d_loglines[trackno+1]!=NULL) {
@@ -2729,7 +2725,6 @@ void VoiceTracker::DragTarget(int trackno,const QPoint &pt)
 		       RDLogLine::LogPointer);
     }
     DrawTrackMap(trackno);
-    WriteTrackMap(trackno);
     d_meter->setLeftPeakBar(d_loglines[trackno]->duckUpGain()-1600);
     d_meter->setRightPeakBar(d_loglines[trackno]->duckUpGain()-1600);
     d_loglines[trackno]->setHasCustomTransition(true);
@@ -2755,7 +2750,6 @@ void VoiceTracker::DragTarget(int trackno,const QPoint &pt)
       d_loglines[trackno]->setFadeupGain(RD_FADE_DEPTH);
     }  
     DrawTrackMap(trackno);
-    WriteTrackMap(trackno);
     d_meter->setLeftPeakBar(d_loglines[trackno]->fadeupGain()-1600);
     d_meter->setRightPeakBar(d_loglines[trackno]->fadeupGain()-1600);
     d_loglines[trackno]->setHasCustomTransition(true);
@@ -3374,29 +3368,6 @@ void VoiceTracker::DrawTarget(RDWavePainter *wp,VoiceTracker::Target target,
 }
 
 
-void VoiceTracker::WriteTrackMap(int trackno)
-{
-  QPainter *p=new QPainter(this);
-  switch(trackno) {
-  case 0:
-    p->drawPixmap(TRACKER_X_ORIGIN,TRACKER_Y_ORIGIN,*d_wave_map[0]);
-    break;
-
-  case 1:
-    p->drawPixmap(TRACKER_X_ORIGIN,TRACKER_Y_HEIGHT+TRACKER_Y_ORIGIN,
-		  *d_wave_map[1]);
-    break;
-
-  case 2:
-    p->drawPixmap(TRACKER_X_ORIGIN,TRACKER_Y_HEIGHT*2+TRACKER_Y_ORIGIN,
-		  *d_wave_map[2]);
-    break;
-  }
-  p->end();
-  delete p;
-}
-
-
 bool VoiceTracker::TransportActive()
 {
   return d_recording||PlayoutActive();
@@ -3636,6 +3607,7 @@ void VoiceTracker::UpdateControls()
     d_close_button->setEnabled(true);
     d_log_view->setEnabled(transport_idle);
   }
+  update();
 }
 
 
@@ -3821,18 +3793,6 @@ bool VoiceTracker::CanDeleteTrack()
     return false;
   }
   return d_log_model->logLine(line)->type()==RDLogLine::Track;
-}
-
-
-void VoiceTracker::ClearCursor(QPainter *p)
-{
-  if(d_cursor_pos>=0) {
-    for(int i=0;i<3;i++) {
-      p->drawPixmap(d_cursor_pos,12+79*i,*d_wave_map[i],
-		    d_cursor_pos-12,0,1,
-		    d_wave_map[i]->size().height());
-    }
-  }
 }
 
 
