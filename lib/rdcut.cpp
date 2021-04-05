@@ -1087,10 +1087,11 @@ void RDCut::setMetadata(RDWaveData *data) const
 {
   QString sql="update CUTS set ";
   if(!data->description().isEmpty()) {
-    sql+=QString("DESCRIPTION=\"")+RDEscapeString(data->description())+"\",";
+    sql+=QString("DESCRIPTION=\"")+
+      RDEscapeString(data->description().left(64))+"\",";
   }
   if(!data->outCue().isEmpty()) {
-    sql+=QString("OUTCUE=\"")+RDEscapeString(data->outCue())+"\",";
+    sql+=QString("OUTCUE=\"")+RDEscapeString(data->outCue().left(64))+"\",";
   }
   else {
     switch(data->endType()) {
@@ -1107,17 +1108,18 @@ void RDCut::setMetadata(RDWaveData *data) const
     }
   }
   if(!data->isrc().isEmpty()) {
-    sql+=QString("ISRC=\"")+RDEscapeString(data->isrc())+"\",";
+    sql+=QString("ISRC=\"")+RDEscapeString(data->isrc().left(12))+"\",";
   }
   if(!data->isci().isEmpty()) {
-    sql+=QString("ISCI=\"")+RDEscapeString(data->isci())+"\",";
+    sql+=QString("ISCI=\"")+RDEscapeString(data->isci().left(32))+"\",";
   }
   if(!data->recordingMbId().isEmpty()) {
     sql+=QString("RECORDING_MBID=\"")+
-      RDEscapeString(data->recordingMbId())+"\",";
+      RDEscapeString(data->recordingMbId().left(40))+"\",";
   }
   if(!data->releaseMbId().isEmpty()) {
-    sql+=QString("RELEASE_MBID=\"")+RDEscapeString(data->releaseMbId())+"\",";
+    sql+=QString("RELEASE_MBID=\"")+
+      RDEscapeString(data->releaseMbId().left(40))+"\",";
   }
   if(data->startPos()>=0) {
     sql+=QString().sprintf("START_POINT=%d,",data->startPos());

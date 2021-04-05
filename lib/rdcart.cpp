@@ -943,40 +943,44 @@ void RDCart::setMetadata(const RDWaveData *data)
 {
   QString sql="update CART set ";
   if(!data->title().isEmpty()) {
-    sql+=QString("TITLE=\"")+RDEscapeString(data->title())+"\",";
+    sql+=QString("TITLE=\"")+RDEscapeString(data->title().left(191))+"\",";
   }
   if(!data->artist().isEmpty()) {
-    sql+=QString("ARTIST=\"")+RDEscapeString(data->artist())+"\",";
+    sql+=QString("ARTIST=\"")+RDEscapeString(data->artist().left(191))+"\",";
   }
   if(!data->album().isEmpty()) {
-    sql+=QString("ALBUM=\"")+RDEscapeString(data->album())+"\",";
+    sql+=QString("ALBUM=\"")+RDEscapeString(data->album().left(191))+"\",";
   }
   if(data->releaseYear()>0) {
     sql+=QString().sprintf("YEAR=\"%04d-01-01\",",data->releaseYear());
   }
   if(!data->label().isEmpty()) {
-    sql+=QString("LABEL=\"")+RDEscapeString(data->label())+"\",";
+    sql+=QString("LABEL=\"")+RDEscapeString(data->label().left(64))+"\",";
   }
   if(!data->conductor().isEmpty()) {
-    sql+=QString("CONDUCTOR=\"")+RDEscapeString(data->conductor())+"\",";
+    sql+=QString("CONDUCTOR=\"")+RDEscapeString(data->conductor().left(64))+
+      "\",";
   }
   if(!data->client().isEmpty()) {
-    sql+=QString("CLIENT=\"")+RDEscapeString(data->client())+"\",";
+    sql+=QString("CLIENT=\"")+RDEscapeString(data->client().left(64))+"\",";
   }
   if(!data->agency().isEmpty()) {
-    sql+=QString("AGENCY=\"")+RDEscapeString(data->agency())+"\",";
+    sql+=QString("AGENCY=\"")+RDEscapeString(data->agency().left(64))+"\",";
   }
   if(!data->publisher().isEmpty()) {
-    sql+=QString("PUBLISHER=\"")+RDEscapeString(data->publisher())+"\",";
+    sql+=QString("PUBLISHER=\"")+RDEscapeString(data->publisher().left(64))+
+      "\",";
   }
   if(!data->composer().isEmpty()) {
-    sql+=QString("COMPOSER=\"")+RDEscapeString(data->composer())+"\",";
+    sql+=QString("COMPOSER=\"")+RDEscapeString(data->composer().left(64))+"\",";
   }
   if(!data->userDefined().isEmpty()) {
-    sql+=QString("USER_DEFINED=\"")+RDEscapeString(data->userDefined())+"\",";
+    sql+=QString("USER_DEFINED=\"")+
+      RDEscapeString(data->userDefined().left(191))+"\",";
   }
   if(!data->tmciSongId().isEmpty()) {
-    sql+=QString("SONG_ID=\"")+RDEscapeString(data->tmciSongId())+"\",";
+    sql+=QString("SONG_ID=\"")+RDEscapeString(data->tmciSongId().left(32))+
+      "\",";
   }
   if(data->beatsPerMinute()>0) {
     sql+=QString().sprintf("BPM=%u,",data->beatsPerMinute());
