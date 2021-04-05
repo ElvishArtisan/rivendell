@@ -1,0 +1,190 @@
+; This is the configuration for the 'pypad_nautel.py' script for
+; Rivendell, which can be used to output Now & Next data to one or more
+; Nautel VS transmitters as RDP in ASCII TCP mode.
+
+; Section Header
+;
+; One section per remote transmitter unit is configured, starting with 'Rds1' and
+; working up consecutively
+[Rds1]
+
+; *****************************************************************************
+; TCP/IP Connection Settings
+;  IP Address
+;
+; The IP address of the TCP port to send updates to, in dotted-quad notation.
+; If using a serial connection, leave this entry blank!
+IpAddress=127.0.0.1
+
+; TCP Port
+;
+; The TCP port number to send updates to, in the range 0 - 65,535.  
+TcpPort=10001
+
+; *****************************************************************************
+
+; Delay in seconds before sending the update
+Delay=30
+
+; *****************************************************************************
+
+; Output Strings.  The PAD data to output each time RDAirPlay changes
+; play state, including any wildcards as placeholders for metadata values.
+;
+; For the list of supported wildcards. see the 'Metadata Wildcards' section
+; of the Rivendell Operations Guide.
+;
+; I recommend setting just these three unless you really know what you're doing
+; documentation is in section 2 of the VS OPS Manual.  
+; In issue 10.0 for the NV2.5 this is on page 2-69
+
+;Program Service - 8 character ASCII tagline, often callsign or a short name
+ProgramService=
+;Dynamic PS - 
+DynamicPS=%t - %a
+;Radio Text - up to 64 characters
+RadioText=%t - %a
+
+;; These settings are not recommended to be changed unless you really know
+;; what you are doing and why you are doing it.  
+;; Per the manual, not all values can be unset by the TCP ASCII connection.
+;;PICode= ***SET THIS IN YOUR TRANSMITTER PER THE RDS/RDBS SPEC***
+;ProgramType=0
+;ProgramTypeName=
+;TrafficProgram=0
+;TrafficAnnouncement=0
+;AltFreq1=107
+;AltFreq2=107
+;AltFreq3=107
+;AltFreq4=107
+;AltFreq5=107
+;AltFreq6=107
+;AltFreq7=107
+;AltFreq8=107
+;AltFreq9=107
+;AltFreq10=107
+;AltFreq11=107
+;AltFreq12=107
+;AltFreq13=107
+;AltFreq14=107
+;AltFreq15=107
+;AltFreq16=107
+;AltFreq17=107
+;AltFreq18=107
+;AltFreq19=107
+;AltFreq20=107
+;AltFreq21=107
+;AltFreq22=107
+;AltFreq23=107
+;AltFreq24=107
+;AltFreq25=107
+;DecoderInfo=3
+;MusicSpeech=1
+;Date=
+;Time=
+;UTCOffset=39
+;Cont=
+;DPSRate=0
+;DPSMode=0
+
+
+
+; Log Selection
+;
+; Set the status for each log to 'Yes', 'No' or 'Onair' to indicate whether
+; state changes on that log should be output on this udp port.  If set
+; to 'Onair', then output will be generated only if RDAirPlays OnAir flag
+; is active.
+MasterLog=Onair
+Aux1Log=No
+Aux2Log=No
+VLog101=No
+VLog102=No
+VLog103=No
+VLog104=No
+VLog105=No
+VLog106=No
+VLog107=No
+VLog108=No
+VLog109=No
+VLog110=No
+VLog111=No
+VLog112=No
+VLog113=No
+VLog114=No
+VLog115=No
+VLog116=No
+VLog117=No
+VLog118=No
+VLog119=No
+VLog120=No
+
+; Additional RDS encoders can be configured by adding new sections...
+;[Rds2]
+;IpAddress=192.168.10.22
+;TcpPort=6789
+;Delay=20
+;ProgramService=
+;DynamicPS=%t
+;RadioText=%a
+;;PICode= ***SET THIS IN YOUR TRANSMITTER PER THE RDS/RDBS SPEC***
+;ProgramType=0
+;ProgramTypeName=
+;TrafficProgram=0
+;TrafficAnnouncement=0
+;AltFreq1=107
+;AltFreq2=107
+;AltFreq3=107
+;AltFreq4=107
+;AltFreq5=107
+;AltFreq6=107
+;AltFreq7=107
+;AltFreq8=107
+;AltFreq9=107
+;AltFreq10=107
+;AltFreq11=107
+;AltFreq12=107
+;AltFreq13=107
+;AltFreq14=107
+;AltFreq15=107
+;AltFreq16=107
+;AltFreq17=107
+;AltFreq18=107
+;AltFreq19=107
+;AltFreq20=107
+;AltFreq21=107
+;AltFreq22=107
+;AltFreq23=107
+;AltFreq24=107
+;AltFreq25=107
+;DecoderInfo=3
+;MusicSpeech=1
+;Date=
+;Time=
+;UTCOffset=39
+;Cont=
+;DPSRate=0
+;DPSMode=0
+;MasterLog=Yes
+;Aux1Log=No
+;Aux2Log=Onair
+;VLog101=No
+;VLog102=No
+;VLog103=No
+;VLog104=No
+;VLog105=No
+;VLog106=No
+;VLog107=No
+;VLog108=No
+;VLog109=No
+;VLog110=No
+;VLog111=No
+;VLog112=No
+;VLog113=No
+;VLog114=No
+;VLog115=No
+;VLog116=No
+;VLog117=No
+;VLog118=No
+;VLog119=No
+;VLog120=No
