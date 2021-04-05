@@ -371,7 +371,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
       }
       else {
 	sql=QString("update PODCASTS set ")+
-	  QString().sprintf("SHELF_LIFE=%d where ",
+	  QString().sprintf("SHELF_LIFE=%lld where ",
 			    q->value(1).toDateTime().
 			    daysTo(q->value(2).toDateTime()))+
 	  QString().sprintf("ID=%u",q->value(0).toUInt());

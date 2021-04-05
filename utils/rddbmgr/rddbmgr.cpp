@@ -2,7 +2,7 @@
 //
 // Rivendell database management utility
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,11 +23,11 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#include <qapplication.h>
-#include <qfileinfo.h>
-#include <qsqldatabase.h>
-#include <qsqlerror.h>
-#include <qstringlist.h>
+#include <QCoreApplication>
+#include <QFileInfo>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QStringList>
 
 #include <dbversion.h>
 #include <rdcmd_switch.h>
@@ -469,7 +469,7 @@ bool MainObject::DropIndex(const QString &tbl_name,const QString &idx_name,
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv);
 
   new MainObject();
   return a.exec();

@@ -21369,3 +21369,7 @@
 	* Added a workaround to 'RDCart::updateLength()' to prevent invalid
 	data values from being written to the 'CART.MINIMUM_TALK_LENGTH'
 	field.
+2021-04-05 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compilation warnings in rddbmgr(8).
+	* Rebased rddbmgr(8) to use 'QCoreApplication' rather than
+	'QApplication'.
