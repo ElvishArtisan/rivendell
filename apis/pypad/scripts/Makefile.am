@@ -32,10 +32,14 @@ install-exec-am:
 	cp pypad_icecast2.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_icecast2.exemplar
 	../../../helpers/install_python.sh pypad_inno713.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_inno713.py
 	cp pypad_inno713.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_inno713.exemplar
+	../../../helpers/install_python.sh pypad_ino713_tcp.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_ino713_tcp.py
+	cp pypad_ino713_tcp.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_ino713_tcp.exemplar
 	../../../helpers/install_python.sh pypad_live365.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_live365.py
 	cp pypad_live365.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_live365.exemplar
 	../../../helpers/install_python.sh pypad_liqcomp.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_liqcomp.py
 	cp pypad_liqcomp.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_liqcomp.exemplar
+	../../../helpers/install_python.sh pypad_nautel.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_nautel.py
+	cp pypad_nautel.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_nautel.exemplar
 	../../../helpers/install_python.sh pypad_serial.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_serial.py
 	cp pypad_serial.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_serial.exemplar
 	../../../helpers/install_python.sh pypad_shoutcast1.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_shoutcast1.py
@@ -70,10 +74,18 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_icecast2.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_inno713.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_inno713.py
+
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_ino713_tcp.exemplar
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_ino713_tcp.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_live365.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_live365.py
+
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_liqcomp.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_liqcomp.py
+
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_nautel.exemplar
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_nautel.py
+
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_serial.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_serial.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_shoutcast1.exemplar
@@ -107,8 +119,12 @@ EXTRA_DIST = pypad_ando.exemplar\
              pypad_icecast2.py\
              pypad_inno713.exemplar\
              pypad_inno713.py\
+             pypad_ino713_tcp.exemplar\
+             pypad_ino713_tcp.py\
              pypad_liqcomp.exemplar\
              pypad_liqcomp.py\
+             pypad_nautel.exemplar\
+             pypad_nautel.py\
              pypad_live365.exemplar\
              pypad_live365.py\
              pypad_serial.exemplar\

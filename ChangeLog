@@ -20718,3 +20718,6 @@
 	delays.
 	* Created pypad_nautel based upon pypad_ino713_tcp, including RDS
 	parameters from documentation. Includes delay.
+2021-04-05 Fred Gleason <fredg@paravelsystems.com>
+	* Integrated the 'pypad_ino713_tcp' and 'pypad_nautel' PyPAD
+	scripts into the build system.
