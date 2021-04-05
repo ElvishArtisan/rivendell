@@ -1075,16 +1075,17 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   // Get CartChunk metadata
   //
   if(import_use_cartchunk_cutid||found_cart) {
+    Log(LOG_INFO," found CartChunk CutID \""+wavedata->cutId()+"\"\n");
     *cartnum=0;
-    *cartnum=wavedata->cutId().toUInt(&ok);
-    //sscanf(wavedata->cutId(),"%u",cartnum);
+    *cartnum=wavedata->cutId().toInt(&ok);
     (*cartnum)+=import_cart_number_offset;
     if((!ok)||(*cartnum==0)||(*cartnum>999999)||
        (effective_group->enforceCartRange()&&
-	(!effective_group->cartNumberValid(*cartnum)))) {
+      	(!effective_group->cartNumberValid(*cartnum)))) {
       Log(LOG_WARNING,QString().sprintf(
-	      " File \"%s\" has an invalid or out of range Cart Number, skipping...\n",
-	      RDGetBasePart(filename).toUtf8().constData()));
+	      " File \"%s\" has an invalid or out of range Cart Number \"%s\", skipping...\n",
+	      RDGetBasePart(filename).toUtf8().constData(),
+	      wavedata->cutId().toUtf8().constData()));
       wavefile->closeWave();
       import_failed_imports++;
       import_journal->addFailure(effective_group->name(),filename,

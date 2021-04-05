@@ -21373,3 +21373,13 @@
 	* Cleaned up compilation warnings in rddbmgr(8).
 	* Rebased rddbmgr(8) to use 'QCoreApplication' rather than
 	'QApplication'.
+2021-04-05 David Klann <dklann@broadcasttool.com>
+	* Fixed bug in lib/rdwavefile.cpp that copied CartChunk Cut ID
+	past the end of the first "NULL" character.
+2021-04-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added the value of the detected CartChunk CutID to the error
+	message	generated when rejecting said CutID as invalid when using
+	the '--use-cartchunk-cutid' switch in rdimport(1).
+	* Added code to print the value of the detected CartChunk CutID
+	when using both the '--use-cartchunk-cutid' and '--verbose' flags
+	in rdimport(1).
