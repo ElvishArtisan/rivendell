@@ -1104,7 +1104,7 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
   // FIXME: CART.MINIMUM_TALK_LENGTH is an unsigned int in the DB, yet we
   //        sometime try to assign -1. Why?
   //
-  if(min_talk_len<0) {
+  if((min_talk_len<0)||(min_talk_len==LLONG_MAX)) {
     min_talk_len=0;
   }
   setMinimumTalkLength(min_talk_len);

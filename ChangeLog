@@ -21365,3 +21365,7 @@
 2021-04-05 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored video updates in the voice tracker to take place only
 	within the 'VoiceTracker::paintEvent()' method.
+2021-04-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added a workaround to 'RDCart::updateLength()' to prevent invalid
+	data values from being written to the 'CART.MINIMUM_TALK_LENGTH'
+	field.
