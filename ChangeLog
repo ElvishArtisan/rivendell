@@ -20702,6 +20702,6 @@
 2020-12-24 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the schema map in rddbmgr(8) to position schema update
 	347 as part of v3.6.x.
-2021-01-17 David Klann <dklann@broadcasttool.com>
+2021-04-05 David Klann <dklann@broadcasttool.com>
 	* Fixed bug in lib/rdwavefile.cpp that copied CartChunk Cut ID
 	past the end of the first "NULL" character.
