@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Report Descriptor
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -542,7 +542,8 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 	  "EVENT_DATETIME="+RDCheckDateTime(q1->value(4).toDateTime(),
 				     "yyyy-MM-dd hh:mm:ss")+","+
 	  QString().sprintf("EVENT_TYPE=%d,",q1->value(5).toInt())+
-	  "EXT_START_TIME=\""+RDEscapeString(q1->value(6).toString())+"\","+
+	  "EXT_START_TIME="+
+	  RDCheckDateTime(q1->value(6).toTime(),"hh:mm:ss")+","+
 	  QString().sprintf("EXT_LENGTH=%d,",q1->value(7).toInt())+
 	  "EXT_DATA=\""+RDEscapeString(q1->value(8).toString())+"\","+
 	  "EXT_EVENT_ID=\""+RDEscapeString(q1->value(9).toString())+"\","+
@@ -613,6 +614,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     ret=ExportRadioTraffic(filename,startdate,enddate,mixname,0);
     break;
 
+    //  case RDReport::RadioTraffic2:
+    //    ret=ExportRadioTraffic(filename,startdate,enddate,mixname,1);
+    //    break;
+
   case RDReport::VisualTraffic:
     ret=ExportDeltaflex(filename,startdate,enddate,mixname);
     break;
@@ -667,9 +672,12 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   QString post_cmd=RDDateDecode(postExportCommand(RDReport::Linux),startdate,
 				report_station,report_config,serviceName());
   system(post_cmd.toUtf8());
+
   sql=QString("delete from ELR_LINES where ")+
     "SERVICE_NAME=\""+RDEscapeString(mixname)+"\"";
   RDSqlQuery::apply(sql);
+
+  //  printf("RDReport mixname: %s\n",mixname.toUtf8().constData());
 
   return ret;
 }
