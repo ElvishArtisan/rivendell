@@ -21410,3 +21410,8 @@
 	* Fixed a bug in rdlogmanager(1) that could cause SQL errors to
 	be thrown when processing ELR records containing null values
 	in the 'EXT_START_TIME' column.
+2021-04-06 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'RadioTraffic.com Traffic Reconciliation' to
+	'Original RadioTraffic.com Traffic Reconciliation (DEPRECATED)'
+	in rdadmin(1).
+	* Added a new 'RadioTraffic.com Traffic Reconciliation' report.

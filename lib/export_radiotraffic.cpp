@@ -84,7 +84,12 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
   // Write Data Rows
   //
   while(q->next()) {
-    *strm << q->value(4).toTime().toString("hh:mm:ss")+" ";
+    if(q->value(4).isNull()) {
+      *strm << "00:00:00 ";
+    }
+    else {
+      *strm << q->value(4).toTime().toString("hh:mm:ss")+" ";
+    }
     *strm << q->value(2).toDateTime().toString("hh:mm:ss")+" ";
     if(q->value(5).toInt()>0) {
       if(version>0) {
