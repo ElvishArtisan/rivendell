@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -610,7 +610,7 @@ void RDLogPlay::append(const QString &log_name)
 }
 
 
-bool RDLogPlay::refresh()            
+bool RDLogPlay::refresh()
 {
   RDLogLine *s;
   RDLogLine *d;

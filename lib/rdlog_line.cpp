@@ -1922,6 +1922,8 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
 	log_segue_start_point[0]=-1;
 	log_segue_end_point[0]=-1;
       }
+      log_talk_start=q->value(6).toInt();
+      log_talk_end=q->value(7).toInt();
       if(log_talk_start>=0) {
 	log_talk_start=(int)((double)log_talk_start*time_ratio);
 	log_talk_end=(int)(q->value(7).toDouble()*time_ratio);
