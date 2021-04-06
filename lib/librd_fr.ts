@@ -843,6 +843,10 @@
         <source>is invalid</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Original RadioTraffic.com Traffic Reconciliation (DEPRECATED)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

@@ -613,6 +613,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     ret=ExportRadioTraffic(filename,startdate,enddate,mixname,0);
     break;
 
+  case RDReport::RadioTraffic2:
+    ret=ExportRadioTraffic(filename,startdate,enddate,mixname,1);
+    break;
+
   case RDReport::VisualTraffic:
     ret=ExportDeltaflex(filename,startdate,enddate,mixname);
     break;
@@ -697,6 +701,9 @@ QString RDReport::filterText(RDReport::ExportFilter filter)
     return QObject::tr("NPR/DS SoundExchange Report");
 
   case RDReport::RadioTraffic:
+    return QObject::tr("Original RadioTraffic.com Traffic Reconciliation (DEPRECATED)");
+
+  case RDReport::RadioTraffic2:
     return QObject::tr("RadioTraffic.com Traffic Reconciliation");
 
   case RDReport::VisualTraffic:
@@ -771,6 +778,7 @@ bool RDReport::multipleDaysAllowed(RDReport::ExportFilter filter)
   case RDReport::CbsiDeltaFlex:
   case RDReport::TextLog:
   case RDReport::RadioTraffic:
+  case RDReport::RadioTraffic2:
   case RDReport::VisualTraffic:
   case RDReport::CounterPoint:
   case RDReport::CounterPoint2:
@@ -804,6 +812,7 @@ bool RDReport::multipleMonthsAllowed(RDReport::ExportFilter filter)
   case RDReport::TextLog:
   case RDReport::BmiEmr:
   case RDReport::RadioTraffic:
+  case RDReport::RadioTraffic2:
   case RDReport::VisualTraffic:
   case RDReport::CounterPoint:
   case RDReport::CounterPoint2:
