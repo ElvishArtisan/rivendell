@@ -21399,3 +21399,6 @@
 	scripts into the build system.
 2021-04-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions that broke the 'make dist' target.
+2021-04-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that caused the Talk Timer to
+	fail to be populated when adding new carts to a log.
