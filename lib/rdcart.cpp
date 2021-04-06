@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Cart.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -985,8 +985,7 @@ void RDCart::setMetadata(const RDWaveData *data)
   if(sql.right(1)==",") {
     sql=sql.left(sql.length()-1);
     sql+=QString().sprintf(" where NUMBER=%u",cart_number);
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    delete q;
+    RDSqlQuery::apply(sql);
   }
   setSchedCodesList(data->schedCodes());
   metadata_changed=true;

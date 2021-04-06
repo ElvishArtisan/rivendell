@@ -20727,3 +20727,7 @@
 2021-04-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the Cart Selector Dialog that made it impossible
 	to enter an apostrophe character in the filter search line.
+2021-04-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdimport(1) where the title of an existing cart
+	would be overwritten with a default title even when no title
+	was found in the file metadata.
