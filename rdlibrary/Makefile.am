@@ -37,8 +37,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdlibrary_*.qm
 
 all:	
-	lupdate-qt4 rdlibrary.pro
-	lrelease-qt4 rdlibrary.pro
+	lupdate-qt5 rdlibrary.pro
+	lrelease-qt5 rdlibrary.pro
 
 bin_PROGRAMS = rdlibrary
 

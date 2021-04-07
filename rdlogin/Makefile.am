@@ -35,8 +35,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdlogin_*.qm
 
 all:	
-	lupdate-qt4 rdlogin.pro
-	lrelease-qt4 rdlogin.pro
+	lupdate-qt5 rdlogin.pro
+	lrelease-qt5 rdlogin.pro
 
 bin_PROGRAMS = rdlogin
 

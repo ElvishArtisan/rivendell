@@ -21415,3 +21415,6 @@
 	'Original RadioTraffic.com Traffic Reconciliation (DEPRECATED)'
 	in rdadmin(1).
 	* Added a new 'RadioTraffic.com Traffic Reconciliation' report.
+2021-04-07 Fred Gleason <fredg@paravelsystems.com>
+	* Updated all Makefile references to 'lupdate-qt4' to 'lupdate-qt5'.
+	* Updated all Makefile references to 'lrelease-qt4' to 'lrelease-qt5'.

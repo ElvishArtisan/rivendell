@@ -45,8 +45,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdhpi_*.qm
 
 all:	
-	lupdate-qt4 rdhpi.pro
-	lrelease-qt4 rdhpi.pro
+	lupdate-qt5 rdhpi.pro
+	lrelease-qt5 rdhpi.pro
 
 lib_LTLIBRARIES = librdhpi.la
 dist_librdhpi_la_SOURCES = rdhpiinformation.cpp rdhpiinformation.h\

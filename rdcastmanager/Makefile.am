@@ -37,8 +37,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdcastmanager_*.qm
 
 all:	
-	lupdate-qt4 rdcastmanager.pro
-	lrelease-qt4 rdcastmanager.pro
+	lupdate-qt5 rdcastmanager.pro
+	lrelease-qt5 rdcastmanager.pro
 
 bin_PROGRAMS = rdcastmanager
 

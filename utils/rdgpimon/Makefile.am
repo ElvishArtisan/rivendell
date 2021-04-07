@@ -34,8 +34,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdgpimon_*.qm
 
 all:	
-	lupdate-qt4 rdgpimon.pro
-	lrelease-qt4 rdgpimon.pro
+	lupdate-qt5 rdgpimon.pro
+	lrelease-qt5 rdgpimon.pro
 
 bin_PROGRAMS = rdgpimon
 

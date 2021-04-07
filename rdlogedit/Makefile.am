@@ -35,8 +35,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdlogedit_*.qm
 
 all:	
-	lupdate-qt4 rdlogedit.pro
-	lrelease-qt4 rdlogedit.pro
+	lupdate-qt5 rdlogedit.pro
+	lrelease-qt5 rdlogedit.pro
 
 bin_PROGRAMS = rdlogedit
 

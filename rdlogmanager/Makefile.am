@@ -35,8 +35,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdlogmanager_*.qm
 
 all:	
-	lupdate-qt4 rdlogmanager.pro
-	lrelease-qt4 rdlogmanager.pro
+	lupdate-qt5 rdlogmanager.pro
+	lrelease-qt5 rdlogmanager.pro
 
 bin_PROGRAMS = rdlogmanager
 
