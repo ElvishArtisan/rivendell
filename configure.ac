@@ -123,6 +123,12 @@ PKG_CHECK_MODULES(QT5_CLI,Qt5Core Qt5Network Qt5Sql Qt5Xml,,[AC_MSG_ERROR([*** Q
 AC_CHECK_PROG(MOC_NAME,moc-qt5,[moc-qt5],[moc])
 AC_SUBST(QT_MOC,$MOC_NAME)
 
+AC_CHECK_PROG(LUPDATE_NAME,lupdate-qt5,[lupdate-qt5],[lupdate])
+AC_SUBST(QT_LUPDATE,$LUPDATE_NAME)
+
+AC_CHECK_PROG(LRELEASE_NAME,lrelease-qt5,[lrelease-qt5],[lrelease])
+AC_SUBST(QT_LRELEASE,$LRELEASE_NAME)
+
 
 #
 # Determine the target architecture

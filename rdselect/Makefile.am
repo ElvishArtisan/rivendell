@@ -21,6 +21,8 @@
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
+LUPDATE = @QT_LUPDATE@
+LRELEASE = @QT_LRELEASE@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
@@ -39,8 +41,8 @@ uninstall-local:
 	rm -f $(DESTDIR)/etc/auto.master.d/rd.audiostore.autofs
 
 all:	
-	lupdate-qt5 rdselect.pro
-	lrelease-qt5 rdselect.pro
+	$(LUPDATE) rdselect.pro
+	$(LRELEASE) rdselect.pro
 
 bin_PROGRAMS = rdselect
 

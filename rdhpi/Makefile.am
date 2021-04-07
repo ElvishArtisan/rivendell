@@ -24,6 +24,8 @@
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
+LUPDATE = @QT_LUPDATE@
+LRELEASE = @QT_LRELEASE@
 CWRAP = ../helpers/cwrap
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -45,8 +47,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdhpi_*.qm
 
 all:	
-	lupdate-qt5 rdhpi.pro
-	lrelease-qt5 rdhpi.pro
+	$(LUPDATE) rdhpi.pro
+	$(LRELEASE) rdhpi.pro
 
 lib_LTLIBRARIES = librdhpi.la
 dist_librdhpi_la_SOURCES = rdhpiinformation.cpp rdhpiinformation.h\

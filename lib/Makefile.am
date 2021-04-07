@@ -22,6 +22,8 @@
 
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -Wno-strict-aliasing -std=c++11 -fPIC -I/usr/include/taglib
 MOC = @QT_MOC@
+LUPDATE = @QT_LUPDATE@
+LRELEASE = @QT_LRELEASE@
 CWRAP = ../helpers/cwrap
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -39,8 +41,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/librd_*.qm
 
 all:	
-	lupdate-qt5 lib.pro
-	lrelease-qt5 lib.pro
+	$(LUPDATE) lib.pro
+	$(LRELEASE) lib.pro
 
 lib_LTLIBRARIES = librd.la
 dist_librd_la_SOURCES = dbversion.h\

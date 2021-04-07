@@ -23,6 +23,8 @@
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
+LUPDATE = @QT_LUPDATE@
+LRELEASE = @QT_LRELEASE@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
@@ -37,8 +39,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdcartslots_*.qm
 
 all:	
-	lupdate-qt5 rdcartslots.pro
-	lrelease-qt5 rdcartslots.pro
+	$(LUPDATE) rdcartslots.pro
+	$(LRELEASE) rdcartslots.pro
 
 bin_PROGRAMS = rdcartslots
 
