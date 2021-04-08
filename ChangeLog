@@ -20736,3 +20736,6 @@
 	'Original RadioTraffic.com Traffic Reconciliation (DEPRECATED)'
 	in rdadmin(1).
 	* Added a new 'RadioTraffic.com Traffic Reconciliation' report.
+2021-04-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDFlacDecode' that caused conversion of files
+	with names containing non-ASCII characters to fail.

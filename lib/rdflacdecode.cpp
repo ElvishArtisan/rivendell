@@ -2,7 +2,7 @@
 //
 // Decode FLAC Files using libFLAC++
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -60,9 +60,7 @@ void RDFlacDecode::decode(RDWaveFile *wave,float *peak)
       (double)flac_end_point*(double)wave->getSamplesPerSec()/1000.0;
   }
   flac_total_frames=0;
-  init(wave->getName().ascii());
-  //set_filename(wave->getName().ascii());
-  //init();
+  init(wave->getName().toUtf8());
 
   while(flac_active&&process_single());
 }
