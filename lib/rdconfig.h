@@ -100,6 +100,8 @@ class RDConfig
   QString jackPort(int num,int endpt) const;
   bool disableMaintChecks() const;
   bool lockRdairplayMemory() const;
+  int meterBasePort() const;
+  int meterPortRange() const;
   bool enableMixerLogging() const;
   uid_t uid() const;
   gid_t gid() const;
@@ -170,6 +172,8 @@ class RDConfig
   QString conf_http_user_agent;
   bool conf_disable_maint_checks;
   bool conf_lock_rdairplay_memory;
+  int conf_meter_base_port;
+  int conf_meter_port_range;
   std::vector<QString> conf_jack_ports[2];
   uid_t conf_uid;
   gid_t conf_gid;

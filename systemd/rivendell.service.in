@@ -3,6 +3,7 @@ Description=Rivendell Radio Automation System
 After=network.target remote-fs.target nss-lookup.target
 
 [Service]
+LimitNOFILE=4096
 Type=simple
 ExecStart=@prefix@/sbin/rdservice
 PrivateTmp=false

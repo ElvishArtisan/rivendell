@@ -382,6 +382,18 @@ bool RDConfig::lockRdairplayMemory() const
 }
 
 
+int RDConfig::meterBasePort() const
+{
+  return conf_meter_base_port;
+}
+
+
+int RDConfig::meterPortRange() const
+{
+  return conf_meter_port_range;
+}
+
+
 uid_t RDConfig::uid() const
 {
   return conf_uid;
@@ -590,6 +602,10 @@ bool RDConfig::load()
     profile->boolValue("Hacks","DisableMaintChecks",false);
   conf_lock_rdairplay_memory=
     profile->boolValue("Hacks","LockRdairplayMemory",false);
+  conf_meter_base_port=
+    profile->intValue("Hacks","MeterPortBaseNumber",RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT);
+  conf_meter_port_range=
+    profile->intValue("Hacks","MeterPortRange",RD_METER_SOCKET_PORT_RANGE);
   if((user=getpwnam(profile->stringValue("Identity","AudioOwner")))!=NULL) {
     conf_uid=user->pw_uid;
   }
@@ -713,6 +729,8 @@ void RDConfig::clear()
   conf_jack_ports[1].clear();
   conf_disable_maint_checks=false;
   conf_lock_rdairplay_memory=false;
+  conf_meter_base_port=RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT;
+  conf_meter_port_range=RD_METER_SOCKET_PORT_RANGE;
   conf_uid=65535;
   conf_gid=65535;
   conf_pypad_uid=65535;

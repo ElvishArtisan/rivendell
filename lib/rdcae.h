@@ -113,6 +113,8 @@ class RDCae : public QObject
   int cae_handle[RD_MAX_CARDS][RD_MAX_STREAMS];
   unsigned cae_pos[RD_MAX_CARDS][RD_MAX_STREAMS];
   Q3SocketDevice *cae_meter_socket;
+  int cae_meter_base_port;
+  int cae_meter_port_range;
   short cae_input_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_stream_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];

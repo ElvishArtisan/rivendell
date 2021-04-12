@@ -56,9 +56,14 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   //
   cae_meter_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
   cae_meter_socket->setBlocking(false);
-  for(Q_INT16 i=30000;i<30100;i++) {
+  cae_meter_base_port=cae_config->meterBasePort();
+  cae_meter_port_range=cae_config->meterPortRange();
+  if(cae_meter_port_range>999) {
+    cae_meter_port_range=999;
+  }
+  for(Q_INT16 i=cae_meter_base_port;i<(cae_meter_base_port+cae_meter_port_range);i++) {
     if(cae_meter_socket->bind(QHostAddress(),i)) {
-      i=31000;
+      i=(cae_meter_base_port+cae_meter_port_range)+1;
     }
   }
 

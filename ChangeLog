@@ -20739,3 +20739,7 @@
 2021-04-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDFlacDecode' that caused conversion of files
 	with names containing non-ASCII characters to fail.
+2021-04-12 David Klann <dklann@broadcasttool.com>
+	* Changed the way in which the VU Meter UDP port is chosen. One
+	can now specify the base port number and the maximum number of UDP
+	ports to consider when caed(8) sets up the VU meter port.
