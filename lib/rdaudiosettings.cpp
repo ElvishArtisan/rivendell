@@ -20,7 +20,6 @@
 
 #include <rdaudiosettings.h>
 
-
 RDAudioSettings::RDAudioSettings()
 {
 }

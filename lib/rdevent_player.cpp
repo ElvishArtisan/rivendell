@@ -20,7 +20,6 @@
 
 #include <rdevent_player.h>
 
-
 RDEventPlayer::RDEventPlayer(RDRipc *ripc,QObject *parent)
   : QObject(parent)
 {

@@ -356,8 +356,9 @@ bool RDRenderer::renderToCart(unsigned cartnum,int cutnum,RDLogModel *model,
   //
   // Get Temporary File
   //
-  strncpy(tempdir,(RDTempDirectory::basePath()+"/rdrenderXXXXXX").toUtf8(),
-    PATH_MAX);
+  strncpy(tempdir,
+	  (RDTempDirectory::basePath()+"/rdrenderXXXXXX").toUtf8().constData(),
+	  PATH_MAX);
   temp_output_filename=QString(mkdtemp(tempdir))+"/log.wav";
   ProgressMessage(tr("Using temporary file")+" \""+temp_output_filename+"\".");
 

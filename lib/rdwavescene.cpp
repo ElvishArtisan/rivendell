@@ -18,6 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <math.h>
+
 #include "rdwavescene.h"
 
 RDWaveScene::RDWaveScene(const QList<uint16_t> &energy,int x_shrink,qreal gain,

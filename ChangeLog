@@ -21421,3 +21421,5 @@
 2021-04-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added tests to the configure script to locate the correct
 	versions of the Qt5 tools 'lupdate' and 'lrelease'.
+2021-04-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'DISTRO-SPECIFIC NOTES' section to 'INSTALL'.

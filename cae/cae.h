@@ -27,6 +27,7 @@
 
 #include <soundtouch/SoundTouch.h>
 
+#include <QTimer>
 #include <QObject>
 #include <QProcess>
 #include <QUdpSocket>

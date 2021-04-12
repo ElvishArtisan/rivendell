@@ -23,7 +23,6 @@
 #include <rdbutton_panel.h>
 #include <rdbutton_dialog.h>
 
-
 RDButtonPanel::RDButtonPanel(RDAirPlayConf::PanelType type,int panel,int cols,
 			     int rows,RDStation *station,bool flash,
 			     QWidget *parent)

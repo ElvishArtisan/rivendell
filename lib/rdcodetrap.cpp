@@ -23,7 +23,6 @@
 
 #include <rdcodetrap.h>
 
-
 RDCodeTrap::RDCodeTrap(QObject *parent)
   : QObject(parent)
 {
