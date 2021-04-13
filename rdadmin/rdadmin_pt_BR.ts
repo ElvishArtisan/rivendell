@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>@default</name>
     <message>
@@ -3068,7 +3066,7 @@ Isto para popular os recursos de áudio na Base de Dados.</translation>
     </message>
     <message>
         <source>Low</source>
-        <translation>Baixa	</translation>
+        <translation>Baixa<byte value="x9"/></translation>
     </message>
     <message>
         <source>None</source>

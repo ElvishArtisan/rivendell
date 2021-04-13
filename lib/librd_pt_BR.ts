@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name></name>
     <message>
@@ -91,7 +89,7 @@
     </message>
     <message>
         <source>PLAY</source>
-        <translation type="unfinished">SIMPLES	</translation>
+        <translation type="unfinished">SIMPLES<byte value="x9"/></translation>
     </message>
     <message>
         <source>SEGUE</source>
@@ -3283,7 +3281,7 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation type="obsolete">SIMPLES	</translation>
+        <translation type="obsolete">SIMPLES<byte value="x9"/></translation>
     </message>
     <message>
         <source>SEGUE</source>

@@ -267,7 +267,7 @@ DISTRO-SPECIFIC NOTES
 ---------------------
 1) RedHat Enterprise Linux 7
 
-Required build packages: git gcc-c++ automake autoconf libtool qt-devel libcurl-devel cdparanoia-devel hpklinux-devel alsa-lib-devel jack-audio-connection-kit-devel libsamplerate-devel libsndfile-devel id3lib-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo fop docbook5-style-xsl libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel libdiscid-devel libcoverart libcoverart-devel
+Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel qt5-qtbase-mysql libcurl-devel cdparanoia-devel hpklinux-devel alsa-lib-devel jack-audio-connection-kit-devel libsamplerate-devel libsndfile-devel id3lib-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo fop docbook5-style-xsl libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel libdiscid-devel libcoverart libcoverart-devel
 
 Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib64 --libexecdir=/var/www/rd-bin --sysconfdir=/etc/httpd/conf.d
 

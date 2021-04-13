@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>AudioCart</name>
     <message>
@@ -1363,9 +1361,9 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Deleting cart %06u will also empty the clipboard.
-      	Do you still want to proceed?</source>
+      <byte value="x9"/>Do you still want to proceed?</source>
         <translation type="obsolete">Al eliminar el cartucho %06u también se vaciará el portapapeles.
-      	¿Desea continuar?</translation>
+      <byte value="x9"/>¿Desea continuar?</translation>
     </message>
     <message>
         <source>rdlibrary : </source>

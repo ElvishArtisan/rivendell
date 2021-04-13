@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name></name>
     <message>
@@ -1276,7 +1274,7 @@ Color</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation type="obsolete">ARTISTA	</translation>
+        <translation type="obsolete">ARTISTA<byte value="x9"/></translation>
     </message>
     <message>
         <source>CLIENT</source>
