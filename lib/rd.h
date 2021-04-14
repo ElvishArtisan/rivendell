@@ -625,4 +625,16 @@
  */
 #define RD_GPIO_EVENT_DAYS 30
 
+/*
+ * Starting UDP port for cae_meter_socket.
+ * Default 'MeterPortBaseNumber=' value in rd.conf(5)
+ */
+#define RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT 30000
+
+/*
+ * Maximum number of UDP ports to consider for cae_meter_socket.
+ * Default 'MeterPortRange' value in rd.conf(5)
+ */
+#define RD_METER_SOCKET_PORT_RANGE 100
+
 #endif  // RD_H
