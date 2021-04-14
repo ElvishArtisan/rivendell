@@ -21427,3 +21427,7 @@
 	* Updated the build package list for RHEL 7 in 'INSTALL'.
 2021-04-13 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the build package list for Ubuntu 20.04 LTS in 'INSTALL'.
+2021-04-13 David Klann <dklann@broadcasttool.com>
+       * Changed the way in which the VU Meter UDP port is chosen. One
+       can now specify the base port number and the maximum number of UDP
+       ports to consider when caed(8) sets up the VU meter port.

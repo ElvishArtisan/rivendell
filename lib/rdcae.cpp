@@ -63,9 +63,15 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   // Meter Connection
   //
   cae_meter_socket=new QUdpSocket(this);
-  for(int16_t i=30000;i<30100;i++) {
-    if(cae_meter_socket->bind(i)) {
-      i=31000;
+  cae_meter_base_port=cae_config->meterBasePort();
+  cae_meter_port_range=cae_config->meterPortRange();
+  if(cae_meter_port_range>999) {
+    cae_meter_port_range=999;
+  }
+  for(int16_t i=cae_meter_base_port;
+      i<(cae_meter_base_port+cae_meter_port_range);i++) {
+    if(cae_meter_socket->bind(QHostAddress(),i)) {
+      i=(cae_meter_base_port+cae_meter_port_range)+1;
     }
   }
 

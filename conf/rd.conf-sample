@@ -164,3 +164,15 @@ TranscodingDelay=0
 
 ; Lock memory in RDAirPlay
 ; LockRdairplayMemory=Yes
+
+; Number at which to start looking for available UDP ports for VU
+; meters. You should only change this if you have another service
+; using UDP Port numbers in the range MeterPortBaseNumber to
+; (MeterPortBaseNumber + MeterPortRange) (extremely rare).
+; MeterPortBaseNumber=30000
+
+; Maximum number of UDP Ports to consider for VU meters. You may need
+; to change this if you have many (say, more than 80) Rivendell
+; dropboxes configured. Rivendell imposes a hard limit of 999 on this
+; setting.
+; MeterPortRange=100
