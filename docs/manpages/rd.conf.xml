@@ -789,6 +789,34 @@
 	   </listitem>
 	 </varlistentry>
        </variablelist>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>MeterPortBaseNumber = </userinput><replaceable>udp-port</replaceable>
+	   </term>
+	   <term>
+	     <userinput>MeterPortRange = </userinput><replaceable>size</replaceable>
+	   </term>
+	   <listitem>
+	     <para>
+	       These parameters define the range of UDP ports to reserve for
+	       processing audio meter updates. The
+	       <userinput>MeterPortBaseNumber</userinput> parameter specifies
+	       the first port in the range (valid values between
+	       <userinput>1</userinput> and <userinput>32767</userinput>) while
+	       <userinput>MeterPortRange</userinput> specifies how many ports
+	       to reserve (valid values between
+	       <userinput>1</userinput> and <userinput>999</userinput>).
+	       The default values
+	       are <userinput>30000</userinput> and <userinput>100</userinput>
+	       respectively.
+	     </para>
+	     <para>
+	       It should seldom be necessary to change these.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
      </listitem>
    </varlistentry>
  </variablelist>
