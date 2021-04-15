@@ -339,7 +339,7 @@ bool RDWaveFile::openWave(RDWaveData *data)
       assert(dlmp4.load());
       format_tag=WAVE_FORMAT_M4A;
 
-      MP4FileHandle f = dlmp4.MP4Read(getName());
+      MP4FileHandle f = dlmp4.MP4Read(getName().toUtf8());
       if(f == MP4_INVALID_FILE_HANDLE)
 	return false;
 
@@ -2477,7 +2477,7 @@ bool RDWaveFile::IsM4A(int fd)
 #ifdef HAVE_MP4_LIBS
   if(!dlmp4.load())
     return false;
-  MP4FileHandle f = dlmp4.MP4Read(getName());
+  MP4FileHandle f = dlmp4.MP4Read(getName().toUtf8());
   bool ret = f != MP4_INVALID_FILE_HANDLE;
   if(ret)
     dlmp4.MP4Close(f, 0);

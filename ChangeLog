@@ -21434,3 +21434,5 @@
 2021-04-14 Fred Gleason <fredg@paravelsystems.com>
 	* Documented the 'MeterPortBaseNumber=' and 'MeterPointRange='
 	directives in the rd.conf(5) man page.
+2021-04-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs that broke the build when MP4 support was enabled.

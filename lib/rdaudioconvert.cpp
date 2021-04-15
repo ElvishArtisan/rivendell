@@ -775,7 +775,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
   sf_dst_info.format=SF_FORMAT_WAV|SF_FORMAT_FLOAT;
   sf_dst_info.channels=wave->getChannels();
   sf_dst_info.samplerate=wave->getSamplesPerSec();
-  if((sf_dst=sf_open(dstfile,SFM_WRITE,&sf_dst_info))==NULL) {
+  if((sf_dst=sf_open(dstfile.toUtf8(),SFM_WRITE,&sf_dst_info))==NULL) {
     ret = RDAudioConvert::ErrorNoDestination;
     goto out_mp4_configbuf;
   }
