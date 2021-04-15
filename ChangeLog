@@ -21436,3 +21436,6 @@
 	directives in the rd.conf(5) man page.
 2021-04-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs that broke the build when MP4 support was enabled.
+2021-04-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdxport.cgi' that broke the build when compiling
+	without the '--enable-rdxport-debug' switch.
