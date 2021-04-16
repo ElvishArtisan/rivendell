@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Workstation.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1002,7 +1002,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
       sql=QString("insert into RDLIBRARY set ")+
 	QString().sprintf("INPUT_CARD=%d,",q->value(0).toInt())+
 	QString().sprintf("INPUT_PORT=%d,",q->value(1).toInt())+
-	QString().sprintf("INPUT_TYPE=%d,",q->value(2).toInt())+
+	"INPUT_TYPE=\""+RDEscapeString(q->value(2).toString())+"\","+
 	QString().sprintf("OUTPUT_CARD=%d,",q->value(3).toInt())+
 	QString().sprintf("OUTPUT_PORT=%d,",q->value(4).toInt())+
 	QString().sprintf("VOX_THRESHOLD=%d,",q->value(5).toInt())+
@@ -1207,7 +1207,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	"DESCRIPTION_TEMPLATE=\""+RDEscapeString(q->value(22).toString())+"\","+
 	"EXIT_PASSWORD=\""+RDEscapeString(q->value(23).toString())+"\","+
 	"SKIN_PATH=\""+RDEscapeString(q->value(24).toString())+"\","+
-	"SHOW_COUNTERS=\","+RDEscapeString(q->value(25).toString())+"\","+
+	"SHOW_COUNTERS=\""+RDEscapeString(q->value(25).toString())+"\","+
 	"STATION=\""+RDEscapeString(name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
@@ -1666,6 +1666,9 @@ bool RDStation::create(const QString &name,QString *err_msg,
     }
     delete q;
 
+    /*
+     * FIXME: Reinstate/remove hotkey support!
+     *
     //
     // Clone Hotkeys
     //
@@ -1688,7 +1691,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
       delete q1;
     }
     delete q;
-
+    */
     //
     // Clone PyPAD Instances
     //

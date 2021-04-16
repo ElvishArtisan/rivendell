@@ -21439,3 +21439,8 @@
 2021-04-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdxport.cgi' that broke the build when compiling
 	without the '--enable-rdxport-debug' switch.
+2021-04-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in rdadmin(1) that threw SQL errors when creating
+	new host entries.
+	* Disabled cloning on hotkey data when creating new host entries
+	in rdadmin(1).
