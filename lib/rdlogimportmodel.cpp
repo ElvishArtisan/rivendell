@@ -189,21 +189,6 @@ void RDLogImportModel::updateModel()
 }
 
 
-void RDLogImportModel::updateRowLine(int line)
-{
-  if(line<d_texts.size()) {
-    QString sql=sqlFields()+
-      "where "+
-      QString().sprintf("IMPORTER_LINES.ID=%u",d_ids.at(line));
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    if(q->first()) {
-      updateRow(line,q);
-    }
-    delete q;
-  }
-}
-
-
 void RDLogImportModel::updateRow(int row,RDSqlQuery *q)
 {
   QList<QVariant> texts;

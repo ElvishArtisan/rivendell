@@ -48,7 +48,6 @@ class RDLogImportModel : public QAbstractTableModel
 
  protected:
   void updateModel();
-  void updateRowLine(int line);
   void updateRow(int row,RDSqlQuery *q);
   QString sqlFields() const;
 

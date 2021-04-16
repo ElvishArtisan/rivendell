@@ -21448,3 +21448,9 @@
 	* Fixed a bug in rdadmin(1) that caused the incorrect hostname to
 	populate in the 'Name' column after creating a new host entry in
 	the 'Rivendell Host List' dialog.
+2021-04-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a copy-paste typo in the 'updateRowLine()' method of
+	the following classes: 'RDFeedListModel', 'RDGroupListModel',
+	'RDLogListModel', 'RDReplicatorListModel', 'RDSchedCodeListModel',
+	'RDServiceListModel', 'RDUserListModel'.
+	* Removed the 'RDLogImportModel::updateRowLine()' method.

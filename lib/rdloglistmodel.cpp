@@ -268,7 +268,7 @@ void RDLogListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      "where NAME=\""+RDEscapeString(d_texts.at(line).at(0).toString())+"\"";
+      "where NAME=\""+RDEscapeString(d_texts.at(line).at(line).toString())+"\"";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
