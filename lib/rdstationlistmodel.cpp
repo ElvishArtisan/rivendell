@@ -298,7 +298,7 @@ void RDStationListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      "where NAME=\""+RDEscapeString(d_hostnames.at(0))+"\"";
+      "where NAME=\""+RDEscapeString(d_hostnames.at(line))+"\"";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);

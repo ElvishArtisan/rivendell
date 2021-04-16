@@ -21444,3 +21444,7 @@
 	new host entries.
 	* Disabled cloning on hotkey data when creating new host entries
 	in rdadmin(1).
+2021-04-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused the incorrect hostname to
+	populate in the 'Name' column after creating a new host entry in
+	the 'Rivendell Host List' dialog.
