@@ -3,7 +3,7 @@
 // Generates a standardized SQL 'INNER JOIN' and 'WHERE' clause for
 // filtering Rivendell carts.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,23 +33,23 @@ QString RDBaseSearchText(QString filter,bool incl_cuts)
 
   edit_filter=edit_filter.trimmed();
   if(edit_filter.isEmpty()) {
-    ret=QString(" ((CART.TITLE like \"%%\")||")+
-      "(CART.ARTIST like \"%%\")||"+
-      "(CART.CLIENT like \"%%\")||"+
-      "(CART.AGENCY like \"%%\")||"+
-      "(CART.ALBUM like \"%%\")||"+
-      "(CART.LABEL like \"%%\")||"+
-      "(CART.NUMBER like \"%%\")||"+
-      "(CART.PUBLISHER like \"%%\")||"+
-      "(CART.COMPOSER like \"%%\")||"+
-      "(CART.CONDUCTOR like \"%%\")||"+
-      "(CART.SONG_ID like \"%%\")||"+
-      "(CART.USER_DEFINED like \"%%\")";
+    ret=QString(" ((`CART`.`TITLE` like \"%%\")||")+
+      "(`CART`.`ARTIST` like \"%%\")||"+
+      "(`CART`.`CLIENT` like \"%%\")||"+
+      "(`CART`.`AGENCY` like \"%%\")||"+
+      "(`CART`.`ALBUM` like \"%%\")||"+
+      "(`CART`.`LABEL` like \"%%\")||"+
+      "(`CART`.`NUMBER` like \"%%\")||"+
+      "(`CART`.`PUBLISHER` like \"%%\")||"+
+      "(`CART`.`COMPOSER` like \"%%\")||"+
+      "(`CART`.`CONDUCTOR` like \"%%\")||"+
+      "(`CART`.`SONG_ID` like \"%%\")||"+
+      "(`CART`.`USER_DEFINED` like \"%%\")";
     if(incl_cuts) {
-      ret+=QString("||(CUTS.ISCI like \"%%\")")+
-	"||(CUTS.ISRC like \"%%\")"+
-	"||(CUTS.DESCRIPTION like \"%%\")"+
-	"||(CUTS.OUTCUE like \"%%\")";
+      ret+=QString("||(`CUTS`.`ISCI` like \"%%\")")+
+	"||(`CUTS`.`ISRC` like \"%%\")"+
+	"||(`CUTS`.`DESCRIPTION` like \"%%\")"+
+	"||(`CUTS`.`OUTCUE` like \"%%\")";
     }
     ret+=")";
   }
@@ -79,23 +79,23 @@ QString RDBaseSearchText(QString filter,bool incl_cuts)
 	ret=ret+" AND ";
       }
       QString search=RDEscapeString(str);
-      ret=ret+QString(" ((CART.TITLE like \"%")+search+"%\")||"+
-	"(CART.ARTIST like \"%"+search+"%\")||"+
-	"(CART.CLIENT like \"%"+search+"%\")||"+
-	"(CART.AGENCY like \"%"+search+"%\")||"+
-	"(CART.ALBUM like \"%"+search+"%\")||"+
-	"(CART.LABEL like \"%"+search+"%\")||"+
-	"(CART.NUMBER like \"%"+search+"%\")||"+
-	"(CART.PUBLISHER like \"%"+search+"%\")||"+
-	"(CART.COMPOSER like \"%"+search+"%\")||"+
-	"(CART.CONDUCTOR like \"%"+search+"%\")||"+
-	"(CART.SONG_ID like \"%"+search+"%\")||"+
-	"(CART.USER_DEFINED like \"%"+search+"%\")";
+      ret=ret+QString(" ((`CART`.`TITLE` like \"%")+search+"%\")||"+
+	"(`CART`.`ARTIST` like \"%"+search+"%\")||"+
+	"(`CART`.`CLIENT` like \"%"+search+"%\")||"+
+	"(`CART`.`AGENCY` like \"%"+search+"%\")||"+
+	"(`CART`.`ALBUM` like \"%"+search+"%\")||"+
+	"(`CART`.`LABEL` like \"%"+search+"%\")||"+
+	"(`CART`.`NUMBER` like \"%"+search+"%\")||"+
+	"(`CART`.`PUBLISHER` like \"%"+search+"%\")||"+
+	"(`CART`.`COMPOSER` like \"%"+search+"%\")||"+
+	"(`CART`.`CONDUCTOR` like \"%"+search+"%\")||"+
+	"(`CART`.`SONG_ID` like \"%"+search+"%\")||"+
+	"(`CART`.`USER_DEFINED` like \"%"+search+"%\")";
       if(incl_cuts) {
-	ret+=QString("||(CUTS.ISCI like \"%")+search+"%\")"+
-	  "||(CUTS.ISRC like \"%"+search+"%\")"+
-	  "||(CUTS.DESCRIPTION like \"%"+search+"%\")"+
-	  "||(CUTS.OUTCUE like \"%"+search+"%\")";
+	ret+=QString("||(`CUTS`.`ISCI` like \"%")+search+"%\")"+
+	  "||(`CUTS`.`ISRC` like \"%"+search+"%\")"+
+	  "||(`CUTS`.`DESCRIPTION` like \"%"+search+"%\")"+
+	  "||(`CUTS`.`OUTCUE` like \"%"+search+"%\")";
       }
       ret+=") ";
     }
@@ -109,7 +109,7 @@ QString RDSchedSearchText(const QString &schedcode)
   QString ret="";
 
   if(!schedcode.isEmpty()) {
-    ret+=QString(" inner join CART_SCHED_CODES on CART.NUMBER=CART_SCHED_CODES.CART_NUMBER and CART_SCHED_CODES.SCHED_CODE=\"")+RDEscapeString(schedcode)+"\" ";
+    ret+=QString(" inner join `CART_SCHED_CODES` on `CART`.`NUMBER`=`CART_SCHED_CODES`.`CART_NUMBER` and `CART_SCHED_CODES`.`SCHED_CODE`='")+RDEscapeString(schedcode)+"' ";
   }
 
   return ret;
@@ -121,7 +121,7 @@ QString RDSchedSearchText(const QStringList &schedcodes)
   QString ret="";
 
   for(int i=0;i<schedcodes.size();i++) {
-    ret+=QString().sprintf(" inner join CART_SCHED_CODES as S%d on (CART.NUMBER=S%d.CART_NUMBER and S%d.SCHED_CODE='%s')",i,i,i,schedcodes.at(i).toUtf8().constData());
+    ret+=QString().sprintf(" inner join `CART_SCHED_CODES` as S%d on (`CART`.`NUMBER`=S%d.`CART_NUMBER` and S%d.`SCHED_CODE`='%s')",i,i,i,schedcodes.at(i).toUtf8().constData());
   }
   return ret;
 }
@@ -135,7 +135,7 @@ QString RDCartSearchText(QString filter,const QString &group,
   ret+=RDSchedSearchText(schedcode);
   ret+=QString(" where ")+RDBaseSearchText(filter,incl_cuts);
   if(!group.isEmpty()) {
-    ret+=QString("&&(CART.GROUP_NAME=\"")+RDEscapeString(group)+"\")";
+    ret+=QString("&&(`CART`.`GROUP_NAME`=\"")+RDEscapeString(group)+"\")";
   }
 
   return ret;
@@ -149,7 +149,7 @@ QString RDCartSearchText(QString filter,const QString &group,
   ret+=RDSchedSearchText(schedcodes);
   ret+=QString(" where ")+RDBaseSearchText(filter,incl_cuts);
   if(!group.isEmpty()) {
-    ret+=QString("&&(CART.GROUP_NAME=\"")+RDEscapeString(group)+"\")";
+    ret+=QString("&&(`CART`.`GROUP_NAME`=\"")+RDEscapeString(group)+"\")";
   }
 
   return ret;
@@ -165,12 +165,12 @@ QString RDAllCartSearchText(const QString &filter,const QString &schedcode,
 
   search+=RDSchedSearchText(schedcode);
   search+=" where (";
-  sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(user)+"\"";
+  sql=QString("select `GROUP_NAME` from `USER_PERMS` where ")+
+    "`USER_NAME`='"+RDEscapeString(user)+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    search+=QString("(CART.GROUP_NAME=\"")+
-      RDEscapeString(q->value(0).toString())+"\")||";
+    search+=QString("(`CART`.`GROUP_NAME`='")+
+      RDEscapeString(q->value(0).toString())+"')||";
   }
   delete q;
   search=search.left(search.length()-2)+QString(")");
@@ -188,12 +188,12 @@ QString RDAllCartSearchText(const QString &filter,const QStringList &schedcodes,
 
   search+=RDSchedSearchText(schedcodes);
   search+=" where (";
-  sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(user)+"\"";
+  sql=QString("select `GROUP_NAME` from `USER_PERMS` where ")+
+    "`USER_NAME`='"+RDEscapeString(user)+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    search+=QString("(CART.GROUP_NAME=\"")+
-      RDEscapeString(q->value(0).toString())+"\")||";
+    search+=QString("(`CART`.`GROUP_NAME`='")+
+      RDEscapeString(q->value(0).toString())+"')||";
   }
   delete q;
   search=search.left(search.length()-2)+QString(")");

@@ -18,8 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <syslog.h>
-
 #include "rdapplication.h"
 #include "rddb.h"
 #include "rdconf.h"
@@ -44,20 +42,20 @@ RDLogLine::RDLogLine(unsigned cartnum,int cutnum)
   clear();
   log_cart_number=cartnum;
   sql=QString("select ")+
-    "GROUP_NAME,"+    // 00
-    "TITLE,"+         // 01
-    "ARTIST,"+        // 02
-    "ALBUM,"+         // 03
-    "YEAR,"+          // 04
-    "LABEL,"          // 05
-    "CLIENT,"+        // 06
-    "AGENCY,"+        // 07
-    "COMPOSER,"+      // 08
-    "PUBLISHER,"+     // 09
-    "USER_DEFINED,"+  // 10
-    "NOTES "+         // 11
-    "from CART where "+
-    QString().sprintf("NUMBER=%u",log_cart_number);
+    "`GROUP_NAME`,"+    // 00
+    "`TITLE`,"+         // 01
+    "`ARTIST`,"+        // 02
+    "`ALBUM`,"+         // 03
+    "`YEAR`,"+          // 04
+    "`LABEL`,"          // 05
+    "`CLIENT`,"+        // 06
+    "`AGENCY`,"+        // 07
+    "`COMPOSER`,"+      // 08
+    "`PUBLISHER`,"+     // 09
+    "`USER_DEFINED`,"+  // 10
+    "`NOTES` "+         // 11
+    "from `CART` where "+
+    QString().sprintf("`NUMBER`=%u",log_cart_number);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     log_group_name=q->value(0).toString();
@@ -78,16 +76,16 @@ RDLogLine::RDLogLine(unsigned cartnum,int cutnum)
   if(cutnum>0) {
     log_cut_number=cutnum;
     sql=QString("select ")+
-      "DESCRIPTION,"+     // 00
-      "START_DATETIME,"+  // 01
-      "END_DATETIME,"+    // 02
-      "OUTCUE,"+          // 03
-      "ISCI,"+            // 04
-      "ISRC,"+            // 05
-      "RECORDING_MBID,"+  // 06
-      "RELEASE_MBID "+    // 07
-      "from CUTS where "+
-      "CUT_NAME=\""+RDEscapeString(RDCut::cutName(cartnum,cutnum))+"\"";
+      "`DESCRIPTION`,"+     // 00
+      "`START_DATETIME`,"+  // 01
+      "`END_DATETIME`,"+    // 02
+      "`OUTCUE`,"+          // 03
+      "`ISCI`,"+            // 04
+      "`ISRC`,"+            // 05
+      "`RECORDING_MBID`,"+  // 06
+      "`RELEASE_MBID` "+    // 07
+      "from `CUTS` where "+
+      "`CUT_NAME`='"+RDEscapeString(RDCut::cutName(cartnum,cutnum))+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       log_description=q->value(0).toString();
@@ -1833,23 +1831,23 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
     }
     log_cut_number=log_cut_name.right(3).toInt();
     sql=QString("select ")+
-      "LENGTH,"+                // 00
-      "START_POINT,"+           // 01
-      "END_POINT,"+             // 02
-      "SEGUE_START_POINT,"+     // 03
-      "SEGUE_END_POINT,"+       // 04
-      "SEGUE_GAIN,"+            // 05
-      "TALK_START_POINT,"+      // 06
-      "TALK_END_POINT,"+        // 07
-      "HOOK_START_POINT,"+      // 08
-      "HOOK_END_POINT,"+        // 09
-      "OUTCUE,"+                // 10
-      "ISRC,"+                  // 11
-      "ISCI,"+                  // 12
-      "DESCRIPTION,"+           // 13
-      "RECORDING_MBID,"+        // 14
-      "RELEASE_MBID "+          // 15
-      "from CUTS where CUT_NAME=\""+RDEscapeString(log_cut_name)+"\"";
+      "`LENGTH,"+                // 00
+      "`START_POINT`,"+           // 01
+      "`END_POINT`,"+             // 02
+      "`SEGUE_START_POINT`,"+     // 03
+      "`SEGUE_END_POINT`,"+       // 04
+      "`SEGUE_GAIN`,"+            // 05
+      "`TALK_START_POINT`,"+      // 06
+      "`TALK_END_POINT`,"+        // 07
+      "`HOOK_START_POINT`,"+      // 08
+      "`HOOK_END_POINT`,"+        // 09
+      "`OUTCUE`,"+                // 10
+      "`ISRC`,"+                  // 11
+      "`ISCI`,"+                  // 12
+      "`DESCRIPTION`,"+           // 13
+      "`RECORDING_MBID`,"+        // 14
+      "`RELEASE_MBID` "+          // 15
+      "from `CUTS` where `CUT_NAME`='"+RDEscapeString(log_cut_name)+"'";
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       delete q;
@@ -2061,37 +2059,37 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
 void RDLogLine::loadCart(int cartnum,int cutnum)
 {
   QString sql=QString("select ")+
-    "CART.TYPE,"+                  // 00
-    "CART.GROUP_NAME,"+            // 01
-    "CART.TITLE,"+                 // 02
-    "CART.ARTIST,"+                // 03
-    "CART.ALBUM,"+                 // 04
-    "CART.YEAR,"+                  // 05
-    "CART.LABEL,"+                 // 06
-    "CART.CLIENT,"+                // 07
-    "CART.AGENCY,"+                // 08
-    "CART.USER_DEFINED,"+          // 09
-    "CART.CONDUCTOR,"+             // 10
-    "CART.SONG_ID,"+               // 11
-    "CART.FORCED_LENGTH,"+         // 12
-    "CART.CUT_QUANTITY,"+          // 13
-    "CART.LAST_CUT_PLAYED,"+       // 14
-    "CART.PLAY_ORDER,"+            // 15
-    "CART.START_DATETIME,"+        // 16
-    "CART.END_DATETIME,"+          // 17
-    "CART.ENFORCE_LENGTH,"+        // 18
-    "CART.PRESERVE_PITCH,"+        // 19
-    "GROUPS.ENABLE_NOW_NEXT,"+     // 20
-    "CART.ASYNCRONOUS,"+           // 21
-    "CART.PUBLISHER,"+             // 22
-    "CART.COMPOSER,"+              // 23
-    "CART.USAGE_CODE,"+            // 24
-    "CART.AVERAGE_SEGUE_LENGTH,"+  // 25
-    "CART.NOTES,"+                 // 26
-    "GROUPS.COLOR "+               // 27
-    "from CART left join GROUPS "+
-    "on CART.GROUP_NAME=GROUPS.NAME where "+
-    QString().sprintf("(CART.NUMBER=%d)",cartnum);
+    "`CART`.`TYPE`,"+                  // 00
+    "`CART`.`GROUP_NAME`,"+            // 01
+    "`CART`.`TITLE`,"+                 // 02
+    "`CART`.`ARTIST`,"+                // 03
+    "`CART`.`ALBUM`,"+                 // 04
+    "`CART`.`YEAR`,"+                  // 05
+    "`CART`.`LABEL`,"+                 // 06
+    "`CART`.`CLIENT`,"+                // 07
+    "`CART`.`AGENCY`,"+                // 08
+    "`CART`.`USER_DEFINED`,"+          // 09
+    "`CART`.`CONDUCTOR`,"+             // 10
+    "`CART`.`SONG_ID`,"+               // 11
+    "`CART`.`FORCED_LENGTH`,"+         // 12
+    "`CART`.`CUT_QUANTITY`,"+          // 13
+    "`CART`.`LAST_CUT_PLAYED`,"+       // 14
+    "`CART`.`PLAY_ORDER`,"+            // 15
+    "`CART`.`START_DATETIME`,"+        // 16
+    "`CART`.`END_DATETIME`,"+          // 17
+    "`CART`.`ENFORCE_LENGTH`,"+        // 18
+    "`CART`.`PRESERVE_PITCH`,"+        // 19
+    "`GROUPS`.`ENABLE_NOW_NEXT`,"+     // 20
+    "`CART`.`ASYNCRONOUS`,"+           // 21
+    "`CART`.`PUBLISHER`,"+             // 22
+    "`CART`.`COMPOSER`,"+              // 23
+    "`CART`.`USAGE_CODE`,"+            // 24
+    "`CART`.`AVERAGE_SEGUE_LENGTH`,"+  // 25
+    "`CART`.`NOTES`,"+                 // 26
+    "`GROUPS`.`COLOR` "+               // 27
+    "from `CART` left join `GROUPS` "+
+    "on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` where "+
+    QString().sprintf("(`CART`.`NUMBER`=%d)",cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -2144,23 +2142,23 @@ void RDLogLine::loadCart(int cartnum,int cutnum)
 
   if(cutnum>0) {
     sql=QString("select ")+
-      "LENGTH,"+                // 00
-      "START_POINT,"+           // 01
-      "END_POINT,"+             // 02
-      "SEGUE_START_POINT,"+     // 03
-      "SEGUE_END_POINT,"+       // 04
-      "SEGUE_GAIN,"+            // 05
-      "TALK_START_POINT,"+      // 06
-      "TALK_END_POINT,"+        // 07
-      "HOOK_START_POINT,"+      // 08
-      "HOOK_END_POINT,"+        // 09
-      "OUTCUE,"+                // 10
-      "ISRC,"+                  // 11
-      "ISCI,"+                  // 12
-      "DESCRIPTION,"+           // 13
-      "RECORDING_MBID,"+        // 14
-      "RELEASE_MBID "+          // 15
-      "from CUTS where CUT_NAME=\""+RDCut::cutName(cartnum,cutnum)+"\"";
+      "`LENGTH`,"+                // 00
+      "`START_POINT`,"+           // 01
+      "`END_POINT`,"+             // 02
+      "`SEGUE_START_POINT`,"+     // 03
+      "`SEGUE_END_POINT`,"+       // 04
+      "`SEGUE_GAIN`,"+            // 05
+      "`TALK_START_POINT`,"+      // 06
+      "`TALK_END_POINT`,"+        // 07
+      "`HOOK_START_POINT`,"+      // 08
+      "`HOOK_END_POINT`,"+        // 09
+      "`OUTCUE`,"+                // 10
+      "`ISRC`,"+                  // 11
+      "`ISCI`,"+                  // 12
+      "`DESCRIPTION`,"+           // 13
+      "`RECORDING_MBID`,"+        // 14
+      "`RELEASE_MBID` "+          // 15
+      "from `CUTS` where `CUT_NAME`='"+RDCut::cutName(cartnum,cutnum)+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       if(log_hook_mode &&(q->value(8).toInt()>=0)&&(q->value(9).toInt()>=0)) {
@@ -2234,27 +2232,27 @@ void RDLogLine::refreshCart()
 
   if((type()==RDLogLine::Cart)||(type()==RDLogLine::Macro)) {
     sql=QString("select ")+
-      "TITLE,"+             // 00
-      "ARTIST,"+            // 01
-      "ALBUM,"+             // 02
-      "YEAR,"+              // 03
-      "CONDUCTOR,"+         // 04
-      "LABEL,"+             // 05
-      "CLIENT,"+            // 06
-      "AGENCY,"+            // 07
-      "PUBLISHER,"+         // 08
-      "COMPOSER,"+          // 09
-      "USER_DEFINED,"+      // 10
-      "SONG_ID,"+           // 11
-      "USAGE_CODE,"+        // 12
-      "FORCED_LENGTH,"+     // 13
-      "ENFORCE_LENGTH,"+    // 14
-      "VALIDITY,"+          // 15
-      "START_DATETIME,"+    // 16
-      "END_DATETIME,"+      // 17
-      "NOTES "+             // 19
-      "from CART where "+
-      QString().sprintf("NUMBER=%u",cartNumber());
+      "`TITLE`,"+             // 00
+      "`ARTIST`,"+            // 01
+      "`ALBUM`,"+             // 02
+      "`YEAR`,"+              // 03
+      "`CONDUCTOR`,"+         // 04
+      "`LABEL`,"+             // 05
+      "`CLIENT`,"+            // 06
+      "`AGENCY`,"+            // 07
+      "`PUBLISHER`,"+         // 08
+      "`COMPOSER`,"+          // 09
+      "`USER_DEFINED`,"+      // 10
+      "`SONG_ID`,"+           // 11
+      "`USAGE_CODE`,"+        // 12
+      "`FORCED_LENGTH`,"+     // 13
+      "`ENFORCE_LENGTH`,"+    // 14
+      "`VALIDITY`,"+          // 15
+      "`START_DATETIME`,"+    // 16
+      "`END_DATETIME`,"+      // 17
+      "`NOTES` "+             // 19
+      "from `CART` where "+
+      QString().sprintf("`NUMBER`=%u",cartNumber());
     q=new RDSqlQuery(sql);
     if(q->first()) {
       log_title=q->value(0).toString();
@@ -2291,18 +2289,18 @@ void RDLogLine::refreshPointers()
   RDSqlQuery *q;
 
   sql=QString("select ")+
-    "START_POINT,"+        // 00
-    "END_POINT,"+          // 01
-    "SEGUE_START_POINT,"+  // 02
-    "SEGUE_END_POINT,"+    // 03
-    "TALK_START_POINT,"+   // 04
-    "TALK_END_POINT,"+     // 05
-    "FADEUP_POINT,"+       // 06
-    "FADEDOWN_POINT,"+     // 07
-    "HOOK_START_POINT,"+   // 08
-    "HOOK_END_POINT "+     // 09
-    "from CUTS where "+
-    "CUT_NAME=\""+RDEscapeString(log_cut_name)+"\"";
+    "`START_POINT`,"+        // 00
+    "`END_POINT`,"+          // 01
+    "`SEGUE_START_POINT`,"+  // 02
+    "`SEGUE_END_POINT`,"+    // 03
+    "`TALK_START_POINT`,"+   // 04
+    "`TALK_END_POINT`,"+     // 05
+    "`FADEUP_POINT`,"+       // 06
+    "`FADEDOWN_POINT`,"+     // 07
+    "`HOOK_START_POINT`,"+   // 08
+    "`HOOK_END_POINT` "+     // 09
+    "from `CUTS` where "+
+    "`CUT_NAME`='"+RDEscapeString(log_cut_name)+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     log_start_point[RDLogLine::CartPointer]=q->value(0).toInt();

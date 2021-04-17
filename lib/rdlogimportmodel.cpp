@@ -172,9 +172,9 @@ void RDLogImportModel::updateModel()
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
     "where "+
-    "IMPORTER_LINES.STATION_NAME=\""+RDEscapeString(d_station_name)+"\"&&"+
-    QString().sprintf("PROCESS_ID=%u ",d_process_id)+
-    "order by IMPORTER_LINES.LINE_ID ";
+    "`IMPORTER_LINES`.`STATION_NAME`='"+RDEscapeString(d_station_name)+"'&&"+
+    QString().sprintf("`PROCESS_ID`=%u ",d_process_id)+
+    "order by `IMPORTER_LINES`.`LINE_ID` ";
   beginResetModel();
   d_texts.clear();
   q=new RDSqlQuery(sql);
@@ -262,18 +262,18 @@ void RDLogImportModel::updateRow(int row,RDSqlQuery *q)
 QString RDLogImportModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "ID,"+             // 00
-    "START_HOUR,"+     // 01
-    "START_SECS,"+     // 02
-    "EXT_CART_NAME,"+  // 03
-    "LENGTH,"+         // 04
-    "EXT_DATA,"+       // 05
-    "EXT_EVENT_ID,"+   // 06
-    "EXT_ANNC_TYPE,"+  // 07
-    "TITLE,"+          // 08
-    "TYPE,"+           // 09
-    "FILE_LINE "+      // 10
-    "from IMPORTER_LINES ";
+    "`ID`,"+             // 00
+    "`START_HOUR`,"+     // 01
+    "`START_SECS`,"+     // 02
+    "`EXT_CART_NAME`,"+  // 03
+    "`LENGTH`,"+         // 04
+    "`EXT_DATA`,"+       // 05
+    "`EXT_EVENT_ID`,"+   // 06
+    "`EXT_ANNC_TYPE`,"+  // 07
+    "`TITLE`,"+          // 08
+    "`TYPE`,"+           // 09
+    "`FILE_LINE` "+      // 10
+    "from `IMPORTER_LINES` ";
 
     return sql;
 }

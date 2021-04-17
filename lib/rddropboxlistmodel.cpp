@@ -223,7 +223,7 @@ void RDDropboxListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("DROPBOXES.ID=%d",d_box_ids.at(row.row()));
+      QString().sprintf("`DROPBOXES`.`ID`=%d",d_box_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -252,8 +252,8 @@ void RDDropboxListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
-    "where DROPBOXES.STATION_NAME=\""+RDEscapeString(d_hostname)+"\" "+
-    "order by DROPBOXES.ID ";
+    "where `DROPBOXES`.`STATION_NAME`='"+RDEscapeString(d_hostname)+"' "+
+    "order by `DROPBOXES`.`ID` ";
   beginResetModel();
   d_box_ids.clear();
   d_group_colors.clear();
@@ -275,7 +275,7 @@ void RDDropboxListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("DROPBOXES.ID=%d",d_box_ids.at(line));
+      QString().sprintf("`DROPBOXES`.`ID`=%d",d_box_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -346,20 +346,20 @@ void RDDropboxListModel::updateRow(int row,RDSqlQuery *q)
 QString RDDropboxListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "DROPBOXES.ID,"+                   // 00
-    "DROPBOXES.GROUP_NAME,"+           // 01
-    "GROUPS.COLOR,"+                   // 02
-    "DROPBOXES.PATH,"+                 // 03
-    "DROPBOXES.NORMALIZATION_LEVEL,"+  // 04
-    "DROPBOXES.AUTOTRIM_LEVEL,"+       // 05
-    "DROPBOXES.TO_CART,"+              // 06
-    "DROPBOXES.FORCE_TO_MONO,"+        // 07
-    "DROPBOXES.USE_CARTCHUNK_ID,"+     // 08
-    "DROPBOXES.DELETE_CUTS,"+          // 09
-    "DROPBOXES.METADATA_PATTERN,"+     // 10
-    "DROPBOXES.SET_USER_DEFINED "+         // 11
-    "from DROPBOXES left join GROUPS "+
-    "on DROPBOXES.GROUP_NAME=GROUPS.NAME ";
+    "`DROPBOXES`.`ID`,"+                   // 00
+    "`DROPBOXES`.`GROUP_NAME`,"+           // 01
+    "`GROUPS`.`COLOR`,"+                   // 02
+    "`DROPBOXES`.`PATH`,"+                 // 03
+    "`DROPBOXES`.`NORMALIZATION_LEVEL`,"+  // 04
+    "`DROPBOXES`.`AUTOTRIM_LEVEL`,"+       // 05
+    "`DROPBOXES`.`TO_CART`,"+              // 06
+    "`DROPBOXES`.`FORCE_TO_MONO`,"+        // 07
+    "`DROPBOXES`.`USE_CARTCHUNK_ID`,"+     // 08
+    "`DROPBOXES`.`DELETE_CUTS`,"+          // 09
+    "`DROPBOXES`.`METADATA_PATTERN`,"+     // 10
+    "`DROPBOXES`.`SET_USER_DEFINED` "+         // 11
+    "from `DROPBOXES` left join `GROUPS` "+
+    "on `DROPBOXES`.`GROUP_NAME`=`GROUPS`.`NAME` ";
 
     return sql;
 }

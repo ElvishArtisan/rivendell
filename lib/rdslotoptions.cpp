@@ -2,7 +2,7 @@
 //
 // Container class for RDCartSlot options
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,7 +29,6 @@ RDSlotOptions::RDSlotOptions(const QString &stationname,unsigned slotno)
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
 
   set_stationname=stationname;
   set_slotno=slotno;
@@ -37,16 +36,15 @@ RDSlotOptions::RDSlotOptions(const QString &stationname,unsigned slotno)
   //
   // Ensure that the DB record exists
   //
-  sql=QString("select ID from CARTSLOTS where (STATION_NAME=\"")+
-    RDEscapeString(stationname)+"\")&&"+
-    QString().sprintf("(SLOT_NUMBER=%u)",slotno);
+  sql=QString("select `ID` from `CARTSLOTS` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(stationname)+"')&&"+
+    QString().sprintf("(`SLOT_NUMBER`=%u)",slotno);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
-    sql=QString("insert into CARTSLOTS set ")+
-      "STATION_NAME=\""+RDEscapeString(stationname)+"\","+
-      QString().sprintf("SLOT_NUMBER=%u",slotno);
-    q1=new RDSqlQuery(sql);
-    delete q1;
+    sql=QString("insert into `CARTSLOTS` set ")+
+      "`STATION_NAME`='"+RDEscapeString(stationname)+"',"+
+      QString().sprintf("`SLOT_NUMBER`=%u",slotno);
+    RDSqlQuery::apply(sql);
   }
   delete q;
 
@@ -138,12 +136,22 @@ bool RDSlotOptions::load()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("select CARD,INPUT_PORT,OUTPUT_PORT,")+
-    "MODE,DEFAULT_MODE,HOOK_MODE,DEFAULT_HOOK_MODE,"+
-    "STOP_ACTION,DEFAULT_STOP_ACTION,"+
-    "CART_NUMBER,DEFAULT_CART_NUMBER,SERVICE_NAME from CARTSLOTS "+
-    "where (STATION_NAME=\""+RDEscapeString(set_stationname)+"\")&&"+
-    QString().sprintf("(SLOT_NUMBER=%u)",set_slotno);
+  sql=QString("select ")+
+    "`CARD`,"+                 // 00
+    "`INPUT_PORT`,"+           // 01
+    "`OUTPUT_PORT`,"+          // 02
+    "`MODE`,"+                 // 03
+    "`DEFAULT_MODE`,"+         // 04
+    "`HOOK_MODE`,"+            // 05
+    "`DEFAULT_HOOK_MODE`,"+    // 06
+    "`STOP_ACTION`,"+          // 07
+    "`DEFAULT_STOP_ACTION`,"+  // 08
+    "`CART_NUMBER`,"+          // 09
+    "`DEFAULT_CART_NUMBER`,"+  // 10
+    "`SERVICE_NAME` "+         // 11
+    "from `CARTSLOTS` where "+
+    "(`STATION_NAME`='"+RDEscapeString(set_stationname)+"')&&"+
+    QString().sprintf("(`SLOT_NUMBER`=%u)",set_slotno);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=true;
@@ -229,16 +237,16 @@ bool RDSlotOptions::load()
 void RDSlotOptions::save() const
 {
   QString sql;
-  RDSqlQuery *q;
 
-  sql=QString("update CARTSLOTS set ")+
-    QString().sprintf("MODE=%d,HOOK_MODE=%d,STOP_ACTION=%d,CART_NUMBER=%d,",
-		      set_mode,set_hook_mode,set_stop_action,set_cart_number)+
-    "SERVICE_NAME=\""+RDEscapeString(set_service)+"\" "+
-    "where (STATION_NAME=\""+RDEscapeString(set_stationname)+"\")&&"+
-    QString().sprintf("(SLOT_NUMBER=%u)",set_slotno);
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `CARTSLOTS` set ")+
+    QString().sprintf("`MODE`=%d,",set_mode)+
+    QString().sprintf("`HOOK_MODE`=%d,",set_hook_mode)+
+    QString().sprintf("`STOP_ACTION`=%d,",set_stop_action)+
+    QString().sprintf("`CART_NUMBER`=%d,",set_cart_number)+
+    "`SERVICE_NAME`='"+RDEscapeString(set_service)+"' "+
+    "where (`STATION_NAME`='"+RDEscapeString(set_stationname)+"')&&"+
+    QString().sprintf("(`SLOT_NUMBER`=%u)",set_slotno);
+  RDSqlQuery::apply(sql);
 }
 
 

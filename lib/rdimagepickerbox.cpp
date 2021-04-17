@@ -2,7 +2,7 @@
 //
 // ComboBox for selecting images
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +21,10 @@
 #include "rdimagepickerbox.h"
 
 RDImagePickerBox::RDImagePickerBox(const QString &tbl_name,
-				   const QString &cat_id_col,
-				   const QString &img_id_col,QWidget *parent)
+				   const QString &cat_id_col,QWidget *parent)
   : QComboBox(parent)
 {
-  c_model=new RDImagePickerModel(tbl_name,cat_id_col,img_id_col,this);
+  c_model=new RDImagePickerModel(tbl_name,cat_id_col,this);
   setModel(c_model);
 
   setCurrentIndex(0);

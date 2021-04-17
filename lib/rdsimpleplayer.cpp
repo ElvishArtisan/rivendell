@@ -2,7 +2,7 @@
 //
 // A naively simple player for Rivendell Carts.
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -153,11 +153,11 @@ void RDSimplePlayer::play(int start_pos)
     }
 
     sql=QString("select ")+
-      "START_POINT,"+  // 00
-      "END_POINT,"+    // 01
-      "PLAY_GAIN "+    // 02
-      "from CUTS where "+
-      "CUT_NAME=\""+RDEscapeString(play_cut)+"\"";
+      "`START_POINT`,"+  // 00
+      "`END_POINT`,"+    // 01
+      "`PLAY_GAIN` "+    // 02
+      "from `CUTS` where "+
+      "`CUT_NAME`='"+RDEscapeString(play_cut)+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       play_cut_gain=q->value(2).toInt(); 

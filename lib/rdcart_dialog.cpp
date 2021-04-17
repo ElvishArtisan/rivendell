@@ -270,23 +270,23 @@ void RDCartDialog::editorData()
   RDSqlQuery *q;
 
   sql=QString("select ")+
-    "CUTS.CUT_NAME,"+      // 00
-    "CUTS.LENGTH,"+        // 01
-    "CART.GROUP_NAME,"+    // 02
-    "CART.TITLE,"+         // 03
-    "CART.ARTIST,"+        // 04
-    "CART.ALBUM,"+         // 05
-    "CART.YEAR,"+          // 06
-    "CART.LABEL,"+         // 07
-    "CART.CLIENT,"+        // 08
-    "CART.AGENCY,"+        // 09
-    "CART.COMPOSER,"+      // 10
-    "CART.PUBLISHER,"+     // 11
-    "CART.USER_DEFINED "+  // 12
-    "from CUTS left join CART "+
-    "on CUTS.CART_NUMBER=CART.NUMBER where "+
-    QString().sprintf("(CUTS.CART_NUMBER=%u)&&",cartnum)+
-    "(CUTS.LENGTH>0)";
+    "`CUTS`.`CUT_NAME`,"+      // 00
+    "`CUTS`.`LENGTH`,"+        // 01
+    "`CART`.`GROUP_NAME`,"+    // 02
+    "`CART`.`TITLE`,"+         // 03
+    "`CART`.`ARTIST`,"+        // 04
+    "`CART`.`ALBUM`,"+         // 05
+    "`CART`.`YEAR`,"+          // 06
+    "`CART`.`LABEL`,"+         // 07
+    "`CART`.`CLIENT`,"+        // 08
+    "`CART`.`AGENCY`,"+        // 09
+    "`CART`.`COMPOSER`,"+      // 10
+    "`CART`.`PUBLISHER`,"+     // 11
+    "`CART`.`USER_DEFINED` "+  // 12
+    "from `CUTS` left join `CART` "+
+    "on `CUTS`.`CART_NUMBER`=`CART`.`NUMBER` where "+
+    QString().sprintf("(`CUTS`.`CART_NUMBER`=%u)&&",cartnum)+
+    "(`CUTS`.`LENGTH`>0)";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;

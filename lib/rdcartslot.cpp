@@ -2,7 +2,7 @@
 //
 // The cart slot widget.
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,9 +19,6 @@
 //
 
 #include <syslog.h>
-
-#include <qpainter.h>
-#include <qbitmap.h>
 
 #include "rdconfig.h"
 #include "rdconf.h"
@@ -532,7 +529,6 @@ void RDCartSlot::stateChangedData(int id,RDPlayDeck::State state)
 	unload();
 	slot_box->setService(slot_svcname);
 	slot_box->setStatusLine(tr("Waiting for break..."));
-	//	LogPlayout(RDAirPlayConf::TrafficFinish);
       }
       break;
 
@@ -613,13 +609,16 @@ unsigned RDCartSlot::SelectCart(const QString &svcname,unsigned msecs)
   unsigned cartnum=0;
   int diff=1000000;
 
-  sql=QString("select AUTOFILLS.CART_NUMBER,CART.FORCED_LENGTH from ")+
-    "AUTOFILLS left join CART on AUTOFILLS.CART_NUMBER=CART.NUMBER"+
+  sql=QString("select ")+
+    "`AUTOFILLS`.`CART_NUMBER`,"+  // 00
+    "`CART`.`FORCED_LENGTH` "+     // 01
+    "from "+
+    "`AUTOFILLS` left join `CART` on `AUTOFILLS`.`CART_NUMBER`=`CART`.`NUMBER`"+
     QString().
-    sprintf(" where (CART.FORCED_LENGTH>%u)&&(CART.FORCED_LENGTH<%u)&&",
+    sprintf(" where (`CART`.`FORCED_LENGTH`>%u)&&(`CART`.`FORCED_LENGTH`<%u)&&",
 	    (unsigned)((double)msecs*RD_TIMESCALE_MIN),
 	    (unsigned)((double)msecs*RD_TIMESCALE_MAX))+
-    "(SERVICE=\""+RDEscapeString(svcname)+"\")";
+    "(`SERVICE`='"+RDEscapeString(svcname)+"')";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     int cur_diff = msecs-q->value(1).toInt();
@@ -660,7 +659,6 @@ void RDCartSlot::LogPlayout(RDPlayDeck::State state)
     action=RDAirPlayConf::TrafficStop;
   }
   QString sql;
-  RDSqlQuery *q;
   QDateTime datetime=QDateTime(QDate::currentDate(),QTime::currentTime());
   int length=
     slot_logline->startTime(RDLogLine::Actual).msecsTo(datetime.time());
@@ -673,45 +671,44 @@ void RDCartSlot::LogPlayout(RDPlayDeck::State state)
           slot_logline->startTime(RDLogLine::Actual));
     QString svctablename=slot_svcname;
     svctablename.replace(" ","_");
-    sql=QString("insert into ELR_LINES set ")+
-      "SERVICE_NAME=\""+RDEscapeString(slot_svcname)+"\","+
-      QString().sprintf("LENGTH=%d,",length)+
-      QString().sprintf("LOG_ID=%d,",slot_number+1)+
-      QString().sprintf("CART_NUMBER=%u,",slot_logline->cartNumber())+
-      QString().sprintf("EVENT_TYPE=%d,",action)+
-      QString().sprintf("EVENT_SOURCE=%d,",slot_logline->source())+
-      QString().sprintf("EXT_LENGTH=%d,",slot_logline->extLength())+
-      QString().sprintf("PLAY_SOURCE=%d,",RDLogLine::CartSlot)+
-      QString().sprintf("CUT_NUMBER=%d,",slot_logline->cutNumber())+
-      QString().sprintf("USAGE_CODE=%d,",slot_logline->usageCode())+
-      QString().sprintf("START_SOURCE=%d,",slot_logline->startSource())+
-      "STATION_NAME=\""+RDEscapeString(slot_station->name())+"\","+
-      "EVENT_DATETIME="+RDCheckDateTime(eventDateTime,"yyyy-MM-dd hh:mm:ss")+
+    sql=QString("insert into `ELR_LINES` set ")+
+      "`SERVICE_NAME`='"+RDEscapeString(slot_svcname)+"',"+
+      QString().sprintf("`LENGTH`=%d,",length)+
+      QString().sprintf("`LOG_ID`=%d,",slot_number+1)+
+      QString().sprintf("`CART_NUMBER`=%u,",slot_logline->cartNumber())+
+      QString().sprintf("`EVENT_TYPE`=%d,",action)+
+      QString().sprintf("`EVENT_SOURCE`=%d,",slot_logline->source())+
+      QString().sprintf("`EXT_LENGTH`=%d,",slot_logline->extLength())+
+      QString().sprintf("`PLAY_SOURCE`=%d,",RDLogLine::CartSlot)+
+      QString().sprintf("`CUT_NUMBER`=%d,",slot_logline->cutNumber())+
+      QString().sprintf("`USAGE_CODE`=%d,",slot_logline->usageCode())+
+      QString().sprintf("`START_SOURCE`=%d,",slot_logline->startSource())+
+      "`STATION_NAME`='"+RDEscapeString(slot_station->name())+"',"+
+      "`EVENT_DATETIME`="+RDCheckDateTime(eventDateTime,"yyyy-MM-dd hh:mm:ss")+
       ","+
-      "EXT_START_TIME="+RDCheckDateTime(
+      "`EXT_START_TIME`="+RDCheckDateTime(
                  slot_logline->extStartTime(),"hh:mm:ss")+","+
-      "EXT_DATA=\""+RDEscapeString(slot_logline->extData())+"\","+
-      "EXT_EVENT_ID=\""+RDEscapeString(slot_logline->extEventId())+"\","+
-      "EXT_ANNC_TYPE=\""+RDEscapeString(slot_logline->extAnncType())+"\","+
-      "EXT_CART_NAME=\""+RDEscapeString(slot_logline->extCartName())+"\","+
-      "TITLE=\""+RDEscapeString(slot_logline->title())+"\","+
-      "ARTIST=\""+RDEscapeString(slot_logline->artist())+"\","+
-      "SCHEDULED_TIME="+
+      "`EXT_DATA`='"+RDEscapeString(slot_logline->extData())+"',"+
+      "`EXT_EVENT_ID`='"+RDEscapeString(slot_logline->extEventId())+"',"+
+      "`EXT_ANNC_TYPE`='"+RDEscapeString(slot_logline->extAnncType())+"',"+
+      "`EXT_CART_NAME`='"+RDEscapeString(slot_logline->extCartName())+"',"+
+      "`TITLE`='"+RDEscapeString(slot_logline->title())+"',"+
+      "`ARTIST`='"+RDEscapeString(slot_logline->artist())+"',"+
+      "`SCHEDULED_TIME`="+
       RDCheckDateTime(slot_logline->startTime(RDLogLine::Logged),"hh:mm:ss")+","+
-      "ISRC=\""+RDEscapeString(slot_logline->isrc())+"\","+
-      "PUBLISHER=\""+RDEscapeString(slot_logline->publisher())+"\","+
-      "COMPOSER=\""+RDEscapeString(slot_logline->composer())+"\","+
-      "ONAIR_FLAG=\""+RDYesNo(slot_ripc->onairFlag())+"\","+
-      "ALBUM=\""+RDEscapeString(slot_logline->album())+"\","+
-      "LABEL=\""+RDEscapeString(slot_logline->label())+"\","+
-      "CONDUCTOR=\""+RDEscapeString(slot_logline->conductor())+"\","+
-      "USER_DEFINED=\""+RDEscapeString(slot_logline->userDefined())+"\","+
-      "SONG_ID=\""+RDEscapeString(slot_logline->songId())+"\","+
-      "DESCRIPTION=\""+RDEscapeString(slot_logline->description())+"\","+
-      "OUTCUE=\""+RDEscapeString(slot_logline->outcue())+"\","+
-      "ISCI=\""+RDEscapeString(slot_logline->isci())+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+      "`ISRC`='"+RDEscapeString(slot_logline->isrc())+"',"+
+      "`PUBLISHER`='"+RDEscapeString(slot_logline->publisher())+"',"+
+      "`COMPOSER`='"+RDEscapeString(slot_logline->composer())+"',"+
+      "`ONAIR_FLAG`='"+RDYesNo(slot_ripc->onairFlag())+"',"+
+      "`ALBUM`='"+RDEscapeString(slot_logline->album())+"',"+
+      "`LABEL`='"+RDEscapeString(slot_logline->label())+"',"+
+      "`CONDUCTOR`='"+RDEscapeString(slot_logline->conductor())+"',"+
+      "`USER_DEFINED`='"+RDEscapeString(slot_logline->userDefined())+"',"+
+      "`SONG_ID`='"+RDEscapeString(slot_logline->songId())+"',"+
+      "`DESCRIPTION`='"+RDEscapeString(slot_logline->description())+"',"+
+      "`OUTCUE`='"+RDEscapeString(slot_logline->outcue())+"',"+
+      "`ISCI`='"+RDEscapeString(slot_logline->isci())+"'";
+    RDSqlQuery::apply(sql);
   }
 }
 

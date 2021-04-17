@@ -210,9 +210,8 @@ void RDServiceListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      "where SERVICES.NAME=\""+
-      RDEscapeString(d_texts.at(row.row()).at(0).toString())+
-      "\"";
+      "where `SERVICES`.`NAME`='"+
+      RDEscapeString(d_texts.at(row.row()).at(0).toString())+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -265,7 +264,7 @@ void RDServiceListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      "where NAME=\""+RDEscapeString(d_texts.at(line).at(line).toString())+"\"";
+      "where `NAME`='"+RDEscapeString(d_texts.at(line).at(line).toString())+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -313,16 +312,16 @@ void RDServiceListModel::updateRow(int row,RDSqlQuery *q)
 QString RDServiceListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "SERVICES.NAME,"+                    // 00
-    "SERVICES.DESCRIPTION,"+             // 01
-    "SERVICES.PROGRAM_CODE,"+            // 02
-    "SERVICES.TRACK_GROUP,"+             // 03
-    "SERVICES.DEFAULT_LOG_SHELFLIFE,"+   // 04
-    "SERVICES.ELR_SHELFLIFE,"+           // 05
-    "SERVICES.AUTO_REFRESH,"+            // 06
-    "SERVICES.CHAIN_LOG,"+               // 07
-    "SERVICES.INCLUDE_IMPORT_MARKERS "+  // 08
-    "from SERVICES ";
+    "`SERVICES`.`NAME`,"+                    // 00
+    "`SERVICES`.`DESCRIPTION`,"+             // 01
+    "`SERVICES`.`PROGRAM_CODE`,"+            // 02
+    "`SERVICES`.`TRACK_GROUP`,"+             // 03
+    "`SERVICES`.`DEFAULT_LOG_SHELFLIFE`,"+   // 04
+    "`SERVICES`.`ELR_SHELFLIFE`,"+           // 05
+    "`SERVICES`.`AUTO_REFRESH`,"+            // 06
+    "`SERVICES`.`CHAIN_LOG`,"+               // 07
+    "`SERVICES`.`INCLUDE_IMPORT_MARKERS` "+  // 08
+    "from `SERVICES` ";
 
     return sql;
 }

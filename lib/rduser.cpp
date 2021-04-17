@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell User.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,11 +23,11 @@
 
 #include <openssl/sha.h>
 
-#include <rdconf.h>
-#include <rdpam.h>
-#include <rduser.h>
-#include <rddb.h>
-#include <rdescape_string.h>
+#include "rdconf.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdpam.h"
+#include "rduser.h"
 
 //
 // Global Classes
@@ -63,10 +63,10 @@ RDUser::Type RDUser::type() const
   RDUser::Type type=RDUser::TypeAll;
 
   sql=QString("select ")+
-    "ADMIN_CONFIG_PRIV,"+  // 00
-    "ADMIN_RSS_PRIV "+     // 01
-    "from USERS where "+
-    "LOGIN_NAME=\""+RDEscapeString(user_name)+"\"";
+    "`ADMIN_CONFIG_PRIV`,"+  // 00
+    "`ADMIN_RSS_PRIV` "+     // 01
+    "from `USERS` where "+
+    "`LOGIN_NAME`='"+RDEscapeString(user_name)+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(0).toString()=="Y") {
@@ -99,11 +99,11 @@ bool RDUser::authenticated(bool webuser) const
 
   if(localAuthentication()) {
     sql=QString("select ")+
-      "LOGIN_NAME,"+
-      "ENABLE_WEB "+
-      "from USERS where "+
-      "LOGIN_NAME=\""+RDEscapeString(user_name)+"\" && "+
-      "PASSWORD=\""+RDEscapeString(user_password)+"\"";
+      "`LOGIN_NAME`,"+
+      "`ENABLE_WEB` "+
+      "from `USERS` where "+
+      "`LOGIN_NAME`='"+RDEscapeString(user_name)+"' && "+
+      "`PASSWORD`='"+RDEscapeString(user_password)+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       bool ret=RDBool(q->value(1).toString())||
@@ -213,10 +213,10 @@ QString RDUser::emailContact() const
   QString ret;
 
   QString sql=QString("select ")+
-    "EMAIL_ADDRESS,"+  // 00
-    "FULL_NAME "+      // 01
-    "from USERS where "+
-    "LOGIN_NAME=\""+RDEscapeString(user_name)+"\"";
+    "`EMAIL_ADDRESS`,"+  // 00
+    "`FULL_NAME` "+      // 01
+    "from `USERS` where "+
+    "`LOGIN_NAME`='"+RDEscapeString(user_name)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=RDUser::emailContact(q->value(0).toString(),q->value(1).toString());
@@ -544,9 +544,9 @@ bool RDUser::groupAuthorized(const QString &group_name)
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "(USER_NAME=\""+RDEscapeString(user_name)+"\")&&"+
-    "(GROUP_NAME=\""+RDEscapeString(group_name)+"\")";
+  sql=QString("select `GROUP_NAME` from `USER_PERMS` where ")+
+    "(`USER_NAME`='"+RDEscapeString(user_name)+"')&&"+
+    "(`GROUP_NAME`='"+RDEscapeString(group_name)+"')";
   q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;
@@ -560,8 +560,8 @@ QStringList RDUser::groups() const
   RDSqlQuery *q;
   QStringList ret;
 
-  sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(user_name)+"\" order by GROUP_NAME";
+  sql=QString("select `GROUP_NAME` from `USER_PERMS` where ")+
+    "`USER_NAME`='"+RDEscapeString(user_name)+"' order by GROUP_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     ret.push_back(q->value(0).toString());
@@ -578,11 +578,11 @@ bool RDUser::cartAuthorized(unsigned cartnum) const
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString("select CART.NUMBER from CART ")+
-    "left join USER_PERMS "+
-    "on CART.GROUP_NAME=USER_PERMS.GROUP_NAME where "+
-    "(USER_PERMS.USER_NAME=\""+RDEscapeString(user_name)+"\")&&"+
-    QString().sprintf("(CART.NUMBER=%u)",cartnum);
+  sql=QString("select `CART`.`NUMBER` from `CART` ")+
+    "left join `USER_PERMS` "+
+    "on `CART`.`GROUP_NAME`=`USER_PERMS`.`GROUP_NAME` where "+
+    "(`USER_PERMS`.`USER_NAME`=\""+RDEscapeString(user_name)+"\")&&"+
+    QString().sprintf("(`CART`.`NUMBER`=%u)",cartnum);
   q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;
@@ -596,9 +596,9 @@ bool RDUser::feedAuthorized(const QString &keyname)
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString("select ID from FEED_PERMS where ")+
-    "(USER_NAME=\""+RDEscapeString(user_name)+"\")&&"+
-    "(KEY_NAME=\""+RDEscapeString(keyname)+"\")";
+  sql=QString("select `ID` from `FEED_PERMS` where ")+
+    "(`USER_NAME`='"+RDEscapeString(user_name)+"')&&"+
+    "(`KEY_NAME`='"+RDEscapeString(keyname)+"')";
   q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;
@@ -633,14 +633,14 @@ QStringList RDUser::services() const
   QStringList services_list;
 
   if (adminConfig()) {
-    sql=QString().sprintf("SELECT NAME FROM SERVICES" );
+    sql=QString().sprintf("select `NAME` from `SERVICES`" );
   } 
   else {
     sql=QString("select distinct ")+
-      "AUDIO_PERMS.SERVICE_NAME "+
-      "from USER_PERMS left join AUDIO_PERMS "+
-      "on USER_PERMS.GROUP_NAME=AUDIO_PERMS.GROUP_NAME where "+
-      "USER_PERMS.USER_NAME=\""+RDEscapeString(user_name)+"\"";
+      "`AUDIO_PERMS`.`SERVICE_NAME` "+
+      "from `USER_PERMS` left join `AUDIO_PERMS` "+
+      "on `USER_PERMS`.`GROUP_NAME`=`AUDIO_PERMS`.`GROUP_NAME` where "+
+      "`USER_PERMS`.`USER_NAME`='"+RDEscapeString(user_name)+"'";
   }
   
   q=new RDSqlQuery(sql);
@@ -687,12 +687,12 @@ bool RDUser::createTicket(QString *ticket,QDateTime *expire_dt,
       *ticket+=QString().sprintf("%02x",0xFF&rawstr[i]);
     }
     *expire_dt=start_dt.addSecs(webapiAuthTimeout());
-    sql=QString("insert into WEBAPI_AUTHS set ")+
-      "TICKET=\""+RDEscapeString(*ticket)+"\","+
-      "LOGIN_NAME=\""+RDEscapeString(name())+"\","+
-      "IPV4_ADDRESS=\""+client_addr.toString()+"\","+
-      "EXPIRATION_DATETIME=\""+
-      expire_dt->toString("yyyy-MM-dd hh:mm:ss")+"\"";
+    sql=QString("insert into `WEBAPI_AUTHS` set ")+
+      "`TICKET`='"+RDEscapeString(*ticket)+"',"+
+      "`LOGIN_NAME`='"+RDEscapeString(name())+"',"+
+      "`IPV4_ADDRESS`='"+client_addr.toString()+"',"+
+      "`EXPIRATION_DATETIME`='"+
+      expire_dt->toString("yyyy-MM-dd hh:mm:ss")+"'";
     RDSqlQuery::apply(sql);
 
     return true;
@@ -710,12 +710,12 @@ bool RDUser::ticketIsValid(const QString &ticket,
   RDSqlQuery *q=NULL;
 
   sql=QString("select ")+
-    "LOGIN_NAME,"+           // 00
-    "EXPIRATION_DATETIME "+  // 01
-    "from WEBAPI_AUTHS where "+
-    "(TICKET=\""+RDEscapeString(ticket)+"\")&&"+
-    "(IPV4_ADDRESS=\""+client_addr.toString()+"\")&&"+
-    "(EXPIRATION_DATETIME>now())";
+    "`LOGIN_NAME`,"+           // 00
+    "`EXPIRATION_DATETIME` "+  // 01
+    "from `WEBAPI_AUTHS` where "+
+    "(`TICKET`='"+RDEscapeString(ticket)+"')&&"+
+    "(`IPV4_ADDRESS`='"+client_addr.toString()+"')&&"+
+    "(`EXPIRATION_DATETIME`>now())";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(username!=NULL) {
@@ -801,27 +801,23 @@ QString RDUser::typeText(RDUser::Type type)
 
 void RDUser::SetRow(const QString &param,const QString &value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update USERS set ")+
-    param+"=\""+RDEscapeString(value)+"\" where "+
-    "LOGIN_NAME=\""+RDEscapeString(user_name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `USERS` set `")+
+    param+"`='"+RDEscapeString(value)+"' where "+
+    "`LOGIN_NAME`='"+RDEscapeString(user_name)+"'";
+  RDSqlQuery::apply(sql);
 }
 
 
 void RDUser::SetRow(const QString &param,int value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update USERS set ")+
-    param+QString().sprintf("=%d where ",value)+
-    "LOGIN_NAME=\""+user_name+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `USERS` set `")+
+    param+QString().sprintf("`=%d where ",value)+
+    "`LOGIN_NAME`='"+user_name+"'";
+  RDSqlQuery::apply(sql);
 }
 
 

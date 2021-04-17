@@ -2,7 +2,7 @@
 //
 // Abstract an RDHotKeys Configuration.
 //
-//   (C) Copyright 2002-2004,2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rddb.h>
-#include <rdconf.h>
-#include <rdhotkeys.h>
-#include <rdescape_string.h>
+#include "rdconf.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdhotkeys.h"
 
 RDHotkeys::RDHotkeys(const QString &station,const QString &module)
 {
@@ -31,9 +31,9 @@ RDHotkeys::RDHotkeys(const QString &station,const QString &module)
   station_hotkeys=station;
   module_name=module;
 
-  sql=QString("select STATION_NAME from RDHOTKEYS where ")+
-    "STATION_NAME=\""+RDEscapeString(station_hotkeys)+"\" && "+
-    "MODULE_NAME=\""+RDEscapeString(module_name)+"\"";
+  sql=QString("select `STATION_NAME` from `RDHOTKEYS` where ")+
+    "`STATION_NAME`='"+RDEscapeString(station_hotkeys)+"' && "+
+    "`MODULE_NAME`='"+RDEscapeString(module_name)+"'";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     InsertHotkeys();
@@ -54,10 +54,10 @@ QString RDHotkeys::GetRowLabel(const QString &station,const QString &module,cons
   QString sql; 
   QString hotkey_label;
 
-  sql=QString().sprintf("select KEY_LABEL from RDHOTKEYS where ")+
-    "STATION_NAME=\""+RDEscapeString(station)+"\" && "+
-    "MODULE_NAME=\""+RDEscapeString(module)+"\" && "+
-    "KEY_VALUE=\""+RDEscapeString(value)+"\"";
+  sql=QString().sprintf("select `KEY_LABEL` from `RDHOTKEYS` where ")+
+    "`STATION_NAME`='"+RDEscapeString(station)+"' && "+
+    "`MODULE_NAME`='"+RDEscapeString(module)+"' && "+
+    "`KEY_VALUE`='"+RDEscapeString(value)+"'";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     hotkey_label=QString("");
@@ -106,11 +106,11 @@ void RDHotkeys::InsertHotkeys() const
   labels.push_back(QObject::tr("Aux Log 2"));
 
   for(int i=0;i<labels.size();i++) {
-    sql=QString("insert into RDHOTKEYS set ")+
-      "STATION_NAME=\""+RDEscapeString(station_hotkeys)+"\","+
-      "MODULE_NAME=\"airplay\","+
-      QString().sprintf("KEY_ID=%u,",i+1)+
-      "KEY_LABEL=\""+RDEscapeString(labels[i])+"\"";
+    sql=QString("insert into `RDHOTKEYS` set ")+
+      "`STATION_NAME`='"+RDEscapeString(station_hotkeys)+"',"+
+      "`MODULE_NAME`='airplay',"+
+      QString().sprintf("`KEY_ID`=%u,",i+1)+
+      "`KEY_LABEL`='"+RDEscapeString(labels[i])+"'";
     RDSqlQuery::apply(sql);
   }
 }

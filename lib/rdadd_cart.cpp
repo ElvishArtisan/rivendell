@@ -56,8 +56,8 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   cart_group_label->setGeometry(10,11,130,19);
   cart_group_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cart_group_label->setFont(labelFont());
-  sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(username)+"\" order by GROUP_NAME";
+  sql=QString("select `GROUP_NAME` from `USER_PERMS` where ")+
+    "`USER_NAME`='"+RDEscapeString(username)+"' order by `GROUP_NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     cart_group_box->insertItem(cart_group_box->count(),q->value(0).toString());
@@ -99,8 +99,8 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
     cart_type_box->insertItem(cart_type_box->count(),tr("Macro"));
   }
   if(*cart_type==RDCart::All) {
-    sql=QString("select DEFAULT_CART_TYPE from GROUPS where ")+
-      "NAME=\""+RDEscapeString(*cart_group)+"\"";
+    sql=QString("select `DEFAULT_CART_TYPE` from `GROUPS` where ")+
+      "`NAME`='"+RDEscapeString(*cart_group)+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       cart_type_box->setCurrentIndex(q->value(0).toUInt()-1);
@@ -196,8 +196,8 @@ void RDAddCart::okData()
   }
   RDSystem *system=new RDSystem();
   if(!system->allowDuplicateCartTitles()) {
-    sql=QString("select NUMBER from CART where ")+
-      "TITLE=\""+RDEscapeString(cart_title_edit->text())+"\"";
+    sql=QString("select `NUMBER` from `CART` where ")+
+      "`TITLE`='"+RDEscapeString(cart_title_edit->text())+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       QMessageBox::warning(this,tr("Duplicate Title"),
@@ -216,7 +216,7 @@ void RDAddCart::okData()
       return;
     }
   }
-  sql=QString().sprintf("select NUMBER from CART where NUMBER=%u",num);
+  sql=QString().sprintf("select `NUMBER` from `CART` where `NUMBER`=%u",num);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::information(this,tr("Cart Exists"),

@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,13 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <ctype.h>
-#include <syslog.h>
-
-#include <qobject.h>
-#include <qapplication.h>
-#include <qdatetime.h>
 
 #include "rdapplication.h"
 #include "rddatedecode.h"
@@ -173,8 +166,11 @@ void RDRipc::sendRml(RDMacro *macro)
     port=macro->port();
   }
   QString rmlline=macro->toString();
-  QString sql=QString("select NAME,VARVALUE from HOSTVARS where ")+
-    "STATION_NAME=\""+RDEscapeString(ripc_station->name())+"\"";
+  QString sql=QString("select ")+
+    "`NAME`,"+      // 00
+    "`VARVALUE` "+  // 01
+    "from `HOSTVARS` where "+
+    "`STATION_NAME`='"+RDEscapeString(ripc_station->name())+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     rmlline.replace(q->value(0).toString(),q->value(1).toString());

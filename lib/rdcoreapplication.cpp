@@ -21,15 +21,13 @@
 #include <stdlib.h>
 #include <syslog.h>
 
-#include <qapplication.h>
-#include <qobject.h>
-#include <qprocess.h>
-
-#include "rdescape_string.h"
+#include <QApplication>
+#include <QProcess>
 
 #include "dbversion.h"
 #include "rdapplication.h"
 #include "rdcmd_switch.h"
+#include "rdescape_string.h"
 
 RDCoreApplication *rdc=NULL;
 QStringList __rdapplication_temp_files;
@@ -470,11 +468,11 @@ void RDCoreApplication::userChangedData()
   QStringList f0=app_ticket.split(":");
   if(f0.size()==2) {
     sql=QString("select ")+
-      "LOGIN_NAME "+  // 00
-      "from WEBAPI_AUTHS where "+
-      "TICKET=\""+RDEscapeString(f0.at(0))+"\" && "+
-      "IPV4_ADDRESS=\""+RDEscapeString(f0.at(1))+"\" && "+
-      "EXPIRATION_DATETIME>now()";
+      "`LOGIN_NAME` "+  // 00
+      "from `WEBAPI_AUTHS` where "+
+      "`TICKET`='"+RDEscapeString(f0.at(0))+"' && "+
+      "`IPV4_ADDRESS`='"+RDEscapeString(f0.at(1))+"' && "+
+      "`EXPIRATION_DATETIME`>now()";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       app_user->setName(q->value(0).toString());

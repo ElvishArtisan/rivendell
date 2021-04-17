@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Clock.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rddb.h>
-#include <rdclock.h>
-#include <rdevent_line.h>
-#include <rdescape_string.h>
+#include "rddb.h"
+#include "rdclock.h"
+#include "rdevent_line.h"
+#include "rdescape_string.h"
 
 //
 // Global Classes
@@ -133,12 +133,12 @@ int RDClock::size() const
 bool RDClock::load()
 {
   QString sql=QString("select ")+
-    "SHORT_NAME,"+  // 00
-    "COLOR,"+       // 01
-    "ARTISTSEP,"+   // 02
-    "REMARKS "+     // 03
-    "from CLOCKS where "+
-    "NAME=\""+RDEscapeString(clock_name)+"\"";
+    "`SHORT_NAME`,"+  // 00
+    "`COLOR`,"+       // 01
+    "`ARTISTSEP`,"+   // 02
+    "`REMARKS` "+     // 03
+    "from `CLOCKS` where "+
+    "`NAME`='"+RDEscapeString(clock_name)+"i";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -156,12 +156,12 @@ bool RDClock::load()
   delete q;
 
   sql=QString("select ")+
-    "EVENT_NAME,"+  // 00
-    "START_TIME,"+  // 01
-    "LENGTH "+      // 02
-    "from CLOCK_LINES where "+
-    "CLOCK_NAME=\""+RDEscapeString(clock_name)+"\" "+
-    "order by START_TIME";
+    "`EVENT_NAME`,"+  // 00
+    "`START_TIME`,"+  // 01
+    "`LENGTH` "+      // 02
+    "from `CLOCK_LINES` where "+
+    "`CLOCK_NAME`='"+RDEscapeString(clock_name)+"' "+
+    "order by `START_TIME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     clock_events.push_back(new RDEventLine(clock_station));
@@ -180,48 +180,44 @@ bool RDClock::save()
   if(clock_short_name.isEmpty()) {
     clock_short_name=clock_name.left(3);
   }
-  QString sql=QString("select NAME from CLOCKS where ")+
-    "NAME=\""+RDEscapeString(clock_name)+"\"";
+  QString sql=QString("select `NAME` from `CLOCKS` where ")+
+    "`NAME`='"+RDEscapeString(clock_name)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     delete q;
-    sql=QString("update CLOCKS set ")+
-      "SHORT_NAME=\""+RDEscapeString(clock_short_name)+"\","+
-      "COLOR=\""+RDEscapeString(clock_color.name())+"\","+
-      QString().sprintf("ARTISTSEP=%d,",artistsep)+
-      "REMARKS=\""+RDEscapeString(clock_remarks)+"\" "+
-      "where NAME=\""+RDEscapeString(clock_name)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
-    sql=QString("delete from CLOCK_LINES where ")+
-      "CLOCK_NAME=\""+RDEscapeString(clock_name)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    sql=QString("update `CLOCKS` set ")+
+      "`SHORT_NAME`='"+RDEscapeString(clock_short_name)+"',"+
+      "`COLOR`='"+RDEscapeString(clock_color.name())+"',"+
+      QString().sprintf("`ARTISTSEP`=%d,",artistsep)+
+      "`REMARKS`='"+RDEscapeString(clock_remarks)+"' "+
+      "where `NAME`='"+RDEscapeString(clock_name)+"'";
+    RDSqlQuery::apply(sql);
+
+    sql=QString("delete from `CLOCK_LINES` where ")+
+      "`CLOCK_NAME`='"+RDEscapeString(clock_name)+"'";
+    RDSqlQuery::apply(sql);
   }
   else {
     delete q;
-    sql=QString("insert into CLOCKS set ")+
-      "NAME=\""+RDEscapeString(clock_name)+"\","+
-      "SHORT_NAME=\""+RDEscapeString(clock_short_name)+"\","+
-      "COLOR=\""+RDEscapeString(clock_color.name())+"\","+
-      QString().sprintf("ARTISTSEP=%d,",artistsep)+
-      "REMARKS=\""+RDEscapeString(clock_remarks)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    sql=QString("insert into `CLOCKS` set ")+
+      "`NAME`='"+RDEscapeString(clock_name)+"',"+
+      "`SHORT_NAME`='"+RDEscapeString(clock_short_name)+"',"+
+      "`COLOR`='"+RDEscapeString(clock_color.name())+"',"+
+      QString().sprintf("`ARTISTSEP`=%d,",artistsep)+
+      "`REMARKS`='"+RDEscapeString(clock_remarks)+"'";
+    RDSqlQuery::apply(sql);
   }
-  sql=QString("delete from CLOCK_LINES where ")+
-    "CLOCK_NAME=\""+RDEscapeString(clock_name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("delete from `CLOCK_LINES` where ")+
+    "`CLOCK_NAME`='"+RDEscapeString(clock_name)+"'";
+  RDSqlQuery::apply(sql);
   for(int i=0;i<clock_events.size();i++) {
-    sql=QString("insert into CLOCK_LINES set ")+
-      "CLOCK_NAME=\""+RDEscapeString(clock_name)+"\","+
-      "EVENT_NAME=\""+RDEscapeString(clock_events.at(i)->name())+"\","+
-      QString().sprintf("START_TIME=%d,",
+    sql=QString("insert into `CLOCK_LINES` set ")+
+      "`CLOCK_NAME`='"+RDEscapeString(clock_name)+"',"+
+      "`EVENT_NAME`='"+RDEscapeString(clock_events.at(i)->name())+"',"+
+      QString().sprintf("`START_TIME`=%d,",
 			QTime().msecsTo(clock_events.at(i)->startTime()))+
-      QString().sprintf("LENGTH=%d",clock_events.at(i)->length());
-    q=new RDSqlQuery(sql);
-    delete q;
+      QString().sprintf("`LENGTH`=%d",clock_events.at(i)->length());
+    RDSqlQuery::apply(sql);
   }
   return true;
 }
@@ -237,42 +233,6 @@ int RDClock::insert(const QString &event_name,const QTime &time,int len)
   execInsert(line,event_name,time,len);
 
   return line;
-  /*
-  int line=-1;
-
-  QString sql=QString("select NAME from EVENTS where ")+
-    "NAME=\""+RDEscapeString(event_name)+"\"";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(!q->first()) {
-    delete q;
-    return -1;
-  }
-  delete q;
-  if((clock_events.size()==0)||(time<clock_events.at(0)->startTime())) {
-    line=0;
-    clock_events.insert(0,new RDEventLine(clock_station));
-  }
-  else {
-    for(int i=0;i<clock_events.size()-1;i++) {
-      if((time>clock_events.at(i)->startTime())&&
-	 (time<clock_events.at(i+1)->startTime())) {
-	line=i+1;
-	clock_events.insert(line,new RDEventLine(clock_station));
-	break;
-      }
-    }
-    if(line<0) {
-      line=clock_events.size();
-      clock_events.push_back(new RDEventLine(clock_station));
-    }
-  }
-  clock_events.at(line)->setName(event_name);
-  clock_events.at(line)->setStartTime(time);
-  clock_events.at(line)->setLength(len);
-  clock_events.at(line)->load();
-
-  return line;
-  */
 }
 
 
@@ -313,12 +273,12 @@ bool RDClock::generateLog(int hour,const QString &logname,
   RDEventLine eventline(clock_station);
 
   sql=QString("select ")+
-    "EVENT_NAME,"+  // 00
-    "START_TIME,"+  // 01
-    "LENGTH "+      // 02
-    "from CLOCK_LINES where "+
-    "CLOCK_NAME=\""+RDEscapeString(clock_name)+"\" "+
-    "order by START_TIME";
+    "`EVENT_NAME`,"+  // 00
+    "`START_TIME`,"+  // 01
+    "`LENGTH` "+      // 02
+    "from `CLOCK_LINES` where "+
+    "`CLOCK_NAME`='"+RDEscapeString(clock_name)+"' "+
+    "order by `START_TIME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     eventline.setName(q->value(0).toString());
@@ -338,8 +298,8 @@ int RDClock::preInsert(const QString &event_name,const QTime &time) const
 {
   int line=-1;
 
-  QString sql=QString("select NAME from EVENTS where ")+
-    "NAME=\""+RDEscapeString(event_name)+"\"";
+  QString sql=QString("select `NAME` from `EVENTS` where ")+
+    "`NAME`='"+RDEscapeString(event_name)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -378,40 +338,3 @@ void RDClock::execInsert(int line,const QString &event_name,const QTime &time,
   clock_events.at(line)->setLength(len);
   clock_events.at(line)->load();
 }
-
-/*
-  int line=-1;
-
-  QString sql=QString("select NAME from EVENTS where ")+
-    "NAME=\""+RDEscapeString(event_name)+"\"";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(!q->first()) {
-    delete q;
-    return -1;
-  }
-  delete q;
-  if((clock_events.size()==0)||(time<clock_events.at(0)->startTime())) {
-    line=0;
-    clock_events.insert(0,new RDEventLine(clock_station));
-  }
-  else {
-    for(int i=0;i<clock_events.size()-1;i++) {
-      if((time>clock_events.at(i)->startTime())&&
-	 (time<clock_events.at(i+1)->startTime())) {
-	line=i+1;
-	clock_events.insert(line,new RDEventLine(clock_station));
-	break;
-      }
-    }
-    if(line<0) {
-      line=clock_events.size();
-      clock_events.push_back(new RDEventLine(clock_station));
-    }
-  }
-  clock_events.at(line)->setName(event_name);
-  clock_events.at(line)->setStartTime(time);
-  clock_events.at(line)->setLength(len);
-  clock_events.at(line)->load();
-
-  return line;
-*/

@@ -199,7 +199,7 @@ void RDUserListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      "where LOGIN_NAME=\""+
+      "where `LOGIN_NAME`=\""+
       RDEscapeString(d_texts.at(row.row()).at(0).toString())+
       "\"";
     RDSqlQuery *q=new RDSqlQuery(sql);
@@ -248,11 +248,10 @@ void RDUserListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+filterSql("");
-  sql+="order by LOGIN_NAME ";
+  sql+="order by `LOGIN_NAME` ";
   beginResetModel();
   d_texts.clear();
   d_icons.clear();
-  //  printf("SQL: %s\n",sql.toUtf8().constData());
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_texts.push_back(texts);
@@ -323,15 +322,15 @@ void RDUserListModel::updateRow(int row,RDSqlQuery *q)
 QString RDUserListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "USERS.LOGIN_NAME,"+         // 00
-    "USERS.ADMIN_CONFIG_PRIV,"+  // 01
-    "USERS.ADMIN_RSS_PRIV,"+     // 02
-    "USERS.FULL_NAME,"+          // 03
-    "USERS.DESCRIPTION,"+        // 04
-    "USERS.EMAIL_ADDRESS,"+      // 05
-    "USERS.PHONE_NUMBER,"+       // 06
-    "USERS.LOCAL_AUTH "+         // 07
-    "from USERS ";
+    "`USERS`.`LOGIN_NAME`,"+         // 00
+    "`USERS`.`ADMIN_CONFIG_PRIV`,"+  // 01
+    "`USERS`.`ADMIN_RSS_PRIV`,"+     // 02
+    "`USERS`.`FULL_NAME`,"+          // 03
+    "`USERS`.`DESCRIPTION`,"+        // 04
+    "`USERS`.`EMAIL_ADDRESS`,"+      // 05
+    "`USERS`.`PHONE_NUMBER`,"+       // 06
+    "`USERS`.`LOCAL_AUTH` "+         // 07
+    "from `USERS` ";
 
     return sql;
 }
@@ -344,51 +343,51 @@ QString RDUserListModel::filterSql(const QString &username) const
   switch(d_type_filter) {
   case RDUser::TypeAll:
     if(!username.isEmpty()) {
-      sql=" where LOGIN_NAME=\""+RDEscapeString(username)+"\"";
+      sql=" where `LOGIN_NAME`='"+RDEscapeString(username)+"'";
     }
     break;
 
   case RDUser::TypeAdminConfig:
-    sql=" where (ADMIN_CONFIG_PRIV=\"Y\")";
+    sql=" where (`ADMIN_CONFIG_PRIV`='Y')";
     if(!username.isEmpty()) {
-      sql+=" && (LOGIN_NAME=\""+RDEscapeString(username)+"\")";
+      sql+=" && (`LOGIN_NAME`='"+RDEscapeString(username)+"')";
     }
     break;
 
   case RDUser::TypeAdminRss:
-    sql=" where (ADMIN_RSS_PRIV=\"Y\")";
+    sql=" where (`ADMIN_RSS_PRIV`='Y')";
     if(!username.isEmpty()) {
-      sql+=" && (LOGIN_NAME=\""+RDEscapeString(username)+"\")";
+      sql+=" && (`LOGIN_NAME`='"+RDEscapeString(username)+"')";
     }
     break;
 
   case RDUser::TypeLocalUser:
-    sql=QString("where (ADMIN_CONFIG_PRIV='N')&&(ADMIN_RSS_PRIV='N')&&")+
-      "(LOCAL_AUTH='Y')";
+    sql=QString("where (`ADMIN_CONFIG_PRIV`='N')&&(`ADMIN_RSS_PRIV`='N')&&")+
+      "(`LOCAL_AUTH`='Y')";
     if(!username.isEmpty()) {
-      sql+=" && (LOGIN_NAME=\""+RDEscapeString(username)+"\")";
+      sql+=" && (`LOGIN_NAME`='"+RDEscapeString(username)+"')";
     }
     break;
 
   case RDUser::TypeExternalUser:
-    sql=QString("where (ADMIN_CONFIG_PRIV='N')&&(ADMIN_RSS_PRIV='N')&&")+
-      "(LOCAL_AUTH='N')";
+    sql=QString("where (`ADMIN_CONFIG_PRIV`='N')&&(`ADMIN_RSS_PRIV`='N')&&")+
+      "(`LOCAL_AUTH`='N')";
     if(!username.isEmpty()) {
-      sql+=" && (LOGIN_NAME=\""+RDEscapeString(username)+"\")";
+      sql+=" && (`LOGIN_NAME`='"+RDEscapeString(username)+"')";
     }
     break;
 
   case RDUser::TypeUser:
-    sql=QString("where (ADMIN_CONFIG_PRIV='N')&&(ADMIN_RSS_PRIV='N')");
+    sql=QString("where (`ADMIN_CONFIG_PRIV`='N')&&(`ADMIN_RSS_PRIV`='N')");
     if(!username.isEmpty()) {
-      sql+=" && (LOGIN_NAME=\""+RDEscapeString(username)+"\")";
+      sql+=" && (`LOGIN_NAME`='"+RDEscapeString(username)+"')";
     }
     break;
 
   case RDUser::TypeAdmin:
-    sql=QString("where ((ADMIN_CONFIG_PRIV='Y')||(ADMIN_RSS_PRIV='Y'))");
+    sql=QString("where ((`ADMIN_CONFIG_PRIV`='Y')||(`ADMIN_RSS_PRIV`='Y'))");
     if(!username.isEmpty()) {
-      sql+=" && (LOGIN_NAME=\""+RDEscapeString(username)+"\")";
+      sql+=" && (`LOGIN_NAME`='"+RDEscapeString(username)+"')";
     }
     break;
 

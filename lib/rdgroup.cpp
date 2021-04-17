@@ -21,8 +21,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <qobject.h>
-
 #include <rdconf.h>
 #include <rdgroup.h>
 #include <rddb.h>
@@ -40,8 +38,8 @@ RDGroup::RDGroup(QString name,bool create)
   group_name=name;
 
   if(create) {
-    sql=QString("insert into GROUPS set ")+
-      "NAME=\""+RDEscapeString(group_name)+"\"";
+    sql=QString("insert into `GROUPS` set ")+
+      "`NAME`='"+RDEscapeString(group_name)+"'";
     q=new RDSqlQuery(sql);
     delete q;
   }
@@ -49,8 +47,8 @@ RDGroup::RDGroup(QString name,bool create)
     //
     // Normalize case
     //
-    sql=QString("select NAME from GROUPS where ")+
-      "NAME=\""+RDEscapeString(name)+"\"";
+    sql=QString("select `NAME` from `GROUPS`` where ")+
+      "`NAME`='"+RDEscapeString(name)+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       group_name=q->value(0).toString();
@@ -266,10 +264,10 @@ int RDGroup::freeCartQuantity() const
   RDSqlQuery *q;
 
   sql=QString("select ")+
-    "DEFAULT_LOW_CART,"+   // 00
-    "DEFAULT_HIGH_CART "+  // 01
-    "from GROUPS where "+
-    "NAME=\""+RDEscapeString(group_name)+"\"";
+    "`DEFAULT_LOW_CART`,"+   // 00
+    "`DEFAULT_HIGH_CART` "+  // 01
+    "from `GROUPS` where "+
+    "`NAME`='"+RDEscapeString(group_name)+"'";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -281,8 +279,8 @@ int RDGroup::freeCartQuantity() const
   }
   int low=q->value(0).toInt();
   int high=q->value(1).toInt();
-  sql=QString("select NUMBER from CART where ")+
-    QString().sprintf("NUMBER>=%d)&&(NUMBER<=%d)",
+  sql=QString("select `NUMBER` from `CART` where ")+
+    QString().sprintf("`NUMBER`>=%d)&&(`NUMBER`<=%d)",
 		      q->value(0).toInt(),q->value(1).toInt());
   delete q;
   q=new RDSqlQuery(sql);
@@ -311,7 +309,7 @@ bool RDGroup::reserveCarts(QList<unsigned> *cart_nums,
     }
     else {
       for(int i=0;i<cart_nums->size();i++) {
-	sql=QString().sprintf("delete from CART where NUMBER=%u",
+	sql=QString().sprintf("delete from `CART` where `NUMBER`=%u",
 			      cart_nums->at(i));
 	q=new RDSqlQuery(sql);
 	delete q;
@@ -335,11 +333,11 @@ bool RDGroup::cartNumberValid(unsigned cartnum) const
   }
   bool ret=false;
   QString sql=QString("select ")+
-    "DEFAULT_LOW_CART,"+    // 00
-    "DEFAULT_HIGH_CART,"+   // 01
-    "ENFORCE_CART_RANGE "+  // 02
-    "from GROUPS where "+
-    "NAME=\""+RDEscapeString(group_name)+"\"";
+    "`DEFAULT_LOW_CART`,"+    // 00
+    "`DEFAULT_HIGH_CART`,"+   // 01
+    "`ENFORCE_CART_RANGE` "+  // 02
+    "from `GROUPS` where "+
+    "`NAME`='"+RDEscapeString(group_name)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     if(!RDBool(q->value(2).toString())) {
@@ -363,19 +361,19 @@ QString RDGroup::xml() const
   QString ret="";
 
   sql=QString("select ")+
-    "DESCRIPTION,"+         // 00
-    "DEFAULT_CART_TYPE,"+   // 01
-    "DEFAULT_LOW_CART,"+    // 02
-    "DEFAULT_HIGH_CART,"+   // 03
-    "CUT_SHELFLIFE,"+       // 04
-    "DEFAULT_TITLE,"+       // 05
-    "ENFORCE_CART_RANGE,"+  // 06
-    "REPORT_TFC,"+          // 07
-    "REPORT_MUS,"+          // 08
-    "ENABLE_NOW_NEXT,"+     // 09
-    "COLOR "+               // 10
-    "from GROUPS where "+
-    "NAME=\""+RDEscapeString(group_name)+"\"";
+    "`DESCRIPTION`,"+         // 00
+    "`DEFAULT_CART_TYPE`,"+   // 01
+    "`DEFAULT_LOW_CART`,"+    // 02
+    "`DEFAULT_HIGH_CART`,"+   // 03
+    "`CUT_SHELFLIFE`,"+       // 04
+    "`DEFAULT_TITLE`,"+       // 05
+    "`ENFORCE_CART_RANGE`,"+  // 06
+    "`REPORT_TFC`,"+          // 07
+    "`REPORT_MUS`,"+          // 08
+    "`ENABLE_NOW_NEXT`,"+     // 09
+    "`COLOR` "+               // 10
+    "from `GROUPS` where "+
+    "`NAME`='"+RDEscapeString(group_name)+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret+="<group>\n";
@@ -417,10 +415,10 @@ unsigned RDGroup::GetNextFreeCart(unsigned startcart) const
   unsigned cart_high_limit;
 
   sql=QString("select ")+
-    "DEFAULT_LOW_CART,"+   // 00
-    "DEFAULT_HIGH_CART "+  // 01
-    "from GROUPS where "+
-    "NAME=\""+RDEscapeString(group_name)+"\"";
+    "`DEFAULT_LOW_CART`,"+   // 00
+    "`DEFAULT_HIGH_CART` "+  // 01
+    "from `GROUPS` where "+
+    "`NAME`='"+RDEscapeString(group_name)+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(startcart>q->value(0).toUInt()) {
@@ -434,9 +432,9 @@ unsigned RDGroup::GetNextFreeCart(unsigned startcart) const
     if((cart_low_limit<1)||(startcart>cart_high_limit)) {
       return 0;
     }
-    sql=QString().sprintf("select NUMBER from CART where \
-                         (NUMBER>=%u)&&(NUMBER<=%u) order by NUMBER",
-			  cart_low_limit,cart_high_limit);
+    sql=QString("select `NUMBER` from `CART` where ")+
+      QString().sprintf("(`NUMBER`>=%u)&&(`NUMBER`<=%u) order by `NUMBER`",
+			cart_low_limit,cart_high_limit);
     q=new RDSqlQuery(sql);
     if(q->size()<1) {
       delete q;
@@ -473,13 +471,13 @@ bool RDGroup::ReserveCart(const QString &station_name,RDCart::Type type,
   bool ret=false;
 
   if((cart_num>=defaultLowCart())&&(cart_num<=defaultHighCart())) {
-    sql=QString().sprintf("insert into CART set NUMBER=%u,",cart_num)+
-      "GROUP_NAME=\""+RDEscapeString(group_name)+"\","+
-      QString().sprintf("TYPE=%d,",type)+
-      "TITLE=\"["+RDEscapeString(QObject::tr("reserved"))+"]\","+
-      "PENDING_STATION=\""+RDEscapeString(station_name)+"\","+
-      QString().sprintf("PENDING_PID=%d,",getpid())+
-      "PENDING_DATETIME=now()";
+    sql=QString().sprintf("insert into `CART` set `NUMBER`=%u,",cart_num)+
+      "`GROUP_NAME`='"+RDEscapeString(group_name)+"',"+
+      QString().sprintf("`TYPE`=%d,",type)+
+      "`TITLE`='["+RDEscapeString(QObject::tr("reserved"))+"]',"+
+      "`PENDING_STATION`='"+RDEscapeString(station_name)+"',"+
+      QString().sprintf("`PENDING_PID`=%d,",getpid())+
+      "`PENDING_DATETIME`=now()";
     q=new QSqlQuery(sql);
     ret=q->isActive();
     delete q;
@@ -493,9 +491,9 @@ void RDGroup::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update GROUPS set ")+
-    param+QString().sprintf("=%d where ",value)+
-    "NAME=\""+RDEscapeString(group_name)+"\"";
+  sql=QString().sprintf("update `GROUPS` set `")+
+    param+QString().sprintf("`=%d where ",value)+
+    "`NAME`='"+RDEscapeString(group_name)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -506,9 +504,9 @@ void RDGroup::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update GROUPS set ")+
-    param+QString().sprintf("=%u where ",value)+
-    "NAME=\""+RDEscapeString(group_name)+"\"";
+  sql=QString("update `GROUPS` set `")+
+    param+QString().sprintf("`=%u where ",value)+
+    "`NAME`='"+RDEscapeString(group_name)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -519,9 +517,9 @@ void RDGroup::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update GROUPS set ")+
-    param+"=\""+RDEscapeString(value)+"\" where "+
-    "NAME=\""+RDEscapeString(group_name)+"\"";
+  sql=QString("update `GROUPS` set `")+
+    param+"`='"+RDEscapeString(value)+"' where "+
+    "`NAME`='"+RDEscapeString(group_name)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 }

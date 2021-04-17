@@ -18,12 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstringlist.h>
-
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdmacro_event.h>
-#include <rdstation.h>
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdmacro_event.h"
+#include "rdstation.h"
 
 RDMacroEvent::RDMacroEvent(RDRipc *ripc,QObject *parent)
   : QObject(parent)
@@ -136,7 +134,8 @@ bool RDMacroEvent::load(const QString &str)
 bool RDMacroEvent::load(unsigned cartnum)
 {
   QString sql=QString().
-    sprintf("select MACROS from CART where (NUMBER=%d)&&(TYPE=2)",cartnum);
+    sprintf("select `MACROS` from `CART` where (`NUMBER`=%d)&&(`TYPE`=2)",
+	    cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -244,9 +243,9 @@ void RDMacroEvent::exec(int line)
       rml.setAddress(addr);
     }
     else {
-      sql=QString("select VARVALUE from HOSTVARS where ")+
-	"(STATION_NAME=\""+RDEscapeString(event_ripc->station())+"\")&&"+
-	"(NAME=\""+RDEscapeString(stationname)+"\")";
+      sql=QString("select `VARVALUE` from `HOSTVARS` where ")+
+	"(`STATION_NAME`='"+RDEscapeString(event_ripc->station())+"')&&"+
+	"(`NAME`='"+RDEscapeString(stationname)+"')";
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	stationname=q->value(0).toString();
@@ -290,7 +289,7 @@ void RDMacroEvent::stop()
 {
   //
   // This will work only for 'Sleep' [SP] macros -- all others are
-  // assumed to execute 'instaneously', and hence trying to 'stop'
+  // assumed to execute 'instantaneously', and hence trying to 'stop'
   // them would make no sense.
   //
   if(event_sleep_timer->isActive()) {

@@ -362,8 +362,8 @@ bool RDFormPost::authenticate(bool *used_ticket)
   if((clientAddress().toIPv4Address()>>24)==127) {  // Localhost
     return true;
   }
-  sql=QString("select NAME from STATIONS where ")+
-    "IPV4_ADDRESS=\""+clientAddress().toString()+"\"";
+  sql=QString("select `NAME` from `STATIONS` where ")+
+    "`IPV4_ADDRESS`='"+clientAddress().toString()+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     delete q;

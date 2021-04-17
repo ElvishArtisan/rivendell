@@ -359,7 +359,7 @@ QModelIndex RDFeedListModel::addFeed(const QString &keyname)
 
   QString sql=sqlFields()+
 	"where "+
-	"FEEDS.KEY_NAME=\""+RDEscapeString(keyname)+"\" ";
+	"`FEEDS`.`KEY_NAME`='"+RDEscapeString(keyname)+"' ";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     updateRow(offset,q);
@@ -422,18 +422,18 @@ void RDFeedListModel::changeUser()
 
   if(d_is_admin) {
     sql=QString("select ")+
-      "KEY_NAME "+  // 00
-      "from FEEDS";
+      "`KEY_NAME` "+  // 00
+      "from `FEEDS`";
   }
   else {
     sql=QString("select ")+
-      "KEY_NAME "+  // 00
-      "from FEED_PERMS where "+
-      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
+      "`KEY_NAME` "+  // 00
+      "from `FEED_PERMS` where "+
+      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"'";
   }
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    filter_sql+="(KEY_NAME=\""+RDEscapeString(q->value(0).toString())+"\")||";
+    filter_sql+="(`KEY_NAME`='"+RDEscapeString(q->value(0).toString())+"')||";
   }
   delete q;
   filter_sql=filter_sql.left(filter_sql.length()-2);
@@ -484,7 +484,7 @@ void RDFeedListModel::updateModel(const QString &filter_sql)
 
   sql=sqlFields()+
     filter_sql+
-    "order by FEEDS.KEY_NAME asc, PODCASTS.ORIGIN_DATETIME desc";
+    "order by `FEEDS`.`KEY_NAME` asc, `PODCASTS`.`ORIGIN_DATETIME` desc";
   //  printf("SQL: %s\n",sql.toUtf8().constData());
   beginResetModel();
   d_texts.clear();
@@ -618,23 +618,22 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
 QString RDFeedListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "FEEDS.ID,"+                      // 00
-    "FEEDS.KEY_NAME,"+                // 01
-    "FEEDS.CHANNEL_TITLE,"+           // 02
-    "FEEDS.ENABLE_AUTOPOST,"+         // 03
-
-    "FEEDS.IS_SUPERFEED,"+            // 04
-    "FEEDS.ID,"+                      // 05
-    "FEEDS.BASE_URL,"+                // 06
-    "FEEDS.ORIGIN_DATETIME,"+         // 07
-    "PODCASTS.ID,"+                   // 08
-    "PODCASTS.ITEM_TITLE,"+           // 09
-    "PODCASTS.STATUS,"+               // 10
-    "PODCASTS.ORIGIN_DATETIME,"+      // 11
-    "FEED_IMAGES.DATA "+              // 12
-    "from FEEDS left join FEED_IMAGES "+
-    "on FEEDS.CHANNEL_IMAGE_ID=FEED_IMAGES.ID left join PODCASTS "+
-    "on FEEDS.ID=PODCASTS.FEED_ID ";
+    "`FEEDS`.`ID`,"+                      // 00
+    "`FEEDS`.`KEY_NAME`,"+                // 01
+    "`FEEDS`.`CHANNEL_TITLE`,"+           // 02
+    "`FEEDS`.`ENABLE_AUTOPOST`,"+         // 03
+    "`FEEDS`.`IS_SUPERFEED`,"+            // 04
+    "`FEEDS`.`ID`,"+                      // 05
+    "`FEEDS`.`BASE_URL`,"+                // 06
+    "`FEEDS`.`ORIGIN_DATETIME`,"+         // 07
+    "`PODCASTS`.`ID`,"+                   // 08
+    "`PODCASTS`.`ITEM_TITLE`,"+           // 09
+    "`PODCASTS`.`STATUS`,"+               // 10
+    "`PODCASTS`.`ORIGIN_DATETIME`,"+      // 11
+    "`FEED_IMAGES`.`DATA` "+              // 12
+    "from `FEEDS` left join `FEED_IMAGES` "+
+    "on `FEEDS`.`CHANNEL_IMAGE_ID`=`FEED_IMAGES`.`ID` left join `PODCASTS` "+
+    "on `FEEDS`.`ID`=`PODCASTS`.`FEED_ID` ";
 
   return sql;
 }

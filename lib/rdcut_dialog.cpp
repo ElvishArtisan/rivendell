@@ -200,13 +200,6 @@ void RDCutDialog::modelResetData()
   for(int i=0;i<cart_cart_model->columnCount();i++) {
     cart_cart_view->resizeColumnToContents(i);
   }
-
-  /*
-  if(cart_cutname!=NULL) {
-    QModelIndex index=cart_cart_model->cutRow(*cart_cutname);
-    cart_cart_view->selectRow(index.row());
-  }
-  */
 }
 
 
@@ -247,11 +240,11 @@ void RDCutDialog::addButtonData()
     delete add_cart;
     return;
   }
-  sql=QString("insert into CART set ")+
-    QString().sprintf("NUMBER=%d,",cart_num)+
-    QString().sprintf("TYPE=%d,",cart_type)+
-    "GROUP_NAME=\""+RDEscapeString(cart_group)+"\","+
-    "TITLE=\""+RDEscapeString(cart_title)+"\"";
+  sql=QString("insert into `CART` set ")+
+    QString().sprintf("`NUMBER`=%d,",cart_num)+
+    QString().sprintf("`TYPE`=%d,",cart_type)+
+    "`GROUP_NAME`='"+RDEscapeString(cart_group)+"',"+
+    "`TITLE`='"+RDEscapeString(cart_title)+"'";
   q=new RDSqlQuery(sql);
   delete q;
   RDCut::create(cart_num,1);

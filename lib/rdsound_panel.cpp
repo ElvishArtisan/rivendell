@@ -2,7 +2,7 @@
 //
 // The sound panel widget for RDAirPlay
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,8 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <qsignalmapper.h>
 
 #include "rdapplication.h"
 #include "rdbutton_dialog.h"
@@ -44,12 +42,12 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   panel_cue_port=-1;
   panel_caption=caption;
   if(extended) {
-    panel_tablename="EXTENDED_PANELS";
-    panel_name_tablename="EXTENDED_PANEL_NAMES";
+    panel_tablename="`EXTENDED_PANELS`";
+    panel_name_tablename="`EXTENDED_PANEL_NAMES`";
   }
   else {
-    panel_tablename="PANELS";
-    panel_name_tablename="PANEL_NAMES";
+    panel_tablename="`PANELS`";
+    panel_name_tablename="`PANEL_NAMES`";
   }
   panel_label_template=label_template;
 
@@ -201,10 +199,13 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
 
   QString sql;
-  sql=QString("select PANEL_NO,NAME from ")+panel_name_tablename+" where "+
-    QString().sprintf("(TYPE=%d)&&",RDAirPlayConf::StationPanel)+
-    "(OWNER=\""+RDEscapeString(rda->station()->name())+"\") "+
-    "order by PANEL_NO";
+  sql=QString("select ")+
+    "`PANEL_NO`,"+
+    "`NAME` "+
+    "from "+panel_name_tablename+" where "+
+    QString().sprintf("(`TYPE`=%d)&&",RDAirPlayConf::StationPanel)+
+    "(`OWNER`='"+RDEscapeString(rda->station()->name())+"') "+
+    "order by `PANEL_NO`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   q->first();
   for(int i=0;i<panel_station_panels;i++) {
@@ -569,10 +570,13 @@ void RDSoundPanel::changeUser()
   // Load New Panel Names
   //
   QString sql;
-  sql=QString("select PANEL_NO,NAME from ")+panel_name_tablename+" where "+
-    QString().sprintf("(TYPE=%d)&&",RDAirPlayConf::UserPanel)+
-    "(OWNER=\""+RDEscapeString(rda->user()->name())+"\") "+
-    "order by PANEL_NO";
+  sql=QString("select ")+
+    "`PANEL_NO`,"+
+    "`NAME` "+
+    "from "+panel_name_tablename+" where "+
+    QString().sprintf("(`TYPE`=%d)&&",RDAirPlayConf::UserPanel)+
+    "(`OWNER`='"+RDEscapeString(rda->user()->name())+"') "+
+    "order by `PANEL_NO`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   q->first();
   for(int i=0;i<panel_user_panels;i++) {
@@ -859,16 +863,16 @@ void RDSoundPanel::panelSetupData()
 			findText("["+PanelTag(panel_selector_box->
 					      currentIndex())+"] "+panel_name));
       sql=QString("delete from ")+panel_name_tablename+" where "+
-	QString().sprintf("(TYPE=%d)&&",panel_type)+
-	"(OWNER=\""+RDEscapeString(PanelOwner(panel_type))+"\")&&"+
-	QString().sprintf("(PANEL_NO=%d)",panel_number);
+	QString().sprintf("(`TYPE`=%d)&&",panel_type)+
+	"(`OWNER`='"+RDEscapeString(PanelOwner(panel_type))+"')&&"+
+	QString().sprintf("(`PANEL_NO`=%d)",panel_number);
       RDSqlQuery::apply(sql);
 
       sql=QString("insert into ")+panel_name_tablename+" set "+
-	QString().sprintf("TYPE=%d,",panel_type)+
-	"OWNER=\""+RDEscapeString(PanelOwner(panel_type))+"\","+
-	QString().sprintf("PANEL_NO=%d,",panel_number)+
-	"NAME=\""+RDEscapeString(panel_name)+"\"";
+	QString().sprintf("`TYPE`=%d,",panel_type)+
+	"`OWNER`='"+RDEscapeString(PanelOwner(panel_type))+"',"+
+	QString().sprintf("`PANEL_NO`=%d,",panel_number)+
+	"`NAME`='"+RDEscapeString(panel_name)+"'";
       RDSqlQuery::apply(sql);
     }
     delete edn;
@@ -1258,17 +1262,21 @@ void RDSoundPanel::LoadPanel(RDAirPlayConf::PanelType type,int panel)
     break;
   }
 
-  QString sql=QString("select ")+panel_tablename+".ROW_NO,"+
-    panel_tablename+".COLUMN_NO,"+
-    panel_tablename+".LABEL,"+
-    panel_tablename+".CART,"+
-    panel_tablename+".DEFAULT_COLOR,"+
-    "CART.FORCED_LENGTH,CART.AVERAGE_HOOK_LENGTH,CART.TYPE from "+
-    panel_tablename+" left join CART on "+panel_tablename+".CART=CART.NUMBER "+
-    "where "+panel_tablename+QString().sprintf(".TYPE=%d && ",type)+
-    panel_tablename+".OWNER=\""+RDEscapeString(owner)+"\" && "+
-    panel_tablename+QString().sprintf(".PANEL_NO=%d ",panel)+
-    "order by "+panel_tablename+".COLUMN_NO,"+panel_tablename+".ROW_NO";
+  QString sql=QString("select ")+
+    panel_tablename+".`ROW_NO`,"+         // 00
+    panel_tablename+".`COLUMN_NO`,"+      // 01
+    panel_tablename+".`LABEL`,"+          // 02
+    panel_tablename+".`CART`,"+           // 03
+    panel_tablename+".`DEFAULT_COLOR`,"+  // 04
+    "`CART`.`FORCED_LENGTH`,"+            // 05
+    "`CART`.`AVERAGE_HOOK_LENGTH`,"+      // 06
+    "`CART`.`TYPE` "+                     // 07
+    "from "+panel_tablename+" "+          // 08
+    "left join `CART` on "+panel_tablename+".`CART`=`CART`.`NUMBER` "+
+    "where "+panel_tablename+QString().sprintf(".`TYPE`=%d && ",type)+
+    panel_tablename+".`OWNER`='"+RDEscapeString(owner)+"' && "+
+    panel_tablename+QString().sprintf(".`PANEL_NO`=%d ",panel)+
+    "order by "+panel_tablename+".`COLUMN_NO`,"+panel_tablename+".`ROW_NO`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     if(panel_buttons[offset]->panelButton(q->value(0).toInt(),
@@ -1356,12 +1364,12 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
   //
   // Determine if the button exists
   //
-  sql=QString("select LABEL from ")+panel_tablename+" where "+
-    QString().sprintf("TYPE=%d && ",type)+
-    "OWNER=\""+RDEscapeString(owner)+"\" && "+
-    QString().sprintf("PANEL_NO=%d && ",panel)+
-    QString().sprintf("ROW_NO=%d && ",row)+
-    QString().sprintf("COLUMN_NO=%d",col);
+  sql=QString("select `LABEL` from ")+panel_tablename+" where "+
+    QString().sprintf("`TYPE`=%d && ",type)+
+    "`OWNER`='"+RDEscapeString(owner)+"' && "+
+    QString().sprintf("`PANEL_NO`=%d && ",panel)+
+    QString().sprintf("`ROW_NO`=%d && ",row)+
+    QString().sprintf("`COLUMN_NO`=%d",col);
   q=new RDSqlQuery(sql);
   if(q->size()>0) {
     //
@@ -1369,18 +1377,18 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
     //
     delete q;
     sql1=QString("update ")+panel_tablename+" set "+
-      "LABEL=\""+RDEscapeString(panel_buttons[offset]->panelButton(row,col)->
-				text())+"\","+
-      QString().sprintf("CART=%d,",
+      "`LABEL`='"+RDEscapeString(panel_buttons[offset]->panelButton(row,col)->
+				text())+"',"+
+      QString().sprintf("`CART`=%d,",
 			panel_buttons[PanelOffset(panel_type,panel_number)]->
 			panelButton(row,col)->cart())+
-      "DEFAULT_COLOR=\""+panel_buttons[offset]->panelButton(row,col)->
-      defaultColor().name()+"\" where "+
-      QString().sprintf("(TYPE=%d)&&",type)+
-      "(OWNER=\""+RDEscapeString(owner)+"\")&&"+
-      QString().sprintf("(PANEL_NO=%d)&&",panel)+
-      QString().sprintf("(ROW_NO=%d)&&",row)+
-      QString().sprintf("(COLUMN_NO=%d)",col);
+      "`DEFAULT_COLOR`='"+panel_buttons[offset]->panelButton(row,col)->
+      defaultColor().name()+"' where "+
+      QString().sprintf("(`TYPE`=%d)&&",type)+
+      "(`OWNER`='"+RDEscapeString(owner)+"')&&"+
+      QString().sprintf("(`PANEL_NO`=%d)&&",panel)+
+      QString().sprintf("(`ROW_NO`=%d)&&",row)+
+      QString().sprintf("(`COLUMN_NO`=%d)",col);
     q=new RDSqlQuery(sql1);
     if(q->isActive()) {
       delete q;
@@ -1395,17 +1403,24 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
     // Otherwise, insert a new one
     //
     sql1=QString("insert into ")+panel_tablename+
-      " (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO,LABEL,CART,DEFAULT_COLOR) "+
+      " (`TYPE`,"+
+      "`OWNER`,"+
+      "`PANEL_NO`,"+
+      "`ROW_NO`,"+
+      "`COLUMN_NO`,"+
+      "`LABEL`,"+
+      "`CART`,"+
+      "`DEFAULT_COLOR`) "+
       QString().sprintf("values (%d,",type)+
-      "\""+RDEscapeString(owner)+"\","+
+      "'"+RDEscapeString(owner)+"',"+
       QString().sprintf("%d,%d,%d,",panel,row,col)+
-      "\""+RDEscapeString(panel_buttons[offset]->
-			  panelButton(row,col)->text())+"\","+
+      "'"+RDEscapeString(panel_buttons[offset]->
+			  panelButton(row,col)->text())+"',"+
       QString().sprintf("%d,",
 			panel_buttons[PanelOffset(panel_type,panel_number)]->
 			panelButton(row,col)->cart())+
-      "\""+RDEscapeString(panel_buttons[offset]->
-			  panelButton(row,col)->defaultColor().name())+"\")";
+      "'"+RDEscapeString(panel_buttons[offset]->
+			  panelButton(row,col)->defaultColor().name())+"')";
     q=new RDSqlQuery(sql1);
     delete q;
   }
@@ -1477,55 +1492,54 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
   QDateTime now=QDateTime::currentDateTime();
 
   sql=QString("select ")+
-    "CART.TITLE,"+         // 00
-    "CART.ARTIST,"+        // 01
-    "CART.PUBLISHER,"+     // 02
-    "CART.COMPOSER,"+      // 03
-    "CART.USAGE_CODE,"+    // 04
-    "CUTS.ISRC,"+          // 05
-    "CART.ALBUM,"+         // 06
-    "CART.LABEL,"+         // 07
-    "CUTS.ISCI,"+          // 08
-    "CART.CONDUCTOR,"+     // 09
-    "CART.USER_DEFINED,"+  // 10
-    "CART.SONG_ID,"+       // 11
-    "CUTS.DESCRIPTION,"+   // 12
-    "CUTS.OUTCUE "+        // 13
-    "from CART left join CUTS "+
-    "on CART.NUMBER=CUTS.CART_NUMBER where "+
-    "CUTS.CUT_NAME=\""+RDEscapeString(button->cutName())+"\"";
+    "`CART`.`TITLE`,"+         // 00
+    "`CART`.`ARTIST`,"+        // 01
+    "`CART`.`PUBLISHER`,"+     // 02
+    "`CART`.`COMPOSER`,"+      // 03
+    "`CART`.`USAGE_CODE`,"+    // 04
+    "`CUTS`.`ISRC`,"+          // 05
+    "`CART`.`ALBUM`,"+         // 06
+    "`CART`.`LABEL`,"+         // 07
+    "`CUTS`.`ISCI`,"+          // 08
+    "`CART`.`CONDUCTOR`,"+     // 09
+    "`CART`.`USER_DEFINED`,"+  // 10
+    "`CART`.`SONG_ID`,"+       // 11
+    "`CUTS`.`DESCRIPTION`,"+   // 12
+    "`CUTS`.`OUTCUE` "+        // 13
+    "from `CART` left join `CUTS` "+
+    "on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` where "+
+    "`CUTS`.`CUT_NAME`='"+RDEscapeString(button->cutName())+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    sql=QString("insert into ELR_LINES set ")+
-      "SERVICE_NAME=\""+RDEscapeString(panel_svcname)+"\","+
-      QString().sprintf("LENGTH=%d,",button->startTime().msecsTo(now.time()))+
-      QString().sprintf("CART_NUMBER=%u,",button->cart())+
-      "STATION_NAME=\""+RDEscapeString(rda->station()->name().toUtf8())+"\","+
-      "EVENT_DATETIME="+
+    sql=QString("insert into `ELR_LINES` set ")+
+      "`SERVICE_NAME`='"+RDEscapeString(panel_svcname)+"',"+
+      QString().sprintf("`LENGTH`=%d,",button->startTime().msecsTo(now.time()))+
+      QString().sprintf("`CART_NUMBER`=%u,",button->cart())+
+      "`STATION_NAME`='"+RDEscapeString(rda->station()->name().toUtf8())+"',"+
+      "`EVENT_DATETIME`="+
       RDCheckDateTime(QDateTime(now.date(),button->startTime()),
 		      "yyyy-MM-dd hh:mm:ss")+","+
-      QString().sprintf("EVENT_TYPE=%d,",RDAirPlayConf::TrafficStop)+
-      QString().sprintf("EVENT_SOURCE=%d,",RDLogLine::SoundPanel)+
-      QString().sprintf("PLAY_SOURCE=%d,",RDLogLine::SoundPanel)+
-      QString().sprintf("CUT_NUMBER=%d,",button->cutName().right(3).toInt())+
-      "TITLE=\""+RDEscapeString(q->value(0).toString().toUtf8())+"\","+
-      "ARTIST=\""+RDEscapeString(q->value(1).toString().toUtf8())+"\","+
-      "PUBLISHER=\""+RDEscapeString(q->value(2).toString().toUtf8())+"\","+
-      "COMPOSER=\""+RDEscapeString(q->value(3).toString().toUtf8())+"\","+
-      QString().sprintf("USAGE_CODE=%d,",q->value(4).toInt())+
-      "ISRC=\""+RDEscapeString(q->value(5).toString().toUtf8())+"\","+
-      QString().sprintf("START_SOURCE=%d,",button->startSource())+
-      "ALBUM=\""+RDEscapeString(q->value(6).toString().toUtf8())+"\","+
-      "LABEL=\""+RDEscapeString(q->value(7).toString().toUtf8())+"\","+
-      "ISCI=\""+RDEscapeString(q->value(8).toString().toUtf8())+"\","+
-      "DESCRIPTION=\""+RDEscapeString(q->value(12).toString().toUtf8())+"\","+
-      "OUTCUE=\""+RDEscapeString(q->value(13).toString().toUtf8())+"\","+
-      "CONDUCTOR=\""+RDEscapeString(q->value(9).toString().toUtf8())+"\","+
-      "USER_DEFINED=\""+RDEscapeString(q->value(10).toString().toUtf8())+"\","+
-      "SONG_ID=\""+RDEscapeString(q->value(11).toString().toUtf8())+"\","+
-      "ONAIR_FLAG=\""+RDYesNo(panel_onair_flag)+"\"";
-    delete q;
-    q=new RDSqlQuery(sql);
+      QString().sprintf("`EVENT_TYPE`=%d,",RDAirPlayConf::TrafficStop)+
+      QString().sprintf("`EVENT_SOURCE`=%d,",RDLogLine::SoundPanel)+
+      QString().sprintf("`PLAY_SOURCE`=%d,",RDLogLine::SoundPanel)+
+      QString().sprintf("`CUT_NUMBER`=%d,",button->cutName().right(3).toInt())+
+      "`TITLE`='"+RDEscapeString(q->value(0).toString().toUtf8())+"',"+
+      "`ARTIST`='"+RDEscapeString(q->value(1).toString().toUtf8())+"',"+
+      "`PUBLISHER`='"+RDEscapeString(q->value(2).toString().toUtf8())+"',"+
+      "`COMPOSER`='"+RDEscapeString(q->value(3).toString().toUtf8())+"',"+
+      QString().sprintf("`USAGE_CODE`=%d,",q->value(4).toInt())+
+      "`ISRC`='"+RDEscapeString(q->value(5).toString().toUtf8())+"',"+
+      QString().sprintf("`START_SOURCE`=%d,",button->startSource())+
+      "`ALBUM`='"+RDEscapeString(q->value(6).toString().toUtf8())+"',"+
+      "`LABEL`='"+RDEscapeString(q->value(7).toString().toUtf8())+"',"+
+      "`ISCI`='"+RDEscapeString(q->value(8).toString().toUtf8())+"',"+
+      "`DESCRIPTION`='"+RDEscapeString(q->value(12).toString().toUtf8())+"',"+
+      "`OUTCUE`='"+RDEscapeString(q->value(13).toString().toUtf8())+"',"+
+      "`CONDUCTOR`='"+RDEscapeString(q->value(9).toString().toUtf8())+"',"+
+      "`USER_DEFINED`='"+RDEscapeString(q->value(10).toString().toUtf8())+"',"+
+      "`SONG_ID`='"+RDEscapeString(q->value(11).toString().toUtf8())+"',"+
+      "`ONAIR_FLAG`='"+RDYesNo(panel_onair_flag)+"'";
+    RDSqlQuery::apply(sql);
   }
   delete q;
 }
@@ -1537,32 +1551,39 @@ void RDSoundPanel::LogTrafficMacro(RDPanelButton *button)
   RDSqlQuery *q;
   QDateTime datetime(QDate::currentDate(),QTime::currentTime());
 
-  sql=QString("select TITLE,ARTIST,PUBLISHER,COMPOSER,USAGE_CODE,")+
-    "FORCED_LENGTH,ALBUM,LABEL from CART where "+
-    QString().sprintf("NUMBER=%u",button->cart());
+  sql=QString("select ")+
+    "`TITLE`,"+          // 00
+    "`ARTIST`,"+         // 01
+    "`PUBLISHER`,"+      // 02
+    "`COMPOSER`,"+       // 03
+    "`USAGE_CODE`,"+     // 04
+    "`FORCED_LENGTH`,"+  // 05
+    "`ALBUM`,"+          // 06 
+    "`LABEL` "+          // 07
+    "from `CART` where "+
+    QString().sprintf("`NUMBER`=%u",button->cart());
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    sql=QString("insert into ELR_LINES set ")+
-      "SERVICE_NAME=\""+RDEscapeString(panel_svcname)+"\","+
-      QString().sprintf("LENGTH=%d,",q->value(5).toUInt())+
-      QString().sprintf("CART_NUMBER=%u,",button->cart())+
-      "STATION_NAME=\""+RDEscapeString(rda->station()->name().toUtf8())+"\","+
-      "EVENT_DATETIME=\""+datetime.toString("yyyy-MM-dd hh:mm:ss")+"\","+
-      QString().sprintf("EVENT_TYPE=%d,",RDAirPlayConf::TrafficMacro)+
-      QString().sprintf("EVENT_SOURCE=%d,",RDLogLine::SoundPanel)+
-      QString().sprintf("PLAY_SOURCE=%d,",RDLogLine::SoundPanel)+
-      "TITLE=\""+RDEscapeString(q->value(0).toString().toUtf8())+"\","+
-      "ARTIST=\""+RDEscapeString(q->value(1).toString().toUtf8())+"\","+
-      "PUBLISHER=\""+RDEscapeString(q->value(2).toString().toUtf8())+"\","+
-      "COMPOSER=\""+RDEscapeString(q->value(3).toString().toUtf8())+"\","+
-      QString().sprintf("USAGE_CODE=%d,",q->value(4).toInt())+
-      QString().sprintf("START_SOURCE=%d,",button->startSource())+
-      "ALBUM=\""+RDEscapeString(q->value(6).toString().toUtf8())+"\","+
-      "LABEL=\""+RDEscapeString(q->value(7).toString().toUtf8())+"\","+
-      "ONAIR_FLAG=\""+RDYesNo(panel_onair_flag)+"\"";
+    sql=QString("insert into `ELR_LINES` set ")+
+      "`SERVICE_NAME`='"+RDEscapeString(panel_svcname)+"',"+
+      QString().sprintf("`LENGTH`=%d,",q->value(5).toUInt())+
+      QString().sprintf("`CART_NUMBER`=%u,",button->cart())+
+      "`STATION_NAME`='"+RDEscapeString(rda->station()->name().toUtf8())+"',"+
+      "`EVENT_DATETIME`='"+datetime.toString("yyyy-MM-dd hh:mm:ss")+"',"+
+      QString().sprintf("`EVENT_TYPE`=%d,",RDAirPlayConf::TrafficMacro)+
+      QString().sprintf("`EVENT_SOURCE`=%d,",RDLogLine::SoundPanel)+
+      QString().sprintf("`PLAY_SOURCE`=%d,",RDLogLine::SoundPanel)+
+      "`TITLE`='"+RDEscapeString(q->value(0).toString().toUtf8())+"',"+
+      "`ARTIST`='"+RDEscapeString(q->value(1).toString().toUtf8())+"',"+
+      "`PUBLISHER`='"+RDEscapeString(q->value(2).toString().toUtf8())+"',"+
+      "`COMPOSER`='"+RDEscapeString(q->value(3).toString().toUtf8())+"',"+
+      QString().sprintf("`USAGE_CODE`=%d,",q->value(4).toInt())+
+      QString().sprintf("`START_SOURCE`=%d,",button->startSource())+
+      "`ALBUM`='"+RDEscapeString(q->value(6).toString().toUtf8())+"',"+
+      "`LABEL`='"+RDEscapeString(q->value(7).toString().toUtf8())+"',"+
+      "`ONAIR_FLAG`='"+RDYesNo(panel_onair_flag)+"'";
     delete q;
-    q=new RDSqlQuery(sql);
-    delete q;
+    RDSqlQuery::apply(sql);
   }
 }
 

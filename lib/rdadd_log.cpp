@@ -104,19 +104,19 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   //
   switch(mode) {
   case RDLogFilter::NoFilter:
-    sql=QString("select NAME from SERVICES order by NAME");
+    sql=QString("select `NAME` from `SERVICES` order by `NAME`");
     break;
 
   case RDLogFilter::UserFilter:
-    sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
-      "order by SERVICE_NAME";
+    sql=QString("select `SERVICE_NAME` from `USER_SERVICE_PERMS` where ")+
+      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"' "+
+      "order by `SERVICE_NAME`";
     break;
 
   case RDLogFilter::StationFilter:
-    sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
-      "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" "+
-      "order by SERVICE_NAME";
+    sql=QString("select `SERVICE_NAME` from `SERVICE_PERMS` where ")+
+      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' "+
+      "order by `SERVICE_NAME`";
     break;
   }
   q=new RDSqlQuery(sql);

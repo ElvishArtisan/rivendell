@@ -2,7 +2,7 @@
 //
 // One-dimensional model for picking images
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,7 +31,7 @@ class RDImagePickerModel : public QAbstractListModel
   Q_OBJECT;
  public:
   RDImagePickerModel(const QString &tbl_name,const QString &cat_id_col,
-		     const QString &img_id_col,QObject *parent=0);
+		     QObject *parent=0);
   ~RDImagePickerModel();
   int categoryId() const;
   int imageId(int row) const;
@@ -52,7 +52,6 @@ class RDImagePickerModel : public QAbstractListModel
   void LoadRows(int cat_id,const QSize &img_size);
   QString c_table_name;
   QString c_category_column;
-  QString c_image_column;
   int c_category_id;
   QSize c_image_size;
   QList<QPixmap *> c_images;

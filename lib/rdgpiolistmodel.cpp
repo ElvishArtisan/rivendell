@@ -37,13 +37,13 @@ RDGpioListModel::RDGpioListModel(RDMatrix *mtx,RDMatrix::GpioType type,
   unsigned right=Qt::AlignRight|Qt::AlignVCenter;
 
   if(type==RDMatrix::GpioInput) {
-    d_table="GPIS";
+    d_table="`GPIS`";
 
     d_headers.push_back(tr("Gpi"));
     d_alignments.push_back(right);
   }
   else {
-    d_table="GPOS";
+    d_table="`GPOS`";
 
     d_headers.push_back(tr("Gpo"));
     d_alignments.push_back(right);
@@ -225,9 +225,9 @@ void RDGpioListModel::updateModel()
   RDSqlQuery *q=NULL;
   QString sql=sqlFields(true)+
     "where "+
-    d_table+".STATION_NAME=\""+RDEscapeString(d_mtx->station())+"\" && "+
-    d_table+QString().sprintf(".MATRIX=%d ",d_mtx->matrix())+
-    "order by "+d_table+".NUMBER ";
+    d_table+".`STATION_NAME`='"+RDEscapeString(d_mtx->station())+"' && "+
+    d_table+QString().sprintf(".`MATRIX`=%d ",d_mtx->matrix())+
+    "order by "+d_table+".`NUMBER` ";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     updateRow(true,q->value(1).toInt()-1,q);
@@ -239,9 +239,9 @@ void RDGpioListModel::updateModel()
   //
   sql=sqlFields(false)+
     "where "+
-    d_table+".STATION_NAME=\""+RDEscapeString(d_mtx->station())+"\" && "+
-    d_table+QString().sprintf(".MATRIX=%d ",d_mtx->matrix())+
-    "order by "+d_table+".NUMBER ";
+    d_table+".`STATION_NAME`='"+RDEscapeString(d_mtx->station())+"' && "+
+    d_table+QString().sprintf(".`MATRIX`=%d ",d_mtx->matrix())+
+    "order by "+d_table+".`NUMBER` ";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     updateRow(false,q->value(1).toInt()-1,q);
@@ -259,7 +259,7 @@ void RDGpioListModel::updateRowLine(int line)
     // The ON Values
     //
     QString sql=sqlFields(true)+
-      QString().sprintf("where ID=%u",d_ids.at(line));
+      QString().sprintf("where `ID`=%u",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(true,line,q);
@@ -270,7 +270,7 @@ void RDGpioListModel::updateRowLine(int line)
     // The OFF Values
     //
     sql=sqlFields(false)+
-      QString().sprintf("where ID=%u",d_ids.at(line));
+      QString().sprintf("where `ID`=%u",d_ids.at(line));
     q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(false,line,q);
@@ -328,17 +328,17 @@ void RDGpioListModel::updateRow(bool on_values,int row,RDSqlQuery *q)
 
 QString RDGpioListModel::sqlFields(bool on_fields) const
 {
-  QString cart_field=".OFF_MACRO_CART";
+  QString cart_field=".`OFF_MACRO_CART`";
   if(on_fields) {
-    cart_field=".MACRO_CART";
+    cart_field=".`MACRO_CART`";
   }
   QString sql=QString("select ")+
-    d_table+".ID,"+          // 00
-    d_table+".NUMBER,"+      // 01
+    d_table+".`ID`,"+          // 00
+    d_table+".`NUMBER`,"+      // 01
     d_table+cart_field+","   // 02
-    "CART.TITLE "+           // 03
-    "from "+d_table+" left join CART "+
-    "on "+d_table+cart_field+"=CART.NUMBER ";
+    "`CART`.`TITLE` "+           // 03
+    "from "+d_table+" left join `CART` "+
+    "on "+d_table+cart_field+"=`CART`.`NUMBER` ";
 
     return sql;
 }

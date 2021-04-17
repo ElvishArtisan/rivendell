@@ -42,12 +42,12 @@ RDEndpointListModel::RDEndpointListModel(RDMatrix *mtx,RDMatrix::Endpoint ep,
   d_alignments.push_back(left);
 
   if(ep==RDMatrix::Input) {
-    d_table_name="INPUTS";
+    d_table_name="`INPUTS`";
     d_headers.push_back(tr("Input"));
     d_alignments.push_back(left);
   }
   else {
-    d_table_name="OUTPUTS";
+    d_table_name="`OUTPUTS`";
     d_headers.push_back(tr("Output"));
     d_alignments.push_back(left);
   }
@@ -220,7 +220,7 @@ void RDEndpointListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("ID=%d ",d_ids.at(row.row()));
+      QString().sprintf("`ID`=%d ",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -250,9 +250,9 @@ void RDEndpointListModel::updateModel()
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
     "where "+
-    "STATION_NAME=\""+RDEscapeString(d_mtx->station())+"\" && "+
-    QString().sprintf("MATRIX=%d ",d_mtx->matrix())+
-    "order by "+d_table_name+".NUMBER ";
+    "`STATION_NAME`='"+RDEscapeString(d_mtx->station())+"' && "+
+    QString().sprintf("`MATRIX`=%d ",d_mtx->matrix())+
+    "order by "+d_table_name+".`NUMBER` ";
   beginResetModel();
   d_ids.clear();
   d_texts.clear();
@@ -281,7 +281,7 @@ void RDEndpointListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      d_table_name+QString().sprintf(".ID=%d ",d_ids.at(line));
+      d_table_name+QString().sprintf(".`ID`=%d ",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -348,29 +348,29 @@ QString RDEndpointListModel::sqlFields() const
   switch(d_mtx->type()) {
   case RDMatrix::LogitekVguest:
     sql=QString("select ")+
-      "ID,"+          // 00
-      "NUMBER,"+      // 01
-      "NAME,"+        // 02
-      "ENGINE_NUM,"+  // 03
-      "DEVICE_NUM "+  // 04
+      "`ID`,"+          // 00
+      "`NUMBER`,"+      // 01
+      "`NAME`,"+        // 02
+      "`ENGINE_NUM`,"+  // 03
+      "`DEVICE_NUM` "+  // 04
       "from "+d_table_name+" ";
     break;
 
   case RDMatrix::LiveWireLwrpAudio:
     sql=QString("select ")+
-      "ID,"+             // 00
-      "NUMBER,"+         // 01
-      "NAME,"+           // 02
-      "NODE_HOSTNAME,"+  // 03
-      "NODE_SLOT "+      // 04
+      "`ID`,"+             // 00
+      "`NUMBER`,"+         // 01
+      "`NAME`,"+           // 02
+      "`NODE_HOSTNAME`,"+  // 03
+      "`NODE_SLOT` "+      // 04
       "from "+d_table_name+" ";
     break;
 
   default:
     sql=QString("select ")+
-      "ID,"+      // 00
-      "NUMBER,"+  // 01
-      "NAME "+    // 02
+      "`ID`,"+      // 00
+      "`NUMBER`,"+  // 01
+      "`NAME` "+    // 02
       "from "+d_table_name+" ";
     break;
   }

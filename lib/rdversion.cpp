@@ -2,7 +2,7 @@
 //
 // Get / Set Version Numbers of Rivendell Components
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,7 +34,7 @@ int RDVersion::database()
 {
   int ver;
 
-  RDSqlQuery *q=new RDSqlQuery("select DB from VERSION");
+  RDSqlQuery *q=new RDSqlQuery("select `DB` from `VERSION`");
   if(!q->first()) {
     delete q;
     return 0;
@@ -47,10 +47,8 @@ int RDVersion::database()
 
 void RDVersion::setDatabase(int ver)
 {
-  RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update VERSION set DB=%d",ver);
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString().sprintf("update `VERSION` set `DB`=%d",ver);
+  RDSqlQuery::apply(sql);
 }

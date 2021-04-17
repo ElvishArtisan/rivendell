@@ -66,13 +66,14 @@ bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
   // Generate Spin Counts
   //
   sql=QString("select ")+
-    "CART_NUMBER,"+  // 00
-    "TITLE,"+        // 01
-    "ARTIST,"+       // 02
-    "ALBUM,LABEL "+  // 03
-    "from ELR_LINES where "+
-    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
-    "order by TITLE";
+    "`CART_NUMBER`,"+  // 00
+    "`TITLE`,"+        // 01
+    "`ARTIST`,"+       // 02
+    "`ALBUM`,"+       // 03
+    "`LABEL` "+       // 04
+    "from `ELR_LINES` where "+
+    "`SERVICE_NAME`='"+RDEscapeString(mixtable)+"' "+
+    "order by `TITLE`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     carts[q->value(0).toInt()]++;

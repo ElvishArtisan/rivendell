@@ -3,7 +3,7 @@
 // Functions for interfacing with web components using the
 // Common Gateway Interface (CGI) Standard 
 //
-//   (C) Copyright 1996-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 1996-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,9 +26,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
-#include <qdatetime.h>
-#include <qstringlist.h>
 
 #include "rdconf.h"
 #include "rddatetime.h"
@@ -686,13 +683,12 @@ long int RDAuthenticateLogin(const QString &username,const QString &passwd,
   timeval=time(&timeval);
   srandom(timeval);
   long int session=random();
-  QString sql=QString("insert into WEB_CONNECTIONS set ")+
-    QString().sprintf("SESSION_ID=%ld,",session)+
-    "LOGIN_NAME=\""+RDEscapeString(username)+"\","+
-    "IP_ADDRESS=\""+addr.toString()+"\","+
-    "TIME_STAMP=now()";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  delete q;
+  QString sql=QString("insert into `WEB_CONNECTIONS` set ")+
+    QString().sprintf("`SESSION_ID`=%ld,",session)+
+    "`LOGIN_NAME`='"+RDEscapeString(username)+"',"+
+    "`IP_ADDRESS`='"+addr.toString()+"',"+
+    "`TIME_STAMP`=now()";
+  RDSqlQuery::apply(sql);
 
   return session;
 }
@@ -708,17 +704,19 @@ QString RDAuthenticateSession(long int session_id,const QHostAddress &addr)
   //
   QDateTime current_datetime=
     QDateTime(QDate::currentDate(),QTime::currentTime());
-  sql=QString("delete from WEB_CONNECTIONS where ")+
-    "TIME_STAMP<\""+current_datetime.addSecs(-RD_WEB_SESSION_TIMEOUT).
-    toString("yyyy-MM-dd hh:mm:ss")+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("delete from `WEB_CONNECTIONS` where ")+
+    "`TIME_STAMP`<'"+current_datetime.addSecs(-RD_WEB_SESSION_TIMEOUT).
+    toString("yyyy-MM-dd hh:mm:ss")+"'";
+  RDSqlQuery::apply(sql);
 
   //
   // Check for Session
   //
-  sql=QString("select LOGIN_NAME,IP_ADDRESS from WEB_CONNECTIONS where ")+
-    QString().sprintf("SESSION_ID=%ld",session_id);
+  sql=QString("select ")+
+    "`LOGIN_NAME`,"+  // 00
+    "`IP_ADDRESS` "+  // 01
+    "from `WEB_CONNECTIONS` where "+
+    QString().sprintf("`SESSION_ID`=%ld",session_id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -734,11 +732,10 @@ QString RDAuthenticateSession(long int session_id,const QHostAddress &addr)
   //
   // Update Session
   //
-  sql=QString("update WEB_CONNECTIONS set ")+
-    "TIME_STAMP=\""+current_datetime.toString("yyyy-MM-dd hh:mm:dd")+"\" "+
-    QString().sprintf("where SESSION_ID=%ld",session_id);
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `WEB_CONNECTIONS` set ")+
+    "`TIME_STAMP`='"+current_datetime.toString("yyyy-MM-dd hh:mm:dd")+"' "+
+    QString().sprintf("where `SESSION_ID`=%ld",session_id);
+  RDSqlQuery::apply(sql);
 
   return name;
 }
@@ -746,9 +743,8 @@ QString RDAuthenticateSession(long int session_id,const QHostAddress &addr)
 
 void RDLogoutSession(long int session_id,const QHostAddress &addr)
 {
-  QString sql=QString().sprintf("select IP_ADDRESS from WEB_CONNECTIONS \
-                         where SESSION_ID=%ld",
-			session_id);
+  QString sql=QString("select `IP_ADDRESS` from `WEB_CONNECTIONS` ")+
+    QString().sprintf("where `SESSION_ID`=%ld",session_id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -759,10 +755,9 @@ void RDLogoutSession(long int session_id,const QHostAddress &addr)
     return;
   }
   delete q;
-  sql=QString().sprintf("delete from WEB_CONNECTIONS where SESSION_ID=%ld",
-			session_id);
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("delete from `WEB_CONNECTIONS` ")+
+    QString().sprintf("where `SESSION_ID`=%ld",session_id);
+  RDSqlQuery::apply(sql);
 }
 
 

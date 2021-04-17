@@ -2,7 +2,7 @@
 //
 //  Small library for handling common configuration file tasks
 // 
-//   (C) Copyright 1996-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 1996-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -24,18 +24,14 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
-
-#include <qdir.h>
-#include <qhostaddress.h>
-#include <qtextstream.h>
-#include <qvariant.h>
-#include <qmessagebox.h>
-#include <qdir.h>
-#define RDCONF_FILE_SEPARATOR '/'
 #include <unistd.h>
 #include <netdb.h>
 #include <sys/timex.h>
 #include <time.h>
+
+#include <QDir>
+
+#define RDCONF_FILE_SEPARATOR '/'
 
 #include "rddb.h"
 #include "rdconf.h"
@@ -738,44 +734,6 @@ int RDSetTimeLength(const QString &str)
   return res;
 }
 
-/*
-bool RDCopy(const QString &srcfile,const QString &destfile)
-{
-  int src_fd;
-  int dest_fd;
-  struct stat src_stat;
-  struct stat dest_stat;
-  char *buf=NULL;
-  int n;
-
-  if((src_fd=open((const char *)srcfile,O_RDONLY))<0) {
-    return false;
-  }
-  if(fstat(src_fd,&src_stat)<0) {
-    close(src_fd);
-    return false;
-  }
-  if((dest_fd=open((const char *)destfile,O_RDWR|O_CREAT,src_stat.st_mode))
-     <0) {
-    close(src_fd);
-    return false;
-  }
-  if(fstat(dest_fd,&dest_stat)<0) {
-    close(src_fd);
-    close(dest_fd);
-    return false;
-  }
-  buf=(char *)malloc(dest_stat.st_blksize);
-  while((n=read(src_fd,buf,dest_stat.st_blksize))==dest_stat.st_blksize) {
-    write(dest_fd,buf,dest_stat.st_blksize);
-  }
-  write(dest_fd,buf,n);
-  free(buf);
-  close(src_fd);
-  close(dest_fd);
-  return true;
-}
-*/
 
 bool RDCopy(const QString &srcfile,const QString &destfile)
 {
@@ -1056,26 +1014,6 @@ QTime RDUtcToLocal(const QTime &gmttime)
   return gmttime.addSecs(-RDTimeZoneOffset());
 }
 
-/*
-int RDTimeZoneOffset()
-{
-  time_t t=time(&t);
-  struct tm *tm=localtime(&t);
-  time_t local_time=3600*tm->tm_hour+60*tm->tm_min+tm->tm_sec;
-  tm=gmtime(&t);
-  time_t gmt_time=3600*tm->tm_hour+60*tm->tm_min+tm->tm_sec;
-
-  int offset=gmt_time-local_time;
-  if(offset>43200) {
-    offset=offset-86400;
-  }
-  if(offset<-43200) {
-    offset=offset+86400;
-  }
-
-  return offset;
-}
-*/
 
 QColor RDGetTextColor(const QColor &background_color)
 {

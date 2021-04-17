@@ -43,7 +43,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   setMaximumSize(sizeHint());
 
   feed_feed=new RDFeed(feed,rda->config(),this);
-  feed_image_model=new RDImagePickerModel("FEED_IMAGES","FEED_ID","ID",this);
+  feed_image_model=new RDImagePickerModel("FEED_IMAGES","FEED_ID",this);
   feed_image_model->setCategoryId(feed_feed->id());
 
   setWindowTitle("RDAdmin - "+tr("Feed: ")+feed);
@@ -199,7 +199,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   // Channel Image
   //
   feed_channel_image_box=
-    new RDImagePickerBox("FEED_IMAGES","FEED_ID","ID",this);
+    new RDImagePickerBox("FEED_IMAGES","FEED_ID",this);
   feed_channel_image_box->setCategoryId(feed_feed->id());
   feed_channel_image_label=new QLabel(tr("Image")+":",this);
   feed_channel_image_label->setFont(labelFont());
@@ -354,7 +354,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Default Item Image
   //
-  feed_item_image_box=new RDImagePickerBox("FEED_IMAGES","FEED_ID","ID",this);
+  feed_item_image_box=new RDImagePickerBox("FEED_IMAGES","FEED_ID",this);
   feed_item_image_box->setCategoryId(feed_feed->id());
   feed_item_image_label=new QLabel(tr("Default Item Image")+":",this);
   feed_item_image_label->setFont(labelFont());

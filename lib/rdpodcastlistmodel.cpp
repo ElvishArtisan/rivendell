@@ -228,7 +228,7 @@ void RDPodcastListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("PODCASTS.ID=%u",d_cast_ids.at(row.row()));
+      QString().sprintf("`PODCASTS`.`ID`=%u",d_cast_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -300,9 +300,9 @@ void RDPodcastListModel::updateModel()
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
     "where "+
-    QString().sprintf("PODCASTS.FEED_ID=%u ",d_feed_id)+
+    QString().sprintf("`PODCASTS`.`FEED_ID`=%u ",d_feed_id)+
     d_filter_sql+
-    " order by PODCASTS.ORIGIN_DATETIME desc";
+    " order by `PODCASTS`.`ORIGIN_DATETIME` desc";
   beginResetModel();
   d_cast_ids.clear();
   d_texts.clear();
@@ -324,7 +324,7 @@ void RDPodcastListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("PODCASTS.ID=%u",d_cast_ids.at(line));
+      QString().sprintf("`PODCASTS`.`ID`=%u",d_cast_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -426,23 +426,23 @@ void RDPodcastListModel::updateRow(int row,RDSqlQuery *q)
 QString RDPodcastListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "PODCASTS.ID,"+                   // 00
-    "PODCASTS.STATUS,"+               // 01
-    "PODCASTS.ITEM_TITLE,"+           // 02
-    "PODCASTS.EFFECTIVE_DATETIME,"+   // 03
-    "PODCASTS.EXPIRATION_DATETIME,"+  // 04
-    "PODCASTS.AUDIO_TIME,"+           // 05
-    "PODCASTS.ITEM_DESCRIPTION,"+     // 06
-    "FEEDS.KEY_NAME,"+                // 07
-    "PODCASTS.ITEM_CATEGORY,"+        // 08
-    "PODCASTS.ORIGIN_LOGIN_NAME,"+    // 09
-    "PODCASTS.ORIGIN_STATION,"+       // 10
-    "PODCASTS.ORIGIN_DATETIME,"+      // 11
-    "PODCASTS.SHA1_HASH,"+            // 12
-    "FEED_IMAGES.DATA "+              // 13
-    "from PODCASTS left join FEEDS "+
-    "on PODCASTS.FEED_ID=FEEDS.ID left join FEED_IMAGES "+
-    "on PODCASTS.ITEM_IMAGE_ID=FEED_IMAGES.ID ";
+    "`PODCASTS`.`ID`,"+                   // 00
+    "`PODCASTS`.`STATUS`,"+               // 01
+    "`PODCASTS`.`ITEM_TITLE`,"+           // 02
+    "`PODCASTS`.`EFFECTIVE_DATETIME`,"+   // 03
+    "`PODCASTS`.`EXPIRATION_DATETIME`,"+  // 04
+    "`PODCASTS`.`AUDIO_TIME`,"+           // 05
+    "`PODCASTS`.`ITEM_DESCRIPTION`,"+     // 06
+    "`FEEDS`.`KEY_NAME`,"+                // 07
+    "`PODCASTS`.`ITEM_CATEGORY`,"+        // 08
+    "`PODCASTS`.`ORIGIN_LOGIN_NAME`,"+    // 09
+    "`PODCASTS`.`ORIGIN_STATION`,"+       // 10
+    "`PODCASTS`.`ORIGIN_DATETIME`,"+      // 11
+    "`PODCASTS`.`SHA1_HASH`,"+            // 12
+    "`FEED_IMAGES`.`DATA` "+              // 13
+    "from `PODCASTS` left join `FEEDS` "+
+    "on `PODCASTS`.`FEED_ID`=`FEEDS`.`ID` left join `FEED_IMAGES` "+
+    "on `PODCASTS`.`ITEM_IMAGE_ID`=`FEED_IMAGES`.`ID` ";
 
     return sql;
 }

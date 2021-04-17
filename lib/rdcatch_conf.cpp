@@ -2,7 +2,7 @@
 //
 // Abstract an RDCatch Configuration.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rddb.h>
-#include <rdconf.h>
-#include <rdcatch_conf.h>
-#include <rdescape_string.h>
+#include "rddb.h"
+#include "rdconf.h"
+#include "rdcatch_conf.h"
+#include "rdescape_string.h"
 
 RDCatchConf::RDCatchConf(const QString &station)
 {
@@ -30,16 +30,16 @@ RDCatchConf::RDCatchConf(const QString &station)
 
   air_station=station;
 
-  sql=QString("select ID from RDCATCH where ")+
-    "STATION=\""+RDEscapeString(air_station)+"\"";
+  sql=QString("select `ID` from `RDCATCH` where ")+
+    "`STATION`='"+RDEscapeString(air_station)+"'";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
-    sql=QString("insert into RDCATCH set ")+
-      "STATION=\""+RDEscapeString(air_station)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
-  } else {
+    sql=QString("insert into `RDCATCH` set ")+
+      "`STATION`='"+RDEscapeString(air_station)+"'";
+    RDSqlQuery::apply(sql);
+  } 
+  else {
     delete q;
   }
 }
@@ -65,12 +65,10 @@ void RDCatchConf::setErrorRml(const QString &str) const
 
 void RDCatchConf::SetRow(const QString &param,const QString &value) const
 {
-  RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update RDCATCH set ")+
-    param+"=\""+RDEscapeString(value)+"\" where "+
-    "STATION=\""+RDEscapeString(air_station)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `RDCATCH` set `")+
+    param+"`='"+RDEscapeString(value)+"\" where "+
+    "`STATION`='"+RDEscapeString(air_station)+"'";
+  RDSqlQuery::apply(sql);
 }

@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Podcast
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,11 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <syslog.h>
-
 #include <curl/curl.h>
-
-#include <qurl.h>
 
 #include "rdapplication.h"
 #include "rdconf.h"
@@ -62,10 +58,11 @@ RDPodcast::RDPodcast(RDConfig *config,unsigned id)
   QString sql;
 
   podcast_id=id;
-  sql=QString().sprintf("select FEEDS.KEY_NAME from \
-                         PODCASTS left join FEEDS \
-                         on (PODCASTS.FEED_ID=FEEDS.ID) \
-                         where PODCASTS.ID=%u",id);
+  sql=QString("select ")+
+    "`FEEDS`.KEY_NAME "+
+    "from `PODCASTS` left join `FEEDS` "+
+    "on (`PODCASTS`.`FEED_ID`=`FEEDS`.`ID`) "+
+    QString().sprintf("where `PODCASTS`.`ID`=%u",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     podcast_keyname=q->value(0).toString();
@@ -533,9 +530,9 @@ void RDPodcast::SetRow(const QString &param,int value) const
 {
   QString sql;
 
-  sql=QString("update PODCASTS set ")+
-    param+QString().sprintf("=%d where ",value)+
-    QString().sprintf("ID=%u",podcast_id);
+  sql=QString("update `PODCASTS` set `")+
+    param+QString().sprintf("`=%d where ",value)+
+    QString().sprintf("`ID`=%u",podcast_id);
   RDSqlQuery::apply(sql);
 }
 
@@ -545,14 +542,14 @@ void RDPodcast::SetRow(const QString &param,const QString &value) const
   QString sql;
 
   if(value.isNull()) {
-    sql=QString("update PODCASTS set ")+
-      param+"=NULL where "+
-      QString().sprintf("ID=%u",podcast_id);
+    sql=QString("update `PODCASTS` set `")+
+      param+"`=NULL where "+
+      QString().sprintf("`ID`=%u",podcast_id);
   }
   else {
-    sql=QString("update PODCASTS set ")+
-      param+"=\""+RDEscapeString(value)+"\" where "+
-      QString().sprintf("ID=%u",podcast_id);
+    sql=QString("update `PODCASTS` set `")+
+      param+"`='"+RDEscapeString(value)+"' where "+
+      QString().sprintf("`ID`=%u",podcast_id);
   }
   RDSqlQuery::apply(sql);
 }
@@ -564,14 +561,14 @@ void RDPodcast::SetRow(const QString &param,const QDateTime &value,
   QString sql;
 
   if(value.isNull()) {
-    sql=QString("update PODCASTS set ")+
+    sql=QString("update `PODCASTS` set ")+
       param+"=NULL"+" where "+
-      QString().sprintf("ID=%u",podcast_id);
+      QString().sprintf("`ID`=%u",podcast_id);
   }
   else {
-    sql=QString("update PODCASTS set ")+
-      param+"="+RDCheckDateTime(value, format)+" where "+
-      QString().sprintf("ID=%u",podcast_id);
+    sql=QString("update `PODCASTS` set `")+
+      param+"`="+RDCheckDateTime(value, format)+" where "+
+      QString().sprintf("`ID`=%u",podcast_id);
   }
   RDSqlQuery::apply(sql);
 }

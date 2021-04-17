@@ -240,20 +240,20 @@ bool RDMarkerPlayer::setCut(unsigned cartnum,int cutnum)
   RDSetMixerOutputPort(rda->cae(),d_cards.first(),d_cae_stream,d_port);
 
   QString sql=QString("select ")+
-    "START_POINT,"+        // 00  
-    "END_POINT,"+          // 01
-    "TALK_START_POINT,"+   // 02
-    "TALK_END_POINT,"+     // 03
-    "SEGUE_START_POINT,"+  // 04
-    "SEGUE_END_POINT,"+    // 05
-    "HOOK_START_POINT,"+   // 06
-    "HOOK_END_POINT,"+     // 07
-    "FADEUP_POINT,"+       // 08
-    "FADEDOWN_POINT,"+     // 09
-    "SEGUE_GAIN,"+         // 10
-    "PLAY_GAIN "+          // 11
-    "from CUTS where "+
-    "CUT_NAME=\""+RDEscapeString(RDCut::cutName(cartnum,cutnum))+"\"";
+    "`START_POINT`,"+        // 00  
+    "`END_POINT`,"+          // 01
+    "`TALK_START_POINT`,"+   // 02
+    "`TALK_END_POINT`,"+     // 03
+    "`SEGUE_START_POINT`,"+  // 04
+    "`SEGUE_END_POINT`,"+    // 05
+    "`HOOK_START_POINT`,"+   // 06
+    "`HOOK_END_POINT`,"+     // 07
+    "`FADEUP_POINT`,"+       // 08
+    "`FADEDOWN_POINT`,"+     // 09
+    "`SEGUE_GAIN`,"+         // 10
+    "`PLAY_GAIN` "+          // 11
+    "from `CUTS` where "+
+    "`CUT_NAME`='"+RDEscapeString(RDCut::cutName(cartnum,cutnum))+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     for(int i=0;i<RDMarkerHandle::LastRole;i++) {

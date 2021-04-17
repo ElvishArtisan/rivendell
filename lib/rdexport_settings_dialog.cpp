@@ -311,10 +311,10 @@ void RDExportSettingsDialog::okData()
 
   if(lib_id>0) {
     sql=QString("select ")+
-      "ID "+  // 00
-      "from ENCODER_PRESETS where "+
-      "NAME=\""+RDEscapeString(lib_name_edit->text())+"\" && "+
-      QString().sprintf("ID!=%u",lib_id);
+      "`ID` "+  // 00
+      "from `ENCODER_PRESETS` where "+
+      "`NAME`='"+RDEscapeString(lib_name_edit->text())+"' && "+
+      QString().sprintf("`ID`!=%u",lib_id);
     q=new RDSqlQuery(sql);
     if(q->first()) {
       QMessageBox::information(this,lib_caption+" - "+tr("Duplicate Name"),

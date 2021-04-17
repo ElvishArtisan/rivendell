@@ -2,7 +2,7 @@
 //
 // Audio Format Settings
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,11 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <QObject>
-
-#include <rdsettings.h>
-#include <rddb.h>
-#include <rdescape_string.h>
+#include "rdsettings.h"
+#include "rddb.h"
+#include "rdescape_string.h"
 
 RDSettings::RDSettings()
 {
@@ -229,16 +227,16 @@ bool RDSettings::loadPreset(unsigned id)
   bool ret=false;
 
   sql=QString("select ")+
-    "NAME,"+                 // 00
-    "FORMAT,"+               // 01
-    "CHANNELS,"+             // 02
-    "SAMPLE_RATE,"+          // 03
-    "BIT_RATE,"+             // 04
-    "QUALITY,"+              // 05
-    "NORMALIZATION_LEVEL,"+  // 06
-    "AUTOTRIM_LEVEL "+       // 07
-    "from ENCODER_PRESETS where "+
-    QString().sprintf("ID=%u",id);
+    "`NAME`,"+                 // 00
+    "`FORMAT`,"+               // 01
+    "`CHANNELS`,"+             // 02
+    "`SAMPLE_RATE`,"+          // 03
+    "`BIT_RATE`,"+             // 04
+    "`QUALITY`,"+              // 05
+    "`NORMALIZATION_LEVEL`,"+  // 06
+    "`AUTOTRIM_LEVEL` "+       // 07
+    "from `ENCODER_PRESETS` where "+
+    QString().sprintf("`ID`=%u",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=true;
@@ -262,7 +260,7 @@ unsigned RDSettings::addPreset()
   QString sql;
 
   set_name=MakeNewName();
-  sql=QString("insert into ENCODER_PRESETS set ")+
+  sql=QString("insert into `ENCODER_PRESETS` set ")+
     SqlFields();
   return RDSqlQuery::run(sql).toUInt();
 }
@@ -272,9 +270,9 @@ bool RDSettings::savePreset(unsigned id) const
 {
   QString sql;
 
-  sql=QString("update ENCODER_PRESETS set ")+
+  sql=QString("update `ENCODER_PRESETS` set ")+
     SqlFields()+" where "+
-    QString().sprintf("ID=%u",id);
+    QString().sprintf("`ID`=%u",id);
 
   return RDSqlQuery::apply(sql);
 }
@@ -284,8 +282,8 @@ bool RDSettings::deletePreset(unsigned id) const
 {
   QString sql;
 
-  sql=QString("delete from ENCODER_PRESETS where ")+
-    QString().sprintf("ID=%u",id);
+  sql=QString("delete from `ENCODER_PRESETS` where ")+
+    QString().sprintf("`ID`=%u",id);
 
   return RDSqlQuery::apply(sql);
 }
@@ -378,14 +376,14 @@ void RDSettings::clear()
 
 QString RDSettings::SqlFields() const
 {
-  return QString("NAME=")+"\""+RDEscapeString(set_name)+"\","+
-    QString().sprintf("FORMAT=%u,",set_format)+
-    QString().sprintf("CHANNELS=%u,",set_channels)+
-    QString().sprintf("SAMPLE_RATE=%u,",set_sample_rate)+
-    QString().sprintf("BIT_RATE=%u,",set_bit_rate)+
-    QString().sprintf("QUALITY=%u,",set_quality)+
-    QString().sprintf("NORMALIZATION_LEVEL=%d,",set_normalization_level)+
-    QString().sprintf("AUTOTRIM_LEVEL=%d ",set_autotrim_level);
+  return QString("`NAME`=")+"\""+RDEscapeString(set_name)+"\","+
+    QString().sprintf("`FORMAT`=%u,",set_format)+
+    QString().sprintf("`CHANNELS`=%u,",set_channels)+
+    QString().sprintf("`SAMPLE_RATE`=%u,",set_sample_rate)+
+    QString().sprintf("`BIT_RATE`=%u,",set_bit_rate)+
+    QString().sprintf("`QUALITY`=%u,",set_quality)+
+    QString().sprintf("`NORMALIZATION_LEVEL`=%d,",set_normalization_level)+
+    QString().sprintf("`AUTOTRIM_LEVEL`=%d ",set_autotrim_level);
 }
 
 
@@ -399,9 +397,9 @@ QString RDSettings::MakeNewName() const
   
   while(!unique) {
     sql=QString("select ")+
-      "ID "+  // 00
-      "from ENCODER_PRESETS where "+
-      "NAME=\""+RDEscapeString(ret)+"\"";
+      "`ID` "+  // 00
+      "from `ENCODER_PRESETS` where "+
+      "`NAME`='"+RDEscapeString(ret)+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       ret="["+QObject::tr("new profile")+QString().sprintf(" %d]",++count);

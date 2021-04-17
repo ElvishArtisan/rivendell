@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,11 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <unistd.h>
-#include <syslog.h>
-
-#include <qapplication.h>
 
 #include "rdapplication.h"
 #include "rdconf.h"
@@ -2996,8 +2991,8 @@ void RDLogPlay::ClearChannel(int deckid)
 RDLogLine::TransType RDLogPlay::GetTransType(const QString &logname,int line)
 {
   RDLogLine::TransType trans=RDLogLine::Stop;
-  QString sql=QString("select TRANS_TYPE from LOG_LINES where ")+
-    "LOG_NAME=\""+RDEscapeString(logname)+"\" && "+
+  QString sql=QString("select `TRANS_TYPE` from `LOG_LINES` where ")+
+    "`LOG_NAME`='"+RDEscapeString(logname)+"' && "+
     QString().sprintf("COUNT=%d",line);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
@@ -3336,41 +3331,41 @@ void RDLogPlay::LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
     evt_sql=RDCheckDateTime(QDateTime(datetime.date(),
 	     logline->startTime(RDLogLine::Actual)), "yyyy-MM-dd hh:mm:ss");
   }
-  sql=QString("insert into ELR_LINES set ")+
-    "SERVICE_NAME=\""+RDEscapeString(serviceName())+"\","+
-    QString().sprintf("LENGTH=%d,",length)+
-    "LOG_NAME=\""+RDEscapeString(logName())+"\","+
-    QString().sprintf("LOG_ID=%d,",logline->id())+
-    QString().sprintf("CART_NUMBER=%u,",logline->cartNumber())+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
-    "EVENT_DATETIME="+evt_sql+","+
-    QString().sprintf("EVENT_TYPE=%d,",action)+
-    QString().sprintf("EVENT_SOURCE=%d,",logline->source())+
-    "EXT_START_TIME="+RDCheckDateTime(logline->extStartTime(),"hh:mm:ss")+","+
-    QString().sprintf("EXT_LENGTH=%d,",logline->extLength())+
-    "EXT_DATA=\""+RDEscapeString(logline->extData())+"\","+
-    "EXT_EVENT_ID=\""+RDEscapeString(logline->extEventId())+"\","+
-    "EXT_ANNC_TYPE=\""+RDEscapeString(logline->extAnncType())+"\","+
-    QString().sprintf("PLAY_SOURCE=%d,",src)+
-    QString().sprintf("CUT_NUMBER=%d,",logline->cutNumber())+
-    "EXT_CART_NAME=\""+RDEscapeString(logline->extCartName())+"\","+
-    "TITLE=\""+RDEscapeString(logline->title())+"\","+
-    "ARTIST=\""+RDEscapeString(logline->artist())+"\","+
-    "SCHEDULED_TIME="+RDCheckDateTime(logline->startTime(RDLogLine::Logged),
+  sql=QString("insert into `ELR_LINES` set ")+
+    "`SERVICE_NAME`='"+RDEscapeString(serviceName())+"',"+
+    QString().sprintf("`LENGTH`=%d,",length)+
+    "`LOG_NAME`='"+RDEscapeString(logName())+"',"+
+    QString().sprintf("`LOG_ID`=%d,",logline->id())+
+    QString().sprintf("`CART_NUMBER`=%u,",logline->cartNumber())+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
+    "`EVENT_DATETIME`="+evt_sql+","+
+    QString().sprintf("`EVENT_TYPE`=%d,",action)+
+    QString().sprintf("`EVENT_SOURCE`=%d,",logline->source())+
+    "`EXT_START_TIME`="+RDCheckDateTime(logline->extStartTime(),"hh:mm:ss")+","+
+    QString().sprintf("`EXT_LENGTH`=%d,",logline->extLength())+
+    "`EXT_DATA`='"+RDEscapeString(logline->extData())+"',"+
+    "`EXT_EVENT_ID`='"+RDEscapeString(logline->extEventId())+"',"+
+    "`EXT_ANNC_TYPE`='"+RDEscapeString(logline->extAnncType())+"',"+
+    QString().sprintf("`PLAY_SOURCE`=%d,",src)+
+    QString().sprintf("`CUT_NUMBER`=%d,",logline->cutNumber())+
+    "`EXT_CART_NAME`='"+RDEscapeString(logline->extCartName())+"',"+
+    "`TITLE`='"+RDEscapeString(logline->title())+"',"+
+    "`ARTIST`='"+RDEscapeString(logline->artist())+"',"+
+    "`SCHEDULED_TIME`="+RDCheckDateTime(logline->startTime(RDLogLine::Logged),
 				       "hh:mm:ss")+","+
-    "ISRC=\""+RDEscapeString(logline->isrc())+"\","+
-    "PUBLISHER=\""+RDEscapeString(logline->publisher())+"\","+
-    "COMPOSER=\""+RDEscapeString(logline->composer())+"\","+
-    QString().sprintf("USAGE_CODE=%d,",logline->usageCode())+
-    QString().sprintf("START_SOURCE=%d,",logline->startSource())+
-    "ONAIR_FLAG=\""+RDYesNo(onair_flag)+"\","+
-    "ALBUM=\""+RDEscapeString(logline->album())+"\","+
-    "LABEL=\""+RDEscapeString(logline->label())+"\","+
-    "USER_DEFINED=\""+RDEscapeString(logline->userDefined())+"\","+
-    "CONDUCTOR=\""+RDEscapeString(logline->conductor())+"\","+
-    "SONG_ID=\""+RDEscapeString(logline->songId())+"\","+
-    "DESCRIPTION=\""+RDEscapeString(logline->description())+"\","+
-    "OUTCUE=\""+RDEscapeString(logline->outcue())+"\","+
-    "ISCI=\""+RDEscapeString(logline->isci())+"\"";
+    "`ISRC`='"+RDEscapeString(logline->isrc())+"',"+
+    "`PUBLISHER`='"+RDEscapeString(logline->publisher())+"',"+
+    "`COMPOSER`='"+RDEscapeString(logline->composer())+"',"+
+    QString().sprintf("`USAGE_CODE`=%d,",logline->usageCode())+
+    QString().sprintf("`START_SOURCE`=%d,",logline->startSource())+
+    "`ONAIR_FLAG`='"+RDYesNo(onair_flag)+"',"+
+    "`ALBUM`='"+RDEscapeString(logline->album())+"',"+
+    "`LABEL`='"+RDEscapeString(logline->label())+"',"+
+    "`USER_DEFINED`='"+RDEscapeString(logline->userDefined())+"',"+
+    "`CONDUCTOR`='"+RDEscapeString(logline->conductor())+"',"+
+    "`SONG_ID`='"+RDEscapeString(logline->songId())+"',"+
+    "`DESCRIPTION`='"+RDEscapeString(logline->description())+"',"+
+    "`OUTCUE`='"+RDEscapeString(logline->outcue())+"',"+
+    "`ISCI`='"+RDEscapeString(logline->isci())+"'";
   RDSqlQuery::apply(sql);
 }

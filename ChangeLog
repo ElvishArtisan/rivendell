@@ -21454,3 +21454,6 @@
 	'RDLogListModel', 'RDReplicatorListModel', 'RDSchedCodeListModel',
 	'RDServiceListModel', 'RDUserListModel'.
 	* Removed the 'RDLogImportModel::updateRowLine()' method.
+2021-04-17 Fred Gleason <fredg@paravelsystems.com>
+	* Escaped all SQL identifiers in 'lib/'.
+	* Replaced " with ' delimiters in all SQL literal strings in 'lib/'.

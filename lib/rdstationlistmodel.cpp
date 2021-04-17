@@ -236,7 +236,7 @@ void RDStationListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      "where STATIONS.NAME=\""+RDEscapeString(d_hostnames.at(row.row()))+"\"";
+      "where `STATIONS`.`NAME`='"+RDEscapeString(d_hostnames.at(row.row()))+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -266,7 +266,7 @@ void RDStationListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields();
-  sql+="order by NAME ";
+  sql+="order by `NAME` ";
   beginResetModel();
   d_hostnames.clear();
   d_texts.clear();
@@ -298,7 +298,7 @@ void RDStationListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      "where NAME=\""+RDEscapeString(d_hostnames.at(line))+"\"";
+      "where `NAME`='"+RDEscapeString(d_hostnames.at(line))+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -440,24 +440,24 @@ void RDStationListModel::updateRow(int row,RDSqlQuery *q)
 QString RDStationListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "STATIONS.NAME,"+                    // 00
-    "STATIONS.DESCRIPTION,"+             // 01
-    "STATIONS.IPV4_ADDRESS,"+            // 02
-    "STATIONS.DEFAULT_NAME,"+            // 03
-    "USERS.LOCAL_AUTH,"+                 // 04
-    "STATIONS.SHORT_NAME,"+              // 05
-    "STATIONS.HTTP_STATION,"+            // 06
-    "STATIONS.CAE_STATION,"+             // 07
-    "STATIONS.REPORT_EDITOR_PATH,"+      // 08
-    "STATIONS.BROWSER_PATH,"+            // 09
-    "STATIONS.SYSTEM_MAINT,"+            // 10
-    "STATIONS.ENABLE_DRAGDROP,"+         // 11
-    "STATIONS.STATION_SCANNED,"+         // 12
-    "STATIONS.HPI_VERSION,"+             // 13
-    "STATIONS.JACK_VERSION,"+            // 14
-    "STATIONS.ALSA_VERSION "+            // 15
-    "from STATIONS left join USERS "+
-    "on STATIONS.DEFAULT_NAME=USERS.LOGIN_NAME ";
+    "`STATIONS`.`NAME`,"+                    // 00
+    "`STATIONS`.`DESCRIPTION`,"+             // 01
+    "`STATIONS`.`IPV4_ADDRESS`,"+            // 02
+    "`STATIONS`.`DEFAULT_NAME`,"+            // 03
+    "`USERS`.`LOCAL_AUTH`,"+                 // 04
+    "`STATIONS`.`SHORT_NAME`,"+              // 05
+    "`STATIONS`.`HTTP_STATION`,"+            // 06
+    "`STATIONS`.`CAE_STATION`,"+             // 07
+    "`STATIONS`.`REPORT_EDITOR_PATH`,"+      // 08
+    "`STATIONS`.`BROWSER_PATH`,"+            // 09
+    "`STATIONS`.`SYSTEM_MAINT`,"+            // 10
+    "`STATIONS`.`ENABLE_DRAGDROP`,"+         // 11
+    "`STATIONS`.`STATION_SCANNED`,"+         // 12
+    "`STATIONS`.`HPI_VERSION`,"+             // 13
+    "`STATIONS`.`JACK_VERSION`,"+            // 14
+    "`STATIONS`.`ALSA_VERSION` "+            // 15
+    "from `STATIONS` left join `USERS` "+
+    "on `STATIONS`.`DEFAULT_NAME`=`USERS`.`LOGIN_NAME` ";
 
     return sql;
 }

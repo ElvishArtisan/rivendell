@@ -194,9 +194,8 @@ void RDReplicatorListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      "where REPLICATORS.NAME=\""+
-      RDEscapeString(d_texts.at(row.row()).at(0).toString())+
-      "\"";
+      "where `REPLICATORS`.`NAME`='"+
+      RDEscapeString(d_texts.at(row.row()).at(0).toString())+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -225,7 +224,7 @@ void RDReplicatorListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields();
-  sql+="order by REPLICATORS.NAME ";
+  sql+="order by `REPLICATORS`.`NAME` ";
   beginResetModel();
   d_texts.clear();
   q=new RDSqlQuery(sql);
@@ -242,8 +241,8 @@ void RDReplicatorListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      "where REPLICATORS.NAME=\""+
-      RDEscapeString(d_texts.at(line).at(line).toString())+"\"";
+      "where `REPLICATORS`.`NAME`='"+
+      RDEscapeString(d_texts.at(line).at(line).toString())+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -277,11 +276,11 @@ void RDReplicatorListModel::updateRow(int row,RDSqlQuery *q)
 QString RDReplicatorListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "REPLICATORS.NAME,"+          // 00
-    "REPLICATORS.TYPE_ID,"+       // 01
-    "REPLICATORS.DESCRIPTION,"+   // 02
-    "REPLICATORS.STATION_NAME "+  // 03
-    "from REPLICATORS ";
+    "`REPLICATORS`.`NAME`,"+          // 00
+    "`REPLICATORS`.`TYPE_ID`,"+       // 01
+    "`REPLICATORS`.`DESCRIPTION`,"+   // 02
+    "`REPLICATORS`.`STATION_NAME` "+  // 03
+    "from `REPLICATORS` ";
 
     return sql;
 }

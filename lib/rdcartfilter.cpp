@@ -241,9 +241,9 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
     sql=sql.left(sql.length()-2);  // Remove the final "&&"
   }
   else {
-    sql+="CART.OWNER is null ";
+    sql+="`CART`.`OWNER` is null ";
   }
-  sql+="order by CART.NUMBER ";
+  sql+="order by `CART`.`NUMBER` ";
   if(d_showmatches_box->isChecked()) {
     sql+=QString().sprintf("limit %d ",RD_LIMITED_CART_SEARCH_QUANTITY);
   }
@@ -397,7 +397,7 @@ void RDCartFilter::changeUser()
 
   d_codes_box->clear();
   d_codes_box->insertItem(0,tr("ALL"));
-  sql=QString().sprintf("select CODE from SCHED_CODES order by CODE");
+  sql=QString().sprintf("select `CODE` from `SCHED_CODES` order by `CODE`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_codes_box->insertItem(d_codes_box->count(),q->value(0).toString());
@@ -515,23 +515,23 @@ QString RDCartFilter::phraseFilter(const QString &phrase, bool incl_cuts)
   }
   else {
     QString search=RDEscapeString(phrase);
-    sql=sql+QString(" ((CART.TITLE like \"%")+search+"%\")||"+
-      "(CART.ARTIST like \"%"+search+"%\")||"+
-      "(CART.CLIENT like \"%"+search+"%\")||"+
-      "(CART.AGENCY like \"%"+search+"%\")||"+
-      "(CART.ALBUM like \"%"+search+"%\")||"+
-      "(CART.LABEL like \"%"+search+"%\")||"+
-      "(CART.NUMBER like \"%"+search+"%\")||"+
-      "(CART.PUBLISHER like \"%"+search+"%\")||"+
-      "(CART.COMPOSER like \"%"+search+"%\")||"+
-      "(CART.CONDUCTOR like \"%"+search+"%\")||"+
-      "(CART.SONG_ID like \"%"+search+"%\")||"+
-      "(CART.USER_DEFINED like \"%"+search+"%\")";
+    sql=sql+QString(" ((`CART`.`TITLE` like '%")+search+"%')||"+
+      "(`CART`.`ARTIST` like '%"+search+"%')||"+
+      "(`CART`.`CLIENT` like '%"+search+"%')||"+
+      "(`CART`.`AGENCY` like '%"+search+"%')||"+
+      "(`CART`.`ALBUM` like '%"+search+"%')||"+
+      "(`CART`.`LABEL` like '%"+search+"%')||"+
+      "(`CART`.`NUMBER` like '%"+search+"%')||"+
+      "(`CART`.`PUBLISHER` like '%"+search+"%')||"+
+      "(`CART`.`COMPOSER` like '%"+search+"%')||"+
+      "(`CART`.`CONDUCTOR` like '%"+search+"%')||"+
+      "(`CART`.`SONG_ID` like '%"+search+"%')||"+
+      "(`CART`.`USER_DEFINED` like '%"+search+"%')";
     if(incl_cuts) {
-      sql+=QString("||(CUTS.ISCI like \"%")+search+"%\")"+
-	"||(CUTS.ISRC like \"%"+search+"%\")"+
-	"||(CUTS.DESCRIPTION like \"%"+search+"%\")"+
-	"||(CUTS.OUTCUE like \"%"+search+"%\")";
+      sql+=QString("||(CUTS.ISCI like '%")+search+"%')"+
+	"||(CUTS.ISRC like '%"+search+"%')"+
+	"||(CUTS.DESCRIPTION like '%"+search+"%')"+
+	"||(CUTS.OUTCUE like '%"+search+"%')";
     }
     sql+=") && ";
   }
@@ -547,12 +547,12 @@ QString RDCartFilter::groupFilter(const QString &group,
 
   if(group==tr("ALL")) {
     for(int i=1;i<groups.size();i++) {
-      sql+="(CART.GROUP_NAME=\""+RDEscapeString(groups.at(i))+"\")||";
+      sql+="(`CART`.`GROUP_NAME`=\""+RDEscapeString(groups.at(i))+"\")||";
     }
     sql=sql.left(sql.length()-2);
   }
   else {
-    sql+="CART.GROUP_NAME=\""+RDEscapeString(group)+"\"";
+    sql+="`CART`.`GROUP_NAME`=\""+RDEscapeString(group)+"\"";
   }
 
   sql+=") &&";
@@ -568,28 +568,28 @@ QString RDCartFilter::typeFilter(bool incl_audio,bool incl_macro,
 
   switch(mask) {
   case RDCart::Audio:
-    sql="((CART.TYPE=1)||(CART.TYPE=3)) &&";
+    sql="((`CART`.`TYPE`=1)||(`CART`.`TYPE`=3)) &&";
     break;
 
   case RDCart::Macro:
-    sql="(CART.TYPE=2) &&";
+    sql="(`CART`.`TYPE`=2) &&";
     break;
 
   case RDCart::All:
     if(incl_audio) {
       if(incl_macro) {
-	sql="((CART.TYPE=1)||(CART.TYPE=2)||(CART.TYPE=3)) &&";
+	sql="((`CART`.`TYPE`=1)||(`CART`.`TYPE`=2)||(`CART`.`TYPE`=3)) &&";
       }
       else {
-	sql="((CART.TYPE=1)||(CART.TYPE=3)) &&";
+	sql="((`CART`.`TYPE`=1)||(`CART`.`TYPE`=3)) &&";
       }
     }
     else {
       if(incl_macro) {
-	sql="(CART.TYPE=2) &&";
+	sql="(`CART`.`TYPE`=2) &&";
       }
       else {
-	sql="(CART.TYPE=0) &&";  // NEVER matches!
+	sql="(`CART`.`TYPE`=0) &&";  // NEVER matches!
       }
     }
     break;
@@ -606,12 +606,12 @@ void RDCartFilter::LoadUserGroups()
   d_group_box->clear();
   d_group_box->insertItem(0,tr("ALL"));
   if(d_user_is_admin) {
-    sql=QString("select NAME from GROUPS order by NAME ");
+    sql=QString("select `NAME` from `GROUPS` order by `NAME` ");
   }
   else {
-    sql=QString("select GROUP_NAME from USER_PERMS where ")+
-      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
-      "order by GROUP_NAME";
+    sql=QString("select `GROUP_NAME` from `USER_PERMS` where ")+
+      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"' "+
+      "order by `GROUP_NAME`";
   }
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -631,10 +631,10 @@ void RDCartFilter::LoadServiceGroups()
   d_group_box->clear();
   d_group_box->insertItem(0,tr("ALL"));
   sql=QString("select ")+
-    "GROUP_NAME "+
-    "from AUDIO_PERMS where "+
-    "SERVICE_NAME=\""+RDEscapeString(d_service)+"\" "+
-    "order by GROUP_NAME";
+    "`GROUP_NAME` "+
+    "from `AUDIO_PERMS` where "+
+    "`SERVICE_NAME`='"+RDEscapeString(d_service)+"' "+
+    "order by `GROUP_NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_group_box->insertItem(d_group_box->count(),q->value(0).toString());

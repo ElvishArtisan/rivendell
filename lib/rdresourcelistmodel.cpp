@@ -201,7 +201,7 @@ void RDResourceListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("ID=%d ",d_ids.at(row.row()));
+      QString().sprintf("`ID`=%d ",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -233,22 +233,21 @@ void RDResourceListModel::updateModel()
   if(d_type==RDMatrix::LogitekVguest) {
     sql=sqlFields()+
       "where "+
-      "STATION_NAME=\""+RDEscapeString(d_mtx->station())+"\" && "+
-      QString().sprintf("MATRIX_NUM=%d && ",d_mtx->matrix())+
-      QString().sprintf("VGUEST_TYPE=%u ",d_vguest_type)+
-      "order by NUMBER ";
+      "`STATION_NAME`='"+RDEscapeString(d_mtx->station())+"' && "+
+      QString().sprintf("`MATRIX_NUM`=%d && ",d_mtx->matrix())+
+      QString().sprintf("`VGUEST_TYPE`=%u ",d_vguest_type)+
+      "order by `NUMBER` ";
   }
   if(d_type==RDMatrix::SasUsi) {
     sql=sqlFields()+
       "where "+
-      "STATION_NAME=\""+RDEscapeString(d_mtx->station())+"\" && "+
-      QString().sprintf("MATRIX_NUM=%d ",d_mtx->matrix())+
-      "order by NUMBER ";
+      "`STATION_NAME`='"+RDEscapeString(d_mtx->station())+"' && "+
+      QString().sprintf("`MATRIX_NUM`=%d ",d_mtx->matrix())+
+      "order by `NUMBER` ";
   }
   beginResetModel();
   d_ids.clear();
   d_texts.clear();
-  //  printf("SQL: %s\n",sql.toUtf8().constData());
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_ids.push_back(-1);
@@ -265,7 +264,7 @@ void RDResourceListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("ID=%d ",d_ids.at(line));
+      QString().sprintf("`ID`=%d ",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -368,14 +367,14 @@ void RDResourceListModel::updateRow(int row,RDSqlQuery *q)
 QString RDResourceListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "ID,"+           // 00
-    "NUMBER,"+       // 01
-    "ENGINE_NUM,"+   // 02
-    "DEVICE_NUM,"+   // 03
-    "SURFACE_NUM,"+  // 04
-    "RELAY_NUM,"+    // 05
-    "BUSS_NUM "+     // 06
-    "from VGUEST_RESOURCES ";
+    "`ID`,"+           // 00
+    "`NUMBER`,"+       // 01
+    "`ENGINE_NUM`,"+   // 02
+    "`DEVICE_NUM`,"+   // 03
+    "`SURFACE_NUM`,"+  // 04
+    "`RELAY_NUM`,"+    // 05
+    "`BUSS_NUM` "+     // 06
+    "from `VGUEST_RESOURCES` ";
 
   return sql;
 }

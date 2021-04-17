@@ -194,7 +194,7 @@ void RDHostvarListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where ID=%d",d_ids.at(row.row()));
+      QString().sprintf("where `ID`=%d",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -223,8 +223,8 @@ void RDHostvarListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
-    " where STATION_NAME=\""+RDEscapeString(d_station_name)+"\" ";
-  sql+="order by NAME ";
+    " where `STATION_NAME`='"+RDEscapeString(d_station_name)+"' ";
+  sql+="order by `NAME` ";
   beginResetModel();
   d_ids.clear();
   d_texts.clear();
@@ -243,7 +243,7 @@ void RDHostvarListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where ID=%d ",d_ids.at(line));
+      QString().sprintf("where `ID`=%d ",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -274,11 +274,11 @@ void RDHostvarListModel::updateRow(int row,RDSqlQuery *q)
 QString RDHostvarListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "ID,"+        // 00
-    "NAME,"+      // 01
-    "VARVALUE,"+  // 02
-    "REMARK "+    // 03
-    "from HOSTVARS ";
+    "`ID`,"+        // 00
+    "`NAME`,"+      // 01
+    "`VARVALUE`,"+  // 02
+    "`REMARK` "+    // 03
+    "from `HOSTVARS` ";
 
   return sql;
 }

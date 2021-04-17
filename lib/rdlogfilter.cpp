@@ -2,7 +2,7 @@
 //
 // Filter widget for picking Rivendell logs.
 //
-//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,9 +23,6 @@
 #include "rd.h"
 #include "rdescape_string.h"
 #include "rdlogfilter.h"
-
-#include <QResizeEvent>
-#include "qlabel.h"
 
 RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,QWidget *parent)
    : QWidget(parent)
@@ -49,7 +46,7 @@ RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,QWidget *parent)
   switch(mode) {
   case RDLogFilter::NoFilter:
     filter_service_box->insertItem(filter_service_box->count(),tr("ALL"));
-    sql=QString("select NAME from SERVICES order by NAME");
+    sql=QString("select `NAME` from `SERVICES` order by `NAME`");
     q=new RDSqlQuery(sql);
     while(q->next()) {
       filter_service_box->
@@ -128,13 +125,13 @@ QString RDLogFilter::whereSql() const
   QString sql="";
   
   if(filter_service_box->currentIndex()!=0) {
-    sql+="&&(LOGS.SERVICE=\""+
-      RDEscapeString(filter_service_box->currentText())+"\")";
+    sql+="&&(`LOGS`.`SERVICE`='"+
+      RDEscapeString(filter_service_box->currentText())+"')";
   }
   else {
     sql+="&&(";
     for(int i=1;i<filter_service_box->count();i++) {
-      sql+="(SERVICE=\""+RDEscapeString(filter_service_box->itemText(i))+"\")||";
+      sql+="(`SERVICE`='"+RDEscapeString(filter_service_box->itemText(i))+"')||";
     }
     sql=sql.left(sql.length()-2);
     sql+=")";
@@ -142,17 +139,17 @@ QString RDLogFilter::whereSql() const
   QString filter=filter_filter_edit->text();
   if(!filter.isEmpty()) {
     if(filter_service_box->currentIndex()==0) {
-      sql+="&&((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
-      sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\")||";
-      sql+="(LOGS.SERVICE like \"%%"+RDEscapeString(filter)+"%%\"))";
+      sql+="&&((`LOGS`.`NAME` like '%%"+RDEscapeString(filter)+"%%')||";
+      sql+="(`LOGS`.`DESCRIPTION` like '%%"+RDEscapeString(filter)+"%%')||";
+      sql+="(`LOGS`.`SERVICE` like '%%"+RDEscapeString(filter)+"%%'))";
     }
     else {
-      sql+="&&((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
-      sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\"))";
+      sql+="&&((`LOGS`.`NAME` like '%%"+RDEscapeString(filter)+"%%')||";
+      sql+="(`LOGS`.`DESCRIPTION` like '%%"+RDEscapeString(filter)+"%%'))";
     }
   }
   if(filter_recent_check->isChecked()) {
-    sql+=QString().sprintf("order by LOGS.ORIGIN_DATETIME desc limit %d",
+    sql+=QString().sprintf("order by `LOGS`.`ORIGIN_DATETIME` desc limit %d",
  			   RD_LOGFILTER_LIMIT_QUAN);
   }
   
@@ -165,8 +162,8 @@ void RDLogFilter::changeUser()
   if(filter_filter_mode==RDLogFilter::UserFilter) {
     filter_service_box->clear();
     filter_service_box->insertItem(filter_service_box->count(),tr("ALL"));
-    QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
+    QString sql=QString("select `SERVICE_NAME` from `USER_SERVICE_PERMS` where ")+
+      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     while(q->next()) {
       filter_service_box->

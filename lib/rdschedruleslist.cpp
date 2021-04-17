@@ -3,7 +3,7 @@
 // A class for handling the scheduling rules for rdlogmanager/edit clocks
 //
 //   (C) Copyright 2005 Stefan Gabriel <stg@st-gabriel.de>
-//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,8 +19,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-
 #include "rdclock.h"
 #include "rddb.h"
 #include "rdescape_string.h"
@@ -32,7 +30,10 @@ RDSchedRulesList::RDSchedRulesList(QString clockname,RDConfig *config)
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("select CODE,DESCRIPTION from SCHED_CODES order by `CODE` asc"); 
+  sql=QString("select ")+
+    "`CODE`,"+
+    "`DESCRIPTION` "+
+    "from `SCHED_CODES` order by `CODE` asc"; 
 
   q=new RDSqlQuery(sql);
 
@@ -50,14 +51,14 @@ RDSchedRulesList::RDSchedRulesList(QString clockname,RDConfig *config)
     sched_code[i] = q->value(0).toString();
     description[i] = q->value(1).toString();
     sql=QString("select ")+
-      "MAX_ROW,"+      // 00
-      "MIN_WAIT,"+     // 01
-      "NOT_AFTER,"+    // 02
-      "OR_AFTER,"+     // 03
-      "OR_AFTER_II "+  // 04
-      "from RULE_LINES where "+
-      "CLOCK_NAME=\""+RDEscapeString(clockname)+"\" && "+
-      "CODE=\""+RDEscapeString(sched_code[i])+"\"";
+      "`MAX_ROW`,"+      // 00
+      "`MIN_WAIT`,"+     // 01
+      "`NOT_AFTER`,"+    // 02
+      "`OR_AFTER`,"+     // 03
+      "`OR_AFTER_II` "+  // 04
+      "from `RULE_LINES` where "+
+      "`CLOCK_NAME`='"+RDEscapeString(clockname)+"' && "+
+      "`CODE`='"+RDEscapeString(sched_code[i])+"'";
     q1=new RDSqlQuery(sql);
     if(q1->first()) {
       max_row[i] = q1->value(0).toInt();
@@ -89,7 +90,9 @@ RDSchedRulesList::~RDSchedRulesList()
   delete []description;
 }
 
-void RDSchedRulesList::insertItem(int pos,int maxrow,int minwait,QString notafter,QString orafter,QString orafterii)
+void RDSchedRulesList::insertItem(int pos,int maxrow,int minwait,
+				  QString notafter,QString orafter,
+				  QString orafterii)
 {
   max_row[pos] = maxrow;
   min_wait[pos] = minwait;
@@ -142,18 +145,19 @@ void RDSchedRulesList::Save(QString clockname)
 {
   QString sql;
 
-  sql=QString("delete from RULE_LINES where ")+
-    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+  sql=QString("delete from `RULE_LINES` where ")+
+    "`CLOCK_NAME`='"+RDEscapeString(clockname)+"'";
   RDSqlQuery::apply(sql);
+
   for (int i=0;i<itemcounter;i++) {
-    sql=QString("insert into RULE_LINES set ")+
-      "CLOCK_NAME=\""+RDEscapeString(clockname)+"\","+
-      "CODE=\""+RDEscapeString(sched_code[i])+"\","+
-      QString().sprintf("MAX_ROW=%d,",max_row[i])+
-      QString().sprintf("MIN_WAIT=%d,",min_wait[i])+
-      "NOT_AFTER=\""+RDEscapeString(not_after[i])+"\","+
-      "OR_AFTER=\""+RDEscapeString(or_after[i])+"\","+
-      "OR_AFTER_II=\""+RDEscapeString(or_after_II[i])+"\"";
+    sql=QString("insert into `RULE_LINES` set ")+
+      "`CLOCK_NAME`='"+RDEscapeString(clockname)+"',"+
+      "`CODE`='"+RDEscapeString(sched_code[i])+"',"+
+      QString().sprintf("`MAX_ROW`=%d,",max_row[i])+
+      QString().sprintf("`MIN_WAIT`=%d,",min_wait[i])+
+      "`NOT_AFTER`='"+RDEscapeString(not_after[i])+"',"+
+      "`OR_AFTER`='"+RDEscapeString(or_after[i])+"',"+
+      "`OR_AFTER_II`='"+RDEscapeString(or_after_II[i])+"'";
     RDSqlQuery::apply(sql);
   }
 }

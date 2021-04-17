@@ -204,7 +204,7 @@ void RDReplCartListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where REPL_CART_STATE.ID=%u",d_ids.at(row.row()));
+      QString().sprintf("where `REPL_CART_STATE`.`ID`=%u",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -251,10 +251,10 @@ void RDReplCartListModel::refreshTimeoutData()
   int line;
 
   sql=QString("select ")+
-    "ID,"+             // 00
-    "ITEM_DATETIME "+  // 01
-    "from REPL_CART_STATE where "+
-    "REPLICATOR_NAME=\""+RDEscapeString(d_replicator_name)+"\"";
+    "`ID`,"+             // 00
+    "`ITEM_DATETIME` "+  // 01
+    "from `REPL_CART_STATE` where "+
+    "`REPLICATOR_NAME`='"+RDEscapeString(d_replicator_name)+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if((line=d_ids.indexOf(q->value(0).toUInt()))>=0) {
@@ -278,8 +278,8 @@ void RDReplCartListModel::updateModel()
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
     "where "+
-    "REPLICATOR_NAME=\""+RDEscapeString(d_replicator_name)+"\" "+
-    "order by REPL_CART_STATE.CART_NUMBER ";
+    "`REPLICATOR_NAME`='"+RDEscapeString(d_replicator_name)+"' "+
+    "order by `REPL_CART_STATE`.`CART_NUMBER` ";
   beginResetModel();
   d_texts.clear();
   q=new RDSqlQuery(sql);
@@ -298,7 +298,7 @@ void RDReplCartListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where REPL_CART_STATE.ID=%u",d_ids.at(line));
+      QString().sprintf("where `REPL_CART_STATE`.`ID`=%u",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -345,14 +345,14 @@ void RDReplCartListModel::updateRow(int row,RDSqlQuery *q)
 QString RDReplCartListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "REPL_CART_STATE.ID,"+               // 00
-    "CART.TYPE,"+                        // 01
-    "REPL_CART_STATE.CART_NUMBER,"+      // 02
-    "CART.TITLE,"+                       // 03
-    "REPL_CART_STATE.ITEM_DATETIME,"+    // 04
-    "REPL_CART_STATE.POSTED_FILENAME "+  // 05
-    "from REPL_CART_STATE left join CART "+
-    "on REPL_CART_STATE.CART_NUMBER=CART.NUMBER ";
+    "`REPL_CART_STATE`.`ID`,"+               // 00
+    "`CART`.`TYPE`,"+                        // 01
+    "`REPL_CART_STATE`.`CART_NUMBER`,"+      // 02
+    "`CART`.`TITLE`,"+                       // 03
+    "`REPL_CART_STATE`.`ITEM_DATETIME`,"+    // 04
+    "`REPL_CART_STATE`.`POSTED_FILENAME` "+  // 05
+    "from `REPL_CART_STATE` left join `CART` "+
+    "on `REPL_CART_STATE`.`CART_NUMBER`=`CART`.`NUMBER` ";
 
   return sql;
 }

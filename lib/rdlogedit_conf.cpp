@@ -2,7 +2,7 @@
 //
 // Abstract an RDLogedit Configuration.
 //
-//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,10 +17,11 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-#include <rddb.h>
-#include <rdconf.h>
-#include <rdlogedit_conf.h>
-#include <rdescape_string.h>
+
+#include "rdconf.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdlogedit_conf.h"
 
 //
 // Global Classes
@@ -32,13 +33,13 @@ RDLogeditConf::RDLogeditConf(const QString &station)
   
   lib_station=station;
 
-  sql=QString("select ID from RDLOGEDIT where ")+
-    "STATION=\""+RDEscapeString(lib_station)+"\"";
+  sql=QString("select `ID` from `RDLOGEDIT` where ")+
+    "`STATION`='"+RDEscapeString(lib_station)+"'";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
-    sql=QString("insert into RDLOGEDIT set ")+
-      "STATION=\""+RDEscapeString(lib_station)+"\"";
+    sql=QString("insert into `RDLOGEDIT` set ")+
+      "`STATION`='"+RDEscapeString(lib_station)+"'";
     q=new RDSqlQuery(sql);
   }
   delete q;
@@ -293,13 +294,13 @@ void RDLogeditConf::getSettings(RDSettings *s) const
   RDSqlQuery *q;
 
   sql=QString("select ")+
-    "DEFAULT_CHANNELS,"+  // 00
-    "FORMAT,"+            // 02
-    "BITRATE,"+           // 03
-    "RIPPER_LEVEL,"+      // 04
-    "TRIM_THRESHOLD "+    // 05
-    "from RDLOGEDIT where "+
-    "STATION=\""+RDEscapeString(lib_station)+"\"";
+    "`DEFAULT_CHANNELS`,"+  // 00
+    "`FORMAT`,"+            // 02
+    "`BITRATE`,"+           // 03
+    "`RIPPER_LEVEL`,"+      // 04
+    "`TRIM_THRESHOLD` "+    // 05
+    "from `RDLOGEDIT` where "+
+    "`STATION`='"+RDEscapeString(lib_station)+"'";
   q=new RDSqlQuery(sql);
   s->clear();
   if(q->first()) {
@@ -318,7 +319,7 @@ void RDLogeditConf::getSettings(RDSettings *s) const
     s->setAutotrimLevel(q->value(4).toUInt());
   }
   delete q;
-  sql=QString("select SAMPLE_RATE from SYSTEM");
+  sql=QString("select `SAMPLE_RATE` from `SYSTEM`");
   q=new RDSqlQuery(sql);
   if(q->first()) {
     s->setSampleRate(q->value(0).toUInt());
@@ -332,9 +333,9 @@ void RDLogeditConf::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update RDLOGEDIT set ")+
-    param+QString().sprintf("=%d where ",value)+
-    "STATION=\""+RDEscapeString(lib_station)+"\"";
+  sql=QString().sprintf("update `RDLOGEDIT` set `")+
+    param+QString().sprintf("`=%d where ",value)+
+    "`STATION`='"+RDEscapeString(lib_station)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -345,9 +346,9 @@ void RDLogeditConf::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update RDLOGEDIT set ")+
-    param+QString().sprintf("=%d where ",value)+
-    "STATION=\""+RDEscapeString(lib_station)+"\"",
+  sql=QString("update `RDLOGEDIT` set `")+
+    param+QString().sprintf("`=%d where ",value)+
+    "`STATION`='"+RDEscapeString(lib_station)+"'",
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -358,9 +359,9 @@ void RDLogeditConf::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update RDLOGEDIT set ")+
-    param+"=\""+RDEscapeString(value)+"\" where "+
-    "STATION=\""+RDEscapeString(lib_station)+"\"",
+  sql=QString("update `RDLOGEDIT` set `")+
+    param+"`='"+RDEscapeString(value)+"' where "+
+    "`STATION`='"+RDEscapeString(lib_station)+"'",
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -371,9 +372,9 @@ void RDLogeditConf::SetRow(const QString &param,bool value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update RDLOGEDIT set ")+
-    param+"=\""+RDYesNo(value)+"\" where "+
-    "STATION=\""+RDEscapeString(lib_station)+"\"";
+  sql=QString("update `RDLOGEDIT` set `")+
+    param+"`='"+RDYesNo(value)+"' where "+
+    "`STATION`='"+RDEscapeString(lib_station)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 }

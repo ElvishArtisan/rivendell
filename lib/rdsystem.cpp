@@ -2,7 +2,7 @@
 //
 // System-wide Rivendell settings
 //
-//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,7 +48,7 @@ bool RDSystem::allowDuplicateCartTitles() const
   QString sql;
   RDSqlQuery *q;
 
-  sql="select DUP_CART_TITLES from SYSTEM";
+  sql="select `DUP_CART_TITLES` from `SYSTEM`";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=RDBool(q->value(0).toString());
@@ -61,12 +61,10 @@ bool RDSystem::allowDuplicateCartTitles() const
 void RDSystem::setAllowDuplicateCartTitles(bool state) const
 {
   QString sql;
-  RDSqlQuery *q;
 
-  sql=QString("update SYSTEM set ")+
-    "DUP_CART_TITLES=\""+RDYesNo(state)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `SYSTEM` set ")+
+    "`DUP_CART_TITLES`='"+RDYesNo(state)+"'";
+  RDSqlQuery::apply(sql);
 }
 
 
@@ -76,7 +74,7 @@ bool RDSystem::fixDuplicateCartTitles() const
   QString sql;
   RDSqlQuery *q;
 
-  sql="select FIX_DUP_CART_TITLES from SYSTEM";
+  sql="select `FIX_DUP_CART_TITLES` from `SYSTEM`";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=RDBool(q->value(0).toString());
@@ -89,12 +87,10 @@ bool RDSystem::fixDuplicateCartTitles() const
 void RDSystem::setFixDuplicateCartTitles(bool state) const
 {
   QString sql;
-  RDSqlQuery *q;
 
-  sql=QString("update SYSTEM set ")+
-    "FIX_DUP_CART_TITLES=\""+RDYesNo(state)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `SYSTEM` set ")+
+    "`FIX_DUP_CART_TITLES`='"+RDYesNo(state)+"'";
+  RDSqlQuery::apply(sql);
 }
 
 
@@ -102,7 +98,7 @@ unsigned RDSystem::maxPostLength() const
 {
   unsigned ret;
 
-  QString sql="select MAX_POST_LENGTH from SYSTEM";
+  QString sql="select `MAX_POST_LENGTH` from `SYSTEM`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toUInt();
@@ -117,9 +113,9 @@ unsigned RDSystem::maxPostLength() const
 
 void RDSystem::setMaxPostLength(unsigned bytes) const
 {
-  QString sql=QString().sprintf("update SYSTEM set MAX_POST_LENGTH=%u",bytes);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  delete q;
+  QString sql=
+    QString().sprintf("update `SYSTEM` set `MAX_POST_LENGTH`=%u",bytes);
+  RDSqlQuery::apply(sql);
 }
 
 
@@ -165,7 +161,7 @@ bool RDSystem::showUserList() const
   QString sql;
   RDSqlQuery *q;
 
-  sql="select SHOW_USER_LIST from SYSTEM";
+  sql="select `SHOW_USER_LIST` from `SYSTEM`";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=RDBool(q->value(0).toString());
@@ -178,12 +174,10 @@ bool RDSystem::showUserList() const
 void RDSystem::setShowUserList(bool state) const
 {
   QString sql;
-  RDSqlQuery *q;
 
-  sql=QString("update SYSTEM set ")+
-    "SHOW_USER_LIST=\""+RDYesNo(state)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `SYSTEM` set ")+
+    "`SHOW_USER_LIST`='"+RDYesNo(state)+"'";
+  RDSqlQuery::apply(sql);
 }
 
 
@@ -229,8 +223,8 @@ QString RDSystem::xml() const
 QVariant RDSystem::GetValue(const QString &field) const
 {
   QVariant ret;
-  QString sql=QString("select ")+
-    field+" from SYSTEM";
+  QString sql=QString("select `")+
+    field+"` from `SYSTEM`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0);
@@ -245,12 +239,12 @@ void RDSystem::SetRow(const QString &param,QString value) const
   QString sql;
 
   if(value.isNull()) {
-    sql=QString("update SYSTEM set ")+
-      param+"=NULL";
+    sql=QString("update `SYSTEM` set `")+
+      param+"`=NULL";
   }
   else {
-    sql=QString("update SYSTEM set ")+
-      param+"=\""+RDEscapeString(value)+"\"";
+    sql=QString("update `SYSTEM` set ")+
+      param+"`='"+RDEscapeString(value)+"'";
   }
   RDSqlQuery::apply(sql);
 }
@@ -260,7 +254,7 @@ void RDSystem::SetRow(const QString &param,int value) const
 {
   QString sql;
 
-  sql=QString("update SYSTEM set ")+
-    param+QString().sprintf("=%d",value);
+  sql=QString("update `SYSTEM` set `")+
+    param+QString().sprintf("`=%d",value);
   RDSqlQuery::apply(sql);
 }

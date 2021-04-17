@@ -67,15 +67,15 @@ bool RDReport::ExportNprSoundEx(const QString &filename,const QDate &startdate,
   // Roll Up Records
   //
   sql=QString("select ")+
-    "EVENT_DATETIME,"+  // 00
-    "LENGTH,"+          // 01
-    "TITLE,"+           // 02
-    "ARTIST,"+          // 03
-    "ALBUM,"+           // 04
-    "LABEL "+           // 05
-    "from ELR_LINES where "+
-    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
-    "order by EVENT_DATETIME";
+    "`EVENT_DATETIME`,"+  // 00
+    "`LENGTH`,"+          // 01
+    "`TITLE`,"+           // 02
+    "`ARTIST`,"+          // 03
+    "`ALBUM`,"+           // 04
+    "`LABEL` "+           // 05
+    "from `ELR_LINES` where "+
+    "`SERVICE_NAME`='"+RDEscapeString(mixtable)+"' "+
+    "order by `EVENT_DATETIME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     *strm << q->value(0).toDateTime().toString("MM/dd/yyyy hh:mm:ss")+"\t";

@@ -2,7 +2,7 @@
 //
 // A list container for Rivendell Groups
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,9 +42,9 @@ void RDGroupList::setServiceName(const QString &str)
 
     clear();
     sql=QString("select ")+
-      "GROUP_NAME "+  // 00
-      "from AUDIO_PERMS where "+
-      "SERVICE_NAME=\""+RDEscapeString(str)+"\"";
+      "`GROUP_NAME` "+  // 00
+      "from `AUDIO_PERMS` where "+
+      "`SERVICE_NAME`='"+RDEscapeString(str)+"'";
     q=new RDSqlQuery(sql);
     while(q->next()) {
       d_groups.push_back(QString(q->value(0).toString()));

@@ -63,21 +63,21 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
     air_fmt=QString().sprintf("%%%-uu ",cartDigits());
   }
   sql=QString("select ")+
-    "ELR_LINES.LENGTH,"+          // 00
-    "ELR_LINES.CART_NUMBER,"+     // 01
-    "ELR_LINES.EVENT_DATETIME,"+  // 02
-    "ELR_LINES.EVENT_TYPE,"+      // 03
-    "ELR_LINES.EXT_START_TIME,"+  // 04
-    "ELR_LINES.EXT_LENGTH,"+      // 05
-    "ELR_LINES.EXT_DATA,"+        // 06
-    "ELR_LINES.EXT_EVENT_ID,"+    // 07
-    "ELR_LINES.EXT_ANNC_TYPE,"+   // 08
-    "ELR_LINES.TITLE,"+           // 09
-    "ELR_LINES.EXT_CART_NAME "+   // 10
-    "from ELR_LINES left join CART "+
-    "on ELR_LINES.CART_NUMBER=CART.NUMBER where "+
-    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
-    "order by EVENT_DATETIME";
+    "`ELR_LINES`.`LENGTH,"+          // 00
+    "`ELR_LINES`.`CART_NUMBER`,"+     // 01
+    "`ELR_LINES`.`EVENT_DATETIME`,"+  // 02
+    "`ELR_LINES`.`EVENT_TYPE`,"+      // 03
+    "`ELR_LINES`.`EXT_START_TIME`,"+  // 04
+    "`ELR_LINES`.`EXT_LENGTH`,"+      // 05
+    "`ELR_LINES`.`EXT_DATA`,"+        // 06
+    "`ELR_LINES`.`EXT_EVENT_ID`,"+    // 07
+    "`ELR_LINES`.`EXT_ANNC_TYPE`,"+   // 08
+    "`ELR_LINES`.`TITLE`,"+           // 09
+    "`ELR_LINES`.`EXT_CART_NAME` "+   // 10
+    "from `ELR_LINES` left join `CART` "+
+    "on `ELR_LINES`.`CART_NUMBER`=`CART`.`NUMBER` where "+
+    "`SERVICE_NAME`='"+RDEscapeString(mixtable)+"' "+
+    "order by `EVENT_DATETIME`";
   q=new RDSqlQuery(sql);
 
   //

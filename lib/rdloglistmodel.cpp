@@ -204,8 +204,8 @@ void RDLogListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      "where NAME=\""+RDEscapeString(d_texts.at(row.row()).at(0).toString())+
-      "\"";
+      "where `NAME`='"+RDEscapeString(d_texts.at(row.row()).at(0).toString())+
+      "'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -244,10 +244,10 @@ void RDLogListModel::updateModel(const QString &filter_sql)
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
     "where "+
-    "(TYPE=0)&&"+        
-    "(LOG_EXISTS=\"Y\") "+
+    "(`TYPE`=0)&&"+        
+    "(`LOG_EXISTS`='Y') "+
     filter_sql+
-    "order by NAME ";
+    "order by `NAME` ";
   beginResetModel();
   d_texts.clear();
   d_icons.clear();
@@ -268,7 +268,7 @@ void RDLogListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      "where NAME=\""+RDEscapeString(d_texts.at(line).at(line).toString())+"\"";
+      "where `NAME`='"+RDEscapeString(d_texts.at(line).at(line).toString())+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -391,22 +391,22 @@ void RDLogListModel::updateRow(int row,RDSqlQuery *q)
 QString RDLogListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "NAME,"+               // 00
-    "DESCRIPTION,"+        // 01
-    "SERVICE,"+            // 02
-    "START_DATE,"+         // 03
-    "END_DATE,"+           // 04
-    "ORIGIN_USER,"+        // 05
-    "ORIGIN_DATETIME,"+    // 06
-    "COMPLETED_TRACKS,"+   // 07
-    "SCHEDULED_TRACKS,"+   // 08
-    "MUSIC_LINKS,"+        // 09
-    "MUSIC_LINKED,"+       // 10
-    "TRAFFIC_LINKS,"+      // 11
-    "TRAFFIC_LINKED,"+     // 12
-    "LINK_DATETIME,"+      // 13
-    "MODIFIED_DATETIME,"+  // 14
-    "AUTO_REFRESH "+       // 15
+    "`NAME`,"+               // 00
+    "`DESCRIPTION`,"+        // 01
+    "`SERVICE`,"+            // 02
+    "`START_DATE`,"+         // 03
+    "`END_DATE`,"+           // 04
+    "`ORIGIN_USER`,"+        // 05
+    "`ORIGIN_DATETIME`,"+    // 06
+    "`COMPLETED_TRACKS`,"+   // 07
+    "`SCHEDULED_TRACKS`,"+   // 08
+    "`MUSIC_LINKS`,"+        // 09
+    "`MUSIC_LINKED`,"+       // 10
+    "`TRAFFIC_LINKS`,"+      // 11
+    "`TRAFFIC_LINKED`,"+     // 12
+    "`LINK_DATETIME`,"+      // 13
+    "`MODIFIED_DATETIME`,"+  // 14
+    "`AUTO_REFRESH` "+       // 15
     "from LOGS ";
     return sql;
 }

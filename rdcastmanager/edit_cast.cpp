@@ -124,7 +124,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_explicit_label->setFont(labelFont());
   cast_item_explicit_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
-  cast_item_image_box=new RDImagePickerBox("FEED_IMAGES","FEED_ID","ID",this);
+  cast_item_image_box=new RDImagePickerBox("FEED_IMAGES","FEED_ID",this);
   cast_item_image_label=new QLabel(tr("Image")+":",this);
   cast_item_image_label->setFont(labelFont());
   cast_item_image_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

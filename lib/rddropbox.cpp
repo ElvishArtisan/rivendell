@@ -34,11 +34,11 @@ RDDropbox::RDDropbox(int id,const QString &stationname)
   box_id=id;
 
   if(id<0) {
-    sql=QString("insert into DROPBOXES set ")+
-      "STATION_NAME=\""+RDEscapeString(stationname)+"\"";
+    sql=QString("insert into `DROPBOXES` set ")+
+      "`STATION_NAME`='"+RDEscapeString(stationname)+"'";
     q=new RDSqlQuery(sql);
     delete q;
-    sql="select ID from DROPBOXES order by ID desc";
+    sql="select `ID` from `DROPBOXES` order by `ID` desc";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       box_id=q->value(0).toInt();
@@ -402,9 +402,9 @@ void RDDropbox::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update DROPBOXES set ")+
-    param+QString().sprintf("=%d where ",value)+
-    QString().sprintf("ID=%d",box_id);
+  sql=QString("update `DROPBOXES` set `")+
+    param+QString().sprintf("`=%d where ",value)+
+    QString().sprintf("`ID`=%d",box_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -415,9 +415,9 @@ void RDDropbox::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update DROPBOXES set ")+
-    param+QString().sprintf("=%u where ",value)+
-    QString().sprintf("ID=%d",box_id);
+  sql=QString("update `DROPBOXES` set `")+
+    param+QString().sprintf("`=%u where ",value)+
+    QString().sprintf("`ID`=%d",box_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -428,9 +428,9 @@ void RDDropbox::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update DROPBOXES set ")+
-    param+"=\""+RDEscapeString(value)+"\" where "+
-    QString().sprintf("ID=%d",box_id);
+  sql=QString("update `DROPBOXES` set `")+
+    param+"`='"+RDEscapeString(value)+"' where "+
+    QString().sprintf("`ID`=%d",box_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -441,9 +441,9 @@ void RDDropbox::SetRow(const QString &param,bool value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update DROPBOXES set ")+
-    param+"=\""+RDYesNo(value)+"\" where "+
-    QString().sprintf("ID=%d",box_id);
+  sql=QString("update `DROPBOXES` set `")+
+    param+"`='"+RDYesNo(value)+"' where "+
+    QString().sprintf("`ID`=%d",box_id);
   q=new RDSqlQuery(sql);
   delete q;
 }

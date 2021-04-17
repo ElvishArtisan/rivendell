@@ -2,7 +2,7 @@
 //
 // Abstract an RDLibrary Configuration.
 //
-//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rddb.h>
-#include <rdconf.h>
-#include <rdlibrary_conf.h>
-#include <rdescape_string.h>
+#include "rdconf.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdlibrary_conf.h"
 
 //
 // Global Classes
@@ -33,16 +33,16 @@ RDLibraryConf::RDLibraryConf(const QString &station)
 
   lib_station=station;
 
-  sql=QString("select ID from RDLIBRARY where ")+
-    "STATION=\""+RDEscapeString(lib_station)+"\"";
+  sql=QString("select `ID` from `RDLIBRARY` where ")+
+    "`STATION`='"+RDEscapeString(lib_station)+"'";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
-    sql=QString("insert into RDLIBRARY set ")+
-      "STATION=\""+RDEscapeString(lib_station)+"\"";
+    sql=QString("insert into `RDLIBRARY` set ")+
+      "`STATION`='"+RDEscapeString(lib_station)+"'";
     q=new RDSqlQuery(sql);
     delete q;
-    sql=QString("select LAST_INSERT_ID() from RDLIBRARY");
+    sql=QString("select LAST_INSERT_ID() from `RDLIBRARY`");
     q=new RDSqlQuery(sql);
     q->first();
   }
@@ -370,13 +370,13 @@ void RDLibraryConf::getSettings(RDSettings *s) const
   RDSqlQuery *q;
 
   sql=QString("select ")+
-    "DEFAULT_CHANNELS,"+  // 00
-    "DEFAULT_FORMAT,"+    // 01
-    "DEFAULT_BITRATE,"+   // 02
-    "RIPPER_LEVEL,"+      // 03
-    "TRIM_THRESHOLD "+    // 04
-    "from RDLIBRARY where "+
-    "STATION=\""+RDEscapeString(lib_station)+"\"";
+    "`DEFAULT_CHANNELS`,"+  // 00
+    "`DEFAULT_FORMAT`,"+    // 01
+    "`DEFAULT_BITRATE`,"+   // 02
+    "`RIPPER_LEVEL`,"+      // 03
+    "`TRIM_THRESHOLD` "+    // 04
+    "from `RDLIBRARY` where "+
+    "`STATION`='"+RDEscapeString(lib_station)+"'";
   q=new RDSqlQuery(sql);
   s->clear();
   if(q->first()) {
@@ -395,7 +395,7 @@ void RDLibraryConf::getSettings(RDSettings *s) const
     s->setAutotrimLevel(q->value(4).toUInt());
   }
   delete q;
-  sql=QString("select SAMPLE_RATE from SYSTEM");
+  sql=QString("select `SAMPLE_RATE` from `SYSTEM`");
   q=new RDSqlQuery(sql);
   if(q->first()) {
     s->setSampleRate(q->value(0).toUInt());
@@ -433,9 +433,9 @@ void RDLibraryConf::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update RDLIBRARY set ")+
-    param+QString().sprintf("=%d  where ",value)+
-    "STATION=\""+RDEscapeString(lib_station)+"\"";
+  sql=QString("update `RDLIBRARY` set `")+
+    param+QString().sprintf("`=%d  where ",value)+
+    "`STATION`='"+RDEscapeString(lib_station)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -446,9 +446,9 @@ void RDLibraryConf::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update RDLIBRARY set ")+
-    param+QString().sprintf("=%u where ",value)+
-    "STATION=\""+RDEscapeString(lib_station)+"\"";
+  sql=QString("update `RDLIBRARY` set `")+
+    param+QString().sprintf("`=%u where ",value)+
+    "`STATION`='"+RDEscapeString(lib_station)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -459,9 +459,9 @@ void RDLibraryConf::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update RDLIBRARY set ")+
-    param+"=\""+RDEscapeString(value)+"\" where "+
-    "STATION=\""+RDEscapeString(lib_station)+"\"";
+  sql=QString("update `RDLIBRARY` set `")+
+    param+"`='"+RDEscapeString(value)+"' where "+
+    "`STATION`='"+RDEscapeString(lib_station)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 }

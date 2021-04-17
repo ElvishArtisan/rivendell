@@ -68,16 +68,16 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
   }
 
   sql=QString("select ")+
-    "EVENT_DATETIME,"+  // 00
-    "TITLE,"+           // 01
-    "ARTIST,"+          // 02
-    "COMPOSER,"+        // 03
-    "LENGTH,"+          // 04
-    "ISRC,"+            // 05
-    "USAGE_CODE "+      // 06
-    "from ELR_LINES where "+
-    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
-    "order by EVENT_DATETIME"; 
+    "`EVENT_DATETIME`,"+  // 00
+    "`TITLE`,"+           // 01
+    "`ARTIST`,"+          // 02
+    "`COMPOSER`,"+        // 03
+    "`LENGTH`,"+          // 04
+    "`ISRC`,"+            // 05
+    "`USAGE_CODE` "+      // 06
+    "from `ELR_LINES` where "+
+    "`SERVICE_NAME`='"+RDEscapeString(mixtable)+"' "+
+    "order by `EVENT_DATETIME`"; 
   q=new RDSqlQuery(sql);
 
   //

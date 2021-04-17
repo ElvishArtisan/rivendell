@@ -188,7 +188,7 @@ bool RDOpenDb (int *schema,QString *err_str,RDConfig *config)
   q=new QSqlQuery(sql);
   if(q->first()) {
     delete q;
-    q=new QSqlQuery("select DB from VERSION");
+    q=new QSqlQuery("select `DB` from `VERSION`");
     if(q->first()) {
       *schema=q->value(0).toUInt();
     }

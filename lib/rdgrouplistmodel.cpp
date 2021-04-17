@@ -290,16 +290,16 @@ void RDGroupListModel::changeUser()
   d_visible_groups.push_back(tr("ALL"));
   if(d_user_is_admin) {
     sql=QString("select ")+
-      "NAME "+  // 00
-      "from GROUPS "+
-      "order by NAME";
+      "`NAME` "+  // 00
+      "from `GROUPS` "+
+      "order by `NAME`";
   }
   else {
     sql=QString("select ")+
-      "GROUP_NAME "+  // 00
-      "from USER_PERMS where "+
-      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
-      "order by GROUP_NAME";
+      "`GROUP_NAME` "+  // 00
+      "from `USER_PERMS` where "+
+      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"' "+
+      "order by `GROUP_NAME`";
   }
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -320,7 +320,7 @@ void RDGroupListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+filterSql();
-  sql+="order by NAME ";
+  sql+="order by `NAME` ";
   beginResetModel();
   d_texts.clear();
   d_colors.clear();
@@ -349,7 +349,7 @@ void RDGroupListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      "where NAME=\""+RDEscapeString(d_texts.at(line).at(line).toString())+"\"";
+      "where `NAME`='"+RDEscapeString(d_texts.at(line).at(line).toString())+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -414,18 +414,18 @@ void RDGroupListModel::updateRow(int row,RDSqlQuery *q)
 QString RDGroupListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "NAME,"+                // 00
-    "DESCRIPTION,"+         // 01
-    "DEFAULT_LOW_CART,"+    // 02
-    "DEFAULT_HIGH_CART,"+   // 03
-    "ENFORCE_CART_RANGE,"+  // 04
-    "DEFAULT_CART_TYPE,"+   // 05
-    "NOTIFY_EMAIL_ADDRESS," // 06
-    "REPORT_TFC,"+          // 07
-    "REPORT_MUS,"+          // 08
-    "ENABLE_NOW_NEXT,"+     // 09
-    "COLOR "+               // 10
-    "from GROUPS ";
+    "`NAME`,"+                // 00
+    "`DESCRIPTION`,"+         // 01
+    "`DEFAULT_LOW_CART`,"+    // 02
+    "`DEFAULT_HIGH_CART`,"+   // 03
+    "`ENFORCE_CART_RANGE`,"+  // 04
+    "`DEFAULT_CART_TYPE`,"+   // 05
+    "`NOTIFY_EMAIL_ADDRESS`," // 06
+    "`REPORT_TFC`,"+          // 07
+    "`REPORT_MUS`,"+          // 08
+    "`ENABLE_NOW_NEXT`,"+     // 09
+    "`COLOR` "+               // 10
+    "from `GROUPS` ";
 
     return sql;
 }
@@ -436,7 +436,7 @@ QString RDGroupListModel::filterSql() const
   QString sql=QString(" where (");
 
   for(int i=0;i<d_visible_groups.size();i++) {
-    sql+=QString("(GROUPS.NAME=\"")+RDEscapeString(d_visible_groups.at(i))+"\")||";
+    sql+=QString("(`GROUPS`.`NAME`='")+RDEscapeString(d_visible_groups.at(i))+"')||";
   }
   sql=sql.left(sql.length()-2);
   sql+=") ";

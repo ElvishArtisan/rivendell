@@ -18,10 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rddb.h>
-#include <rdconf.h>
-#include <rddeck.h>
-#include <rdescape_string.h>
+#include "rddb.h"
+#include "rdconf.h"
+#include "rddeck.h"
+#include "rdescape_string.h"
 
 //
 // Global Classes
@@ -35,18 +35,17 @@ RDDeck::RDDeck(QString station,unsigned channel,bool create)
   deck_channel=channel;
 
   if(create) {
-    sql=QString("select ID from DECKS where ")+
-      "(STATION_NAME=\""+RDEscapeString(deck_station)+"\")&&"+
-      QString().sprintf("(CHANNEL=%d)",deck_channel);
+    sql=QString("select `ID` from `DECKS` where ")+
+      "(`STATION_NAME`='"+RDEscapeString(deck_station)+"')&&"+
+      QString().sprintf("(`CHANNEL`=%d)",deck_channel);
     q=new RDSqlQuery(sql);
     if(q->size()!=1) {
       delete q;
       sql=QString().
-        sprintf("insert into DECKS set ")+
-	"STATION_NAME=\""+RDEscapeString(deck_station)+"\","+
-	QString().sprintf("CHANNEL=%d",deck_channel);
-      q=new RDSqlQuery(sql);
-      delete q;
+        sprintf("insert into `DECKS` set ")+
+	"`STATION_NAME`='"+RDEscapeString(deck_station)+"',"+
+	QString().sprintf("`CHANNEL`=%d",deck_channel);
+      RDSqlQuery::apply(sql);
     }
     else {
       delete q;
@@ -61,11 +60,11 @@ bool RDDeck::isActive() const
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString("select ID from DECKS where ")+
-    "(STATION_NAME=\""+RDEscapeString(deck_station)+"\")&&"+
-    QString().sprintf("(CHANNEL=%u)&&",deck_channel)+
-    "(CARD_NUMBER>=0)&&"+
-    "(PORT_NUMBER>=0)";
+  sql=QString("select `ID` from `DECKS` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(deck_station)+"')&&"+
+    QString().sprintf("(`CHANNEL`=%u)&&",deck_channel)+
+    "(`CARD_NUMBER`>=0)&&"+
+    "(`PORT_NUMBER`>=0)";
   q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;
@@ -217,9 +216,9 @@ QString RDDeck::switchMatrixName() const
   QString matrix_name;
   QString sql;
 
-  sql=QString("select NAME from MATRICES where ")+
-    "(STATION_NAME=\""+RDEscapeString(switchStation())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)",switchMatrix());
+  sql=QString("select `NAME` from `MATRICES` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(switchStation())+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)",switchMatrix());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     matrix_name=q->value(0).toString();
@@ -246,10 +245,10 @@ QString RDDeck::switchOutputName() const
   QString output_name;
   QString sql;
 
-  sql=QString("select NAME from OUTPUTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(switchStation())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",switchMatrix())+
-    QString().sprintf("(NUMBER=%d)",switchOutput());
+  sql=QString("select `NAME` from `OUTPUTS` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(switchStation())+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)&&",switchMatrix())+
+    QString().sprintf("(`NUMBER`=%d)",switchOutput());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output_name=q->value(0).toString();
@@ -283,9 +282,9 @@ int RDDeck::GetIntValue(const QString &field) const
   RDSqlQuery *q;
   int accum;
   
-  sql=QString("select ")+field+" from DECKS where "+
-    "(STATION_NAME=\""+RDEscapeString(deck_station)+"\")&&"+
-    QString().sprintf("(CHANNEL=%d)",deck_channel);
+  sql=QString("select `")+field+"` from `DECKS` where "+
+    "(`STATION_NAME`='"+RDEscapeString(deck_station)+"')&&"+
+    QString().sprintf("(`CHANNEL`=%d)",deck_channel);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toInt();
@@ -303,9 +302,9 @@ QString RDDeck::GetStringValue(const QString &field) const
   RDSqlQuery *q;
   QString accum;
   
-  sql=QString("select ")+field+" from DECKS where "+
-    "(STATION_NAME=\""+RDEscapeString(deck_station)+"\")&&"+
-    QString().sprintf("(CHANNEL=%d)",deck_channel);
+  sql=QString("select `")+field+"` from `DECKS` where "+
+    "(`STATION_NAME`='"+RDEscapeString(deck_station)+"')&&"+
+    QString().sprintf("(`CHANNEL`=%d)",deck_channel);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toString();
@@ -322,10 +321,10 @@ void RDDeck::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update DECKS set ")+
-    param+QString().sprintf("=%d where ",value)+
-    "(STATION_NAME=\""+RDEscapeString(deck_station)+"\")&&"+
-    QString().sprintf("(CHANNEL=%d)",deck_channel);
+  sql=QString("update `DECKS` set `")+
+    param+QString().sprintf("`=%d where ",value)+
+    "(`STATION_NAME`='"+RDEscapeString(deck_station)+"')&&"+
+    QString().sprintf("(`CHANNEL`=%d)",deck_channel);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -336,10 +335,10 @@ void RDDeck::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update DECKS set ")+
-    param+"=\""+RDEscapeString(value)+"\" where "+
-    "(STATION_NAME=\""+RDEscapeString(deck_station)+"\")&&"+
-    QString().sprintf("(CHANNEL=%d)",deck_channel);
+  sql=QString("update `DECKS` set `")+
+    param+"`='"+RDEscapeString(value)+"' where "+
+    "(`STATION_NAME`='"+RDEscapeString(deck_station)+"')&&"+
+    QString().sprintf("(`CHANNEL`=%d)",deck_channel);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -350,10 +349,10 @@ void RDDeck::SetRow(const QString &param,bool value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update DECKS set ")+
-    param+"=\""+RDYesNo(value)+"\" where "+
-    "(STATION_NAME=\""+RDEscapeString(deck_station)+"\")&&"+
-    QString().sprintf("(CHANNEL=%d)",deck_channel);
+  sql=QString("update `DECKS` set `")+
+    param+"`='"+RDYesNo(value)+"' where "+
+    "(`STATION_NAME`='"+RDEscapeString(deck_station)+"')&&"+
+    QString().sprintf("(`CHANNEL`=%d)",deck_channel);
   q=new RDSqlQuery(sql);
   delete q;
 }

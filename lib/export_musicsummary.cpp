@@ -48,13 +48,13 @@ bool RDReport::ExportMusicSummary(const QString &filename,
   QTextStream *strm=new QTextStream(file);
   strm->setCodec("UTF-8");
   sql=QString("select ")+
-    "ELR_LINES.ARTIST,"+  // 00
-    "ELR_LINES.TITLE,"+   // 01
-    "ELR_LINES.ALBUM "+   // 02
-    "from ELR_LINES left join CART "+
-    "on ELR_LINES.CART_NUMBER=CART.NUMBER where "+
-    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
-    "order by EVENT_DATETIME";
+    "`ELR_LINES`.`ARTIST`,"+  // 00
+    "`ELR_LINES`.`TITLE`,"+   // 01
+    "`ELR_LINES`.`ALBUM` "+   // 02
+    "from `ELR_LINES` left join `CART` "+
+    "on `ELR_LINES`.`CART_NUMBER`=`CART`.`NUMBER` where "+
+    "`SERVICE_NAME`='"+RDEscapeString(mixtable)+"' "+
+    "order by `EVENT_DATETIME`";
   q=new RDSqlQuery(sql);
 
   //

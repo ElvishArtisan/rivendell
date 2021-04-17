@@ -2,7 +2,7 @@
 //
 // Scheduler code editor dialog
 //
-//  (C) Copyright 2014-2019 Fred Gleason <fredg@paravelsystems.com>
+//  (C) Copyright 2014-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   Based on original code by Stefan Gabriel <stg@st-gabriel.de>
 //
@@ -119,7 +119,7 @@ int RDSchedCodesDialog::exec(QStringList *sched_codes,QStringList *remove_codes)
     } 
   }
        
-  sql=QString().sprintf("select CODE from SCHED_CODES");
+  sql=QString().sprintf("select `CODE` from `SCHED_CODES`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(codes_sel->destFindItem(q->value(0).toString())==0) {

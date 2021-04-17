@@ -2,7 +2,7 @@
 //
 // Functions for getting system status.
 //
-//   (C) Copyright 2016-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -24,9 +24,6 @@
 #include <errno.h>
 
 #include <QDir>
-#include <qsqlquery.h>
-#include <qstringlist.h>
-#include <qvariant.h>
 
 #include "rdapplication.h"
 #include "rdstatus.h"
@@ -85,7 +82,7 @@ bool RDDbValid(RDConfig *config,int *schema)
   db->setHostName(config->mysqlHostname());
   if(db->open()) {
     ret=true;
-    sql="select DB from VERSION";
+    sql="select `DB` from `VERSION`";
     q=new QSqlQuery(sql);
     if(q->first()) {
       *schema=q->value(0).toInt();

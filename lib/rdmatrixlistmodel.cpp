@@ -218,7 +218,7 @@ void RDMatrixListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("MATRICES.ID=%d ",d_ids.at(row.row()));
+      QString().sprintf("`MATRICES`.`ID`=%d ",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -248,8 +248,8 @@ void RDMatrixListModel::updateModel()
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
     "where "+
-    "STATION_NAME=\""+RDEscapeString(d_station_name)+"\" "+
-    "order by MATRICES.NAME ";
+    "`STATION_NAME`='"+RDEscapeString(d_station_name)+"' "+
+    "order by `MATRICES`.`NAME` ";
   beginResetModel();
   d_ids.clear();
   d_texts.clear();
@@ -277,7 +277,7 @@ void RDMatrixListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("MATRICES.ID=%d ",d_ids.at(line));
+      QString().sprintf("`MATRICES`.`ID`=%d ",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -321,15 +321,15 @@ void RDMatrixListModel::updateRow(int row,RDSqlQuery *q)
 QString RDMatrixListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "MATRICES.ID,"+       // 00
-    "MATRICES.NAME,"+     // 01
-    "MATRICES.MATRIX,"+   // 02
-    "MATRICES.TYPE,"+     // 03
-    "MATRICES.INPUTS,"+   // 04
-    "MATRICES.OUTPUTS,"+  // 05
-    "MATRICES.GPIS,"+     // 06
-    "MATRICES.GPOS "+     // 07
-    "from MATRICES ";
+    "`MATRICES`.`ID`,"+       // 00
+    "`MATRICES`.`NAME`,"+     // 01
+    "`MATRICES`.`MATRIX`,"+   // 02
+    "`MATRICES`.`TYPE`,"+     // 03
+    "`MATRICES`.`INPUTS`,"+   // 04
+    "`MATRICES`.`OUTPUTS`,"+  // 05
+    "`MATRICES`.`GPIS`,"+     // 06
+    "`MATRICES`.`GPOS` "+     // 07
+    "from `MATRICES` ";
 
     return sql;
 }

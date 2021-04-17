@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Report in 'results' format
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,18 +45,18 @@ bool RDReport::ExportResultsReport(const QString &filename,
   QTextStream *strm=new QTextStream(file);
   strm->setCodec("UTF-8");
   sql=QString("select ")+
-    "ELR_LINES.EVENT_DATETIME,"+  // 00
-    "ELR_LINES.EVENT_TYPE,"+      // 01
-    "ELR_LINES.LENGTH,"+          // 02
-    "ELR_LINES.CART_NUMBER,"+     // 03
-    "ELR_LINES.CUT_NUMBER,"+      // 04
-    "ELR_LINES.TITLE,"+           // 05
-    "ELR_LINES.ARTIST,"+          // 06
-    "ELR_LINES.EXT_START_TIME "+  // 07
-    "from ELR_LINES left join CART "+
-    "on ELR_LINES.CART_NUMBER=CART.NUMBER where "+
-    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
-    "order by EVENT_DATETIME";
+    "`ELR_LINES`.`EVENT_DATETIME`,"+  // 00
+    "`ELR_LINES`.`EVENT_TYPE`,"+      // 01
+    "`ELR_LINES`.`LENGTH`,"+          // 02
+    "`ELR_LINES`.`CART_NUMBER`,"+     // 03
+    "`ELR_LINES`.`CUT_NUMBER`,"+      // 04
+    "`ELR_LINES`.`TITLE`,"+           // 05
+    "`ELR_LINES`.`ARTIST`,"+          // 06
+    "`ELR_LINES`.`EXT_START_TIME` "+  // 07
+    "from `ELR_LINES` left join `CART` "+
+    "on `ELR_LINES`.`CART_NUMBER`=`CART.NUMBER` where "+
+    "`SERVICE_NAME`='"+RDEscapeString(mixtable)+"' "+
+    "order by `EVENT_DATETIME`";
   q=new RDSqlQuery(sql);
 
   //

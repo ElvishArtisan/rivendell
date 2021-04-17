@@ -355,17 +355,6 @@ RDCart::Type RDLibraryModel::cartType(const QModelIndex &index) const
   return d_cart_types.at(index.internalId()-1);
 }
 
-/*
-QString RDLibraryModel::cutName(const QModelIndex &index) const
-{
-  if(isCart(index)) {
-    return QString();
-  }
-  return RDCut::cutName(d_cart_numbers.at(index.internalId()-1),
-			d_cut_texts.at(index.internalId()-1).at(index.row()).
-			at(0).toString().right(3).toInt());
-}
-*/
 
 QString RDLibraryModel::cartOwnedBy(const QModelIndex &index)
 {
@@ -524,9 +513,9 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   //
   d_group_colors.clear();
   sql=QString("select ")+
-    "NAME,"+   // 00
-    "COLOR "+  // 01
-    "from GROUPS order by NAME";
+    "`NAME`,"+   // 00
+    "`COLOR` "+  // 01
+    "from `GROUPS` order by `NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_group_colors[q->value(0).toString()]=QColor(q->value(1).toString());
@@ -535,7 +524,6 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
 
   sql=sqlFields()+
     filter_sql;
-  //  printf("SQL: %s\n",sql.toUtf8().constData());
   beginResetModel();
   d_texts.clear();
   d_notes.clear();
@@ -571,7 +559,7 @@ void RDLibraryModel::updateCartLine(int cartline)
 {
   QString sql=sqlFields()+
     "where "+
-    "CART.NUMBER="+d_texts.at(cartline).at(0).toString();
+    "`CART`.`NUMBER`="+d_texts.at(cartline).at(0).toString();
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     updateRow(cartline,q);
@@ -719,40 +707,40 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
 QString RDLibraryModel::sqlFields() const
 {
 QString sql=QString("select ")+
-  "CART.NUMBER,"+             // 00
-  "CART.FORCED_LENGTH,"+      // 01
-  "CART.TITLE,"+              // 02
-  "CART.ARTIST,"+             // 03
-  "CART.ALBUM,"+              // 04
-  "CART.LABEL,"+              // 05
-  "CART.CLIENT,"+             // 06
-  "CART.AGENCY,"+             // 07
-  "CART.USER_DEFINED,"+       // 08
-  "CART.COMPOSER,"+           // 09
-  "CART.PUBLISHER,"+          // 10
-  "CART.CONDUCTOR,"+          // 11
-  "CART.GROUP_NAME,"+         // 12
-  "CART.START_DATETIME,"+     // 13
-  "CART.END_DATETIME,"+       // 14
-  "CART.TYPE,"+               // 15
-  "CART.CUT_QUANTITY,"+       // 16
-  "CART.LAST_CUT_PLAYED,"+    // 17
-  "CART.ENFORCE_LENGTH,"+     // 18
-  "CART.PRESERVE_PITCH,"+     // 19
-  "CART.LENGTH_DEVIATION,"+   // 20
-  "CART.OWNER,"+              // 21
-  "CART.VALIDITY,"+           // 22
-  "GROUPS.COLOR,"+            // 23
-  "CUTS.CUT_NAME,"+           // 24
-  "CUTS.START_POINT,"+        // 25
-  "CUTS.END_POINT,"+          // 26
-  "CUTS.TALK_START_POINT,"+   // 27
-  "CUTS.TALK_END_POINT,"+     // 28
-  "CUTS.DESCRIPTION,"+        // 29
-  "CART.NOTES "+              // 30
-  "from CART "+
-  "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
-  "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER ";
+  "`CART`.`NUMBER`,"+             // 00
+  "`CART`.`FORCED_LENGTH`,"+      // 01
+  "`CART`.`TITLE`,"+              // 02
+  "`CART`.`ARTIST`,"+             // 03
+  "`CART`.`ALBUM`,"+              // 04
+  "`CART`.`LABEL`,"+              // 05
+  "`CART`.`CLIENT`,"+             // 06
+  "`CART`.`AGENCY`,"+             // 07
+  "`CART`.`USER_DEFINED`,"+       // 08
+  "`CART`.`COMPOSER`,"+           // 09
+  "`CART`.`PUBLISHER`,"+          // 10
+  "`CART`.`CONDUCTOR`,"+          // 11
+  "`CART`.`GROUP_NAME`,"+         // 12
+  "`CART`.`START_DATETIME`,"+     // 13
+  "`CART`.`END_DATETIME`,"+       // 14
+  "`CART`.`TYPE`,"+               // 15
+  "`CART`.`CUT_QUANTITY`,"+       // 16
+  "`CART`.`LAST_CUT_PLAYED`,"+    // 17
+  "`CART`.`ENFORCE_LENGTH`,"+     // 18
+  "`CART`.`PRESERVE_PITCH`,"+     // 19
+  "`CART`.`LENGTH_DEVIATION`,"+   // 20
+  "`CART`.`OWNER`,"+              // 21
+  "`CART`.`VALIDITY`,"+           // 22
+  "`GROUPS`.`COLOR`,"+            // 23
+  "`CUTS`.`CUT_NAME`,"+           // 24
+  "`CUTS`.`START_POINT`,"+        // 25
+  "`CUTS`.`END_POINT`,"+          // 26
+  "`CUTS`.`TALK_START_POINT`,"+   // 27
+  "`CUTS`.`TALK_END_POINT`,"+     // 28
+  "`CUTS`.`DESCRIPTION`,"+        // 29
+  "`CART`.`NOTES` "+              // 30
+  "from `CART` "+
+  "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` "+
+  "left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` ";
 
   return sql;
 }

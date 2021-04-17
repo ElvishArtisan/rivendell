@@ -182,11 +182,11 @@ void RDDiscModel::setCutName(const QModelIndex &row,const QString &cutname)
   }
   else {
     QString sql=QString("select ")+
-      "CART.TITLE,"+        // 00
-      "CUTS.DESCRIPTION "+  // 01
-      "from CART left join CUTS "+
-      "on CART.NUMBER=CUTS.CART_NUMBER "+
-      "where CUTS.CUT_NAME=\""+RDEscapeString(cutname)+"\"";
+      "`CART`.`TITLE`,"+        // 00
+      "`CUTS`.`DESCRIPTION` "+  // 01
+      "from `CART` left join `CUTS` "+
+      "on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` "+
+      "where `CUTS`.`CUT_NAME`='"+RDEscapeString(cutname)+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       d_texts[row.row()][5]=q->value(0).toString()+"->"+q->value(1).toString();

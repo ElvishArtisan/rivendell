@@ -373,16 +373,16 @@ RDMarkerView::RDMarkerView(int width,int height,QWidget *parent)
 
   d_wave_factory=new RDWaveFactory(RDWaveFactory::MultiTrack);
 
-  d_pointer_fields.push_back("START_POINT");
-  d_pointer_fields.push_back("END_POINT");
-  d_pointer_fields.push_back("TALK_START_POINT");
-  d_pointer_fields.push_back("TALK_END_POINT");
-  d_pointer_fields.push_back("SEGUE_START_POINT");
-  d_pointer_fields.push_back("SEGUE_END_POINT");
-  d_pointer_fields.push_back("HOOK_START_POINT");
-  d_pointer_fields.push_back("HOOK_END_POINT");
-  d_pointer_fields.push_back("FADEUP_POINT");
-  d_pointer_fields.push_back("FADEDOWN_POINT");
+  d_pointer_fields.push_back("`START_POINT`");
+  d_pointer_fields.push_back("`END_POINT`");
+  d_pointer_fields.push_back("`TALK_START_POINT`");
+  d_pointer_fields.push_back("`TALK_END_POINT`");
+  d_pointer_fields.push_back("`SEGUE_START_POINT`");
+  d_pointer_fields.push_back("`SEGUE_END_POINT`");
+  d_pointer_fields.push_back("`HOOK_START_POINT`");
+  d_pointer_fields.push_back("`HOOK_END_POINT`");
+  d_pointer_fields.push_back("`FADEUP_POINT`");
+  d_pointer_fields.push_back("`FADEDOWN_POINT`");
 
   //
   // The Main Mouse Menu
@@ -764,15 +764,15 @@ void RDMarkerView::save()
     sql+=d_pointer_fields.at(i)+QString().sprintf("=%d,",d_pointers[i]);
   }
   if(d_no_segue_fade) {
-    sql+="SEGUE_GAIN=0,";
+    sql+="`SEGUE_GAIN`=0,";
   }
   else {
-    sql+=QString().sprintf("SEGUE_GAIN=%d,",RD_FADE_DEPTH);
+    sql+=QString().sprintf("`SEGUE_GAIN`=%d,",RD_FADE_DEPTH);
   }
-  sql+=QString().sprintf("PLAY_GAIN=%d ",100*d_play_gain);
+  sql+=QString().sprintf("`PLAY_GAIN`=%d ",100*d_play_gain);
   sql+=QString(" where ")+
-    "CUT_NAME=\""+RDEscapeString(RDCut::cutName(d_cart_number,d_cut_number))+
-    "\"";
+    "`CUT_NAME`='"+RDEscapeString(RDCut::cutName(d_cart_number,d_cut_number))+
+    "'";
   RDSqlQuery::apply(sql);
   d_has_unsaved_changes=false;
 }
@@ -1170,12 +1170,12 @@ bool RDMarkerView::LoadCutData()
 
   sql=QString("select ")+
     d_pointer_fields.join(",")+","+  // 00 - 09
-    "CHANNELS,"+                     // 10
-    "SEGUE_GAIN,"+                   // 11
-    "PLAY_GAIN "+                    // 12
-    "from CUTS where "+
-    "CUT_NAME=\""+
-    RDEscapeString(RDCut::cutName(d_cart_number,d_cut_number))+"\"";
+    "`CHANNELS`,"+                     // 10
+    "`SEGUE_GAIN`,"+                   // 11
+    "`PLAY_GAIN` "+                    // 12
+    "from `CUTS` where "+
+    "`CUT_NAME`='"+
+    RDEscapeString(RDCut::cutName(d_cart_number,d_cut_number))+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=true;

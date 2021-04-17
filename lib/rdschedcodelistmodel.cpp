@@ -189,9 +189,8 @@ void RDSchedCodeListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      "where CODE=\""+
-      RDEscapeString(d_texts.at(row.row()).at(0).toString())+
-      "\"";
+      "where `CODE`='"+
+      RDEscapeString(d_texts.at(row.row()).at(0).toString())+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -220,7 +219,7 @@ void RDSchedCodeListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields();
-  sql+="order by CODE ";
+  sql+="order by `CODE` ";
   beginResetModel();
   d_texts.clear();
 
@@ -244,7 +243,7 @@ void RDSchedCodeListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      "where CODE=\""+RDEscapeString(d_texts.at(line).at(line).toString())+"\"";
+      "where `CODE`='"+RDEscapeString(d_texts.at(line).at(line).toString())+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -271,9 +270,9 @@ void RDSchedCodeListModel::updateRow(int row,RDSqlQuery *q)
 QString RDSchedCodeListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "CODE,"+         // 00
-    "DESCRIPTION "+  // 01
-    "from SCHED_CODES ";
+    "`CODE`,"+         // 00
+    "`DESCRIPTION` "+  // 01
+    "from `SCHED_CODES` ";
 
     return sql;
 }

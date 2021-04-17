@@ -194,7 +194,7 @@ void RDNodeListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("ID=%u",d_ids.at(row.row()));
+      QString().sprintf("`ID`=%u",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -223,9 +223,9 @@ void RDNodeListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
-    "where STATION_NAME=\""+RDEscapeString(d_mtx->station())+"\" && "+
-    QString().sprintf("MATRIX=%d ",d_mtx->matrix())+
-    "order by DESCRIPTION ";
+    "where `STATION_NAME`='"+RDEscapeString(d_mtx->station())+"' && "+
+    QString().sprintf("`MATRIX`=%d ",d_mtx->matrix())+
+    "order by `DESCRIPTION` ";
   beginResetModel();
   d_texts.clear();
   q=new RDSqlQuery(sql);
@@ -244,7 +244,7 @@ void RDNodeListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("ID=%u",d_ids.at(line));
+      QString().sprintf("`ID`=%u",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -275,11 +275,11 @@ void RDNodeListModel::updateRow(int row,RDSqlQuery *q)
 QString RDNodeListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "ID,"            // 00
-    "DESCRIPTION,"+  // 01
-    "HOSTNAME,"+     // 02
-    "BASE_OUTPUT "   // 03
-    "from SWITCHER_NODES ";
+    "`ID`,"            // 00
+    "`DESCRIPTION`,"+  // 01
+    "`HOSTNAME`,"+     // 02
+    "`BASE_OUTPUT` "   // 03
+    "from `SWITCHER_NODES` ";
 
     return sql;
 }
