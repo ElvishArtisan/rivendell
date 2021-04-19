@@ -44,7 +44,7 @@ RDAudioPort::RDAudioPort(QString station,int card)
     "`PORT_NUMBER`,"+  // 00
     "`LEVEL`,"+        // 01
     "`TYPE`,"+         // 02
-    "`MODE `"+         // 03
+    "`MODE` "+         // 03
     "from `AUDIO_INPUTS` where "+
     "`STATION_NAME`='"+RDEscapeString(port_station)+"' && "+
     QString().sprintf("`CARD_NUMBER`=%d",port_card);
@@ -60,7 +60,7 @@ RDAudioPort::RDAudioPort(QString station,int card)
 
   sql=QString("select ")+
     "`PORT_NUMBER`,"+  // 00
-    "`LEVEL `"+        // 01
+    "`LEVEL` "+        // 01
     "from `AUDIO_OUTPUTS` where "+
     "`STATION_NAME`='"+RDEscapeString(port_station)+"' && "+
     QString().sprintf("`CARD_NUMBER`=%d",port_card);

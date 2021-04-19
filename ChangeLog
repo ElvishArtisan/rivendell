@@ -21471,3 +21471,5 @@
 	* Escaped all SQL identifiers in 'cae/'.
 	* Replaced " with ' delimiters in all SQL literal strings in
 	'cae/'.
+2021-04-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regression in 'RDAudioPorts' that caused SQL errors.
