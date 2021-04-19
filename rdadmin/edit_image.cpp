@@ -2,7 +2,7 @@
 //
 // View a pixmap image and modify its metadata
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -102,17 +102,17 @@ int EditImage::exec(int img_id)
   c_image_id=img_id;
 
   sql=QString("select ")+
-    "FEED_IMAGES.DESCRIPTION,"+     // 00
-    "FEED_IMAGES.FILE_EXTENSION,"+  // 01
-    "FEED_IMAGES.WIDTH,"+           // 02
-    "FEED_IMAGES.HEIGHT,"+          // 03
-    "FEED_IMAGES.DEPTH,"+           // 04
-    "FEED_IMAGES.DATA,"+            // 05
-    "FEED_IMAGES.FEED_ID,"+         // 06
-    "FEEDS.BASE_URL "+              // 07
-    "from FEED_IMAGES left join FEEDS "+
-    "on FEED_IMAGES.FEED_ID=FEEDS.ID where "+
-    QString().sprintf("FEED_IMAGES.ID=%d",img_id);
+    "`FEED_IMAGES`.`DESCRIPTION`,"+     // 00
+    "`FEED_IMAGES`.`FILE_EXTENSION`,"+  // 01
+    "`FEED_IMAGES`.`WIDTH`,"+           // 02
+    "`FEED_IMAGES`.`HEIGHT`,"+          // 03
+    "`FEED_IMAGES`.`DEPTH`,"+           // 04
+    "`FEED_IMAGES`.`DATA`,"+            // 05
+    "`FEED_IMAGES`.`FEED_ID`,"+         // 06
+    "`FEEDS`.`BASE_URL` "+              // 07
+    "from `FEED_IMAGES` left join `FEEDS` "+
+    "on `FEED_IMAGES`.`FEED_ID`=`FEEDS`.`ID` where "+
+    QString().sprintf("`FEED_IMAGES`.`ID`=%d",img_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     c_description_edit->setText(q->value(0).toString());
@@ -130,8 +130,6 @@ int EditImage::exec(int img_id)
     c_image_label->setPixmap(QPixmap::fromImage(c_image.
 						scaled(fsize,
 						       Qt::KeepAspectRatio)));
-    //    resize(EDIT_IMAGE_WIDTH_OFFSET+fsize.width(),
-    //	   EDIT_IMAGE_HEIGHT_OFFSET+fsize.height());
     resize(sizeHint());
   }
   delete q;
@@ -142,9 +140,9 @@ int EditImage::exec(int img_id)
 
 void EditImage::okData()
 {
-  QString sql=QString("update FEED_IMAGES set ")+
-    "DESCRIPTION=\""+RDEscapeString(c_description_edit->text())+"\" "+
-    QString().sprintf("where ID=%d",c_image_id);
+  QString sql=QString("update `FEED_IMAGES` set ")+
+    "`DESCRIPTION`='"+RDEscapeString(c_description_edit->text())+"' "+
+    QString().sprintf("where `ID`=%d",c_image_id);
   RDSqlQuery::apply(sql);
    
   done(true);

@@ -183,16 +183,16 @@ void ListReports::DeleteReport(QString rptname)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("delete from REPORTS where ")+
-    "NAME=\""+RDEscapeString(rptname)+"\"";
+  sql=QString("delete from `REPORTS` where ")+
+    "`NAME`='"+RDEscapeString(rptname)+"'";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString("delete from REPORT_SERVICES where ")+
-    "REPORT_NAME=\""+RDEscapeString(rptname)+"\"";
+  sql=QString("delete from `REPORT_SERVICES` where ")+
+    "`REPORT_NAME`='"+RDEscapeString(rptname)+"'";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString("delete from REPORT_STATIONS where ")+
-    "REPORT_NAME=\""+RDEscapeString(rptname)+"\"";
+  sql=QString("delete from `REPORT_STATIONS` where ")+
+    "`REPORT_NAME`='"+RDEscapeString(rptname)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -205,7 +205,7 @@ void ListReports::RefreshList(QString rptname)
   int count=0;
 
   list_box->clear();
-  q=new RDSqlQuery("select NAME from REPORTS");
+  q=new RDSqlQuery("select `NAME` from `REPORTS`");
   while (q->next()) {
     list_box->insertItem(list_box->count(),q->value(0).toString());
     if(rptname==q->value(0).toString()) {

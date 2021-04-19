@@ -162,9 +162,9 @@ void TestImport::importData()
   }
   test_events_model->refresh();
 
-  QString sql=QString("delete from IMPORTER_LINES where ")+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
-    QString().sprintf("PROCESS_ID=%u",getpid());
+  QString sql=QString("delete from `IMPORTER_LINES` where ")+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+    QString().sprintf("`PROCESS_ID`=%u",getpid());
   //  printf("IMPORTER_LINES cleanup SQL: %s\n",(const char *)sql);
   RDSqlQuery::apply(sql);
 }

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Gpi
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-#include <qpainter.h>
+#include <QMessageBox>
 
 #include <rdapplication.h>
 #include <rdcart_dialog.h>
@@ -36,10 +35,8 @@ EditGpi::EditGpi(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Text Validator
@@ -161,10 +158,6 @@ EditGpi::EditGpi(QWidget *parent)
   button->setFont(buttonFont());
   button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  //
-  // Load Data
-  //
 }
 
 
@@ -184,22 +177,22 @@ int EditGpi::exec(RDMatrix::GpioType type,int id)
 {
   edit_id=id;
   edit_type=type;
-  edit_table="GPIS";
+  edit_table="`GPIS`";
   if(type==RDMatrix::GpioOutput) {
-    edit_table="GPOS";
+    edit_table="`GPOS`";
   }
 
   //
   // ON Values
   //
   QString sql=QString("select ")+
-    edit_table+".NUMBER,"+      // 00
-    edit_table+".MACRO_CART,"+  // 01
-    "CART.TITLE "+              // 02
+    edit_table+".`NUMBER`,"+      // 00
+    edit_table+".`MACRO_CART`,"+  // 01
+    "`CART.TITLE` "+              // 02
     "from "+edit_table+" "+
-    "left join CART "+
-    "on "+edit_table+".MACRO_CART=CART.NUMBER where "+
-    edit_table+QString().sprintf(".ID=%d",id);
+    "left join `CART` "+
+    "on "+edit_table+".`MACRO_CART`=`CART`.`NUMBER` where "+
+    edit_table+QString().sprintf(".`ID`=%d",id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     setWindowTitle("RDAdmin - "+tr("Edit GPI")+
@@ -219,13 +212,13 @@ int EditGpi::exec(RDMatrix::GpioType type,int id)
   // OFF Values
   //
   sql=QString("select ")+
-    edit_table+".NUMBER,"+      // 00
-    edit_table+".OFF_MACRO_CART,"+  // 01
-    "CART.TITLE "+              // 02
+    edit_table+".`NUMBER`,"+      // 00
+    edit_table+".`OFF_MACRO_CART`,"+  // 01
+    "`CART`.`TITLE` "+              // 02
     "from "+edit_table+" "+
-    "left join CART "+
-    "on "+edit_table+".OFF_MACRO_CART=CART.NUMBER where "+
-    edit_table+QString().sprintf(".ID=%d",id);
+    "left join `CART` "+
+    "on "+edit_table+".`OFF_MACRO_CART`=`CART`.`NUMBER` where "+
+    edit_table+QString().sprintf(".`ID`=%d",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(1).toUInt()>0) {
@@ -238,15 +231,6 @@ int EditGpi::exec(RDMatrix::GpioType type,int id)
       edit_offdescription_edit->setText("");
     }
   }
-
-  /*
-  if(*edit_offcart>0) {
-    RDCart *rdcart=new RDCart(*offcart);
-    edit_offmacro_edit->setText(QString().sprintf("%06d",*offcart));
-    edit_offdescription_edit->setText(rdcart->title());
-    delete rdcart;
-  }
-  */
 
   return QDialog::exec();
 }
@@ -327,9 +311,9 @@ void EditGpi::okData()
   }
 
   QString sql=QString("update ")+edit_table+" set "+
-    QString().sprintf("MACRO_CART=%u,",oncart)+
-    QString().sprintf("OFF_MACRO_CART=%u ",offcart)+
-    QString().sprintf("where ID=%d",edit_id);
+    QString().sprintf("`MACRO_CART`=%u,",oncart)+
+    QString().sprintf("`OFF_MACRO_CART`=%u ",offcart)+
+    QString().sprintf("where `ID`=%d",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

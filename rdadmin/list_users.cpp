@@ -20,7 +20,7 @@
 
 #include <math.h>
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rdcart.h>
 #include <rdescape_string.h>
@@ -168,9 +168,9 @@ void ListUsers::deleteData()
   // Check for default user assignments
   //
   sql=QString("select ")+
-    "NAME "+  // 00
-    "from STATIONS where "+
-    "DEFAULT_NAME=\""+RDEscapeString(username)+"\"";
+    "`NAME` "+  // 00
+    "from `STATIONS` where "+
+    "`DEFAULT_NAME`='"+RDEscapeString(username)+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     str=tr("This user is set as the default user for the following hosts:\n\n");
@@ -195,29 +195,29 @@ void ListUsers::deleteData()
   //
   // Delete RSS Feed Perms
   //
-  sql=QString("delete from FEED_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(username)+"\"";
+  sql=QString("delete from `FEED_PERMS` where ")+
+    "`USER_NAME`='"+RDEscapeString(username)+"'";
   RDSqlQuery::apply(sql);
   
   //
   // Delete Member User Perms
   //
-  sql=QString("delete from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(username)+"\"";
+  sql=QString("delete from `USER_PERMS` where ")+
+    "`USER_NAME`='"+RDEscapeString(username)+"'";
   RDSqlQuery::apply(sql);
   
   //
   // Delete from User List
   //
-  sql=QString("delete from USERS where ")+
-    "LOGIN_NAME=\""+RDEscapeString(username)+"\"";
+  sql=QString("delete from `USERS` where ")+
+    "`LOGIN_NAME`='"+RDEscapeString(username)+"'";
   RDSqlQuery::apply(sql);
 
   //
   // Delete from Cached Web Connections
   //
-  sql=QString("delete from WEB_CONNECTIONS where ")+
-    "LOGIN_NAME=\""+RDEscapeString(username)+"\"";
+  sql=QString("delete from `WEB_CONNECTIONS` where ")+
+    "`LOGIN_NAME`='"+RDEscapeString(username)+"'";
   RDSqlQuery::apply(sql);
 
   list_users_model->removeUser(username);

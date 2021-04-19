@@ -134,8 +134,8 @@ void RenameGroup::okData()
     return;
   }
 
-  sql=QString("select NAME from GROUPS where ")+
-    "NAME=\""+RDEscapeString(group_newname_edit->text())+"\"";
+  sql=QString("select `NAME` from `GROUPS` where ")+
+    "`NAME`='"+RDEscapeString(group_newname_edit->text())+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(QMessageBox::question(this,"RDAdmin - "+tr("Group Exists"),
@@ -153,88 +153,78 @@ void RenameGroup::okData()
   //
   // Update Cart List
   //
-  sql=QString("update CART set ")+
-    "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
-    "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `CART` set ")+
+    "`GROUP_NAME`='"+RDEscapeString(group_newname_edit->text())+"' where "+
+    "`GROUP_NAME`='"+RDEscapeString(group_name_edit->text())+"'";
+  RDSqlQuery::apply(sql);
 
   //
   // Update LogManager Events
   //
-  sql=QString("update EVENTS set ")+
-    "SCHED_GROUP=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
-    "SCHED_GROUP=\""+RDEscapeString(group_name_edit->text())+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `EVENTS` set ")+
+    "`SCHED_GROUP`='"+RDEscapeString(group_newname_edit->text())+"' where "+
+    "`SCHED_GROUP`='"+RDEscapeString(group_name_edit->text())+"'";
+  RDSqlQuery::apply(sql);
 
   //
   // Update Replicators
   //
-  sql=QString("update REPLICATOR_MAP set ")+
-    "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
-    "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"",
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `REPLICATOR_MAP` set ")+
+    "`GROUP_NAME`='"+RDEscapeString(group_newname_edit->text())+"' where "+
+    "`GROUP_NAME`='"+RDEscapeString(group_name_edit->text())+"'";
+  RDSqlQuery::apply(sql);
 
   //
   // Update Dropboxes
   //
-  sql=QString("update DROPBOXES set ")+
-    "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
-    "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `DROPBOXES` set ")+
+    "`GROUP_NAME`='"+RDEscapeString(group_newname_edit->text())+"' where "+
+    "`GROUP_NAME`='"+RDEscapeString(group_name_edit->text())+"'";
+  RDSqlQuery::apply(sql);
 
   //
   // Update Group List
   //
   if(!merging) {
-    sql=QString("update GROUPS set ")+
-      "NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
-      "NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    sql=QString("update `GROUPS` set ")+
+      "`NAME`='"+RDEscapeString(group_newname_edit->text())+"' where "+
+      "`NAME`='"+RDEscapeString(group_name_edit->text())+"'";
+    RDSqlQuery::apply(sql);
 
     //
     // Update AUDIO_PERMS
     //
-    sql=QString("update AUDIO_PERMS set ")+
-      "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
-      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    sql=QString("update `AUDIO_PERMS` set ")+
+      "`GROUP_NAME`='"+RDEscapeString(group_newname_edit->text())+"' where "+
+      "`GROUP_NAME`='"+RDEscapeString(group_name_edit->text())+"'";
+    RDSqlQuery::apply(sql);
 
     //
     // Update USER_PERMS
     //
-    sql=QString("update USER_PERMS set ")+
-      "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
-      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    sql=QString("update `USER_PERMS` set ")+
+      "`GROUP_NAME`='"+RDEscapeString(group_newname_edit->text())+"' where "+
+      "`GROUP_NAME`='"+RDEscapeString(group_name_edit->text())+"'";
+    RDSqlQuery::apply(sql);
   }
   else {
-    sql=QString("delete from GROUPS where ")+
-      "NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    sql=QString("delete from `GROUPS` where ")+
+      "`NAME`='"+RDEscapeString(group_name_edit->text())+"'";
+    RDSqlQuery::apply(sql);
 
     //
     // Update AUDIO_PERMS
     //
-    sql=QString("delete from AUDIO_PERMS where ")+
-      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    sql=QString("delete from `AUDIO_PERMS` where ")+
+      "`GROUP_NAME`='"+RDEscapeString(group_name_edit->text())+"'";
+    RDSqlQuery::apply(sql);
     
     //
     // Update USER_PERMS
     //
-    sql=QString("delete from USER_PERMS where ")+
-      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    sql=QString("delete from `USER_PERMS` where ")+
+      "`GROUP_NAME`='"+RDEscapeString(group_name_edit->text())+"'";
+    RDSqlQuery::apply(sql);
   }
 
   *group_new_name=group_newname_edit->text();

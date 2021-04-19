@@ -102,12 +102,12 @@ int EditSasResource::exec(unsigned id)
   edit_id=id;
 
   QString sql=QString("select ")+
-    "NUMBER,"+      // 00
-    "ENGINE_NUM,"+  // 01
-    "DEVICE_NUM,"+  // 02
-    "RELAY_NUM "+   // 03
-    "from VGUEST_RESOURCES where "+
-    QString().sprintf("ID=%u",edit_id);
+    "`NUMBER`,"+      // 00
+    "`ENGINE_NUM`,"+  // 01
+    "`DEVICE_NUM`,"+  // 02
+    "`RELAY_NUM` "+   // 03
+    "from `VGUEST_RESOURCES` where "+
+    QString().sprintf("`ID`=%u",edit_id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(1).toInt()>=0) {
@@ -171,11 +171,11 @@ void EditSasResource::okData()
     }
   }
 
-  QString sql=QString("update VGUEST_RESOURCES set ")+
-    QString().sprintf("ENGINE_NUM=%d,",enginenum)+
-    QString().sprintf("DEVICE_NUM=%d,",devicenum)+
-    QString().sprintf("RELAY_NUM=%d ",relaynum)+
-    QString().sprintf("where ID=%u",edit_id);
+  QString sql=QString("update `VGUEST_RESOURCES` set ")+
+    QString().sprintf("`ENGINE_NUM`=%d,",enginenum)+
+    QString().sprintf("`DEVICE_NUM`=%d,",devicenum)+
+    QString().sprintf("`RELAY_NUM`=%d ",relaynum)+
+    QString().sprintf("where `ID`=%u",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

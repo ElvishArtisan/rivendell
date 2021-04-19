@@ -156,8 +156,8 @@ void ListSvcs::deleteData()
     return;
   }
 
-  sql=QString("select NAME from LOGS where ")+
-    "SERVICE=\""+RDEscapeString(svcname)+"\"";
+  sql=QString("select `NAME` from `LOGS` where ")+
+    "`SERVICE`='"+RDEscapeString(svcname)+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(QMessageBox::warning(this,"RDAdmin - "+tr("Logs Exist"),

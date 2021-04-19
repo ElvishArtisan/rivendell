@@ -518,7 +518,7 @@ atualizada para a Versão</translation>
     </message>
     <message>
         <source>Empty Host Config</source>
-        <translation>Configuração vazia de Cliente</translation>
+        <translation type="vanished">Configuração vazia de Cliente</translation>
     </message>
     <message>
         <source>Invalid Name</source>

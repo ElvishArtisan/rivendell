@@ -357,9 +357,9 @@ void EditSystem::okData()
       pd->setMaximum(10);
       pd->setValue(0);
       while(q->next()) {
-	sql=QString("select NUMBER from CART where ")+
-	  "(TITLE=\""+RDEscapeString(q->value(1).toString())+"\")&&"+
-	  QString().sprintf("(NUMBER!=%u)",q->value(0).toUInt());
+	sql=QString("select `NUMBER` from `CART` where ")+
+	  "(`TITLE`='"+RDEscapeString(q->value(1).toString())+"')&&"+
+	  QString().sprintf("(`NUMBER`!=%u)",q->value(0).toUInt());
 	q1=new RDSqlQuery(sql);
 	while(q1->next()) {
 	  dups.insert(q1->value(0).toUInt(),q->value(1).toString());
@@ -390,10 +390,10 @@ void EditSystem::okData()
 	QString filter_sql="where (";
 	for(QMultiMap<unsigned,QString>::const_iterator ci=dups.begin();
 	    ci!=dups.end();ci++) {
-	  filter_sql+=QString().sprintf("CART.NUMBER=%u||",ci.key());
+	  filter_sql+=QString().sprintf("`CART`.`NUMBER`=%u||",ci.key());
 	}
 	filter_sql=filter_sql.left(filter_sql.length()-2)+
-	  ") order by CART.TITLE ";
+	  ") order by `CART`.`TITLE` ";
 	edit_duplicate_model->setFilterSql(filter_sql);
 	return;
       }
@@ -401,24 +401,24 @@ void EditSystem::okData()
       //
       // All ok -- make the change
       //
-      sql="alter table CART drop index TITLE_IDX";
-      q=new RDSqlQuery(sql);
-      delete q;
-      sql="alter table CART modify column TITLE varchar(191) unique";
-      q=new RDSqlQuery(sql);
-      delete q;
+      sql="alter table `CART` drop index `TITLE_IDX`";
+      RDSqlQuery::apply(sql);
+
+      sql="alter table `CART` modify column `TITLE` varchar(191) unique";
+      RDSqlQuery::apply(sql);
+
       edit_system->setAllowDuplicateCartTitles(false);
     }
     else {
-      sql="alter table CART drop index TITLE";
-      q=new RDSqlQuery(sql);
-      delete q;
-      sql="alter table CART modify column TITLE varchar(191)";
-      q=new RDSqlQuery(sql);
-      delete q;
-      sql="alter table CART add index TITLE_IDX(TITLE)";
-      q=new RDSqlQuery(sql);
-      delete q;
+      sql="alter table `CART` drop index `TITLE`";
+      RDSqlQuery::apply(sql);
+
+      sql="alter table `CART` modify column `TITLE` varchar(191)";
+      RDSqlQuery::apply(sql);
+
+      sql="alter table `CART` add index `TITLE_IDX`(`TITLE`)";
+      RDSqlQuery::apply(sql);
+
       edit_system->setAllowDuplicateCartTitles(true);
     }
     delete pd;
@@ -456,12 +456,12 @@ void EditSystem::BuildDuplicatesList(std::map<unsigned,QString> *dups)
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql="select NUMBER,TITLE from CART order by NUMBER";
+  sql="select `NUMBER`,`TITLE` from `CART` order by `NUMBER`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString("select NUMBER from CART where ")+
-      "(TITLE=\""+RDEscapeString(q->value(1).toString())+"\")&&"+
-      QString().sprintf("(NUMBER!=%u)",q->value(0).toUInt());
+    sql=QString("select `NUMBER` from `CART` where ")+
+      "(`TITLE`='"+RDEscapeString(q->value(1).toString())+"')&&"+
+      QString().sprintf("(`NUMBER`!=%u)",q->value(0).toUInt());
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       (*dups)[q1->value(0).toUInt()]=q->value(1).toString();

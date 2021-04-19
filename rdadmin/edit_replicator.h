@@ -33,6 +33,7 @@
 #include <rdreplicator.h>
 #include <rdsettings.h>
 #include <rdstation.h>
+#include <rdstationlistmodel.h>
 
 class EditReplicator : public RDDialog
 {
@@ -55,6 +56,7 @@ class EditReplicator : public RDDialog
   QLineEdit *repl_description_edit;
   QComboBox *repl_type_box;
   QComboBox *repl_station_box;
+  RDStationListModel *repl_station_model;
   QLineEdit *repl_url_edit;
   QLabel *repl_username_label;
   QLineEdit *repl_username_edit;

@@ -633,7 +633,7 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Empty Host Config</source>
-        <translation>Vyprázdnit nastavení serveru</translation>
+        <translation type="vanished">Vyprázdnit nastavení serveru</translation>
     </message>
     <message>
         <source>Invalid Name</source>

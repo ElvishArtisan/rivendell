@@ -33,8 +33,6 @@
 AddReport::AddReport(QString *rptname,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -107,8 +105,8 @@ void AddReport::okData()
 			 tr("You must provide a report name!"));
     return;
   }
-  sql=QString("select NAME from REPORTS where ")+
-    "NAME=\""+RDEscapeString(add_name_edit->text())+"\"";
+  sql=QString("select `NAME` from `REPORTS` where ")+
+    "`NAME`='"+RDEscapeString(add_name_edit->text())+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::warning(this,tr("Report Exists"),
@@ -117,8 +115,8 @@ void AddReport::okData()
     return;
   }
   delete q;
-  sql=QString("insert into REPORTS set ")+
-    "NAME=\""+RDEscapeString(add_name_edit->text())+"\"";
+  sql=QString("insert into `REPORTS` set ")+
+    "`NAME`='"+RDEscapeString(add_name_edit->text())+"'";
   q=new RDSqlQuery(sql);
   delete q;
   *add_name=add_name_edit->text();

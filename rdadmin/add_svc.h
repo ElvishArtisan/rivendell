@@ -24,6 +24,7 @@
 #include <QComboBox>
 
 #include <rddialog.h>
+#include <rdservicelistmodel.h>
 #include <rdsvc.h>
 
 class AddSvc : public RDDialog
@@ -42,9 +43,9 @@ class AddSvc : public RDDialog
  private:
   QLineEdit *svc_name_edit;
   QComboBox *svc_exemplar_box;
+  RDServiceListModel *svc_services_model;
   QString *svc_name;
 };
 
 
-#endif
-
+#endif  // ADD_SVC_H

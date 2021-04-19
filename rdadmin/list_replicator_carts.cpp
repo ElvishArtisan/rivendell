@@ -108,10 +108,10 @@ void ListReplicatorCarts::repostData()
   if(rows.size()==0) {
     return;
   }
-  QString sql=QString("update REPL_CART_STATE set ")+
-    "REPOST=\"Y\" where ";
+  QString sql=QString("update `REPL_CART_STATE` set ")+
+    "`REPOST`='Y' where ";
   for(int i=0;i<rows.size();i++) {
-    sql+=QString().sprintf("(ID=%u)||",list_model->cartId(rows.at(i)));
+    sql+=QString().sprintf("(`ID`=%u)||",list_model->cartId(rows.at(i)));
   }
   sql=sql.left(sql.length()-2);
   RDSqlQuery::apply(sql);
@@ -120,9 +120,9 @@ void ListReplicatorCarts::repostData()
 
 void ListReplicatorCarts::repostAllData()
 {
-  QString sql=QString("update REPL_CART_STATE set ")+
-    "REPOST=\"Y\" where "+
-    "REPLICATOR_NAME=\""+RDEscapeString(list_model->replicatorName())+"\"";
+  QString sql=QString("update `REPL_CART_STATE` set ")+
+    "`REPOST`='Y' where "+
+    "`REPLICATOR_NAME`='"+RDEscapeString(list_model->replicatorName())+"'";
   RDSqlQuery::apply(sql);
 }
 

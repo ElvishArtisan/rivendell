@@ -20,12 +20,11 @@
 
 #include <math.h>
 
-#include <globals.h>
-
 #include <rddb.h>
 #include <rdescape_string.h>
 
 #include "edit_jack_client.h"
+#include "globals.h"
 
 EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
   : RDDialog(parent)
@@ -101,10 +100,10 @@ int EditJackClient::exec(unsigned id)
   edit_id=id;
 
   sql=QString("select ")+
-    "DESCRIPTION,"    // 00
-    "COMMAND_LINE "+  // 01
-    "from JACK_CLIENTS where "+
-    QString().sprintf("ID=%u",id);
+    "`DESCRIPTION`,"    // 00
+    "`COMMAND_LINE` "+  // 01
+    "from `JACK_CLIENTS` where "+
+    QString().sprintf("`ID`=%u",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     edit_jack_description_edit->setText(q->value(0).toString());
@@ -120,12 +119,12 @@ void EditJackClient::okData()
 {
   QString sql;
 
-  sql=QString("update JACK_CLIENTS set ")+
-    "DESCRIPTION=\""+RDEscapeString(edit_jack_description_edit->text())+"\","+
-    "COMMAND_LINE=\""+
-    RDEscapeString(edit_jack_command_line_edit->text().trimmed())+"\" "+
+  sql=QString("update `JACK_CLIENTS` set ")+
+    "`DESCRIPTION`='"+RDEscapeString(edit_jack_description_edit->text())+"',"+
+    "`COMMAND_LINE`='"+
+    RDEscapeString(edit_jack_command_line_edit->text().trimmed())+"' "+
     "where "+
-    QString().sprintf("ID=%u",edit_id);
+    QString().sprintf("`ID`=%u",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

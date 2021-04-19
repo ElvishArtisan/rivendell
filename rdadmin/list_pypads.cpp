@@ -140,12 +140,12 @@ void ListPypads::addData()
   }
   delete file;
 
-  QString sql=QString("insert into PYPAD_INSTANCES set ")+
-    "STATION_NAME=\""+RDEscapeString(list_station->name())+"\","+
-    "SCRIPT_PATH=\""+RDEscapeString(script)+"\","+
-    "DESCRIPTION=\""+
-    RDEscapeString("new "+script.split("/").last()+" instance")+"\","+
-    "CONFIG=\""+RDEscapeString(exemplar)+"\"";
+  QString sql=QString("insert into `PYPAD_INSTANCES` set ")+
+    "`STATION_NAME`='"+RDEscapeString(list_station->name())+"',"+
+    "`SCRIPT_PATH`='"+RDEscapeString(script)+"',"+
+    "`DESCRIPTION`='"+
+    RDEscapeString("new "+script.split("/").last()+" instance")+"',"+
+    "`CONFIG`='"+RDEscapeString(exemplar)+"'";
   int id=RDSqlQuery::run(sql).toInt();
   EditPypad *d=new EditPypad(id,this);
   if(d->exec()) {
@@ -158,8 +158,8 @@ void ListPypads::addData()
     rda->ripc()->sendNotification(notify);
   }
   else {
-    sql=QString("delete from PYPAD_INSTANCES where ")+
-      QString().sprintf("ID=%u",id);
+    sql=QString("delete from `PYPAD_INSTANCES` where ")+
+      QString().sprintf("`ID`=%u",id);
     RDSqlQuery::apply(sql);
   }
   delete d;
@@ -200,8 +200,8 @@ void ListPypads::deleteData()
      QMessageBox::No) {
     return;
   }
-  sql=QString("delete from PYPAD_INSTANCES where ")+
-    QString().sprintf("ID=%d",id);
+  sql=QString("delete from `PYPAD_INSTANCES` where ")+
+    QString().sprintf("`ID`=%d",id);
   RDSqlQuery::apply(sql);
   list_list_model->removeInstance(id);
   RDNotification notify=

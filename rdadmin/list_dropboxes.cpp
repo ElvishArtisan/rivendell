@@ -131,7 +131,7 @@ void ListDropboxes::addData()
     delete notify;
   }
   else {
-    QString sql=QString().sprintf("delete from DROPBOXES where ID=%d",id);
+    QString sql=QString().sprintf("delete from `DROPBOXES` where `ID`=%d",id);
     RDSqlQuery *q=new RDSqlQuery(sql);
     delete q;
     delete edit_dropbox;
@@ -186,7 +186,7 @@ void ListDropboxes::duplicateData()
     delete notify;
   }
   else {
-    QString sql=QString().sprintf("delete from DROPBOXES where ID=%d",
+    QString sql=QString().sprintf("delete from `DROPBOXES` where `ID`=%d",
 				  new_box_id);
     RDSqlQuery::apply(sql);
   }
@@ -203,11 +203,11 @@ void ListDropboxes::deleteData()
     return;
   }
   int box_id=list_dropboxes_model->dropboxId(rows.first());
-  sql=QString().sprintf("delete from DROPBOX_PATHS where DROPBOX_ID=%d",
+  sql=QString().sprintf("delete from `DROPBOX_PATHS` where `DROPBOX_ID`=%d",
 			box_id);
   RDSqlQuery::apply(sql);
 
-  sql=QString().sprintf("delete from DROPBOXES where ID=%d",box_id);
+  sql=QString().sprintf("delete from `DROPBOXES` where `ID`=%d",box_id);
   RDSqlQuery::apply(sql);
 
   list_dropboxes_model->removeDropbox(box_id);

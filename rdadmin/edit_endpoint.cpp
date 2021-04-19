@@ -33,10 +33,8 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Text Validator
@@ -116,24 +114,22 @@ int EditEndpoint::exec(RDMatrix *mtx,RDMatrix::Endpoint endpt_type,int endpt_id)
   edit_endpoint_type=endpt_type;
   edit_endpoint_id=endpt_id;
   if(endpt_type==RDMatrix::Input) {
-    edit_table="INPUTS";
+    edit_table="`INPUTS`";
     setWindowTitle("RDAdmin - "+tr("Edit Input"));
   }
   else {
-    edit_table="OUTPUTS";
+    edit_table="`OUTPUTS`";
     setWindowTitle("RDAdmin - "+tr("Edit Output"));
   }
 
   sql=QString("select ")+
-    "NAME,"+        // 00
-    "ENGINE_NUM,"+  // 01
-    "DEVICE_NUM "+  // 02
+    "`NAME`,"+        // 00
+    "`ENGINE_NUM`,"+  // 01
+    "`DEVICE_NUM` "+  // 02
     "from "+edit_table+" where "+
-    QString().sprintf("ID=%d",endpt_id);
+    QString().sprintf("`ID`=%d",endpt_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
-
-
     edit_endpoint_edit->setText(q->value(0).toString());
     if(q->value(1).toInt()>=0) {
       edit_enginenum_edit->setText(QString().sprintf("%d",q->value(1).toInt()));
@@ -167,12 +163,12 @@ void EditEndpoint::okData()
   QString sql;
 
   sql=QString("update ")+edit_table+" set "+
-    "NAME=\""+RDEscapeString(edit_endpoint_edit->text())+"\","+
-    QString().sprintf("ENGINE_NUM=%d,",edit_enginenum_edit->text().toInt())+
+    "`NAME`='"+RDEscapeString(edit_endpoint_edit->text())+"',"+
+    QString().sprintf("`ENGINE_NUM`=%d,",edit_enginenum_edit->text().toInt())+
     QString().
-    sprintf("DEVICE_NUM=%d ",edit_devicenum_edit->text().toInt(NULL,16))+
+    sprintf("`DEVICE_NUM`=%d ",edit_devicenum_edit->text().toInt(NULL,16))+
     "where "+
-    QString().sprintf("ID=%d",edit_endpoint_id);
+    QString().sprintf("`ID`=%d",edit_endpoint_id);
   RDSqlQuery::apply(sql);
 
   done(true);

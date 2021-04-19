@@ -27,6 +27,7 @@
 
 #include <rddialog.h>
 #include <rddropbox.h>
+#include <rdgrouplistmodel.h>
 #include <rdschedcodes_dialog.h>
 
 class EditDropbox : public RDDialog
@@ -54,6 +55,7 @@ class EditDropbox : public RDDialog
  private:
   RDDropbox *box_dropbox;
   QComboBox *box_group_name_box;
+  RDGroupListModel *box_group_name_model;
   QLineEdit *box_path_edit;
   QString box_path;
   QLineEdit *box_to_cart_edit;

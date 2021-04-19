@@ -30,8 +30,6 @@
 AddUser::AddUser(QString *username,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   user_name=username;
 
   //
@@ -97,7 +95,6 @@ QSizePolicy AddUser::sizePolicy() const
 void AddUser::okData()
 {
   RDSqlQuery *q;
-  RDSqlQuery *q1;
   QString sql;
   QString username=RDEscapeString(user_name_edit->text());
 
@@ -106,9 +103,9 @@ void AddUser::okData()
     return;
   }
 
-  sql=QString("insert into USERS set ")+
-    "LOGIN_NAME=\""+RDEscapeString(username)+"\","+
-    "PASSWORD=PASSWORD(\"\")";
+  sql=QString("insert into `USERS` set ")+
+    "`LOGIN_NAME`='"+RDEscapeString(username)+"',"+
+    "`PASSWORD`=PASSWORD('')";
   q=new RDSqlQuery(sql);
   if(!q->isActive()) {
     QMessageBox::warning(this,tr("User Exists"),tr("User Already Exists!"),
@@ -117,32 +114,31 @@ void AddUser::okData()
     return;
   }
   delete q;
-  sql="select NAME from GROUPS";
+  sql="select `NAME` from `GROUPS`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString("insert into USER_PERMS set ")+
-      "USER_NAME=\""+RDEscapeString(username)+"\","+
-      "GROUP_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
-    q1=new RDSqlQuery(sql);
-    delete q1;
+    sql=QString("insert into `USER_PERMS` set ")+
+      "`USER_NAME`='"+RDEscapeString(username)+"',"+
+      "`GROUP_NAME`='"+RDEscapeString(q->value(0).toString())+"'";
+    RDSqlQuery::apply(sql);
   }
   delete q;
   EditUser *user=new EditUser(user_name_edit->text(),this);
   if(user->exec()<0) {
-    sql=QString("delete from USER_PERMS where ")+
-      "USER_NAME=\""+RDEscapeString(username)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
-    sql=QString("delete from USERS where ")+
-      "LOGIN_NAME=\""+RDEscapeString(username)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    sql=QString("delete from `USER_PERMS` where ")+
+      "`USER_NAME`='"+RDEscapeString(username)+"'";
+    RDSqlQuery::apply(sql);
+
+    sql=QString("delete from `USERS` where ")+
+      "`LOGIN_NAME`='"+RDEscapeString(username)+"'";
+    RDSqlQuery::apply(sql);
     delete user;
     done(false);
     return;
   }
   delete user;
   *user_name=user_name_edit->text();
+
   done(true);
 }
 

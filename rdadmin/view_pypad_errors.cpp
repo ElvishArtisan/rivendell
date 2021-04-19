@@ -34,8 +34,8 @@ ViewPypadErrors::ViewPypadErrors(int id,QWidget *parent)
   //
   view_text=new QTextEdit(this);
   view_text->setReadOnly(true);
-  QString sql=QString("select ERROR_TEXT from PYPAD_INSTANCES where ")+
-    QString().sprintf("ID=%u",id);
+  QString sql=QString("select `ERROR_TEXT` from `PYPAD_INSTANCES` where ")+
+    QString().sprintf("`ID`=%u",id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     view_text->setPlainText(q->value(0).toString());

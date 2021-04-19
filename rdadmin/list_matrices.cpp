@@ -224,41 +224,40 @@ void ListMatrices::resizeEvent(QResizeEvent *e)
 
 void ListMatrices::DeleteMatrix(RDMatrix *mtx)
 {
-  QString sql=QString("delete from MATRICES where ")+
-    "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-    QString().sprintf("MATRIX=%d",mtx->matrix());
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from INPUTS where ")+
-    "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-    QString().sprintf("MATRIX=%d",mtx->matrix());
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from OUTPUTS where ")+
-    "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-    QString().sprintf("MATRIX=%d",mtx->matrix());
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from SWITCHER_NODES where ")+
-    "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-    QString().sprintf("MATRIX=%d",mtx->matrix());
-  q=new RDSqlQuery(sql);
-  delete q;
-sql=QString("delete from GPIS where ")+
-  "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-  QString().sprintf("MATRIX=%d",mtx->matrix());
-  q=new RDSqlQuery(sql);
-  delete q;
-sql=QString("delete from GPOS where ")+
-  "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-  QString().sprintf("MATRIX=%d",mtx->matrix());
-  q=new RDSqlQuery(sql);
-  delete q;
-sql=QString("delete from VGUEST_RESOURCES where ")+
-  "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
-  QString().sprintf("MATRIX_NUM=%d",mtx->matrix());
-  q=new RDSqlQuery(sql);
-  delete q;
+  QString sql=QString("delete from `MATRICES` where ")+
+    "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
+    QString().sprintf("`MATRIX`=%d",mtx->matrix());
+  RDSqlQuery::apply(sql);
+
+  sql=QString("delete from `INPUTS` where ")+
+    "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
+    QString().sprintf("`MATRIX`=%d",mtx->matrix());
+  RDSqlQuery::apply(sql);
+
+  sql=QString("delete from `OUTPUTS` where ")+
+    "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
+    QString().sprintf("`MATRIX`=%d",mtx->matrix());
+  RDSqlQuery::apply(sql);
+
+  sql=QString("delete from `SWITCHER_NODES` where ")+
+    "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
+    QString().sprintf("`MATRIX`=%d",mtx->matrix());
+  RDSqlQuery::apply(sql);
+
+  sql=QString("delete from `GPIS` where ")+
+  "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
+  QString().sprintf("`MATRIX`=%d",mtx->matrix());
+  RDSqlQuery::apply(sql);
+
+  sql=QString("delete from `GPOS` where ")+
+  "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
+  QString().sprintf("`MATRIX`=%d",mtx->matrix());
+  RDSqlQuery::apply(sql);
+
+  sql=QString("delete from `VGUEST_RESOURCES` where ")+
+  "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
+  QString().sprintf("`MATRIX_NUM`=%d",mtx->matrix());
+  RDSqlQuery::apply(sql);
 
   list_model->removeMatrix(mtx->id());
 }

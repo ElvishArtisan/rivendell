@@ -28,6 +28,7 @@
 #include <qpushbutton.h>
 
 #include <rddialog.h>
+#include <rdservicelistmodel.h>
 #include <rdstation.h>
 
 class EditCartSlots : public RDDialog
@@ -72,6 +73,7 @@ class EditCartSlots : public RDDialog
   QPushButton *edit_cart_button;
   QLabel *edit_service_label;
   QComboBox *edit_service_box;
+  RDServiceListModel *edit_service_model;
   QSpinBox *edit_card_spin;
   QSpinBox *edit_input_spin;
   QSpinBox *edit_output_spin;

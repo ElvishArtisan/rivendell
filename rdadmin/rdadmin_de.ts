@@ -551,7 +551,7 @@ worden. Aktuelle Version</translation>
     </message>
     <message>
         <source>Empty Host Config</source>
-        <translation>Host Konfiguration leeren</translation>
+        <translation type="vanished">Host Konfiguration leeren</translation>
     </message>
     <message>
         <source>Invalid Name</source>

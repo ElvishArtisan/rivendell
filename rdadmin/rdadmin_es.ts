@@ -641,7 +641,7 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Empty Host Config</source>
-        <translation>Configuración en blanco</translation>
+        <translation type="vanished">Configuración en blanco</translation>
     </message>
     <message>
         <source>Invalid Name</source>

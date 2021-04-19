@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Matrix
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,14 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rd.h>
-#include <rdmatrix.h>
 #include <rddb.h>
 #include <rdescape_string.h>
+#include <rdmatrix.h>
 
 #include "edit_user.h"
 #include "add_matrix.h"
@@ -34,8 +32,6 @@
 AddMatrix::AddMatrix(QString station,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   add_station=station;
 
   //
@@ -117,9 +113,9 @@ QSizePolicy AddMatrix::sizePolicy() const
 
 void AddMatrix::okData()
 {
-  QString sql=QString("select MATRIX from MATRICES where STATION_NAME=\"")+
-    RDEscapeString(add_station)+"\" && MATRIX="+
-    QString().sprintf("%d",add_matrix_box->value());
+  QString sql=QString("select `MATRIX` from `MATRICES` where ")+
+    "`STATION_NAME`='"+RDEscapeString(add_station)+"' && "+
+    QString().sprintf("`MATRIX`=%d",add_matrix_box->value());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     delete q;
@@ -129,40 +125,31 @@ void AddMatrix::okData()
   }
   delete q;
 
-  sql=QString("insert into MATRICES set STATION_NAME=\"")+
-    RDEscapeString(add_station)+"\","+
-    "NAME=\""+tr("New Switcher")+"\","+
-    "GPIO_DEVICE=\""+RD_DEFAULT_GPIO_DEVICE+"\","+
-    QString().
-    sprintf("MATRIX=%d,\
-             PORT=0,\
-             TYPE=%d,\
-             INPUTS=%d,\
-             OUTPUTS=%d,\
-             GPIS=%d,\
-             GPOS=%d,\
-             PORT_TYPE=%d,\
-             PORT_TYPE_2=%d",
-	    add_matrix_box->value(),
-	    add_type_box->currentIndex(),
+  sql=QString("insert into `MATRICES` set ")+
+    "`STATION_NAME`='"+RDEscapeString(add_station)+"',"+
+    "`NAME`='"+tr("New Switcher")+"',"+
+    "`GPIO_DEVICE`='"+RD_DEFAULT_GPIO_DEVICE+"',"+
+    QString().sprintf("`MATRIX`=%d,",add_matrix_box->value())+
+    "`PORT`=0,"+
+    QString().sprintf("`TYPE`=%d,",add_type_box->currentIndex())+
+    QString().sprintf("`INPUTS`=%d",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
-				    currentIndex(),
-				    RDMatrix::InputsControl),
+				    currentIndex(),RDMatrix::InputsControl))+
+    QString().sprintf("`OUTPUTS`=%d",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
-				    currentIndex(),
-				    RDMatrix::OutputsControl),
+				    currentIndex(),RDMatrix::OutputsControl))+
+    QString().sprintf("`GPIS`=%d",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
-				    currentIndex(),
-				    RDMatrix::GpisControl),
+				    currentIndex(),RDMatrix::GpisControl))+
+    QString().sprintf("`GPOS`=%d,",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
-				    currentIndex(),
-				    RDMatrix::GposControl),
+				    currentIndex(),RDMatrix::GposControl))+
+    QString().sprintf("`PORT_TYPE`=%d,",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
-				    currentIndex(),
-				    RDMatrix::PortTypeControl),
-	    RDMatrix::NoPort);
-  q=new RDSqlQuery(sql);
-  delete q;
+				    currentIndex(),RDMatrix::PortTypeControl))+
+    QString().sprintf("`PORT_TYPE_2`=%d",RDMatrix::NoPort);
+  RDSqlQuery::apply(sql);
+
   done(add_matrix_box->value());
 }
 
@@ -177,8 +164,8 @@ int AddMatrix::GetNextMatrix()
 {
   int n=0;
 
-  QString sql=QString("select MATRIX from MATRICES where STATION_NAME=\"")+
-    RDEscapeString(add_station)+"\" order by MATRIX";
+  QString sql=QString("select `MATRIX` from `MATRICES` where ")+
+    "`STATION_NAME`='"+RDEscapeString(add_station)+"' order by `MATRIX`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     if(n!=q->value(0).toInt()) {

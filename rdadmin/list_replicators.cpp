@@ -171,25 +171,25 @@ void ListReplicators::deleteData()
   //
   // Delete Group Assignments
   //
-  sql=QString("delete from REPLICATOR_MAP  where ")+
-    "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
+  sql=QString("delete from `REPLICATOR_MAP` where ")+
+    "`REPLICATOR_NAME`='"+RDEscapeString(name)+"'";
   RDSqlQuery::apply(sql);
   
   //
   // Delete State Records
   //
-  sql=QString("delete from REPL_CART_STATE where ")+
-    "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
+  sql=QString("delete from `REPL_CART_STATE` where ")+
+    "`REPLICATOR_NAME`='"+RDEscapeString(name)+"'";
   RDSqlQuery::apply(sql);
-  sql=QString("delete from REPL_CUT_STATE where ")+
-    "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
+  sql=QString("delete from `REPL_CUT_STATE` where ")+
+    "`REPLICATOR_NAME`='"+RDEscapeString(name)+"'";
   RDSqlQuery::apply(sql);
 
   //
   // Delete from Replicator List
   //
-  sql=QString("delete from REPLICATORS where ")+
-    "NAME=\""+RDEscapeString(name)+"\"";
+  sql=QString("delete from `REPLICATORS` where ")+
+    "`NAME`='"+RDEscapeString(name)+"'";
   RDSqlQuery::apply(sql);
 
   list_replicators_model->removeReplicator(name);

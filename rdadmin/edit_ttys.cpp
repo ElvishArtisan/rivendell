@@ -33,8 +33,6 @@
 EditTtys::EditTtys(QString station,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -241,14 +239,14 @@ void EditTtys::enableButtonData(int state)
 
   if(!state) {
     sql=QString("select ")+
-      "NAME,"+    // 00
-      "MATRIX,"+  // 01
-      "TYPE "+    // 02
-      "from MATRICES where "+
-      "STATION_NAME=\""+RDEscapeString(edit_station)+"\" && "+
-      QString().sprintf("(PORT_TYPE=%d && PORT=%d) || ",
+      "`NAME`,"+    // 00
+      "`MATRIX`,"+  // 01
+      "`TYPE` "+    // 02
+      "from `MATRICES` where "+
+      "`STATION_NAME`='"+RDEscapeString(edit_station)+"' && "+
+      QString().sprintf("(`PORT_TYPE`=%d && `PORT`=%d) || ",
 			RDMatrix::TtyPort,edit_port_box->currentIndex())+
-      QString().sprintf("(PORT_TYPE_2=%d && PORT_2=%d)",
+      QString().sprintf("(`PORT_TYPE_2`=%d && `PORT_2`=%d)",
 			RDMatrix::TtyPort,edit_port_box->currentIndex());
     q=new RDSqlQuery(sql);
     if(q->first()) {
@@ -290,7 +288,7 @@ void EditTtys::closeData()
   macro.setEchoRequested(false);
   for(int i=0;i<MAX_TTYS;i++) {
     if(edit_port_modified[i]) {
-      sql=QString().sprintf("select MATRIX from MATRICES where PORT=%d",i);
+      sql=QString().sprintf("select `MATRIX` from `MATRICES` where `PORT`=%d",i);
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	macro.setCommand(RDMacro::SZ);

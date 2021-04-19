@@ -91,16 +91,11 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   //
   repl_station_box=new QComboBox(this);
   repl_station_box->setGeometry(155,77,sizeHint().width()-165,19);
-  sql="select NAME from STATIONS order by NAME";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    repl_station_box->insertItem(repl_station_box->count(),
-				 q->value(0).toString());
-    if(repl_replicator->stationName()==q->value(0).toString()) {
-      repl_station_box->setCurrentIndex(repl_station_box->count()-1);
-    }
-  }
-  delete q;
+  repl_station_model=new RDStationListModel(false,"",this);
+  repl_station_model->setFont(defaultFont());
+  repl_station_model->setPalette(palette());
+  repl_station_box->setModel(repl_station_model);
+  repl_station_box->setCurrentText(repl_replicator->stationName());
   QLabel *repl_station_label=new QLabel(tr("Host System:"),this);
   repl_station_label->setFont(labelFont());
   repl_station_label->setGeometry(10,77,140,19);
@@ -233,15 +228,15 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
     repl_normalize_box->setChecked(true);
     repl_normalize_spin->setValue(repl_replicator->normalizeLevel()/1000);
   }
-  sql=QString("select GROUP_NAME from REPLICATOR_MAP where ")+
-    "REPLICATOR_NAME=\""+RDEscapeString(repl_name_edit->text())+"\"";
+  sql=QString("select `GROUP_NAME` from `REPLICATOR_MAP` where ")+
+    "`REPLICATOR_NAME`='"+RDEscapeString(repl_name_edit->text())+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     repl_groups_sel->destInsertItem(q->value(0).toString());
   }
   delete q;
 
-  sql=QString().sprintf("select NAME from GROUPS");
+  sql=QString().sprintf("select `NAME` from `GROUPS`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(repl_groups_sel->destFindItem(q->value(0).toString())==0) {
@@ -256,6 +251,7 @@ EditReplicator::~EditReplicator()
 {
   delete repl_settings;
   delete repl_replicator;
+  delete repl_station_model;
 }
 
 
@@ -315,15 +311,15 @@ void EditReplicator::okData()
   // Add New Groups
   //
   for(unsigned i=0;i<repl_groups_sel->destCount();i++) {
-    sql=QString("select GROUP_NAME from REPLICATOR_MAP where ")+
-      "REPLICATOR_NAME=\""+RDEscapeString(repl_name_edit->text())+"\" && "+
-      "GROUP_NAME=\""+RDEscapeString(repl_groups_sel->destText(i))+"\"";
+    sql=QString("select `GROUP_NAME` from `REPLICATOR_MAP` where ")+
+      "`REPLICATOR_NAME`='"+RDEscapeString(repl_name_edit->text())+"' && "+
+      "`GROUP_NAME`='"+RDEscapeString(repl_groups_sel->destText(i))+"'";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString("insert into REPLICATOR_MAP (REPLICATOR_NAME,GROUP_NAME) ")+
-	"values (\""+RDEscapeString(repl_name_edit->text())+"\","+
-	"\""+RDEscapeString(repl_groups_sel->destText(i))+"\")";
+      sql=QString("insert into `REPLICATOR_MAP` (`REPLICATOR_NAME`,`GROUP_NAME`) ")+
+	"values ('"+RDEscapeString(repl_name_edit->text())+"',"+
+	"'"+RDEscapeString(repl_groups_sel->destText(i))+"')";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -332,11 +328,11 @@ void EditReplicator::okData()
   //
   // Delete Old Groups
   //
-  sql=QString("delete from REPLICATOR_MAP where ")+
-    "REPLICATOR_NAME=\""+RDEscapeString(repl_name_edit->text())+"\"";
+  sql=QString("delete from `REPLICATOR_MAP` where ")+
+    "`REPLICATOR_NAME`='"+RDEscapeString(repl_name_edit->text())+"'";
   for(unsigned i=0;i<repl_groups_sel->destCount();i++) {
-    sql+=QString(" && GROUP_NAME<>\"")+
-      RDEscapeString(repl_groups_sel->destText(i))+"\"";
+    sql+=QString(" && `GROUP_NAME`<>'")+
+      RDEscapeString(repl_groups_sel->destText(i))+"'";
   }
   q=new RDSqlQuery(sql);
   delete q;

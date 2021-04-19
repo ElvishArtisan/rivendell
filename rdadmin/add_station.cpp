@@ -32,8 +32,6 @@
 AddStation::AddStation(QString *stationname,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   add_name=stationname;
 
   //
@@ -172,16 +170,15 @@ void AddStation::CloneEncoderValues(const QString &paramname,
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-sql=QString("select ")+
+  sql=QString("select ")+
   paramname+" from `ENCODER_"+paramname+"` where "+
-  QString().sprintf("ENCODER_ID=%d",src_id);
+  QString().sprintf("`ENCODER_ID`=%d",src_id);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString("insert into `ENCODER_")+
       paramname+"` set "+paramname+
-      QString().sprintf("=%d,ENCODER_ID=%d",q->value(0).toInt(),dest_id);
-    q1=new RDSqlQuery(sql);
-    delete q1;
+      QString().sprintf("=%d,`ENCODER_ID`=%d",q->value(0).toInt(),dest_id);
+    RDSqlQuery::apply(sql);
   }
   delete q;
 }

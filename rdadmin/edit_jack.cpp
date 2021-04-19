@@ -23,11 +23,12 @@
 
 #include <rdescape_string.h>
 
-#include <globals.h>
 #include <rdcart_dialog.h>
 #include <rddb.h>
 #include <edit_jack.h>
 #include <edit_jack_client.h>
+
+#include "globals.h"
 
 EditJack::EditJack(RDStation *station,QWidget *parent)
   : RDDialog(parent)
@@ -173,10 +174,10 @@ void EditJack::addData()
 {
   QString sql;
 
-  sql=QString("insert into JACK_CLIENTS set ")+
-    "STATION_NAME=\""+RDEscapeString(edit_station->name())+"\","+
-    "DESCRIPTION=\""+RDEscapeString(tr("[New client]"))+"\","+
-    "COMMAND_LINE=\"\"";
+  sql=QString("insert into `JACK_CLIENTS` set ")+
+    "`STATION_NAME`='"+RDEscapeString(edit_station->name())+"',"+
+    "`DESCRIPTION`='"+RDEscapeString(tr("[New client]"))+"',"+
+    "`COMMAND_LINE`=''";
   unsigned id=RDSqlQuery::run(sql).toUInt();
 
   EditJackClient *d=new EditJackClient(edit_station,this);
@@ -185,8 +186,8 @@ void EditJack::addData()
     edit_jack_client_view->selectRow(row.row());
   }
   else {
-    sql=QString("delete from JACK_CLIENTS where ")+
-      QString().sprintf("ID=%u",id);
+    sql=QString("delete from `JACK_CLIENTS` where ")+
+      QString().sprintf("`ID`=%u",id);
     RDSqlQuery::apply(sql);
   }
 }
@@ -223,8 +224,8 @@ void EditJack::deleteData()
 			   tr("Are you sure you want to delete JACK Client")+
 			   " \""+edit_jack_client_model->data(rows.first()).toString()+"\"?",QMessageBox::Yes,
 			   QMessageBox::No)==QMessageBox::Yes) {
-    sql=QString().sprintf("delete from JACK_CLIENTS where ")+
-      QString().sprintf("ID=%d",id);
+    sql=QString().sprintf("delete from `JACK_CLIENTS` where ")+
+      QString().sprintf("`ID`=%d",id);
     RDSqlQuery::apply(sql);
     edit_jack_client_model->removeClient(id);
   }

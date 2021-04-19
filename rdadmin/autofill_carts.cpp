@@ -77,9 +77,9 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
   svc_close_button->setText(tr("Close"));
   connect(svc_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
-  QString sql=QString("left join AUTOFILLS ")+
-    "on CART.NUMBER=AUTOFILLS.CART_NUMBER where "+
-    "AUTOFILLS.SERVICE=\""+RDEscapeString(svc_svc->name())+"\"";
+  QString sql=QString("left join `AUTOFILLS` ")+
+    "on `CART`.`NUMBER`=`AUTOFILLS`.`CART_NUMBER` where "+
+    "`AUTOFILLS`.`SERVICE`='"+RDEscapeString(svc_svc->name())+"'";
   svc_cart_model->setFilterSql(sql);
 }
 
@@ -107,9 +107,9 @@ void AutofillCarts::addData()
   int cartnum=0;
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::Audio,svc_svc->name(),NULL)) {
-    sql=QString("insert into AUTOFILLS set ")+
-      "SERVICE=\""+RDEscapeString(svc_svc->name())+"\","+
-      QString().sprintf("CART_NUMBER=%d",cartnum);
+    sql=QString("insert into `AUTOFILLS` set ")+
+      "`SERVICE`='"+RDEscapeString(svc_svc->name())+"',"+
+      QString().sprintf("`CART_NUMBER`=%d",cartnum);
     RDSqlQuery::apply(sql);
     QModelIndex index=svc_cart_model->addCart(cartnum);
     if(index.isValid()) {
@@ -127,9 +127,9 @@ void AutofillCarts::deleteData()
     return;
   }
 
-  QString sql=QString("delete from AUTOFILLS where ")+
-    "SERVICE=\""+RDEscapeString(svc_svc->name())+"\" && "+
-    QString().sprintf("CART_NUMBER=%u",
+  QString sql=QString("delete from `AUTOFILLS` where ")+
+    "`SERVICE`='"+RDEscapeString(svc_svc->name())+"' && "+
+    QString().sprintf("`CART_NUMBER`=%u",
 		      svc_cart_model->cartNumber(rows.first()));
   RDSqlQuery::apply(sql);
   svc_cart_model->removeCart(rows.first());

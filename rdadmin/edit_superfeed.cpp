@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Superfeed
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,8 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <qpushbutton.h>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -75,17 +73,17 @@ EditSuperfeed::EditSuperfeed(RDFeed *feed,QWidget *parent)
   // Populate Fields
   //
   sql=QString("select ")+
-    "MEMBER_KEY_NAME "+  // 00
-    "from SUPERFEED_MAPS where "+
-    "KEY_NAME=\""+RDEscapeString(feed_feed->keyName())+"\"";
+    "`MEMBER_KEY_NAME` "+  // 00
+    "from `SUPERFEED_MAPS` where "+
+    "`KEY_NAME`='"+RDEscapeString(feed_feed->keyName())+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     feed_host_sel->destInsertItem(q->value(0).toString());
   }
   delete q;
 
-  sql=QString("select KEY_NAME from FEEDS where ")+
-    "IS_SUPERFEED='N'";
+  sql=QString("select `KEY_NAME` from `FEEDS` where ")+
+    "`IS_SUPERFEED`='N'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(feed_host_sel->destFindItem(q->value(0).toString())==0) {
@@ -122,7 +120,7 @@ void EditSuperfeed::okData()
   // Feed ID Map
   //
   QMap<QString,unsigned> feed_ids;
-  sql=QString("select KEY_NAME,ID from FEEDS");
+  sql=QString("select `KEY_NAME`,`ID` from `FEEDS`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     feed_ids[q->value(0).toString()]=q->value(1).toUInt();
@@ -134,18 +132,18 @@ void EditSuperfeed::okData()
   //
   for(unsigned i=0;i<feed_host_sel->destCount();i++) {
     sql=QString("select ")+
-      "MEMBER_KEY_NAME "  // 00
-      "from SUPERFEED_MAPS where "+
-      "KEY_NAME=\""+RDEscapeString(feed_feed->keyName())+"\" && "
-      "MEMBER_KEY_NAME=\""+RDEscapeString(feed_host_sel->destText(i))+"\"";
+      "`MEMBER_KEY_NAME` "  // 00
+      "from `SUPERFEED_MAPS` where "+
+      "`KEY_NAME`='"+RDEscapeString(feed_feed->keyName())+"' && "
+      "`MEMBER_KEY_NAME`='"+RDEscapeString(feed_host_sel->destText(i))+"'";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString("insert into SUPERFEED_MAPS set ")+
-	"KEY_NAME=\""+RDEscapeString(feed_feed->keyName())+"\","+
-	"MEMBER_KEY_NAME=\""+RDEscapeString(feed_host_sel->destText(i))+"\","+
-	QString().sprintf("FEED_ID=%u,",feed_ids.value(feed_feed->keyName()))+
-	QString().sprintf("MEMBER_FEED_ID=%u",feed_ids.value(feed_host_sel->destText(i)));
+      sql=QString("insert into `SUPERFEED_MAPS` set ")+
+	"`KEY_NAME`='"+RDEscapeString(feed_feed->keyName())+"',"+
+	"`MEMBER_KEY_NAME`='"+RDEscapeString(feed_host_sel->destText(i))+"',"+
+	QString().sprintf("`FEED_ID`=%u,",feed_ids.value(feed_feed->keyName()))+
+	QString().sprintf("`MEMBER_FEED_ID`=%u",feed_ids.value(feed_host_sel->destText(i)));
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -154,11 +152,11 @@ void EditSuperfeed::okData()
   //
   // Delete Old Groups
   //
-  sql=QString("delete from SUPERFEED_MAPS where ")+
-    "KEY_NAME=\""+RDEscapeString(feed_feed->keyName())+"\"";
+  sql=QString("delete from `SUPERFEED_MAPS` where ")+
+    "`KEY_NAME`='"+RDEscapeString(feed_feed->keyName())+"'";
   for(unsigned i=0;i<feed_host_sel->destCount();i++) {
-    sql+=QString(" && MEMBER_KEY_NAME<>\"")+
-      RDEscapeString(feed_host_sel->destText(i))+"\"";
+    sql+=QString(" && `MEMBER_KEY_NAME`<>'")+
+      RDEscapeString(feed_host_sel->destText(i))+"'";
   }
   q=new RDSqlQuery(sql);
   delete q;

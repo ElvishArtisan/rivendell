@@ -18,9 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QMessageBox>
+#include <QPushButton>
 
 #include <rd.h>
 #include <rddb.h>
@@ -32,8 +31,6 @@
 EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   edit_id=id;
   edit_matrix=matrix;
   edit_password_changed=false;
@@ -42,10 +39,8 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Node Hostname
@@ -141,10 +136,14 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   else {
     QString sql;
     RDSqlQuery *q;
-    sql=QString().sprintf("select HOSTNAME,TCP_PORT,DESCRIPTION,PASSWORD,\
-                           BASE_OUTPUT \
-                           from SWITCHER_NODES \
-                           where ID=%d",*edit_id);
+    sql=QString("select ")+
+      "`HOSTNAME`,"+     // 00
+      "`TCP_PORT`,"+     // 01
+      "`DESCRIPTION`,"+  // 02
+      "`PASSWORD`,"+     // 03
+      "`BASE_OUTPUT` "+  // 04
+      "from `SWITCHER_NODES` where "+
+      QString().sprintf("`ID`=%d",*edit_id);
     q=new RDSqlQuery(sql);
     if(q->first()) {
       edit_hostname_edit->setText(q->value(0).toString());
@@ -199,11 +198,11 @@ void EditNode::okData()
   }
 
   if((*edit_id)<0) {
-    sql=QString("select ID from SWITCHER_NODES where ")+
-      "(STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\") && "+
-      QString().sprintf("(MATRIX=%d) && ",edit_matrix->matrix())+
-      "(HOSTNAME=\""+RDEscapeString(edit_hostname_edit->text())+"\") && "+
-      QString().sprintf("(TCP_PORT=%d)",edit_tcpport_spin->value());
+    sql=QString("select `ID` from `SWITCHER_NODES` where ")+
+      "(`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"') && "+
+      QString().sprintf("(`MATRIX`=%d) && ",edit_matrix->matrix())+
+      "(`HOSTNAME`='"+RDEscapeString(edit_hostname_edit->text())+"') && "+
+      QString().sprintf("(`TCP_PORT`=%d)",edit_tcpport_spin->value());
     q=new RDSqlQuery(sql);
     if(q->first()) {
       delete q;
@@ -213,7 +212,7 @@ void EditNode::okData()
     }
     delete q;
 
-    sql="select ID from SWITCHER_NODES order by ID desc";
+    sql="select `ID` from `SWITCHER_NODES` order by `ID` desc";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       *edit_id=q->value(0).toInt()+1;
@@ -222,26 +221,25 @@ void EditNode::okData()
       *edit_id=1;
     }
     delete q;
-    sql=QString("insert into SWITCHER_NODES set ")+
-      QString().sprintf("ID=%d,",*edit_id)+
-      "STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\","+
-      QString().sprintf("MATRIX=%d,",edit_matrix->matrix())+
-      "HOSTNAME=\""+RDEscapeString(edit_hostname_edit->text())+"\","+
-      QString().sprintf("TCP_PORT=%d,",edit_tcpport_spin->value())+
-      "DESCRIPTION=\""+RDEscapeString(edit_description_edit->text())+"\","+
-      QString().sprintf("BASE_OUTPUT=%d,",edit_output_spin->value())+
-      "PASSWORD=\""+RDEscapeString(edit_password)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    sql=QString("insert into `SWITCHER_NODES` set ")+
+      QString().sprintf("`ID`=%d,",*edit_id)+
+      "`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"',"+
+      QString().sprintf("`MATRIX`=%d,",edit_matrix->matrix())+
+      "`HOSTNAME`='"+RDEscapeString(edit_hostname_edit->text())+"',"+
+      QString().sprintf("`TCP_PORT`=%d,",edit_tcpport_spin->value())+
+      "`DESCRIPTION`='"+RDEscapeString(edit_description_edit->text())+"',"+
+      QString().sprintf("`BASE_OUTPUT`=%d,",edit_output_spin->value())+
+      "`PASSWORD`='"+RDEscapeString(edit_password)+"'";
+    RDSqlQuery::apply(sql);
   }
   else {
-    sql=QString("update SWITCHER_NODES set ")+
-      "HOSTNAME=\""+RDEscapeString(edit_hostname_edit->text())+"\","+
-      QString().sprintf("TCP_PORT=%d,",edit_tcpport_spin->value())+
-      "DESCRIPTION=\""+RDEscapeString(edit_description_edit->text())+"\","+
-      QString().sprintf("BASE_OUTPUT=%d,",edit_output_spin->value())+
-      "PASSWORD=\""+RDEscapeString(edit_password)+"\" where "+
-      QString().sprintf("ID=%d",*edit_id);
+    sql=QString("update `SWITCHER_NODES` set ")+
+      "`HOSTNAME`='"+RDEscapeString(edit_hostname_edit->text())+"',"+
+      QString().sprintf("`TCP_PORT`=%d,",edit_tcpport_spin->value())+
+      "`DESCRIPTION`='"+RDEscapeString(edit_description_edit->text())+"',"+
+      QString().sprintf("`BASE_OUTPUT`=%d,",edit_output_spin->value())+
+      "`PASSWORD`='"+RDEscapeString(edit_password)+"' where "+
+      QString().sprintf("`ID`=%d",*edit_id);
     q=new RDSqlQuery(sql);
     delete q;
   }

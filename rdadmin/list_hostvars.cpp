@@ -118,9 +118,9 @@ QSizePolicy ListHostvars::sizePolicy() const
 
 void ListHostvars::addData()
 {
-  QString sql=QString("insert into HOSTVARS set ")+
-    "STATION_NAME=\""+RDEscapeString(list_station)+"\","+
-    "NAME=\""+RDEscapeString("%NEW_VAR%")+"\"";
+  QString sql=QString("insert into `HOSTVARS` set ")+
+    "`STATION_NAME`='"+RDEscapeString(list_station)+"',"+
+    "`NAME`='"+RDEscapeString("%NEW_VAR%")+"'";
   int id=RDSqlQuery::run(sql).toInt();
   if(list_edit_hostvar_dialog->exec(id)) {
     QModelIndex row=list_model->addVar(id);
@@ -128,8 +128,8 @@ void ListHostvars::addData()
       list_view->selectRow(row.row());
     }
     else {
-      sql=QString("delete from HOSTVARS ")+
-	QString().sprintf("where ID=%d",id);
+      sql=QString("delete from `HOSTVARS` ")+
+	QString().sprintf("where `ID`=%d",id);
       RDSqlQuery::apply(sql);
     }
   }
@@ -164,8 +164,8 @@ void ListHostvars::deleteData()
 		      QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
     return;
   }
-  QString sql=QString("delete from HOSTVARS ")+
-    QString().sprintf("where ID=%d",list_model->varId(rows.first()));
+  QString sql=QString("delete from `HOSTVARS` ")+
+    QString().sprintf("where `ID`=%d",list_model->varId(rows.first()));
   RDSqlQuery::apply(sql);
   list_model->removeVar(rows.first());
 }

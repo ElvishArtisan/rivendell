@@ -18,13 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qmessagebox.h>
-#include <qdatetime.h>
+#include <QMessageBox>
 
-#include <rddb.h>
 #include <rdapplication.h>
+#include <rddb.h>
 #include <rdescape_string.h>
 #include <rdtextvalidator.h>
 

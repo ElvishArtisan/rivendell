@@ -129,11 +129,11 @@ void ListSchedCodes::addData()
     }
   }
   else {
-    QString sql=QString("delete from SCHED_CODES where ")+
-      "CODE=\""+RDEscapeString(scode)+"\"";
+    QString sql=QString("delete from `SCHED_CODES` where ")+
+      "`CODE`='"+RDEscapeString(scode)+"'";
     RDSqlQuery::apply(sql);
-    sql=QString("delete from RULE_LINES where ")+
-      "CODE=\""+RDEscapeString(scode)+"\"";
+    sql=QString("delete from `RULE_LINES` where ")+
+      "`CODE`='"+RDEscapeString(scode)+"'";
     RDSqlQuery::apply(sql);
   }
 }
@@ -175,16 +175,16 @@ void ListSchedCodes::deleteData()
     return;
   }
 
-  sql=QString("delete from DROPBOX_SCHED_CODES where ")+
-    "SCHED_CODE=\""+RDEscapeString(codename)+"\"";
+  sql=QString("delete from `DROPBOX_SCHED_CODES` where ")+
+    "`SCHED_CODE`='"+RDEscapeString(codename)+"'";
   RDSqlQuery::apply(sql);
 
-  sql=QString("delete from RULE_LINES where ")+
-    "CODE=\""+RDEscapeString(codename)+"\"";
+  sql=QString("delete from `RULE_LINES` where ")+
+    "`CODE`='"+RDEscapeString(codename)+"'";
   RDSqlQuery::apply(sql);
 
-  sql=QString("delete from SCHED_CODES where ")+
-    "CODE=\""+RDEscapeString(codename)+"\"";
+  sql=QString("delete from `SCHED_CODES` where ")+
+    "`CODE`='"+RDEscapeString(codename)+"'";
   RDSqlQuery::apply(sql);
   list_schedcodes_model->removeSchedCode(rows.first());
 }

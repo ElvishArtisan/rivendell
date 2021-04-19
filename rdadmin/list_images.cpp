@@ -173,25 +173,25 @@ void ListImages::deleteData()
 
   if((row=SelectedRow())>=0) {
     sql=QString("select ")+
-      "ID "+
-      "from FEEDS where "+
-      QString().sprintf("CHANNEL_IMAGE_ID=%d",list_model->imageId(row));
+      "`ID` "+
+      "from `FEEDS` where "+
+      QString().sprintf("`CHANNEL_IMAGE_ID`=%d",list_model->imageId(row));
     q=new RDSqlQuery(sql);
     channel_ids=q->size();
     delete q;
 
     sql=QString("select ")+
-      "ID "+
-      "from FEEDS where "+
-      QString().sprintf("DEFAULT_ITEM_IMAGE_ID=%d",list_model->imageId(row));
+      "`ID` "+
+      "from `FEEDS` where "+
+      QString().sprintf("`DEFAULT_ITEM_IMAGE_ID`=%d",list_model->imageId(row));
     q=new RDSqlQuery(sql);
     channel_default_ids=q->size();
     delete q;
 
     sql=QString("select ")+
-      "ID "+
-      "from PODCASTS where "+
-      QString().sprintf("ITEM_IMAGE_ID=%d",list_model->imageId(row));
+      "`ID` "+
+      "from `PODCASTS` where "+
+      QString().sprintf("`ITEM_IMAGE_ID`=%d",list_model->imageId(row));
     q=new RDSqlQuery(sql);
     item_ids=q->size();
     delete q;
@@ -212,8 +212,8 @@ void ListImages::deleteData()
       return;
     }
 
-    sql=QString("select ID from FEED_IMAGES where ")+
-      QString().sprintf("ID=%d",list_model->imageId(row));
+    sql=QString("select `ID` from `FEED_IMAGES` where ")+
+      QString().sprintf("`ID`=%d",list_model->imageId(row));
     q=new RDSqlQuery(sql);
     if(q->first()) {
       if((row=SelectedRow())>=0) {

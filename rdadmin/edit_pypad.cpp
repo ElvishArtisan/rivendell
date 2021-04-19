@@ -2,7 +2,7 @@
 //
 // Edit a PyPAD Instance Configuration
 //
-//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -77,11 +77,11 @@ EditPypad::EditPypad(int id,QWidget *parent)
   // Load Values
   //
   QString sql=QString("select ")+
-    "SCRIPT_PATH,"+  // 00
-    "DESCRIPTION,"+  // 01
-    "CONFIG "+       // 02
-    "from PYPAD_INSTANCES where "+
-    QString().sprintf("ID=%u",edit_id);
+    "`SCRIPT_PATH`,"+  // 00
+    "`DESCRIPTION`,"+  // 01
+    "`CONFIG` "+       // 02
+    "from `PYPAD_INSTANCES` where "+
+    QString().sprintf("`ID`=%u",edit_id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     edit_script_path_edit->setText(q->value(0).toString());
@@ -107,10 +107,10 @@ QSizePolicy EditPypad::sizePolicy() const
 
 void EditPypad::okData()
 {
-  QString sql=QString("update PYPAD_INSTANCES set ")+
-    "DESCRIPTION=\""+RDEscapeString(edit_description_edit->text())+"\","+
-    "CONFIG=\""+RDEscapeString(edit_config_text->toPlainText())+"\" where "+
-    QString().sprintf("ID=%u",edit_id);
+  QString sql=QString("update `PYPAD_INSTANCES` set ")+
+    "`DESCRIPTION`='"+RDEscapeString(edit_description_edit->text())+"',"+
+    "`CONFIG`='"+RDEscapeString(edit_config_text->toPlainText())+"' where "+
+    QString().sprintf("`ID`=%u",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

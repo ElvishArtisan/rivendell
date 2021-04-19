@@ -533,7 +533,7 @@ oppdatert til versjon </translation>
     </message>
     <message>
         <source>Empty Host Config</source>
-        <translation>Tomt vertsoppsett</translation>
+        <translation type="vanished">Tomt vertsoppsett</translation>
     </message>
     <message>
         <source>Invalid Name</source>

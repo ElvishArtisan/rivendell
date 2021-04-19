@@ -522,7 +522,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
     setText(svc_svc->preimportCommand(RDSvc::Traffic));
   svc_tfc_import_template_box->insertItem(0,tr("[custom]"));
   svc_mus_import_template_box->insertItem(0,tr("[custom]"));
-  sql="select NAME from IMPORT_TEMPLATES order by NAME";
+  sql="select `NAME` from `IMPORT_TEMPLATES` order by `NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     svc_tfc_import_template_box->

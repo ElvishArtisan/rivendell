@@ -113,13 +113,13 @@ int EditVguestResource::exec(RDMatrix::VguestType type,unsigned id)
   edit_id=id;
 
   QString sql=QString("select ")+
-    "ENGINE_NUM,"+   // 00
-    "DEVICE_NUM,"+   // 01
-    "SURFACE_NUM,"+  // 02
-    "RELAY_NUM,"+    // 03
-    "BUSS_NUM "+     // 04
-    "from VGUEST_RESOURCES where "+
-    QString().sprintf("ID=%u",id);
+    "`ENGINE_NUM`,"+   // 00
+    "`DEVICE_NUM`,"+   // 01
+    "`SURFACE_NUM`,"+  // 02
+    "`RELAY_NUM`,"+    // 03
+    "`BUSS_NUM` "+     // 04
+    "from `VGUEST_RESOURCES` where "+
+    QString().sprintf("`ID`=%u",id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(0).toInt()>=0) {
@@ -205,12 +205,12 @@ void EditVguestResource::okData()
       return;
     }
   }
-  QString sql=QString("update VGUEST_RESOURCES set ")+
-    QString().sprintf("ENGINE_NUM=%d,",enginenum)+
-    QString().sprintf("DEVICE_NUM=%d,",devicenum)+
-    QString().sprintf("SURFACE_NUM=%d,",surfacenum)+
-    QString().sprintf("RELAY_NUM=%d ",relaynum)+
-    QString().sprintf("where ID=%u",edit_id);
+  QString sql=QString("update `VGUEST_RESOURCES` set ")+
+    QString().sprintf("`ENGINE_NUM`=%d,",enginenum)+
+    QString().sprintf("`DEVICE_NUM`=%d,",devicenum)+
+    QString().sprintf("`SURFACE_NUM`=%d,",surfacenum)+
+    QString().sprintf("`RELAY_NUM`=%d ",relaynum)+
+    QString().sprintf("where `ID`=%u",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

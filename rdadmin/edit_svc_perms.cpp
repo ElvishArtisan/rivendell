@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Service Permissions
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,8 +26,6 @@
 EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   QString sql;
   RDSqlQuery *q;
 
@@ -73,15 +71,15 @@ EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent)
 
   //
   // Populate Fields
-  sql=QString("select STATION_NAME from SERVICE_PERMS where ")+
-    "SERVICE_NAME=\""+RDEscapeString(svc_svc->name())+"\"";
+  sql=QString("select `STATION_NAME` from `SERVICE_PERMS` where ")+
+    "`SERVICE_NAME`='"+RDEscapeString(svc_svc->name())+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     svc_host_sel->destInsertItem(q->value(0).toString());
   }
   delete q;
 
-  sql=QString("select NAME from STATIONS");
+  sql=QString("select `NAME` from `STATIONS`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(svc_host_sel->destFindItem(q->value(0).toString())==0) {
@@ -118,15 +116,15 @@ void EditSvcPerms::okData()
   // Add New Hosts
   //
   for(unsigned i=0;i<svc_host_sel->destCount();i++) {
-    sql=QString("select STATION_NAME from SERVICE_PERMS where ")+
-      "SERVICE_NAME=\""+RDEscapeString(svc_svc->name())+"\" && "+
-      "STATION_NAME=\""+RDEscapeString(svc_host_sel->destText(i))+"\"";
+    sql=QString("select `STATION_NAME` from `SERVICE_PERMS` where ")+
+      "`SERVICE_NAME`='"+RDEscapeString(svc_svc->name())+"' && "+
+      "`STATION_NAME`='"+RDEscapeString(svc_host_sel->destText(i))+"'";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString("insert into SERVICE_PERMS (SERVICE_NAME,STATION_NAME) ")+
-	"values (\""+RDEscapeString(svc_svc->name())+"\","+
-	"\""+RDEscapeString(svc_host_sel->destText(i))+"\")";
+      sql=QString("insert into `SERVICE_PERMS` (`SERVICE_NAME`,`STATION_NAME`) ")+
+	"values ('"+RDEscapeString(svc_svc->name())+"',"+
+	"'"+RDEscapeString(svc_host_sel->destText(i))+"')";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -135,11 +133,11 @@ void EditSvcPerms::okData()
   //
   // Delete Old Hosts
   //
-  sql=QString("delete from SERVICE_PERMS where ")+
-    "SERVICE_NAME=\""+RDEscapeString(svc_svc->name())+"\"";
+  sql=QString("delete from `SERVICE_PERMS` where ")+
+    "`SERVICE_NAME`='"+RDEscapeString(svc_svc->name())+"'";
   for(unsigned i=0;i<svc_host_sel->destCount();i++) {
-    sql+=QString(" && STATION_NAME<>\"")+
-      RDEscapeString(svc_host_sel->destText(i))+"\"";
+    sql+=QString(" && `STATION_NAME`<>'")+
+      RDEscapeString(svc_host_sel->destText(i))+"'";
   }
   q=new RDSqlQuery(sql);
   delete q;

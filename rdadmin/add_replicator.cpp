@@ -18,9 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rdescape_string.h>
 #include <rdtextvalidator.h>
@@ -31,8 +29,6 @@
 AddReplicator::AddReplicator(QString *rname,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   repl_name=rname;
 
   //
@@ -110,8 +106,8 @@ void AddReplicator::okData()
     return;
   }
 
-  sql=QString("insert into REPLICATORS set ")+
-    "NAME=\""+RDEscapeString(repl_name_edit->text())+"\"";
+  sql=QString("insert into `REPLICATORS` set ")+
+    "`NAME`='"+RDEscapeString(repl_name_edit->text())+"'";
   q=new RDSqlQuery(sql);
   if(!q->isActive()) {
     QMessageBox::warning(this,tr("Replicator Exists"),tr("A replicator with that name already exists!"));
@@ -122,8 +118,8 @@ void AddReplicator::okData()
 
   EditReplicator *replicator=new EditReplicator(repl_name_edit->text(),this);
   if(replicator->exec()<0) {
-    sql=QString("delete from REPLICATORS where ")+
-      "NAME=\""+RDEscapeString(repl_name_edit->text())+"\"";
+    sql=QString("delete from `REPLICATORS` where ")+
+      "`NAME`='"+RDEscapeString(repl_name_edit->text())+"'";
     q=new RDSqlQuery(sql);
     delete q;
     delete replicator;

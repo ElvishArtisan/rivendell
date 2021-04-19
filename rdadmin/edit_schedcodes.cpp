@@ -106,9 +106,9 @@ int EditSchedCode::exec(const QString &scode)
   d_code_edit->setText(scode);
 
   QString sql=QString("select ")+
-    "DESCRIPTION "+  // 00
-    "from SCHED_CODES where "+
-    "CODE=\""+RDEscapeString(scode)+"\"";
+    "`DESCRIPTION` "+  // 00
+    "from `SCHED_CODES` where "+
+    "`CODE`='"+RDEscapeString(scode)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     d_description_edit->setText(q->value(0).toString());
@@ -124,9 +124,9 @@ void EditSchedCode::okData()
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("update SCHED_CODES set ")+
-    "DESCRIPTION=\""+RDEscapeString(d_description_edit->text())+"\" "+
-    "where CODE=\""+RDEscapeString(d_code_edit->text())+"\"";
+  sql=QString("update `SCHED_CODES` set ")+
+    "`DESCRIPTION`='"+RDEscapeString(d_description_edit->text())+"' "+
+    "where `CODE`='"+RDEscapeString(d_code_edit->text())+"'";
   q=new RDSqlQuery(sql);
   delete q;
 

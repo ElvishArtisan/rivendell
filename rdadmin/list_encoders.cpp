@@ -190,9 +190,9 @@ void ListEncoders::RefreshList()
 
   c_list->clear();
   sql=QString("select ")+
-    "ID,"+    // 00
-    "NAME "+  // 01
-    "from ENCODER_PRESETS order by NAME";
+    "`ID`,"+    // 00
+    "`NAME` "+  // 01
+    "from `ENCODER_PRESETS` order by `NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     item=new QListWidgetItem(c_list);

@@ -230,10 +230,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Empty Host Config</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Invalid Name</source>
         <translation type="unfinished"></translation>
     </message>

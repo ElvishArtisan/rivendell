@@ -18,9 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qmessagebox.h>
+#include <QPushButton>
+#include <QMessageBox>
 
 #include <rd.h>
 #include <rdescape_string.h>
@@ -107,11 +106,11 @@ int EditLiveWireGpio::exec(int slot_id)
   edit_id=slot_id;
 
   QString sql=QString("select ")+
-    "SLOT,"+           // 00
-    "SOURCE_NUMBER,"+  // 01
-    "IP_ADDRESS "+     // 02
-    "from LIVEWIRE_GPIO_SLOTS where "+
-    QString().sprintf("ID=%u",slot_id);
+    "`SLOT`,"+           // 00
+    "`SOURCE_NUMBER`,"+  // 01
+    "`IP_ADDRESS` "+     // 02
+    "from `LIVEWIRE_GPIO_SLOTS` where "+
+    QString().sprintf("`ID`=%u",slot_id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     edit_title_label->
@@ -142,10 +141,10 @@ void EditLiveWireGpio::okData()
 			 tr("The Surface Address is invalid!"));
     return;
   }
-  QString sql=QString("update LIVEWIRE_GPIO_SLOTS set ")+
-    QString().sprintf("SOURCE_NUMBER=%d,",edit_source_number_spin->value())+
-    "IP_ADDRESS=\""+RDEscapeString(addr.toString())+"\" "+
-    QString().sprintf("where ID=%u",edit_id);
+  QString sql=QString("update `LIVEWIRE_GPIO_SLOTS` set ")+
+    QString().sprintf("`SOURCE_NUMBER`=%d,",edit_source_number_spin->value())+
+    "`IP_ADDRESS`='"+RDEscapeString(addr.toString())+"' "+
+    QString().sprintf("where `ID`=%u",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

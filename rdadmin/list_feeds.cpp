@@ -147,16 +147,16 @@ void ListFeeds::addData()
       }
     }
     else {
-      sql=QString("delete from FEED_PERMS where ")+
-	"KEY_NAME=\""+RDEscapeString(feed)+"\"";
+      sql=QString("delete from `FEED_PERMS` where ")+
+	"`KEY_NAME`='"+RDEscapeString(feed)+"'";
       RDSqlQuery::apply(sql);
 
-      sql=QString("delete from FEED_IMAGES where ")+
-	"FEED_KEY_NAME=\""+RDEscapeString(feed)+"\"";
+      sql=QString("delete from `FEED_IMAGES` where ")+
+	"`FEED_KEY_NAME`='"+RDEscapeString(feed)+"'";
       RDSqlQuery::apply(sql);
 
-      sql=QString("delete from FEEDS where ")+
-	"KEY_NAME=\""+RDEscapeString(feed)+"\"";
+      sql=QString("delete from `FEEDS` where ")+
+	"`KEY_NAME`='"+RDEscapeString(feed)+"'";
       RDSqlQuery::apply(sql);
 
       return;
@@ -211,9 +211,9 @@ void ListFeeds::deleteData()
   //
   RDPodcast *cast;
   sql=QString("select ")+
-    "ID "+  // 00
-    "from PODCASTS where "+
-    QString().sprintf("FEED_ID=%u",list_feeds_model->feedId(rows.first()));
+    "`ID` "+  // 00
+    "from `PODCASTS` where "+
+    QString().sprintf("`FEED_ID`=%u",list_feeds_model->feedId(rows.first()));
   q=new RDSqlQuery(sql);
   QProgressDialog *pd=
     new QProgressDialog(tr("Deleting remote audio..."),"",0,q->size()+1,this);
@@ -241,30 +241,30 @@ void ListFeeds::deleteData()
   //
   // Delete Cast Entries
   //
-  sql=QString("delete from PODCASTS where ")+
-    QString().sprintf("FEED_ID=%u",list_feeds_model->feedId(rows.first()));
+  sql=QString("delete from `PODCASTS` where ")+
+    QString().sprintf("`FEED_ID`=%u",list_feeds_model->feedId(rows.first()));
   RDSqlQuery::apply(sql);
 
   //
   // Delete Images
   //
   feed->removeAllImages();
-  sql=QString("delete from FEED_IMAGES where ")+
-    QString().sprintf("FEED_ID=%d",feed->id());
+  sql=QString("delete from `FEED_IMAGES` where ")+
+    QString().sprintf("`FEED_ID`=%d",feed->id());
   RDSqlQuery::apply(sql);
 
   //
   // Delete Feed
   //
-  sql=QString("delete from FEED_PERMS where ")+
-    "KEY_NAME=\""+RDEscapeString(feedname)+"\"";
+  sql=QString("delete from `FEED_PERMS` where ")+
+    "`KEY_NAME`='"+RDEscapeString(feedname)+"'";
   RDSqlQuery::apply(sql);
-  sql=QString("delete from SUPERFEED_MAPS where ")+
-    "KEY_NAME=\""+RDEscapeString(feedname)+"\" || "+
-    "MEMBER_KEY_NAME=\""+RDEscapeString(feedname)+"\"";
+  sql=QString("delete from `SUPERFEED_MAPS` where ")+
+    "`KEY_NAME`='"+RDEscapeString(feedname)+"' || "+
+    "`MEMBER_KEY_NAME`='"+RDEscapeString(feedname)+"'";
   RDSqlQuery::apply(sql);
-  sql=QString("delete from FEEDS where ")+
-    "KEY_NAME=\""+RDEscapeString(feedname)+"\"";
+  sql=QString("delete from `FEEDS` where ")+
+    "`KEY_NAME`='"+RDEscapeString(feedname)+"'";
   RDSqlQuery::apply(sql);
   list_feeds_model->removeFeed(feedname);
 
@@ -312,9 +312,9 @@ void ListFeeds::repostData()
   // Post Images
   //
   sql=QString("select ")+
-    "ID "+              // 00
-    "from FEED_IMAGES where "+
-    QString().sprintf("FEED_ID=%u",feed->id());
+    "`ID` "+              // 00
+    "from `FEED_IMAGES` where "+
+    QString().sprintf("`FEED_ID`=%u",feed->id());
   q=new RDSqlQuery(sql);
   pd->setLabelText(tr("Posting images..."));
   pd->setRange(0,q->size());
@@ -330,9 +330,9 @@ void ListFeeds::repostData()
   // Post Item Data
   //
   sql=QString("select ")+
-    "ID "+              // 00
-    "from PODCASTS where "+
-    QString().sprintf("FEED_ID=%u",feed->id());
+    "`ID` "+              // 00
+    "from `PODCASTS` where "+
+    QString().sprintf("`FEED_ID`=%u",feed->id());
   q=new RDSqlQuery(sql);
   pd->setLabelText(tr("Posting item data..."));
   pd->setRange(0,q->size());
@@ -397,9 +397,9 @@ void ListFeeds::unpostData()
   // Remove Item Data
   //
   sql=QString("select ")+
-    "ID "+              // 00
-    "from PODCASTS where "+
-    QString().sprintf("FEED_ID=%u",feed->id());
+    "`ID` "+              // 00
+    "from `PODCASTS` where "+
+    QString().sprintf("`FEED_ID`=%u",feed->id());
   q=new RDSqlQuery(sql);
   pd->setLabelText(tr("Unposting item data..."));
   pd->setRange(0,q->size());
@@ -418,9 +418,9 @@ void ListFeeds::unpostData()
   // Remove Images
   //
   sql=QString("select ")+
-    "ID "+              // 00
-    "from FEED_IMAGES where "+
-    QString().sprintf("FEED_ID=%u",feed->id());
+    "`ID` "+              // 00
+    "from `FEED_IMAGES` where "+
+    QString().sprintf("`FEED_ID`=%u",feed->id());
   q=new RDSqlQuery(sql);
   pd->setLabelText(tr("Unposting images..."));
   pd->setRange(0,q->size());

@@ -19,7 +19,7 @@
 //
 
 #include <QLabel>
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -34,11 +34,6 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
-  QString sql;
-  RDSqlQuery *q;
-
   edit_station=station;
   edit_cae_station=cae_station;
   edit_previous_slot=0;
@@ -162,17 +157,14 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   //
   edit_service_box=new QComboBox(this);
   edit_service_box->setGeometry(127,240,120,20);
+  edit_service_model=new RDServiceListModel(true,this);
+  edit_service_model->setFont(defaultFont());
+  edit_service_model->setPalette(palette());
+  edit_service_box->setModel(edit_service_model);
   edit_service_label=new QLabel(tr("Service:"),this);
   edit_service_label->setGeometry(10,240,112,20);
   edit_service_label->setFont(labelFont());
   edit_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  sql="select NAME from SERVICES order by NAME";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    edit_service_box->
-      insertItem(edit_service_box->count(),q->value(0).toString());
-  }
-  delete q;
 
   //
   // Slot Mode
@@ -388,11 +380,18 @@ void EditCartSlots::ReadSlot(unsigned slotnum)
   RDSlotOptions *opts=new RDSlotOptions(edit_station->name(),slotnum);
   delete opts;
 
-  sql=QString("select CARD,INPUT_PORT,OUTPUT_PORT,DEFAULT_MODE,")+
-    "DEFAULT_HOOK_MODE,"+
-    "DEFAULT_STOP_ACTION,DEFAULT_CART_NUMBER,SERVICE_NAME from CARTSLOTS "+
-    "where (STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&"+
-    QString().sprintf("(SLOT_NUMBER=%u)",slotnum);
+  sql=QString("select ")+
+    "`CARD`,"+                 // 00
+    "`INPUT_PORT`,"+           // 01
+    "`OUTPUT_PORT`,"+          // 02
+    "`DEFAULT_MODE`,"+         // 03
+    "`DEFAULT_HOOK_MODE`,"+    // 04
+    "`DEFAULT_STOP_ACTION`,"+  // 05
+    "`DEFAULT_CART_NUMBER`,"+  // 06
+    "`SERVICE_NAME` "+         // 07
+    "from `CARTSLOTS` where "+
+    "(`STATION_NAME`='"+RDEscapeString(edit_station->name())+"')&&"+
+    QString().sprintf("(`SLOT_NUMBER`=%u)",slotnum);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     edit_card_spin->setValue(q->value(0).toInt());
@@ -430,36 +429,33 @@ void EditCartSlots::ReadSlot(unsigned slotnum)
 void EditCartSlots::WriteSlot(unsigned slotnum)
 {
   QString sql;
-  RDSqlQuery *q;
 
-  sql=QString("update CARTSLOTS set ")+
-    QString().sprintf("CARD=%d,INPUT_PORT=%d,OUTPUT_PORT=%d,",
-		      edit_card_spin->value(),
-		      edit_input_spin->value(),
-		      edit_output_spin->value())+
-    QString().sprintf("DEFAULT_MODE=%d,",
+  sql=QString("update `CARTSLOTS` set ")+
+    QString().sprintf("`CARD`=%d,",edit_card_spin->value())+
+    QString().sprintf("`INPUT_PORT`=%d,",edit_input_spin->value())+
+    QString().sprintf("`OUTPUT_PORT`=%d,",edit_output_spin->value())+
+    QString().sprintf("`DEFAULT_MODE`=%d,",
 		      edit_mode_box->currentIndex()-1)+
-    QString().sprintf("DEFAULT_HOOK_MODE=%d,",
+    QString().sprintf("`DEFAULT_HOOK_MODE`=%d,",
 		      edit_play_mode_box->currentIndex()-1)+
-    QString().sprintf("DEFAULT_STOP_ACTION=%d,",
+    QString().sprintf("`DEFAULT_STOP_ACTION`=%d,",
 		      edit_stop_action_box->currentIndex()-1);
   switch(edit_cartaction_box->currentIndex()) {
   case 0:
-    sql+="DEFAULT_CART_NUMBER=-1,";
+    sql+="`DEFAULT_CART_NUMBER`=-1,";
     break;
 
   case 1:
-    sql+="DEFAULT_CART_NUMBER=0,";
+    sql+="`DEFAULT_CART_NUMBER`=0,";
     break;
 
   default:
-    sql+=QString().sprintf("DEFAULT_CART_NUMBER=%d,",
+    sql+=QString().sprintf("`DEFAULT_CART_NUMBER`=%d,",
 			   edit_cart_edit->text().toInt());
     break;
   }
-  sql+="SERVICE_NAME=\""+RDEscapeString(edit_service_box->currentText())+"\" ";
-  sql+="where (STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&";
-  sql+=QString().sprintf("(SLOT_NUMBER=%u)",slotnum);
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql+="`SERVICE_NAME`='"+RDEscapeString(edit_service_box->currentText())+"' ";
+  sql+="where (`STATION_NAME`='"+RDEscapeString(edit_station->name())+"')&&";
+  sql+=QString().sprintf("(`SLOT_NUMBER`=%u)",slotnum);
+  RDSqlQuery::apply(sql);
 }

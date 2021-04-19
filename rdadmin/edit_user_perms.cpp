@@ -2,7 +2,7 @@
 //
 // Edit Rivendell User/Group Permissions
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-
 #include <rddb.h>
 #include <rdescape_string.h>
 
@@ -28,8 +26,6 @@
 EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   QString sql;
   RDSqlQuery *q;
 
@@ -74,15 +70,15 @@ EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
   //
   // Populate Fields
   //
-  sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(user_user->name())+"\"";
+  sql=QString("select `GROUP_NAME` from `USER_PERMS` where ")+
+    "`USER_NAME`='"+RDEscapeString(user_user->name())+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     user_host_sel->destInsertItem(q->value(0).toString());
   }
   delete q;
 
-  sql=QString("select NAME from GROUPS");
+  sql=QString("select `NAME` from `GROUPS`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(user_host_sel->destFindItem(q->value(0).toString())==0) {
@@ -119,15 +115,15 @@ void EditUserPerms::okData()
   // Add New Groups
   //
   for(unsigned i=0;i<user_host_sel->destCount();i++) {
-    sql=QString("select GROUP_NAME from USER_PERMS where ")+
-      "USER_NAME=\""+RDEscapeString(user_user->name())+"\" && "
-      "GROUP_NAME=\""+RDEscapeString(user_host_sel->destText(i))+"\"";
+    sql=QString("select `GROUP_NAME` from `USER_PERMS` where ")+
+      "`USER_NAME`='"+RDEscapeString(user_user->name())+"' && "
+      "`GROUP_NAME`='"+RDEscapeString(user_host_sel->destText(i))+"'";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString("insert into USER_PERMS (USER_NAME,GROUP_NAME) ")+
-	"values (\""+RDEscapeString(user_user->name())+
-	"\",\""+RDEscapeString(user_host_sel->destText(i))+"\")";
+      sql=QString("insert into `USER_PERMS` (`USER_NAME`,`GROUP_NAME`) ")+
+	"values ('"+RDEscapeString(user_user->name())+
+	"','"+RDEscapeString(user_host_sel->destText(i))+"')";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -136,14 +132,13 @@ void EditUserPerms::okData()
   //
   // Delete Old Groups
   //
-  sql=QString("delete from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(user_user->name())+"\"";
+  sql=QString("delete from `USER_PERMS` where ")+
+    "`USER_NAME`='"+RDEscapeString(user_user->name())+"'";
   for(unsigned i=0;i<user_host_sel->destCount();i++) {
-    sql+=QString(" && GROUP_NAME<>\"")+
-      RDEscapeString(user_host_sel->destText(i))+"\"";
+    sql+=QString(" && `GROUP_NAME`<>'")+
+      RDEscapeString(user_host_sel->destText(i))+"'";
   }
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
   done(0);
 }
 

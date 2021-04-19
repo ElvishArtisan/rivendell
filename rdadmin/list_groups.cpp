@@ -199,9 +199,9 @@ void ListGroups::deleteData()
     return;
   }
   sql=QString("select ")+
-    "NUMBER "+  // 00
-    "from CART where "+
-    "GROUP_NAME=\""+RDEscapeString(grpname)+"\"";
+    "`NUMBER` "+  // 00
+    "from `CART` where "+
+    "`GROUP_NAME`='"+RDEscapeString(grpname)+"'";
   q=new RDSqlQuery(sql);
   if((carts=q->size())>0) {
     warning=QString().sprintf("%d ",carts)+tr("member carts will be deleted along with group")+" \""+grpname+"\"!\n";
@@ -232,29 +232,29 @@ void ListGroups::deleteData()
   //
   // Delete Member Audio Perms
   //
-  sql=QString("delete from AUDIO_PERMS where ")+
-    "GROUP_NAME=\""+RDEscapeString(grpname)+"\"";
+  sql=QString("delete from `AUDIO_PERMS` where ")+
+    "`GROUP_NAME`='"+RDEscapeString(grpname)+"'";
   RDSqlQuery::apply(sql);
   
   //
   // Delete Member User Perms
   //
-  sql=QString("delete from USER_PERMS where ")+
-    "GROUP_NAME=\""+RDEscapeString(grpname)+"\"";
+  sql=QString("delete from `USER_PERMS` where ")+
+    "`GROUP_NAME`='"+RDEscapeString(grpname)+"'";
   RDSqlQuery::apply(sql);
   
   //
   // Delete Replicator Map Records
   //
-  sql=QString("delete from REPLICATOR_MAP where ")+
-    "GROUP_NAME=\""+RDEscapeString(grpname)+"\"";
+  sql=QString("delete from `REPLICATOR_MAP` where ")+
+    "`GROUP_NAME`='"+RDEscapeString(grpname)+"'";
   RDSqlQuery::apply(sql);
   
   //
   // Delete from Group List
   //
-  sql=QString("delete from GROUPS where ")+
-    "NAME=\""+RDEscapeString(grpname)+"\"";
+  sql=QString("delete from `GROUPS` where ")+
+    "`NAME`='"+RDEscapeString(grpname)+"'";
   RDSqlQuery::apply(sql);
   list_groups_model->removeGroup(grpname);
 }
@@ -279,16 +279,16 @@ void ListGroups::reportData()
   // Generate Body
   //
   sql=QString("select ")+
-    "NAME,"+                // 00
-    "DESCRIPTION,"+         // 01
-    "DEFAULT_LOW_CART,"+    // 02
-    "DEFAULT_HIGH_CART,"+   // 03
-    "ENFORCE_CART_RANGE,"+  // 04
-    "DEFAULT_CART_TYPE,"+   // 05
-    "REPORT_MUS,"+          // 06
-    "REPORT_TFC,"+          // 07
-    "ENABLE_NOW_NEXT "+     // 08
-    "from GROUPS order by NAME";
+    "`NAME`,"+                // 00
+    "`DESCRIPTION`,"+         // 01
+    "`DEFAULT_LOW_CART`,"+    // 02
+    "`DEFAULT_HIGH_CART`,"+   // 03
+    "`ENFORCE_CART_RANGE`,"+  // 04
+    "`DEFAULT_CART_TYPE`,"+   // 05
+    "`REPORT_MUS`,"+          // 06
+    "`REPORT_TFC`,"+          // 07
+    "`ENABLE_NOW_NEXT` "+     // 08
+    "from `GROUPS` order by `NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     //

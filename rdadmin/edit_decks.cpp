@@ -482,11 +482,11 @@ void EditDecks::matrixActivatedData(const QString &str)
     return;
   }
   int matrix=edit_matrix_ids[edit_swmatrix_box->currentIndex()];
-  sql=QString("select NAME from OUTPUTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(edit_swstation_box->currentText())+
-    "\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",matrix)+
-    "(NAME!=\"\")";
+  sql=QString("select `NAME` from `OUTPUTS` where ")+
+    "(`STATION_NAME`='"+
+    RDEscapeString(edit_swstation_box->currentText())+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)&&",matrix)+
+    "(`NAME`!='')";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_swoutput_box->
@@ -668,9 +668,12 @@ void EditDecks::ReadRecord(int chan)
   }
 
   if(chan>128) {
-    sql=QString("select NUMBER,CART_NUMBER from DECK_EVENTS where ")+
-      "(STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&"+
-      QString().sprintf("(CHANNEL=%d)",chan);
+    sql=QString("select ")+
+      "`NUMBER`,"+       // 00
+      "`CART_NUMBER` "+  // 01
+      "from `DECK_EVENTS` where "+
+      "(`STATION_NAME`='"+RDEscapeString(edit_station->name())+"')&&"+
+      QString().sprintf("(`CHANNEL`=%d)",chan);
     q=new RDSqlQuery(sql);
     while(q->next()) {
       if((q->value(0).toInt()-1)<RD_CUT_EVENT_ID_QUAN) {
@@ -746,11 +749,11 @@ void EditDecks::WriteRecord(int chan)
       else {
 	cartnum=edit_event_edits[i]->text().toUInt();
       }
-      sql=QString("update DECK_EVENTS set ")+
-	QString().sprintf("CART_NUMBER=%u ",cartnum)+
-	"where (STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&"+
-	QString().sprintf("(CHANNEL=%d)&&",chan)+
-	QString().sprintf("(NUMBER=%u)",i+1);
+      sql=QString("update `DECK_EVENTS` set ")+
+	QString().sprintf("`CART_NUMBER`=%u ",cartnum)+
+	"where (`STATION_NAME`='"+RDEscapeString(edit_station->name())+"')&&"+
+	QString().sprintf("(`CHANNEL`=%d)&&",chan)+
+	QString().sprintf("(`NUMBER`=%u)",i+1);
       q=new RDSqlQuery(sql);
       delete q;
     }
@@ -773,10 +776,11 @@ int EditDecks::GetOutput()
 {
   int output=-1;
 
-  QString sql=QString("select NUMBER from OUTPUTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(edit_swstation_box->currentText())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",GetMatrix())+
-    "(NAME=\""+RDEscapeString(edit_swoutput_box->currentText())+"\")";
+  QString sql=QString("select `NUMBER` from `OUTPUTS` where ")+
+    "(`STATION_NAME`='"+
+    RDEscapeString(edit_swstation_box->currentText())+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)&&",GetMatrix())+
+    "(`NAME`='"+RDEscapeString(edit_swoutput_box->currentText())+"')";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output=q->value(0).toInt();
@@ -794,24 +798,33 @@ QStringList EditDecks::GetActiveOutputMatrices()
   RDSqlQuery *q1;
   
   edit_matrix_ids.clear();
-  sql=QString("select TYPE,NAME,OUTPUTS,MATRIX from MATRICES where ")+
-    "STATION_NAME=\""+RDEscapeString(edit_swstation_box->currentText())+"\"";
+  sql=QString("select ")+
+    "`TYPE`,"+     // 00
+    "`NAME`,"+     // 01
+    "`OUTPUTS`,"+  // 02
+    "`MATRIX` "+   // 03
+    "from `MATRICES` where "+
+    "`STATION_NAME`='"+RDEscapeString(edit_swstation_box->currentText())+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     switch((RDMatrix::Type)q->value(0).toInt()) {
     case RDMatrix::LiveWireLwrpAudio:
-      sql=QString("select HOSTNAME,PASSWORD,TCP_PORT,BASE_OUTPUT ")+
-	"from SWITCHER_NODES "+
-	"where (STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&& "+
-	QString().sprintf("(MATRIX=%d) ",q->value(3).toInt())+
-	"order by BASE_OUTPUT desc";
+      sql=QString("select ")+
+	"`HOSTNAME`,"+     // 00
+	"`PASSWORD`,"+     // 01
+	"`TCP_PORT`,"+     // 02
+	"`BASE_OUTPUT` "+  // 03
+	"from `SWITCHER_NODES` where "+
+	"(`STATION_NAME`='"+RDEscapeString(edit_station->name())+"')&& "+
+	QString().sprintf("(`MATRIX`=%d) ",q->value(3).toInt())+
+	"order by `BASE_OUTPUT` desc";
       q1=new RDSqlQuery(sql);
       if(q1->first()) {
 	RDLiveWire *lw=new RDLiveWire(0,this);
 	if(!lw->loadSettings(q1->value(0).toString(),q1->value(2).toUInt(),
 			     q1->value(1).toString(),q1->value(3).toInt())) {
 	  QMessageBox::warning(this,"RDAdmin - "+tr("Connection Error"),
-			       tr("Unable to connect to node at")+" \""+
+			       tr("Unable to connect to node at")+" \" "+
 			       q1->value(0).toString()+"\"."+
 			    tr("Check that the unit is online and try again."));
 	  delete lw;

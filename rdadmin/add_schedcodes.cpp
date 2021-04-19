@@ -108,8 +108,8 @@ void AddSchedCode::okData()
     return;
   }
 
-  QString sql=QString("insert into SCHED_CODES set ")+
-    "CODE=\""+RDEscapeString(d_code_edit->text())+"\"";
+  QString sql=QString("insert into `SCHED_CODES` set ")+
+    "`CODE`='"+RDEscapeString(d_code_edit->text())+"'";
   if(!RDSqlQuery::apply(sql)) {
     QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
 			 tr("Schedule Code Already Exists!"));
@@ -120,14 +120,14 @@ void AddSchedCode::okData()
   // Add schedcode rules
   //
   sql=QString("select ")+
-    "NAME "  // 00
-    "from CLOCKS "+
-    "order by NAME";
+    "`NAME` "  // 00
+    "from `CLOCKS` "+
+    "order by `NAME`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString("insert into RULE_LINES set ")+
-      "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-      "CODE=\""+RDEscapeString(d_code_edit->text())+"\"";
+    sql=QString("insert into `RULE_LINES` set ")+
+      "`CLOCK_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
+      "`CODE`='"+RDEscapeString(d_code_edit->text())+"'";
     RDSqlQuery::apply(sql);
   }
   delete q;

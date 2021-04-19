@@ -636,9 +636,9 @@ void EditStation::okData()
   RDSqlQuery *q;
 
   if(!station_maint_box->isChecked()) {
-    sql=QString("select NAME from STATIONS where ")+
-      "(NAME!=\""+RDEscapeString(station_station->name())+"\")&&"+
-      "(SYSTEM_MAINT=\"Y\")";
+    sql=QString("select `NAME` from `STATIONS` where ")+
+      "(`NAME`!='"+RDEscapeString(station_station->name())+"')&&"+
+      "(`SYSTEM_MAINT`='Y')";
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       QMessageBox::warning(this,tr("System Maintenance"),

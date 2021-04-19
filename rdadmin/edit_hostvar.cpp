@@ -114,11 +114,11 @@ int EditHostvar::exec(int id)
   edit_id=id;
 
   QString sql=QString("select ")+
-    "NAME,"+      // 00
-    "VARVALUE,"+  // 01
-    "REMARK "+    // 02
-    "from HOSTVARS where "+
-    QString().sprintf("ID=%d",id);
+    "`NAME`,"+      // 00
+    "`VARVALUE`,"+  // 01
+    "`REMARK` "+    // 02
+    "from `HOSTVARS` where "+
+    QString().sprintf("`ID`=%d",id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     edit_name_edit->setText(q->value(0).toString());
@@ -133,11 +133,11 @@ int EditHostvar::exec(int id)
 
 void EditHostvar::okData()
 {
-  QString sql=QString("update HOSTVARS set ")+
-    "NAME=\""+RDEscapeString(edit_name_edit->text())+"\","+
-    "VARVALUE=\""+RDEscapeString(edit_varvalue_edit->text())+"\","+
-    "REMARK=\""+RDEscapeString(edit_remark_edit->text())+"\" "+
-    QString().sprintf("where ID=%d",edit_id);
+  QString sql=QString("update `HOSTVARS` set ")+
+    "`NAME`='"+RDEscapeString(edit_name_edit->text())+"',"+
+    "`VARVALUE`='"+RDEscapeString(edit_varvalue_edit->text())+"',"+
+    "`REMARK`='"+RDEscapeString(edit_remark_edit->text())+"' "+
+    QString().sprintf("where `ID`=%d",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

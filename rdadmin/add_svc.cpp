@@ -32,8 +32,6 @@
 AddSvc::AddSvc(QString *svcname,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   svc_name=svcname;
 
   //
@@ -68,6 +66,10 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
   //
   svc_exemplar_box=new QComboBox(this);
   svc_exemplar_box->setGeometry(155,36,sizeHint().width()-165,19);
+  svc_services_model=new RDServiceListModel(true,this);
+  svc_services_model->setFont(defaultFont());
+  svc_services_model->setPalette(palette());
+  svc_exemplar_box->setModel(svc_services_model);
   QLabel *svc_exemplar_label=
     new QLabel(tr("Base Service On:"),this);
   svc_exemplar_label->setGeometry(10,36,140,19);
@@ -93,24 +95,13 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
   cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  //
-  // Populate Exemplar List
-  //
-  svc_exemplar_box->insertItem(0,tr("Empty Host Config"));
-  QString sql="select NAME from SERVICES";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    svc_exemplar_box->
-      insertItem(svc_exemplar_box->count(),q->value(0).toString());
-  }
-  delete q;
 }
 
 
 AddSvc::~AddSvc()
 {
   delete svc_name_edit;
+  delete svc_services_model;
 }
 
 
