@@ -115,8 +115,8 @@ int ListLogs::exec(QString *logname,QString *svcname,RDLogLock **log_lock)
   list_log_lock=log_lock;
   list_saveas_button->setEnabled(rda->user()->createLog());
   QStringList services_list;
-  QString sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+  QString sql=QString("select `SERVICE_NAME` from `SERVICE_PERMS` where ")+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   services_list.push_back(tr("ALL"));
   while(q->next()) {

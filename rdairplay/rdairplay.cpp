@@ -835,8 +835,8 @@ void MainWidget::ripcConnectedData(bool state)
       }
     }
     if(!air_start_logname[i].isEmpty()) {
-      sql=QString("select NAME from LOGS where ")+
-	"NAME=\""+RDEscapeString(air_start_logname[i])+"\"";
+      sql=QString("select `NAME` from `LOGS` where ")+
+	"`NAME`='"+RDEscapeString(air_start_logname[i])+"'";
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	rml.clear();
@@ -2180,8 +2180,8 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
       }
     }
     if(svc_quan==0) {
-      sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
-	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+      sql=QString("select `SERVICE_NAME` from `SERVICE_PERMS` where ")+
+	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"'";
       q=new RDSqlQuery(sql);
       while(q->next()) {
 	services_list.append( q->value(0).toString() );
