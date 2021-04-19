@@ -21499,3 +21499,7 @@
 	* Escaped all SQL identifiers in 'rdcatch/'.
 	* Replaced " with ' delimiters in all SQL literal strings in
 	'rdcatch/'.
+2021-04-19 Fred Gleason <fredg@paravelsystems.com>
+	* Escaped all SQL identifiers in 'rdcatchd/'.
+	* Replaced " with ' delimiters in all SQL literal strings in
+	'rdcatchd/'.

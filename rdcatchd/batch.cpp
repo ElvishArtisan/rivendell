@@ -146,7 +146,7 @@ void MainObject::RunBatch(RDCmdSwitch *cmd)
   //
   // Load Event
   //
-  QString sql=LoadEventSql()+QString().sprintf(" where ID=%d",id);
+  QString sql=LoadEventSql()+QString().sprintf(" where `ID`=%d",id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;

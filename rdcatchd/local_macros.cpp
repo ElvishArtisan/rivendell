@@ -22,6 +22,7 @@
 
 #include <rdapplication.h>
 #include <rdcart.h>
+#include <rdescape_string.h>
 #include <rduser.h>
 
 #include "rdcatchd.h"
@@ -58,10 +59,10 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 	    if((event_ptr=GetEvent(catch_record_id[decknum]))<
 	       catch_events.size()) {
 	      e=catch_events[event_ptr];
-	      sql=QString("insert into CUT_EVENTS set ")+
-		"CUT_NAME=\""+e.cutName()+"\","+
-		QString().sprintf("NUMBER=%u,",eventnum)+
-		QString().sprintf("POINT=%u",e.startTime().
+	      sql=QString("insert into `CUT_EVENTS` set ")+
+		"`CUT_NAME`='"+RDEscapeString(e.cutName())+"',"+
+		QString().sprintf("`NUMBER`=%u,",eventnum)+
+		QString().sprintf("`POINT`=%u",e.startTime().
 				  msecsTo(QTime::currentTime()));
 	      q=new RDSqlQuery(sql);
 	      delete q;

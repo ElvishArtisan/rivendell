@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher Daemon
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,10 +37,7 @@
 
 #include <vector>
 
-#include <qapplication.h>
-#include <qtimer.h>
-#include <qsignalmapper.h>
-#include <qsessionmanager.h>
+#include <QApplication>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -245,9 +242,6 @@ MainObject::MainObject(QObject *parent)
   catch_garbage_timer->setSingleShot(true);
   connect(catch_garbage_timer,SIGNAL(timeout()),this,SLOT(garbageData()));
 
-  //  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-  //	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
-
   //
   // Create RDCatchConf
   //
@@ -307,12 +301,12 @@ MainObject::MainObject(QObject *parent)
   // Sound Initialization
   //
   sql=QString("select ")+
-    "CHANNEL,"+      // 00
-    "CARD_NUMBER,"+  // 01
-    "PORT_NUMBER "+  // 02
-    "from DECKS	where "+
-    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
-    "(CARD_NUMBER!=-1)&&(CHANNEL>0)&&(CHANNEL<9)";
+    "`CHANNEL`,"+      // 00
+    "`CARD_NUMBER`,"+  // 01
+    "`PORT_NUMBER` "+  // 02
+    "from `DECKS` where "+
+    "(`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"')&&"+
+    "(`CARD_NUMBER`!=-1)&&(`CHANNEL`>0)&&(`CHANNEL`<9)";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if((q->value(1).toInt()>=0)&&(q->value(2).toInt()>=0)) {
@@ -326,14 +320,14 @@ MainObject::MainObject(QObject *parent)
   // Initialize Monitor Passthroughs
   //
   sql=QString("select ")+
-    "CARD_NUMBER,"+      // 00
-    "PORT_NUMBER,"+      // 01
-    "MON_PORT_NUMBER,"+  // 02
-    "CHANNEL from DECKS where "+
-    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
-    QString().sprintf("(CHANNEL<=%d) &&",MAX_DECKS)+
-    "(CARD_NUMBER>=0)&&(MON_PORT_NUMBER>=0) && "+
-    "(DEFAULT_MONITOR_ON=\"Y\")";
+    "`CARD_NUMBER`,"+      // 00
+    "`PORT_NUMBER`,"+      // 01
+    "`MON_PORT_NUMBER`,"+  // 02
+    "`CHANNEL` from `DECKS` where "+
+    "(`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"')&&"+
+    QString().sprintf("(`CHANNEL`<=%d) &&",MAX_DECKS)+
+    "(`CARD_NUMBER`>=0)&&(`MON_PORT_NUMBER`>=0) && "+
+    "(`DEFAULT_MONITOR_ON`='Y')";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     rda->cae()->setPassthroughVolume(q->value(0).toInt(),q->value(1).toInt(),
@@ -392,19 +386,19 @@ MainObject::MainObject(QObject *parent)
   //
   // Mark Interrupted Events
   //
-  sql=QString("update RECORDINGS set ")+
-    QString().sprintf("EXIT_CODE=%d where ",RDRecording::Interrupted)+
-    QString().sprintf("((EXIT_CODE=%d)||",RDRecording::Uploading)+
-    QString().sprintf("(EXIT_CODE=%d))||",RDRecording::Downloading)+
-    QString().sprintf("(EXIT_CODE=%d)&&",RDRecording::RecordActive)+
-    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")";
+  sql=QString("update `RECORDINGS` set ")+
+    QString().sprintf("`EXIT_CODE`=%d where ",RDRecording::Interrupted)+
+    QString().sprintf("((`EXIT_CODE`=%d)||",RDRecording::Uploading)+
+    QString().sprintf("(`EXIT_CODE`=%d))||",RDRecording::Downloading)+
+    QString().sprintf("(`EXIT_CODE`=%d)&&",RDRecording::RecordActive)+
+    "(`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"')";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString("update RECORDINGS set ")+
-    QString().sprintf("EXIT_CODE=%d where ",RDRecording::Ok)+
-    QString().sprintf("((EXIT_CODE=%d)||",RDRecording::Waiting)+
-    QString().sprintf("(EXIT_CODE=%d))&&",RDRecording::PlayActive)+
-    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")";
+  sql=QString("update `RECORDINGS` set ")+
+    QString().sprintf("`EXIT_CODE`=%d where ",RDRecording::Ok)+
+    QString().sprintf("((`EXIT_CODE`=%d)||",RDRecording::Waiting)+
+    QString().sprintf("(`EXIT_CODE`=%d))&&",RDRecording::PlayActive)+
+    "(`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"')";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -648,15 +642,15 @@ void MainObject::engineData(int id)
     catch_record_card[catch_events[event].channel()-1]=-1;
     catch_record_stream[catch_events[event].channel()-1]=-1;
     sql=QString("select ")+
-      "CARD_NUMBER,"+     // 00
-      "PORT_NUMBER,"+     // 01
-      "SWITCH_STATION,"+  // 02
-      "SWITCH_MATRIX,"+   // 03
-      "SWITCH_OUTPUT,"+   // 04
-      "SWITCH_DELAY "+    // 05
-      "from DECKS where "+
-      "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
-      QString().sprintf("(CHANNEL=%d)",catch_events[event].channel());
+      "`CARD_NUMBER`,"+     // 00
+      "`PORT_NUMBER`,"+     // 01
+      "`SWITCH_STATION`,"+  // 02
+      "`SWITCH_MATRIX`,"+   // 03
+      "`SWITCH_OUTPUT`,"+   // 04
+      "`SWITCH_DELAY` "+    // 05
+      "from `DECKS` where "+
+      "(`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"')&&"+
+      QString().sprintf("(`CHANNEL`=%d)",catch_events[event].channel());
     q=new RDSqlQuery(sql);
     if(q->first()) {
       catch_record_card[catch_events[event].channel()-1]=
@@ -684,8 +678,8 @@ void MainObject::engineData(int id)
     }
     delete q;
     
-    sql=QString("delete from CUT_EVENTS where ")+
-      "CUT_NAME=\""+catch_events[event].cutName()+"\"";
+    sql=QString("delete from `CUT_EVENTS` where ")+
+      "`CUT_NAME`='"+catch_events[event].cutName()+"'";
     q=new RDSqlQuery(sql);
     delete q;
 
@@ -734,12 +728,12 @@ void MainObject::engineData(int id)
     catch_playout_card[catch_events[event].channel()-129]=-1;
     catch_playout_stream[catch_events[event].channel()-129]=-1;
     sql=QString("select ")+
-      "CARD_NUMBER,"+  // 00
-      "PORT_NUMBER,"+  // 01
-      "PORT_NUMBER "+  // 02
-      "from DECKS where "+
-      "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
-      QString().sprintf("(CHANNEL=%d)",catch_events[event].channel());
+      "`CARD_NUMBER`,"+  // 00
+      "`PORT_NUMBER`,"+  // 01
+      "`PORT_NUMBER` "+  // 02
+      "from `DECKS` where "+
+      "(`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"')&&"+
+      QString().sprintf("(`CHANNEL`=%d)",catch_events[event].channel());
     q=new RDSqlQuery(sql);
     if(q->first()) {
       catch_playout_id[catch_events[event].channel()-129]=id;
@@ -792,13 +786,13 @@ void MainObject::engineData(int id)
     // Load Import Parameters
     //
     sql=QString("select ")+
-      "DEFAULT_FORMAT,"+    // 00
-      "DEFAULT_CHANNELS,"+  // 01
-      "DEFAULT_LAYER,"+     // 02
-      "DEFAULT_BITRATE,"+   // 03
-      "RIPPER_LEVEL "+      // 04
-      "from RDLIBRARY where "+
-      "STATION=\""+RDEscapeString(rda->config()->stationName())+"\"";
+      "`DEFAULT_FORMAT`,"+    // 00
+      "`DEFAULT_CHANNELS`,"+  // 01
+      "`DEFAULT_LAYER`,"+     // 02
+      "`DEFAULT_BITRATE`,"+   // 03
+      "`RIPPER_LEVEL` "+      // 04
+      "from `RDLIBRARY` where "+
+      "`STATION`='"+RDEscapeString(rda->config()->stationName())+"'";
     q=new RDSqlQuery(sql);
     if(q->first())
       {
@@ -873,9 +867,9 @@ void MainObject::isConnectedData(bool state)
 {
   if(state) {
     QList<int> cards;
-    QString sql=QString("select CARD_NUMBER from DECKS where ")+
-      "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
-      "CARD_NUMBER>=0";
+    QString sql=QString("select `CARD_NUMBER` from `DECKS` where ")+
+      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+      "`CARD_NUMBER`>=0";
     RDSqlQuery *q=new RDSqlQuery(sql);
     while(q->next()) {
       if(!cards.contains(q->value(0).toInt())) {
@@ -1400,10 +1394,10 @@ void MainObject::StartPlayout(int event)
   // Get cut parameters
   //
   QString sql=QString("select ")+
-    "START_POINT,"+  // 00
-    "END_POINT "+    // 01
-    "from CUTS where "+
-    "CUT_NAME=\""+RDEscapeString(catch_events[event].cutName())+"\"";
+    "`START_POINT`,"+  // 00
+    "`END_POINT` "+    // 01
+    "from `CUTS` where "+
+    "`CUT_NAME`='"+RDEscapeString(catch_events[event].cutName())+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     return;
@@ -1850,8 +1844,8 @@ void MainObject::LoadEngine(bool adv_day)
 
   catch_events.clear();
   rda->syslog(LOG_DEBUG,"rdcatchd engine load starts...");
-  sql=LoadEventSql()+QString(" where STATION_NAME=\"")+
-    RDEscapeString(rda->station()->name())+"\"";
+  sql=LoadEventSql()+QString(" where `STATION_NAME`='")+
+    RDEscapeString(rda->station()->name())+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     catch_events.push_back(CatchEvent(rda->station(),RDConfiguration()));
@@ -1866,55 +1860,55 @@ void MainObject::LoadEngine(bool adv_day)
 QString MainObject::LoadEventSql()
 {
   return QString("select ")+
-    "ID,"+                    // 00
-    "IS_ACTIVE,"+             // 01
-    "TYPE,"+                  // 02
-    "CHANNEL,"+               // 03
-    "CUT_NAME,"+              // 04
-    "SUN,"+                   // 05
-    "MON,"+                   // 06
-    "TUE,"+                   // 07
-    "WED,"+                   // 08
-    "THU,"+                   // 09
-    "FRI,"+                   // 10
-    "SAT,"+                   // 11
-    "START_TIME,"+            // 12
-    "LENGTH,"+                // 13
-    "START_GPI,"+             // 14
-    "END_GPI,"+               // 15
-    "TRIM_THRESHOLD,"+        // 16
-    "STARTDATE_OFFSET,"+      // 17
-    "ENDDATE_OFFSET,"+        // 18
-    "FORMAT,"                 // 19
-    "CHANNELS,"+              // 20
-    "SAMPRATE,"+              // 21
-    "BITRATE,"+               // 22
-    "MACRO_CART,"+            // 23
-    "SWITCH_INPUT,"+          // 24
-    "SWITCH_OUTPUT,"+         // 25
-    "ONE_SHOT,"+              // 26
-    "START_TYPE,"+            // 27
-    "START_LENGTH,"+          // 28
-    "START_MATRIX,"+          // 29
-    "START_LINE,"+            // 30
-    "START_OFFSET,"+          // 31
-    "END_TYPE,"+              // 32
-    "END_TIME,"+              // 33
-    "END_LENGTH,"+            // 34
-    "END_MATRIX,"+            // 35
-    "END_LINE,"+              // 36
-    "URL,"+                   // 37
-    "URL_USERNAME,"+          // 38
-    "URL_PASSWORD,"+          // 39
-    "QUALITY,"+               // 40
-    "NORMALIZE_LEVEL,"+       // 41
-    "ALLOW_MULT_RECS,"+       // 42
-    "MAX_GPI_REC_LENGTH,"+    // 43
-    "DESCRIPTION,"+           // 44
-    "FEED_ID,"+               // 45
-    "EVENTDATE_OFFSET,"+      // 46
-    "ENABLE_METADATA "+       // 47
-    "from RECORDINGS";
+    "`ID`,"+                    // 00
+    "`IS_ACTIVE`,"+             // 01
+    "`TYPE`,"+                  // 02
+    "`CHANNEL`,"+               // 03
+    "`CUT_NAME`,"+              // 04
+    "`SUN`,"+                   // 05
+    "`MON`,"+                   // 06
+    "`TUE`,"+                   // 07
+    "`WED`,"+                   // 08
+    "`THU`,"+                   // 09
+    "`FRI`,"+                   // 10
+    "`SAT`,"+                   // 11
+    "`START_TIME`,"+            // 12
+    "`LENGTH`,"+                // 13
+    "`START_GPI`,"+             // 14
+    "`END_GPI`,"+               // 15
+    "`TRIM_THRESHOLD`,"+        // 16
+    "`STARTDATE_OFFSET`,"+      // 17
+    "`ENDDATE_OFFSET`,"+        // 18
+    "`FORMAT`,"                 // 19
+    "`CHANNELS`,"+              // 20
+    "`SAMPRATE`,"+              // 21
+    "`BITRATE`,"+               // 22
+    "`MACRO_CART`,"+            // 23
+    "`SWITCH_INPUT`,"+          // 24
+    "`SWITCH_OUTPUT`,"+         // 25
+    "`ONE_SHOT`,"+              // 26
+    "`START_TYPE`,"+            // 27
+    "`START_LENGTH`,"+          // 28
+    "`START_MATRIX`,"+          // 29
+    "`START_LINE`,"+            // 30
+    "`START_OFFSET`,"+          // 31
+    "`END_TYPE`,"+              // 32
+    "`END_TIME`,"+              // 33
+    "`END_LENGTH`,"+            // 34
+    "`END_MATRIX`,"+            // 35
+    "`END_LINE`,"+              // 36
+    "`URL`,"+                   // 37
+    "`URL_USERNAME`,"+          // 38
+    "`URL_PASSWORD`,"+          // 39
+    "`QUALITY`,"+               // 40
+    "`NORMALIZE_LEVEL`,"+       // 41
+    "`ALLOW_MULT_RECS`,"+       // 42
+    "`MAX_GPI_REC_LENGTH`,"+    // 43
+    "`DESCRIPTION`,"+           // 44
+    "`FEED_ID`,"+               // 45
+    "`EVENTDATE_OFFSET`,"+      // 46
+    "`ENABLE_METADATA` "+       // 47
+    "from `RECORDINGS`";
 }
 
 
@@ -2024,13 +2018,13 @@ void MainObject::LoadDeckList()
     status[i]=RDDeck::Offline;
   }
   QString sql=QString("select ")+
-    "CHANNEL,"+          // 00
-    "CARD_NUMBER,"+      // 01
-    "PORT_NUMBER,"+      // 02
-    "MON_PORT_NUMBER "+  // 03
-    "from DECKS where "+
-    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
-    "(CARD_NUMBER!=-1)&&(CHANNEL>0)&&(CHANNEL<9)";
+    "`CHANNEL`,"+          // 00
+    "`CARD_NUMBER`,"+      // 01
+    "`PORT_NUMBER`,"+      // 02
+    "`MON_PORT_NUMBER` "+  // 03
+    "from `DECKS` where "+
+    "(`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"')&&"+
+    "(`CARD_NUMBER`!=-1)&&(`CHANNEL`>0)&&(`CHANNEL`<9)";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     status[q->value(0).toUInt()-1]=RDDeck::Idle;
@@ -2060,9 +2054,9 @@ void MainObject::LoadDeckList()
   for(int i=0;i<MAX_DECKS;i++) {
     status[i]=RDDeck::Offline;
   }
-  sql=QString("select CHANNEL from DECKS where ")+
-    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
-    "(CARD_NUMBER!=-1)&&(CHANNEL>128)&&(CHANNEL<137)";
+  sql=QString("select `CHANNEL` from `DECKS` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"')&&"+
+    "(`CARD_NUMBER`!=-1)&&(`CHANNEL`>128)&&(`CHANNEL`<137)";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     status[q->value(0).toUInt()-129]=RDDeck::Idle;
@@ -2131,8 +2125,8 @@ bool MainObject::AddEvent(int id)
   //
   sql=LoadEventSql()+
     QString(" where ")+
-    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-    QString().sprintf("(ID=%d)",id);
+    "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
+    QString().sprintf("(`ID`=%d)",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     catch_events.push_back(CatchEvent(rda->station(),RDConfiguration()));
@@ -2253,7 +2247,7 @@ int MainObject::GetEvent(int id)
 
 void MainObject::PurgeEvent(int event)
 {
-  QString sql=QString().sprintf("delete from RECORDINGS where ID=%d",
+  QString sql=QString().sprintf("delete from `RECORDINGS` where `ID`=%d",
 				catch_events[event].id());
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
@@ -2313,10 +2307,10 @@ void MainObject::LoadHeartbeat()
     catch_heartbeat_timer->stop();
   }
   QString sql=QString("select ")+
-    "HEARTBEAT_CART,"+      // 00
-    "HEARTBEAT_INTERVAL "+  // 01
-    "from STATIONS where "+
-    "NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+    "`HEARTBEAT_CART`,"+      // 00
+    "`HEARTBEAT_INTERVAL` "+  // 01
+    "from `STATIONS` where "+
+    "`NAME`='"+RDEscapeString(rda->station()->name())+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     if((q->value(0).toUInt()!=0)&&(q->value(1).toUInt()!=0)) {
@@ -2360,24 +2354,23 @@ void MainObject::CheckInPodcast(CatchEvent *e) const
   //
   // Purge Stale Casts
   //
-  sql=QString("delete from PODCASTS where ")+
-    QString().sprintf("(FEED_ID=%d)&&",e->feedId())+
-    "(AUDIO_FILENAME=\""+RDEscapeString(RDGetBasePart(e->resolvedUrl()))+"\")";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("delete from `PODCASTS` where ")+
+    QString().sprintf("(`FEED_ID`=%d)&&",e->feedId())+
+    "(`AUDIO_FILENAME`='"+RDEscapeString(RDGetBasePart(e->resolvedUrl()))+"')";
+  RDSqlQuery::apply(sql);
 
   //
   // Get Channel Parameters
   //
   sql=QString("select ")+
-    "ENABLE_AUTOPOST,"+      // 00
-    "CHANNEL_TITLE,"+        // 01
-    "CHANNEL_DESCRIPTION,"+  // 02
-    "CHANNEL_CATEGORY,"+     // 03
-    "CHANNEL_LINK,"+         // 04
-    "MAX_SHELF_LIFE "+       // 05
-    "from FEEDS	where "+
-    QString().sprintf("ID=%u",e->feedId());
+    "`ENABLE_AUTOPOST`,"+      // 00
+    "`CHANNEL_TITLE`,"+        // 01
+    "`CHANNEL_DESCRIPTION`,"+  // 02
+    "`CHANNEL_CATEGORY`,"+     // 03
+    "`CHANNEL_LINK`,"+         // 04
+    "`MAX_SHELF_LIFE` "+       // 05
+    "from `FEEDS` where "+
+    QString().sprintf("`ID`=%u",e->feedId());
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -2391,39 +2384,37 @@ void MainObject::CheckInPodcast(CatchEvent *e) const
   if(q->value(0).toString().toLower()=="y") {
     status=RDPodcast::StatusActive;
   }
-  sql=QString("insert into PODCASTS set ")+
-    QString().sprintf("FEED_ID=%u,",e->feedId())+
-    QString().sprintf("STATUS=%u,",status)+
-    "ITEM_TITLE=\""+RDEscapeString(q->value(1).toString())+"\","+
-    "ITEM_DESCRIPTION=\""+RDEscapeString(q->value(2).toString())+"\","+
-    "ITEM_CATEGORY=\""+RDEscapeString(q->value(3).toString())+"\","+
-    "ITEM_LINK=\""+RDEscapeString(q->value(4).toString())+"\","+
-    "AUDIO_FILENAME=\""+RDEscapeString(RDGetBasePart(e->resolvedUrl()))+"\","+
-    QString().sprintf("AUDIO_LENGTH=%u,",e->podcastLength())+
-    QString().sprintf("AUDIO_TIME=%u,",e->podcastTime())+
-    QString().sprintf("SHELF_LIFE=%u,",q->value(5).toUInt())+
-    "EFFECTIVE_DATETIME=now(),"+
-    "ORIGIN_DATETIME=now()";
+  sql=QString("insert into `PODCASTS` set ")+
+    QString().sprintf("`FEED_ID`=%u,",e->feedId())+
+    QString().sprintf("`STATUS`=%u,",status)+
+    "`ITEM_TITLE`='"+RDEscapeString(q->value(1).toString())+"',"+
+    "`ITEM_DESCRIPTION`='"+RDEscapeString(q->value(2).toString())+"',"+
+    "`ITEM_CATEGORY`='"+RDEscapeString(q->value(3).toString())+"',"+
+    "`ITEM_LINK`='"+RDEscapeString(q->value(4).toString())+"',"+
+    "`AUDIO_FILENAME`='"+RDEscapeString(RDGetBasePart(e->resolvedUrl()))+"',"+
+    QString().sprintf("`AUDIO_LENGTH`=%u,",e->podcastLength())+
+    QString().sprintf("`AUDIO_TIME`=%u,",e->podcastTime())+
+    QString().sprintf("`SHELF_LIFE`=%u,",q->value(5).toUInt())+
+    "`EFFECTIVE_DATETIME`=now(),"+
+    "`ORIGIN_DATETIME`=now()";
   delete q;
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 
   //
   // Update the Build Date
   //
-  sql=QString("update FEEDS set ")+
-    "LAST_BUILD_DATETIME=now() where "+
-    QString().sprintf("ID=%u",e->feedId());
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update `FEEDS` set ")+
+    "`LAST_BUILD_DATETIME`=now() where "+
+    QString().sprintf("`ID`=%u",e->feedId());
+  RDSqlQuery::apply(sql);
 }
 
 
 RDRecording::ExitCode MainObject::ReadExitCode(int event)
 {
   RDRecording::ExitCode code=RDRecording::InternalError;
-  QString sql=QString("select EXIT_CODE from RECORDINGS where ")+
-    QString().sprintf("ID=%d",catch_events[event].id());
+  QString sql=QString("select `EXIT_CODE` from `RECORDINGS` where ")+
+    QString().sprintf("`ID`=%d",catch_events[event].id());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     code=(RDRecording::ExitCode)q->value(0).toInt();
@@ -2437,10 +2428,10 @@ RDRecording::ExitCode MainObject::ReadExitCode(int event)
 void MainObject::WriteExitCode(int event,RDRecording::ExitCode code,
 			       const QString &err_text)
 {
-  QString sql=QString("update RECORDINGS set ")+
-    QString().sprintf("EXIT_CODE=%d,",code)+
-    "EXIT_TEXT=\""+RDEscapeString(err_text)+"\" where "+
-    QString().sprintf("ID=%d",catch_events[event].id());
+  QString sql=QString("update `RECORDINGS` set ")+
+    QString().sprintf("`EXIT_CODE`=%d,",code)+
+    "`EXIT_TEXT`='"+RDEscapeString(err_text)+"' where "+
+    QString().sprintf("`ID`=%d",catch_events[event].id());
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
   switch(code) {
@@ -2470,12 +2461,11 @@ void MainObject::WriteExitCode(int event,RDRecording::ExitCode code,
 void MainObject::WriteExitCodeById(int id,RDRecording::ExitCode code,
 				   const QString &err_text)
 {
-  QString sql=QString("update RECORDINGS set ")+
-    QString().sprintf("EXIT_CODE=%d,",code)+
-    "EXIT_TEXT=\""+RDEscapeString(err_text)+"\" where "+
-    QString().sprintf("ID=%d",id);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  delete q;
+  QString sql=QString("update `RECORDINGS` set ")+
+    QString().sprintf("`EXIT_CODE`=%d,",code)+
+    "`EXIT_TEXT`='"+RDEscapeString(err_text)+"' where "+
+    QString().sprintf("`ID`=%d",id);
+  RDSqlQuery::apply(sql);
 }
 
 

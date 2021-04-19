@@ -45,10 +45,10 @@ void EventPlayer::load(const QString &cutname)
   // Load Deck Events
   //
   event_deck_events.clear();
-  sql=QString("select CART_NUMBER from DECK_EVENTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(event_station->name())+"\")&&"+
-    QString().sprintf("(CHANNEL=%d) ",event_channel)+
-    "order by NUMBER";
+  sql=QString("select `CART_NUMBER` from `DECK_EVENTS` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(event_station->name())+"')&&"+
+    QString().sprintf("(`CHANNEL`=%d) ",event_channel)+
+    "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     event_deck_events.push_back(q->value(0).toUInt());
@@ -62,8 +62,8 @@ void EventPlayer::load(const QString &cutname)
   event_numbers.clear();
   event_points.clear();
   event_current_event=-1;
-  sql=QString("select NUMBER,POINT from CUT_EVENTS where ")+
-    "CUT_NAME=\""+cutname+"\" "+
+  sql=QString("select `NUMBER`,`POINT` from `CUT_EVENTS` where ")+
+    "`CUT_NAME`='"+RDEscapeString(cutname)+"' "+
     "order by POINT";
   q=new RDSqlQuery(sql);
   while(q->next()) {
