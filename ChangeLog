@@ -21464,3 +21464,6 @@
 2021-04-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that threw a SQL error when opening the
 	'Edit Group' dialog in rdadmin(1).
+2021-04-19 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'CODINGSTYLE' to include requirements for escaping
+	identifiers and quoting string literals.

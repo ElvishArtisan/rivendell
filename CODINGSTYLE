@@ -179,16 +179,38 @@ SQL STATEMENTS:
 When embedding SQL statements in code, the following guidelines should be
 followed:
 
-1) All table and field names are uppercase-only, while SQL operators
-   should be all lowercase.
+1) All identifier fields should be enclosed in backtick characters.
 
+Good:
+  sql="select `FIELD1`,`FIELD2` from `MY_TABLE` where `ID`=2";
+
+Bad:
 Good:
   sql="select FIELD1,FIELD2 from MY_TABLE where ID=2";
 
-Bad:
-  sql="SELECT FIELD1,FIELD2 FROM MY_TABLE WHERE ID=2";
 
-2) Long or complex SQL statements should be broken into multiple lines in
+2) All string literals should be delimited with the apostrophe character,
+*not* quotes. The previous use of quotes is a MySQL-ism that is now strongly
+discouraged.
+
+Good:
+  sql="select `FIELD1` from `MY_TABLE` where `FIELD2`='foobar';
+
+Bad:
+  sql="select `FIELD1` from `MY_TABLE` where `FIELD2`="foobar";
+ 
+
+3) All identifiers are uppercase-only, while SQL operators
+   should be all lowercase.
+
+Good:
+  sql="select `FIELD1`,`FIELD2` from `MY_TABLE` where `ID`=2";
+
+Bad:
+  sql="SELECT `FIELD1`,`FIELD2` FROM `MY_TABLE` WHERE `ID`=2";
+
+
+4) Long or complex SQL statements should be broken into multiple lines in
    a manner to enhance the readability of both C++ and SQL. For 'select'
    queries that return more than two fields per row, each field should be
    commented with its ordinal number to assist in determining the
@@ -197,26 +219,26 @@ Bad:
 
 Good:
   sql=QString("select ")+
-    "CART.TITLE,"+         // 00
-    "CART.ARTIST,"+        // 01
-    "CART.PUBLISHER,"+     // 02
-    "CART.COMPOSER,"+      // 03
-    "CART.USAGE_CODE,"+    // 04
-    "CUTS.ISRC,"+          // 05
-    "CART.ALBUM,"+         // 06
-    "CART.LABEL,"+         // 07
-    "CUTS.ISCI,"+          // 08
-    "CART.CONDUCTOR,"+     // 09
-    "CART.USER_DEFINED,"+  // 10
-    "CART.SONG_ID,"+       // 11
-    "CUTS.DESCRIPTION,"+   // 12
-    "CUTS.OUTCUE "+        // 13
-    "from CART left join CUTS "+
-    "on CART.NUMBER=CUTS.CART_NUMBER where "+
-    "CUTS.CUT_NAME=\""+RDEscapeString(button->cutName())+"\"";
+    "`CART`.`TITLE,"+         // 00
+    "`CART`.`ARTIST,"+        // 01
+    "`CART`.`PUBLISHER,"+     // 02
+    "`CART`.`COMPOSER,"+      // 03
+    "`CART`.`USAGE_CODE,"+    // 04
+    "`CUTS`.`ISRC,"+          // 05
+    "`CART`.`ALBUM,"+         // 06
+    "`CART`.`LABEL,"+         // 07
+    "`CUTS`.`ISCI,"+          // 08
+    "`CART`.`CONDUCTOR,"+     // 09
+    "`CART`.`USER_DEFINED,"+  // 10
+    "`CART`.`SONG_ID,"+       // 11
+    "`CUTS`.`DESCRIPTION,"+   // 12
+    "`CUTS`.`OUTCUE "+        // 13
+    "from `CART` left join `CUTS` "+
+    "on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` where "+
+    "`CUTS`.`CUT_NAME`='"+RDEscapeString(button->cutName())+"'";
 
 Bad:
-  sql="select CART.TITLE,CART.ARTIST,CART.PUBLISHER,CART.COMPOSER,CART.USAGE_CODE,CUTS.ISRC,CART.ALBUM,CART.LABEL,CUTS.ISCI,CART.CONDUCTOR,CART.USER_DEFINED,"+ CART.SONG_ID,CUTS.DESCRIPTION,CUTS.OUTCUE from CART left join CUTS on CART.NUMBER=CUTS.CART_NUMBER where CUTS.CUT_NAME=\""+RDEscapeString(button->cutName())+"\"";
+  sql="select `CART`.`TITLE`,`CART`.`ARTIST`,`CART`.`PUBLISHER`,`CART`.`COMPOSER`,`CART`.`USAGE_CODE`,`CUTS.ISRC`,`CART.ALBUM`,`CART.LABEL`,`CUTS`.`ISCI`,`CART`.`CONDUCTOR`,`CART`.`USER_DEFINED`,`CART`.`SONG_ID`,`CUTS`.`DESCRIPTION`,`CUTS.OUTCUE` from `CART` left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` where `CUTS`.`CUT_NAME`='"+RDEscapeString(button->cutName())+"'";
 
 
 SCHEMA CHANGES:
