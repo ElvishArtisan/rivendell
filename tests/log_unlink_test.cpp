@@ -90,7 +90,7 @@ MainObject::MainObject(QObject *parent)
   //
   QString err (tr("upload_test: "));
   if(!RDOpenDb(&schema,&err,test_config)) {
-    fprintf(stderr,err.ascii());
+    fprintf(stderr,"%s", err.ascii());
     delete cmd;
     exit(256);
   }
