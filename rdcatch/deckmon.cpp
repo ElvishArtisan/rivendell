@@ -282,7 +282,8 @@ void DeckMon::SetCutInfo(int id,const QString &cutname)
     mon_cut_label->setText("");
     return;
   }
-  sql=QString().sprintf("select DESCRIPTION from RECORDINGS where ID=%d",id);
+  sql=QString("select `DESCRIPTION` from `RECORDINGS` where ")+
+    QString().sprintf("`ID`=%d",id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     if(cutname.isEmpty()) {
@@ -290,11 +291,11 @@ void DeckMon::SetCutInfo(int id,const QString &cutname)
     }
     else {
       sql=QString("select ")+
-	"CART.TITLE,"+        // 00
-	"CUTS.DESCRIPTION "+  // 01
-	"from CART left join CUTS "+
-	"on CART.NUMBER=CUTS.CART_NUMBER where "+
-	"CUTS.CUT_NAME=\""+RDEscapeString(cutname)+"\"";
+	"`CART`.`TITLE`,"+        // 00
+	"`CUTS`.`DESCRIPTION` "+  // 01
+	"from `CART` left join `CUTS` "+
+	"on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` where "+
+	"`CUTS`.`CUT_NAME`='"+RDEscapeString(cutname)+"'";
       q1=new RDSqlQuery(sql);
       if(q1->first()) {
 	mon_cut_label->

@@ -184,9 +184,9 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   connect(mon_mapper,SIGNAL(mapped(int)),this,SLOT(monitorData(int)));
   QString sql;
   RDSqlQuery *q1;
-  RDSqlQuery *q=
-    new RDSqlQuery("select NAME,IPV4_ADDRESS from STATIONS\
-                   where NAME!=\"DEFAULT\"");
+  sql=QString("select `NAME`,`IPV4_ADDRESS` from `STATIONS` where ")+
+    "`NAME`!='DEFAULT'";
+  RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     catch_connect.push_back(new CatchConnector(new RDCatchConnect(catch_connect.size(),this),q->value(0).toString().toLower()));
     connect(catch_connect.back()->connector(),
@@ -218,12 +218,13 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
       connectHost(q->value(1).toString(),RDCATCHD_TCP_PORT,
 		  rda->config()->password());
     sql=QString("select ")+
-      "CHANNEL,"+          // 00
-      "MON_PORT_NUMBER "+  // 01
-      "from DECKS where "+
-      "(CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&(CHANNEL>0)&&"+
-      "(STATION_NAME=\""+RDEscapeString(q->value(0).toString().toLower())+"\") "+
-      "order by CHANNEL";
+      "`CHANNEL`,"+          // 00
+      "`MON_PORT_NUMBER` "+  // 01
+      "from `DECKS` where "+
+      "(`CARD_NUMBER`!=-1)&&(`PORT_NUMBER`!=-1)&&(`CHANNEL`>0)&&"+
+      "(`STATION_NAME`='"+
+      RDEscapeString(q->value(0).toString().toLower())+"') "+
+      "order by `CHANNEL`";
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       catch_connect.back()->chan.push_back(q1->value(0).toUInt());
@@ -673,8 +674,8 @@ void MainWidget::deleteData()
     fprintf(stderr,"rdcatch: invalid connection index!\n");
     return;
   }
-  sql=QString("delete from RECORDINGS where ")+
-    QString().sprintf("ID=%u",catch_recordings_model->recordId(rows.first()));
+  sql=QString("delete from `RECORDINGS` where ")+
+    QString().sprintf("`ID`=%u",catch_recordings_model->recordId(rows.first()));
   RDSqlQuery::apply(sql);
   RDNotification *notify=new RDNotification(RDNotification::CatchEventType,
 					    RDNotification::DeleteAction,
@@ -1006,38 +1007,38 @@ void MainWidget::filterChangedData(bool state)
   QString sql;
 
   if(catch_show_active_box->isChecked()) {
-    sql+="(RECORDINGS.IS_ACTIVE=\"Y\")&&";
+    sql+="(`RECORDINGS`.`IS_ACTIVE`='Y')&&";
   }
   if(catch_show_today_box->isChecked()) {
     QDate today=QDate::currentDate();
 
     switch(today.dayOfWeek()) {
     case 1:
-      sql+="(RECORDINGS.MON=\"Y\")&&";
+      sql+="(`RECORDINGS`.`MON`='Y')&&";
       break;
 
     case 2:
-      sql+="(RECORDINGS.TUE=\"Y\")&&";
+      sql+="(`RECORDINGS`.`TUE`='Y')&&";
       break;
 
     case 3:
-      sql+="(RECORDINGS.WED=\"Y\")&&";
+      sql+="(`RECORDINGS`.`WED`='Y')&&";
       break;
 
     case 4:
-      sql+="(RECORDINGS.THU=\"Y\")&&";
+      sql+="(`RECORDINGS`.`THU`='Y')&&";
       break;
 
     case 5:
-      sql+="(RECORDINGS.FRI=\"Y\")&&";
+      sql+="(`RECORDINGS`.`FRI`='Y')&&";
       break;
 
     case 6:
-      sql+="(RECORDINGS.SAT=\"Y\")&&";
+      sql+="(`RECORDINGS`.`SAT`='Y')&&";
       break;
 
     case 7:
-      sql+="(RECORDINGS.SUN=\"Y\")&&";
+      sql+="(`RECORDINGS`.`SUN`='Y')&&";
       break;
     }
   }
@@ -1046,43 +1047,43 @@ void MainWidget::filterChangedData(bool state)
     break;
 
   case 1:  // Weekdays
-    sql+=QString("((RECORDINGS.MON=\"Y\")||")+
-      "(RECORDINGS.TUE=\"Y\")||"+
-      "(RECORDINGS.WED=\"Y\")||"+
-      "(RECORDINGS.THU=\"Y\")||"+
-      "(RECORDINGS.FRI=\"Y\"))&&";
+    sql+=QString("((`RECORDINGS`.`MON`='Y')||")+
+      "(`RECORDINGS`.`TUE`='Y')||"+
+      "(`RECORDINGS`.`WED`='Y')||"+
+      "(`RECORDINGS`.`THU`='Y')||"+
+      "(`RECORDINGS`.`FRI`='Y'))&&";
     break;
 
   case 2:  // Sunday
-    sql+="(RECORDINGS.SUN=\"Y\")&&";
+    sql+="(`RECORDINGS`.`SUN`='Y')&&";
     break;
 
   case 3:  // Monday
-    sql+="(RECORDINGS.MON=\"Y\")&&";
+    sql+="(`RECORDINGS`.`MON`='Y')&&";
     break;
 
   case 4:  // Tuesday
-    sql+="(RECORDINGS.TUE=\"Y\")&&";
+    sql+="(`RECORDINGS`.`TUE`='Y')&&";
     break;
 
   case 5:  // Wednesday
-    sql+="(RECORDINGS.WED=\"Y\")&&";
+    sql+="(`RECORDINGS`.`WED`='Y')&&";
     break;
 
   case 6:  // Thursday
-    sql+="(RECORDINGS.THU=\"Y\")&&";
+    sql+="(`RECORDINGS`.`THU`='Y')&&";
     break;
 
   case 7:  // Friday
-    sql+="(RECORDINGS.FRI=\"Y\")&&";
+    sql+="(`RECORDINGS`.`FRI`='Y')&&";
     break;
 
   case 8:  // Saturday
-    sql+="(RECORDINGS.SAT=\"Y\")&&";
+    sql+="(`RECORDINGS`.`SAT`='Y')&&";
     break;
   }
   if(catch_type_box->currentIndex()<RDRecording::LastType) {
-    sql+=QString().sprintf("(RECORDINGS.TYPE=%d)&&",
+    sql+=QString().sprintf("(`RECORDINGS`.`TYPE`=%d)&&",
 			   catch_type_box->currentIndex());
   }
 
@@ -1186,23 +1187,23 @@ int MainWidget::ShowNextEvents(int day,QTime time,QTime *next)
   int count=0;
   if(time.isNull()) {
     sql=QString("select ")+
-      "ID,"+          // 00
-      "START_TIME "+  // 01
-      "from RECORDINGS where "+
-      "(IS_ACTIVE=\"Y\")&&"+
-      "("+RDGetShortDayNameEN(day).toUpper()+"=\"Y\") "+
-      "order by START_TIME";
+      "`ID`,"+          // 00
+      "`START_TIME` "+  // 01
+      "from `RECORDINGS` where "+
+      "(`IS_ACTIVE`='Y')&&"+
+      "("+RDGetShortDayNameEN(day).toUpper()+"='Y') "+
+      "order by `START_TIME`";
   }
   else {
     sql=QString("select ")+
-      "ID,"+
-      "START_TIME "+
-      "from RECORDINGS where "+
-      "(IS_ACTIVE=\"Y\")&&"+
-      "(time_to_sec(START_TIME)>time_to_sec(\""+
-      RDEscapeString(time.toString("hh:mm:ss"))+"\"))&&"+
-      "("+RDGetShortDayNameEN(day).toUpper()+"=\"Y\")"+
-      "order by START_TIME";
+      "`ID`,"+
+      "`START_TIME` "+
+      "from `RECORDINGS` where "+
+      "(`IS_ACTIVE`='Y')&&"+
+      "(time_to_sec(`START_TIME`)>time_to_sec('"+
+      RDEscapeString(time.toString("hh:mm:ss"))+"'))&&"+
+      "("+RDGetShortDayNameEN(day).toUpper()+"='Y')"+
+      "order by `START_TIME`";
   }
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
@@ -1226,10 +1227,10 @@ unsigned MainWidget::AddRecord()
 {
   QString sql;
 
-  sql=QString("insert into RECORDINGS set ")+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
-    "CHANNEL=0,"+
-    "CUT_NAME=\"\"";
+  sql=QString("insert into `RECORDINGS` set ")+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
+    "`CHANNEL`=0,"+
+    "`CUT_NAME`=''";
   return RDSqlQuery::run(sql).toUInt();
 }
 

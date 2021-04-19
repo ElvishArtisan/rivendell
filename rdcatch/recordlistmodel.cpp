@@ -424,7 +424,7 @@ void RecordListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_ids.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where RECORDINGS.ID=%u",d_ids.at(row.row()));
+      QString().sprintf("where `RECORDINGS`.`ID`=%u",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -465,7 +465,7 @@ void RecordListModel::updateModel()
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
     d_filter_sql+
-    "order by RECORDINGS.START_TIME ";
+    "order by `RECORDINGS`.`START_TIME` ";
   beginResetModel();
   d_ids.clear();
   d_types.clear();
@@ -498,7 +498,7 @@ void RecordListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where RECORDINGS.ID=%u",d_ids.at(line));
+      QString().sprintf("where `RECORDINGS`.`ID`=%u",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -629,11 +629,11 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
     }
     texts[5]=tr("Cut")+" "+q->value(6).toString();
     sql=QString("select ")+
-      "SWITCH_STATION,"+  // 00
-      "SWITCH_MATRIX "+   // 01
-      "from DECKS where "+
-      "(STATION_NAME=\""+RDEscapeString(q->value(3).toString())+"\")&&"+
-      QString().sprintf("(CHANNEL=%d)",q->value(24).toInt());
+      "`SWITCH_STATION`,"+  // 00
+      "`SWITCH_MATRIX` "+   // 01
+      "from `DECKS` where "+
+      "(`STATION_NAME`='"+RDEscapeString(q->value(3).toString())+"')&&"+
+      QString().sprintf("(`CHANNEL`=%d)",q->value(24).toInt());
     q1=new RDSqlQuery(sql);
     if(q1->first()) {  // Source
       texts[4]=GetSourceName(q1->value(0).toString(),q1->value(1).toInt(),
@@ -774,55 +774,55 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
 QString RecordListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "RECORDINGS.ID,"+                // 00
-    "RECORDINGS.DESCRIPTION,"+       // 01
-    "RECORDINGS.IS_ACTIVE,"+         // 02
-    "RECORDINGS.STATION_NAME,"+      // 03
-    "RECORDINGS.START_TIME,"+        // 04
-    "RECORDINGS.LENGTH,"+            // 05
-    "RECORDINGS.CUT_NAME,"+          // 06
-    "RECORDINGS.SUN,"+               // 07
-    "RECORDINGS.MON,"+               // 08
-    "RECORDINGS.TUE,"+               // 09
-    "RECORDINGS.WED,"+               // 10
-    "RECORDINGS.THU,"+               // 11
-    "RECORDINGS.FRI,"+               // 12
-    "RECORDINGS.SAT,"+               // 13
-    "RECORDINGS.SWITCH_INPUT,"+      // 14
-    "RECORDINGS.START_GPI,"+         // 15
-    "RECORDINGS.END_GPI,"+           // 16
-    "RECORDINGS.TRIM_THRESHOLD,"+    // 17
-    "RECORDINGS.STARTDATE_OFFSET,"+  // 18
-    "RECORDINGS.ENDDATE_OFFSET,"+    // 19
-    "RECORDINGS.FORMAT,"+            // 20
-    "RECORDINGS.CHANNELS,"+          // 21
-    "RECORDINGS.SAMPRATE,"+          // 22
-    "RECORDINGS.BITRATE,"+           // 23
-    "RECORDINGS.CHANNEL,"+           // 24
-    "RECORDINGS.MACRO_CART,"+        // 25
-    "RECORDINGS.TYPE,"+              // 26
-    "RECORDINGS.SWITCH_OUTPUT,"+     // 27
-    "RECORDINGS.EXIT_CODE,"+         // 28
-    "RECORDINGS.ONE_SHOT,"+          // 29
-    "RECORDINGS.START_TYPE,"+        // 30
-    "RECORDINGS.START_LENGTH,"+      // 31
-    "RECORDINGS.START_MATRIX,"+      // 32
-    "RECORDINGS.START_LINE,"+        // 33
-    "RECORDINGS.START_OFFSET,"+      // 34
-    "RECORDINGS.END_TYPE,"+          // 35
-    "RECORDINGS.END_TIME,"+          // 36
-    "RECORDINGS.END_LENGTH,"+        // 37
-    "RECORDINGS.END_MATRIX,"+        // 38
-    "RECORDINGS.END_LINE,"+          // 39
-    "CUTS.ORIGIN_NAME,"+             // 40
-    "CUTS.ORIGIN_DATETIME,"+         // 41
-    "RECORDINGS.URL,"+               // 42
-    "RECORDINGS.QUALITY,"+           // 43
-    "FEEDS.KEY_NAME,"+               // 44
-    "EXIT_TEXT "+                    // 45
-    "from RECORDINGS left join CUTS "+
-    "on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS "+
-    "on (RECORDINGS.FEED_ID=FEEDS.ID) ";
+    "`RECORDINGS`.`ID`,"+                // 00
+    "`RECORDINGS`.`DESCRIPTION`,"+       // 01
+    "`RECORDINGS`.`IS_ACTIVE`,"+         // 02
+    "`RECORDINGS`.`STATION_NAME`,"+      // 03
+    "`RECORDINGS`.`START_TIME`,"+        // 04
+    "`RECORDINGS`.`LENGTH`,"+            // 05
+    "`RECORDINGS`.`CUT_NAME`,"+          // 06
+    "`RECORDINGS`.`SUN`,"+               // 07
+    "`RECORDINGS`.`MON`,"+               // 08
+    "`RECORDINGS`.`TUE`,"+               // 09
+    "`RECORDINGS`.`WED`,"+               // 10
+    "`RECORDINGS`.`THU`,"+               // 11
+    "`RECORDINGS`.`FRI`,"+               // 12
+    "`RECORDINGS`.`SAT`,"+               // 13
+    "`RECORDINGS`.`SWITCH_INPUT`,"+      // 14
+    "`RECORDINGS`.`START_GPI`,"+         // 15
+    "`RECORDINGS`.`END_GPI`,"+           // 16
+    "`RECORDINGS`.`TRIM_THRESHOLD`,"+    // 17
+    "`RECORDINGS`.`STARTDATE_OFFSET`,"+  // 18
+    "`RECORDINGS`.`ENDDATE_OFFSET`,"+    // 19
+    "`RECORDINGS`.`FORMAT`,"+            // 20
+    "`RECORDINGS`.`CHANNELS`,"+          // 21
+    "`RECORDINGS`.`SAMPRATE`,"+          // 22
+    "`RECORDINGS`.`BITRATE`,"+           // 23
+    "`RECORDINGS`.`CHANNEL`,"+           // 24
+    "`RECORDINGS`.`MACRO_CART`,"+        // 25
+    "`RECORDINGS`.`TYPE`,"+              // 26
+    "`RECORDINGS`.`SWITCH_OUTPUT`,"+     // 27
+    "`RECORDINGS`.`EXIT_CODE`,"+         // 28
+    "`RECORDINGS`.`ONE_SHOT`,"+          // 29
+    "`RECORDINGS`.`START_TYPE`,"+        // 30
+    "`RECORDINGS`.`START_LENGTH`,"+      // 31
+    "`RECORDINGS`.`START_MATRIX`,"+      // 32
+    "`RECORDINGS`.`START_LINE`,"+        // 33
+    "`RECORDINGS`.`START_OFFSET`,"+      // 34
+    "`RECORDINGS`.`END_TYPE`,"+          // 35
+    "`RECORDINGS`.`END_TIME`,"+          // 36
+    "`RECORDINGS`.`END_LENGTH`,"+        // 37
+    "`RECORDINGS`.`END_MATRIX`,"+        // 38
+    "`RECORDINGS`.`END_LINE`,"+          // 39
+    "`CUTS`.`ORIGIN_NAME`,"+             // 40
+    "`CUTS`.`ORIGIN_DATETIME`,"+         // 41
+    "`RECORDINGS`.`URL`,"+               // 42
+    "`RECORDINGS`.`QUALITY`,"+           // 43
+    "`FEEDS`.`KEY_NAME`,"+               // 44
+    "`EXIT_TEXT` "+                      // 45
+    "from `RECORDINGS` left join `CUTS` "+
+    "on (`RECORDINGS`.`CUT_NAME`=`CUTS`.`CUT_NAME`) left join `FEEDS` "+
+    "on (`RECORDINGS`.`FEED_ID`=`FEEDS`.`ID`) ";
 
     return sql;
 }
@@ -831,10 +831,10 @@ QString RecordListModel::sqlFields() const
 QString RecordListModel::GetSourceName(QString station,int matrix,int input)
 {
   QString input_name;
-  QString sql=QString("select NAME from INPUTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",matrix)+
-    QString().sprintf("(NUMBER=%d)",input);
+  QString sql=QString("select `NAME` from `INPUTS` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(station)+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)&&",matrix)+
+    QString().sprintf("(`NUMBER`=%d)",input);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     input_name=q->value(0).toString();
@@ -848,10 +848,10 @@ QString RecordListModel::GetDestinationName(QString station,int matrix,
 					    int output)
 {
   QString output_name;
-  QString sql=QString("select NAME from OUTPUTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",matrix)+
-    QString().sprintf("(NUMBER=%d)",output);
+  QString sql=QString("select `NAME` from `OUTPUTS` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(station)+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)&&",matrix)+
+    QString().sprintf("(`NUMBER`=%d)",output);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output_name=q->value(0).toString();
@@ -888,13 +888,13 @@ void RecordListModel::UpdateStatus(int line)
   RDRecording::ExitCode code=RDRecording::InternalError;
   QString err_text=tr("Unknown");
   QString sql=QString("select ")+
-    "RECORDINGS.EXIT_CODE,"+  // 00
-    "CUTS.ORIGIN_NAME,"+      // 01
-    "CUTS.ORIGIN_DATETIME,"+  // 02
-    "RECORDINGS.EXIT_TEXT "+  // 03
-    "from RECORDINGS left join CUTS "+
-    "on RECORDINGS.CUT_NAME=CUTS.CUT_NAME where "+
-    QString().sprintf("RECORDINGS.ID=%u",d_ids.at(line));
+    "`RECORDINGS`.`EXIT_CODE`,"+  // 00
+    "`CUTS`.`ORIGIN_NAME`,"+      // 01
+    "`CUTS`.`ORIGIN_DATETIME`,"+  // 02
+    "`RECORDINGS`.`EXIT_TEXT` "+  // 03
+    "from `RECORDINGS` left join `CUTS` "+
+    "on `RECORDINGS`.`CUT_NAME`=`CUTS`.`CUT_NAME` where "+
+    QString().sprintf("`RECORDINGS`.`ID`=%u",d_ids.at(line));
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     code=(RDRecording::ExitCode)q->value(0).toInt();

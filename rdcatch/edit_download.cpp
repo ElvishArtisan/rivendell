@@ -582,36 +582,36 @@ void EditDownload::Save()
 
 bool EditDownload::CheckEvent(bool include_myself)
 {
-  QString sql=QString("select ID from RECORDINGS where ")+
-    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")&&"+
-    QString().sprintf("(TYPE=%d)&&",RDRecording::Download)+
-    "(START_TIME=\""+RDEscapeString(edit_starttime_edit->time().
-				    toString("hh:mm:ss"))+"\")&&"+
-    "(URL=\""+RDEscapeString(edit_url_edit->text())+"\")&&"+
-    "(CUT_NAME=\""+RDEscapeString(edit_destination_edit->text().right(10))+"\")";
+  QString sql=QString("select `ID` from `RECORDINGS` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(edit_station_box->currentText())+"')&&"+
+    QString().sprintf("(`TYPE`=%d)&&",RDRecording::Download)+
+    "(`START_TIME`='"+RDEscapeString(edit_starttime_edit->time().
+				    toString("hh:mm:ss"))+"')&&"+
+    "(`URL`='"+RDEscapeString(edit_url_edit->text())+"')&&"+
+    "(`CUT_NAME`='"+RDEscapeString(edit_destination_edit->text().right(10))+"')";
   if(edit_sun_button->isChecked()) {
-    sql+="&&(SUN=\"Y\")";
+    sql+="&&(`SUN`='Y')";
   }
   if(edit_mon_button->isChecked()) {
-    sql+="&&(MON=\"Y\")";
+    sql+="&&(`MON`='Y')";
   }
   if(edit_tue_button->isChecked()) {
-    sql+="&&(TUE=\"Y\")";
+    sql+="&&(`TUE`='Y')";
   }
   if(edit_wed_button->isChecked()) {
-    sql+="&&(WED=\"Y\")";
+    sql+="&&(`WED`='Y')";
   }
   if(edit_thu_button->isChecked()) {
-    sql+="&&(THU=\"Y\")";
+    sql+="&&(`THU`='Y')";
   }
   if(edit_fri_button->isChecked()) {
-    sql+="&&(FRI=\"Y\")";
+    sql+="&&(`FRI`='Y')";
   }
   if(edit_sat_button->isChecked()) {
-    sql+="&&(SAT=\"Y\")";
+    sql+="&&(`SAT`='Y')";
   }
   if(!include_myself) {
-    sql+=QString().sprintf("&&(ID!=%d)",edit_recording->id());
+    sql+=QString().sprintf("&&(`ID`!=%d)",edit_recording->id());
   }
   RDSqlQuery *q=new RDSqlQuery(sql);
   bool res=!q->first();

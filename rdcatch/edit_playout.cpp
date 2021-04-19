@@ -357,12 +357,12 @@ void EditPlayout::PopulateDecks(QComboBox *box)
 
   box->clear();
   QString sql=QString("select ")+
-    "STATION_NAME,"+  // 00
-    "CHANNEL "+       // 01
-    "from DECKS where "+
-    "(CARD_NUMBER!=-1)&&"+
-    "(PORT_NUMBER!=-1)&&"+
-    "(CHANNEL>128) order by STATION_NAME,CHANNEL";
+    "`STATION_NAME`,"+  // 00
+    "`CHANNEL` "+       // 01
+    "from `DECKS` where "+
+    "(`CARD_NUMBER`!=-1)&&"+
+    "(`PORT_NUMBER`!=-1)&&"+
+    "(`CHANNEL`>128) order by `STATION_NAME`,`CHANNEL`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     box->insertItem(box->count(),q->value(0).toString()+
