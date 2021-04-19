@@ -68,7 +68,7 @@ void RDCatchConf::SetRow(const QString &param,const QString &value) const
   QString sql;
 
   sql=QString("update `RDCATCH` set `")+
-    param+"`='"+RDEscapeString(value)+"\" where "+
+    param+"`='"+RDEscapeString(value)+"' where "+
     "`STATION`='"+RDEscapeString(air_station)+"'";
   RDSqlQuery::apply(sql);
 }

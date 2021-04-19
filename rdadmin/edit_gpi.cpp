@@ -188,7 +188,7 @@ int EditGpi::exec(RDMatrix::GpioType type,int id)
   QString sql=QString("select ")+
     edit_table+".`NUMBER`,"+      // 00
     edit_table+".`MACRO_CART`,"+  // 01
-    "`CART.TITLE` "+              // 02
+    "`CART`.`TITLE` "+              // 02
     "from "+edit_table+" "+
     "left join `CART` "+
     "on "+edit_table+".`MACRO_CART`=`CART`.`NUMBER` where "+
