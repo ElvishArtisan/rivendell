@@ -188,9 +188,9 @@ MainObject::MainObject(QObject *parent)
   // Verify that default group exists
   //
   sql=QString("select ")+
-    "NAME "+
-    "from GROUPS where "+
-    "NAME=\""+RDEscapeString(default_group)+"\"";
+    "`NAME` "+
+    "from `GROUPS` where "+
+    "`NAME`='"+RDEscapeString(default_group)+"'";
   q=new QSqlQuery(sql,filter_db);
   if(!q->next()) {
     fprintf(stderr,"rivendell_filter: default group does not exist\n");
@@ -202,37 +202,37 @@ MainObject::MainObject(QObject *parent)
   // Transfer Loop
   //
   sql=QString().sprintf("select ")+
-    "NUMBER,"+                // 00
-    "TYPE,"+                  // 01
-    "GROUP_NAME,"+            // 02
-    "TITLE,"+                 // 03
-    "ARTIST,"+                // 04
-    "ALBUM,"+                 // 05
-    "YEAR,"+                  // 06
-    "LABEL,"+                 // 08
-    "CLIENT,"+                // 09
-    "AGENCY,"+                // 10
-    "PUBLISHER,"+             // 11
-    "COMPOSER,"+              // 12
-    "USER_DEFINED,"+          // 13
-    "USAGE_CODE,"+            // 14
-    "FORCED_LENGTH,"+         // 15
-    "AVERAGE_LENGTH,"+        // 16
-    "LENGTH_DEVIATION,"+      // 17
-    "AVERAGE_SEGUE_LENGTH,"+  // 18
-    "AVERAGE_HOOK_LENGTH,"+   // 19
-    "CUT_QUANTITY,"+          // 20
-    "LAST_CUT_PLAYED,"+       // 21
-    "PLAY_ORDER,"+            // 22
-    "VALIDITY,"+              // 23
-    "ENFORCE_LENGTH,"+        // 24
-    "PRESERVE_PITCH,"+        // 25
-    "ASYNCRONOUS,"+           // 26
-    "OWNER,"+                 // 27
-    "MACROS,"+                // 28
-    "SCHED_CODES "+           // 29
-    "from CART where "+
-    QString().sprintf("(NUMBER>=%u)&&(NUMBER<=%u)",start_cartnum,end_cartnum);
+    "`NUMBER`,"+                // 00
+    "`TYPE`,"+                  // 01
+    "`GROUP_NAME`,"+            // 02
+    "`TITLE`,"+                 // 03
+    "`ARTIST`,"+                // 04
+    "`ALBUM`,"+                 // 05
+    "`YEAR`,"+                  // 06
+    "`LABEL`,"+                 // 08
+    "`CLIENT`,"+                // 09
+    "`AGENCY`,"+                // 10
+    "`PUBLISHER`,"+             // 11
+    "`COMPOSER`,"+              // 12
+    "`USER_DEFINED`,"+          // 13
+    "`USAGE_CODE`,"+            // 14
+    "`FORCED_LENGTH`,"+         // 15
+    "`AVERAGE_LENGTH`,"+        // 16
+    "`LENGTH_DEVIATION`,"+      // 17
+    "`AVERAGE_SEGUE_LENGTH`,"+  // 18
+    "`AVERAGE_HOOK_LENGTH`,"+   // 19
+    "`CUT_QUANTITY`,"+          // 20
+    "`LAST_CUT_PLAYED`,"+       // 21
+    "`PLAY_ORDER`,"+            // 22
+    "`VALIDITY`,"+              // 23
+    "`ENFORCE_LENGTH`,"+        // 24
+    "`PRESERVE_PITCH`,"+        // 25
+    "`ASYNCRONOUS`,"+           // 26
+    "`OWNER`,"+                 // 27
+    "`MACROS`,"+                // 28
+    "`SCHED_CODES` "+           // 29
+    "from `CART` where "+
+    QString().sprintf("(`NUMBER`>=%u)&&(`NUMBER`<=%u)",start_cartnum,end_cartnum);
   q=new QSqlQuery(sql,ext_db);
   while(q->next()) {
     printf("Transferring cart %06u [%s]...",q->value(0).toUInt(),
@@ -242,8 +242,8 @@ MainObject::MainObject(QObject *parent)
     //
     // Validate Group
     //
-    sql=QString("select NAME from GROUPS where ")+
-      "NAME=\""+RDEscapeString(q->value(2).toString())+"\"";
+    sql=QString("select `NAME` from `GROUPS` where ")+
+      "`NAME`='"+RDEscapeString(q->value(2).toString())+"'";
     q1=new QSqlQuery(sql,filter_db);
     if(q1->first()) {
       group=q->value(2).toString();
@@ -256,18 +256,18 @@ MainObject::MainObject(QObject *parent)
     //
     // Purge old entries
     //
-    sql=QString().sprintf("select CUT_NAME from CUTS where CART_NUMBER=%u",
+    sql=QString().sprintf("select `CUT_NAME` from `CUTS` where `CART_NUMBER`=%u",
 			  q->value(0).toUInt());
     q1=new QSqlQuery(sql,filter_db);
     while(q1->next()) {
       unlink(RDCut::pathName(q1->value(0).toString()).toUtf8());
     }
     delete q1;
-    sql=QString().sprintf("delete from CUTS where CART_NUMBER=%u",
+    sql=QString().sprintf("delete from `CUTS` where `CART_NUMBER`=%u",
 			  q->value(0).toUInt());
     q1=new QSqlQuery(sql,filter_db);
     delete q1;
-    sql=QString().sprintf("delete from CART where NUMBER=%u",
+    sql=QString().sprintf("delete from `CART` where `NUMBER`=%u",
 			  q->value(0).toUInt());
     q1=new QSqlQuery(sql,filter_db);
     delete q1;
@@ -279,79 +279,79 @@ MainObject::MainObject(QObject *parent)
       owner="null";
     }
     else {
-      owner=QString("\"")+RDEscapeString(q->value(26).toString())+"\"";
+      owner=QString("'")+RDEscapeString(q->value(26).toString())+"'";
     }
-    sql=QString("insert into CART set ")+
-      QString().sprintf("NUMBER=%u,",q->value(0).toUInt())+
-      QString().sprintf("TYPE=%u,",q->value(1).toUInt())+
-      "GROUP_NAME=\""+RDEscapeString(group)+"\","+
-      "TITLE=\""+RDEscapeString(q->value(3).toString())+"\","+
-      "ARTIST=\""+RDEscapeString(q->value(4).toString())+"\","+
-      "ALBUM=\""+RDEscapeString(q->value(5).toString())+"\","+
-      "YEAR=%s,"+RDCheckDateTime(q->value(6).toDate(),"yyyy-MM-dd")+","+
-      "LABEL=\""+RDEscapeString(q->value(7).toString())+"\","+
-      "CLIENT=\""+RDEscapeString(q->value(8).toString())+"\","+
-      "AGENCY=\""+RDEscapeString(q->value(9).toString())+"\","+
-      "PUBLISHER=\""+RDEscapeString(q->value(10).toString())+"\","+
-      "COMPOSER=\""+RDEscapeString(q->value(11).toString())+"\","+
-      "USER_DEFINED=\""+RDEscapeString(q->value(12).toString())+"\","+
-      "USAGE_CODE=\""+RDEscapeString(q->value(13).toString())+"\","+
-      QString().sprintf("FORCED_LENGTH=%u,",q->value(14).toUInt())+
-      QString().sprintf("AVERAGE_LENGTH=%u,",q->value(15).toUInt())+
-      QString().sprintf("LENGTH_DEVIATION=%u,",q->value(16).toUInt())+
-      QString().sprintf("AVERAGE_SEGUE_LENGTH=%u,",q->value(17).toUInt())+
-      QString().sprintf("AVERAGE_HOOK_LENGTH=%u,",q->value(18).toUInt())+
-      QString().sprintf("CUT_QUANTITY=%u,",q->value(19).toUInt())+
-      QString().sprintf("LAST_CUT_PLAYED=%u,",q->value(20).toUInt())+
-      QString().sprintf("PLAY_ORDER=%u,",q->value(21).toUInt())+
-      QString().sprintf("VALIDITY=%u,",q->value(22).toUInt())+
-      "ENFORCE_LENGTH=\""+RDEscapeString(q->value(23).toString())+"\","+
-      "PRESERVE_PITCH=\""+RDEscapeString(q->value(24).toString())+"\","+
-      "ASYNCRONOUS=\""+RDEscapeString(q->value(25).toString())+"\","+
-      "OWNER="+owner+","+
-      "MACROS=\""+RDEscapeString(q->value(27).toString())+"\","+
-      "SCHED_CODES=\""+RDEscapeString(q->value(28).toString())+"\"";
+    sql=QString("insert into `CART` set ")+
+      QString().sprintf("`NUMBER`=%u,",q->value(0).toUInt())+
+      QString().sprintf("`TYPE`=%u,",q->value(1).toUInt())+
+      "`GROUP_NAME`='"+RDEscapeString(group)+"',"+
+      "`TITLE`='"+RDEscapeString(q->value(3).toString())+"',"+
+      "`ARTIST`='"+RDEscapeString(q->value(4).toString())+"',"+
+      "`ALBUM`='"+RDEscapeString(q->value(5).toString())+"',"+
+      "`YEAR`=%s,"+RDCheckDateTime(q->value(6).toDate(),"yyyy-MM-dd")+","+
+      "`LABEL`='"+RDEscapeString(q->value(7).toString())+"',"+
+      "`CLIENT`='"+RDEscapeString(q->value(8).toString())+"',"+
+      "`AGENCY`='"+RDEscapeString(q->value(9).toString())+"',"+
+      "`PUBLISHER`='"+RDEscapeString(q->value(10).toString())+"',"+
+      "`COMPOSER`='"+RDEscapeString(q->value(11).toString())+"',"+
+      "`USER_DEFINED`='"+RDEscapeString(q->value(12).toString())+"',"+
+      "`USAGE_CODE`='"+RDEscapeString(q->value(13).toString())+"',"+
+      QString().sprintf("`FORCED_LENGTH`=%u,",q->value(14).toUInt())+
+      QString().sprintf("`AVERAGE_LENGTH`=%u,",q->value(15).toUInt())+
+      QString().sprintf("`LENGTH_DEVIATION`=%u,",q->value(16).toUInt())+
+      QString().sprintf("`AVERAGE_SEGUE_LENGTH`=%u,",q->value(17).toUInt())+
+      QString().sprintf("`AVERAGE_HOOK_LENGTH`=%u,",q->value(18).toUInt())+
+      QString().sprintf("`CUT_QUANTITY`=%u,",q->value(19).toUInt())+
+      QString().sprintf("`LAST_CUT_PLAYED`=%u,",q->value(20).toUInt())+
+      QString().sprintf("`PLAY_ORDER`=%u,",q->value(21).toUInt())+
+      QString().sprintf("`VALIDITY`=%u,",q->value(22).toUInt())+
+      "`ENFORCE_LENGTH`='"+RDEscapeString(q->value(23).toString())+"',"+
+      "`PRESERVE_PITCH`='"+RDEscapeString(q->value(24).toString())+"',"+
+      "`ASYNCRONOUS`='"+RDEscapeString(q->value(25).toString())+"',"+
+      "`OWNER`="+owner+","+
+      "`MACROS`='"+RDEscapeString(q->value(27).toString())+"',"+
+      "`SCHED_CODES`='"+RDEscapeString(q->value(28).toString())+"'";
     q1=new QSqlQuery(sql,filter_db);
     delete q1;
     sql=QString("select ")+
-      "CUT_NAME,"+           // 00
-      "EVERGREEN,"+          // 01
-      "DESCRIPTION,"+        // 02
-      "OUTCUE,"+             // 03
-      "ISRC,"+               // 04
-      "LENGTH,"+             // 05
-      "ORIGIN_DATETIME,"+    // 06
-      "START_DATETIME,"+     // 07
-      "END_DATETIME,"+       // 08
-      "SUN,"+                // 09
-      "MON,"+                // 10
-      "TUE,"+                // 11
-      "WED,"+                // 12
-      "THU,"+                // 13
-      "FRI,"+                // 14
-      "SAT,"+                // 15
-      "START_DAYPART,"+      // 16
-      "END_DAYPART,"+        // 17
-      "ORIGIN_NAME,"+        // 18
-      "WEIGHT,"+             // 19
-      "VALIDITY,"+           // 20
-      "CODING_FORMAT,"+      // 21
-      "BIT_RATE,"+           // 22
-      "CHANNELS,"+           // 23
-      "PLAY_GAIN,"+          // 24
-      "START_POINT,"+        // 25
-      "END_POINT,"+          // 26
-      "FADEUP_POINT,"+       // 27
-      "FADEDOWN_POINT,"+     // 28
-      "SEGUE_START_POINT,"+  // 29
-      "SEGUE_END_POINT,"+    // 30
-      "SEGUE_GAIN,"+         // 31
-      "HOOK_START_POINT,"+   // 32
-      "HOOK_END_POINT,"+     // 33
-      "TALK_START_POINT,"+   // 34
-      "TALK_END_POINT "+     // 35
-      "from CUTS where "+
-      QString().sprintf("CART_NUMBER=%u",q->value(0).toUInt());
+      "`CUT_NAME`,"+           // 00
+      "`EVERGREEN`,"+          // 01
+      "`DESCRIPTION`,"+        // 02
+      "`OUTCUE`,"+             // 03
+      "`ISRC`,"+               // 04
+      "`LENGTH`,"+             // 05
+      "`ORIGIN_DATETIME`,"+    // 06
+      "`START_DATETIME`,"+     // 07
+      "`END_DATETIME`,"+       // 08
+      "`SUN`,"+                // 09
+      "`MON`,"+                // 10
+      "`TUE`,"+                // 11
+      "`WED`,"+                // 12
+      "`THU`,"+                // 13
+      "`FRI`,"+                // 14
+      "`SAT`,"+                // 15
+      "`START_DAYPART`,"+      // 16
+      "`END_DAYPART`,"+        // 17
+      "`ORIGIN_NAME`,"+        // 18
+      "`WEIGHT`,"+             // 19
+      "`VALIDITY`,"+           // 20
+      "`CODING_FORMAT`,"+      // 21
+      "`BIT_RATE`,"+           // 22
+      "`CHANNELS`,"+           // 23
+      "`PLAY_GAIN`,"+          // 24
+      "`START_POINT`,"+        // 25
+      "`END_POINT`,"+          // 26
+      "`FADEUP_POINT`,"+       // 27
+      "`FADEDOWN_POINT`,"+     // 28
+      "`SEGUE_START_POINT`,"+  // 29
+      "`SEGUE_END_POINT`,"+    // 30
+      "`SEGUE_GAIN`,"+         // 31
+      "`HOOK_START_POINT`,"+   // 32
+      "`HOOK_END_POINT`,"+     // 33
+      "`TALK_START_POINT`,"+   // 34
+      "`TALK_END_POINT` "+     // 35
+      "from `CUTS` where "+
+      QString().sprintf("`CART_NUMBER`=%u",q->value(0).toUInt());
     q1=new QSqlQuery(sql,ext_db);
     while(q1->next()) {
       if(q1->value(7).isNull()) {
@@ -380,45 +380,45 @@ MainObject::MainObject(QObject *parent)
       else {
 	end_daypart=RDCheckDateTime(q1->value(17).toTime(),"hh:mm:ss");
       }
-      sql=QString("insert into CUTS set ")+
-	"CUT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\","+
-	QString().sprintf("CART_NUMBER=%u,",q->value(0).toUInt())+
-	"EVERGREEN=\""+RDEscapeString(q1->value(1).toString())+"\","+
-	"DESCRIPTION=\""+RDEscapeString(q1->value(2).toString())+"\","+
-	"OUTCUE=\""+RDEscapeString(q1->value(3).toString())+"\","+
-	"ISRC=\""+RDEscapeString(q1->value(4).toString())+"\","+
-	QString().sprintf("LENGTH=%u,",q1->value(5).toUInt())+
-	"ORIGIN_DATETIME=\""+RDEscapeString(q1->value(6).toString())+"\","+
-	"START_DATETIME="+start_datetime+","+
-	"END_DATETIME="+end_datetime+","+
-	"SUN=\""+RDEscapeString(q1->value(9).toString())+"\","+
-	"MON=\""+RDEscapeString(q1->value(10).toString())+"\","+
-	"TUE=\""+RDEscapeString(q1->value(11).toString())+"\","+
-	"WED=\""+RDEscapeString(q1->value(12).toString())+"\","+
-	"THU=\""+RDEscapeString(q1->value(13).toString())+"\","+
-	"FRI=\""+RDEscapeString(q1->value(14).toString())+"\","+
-	"SAT=\""+RDEscapeString(q1->value(15).toString())+"\","+
-	"START_DAYPART="+start_daypart+","+
-	"END_DAYPART="+end_daypart+","+
-	"ORIGIN_NAME=\""+RDEscapeString(q1->value(18).toString())+"\","+
-	QString().sprintf("WEIGHT=%u,",q1->value(19).toUInt())+
-	QString().sprintf("VALIDITY=%u,",q1->value(20).toUInt())+
-	QString().sprintf("CODING_FORMAT=%u,",q1->value(21).toUInt())+
-	QString().sprintf("SAMPLE_RATE=%u,",q1->value(22).toUInt())+
-	QString().sprintf("BIT_RATE=%u,",q1->value(23).toUInt())+
-	QString().sprintf("CHANNELS=%u,",q1->value(24).toUInt())+
-	QString().sprintf("PLAY_GAIN=%d,",q1->value(25).toInt())+
-	QString().sprintf("START_POINT=%d,",q1->value(26).toInt())+
-	QString().sprintf("END_POINT=%d,",q1->value(27).toInt())+
-	QString().sprintf("FADEUP_POINT=%d,",q1->value(28).toInt())+
-	QString().sprintf("FADEDOWN_POINT=%d,",q1->value(29).toInt())+
-	QString().sprintf("SEGUE_START_POINT=%d,",q1->value(30).toInt())+
-	QString().sprintf("SEGUE_END_POINT=%d,",q1->value(31).toInt())+
-	QString().sprintf("SEGUE_GAIN=%d,",q1->value(32).toInt())+
-	QString().sprintf("HOOK_START_POINT=%d,",q1->value(33).toInt())+
-	QString().sprintf("HOOK_END_POINT=%d,",q1->value(34).toInt())+
-	QString().sprintf("TALK_START_POINT=%d,",q1->value(35).toInt())+
-	QString().sprintf("TALK_END_POINT=%d",q1->value(36).toInt());
+      sql=QString("insert into `CUTS` set ")+
+	"`CUT_NAME`='"+RDEscapeString(q1->value(0).toString())+"',"+
+	QString().sprintf("`CART_NUMBER`=%u,",q->value(0).toUInt())+
+	"`EVERGREEN`='"+RDEscapeString(q1->value(1).toString())+"',"+
+	"`DESCRIPTION`='"+RDEscapeString(q1->value(2).toString())+"',"+
+	"`OUTCUE`='"+RDEscapeString(q1->value(3).toString())+"',"+
+	"`ISRC`='"+RDEscapeString(q1->value(4).toString())+"',"+
+	QString().sprintf("`LENGTH`=%u,",q1->value(5).toUInt())+
+	"`ORIGIN_DATETIME`='"+RDEscapeString(q1->value(6).toString())+"',"+
+	"`START_DATETIME`="+start_datetime+","+
+	"`END_DATETIME`="+end_datetime+","+
+	"`SUN`='"+RDEscapeString(q1->value(9).toString())+"',"+
+	"`MON`='"+RDEscapeString(q1->value(10).toString())+"',"+
+	"`TUE`='"+RDEscapeString(q1->value(11).toString())+"',"+
+	"`WED`='"+RDEscapeString(q1->value(12).toString())+"',"+
+	"`THU`='"+RDEscapeString(q1->value(13).toString())+"',"+
+	"`FRI`='"+RDEscapeString(q1->value(14).toString())+"',"+
+	"`SAT`='"+RDEscapeString(q1->value(15).toString())+"',"+
+	"`START_DAYPART`="+start_daypart+","+
+	"`END_DAYPART`="+end_daypart+","+
+	"`ORIGIN_NAME`='"+RDEscapeString(q1->value(18).toString())+"',"+
+	QString().sprintf("`WEIGHT`=%u,",q1->value(19).toUInt())+
+	QString().sprintf("`VALIDITY`=%u,",q1->value(20).toUInt())+
+	QString().sprintf("`CODING_FORMAT`=%u,",q1->value(21).toUInt())+
+	QString().sprintf("`SAMPLE_RATE`=%u,",q1->value(22).toUInt())+
+	QString().sprintf("`BIT_RATE`=%u,",q1->value(23).toUInt())+
+	QString().sprintf("`CHANNELS`=%u,",q1->value(24).toUInt())+
+	QString().sprintf("`PLAY_GAIN`=%d,",q1->value(25).toInt())+
+	QString().sprintf("`START_POINT`=%d,",q1->value(26).toInt())+
+	QString().sprintf("`END_POINT`=%d,",q1->value(27).toInt())+
+	QString().sprintf("`FADEUP_POINT`=%d,",q1->value(28).toInt())+
+	QString().sprintf("`FADEDOWN_POINT`=%d,",q1->value(29).toInt())+
+	QString().sprintf("`SEGUE_START_POINT`=%d,",q1->value(30).toInt())+
+	QString().sprintf("`SEGUE_END_POINT`=%d,",q1->value(31).toInt())+
+	QString().sprintf("`SEGUE_GAIN`=%d,",q1->value(32).toInt())+
+	QString().sprintf("`HOOK_START_POINT`=%d,",q1->value(33).toInt())+
+	QString().sprintf("`HOOK_END_POINT`=%d,",q1->value(34).toInt())+
+	QString().sprintf("`TALK_START_POINT`=%d,",q1->value(35).toInt())+
+	QString().sprintf("`TALK_END_POINT`=%d",q1->value(36).toInt());
       q2=new QSqlQuery(sql,filter_db);
       delete q2;
       ok=RDCopy(ext_audiodir+q1->value(0).toString()+"."+RD_AUDIO_EXTENSION,

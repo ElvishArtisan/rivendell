@@ -47,8 +47,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch("panel_copy",PANEL_COPY_USAGE);
+  RDCmdSwitch *cmd=new RDCmdSwitch("panel_copy",PANEL_COPY_USAGE);
   delete cmd;
 
   rd_config=new RDConfig(RD_CONF_FILE);
@@ -122,7 +121,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Check Database Versions
   //
-  sql=QString("select DB from VERSION");
+  sql=QString("select `DB` from `VERSION`");
   q=new QSqlQuery(sql,src_db);
   if(!q->first()) {
     fprintf(stderr,"panel_copy: unable to read source database version\n");
@@ -169,26 +168,26 @@ MainObject::MainObject(QObject *parent)
   // Copy Entries
   //
   sql=QString("select ")+
-    "TYPE,"+           // 00
-    "OWNER,"+          // 01
-    "PANEL_NO,"+       // 02
-    "ROW_NO,"+         // 03
-    "COLUMN_NO,"+      // 04
-    "LABEL,"+          // 05
-    "CART,"+           // 06
-    "DEFAULT_COLOR "+  // 07
-    "from PANELS";
+    "`TYPE`,"+           // 00
+    "`OWNER`,"+          // 01
+    "`PANEL_NO`,"+       // 02
+    "`ROW_NO`,"+         // 03
+    "`COLUMN_NO`,"+      // 04
+    "`LABEL`,"+          // 05
+    "`CART`,"+           // 06
+    "`DEFAULT_COLOR` "+  // 07
+    "from `PANELS`";
   q=new QSqlQuery(sql,src_db);
   while(q->next()) {
-    sql=QString("insert into PANELS set ")+
-      QString().sprintf("TYPE=%d,",q->value(0).toInt())+
-      "OWNER=\""+RDEscapeString(q->value(1).toString())+"\","+
-      QString().sprintf("PANEL_NO=%d,",q->value(2).toInt())+
-      QString().sprintf("ROW_NO=%d,",q->value(3).toInt())+
-      QString().sprintf("COLUMN_NO=%d,",q->value(4).toInt())+
-      "LABEL=\""+RDEscapeString(q->value(5).toString())+"\","+
-      QString().sprintf("CART=%d,",q->value(6).toInt())+
-      "DEFAULT_COLOR=\""+RDEscapeString(q->value(7).toString())+"\"";
+    sql=QString("insert into `PANELS` set ")+
+      QString().sprintf("`TYPE`=%d,",q->value(0).toInt())+
+      "`OWNER`='"+RDEscapeString(q->value(1).toString())+"',"+
+      QString().sprintf("`PANEL_NO`=%d,",q->value(2).toInt())+
+      QString().sprintf("`ROW_NO`=%d,",q->value(3).toInt())+
+      QString().sprintf("`COLUMN_NO`=%d,",q->value(4).toInt())+
+      "`LABEL`='"+RDEscapeString(q->value(5).toString())+"',"+
+      QString().sprintf("`CART`=%d,",q->value(6).toInt())+
+      "`DEFAULT_COLOR`='"+RDEscapeString(q->value(7).toString())+"'";
     q1=new QSqlQuery(sql,dest_db);
     delete q1;
   }

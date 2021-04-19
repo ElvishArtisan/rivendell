@@ -203,33 +203,33 @@ bool MainObject::ImportCut(RDGroup *group,struct WingsRecord *rec,
   printf("Importing %s - %s to cart %u, group %s\n",
 	 rec->filename,rec->title,cartnum,group->name().toUtf8().constData());
   
-  sql=QString("insert into CART set ")+
-    QString().sprintf("NUMBER=%u,",cartnum)+
-    "GROUP_NAME=\""+RDEscapeString(group->name())+"\","+
-    "TITLE=\""+RDEscapeString(rec->title)+"\","+
-    "ARTIST=\""+RDEscapeString(rec->artist)+"\","+
-    "ALBUM=\""+RDEscapeString(rec->album)+"\","+
-    "CUT_QUANTITY=1,"+
-    QString().sprintf("TYPE=%d,",RDCart::Audio)+
-    QString().sprintf("FORCED_LENGTH=%u,",wavefile->getExtTimeLength())+
-    QString().sprintf("AVERAGE_LENGTH=%u,",wavefile->getExtTimeLength())+
-    "USER_DEFINED=\""+RDEscapeString(rec->filename)+"."+
-    RDEscapeString(rec->extension)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("insert into `CART` set ")+
+    QString().sprintf("`NUMBER`=%u,",cartnum)+
+    "`GROUP_NAME`='"+RDEscapeString(group->name())+"',"+
+    "`TITLE`='"+RDEscapeString(rec->title)+"',"+
+    "`ARTIST`='"+RDEscapeString(rec->artist)+"',"+
+    "`ALBUM`='"+RDEscapeString(rec->album)+"',"+
+    "`CUT_QUANTITY`=1,"+
+    QString().sprintf("`TYPE`=%d,",RDCart::Audio)+
+    QString().sprintf("`FORCED_LENGTH`=%u,",wavefile->getExtTimeLength())+
+    QString().sprintf("`AVERAGE_LENGTH`=%u,",wavefile->getExtTimeLength())+
+    "`USER_DEFINED`='"+RDEscapeString(rec->filename)+"."+
+    RDEscapeString(rec->extension)+"'";
+  RDSqlQuery::apply(sql);
+
   RDCut::create(cartnum,1);
-  sql=QString("update CUTS set ")+
-    "DESCRIPTION=\""+RDEscapeString(rec->title)+"\","+
-    "ORIGIN_DATETIME=now(),"+
-    "ORIGIN_NAME=\""+RDEscapeString(rda->config()->stationName())+"\","+
-    QString().sprintf("CODING_FORMAT=%d,",format)+
-    QString().sprintf("SAMPLE_RATE=%u,",wavefile->getSamplesPerSec())+
-    QString().sprintf("CHANNELS=%d,",wavefile->getChannels())+
-    QString().sprintf("BIT_RATE=%d,",wavefile->getHeadBitRate())+
-    QString().sprintf("LENGTH=%u,",wavefile->getExtTimeLength())+
-    "START_POINT=0,"+
-    QString().sprintf("END_POINT=%d where ",wavefile->getExtTimeLength())+
-    "CUT_NAME=\""+RDCut::cutName(cartnum,1)+"\"";
+  sql=QString("update `CUTS` set ")+
+    "`DESCRIPTION`='"+RDEscapeString(rec->title)+"',"+
+    "`ORIGIN_DATETIME`=now(),"+
+    "`ORIGIN_NAME`='"+RDEscapeString(rda->config()->stationName())+"',"+
+    QString().sprintf("`CODING_FORMAT`=%d,",format)+
+    QString().sprintf("`SAMPLE_RATE`=%u,",wavefile->getSamplesPerSec())+
+    QString().sprintf("`CHANNELS`=%d,",wavefile->getChannels())+
+    QString().sprintf("`BIT_RATE`=%d,",wavefile->getHeadBitRate())+
+    QString().sprintf("`LENGTH`=%u,",wavefile->getExtTimeLength())+
+    "`START_POINT`=0,"+
+    QString().sprintf("`END_POINT`=%d where ",wavefile->getExtTimeLength())+
+    "`CUT_NAME`='"+RDCut::cutName(cartnum,1)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 
