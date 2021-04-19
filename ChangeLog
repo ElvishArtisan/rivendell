@@ -21467,3 +21467,7 @@
 2021-04-19 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'CODINGSTYLE' to include requirements for escaping
 	identifiers and quoting string literals.
+2021-04-18 Fred Gleason <fredg@paravelsystems.com>
+	* Escaped all SQL identifiers in 'cae/'.
+	* Replaced " with ' delimiters in all SQL literal strings in
+	'cae/'.

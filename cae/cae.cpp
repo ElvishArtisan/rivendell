@@ -1615,8 +1615,8 @@ void MainObject::InitProvisioning() const
   //
   if(rd_config->provisioningCreateHost()) {
     if(!rd_config->provisioningHostTemplate().isEmpty()) {
-      sql=QString("select NAME from STATIONS where ")+
-	"NAME=\""+RDEscapeString(rd_config->stationName())+"\"";
+      sql=QString("select `NAME` from `STATIONS` where ")+
+	"`NAME`='"+RDEscapeString(rd_config->stationName())+"'";
       q=new RDSqlQuery(sql);
       if(!q->first()) {
 	if(RDStation::create(rd_config->stationName(),&err_msg,rd_config->provisioningHostTemplate(),rd_config->provisioningHostIpAddress())) {
@@ -1648,8 +1648,8 @@ void MainObject::InitProvisioning() const
     if(!rd_config->provisioningServiceTemplate().isEmpty()) {
       QString svcname=
 	rd_config->provisioningServiceName(rd_config->stationName());
-      sql=QString("select NAME from SERVICES where ")+
-	"NAME=\""+RDEscapeString(svcname)+"\"";
+      sql=QString("select `NAME` from `SERVICES` where ")+
+	"`NAME`='"+RDEscapeString(svcname)+"'";
       q=new RDSqlQuery(sql);
       if(!q->first()) {
 	if(RDSvc::create(svcname,&err_msg,

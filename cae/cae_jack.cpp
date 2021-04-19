@@ -432,10 +432,10 @@ void MainObject::jackClientStartData()
 {
 #ifdef JACK
   QString sql=QString("select ")+
-    "DESCRIPTION,"+   // 00
-    "COMMAND_LINE "+  // 01
-    "from JACK_CLIENTS where "+
-    "STATION_NAME=\""+RDEscapeString(rd_config->stationName())+"\"";
+    "`DESCRIPTION`,"+   // 00
+    "`COMMAND_LINE` "+  // 01
+    "from `JACK_CLIENTS` where "+
+    "`STATION_NAME`='"+RDEscapeString(rd_config->stationName())+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     QString cmd=RDDateDecode(q->value(1).toString(),QDate::currentDate(),
