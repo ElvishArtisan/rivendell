@@ -21461,3 +21461,6 @@
 	* Escaped all SQL identifiers in 'rdadmin/'.
 	* Replaced " with ' delimiters in all SQL literal strings in
 	'rdadmin/'.
+2021-04-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that threw a SQL error when opening the
+	'Edit Group' dialog in rdadmin(1).

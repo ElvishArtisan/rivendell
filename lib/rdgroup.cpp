@@ -47,7 +47,7 @@ RDGroup::RDGroup(QString name,bool create)
     //
     // Normalize case
     //
-    sql=QString("select `NAME` from `GROUPS`` where ")+
+    sql=QString("select `NAME` from `GROUPS` where ")+
       "`NAME`='"+RDEscapeString(name)+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
