@@ -349,14 +349,14 @@ void ListCasts::deleteData()
   }
   pd->setValue(1);
   qApp->processEvents();
-  sql=QString("delete from PODCASTS where ")+
-    QString().sprintf("ID=%u",cast_id);
+  sql=QString("delete from `PODCASTS` where ")+
+    QString().sprintf("`ID`=%u",cast_id);
   RDSqlQuery::apply(sql);
 
-  sql=QString("update FEEDS set ")+
+  sql=QString("update `FEEDS` set ")+
     "LAST_BUILD_DATETIME=now() "+
     "where "+
-    QString().sprintf("ID=%u",list_feed_id);
+    QString().sprintf("`ID`=%u",list_feed_id);
   RDSqlQuery::apply(sql);
 
   if(!list_feed->postXml()) {
