@@ -21477,3 +21477,5 @@
 	* Fixed regression in 'RDStation' that caused SQL errors.
 2021-04-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed various regressions in rdadmin(1) that caused SQL errors.
+2021-04-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regression in 'RDSystem' that caused SQL errors.

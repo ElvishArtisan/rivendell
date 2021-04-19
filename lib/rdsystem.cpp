@@ -243,7 +243,7 @@ void RDSystem::SetRow(const QString &param,QString value) const
       param+"`=NULL";
   }
   else {
-    sql=QString("update `SYSTEM` set ")+
+    sql=QString("update `SYSTEM` set `")+
       param+"`='"+RDEscapeString(value)+"'";
   }
   RDSqlQuery::apply(sql);
