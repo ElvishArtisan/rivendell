@@ -1597,7 +1597,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("`ROW_NO`=%d,",q->value(1).toInt())+
 	QString().sprintf("`COLUMN_NO`=%d,",q->value(2).toInt())+
 	"`LABEL`='"+RDEscapeString(q->value(3).toString())+"',"+
-	QString().sprintf("`CART=%u,",q->value(4).toUInt())+
+	QString().sprintf("`CART`=%u,",q->value(4).toUInt())+
 	"`DEFAULT_COLOR`='"+RDEscapeString(q->value(5).toString())+"',"+
 	QString().sprintf("`TYPE`=%d,",RDAirPlayConf::StationPanel)+
 	"`OWNER`='"+RDEscapeString(name)+"'";

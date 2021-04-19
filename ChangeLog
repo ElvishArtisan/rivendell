@@ -21473,3 +21473,5 @@
 	'cae/'.
 2021-04-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regression in 'RDAudioPorts' that caused SQL errors.
+2021-04-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regression in 'RDStation' that caused SQL errors.
