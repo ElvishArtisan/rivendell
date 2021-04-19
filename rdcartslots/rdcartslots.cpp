@@ -141,8 +141,8 @@ void MainWidget::caeConnectedData(bool state)
 {
   QList<int> cards;
 
-  QString sql=QString("select CARD from CARTSLOTS where ")+
-    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
+  QString sql=QString("select `CARD` from `CARTSLOTS` where ")+
+    "`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
    cards.push_back(q->value(0).toInt());

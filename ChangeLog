@@ -21487,3 +21487,7 @@
 	* Escaped all SQL identifiers in 'rdairplay/'.
 	* Replaced " with ' delimiters in all SQL literal strings in
 	'rdairplay/'.
+2021-04-19 Fred Gleason <fredg@paravelsystems.com>
+	* Escaped all SQL identifiers in 'rdcartslots/'.
+	* Replaced " with ' delimiters in all SQL literal strings in
+	'rdcartslots/'.
