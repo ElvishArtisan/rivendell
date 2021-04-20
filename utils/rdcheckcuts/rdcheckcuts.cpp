@@ -2,7 +2,7 @@
 //
 // Check Rivendell Cuts for Valid Audio
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -67,7 +67,7 @@ MainObject::MainObject(QObject *parent)
   // Build Group List
   //
   if(group_names.size()==0) {
-    sql="select NAME from GROUPS order by NAME";
+    sql="select `NAME` from `GROUPS` order by `NAME`";
     q=new RDSqlQuery(sql);
     while(q->next()) {
       group_names.push_back(q->value(0).toString());
@@ -117,9 +117,12 @@ bool MainObject::ValidateGroup(const QString &groupname,
   RDAudioInfo *info=new RDAudioInfo(this);
   RDAudioInfo::ErrorCode err_code;
   
-  sql=QString("select CUTS.CUT_NAME,CUTS.CART_NUMBER,CUTS.LENGTH ")+
-    "from CUTS left join CART on CUTS.CART_NUMBER=CART.NUMBER "+
-    "where CART.GROUP_NAME=\""+groupname+"\" order by CART_NUMBER";
+  sql=QString("select ")+
+    "`CUTS`.`CUT_NAME`,"+     // 00
+    "`CUTS`.`CART_NUMBER`,"+  // 01
+    "`CUTS`.`LENGTH` "+       // 02
+    "from `CUTS` left join `CART` on `CUTS`.`CART_NUMBER`=`CART`.`NUMBER` "+
+    "where `CART`.`GROUP_NAME`='"+groupname+"' order by `CUTS`.`CART_NUMBER`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(2).toInt()>0) {
