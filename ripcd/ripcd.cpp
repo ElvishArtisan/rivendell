@@ -733,12 +733,12 @@ void MainObject::LoadGpiTable()
     }
   }
   QString sql=QString("select ")+
-    "MATRIX,"+          // 00
-    "NUMBER,"+          // 01
-    "OFF_MACRO_CART,"+  // 02
-    "MACRO_CART "+      // 03
-    "from GPIS where "+
-    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
+    "`MATRIX`,"+          // 00
+    "`NUMBER`,"+          // 01
+    "`OFF_MACRO_CART`,"+  // 02
+    "`MACRO_CART` "+      // 03
+    "from `GPIS` where "+
+    "`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     ripcd_gpi_macro[q->value(0).toInt()][q->value(1).toInt()-1][0]=
@@ -749,12 +749,12 @@ void MainObject::LoadGpiTable()
   delete q;
 
   sql=QString("select ")+
-    "MATRIX,"+          // 00
-    "NUMBER,"+          // 01
-    "OFF_MACRO_CART,"+  // 02
-    "MACRO_CART "+      // 03
-    "from GPOS where "+
-    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
+    "`MATRIX`,"+          // 00
+    "`NUMBER`,"+          // 01
+    "`OFF_MACRO_CART`,"+  // 02
+    "`MACRO_CART` "+      // 03
+    "from `GPOS` where "+
+    "`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     ripcd_gpo_macro[q->value(0).toInt()][q->value(1).toInt()-1][0]=

@@ -245,33 +245,31 @@ void WheatnetSlio::CheckLineEntry(int line)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("select ID from GPIS where ")+
-    "(STATION_NAME=\""+RDEscapeString(stationName())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",matrixNumber())+
-    QString().sprintf("(NUMBER=%d)",line);
+  sql=QString("select `ID` from `GPIS` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(stationName())+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)&&",matrixNumber())+
+    QString().sprintf("(`NUMBER`=%d)",line);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
-    delete q;
-    sql=QString("insert into GPIS set ")+
-      "STATION_NAME=\""+RDEscapeString(stationName())+"\","+
-      QString().sprintf("MATRIX=%d,",matrixNumber())+
-      QString().sprintf("NUMBER=%d",line);
-    q=new RDSqlQuery(sql);
+    sql=QString("insert into `GPIS` set ")+
+      "`STATION_NAME`='"+RDEscapeString(stationName())+"',"+
+      QString().sprintf("`MATRIX`=%d,",matrixNumber())+
+      QString().sprintf("`NUMBER`=%d",line);
+    RDSqlQuery::apply(sql);
   }
   delete q;
 
-  sql=QString("select ID from GPOS where ")+
-    "(STATION_NAME=\""+RDEscapeString(stationName())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",matrixNumber())+
-    QString().sprintf("(NUMBER=%d)",line);
+  sql=QString("select `ID` from `GPOS` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(stationName())+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)&&",matrixNumber())+
+    QString().sprintf("(`NUMBER`=%d)",line);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
-    delete q;
-    sql=QString("insert into GPOS set ")+
-      "STATION_NAME=\""+RDEscapeString(stationName())+"\","+
-      QString().sprintf("MATRIX=%d,",matrixNumber())+
-      QString().sprintf("NUMBER=%d",line);
-    q=new RDSqlQuery(sql);
+    sql=QString("insert into `GPOS` set ")+
+      "`STATION_NAME`='"+RDEscapeString(stationName())+"',"+
+      QString().sprintf("`MATRIX`=%d,",matrixNumber())+
+      QString().sprintf("`NUMBER`=%d",line);
+    RDSqlQuery::apply(sql);
   }
   delete q;
 }
@@ -281,7 +279,6 @@ void WheatnetSlio::ProcessSys(const QString &cmd)
 {
   //  printf("SYS: %s\n",(const char *)cmd);
   QString sql;
-  RDSqlQuery *q;
   bool ok=false;
 
   QStringList f0=cmd.split(":");
@@ -305,12 +302,11 @@ void WheatnetSlio::ProcessSys(const QString &cmd)
 	CheckLineEntry(i+1);
 	SendCommand(QString().sprintf("<SLIOSUB:%d|LVL:1>",i+1));
       }
-      sql=QString("update MATRICES set ")+
-	QString().sprintf("GPIS=%d,GPOS=%d where ",slio_gpios,slio_gpios)+
-	"(STATION_NAME=\""+RDEscapeString(stationName())+"\")&&"+
-	QString().sprintf("(MATRIX=%d)",matrixNumber());
-      q=new RDSqlQuery(sql);
-      delete q;
+      sql=QString("update `MATRICES` set ")+
+	QString().sprintf("`GPIS`=%d,`GPOS`=%d where ",slio_gpios,slio_gpios)+
+	"(`STATION_NAME`='"+RDEscapeString(stationName())+"')&&"+
+	QString().sprintf("(`MATRIX`=%d)",matrixNumber());
+      RDSqlQuery::apply(sql);
       slio_watchdog_timer->start(WHEATNET_SLIO_WATCHDOG_INTERVAL);
       slio_poll_timer->start(WHEATNET_SLIO_POLL_INTERVAL);
     }

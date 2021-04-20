@@ -88,21 +88,20 @@ void Switcher::insertGpioEntry(bool is_gpo,int line)
 {
   QString sql;
   RDSqlQuery *q;
-  QString table="GPIS";
+  QString table="`GPIS`";
 
   if(is_gpo) {
-    table="GPOS";
+    table="`GPOS`";
   }
-  sql="select ID from "+table+" where (STATION_NAME=\""+
-    RDEscapeString(stationName())+"\")&&"+
-    QString().sprintf("(MATRIX=%u)&&(NUMBER=%d)",matrixNumber(),line);
+  sql="select `ID` from "+table+" where (`STATION_NAME`='"+
+    RDEscapeString(stationName())+"')&&"+
+    QString().sprintf("(`MATRIX`=%u)&&(`NUMBER`=%d)",matrixNumber(),line);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
-    delete q;
-    sql="insert into "+table+" set STATION_NAME=\""+
-      RDEscapeString(stationName())+"\","+
-      QString().sprintf("MATRIX=%u,NUMBER=%d",matrixNumber(),line);
-    q=new RDSqlQuery(sql);
+    sql="insert into "+table+" set `STATION_NAME`='"+
+      RDEscapeString(stationName())+"',"+
+      QString().sprintf("`MATRIX`=%u,`NUMBER`=%d",matrixNumber(),line);
+    RDSqlQuery::apply(sql);
   }
   delete q;
 }

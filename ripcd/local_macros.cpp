@@ -136,17 +136,15 @@ void MainObject::LogGpioEvent(int matrix,int line,RDMatrix::GpioType type,
 			      bool state)
 {
   QString sql;
-  RDSqlQuery *q;
 
-  sql=QString("insert into GPIO_EVENTS set ")+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
-    QString().sprintf("MATRIX=%d,",matrix)+
-    QString().sprintf("NUMBER=%d,",line+1)+
-    QString().sprintf("TYPE=%d,",type)+
-    QString().sprintf("EDGE=%d,",state)+
-    "EVENT_DATETIME=now()";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("insert into `GPIO_EVENTS` set ")+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
+    QString().sprintf("`MATRIX`=%d,",matrix)+
+    QString().sprintf("`NUMBER`=%d,",line+1)+
+    QString().sprintf("`TYPE`=%d,",type)+
+    QString().sprintf("`EDGE`=%d,",state)+
+    "`EVENT_DATETIME`=now()";
+  RDSqlQuery::apply(sql);
 }
 
 
@@ -170,13 +168,13 @@ void MainObject::LoadLocalMacros()
   // Initialize Matrices
   //
   sql=QString("select ")+
-    "MATRIX,"+   // 00
-    "TYPE,"+     // 01
-    "PORT,"+     // 02
-    "INPUTS,"+   // 03
-    "OUTPUTS "+  // 04
-    "from MATRICES where "+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+    "`MATRIX`,"+   // 00
+    "`TYPE`,"+     // 01
+    "`PORT`,"+     // 02
+    "`INPUTS`,"+   // 03
+    "`OUTPUTS` "+  // 04
+    "from `MATRICES` where "+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(!LoadSwitchDriver(q->value(0).toInt())) {
@@ -191,15 +189,15 @@ void MainObject::LoadLocalMacros()
   // Initialize TTYs
   //
   sql=QString("select ")+
-    "PORT_ID,"+      // 00
-    "PORT,"+         // 01
-    "BAUD_RATE,"+    // 02
-    "DATA_BITS,"+    // 03
-    "PARITY,"+       // 04
-    "TERMINATION "+  // 05
-    "from TTYS where "+
-    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-    "(ACTIVE=\"Y\")";
+    "`PORT_ID`,"+      // 00
+    "`PORT`,"+         // 01
+    "`BAUD_RATE`,"+    // 02
+    "`DATA_BITS`,"+    // 03
+    "`PARITY`,"+       // 04
+    "`TERMINATION` "+  // 05
+    "from `TTYS` where "+
+    "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
+    "(`ACTIVE`='Y')";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     tty_port=q->value(0).toUInt();
@@ -865,16 +863,16 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     // Try to Restart
     //
     sql=QString("select ")+
-      "PORT_ID,"+      // 00
-      "PORT,"+         // 01
-      "BAUD_RATE,"+    // 02
-      "DATA_BITS,"+    // 03
-      "PARITY,"+       // 04
-      "TERMINATION "+  // 05
-      "from TTYS where "+
-      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-      "(ACTIVE=\"Y\")&&"+
-      QString().sprintf("(PORT_ID=%d)",tty_port);
+      "`PORT_ID`,"+      // 00
+      "`PORT`,"+         // 01
+      "`BAUD_RATE`,"+    // 02
+      "`DATA_BITS`,"+    // 03
+      "`PARITY`,"+       // 04
+      "`TERMINATION` "+  // 05
+      "from `TTYS` where "+
+      "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
+      "(`ACTIVE`='Y')&&"+
+      QString().sprintf("(`PORT_ID`=%d)",tty_port);
     q=new RDSqlQuery(sql);
     if(q->first()) {
       if(!ripcd_tty_inuse[tty_port]) {

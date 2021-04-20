@@ -145,13 +145,13 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
   // Source Table
   //
   sql=QString("select ")+
-    "SLOT,"+           // 00
-    "SOURCE_NUMBER,"+  // 01
-    "IP_ADDRESS "+     // 02
+    "`SLOT`,"+           // 00
+    "`SOURCE_NUMBER`,"+  // 01
+    "`IP_ADDRESS` "+     // 02
     "from LIVEWIRE_GPIO_SLOTS "+
-    "where (STATION_NAME=\""+RDEscapeString(livewire_stationname)+"\")&&"+
-    QString().sprintf("(MATRIX=%d) ",livewire_matrix)+
-    "order by SLOT";
+    "where (`STATION_NAME`='"+RDEscapeString(livewire_stationname)+"')&&"+
+    QString().sprintf("(`MATRIX`=%d) ",livewire_matrix)+
+    "order by `SLOT`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(0).toInt()<((int)livewire_gpios/RD_LIVEWIRE_GPIO_BUNDLE_SIZE)) {

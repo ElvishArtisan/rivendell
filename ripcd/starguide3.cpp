@@ -42,14 +42,14 @@ StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent)
   // Load Feed Data
   //
   sql=QString("select ")+
-    "NUMBER,"+        // 00
-    "ENGINE_NUM,"+    // 01
-    "DEVICE_NUM,"+    // 02
-    "CHANNEL_MODE "+  // 03
-    "from INPUTS  where "+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
-    QString().sprintf("MATRIX=%d ",matrix->matrix())+
-    "order by NUMBER";
+    "`NUMBER`,"+        // 00
+    "`ENGINE_NUM`,"+    // 01
+    "`DEVICE_NUM`,"+    // 02
+    "`CHANNEL_MODE` "+  // 03
+    "from `INPUTS`  where "+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+    QString().sprintf("`MATRIX`=%d ",matrix->matrix())+
+    "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   q->first();
   for(int i=0;i<sg_inputs;i++) {

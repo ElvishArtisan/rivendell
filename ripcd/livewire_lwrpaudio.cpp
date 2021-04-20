@@ -41,13 +41,13 @@ LiveWireLwrpAudio::LiveWireLwrpAudio(RDMatrix *matrix,QObject *parent)
   // Load The Node List
   //
   sql=QString("select ")+
-    "HOSTNAME,"+     // 00
-    "TCP_PORT,"+     // 01
-    "PASSWORD,"+     // 02
-    "BASE_OUTPUT "+  // 03
-    "from SWITCHER_NODES where "+
-    "(STATION_NAME=\""+RDEscapeString(livewire_stationname)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)",livewire_matrix);
+    "`HOSTNAME`,"+     // 00
+    "`TCP_PORT`,"+     // 01
+    "`PASSWORD`,"+     // 02
+    "`BASE_OUTPUT` "+  // 03
+    "from `SWITCHER_NODES` where "+
+    "(`STATION_NAME`='"+RDEscapeString(livewire_stationname)+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)",livewire_matrix);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     livewire_nodes.push_back(new RDLiveWire(livewire_nodes.size(),this));
@@ -174,28 +174,25 @@ void LiveWireLwrpAudio::nodeConnectedData(unsigned id)
 void LiveWireLwrpAudio::sourceChangedData(unsigned id,RDLiveWireSource *src)
 {
   QString sql;
-  RDSqlQuery *q;
 
-  sql=QString("delete from INPUTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(livewire_stationname)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",livewire_matrix)+
-    "(NODE_HOSTNAME=\""+RDEscapeString(livewire_nodes[id]->hostname())+"\")&&"+
-    QString().sprintf("(NODE_TCP_PORT=%d)&&",livewire_nodes[id]->tcpPort())+
-    QString().sprintf("(NODE_SLOT=%d)",src->slotNumber());
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("delete from `INPUTS` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(livewire_stationname)+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)&&",livewire_matrix)+
+    "(`NODE_HOSTNAME`='"+RDEscapeString(livewire_nodes[id]->hostname())+"')&&"+
+    QString().sprintf("(`NODE_TCP_PORT`=%d)&&",livewire_nodes[id]->tcpPort())+
+    QString().sprintf("(`NODE_SLOT`=%d)",src->slotNumber());
+  RDSqlQuery::apply(sql);
 
   if(src->rtpEnabled()) {
-    sql=QString("insert into INPUTS set ")+
-      "STATION_NAME=\""+RDEscapeString(livewire_stationname)+"\","+
-      QString().sprintf("MATRIX=%d,",livewire_matrix)+
-      "NODE_HOSTNAME=\""+RDEscapeString(livewire_nodes[id]->hostname())+"\","+
-      QString().sprintf("NODE_TCP_PORT=%d,",livewire_nodes[id]->tcpPort())+
-      QString().sprintf("NODE_SLOT=%d,",src->slotNumber())+
-      "NAME=\""+RDEscapeString(src->primaryName())+"\","+
-      QString().sprintf("NUMBER=%d",src->channelNumber());
-    q=new RDSqlQuery(sql);
-    delete q;
+    sql=QString("insert into `INPUTS` set ")+
+      "`STATION_NAME`='"+RDEscapeString(livewire_stationname)+"',"+
+      QString().sprintf("`MATRIX`=%d,",livewire_matrix)+
+      "`NODE_HOSTNAME`='"+RDEscapeString(livewire_nodes[id]->hostname())+"',"+
+      QString().sprintf("`NODE_TCP_PORT`=%d,",livewire_nodes[id]->tcpPort())+
+      QString().sprintf("`NODE_SLOT`=%d,",src->slotNumber())+
+      "`NAME`='"+RDEscapeString(src->primaryName())+"',"+
+      QString().sprintf("`NUMBER`=%d",src->channelNumber());
+    RDSqlQuery::apply(sql);
   }
 }
 
@@ -203,28 +200,25 @@ void LiveWireLwrpAudio::sourceChangedData(unsigned id,RDLiveWireSource *src)
 void LiveWireLwrpAudio::destinationChangedData(unsigned id,RDLiveWireDestination *dst)
 {
   QString sql;
-  RDSqlQuery *q;
 
-  sql=QString("delete from OUTPUTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(livewire_stationname)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",livewire_matrix)+
-    "(NODE_HOSTNAME=\""+RDEscapeString(livewire_nodes[id]->hostname())+"\")&&"+
-    QString().sprintf("(NODE_TCP_PORT=%d)&&",livewire_nodes[id]->tcpPort())+
-    QString().sprintf("(NODE_SLOT=%d)",dst->slotNumber());
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("delete from `OUTPUTS` where ")+
+    "(`STATION_NAME`='"+RDEscapeString(livewire_stationname)+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)&&",livewire_matrix)+
+    "(`NODE_HOSTNAME`='"+RDEscapeString(livewire_nodes[id]->hostname())+"')&&"+
+    QString().sprintf("(`NODE_TCP_PORT`=%d)&&",livewire_nodes[id]->tcpPort())+
+    QString().sprintf("(`NODE_SLOT`=%d)",dst->slotNumber());
+  RDSqlQuery::apply(sql);
 
-  sql=QString("insert into OUTPUTS set ")+
-    "STATION_NAME=\""+RDEscapeString(livewire_stationname)+"\","+
-    QString().sprintf("MATRIX=%d,",livewire_matrix)+
-    "NODE_HOSTNAME=\""+RDEscapeString(livewire_nodes[id]->hostname())+"\","+
-    QString().sprintf("NODE_TCP_PORT=%d,",livewire_nodes[id]->tcpPort())+
-    QString().sprintf("NODE_SLOT=%d,",dst->slotNumber())+
-    "NAME=\""+RDEscapeString(dst->primaryName())+"\","+
-    QString().sprintf("NUMBER=%d",
+  sql=QString("insert into `OUTPUTS` set ")+
+    "`STATION_NAME`='"+RDEscapeString(livewire_stationname)+"',"+
+    QString().sprintf("`MATRIX`=%d,",livewire_matrix)+
+    "`NODE_HOSTNAME`='"+RDEscapeString(livewire_nodes[id]->hostname())+"',"+
+    QString().sprintf("`NODE_TCP_PORT`=%d,",livewire_nodes[id]->tcpPort())+
+    QString().sprintf("`NODE_SLOT`=%d,",dst->slotNumber())+
+    "`NAME`='"+RDEscapeString(dst->primaryName())+"',"+
+    QString().sprintf("`NUMBER`=%d",
 		      livewire_nodes[id]->baseOutput()+dst->slotNumber()-1);
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 }
 
 

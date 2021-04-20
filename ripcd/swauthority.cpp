@@ -311,13 +311,12 @@ void SoftwareAuthority::DispatchCommand()
       if(swa_is_gpio) {
 	swa_gpis=swa_inputs*RD_LIVEWIRE_GPIO_BUNDLE_SIZE;
       }
-      sql=QString("update MATRICES set ")+
-	QString().sprintf("INPUTS=%d,",swa_inputs)+
-	QString().sprintf("GPIS=%d ",swa_gpis)+
-	"where (STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-	QString().sprintf("(MATRIX=%d)",swa_matrix);
-      q=new RDSqlQuery(sql);
-      delete q;
+      sql=QString("update `MATRICES` set ")+
+	QString().sprintf("`INPUTS`=%d,",swa_inputs)+
+	QString().sprintf("`GPIS`=%d ",swa_gpis)+
+	"where (`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
+	QString().sprintf("(`MATRIX`=%d)",swa_matrix);
+      RDSqlQuery::apply(sql);
       return;
     }
     f0=line_in.split("\t",QString::KeepEmptyParts);
@@ -325,31 +324,30 @@ void SoftwareAuthority::DispatchCommand()
     if(f0.size()>=7) {
       name=f0[6]+": "+f0[2];
     }
-    sql=QString("select NUMBER from INPUTS where ")+
-      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-      QString().sprintf("(MATRIX=%d)&&",swa_matrix)+
-      QString().sprintf("(NUMBER=%d)",f0[0].toInt());
+    sql=QString("select `NUMBER` from `INPUTS` where ")+
+      "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
+      QString().sprintf("(`MATRIX`=%d)&&",swa_matrix)+
+      QString().sprintf("(`NUMBER`=%d)",f0[0].toInt());
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      sql=QString("update INPUTS set ")+
-	"NAME=\""+RDEscapeString(name)+"\" where "+
-	"(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-	QString().sprintf("(MATRIX=%d)&&",swa_matrix)+
-	QString().sprintf("(NUMBER=%d)",f0[0].toInt());
+      sql=QString("update `INPUTS` set ")+
+	"`NAME`='"+RDEscapeString(name)+"' where "+
+	"(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
+	QString().sprintf("(`MATRIX`=%d)&&",swa_matrix)+
+	QString().sprintf("(`NUMBER`=%d)",f0[0].toInt());
     }
     else {
-      sql=QString("insert into INPUTS set ")+
-	"NAME=\""+RDEscapeString(name)+"\","+
-	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
-	QString().sprintf("MATRIX=%d,",swa_matrix)+
-	QString().sprintf("NUMBER=%d",f0[0].toInt());
+      sql=QString("insert into `INPUTS` set ")+
+	"`NAME`='"+RDEscapeString(name)+"',"+
+	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
+	QString().sprintf("`MATRIX`=%d,",swa_matrix)+
+	QString().sprintf("`NUMBER`=%d",f0[0].toInt());
     }
     if(f0[0].toInt()>swa_inputs) {
       swa_inputs=f0[0].toInt();
     }
     delete q;
-    q=new RDSqlQuery(sql);
-    delete q;
+    RDSqlQuery::apply(sql);
     break;
 
   case 2:   // Destinations List
@@ -361,13 +359,12 @@ void SoftwareAuthority::DispatchCommand()
       if(swa_is_gpio) {
 	swa_gpos=swa_outputs*RD_LIVEWIRE_GPIO_BUNDLE_SIZE;
       }
-      sql=QString("update MATRICES set ")+
-	QString().sprintf("OUTPUTS=%d,",swa_outputs)+
-	QString().sprintf("GPOS=%d ",swa_gpos)+
-	"where (STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-	QString().sprintf("(MATRIX=%d)",swa_matrix);
-      q=new RDSqlQuery(sql);
-      delete q;
+      sql=QString("update `MATRICES` set ")+
+	QString().sprintf("`OUTPUTS`=%d,",swa_outputs)+
+	QString().sprintf("`GPOS`=%d ",swa_gpos)+
+	"where (`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
+	QString().sprintf("(`MATRIX`=%d)",swa_matrix);
+      RDSqlQuery::apply(sql);
 
       rda->syslog(LOG_INFO,
 		  "connection to SoftwareAuthority device at %s:%d established",
@@ -383,31 +380,30 @@ void SoftwareAuthority::DispatchCommand()
     if(f0.size()>=6) {
       name=f0[3]+"/"+f0[5]+": "+f0[2];
     }
-    sql=QString("select NUMBER from OUTPUTS where ")+
-      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-      QString().sprintf("(MATRIX=%d)&&",swa_matrix)+
-      QString().sprintf("(NUMBER=%d)",f0[0].toInt());
+    sql=QString("select `NUMBER` from `OUTPUTS` where ")+
+      "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
+      QString().sprintf("(`MATRIX`=%d)&&",swa_matrix)+
+      QString().sprintf("(`NUMBER`=%d)",f0[0].toInt());
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      sql=QString("update OUTPUTS set ")+
-	"NAME=\""+RDEscapeString(name)+"\" where "+
-	"(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-	QString().sprintf("(MATRIX=%d)&&",swa_matrix)+
-	QString().sprintf("(NUMBER=%d)",f0[0].toInt());
+      sql=QString("update `OUTPUTS` set ")+
+	"`NAME`='"+RDEscapeString(name)+"' where "+
+	"(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
+	QString().sprintf("(`MATRIX`=%d)&&",swa_matrix)+
+	QString().sprintf("(`NUMBER`=%d)",f0[0].toInt());
     }
     else {
-      sql=QString("insert into OUTPUTS set ")+
-	"NAME=\""+RDEscapeString(name)+"\","+
-	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
-	QString().sprintf("MATRIX=%d,",swa_matrix)+
-	QString().sprintf("NUMBER=%d",f0[0].toInt());
+      sql=QString("insert into `OUTPUTS` set ")+
+	"`NAME`='"+RDEscapeString(name)+"',"+
+	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
+	QString().sprintf("`MATRIX`=%d,",swa_matrix)+
+	QString().sprintf("`NUMBER`=%d",f0[0].toInt());
     }
     if(f0[0].toInt()>swa_outputs) {
       swa_outputs=f0[0].toInt();
     }
     delete q;
-    q=new RDSqlQuery(sql);
-    delete q;
+    RDSqlQuery::apply(sql);
     break;
   }
 
