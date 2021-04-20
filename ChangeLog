@@ -21551,3 +21551,7 @@
 	* Escaped all SQL identifiers in 'utils/rdcheckcuts/'.
 	* Replaced " with ' delimiters in all SQL literal strings in
 	'utils/rdcheckcuts/'.
+2021-04-20 Fred Gleason <fredg@paravelsystems.com>
+	* Escaped all SQL identifiers in 'utils/rdclilogedit/'.
+	* Replaced " with ' delimiters in all SQL literal strings in
+	'utils/rdclilogedit/'.

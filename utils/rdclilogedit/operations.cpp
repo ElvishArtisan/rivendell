@@ -98,8 +98,8 @@ void MainObject::Deletelog(QString logname)
   // FIXME: This should really be handled by use of collations in the
   //        where clause.
   //
-  sql=QString("select NAME from LOGS where ")+
-    "NAME=\""+RDEscapeString(logname)+"\"";
+  sql=QString("select `NAME` from `LOGS` where ")+
+    "`NAME`='"+RDEscapeString(logname)+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     logname=q->value(0).toString();
@@ -183,7 +183,7 @@ void MainObject::ListLogs() const
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("select NAME from LOGS order by NAME");
+  sql=QString("select `NAME` from `LOGS` order by `NAME`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     printf("%s\n",q->value(0).toString().toUtf8().constData());
@@ -197,7 +197,7 @@ void MainObject::Listservices() const
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("select NAME from SERVICES order by NAME");
+  sql=QString("select `NAME` from `SERVICES` order by `NAME`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     printf("%s\n",q->value(0).toString().toUtf8().constData());
@@ -230,8 +230,8 @@ void MainObject::Load(QString logname)
   // FIXME: This should really be handled by use of collations in the
   //        where clause.
   //
-  sql=QString("select NAME from LOGS where ")+
-    "NAME=\""+RDEscapeString(logname)+"\"";
+  sql=QString("select `NAME` from `LOGS` where ")+
+    "NAME='"+RDEscapeString(logname)+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     logname=q->value(0).toString();
@@ -364,7 +364,7 @@ void MainObject::New(const QString &logname)
   if(!edit_log->exists()) {
     edit_log_model=new RDLogModel(logname,false,this);
     edit_description=logname+" log";
-    sql=QString("select NAME from SERVICES");
+    sql=QString("select `NAME` from `SERVICES`");
     q=new RDSqlQuery(sql);
     if(q->first()) {
       edit_service=q->value(0).toString();
@@ -419,19 +419,19 @@ void MainObject::Saveas(const QString &logname)
 
   RDLog *log=new RDLog(logname);
   if(!log->exists()) {
-    sql=QString("insert into LOGS set ")+
-      "NAME=\""+RDEscapeString(logname)+"\","+
-      "TYPE=0,"+
-      "DESCRIPTION=\""+RDEscapeString(edit_description)+"\","+
-      "ORIGIN_USER=\""+RDEscapeString(rda->user()->name())+"\","+
-      "ORIGIN_DATETIME=now(),"+
-      "LINK_DATETIME=now(),"+
-      "MODIFIED_DATETIME=now(),"+
-      "START_DATE="+RDCheckDateTime(edit_start_date,"yyyy-MM-dd")+","+
-      "END_DATE="+RDCheckDateTime(edit_end_date,"yyyy-MM-dd")+","+
-      "PURGE_DATE="+RDCheckDateTime(edit_purge_date,"yyyy-MM-dd")+","+
-      "AUTO_REFRESH=\""+RDYesNo(edit_auto_refresh)+"\","+
-      "SERVICE=\""+RDEscapeString(edit_service)+"\"";
+    sql=QString("insert into `LOGS` set ")+
+      "`NAME='"+RDEscapeString(logname)+"',"+
+      "`TYPE=0,"+
+      "`DESCRIPTION`='"+RDEscapeString(edit_description)+"',"+
+      "`ORIGIN_USER`='"+RDEscapeString(rda->user()->name())+"',"+
+      "`ORIGIN_DATETIME`=now(),"+
+      "`LINK_DATETIME`=now(),"+
+      "`MODIFIED_DATETIME`=now(),"+
+      "`START_DATE`="+RDCheckDateTime(edit_start_date,"yyyy-MM-dd")+","+
+      "`END_DATE`="+RDCheckDateTime(edit_end_date,"yyyy-MM-dd")+","+
+      "`PURGE_DATE`="+RDCheckDateTime(edit_purge_date,"yyyy-MM-dd")+","+
+      "`AUTO_REFRESH`='"+RDYesNo(edit_auto_refresh)+"',"+
+      "`SERVICE`='"+RDEscapeString(edit_service)+"'";
     q=new RDSqlQuery(sql);
     delete q;
     edit_log_model->setLogName(logname);
