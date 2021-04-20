@@ -2,7 +2,7 @@
 //
 // Test Rivendell image storage
 //
-//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -191,13 +191,13 @@ void MainObject::RunList()
   RDSqlQuery *q=NULL;
 
   sql=QString("select ")+
-    "ID,"+           // 00
-    "WIDTH,"+        // 01
-    "HEIGHT,"+       // 02
-    "DEPTH,"+        // 03
-    "DESCRIPTION "+  // 04
-    "from FEED_IMAGES where "+
-    "FEED_KEY_NAME=\""+RDEscapeString(test_feed->keyName())+"\"";
+    "`ID`,"+           // 00
+    "`WIDTH`,"+        // 01
+    "`HEIGHT`,"+       // 02
+    "`DEPTH`,"+        // 03
+    "`DESCRIPTION` "+  // 04
+    "from `FEED_IMAGES` where "+
+    "`FEED_KEY_NAME`='"+RDEscapeString(test_feed->keyName())+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     printf("ID: %u\n",q->value(0).toUInt());
@@ -239,14 +239,14 @@ void MainObject::RunPush()
   //
   // Write it to the DB
   //
-  sql=QString("insert into FEED_IMAGES set ")+
-    QString().sprintf("FEED_ID=%u,",test_feed->id())+
-    "FEED_KEY_NAME=\""+RDEscapeString(test_feed->keyName())+"\","+
-    QString().sprintf("WIDTH=%d,",img->width())+
-    QString().sprintf("HEIGHT=%d,",img->height())+
-    QString().sprintf("DEPTH=%d,",img->depth())+
-    "DESCRIPTION=\""+RDEscapeString(test_description)+"\","+
-    "DATA="+RDEscapeBlob(data);
+  sql=QString("insert into `FEED_IMAGES` set ")+
+    QString().sprintf("`FEED_ID`=%u,",test_feed->id())+
+    "`FEED_KEY_NAME`='"+RDEscapeString(test_feed->keyName())+"',"+
+    QString().sprintf("`WIDTH`=%d,",img->width())+
+    QString().sprintf("`HEIGHT`=%d,",img->height())+
+    QString().sprintf("`DEPTH`=%d,",img->depth())+
+    "`DESCRIPTION`='"+RDEscapeString(test_description)+"',"+
+    "`DATA`="+RDEscapeBlob(data);
   RDSqlQuery::apply(sql);
 }
 
@@ -258,8 +258,8 @@ void MainObject::RunPop()
   QByteArray data;
   FILE *f=NULL;
 
-  sql=QString("select DATA from FEED_IMAGES where ")+
-    QString().sprintf("ID=%u",test_image_id);
+  sql=QString("select `DATA` from `FEED_IMAGES` where ")+
+    QString().sprintf("`ID`=%u",test_image_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if((f=fopen(test_filename.toUtf8(),"w"))==NULL) {
