@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Chain Entry
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,9 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
-#include <qpushbutton.h>
-#include <qmessagebox.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -106,8 +103,8 @@ void EditChain::selectLogData()
 void EditChain::labelChangedData(const QString &logname)
 {
   QString sql=
-    QString("select DESCRIPTION from LOGS where ")+
-    "NAME=\""+RDEscapeString(logname)+"\"";
+    QString("select `DESCRIPTION` from `LOGS` where ")+
+    "`NAME`='"+RDEscapeString(logname)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;

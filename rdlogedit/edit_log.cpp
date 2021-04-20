@@ -99,14 +99,11 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   // Log Name
   //
   edit_modified_label=new QLabel(this);
-  //  edit_modified_label->setBackgroundColor(QColor(system_mid_color));
   edit_modified_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
   edit_modified_label->setFont(progressFont());
   edit_logname_label=new QLabel(logname,this);
-  //  edit_logname_label->setBackgroundColor(QColor(system_mid_color));
   edit_logname_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_logname_label_label=new QLabel(tr("Log Name:"),this);
-  //  edit_logname_label_label->setBackgroundColor(QColor(system_mid_color));
   edit_logname_label_label->setFont(labelFont());
   edit_logname_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -114,10 +111,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   // Track Counts
   //
   edit_track_label=new QLabel(this);
-  //  edit_track_label->setBackgroundColor(QColor(system_mid_color));
   edit_track_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_track_label_label=new QLabel(tr("Tracks:"),this);
-  //  edit_track_label_label->setBackgroundColor(QColor(system_mid_color));
   edit_track_label_label->setFont(labelFont());
   edit_track_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -128,10 +123,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
     new QLabel(edit_log->originUser()+QString(" - ")+
 	       edit_log->originDatetime().toString("MM/dd/yyyy - hh:mm:ss"),
 	       this);
-  //  edit_origin_label->setBackgroundColor(QColor(system_mid_color));
   edit_origin_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_origin_label_label=new QLabel(tr("Origin:"),this);
-  //  edit_origin_label_label->setBackgroundColor(QColor(system_mid_color));
   edit_origin_label_label->setFont(labelFont());
   edit_origin_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -464,7 +457,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
     edit_purgedate_box->setChecked(true);
     edit_purgedate_edit->setDate(purge_date);
   }
-  sql=QString("select NAME from SERVICES");
+  sql=QString("select `NAME` from `SERVICES`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     services_list.append( q->value(0).toString() );

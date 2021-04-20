@@ -446,19 +446,19 @@ void MainWidget::reportData()
   // Report Body
   //
   sql=QString("select ")+
-    "NAME,"+               // 00
-    "DESCRIPTION,"+        // 01
-    "SERVICE,"+            // 02
-    "MUSIC_LINKS,"+        // 03
-    "MUSIC_LINKED,"+       // 04
-    "TRAFFIC_LINKS,"+      // 05
-    "TRAFFIC_LINKED,"+     // 06
-    "COMPLETED_TRACKS,"+   // 07
-    "SCHEDULED_TRACKS,"+   // 08
-    "START_DATE,"+         // 09
-    "END_DATE,"+           // 10
-    "MODIFIED_DATETIME "+  // 11
-    "from LOGS order by NAME ";
+    "`NAME`,"+               // 00
+    "`DESCRIPTION`,"+        // 01
+    "`SERVICE`,"+            // 02
+    "`MUSIC_LINKS`,"+        // 03
+    "`MUSIC_LINKED`,"+       // 04
+    "`TRAFFIC_LINKS`,"+      // 05
+    "`TRAFFIC_LINKED`,"+     // 06
+    "`COMPLETED_TRACKS`,"+   // 07
+    "`SCHEDULED_TRACKS`,"+   // 08
+    "`START_DATE`,"+         // 09
+    "`END_DATE`,"+           // 10
+    "`MODIFIED_DATETIME` "+  // 11
+    "from `LOGS` order by `NAME` ";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     //

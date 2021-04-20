@@ -21507,3 +21507,7 @@
 	* Escaped all SQL identifiers in 'rdlibrary/'.
 	* Replaced " with ' delimiters in all SQL literal strings in
 	'rdlibrary/'.
+2021-04-19 Fred Gleason <fredg@paravelsystems.com>
+	* Escaped all SQL identifiers in 'rdlogedit/'.
+	* Replaced " with ' delimiters in all SQL literal strings in
+	'rdlogedit/'.
