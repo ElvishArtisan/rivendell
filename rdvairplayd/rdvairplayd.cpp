@@ -229,8 +229,8 @@ void MainObject::ripcConnectedData(bool state)
       break;
     }
     if(!air_start_lognames[i].isEmpty()) {
-      sql=QString("select NAME from LOGS where ")+
-	"NAME=\""+RDEscapeString(air_start_lognames[i])+"\"";
+      sql=QString("select `NAME` from `LOGS` where ")+
+	"`NAME`='"+RDEscapeString(air_start_lognames[i])+"'";
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	rml.clear();
