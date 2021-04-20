@@ -51,8 +51,8 @@ bool NoteBubble::setCartNumber(unsigned cartnum)
 
   note_show_timer->stop();
   hide();
-  QString sql=QString("select NOTES from CART where ")+
-    QString().sprintf("NUMBER=%u",cartnum);
+  QString sql=QString("select `NOTES` from `CART` where ")+
+    QString().sprintf("`NUMBER`=%u",cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()&&(!q->value(0).toString().trimmed().isEmpty())) {
     setText(q->value(0).toString());

@@ -355,10 +355,10 @@ void MainWidget::addData()
   }
   delete add_cart;
 
-  sql=QString("insert into CART set ")+
-    QString().sprintf("NUMBER=%u,TYPE=%d,",cart_num,cart_type)+
-    "GROUP_NAME=\""+RDEscapeString(lib_default_group)+"\","+
-    "TITLE=\""+RDEscapeString(cart_title)+"\"";
+  sql=QString("insert into `CART` set ")+
+    QString().sprintf("`NUMBER`=%u,`TYPE`=%d,",cart_num,cart_type)+
+    "`GROUP_NAME`='"+RDEscapeString(lib_default_group)+"',"+
+    "`TITLE`='"+RDEscapeString(cart_title)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -458,10 +458,10 @@ void MainWidget::deleteData()
   for(int i=0;i<carts.size();i++) {
     unsigned cartnum=lib_cart_model->cartNumber(carts.at(i));
     sql=QString("select ")+
-      "CUT_NAME "+  // 00
-      "from RECORDINGS where "+
-      QString().sprintf("(CUT_NAME like \"%06u_%%\")||",cartnum)+
-      QString().sprintf("(MACRO_CART=%u)",cartnum);
+      "`CUT_NAME` "+  // 00
+      "from `RECORDINGS` where "+
+      QString().sprintf("(`CUT_NAME` like '%06u_%%')||",cartnum)+
+      QString().sprintf("(`MACRO_CART`=%u)",cartnum);
     q=new RDSqlQuery(sql);
     if(q->first()) {
       QString str=tr("Cart")+
@@ -691,10 +691,10 @@ void MainWidget::notificationReceivedData(RDNotification *notify)
     case RDNotification::AddAction:
       and_fields.push_back(QString().sprintf("CART.NUMBER=%u",cartnum));
       sql=QString("select ")+
-	"CART.NUMBER "+  // 00
-	"from CART "+
-	"left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
-	"left join CUTS on CART.NUMBER=CUTS.CART_NUMBER "+
+	"`CART`.`NUMBER` "+  // 00
+	"from `CART` "+
+	"left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` "+
+	"left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` "+
 	lib_cart_filter->filterSql(and_fields);
       q=new RDSqlQuery(sql);
       if(q->first()) {

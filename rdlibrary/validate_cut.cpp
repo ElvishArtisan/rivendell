@@ -2,7 +2,7 @@
 //
 // Validate a Rivendell Audio Cut
 //
-//   (C) Copyright 2006-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2006-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,33 +27,33 @@ QString ValidateCutFields()
   QString sql;
 
   sql=QString("select ")+
-    "PLAY_ORDER,"+          // 00
-    "WEIGHT,"+              // 01   
-    "DESCRIPTION,"+         // 02
-    "LENGTH,"+              // 03
-    "LAST_PLAY_DATETIME,"+  // 04
-    "PLAY_COUNTER,"+        // 05
-    "ORIGIN_DATETIME,"+     // 06
-    "ORIGIN_NAME,"+         // 07
-    "ORIGIN_LOGIN_NAME,"+   // 08
-    "SOURCE_HOSTNAME,"+     // 09
-    "OUTCUE,"+              // 10
-    "CUT_NAME,"+            // 11
-    "LENGTH,"+              // 12  offsets begin here
-    "EVERGREEN,"+           // 13
-    "START_DATETIME,"+      // 14
-    "END_DATETIME,"+        // 15
-    "START_DAYPART,"+       // 16
-    "END_DAYPART,"+         // 17
-    "MON,"+                 // 18
-    "TUE,"+                 // 19
-    "WED,"+                 // 20
-    "THU,"+                 // 21
-    "FRI,"+                 // 22
-    "SAT,"+                 // 23
-    "SUN,"+                 // 24
-    "SHA1_HASH "+           // 25
-    "from CUTS";
+    "`PLAY_ORDER`,"+          // 00
+    "`WEIGHT`,"+              // 01   
+    "`DESCRIPTION`,"+         // 02
+    "`LENGTH`,"+              // 03
+    "`LAST_PLAY_DATETIME`,"+  // 04
+    "`PLAY_COUNTER`,"+        // 05
+    "`ORIGIN_DATETIME`,"+     // 06
+    "`ORIGIN_NAME`,"+         // 07
+    "`ORIGIN_LOGIN_NAME`,"+   // 08
+    "`SOURCE_HOSTNAME`,"+     // 09
+    "`OUTCUE`,"+              // 10
+    "`CUT_NAME`,"+            // 11
+    "`LENGTH`,"+              // 12  offsets begin here
+    "`EVERGREEN`,"+           // 13
+    "`START_DATETIME`,"+      // 14
+    "`END_DATETIME`,"+        // 15
+    "`START_DAYPART`,"+       // 16
+    "`END_DAYPART`,"+         // 17
+    "`MON`,"+                 // 18
+    "`TUE`,"+                 // 19
+    "`WED`,"+                 // 20
+    "`THU`,"+                 // 21
+    "`FRI`,"+                 // 22
+    "`SAT`,"+                 // 23
+    "`SUN`,"+                 // 24
+    "`SHA1_HASH` "+           // 25
+    "from `CUTS`";
 
   return sql;
 }

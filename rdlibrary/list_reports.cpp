@@ -172,26 +172,21 @@ void ListReports::GenerateCartReport(QString *report)
   //
   // Generate Rows
   //
-  /*
-  if(list_type_filter.isEmpty()) {
-    return;
-  }
-  */
   sql=QString("select ")+
-    "CART.TYPE,"+              // 00
-    "CART.NUMBER,"+            // 01
-    "CART.GROUP_NAME,"+        // 02
-    "CART.FORCED_LENGTH,"+     // 03
-    "CART.TITLE,"+             // 04
-    "CART.ARTIST,"+            // 05
-    "CART.CUT_QUANTITY,"+      // 06
-    "CART.USE_WEIGHTING,"+     // 07
-    "CART.ENFORCE_LENGTH,"+    // 08
-    "CART.LENGTH_DEVIATION,"+  // 09
-    "CART.OWNER "+             // 10
-    "from CART "+
-    "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
-    "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER ";
+    "`CART`.`TYPE`,"+              // 00
+    "`CART`.`NUMBER`,"+            // 01
+    "`CART`.`GROUP_NAME`,"+        // 02
+    "`CART`.`FORCED_LENGTH`,"+     // 03
+    "`CART`.`TITLE`,"+             // 04
+    "`CART`.`ARTIST`,"+            // 05
+    "`CART`.`CUT_QUANTITY`,"+      // 06
+    "`CART`.`USE_WEIGHTING`,"+     // 07
+    "`CART`.`ENFORCE_LENGTH`,"+    // 08
+    "`CART`.`LENGTH_DEVIATION`,"+  // 09
+    "`CART`.`OWNER` "+             // 10
+    "from `CART` "+
+    "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME "+
+    "left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` ";
   sql+=list_filter_sql;
   unsigned prev_cartnum=0;
   q=new RDSqlQuery(sql);
@@ -318,30 +313,30 @@ void ListReports::GenerateCutReport(QString *report)
   // Generate Rows
   //
   sql=QString("select ")+
-    "CART.NUMBER,"+              // 00
-    "CUTS.CUT_NAME,"+            // 01
-    "CART.USE_WEIGHTING,"+       // 02
-    "CUTS.PLAY_ORDER,"+          // 03
-    "CUTS.WEIGHT,"+              // 04
-    "CART.TITLE,"+               // 05
-    "CUTS.DESCRIPTION,"+         // 06
-    "CUTS.LENGTH,"+              // 07
-    "CUTS.LAST_PLAY_DATETIME,"+  // 08
-    "CUTS.PLAY_COUNTER,"+        // 09
-    "CUTS.START_DATETIME,"+      // 10
-    "CUTS.END_DATETIME,"+        // 11
-    "CUTS.SUN,"+                 // 12
-    "CUTS.MON,"+                 // 13
-    "CUTS.TUE,"+                 // 14
-    "CUTS.WED,"+                 // 15
-    "CUTS.THU,"+                 // 16
-    "CUTS.FRI,"+                 // 17
-    "CUTS.SAT,"+                 // 18
-    "CUTS.START_DAYPART,"+       // 19
-    "CUTS.END_DAYPART "+         // 20
-    "from CART "+
-    "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
-    "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER ";
+    "`CART`.`NUMBER`,"+              // 00
+    "`CUTS`.`CUT_NAME`,"+            // 01
+    "`CART`.`USE_WEIGHTING`,"+       // 02
+    "`CUTS`.`PLAY_ORDER`,"+          // 03
+    "`CUTS`.`WEIGHT`,"+              // 04
+    "`CART`.`TITLE`,"+               // 05
+    "`CUTS`.`DESCRIPTION`,"+         // 06
+    "`CUTS`.`LENGTH`,"+              // 07
+    "`CUTS`.`LAST_PLAY_DATETIME`,"+  // 08
+    "`CUTS`.`PLAY_COUNTER`,"+        // 09
+    "`CUTS`.`START_DATETIME`,"+      // 10
+    "`CUTS`.`END_DATETIME`,"+        // 11
+    "`CUTS`.`SUN`,"+                 // 12
+    "`CUTS`.`MON`,"+                 // 13
+    "`CUTS`.`TUE`,"+                 // 14
+    "`CUTS`.`WED`,"+                 // 15
+    "`CUTS`.`THU`,"+                 // 16
+    "`CUTS`.`FRI`,"+                 // 17
+    "`CUTS`.`SAT`,"+                 // 18
+    "`CUTS`.`START_DAYPART`,"+       // 19
+    "`CUTS`.`END_DAYPART` "+         // 20
+    "from `CART` "+
+    "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` "+
+    "left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` ";
   sql+=list_filter_sql;
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -511,40 +506,40 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   // Generate Rows
   //
   sql=QString("select ")+
-    "CART.NUMBER,"+             // 00
-    "CART.TYPE,"+               // 01
-    "CUTS.CUT_NAME,"+           // 02
-    "CART.GROUP_NAME,"+         // 03
-    "CART.TITLE,"+              // 04
-    "CART.ARTIST,"+             // 05
-    "CART.ALBUM,"+              // 06
-    "CART.YEAR,"+               // 07
-    "CUTS.ISRC,"+               // 08
-    "CUTS.ISCI,"+               // 09
-    "CART.LABEL,"+              // 10
-    "CART.CLIENT,"+             // 11
-    "CART.AGENCY,"+             // 12
-    "CART.PUBLISHER,"+          // 13
-    "CART.COMPOSER,"+           // 14
-    "CART.CONDUCTOR,"+          // 15
-    "CART.SONG_ID,"+            // 16
-    "CART.USER_DEFINED,"+       // 17
-    "CUTS.DESCRIPTION,"+        // 18
-    "CUTS.OUTCUE,"+             // 19
-    "CUTS.LENGTH,"+             // 20
-    "CUTS.START_POINT,"+        // 21
-    "CUTS.END_POINT,"+          // 22
-    "CUTS.SEGUE_START_POINT,"+  // 23
-    "CUTS.SEGUE_END_POINT,"+    // 24
-    "CUTS.HOOK_START_POINT,"+   // 25
-    "CUTS.HOOK_END_POINT,"+     // 26
-    "CUTS.TALK_START_POINT,"+   // 27
-    "CUTS.TALK_END_POINT,"+     // 28
-    "CUTS.FADEUP_POINT,"+       // 29
-    "CUTS.FADEDOWN_POINT "+     // 30
-    "from CART "+
-    "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
-    "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER ";
+    "`CART`.`NUMBER`,"+             // 00
+    "`CART`.`TYPE`,"+               // 01
+    "`CUTS`.`CUT_NAME`,"+           // 02
+    "`CART`.`GROUP_NAME`,"+         // 03
+    "`CART`.`TITLE`,"+              // 04
+    "`CART`.`ARTIST`,"+             // 05
+    "`CART`.`ALBUM`,"+              // 06
+    "`CART`.`YEAR`,"+               // 07
+    "`CUTS`.`ISRC`,"+               // 08
+    "`CUTS`.`ISCI`,"+               // 09
+    "`CART`.`LABEL`,"+              // 10
+    "`CART`.`CLIENT`,"+             // 11
+    "`CART`.`AGENCY`,"+             // 12
+    "`CART`.`PUBLISHER`,"+          // 13
+    "`CART`.`COMPOSER`,"+           // 14
+    "`CART`.`CONDUCTOR`,"+          // 15
+    "`CART`.`SONG_ID`,"+            // 16
+    "`CART`.`USER_DEFINED`,"+       // 17
+    "`CUTS`.`DESCRIPTION`,"+        // 18
+    "`CUTS`.`OUTCUE`,"+             // 19
+    "`CUTS`.`LENGTH`,"+             // 20
+    "`CUTS`.`START_POINT`,"+        // 21
+    "`CUTS`.`END_POINT`,"+          // 22
+    "`CUTS`.`SEGUE_START_POINT`,"+  // 23
+    "`CUTS`.`SEGUE_END_POINT`,"+    // 24
+    "`CUTS`.`HOOK_START_POINT`,"+   // 25
+    "`CUTS`.`HOOK_END_POINT`,"+     // 26
+    "`CUTS`.`TALK_START_POINT`,"+   // 27
+    "`CUTS`.`TALK_END_POINT`,"+     // 28
+    "`CUTS`.`FADEUP_POINT`,"+       // 29
+    "`CUTS`.`FADEDOWN_POINT` "+     // 30
+    "from `CART` "+
+    "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME "+
+    "left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` ";
   sql+=list_filter_sql;
   q=new RDSqlQuery(sql);
 

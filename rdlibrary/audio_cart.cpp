@@ -312,8 +312,8 @@ void AudioCart::deleteCutData()
   // Check for RDCatch Events
   //
   for(int i=0;i<cutnames.size();i++) {
-    QString sql=QString("select CUT_NAME from RECORDINGS where ")+
-      "CUT_NAME=\""+RDEscapeString(cutnames.at(i))+"\"";
+    QString sql=QString("select `CUT_NAME` from `RECORDINGS` where ")+
+      "`CUT_NAME`='"+RDEscapeString(cutnames.at(i))+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       if(QMessageBox::warning(this,tr("RDCatch Event Exists"),
