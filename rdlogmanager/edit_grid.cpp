@@ -144,16 +144,16 @@ void EditGrid::hourButtonData(int id)
   }
   delete listclocks;
   current_clockname=clockname;
-  QString sql=QString("update SERVICE_CLOCKS set ");
+  QString sql=QString("update `SERVICE_CLOCKS` set ");
   if(clockname.isEmpty()) {
-    sql+="CLOCK_NAME=null ";
+    sql+="`CLOCK_NAME`=null ";
   }
   else {
-    sql+="CLOCK_NAME=\""+RDEscapeString(clockname)+"\" ";
+    sql+="`CLOCK_NAME`='"+RDEscapeString(clockname)+"' ";
   }
   sql+=QString("where ")+
-    "(SERVICE_NAME=\""+RDEscapeString(edit_servicename)+"\")&&"+
-    QString().sprintf("(HOUR=%d)",id);
+    "(`SERVICE_NAME`='"+RDEscapeString(edit_servicename)+"')&&"+
+    QString().sprintf("(`HOUR`=%d)",id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
   LabelButton(dayofweek,hour,clockname);
@@ -172,9 +172,9 @@ void EditGrid::allHourButtonData()
   if(QMessageBox::question(this,"RDLogManager - "+tr("Clear Clocks"),
 			   tr("Are you sure you want to update ALL clocks in the grid?")+"\n"+tr("This operation cannot be undone!"),QMessageBox::Yes,QMessageBox::No)==QMessageBox::Yes) {
     for(int id=0;id<168;id++) {
-      QString sql=QString("update SERVICE_CLOCKS set ")+
-	"CLOCK_NAME=\""+RDEscapeString(clockname)+"\" where "+
-	"SERVICE_NAME=\""+RDEscapeString(edit_servicename)+"\"";
+      QString sql=QString("update `SERVICE_CLOCKS` set ")+
+	"`CLOCK_NAME`='"+RDEscapeString(clockname)+"' where "+
+	"`SERVICE_NAME`='"+RDEscapeString(edit_servicename)+"'";
       RDSqlQuery *q=new RDSqlQuery(sql);
       delete q;
       int dayofweek=id/24+1;
@@ -236,8 +236,8 @@ void EditGrid::clearHourData()
   int dayofweek=edit_rightclick_id/24+1;
   int hour=edit_rightclick_id-24*(dayofweek-1);
 
-  QString sql=QString("update SERVICE_CLOCKS set CLOCK_NAME=null where ")+
-    "(SERVICE_NAME=\""+RDEscapeString(edit_servicename)+"\")&&"+
+  QString sql=QString("update `SERVICE_CLOCKS` set `CLOCK_NAME`=null where ")+
+    "(`SERVICE_NAME`='"+RDEscapeString(edit_servicename)+"')&&"+
     QString().sprintf("(HOUR=%d)",(dayofweek-1)*24+hour);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
@@ -273,10 +273,10 @@ void EditGrid::LabelButton(int dayofweek,int hour,QString clockname)
   QColor color=palette().color(QPalette::Background);
 
   QString sql=QString("select ")+
-    "SHORT_NAME,"+  // 00
-    "COLOR "+       // 01
-    "from CLOCKS where "+
-    "NAME=\""+RDEscapeString(clockname)+"\"";
+    "`SHORT_NAME`,"+  // 00
+    "`COLOR` "+       // 01
+    "from `CLOCKS` where "+
+    "`NAME`='"+RDEscapeString(clockname)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     code=q->value(0).toString();
@@ -293,9 +293,9 @@ void EditGrid::LabelButton(int dayofweek,int hour,QString clockname)
 
 QString EditGrid::GetClock(int dayofweek,int hour)
 {
-  QString sql=QString("select CLOCK_NAME from SERVICE_CLOCKS where ")+
-    "(SERVICE_NAME=\""+RDEscapeString(edit_servicename)+"\")&&"+
-    QString().sprintf("(HOUR=%d)",24*(dayofweek-1)+hour);
+  QString sql=QString("select `CLOCK_NAME` from `SERVICE_CLOCKS` where ")+
+    "(`SERVICE_NAME`='"+RDEscapeString(edit_servicename)+"')&&"+
+    QString().sprintf("(`HOUR`=%d)",24*(dayofweek-1)+hour);
 
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {

@@ -21515,3 +21515,7 @@
 	* Escaped all SQL identifiers in 'rdlogin/'.
 	* Replaced " with ' delimiters in all SQL literal strings in
 	'rdlogin/'.
+2021-04-19 Fred Gleason <fredg@paravelsystems.com>
+	* Escaped all SQL identifiers in 'rdlogmanager/'.
+	* Replaced " with ' delimiters in all SQL literal strings in
+	'rdlogmanager/'.

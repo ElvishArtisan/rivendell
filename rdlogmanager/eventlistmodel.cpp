@@ -199,7 +199,8 @@ void EventListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      "EVENTS.NAME=\""+RDEscapeString(d_texts.at(row.row()).at(0).toString())+
+      "`EVENTS`.`NAME`=\""+
+      RDEscapeString(d_texts.at(row.row()).at(0).toString())+
       "\"";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
@@ -239,7 +240,7 @@ void EventListModel::updateModel()
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
     d_filter_sql+
-    "order by EVENTS.NAME ";
+    "order by `EVENTS`.`NAME` ";
   beginResetModel();
   d_texts.clear();
   d_icons.clear();
@@ -259,7 +260,8 @@ void EventListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      "EVENTS.NAME=\""+RDEscapeString(d_texts.at(line).at(0).toString())+"\"";
+      "`EVENTS`.`NAME`=\""+
+      RDEscapeString(d_texts.at(line).at(0).toString())+"\"";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -297,16 +299,16 @@ void EventListModel::updateRow(int row,RDSqlQuery *q)
 QString EventListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "NAME,"+              // 00
-    "COLOR,"+             // 01
-    "PREPOSITION,"+       // 02
-    "FIRST_TRANS_TYPE,"+  // 03
-    "TIME_TYPE,"+         // 04
-    "GRACE_TIME,"+        // 05
-    "USE_AUTOFILL,"+      // 06
-    "IMPORT_SOURCE,"+     // 07
-    "NESTED_EVENT "+      // 08
-    "from EVENTS ";
+    "`NAME`,"+              // 00
+    "`COLOR`,"+             // 01
+    "`PREPOSITION`,"+       // 02
+    "`FIRST_TRANS_TYPE`,"+  // 03
+    "`TIME_TYPE`,"+         // 04
+    "`GRACE_TIME`,"+        // 05
+    "`USE_AUTOFILL`,"+      // 06
+    "`IMPORT_SOURCE`,"+     // 07
+    "`NESTED_EVENT` "+      // 08
+    "from `EVENTS` ";
 
     return sql;
 }

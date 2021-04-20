@@ -143,7 +143,7 @@ ListEvents::ListEvents(QString *eventname,QWidget *parent)
   edit_filter_box->insertItem(0,tr("ALL"));
   edit_filter_box->insertItem(1,tr("NONE"));
 
-  QString sql="select NAME from SERVICES";
+  QString sql="select `NAME` from `SERVICES`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     services_list.append( q->value(0).toString() );
@@ -188,9 +188,9 @@ void ListEvents::addData()
   }
   delete add_dialog;
   QString sql=QString("select ")+
-    "NAME "+
-    "from EVENTS where "+
-    "NAME=\""+RDEscapeString(logname)+"\"";
+    "`NAME` "+
+    "from `EVENTS` where "+
+    "`NAME`='"+RDEscapeString(logname)+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::
@@ -204,26 +204,25 @@ void ListEvents::addData()
   delete event;
   EditEvent *event_dialog=new EditEvent(logname,true,&new_events,this);
   if(event_dialog->exec()<-1) {
-    sql=QString("delete from EVENTS where ")+
-      "NAME=\""+RDEscapeString(logname)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    sql=QString("delete from `EVENTS` where ")+
+      "`NAME`='"+RDEscapeString(logname)+"'";
+    RDSqlQuery::apply(sql);
     return;
   }
   else {
     if(edit_filter_box->currentIndex()==0) {
       sql=QString(" select ")+
-	"ID "+  // 00
-	"from EVENT_PERMS where "+
-	"EVENT_NAME=\""+RDEscapeString(logname)+"\"";
+	"`ID` "+  // 00
+	"from `EVENT_PERMS` where "+
+	"`EVENT_NAME`='"+RDEscapeString(logname)+"'";
       q=new RDSqlQuery(sql);
       if(!q->first()) {
-	sql="select NAME from SERVICES";
+	sql="select `NAME` from `SERVICES`";
 	q1=new RDSqlQuery(sql);
 	while(q1->next()) {
-	  sql=QString("insert into EVENT_PERMS set ")+
-	    "EVENT_NAME=\""+RDEscapeString(logname)+"\","+
-	    "SERVICE_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	  sql=QString("insert into `EVENT_PERMS` set ")+
+	    "`EVENT_NAME`='"+RDEscapeString(logname)+"',"+
+	    "`SERVICE_NAME`='"+RDEscapeString(q1->value(0).toString())+"'";
 	  RDSqlQuery::apply(sql);
 	}
 	delete q1;
@@ -231,9 +230,9 @@ void ListEvents::addData()
       delete q;
     }
     else {
-      sql=QString("insert into EVENT_PERMS set ")+
-	"EVENT_NAME=\""+RDEscapeString(logname)+"\","+
-	"SERVICE_NAME=\""+RDEscapeString(edit_filter_box->currentText())+"\"";
+      sql=QString("insert into `EVENT_PERMS` set ")+
+	"`EVENT_NAME`='"+RDEscapeString(logname)+"',"+
+	"`SERVICE_NAME`='"+RDEscapeString(edit_filter_box->currentText())+"'";
       RDSqlQuery::apply(sql);
     }
     QModelIndex row=edit_events_model->addEvent(logname);
@@ -327,33 +326,33 @@ void ListEvents::renameData()
   //
   // Rename Clock References
   //
-  sql=QString("update CLOCK_LINES set ")+
-    "EVENT_NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "EVENT_NAME=\""+RDEscapeString(old_name)+"\"";
+  sql=QString("update `CLOCK_LINES` set ")+
+    "`EVENT_NAME`='"+RDEscapeString(new_name)+"' where "+
+    "`EVENT_NAME`='"+RDEscapeString(old_name)+"'";
   RDSqlQuery::apply(sql);
 
   //
   // Rename Event Line References
   //
-  sql=QString("update EVENT_LINES set ")+
-    "EVENT_NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "EVENT_NAME=\""+RDEscapeString(old_name)+"\"";
+  sql=QString("update `EVENT_LINES` set ")+
+    "`EVENT_NAME`='"+RDEscapeString(new_name)+"' where "+
+    "`EVENT_NAME`='"+RDEscapeString(old_name)+"'";
   RDSqlQuery::apply(sql);
 
   //
   // Rename Service Permissions
   //
-  sql=QString("update EVENT_PERMS set ")+
-    "EVENT_NAME=\""+RDEscapeString(new_name)+"\" "+
-    "where EVENT_NAME=\""+RDEscapeString(old_name)+"\"";
+  sql=QString("update `EVENT_PERMS` set ")+
+    "`EVENT_NAME`='"+RDEscapeString(new_name)+"' "+
+    "where `EVENT_NAME`='"+RDEscapeString(old_name)+"'";
   RDSqlQuery::apply(sql);
 
   //
   // Rename Primary Key
   //
-  sql=QString("update EVENTS set ")+
-    "NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "NAME=\""+RDEscapeString(old_name)+"\"";
+  sql=QString("update `EVENTS` set ")+
+    "`NAME`='"+RDEscapeString(new_name)+"' where "+
+    "`NAME`='"+RDEscapeString(old_name)+"'";
   RDSqlQuery::apply(sql);
 
   edit_events_model->removeEvent(old_name);
@@ -442,14 +441,14 @@ int ListEvents::ActiveEvents(QString event_name,QString *clock_list)
   QString sql;
   RDSqlQuery *q,*q1;
 
-  sql="select NAME from CLOCKS";
+  sql="select `NAME` from `CLOCKS`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString("select ")+
-      "EVENT_NAME "+
-      "from CLOCK_LINES where "+
-      "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
-      "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
+      "`EVENT_NAME` "+
+      "from `CLOCK_LINES` where "+
+      "`CLOCK_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
+      "`EVENT_NAME`='"+RDEscapeString(event_name)+"'";
     q1=new RDSqlQuery(sql);
     if(q1->first()) {
       *clock_list+=
@@ -467,40 +466,40 @@ int ListEvents::ActiveEvents(QString event_name,QString *clock_list)
 void ListEvents::DeleteEvent(QString event_name)
 {
   QString sql;
-  RDSqlQuery *q,*q1;
+  RDSqlQuery *q;
   QString base_name=event_name;
   base_name.replace(" ","_");
 
   //
   // Delete Active Clock Entries
   //
-  sql="select NAME from CLOCKS";
+  sql="select `NAME` from `CLOCKS`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString("delete from CLOCK_LINES where ")+
-      "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
-      "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
-    q1=new RDSqlQuery(sql);
-    delete q1;
+    sql=QString("delete from `CLOCK_LINES` where ")+
+      "`CLOCK_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
+      "`EVENT_NAME`='"+RDEscapeString(event_name)+"'";
+    RDSqlQuery::apply(sql);
   }
   delete q;
 
   //
   // Delete Service Associations
   //
-  sql=QString("delete from EVENT_PERMS where ")+
-    "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
+  sql=QString("delete from `EVENT_PERMS` where ")+
+    "`EVENT_NAME`='"+RDEscapeString(event_name)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Delete Event Definition
   //
-  sql=QString("delete from EVENTS where ")+
-    "NAME=\""+RDEscapeString(event_name)+"\"";
+  sql=QString("delete from `EVENTS` where ")+
+    "`NAME`='"+RDEscapeString(event_name)+"'";
   RDSqlQuery::apply(sql);
-  sql=QString("delete from EVENT_LINES where ")+
-    "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
+
+  sql=QString("delete from `EVENT_LINES` where ")+
+    "`EVENT_NAME`='"+RDEscapeString(event_name)+"'";
   RDSqlQuery::apply(sql);
 }
 
@@ -508,18 +507,18 @@ void ListEvents::DeleteEvent(QString event_name)
 QString ListEvents::GetEventFilter(QString svc_name)
 {
   QString filter="where ";
-  QString sql=QString("select EVENT_NAME from EVENT_PERMS where ")+
-    "SERVICE_NAME=\""+RDEscapeString(svc_name)+"\"";
+  QString sql=QString("select `EVENT_NAME` from `EVENT_PERMS` where ")+
+    "`SERVICE_NAME`='"+RDEscapeString(svc_name)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->size()>0) {
     while(q->next()) {
-      filter+=QString().sprintf("(NAME=\"%s\")||",
+      filter+=QString().sprintf("(`NAME`='%s')||",
 				q->value(0).toString().toUtf8().constData());
     }
     filter=filter.left(filter.length()-2);
   }
   else {
-    filter="(SERVICE_NAME=\"\")";
+    filter="(`SERVICE_NAME`='')";
   }
   delete q;
 
@@ -533,13 +532,13 @@ QString ListEvents::GetNoneFilter()
   RDSqlQuery *q;
   QString filter;
 
-  sql="select EVENT_NAME from EVENT_PERMS";
+  sql="select `EVENT_NAME` from `EVENT_PERMS`";
   q=new RDSqlQuery(sql);
   if(q->size()>0) {
     filter="where ";
   }
   while(q->next()) {
-    filter+=QString().sprintf("(NAME!=\"%s\")&&",
+    filter+=QString().sprintf("(`NAME`!='%s')&&",
 			      RDEscapeString(q->value(0).toString()).toUtf8().constData());
   }
   if(q->size()>0) {

@@ -262,11 +262,11 @@ void ImportCartsModel::setCartNumber(const QModelIndex &row,unsigned cartnum)
     int total_len=totalLength();
     d_texts[row.row()][0]=QString().sprintf("%06u",cartnum);
     QString sql=QString("select ")+
-      "NUMBER "          // 00
-      "TYPE,"+           // 01
-      "FORCED_LENGTH "+  // 02
-      "from CART where "+
-      QString().sprintf("NUMBER=%u",cartnum);
+      "`NUMBER`,"          // 00
+      "`TYPE`,"+           // 01
+      "`FORCED_LENGTH` "+  // 02
+      "from `CART` where "+
+      QString().sprintf("`NUMBER`=%u",cartnum);
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       d_texts[row.row()][3]=q->value(0);
@@ -334,9 +334,9 @@ int ImportCartsModel::lineCount() const
 
 void ImportCartsModel::save(RDLogLine::TransType first_trans)
 {
-  QString sql=QString("delete from EVENT_LINES where ")+
-    "EVENT_NAME=\""+RDEscapeString(d_event_name)+"\" && "+
-    QString().sprintf("TYPE=%u",d_import_type);
+  QString sql=QString("delete from `EVENT_LINES` where ")+
+    "`EVENT_NAME`='"+RDEscapeString(d_event_name)+"' && "+
+    QString().sprintf("`TYPE`=%u",d_import_type);
   RDSqlQuery::apply(sql);
 
   for(int i=0;i<lineCount();i++) {
@@ -345,29 +345,29 @@ void ImportCartsModel::save(RDLogLine::TransType first_trans)
     if(trans==RDLogLine::NoTrans) {
       trans=RDLogLine::Play;
     }
-    sql=QString("insert into EVENT_LINES set ")+
-      "EVENT_NAME=\""+RDEscapeString(d_event_name)+"\","+\
-      QString().sprintf("TYPE=%u,",d_import_type)+
-      QString().sprintf("COUNT=%d,",i)+
-      QString().sprintf("EVENT_TYPE=%u,",d_event_types.at(i));
+    sql=QString("insert into `EVENT_LINES` set ")+
+      "`EVENT_NAME`='"+RDEscapeString(d_event_name)+"',"+\
+      QString().sprintf("`TYPE`=%u,",d_import_type)+
+      QString().sprintf("`COUNT`=%d,",i)+
+      QString().sprintf("`EVENT_TYPE`=%u,",d_event_types.at(i));
     if((i==0)&&(first_trans!=RDLogLine::NoTrans)) {
-      sql+=QString().sprintf("TRANS_TYPE=%u,",first_trans);
+      sql+=QString().sprintf("`TRANS_TYPE`=%u,",first_trans);
     }
     else {
-      sql+=QString().sprintf("TRANS_TYPE=%u,",d_trans_types.at(i));
+      sql+=QString().sprintf("`TRANS_TYPE`=%u,",d_trans_types.at(i));
     }
     switch(d_event_types.at(i)) {
     case RDLogLine::Cart:
     case RDLogLine::Macro:
       sql+=QString().
-	sprintf("CART_NUMBER=%u,",d_texts.at(i).at(0).toString().toUInt())+
-	"MARKER_COMMENT=null";
+	sprintf("`CART_NUMBER`=%u,",d_texts.at(i).at(0).toString().toUInt())+
+	"`MARKER_COMMENT`=null";
       break;
 
     case RDLogLine::Marker:
     case RDLogLine::Track:
-      sql+=QString("CART_NUMBER=null,")+
-	"MARKER_COMMENT=\""+RDEscapeString(d_marker_comments.at(i))+"\"";
+      sql+=QString("`CART_NUMBER`=null,")+
+	"`MARKER_COMMENT`='"+RDEscapeString(d_marker_comments.at(i))+"'";
       break;
 
     case RDLogLine::MusicLink:
@@ -472,9 +472,9 @@ void ImportCartsModel::updateModel()
   //
   d_group_colors.clear();
   QString sql=QString("select ")+
-    "NAME,"+   // 00
-    "COLOR "+  // 01
-    "from GROUPS order by NAME";
+    "`NAME`,"+   // 00
+    "`COLOR` "+  // 01
+    "from `GROUPS` order by `NAME`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     d_group_colors[q->value(0).toString()]=QColor(q->value(1).toString());
@@ -485,9 +485,9 @@ void ImportCartsModel::updateModel()
   QList<QVariant> icons;
 
   sql=sqlFields()+"where "+
-    "EVENT_LINES.EVENT_NAME=\""+RDEscapeString(d_event_name)+"\" && "+
-    QString().sprintf("EVENT_LINES.TYPE=%u ",d_import_type)+
-    "order by EVENT_LINES.COUNT ";
+    "`EVENT_LINES`.`EVENT_NAME`='"+RDEscapeString(d_event_name)+"' && "+
+    QString().sprintf("`EVENT_LINES`.`TYPE`=%u ",d_import_type)+
+    "order by `EVENT_LINES`.`COUNT` ";
   beginResetModel();
   d_marker_comments.clear();
   d_texts.clear();
@@ -608,19 +608,19 @@ void ImportCartsModel::updateRow(int row,RDSqlQuery *q)
 QString ImportCartsModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "EVENT_LINES.ID,"+              // 00
-    "EVENT_LINES.EVENT_TYPE,"+      // 01
-    "EVENT_LINES.CART_NUMBER,"+     // 02
-    "CART.GROUP_NAME,"+             // 03
-    "GROUPS.COLOR,"+                // 04
-    "CART.FORCED_LENGTH,"+          // 05
-    "CART.TITLE,"+                  // 06
-    "EVENT_LINES.TRANS_TYPE,"+      // 07
-    "EVENT_LINES.MARKER_COMMENT "+  // 08
-    "from EVENT_LINES left join CART "+
-    "on EVENT_LINES.CART_NUMBER=CART.NUMBER "+
-    "left join GROUPS "+
-    "on CART.GROUP_NAME=GROUPS.NAME ";
+    "`EVENT_LINES`.`ID`,"+              // 00
+    "`EVENT_LINES`.`EVENT_TYPE`,"+      // 01
+    "`EVENT_LINES`.`CART_NUMBER`,"+     // 02
+    "`CART`.`GROUP_NAME`,"+             // 03
+    "`GROUPS`.`COLOR`,"+                // 04
+    "`CART`.`FORCED_LENGTH`,"+          // 05
+    "`CART`.`TITLE`,"+                  // 06
+    "`EVENT_LINES`.`TRANS_TYPE`,"+      // 07
+    "`EVENT_LINES`.`MARKER_COMMENT` "+  // 08
+    "from `EVENT_LINES` left join `CART` "+
+    "on `EVENT_LINES`.`CART_NUMBER`=`CART`.`NUMBER` "+
+    "left join `GROUPS` "+
+    "on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` ";
 
     return sql;
 }

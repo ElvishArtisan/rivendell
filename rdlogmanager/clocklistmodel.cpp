@@ -207,8 +207,9 @@ void ClockListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      "CLOCKS.NAME=\""+RDEscapeString(d_texts.at(row.row()).at(0).toString())+
-      "\"";
+      "`CLOCKS`.`NAME`='"+
+      RDEscapeString(d_texts.at(row.row()).at(0).toString())+
+      "'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -247,7 +248,7 @@ void ClockListModel::updateModel()
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
     d_filter_sql+
-    "order by CLOCKS.NAME ";
+    "order by `CLOCKS`.`NAME` ";
   beginResetModel();
   d_texts.clear();
   d_icons.clear();
@@ -267,7 +268,7 @@ void ClockListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      "CLOCKS.NAME=\""+RDEscapeString(d_texts.at(line).at(0).toString())+"\"";
+      "`CLOCKS`.`NAME`='"+RDEscapeString(d_texts.at(line).at(0).toString())+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -295,10 +296,10 @@ void ClockListModel::updateRow(int row,RDSqlQuery *q)
 QString ClockListModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "NAME,"+        // 00
-    "SHORT_NAME,"+  // 01
-    "COLOR "+       // 02
-    "from CLOCKS ";
+    "`NAME`,"+        // 00
+    "`SHORT_NAME`,"+  // 01
+    "`COLOR` "+       // 02
+    "from `CLOCKS` ";
 
     return sql;
 }

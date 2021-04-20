@@ -59,9 +59,9 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   label->setGeometry(10,11,60,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  sql=QString("select REPORT_NAME from REPORT_SERVICES where ")+
-    "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" "+
-    "order by REPORT_NAME";
+  sql=QString("select `REPORT_NAME` from `REPORT_SERVICES` where ")+
+    "`SERVICE_NAME`='"+RDEscapeString(svcname)+"' "+
+    "order by `REPORT_NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_report_box->

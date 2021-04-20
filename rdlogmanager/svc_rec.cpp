@@ -46,9 +46,9 @@ SvcRec::SvcRec(const QString &svcname,QWidget *parent)
   QDate current_date=QDate::currentDate();
   pick_high_year=current_date.year();
   pick_low_year=pick_high_year;
-  sql=QString("select EVENT_DATETIME from ELR_LINES where ")+
-    "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" "+
-    "order by EVENT_DATETIME";
+  sql=QString("select `EVENT_DATETIME` from `ELR_LINES` where ")+
+    "`SERVICE_NAME`='"+RDEscapeString(svcname)+"' "+
+    "order by `EVENT_DATETIME`";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     pick_low_year=q->value(0).toDate().year();
@@ -210,10 +210,10 @@ void SvcRec::deleteDay()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("delete from ELR_LINES where ")+
-    "SERVICE_NAME=\""+RDEscapeString(pick_service_name)+"\" && "+
-    "EVENT_DATETIME>=\""+date().toString("yyyy-MM-dd 00:00:00")+"\" && "+
-    "EVENT_DATETIME<\""+date().addDays(1).toString("yyyy-MM-dd 00:00:00")+"\"";
+  sql=QString("delete from `ELR_LINES` where ")+
+    "`SERVICE_NAME`='"+RDEscapeString(pick_service_name)+"' && "+
+    "`EVENT_DATETIME`>='"+date().toString("yyyy-MM-dd 00:00:00")+"' && "+
+    "`EVENT_DATETIME`<'"+date().addDays(1).toString("yyyy-MM-dd 00:00:00")+"'";
   q=new RDSqlQuery(sql);
   delete q;
   GetActiveDays(pick_date);
@@ -396,10 +396,10 @@ void SvcRec::GetActiveDays(const QDate &date)
   RDSqlQuery *q;
 
   for(int i=0;i<=date.daysInMonth();i++) {
-    sql=QString("select ID from ELR_LINES where ")+
-      "SERVICE_NAME=\""+RDEscapeString(pick_service_name)+"\" && "+
-      "(EVENT_DATETIME>=\""+date.toString("yyyy-MM")+QString().sprintf("-%02d 00:00:00\")&&",i+1)+
-      "(EVENT_DATETIME<=\""+date.toString("yyyy-MM")+QString().sprintf("-%02d 23:59:59\")",i+1);
+    sql=QString("select `ID` from `ELR_LINES` where ")+
+      "`SERVICE_NAME`='"+RDEscapeString(pick_service_name)+"' && "+
+      "(`EVENT_DATETIME`>='"+date.toString("yyyy-MM")+QString().sprintf("-%02d 00:00:00')&&",i+1)+
+      "(`EVENT_DATETIME`<='"+date.toString("yyyy-MM")+QString().sprintf("-%02d 23:59:59')",i+1);
     q=new RDSqlQuery(sql);
     pick_active_days[i]=q->first();
     delete q;

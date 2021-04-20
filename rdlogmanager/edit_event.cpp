@@ -157,12 +157,12 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   RDSqlQuery *q;
   event_player = NULL;
   sql=QString("select ")+
-    "OUTPUT_CARD,"+  // 00
-    "OUTPUT_PORT,"+  // 01
-    "START_CART,"+   // 02
-    "END_CART "+     // 03
-    "from RDLOGEDIT where "+
-    "STATION=\""+RDEscapeString(rda->station()->name())+"\"";
+    "`OUTPUT_CARD`,"+  // 00
+    "`OUTPUT_PORT`,"+  // 01
+    "`START_CART`,"+   // 02
+    "`END_CART` "+     // 03
+    "from `RDLOGEDIT` where "+
+    "`STATION`='"+RDEscapeString(rda->station()->name())+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     event_player=
@@ -561,7 +561,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_have_code_box->insertItem(tr("[None]"));
   event_have_code2_box->insertItem(tr("[None]"));
 
-  sql2="select CODE from SCHED_CODES order by CODE";
+  sql2="select `CODE` from `SCHED_CODES` order by `CODE`";
   q2=new RDSqlQuery(sql2);
   while(q2->next()) {
     event_have_code_box->insertItem(q2->value(0).toString());
@@ -811,9 +811,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     event_color_button->setPalette(QPalette(color,palette().color(QPalette::Background)));
   }
   QString str=event_event->nestedEvent();
-  sql=QString("select NAME from EVENTS where ")+
-    "NAME!=\""+RDEscapeString(eventname)+"\""+
-    "order by NAME";
+  sql=QString("select `NAME` from `EVENTS` where ")+
+    "`NAME`!='"+RDEscapeString(eventname)+"'"+
+    "order by `NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     event_nestevent_box->insertItem(event_nestevent_box->count(),
@@ -1147,8 +1147,8 @@ void EditEvent::saveAsData()
     return;
   }
   delete add_dialog;
-  QString sql=QString("select NAME from EVENTS where ")+
-    "NAME=\""+RDEscapeString(event_name)+"\"";
+  QString sql=QString("select `NAME` from `EVENTS` where ")+
+    "`NAME`='"+RDEscapeString(event_name)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete event_event;
@@ -1173,8 +1173,8 @@ void EditEvent::saveAsData()
     event_event=new RDEvent(event_name,true);
     Save();
     event_new_events->push_back(event_name);
-    sql=QString("delete from EVENT_PERMS where ")+
-      "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
+    sql=QString("delete from `EVENT_PERMS` where ")+
+      "`EVENT_NAME`='"+RDEscapeString(event_name)+"'";
     q=new RDSqlQuery(sql);
     delete q;
     CopyEventPerms(old_name,event_name);
@@ -1406,13 +1406,13 @@ void EditEvent::CopyEventPerms(QString old_name,QString new_name)
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString("select SERVICE_NAME from EVENT_PERMS where ")+
-    "EVENT_NAME=\""+RDEscapeString(old_name)+"\"";
+  sql=QString("select `SERVICE_NAME` from `EVENT_PERMS` where ")+
+    "`EVENT_NAME`='"+RDEscapeString(old_name)+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString("insert into EVENT_PERMS set ")+
-      "EVENT_NAME=\""+RDEscapeString(new_name)+"\","+
-      "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+    sql=QString("insert into `EVENT_PERMS` set ")+
+      "`EVENT_NAME`='"+RDEscapeString(new_name)+"',"+
+      "`SERVICE_NAME`='"+RDEscapeString(q->value(0).toString())+"'";
     q1=new RDSqlQuery(sql);
     delete q1;
   }
@@ -1425,16 +1425,16 @@ void EditEvent::AbandonEvent(QString name)
   if(name==event_name) {
     return;
   }
-  QString sql=QString("delete from EVENTS where ")+
-    "NAME=\""+RDEscapeString(name)+"\"";
+  QString sql=QString("delete from `EVENTS` where ")+
+    "`NAME`='"+RDEscapeString(name)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
-  sql=QString("delete from EVENT_PERMS where ")+
-    "EVENT_NAME=\""+RDEscapeString(name)+"\"";
+  sql=QString("delete from `EVENT_PERMS` where ")+
+    "`EVENT_NAME`='"+RDEscapeString(name)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 
-  sql=QString("delete from EVENT_LINES where ")+
-    "EVENT_NAME=\""+RDEscapeString(name)+"\"";
+  sql=QString("delete from `EVENT_LINES` where ")+
+    "`EVENT_NAME`='"+RDEscapeString(name)+"'";
   RDSqlQuery::apply(sql);
 }

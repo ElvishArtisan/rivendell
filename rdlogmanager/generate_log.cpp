@@ -70,7 +70,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   gen_service_label->setFont(labelFont());
   gen_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
-  QString sql="select NAME from SERVICES";
+  QString sql="select `NAME` from `SERVICES`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     services_list.append( q->value(0).toString() );

@@ -117,9 +117,9 @@ void RenameItem::okData()
     return;
   }
   QString sql=QString("select ")+
-    "NAME "+
-    "from "+edit_tablename+" where "+
-    "NAME=\""+RDEscapeString(edit_name_edit->text())+"\"";
+    "`NAME` "+
+    "from `"+edit_tablename+"` where "+
+    "`NAME`='"+RDEscapeString(edit_name_edit->text())+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->next()) {
     delete q;

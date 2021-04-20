@@ -150,7 +150,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   edit_filter_box->insertItem(0,tr("ALL"));
   edit_filter_box->insertItem(1,tr("NONE"));
 
-  QString sql="select NAME from SERVICES";
+  QString sql="select `NAME` from `SERVICES`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     services_list.append( q->value(0).toString() );
@@ -200,8 +200,8 @@ void ListClocks::addData()
     return;
   }
   delete add_dialog;
-  sql=QString("select NAME from CLOCKS where ")+
-    "NAME=\""+RDEscapeString(clockname)+"\"";
+  sql=QString("select `NAME` from `CLOCKS` where ")+
+    "NAME='"+RDEscapeString(clockname)+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::
@@ -211,23 +211,23 @@ void ListClocks::addData()
     return;
   }
   delete q;
-  sql=QString("insert into CLOCKS set ")+
-    "NAME=\""+RDEscapeString(clockname)+"\","+
-    "ARTISTSEP=15";
+  sql=QString("insert into `CLOCKS` set ")+
+    "`NAME`='"+RDEscapeString(clockname)+"',"+
+    "`ARTISTSEP`=15";
   RDSqlQuery::apply(sql);
 
   //
   // Create default schedcode rules
   //
   sql=QString("select ")+
-    "CODE "+  // 00
-    "from SCHED_CODES "+
-    "order by CODE";
+    "`CODE` "+  // 00
+    "from `SCHED_CODES` "+
+    "order by `CODE`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString("insert into RULE_LINES set ")+
-      "CLOCK_NAME=\""+RDEscapeString(clockname)+"\","+
-      "CODE=\""+RDEscapeString(q->value(0).toString())+"\"";
+    sql=QString("insert into `RULE_LINES` set ")+
+      "`CLOCK_NAME`='"+RDEscapeString(clockname)+"',"+
+      "`CODE`='"+RDEscapeString(q->value(0).toString())+"'";
     RDSqlQuery::apply(sql);
   }
   delete q;
@@ -235,14 +235,14 @@ void ListClocks::addData()
   EditClock *clock_dialog=new EditClock(clockname,true,&new_clocks,this);
   if(clock_dialog->exec()<0) {
     // Back everything out!
-    sql=QString("delete from RULE_LINES where ")+
-      "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+    sql=QString("delete from `RULE_LINES` where ")+
+      "`CLOCK_NAME`='"+RDEscapeString(clockname)+"'";
     RDSqlQuery::apply(sql);
-    sql=QString("delete from CLOCK_LINES where ")+
-      "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+    sql=QString("delete from `CLOCK_LINES` where ")+
+      "`CLOCK_NAME`='"+RDEscapeString(clockname)+"'";
     RDSqlQuery::apply(sql);
-    sql=QString("delete from CLOCKS where ")+
-      "NAME=\""+RDEscapeString(clockname)+"\"";
+    sql=QString("delete from `CLOCKS` where ")+
+      "`NAME`='"+RDEscapeString(clockname)+"'";
     RDSqlQuery::apply(sql);
   }
   else {
@@ -251,17 +251,17 @@ void ListClocks::addData()
       // Create default clock permissions
       //
       sql=QString("select ")+
-	"ID "+  // 00
-	"from CLOCK_PERMS where "+
-	"CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+	"`ID` "+  // 00
+	"from `CLOCK_PERMS` where "+
+	"`CLOCK_NAME`='"+RDEscapeString(clockname)+"'";
       q=new RDSqlQuery(sql);
       if(!q->first()) {
-	sql="select NAME from SERVICES";
+	sql="select `NAME` from `SERVICES`";
 	q1=new RDSqlQuery(sql);
 	while(q1->next()) {
-	  sql=QString("insert into CLOCK_PERMS set ")+
-	    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\","+
-	    "SERVICE_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	  sql=QString("insert into `CLOCK_PERMS` set ")+
+	    "`CLOCK_NAME`='"+RDEscapeString(clockname)+"',"+
+	    "`SERVICE_NAME`='"+RDEscapeString(q1->value(0).toString())+"'";
 	  RDSqlQuery::apply(sql);
 	}
 	delete q1;
@@ -269,9 +269,9 @@ void ListClocks::addData()
       delete q;
     }
     else {
-      sql=QString("insert into CLOCK_PERMS set ")+
-	"CLOCK_NAME=\""+RDEscapeString(clockname)+"\","+
-	"SERVICE_NAME=\""+RDEscapeString(edit_filter_box->currentText())+"\"";
+      sql=QString("insert into `CLOCK_PERMS` set ")+
+	"`CLOCK_NAME`='"+RDEscapeString(clockname)+"',"+
+	"`SERVICE_NAME`='"+RDEscapeString(edit_filter_box->currentText())+"'";
       RDSqlQuery::apply(sql);
     }
     QModelIndex row=edit_clocks_model->addClock(clockname);
@@ -359,15 +359,15 @@ void ListClocks::renameData()
   //
   // Rename Grid References
   //
-  sql="select NAME from SERVICES";
+  sql="select `NAME` from `SERVICES`";
   // FIXME: not sure if the usersec service filter should be applied here, or
   // if all services should be brought over
   q=new RDSqlQuery(sql);
   while(q->next()) {
     for(int i=0;i<168;i++) {
-      sql=QString("update SERVICE_CLOCKS set ")+
-	"CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
-	"CLOCK_NAME=\""+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"\"";
+      sql=QString("update `SERVICE_CLOCKS` set ")+
+	"`CLOCK_NAME`='"+RDEscapeString(new_name)+"' where "+
+	"`CLOCK_NAME`='"+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"'";
       RDSqlQuery::apply(sql);
     }
   }
@@ -376,30 +376,30 @@ void ListClocks::renameData()
   //
   // Rename Meta Table
   //
-  sql=QString("update CLOCK_LINES set ")+
-    "CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "CLOCK_NAME=\""+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"\"";
+  sql=QString("update `CLOCK_LINES` set ")+
+    "`CLOCK_NAME`='"+RDEscapeString(new_name)+"' where "+
+    "`CLOCK_NAME`='"+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"'";
   RDSqlQuery::apply(sql);
 
-  sql=QString("update RULE_LINES set ")+
-    "CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "CLOCK_NAME=\""+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"\"";
+  sql=QString("update `RULE_LINES` set ")+
+    "`CLOCK_NAME`='"+RDEscapeString(new_name)+"' where "+
+    "`CLOCK_NAME`='"+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"'";
   RDSqlQuery::apply(sql);
 
   //
   // Rename Service Permissions
   //
-  sql=QString("update CLOCK_PERMS set ")+
-    "CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "CLOCK_NAME=\""+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"\"";
+  sql=QString("update `CLOCK_PERMS` set ")+
+    "`CLOCK_NAME`='"+RDEscapeString(new_name)+"' where "+
+    "`CLOCK_NAME`='"+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"'";
   RDSqlQuery::apply(sql);
 
   //
   // Rename Primary Key
   //
-  sql=QString("update CLOCKS set ")+
-    "NAME=\""+RDEscapeString(new_name)+"\" where "+
-    "NAME=\""+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"\"";
+  sql=QString("update `CLOCKS` set ")+
+    "`NAME`='"+RDEscapeString(new_name)+"' where "+
+    "`NAME`='"+RDEscapeString(edit_clocks_model->clockName(rows.first()))+"'";
   RDSqlQuery::apply(sql);
 
   edit_clocks_model->removeClock(old_name);
@@ -504,8 +504,8 @@ int ListClocks::ActiveClocks(QString clockname,QString *svc_list)
   QString svcname;
   QStringList svcs;
 
-  sql=QString("select SERVICE_NAME from SERVICE_CLOCKS where ")+
-    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\" order by CLOCK_NAME";
+  sql=QString("select `SERVICE_NAME` from `SERVICE_CLOCKS` where ")+
+    "`CLOCK_NAME`='"+RDEscapeString(clockname)+"' order by `CLOCK_NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if((svcs.size()==0)||(svcs.back()!=q->value(0).toString())) {
@@ -532,31 +532,31 @@ void ListClocks::DeleteClock(QString clockname)
   //
   // Clear Active Clocks
   //
-  sql=QString("update SERVICE_CLOCKS set ")+
-    "CLOCK_NAME=null where "+
-    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+  sql=QString("update `SERVICE_CLOCKS` set ")+
+    "`CLOCK_NAME`=null where "+
+    "`CLOCK_NAME`='"+RDEscapeString(clockname)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Delete Service Associations
   //
-  sql=QString("delete from CLOCK_PERMS where ")+
-    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+  sql=QString("delete from `CLOCK_PERMS` where ")+
+    "`CLOCK_NAME`='"+RDEscapeString(clockname)+"'";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Delete Clock Definition
   //
-  sql=QString("delete from CLOCKS where ")+
-    "NAME=\""+RDEscapeString(clockname)+"\"";
+  sql=QString("delete from `CLOCKS` where ")+
+    "`NAME`='"+RDEscapeString(clockname)+"'";
   RDSqlQuery::apply(sql);
-  sql=QString("delete from CLOCK_LINES where ")+
-    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+  sql=QString("delete from `CLOCK_LINES` where ")+
+    "`CLOCK_NAME`='"+RDEscapeString(clockname)+"'";
   RDSqlQuery::apply(sql);
-  sql=QString("delete from RULE_LINES where ")+
-    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+  sql=QString("delete from `RULE_LINES` where ")+
+    "`CLOCK_NAME`='"+RDEscapeString(clockname)+"'";
   RDSqlQuery::apply(sql);
 }
 
@@ -564,18 +564,18 @@ void ListClocks::DeleteClock(QString clockname)
 QString ListClocks::GetClockFilter(QString svc_name)
 {
   QString filter="where ";
-  QString sql=QString("select CLOCK_NAME from CLOCK_PERMS where ")+
-    "SERVICE_NAME=\""+RDEscapeString(svc_name)+"\"";
+  QString sql=QString("select `CLOCK_NAME` from `CLOCK_PERMS` where ")+
+    "`SERVICE_NAME`='"+RDEscapeString(svc_name)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->size()>0) {
     while(q->next()) {
-      filter+=QString("(NAME=\"")+
-	RDEscapeString(q->value(0).toString())+"\")||";
+      filter+=QString("(`NAME`='")+
+	RDEscapeString(q->value(0).toString())+"')||";
     }
     filter=filter.left(filter.length()-2);
   }
   else {
-    filter="(SERVICE_NAME=\"\")";
+    filter="(`SERVICE_NAME`='')";
   }
   delete q;
 
@@ -589,13 +589,13 @@ QString ListClocks::GetNoneFilter()
   RDSqlQuery *q;
   QString filter;
 
-  sql="select CLOCK_NAME from CLOCK_PERMS";
+  sql="select `CLOCK_NAME` from `CLOCK_PERMS`";
   q=new RDSqlQuery(sql);
   if(q->size()>0) {
     filter="where ";
   }
   while(q->next()) {
-    filter+=QString("(NAME!=\"")+RDEscapeString(q->value(0).toString())+"\")&&";
+    filter+=QString("(`NAME`!='")+RDEscapeString(q->value(0).toString())+"')&&";
   }
   if(q->size()>0) {
     filter=filter.left(filter.length()-2);

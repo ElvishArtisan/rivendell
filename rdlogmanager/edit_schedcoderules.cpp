@@ -126,16 +126,16 @@ int EditSchedCodeRules::exec(unsigned rule_id)
   edit_rule_id=rule_id;
 
   QString sql=QString("select ")+
-    "RULE_LINES.CODE,"+          // 00
-    "SCHED_CODES.DESCRIPTION,"+  // 01
-    "RULE_LINES.MAX_ROW,"+       // 01
-    "RULE_LINES.MIN_WAIT,"+      // 02
-    "RULE_LINES.NOT_AFTER,"+     // 03
-    "RULE_LINES.OR_AFTER,"+      // 04
-    "RULE_LINES.OR_AFTER_II "+   // 05
-    "from RULE_LINES left join SCHED_CODES "+
-    "on RULE_LINES.CODE=SCHED_CODES.CODE "+
-    QString().sprintf("where RULE_LINES.ID=%u",rule_id);
+    "`RULE_LINES.CODE`,"+          // 00
+    "`SCHED_CODES.DESCRIPTION`,"+  // 01
+    "`RULE_LINES.MAX_ROW`,"+       // 01
+    "`RULE_LINES.MIN_WAIT`,"+      // 02
+    "`RULE_LINES.NOT_AFTER`,"+     // 03
+    "`RULE_LINES.OR_AFTER`,"+      // 04
+    "`RULE_LINES.OR_AFTER_II` "+   // 05
+    "from `RULE_LINES` left join `SCHED_CODES` "+
+    "on `RULE_LINES`.`CODE`=`SCHED_CODES`.`CODE` "+
+    QString().sprintf("where `RULE_LINES`.`ID`=%u",rule_id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(1).toString().isEmpty()) {
@@ -166,13 +166,13 @@ void EditSchedCodeRules::okData()
 {
   QStringList codes;
   QStringList fields;
-  fields.push_back("NOT_AFTER");
-  fields.push_back("OR_AFTER");
-  fields.push_back("OR_AFTER_II");
+  fields.push_back("`NOT_AFTER`");
+  fields.push_back("`OR_AFTER`");
+  fields.push_back("`OR_AFTER_II`");
 
-  QString sql=QString("update RULE_LINES set ")+
-    QString().sprintf("MAX_ROW=%u,",edit_max_row_spin->value())+
-    QString().sprintf("MIN_WAIT=%u,",edit_min_wait_spin->value());
+  QString sql=QString("update `RULE_LINES` set ")+
+    QString().sprintf("`MAX_ROW`=%u,",edit_max_row_spin->value())+
+    QString().sprintf("`MIN_WAIT`=%u,",edit_min_wait_spin->value());
   for(int i=0;i<3;i++) {
     if(edit_notafter_boxes[i]->currentText()!=tr("[none]")&&
        (!codes.contains(edit_notafter_boxes[i]->currentText()))) {
@@ -190,7 +190,7 @@ void EditSchedCodeRules::okData()
     }
   }
   sql=sql.left(sql.length()-1);
-  sql+=QString().sprintf(" where ID=%u",edit_rule_id);
+  sql+=QString().sprintf(" where `ID`=%u",edit_rule_id);
   RDSqlQuery::apply(sql);
 
   done(true);

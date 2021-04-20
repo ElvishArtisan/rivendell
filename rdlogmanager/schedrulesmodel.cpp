@@ -192,8 +192,8 @@ void SchedRulesModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+"where "+
-    "RULE_LINES.CLOCK_NAME=\""+RDEscapeString(d_clock_name)+"\" "+
-    "order by RULE_LINES.CODE ";
+    "`RULE_LINES`.`CLOCK_NAME`=\""+RDEscapeString(d_clock_name)+"\" "+
+    "order by `RULE_LINES`.`CODE` ";
   beginResetModel();
   d_texts.clear();
   d_ids.clear();
@@ -212,7 +212,7 @@ void SchedRulesModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where RULE_LINES.ID=%u",d_ids.at(line)); 
+      QString().sprintf("where `RULE_LINES`.`ID`=%u",d_ids.at(line)); 
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -256,16 +256,16 @@ void SchedRulesModel::updateRow(int row,RDSqlQuery *q)
 QString SchedRulesModel::sqlFields() const
 {
   QString sql=QString("select ")+
-    "RULE_LINES.ID,"+            // 00
-    "SCHED_CODES.CODE,"+         // 01
-    "RULE_LINES.MAX_ROW,"+       // 02
-    "RULE_LINES.MIN_WAIT,"+      // 03
-    "RULE_LINES.NOT_AFTER,"+     // 04
-    "RULE_LINES.OR_AFTER,"+      // 05
-    "RULE_LINES.OR_AFTER_II,"+   // 06
-    "SCHED_CODES.DESCRIPTION "+  // 07
-    "from SCHED_CODES left join RULE_LINES "+
-    "on SCHED_CODES.CODE=RULE_LINES.CODE ";
+    "`RULE_LINES`.`ID`,"+            // 00
+    "`SCHED_CODES`.`CODE`,"+         // 01
+    "`RULE_LINES`.`MAX_ROW`,"+       // 02
+    "`RULE_LINES`.`MIN_WAIT`,"+      // 03
+    "`RULE_LINES`.`NOT_AFTER`,"+     // 04
+    "`RULE_LINES`.`OR_AFTER`,"+      // 05
+    "`RULE_LINES`.`OR_AFTER_II`,"+   // 06
+    "`SCHED_CODES`.`DESCRIPTION` "+  // 07
+    "from `SCHED_CODES` left join `RULE_LINES` "+
+    "on `SCHED_CODES`.`CODE`=`RULE_LINES`.`CODE` ";
 
     return sql;
 }

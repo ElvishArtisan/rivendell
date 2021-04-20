@@ -2,7 +2,7 @@
 //
 // Edit RDLogManager Service Associations
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -80,14 +80,14 @@ EditPerms::EditPerms(QString object_name,ObjectType type,QWidget *parent)
     break;
   }
   sql=QString("select ")+
-    "SERVICE_NAME from "+object_type+"_PERMS where "+
-    object_type+"_NAME=\""+RDEscapeString(object_name)+"\"";
+    "SERVICE_NAME from `"+object_type+"_PERMS` where `"+
+    object_type+"_NAME`='"+RDEscapeString(object_name)+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     svc_object_sel->destInsertItem(q->value(0).toString());
   }
   delete q;
-  sql=QString().sprintf("select NAME from SERVICES");
+  sql=QString().sprintf("select `NAME` from `SERVICES`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(svc_object_sel->destFindItem(q->value(0).toString())==0) {
@@ -124,18 +124,17 @@ void EditPerms::okData()
   // Add New Objects
   //
   for(unsigned i=0;i<svc_object_sel->destCount();i++) {
-    sql=QString("select ")+object_type+"_NAME from "+
-      object_type+"_PERMS where "+
-      "SERVICE_NAME=\""+RDEscapeString(svc_object_sel->destText(i))+"\" && "+
-      object_type+"_NAME=\""+RDEscapeString(sel_name)+"\"";
+    sql=QString("select `")+object_type+"_NAME` from `"+
+      object_type+"_PERMS` where "+
+      "`SERVICE_NAME`='"+RDEscapeString(svc_object_sel->destText(i))+"' && `"+
+      object_type+"_NAME`='"+RDEscapeString(sel_name)+"'";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
-      delete q;
-      sql=QString("insert into ")+object_type+"_PERMS "+
-	"(SERVICE_NAME,"+object_type+"_NAME) "+
-	"values (\""+RDEscapeString(svc_object_sel->destText(i))+"\","+
-	"\""+RDEscapeString(sel_name)+"\")";
-      q=new RDSqlQuery(sql);
+      sql=QString("insert into `")+object_type+"_PERMS` "+
+	"(`SERVICE_NAME`,`"+object_type+"_NAME`) "+
+	"values ('"+RDEscapeString(svc_object_sel->destText(i))+"',"+
+	"'"+RDEscapeString(sel_name)+"')";
+      RDSqlQuery::apply(sql);
     }
     delete q;
   }
@@ -143,12 +142,12 @@ void EditPerms::okData()
   //
   // Delete Old Hosts
   //
-  sql=QString("delete from ")+
-    object_type+"_PERMS where "+
-    object_type+"_NAME=\""+RDEscapeString(sel_name)+"\"";
+  sql=QString("delete from `")+
+    object_type+"_PERMS` where `"+
+    object_type+"_NAME`='"+RDEscapeString(sel_name)+"'";
   for(unsigned i=0;i<svc_object_sel->destCount();i++) {
-    sql+=QString(" && SERVICE_NAME<>\"")+
-      RDEscapeString(svc_object_sel->destText(i))+"\"";
+    sql+=QString(" && `SERVICE_NAME`<>'")+
+      RDEscapeString(svc_object_sel->destText(i))+"'";
   }
   q=new RDSqlQuery(sql);
   delete q;
