@@ -91,10 +91,10 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   login_username_box->setModel(login_username_model);
   QFontMetrics fm(font());
   sql=QString("select ")+
-    "LOGIN_NAME "+  // 00
-    "from USERS where "+
-    "ADMIN_CONFIG_PRIV='N'"+
-    "order by LOGIN_NAME";
+    "`LOGIN_NAME` "+  // 00
+    "from `USERS` where "+
+    "`ADMIN_CONFIG_PRIV`='N'"+
+    "order by `LOGIN_NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if((20+fm.width(q->value(0).toString()))>login_user_width) {
