@@ -45,7 +45,7 @@ Db::Db(QString *err_str,RDConfig *config)
     return;
   }
 
-  q=new QSqlQuery("select DB from VERSION",db);
+  q=new QSqlQuery("select `DB` from `VERSION`",db);
   if(q->first()) {
     db_schema=q->value(0).toUInt();
   }

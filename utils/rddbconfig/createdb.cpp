@@ -94,7 +94,7 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *rd_config)
   q=new QSqlQuery(sql,db);
   delete q;
 
-  sql=QString().sprintf("create user '%s'@'%%' identified by \"%s\"",
+  sql=QString().sprintf("create user '%s'@'%%' identified by '%s'",
 			rd_config->mysqlUsername().toUtf8().constData(),
 			rd_config->mysqlPassword().toUtf8().constData());
   q=new QSqlQuery(sql,db);
@@ -105,7 +105,7 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *rd_config)
   }
   delete q;
 
-  sql=QString().sprintf("create user '%s'@'localhost' identified by \"%s\"",
+  sql=QString().sprintf("create user '%s'@'localhost' identified by '%s'",
 			rd_config->mysqlUsername().toUtf8().constData(),
 			rd_config->mysqlPassword().toUtf8().constData());
   q=new QSqlQuery(sql,db);
@@ -116,10 +116,22 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *rd_config)
   }
   delete q;
 
-  sql=QString().sprintf("grant SELECT, INSERT, UPDATE, DELETE, CREATE, DROP,\
-    INDEX, ALTER, LOCK TABLES on %s.* to %s", 
+  sql=QString("grant ")+
+    "SELECT,"+
+    "INSERT,"+
+    "UPDATE,"+
+    "DELETE,"+
+    "CREATE,"+
+    "DROP,"+
+    "INDEX,"+
+    "ALTER,"+
+    "LOCK TABLES "+
+    "on `"+db_name+"` to `"+rd_config->mysqlUsername()+"`";
+/*
+    "on %s.* to %s", 
 			db_name.toUtf8().constData(),
 			rd_config->mysqlUsername().toUtf8().constData());
+*/
   q=new QSqlQuery(sql,db);
   if (!q->isActive()) {
     *err_str+=QString().sprintf("Could not set permissions: %s",
