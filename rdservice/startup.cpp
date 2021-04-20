@@ -2,7 +2,7 @@
 //
 // Startup routines for the Rivendell Services Manager
 //
-//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -161,8 +161,8 @@ bool MainObject::Startup(QString *err_msg)
   //
   // rdrepld(8)
   //
-  sql=QString("select NAME from REPLICATORS where ")+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+  sql=QString("select `NAME` from `REPLICATORS` where ")+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"'";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     svc_processes[RDSERVICE_RDREPLD_ID]=new RDProcess(RDSERVICE_RDREPLD_ID,this);
@@ -184,7 +184,7 @@ bool MainObject::Startup(QString *err_msg)
   //
   // rdrssd(8)
   //
-  sql=QString("select RSS_PROCESSOR_STATION from SYSTEM");
+  sql=QString("select `RSS_PROCESSOR_STATION` from `SYSTEM`");
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(0).toString().toLower()==rda->station()->name().toLower()) {
@@ -225,33 +225,33 @@ bool MainObject::StartDropboxes(QString *err_msg)
   // Launch Dropbox Configurations
   //
   sql=QString("select ")+
-    "ID,"+                       // 00
-    "GROUP_NAME,"+               // 01
-    "PATH,"+                     // 02
-    "NORMALIZATION_LEVEL,"+      // 03
-    "AUTOTRIM_LEVEL,"+           // 04
-    "TO_CART,"+                  // 05
-    "USE_CARTCHUNK_ID,"+         // 06
-    "TITLE_FROM_CARTCHUNK_ID,"+  // 07
-    "DELETE_CUTS,"+              // 08
-    "METADATA_PATTERN,"+         // 09
-    "FIX_BROKEN_FORMATS,"+       // 10
-    "LOG_TO_SYSLOG,"+            // 11
-    "LOG_PATH,"+                 // 12
-    "DELETE_SOURCE,"+            // 13
-    "STARTDATE_OFFSET,"+         // 14
-    "ENDDATE_OFFSET,"+           // 15
-    "ID,"+                       // 16
-    "IMPORT_CREATE_DATES,"+      // 17
-    "CREATE_STARTDATE_OFFSET,"+  // 18
-    "CREATE_ENDDATE_OFFSET,"+    // 19
-    "SET_USER_DEFINED,"+         // 20
-    "FORCE_TO_MONO,"+            // 21
-    "SEGUE_LEVEL,"+              // 22
-    "SEGUE_LENGTH,"+             // 23
-    "SEND_EMAIL "+               // 24
-    "from DROPBOXES where "+
-    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
+    "`ID`,"+                       // 00
+    "`GROUP_NAME`,"+               // 01
+    "`PATH`,"+                     // 02
+    "`NORMALIZATION_LEVEL`,"+      // 03
+    "`AUTOTRIM_LEVEL`,"+           // 04
+    "`TO_CART`,"+                  // 05
+    "`USE_CARTCHUNK_ID`,"+         // 06
+    "`TITLE_FROM_CARTCHUNK_ID`,"+  // 07
+    "`DELETE_CUTS`,"+              // 08
+    "`METADATA_PATTERN`,"+         // 09
+    "`FIX_BROKEN_FORMATS`,"+       // 10
+    "`LOG_TO_SYSLOG`,"+            // 11
+    "`LOG_PATH`,"+                 // 12
+    "`DELETE_SOURCE`,"+            // 13
+    "`STARTDATE_OFFSET`,"+         // 14
+    "`ENDDATE_OFFSET`,"+           // 15
+    "`ID`,"+                       // 16
+    "`IMPORT_CREATE_DATES`,"+      // 17
+    "`CREATE_STARTDATE_OFFSET`,"+  // 18
+    "`CREATE_ENDDATE_OFFSET`,"+    // 19
+    "`SET_USER_DEFINED`,"+         // 20
+    "`FORCE_TO_MONO`,"+            // 21
+    "`SEGUE_LEVEL`,"+              // 22
+    "`SEGUE_LENGTH`,"+             // 23
+    "`SEND_EMAIL` "+               // 24
+    "from `DROPBOXES` where "+
+    "`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     QStringList args;
@@ -259,8 +259,8 @@ bool MainObject::StartDropboxes(QString *err_msg)
     args.push_back(QString().sprintf("--persistent-dropbox-id=%d",
 				     q->value(16).toInt()));
     args.push_back("--drop-box");
-    sql=QString("select SCHED_CODE from DROPBOX_SCHED_CODES where ")+
-      QString().sprintf("DROPBOX_ID=%d",q->value(0).toInt());
+    sql=QString("select `SCHED_CODE` from `DROPBOX_SCHED_CODES` where ")+
+      QString().sprintf("`DROPBOX_ID`=%d",q->value(0).toInt());
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       args.push_back(QString().sprintf("--add-scheduler-code=")+

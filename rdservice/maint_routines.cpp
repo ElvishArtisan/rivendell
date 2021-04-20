@@ -52,10 +52,10 @@ void MainObject::checkMaintData()
   //
   // Get the system-wide maintenance timestamp
   //
-  sql="lock tables VERSION write";
+  sql="lock tables `VERSION` write";
   q=new RDSqlQuery(sql);
   delete q;
-  sql="select LAST_MAINT_DATETIME from VERSION";
+  sql="select `LAST_MAINT_DATETIME` from `VERSION`";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     run=1000*q->value(0).toDateTime().secsTo(current_datetime)>
