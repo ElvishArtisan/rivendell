@@ -118,20 +118,20 @@ void MainObject::ripcConnectedData(bool state)
   //
   // Clear DB Records
   //
-  sql=QString("update PYPAD_INSTANCES set ")+
-    "IS_RUNNING=\"N\","+
-    "EXIT_CODE=0,"+
-    "ERROR_TEXT=null "+
-    "where STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+  sql=QString("update `PYPAD_INSTANCES` set ")+
+    "`IS_RUNNING`='N',"+
+    "`EXIT_CODE`=0,"+
+    "`ERROR_TEXT`=null "+
+    "where `STATION_NAME`='"+RDEscapeString(rda->station()->name())+"'";
   RDSqlQuery::apply(sql);
 
   //
   // Start Scripts
   //
   sql=QString("select ")+
-    "ID "           // 00
-    "from PYPAD_INSTANCES where "+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+    "`ID` "           // 00
+    "from `PYPAD_INSTANCES` where "+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     StartScript(q->value(0).toUInt());
@@ -149,9 +149,9 @@ void MainObject::notificationReceivedData(RDNotification *notify)
     int id=notify->id().toUInt();
     switch(notify->action()) {
     case RDNotification::AddAction: 
-      sql=QString("select ID from PYPAD_INSTANCES where ")+
-	QString().sprintf("ID=%u && ",id)+
-	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+      sql=QString("select `ID` from `PYPAD_INSTANCES` where ")+
+	QString().sprintf("`ID`=%u && ",id)+
+	"STATION_NAME='"+RDEscapeString(rda->station()->name())+"'";
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	StartScript(id);
@@ -233,9 +233,9 @@ void MainObject::exitData()
     //
     // Update Database
     //
-    QString sql=QString("update PYPAD_INSTANCES set ")+
-      "IS_RUNNING=\"N\" where "+
-      "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+    QString sql=QString("update `PYPAD_INSTANCES` set ")+
+      "`IS_RUNNING`='N' where "+
+      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"'";
     RDSqlQuery::apply(sql);
     exit(0);
   }
@@ -256,9 +256,9 @@ bool MainObject::ScriptIsActive(unsigned id) const
 
 void MainObject::StartScript(unsigned id)
 {
-  QString sql=QString("select SCRIPT_PATH from PYPAD_INSTANCES where ")+
-    QString().sprintf("ID=%u && ",id)+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+  QString sql=QString("select `SCRIPT_PATH` from `PYPAD_INSTANCES` where ")+
+    QString().sprintf("`ID`=%u && ",id)+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     RDProcess *proc=new RDProcess(id,this);
@@ -287,16 +287,16 @@ void MainObject::KillScript(unsigned id)
 void MainObject::SetRunStatus(unsigned id,bool state,int exit_code,
 			      const QString &err_text) const
 {
-  QString sql=QString("update PYPAD_INSTANCES set ")+
-    "IS_RUNNING=\""+RDYesNo(state)+"\","+
-    QString().sprintf("EXIT_CODE=%u,",exit_code);
+  QString sql=QString("update `PYPAD_INSTANCES` set ")+
+    "`IS_RUNNING`='"+RDYesNo(state)+"',"+
+    QString().sprintf("`EXIT_CODE`=%u,",exit_code);
   if(err_text.isNull()) {
-    sql+="ERROR_TEXT=null ";
+    sql+="`ERROR_TEXT`=null ";
   }
   else {
-    sql+="ERROR_TEXT=\""+RDEscapeString(err_text)+"\" ";
+    sql+="`ERROR_TEXT`='"+RDEscapeString(err_text)+"' ";
   }
-  sql+=QString().sprintf("where ID=%u",id);
+  sql+=QString().sprintf("where `ID`=%u",id);
   RDSqlQuery::apply(sql);
 }
 
