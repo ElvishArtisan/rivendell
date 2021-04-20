@@ -21527,3 +21527,7 @@
 	* Escaped all SQL identifiers in 'rdrepld/'.
 	* Replaced " with ' delimiters in all SQL literal strings in
 	'rdrepld/'.
+2021-04-20 Fred Gleason <fredg@paravelsystems.com>
+	* Escaped all SQL identifiers in 'rdrssd/'.
+	* Replaced " with ' delimiters in all SQL literal strings in
+	'rdrssd/'.

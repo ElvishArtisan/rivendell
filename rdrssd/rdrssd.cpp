@@ -108,9 +108,9 @@ void MainObject::timeoutData()
   RDSqlQuery *q=NULL;
 
   sql=QString("select ")+
-    "KEY_NAME "+  // 00
-    "from FEEDS where "+
-    "IS_SUPERFEED='N'";
+    "`KEY_NAME` "+  // 00
+    "from `FEEDS` where "+
+    "`IS_SUPERFEED`='N'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     ProcessFeed(q->value(0).toString());
@@ -126,7 +126,7 @@ void MainObject::ProcessFeed(const QString &key_name)
   QString sql;
   RDSqlQuery *q=NULL;
   QDateTime now=QDateTime::currentDateTime();
-  QString now_str="\""+now.toString("yyyy-MM-dd hh:mm:ss")+"\"";
+  QString now_str="'"+now.toString("yyyy-MM-dd hh:mm:ss")+"'";
   QString err_msg;
   RDFeed *feed=new RDFeed(key_name,rda->config(),this);
 
@@ -134,15 +134,15 @@ void MainObject::ProcessFeed(const QString &key_name)
   // Update Posted XML
   //
   sql=QString("select ")+
-    "PODCASTS.ID,"+                   // 00
-    "PODCASTS.EXPIRATION_DATETIME "+  // 01
-    "from PODCASTS left join FEEDS "+
-    "on PODCASTS.FEED_ID=FEEDS.ID where "+
-    "(FEEDS.KEY_NAME=\""+RDEscapeString(key_name)+"\") && "+
-    "((FEEDS.LAST_BUILD_DATETIME<PODCASTS.EFFECTIVE_DATETIME) && "+
-    "(PODCASTS.EFFECTIVE_DATETIME<"+now_str+") || "+
-    "(FEEDS.LAST_BUILD_DATETIME<PODCASTS.EXPIRATION_DATETIME) && "+
-    "(PODCASTS.EXPIRATION_DATETIME<"+now_str+"))";
+    "`PODCASTS`.`ID`,"+                   // 00
+    "`PODCASTS`.`EXPIRATION_DATETIME` "+  // 01
+    "from `PODCASTS` left join `FEEDS` "+
+    "on `PODCASTS`.`FEED_ID`=`FEEDS`.`ID` where "+
+    "(`FEEDS`.`KEY_NAME`='"+RDEscapeString(key_name)+"') && "+
+    "((`FEEDS`.`LAST_BUILD_DATETIME`<`PODCASTS`.`EFFECTIVE_DATETIME`) && "+
+    "(`PODCASTS`.`EFFECTIVE_DATETIME`<"+now_str+") || "+
+    "(`FEEDS`.`LAST_BUILD_DATETIME`<`PODCASTS`.`EXPIRATION_DATETIME`) && "+
+    "(`PODCASTS`.`EXPIRATION_DATETIME`<"+now_str+"))";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     bool deleted=false;
@@ -156,8 +156,8 @@ void MainObject::ProcessFeed(const QString &key_name)
 		    feed->keyName().toUtf8().constData(),
 		    err_msg.toUtf8().constData());
       }
-      sql=QString("delete from PODCASTS where ")+
-	QString().sprintf("ID=%u",q->value(0).toUInt());
+      sql=QString("delete from `PODCASTS` where ")+
+	QString().sprintf("`ID`=%u",q->value(0).toUInt());
       RDSqlQuery::apply(sql);
       rda->syslog(LOG_INFO,"purged cast %u [%s] from feed \"%s\"",
 		  q->value(0).toUInt(),cast->itemTitle().toUtf8().constData(),
