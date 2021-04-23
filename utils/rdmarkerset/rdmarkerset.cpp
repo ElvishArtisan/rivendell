@@ -140,7 +140,7 @@ MainObject::MainObject(QObject *parent)
   // Validate Groups
   //
   if(set_all_groups) {
-    QString sql="select NAME from GROUPS order by NAME";
+    QString sql="select `NAME` from `GROUPS` order by `NAME`";
     QSqlQuery *q=new QSqlQuery(sql);
     while(q->next()) {
       set_group_names.push_back(q->value(0).toString());
@@ -188,11 +188,14 @@ void MainObject::ProcessGroup(const QString &group_name)
   QString sql;
   QSqlQuery *q;
 
-  sql=QString("select CUTS.CUT_NAME,CART.TITLE,CUTS.DESCRIPTION ")+
-    "from CART left join CUTS "+
-    "on CART.NUMBER=CUTS.CART_NUMBER where (CART.GROUP_NAME=\""+
-    RDEscapeString(group_name)+"\")&&"+
-    QString().sprintf("(CART.TYPE!=%d)",RDCart::Macro);
+  sql=QString("select ")+
+    "`CUTS`.`CUT_NAME`,"+     // 00
+    "`CART`.`TITLE`,"+        // 01
+    "`CUTS`.`DESCRIPTION` "+  // 02
+    "from `CART` left join `CUTS` "+
+    "on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` where (`CART`.`GROUP_NAME`='"+
+    RDEscapeString(group_name)+"')&&"+
+    QString().sprintf("(`CART`.`TYPE`!=%d)",RDCart::Macro);
   q=new QSqlQuery(sql);
   while(q->next()) {
     if(set_auto_trim<0) {
