@@ -189,11 +189,11 @@ void MainObject::GetAudio()
   unsigned cartnum=0;
   int cutnum=0;
   QString sql=QString("select ")+
-    "CUTS.CUT_NAME from "+
-    "CART left join CUTS on CART.NUMBER=CUTS.CART_NUMBER where "+
-    "CART.TITLE=\""+RDEscapeString(title)+"\" && "+
-    QString().sprintf("CART.TYPE=%d ",RDCart::Audio)+
-    "order by CUTS.CUT_NAME";
+    "`CUTS`.`CUT_NAME` from "+
+    "`CART` left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` where "+
+    "`CART`.`TITLE`='"+RDEscapeString(title)+"' && "+
+    QString().sprintf("`CART`.`TYPE`=%d ",RDCart::Audio)+
+    "order by `CUTS`.`CUT_NAME`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     cartnum=RDCut::cartNumber(q->value(0).toString());
@@ -434,9 +434,9 @@ void MainObject::PutAudio()
   if((!rda->system()->allowDuplicateCartTitles())&&
      (!rda->system()->fixDuplicateCartTitles())) {
     sql=QString("select ")+
-      "NUMBER "+  // 00
-      "from CART where "+
-      "TITLE=\""+RDEscapeString(title)+"\"";
+      "`NUMBER` "+  // 00
+      "from `CART` where "+
+      "`TITLE`='"+RDEscapeString(title)+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       QString body;
@@ -554,9 +554,9 @@ void MainObject::ServeForm()
   printf("      var preset_ids=new Array();\n");
   printf("      var preset_exts=new Array();\n");
   sql=QString("select ")+
-    "ID,"+      // 00
-    "FORMAT "+  // 01
-    "from ENCODER_PRESETS order by ID";
+    "`ID`,"+      // 00
+    "`FORMAT` "+  // 01
+    "from `ENCODER_PRESETS` order by `ID`";
   int count=0;
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -598,9 +598,9 @@ void MainObject::ServeForm()
   printf("	<td>\n");
   printf("	  <select id=\"preset\">\n");
   sql=QString("select ")+
-    "ID,"+    // 00
-    "NAME "+  // 01
-    "from ENCODER_PRESETS order by NAME";
+    "`ID`,"+    // 00
+    "`NAME` "+  // 01
+    "from `ENCODER_PRESETS` order by `NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     printf("          <option value=\"%u\">%s</option>\n",
@@ -635,14 +635,14 @@ void MainObject::ServeForm()
     printf("	<td>\n");
     printf("	  <select id=\"group\">\n");
     sql=QString("select ")+
-      "GROUPS.NAME "+  // 00
-      "from GROUPS left join USER_PERMS "+
-      "on GROUPS.NAME=USER_PERMS.GROUP_NAME where "+
-      "USER_PERMS.USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" && "+
-      QString().sprintf("GROUPS.DEFAULT_CART_TYPE=%u && ",RDCart::Audio)+
-      "GROUPS.DEFAULT_LOW_CART>0 && "+
-      "GROUPS.DEFAULT_HIGH_CART>0 "+
-      "order by GROUPS.NAME";
+      "`GROUPS`.`NAME` "+  // 00
+      "from `GROUPS` left join `USER_PERMS` "+
+      "on `GROUPS`.`NAME`=`USER_PERMS`.`GROUP_NAME` where "+
+      "`USER_PERMS`.`USER_NAME`='"+RDEscapeString(rda->user()->name())+"' && "+
+      QString().sprintf("`GROUPS`.`DEFAULT_CART_TYPE`=%u && ",RDCart::Audio)+
+      "`GROUPS`.`DEFAULT_LOW_CART`>0 && "+
+      "`GROUPS`.`DEFAULT_HIGH_CART`>0 "+
+      "order by `GROUPS.NAME`";
     q=new RDSqlQuery(sql);
     while(q->next()) {
       printf("          <option value=\"%s\">%s</option>\n",
