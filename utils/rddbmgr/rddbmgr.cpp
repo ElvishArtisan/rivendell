@@ -277,8 +277,8 @@ MainObject::MainObject(QObject *parent)
 
     // Check that Orphan group exists
     if(!db_orphan_group_name.isEmpty()) {
-      QString sql=QString("select NAME from GROUPS where ")+
-	"NAME=\""+RDEscapeString(db_orphan_group_name)+"\"";
+      QString sql=QString("select `NAME` from `GROUPS` where ")+
+	"NAME='"+RDEscapeString(db_orphan_group_name)+"'";
       RDSqlQuery *q=new RDSqlQuery(sql,false);
       if(!q->first()) {
 	fprintf(stderr,"rddbmgr: invalid group \"%s\"\n",
@@ -380,8 +380,8 @@ MainObject::MainObject(QObject *parent)
 
 void MainObject::WriteSchemaVersion(int ver) const
 {
-  QString sql=QString("update VERSION set ")+
-    QString().sprintf("DB=%d",ver);
+  QString sql=QString("update `VERSION` set ")+
+    QString().sprintf("`DB`=%d",ver);
   RDSqlQuery::apply(sql);
 }
 
@@ -393,7 +393,7 @@ bool MainObject::TableExists(const QString &tbl_name) const
   bool ret=false;
 
   sql=QString("show tables where ")+
-    "Tables_in_"+db_config->mysqlDbname()+"=\""+RDEscapeString(tbl_name)+"\"";
+    "`Tables_in_"+db_config->mysqlDbname()+"`='"+RDEscapeString(tbl_name)+"'";
   q=new RDSqlQuery(sql,false);
   ret=q->first();
   delete q;
@@ -409,7 +409,7 @@ bool MainObject::DropTable(const QString &tbl_name,QString *err_msg) const
   bool ret=false;
 
   sql=QString("show tables where ")+
-    "Tables_in_"+db_config->mysqlDbname()+"=\""+RDEscapeString(tbl_name)+"\"";
+    "`Tables_in_"+db_config->mysqlDbname()+"`='"+RDEscapeString(tbl_name)+"'";
   q=new RDSqlQuery(sql,false);
   if(q->first()) {
     sql=QString("drop table `")+q->value(0).toString()+"`";
@@ -432,10 +432,10 @@ bool MainObject::ColumnExists(const QString &tbl_name,
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString("select * from INFORMATION_SCHEMA.COLUMNS where ")+
-    "TABLE_SCHEMA=\""+db_config->mysqlDbname()+"\" && "+
-    "TABLE_NAME=\""+tbl_name+"\" && "+
-    "COLUMN_NAME=\""+col_name+"\"";
+  sql=QString("select * from `INFORMATION_SCHEMA`.`COLUMNS` where ")+
+    "`TABLE_SCHEMA`='"+db_config->mysqlDbname()+"' && "+
+    "`TABLE_NAME`='"+tbl_name+"' && "+
+    "`COLUMN_NAME`='"+col_name+"'";
   q=new RDSqlQuery(sql,false);
   ret=q->first();
   delete q;

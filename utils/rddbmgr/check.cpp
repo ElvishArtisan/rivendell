@@ -158,32 +158,32 @@ void MainObject::CheckTableAttributes()
   // Per-table Attributes
   //
   sql=QString("select ")+
-    "TABLE_NAME,"+       // 00
-    "ENGINE,"+           // 01
-    "TABLE_COLLATION "+  // 02
-    "from information_schema.TABLES where "+
-    "TABLE_SCHEMA='"+RDEscapeString(db_mysql_database)+"'";
+    "`TABLE_NAME`,"+       // 00
+    "`ENGINE`,"+           // 01
+    "`TABLE_COLLATION` "+  // 02
+    "from `information_schema`.`TABLES` where "+
+    "`TABLE_SCHEMA`='"+RDEscapeString(db_mysql_database)+"'";
   q=new RDSqlQuery(sql,false);
   while(q->next()) {
     QStringList f0=q->value(2).toString().split("_");
     QString charset=f0.at(0);
     if(q->value(1).toString().toLower()!=db_mysql_engine.toLower()) {
       printf("  Table \"%s\" uses engine type %s, should be %s. Fix? (y/N) ",
-	     (const char *)q->value(0).toString().toUtf8(),
-	     (const char *)q->value(1).toString().toUtf8(),
-	     (const char *)db_mysql_engine.toUtf8());
+	     q->value(0).toString().toUtf8().constData(),
+	     q->value(1).toString().toUtf8().constData(),
+	     db_mysql_engine.toUtf8().constData());
       fflush(NULL);
       if(UserResponse()) {
 	sql=QString("alter table `")+q->value(0).toString()+"` "+
-	  "ENGINE="+db_mysql_engine;
+	  "`ENGINE`="+db_mysql_engine;
 	RDSqlQuery::apply(sql);
       }
     }
     if(q->value(2).toString().toLower()!="utf8mb4_general_ci") {
       printf("  Table \"%s\" uses charset/collation %s/%s, should be utf8mb4/utf8mb4_general_ci. Fix? (y/N) ",
-	     (const char *)q->value(0).toString().toUtf8(),
-	     (const char *)charset.toUtf8(),
-	     (const char *)q->value(2).toString().toUtf8());
+	     q->value(0).toString().toUtf8().constData(),
+	     charset.toUtf8().constData(),
+	     q->value(2).toString().toUtf8().constData());
       fflush(NULL);
       if(UserResponse()) {
 	RewriteTable(q->value(0).toString(),
@@ -198,18 +198,18 @@ void MainObject::CheckTableAttributes()
   // Database Attributes
   //
   sql=QString("select ")+
-    "SCHEMA_NAME,"+                 // 00
-    "DEFAULT_CHARACTER_SET_NAME,"+  // 01
-    "DEFAULT_COLLATION_NAME "+      // 02
-    "from information_schema.SCHEMATA";
+    "`SCHEMA_NAME`,"+                 // 00
+    "`DEFAULT_CHARACTER_SET_NAME`,"+  // 01
+    "`DEFAULT_COLLATION_NAME` "+      // 02
+    "from `information_schema`.`SCHEMATA`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(0).toString()==db_mysql_database) {
       if((q->value(1).toString().toLower()!="utf8mb4")||
 	 (q->value(2).toString().toLower()!="utf8mb4_general_ci")) {
 	printf("  Database uses default charset/collation %s/%s, should be utf8mb4/utf8mb4_general_ci. Fix? (y/N) ",
-	       (const char *)q->value(1).toString().toUtf8(),
-	       (const char *)q->value(2).toString().toUtf8());
+	       q->value(1).toString().toUtf8().constData(),
+	       q->value(2).toString().toUtf8().constData());
 	fflush(NULL);
 	if(UserResponse()) {
 	  sql=QString("alter database `")+db_mysql_database+"` "+
@@ -397,10 +397,12 @@ void MainObject::RelinkAudio(const QString &srcdir) const
     //
     // Check against audio cuts
     //
-    sql=QString("select CUTS.CUT_NAME,CART.TITLE from ")+
-      "CUTS left join CART "+
-      "on CUTS.CART_NUMBER=CART.NUMBER where "+
-      "CUTS.SHA1_HASH=\""+RDEscapeString(hash)+"\"";
+    sql=QString("select ")+
+      "`CUTS`.`CUT_NAME`,"+  // 00
+      "`CART`.`TITLE` "+     // 01
+      "from `CUTS` left join `CART` "+
+      "on `CUTS`.`CART_NUMBER`=`CART`.`NUMBER` where "+
+      "`CUTS`.`SHA1_HASH`='"+RDEscapeString(hash)+"'";
     q=new RDSqlQuery(sql);
     while(q->next()) {
       RelinkCut(filename,q->value(0).toString(),q->value(1).toString(),
@@ -411,13 +413,13 @@ void MainObject::RelinkAudio(const QString &srcdir) const
     // Check against RSS posts
     //
     sql=QString("select ")+
-      "FEEDS.KEY_NAME,"+           // 00
-      "PODCASTS.ID,"+              // 01
-      "PODCASTS.ITEM_TITLE,"+      // 02
-      "PODCASTS.AUDIO_FILENAME "+  // 03
-      "from PODCASTS left join FEEDS "+
-      "on FEEDS.ID=PODCASTS.FEED_ID where "+
-      "PODCASTS.SHA1_HASH=\""+RDEscapeString(hash)+"\"";
+      "`FEEDS`.`KEY_NAME`,"+           // 00
+      "`PODCASTS`.`ID`,"+              // 01
+      "`PODCASTS`.`ITEM_TITLE`,"+      // 02
+      "`PODCASTS`.`AUDIO_FILENAME` "+  // 03
+      "from `PODCASTS` left join `FEEDS` "+
+      "on `FEEDS`.`ID`=`PODCASTS`.`FEED_ID` where "+
+      "`PODCASTS`.`SHA1_HASH`='"+RDEscapeString(hash)+"'";
     q=new RDSqlQuery(sql);
     while(q->next()) {
       RelinkCast(filename,q->value(0).toString(),q->value(1).toUInt(),
@@ -558,14 +560,20 @@ void MainObject::RelinkCast(const QString &src_filename,const QString &keyname,
 
 void MainObject::CheckOrphanedTracks() const
 {
-  QString sql="select NUMBER,TITLE,OWNER from CART where OWNER!=\"\"";
+  QString sql=QString("select ")+
+    "`NUMBER`,"+  // 00
+    "`TITLE`,"+   // 01
+    "`OWNER` "+   // 02
+    "from `CART` where "+
+    "(`OWNER`!='')&&"+
+    "(`OWNER` is not null)";
   QSqlQuery *q=new QSqlQuery(sql);
   QSqlQuery *q1;
 
   while(q->next()) {
-    sql=QString("select LINE_ID from LOG_LINES where ")+
-      "LOG_NAME=\""+RDEscapeString(q->value(2).toString())+"\" && "+
-      QString().sprintf("CART_NUMBER=%u",q->value(0).toUInt());
+    sql=QString("select `LINE_ID` from `LOG_LINES` where ")+
+      "`LOG_NAME`='"+RDEscapeString(q->value(2).toString())+"' && "+
+      QString().sprintf("`CART_NUMBER`=%u",q->value(0).toUInt());
     q1=new QSqlQuery(sql);
     if(!q1->first()) {
       printf("  Found orphaned track %u - \"%s\".  Delete? (y/N) ",
@@ -594,12 +602,16 @@ void MainObject::CheckCutCounts() const
   QSqlQuery *q;
   QSqlQuery *q1;
 
-  sql="select NUMBER,CUT_QUANTITY,TITLE from CART";
+  sql=QString("select ")+
+    "`NUMBER`,"+        // 00
+    "`CUT_QUANTITY`,"+  // 01
+    "`TITLE` "+         // 02
+    "from `CART`";
   q=new QSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("select CUT_NAME from CUTS \
-                           where (CART_NUMBER=%u)&&(LENGTH>0)",
-			  q->value(0).toUInt());
+    sql=QString("select `CUT_NAME` from `CUTS` where ")+
+      QString().sprintf("(`CART_NUMBER`=%u)&&",q->value(0).toUInt())+
+      "(`LENGTH`>0)";
     q1=new QSqlQuery(sql);
     if(q1->size()!=q->value(1).toInt()) {
       printf("  Cart %u [%s] has invalid cut count, fix (y/N)?",
@@ -623,10 +635,10 @@ void MainObject::CheckPendingCarts() const
   QSqlQuery *q;
   QDateTime now(QDate::currentDate(),QTime::currentTime());
 
-  sql=QString("select NUMBER from CART where ")+
-    "(PENDING_STATION is not null)&&"+
-    "(PENDING_DATETIME<\""+now.addDays(-1).
-    toString("yyyy-MM-dd hh:mm:ss")+"\")";
+  sql=QString("select `NUMBER` from `CART` where ")+
+    "(`PENDING_STATION` is not null)&&"+
+    "(`PENDING_DATETIME`<'"+now.addDays(-1).
+    toString("yyyy-MM-dd hh:mm:ss")+"')";
   q=new QSqlQuery(sql);
   while(q->next()) {
     printf("  Cart %06u has stale reservation, delete cart(y/N)?",
@@ -645,8 +657,12 @@ void MainObject::CheckOrphanedCarts() const
   QSqlQuery *q;
   QSqlQuery *q1;
 
-  sql="select CART.NUMBER,CART.TITLE from CART left join GROUPS \
-       on CART.GROUP_NAME=GROUPS.NAME where GROUPS.NAME is null";
+  sql=QString("select ")+
+    "`CART`.`NUMBER`,"+
+    "`CART`.`TITLE` "+
+    "from `CART` left join `GROUPS` "+
+    "on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` where "+
+    "`GROUPS`.`NAME` is null";
   q=new QSqlQuery(sql);
   while(q->next()) {
     printf("  Cart %06u [%s] has missing/invalid group.\n",
@@ -658,10 +674,9 @@ void MainObject::CheckOrphanedCarts() const
       printf("  Assign to group \"%s\" (y/N)?",
 	     db_orphan_group_name.toUtf8().constData());
       if(UserResponse()) {
-	sql=QString().
-	  sprintf("update CART set GROUP_NAME=\"%s\" where NUMBER=%u",
-		  RDEscapeString(db_orphan_group_name).toUtf8().constData(),
-		  q->value(0).toUInt());
+	sql=QString("update `CART` set ")+
+	  "`GROUP_NAME`='"+RDEscapeString(db_orphan_group_name)+"' "+
+	  QString().sprintf("where `NUMBER`=%u",q->value(0).toUInt());
 	q1=new QSqlQuery(sql);
 	delete q1;
       }
@@ -680,8 +695,12 @@ void MainObject::CheckOrphanedCuts() const
   QSqlQuery *q2;
   QFileInfo *file=NULL;
 
-  sql="select CUTS.CUT_NAME,CUTS.DESCRIPTION from CUTS left join CART \
-       on CUTS.CART_NUMBER=CART.NUMBER where CART.NUMBER is null";
+  sql=QString("select ")+
+    "`CUTS`.`CUT_NAME`,"+     // 00
+    "`CUTS`.`DESCRIPTION` "+  // 01
+    "from `CUTS` left join `CART` "+
+    "on `CUTS`.`CART_NUMBER`=`CART`.`NUMBER` "+
+    "where `CART`.`NUMBER` is null";
   q=new QSqlQuery(sql);
   while(q->next()) {
     printf("  Cut %s [%s] is orphaned.\n",
@@ -690,7 +709,7 @@ void MainObject::CheckOrphanedCuts() const
     //
     // Try to repair it
     //
-    sql=QString().sprintf("select NUMBER from CART where NUMBER=%d",
+    sql=QString().sprintf("select `NUMBER` from `CART` where `NUMBER`=%d",
 			  q->value(0).toString().left(6).toUInt());
     q1=new QSqlQuery(sql);
     if(q1->first()) {
@@ -700,7 +719,7 @@ void MainObject::CheckOrphanedCuts() const
 	// FIXME: Regen Cart Data
 	//
 	sql=QString().
-	  sprintf("update CUTS set CART_NUMBER=%u where CUT_NAME=\"%s\"",
+	  sprintf("update `CUTS` set `CART_NUMBER`=%u where `CUT_NAME`='%s'",
 		  q1->value(0).toUInt(),
 		  q->value(0).toString().toUtf8().constData());
 	q2=new QSqlQuery(sql);
@@ -720,7 +739,7 @@ void MainObject::CheckOrphanedCuts() const
     if(!file->exists()) {
       printf("  Clear it (y/N)?");
       if(UserResponse()) {
-	sql=QString().sprintf("delete from CUTS where CUT_NAME=\"%s\"",
+	sql=QString().sprintf("delete from `CUTS` where `CUT_NAME`='%s'",
 			      q->value(0).toString().toUtf8().constData());
 	q1=new QSqlQuery(sql);
 	delete q1;
@@ -734,7 +753,7 @@ void MainObject::CheckOrphanedCuts() const
 	printf("  Clear it (y/N)?");
 	if(UserResponse()) {
 	  system(("mv "+file->filePath()+" "+db_dump_cuts_dir+"/").toUtf8());
-	  sql=QString().sprintf("delete from CUTS where CUT_NAME=\"%s\"",
+	  sql=QString().sprintf("delete from `CUTS` where `CUT_NAME`='%s'",
 				q->value(0).toString().toUtf8().constData());
 	  q1=new QSqlQuery(sql);
 	  delete q1;
@@ -765,9 +784,9 @@ void MainObject::CheckOrphanedAudio() const
       list[i].mid(7,3).toInt(&ok);
       if(ok) {
 	QString sql=QString("select ")+
-	  "CUT_NAME "+
-	  "from CUTS where "+
-	  "CUT_NAME=\""+RDEscapeString(list.at(i).left(10))+"\"";
+	  "`CUT_NAME` "+
+	  "from `CUTS` where "+
+	  "`CUT_NAME`='"+RDEscapeString(list.at(i).left(10))+"'";
 	QSqlQuery *q=new QSqlQuery(sql);
 	if(!q->first()) {
 	  printf("  File \"%s/%s\" is orphaned.\n",
@@ -806,7 +825,11 @@ void MainObject::ValidateAudioLengths() const
   QSqlQuery *q;
   RDWaveFile *wave=NULL;
 
-  sql="select CUT_NAME,CART_NUMBER,LENGTH from CUTS order by CART_NUMBER";
+  sql=QString("select ")+
+    "`CUT_NAME`,"+
+    "`CART_NUMBER`,"+
+    "`LENGTH` "+
+    "from `CUTS` order by `CART_NUMBER`";
   q=new QSqlQuery(sql);
   while(q->next()) {
     if(q->value(2).toInt()>0) {
@@ -834,9 +857,9 @@ void MainObject::Rehash(const QString &arg) const
   bool ok=false;
 
   if(arg.toLower()=="all") {
-    sql=QString("select NUMBER from CART where ")+
-      QString().sprintf("TYPE=%d ",RDCart::Audio)+
-      "order by NUMBER";
+    sql=QString("select `NUMBER` from `CART` where ")+
+      QString().sprintf("`TYPE`=%d ",RDCart::Audio)+
+      "order by `NUMBER`";
     q=new QSqlQuery(sql);
     while(q->next()) {
       RehashCart(q->value(0).toUInt());
@@ -862,9 +885,9 @@ void MainObject::RehashCart(unsigned cartnum) const
   RDCart *cart=new RDCart(cartnum);
   if(cart->exists()) {
     if(cart->type()==RDCart::Audio) {
-      QString sql=QString("select CUT_NAME from CUTS where ")+
-	QString().sprintf("CART_NUMBER=%u ",cartnum)+
-	"order by CUT_NAME";
+      QString sql=QString("select `CUT_NAME` from `CUTS` where ")+
+	QString().sprintf("`CART_NUMBER`=%u ",cartnum)+
+	"order by `CUT_NAME`";
       QSqlQuery *q=new QSqlQuery(sql);
       while(q->next()) {
 	RehashCut(q->value(0).toString());
@@ -930,20 +953,20 @@ void MainObject::SetCutLength(const QString &cutname,int len) const
   fflush(NULL);
   if(UserResponse()) {
     fflush(NULL);
-    sql=QString("update CUTS set ")+
-      "START_POINT=0,"+
-      QString().sprintf("END_POINT=%d,",len)+
-      "FADEUP_POINT=-1,"+
-      "FADEDOWN_POINT=-1,"+
-      "SEGUE_START_POINT=-1,"+
-      "SEGUE_END_POINT=-1,"+
-      "TALK_START_POINT=-1,"+
-      "TALK_END_POINT=-1,"+
-      "HOOK_START_POINT=-1,"+
-      "HOOK_END_POINT=-1,"+
-      "PLAY_GAIN=0,"+
-      QString().sprintf("LENGTH=%d where ",len)+
-      "CUT_NAME=\""+RDEscapeString(cutname)+"\"";
+    sql=QString("update `CUTS` set ")+
+      "`START_POINT`=0,"+
+      QString().sprintf("`END_POINT`=%d,",len)+
+      "`FADEUP_POINT`=-1,"+
+      "`FADEDOWN_POINT`=-1,"+
+      "`SEGUE_START_POINT`=-1,"+
+      "`SEGUE_END_POINT`=-1,"+
+      "`TALK_START_POINT`=-1,"+
+      "`TALK_END_POINT`=-1,"+
+      "`HOOK_START_POINT`=-1,"+
+      "`HOOK_END_POINT`=-1,"+
+      "`PLAY_GAIN`=0,"+
+      QString().sprintf("`LENGTH`=%d where ",len)+
+      "`CUT_NAME`='"+RDEscapeString(cutname)+"'";
     q=new QSqlQuery(sql);
     delete q;
     cart->updateLength();
@@ -1031,8 +1054,8 @@ void MainObject::CheckSchedCodeRules(bool prompt_user) const
   // Check that we have at least one schedule code
   //
   sql=QString("select ")+
-    "CODE "+  // 00
-    "from SCHED_CODES";
+    "`CODE` "+  // 00
+    "from `SCHED_CODES`";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -1044,19 +1067,19 @@ void MainObject::CheckSchedCodeRules(bool prompt_user) const
   // Check for orphaned rules
   //
   sql=QString("select ")+
-    "NAME "+  // 00
-    "from CLOCKS order by NAME";
+    "`NAME` "+  // 00
+    "from `CLOCKS` order by `NAME`";
   q=new RDSqlQuery(sql);
   QString where_sql="";
   while(q->next()) {
-    where_sql+="(CLOCK_NAME!=\""+RDEscapeString(q->value(0).toString())+"\")&&";
+    where_sql+="(`CLOCK_NAME`!='"+RDEscapeString(q->value(0).toString())+"')&&";
   }
   where_sql=where_sql.left(where_sql.length()-2);
   delete q;
 
   sql=QString("select ")+
-    "ID "  // 00
-    "from RULE_LINES where "+
+    "`ID` "  // 00
+    "from `RULE_LINES` where "+
     where_sql;
   q=new RDSqlQuery(sql);
   if(q->first()) {
@@ -1076,27 +1099,27 @@ void MainObject::CheckSchedCodeRules(bool prompt_user) const
   // Check for missing rules
   //
   sql=QString("select ")+
-    "NAME "+  // 00
-    "from CLOCKS order by NAME";
+    "`NAME` "+  // 00
+    "from `CLOCKS` order by `NAME`";
   RDSqlQuery *clock_q=new RDSqlQuery(sql);
   while(clock_q->next()) {
     QString clkname=clock_q->value(0).toString();
     sql=QString("select ")+
-      "CODE "+  // 00
-      "from SCHED_CODES order by CODE";
+      "`CODE` "+  // 00
+      "from `SCHED_CODES` order by CODE";
     RDSqlQuery *code_q=new RDSqlQuery(sql);
     while(code_q->next()) {
       QString code=code_q->value(0).toString();
       sql=QString("select ")+
-	"ID "+  // 00
-	"from RULE_LINES where "+
-	"CLOCK_NAME=\""+RDEscapeString(clkname)+"\" && "+
-	"CODE=\""+RDEscapeString(code)+"\"";
+	"`ID` "+  // 00
+	"from `RULE_LINES` where "+
+	"`CLOCK_NAME`='"+RDEscapeString(clkname)+"' && "+
+	"`CODE`='"+RDEscapeString(code)+"'";
       q=new RDSqlQuery(sql);
       if(!q->first()) {
-	sql=QString("insert into RULE_LINES set ")+
-	  "CLOCK_NAME=\""+RDEscapeString(clkname)+"\","+
-	  "CODE=\""+RDEscapeString(code)+"\"";
+	sql=QString("insert into `RULE_LINES` set ")+
+	  "`CLOCK_NAME`='"+RDEscapeString(clkname)+"',"+
+	  "`CODE`='"+RDEscapeString(code)+"'";
 	RDSqlQuery::apply(sql);
       }
       delete q;

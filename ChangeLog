@@ -21559,3 +21559,7 @@
 	* Escaped all SQL identifiers in 'utils/rddbconfig/'.
 	* Replaced " with ' delimiters in all SQL literal strings in
 	'utils/rddbconfig/'.
+2021-04-22 Fred Gleason <fredg@paravelsystems.com>
+	* Escaped all SQL identifiers in 'utils/rddbmgr/'.
+	* Replaced " with ' delimiters in all SQL literal strings in
+	'utils/rddbmgr/'.

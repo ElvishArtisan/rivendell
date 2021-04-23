@@ -2,7 +2,7 @@
 //
 // Routines for --modify for rddbmgr(8)
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,8 +19,6 @@
 //
 
 #include <stdlib.h>
-
-#include <qstringlist.h>
 
 #include <dbversion.h>
 #include <rddb.h>
@@ -79,10 +77,10 @@ bool MainObject::ModifyCharset(const QString &charset,
   // Per-table Attributes
   //
   sql=QString("select ")+
-    "TABLE_NAME,"+       // 00
-    "TABLE_COLLATION "+  // 01
-    "from information_schema.TABLES where "+
-    "TABLE_SCHEMA='"+RDEscapeString(db_mysql_database)+"'";
+    "`TABLE_NAME`,"+       // 00
+    "`TABLE_COLLATION` "+  // 01
+    "from `information_schema`.`TABLES` where "+
+    "`TABLE_SCHEMA`='"+RDEscapeString(db_mysql_database)+"'";
   q=new RDSqlQuery(sql,false);
   while(q->next()) {
     QStringList f0=q->value(1).toString().split("_");
@@ -98,10 +96,10 @@ bool MainObject::ModifyCharset(const QString &charset,
   // Database Attributes
   //
   sql=QString("select ")+
-    "SCHEMA_NAME,"+                 // 00
-    "DEFAULT_CHARACTER_SET_NAME,"+  // 01
-    "DEFAULT_COLLATION_NAME "+      // 02
-    "from information_schema.SCHEMATA";
+    "`SCHEMA_NAME`,"+                 // 00
+    "`DEFAULT_CHARACTER_SET_NAME`,"+  // 01
+    "`DEFAULT_COLLATION_NAME` "+      // 02
+    "from `information_schema`.`SCHEMATA`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(0).toString()==db_mysql_database) {
@@ -116,4 +114,3 @@ bool MainObject::ModifyCharset(const QString &charset,
   delete q;
   return true;
 }
-
