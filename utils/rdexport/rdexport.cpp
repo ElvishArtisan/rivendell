@@ -327,10 +327,10 @@ void MainObject::ExportTitle(const QString &title)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("select NUMBER from CART where ")+
-    "(TITLE=\""+RDEscapeString(title)+"\")&&"+
-    QString().sprintf("(TYPE=%u) ",RDCart::Audio)+
-    "order by NUMBER";
+  sql=QString("select `NUMBER` from `CART` where ")+
+    "(`TITLE`='"+RDEscapeString(title)+"')&&"+
+    QString().sprintf("(`TYPE`=%u) ",RDCart::Audio)+
+    "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     ExportCart(q->value(0).toUInt());
@@ -344,10 +344,10 @@ void MainObject::ExportGroup(const QString &groupname)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("select NUMBER from CART where ")+
-    "(GROUP_NAME=\""+RDEscapeString(groupname)+"\")&&"+
-    QString().sprintf("(TYPE=%u) ",RDCart::Audio)+
-    "order by NUMBER";
+  sql=QString("select `NUMBER` from `CART` where ")+
+    "(`GROUP_NAME`='"+RDEscapeString(groupname)+"')&&"+
+    QString().sprintf("(`TYPE`=%u) ",RDCart::Audio)+
+    "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     ExportCart(q->value(0).toUInt());
@@ -361,9 +361,9 @@ void MainObject::ExportSchedCode(const QString &schedcode)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("select CART_NUMBER from CART_SCHED_CODES where ")+
-    "SCHED_CODE=\""+RDEscapeString(schedcode)+"\" "+
-    "order by CART_NUMBER";
+  sql=QString("select `CART_NUMBER` from `CART_SCHED_CODES` where ")+
+    "`SCHED_CODE`='"+RDEscapeString(schedcode)+"' "+
+    "order by `CART_NUMBER`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     ExportCart(q->value(0).toUInt());
@@ -379,8 +379,8 @@ void MainObject::ExportCart(unsigned cartnum)
   RDSqlQuery *q;
 
   if(cart->exists()&&(cart->type()==RDCart::Audio)) {
-    sql=QString().sprintf("select CUT_NAME from CUTS where CART_NUMBER=%u",
-			  cartnum);
+    sql=QString("select `CUT_NAME` from `CUTS` where ")+
+      QString().sprintf("`CART_NUMBER`=%u",cartnum);
     q=new RDSqlQuery(sql);
     while(q->next()) {
       RDCut *cut=new RDCut(q->value(0).toString());
