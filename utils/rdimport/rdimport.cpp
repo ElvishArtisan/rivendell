@@ -1155,9 +1155,9 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       }
       else {
 	sql=QString("select ")+
-	  "NUMBER "+  // 00
-	  "from CART where "+
-	  "TITLE=\""+RDEscapeString(wavedata->title())+"\"";
+	  "`NUMBER` "+  // 00
+	  "from `CART` where "+
+	  "`TITLE`='"+RDEscapeString(wavedata->title())+"'";
 	q=new RDSqlQuery(sql);
 	if(q->first()) {
 	  QString err_msg=QString().
@@ -2169,9 +2169,9 @@ QDateTime MainObject::GetCachedTimestamp(const QString &filename)
   if(import_persistent_dropbox_id<0) {
     return dt;
   }
-  sql=QString().sprintf("select FILE_DATETIME from DROPBOX_PATHS where ")+
-    QString().sprintf("(DROPBOX_ID=%d)&&",import_persistent_dropbox_id)+
-    "(FILE_PATH=\""+RDEscapeString(filename)+"\")";
+  sql=QString().sprintf("select `FILE_DATETIME` from `DROPBOX_PATHS` where ")+
+    QString().sprintf("(`DROPBOX_ID`=%d)&&",import_persistent_dropbox_id)+
+    "(`FILE_PATH`='"+RDEscapeString(filename)+"')";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     dt=q->value(0).toDateTime();
@@ -2185,24 +2185,23 @@ void MainObject::WriteTimestampCache(const QString &filename,
 				     const QDateTime &dt)
 {
   QString sql;
-  RDSqlQuery *q;
+
   if(import_persistent_dropbox_id<0) {
     return;
   }
   if(GetCachedTimestamp(filename).isNull()) {
-    sql=QString("insert into DROPBOX_PATHS set ")+
-      QString().sprintf("DROPBOX_ID=%d,",import_persistent_dropbox_id)+
-      "FILE_PATH=\""+RDEscapeString(filename)+"\","+
-      "FILE_DATETIME="+RDCheckDateTime(dt,"yyyy-MM-dd hh:mm:ss");
+    sql=QString("insert into `DROPBOX_PATHS` set ")+
+      QString().sprintf("`DROPBOX_ID`=%d,",import_persistent_dropbox_id)+
+      "`FILE_PATH`='"+RDEscapeString(filename)+"',"+
+      "`FILE_DATETIME`="+RDCheckDateTime(dt,"yyyy-MM-dd hh:mm:ss");
   }
   else {
-    sql=QString("update DROPBOX_PATHS set ")+
-      "FILE_DATETIME="+RDCheckDateTime(dt,"yyyy-MM-dd hh:mm:ss")+" where "+
-      QString().sprintf("(DROPBOX_ID=%d)&&",import_persistent_dropbox_id)+
-      "(FILE_PATH=\""+RDEscapeString(filename)+"\")";
+    sql=QString("update `DROPBOX_PATHS` set ")+
+      "`FILE_DATETIME`="+RDCheckDateTime(dt,"yyyy-MM-dd hh:mm:ss")+" where "+
+      QString().sprintf("(`DROPBOX_ID`=%d)&&",import_persistent_dropbox_id)+
+      "(`FILE_PATH`='"+RDEscapeString(filename)+"')";
   }
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 }
 
 
@@ -2212,8 +2211,8 @@ bool MainObject::SchedulerCodeExists(const QString &code) const
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString("select CODE from SCHED_CODES where CODE=\"")+
-    RDEscapeString(code)+"\"";
+  sql=QString("select `CODE` from `SCHED_CODES` where `CODE`='")+
+    RDEscapeString(code)+"'";
   q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;

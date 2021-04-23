@@ -21575,3 +21575,7 @@
 	* Escaped all SQL identifiers in 'utils/rdgpimon/'.
 	* Replaced " with ' delimiters in all SQL literal strings in
 	'utils/rdgpimon/'.
+2021-04-23 Fred Gleason <fredg@paravelsystems.com>
+	* Escaped all SQL identifiers in 'utils/rdimport/'.
+	* Replaced " with ' delimiters in all SQL literal strings in
+	'utils/rdimport/'.
