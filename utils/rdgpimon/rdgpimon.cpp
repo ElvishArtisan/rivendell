@@ -287,7 +287,6 @@ void MainWidget::matrixActivatedData(int index)
     new RDMatrix(rda->config()->stationName(),gpi_matrix_box->currentIndex());
   UpdateLabelsDown(0);
   gpi_up_button->setDisabled(true);
-  //  RefreshEventsList();
   gpi_events_model->
     setGpioType((RDMatrix::GpioType)gpi_type_box->currentIndex());
   gpi_events_model->setMatrixNumber(index);
@@ -328,22 +327,22 @@ void MainWidget::eventsReportData()
   report+="\n";
 
   sql=QString("select ")+
-    "EVENT_DATETIME,"+  // 00
-    "NUMBER,"+          // 01
-    "EDGE "+            // 02
-    "from GPIO_EVENTS where "+
-    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",gpi_matrix_box->currentIndex())+
-    QString().sprintf("(TYPE=%d)&&",gpi_type_box->currentIndex())+
-    "(EVENT_DATETIME>=\""+gpi_events_date_edit->date().toString("yyyy-MM-dd")+
-    " 00:00:00\")&&"+
-    "(EVENT_DATETIME<\""+gpi_events_date_edit->date().addDays(1).
-    toString("yyyy-MM-dd")+" 00:00:00\")";
+    "`EVENT_DATETIME`,"+  // 00
+    "`NUMBER`,"+          // 01
+    "`EDGE` "+            // 02
+    "from `GPIO_EVENTS` where "+
+    "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)&&",gpi_matrix_box->currentIndex())+
+    QString().sprintf("(`TYPE`=%d)&&",gpi_type_box->currentIndex())+
+    "(`EVENT_DATETIME`>='"+gpi_events_date_edit->date().toString("yyyy-MM-dd")+
+    " 00:00:00')&&"+
+    "(`EVENT_DATETIME`<'"+gpi_events_date_edit->date().addDays(1).
+    toString("yyyy-MM-dd")+" 00:00:00')";
   if(gpi_events_state_box->currentIndex()==0) {
-    sql+="&&(EDGE=1)";
+    sql+="&&(`EDGE`=1)";
   }
   if(gpi_events_state_box->currentIndex()==1) {
-    sql+="&&(EDGE=0)";
+    sql+="&&(`EDGE`=0)";
   }
   report+="                       -- Time --   - Line -   - State -\n";
   q=new RDSqlQuery(sql);
@@ -528,29 +527,29 @@ void MainWidget::UpdateLabelsUp(int last_line)
   int count=0;
   int count_limit=GPIMON_ROWS*GPIMON_COLS;
   bool last_updated=false;
-  QString tablename="GPIS";
+  QString tablename="`GPIS`";
 
   for(int i=0;i<(GPIMON_ROWS*GPIMON_COLS);i++) {
     gpi_labels[i]->hide();
   }
   switch((RDMatrix::GpioType)gpi_type_box->currentIndex()) {
     case RDMatrix::GpioInput:
-      tablename="GPIS";
+      tablename="`GPIS`";
       break;
 
     case RDMatrix::GpioOutput:
-      tablename="GPOS";
+      tablename="`GPOS`";
       break;
   }
   sql=QString("select ")+
-    "NUMBER,"+          // 00
-    "OFF_MACRO_CART,"+  // 01
-    "MACRO_CART "+      // 02
+    "`NUMBER`,"+          // 00
+    "`OFF_MACRO_CART`,"+  // 01
+    "`MACRO_CART` "+      // 02
     "from "+tablename+" where "+
-    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",gpi_matrix->matrix())+
-    QString().sprintf("(NUMBER<=%d) ",last_line)+
-    "order by NUMBER desc";
+    "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)&&",gpi_matrix->matrix())+
+    QString().sprintf("(`NUMBER`<=%d) ",last_line)+
+    "order by `NUMBER` desc";
   q=new RDSqlQuery(sql);
   if(q->size()<count_limit) {
     count_limit=q->size();
@@ -580,29 +579,29 @@ void MainWidget::UpdateLabelsDown(int first_line)
   RDSqlQuery *q;
   int count=0;
   bool first_updated=false;
-  QString tablename="GPIS";
+  QString tablename="`GPIS`";
 
   for(int i=0;i<(GPIMON_ROWS*GPIMON_COLS);i++) {
     gpi_labels[i]->hide();
   }
   switch((RDMatrix::GpioType)gpi_type_box->currentIndex()) {
     case RDMatrix::GpioInput:
-      tablename="GPIS";
+      tablename="`GPIS`";
       break;
 
     case RDMatrix::GpioOutput:
-      tablename="GPOS";
+      tablename="`GPOS`";
       break;
   }
   sql=QString("select ")+
-    "NUMBER,"+          // 00
-    "OFF_MACRO_CART,"+  // 01
-    "MACRO_CART "+      // 02
+    "`NUMBER`,"+          // 00
+    "`OFF_MACRO_CART`,"+  // 01
+    "`MACRO_CART` "+      // 02
     "from "+tablename+" where "+
-    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",gpi_matrix->matrix())+
-    QString().sprintf("(NUMBER>=%d) ",first_line)+
-    "order by NUMBER";
+    "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
+    QString().sprintf("(`MATRIX`=%d)&&",gpi_matrix->matrix())+
+    QString().sprintf("(`NUMBER`>=%d) ",first_line)+
+    "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   while(q->next()&&(count<(GPIMON_ROWS*GPIMON_COLS))) {
     gpi_labels[count]->setCart(q->value(1).toUInt(),q->value(2).toUInt());
@@ -618,9 +617,9 @@ void MainWidget::UpdateLabelsDown(int first_line)
 
   sql=QString("select ")+
     tablename+" "+  // 00
-    "from MATRICES where "+
-    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\") && "+
-    QString().sprintf("(MATRIX=%d)",gpi_matrix->matrix());
+    "from `MATRICES` where "+
+    "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"') && "+
+    QString().sprintf("(`MATRIX`=%d)",gpi_matrix->matrix());
   q=new RDSqlQuery(sql);
   if(q->first()) {
     for(int i=0;i<(GPIMON_ROWS*GPIMON_COLS);i++) {
