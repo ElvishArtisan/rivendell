@@ -112,11 +112,9 @@ void MainObject::userData()
 void MainObject::RunSystemMaintenance()
 {
   QString sql;
-  RDSqlQuery *q;
 
-  sql="update VERSION set LAST_MAINT_DATETIME=now()";
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql="update `VERSION` set `LAST_MAINT_DATETIME`=now()";
+  RDSqlQuery::apply(sql);
 
   PrintMessage("Starting System Maintenance");
 
@@ -149,22 +147,22 @@ void MainObject::PurgeCuts()
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
 
   sql=QString("select ")+
-    "NAME,"+                // 00
-    "CUT_SHELFLIFE,"+       // 01
-    "DELETE_EMPTY_CARTS "+  // 02
-    "from GROUPS where "+
-    "CUT_SHELFLIFE>=0";
+    "`NAME`,"+                // 00
+    "`CUT_SHELFLIFE`,"+       // 01
+    "`DELETE_EMPTY_CARTS` "+  // 02
+    "from `GROUPS` where "+
+    "`CUT_SHELFLIFE`>=0";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString("select ")+
-      "CART.NUMBER,"+    // 00
-      "CUTS.CUT_NAME "+  // 01
-      "from CUTS left join CART "+
-      "on CUTS.CART_NUMBER=CART.NUMBER where "+
-      "(CART.GROUP_NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+
-      "(CUTS.END_DATETIME<\""+
+      "`CART.NUMBER`,"+    // 00
+      "`CUTS.CUT_NAME` "+  // 01
+      "from `CUTS` left join `CART` "+
+      "on `CUTS`.`CART_NUMBER`=`CART`.`NUMBER` where "+
+      "(`CART`.`GROUP_NAME`='"+RDEscapeString(q->value(0).toString())+"')&&"+
+      "(`CUTS`.`END_DATETIME`<'"+
       RDEscapeString(dt.addDays(-q->value(1).toInt()).toString("yyyy-MM-dd"))+
-      " 00:00:00\")";
+      " 00:00:00')";
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       RDCart *cart=new RDCart(q1->value(0).toUInt());
@@ -205,10 +203,10 @@ void MainObject::PurgeLogs()
   RDSqlQuery *q;
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
 
-  sql=QString("select NAME from LOGS where ")+
-    "(PURGE_DATE!=\"0000-00-00\")&&"+
-    "(PURGE_DATE is not null)&&"+
-    "(PURGE_DATE<\""+dt.date().toString("yyyy-MM-dd")+"\")";
+  sql=QString("select `NAME` from `LOGS` where ")+
+    "(`PURGE_DATE`!='0000-00-00')&&"+
+    "(`PURGE_DATE` is not null)&&"+
+    "(`PURGE_DATE`<'"+dt.date().toString("yyyy-MM-dd")+"')";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     rda->syslog(LOG_INFO,"purged log %s",
@@ -232,16 +230,16 @@ void MainObject::PurgeElr()
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
 
   sql=QString("select ")+
-    "NAME,"+
-    "ELR_SHELFLIFE "+
-    "from SERVICES where "+
-    "ELR_SHELFLIFE>=0";
+    "`NAME`,"+
+    "`ELR_SHELFLIFE` "+
+    "from `SERVICES` where "+
+    "`ELR_SHELFLIFE`>=0";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString("delete from ELR_LINES where ")+
-      "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
-      "EVENT_DATETIME<\""+
-      dt.addDays(-q->value(1).toInt()).toString("yyyy-MM-dd")+" 00:00:00\"";
+    sql=QString("delete from `ELR_LINES` where ")+
+      "`SERVICE_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
+      "`EVENT_DATETIME`<'"+
+      dt.addDays(-q->value(1).toInt()).toString("yyyy-MM-dd")+" 00:00:00'";
     RDSqlQuery::apply(sql);
   }
   delete q;
@@ -256,22 +254,20 @@ void MainObject::PurgeDropboxes()
 
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
 
   sql=QString("select ")+
-    "DROPBOX_PATHS.FILE_PATH,"+  // 00
-    "DROPBOX_PATHS.ID "+         // 01
-    "from DROPBOXES left join DROPBOX_PATHS "+
-    "on (DROPBOXES.ID=DROPBOX_PATHS.DROPBOX_ID) where "+
-    "DROPBOXES.STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+
-    "\"";
+    "`DROPBOX_PATHS`.`FILE_PATH`,"+  // 00
+    "`DROPBOX_PATHS`.`ID` "+         // 01
+    "from `DROPBOXES` left join `DROPBOX_PATHS` "+
+    "on (`DROPBOXES`.`ID`=`DROPBOX_PATHS`.`DROPBOX_ID`) where "+
+    "`DROPBOXES`.`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+
+    "'";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(!QFile::exists(q->value(0).toString())) {
-      sql=QString("delete from DROPBOX_PATHS where ")+
-	QString().sprintf("ID=%d",q->value(1).toInt());
-      q1=new RDSqlQuery(sql);
-      delete q1;
+      sql=QString("delete from `DROPBOX_PATHS` where ")+
+	QString().sprintf("`ID`=%d",q->value(1).toInt());
+      RDSqlQuery::apply(sql);
     }
   }
   delete q;
@@ -286,10 +282,9 @@ void MainObject::PurgeGpioEvents()
 
   QString sql;
 
-  sql=QString("delete from GPIO_EVENTS where ")+
-    "EVENT_DATETIME<\""+
-    QDate::currentDate().addDays(-RD_GPIO_EVENT_DAYS).toString("yyyy-MM-dd")+" 00:00:00\"";
-  printf("SQL: %s\n",sql.toUtf8().constData());
+  sql=QString("delete from `GPIO_EVENTS` where ")+
+    "`EVENT_DATETIME`<'"+
+    QDate::currentDate().addDays(-RD_GPIO_EVENT_DAYS).toString("yyyy-MM-dd")+" 00:00:00'";
   RDSqlQuery::apply(sql);
 
   PrintMessage("Starting Completed GpioEvents()");
@@ -301,11 +296,9 @@ void MainObject::PurgeWebapiAuths()
   PrintMessage("Starting PurgeWebapiAuths()");
 
   QString sql;
-  RDSqlQuery *q;
 
-  sql=QString("delete from WEBAPI_AUTHS where EXPIRATION_DATETIME<now()");
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("delete from `WEBAPI_AUTHS` where `EXPIRATION_DATETIME`<now()");
+  RDSqlQuery::apply(sql);
 
   PrintMessage("Completed PurgeWebapiAuths()");
 }
@@ -324,14 +317,14 @@ void MainObject::PurgeStacks()
   int artistsep=50000;
   int titlesep=50000;
 
-  sql="select MAX(ARTISTSEP) from CLOCKS";
+  sql="select MAX(`ARTISTSEP`) from `CLOCKS`";
   q=new RDSqlQuery(sql);
   if(q->next()) {
     artistsep=q->value(0).toInt();
   }
   delete q;
 
-  sql="select MAX(TITLE_SEP) from EVENTS";
+  sql="select MAX(`TITLE_SEP`) from `EVENTS`";
   q=new RDSqlQuery(sql);
   if(q->next()) {
     titlesep=q->value(0).toInt();
@@ -340,36 +333,35 @@ void MainObject::PurgeStacks()
 
   stacksize=(artistsep<titlesep)?titlesep:artistsep;
 
-  sql="select NAME from SERVICES";
+  sql="select `NAME` from `SERVICES`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString("select MAX(SCHED_STACK_ID) from STACK_LINES where ")+
-      "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+    sql=QString("select MAX(`SCHED_STACK_ID`) from `STACK_LINES` where ")+
+      "`SERVICE_NAME`='"+RDEscapeString(q->value(0).toString())+"'";
     q1=new RDSqlQuery(sql);
     if (q1->next()) {
       stackid=q1->value(0).toUInt();
       if (stackid-stacksize > 0) {
-        sql=QString("select ID from STACK_LINES where ")+
-	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
-	  QString().sprintf("SCHED_STACK_ID<=%d",stackid-stacksize);
+        sql=QString("select `ID` from `STACK_LINES` where ")+
+	  "`SERVICE_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
+	  QString().sprintf("`SCHED_STACK_ID`<=%d",stackid-stacksize);
 	q2=new RDSqlQuery(sql);
 	while(q2->next()) {
-	  sql=QString("delete from STACK_SCHED_CODES where ")+
-	    QString().sprintf("STACK_LINES_ID=%u",q2->value(0).toUInt());
+	  sql=QString("delete from `STACK_SCHED_CODES` where ")+
+	    QString().sprintf("`STACK_LINES_ID`=%u",q2->value(0).toUInt());
 	  RDSqlQuery::apply(sql);
 	}
 	delete q2;
-        sql=QString("delete from STACK_LINES where ")+
-	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
-	  QString().sprintf("SCHED_STACK_ID<=%d",stackid-stacksize);
+        sql=QString("delete from `STACK_LINES` where ")+
+	  "`SERVICE_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
+	  QString().sprintf("`SCHED_STACK_ID`<=%d",stackid-stacksize);
 	RDSqlQuery::apply(sql);
 
-        sql=QString("update STACK_LINES set ")+
-	  QString().sprintf("SCHED_STACK_ID=SCHED_STACK_ID-%d where ",
+        sql=QString("update `STACK_LINES` set ")+
+	  QString().sprintf("`SCHED_STACK_ID`=`SCHED_STACK_ID`-%d where ",
 			    stackid-stacksize)+
-	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
-        q2=new RDSqlQuery(sql);
-        delete q2;
+	  "SERVICE_NAME='"+RDEscapeString(q->value(0).toString())+"'";
+        RDSqlQuery::apply(sql);
       }
     }
     delete q1;
@@ -388,7 +380,7 @@ void MainObject::RehashCuts()
   RDSqlQuery *q;
   RDRehash::ErrorCode err;
 
-  sql="select CUT_NAME from CUTS where SHA1_HASH is null limit 100";
+  sql="select `CUT_NAME` from `CUTS` where `SHA1_HASH` is null limit 100";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if((err=RDRehash::rehash(rda->station(),rda->user(),rda->config(),
