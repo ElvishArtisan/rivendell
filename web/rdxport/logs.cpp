@@ -132,38 +132,38 @@ void Xport::ListLogs()
   //
   // Generate Log List
   //
-  sql="select NAME from LOGS";
+  sql="select `NAME` from `LOGS`";
   sql+=" where";
   if(!log_name.isEmpty()) {
-    sql+=" (NAME=\""+RDEscapeString(log_name)+"\")&&";
+    sql+=" (`NAME`='"+RDEscapeString(log_name)+"')&&";
   }
   if(service_name.isEmpty()) {
-    QString sql2=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
+    QString sql2=QString("select `SERVICE_NAME` from `USER_SERVICE_PERMS` where ")+
+      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"'";
     q=new RDSqlQuery(sql2);
     sql+="(";
     while(q->next()) {
-      sql+="(SERVICE=\""+RDEscapeString(q->value(0).toString())+"\")||";
+      sql+="(`SERVICE`='"+RDEscapeString(q->value(0).toString())+"')||";
     }
     sql=sql.left(sql.length()-2);
     sql+=")&&";
     delete q;
   }
   else {
-    sql+=" (SERVICE=\""+RDEscapeString(service_name)+"\")&&";
+    sql+=" (`SERVICE`='"+RDEscapeString(service_name)+"')&&";
   }
   if(trackable=="1") {
-    sql+=" (SCHEDULED_TRACKS>0)&&";
+    sql+=" (`SCHEDULED_TRACKS`>0)&&";
   }
   if(!filter.isEmpty()) {
     if(service_name.isEmpty()) {
-      sql+=" ((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
-      sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\")||";
-      sql+="(LOGS.SERVICE like \"%%"+RDEscapeString(filter)+"%%\"))&&";
+      sql+=" ((`LOGS`.`NAME` like '%%"+RDEscapeString(filter)+"%%')||";
+      sql+="(`LOGS`.`DESCRIPTION` like '%%"+RDEscapeString(filter)+"%%')||";
+      sql+="(`LOGS`.`SERVICE` like '%%"+RDEscapeString(filter)+"%%'))&&";
     }
     else {
-      sql+=" ((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
-      sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\"))&&";
+      sql+=" ((`LOGS`.`NAME` like '%%"+RDEscapeString(filter)+"%%')||";
+      sql+="(`LOGS`.`DESCRIPTION` like '%%"+RDEscapeString(filter)+"%%'))&&";
     }
   }
   sql=sql.trimmed();
@@ -175,11 +175,11 @@ void Xport::ListLogs()
     sql=sql.left(sql.length()-5);
   }
   if(recent=="1") {
-    sql+=QString().sprintf(" order by LOGS.ORIGIN_DATETIME desc limit %d",
+    sql+=QString().sprintf(" order by `LOGS`.`ORIGIN_DATETIME` desc limit %d",
 			   RD_LOGFILTER_LIMIT_QUAN);
   }
   else {
-    sql+=" order by NAME";
+    sql+=" order by `NAME`";
   }
   q=new RDSqlQuery(sql);
 
@@ -631,9 +631,10 @@ void Xport::LockLog()
 
 RDSvc *Xport::GetLogService(const QString &svc_name)
 {
-  QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-    "(USER_NAME=\""+RDEscapeString(rda->user()->name())+"\")&&"+
-    "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")";
+  QString sql=QString("select `SERVICE_NAME` ")+
+    "from `USER_SERVICE_PERMS` where "+
+    "(`USER_NAME`='"+RDEscapeString(rda->user()->name())+"')&&"+
+    "(`SERVICE_NAME`='"+RDEscapeString(svc_name)+"')";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     XmlExit("No such service",404,"logs.cpp",LINE_NUMBER);
@@ -652,9 +653,10 @@ bool Xport::ServiceUserValid(const QString &svc_name)
 {
   bool ret=false;
 
-  QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-    "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")&&"+
-    "(USER_NAME=\""+RDEscapeString(rda->user()->name())+"\")";
+  QString sql=QString("select `SERVICE_NAME` ")+
+    "from `USER_SERVICE_PERMS` where "+
+    "(`SERVICE_NAME`='"+RDEscapeString(svc_name)+"')&&"+
+    "(`USER_NAME`='"+RDEscapeString(rda->user()->name())+"')";
   RDSqlQuery *q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;

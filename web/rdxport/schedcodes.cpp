@@ -34,7 +34,7 @@ void Xport::ListSchedCodes()
   //
   // Generate Scheduler Code List
   //
-  sql=QString("select CODE from SCHED_CODES order by CODE");
+  sql=QString("select `CODE` from `SCHED_CODES` order by `CODE`");
   q=new RDSqlQuery(sql);
 
   //

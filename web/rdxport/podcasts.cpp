@@ -556,9 +556,9 @@ void Xport::PostImage()
     XmlExit("Missing ID",400,"podcasts.cpp",LINE_NUMBER);
   }
   sql=QString("select ")+
-    "FEED_ID,"+         // 00
-    "DATA,"+            // 01
-    "FILE_EXTENSION "+  // 02
+    "`FEED_ID`,"+         // 00
+    "`DATA`,"+            // 01
+    "`FILE_EXTENSION` "+  // 02
     "from FEED_IMAGES where "+
     QString().sprintf("ID=%d",img_id);
   q=new RDSqlQuery(sql);
@@ -668,10 +668,10 @@ void Xport::RemoveImage()
     XmlExit("Missing ID",400,"podcasts.cpp",LINE_NUMBER);
   }
   sql=QString("select ")+
-    "FEED_ID,"+         // 00
-    "FILE_EXTENSION "+  // 01
-    "from FEED_IMAGES where "+
-    QString().sprintf("ID=%d",img_id);
+    "`FEED_ID`,"+         // 00
+    "`FILE_EXTENSION` "+  // 01
+    "from `FEED_IMAGES` where "+
+    QString().sprintf("`ID`=%d",img_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     feed_id=q->value(0).toUInt();

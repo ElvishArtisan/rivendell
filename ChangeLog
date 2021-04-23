@@ -21587,3 +21587,7 @@
 	* Escaped all SQL identifiers in 'utils/rdmarkerset/'.
 	* Replaced " with ' delimiters in all SQL literal strings in
 	'utils/rdmarkerset/'.
+2021-04-23 Fred Gleason <fredg@paravelsystems.com>
+	* Escaped all SQL identifiers in 'web/rdxport/'.
+	* Replaced " with ' delimiters in all SQL literal strings in
+	'web/rdxport/'.

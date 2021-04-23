@@ -60,8 +60,8 @@ void Xport::DeleteAudio()
   }
   unlink(RDCut::pathName(cartnum,cutnum).toUtf8());
   unlink((RDCut::pathName(cartnum,cutnum)+".energy").toUtf8());
-  QString sql=QString("delete from CUT_EVENTS where ")+
-    "CUT_NAME=\""+RDCut::cutName(cartnum,cutnum)+"\"";
+  QString sql=QString("delete from `CUT_EVENTS` where ")+
+    "`CUT_NAME`='"+RDCut::cutName(cartnum,cutnum)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
   SendNotification(RDNotification::CartType,RDNotification::ModifyAction,

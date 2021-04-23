@@ -51,22 +51,22 @@ void Xport::ListServices()
   //
   // Generate Service List
   //
-  sql=QString("select NAME from SERVICES where ");
-  sql2=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
+  sql=QString("select `NAME` from `SERVICES` where ");
+  sql2=QString("select `SERVICE_NAME` from `USER_SERVICE_PERMS` where ")+
+    "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"'";
   q=new RDSqlQuery(sql2);
   sql+="(";
   while(q->next()) {
-    sql+="(NAME=\""+RDEscapeString(q->value(0).toString())+"\")||";
+    sql+="(`NAME`='"+RDEscapeString(q->value(0).toString())+"')||";
   }
   sql=sql.left(sql.length()-2);
   sql+=")";
   delete q;
 
   if(trackable=="1") {
-    sql+="&&(TRACK_GROUP!=\"\")&&(TRACK_GROUP is not null)";
+    sql+="&&(`TRACK_GROUP`!='')&&(`TRACK_GROUP` is not null)";
   }
-  sql+=" order by NAME";
+  sql+=" order by `NAME`";
   q=new RDSqlQuery(sql);
 
   //
