@@ -403,7 +403,6 @@ bool MainWidget::CheckSpot(const QString &isci)
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
   bool ret=false;
   QDate today=QDate::currentDate();
   QDate killdate=dg_date_edit->date().addDays(RDDGIMPORT_KILLDATE_OFFSET);
@@ -414,22 +413,25 @@ bool MainWidget::CheckSpot(const QString &isci)
     endDateTimeSQL = RDCheckDateTime(QDateTime(killdate,QTime(23,59,59)),
                                     "yyyy-MM-dd hh:mm:ss");
 
-  sql=QString("select CUT_NAME,CUTS.START_DATETIME,CUTS.END_DATETIME ")+
-    "from CART left join CUTS on CART.NUMBER=CUTS.CART_NUMBER "+
-    "where (CART.GROUP_NAME=\""+RDEscapeString(dg_svc->autospotGroup())+"\")&&"
-    "(CUTS.ISCI=\""+RDEscapeString(isci)+"\")";
+  sql=QString("select ")+
+    "`CUTS`.`CUT_NAME`,"+        // 00
+    "`CUTS`.`START_DATETIME`,"+  // 01
+    "`CUTS`.`END_DATETIME` "+   // 02
+    "from `CART` left join `CUTS` on "+
+    "`CART`.`NUMBER`=`CUTS`.`CART_NUMBER` "+
+    "where (`CART`.`GROUP_NAME`='"+RDEscapeString(dg_svc->autospotGroup())+"')&&"
+    "(`CUTS`.`ISCI`='"+RDEscapeString(isci)+"')";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     dg_carts[isci]=RDCut::cartNumber(q->value(0).toString());
     if(q->value(2).isNull()||(q->value(2).toDateTime().date()<killdate)) {
-      sql="update CUTS set ";
+      sql="update `CUTS` set ";
       if(q->value(1).isNull()) {
-	sql+="START_DATETIME=\""+today.toString("yyyy-MM-dd")+" 00:00:00\",";
+	sql+="`START_DATETIME`='"+today.toString("yyyy-MM-dd")+" 00:00:00',";
       }
-      sql+="END_DATETIME="+endDateTimeSQL+" ";
-      sql+="where CUT_NAME=\""+q->value(0).toString()+"\"";
-      q1=new RDSqlQuery(sql);
-      delete q1;
+      sql+="`END_DATETIME`="+endDateTimeSQL+" ";
+      sql+="where `CUT_NAME`='"+q->value(0).toString()+"'";
+      RDSqlQuery::apply(sql);
     }
     ret=true;
   }
