@@ -2901,7 +2901,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 	"`EVENT_NAME` char(64) not null,"+
 	"`START_TIME` int not null,"+
 	"`LENGTH` int not null,"+
-	"`index EVENT_NAME_IDX` (`EVENT_NAME`))"+
+	"index `EVENT_NAME_IDX` (`EVENT_NAME`))"+
 	" charset latin1 collate latin1_swedish_ci"+
 	db_table_create_postfix;
       if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -3541,25 +3541,25 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   if((cur_schema==284)&&(set_schema<cur_schema)) {
     for(int i=9;i>=0;i--) {
       sql=QString("alter table `RDAIRPLAY` add column ")+
-	QString().sprintf("`STOP_RML%d` char(255) after `INSTANCE`",i);
+	QString().sprintf("`STOP_RML%d` char(255) after `STATION`",i);
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
 
       sql=QString("alter table `RDAIRPLAY` add column ")+
-	QString().sprintf("`START_RML%d` char(255) after `INSTANCE`",i);
+	QString().sprintf("`START_RML%d` char(255) after `STATION`",i);
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
 
       sql=QString("alter table `RDAIRPLAY` add column ")+
-	QString().sprintf("`PORT%d` int default 0 after `INSTANCE`",i);
+	QString().sprintf("`PORT%d` int default 0 after `STATION`",i);
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
 
       sql=QString("alter table `RDAIRPLAY` add column ")+
-	QString().sprintf("`CARD%d` int default 0 after `INSTANCE`",i);
+	QString().sprintf("`CARD%d` int default 0 after `STATION`",i);
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
@@ -4269,6 +4269,11 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 257
   //
   if((cur_schema==257)&&(set_schema<cur_schema)) {
+    /*
+     * Disabled because the constraint assumes null date/time values are
+     * indicated by zeroed fields --i.e. '0000-00-00 00:00:00'-- which
+     * are not legal in later versions of MySQL.
+     *
     sql=QString("alter table `LOGS` modify column `LINK_DATETIME` datetime not null");
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4283,7 +4288,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
-
+    */
     WriteSchemaVersion(--cur_schema);
   }
 

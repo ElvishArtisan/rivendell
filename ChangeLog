@@ -21615,3 +21615,7 @@
 2021-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Added a check for zero length recordings to the 'Edit Recording'
 	dialog in rdcatch(1).
+2021-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions that caused SQL errors when performing
+	schema upgrades and reversions.
+	* Disabled the reversion from schema 257=>256 in rddbmgr(8).

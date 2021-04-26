@@ -9863,7 +9863,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       return false;
     }
 
-    sql=QString("alter table `RDLOGEDIT ")+
+    sql=QString("alter table `RDLOGEDIT` ")+
       "modify column `OUTPUT_CARD` int(11) default 0";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -9920,7 +9920,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       return false;
     }
 
-    sql=QString("alter table `LOGS add column ")+
+    sql=QString("alter table `LOGS` add column ")+
       "`INCLUDE_IMPORT_MARKERS` enum('N','Y') default 'Y' after `COMPLETED_TRACKS`";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -10130,7 +10130,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     //    delete q;
 
     sql=QString("insert into `IMPORT_TEMPLATES` set ")+
-      "`NAME='MusicMaster Nexus',"+
+      "`NAME`='MusicMaster Nexus',"+
       "`HOURS_OFFSET`=0,"+
       "`HOURS_LENGTH`=2,"+
       "`MINUTES_OFFSET`=3,"+
@@ -10362,7 +10362,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
-    sql=QString("alter table `FEEDS add column `DEFAULT_ITEM_IMAGE_ID` ")+
+    sql=QString("alter table `FEEDS` add column `DEFAULT_ITEM_IMAGE_ID` ")+
       "int not null default -1 after `KEEP_METADATA`";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
