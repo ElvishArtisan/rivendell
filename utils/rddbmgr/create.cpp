@@ -108,7 +108,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "`ADD_PODCAST_PRIV` enum('N','Y') not null default 'N',"+
     "`EDIT_PODCAST_PRIV` enum('N','Y') not null default 'N',"+
     "`DELETE_PODCAST_PRIV` enum('N','Y') not null default 'N',"+
-    "`INDEX FULL_NAME_IDX` (`FULL_NAME`))"+
+    "index `FULL_NAME_IDX` (`FULL_NAME`))"+
     " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -159,7 +159,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "`HPI_VERSION` char(16),"+
     "`JACK_VERSION` char(16),"+
     "`ALSA_VERSION` char(16),"+
-    "INDEX `DESCRIPTION_IDX` (`DESCRIPTION`),"+
+    "index `DESCRIPTION_IDX` (`DESCRIPTION`),"+
     "index `IPV4_ADDRESS_IDX` (`IPV4_ADDRESS`))"+
     " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
@@ -661,7 +661,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "`LOCK_DATETIME` datetime,"+
     "`LOCK_GUID` char(82),"+
     "index `NAME_IDX` (`NAME`,`LOG_EXISTS`),"+
-    "index `SERVICE_IDX` (`SERVICE),"+
+    "index `SERVICE_IDX` (`SERVICE`),"+
     "index `DESCRIPTION_IDX` (`DESCRIPTION`),"+
     "index `ORIGIN_USER_IDX` (`ORIGIN_USER`),"+
     "index `START_DATE_IDX` (`START_DATE`),"+
@@ -830,7 +830,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "`NODE_HOSTNAME` char(255),"+
     "`NODE_TCP_PORT` int,"+
     "`NODE_SLOT` int,"+
-    "index `MATRIX_IDX` (`STATION_NAME`,`MATRIX,NUMBER`),"+
+    "index `MATRIX_IDX` (`STATION_NAME`,`MATRIX`,`NUMBER`),"+
     "index `NODE_IDX` (`STATION_NAME`,`MATRIX`,`NUMBER`,`NODE_HOSTNAME`,`NODE_TCP_PORT`))"+
     " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
@@ -1379,7 +1379,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
   // Create SWITCHER_NODES Table
   //
   sql=QString("create table if not exists `SWITCHER_NODES` (")+
-    "`ID int not null auto_increment primary key,"+
+    "`ID` int not null auto_increment primary key,"+
     "`STATION_NAME` char(64),"+
     "`MATRIX` int,"+
     "`BASE_OUTPUT` int default 0,"+
@@ -1477,7 +1477,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "`NUMBER` int not null,"+
     "`MACRO_CART` int default 0,"+
     "`OFF_MACRO_CART` int default 0,"+
-    "index `MATRIX_IDX` (`STATION_NAME`,`MATRIX,NUMBER`))"+
+    "index `MATRIX_IDX` (`STATION_NAME`,`MATRIX`,`NUMBER`))"+
     " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -1503,7 +1503,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
   // Create NOWNEXT_PLUGINS Table
   //
   sql=QString("create table if not exists `NOWNEXT_PLUGINS` (")+
-    "`ID int auto_increment not null primary key,"+
+    "`ID` int auto_increment not null primary key,"+
     "`STATION_NAME` char(64) not null,"+
     "`LOG_MACHINE` int unsigned not null default 0,"+
     "`PLUGIN_PATH` char(255),"+
@@ -2506,7 +2506,7 @@ bool MainObject::InsertImportFormats(QString *err_msg) const
   QString sql;
 
   sql=QString("insert into `IMPORT_TEMPLATES` set ")+
-    "`NAME='Rivendell Standard Import',"+
+    "`NAME`='Rivendell Standard Import',"+
     "`CART_OFFSET`=10,"+
     "`CART_LENGTH`=6,"+
     "`TITLE_OFFSET`=25,"+
@@ -2530,7 +2530,7 @@ bool MainObject::InsertImportFormats(QString *err_msg) const
   }
 
   sql=QString("insert into `IMPORT_TEMPLATES` set ")+
-    "`NAME='PowerGold Music Scheduling',"+
+    "`NAME`='PowerGold Music Scheduling',"+
     "`CART_OFFSET`=10,"+
     "`CART_LENGTH`=6,"+
     "`TITLE_OFFSET`=25,"+
