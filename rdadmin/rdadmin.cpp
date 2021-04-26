@@ -60,7 +60,7 @@ void PrintError(const QString &str,bool interactive)
     QMessageBox::warning(NULL,QObject::tr("RDAdmin Error"),str);
   }
   else {
-    fprintf(stderr,(QString("rdadmin: ")+str).toUtf8().constData());
+    fprintf(stderr,"rdadmin: %s\n",str.toUtf8().constData());
   }
 }
 

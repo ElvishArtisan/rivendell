@@ -21595,3 +21595,5 @@
 	* Escaped all SQL identifiers in 'web/webget/'.
 	* Replaced " with ' delimiters in all SQL literal strings in
 	'web/webget/'.
+2021-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed security warnings when build under Debian.
