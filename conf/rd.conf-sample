@@ -61,6 +61,18 @@ HeartbeatInterval=360
 ; created by Rivendell.
 ;Engine=MyISAM
 
+; The following setting controls the collation used for new DB tables
+; created by Rivendell. Collations control how text is sorted and matched
+; by the database engine. Versions of MySQL earlier than v8.0 should use
+; 'utf8mb4_general_ci', while those using v8.0 or later may find it
+; beneficial to switch to 'utf8mb4_0900_ai_ci', which provides support
+; for more up-to-date Unicode standards. For more information, see:
+;
+; https://www.monolune.com/what-is-the-utf8mb4_0900_ai_ci-collation/
+;
+Collation=utf8mb4_general_ci
+;Collation=utf8mb4_0900_ai_ci
+
 [AudioStore]
 MountSource=
 MountType=

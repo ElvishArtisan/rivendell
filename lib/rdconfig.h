@@ -62,6 +62,7 @@ class RDConfig
   QString mysqlDriver() const;
   int mysqlHeartbeatInterval() const;
   QString mysqlEngine() const;
+  QString mysqlCollation() const;
   QString createTablePostfix() const;
   bool logXloadDebugData() const;
   bool provisioningCreateHost() const;
@@ -133,6 +134,7 @@ class RDConfig
   QString conf_mysql_password;
   QString conf_mysql_driver;
   QString conf_mysql_engine;
+  QString conf_mysql_collation;
   QString conf_create_table_postfix;
   int conf_mysql_heartbeat_interval;
   bool conf_provisioning_create_host;

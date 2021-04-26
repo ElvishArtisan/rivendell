@@ -217,6 +217,12 @@ QString RDConfig::mysqlEngine() const
 }
 
 
+QString RDConfig::mysqlCollation() const
+{
+  return conf_mysql_collation;
+}
+
+
 QString RDConfig::createTablePostfix() const
 {
   return conf_create_table_postfix;
@@ -585,6 +591,8 @@ bool RDConfig::load()
 		      DEFAULT_MYSQL_HEARTBEAT_INTERVAL);
   conf_mysql_engine=
     profile->stringValue("mySQL","Engine",DEFAULT_MYSQL_ENGINE);
+  conf_mysql_collation=
+    profile->stringValue("mySQL","Collation",DEFAULT_MYSQL_COLLATION);
   conf_create_table_postfix=
     RDConfig::createTablePostfix(conf_mysql_engine);
 
@@ -690,6 +698,7 @@ void RDConfig::clear()
   conf_mysql_driver="";
   conf_mysql_heartbeat_interval=DEFAULT_MYSQL_HEARTBEAT_INTERVAL;
   conf_mysql_engine=DEFAULT_MYSQL_ENGINE;
+  conf_mysql_collation=DEFAULT_MYSQL_COLLATION;
   conf_create_table_postfix="";
   conf_log_xload_debug_data=false;
   conf_provisioning_create_host=false;

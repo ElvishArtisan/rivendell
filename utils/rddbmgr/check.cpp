@@ -179,16 +179,17 @@ void MainObject::CheckTableAttributes()
 	RDSqlQuery::apply(sql);
       }
     }
-    if(q->value(2).toString().toLower()!="utf8mb4_general_ci") {
-      printf("  Table \"%s\" uses charset/collation %s/%s, should be utf8mb4/utf8mb4_general_ci. Fix? (y/N) ",
+    if(q->value(2).toString().toLower()!=db_config->mysqlCollation()) {
+      printf("  Table \"%s\" uses charset/collation %s/%s, should be utf8mb4/%s. Fix? (y/N) ",
 	     q->value(0).toString().toUtf8().constData(),
 	     charset.toUtf8().constData(),
-	     q->value(2).toString().toUtf8().constData());
+	     q->value(2).toString().toUtf8().constData(),
+	     db_config->mysqlCollation().toUtf8().constData());
       fflush(NULL);
       if(UserResponse()) {
 	RewriteTable(q->value(0).toString(),
 		     charset,q->value(2).toString(),
-		     "utf8mb4","utf8mb4_general_ci");
+		     "utf8mb4",db_config->mysqlCollation());
       }
     }
   }
@@ -206,14 +207,15 @@ void MainObject::CheckTableAttributes()
   while(q->next()) {
     if(q->value(0).toString()==db_mysql_database) {
       if((q->value(1).toString().toLower()!="utf8mb4")||
-	 (q->value(2).toString().toLower()!="utf8mb4_general_ci")) {
-	printf("  Database uses default charset/collation %s/%s, should be utf8mb4/utf8mb4_general_ci. Fix? (y/N) ",
+	 (q->value(2).toString().toLower()!=db_config->mysqlCollation())) {
+	printf("  Database uses default charset/collation %s/%s, should be utf8mb4/%s. Fix? (y/N) ",
 	       q->value(1).toString().toUtf8().constData(),
-	       q->value(2).toString().toUtf8().constData());
+	       q->value(2).toString().toUtf8().constData(),
+	       db_config->mysqlCollation());
 	fflush(NULL);
 	if(UserResponse()) {
 	  sql=QString("alter database `")+db_mysql_database+"` "+
-	    "character set utf8mb4 collate utf8mb4_general_ci";
+	    "character set utf8mb4 collate "+db_config->mysqlCollation();
 	  RDSqlQuery::apply(sql);	
 	}
       }
@@ -229,6 +231,14 @@ void MainObject::RewriteTable(const QString &tblname,
 			      const QString &new_charset,
 			      const QString &new_collation)
 {
+  /*
+  printf("RewriteTable('%s','%s','%s','%s','%s')\n",
+	 tblname.toUtf8().constData(),
+	 old_charset.toUtf8().constData(),
+	 old_collation.toUtf8().constData(),
+	 new_charset.toUtf8().constData(),
+	 new_collation.toUtf8().constData());
+  */  
   QString err_msg;
   QProcess *proc=NULL;
   QStringList args;

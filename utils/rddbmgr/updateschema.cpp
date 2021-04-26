@@ -9844,7 +9844,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       return false;
     }
 
-    ModifyCharset("utf8mb4","utf8mb4_general_ci");
+    ModifyCharset("utf8mb4",db_config->mysqlCollation());
 
     WriteSchemaVersion(++cur_schema);
   }
@@ -9853,7 +9853,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   // Maintainer's Note:
   //
   // All tables created below this point should use a character set
-  // of 'utf8mb4' and a collation of 'utf8mb4_general_ci'.
+  // of 'utf8mb4' and the collation returned by 'RDConfig::mysqlCollation()'.
   //
 
   if((cur_schema<298)&&(set_schema>cur_schema)) {
@@ -9878,7 +9878,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`CART_NUMBER` int unsigned not null default 0,"+
       "`SCHED_CODE` varchar(11) not null,"+
       "index `SCHED_CODE_IDX` (`CART_NUMBER`,`SCHED_CODE`))"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -9947,7 +9947,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`DESCRIPTION` varchar(191) default '[new]',"+
       "`CONFIG` text not null,"+
       "index `STATION_NAME_IDX` (`STATION_NAME`))"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -10020,7 +10020,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`STACK_LINES_ID` int unsigned,"+
       "`SCHED_CODE` varchar(10),"+
       "index `SCHED_CODE_IDX` (`SCHED_CODE`))"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -10078,7 +10078,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`RD_NAME` varchar(255),"+
       "`NEXUS_NAME` varchar(255),"+
       "`NEXUS_ID` int(11))"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -10089,7 +10089,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`NOTIFICATION` varchar(255),"+
       "`ERROR` varchar(255),"+
       "`CREATED` timestamp default current_timestamp)"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -10100,7 +10100,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`ADDRESS` varchar(50) NOT NULL,"+
       "`PORT` int(11) NOT NULL DEFAULT 8080,"+
       "`STATION_NAME` varchar(64))"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -10113,7 +10113,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`RD_SERVICE` varchar(10) not null,"+
       "`RD_GROUP_NAME` varchar(10) not null,"+
       "`RD_SCHED_CODE` varchar(11) not null)"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -10267,7 +10267,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "index `MEMBER_FEED_ID_IDX` (`MEMBER_FEED_ID`),"+
       "index `KEY_NAME_IDX` (`KEY_NAME`),"+
       "index `MEMBER_KEY_NAME_IDX` (`MEMBER_KEY_NAME`)) "+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -10319,7 +10319,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`CHANNEL_XML` text,"+
       "`ITEM_XML` text,"+
       "index `NAME_IDX` (`NAME`)) "+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -10347,7 +10347,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`DATA` mediumblob not null,"+
       "index `FEED_ID_IDX` (`FEED_ID`),"+
       "index `FEED_KEY_NAME_IDX` (`FEED_KEY_NAME`)) "+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -10704,7 +10704,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`NORMALIZATION_LEVEL` int not null,"+
       "`AUTOTRIM_LEVEL` int not null,"+
       "unique index `NAME_IDX` (`NAME`))"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;

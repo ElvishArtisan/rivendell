@@ -284,7 +284,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
       "`ENCODER_ID` int not null,"+
       "`CHANNELS` int not null,"+
       "index `ENCODER_ID_IDX` (`ENCODER_ID`))"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -295,7 +295,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
       "`ENCODER_ID` int not null,"+
       "`BITRATES` int not null,"+
       "index `ENCODER_ID_IDX` (`ENCODER_ID`))"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -306,7 +306,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
       "`ENCODER_ID` int not null,"+
       "`SAMPLERATES` int not null,"+
       "index `ENCODER_ID_IDX` (`ENCODER_ID`))"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -319,7 +319,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
       "`COMMAND_LINE` char(255),"+
       "`DEFAULT_EXTENSION` char(16),"+
       "index `NAME_IDX` (`NAME`,`STATION_NAME`))"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -397,7 +397,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
       "`ACCESS_DATE` date not null,"+
       "`ACCESS_COUNT` int unsigned not null default 0,"+
       "unique index `KEY_NAME_CAST_ID_DATE_IDX` (`FEED_KEY_NAME`,`CAST_ID`,`ACCESS_DATE`))"+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -468,7 +468,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
       "`CHANNEL_XML` text,"+
       "`ITEM_XML` text,"+
       "index `NAME_IDX` (`NAME`)) "+
-      " charset utf8mb4 collate utf8mb4_general_ci"+
+      " charset utf8mb4 collate "+db_config->mysqlCollation()+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -913,7 +913,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Maintainer's Note:
   //
   // All tables created above this point should use a character set
-  // of 'utf8mb4' and a collation of 'utf8mb4_general_ci'.
+  // of 'utf8mb4' and the collation returned by 'RDConfig::mysqlCollation()'.
   //
 
   //

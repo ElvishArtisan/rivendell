@@ -21622,3 +21622,6 @@
 2021-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions that caused SQL errors when performing database
 	creation in rddbmgr(8).
+2021-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Collations=' directive to the [mySQL] section of
+	rd.conf(5).
