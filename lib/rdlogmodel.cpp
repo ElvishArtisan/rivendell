@@ -359,9 +359,9 @@ int RDLogModel::validate(QString *report,const QDate &date)
 	    sql=QString("select `CUT_NAME` from `CUTS` where ")+
 	      QString().sprintf("(`CART_NUMBER`=%u)&&",logLine(i)->cartNumber())+
 	      "((`START_DATETIME` is null)||"+
-	      "(`START_DATETIME`<=\""+date.toString("yyyy-MM-dd")+" 23:59:59\"))&&"+
+	      "(`START_DATETIME`<='"+date.toString("yyyy-MM-dd")+" 23:59:59'))&&"+
 	      "((`END_DATETIME` is null)||"+
-	      "(`END_DATETIME`>=\""+date.toString("yyyy-MM-dd")+" 00:00:00\"))&&"+
+	      "(`END_DATETIME`>='"+date.toString("yyyy-MM-dd")+" 00:00:00'))&&"+
 	      "("+RDDowCode(date.dayOfWeek())+"='Y')&&(LENGTH>0)";
 	  }
 	  else {
@@ -383,7 +383,7 @@ int RDLogModel::validate(QString *report,const QDate &date)
 	      "((`END_DAYPART` is null)||"+
 	      "(`END_DAYPART`>='"+logLine(i)->startTime(RDLogLine::Logged).
 	      toString("hh:mm:ss")+"'))&&"+
-	      "("+RDDowCode(date.dayOfWeek())+"=\"Y\")&&(LENGTH>0)";
+	      "("+RDDowCode(date.dayOfWeek())+"='Y')&&(LENGTH>0)";
 	  }
 	  q1=new RDSqlQuery(sql);
 	  if(!q1->first()) {
@@ -1056,7 +1056,7 @@ int RDLogModel::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
     "`CART`.`LAST_CUT_PLAYED`,"+         // 23
     "`CART`.`PLAY_ORDER`,"+              // 24
     "`CART`.`ENFORCE_LENGTH`,"+          // 25
-    "`CART`.`PRESERVE_PITCH `,"+         // 26
+    "`CART`.`PRESERVE_PITCH`,"+         // 26
     "`LOG_LINES`.`TYPE`,"+               // 27
     "`LOG_LINES`.`COMMENT`,"+            // 28
     "`LOG_LINES`.`LABEL`,"+              // 29
@@ -1093,13 +1093,13 @@ int RDLogModel::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
     "`CART`.`START_DATETIME`,"+          // 60
     "`CART`.`END_DATETIME`,"+            // 61
     "`LOG_LINES`.`EVENT_LENGTH`,"+       // 62
-    "`CART`.`USE_EVENT_LENGTH',"+        // 63
+    "`CART`.`USE_EVENT_LENGTH`,"+        // 63
     "`CART`.`NOTES` "+                   // 64
     "from `LOG_LINES` left join `CART` "+
     "on `LOG_LINES`.`CART_NUMBER`=`CART`.`NUMBER` where "+
-    "`LOG_LINES`.`LOG_NAME`=\""+RDEscapeString(logname)+"\" "+
+    "`LOG_LINES`.`LOG_NAME`='"+RDEscapeString(logname)+"' "+
     "order by `COUNT`";
-   q=new RDSqlQuery(sql);
+  q=new RDSqlQuery(sql);
   if(q->size()<=0) {
     delete q;
     return 0;

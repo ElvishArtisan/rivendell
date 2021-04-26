@@ -63,7 +63,7 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
     air_fmt=QString().sprintf("%%%-uu ",cartDigits());
   }
   sql=QString("select ")+
-    "`ELR_LINES`.`LENGTH,"+          // 00
+    "`ELR_LINES`.`LENGTH`,"+          // 00
     "`ELR_LINES`.`CART_NUMBER`,"+     // 01
     "`ELR_LINES`.`EVENT_DATETIME`,"+  // 02
     "`ELR_LINES`.`EVENT_TYPE`,"+      // 03

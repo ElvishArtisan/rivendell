@@ -21597,3 +21597,10 @@
 	'web/webget/'.
 2021-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed security warnings when build under Debian.
+2021-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed typo in 'lib/export_radiotraffic.cpp' that caused SQL
+	errors.
+	* Fixed typo in 'lib/rdlog_line.cpp' that caused SQL
+	errors.
+	* Fixed typo in 'lib/rdlogmodel.cpp' that caused SQL
+	errors.

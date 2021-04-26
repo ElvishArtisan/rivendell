@@ -1831,7 +1831,7 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
     }
     log_cut_number=log_cut_name.right(3).toInt();
     sql=QString("select ")+
-      "`LENGTH,"+                // 00
+      "`LENGTH`,"+                // 00
       "`START_POINT`,"+           // 01
       "`END_POINT`,"+             // 02
       "`SEGUE_START_POINT`,"+     // 03
