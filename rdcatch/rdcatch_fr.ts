@@ -653,6 +653,10 @@ New</source>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The Record Length parameter cannot be &quot;00:00:00&quot;!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditSwitchEvent</name>

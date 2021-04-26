@@ -21612,3 +21612,6 @@
 2021-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions caused by changes in behavior in the null
 	constructor of 'QTime' between Qt4 and Qt5.
+2021-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check for zero length recordings to the 'Edit Recording'
+	dialog in rdcatch(1).

@@ -955,6 +955,11 @@ bool EditRecording::CheckEvent(bool include_myself)
       break;
 
     case RDRecording::LengthEnd:
+      if(QTime(0,0,0).msecsTo(edit_endlength_edit->time())==0) {
+	QMessageBox::warning(this,"RDCatch - "+tr("Record Parameter Error"),
+			     tr("The Record Length parameter cannot be \"00:00:00\"!"));
+	return false;
+      }
       break;
     }
     break;
@@ -980,6 +985,11 @@ bool EditRecording::CheckEvent(bool include_myself)
       break;
 
     case RDRecording::LengthEnd:
+      if(QTime(0,0,0).msecsTo(edit_endlength_edit->time())==0) {
+	QMessageBox::warning(this,"RDCatch - "+tr("Record Parameter Error"),
+			     tr("The Record Length parameter cannot be \"00:00:00\"!"));
+	return false;
+      }
       break;
     }
     break;
