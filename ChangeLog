@@ -21607,3 +21607,5 @@
 2021-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDCartFilter' that caused a SQL error when
 	no groups were included in the search terms.
+2021-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed an invalid slot error in 'lib/rdlistsvcs.cpp'.

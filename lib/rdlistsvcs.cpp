@@ -46,7 +46,7 @@ RDListSvcs::RDListSvcs(const QString &caption,QWidget *parent)
   connect(edit_svc_model,SIGNAL(modelReset()),
 	  edit_svc_view,SLOT(resizeColumnsToContents()));
   connect(edit_svc_view,SIGNAL(doubleClicked(const QModelIndex &)),
-  	  this,SLOT(cartDoubleClickedData(const QModelIndex &)));
+  	  this,SLOT(doubleClickedData(const QModelIndex &)));
 
   //
   //  Ok Button
