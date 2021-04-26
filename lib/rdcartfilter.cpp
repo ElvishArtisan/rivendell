@@ -234,7 +234,12 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   sql+=RDCartFilter::phraseFilter(d_filter_edit->text().trimmed(),true);
   QStringList groups;
   for(int i=0;i<d_group_box->count();i++) {
-    groups.push_back(d_group_box->itemText(i));
+    if(d_group_box->itemText(i)!=tr("ALL")) {
+      groups.push_back(d_group_box->itemText(i));
+    }
+  }
+  if(groups.size()==0) {  // No groups selected, so force an empty selection
+    return QString(" where `CART`.`NUMBER`<0");  // An impossibility
   }
   sql+=RDCartFilter::groupFilter(d_group_box->currentText(),groups);
   if(d_show_track_carts) {
@@ -340,6 +345,7 @@ QString RDCartFilter::service() const
 
 void RDCartFilter::setService(const QString &svc)
 {
+
   if(svc!=d_service) {
     d_service=svc;
     if(!d_service.isEmpty()) {
@@ -427,6 +433,7 @@ void RDCartFilter::setMatchCount(int matches)
 
 void RDCartFilter::searchClickedData()
 {
+
   d_search_button->setDisabled(true);
   if(d_filter_edit->text().isEmpty()) {
     d_clear_button->setDisabled(true);

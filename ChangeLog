@@ -21604,3 +21604,6 @@
 	errors.
 	* Fixed typo in 'lib/rdlogmodel.cpp' that caused SQL
 	errors.
+2021-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDCartFilter' that caused a SQL error when
+	no groups were included in the search terms.
