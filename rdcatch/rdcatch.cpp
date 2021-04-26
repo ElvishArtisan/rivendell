@@ -498,7 +498,7 @@ void MainWidget::nextEventData()
     if(ShowNextEvents(i,QTime(),&next_time)>0) {
       int interval=current_time.msecsTo(QTime(23,59,59))+1000+
 	86400000*extra_day+
-	QTime().msecsTo(next_time);
+	QTime(0,0,0).msecsTo(next_time);
       catch_next_timer->start(interval);
       if(catch_scroll) {
 	UpdateScroll();
@@ -511,7 +511,7 @@ void MainWidget::nextEventData()
     if(ShowNextEvents(i,QTime(),&next_time)>0) {
       int interval=current_time.msecsTo(QTime(23,59,59))+1000+
 	86400000*extra_day+
-	QTime().msecsTo(next_time);
+	QTime(0,0,0).msecsTo(next_time);
       catch_next_timer->start(interval);
       if(catch_scroll) {
 	UpdateScroll();
@@ -1116,7 +1116,7 @@ void MainWidget::midnightData()
   filterChangedData(false);
   catch_midnight_timer->
     start(86400000+QTime::currentTime().addMSecs(catch_time_offset).
-	  msecsTo(QTime()));
+	  msecsTo(QTime(0,0,0)));
 }
 
 

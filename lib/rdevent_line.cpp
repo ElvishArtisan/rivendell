@@ -460,7 +460,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   if(event_preposition>=0) {
     time_type=RDLogLine::Hard;
     grace_time=-1;
-    if(QTime().msecsTo(time)>event_preposition) {
+    if(QTime(0,0,0).msecsTo(time)>event_preposition) {
       time=time.addMSecs(-event_preposition);
     }
     else {
@@ -480,7 +480,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("`COUNT`=%d,",count)+
       QString().sprintf("`TYPE`=%d,",i_item->eventType())+
       QString().sprintf("`SOURCE`=%d,",RDLogLine::Template)+
-      QString().sprintf("`START_TIME`=%d,",QTime().msecsTo(time))+
+      QString().sprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
       QString().sprintf("`GRACE_TIME`=%d,",grace_time)+
       QString().sprintf("`CART_NUMBER`=%u,",i_item->cartNumber())+
       QString().sprintf("`TIME_TYPE`=%d,",time_type)+
@@ -520,13 +520,13 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("`COUNT`=%d,",count)+
       QString().sprintf("`TYPE`=%d,",link_type)+
       QString().sprintf("`SOURCE`=%d,",RDLogLine::Template)+
-      QString().sprintf("`START_TIME`=%d,",QTime().msecsTo(time))+
+      QString().sprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
       QString().sprintf("`GRACE_TIME`=%d,",grace_time)+
       QString().sprintf("`TIME_TYPE`=%d,",time_type)+
       QString().sprintf("`TRANS_TYPE`=%d,",trans_type)+
       "`LINK_EVENT_NAME`='"+RDEscapeString(event_name)+"',"+
       QString().sprintf("`LINK_START_TIME`=%d,",
-			QTime().msecsTo(event_start_time))+
+			QTime(0,0,0).msecsTo(event_start_time))+
       QString().sprintf("`LINK_LENGTH`=%d,",
 			event_start_time.msecsTo(end_start_time))+
       QString().sprintf("`LINK_ID`=%d,",link_id)+
@@ -841,7 +841,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	QString().sprintf("`COUNT`=%d,",count)+
 	QString().sprintf("`TYPE`=%d,",RDLogLine::Cart)+
 	QString().sprintf("`SOURCE`=%d,",source)+
-	QString().sprintf("`START_TIME`=%d,",QTime().msecsTo(time))+
+	QString().sprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
 	QString().sprintf("`GRACE_TIME`=%d,",grace_time)+
 	QString().sprintf("`CART_NUMBER`=%u,",schedCL->getItemCartNumber(schedpos))+
 	QString().sprintf("`TIME_TYPE`=%d,",time_type)+
@@ -894,7 +894,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("`COUNT`=%d,",count)+
       QString().sprintf("`TYPE`=%d,",i_item->eventType())+
       QString().sprintf("`SOURCE`=%d,",RDLogLine::Template)+
-      QString().sprintf("`START_TIME`=%d,",QTime().msecsTo(time))+
+      QString().sprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
       QString().sprintf("`GRACE_TIME`=%d,",grace_time)+
       QString().sprintf("`CART_NUMBER`=%u,",i_item->cartNumber())+
       QString().sprintf("`TIME_TYPE`=%d,",time_type)+
@@ -1101,7 +1101,7 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
       logline->setGraceTime(grace_time);
       logline->setTimeType(time_type);
       logline->setTransType(trans_type);
-      logline->setExtStartTime(QTime().addSecs(3600*start_start_hour+
+      logline->setExtStartTime(QTime(0,0,0).addSecs(3600*start_start_hour+
 					       q->value(1).toInt()));
       logline->setExtLength(q->value(2).toInt());
       logline->setExtData(q->value(3).toString().trimmed());
@@ -1199,17 +1199,17 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
   // Fill Check
   //
   if(event_autofill_slop>=0) {
-    int slop=QTime().msecsTo(end_time)-QTime().msecsTo(time);
+    int slop=QTime(0,0,0).msecsTo(end_time)-QTime(0,0,0).msecsTo(time);
     if(abs(slop)>=event_autofill_slop) {
       if(slop>0) {
 	*errors+=QString("  ")+time.toString("hh:mm:ss")+
 	  " -- \""+event_name+"\" "+QObject::tr("is underscheduled by")+" "+
-	  QTime().addMSecs(slop).toString("hh:mm:ss")+".\n";
+	  QTime(0,0,0).addMSecs(slop).toString("hh:mm:ss")+".\n";
       }
       else {
 	*errors+=QString("  ")+time.toString("hh:mm:ss")+
 	  " -- \""+event_name+"\" "+QObject::tr("is overscheduled by")+" "+
-	  QTime().addMSecs(-slop).toString("hh:mm:ss")+".\n";
+	  QTime(0,0,0).addMSecs(-slop).toString("hh:mm:ss")+".\n";
       }
     }
   }

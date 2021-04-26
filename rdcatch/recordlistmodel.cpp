@@ -608,7 +608,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
 	","+q->value(4).toTime().addMSecs(q->value(31).toInt()).
 	toString("hh:mm:ss")+","+
 	QString().sprintf("%d:%d,",q->value(32).toInt(),q->value(33).toInt())+
-	QTime().addMSecs(q->value(34).toUInt()).toString("mm:ss");
+	QTime(0,0,0).addMSecs(q->value(34).toUInt()).toString("mm:ss");
       break;
     }
     switch((RDRecording::EndType)q->value(35).toUInt()) {

@@ -130,7 +130,7 @@ EditEvent::EditEvent(RDLogLine *line,QWidget *parent)
 
   default:
     edit_grace_bgroup->button(2)->setChecked(true);
-    edit_grace_timeedit->setTime(QTime().addMSecs(edit_logline->graceTime()));
+    edit_grace_timeedit->setTime(QTime(0,0,0).addMSecs(edit_logline->graceTime()));
     graceClickedData(2);
     break;
   }
@@ -216,7 +216,7 @@ void EditEvent::okData()
 	break;
 
       case 2:
-	edit_logline->setGraceTime(QTime().msecsTo(edit_grace_timeedit->time()));
+	edit_logline->setGraceTime(QTime(0,0,0).msecsTo(edit_grace_timeedit->time()));
 	break;
       }
     }

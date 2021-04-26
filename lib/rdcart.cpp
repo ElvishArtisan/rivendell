@@ -740,7 +740,7 @@ QDateTime RDCart::startDateTime() const
   if(value.isValid()) {
     return value;
   }
-  return QDateTime(QDate(),QTime());
+  return QDateTime();
 }
 
 
@@ -766,7 +766,7 @@ QDateTime RDCart::endDateTime() const
   if(value.isValid()) {
     return value;
   }
-  return QDateTime(QDate(),QTime());
+  return QDateTime();
 }
 
 

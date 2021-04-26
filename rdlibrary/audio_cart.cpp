@@ -358,7 +358,7 @@ void AudioCart::deleteCutData()
     rdcart_cut_model->removeCut(cutnames.at(i));
   }
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
-			    QTime().msecsTo(rdcart_controls->
+			    QTime(0,0,0).msecsTo(rdcart_controls->
 					    forced_length_edit->time()));
   rdcart_cart->resetRotation();
   disk_gauge->update();
@@ -407,7 +407,7 @@ void AudioCart::pasteCutData()
   cut_clipboard->copyTo(rda->station(),rda->user(),
 			rdcart_cut_model->cutName(row),rda->config());
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
-			    QTime().msecsTo(rdcart_controls->
+			    QTime(0,0,0).msecsTo(rdcart_controls->
 					    forced_length_edit->time()));
   rdcart_cart->resetRotation();
   rdcart_cut_model->refresh(row);
@@ -455,7 +455,7 @@ void AudioCart::editCutData()
   if(rdcart_marker_dialog->exec(RDCut::cartNumber(cutname),RDCut::cutNumber(cutname))) {
     emit cartDataChanged();
     rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
-			      QTime().msecsTo(rdcart_controls->
+			      QTime(0,0,0).msecsTo(rdcart_controls->
 					      forced_length_edit->time()));
     QModelIndex index=rdcart_cut_model->refresh(row);
     if(index.isValid()) {
@@ -484,7 +484,7 @@ void AudioCart::recordCutData()
   disk_gauge->update();
   emit cartDataChanged();
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
-			    QTime().msecsTo(rdcart_controls->
+			    QTime(0,0,0).msecsTo(rdcart_controls->
 					    forced_length_edit->time()));
 }
 
@@ -536,7 +536,7 @@ void AudioCart::ripCutData()
   delete rec;
   disk_gauge->update();
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
-			    QTime().msecsTo(rdcart_controls->
+			    QTime(0,0,0).msecsTo(rdcart_controls->
 					    forced_length_edit->time()));
   row=rdcart_cut_model->refresh(row);
   if(row.isValid()) {
@@ -617,7 +617,7 @@ void AudioCart::importCutData()
   delete import;
   disk_gauge->update();
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
-			    QTime().msecsTo(rdcart_controls->
+			    QTime(0,0,0).msecsTo(rdcart_controls->
 					    forced_length_edit->time()));
   row=rdcart_cut_model->refresh(row);
   if(row.isValid()) {

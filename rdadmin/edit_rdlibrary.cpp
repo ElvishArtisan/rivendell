@@ -379,7 +379,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_input_card->setPort(lib_lib->inputPort());
   lib_output_card->setCard(lib_lib->outputCard());
   lib_output_card->setPort(lib_lib->outputPort());
-  lib_maxlength_time->setTime(QTime().addMSecs(lib_lib->maxLength()));
+  lib_maxlength_time->setTime(QTime(0,0,0).addMSecs(lib_lib->maxLength()));
   lib_vox_spin->setValue(lib_lib->voxThreshold()/100);
   lib_trim_spin->setValue(lib_lib->trimThreshold()/100);
   lib_preroll_spin->setValue(lib_lib->tailPreroll());
@@ -511,7 +511,7 @@ void EditRDLibrary::okData()
   lib_lib->setInputPort(lib_input_card->port());
   lib_lib->setOutputCard(lib_output_card->card());
   lib_lib->setOutputPort(lib_output_card->port());
-  lib_lib->setMaxLength(QTime().msecsTo(lib_maxlength_time->time()));
+  lib_lib->setMaxLength(QTime(0,0,0).msecsTo(lib_maxlength_time->time()));
   lib_lib->setVoxThreshold(100*lib_vox_spin->value());
   lib_lib->setTrimThreshold(100*lib_trim_spin->value());
   lib_lib->setTailPreroll(lib_preroll_spin->value());

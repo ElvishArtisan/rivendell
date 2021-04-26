@@ -2,7 +2,7 @@
 //
 //   An event timer engine.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -151,7 +151,7 @@ void RDTimeEngine::SetTimer()
     engine_timer->start(diff);
     return;
   }
-  diff=GetNextDiff(QTime(),&engine_pending_id);
+  diff=GetNextDiff(QTime(0,0,0),&engine_pending_id);
   if(diff!=86400001) {
     diff+=(current_time.msecsTo(QTime(23,59,59))+1000);
     engine_timer->start(diff);

@@ -331,10 +331,10 @@ void Xport::SaveLog()
       XmlExit("Missing "+line+"_START_TIME",400,"logs.cpp",LINE_NUMBER);
     }
     if(ll->timeType()==RDLogLine::Hard) {
-      ll->setStartTime(RDLogLine::Logged,QTime().addMSecs(integer1));
+      ll->setStartTime(RDLogLine::Logged,QTime(0,0,0).addMSecs(integer1));
     }
     else {
-      ll->setStartTime(RDLogLine::Predicted,QTime().addMSecs(integer1));
+      ll->setStartTime(RDLogLine::Predicted,QTime(0,0,0).addMSecs(integer1));
     }
 
     if(!xport_post->getValue(line+"_GRACE_TIME",&integer1)) {
@@ -444,7 +444,7 @@ void Xport::SaveLog()
     if(!xport_post->getValue(line+"_LINK_START_TIME",&integer1)) {
       XmlExit("Missing "+line+"_LINK_START_TIME",400,"logs.cpp",LINE_NUMBER);
     }
-    ll->setLinkStartTime(QTime().addMSecs(integer1));
+    ll->setLinkStartTime(QTime(0,0,0).addMSecs(integer1));
 
     if(!xport_post->getValue(line+"_LINK_LENGTH",&integer1)) {
       XmlExit("Missing "+line+"_LINK_LENGTH",400,"logs.cpp",LINE_NUMBER);

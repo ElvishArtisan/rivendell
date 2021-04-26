@@ -318,7 +318,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_input_card->setPort(lib_lib->inputPort());
   lib_output_card->setCard(lib_lib->outputCard());
   lib_output_card->setPort(lib_lib->outputPort());
-  lib_maxlength_time->setTime(QTime().addMSecs(lib_lib->maxLength()));
+  lib_maxlength_time->setTime(QTime(0,0,0).addMSecs(lib_lib->maxLength()));
   lib_threshold_spin->setValue(lib_lib->trimThreshold()/100);
   lib_normalization_spin->setValue(lib_lib->ripperLevel()/100);
   lib_waveform_caption_edit->setText(lib_lib->waveformCaption());
@@ -437,7 +437,7 @@ void EditRDLogedit::okData()
   lib_lib->setInputPort(lib_input_card->port());
   lib_lib->setOutputCard(lib_output_card->card());
   lib_lib->setOutputPort(lib_output_card->port());
-  lib_lib->setMaxLength(QTime().msecsTo(lib_maxlength_time->time()));
+  lib_lib->setMaxLength(QTime(0,0,0).msecsTo(lib_maxlength_time->time()));
   lib_lib->setTrimThreshold(lib_threshold_spin->value()*100);
   lib_lib->setRipperLevel(lib_normalization_spin->value()*100);
   lib_lib->setTailPreroll(lib_preroll_spin->value());

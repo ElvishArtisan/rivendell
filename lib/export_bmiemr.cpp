@@ -131,7 +131,7 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
       RDReport::leftJustify(q->value(1).toString(),40)+
       RDReport::leftJustify(q->value(2).toString(),40)+
       RDReport::leftJustify(q->value(3).toString(),40)+
-      QTime().addMSecs(q->value(4).toInt()).toString("hh:mm:ss")+"           "+
+      QTime(0,0,0).addMSecs(q->value(4).toInt()).toString("hh:mm:ss")+"           "+
       RDReport::rightJustify(q->value(5).toString(),12)+
       usage_code+"                      \x0d\x0a";
     records++;

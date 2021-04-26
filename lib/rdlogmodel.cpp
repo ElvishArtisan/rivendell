@@ -1114,9 +1114,9 @@ int RDLogModel::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
       d_max_id=q->value(0).toInt()+id_offset;
     }
     line.setStartTime(RDLogLine::Imported,
-		      QTime().addMSecs(q->value(2).toInt())); // Start Time
+		      QTime(0,0,0).addMSecs(q->value(2).toInt())); // Start Time
     line.setStartTime(RDLogLine::Logged,
-		      QTime().addMSecs(q->value(2).toInt()));
+		      QTime(0,0,0).addMSecs(q->value(2).toInt()));
     line.
       setTimeType((RDLogLine::TimeType)q->value(3).toInt());   // Time Type
     line.
@@ -1128,7 +1128,7 @@ int RDLogModel::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
     line.setEventLength(q->value(62).toInt());                 // Event Length
     line.setSource((RDLogLine::Source)q->value(31).toUInt());
     line.setLinkEventName(q->value(48).toString());           // Link Event Name
-    line.setLinkStartTime(QTime().addMSecs(q->value(49).toInt())); // Link Start Time
+    line.setLinkStartTime(QTime(0,0,0).addMSecs(q->value(49).toInt())); // Link Start Time
     line.setLinkLength(q->value(50).toInt());               // Link Length
     line.setLinkStartSlop(q->value(56).toInt());            // Link Start Slop
     line.setLinkEndSlop(q->value(57).toInt());              // Link End Slop
@@ -1410,7 +1410,7 @@ void RDLogModel::InsertLineValues(QString *query, int line)
     QString().sprintf("%d,",ll->id())+
     QString().sprintf("%d,",line)+
     QString().sprintf("%u,",ll->cartNumber())+
-    QString().sprintf("%d,",QTime().msecsTo(ll->startTime(RDLogLine::Logged)))+
+    QString().sprintf("%d,",QTime(0,0,0).msecsTo(ll->startTime(RDLogLine::Logged)))+
     QString().sprintf("%d,",ll->timeType())+
     QString().sprintf("%d,",ll->transType())+
     QString().sprintf("%d,",ll->startPoint(RDLogLine::LogPointer))+
@@ -1434,7 +1434,7 @@ void RDLogModel::InsertLineValues(QString *query, int line)
     QString().sprintf("%d,",ll->fadedownGain())+
     QString().sprintf("%d,",ll->segueGain())+
     "'"+RDEscapeString(ll->linkEventName())+"',"+
-    QString().sprintf("%d,",QTime().msecsTo(ll->linkStartTime()))+
+    QString().sprintf("%d,",QTime(0,0,0).msecsTo(ll->linkStartTime()))+
     QString().sprintf("%d,",ll->linkLength())+
     QString().sprintf("%d,",ll->linkId())+
     "'"+RDYesNo(ll->linkEmbedded())+"',"+

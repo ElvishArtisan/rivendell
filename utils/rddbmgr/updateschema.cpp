@@ -2188,8 +2188,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       sql=QString().
 	sprintf("update `RECORDINGS` set `MAX_GPI_REC_LENGTH`=%u where `ID`=%u",
-		QTime().msecsTo(q->value(2).toTime())+q->value(3).toUInt()-
-		QTime().msecsTo(q->value(1).toTime()),q->value(0).toUInt());
+		QTime(0,0,0).msecsTo(q->value(2).toTime())+q->value(3).toUInt()-
+		QTime(0,0,0).msecsTo(q->value(1).toTime()),q->value(0).toUInt());
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
@@ -10976,7 +10976,7 @@ bool MainObject::ConvertTimeField186(const QString &table,const QString &field,
       sql=QString("update `")+table+
 	"` set `"+
 	field+QString().sprintf("_TEMP`=%d where `ID`=%d",
-				QTime().msecsTo(q->value(1).toTime()),
+				QTime(0,0,0).msecsTo(q->value(1).toTime()),
 				q->value(0).toInt());
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;

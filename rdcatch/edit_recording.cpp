@@ -472,7 +472,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
     edit_startmatrix_spin->setValue(edit_recording->startMatrix());
     edit_startline_spin->setValue(edit_recording->startLine());
     edit_startoffset_edit->
-      setTime(QTime().addMSecs(edit_recording->startOffset()));
+      setTime(QTime(0,0,0).addMSecs(edit_recording->startOffset()));
     edit_multirec_box->
       setChecked(edit_recording->allowMultipleRecordings());
     break;
@@ -482,7 +482,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   switch((RDRecording::EndType)edit_endtype_group->checkedId()) {
   case RDRecording::LengthEnd:
     edit_endlength_edit->
-      setTime(QTime().addMSecs(edit_recording->length()));
+      setTime(QTime(0,0,0).addMSecs(edit_recording->length()));
     break;
 
   case RDRecording::HardEnd:
@@ -499,7 +499,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
     break;
   }
   edit_maxlength_edit->
-    setTime(QTime().addMSecs(edit_recording->maxGpiRecordingLength()));
+    setTime(QTime(0,0,0).addMSecs(edit_recording->maxGpiRecordingLength()));
   endTypeClickedData(edit_endtype_group->checkedId());
 
   edit_cutname=edit_recording->cutName();
@@ -865,7 +865,7 @@ void EditRecording::Save()
     edit_recording->setStartMatrix(edit_startmatrix_spin->value());
     edit_recording->setStartLine(edit_startline_spin->value());
     edit_recording->
-      setStartOffset(QTime().msecsTo(edit_startoffset_edit->time()));
+      setStartOffset(QTime(0,0,0).msecsTo(edit_startoffset_edit->time()));
     edit_recording->
       setAllowMultipleRecordings(edit_multirec_box->isChecked());
     break;
@@ -873,11 +873,11 @@ void EditRecording::Save()
   edit_recording->
     setEndType((RDRecording::EndType)edit_endtype_group->checkedId());
   edit_recording->
-    setMaxGpiRecordingLength(QTime().msecsTo(edit_maxlength_edit->time()));
+    setMaxGpiRecordingLength(QTime(0,0,0).msecsTo(edit_maxlength_edit->time()));
   switch((RDRecording::EndType)edit_endtype_group->checkedId()) {
   case RDRecording::LengthEnd:
     edit_recording->
-      setLength(QTime().msecsTo(edit_endlength_edit->time()));
+      setLength(QTime(0,0,0).msecsTo(edit_endlength_edit->time()));
     break;
 
   case RDRecording::HardEnd:

@@ -584,7 +584,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
 	setText(RDGetTimeLength(rdcart_cart->averageLength()));
     }
     rdcart_controls.forced_length_edit->
-      setTime(QTime().addMSecs(rdcart_cart->forcedLength()));
+      setTime(QTime(0,0,0).addMSecs(rdcart_cart->forcedLength()));
     rdcart_forced_length_ledit->
       setText(rdcart_controls.forced_length_edit->time().toString("hh:mm:ss"));
     rdcart_controls.title_edit->setText(rdcart_cart->title());
@@ -792,13 +792,13 @@ void EditCart::okData()
     rdcart_cart->calculateAverageLength(&rdcart_length_deviation);
     rdcart_cart->setLengthDeviation(rdcart_length_deviation);
     rdcart_cart->updateLength(rdcart_controls.enforce_length_box->isChecked(),
-			      QTime().msecsTo(rdcart_controls.
+			      QTime(0,0,0).msecsTo(rdcart_controls.
 					      forced_length_edit->time()));
     rdcart_cart->
       setAverageLength(RDSetTimeLength(rdcart_average_length_edit->text()));
     if(rdcart_controls.enforce_length_box->isChecked()) {
       rdcart_cart->
-	setForcedLength(QTime().msecsTo(rdcart_controls.forced_length_edit->time()));
+	setForcedLength(QTime(0,0,0).msecsTo(rdcart_controls.forced_length_edit->time()));
       rdcart_cart->setEnforceLength(true);
     }
     else {
@@ -907,7 +907,7 @@ void EditCart::cancelData()
       rdcart_cart->setForcedLength(len);
     }
     rdcart_cart->updateLength(rdcart_controls.enforce_length_box->isChecked(),
-			      QTime().msecsTo(rdcart_controls.
+			      QTime(0,0,0).msecsTo(rdcart_controls.
 					      forced_length_edit->time()));
   }
   done(false);
@@ -920,7 +920,7 @@ void EditCart::forcedLengthData(bool state)
   rdcart_controls.forced_length_edit->setEnabled(state);
   if(state) {
     rdcart_controls.forced_length_edit->
-      setTime(QTime().
+      setTime(QTime(0,0,0).
 	      addMSecs(RDSetTimeLength(rdcart_average_length_edit->text())));
   }
 }
@@ -955,7 +955,7 @@ void EditCart::closeEvent(QCloseEvent *e)
 
 bool EditCart::ValidateLengths()
 {
-  return rdcart_cart->validateLengths(QTime().
+  return rdcart_cart->validateLengths(QTime(0,0,0).
 		     msecsTo(rdcart_controls.forced_length_edit->time()));
 }
 

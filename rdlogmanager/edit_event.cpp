@@ -745,7 +745,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   }
   else {
     event_position_box->setChecked(true);
-    event_position_edit->setTime(QTime().addMSecs(pos));
+    event_position_edit->setTime(QTime(0,0,0).addMSecs(pos));
     prepositionToggledData(true);
   }
   
@@ -772,7 +772,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 	      
     default:
       event_grace_group->button(2)->setChecked(true);
-      event_grace_edit->setTime(QTime().addMSecs(grace));
+      event_grace_edit->setTime(QTime(0,0,0).addMSecs(grace));
       break;
     }
 
@@ -784,13 +784,13 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   int autofill_slop=event_event->autofillSlop();
   if(autofill_slop>=0) {
     event_autofill_slop_box->setChecked(true);
-    event_autofill_slop_edit->setTime(QTime().addMSecs(autofill_slop));
+    event_autofill_slop_edit->setTime(QTime(0,0,0).addMSecs(autofill_slop));
   }
   autofillToggledData(event_autofill_box->isChecked());
   event_timescale_box->setChecked(event_event->useTimescale());
   event_source_group->button(event_event->importSource())->setChecked(true);
-  event_startslop_edit->setTime(QTime().addMSecs(event_event->startSlop()));
-  event_endslop_edit->setTime(QTime().addMSecs(event_event->endSlop()));
+  event_startslop_edit->setTime(QTime(0,0,0).addMSecs(event_event->startSlop()));
+  event_endslop_edit->setTime(QTime(0,0,0).addMSecs(event_event->endSlop()));
   if(event_position_box->isChecked()||event_timetype_check->isChecked()) {
     event_firsttrans_box->setCurrentIndex(event_event->firstTransType());
   }
@@ -1269,7 +1269,7 @@ void EditEvent::Save()
 
   event_event->setRemarks(event_remarks_edit->toPlainText());
   if(event_position_box->isChecked()) {
-    event_event->setPreposition(QTime().msecsTo(event_position_edit->time()));
+    event_event->setPreposition(QTime(0,0,0).msecsTo(event_position_edit->time()));
   }
   else {
     event_event->setPreposition(-1);
@@ -1288,7 +1288,7 @@ void EditEvent::Save()
       break;
 
     default:
-      event_event->setGraceTime(QTime().msecsTo(event_grace_edit->time()));
+      event_event->setGraceTime(QTime(0,0,0).msecsTo(event_grace_edit->time()));
       break;	  
     }
   }
@@ -1301,7 +1301,7 @@ void EditEvent::Save()
   event_event->setUseAutofill(event_autofill_box->isChecked());
   if(event_autofill_slop_box->isChecked()) {
     event_event->
-      setAutofillSlop(QTime().msecsTo(event_autofill_slop_edit->time()));
+      setAutofillSlop(QTime(0,0,0).msecsTo(event_autofill_slop_edit->time()));
   }
   else {
     event_event->setAutofillSlop(-1);
@@ -1309,8 +1309,8 @@ void EditEvent::Save()
   event_event->setUseTimescale(event_timescale_box->isChecked());
   event_event->
     setImportSource((RDEventLine::ImportSource)event_source_group->checkedId());
-  event_event->setStartSlop(QTime().msecsTo(event_startslop_edit->time()));
-  event_event->setEndSlop(QTime().msecsTo(event_endslop_edit->time()));
+  event_event->setStartSlop(QTime(0,0,0).msecsTo(event_startslop_edit->time()));
+  event_event->setEndSlop(QTime(0,0,0).msecsTo(event_endslop_edit->time()));
   if(!event_timetype_check->isChecked()) {
     event_event->
       setFirstTransType((RDLogLine::TransType)event_firsttrans_box->
@@ -1368,7 +1368,7 @@ QString EditEvent::GetProperties()
   int grace_msec=-1;
 
   if(event_position_box->isChecked()) {
-    prepos_msec=QTime().msecsTo(event_position_edit->time());
+    prepos_msec=QTime(0,0,0).msecsTo(event_position_edit->time());
   }
   if(event_timetype_check->isChecked()) {
     time_type=RDLogLine::Hard;
@@ -1384,7 +1384,7 @@ QString EditEvent::GetProperties()
       break;
 
     default:
-      grace_msec=QTime().msecsTo(event_grace_edit->time());
+      grace_msec=QTime(0,0,0).msecsTo(event_grace_edit->time());
       break;	  
     }
   }

@@ -691,8 +691,8 @@ void MainObject::engineData(int id)
     case RDRecording::GpiStart:
       catch_events[event].gpiStartTimer()->
 	start(catch_events[event].startLength()-
-	      (QTime().msecsTo(current_time)-
-	       QTime().msecsTo(catch_events[event].startTime())));
+	      (QTime(0,0,0).msecsTo(current_time)-
+	       QTime(0,0,0).msecsTo(catch_events[event].startTime())));
       catch_record_deck_status[catch_events[event].channel()-1]=
 	RDDeck::Waiting;
       catch_record_id[catch_events[event].channel()-1]=

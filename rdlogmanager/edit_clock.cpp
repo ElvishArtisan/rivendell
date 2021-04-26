@@ -624,7 +624,7 @@ void EditClock::UpdateClock(int line)
       p->setBrush(edit_clocks_view->palette().
 		  color(QPalette::Active,QPalette::Highlight));
       p->drawPie(-size_x/2,-size_y/2,size_x,size_y,
-	  -QTime().secsTo(edit_clocks_model->eventLine(line)->startTime())*5760/3600,
+	  -QTime(0,0,0).secsTo(edit_clocks_model->eventLine(line)->startTime())*5760/3600,
 	  -(edit_clocks_model->eventLine(line)->length()/1000)*5760/3600);
     }
     else {
@@ -635,7 +635,7 @@ void EditClock::UpdateClock(int line)
 	p->setBrush(palette().color(QPalette::Active,QPalette::Base));
       }
       p->drawPie(-size_x/2,-size_y/2,size_x,size_y,
-	     -QTime().secsTo(edit_clocks_model->eventLine(i)->startTime())*5760/3600,
+	     -QTime(0,0,0).secsTo(edit_clocks_model->eventLine(i)->startTime())*5760/3600,
 	     -(edit_clocks_model->eventLine(i)->length()/1000)*5760/3600);
     }
   }

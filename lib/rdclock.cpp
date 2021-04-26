@@ -166,7 +166,7 @@ bool RDClock::load()
   while(q->next()) {
     clock_events.push_back(new RDEventLine(clock_station));
     clock_events.back()->setName(q->value(0).toString());
-    clock_events.back()->setStartTime(QTime().addMSecs(q->value(1).toInt()));
+    clock_events.back()->setStartTime(QTime(0,0,0).addMSecs(q->value(1).toInt()));
     clock_events.back()->setLength(q->value(2).toInt());
     clock_events.back()->load();
   }
@@ -215,7 +215,7 @@ bool RDClock::save()
       "`CLOCK_NAME`='"+RDEscapeString(clock_name)+"',"+
       "`EVENT_NAME`='"+RDEscapeString(clock_events.at(i)->name())+"',"+
       QString().sprintf("`START_TIME`=%d,",
-			QTime().msecsTo(clock_events.at(i)->startTime()))+
+			QTime(0,0,0).msecsTo(clock_events.at(i)->startTime()))+
       QString().sprintf("`LENGTH`=%d",clock_events.at(i)->length());
     RDSqlQuery::apply(sql);
   }
@@ -283,7 +283,7 @@ bool RDClock::generateLog(int hour,const QString &logname,
   while(q->next()) {
     eventline.setName(q->value(0).toString());
     eventline.load();
-    eventline.setStartTime(QTime().addMSecs(q->value(1).toInt()).
+    eventline.setStartTime(QTime(0,0,0).addMSecs(q->value(1).toInt()).
 			   addSecs(3600*hour));
     eventline.setLength(q->value(2).toInt());
     eventline.generateLog(logname,svc_name,errors,clock_name);
