@@ -21640,3 +21640,5 @@
 	* Added 'RDSha1HashCheckPassword()' function in 'lib/rdhash.[cpp|h]'.
 	* Changed the hashing algorithm used for the Exit Password for
 	rdairplay(1) to salted SHA1.
+2021-04-27 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'Required build packages' list for Ubuntu in 'INSTALL'.
