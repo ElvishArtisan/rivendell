@@ -1019,7 +1019,10 @@ int RDLogModel::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
   // Load the group color table
   //
   std::map<QString,QColor> group_colors;
-  sql="select NAME,COLOR from GROUPS";
+  sql=QString("select ")+
+    "`NAME`,"+   // 00
+    "`COLOR` "+  // 01
+    "from `GROUPS`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     group_colors[q->value(0).toString()]=QColor(q->value(1).toString());
