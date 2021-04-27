@@ -21625,3 +21625,5 @@
 2021-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Collations=' directive to the [mySQL] section of
 	rd.conf(5).
+2021-04-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a note on Apache configuration on Ubuntu to 'INSTALL'.
