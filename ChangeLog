@@ -21627,3 +21627,5 @@
 	rd.conf(5).
 2021-04-27 Fred Gleason <fredg@paravelsystems.com>
 	* Added a note on Apache configuration on Ubuntu to 'INSTALL'.
+2021-04-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDLog::create()' that threw SQL errors.

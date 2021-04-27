@@ -545,8 +545,8 @@ bool RDLog::create(const QString &name,const QString &svc_name,
   }
   delete q;
   sql=QString("insert into `LOGS` set ")+
-    "`NAME=\""+RDEscapeString(name)+"\","+
-    "`TYPE=0,"+
+    "`NAME`=\""+RDEscapeString(name)+"\","+
+    "`TYPE`=0,"+
     "`DESCRIPTION`='"+RDEscapeString(name)+" log ',"+
     "`ORIGIN_USER`='"+RDEscapeString(user_name)+"',"+
     "`ORIGIN_DATETIME`=now(),"+
