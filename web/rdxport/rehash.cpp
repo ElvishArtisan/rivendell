@@ -59,7 +59,7 @@ void Xport::Rehash()
     delete cut;
     XmlExit("No such cut",404,"rdhash.cpp",LINE_NUMBER);
   }
-  cut->setSha1Hash(RDSha1Hash(RDCut::pathName(cart_number,cut_number)));
+  cut->setSha1Hash(RDSha1HashFile(RDCut::pathName(cart_number,cut_number)));
   delete cut;
   XmlExit("OK",200,"rdhash.cpp",LINE_NUMBER);
 }

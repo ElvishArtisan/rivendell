@@ -107,7 +107,7 @@ void Xport::SavePodcast()
     delete cast;
     XmlExit(err_msg.toUtf8(),500,"podcasts.cpp",LINE_NUMBER);
   }
-  cast->setSha1Hash(RDSha1Hash(destpath));
+  cast->setSha1Hash(RDSha1HashFile(destpath));
 
   printf("Content-type: text/html; charset: UTF-8\n");
   printf("Status: 200\n\n");
@@ -172,7 +172,7 @@ void Xport::GetPodcast()
   data=new char[st.st_blksize];
   n=read(fd,data,st.st_blksize);
   while(n>0) {
-    write(1,data,n);
+    n=write(1,data,n);
     n=read(fd,data,st.st_blksize);
   }
   delete data;

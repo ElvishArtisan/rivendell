@@ -23,7 +23,9 @@
 
 #include <qstring.h>
 
-QString RDSha1Hash(const QString &filename,bool throttle=false);
+QString RDSha1HashFile(const QString &filename,bool throttle=false);
+QString RDSha1HashPassword(const QString &secret);
+bool RDSha1HashCheckPassword(const QString &secret,const QString &hash);
 
 
-#endif  // RD_H
+#endif  // RDHASH_H

@@ -211,7 +211,7 @@ void MainObject::CheckTableAttributes()
 	printf("  Database uses default charset/collation %s/%s, should be utf8mb4/%s. Fix? (y/N) ",
 	       q->value(1).toString().toUtf8().constData(),
 	       q->value(2).toString().toUtf8().constData(),
-	       db_config->mysqlCollation());
+	       db_config->mysqlCollation().toUtf8().constData());
 	fflush(NULL);
 	if(UserResponse()) {
 	  sql=QString("alter database `")+db_mysql_database+"` "+
@@ -400,7 +400,7 @@ void MainObject::RelinkAudio(const QString &srcdir) const
   QStringList files=dir.entryList(QDir::Files|QDir::Readable|QDir::Hidden);
   for(int i=0;i<files.size();i++) {
     QString filename=dir.path()+"/"+files[i];
-    QString hash=RDSha1Hash(filename);
+    QString hash=RDSha1HashFile(filename);
     QString firstdest;
     bool delete_source=true;
 
@@ -913,7 +913,7 @@ void MainObject::RehashCart(unsigned cartnum) const
 
 void MainObject::RehashCut(const QString &cutnum) const
 {
-  QString hash=RDSha1Hash(RDCut::pathName(cutnum),true);
+  QString hash=RDSha1HashFile(RDCut::pathName(cutnum),true);
   if(hash.isEmpty()) {
     printf("  Unable to generate hash for \"%s\"\n",
 	   RDCut::pathName(cutnum).toUtf8().constData());

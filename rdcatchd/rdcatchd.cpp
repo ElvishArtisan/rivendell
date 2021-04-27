@@ -2334,7 +2334,7 @@ void MainObject::CheckInRecording(QString cutname,CatchEvent *evt,
   s->setChannels(evt->channels());
   cut->checkInRecording(rda->config()->stationName(),"",
 			rda->config()->stationName(),s,msecs);
-  cut->setSha1Hash(RDSha1Hash(RDCut::pathName(cut->cutName())));
+  cut->setSha1Hash(RDSha1HashFile(RDCut::pathName(cut->cutName())));
   delete s;
   cut->autoTrim(RDCut::AudioBoth,-threshold);
   RDCart *cart=new RDCart(cut->cartNumber());

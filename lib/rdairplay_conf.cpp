@@ -20,10 +20,11 @@
 
 #include <QObject>
 
+#include "rdairplay_conf.h"
 #include "rddb.h"
 #include "rdconf.h"
-#include "rdairplay_conf.h"
 #include "rdescape_string.h"
+#include "rdhash.h"
 
 RDAirPlayConf::RDAirPlayConf(const QString &station,const QString &tablename)
 {
@@ -662,34 +663,40 @@ bool RDAirPlayConf::exitPasswordValid(const QString &passwd) const
 {
   QString sql;
   RDSqlQuery *q;
-
-  sql=QString("select `EXIT_PASSWORD` from `")+air_tablename+"` where "+
-    "STATION='"+RDEscapeString(air_station)+"' && "+
-    "((`EXIT_PASSWORD`=PASSWORD('"+RDEscapeString(passwd)+"'))";
-  if(passwd.isEmpty()) {
-    sql+="||(`EXIT_PASSWORD` is null)";
-  }
-  sql+=")";
+  bool ret=false;
+  
+  sql=QString("select ")+
+    "`EXIT_PASSWORD` "+  // 00
+    "from `"+air_tablename+"` where "+
+    "`STATION`='"+RDEscapeString(air_station)+"'";
   q=new RDSqlQuery(sql);
-  if(q->size()>0) {
-    delete q;
-    return true;
+  if(q->first()) {
+    if(passwd.isEmpty()) {
+      ret=q->value(0).isNull();
+    }
+    else {
+      ret=RDSha1HashCheckPassword(passwd,q->value(0).toString());
+    }
   }
-  delete q;
-  return false;
+  return ret;
 }
 
 
 void RDAirPlayConf::setExitPassword(const QString &passwd) const
 {
   QString sql;
-  RDSqlQuery *q;
 
-  sql=QString("update `")+air_tablename+"` set "+
-    "`EXIT_PASSWORD`=PASSWORD('"+RDEscapeString(passwd)+"') where "+
-    "`STATION`='"+RDEscapeString(air_station)+"'";
-  q=new RDSqlQuery(sql);
-  delete q;
+  if(passwd.isEmpty()) {
+    sql=QString("update `")+air_tablename+"` set "+
+      "`EXIT_PASSWORD`=null where "+
+      "`STATION`='"+RDEscapeString(air_station)+"'";
+  }
+  else {
+    sql=QString("update `")+air_tablename+"` set "+
+      "`EXIT_PASSWORD`='"+RDEscapeString(RDSha1HashPassword(passwd))+"' where "+
+      "`STATION`='"+RDEscapeString(air_station)+"'";
+  }
+  RDSqlQuery::apply(sql);
 }
 
 

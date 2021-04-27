@@ -133,6 +133,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   login_button=new QPushButton(this);
   login_button->setFont(buttonFont());
   login_button->setText(tr("Set User"));
+  login_button->setDefault(true);
   connect(login_button,SIGNAL(clicked()),this,SLOT(loginData()));
 
   //

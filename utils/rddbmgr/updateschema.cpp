@@ -10774,6 +10774,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<349)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `RDAIRPLAY` ")+
+      "modify column EXIT_PASSWORD varchar(48)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

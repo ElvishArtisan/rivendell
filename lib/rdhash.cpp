@@ -27,9 +27,28 @@
 
 #include <openssl/sha.h>
 
+#include <QDateTime>
+
 #include "rdhash.h"
 
-QString RDSha1Hash(const QString &filename,bool throttle)
+QString __RDSha1Hash_MakePasswordHash(const QString &secret,const QString &salt)
+{
+  SHA_CTX ctx;
+  unsigned char md[SHA_DIGEST_LENGTH];
+
+  SHA1_Init(&ctx);
+  SHA1_Update(&ctx,salt.toUtf8(),salt.toUtf8().length());
+  SHA1_Update(&ctx,secret.toUtf8(),secret.toUtf8().length());
+  SHA1_Final(md,&ctx);
+  QString ret=salt;
+  for(int i=0;i<SHA_DIGEST_LENGTH;i++) {
+    ret+=QString().sprintf("%02x",0xff&md[i]);
+  }
+  
+  return ret;
+}
+
+QString RDSha1HashFile(const QString &filename,bool throttle)
 {
   QString ret;
   SHA_CTX ctx;
@@ -56,4 +75,28 @@ QString RDSha1Hash(const QString &filename,bool throttle)
   }
 
   return ret;
+}
+
+
+QString RDSha1HashPassword(const QString &secret)
+{
+
+  //
+  // Create a salt value
+  //
+  srand(QDateTime::currentDateTime().toMSecsSinceEpoch());
+  QString salt=QString().sprintf("%08x",rand());
+
+  //
+  // Generate the hash
+  //
+  return __RDSha1Hash_MakePasswordHash(secret,salt);
+}
+
+
+bool RDSha1HashCheckPassword(const QString &secret,const QString &hash)
+{
+  QString salt=secret.left(8);
+
+  return __RDSha1Hash_MakePasswordHash(secret,hash.left(8))==hash;
 }

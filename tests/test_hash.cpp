@@ -32,7 +32,9 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString filename="";
-
+  QString password="";
+  QString hash="";
+  
   //
   // Read Command Options
   //
@@ -42,27 +44,58 @@ MainObject::MainObject(QObject *parent)
       filename=cmd->value(i);
       cmd->setProcessed(i,true);
     }
+    if(cmd->key(i)=="--hash") {
+      hash=cmd->value(i);
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--password") {
+      password=cmd->value(i);
+      cmd->setProcessed(i,true);
+    }
   }
-  if(filename.isEmpty()) {
-    fprintf(stderr,"test_hash: missing --filename\n");
+  if(filename.isEmpty()&&password.isEmpty()) {
+    fprintf(stderr,"test_hash: missing --filename or --password\n");
     exit(256);
   }
- 
-  QString hash=RDSha1Hash(filename);
-  if(hash.isEmpty()) {
-    fprintf(stderr,"test_hash: unable to open \"%s\"\n",
-	    filename.toUtf8().constData());
+  if((!filename.isEmpty())&&(!password.isEmpty())) {
+    fprintf(stderr,"test_hash: --filename and --password are mutually exclusive\n");
     exit(256);
   }
-  printf("%s\n",hash.toUtf8().constData());
 
-  exit(0);
+  if(!filename.isEmpty()) {  // Hash the specified file
+    hash=RDSha1HashFile(filename);
+    if(hash.isEmpty()) {
+      fprintf(stderr,"test_hash: unable to open \"%s\"\n",
+	      filename.toUtf8().constData());
+      exit(256);
+    }
+    printf("%s\n",hash.toUtf8().constData());
+    exit(0);
+  }
+
+  if((!hash.isEmpty())&&(!password.isEmpty())) {  // Check the specified hash
+    if( RDSha1HashCheckPassword(password,hash)) {
+      printf("Match!\n");
+    }
+    else {
+      printf("No Match!\n");
+    }
+    exit(0);
+  }
+
+  if(!password.isEmpty()) {  // Generate password hash
+    printf("%s\n",RDSha1HashPassword(password).toUtf8().constData());
+    exit(0);
+  }
+
+  fprintf(stderr,"test_hash: inconsistent arguments given!\n");
+  exit(256);
 }
 
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

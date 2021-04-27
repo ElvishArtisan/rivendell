@@ -256,7 +256,7 @@ void Xport::Import()
     break;
   }
   if(resp_code==200) {
-    cut->setSha1Hash(RDSha1Hash(RDCut::pathName(cut->cutName())));
+    cut->setSha1Hash(RDSha1HashFile(RDCut::pathName(cut->cutName())));
     if(!title.isEmpty()) {
       cart->setTitle(title);
     }

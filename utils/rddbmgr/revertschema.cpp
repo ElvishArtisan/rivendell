@@ -41,6 +41,19 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 349
+  //
+  if((cur_schema==349)&&(set_schema<cur_schema)) {
+    sql=QString("alter table `RDAIRPLAY` ")+
+      "modify column EXIT_PASSWORD varchar(41)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 348
   //
   if((cur_schema==348)&&(set_schema<cur_schema)) {

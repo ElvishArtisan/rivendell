@@ -24,7 +24,7 @@
 #include <rdcmd_switch.cpp>
 #include <rdhash.h>
 
-#define TEST_HASH_USAGE "[options]\n\nTest SHA1 has generation\n\n--filename=<file-name>\n     The name of the file for which to generate a hash.\n\n"
+#define TEST_HASH_USAGE "[options]\n\nTest SHA1 hash generation\n\n--filename=<file-name>\n     The name of the file for which to generate a hash.\n\n--password=<secret>\n     Generate a password hash from <secret>\n\n--hash=<hash>\n     When given with --secret, verify <hash>\n\n"
 
 class MainObject : public QObject
 {
