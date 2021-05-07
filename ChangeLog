@@ -20746,3 +20746,9 @@
 2021-04-14 Fred Gleason <fredg@paravelsystems.com>
 	* Documented the 'MeterPortBaseNumber=' and 'MeterPointRange='
 	directives in the rd.conf(5) man page.
+2021-05-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) where clicking the 'OK' button
+	in the 'Edit Switcher' dialog would cause an error dialog to appear
+	with a 'primary serial device not active' warning. The following
+	devices are affected: 'Local GPIO', 'Local Audio Adapter',
+	'Logitek vGuest', 'Livewire LWRP Audio', and 'Kernel GPIO'.
