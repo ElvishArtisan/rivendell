@@ -21644,3 +21644,5 @@
 	* Updated the 'Required build packages' list for Ubuntu in 'INSTALL'.
 2021-05-07 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed typos in 'CODINGSTYLE'.
+2021-05-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0beta0.
