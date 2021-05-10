@@ -21657,3 +21657,6 @@
 	SQL errors.
 	* Fixed typos in 'utils/rddbmgr/updateschema.cpp' that caused SQL
 	errors.
+2021-05-10 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the dependency for the MySQL Qt plug-in for RPM
+	packages.
