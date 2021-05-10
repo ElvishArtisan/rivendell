@@ -21646,3 +21646,14 @@
 	* Fixed typos in 'CODINGSTYLE'.
 2021-05-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0beta0.
+2021-05-09 David Klann <dklann@broadcasttool.com>
+	* Fixed typo in 'lib/rdcut.cpp' that caused SQL
+	errors.
+	* Fixed typos in 'lib/rdsvc.cpp' that caused SQL
+	errors.
+	* Fixed typos in 'rdlibrary/list_reports.cpp' that caused SQL
+	errors.
+	* Fixed typos in 'utils/rdclilogedit/operations.cpp' that caused
+	SQL errors.
+	* Fixed typos in 'utils/rddbmgr/updateschema.cpp' that caused SQL
+	errors.

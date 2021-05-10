@@ -1105,7 +1105,7 @@ void RDCut::setMetadata(RDWaveData *data) const
     sql+=QString("`ISRC`='")+RDEscapeString(data->isrc().left(12))+"',";
   }
   if(!data->isci().isEmpty()) {
-    sql+=QString("`ISCI=`'")+RDEscapeString(data->isci().left(32))+"',";
+    sql+=QString("`ISCI`='")+RDEscapeString(data->isci().left(32))+"',";
   }
   if(!data->recordingMbId().isEmpty()) {
     sql+=QString("`RECORDING_MBID`='")+

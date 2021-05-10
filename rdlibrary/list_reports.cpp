@@ -185,7 +185,7 @@ void ListReports::GenerateCartReport(QString *report)
     "`CART`.`LENGTH_DEVIATION`,"+  // 09
     "`CART`.`OWNER` "+             // 10
     "from `CART` "+
-    "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME "+
+    "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` "+
     "left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` ";
   sql+=list_filter_sql;
   unsigned prev_cartnum=0;
@@ -538,7 +538,7 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
     "`CUTS`.`FADEUP_POINT`,"+       // 29
     "`CUTS`.`FADEDOWN_POINT` "+     // 30
     "from `CART` "+
-    "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME "+
+    "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` "+
     "left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` ";
   sql+=list_filter_sql;
   q=new RDSqlQuery(sql);

@@ -1281,8 +1281,8 @@ bool RDSvc::create(const QString &name,QString *err_msg,
   }
   else {    // Base on Existing Service
     sql=QString("select ")+
-      "`DESCRIPTION,`"+            // 00
-      "`NAME_TEMPLATE,`"+          // 01
+      "`DESCRIPTION`,"+            // 00
+      "`NAME_TEMPLATE`,"+          // 01
       "`DESCRIPTION_TEMPLATE`,"+   // 02
       "`PROGRAM_CODE`,"+           // 03
       "`CHAIN_LOG`,"+              // 04
