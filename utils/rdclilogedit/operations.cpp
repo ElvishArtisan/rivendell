@@ -420,8 +420,8 @@ void MainObject::Saveas(const QString &logname)
   RDLog *log=new RDLog(logname);
   if(!log->exists()) {
     sql=QString("insert into `LOGS` set ")+
-      "`NAME='"+RDEscapeString(logname)+"',"+
-      "`TYPE=0,"+
+      "`NAME`='"+RDEscapeString(logname)+"',"+
+      "`TYPE`=0,"+
       "`DESCRIPTION`='"+RDEscapeString(edit_description)+"',"+
       "`ORIGIN_USER`='"+RDEscapeString(rda->user()->name())+"',"+
       "`ORIGIN_DATETIME`=now(),"+
