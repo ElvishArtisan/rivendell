@@ -21672,3 +21672,6 @@
 2021-05-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression 'RDCutDialog' that could cause a segfault
 	when calling 'RDCutDialog::exec()'.
+2021-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDCutDialog' that allowed a cart entry to be
+	selected.
