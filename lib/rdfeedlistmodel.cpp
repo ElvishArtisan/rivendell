@@ -552,7 +552,7 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
       scaled(32,32,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
   }
   d_texts[row][1]=q->value(2);  // Title
-  if(q->value(3).toString()=="Y") {
+  if(q->value(4).toString()=="Y") {
     d_texts[row][2]=tr("[superfeed]");
   }
   else {

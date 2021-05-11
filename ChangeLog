@@ -21666,3 +21666,6 @@
 2021-05-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the log rendering engine which caused
 	a segfault when cleaning up temporary files.
+2021-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcastmanager(1) that caused values in the
+	'Superfeed' column of the Feed List to be inverted.
