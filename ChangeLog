@@ -21663,4 +21663,6 @@
 2021-05-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdcastmanager(1) that could cause a segfault
 	when closing the 'List Feed' dialog.
-
+2021-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the log rendering engine which caused
+	a segfault when cleaning up temporary files.
