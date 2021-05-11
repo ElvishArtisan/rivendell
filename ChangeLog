@@ -21669,3 +21669,6 @@
 2021-05-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcastmanager(1) that caused values in the
 	'Superfeed' column of the Feed List to be inverted.
+2021-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression 'RDCutDialog' that could cause a segfault
+	when calling 'RDCutDialog::exec()'.

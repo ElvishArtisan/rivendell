@@ -46,6 +46,7 @@ RDCutDialog::RDCutDialog(QString *filter,QString *group,QString *schedcode,
   cart_caption=caption;
   cart_allow_add=allow_add;
 
+  cart_temp_allowed=NULL;
   cart_cutname=NULL;
   cart_filter_mode=rda->station()->filterMode();
   if(filter==NULL) {
