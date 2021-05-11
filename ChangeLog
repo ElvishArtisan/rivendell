@@ -21660,3 +21660,7 @@
 2021-05-10 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the dependency for the MySQL Qt plug-in for RPM
 	packages.
+2021-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcastmanager(1) that could cause a segfault
+	when closing the 'List Feed' dialog.
+

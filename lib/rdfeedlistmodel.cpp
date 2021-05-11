@@ -519,7 +519,7 @@ void RDFeedListModel::updateRowLine(int line)
 {
   QString sql=sqlFields()+
     "where "+
-    "FEEDS.KEY_NAME=\""+RDEscapeString(d_key_names.at(line).at(line))+"\"";
+    "FEEDS.KEY_NAME=\""+RDEscapeString(d_key_names.at(line))+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     updateRow(line,q);

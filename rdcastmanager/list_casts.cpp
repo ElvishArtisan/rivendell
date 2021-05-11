@@ -59,6 +59,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
 
   list_progress_dialog=
     new QProgressDialog(tr("Uploading Audio..."),tr("Cancel"),0,1,this);
+  list_progress_dialog->setValue(1);
   list_progress_dialog->setWindowTitle("RDCastManager - "+tr("Progress"));
   list_progress_dialog->setCancelButton(NULL);
   list_progress_dialog->setMinimumDuration(0);
