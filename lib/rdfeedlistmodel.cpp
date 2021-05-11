@@ -605,7 +605,7 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
   } while(q->next()&&(q->value(1).toString()==keyname));
   q->previous();
 
-  if(q->value(3).toString()=="Y") {
+  if(q->value(4).toString()=="Y") {
     d_texts[row][2]=tr("[superfeed]");
   }
   else {

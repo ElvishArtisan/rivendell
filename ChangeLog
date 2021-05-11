@@ -21675,3 +21675,6 @@
 2021-05-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDCutDialog' that allowed a cart entry to be
 	selected.
+2021-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcastmanager(1) that caused values in the
+	'Superfeed' column of the Feed List to be inverted.
