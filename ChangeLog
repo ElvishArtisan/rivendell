@@ -21684,3 +21684,5 @@
 2021-05-12 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the '--libdir=' value for './configure' for Ubuntu in
 	'INSTALL'.
+2021-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'Environmental Variables' entry for Ubuntu in 'INSTALL'.
