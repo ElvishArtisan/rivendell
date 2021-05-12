@@ -21681,3 +21681,6 @@
 2021-05-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to update the desktop icon cache to the 'make install'
 	target.
+2021-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the '--libdir=' value for './configure' for Ubuntu in
+	'INSTALL'.
