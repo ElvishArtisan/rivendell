@@ -186,6 +186,7 @@ install-exec-am:
 	mkdir -p $(DESTDIR)@prefix@/share/X11/fvwm2/pixmaps
 	cp rivendell-16x16.xpm $(DESTDIR)@prefix@/share/X11/fvwm2/pixmaps/mini.rivendell.xpm
 	cp rivendell-32x32.xpm $(DESTDIR)@prefix@/share/X11/fvwm2/pixmaps/rivendell.xpm
+	./update_icons.sh
 
 uninstall-local:	
 	rm -f $(DESTDIR)@libexecdir@/donut-spinner.gif
@@ -267,7 +268,7 @@ uninstall-local:
 	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/128x128/apps/rdpanel-128x128.png
 	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/256x256/apps/rdpanel.png
 	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/512x512/apps/rdpanel.png
-
+	./update_icons.sh
 
 EXTRA_DIST = admin.xpm\
              blueball.png\
@@ -490,6 +491,7 @@ EXTRA_DIST = admin.xpm\
              trashcan-16x16.xpm\
              trashcan-32x32.png\
              trashcan-32x32.xpm\
+             update_icons.sh\
              upload.xpm\
              user.xpm\
              webget_logo.png\
