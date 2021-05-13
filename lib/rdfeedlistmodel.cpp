@@ -418,7 +418,7 @@ void RDFeedListModel::changeUser()
 {
   QString sql;
   RDSqlQuery *q=NULL;
-  QString filter_sql="where ";
+  QString filter_sql="where (`KEY_NAME` is null)||";
 
   if(d_is_admin) {
     sql=QString("select ")+

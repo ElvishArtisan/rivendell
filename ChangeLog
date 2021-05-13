@@ -21686,3 +21686,6 @@
 	'INSTALL'.
 2021-05-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'Environmental Variables' entry for Ubuntu in 'INSTALL'.
+2021-05-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcastmanager(1) that generated a SQL error
+	when run with a user with no authorized feeds.
