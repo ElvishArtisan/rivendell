@@ -1,14 +1,26 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.5.0int0 -- 24 December 2020
+v3.6.0 -- 15 May 2020
 
 Changes:
    RDImport. Added the user's e-mail address to the set of addressees used
    when the '--send-mail' switch is used.
 
+   New PyPAD Scripts. Added the following PyPAD scripts.
+     'pypad_ino713_tcp' - Supports Innovonics RDS/RDBS encoders via TCP.
+
+     'pypad_nautel' - Supports Nautel 'VS' series transmitters.
+
+   Reconciliation Reports. Fixed a formatting bug in the 
+   'RadioTraffic.com Traffic Reconciliation' report type, while retaining
+   the original format in a report type called
+   'Original RadioTraffic.com Traffic Reconciliation (DEPRECATED)'.
+
+   Various bug fixes. See the ChangeLog for details.
+
 Database Update:
-   This version of Rivendell uses database schema version 346, and will
+   This version of Rivendell uses database schema version 347, and will
    automatically upgrade any earlier versions. To see the current schema
    version prior to upgrade, see RDAdmin->SystemInfo.
 

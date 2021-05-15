@@ -20752,3 +20752,5 @@
 	with a 'primary serial device not active' warning. The following
 	devices are affected: 'Local GPIO', 'Local Audio Adapter',
 	'Logitek vGuest', 'Livewire LWRP Audio', and 'Kernel GPIO'.
+2021-05-15 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.0.
