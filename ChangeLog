@@ -21642,3 +21642,5 @@
 	rdairplay(1) to salted SHA1.
 2021-04-27 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'Required build packages' list for Ubuntu in 'INSTALL'.
+2021-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'make dep' target.

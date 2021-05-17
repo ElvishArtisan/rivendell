@@ -26,7 +26,8 @@ if ALSA_RD_AM
   ALSACONFIG_RD_OPT = rdalsaconfig
 endif
 
-SUBDIRS = icons\
+SUBDIRS = debian\
+          icons\
           helpers\
           lib\
           $(HPI_RD_OPT) apis\
@@ -67,6 +68,9 @@ ACLOCAL_AMFLAGS = -I m4
 maintainer-clean-local:	
 	rm -rf m4
 
+deb:	dist
+	./build_debs.sh
+
 rpm:	dist
 	mkdir -p $(HOME)/rpmbuild/SOURCES
 	cp rivendell-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
@@ -93,9 +97,15 @@ EXTRA_DIST = autogen.sh\
              UPGRADING
 
 CLEANFILES = *~\
+             *.buildinfo\
+             *.changes\
+             *.ddeb\
+             *.deb\
+             *.dsc\
              *.mo\
              *.rpm\
              *.tar.gz\
+             *.tar.xz\
              *.tgz\
              *.zip\
              py-compile

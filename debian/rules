@@ -1,0 +1,175 @@
+#!/usr/bin/make -f
+
+build:	
+	dh_update_autotools_config
+	dh_autoreconf
+	 ./configure --prefix=/usr --libdir=/usr/lib --libexecdir=/var/www/rd-bin --sysconfdir=/etc/apache2/conf-available MUSICBRAINZ_LIBS="-ldiscid -lmusicbrainz5cc -lcoverartcc"
+	make $(DEBUILD_MAKE_ARGS)
+
+binary:	
+	dh_testroot
+	dh_prep
+	dh_auto_install
+	dh_installchangelogs ChangeLog
+
+#
+# rivendell-webapi
+#
+	mkdir -p debian/rivendell-webapi/usr/lib
+	mv debian/tmp/usr/lib/librivwebcapi.so.* debian/rivendell-webapi/usr/lib/
+
+#
+# rivendell-importers
+#
+	mkdir -p debian/rivendell-importers/usr/bin
+	mv debian/tmp/usr/bin/wings_filter debian/rivendell-importers/usr/bin/
+	mv debian/tmp/usr/bin/rivendell_filter debian/rivendell-importers/usr/bin/
+	mv debian/tmp/usr/bin/nexgen_filter debian/rivendell-importers/usr/bin/
+	mv debian/tmp/usr/bin/sas_filter debian/rivendell-importers/usr/bin/
+	mv debian/tmp/usr/bin/crc-unity4k.sh debian/rivendell-importers/usr/bin/
+	mv debian/tmp/usr/bin/rdcatch_copy debian/rivendell-importers/usr/bin/
+	mv debian/tmp/usr/bin/panel_copy debian/rivendell-importers/usr/bin/
+	mv debian/tmp/usr/bin/rddgimport debian/rivendell-importers/usr/bin/
+
+#
+# rivendell-opsguide
+#
+	mkdir -p debian/rivendell-opsguide/usr/share/rivendell
+	mv debian/tmp/usr/share/rivendell/opsguide.pdf debian/rivendell-opsguide/usr/share/rivendell/
+	mv debian/tmp/usr/share/rivendell/html debian/rivendell-opsguide/usr/share/rivendell/
+
+#
+# rivendell-devel
+#
+	mkdir -p debian/rivendell-devel/usr/lib
+	mv debian/tmp/usr/lib/librivwebcapi.so debian/rivendell-devel/usr/lib/
+	mv debian/tmp/usr/lib/librivwebcapi.a debian/rivendell-devel/usr/lib/
+	mkdir -p debian/rivendell-devel/usr/share/pkgconfig
+	mv debian/tmp/usr/lib/pkgconfig/rivwebcapi.pc debian/rivendell-devel/usr/share/pkgconfig/
+	mkdir -p debian/rivendell-devel/usr/include
+	mv debian/tmp/usr/include/rivwebcapi debian/rivendell-devel/usr/include/
+	mkdir -p debian/rivendell-devel/usr/share/man/man7
+	mv debian/tmp/usr/share/man/man7/rd_addcart.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_addcut.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_addlog.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_assignschedcode.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_audioinfo.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_audiostore.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_copyaudio.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_createticket.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_deleteaudio.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_deletelog.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_deletepodcast.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_editcart.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_editcut.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_export.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_exportpeaks.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_getuseragent.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_getversion.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_import.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listcart.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listcartcuts.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listcarts.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listcartscuts.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listcartschedcodes.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listcut.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listcuts.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listgroup.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listgroups.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listlog.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listlogs.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listschedcodes.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listservices.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_listsystemsettings.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_postimage.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_postpodcast.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_postrss.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_removecart.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_removecut.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_removeimage.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_removepodcast.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_removerss.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_savelog.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_savepodcast.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_trimaudio.7 debian/rivendell-devel/usr/share/man/man7/
+	mv debian/tmp/usr/share/man/man7/rd_unassignschedcode.7 debian/rivendell-devel/usr/share/man/man7/
+
+
+#
+# rivendell-pypad
+#
+	mkdir -p debian/rivendell-pypad/usr/lib/rivendell/pypad
+	cp -a apis/pypad/scripts/pypad* debian/rivendell-pypad/usr/lib/rivendell/pypad/
+	mkdir -p debian/rivendell-pypad/usr/lib/python3.8/pypad
+	mv debian/tmp/usr/lib/python3.8/site-packages/* debian/rivendell-pypad/usr/lib/python3.8/pypad/
+
+#
+# rivendell-select
+#
+	mkdir -p debian/rivendell-select/usr/bin
+	mv debian/tmp/usr/bin/rdselect debian/rivendell-select/usr/bin/
+	mv debian/tmp/usr/bin/rdselect_helper debian/rivendell-select/usr/bin/
+	mv debian/tmp/usr/bin/rdmonitor debian/rivendell-select/usr/bin/
+	mkdir -p debian/rivendell-select/etc/X11/xinit/xinitrc.d
+	mv debian/tmp/etc/X11/xinit/xinitrc.d/start-rdmonitor.sh debian/rivendell-select/etc/X11/xinit/xinitrc.d/
+
+
+#
+# rivendell-webget
+#
+	mkdir -p debian/rivendell-webget/var/www/rd-bin
+	mv debian/tmp/var/www/rd-bin/webget.cgi debian/rivendell-webget/var/www/rd-bin/
+	mv debian/tmp/var/www/rd-bin/webget.js debian/rivendell-webget/var/www/rd-bin/
+
+
+#
+# rivendell
+#
+	mkdir -p debian/rivendell
+	rsync -a debian/tmp/etc debian/rivendell/
+	rm -rf debian/tmp/etc
+	rsync -a debian/tmp/lib debian/rivendell/
+	rm -rf debian/tmp/lib
+	rsync -a debian/tmp/usr debian/rivendell/
+	rm -rf debian/tmp/usr
+	rsync -a debian/tmp/var debian/rivendell/
+	rm -rf debian/tmp/var
+	mkdir -p debian/rivendell/etc/logrotate.d
+	cp conf/logrotate-sample debian/rivendell/etc/logrotate.d/rivendell
+	mkdir -p debian/rivendell/usr/share/doc/rivendell/logos
+	cp icons/webget_logo.png debian/rivendell/usr/share/doc/rivendell/logos/
+	cp AUTHORS debian/rivendell/usr/share/doc/rivendell/
+	cp NEWS debian/rivendell/usr/share/doc/rivendell/
+	cp README debian/rivendell/usr/share/doc/rivendell/
+	cp UPGRADING debian/rivendell/usr/share/doc/rivendell/
+	cp CODINGSTYLE debian/rivendell/usr/share/doc/rivendell/
+	cp conf/*.conf debian/rivendell/usr/share/doc/rivendell/
+	cat conf/rd.conf-sample | sed s/SyslogFacility=1/SyslogFacility=23/ > debian/rivendell/usr/share/doc/rivendell/rd.conf-sample
+	cp conf/asound.conf-sample debian/rivendell/usr/share/doc/rivendell/
+	mkdir -p debian/rivendell/usr/share/doc/rivendell/misc
+	cp conf/syslog.conf-sample debian/rivendell/usr/share/doc/rivendell/
+	mkdir -p debian/rivendell/etc/fail2ban/filter.d
+	cp conf/rivendell-webapi.conf debian/rivendell/etc/fail2ban/filter.d/
+	cp docs/misc/colors debian/rivendell/usr/share/doc/rivendell/misc/
+	cp docs/misc/reports.txt debian/rivendell/usr/share/doc/rivendell/misc/
+	cp docs/misc/ALSA.txt debian/rivendell/usr/share/doc/rivendell/misc/
+	cp docs/misc/RDMONITOR.txt debian/rivendell/usr/share/doc/rivendell/misc/
+	cp docs/misc/scheduler_formats.ods debian/rivendell/usr/share/doc/rivendell/misc/
+	cp docs/misc/ando_interface.odt debian/rivendell/usr/share/doc/rivendell/misc/
+
+
+	dh_strip_nondeterminism
+	dh_compress
+	dh_fixperms
+	dh_missing
+	dh_dwz
+	dh_strip
+	dh_makeshlibs
+	dh_shlibdeps
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+%:	
+	dh $@

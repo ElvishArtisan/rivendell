@@ -1,0 +1,71 @@
+Source: rivendell
+Section: audio
+Priority: optional
+Maintainer: Fred Gleason <fredg@paravelsystems.com>
+Build-Depends: debhelper-compat (= 12), autotools-dev
+Standards-Version: 4.4.1
+
+Package: rivendell
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Radio Broadcast Automation System
+ Rivendell is a complete radio broadcast automation solution, with
+ facilities for the acquisition, management, scheduling and playout of
+ audio content.  Modules for the production and management of podcast
+ audio are also included.
+
+Package: rivendell-importers
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Library importers for the Rivendell Broadcast Automation System
+ This package contains various importer scripts, which can be used to
+ import audio from existing legacy automation systems into Rivendell.
+ Currently, scripts exist for the AirForce Wings, Prophet NexGen and Sierra
+ Automated Systems SASAuto systems, as well as from another Rivendell system
+ (useful for 'merging' multiple databases).  Additionally, scripts for
+ initializing switcher matrices for the Christian Radio Consortium
+ (CRC) Unity4000 network and copying RDCatch event lists between hosts
+ are included.
+
+Package: rivendell-opsguide
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Rivendell Operations and Administration Guide
+ This package contains the Rivendell Operations and Administration Guide,
+ in both HTML and PDF formats.
+
+Package: rivendell-webapi
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Client libraries for interfacing with Rivendell's Web API.
+ This package contains client libraries for interfacing with Rivendell's
+ Web API subsystem.
+
+Package: rivendell-devel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Header files and example code for development with Rivendell APIs
+ This package contains header files and example code for development using
+ Rivendell's Web C API, which can be used to integrate with Rivendell Web
+ API Interface.
+
+Package: rivendell-select
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The RDSelect system selector tool for Rivendell.
+ This package contains the RDMonitor/RDSelect tool for Rivendell, which can
+ be used to select which amoung multiple Rivendell instances a host should be
+ associated with.
+
+Package: rivendell-webget
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: The WebGet audio fetcher service for Rivendell
+ This package contains the WebGet audio fetching tool for Rivendell.
+
+Package: rivendell-pypad
+Architecture: all
+Depends:
+Description: PyPAD Program Associated Data script system for Rivendell
+ This package contains Rivendell's PyPAD scripting system for transmitting
+ Program Associated Data (PAD) using Python scripts.

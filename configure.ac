@@ -506,6 +506,8 @@ ln -s ../../icons/redx.png docs/opsguide/redx.png
 
 
 AC_CONFIG_FILES([rivendell.spec \
+    debian/Makefile \
+    debian/source/Makefile \
     Makefile \
     conf/rd-bin.conf \
     icons/Makefile \
@@ -596,10 +598,12 @@ AC_CONFIG_FILES([rivendell.spec \
     xdg/Makefile \
     xdg/rdalsaconfig-root-consolehelper \
     xdg/rddbconfig-root-consolehelper \
+    build_debs.sh \
     ])
 AC_OUTPUT()
 
 chmod 755 helpers/install_python.sh
+chmod 755 build_debs.sh
 
 #
 # Create symlinks in 'utils/rdselect_helper/'

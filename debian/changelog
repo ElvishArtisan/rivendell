@@ -1,0 +1,5 @@
+rivendell (3.5.0int0-1) unstable; urgency=medium
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Fred Gleason <fredg@paravelsystems.com>  Wed, 05 May 2021 14:12:22 -0400
