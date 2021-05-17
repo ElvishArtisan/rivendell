@@ -265,6 +265,7 @@ AC_CHECK_HEADER(soundtouch/SoundTouch.h,[],[AC_MSG_ERROR([*** SoundTouch not fou
 # Check for Python
 #
 AM_PATH_PYTHON([3])
+#echo -n $pythondir | sed "s^\${prefix}^/usr^" > debian/pythondir
 AC_SUBST(PYTHON_BASE_DEP,"python"`echo $PYTHON_VERSION | sed -e s/3./3/`)
 
 #

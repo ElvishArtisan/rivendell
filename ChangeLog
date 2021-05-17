@@ -21698,3 +21698,9 @@
 2021-05-17 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to generate 'debian/changelog' and 'debian/control'
 	automatically.
+2021-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Updated Debian package dependencies.
+	* Renamed the Debian 'rivendell-devel' sub-package to
+	'rivendell-dev'.
+2021-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Updated Debianpackage dependencies for shared libraries.
