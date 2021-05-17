@@ -7,7 +7,7 @@ Standards-Version: 4.4.1
 
 Package: rivendell
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, mysql-client, libqt5sql5-mysql, apache2, curl, rsyslog, rivendell-pypad (= @VERSION@)
 Description: Radio Broadcast Automation System
  Rivendell is a complete radio broadcast automation solution, with
  facilities for the acquisition, management, scheduling and playout of
@@ -16,7 +16,7 @@ Description: Radio Broadcast Automation System
 
 Package: rivendell-importers
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, rivendell
 Description: Library importers for the Rivendell Broadcast Automation System
  This package contains various importer scripts, which can be used to
  import audio from existing legacy automation systems into Rivendell.
