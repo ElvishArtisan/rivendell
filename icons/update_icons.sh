@@ -22,8 +22,10 @@
 #
 
 if test $UID = 0 ; then
-  if test -x /usr/bin/gtk-update-icon-cache ; then
-    /usr/bin/gtk-update-icon-cache -f /usr/share/icons/hicolor
+  if test -z $FAKEROOTKEY ; then
+    if test -x /usr/bin/gtk-update-icon-cache ; then
+      /usr/bin/gtk-update-icon-cache -f /usr/share/icons/hicolor
+    fi
   fi
 fi
 

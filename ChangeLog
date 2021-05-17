@@ -21691,3 +21691,5 @@
 	when run with a user with no authorized feeds.
 2021-05-17 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'make deb' target.
+2021-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regressions that broke the 'make deb' target.
