@@ -120,6 +120,7 @@ MAINTAINERCLEANFILES = *~\
                        *.tar.gz\
                        aclocal.m4\
                        Makefile.in\
+                       compile\
                        config.guess\
                        config.status\
                        config.sub\
