@@ -378,7 +378,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`NUMBER` int not null,"+
       "`NAME` char(64),"+
       "`FEED_NAME` char(8),"+
-      "index `MATRIX_IDX` (`STATION_NAME`,`MATRIX,NUMBER`))"+
+      "index `MATRIX_IDX` (`STATION_NAME`,`MATRIX`,`NUMBER`))"+
       " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -394,7 +394,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`MATRIX` int not null,"+
       "`NUMBER` int not null,"+
       "`NAME` char(64),"+
-      "index `MATRIX_IDX` (`STATION_NAME`,`MATRIX,NUMBER`))"+
+      "index `MATRIX_IDX` (`STATION_NAME`,`MATRIX`,`NUMBER`))"+
       " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -649,7 +649,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`MATRIX` int not null,"+
       "`NUMBER` int not null,"+
       "`MACRO_CART` int default -1,"+
-      "index `MATRIX_IDX` (`STATION_NAME`,`MATRIX,NUMBER`))"+
+      "index `MATRIX_IDX` (`STATION_NAME`,`MATRIX`,`NUMBER`))"+
       " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -2459,7 +2459,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
-    sql="alter table `LOGS` add index `NAME_IDX` (`NAME,LOG_EXISTS`)";
+    sql="alter table `LOGS` add index `NAME_IDX` (`NAME`,`LOG_EXISTS`)";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -4632,7 +4632,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`MATRIX` int not null,"+
       "`NUMBER` int not null,"+
       "`MACRO_CART` int default 0,"+
-      "index `MATRIX_IDX` (`STATION_NAME`,`MATRIX,NUMBER`))"+
+      "index `MATRIX_IDX` (`STATION_NAME`,`MATRIX`,`NUMBER`))"+
       " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {

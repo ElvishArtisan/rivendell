@@ -169,7 +169,7 @@ if test $ar_gcc_distro = suse ; then
 #  AC_SUBST(CONSOLEHELPER_RDALSACONFIG,"")
   AC_SUBST(USERMODE_PKG,"")
   AC_SUBST(MYSQL_PKG,"mysql")
-  AC_SUBST(QT4_MYSQL_PKG,"qt-mysql")
+  AC_SUBST(QT_MYSQL_PKG,"qt-mysql")
   AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
 else
   AC_SUBST(APACHE_PKG,"httpd")
@@ -178,17 +178,7 @@ else
   if test $ar_distro_major -ge 7 ; then
     AC_SUBST(USERMODE_PKG,"usermode usermode-gtk")
     AC_SUBST(MYSQL_PKG,"mariadb")
-    AC_SUBST(QT4_MYSQL_PKG,"qt-mysql")
-  else
-    if test $ar_distro_major -ge 6 ; then
-    AC_SUBST(USERMODE_PKG,"usermode")
-      AC_SUBST(MYSQL_PKG,"mysql")
-      AC_SUBST(QT4_MYSQL_PKG,"qt4-mysql")
-    else
-      AC_SUBST(USERMODE_PKG,"usermode")
-      AC_SUBST(MYSQL_PKG,"mysql")
-      AC_SUBST(QT4_MYSQL_PKG,"qt-MySQL")
-    fi
+    AC_SUBST(QT_MYSQL_PKG,"qt5-qtbase-mysql")
   fi
 fi
 

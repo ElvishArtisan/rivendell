@@ -46,6 +46,7 @@ RDCutDialog::RDCutDialog(QString *filter,QString *group,QString *schedcode,
   cart_caption=caption;
   cart_allow_add=allow_add;
 
+  cart_temp_allowed=NULL;
   cart_cutname=NULL;
   cart_filter_mode=rda->station()->filterMode();
   if(filter==NULL) {
@@ -200,6 +201,9 @@ void RDCutDialog::modelResetData()
   for(int i=0;i<cart_cart_model->columnCount();i++) {
     cart_cart_view->resizeColumnToContents(i);
   }
+  for(int i=0;i<cart_cart_model->rowCount();i++) {
+    cart_cart_view->setExpanded(cart_cart_model->index(i,0),true);
+  }
 }
 
 
@@ -279,9 +283,8 @@ void RDCutDialog::okData()
     if(cart_temp_allowed!=NULL) {
       *cart_temp_allowed=false;
     }
+    done(true);
   }
-
-  done(true);
 }
 
 

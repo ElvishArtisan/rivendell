@@ -219,20 +219,20 @@ Bad:
 
 Good:
   sql=QString("select ")+
-    "`CART`.`TITLE,"+         // 00
-    "`CART`.`ARTIST,"+        // 01
-    "`CART`.`PUBLISHER,"+     // 02
-    "`CART`.`COMPOSER,"+      // 03
-    "`CART`.`USAGE_CODE,"+    // 04
-    "`CUTS`.`ISRC,"+          // 05
-    "`CART`.`ALBUM,"+         // 06
-    "`CART`.`LABEL,"+         // 07
-    "`CUTS`.`ISCI,"+          // 08
-    "`CART`.`CONDUCTOR,"+     // 09
-    "`CART`.`USER_DEFINED,"+  // 10
-    "`CART`.`SONG_ID,"+       // 11
-    "`CUTS`.`DESCRIPTION,"+   // 12
-    "`CUTS`.`OUTCUE "+        // 13
+    "`CART`.`TITLE`,"+         // 00
+    "`CART`.`ARTIST`,"+        // 01
+    "`CART`.`PUBLISHER`,"+     // 02
+    "`CART`.`COMPOSER`,"+      // 03
+    "`CART`.`USAGE_CODE`,"+    // 04
+    "`CUTS`.`ISRC`,"+          // 05
+    "`CART`.`ALBUM`,"+         // 06
+    "`CART`.`LABEL`,"+         // 07
+    "`CUTS`.`ISCI`,"+          // 08
+    "`CART`.`CONDUCTOR`,"+     // 09
+    "`CART`.`USER_DEFINED`,"+  // 10
+    "`CART`.`SONG_ID`,"+       // 11
+    "`CUTS`.`DESCRIPTION`,"+   // 12
+    "`CUTS`.`OUTCUE` "+        // 13
     "from `CART` left join `CUTS` "+
     "on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` where "+
     "`CUTS`.`CUT_NAME`='"+RDEscapeString(button->cutName())+"'";
@@ -249,7 +249,7 @@ Changes that alter the schema of the database must include:
   B) Code that implements the schema change, in the
      'utils/rddbmgr/updateschema.cpp' file.
 
-  C) Code the implements an exact, perfect reversal of the schema change,
+  C) Code that implements an exact, perfect reversal of the schema change,
      in the 'utils/rddbmgr/revertschema.cpp' file.
 
   D) Updating of the schema map in the 'MainObject::InitializeSchemaMap()'

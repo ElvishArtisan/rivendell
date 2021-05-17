@@ -21642,5 +21642,52 @@
 	rdairplay(1) to salted SHA1.
 2021-04-27 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'Required build packages' list for Ubuntu in 'INSTALL'.
+2021-05-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed typos in 'CODINGSTYLE'.
+2021-05-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0beta0.
+2021-05-09 David Klann <dklann@broadcasttool.com>
+	* Fixed typo in 'lib/rdcut.cpp' that caused SQL
+	errors.
+	* Fixed typos in 'lib/rdsvc.cpp' that caused SQL
+	errors.
+	* Fixed typos in 'rdlibrary/list_reports.cpp' that caused SQL
+	errors.
+	* Fixed typos in 'utils/rdclilogedit/operations.cpp' that caused
+	SQL errors.
+	* Fixed typos in 'utils/rddbmgr/updateschema.cpp' that caused SQL
+	errors.
+2021-05-10 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the dependency for the MySQL Qt plug-in for RPM
+	packages.
+2021-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcastmanager(1) that could cause a segfault
+	when closing the 'List Feed' dialog.
+2021-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the log rendering engine which caused
+	a segfault when cleaning up temporary files.
+2021-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcastmanager(1) that caused values in the
+	'Superfeed' column of the Feed List to be inverted.
+2021-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression 'RDCutDialog' that could cause a segfault
+	when calling 'RDCutDialog::exec()'.
+2021-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDCutDialog' that allowed a cart entry to be
+	selected.
+2021-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcastmanager(1) that caused values in the
+	'Superfeed' column of the Feed List to be inverted.
+2021-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to update the desktop icon cache to the 'make install'
+	target.
+2021-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the '--libdir=' value for './configure' for Ubuntu in
+	'INSTALL'.
+2021-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'Environmental Variables' entry for Ubuntu in 'INSTALL'.
+2021-05-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcastmanager(1) that generated a SQL error
+	when run with a user with no authorized feeds.
 2021-05-17 Fred Gleason <fredg@paravelsystems.com>
-	* Added a 'make dep' target.
+	* Added a 'make deb' target.

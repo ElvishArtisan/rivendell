@@ -418,7 +418,7 @@ void RDFeedListModel::changeUser()
 {
   QString sql;
   RDSqlQuery *q=NULL;
-  QString filter_sql="where ";
+  QString filter_sql="where (`KEY_NAME` is null)||";
 
   if(d_is_admin) {
     sql=QString("select ")+
@@ -519,7 +519,7 @@ void RDFeedListModel::updateRowLine(int line)
 {
   QString sql=sqlFields()+
     "where "+
-    "FEEDS.KEY_NAME=\""+RDEscapeString(d_key_names.at(line).at(line))+"\"";
+    "FEEDS.KEY_NAME=\""+RDEscapeString(d_key_names.at(line))+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     updateRow(line,q);
@@ -552,7 +552,7 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
       scaled(32,32,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
   }
   d_texts[row][1]=q->value(2);  // Title
-  if(q->value(3).toString()=="Y") {
+  if(q->value(4).toString()=="Y") {
     d_texts[row][2]=tr("[superfeed]");
   }
   else {
@@ -605,7 +605,7 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
   } while(q->next()&&(q->value(1).toString()==keyname));
   q->previous();
 
-  if(q->value(3).toString()=="Y") {
+  if(q->value(4).toString()=="Y") {
     d_texts[row][2]=tr("[superfeed]");
   }
   else {
