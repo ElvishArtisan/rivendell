@@ -21704,3 +21704,5 @@
 	'rivendell-dev'.
 2021-05-17 Fred Gleason <fredg@paravelsystems.com>
 	* Updated Debian package dependencies for shared libraries.
+2021-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'hpklinux-dev' build dependency for DEB packages.

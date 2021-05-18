@@ -2,7 +2,7 @@ Source: rivendell
 Section: audio
 Priority: optional
 Maintainer: Fred Gleason <fredg@paravelsystems.com>
-Build-Depends: debhelper-compat (= 12), autotools-dev
+Build-Depends: debhelper-compat (= 12), autotools-dev, hpklinux-dev
 Standards-Version: 4.4.1
 
 Package: rivendell
