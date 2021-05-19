@@ -136,13 +136,7 @@ AC_SUBST(QT_LRELEASE,$LRELEASE_NAME)
 AR_GCC_TARGET()
 AC_SUBST(VENDOR,$ar_gcc_distro)
 AC_SUBST(ARCH,$ar_gcc_arch)
-if test $ar_gcc_arch = x86_64 ; then
-  LIB_PATH=$PREFIX/lib64
-  AC_SUBST(RD_LIB_PATH,lib64)
-else
-  LIB_PATH=$PREFIX/lib
-  AC_SUBST(RD_LIB_PATH,lib)
-fi
+AC_SUBST(RD_LIB_PATH,${libdir})
 
 #
 # Determine number of available CPU cores for building packages
@@ -358,10 +352,10 @@ if test $HPI_FOUND ; then
     USING_HPI=yes
     AC_DEFINE(HPI,yes)
     AC_SUBST(LIBHPI,"-lrdhpi -lhpi")
-    AC_SUBST(HPI_FILE1,$LIB_PATH/librdhpi-$VERSION.so)
-    AC_SUBST(HPI_FILE2,$LIB_PATH/librdhpi.a)
-    AC_SUBST(HPI_FILE3,$LIB_PATH/librdhpi.la)
-    AC_SUBST(HPI_FILE4,$LIB_PATH/librdhpi.so)
+    AC_SUBST(HPI_FILE1,${libdir}/librdhpi-$VERSION.so)
+    AC_SUBST(HPI_FILE2,${libdir}/librdhpi.a)
+    AC_SUBST(HPI_FILE3,${libdir}/librdhpi.la)
+    AC_SUBST(HPI_FILE4,${libdir}/librdhpi.so)
   else 
     AC_SUBST(LIBHPI,"")
     AC_SUBST(HPI_FILE1,"")

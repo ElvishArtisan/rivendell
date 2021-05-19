@@ -21710,3 +21710,5 @@
 	* Fixed typos in 'debian/control'.
 	* Implemented 'postinst', 'prerm' and 'postrm' script for
 	DEB packages.
+2021-05-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed hard-coded ${libdir} paths in 'configure.ac'.
