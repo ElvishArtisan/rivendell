@@ -93,7 +93,8 @@ binary:
 	mv debian/tmp/usr/share/man/man7/rd_savepodcast.7 debian/rivendell-dev/usr/share/man/man7/
 	mv debian/tmp/usr/share/man/man7/rd_trimaudio.7 debian/rivendell-dev/usr/share/man/man7/
 	mv debian/tmp/usr/share/man/man7/rd_unassignschedcode.7 debian/rivendell-dev/usr/share/man/man7/
-
+	mkdir -p debian/rivendell/usr/share/rivendell
+	cp conf/rd.conf-sample debian/rivendell/usr/share/rivendell/
 
 #
 # rivendell-pypad
@@ -101,7 +102,9 @@ binary:
 	mkdir -p debian/rivendell-pypad/usr/lib/rivendell/pypad
 	cp -a apis/pypad/scripts/pypad* debian/rivendell-pypad/usr/lib/rivendell/pypad/
 	mkdir -p debian/rivendell-pypad/usr/lib/python3.8/pypad
-	mv debian/tmp/usr/lib/python3.8/site-packages/* debian/rivendell-pypad/usr/lib/python3.8/pypad/
+	mv debian/tmp/usr/lib/python3.8/site-packages/pypad.py debian/rivendell-pypad/usr/lib/python3.8/pypad/
+	mv debian/tmp/usr/lib/python3.8/site-packages/__pycache__ debian/rivendell-pypad/usr/lib/python3.8/pypad/
+	rmdir debian/tmp/usr/lib/python3.8/site-packages
 
 #
 # rivendell-select
@@ -136,8 +139,9 @@ binary:
 	rm -rf debian/tmp/var
 	mkdir -p debian/rivendell/etc/logrotate.d
 	cp conf/logrotate-sample debian/rivendell/etc/logrotate.d/rivendell
+	mkdir -p debian/rivendell/usr/share/rivendell/logos
+	cp icons/webget_logo.png debian/rivendell/usr/share/rivendell/logos/
 	mkdir -p debian/rivendell/usr/share/doc/rivendell/logos
-	cp icons/webget_logo.png debian/rivendell/usr/share/doc/rivendell/logos/
 	cp AUTHORS debian/rivendell/usr/share/doc/rivendell/
 	cp NEWS debian/rivendell/usr/share/doc/rivendell/
 	cp README debian/rivendell/usr/share/doc/rivendell/
@@ -146,10 +150,11 @@ binary:
 	cp conf/*.conf debian/rivendell/usr/share/doc/rivendell/
 	cat conf/rd.conf-sample | sed s/SyslogFacility=1/SyslogFacility=23/ > debian/rivendell/usr/share/doc/rivendell/rd.conf-sample
 	cp conf/asound.conf-sample debian/rivendell/usr/share/doc/rivendell/
-	mkdir -p debian/rivendell/usr/share/doc/rivendell/misc
-	cp conf/syslog.conf-sample debian/rivendell/usr/share/doc/rivendell/
+	mkdir -p debian/rivendell/usr/share/rivendell
+	cp conf/syslog.conf-sample debian/rivendell/usr/share/rivendell/
 	mkdir -p debian/rivendell/etc/fail2ban/filter.d
 	cp conf/rivendell-webapi.conf debian/rivendell/etc/fail2ban/filter.d/
+	mkdir -p debian/rivendell/usr/share/doc/rivendell/misc
 	cp docs/misc/colors debian/rivendell/usr/share/doc/rivendell/misc/
 	cp docs/misc/reports.txt debian/rivendell/usr/share/doc/rivendell/misc/
 	cp docs/misc/ALSA.txt debian/rivendell/usr/share/doc/rivendell/misc/

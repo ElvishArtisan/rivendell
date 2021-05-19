@@ -1,5 +1,5 @@
 #!/bin/sh
-# postrm script for fdk-aac
+# postrm script for Rivendell
 #
 # see: dh_installdeb(1)
 
@@ -21,8 +21,12 @@ set -e
 
 case "$1" in
     purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
-      /bin/systemctl daemon-reload
-      ldconfig
+	if test -x /usr/bin/gtk-update-icon-cache ; then
+	    /usr/bin/gtk-update-icon-cache --quiet /usr/share/icons/hicolor
+	fi
+	/bin/systemctl daemon-reload
+	rm -f /etc/apache2/conf-enabled/rd-bin.conf
+	/bin/systemctl restart apache2
     ;;
 
     *)

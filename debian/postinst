@@ -1,15 +1,69 @@
 #!/bin/sh
-# postinst script for padpoint
+# postinst script for Rivendell
 
 case "$1" in
     configure)
       ldconfig
-      if test ! -e /etc/padpoint.conf ; then
-        cp /usr/share/doc/padpoint/padpoint.conf-sample /etc/padpoint.conf
-      fi
       /bin/systemctl daemon-reload
-      /bin/systemctl enable padpoint
-      /bin/systemctl restart padpoint
+      /usr/sbin/groupadd -r -g 150 rivendell
+      /usr/sbin/useradd -o -u 150 -g rivendell -s /bin/false -r -c "Rivendell radio automation system" -d /var/snd rivendell
+      /usr/sbin/groupadd -r -g 151 pypad
+      /usr/sbin/useradd -o -u 151 -g pypad -s /bin/false -r -c "Rivendell PyPAD scripts" -d /dev/null pypad
+      if test ! -e /var/snd ; then
+	  mkdir -p /var/snd
+	  chown rivendell:rivendell /var/snd
+	  chmod 775 /var/snd
+      fi
+      if test ! -d /etc/rivendell.d ; then
+	  mkdir -p /etc/rivendell.d
+	  chmod 775 /etc/rivendell.d
+      fi
+      if test ! -e /etc/rd.conf ; then
+	  cp /usr/share/rivendell/rd.conf-sample /etc/rivendell.d/rd-default.conf
+	  ln -s /etc/rivendell.d/rd-default.conf /etc/rd.conf
+      fi
+      if test ! -h /etc/rd.conf ; then
+	  mv /etc/rd.conf /etc/rivendell.d/rd-default.conf
+	  ln -s /etc/rivendell.d/rd-default.conf /etc/rd.conf
+      fi
+      #
+      # FIXME: Configure ALSA Here!
+      #
+      /usr/sbin/rddbmgr --modify
+      /bin/systemctl restart rivendell
+      /bin/systemctl enable rivendell
+      ln -f -s ../conf-available/rd-bin.conf /etc/apache2/conf-enabled/rd-bin.conf
+      chown rivendell:rivendell /var/www/rd-bin/rdxport.cgi
+      chmod 6755 /var/www/rd-bin/rdxport.cgi
+      /bin/systemctl restart apache2
+      /bin/systemctl enable apache2
+
+      if test -x /usr/bin/gtk-update-icon-cache ; then
+	  /usr/bin/gtk-update-icon-cache -f --quiet /usr/share/icons/hicolor
+      fi
+      if test ! -e /var/www/rd-bin/logos ; then
+	  mkdir -p /var/www/rd-bin/logos
+      fi
+      if test ! -f /var/www/rd-bin/logos/webget_logo.png ; then
+	  mkdir -p /var/www/rd-bin/logos
+	  cp -f /usr/share/rivendell/logos/webget_logo.png /var/www/rd-bin/logos/webget_logo.png
+      fi
+
+      mkdir -p /var/log/rivendell
+      if test ! -e /etc/rsyslog.d/rivendell.conf ; then
+	  cp /usr/share/rivendell/syslog.conf-sample /etc/rsyslog.d/rivendell.conf
+      fi
+      /bin/systemctl restart rsyslog
+
+      if test -x /usr/bin/rdselect_helper ; then
+	  chown root:root /usr/bin/rdselect_helper
+	  chmod 4755 /usr/bin/rdselect_helper
+      fi
+
+      if test -x /var/www/rd-bin/webget.cgi ; then
+	 chown root:root /var/www/rd-bin/webget.cgi
+	 chmod 6755 /var/www/rd-bin/webget.cgi
+      fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

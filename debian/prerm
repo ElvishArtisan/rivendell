@@ -1,5 +1,5 @@
 #!/bin/sh
-# prerm script for fdk-aac
+# prerm script for Rivendell
 #
 # see: dh_installdeb(1)
 
@@ -19,8 +19,8 @@ set -e
 
 case "$1" in
     remove|upgrade|deconfigure)
-      /bin/systemctl stop padpoint
-      /bin/systemctl disable padpoint
+	/bin/systemctl stop rivendell
+	/bin/systemctl disable rivendell
     ;;
 
     failed-upgrade)

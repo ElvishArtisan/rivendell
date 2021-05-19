@@ -7,7 +7,7 @@ Standards-Version: 4.4.1
 
 Package: rivendell
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, mysql-client, libqt5sql5-mysql, apache2, curl, rsyslog, rivendell-pypad (= @VERSION@)
+Depends: ${shlibs:Depends}, ${misc:Depends}, mysql-client, libqt5sql5-mysql, apache2, curl, rsyslog, rivendell-pypad (= @VERSION@-1)
 Description: Radio Broadcast Automation System
  Rivendell is a complete radio broadcast automation solution, with
  facilities for the acquisition, management, scheduling and playout of
@@ -16,7 +16,7 @@ Description: Radio Broadcast Automation System
 
 Package: rivendell-importers
 Architecture: any
-Depends: ${misc:Depends}, rivendell (= @VERSION@)
+Depends: ${misc:Depends}, rivendell (= @VERSION@-1)
 Description: Library importers for the Rivendell Broadcast Automation System
  This package contains various importer scripts, which can be used to
  import audio from existing legacy automation systems into Rivendell.
@@ -43,7 +43,7 @@ Description: Client libraries for interfacing with Rivendell's Web API.
 
 Package: rivendell-dev
 Architecture: any
-Depends: ${misc:Depends}, rivendell (= @VERSION@)
+Depends: ${misc:Depends}, rivendell (= @VERSION@-1)
 Description: Header files and example code for development with Rivendell APIs
  This package contains header files and example code for development using
  Rivendell's Web C API, which can be used to integrate with Rivendell Web
@@ -51,7 +51,7 @@ Description: Header files and example code for development with Rivendell APIs
 
 Package: rivendell-select
 Architecture: any
-Depends: ${misc:Depends}, rivendell (= @VERSION@)
+Depends: ${misc:Depends}, rivendell (= @VERSION@-1)
 Description: The RDSelect system selector tool for Rivendell.
  This package contains the RDMonitor/RDSelect tool for Rivendell, which can
  be used to select which amoung multiple Rivendell instances a host should be
@@ -59,13 +59,13 @@ Description: The RDSelect system selector tool for Rivendell.
 
 Package: rivendell-webget
 Architecture: any
-Depends: ${misc:Depends}, rivendell (= @VERSION@)
+Depends: ${misc:Depends}, rivendell (= @VERSION@-1)
 Description: The WebGet audio fetcher service for Rivendell
  This package contains the WebGet audio fetching tool for Rivendell.
 
 Package: rivendell-pypad
 Architecture: all
-Depends: python3, python3-pycurl, python3-pymysql, python3-serial, python3-requests 
+Depends: python3, python3-pycurl, python3-mysqldb, python3-serial, python3-requests 
 Description: PyPAD Program Associated Data script system for Rivendell
  This package contains Rivendell's PyPAD scripting system for transmitting
  Program Associated Data (PAD) using Python scripts.
