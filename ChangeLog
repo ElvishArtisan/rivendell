@@ -21712,3 +21712,6 @@
 	DEB packages.
 2021-05-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed hard-coded ${libdir} paths in 'configure.ac'.
+2021-05-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'LOCAL_PREFIX' and 'RD_LIB_PATH' Autoconf
+	substitutions from the build system.

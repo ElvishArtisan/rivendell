@@ -36,8 +36,6 @@ moc_%.cpp:	%.h
 html_%.cpp:	%.html
 	$(CWRAP) -o $@ $<
 
-instdir = @LOCAL_PREFIX@/lib
-
 # I18N Stuff
 install-exec-local:	
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell

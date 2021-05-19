@@ -56,18 +56,6 @@ AC_SUBST(INTERFACE_RIVWEBCAPI_MINOR,$RIVWEBCAPI_AGE)
 AC_SUBST(INTERFACE_RIVWEBCAPI_POINT,$RIVWEBCAPI_REVISION)
 
 #
-# Some Fully Resolved Install Paths
-# (for the packaging system and friends)
-#
-if test ${prefix} = "NONE" ; then
-  PREFIX=/usr/local
-  AC_SUBST(LOCAL_PREFIX,/usr/local)
-else
-  PREFIX=${prefix}
-  AC_SUBST(LOCAL_PREFIX,${prefix})
-fi
-
-#
 # Basic Compiler Checks
 #
 AC_PROG_CC
@@ -136,7 +124,6 @@ AC_SUBST(QT_LRELEASE,$LRELEASE_NAME)
 AR_GCC_TARGET()
 AC_SUBST(VENDOR,$ar_gcc_distro)
 AC_SUBST(ARCH,$ar_gcc_arch)
-AC_SUBST(RD_LIB_PATH,${libdir})
 
 #
 # Determine number of available CPU cores for building packages
@@ -313,7 +300,6 @@ fi
 #
 # Set Hard Library Dependencies
 #
-#AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch -lcrypto")
 AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lrd -lcurl -lid3 -ltag $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch -lcrypto")
 
 #
@@ -433,10 +419,8 @@ else
   AC_SUBST(RPMBUILD,rpmbuild)
 fi
 if test -d /usr/src/redhat ; then
-dnl  AC_SUBST(RPM_ROOT,/usr/src/redhat)
   AC_SUBST(VENDOR,redhat)
 else
-dnl  AC_SUBST(RPM_ROOT,/usr/src/packages)
   AC_SUBST(VENDOR,suse)
 fi 
 AC_SUBST(RPM_DATESTAMP,`date +%a\ %b\ %d\ %Y`)
