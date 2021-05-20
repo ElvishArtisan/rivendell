@@ -45,6 +45,9 @@ AC_DEFUN([AR_GCC_TARGET],[AC_REQUIRE([AC_PROG_CC])]
 #   $ar_distro_version = Distribution Version (10.3, 3.1, etc)
 #   $ar_distro_major = Distribution Version Major Number (10, 3, etc)
 #   $ar_distro_minor = Distribution Version Minor Number (3, 1, etc)
+#   $ar_distro_pretty_name = Full Distribution Name (Ubuntu 20.04.2 LTS, etc)
+#   $ar_distro_id = All lowercase identifier (ubuntu, debian, centos, etc)
+#   $ar_distro_id_like = Identifier(s) of similar distros (rhel fedora, etc)
 #
 AC_DEFUN([AR_GET_DISTRO],[]
   [
@@ -53,7 +56,10 @@ AC_DEFUN([AR_GET_DISTRO],[]
   ar_distro_version=$(./get_distro.pl VERSION)
   ar_distro_major=$(./get_distro.pl MAJOR)
   ar_distro_minor=$(./get_distro.pl MINOR)
-  AC_MSG_RESULT([$ar_distro_name $ar_distro_version])
+  ar_distro_pretty_name=$(./get_distro.pl PRETTY_NAME)
+  ar_distro_id=$(./get_distro.pl ID)
+  ar_distro_id_like=$(./get_distro.pl ID_LIKE)
+  AC_MSG_RESULT([$ar_distro_pretty_name $ar_distro_version])
   ]
 )
 

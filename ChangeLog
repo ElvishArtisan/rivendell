@@ -21715,3 +21715,6 @@
 2021-05-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'LOCAL_PREFIX' and 'RD_LIB_PATH' Autoconf
 	substitutions from the build system.
+2021-05-19 Fred Gleason <fredg@paravelsystems.com>
+	* Hacked the build system to make the PyPAD module install
+	correctly on Debian-ish systems.

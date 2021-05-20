@@ -100,11 +100,10 @@ binary:
 # rivendell-pypad
 #
 	mkdir -p debian/rivendell-pypad/usr/lib/rivendell/pypad
-	cp -a apis/pypad/scripts/pypad* debian/rivendell-pypad/usr/lib/rivendell/pypad/
-	mkdir -p debian/rivendell-pypad/usr/lib/python3.8/pypad
-	mv debian/tmp/usr/lib/python3.8/site-packages/pypad.py debian/rivendell-pypad/usr/lib/python3.8/pypad/
-	mv debian/tmp/usr/lib/python3.8/site-packages/__pycache__ debian/rivendell-pypad/usr/lib/python3.8/pypad/
-	rmdir debian/tmp/usr/lib/python3.8/site-packages
+	mv debian/tmp/usr/lib/rivendell/pypad/* debian/rivendell-pypad/usr/lib/rivendell/pypad/
+	mkdir -p debian/rivendell-pypad/usr/lib/python3/dist-packages/__pycache__
+	mv debian/tmp/usr/lib/python3/dist-packages/pypad.py debian/rivendell-pypad/usr/lib/python3/dist-packages/
+	mv debian/tmp/usr/lib/python3/dist-packages/__pycache__/* debian/rivendell-pypad/usr/lib/python3/dist-packages/__pycache__/
 
 #
 # rivendell-select

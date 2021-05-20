@@ -162,6 +162,12 @@ else
     AC_SUBST(QT_MYSQL_PKG,"qt5-qtbase-mysql")
   fi
 fi
+if test $ar_distro_id = "debian" ; then
+   DISTRO_IS_DEBIANISH=yes
+fi
+if test $ar_distro_id = "ubuntu" ; then
+   DISTRO_IS_DEBIANISH=yes
+fi
 
 #
 # Check for Expat
@@ -245,9 +251,22 @@ AC_CHECK_HEADER(soundtouch/SoundTouch.h,[],[AC_MSG_ERROR([*** SoundTouch not fou
 #
 # Check for Python
 #
-AM_PATH_PYTHON([3])
-#echo -n $pythondir | sed "s^\${prefix}^/usr^" > debian/pythondir
-AC_SUBST(PYTHON_BASE_DEP,"python"`echo $PYTHON_VERSION | sed -e s/3./3/`)
+if test -z $DISTRO_IS_DEBIANISH ; then
+   AM_PATH_PYTHON([3])
+   #echo -n $pythondir | sed "s^\${prefix}^/usr^" > debian/pythondir
+   AC_SUBST(PYTHON_BASE_DEP,"python"`echo $PYTHON_VERSION | sed -e s/3./3/`)
+else
+   #
+   # FIXME: Horrible hack to make Python install correctly on Debianish setups
+   #
+   AC_MSG_NOTICE([Configuring Debian-style Python installation])
+   PYTHON="/usr/bin/python3"
+   AC_ARG_VAR(PYTHON,[the Python interpreter])
+   pythondir="/usr/lib/python3/dist-packages"
+   AC_ARG_VAR(pythondir,[the Python modules directory])
+   pyexecdir="/usr/lib/python3/dist-packages"
+   AC_ARG_VAR(pyexecdir,[the Python extension modules directory])
+fi
 
 #
 # Check for FLAC
