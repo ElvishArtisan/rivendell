@@ -1006,7 +1006,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   //
   // Open the file
   //
-  if(!OpenAudioFile(wavefile,wavedata)) {
+  if(!OpenAudioFile(&wavefile,wavedata)) {
     delete wavedata;
     delete wavefile;
     return MainObject::FileBad;
@@ -1442,16 +1442,16 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 }
 
 
-bool MainObject::OpenAudioFile(RDWaveFile *wavefile,RDWaveData *wavedata)
+bool MainObject::OpenAudioFile(RDWaveFile **wavefile,RDWaveData *wavedata)
 {
-  QString orig_filename=wavefile->getName();
+  QString orig_filename=(*wavefile)->getName();
 
-  if(!wavefile->openWave(wavedata)) {
+  if(!(*wavefile)->openWave(wavedata)) {
     if(import_fix_broken_formats) {
       Log(LOG_WARNING,QString().sprintf(" File \"%s\" appears to be malformed, trying workaround ... ",
 		   RDGetBasePart(orig_filename).toUtf8().constData()));
-      delete wavefile;
-      if((wavefile=FixFile(orig_filename,wavedata))==NULL) {
+      delete *wavefile;
+      if(((*wavefile)=FixFile(orig_filename,wavedata))==NULL) {
 	Log(LOG_WARNING,QString().sprintf("failed.\n"));
 	Log(LOG_WARNING,QString().sprintf(
 		" File \"%s\" is not readable or not a recognized format, skipping...\n",
@@ -1473,7 +1473,7 @@ bool MainObject::OpenAudioFile(RDWaveFile *wavefile,RDWaveData *wavedata)
     else {
       Log(LOG_WARNING,QString().sprintf(
         " File \"%s\" is not readable or not a recognized format, skipping...\n",
-        RDGetBasePart(wavefile->getName()).toUtf8().constData()));
+        RDGetBasePart((*wavefile)->getName()).toUtf8().constData()));
       if(!import_run) {
 	NormalExit();
       }

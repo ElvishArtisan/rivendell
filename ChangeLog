@@ -20754,3 +20754,6 @@
 	'Logitek vGuest', 'Livewire LWRP Audio', and 'Kernel GPIO'.
 2021-05-15 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.0.
+2021-05-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a use-after-delete bug in rdimport(1) that could cause
+	a segfault when the '--fix-broken-formats' switch was given.
