@@ -2,7 +2,7 @@
 //
 // A Utility for running periodic system maintenance.
 //
-//   (C) Copyright 2008-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -60,8 +60,9 @@ MainObject::MainObject(QObject *parent)
   // Open the Database
   //
   rda=new RDApplication("rdmaint","rdmaint",RDMAINT_USAGE,this);
-  if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdmaint: %s\n",(const char *)err_msg);
+  if(!rda->open(&err_msg,NULL,false)) {
+    fprintf(stderr,"rdmaint: %s\n",err_msg.toUtf8().constData());
+    rda->syslog(LOG_ERR,"%s",err_msg.toUtf8().constData());
     exit(1);
   }
 

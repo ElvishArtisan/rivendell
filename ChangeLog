@@ -20765,3 +20765,6 @@
 	* Added an 'RDProcess::prettyCommandString()' method.
 2021-05-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added an '--force-system-maintenance' switch to rdservice(8).
+2021-05-28 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdmaint(8) to enable it to operate even when
+	the Rivendell services are not running.
