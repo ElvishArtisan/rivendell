@@ -71,6 +71,7 @@ class MainObject : public QObject
   QTimer *svc_maint_timer;
   QTimer *svc_exit_timer;
   StartupTarget svc_startup_target;
+  bool svc_force_system_maintenance;
 };
 
 
