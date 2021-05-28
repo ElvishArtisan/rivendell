@@ -21730,3 +21730,5 @@
 	* Added an '--initial-maintenance' switch to rdservice(8).
 2021-05-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDProcess::prettyCommandString()' method.
+2021-05-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added an '--force-system-maintenance' switch to rdservice(8).

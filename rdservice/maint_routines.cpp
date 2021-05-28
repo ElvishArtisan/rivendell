@@ -77,8 +77,9 @@ void MainObject::checkMaintData()
   //
   // Run the routines
   //
-  if(run) {
+  if(run||svc_force_system_maintenance) {
     RunSystemMaintRoutine();
+    svc_force_system_maintenance=false;
   }
 }
 

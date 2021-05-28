@@ -61,6 +61,7 @@ MainObject::MainObject(QObject *parent)
   bool ok=false;
 
   svc_startup_target=MainObject::TargetAll;
+  svc_force_system_maintenance=false;
 
   //
   // Check for prior instance
@@ -89,6 +90,10 @@ MainObject::MainObject(QObject *parent)
       MainObject::StartupTarget target=(MainObject::StartupTarget)j;
       if(rda->cmdSwitch()->key(i)==TargetCommandString(target)) {
 	svc_startup_target=target;
+	rda->cmdSwitch()->setProcessed(i,true);
+      }
+      if(rda->cmdSwitch()->key(i)=="--force-system-maintenance") {
+	svc_force_system_maintenance=true;
 	rda->cmdSwitch()->setProcessed(i,true);
       }
       if(rda->cmdSwitch()->key(i)=="--initial-maintenance-interval") {
@@ -158,20 +163,17 @@ void MainObject::processFinishedData(int id)
   RDProcess *proc=svc_processes.value(id);
   if(proc->process()->exitStatus()!=QProcess::NormalExit) {
     rda->syslog(LOG_WARNING,"process \"%s\" crashed!",
-		(proc->program()+" "+proc->arguments().join(" ").trimmed()).
-		toUtf8().constData());
+		proc->prettyCommandString().toUtf8().constData());
   }
   else {
     if(proc->process()->exitCode()!=0) {
       rda->syslog(LOG_WARNING,"process \"%s\" exited with exit code %d",
-		  (proc->program()+" "+proc->arguments().join(" ").trimmed()).
-		  toUtf8().constData(),
+		  proc->prettyCommandString().toUtf8().constData(),
 		  proc->process()->exitCode());
     }
     else {
       rda->syslog(LOG_DEBUG,"process \"%s\" exited normally",
-		  (proc->program()+" "+proc->arguments().join(" ").trimmed()).
-		  toUtf8().constData());
+		  proc->prettyCommandString().toUtf8().constData());
     }
   }
   svc_processes.remove(id);
