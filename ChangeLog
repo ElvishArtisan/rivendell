@@ -21721,3 +21721,6 @@
 2021-05-28 Fred Gleason <fredg@paravelsystems.com>
 	* Updated rddbmgr(8) to correctly recognize schema database
 	schema 347 as belonging to v3.6.0.
+2021-05-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a use-after-delete bug in rdimport(1) that could cause
+	a segfault when the '--fix-broken-formats' switch was given.

@@ -63,7 +63,7 @@ class MainObject : public QObject
   void RunDropBox();
   void ProcessFileEntry(const QString &entry);
   MainObject::Result ImportFile(const QString &filename,unsigned *cartnum);
-  bool OpenAudioFile(RDWaveFile *wavefile,RDWaveData *wavedata);
+  bool OpenAudioFile(RDWaveFile **wavefile,RDWaveData *wavedata);
   void VerifyFile(const QString &filename,unsigned *cartnum);
   RDWaveFile *FixFile(const QString &filename,RDWaveData *wavedata);
   bool IsWav(int fd);
