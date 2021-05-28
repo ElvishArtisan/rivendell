@@ -89,6 +89,18 @@
 	</para>
       </listitem>
     </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--initial-maintenance-interval=<replaceable>interval</replaceable></option>
+      </term>
+      <listitem>
+	<para>
+	  Schedule the initial maintenance run to be started
+	  <replaceable>interval</replaceable> milliseconds after startup.
+	</para>
+      </listitem>
+    </varlistentry>
   </variablelist>
   </refsect1>
 

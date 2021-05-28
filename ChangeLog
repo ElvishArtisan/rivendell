@@ -20757,3 +20757,7 @@
 2021-05-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a use-after-delete bug in rdimport(1) that could cause
 	a segfault when the '--fix-broken-formats' switch was given.
+2021-05-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added syslog DEBUG messages around the start/stop of ephemeral
+	processes in rdservice(8).
+	* Added an '--initial-maintenance' switch to rdservice(8).
