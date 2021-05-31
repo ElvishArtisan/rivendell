@@ -1,0 +1,51 @@
+#!/bin/sh
+
+# install_usermode.sh
+#
+#  Install support files for usermode wrapper
+#
+#   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License version 2 as
+#   published by the Free Software Foundation.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program; if not, write to the Free Software
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+
+ACTION=$1
+DESTDIR=$2
+PREFIX=$3
+
+if test "@HAVE_USERMODE@" != "yes" ; then
+    exit 0
+fi
+
+if test "$ACTION" = "install" ; then
+    mkdir -p $DESTDIR/etc/pam.d
+    cp rdalsaconfig-root-pam $DESTDIR/etc/pam.d/rdalsaconfig-root
+    cp rddbconfig-root-pam $DESTDIR/etc/pam.d/rddbconfig-root
+    mkdir -p $DESTDIR/etc/security/console.apps
+    cp rdalsaconfig-root-consolehelper $DESTDIR/etc/security/console.apps/rdalsaconfig-root
+    cp rddbconfig-root-consolehelper $DESTDIR/etc/security/console.apps/rddbconfig-root
+    rm -f $DESTDIR$PREFIX/bin/rdalsaconfig-root
+    ln -s /usr/bin/consolehelper $DESTDIR$PREFIX/bin/rdalsaconfig-root
+    rm -f $DESTDIR$PREFIX/bin/rddbconfig-root
+    ln -s /usr/bin/consolehelper $DESTDIR$PREFIX/bin/rddbconfig-root
+fi
+
+if test "$ACTION" = "uninstall" ; then
+    rm -f $DESTDIR/etc/pam.d/rdalsaconfig-root
+    rm -f $DESTDIR/etc/security/console.apps/rdalsaconfig-root
+    rm -f $DESTDIR$prefix/bin/rdalsaconfig-root
+    rm -f $DESTDIR/etc/pam.d/rddbconfig-root
+    rm -f $DESTDIR/etc/security/console.apps/rddbconfig-root
+fi
+

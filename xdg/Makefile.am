@@ -37,36 +37,40 @@ install-exec-am:
 	cp rivendell-rdpanel.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdsoftkeys.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rmlsend.desktop $(DESTDIR)@prefix@/share/applications/
-
 	mkdir -p $(DESTDIR)@prefix@/share/desktop-directories
 	cp *.directory $(DESTDIR)@prefix@/share/desktop-directories/
 	mkdir -p $(DESTDIR)/etc/xdg/menus/applications-merged
 	cp *.menu $(DESTDIR)/etc/xdg/menus/applications-merged/
-	mkdir -p $(DESTDIR)/etc/pam.d
-	cp rdalsaconfig-root-pam $(DESTDIR)/etc/pam.d/rdalsaconfig-root
-	cp rddbconfig-root-pam $(DESTDIR)/etc/pam.d/rddbconfig-root
-	mkdir -p $(DESTDIR)/etc/security/console.apps
-	cp rdalsaconfig-root-consolehelper $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
-	cp rddbconfig-root-consolehelper $(DESTDIR)/etc/security/console.apps/rddbconfig-root
 	cp @RDALSACONFIG_DESKTOP_FILE@ $(DESTDIR)@prefix@/share/applications/rivendell-rdalsaconfig.desktop
 	cp @RDDBCONFIG_DESKTOP_FILE@ $(DESTDIR)@prefix@/share/applications/rivendell-rddbconfig.desktop
-	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
-	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
-	rm -f $(DESTDIR)$(prefix)/bin/rddbconfig-root
-	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rddbconfig-root
+	./install_usermode.sh install $(DESTDIR) $(prefix)
+
+#	mkdir -p $(DESTDIR)/etc/pam.d
+#	cp rdalsaconfig-root-pam $(DESTDIR)/etc/pam.d/rdalsaconfig-root
+#	cp rddbconfig-root-pam $(DESTDIR)/etc/pam.d/rddbconfig-root
+#	mkdir -p $(DESTDIR)/etc/security/console.apps
+#	cp rdalsaconfig-root-consolehelper $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
+#	cp rddbconfig-root-consolehelper $(DESTDIR)/etc/security/console.apps/rddbconfig-root
+#	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
+#	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
+#	rm -f $(DESTDIR)$(prefix)/bin/rddbconfig-root
+#	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rddbconfig-root
 
 uninstall-local:	
 	rm -f $(DESTDIR)@prefix@/share/applications/rivendell-*.desktop
 	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-*.directory
 	rm -f $(DESTDIR)/etc/xdg/menus/applications-merged/rivendell-*.menu
-	rm -f $(DESTDIR)/etc/pam.d/rdalsaconfig-root
-	rm -f $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
-	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
-	rm -f $(DESTDIR)/etc/pam.d/rddbconfig-root
-	rm -f $(DESTDIR)/etc/security/console.apps/rddbconfig-root
-	rm -f $(DESTDIR)$(prefix)/bin/rddbconfig-root
+	./install_usermode.sh uninstall $(DESTDIR) $(prefix)
 
-EXTRA_DIST = rdalsaconfig-root-consolehelper.in\
+#	rm -f $(DESTDIR)/etc/pam.d/rdalsaconfig-root
+#	rm -f $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
+#	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
+#	rm -f $(DESTDIR)/etc/pam.d/rddbconfig-root
+#	rm -f $(DESTDIR)/etc/security/console.apps/rddbconfig-root
+#	rm -f $(DESTDIR)$(prefix)/bin/rddbconfig-root
+
+EXTRA_DIST = install_usermode.sh.in\
+             rdalsaconfig-root-consolehelper.in\
              rdalsaconfig-root-pam\
              rddbconfig-root-consolehelper.in\
              rddbconfig-root-pam\
@@ -98,7 +102,8 @@ EXTRA_DIST = rdalsaconfig-root-consolehelper.in\
              rivendell-utilities.directory
 
 CLEANFILES = *~
-DISTCLEANFILES = rdalsaconfig-root-consolehelper\
+DISTCLEANFILES = install_usermod.sh\
+                 rdalsaconfig-root-consolehelper\
                  rddbconfig-root-consolehelper
 MAINTAINERCLEANFILES = *~\
                        Makefile.in

@@ -162,6 +162,7 @@ case "$ar_distro_id" in
        AC_SUBST(MYSQL_PKG,"mysql-server")
        AC_SUBST(QT_MYSQL_PKG,"libqt5sql5-mysql")
        AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
+       AC_SUBST(HAVE_USERMODE,"no")
        AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-sudo.desktop")
        AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig-sudo.desktop")
      ;;
@@ -184,6 +185,7 @@ case "$ar_distro_id" in
        AC_SUBST(MYSQL_PKG,"mariadb")
        AC_SUBST(QT_MYSQL_PKG,"qt5-qtbase-mysql")
        AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell-$PACKAGE_VERSION")
+       AC_SUBST(HAVE_USERMODE,"yes")
        AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-root.desktop")
        AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig-root.desktop")
      ;;
@@ -197,6 +199,7 @@ case "$ar_distro_id" in
        AC_SUBST(MYSQL_PKG,"mysql")
        AC_SUBST(QT_MYSQL_PKG,"qt-mysql")
        AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
+       AC_SUBST(HAVE_USERMODE,"no")
        AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig.desktop")
        AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig.desktop")
      ;;
@@ -617,6 +620,7 @@ AC_CONFIG_FILES([rivendell.spec \
     utils/rdsoftkeys/Makefile \
     utils/rmlsend/Makefile \
     xdg/Makefile \
+    xdg/install_usermode.sh \
     xdg/rdalsaconfig-root-consolehelper \
     xdg/rddbconfig-root-consolehelper \
     build_debs.sh \
@@ -624,6 +628,7 @@ AC_CONFIG_FILES([rivendell.spec \
 AC_OUTPUT()
 
 chmod 755 helpers/install_python.sh
+chmod 755 xdg/install_usermode.sh
 chmod 755 build_debs.sh
 
 #

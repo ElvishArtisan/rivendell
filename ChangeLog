@@ -21745,3 +21745,6 @@
 2021-05-31 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'rivendell.spec.in' that broke the
 	'make rpm' target.
+2021-05-31 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the build system to suppress installation of usermode
+	support components on non-RedHat-ish platforms.
