@@ -144,30 +144,63 @@ fi
 #
 AR_GET_DISTRO()
 AC_SUBST(DISTRO,$ar_gcc_distro)
-if test $ar_gcc_distro = suse ; then
-  AC_SUBST(APACHE_PKG,"apache2")
-  AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
-#  AC_SUBST(CONSOLEHELPER_RDALSACONFIG,"")
-  AC_SUBST(USERMODE_PKG,"")
-  AC_SUBST(MYSQL_PKG,"mysql")
-  AC_SUBST(QT_MYSQL_PKG,"qt-mysql")
-  AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
-else
-  AC_SUBST(APACHE_PKG,"httpd")
-  AC_SUBST(APACHE_CONFIG_DIR,"/etc/httpd/conf.d")
-  AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell-$PACKAGE_VERSION")
-  if test $ar_distro_major -ge 7 ; then
-    AC_SUBST(USERMODE_PKG,"usermode usermode-gtk")
-    AC_SUBST(MYSQL_PKG,"mariadb")
-    AC_SUBST(QT_MYSQL_PKG,"qt5-qtbase-mysql")
-  fi
-fi
-if test $ar_distro_id = "debian" ; then
-   DISTRO_IS_DEBIANISH=yes
-fi
-if test $ar_distro_id = "ubuntu" ; then
-   DISTRO_IS_DEBIANISH=yes
-fi
+AC_MSG_NOTICE($ar_distro_id)
+DISTRO_NAME="|                           Distribution Name ... Unknown |"
+case "$ar_distro_id" in
+     debian|ubuntu)
+       AC_MSG_NOTICE([Distro is Debian-ish])
+       DISTRO_FAMILY="|                         Distribution Family ... Debian  |"
+       DISTRO_IS_DEBIANISH=yes
+       if test $ar_distro_id = "debian" ; then
+         DISTRO_NAME="|                           Distribution Name ... Debian  |"
+       else
+         DISTRO_NAME="|                           Distribution Name ... Ubuntu  |"
+       fi
+       AC_SUBST(APACHE_PKG,"apache2")
+       AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
+       AC_SUBST(USERMODE_PKG,"")
+       AC_SUBST(MYSQL_PKG,"mysql-server")
+       AC_SUBST(QT_MYSQL_PKG,"libqt5sql5-mysql")
+       AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
+       AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-sudo.desktop")
+       AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig-sudo.desktop")
+     ;;
+
+     centos|rhel|fedora)
+       AC_MSG_NOTICE([Distro is RedHat-ish])
+       DISTRO_FAMILY="|                         Distribution Family ... RedHat  |"
+       if test $ar_distro_id = "centos" ; then
+         DISTRO_NAME="|                           Distribution Name ... CentOS  |"
+       fi
+       if test $ar_distro_id = "fedora" ; then
+         DISTRO_NAME="|                           Distribution Name ... Fedora  |"
+       fi
+       if test $ar_distro_id = "rhel" ; then
+         DISTRO_NAME="|                           Distribution Name ... RHEL    |"
+       fi
+       AC_SUBST(APACHE_PKG,"httpd")
+       AC_SUBST(APACHE_CONFIG_DIR,"/etc/httpd/conf.d")
+       AC_SUBST(USERMODE_PKG,"usermode usermode-gtk")
+       AC_SUBST(MYSQL_PKG,"mariadb")
+       AC_SUBST(QT_MYSQL_PKG,"qt5-qtbase-mysql")
+       AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell-$PACKAGE_VERSION")
+       AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-root.desktop")
+       AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig-root.desktop")
+     ;;
+
+     *)
+       AC_MSG_NOTICE([Distro is unknown])
+       DISTRO_FAMILY="|                         Distribution Family ... Unknown |"
+       AC_SUBST(APACHE_PKG,"apache2")
+       AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
+       AC_SUBST(USERMODE_PKG,"")
+       AC_SUBST(MYSQL_PKG,"mysql")
+       AC_SUBST(QT_MYSQL_PKG,"qt-mysql")
+       AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
+       AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig.desktop")
+       AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig.desktop")
+     ;;
+esac
 
 #
 # Check for Expat
@@ -613,58 +646,62 @@ ln -s ../../lib/rdprofile.h utils/rdselect_helper/rdprofile.h
 # Configuration Results
 #
 AC_MSG_NOTICE()
-AC_MSG_NOTICE("|-----------------------------------------------------|")
-AC_MSG_NOTICE("|       *** RIVENDELL CONFIGURATION SUMMARY ***       |")
-AC_MSG_NOTICE("|-----------------------------------------------------|")
-AC_MSG_NOTICE("| Configured Audio Drivers:                           |")
+AC_MSG_NOTICE("|---------------------------------------------------------|")
+AC_MSG_NOTICE("|         *** RIVENDELL CONFIGURATION SUMMARY ***         |")
+AC_MSG_NOTICE("|---------------------------------------------------------|")
+AC_MSG_NOTICE("| Platorm Information:                                    |")
+AC_MSG_NOTICE("$DISTRO_NAME")
+AC_MSG_NOTICE("$DISTRO_FAMILY")
+AC_MSG_NOTICE("|                                                         |")
+AC_MSG_NOTICE("| Configured Audio Drivers:                               |")
 if test -z $USING_ALSA ; then
-AC_MSG_NOTICE("|  Advanced Linux Sound Architecture (ALSA) ... No    |")
+AC_MSG_NOTICE("|    Advanced Linux Sound Architecture (ALSA) ... No      |")
 else
-AC_MSG_NOTICE("|  Advanced Linux Sound Architecture (ALSA) ... Yes   |")
+AC_MSG_NOTICE("|    Advanced Linux Sound Architecture (ALSA) ... Yes     |")
 fi
 if test -z $USING_HPI ; then
-AC_MSG_NOTICE("|                          AudioScience HPI ... No    |")
+AC_MSG_NOTICE("|                            AudioScience HPI ... No      |")
 else
-AC_MSG_NOTICE("|                          AudioScience HPI ... Yes   |")
+AC_MSG_NOTICE("|                            AudioScience HPI ... Yes     |")
 fi
 if test -z $USING_JACK ; then
-AC_MSG_NOTICE("|                 JACK Audio Connection Kit ... No    |")
+AC_MSG_NOTICE("|                   JACK Audio Connection Kit ... No      |")
 else
-AC_MSG_NOTICE("|                 JACK Audio Connection Kit ... Yes   |")
+AC_MSG_NOTICE("|                   JACK Audio Connection Kit ... Yes     |")
 fi
-AC_MSG_NOTICE("|                                                     |")
-AC_MSG_NOTICE("| Audio Codecs:                                       |")
+AC_MSG_NOTICE("|                                                         |")
+AC_MSG_NOTICE("| Audio Codecs:                                           |")
 if test -z $FLAC_FOUND ; then
-AC_MSG_NOTICE("|            FLAC Encoding/Decoding Support ... No    |")
+AC_MSG_NOTICE("|              FLAC Encoding/Decoding Support ... No      |")
 else
-AC_MSG_NOTICE("|            FLAC Encoding/Decoding Support ... Yes   |")
+AC_MSG_NOTICE("|              FLAC Encoding/Decoding Support ... Yes     |")
 fi
 if test -z $USING_MAD ; then
-AC_MSG_NOTICE("|                     MPEG Decoding Support ... No    |")
+AC_MSG_NOTICE("|                       MPEG Decoding Support ... No      |")
 else
-AC_MSG_NOTICE("|                     MPEG Decoding Support ... Yes   |")
+AC_MSG_NOTICE("|                       MPEG Decoding Support ... Yes     |")
 fi
 if test -z $USING_TWOLAME ; then
-AC_MSG_NOTICE("|             MPEG Layer 2 Encoding Support ... No    |")
+AC_MSG_NOTICE("|               MPEG Layer 2 Encoding Support ... No      |")
 else
-AC_MSG_NOTICE("|             MPEG Layer 2 Encoding Support ... Yes   |")
+AC_MSG_NOTICE("|               MPEG Layer 2 Encoding Support ... Yes     |")
 fi
 if test -z $USING_LAME ; then
-AC_MSG_NOTICE("|             MPEG Layer 3 Encoding Support ... No    |")
+AC_MSG_NOTICE("|               MPEG Layer 3 Encoding Support ... No      |")
 else
-AC_MSG_NOTICE("|             MPEG Layer 3 Encoding Support ... Yes   |")
+AC_MSG_NOTICE("|               MPEG Layer 3 Encoding Support ... Yes     |")
 fi
 if test -z $VORBIS_FOUND ; then
-AC_MSG_NOTICE("|       OggVorbis Encoding/Decoding Support ... No    |")
+AC_MSG_NOTICE("|         OggVorbis Encoding/Decoding Support ... No      |")
 else
-AC_MSG_NOTICE("|       OggVorbis Encoding/Decoding Support ... Yes   |")
+AC_MSG_NOTICE("|         OggVorbis Encoding/Decoding Support ... Yes     |")
 fi
 if test -z $MP4V2_FOUND ; then
-AC_MSG_NOTICE("|                      M4A Decoding Support ... No    |")
+AC_MSG_NOTICE("|                        M4A Decoding Support ... No      |")
 else
-AC_MSG_NOTICE("|                      M4A Decoding Support ... Yes   |")
+AC_MSG_NOTICE("|                        M4A Decoding Support ... Yes     |")
 fi
-AC_MSG_NOTICE("|-----------------------------------------------------|")
+AC_MSG_NOTICE("|---------------------------------------------------------|")
 AC_MSG_NOTICE()
 AC_MSG_NOTICE()
 AC_MSG_NOTICE(Now enter 'make' to build the software.)

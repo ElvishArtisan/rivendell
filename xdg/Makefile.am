@@ -2,7 +2,7 @@
 ##
 ## xdg/automake.am for Rivendell
 ##
-##   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -48,11 +48,10 @@ install-exec-am:
 	mkdir -p $(DESTDIR)/etc/security/console.apps
 	cp rdalsaconfig-root-consolehelper $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
 	cp rddbconfig-root-consolehelper $(DESTDIR)/etc/security/console.apps/rddbconfig-root
-	cp rivendell-rdalsaconfig-root.desktop $(DESTDIR)@prefix@/share/applications/
-	cp rivendell-rddbconfig-root.desktop $(DESTDIR)@prefix@/share/applications/
+	cp @RDALSACONFIG_DESKTOP_FILE@ $(DESTDIR)@prefix@/share/applications/rivendell-rdalsaconfig.desktop
+	cp @RDDBCONFIG_DESKTOP_FILE@ $(DESTDIR)@prefix@/share/applications/rivendell-rddbconfig.desktop
 	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
 	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
-	cp rivendell-rddbconfig-root.desktop $(DESTDIR)@prefix@/share/applications/
 	rm -f $(DESTDIR)$(prefix)/bin/rddbconfig-root
 	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rddbconfig-root
 

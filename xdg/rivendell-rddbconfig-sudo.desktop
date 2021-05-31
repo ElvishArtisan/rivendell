@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Terminal=true
+Categories=Qt;KDE;Rivendell;
+Name=RDDBConfig
+GenericName=Rivendell Database Management
+Exec=sudo rddbconfig
+Icon=rdadmin
+Type=Application

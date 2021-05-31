@@ -21734,3 +21734,8 @@
 	* Added an '--force-system-maintenance' switch to rdservice(8).
 2021-05-31 Fred Gleason <fredg@paravelsystems.com>
 	* Added symlinks to enable CGI processing in 'debian/postinst'.
+2021-05-31 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the distribution detection logic in 'configure.ac'
+	to work on the basis of 'distribution type'.
+	* Added desktop entries for rdalsaconfig(8) and rddbconfig(8) that use
+	sudo(8) for privilege escalation.
