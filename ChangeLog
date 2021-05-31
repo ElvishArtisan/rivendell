@@ -21718,3 +21718,5 @@
 2021-05-19 Fred Gleason <fredg@paravelsystems.com>
 	* Hacked the build system to make the PyPAD module install
 	correctly on Debian-ish systems.
+2021-05-31 Fred Gleason <fredg@paravelsystems.com>
+	* Added symlinks to enable CGI processing in 'debian/postinst'.

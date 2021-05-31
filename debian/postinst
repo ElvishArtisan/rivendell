@@ -33,6 +33,8 @@ case "$1" in
       /bin/systemctl restart rivendell
       /bin/systemctl enable rivendell
       ln -f -s ../conf-available/rd-bin.conf /etc/apache2/conf-enabled/rd-bin.conf
+      ln -f -s ../mods-available/cgid.conf /etc/apache2/mods-enabled/cgid.conf
+      ln -f -s ../mods-available/cgid.load /etc/apache2/mods-enabled/cgid.load
       chown rivendell:rivendell /var/www/rd-bin/rdxport.cgi
       chmod 6755 /var/www/rd-bin/rdxport.cgi
       /bin/systemctl restart apache2
