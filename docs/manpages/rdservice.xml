@@ -89,8 +89,34 @@
 	</para>
       </listitem>
     </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--force-service-maintenance</option>
+      </term>
+      <listitem>
+	<para>
+          Force the initial maintenance run to include System maintenance,
+          even if the scheduling algorithm doesn't call for it. (Useless
+          except for debugging).
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--initial-maintenance-interval=<replaceable>interval</replaceable></option>
+      </term>
+      <listitem>
+	<para>
+          Schedule the initial maintenance run to be started
+          <replaceable>interval</replaceable> milliseconds after startup.
+          (Useless except for debugging).
+	</para>
+      </listitem>
+    </varlistentry>
   </variablelist>
-  </refsect1>
+</refsect1>
 
 <refsect1 id='exit_values'><title>Exit Values</title>
   <para>

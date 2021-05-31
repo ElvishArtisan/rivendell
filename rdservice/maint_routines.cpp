@@ -2,7 +2,7 @@
 //
 // Rivendell Maintenance Routines
 //
-//   (C) Copyright 2008-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,12 +23,15 @@
 
 #include <rd.h>
 #include <rdapplication.h>
+#include <rdconf.h>
 #include <rdpaths.h>
 
 #include "rdservice.h"
 
 void MainObject::checkMaintData()
 {
+  rda->syslog(LOG_DEBUG,"starting maintenance checks");
+
   QString sql;
   RDSqlQuery *q;
   QDateTime current_datetime=
@@ -38,7 +41,12 @@ void MainObject::checkMaintData()
   //
   // Schedule Next Maintenance Run
   //
-  svc_maint_timer->start(GetMaintInterval());
+  int interval=GetMaintInterval();
+  svc_maint_timer->start(interval);
+  rda->syslog(LOG_DEBUG,"next maintenance run at %s [%s from now]",
+	      QDateTime::currentDateTime().addMSecs(interval).
+	      toString("hh:mm:ss").toUtf8().constData(),
+	      RDGetTimeLength(interval,false,false).toUtf8().constData());
 
   RunLocalMaintRoutine();
 
@@ -69,8 +77,9 @@ void MainObject::checkMaintData()
   //
   // Run the routines
   //
-  if(run) {
+  if(run||svc_force_system_maintenance) {
     RunSystemMaintRoutine();
+    svc_force_system_maintenance=false;
   }
 }
 
@@ -107,12 +116,15 @@ int MainObject::GetMaintInterval() const
 void MainObject::RunEphemeralProcess(int id,const QString &program,
 				     const QStringList &args)
 {
+  rda->syslog(LOG_DEBUG,"starting ephemeral process \"%s\"",
+	      (program+" "+args.join(" ")).trimmed().toUtf8().constData());
   svc_processes[id]=new RDProcess(id,this);
   connect(svc_processes[id],SIGNAL(finished(int)),
 	  this,SLOT(processFinishedData(int)));
   svc_processes[id]->start(program,args);
   if(!svc_processes[id]->process()->waitForStarted()) {
-    QString err_msg=tr("unable to start")+"\""+program+"\": "+
+    QString err_msg=tr("unable to start ephemeral process ")+
+      "\""+(program+" "+args.join(" ")).trimmed()+"\": "+
       svc_processes[id]->errorText();
     rda->syslog(LOG_WARNING,"%s",(const char *)err_msg.toUtf8());
     delete svc_processes[id];

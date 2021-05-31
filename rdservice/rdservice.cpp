@@ -57,8 +57,11 @@ MainObject::MainObject(QObject *parent)
 {
   QString err_msg;
   RDApplication::ErrorType err_type=RDApplication::ErrorOk;
+  int initial_maintenance_interval=-1;
+  bool ok=false;
 
   svc_startup_target=MainObject::TargetAll;
+  svc_force_system_maintenance=false;
 
   //
   // Check for prior instance
@@ -77,6 +80,7 @@ MainObject::MainObject(QObject *parent)
 		err_msg.toUtf8().constData());
     exit(RDApplication::ExitNoDb);
   }
+  rda->syslog(LOG_DEBUG,"starting up");
 
   //
   // Process Startup Options
@@ -86,6 +90,19 @@ MainObject::MainObject(QObject *parent)
       MainObject::StartupTarget target=(MainObject::StartupTarget)j;
       if(rda->cmdSwitch()->key(i)==TargetCommandString(target)) {
 	svc_startup_target=target;
+	rda->cmdSwitch()->setProcessed(i,true);
+      }
+      if(rda->cmdSwitch()->key(i)=="--force-system-maintenance") {
+	svc_force_system_maintenance=true;
+	rda->cmdSwitch()->setProcessed(i,true);
+      }
+      if(rda->cmdSwitch()->key(i)=="--initial-maintenance-interval") {
+	initial_maintenance_interval=rda->cmdSwitch()->value(i).toInt(&ok);
+	if(!ok) {
+	  fprintf(stderr,
+	      "rdservice: invalid \"--initial-maintenance-interval\" value\n");
+	  exit(4);
+	}
 	rda->cmdSwitch()->setProcessed(i,true);
       }
     }
@@ -121,6 +138,13 @@ MainObject::MainObject(QObject *parent)
   connect(svc_maint_timer,SIGNAL(timeout()),this,SLOT(checkMaintData()));
   int interval=GetMaintInterval();
   if(!rda->config()->disableMaintChecks()) {
+    if(initial_maintenance_interval>=0) {
+      interval=initial_maintenance_interval;
+    }
+    rda->syslog(LOG_DEBUG,"initial maintenance run at %s [%s from now]",
+		QDateTime::currentDateTime().addMSecs(interval).
+		toString("hh:mm:ss").toUtf8().constData(),
+		RDGetTimeLength(interval,false,false).toUtf8().constData());
     svc_maint_timer->start(interval);
   }
   else {
@@ -136,7 +160,22 @@ MainObject::MainObject(QObject *parent)
 
 void MainObject::processFinishedData(int id)
 {
-  svc_processes[id]->deleteLater();
+  RDProcess *proc=svc_processes.value(id);
+  if(proc->process()->exitStatus()!=QProcess::NormalExit) {
+    rda->syslog(LOG_WARNING,"process \"%s\" crashed!",
+		proc->prettyCommandString().toUtf8().constData());
+  }
+  else {
+    if(proc->process()->exitCode()!=0) {
+      rda->syslog(LOG_WARNING,"process \"%s\" exited with exit code %d",
+		  proc->prettyCommandString().toUtf8().constData(),
+		  proc->process()->exitCode());
+    }
+    else {
+      rda->syslog(LOG_DEBUG,"process \"%s\" exited normally",
+		  proc->prettyCommandString().toUtf8().constData());
+    }
+  }
   svc_processes.remove(id);
 }
 

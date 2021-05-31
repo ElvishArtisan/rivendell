@@ -33,6 +33,7 @@ class RDProcess : public QObject
   QProcess *process() const;
   QString program() const;
   QStringList arguments() const;
+  QString prettyCommandString() const;
   void setProcessEnvironment(const QProcessEnvironment &env);
   void start(const QString &program,const QStringList &args);
   QString errorText() const;

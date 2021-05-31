@@ -60,6 +60,12 @@ QStringList RDProcess::arguments() const
 }
 
 
+QString RDProcess::prettyCommandString() const
+{
+  return (p_program.trimmed()+" "+p_arguments.join(" ")).trimmed();
+}
+
+
 void RDProcess::setProcessEnvironment(const QProcessEnvironment &env)
 {
   p_process->setProcessEnvironment(env);

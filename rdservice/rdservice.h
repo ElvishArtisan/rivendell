@@ -2,7 +2,7 @@
 //
 // Rivendell Services Manager
 //
-//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -71,6 +71,7 @@ class MainObject : public QObject
   QTimer *svc_maint_timer;
   QTimer *svc_exit_timer;
   StartupTarget svc_startup_target;
+  bool svc_force_system_maintenance;
 };
 
 
