@@ -58,8 +58,9 @@ MainObject::MainObject(QObject *parent)
   // Open the Database
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdmaint","rdmaint",RDMAINT_USAGE,this));
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,false)) {
     fprintf(stderr,"rdmaint: %s\n",err_msg.toUtf8().constData());
+    rda->syslog(LOG_ERR,"%s",err_msg.toUtf8().constData());
     exit(1);
   }
 
