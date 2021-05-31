@@ -369,8 +369,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/rivendell-rdcartslots.desktop
 %{_datadir}/applications/rivendell-rdcatch.desktop
 %{_datadir}/applications/rivendell-rdgpimon.desktop
-%{_datadir}/applications/rivendell-rdalsaconfig-root.desktop
-%{_datadir}/applications/rivendell-rddbconfig-root.desktop
+%{_datadir}/applications/rivendell-rdalsaconfig.desktop
+%{_datadir}/applications/rivendell-rddbconfig.desktop
 %{_datadir}/applications/rivendell-rdlibrary.desktop
 %{_datadir}/applications/rivendell-rdlogedit.desktop
 %{_datadir}/applications/rivendell-rdlogmanager.desktop
