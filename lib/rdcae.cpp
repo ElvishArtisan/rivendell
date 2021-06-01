@@ -493,7 +493,12 @@ void RDCae::clockData()
 
 void RDCae::SendCommand(QString cmd)
 {
-  write(cae_socket,cmd.toUtf8(),cmd.toUtf8().length());
+  int len=cmd.toUtf8().length();
+  int n=write(cae_socket,cmd.toUtf8(),cmd.toUtf8().length());
+  if(n!=len) {
+    rda->syslog(LOG_WARNING,"RDCae lost %d bytes when sending \"%s\"",
+		len-n,cmd.toUtf8().constData());
+  }
 }
 
 

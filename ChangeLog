@@ -21756,3 +21756,5 @@
 2021-06-01 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the '${shlibs:Depends}' dependency from the
 	'rivendell-webapi' DEB package.
+2021-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compile warning in 'lib/rdcae.cpp'.
