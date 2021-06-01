@@ -21751,3 +21751,5 @@
 2021-06-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that caused the application menu layout to
 	be corrupted in the DEB packages.
+2021-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up 'invalid date format' warnings from dpkg-buildpkg(1).
