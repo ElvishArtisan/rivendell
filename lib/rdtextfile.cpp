@@ -2,7 +2,7 @@
 //
 // Spawn an external text file viewer.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -49,7 +49,7 @@ bool RDTextFile(const QString &data,bool delete_on_exit)
 			 "Too many arguments to report editor!");
     return false;
   }
-  strncpy(cmd,f0.at(0).toUtf8(),PATH_MAX);
+  strncpy(cmd,f0.at(0).toUtf8(),PATH_MAX-1);
   QStringList f1=f0.at(0).split("/");
   args[0]=(char *)malloc(f1.back().toUtf8().size()+1);
   strcpy(args[0],f1.back().toUtf8());
@@ -63,7 +63,10 @@ bool RDTextFile(const QString &data,bool delete_on_exit)
     QMessageBox::warning(NULL,"File Error","Unable to create temporary file");
     return false;
   }
-  write(fd,data.toUtf8(),data.toUtf8().length());
+  if(write(fd,data.toUtf8(),data.toUtf8().length())!=data.toUtf8().length()) {
+    rda->syslog(LOG_WARNING,"RDTextFile write lost data [%s]",
+		strerror(errno));
+  }
   ::close(fd);
   if(delete_on_exit) {
     rda->addTempFile(tmpfile);
@@ -99,7 +102,7 @@ bool RDTextViewer(const QString &filename)
 			 "Too many arguments to report editor!");
     return false;
   }
-  strncpy(cmd,f0.at(0).toUtf8(),PATH_MAX);
+  strncpy(cmd,f0.at(0).toUtf8(),PATH_MAX-1);
   QStringList f1=f0.at(0).split("/");
   args[0]=(char *)malloc(f1.back().toUtf8().size()+1);
   strcpy(args[0],f1.back().toUtf8());
@@ -140,7 +143,7 @@ bool RDWebBrowser(const QString &url)
 			 "Too many arguments to web browser!");
     return false;
   }
-  strncpy(cmd,f0.at(0).toUtf8(),PATH_MAX);
+  strncpy(cmd,f0.at(0).toUtf8(),PATH_MAX-1);
   QStringList f1=f0.at(0).split("/");
   args[0]=(char *)malloc(f1.back().toUtf8().size()+1);
   strcpy(args[0],f1.back().toUtf8());
