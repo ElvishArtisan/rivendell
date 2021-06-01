@@ -2,7 +2,7 @@
 //
 // Render a Rivendell log to a single audio object.
 //
-//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -183,7 +183,7 @@ bool __RDRenderLogLine::GetCutFile(const QString &cutname,int start_pt,
   char tempdir[PATH_MAX];
   
   strncpy(tempdir,(RDTempDirectory::basePath()+"/rdrenderXXXXXX").toUtf8(),
-	  PATH_MAX);
+	  PATH_MAX-1);
   *dest_filename=QString(mkdtemp(tempdir))+"/"+cutname+".wav";
   RDAudioExport *conv=new RDAudioExport();
   conv->setDestinationFile(*dest_filename);
@@ -274,7 +274,7 @@ bool RDRenderer::renderToFile(const QString &outfile,RDLogModel *model,
     // Get Temporary File
     //
     strncpy(tempdir,(RDTempDirectory::basePath()+"/rdrenderXXXXXX").toUtf8(),
-      PATH_MAX);
+      PATH_MAX-1);
     temp_output_filename=QString(mkdtemp(tempdir))+"/log.wav";
     ProgressMessage(tr("Using temporary file")+" \""+temp_output_filename+"\".");
 
@@ -358,7 +358,7 @@ bool RDRenderer::renderToCart(unsigned cartnum,int cutnum,RDLogModel *model,
   //
   strncpy(tempdir,
 	  (RDTempDirectory::basePath()+"/rdrenderXXXXXX").toUtf8().constData(),
-	  PATH_MAX);
+	  PATH_MAX-1);
   temp_output_filename=QString(mkdtemp(tempdir))+"/log.wav";
   ProgressMessage(tr("Using temporary file")+" \""+temp_output_filename+"\".");
 
