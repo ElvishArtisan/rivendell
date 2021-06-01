@@ -54,16 +54,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   air_panel=NULL;
 
   //
-  // Ensure Single Instance
-  //
-  air_lock=new RDInstanceLock(RDHomeDir()+"/.rdairplaylock");
-  if(!air_lock->lock()) {
-    QMessageBox::information(this,tr("RDAirPlay"),
-			     tr("Multiple instances not allowed!"));
-    exit(1);
-  }
-
-  //
   // Get the Startup Date/Time
   //
   air_startup_datetime=QDateTime(QDate::currentDate(),QTime::currentTime());
@@ -74,6 +64,16 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   rda=new RDApplication("RDAirPlay","rdairplay",RDAIRPLAY_USAGE,this);
   if(!rda->open(&err_msg)) {
     QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),err_msg);
+    exit(1);
+  }
+
+  //
+  // Ensure Single Instance
+  //
+  air_lock=new RDInstanceLock(RDHomeDir()+"/.rdairplaylock");
+  if(!air_lock->lock()) {
+    QMessageBox::information(this,tr("RDAirPlay"),
+			     tr("Multiple instances not allowed!"));
     exit(1);
   }
 

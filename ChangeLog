@@ -21776,3 +21776,5 @@
 	* Cleaned up a compile warning in 'lib/rdevent_line.cpp'.
 2021-06-01 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compile warnings in 'lib/rdformpost.cpp'.
+2021-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compile warnings in 'lib/rdinstancelock.cpp'.

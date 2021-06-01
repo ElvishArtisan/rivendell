@@ -2,7 +2,7 @@
 //
 //   An abstract instance-locking class.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -26,9 +26,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include <qstring.h>
-#include <qdir.h>
+#include <QDir>
+#include <QString>
 
+#include <rdapplication.h>
 #include <rdinstancelock.h>
 
 RDInstanceLock::RDInstanceLock(QString path)
@@ -58,7 +59,11 @@ bool RDInstanceLock::lock()
     lock_locked=false;
     return false;
   }
-  fscanf(file,"%d",&pid);
+  if(fscanf(file,"%d",&pid)!=1) {
+    rda->syslog(LOG_WARNING,
+		"RDInstanceLock::lock fscanf returned a parser failure [%s]",
+		strerror(errno));
+  }
   fclose(file);
   dir.setPath(QString().sprintf("/proc/%u",pid));
   if(!dir.exists()) {
