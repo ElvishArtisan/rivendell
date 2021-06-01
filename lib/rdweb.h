@@ -3,7 +3,7 @@
 // Functions for interfacing with web components using the
 // Common Gateway Interface (CGI) Standard 
 //
-//   (C) Copyright 1996-2007 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 1996-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,49 +22,16 @@
 #ifndef RDWEB_H
 #define RDWEB_H
 
-#include <map>
-
-#include <qstring.h>
-#include <qdatetime.h>
-#include <qhostaddress.h>
-#include <qstringlist.h>
+#include <QDateTime>
+#include <QString>
 
 #include <rdaudioconvert.h>
 
 //
-// Data Structure Sizes
-//
-#define CGI_ACCUM_SIZE 1024
-#define RD_WEB_SESSION_TIMEOUT 900
-
-//
 // Function Prototypes
 //
-extern int RDReadPost(char *,int);
-extern int RDPutPostString(char *,char *,char *,int);
-extern int RDFindPostString(const char *,const char *,char *,int);
-extern int RDGetPostString(const char *,const char *,char *,int);
-extern int RDGetPostInt(const char *,const char *,int *);
-extern int RDGetPostLongInt(const char *,const char *,long int *);
-extern int RDPurgePostString(const char *,const char *,int);
-extern int RDEncodeString(char *,int);
-extern int RDEncodeSQLString(char *,int);
-extern int RDDecodeString(char *);
-extern int RDPutPlaintext(char *,int);
-extern int RDPurgePlaintext(char *,int);
-extern void RDCgiError(const char *str,int resp_code=200);
 extern void RDXMLResult(const char *str,int resp_code,
 			RDAudioConvert::ErrorCode err=RDAudioConvert::ErrorOk);
-extern int RDBufferDiff(char *,int,int,int);
-extern void RDPruneAmp(char *);
-extern int RDEscapeQuotes(const char *src,char *dest,int maxlen);
-extern long int RDAuthenticateLogin(const QString &username,
-				    const QString &passwd,
-				    const QHostAddress &addr);
-extern QString RDAuthenticateSession(long int session_id,
-				     const QHostAddress &addr);
-extern void RDLogoutSession(long int session_id,const QHostAddress &addr);
-extern bool RDParsePost(std::map<QString,QString> *vars);
 extern QString RDXmlField(const QString &tag,const QString &value,
 			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag,const char *value,

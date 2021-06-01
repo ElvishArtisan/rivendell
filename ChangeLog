@@ -21801,3 +21801,12 @@
 2021-06-01 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up 'No relevant classes found' warnings in
 	'lib/Makefile.am'.
+2021-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed ' RDReadPost()', 'RDPutPostString()', 'GetPostString()',
+	'GetPostInt()', 'GetPostLongInt()', 'RDPurgePostString',
+	'RDEncodeString()', 'RDEncodeSQLString()', 'RDDecodeString()',
+	'RDPutPlaintext()', 'RDPurgePlaintext()', 'RDCgiError()',
+	'RDBufferDiff()', 'RDPruneAmp()', 'RDEscapeQuotes()',
+	'RDAuthenticateLogin()', ' RDAuthenticateSession()',
+	'RDLogoutSession()' and 'RDParsePost()' functions from
+	'lib/rdweb.[cpp|h]'.
