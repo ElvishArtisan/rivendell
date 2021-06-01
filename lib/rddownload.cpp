@@ -2,7 +2,7 @@
 //
 // Download a File
 //
-//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,8 +32,9 @@
 
 #include <rd.h>
 #include <rdapplication.h>
-#include <rdsystemuser.h>
+#include <rdconf.h>
 #include <rddownload.h>
+#include <rdsystemuser.h>
 
 //
 // CURL Progress Callback
@@ -123,7 +124,6 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   long response_code=0;
   RDDownload::ErrorCode ret=RDDownload::ErrorOk;
   RDSystemUser *user=NULL;
-  char userpwd[256];
 
   if(!urlIsSupported(conv_src_url)) {
     return RDDownload::ErrorUnsupportedProtocol;
@@ -170,8 +170,8 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
     curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
   }
   else {
-    strncpy(userpwd,(username+":"+password).toUtf8(),256);
-    curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
+    curl_easy_setopt(curl,CURLOPT_USERPWD,(username+":"+password).
+		     toUtf8().constData());
   }
 
   curl_easy_setopt(curl,CURLOPT_URL,url.constData());
@@ -189,8 +189,8 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   }
 
   if(user!=NULL) {
-    setegid(user->gid());
-    seteuid(user->uid());
+    RDCheckExitCode("RDDownLoad::runDownload setegid",setegid(user->gid()));
+    RDCheckExitCode("RDDownload::runDownload seteuid",seteuid(user->uid()));
   }
   switch((curl_err=curl_easy_perform(curl))) {
   case CURLE_OK:
@@ -232,8 +232,8 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
     ret=RDDownload::ErrorUnspecified;
   }
   if(user!=NULL) {
-    seteuid(getuid());
-    setegid(getgid());
+    RDCheckExitCode("RDDownload::runDownload seteuid",seteuid(getuid()));
+    RDCheckExitCode("RDDownload::runDownload getgid",setegid(getgid()));
     delete user;
   }
   if((curl_err!=CURLE_OK)&&log_debug) {
