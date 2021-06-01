@@ -21772,3 +21772,5 @@
 	* Cleaned up compile warnings in 'lib/rdcut.cpp'.
 2021-06-01 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compile warnings in 'lib/rddownload.cpp'.
+2021-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up a compile warning in 'lib/rdevent_line.cpp'.
