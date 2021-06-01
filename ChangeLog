@@ -21796,3 +21796,5 @@
 	* Cleaned up compile warnings in 'lib/rdunixsocket.cpp'.
 2021-06-01 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compile warnings in 'lib/rduser.cpp'.
+2021-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compile warnings in 'lib/rdwavefile.cpp'.

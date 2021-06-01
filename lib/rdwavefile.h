@@ -2,7 +2,7 @@
 //
 //   A class for handling Microsoft WAV files.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -1076,6 +1076,7 @@ class RDWaveFile
 #endif  // HAVE_VORBIS
    int WriteOggBuffer(char *buf,int size);
    unsigned FrameOffset(int msecs) const;
+   int CheckExitCode(const QString &msg,int exit_code);
    QString wave_file_name;
    QFile wave_file;
    RDWaveData *wave_data;

@@ -452,7 +452,8 @@ bool RDWaveFile::openWave(RDWaveData *data)
       return false;
     }
     lseek(wave_file.handle(),0,SEEK_SET);
-    read(wave_file.handle(),tmc_buffer,4);
+    CheckExitCode("RDWaveFile::openWave()",
+		  read(wave_file.handle(),tmc_buffer,4));
     data_length=(0xFF&tmc_buffer[0])+(0xFF&tmc_buffer[1])*256+
       (0xFF&tmc_buffer[2])*65536+(0xFF&tmc_buffer[3])*16777216;
     data_start=atx_offset;
@@ -542,10 +543,12 @@ bool RDWaveFile::createWave(RDWaveData *data,unsigned ptr_offset)
 	  return false;
 	}
 	recordable=true;
-	write(wave_file.handle(),"RIFF\0\0\0\0WAVE",12);
+	CheckExitCode("RDWaveFile::createWave()",
+		      write(wave_file.handle(),"RIFF\0\0\0\0WAVE",12));
 	WriteChunk(wave_file.handle(),"fmt ",fmt_chunk_data,fmt_size);
 	if(format_tag==WAVE_FORMAT_MPEG) {
-	  write(wave_file.handle(),"fact\4\0\0\0\0\0\0\0",12);
+	  CheckExitCode("RDWaveFile::createWave()",
+			write(wave_file.handle(),"fact\4\0\0\0\0\0\0\0",12));
 	}
 	if(cart_chunk) {
 	  MakeCart(ptr_offset);
@@ -566,7 +569,8 @@ bool RDWaveFile::createWave(RDWaveData *data,unsigned ptr_offset)
 	  WriteChunk(wave_file.handle(),"rdxl",rdxl_contents);
 	}
 	wave_type=RDWaveFile::Wave;
-	write(wave_file.handle(),"data\0\0\0\0",8);
+	CheckExitCode("RDWaveFile::createWave()",
+		      write(wave_file.handle(),"data\0\0\0\0",8));
 	data_start=lseek(wave_file.handle(),0,SEEK_CUR);
 	break;
 
@@ -650,22 +654,29 @@ void RDWaveFile::closeWave(int samples)
 	    levl_peak_value=0;
 	    MakeLevl();
 	    lseek(wave_file.handle(),0,SEEK_END);
-	    write(wave_file.handle(),"levl",4);
+	    CheckExitCode("RDWaveFile::closeWave()",
+			  write(wave_file.handle(),"levl",4));
 	    lsize=LEVL_CHUNK_SIZE+energy_data.size()*2-8;
 	    size_buf[0]=lsize&0xff;
 	    size_buf[1]=(lsize>>8)&0xff;
 	    size_buf[2]=(lsize>>16)&0xff;
 	    size_buf[3]=(lsize>>24)&0xff;
-	    write(wave_file.handle(),size_buf,4);
-	    write(wave_file.handle(),levl_chunk_data,LEVL_CHUNK_SIZE-8);
+	    CheckExitCode("RDWaveFile::closeWave()",
+			  write(wave_file.handle(),size_buf,4));
+	    CheckExitCode("RDWaveFile::closeWave()",
+			  write(wave_file.handle(),levl_chunk_data,
+				LEVL_CHUNK_SIZE-8));
 	    // Fixup the endianness
 	    unsigned char * sbuf = new unsigned char [2 * energy_data.size()];
 	    for (unsigned int i=0; i < energy_data.size(); i++){
 	      WriteSword (sbuf,2*i,(unsigned short) energy_data[i]);
 	    }
-	    write(wave_file.handle(),sbuf,2*energy_data.size());
+	    CheckExitCode("RDWaveFile::closeWave()",
+			  write(wave_file.handle(),sbuf,2*energy_data.size()));
 	    delete [] sbuf;
-	    ftruncate(wave_file.handle(),lseek(wave_file.handle(),0,SEEK_CUR));
+	    CheckExitCode("RDWaveFile::closeWave()",
+			  ftruncate(wave_file.handle(),lseek(wave_file.handle(),
+							     0,SEEK_CUR)));
 	  }
 
 	  //
@@ -677,7 +688,8 @@ void RDWaveFile::closeWave(int samples)
 	  size_buf[2]=(cptr>>16)&0xff;
 	  size_buf[3]=(cptr>>24)&0xff;
 	  lseek(wave_file.handle(),4,SEEK_SET);
-	  write(wave_file.handle(),size_buf,4);
+	  CheckExitCode("RDWaveFile::closeWave()",
+			write(wave_file.handle(),size_buf,4));
 	  
 	  //
 	  // Update data chunk size
@@ -688,7 +700,8 @@ void RDWaveFile::closeWave(int samples)
 	  size_buf[3]=(data_length>>24)&0xff;
 	  lseek(wave_file.handle(),
 		FindChunk(wave_file.handle(),"data",&csize)-4,SEEK_SET);
-	  write(wave_file.handle(),size_buf,4);
+	  CheckExitCode("RDWaveFile::closeWave()",
+			write(wave_file.handle(),size_buf,4));
 	  
 	  //
 	  // Update fact chunk
@@ -739,14 +752,17 @@ void RDWaveFile::closeWave(int samples)
 	  // Truncate
 	  //
 	  if(!levl_chunk) {
-	    ftruncate(wave_file.handle(),FindChunk(wave_file.handle(),
-						   "data",&csize)+data_length);
+	    CheckExitCode("RDWaveFile::closeWave()",
+			  ftruncate(wave_file.handle(),
+				    FindChunk(wave_file.handle(),
+					      "data",&csize)+data_length));
 	  }
 	  else {
 	    if((format_tag==WAVE_FORMAT_MPEG)&&(head_layer!=2)) {
-	      ftruncate(wave_file.handle(),
-			FindChunk(wave_file.handle(),
-				  "data",&csize)+data_length);
+	    CheckExitCode("RDWaveFile::closeWave()",
+			  ftruncate(wave_file.handle(),
+				    FindChunk(wave_file.handle(),
+					      "data",&csize)+data_length));
 	    }
 	  }
 	  break;
@@ -886,7 +902,8 @@ void RDWaveFile::resetWave()
 {
   if(wave_type!=RDWaveFile::Ogg) {
     lseek(wave_file.handle(),data_start,SEEK_SET);
-    ftruncate(wave_file.handle(),data_start);
+    CheckExitCode("RDWaveFile::resetWave()",
+		  ftruncate(wave_file.handle(),data_start));
   }
 }
 
@@ -2550,7 +2567,7 @@ bool RDWaveFile::GetChunk(int fd,const char *chunk_name,unsigned *chunk_size,
     return false;
   }
   lseek(fd,SEEK_SET,pos);
-  read(fd,chunk,size);
+  CheckExitCode("RDWaveFile::GetChunk()",read(fd,chunk,size));
   return true;
 }
 
@@ -2575,14 +2592,14 @@ void RDWaveFile::WriteChunk(int fd,const char *cname,unsigned char *buf,
       size_buf[3]=(size>>24)&0xff;
     }
     lseek(fd,0,SEEK_END);
-    write(fd,cname,4);
-    write(fd,size_buf,4);
-    write(fd,buf,size);
+    CheckExitCode("RDWaveFile::WriteChunk()",write(fd,cname,4));
+    CheckExitCode("RDWaveFile::WriteChunk()",write(fd,size_buf,4));
+    CheckExitCode("RDWaveFile::WriteChunk()",write(fd,buf,size));
 
     return;
   }
   if(csize==size) {
-    write(fd,buf,size);
+    CheckExitCode("RDWaveFile::WriteChunk()",write(fd,buf,size));
     return;
   }
   //printf("WARNING: Updated chunk size mismatch!  Update not written.\n");
@@ -2598,9 +2615,10 @@ void RDWaveFile::WriteChunk(int fd,const char *cname,const QString &contents)
   size_buf[3]=(contents.toUtf8().length()>>24)&0xff;
 
   lseek(fd,0,SEEK_END);
-  write(fd,cname,4);
-  write(fd,size_buf,4);
-  write(fd,contents.toUtf8(),contents.toUtf8().length());
+  CheckExitCode("RDWaveFile::WriteChunk()",write(fd,cname,4));
+  CheckExitCode("RDWaveFile::WriteChunk()",write(fd,size_buf,4));
+  CheckExitCode("RDWaveFile::WriteChunk()",
+		write(fd,contents.toUtf8(),contents.toUtf8().length()));
 }
 
 
@@ -2741,7 +2759,8 @@ bool RDWaveFile::GetCart(int fd)
     //
     if(chunk_size>2048) {
       tag_buffer=(char *)malloc(chunk_size-2048+1);
-      read(wave_file.handle(),tag_buffer,chunk_size-2048);
+      CheckExitCode("RDWaveFile::GetCart()",
+		    read(wave_file.handle(),tag_buffer,chunk_size-2048));
       tag_buffer[chunk_size-2048]=0;
       cart_tag_text=tag_buffer;
       free(tag_buffer);
@@ -2865,7 +2884,8 @@ bool RDWaveFile::GetBext(int fd)
   //
   if(chunk_size>602) {
     tag_buffer=(char *)malloc(chunk_size-602+1);
-    read(wave_file.handle(),tag_buffer,chunk_size-602);
+    CheckExitCode("RDWaveFile::GetBext()",
+		  read(wave_file.handle(),tag_buffer,chunk_size-602));
     tag_buffer[chunk_size-602]=0;
     bext_coding_history=tag_buffer;
     free(tag_buffer);
@@ -2958,7 +2978,7 @@ bool RDWaveFile::GetLevl(int fd)
 	levl_block_offset-8,SEEK_SET);
   for(unsigned i=1;i<levl_frames;i++) {
     for(int j=0;j<levl_channels;j++) {
-      read(wave_file.handle(),frame,2);
+      CheckExitCode("RDWaveFile::GetLevl()",read(wave_file.handle(),frame,2));
       energy_data.push_back(frame[0]+256*frame[1]);
     }
   }
@@ -3235,7 +3255,7 @@ bool RDWaveFile::GetRdxl(int fd)
   lseek(fd,SEEK_SET,pos);
   chunk=new char[chunk_size+1];
   memset(chunk,0,chunk_size+1);
-  read(fd,chunk,chunk_size);
+  CheckExitCode("RDWaveFile::GetRdxl()",read(fd,chunk,chunk_size));
   rdxl_contents=QString::fromUtf8(chunk);
   delete chunk;
 
@@ -3282,13 +3302,7 @@ bool RDWaveFile::GetList(int fd)
     return false;
   }
   unsigned char *chunk_data=new unsigned char[chunk_size];
-  read(fd,chunk_data,chunk_size);
-/*
-  if(strncmp("INFO",chunk_data,4)) {
-    delete chunk_data;
-    return false;
-  }
-*/
+  CheckExitCode("RDWaveFile::GetList()",read(fd,chunk_data,chunk_size));
   unsigned offset=4;
   while(ReadListElement(chunk_data,&offset,chunk_size));
   if((wave_data->segueStartPos()>=0)&&(wave_data->segueEndPos()<0)) {
@@ -5018,4 +5032,14 @@ unsigned RDWaveFile::FrameOffset(int msecs) const
     return 0;
   }
   return (unsigned)((double)msecs*(double)samples_per_sec/1000.0);
+}
+
+
+int RDWaveFile::CheckExitCode(const QString &msg,int exit_code)
+{
+  if(exit_code!=0) {
+    fprintf(stderr,"%s returned non-zero exit code %d [%s]\n",
+	    msg.toUtf8().constData(),exit_code,strerror(errno));
+  }
+  return exit_code;
 }
