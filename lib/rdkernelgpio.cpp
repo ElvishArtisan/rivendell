@@ -2,7 +2,7 @@
 //
 // Control Class for the Linux SysFS GPIO Interface
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include "rdapplication.h"
 #include "rdkernelgpio.h"
 
 RDKernelGpio::RDKernelGpio(QObject *parent)
@@ -84,7 +85,11 @@ RDKernelGpio::Direction RDKernelGpio::direction(int gpio,bool *ok) const
   char str[255];
 
   if((f=OpenNode("direction","r",gpio))!=NULL) {
-    fscanf(f,"%s",str);
+    if(fscanf(f,"%s",str)!=1) {
+      rda->syslog(LOG_WARNING,
+	   "RDKernelGpio::direction fscanf returned unexpected item count [%s]",
+	   strerror(errno));
+    }
     if(QString(str)=="out") {
       ret=RDKernelGpio::Out;
     }
@@ -130,7 +135,14 @@ bool RDKernelGpio::activeLow(int gpio,bool *ok) const
   FILE *f=NULL;
 
   if((f=OpenNode("active_low","r",gpio))!=NULL) {
-    fscanf(f,"%u",&ret);
+    if(fscanf(f,"%u",&ret)!=1) {
+      rda->syslog(LOG_WARNING,
+	   "RDKernelGpio::activeLow fscanf returned unexpected item count [%s]",
+	   strerror(errno));
+      if(ok!=NULL) {
+	*ok=false;
+      }
+    }
     fclose(f);
     if(ok!=NULL) {
       *ok=true;
@@ -165,7 +177,14 @@ bool RDKernelGpio::value(int gpio,bool *ok) const
   FILE *f=NULL;
 
   if((f=OpenNode("value","r",gpio))!=NULL) {
-    fscanf(f,"%u",&ret);
+    if(fscanf(f,"%u",&ret)!=1) {
+      rda->syslog(LOG_WARNING,
+	   "RDKernelGpio::activeLow fscanf returned unexpected item count [%s]",
+	   strerror(errno));
+      if(ok!=NULL) {
+	*ok=false;
+      }
+    }
     fclose(f);
     if(ok!=NULL) {
       *ok=true;
