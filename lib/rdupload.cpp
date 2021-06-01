@@ -2,7 +2,7 @@
 //
 // Upload a File
 //
-//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,6 +34,7 @@
 
 #include "rd.h"
 #include "rdapplication.h"
+#include "rdconf.h"
 #include "rdsystemuser.h"
 #include "rdupload.h"
 
@@ -169,7 +170,7 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
     curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
   }
   else {
-    strncpy(userpwd,(username+":"+password).toUtf8(),256);
+    strncpy(userpwd,(username+":"+password).toUtf8(),255);
     curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   }
 
@@ -188,8 +189,8 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,UploadErrorCallback);
   }
   if(user!=NULL) {
-    setegid(user->gid());
-    seteuid(user->uid());
+    RDCheckExitCode("RDUpload::runUpload setegid",setegid(user->gid()));
+    RDCheckExitCode("RDUpload::runUpload seteuid",seteuid(user->uid()));
   }
   switch((curl_err=curl_easy_perform(curl))) {
   case CURLE_OK:
@@ -227,8 +228,8 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
     break;
   }
   if(user!=NULL) {
-    seteuid(getuid());
-    setegid(getgid());
+    RDCheckExitCode("RDUpload::runUpload seteuid",seteuid(getuid()));
+    RDCheckExitCode("RDUpload::runUpload setegid",setegid(getgid()));
     delete user;
   }
   if((curl_err!=CURLE_OK)&&log_debug) {
