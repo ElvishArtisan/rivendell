@@ -2,7 +2,7 @@
 //
 // Abstract a Linux CDROM Device.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -30,7 +30,7 @@
 #include <qdatetime.h>
 
 #include <rdcdplayer.h>
-
+#include <rdconf.h>
 
 RDCdPlayer::RDCdPlayer(FILE *profile_msgs,QWidget *parent)
   : QObject(parent)
@@ -221,13 +221,15 @@ void RDCdPlayer::lock()
 
 void RDCdPlayer::unlock()
 {
-  system(("eject -i off "+cdrom_device).toUtf8());
+  RDCheckExitCode("RDCdPlayer unlock process",
+		   system(("eject -i off "+cdrom_device).toUtf8()));
 }
 
 
 void RDCdPlayer::eject()
 {
-  system(("eject "+cdrom_device).toUtf8());
+  RDCheckExitCode("RDCdPlayer eject project",
+		  system(("eject "+cdrom_device).toUtf8()));
 }
 
 
