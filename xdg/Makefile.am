@@ -20,6 +20,7 @@
 ## Use automake to process this into a Makefile.in
 
 install-exec-am:	
+	./install_usermode.sh install $(DESTDIR) $(prefix)
 	mkdir -p $(DESTDIR)@prefix@/share/applications
 	cp rivendell-rdadmin.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdairplay.desktop $(DESTDIR)@prefix@/share/applications/
@@ -38,29 +39,25 @@ install-exec-am:
 	cp rivendell-rdsoftkeys.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rmlsend.desktop $(DESTDIR)@prefix@/share/applications/
 	mkdir -p $(DESTDIR)@prefix@/share/desktop-directories
-	cp *.directory $(DESTDIR)@prefix@/share/desktop-directories/
+	cp rivendell-configuration.directory $(DESTDIR)@prefix@/share/desktop-directories/
+	cp rivendell-documentation.directory $(DESTDIR)@prefix@/share/desktop-directories/
+	cp rivendell-logtools.directory $(DESTDIR)@prefix@/share/desktop-directories/
+	cp rivendell-rivendell.directory $(DESTDIR)@prefix@/share/desktop-directories/
+	cp rivendell-utilities.directory $(DESTDIR)@prefix@/share/desktop-directories/
 	mkdir -p $(DESTDIR)/etc/xdg/menus/applications-merged
-	cp *.menu $(DESTDIR)/etc/xdg/menus/applications-merged/
+	cp rivendell-rivendell.menu $(DESTDIR)/etc/xdg/menus/applications-merged/
 	cp @RDALSACONFIG_DESKTOP_FILE@ $(DESTDIR)@prefix@/share/applications/rivendell-rdalsaconfig.desktop
 	cp @RDDBCONFIG_DESKTOP_FILE@ $(DESTDIR)@prefix@/share/applications/rivendell-rddbconfig.desktop
-	./install_usermode.sh install $(DESTDIR) $(prefix)
-
-#	mkdir -p $(DESTDIR)/etc/pam.d
-#	cp rdalsaconfig-root-pam $(DESTDIR)/etc/pam.d/rdalsaconfig-root
-#	cp rddbconfig-root-pam $(DESTDIR)/etc/pam.d/rddbconfig-root
-#	mkdir -p $(DESTDIR)/etc/security/console.apps
-#	cp rdalsaconfig-root-consolehelper $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
-#	cp rddbconfig-root-consolehelper $(DESTDIR)/etc/security/console.apps/rddbconfig-root
-#	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
-#	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
-#	rm -f $(DESTDIR)$(prefix)/bin/rddbconfig-root
-#	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rddbconfig-root
 
 uninstall-local:	
-	rm -f $(DESTDIR)@prefix@/share/applications/rivendell-*.desktop
-	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-*.directory
-	rm -f $(DESTDIR)/etc/xdg/menus/applications-merged/rivendell-*.menu
 	./install_usermode.sh uninstall $(DESTDIR) $(prefix)
+	rm -f $(DESTDIR)@prefix@/share/applications/rivendell-*
+	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-configuration.directory
+	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-documentation.directory
+	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-logtools.directory
+	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-rivendell.directory
+	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-utilities.directory
+	rm -f $(DESTDIR)/etc/xdg/menus/applications-merged/rivendell-rivendell.menu
 
 #	rm -f $(DESTDIR)/etc/pam.d/rdalsaconfig-root
 #	rm -f $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
@@ -81,11 +78,13 @@ EXTRA_DIST = install_usermode.sh.in\
              rivendell-rdairplay.desktop\
              rivendell-rdalsaconfig.desktop\
              rivendell-rdalsaconfig-root.desktop\
+             rivendell-rdalsaconfig-sudo.desktop\
              rivendell-rdcartslots.desktop\
              rivendell-rdcastmanager.desktop\
              rivendell-rdcatch.desktop\
              rivendell-rddbconfig.desktop\
              rivendell-rddbconfig-root.desktop\
+             rivendell-rddbconfig-sudo.desktop\
              rivendell-rddgimport.desktop\
              rivendell-rddiscimport.desktop\
              rivendell-rdgpimon.desktop\

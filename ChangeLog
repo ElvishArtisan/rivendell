@@ -21748,3 +21748,6 @@
 2021-05-31 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the build system to suppress installation of usermode
 	support components on non-RedHat-ish platforms.
+2021-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that caused the application menu layout to
+	be corrupted in the DEB packages.
