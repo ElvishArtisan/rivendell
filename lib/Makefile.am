@@ -344,8 +344,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdgpioslotsmodel.cpp\
                           moc_rdgrouplistmodel.cpp\
                           moc_rdhostvarlistmodel.cpp\
-                          moc_rdhotkeys.cpp\
-                          moc_rdhotkeylist.cpp\
                           moc_rdimagepickerbox.cpp\
                           moc_rdimagepickermodel.cpp\
                           moc_rdimport_audio.cpp\

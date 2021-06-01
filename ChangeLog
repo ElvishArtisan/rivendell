@@ -21798,3 +21798,6 @@
 	* Cleaned up compile warnings in 'lib/rduser.cpp'.
 2021-06-01 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compile warnings in 'lib/rdwavefile.cpp'.
+2021-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up 'No relevant classes found' warnings in
+	'lib/Makefile.am'.
