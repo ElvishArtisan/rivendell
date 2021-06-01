@@ -176,7 +176,7 @@ MainObject::MainObject(QObject *parent)
   // Create Temp Directory
   //
   strncpy(tempdir,(RDTempDirectory::basePath()+"/nexgen_filterXXXXXX").toUtf8(),
-	  PATH_MAX);
+	  PATH_MAX-1);
   filter_temp_dir=new QDir(mkdtemp(tempdir));
   filter_temp_audiofile=filter_temp_dir->canonicalPath()+"/audio.dat";
 
@@ -269,10 +269,10 @@ void MainObject::ProcessArchive(const QString &filename)
     }
     for(uint32_t i=blksize;i<len;i+=blksize) {
       n=read(fd_in,data,blksize);
-      write(fd_out,data,n);
+      RDCheckExitCode("ProcessArchive() write",write(fd_out,data,n));
     }
     n=read(fd_in,data,len%blksize);
-    write(fd_out,data,n);
+    RDCheckExitCode("ProcessArchive() write",write(fd_out,data,n));
     close(fd_out);
   }
   close(fd_in);
