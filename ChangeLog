@@ -21768,3 +21768,5 @@
 	* Removed 'IncrementIndex()', 'GetLock()' and 'ClearLock()' functions
 	from 'lib/rdconf.[cpp|h]'.
 	* Cleaned up compile warning in 'lib/rdconf.cpp'.
+2021-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compile warnings in 'lib/rdcut.cpp'.

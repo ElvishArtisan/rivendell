@@ -1799,13 +1799,14 @@ bool RDCut::FileCopy(const QString &srcfile,const QString &destfile) const
   }
   buf=(char *)malloc(dest_stat.st_blksize);
   while((n=read(src_fd,buf,dest_stat.st_blksize))==dest_stat.st_blksize) {
-    write(dest_fd,buf,dest_stat.st_blksize);
+    RDCheckExitCode("RDCut::FileCopy write",
+		    write(dest_fd,buf,dest_stat.st_blksize));
     bytes+=dest_stat.st_blksize;
     if((step=10*bytes/src_stat.st_size)!=previous_step) {
       previous_step=step;
     }
   }
-  write(dest_fd,buf,n);
+  RDCheckExitCode("RDCut::FileCopy write",write(dest_fd,buf,n));
   free(buf);
   close(src_fd);
   close(dest_fd);
