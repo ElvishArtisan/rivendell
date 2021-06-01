@@ -488,7 +488,9 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   // Run Preimport Command
   //
   if(!preimport_cmd.isEmpty()) {
-    system(RDDateDecode(preimport_cmd,date,svc_station,svc_config,svc_name).toUtf8());
+    RDCheckExitCode("RDSvc::import system",
+		    system(RDDateDecode(preimport_cmd,date,svc_station,
+					svc_config,svc_name).toUtf8()));
   }
 
   QString parser_table;
