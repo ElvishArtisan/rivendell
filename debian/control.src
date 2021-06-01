@@ -36,7 +36,7 @@ Description: Rivendell Operations and Administration Guide
 
 Package: rivendell-webapi
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}
 Description: Client libraries for interfacing with Rivendell's Web API.
  This package contains client libraries for interfacing with Rivendell's
  Web API subsystem.
