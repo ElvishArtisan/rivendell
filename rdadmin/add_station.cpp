@@ -168,7 +168,6 @@ void AddStation::CloneEncoderValues(const QString &paramname,
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
 
   sql=QString("select ")+
   paramname+" from `ENCODER_"+paramname+"` where "+
