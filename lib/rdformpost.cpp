@@ -2,7 +2,7 @@
 //
 // Handle data from an HTML form.
 //
-//   (C) Copyright 2009-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -97,7 +97,7 @@ RDFormPost::RDFormPost(RDFormPost::Encoding encoding,unsigned maxsize,
   // (Perhaps) autodetect the encoding type
   //
   char first[2];
-  read(0,first,1);
+  RDCheckExitCode("RDFormPost::RDFormPost read",read(0,first,1));
   if(post_encoding==RDFormPost::AutoEncoded) {
     if(first[0]=='-') {
       post_encoding=RDFormPost::MultipartEncoded;
@@ -690,7 +690,8 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
     data=GetLine();
     line=QString::fromUtf8(data).trimmed();
     while(!line.contains(post_separator)) {
-      write(fd,data,data.length());
+      RDCheckExitCode("RDFormPost::GetMimePart write",
+		      write(fd,data,data.length()));
       data=GetLine();
       line=QString::fromUtf8(data).trimmed();
     }
@@ -705,7 +706,9 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
   }
 
   if(fd>=0) {
-    ftruncate(fd,lseek(fd,0,SEEK_CUR)-2);  // Remove extraneous final CR/LF
+    // Remove extraneous final CR/LF
+    RDCheckExitCode("RDFormPost::GetMimePart ftruncate",
+		    ftruncate(fd,lseek(fd,0,SEEK_CUR)-2));
     close(fd);
   }
 
