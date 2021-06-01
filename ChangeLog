@@ -21788,3 +21788,5 @@
 	* Cleaned up compile warnings in 'lib/rdsvc.cpp'.
 2021-06-01 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compile warnings in 'lib/rdtextfile.cpp'.
+2021-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compile warnings in 'lib/rdttydevice.cpp'.

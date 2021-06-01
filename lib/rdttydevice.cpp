@@ -2,8 +2,7 @@
 //
 //   A Qt driver for tty ports.
 //
-//   (C) Copyright 2010-1018 Fred Gleason <fredg@paravelsystems.com>
-//       All Rights Reserved.
+//   (C) Copyright 2010-1021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -26,6 +25,7 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 
+#include "rdapplication.h"
 #include "rdttydevice.h"
 
 RDTTYDevice::RDTTYDevice(QObject *parent)
@@ -593,7 +593,8 @@ void RDTTYDevice::writeTtyData()
 {
   char data[2048];
   int bytes=0;
-
+  int s;
+  
   ioctl(tty_fd,TIOCOUTQ,&bytes);
   int n=2048-bytes;
   if((int)tty_write_queue.size()<n) {
@@ -607,5 +608,8 @@ void RDTTYDevice::writeTtyData()
     data[i]=tty_write_queue.front();
     tty_write_queue.pop();
   }
-  ::write(tty_fd,data,n);
+  if((s=::write(tty_fd,data,n))!=n) {
+    rda->
+      syslog(LOG_WARNING,"RDTTYDevice::writeTtyData write lost %c bytes",n-s);
+  }
 }
