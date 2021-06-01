@@ -21,6 +21,7 @@
 #include <syslog.h>
 
 #include <rdapplication.h>
+#include <rdconf.h>
 #include <rddebug.h>
 
 #include "cae.h"
@@ -227,7 +228,8 @@ bool MainObject::hpiLoadRecord(int card,int stream,int coding,int chans,
     record[card][stream]=NULL;
     return false;
   }
-  chown(wavename.toUtf8(),rd_config->uid(),rd_config->gid());
+  RDCheckExitCode(rd_config,"hpiLoadRecord() chown",
+		  chown(wavename.toUtf8(),rd_config->uid(),rd_config->gid()));
   if(!record[card][stream]->recordReady()) {
     delete record[card][stream];
     record[card][stream]=NULL;

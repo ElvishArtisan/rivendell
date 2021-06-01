@@ -27,6 +27,7 @@
 
 #include <rd.h>
 #include <rdapplication.h>
+#include <rdconf.h>
 #include <rdmeteraverage.h>
 #include <rdringbuffer.h>
 
@@ -1039,7 +1040,8 @@ bool MainObject::alsaLoadRecord(int card,int stream,int coding,int chans,
     alsa_record_wave[card][stream]=NULL;
     return false;
   }
-  chown(wavename.toUtf8(),rd_config->uid(),rd_config->gid());
+  RDCheckExitCode(rd_config,"alsaLoadRecord() chown",
+		  chown(wavename.toUtf8(),rd_config->uid(),rd_config->gid()));
   alsa_input_channels[card][stream]=chans;
   alsa_record_ring[card][stream]=new RDRingBuffer(RINGBUFFER_SIZE);
   alsa_record_ring[card][stream]->reset();

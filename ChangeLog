@@ -21810,3 +21810,5 @@
 	'RDAuthenticateLogin()', ' RDAuthenticateSession()',
 	'RDLogoutSession()' and 'RDParsePost()' functions from
 	'lib/rdweb.[cpp|h]'.
+2021-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compile warnings in caed(8).
