@@ -210,72 +210,6 @@ void Prepend(char *sPathname,char *sFilename)
   strcpy(sFilename,sTemp);
 }
 
-  
-int IncrementIndex(char *sPathname,int dMaxIndex)
-{
-  int dLockname=-1;
-  FILE *hPathname;
-  int i;
-  char sLockname[256];
-  char sAccum[256];
-  int dIndex,dNewIndex;
-
-  /* Lock the index */
-  strcpy(sLockname,sPathname);
-  strcat(sLockname,".LCK");
-  i=0;
-  while(dLockname<0 && i<MAX_RETRIES) {
-      dLockname=open(sLockname,O_WRONLY|O_EXCL|O_CREAT,S_IRUSR|S_IWUSR);
-    i++;
-  }
-  if(dLockname<0) {
-    return -1;
-  }
-  sprintf(sAccum,"%d",getpid());
-  write(dLockname,sAccum,strlen(sAccum));
-  close(dLockname);
-
-  /* We've got the lock, so read the index */
-  hPathname=fopen(sPathname,"r");
-  if(hPathname==NULL) {
-    unlink(sLockname);
-    return -1;
-  }
-  if(fscanf(hPathname,"%d",&dIndex)!=1) {
-    fclose(hPathname);
-    unlink(sLockname);
-    return -1;
-  }
-  fclose(hPathname);
-
-  /* Update the index */
-  if((dIndex<dMaxIndex) || (dMaxIndex==0)) {
-    dNewIndex=dIndex+1;
-  }
-  else {
-    dNewIndex=1;
-  }
-
-  /* Write it back */
-  hPathname=fopen(sPathname,"w");
-  if(hPathname==NULL) {
-    unlink(sLockname);
-    return -1;
-  }
-  fprintf(hPathname,"%d",dNewIndex);
-  fclose(hPathname);
-
-  /* Release the lock */
-  unlink(sLockname);
-
-  /* Ensure a sane value to return and then exit */
-  if((dIndex>dMaxIndex)&&(dMaxIndex!=0)) {
-    dIndex=1;
-  }
-
-  return dIndex;
-}
-
 
 /*
  * int StripLevel(char *sString)
@@ -296,36 +230,6 @@ void StripLevel(char *sString)
     }
   }
   sString[0]=0;
-}
-
-
-
-
-bool GetLock(const char *sLockname)
-{
-  int fd;
-  char sAccum[256];
-
-  if((fd=open(sLockname,O_WRONLY|O_EXCL|O_CREAT,S_IRUSR|S_IWUSR))<0) {
-    printf("failed!\n");
-    if(RDCheckPid(RDGetPathPart(sLockname),RDGetBasePart(sLockname))) {
-      return false;
-    }
-    ClearLock(sLockname);
-    if((fd=open(sLockname,O_WRONLY|O_EXCL|O_CREAT,S_IRUSR|S_IWUSR))<0) {
-      return false;
-    }
-  }
-  sprintf(sAccum,"%d",getpid());
-  write(fd,sAccum,strlen(sAccum));
-  close(fd);
-  return true;
-}
-
-
-void ClearLock(const char *sLockname)
-{
-  unlink(sLockname);
 }
 
 
@@ -408,7 +312,7 @@ QFont::Weight RDGetFontWeight(QString string)
 bool RDDetach(const QString &coredir)
 {
   if(!coredir.isEmpty()) {
-    chdir(coredir.toUtf8());
+    RDCheckExitCode("RDDetach chdir",chdir(coredir.toUtf8()));
   }
   if(daemon(coredir.isEmpty(),0)) {
     return false;
@@ -803,9 +707,9 @@ bool RDCopy(int src_fd,int dest_fd)
   }
   buf=(char *)malloc(dest_stat.st_blksize);
   while((n=read(src_fd,buf,dest_stat.st_blksize))==dest_stat.st_blksize) {
-    write(dest_fd,buf,dest_stat.st_blksize);
+    RDCheckExitCode("RDCopy write",write(dest_fd,buf,dest_stat.st_blksize));
   }
-  write(dest_fd,buf,n);
+  RDCheckExitCode("RDCopy write",write(dest_fd,buf,n));
   free(buf);
 
   return true;
@@ -827,7 +731,7 @@ bool RDWritePid(const QString &dirname,const QString &filename,int owner,
   }
   fprintf(file,"%d",getpid());
   fclose(file);
-  chown(pathname.toUtf8(),owner,group);
+  RDCheckExitCode("RDWritePid chown",chown(pathname.toUtf8(),owner,group));
 
   return true;
 }
@@ -1195,6 +1099,7 @@ int RDCheckExitCode(const QString &msg,int exit_code)
     rda->syslog(LOG_WARNING,"%s returned non-zero exit code %d [%s]",
 		msg.toUtf8().constData(),exit_code,strerror(errno));
   }
+  return exit_code;
 }
 
 
@@ -1205,4 +1110,5 @@ int RDCheckExitCode(RDConfig *config,const QString &msg,int exit_code)
 			  "%s returned non-zero exit code %d [%s]",
 			  msg.toUtf8().constData(),exit_code,strerror(errno));
   }
+  return exit_code;
 }
