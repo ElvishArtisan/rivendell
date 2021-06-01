@@ -675,7 +675,7 @@ bool RDUser::createTicket(QString *ticket,QDateTime *expire_dt,
     for(int i=0;i<5;i++) {
       long r=random();
       unsigned ipv4_addr=client_addr.toIPv4Address();
-      snprintf(rawstr+i*8,8,"%c%c%c%c%c%c%c%c",
+      snprintf(rawstr+i*8,9,"%c%c%c%c%c%c%c%c",
 	       0xff&((int)r>>24),0xff&(ipv4_addr>>24),
 	       0xff&((int)r>>16),0xff&(ipv4_addr>>16),
 	       0xff&((int)r>>8),0xff&(ipv4_addr>>8),
