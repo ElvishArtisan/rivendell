@@ -21760,3 +21760,5 @@
 	* Cleaned up compile warning in 'lib/rdcae.cpp'.
 2021-06-01 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compile warning in 'lib/rdcart_dialog.cpp'.
+2021-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDCheckExitCode()' functions in 'lib/rdconf.[cpp|h].

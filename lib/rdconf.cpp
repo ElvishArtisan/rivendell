@@ -31,6 +31,8 @@
 
 #include <QDir>
 
+#include <rdapplication.h>
+
 #define RDCONF_FILE_SEPARATOR '/'
 
 #include "rddb.h"
@@ -1184,4 +1186,23 @@ QList<pid_t> RDGetPids(const QString &program)
   }
 
   return pids;
+}
+
+
+int RDCheckExitCode(const QString &msg,int exit_code)
+{
+  if(exit_code!=0) {
+    rda->syslog(LOG_WARNING,"%s returned non-zero exit code %d [%s]",
+		msg.toUtf8().constData(),exit_code,strerror(errno));
+  }
+}
+
+
+int RDCheckExitCode(RDConfig *config,const QString &msg,int exit_code)
+{
+  if(exit_code!=0) {
+    RDApplication::syslog(config,LOG_WARNING,
+			  "%s returned non-zero exit code %d [%s]",
+			  msg.toUtf8().constData(),exit_code,strerror(errno));
+  }
 }

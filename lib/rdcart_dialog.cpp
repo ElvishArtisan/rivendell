@@ -310,12 +310,8 @@ void RDCartDialog::editorData()
   delete q;
 
   if(fork()==0) {
-    int exit_code=system((cmd+" &").toUtf8());
-    if(exit_code!=0) {
-      rda->syslog(LOG_WARNING,
-		  "editor subprocess returned non-zero exit code %d [%s]",
-		  exit_code,strerror(errno));
-    }
+    RDCheckExitCode("RDCartDialog editor subprocess",
+		    system((cmd+" &").toUtf8()));
     exit(0);
   }
 }

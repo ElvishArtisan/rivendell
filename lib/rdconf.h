@@ -36,6 +36,8 @@
 #include <QSqlDatabase>
 #include <QVariant>
 
+#include <rdconfig.h>
+
 /* Function Prototypes */
 int GetPrivateProfileBool(const char *,const char *,const char *,bool);
 int GetPrivateProfileString(const char *,const char *,const char *,char *,
@@ -110,5 +112,8 @@ bool RDModulesActive();
 QByteArray RDStringToData(const QString &str);
 QString RDStringToHex(const QString &str);
 QList<pid_t> RDGetPids(const QString &program);
+int RDCheckExitCode(const QString &msg,int exit_code);
+int RDCheckExitCode(RDConfig *config,const QString &msg,int exit_code);
+
 
 #endif   // RDCONF_H
