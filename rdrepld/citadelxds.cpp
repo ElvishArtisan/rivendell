@@ -134,8 +134,12 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
   //
   // Skip Header
   //
-  fgets(line,1024,f);
-  fgets(line,1024,f);
+  if(fgets(line,1024,f)==NULL) {
+    rda->syslog(LOG_WARNING,"fgets() error reading ISCI xreference data");
+  }
+  if(fgets(line,1024,f)==NULL) {
+    rda->syslog(LOG_WARNING,"fgets() error reading ISCI xreference data");
+  }
 
   //
   // Load Records
