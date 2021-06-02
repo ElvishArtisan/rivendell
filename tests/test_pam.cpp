@@ -51,7 +51,9 @@ int ConversationResponseCallback(int num_msg,const struct pam_message **msg,
     case PAM_PROMPT_ECHO_ON:
       printf("%s ",msg[i]->msg);
       fflush(NULL);
-      fgets(resp[i]->resp,256,stdin);
+      if(fgets(resp[i]->resp,256,stdin)==NULL) {
+	fprintf(stderr,"failed to read prompt!\n");
+      }
       resp[i]->resp[strlen(resp[i]->resp)-1]=0;
       resp[i]->resp_retcode=0;
       break;
