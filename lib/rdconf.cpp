@@ -1112,3 +1112,13 @@ int RDCheckExitCode(RDConfig *config,const QString &msg,int exit_code)
   }
   return exit_code;
 }
+
+
+int RDCheckReturnCode(const QString &msg,int code,int ok_value)
+{
+  if(code!=ok_value) {
+    rda->syslog(LOG_WARNING,"%s returned %d, was expecting %d",
+		msg.toUtf8().constData(),code,ok_value);
+  }
+  return code;
+}

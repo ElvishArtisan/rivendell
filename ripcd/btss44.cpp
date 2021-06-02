@@ -109,7 +109,7 @@ bool BtSs44::secondaryTtyActive()
 
 void BtSs44::processCommand(RDMacro *cmd)
 {
-  char str[9];
+  char str[256];
 
   switch(cmd->command()) {
       case RDMacro::GO:

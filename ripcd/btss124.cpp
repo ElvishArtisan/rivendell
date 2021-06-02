@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 12.4
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -91,7 +91,7 @@ bool BtSs124::secondaryTtyActive()
 
 void BtSs124::processCommand(RDMacro *cmd)
 {
-  char str[9];
+  char str[256];
 
   switch(cmd->command()) {
       case RDMacro::SA:

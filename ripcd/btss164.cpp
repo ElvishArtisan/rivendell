@@ -109,7 +109,7 @@ BtSs164::~BtSs164()
 
 void BtSs164::processCommand(RDMacro *cmd)
 {
-  char str[9];
+  char str[256];
 
   switch(cmd->command()) {
       case RDMacro::GO:

@@ -113,7 +113,7 @@ bool BtAcs82::secondaryTtyActive()
 
 void BtAcs82::processCommand(RDMacro *cmd)
 {
-  char str[9];
+  char str[256];
   int lvl=0;
 
   switch(cmd->command()) {

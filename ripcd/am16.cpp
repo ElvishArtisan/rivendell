@@ -25,6 +25,7 @@
 #include <syslog.h>
 
 #include <rdapplication.h>
+#include <rdconf.h>
 
 #include "am16.h"
 #include "globals.h"
@@ -137,7 +138,7 @@ void Am16::processCommand(RDMacro *cmd)
       data[6]=0x07;   // Request Program NN
       data[7]=AM16_PATCH_NUMBER;
       data[8]=AM16_SYSEX_END;
-      write(bt_midi_socket,data,9);
+      RDCheckReturnCode("process command ST",write(bt_midi_socket,data,9),9);
       bt_timeout_timer->start(AM16_TIMEOUT_INTERVAL);
     }
     cmd->acknowledge(true);
@@ -214,18 +215,22 @@ void Am16::ProcessMessage(char *msg,int len)
       //
       // Send to Programs
       //
-      write(bt_midi_socket,msg,len);
+      RDCheckReturnCode("ProcessMessage() write",
+			write(bt_midi_socket,msg,len),len);
       msg[7]++;
-      write(bt_midi_socket,msg,len);
+      RDCheckReturnCode("ProcessMessage() write",
+			write(bt_midi_socket,msg,len),len);
 
       //
       // Toggle Active Programs
       //
       msg[0]=0xC1;   // Channel 1
       msg[1]=AM16_PATCH_NUMBER+1;
-      write(bt_midi_socket,msg,2);
+      RDCheckReturnCode("ProcessMessage() write",
+			write(bt_midi_socket,msg,2),2);
       msg[1]=AM16_PATCH_NUMBER;
-      write(bt_midi_socket,msg,2);
+      RDCheckReturnCode("ProcessMessage() write",
+			write(bt_midi_socket,msg,2),2);
     }
     break;
 

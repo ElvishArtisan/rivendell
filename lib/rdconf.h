@@ -111,6 +111,7 @@ QString RDStringToHex(const QString &str);
 QList<pid_t> RDGetPids(const QString &program);
 int RDCheckExitCode(const QString &msg,int exit_code);
 int RDCheckExitCode(RDConfig *config,const QString &msg,int exit_code);
+int RDCheckReturnCode(const QString &msg,int code,int ok_value);
 
 
 #endif   // RDCONF_H

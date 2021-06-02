@@ -92,7 +92,7 @@ bool Sas32000::secondaryTtyActive()
 
 void Sas32000::processCommand(RDMacro *cmd)
 {
-  char str[9];
+  char str[256];
   char sign='1';
 
   switch(cmd->command()) {
