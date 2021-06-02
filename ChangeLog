@@ -21816,3 +21816,9 @@
 	* Cleaned up compile warnings in nextgen_filter(1).
 2021-06-01 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compile warnings in rdadmin(1).
+2021-06-02 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compile warnings in 'lib/rdconfig.cpp'.
+	* Cleaned up compile warnings in 'lib/rddelete.cpp'.
+	* Cleaned up compile warnings in 'lib/rdmblookup.cpp'.
+	* Cleaned up compile warnings in 'lib/rdtempdirectory.cpp'.
+	* Cleaned up compile warnings in 'lib/rdunixserver.cpp'.

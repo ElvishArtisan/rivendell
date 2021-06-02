@@ -2,7 +2,7 @@
 //
 // UNIX Socket Server
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -84,7 +84,7 @@ bool RDUnixServer::listenToPathname(const QString &pathname)
   }
   memset(&sa,0,sizeof(sa));
   sa.sun_family=AF_UNIX;
-  strncpy(sa.sun_path,pathname.toUtf8(),UNIX_PATH_MAX);
+  strncpy(sa.sun_path,pathname.toUtf8(),UNIX_PATH_MAX-1);
   if(bind(unix_socket,(struct sockaddr *)(&sa),sizeof(sa))<0) {
     unix_error_string=QString("unable to bind address")+" ["+
       QString(strerror(errno))+"]";
@@ -115,7 +115,7 @@ bool RDUnixServer::listenToAbstract(const QString &addr)
   }
   memset(&sa,0,sizeof(sa));
   sa.sun_family=AF_UNIX;
-  strncpy(sa.sun_path+1,addr.toUtf8(),UNIX_PATH_MAX-1);
+  strncpy(sa.sun_path+1,addr.toUtf8(),UNIX_PATH_MAX-2);
   if(bind(unix_socket,(struct sockaddr *)(&sa),sizeof(sa))<0) {
     unix_error_string=QString("unable to bind address")+" ["+
       QString(strerror(errno))+"]";

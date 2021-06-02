@@ -519,7 +519,7 @@ bool RDConfig::load()
   }
   gethostname(sname,255);
   QStringList list=QString(sname).split(".");  // Strip domain name parts
-  strncpy(sname,list.at(0).toUtf8(),256);
+  strncpy(sname,list.at(0).toUtf8(),255);
   conf_station_name=
     profile->stringValue("Identity","StationName",sname);
   conf_password=profile->stringValue("Identity","Password","");

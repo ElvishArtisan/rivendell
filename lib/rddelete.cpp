@@ -2,7 +2,7 @@
 //
 // Delete a file from the audio store via the Rivendell Web Service
 //
-//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -107,7 +107,6 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
   QString currentdir;
   QString filename;
   QString xml="";
-  char userpwd[256];
 
   if(!urlIsSupported(conv_target_url)) {
     return RDDelete::ErrorUnsupportedUrlScheme;
@@ -134,8 +133,8 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
     curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
   }
   else {
-    strncpy(userpwd,(username+":"+password).toUtf8(),256);
-    curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
+    curl_easy_setopt(curl,CURLOPT_USERPWD,
+		     (username+":"+password).toUtf8().constData());
   }
 
   curl_easy_setopt(curl,CURLOPT_URL,conv_target_url.toEncoded().constData());

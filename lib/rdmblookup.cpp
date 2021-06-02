@@ -2,7 +2,7 @@
 //
 //   RDDiscLookup instance class for MusicBrainz
 //
-//   (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -77,7 +77,7 @@ RDMbLookup::RDMbLookup(const QString &caption,FILE *profile_msgs,
   temp_directory=NULL;
   strncpy(tempdir,"/tmp",PATH_MAX);
   if(getenv("TEMP")!=NULL) {
-    strncpy(tempdir,getenv("TEMP"),PATH_MAX);
+    strncpy(tempdir,getenv("TEMP"),PATH_MAX-1);
   }
   strncat(tempdir,"/rivendell-XXXXXX",PATH_MAX-strlen(tempdir));
   if(mkdtemp(tempdir)==NULL) {
