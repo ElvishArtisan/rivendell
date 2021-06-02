@@ -33,7 +33,9 @@
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
 {
-  setuid(geteuid());  // So the SETUID bit works as expected
+  if(setuid(geteuid())!=0) {  // So the SETUID bit works as expected
+    fprintf(stderr,"rdselect_helper: setuid error [%s]\n",strerror(errno));
+  }
   if(getuid()!=0) {
     fprintf(stderr,
 	    "rdselect_helper: this program must be installed SETUID root\n");
