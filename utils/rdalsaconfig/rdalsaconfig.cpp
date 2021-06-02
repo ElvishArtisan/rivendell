@@ -2,7 +2,7 @@
 //
 // A Qt-based application to display info about ALSA cards.
 //
-//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,6 +22,7 @@
 #include <qmessagebox.h>
 
 #include <rdapplication.h>
+#include <rdconf.h>
 
 #include "alsaitem.h"
 #include "rdalsaconfig.h"
@@ -44,7 +45,8 @@ void StopDaemons()
 {
   if(alsa_manage_daemons) {
     if(system("systemctl --quiet is-active rivendell")==0) {
-      system("systemctl --quiet stop rivendell");
+      RDCheckExitCode("StopDaemons() system",
+		      system("systemctl --quiet stop rivendell"));
       alsa_daemon_start_needed=true;
     }
   }
@@ -54,7 +56,8 @@ void StopDaemons()
 void StartDaemons()
 {
   if(alsa_daemon_start_needed) {
-    system("systemctl --quiet start rivendell");
+    RDCheckExitCode("StartDaemons() system",
+		    system("systemctl --quiet start rivendell"));
   }
 }
 
