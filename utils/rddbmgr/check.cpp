@@ -473,7 +473,8 @@ void MainObject::RelinkCut(const QString &src_filename,const QString &cutname,
 	}
 	else {
 	  unlink(RDCut::pathName(cutname).toUtf8());
-	  link((*firstdest).toUtf8(),RDCut::pathName(cutname).toUtf8());
+	  RDCheckExitCode("RelinkCut() link",
+		link((*firstdest).toUtf8(),RDCut::pathName(cutname).toUtf8()));
 	}
       }
       else {
@@ -483,9 +484,12 @@ void MainObject::RelinkCut(const QString &src_filename,const QString &cutname,
       }
     }
     else {
-      chown(RDCut::pathName(cutname).toUtf8(),db_config->uid(),
-	    db_config->gid());
-      chmod(RDCut::pathName(cutname).toUtf8(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP);
+      RDCheckExitCode("RelinkCut() chown",
+		      chown(RDCut::pathName(cutname).toUtf8(),db_config->uid(),
+			    db_config->gid()));
+      RDCheckExitCode("RelinkCut() chmod",
+		      chmod(RDCut::pathName(cutname).toUtf8(),
+			    S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP));
     }
   }
   else {
@@ -499,8 +503,10 @@ void MainObject::RelinkCut(const QString &src_filename,const QString &cutname,
       }
     }
     else {
-      unlink(RDCut::pathName(cutname).toUtf8());
-      link((*firstdest).toUtf8(),RDCut::pathName(cutname).toUtf8());
+      RDCheckExitCode("RelinkCut() unlink",
+		      unlink(RDCut::pathName(cutname).toUtf8()));
+      RDCheckExitCode("RelinkCut() link",
+		link((*firstdest).toUtf8(),RDCut::pathName(cutname).toUtf8()));
     }
   }
   printf("  done.\n");
@@ -534,7 +540,8 @@ void MainObject::RelinkCast(const QString &src_filename,const QString &keyname,
 	}
 	else {
 	  unlink(destpath.toUtf8());
-	  link((*firstdest).toUtf8(),destpath.toUtf8());
+	  RDCheckExitCode("RelinkCast() link",
+			  link((*firstdest).toUtf8(),destpath.toUtf8()));
 	}
       }
       else {
@@ -544,13 +551,15 @@ void MainObject::RelinkCast(const QString &src_filename,const QString &keyname,
       }
     }
     else {
-      chown(destpath.toUtf8(),db_config->uid(),db_config->gid());
+      RDCheckExitCode("RelinkCast() chown",
+		      chown(destpath.toUtf8(),db_config->uid(),
+			    db_config->gid()));
       chmod(destpath.toUtf8(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP);
     }
   }
   else {
     if(firstdest->isEmpty()) {
-      unlink(destpath.toUtf8());
+      RDCheckExitCode("RelinkCast() unlink",unlink(destpath.toUtf8()));
       if(CopyToAudioStore(destpath,src_filename)) {
 	*firstdest=destpath;
       }
@@ -560,8 +569,9 @@ void MainObject::RelinkCast(const QString &src_filename,const QString &keyname,
       }
     }
     else {
-      unlink(destpath.toUtf8());
-      link((*firstdest).toUtf8(),destpath.toUtf8());
+      RDCheckExitCode("RelinkCast() unlink",unlink(destpath.toUtf8()));
+      RDCheckExitCode("RelinkCast() link",
+		      link((*firstdest).toUtf8(),destpath.toUtf8()));
     }
   }
   printf("  done.\n");
@@ -762,7 +772,9 @@ void MainObject::CheckOrphanedCuts() const
       else {
 	printf("  Clear it (y/N)?");
 	if(UserResponse()) {
-	  system(("mv "+file->filePath()+" "+db_dump_cuts_dir+"/").toUtf8());
+	  RDCheckExitCode("CheckOrphanedCuts() system",
+			  system(("mv "+file->filePath()+" "+
+				  db_dump_cuts_dir+"/").toUtf8()));
 	  sql=QString().sprintf("delete from `CUTS` where `CUT_NAME`='%s'",
 				q->value(0).toString().toUtf8().constData());
 	  q1=new QSqlQuery(sql);
@@ -810,12 +822,12 @@ void MainObject::CheckOrphanedAudio() const
 	    printf("  Move to \"%s\" (y/N)? ",
 		   db_dump_cuts_dir.toUtf8().constData());
 	    if(UserResponse()) {
-	      system(QString().sprintf("mv %s/%s %s/",
-				       db_config->audioRoot().toUtf8().
-				       constData(),
-				       list.at(i).toUtf8().constData(),
-				       db_dump_cuts_dir.toUtf8().constData()).
-		     toUtf8());
+	      RDCheckExitCode("CheckOrphanedAudio() system",
+			      system(QString().sprintf("mv %s/%s %s/",
+				   db_config->audioRoot().toUtf8().constData(),
+				   list.at(i).toUtf8().constData(),
+				   db_dump_cuts_dir.toUtf8().constData()).
+				   toUtf8()));
 	      printf("  Saved audio in \"%s/%s\"\n",
 		     db_dump_cuts_dir.toUtf8().constData(),
 		     list.at(i).toUtf8().constData());
@@ -1000,16 +1012,16 @@ bool MainObject::UserResponse() const
     return false;
   }
   while((c!='y')&&(c!='Y')&&(c!='n')&&(c!='N')) {
-    scanf("%c",&c);
+    RDCheckReturnCode("UserResponse()",scanf("%c",&c),1);
     if((c=='y')||(c=='Y')) {
-      scanf("%c",&c);
+      RDCheckReturnCode("UserResponse()",scanf("%c",&c),1);
       return true;
     }
     if(c=='\n') {
       return false;
     }
   }
-  scanf("%c",&c);
+  RDCheckReturnCode("UserResponse()",scanf("%c",&c),1);
   return false;
 }
 
@@ -1043,10 +1055,11 @@ bool MainObject::CopyToAudioStore(const QString &destfile,
   }
   data=(char *)malloc(blksize);
   while((n=read(src_fd,data,blksize))!=0) {
-    write(dest_fd,data,n);
+    RDCheckReturnCode("CopyToAudioStore() write",write(dest_fd,data,n),n);
   }
   free(data);
-  fchown(dest_fd,db_config->uid(),db_config->gid());
+  RDCheckExitCode("CopyToAudioStore() fchown",
+		  fchown(dest_fd,db_config->uid(),db_config->gid()));
   fchmod(dest_fd,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP);
   close(dest_fd);
   close(src_fd);
