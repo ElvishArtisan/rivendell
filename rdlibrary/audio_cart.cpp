@@ -433,7 +433,7 @@ void AudioCart::extEditorCutData()
   //        and possibly also add some tooltips with help advice
 
   if(fork()==0) {
-    system((cmd+" &").toUtf8());
+    RDCheckExitCode("extEditorCutData() system",system((cmd+" &").toUtf8()));
     exit(0);
   }
 }
