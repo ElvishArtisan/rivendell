@@ -194,14 +194,14 @@ int CreateWav(char *sFilename,struct wavHeader *wavHeader)
   /*
    * Write the WAVE Header
    */
-  write(hFilename,"RIFF",4);
+  CheckReturnCode("CreateWav()",write(hFilename,"RIFF",4),4);
   WriteDword(hFilename,0);
-  write(hFilename,"WAVE",4);
+  CheckReturnCode("CreateWav()",write(hFilename,"WAVE",4),4);
 
   /*
    * Write the format chunk
    */
-  write(hFilename,"fmt ",4);
+  CheckReturnCode("CreateWav()",write(hFilename,"fmt ",4),4);
   WriteDword(hFilename,16);
   WriteSword(hFilename,wavHeader->wFormatTag);
   WriteSword(hFilename,wavHeader->wChannels);
@@ -213,14 +213,14 @@ int CreateWav(char *sFilename,struct wavHeader *wavHeader)
   /*
    * Write the fact chunk
    */
-  write(hFilename,"fact",4);
+  CheckReturnCode("CreateWav()",write(hFilename,"fact",4),4);
   WriteDword(hFilename,4);
   WriteDword(hFilename,0);
 
   /*
    * Write the data chunk
    */
-  write(hFilename,"data",4);
+  CheckReturnCode("CreateWav()",write(hFilename,"data",4),4);
   WriteDword(hFilename,0);
 
   return hFilename;
@@ -363,7 +363,7 @@ int GetListChunk(int hFilename,struct wavList *wavList)
     oSize=dBuffer[0]+(dBuffer[1]<<8)+(dBuffer[2]<<16)+(dBuffer[3]<<24);
     oTemp=read(hFilename,sBuffer,dBuffer[0]);
     lseek(hFilename,oSize-oTemp,SEEK_CUR);
-    read(hFilename,dBuffer,1);
+    CheckReturnCode("GetListChunk",read(hFilename,dBuffer,1),1);
     if(dBuffer[0]!=0) {
       lseek(hFilename,-1,SEEK_CUR);
     }
@@ -555,18 +555,20 @@ int PlayWavOffsetDesc(char *sFilename,int hAudio,int dOffset,unsigned dOptions)
     j=(wavFilename.dwWaveDataSize-dWaveOffset)/BUFFER_SIZE;
     k=(wavFilename.dwWaveDataSize-dWaveOffset)-j*BUFFER_SIZE;
     for(iWav=0;iWav<j;iWav++) {
-      read(hFilename,cBuffer,BUFFER_SIZE);
+      CheckReturnCode("PlayWavOffsetDesc",
+		      read(hFilename,cBuffer,BUFFER_SIZE),BUFFER_SIZE);
       if(dWavPause==1) {
 	select(0,NULL,NULL,NULL,NULL);    /* Sleep till we get a signal */
       }
-      write(hAudio,cBuffer,BUFFER_SIZE);
+      CheckReturnCode("PlayWavOffsetDesc",
+		      write(hAudio,cBuffer,BUFFER_SIZE),BUFFER_SIZE);
     }
     memset(cBuffer,0,BUFFER_SIZE);
-    read(hFilename,cBuffer,k);
+    CheckReturnCode("PlayWavOffsetDesc",read(hFilename,cBuffer,k),k);
     if(dWavPause==1) {
       select(0,NULL,NULL,NULL,NULL);    /* Sleep till we get a signal */
     }
-    write(hAudio,cBuffer,k);
+    CheckReturnCode("PlayWavOffsetDesc",write(hAudio,cBuffer,k),k);
   }
   /* Finish up */
   close(hFilename);
@@ -727,7 +729,7 @@ int RecWavDesc(char *sFilename,int hAudio,unsigned dSeconds,
 
   /* The 'RIFF' field */
   strcpy(cBuffer,"RIFF");
-  write(hFilename,cBuffer,4);
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,4),4);
 
   /* The size pointer */
   /* wav files are little endian! */
@@ -735,79 +737,81 @@ int RecWavDesc(char *sFilename,int hAudio,unsigned dSeconds,
   cBuffer[1]=(dTotalWavSize & 0x0000FF00) >> 8;
   cBuffer[2]=(dTotalWavSize & 0x00FF0000) >> 16;
   cBuffer[3]=(dTotalWavSize & 0xFF000000) >> 24;
-  write(hFilename,cBuffer,4);  
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,4),4);  
 
   /* The WAVE field */
   strcpy(cBuffer,"WAVE");
-  write(hFilename,cBuffer,4);
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,4),4);
 
   /* Now the format chunk */
   /* First the chunk header */
   strcpy(cBuffer,"fmt ");
-  write(hFilename,cBuffer,4);
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,4),4);
 
   /* The chunk size field */
   cBuffer[0]=0x10;
   cBuffer[1]=0;
   cBuffer[2]=0;
   cBuffer[3]=0;
-  write(hFilename,cBuffer,4);
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,4),4);
 
   /* The Format Category */
   cBuffer[0]=dFormatTag & 0x00FF;
   cBuffer[1]=(dFormatTag & 0xFF00) >> 8;
-  write(hFilename,cBuffer,2);
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,2),2);
 
   /* Number of Channels */
   cBuffer[0]=dChannels & 0x00FF;
   cBuffer[1]=(dChannels & 0xFF00) >> 8;
-  write(hFilename,cBuffer,2);
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,2),2);
 
   /* Samples/second/channel */
   cBuffer[0]=ldSamplesPerSec & 0x000000FF;
   cBuffer[1]=(ldSamplesPerSec & 0x0000FF00) >> 8;
   cBuffer[2]=(ldSamplesPerSec & 0x00FF0000) >> 16;
   cBuffer[3]=(ldSamplesPerSec & 0xFF000000) >> 24;
-  write(hFilename,cBuffer,4);
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,4),4);
 
   /* Average bytes per second */
   cBuffer[0]=dBytesPerSec & 0x000000FF;
   cBuffer[1]=(dBytesPerSec & 0x0000FF00) >> 8;
   cBuffer[2]=(dBytesPerSec & 0x00FF0000) >> 16;
   cBuffer[3]=(dBytesPerSec & 0xFF000000) >> 24;
-  write(hFilename,cBuffer,4);
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,4),4);
 
   /* Data Block Alignment */
   cBuffer[0]=dBlockAlign & 0x00FF;
   cBuffer[1]=(dBlockAlign & 0xFF00) >> 8;
-  write(hFilename,cBuffer,2);
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,2),2);
 
   /* Bits per Sample */
   /* NOTE: This field pertains only to WAVE_FORMAT_PCM format encoding */
   cBuffer[0]=dBitsPerSample & 0x00FF;
   cBuffer[1]=(dBitsPerSample & 0xFF00) >> 8;
-  write(hFilename,cBuffer,2);
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,2),2);
 
   /* Now, the data chunk */
   /* The 'data' field */
   strcpy(cBuffer,"data");
-  write(hFilename,cBuffer,4);
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,4),4);
 
   /* The data size field */
   cBuffer[0]=dTotalSampleBytes & 0x000000FF;
   cBuffer[1]=(dTotalSampleBytes & 0x0000FF00) >> 8;
   cBuffer[2]=(dTotalSampleBytes & 0x00FF0000) >> 16;
   cBuffer[3]=(dTotalSampleBytes & 0xFF000000) >> 24;
-  write(hFilename,cBuffer,4);
+  CheckReturnCode("RecWavDesc",write(hFilename,cBuffer,4),4);
 
   /* Move the audio data */
   for(i=0;i<dBufferWrites;i++) {
-    read(hAudio,cBuffer,BUFFER_SIZE);
-    write(hFilename,cBuffer,BUFFER_SIZE);
+    CheckReturnCode("RecWavDesc",read(hAudio,cBuffer,BUFFER_SIZE),BUFFER_SIZE);
+    CheckReturnCode("RecWavDesc",
+		    write(hFilename,cBuffer,BUFFER_SIZE),BUFFER_SIZE);
   }
   
   /* Finish up */
-  ftruncate(hFilename,lseek(hFilename,0,SEEK_CUR));
+  CheckReturnCode("RecWavDesc",
+		  ftruncate(hFilename,lseek(hFilename,0,SEEK_CUR)),0);
   close(hFilename);
 
   return 0;
@@ -878,7 +882,8 @@ int RecordWavDesc(char *sFilename,int hAudio,int dSeconds,
 	dBufferCount=wavHeader->dwAvgBytesPerSec*wavProcess->dSenseTimeout/
 	  BUFFER_SIZE;
 	while((dSense==0)&&((dBufferCount--)>0)) {
-	  read(hAudio,cBuffer,BUFFER_SIZE);
+	  CheckReturnCode("RecordWavDesc",
+			  read(hAudio,cBuffer,BUFFER_SIZE),BUFFER_SIZE);
 	  for(i=0;i<BUFFER_SIZE;i++) {
 	    if((cBuffer[i]>dPosThreshold)||(cBuffer[i]<dNegThreshold)) {
 	      dSense=1;
@@ -895,7 +900,8 @@ int RecordWavDesc(char *sFilename,int hAudio,int dSeconds,
 	dBufferCount=wavHeader->dwAvgBytesPerSec*wavProcess->dSenseTimeout/
 	  BUFFER_SIZE;
 	while((dSense==0)&&((dBufferCount--)>0)) {
-	  read(hAudio,cBuffer,BUFFER_SIZE);
+	  CheckReturnCode("RecordWavDesc",
+			  read(hAudio,cBuffer,BUFFER_SIZE),BUFFER_SIZE);
 	  for(i=0;i<BUFFER_SIZE/2;i++) {
 	    if((dBuffer[i]>dPosThreshold)||(dBuffer[i]<dNegThreshold)) {
 	      dSense=1;
@@ -923,19 +929,26 @@ int RecordWavDesc(char *sFilename,int hAudio,int dSeconds,
   dExcessWrites=(wavHeader->dwWaveDataSize-(BUFFER_SIZE-dStartWrite))-
     (dBufferWrites*BUFFER_SIZE);
   if(dSense==1) {
-    write(hFilename,cBuffer+dStartWrite,BUFFER_SIZE-dStartWrite);
+      CheckReturnCode("RecordWavDesc",
+		      write(hFilename,cBuffer+dStartWrite,
+			    BUFFER_SIZE-dStartWrite),BUFFER_SIZE-dStartWrite);
   }
   for(i=0;i<dBufferWrites;i++) {
-    read(hAudio,cBuffer,BUFFER_SIZE);
-    write(hFilename,cBuffer,BUFFER_SIZE);
+    CheckReturnCode("RecordWavDesc",
+		    read(hAudio,cBuffer,BUFFER_SIZE),BUFFER_SIZE);
+    CheckReturnCode("RecordWavDesc",
+		    write(hFilename,cBuffer,BUFFER_SIZE),BUFFER_SIZE);
   }
-  read(hAudio,cBuffer,dExcessWrites);
-  write(hFilename,cBuffer,dExcessWrites);
+  CheckReturnCode("RecordWavDesc",
+		  read(hAudio,cBuffer,dExcessWrites),dExcessWrites);
+  CheckReturnCode("RecordWavDesc",
+		  write(hFilename,cBuffer,dExcessWrites),dExcessWrites);
 
   /*
    * Finish Up
    */
-  ftruncate(hFilename,lseek(hFilename,0,SEEK_CUR));
+    CheckReturnCode("RecordWavDesc",
+		    ftruncate(hFilename,lseek(hFilename,0,SEEK_CUR)),0);
   FixWav(hFilename,wavHeader->dwFileSize,wavHeader->dwWaveDataSize);
   close(hFilename);
 
@@ -1135,7 +1148,8 @@ int TailTrim(char *sFilename,int dThreshold)
   lseek(hFilename,wavChunk.oOffset+wavChunk.oSize+6,SEEK_SET);
   for(i=0;i<wavChunk.oSize/BUFFER_SIZE;i++) {
     lseek(hFilename,-BUFFER_SIZE,SEEK_CUR);
-    read(hFilename,cBuffer,BUFFER_SIZE);
+    CheckReturnCode("TailTrim",
+		    read(hFilename,cBuffer,BUFFER_SIZE),BUFFER_SIZE);
     lseek(hFilename,-BUFFER_SIZE,SEEK_CUR);
     for(j=BUFFER_SIZE/2-100;j>=0;j--) {
       /*      printf("Threshold: %d   Value: %d\n",dThreshold,dBuffer[j]); */
@@ -1148,7 +1162,7 @@ int TailTrim(char *sFilename,int dThreshold)
   }
   dEnd=wavChunk.oSize-BUFFER_SIZE*(wavChunk.oSize/BUFFER_SIZE);
   lseek(hFilename,-dEnd,SEEK_CUR);
-  read(hFilename,cBuffer,dEnd);
+  CheckReturnCode("RecordWavDesc",read(hFilename,cBuffer,dEnd),dEnd);
   lseek(hFilename,-dEnd,SEEK_CUR);
   for(j=dEnd-1;j>=0;j--) {
     if(abs(dBuffer[j])>=dThreshold) {
@@ -1182,3 +1196,11 @@ int TruncWav(int hFilename,struct wavHeader *wavHeader,
   return 0;
 }
 
+
+int CheckReturnCode(const char *msg,int code,int ok_value)
+{
+  if(code!=ok_value) {
+    fprintf(stderr,"rdgen: %s\n",msg);
+  }
+  return code;
+}

@@ -21844,3 +21844,5 @@
 	* Cleaned up compile warnings in rddbmgr(8).
 2021-06-02 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compile warnings in rdexport(1).
+2021-06-02 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compile warnings in rdgen(1).
