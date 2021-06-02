@@ -89,9 +89,9 @@ MainObject::MainObject(QObject *parent)
       QStringList f0=rda->cmdSwitch()->value(i).split(":");
       if(f0.size()==2) {
 	int start=f0[0].toUInt(&valid);
-	if(valid&&(start>0)&&(valid<=RD_MAX_CART_NUMBER)) {
+	if(valid&&(start>0)&&(start<=RD_MAX_CART_NUMBER)) {
 	  int end=f0[1].toUInt(&valid);
-	  if(valid&&(start>0)&&(valid<=RD_MAX_CART_NUMBER)&&(end>=start)) {
+	  if(valid&&(start>0)&&(start<=RD_MAX_CART_NUMBER)&&(end>=start)) {
 	    export_start_carts.push_back(start);
 	    export_end_carts.push_back(end);
 	    ok=true;
