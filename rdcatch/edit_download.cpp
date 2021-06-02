@@ -61,7 +61,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   // Dialogs
   //
   edit_cut_dialog=new RDCutDialog(edit_filter,&edit_group,&edit_schedcode,
-				  false,true,true,"RDCatch",this);
+				  false,true,true,"RDCatch",false,this);
 
   //
   // Active Button

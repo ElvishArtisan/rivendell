@@ -58,7 +58,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   // Dialogs
   //
   edit_cut_dialog=new RDCutDialog(edit_filter,NULL,NULL,false,false,false,
-				  "RDCatch",this);
+				  "RDCatch",false,this);
 
   //
   // Active Button
