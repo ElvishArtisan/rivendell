@@ -136,7 +136,7 @@ void EditSchedRules::importData()
 
   ListClocks *listclocks=new ListClocks(&src_clockname,this);
   listclocks->setWindowTitle("RDLogManager - "+tr("Import Rules from Clock"));
-  if(!listclocks->exec()<0) {
+  if(listclocks->exec()<0) {
     delete listclocks;
     return;
   }

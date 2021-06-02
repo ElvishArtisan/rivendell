@@ -21828,3 +21828,5 @@
 	* Cleaned up compile warnings in rdcatchd(8).
 2021-06-02 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compile warnings in rdlibrary(1).
+2021-06-02 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compile warnings in rdlogmanager(1).
