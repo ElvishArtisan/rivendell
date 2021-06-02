@@ -2489,10 +2489,11 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
 
     QString cmd=QString().sprintf("rdgen -t 10 -l 16 %s",
 				  filename.toUtf8().constData());
-    system(cmd.toUtf8());
+    RDCheckExitCode("InititalizeNewDb() system",system(cmd.toUtf8()));
     if(getuid()==0) {
-      chown(filename.toUtf8(),RDConfiguration()->uid(),
-	    RDConfiguration()->gid());
+      RDCheckExitCode("InititalizeNewDb() chown",
+		      chown(filename.toUtf8(),RDConfiguration()->uid(),
+			    RDConfiguration()->gid()));
       chmod (filename.toUtf8(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
     }
   }
