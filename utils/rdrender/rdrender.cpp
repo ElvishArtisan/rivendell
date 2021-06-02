@@ -238,7 +238,7 @@ MainObject::MainObject(QObject *parent)
   // Sanity Checks
   //
   if((render_last_line>=0)&&(render_first_line>=0)&&
-     (render_last_line<render_last_line)) {
+     (render_first_line<render_last_line)) {
     fprintf(stderr,"rdrender: --last-line must be greater than --first-line\n");
     exit(1);
   }
