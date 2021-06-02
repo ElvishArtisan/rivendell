@@ -369,7 +369,9 @@ void MainObject::RunUpload(CatchEvent *evt)
 		(const char *)evt->tempName().toUtf8());
   }
   else {
-    chown(evt->tempName().toUtf8(),rda->config()->uid(),rda->config()->gid());
+    RDCheckExitCode("batch.cpp chown",chown(evt->tempName().toUtf8(),
+					    rda->config()->uid(),
+					    rda->config()->gid()));
   }
 }
 

@@ -2341,8 +2341,9 @@ void MainObject::CheckInRecording(QString cutname,CatchEvent *evt,
   cart->updateLength();
   delete cart;
   delete cut;
-  chown(RDCut::pathName(cutname).toUtf8(),rda->config()->uid(),
-	rda->config()->gid());
+  RDCheckExitCode("rdcatchd.cpp chown",chown(RDCut::pathName(cutname).toUtf8(),
+					     rda->config()->uid(),
+					     rda->config()->gid()));
 }
 
 

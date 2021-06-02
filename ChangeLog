@@ -21824,3 +21824,5 @@
 	* Cleaned up compile warnings in 'lib/rdunixserver.cpp'.
 2021-06-02 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compile warnings in rdcatch(1).
+2021-06-02 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compile warnings in rdcatchd(8).
