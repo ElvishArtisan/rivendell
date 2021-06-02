@@ -1608,7 +1608,7 @@ RDWaveFile *MainObject::FixFile(const QString &filename,RDWaveData *wavedata)
   char tempfile[PATH_MAX];
   strncpy(tempfile,(RDTempDirectory::basePath()+
 		    QString().sprintf("/rdimport%dXXXXXX",getpid())).toUtf8(),
-	  PATH_MAX);
+	  PATH_MAX-1);
   int dest_fd=mkstemp(tempfile);
   if(dest_fd<0) {
     return NULL;
@@ -1751,7 +1751,7 @@ bool MainObject::FixChunkSizes(const QString &filename)
       off_t pos=lseek(fd,0,SEEK_CUR);
       char buf[4];
       lseek(fd,last_offset,SEEK_SET);
-      read(fd,buf,4);
+      RDCheckReturnCode("FixChunkSizes() read",read(fd,buf,4),4);
       unsigned size=(0xff&buf[0])+(0xff&(256*buf[1]))+
 	(0xff&(65536*buf[2]))+(0xff&(16777216*buf[3]))+1;
       buf[0]=size&0xff;
@@ -1759,7 +1759,7 @@ bool MainObject::FixChunkSizes(const QString &filename)
       buf[2]=(size>>16)&0xff;
       buf[3]=(size>>24)&0xff;
       lseek(fd,last_offset,SEEK_SET);
-      write(fd,buf,4);
+      RDCheckReturnCode("FixChunkSizes() write",write(fd,buf,4),4);
       lseek(fd,pos,SEEK_SET);
     }
     last_offset=lseek(fd,0,SEEK_CUR);
