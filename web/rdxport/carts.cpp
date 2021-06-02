@@ -298,7 +298,7 @@ void Xport::EditCart()
   case RDCart::Macro:
     line=0;
     while(xport_post->getValue(QString().sprintf("MACRO%d",line++),&value)) {
-      value.trimmed();
+      value=value.trimmed();
       if(value.right(1)!="!") {
 	delete cart;
 	XmlExit("Invalid macro data",400,"carts.cpp",LINE_NUMBER);

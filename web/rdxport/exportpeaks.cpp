@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- ExportPeaks service
 //
-//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -73,6 +73,8 @@ void Xport::ExportPeaks()
   fflush(NULL);
   unsigned short *peaks=new unsigned short[wave->energySize()];
   wave->readEnergy(peaks,wave->energySize());
-  write(1,peaks,sizeof(unsigned short)*wave->energySize());
+  RDCheckReturnCode("ExportPeaks() write",
+		    write(1,peaks,sizeof(unsigned short)*wave->energySize()),
+		    sizeof(unsigned short)*wave->energySize());
   Exit(0);
 }

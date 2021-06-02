@@ -180,7 +180,7 @@ void Xport::Export()
     fflush(NULL);
     if((fd=open(tmpfile.toUtf8(),O_RDONLY))>=0) {
       while((n=read(fd,data,2048))>0) {
-	write(1,data,n);
+	RDCheckReturnCode("Export() write",write(1,data,n),n);
       }
     }
     close(fd);
