@@ -32,6 +32,7 @@
 #include <QProcess>
 
 #include <rdapplication.h>
+#include <rdconf.h>
 #include <rdescape_string.h>
 #include <rdgroup.h>
 #include <rdsendmail.h>
@@ -294,7 +295,7 @@ void MainObject::GetAudio()
     fflush(NULL);
     if((fd=open(tmpfile.toUtf8(),O_RDONLY))>=0) {
       while((n=read(fd,data,2048))>0) {
-	write(1,data,n);
+	RDCheckReturnCode("GetAudio() write",write(1,data,n),n);
       }
     }
     close(fd);

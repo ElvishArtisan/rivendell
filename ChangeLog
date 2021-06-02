@@ -21856,3 +21856,5 @@
 	* Cleaned up compile warnings in rdselect_helper(1).
 2021-06-02 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compile warnings in rdxport.cgi.
+2021-06-02 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compile warnings in webget.cgi.
