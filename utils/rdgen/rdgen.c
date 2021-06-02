@@ -261,7 +261,7 @@ int main(int argc,char *argv[])
 	  cBuffer[i++]=128;
 	}
       }
-      write(hFilename,cBuffer,BUFFER_SIZE);
+      CheckReturnCode("write",write(hFilename,cBuffer,BUFFER_SIZE),BUFFER_SIZE);
       dBytes+=BUFFER_SIZE;
       ldLimit+=(BUFFER_SIZE/2);
       ldTimeline+=(BUFFER_SIZE/2);
@@ -297,7 +297,7 @@ int main(int argc,char *argv[])
 	  cBuffer[i++]=0;
 	}
       }
-      write(hFilename,cBuffer,BUFFER_SIZE);
+      CheckReturnCode("write",write(hFilename,cBuffer,BUFFER_SIZE),BUFFER_SIZE);
       dBytes+=BUFFER_SIZE;
       ldLimit+=(BUFFER_SIZE/4);
       ldTimeline+=(BUFFER_SIZE/4);
