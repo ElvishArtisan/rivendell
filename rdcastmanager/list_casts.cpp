@@ -55,7 +55,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   list_render_dialog=new RenderDialog(this);
 
   list_cut_dialog=new RDCutDialog(&cast_filter,&cast_group,&cast_schedcode,
-				  false,false,false,"RDCastManager",this);
+				  false,false,false,"RDCastManager",false,this);
 
   list_progress_dialog=
     new QProgressDialog(tr("Uploading Audio..."),tr("Cancel"),0,1,this);
