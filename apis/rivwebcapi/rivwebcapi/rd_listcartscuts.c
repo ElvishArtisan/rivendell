@@ -41,7 +41,6 @@ struct xml_data {
 static void XMLCALL __ListCartsCutsElementStart(void *data, const char *el, 
 						const char **attr)
 {
-  unsigned i;
   struct xml_data *xml_data=(struct xml_data *)data;
   if(strcasecmp(el,"cart")==0) {    // Allocate a new cart entry
     (xml_data->cart_ptr)++;
@@ -499,7 +498,6 @@ struct rd_cut *RD_ListCartsCuts_GetCut(struct rd_cart carts[],int cart_rec,
 void RD_ListCartsCuts_Free(struct rd_cart carts[],int numrecs)
 {
   int i;
-  struct rd_cut *cut=NULL;
 
   for(i=0;i<numrecs;i++) {
     if(carts[i].cart_cuts!=NULL) {

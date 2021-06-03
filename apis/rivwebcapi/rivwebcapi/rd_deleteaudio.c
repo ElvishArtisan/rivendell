@@ -3,6 +3,7 @@
  * Implementation of the Delete Audio Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
+ * (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -50,7 +51,7 @@ static void XMLCALL __DeleteAudioElementData(void *data,const XML_Char *s,
 
 static void XMLCALL __DeleteAudioElementEnd(void *data, const char *el)
 {
-  struct xml_data *xml_data=(struct xml_data *)data;
+  //  struct xml_data *xml_data=(struct xml_data *)data;
 
 }
 
@@ -73,7 +74,6 @@ int RD_DeleteAudio( const char hostname[],
                   	const unsigned cutnumber,
                         const char user_agent[])
 {
-  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   XML_Parser parser;

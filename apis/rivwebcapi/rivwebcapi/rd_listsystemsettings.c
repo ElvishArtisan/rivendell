@@ -3,7 +3,7 @@
  * Implementation of the List System Settings Rivendell Access Library
  *
  * (C) Copyright 2017 Todd Baker  <bakert@rfa.org>             
- * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+ * (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -99,7 +99,6 @@ int RD_ListSystemSettings(struct rd_system_settings *system_settings[],
                         const char user_agent[],
                   	unsigned *numrecs)
 {
-  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   XML_Parser parser;

@@ -3,7 +3,7 @@
  * Implementation of the ListGroups Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
- * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+ * (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -127,7 +127,6 @@ int RD_ListGroups(struct rd_group *grps[],
   CURL *curl=NULL;
   XML_Parser parser;
   struct xml_data xml_data;
-  struct rd_group groups[20];
   long response_code;
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;

@@ -2,7 +2,7 @@
  *
  * Common Utility Functions for the Rivendell Access Library
  *
- * (C) Copyright 2015-2019 Fred Gleason <fredg@paravelsystems.com>
+ * (C) Copyright 2015-2021 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -162,7 +162,6 @@ size_t RD_Cnv_tm_to_DTString(struct tm *tmptr,char * dest)
     int offhr = 0;
     int offmin = 0;
     int val;
-    int leap = 0;
      
     if (!validate_tm(tmptr))
     {

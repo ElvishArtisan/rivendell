@@ -3,7 +3,7 @@
  * Implementation of the Copy Audio Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
- * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+ * (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -51,7 +51,7 @@ static void XMLCALL __CopyAudioElementData(void *data,const XML_Char *s,
 
 static void XMLCALL __CopyAudioElementEnd(void *data, const char *el)
 {
-  struct xml_data *xml_data=(struct xml_data *)data;
+  //  struct xml_data *xml_data=(struct xml_data *)data;
 
 }
 

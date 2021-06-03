@@ -21860,3 +21860,5 @@
 	* Cleaned up compile warnings in webget.cgi.
 2021-06-02 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compile warnings in rdgen(1).
+2021-06-03 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up 'unused variable' warnings in 'apis/rivcapi/'.

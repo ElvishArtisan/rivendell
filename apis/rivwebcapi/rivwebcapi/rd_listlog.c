@@ -3,7 +3,7 @@
  * Implementation of the ListLog Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
- * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+ * (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -421,17 +421,14 @@ int RD_ListLog(struct rd_logline *logline[],
                         const char user_agent[],
 			unsigned *numrecs)
 {
-  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   XML_Parser parser;
   struct xml_data xml_data;
   long response_code;
-  int i;
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
-  char cart_buffer[7];
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
 

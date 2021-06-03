@@ -3,7 +3,7 @@
  * Implementation of the ListSchedulCodes Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
- *
+ * (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
  *   published by the Free Software Foundation.
@@ -90,7 +90,6 @@ int RD_ListSchedCodes(struct rd_schedcodes *scodes[],
                         const char user_agent[],
                   	unsigned *numrecs)
 {
-  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   XML_Parser parser;

@@ -3,7 +3,7 @@
  * Implementation of the ListCart Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
- * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+ * (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -39,7 +39,6 @@ struct xml_data {
 static void XMLCALL __ListCartElementStart(void *data, const char *el, 
 					     const char **attr)
 {
-  unsigned i;
   struct xml_data *xml_data=(struct xml_data *)data;
   if(strcasecmp(el,"cart")==0) {    // Allocate a new cart entry
     xml_data->carts=realloc(xml_data->carts, sizeof(struct rd_cart));

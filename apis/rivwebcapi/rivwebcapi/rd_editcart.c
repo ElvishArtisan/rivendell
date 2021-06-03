@@ -3,7 +3,7 @@
  * Implementation of the Edit Cart Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
- * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+ * (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -62,7 +62,6 @@ static void XMLCALL __EditCartElementEnd(void *data, const char *el)
 {
   struct xml_data *xml_data=(struct xml_data *)data;
   struct rd_cart *cart=xml_data->cart;
-  char hold_datetime[25];
 
   if(strcasecmp(el,"number")==0) {
     sscanf(xml_data->strbuf,"%u",&cart->cart_number);

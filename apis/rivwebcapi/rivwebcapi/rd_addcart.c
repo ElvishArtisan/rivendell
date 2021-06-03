@@ -3,7 +3,7 @@
  * Implementation of the Add Cart Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
- * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+ * (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -187,7 +187,6 @@ int RD_AddCart(struct rd_cart *cart[],
   CURLcode res;
   char user_agent_string[255];
   char cart_buffer[50];
-  char cut_buffer[50];
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
 

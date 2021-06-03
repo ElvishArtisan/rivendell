@@ -3,6 +3,7 @@
  * Implementation of the Import Cart Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
+ * (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +45,7 @@ static void XMLCALL __ImportCartElementStart(void *data, const char *el,
   //
   xml_data->cartimport=realloc(xml_data->cartimport, sizeof(struct rd_cartimport));
   //}
-  strncpy(xml_data->elem_name,el,256);
+  strncpy(xml_data->elem_name,el,255);
   memset(xml_data->strbuf,0,1024);
 }
 
@@ -103,7 +104,6 @@ int RD_ImportCart(struct rd_cartimport *cartimport[],
                         const char user_agent[],
 			unsigned *numrecs)
 {
-  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   XML_Parser parser;
@@ -111,7 +111,6 @@ int RD_ImportCart(struct rd_cartimport *cartimport[],
   long response_code;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
-  int i;
   char cart_buffer[50];
   char cut_buffer[50];
   char channels_buffer[50];
@@ -119,8 +118,6 @@ int RD_ImportCart(struct rd_cartimport *cartimport[],
   char autotrim_buffer[50];
   char use_metadata_buffer[50];
   char create_flag[50];
-  long userlen = strlen(username);
-  long passwdlen = strlen(passwd);
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];

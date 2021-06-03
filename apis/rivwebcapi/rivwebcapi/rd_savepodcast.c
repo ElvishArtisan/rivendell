@@ -3,7 +3,7 @@
  * Implementation of the save RSS item audio Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>
- * (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+ * (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -52,7 +52,7 @@ static void XMLCALL __SavePodcastElementData(void *data,const XML_Char *s,
 
 static void XMLCALL __SavePodcastElementEnd(void *data, const char *el)
 {
-  struct xml_data *xml_data=(struct xml_data *)data;
+  //  struct xml_data *xml_data=(struct xml_data *)data;
 
 }
 
@@ -76,7 +76,6 @@ int RD_SavePodcast(const char hostname[],
 		   const char filename[],
 		   const char user_agent[])
 {
-  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   XML_Parser parser;
@@ -84,10 +83,7 @@ int RD_SavePodcast(const char hostname[],
   long response_code;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
-  int i;
   char id_buffer[21];
-  long userlen = strlen(username);
-  long passwdlen = strlen(passwd);
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
