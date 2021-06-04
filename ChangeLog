@@ -21862,3 +21862,6 @@
 	* Cleaned up compile warnings in rdgen(1).
 2021-06-03 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up 'unused variable' warnings in 'apis/rivcapi/'.
+2021-06-04 Fred Gleason <fredg@paravelsystems.com>
+	* Corrected file permissions and ownerships for rsyslog in
+	'debian/postinst'.

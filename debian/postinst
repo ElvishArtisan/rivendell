@@ -52,8 +52,16 @@ case "$1" in
       fi
 
       mkdir -p /var/log/rivendell
-      if test ! -e /etc/rsyslog.d/rivendell.conf ; then
-	  cp /usr/share/rivendell/syslog.conf-sample /etc/rsyslog.d/rivendell.conf
+      chmod 750 /var/log/rivendell
+      chown root:syslog /var/log/rivendell
+      touch /var/log/rivendell/operations
+      chmod 640 /var/log/rivendell/operations
+      chown syslog:adm /var/log/rivendell/operations
+      touch /var/log/rivendell/debug
+      chmod 640 /var/log/rivendell/debug
+      chown syslog:adm /var/log/rivendell/debug
+      if test ! -e /etc/rsyslog.d/10-rivendell.conf ; then
+	  cp /usr/share/rivendell/syslog.conf-sample /etc/rsyslog.d/10-rivendell.conf
       fi
       /bin/systemctl restart rsyslog
 
