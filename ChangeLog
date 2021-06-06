@@ -20768,3 +20768,5 @@
 2021-05-28 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdmaint(8) to enable it to operate even when
 	the Rivendell services are not running.
+2021-06-06 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.1.
