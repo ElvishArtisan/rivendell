@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.6.0 -- 15 May 2020
+v3.6.0 -- 15 May 2021
 
 Changes:
    RDImport. Added the user's e-mail address to the set of addressees used
