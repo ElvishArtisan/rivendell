@@ -19,7 +19,6 @@
 #   You should have received a copy of the GNU General Public
 #   License along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-#
 
 import sys
 import socket
@@ -30,14 +29,6 @@ import time
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
-
-def sendvar(var):
-    if(len(var)!=0):
-        send_sock=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        send_sock.connect((ipaddr,port))
-        send_sock.sendall(var.encode('utf-8'))
-        send_sock.close()
-
 def getval(val, update, section):
     try:
         configval = update.config().get(section,val)
@@ -47,7 +38,7 @@ def getval(val, update, section):
 
 def encode(srcdata, fieldname, update):
     if(len(srcdata)!=0):
-        enc=fieldname+'='+update.resolvePadFields(srcdata,pypad.ESCAPE_NONE)+'\r\n'
+        enc=fieldname+'='+update.resolvePadFields(srcdata,pypad.ESCAPE_NONE).ljust(64)+'\r\n'
     else:
         enc=''
     return enc
@@ -60,7 +51,6 @@ def ProcessPad(update):
     section='Rds'+str(n)
     while(update.config().has_section(section)):
         if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW):
-            dps=''
             dps=getval_encode('DynamicPS',"DPS",update,section)
             ps=getval_encode('ProgramService',"PS",update,section)
             text=getval_encode('RadioText',"TEXT",update,section)
@@ -104,14 +94,19 @@ def ProcessPad(update):
             dpsm=getval_encode('DPSMode',"DPSM",update,section)
 
 
+            def sendvar(var):
+                if(len(var)!=0):
+                    ipaddr=update.config().get(section,'IpAddress')
+                    port=int(update.config().get(section,'TcpPort'))
+                    send_sock=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+                    send_sock.connect((ipaddr, port))
+                    send_sock.sendall(var.encode('utf-8'))
+                    send_sock.close
 
-            #
             # Use TCP output
             #
             waittime=int(update.config().get(section,'Delay'))
             time.sleep(waittime)
-            ipaddr=update.config().get(section,'IpAddress')
-            port=int(update.config().get(section,'TcpPort'))
             sendvar(dps)
             sendvar(ps)
             sendvar(text)
@@ -154,7 +149,6 @@ def ProcessPad(update):
             sendvar(cont)
             sendvar(dpsr)
             sendvar(dpsm)
-
 
         n=n+1
         section='Rds'+str(n)
