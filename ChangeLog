@@ -21874,3 +21874,5 @@
 2021-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Set Password' dialog so as to pass the password
 	value in the 'RDPasswd::exec()' method.
+2021-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in 'RDClock::load()' that threw a SQL error.

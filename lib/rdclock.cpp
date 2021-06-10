@@ -138,7 +138,7 @@ bool RDClock::load()
     "`ARTISTSEP`,"+   // 02
     "`REMARKS` "+     // 03
     "from `CLOCKS` where "+
-    "`NAME`='"+RDEscapeString(clock_name)+"i";
+    "`NAME`='"+RDEscapeString(clock_name)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
