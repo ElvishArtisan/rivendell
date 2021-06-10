@@ -35,10 +35,8 @@ AddUser::AddUser(QString *username,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("Add User"));
 
@@ -104,16 +102,12 @@ void AddUser::okData()
   }
 
   sql=QString("insert into `USERS` set ")+
-    "`LOGIN_NAME`='"+RDEscapeString(username)+"',"+
-    "`PASSWORD`=PASSWORD('')";
-  q=new RDSqlQuery(sql);
-  if(!q->isActive()) {
+    "`LOGIN_NAME`='"+RDEscapeString(username)+"'";
+  if(!RDSqlQuery::apply(sql)) {
     QMessageBox::warning(this,tr("User Exists"),tr("User Already Exists!"),
 			 1,0,0);
-    delete q;
     return;
   }
-  delete q;
   sql="select `NAME` from `GROUPS`";
   q=new RDSqlQuery(sql);
   while(q->next()) {

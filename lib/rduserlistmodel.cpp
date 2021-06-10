@@ -213,10 +213,10 @@ void RDUserListModel::refresh(const QModelIndex &row)
 }
 
 
-void RDUserListModel::refresh(const QString &grpname)
+void RDUserListModel::refresh(const QString &username)
 {
   for(int i=0;i<d_texts.size();i++) {
-    if(d_texts.at(i).at(0)==grpname) {
+    if(d_texts.at(i).at(0)==username) {
       updateRowLine(i);
       return;
     }
@@ -267,7 +267,7 @@ void RDUserListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      filterSql(d_texts.at(line).at(line).toString());
+      filterSql(d_texts.at(line).at(0).toString());
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);

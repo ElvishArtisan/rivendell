@@ -21865,3 +21865,9 @@
 2021-06-04 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected file permissions and ownerships for rsyslog in
 	'debian/postinst'.
+2021-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that threw a SQL error when attempting
+	to add a new user.
+	* Fixed a bug in rdadmin(1) that caused the incorrect Login Name
+	to appear in the 'Rivendell User List' dialog immediately after
+	adding the user.
