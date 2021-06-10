@@ -23,7 +23,7 @@
 #include "rdpasswd.h"
 #include "rdtextvalidator.h"
 
-RDPasswd::RDPasswd(QString *password,QWidget *parent)
+RDPasswd::RDPasswd(const QString &caption,QWidget *parent)
   : RDDialog(parent)
 {
   //
@@ -32,8 +32,7 @@ RDPasswd::RDPasswd(QString *password,QWidget *parent)
   setMinimumSize(sizeHint());
   setMaximumSize(sizeHint());
 
-  passwd_password=password;
-  setWindowTitle(tr("Change Password"));
+  setWindowTitle(caption+" - "+tr("Change Password"));
 
   //
   // Text Validator
@@ -48,7 +47,7 @@ RDPasswd::RDPasswd(QString *password,QWidget *parent)
   passwd_password_1_edit->setEchoMode(QLineEdit::Password);
   passwd_password_1_edit->setFocus();
   passwd_password_1_edit->setValidator(validator);
-  passwd_password_1_label=new QLabel(tr("&Password:"),this);
+  passwd_password_1_label=new QLabel(tr("Password:"),this);
   passwd_password_1_label->setFont(labelFont());
   passwd_password_1_label->setAlignment(Qt::AlignRight);
 
@@ -59,7 +58,7 @@ RDPasswd::RDPasswd(QString *password,QWidget *parent)
   passwd_password_2_edit->setMaxLength(RD_MAX_PASSWORD_LENGTH);
   passwd_password_2_edit->setEchoMode(QLineEdit::Password);
   passwd_password_2_edit->setValidator(validator);
-  passwd_password_2_label=new QLabel(tr("C&onfirm:"),this);
+  passwd_password_2_label=new QLabel(tr("Confirm:"),this);
   passwd_password_2_label->setFont(labelFont());
   passwd_password_2_label->setAlignment(Qt::AlignRight);
 
@@ -68,7 +67,7 @@ RDPasswd::RDPasswd(QString *password,QWidget *parent)
   //
   passwd_ok_button=new QPushButton(this);
   passwd_ok_button->setFont(buttonFont());
-  passwd_ok_button->setText(tr("&OK"));
+  passwd_ok_button->setText(tr("OK"));
   passwd_ok_button->setDefault(true);
   connect(passwd_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -77,7 +76,7 @@ RDPasswd::RDPasswd(QString *password,QWidget *parent)
   //
   passwd_cancel_button=new QPushButton(this);
   passwd_cancel_button->setFont(buttonFont());
-  passwd_cancel_button->setText(tr("&Cancel"));
+  passwd_cancel_button->setText(tr("Cancel"));
   connect(passwd_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 
@@ -98,6 +97,14 @@ QSize RDPasswd::sizeHint() const
 QSizePolicy RDPasswd::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int RDPasswd::exec(QString *passwd)
+{
+  passwd_password=passwd;
+
+  return QDialog::exec();
 }
 
 

@@ -29,6 +29,7 @@
 #include <qspinbox.h>
 
 #include <rddialog.h>
+#include <rdpasswd.h>
 #include <rduser.h>
 
 class EditUser : public RDDialog
@@ -53,6 +54,7 @@ class EditUser : public RDDialog
   void cancelData();
 
  private:
+  RDPasswd *user_password_dialog;
   QLineEdit *user_name_edit;
   QLineEdit *user_full_name_edit;
   QLineEdit *user_email_address_edit;

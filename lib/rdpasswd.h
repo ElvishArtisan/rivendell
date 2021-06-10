@@ -2,7 +2,7 @@
 //
 // Set Password Widget for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,16 +25,20 @@
 #include <QLineEdit>
 #include <QPushButton>
 
-#include <rddialog.h>
+#include "rddialog.h"
 
 class RDPasswd : public RDDialog
 {
-  Q_OBJECT
+  Q_OBJECT;
  public:
-  RDPasswd(QString *password,QWidget *parent=0);
+  RDPasswd(const QString &caption,QWidget *parent=0);
+  //  RDPasswd(QString *password,QWidget *parent=0);
   ~RDPasswd();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+
+ public slots:
+  int exec(QString *passwd);
 
  private slots:
   void okData();

@@ -42,6 +42,11 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_user=new RDUser(user);
 
   //
+  // Dialogs
+  //
+  user_password_dialog=new RDPasswd("RDAdmin",this);
+
+  //
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
@@ -470,6 +475,7 @@ EditUser::~EditUser()
   delete user_prod_group;
   delete user_traffic_group;
   delete user_onair_group;
+  delete user_password_dialog;
 }
 
 
@@ -497,11 +503,9 @@ void EditUser::passwordData()
 {
   QString password;
 
-  RDPasswd *passwd=new RDPasswd(&password,this);
-  if(passwd->exec()==0) {
+  if(user_password_dialog->exec(&password)==0) {
     user_user->setPassword(password);
   }
-  delete passwd;
 }
 
 

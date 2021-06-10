@@ -21871,3 +21871,6 @@
 	* Fixed a bug in rdadmin(1) that caused the incorrect Login Name
 	to appear in the 'Rivendell User List' dialog immediately after
 	adding the user.
+2021-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Set Password' dialog so as to pass the password
+	value in the 'RDPasswd::exec()' method.
