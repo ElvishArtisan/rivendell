@@ -486,7 +486,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   event_sched_group_box=new RDComboBox(this);
   event_sched_group_box->setGeometry(CENTER_LINE+510,384,100,20);
-  QString sql2="select NAME from GROUPS order by NAME";
+  QString sql2="select `NAME` from `GROUPS` order by `NAME`";
   RDSqlQuery *q2=new RDSqlQuery(sql2);
   while(q2->next()) {
     event_sched_group_box->insertItem(q2->value(0).toString());
