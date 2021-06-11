@@ -21879,3 +21879,5 @@
 2021-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'Edit Event' dialog in rdlogmanager(1) that
 	threw a SQL error.
+2021-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v4.0.0beta1.
