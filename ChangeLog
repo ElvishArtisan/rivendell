@@ -21881,3 +21881,6 @@
 	threw a SQL error.
 2021-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to v4.0.0beta1.
+2021-06-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that threw a SQL error when opening
+	the 'Edit Service' dialog.

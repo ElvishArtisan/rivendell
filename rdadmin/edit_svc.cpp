@@ -470,7 +470,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   group=svc_svc->trackGroup();
   autospot=svc_svc->autospotGroup();
-  sql="select NAME from GROUPS order by NAME";
+  sql="select `NAME` from `GROUPS` order by `NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     svc_voice_group_box->insertItem(svc_voice_group_box->count(),
