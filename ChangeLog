@@ -21887,3 +21887,6 @@
 2021-06-14 Fred Gleason <fredg@paravelsystems.com>
 	* Reworked the 'ListLog' widget in rdairplay(1) to support
 	dynamic resizing.
+2021-06-14 Fred Gleason <fredg@paravelsystems.com>
+	* Removed commented-out code from the 'ListLog' widget in
+	rdairplay(1).

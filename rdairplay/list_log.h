@@ -2,7 +2,7 @@
 //
 // The full log widget for RDAirPlay.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -89,6 +89,7 @@ class ListLog : public RDWidget
   RDAirPlayConf::ActionMode list_action_mode;
   ListLog::PlayButtonMode list_playbutton_mode;
   EditEvent *list_event_edit;
+  QGroupBox *list_groupbox;
   QLabel *list_endtime_label;
   QLineEdit *list_endtime_edit;
   QLabel *list_stoptime_label;
@@ -116,8 +117,6 @@ class ListLog : public RDWidget
   bool list_pause_allowed;
   bool list_audition_head_playing;
   bool list_audition_tail_playing;
-
-  QGroupBox *log_groupbox;
 };
 
 

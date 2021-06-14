@@ -158,10 +158,10 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   //
   // Time Counter Section
   //
-  log_groupbox=new QGroupBox(tr("Run Length"),this);
-  log_groupbox->setFont(labelFont());
+  list_groupbox=new QGroupBox(tr("Run Length"),this);
+  list_groupbox->setFont(labelFont());
   if(!rda->airplayConf()->showCounters()) {
-    log_groupbox->hide();
+    list_groupbox->hide();
   }
 
   //
@@ -310,16 +310,8 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   //
   // Map Slots
   //
-  //  connect(list_log,SIGNAL(reloaded()),this,SLOT(logReloadedData()));
-  //  connect(list_log,SIGNAL(played(int)),this,SLOT(logPlayedData(int)));
-  //  connect(list_log,SIGNAL(paused(int)),this,SLOT(logPausedData(int)));
-  //  connect(list_log,SIGNAL(stopped(int)),this,SLOT(logStoppedData(int)));
-  //  connect(list_log,SIGNAL(inserted(int)),this,SLOT(logInsertedData(int)));
-  //  connect(list_log,SIGNAL(removed(int,int,bool)),
-  //	  this,SLOT(logRemovedData(int,int,bool)));
   connect(list_log,SIGNAL(transportChanged()),
 	  this,SLOT(transportChangedData()));
-  //  connect(list_log,SIGNAL(modified(int)),this,SLOT(modifiedData(int)));
   connect(list_log,SIGNAL(refreshabilityChanged(bool)),
 	  this,SLOT(refreshabilityChangedData(bool)));
   connect(list_log,SIGNAL(auditionHeadPlayed(int)),
@@ -923,7 +915,7 @@ void ListLog::resizeEvent(QResizeEvent *e)
     //
     // Counters
     //
-    log_groupbox->setGeometry(695,size().height()-61,153,58);
+    list_groupbox->setGeometry(695,size().height()-61,153,58);
     list_stoptime_edit->setGeometry(773,size().height()-45,70,18);
     list_stoptime_label->setGeometry(703,size().height()-45,65,18);
     list_endtime_edit->setGeometry(773,size().height()-25,70,18);
@@ -952,7 +944,7 @@ void ListLog::resizeEvent(QResizeEvent *e)
     //
     // Counters
     //
-    log_groupbox->setGeometry(333,size().height()-116,158,58);
+    list_groupbox->setGeometry(333,size().height()-116,158,58);
     list_stoptime_edit->setGeometry(412,size().height()-100,70,18);
     list_stoptime_label->setGeometry(342,size().height()-100,65,18);
     list_endtime_edit->setGeometry(412,size().height()-80,70,18);
