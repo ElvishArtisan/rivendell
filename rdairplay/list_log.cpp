@@ -121,7 +121,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   if(rda->airplayConf()->hourSelectorEnabled()) {
     y+=80;
     h-=80;
-    list_hour_selector->setGeometry(0,0,sizeHint().width(),80);
     list_hour_selector->show();
   }
 
@@ -129,7 +128,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   // Log View
   //
   list_log_view=new LogTableView(this);
-  list_log_view->setGeometry(0,y,sizeHint().width(),h);
   list_log_view->setSelectionBehavior(QAbstractItemView::SelectRows);
   list_log_view->setSelectionMode(QAbstractItemView::ContiguousSelection);
   list_log_view->setShowGrid(false);
@@ -160,20 +158,17 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   //
   // Time Counter Section
   //
-  QGroupBox *groupbox=new QGroupBox(tr("Run Length"),this);
-  groupbox->setFont(labelFont());
-  groupbox->setGeometry(336,sizeHint().height()-116,146,58);
+  log_groupbox=new QGroupBox(tr("Run Length"),this);
+  log_groupbox->setFont(labelFont());
   if(!rda->airplayConf()->showCounters()) {
-    groupbox->hide();
+    log_groupbox->hide();
   }
 
   //
   // Stop Time Counter
   //
   list_stoptime_edit=new QLineEdit(this);
-  list_stoptime_edit->setGeometry(407,sizeHint().height()-100,70,18);
   list_stoptime_label=new QLabel(tr("Next Stop:"),this);
-  list_stoptime_label->setGeometry(337,sizeHint().height()-100,65,18);
   list_stoptime_label->setFont(labelFont());
   list_stoptime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   //  list_stoptime_label->setBackgroundColor(QColor(system_mid_color));
@@ -186,9 +181,7 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   // End Time Counter
   //
   list_endtime_edit=new QLineEdit(this);
-  list_endtime_edit->setGeometry(407,sizeHint().height()-80,70,18);
   list_endtime_label=new QLabel(tr("Log End:"),this);
-  list_endtime_label->setGeometry(337,sizeHint().height()-80,65,18);
   list_endtime_label->setFont(labelFont());
   list_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   //  list_endtime_label->setBackgroundColor(QColor(system_mid_color));
@@ -201,7 +194,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   // Select Button
   //
   list_take_button=new QPushButton(this);
-  list_take_button->setGeometry(10,sizeHint().height()-55,80,50);
   list_take_button->setFont(bigButtonFont());
   list_take_button->
     setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -214,7 +206,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   // Audition Head Button
   //
   list_head_button=new QPushButton(this);
-  list_head_button->setGeometry(10,sizeHint().height()-113,80,50);
   list_head_button->setFont(bigButtonFont());
   list_head_button->
     setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -229,7 +220,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   // Audition Tail Button
   //
   list_tail_button=new QPushButton(this);
-  list_tail_button->setGeometry(90,sizeHint().height()-113,80,50);
   list_tail_button->setFont(bigButtonFont());
   list_tail_button->
     setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -244,7 +234,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   // Play Button
   //
   list_play_button=new QPushButton(this);
-  list_play_button->setGeometry(10,sizeHint().height()-55,80,50);
   list_play_button->setFont(bigButtonFont());
   list_play_button->
     setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -257,7 +246,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   // Next Button
   //
   list_next_button=new QPushButton(this);
-  list_next_button->setGeometry(90,sizeHint().height()-55,80,50);
   list_next_button->setFont(bigButtonFont());
   list_next_button->
     setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -270,7 +258,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   // Modify Button
   //
   list_modify_button=new QPushButton(this);
-  list_modify_button->setGeometry(170,sizeHint().height()-55,80,50);
   list_modify_button->setFont(bigButtonFont());
   list_modify_button->
     setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -283,7 +270,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   // Scroll Button
   //
   list_scroll_button=new QPushButton(this);
-  list_scroll_button->setGeometry(250,sizeHint().height()-55,80,50);
   list_scroll_button->setFont(bigButtonFont());
   list_scroll_button->
     setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -296,7 +282,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   // Refresh Button
   //
   list_refresh_button=new QPushButton(this);
-  list_refresh_button->setGeometry(330,sizeHint().height()-55,80,50);
   list_refresh_button->setFont(bigButtonFont());
   list_refresh_button->
     setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -310,8 +295,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   // Log Load   
   //
   list_load_button=new QPushButton(this);
-  list_load_button->setGeometry(sizeHint().width()-90,sizeHint().height()-55,
-				80,50);
   list_load_button->setFont(bigButtonFont());
   list_load_button->
     setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -909,6 +892,96 @@ void ListLog::refreshabilityChangedData(bool state)
 void ListLog::cartDroppedData(int line,RDLogLine *ll)
 {
   emit cartDropped(list_id,line,ll);
+}
+
+
+void ListLog::resizeEvent(QResizeEvent *e)
+{
+  //
+  // Hour Selector
+  //
+  if(rda->airplayConf()->hourSelectorEnabled()) {
+    list_hour_selector->setGeometry(0,0,size().width(),80);
+  }
+
+  //
+  // Log Items
+  //
+  int list_y=0;
+  int list_h=size().height()-60;
+  if(rda->airplayConf()->showCounters()) {
+    list_h-=60;
+  }
+
+  if(size().width()>=850) {
+    //
+    // Audition Head/Tail Buttons
+    //
+    list_head_button->setGeometry(510,size().height()-55,90,50);
+    list_tail_button->setGeometry(600,size().height()-55,90,50);
+
+    //
+    // Counters
+    //
+    log_groupbox->setGeometry(695,size().height()-61,153,58);
+    list_stoptime_edit->setGeometry(773,size().height()-45,70,18);
+    list_stoptime_label->setGeometry(703,size().height()-45,65,18);
+    list_endtime_edit->setGeometry(773,size().height()-25,70,18);
+    list_endtime_label->setGeometry(703,size().height()-25,65,18);
+
+    //
+    // Bottom Buttons
+    //
+    list_take_button->setGeometry(10,size().height()-55,80,50);
+    list_play_button->setGeometry(10,size().height()-55,80,50);
+    list_next_button->setGeometry(90,size().height()-55,80,50);
+    list_modify_button->setGeometry(170,size().height()-55,80,50);
+    list_scroll_button->setGeometry(250,size().height()-55,80,50);
+    list_refresh_button->setGeometry(330,size().height()-55,80,50);
+    list_load_button->setGeometry(410,size().height()-55,
+				  80,50);
+    list_h+=60;
+  }
+  else {
+    //
+    // Audition Head/Tail Buttons
+    //
+    list_head_button->setGeometry(10,size().height()-113,90,50);
+    list_tail_button->setGeometry(100,size().height()-113,90,50);
+
+    //
+    // Counters
+    //
+    log_groupbox->setGeometry(333,size().height()-116,158,58);
+    list_stoptime_edit->setGeometry(412,size().height()-100,70,18);
+    list_stoptime_label->setGeometry(342,size().height()-100,65,18);
+    list_endtime_edit->setGeometry(412,size().height()-80,70,18);
+    list_endtime_label->setGeometry(342,size().height()-80,65,18);
+
+    //
+    // Bottom Buttons
+    //
+    list_take_button->setGeometry(10,size().height()-55,80,50);
+    list_play_button->setGeometry(10,size().height()-55,80,50);
+    list_next_button->setGeometry(90,size().height()-55,80,50);
+    list_modify_button->setGeometry(170,size().height()-55,80,50);
+    list_scroll_button->setGeometry(250,size().height()-55,80,50);
+    list_refresh_button->setGeometry(330,size().height()-55,80,50);
+    list_load_button->setGeometry(size().width()-90,size().height()-55,80,50);
+  }
+
+  if(rda->airplayConf()->hourSelectorEnabled()) {
+    if(size().width()>=(24*HOURSELECTOR_BUTTON_EDGE)) {
+      list_y+=HOURSELECTOR_BUTTON_EDGE;
+      list_h-=HOURSELECTOR_BUTTON_EDGE;
+    }
+    else {
+      list_y+=2*HOURSELECTOR_BUTTON_EDGE;
+      list_h-=2*HOURSELECTOR_BUTTON_EDGE;
+    }
+  }
+  list_log_view->setGeometry(0,list_y,size().width(),list_h);
+
 }
 
 

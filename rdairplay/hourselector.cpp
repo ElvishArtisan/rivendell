@@ -105,6 +105,24 @@ void HourSelector::updateHour(int hour,bool state)
 
 void HourSelector::resizeEvent(QResizeEvent *e)
 {
+  if(size().width()>=(24*HOURSELECTOR_BUTTON_EDGE)) {
+    for(unsigned i=0;i<24;i++) {
+      hour_button[i]->
+	setGeometry(i*HOURSELECTOR_BUTTON_EDGE,0,
+		    HOURSELECTOR_BUTTON_EDGE,HOURSELECTOR_BUTTON_EDGE);
+    }
+  }
+  else {
+    for(unsigned i=0;i<2;i++) {
+      for(unsigned j=0;j<12;j++) {
+	unsigned hour=12*i+j;
+	hour_button[hour]->
+	  setGeometry(j*HOURSELECTOR_BUTTON_EDGE,i*HOURSELECTOR_BUTTON_EDGE,
+		      HOURSELECTOR_BUTTON_EDGE,HOURSELECTOR_BUTTON_EDGE);
+      }
+    }
+  }
+  /*
   for(unsigned i=0;i<2;i++) {
     for(unsigned j=0;j<12;j++) {
       unsigned hour=12*i+j;
@@ -112,6 +130,7 @@ void HourSelector::resizeEvent(QResizeEvent *e)
 				     size().width()/12,size().height()/2);
     }
   }
+  */
 }
 
 

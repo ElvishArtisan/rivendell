@@ -70,6 +70,9 @@ class ListLog : public RDWidget
   void refreshabilityChangedData(bool state);
   void cartDroppedData(int line,RDLogLine *ll);
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+  
  private:
   enum PlayButtonMode {ButtonDisabled=0,ButtonPlay=1,ButtonStop=2};
   int CurrentLine();
@@ -113,6 +116,8 @@ class ListLog : public RDWidget
   bool list_pause_allowed;
   bool list_audition_head_playing;
   bool list_audition_tail_playing;
+
+  QGroupBox *log_groupbox;
 };
 
 

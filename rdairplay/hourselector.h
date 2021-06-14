@@ -24,6 +24,8 @@
 #include <rdlogplay.h>
 #include <rdwidget.h>
 
+#define HOURSELECTOR_BUTTON_EDGE 41
+
 class HourSelector : public RDWidget
 {
  Q_OBJECT

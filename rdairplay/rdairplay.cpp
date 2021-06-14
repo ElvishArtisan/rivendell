@@ -33,7 +33,6 @@
 #include <rdescape_string.h>
 
 #include "rdairplay.h"
-#include "wall_clock.h"
 
 //
 // Prototypes
@@ -118,12 +117,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Fix the Window Size
   //
-#ifndef RESIZABLE
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-#endif  // RESIZABLE
+  setMinimumSize(sizeHint());
+  //  setMaximumSize(sizeHint());
 
   //
   // Initialize the Random Number Generator
@@ -319,21 +314,17 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Wall Clock
   //
-  WallClock *clock=new WallClock(this);
-  clock->
-    setGeometry(10,5,clock->sizeHint().width(),clock->sizeHint().height());
-  clock->setCheckSyncEnabled(rda->airplayConf()->checkTimesync());
-  connect(air_master_timer,SIGNAL(timeout()),clock,SLOT(tickClock()));
- clock->setFocusPolicy(Qt::NoFocus);
-  connect(clock,SIGNAL(timeModeChanged(RDAirPlayConf::TimeMode)),
+  air_clock=new WallClock(this);
+  air_clock->setCheckSyncEnabled(rda->airplayConf()->checkTimesync());
+  connect(air_master_timer,SIGNAL(timeout()),air_clock,SLOT(tickClock()));
+  air_clock->setFocusPolicy(Qt::NoFocus);
+  connect(air_clock,SIGNAL(timeModeChanged(RDAirPlayConf::TimeMode)),
 	  this,SLOT(timeModeData(RDAirPlayConf::TimeMode)));
 
   //
   // Post Counter
   //
   air_post_counter=new PostCounter(this);
-  air_post_counter->setGeometry(220,5,air_post_counter->sizeHint().width(),
-				air_post_counter->sizeHint().height());
   air_post_counter->setPostPoint(QTime(),0,false,false);
   air_post_counter->setFocusPolicy(Qt::NoFocus);
   connect(air_master_timer,SIGNAL(timeout()),
@@ -345,8 +336,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Pie Counter
   //
   air_pie_counter=new PieCounter(rda->airplayConf()->pieCountLength(),this);
-  air_pie_counter->setGeometry(426,5,air_pie_counter->sizeHint().width(),
-				air_pie_counter->sizeHint().height());
   air_pie_counter->setCountLength(rda->airplayConf()->pieCountLength());
   air_pie_end=rda->airplayConf()->pieEndPoint();
   air_pie_counter->setOpMode(air_op_mode[0]);
@@ -360,8 +349,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Audio Meter
   //
   air_stereo_meter=new RDStereoMeter(this);
-  air_stereo_meter->setGeometry(50,70,air_stereo_meter->sizeHint().width(),
-				air_stereo_meter->sizeHint().height());
   air_stereo_meter->setMode(RDSegMeter::Peak);
   air_stereo_meter->setFocusPolicy(Qt::NoFocus);
 
@@ -369,8 +356,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Message Label
   //
   air_message_label=new QLabel(this);
-  air_message_label->setGeometry(sizeHint().width()-425,70,
-		MESSAGE_WIDGET_WIDTH,air_stereo_meter->sizeHint().height());
   air_message_label->setStyleSheet("background-color: "+
 				   QColor(LOGLINEBOX_BACKGROUND_COLOR).name());
   air_message_label->setWordWrap(true);
@@ -384,8 +369,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Stop Counter
   //
   air_stop_counter=new StopCounter(this);
-  air_stop_counter->setGeometry(600,5,air_stop_counter->sizeHint().width(),
-				air_stop_counter->sizeHint().height());
   air_stop_counter->setTime(QTime(0,0,0));
  air_stop_counter->setFocusPolicy(Qt::NoFocus);
   connect(air_master_timer,SIGNAL(timeout()),
@@ -397,10 +380,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Mode Display/Button
   //
   air_mode_display=new ModeDisplay(this);
-  air_mode_display->
-    setGeometry(sizeHint().width()-air_mode_display->sizeHint().width()-10,
-		5,air_mode_display->sizeHint().width(),
-		air_mode_display->sizeHint().height());
   air_mode_display->setFocusPolicy(Qt::NoFocus);
   air_mode_display->setOpModeStyle(air_op_mode_style);
   connect(air_mode_display,SIGNAL(clicked()),this,SLOT(modeButtonData()));
@@ -430,7 +409,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Add Button
   //
   air_add_button=new RDPushButton(this);
-  air_add_button->setGeometry(10,sizeHint().height()-65,80,60);
   air_add_button->setFont(bigButtonFont());
   air_add_button->setText(tr("ADD"));
  air_add_button->setFocusPolicy(Qt::NoFocus);
@@ -440,7 +418,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Delete Button
   //
   air_delete_button=new RDPushButton(this);
-  air_delete_button->setGeometry(100,sizeHint().height()-65,80,60);
   air_delete_button->setFont(bigButtonFont());
   air_delete_button->setText(tr("DEL"));
   air_delete_button->setFlashColor(AIR_FLASH_COLOR);
@@ -451,7 +428,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Move Button
   //
   air_move_button=new RDPushButton(this);
-  air_move_button->setGeometry(190,sizeHint().height()-65,80,60);
   air_move_button->setFont(bigButtonFont());
   air_move_button->setText(tr("MOVE"));
   air_move_button->setFlashColor(AIR_FLASH_COLOR);
@@ -462,7 +438,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Copy Button
   //
   air_copy_button=new RDPushButton(this);
-  air_copy_button->setGeometry(280,sizeHint().height()-65,80,60);
   air_copy_button->setFont(bigButtonFont());
   air_copy_button->setText(tr("COPY"));
   air_copy_button->setFlashColor(AIR_FLASH_COLOR);
@@ -490,8 +465,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 		       "RDAirPlay",
 		       rda->airplayConf()->buttonLabelTemplate(),false,
 		       air_event_player,air_cart_dialog,this);
-    air_panel->setGeometry(510,140,air_panel->sizeHint().width(),
-			 air_panel->sizeHint().height());
     air_panel->setPauseEnabled(rda->airplayConf()->panelPauseEnabled());
     air_panel->setCard(0,rda->airplayConf()->card(RDAirPlayConf::SoundPanel1Channel));
     air_panel->setPort(0,rda->airplayConf()->port(RDAirPlayConf::SoundPanel1Channel));
@@ -599,8 +572,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   air_pause_enabled=rda->airplayConf()->pauseEnabled();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log_list[i]=new ListLog(air_log[i],i,air_pause_enabled,this);
-    air_log_list[i]->setGeometry(510,140,air_log_list[i]->sizeHint().width(),
-			      air_log_list[i]->sizeHint().height());
     air_log_list[i]->hide();
     connect(air_log_list[i],SIGNAL(selectClicked(int,int,RDLogLine::Status)),
 	    this,SLOT(selectClickedData(int,int,RDLogLine::Status)));
@@ -615,7 +586,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(fullLogButtonData(int)));
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log_button[i]=new QPushButton(this);
-    air_log_button[i]->setGeometry(647+i*123,sizeHint().height()-65,118,60);
     air_log_button[i]->setFont(bigButtonFont());
     air_log_button[i]->setFocusPolicy(Qt::NoFocus);
     mapper->setMapping(air_log_button[i],i);
@@ -637,7 +607,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Empty Cart
   //
   air_empty_cart=new RDEmptyCart(this);
-  air_empty_cart->setGeometry(520,sizeHint().height()-51,32,32);
   if(!rda->station()->enableDragdrop()) {
     air_empty_cart->hide();
   }
@@ -646,7 +615,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // SoundPanel Button
   //
   air_panel_button=new QPushButton(this);
-  air_panel_button->setGeometry(562,sizeHint().height()-65,80,60);
   air_panel_button->setFont(bigButtonFont());
   air_panel_button->setText(tr("Sound\nPanel"));
   air_panel_button->setPalette(active_color);
@@ -667,8 +635,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   air_button_list=
     new ButtonLog(air_log[0],0,rda->airplayConf(),air_pause_enabled,this);
-  air_button_list->setGeometry(10,140,air_button_list->sizeHint().width(),
-			       air_button_list->sizeHint().height());
   connect(air_button_list,SIGNAL(selectClicked(int,int,RDLogLine::Status)),
 	  this,SLOT(selectClickedData(int,int,RDLogLine::Status)));
   connect(air_button_list,SIGNAL(cartDropped(int,int,RDLogLine *)),
@@ -1982,6 +1948,73 @@ void MainWidget::closeEvent(QCloseEvent *e)
   rda->syslog(LOG_INFO,"RDAirPlay exiting");
   air_lock->unlock();
   exit(0);
+}
+
+
+void MainWidget::resizeEvent(QResizeEvent *e)
+{
+  int w=width();
+  int h=height();
+  
+  //
+  // Top Row
+  //
+  air_clock->setGeometry(10,5,air_clock->sizeHint().width(),
+			 air_clock->sizeHint().height());
+  air_post_counter->setGeometry(220,5,air_post_counter->sizeHint().width(),
+				air_post_counter->sizeHint().height());
+  air_pie_counter->setGeometry(426,5,air_pie_counter->sizeHint().width(),
+				air_pie_counter->sizeHint().height());
+  air_stop_counter->setGeometry(600,5,air_stop_counter->sizeHint().width(),
+				air_stop_counter->sizeHint().height());
+  air_mode_display->
+    setGeometry(sizeHint().width()-air_mode_display->sizeHint().width()-10,
+		5,air_mode_display->sizeHint().width(),
+		air_mode_display->sizeHint().height());
+
+  //
+  // Meter Row
+  //
+  air_stereo_meter->setGeometry(50,70,air_stereo_meter->sizeHint().width(),
+				air_stereo_meter->sizeHint().height());
+  air_message_label->setGeometry(sizeHint().width()-425,70,
+		MESSAGE_WIDGET_WIDTH,air_stereo_meter->sizeHint().height());
+
+  //
+  // Button Log
+  //
+  air_button_list->setGeometry(10,140,air_button_list->sizeHint().width(),
+			       air_button_list->sizeHint().height());
+
+  //
+  // Sound Panel
+  //
+  air_panel->setGeometry(510,140,air_panel->sizeHint().width(),
+			 air_panel->sizeHint().height());
+  //
+  // Full Log Widgets
+  //
+  for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+    air_log_list[i]->setGeometry(510,140,w-530,h-210);
+    //    air_log_list[i]->setGeometry(510,140,air_log_list[i]->sizeHint().width(),
+    //				 air_log_list[i]->sizeHint().height());
+  }
+
+
+  //
+  // Bottom Button Row
+  //
+  air_add_button->setGeometry(10,size().height()-65,80,60);
+  air_delete_button->setGeometry(100,size().height()-65,80,60);
+  air_move_button->setGeometry(190,size().height()-65,80,60);
+  air_copy_button->setGeometry(280,size().height()-65,80,60);
+
+  air_empty_cart->setGeometry(520,size().height()-51,32,32);
+
+  air_panel_button->setGeometry(562,size().height()-65,80,60);
+  for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+    air_log_button[i]->setGeometry(647+i*123,size().height()-65,118,60);
+  }
 }
 
 

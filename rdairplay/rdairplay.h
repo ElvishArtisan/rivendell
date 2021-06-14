@@ -35,11 +35,7 @@
 #include "post_counter.h"
 #include "pie_counter.h"
 #include "stop_counter.h"
-
-//
-// Debug Settings
-//
-//#define RESIZABLE
+#include "wall_clock.h"
 
 //
 // Widget Settings
@@ -94,12 +90,13 @@ class MainWidget : public RDWidget
   void masterTimerData();
   void transportChangedData();
   void timeModeData(RDAirPlayConf::TimeMode mode);
+  
+ protected:
   void keyPressEvent(QKeyEvent *e);
   void keyReleaseEvent(QKeyEvent *e);
   void closeEvent(QCloseEvent *);
+  void resizeEvent(QResizeEvent *e);
   void paintEvent(QPaintEvent *e);
-  
- protected:
   void wheelEvent(QWheelEvent *e);
 
  private:
@@ -192,6 +189,9 @@ class MainWidget : public RDWidget
   RDEventPlayer *air_event_player;
   RDHotKeyList *air_keylist;
   RDHotkeys *air_hotkeys;
+
+
+  WallClock *air_clock;
 };
 
 
