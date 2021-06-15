@@ -29,16 +29,15 @@
 #include "rdmacro.h"
 #include "rdsound_panel.h"
 
-RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
-			   int user_panels,bool flash,const QString &caption,
-			   const QString &label_template,bool extended,
-			   RDEventPlayer *player,RDCartDialog *cart_dialog,
-			   QWidget *parent)
+RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
+			   const QString &caption,const QString &label_template,
+			   bool extended,RDEventPlayer *player,
+			   RDCartDialog *cart_dialog,QWidget *parent)
   : RDWidget(parent)
 {
   panel_playmode_box=NULL;
-  panel_button_columns=cols;
-  panel_button_rows=rows;
+  panel_button_columns=PANEL_MAX_BUTTON_COLUMNS;
+  panel_button_rows=PANEL_MAX_BUTTON_ROWS;
   panel_cue_port=-1;
   panel_caption=caption;
   if(extended) {
@@ -92,10 +91,6 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   panel_selector_box=new RDComboBox(this);
   panel_selector_box->setFont(buttonFont());
   panel_selector_box->addIgnoredKey(Qt::Key_Space);
-  panel_selector_box->
-    setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-5),
-		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
-		2*PANEL_BUTTON_SIZE_X+15,50);
   connect(panel_selector_box,SIGNAL(activated(int)),
 	  this,SLOT(panelActivatedData(int)));
   connect(panel_selector_box,SIGNAL(setupClicked()),
@@ -122,10 +117,6 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   panel_playmode_box=new QComboBox(this);
   panel_playmode_box->setFont(buttonFont());
-  panel_playmode_box->
-    setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-3)-5,
-		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
-		PANEL_BUTTON_SIZE_X+10,50);
   connect(panel_playmode_box,SIGNAL(activated(int)),
 	  this,SLOT(playmodeActivatedData(int)));
   panel_playmode_box->insertItem(panel_playmode_box->count(),tr("Play All"));
@@ -135,10 +126,6 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   // Reset Button
   //
   panel_reset_button=new RDPushButton(this);
-  panel_reset_button->
-    setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-2),
-		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
-		PANEL_BUTTON_SIZE_X,50);
   panel_reset_button->setFont(buttonFont());
   panel_reset_button->setText(tr("Reset"));
   panel_reset_button->setFlashColor(QColor(RDPANEL_RESET_FLASH_COLOR));
@@ -149,10 +136,6 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   // All Button
   //
   panel_all_button=new RDPushButton(this);
-  panel_all_button->
-    setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-1),
-		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
-		PANEL_BUTTON_SIZE_X,50);
   panel_all_button->setFont(buttonFont());
   panel_all_button->setText(tr("All"));
   panel_all_button->setFlashColor(QColor(RDPANEL_RESET_FLASH_COLOR));
@@ -164,10 +147,6 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   // Setup Button
   //
   panel_setup_button=new RDPushButton(this);
-  panel_setup_button->
-    setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-1),
-		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
-		PANEL_BUTTON_SIZE_X,50);
   panel_setup_button->setFont(buttonFont());
   panel_setup_button->setText(tr("Setup"));
   panel_setup_button->setFlashColor(QColor(RDPANEL_SETUP_FLASH_COLOR));
@@ -592,6 +571,8 @@ void RDSoundPanel::changeUser()
   }
   delete q;
   panel_selector_box->setCurrentIndex(current_item);
+
+  UpdateButtonViewport();
 }
 
 
@@ -642,6 +623,8 @@ void RDSoundPanel::panelActivatedData(int n)
     panel_number=n-panel_station_panels;
   }
   panel_buttons[PanelOffset(panel_type,panel_number)]->show();
+
+  UpdateButtonViewport();
 }
 
 
@@ -894,6 +877,25 @@ void RDSoundPanel::scanPanelData()
 }
 
 
+void RDSoundPanel::resizeEvent(QResizeEvent *e)
+{
+  int w=size().width();
+  int h=size().height();
+  
+  UpdateButtonViewport();
+  
+  panel_selector_box->setGeometry(0,h-50,2*PANEL_BUTTON_SIZE_X+10,50);
+  panel_playmode_box->setGeometry(2*PANEL_BUTTON_SIZE_X+15,h-50,
+				  PANEL_BUTTON_SIZE_X+10,50);
+  panel_reset_button->setGeometry(w-2*PANEL_BUTTON_SIZE_X-20,h-50,
+				  PANEL_BUTTON_SIZE_X,50);
+  panel_all_button->setGeometry(w-PANEL_BUTTON_SIZE_X-15,h-50,
+				  PANEL_BUTTON_SIZE_X,50);
+  panel_setup_button->setGeometry(w-PANEL_BUTTON_SIZE_X-15,h-50,
+				  PANEL_BUTTON_SIZE_X,50);
+}
+
+
 void RDSoundPanel::wheelEvent(QWheelEvent *e)
 {
   if(e->orientation()==Qt::Vertical) {
@@ -905,6 +907,19 @@ void RDSoundPanel::wheelEvent(QWheelEvent *e)
     }
   }
   e->accept();
+}
+
+
+void RDSoundPanel::UpdateButtonViewport()
+{
+  QRect viewport(0,0,size().width()-10,size().height()-60);
+  RDButtonPanel *panel=panel_buttons[PanelOffset(panel_type,panel_number)];
+  for(int i=0;i<panel_button_rows;i++) {
+    for(int j=0;j<panel_button_columns;j++) {
+      RDPanelButton *button=panel->panelButton(i,j);
+      button->setVisible(viewport.contains(button->geometry()));
+    }
+  }
 }
 
 
@@ -1337,6 +1352,8 @@ void RDSoundPanel::LoadPanel(RDAirPlayConf::PanelType type,int panel)
     }
   }
   delete q;
+
+  UpdateButtonViewport();
 }
 
 

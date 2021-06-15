@@ -959,7 +959,7 @@ void ListLog::resizeEvent(QResizeEvent *e)
     list_modify_button->setGeometry(170,size().height()-55,80,50);
     list_scroll_button->setGeometry(250,size().height()-55,80,50);
     list_refresh_button->setGeometry(330,size().height()-55,80,50);
-    list_load_button->setGeometry(size().width()-90,size().height()-55,80,50);
+    list_load_button->setGeometry(410,size().height()-55,80,50);
   }
 
   if(rda->airplayConf()->hourSelectorEnabled()) {

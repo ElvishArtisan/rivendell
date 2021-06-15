@@ -2,7 +2,7 @@
 //
 // The sound panel widget for RDAirPlay
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,9 @@
 #ifndef RDBUTTON_PANEL_H
 #define RDBUTTON_PANEL_H
 
-#include <qwidget.h>
-#include <qdatetime.h>
-#include <qlabel.h>
+#include <QDateTime>
+#include <QLabel>
+#include <QWidget>
 
 #include <rdairplay_conf.h>
 #include <rdstation.h>
@@ -34,8 +34,8 @@
 //
 // Widget Settings
 //
-#define PANEL_MAX_BUTTON_COLUMNS 20
-#define PANEL_MAX_BUTTON_ROWS 20
+#define PANEL_MAX_BUTTON_COLUMNS 40
+#define PANEL_MAX_BUTTON_ROWS 23
 #define PANEL_BUTTON_SIZE_X 88
 #define PANEL_BUTTON_SIZE_Y 80
 

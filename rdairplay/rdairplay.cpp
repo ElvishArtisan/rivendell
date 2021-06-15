@@ -118,7 +118,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   // Fix the Window Size
   //
   setMinimumSize(sizeHint());
-  //  setMaximumSize(sizeHint());
 
   //
   // Initialize the Random Number Generator
@@ -187,11 +186,14 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
     air_stop_gpo_lines[i]=rda->airplayConf()->stopGpoLine(chan)-1;
     air_channel_gpio_types[i]=rda->airplayConf()->gpioType(chan);
     air_audio_channels[i]=
-      AudioChannel(rda->airplayConf()->card(chan),rda->airplayConf()->port(chan));
+      AudioChannel(rda->airplayConf()->card(chan),
+		   rda->airplayConf()->port(chan));
 
-    if((rda->airplayConf()->card(chan)>=0)&&(rda->airplayConf()->port(chan)>=0)) {
+    if((rda->airplayConf()->card(chan)>=0)&&
+       (rda->airplayConf()->port(chan)>=0)) {
       int achan=
-	AudioChannel(rda->airplayConf()->card(chan),rda->airplayConf()->port(chan));
+	AudioChannel(rda->airplayConf()->card(chan),
+		     rda->airplayConf()->port(chan));
       if(air_channel_timers[0][achan]==NULL) {
 	air_channel_timers[0][achan]=new QTimer(this);
 	air_channel_timers[0][achan]->setSingleShot(true);
@@ -231,7 +233,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // RIPC Connection
   //
-  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(ripcConnectedData(bool)));
+  connect(rda->ripc(),SIGNAL(connected(bool)),
+	  this,SLOT(ripcConnectedData(bool)));
   connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
   connect(rda->ripc(),SIGNAL(rmlReceived(RDMacro *)),
 	  this,SLOT(rmlReceivedData(RDMacro *)));
@@ -387,10 +390,10 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Create Palettes
   //
-  auto_color=
-    QPalette(QColor(BUTTON_MODE_AUTO_COLOR),palette().color(QPalette::Background));
-  manual_color=
-    QPalette(QColor(BUTTON_MODE_MANUAL_COLOR),palette().color(QPalette::Background));
+  auto_color=QPalette(QColor(BUTTON_MODE_AUTO_COLOR),
+		      palette().color(QPalette::Background));
+  manual_color=QPalette(QColor(BUTTON_MODE_MANUAL_COLOR),
+			palette().color(QPalette::Background));
   active_color=palette();
   active_color.setColor(QPalette::Active,QPalette::ButtonText,
 			BUTTON_LOG_ACTIVE_TEXT_COLOR);
@@ -458,16 +461,17 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
       rda->airplayConf()->panels(RDAirPlayConf::UserPanel)){
     int card=-1;
     air_panel=
-      new RDSoundPanel(AIR_PANEL_BUTTON_COLUMNS,AIR_PANEL_BUTTON_ROWS,
-		       rda->airplayConf()->panels(RDAirPlayConf::StationPanel),
+      new RDSoundPanel(rda->airplayConf()->panels(RDAirPlayConf::StationPanel),
 		       rda->airplayConf()->panels(RDAirPlayConf::UserPanel),
 		       rda->airplayConf()->flashPanel(),
 		       "RDAirPlay",
 		       rda->airplayConf()->buttonLabelTemplate(),false,
 		       air_event_player,air_cart_dialog,this);
     air_panel->setPauseEnabled(rda->airplayConf()->panelPauseEnabled());
-    air_panel->setCard(0,rda->airplayConf()->card(RDAirPlayConf::SoundPanel1Channel));
-    air_panel->setPort(0,rda->airplayConf()->port(RDAirPlayConf::SoundPanel1Channel));
+    air_panel->setCard(0,rda->airplayConf()->
+		       card(RDAirPlayConf::SoundPanel1Channel));
+    air_panel->setPort(0,rda->airplayConf()->
+		       port(RDAirPlayConf::SoundPanel1Channel));
     air_panel->setFocusPolicy(Qt::NoFocus);
     if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel2Channel))<0) {
       air_panel->setCard(1,air_panel->card(RDAirPlayConf::MainLog1Channel));
@@ -475,7 +479,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
     }
     else {
       air_panel->setCard(1,card);
-      air_panel->setPort(1,rda->airplayConf()->port(RDAirPlayConf::SoundPanel2Channel));
+      air_panel->setPort(1,rda->airplayConf()->
+			 port(RDAirPlayConf::SoundPanel2Channel));
     }
     if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel3Channel))<0) {
       air_panel->setCard(2,air_panel->card(RDAirPlayConf::MainLog2Channel));
@@ -483,7 +488,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
     }
     else {
       air_panel->setCard(2,card);
-      air_panel->setPort(2,rda->airplayConf()->port(RDAirPlayConf::SoundPanel3Channel));
+      air_panel->setPort(2,rda->airplayConf()->
+			 port(RDAirPlayConf::SoundPanel3Channel));
     }
     if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel4Channel))<0) {
       air_panel->setCard(3,air_panel->card(RDAirPlayConf::SoundPanel1Channel));
@@ -491,7 +497,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
     }
     else {
       air_panel->setCard(3,card);
-      air_panel->setPort(3,rda->airplayConf()->port(RDAirPlayConf::SoundPanel4Channel));
+      air_panel->setPort(3,rda->airplayConf()->
+			 port(RDAirPlayConf::SoundPanel4Channel));
     }
     if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel5Channel))<0) {
       air_panel->setCard(4,air_panel->card(RDAirPlayConf::CueChannel));
@@ -504,24 +511,29 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
     }
     air_panel->setRmls(0,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel1Channel),
-		  rda->airplayConf()->stopRml(RDAirPlayConf::SoundPanel1Channel));
+		  rda->airplayConf()->
+		       stopRml(RDAirPlayConf::SoundPanel1Channel));
     air_panel->setRmls(1,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel2Channel),
-		  rda->airplayConf()->stopRml(RDAirPlayConf::SoundPanel2Channel));
+		  rda->airplayConf()->
+		       stopRml(RDAirPlayConf::SoundPanel2Channel));
     air_panel->setRmls(2,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel3Channel),
-		  rda->airplayConf()->stopRml(RDAirPlayConf::SoundPanel3Channel));
+		  rda->airplayConf()->
+		       stopRml(RDAirPlayConf::SoundPanel3Channel));
     air_panel->setRmls(3,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel4Channel),
-		  rda->airplayConf()->stopRml(RDAirPlayConf::SoundPanel4Channel));
+		  rda->airplayConf()->
+		       stopRml(RDAirPlayConf::SoundPanel4Channel));
     air_panel->setRmls(4,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel5Channel),
-		  rda->airplayConf()->stopRml(RDAirPlayConf::SoundPanel5Channel));
+		  rda->airplayConf()->
+		       stopRml(RDAirPlayConf::SoundPanel5Channel));
     int next_output=0;
     int channum[2];
     bool assigned=false;
     if((air_log[0]->card(0)==air_log[0]->card(RDAirPlayConf::MainLog2Channel))&&
-       (air_log[0]->port(0)==air_log[0]->port(RDAirPlayConf::MainLog2Channel))) {
+      (air_log[0]->port(0)==air_log[0]->port(RDAirPlayConf::MainLog2Channel))) {
       next_output=2;
       channum[0]=1;
       channum[1]=1;
@@ -545,7 +557,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
       }
       if(!assigned) {
 	for(int j=0;j<i;j++) {
-	  if((i!=j)&&(air_panel->card((RDAirPlayConf::Channel)i)==air_panel->card(j))&&
+	  if((i!=j)&&(air_panel->card((RDAirPlayConf::Channel)i)==
+		      air_panel->card(j))&&
 	     (air_panel->port((RDAirPlayConf::Channel)i)==air_panel->port(j))) {
 	    air_panel->setOutputText(i,air_panel->outputText(j));
 	    next_output--;
@@ -1989,15 +2002,13 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   //
   // Sound Panel
   //
-  air_panel->setGeometry(510,140,air_panel->sizeHint().width(),
-			 air_panel->sizeHint().height());
+  air_panel->setGeometry(510,140,w-510,h-215);
+
   //
   // Full Log Widgets
   //
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log_list[i]->setGeometry(510,140,w-530,h-210);
-    //    air_log_list[i]->setGeometry(510,140,air_log_list[i]->sizeHint().width(),
-    //				 air_log_list[i]->sizeHint().height());
   }
 
 

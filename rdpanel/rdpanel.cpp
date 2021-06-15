@@ -50,7 +50,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
 #ifndef RESIZABLE
   setMinimumSize(sizeHint());
-  setMaximumSize(sizeHint());
+  //  setMaximumSize(sizeHint());
 #endif  // RESIZABLE
 
   //
@@ -132,15 +132,12 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
       rda->panelConf()->panels(RDAirPlayConf::UserPanel)){
     int card=-1;
     panel_panel=
-      new RDSoundPanel(RDPANEL_PANEL_BUTTON_COLUMNS,RDPANEL_PANEL_BUTTON_ROWS,
-		       rda->panelConf()->panels(RDAirPlayConf::StationPanel),
+      new RDSoundPanel(rda->panelConf()->panels(RDAirPlayConf::StationPanel),
 		       rda->panelConf()->panels(RDAirPlayConf::UserPanel),
 		       rda->panelConf()->flashPanel(),
 		       "RDPanel",
 		       rda->panelConf()->buttonLabelTemplate(),true,
 		       panel_player,panel_cart_dialog,this);
-    panel_panel->setGeometry(10,10,panel_panel->sizeHint().width(),
-			 panel_panel->sizeHint().height());
     panel_panel->setPauseEnabled(rda->panelConf()->panelPauseEnabled());
     panel_panel->setCard(0,rda->panelConf()->card(RDAirPlayConf::SoundPanel1Channel));
     panel_panel->setPort(0,rda->panelConf()->port(RDAirPlayConf::SoundPanel1Channel));
@@ -239,11 +236,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Audio Meter
   //
   panel_stereo_meter=new RDStereoMeter(this);
-  panel_stereo_meter->
-    setGeometry(20,
-		sizeHint().height()-panel_stereo_meter->sizeHint().height()-7,
-		panel_stereo_meter->sizeHint().width(),
-		panel_stereo_meter->sizeHint().height());
   panel_stereo_meter->setMode(RDSegMeter::Peak);
   panel_stereo_meter->setFocusPolicy(Qt::NoFocus);
 
@@ -251,7 +243,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Empty Cart
   //
   panel_empty_cart=new RDEmptyCart(this);
-  panel_empty_cart->setGeometry(373,sizeHint().height()-52,32,32);
   if(!rda->station()->enableDragdrop()) {
     panel_empty_cart->hide();
   }
@@ -322,6 +313,18 @@ void MainWidget::meterData()
 
 void MainWidget::masterTimerData()
 {
+}
+
+
+void MainWidget::resizeEvent(QResizeEvent *e)
+{
+  panel_panel->setGeometry(10,10,size().width()-10,size().height()-25);
+  panel_empty_cart->setGeometry(323,size().height()-56,32,32);
+  panel_stereo_meter->
+    setGeometry(375,
+		size().height()-panel_stereo_meter->sizeHint().height()-7,
+		panel_stereo_meter->sizeHint().width(),
+		panel_stereo_meter->sizeHint().height());
 }
 
 

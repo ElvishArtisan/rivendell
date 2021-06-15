@@ -46,8 +46,6 @@
 #define AIR_TOTAL_BUTTONS 7
 #define AIR_LOG_PORTS 2
 #define AIR_PANEL_PORTS 1
-#define AIR_PANEL_BUTTON_ROWS 5
-#define AIR_PANEL_BUTTON_COLUMNS 5
 #define AIR_TOTAL_PORTS 3
 #define AIR_MESSAGE_FONT_QUANTITY 8
 #define AIR_CHANNEL_LOCKOUT_INTERVAL 1000
@@ -167,7 +165,6 @@ class MainWidget : public RDWidget
   QDateTime air_startup_datetime;
   QPixmap *air_refresh_pixmap;
   QString air_editor_cmd;
-  //  QSplashScreen *air_splash_screen;
   int  keystrokecount;
   bool AltKeyHit ;
   bool CtrlKeyHit;

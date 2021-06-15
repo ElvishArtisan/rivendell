@@ -2,7 +2,7 @@
 //
 // The sound panel widget
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,7 +50,7 @@ class RDSoundPanel : public RDWidget
 {
  Q_OBJECT
  public:
-  RDSoundPanel(int cols,int rows,int station_panels,int user_panels,bool flash,
+  RDSoundPanel(int station_panels,int user_panels,bool flash,
 	       const QString &caption,const QString &label_template,
 	       bool extended,RDEventPlayer *player,RDCartDialog *cart_dialog,
 	       QWidget *parent=0);
@@ -117,9 +117,11 @@ class RDSoundPanel : public RDWidget
   void scanPanelData();
 
  protected:
+  void resizeEvent(QResizeEvent *e);
   void wheelEvent(QWheelEvent *e);
 
  private:
+  void UpdateButtonViewport();
   void PlayButton(RDAirPlayConf::PanelType type,int panel,int row,int col,
 		RDLogLine::StartSource src,bool hookmode,int mport=-1,
                   bool pause_when_finished=false);
