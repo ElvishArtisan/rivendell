@@ -42,33 +42,36 @@ StartButton::StartButton(bool allow_pause,QWidget *parent)
   // Create Palettes
   //
   start_stop_color=
-    QPalette(QColor(BUTTON_STOPPED_BACKGROUND_COLOR),palette().color(QPalette::Background));
+    QPalette(QColor(BUTTON_STOPPED_BACKGROUND_COLOR),
+	     palette().color(QPalette::Background));
   start_play_color=
-    QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),palette().color(QPalette::Background));
+    QPalette(QColor(BUTTON_PLAY_BACKGROUND_COLOR),
+	     palette().color(QPalette::Background));
   start_play_color.
     setColor(QPalette::ButtonText,QColor(BUTTON_PLAY_TEXT_COLOR));
   start_pause_color=
-    QPalette(QColor(BUTTON_PAUSE_BACKGROUND_COLOR),palette().color(QPalette::Background));
+    QPalette(QColor(BUTTON_PAUSE_BACKGROUND_COLOR),
+	     palette().color(QPalette::Background));
   start_pause_color.
     setColor(QPalette::ButtonText,QColor(BUTTON_PAUSE_TEXT_COLOR));
 
-  start_from_color=
-    QPalette(QColor(BUTTON_FROM_BACKGROUND_COLOR),palette().color(QPalette::Background));
+  start_from_color=QPalette(QColor(BUTTON_FROM_BACKGROUND_COLOR),
+			    palette().color(QPalette::Background));
   start_from_color.
     setColor(QPalette::ButtonText,QColor(BUTTON_FROM_TEXT_COLOR));
 
-  start_to_color=
-    QPalette(QColor(BUTTON_TO_BACKGROUND_COLOR),palette().color(QPalette::Background));
+  start_to_color=QPalette(QColor(BUTTON_TO_BACKGROUND_COLOR),
+			       palette().color(QPalette::Background));
   start_to_color.
     setColor(QPalette::ButtonText,QColor(BUTTON_TO_TEXT_COLOR));
 
-  start_disabled_color=
-    QPalette(QColor(BUTTON_DISABLED_BACKGROUND_COLOR),palette().color(QPalette::Background));
+  start_disabled_color=QPalette(QColor(BUTTON_DISABLED_BACKGROUND_COLOR),
+				palette().color(QPalette::Background));
   start_disabled_color.
     setColor(QPalette::ButtonText,QColor(BUTTON_DISABLED_TEXT_COLOR));
 
-  start_error_color=
-    QPalette(QColor(BUTTON_ERROR_BACKGROUND_COLOR),palette().color(QPalette::Background));
+  start_error_color=QPalette(QColor(BUTTON_ERROR_BACKGROUND_COLOR),
+			     palette().color(QPalette::Background));
   start_error_color.
     setColor(QPalette::ButtonText,QColor(BUTTON_ERROR_TEXT_COLOR));
 
@@ -77,24 +80,17 @@ StartButton::StartButton(bool allow_pause,QWidget *parent)
 }
 
 
-void StartButton::setTime(QString str)
-{
-  start_time=QTime();
-  Resize(geometry().x(),geometry().y(),geometry().width(),geometry().height());
-}
-
-
-void StartButton::setTime(QTime time)
+void StartButton::setTime(const QTime &time)
 {
   start_time=time;
-  Resize(geometry().x(),geometry().y(),geometry().width(),geometry().height());
+  update();
 }
 
 
-void StartButton::setPort(QString port)
+void StartButton::setPort(const QString &port)
 {
   start_port=port;
-  Resize(geometry().x(),geometry().y(),geometry().width(),geometry().height());
+  update();
 }
 
 
@@ -174,7 +170,7 @@ void StartButton::setMode(Mode mode,RDCart::Type cart_type)
     start_title=ERROR_MODE_TITLE;
     break;
   }
-  Resize(geometry().x(),geometry().y(),geometry().width(),geometry().height());
+  update();
 }
 
 
@@ -184,27 +180,14 @@ void StartButton::setTimeMode(RDAirPlayConf::TimeMode mode)
     return;
   }
   start_time_mode=mode;
-  Resize(geometry().x(),geometry().y(),geometry().width(),geometry().height());
+  update();
 }
 
 
-void StartButton::setGeometry(int x,int y,int w,int h)
+void StartButton::paintEvent(QPaintEvent *e)
 {
-  Resize(x,y,w,h);
-  QPushButton::setGeometry(x,y,w,h);
-}
-
-
-void StartButton::setGeometry(QRect rect)
-{
-  setGeometry(rect.x(),rect.y(),rect.width(),rect.height());
-}
-
-
-void StartButton::Resize(int x,int y,int w,int h)
-{
-  w-=2;
-  h-=2;
+  int w=size().width()-2;
+  int h=size().width()-2;
   QPixmap *pix=new QPixmap(w,h);
   QPainter *p=new QPainter();
   p->begin(pix);
@@ -235,8 +218,10 @@ void StartButton::Resize(int x,int y,int w,int h)
     p->drawText(15,70,start_port);
   }
   p->end();
-  setIcon(*pix);
-  setIconSize(QSize(w-2,h-2));
+  delete p;
+
+  p=new QPainter(this);
+  p->drawPixmap(1,1,w,w,*pix,0,0,pix->size().width(),pix->size().height());
   delete p;
   delete pix;
 }

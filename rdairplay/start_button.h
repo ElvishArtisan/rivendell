@@ -2,7 +2,7 @@
 //
 // The Start Button for RDAirPlay Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,19 +31,16 @@ class StartButton : public RDPushButton
   enum Mode {Stop=0,Play=1,Pause=2,AddFrom=3,AddTo=4,DeleteFrom=5,
 	     MoveFrom=6,MoveTo=7,CopyFrom=8,CopyTo=9,Disabled=10,Error=11};
   StartButton(bool allow_pause=false,QWidget *parent=0);
-  void setTime(QString);
-  void setTime(QTime);
-  void setPort(QString port);
-  StartButton::Mode mode() const;
+  void setTime(const QTime &time);
+  void setPort(const QString &port);
+  Mode mode() const;
   void setMode(Mode mode,RDCart::Type cart_type);
   void setTimeMode(RDAirPlayConf::TimeMode mode);
 
- public slots:
-  void setGeometry(int x,int y,int w,int h);
-  void setGeometry(QRect rect);
+ protected:
+  void paintEvent(QPaintEvent *e);
 
  private:
-  void Resize(int x,int y,int w,int h);
   StartButton::Mode start_mode;
   QFont start_label_font;
   QFont start_counter_font;

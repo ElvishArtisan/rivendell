@@ -21893,3 +21893,6 @@
 2021-06-14 Fred Gleason <fredg@paravelsystems.com>
 	* Made the sound panel resizeable in rdairplay(1).
 	* Make the sound panel resizeable in rdpanel(1).
+2021-06-15 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'StartButton' widget in rdairplay(1) to be more
+	idiomatic.
