@@ -44,7 +44,7 @@ void LibraryView::mousePressEvent(QMouseEvent *e)
     RDCartDrag *cd=
       new RDCartDrag(mod->cartNumber(index),
 		     mod->data(mod->index(index.row(),4)).toString(),
-		     mod->data(mod->index(index.row(),0),Qt::TextColorRole).
+		     mod->data(mod->index(index.row(),1),Qt::TextColorRole).
 		     value<QColor>());
     drag->setMimeData(cd);
     drag->setPixmap(mod->data(mod->index(index.row(),0),Qt::DecorationRole).

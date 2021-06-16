@@ -21909,3 +21909,6 @@
 	buttons in the SoundPanel widget.
 2021-06-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a compile warning in 'lib/rdsound_panel.cpp'.
+2021-06-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlibrary(1) that caused the incorrect
+	color to be embedded when dragging a cart.
