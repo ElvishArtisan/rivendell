@@ -67,8 +67,10 @@ class RDSoundPanel : public RDWidget
   void setLogName(const QString &logname);
   void setSvcName(const QString &svcname);
   void play(RDAirPlayConf::PanelType type,int panel,int row,int col,
-	    RDLogLine::StartSource src,int mport=-1,bool pause_when_finished=false);
-  bool pause(RDAirPlayConf::PanelType type,int panel,int row,int col,int mport=-1);
+	    RDLogLine::StartSource src,int mport=-1,
+	    bool pause_when_finished=false);
+  bool pause(RDAirPlayConf::PanelType type,int panel,int row,int col,
+	     int mport=-1);
   void stop(RDAirPlayConf::PanelType type,int panel,int row,int col,
   int mport=-1,bool pause_when_finished=false,int fade_out=0);
   void channelStop(int mport);
@@ -127,7 +129,8 @@ class RDSoundPanel : public RDWidget
                   bool pause_when_finished=false);
   bool PlayAudio(RDPanelButton *button,RDCart *cart,bool hookmode,int mport=-1);
   void PlayMacro(RDPanelButton *button,RDCart *cart);
-  void PauseButton(RDAirPlayConf::PanelType type,int panel,int row,int col,int mport=-1);
+  void PauseButton(RDAirPlayConf::PanelType type,int panel,int row,int col,
+		   int mport=-1);
   void StopButton(RDAirPlayConf::PanelType type,int panel,int row,int col,
                int mport=-1,bool pause_when_finished=false,int fade_out=0);
   void StopButton(int id);

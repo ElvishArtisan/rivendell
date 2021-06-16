@@ -319,9 +319,9 @@ void MainWidget::masterTimerData()
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
   panel_panel->setGeometry(10,10,size().width()-10,size().height()-25);
-  panel_empty_cart->setGeometry(323,size().height()-56,32,32);
+  panel_empty_cart->setGeometry(533,size().height()-56,32,32);
   panel_stereo_meter->
-    setGeometry(375,
+    setGeometry(585,
 		size().height()-panel_stereo_meter->sizeHint().height()-7,
 		panel_stereo_meter->sizeHint().width(),
 		panel_stereo_meter->sizeHint().height());

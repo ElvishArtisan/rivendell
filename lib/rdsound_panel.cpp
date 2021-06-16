@@ -887,11 +887,11 @@ void RDSoundPanel::resizeEvent(QResizeEvent *e)
   panel_selector_box->setGeometry(0,h-50,2*PANEL_BUTTON_SIZE_X+10,50);
   panel_playmode_box->setGeometry(2*PANEL_BUTTON_SIZE_X+15,h-50,
 				  PANEL_BUTTON_SIZE_X+10,50);
-  panel_reset_button->setGeometry(w-2*PANEL_BUTTON_SIZE_X-20,h-50,
+  panel_reset_button->setGeometry(2*PANEL_BUTTON_SIZE_X+140,h-50,
 				  PANEL_BUTTON_SIZE_X,50);
-  panel_all_button->setGeometry(w-PANEL_BUTTON_SIZE_X-15,h-50,
+  panel_all_button->setGeometry(2*PANEL_BUTTON_SIZE_X+235,h-50,
 				  PANEL_BUTTON_SIZE_X,50);
-  panel_setup_button->setGeometry(w-PANEL_BUTTON_SIZE_X-15,h-50,
+  panel_setup_button->setGeometry(2*PANEL_BUTTON_SIZE_X+235,h-50,
 				  PANEL_BUTTON_SIZE_X,50);
 }
 

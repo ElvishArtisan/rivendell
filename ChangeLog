@@ -21904,3 +21904,6 @@
 	resizeable.
 2021-06-16 Fred Gleason <fredg@paravelsystems.com>
 	* Modified 'systemd/daemon-reload.sh' to use bash(1) explicitly.
+2021-06-16 Fred Gleason <fredg@paravelsystems.com>
+	* Left-Justified the position of the 'Reset', 'Setup' and 'All'
+	buttons in the SoundPanel widget.
