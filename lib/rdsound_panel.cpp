@@ -879,7 +879,7 @@ void RDSoundPanel::scanPanelData()
 
 void RDSoundPanel::resizeEvent(QResizeEvent *e)
 {
-  int w=size().width();
+  //  int w=size().width();
   int h=size().height();
   
   UpdateButtonViewport();

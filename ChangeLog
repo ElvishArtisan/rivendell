@@ -21907,3 +21907,5 @@
 2021-06-16 Fred Gleason <fredg@paravelsystems.com>
 	* Left-Justified the position of the 'Reset', 'Setup' and 'All'
 	buttons in the SoundPanel widget.
+2021-06-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a compile warning in 'lib/rdsound_panel.cpp'.
