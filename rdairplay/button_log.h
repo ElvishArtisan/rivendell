@@ -2,7 +2,7 @@
 //
 // The button play widget for RDAirPlay.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -62,6 +62,9 @@ class ButtonLog : public RDWidget
   void positionData(int line,int point);
   void cartDroppedData(int line,RDLogLine *ll);
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+  
  signals:
   void selectClicked(int id,int line,RDLogLine::Status);
   void cartDropped(int id,int line,RDLogLine *ll);

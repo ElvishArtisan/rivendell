@@ -38,6 +38,11 @@
 #include "../icons/traffic.xpm"
 #include "../icons/music.xpm"
 
+//
+// For debugging layout issues
+//
+//#define COLORIZE_LAYOUT
+
 LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   : RDWidget(parent)
 {
@@ -134,16 +139,14 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   // Count Up
   //
   line_up_label=new QLabel(this);
-  line_up_label->setGeometry(5,65,65,16);
-  line_up_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  line_up_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   line_up_label->setFont(line_font);
   line_up_label->hide();
-
+  
   //
   // Position Slider
   //
   line_position_bar=new QProgressBar(this);
-  line_position_bar->setGeometry(75,66,sizeHint().width()-150,13);
   line_position_bar->setTextVisible(false);
   line_position_bar->hide();
 
@@ -151,7 +154,6 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   // Count Down
   //
   line_down_label=new QLabel(this);
-  line_down_label->setGeometry(sizeHint().width()-72,65,65,16);
   line_down_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   line_down_label->setFont(line_font);
   line_down_label->hide();
@@ -160,7 +162,6 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   // Cut Description
   //
   line_description_label=new QLabel(this);
-  line_description_label->setGeometry((sizeHint().width()/2),48,(sizeHint().width()/2 -10),16);
   line_description_label->setFont(line_font);
   line_description_label->hide();
 
@@ -168,7 +169,6 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   // Outcue
   //
   line_outcue_label=new QLabel(this);
-  line_outcue_label->setGeometry(5,48, (sizeHint().width()/2 -10),16);
   line_outcue_label->setFont(outcue_font);
   line_outcue_label->hide();
 
@@ -176,21 +176,18 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   // Artist
   //
   line_artist_label=new QLabel(this);
-  line_artist_label->setGeometry(5,33,sizeHint().width()-10,16);
   line_artist_label->setFont(line_font);
 
   //
   // Title
   //
   line_title_label=new QLabel(this);
-  line_title_label->setGeometry(5,18,sizeHint().width()-10,18);
   line_title_label->setFont(line_bold_font);
 
   //
   // Marker Comment
   //
   line_comment_label=new QLabel(this);
-  line_comment_label->setGeometry(5,18,sizeHint().width()-10,62);
   line_comment_label->setFont(line_font);
   line_comment_label->setAlignment(Qt::AlignTop|Qt::AlignLeft);
   line_comment_label->setWordWrap(true);
@@ -200,34 +197,29 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   // Icon
   //
   line_icon_label=new QLabel(this);
-  line_icon_label->setGeometry(5,3,45,16);
 
   //
   // Cart
   //
   line_cart_label=new QLabel(this);
-  line_cart_label->setGeometry(25,3,53,16);
   line_cart_label->setFont(line_font);
 
   //
   // Cut
   //
   line_cut_label=new QLabel(this);
-  line_cut_label->setGeometry(80,3,24,16);
   line_cut_label->setFont(line_font);
 
   //
   // Group
   //
   line_group_label=new QLabel(this);
-  line_group_label->setGeometry(107,3,75,16);
   line_group_label->setFont(line_bold_font);
 
   //
   // Time
   //
   line_time_label=new QLabel(this);
-  line_time_label->setGeometry(185,3,70,16);
   line_time_label->setFont(line_font);
   line_time_label->setAlignment(Qt::AlignRight);
   line_time_label->setPalette(line_time_palette);
@@ -236,7 +228,6 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   // Talk Time
   //
   line_talktime_label=new QLabel(this);
-  line_talktime_label->setGeometry(257,3,36,16);
   line_talktime_label->setFont(talk_font);
   line_talktime_label->setAlignment(Qt::AlignRight);
 
@@ -244,7 +235,6 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   // Length
   //
   line_length_label=new QLabel(this);
-  line_length_label->setGeometry(297,3,40,16);
   line_length_label->setFont(line_font);
   line_length_label->setAlignment(Qt::AlignRight);
 
@@ -252,7 +242,6 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   // Transition Type
   //
   line_trans_label=new QLabel(this);
-  line_trans_label->setGeometry(sizeHint().width()-53,3,48,16);
   line_trans_label->setAlignment(Qt::AlignRight);
   line_trans_label->setFont(line_bold_font);
 
@@ -264,6 +253,24 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   line_countdown_timer=new QTimer(this);
   connect(line_countdown_timer,SIGNAL(timeout()),this,SLOT(countdownData()));
 
+#ifdef COLORIZE_LAYOUT
+  line_up_label->setStyleSheet("background-color: #FF0000");
+  line_down_label->setStyleSheet("background-color: #00FF00");
+  line_description_label->setStyleSheet("background-color: #FF0000");
+  line_outcue_label->setStyleSheet("background-color: #00FF00");
+  line_artist_label->setStyleSheet("background-color: #0000FF");
+  line_title_label->setStyleSheet("background-color: #FF0000");
+  line_comment_label->setStyleSheet("background-color: #FFFF00");
+  line_icon_label->setStyleSheet("background-color: #00FFFF");
+  line_cart_label->setStyleSheet("background-color: #FF00FF");
+  line_cut_label->setStyleSheet("background-color: #FF0000");
+  line_group_label->setStyleSheet("background-color: #00FF00");
+  line_time_label->setStyleSheet("background-color: #FFFF00");
+  line_talktime_label->setStyleSheet("background-color: #00FFFF");
+  line_length_label->setStyleSheet("background-color: #0000FF");
+  line_trans_label->setStyleSheet("background-color: #FF00FF");
+#endif  // COLORIZE_LAYOUT
+  
   setAcceptDrops(true);
 }
 
@@ -827,12 +834,39 @@ void LogLineBox::mouseDoubleClickEvent(QMouseEvent *e)
 }
 
 
+void LogLineBox::resizeEvent(QResizeEvent *e)
+{
+  line_comment_label->setGeometry(5,18,size().width()-10,62);
+
+  line_icon_label->setGeometry(5,3,16,16);
+  line_cart_label->setGeometry(23,3,48,16);
+  line_cut_label->setGeometry(73,3,24,16);
+  line_group_label->setGeometry(100,3,80,16);
+  line_time_label->setGeometry(180,3,75,16);
+  line_talktime_label->setGeometry(257,3,36,16);
+  line_length_label->setGeometry(297,3,40,16);
+  line_trans_label->setGeometry(size().width()-53,3,48,16);
+
+  line_title_label->setGeometry(5,18,size().width()-10,18);
+
+  line_artist_label->setGeometry(5,33,size().width()-10,16);
+
+  line_description_label->
+    setGeometry((size().width()/2),48,(size().width()/2 -10),16);
+  line_outcue_label->setGeometry(5,48, (size().width()/2 -10),16);
+
+  line_up_label->setGeometry(5,65,65,16);
+  line_position_bar->setGeometry(75,66,size().width()-150,13);
+  line_down_label->setGeometry(size().width()-72,65,65,16);
+}
+
+
 void LogLineBox::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
+  p->fillRect(0,0,size().width()-2,size().height()-2,
 	      QGuiApplication::palette().color(QPalette::Background));
-  p->drawRect(0,0,sizeHint().width()-2,sizeHint().height()-2);
+  p->drawRect(0,0,size().width()-2,size().height()-2);
   p->end();
   delete p;
 }

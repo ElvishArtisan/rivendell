@@ -21896,3 +21896,6 @@
 2021-06-15 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'StartButton' widget in rdairplay(1) to be more
 	idiomatic.
+2021-06-16 Fred Gleason <fredg@paravelsystems.com>
+	* Tweaked the field layout in the button widget labels in
+	rdairplay(1).

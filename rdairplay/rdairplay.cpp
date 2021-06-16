@@ -1996,18 +1996,23 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   //
   // Button Log
   //
-  air_button_list->setGeometry(10,140,air_button_list->sizeHint().width(),
-			       air_button_list->sizeHint().height());
-
+  air_button_list->setGeometry(10,140,
+			       air_button_list->sizeHint().width(),
+			       h-215);
+  //  air_button_list->setGeometry(10,140,air_button_list->sizeHint().width(),
+  //			       air_button_list->sizeHint().height());
+  
   //
   // Sound Panel
   //
+  //  air_panel->setGeometry(w/2,140,(w/2)-20,h-210);
   air_panel->setGeometry(510,140,w-510,h-215);
 
   //
   // Full Log Widgets
   //
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+    //    air_log_list[i]->setGeometry(w/2,140,(w/2)-20,h-210);
     air_log_list[i]->setGeometry(510,140,w-530,h-210);
   }
 

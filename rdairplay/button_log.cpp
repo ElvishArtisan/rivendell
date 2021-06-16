@@ -2,7 +2,7 @@
 //
 // The button log widget for RDAirPlay
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -58,19 +58,11 @@ ButtonLog::ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
     log_line_box[i]->setMode(LogLineBox::Full);
     log_line_box[i]->setAcceptDrops(rda->station()->enableDragdrop());
     log_line_box[i]->setAllowDrags(rda->station()->enableDragdrop());
-    log_line_box[i]->setGeometry(10+log_line_box[i]->sizeHint().height(),
-			       (log_line_box[i]->sizeHint().height()+12)*i,
-			       log_line_box[i]->sizeHint().width(),
-			       log_line_box[i]->sizeHint().height());
     connect(log_line_box[i],SIGNAL(doubleClicked(int)),
 	    this,SLOT(boxDoubleClickedData(int)));
     connect(log_line_box[i],SIGNAL(cartDropped(int,RDLogLine *)),
 	    this,SLOT(cartDroppedData(int,RDLogLine *)));
     log_start_button[i]=new StartButton(allow_pause,this);
-    log_start_button[i]->setGeometry(5,
-			       (log_line_box[i]->sizeHint().height()+12)*i,
-			       log_line_box[i]->sizeHint().height(),
-			       log_line_box[i]->sizeHint().height());
     mapper->setMapping(log_start_button[i],i);
     connect(log_start_button[i],SIGNAL(clicked()),
 	    mapper,SLOT(map()));
@@ -81,21 +73,11 @@ ButtonLog::ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
     log_line_box[i]->setMode(LogLineBox::Half);
     log_line_box[i]->setAcceptDrops(rda->station()->enableDragdrop());
     log_line_box[i]->setAllowDrags(rda->station()->enableDragdrop());
-    log_line_box[i]->setGeometry(10+log_line_box[0]->sizeHint().height(),
-			       (log_line_box[0]->sizeHint().height()+12)*3+
-			       (log_line_box[i]->sizeHint().height()+12)*(i-3),
-			        log_line_box[i]->sizeHint().width(),
-			        log_line_box[i]->sizeHint().height());
     connect(log_line_box[i],SIGNAL(doubleClicked(int)),
 	    this,SLOT(boxDoubleClickedData(int)));
     connect(log_line_box[i],SIGNAL(cartDropped(int,RDLogLine *)),
 	    this,SLOT(cartDroppedData(int,RDLogLine *)));
     log_start_button[i]=new StartButton(allow_pause,this);
-    log_start_button[i]->setGeometry(5,
-			       (log_line_box[0]->sizeHint().height()+12)*3+
-			       (log_line_box[i]->sizeHint().height()+12)*(i-3),
-			        log_line_box[0]->sizeHint().height(),
-			        log_line_box[i]->sizeHint().height());
     mapper->setMapping(log_start_button[i],i);
     connect(log_start_button[i],SIGNAL(clicked()),
 	    mapper,SLOT(map()));
@@ -460,6 +442,35 @@ void ButtonLog::positionData(int line,int point)
 void ButtonLog::cartDroppedData(int line,RDLogLine *ll)
 {
   emit cartDropped(log_id,line,ll);
+}
+
+
+void ButtonLog::resizeEvent(QResizeEvent *e)
+{
+  for(int i=0;i<BUTTON_PLAY_BUTTONS;i++) {
+    log_line_box[i]->setGeometry(10+LOGLINEBOX_FULL_HEIGHT,
+				 (LOGLINEBOX_FULL_HEIGHT+11)*i,
+				 log_line_box[i]->sizeHint().width(),
+				 log_line_box[i]->sizeHint().height());
+  }
+  for(int i=0;i<BUTTON_PLAY_BUTTONS;i++) {
+    log_start_button[i]->setGeometry(5,
+				     (LOGLINEBOX_FULL_HEIGHT+11)*i,
+				     LOGLINEBOX_FULL_HEIGHT,
+				     LOGLINEBOX_FULL_HEIGHT);
+  }
+  for(int i=BUTTON_PLAY_BUTTONS;i<BUTTON_TOTAL_BUTTONS;i++) {
+    log_line_box[i]->setGeometry(10+85,
+			       (LOGLINEBOX_FULL_HEIGHT+11)*3+
+			       (LOGLINEBOX_HALF_HEIGHT+11)*(i-3),
+				 log_line_box[i]->sizeHint().width(),
+				 log_line_box[i]->sizeHint().height());
+    log_start_button[i]->setGeometry(5,
+				     (LOGLINEBOX_FULL_HEIGHT+11)*3+
+				     (LOGLINEBOX_HALF_HEIGHT+11)*(i-3),
+				     LOGLINEBOX_FULL_HEIGHT,
+				     LOGLINEBOX_HALF_HEIGHT);
+  }
 }
 
 

@@ -70,6 +70,7 @@ class LogLineBox : public RDWidget
   void mouseMoveEvent(QMouseEvent *e);
   void mouseReleaseEvent(QMouseEvent *e);
   void mouseDoubleClickEvent(QMouseEvent *e);
+  void resizeEvent(QResizeEvent *e);
   void paintEvent(QPaintEvent *);
   void dragEnterEvent(QDragEnterEvent *e);
   void dropEvent(QDropEvent *e);
