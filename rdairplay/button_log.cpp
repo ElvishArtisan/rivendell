@@ -459,6 +459,8 @@ void ButtonLog::resizeEvent(QResizeEvent *e)
 				     LOGLINEBOX_FULL_HEIGHT,
 				     LOGLINEBOX_FULL_HEIGHT);
   }
+
+  QRect viewport=QRect(0,0,size().width(),size().height());
   for(int i=BUTTON_PLAY_BUTTONS;i<BUTTON_TOTAL_BUTTONS;i++) {
     log_line_box[i]->setGeometry(10+85,
 			       (LOGLINEBOX_FULL_HEIGHT+11)*3+
@@ -470,6 +472,10 @@ void ButtonLog::resizeEvent(QResizeEvent *e)
 				     (LOGLINEBOX_HALF_HEIGHT+11)*(i-3),
 				     LOGLINEBOX_FULL_HEIGHT,
 				     LOGLINEBOX_HALF_HEIGHT);
+    bool visible=viewport.contains(log_line_box[i]->geometry())&&
+      viewport.contains(log_start_button[i]->geometry());
+    log_line_box[i]->setVisible(visible);
+    log_start_button[i]->setVisible(visible);
   }
 }
 
