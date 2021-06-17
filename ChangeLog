@@ -19946,3 +19946,6 @@
 	service with a name containing whitespace.
 	* Added whitespace to the set of banned characters for service names
 	in the 'Add Service' dialog in rdadmin(1).
+2020-09-22 Daniel Bair <daniel@danielbair.com>
+	* Update to support system dark themes
+	'rdairplay/loglinebox.cpp'.
