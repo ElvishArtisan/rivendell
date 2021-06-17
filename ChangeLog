@@ -21914,3 +21914,5 @@
 	color to be embedded when dragging a cart.
 2021-06-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a spelling typo in 'configure.ac'.
+2021-06-17 Daniel Bair <daniel@danielbair.com>
+	* Update to support system dark themes 'rdairplay/loglinebox.cpp'.

@@ -3849,19 +3849,19 @@ End</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="vanished">&amp;Cancelar</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>&amp;Senha:</translation>
+        <translation type="vanished">&amp;Senha:</translation>
     </message>
     <message>
         <source>C&amp;onfirm:</source>
-        <translation>&amp;Confirmar</translation>
+        <translation type="vanished">&amp;Confirmar</translation>
     </message>
     <message>
         <source>Password Mismatch</source>
@@ -3876,6 +3876,18 @@ por favor, tente novamente!</translation>
     <message>
         <source>OK</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>

@@ -3861,19 +3861,19 @@ del audio</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="vanished">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="vanished">&amp;Cancelar</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>&amp;Contraseña:</translation>
+        <translation type="vanished">&amp;Contraseña:</translation>
     </message>
     <message>
         <source>C&amp;onfirm:</source>
-        <translation>C&amp;onfirmar:</translation>
+        <translation type="vanished">C&amp;onfirmar:</translation>
     </message>
     <message>
         <source>Password Mismatch</source>
@@ -3888,6 +3888,18 @@ please try again!</source>
     <message>
         <source>OK</source>
         <translation>Aceptar</translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>

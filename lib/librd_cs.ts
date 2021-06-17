@@ -3897,19 +3897,19 @@ End</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>He&amp;slo:</translation>
+        <translation type="vanished">He&amp;slo:</translation>
     </message>
     <message>
         <source>C&amp;onfirm:</source>
-        <translation>&amp;Potvrdit:</translation>
+        <translation type="vanished">&amp;Potvrdit:</translation>
     </message>
     <message>
         <source>Password Mismatch</source>
@@ -3924,6 +3924,18 @@ Zkuste to, prosím, znovu!</translation>
     <message>
         <source>OK</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
