@@ -21916,3 +21916,6 @@
 	* Fixed a spelling typo in 'configure.ac'.
 2021-06-17 Daniel Bair <daniel@danielbair.com>
 	* Update to support system dark themes 'rdairplay/loglinebox.cpp'.
+2021-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the build system that caused
+	consolehelper(8) components to be installed incorrectly on RHEL.
