@@ -21919,3 +21919,7 @@
 2021-06-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the build system that caused
 	consolehelper(8) components to be installed incorrectly on RHEL.
+2021-06-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDMainWindow' class.
+	* Added 'RDMainWindow' to rdairplay(1).
+	* Added 'RDMainWindow' to rdpanel(1).

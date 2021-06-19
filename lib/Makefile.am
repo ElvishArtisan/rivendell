@@ -186,6 +186,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdmacro.cpp rdmacro.h\
                         rdmacro_event.cpp rdmacro_event.h\
                         rdmacrocartmodel.cpp rdmacrocartmodel.h\
+                        rdmainwindow.cpp rdmainwindow.h\
                         rdmarker_bar.cpp rdmarker_bar.h\
                         rdmarkerdialog.cpp rdmarkerdialog.h\
                         rdmarkerplayer.cpp rdmarkerplayer.h\
@@ -364,6 +365,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdlogplay.cpp\
                           moc_rdmacro_event.cpp\
                           moc_rdmacrocartmodel.cpp\
+                          moc_rdmainwindow.cpp\
                           moc_rdmarker_bar.cpp\
                           moc_rdmarkerdialog.cpp\
                           moc_rdmarkerplayer.cpp\

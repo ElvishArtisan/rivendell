@@ -25,9 +25,9 @@
 #include <rdhotkeylist.h>
 #include <rdhotkeys.h>
 #include <rdinstancelock.h>
+#include <rdmainwindow.h>
 #include <rdsound_panel.h>
 #include <rdstereometer.h>
-#include <rdwidget.h>
 
 #include "button_log.h"
 #include "colors.h"
@@ -54,7 +54,7 @@
 #define MESSAGE_WIDGET_WIDTH 410
 #define RDAIRPLAY_USAGE "[OPTIONS]\n"
 
-class MainWidget : public RDWidget
+class MainWidget : public RDMainWindow
 {
   Q_OBJECT
  public:

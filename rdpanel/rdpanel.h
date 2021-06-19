@@ -22,6 +22,7 @@
 #define RDPANEL_H
 
 #include <rdemptycart.h>
+#include <rdmainwindow.h>
 #include <rdsound_panel.h>
 #include <rdstereometer.h>
 #include <rdwidget.h>
@@ -31,11 +32,9 @@
 //
 #define MASTER_TIMER_INTERVAL 100
 #define METER_INTERVAL 50
-//#define RDPANEL_PANEL_BUTTON_ROWS 7
-//#define RDPANEL_PANEL_BUTTON_COLUMNS 9
 #define RDPANEL_USAGE "\n"
 
-class MainWidget : public RDWidget
+class MainWidget : public RDMainWindow
 {
   Q_OBJECT
  public:

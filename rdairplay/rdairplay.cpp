@@ -40,7 +40,7 @@
 void SigHandler(int signo);
 
 MainWidget::MainWidget(RDConfig *config,QWidget *parent)
-  : RDWidget(config,parent)
+  : RDMainWindow("rdairplay",config)
 {
   QString str;
   int cards[3];
@@ -711,6 +711,10 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   }
 
   rda->syslog(LOG_INFO,"RDAirPlay started");
+
+  if(!loadSettings(true)) {
+    showMaximized();
+  }
 }
 
 
@@ -1946,6 +1950,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
     rda->airplayConf()->setExitCode(RDAirPlayConf::ExitClean);
     rda->syslog(LOG_INFO,"RDAirPlay exiting");
     air_lock->unlock();
+    saveSettings();
     exit(0);
   }
   if(QMessageBox::question(this,"RDAirPlay",tr("Exit RDAirPlay?"),
@@ -1960,6 +1965,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
   rda->airplayConf()->setExitCode(RDAirPlayConf::ExitClean);
   rda->syslog(LOG_INFO,"RDAirPlay exiting");
   air_lock->unlock();
+  saveSettings();
   exit(0);
 }
 
@@ -2392,7 +2398,7 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
+  //  w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();
 }

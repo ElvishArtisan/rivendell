@@ -40,7 +40,7 @@ RDAudioPort *rdaudioport_conf;
 RDCartDialog *panel_cart_dialog;
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
-  : RDWidget(c,parent)
+  : RDMainWindow("rdpanel",c)
 {
   QPixmap panel_skin_pixmap;
   QString err_msg;
@@ -48,10 +48,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Fix the Window Size
   //
-#ifndef RESIZABLE
   setMinimumSize(sizeHint());
-  //  setMaximumSize(sizeHint());
-#endif  // RESIZABLE
 
   //
   // Open the Database
@@ -247,6 +244,10 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     panel_empty_cart->hide();
   }
 
+  if(!loadSettings(true)) {
+    showMaximized();
+  }
+  
   rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 }
 
@@ -345,6 +346,7 @@ void MainWidget::wheelEvent(QWheelEvent *e)
 void MainWidget::closeEvent(QCloseEvent *e)
 {
   panel_db->removeDatabase(rda->config()->mysqlDbname());
+  saveSettings();
   exit(0);
 }
 
@@ -392,7 +394,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();
 }
