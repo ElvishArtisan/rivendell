@@ -40,7 +40,7 @@ QString cast_group;
 QString cast_schedcode;
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
-  : RDWidget(c,parent)
+  : RDMainWindow("rdcastmanager",c)
 {
   QString str1;
   QString str2;
@@ -134,6 +134,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   connect(cast_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
   cast_resize=true;
+
+  loadSettings(true);
 }
 
 
@@ -231,6 +233,7 @@ void MainWidget::feedDoubleClickedData(const QModelIndex &index)
 
 void MainWidget::quitMainWidget()
 {
+  saveSettings();
   exit(0);
 }
 
@@ -243,6 +246,12 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     cast_copy_button->setGeometry(120,size().height()-55,100,50);
     cast_close_button->setGeometry(size().width()-90,size().height()-55,80,50);
   }
+}
+
+
+void MainWidget::closeEvent(QCloseEvent *e)
+{
+  quitMainWidget();
 }
 
 
@@ -284,7 +293,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  w->setGeometry(w->geometry().x(),w->geometry().y(),w->sizeHint().width(),w->sizeHint().height());
   w->show();
   return a.exec();
 }

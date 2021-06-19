@@ -26,12 +26,13 @@
 #include <rdconfig.h>
 #include <rdfeedlistmodel.h>
 #include <rdlog_line.h>
+#include <rdmainwindow.h>
 #include <rdtreeview.h>
 #include <rdwidget.h>
 
 #define RDCASTMANAGER_USAGE "\n"
 
-class MainWidget : public RDWidget
+class MainWidget : public RDMainWindow
 {
  Q_OBJECT
  public:
@@ -51,7 +52,8 @@ class MainWidget : public RDWidget
 
  protected:
   void resizeEvent(QResizeEvent *e);
-
+  void closeEvent(QCloseEvent *e);
+  
  private:
   RDTreeView *cast_feed_view;
   RDFeedListModel *cast_feed_model;

@@ -21923,3 +21923,5 @@
 	* Added an 'RDMainWindow' class.
 	* Added 'RDMainWindow' to rdairplay(1).
 	* Added 'RDMainWindow' to rdpanel(1).
+2021-06-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDMainWindow' to rdcastmanager(1).
