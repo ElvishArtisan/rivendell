@@ -55,7 +55,7 @@ bool audio_changed;
 void SigHandler(int signo);
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
-  : RDWidget(c,parent)
+  : MainWindow("rdlibrary",c)
 {
   QString err_msg;
 
@@ -844,36 +844,20 @@ QString MainWidget::GeometryFile() {
   }
 }
 
+
 void MainWidget::LoadGeometry()
 {
-  QString geometry_file=GeometryFile();
-  if(geometry_file.isEmpty()) {
-    return;
-  }
-  RDProfile *profile=new RDProfile();
-  profile->setSource(geometry_file);
-  resize(profile->intValue("RDLibrary","Width",sizeHint().width()),
-	 profile->intValue("RDLibrary","Height",sizeHint().height()));
-  lib_cart_filter->loadConfig(profile);
-
-  delete profile;
+  loadSettings(true);
+  lib_cart_filter->setDragEnabled(dragEnabled());
+  lib_cart_filter->setShowNoteBubbles(showNoteBubbles());
 }
 
 
 void MainWidget::SaveGeometry()
 {
-  QString geometry_file=GeometryFile();
-  FILE *file=fopen(geometry_file.toUtf8(),"w");
-  if(file==NULL) {
-    return;
-  }
-  fprintf(file,"[RDLibrary]\n");
-  fprintf(file,"Width=%d\n",geometry().width());
-  fprintf(file,"Height=%d\n",geometry().height());
-  fprintf(file,"ShowNoteBubbles=");
-  lib_cart_filter->saveConfig(file);
-
-  fclose(file);
+  setDragEnabled(lib_cart_filter->dragEnabled());
+  setShowNoteBubbles(lib_cart_filter->showNoteBubbles());
+  saveSettings();
 }
 
 

@@ -57,6 +57,7 @@ dist_rdlibrary_SOURCES = audio_cart.cpp audio_cart.h\
                          libraryview.cpp libraryview.h\
                          list_reports.cpp list_reports.h\
                          macro_cart.cpp macro_cart.h\
+                         mainwindow.cpp mainwindow.h\
                          notebubble.cpp notebubble.h\
                          rdlibrary.cpp rdlibrary.h\
                          record_cut.cpp record_cut.h\
@@ -73,6 +74,7 @@ nodist_rdlibrary_SOURCES = moc_audio_cart.cpp\
                            moc_libraryview.cpp\
                            moc_list_reports.cpp\
                            moc_macro_cart.cpp\
+                           moc_mainwindow.cpp\
                            moc_notebubble.cpp\
                            moc_rdlibrary.cpp\
                            moc_record_cut.cpp

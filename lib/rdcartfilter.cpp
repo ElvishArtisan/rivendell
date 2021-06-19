@@ -199,32 +199,6 @@ QSizePolicy RDCartFilter::sizePolicy() const
 }
 
 
-void RDCartFilter::loadConfig(RDProfile *p)
-{
-  d_shownotes_box->setChecked(p->boolValue("RDLibrary","ShowNoteBubbles",true));
-  d_allowdrag_box->
-    setChecked(p->boolValue("RDLibrary","AllowCartDragging",false));
-}
-
-
-void RDCartFilter::saveConfig(FILE *f) const
-{
-  if(d_shownotes_box->isChecked()) {
-    fputs("Yes\n",f);
-  }
-  else {
-    fputs("No\n",f);
-  }
-  fprintf(f,"AllowCartDragging=");
-  if(d_allowdrag_box->isChecked()) {
-    fprintf(f,"Yes\n");
-  }
-  else {
-    fprintf(f,"No\n");
-  }
-}
-
-
 QString RDCartFilter::filterSql(const QStringList &and_fields) const
 {
   QString sql=" where ";
@@ -279,6 +253,12 @@ QString RDCartFilter::selectedSchedCode() const
 bool RDCartFilter::dragEnabled() const
 {
   return d_allowdrag_box->isChecked();
+}
+
+
+bool RDCartFilter::showNoteBubbles() const
+{
+  return d_shownotes_box->isChecked();
 }
 
 
@@ -359,6 +339,18 @@ void RDCartFilter::setService(const QString &svc)
 RDLibraryModel *RDCartFilter::model() const
 {
   return d_cart_model;
+}
+
+
+void RDCartFilter::setDragEnabled(bool state)
+{
+  return d_allowdrag_box->setChecked(state);
+}
+
+
+void RDCartFilter::setShowNoteBubbles(bool state)
+{
+  d_shownotes_box->setChecked(state);
 }
 
 

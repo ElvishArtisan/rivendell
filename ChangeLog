@@ -21927,3 +21927,10 @@
 	* Added 'RDMainWindow' to rdcastmanager(1).
 2021-06-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDMainWindow' to rdcatch(1).
+2021-06-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDCartFilter::setDragEnabled()',
+	'RDCartFilter::showNoteBubbles()' and
+	'RDCartFilter::setShowNoteBubbles()' methods.
+	* Removed 'RDCartFilter::loadConfig()' and 'RDCartFilter::saveConfig()'
+	methods.
+	* Added 'RDMainWindow' to rdlibrary(1).

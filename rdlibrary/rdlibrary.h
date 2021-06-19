@@ -32,6 +32,7 @@
 
 #include "disk_gauge.h"
 #include "libraryview.h"
+#include "mainwindow.h"
 
 #define RDLIBRARY_GEOMETRY_FILE ".rdlibrary"
 #define RDLIBRARY_STEP_SIZE 5000
@@ -47,7 +48,7 @@
 
 #define RDLIBRARY_USAGE "[--profile-ripping]\n\n--profile-ripping\n     Print profiling information to stdout when performing rips from\n     optical media.\n\n"
 
-class MainWidget : public RDWidget
+class MainWidget : public MainWindow
 {
  Q_OBJECT
  public:

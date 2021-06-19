@@ -41,13 +41,12 @@ class RDCartFilter : public RDWidget
   ~RDCartFilter();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  void loadConfig(RDProfile *p);
-  void saveConfig(FILE *f) const;
   QString filterSql(const QStringList &and_fields=QStringList()) const;
   QString filterText() const;
   QString selectedGroup() const;
   QString selectedSchedCode() const;
   bool dragEnabled() const;
+  bool showNoteBubbles() const;
   RDCart::Type showCartType() const;
   void setShowCartType(RDCart::Type type);
   bool showTrackCarts() const;
@@ -62,6 +61,8 @@ class RDCartFilter : public RDWidget
   static QString typeFilter(bool incl_audio,bool incl_macro,RDCart::Type mask);
 
  public slots:
+  void setDragEnabled(bool state);
+  void setShowNoteBubbles(bool state);
   void setModel(RDLibraryModel *model);
   void setFilterText(const QString &str);
   void setSelectedGroup(const QString &grpname);
