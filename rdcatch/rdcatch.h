@@ -26,6 +26,7 @@
 #include <QScrollArea>
 
 #include <rdcatch_connect.h>
+#include <rdmainwindow.h>
 #include <rdtableview.h>
 #include <rdtransportbutton.h>
 #include <rdwidget.h>
@@ -59,7 +60,7 @@ class CatchConnector
 };
 
 
-class MainWidget : public RDWidget
+class MainWidget : public RDMainWindow
 {
   Q_OBJECT
  public:
@@ -116,8 +117,6 @@ class MainWidget : public RDWidget
   int GetMonitor(int serial,int chan);
   int GetConnection(QString station,unsigned chan=0);
   QString GeometryFile();
-  void LoadGeometry();
-  void SaveGeometry();
   std::vector<CatchMonitor *> catch_monitor;
   QScrollArea *catch_monitor_area;
   VBox *catch_monitor_vbox;

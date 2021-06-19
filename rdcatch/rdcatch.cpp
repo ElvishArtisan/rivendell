@@ -73,7 +73,7 @@ QString CatchConnector::stationName()
 
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
-  : RDWidget(c,parent)
+  : RDMainWindow("rdcatch",c)
 {
   QString str;
   QString err_msg;
@@ -427,7 +427,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   catch_midnight_timer->setSingleShot(true);
   connect(catch_midnight_timer,SIGNAL(timeout()),this,SLOT(midnightData()));
   midnightData();
-  LoadGeometry();
+
+  loadSettings(true);
 
   QTime current_time=QTime::currentTime().addMSecs(catch_time_offset);
   QDate current_date=QDate::currentDate();
@@ -995,7 +996,9 @@ void MainWidget::heartbeatFailedData(int id)
 void MainWidget::quitMainWidget()
 {
   catch_db->removeDatabase(rda->config()->mysqlDbname());
-  SaveGeometry();
+
+  saveSettings();
+  
   exit(0);
 }
 
@@ -1322,37 +1325,6 @@ QString MainWidget::GeometryFile() {
   } else {
     return NULL;
   }
-}
-
-void MainWidget::LoadGeometry()
-{
-  QString geometry_file=GeometryFile();
-  if(geometry_file.isEmpty()) {
-    return;
-  }
-  RDProfile *profile=new RDProfile();
-  profile->setSource(geometry_file);
-  resize(profile->intValue("RDCatch","Width",sizeHint().width()),
-	 profile->intValue("RDCatch","Height",sizeHint().height()));
-
-  delete profile;
-}
-
-
-void MainWidget::SaveGeometry()
-{
-  QString geometry_file=GeometryFile();
-  if(geometry_file.isEmpty()) {
-    return;
-  }
-  FILE *file=fopen(geometry_file.toUtf8(),"w");
-  if(file==NULL) {
-    return;
-  }
-  fprintf(file,"[RDCatch]\n");
-  fprintf(file,"Width=%d\n",geometry().width());
-  fprintf(file,"Height=%d\n",geometry().height());
-  fclose(file);
 }
 
 
