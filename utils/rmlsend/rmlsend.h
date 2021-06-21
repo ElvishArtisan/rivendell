@@ -28,7 +28,7 @@
 #include <QUdpSocket>
 
 #include <rd.h>
-#include <rdwidget.h>
+#include <rdmainwindow.h>
 
 //
 // Settings
@@ -37,7 +37,7 @@
 #define RMLSEND_DEFAULT_ADDR "localhost"
 #define RMLSEND_DEFAULT_PORT 5859
 
-class MainWidget : public RDWidget
+class MainWidget : public RDMainWindow
 {
   Q_OBJECT
  public:
@@ -45,8 +45,12 @@ class MainWidget : public RDWidget
   MainWidget(RDConfig *c,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
- private slots:
+
+protected:
+  void closeEvent(QCloseEvent *);
+
+private slots:
+  void quitMainWidget();
   void sendCommand();
   void readResponse();
   void destChangedData(int id);

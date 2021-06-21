@@ -39,7 +39,7 @@
 RDCmdSwitch *rdcmdswitch=NULL;
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
-  : RDWidget(c,parent)
+  : RDMainWindow("rmlsend",c)
 {
   //
   // Set Window Size
@@ -114,7 +114,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   quit->setGeometry(sizeHint().width()-80,sizeHint().height()-50,70,40);
   quit->setFont(buttonFont());
   quit->setDefault(true);
-  connect(quit,SIGNAL(clicked()),qApp,SLOT(quit()));
+  connect(quit,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
   udp_command=new QUdpSocket(this);
 
@@ -150,6 +150,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     }
   }
   destChangedData(port_box->currentIndex());
+
+  loadSettings(true);
 }
 
 
@@ -162,6 +164,19 @@ QSize MainWidget::sizeHint() const
 QSizePolicy MainWidget::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void MainWidget::closeEvent(QCloseEvent *e)
+{
+  quitMainWidget();
+}
+
+
+void MainWidget::quitMainWidget()
+{
+  saveSettings();
+  exit(0);
 }
 
 
