@@ -24,7 +24,6 @@ if ALSA_RD_AM
   ALSACONFIG_RD_OPT = rdalsaconfig
 endif
 SUBDIRS = $(ALSACONFIG_RD_OPT)\
-          rddgimport\
           rdcheckcuts\
           rdcleandirs\
           rdclilogedit\

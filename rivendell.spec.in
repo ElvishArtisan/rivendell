@@ -454,9 +454,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/crc-unity4k.sh
 %{_bindir}/rdcatch_copy
 %{_bindir}/panel_copy
-%{_bindir}/rddgimport
-%{_datadir}/applications/rivendell-rddgimport.desktop
-%{_datadir}/applications/rivendell-rddiscimport.desktop
 
 
 %files opsguide

@@ -27,8 +27,6 @@ install-exec-am:
 	cp rivendell-rdcartslots.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdcastmanager.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdcatch.desktop $(DESTDIR)@prefix@/share/applications/
-	cp rivendell-rddgimport.desktop $(DESTDIR)@prefix@/share/applications/
-	cp rivendell-rddiscimport.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdgpimon.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdlibrary.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdlogedit.desktop $(DESTDIR)@prefix@/share/applications/
@@ -59,13 +57,6 @@ uninstall-local:
 	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-utilities.directory
 	rm -f $(DESTDIR)/etc/xdg/menus/applications-merged/rivendell-rivendell.menu
 
-#	rm -f $(DESTDIR)/etc/pam.d/rdalsaconfig-root
-#	rm -f $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
-#	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
-#	rm -f $(DESTDIR)/etc/pam.d/rddbconfig-root
-#	rm -f $(DESTDIR)/etc/security/console.apps/rddbconfig-root
-#	rm -f $(DESTDIR)$(prefix)/bin/rddbconfig-root
-
 EXTRA_DIST = install_usermode.sh.in\
              rdalsaconfig-root-consolehelper.in\
              rdalsaconfig-root-pam\
@@ -85,8 +76,6 @@ EXTRA_DIST = install_usermode.sh.in\
              rivendell-rddbconfig.desktop\
              rivendell-rddbconfig-root.desktop\
              rivendell-rddbconfig-sudo.desktop\
-             rivendell-rddgimport.desktop\
-             rivendell-rddiscimport.desktop\
              rivendell-rdgpimon.desktop\
              rivendell-rdlibrary.desktop\
              rivendell-rdlogedit.desktop\

@@ -49,8 +49,6 @@
       <Filename>rivendell-rdgpimon.desktop</Filename>
       <Filename>rivendell-rdsoftkeys.desktop</Filename>
       <Filename>rivendell-rmlsend.desktop</Filename>
-      <Filename>rivendell-rddgimport.desktop</Filename>
-      <Filename>rivendell-rddiscimport.desktop</Filename>
     </Include>
   </Menu>
 </Menu>

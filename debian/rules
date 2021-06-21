@@ -29,7 +29,6 @@ binary:
 	mv debian/tmp/usr/bin/crc-unity4k.sh debian/rivendell-importers/usr/bin/
 	mv debian/tmp/usr/bin/rdcatch_copy debian/rivendell-importers/usr/bin/
 	mv debian/tmp/usr/bin/panel_copy debian/rivendell-importers/usr/bin/
-	mv debian/tmp/usr/bin/rddgimport debian/rivendell-importers/usr/bin/
 
 #
 # rivendell-opsguide
