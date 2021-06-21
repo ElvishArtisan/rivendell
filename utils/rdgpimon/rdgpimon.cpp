@@ -29,7 +29,7 @@
 #include "rdgpimon.h"
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
-  : RDWidget(c,parent)
+  : RDMainWindow("rdgpimon",c)
 {
   QString err_msg;
 
@@ -244,6 +244,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   gpi_events_startup_timer->setSingleShot(true);
   connect(gpi_events_startup_timer,SIGNAL(timeout()),this,SLOT(startUpData()));
   gpi_events_startup_timer->start(GPIMON_START_UP_DELAY);
+
+  loadSettings(true);
 }
 
 
@@ -516,7 +518,14 @@ void MainWidget::downData()
 
 void MainWidget::quitMainWidget()
 {
+  saveSettings();
   exit(0);
+}
+
+
+void MainWidget::closeEvent(QCloseEvent *e)
+{
+  quitMainWidget();
 }
 
 
@@ -698,7 +707,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();
 }

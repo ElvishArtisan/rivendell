@@ -24,10 +24,11 @@
 #include <QComboBox>
 #include <QDateTimeEdit>
 
-#include <rdmatrix.h>
-#include <rdtransportbutton.h>
 #include <rdgpiologmodel.h>
+#include <rdmainwindow.h>
+#include <rdmatrix.h>
 #include <rdtableview.h>
+#include <rdtransportbutton.h>
 #include <rdwidget.h>
 
 #include "gpi_label.h"
@@ -37,14 +38,14 @@
 #define GPIMON_COLS 8
 #define RDGPIMON_USAGE "\n"
 
-class MainWidget : public RDWidget
+class MainWidget : public RDMainWindow
 {
   Q_OBJECT
  public:
   MainWidget(RDConfig *c,QWidget *parent=0);
-   ~MainWidget();
-   QSize sizeHint() const;
-   QSizePolicy sizePolicy() const;
+  ~MainWidget();
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
 
  private slots:
   void userData();
@@ -64,6 +65,9 @@ class MainWidget : public RDWidget
   void downData();
   void quitMainWidget();
 
+ protected:
+  void closeEvent(QCloseEvent *e);
+  
  private:
   void UpdateLabelsUp(int last_line);
   void UpdateLabelsDown(int first_line);
