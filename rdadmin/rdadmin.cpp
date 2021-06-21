@@ -66,7 +66,7 @@ void PrintError(const QString &str,bool interactive)
 
 
 MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
-  : RDWidget(config,parent)
+  : RDMainWindow("rdadmin",config)
 {
   QString str;
   QString err_msg;
@@ -245,6 +245,8 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   quit_button->setFont(buttonFont());
   quit_button->setText(tr("Quit"));
   connect(quit_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
+
+  loadSettings(true);
 }
 
 
@@ -257,6 +259,12 @@ QSize MainWidget::sizeHint() const
 QSizePolicy MainWidget::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void MainWidget::closeEvent(QCloseEvent *e)
+{
+  quitMainWidget();
 }
 
 
@@ -340,6 +348,7 @@ void MainWidget::podcastsData()
 
 void MainWidget::quitMainWidget()
 {
+  saveSettings();
   exit(0);
 }
 
@@ -384,7 +393,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();
 }

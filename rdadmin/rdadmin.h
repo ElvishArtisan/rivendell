@@ -24,18 +24,22 @@
 #include <qsize.h>
 #include <qsizepolicy.h>
 
+#include <rdmainwindow.h>
 #include <rdwidget.h>
 
 #define RDADMIN_USAGE "\n"
 
-class MainWidget : public RDWidget
+class MainWidget : public RDMainWindow
 {
   Q_OBJECT
  public:
   MainWidget(RDConfig *config,RDWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
+
+ protected:
+  void closeEvent(QCloseEvent *e);
+
  private slots:
   void manageUsersData();
   void manageGroupsData();
