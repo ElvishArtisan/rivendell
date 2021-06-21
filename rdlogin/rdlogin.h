@@ -26,12 +26,13 @@
 #include <QLineEdit>
 #include <QPushButton>
 
+#include <rdmainwindow.h>
 #include <rduserlistmodel.h>
 #include <rdwidget.h>
 
 #define RDLOGIN_USAGE "\n"
 
-class MainWidget : public RDWidget
+class MainWidget : public RDMainWindow
 {
   Q_OBJECT
  public:
@@ -40,6 +41,9 @@ class MainWidget : public RDWidget
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
+ protected:
+  void closeEvent(QCloseEvent *e);
+				 
  private slots:
   void connectedData(bool state);
   void userData();

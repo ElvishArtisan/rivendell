@@ -28,7 +28,7 @@
 #include "rdlogin.h"
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
-  : RDWidget(c,parent)
+  : RDMainWindow("rdlogin",c)
 {
   login_resize=false;
   login_user_width=160;
@@ -154,7 +154,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 
   login_resize=true;
 
-  resizeEvent(NULL);
+  loadSettings(true);
 }
 
 
@@ -175,6 +175,12 @@ QSize MainWidget::sizeHint() const
 QSizePolicy MainWidget::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void MainWidget::closeEvent(QCloseEvent *e)
+{
+  quitMainWidget();
 }
 
 
@@ -237,12 +243,14 @@ void MainWidget::logoutData()
 
 void MainWidget::cancelData()
 {
+  saveSettings();
   exit(0);
 }
 
 
 void MainWidget::quitMainWidget()
 {
+  saveSettings();
   qApp->quit();
 }
 
@@ -296,7 +304,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();
 }
