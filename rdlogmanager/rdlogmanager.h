@@ -25,6 +25,7 @@
 #include <qpushbutton.h>
 
 #include <rdlog_line.h>
+#include <rdmainwindow.h>
 #include <rdwidget.h>
 
 #define RDLOGMANAGER_USAGE "[OPTIONS]\n"
@@ -39,14 +40,17 @@ extern int RunReportOperation(int argc,char *argv[],const QString &rptname,
 			      bool protect_existing,int start_offset,
 			      int end_offset);
 
-class MainWidget : public RDWidget
+class MainWidget : public RDMainWindow
 {
  Q_OBJECT
  public:
   MainWidget(RDConfig *c,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
+
+protected:
+ void closeEvent(QCloseEvent *e);
+
  private slots:
   void userData();
   void eventsData();

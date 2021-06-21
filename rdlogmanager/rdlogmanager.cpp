@@ -39,7 +39,7 @@ QString *clock_filter;
 bool skip_db_check=false;
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
-  : RDWidget(c,parent)
+  : RDMainWindow("rdlogmanager",c)
 {
   QString err_msg;
 
@@ -146,6 +146,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   log_close_button->setText(tr("Close"));
   log_close_button->setDefault(true);
   connect(log_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
+
+  loadSettings(true);
 }
 
 
@@ -158,6 +160,12 @@ QSize MainWidget::sizeHint() const
 QSizePolicy MainWidget::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void MainWidget::closeEvent(QCloseEvent *e)
+{
+  quitMainWidget();
 }
 
 
@@ -219,6 +227,7 @@ void MainWidget::reportsData()
 
 void MainWidget::quitMainWidget()
 {
+  saveSettings();
   exit(RDApplication::ExitOk);
 }
 
@@ -261,8 +270,6 @@ int gui_main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  w->setGeometry(QRect(QPoint(w->geometry().x(),w->geometry().y()),
-		       w->sizeHint()));
   w->show();
   return a.exec();
 }
