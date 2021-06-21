@@ -558,14 +558,10 @@ EditLog::~EditLog()
 
 QSize EditLog::sizeHint() const
 {
+  printf("sizeHint(%d,%d)\n",global_logedit_window_size.width(),
+	 global_logedit_window_size.height());
   return global_logedit_window_size;
 } 
-
-
-QSizePolicy EditLog::sizePolicy() const
-{
-  return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-}
 
 
 int EditLog::exec()

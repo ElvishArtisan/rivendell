@@ -28,7 +28,7 @@
 // Global Resources
 //
 extern bool global_import_running;
-extern QSize global_top_window_size;
+//extern QSize global_top_window_size;
 extern QSize global_logedit_window_size;
 extern int global_start_time_style;
 

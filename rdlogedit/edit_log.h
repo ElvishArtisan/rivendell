@@ -47,7 +47,6 @@ class EditLog : public RDDialog
 	 QWidget *parent=0);
   ~EditLog();
   QSize sizeHint() const;
-  QSizePolicy sizePolicy() const;
 
  public slots:
   int exec();

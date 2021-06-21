@@ -26,16 +26,17 @@
 #include <rdlog_line.h>
 #include <rdlogfilter.h>
 #include <rdloglistmodel.h>
+#include <rdmainwindow.h>
 #include <rdnotification.h>
 #include <rdtableview.h>
 #include <rdwidget.h>
 
-#define RDLOGEDIT_POSITION_FILENAME ".rdlogedit"
 #define RDLOGEDIT_DEFAULT_WIDTH 640
 #define RDLOGEDIT_DEFAULT_HEIGHT 480
+#define RDLOGEDIT_POSITION_FILENAME ".rdlogedit"
 #define RDLOGEDIT_USAGE "\n"
 
-class MainWidget : public RDWidget
+class MainWidget : public RDMainWindow
 {
  Q_OBJECT
  public:
@@ -60,14 +61,13 @@ class MainWidget : public RDWidget
   void quitMainWidget();
 
  protected:
+  void closeEvent(QCloseEvent *e);
   void resizeEvent(QResizeEvent *e);
 
  private:
   void SendNotification(RDNotification::Action action,const QString &logname);
   void LockList();
   void UnlockList();
-  void LoadPositions() const;
-  void SavePositions() const;
   QModelIndex SingleSelectedRow() const;
   QString log_filename;
   QString log_import_path;

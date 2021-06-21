@@ -21934,3 +21934,5 @@
 	* Removed 'RDCartFilter::loadConfig()' and 'RDCartFilter::saveConfig()'
 	methods.
 	* Added 'RDMainWindow' to rdlibrary(1).
+2021-06-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDMainWindow' to rdlogedit(1).

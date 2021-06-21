@@ -38,12 +38,12 @@
 // Global Resources
 //
 bool global_import_running=false;
-QSize global_top_window_size;
+//QSize global_top_window_size;
 QSize global_logedit_window_size;
 int global_start_time_style;
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
-  : RDWidget(c,parent)
+  : RDMainWindow("rdlogedit",c)
 {
   QString err_msg;
 
@@ -57,7 +57,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   setMinimumWidth(RDLOGEDIT_DEFAULT_WIDTH);
   setMinimumHeight(RDLOGEDIT_DEFAULT_HEIGHT);
-  LoadPositions();
 
   //
   // Open the Database
@@ -183,12 +182,14 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 	     tr("User")+": ["+tr("Unknown")+"]");
 
   log_resize=true;
+
+  loadSettings(true);
 }
 
 
 QSize MainWidget::sizeHint() const
 {
-  return global_top_window_size;
+  return QSize(RDLOGEDIT_DEFAULT_WIDTH,RDLOGEDIT_DEFAULT_HEIGHT);
 }
 
 
@@ -608,8 +609,14 @@ void MainWidget::notificationReceivedData(RDNotification *notify)
 
 void MainWidget::quitMainWidget()
 {
-  SavePositions();
+  saveSettings();
   exit(0);
+}
+
+
+void MainWidget::closeEvent(QCloseEvent *e)
+{
+  quitMainWidget();
 }
 
 
@@ -630,8 +637,6 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   log_track_button->setGeometry(300,size().height()-55,80,50);
   log_report_button->setGeometry(400,size().height()-55,80,50);
   log_close_button->setGeometry(size().width()-90,size().height()-55,80,50);
-
-  global_top_window_size=e->size();
 }
 
 
@@ -709,44 +714,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  w->setGeometry(QRect(QPoint(w->geometry().x(),w->geometry().y()),
-		 w->sizeHint()));
   w->show();
   return a.exec();
-}
-
-
-void MainWidget::LoadPositions() const
-{
-  QString filename=RDHomeDir()+"/"+RDLOGEDIT_POSITION_FILENAME;
-  RDProfile *p=new RDProfile();
-  p->setSource(filename);
-  global_top_window_size=
-    QSize(p->intValue("RDLogEdit","TopWindowWidth",RDLOGEDIT_DEFAULT_WIDTH),
-	  p->intValue("RDLogEdit","TopWindowHeight",RDLOGEDIT_DEFAULT_HEIGHT));
-  global_logedit_window_size=
-    QSize(p->intValue("RDLogEdit","LogeditWindowWidth",RDLOGEDIT_EDITLOG_DEFAULT_WIDTH),
-	  p->intValue("RDLogEdit","LogeditWindowHeight",RDLOGEDIT_EDITLOG_DEFAULT_HEIGHT));
-  global_start_time_style=p->intValue("RDLogEdit","StartTimeStyle",0);
-
-  delete p;
-}
-
-
-void MainWidget::SavePositions() const
-{
-  QString filename=RDHomeDir()+"/"+RDLOGEDIT_POSITION_FILENAME;
-  QString temp_filename=RDHomeDir()+"/"+RDLOGEDIT_POSITION_FILENAME+"-temp";
-  FILE *f=NULL;
-
-  if((f=fopen(temp_filename.toUtf8(),"w"))!=NULL) {
-    fprintf(f,"[RDLogEdit]\n");
-    fprintf(f,"TopWindowWidth=%d\n",global_top_window_size.width());
-    fprintf(f,"TopWindowHeight=%d\n",global_top_window_size.height());
-    fprintf(f,"LogeditWindowWidth=%d\n",global_logedit_window_size.width());
-    fprintf(f,"LogeditWindowHeight=%d\n",global_logedit_window_size.height());
-    fprintf(f,"StartTimeStyle=%d\n",global_start_time_style);
-    fclose(f);
-    rename(temp_filename.toUtf8(),filename.toUtf8());
-  }
 }
