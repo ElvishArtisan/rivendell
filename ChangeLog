@@ -21938,3 +21938,5 @@
 	* Added 'RDMainWindow' to rdlogedit(1).
 2021-06-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDMainWindow' to rdadmin(1).
+2021-06-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDMainWindow' to rdcartslots(1).

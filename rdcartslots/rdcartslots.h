@@ -22,6 +22,7 @@
 #define RDCARTSLOTS_H
 
 #include <rdcartslot.h>
+#include <rdmainwindow.h>
 #include <rdwidget.h>
 
 //
@@ -31,7 +32,7 @@
 #define METER_INTERVAL 50
 #define RDCARTSLOTS_USAGE "\n"
 
-class MainWidget : public RDWidget
+class MainWidget : public RDMainWindow
 {
   Q_OBJECT
  public:

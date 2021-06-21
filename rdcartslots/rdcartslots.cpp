@@ -27,7 +27,7 @@
 #include "rdcartslots.h"
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
-  : RDWidget(c,parent)
+  : RDMainWindow("rdcartslots",c)
 {
   QString err_msg;
 
@@ -120,11 +120,11 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   // Fix the Window Size
   //
 #ifndef RESIZABLE
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 #endif  // RESIZABLE
+
+  loadSettings(true);
 }
 
 
@@ -193,6 +193,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
   for(unsigned i=0;i<panel_slots.size();i++) {
     delete panel_slots[i];  // So temporary carts get cleaned up properly
   }
+  saveSettings();
   exit(0);
 }
 
@@ -235,7 +236,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();
 }
