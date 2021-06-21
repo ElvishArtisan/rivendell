@@ -39,7 +39,7 @@
 #include "../icons/redx.xpm"
 
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
-  : RDWidget(c,parent)
+  : RDMainWindow("rdselect",c)
 {
   //
   // Read Command Options
@@ -169,6 +169,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   SetSystem(select_current_id);
   SetCurrentItem(select_current_id);
   select_box->clearSelection();
+
+  loadSettings(true);
 }
 
 
@@ -222,13 +224,21 @@ void MainWidget::okData()
   }
   delete proc;
 
+  saveSettings();
   exit(0);
 }
 
 
 void MainWidget::cancelData()
 {
+  saveSettings();
   exit(0);
+}
+
+
+void MainWidget::closeEvent(QCloseEvent *e)
+{
+  cancelData();
 }
 
 

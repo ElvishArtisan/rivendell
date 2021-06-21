@@ -25,10 +25,11 @@
 #include <QPushButton>
 
 #include <rdconfig.h>
+#include <rdmainwindow.h>
 #include <rdmonitor_config.h>
 #include <rdwidget.h>
 
-class MainWidget : public RDWidget
+class MainWidget : public RDMainWindow
 {
   Q_OBJECT
  public:
@@ -42,6 +43,7 @@ class MainWidget : public RDWidget
   void cancelData();
   
  protected:
+  void closeEvent(QCloseEvent *e);
   void resizeEvent(QResizeEvent *e);
 
  private:
