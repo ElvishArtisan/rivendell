@@ -31,6 +31,8 @@
 #include <rdtableview.h>
 #include <rdwidget.h>
 
+#include "voice_tracker.h"
+
 #define RDLOGEDIT_DEFAULT_WIDTH 640
 #define RDLOGEDIT_DEFAULT_HEIGHT 480
 #define RDLOGEDIT_POSITION_FILENAME ".rdlogedit"
@@ -89,6 +91,7 @@ class MainWidget : public RDMainWindow
   bool log_resize;
   bool log_list_locked;
   QStringList log_deleted_logs;
+  VoiceTracker *log_tracker_dialog;
 };
 
 

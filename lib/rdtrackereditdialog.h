@@ -1,8 +1,8 @@
-// voice_tracker.h
+// rdtrackereditdialog.h
 //
-// Rivendell Voice Tracker Dialog
+// Edit a Rivendell Voice Track Log Entry
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,38 +18,29 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef VOICE_TRACKER_H
-#define VOICE_TRACKER_H
+#ifndef RDTRACKEREDITDIALOG_H
+#define RDTRACKEREDITDIALOG_H
 
-#include <QPushButton>
+#include <qlineedit.h>
 
-#include <rddialog.h>
-#include <rdtrackerwidget.h>
+#include "rdlogeventdialog.h"
 
-class VoiceTracker : public RDDialog
+class RDTrackerEditDialog : public RDLogEventDialog
 {
   Q_OBJECT
  public:
-  VoiceTracker(QString *import_path,QWidget *parent=0);
-  ~VoiceTracker();
+  RDTrackerEditDialog(RDLogLine *,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
- public slots:
-  int exec(const QString &logname);
-
- private slots:
-  void closeData();
-
  protected:
-  void closeEvent(QCloseEvent *e);
-  void resizeEvent(QResizeEvent *e);
-  
+  bool saveData();
+
  private:
-  RDTrackerWidget *d_tracker_widget;
-  QPushButton *d_close_button;
-  QString *d_import_path;
+  QCheckBox *edit_overlap_box;
+  QLabel *edit_overlap_label;
+  QLineEdit *edit_comment_edit;
 };
 
 
-#endif  // VOICE_TRACKER_H
+#endif  // RDTRACKEREDITDIALOG_H

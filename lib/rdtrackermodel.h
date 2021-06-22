@@ -1,8 +1,8 @@
-// voice_tracker.h
+// rdtrackermodel.h
 //
-// Rivendell Voice Tracker Dialog
+// Data model for Rivendell logs RDTrackerWidget
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,38 +18,31 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef VOICE_TRACKER_H
-#define VOICE_TRACKER_H
+#ifndef RDTRACKERMODEL_H
+#define RDTRACKERMODEL_H
 
-#include <QPushButton>
+#include <rdgroup_list.h>
+#include <rdlogmodel.h>
 
-#include <rddialog.h>
-#include <rdtrackerwidget.h>
-
-class VoiceTracker : public RDDialog
+class RDTrackerModel : public RDLogModel
 {
   Q_OBJECT
  public:
-  VoiceTracker(QString *import_path,QWidget *parent=0);
-  ~VoiceTracker();
-  QSize sizeHint() const;
-  QSizePolicy sizePolicy() const;
+  RDTrackerModel(QObject *parent=0);
+  ~RDTrackerModel();
+  QString serviceName() const;
+  bool groupIsValid(const QString &grpname) const;
+  bool allGroupsValid() const;
 
  public slots:
-  int exec(const QString &logname);
-
- private slots:
-  void closeData();
+   void setServiceName(const QString &str);
 
  protected:
-  void closeEvent(QCloseEvent *e);
-  void resizeEvent(QResizeEvent *e);
-  
+  QColor rowBackgroundColor(int row,RDLogLine *ll) const;
+
  private:
-  RDTrackerWidget *d_tracker_widget;
-  QPushButton *d_close_button;
-  QString *d_import_path;
+  RDGroupList *d_group_list;
 };
 
 
-#endif  // VOICE_TRACKER_H
+#endif  // RDTRACKERMODEL_H

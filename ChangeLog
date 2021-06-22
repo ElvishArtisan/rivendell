@@ -21953,3 +21953,7 @@
 	* Removed vestigal bits of the rddiscimport(1) applet.
 2021-06-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDMainWindow' to rmlsend(1).
+2021-06-22 Fred Gleason <fredg@paravelsystems.com>
+	* Broke out voicetracker functionality from rdlogedit(1) into
+	'RDTrackerEditDialog', 'RDTrackerModel', 'RDTrackerTableView'
+	and 'RDTrackerWidget' classes.

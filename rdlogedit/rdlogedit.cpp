@@ -28,11 +28,12 @@
 #include <rdprofile.h>
 #include <rdreport.h>
 #include <rdtextfile.h>
+#include <rdtrackerwidget.h>
 
 #include "edit_log.h"
 #include "globals.h"
 #include "rdlogedit.h"
-#include "voice_tracker.h"
+//#include "voice_tracker.h"
 
 //
 // Global Resources
@@ -109,6 +110,11 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   connect(log_filter_widget,SIGNAL(filterChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
 
+  //
+  // Dialogs
+  //
+  log_tracker_dialog=new VoiceTracker(&log_import_path,this);
+  
   //
   // Log List
   //
@@ -420,6 +426,20 @@ void MainWidget::trackData()
     return;
   }
   LockList();
+  log_tracker_dialog->exec(log_log_model->logName(row));
+  log_log_model->refresh(row);
+  UnlockList();
+}
+
+/*
+void MainWidget::trackData()
+{
+  QModelIndex row=SingleSelectedRow();
+
+  if(!row.isValid()) {
+    return;
+  }
+  LockList();
   VoiceTracker *dialog=
     new VoiceTracker(log_log_model->logName(row),&log_import_path);
   dialog->exec();
@@ -427,7 +447,7 @@ void MainWidget::trackData()
   log_log_model->refresh(row);
   UnlockList();
 }
-
+*/
 
 void MainWidget::reportData()
 {

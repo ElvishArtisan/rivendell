@@ -177,6 +177,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdlog.cpp rdlog.h\
                         rdlog_line.cpp rdlog_line.h\
                         rdlogedit_conf.cpp rdlogedit_conf.h\
+                        rdlogeventdialog.cpp rdlogeventdialog.h\
                         rdlogfilter.cpp rdlogfilter.h\
                         rdlogimportmodel.cpp rdlogimportmodel.h\
                         rdloglock.cpp rdloglock.h\
@@ -262,6 +263,10 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdtimeedit.cpp rdtimeedit.h\
                         rdtimeengine.cpp rdtimeengine.h\
                         rdtimeevent.cpp rdtimeevent.h\
+                        rdtrackereditdialog.cpp rdtrackereditdialog.h\
+                        rdtrackermodel.cpp rdtrackermodel.h\
+                        rdtrackertableview.cpp rdtrackertableview.h\
+                        rdtrackerwidget.cpp rdtrackerwidget.h\
                         rdtransportbutton.cpp rdtransportbutton.h\
                         rdtransfer.cpp rdtransfer.h\
                         rdtreeview.cpp rdtreeview.h\
@@ -357,6 +362,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdlistselector.cpp\
                           moc_rdlistsvcs.cpp\
                           moc_rdlivewire.cpp\
+                          moc_rdlogeventdialog.cpp\
                           moc_rdlogfilter.cpp\
                           moc_rdlogimportmodel.cpp\
                           moc_rdloglock.cpp\
@@ -409,6 +415,10 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdtableview.cpp\
                           moc_rdtimeedit.cpp\
                           moc_rdtimeengine.cpp\
+                          moc_rdtrackereditdialog.cpp\
+                          moc_rdtrackermodel.cpp\
+                          moc_rdtrackertableview.cpp\
+                          moc_rdtrackerwidget.cpp\
                           moc_rdtransfer.cpp\
                           moc_rdtransportbutton.cpp\
                           moc_rdtreeview.cpp\
