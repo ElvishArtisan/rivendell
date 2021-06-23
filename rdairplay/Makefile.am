@@ -58,6 +58,7 @@ dist_rdairplay_SOURCES = button_log.cpp button_log.h\
                          rdairplay.cpp rdairplay.h\
                          start_button.cpp start_button.h\
                          stop_counter.cpp stop_counter.h\
+                         voicetracker.cpp voicetracker.h\
                          wall_clock.cpp wall_clock.h
 
 
@@ -74,6 +75,7 @@ nodist_rdairplay_SOURCES = moc_button_log.cpp\
                            moc_rdairplay.cpp\
                            moc_start_button.cpp\
                            moc_stop_counter.cpp\
+                           moc_voicetracker.cpp\
                            moc_wall_clock.cpp
 
 rdairplay_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@

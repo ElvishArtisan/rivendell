@@ -51,7 +51,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   QString err_msg;
 
   air_panel=NULL;
-
+  air_tracker=NULL;
+  
   //
   // Get the Startup Date/Time
   //
@@ -580,6 +581,12 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   }
 
   //
+  // Voice Tracker
+  //
+  air_tracker=new VoiceTracker(this);
+  air_tracker->hide();
+  
+  //
   // Full Log List
   //
   air_pause_enabled=rda->airplayConf()->pauseEnabled();
@@ -642,6 +649,14 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
     air_log_list[0]->show();
   }	  
 
+  //
+  // Voice Tracker Button
+  //
+  air_tracker_button=new QPushButton(this);
+  air_tracker_button->setFont(bigButtonFont());
+  air_tracker_button->setText(tr("Voice\nTracker"));
+  air_tracker_button->setFocusPolicy(Qt::NoFocus);
+  connect(air_tracker_button,SIGNAL(clicked()),this,SLOT(trackerButtonData()));
 
   //
   // Button Log
@@ -1333,6 +1348,8 @@ void MainWidget::fullLogButtonData(int id)
   }
   else {
     air_panel->hide();
+    ShowTracker(false);
+    air_tracker_button->setPalette(palette());
     for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
       if(air_log_list[i]->isVisible()) {
 	air_log_list[i]->hide();
@@ -1356,8 +1373,25 @@ void MainWidget::panelButtonData()
       air_log_button[i]->setPalette(palette());
     }
   }
+  ShowTracker(false);
+  air_tracker_button->setPalette(palette());
   air_panel->show();
   air_panel_button->setPalette(active_color);
+}
+
+
+void MainWidget::trackerButtonData()
+{
+  for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+    if(air_log_list[i]->isVisible()) {
+      air_log_list[i]->hide();
+      air_log_button[i]->setPalette(palette());
+    }
+  }
+  air_panel->hide();
+  air_panel_button->setPalette(palette());
+  ShowTracker(true);
+  air_tracker_button->setPalette(active_color);
 }
 
 
@@ -2011,8 +2045,14 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   //
   // Sound Panel
   //
-  //  air_panel->setGeometry(w/2,140,(w/2)-20,h-210);
-  air_panel->setGeometry(510,140,w-510,h-215);
+  if(air_panel!=NULL) {
+    air_panel->setGeometry(510,140,w-510,h-215);
+  }
+
+  //
+  // Voice Tracker
+  //
+  air_tracker->setGeometry(510,140,w-510,h-215);
 
   //
   // Full Log Widgets
@@ -2033,9 +2073,20 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 
   air_empty_cart->setGeometry(520,size().height()-51,32,32);
 
-  air_panel_button->setGeometry(562,size().height()-65,80,60);
+  int xpos=562;
+  air_panel_button->setGeometry(xpos,size().height()-65,80,60);
+  xpos+=85;
+  if((size().width()>=(510+air_tracker->sizeHint().width()))&&
+     (size().height()>=(140+air_tracker->sizeHint().height()))) {
+    air_tracker_button->setGeometry(xpos,size().height()-65,80,60);
+    xpos+=85;
+    air_tracker_button->show();
+  }
+  else {
+    air_tracker_button->hide();
+  }
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log_button[i]->setGeometry(647+i*123,size().height()-65,118,60);
+    air_log_button[i]->setGeometry(xpos+i*123,size().height()-65,118,60);
   }
 }
 
@@ -2471,4 +2522,18 @@ RDAirPlayConf::Channel MainWidget::PanelChannel(int mport) const
     break;
   }
   return chan;
+}
+
+
+void MainWidget::ShowTracker(bool state)
+{
+  if(state) {
+    setMinimumWidth(510+air_tracker->sizeHint().width());
+    setMinimumHeight(140+air_tracker->sizeHint().height());
+    air_tracker->show();
+  }
+  else {
+    setMinimumSize(sizeHint());
+    air_tracker->hide();
+  }
 }

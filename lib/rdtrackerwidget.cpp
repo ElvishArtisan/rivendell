@@ -389,6 +389,8 @@ RDTrackerWidget::RDTrackerWidget(QString *import_path,QWidget *parent)
   d_delete_button->setFont(buttonFont());
   d_delete_button->setText(tr("Delete\nTrack"));
   connect(d_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
+
+  setDisabled(true);
 }
 
 
@@ -483,6 +485,8 @@ bool RDTrackerWidget::load(const QString &logname)
 			 tr("No voicetracking group has been defined for this service,\ntherefore only existing transitions will be editable."));
   }
 
+  setEnabled(true);
+
   return true;
 }
 
@@ -494,6 +498,7 @@ void RDTrackerWidget::unload()
   if(d_size_altered) {
     d_log_model->save(rda->config());
   }
+  d_log_model->clear();
   if(d_log_lock!=NULL) {
     delete d_log_lock;
     d_log_lock=NULL;
@@ -512,6 +517,8 @@ void RDTrackerWidget::unload()
   }
   
   d_tracks=0;
+  LoadTrack(-1);
+  setDisabled(true);
 }
 
 
@@ -1758,7 +1765,7 @@ void RDTrackerWidget::resizeEvent(QResizeEvent *e)
       delete d_wave_map[i];
       d_wave_map[i]=new QPixmap(size().width()-90,77);
     }
-    DragTrack(0,0);
+    LoadTrack(d_track_line);
   }
   
   d_track1_button->setGeometry(size().width()-80,4,70,70);
@@ -1810,12 +1817,14 @@ void RDTrackerWidget::paintEvent(QPaintEvent *e)
   if(d_track_line<0) {
     p=new QPainter();
     for(int i=0;i<3;i++) {
-      p->begin(d_wave_map[i]);
-      p->setPen(TRACKER_TEXT_COLOR);
-      p->setBackground(Qt::gray);
-      p->eraseRect(0,0,d_wave_map[i]->size().width(),
-		   d_wave_map[i]->size().height());
-      p->end();
+      if(!d_wave_map[i]->isNull()) {
+	p->begin(d_wave_map[i]);
+	p->setPen(TRACKER_TEXT_COLOR);
+	p->setBackground(Qt::gray);
+	p->eraseRect(0,0,d_wave_map[i]->size().width(),
+		     d_wave_map[i]->size().height());
+	p->end();
+      }
     }
     delete p;
   }
@@ -2169,9 +2178,11 @@ void RDTrackerWidget::LoadTrack(int line)
         if(d_wpg[i]!=NULL) {
            delete d_wpg[i];
         }
-	d_wpg[i]=new RDWavePainter(d_wave_map[i],d_track_cuts[i],
-				 rda->station(),rda->user(),rda->config());
-	d_wpg[i]->end();
+	if(!d_wave_map[i]->isNull()) {
+	  d_wpg[i]=new RDWavePainter(d_wave_map[i],d_track_cuts[i],
+				     rda->station(),rda->user(),rda->config());
+	  d_wpg[i]->end();
+	}
       }
     }
 
@@ -2258,6 +2269,7 @@ void RDTrackerWidget::LoadTrack(int line)
   DrawTrackMap(0);
   DrawTrackMap(1);
   DrawTrackMap(2);
+
   UpdateControls();
 }
 
@@ -2820,7 +2832,7 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
   QColor back_color;
   switch(trackno) {
   case 0:
-    if(d_wave_name[0].isEmpty()) {
+    if(d_wave_name[0].isEmpty()&&(!d_wave_map[0]->isNull())) {
       p=new QPainter(d_wave_map[0]);
       p->setBackground(Qt::gray);
       p->eraseRect(0,0,d_wave_map[0]->size().width(),
@@ -2829,108 +2841,111 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
       delete p;
     }
     else {
-      d_wpg[0]->begin(d_wave_map[0]);
-      d_wpg[0]->setFont(labelFont());
-      d_wpg[0]->setPen(TRACKER_TEXT_COLOR);
-      d_wpg[0]->setBackground(palette().color(QPalette::Background));
-      d_wpg[0]->eraseRect(0,0,d_wave_map[0]->size().width(),
-			d_wave_map[0]->size().height());
-      if(!d_wave_name[0].isEmpty()) {
-	d_wpg[0]->drawWaveByMsecs(0,d_wave_map[0]->width(),
-				d_wave_origin[0],
-				d_wave_origin[0]+d_wave_width,800,
-				RDWavePainter::Mono,Qt::black,
-				d_loglines[0]->
-				startPoint(RDLogLine::CartPointer),
-				d_loglines[0]->
-				endPoint(RDLogLine::CartPointer));
+      if(!d_wave_map[0]->isNull()&&(!d_wave_map[0]->isNull())) {
+	d_wpg[0]->begin(d_wave_map[0]);
+	d_wpg[0]->setFont(labelFont());
+	d_wpg[0]->setPen(TRACKER_TEXT_COLOR);
+	d_wpg[0]->setBackground(palette().color(QPalette::Background));
+	d_wpg[0]->eraseRect(0,0,d_wave_map[0]->size().width(),
+			    d_wave_map[0]->size().height());
+	if(!d_wave_name[0].isEmpty()) {
+	  d_wpg[0]->drawWaveByMsecs(0,d_wave_map[0]->width(),
+				    d_wave_origin[0],
+				    d_wave_origin[0]+d_wave_width,800,
+				    RDWavePainter::Mono,Qt::black,
+				    d_loglines[0]->
+				    startPoint(RDLogLine::CartPointer),
+				    d_loglines[0]->
+				    endPoint(RDLogLine::CartPointer));
 
-	//
-	// Draw Segue Markers
-	//
-	if(d_loglines[0]->segueStartPoint(RDLogLine::CartPointer)>=0) {
-	  xpos=(d_loglines[0]->segueStartPoint(RDLogLine::CartPointer)-
+	  //
+	  // Draw Segue Markers
+	  //
+	  if(d_loglines[0]->segueStartPoint(RDLogLine::CartPointer)>=0) {
+	    xpos=(d_loglines[0]->segueStartPoint(RDLogLine::CartPointer)-
+		  d_wave_origin[0])/TRACKER_MSECS_PER_PIXEL;
+	    DrawCursor(d_wpg[0],d_wave_map[0]->height(),xpos,
+		       RD_SEGUE_MARKER_COLOR,20,true);
+	    xpos=(d_loglines[0]->segueEndPoint(RDLogLine::CartPointer)-
+		  d_wave_origin[0])/TRACKER_MSECS_PER_PIXEL;
+	    DrawCursor(d_wpg[0],d_wave_map[0]->height(),xpos,
+		       RD_SEGUE_MARKER_COLOR,20,false);
+	  }
+
+	  //
+	  // Draw Start Marker
+	  //
+	  xpos=(d_loglines[0]->startPoint(RDLogLine::CartPointer)-
 		d_wave_origin[0])/TRACKER_MSECS_PER_PIXEL;
 	  DrawCursor(d_wpg[0],d_wave_map[0]->height(),xpos,
-		     RD_SEGUE_MARKER_COLOR,20,true);
-	  xpos=(d_loglines[0]->segueEndPoint(RDLogLine::CartPointer)-
-		d_wave_origin[0])/TRACKER_MSECS_PER_PIXEL;
-	  DrawCursor(d_wpg[0],d_wave_map[0]->height(),xpos,
-		     RD_SEGUE_MARKER_COLOR,20,false);
-	}
-
-	//
-	// Draw Start Marker
-	//
-	xpos=(d_loglines[0]->startPoint(RDLogLine::CartPointer)-
-	      d_wave_origin[0])/TRACKER_MSECS_PER_PIXEL;
-	DrawCursor(d_wpg[0],d_wave_map[0]->height(),xpos,
-		   RD_START_END_MARKER_COLOR,10,true);
-
-	//
-	// Draw End Marker
-	//
-	xpos=(d_loglines[0]->endPoint(RDLogLine::CartPointer)-
-	      d_wave_origin[0])/TRACKER_MSECS_PER_PIXEL;
-	DrawCursor(d_wpg[0],d_wave_map[0]->height(),xpos,
-		   RD_START_END_MARKER_COLOR,10,false);
-
-	//
-	// Draw Fadedown Marker
-	//
-	if(d_loglines[0]->fadedownPoint(RDLogLine::CartPointer)>=0) {
-	  xpos=(d_loglines[0]->fadedownPoint(RDLogLine::CartPointer)-
-		d_wave_origin[0])/TRACKER_MSECS_PER_PIXEL;
-	  DrawCursor(d_wpg[0],d_wave_map[0]->height(),xpos,
-		     RD_FADE_MARKER_COLOR,30,true);
-	}
-
-	//
-	// Draw Rubber Bands
-	//
-	DrawRubberBand(d_wpg[0],0);
-   
-	//
-	// Draw Menu Marker
-	//
-        if(d_menu_clicked_point>=0 && d_rightclick_track==0) {
-	  DrawCursor(d_wpg[0],d_wave_map[0]->height(),d_menu_clicked_point,
 		     RD_START_END_MARKER_COLOR,10,true);
-	  DrawCursor(d_wpg[0],d_wave_map[0]->height(),d_menu_clicked_point,
+
+	  //
+	  // Draw End Marker
+	  //
+	  xpos=(d_loglines[0]->endPoint(RDLogLine::CartPointer)-
+		d_wave_origin[0])/TRACKER_MSECS_PER_PIXEL;
+	  DrawCursor(d_wpg[0],d_wave_map[0]->height(),xpos,
 		     RD_START_END_MARKER_COLOR,10,false);
-        }	    
+
+	  //
+	  // Draw Fadedown Marker
+	  //
+	  if(d_loglines[0]->fadedownPoint(RDLogLine::CartPointer)>=0) {
+	    xpos=(d_loglines[0]->fadedownPoint(RDLogLine::CartPointer)-
+		  d_wave_origin[0])/TRACKER_MSECS_PER_PIXEL;
+	    DrawCursor(d_wpg[0],d_wave_map[0]->height(),xpos,
+		       RD_FADE_MARKER_COLOR,30,true);
+	  }
+
+	  //
+	  // Draw Rubber Bands
+	  //
+	  DrawRubberBand(d_wpg[0],0);
+   
+	  //
+	  // Draw Menu Marker
+	  //
+	  if(d_menu_clicked_point>=0 && d_rightclick_track==0) {
+	    DrawCursor(d_wpg[0],d_wave_map[0]->height(),d_menu_clicked_point,
+		       RD_START_END_MARKER_COLOR,10,true);
+	    DrawCursor(d_wpg[0],d_wave_map[0]->height(),d_menu_clicked_point,
+		       RD_START_END_MARKER_COLOR,10,false);
+	  }	    
+	}
+	d_wpg[0]->setPen(TRACKER_TEXT_COLOR);
+	d_wpg[0]->drawText(5,14,d_loglines[0]->
+		     resolveWildcards(rda->logeditConf()->waveformCaption()));
+	d_wpg[0]->end();
       }
-      d_wpg[0]->setPen(TRACKER_TEXT_COLOR);
-      d_wpg[0]->drawText(5,14,d_loglines[0]->
-		       resolveWildcards(rda->logeditConf()->waveformCaption()));
-      d_wpg[0]->end();
     }
     break;
 
   case 1:
     if(d_wave_name[1].isEmpty()) {
-      p=new QPainter(d_wave_map[1]);
-      if(d_loaded) {
-	p->setBackground(palette().color(QPalette::Background));
-	p->setFont(labelFont());
-	p->setPen(TRACKER_TEXT_COLOR);
-	p->eraseRect(0,0,d_wave_map[1]->size().width(),
-		     d_wave_map[1]->size().height());
-	p->drawText(5,14,d_loglines[1]->markerComment());
+      if(!d_wave_map[1]->isNull()) {
+	p=new QPainter(d_wave_map[1]);
+	if(d_loaded) {
+	  p->setBackground(palette().color(QPalette::Background));
+	  p->setFont(labelFont());
+	  p->setPen(TRACKER_TEXT_COLOR);
+	  p->eraseRect(0,0,d_wave_map[1]->size().width(),
+		       d_wave_map[1]->size().height());
+	}
+	else {
+	  p->setBackground(Qt::gray);
+	  p->eraseRect(0,0,d_wave_map[1]->size().width(),
+		       d_wave_map[1]->size().height());
+	}
+	if(d_start_time>QTime(0,0,0)) {
+	  p->setFont(labelFont());
+	  p->setPen(TRACKER_TEXT_COLOR);
+	  p->drawText(550,75,tr("Start")+" "+
+		      d_start_time.toString("h:mm:ss"));
+	}           
+	p->end();
+	delete p;
       }
-      else {
-	p->setBackground(Qt::gray);
-	p->eraseRect(0,0,d_wave_map[1]->size().width(),
-		     d_wave_map[1]->size().height());
-      }
-      if(d_start_time>QTime(0,0,0)) {
-        p->setFont(labelFont());
-	p->setPen(TRACKER_TEXT_COLOR);
-        p->drawText(550,75,tr("Start")+" "+
-		    d_start_time.toString("h:mm:ss"));
-      }           
-      p->end();
-      delete p;
     }
     else {
       if((d_loglines[1]->transType()==RDLogLine::Segue)) {
@@ -2942,127 +2957,131 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
       switch(d_deck_state) {
       case RDTrackerWidget::DeckTrack2:
       case RDTrackerWidget::DeckTrack3:
-	p=new QPainter(d_wave_map[1]);
-	p->setPen(TRACKER_RECORD_COLOR);
-	p->setBrush(TRACKER_RECORD_COLOR);
-	p->setBackground(back_color);
-	p->eraseRect(0,0,d_wave_map[1]->size().width(),
-		     d_wave_map[1]->size().height());
-	p->fillRect(-d_wave_origin[1]/
-		    TRACKER_MSECS_PER_PIXEL,
-		    TRACKER_Y_HEIGHT/4,
-		    d_recording_pos/TRACKER_MSECS_PER_PIXEL,
-		    TRACKER_Y_HEIGHT/2,TRACKER_RECORD_COLOR);
-	p->setFont(labelFont());
-        if(d_start_time>QTime(0,0,0)) {
-	  p->setPen(TRACKER_TEXT_COLOR);
-	  track_time=d_start_time;
-	  track_time=track_time.
-	    addMSecs(d_time_remaining_start-d_time_counter);
-          p->drawText(550,75,tr("Time")+" "+track_time.toString("h:mm:ss"));
-        }                  
-	p->end();
-	delete p;
+	if(!d_wave_map[1]->isNull()) {
+	  p=new QPainter(d_wave_map[1]);
+	  p->setPen(TRACKER_RECORD_COLOR);
+	  p->setBrush(TRACKER_RECORD_COLOR);
+	  p->setBackground(back_color);
+	  p->eraseRect(0,0,d_wave_map[1]->size().width(),
+		       d_wave_map[1]->size().height());
+	  p->fillRect(-d_wave_origin[1]/
+		      TRACKER_MSECS_PER_PIXEL,
+		      TRACKER_Y_HEIGHT/4,
+		      d_recording_pos/TRACKER_MSECS_PER_PIXEL,
+		      TRACKER_Y_HEIGHT/2,TRACKER_RECORD_COLOR);
+	  p->setFont(labelFont());
+	  if(d_start_time>QTime(0,0,0)) {
+	    p->setPen(TRACKER_TEXT_COLOR);
+	    track_time=d_start_time;
+	    track_time=track_time.
+	      addMSecs(d_time_remaining_start-d_time_counter);
+	    p->drawText(550,75,tr("Time")+" "+track_time.toString("h:mm:ss"));
+	  }                  
+	  p->end();
+	  delete p;
+	}
 	break;
 
       default:
-	d_wpg[1]->begin(d_wave_map[1]);
-	d_wpg[1]->setFont(labelFont());
-	d_wpg[1]->setPen(TRACKER_TEXT_COLOR);
-	d_wpg[1]->setBackground(back_color);
-	d_wpg[1]->eraseRect(0,0,d_wave_map[1]->size().width(),
-			  d_wave_map[1]->size().height());
-	if(!d_wave_name[1].isEmpty()) {
-	  d_wpg[1]->drawWaveByMsecs(0,d_wave_map[1]->width(),
-				  d_wave_origin[1],
-				  d_wave_origin[1]+d_wave_width,800,
-				  RDWavePainter::Mono,Qt::black,
-				  d_loglines[1]->
-				  startPoint(RDLogLine::CartPointer),
-				  d_loglines[1]->
-				  endPoint(RDLogLine::CartPointer));
-	}
-	if(d_track_line>=0) {
+	if(!d_wave_map[1]->isNull()) {
+	  d_wpg[1]->begin(d_wave_map[1]);
+	  d_wpg[1]->setFont(labelFont());
+	  d_wpg[1]->setPen(TRACKER_TEXT_COLOR);
+	  d_wpg[1]->setBackground(back_color);
+	  d_wpg[1]->eraseRect(0,0,d_wave_map[1]->size().width(),
+			      d_wave_map[1]->size().height());
+	  if(!d_wave_name[1].isEmpty()) {
+	    d_wpg[1]->drawWaveByMsecs(0,d_wave_map[1]->width(),
+				      d_wave_origin[1],
+				      d_wave_origin[1]+d_wave_width,800,
+				      RDWavePainter::Mono,Qt::black,
+				      d_loglines[1]->
+				      startPoint(RDLogLine::CartPointer),
+				      d_loglines[1]->
+				      endPoint(RDLogLine::CartPointer));
+	  }
+	  if(d_track_line>=0) {
 
-	  //
-	  // Draw Segue Markers
-	  //
-	  if(d_loglines[1]->segueStartPoint(RDLogLine::CartPointer)>=0) {
-	    xpos=(d_loglines[1]->segueStartPoint(RDLogLine::CartPointer)-
-		  d_wave_origin[1])/TRACKER_MSECS_PER_PIXEL;
-	    DrawCursor(d_wpg[1],d_wave_map[1]->height(),xpos,
-		       RD_SEGUE_MARKER_COLOR,20,true);
-	    xpos=(d_loglines[1]->segueEndPoint(RDLogLine::CartPointer)-
-		  d_wave_origin[1])/TRACKER_MSECS_PER_PIXEL;
-	    DrawCursor(d_wpg[1],d_wave_map[1]->height(),xpos,
-		       RD_SEGUE_MARKER_COLOR,20,false);
+	    //
+	    // Draw Segue Markers
+	    //
+	    if(d_loglines[1]->segueStartPoint(RDLogLine::CartPointer)>=0) {
+	      xpos=(d_loglines[1]->segueStartPoint(RDLogLine::CartPointer)-
+		    d_wave_origin[1])/TRACKER_MSECS_PER_PIXEL;
+	      DrawCursor(d_wpg[1],d_wave_map[1]->height(),xpos,
+			 RD_SEGUE_MARKER_COLOR,20,true);
+	      xpos=(d_loglines[1]->segueEndPoint(RDLogLine::CartPointer)-
+		    d_wave_origin[1])/TRACKER_MSECS_PER_PIXEL;
+	      DrawCursor(d_wpg[1],d_wave_map[1]->height(),xpos,
+			 RD_SEGUE_MARKER_COLOR,20,false);
 	    }
 
-	  //
-	  // Draw Fadeup Marker
-	  //
-	  if(d_loglines[1]->fadeupPoint(RDLogLine::CartPointer)>=0) {
-	    xpos=(d_loglines[1]->fadeupPoint(RDLogLine::CartPointer)-
-		  d_wave_origin[1])/TRACKER_MSECS_PER_PIXEL;
-	    DrawCursor(d_wpg[1],d_wave_map[1]->height(),xpos,
-		       RD_FADE_MARKER_COLOR,30,false);
-	  }
+	    //
+	    // Draw Fadeup Marker
+	    //
+	    if(d_loglines[1]->fadeupPoint(RDLogLine::CartPointer)>=0) {
+	      xpos=(d_loglines[1]->fadeupPoint(RDLogLine::CartPointer)-
+		    d_wave_origin[1])/TRACKER_MSECS_PER_PIXEL;
+	      DrawCursor(d_wpg[1],d_wave_map[1]->height(),xpos,
+			 RD_FADE_MARKER_COLOR,30,false);
+	    }
                
-	  //
-	  // Draw Start Marker
-	  //
-	  xpos=(d_loglines[1]->startPoint(RDLogLine::CartPointer)-
-		d_wave_origin[1])/TRACKER_MSECS_PER_PIXEL;
-	  DrawCursor(d_wpg[1],d_wave_map[1]->height(),xpos,
-		     RD_START_END_MARKER_COLOR,10,true);
-
-	  //
-	  // Draw Fadedown Marker
-	  //
-	  if(d_loglines[1]->fadedownPoint(RDLogLine::CartPointer)>=0) {
-	    xpos=(d_loglines[1]->fadedownPoint(RDLogLine::CartPointer)-
+	    //
+	    // Draw Start Marker
+	    //
+	    xpos=(d_loglines[1]->startPoint(RDLogLine::CartPointer)-
 		  d_wave_origin[1])/TRACKER_MSECS_PER_PIXEL;
 	    DrawCursor(d_wpg[1],d_wave_map[1]->height(),xpos,
-		       RD_FADE_MARKER_COLOR,30,true);
-	  }
-              
-	  //
-	  // Draw End Marker
-	  //
-	  xpos=(d_loglines[1]->endPoint(RDLogLine::CartPointer)-
-		d_wave_origin[1])/TRACKER_MSECS_PER_PIXEL;
-	  DrawCursor(d_wpg[1],d_wave_map[1]->height(),xpos,
-		     RD_START_END_MARKER_COLOR,10,false);
-
-	  //
-	  // Draw Rubber Bands
-	  //
-	  DrawRubberBand(d_wpg[1],1);
-
-	  //
-	  // Draw Menu Marker
-	  //
-          if(d_menu_clicked_point>=0 && d_rightclick_track==1) {
-	    DrawCursor(d_wpg[1],d_wave_map[1]->height(),d_menu_clicked_point,
 		       RD_START_END_MARKER_COLOR,10,true);
-	    DrawCursor(d_wpg[1],d_wave_map[1]->height(),d_menu_clicked_point,
+
+	    //
+	    // Draw Fadedown Marker
+	    //
+	    if(d_loglines[1]->fadedownPoint(RDLogLine::CartPointer)>=0) {
+	      xpos=(d_loglines[1]->fadedownPoint(RDLogLine::CartPointer)-
+		    d_wave_origin[1])/TRACKER_MSECS_PER_PIXEL;
+	      DrawCursor(d_wpg[1],d_wave_map[1]->height(),xpos,
+			 RD_FADE_MARKER_COLOR,30,true);
+	    }
+              
+	    //
+	    // Draw End Marker
+	    //
+	    xpos=(d_loglines[1]->endPoint(RDLogLine::CartPointer)-
+		  d_wave_origin[1])/TRACKER_MSECS_PER_PIXEL;
+	    DrawCursor(d_wpg[1],d_wave_map[1]->height(),xpos,
 		       RD_START_END_MARKER_COLOR,10,false);
-          }       
-	  d_wpg[1]->setPen(TRACKER_TEXT_COLOR);
-	  d_wpg[1]->drawText(5,14,d_loglines[1]->title());
+
+	    //
+	    // Draw Rubber Bands
+	    //
+	    DrawRubberBand(d_wpg[1],1);
+
+	    //
+	    // Draw Menu Marker
+	    //
+	    if(d_menu_clicked_point>=0 && d_rightclick_track==1) {
+	      DrawCursor(d_wpg[1],d_wave_map[1]->height(),d_menu_clicked_point,
+			 RD_START_END_MARKER_COLOR,10,true);
+	      DrawCursor(d_wpg[1],d_wave_map[1]->height(),d_menu_clicked_point,
+			 RD_START_END_MARKER_COLOR,10,false);
+	    }       
+	    d_wpg[1]->setPen(TRACKER_TEXT_COLOR);
+	    d_wpg[1]->drawText(5,14,d_loglines[1]->title());
+	  }
+	  if(d_start_time>QTime(0,0,0)) {
+	    d_wpg[1]->drawText(550,75,tr("Start")+" "+
+			       d_start_time.toString("h:mm:ss"));
+	  }
+	  d_wpg[1]->end();
 	}
-        if(d_start_time>QTime(0,0,0)) {
-	  d_wpg[1]->drawText(550,75,tr("Start")+" "+
-			   d_start_time.toString("h:mm:ss"));
-        }
-	d_wpg[1]->end();
 	break;
       }
     }
     break;
 
   case 2:
-    if(d_wave_name[2].isEmpty()) {
+    if(d_wave_name[2].isEmpty()&&(!d_wave_map[2]->isNull())) {
       p=new QPainter(d_wave_map[2]);
       p->setBackground(Qt::gray);
       p->eraseRect(0,0,d_wave_map[2]->size().width(),
@@ -3077,117 +3096,117 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
       else {
 	back_color=Qt::lightGray;
       }
-      d_wpg[2]->begin(d_wave_map[2]);
-      d_wpg[2]->setFont(labelFont());
-      d_wpg[2]->setBackground(back_color);
-      d_wpg[2]->eraseRect(0,0,d_wave_map[2]->size().width(),
-			d_wave_map[2]->size().height());
-      if(!d_wave_name[2].isEmpty()) {
-	d_wpg[2]->
-	  drawWaveByMsecs(0,d_wave_map[2]->width(),d_wave_origin[2],
-			  d_wave_origin[2]+d_wave_width,800,
-			  RDWavePainter::Mono,Qt::black,
-			  d_loglines[2]->startPoint(RDLogLine::CartPointer),
-			  d_loglines[2]->endPoint(RDLogLine::CartPointer));
-
-	//
-	// Draw Talk Markers
-	//
-	if(d_loglines[2]->talkEndPoint()>0) {
-	  int tsxpos;
-	  int texpos;
-	  if(d_loglines[2]->talkStartPoint()==0){
-	    tsxpos=(d_loglines[2]->startPoint()-
-		    d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
-	  }
-	  else {
-	    tsxpos=(d_loglines[2]->talkStartPoint()-
-		    d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
-	  }
-	  if(d_loglines[2]->talkEndPoint()==0) {
-	    texpos=(d_loglines[2]->startPoint()-
-		    d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
-	  }
-	  else {
-	    if(d_loglines[2]->talkStartPoint()==0) {
-	      texpos=(d_loglines[2]->startPoint()+
-                      d_loglines[2]->talkEndPoint()-
+      if(!d_wave_map[2]->isNull()) {
+	d_wpg[2]->begin(d_wave_map[2]);
+	d_wpg[2]->setFont(labelFont());
+	d_wpg[2]->setBackground(back_color);
+	d_wpg[2]->eraseRect(0,0,d_wave_map[2]->size().width(),
+			    d_wave_map[2]->size().height());
+	if(!d_wave_name[2].isEmpty()) {
+	  d_wpg[2]->
+	    drawWaveByMsecs(0,d_wave_map[2]->width(),d_wave_origin[2],
+			    d_wave_origin[2]+d_wave_width,800,
+			    RDWavePainter::Mono,Qt::black,
+			    d_loglines[2]->startPoint(RDLogLine::CartPointer),
+			    d_loglines[2]->endPoint(RDLogLine::CartPointer));
+	    //
+	  // Draw Talk Markers
+	  //
+	  if(d_loglines[2]->talkEndPoint()>0) {
+	    int tsxpos;
+	    int texpos;
+	    if(d_loglines[2]->talkStartPoint()==0){
+	      tsxpos=(d_loglines[2]->startPoint()-
 		      d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
 	    }
 	    else {
-	      texpos=(d_loglines[2]->talkEndPoint()-
+	      tsxpos=(d_loglines[2]->talkStartPoint()-
 		      d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
 	    }
+	    if(d_loglines[2]->talkEndPoint()==0) {
+	      texpos=(d_loglines[2]->startPoint()-
+		      d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
+	    }
+	    else {
+	      if(d_loglines[2]->talkStartPoint()==0) {
+		texpos=(d_loglines[2]->startPoint()+
+			d_loglines[2]->talkEndPoint()-
+			d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
+	      }
+	      else {
+		texpos=(d_loglines[2]->talkEndPoint()-
+			d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
+	      }
+	    }
+	    if(tsxpos!=texpos){
+	      DrawCursor(d_wpg[2],d_wave_map[2]->height(),tsxpos,
+			 RD_TALK_MARKER_COLOR,20,true);
+	      DrawCursor(d_wpg[2],d_wave_map[2]->height(),texpos,
+			 RD_TALK_MARKER_COLOR,20,false);
+	    }
 	  }
-	  if(tsxpos!=texpos){
-	    DrawCursor(d_wpg[2],d_wave_map[2]->height(),tsxpos,
-		       RD_TALK_MARKER_COLOR,20,true);
-	    DrawCursor(d_wpg[2],d_wave_map[2]->height(),texpos,
-		       RD_TALK_MARKER_COLOR,20,false);
-	  }
-	}
 
-	//
-	// Draw Fadeup Marker
-	//
-	if(d_loglines[2]->fadeupPoint(RDLogLine::CartPointer)>=0) {
-	  xpos=(d_loglines[2]->fadeupPoint(RDLogLine::CartPointer)-
+	  //
+	  // Draw Fadeup Marker
+	  //
+	  if(d_loglines[2]->fadeupPoint(RDLogLine::CartPointer)>=0) {
+	    xpos=(d_loglines[2]->fadeupPoint(RDLogLine::CartPointer)-
+		  d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
+	    DrawCursor(d_wpg[2],d_wave_map[2]->height(),xpos,
+		       RD_FADE_MARKER_COLOR,30,false);
+	  }
+	      	         
+	  //
+	  // Draw Start Marker
+	  //
+	  xpos=(d_loglines[2]->startPoint(RDLogLine::CartPointer)-
 		d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
 	  DrawCursor(d_wpg[2],d_wave_map[2]->height(),xpos,
-		     RD_FADE_MARKER_COLOR,30,false);
-	}
-	      	         
-	//
-	// Draw Start Marker
-	//
-	xpos=(d_loglines[2]->startPoint(RDLogLine::CartPointer)-
-	      d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
-	DrawCursor(d_wpg[2],d_wave_map[2]->height(),xpos,
-		   RD_START_END_MARKER_COLOR,10,true);
-
-	//
-	// Draw End Marker
-	//
-	xpos=(d_loglines[2]->endPoint(RDLogLine::CartPointer)-
-	      d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
-	DrawCursor(d_wpg[2],d_wave_map[2]->height(),xpos,
-		   RD_START_END_MARKER_COLOR,10,false);
-
-	//
-	// Draw Menu Marker
-	//
-        if(d_menu_clicked_point>=0 && d_rightclick_track==2) {
-	  DrawCursor(d_wpg[2],d_wave_map[2]->height(),d_menu_clicked_point,
 		     RD_START_END_MARKER_COLOR,10,true);
-	  DrawCursor(d_wpg[2],d_wave_map[2]->height(),d_menu_clicked_point,
-		     RD_START_END_MARKER_COLOR,10,false);
-        }       
- 
-	//
-	// Draw Rubber Bands
-	//
-	DrawRubberBand(d_wpg[2],2);
-      }
-      d_wpg[2]->setPen(TRACKER_TEXT_COLOR);
-      d_wpg[2]->drawText(5,14,d_loglines[2]->
-		       resolveWildcards(rda->logeditConf()->waveformCaption()));
-      if(d_recording && (d_deck[2]->state()==RDPlayDeck::Playing ||
-			     d_deck[2]->state()==RDPlayDeck::Stopping)) {
-	int talk_len=d_loglines[2]->talkLength();
-	if(talk_len>0 && d_deck[2]->currentPosition()>
-	   d_loglines[2]->talkStartPoint()){
-	  talk_len-=d_deck[2]->currentPosition()-
-	    d_loglines[2]->talkStartPoint();
-	}
-	d_wpg[2]->drawText(550,75,tr("Talk")+
-			 QString().sprintf(" :%d",(talk_len+500)/1000));
-      }
-      else {
-	d_wpg[2]->drawText(550,75,tr("Talk")+QString().
-		  sprintf(" :%d",(d_loglines[2]->talkLength()+500)/1000));
-      }
 
-      d_wpg[2]->end();
+	  //
+	  // Draw End Marker
+	  //
+	  xpos=(d_loglines[2]->endPoint(RDLogLine::CartPointer)-
+		d_wave_origin[2])/TRACKER_MSECS_PER_PIXEL;
+	  DrawCursor(d_wpg[2],d_wave_map[2]->height(),xpos,
+		     RD_START_END_MARKER_COLOR,10,false);
+
+	  //
+	  // Draw Menu Marker
+	  //
+	  if(d_menu_clicked_point>=0 && d_rightclick_track==2) {
+	    DrawCursor(d_wpg[2],d_wave_map[2]->height(),d_menu_clicked_point,
+		       RD_START_END_MARKER_COLOR,10,true);
+	    DrawCursor(d_wpg[2],d_wave_map[2]->height(),d_menu_clicked_point,
+		       RD_START_END_MARKER_COLOR,10,false);
+	  }       
+ 
+	  //
+	  // Draw Rubber Bands
+	  //
+	  DrawRubberBand(d_wpg[2],2);
+	}
+	d_wpg[2]->setPen(TRACKER_TEXT_COLOR);
+	d_wpg[2]->drawText(5,14,d_loglines[2]->
+			   resolveWildcards(rda->logeditConf()->waveformCaption()));
+	if(d_recording && (d_deck[2]->state()==RDPlayDeck::Playing ||
+			   d_deck[2]->state()==RDPlayDeck::Stopping)) {
+	  int talk_len=d_loglines[2]->talkLength();
+	  if(talk_len>0 && d_deck[2]->currentPosition()>
+	     d_loglines[2]->talkStartPoint()){
+	    talk_len-=d_deck[2]->currentPosition()-
+	      d_loglines[2]->talkStartPoint();
+	  }
+	  d_wpg[2]->drawText(550,75,tr("Talk")+
+			     QString().sprintf(" :%d",(talk_len+500)/1000));
+	}
+	else {
+	  d_wpg[2]->drawText(550,75,tr("Talk")+QString().
+			     sprintf(" :%d",(d_loglines[2]->talkLength()+500)/1000));
+	}
+	d_wpg[2]->end();
+      }
     }
     break;
   }

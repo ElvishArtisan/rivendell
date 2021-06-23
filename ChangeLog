@@ -21957,3 +21957,6 @@
 	* Broke out voicetracker functionality from rdlogedit(1) into
 	'RDTrackerEditDialog', 'RDTrackerModel', 'RDTrackerTableView'
 	and 'RDTrackerWidget' classes.
+2021-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a voice tracker widget to the right-hand side of
+	rdairplay(1).

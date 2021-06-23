@@ -30,11 +30,10 @@
 #include <rdsvc.h>
 #include <rdstereometer.h>
 #include <rdtransportbutton.h>
-#include <rdwavepainter.h>
-#include <rdwidget.h>
-
 #include <rdtrackermodel.h>
 #include <rdtrackertableview.h>
+#include <rdwavepainter.h>
+#include <rdwidget.h>
 
 //
 // Widget Settings
@@ -158,7 +157,6 @@ class RDTrackerWidget : public RDWidget
   int SingleSelectionLine(bool incl_end_handle=false);
   void SendNotification(RDNotification::Action action,const QString &log_name);
   void SendNotification(RDNotification::Action action,unsigned cartnum);
-
   bool d_segue_loaded;
   unsigned d_play_start_macro;
   unsigned d_play_end_macro;

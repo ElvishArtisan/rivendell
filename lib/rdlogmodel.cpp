@@ -301,12 +301,12 @@ int RDLogModel::append(const QString &logname,bool track_ptrs)
 void RDLogModel::clear()
 {
   if(d_log_lines.size()>0) {
-    beginRemoveRows(QModelIndex(),0,lineCount()-1);
+    beginResetModel();
     for(int i=0;i<d_log_lines.size();i++) {
       delete d_log_lines.at(i);
     }
     d_log_lines.clear();
-    endRemoveRows();
+    endResetModel();
   }
   d_log_name="";
   d_max_id=0;

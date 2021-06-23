@@ -35,6 +35,7 @@
 #include "post_counter.h"
 #include "pie_counter.h"
 #include "stop_counter.h"
+#include "voicetracker.h"
 #include "wall_clock.h"
 
 //
@@ -80,6 +81,7 @@ class MainWidget : public RDMainWindow
   void copyButtonData();
   void fullLogButtonData(int);
   void panelButtonData();
+  void trackerButtonData();
   void modeButtonData();
   void selectClickedData(int id,int line,RDLogLine::Status status);
   void selectClickedData(unsigned cartnum,int row,int col);
@@ -112,9 +114,12 @@ class MainWidget : public RDMainWindow
   bool AssertChannelLock(int dir,int card,int port);
   bool AssertChannelLock(int dir,int achan);
   int AudioChannel(int card,int port) const;
+  void ShowTracker(bool state);
   RDAirPlayConf::Channel PanelChannel(int mport) const;
   RDLogPlay *air_log[RDAIRPLAY_LOG_QUANTITY];
   RDSoundPanel *air_panel;
+  VoiceTracker *air_tracker;
+  QPushButton *air_tracker_button;
   PostCounter *air_post_counter;
   PieCounter *air_pie_counter;
   RDStereoMeter *air_stereo_meter;
