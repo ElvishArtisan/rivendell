@@ -197,6 +197,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdmatrixlistmodel.cpp rdmatrixlistmodel.h\
                         rdmblookup.cpp rdmblookup.h\
                         rdmeteraverage.cpp rdmeteraverage.h\
+                        rdmeterstrip.cpp rdmeterstrip.h\
                         rdmixer.cpp rdmixer.h\
                         rdmonitor_config.cpp rdmonitor_config.h\
 			rdmp4.cpp rdmp4.h\
@@ -379,6 +380,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdmarkerview.cpp\
                           moc_rdmatrixlistmodel.cpp\
                           moc_rdmblookup.cpp\
+                          moc_rdmeterstrip.cpp\
                           moc_rdmulticaster.cpp\
                           moc_rdnodelistmodel.cpp\
                           moc_rdnodeslotsmodel.cpp\

@@ -42,6 +42,7 @@ noinst_PROGRAMS = audio_convert_test\
                   log_unlink_test\
                   mcast_recv_test\
                   metadata_wildcard_test\
+                  meterstrip_test\
                   notification_test\
                   rdxml_parse_test\
                   readcd_test\
@@ -103,6 +104,10 @@ log_unlink_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 dist_metadata_wildcard_test_SOURCES = metadata_wildcard_test.cpp metadata_wildcard_test.h
 nodist_metadata_wildcard_test_SOURCES = moc_metadata_wildcard_test.cpp
 metadata_wildcard_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ 
+
+dist_meterstrip_test_SOURCES = meterstrip_test.cpp meterstrip_test.h
+nodist_meterstrip_test_SOURCES = moc_meterstrip_test.cpp
+meterstrip_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ 
 
 dist_mcast_recv_test_SOURCES = mcast_recv_test.cpp mcast_recv_test.h
 nodist_mcast_recv_test_SOURCES = moc_mcast_recv_test.cpp

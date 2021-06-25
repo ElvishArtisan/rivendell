@@ -21960,3 +21960,5 @@
 2021-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Added a voice tracker widget to the right-hand side of
 	rdairplay(1).
+2021-06-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDMeterStrip' widget.

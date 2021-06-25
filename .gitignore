@@ -134,6 +134,7 @@ tests/getpids_test
 tests/log_unlink_test
 tests/mcast_recv_test
 tests/metadata_wildcard_test
+tests/meterstrip_test
 tests/notification_test
 tests/rdxml_parse_test
 tests/readcd_test
