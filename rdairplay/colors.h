@@ -75,6 +75,7 @@
 //
 #define AIR_FLASH_COLOR Qt::blue
 #define AIR_ERROR_COLOR Qt::red
+#define AIR_WIDGET_BACKGROUND_COLOR "#D0D0D0"
 
 //
 // LogLineBox Colors

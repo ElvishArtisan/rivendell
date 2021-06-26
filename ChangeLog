@@ -21965,3 +21965,6 @@
 2021-06-26 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the layout in rdairplay(1) to achieve cleaner
 	separation of global and per-log UI elements.
+2021-06-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'AIR_WIDGET_BACKGROUND_COLOR' define to
+	'rdairplay/colors.h'.

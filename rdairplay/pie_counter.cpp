@@ -43,7 +43,8 @@ PieCounter::PieCounter(int count_length,QWidget *parent)
   onair_on_palette=palette();
   onair_on_palette.setColor(QPalette::Background,PIE_ONAIR_COLOR);
   onair_off_palette=palette();
-  onair_on_palette.setColor(QPalette::Background,QColor("#D0D0D0"));
+  onair_on_palette.
+    setColor(QPalette::Background,QColor(AIR_WIDGET_BACKGROUND_COLOR));
   setPalette(onair_on_palette);
   
   setAutoFillBackground(true);

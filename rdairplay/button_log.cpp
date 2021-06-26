@@ -21,6 +21,7 @@
 #include <QPainter>
 
 #include "button_log.h"
+#include "colors.h"
 
 ButtonLog::ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
 		     QWidget *parent)
@@ -535,7 +536,8 @@ void ButtonLog::resizeEvent(QResizeEvent *e)
 void ButtonLog::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->fillRect(0,0,size().width(),size().height(),QColor("#D0D0D0"));
+  p->fillRect(0,0,size().width(),size().height(),
+	      QColor(AIR_WIDGET_BACKGROUND_COLOR));
   delete p;
 }
 
