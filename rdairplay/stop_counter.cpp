@@ -57,7 +57,8 @@ void StopCounter::setTimeMode(RDAirPlayConf::TimeMode mode)
 
 QSize StopCounter::sizeHint() const
 {
-  return QSize(200,60);
+  return QSize(180,80);
+  //  return QSize(200,60);
 }
 
 
@@ -138,7 +139,7 @@ void StopCounter::UpdateTime()
 						 QPalette::Background));
     p->setPen(QColor(text_color));
     p->setFont(subLabelFont());
-    p->drawText((sizeHint().width()-2-p->fontMetrics().width(stop_text))/2,22,
+    p->drawText((sizeHint().width()-2-p->fontMetrics().width(stop_text))/2,32,
 		stop_text);
     p->setFont(bannerFont());
     if (msecs < 0){
@@ -151,11 +152,12 @@ void StopCounter::UpdateTime()
     }
     if(stop_running) {
       text=QTime(0,0,1).addMSecs(msecs).toString("hh:mm:ss");
-      p->drawText((sizeHint().width()-2-p->fontMetrics().width(text))/2,49,text);
+      p->drawText((sizeHint().width()-2-p->fontMetrics().width(text))/2,59,
+		  text);
     }
     else {
       p->drawText((sizeHint().width()-2-p->
-		   fontMetrics().width(tr("Stopped")))/2,49,
+		   fontMetrics().width(tr("Stopped")))/2,59,
 		  tr("Stopped"));
     }
     p->end();

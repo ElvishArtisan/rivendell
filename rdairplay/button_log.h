@@ -25,7 +25,10 @@
 
 #include "list_log.h"
 #include "loglinebox.h"
+#include "pie_counter.h"
+#include "post_counter.h"
 #include "start_button.h"
+#include "stop_counter.h"
 
 //
 // Widget Settings
@@ -46,6 +49,9 @@ class ButtonLog : public RDWidget
   RDAirPlayConf::ActionMode actionMode() const;
   void setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum=0);
   void setTimeMode(RDAirPlayConf::TimeMode mode);
+  PieCounter *pieCounterWidget() const;
+  PostCounter *postCounterWidget() const;
+  StopCounter *stopCounterWidget() const;
 
  public slots:
   void startButton(int);
@@ -64,6 +70,7 @@ class ButtonLog : public RDWidget
 
  protected:
   void resizeEvent(QResizeEvent *e);
+  void paintEvent(QPaintEvent *e);
   
  signals:
   void selectClicked(int id,int line,RDLogLine::Status);
@@ -83,6 +90,9 @@ class ButtonLog : public RDWidget
   RDAirPlayConf::TimeMode log_time_mode;
   EditEvent *log_event_edit;
   bool log_pause_enabled;
+  PieCounter *log_pie_counter_widget;
+  PostCounter *log_post_counter_widget;
+  StopCounter *log_stop_counter_widget;
 };
 
 

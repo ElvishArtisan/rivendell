@@ -2,7 +2,7 @@
 //
 // The pie counter widget for Rivendell
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,8 +39,8 @@
 //
 // Extra padding for the bounding box
 //
-#define PIE_X_PADDING 28
-#define PIE_Y_PADDING 7
+#define PIE_X_PADDING 0
+#define PIE_Y_PADDING 0
 
 
 class PieCounter : public RDWidget
@@ -92,4 +92,4 @@ class PieCounter : public RDWidget
   QPixmap pie_pixmap;
 };
 
-#endif
+#endif  // PIE_COUNTER_H

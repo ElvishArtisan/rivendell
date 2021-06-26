@@ -18,6 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QPainter>
+
 #include "button_log.h"
 
 ButtonLog::ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
@@ -46,6 +48,22 @@ ButtonLog::ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
   // Edit Event Dialog
   //
   log_event_edit=new EditEvent(log_log,this);
+
+  //
+  // Top Widgets
+  //
+  log_pie_counter_widget=
+    new PieCounter(rda->airplayConf()->pieCountLength(),this);
+  log_pie_counter_widget->setCountLength(rda->airplayConf()->pieCountLength());
+  log_pie_counter_widget->setFocusPolicy(Qt::NoFocus);
+
+  log_post_counter_widget=new PostCounter(this);
+  log_post_counter_widget->setPostPoint(QTime(),0,false,false);
+  log_post_counter_widget->setFocusPolicy(Qt::NoFocus);
+
+  log_stop_counter_widget=new StopCounter(this);
+  log_stop_counter_widget->setTime(QTime(0,0,0));
+  log_stop_counter_widget->setFocusPolicy(Qt::NoFocus);
 
   //
   // Line Boxes / Start Buttons
@@ -87,7 +105,7 @@ ButtonLog::ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
 
 QSize ButtonLog::sizeHint() const
 {
-  return QSize(500,530);
+  return QSize(492,800);
 }
 
 
@@ -272,6 +290,24 @@ void ButtonLog::setTimeMode(RDAirPlayConf::TimeMode mode)
 }
 
 
+PieCounter *ButtonLog::pieCounterWidget() const
+{
+  return log_pie_counter_widget;
+}
+
+
+PostCounter *ButtonLog::postCounterWidget() const
+{
+  return log_post_counter_widget;
+}
+
+
+StopCounter *ButtonLog::stopCounterWidget() const
+{
+  return log_stop_counter_widget;
+}
+
+
 void ButtonLog::startButton(int id)
 {
 #ifdef SHOW_SLOTS
@@ -447,15 +483,31 @@ void ButtonLog::cartDroppedData(int line,RDLogLine *ll)
 
 void ButtonLog::resizeEvent(QResizeEvent *e)
 {
+  log_post_counter_widget->setGeometry(5,
+				15+10,
+				log_post_counter_widget->sizeHint().width(),
+				log_post_counter_widget->sizeHint().height());
+  log_pie_counter_widget->setGeometry(10+log_post_counter_widget->size().width(),
+			       10,
+			       log_pie_counter_widget->sizeHint().width(),
+			       log_pie_counter_widget->sizeHint().height());
+  log_stop_counter_widget->setGeometry(10-5+log_pie_counter_widget->sizeHint().width()+
+				log_post_counter_widget->size().width()+10,
+				15+10,
+				log_stop_counter_widget->sizeHint().width(),
+				log_stop_counter_widget->sizeHint().height());
+
+
+
   for(int i=0;i<BUTTON_PLAY_BUTTONS;i++) {
     log_line_box[i]->setGeometry(10+LOGLINEBOX_FULL_HEIGHT,
-				 (LOGLINEBOX_FULL_HEIGHT+11)*i,
+				 130+(LOGLINEBOX_FULL_HEIGHT+11)*i,
 				 log_line_box[i]->sizeHint().width(),
 				 log_line_box[i]->sizeHint().height());
   }
   for(int i=0;i<BUTTON_PLAY_BUTTONS;i++) {
     log_start_button[i]->setGeometry(5,
-				     (LOGLINEBOX_FULL_HEIGHT+11)*i,
+				     130+(LOGLINEBOX_FULL_HEIGHT+11)*i,
 				     LOGLINEBOX_FULL_HEIGHT,
 				     LOGLINEBOX_FULL_HEIGHT);
   }
@@ -463,12 +515,12 @@ void ButtonLog::resizeEvent(QResizeEvent *e)
   QRect viewport=QRect(0,0,size().width(),size().height());
   for(int i=BUTTON_PLAY_BUTTONS;i<BUTTON_TOTAL_BUTTONS;i++) {
     log_line_box[i]->setGeometry(10+85,
-			       (LOGLINEBOX_FULL_HEIGHT+11)*3+
+			       130+(LOGLINEBOX_FULL_HEIGHT+11)*3+
 			       (LOGLINEBOX_HALF_HEIGHT+11)*(i-3),
 				 log_line_box[i]->sizeHint().width(),
 				 log_line_box[i]->sizeHint().height());
     log_start_button[i]->setGeometry(5,
-				     (LOGLINEBOX_FULL_HEIGHT+11)*3+
+				     130+(LOGLINEBOX_FULL_HEIGHT+11)*3+
 				     (LOGLINEBOX_HALF_HEIGHT+11)*(i-3),
 				     LOGLINEBOX_FULL_HEIGHT,
 				     LOGLINEBOX_HALF_HEIGHT);
@@ -477,6 +529,14 @@ void ButtonLog::resizeEvent(QResizeEvent *e)
     log_line_box[i]->setVisible(visible);
     log_start_button[i]->setVisible(visible);
   }
+}
+
+
+void ButtonLog::paintEvent(QPaintEvent *e)
+{
+  QPainter *p=new QPainter(this);
+  p->fillRect(0,0,size().width(),size().height(),QColor("#D0D0D0"));
+  delete p;
 }
 
 

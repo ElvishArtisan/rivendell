@@ -21962,3 +21962,6 @@
 	rdairplay(1).
 2021-06-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDMeterStrip' widget.
+2021-06-26 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the layout in rdairplay(1) to achieve cleaner
+	separation of global and per-log UI elements.

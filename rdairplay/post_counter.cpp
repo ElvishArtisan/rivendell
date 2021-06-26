@@ -72,7 +72,8 @@ void PostCounter::setTimeMode(RDAirPlayConf::TimeMode mode)
 
 QSize PostCounter::sizeHint() const
 {
-  return QSize(200,60);
+  return QSize(180,80);
+  //  return QSize(200,60);
 }
 
 
@@ -181,10 +182,10 @@ void PostCounter::UpdateDisplay()
   p->setPen(QColor(text_color));
   p->setFont(subLabelFont());
   p->drawText((size().width()-2-p->
-	       fontMetrics().width(point))/2,22,point);
+	       fontMetrics().width(point))/2,32,point);
   p->setFont(bannerFont());
   p->drawText((size().width()-2-p->
-	       fontMetrics().width(state))/2,48,state);
+	       fontMetrics().width(state))/2,58,state);
   p->end();
   delete p;
   setIcon(pix);    

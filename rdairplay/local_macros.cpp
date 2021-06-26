@@ -51,20 +51,20 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
   switch(rml->command()) {
   case RDMacro::LB:     // Label
     if(rml->argQuantity()==0) {
-      air_message_label->clear();
+      air_top_strip->messageWidget()->clear();
     }
     else {
       for(int i=0;i<(rml->argQuantity()-1);i++) {
 	str+=(rml->arg(i)+" ");
       }
       str+=rml->arg(rml->argQuantity()-1);
-      pal=air_message_label->palette();
+      pal=air_top_strip->messageWidget()->palette();
       pal.setColor(QPalette::Active,QPalette::Foreground,QColor(Qt::black));
       pal.setColor(QPalette::Inactive,QPalette::Foreground,
 		   QColor(Qt::black));
-      air_message_label->setPalette(pal);
-      air_message_label->setFont(MessageFont(str));
-      air_message_label->setText(str);
+      air_top_strip->messageWidget()->setPalette(pal);
+      air_top_strip->messageWidget()->setFont(MessageFont(str));
+      air_top_strip->messageWidget()->setText(str);
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
@@ -74,7 +74,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 
   case RDMacro::LC:     // Color Label
     if(rml->argQuantity()<=1) {
-      air_message_label->clear();
+      air_top_strip->messageWidget()->clear();
     }
     else {
       QColor color(rml->arg(0));
@@ -85,12 +85,12 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 	str+=(rml->arg(i)+" ");
       }
       str+=rml->arg(rml->argQuantity()-1);
-      pal=air_message_label->palette();
+      pal=air_top_strip->messageWidget()->palette();
       pal.setColor(QPalette::Active,QPalette::Foreground,color);
       pal.setColor(QPalette::Inactive,QPalette::Foreground,color);
-      air_message_label->setPalette(pal);
-      air_message_label->setFont(MessageFont(str));
-      air_message_label->setText(str);
+      air_top_strip->messageWidget()->setPalette(pal);
+      air_top_strip->messageWidget()->setFont(MessageFont(str));
+      air_top_strip->messageWidget()->setText(str);
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);

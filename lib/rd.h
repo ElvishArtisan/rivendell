@@ -419,6 +419,12 @@
 #define RDAIRPLAY_LOG_QUANTITY 3
 
 /*
+ * RDAirPlay Logo
+ */
+#define RD_RDAIRPLAY_LOGO_WIDTH 167
+#define RD_RDAIRPLAY_LOGO_HEIGHT 125
+
+/*
  * Cue Editor Colors
  */
 #define RD_CUEEDITOR_KNOB_COLOR Qt::blue

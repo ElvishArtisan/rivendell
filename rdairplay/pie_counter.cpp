@@ -43,7 +43,9 @@ PieCounter::PieCounter(int count_length,QWidget *parent)
   onair_on_palette=palette();
   onair_on_palette.setColor(QPalette::Background,PIE_ONAIR_COLOR);
   onair_off_palette=palette();
-
+  onair_on_palette.setColor(QPalette::Background,QColor("#D0D0D0"));
+  setPalette(onair_on_palette);
+  
   setAutoFillBackground(true);
 
   pie_time_label=new QLabel(":00",this);
@@ -236,6 +238,8 @@ void PieCounter::paintEvent(QPaintEvent *e)
   int talk_angle=(int)
     (-5760.0*((double)pie_talk_end-(double)pie_talk_start)/(double)pie_length);
   QPainter *p=new QPainter(&pix);
+  p->setRenderHint(QPainter::Antialiasing,true);
+  p->setRenderHint(QPainter::SmoothPixmapTransform,true);
   double ring_angle = ((pie_length < (pie_count_length) ? pie_length :  pie_count_length) - 
 	  ((pie_time >  pie_count_length)  ? pie_count_length : pie_time));
   if (pie_count_length)

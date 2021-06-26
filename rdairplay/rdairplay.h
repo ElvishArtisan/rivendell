@@ -26,17 +26,13 @@
 #include <rdhotkeys.h>
 #include <rdinstancelock.h>
 #include <rdmainwindow.h>
+#include <rdmeterstrip.h>
 #include <rdsound_panel.h>
-#include <rdstereometer.h>
 
 #include "button_log.h"
 #include "colors.h"
-#include "mode_display.h"
-#include "post_counter.h"
-#include "pie_counter.h"
-#include "stop_counter.h"
+#include "topstrip.h"
 #include "voicetracker.h"
-#include "wall_clock.h"
 
 //
 // Widget Settings
@@ -86,7 +82,6 @@ class MainWidget : public RDMainWindow
   void selectClickedData(int id,int line,RDLogLine::Status status);
   void selectClickedData(unsigned cartnum,int row,int col);
   void cartDroppedData(int id,int line,RDLogLine *ll);
-  void meterData();
   void masterTimerData();
   void transportChangedData();
   void timeModeData(RDAirPlayConf::TimeMode mode);
@@ -96,7 +91,6 @@ class MainWidget : public RDMainWindow
   void keyReleaseEvent(QKeyEvent *e);
   void closeEvent(QCloseEvent *);
   void resizeEvent(QResizeEvent *e);
-  void paintEvent(QPaintEvent *e);
   void wheelEvent(QWheelEvent *e);
 
  private:
@@ -120,11 +114,7 @@ class MainWidget : public RDMainWindow
   RDSoundPanel *air_panel;
   VoiceTracker *air_tracker;
   QPushButton *air_tracker_button;
-  PostCounter *air_post_counter;
-  PieCounter *air_pie_counter;
-  RDStereoMeter *air_stereo_meter;
-  StopCounter *air_stop_counter;
-  ModeDisplay *air_mode_display;
+  RDMeterStrip *air_meter_strip;
   RDPushButton *air_add_button;
   RDPushButton *air_delete_button;
   RDPushButton *air_move_button;
@@ -152,7 +142,6 @@ class MainWidget : public RDMainWindow
   QString air_add_filter;
   QString air_add_group;
   QString air_add_schedcode;
-  QLabel *air_message_label;
   int air_source_id;
   int air_meter_card[3];
   int air_meter_port[3];
@@ -191,9 +180,7 @@ class MainWidget : public RDMainWindow
   RDEventPlayer *air_event_player;
   RDHotKeyList *air_keylist;
   RDHotkeys *air_hotkeys;
-
-
-  WallClock *air_clock;
+  TopStrip *air_top_strip;
 };
 
 

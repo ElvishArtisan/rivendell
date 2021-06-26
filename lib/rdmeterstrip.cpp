@@ -34,7 +34,10 @@ RDMeterStrip::RDMeterStrip(QWidget *parent)
 
 QSize RDMeterStrip::sizeHint() const
 {
-  return QSize(40*d_types.size(),130);
+  if(d_types.size()==0) {
+    return QSize(1,125);
+  }
+  return QSize(40*d_types.size(),125);
 }
 
 
@@ -88,6 +91,10 @@ void RDMeterStrip::pollData()
 
 void RDMeterStrip::resizeEvent(QResizeEvent *e)
 {
+  if(d_types.size()==0) {
+    return;
+  }
+
   int w=size().width();
   int h=size().height();
   int margin_x=(w-sizeHint().width())/2;
@@ -99,13 +106,13 @@ void RDMeterStrip::resizeEvent(QResizeEvent *e)
   
   for(int i=0;i<d_card_numbers.size();i++) {
     d_meters.at(2*i)->setGeometry(margin_x+i*slot_w+slot_w/5,
-				  0,
+				  5,
 				  meter_w,
-				  h-20);
+				  h-25);
     d_meters.at(2*i+1)->setGeometry(margin_x+i*slot_w+slot_w/2,
-				    0,
+				    5,
 				    meter_w,
-				    h-20);
+				    h-25);
     d_labels.at(i)->setGeometry(margin_x+i*slot_w,
 				h-20,
 				slot_w,

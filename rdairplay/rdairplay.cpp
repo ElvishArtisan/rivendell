@@ -172,6 +172,44 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
     palette.setBrush(backgroundRole(),bgmap);
     setPalette(palette);
   }
+
+  //
+  // Top Strip
+  //
+  air_top_strip=new TopStrip(this);
+  connect(air_master_timer,SIGNAL(timeout()),
+	  air_top_strip->wallClockWidget(),SLOT(tickClock()));
+  connect(air_top_strip->wallClockWidget(),
+	  SIGNAL(timeModeChanged(RDAirPlayConf::TimeMode)),
+	  this,SLOT(timeModeData(RDAirPlayConf::TimeMode)));
+
+  connect(air_top_strip->modeDisplayWidget(),SIGNAL(clicked()),
+	  this,SLOT(modeButtonData()));
+  connect(rda->ripc(),SIGNAL(onairFlagChanged(bool)),
+	  air_top_strip,SLOT(setOnairFlag(bool)));
+
+  //
+  // Meter Strip
+  //
+  QList<int> strip_cards;
+  QList<int> strip_ports;
+  for(unsigned i=0;i<RDAirPlayConf::LastChannel;i++) {
+    RDAirPlayConf::Channel chan=(RDAirPlayConf::Channel)i;
+    if(((rda->airplayConf()->card(chan)>=0)&&
+	(rda->airplayConf()->port(chan)>=0))&&
+       ((!strip_cards.contains(rda->airplayConf()->card(chan)))||
+	(!strip_ports.contains(rda->airplayConf()->port(chan))))) {
+      strip_cards.push_back(rda->airplayConf()->card(chan));
+      strip_ports.push_back(rda->airplayConf()->port(chan));
+    }
+  }
+  air_meter_strip=new RDMeterStrip(this);
+  for(int i=0;i<strip_cards.size();i++) {
+    air_top_strip->meterWidget()->
+      addOutputMeter(strip_cards.at(i),strip_ports.at(i),
+		     QString().sprintf("M%d",i+1));
+  }
+  
   //
   // Load GPIO Channel Configuration
   //
@@ -316,79 +354,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 				   &air_add_schedcode,"RDAirPlay",false,this);
 
   //
-  // Wall Clock
-  //
-  air_clock=new WallClock(this);
-  air_clock->setCheckSyncEnabled(rda->airplayConf()->checkTimesync());
-  connect(air_master_timer,SIGNAL(timeout()),air_clock,SLOT(tickClock()));
-  air_clock->setFocusPolicy(Qt::NoFocus);
-  connect(air_clock,SIGNAL(timeModeChanged(RDAirPlayConf::TimeMode)),
-	  this,SLOT(timeModeData(RDAirPlayConf::TimeMode)));
-
-  //
-  // Post Counter
-  //
-  air_post_counter=new PostCounter(this);
-  air_post_counter->setPostPoint(QTime(),0,false,false);
-  air_post_counter->setFocusPolicy(Qt::NoFocus);
-  connect(air_master_timer,SIGNAL(timeout()),
-	  air_post_counter,SLOT(tickCounter()));
-  connect(air_log[0],SIGNAL(postPointChanged(QTime,int,bool,bool)),
-	  air_post_counter,SLOT(setPostPoint(QTime,int,bool,bool)));
-
-  //
-  // Pie Counter
-  //
-  air_pie_counter=new PieCounter(rda->airplayConf()->pieCountLength(),this);
-  air_pie_counter->setCountLength(rda->airplayConf()->pieCountLength());
-  air_pie_end=rda->airplayConf()->pieEndPoint();
-  air_pie_counter->setOpMode(air_op_mode[0]);
-  air_pie_counter->setFocusPolicy(Qt::NoFocus);
-  connect(air_master_timer,SIGNAL(timeout()),
-	  air_pie_counter,SLOT(tickCounter()));
-  connect(rda->ripc(),SIGNAL(onairFlagChanged(bool)),
-	  air_pie_counter,SLOT(setOnairFlag(bool)));
-
-  //
-  // Audio Meter
-  //
-  air_stereo_meter=new RDStereoMeter(this);
-  air_stereo_meter->setMode(RDSegMeter::Peak);
-  air_stereo_meter->setFocusPolicy(Qt::NoFocus);
-
-  //
-  // Message Label
-  //
-  air_message_label=new QLabel(this);
-  air_message_label->setStyleSheet("background-color: "+
-				   QColor(LOGLINEBOX_BACKGROUND_COLOR).name());
-  air_message_label->setWordWrap(true);
-  air_message_label->setLineWidth(1);
-  air_message_label->setMidLineWidth(1);
-  air_message_label->setFrameStyle(QFrame::Box|QFrame::Raised);
-  air_message_label->setAlignment(Qt::AlignCenter);
-  air_message_label->setFocusPolicy(Qt::NoFocus);
-
-  //
-  // Stop Counter
-  //
-  air_stop_counter=new StopCounter(this);
-  air_stop_counter->setTime(QTime(0,0,0));
- air_stop_counter->setFocusPolicy(Qt::NoFocus);
-  connect(air_master_timer,SIGNAL(timeout()),
-	  air_stop_counter,SLOT(tickCounter()));
-  connect(air_log[0],SIGNAL(nextStopChanged(QTime)),
-	  air_stop_counter,SLOT(setTime(QTime)));
-
-  //
-  // Mode Display/Button
-  //
-  air_mode_display=new ModeDisplay(this);
-  air_mode_display->setFocusPolicy(Qt::NoFocus);
-  air_mode_display->setOpModeStyle(air_op_mode_style);
-  connect(air_mode_display,SIGNAL(clicked()),this,SLOT(modeButtonData()));
-
-  //
   // Create Palettes
   //
   auto_color=QPalette(QColor(BUTTON_MODE_AUTO_COLOR),
@@ -447,13 +412,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   air_copy_button->setFlashColor(AIR_FLASH_COLOR);
   air_copy_button->setFocusPolicy(Qt::NoFocus);
   connect(air_copy_button,SIGNAL(clicked()),this,SLOT(copyButtonData()));
-
-  //
-  // Meter Timer
-  //
-  QTimer *timer=new QTimer(this);
-  connect(timer,SIGNAL(timeout()),this,SLOT(meterData()));
-  timer->start(RD_METER_UPDATE_INTERVAL);
 
   //
   // Sound Panel Array
@@ -663,10 +621,23 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   air_button_list=
     new ButtonLog(air_log[0],0,rda->airplayConf(),air_pause_enabled,this);
+  air_button_list->pieCounterWidget()->setOpMode(air_op_mode[0]);
+  air_pie_end=rda->airplayConf()->pieEndPoint();
   connect(air_button_list,SIGNAL(selectClicked(int,int,RDLogLine::Status)),
 	  this,SLOT(selectClickedData(int,int,RDLogLine::Status)));
   connect(air_button_list,SIGNAL(cartDropped(int,int,RDLogLine *)),
 	  this,SLOT(cartDroppedData(int,int,RDLogLine *)));
+  connect(air_master_timer,SIGNAL(timeout()),
+	  air_button_list->postCounterWidget(),SLOT(tickCounter()));
+  connect(air_log[0],SIGNAL(postPointChanged(QTime,int,bool,bool)),
+	  air_button_list->postCounterWidget(),
+	  SLOT(setPostPoint(QTime,int,bool,bool)));
+  connect(air_master_timer,SIGNAL(timeout()),
+	  air_button_list->pieCounterWidget(),SLOT(tickCounter()));
+  connect(air_master_timer,SIGNAL(timeout()),
+	  air_button_list->stopCounterWidget(),SLOT(tickCounter()));
+  connect(air_log[0],SIGNAL(nextStopChanged(QTime)),
+	  air_button_list->stopCounterWidget(),SLOT(setTime(QTime)));
 
   //
   // Set Startup Mode
@@ -735,7 +706,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(1024,738);
+  return QSize(1024,870);
 }
 
 
@@ -1617,27 +1588,6 @@ void MainWidget::cartDroppedData(int id,int line,RDLogLine *ll)
 }
 
 
-void MainWidget::meterData()
-{
-#ifdef SHOW_METER_SLOTS
-  printf("meterData()\n");
-#endif
-  double ratio[2]={0.0,0.0};
-  short level[2];
-
-  for(int i=0;i<AIR_TOTAL_PORTS;i++) {
-    if(FirstPort(i)) {
-      rda->cae()->outputMeterUpdate(air_meter_card[i],air_meter_port[i],level);
-      for(int j=0;j<2;j++) {
-	ratio[j]+=pow(10.0,((double)level[j])/1000.0);
-      }
-    }
-  }
-  air_stereo_meter->setLeftPeakBar((int)(log10(ratio[0])*1000.0));
-  air_stereo_meter->setRightPeakBar((int)(log10(ratio[1])*1000.0));
-}
-
-
 void MainWidget::masterTimerData()
 {
   static unsigned counter=0;
@@ -1708,10 +1658,10 @@ void MainWidget::transportChangedData()
       break;
     }
     if(logline->effectiveLength()>0) {
-      if((air_pie_counter->line()!=logline->id())) {
+      if((air_button_list->pieCounterWidget()->line()!=logline->id())) {
 	switch(pie_end) {
 	case RDAirPlayConf::CartEnd:
-	  air_pie_counter->setTime(logline->effectiveLength());
+	  air_button_list->pieCounterWidget()->setTime(logline->effectiveLength());
 	  break;
 	      
 	case RDAirPlayConf::CartTransition:
@@ -1726,50 +1676,50 @@ void MainWidget::transportChangedData()
 	       msecsTo(QTime::currentTime())<
 	       logline->segueLength(next_logline->transType())-
 	       logline->playPosition())) {
-	      air_pie_counter->
+	      air_button_list->pieCounterWidget()->
 		setTime(logline->segueLength(next_logline->transType()));
 	    }
 	  }
 	  else {
-	    air_pie_counter->setTime(logline->effectiveLength());
+	    air_button_list->pieCounterWidget()->setTime(logline->effectiveLength());
 	  }
 	  break;
 	}
 	if(logline->talkStartPoint()==0) {
-          air_pie_counter->setTalkStart(0);
-  	  air_pie_counter->setTalkEnd(logline->talkEndPoint());
+          air_button_list->pieCounterWidget()->setTalkStart(0);
+  	  air_button_list->pieCounterWidget()->setTalkEnd(logline->talkEndPoint());
         }
         else {
-	air_pie_counter->
+	air_button_list->pieCounterWidget()->
 	  setTalkStart(logline->talkStartPoint()-logline->
 		         startPoint());
-	air_pie_counter->
+	air_button_list->pieCounterWidget()->
 	  setTalkEnd(logline->talkEndPoint()-logline->
 		         startPoint());
         }
-	air_pie_counter->setTransType(air_log[0]->nextTrans(line));
+	air_button_list->pieCounterWidget()->setTransType(air_log[0]->nextTrans(line));
 	if(logline->playDeck()==NULL) {
-	  air_pie_counter->setLogline(NULL);
-	  air_pie_counter->start(rda->station()->timeOffset());
+	  air_button_list->pieCounterWidget()->setLogline(NULL);
+	  air_button_list->pieCounterWidget()->start(rda->station()->timeOffset());
 	}
 	else {
-	  air_pie_counter->setLogline(logline);
-	  air_pie_counter->start(((RDPlayDeck *)logline->playDeck())->
+	  air_button_list->pieCounterWidget()->setLogline(logline);
+	  air_button_list->pieCounterWidget()->start(((RDPlayDeck *)logline->playDeck())->
 				 currentPosition()+
 				 rda->station()->timeOffset());
 	}
       }
     }
     else {
-      air_pie_counter->stop();
-      air_pie_counter->resetTime();
-      air_pie_counter->setLine(-1);
+      air_button_list->pieCounterWidget()->stop();
+      air_button_list->pieCounterWidget()->resetTime();
+      air_button_list->pieCounterWidget()->setLine(-1);
     }
   }
   else {
-    air_pie_counter->stop();
-    air_pie_counter->resetTime();
-    air_pie_counter->setLine(-1);
+    air_button_list->pieCounterWidget()->stop();
+    air_button_list->pieCounterWidget()->resetTime();
+    air_button_list->pieCounterWidget()->setLine(-1);
   }
 }
 
@@ -1780,8 +1730,8 @@ void MainWidget::timeModeData(RDAirPlayConf::TimeMode mode)
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log_list[i]->setTimeMode(mode);
   }
-  air_stop_counter->setTimeMode(mode);
-  air_post_counter->setTimeMode(mode);
+  air_button_list->stopCounterWidget()->setTimeMode(mode);
+  air_button_list->postCounterWidget()->setTimeMode(mode);
 }
 
 
@@ -1819,6 +1769,7 @@ void MainWidget::keyPressEvent(QKeyEvent *e)
    break;
   }
 }
+
 
 void MainWidget::keyReleaseEvent(QKeyEvent *e)
 {
@@ -1971,6 +1922,7 @@ void MainWidget::keyReleaseEvent(QKeyEvent *e)
   QWidget::keyReleaseEvent(e);
 }
 
+
 void MainWidget::closeEvent(QCloseEvent *e)
 {
   if(!rda->airplayConf()->exitPasswordValid("")) {
@@ -2012,26 +1964,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   //
   // Top Row
   //
-  air_clock->setGeometry(10,5,air_clock->sizeHint().width(),
-			 air_clock->sizeHint().height());
-  air_post_counter->setGeometry(220,5,air_post_counter->sizeHint().width(),
-				air_post_counter->sizeHint().height());
-  air_pie_counter->setGeometry(426,5,air_pie_counter->sizeHint().width(),
-				air_pie_counter->sizeHint().height());
-  air_stop_counter->setGeometry(600,5,air_stop_counter->sizeHint().width(),
-				air_stop_counter->sizeHint().height());
-  air_mode_display->
-    setGeometry(sizeHint().width()-air_mode_display->sizeHint().width()-10,
-		5,air_mode_display->sizeHint().width(),
-		air_mode_display->sizeHint().height());
-
-  //
-  // Meter Row
-  //
-  air_stereo_meter->setGeometry(50,70,air_stereo_meter->sizeHint().width(),
-				air_stereo_meter->sizeHint().height());
-  air_message_label->setGeometry(sizeHint().width()-425,70,
-		MESSAGE_WIDGET_WIDTH,air_stereo_meter->sizeHint().height());
+  air_top_strip->setGeometry(0,0,w,10+RD_RDAIRPLAY_LOGO_HEIGHT);
 
   //
   // Button Log
@@ -2039,8 +1972,6 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   air_button_list->setGeometry(10,140,
 			       air_button_list->sizeHint().width(),
 			       h-215);
-  //  air_button_list->setGeometry(10,140,air_button_list->sizeHint().width(),
-  //			       air_button_list->sizeHint().height());
   
   //
   // Sound Panel
@@ -2058,7 +1989,6 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   // Full Log Widgets
   //
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    //    air_log_list[i]->setGeometry(w/2,140,(w/2)-20,h-210);
     air_log_list[i]->setGeometry(510,140,w-530,h-210);
   }
 
@@ -2088,16 +2018,6 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log_button[i]->setGeometry(xpos+i*123,size().height()-65,118,60);
   }
-}
-
-
-void MainWidget::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-  p->setPen(Qt::black);
-  p->fillRect(10,70,410,air_stereo_meter->sizeHint().height(),Qt::black);
-  p->end();
-  delete p;
 }
 
 
@@ -2184,16 +2104,16 @@ void MainWidget::SetManualMode(int mach)
     return;
   }
   if(mach==0) {
-    air_pie_counter->setOpMode(RDAirPlayConf::Manual);
+    air_button_list->pieCounterWidget()->setOpMode(RDAirPlayConf::Manual);
   }
-  air_mode_display->setOpMode(mach,RDAirPlayConf::Manual);
+  air_top_strip->modeDisplayWidget()->setOpMode(mach,RDAirPlayConf::Manual);
   air_op_mode[mach]=RDAirPlayConf::Manual;
   rda->airplayConf()->setOpMode(mach,RDAirPlayConf::Manual);
   air_log[mach]->setOpMode(RDAirPlayConf::Manual);
   air_log_list[mach]->setOpMode(RDAirPlayConf::Manual);
   if(mach==0) {
     air_button_list->setOpMode(RDAirPlayConf::Manual);
-    air_post_counter->setDisabled(true);
+    air_button_list->postCounterWidget()->setDisabled(true);
   }
   rda->syslog(LOG_INFO,"log machine %d mode set to MANUAL",mach+1);
 }
@@ -2208,16 +2128,16 @@ void MainWidget::SetAutoMode(int mach)
     return;
   }
   if(mach==0) {
-    air_pie_counter->setOpMode(RDAirPlayConf::Auto);
+    air_button_list->pieCounterWidget()->setOpMode(RDAirPlayConf::Auto);
   }
-  air_mode_display->setOpMode(mach,RDAirPlayConf::Auto);
+  air_top_strip->modeDisplayWidget()->setOpMode(mach,RDAirPlayConf::Auto);
   air_op_mode[mach]=RDAirPlayConf::Auto;
   rda->airplayConf()->setOpMode(mach,RDAirPlayConf::Auto);
   air_log[mach]->setOpMode(RDAirPlayConf::Auto);
   air_log_list[mach]->setOpMode(RDAirPlayConf::Auto);
   if(mach==0) {
     air_button_list->setOpMode(RDAirPlayConf::Auto);
-    air_post_counter->setEnabled(true);
+    air_button_list->postCounterWidget()->setEnabled(true);
   }
   rda->syslog(LOG_INFO,"log machine %d mode set to AUTO",mach+1);
 }
@@ -2232,16 +2152,16 @@ void MainWidget::SetLiveAssistMode(int mach)
     return;
   }
   if(mach==0) {
-    air_pie_counter->setOpMode(RDAirPlayConf::LiveAssist);
+    air_button_list->pieCounterWidget()->setOpMode(RDAirPlayConf::LiveAssist);
   }
-  air_mode_display->setOpMode(mach,RDAirPlayConf::LiveAssist);
+  air_top_strip->modeDisplayWidget()->setOpMode(mach,RDAirPlayConf::LiveAssist);
   air_op_mode[mach]=RDAirPlayConf::LiveAssist;
   rda->airplayConf()->setOpMode(mach,RDAirPlayConf::LiveAssist);
   air_log[mach]->setOpMode(RDAirPlayConf::LiveAssist);
   air_log_list[mach]->setOpMode(RDAirPlayConf::LiveAssist);
   if(mach==0) {
     air_button_list->setOpMode(RDAirPlayConf::LiveAssist); 
-    air_post_counter->setDisabled(true);
+    air_button_list->postCounterWidget()->setDisabled(true);
   }
   rda->syslog(LOG_INFO,"log machine %d mode set to LIVE ASSIST",mach+1);
 }
@@ -2449,7 +2369,6 @@ int main(int argc,char *argv[])
   RDConfig *config=new RDConfig();
   config->load();
   MainWidget *w=new MainWidget(config);
-  //  w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();
 }
