@@ -2028,27 +2028,28 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   //
   // Bottom Button Row
   //
-  air_add_button->setGeometry(10,size().height()-65,80,60);
-  air_delete_button->setGeometry(100,size().height()-65,80,60);
-  air_move_button->setGeometry(190,size().height()-65,80,60);
-  air_copy_button->setGeometry(280,size().height()-65,80,60);
+  air_add_button->setGeometry(10,h-65,80,60);
+  air_delete_button->setGeometry(100,h-65,80,60);
+  air_move_button->setGeometry(190,h-65,80,60);
+  air_copy_button->setGeometry(280,h-65,80,60);
 
-  air_empty_cart->setGeometry(520,size().height()-51,32,32);
+  air_empty_cart->setGeometry(520,h-51,32,32);
 
   int xpos=562;
-  air_panel_button->setGeometry(xpos,size().height()-65,80,60);
+  air_panel_button->setGeometry(xpos,h-65,80,60);
   xpos+=85;
   if((size().width()>=(510+air_tracker->sizeHint().width()))&&
-     (size().height()>=(140+air_tracker->sizeHint().height()))) {
-    air_tracker_button->setGeometry(xpos,size().height()-65,80,60);
+     (h>=(140+air_tracker->sizeHint().height()))) {
+    air_tracker_button->setGeometry(xpos,h-65,80,60);
     xpos+=85;
     air_tracker_button->show();
   }
   else {
     air_tracker_button->hide();
   }
+  int log_button_w=(w-xpos-5)/3;
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log_button[i]->setGeometry(xpos+i*123,size().height()-65,118,60);
+    air_log_button[i]->setGeometry(xpos+i*log_button_w,h-65,log_button_w-5,60);
   }
 }
 

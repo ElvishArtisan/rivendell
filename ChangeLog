@@ -21971,3 +21971,6 @@
 2021-06-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added a shaded rectangle background to the 'Button Log' and
 	right-side widgets in rdairplay(1).
+2021-06-28 Fred Gleason <fredg@paravelsystems.com>
+	* Resized the log buttons in the bottom-right of the rdairplay(1)
+	main screen to use all available space.
