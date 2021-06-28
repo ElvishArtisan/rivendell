@@ -56,6 +56,7 @@ dist_rdairplay_SOURCES = button_log.cpp button_log.h\
                          pie_counter.cpp pie_counter.h\
                          post_counter.cpp post_counter.h\
                          rdairplay.cpp rdairplay.h\
+                         soundpanel.cpp soundpanel.h\
                          start_button.cpp start_button.h\
                          stop_counter.cpp stop_counter.h\
                          topstrip.cpp topstrip.h\
@@ -74,6 +75,7 @@ nodist_rdairplay_SOURCES = moc_button_log.cpp\
                            moc_pie_counter.cpp\
                            moc_post_counter.cpp\
                            moc_rdairplay.cpp\
+                           moc_soundpanel.cpp\
                            moc_start_button.cpp\
                            moc_stop_counter.cpp\
                            moc_topstrip.cpp\

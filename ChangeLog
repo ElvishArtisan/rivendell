@@ -21968,3 +21968,6 @@
 2021-06-26 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'AIR_WIDGET_BACKGROUND_COLOR' define to
 	'rdairplay/colors.h'.
+2021-06-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added a shaded rectangle background to the 'Button Log' and
+	right-side widgets in rdairplay(1).

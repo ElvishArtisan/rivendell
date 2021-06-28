@@ -350,8 +350,8 @@ void RDSoundPanel::setColor(RDAirPlayConf::PanelType type,int panel,int row,
 }
 
 
-void RDSoundPanel::duckVolume(RDAirPlayConf::PanelType type,int panel,int row,int col,
-		  int level,int fade,int mport)
+void RDSoundPanel::duckVolume(RDAirPlayConf::PanelType type,int panel,int row,
+			      int col,int level,int fade,int mport)
 {
   int edit_mport=mport;
   if (edit_mport==0) {
@@ -363,12 +363,13 @@ void RDSoundPanel::duckVolume(RDAirPlayConf::PanelType type,int panel,int row,in
         panel_buttons[PanelOffset(type,panel)]->panelButton(j,i)->playDeck();
       if((row==j || row==-1) && (col==i || col==-1)) {
 	if(mport==-1) {
-	  panel_buttons[PanelOffset(type,panel)]->panelButton(j,i)->setDuckVolume(level);
+	  panel_buttons[PanelOffset(type,panel)]->panelButton(j,i)->
+	    setDuckVolume(level);
 	}    
         if(deck!=NULL) {
           if(edit_mport==-1 || 
-             edit_mport==panel_buttons[PanelOffset(type,panel)]->panelButton(j,i)->
-                     outputText().toInt()) {
+             edit_mport==panel_buttons[PanelOffset(type,panel)]->
+	     panelButton(j,i)->outputText().toInt()) {
 	    deck->duckVolume(level,fade);
           }
         }
@@ -912,7 +913,7 @@ void RDSoundPanel::wheelEvent(QWheelEvent *e)
 
 void RDSoundPanel::UpdateButtonViewport()
 {
-  QRect viewport(0,0,size().width()-10,size().height()-60);
+  QRect viewport(0,0,size().width()-5,size().height()-60);
   RDButtonPanel *panel=panel_buttons[PanelOffset(panel_type,panel_number)];
   for(int i=0;i<panel_button_rows;i++) {
     for(int j=0;j<panel_button_columns;j++) {

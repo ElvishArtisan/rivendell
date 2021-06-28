@@ -20,6 +20,7 @@
 
 #include <rdlist_logs.h>
 
+#include "colors.h"
 #include "voicetracker.h"
 
 VoiceTracker::VoiceTracker(QWidget *parent)
@@ -35,7 +36,8 @@ VoiceTracker::VoiceTracker(QWidget *parent)
 
 QSize VoiceTracker::sizeHint() const
 {
-  return d_tracker_widget->sizeHint();
+  return QSize(10+d_tracker_widget->sizeHint().width(),
+	       10+d_tracker_widget->sizeHint().height());
 }
 
 
@@ -67,6 +69,14 @@ void VoiceTracker::unloadData()
 
 void VoiceTracker::resizeEvent(QResizeEvent *e)
 {
-  d_tracker_widget->setGeometry(0,0,size().width(),size().height());
-  d_load_button->setGeometry(size().width()-90,size().height()-50,80,50);
+  d_tracker_widget->setGeometry(5,5,size().width()-10,size().height()-10);
+  d_load_button->setGeometry(size().width()-95,size().height()-55,80,50);
+}
+
+
+void VoiceTracker::paintEvent(QPaintEvent *e)
+{
+  QPainter *p=new QPainter(this);
+  p->fillRect(0,0,size().width(),size().height(),
+	      QColor(AIR_WIDGET_BACKGROUND_COLOR));
 }

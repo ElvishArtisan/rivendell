@@ -420,71 +420,88 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
       rda->airplayConf()->panels(RDAirPlayConf::UserPanel)){
     int card=-1;
     air_panel=
-      new RDSoundPanel(rda->airplayConf()->panels(RDAirPlayConf::StationPanel),
-		       rda->airplayConf()->panels(RDAirPlayConf::UserPanel),
-		       rda->airplayConf()->flashPanel(),
-		       "RDAirPlay",
-		       rda->airplayConf()->buttonLabelTemplate(),false,
-		       air_event_player,air_cart_dialog,this);
-    air_panel->setPauseEnabled(rda->airplayConf()->panelPauseEnabled());
-    air_panel->setCard(0,rda->airplayConf()->
+      new SoundPanel(rda->airplayConf()->panels(RDAirPlayConf::StationPanel),
+		     rda->airplayConf()->panels(RDAirPlayConf::UserPanel),
+		     rda->airplayConf()->flashPanel(),
+		     "RDAirPlay",
+		     rda->airplayConf()->buttonLabelTemplate(),false,
+		     air_event_player,air_cart_dialog,this);
+    air_panel->soundPanelWidget()->
+      setPauseEnabled(rda->airplayConf()->panelPauseEnabled());
+    air_panel->soundPanelWidget()->setCard(0,rda->airplayConf()->
 		       card(RDAirPlayConf::SoundPanel1Channel));
-    air_panel->setPort(0,rda->airplayConf()->
+    air_panel->soundPanelWidget()->setPort(0,rda->airplayConf()->
 		       port(RDAirPlayConf::SoundPanel1Channel));
-    air_panel->setFocusPolicy(Qt::NoFocus);
+    air_panel->soundPanelWidget()->setFocusPolicy(Qt::NoFocus);
     if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel2Channel))<0) {
-      air_panel->setCard(1,air_panel->card(RDAirPlayConf::MainLog1Channel));
-      air_panel->setPort(1,air_panel->port(RDAirPlayConf::MainLog1Channel));
+      air_panel->soundPanelWidget()->
+	setCard(1,air_panel->
+		soundPanelWidget()->card(RDAirPlayConf::MainLog1Channel));
+      air_panel->soundPanelWidget()->
+	setPort(1,air_panel->
+		soundPanelWidget()->port(RDAirPlayConf::MainLog1Channel));
     }
     else {
-      air_panel->setCard(1,card);
-      air_panel->setPort(1,rda->airplayConf()->
+      air_panel->soundPanelWidget()->setCard(1,card);
+      air_panel->soundPanelWidget()->setPort(1,rda->airplayConf()->
 			 port(RDAirPlayConf::SoundPanel2Channel));
     }
     if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel3Channel))<0) {
-      air_panel->setCard(2,air_panel->card(RDAirPlayConf::MainLog2Channel));
-      air_panel->setPort(2,air_panel->port(RDAirPlayConf::MainLog2Channel));
+      air_panel->soundPanelWidget()->
+	setCard(2,air_panel->
+		soundPanelWidget()->card(RDAirPlayConf::MainLog2Channel));
+      air_panel->soundPanelWidget()->
+	setPort(2,air_panel->
+		soundPanelWidget()->port(RDAirPlayConf::MainLog2Channel));
     }
     else {
-      air_panel->setCard(2,card);
-      air_panel->setPort(2,rda->airplayConf()->
+      air_panel->soundPanelWidget()->setCard(2,card);
+      air_panel->soundPanelWidget()->setPort(2,rda->airplayConf()->
 			 port(RDAirPlayConf::SoundPanel3Channel));
     }
     if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel4Channel))<0) {
-      air_panel->setCard(3,air_panel->card(RDAirPlayConf::SoundPanel1Channel));
-      air_panel->setPort(3,air_panel->port(RDAirPlayConf::SoundPanel1Channel));
+      air_panel->soundPanelWidget()->
+	setCard(3,air_panel->
+		soundPanelWidget()->card(RDAirPlayConf::SoundPanel1Channel));
+      air_panel->soundPanelWidget()->
+	setPort(3,air_panel->
+		soundPanelWidget()->port(RDAirPlayConf::SoundPanel1Channel));
     }
     else {
-      air_panel->setCard(3,card);
-      air_panel->setPort(3,rda->airplayConf()->
+      air_panel->soundPanelWidget()->setCard(3,card);
+      air_panel->soundPanelWidget()->setPort(3,rda->airplayConf()->
 			 port(RDAirPlayConf::SoundPanel4Channel));
     }
     if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel5Channel))<0) {
-      air_panel->setCard(4,air_panel->card(RDAirPlayConf::CueChannel));
-      air_panel->setPort(4,air_panel->port(RDAirPlayConf::CueChannel));
+      air_panel->soundPanelWidget()->
+	setCard(4,air_panel->
+		soundPanelWidget()->card(RDAirPlayConf::CueChannel));
+      air_panel->soundPanelWidget()->
+	setPort(4,air_panel->
+		soundPanelWidget()->port(RDAirPlayConf::CueChannel));
     }
     else {
-      air_panel->setCard(4,card);
-      air_panel->setPort(4,rda->airplayConf()->
+      air_panel->soundPanelWidget()->setCard(4,card);
+      air_panel->soundPanelWidget()->setPort(4,rda->airplayConf()->
 			 port(RDAirPlayConf::SoundPanel5Channel));
     }
-    air_panel->setRmls(0,rda->airplayConf()->
+    air_panel->soundPanelWidget()->setRmls(0,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel1Channel),
 		  rda->airplayConf()->
 		       stopRml(RDAirPlayConf::SoundPanel1Channel));
-    air_panel->setRmls(1,rda->airplayConf()->
+    air_panel->soundPanelWidget()->setRmls(1,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel2Channel),
 		  rda->airplayConf()->
 		       stopRml(RDAirPlayConf::SoundPanel2Channel));
-    air_panel->setRmls(2,rda->airplayConf()->
+    air_panel->soundPanelWidget()->setRmls(2,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel3Channel),
 		  rda->airplayConf()->
 		       stopRml(RDAirPlayConf::SoundPanel3Channel));
-    air_panel->setRmls(3,rda->airplayConf()->
+    air_panel->soundPanelWidget()->setRmls(3,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel4Channel),
 		  rda->airplayConf()->
 		       stopRml(RDAirPlayConf::SoundPanel4Channel));
-    air_panel->setRmls(4,rda->airplayConf()->
+    air_panel->soundPanelWidget()->setRmls(4,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel5Channel),
 		  rda->airplayConf()->
 		       stopRml(RDAirPlayConf::SoundPanel5Channel));
@@ -503,12 +520,15 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
       channum[1]=2;
     }
     for(int i=0;i<PANEL_MAX_OUTPUTS;i++) {
-      air_panel->setOutputText(i,QString().sprintf("%d",next_output++));
+      air_panel->soundPanelWidget()->setOutputText(i,QString().sprintf("%d",next_output++));
       assigned=false;
       for(int j=0;j<2;j++) {
-	if((air_panel->card((RDAirPlayConf::Channel)i)==air_log[0]->card(j))&&
-	   (air_panel->port((RDAirPlayConf::Channel)i)==air_log[0]->port(j))) {
-	  air_panel->setOutputText(i,QString().sprintf("%d",channum[j]));
+	if((air_panel->soundPanelWidget()->
+	    card((RDAirPlayConf::Channel)i)==air_log[0]->card(j))&&
+	   (air_panel->soundPanelWidget()->
+	    port((RDAirPlayConf::Channel)i)==air_log[0]->port(j))) {
+	  air_panel->soundPanelWidget()->
+	    setOutputText(i,QString().sprintf("%d",channum[j]));
 	  next_output--;
 	  assigned=true;
 	  j=2;
@@ -516,10 +536,13 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
       }
       if(!assigned) {
 	for(int j=0;j<i;j++) {
-	  if((i!=j)&&(air_panel->card((RDAirPlayConf::Channel)i)==
-		      air_panel->card(j))&&
-	     (air_panel->port((RDAirPlayConf::Channel)i)==air_panel->port(j))) {
-	    air_panel->setOutputText(i,air_panel->outputText(j));
+	  if((i!=j)&&(air_panel->soundPanelWidget()->
+		      card((RDAirPlayConf::Channel)i)==
+		      air_panel->soundPanelWidget()->card(j))&&
+	     (air_panel->soundPanelWidget()->
+	      port((RDAirPlayConf::Channel)i)==air_panel->soundPanelWidget()->port(j))) {
+	    air_panel->soundPanelWidget()->
+	      setOutputText(i,air_panel->soundPanelWidget()->outputText(j));
 	    next_output--;
 	    j=PANEL_MAX_OUTPUTS;
 	  }
@@ -527,14 +550,17 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
       }
     }
 
-    air_panel->setSvcName(rda->airplayConf()->defaultSvc());
-    connect(rda->ripc(),SIGNAL(userChanged()),air_panel,SLOT(changeUser()));
-    connect(air_master_timer,SIGNAL(timeout()),air_panel,SLOT(tickClock()));
-    connect(air_panel,SIGNAL(selectClicked(unsigned,int,int)),
+    air_panel->soundPanelWidget()->setSvcName(rda->airplayConf()->defaultSvc());
+    connect(rda->ripc(),SIGNAL(userChanged()),
+	    air_panel->soundPanelWidget(),SLOT(changeUser()));
+    connect(air_master_timer,SIGNAL(timeout()),
+	    air_panel->soundPanelWidget(),SLOT(tickClock()));
+    connect(air_panel->soundPanelWidget(),
+	    SIGNAL(selectClicked(unsigned,int,int)),
 	    this,SLOT(selectClickedData(unsigned,int,int)));
-    connect(air_panel,SIGNAL(channelStarted(int,int,int)),
+    connect(air_panel->soundPanelWidget(),SIGNAL(channelStarted(int,int,int)),
 	    this,SLOT(panelChannelStartedData(int,int,int)));
-    connect(air_panel,SIGNAL(channelStopped(int,int,int)),
+    connect(air_panel->soundPanelWidget(),SIGNAL(channelStopped(int,int,int)),
 	    this,SLOT(panelChannelStoppedData(int,int,int)));
   }
 
@@ -887,12 +913,12 @@ void MainWidget::gpiStateChangedData(int matrix,int line,bool state)
   if(!state) {
     if((air_stop_gpi_matrices[RDAirPlayConf::SoundPanel1Channel]==matrix)&&
        (air_stop_gpi_lines[RDAirPlayConf::SoundPanel1Channel]==line)) {
-      air_panel->channelStop(0);
+      air_panel->soundPanelWidget()->channelStop(0);
     }
     for(unsigned i=6;i<10;i++) {
       if((air_stop_gpi_matrices[i]==matrix)&&
 	 (air_stop_gpi_lines[i]==line)) {
-	air_panel->channelStop(i-5);
+	air_panel->soundPanelWidget()->channelStop(i-5);
       }
     }
   }
@@ -1144,7 +1170,7 @@ void MainWidget::logRenamedData(int log)
   case 0:
     air_log_button[0]->setText(tr("Main Log")+"\n["+labelname+"]");
     SetCaption();
-    if(air_panel) {
+    if(air_panel->soundPanelWidget()) {
     }
     break;
 
@@ -1175,12 +1201,13 @@ void MainWidget::logReloadedData(int log)
 	   (const char *)air_log[0]->logName().toUtf8());
     if(air_log[0]->logName().isEmpty()) {
       if(air_panel!=NULL) {
-	air_panel->setSvcName(rda->airplayConf()->defaultSvc());
+	air_panel->soundPanelWidget()->
+	  setSvcName(rda->airplayConf()->defaultSvc());
       }
     }
     else {
       if(air_panel!=NULL) {
-	air_panel->setSvcName(air_log[0]->serviceName());
+	air_panel->soundPanelWidget()->setSvcName(air_log[0]->serviceName());
       }
     }
     break;
@@ -1534,24 +1561,29 @@ void MainWidget::selectClickedData(unsigned cartnum,int row,int col)
 
   case StartButton::CopyTo:
     if(air_panel!=NULL) {
-      air_panel->setButton(air_panel->currentType(),
-			   air_panel->currentNumber(),row,col,air_add_cart);
+      air_panel->soundPanelWidget()->
+	setButton(air_panel->soundPanelWidget()->currentType(),
+		  air_panel->soundPanelWidget()->currentNumber(),
+		  row,col,air_add_cart);
     }
     SetActionMode(StartButton::Stop);
     break;
 
   case StartButton::AddTo:
     if(air_panel!=NULL) {
-      air_panel->setButton(air_panel->currentType(),
-			   air_panel->currentNumber(),row,col,air_add_cart);
+      air_panel->soundPanelWidget()->
+	setButton(air_panel->soundPanelWidget()->currentType(),
+		  air_panel->soundPanelWidget()->currentNumber(),
+		  row,col,air_add_cart);
     }
     SetActionMode(StartButton::Stop);
     break;
 
   case StartButton::DeleteFrom:
     if(air_panel!=NULL) {
-      air_panel->setButton(air_panel->currentType(),
-			   air_panel->currentNumber(),row,col,0);
+      air_panel->soundPanelWidget()->
+	setButton(air_panel->soundPanelWidget()->currentType(),
+		  air_panel->soundPanelWidget()->currentNumber(),row,col,0);
     }
     SetActionMode(StartButton::Stop);
     break;
@@ -1977,19 +2009,19 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   // Sound Panel
   //
   if(air_panel!=NULL) {
-    air_panel->setGeometry(510,140,w-510,h-215);
+    air_panel->setGeometry(510,140,w-520,h-215);
   }
 
   //
   // Voice Tracker
   //
-  air_tracker->setGeometry(510,140,w-510,h-215);
+  air_tracker->setGeometry(510,140,w-515,h-215);
 
   //
   // Full Log Widgets
   //
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log_list[i]->setGeometry(510,140,w-530,h-210);
+    air_log_list[i]->setGeometry(510,140,w-520,h-215);
   }
 
 
@@ -2025,10 +2057,10 @@ void MainWidget::wheelEvent(QWheelEvent *e)
 {
   if((air_panel!=NULL)&&(e->orientation()==Qt::Vertical)) {
     if(e->delta()>0) {
-      air_panel->panelDown();
+      air_panel->soundPanelWidget()->panelDown();
     }
     if(e->delta()<0) {
-      air_panel->panelUp();
+      air_panel->soundPanelWidget()->panelUp();
     }
   }
   e->accept();
@@ -2190,7 +2222,7 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
     }
     air_button_list->setActionMode(RDAirPlayConf::Normal);
     if(air_panel!=NULL) {
-      air_panel->setActionMode(RDAirPlayConf::Normal);
+      air_panel->soundPanelWidget()->setActionMode(RDAirPlayConf::Normal);
     }
     break;
 
@@ -2229,7 +2261,7 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
     }
     air_button_list->setActionMode(RDAirPlayConf::Normal);
     if(air_panel!=NULL) {
-      air_panel->setActionMode(RDAirPlayConf::Normal);
+      air_panel->soundPanelWidget()->setActionMode(RDAirPlayConf::Normal);
     }
     if(air_cart_dialog->
        exec(&air_add_cart,RDCart::All,air_log[0]->serviceName(),NULL)) {
@@ -2251,7 +2283,7 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
     }
     air_button_list->setActionMode(RDAirPlayConf::AddTo);
     if(air_panel!=NULL) {
-      air_panel->setActionMode(RDAirPlayConf::AddTo);
+      air_panel->soundPanelWidget()->setActionMode(RDAirPlayConf::AddTo);
     }
     break;
 
@@ -2266,7 +2298,7 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
     }
     air_button_list->setActionMode(RDAirPlayConf::DeleteFrom);
     if(air_panel!=NULL) {
-      air_panel->setActionMode(RDAirPlayConf::DeleteFrom);
+      air_panel->soundPanelWidget()->setActionMode(RDAirPlayConf::DeleteFrom);
     }
     break;
 
@@ -2281,7 +2313,7 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
     }
     air_button_list->setActionMode(RDAirPlayConf::MoveFrom);
     if(air_panel!=NULL) {
-      air_panel->setActionMode(RDAirPlayConf::MoveFrom);
+      air_panel->soundPanelWidget()->setActionMode(RDAirPlayConf::MoveFrom);
     }
     break;
 
@@ -2296,7 +2328,7 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
     }
     air_button_list->setActionMode(RDAirPlayConf::MoveTo);
     if(air_panel!=NULL) {
-      air_panel->setActionMode(RDAirPlayConf::MoveTo);
+      air_panel->soundPanelWidget()->setActionMode(RDAirPlayConf::MoveTo);
     }
     break;
 
@@ -2311,7 +2343,7 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
     }
     air_button_list->setActionMode(RDAirPlayConf::CopyFrom);
     if(air_panel!=NULL) {
-      air_panel->setActionMode(RDAirPlayConf::CopyFrom);
+      air_panel->soundPanelWidget()->setActionMode(RDAirPlayConf::CopyFrom);
     }
     break;
 
@@ -2326,7 +2358,7 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
     }
     air_button_list->setActionMode(RDAirPlayConf::CopyTo);
     if(air_panel!=NULL) {
-      air_panel->setActionMode(RDAirPlayConf::CopyTo);
+      air_panel->soundPanelWidget()->setActionMode(RDAirPlayConf::CopyTo);
     }
     break;
 

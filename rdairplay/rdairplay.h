@@ -27,10 +27,10 @@
 #include <rdinstancelock.h>
 #include <rdmainwindow.h>
 #include <rdmeterstrip.h>
-#include <rdsound_panel.h>
 
 #include "button_log.h"
 #include "colors.h"
+#include "soundpanel.h"
 #include "topstrip.h"
 #include "voicetracker.h"
 
@@ -111,7 +111,7 @@ class MainWidget : public RDMainWindow
   void ShowTracker(bool state);
   RDAirPlayConf::Channel PanelChannel(int mport) const;
   RDLogPlay *air_log[RDAIRPLAY_LOG_QUANTITY];
-  RDSoundPanel *air_panel;
+  SoundPanel *air_panel;
   VoiceTracker *air_tracker;
   QPushButton *air_tracker_button;
   RDMeterStrip *air_meter_strip;

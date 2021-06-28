@@ -275,11 +275,13 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       label+=(rml->arg(i)+" ");
     }
     label=label.left(label.length()-1);
-    air_panel->setText(panel_type,panel_number,rml->arg(2).toInt()-1,
-		       rml->arg(1).toInt()-1,label);
-    air_panel->setColor(panel_type,panel_number,rml->arg(2).toInt()-1,
-			rml->arg(1).toInt()-1,
-			rml->arg(rml->argQuantity()-1));
+    air_panel->soundPanelWidget()->
+      setText(panel_type,panel_number,rml->arg(2).toInt()-1,
+	      rml->arg(1).toInt()-1,label);
+    air_panel->soundPanelWidget()->
+      setColor(panel_type,panel_number,rml->arg(2).toInt()-1,
+	       rml->arg(1).toInt()-1,
+	       rml->arg(rml->argQuantity()-1));
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       rda->ripc()->sendRml(rml);
@@ -312,8 +314,9 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    air_panel->setButton(panel_type,panel_number,rml->arg(2).toInt()-1,
-			 rml->arg(1).toInt()-1,rml->arg(3).toUInt());
+    air_panel->soundPanelWidget()->
+      setButton(panel_type,panel_number,rml->arg(2).toInt()-1,
+		rml->arg(1).toInt()-1,rml->arg(3).toUInt());
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       rda->ripc()->sendRml(rml);
@@ -489,24 +492,28 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     switch(rml->argQuantity()) {
     case 3:
-      air_panel->play(panel_type,panel_number,rml->arg(2).toInt()-1,
-		      rml->arg(1).toInt()-1,RDLogLine::StartMacro);
+      air_panel->soundPanelWidget()->
+	play(panel_type,panel_number,rml->arg(2).toInt()-1,
+	     rml->arg(1).toInt()-1,RDLogLine::StartMacro);
       break; 
 
     case 4:
-      air_panel->play(panel_type,panel_number,rml->arg(2).toInt()-1,
-		      rml->arg(1).toInt()-1,RDLogLine::StartMacro,rml->arg(3).toInt());
+      air_panel->soundPanelWidget()->
+	play(panel_type,panel_number,rml->arg(2).toInt()-1,
+	     rml->arg(1).toInt()-1,RDLogLine::StartMacro,rml->arg(3).toInt());
       break;
  
     case 5: 
       if(rml->arg(4).toInt()==1) {
-	air_panel->play(panel_type,panel_number,rml->arg(2).toInt()-1,
-			rml->arg(1).toInt()-1,
-			RDLogLine::StartMacro,rml->arg(3).toInt(),true);
+	air_panel->soundPanelWidget()->
+	  play(panel_type,panel_number,rml->arg(2).toInt()-1,
+	       rml->arg(1).toInt()-1,
+	       RDLogLine::StartMacro,rml->arg(3).toInt(),true);
       }
       else {
-	air_panel->play(panel_type,panel_number,rml->arg(2).toInt()-1,
-			rml->arg(1).toInt()-1,RDLogLine::StartMacro,rml->arg(3).toInt());
+	air_panel->soundPanelWidget()->
+	  play(panel_type,panel_number,rml->arg(2).toInt()-1,
+	       rml->arg(1).toInt()-1,RDLogLine::StartMacro,rml->arg(3).toInt());
       }
       break;
 
@@ -629,36 +636,42 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     switch(rml->argQuantity()) {
     case 3: 
-      air_panel->stop(panel_type,panel_number,rml->arg(2).toInt()-1,
-		      rml->arg(1).toInt()-1);
+      air_panel->soundPanelWidget()->
+	stop(panel_type,panel_number,rml->arg(2).toInt()-1,
+	     rml->arg(1).toInt()-1);
       break;
   
     case 4:
-      air_panel->stop(panel_type,panel_number,rml->arg(2).toInt()-1,
-		      rml->arg(1).toInt()-1,rml->arg(3).toInt());
+      air_panel->soundPanelWidget()->
+	stop(panel_type,panel_number,rml->arg(2).toInt()-1,
+	     rml->arg(1).toInt()-1,rml->arg(3).toInt());
       break;
 
     case 5:
       if(rml->arg(4).toInt()==1) {
-	air_panel->stop(panel_type,panel_number,rml->arg(2).toInt()-1,
-			rml->arg(1).toInt()-1,rml->arg(3).toInt(),true);
+	air_panel->soundPanelWidget()->
+	  stop(panel_type,panel_number,rml->arg(2).toInt()-1,
+	       rml->arg(1).toInt()-1,rml->arg(3).toInt(),true);
       }
       else {
-	air_panel->stop(panel_type,panel_number,rml->arg(2).toInt()-1,
-			rml->arg(1).toInt()-1,rml->arg(3).toInt(),false);
+	air_panel->soundPanelWidget()->
+	  stop(panel_type,panel_number,rml->arg(2).toInt()-1,
+	       rml->arg(1).toInt()-1,rml->arg(3).toInt(),false);
       }
       break;
          
     case 6:
       if(rml->arg(4).toInt()==1) {
-	air_panel->stop(panel_type,panel_number,rml->arg(2).toInt()-1,
-			rml->arg(1).toInt()-1,rml->arg(3).toInt(),true,
-			rml->arg(5).toInt());
+	air_panel->soundPanelWidget()->
+	  stop(panel_type,panel_number,rml->arg(2).toInt()-1,
+	       rml->arg(1).toInt()-1,rml->arg(3).toInt(),true,
+	       rml->arg(5).toInt());
       }
       else {
-	air_panel->stop(panel_type,panel_number,rml->arg(2).toInt()-1,
-			rml->arg(1).toInt()-1,rml->arg(3).toInt(),false,
-			rml->arg(5).toInt());
+	air_panel->soundPanelWidget()->
+	  stop(panel_type,panel_number,rml->arg(2).toInt()-1,
+	       rml->arg(1).toInt()-1,rml->arg(3).toInt(),false,
+	       rml->arg(5).toInt());
       }
       break;
          
@@ -697,12 +710,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       return;
     }
     if(rml->argQuantity()==3) {
-      ret=air_panel->pause(panel_type,panel_number,rml->arg(2).toInt()-1,
-			   rml->arg(1).toInt()-1);
+      ret=air_panel->soundPanelWidget()->
+	pause(panel_type,panel_number,rml->arg(2).toInt()-1,
+	      rml->arg(1).toInt()-1);
     }
     else {
-      ret=air_panel->pause(panel_type,panel_number,rml->arg(2).toInt()-1,
-			   rml->arg(1).toInt()-1,rml->arg(3).toInt());
+      ret=air_panel->soundPanelWidget()->
+	pause(panel_type,panel_number,rml->arg(2).toInt()-1,
+	      rml->arg(1).toInt()-1,rml->arg(3).toInt());
     }
     if(rml->echoRequested()) {
       rml->acknowledge(ret);
@@ -736,13 +751,16 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       return;
     }
     if(rml->argQuantity()==5) {
-      air_panel->duckVolume(panel_type,panel_number,rml->arg(2).toInt()-1,
-			    rml->arg(1).toInt()-1,(rml->arg(3).toInt())*100,rml->arg(4).toInt());
+      air_panel->soundPanelWidget()->
+	duckVolume(panel_type,panel_number,rml->arg(2).toInt()-1,
+		   rml->arg(1).toInt()-1,(rml->arg(3).toInt())*100,
+		   rml->arg(4).toInt());
     }
     else {
-      air_panel->duckVolume(panel_type,panel_number,rml->arg(2).toInt()-1,
-			    rml->arg(1).toInt()-1,(rml->arg(3).toInt())*100,rml->arg(4).toInt(),
-			    rml->arg(5).toInt());
+      air_panel->soundPanelWidget()->
+	duckVolume(panel_type,panel_number,rml->arg(2).toInt()-1,
+		   rml->arg(1).toInt()-1,(rml->arg(3).toInt())*100,
+		   rml->arg(4).toInt(),rml->arg(5).toInt());
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
@@ -955,8 +973,8 @@ bool MainWidget::GetPanel(QString str,RDAirPlayConf::PanelType *type,
 
       case 'c':
       case 'C':
-	*type=air_panel->currentType();
-        *panel=air_panel->currentNumber();
+	*type=air_panel->soundPanelWidget()->currentType();
+        *panel=air_panel->soundPanelWidget()->currentNumber();
         return true; 
 	  break;
 

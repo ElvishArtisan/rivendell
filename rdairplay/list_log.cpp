@@ -19,6 +19,7 @@
 //
 
 #include <QMessageBox>
+#include <QPainter>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -893,14 +894,14 @@ void ListLog::resizeEvent(QResizeEvent *e)
   // Hour Selector
   //
   if(rda->airplayConf()->hourSelectorEnabled()) {
-    list_hour_selector->setGeometry(0,0,size().width(),80);
+    list_hour_selector->setGeometry(5,5,size().width()-10,82);
   }
 
   //
   // Log Items
   //
-  int list_y=0;
-  int list_h=size().height()-60;
+  int list_y=2;
+  int list_h=size().height()-63;
   if(rda->airplayConf()->showCounters()) {
     list_h-=60;
   }
@@ -909,28 +910,28 @@ void ListLog::resizeEvent(QResizeEvent *e)
     //
     // Audition Head/Tail Buttons
     //
-    list_head_button->setGeometry(510,size().height()-55,90,50);
-    list_tail_button->setGeometry(600,size().height()-55,90,50);
+    list_head_button->setGeometry(5+510,size().height()-55,90,50);
+    list_tail_button->setGeometry(5+600,size().height()-55,90,50);
 
     //
     // Counters
     //
-    list_groupbox->setGeometry(695,size().height()-61,153,58);
-    list_stoptime_edit->setGeometry(773,size().height()-45,70,18);
-    list_stoptime_label->setGeometry(703,size().height()-45,65,18);
-    list_endtime_edit->setGeometry(773,size().height()-25,70,18);
-    list_endtime_label->setGeometry(703,size().height()-25,65,18);
+    list_groupbox->setGeometry(5+695,size().height()-61,153,58);
+    list_stoptime_edit->setGeometry(5+773,size().height()-45,70,18);
+    list_stoptime_label->setGeometry(5+703,size().height()-45,65,18);
+    list_endtime_edit->setGeometry(5+773,size().height()-25,70,18);
+    list_endtime_label->setGeometry(5+703,size().height()-25,65,18);
 
     //
     // Bottom Buttons
     //
-    list_take_button->setGeometry(10,size().height()-55,80,50);
-    list_play_button->setGeometry(10,size().height()-55,80,50);
-    list_next_button->setGeometry(90,size().height()-55,80,50);
-    list_modify_button->setGeometry(170,size().height()-55,80,50);
-    list_scroll_button->setGeometry(250,size().height()-55,80,50);
-    list_refresh_button->setGeometry(330,size().height()-55,80,50);
-    list_load_button->setGeometry(410,size().height()-55,
+    list_take_button->setGeometry(5+10,size().height()-55,80,50);
+    list_play_button->setGeometry(5+10,size().height()-55,80,50);
+    list_next_button->setGeometry(5+90,size().height()-55,80,50);
+    list_modify_button->setGeometry(5+170,size().height()-55,80,50);
+    list_scroll_button->setGeometry(5+250,size().height()-55,80,50);
+    list_refresh_button->setGeometry(5+330,size().height()-55,80,50);
+    list_load_button->setGeometry(5+410,size().height()-55,
 				  80,50);
     list_h+=60;
   }
@@ -938,28 +939,30 @@ void ListLog::resizeEvent(QResizeEvent *e)
     //
     // Audition Head/Tail Buttons
     //
-    list_head_button->setGeometry(10,size().height()-113,90,50);
-    list_tail_button->setGeometry(100,size().height()-113,90,50);
+    list_head_button->setGeometry(5+10,size().height()-113,90,50);
+    list_tail_button->setGeometry(5+100,size().height()-113,90,50);
 
     //
     // Counters
     //
-    list_groupbox->setGeometry(333,size().height()-116,158,58);
-    list_stoptime_edit->setGeometry(412,size().height()-100,70,18);
-    list_stoptime_label->setGeometry(342,size().height()-100,65,18);
-    list_endtime_edit->setGeometry(412,size().height()-80,70,18);
-    list_endtime_label->setGeometry(342,size().height()-80,65,18);
+    list_groupbox->setGeometry(5+333,size().height()-116,158,58);
+    list_stoptime_edit->setGeometry(5+412,size().height()-100,70,18);
+    list_stoptime_label->setGeometry(5+342,size().height()-100,65,18);
+    list_endtime_edit->setGeometry(5+412,size().height()-80,70,18);
+    list_endtime_label->setGeometry(5+342,size().height()-80,65,18);
 
     //
     // Bottom Buttons
     //
-    list_take_button->setGeometry(10,size().height()-55,80,50);
-    list_play_button->setGeometry(10,size().height()-55,80,50);
-    list_next_button->setGeometry(90,size().height()-55,80,50);
-    list_modify_button->setGeometry(170,size().height()-55,80,50);
-    list_scroll_button->setGeometry(250,size().height()-55,80,50);
-    list_refresh_button->setGeometry(330,size().height()-55,80,50);
-    list_load_button->setGeometry(410,size().height()-55,80,50);
+    list_take_button->setGeometry(5+10,size().height()-55,80,50);
+    list_play_button->setGeometry(5+10,size().height()-55,80,50);
+    list_next_button->setGeometry(5+90,size().height()-55,80,50);
+    list_modify_button->setGeometry(5+170,size().height()-55,80,50);
+    list_scroll_button->setGeometry(5+250,size().height()-55,80,50);
+    list_refresh_button->setGeometry(5+330,size().height()-55,80,50);
+    list_load_button->setGeometry(5+410,size().height()-55,80,50);
+
+    list_h+=4;
   }
 
   if(rda->airplayConf()->hourSelectorEnabled()) {
@@ -968,12 +971,20 @@ void ListLog::resizeEvent(QResizeEvent *e)
       list_h-=HOURSELECTOR_BUTTON_EDGE;
     }
     else {
-      list_y+=2*HOURSELECTOR_BUTTON_EDGE;
-      list_h-=2*HOURSELECTOR_BUTTON_EDGE;
+      list_y+=(2*HOURSELECTOR_BUTTON_EDGE);
+      list_h-=(2*HOURSELECTOR_BUTTON_EDGE);
     }
   }
-  list_log_view->setGeometry(0,list_y,size().width(),list_h);
+  list_log_view->setGeometry(5+0,5+list_y,size().width()-10,list_h-5);
+}
 
+
+void ListLog::paintEvent(QPaintEvent *e)
+{
+  QPainter *p=new QPainter(this);
+  p->fillRect(0,0,size().width(),size().height(),
+	      QColor(AIR_WIDGET_BACKGROUND_COLOR));
+  delete p;
 }
 
 

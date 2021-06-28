@@ -32,6 +32,7 @@ x11 {
   SOURCES += pie_counter.cpp
   SOURCES += post_counter.cpp
   SOURCES += rdairplay.cpp
+  SOURCES += soundpanel.cpp
   SOURCES += start_button.cpp
   SOURCES += stop_counter.cpp
   SOURCES += wall_clock.cpp
@@ -50,6 +51,7 @@ x11 {
   HEADERS += pie_counter.h
   HEADERS += post_counter.h
   HEADERS += rdairplay.h
+  HEADERS += soundpanel.h
   HEADERS += start_button.h
   HEADERS += stop_counter.h
   HEADERS += wall_clock.h

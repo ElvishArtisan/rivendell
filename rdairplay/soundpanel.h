@@ -1,6 +1,6 @@
-// voicetracker.h
+// soundpanel.h
 //
-// Voice tracker panel for RDAirPlay
+// RDSoundPanel panel for RDAirPlay
 //
 //   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,34 +18,29 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef VOICETRACKER_H
-#define VOICETRACKER_H
+#ifndef SOUNDPANEL_H
+#define SOUNDPANEL_H
 
-#include <QLabel>
-#include <QPushButton>
-
-#include <rdtrackerwidget.h>
+#include <rdsound_panel.h>
 #include <rdwidget.h>
 
-class VoiceTracker : public RDWidget
+class SoundPanel : public RDWidget
 {
   Q_OBJECT
  public:
-  VoiceTracker(QWidget *parent=0);
-  QSize sizeHint() const;
-
- private slots:
-  void loadData();
-  void unloadData();
-
+  SoundPanel(int station_panels,int user_panels,bool flash,
+	     const QString &caption,const QString &label_template,
+	     bool extended,RDEventPlayer *player,RDCartDialog *cart_dialog,
+	     QWidget *parent=0);
+  ~SoundPanel();
+  RDSoundPanel *soundPanelWidget() const;
+  
  protected:
   void resizeEvent(QResizeEvent *e);
   void paintEvent(QPaintEvent *e);
 
  private:
-  RDTrackerWidget *d_tracker_widget;
-  QPushButton *d_load_button;
-  QString d_import_path;
+  RDSoundPanel *d_panel;
 };
 
-#endif  // VOICETRACKER_H
+#endif  // SOUNDPANEL_H

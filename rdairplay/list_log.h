@@ -72,6 +72,7 @@ class ListLog : public RDWidget
 
  protected:
   void resizeEvent(QResizeEvent *e);
+  void paintEvent(QPaintEvent *e);
   
  private:
   enum PlayButtonMode {ButtonDisabled=0,ButtonPlay=1,ButtonStop=2};
