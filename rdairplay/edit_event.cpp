@@ -110,6 +110,7 @@ EditEvent::EditEvent(RDLogPlay *log,QWidget *parent)
   // Cue Editor
   //
   edit_cue_edit=new RDCueEdit(this);
+  edit_using_cue=true;
 
   //
   // Cart Notes
@@ -225,6 +226,7 @@ int EditEvent::exec(int line)
     if((edit_logline->cutNumber()<1)||
        (edit_logline->forcedLength()<=0)) {
       edit_cue_edit->hide();
+      edit_using_cue=false;
       if(edit_logline->cartNotes().isEmpty()) {
 	edit_height=195;
 	edit_cart_notes_label->hide();
@@ -239,6 +241,7 @@ int EditEvent::exec(int line)
     else {
       edit_cue_edit->initialize(edit_logline);
       edit_cue_edit->show();
+      edit_using_cue=true;
       if(edit_logline->cartNotes().isEmpty()) {
 	edit_height=360;
 	edit_cart_notes_label->hide();
@@ -254,6 +257,7 @@ int EditEvent::exec(int line)
 
   case RDLogLine::Macro:
     edit_cue_edit->hide();
+    edit_using_cue=false;
     if(edit_logline->cartNotes().isEmpty()) {
       edit_height=195;
       edit_cart_notes_label->hide();
@@ -269,6 +273,7 @@ int EditEvent::exec(int line)
   case RDLogLine::Marker:
     setWindowTitle(tr("Edit Marker"));
     edit_cue_edit->hide();
+    edit_using_cue=false;
     edit_cart_notes_label->hide();
     edit_cart_notes_text->hide();
     edit_height=195;
@@ -277,6 +282,7 @@ int EditEvent::exec(int line)
   case RDLogLine::Track:
     setWindowTitle(tr("Edit Track"));
     edit_cue_edit->hide();
+    edit_using_cue=false;
     edit_cart_notes_label->hide();
     edit_cart_notes_text->hide();
     edit_height=195;
@@ -285,6 +291,7 @@ int EditEvent::exec(int line)
   case RDLogLine::Chain:
     setWindowTitle(tr("Edit Log Track"));
     edit_cue_edit->hide();
+    edit_using_cue=false;
     edit_cart_notes_label->hide();
     edit_cart_notes_text->hide();
     edit_height=195;
@@ -292,6 +299,7 @@ int EditEvent::exec(int line)
 
   default:
     edit_cue_edit->hide();
+    edit_using_cue=false;
     edit_height=195;
     break;
   }
@@ -457,7 +465,7 @@ void EditEvent::resizeEvent(QResizeEvent *e)
 
   edit_cue_edit->setGeometry(20,132,edit_cue_edit->sizeHint().width(),
 			     edit_cue_edit->sizeHint().height());
-  if(edit_cue_edit->isVisible()) {
+  if(edit_using_cue) {
     edit_cart_notes_label->
       setGeometry(15,127+edit_cue_edit->sizeHint().height(),
 		  size().width()-20,20);

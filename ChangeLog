@@ -21977,3 +21977,7 @@
 2021-06-28 Fred Gleason <fredg@paravelsystems.com>
 	* Increased the minimum width of the rdairplay(1) main screen to
 	accomodate the added sound panel margin.
+2021-06-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused the event editor
+	dialog to display the 'Cart Notes' editor window in the wrong
+	location.

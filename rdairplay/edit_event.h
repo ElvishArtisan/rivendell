@@ -71,6 +71,7 @@ class EditEvent : public RDDialog
   QCheckBox *edit_overlap_box;
   QLabel *edit_overlap_label;
   RDCueEdit *edit_cue_edit;
+  bool edit_using_cue;
   QFont normal_font;
   QLabel *edit_cart_notes_label;
   QTextEdit *edit_cart_notes_text;
