@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Audio Port Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,11 @@
 #ifndef EDIT_AUDIOS_H
 #define EDIT_AUDIOS_H
 
-#include <qsqldatabase.h>
-#include <qcombobox.h>
-#include <qradiobutton.h>
-#include <qspinbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
 #include <rd.h>
 #include <rdaudio_port.h>
@@ -61,18 +60,24 @@ class EditAudioPorts : public RDDialog
   RDAudioPort *edit_card;
   RDStation *rdstation;
   QString edit_station;
+  QLabel *edit_card_label;
   QComboBox *edit_card_box;
+  QLabel *card_driver_label;
   QLineEdit *card_driver_edit;
-  QComboBox *edit_clock_box;
   QLabel *edit_clock_label;
+  QComboBox *edit_clock_box;
+  QLabel *edit_inportnum_label[RD_MAX_PORTS];
   QComboBox *edit_type_box[RD_MAX_PORTS];
   QLabel *edit_type_label[RD_MAX_PORTS];
   QComboBox *edit_mode_box[RD_MAX_PORTS];
   QLabel *edit_mode_label[RD_MAX_PORTS];
   QSpinBox *edit_input_box[RD_MAX_PORTS];
   QLabel *edit_input_label[RD_MAX_PORTS];
+  QLabel *edit_outportnum_label[RD_MAX_PORTS];
   QSpinBox *edit_output_box[RD_MAX_PORTS];
   QLabel *edit_output_label[RD_MAX_PORTS];
+  QPushButton *edit_help_button;
+  QPushButton *edit_close_button;
 };
 
 

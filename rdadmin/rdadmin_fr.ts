@@ -391,15 +391,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Edit AudioScience Audio Ports</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Audio Ports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2944,11 +2944,6 @@ configured to run the CAE service in order to populate the audio resources datab
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ASI Audio
-Ports</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Audio Editor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3011,6 +3006,11 @@ Instances</source>
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio
+Ports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

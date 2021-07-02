@@ -21981,3 +21981,6 @@
 	* Fixed a regression in rdairplay(1) that caused the event editor
 	dialog to display the 'Cart Notes' editor window in the wrong
 	location.
+2021-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the layout of the 'Edit Audio Ports' dialog in rdadmin(1)
+	to show all 24 audio ports per card.
