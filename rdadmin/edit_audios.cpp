@@ -291,69 +291,72 @@ void EditAudioPorts::ReadRecord(int card)
   //       those parameters are not supported by CAE for that type.
   //
   switch(rdstation->cardDriver(card)) {
-      case RDStation::Hpi:
-        card_driver_edit->setText("AudioScience HPI");
-        edit_clock_box->setEnabled(true);
-        edit_clock_label->setEnabled(true);
-        for (int i=0;i<RD_MAX_PORTS;i++) {
-          edit_type_label[i]->setEnabled(true);
-          edit_type_box[i]->setEnabled(true);
-          edit_mode_label[i]->setEnabled(true);
-          edit_mode_box[i]->setEnabled(true);
-          edit_input_label[i]->setEnabled(true);
-          edit_input_box[i]->setEnabled(true);
-          edit_output_label[i]->setEnabled(true);
-          edit_output_box[i]->setEnabled(true);
-        }
-        break;
-      case RDStation::Jack:
-	card_label_edit->setText(tr("[none]"));
-        card_driver_edit->setText("JACK Audio Connection Kit");
-        edit_clock_box->setDisabled(true);
-        edit_clock_label->setDisabled(true);
-	for (int i=0;i<RD_MAX_PORTS;i++) {
-          edit_type_label[i]->setDisabled(true);
-          edit_type_box[i]->setDisabled(true);
-          edit_mode_label[i]->setEnabled(true);
-          edit_mode_box[i]->setEnabled(true);
-          edit_input_label[i]->setDisabled(true);
-          edit_input_box[i]->setDisabled(true);
-          edit_output_label[i]->setDisabled(true);
-          edit_output_box[i]->setDisabled(true);
-        }
-        break;
-      case RDStation::Alsa:
-        card_driver_edit->setText("Advanced Linux Sound Architecture (ALSA)");
-        edit_clock_box->setDisabled(true);
-        edit_clock_label->setDisabled(true);
-	for (int i=0;i<RD_MAX_PORTS;i++) {
-          edit_type_label[i]->setDisabled(true);
-          edit_type_box[i]->setDisabled(true);
-          edit_mode_label[i]->setDisabled(true);
-          edit_mode_box[i]->setDisabled(true);
-          edit_input_label[i]->setDisabled(true);
-          edit_input_box[i]->setDisabled(true);
-          edit_output_label[i]->setDisabled(true);
-          edit_output_box[i]->setDisabled(true);
-        }
-        break;
-      case RDStation::None:
-      default:
-        card_label_edit->setText(tr("[none]"));
-        card_driver_edit->setText(tr("[none]"));
-        edit_clock_box->setDisabled(true);
-        edit_clock_label->setDisabled(true);
-	for (int i=0;i<RD_MAX_PORTS;i++) {
-          edit_type_label[i]->setDisabled(true);
-          edit_type_box[i]->setDisabled(true);
-          edit_mode_label[i]->setDisabled(true);
-          edit_mode_box[i]->setDisabled(true);
-          edit_input_label[i]->setDisabled(true);
-          edit_input_box[i]->setDisabled(true);
-          edit_output_label[i]->setDisabled(true);
-          edit_output_box[i]->setDisabled(true);
-        }
-        break;
+  case RDStation::Hpi:
+    card_driver_edit->setText("AudioScience HPI");
+    edit_clock_box->setEnabled(true);
+    edit_clock_label->setEnabled(true);
+    for (int i=0;i<RD_MAX_PORTS;i++) {
+      edit_type_label[i]->setEnabled(true);
+      edit_type_box[i]->setEnabled(true);
+      edit_mode_label[i]->setEnabled(true);
+      edit_mode_box[i]->setEnabled(true);
+      edit_input_label[i]->setEnabled(true);
+      edit_input_box[i]->setEnabled(true);
+      edit_output_label[i]->setEnabled(true);
+      edit_output_box[i]->setEnabled(true);
+    }
+    break;
+
+  case RDStation::Jack:
+    card_label_edit->setText(tr("[none]"));
+    card_driver_edit->setText("JACK Audio Connection Kit");
+    edit_clock_box->setDisabled(true);
+    edit_clock_label->setDisabled(true);
+    for (int i=0;i<RD_MAX_PORTS;i++) {
+      edit_type_label[i]->setDisabled(true);
+      edit_type_box[i]->setDisabled(true);
+      edit_mode_label[i]->setEnabled(true);
+      edit_mode_box[i]->setEnabled(true);
+      edit_input_label[i]->setDisabled(true);
+      edit_input_box[i]->setDisabled(true);
+      edit_output_label[i]->setDisabled(true);
+      edit_output_box[i]->setDisabled(true);
+    }
+    break;
+
+  case RDStation::Alsa:
+    card_driver_edit->setText("Advanced Linux Sound Architecture (ALSA)");
+    edit_clock_box->setDisabled(true);
+    edit_clock_label->setDisabled(true);
+    for (int i=0;i<RD_MAX_PORTS;i++) {
+      edit_type_label[i]->setDisabled(true);
+      edit_type_box[i]->setDisabled(true);
+      edit_mode_label[i]->setDisabled(true);
+      edit_mode_box[i]->setDisabled(true);
+      edit_input_label[i]->setDisabled(true);
+      edit_input_box[i]->setDisabled(true);
+      edit_output_label[i]->setDisabled(true);
+      edit_output_box[i]->setDisabled(true);
+    }
+    break;
+
+  case RDStation::None:
+  default:
+    card_label_edit->setText(tr("[none]"));
+    card_driver_edit->setText(tr("[none]"));
+    edit_clock_box->setDisabled(true);
+    edit_clock_label->setDisabled(true);
+    for (int i=0;i<RD_MAX_PORTS;i++) {
+      edit_type_label[i]->setDisabled(true);
+      edit_type_box[i]->setDisabled(true);
+      edit_mode_label[i]->setDisabled(true);
+      edit_mode_box[i]->setDisabled(true);
+      edit_input_label[i]->setDisabled(true);
+      edit_input_box[i]->setDisabled(true);
+      edit_output_label[i]->setDisabled(true);
+      edit_output_box[i]->setDisabled(true);
+    }
+    break;
   }
   edit_clock_box->setCurrentIndex(edit_card->clockSource());
   for(int i=0;i<RD_MAX_PORTS;i++) {

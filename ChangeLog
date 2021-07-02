@@ -21987,3 +21987,5 @@
 2021-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Card Type' control to 'Edit Audio Ports' dialog in
 	rdadmin(1).
+2021-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up indentation in 'rdadmin/edit_audios.cpp'.
