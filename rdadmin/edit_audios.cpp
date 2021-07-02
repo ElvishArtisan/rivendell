@@ -51,13 +51,22 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   edit_card_label->setAlignment(Qt::AlignRight);
 
   //
+  // Card Label
+  //
+  card_label_edit=new QLineEdit(this);
+  card_label_edit->setReadOnly(true);
+  card_label_label=new QLabel(tr("Card Type:"),this);
+  card_label_label->setFont(labelFont());
+  card_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  //
   // Card Driver
   //
   card_driver_edit=new QLineEdit(this);
   card_driver_edit->setReadOnly(true);
   card_driver_label=new QLabel(tr("Card Driver:"),this);
   card_driver_label->setFont(labelFont());
-  card_driver_label->setAlignment(Qt::AlignRight);
+  card_driver_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Clock Selector
@@ -222,12 +231,17 @@ void EditAudioPorts::resizeEvent(QResizeEvent *e)
   //
   // Header
   //
-  edit_card_box->setGeometry(75,10,60,26);
   edit_card_label->setGeometry(10,16,60,22);
-  card_driver_edit->setGeometry(225,15,170,19);//FIXME: size
-  card_driver_label->setGeometry(140,16,80,22);
-  edit_clock_box->setGeometry(500,10,150,26);
-  edit_clock_label->setGeometry(395,16,100,22);
+  edit_card_box->setGeometry(75,10,60,26);
+
+  card_label_label->setGeometry(140,14,80,22);
+  card_label_edit->setGeometry(225,14,300,22);
+
+  card_driver_label->setGeometry(550,14,80,22);
+  card_driver_edit->setGeometry(635,14,300,22);
+
+  edit_clock_label->setGeometry(size().width()-265,16,100,22);
+  edit_clock_box->setGeometry(size().width()-160,10,150,26);
 
   for(int i=0;i<RD_MAX_PORTS;i++) {
     int row=i/8;
@@ -270,9 +284,12 @@ void EditAudioPorts::ReadRecord(int card)
     delete rdstation;
   }
   rdstation=new RDStation(edit_station);
-  card_driver_edit->setText(rdstation->name());
+  card_label_edit->setText(rdstation->cardName(card));
 
-  // NOTE: various controls are disabled for some card driver types if they are not yet implemented within CAE.
+  //
+  // NOTE: various controls are disabled for some card driver types if
+  //       those parameters are not supported by CAE for that type.
+  //
   switch(rdstation->cardDriver(card)) {
       case RDStation::Hpi:
         card_driver_edit->setText("AudioScience HPI");
@@ -290,7 +307,8 @@ void EditAudioPorts::ReadRecord(int card)
         }
         break;
       case RDStation::Jack:
-        card_driver_edit->setText("JACK");
+	card_label_edit->setText(tr("[none]"));
+        card_driver_edit->setText("JACK Audio Connection Kit");
         edit_clock_box->setDisabled(true);
         edit_clock_label->setDisabled(true);
 	for (int i=0;i<RD_MAX_PORTS;i++) {
@@ -305,7 +323,7 @@ void EditAudioPorts::ReadRecord(int card)
         }
         break;
       case RDStation::Alsa:
-        card_driver_edit->setText("ALSA");
+        card_driver_edit->setText("Advanced Linux Sound Architecture (ALSA)");
         edit_clock_box->setDisabled(true);
         edit_clock_label->setDisabled(true);
 	for (int i=0;i<RD_MAX_PORTS;i++) {
@@ -321,7 +339,8 @@ void EditAudioPorts::ReadRecord(int card)
         break;
       case RDStation::None:
       default:
-        card_driver_edit->setText("UNKNOWN");
+        card_label_edit->setText(tr("[none]"));
+        card_driver_edit->setText(tr("[none]"));
         edit_clock_box->setDisabled(true);
         edit_clock_label->setDisabled(true);
 	for (int i=0;i<RD_MAX_PORTS;i++) {

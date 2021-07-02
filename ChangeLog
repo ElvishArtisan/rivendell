@@ -21984,3 +21984,6 @@
 2021-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the layout of the 'Edit Audio Ports' dialog in rdadmin(1)
 	to show all 24 audio ports per card.
+2021-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Card Type' control to 'Edit Audio Ports' dialog in
+	rdadmin(1).

@@ -64,6 +64,8 @@ class EditAudioPorts : public RDDialog
   QComboBox *edit_card_box;
   QLabel *card_driver_label;
   QLineEdit *card_driver_edit;
+  QLabel *card_label_label;
+  QLineEdit *card_label_edit;
   QLabel *edit_clock_label;
   QComboBox *edit_clock_box;
   QLabel *edit_inportnum_label[RD_MAX_PORTS];

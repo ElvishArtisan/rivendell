@@ -402,6 +402,14 @@
         <source>Edit Audio Ports</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Card Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditCartSlots</name>
