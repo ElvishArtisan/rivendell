@@ -55,6 +55,8 @@ MainObject::MainObject(QObject *parent)
 {
   QString err_msg;
   RDApplication::ErrorType err_type=RDApplication::ErrorOk;
+  QString sql;
+  RDSqlQuery *q;
 
   //
   // Startup DateTime
@@ -101,8 +103,6 @@ MainObject::MainObject(QObject *parent)
   connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
   connect(rda->ripc(),SIGNAL(rmlReceived(RDMacro *)),
 	  this,SLOT(rmlReceivedData(RDMacro *)));
-  //  connect(rda->ripc(),SIGNAL(gpiStateChanged(int,int,bool)),
-  //	  this,SLOT(gpiStateChangedData(int,int,bool)));
   rda->ripc()->
     connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
@@ -141,18 +141,32 @@ MainObject::MainObject(QObject *parent)
       ports[0]=-1;
       ports[1]=-1;
     }
+    QString labels[2];
+    for(int i=0;i<2;i++) {
+      if((cards[0]>=0)&&(ports[i]>=0)) {
+	sql=QString("select ")+
+	  "`LABEL` "+  // 00
+	  "from `AUDIO_OUTPUTS` where "+
+	  "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+	  QString().sprintf("`CARD`=%d &&",cards[i])+
+	  QString().sprintf("`PORT`=%d",ports[i]);
+	q=new RDSqlQuery(sql);
+	if(q->first()) {
+	  labels[i]=q->value(0).toString();
+	}
+	delete q;
+      }
+    }
     QString start_rml[2]={"",""};
     start_rml[0]=rda->airplayConf()->virtualStartRml(i+RD_RDVAIRPLAY_LOG_BASE);
     start_rml[1]=rda->airplayConf()->virtualStartRml(i+RD_RDVAIRPLAY_LOG_BASE);
     QString stop_rml[2]={"",""};
     stop_rml[0]=rda->airplayConf()->virtualStopRml(i+RD_RDVAIRPLAY_LOG_BASE);
     stop_rml[1]=rda->airplayConf()->virtualStopRml(i+RD_RDVAIRPLAY_LOG_BASE);
-    air_logs[i]->setChannels(cards,ports,start_rml,stop_rml);
+    air_logs[i]->setChannels(cards,ports,labels,start_rml,stop_rml);
     air_logs[i]->
       setOpMode(rda->airplayConf()->opMode(i+RD_RDVAIRPLAY_LOG_BASE));
   }
-  //  connect(air_logs[0],SIGNAL(transportChanged()),
-  //	  this,SLOT(transportChangedData()));
   
   //
   // Exit Timer
@@ -171,12 +185,7 @@ void MainObject::ripcConnectedData(bool state)
   QString sql;
   RDSqlQuery *q;
   RDMacro rml;
-  /*
-  rml.setRole(RDMacro::Cmd);
-  addr.setAddress("127.0.0.1");
-  rml.setAddress(addr);
-  rml.setEchoRequested(false);
-  */
+
   //
   // Get Onair Flag State
   //

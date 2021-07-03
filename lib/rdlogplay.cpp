@@ -239,12 +239,13 @@ void RDLogPlay::setLogName(QString name)
 }
 
 
-void RDLogPlay::setChannels(int cards[2],int ports[2],
+void RDLogPlay::setChannels(int cards[2],int ports[2],QString labels[2],
 			  const QString start_rml[2],const QString stop_rml[2])
 {
   for(int i=0;i<2;i++) {
     play_card[i]=cards[i];
     play_port[i]=ports[i];
+    play_label[i]=labels[i];
     play_start_rml[i]=start_rml[i];
     play_stop_rml[i]=stop_rml[i];
     play_cae->requestTimescale(play_card[i]);
@@ -2633,10 +2634,11 @@ QString RDLogPlay::GetPortName(int card,int port)
   for(int i=0;i<2;i++) {
     for(int j=0;j<2;j++) {
       if((play_card[i]==card)&&(play_port[i]==port)) {
-	return QString().sprintf("%d",i+1);
+	return play_label[i];
       }
     }
   }
+
   return QString();
 }
 

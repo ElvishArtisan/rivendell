@@ -42,9 +42,6 @@ class StartButton : public RDPushButton
 
  private:
   StartButton::Mode start_mode;
-  QFont start_label_font;
-  QFont start_counter_font;
-  QFont start_port_font;
   QString start_title;
   QString start_port;
   QPalette start_stop_color;

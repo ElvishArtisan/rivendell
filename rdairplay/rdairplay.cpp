@@ -333,9 +333,11 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   air_cue_card=rda->airplayConf()->card(RDAirPlayConf::CueChannel);
   air_cue_port=rda->airplayConf()->port(RDAirPlayConf::CueChannel);
+  QString labels[3];
   for(int i=0;i<3;i++) {
     air_meter_card[i]=rda->airplayConf()->card((RDAirPlayConf::Channel)i);
     air_meter_port[i]=rda->airplayConf()->port((RDAirPlayConf::Channel)i);
+    labels[i]=rda->airplayConf()->portLabel((RDAirPlayConf::Channel)i);
     cards[i]=rda->airplayConf()->card((RDAirPlayConf::Channel)i);
     ports[i]=rda->airplayConf()->port((RDAirPlayConf::Channel)i);
     start_rmls[i]=rda->airplayConf()->startRml((RDAirPlayConf::Channel)i);
@@ -347,23 +349,25 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
     cards[1]=cards[0];
     ports[1]=ports[0];
   }
-  air_log[0]->setChannels(cards,ports,start_rmls,stop_rmls);
+  air_log[0]->setChannels(cards,ports,start_rmls,stop_rmls,labels);
 
   for(int i=0;i<2;i++) {
     cards[i]=rda->airplayConf()->card(RDAirPlayConf::AuxLog1Channel);
     ports[i]=rda->airplayConf()->port(RDAirPlayConf::AuxLog1Channel);
+    labels[i]=rda->airplayConf()->portLabel(RDAirPlayConf::AuxLog1Channel);
     start_rmls[i]=rda->airplayConf()->startRml(RDAirPlayConf::AuxLog1Channel);
     stop_rmls[i]=rda->airplayConf()->stopRml(RDAirPlayConf::AuxLog1Channel);
   }
-  air_log[1]->setChannels(cards,ports,start_rmls,stop_rmls);
+  air_log[1]->setChannels(cards,ports,labels,start_rmls,stop_rmls);
 
   for(int i=0;i<2;i++) {
     cards[i]=rda->airplayConf()->card(RDAirPlayConf::AuxLog2Channel);
     ports[i]=rda->airplayConf()->port(RDAirPlayConf::AuxLog2Channel);
+    ports[i]=rda->airplayConf()->port(RDAirPlayConf::AuxLog2Channel);
     start_rmls[i]=rda->airplayConf()->startRml(RDAirPlayConf::AuxLog2Channel);
     stop_rmls[i]=rda->airplayConf()->stopRml(RDAirPlayConf::AuxLog2Channel);
   }
-  air_log[2]->setChannels(cards,ports,start_rmls,stop_rmls);
+  air_log[2]->setChannels(cards,ports,labels,start_rmls,stop_rmls);
 
   //
   // Cart Picker

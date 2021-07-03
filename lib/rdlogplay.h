@@ -61,7 +61,7 @@ class RDLogPlay : public RDLogModel
   RDAirPlayConf::OpMode mode() const;
   void setOpMode(RDAirPlayConf::OpMode mode);
   void setLogName(QString name);
-  void setChannels(int cards[2],int ports[2],
+  void setChannels(int cards[2],int ports[2],QString labels[2],
 		   const QString start_rml[2],const QString stop_rml[2]);
   void setSegueLength(int len);
   void setNowCart(unsigned cartnum);
@@ -228,6 +228,7 @@ class RDLogPlay : public RDLogModel
   int play_grace_line;
   int play_card[2];
   int play_port[2];
+  QString play_label[2];
   QString play_start_rml[2];
   QString play_stop_rml[2];
   bool play_timescaling_available;

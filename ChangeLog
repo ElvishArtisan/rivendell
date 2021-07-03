@@ -21999,3 +21999,6 @@
 	* Added 'Label' fields to the 'Input Port' and 'Output Port'
 	sections of the 'Edit Audio Ports' dialog in rdadmin(1).
 	* Added code to rdairplay(1) to use port labels on audio meters.
+2021-07-03 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the buttons in the Button Log widget in rdairplay(1) to
+	display channel labels when playing.

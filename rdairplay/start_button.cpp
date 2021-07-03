@@ -33,12 +33,6 @@ StartButton::StartButton(bool allow_pause,QWidget *parent)
   setFocusPolicy(Qt::NoFocus);
 
   //
-  // Create Font
-  //
-  start_port_font=QFont(font().family(),20,QFont::Bold);
-  start_port_font.setPixelSize(20);
-
-  //
   // Create Palettes
   //
   start_stop_color=
@@ -195,27 +189,27 @@ void StartButton::paintEvent(QPaintEvent *e)
   if(start_mode!=StartButton::Disabled) {
     p->setPen(QColor(Qt::color1));
     p->setFont(labelFont());
-    p->drawText((geometry().width()-p->fontMetrics().width(start_title))/2,
+    p->drawText((w-p->fontMetrics().width(start_title))/2,
 		22,start_title);
     p->drawLine(10,24,70,24);
     if(!start_time.isNull()) {
       if(start_time_mode==RDAirPlayConf::TwentyFourHour) {
-	p->drawText((geometry().width()-p->
+	p->drawText((w-p->
 		     fontMetrics().width(start_time.toString("hh:mm:ss")))/2,
 		    40,start_time.toString("hh:mm:ss"));
       }
       else {
-	p->drawText((geometry().width()-p->
+	p->drawText((w-p->
 		     fontMetrics().width(start_time.toString("h:mm:ss ap")))/2,
 		    40,start_time.toString("h:mm:ss ap"));
       }
     }
     else {
-      p->drawText((geometry().width()-p->fontMetrics().width("--:--:--"))/2,
+      p->drawText((w-p->fontMetrics().width("--:--:--"))/2,
 		  40,"--:--:--");
     }
-    p->setFont(start_port_font);
-    p->drawText(15,70,start_port);
+    p->setFont(bigLabelFont());
+    p->drawText((w-p->fontMetrics().width(start_port))/2,70,start_port);
   }
   p->end();
   delete p;
