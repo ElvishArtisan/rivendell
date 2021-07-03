@@ -52,6 +52,7 @@ class RDAirPlayConf
   void setCard(Channel chan,int card) const;
   int port(Channel chan) const;
   void setPort(Channel chan,int port) const;
+  QString portLabel(Channel chan) const;
   QString startRml(Channel chan) const;
   void setStartRml(Channel chan,QString str) const;
   QString stopRml(Channel chan) const;

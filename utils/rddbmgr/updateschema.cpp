@@ -10784,6 +10784,52 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<350)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `AUDIO_INPUTS` ")+
+      "add column `LABEL` varchar(4) after `PORT_NUMBER`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `AUDIO_OUTPUTS` ")+
+      "add column `LABEL` varchar(4) after `PORT_NUMBER`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    //
+    // Maintainer's Note:
+    //
+    // Use hard-coded maximum card/port quantities (24 four for each) here,
+    // in case the #define'd values change in future!
+    //
+    sql=QString("select `NAME` from `STATIONS`");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      for(int i=0;i<24;i++) {
+	for(int j=0;j<24;j++) {
+	  sql=QString("update `AUDIO_INPUTS` set ")+
+	    "`LABEL`='"+RDEscapeString(QString().sprintf("M%d",j+1))+"' where "+
+	    "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
+	    QString().sprintf("`CARD_NUMBER`=%d && ",i)+
+	    QString().sprintf("`PORT_NUMBER`=%d",j);
+	  if(!RDSqlQuery::apply(sql,err_msg)) {
+	    return false;
+	  }
+
+	  sql=QString("update `AUDIO_OUTPUTS` set ")+
+	    "`LABEL`='"+RDEscapeString(QString().sprintf("M%d",j+1))+"' where "+
+	    "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
+	    QString().sprintf("`CARD_NUMBER`=%d && ",i)+
+	    QString().sprintf("`PORT_NUMBER`=%d",j);
+	  if(!RDSqlQuery::apply(sql,err_msg)) {
+	    return false;
+	  }
+	}
+      }
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

@@ -41,6 +41,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 350
+  //
+  if((cur_schema==350)&&(set_schema<cur_schema)) {
+    DropColumn("AUDIO_INPUTS","LABEL");
+    DropColumn("AUDIO_OUTPUTS","LABEL");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 349
   //
   if((cur_schema==349)&&(set_schema<cur_schema)) {

@@ -408,7 +408,8 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_audioports_button->setText(tr("Audio\nPorts"));
   connect(station_audioports_button,SIGNAL(clicked()),
 	  this,SLOT(editAudioData()));
-
+  station_audioports_button->setDisabled(station_station->cards()==0);
+  
   //
   // TTY Configuration Button
   //
@@ -791,7 +792,7 @@ void EditStation::viewAdaptersData()
 
 void EditStation::editAudioData()
 {
-  EditAudioPorts *edit_conf=new EditAudioPorts(station_station->name(),0);
+  EditAudioPorts *edit_conf=new EditAudioPorts(station_station,0);
   edit_conf->exec();
   delete edit_conf;
 }

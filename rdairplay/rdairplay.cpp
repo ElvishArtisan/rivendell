@@ -193,6 +193,9 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   QList<int> strip_cards;
   QList<int> strip_ports;
+  QStringList strip_labels;
+  QList<int> strip_index;
+  bool strip_changed=true;
   for(unsigned i=0;i<RDAirPlayConf::LastChannel;i++) {
     RDAirPlayConf::Channel chan=(RDAirPlayConf::Channel)i;
     if(((rda->airplayConf()->card(chan)>=0)&&
@@ -201,13 +204,28 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 	(!strip_ports.contains(rda->airplayConf()->port(chan))))) {
       strip_cards.push_back(rda->airplayConf()->card(chan));
       strip_ports.push_back(rda->airplayConf()->port(chan));
+      strip_labels.push_back(rda->airplayConf()->portLabel(chan));
+      strip_index.push_back(strip_index.size());
+    }
+  }
+  while(strip_changed) {
+    strip_changed=false;
+    for(int i=0;i<(strip_index.size()-1);i++) {
+      if(strip_labels.at(strip_index.at(i))>
+	 strip_labels.at(strip_index.at(i+1))) {
+	int index=strip_index.at(i);
+	strip_index[i]=strip_index.at(i+1);
+	strip_index[i+1]=index;
+	strip_changed=true;
+      }
     }
   }
   air_meter_strip=new RDMeterStrip(this);
   for(int i=0;i<strip_cards.size();i++) {
     air_top_strip->meterWidget()->
-      addOutputMeter(strip_cards.at(i),strip_ports.at(i),
-		     QString().sprintf("M%d",i+1));
+      addOutputMeter(strip_cards.at(strip_index.at(i)),
+		     strip_ports.at(strip_index.at(i)),
+		     strip_labels.at(strip_index.at(i)));
   }
   
   //

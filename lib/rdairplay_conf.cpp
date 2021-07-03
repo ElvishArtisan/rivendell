@@ -83,6 +83,30 @@ void RDAirPlayConf::setPort(RDAirPlayConf::Channel chan,int port) const
 }
 
 
+QString RDAirPlayConf::portLabel(RDAirPlayConf::Channel chan) const
+{
+  QString ret="??";
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  sql=QString("select ")+
+    "`AUDIO_OUTPUTS`.`LABEL` "+  // 00
+    "from `RDAIRPLAY_CHANNELS` left join `AUDIO_OUTPUTS` "+
+    "on `RDAIRPLAY_CHANNELS`.`PORT`=`AUDIO_OUTPUTS`.`PORT_NUMBER` where "+
+    "`AUDIO_OUTPUTS`.`STATION_NAME`='"+RDEscapeString(air_station)+"' && "+
+    "`AUDIO_OUTPUTS`.`CARD_NUMBER`=`RDAIRPLAY_CHANNELS`.`CARD` && "+
+    "`AUDIO_OUTPUTS`.`PORT_NUMBER`=`RDAIRPLAY_CHANNELS`.`PORT` && "+
+    QString().sprintf("`RDAIRPLAY_CHANNELS`.`INSTANCE`=%u",chan);
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toString();
+  }
+  delete q;
+  
+  return ret;
+}
+
+
 QString RDAirPlayConf::startRml(RDAirPlayConf::Channel chan) const
 {
   return GetChannelValue("START_RML",chan).toString();

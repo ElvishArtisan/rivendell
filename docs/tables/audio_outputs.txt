@@ -9,4 +9,5 @@ ID                   int(10) unsigned  Primary key, auto increment
 STATION_NAME	     varchar(64)
 CARD_NUMBER	     int(11) signed
 PORT_NUMBER          int(11) signed
+LABEL                varchar(4)
 LEVEL                int(11) signed    Gain offset, in 1/100 dB

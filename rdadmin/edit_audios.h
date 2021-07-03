@@ -38,7 +38,7 @@ class EditAudioPorts : public RDDialog
 {
   Q_OBJECT
  public:
-  EditAudioPorts(QString station,QWidget *parent=0);
+  EditAudioPorts(RDStation *station,QWidget *parent=0);
   ~EditAudioPorts();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -51,6 +51,7 @@ class EditAudioPorts : public RDDialog
 
  protected:
   void resizeEvent(QResizeEvent *e);
+  void closeEvent(QCloseEvent *e);
 
  private:
   void ReadRecord(int card);
@@ -59,7 +60,6 @@ class EditAudioPorts : public RDDialog
   int edit_card_num;
   RDAudioPort *edit_card;
   RDStation *rdstation;
-  QString edit_station;
   QLabel *edit_card_label;
   QComboBox *edit_card_box;
   QLabel *card_driver_label;
@@ -69,6 +69,8 @@ class EditAudioPorts : public RDDialog
   QLabel *edit_clock_label;
   QComboBox *edit_clock_box;
   QLabel *edit_inportnum_label[RD_MAX_PORTS];
+  QLabel *edit_input_label_label[RD_MAX_PORTS];
+  QLineEdit *edit_input_label_edit[RD_MAX_PORTS];
   QComboBox *edit_type_box[RD_MAX_PORTS];
   QLabel *edit_type_label[RD_MAX_PORTS];
   QComboBox *edit_mode_box[RD_MAX_PORTS];
@@ -76,6 +78,8 @@ class EditAudioPorts : public RDDialog
   QSpinBox *edit_input_box[RD_MAX_PORTS];
   QLabel *edit_input_label[RD_MAX_PORTS];
   QLabel *edit_outportnum_label[RD_MAX_PORTS];
+  QLabel *edit_output_label_label[RD_MAX_PORTS];
+  QLineEdit *edit_output_label_edit[RD_MAX_PORTS];
   QSpinBox *edit_output_box[RD_MAX_PORTS];
   QLabel *edit_output_label[RD_MAX_PORTS];
   QPushButton *edit_help_button;

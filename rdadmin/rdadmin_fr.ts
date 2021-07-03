@@ -410,6 +410,10 @@
         <source>[none]</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditCartSlots</name>

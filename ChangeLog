@@ -21989,3 +21989,13 @@
 	rdadmin(1).
 2021-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up indentation in 'rdadmin/edit_audios.cpp'.
+2021-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'AUDIO_INPUTS.LABEL' field to the database.
+	* Added an 'AUDIO_OUTPUTS.LABEL' field to the database.
+	* Incremented the database version to 350.
+	* Added 'RDAudioPort::inputPortLabel()',
+	'RDAudioPort::setInputPortLabel()' 'RDAudioPort::outputPortLabel()'
+	and 'RDAudioPort::setOutputPortLabel()' methods.
+	* Added 'Label' fields to the 'Input Port' and 'Output Port'
+	sections of the 'Edit Audio Ports' dialog in rdadmin(1).
+	* Added code to rdairplay(1) to use port labels on audio meters.
