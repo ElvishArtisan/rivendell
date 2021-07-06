@@ -87,10 +87,13 @@ RDCartSlot::RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
   //
   // Start Button
   //
-  slot_start_button=new QPushButton(QString().sprintf("%d",slotnum+1),this);
+  slot_start_button=new RDSlotButton(slotnum,this);
+  slot_start_button->setPortLabel(slot_options->outputPortLabel());
   slot_start_button->setGeometry(0,0,sizeHint().height(),sizeHint().height());
   slot_start_button->setFont(hugeButtonFont());
   slot_start_button->setDisabled(true);
+  connect(slot_deck,SIGNAL(stateChanged(int,RDPlayDeck::State)),
+	  slot_start_button,SLOT(setState(int,RDPlayDeck::State)));
   connect(slot_start_button,SIGNAL(clicked()),this,SLOT(startData()));
 
   //
@@ -473,7 +476,6 @@ void RDCartSlot::stateChangedData(int id,RDPlayDeck::State state)
     LogPlayout(state);
     slot_start_button->
       setEnabled(slot_options->mode()==RDSlotOptions::CartDeckMode);
-    slot_start_button->setPalette(slot_playing_color);
     slot_load_button->setDisabled(true);
     slot_options_button->setDisabled(true);
     break;
@@ -483,7 +485,6 @@ void RDCartSlot::stateChangedData(int id,RDPlayDeck::State state)
     LogPlayout(state);
     slot_start_button->
       setEnabled(slot_options->mode()==RDSlotOptions::CartDeckMode);
-    slot_start_button->setPalette(slot_ready_color);
     slot_load_button->setEnabled(true);
     slot_options_button->setEnabled(true);
     slot_box->setTimer(0);

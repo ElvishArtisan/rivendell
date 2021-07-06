@@ -244,6 +244,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdsimpleplayer.cpp rdsimpleplayer.h\
                         rdslider.cpp rdslider.h\
                         rdslotbox.cpp rdslotbox.h\
+                        rdslotbutton.cpp rdslotbutton.h\
                         rdslotdialog.cpp rdslotdialog.h\
                         rdslotoptions.cpp rdslotoptions.h\
                         rdsocket.cpp rdsocket.h\
@@ -410,6 +411,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdsocket.cpp\
                           moc_rdsound_panel.cpp\
                           moc_rdslotbox.cpp\
+                          moc_rdslotbutton.cpp\
                           moc_rdslotdialog.cpp\
                           moc_rdstationlistmodel.cpp\
                           moc_rdstereometer.cpp\

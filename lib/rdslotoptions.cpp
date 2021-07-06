@@ -130,6 +130,12 @@ int RDSlotOptions::outputPort() const
 }
 
 
+QString RDSlotOptions::outputPortLabel() const
+{
+  return set_output_port_label;
+}
+
+
 bool RDSlotOptions::load()
 {
   bool ret=false;
@@ -137,21 +143,25 @@ bool RDSlotOptions::load()
   RDSqlQuery *q;
 
   sql=QString("select ")+
-    "`CARD`,"+                 // 00
-    "`INPUT_PORT`,"+           // 01
-    "`OUTPUT_PORT`,"+          // 02
-    "`MODE`,"+                 // 03
-    "`DEFAULT_MODE`,"+         // 04
-    "`HOOK_MODE`,"+            // 05
-    "`DEFAULT_HOOK_MODE`,"+    // 06
-    "`STOP_ACTION`,"+          // 07
-    "`DEFAULT_STOP_ACTION`,"+  // 08
-    "`CART_NUMBER`,"+          // 09
-    "`DEFAULT_CART_NUMBER`,"+  // 10
-    "`SERVICE_NAME` "+         // 11
-    "from `CARTSLOTS` where "+
-    "(`STATION_NAME`='"+RDEscapeString(set_stationname)+"')&&"+
-    QString().sprintf("(`SLOT_NUMBER`=%u)",set_slotno);
+    "`CARTSLOTS`.`CARD`,"+                 // 00
+    "`CARTSLOTS`.`INPUT_PORT`,"+           // 01
+    "`CARTSLOTS`.`OUTPUT_PORT`,"+          // 02
+    "`CARTSLOTS`.`MODE`,"+                 // 03
+    "`CARTSLOTS`.`DEFAULT_MODE`,"+         // 04
+    "`CARTSLOTS`.`HOOK_MODE`,"+            // 05
+    "`CARTSLOTS`.`DEFAULT_HOOK_MODE`,"+    // 06
+    "`CARTSLOTS`.`STOP_ACTION`,"+          // 07
+    "`CARTSLOTS`.`DEFAULT_STOP_ACTION`,"+  // 08
+    "`CARTSLOTS`.`CART_NUMBER`,"+          // 09
+    "`CARTSLOTS`.`DEFAULT_CART_NUMBER`,"+  // 10
+    "`CARTSLOTS`.`SERVICE_NAME`,"+         // 11
+    "`AUDIO_OUTPUTS`.`LABEL` "+            // 12
+    "from `CARTSLOTS` left join `AUDIO_OUTPUTS` "+
+    "on `CARTSLOTS`.`OUTPUT_PORT`=`AUDIO_OUTPUTS`.`PORT_NUMBER` where "+
+    "`AUDIO_OUTPUTS`.`STATION_NAME`='"+RDEscapeString(set_stationname)+"' && "+
+    "`AUDIO_OUTPUTS`.`CARD_NUMBER`=`CARTSLOTS`.`CARD` && "+
+    "`AUDIO_OUTPUTS`.`PORT_NUMBER`=`CARTSLOTS`.`OUTPUT_PORT` && "+
+    QString().sprintf("`CARTSLOTS`.`SLOT_NUMBER`=%u",set_slotno);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=true;
@@ -162,6 +172,7 @@ bool RDSlotOptions::load()
     set_card=q->value(0).toInt();
     set_input_port=q->value(1).toInt();
     set_output_port=q->value(2).toInt();
+    set_output_port_label=q->value(12).toString();
 
     //
     // Mode

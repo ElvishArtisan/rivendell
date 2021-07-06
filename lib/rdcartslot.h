@@ -2,7 +2,7 @@
 //
 // The cart slot widget.
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,6 +25,7 @@
 #include <rdcueeditdialog.h>
 #include <rdlistsvcs.h>
 #include <rdslotbox.h>
+#include <rdslotbutton.h>
 #include <rdslotdialog.h>
 #include <rdwidget.h>
 
@@ -78,7 +79,7 @@ class RDCartSlot : public RDWidget
   void SetInput(bool state);
   void LogPlayout(RDPlayDeck::State state);
   void ClearTempCart();
-  QPushButton *slot_start_button;
+  RDSlotButton *slot_start_button;
   QPushButton *slot_load_button;
   QPushButton *slot_options_button;
   std::vector<QString> *slot_svc_names;
