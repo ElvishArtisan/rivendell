@@ -542,7 +542,9 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
       channum[1]=2;
     }
     for(int i=0;i<PANEL_MAX_OUTPUTS;i++) {
-      air_panel->soundPanelWidget()->setOutputText(i,QString().sprintf("%d",next_output++));
+      air_panel->soundPanelWidget()->
+      setOutputText(i,rda->airplayConf()->soundPanelChannelName(next_output++));
+      //air_panel->soundPanelWidget()->setOutputText(i,QString().sprintf("%d",next_output++));
       assigned=false;
       for(int j=0;j<2;j++) {
 	if((air_panel->soundPanelWidget()->
@@ -550,7 +552,10 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 	   (air_panel->soundPanelWidget()->
 	    port((RDAirPlayConf::Channel)i)==air_log[0]->port(j))) {
 	  air_panel->soundPanelWidget()->
-	    setOutputText(i,QString().sprintf("%d",channum[j]));
+	    setOutputText(i,rda->airplayConf()->
+			  soundPanelChannelName(channum[j]));
+	  //air_panel->soundPanelWidget()->
+	  //setOutputText(i,QString().sprintf("%d",channum[j]));
 	  next_output--;
 	  assigned=true;
 	  j=2;

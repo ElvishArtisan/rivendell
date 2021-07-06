@@ -1057,6 +1057,35 @@ QString RDAirPlayConf::channelText(RDAirPlayConf::Channel chan)
 }
 
 
+QString RDAirPlayConf::soundPanelChannelName(int mport)
+{
+  return portLabel(RDAirPlayConf::soundPanelChannel(mport));
+}
+
+
+
+RDAirPlayConf::Channel RDAirPlayConf::soundPanelChannel(int mport)
+{
+  switch(mport-1) {
+  case 0:
+    return RDAirPlayConf::SoundPanel1Channel;
+
+  case 1:
+    return RDAirPlayConf::SoundPanel2Channel;
+
+  case 2:
+    return RDAirPlayConf::SoundPanel3Channel;
+
+  case 3:
+    return RDAirPlayConf::SoundPanel4Channel;
+
+  case 4:
+    return RDAirPlayConf::SoundPanel5Channel;
+  }
+  return RDAirPlayConf::CueChannel;
+}
+
+
 QString RDAirPlayConf::logModeText(RDAirPlayConf::OpMode mode)
 {
   QString ret=QObject::tr("Unknown");

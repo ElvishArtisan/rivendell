@@ -471,9 +471,11 @@ void RDPanelButton::WriteKeycap(int secs)
         }
       else {
 	if(button_active_length>=0) {
-	  p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-
-		      RDPANEL_BUTTON_MARGIN,
-		      RDGetTimeLength(button_active_length+1000,true,false));
+	  QString lenstr=RDGetTimeLength(button_active_length+1000,true,false);
+	  p->drawText(size().width()-p->fontMetrics().width(lenstr)-
+		      RDPANEL_BUTTON_MARGIN-2,
+		      size().height()-2-RDPANEL_BUTTON_MARGIN,
+		      lenstr);
 	}
 	else {
 	  p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-
@@ -482,20 +484,15 @@ void RDPanelButton::WriteKeycap(int secs)
       }
     }
     else {
-      if(secs>8) {
-        p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-RDPANEL_BUTTON_MARGIN,
-		    RDGetTimeLength(1000*(secs+1),true,false));
-      }
-      else {
-        p->setFont(timerFont());
-        QString secstr=QString().sprintf(":%d",secs+1);
-        p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-RDPANEL_BUTTON_MARGIN,secstr);
-        }
-      p->setFont(bannerFont());
-      QFontMetrics om(timerFont());
-      p->drawText(size().width()-2-om.width(button_output_text)-
-		  RDPANEL_BUTTON_MARGIN,
-		  size().height()-2-RDPANEL_BUTTON_MARGIN,button_output_text);
+      QString lenstr=RDGetTimeLength(button_active_length+1000,true,false);
+      p->drawText(size().width()-p->fontMetrics().width(lenstr)-
+		  RDPANEL_BUTTON_MARGIN-2,
+		  size().height()-2-RDPANEL_BUTTON_MARGIN,
+		  lenstr);
+      p->setFont(bigLabelFont());
+      p->drawText((size().width()-p->fontMetrics().width(button_output_text))/2,
+		  74*size().height()/100,
+		  button_output_text);
     }
   }
   p->end();

@@ -160,6 +160,8 @@ class RDAirPlayConf
   void setLogNowCart(int lognum,unsigned cartnum) const;
   unsigned logNextCart(int lognum) const;
   void setLogNextCart(int lognum,unsigned cartnum) const;
+  QString soundPanelChannelName(int mport);
+  static Channel soundPanelChannel(int mport);
   static QString channelText(RDAirPlayConf::Channel chan);
   static QString logModeText(RDAirPlayConf::OpMode mode);
 
