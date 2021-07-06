@@ -22011,3 +22011,7 @@
 2021-07-06 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the start buttons in rdcartslots(1) to display channel
 	labels.
+2021-07-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlibrary(1) that caused the average
+	length of audio carts to fail to be updated after moving Start
+	and/or End markers in a cut.

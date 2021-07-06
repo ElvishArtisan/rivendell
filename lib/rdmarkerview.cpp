@@ -763,6 +763,8 @@ void RDMarkerView::save()
   for(int i=0;i<RDMarkerHandle::PointerRole::LastRole;i++) {
     sql+=d_pointer_fields.at(i)+QString().sprintf("=%d,",d_pointers[i]);
   }
+  sql+=QString().sprintf("`LENGTH`=%d,",d_pointers[RDMarkerHandle::CutEnd]-
+			 d_pointers[RDMarkerHandle::CutStart]);
   if(d_no_segue_fade) {
     sql+="`SEGUE_GAIN`=0,";
   }
