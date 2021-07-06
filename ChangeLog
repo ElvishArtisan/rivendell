@@ -22005,3 +22005,6 @@
 2021-07-06 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the buttons in the Sound Panel widget in rdairplay(1) to
 	display channel labels when playing.
+2021-07-06 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the sound panel buttons in rdpanel(1) to display channel
+	labels when playing.

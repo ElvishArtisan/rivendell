@@ -202,7 +202,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
       if(unique) {
 	next_output++;
       }
-      panel_panel->setOutputText(i,QString().sprintf("%d",output));
+      panel_panel->
+	setOutputText(i,rda->panelConf()->soundPanelChannelName(output));
     }
 
     //
