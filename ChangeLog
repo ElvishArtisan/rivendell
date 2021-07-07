@@ -22015,3 +22015,6 @@
 	* Fixed a regression in rdlibrary(1) that caused the average
 	length of audio carts to fail to be updated after moving Start
 	and/or End markers in a cut.
+2021-07-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in sound panels that broke timer countdowns
+	during play-out.

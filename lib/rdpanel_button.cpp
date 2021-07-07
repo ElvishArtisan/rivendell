@@ -484,7 +484,7 @@ void RDPanelButton::WriteKeycap(int secs)
       }
     }
     else {
-      QString lenstr=RDGetTimeLength(button_active_length+1000,true,false);
+      QString lenstr=RDGetTimeLength(1000*(1+secs),true,false);
       p->drawText(size().width()-p->fontMetrics().width(lenstr)-
 		  RDPANEL_BUTTON_MARGIN-2,
 		  size().height()-2-RDPANEL_BUTTON_MARGIN,
@@ -492,7 +492,7 @@ void RDPanelButton::WriteKeycap(int secs)
       p->setFont(bigLabelFont());
       p->drawText((size().width()-p->fontMetrics().width(button_output_text))/2,
 		  74*size().height()/100,
-		  button_output_text);
+      		  button_output_text);
     }
   }
   p->end();
