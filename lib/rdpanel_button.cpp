@@ -60,7 +60,7 @@ void RDPanelButton::clear()
   button_active_length=0;
   button_length[0]=0;
   button_length[1]=0;
-  button_secs=-1;
+  button_msecs=-1;
   button_flashing=false;
   button_flash_state=false;
   button_state=false;
@@ -151,7 +151,7 @@ void RDPanelButton::setColor(QColor color)
       button_flashing=true;
     }
   }
-  WriteKeycap(button_secs);
+  WriteKeycap(button_msecs);
 }
 
 
@@ -319,15 +319,15 @@ int RDPanelButton::duckVolume() const
 
 void RDPanelButton::tickClock()
 {
-  int secs;
+  int msecs;
   QTime current_time=
     QTime::currentTime().addMSecs(button_station->timeOffset());
   if((button_start_time.isNull())||(current_time>button_end_time)||
-     ((secs=current_time.secsTo(button_end_time))==button_secs)) {
+     ((msecs=current_time.msecsTo(button_end_time))==button_msecs)) {
     return;
-    }
-  button_secs=secs;
-  WriteKeycap(secs);
+  }
+  button_msecs=msecs;
+  WriteKeycap(msecs);
 }
 
 
@@ -338,7 +338,7 @@ void RDPanelButton::flashButton(bool state)
   }
   button_flash_state=state;
   if(button_flashing&&button_state) {
-    WriteKeycap(button_secs);
+    WriteKeycap(button_msecs);
   }
 }
 
@@ -422,7 +422,7 @@ void RDPanelButton::dropEvent(QDropEvent *e)
 }
 
 
-void RDPanelButton::WriteKeycap(int secs)
+void RDPanelButton::WriteKeycap(int msecs)
 {
   QString text=button_text;
   QPixmap *pix=new QPixmap(size().width()-2,size().height()-2);
@@ -464,7 +464,7 @@ void RDPanelButton::WriteKeycap(int secs)
   // Time Field & Output Text
   //
   if(!button_text.isEmpty()) {
-    if(secs<0) {
+    if(msecs<0) {
       p->setFont(smallTimerFont());
       if(button_pause_when_finished) {
         p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-RDPANEL_BUTTON_MARGIN,"Finished");
@@ -484,7 +484,7 @@ void RDPanelButton::WriteKeycap(int secs)
       }
     }
     else {
-      QString lenstr=RDGetTimeLength(1000*(1+secs),true,false);
+      QString lenstr=RDGetTimeLength(1000+msecs,true,false);
       p->drawText(size().width()-p->fontMetrics().width(lenstr)-
 		  RDPANEL_BUTTON_MARGIN-2,
 		  size().height()-2-RDPANEL_BUTTON_MARGIN,

@@ -107,7 +107,7 @@ class RDPanelButton : public RDPushButton
   QTime button_end_time;
   int button_length[2];
   int button_active_length;
-  int button_secs;
+  int button_msecs;
   RDStation *button_station;
   RDPlayDeck *button_play_deck;
   int button_output;
