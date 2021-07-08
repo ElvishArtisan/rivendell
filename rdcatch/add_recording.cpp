@@ -77,7 +77,7 @@ AddRecording::AddRecording(QString *filter,QWidget *parent)
   button->setFont(buttonFont());
   button->setText(tr("Playout"));
   button->setDisabled(true);
-  sql=QString("select `CHANNEL` from `DECKS` where (`CARD`_NUMBER`>=0)&&")+
+  sql=QString("select `CHANNEL` from `DECKS` where (`CARD_NUMBER`>=0)&&")+
     "(`PORT_NUMBER`>=0)&&(`CHANNEL`>128)&&(`CHANNEL`<=137)";
   q=new RDSqlQuery(sql);
   if(q->first()) {

@@ -22030,3 +22030,6 @@
 	* Fixed a regression in rdimport(1) that caused it to repeatedly
 	re-import files in dropbox mode when the '--delete-source' switch
 	was set.
+2021-07-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'Add Recording' dialog in rdcatch(1)
+	that threw a SQL error.
