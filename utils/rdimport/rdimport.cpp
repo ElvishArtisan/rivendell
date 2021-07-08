@@ -1520,7 +1520,8 @@ void MainObject::VerifyFile(const QString &filename,unsigned *cartnum)
       found=true;
       QFileInfo *file=new QFileInfo(filename);
       dt=GetCachedTimestamp(filename);
-      if(dt.isNull()||(file->lastModified()>dt)) {
+      if(dt.isNull()||
+	 (file->lastModified().toSecsSinceEpoch()>dt.toSecsSinceEpoch())) {
 	if((file->size()==(*ci)->size)&&(!(*ci)->failed)) {
 	  (*ci)->pass++;
 	}

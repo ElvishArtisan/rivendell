@@ -22026,3 +22026,7 @@
 2021-07-08 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdservice(8) to log the startup command-line for all
 	dropboxes at DEBUG priority.
+2021-07-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdimport(1) that caused it to repeatedly
+	re-import files in dropbox mode when the '--delete-source' switch
+	was set.
