@@ -22020,3 +22020,6 @@
 	during play-out.
 2021-07-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a branding bug to rdairplay(1).
+2021-07-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdvairplayd(8) that caused a SQL error to be
+	generated at startup.
