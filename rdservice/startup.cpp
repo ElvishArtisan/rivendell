@@ -329,6 +329,11 @@ bool MainObject::StartDropboxes(QString *err_msg)
     args.push_back(q->value(1).toString());
     args.push_back(q->value(2).toString());
 
+    rda->syslog(LOG_DEBUG,"starting dropbox %d using command: \"%s\"",
+		q->value(0).toInt(),
+		(QString(RD_PREFIX)+"/bin/rdimport "+
+		 args.join(" ")).toUtf8().constData());
+    
     svc_processes[id]=new RDProcess(id,this);
     svc_processes[id]->start(QString(RD_PREFIX)+"/bin/rdimport",args);
     if(!svc_processes[id]->process()->waitForStarted(-1)) {

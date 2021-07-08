@@ -22023,3 +22023,6 @@
 2021-07-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdvairplayd(8) that caused a SQL error to be
 	generated at startup.
+2021-07-08 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdservice(8) to log the startup command-line for all
+	dropboxes at DEBUG priority.
