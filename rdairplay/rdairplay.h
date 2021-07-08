@@ -181,6 +181,7 @@ class MainWidget : public RDMainWindow
   RDHotKeyList *air_keylist;
   RDHotkeys *air_hotkeys;
   TopStrip *air_top_strip;
+  QLabel *air_bug_label;
 };
 
 

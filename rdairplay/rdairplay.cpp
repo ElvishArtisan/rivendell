@@ -35,6 +35,11 @@
 #include "rdairplay.h"
 
 //
+// Graphics
+//
+#include "../icons/bug-138x60.xpm"
+
+//
 // Prototypes
 //
 void SigHandler(int signo);
@@ -435,6 +440,15 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   air_copy_button->setFocusPolicy(Qt::NoFocus);
   connect(air_copy_button,SIGNAL(clicked()),this,SLOT(copyButtonData()));
 
+  //
+  // Bug
+  //
+  QPixmap *bug=new QPixmap(bug_138x60_xpm);
+  air_bug_label=new QLabel(this);
+  air_bug_label->setScaledContents(true);
+  air_bug_label->setPixmap(*bug);
+  delete bug;
+  
   //
   // Sound Panel Array
   //
@@ -2060,6 +2074,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   air_move_button->setGeometry(190,h-65,80,60);
   air_copy_button->setGeometry(280,h-65,80,60);
 
+  air_bug_label->setGeometry(370,h-65,138,60);
   air_empty_cart->setGeometry(520,h-51,32,32);
 
   int xpos=562;

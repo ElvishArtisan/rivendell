@@ -273,6 +273,8 @@ uninstall-local:
 EXTRA_DIST = admin.xpm\
              blueball.png\
              blueball.xpm\
+             bug-138x60.png\
+             bug-138x60.xpm\
              chain.png\
              chain.xpm\
              checkmark.xpm\
