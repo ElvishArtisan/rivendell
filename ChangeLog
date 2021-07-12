@@ -22033,3 +22033,9 @@
 2021-07-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the 'Add Recording' dialog in rdcatch(1)
 	that threw a SQL error.
+2021-07-12 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Edit Upload' dialog in rdcatch(1) to disable the
+	'Url', 'Username', 'Password' and 'Export Format' controls when
+	an RSS feed is selected.
+	* Added the feed icon to the 'RSS Feed' column in the record list
+	display in rdcatch(1).

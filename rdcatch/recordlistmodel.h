@@ -89,7 +89,7 @@ class RecordListModel : public QAbstractTableModel
   QList<QVariant> d_back_colors;
   QList<bool> d_is_nexts;
   QList<RDDeck::Status> d_statuses;
-  QList<QVariant> d_icons;
+  QList<QList<QVariant> > d_icons;
   QString d_filter_sql;
 };
 

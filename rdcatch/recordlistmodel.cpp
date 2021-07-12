@@ -195,9 +195,7 @@ QVariant RecordListModel::data(const QModelIndex &index,int role) const
       return d_texts.at(row).at(col);
 
     case Qt::DecorationRole:
-      if(col==0) {
-	return d_icons.at(row);
-      }
+      return d_icons.at(row).at(col);
 
     case Qt::TextAlignmentRole:
       return d_alignments.at(col);
@@ -534,8 +532,17 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   //
   // Qt::DecorationType
   //
-  d_icons[row]=
+  QList<QVariant> icons;
+  for(int i=0;i<columnCount();i++) {
+    icons.push_back(QPixmap());
+  }
+  icons[0]=
     rda->iconEngine()->catchIcon((RDRecording::Type)q->value(26).toUInt());
+  icons[1]=rda->iconEngine()->stationIcon();
+  if(!q->value(47).isNull()) {
+    icons[13]=QImage::fromData(q->value(47).toByteArray()).
+      scaled(22,22,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+  }
 
   //
   // Qt::DisplayType
@@ -593,7 +600,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   texts[27]=q->value(0).toString();   // Id
   texts[28]=q->value(26).toString();   // Type
   texts[31]=QString().sprintf("%u",RDDeck::Idle);
-  //  item->setPixmap(0,*(catch_type_maps[q->value(26).toInt()]));
+
   switch((RDRecording::Type)q->value(26).toInt()) {
   case RDRecording::Recording:
     texts[1]=q->value(3).toString()+
@@ -767,6 +774,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
     break;
   }
 
+  d_icons[row]=icons;
   d_texts[row]=texts;
 }
 
@@ -819,10 +827,13 @@ QString RecordListModel::sqlFields() const
     "`RECORDINGS`.`URL`,"+               // 42
     "`RECORDINGS`.`QUALITY`,"+           // 43
     "`FEEDS`.`KEY_NAME`,"+               // 44
-    "`EXIT_TEXT` "+                      // 45
+    "`FEEDS`.`CHANNEL_IMAGE_ID`,"+       // 45
+    "`RECORDINGS`.`EXIT_TEXT`,"+         // 46
+    "`FEED_IMAGES`.`DATA` "+             // 47
     "from `RECORDINGS` left join `CUTS` "+
     "on (`RECORDINGS`.`CUT_NAME`=`CUTS`.`CUT_NAME`) left join `FEEDS` "+
-    "on (`RECORDINGS`.`FEED_ID`=`FEEDS`.`ID`) ";
+    "on (`RECORDINGS`.`FEED_ID`=`FEEDS`.`ID`) left join `FEED_IMAGES` "+
+    "on (`FEEDS`.`ID`=`FEED_IMAGES`.`FEED_ID`) ";
 
     return sql;
 }

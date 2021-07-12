@@ -671,7 +671,7 @@ QString RDRecording::feedKeyName() const
 				feedId());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
-    QString ret=q->value(0).toString();
+    ret=q->value(0).toString();
   }
   delete q;
   return ret;

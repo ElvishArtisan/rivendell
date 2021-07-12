@@ -99,7 +99,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   // Feed List
   //
   list_feeds_view=new RDTableView(this);
-  list_feeds_model=new RDFeedListModel(true,this);
+  list_feeds_model=new RDFeedListModel(true,false,this);
   list_feeds_model->setFont(font());
   list_feeds_model->setPalette(palette());
   list_feeds_view->setModel(list_feeds_model);

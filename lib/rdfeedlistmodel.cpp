@@ -25,10 +25,11 @@
 #include "rdfeedlistmodel.h"
 #include "rdpodcast.h"
 
-RDFeedListModel::RDFeedListModel(bool is_admin,QObject *parent)
+RDFeedListModel::RDFeedListModel(bool is_admin,bool incl_none,QObject *parent)
   : QAbstractItemModel(parent)
 {
   d_is_admin=is_admin;
+  d_include_none=incl_none;
   d_font_metrics=NULL;
   d_bold_font_metrics=NULL;
 
@@ -481,6 +482,7 @@ void RDFeedListModel::updateModel(const QString &filter_sql)
   }
   QList<QList<QVariant> > list_list;
   list_list.push_back(list);
+  QList<unsigned> ids;
 
   sql=sqlFields()+
     filter_sql+
@@ -493,8 +495,19 @@ void RDFeedListModel::updateModel(const QString &filter_sql)
   d_cast_ids.clear();
   d_cast_icons.clear();
   d_icons.clear();
+
+  if(d_include_none) {
+    d_texts.push_back(list);
+    d_texts[0][0]=tr("[none]");
+    d_key_names.push_back(QString());
+    d_feed_ids.push_back(0);
+    d_cast_texts.push_back(list_list);
+    d_cast_ids.push_back(ids);
+    d_cast_icons.push_back(list);
+    d_icons.push_back(icons);
+  }
+
   QString prev_keyname;
-  QList<unsigned> ids;
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(0).toString()!=prev_keyname) {
