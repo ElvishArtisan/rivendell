@@ -22039,3 +22039,6 @@
 	an RSS feed is selected.
 	* Added the feed icon to the 'RSS Feed' column in the record list
 	display in rdcatch(1).
+2021-07-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDCheckExitCode()' that caused spurrious warnings
+	to be sent to syslog(3).

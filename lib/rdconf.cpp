@@ -1095,7 +1095,7 @@ QList<pid_t> RDGetPids(const QString &program)
 
 int RDCheckExitCode(const QString &msg,int exit_code)
 {
-  if(exit_code!=0) {
+  if(exit_code<0) {
     rda->syslog(LOG_WARNING,"%s returned non-zero exit code %d [%s]",
 		msg.toUtf8().constData(),exit_code,strerror(errno));
   }
@@ -1105,7 +1105,7 @@ int RDCheckExitCode(const QString &msg,int exit_code)
 
 int RDCheckExitCode(RDConfig *config,const QString &msg,int exit_code)
 {
-  if(exit_code!=0) {
+  if(exit_code<0) {
     RDApplication::syslog(config,LOG_WARNING,
 			  "%s returned non-zero exit code %d [%s]",
 			  msg.toUtf8().constData(),exit_code,strerror(errno));
