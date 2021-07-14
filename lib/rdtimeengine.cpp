@@ -18,159 +18,78 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-
-#include <rdtimeengine.h>
+#include "rdtimeengine.h"
 
 RDTimeEngine::RDTimeEngine(QObject *parent)
   : QObject(parent)
 {
-  engine_pending_id=-1;
-  engine_timer=new QTimer(this);
-  engine_timer->setSingleShot(true);
-  engine_time_offset=0;
-  connect(engine_timer,SIGNAL(timeout()),this,SLOT(timerData()));
+  d_mapper=new QSignalMapper(this);
+  connect(d_mapper,SIGNAL(mapped(int)),this,SLOT(timerData(int)));
 }
 
 
 RDTimeEngine::~RDTimeEngine()
 {
   clear();
-  delete engine_timer;
+  delete d_mapper;
 }
 
 
 void RDTimeEngine::clear()
 {
-  engine_time_offset=0;
-  engine_events.clear();
-  SetTimer();
+  for(QMap<int,QTimer *>::const_iterator it=d_timers.begin();
+      it!=d_timers.end();it++) {
+    d_mapper->removeMappings(it.value());
+    delete it.value();
+  }
+  d_timers.clear();
+  d_times.clear();
 }
 
 
 QTime RDTimeEngine::event(int id) const
 {
-  for(unsigned i=0;i<engine_events.size();i++) {
-    for(int j=0;j<engine_events[i].size();j++) {
-      if(id==engine_events[i].id(j)) {
-	return engine_events[i].time();
-      }
-    }
-  }
-  return QTime();
+  return d_times.value(id);
 }
 
 
-int RDTimeEngine::timeOffset() const
+void RDTimeEngine::addEvent(int id,const QTime &time)
 {
-  return engine_time_offset;
-}
-
-
-void RDTimeEngine::setTimeOffset(int msecs)
-{
-  engine_time_offset=msecs;
-  SetTimer();
-}
-
-
-void RDTimeEngine::addEvent(int id,QTime time)
-{
-  for(unsigned i=0;i<engine_events.size();i++) {
-    if(time==engine_events[i].time()) {
-      engine_events[i].addId(id);
-      SetTimer();
-      return;
-    }
-  }
-  engine_events.push_back(RDTimeEvent());
-  engine_events.back().setTime(time);
-  engine_events.back().addId(id);
-  SetTimer();
+  d_times[id]=time;
+  d_timers[id]=new QTimer(this);
+  d_timers.value(id)->setTimerType(Qt::PreciseTimer);
+  d_timers.value(id)->setSingleShot(true);
+  d_mapper->setMapping(d_timers.value(id),id);
+  connect(d_timers.value(id),SIGNAL(timeout()),d_mapper,SLOT(map()));
+  StartEvent(id);
 }
 
 
 void RDTimeEngine::removeEvent(int id)
 {
-  for(unsigned i=0;i<engine_events.size();i++) {
-    for(int j=0;j<engine_events[i].size();j++) {
-      if(id==engine_events[i].id(j)) {
-	if(engine_events[i].size()==1) {
-	  std::vector<RDTimeEvent>::iterator it=engine_events.begin()+i;
-	  engine_events.erase(it,it+1);
-	}
-	else {
-	  engine_events[i].removeId(j);
-	}
-	SetTimer();
-	return;
-      }
-    }
-  }
+  d_timers.value(id)->stop();
+  d_mapper->removeMappings(d_timers.value(id));
+  delete d_timers.value(id);
+  d_timers.remove(id);
+  d_times.remove(id);
 }
 
 
-int RDTimeEngine::next() const
+void RDTimeEngine::timerData(int id)
 {
-  return engine_pending_id;
+  emit timeout(id);
+  StartEvent(id);
 }
 
 
-void RDTimeEngine::timerData()
+void RDTimeEngine::StartEvent(int id)
 {
-  for(unsigned i=0;i<engine_events.size();i++) {
-    for(int j=0;j<engine_events[i].size();j++) {
-      if(engine_pending_id==engine_events[i].id(j)) {
-	EmitEvents(i);
-	SetTimer();
-	return;
-      }
-    }
+  QTime now=QTime::currentTime();
+  int interval=now.msecsTo(d_times.value(id));
+
+  if(interval<0) {  // Crosses midnight
+    interval=
+      now.msecsTo(QTime(23,59,59))+1000+QTime(0,0,0).msecsTo(d_times.value(id));
   }
-}
-
-
-void RDTimeEngine::EmitEvents(int offset)
-{
-//  for(int i=0;i<engine_events[offset].size();i++) {
-  for(int i=engine_events[offset].size()-1;i>=0;i--) {
-    emit timeout(engine_events[offset].id(i));
-  }
-}
-
-
-void RDTimeEngine::SetTimer()
-{
-  engine_timer->stop();
-  if(engine_events.size()==0) {
-    return;
-  }
-  QTime current_time=QTime::currentTime().addMSecs(engine_time_offset);
-  int diff=GetNextDiff(current_time,&engine_pending_id);
-  if(diff!=86400001) {
-    engine_timer->start(diff);
-    return;
-  }
-  diff=GetNextDiff(QTime(0,0,0),&engine_pending_id);
-  if(diff!=86400001) {
-    diff+=(current_time.msecsTo(QTime(23,59,59))+1000);
-    engine_timer->start(diff);
-    return;
-  }
-}
-
-
-int RDTimeEngine::GetNextDiff(QTime time,int *pending_id)
-{
-  int diff=86400001;
-  *pending_id=-1;
-
-  for(unsigned i=0;i<engine_events.size();i++) {
-    if(((time.msecsTo(engine_events[i].time()))>=0)&&
-       (time.msecsTo(engine_events[i].time())<diff)) {
-      diff=time.msecsTo(engine_events[i].time());
-      *pending_id=engine_events[i].id(0);
-    }
-  }
-  return diff;
+  d_timers.value(id)->start(1+interval);
 }

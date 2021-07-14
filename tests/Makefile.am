@@ -52,6 +52,7 @@ noinst_PROGRAMS = audio_convert_test\
                   test_hash\
                   test_pam\
                   timer_test\
+                  timeengine_test\
                   upload_test\
                   wav_chunk_test\
                   wavefactory_test\
@@ -141,6 +142,10 @@ test_pam_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 dist_timer_test_SOURCES = timer_test.cpp timer_test.h
 nodist_timer_test_SOURCES = moc_timer_test.cpp
 timer_test_LDADD =  @QT5_LIBS@ @MUSICBRAINZ_LIBS@ 
+
+dist_timeengine_test_SOURCES = timeengine_test.cpp timeengine_test.h
+nodist_timeengine_test_SOURCES = moc_timeengine_test.cpp
+timeengine_test_LDADD =  @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ 
 
 dist_upload_test_SOURCES = upload_test.cpp upload_test.h
 upload_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@ 

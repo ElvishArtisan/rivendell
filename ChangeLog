@@ -22042,3 +22042,6 @@
 2021-07-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDCheckExitCode()' that caused spurrious warnings
 	to be sent to syslog(3).
+2021-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'RDTimeEngine' class.
+	* Added a 'timeengine_test' test harness.

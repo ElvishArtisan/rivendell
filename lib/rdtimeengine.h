@@ -2,7 +2,7 @@
 //
 //   An event timer engine.
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -21,11 +21,11 @@
 #ifndef RDTIMEENGINE_H
 #define RDTIMEENGINE_H
 
-#include <vector>
-
-#include <qwidget.h>
-#include <qdatetime.h>
-#include <qtimer.h>
+#include <QDateTime>
+#include <QMap>
+#include <QObject>
+#include <QSignalMapper>
+#include <QTimer>
 
 #include <rdtimeevent.h>
 
@@ -37,26 +37,20 @@ class RDTimeEngine : public QObject
   ~RDTimeEngine();
   void clear();
   QTime event(int id) const;
-  int timeOffset() const;
-  void setTimeOffset(int msecs);
-  void addEvent(int id,QTime time);
+  void addEvent(int id,const QTime &time);
   void removeEvent(int id);
-  int next() const;
   
  signals:
   void timeout(int id);
   
  private slots:
-  void timerData();
+  void timerData(int id);
 
  private:
-  void EmitEvents(int offset);
-  void SetTimer();
-  int GetNextDiff(QTime time,int *pending_id);
-  QTimer *engine_timer;
-  std::vector<RDTimeEvent> engine_events;
-  int engine_pending_id;
-  int engine_time_offset;
+  void StartEvent(int id);
+  QMap<int,QTime> d_times;
+  QMap<int,QTimer *> d_timers;
+  QSignalMapper *d_mapper;
 };
 
 

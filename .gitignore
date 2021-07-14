@@ -145,6 +145,7 @@ tests/sendmail_test
 tests/stringcode_test
 tests/test_hash
 tests/test_pam
+tests/timeengine_test
 tests/timer_test
 tests/upload_test
 tests/wav_chunk_test
