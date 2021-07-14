@@ -349,7 +349,6 @@ MainObject::MainObject(QObject *parent)
   // Time Engine
   //
   catch_engine=new RDTimeEngine(this);
-  catch_engine->setTimeOffset(rda->station()->timeOffset());
   connect(catch_engine,SIGNAL(timeout(int)),this,SLOT(engineData(int)));
   LoadEngine();
 
@@ -572,7 +571,6 @@ void MainObject::offsetTimerData(int id)
 
 void MainObject::engineData(int id)
 {
-  // LogLine(QString().sprintf("engineData(%d)",id));
   QString sql;
   RDSqlQuery *q;
   RDStation *rdstation;
@@ -583,9 +581,6 @@ void MainObject::engineData(int id)
   //
   QDate date=QDate::currentDate();
   QTime current_time=QTime::currentTime();
-  if((current_time.msecsTo(QTime(23,59,59))+1000)<catch_engine->timeOffset()) {
-    date=date.addDays(1);
-  }
 
   //
   // Ignore inactive or non-existent events
@@ -810,10 +805,10 @@ void MainObject::engineData(int id)
     delete q;
     catch_events[event].
       setResolvedUrl(RDDateTimeDecode(catch_events[event].url(),
-	       QDateTime(date.addDays(catch_events[event].eventdateOffset()),
-			 current_time),rda->station(),RDConfiguration()));
-	StartDownloadEvent(event);
-	break;
+		QDateTime(date.addDays(catch_events[event].eventdateOffset()),
+			  current_time),rda->station(),RDConfiguration()));
+    StartDownloadEvent(event);
+    break;
 
   case RDRecording::Upload:
     if(!RDCut::exists(catch_events[event].cutName())) {
@@ -1664,11 +1659,6 @@ void MainObject::DispatchCommand(ServerConnection *conn)
     LoadDeckList();
   }
 
-  if(cmds.at(0)=="RO") {  // Reload Time Offset
-    EchoArgs(conn->id(),'+');
-    catch_engine->setTimeOffset(rda->station()->timeOffset());
-  }
-
   if((cmds.at(0)=="RE")&&(cmds.size()==2)) {  // Request Status
     chan=cmds.at(1).toInt(&ok);
     if(!ok) {
@@ -1959,6 +1949,12 @@ void MainObject::LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add)
   e->setChannels(q->value(20).toInt());
   e->setSampleRate(q->value(21).toUInt());
   e->setBitrate(q->value(22).toInt());
+  e->setUrl(q->value(37).toString());
+  e->setUrlUsername(q->value(38).toString());
+  e->setUrlPassword(q->value(39).toString());
+  e->setQuality(q->value(40).toInt());
+  e->setNormalizeLevel(q->value(41).toInt());
+  e->setFeedId(q->value(45).toUInt());
   e->setMacroCart(q->value(23).toInt());
   e->setSwitchInput(q->value(24).toInt());
   e->setSwitchOutput(q->value(25).toInt());
@@ -1974,15 +1970,9 @@ void MainObject::LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add)
   e->setEndLength(q->value(34).toInt());
   e->setEndMatrix(q->value(35).toInt());
   e->setEndLine(q->value(36).toInt());
-  e->setUrl(q->value(37).toString());
-  e->setUrlUsername(q->value(38).toString());
-  e->setUrlPassword(q->value(39).toString());
-  e->setQuality(q->value(40).toInt());
-  e->setNormalizeLevel(q->value(41).toInt());
   e->setAllowMultipleRecordings(RDBool(q->value(42).toString()));
   e->setMaxGpiRecordLength(q->value(43).toUInt());
   e->setDescription(q->value(44).toString());
-  e->setFeedId(q->value(45).toUInt());
   e->setEventdateOffset(q->value(46).toInt());
   e->setEnableMetadata(RDBool(q->value(47).toString()));
 
@@ -2344,70 +2334,6 @@ void MainObject::CheckInRecording(QString cutname,CatchEvent *evt,
   RDCheckExitCode("rdcatchd.cpp chown",chown(RDCut::pathName(cutname).toUtf8(),
 					     rda->config()->uid(),
 					     rda->config()->gid()));
-}
-
-
-void MainObject::CheckInPodcast(CatchEvent *e) const
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  //
-  // Purge Stale Casts
-  //
-  sql=QString("delete from `PODCASTS` where ")+
-    QString().sprintf("(`FEED_ID`=%d)&&",e->feedId())+
-    "(`AUDIO_FILENAME`='"+RDEscapeString(RDGetBasePart(e->resolvedUrl()))+"')";
-  RDSqlQuery::apply(sql);
-
-  //
-  // Get Channel Parameters
-  //
-  sql=QString("select ")+
-    "`ENABLE_AUTOPOST`,"+      // 00
-    "`CHANNEL_TITLE`,"+        // 01
-    "`CHANNEL_DESCRIPTION`,"+  // 02
-    "`CHANNEL_CATEGORY`,"+     // 03
-    "`CHANNEL_LINK`,"+         // 04
-    "`MAX_SHELF_LIFE` "+       // 05
-    "from `FEEDS` where "+
-    QString().sprintf("`ID`=%u",e->feedId());
-  q=new RDSqlQuery(sql);
-  if(!q->first()) {
-    delete q;
-    return;
-  }
-
-  //
-  // Add the Cast Entry
-  //
-  RDPodcast::Status status=RDPodcast::StatusPending;
-  if(q->value(0).toString().toLower()=="y") {
-    status=RDPodcast::StatusActive;
-  }
-  sql=QString("insert into `PODCASTS` set ")+
-    QString().sprintf("`FEED_ID`=%u,",e->feedId())+
-    QString().sprintf("`STATUS`=%u,",status)+
-    "`ITEM_TITLE`='"+RDEscapeString(q->value(1).toString())+"',"+
-    "`ITEM_DESCRIPTION`='"+RDEscapeString(q->value(2).toString())+"',"+
-    "`ITEM_CATEGORY`='"+RDEscapeString(q->value(3).toString())+"',"+
-    "`ITEM_LINK`='"+RDEscapeString(q->value(4).toString())+"',"+
-    "`AUDIO_FILENAME`='"+RDEscapeString(RDGetBasePart(e->resolvedUrl()))+"',"+
-    QString().sprintf("`AUDIO_LENGTH`=%u,",e->podcastLength())+
-    QString().sprintf("`AUDIO_TIME`=%u,",e->podcastTime())+
-    QString().sprintf("`SHELF_LIFE`=%u,",q->value(5).toUInt())+
-    "`EFFECTIVE_DATETIME`=now(),"+
-    "`ORIGIN_DATETIME`=now()";
-  delete q;
-  RDSqlQuery::apply(sql);
-
-  //
-  // Update the Build Date
-  //
-  sql=QString("update `FEEDS` set ")+
-    "`LAST_BUILD_DATETIME`=now() where "+
-    QString().sprintf("`ID`=%u",e->feedId());
-  RDSqlQuery::apply(sql);
 }
 
 

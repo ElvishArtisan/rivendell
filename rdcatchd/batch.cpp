@@ -44,6 +44,8 @@
 #include <rddebug.h>
 #include <rddownload.h>
 #include <rdescape_string.h>
+#include <rdfeed.h>
+#include <rdpodcast.h>
 #include <rdsettings.h>
 #include <rdtempdirectory.h>
 #include <rdupload.h>
@@ -291,87 +293,104 @@ void MainObject::RunUpload(CatchEvent *evt)
 	      (const char *)evt->tempName().toUtf8(),evt->id());
 
   //
-  // Load Podcast Parameters
-  //
-  if(evt->feedId()>0) {
-    QFile *file=new QFile(evt->tempName());
-    evt->setPodcastLength(file->size());
-    delete file;
-    RDWaveFile *wave=new RDWaveFile(evt->tempName());
-    if(wave->openWave()) {
-      evt->setPodcastTime(wave->getExtTimeLength());
-    }
-    delete wave;
-  }
-  
-  //
   // Execute Upload
   //
   rda->syslog(LOG_INFO,"starting upload of %s to %s, id=%d",
 	      (const char *)evt->tempName().toUtf8(),
 	      (const char *)evt->resolvedUrl().toUtf8(),
 	      evt->id());
-  RDUpload *conv=new RDUpload(rda->config(),this);
-  conv->setSourceFile(evt->tempName());
-  conv->setDestinationUrl(evt->resolvedUrl());
-  QString url_username=evt->urlUsername();
-  QString url_password=evt->urlPassword();
-  if(url_username.isEmpty()&&
-     (QUrl(evt->resolvedUrl()).scheme().toLower()=="ftp")) {
-    url_username=RD_ANON_FTP_USERNAME;
-    url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
+  if(evt->feedId()<=0) {  // Standard upload
+    RDUpload *conv=new RDUpload(rda->config(),this);
+    conv->setSourceFile(evt->tempName());
+    conv->setDestinationUrl(evt->resolvedUrl());
+    QString url_username=evt->urlUsername();
+    QString url_password=evt->urlPassword();
+    if(url_username.isEmpty()&&
+       (QUrl(evt->resolvedUrl()).scheme().toLower()=="ftp")) {
+      url_username=RD_ANON_FTP_USERNAME;
+      url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
+    }
+    //
+    // FIXME: Finish implementing ssh(1) identity keys!
+    //
+    switch((conv_err=conv->runUpload(url_username,url_password,"",false,
+				     rda->config()->logXloadDebugData()))) {
+    case RDUpload::ErrorOk:
+      catch_connect->setExitCode(evt->id(),RDRecording::Ok,tr("Ok"));
+      qApp->processEvents();
+      rda->syslog(LOG_INFO,"finished upload of %s to %s, id=%d",
+		  (const char *)evt->tempName().toUtf8(),
+		  (const char *)evt->resolvedUrl().toUtf8(),
+		  evt->id());
+      break;
+
+    case RDUpload::ErrorInternal:
+      catch_connect->setExitCode(evt->id(),RDRecording::InternalError,
+				 RDUpload::errorText(conv_err));
+      qApp->processEvents();
+      rda->syslog(LOG_WARNING,"upload of %s returned an error: \"%s\", id=%d",
+		  (const char *)evt->tempName().toUtf8(),
+		  (const char *)RDUpload::errorText(conv_err).toUtf8(),
+		  evt->id());
+      break;
+
+    default:
+      catch_connect->setExitCode(evt->id(),RDRecording::ServerError,
+				 RDUpload::errorText(conv_err));
+      qApp->processEvents();
+      rda->syslog(LOG_WARNING,"upload of %s returned an error: \"%s\", id=%d",
+		  (const char *)evt->tempName().toUtf8(),
+		  (const char *)RDUpload::errorText(conv_err).toUtf8(),
+		  evt->id());
+      break;
+    }
+    delete conv;
+
+    //
+    // Clean Up
+    //
+    if(evt->deleteTempFile()) {
+      unlink(evt->tempName().toUtf8());
+      rda->
+	syslog(LOG_INFO,"deleted file %s",evt->tempName().toUtf8().constData());
+    }
+    else {
+      RDCheckExitCode("batch.cpp chown",chown(evt->tempName().toUtf8(),
+					      rda->config()->uid(),
+					      rda->config()->gid()));
+    }
   }
-  //
-  // FIXME: Finish implementing ssh(1) identity keys!
-  //
-  switch((conv_err=conv->runUpload(url_username,url_password,"",false,
-				   rda->config()->logXloadDebugData()))) {
-  case RDUpload::ErrorOk:
+  else {  // Podcast upload
+    unsigned cast_id;
+    RDFeed::Error feed_err=RDFeed::ErrorOk;
+
+    RDFeed *feed=new RDFeed(evt->feedId(),rda->config(),this);
+    rda->syslog(LOG_INFO,"starting post of %s to feed \"%s\", id=%d",
+		evt->tempName().toUtf8().constData(),
+		feed->keyName().toUtf8().constData(),
+		evt->id());
+    if((cast_id=feed->postFile(evt->tempName(),&feed_err))==0) {
+      rda->syslog(LOG_WARNING,"post of %s to feed \"%s\" failed [%s], id=%d",
+		  evt->tempName().toUtf8().constData(),
+		  feed->keyName().toUtf8().constData(),
+		  RDFeed::errorString(feed_err).toUtf8().constData(),
+		  evt->id());
+      catch_connect->setExitCode(evt->id(),RDRecording::ServerError,
+				 RDFeed::errorString(feed_err));
+      delete feed;
+      return;
+    }
+    rda->syslog(LOG_INFO,"post of %s to cast id %u successful, id=%d",
+		evt->tempName().toUtf8().constData(),
+		cast_id,
+		evt->id());
+    RDCart *cart=new RDCart(RDCut::cartNumber(evt->cutName()));
+    RDPodcast *cast=new RDPodcast(rda->config(),cast_id);
+    cast->setItemTitle(cart->title());
     catch_connect->setExitCode(evt->id(),RDRecording::Ok,tr("Ok"));
-    qApp->processEvents();
-    rda->syslog(LOG_INFO,"finished upload of %s to %s, id=%d",
-		(const char *)evt->tempName().toUtf8(),
-		(const char *)evt->resolvedUrl().toUtf8(),
-		evt->id());
-    break;
-
-  case RDUpload::ErrorInternal:
-    catch_connect->setExitCode(evt->id(),RDRecording::InternalError,
-			       RDUpload::errorText(conv_err));
-    qApp->processEvents();
-    rda->syslog(LOG_WARNING,"upload of %s returned an error: \"%s\", id=%d",
-		(const char *)evt->tempName().toUtf8(),
-		(const char *)RDUpload::errorText(conv_err).toUtf8(),
-		evt->id());
-    break;
-
-  default:
-    catch_connect->setExitCode(evt->id(),RDRecording::ServerError,
-			       RDUpload::errorText(conv_err));
-    qApp->processEvents();
-    rda->syslog(LOG_WARNING,"upload of %s returned an error: \"%s\", id=%d",
-		(const char *)evt->tempName().toUtf8(),
-		(const char *)RDUpload::errorText(conv_err).toUtf8(),
-		evt->id());
-    break;
-  }
-  delete conv;
-
-  //
-  // Clean Up
-  //
-  if(evt->feedId()>0) {
-    CheckInPodcast(evt);
-  }
-  if(evt->deleteTempFile()) {
-    unlink(evt->tempName().toUtf8());
-    rda->syslog(LOG_INFO,"deleted file %s",
-		(const char *)evt->tempName().toUtf8());
-  }
-  else {
-    RDCheckExitCode("batch.cpp chown",chown(evt->tempName().toUtf8(),
-					    rda->config()->uid(),
-					    rda->config()->gid()));
+    delete cast;
+    delete cart;
+    delete feed;
   }
 }
 

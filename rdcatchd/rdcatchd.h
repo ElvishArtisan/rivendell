@@ -24,17 +24,7 @@
 #define XLOAD_UPDATE_INTERVAL 1000
 #define RDCATCHD_USAGE "[-d][--event-id=<id>]\n\nOptions:\n\n-d\n     Set 'debug' mode, causing rdcatchd(8) to stay in the foreground\n     and print debugging info on standard output.\n\n--event-id=<id>\n     Execute event <id> and then exit.\n\n" 
 
-#include <vector>
-#include <list>
-
-#include <qlist.h>
-#include <qobject.h>
-#include <qstring.h>
-#include <qtcpserver.h>
-#include <qsignalmapper.h>
-#include <qtimer.h>
-#include <qhostaddress.h>
-#include <qsignalmapper.h>
+#include <QTcpServer>
 
 #include <rd.h>
 #include <rdcart.h>
@@ -178,7 +168,6 @@ class MainObject : public QObject
   void LoadHeartbeat();
   void CheckInRecording(QString cutname,CatchEvent *evt,unsigned msecs,
 			unsigned threshold);
-  void CheckInPodcast(CatchEvent *e) const;
   RDRecording::ExitCode ReadExitCode(int event);
   void WriteExitCode(int event,RDRecording::ExitCode code,
 		     const QString &err_text="");

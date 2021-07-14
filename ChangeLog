@@ -22047,3 +22047,5 @@
 	* Added a 'timeengine_test' test harness.
 2021-07-14 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'RDTimeEvent' class.
+2021-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Restored the ability to post to RSS feeds in rdcatch(1).
