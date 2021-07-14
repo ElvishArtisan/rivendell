@@ -22045,3 +22045,5 @@
 2021-07-14 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'RDTimeEngine' class.
 	* Added a 'timeengine_test' test harness.
+2021-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDTimeEvent' class.

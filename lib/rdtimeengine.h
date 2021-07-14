@@ -27,8 +27,6 @@
 #include <QSignalMapper>
 #include <QTimer>
 
-#include <rdtimeevent.h>
-
 class RDTimeEngine : public QObject
 {
   Q_OBJECT
