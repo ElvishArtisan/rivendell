@@ -773,10 +773,6 @@ New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>RSS Feed:</source>
         <translation type="unfinished"></translation>
     </message>

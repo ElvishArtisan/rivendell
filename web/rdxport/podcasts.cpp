@@ -377,7 +377,8 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
 		     rda->station()->sshIdentityFile().toUtf8().constData());
     curl_easy_setopt(curl,CURLOPT_KEYPASSWD,
 		     feed->purgePassword().toUtf8().constData());
-    *err_msg+="using ssh key at \""+rda->station()->sshIdentityFile()+"\" ";
+    rda->syslog(LOG_DEBUG,"using ssh key at \"%s\"",
+		rda->station()->sshIdentityFile().toUtf8().constData());
   }
   else {
     curl_easy_setopt(curl,CURLOPT_USERNAME,
@@ -385,6 +386,10 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
     curl_easy_setopt(curl,CURLOPT_PASSWORD,
 		     feed->purgePassword().toUtf8().constData());
   }
+
+  // HACK HACK!!
+  curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0);  // Verify remote hostname
+  curl_easy_setopt(curl,CURLOPT_SSL_VERIFYPEER,0);  // Verify remote certificate
 
   //
   // Transfer Parameters
@@ -397,7 +402,7 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent().toUtf8());
+		   rda->config()->userAgent().toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errstr);
 
   //
@@ -407,18 +412,20 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   case CURLE_OK:
   case CURLE_PARTIAL_FILE:
     feed->setLastBuildDateTime(now);
+    rda->syslog(LOG_DEBUG,
+		"posted RSS XML to \"%s\"",
+		feed->feedUrl().toUtf8().constData());
     ret=true;
     break;
 
   default:
+    rda->syslog(LOG_ERR,"RSS XML upload failed: curl error %d [%s]",
+		curl_err,curl_easy_strerror(curl_err));
     *err_msg+=errstr;
     ret=false;
     break;
   }
   curl_easy_cleanup(curl);
-
-  rda->syslog(LOG_DEBUG,
-	      "posted RSS XML to \"%s\"",feed->feedUrl().toUtf8().constData());
 
   return ret;
 }

@@ -371,6 +371,14 @@ void EditCast::okData()
   }
 
   if(!cast_feed->postXmlConditional("RDCastManager",this)) {
+    if(QMessageBox::warning(this,"RDAdmin - "+tr("Upload Error"),
+			    tr("XML data upload failed!")+"\n\n"+
+			    tr("Continue saving feed parameters anyway?"),
+			    QMessageBox::Yes,QMessageBox::Yes)==
+       QMessageBox::Yes) {
+      done(true);
+      return;
+    }
     return;
   }
 

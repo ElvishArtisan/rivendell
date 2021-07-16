@@ -99,6 +99,18 @@
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Upload Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>XML data upload failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue saving feed parameters anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>

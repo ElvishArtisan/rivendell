@@ -636,11 +636,13 @@ void EditFeed::okData()
   RDUpload *u=new RDUpload(rda->config(),this);
   if((!d->urlIsSupported(feed_purge_url_edit->text()))||
      (!u->urlIsSupported(feed_purge_url_edit->text()))) {
-    QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
-			 tr("Audio Upload URL has unsupported scheme!"));
-    delete d;
-    delete u;
-    return;
+    if(QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			    tr("Audio Upload URL has unsupported scheme!"),
+			    QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
+      delete d;
+      delete u;
+      return;
+    }
   }
   delete d;
   delete u;

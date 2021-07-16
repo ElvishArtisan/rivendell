@@ -22052,3 +22052,6 @@
 2021-07-14 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the login dialog for rdadmin(1) to use persistent
 	placement.
+2021-07-16 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the error dialogs in rdadmin(1) to make it possible
+	to create a new RSS feed even with an inoperable upload URL.
