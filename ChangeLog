@@ -22055,3 +22055,6 @@
 2021-07-16 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the error dialogs in rdadmin(1) to make it possible
 	to create a new RSS feed even with an inoperable upload URL.
+2021-07-17 Fred Gleason <fredg@paravelsystems.com>
+	* Disabled host key validation for SFTP transfers in the podcast
+	subsystem.

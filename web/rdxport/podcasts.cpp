@@ -371,6 +371,11 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   //
   if((QUrl(feed->feedUrl()).scheme().toLower()=="sftp")&&
      (!rda->station()->sshIdentityFile().isEmpty())&&feed->purgeUseIdFile()) {
+    //
+    // Disable host key verification
+    //
+    curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0);
+
     curl_easy_setopt(curl,CURLOPT_USERNAME,
 		     feed->purgeUsername().toUtf8().constData());
     curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
@@ -381,15 +386,16 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
 		rda->station()->sshIdentityFile().toUtf8().constData());
   }
   else {
+    //
+    // Disable host key verification
+    //
+    curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0);
+
     curl_easy_setopt(curl,CURLOPT_USERNAME,
 		     feed->purgeUsername().toUtf8().constData());
     curl_easy_setopt(curl,CURLOPT_PASSWORD,
 		     feed->purgePassword().toUtf8().constData());
   }
-
-  // HACK HACK!!
-  curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0);  // Verify remote hostname
-  curl_easy_setopt(curl,CURLOPT_SSL_VERIFYPEER,0);  // Verify remote certificate
 
   //
   // Transfer Parameters
