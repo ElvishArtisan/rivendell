@@ -22061,3 +22061,6 @@
 2021-07-20 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Edit Upload' dialog in rdcatch(1) to improve
 	modularity.
+2021-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Edit Download' dialog in rdcatch(1) to improve
+	modularity.

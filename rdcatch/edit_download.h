@@ -34,6 +34,9 @@
 #include <rdrecording.h>
 #include <rdstationlistmodel.h>
 
+#include "dowselector.h"
+#include "eventwidget.h"
+
 class EditDownload : public RDDialog
 {
  Q_OBJECT
@@ -54,7 +57,8 @@ class EditDownload : public RDDialog
   void cancelData();
   
  protected:
-  void keyPressEvent(QKeyEvent *);
+  void resizeEvent(QResizeEvent *e);
+  void keyPressEvent(QKeyEvent *e);
   void closeEvent(QCloseEvent *e);
   
  private:
@@ -63,42 +67,47 @@ class EditDownload : public RDDialog
   RDDeck *edit_deck;
   RDCutDialog *edit_cut_dialog;
   RDRecording *edit_recording;
-  QCheckBox *edit_active_button;
-  RDComboBox *edit_station_box;
-  RDStationListModel *edit_station_model;
-  QTimeEdit *edit_starttime_edit;
+  QLabel *edit_description_label;
   QLineEdit *edit_description_edit;
+  QLabel *edit_url_label;
   QLineEdit *edit_url_edit;
   QLabel *edit_username_label;
   QLineEdit *edit_username_edit;
   QLabel *edit_password_label;
   QLineEdit *edit_password_edit;
   QString edit_cutname;
+  QLabel *edit_destination_label;
   QLineEdit *edit_destination_edit;
+  QPushButton *edit_destination_button;
+  QLabel *edit_metadata_label;
   QCheckBox *edit_metadata_box;
-  QCheckBox *edit_sun_button;
-  QCheckBox *edit_mon_button;
-  QCheckBox *edit_tue_button;
-  QCheckBox *edit_wed_button;
-  QCheckBox *edit_thu_button;
-  QCheckBox *edit_fri_button;
-  QCheckBox *edit_sat_button;
+  QLabel *edit_eventoffset_label;
   QSpinBox *edit_eventoffset_spin;
+  QLabel *edit_eventoffset_unit;
   QCheckBox *edit_oneshot_box;
+  QLabel *edit_oneshot_label;
   std::vector<int> *edit_added_events;
+  QLabel *edit_channels_label;
   QComboBox *edit_channels_box;
+  QLabel *edit_autotrim_label_label;
   QCheckBox *edit_autotrim_box;
   QLabel *edit_autotrim_label;
   QSpinBox *edit_autotrim_spin;
   QLabel *edit_autotrim_unit;
+  QLabel *edit_normalize_label_label;
   QCheckBox *edit_normalize_box;
   QLabel *edit_normalize_label;
   QSpinBox *edit_normalize_spin;
   QLabel *edit_normalize_unit;
+  QPushButton *edit_saveas_button;
+  QPushButton *edit_ok_button;
+  QPushButton *edit_cancel_button;
   QString *edit_filter;
   QString edit_group;
   QString edit_schedcode;
+  EventWidget *edit_event_widget;
+  DowSelector *edit_dow_selector;
 };
 
 
-#endif
+#endif  // EDIT_DOWNLOAD_H

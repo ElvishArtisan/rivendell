@@ -64,72 +64,37 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
 				  false,true,true,"RDCatch",false,this);
 
   //
-  // Active Button
+  // Event Widget
   //
-  edit_active_button=new QCheckBox(this);
-  edit_active_button->setGeometry(10,11,20,20);
-  QLabel *label=new QLabel(tr("Event Active"),this);
-  label->setGeometry(30,11,125,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Station
-  //
-  edit_station_box=new RDComboBox(this);
-  edit_station_model=new RDStationListModel(false,"",this);
-  edit_station_box->setModel(edit_station_model);
-  edit_station_box->setGeometry(200,10,140,23);
-  label=new QLabel(tr("Location:"),this);
-  label->setGeometry(125,10,70,23);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
-  // Start Time
-  //
-  edit_starttime_edit=new QTimeEdit(this);
-  edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
-  edit_starttime_edit->setDisplayFormat("hh:mm:ss");
-  label=new QLabel(tr("Start Time:"),this);
-  label->setGeometry(sizeHint().width()-175,12,80,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
+  edit_event_widget=new EventWidget(EventWidget::OtherEvent,this);
   //
   // Description
   //
   edit_description_edit=new QLineEdit(this);
-  edit_description_edit->setGeometry(115,43,sizeHint().width()-125,20);
   edit_description_edit->setValidator(validator);
-  label=new QLabel(tr("Description:"),this);
-  label->setGeometry(10,43,100,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_description_label=new QLabel(tr("Description:"),this);
+  edit_description_label->setFont(labelFont());
+  edit_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Url
   //
   edit_url_edit=new QLineEdit(this);
-  edit_url_edit->setGeometry(115,70,sizeHint().width()-125,20);
   edit_url_edit->setMaxLength(255);
   edit_url_edit->setValidator(validator);
   connect(edit_url_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(urlChangedData(const QString &)));
-  label=new QLabel(tr("Url:"),this);
-  label->setGeometry(10,70,100,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_url_label=new QLabel(tr("Url:"),this);
+  edit_url_label->setFont(labelFont());
+  edit_url_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Username
   //
   edit_username_edit=new QLineEdit(this);
-  edit_username_edit->setGeometry(115,97,150,20);
   edit_username_edit->setMaxLength(64);
   edit_username_edit->setValidator(validator);
   edit_username_label=new QLabel(tr("Username:"),this);
-  edit_username_label->setGeometry(10,97,100,20);
   edit_username_label->setFont(labelFont());
   edit_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -137,12 +102,10 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   // Password
   //
   edit_password_edit=new QLineEdit(this);
-  edit_password_edit->setGeometry(360,97,sizeHint().width()-370,20);
   edit_password_edit->setEchoMode(QLineEdit::Password);
   edit_password_edit->setMaxLength(64);
   edit_username_edit->setValidator(validator);
   edit_password_label=new QLabel(tr("Password:"),this);
-  edit_password_label->setGeometry(275,97,80,20);
   edit_password_label->setFont(labelFont());
   edit_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -150,50 +113,41 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   // Destination
   //
   edit_destination_edit=new QLineEdit(this);
-  edit_destination_edit->setGeometry(115,124,sizeHint().width()-195,20);
   edit_destination_edit->setReadOnly(true);
-  label=new QLabel(tr("Destination:"),this);
-  label->setGeometry(10,127,100,19);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight);
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-70,122,60,24);
-  button->setFont(subLabelFont());
-  button->setText(tr("Select"));
-  connect(button,SIGNAL(clicked()),this,SLOT(selectCartData()));
+  edit_destination_label=new QLabel(tr("Destination:"),this);
+  edit_destination_label->setFont(labelFont());
+  edit_destination_label->setAlignment(Qt::AlignRight);
+  edit_destination_button=new QPushButton(this);
+  edit_destination_button->setFont(subLabelFont());
+  edit_destination_button->setText(tr("Select"));
+  connect(edit_destination_button,SIGNAL(clicked()),
+	  this,SLOT(selectCartData()));
 
   //
   // Channels
   //
   edit_channels_box=new QComboBox(this);
-  edit_channels_box->setGeometry(190,149,40,20);
   edit_channels_box->insertItem(0,"1");
   edit_channels_box->insertItem(1,"2");
-  label=new QLabel(tr("Channels:"),this);
-  label->setGeometry(120,149,70,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+  edit_channels_label=new QLabel(tr("Channels:"),this);
+  edit_channels_label->setFont(labelFont());
+  edit_channels_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   //
   // Autotrim Controls
   //
   edit_autotrim_box=new QCheckBox(this);
-  edit_autotrim_box->setGeometry(120,175,15,15);
   connect(edit_autotrim_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autotrimToggledData(bool)));
-  label=new QLabel(tr("Autotrim"),this);
-  label->setGeometry(140,173,80,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+  edit_autotrim_label_label=new QLabel(tr("Autotrim"),this);
+  edit_autotrim_label_label->setFont(labelFont());
+  edit_autotrim_label_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   edit_autotrim_spin=new QSpinBox(this);
-  edit_autotrim_spin->setGeometry(265,173,40,20);
   edit_autotrim_spin->setRange(-99,-1);
   edit_autotrim_label=new QLabel(tr("Level:"),this);
-  edit_autotrim_label->setGeometry(220,173,40,20);
   edit_autotrim_label->setFont(labelFont());
   edit_autotrim_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   edit_autotrim_unit=new QLabel(tr("dBFS"),this);
-  edit_autotrim_unit->setGeometry(310,173,40,20);
   edit_autotrim_unit->setFont(labelFont());
   edit_autotrim_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
@@ -201,22 +155,17 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   // Normalize Controls
   //
   edit_normalize_box=new QCheckBox(this);
-  edit_normalize_box->setGeometry(120,199,15,15);
   connect(edit_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeToggledData(bool)));
-  label=new QLabel(tr("Normalize"),this);
-  label->setGeometry(140,197,80,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+  edit_normalize_label_label=new QLabel(tr("Normalize"),this);
+  edit_normalize_label_label->setFont(labelFont());
+  edit_normalize_label_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   edit_normalize_spin=new QSpinBox(this);
-  edit_normalize_spin->setGeometry(265,197,40,20);
   edit_normalize_spin->setRange(-99,-1);
   edit_normalize_label=new QLabel(tr("Level:"),this);
-  edit_normalize_label->setGeometry(220,197,40,20);
   edit_normalize_label->setFont(labelFont());
   edit_normalize_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   edit_normalize_unit=new QLabel(tr("dBFS"),this);
-  edit_normalize_unit->setGeometry(310,197,40,20);
   edit_normalize_unit->setFont(labelFont());
   edit_normalize_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
@@ -224,151 +173,67 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   // Export Metadata Box
   //
   edit_metadata_box=new QCheckBox(this);
-  edit_metadata_box->setGeometry(120,222,15,15);
-  label=new QLabel(tr("Update Library Metadata"),this);
-  label->setGeometry(140,222,160,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  edit_metadata_label=new QLabel(tr("Update Library Metadata"),this);
+  edit_metadata_label->setFont(labelFont());
+  edit_metadata_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
-  // Button Label
+  // DOW Selector
   //
-  QGroupBox *groupbox=new QGroupBox(tr("Active Days"),this);
-  groupbox->setFont(labelFont());
-  groupbox->setGeometry(10,257,sizeHint().width()-20,62);
-
-  //
-  // Monday Button
-  //
-  edit_mon_button=new QCheckBox(this);
-  edit_mon_button->setGeometry(20,273,20,20);
-  label=new QLabel(tr("Monday"),this);
-  label->setGeometry(40,273,115,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Tuesday Button
-  //
-  edit_tue_button=new QCheckBox(this);
-  edit_tue_button->setGeometry(115,273,20,20);
-  label=new QLabel(tr("Tuesday"),this);
-  label->setGeometry(135,273,115,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Wednesday Button
-  //
-  edit_wed_button=new QCheckBox(this);
-  edit_wed_button->setGeometry(215,273,20,20);
-  label=new QLabel(tr("Wednesday"),this);
-  label->setGeometry(235,273,115,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Thursday Button
-  //
-  edit_thu_button=new QCheckBox(this);
-  edit_thu_button->setGeometry(335,273,20,20);
-  label=new QLabel(tr("Thursday"),this);
-  label->setGeometry(355,273,115,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Friday Button
-  //
-  edit_fri_button=new QCheckBox(this);
-  edit_fri_button->setGeometry(440,273,20,20);
-  label=new QLabel(tr("Friday"),this);
-  label->setGeometry(460,273,40,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Saturday Button
-  //
-  edit_sat_button=new QCheckBox(this);
-  edit_sat_button->setGeometry(130,298,20,20);
-  label=new QLabel(tr("Saturday"),this);
-  label->setGeometry(150,298,60,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Sunday Button
-  //
-  edit_sun_button=new QCheckBox(this);
-  edit_sun_button->setGeometry(300,298,20,20);
-  label=new QLabel(tr("Sunday"),this);
-  label->setGeometry(320,298,60,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  edit_dow_selector=new DowSelector(this);
 
   //
   // OneShot Button
   //
   edit_oneshot_box=new QCheckBox(this);
-  edit_oneshot_box->setGeometry(20,335,15,15);
-  label=new QLabel(tr("Make OneShot"),this);
-  label->setGeometry(40,333,115,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  edit_oneshot_label=new QLabel(tr("Make OneShot"),this);
+  edit_oneshot_label->setFont(labelFont());
+  edit_oneshot_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Event Offset
   //
   edit_eventoffset_spin=new QSpinBox(this);
-  edit_eventoffset_spin->setGeometry(245,333,45,20);
   edit_eventoffset_spin->setRange(-30,30);
-  label=new QLabel(tr("Event Offset:"),this);
-  label->setGeometry(140,333,100,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  label=new QLabel(tr("days"),this);
-  label->setGeometry(295,333,40,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+  edit_eventoffset_label=new QLabel(tr("Event Offset:"),this);
+  edit_eventoffset_label->setFont(labelFont());
+  edit_eventoffset_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  edit_eventoffset_unit=new QLabel(tr("days"),this);
+  edit_eventoffset_unit->setFont(labelFont());
+  edit_eventoffset_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   //
   //  Save As Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-300,sizeHint().height()-60,80,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Save As\nNew"));
-  connect(button,SIGNAL(clicked()),this,SLOT(saveasData()));
+  edit_saveas_button=new QPushButton(this);
+  edit_saveas_button->setFont(buttonFont());
+  edit_saveas_button->setText(tr("Save As\nNew"));
+  connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
   if(adds==NULL) {
-    button->hide();
+    edit_saveas_button->hide();
   }
 
   //
   //  Ok Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(buttonFont());
-  button->setText(tr("OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okData()));
+  edit_ok_button=new QPushButton(this);
+  edit_ok_button->setDefault(true);
+  edit_ok_button->setFont(buttonFont());
+  edit_ok_button->setText(tr("OK"));
+  connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Cancel"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  edit_cancel_button=new QPushButton(this);
+  edit_cancel_button->setFont(buttonFont());
+  edit_cancel_button->setText(tr("Cancel"));
+  connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Populate Data
   //
-  edit_station_box->setCurrentText(edit_recording->station());
-  edit_active_button->setChecked(edit_recording->isActive());
-  edit_starttime_edit->setTime(edit_recording->startTime());
+  edit_event_widget->fromRecording(edit_recording->id());
   edit_description_edit->setText(edit_recording->description());
   edit_url_edit->setText(edit_recording->url());
   edit_username_edit->setText(edit_recording->urlUsername());
@@ -395,13 +260,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   }
   normalizeToggledData(edit_normalize_box->isChecked());
   edit_metadata_box->setChecked(edit_recording->enableMetadata());
-  edit_mon_button->setChecked(edit_recording->mon());
-  edit_tue_button->setChecked(edit_recording->tue());
-  edit_wed_button->setChecked(edit_recording->wed());
-  edit_thu_button->setChecked(edit_recording->thu());
-  edit_fri_button->setChecked(edit_recording->fri());
-  edit_sat_button->setChecked(edit_recording->sat());
-  edit_sun_button->setChecked(edit_recording->sun());
+  edit_dow_selector->fromRecording(edit_recording->id());
   edit_eventoffset_spin->setValue(edit_recording->eventdateOffset());
   edit_oneshot_box->setChecked(edit_recording->oneShot());
 }
@@ -409,7 +268,7 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
 
 EditDownload::~EditDownload()
 {
-  delete edit_station_box;
+  delete edit_event_widget;
   if(edit_deck!=NULL) {
     delete edit_deck;
   }
@@ -522,6 +381,61 @@ void EditDownload::cancelData()
 }
 
 
+void EditDownload::resizeEvent(QResizeEvent *e)
+{
+  edit_event_widget->setGeometry(10,11,edit_event_widget->sizeHint().width(),
+				 edit_event_widget->sizeHint().height());
+
+  edit_description_edit->setGeometry(115,43,size().width()-125,20);
+  edit_description_label->setGeometry(10,43,100,20);
+
+  edit_url_edit->setGeometry(115,70,size().width()-125,20);
+  edit_url_label->setGeometry(10,70,100,20);
+
+  edit_username_edit->setGeometry(115,97,150,20);
+  edit_username_label->setGeometry(10,97,100,20);
+
+  edit_password_edit->setGeometry(360,97,size().width()-370,20);
+  edit_password_label->setGeometry(275,97,80,20);
+
+  edit_destination_edit->setGeometry(115,124,size().width()-195,20);
+  edit_destination_button->setGeometry(size().width()-70,122,60,24);
+  edit_destination_label->setGeometry(10,127,100,19);
+
+  edit_channels_box->setGeometry(190,149,40,20);
+  edit_channels_label->setGeometry(120,149,70,20);
+
+  edit_autotrim_box->setGeometry(120,175,15,15);
+  edit_autotrim_label_label->setGeometry(140,173,80,20);
+  edit_autotrim_spin->setGeometry(265,173,40,20);
+  edit_autotrim_label->setGeometry(220,173,40,20);
+  edit_autotrim_unit->setGeometry(310,173,40,20);
+
+  edit_normalize_label_label->setGeometry(140,197,80,20);
+  edit_normalize_box->setGeometry(120,199,15,15);
+  edit_normalize_spin->setGeometry(265,197,40,20);
+  edit_normalize_label->setGeometry(220,197,40,20);
+  edit_normalize_unit->setGeometry(310,197,40,20);
+
+  edit_metadata_box->setGeometry(120,222,15,15);
+  edit_metadata_label->setGeometry(140,222,160,20);
+
+  edit_dow_selector->setGeometry(10,257,edit_dow_selector->sizeHint().width(),
+				 edit_dow_selector->sizeHint().height());
+
+  edit_oneshot_box->setGeometry(20,335,15,15);
+  edit_oneshot_label->setGeometry(40,333,115,20);
+
+  edit_eventoffset_spin->setGeometry(245,333,45,20);
+  edit_eventoffset_label->setGeometry(140,333,100,20);
+  edit_eventoffset_unit->setGeometry(295,333,40,20);
+
+  edit_saveas_button->setGeometry(size().width()-300,size().height()-60,80,50);
+  edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+}
+
+
 void EditDownload::keyPressEvent(QKeyEvent *e)
 {
   switch(e->key()) {
@@ -545,10 +459,8 @@ void EditDownload::closeEvent(QCloseEvent *e)
 
 void EditDownload::Save()
 {
-  edit_recording->setIsActive(edit_active_button->isChecked());
-  edit_recording->setStation(edit_station_box->currentText());
+  edit_event_widget->toRecording(edit_recording->id());
   edit_recording->setType(RDRecording::Download);
-  edit_recording->setStartTime(edit_starttime_edit->time());
   edit_recording->setDescription(edit_description_edit->text());
   edit_recording->setChannels(edit_channels_box->currentIndex()+1);
   if(edit_autotrim_box->isChecked()) {
@@ -568,13 +480,7 @@ void EditDownload::Save()
   edit_recording->setUrlUsername(edit_username_edit->text());
   edit_recording->setUrlPassword(edit_password_edit->text());
   edit_recording->setEnableMetadata(edit_metadata_box->isChecked());
-  edit_recording->setMon(edit_mon_button->isChecked());
-  edit_recording->setTue(edit_tue_button->isChecked());
-  edit_recording->setWed(edit_wed_button->isChecked());
-  edit_recording->setThu(edit_thu_button->isChecked());
-  edit_recording->setFri(edit_fri_button->isChecked());
-  edit_recording->setSat(edit_sat_button->isChecked());
-  edit_recording->setSun(edit_sun_button->isChecked());
+  edit_dow_selector->toRecording(edit_recording->id());
   edit_recording->setEventdateOffset(edit_eventoffset_spin->value());
   edit_recording->setOneShot(edit_oneshot_box->isChecked());
 }
@@ -583,31 +489,31 @@ void EditDownload::Save()
 bool EditDownload::CheckEvent(bool include_myself)
 {
   QString sql=QString("select `ID` from `RECORDINGS` where ")+
-    "(`STATION_NAME`='"+RDEscapeString(edit_station_box->currentText())+"')&&"+
+    "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
     QString().sprintf("(`TYPE`=%d)&&",RDRecording::Download)+
-    "(`START_TIME`='"+RDEscapeString(edit_starttime_edit->time().
+    "(`START_TIME`='"+RDEscapeString(edit_event_widget->startTime().
 				    toString("hh:mm:ss"))+"')&&"+
     "(`URL`='"+RDEscapeString(edit_url_edit->text())+"')&&"+
     "(`CUT_NAME`='"+RDEscapeString(edit_destination_edit->text().right(10))+"')";
-  if(edit_sun_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(7)) {
     sql+="&&(`SUN`='Y')";
   }
-  if(edit_mon_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(1)) {
     sql+="&&(`MON`='Y')";
   }
-  if(edit_tue_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(2)) {
     sql+="&&(`TUE`='Y')";
   }
-  if(edit_wed_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(3)) {
     sql+="&&(`WED`='Y')";
   }
-  if(edit_thu_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(4)) {
     sql+="&&(`THU`='Y')";
   }
-  if(edit_fri_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(5)) {
     sql+="&&(`FRI`='Y')";
   }
-  if(edit_sat_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(6)) {
     sql+="&&(`SAT`='Y')";
   }
   if(!include_myself) {
