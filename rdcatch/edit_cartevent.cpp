@@ -61,208 +61,91 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   }
 
   //
-  // Active Button
+  // Event Widget
   //
-  edit_active_button=new QCheckBox(this);
-  edit_active_button->setGeometry(10,11,20,20);
-  QLabel *label=new QLabel(tr("Event Active"),this);
-  label->setGeometry(30,11,125,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Station
-  //
-  edit_station_box=new RDComboBox(this);
-  edit_station_model=new RDStationListModel(false,"",this);
-  edit_station_box->setModel(edit_station_model);
-  edit_station_box->setGeometry(200,10,140,23);
-  label=new QLabel(tr("Location:"),this);
-  label->setGeometry(125,10,70,23);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
-  // Start Time
-  //
-  edit_starttime_edit=new QTimeEdit(this);
-  edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
-  edit_starttime_edit->setDisplayFormat("hh:mm:ss");
-  label=new QLabel(tr("Start Time:"),this);
-  label->setGeometry(sizeHint().width()-175,12,80,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_event_widget=new EventWidget(EventWidget::OtherEvent,this);
 
   //
   // Description
   //
   edit_description_edit=new QLineEdit(this);
-  edit_description_edit->setGeometry(115,43,sizeHint().width()-125,20);
   edit_description_edit->setValidator(validator);
-  label=new QLabel(tr("Description:"),this);
-  label->setGeometry(10,43,100,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_description_label=new QLabel(tr("Description:"),this);
+  edit_description_label->setFont(labelFont());
+  edit_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Cart Number
   //
   edit_destination_edit=new QLineEdit(this);
-  edit_destination_edit->setGeometry(115,70,60,20);
   edit_destination_edit->setReadOnly(false);
-  label=new QLabel(tr("Cart Number:"),this);
-  label->setGeometry(10,73,100,19);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight);
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(185,68,60,24);
-  button->setFont(subLabelFont());
-  button->setText(tr("Select"));
-  connect(button,SIGNAL(clicked()),this,SLOT(selectCartData()));
+  edit_destination_label=new QLabel(tr("Cart Number:"),this);
+  edit_destination_label->setFont(labelFont());
+  edit_destination_label->setAlignment(Qt::AlignRight);
+  edit_destination_button=new QPushButton(this);
+  edit_destination_button->setFont(subLabelFont());
+  edit_destination_button->setText(tr("Select"));
+  connect(edit_destination_button,SIGNAL(clicked()),this,SLOT(selectCartData()));
 
   //
-  // Button Label
+  // DOW Selector
   //
-  QGroupBox *groupbox=new QGroupBox(tr("Active Days"),this);
-  groupbox->setFont(labelFont());
-  groupbox->setGeometry(10,104,sizeHint().width()-20,62);
-
-  //
-  // Monday Button
-  //
-  edit_mon_button=new QCheckBox(this);
-  edit_mon_button->setGeometry(20,120,20,20);
-  label=new QLabel(tr("Monday"),this);
-  label->setGeometry(40,120,115,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Tuesday Button
-  //
-  edit_tue_button=new QCheckBox(this);
-  edit_tue_button->setGeometry(115,120,20,20);
-  label=new QLabel(tr("Tuesday"),this);
-  label->setGeometry(135,120,115,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Wednesday Button
-  //
-  edit_wed_button=new QCheckBox(this);
-  edit_wed_button->setGeometry(215,120,20,20);
-  label=new QLabel(tr("Wednesday"),this);
-  label->setGeometry(235,120,115,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Thursday Button
-  //
-  edit_thu_button=new QCheckBox(this);
-  edit_thu_button->setGeometry(335,120,20,20);
-  label=new QLabel(tr("Thursday"),this);
-  label->setGeometry(355,120,115,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Friday Button
-  //
-  edit_fri_button=new QCheckBox(this);
-  edit_fri_button->setGeometry(440,120,20,20);
-  label=new QLabel(tr("Friday"),this);
-  label->setGeometry(460,120,40,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Saturday Button
-  //
-  edit_sat_button=new QCheckBox(this);
-  edit_sat_button->setGeometry(130,145,20,20);
-  label=new QLabel(tr("Saturday"),this);
-  label->setGeometry(150,145,60,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Sunday Button
-  //
-  edit_sun_button=new QCheckBox(this);
-  edit_sun_button->setGeometry(300,145,20,20);
-  label=new QLabel(tr("Sunday"),this);
-  label->setGeometry(320,145,60,20);
-  label->setFont(subLabelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  edit_dow_selector=new DowSelector(this);
 
   //
   // OneShot Button
   //
   edit_oneshot_box=new QCheckBox(this);
-  edit_oneshot_box->setGeometry(20,180,15,15);
-  label=new QLabel(tr("Make OneShot"),this);
-  label->setGeometry(40,178,115,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  edit_oneshot_label=new QLabel(tr("Make OneShot"),this);
+  edit_oneshot_label->setFont(labelFont());
+  edit_oneshot_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   //  Save As Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-300,sizeHint().height()-60,80,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Save As\nNew"));
-  connect(button,SIGNAL(clicked()),this,SLOT(saveasData()));
+  edit_saveas_button=new QPushButton(this);
+  edit_saveas_button->setFont(buttonFont());
+  edit_saveas_button->setText(tr("Save As\nNew"));
+  connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
   if(adds==NULL) {
-    button->hide();
+    edit_saveas_button->hide();
   }
 
   //
   //  Ok Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(buttonFont());
-  button->setText(tr("OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okData()));
+  edit_ok_button=new QPushButton(this);
+  edit_ok_button->setDefault(true);
+  edit_ok_button->setFont(buttonFont());
+  edit_ok_button->setText(tr("OK"));
+  connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Cancel"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  edit_cancel_button=new QPushButton(this);
+  edit_cancel_button->setFont(buttonFont());
+  edit_cancel_button->setText(tr("Cancel"));
+  connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Populate Data
   //
-  edit_station_box->setCurrentText(edit_recording->station());
-  edit_active_button->setChecked(edit_recording->isActive());
-  edit_starttime_edit->setTime(edit_recording->startTime());
+  edit_event_widget->fromRecording(edit_recording->id());
   edit_description_edit->setText(edit_recording->description());
   if(edit_cart!=NULL) {
     edit_destination_edit->
       setText(QString().sprintf("%06d",edit_cart->number()));
   }
-  edit_mon_button->setChecked(edit_recording->mon());
-  edit_tue_button->setChecked(edit_recording->tue());
-  edit_wed_button->setChecked(edit_recording->wed());
-  edit_thu_button->setChecked(edit_recording->thu());
-  edit_fri_button->setChecked(edit_recording->fri());
-  edit_sat_button->setChecked(edit_recording->sat());
-  edit_sun_button->setChecked(edit_recording->sun());
+  edit_dow_selector->fromRecording(edit_recording->id());
   edit_oneshot_box->setChecked(edit_recording->oneShot());
 }
 
 
 EditCartEvent::~EditCartEvent()
 {
-  delete edit_station_box;
+  delete edit_event_widget;
+  delete edit_dow_selector;
   if(edit_deck!=NULL) {
     delete edit_deck;
   }
@@ -339,6 +222,30 @@ void EditCartEvent::cancelData()
 }
 
 
+void EditCartEvent::resizeEvent(QResizeEvent *e)
+{
+  edit_event_widget->setGeometry(10,11,edit_event_widget->sizeHint().width(),
+				 edit_event_widget->sizeHint().height());
+
+  edit_description_edit->setGeometry(115,43,size().width()-125,20);
+  edit_description_label->setGeometry(10,43,100,20);
+
+  edit_destination_edit->setGeometry(115,70,60,20);
+  edit_destination_label->setGeometry(10,73,100,19);
+  edit_destination_button->setGeometry(185,68,60,24);
+
+  edit_dow_selector->setGeometry(10,104,edit_dow_selector->sizeHint().width(),
+				 edit_dow_selector->sizeHint().height());
+
+  edit_oneshot_box->setGeometry(20,180,15,15);
+  edit_oneshot_label->setGeometry(40,178,115,20);
+
+  edit_saveas_button->setGeometry(size().width()-300,size().height()-60,80,50);
+  edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+}
+
+
 void EditCartEvent::keyPressEvent(QKeyEvent *e)
 {
   switch(e->key()) {
@@ -362,19 +269,11 @@ void EditCartEvent::closeEvent(QCloseEvent *e)
 
 void EditCartEvent::Save()
 {
-  edit_recording->setIsActive(edit_active_button->isChecked());
-  edit_recording->setStation(edit_station_box->currentText());
+  edit_event_widget->toRecording(edit_recording->id());
   edit_recording->setType(RDRecording::MacroEvent);
-  edit_recording->setStartTime(edit_starttime_edit->time());
   edit_recording->setDescription(edit_description_edit->text());
   edit_recording->setMacroCart(edit_cart->number());
-  edit_recording->setMon(edit_mon_button->isChecked());
-  edit_recording->setTue(edit_tue_button->isChecked());
-  edit_recording->setWed(edit_wed_button->isChecked());
-  edit_recording->setThu(edit_thu_button->isChecked());
-  edit_recording->setFri(edit_fri_button->isChecked());
-  edit_recording->setSat(edit_sat_button->isChecked());
-  edit_recording->setSun(edit_sun_button->isChecked());
+  edit_dow_selector->toRecording(edit_recording->id());
   edit_recording->setOneShot(edit_oneshot_box->isChecked());
 }
 
@@ -382,31 +281,31 @@ void EditCartEvent::Save()
 bool EditCartEvent::CheckEvent(bool include_myself)
 {
   QString sql=QString("select `ID` from `RECORDINGS` where ")+
-    "(`STATION_NAME`='"+RDEscapeString(edit_station_box->currentText())+"')&&"+
+    "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
     QString().sprintf("(`TYPE`=%d)&&",RDRecording::MacroEvent)+
-    "(`START_TIME`='"+RDEscapeString(edit_starttime_edit->time().
+    "(`START_TIME`='"+RDEscapeString(edit_event_widget->startTime().
 				   toString("hh:mm:ss"))+"')&&"+
     QString().sprintf("(`MACRO_CART`=%u)",
 		      edit_destination_edit->text().toUInt());
-  if(edit_sun_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(7)) {
     sql+="&&(`SUN`='Y')";
   }
-  if(edit_mon_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(1)) {
     sql+="&&(`MON`='Y')";
   }
-  if(edit_tue_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(2)) {
     sql+="&&(`TUE`='Y')";
   }
-  if(edit_wed_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(3)) {
     sql+="&&(`WED`='Y')";
   }
-  if(edit_thu_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(4)) {
     sql+="&&(`THU`='Y')";
   }
-  if(edit_fri_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(5)) {
     sql+="&&(`FRI`='Y')";
   }
-  if(edit_sat_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(6)) {
     sql+="&&(`SAT`='Y')";
   }
   if(!include_myself) {
