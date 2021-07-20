@@ -132,13 +132,13 @@ void AddMatrix::okData()
     QString().sprintf("`MATRIX`=%d,",add_matrix_box->value())+
     "`PORT`=0,"+
     QString().sprintf("`TYPE`=%d,",add_type_box->currentIndex())+
-    QString().sprintf("`INPUTS`=%d",
+    QString().sprintf("`INPUTS`=%d,",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
 				    currentIndex(),RDMatrix::InputsControl))+
-    QString().sprintf("`OUTPUTS`=%d",
+    QString().sprintf("`OUTPUTS`=%d,",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
 				    currentIndex(),RDMatrix::OutputsControl))+
-    QString().sprintf("`GPIS`=%d",
+    QString().sprintf("`GPIS`=%d,",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
 				    currentIndex(),RDMatrix::GpisControl))+
     QString().sprintf("`GPOS`=%d,",
