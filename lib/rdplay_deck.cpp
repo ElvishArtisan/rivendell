@@ -392,6 +392,9 @@ void RDPlayDeck::reset()
 void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
 		      int duck_up_end)
 {
+  if(play_cut==NULL) {
+    return;
+  }
   int fadeup;
   play_hook_mode=false;
   play_cut_gain=play_cut->playGain();
