@@ -23,6 +23,7 @@
 
 #include <QCheckBox>
 #include <QDateTimeEdit>
+#include <QGroupBox>
 #include <QLabel>
 #include <QSpinBox>
 
@@ -32,6 +33,9 @@
 #include <rddialog.h>
 #include <rdfeedlistmodel.h>
 #include <rdrecording.h>
+
+#include "dowselector.h"
+#include "eventwidget.h"
 
 class EditUpload : public RDDialog
 {
@@ -66,12 +70,15 @@ class EditUpload : public RDDialog
   RDCutDialog *edit_cut_dialog;
   RDRecording *edit_recording;
   RDSettings edit_settings;
+  EventWidget *edit_event_widget;
+  /*
   QCheckBox *edit_active_button;
   QLabel *edit_active_label;
   QLabel *edit_station_label;
   RDComboBox *edit_station_box;
   QLabel *edit_starttime_label;
   QTimeEdit *edit_starttime_edit;
+  */
   QLabel *edit_feed_label;
   QComboBox *edit_feed_box;
   RDFeedListModel *edit_feed_model;
@@ -84,6 +91,8 @@ class EditUpload : public RDDialog
   QLineEdit *edit_username_edit;
   QLabel *edit_password_label;
   QLineEdit *edit_password_edit;
+  QCheckBox *edit_use_id_file_check;;
+  QLabel *edit_use_id_file_label;
   QString edit_cutname;
   QLabel *edit_source_label;
   QLineEdit *edit_source_edit;
@@ -97,6 +106,10 @@ class EditUpload : public RDDialog
   QLabel *edit_normalize_unit;
   QCheckBox *edit_metadata_box;
   QLabel *edit_metadata_label;
+
+  DowSelector *edit_dow_selector;
+  /*
+  QGroupBox *edit_dow_group;
   QCheckBox *edit_sun_button;
   QLabel *edit_sun_label;
   QCheckBox *edit_mon_button;
@@ -111,6 +124,7 @@ class EditUpload : public RDDialog
   QLabel *edit_fri_label;
   QCheckBox *edit_sat_button;
   QLabel *edit_sat_label;
+  */
   QLabel *edit_eventoffset_label;
   QSpinBox *edit_eventoffset_spin;
   QLabel *edit_eventoffset_unit_label;

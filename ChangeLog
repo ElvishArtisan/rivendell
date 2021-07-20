@@ -22058,3 +22058,6 @@
 2021-07-17 Fred Gleason <fredg@paravelsystems.com>
 	* Disabled host key validation for SFTP transfers in the podcast
 	subsystem.
+2021-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Edit Upload' dialog in rdcatch(1) to improve
+	modularity.

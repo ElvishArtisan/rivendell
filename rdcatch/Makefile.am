@@ -49,12 +49,14 @@ dist_rdcatch_SOURCES = add_recording.cpp add_recording.h\
                        catchtableview.cpp catchtableview.h\
                        colors.h\
                        deckmon.cpp deckmon.h\
+                       dowselector.cpp dowselector.h\
                        edit_cartevent.cpp edit_cartevent.h\
                        edit_download.cpp edit_download.h\
                        edit_playout.cpp edit_playout.h\
                        edit_recording.cpp edit_recording.h\
                        edit_switchevent.cpp edit_switchevent.h\
                        edit_upload.cpp edit_upload.h\
+                       eventwidget.cpp eventwidget.h\
                        globals.h\
                        list_reports.cpp list_reports.h\
                        rdcatch.cpp rdcatch.h\
@@ -64,12 +66,14 @@ dist_rdcatch_SOURCES = add_recording.cpp add_recording.h\
 nodist_rdcatch_SOURCES = moc_add_recording.cpp\
                          moc_catchtableview.cpp\
                          moc_deckmon.cpp\
+                         moc_dowselector.cpp\
                          moc_edit_cartevent.cpp\
                          moc_edit_download.cpp\
                          moc_edit_playout.cpp\
                          moc_edit_recording.cpp\
                          moc_edit_switchevent.cpp\
                          moc_edit_upload.cpp\
+                         moc_eventwidget.cpp\
                          moc_list_reports.cpp\
                          moc_rdcatch.cpp\
                          moc_recordlistmodel.cpp\

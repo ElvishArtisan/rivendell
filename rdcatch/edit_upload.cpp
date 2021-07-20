@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <QGroupBox>
 #include <QMessageBox>
 #include <QUrl>
 
@@ -34,10 +33,6 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
 		       QWidget *parent)
   : RDDialog(parent)
 {
-  QString sql;
-  RDSqlQuery *q;
-  QString temp;
-
   edit_deck=NULL;
   edit_added_events=adds;
   edit_filter=filter;
@@ -51,11 +46,6 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   setMaximumSize(sizeHint());
 
   //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
-
-  //
   // The Recording Record
   //
   edit_recording=new RDRecording(id);
@@ -65,33 +55,10 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   //
   edit_cut_dialog=new RDCutDialog(edit_filter,&edit_group,&edit_schedcode,
 				  false,false,false,"RDCatch",false,this);
-
   //
-  // Active Button
+  // Event Widget
   //
-  edit_active_button=new QCheckBox(this);
-  edit_active_label=new QLabel(tr("Event Active"),this);
-  edit_active_label->setFont(labelFont());
-  edit_active_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Station
-  //
-  edit_station_box=new RDComboBox(this);
-  connect(edit_station_box,SIGNAL(editTextChanged(const QString &)),
-	  this,SLOT(stationChangedData(const QString &)));
-  edit_station_label=new QLabel(tr("Location:"),this);
-  edit_station_label->setFont(labelFont());
-  edit_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
-  // Start Time
-  //
-  edit_starttime_edit=new QTimeEdit(this);
-  edit_starttime_edit->setDisplayFormat("hh:mm:ss");
-  edit_starttime_label=new QLabel(tr("Start Time:"),this);
-  edit_starttime_label->setFont(labelFont());
-  edit_starttime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_event_widget=new EventWidget(EventWidget::OtherEvent,this);
 
   //
   // Source
@@ -104,13 +71,13 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   edit_source_select_button=new QPushButton(this);
   edit_source_select_button->setFont(subButtonFont());
   edit_source_select_button->setText(tr("Select"));
-  connect(edit_source_select_button,SIGNAL(clicked()),this,SLOT(selectCartData()));
+  connect(edit_source_select_button,SIGNAL(clicked()),
+	  this,SLOT(selectCartData()));
 
   //
   // Description
   //
   edit_description_edit=new QLineEdit(this);
-  edit_description_edit->setValidator(validator);
   edit_description_label=new QLabel(tr("Description:"),this);
   edit_description_label->setFont(labelFont());
   edit_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -124,6 +91,7 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   edit_feed_label->setFont(labelFont());
   edit_feed_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_feed_model=new RDFeedListModel(true,true,this);
+  edit_feed_model->setFont(defaultFont());
   edit_feed_box->setModel(edit_feed_model);
 
   //
@@ -131,7 +99,6 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   //
   edit_url_edit=new QLineEdit(this);
   edit_url_edit->setMaxLength(191);
-  edit_url_edit->setValidator(validator);
   connect(edit_url_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(urlChangedData(const QString &)));
   edit_url_label=new QLabel(tr("Url:"),this);
@@ -143,7 +110,6 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   //
   edit_username_edit=new QLineEdit(this);
   edit_username_edit->setMaxLength(64);
-  edit_username_edit->setValidator(validator);
   edit_username_label=new QLabel(tr("Username:"),this);
   edit_username_label->setFont(labelFont());
   edit_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -154,11 +120,19 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   edit_password_edit=new QLineEdit(this);
   edit_password_edit->setEchoMode(QLineEdit::Password);
   edit_password_edit->setMaxLength(64);
-  edit_username_edit->setValidator(validator);
   edit_password_label=new QLabel(tr("Password:"),this);
   edit_password_label->setFont(labelFont());
   edit_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
+  //
+  // Use ssh(1) ID File
+  //
+  edit_use_id_file_label=
+    new QLabel(tr("Authenticate with local identity file"),this);
+  edit_use_id_file_label->setFont(labelFont());
+  edit_use_id_file_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  edit_use_id_file_check=new QCheckBox(this);
+  
   //
   // Audio Format
   //
@@ -204,68 +178,10 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   edit_metadata_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
-  // Button Label
+  // Day of the week Selector
   //
-  QGroupBox *groupbox=new QGroupBox(tr("Active Days"),this);
-  groupbox->setFont(labelFont());
-  groupbox->setGeometry(10,266,sizeHint().width()-20,62);
-
-  //
-  // Monday Button
-  //
-  edit_mon_button=new QCheckBox(this);
-  edit_mon_label=new QLabel(tr("Monday"),this);
-  edit_mon_label->setFont(subLabelFont());
-  edit_mon_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Tuesday Button
-  //
-  edit_tue_button=new QCheckBox(this);
-  edit_tue_label=new QLabel(tr("Tuesday"),this);
-  edit_tue_label->setFont(subLabelFont());
-  edit_tue_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Wednesday Button
-  //
-  edit_wed_button=new QCheckBox(this);
-  edit_wed_label=new QLabel(tr("Wednesday"),this);
-  edit_wed_label->setFont(subLabelFont());
-  edit_wed_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Thursday Button
-  //
-  edit_thu_button=new QCheckBox(this);
-  edit_thu_label=new QLabel(tr("Thursday"),this);
-  edit_thu_label->setFont(subLabelFont());
-  edit_thu_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Friday Button
-  //
-  edit_fri_button=new QCheckBox(this);
-  edit_fri_label=new QLabel(tr("Friday"),this);
-  edit_fri_label->setFont(subLabelFont());
-  edit_fri_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Saturday Button
-  //
-  edit_sat_button=new QCheckBox(this);
-  edit_sat_label=new QLabel(tr("Saturday"),this);
-  edit_sat_label->setFont(subLabelFont());
-  edit_sat_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Sunday Button
-  //
-  edit_sun_button=new QCheckBox(this);
-  edit_sun_label=new QLabel(tr("Sunday"),this);
-  edit_sun_label->setFont(subLabelFont());
-  edit_sun_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
+  edit_dow_selector=new DowSelector(this);
+  
   //
   // OneShot Button
   //
@@ -317,32 +233,18 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   //
   // Populate Data
   //
-  q=new RDSqlQuery("select `NAME` from `STATIONS` where `NAME`!='DEFAULT'");
-  while(q->next()) {
-    edit_station_box->insertItem(q->value(0).toString());
-    if(edit_recording->station()==q->value(0).toString()) {
-      edit_station_box->setCurrentIndex(edit_station_box->count()-1);
-    }
-  }
-  delete q;
-  edit_active_button->setChecked(edit_recording->isActive());
-  edit_starttime_edit->setTime(edit_recording->startTime());
+  edit_event_widget->fromRecording(edit_recording->id());
   edit_description_edit->setText(edit_recording->description());
   edit_url_edit->setText(edit_recording->url());
   edit_username_edit->setText(edit_recording->urlUsername());
   edit_password_edit->setText(edit_recording->urlPassword());
+  edit_use_id_file_check->setChecked(edit_recording->urlUseIdFile());
   edit_cutname=edit_recording->cutName();
   if(!edit_recording->cutName().isEmpty()) {
     edit_source_edit->setText("Cut "+edit_recording->cutName());
   }
   edit_metadata_box->setChecked(edit_recording->enableMetadata());
-  edit_mon_button->setChecked(edit_recording->mon());
-  edit_tue_button->setChecked(edit_recording->tue());
-  edit_wed_button->setChecked(edit_recording->wed());
-  edit_thu_button->setChecked(edit_recording->thu());
-  edit_fri_button->setChecked(edit_recording->fri());
-  edit_sat_button->setChecked(edit_recording->sat());
-  edit_sun_button->setChecked(edit_recording->sun());
+  edit_dow_selector->fromRecording(edit_recording->id());
   edit_eventoffset_spin->setValue(edit_recording->eventdateOffset());
   edit_oneshot_box->setChecked(edit_recording->oneShot());
   edit_settings.setFormat(edit_recording->format());
@@ -366,7 +268,8 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
 
 EditUpload::~EditUpload()
 {
-  delete edit_station_box;
+  delete edit_event_widget;
+  delete edit_dow_selector;
   if(edit_deck!=NULL) {
     delete edit_deck;
   }
@@ -375,7 +278,7 @@ EditUpload::~EditUpload()
 
 QSize EditUpload::sizeHint() const
 {
-  return QSize(520,441);
+  return QSize(520,451);
 } 
 
 
@@ -405,15 +308,18 @@ void EditUpload::feedChangedData(int index)
   edit_password_label->setEnabled(index==0);
   edit_password_edit->setEnabled(index==0);
 
+  urlChangedData(edit_url_edit->text());
+  
   edit_format_label->setEnabled(index==0);
   edit_format_edit->setEnabled(index==0);
   edit_format_set_button->setEnabled(index==0);
 
-  edit_normalize_box->setEnabled(index==0);
   edit_normalize_label->setEnabled(index==0);
-  edit_normalize_level_label->setEnabled(index==0);
-  edit_normalize_spin->setEnabled(index==0);
-  edit_normalize_unit->setEnabled(index==0);
+  edit_normalize_box->setEnabled(index==0);
+  edit_normalize_level_label->
+    setEnabled((index==0)&&edit_normalize_box->isChecked());
+  edit_normalize_spin->setEnabled((index==0)&&edit_normalize_box->isChecked());
+  edit_normalize_unit->setEnabled((index==0)&&edit_normalize_box->isChecked());
 
   edit_metadata_box->setEnabled(index==0);
   edit_metadata_label->setEnabled(index==0);
@@ -424,8 +330,9 @@ void EditUpload::urlChangedData(const QString &str)
 {
   QUrl url(str);
   QString scheme=url.scheme().toLower();
-  if((scheme=="ftp")||(scheme=="ftps")||(scheme=="file")||
-     (scheme=="scp")||(scheme=="sftp")) {
+  if(((scheme=="ftp")||(scheme=="ftps")||(scheme=="file")||
+      (scheme=="scp")||(scheme=="sftp"))&&
+     edit_feed_box->currentIndex()==0) {
     edit_username_label->setEnabled(true);
     edit_username_edit->setEnabled(true);
     edit_password_label->setEnabled(true);
@@ -436,6 +343,15 @@ void EditUpload::urlChangedData(const QString &str)
     edit_username_edit->setDisabled(true);
     edit_password_label->setDisabled(true);
     edit_password_edit->setDisabled(true);
+  }
+  if((scheme=="sftp")&&(!rda->station()->sshIdentityFile().isEmpty())&&
+     (edit_feed_box->currentIndex()==0)) {
+    edit_use_id_file_check->setEnabled(true);
+    edit_use_id_file_label->setEnabled(true);
+  }
+  else {
+    edit_use_id_file_check->setDisabled(true);
+    edit_use_id_file_label->setDisabled(true);
   }
 }
 
@@ -463,10 +379,10 @@ void EditUpload::setFormatData()
 
 void EditUpload::normalizeCheckData(bool state)
 {
-  edit_normalize_label->setEnabled(state);
-  edit_normalize_level_label->setEnabled(state);
-  edit_normalize_spin->setEnabled(state);
-  edit_normalize_unit->setEnabled(state);
+  edit_normalize_level_label->
+    setEnabled(state&&(edit_feed_box->currentIndex()==0));
+  edit_normalize_spin->setEnabled(state&&(edit_feed_box->currentIndex()==0));
+  edit_normalize_unit->setEnabled(state&&(edit_feed_box->currentIndex()==0));
 }
 
 
@@ -489,7 +405,8 @@ void EditUpload::okData()
   if(edit_feed_box->currentIndex()==0) {  // No RSS feed selected
     if(!CheckFormat()) {
       QMessageBox::warning(this,tr("Unsupported Format"),
-			   tr("The currently selected export format is unsupported on host ")+edit_station_box->currentText()+"!");
+	   tr("The currently selected export format is unsupported on host ")+
+			   edit_event_widget->stationName()+"!");
       return;
     }
     QUrl url(edit_url_edit->text());
@@ -528,63 +445,48 @@ void EditUpload::cancelData()
 
 void EditUpload::resizeEvent(QResizeEvent *e)
 {
-  edit_active_button->setGeometry(10,11,20,20);
-  edit_active_label->setGeometry(30,11,125,20);
-  edit_station_box->setGeometry(200,10,140,23);
-  edit_station_label->setGeometry(125,10,70,23);
-  edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
-  edit_starttime_label->setGeometry(sizeHint().width()-175,12,80,20);
+  edit_event_widget->setGeometry(10,11,edit_event_widget->sizeHint().width(),
+				 edit_event_widget->sizeHint().height());
 
-  edit_source_edit->setGeometry(115,43,sizeHint().width()-195,20);
+  edit_source_edit->setGeometry(115,43,size().width()-195,20);
   edit_source_label->setGeometry(10,43,100,19);
-  edit_source_select_button->setGeometry(sizeHint().width()-70,41,60,24);
-  edit_description_edit->setGeometry(115,70,sizeHint().width()-125,20);
+  edit_source_select_button->setGeometry(size().width()-70,41,60,24);
+  edit_description_edit->setGeometry(115,70,size().width()-125,20);
   edit_description_label->setGeometry(10,70,100,20);
 
   edit_feed_box->setGeometry(115,97,160,20);
   edit_feed_label->setGeometry(10,97,100,19);
-  edit_url_edit->setGeometry(115,124,sizeHint().width()-125,20);
+  edit_url_edit->setGeometry(115,124,size().width()-125,20);
   edit_url_label->setGeometry(10,124,100,20);
   edit_username_edit->setGeometry(115,151,150,20);
   edit_username_label->setGeometry(10,151,100,20);
-  edit_password_edit->setGeometry(360,151,sizeHint().width()-370,20);
+  edit_password_edit->setGeometry(360,151,size().width()-370,20);
   edit_password_label->setGeometry(275,151,80,20);
-  edit_username_edit->setGeometry(115,151,150,20);
-  edit_username_label->setGeometry(10,151,100,20);
-  edit_password_edit->setGeometry(360,151,sizeHint().width()-370,20);
-  edit_password_label->setGeometry(275,151,80,20);
-  edit_format_label->setGeometry(5,178,105,20);
-  edit_format_edit->setGeometry(115,178,sizeHint().width()-195,20);
-  edit_format_set_button->setGeometry(sizeHint().width()-70,176,60,24);
-  edit_normalize_box->setGeometry(115,208,15,15);
-  edit_normalize_label->setGeometry(135,206,83,20);
-  edit_normalize_spin->setGeometry(265,206,40,20);
-  edit_normalize_level_label->setGeometry(215,206,45,20);
-  edit_normalize_unit->setGeometry(310,206,40,20);
-  edit_metadata_box->setGeometry(115,231,15,15);
-  edit_metadata_label->setGeometry(135,231,160,20);
-  edit_mon_button->setGeometry(20,282,20,20);
-  edit_mon_label->setGeometry(40,282,115,20);
-  edit_tue_button->setGeometry(115,282,20,20);
-  edit_tue_label->setGeometry(135,282,115,20);
-  edit_wed_button->setGeometry(215,282,20,20);
-  edit_wed_label->setGeometry(235,282,115,20);
-  edit_thu_button->setGeometry(335,282,20,20);
-  edit_thu_label->setGeometry(355,282,115,20);
-  edit_fri_button->setGeometry(440,282,20,20);
-  edit_fri_label->setGeometry(460,282,40,20);
-  edit_sat_button->setGeometry(130,307,20,20);
-  edit_sat_label->setGeometry(150,307,60,20);
-  edit_sun_button->setGeometry(300,307,20,20);
-  edit_sun_label->setGeometry(320,307,60,20);
-  edit_oneshot_box->setGeometry(20,342,15,15);
-  edit_oneshot_label->setGeometry(40,340,115,20);
-  edit_eventoffset_spin->setGeometry(245,340,45,20);
-  edit_eventoffset_label->setGeometry(140,340,100,20);
-  edit_eventoffset_unit_label->setGeometry(295,340,40,20);
-  event_saveas_button->setGeometry(sizeHint().width()-300,sizeHint().height()-60,80,50);
-  event_ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  event_cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
+  edit_use_id_file_check->setGeometry(120,176,15,15);
+  edit_use_id_file_label->setGeometry(140,174,size().width()-150,20);
+
+  edit_format_label->setGeometry(5,205,105,20);
+  edit_format_edit->setGeometry(115,205,size().width()-195,20);
+  edit_format_set_button->setGeometry(size().width()-70,203,60,24);
+  edit_normalize_box->setGeometry(115,233,15,15);
+  edit_normalize_label->setGeometry(135,231,83,20);
+  edit_normalize_spin->setGeometry(265,231,40,20);
+  edit_normalize_level_label->setGeometry(215,231,45,20);
+  edit_normalize_unit->setGeometry(310,231,40,20);
+  edit_metadata_box->setGeometry(115,254,15,15);
+  edit_metadata_label->setGeometry(135,252,160,20);
+
+  edit_dow_selector->setGeometry(10,283,edit_dow_selector->sizeHint().width(),
+				 edit_dow_selector->sizeHint().height());
+  edit_oneshot_box->setGeometry(20,359,15,15);
+  edit_oneshot_label->setGeometry(40,357,115,20);
+  edit_eventoffset_spin->setGeometry(245,357,45,20);
+  edit_eventoffset_label->setGeometry(140,357,100,20);
+  edit_eventoffset_unit_label->setGeometry(295,357,40,20);
+
+  event_saveas_button->setGeometry(size().width()-300,size().height()-60,80,50);
+  event_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  event_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
 
 
@@ -613,36 +515,36 @@ bool EditUpload::CheckFormat()
 {
   bool res=false;
 
-  RDStation *station=new RDStation(edit_station_box->currentText());
+  RDStation *station=new RDStation(edit_event_widget->stationName());
   switch(edit_settings.format()) {
-      case RDSettings::Pcm16:
-      case RDSettings::Pcm24:
-      case RDSettings::MpegL2:
-      case RDSettings::MpegL2Wav:
-	res=true;
-	break;
+  case RDSettings::Pcm16:
+  case RDSettings::Pcm24:
+  case RDSettings::MpegL2:
+  case RDSettings::MpegL2Wav:
+    res=true;
+    break;
 
-      case RDSettings::MpegL1:
-	res=false;
-	break;
+  case RDSettings::MpegL1:
+    res=false;
+    break;
 
-      case RDSettings::MpegL3:
-	if(station->haveCapability(RDStation::HaveLame)) {
-	  res=true;
-	}
-	break;
+  case RDSettings::MpegL3:
+    if(station->haveCapability(RDStation::HaveLame)) {
+      res=true;
+    }
+    break;
 	
-      case RDSettings::Flac:
-	if(station->haveCapability(RDStation::HaveFlac)) {
-	  res=true;
-	}
-	break;
+  case RDSettings::Flac:
+    if(station->haveCapability(RDStation::HaveFlac)) {
+      res=true;
+    }
+    break;
 	
-      case RDSettings::OggVorbis:
-	if(station->haveCapability(RDStation::HaveOggenc)) {
-	  res=true;
-	}
-	break;
+  case RDSettings::OggVorbis:
+    if(station->haveCapability(RDStation::HaveOggenc)) {
+      res=true;
+    }
+    break;
   }
   delete station;
 
@@ -652,23 +554,18 @@ bool EditUpload::CheckFormat()
 
 void EditUpload::Save()
 {
-  edit_recording->setIsActive(edit_active_button->isChecked());
-  edit_recording->setStation(edit_station_box->currentText());
+  edit_recording->setIsActive(edit_event_widget->isActive());
+  edit_recording->setStation(edit_event_widget->stationName());
+  edit_recording->setStartTime(edit_event_widget->startTime());
   edit_recording->setType(RDRecording::Upload);
-  edit_recording->setStartTime(edit_starttime_edit->time());
   edit_recording->setDescription(edit_description_edit->text());
   edit_recording->setCutName(edit_source_edit->text().right(10));
   edit_recording->setUrl(edit_url_edit->text());
   edit_recording->setUrlUsername(edit_username_edit->text());
   edit_recording->setUrlPassword(edit_password_edit->text());
+  edit_recording->setUrlUseIdFile(edit_use_id_file_check->isChecked());
   edit_recording->setEnableMetadata(edit_metadata_box->isChecked());
-  edit_recording->setMon(edit_mon_button->isChecked());
-  edit_recording->setTue(edit_tue_button->isChecked());
-  edit_recording->setWed(edit_wed_button->isChecked());
-  edit_recording->setThu(edit_thu_button->isChecked());
-  edit_recording->setFri(edit_fri_button->isChecked());
-  edit_recording->setSat(edit_sat_button->isChecked());
-  edit_recording->setSun(edit_sun_button->isChecked());
+  edit_dow_selector->toRecording(edit_recording->id());
   edit_recording->setEventdateOffset(edit_eventoffset_spin->value());
   edit_recording->setOneShot(edit_oneshot_box->isChecked());
   edit_recording->setFormat(edit_settings.format());
@@ -694,38 +591,38 @@ void EditUpload::Save()
   else {
     edit_recording->setFeedId(feed_id);
   }
-  //  edit_recording->setFeedId(edit_feed_box->currentText());
 }
 
 
 bool EditUpload::CheckEvent(bool include_myself)
 {
   QString sql=QString("select `ID` from `RECORDINGS` where ")+
-    "(`STATION_NAME`='"+RDEscapeString(edit_station_box->currentText())+"')&&"+
+    "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
     QString().sprintf("(`TYPE`=%d)&&",RDRecording::Upload)+
-    "(`START_TIME`='"+edit_starttime_edit->time().toString("hh:mm:ss")+"')&&"+
+    "(`START_TIME`='"+
+    edit_event_widget->startTime().toString("hh:mm:ss")+"')&&"+
     "(`URL`='"+RDEscapeString(edit_url_edit->text())+"')&&"+
     "(`CUT_NAME`='"+RDEscapeString(edit_source_edit->text().right(10))+
     "')";
-  if(edit_sun_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(7)) {
     sql+="&&(`SUN`='Y')";
   }
-  if(edit_mon_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(1)) {
     sql+="&&(`MON`='Y')";
   }
-  if(edit_tue_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(2)) {
     sql+="&&(`TUE`='Y')";
   }
-  if(edit_wed_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(3)) {
     sql+="&&(`WED`='Y')";
   }
-  if(edit_thu_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(4)) {
     sql+="&&(`THU`='Y')";
   }
-  if(edit_fri_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(5)) {
     sql+="&&(`FRI`='Y')";
   }
-  if(edit_sat_button->isChecked()) {
+  if(edit_dow_selector->dayOfWeekEnabled(6)) {
     sql+="&&(`SAT`='Y')";
   }
   if(!include_myself) {

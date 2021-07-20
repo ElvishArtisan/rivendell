@@ -615,7 +615,7 @@ void RDRecording::setUrlPassword(QString passwd) const
 
 bool RDRecording::urlUseIdFile() const
 {
-  return RDBool(GetStringValue("URL_PASSWORD"));
+  return RDBool(GetStringValue("URL_USE_ID_FILE"));
 }
 
 
