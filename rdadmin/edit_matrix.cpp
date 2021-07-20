@@ -115,6 +115,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_porttype_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_porttype_box->insertItem(0,tr("Serial"));
   edit_porttype_box->insertItem(1,tr("TCP/IP"));
+  edit_porttype_box->insertItem(1,tr("None"));
   connect(edit_porttype_box,SIGNAL(activated(int)),
 	  this,SLOT(portTypeActivatedData(int)));
 

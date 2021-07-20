@@ -22067,3 +22067,9 @@
 2021-07-20 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Edit Cart Event' dialog in rdcatch(1) to improve
 	modularity.
+2021-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) where clicking the 'OK' button
+	in the 'Edit Switcher' dialog would cause an error dialog to appear
+	with a 'primary serial device not active' warning. The following
+	devices are affected: 'Local GPIO', 'Local Audio Adapter',
+	'Logitek vGuest', 'Livewire LWRP Audio', and 'Kernel GPIO'.
