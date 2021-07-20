@@ -108,13 +108,11 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   name_label->setGeometry(0,5,sizeHint().width(),20);
   name_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
   name_label->setFont(labelFont());
-  name_label->setText(tr("User")+": "+rda->user()->name());
 
   QLabel *description_label=new QLabel(this);
   description_label->setGeometry(0,24,sizeHint().width(),14);
   description_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
   name_label->setFont(labelFont());
-  description_label->setText(rda->user()->description());
 
   //
   // Manage Users Button
@@ -238,6 +236,8 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
       exit(1);
     }
   }
+  name_label->setText(tr("User")+": "+rda->user()->name());
+  description_label->setText(rda->user()->description());
   users_button->setEnabled(config_priv);
   groups_button->setEnabled(config_priv);
   services_button->setEnabled(config_priv);
