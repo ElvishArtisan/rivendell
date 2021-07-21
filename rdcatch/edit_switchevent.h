@@ -32,6 +32,9 @@
 #include <rdrecording.h>
 #include <rdstationlistmodel.h>
 
+#include "dowselector.h"
+#include "eventwidget.h"
+
 class EditSwitchEvent : public RDDialog
 {
  Q_OBJECT
@@ -53,7 +56,8 @@ class EditSwitchEvent : public RDDialog
   void cancelData();
   
  protected:
-  void keyPressEvent(QKeyEvent *);
+  void resizeEvent(QResizeEvent *e);
+  void keyPressEvent(QKeyEvent *e);
   void closeEvent(QCloseEvent *e);
   
  private:
@@ -65,28 +69,26 @@ class EditSwitchEvent : public RDDialog
   RDMatrix *edit_matrix;
   RDDeck *edit_deck;
   RDRecording *edit_recording;
-  QCheckBox *edit_active_button;
-  RDComboBox *edit_station_box;
-  RDStationListModel *edit_station_model;
-  QTimeEdit *edit_starttime_edit;
+  QLabel *edit_description_label;
   QLineEdit *edit_description_edit;
+  QLabel *edit_matrix_label;
   RDComboBox *edit_matrix_box;
+  QLabel *edit_input_label;
   RDComboBox *edit_input_box;
   QSpinBox *edit_input_spin;
+  QLabel *edit_output_label;
   RDComboBox *edit_output_box;
   QSpinBox *edit_output_spin;
-  QCheckBox *edit_sun_button;
-  QCheckBox *edit_mon_button;
-  QCheckBox *edit_tue_button;
-  QCheckBox *edit_wed_button;
-  QCheckBox *edit_thu_button;
-  QCheckBox *edit_fri_button;
-  QCheckBox *edit_sat_button;
   QString *edit_filter;
   QCheckBox *edit_oneshot_box;
+  QLabel *edit_oneshot_label;
+  QPushButton *edit_saveas_button;
+  QPushButton *edit_ok_button;
+  QPushButton *edit_cancel_button;
+  EventWidget *edit_event_widget;
+  DowSelector *edit_dow_selector;
   std::vector<int>*edit_added_events;
 };
 
 
-#endif
-
+#endif  // EDIT_SWITCHEVENT_H
