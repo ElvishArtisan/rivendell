@@ -312,14 +312,6 @@ New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Event Active</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Location:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Start Parameters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -409,38 +401,6 @@ New</source>
     </message>
     <message>
         <source>Normalize</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Active Days</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Monday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tuesday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wednesday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Thursday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Friday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Saturday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sunday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

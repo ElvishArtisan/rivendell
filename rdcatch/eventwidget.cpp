@@ -60,9 +60,33 @@ EventWidget::EventWidget(EventWidget::EventType type,QWidget *parent)
   d_time_label->setFont(labelFont());
   d_time_edit=new QTimeEdit(this);
   d_time_edit->setDisplayFormat("hh:mm:ss");
-
+  if(d_event_type==EventWidget::RecordEvent) {
+    d_time_label->hide();
+    d_time_edit->hide();
+  }
+  
   switch(d_event_type) {
   case EventWidget::RecordEvent:
+    d_location_box->clear();
+    sql=QString("select ")+
+      "`STATION_NAME`,"+  // 00
+      "`CHANNEL` "+       // 01
+      "from `DECKS` where "+
+      "(`CARD_NUMBER`!=-1)&&"+
+      "(`PORT_NUMBER`!=-1)&&"+
+      "(`CHANNEL`!=0)&&"+
+      "(`CHANNEL`<9) "+
+      "order by `STATION_NAME`,`CHANNEL`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      d_location_box->
+	insertItem(d_location_box->count(),
+		   q->value(0).toString()+
+		   QString().sprintf(" : %dR",q->value(1).toInt()),
+		   q->value(0).toString()+"\t"+
+		   QString().sprintf("%d",q->value(1).toInt()));
+    }
+    delete q;
     break;
 
   case EventWidget::PlayEvent:
@@ -142,9 +166,7 @@ void EventWidget::toRecording(unsigned record_id) const
 {
   QString sql=QString("update `RECORDINGS` set ")+
     "`IS_ACTIVE`='"+RDYesNo(d_state_check->isChecked())+"',"+
-    "`STATION_NAME`='"+RDEscapeString(d_current_station_name)+"',"+
-    "`START_TIME`='"+
-    RDEscapeString(d_time_edit->time().toString("hh:mm:ss"))+"' ";
+    "`STATION_NAME`='"+RDEscapeString(d_current_station_name)+"' ";
   switch(d_event_type) {
     case EventWidget::RecordEvent:
       sql+=QString().sprintf(",`CHANNEL`=%u ",d_current_deck_number);
@@ -175,15 +197,17 @@ void EventWidget::fromRecording(unsigned record_id)
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     d_state_check->setChecked(q->value(0).toString()=="Y");
-    d_time_edit->setTime(q->value(3).toTime());
     switch(d_event_type) {
     case EventWidget::RecordEvent:
       d_location_box->
 	setCurrentText(q->value(1).toString()+
 		       QString().sprintf(" : %uR",q->value(2).toUInt()));
+      d_current_station_name=q->value(1).toString();
+      d_current_deck_number=q->value(2).toUInt();
       break;
 
     case EventWidget::PlayEvent:
+      d_time_edit->setTime(q->value(3).toTime());
       d_location_box->
 	setCurrentText(q->value(1).toString()+
 		       QString().sprintf(" : %uP",q->value(2).toUInt()-128));
@@ -192,6 +216,7 @@ void EventWidget::fromRecording(unsigned record_id)
       break;
 
     case EventWidget::OtherEvent:
+      d_time_edit->setTime(q->value(3).toTime());
       d_location_box->setCurrentText(q->value(1).toString());
       d_current_station_name=q->value(1).toString();
       d_current_deck_number=-1;

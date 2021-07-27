@@ -21,18 +21,21 @@
 #ifndef EDIT_RECORDING_H
 #define EDIT_RECORDING_H
 
-
 #include <QButtonGroup>
 #include <QComboBox>
 #include <QCheckBox>
 #include <QDateTimeEdit>
 #include <QLabel>
+#include <QRadioButton>
 #include <QSpinBox>
 
 #include <rdcut_dialog.h>
 #include <rddeck.h>
 #include <rddialog.h>
 #include <rdrecording.h>
+
+#include "eventwidget.h"
+#include "dowselector.h"
 
 class EditRecording : public RDDialog
 {
@@ -45,7 +48,7 @@ class EditRecording : public RDDialog
   QSizePolicy sizePolicy() const;
   
  private slots:
-  void activateStationData(int,bool use_temp=true);
+  void locationChangedData(const QString &station,int decknum);
   void startTypeClickedData(int id);
   void endTypeClickedData(int id);
   void selectCutData();
@@ -56,51 +59,58 @@ class EditRecording : public RDDialog
   void cancelData();
   
  protected:
+  void resizeEvent(QResizeEvent *e);
   void keyPressEvent(QKeyEvent *);
   void closeEvent(QCloseEvent *e);
   
  private:
-  void PopulateDecks(QComboBox *box);
   void Save();
   bool CheckEvent(bool include_myself);
   QString GetSourceName(int input);
   int GetSource();
-  QString GetLocation(int *chan) const;
   RDDeck *edit_deck;
   RDCutDialog *edit_cut_dialog;
   RDRecording *edit_recording;
-  QCheckBox *edit_active_button;
-  QComboBox *edit_station_box;
+  EventWidget *edit_event_widget;
+  QGroupBox *edit_start_groupbox;
+  QRadioButton *edit_start_hardtime_radio;
+  QRadioButton *edit_start_gpi_radio;
+  QLabel *edit_description_label;
   QLineEdit *edit_description_edit;
   QString edit_cutname;
+  QLabel *edit_destination_label;
   QLineEdit *edit_destination_edit;
-  QCheckBox *edit_sun_button;
-  QCheckBox *edit_mon_button;
-  QCheckBox *edit_tue_button;
-  QCheckBox *edit_wed_button;
-  QCheckBox *edit_thu_button;
-  QCheckBox *edit_fri_button;
-  QCheckBox *edit_sat_button;
+  QPushButton *edit_destination_button;
+  DowSelector *edit_dow_selector;
+  QLabel *edit_source_label;
   QComboBox *edit_source_box;
+  QLabel *edit_startoffset_time_label;
   QSpinBox *edit_startoffset_box;
+  QLabel *edit_endoffset_label;
   QSpinBox *edit_endoffset_box;
   QCheckBox *edit_oneshot_box;
+  QLabel *edit_oneshot_label;
   QButtonGroup *edit_starttype_group;
-  QLabel *edit_starttime_label;
   QButtonGroup *edit_endtype_group;
+  QGroupBox *edit_end_groupbox;
+  QRadioButton *edit_end_hardtime_radio;
+  QRadioButton *edit_end_length_radio;
+  QRadioButton *edit_end_gpi_radio;
   QLabel *edit_endtime_label;
-  QLabel *edit_endlength_label;
+  QLabel *edit_starttime_label;
   QTimeEdit *edit_starttime_edit;
   QTimeEdit *edit_endtime_edit;
+  QLabel *edit_endlength_label;
   QTimeEdit *edit_endlength_edit;
   QLabel *edit_start_startwindow_label;
   QTimeEdit *edit_start_startwindow_edit;
   QLabel *edit_start_endwindow_label;
   QTimeEdit *edit_start_endwindow_edit;
-  QLabel *edit_end_startwindow_label;
   QCheckBox *edit_multirec_box;
+  QLabel *edit_multirec_label;
   QLabel *edit_maxlength_label;
   QTimeEdit *edit_maxlength_edit;
+  QLabel *edit_end_startwindow_label;
   QTimeEdit *edit_end_startwindow_edit;
   QLabel *edit_end_endwindow_label;
   QTimeEdit *edit_end_endwindow_edit;
@@ -117,15 +127,21 @@ class EditRecording : public RDDialog
   QLabel *edit_startoffset_label;
   QTimeEdit *edit_startoffset_edit;
   std::vector<int> *edit_added_events;
+  QLabel *edit_channels_label;
   QComboBox *edit_channels_box;
   QCheckBox *edit_autotrim_box;
   QLabel *edit_autotrim_label;
+  QLabel *edit_autotrim_level_label;
   QSpinBox *edit_autotrim_spin;
   QLabel *edit_autotrim_unit;
   QCheckBox *edit_normalize_box;
   QLabel *edit_normalize_label;
+  QLabel *edit_normalize_level_label;
   QSpinBox *edit_normalize_spin;
   QLabel *edit_normalize_unit;
+  QPushButton *edit_saveas_button;
+  QPushButton *edit_ok_button;
+  QPushButton *edit_cancel_button;
   QString *edit_filter;
   QString edit_group;
   QString edit_schedcode;

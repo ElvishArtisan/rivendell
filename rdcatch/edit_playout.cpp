@@ -89,7 +89,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   edit_destination_button->setText(tr("Select"));
   connect(edit_destination_button,SIGNAL(clicked()),this,SLOT(selectCutData()));
 
-  //
+
   // DOW Selector
   //
   edit_dow_selector=new DowSelector(this);
