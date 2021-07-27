@@ -51,6 +51,7 @@ class EditPlayout : public RDDialog
   void cancelData();
   
  protected:
+  void resizeEvent(QResizeEvent *e);
   void keyPressEvent(QKeyEvent *);
   void closeEvent(QCloseEvent *e);
   
@@ -61,10 +62,17 @@ class EditPlayout : public RDDialog
   RDRecording *edit_recording;
   EventWidget *edit_event_widget;
   DowSelector *edit_dow_selector;
+  QLabel *edit_description_label;
   QLineEdit *edit_description_edit;
   QString edit_cutname;
+  QLabel *edit_destination_label;
   QLineEdit *edit_destination_edit;
+  QPushButton *edit_destination_button;
   QCheckBox *edit_oneshot_box;
+  QLabel *edit_oneshot_label;
+  QPushButton *edit_saveas_button;
+  QPushButton *edit_ok_button;
+  QPushButton *edit_cancel_button;
   std::vector<int> *edit_added_events;
   QString *edit_filter;
 };

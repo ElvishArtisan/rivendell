@@ -64,8 +64,6 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   // Event Widget
   //
   edit_event_widget=new EventWidget(EventWidget::PlayEvent,this);
-  edit_event_widget->setGeometry(10,11,edit_event_widget->sizeHint().width(),
-				 edit_event_widget->sizeHint().height());
   connect(edit_event_widget,SIGNAL(locationChanged(const QString &,int)),
 	  this,SLOT(locationChangedData(const QString &,int)));
 
@@ -73,76 +71,64 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   // Description
   //
   edit_description_edit=new QLineEdit(this);
-  edit_description_edit->setGeometry(105,43,sizeHint().width()-115,20);
   edit_description_edit->setValidator(validator);
-  QLabel *label=new QLabel(tr("Description:"),this);
-  label->setGeometry(10,43,90,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_description_label=new QLabel(tr("Description:"),this);
+  edit_description_label->setFont(labelFont());
+  edit_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Destination
   //
   edit_destination_edit=new QLineEdit(this);
-  edit_destination_edit->setGeometry(105,70,sizeHint().width()-185,20);
   edit_destination_edit->setReadOnly(true);
-  label=new QLabel(tr("Destination:"),this);
-  label->setGeometry(10,70,90,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-70,65,60,30);
-  button->setFont(subButtonFont());
-  button->setText(tr("Select"));
-  connect(button,SIGNAL(clicked()),this,SLOT(selectCutData()));
+  edit_destination_label=new QLabel(tr("Destination:"),this);
+  edit_destination_label->setFont(labelFont());
+  edit_destination_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_destination_button=new QPushButton(this);
+  edit_destination_button->setFont(subButtonFont());
+  edit_destination_button->setText(tr("Select"));
+  connect(edit_destination_button,SIGNAL(clicked()),this,SLOT(selectCutData()));
 
   //
   // DOW Selector
   //
   edit_dow_selector=new DowSelector(this);
-  edit_dow_selector->setGeometry(10,104,edit_dow_selector->sizeHint().width(),
-				 edit_dow_selector->sizeHint().height());
 
   //
-  // OneShot Button
+  // OneShot Checkbox
   //
   edit_oneshot_box=new QCheckBox(this);
-  edit_oneshot_box->setGeometry(20,180,15,15);
-  label=new QLabel(tr("Make OneShot"),this);
-  label->setGeometry(40,178,115,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  edit_oneshot_label=new QLabel(tr("Make OneShot"),this);
+  edit_oneshot_label->setFont(labelFont());
+  edit_oneshot_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   //  Save As Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-300,sizeHint().height()-60,80,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Save As\nNew"));
-  connect(button,SIGNAL(clicked()),this,SLOT(saveasData()));
+  edit_saveas_button=new QPushButton(this);
+  edit_saveas_button->setFont(buttonFont());
+  edit_saveas_button->setText(tr("Save As\nNew"));
+  connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
   if(adds==NULL) {
-    button->hide();
+    edit_saveas_button->hide();
   }
 
   //
   //  Ok Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(buttonFont());
-  button->setText(tr("OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okData()));
+  edit_ok_button=new QPushButton(this);
+  edit_ok_button->setDefault(true);
+  edit_ok_button->setFont(buttonFont());
+  edit_ok_button->setText(tr("OK"));
+  connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Cancel"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  edit_cancel_button=new QPushButton(this);
+  edit_cancel_button->setFont(buttonFont());
+  edit_cancel_button->setText(tr("Cancel"));
+  connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Populate Data
@@ -218,6 +204,30 @@ void EditPlayout::okData()
 void EditPlayout::cancelData()
 {
   done(false);
+}
+
+
+void EditPlayout::resizeEvent(QResizeEvent *e)
+{
+  edit_event_widget->setGeometry(10,11,edit_event_widget->sizeHint().width(),
+				 edit_event_widget->sizeHint().height());
+
+  edit_description_edit->setGeometry(105,43,size().width()-115,20);
+  edit_description_label->setGeometry(10,43,90,20);
+
+  edit_destination_edit->setGeometry(105,70,size().width()-185,20);
+  edit_destination_label->setGeometry(10,70,90,20);
+  edit_destination_button->setGeometry(size().width()-70,65,60,30);
+
+  edit_dow_selector->setGeometry(10,104,edit_dow_selector->sizeHint().width(),
+				 edit_dow_selector->sizeHint().height());
+
+  edit_oneshot_box->setGeometry(20,180,15,15);
+  edit_oneshot_label->setGeometry(40,178,115,20);
+
+  edit_saveas_button->setGeometry(size().width()-300,size().height()-60,80,50);
+  edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
 
 
