@@ -23,6 +23,7 @@
 #include <rdconf.h>
 #include <rddb.h>
 #include <rdescape_string.h>
+#include <rdiconengine.h>
 
 #include "eventwidget.h"
 
@@ -85,6 +86,10 @@ EventWidget::EventWidget(EventWidget::EventType type,QWidget *parent)
 		   QString().sprintf(" : %dR",q->value(1).toInt()),
 		   q->value(0).toString()+"\t"+
 		   QString().sprintf("%d",q->value(1).toInt()));
+      d_location_box->
+	setItemData(d_location_box->count()-1,
+		    rda->iconEngine()->
+		    catchIcon(RDRecording::Recording),Qt::DecorationRole);
     }
     delete q;
     break;
@@ -106,6 +111,10 @@ EventWidget::EventWidget(EventWidget::EventType type,QWidget *parent)
 		   QString().sprintf(" : %dP",q->value(1).toInt()-128),
 		   q->value(0).toString()+"\t"+
 		   QString().sprintf("%d",q->value(1).toInt()-128));
+      d_location_box->
+	setItemData(d_location_box->count()-1,
+		    rda->iconEngine()->
+		    catchIcon(RDRecording::Playout),Qt::DecorationRole);
     }
     delete q;
     break;
@@ -119,6 +128,9 @@ EventWidget::EventWidget(EventWidget::EventType type,QWidget *parent)
     while(q->next()) {
       d_location_box->
 	insertItem(d_location_box->count(),q->value(0).toString());
+      d_location_box->
+	setItemData(d_location_box->count()-1,
+		    rda->iconEngine()->stationIcon(),Qt::DecorationRole);
     }
     delete q;
     break;

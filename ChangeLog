@@ -22090,3 +22090,5 @@
 	modularity.
 2021-07-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a layout glitch in the 'Add Event' dialog in rdcatch(1).
+2021-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added type icons to the 'Location' dropdowns in rdcatch(1).
