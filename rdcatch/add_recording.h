@@ -35,9 +35,6 @@ class AddRecording : public RDDialog
  public slots:
   int exec(RDRecording::Type *type,int rec_id);
 
- protected:
-  void closeEvent(QCloseEvent *e);
-
  private slots:
   void recordingData();
   void playoutData();
@@ -48,14 +45,23 @@ class AddRecording : public RDDialog
   void cancelData();
 
  protected:
+  void resizeEvent(QResizeEvent *e);
   void keyPressEvent(QKeyEvent *e);
-
+  void closeEvent(QCloseEvent *e);
+  
  private: 
   int add_id;
   RDRecording::Type *add_type;
   QString *add_filter;
+  QLabel *add_title_label;
+  QPushButton *add_recording_button;
+  QPushButton *add_playout_button;
+  QPushButton *add_download_button;
+  QPushButton *add_upload_button;
+  QPushButton *add_macrocart_button;
+  QPushButton *add_switchevent_button;
+  QPushButton *add_cancel_button;
 };
 
 
-#endif
-
+#endif  // ADD_RECORDING_H

@@ -31,7 +31,7 @@
 extern RDStation *rdstation_conf;
 
 AddRecording::AddRecording(QString *filter,QWidget *parent)
-  : RDDialog(parent,Qt::CustomizeWindowHint|Qt::WindowTitleHint)
+  : RDDialog(parent)
 {
   add_id=-1;
   add_filter=filter;
@@ -47,90 +47,82 @@ AddRecording::AddRecording(QString *filter,QWidget *parent)
   //
   // Title Label
   //
-  QLabel *label=new QLabel(tr("Schedule a:"),this);
-  label->setGeometry(0,0,sizeHint().width(),30);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignCenter);
+  add_title_label=new QLabel(tr("Schedule a:"),this);
+  add_title_label->setFont(labelFont());
+  add_title_label->setAlignment(Qt::AlignCenter);
 
   //
   //  Recording Button
   //
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(10,30,sizeHint().width()-20,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Recording"));
-  button->setDisabled(true);
+  add_recording_button=new QPushButton(this);
+  add_recording_button->setFont(buttonFont());
+  add_recording_button->setText(tr("Recording"));
+  add_recording_button->setDisabled(true);
   QString sql=QString("select `CHANNEL` from `DECKS` where ")+
     "(`CARD_NUMBER`>=0)&&(`CHANNEL`>0)&&(`CHANNEL`<=9)";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
-    button->setEnabled(true);
+    add_recording_button->setEnabled(true);
   }
   delete q;
-  connect(button,SIGNAL(clicked()),this,SLOT(recordingData()));
+  connect(add_recording_button,SIGNAL(clicked()),this,SLOT(recordingData()));
 
   //
   //  Playout Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(10,80,sizeHint().width()-20,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Playout"));
-  button->setDisabled(true);
+  add_playout_button=new QPushButton(this);
+  add_playout_button->setFont(buttonFont());
+  add_playout_button->setText(tr("Playout"));
+  add_playout_button->setDisabled(true);
   sql=QString("select `CHANNEL` from `DECKS` where (`CARD_NUMBER`>=0)&&")+
     "(`PORT_NUMBER`>=0)&&(`CHANNEL`>128)&&(`CHANNEL`<=137)";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    button->setEnabled(true);
+    add_playout_button->setEnabled(true);
   }
   delete q;
-  connect(button,SIGNAL(clicked()),this,SLOT(playoutData()));
+  connect(add_playout_button,SIGNAL(clicked()),this,SLOT(playoutData()));
 
   //
   //  Download Event Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(10,130,sizeHint().width()-20,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Download"));
-  connect(button,SIGNAL(clicked()),this,SLOT(downloadData()));
+  add_download_button=new QPushButton(this);
+  add_download_button->setFont(buttonFont());
+  add_download_button->setText(tr("Download"));
+  connect(add_download_button,SIGNAL(clicked()),this,SLOT(downloadData()));
 
   //
   //  Upload Event Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(10,180,sizeHint().width()-20,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Upload"));
-  connect(button,SIGNAL(clicked()),this,SLOT(uploadData()));
+  add_upload_button=new QPushButton(this);
+  add_upload_button->setFont(buttonFont());
+  add_upload_button->setText(tr("Upload"));
+  connect(add_upload_button,SIGNAL(clicked()),this,SLOT(uploadData()));
 
   //
   //  Macro Event Cart Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(10,230,sizeHint().width()-20,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Macro Cart"));
-  connect(button,SIGNAL(clicked()),this,SLOT(macroData()));
+  add_macrocart_button=new QPushButton(this);
+  add_macrocart_button->setFont(buttonFont());
+  add_macrocart_button->setText(tr("Macro Cart"));
+  connect(add_macrocart_button,SIGNAL(clicked()),this,SLOT(macroData()));
 
   //
   //  Switch Event Cart Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(10,280,sizeHint().width()-20,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Switch Event"));
-  connect(button,SIGNAL(clicked()),this,SLOT(switchData()));
+  add_switchevent_button=new QPushButton(this);
+  add_switchevent_button->setFont(buttonFont());
+  add_switchevent_button->setText(tr("Switch Event"));
+  connect(add_switchevent_button,SIGNAL(clicked()),this,SLOT(switchData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(10,350,sizeHint().width()-20,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Cancel"));
-  button->setDefault(true);
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  add_cancel_button=new QPushButton(this);
+  add_cancel_button->setFont(buttonFont());
+  add_cancel_button->setText(tr("Cancel"));
+  add_cancel_button->setDefault(true);
+  connect(add_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 
 
@@ -157,12 +149,6 @@ int AddRecording::exec(RDRecording::Type *type,int rec_id)
   add_type=type;
 
   return QDialog::exec();
-}
-
-
-void AddRecording::closeEvent(QCloseEvent *e)
-{
-  cancelData();
 }
 
 
@@ -257,6 +243,21 @@ void AddRecording::cancelData()
 }
 
 
+void AddRecording::resizeEvent(QResizeEvent *e)
+{
+  add_title_label->setGeometry(0,0,sizeHint().width(),30);
+
+  add_recording_button->setGeometry(10,30,sizeHint().width()-20,50);
+  add_playout_button->setGeometry(10,80,sizeHint().width()-20,50);
+  add_download_button->setGeometry(10,130,sizeHint().width()-20,50);
+  add_upload_button->setGeometry(10,180,sizeHint().width()-20,50);
+  add_macrocart_button->setGeometry(10,230,sizeHint().width()-20,50);
+  add_switchevent_button->setGeometry(10,280,sizeHint().width()-20,50);
+
+  add_cancel_button->setGeometry(10,340,sizeHint().width()-20,50);
+}
+
+
 void AddRecording::keyPressEvent(QKeyEvent *e)
 {
   switch(e->key()) {
@@ -268,4 +269,10 @@ void AddRecording::keyPressEvent(QKeyEvent *e)
 	QWidget::keyPressEvent(e);
 	break;
   }
+}
+
+
+void AddRecording::closeEvent(QCloseEvent *e)
+{
+  cancelData();
 }

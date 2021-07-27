@@ -22088,3 +22088,5 @@
 2021-07-27 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Edit Recording' dialog in rdcatch(1) to improve
 	modularity.
+2021-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a layout glitch in the 'Add Event' dialog in rdcatch(1).
