@@ -66,6 +66,24 @@ EventWidget::EventWidget(EventWidget::EventType type,QWidget *parent)
     break;
 
   case EventWidget::PlayEvent:
+    d_location_box->clear();
+    sql=QString("select ")+
+      "`STATION_NAME`,"+  // 00
+      "`CHANNEL` "+       // 01
+      "from `DECKS` where "+
+      "(`CARD_NUMBER`!=-1)&&"+
+      "(`PORT_NUMBER`!=-1)&&"+
+      "(`CHANNEL`>128) order by `STATION_NAME`,`CHANNEL`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      d_location_box->
+	insertItem(d_location_box->count(),
+		   q->value(0).toString()+
+		   QString().sprintf(" : %dP",q->value(1).toInt()-128),
+		   q->value(0).toString()+"\t"+
+		   QString().sprintf("%d",q->value(1).toInt()-128));
+    }
+    delete q;
     break;
 
   case EventWidget::OtherEvent:
@@ -126,8 +144,20 @@ void EventWidget::toRecording(unsigned record_id) const
     "`IS_ACTIVE`='"+RDYesNo(d_state_check->isChecked())+"',"+
     "`STATION_NAME`='"+RDEscapeString(d_current_station_name)+"',"+
     "`START_TIME`='"+
-    RDEscapeString(d_time_edit->time().toString("hh:mm:ss"))+"' "+
-    "where "+
+    RDEscapeString(d_time_edit->time().toString("hh:mm:ss"))+"' ";
+  switch(d_event_type) {
+    case EventWidget::RecordEvent:
+      sql+=QString().sprintf(",`CHANNEL`=%u ",d_current_deck_number);
+      break;
+
+    case EventWidget::PlayEvent:
+      sql+=QString().sprintf(",`CHANNEL`=%u ",d_current_deck_number+128);
+      break;
+
+  case EventWidget::OtherEvent:
+    break;
+  }
+  sql+="where "+
     QString().sprintf("`ID`=%u",record_id);
   RDSqlQuery::apply(sql);
 }
@@ -148,9 +178,17 @@ void EventWidget::fromRecording(unsigned record_id)
     d_time_edit->setTime(q->value(3).toTime());
     switch(d_event_type) {
     case EventWidget::RecordEvent:
+      d_location_box->
+	setCurrentText(q->value(1).toString()+
+		       QString().sprintf(" : %uR",q->value(2).toUInt()));
       break;
 
     case EventWidget::PlayEvent:
+      d_location_box->
+	setCurrentText(q->value(1).toString()+
+		       QString().sprintf(" : %uP",q->value(2).toUInt()-128));
+      d_current_station_name=q->value(1).toString();
+      d_current_deck_number=q->value(2).toUInt()-128;
       break;
 
     case EventWidget::OtherEvent:
@@ -176,7 +214,7 @@ void EventWidget::locationActivatedData(const QString &str)
 
   case 2:
     d_current_station_name=f0.at(0).trimmed();
-    d_current_deck_number=f0.at(1).toInt()-1;
+    d_current_deck_number=f0.at(1).left(f0.at(1).length()-1).toInt();
     emit locationChanged(d_current_station_name,d_current_deck_number);
     break;
   }

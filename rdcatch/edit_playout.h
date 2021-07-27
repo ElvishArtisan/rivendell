@@ -31,6 +31,9 @@
 #include <rdrecording.h>
 #include <rdstationlistmodel.h>
 
+#include "eventwidget.h"
+#include "dowselector.h"
+
 class EditPlayout : public RDDialog
 {
  Q_OBJECT
@@ -41,7 +44,7 @@ class EditPlayout : public RDDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void activateStationData(int,bool use_temp=true);
+  void locationChangedData(const QString &station,int decknum);
   void selectCutData();
   void saveasData();
   void okData();
@@ -52,31 +55,19 @@ class EditPlayout : public RDDialog
   void closeEvent(QCloseEvent *e);
   
  private:
-  void PopulateDecks(QComboBox *box);
   void Save();
-  QString GetLocation(int *chan) const;
   RDDeck *edit_deck;
   RDCutDialog *edit_cut_dialog;
   RDRecording *edit_recording;
-  QCheckBox *edit_active_button;
-  RDComboBox *edit_station_box;
-  //  RDStationListModel *edit_station_model;
-  QTimeEdit *edit_starttime_edit;
+  EventWidget *edit_event_widget;
+  DowSelector *edit_dow_selector;
   QLineEdit *edit_description_edit;
   QString edit_cutname;
   QLineEdit *edit_destination_edit;
-  QCheckBox *edit_sun_button;
-  QCheckBox *edit_mon_button;
-  QCheckBox *edit_tue_button;
-  QCheckBox *edit_wed_button;
-  QCheckBox *edit_thu_button;
-  QCheckBox *edit_fri_button;
-  QCheckBox *edit_sat_button;
   QCheckBox *edit_oneshot_box;
   std::vector<int> *edit_added_events;
   QString *edit_filter;
 };
 
 
-#endif
-
+#endif  // EDIT_PLAYOUT_H
