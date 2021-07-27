@@ -2,7 +2,7 @@
 //
 // Create a Rivendell Log
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
 #include "rdapplication.h"
 #include "rddb.h"
@@ -40,10 +40,8 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMinimumSize(sizeHint());
 
   setWindowTitle(tr("Create Log"));
 
@@ -60,7 +58,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   add_name_edit->setGeometry(115,11,sizeHint().width()-125,19);
   add_name_edit->setMaxLength(64);
   add_name_edit->setValidator(v);
-  QLabel *label=new QLabel(tr("&New Log Name:"),this);
+  QLabel *label=new QLabel(tr("New Log Name")+":",this);
   label->setGeometry(10,13,100,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
@@ -72,7 +70,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   //
   add_service_box=new QComboBox(this);
   add_service_box->setGeometry(115,33,100,19);
-  label=new QLabel(tr("&Service:"),this);
+  label=new QLabel(tr("Service")+":",this);
   label->setGeometry(10,33,100,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
