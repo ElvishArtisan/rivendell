@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Audio Settings
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,10 @@
 #ifndef RDEXPORT_SETTINGS_DIALOG_H
 #define RDEXPORT_SETTINGS_DIALOG_H
 
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rddialog.h>
 #include <rdsettings.h>
@@ -55,7 +55,6 @@ class RDExportSettingsDialog : public RDDialog
 
  private:
   void ShowBitRates(RDSettings::Format fmt,int samprate,int bitrate,int qual);
-  void SetCurrentItem(QComboBox *box,int value);
   RDSettings::Format GetFormat(QString str);
   RDSettings *lib_settings;
   QLabel *lib_name_label;
@@ -68,6 +67,7 @@ class RDExportSettingsDialog : public RDDialog
   QComboBox *lib_channels_box;
   QLabel *lib_bitrate_label;
   QComboBox *lib_bitrate_box;
+  QLabel *lib_bitrate_unit;
   bool lib_normalization_level_enabled;
   QLabel *lib_normalization_level_label;
   QSpinBox *lib_normalization_level_spin;

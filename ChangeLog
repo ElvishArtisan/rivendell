@@ -22108,3 +22108,7 @@
 	* Fixed a bug in rdlogedit(1) that caused the 'Audio
 	Parameters' controls to fail to be disabled when the 'Render To'
 	control was set to 'Cart/Cut'.
+2021-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'Edit Audio Settings'
+	('RDExportSettingsDialog') dialog that made it impossible to
+	select any sample rate other than 32000.

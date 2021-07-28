@@ -26,6 +26,7 @@
 
 #include <rdcut_dialog.h>
 #include <rddialog.h>
+#include <rdexport_settings_dialog.h>
 #include <rdlogmodel.h>
 
 //
@@ -60,14 +61,12 @@ class RenderDialog : public RDDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  //  RDStation *render_station;
-  //  RDSystem *render_system;
-  //  RDConfig *render_config;
   RDUser *render_user;
   RDLogModel *render_model;
   int render_first_line;
   int render_last_line;
   RDSettings *render_settings;
+  RDExportSettingsDialog *render_settings_dialog;
   RDCutDialog *render_cut_dialog;
   QProgressDialog *render_progress_dialog;
   QLabel *render_to_label;

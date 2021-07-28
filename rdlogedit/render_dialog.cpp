@@ -25,7 +25,6 @@
 #include <qpushbutton.h>
 
 #include <rdconf.h>
-#include <rdexport_settings_dialog.h>
 #include <rdrenderer.h>
 
 #include "render_dialog.h"
@@ -48,6 +47,7 @@ RenderDialog::RenderDialog(QWidget *parent)
   //
   // Dialogs
   //
+  render_settings_dialog=new RDExportSettingsDialog("RDLogEdit",this);
   render_progress_dialog=
     new QProgressDialog(tr("Rendering Log..."),tr("Cancel"),0,0,this);
   render_progress_dialog->setWindowTitle(tr("Render Progress"));
@@ -164,6 +164,8 @@ RenderDialog::RenderDialog(QWidget *parent)
 
 RenderDialog::~RenderDialog()
 {
+  delete render_progress_dialog;
+  delete render_settings_dialog;
 }
 
 
@@ -245,11 +247,9 @@ void RenderDialog::starttimeSourceData(int item)
 
 void RenderDialog::audiosettingsData()
 {
-  RDExportSettingsDialog *d=new RDExportSettingsDialog("RDLogEdit",this);
-  if(d->exec(render_settings)) {
+  if(render_settings_dialog->exec(render_settings)) {
     render_audiosettings_edit->setText(render_settings->description());
   }
-  delete d;
 }
 
 

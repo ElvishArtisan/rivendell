@@ -78,12 +78,15 @@ RDExportSettingsDialog::RDExportSettingsDialog(const QString &caption,
   //
   // Bitrate
   //
-  lib_bitrate_box=new QComboBox(this);
-  connect(lib_bitrate_box,SIGNAL(activated(const QString &)),
-	  this,SLOT(bitrateData(const QString &)));
   lib_bitrate_label=new QLabel(tr("Bitrate")+":",this);
   lib_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   lib_bitrate_label->setFont(labelFont());
+  lib_bitrate_box=new QComboBox(this);
+  connect(lib_bitrate_box,SIGNAL(activated(const QString &)),
+	  this,SLOT(bitrateData(const QString &)));
+  lib_bitrate_unit=new QLabel("kbps",this);
+  lib_bitrate_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  lib_bitrate_unit->setFont(labelFont());
 
   //
   // Quality
@@ -401,7 +404,8 @@ void RDExportSettingsDialog::resizeEvent(QResizeEvent *e)
   ypos+=22;
 
   lib_bitrate_label->setGeometry(10,ypos,135,19);
-  lib_bitrate_box->setGeometry(150,ypos,100,19);
+  lib_bitrate_box->setGeometry(150,ypos,50,19);
+  lib_bitrate_unit->setGeometry(205,ypos,size().width()-215,19);
   ypos+=22;
 
   lib_quality_label->setGeometry(10,ypos,135,19);
@@ -427,6 +431,8 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
 					  int new_samprate,
 					  int bitrate,int qual)
 {
+  printf("ShowBitRates: fmt: %u  new_samprate: %u  bitrate: %u  qual: %u\n",
+	 fmt,new_samprate,bitrate,qual);
   int samprate=lib_samprate_box->currentText().toInt();
   int channels=lib_channels_box->currentText().toInt();
   lib_channels_box->clear();
@@ -456,21 +462,21 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
     lib_samprate_box->insertItem(lib_samprate_box->count(),"48000");
     lib_bitrate_box->setEnabled(true);
     lib_bitrate_label->setEnabled(true);
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("32 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("64 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("96 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("128 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("160 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("192 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("224 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("256 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("288 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("320 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("352 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("384 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("416 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("448 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("VBR"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"32");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"64");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"96");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"128");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"160");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"192");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"224");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"256");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"288");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"320");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"352");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"384");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"416");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"448");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"VBR");
     switch(bitrate) {
     case 0:
       lib_bitrate_box->setCurrentIndex(14);
@@ -577,20 +583,20 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
     lib_samprate_box->insertItem(lib_samprate_box->count(),"48000");
     lib_bitrate_box->setEnabled(true);
     lib_bitrate_label->setEnabled(true);
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("32 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("48 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("56 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("64 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("80 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("96 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("112 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("128 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("160 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("192 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("224 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("256 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("320 kbps"));
-    lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("384 kbps"));
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"32");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"48");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"56");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"64");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"80");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"96");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"112");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"128");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"160");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"192");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"224");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"256");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"320");
+    lib_bitrate_box->insertItem(lib_bitrate_box->count(),"384");
     switch(bitrate) {
     case 0:
       lib_bitrate_box->setCurrentIndex(11);
@@ -697,21 +703,21 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
     case 44100:
     case 48000:
     default:
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("32 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("40 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("48 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("56 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("64 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("80 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("96 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("112 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("128 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("160 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("192 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("224 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("256 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("320 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("VBR"));
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"32");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"40");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"48");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"56");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"64");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"80");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"96");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"112");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"128");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"160");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"192");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"224");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"256");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"320");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"VBR");
       switch(bitrate) {
       case 0:
 	lib_bitrate_box->setCurrentIndex(14);
@@ -810,21 +816,21 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
     case 16000:
     case 22050:
     case 24000:
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("8 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("16 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("24 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("32 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("40 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("48 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("56 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("64 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("80 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("96 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("112 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("128 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("144 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("160 kbps"));
-      lib_bitrate_box->insertItem(lib_bitrate_box->count(),tr("VBR"));
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"8");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"16");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"24");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"32");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"40");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"48");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"56");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"64");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"80");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"96");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"112");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"128");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"144");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"160");
+      lib_bitrate_box->insertItem(lib_bitrate_box->count(),"VBR");
       switch(bitrate) {
       case 0:
 	lib_bitrate_box->setCurrentIndex(14);
@@ -948,18 +954,8 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
     lib_quality_spin->setValue(qual);
     break;
   }
-  SetCurrentItem(lib_channels_box,channels);
-  SetCurrentItem(lib_samprate_box,samprate);
-}
-
-
-void RDExportSettingsDialog::SetCurrentItem(QComboBox *box,int value)
-{
-  for(int i=0;i<box->count();i++) {
-    if(box->itemData(i).toString().toInt()==value) {
-      box->setCurrentIndex(i);
-    }
-  }
+  lib_channels_box->setCurrentText(QString().sprintf("%u",channels));
+  lib_samprate_box->setCurrentText(QString().sprintf("%u",samprate));
 }
 
 
