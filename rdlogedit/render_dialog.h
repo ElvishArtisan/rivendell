@@ -38,8 +38,7 @@ class RenderDialog : public RDDialog
 {
  Q_OBJECT
  public:
-  RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
-	      QWidget *parent=0);
+  RenderDialog(QWidget *parent=0);
   ~RenderDialog();
   QSize sizeHint() const;
 
@@ -61,9 +60,9 @@ class RenderDialog : public RDDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  RDStation *render_station;
-  RDSystem *render_system;
-  RDConfig *render_config;
+  //  RDStation *render_station;
+  //  RDSystem *render_system;
+  //  RDConfig *render_config;
   RDUser *render_user;
   RDLogModel *render_model;
   int render_first_line;

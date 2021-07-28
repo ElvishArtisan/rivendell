@@ -33,13 +33,11 @@
 #include "edit_log.h"
 #include "globals.h"
 #include "rdlogedit.h"
-//#include "voice_tracker.h"
 
 //
 // Global Resources
 //
 bool global_import_running=false;
-//QSize global_top_window_size;
 QSize global_logedit_window_size;
 int global_start_time_style;
 

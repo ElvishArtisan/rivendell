@@ -304,7 +304,6 @@ bool RDRenderer::renderToFile(const QString &outfile,RDLogModel *model,
 
     ret=Render(outfile,model,s,start_time,ignore_stops,err_msg,
 	       first_line,last_line,first_time,last_time);
-    emit lineStarted(model->lineCount(),model->lineCount());
     return ret;
   }
   return true;

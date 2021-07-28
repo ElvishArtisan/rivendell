@@ -77,8 +77,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Dialogs
   //
-  edit_render_dialog=
-    new RenderDialog(rda->station(),rda->system(),rda->config(),this);
+  edit_render_dialog=new RenderDialog(this);
 
   //
   // Text Validator

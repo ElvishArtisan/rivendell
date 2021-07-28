@@ -30,13 +30,9 @@
 
 #include "render_dialog.h"
 
-RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
-			   QWidget *parent)
+RenderDialog::RenderDialog(QWidget *parent)
   : RDDialog(parent)
 {
-  render_station=station;
-  render_system=system;
-  render_config=config;
   render_save_path=RDHomeDir();
   render_first_line=0;
   render_last_line=0;
@@ -55,6 +51,9 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   render_progress_dialog=
     new QProgressDialog(tr("Rendering Log..."),tr("Cancel"),0,0,this);
   render_progress_dialog->setWindowTitle(tr("Render Progress"));
+  render_progress_dialog->setMinimumDuration(1000);
+  render_progress_dialog->setAutoClose(true);
+  render_progress_dialog->reset();
   render_cut_dialog=new RDCutDialog(NULL,NULL,NULL,false,true,true,"RDLogEdit",
 				    false,this);
   //
@@ -62,7 +61,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   //
   render_settings=new RDSettings();
   render_settings->setChannels(2);
-  render_settings->setSampleRate(render_system->sampleRate());
+  render_settings->setSampleRate(rda->system()->sampleRate());
   render_settings->setFormat(RDSettings::Pcm16);
   render_settings->setLayer(2);
   render_settings->setBitRate(256000);

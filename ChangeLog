@@ -22097,3 +22097,6 @@
 2021-07-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDLogListModel::updateRowLine()' that caused a
 	segfault.
+2021-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogedit(1) that caused the rendering
+	progress dialog to appear when there was no render being processed.
