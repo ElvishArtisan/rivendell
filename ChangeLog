@@ -22100,3 +22100,7 @@
 2021-07-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlogedit(1) that caused the rendering
 	progress dialog to appear when there was no render being processed.
+2021-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdadmin(1) that caused the 'Bitrate'
+	parameter in the 'Configure RDLibrary' dialog to always save
+	'0' as the value.
