@@ -181,8 +181,8 @@ int RenderDialog::exec(RDUser *user,RDLogModel *model,
   render_first_line=first_line;
   render_last_line=last_line;
   render_filename_edit->clear();
-  render_render_button->setDisabled(true);
-
+  toChangedData(render_to_box->currentIndex());
+  
   return QDialog::exec();
 }
 
@@ -200,6 +200,9 @@ void RenderDialog::toChangedData(int item)
   render_filename_edit->clear();
   render_to_cartnum=0;
   render_to_cutnum=-1;
+  render_audiosettings_label->setDisabled(item==0);
+  render_audiosettings_edit->setDisabled(item==0);
+  render_audiosettings_button->setDisabled(item==0);
   render_render_button->setDisabled(true);
 }
 
@@ -314,8 +317,8 @@ void RenderDialog::closeEvent(QCloseEvent *e)
 
 void RenderDialog::resizeEvent(QResizeEvent *e)
 {
-  render_to_label->setGeometry(10,10,65,20);
-  render_to_box->setGeometry(80,10,100,20);
+  render_to_label->setGeometry(10,10,75,20);
+  render_to_box->setGeometry(90,10,100,20);
 
   render_filename_label->setGeometry(10,40,95,20);
   render_filename_edit->setGeometry(110,40,size().width()-190,20);

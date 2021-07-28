@@ -22104,3 +22104,7 @@
 	* Fixed a regression in rdadmin(1) that caused the 'Bitrate'
 	parameter in the 'Configure RDLibrary' dialog to always save
 	'0' as the value.
+2021-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogedit(1) that caused the 'Audio
+	Parameters' controls to fail to be disabled when the 'Render To'
+	control was set to 'Cart/Cut'.
