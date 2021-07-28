@@ -2154,46 +2154,6 @@ GPIOs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>32 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>48 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>56 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>64 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>80 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>96 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>112 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>128 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>160 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>192 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sample Rate Converter:</source>
         <translation type="unfinished"></translation>
     </message>
