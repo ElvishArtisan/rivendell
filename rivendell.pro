@@ -2,7 +2,7 @@
 #
 # The top level QMake project file for Rivendell
 #
-# (C) Copyright 2003-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+# (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,6 @@ TEMPLATE = subdirs
 
 SUBDIRS += lib
 SUBDIRS += utils
-#SUBDIRS += ripcd
 SUBDIRS += rdlogedit
 SUBDIRS += rdlogmanager
 

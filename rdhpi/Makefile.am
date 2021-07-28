@@ -24,8 +24,6 @@
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
-LUPDATE = @QT_LUPDATE@
-LRELEASE = @QT_LRELEASE@
 CWRAP = ../helpers/cwrap
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -38,15 +36,13 @@ html_%.cpp:	%.html
 
 # I18N Stuff
 install-exec-local:	
-	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
-	cp rdhpi_*.qm $(DESTDIR)$(prefix)/share/rivendell
+	../helpers/rdi18n_helper.sh --install rdhpi $(DESTDIR)$(prefix)/share/rivendell
 
 uninstall-local:	
-	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdhpi_*.qm
+	../helpers/rdi18n_helper.sh --uninstall rdhpi $(DESTDIR)$(prefix)/share/rivendell
 
 all:	
-	$(LUPDATE) rdhpi.pro
-	$(LRELEASE) rdhpi.pro
+	../helpers/rdi18n_helper.sh --update rdhpi $(DESTDIR)$(prefix)/share/rivendell
 
 lib_LTLIBRARIES = librdhpi.la
 dist_librdhpi_la_SOURCES = rdhpiinformation.cpp rdhpiinformation.h\

@@ -21,8 +21,6 @@
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
-LUPDATE = @QT_LUPDATE@
-LRELEASE = @QT_LRELEASE@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
@@ -30,15 +28,13 @@ moc_%.cpp:	%.h
 
 # I18N Stuff
 install-exec-local:	
-	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
-	cp rdlogedit_*.qm $(DESTDIR)$(prefix)/share/rivendell
+	../helpers/rdi18n_helper.sh --install rdlogedit $(DESTDIR)$(prefix)/share/rivendell
 
 uninstall-local:	
-	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdlogedit_*.qm
+	../helpers/rdi18n_helper.sh --uninstall rdlogedit $(DESTDIR)$(prefix)/share/rivendell
 
 all:	
-	$(LUPDATE) rdlogedit.pro
-	$(LRELEASE) rdlogedit.pro
+	../helpers/rdi18n_helper.sh --update rdlogedit $(DESTDIR)$(prefix)/share/rivendell
 
 bin_PROGRAMS = rdlogedit
 

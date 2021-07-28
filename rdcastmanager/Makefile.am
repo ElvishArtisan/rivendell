@@ -23,8 +23,6 @@
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC  -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
-LUPDATE = @QT_LUPDATE@
-LRELEASE = @QT_LRELEASE@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
@@ -32,15 +30,13 @@ moc_%.cpp:	%.h
 
 # I18N Stuff
 install-exec-local:	
-	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
-	cp rdcastmanager_*.qm $(DESTDIR)$(prefix)/share/rivendell
+	../helpers/rdi18n_helper.sh --install rdcastmanager $(DESTDIR)$(prefix)/share/rivendell
 
 uninstall-local:	
-	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdcastmanager_*.qm
+	../helpers/rdi18n_helper.sh --uninstall rdcastmanager $(DESTDIR)$(prefix)/share/rivendell
 
 all:	
-	$(LUPDATE) rdcastmanager.pro
-	$(LRELEASE) rdcastmanager.pro
+	../helpers/rdi18n_helper.sh --update rdcastmanager $(DESTDIR)$(prefix)/share/rivendell
 
 bin_PROGRAMS = rdcastmanager
 

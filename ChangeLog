@@ -22112,3 +22112,5 @@
 	* Fixed a regression in the 'Edit Audio Settings'
 	('RDExportSettingsDialog') dialog that made it impossible to
 	select any sample rate other than 32000.
+2021-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--enable-i18n-updates' switch to '.configure'.

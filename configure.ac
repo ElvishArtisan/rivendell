@@ -101,6 +101,8 @@ AC_ARG_ENABLE(mp4v2,[  --disable-mp4           disable M4A decode support],
 		      [MP4V2_DISABLED=yes],[])
 AC_ARG_ENABLE(rdxport-debug,[  --enable-rdxport-debug  enable DEBUG support for RDXport services],
 		      [RDXPORT_DEBUG_ENABLED=yes],[])
+AC_ARG_ENABLE(i18n-updates,[  --enable-i18n-updates   enable I18N metadata updates],
+		      [I18N_ENABLED=yes],[])
 
 
 #
@@ -204,6 +206,15 @@ case "$ar_distro_id" in
        AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig.desktop")
      ;;
 esac
+
+#
+# Internationalization
+#
+if test $I18N_ENABLED ; then
+   AC_SUBST(I18N_ACTIVE,1)
+else
+   AC_SUBST(I18N_ACTIVE,0)
+fi
 
 #
 # Check for Expat
@@ -537,6 +548,7 @@ AC_CONFIG_FILES([rivendell.spec \
     icons/Makefile \
     helpers/Makefile \
     helpers/install_python.sh \
+    helpers/rdi18n_helper.sh \
     apis/Makefile \
     apis/pypad/Makefile \
     apis/pypad/api/Makefile \
@@ -626,6 +638,7 @@ AC_CONFIG_FILES([rivendell.spec \
     ])
 AC_OUTPUT()
 
+chmod 755 helpers/rdi18n_helper.sh
 chmod 755 helpers/install_python.sh
 chmod 755 xdg/install_usermode.sh
 chmod 755 build_debs.sh
@@ -656,6 +669,11 @@ AC_MSG_NOTICE("|---------------------------------------------------------|")
 AC_MSG_NOTICE("| Platform Information:                                   |")
 AC_MSG_NOTICE("$DISTRO_NAME")
 AC_MSG_NOTICE("$DISTRO_FAMILY")
+if test $I18N_ENABLED ; then
+AC_MSG_NOTICE("|                            Update I18N Data ... Yes     |")
+else
+AC_MSG_NOTICE("|                            Update I18N Data ... No      |")
+fi
 AC_MSG_NOTICE("|                                                         |")
 AC_MSG_NOTICE("| Configured Audio Drivers:                               |")
 if test -z $USING_ALSA ; then

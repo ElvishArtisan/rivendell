@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# rdi18n_helper.sh
+#
+# Helper script for managing internationalization files for Rivendell
+#
+# (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License version 2 as
+#   published by the Free Software Foundation.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program; if not, write to the Free Software
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+
+USAGE="rdi18n_helper.sh --install|--uninstall|--update <basename> <installdir>"
+
+OPERATION=$1
+BASENAME=$2
+INSTALLDIR=$3
+
+if test -z $BASENAME ; then
+    echo $USAGE
+    exit 1
+fi
+
+function Install {
+    mkdir -p ${INSTALLDIR}
+    cp ${BASENAME}_*.qm ${INSTALLDIR}/
+}
+
+
+function Uninstall {
+    rm -f ${INSTALLDIR}/${BASENAME}_*.qm
+}
+
+
+function Update {
+    if test @I18N_ACTIVE@ -eq 1 ; then
+	@QT_LUPDATE@ ${BASENAME}.pro
+    fi
+    @QT_LRELEASE@ ${BASENAME}.pro
+}
+
+if test $OPERATION = "--install" ; then
+    Install
+    exit 0
+fi
+
+if test $OPERATION = "--uninstall" ; then
+    Uninstall
+    exit 0
+fi
+
+if test $OPERATION = "--update" ; then
+    Update
+    exit 0
+fi
+
+echo $USAGE
+exit 1

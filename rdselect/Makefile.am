@@ -21,8 +21,6 @@
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
-LUPDATE = @QT_LUPDATE@
-LRELEASE = @QT_LRELEASE@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
@@ -30,19 +28,17 @@ moc_%.cpp:	%.h
 
 # I18N Stuff
 install-exec-hook:
-	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
-	cp rdselect_*.qm $(DESTDIR)$(prefix)/share/rivendell
+	../helpers/rdi18n_helper.sh --install rdselect $(DESTDIR)$(prefix)/share/rivendell
 	mkdir -p $(DESTDIR)/etc/auto.master.d
 	cp rd.audiostore.autofs $(DESTDIR)/etc/auto.master.d/
 	touch $(DESTDIR)/etc/auto.rd.audiostore
 
 uninstall-local:	
-	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdselect_*.qm
+	../helpers/rdi18n_helper.sh --uninstall rdselect $(DESTDIR)$(prefix)/share/rivendell
 	rm -f $(DESTDIR)/etc/auto.master.d/rd.audiostore.autofs
 
 all:	
-	$(LUPDATE) rdselect.pro
-	$(LRELEASE) rdselect.pro
+	../helpers/rdi18n_helper.sh --update rdselect $(DESTDIR)$(prefix)/share/rivendell
 
 bin_PROGRAMS = rdselect
 

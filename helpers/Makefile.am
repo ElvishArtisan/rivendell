@@ -2,7 +2,7 @@
 ##
 ## helper/ Automake.am for Rivendell
 ##
-## (C) Copyright 2003-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ## Use automake to process this into a Makefile.in
 ##
@@ -33,7 +33,8 @@ dist_cwrap_SOURCES = cwrap.cpp cwrap.h
 
 dist_jsmin_SOURCES = jsmin.c
 
-EXTRA_DIST = install_python.sh.in\
+EXTRA_DIST = rdi18n_helper.sh.in\
+             install_python.sh.in\
              rdpack.sh\
              rdtrans.sh\
              rdtransgui.sh\
@@ -44,6 +45,7 @@ CLEANFILES = *~\
              moc_*
 
 DISTCLEANFILES = docbook\
+                 rdi18n_helper.sh\
                  install_python.sh
 
 MAINTAINERCLEANFILES = *~\

@@ -23,8 +23,6 @@
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
-LUPDATE = @QT_LUPDATE@
-LRELEASE = @QT_LRELEASE@
 CWRAP = ../helpers/cwrap
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -39,15 +37,13 @@ global_credits.c:
 
 # I18N Stuff
 install-exec-local:	
-	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
-	cp rdadmin_*.qm $(DESTDIR)$(prefix)/share/rivendell
+	../helpers/rdi18n_helper.sh --install rdadmin $(DESTDIR)$(prefix)/share/rivendell
 
 uninstall-local:
-	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdadmin_*.qm
+	../helpers/rdi18n_helper.sh --uninstall rdadmin $(DESTDIR)$(prefix)/share/rivendell
 
 all:	
-	$(LUPDATE) rdadmin.pro
-	$(LRELEASE) rdadmin.pro
+	../helpers/rdi18n_helper.sh --update rdadmin $(DESTDIR)$(prefix)/share/rivendell
 
 bin_PROGRAMS = rdadmin
 

@@ -22,8 +22,6 @@
 
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -Wno-strict-aliasing -std=c++11 -fPIC -I/usr/include/taglib
 MOC = @QT_MOC@
-LUPDATE = @QT_LUPDATE@
-LRELEASE = @QT_LRELEASE@
 CWRAP = ../helpers/cwrap
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -32,15 +30,13 @@ moc_%.cpp:	%.h
 
 # I18N Stuff
 install-exec-local:	
-	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
-	cp librd_*.qm $(DESTDIR)$(prefix)/share/rivendell
+	../helpers/rdi18n_helper.sh --install librd $(DESTDIR)$(prefix)/share/rivendell
 
 uninstall-local:
-	rm -f $(DESTDIR)$(prefix)/share/rivendell/librd_*.qm
+	../helpers/rdi18n_helper.sh --uninstall librd $(DESTDIR)$(prefix)/share/rivendell
 
 all:	
-	$(LUPDATE) lib.pro
-	$(LRELEASE) lib.pro
+	../helpers/rdi18n_helper.sh --update librd $(DESTDIR)$(prefix)/share/rivendell
 
 lib_LTLIBRARIES = librd.la
 dist_librd_la_SOURCES = dbversion.h\
@@ -438,7 +434,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
 
 librd_la_LDFLAGS = -release $(VERSION)
 
-EXTRA_DIST = lib.pro\
+EXTRA_DIST = librd.pro\
              librd_cs.ts\
              librd_de.ts\
              librd_es.ts\

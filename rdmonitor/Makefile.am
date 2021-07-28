@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2012-2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,6 @@
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -Wno-strict-aliasing -std=c++11 -fPIC -I$(top_srcdir)/lib @QT5_CFLAGS@ @MUSICBRAINZ_CFLAGS@
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
-LUPDATE = @QT_LUPDATE@
-LRELEASE = @QT_LRELEASE@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
@@ -30,15 +28,13 @@ moc_%.cpp:	%.h
 
 # I18N Stuff
 install-exec-local:	
-	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
-	cp rdmonitor_*.qm $(DESTDIR)$(prefix)/share/rivendell
+	../helpers/rdi18n_helper.sh --install rdmonitor $(DESTDIR)$(prefix)/share/rivendell
 
 uninstall-local:	
-	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdmonitor_*.qm
+	../helpers/rdi18n_helper.sh --uninstall rdmonitor $(DESTDIR)$(prefix)/share/rivendell
 
 all:	
-	$(LUPDATE) rdmonitor.pro
-	$(LRELEASE) rdmonitor.pro
+	../helpers/rdi18n_helper.sh --update rdmonitor $(DESTDIR)$(prefix)/share/rivendell
 
 bin_PROGRAMS = rdmonitor
 
