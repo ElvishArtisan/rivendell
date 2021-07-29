@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name></name>
     <message>
@@ -981,6 +979,10 @@
         <source>Original RadioTraffic.com Traffic Reconciliation (DEPRECATED)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>ERR</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1077,11 +1079,11 @@
     </message>
     <message>
         <source>&amp;New Log Name:</source>
-        <translation>&amp;Name des neuen Logs:</translation>
+        <translation type="obsolete">&amp;Name des neuen Logs:</translation>
     </message>
     <message>
         <source>&amp;Service:</source>
-        <translation>&amp;Service:</translation>
+        <translation type="obsolete">&amp;Service:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1102,6 +1104,14 @@
     <message>
         <source>The service is invalid!</source>
         <translation>Der Service ist ungültig!</translation>
+    </message>
+    <message>
+        <source>New Log Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2341,95 +2351,95 @@ Overwrite?</source>
     </message>
     <message>
         <source>32 kbps</source>
-        <translation>32 kbps</translation>
+        <translation type="obsolete">32 kbps</translation>
     </message>
     <message>
         <source>64 kbps</source>
-        <translation>64 kbps</translation>
+        <translation type="obsolete">64 kbps</translation>
     </message>
     <message>
         <source>96 kbps</source>
-        <translation>96 kbps</translation>
+        <translation type="obsolete">96 kbps</translation>
     </message>
     <message>
         <source>128 kbps</source>
-        <translation>128 kbps</translation>
+        <translation type="obsolete">128 kbps</translation>
     </message>
     <message>
         <source>160 kbps</source>
-        <translation>160 kbps</translation>
+        <translation type="obsolete">160 kbps</translation>
     </message>
     <message>
         <source>192 kbps</source>
-        <translation>192 kbps</translation>
+        <translation type="obsolete">192 kbps</translation>
     </message>
     <message>
         <source>224 kbps</source>
-        <translation>224 kbps</translation>
+        <translation type="obsolete">224 kbps</translation>
     </message>
     <message>
         <source>256 kbps</source>
-        <translation>256 kbps</translation>
+        <translation type="obsolete">256 kbps</translation>
     </message>
     <message>
         <source>288 kbps</source>
-        <translation>288 kbps</translation>
+        <translation type="obsolete">288 kbps</translation>
     </message>
     <message>
         <source>320 kbps</source>
-        <translation>320 kbps</translation>
+        <translation type="obsolete">320 kbps</translation>
     </message>
     <message>
         <source>352 kbps</source>
-        <translation>352 kbps</translation>
+        <translation type="obsolete">352 kbps</translation>
     </message>
     <message>
         <source>384 kbps</source>
-        <translation>384 kbps</translation>
+        <translation type="obsolete">384 kbps</translation>
     </message>
     <message>
         <source>416 kbps</source>
-        <translation>416 kbps</translation>
+        <translation type="obsolete">416 kbps</translation>
     </message>
     <message>
         <source>448 kbps</source>
-        <translation>448 kbps</translation>
+        <translation type="obsolete">448 kbps</translation>
     </message>
     <message>
         <source>48 kbps</source>
-        <translation>48 kbps</translation>
+        <translation type="obsolete">48 kbps</translation>
     </message>
     <message>
         <source>56 kbps</source>
-        <translation>56 kbps</translation>
+        <translation type="obsolete">56 kbps</translation>
     </message>
     <message>
         <source>80 kbps</source>
-        <translation>80 kbps</translation>
+        <translation type="obsolete">80 kbps</translation>
     </message>
     <message>
         <source>112 kbps</source>
-        <translation>112 kbps</translation>
+        <translation type="obsolete">112 kbps</translation>
     </message>
     <message>
         <source>40 kbps</source>
-        <translation>40 kbps</translation>
+        <translation type="obsolete">40 kbps</translation>
     </message>
     <message>
         <source>8 kbps</source>
-        <translation>8 kbps</translation>
+        <translation type="obsolete">8 kbps</translation>
     </message>
     <message>
         <source>16 kbps</source>
-        <translation>16 kbps</translation>
+        <translation type="obsolete">16 kbps</translation>
     </message>
     <message>
         <source>24 kbps</source>
-        <translation>24 kbps</translation>
+        <translation type="obsolete">24 kbps</translation>
     </message>
     <message>
         <source>144 kbps</source>
-        <translation>144 kbps</translation>
+        <translation type="obsolete">144 kbps</translation>
     </message>
     <message>
         <source>PCM24</source>
@@ -2540,6 +2550,10 @@ Overwrite?</source>
     </message>
     <message>
         <source>[superfeed]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3192,6 +3206,61 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
 </context>
 <context>
+    <name>RDLogEventDialog</name>
+    <message>
+        <source>Start at:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Action If Previous Event Still Playing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Immediately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait up to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play</source>
+        <translation type="unfinished">Play</translation>
+    </message>
+    <message>
+        <source>Segue</source>
+        <translation type="unfinished">Segue</translation>
+    </message>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbrechen</translation>
+    </message>
+    <message>
+        <source>Transition If Previous Cart Ends Before</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDLogFilter</name>
     <message>
         <source>Service</source>
@@ -3779,6 +3848,17 @@ End</source>
     </message>
 </context>
 <context>
+    <name>RDMeterStrip</name>
+    <message>
+        <source>L</source>
+        <translation type="unfinished">L</translation>
+    </message>
+    <message>
+        <source>R</source>
+        <translation type="unfinished">R</translation>
+    </message>
+</context>
+<context>
     <name>RDNodeListModel</name>
     <message>
         <source>Hostname</source>
@@ -3859,19 +3939,19 @@ End</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="vanished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Abbrechen</translation>
+        <translation type="obsolete">&amp;Abbrechen</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation type="vanished">&amp;Paßwort:</translation>
+        <translation type="obsolete">&amp;Paßwort:</translation>
     </message>
     <message>
         <source>C&amp;onfirm:</source>
-        <translation type="vanished">&amp;Bestätigen:</translation>
+        <translation type="obsolete">&amp;Bestätigen:</translation>
     </message>
     <message>
         <source>Password Mismatch</source>
@@ -4609,6 +4689,180 @@ bitte erneut versuchen!</translation>
     </message>
     <message>
         <source>Import file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RDTrackerEditDialog</name>
+    <message>
+        <source>Edit Voice Track Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RDTrackerTableView</name>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RDTrackerWidget</name>
+    <message>
+        <source>Edit Cue Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undo Segue Changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Start Point Here</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set End Point Here</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set to Hook Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remaining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished">Zeit</translation>
+    </message>
+    <message>
+        <source>Do Over</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hit Post</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No VoiceTrack Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No voicetracking group has been defined for this service,
+therefore only existing transitions will be editable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import</source>
+        <translation type="unfinished">Importieren</translation>
+    </message>
+    <message>
+        <source>Cart Creation Failure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create new cart for voice track!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDLogEdit</source>
+        <translation type="unfinished">RDLogEdit</translation>
+    </message>
+    <message>
+        <source>Audio Deletion Error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voice Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Track List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No more tracks!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk</source>
+        <translation type="unfinished">Mod</translation>
+    </message>
+    <message>
+        <source>Abort</source>
+        <translation type="unfinished">Abbrechen</translation>
+    </message>
+    <message>
+        <source>RDLogEdit - Voice Tracker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This cart cannot contain any additional cuts!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Segue Changed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save segue changes?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

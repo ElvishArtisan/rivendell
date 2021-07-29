@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>AddMeta</name>
     <message>
@@ -1154,30 +1152,6 @@ Tracker</source>
         <translation type="unfinished">Voice Tracker</translation>
     </message>
     <message>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remaining</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tracks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>TIME</source>
         <translation type="obsolete">Zeit</translation>
     </message>
@@ -1206,39 +1180,12 @@ Tracker</source>
         <translation type="obsolete">KÜNSTLER</translation>
     </message>
     <message>
-        <source>Do Over</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hit Post</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Insert
-Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete
-Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Close</source>
         <translation type="obsolete">&amp;Schliessen</translation>
     </message>
     <message>
-        <source>No VoiceTrack Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No voicetracking group has been defined for this service,
-therefore only existing transitions will be editable.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>RDLogEdit</source>
-        <translation type="unfinished">RDLogEdit</translation>
+        <translation type="obsolete">RDLogEdit</translation>
     </message>
     <message>
         <source>TRACK</source>
@@ -1246,7 +1193,7 @@ therefore only existing transitions will be editable.</source>
     </message>
     <message>
         <source>Voice Track</source>
-        <translation type="unfinished">Voice Track</translation>
+        <translation type="obsolete">Voice Track</translation>
     </message>
     <message>
         <source>[cart not found]</source>
@@ -1285,36 +1232,8 @@ therefore only existing transitions will be editable.</source>
         <translation type="obsolete">STOP</translation>
     </message>
     <message>
-        <source>Segue Changed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save segue changes?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDLogEdit - Voice Tracker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This cart cannot contain any additional cuts!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>LABEL</source>
         <translation type="obsolete">LABEL</translation>
-    </message>
-    <message>
-        <source>Log Locked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log already being edited by</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Talk</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cart</source>
@@ -1331,64 +1250,6 @@ therefore only existing transitions will be editable.</source>
     <message>
         <source>Label</source>
         <translation type="obsolete">Label</translation>
-    </message>
-    <message>
-        <source>Import</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Abort</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Track List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No more tracks!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart Creation Failure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create new cart for voice track!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Audio Deletion Error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Cue Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Undo Segue Changes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set Start Point Here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set End Point Here</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set to Hook Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Previous
-Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Next
-Track</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>

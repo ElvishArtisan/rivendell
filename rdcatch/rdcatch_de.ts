@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>AddRecording</name>
     <message>
@@ -134,6 +132,13 @@
     </message>
 </context>
 <context>
+    <name>DowSelector</name>
+    <message>
+        <source>Active Days</source>
+        <translation type="unfinished">Aktive Tage</translation>
+    </message>
+</context>
+<context>
     <name>EditCartEvent</name>
     <message>
         <source>Edit Cart Event</source>
@@ -141,15 +146,15 @@
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Event Aktiv</translation>
+        <translation type="obsolete">Event Aktiv</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Ort:</translation>
+        <translation type="obsolete">Ort:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Startzeit:</translation>
+        <translation type="obsolete">Startzeit:</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -165,35 +170,35 @@
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Aktive Tage</translation>
+        <translation type="obsolete">Aktive Tage</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Montag</translation>
+        <translation type="obsolete">Montag</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Dienstag</translation>
+        <translation type="obsolete">Dienstag</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Mittwoch</translation>
+        <translation type="obsolete">Mittwoch</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Donnerstag</translation>
+        <translation type="obsolete">Donnerstag</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Freitag</translation>
+        <translation type="obsolete">Freitag</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Samstag</translation>
+        <translation type="obsolete">Samstag</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Sonntag</translation>
+        <translation type="obsolete">Sonntag</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -255,15 +260,15 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Event aktiv</translation>
+        <translation type="obsolete">Event aktiv</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Ort:</translation>
+        <translation type="obsolete">Ort:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Startzeit:</translation>
+        <translation type="obsolete">Startzeit:</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -311,35 +316,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Aktive Tage</translation>
+        <translation type="obsolete">Aktive Tage</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Montag</translation>
+        <translation type="obsolete">Montag</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Dienstag</translation>
+        <translation type="obsolete">Dienstag</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Mittwoch</translation>
+        <translation type="obsolete">Mittwoch</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Donnerstag</translation>
+        <translation type="obsolete">Donnerstag</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Freitag</translation>
+        <translation type="obsolete">Freitag</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Samstag</translation>
+        <translation type="obsolete">Samstag</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Sonntag</translation>
+        <translation type="obsolete">Sonntag</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -433,15 +438,15 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Event aktiv</translation>
+        <translation type="obsolete">Event aktiv</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Ort:</translation>
+        <translation type="obsolete">Ort:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Startzeit:</translation>
+        <translation type="obsolete">Startzeit:</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -457,35 +462,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Aktive Tage</translation>
+        <translation type="obsolete">Aktive Tage</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Montag</translation>
+        <translation type="obsolete">Montag</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Dienstag</translation>
+        <translation type="obsolete">Dienstag</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Mittwoch</translation>
+        <translation type="obsolete">Mittwoch</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Donnerstag</translation>
+        <translation type="obsolete">Donnerstag</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Freitag</translation>
+        <translation type="obsolete">Freitag</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Samstag</translation>
+        <translation type="obsolete">Samstag</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Sonntag</translation>
+        <translation type="obsolete">Sonntag</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -539,11 +544,11 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Event aktiv</translation>
+        <translation type="obsolete">Event aktiv</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Ort:</translation>
+        <translation type="obsolete">Ort:</translation>
     </message>
     <message>
         <source>Start Parameters</source>
@@ -643,35 +648,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Aktive Tage</translation>
+        <translation type="obsolete">Aktive Tage</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Montag</translation>
+        <translation type="obsolete">Montag</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Dienstag</translation>
+        <translation type="obsolete">Dienstag</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Mittwoch</translation>
+        <translation type="obsolete">Mittwoch</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Donnerstag</translation>
+        <translation type="obsolete">Donnerstag</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Freitag</translation>
+        <translation type="obsolete">Freitag</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Samstag</translation>
+        <translation type="obsolete">Samstag</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Sonntag</translation>
+        <translation type="obsolete">Sonntag</translation>
     </message>
     <message>
         <source>Start Date Offset:</source>
@@ -785,15 +790,15 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Event aktiv</translation>
+        <translation type="obsolete">Event aktiv</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Ort:</translation>
+        <translation type="obsolete">Ort:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Startzeit:</translation>
+        <translation type="obsolete">Startzeit:</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -813,35 +818,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Aktive Tage</translation>
+        <translation type="obsolete">Aktive Tage</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Montag</translation>
+        <translation type="obsolete">Montag</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Dienstag</translation>
+        <translation type="obsolete">Dienstag</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Mittwoch</translation>
+        <translation type="obsolete">Mittwoch</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Donnerstag</translation>
+        <translation type="obsolete">Donnerstag</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Freitag</translation>
+        <translation type="obsolete">Freitag</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Samstag</translation>
+        <translation type="obsolete">Samstag</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Sonntag</translation>
+        <translation type="obsolete">Sonntag</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -895,19 +900,19 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Event aktiv</translation>
+        <translation type="obsolete">Event aktiv</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Ort:</translation>
+        <translation type="obsolete">Ort:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Startzeit:</translation>
+        <translation type="obsolete">Startzeit:</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[keine]</translation>
+        <translation type="obsolete">[keine]</translation>
     </message>
     <message>
         <source>RSS Feed:</source>
@@ -959,35 +964,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Aktive Tage</translation>
+        <translation type="obsolete">Aktive Tage</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Montag</translation>
+        <translation type="obsolete">Montag</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Dienstag</translation>
+        <translation type="obsolete">Dienstag</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Mittwoch</translation>
+        <translation type="obsolete">Mittwoch</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Donnerstag</translation>
+        <translation type="obsolete">Donnerstag</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Freitag</translation>
+        <translation type="obsolete">Freitag</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Samstag</translation>
+        <translation type="obsolete">Samstag</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Sonntag</translation>
+        <translation type="obsolete">Sonntag</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -1086,6 +1091,25 @@ New</source>
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authenticate with local identity file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EventWidget</name>
+    <message>
+        <source>Event Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

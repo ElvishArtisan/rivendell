@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>@default</name>
     <message>
@@ -518,7 +516,7 @@ atualizada para a Versão</translation>
     </message>
     <message>
         <source>Empty Host Config</source>
-        <translation type="vanished">Configuração vazia de Cliente</translation>
+        <translation type="obsolete">Configuração vazia de Cliente</translation>
     </message>
     <message>
         <source>Invalid Name</source>
@@ -659,7 +657,7 @@ atualizada para a Versão</translation>
     <name>EditAudioPorts</name>
     <message>
         <source>Edit Audio Ports</source>
-        <translation type="obsolete">Editar Portas de Áudio</translation>
+        <translation type="unfinished">Editar Portas de Áudio</translation>
     </message>
     <message>
         <source>Clock Source:</source>
@@ -754,16 +752,24 @@ atualizada para a Versão</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Edit AudioScience Audio Ports</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Card Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished">[Nenhum]</translation>
     </message>
 </context>
 <context>
@@ -3068,7 +3074,7 @@ Isto para popular os recursos de áudio na Base de Dados.</translation>
     </message>
     <message>
         <source>Low</source>
-        <translation>Baixa	</translation>
+        <translation>Baixa<byte value="x9"/></translation>
     </message>
     <message>
         <source>None</source>
@@ -3092,43 +3098,43 @@ Isto para popular os recursos de áudio na Base de Dados.</translation>
     </message>
     <message>
         <source>32 kbps/chan</source>
-        <translation>32 kbps/chan</translation>
+        <translation type="obsolete">32 kbps/chan</translation>
     </message>
     <message>
         <source>48 kbps/chan</source>
-        <translation>48 kbps/chan</translation>
+        <translation type="obsolete">48 kbps/chan</translation>
     </message>
     <message>
         <source>56 kbps/chan</source>
-        <translation>56 kbps/chan</translation>
+        <translation type="obsolete">56 kbps/chan</translation>
     </message>
     <message>
         <source>64 kbps/chan</source>
-        <translation>64 kbps/chan</translation>
+        <translation type="obsolete">64 kbps/chan</translation>
     </message>
     <message>
         <source>80 kbps/chan</source>
-        <translation>80 kbps/chan</translation>
+        <translation type="obsolete">80 kbps/chan</translation>
     </message>
     <message>
         <source>96 kbps/chan</source>
-        <translation>96 kbps/chan</translation>
+        <translation type="obsolete">96 kbps/chan</translation>
     </message>
     <message>
         <source>112 kbps/chan</source>
-        <translation>112 kbps/chan</translation>
+        <translation type="obsolete">112 kbps/chan</translation>
     </message>
     <message>
         <source>128 kbps/chan</source>
-        <translation>128 kbps/chan</translation>
+        <translation type="obsolete">128 kbps/chan</translation>
     </message>
     <message>
         <source>160 kbps/chan</source>
-        <translation>160 kbps/chan</translation>
+        <translation type="obsolete">160 kbps/chan</translation>
     </message>
     <message>
         <source>192 kbps/chan</source>
-        <translation>192 kbps/chan</translation>
+        <translation type="obsolete">192 kbps/chan</translation>
     </message>
     <message>
         <source>40 kbps/chan</source>
@@ -3997,7 +4003,7 @@ do Cliente</translation>
     <message>
         <source>Audio
 Ports</source>
-        <translation type="obsolete">Portas de 
+        <translation type="unfinished">Portas de 
 Áudio</translation>
     </message>
     <message>
@@ -4101,11 +4107,6 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Short Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ASI Audio
-Ports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

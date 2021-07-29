@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>EditCast</name>
     <message>
@@ -155,6 +153,18 @@ Episodios</translation>
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Upload Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>XML data upload failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue saving feed parameters anyway?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

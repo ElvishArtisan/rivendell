@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>AddRecording</name>
     <message>
@@ -134,6 +132,13 @@
     </message>
 </context>
 <context>
+    <name>DowSelector</name>
+    <message>
+        <source>Active Days</source>
+        <translation type="unfinished">Dias Ativos</translation>
+    </message>
+</context>
+<context>
     <name>EditCartEvent</name>
     <message>
         <source>Edit Cart Event</source>
@@ -141,15 +146,15 @@
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Evento Ativo</translation>
+        <translation type="obsolete">Evento Ativo</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Local:</translation>
+        <translation type="obsolete">Local:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Início:</translation>
+        <translation type="obsolete">Início:</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -165,35 +170,35 @@
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Dias Ativos</translation>
+        <translation type="obsolete">Dias Ativos</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Segunda-Feira</translation>
+        <translation type="obsolete">Segunda-Feira</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Terça-Feira</translation>
+        <translation type="obsolete">Terça-Feira</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Quarta-Feira</translation>
+        <translation type="obsolete">Quarta-Feira</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Quinta-Feira</translation>
+        <translation type="obsolete">Quinta-Feira</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Sexta</translation>
+        <translation type="obsolete">Sexta</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Sábado</translation>
+        <translation type="obsolete">Sábado</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Domingo</translation>
+        <translation type="obsolete">Domingo</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -255,15 +260,15 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Evento Ativo</translation>
+        <translation type="obsolete">Evento Ativo</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Local:</translation>
+        <translation type="obsolete">Local:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Início:</translation>
+        <translation type="obsolete">Início:</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -311,35 +316,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Dias Ativos</translation>
+        <translation type="obsolete">Dias Ativos</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Segunda-Feira</translation>
+        <translation type="obsolete">Segunda-Feira</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Terça-Feira</translation>
+        <translation type="obsolete">Terça-Feira</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Quarta-Feira</translation>
+        <translation type="obsolete">Quarta-Feira</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Quinta-Feira</translation>
+        <translation type="obsolete">Quinta-Feira</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Sexta</translation>
+        <translation type="obsolete">Sexta</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Sábado</translation>
+        <translation type="obsolete">Sábado</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Domingo</translation>
+        <translation type="obsolete">Domingo</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -433,15 +438,15 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Evento Ativo</translation>
+        <translation type="obsolete">Evento Ativo</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Local:</translation>
+        <translation type="obsolete">Local:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Início:</translation>
+        <translation type="obsolete">Início:</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -457,35 +462,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Dias Ativos</translation>
+        <translation type="obsolete">Dias Ativos</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Segunda-Feira</translation>
+        <translation type="obsolete">Segunda-Feira</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Terça-Feira</translation>
+        <translation type="obsolete">Terça-Feira</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Quarta-Feira</translation>
+        <translation type="obsolete">Quarta-Feira</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Quinta-Feira</translation>
+        <translation type="obsolete">Quinta-Feira</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Sexta</translation>
+        <translation type="obsolete">Sexta</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Sábado</translation>
+        <translation type="obsolete">Sábado</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Domingo</translation>
+        <translation type="obsolete">Domingo</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -539,11 +544,11 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Evento Ativo</translation>
+        <translation type="obsolete">Evento Ativo</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Local:</translation>
+        <translation type="obsolete">Local:</translation>
     </message>
     <message>
         <source>Start Parameters</source>
@@ -643,35 +648,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Dias Ativos</translation>
+        <translation type="obsolete">Dias Ativos</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Segunda-Feira</translation>
+        <translation type="obsolete">Segunda-Feira</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Terça-Feira</translation>
+        <translation type="obsolete">Terça-Feira</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Quarta-Feira</translation>
+        <translation type="obsolete">Quarta-Feira</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Quinta-Feira</translation>
+        <translation type="obsolete">Quinta-Feira</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Sexta-Feira</translation>
+        <translation type="obsolete">Sexta-Feira</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Sábado</translation>
+        <translation type="obsolete">Sábado</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Domingo</translation>
+        <translation type="obsolete">Domingo</translation>
     </message>
     <message>
         <source>Start Date Offset:</source>
@@ -785,15 +790,15 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Evento Ativo</translation>
+        <translation type="obsolete">Evento Ativo</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Local:</translation>
+        <translation type="obsolete">Local:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Início:</translation>
+        <translation type="obsolete">Início:</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -813,35 +818,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Dias Ativos</translation>
+        <translation type="obsolete">Dias Ativos</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Segunda-Feira</translation>
+        <translation type="obsolete">Segunda-Feira</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Terça-Feira</translation>
+        <translation type="obsolete">Terça-Feira</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Quarta-Feira</translation>
+        <translation type="obsolete">Quarta-Feira</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Quinta-Feira</translation>
+        <translation type="obsolete">Quinta-Feira</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Sexta</translation>
+        <translation type="obsolete">Sexta</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Sábado</translation>
+        <translation type="obsolete">Sábado</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Domingo</translation>
+        <translation type="obsolete">Domingo</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -895,19 +900,19 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Evento Ativo</translation>
+        <translation type="obsolete">Evento Ativo</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Local:</translation>
+        <translation type="obsolete">Local:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Início:</translation>
+        <translation type="obsolete">Início:</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[nenhum]</translation>
+        <translation type="obsolete">[nenhum]</translation>
     </message>
     <message>
         <source>RSS Feed:</source>
@@ -959,35 +964,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Dias Ativos</translation>
+        <translation type="obsolete">Dias Ativos</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Segunda-Feira</translation>
+        <translation type="obsolete">Segunda-Feira</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Terça-Feira</translation>
+        <translation type="obsolete">Terça-Feira</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Quarta-Feira</translation>
+        <translation type="obsolete">Quarta-Feira</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Quinta-Feira</translation>
+        <translation type="obsolete">Quinta-Feira</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Sexta</translation>
+        <translation type="obsolete">Sexta</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Sábado</translation>
+        <translation type="obsolete">Sábado</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Domingo</translation>
+        <translation type="obsolete">Domingo</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -1086,6 +1091,25 @@ New</source>
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authenticate with local identity file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EventWidget</name>
+    <message>
+        <source>Event Active</source>
+        <translation type="unfinished">Evento Ativo</translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

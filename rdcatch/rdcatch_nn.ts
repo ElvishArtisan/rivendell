@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>AddRecording</name>
     <message>
@@ -134,6 +132,13 @@
     </message>
 </context>
 <context>
+    <name>DowSelector</name>
+    <message>
+        <source>Active Days</source>
+        <translation type="unfinished">Aktiv dagar</translation>
+    </message>
+</context>
+<context>
     <name>EditCartEvent</name>
     <message>
         <source>Edit Cart Event</source>
@@ -141,15 +146,15 @@
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Hendinga aktiv</translation>
+        <translation type="obsolete">Hendinga aktiv</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Plass:</translation>
+        <translation type="obsolete">Plass:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Starttid:</translation>
+        <translation type="obsolete">Starttid:</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -165,35 +170,35 @@
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Aktiv dagar</translation>
+        <translation type="obsolete">Aktiv dagar</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Måndag</translation>
+        <translation type="obsolete">Måndag</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Tysdag</translation>
+        <translation type="obsolete">Tysdag</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Onsdag</translation>
+        <translation type="obsolete">Onsdag</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Torsdag</translation>
+        <translation type="obsolete">Torsdag</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Fredag</translation>
+        <translation type="obsolete">Fredag</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Laurdag</translation>
+        <translation type="obsolete">Laurdag</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Sundag</translation>
+        <translation type="obsolete">Sundag</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -254,15 +259,15 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Hendinga aktiv</translation>
+        <translation type="obsolete">Hendinga aktiv</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Plass:</translation>
+        <translation type="obsolete">Plass:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Starttid:</translation>
+        <translation type="obsolete">Starttid:</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -310,35 +315,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Aktiv dagar</translation>
+        <translation type="obsolete">Aktiv dagar</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Måndag</translation>
+        <translation type="obsolete">Måndag</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Tysdag</translation>
+        <translation type="obsolete">Tysdag</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Onsdag</translation>
+        <translation type="obsolete">Onsdag</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Torsdag</translation>
+        <translation type="obsolete">Torsdag</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Fredag</translation>
+        <translation type="obsolete">Fredag</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Laurdag</translation>
+        <translation type="obsolete">Laurdag</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Sundag</translation>
+        <translation type="obsolete">Sundag</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -431,15 +436,15 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Hendinga aktiv</translation>
+        <translation type="obsolete">Hendinga aktiv</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Plass:</translation>
+        <translation type="obsolete">Plass:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Starttid:</translation>
+        <translation type="obsolete">Starttid:</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -455,35 +460,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Aktiv dagar</translation>
+        <translation type="obsolete">Aktiv dagar</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Måndag</translation>
+        <translation type="obsolete">Måndag</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Tysdag</translation>
+        <translation type="obsolete">Tysdag</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Onsdag</translation>
+        <translation type="obsolete">Onsdag</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Torsdag</translation>
+        <translation type="obsolete">Torsdag</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Fredag</translation>
+        <translation type="obsolete">Fredag</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Laurdag</translation>
+        <translation type="obsolete">Laurdag</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Sundag</translation>
+        <translation type="obsolete">Sundag</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -536,11 +541,11 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Hendinga aktiv</translation>
+        <translation type="obsolete">Hendinga aktiv</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Plass:</translation>
+        <translation type="obsolete">Plass:</translation>
     </message>
     <message>
         <source>Start Parameters</source>
@@ -640,35 +645,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Aktiv dagar</translation>
+        <translation type="obsolete">Aktiv dagar</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Måndag</translation>
+        <translation type="obsolete">Måndag</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Tysdag</translation>
+        <translation type="obsolete">Tysdag</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Onsdag</translation>
+        <translation type="obsolete">Onsdag</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Torsdag</translation>
+        <translation type="obsolete">Torsdag</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Fredag</translation>
+        <translation type="obsolete">Fredag</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Laurdag</translation>
+        <translation type="obsolete">Laurdag</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Sundag</translation>
+        <translation type="obsolete">Sundag</translation>
     </message>
     <message>
         <source>Start Date Offset:</source>
@@ -782,15 +787,15 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Hendinga aktiv</translation>
+        <translation type="obsolete">Hendinga aktiv</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Plass:</translation>
+        <translation type="obsolete">Plass:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Starttid:</translation>
+        <translation type="obsolete">Starttid:</translation>
     </message>
     <message>
         <source>Description:</source>
@@ -810,35 +815,31 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Aktiv dagar</translation>
+        <translation type="obsolete">Aktiv dagar</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Måndag</translation>
-    </message>
-    <message>
-        <source>Tuesday</source>
-        <translation></translation>
+        <translation type="obsolete">Måndag</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Onsdag</translation>
+        <translation type="obsolete">Onsdag</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Torsdag</translation>
+        <translation type="obsolete">Torsdag</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Fredag</translation>
+        <translation type="obsolete">Fredag</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Laurdag</translation>
+        <translation type="obsolete">Laurdag</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Sundag</translation>
+        <translation type="obsolete">Sundag</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -892,19 +893,19 @@ New</source>
     </message>
     <message>
         <source>Event Active</source>
-        <translation>Hendinga aktiv</translation>
+        <translation type="obsolete">Hendinga aktiv</translation>
     </message>
     <message>
         <source>Location:</source>
-        <translation>Plass:</translation>
+        <translation type="obsolete">Plass:</translation>
     </message>
     <message>
         <source>Start Time:</source>
-        <translation>Starttid:</translation>
+        <translation type="obsolete">Starttid:</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ingen]</translation>
+        <translation type="obsolete">[ingen]</translation>
     </message>
     <message>
         <source>RSS Feed:</source>
@@ -956,35 +957,35 @@ New</source>
     </message>
     <message>
         <source>Active Days</source>
-        <translation>Aktiv dagar</translation>
+        <translation type="obsolete">Aktiv dagar</translation>
     </message>
     <message>
         <source>Monday</source>
-        <translation>Måndag</translation>
+        <translation type="obsolete">Måndag</translation>
     </message>
     <message>
         <source>Tuesday</source>
-        <translation>Tysdag</translation>
+        <translation type="obsolete">Tysdag</translation>
     </message>
     <message>
         <source>Wednesday</source>
-        <translation>Onsdag</translation>
+        <translation type="obsolete">Onsdag</translation>
     </message>
     <message>
         <source>Thursday</source>
-        <translation>Torsdag</translation>
+        <translation type="obsolete">Torsdag</translation>
     </message>
     <message>
         <source>Friday</source>
-        <translation>Fredag</translation>
+        <translation type="obsolete">Fredag</translation>
     </message>
     <message>
         <source>Saturday</source>
-        <translation>Laurdag</translation>
+        <translation type="obsolete">Laurdag</translation>
     </message>
     <message>
         <source>Sunday</source>
-        <translation>Sundag</translation>
+        <translation type="obsolete">Sundag</translation>
     </message>
     <message>
         <source>Make OneShot</source>
@@ -1083,6 +1084,25 @@ New</source>
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authenticate with local identity file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EventWidget</name>
+    <message>
+        <source>Event Active</source>
+        <translation type="unfinished">Hendinga aktiv</translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

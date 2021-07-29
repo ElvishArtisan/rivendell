@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>@default</name>
     <message>
@@ -551,7 +549,7 @@ worden. Aktuelle Version</translation>
     </message>
     <message>
         <source>Empty Host Config</source>
-        <translation type="vanished">Host Konfiguration leeren</translation>
+        <translation type="obsolete">Host Konfiguration leeren</translation>
     </message>
     <message>
         <source>Invalid Name</source>
@@ -692,7 +690,7 @@ worden. Aktuelle Version</translation>
     <name>EditAudioPorts</name>
     <message>
         <source>Edit Audio Ports</source>
-        <translation type="obsolete">Audioports editieren</translation>
+        <translation type="unfinished">Audioports editieren</translation>
     </message>
     <message>
         <source>Clock Source:</source>
@@ -787,16 +785,24 @@ worden. Aktuelle Version</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Edit AudioScience Audio Ports</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Card Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished">[keine]</translation>
     </message>
 </context>
 <context>
@@ -3144,43 +3150,43 @@ eingeben um die Audioressourcendatenbank zu füllen.</translation>
     </message>
     <message>
         <source>32 kbps/chan</source>
-        <translation>32 kbps/Kanal</translation>
+        <translation type="obsolete">32 kbps/Kanal</translation>
     </message>
     <message>
         <source>48 kbps/chan</source>
-        <translation>48 kbps/Kanals</translation>
+        <translation type="obsolete">48 kbps/Kanals</translation>
     </message>
     <message>
         <source>56 kbps/chan</source>
-        <translation>56 knps/Kanal</translation>
+        <translation type="obsolete">56 knps/Kanal</translation>
     </message>
     <message>
         <source>64 kbps/chan</source>
-        <translation>64 kbps/Kanal</translation>
+        <translation type="obsolete">64 kbps/Kanal</translation>
     </message>
     <message>
         <source>80 kbps/chan</source>
-        <translation>80 kbps/Kanal</translation>
+        <translation type="obsolete">80 kbps/Kanal</translation>
     </message>
     <message>
         <source>96 kbps/chan</source>
-        <translation>96 kbps/Kanal</translation>
+        <translation type="obsolete">96 kbps/Kanal</translation>
     </message>
     <message>
         <source>112 kbps/chan</source>
-        <translation>112 kbps/Kanal</translation>
+        <translation type="obsolete">112 kbps/Kanal</translation>
     </message>
     <message>
         <source>128 kbps/chan</source>
-        <translation>128 kbps/Kanal</translation>
+        <translation type="obsolete">128 kbps/Kanal</translation>
     </message>
     <message>
         <source>160 kbps/chan</source>
-        <translation>160 kbps/Kanal</translation>
+        <translation type="obsolete">160 kbps/Kanal</translation>
     </message>
     <message>
         <source>192 kbps/chan</source>
-        <translation>192 kbps/Kanal</translation>
+        <translation type="obsolete">192 kbps/Kanal</translation>
     </message>
     <message>
         <source>40 kbps/chan</source>
@@ -4032,7 +4038,7 @@ Ressourcen</translation>
     <message>
         <source>Audio
 Ports</source>
-        <translation type="obsolete">Audio
+        <translation type="unfinished">Audio
 Ports</translation>
     </message>
     <message>
@@ -4157,11 +4163,6 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Short Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ASI Audio
-Ports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

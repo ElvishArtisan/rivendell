@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>AddMeta</name>
     <message>
@@ -1165,35 +1163,35 @@ Tracker</source>
     </message>
     <message>
         <source>Edit Cue Markers</source>
-        <translation type="unfinished">Editar marcadores</translation>
+        <translation type="obsolete">Editar marcadores</translation>
     </message>
     <message>
         <source>Undo Segue Changes</source>
-        <translation type="unfinished">Deshacer cambios en Segue</translation>
+        <translation type="obsolete">Deshacer cambios en Segue</translation>
     </message>
     <message>
         <source>Set Start Point Here</source>
-        <translation type="unfinished">Colocar punto de inicio aquí</translation>
+        <translation type="obsolete">Colocar punto de inicio aquí</translation>
     </message>
     <message>
         <source>Set End Point Here</source>
-        <translation type="unfinished">Colocar punto de fin aquí</translation>
+        <translation type="obsolete">Colocar punto de fin aquí</translation>
     </message>
     <message>
         <source>Set to Hook Markers</source>
-        <translation type="unfinished">Colocar en los marcadores &quot;Hook&quot;</translation>
+        <translation type="obsolete">Colocar en los marcadores &quot;Hook&quot;</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation>Inicio</translation>
+        <translation type="obsolete">Inicio</translation>
     </message>
     <message>
         <source>Record</source>
-        <translation>Grabar</translation>
+        <translation type="obsolete">Grabar</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation>Guardar</translation>
+        <translation type="obsolete">Guardar</translation>
     </message>
     <message>
         <source>&amp;Previous
@@ -1209,15 +1207,15 @@ Track</source>
     </message>
     <message>
         <source>Remaining</source>
-        <translation>Restan</translation>
+        <translation type="obsolete">Restan</translation>
     </message>
     <message>
         <source>Tracks</source>
-        <translation>Pistas</translation>
+        <translation type="obsolete">Pistas</translation>
     </message>
     <message>
         <source>Time</source>
-        <translation>Tiempo</translation>
+        <translation type="obsolete">Tiempo</translation>
     </message>
     <message>
         <source> </source>
@@ -1253,23 +1251,19 @@ Track</source>
     </message>
     <message>
         <source>Do Over</source>
-        <translation>Sobre-
+        <translation type="obsolete">Sobre-
 escribir</translation>
-    </message>
-    <message>
-        <source>Hit Post</source>
-        <translation></translation>
     </message>
     <message>
         <source>Insert
 Track</source>
-        <translation>Insertar
+        <translation type="obsolete">Insertar
 Pista</translation>
     </message>
     <message>
         <source>Delete
 Track</source>
-        <translation>Borrar
+        <translation type="obsolete">Borrar
 Pista</translation>
     </message>
     <message>
@@ -1278,33 +1272,33 @@ Pista</translation>
     </message>
     <message>
         <source>No VoiceTrack Group</source>
-        <translation>No hay grupos para las pistas de voz</translation>
+        <translation type="obsolete">No hay grupos para las pistas de voz</translation>
     </message>
     <message>
         <source>No voicetracking group has been defined for this service,
 therefore only existing transitions will be editable.</source>
-        <translation>No se ha definido un grupo para las pistas de voz, por ende
+        <translation type="obsolete">No se ha definido un grupo para las pistas de voz, por ende
 sólo podrás editar transiciones ya existentes.</translation>
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished">Importar</translation>
+        <translation type="obsolete">Importar</translation>
     </message>
     <message>
         <source>Cart Creation Failure</source>
-        <translation type="unfinished">Falló la creación de cartuchos</translation>
+        <translation type="obsolete">Falló la creación de cartuchos</translation>
     </message>
     <message>
         <source>Unable to create new cart for voice track!</source>
-        <translation type="unfinished">¡No fue posible crear un nuevo cartucho para la pista de voz!</translation>
+        <translation type="obsolete">¡No fue posible crear un nuevo cartucho para la pista de voz!</translation>
     </message>
     <message>
         <source>RDLogEdit</source>
-        <translation type="unfinished">RDLogEdit</translation>
+        <translation type="obsolete">RDLogEdit</translation>
     </message>
     <message>
         <source>Audio Deletion Error!</source>
-        <translation type="unfinished">¡Error eliminando audio!</translation>
+        <translation type="obsolete">¡Error eliminando audio!</translation>
     </message>
     <message>
         <source>TRACK</source>
@@ -1312,15 +1306,15 @@ sólo podrás editar transiciones ya existentes.</translation>
     </message>
     <message>
         <source>Voice Track</source>
-        <translation type="unfinished">Pista de voz</translation>
+        <translation type="obsolete">Pista de voz</translation>
     </message>
     <message>
         <source>Track List</source>
-        <translation type="unfinished">Listado de pistas</translation>
+        <translation type="obsolete">Listado de pistas</translation>
     </message>
     <message>
         <source>No more tracks!</source>
-        <translation type="unfinished">¡No hay más pistas!</translation>
+        <translation type="obsolete">¡No hay más pistas!</translation>
     </message>
     <message>
         <source>[end of log]</source>
@@ -1364,39 +1358,19 @@ sólo podrás editar transiciones ya existentes.</translation>
     </message>
     <message>
         <source>Abort</source>
-        <translation type="unfinished">Abortar</translation>
+        <translation type="obsolete">Abortar</translation>
     </message>
     <message>
         <source>Segue Changed</source>
-        <translation>Segue modificado</translation>
+        <translation type="obsolete">Segue modificado</translation>
     </message>
     <message>
         <source>Save segue changes?</source>
-        <translation>¿Guardar cambios en Segue?</translation>
-    </message>
-    <message>
-        <source>RDLogEdit - Voice Tracker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This cart cannot contain any additional cuts!</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">¿Guardar cambios en Segue?</translation>
     </message>
     <message>
         <source>LABEL</source>
         <translation type="obsolete">ETIQUETA</translation>
-    </message>
-    <message>
-        <source>Log Locked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log already being edited by</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Talk</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cart</source>
@@ -1413,16 +1387,6 @@ sólo podrás editar transiciones ya existentes.</translation>
     <message>
         <source>Label</source>
         <translation type="obsolete">Etiqueta</translation>
-    </message>
-    <message>
-        <source>Previous
-Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Next
-Track</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>

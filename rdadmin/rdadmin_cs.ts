@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1">
+<!DOCTYPE TS><TS>
 <context>
     <name>@default</name>
     <message>
@@ -633,7 +631,7 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Empty Host Config</source>
-        <translation type="vanished">Vyprázdnit nastavení serveru</translation>
+        <translation type="obsolete">Vyprázdnit nastavení serveru</translation>
     </message>
     <message>
         <source>Invalid Name</source>
@@ -774,7 +772,7 @@ a záloha původní databáze uložena v </translation>
     <name>EditAudioPorts</name>
     <message>
         <source>Edit Audio Ports</source>
-        <translation type="obsolete">Upravit přípojky zvuku</translation>
+        <translation type="unfinished">Upravit přípojky zvuku</translation>
     </message>
     <message>
         <source>Clock Source:</source>
@@ -869,16 +867,24 @@ a záloha původní databáze uložena v </translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Edit AudioScience Audio Ports</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Card Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished">[žádný]</translation>
     </message>
 </context>
 <context>
@@ -3395,43 +3401,43 @@ eingeben um die Audioressourcendatenbank zu füllen.</translation>
     </message>
     <message>
         <source>32 kbps/chan</source>
-        <translation>32 kB/s/kanál</translation>
+        <translation type="obsolete">32 kB/s/kanál</translation>
     </message>
     <message>
         <source>48 kbps/chan</source>
-        <translation>48 kB/s/kanál</translation>
+        <translation type="obsolete">48 kB/s/kanál</translation>
     </message>
     <message>
         <source>56 kbps/chan</source>
-        <translation>56 kB/s/kanál</translation>
+        <translation type="obsolete">56 kB/s/kanál</translation>
     </message>
     <message>
         <source>64 kbps/chan</source>
-        <translation>64 kB/s/kanál</translation>
+        <translation type="obsolete">64 kB/s/kanál</translation>
     </message>
     <message>
         <source>80 kbps/chan</source>
-        <translation>80 kB/s/kanál</translation>
+        <translation type="obsolete">80 kB/s/kanál</translation>
     </message>
     <message>
         <source>96 kbps/chan</source>
-        <translation>96 kB/s/kanál</translation>
+        <translation type="obsolete">96 kB/s/kanál</translation>
     </message>
     <message>
         <source>112 kbps/chan</source>
-        <translation>112 kB/s/kanál</translation>
+        <translation type="obsolete">112 kB/s/kanál</translation>
     </message>
     <message>
         <source>128 kbps/chan</source>
-        <translation>128 kB/s/kanál</translation>
+        <translation type="obsolete">128 kB/s/kanál</translation>
     </message>
     <message>
         <source>160 kbps/chan</source>
-        <translation>160 kB/s/kanál</translation>
+        <translation type="obsolete">160 kB/s/kanál</translation>
     </message>
     <message>
         <source>192 kbps/chan</source>
-        <translation>192 kB/s/kanál</translation>
+        <translation type="obsolete">192 kB/s/kanál</translation>
     </message>
     <message>
         <source>40 kbps/chan</source>
@@ -4405,7 +4411,7 @@ zvuku</translation>
     <message>
         <source>Audio
 Ports</source>
-        <translation type="obsolete">Zvukové
+        <translation type="unfinished">Zvukové
 přípojky</translation>
     </message>
     <message>
@@ -4533,11 +4539,6 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Short Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ASI Audio
-Ports</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
