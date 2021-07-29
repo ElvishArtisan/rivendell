@@ -22123,3 +22123,6 @@
 	* Fixed a bug in rdimport(1) that caused the cart title
 	uniqueness check to be applied to the incorrect string when
 	the '--set-string-title=' switch was used.
+2021-07-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in rdimport(1) and the WebGet service
+	that threw 500 errors when connecting to WebGet.

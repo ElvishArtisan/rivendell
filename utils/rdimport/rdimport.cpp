@@ -2340,7 +2340,8 @@ void MainObject::ErrorExit(RDApplication::ExitCode code) const
 
 int main(int argc,char *argv[])
 {
-  QCoreApplication a(argc,argv,false);
+  QCoreApplication::setSetuidAllowed(true);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

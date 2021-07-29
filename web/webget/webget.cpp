@@ -66,12 +66,14 @@ MainObject::MainObject(QObject *parent)
   //
   // Drop root permissions
   //
+  /*
   if(setgid(rda->config()->gid())<0) {
     TextExit("Unable to set Rivendell group",500,LINE_NUMBER);
   }
   if(setuid(rda->config()->uid())<0) {
     TextExit("Unable to set Rivendell user",500,LINE_NUMBER);
   }
+  */
   if(getuid()==0) {
     TextExit("Rivendell user should never be \"root\"!",500,LINE_NUMBER);
   }
@@ -643,7 +645,7 @@ void MainObject::ServeForm()
       QString().sprintf("`GROUPS`.`DEFAULT_CART_TYPE`=%u && ",RDCart::Audio)+
       "`GROUPS`.`DEFAULT_LOW_CART`>0 && "+
       "`GROUPS`.`DEFAULT_HIGH_CART`>0 "+
-      "order by `GROUPS.NAME`";
+      "order by `GROUPS`.`NAME`";
     q=new RDSqlQuery(sql);
     while(q->next()) {
       printf("          <option value=\"%s\">%s</option>\n",
@@ -773,6 +775,7 @@ void MainObject::Exit(int code)
   if(webget_post!=NULL) {
     delete webget_post;
   }
+  rda->syslog(LOG_NOTICE,"EXIT 1");
   exit(code);
 }
 
@@ -791,13 +794,15 @@ void MainObject::TextExit(const QString &msg,int code,int srcline) const
   printf("\n");
   printf("[Line: %d]\n",srcline);
 #endif  // RDXPORT_DEBUG
+  rda->syslog(LOG_NOTICE,"EXIT 2");
   exit(0);
 }
 
 
 int main(int argc,char *argv[])
 {
-  QCoreApplication a(argc,argv,false);
+  QCoreApplication::setSetuidAllowed(true);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }
