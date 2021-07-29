@@ -22117,3 +22117,5 @@
 2021-07-29 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected misaligned readout labels in the 'Edit Audio'
 	('RDMarkerDialog') dialog.
+2021-07-29 Fred Gleason <fredg@paravelsystems.com>
+	* Removed stale entries from 'lib/librd.pro'.
