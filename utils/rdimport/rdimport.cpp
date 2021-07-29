@@ -1097,6 +1097,19 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if(*cartnum!=0) {
     cart_exists=RDCart::exists(*cartnum);
   }
+  if(import_string_title.isEmpty()) {
+    //
+    // If the cart already exists and no title was found in metadata,
+    // then keep the existing title. Otherwise, generate a default title.
+    //
+    if((!cart_exists)&&wavedata->metadataFound()&&wavedata->title().isEmpty()) {
+      wavedata->setTitle(effective_group->generateTitle(filename));
+    }
+  } 
+  else {  // Use specified title
+    wavedata->setTitle(import_string_title);
+  }
+
   //
   // If the cart already exists and no title was found in metadata,
   // then keep the existing title. Otherwise, generate a default title.
@@ -1221,13 +1234,11 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   settings->setAutotrimLevel(import_autotrim_level/100);
   conv->setDestinationSettings(settings);
   conv->setUseMetadata(false);
-  if(import_string_title.isNull()) {
-    Log(LOG_INFO,QString().
-	sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
-		RDGetBasePart(filename).toUtf8().constData(),
-		wavedata->title().trimmed().toUtf8().constData(),
-		*cartnum));
-  }
+  Log(LOG_INFO,QString().
+      sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
+	      RDGetBasePart(filename).toUtf8().constData(),
+	      wavedata->title().trimmed().toUtf8().constData(),
+	      *cartnum));
   switch(conv_err=conv->runImport(rda->user()->name(),rda->user()->password(),
 				  &audio_conv_err)) {
   case RDAudioImport::ErrorOk:
@@ -1355,9 +1366,6 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   }
   if(!import_string_song_id.isNull()) {
     cart->setSongId(import_string_song_id);
-  }
-  if(!import_string_title.isNull()) {
-    cart->setTitle(import_string_title);
   }
   if(!import_set_user_defined.isEmpty()) {
     cart->setUserDefined(import_set_user_defined);
