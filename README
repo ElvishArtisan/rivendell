@@ -3,6 +3,13 @@ This is the README file for the Rivendell package.
 This software comes with ABSOLUTELY NO WARRANTY. See the file COPYING for
 details.
 
+This is a special version of Rivendell, one that cosnsists of v3.x code
+with schema support for v4.x. It is intended for use in situations where
+it is desired to test v4.x instances as part of a larger v3.x system.
+
+UNLESS YOU UNDERSTAND EXACTLY WHAT YOU DOING, YOU DO NOT WANT TO USE
+THIS VERSION!
+
 Welcome to this release of the Rivendell Project. Rivendell aims
 to be a robust, functionally complete digital audio system for use in 
 professional radio broadcast environments.
