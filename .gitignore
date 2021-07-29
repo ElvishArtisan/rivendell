@@ -69,6 +69,7 @@ docs/rivwebcapi/*.html
 docs/rivwebcapi/*.pdf
 helpers/cwrap
 helpers/docbook
+helpers/rdi18n_helper.sh
 helpers/install_python.sh
 helpers/jsmin
 importers/nexgen_filter
