@@ -40,6 +40,44 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
 
+
+  //
+  // Revert 350
+  //
+  if((cur_schema==350)&&(set_schema<cur_schema)) {
+    DropColumn("AUDIO_INPUTS","LABEL");
+    DropColumn("AUDIO_OUTPUTS","LABEL");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 349
+  //
+  if((cur_schema==349)&&(set_schema<cur_schema)) {
+    sql=QString("alter table `RDAIRPLAY` ")+
+      "modify column EXIT_PASSWORD varchar(41)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 348
+  //
+  if((cur_schema==348)&&(set_schema<cur_schema)) {
+    // Nothing to do!
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Above this point are 'proleptic' schema changes, inserted
+  // to allow compatibility with v4.x instances.
+  //
+
   //
   // Revert 347
   //

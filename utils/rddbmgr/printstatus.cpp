@@ -44,7 +44,7 @@ bool MainObject::PrintStatus(QString *err_msg) const
     return true;
   }
 
-  printf("Rivendell database, schema %d [%s]\n",schema,
+  printf("Rivendell database, schema %d [%s] (WARNING, CUSTOMIZED!)\n",schema,
 	 (const char *)GetSchemaVersion(schema));
 
   *err_msg="ok";

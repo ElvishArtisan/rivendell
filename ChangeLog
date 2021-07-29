@@ -20781,3 +20781,13 @@
 	the '--set-string-title=' switch was used.
 2021-07-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'special use' warning to 'README'.
+2021-07-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a pseudo-schema change to force checking of schedule code
+	rules (commented out).
+	* Incremented the database version to 348.
+	* Changed the 'RDAIRPLAY_EXIT_PASSWORD' field from 'varchar(41)'
+	to 'varchar(48)'.
+	* Incremented the database version to 349.
+	* Added an 'AUDIO_INPUTS.LABEL' field to the database.
+	* Added an 'AUDIO_OUTPUTS.LABEL' field to the database.
+	* Incremented the database version to 350.
