@@ -22114,3 +22114,6 @@
 	select any sample rate other than 32000.
 2021-07-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--enable-i18n-updates' switch to '.configure'.
+2021-07-29 Fred Gleason <fredg@paravelsystems.com>
+	* Corrected misaligned readout labels in the 'Edit Audio'
+	('RDMarkerDialog') dialog.

@@ -590,30 +590,33 @@ void RDMarkerPlayer::trimThresholdChanged(int dbfs)
 
 void RDMarkerPlayer::resizeEvent(QResizeEvent *)
 {
-  for(int i=0;i<RDMARKERPLAYER_READOUT_QUAN;i++) {
-    d_readout_labels[i]->setGeometry(2,
-				     i*(d_cut_readout->sizeHint().height()/4-1),
-				     15+50,
-				     d_cut_readout->sizeHint().height()/4+1);
+  for(int i=0;i<4;i++) {
+    d_readout_labels[i]->
+      setGeometry(2,12+i*(d_cut_readout->sizeHint().height()/4),
+		  65,d_cut_readout->sizeHint().height()/4+1);
+  }
+  for(int i=4;i<RDMARKERPLAYER_READOUT_QUAN;i++) {
+    d_readout_labels[i]->
+      setGeometry(2,14+i*(d_cut_readout->sizeHint().height()/4),
+		  65,d_cut_readout->sizeHint().height()/4+1);
   }
 
-  d_cut_readout->setGeometry(70,
-			     2+8,
-			     d_cut_readout->sizeHint().width(),
-			     d_cut_readout->sizeHint().height());
+  d_cut_readout->
+    setGeometry(70,10,d_cut_readout->sizeHint().width(),
+		d_cut_readout->sizeHint().height());
 
-  d_talk_readout->setGeometry(70+1*(d_talk_readout->sizeHint().width()),
-			      2+8,
+  d_talk_readout->setGeometry(70+d_talk_readout->sizeHint().width(),
+			      10,
 			      d_talk_readout->sizeHint().width(),
 			      d_talk_readout->sizeHint().height());
 
   d_segue_readout->setGeometry(70+2*(d_segue_readout->sizeHint().width()),
-			       2+8,
+			       10,
 			       d_segue_readout->sizeHint().width(),
 			       d_segue_readout->sizeHint().height());
 
   d_hook_readout->setGeometry(70+3*(d_hook_readout->sizeHint().width()),
-			      2+8,
+			      10,
 			      d_hook_readout->sizeHint().width(),
 			      d_hook_readout->sizeHint().height());
 
