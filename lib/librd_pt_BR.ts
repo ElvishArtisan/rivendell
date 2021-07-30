@@ -1222,6 +1222,10 @@ Cor</translation>
         <source>Port:</source>
         <translation>Porta:</translation>
     </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDCart</name>

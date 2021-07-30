@@ -70,7 +70,8 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   label->setFont(labelFont());
   label->setGeometry(20,32,300,16);
   air_card_sel[0]=new RDCardSelector(this);
-  air_card_sel[0]->setGeometry(15,50,120,117);
+  air_card_sel[0]->setGeometry(15,50,air_card_sel[0]->sizeHint().width(),
+			       air_card_sel[0]->sizeHint().height());
   air_start_rml_edit[0]=new QLineEdit(this);
   air_start_rml_edit[0]->setGeometry(205,50,160,19);
   air_start_rml_edit[0]->setValidator(validator);
@@ -93,7 +94,8 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   label->setFont(labelFont());
   label->setGeometry(20,100,300,16);
   air_card_sel[1]=new RDCardSelector(this);
-  air_card_sel[1]->setGeometry(15,118,120,117);
+  air_card_sel[1]->setGeometry(15,118,air_card_sel[1]->sizeHint().width(),
+			       air_card_sel[1]->sizeHint().height());
   air_start_rml_edit[1]=new QLineEdit(this);
   air_start_rml_edit[1]->setGeometry(205,118,160,19);
   air_start_rml_edit[1]->setValidator(validator);
@@ -116,7 +118,8 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   label->setFont(labelFont());
   label->setGeometry(20,168,300,16);
   air_card_sel[2]=new RDCardSelector(this);
-  air_card_sel[2]->setGeometry(15,186,120,117);
+  air_card_sel[2]->setGeometry(15,186,air_card_sel[2]->sizeHint().width(),
+			       air_card_sel[2]->sizeHint().height());
   air_start_rml_edit[2]=new QLineEdit(this);
   air_start_rml_edit[2]->setGeometry(205,186,160,19);
   air_start_rml_edit[2]->setValidator(validator);
@@ -139,7 +142,8 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   label->setFont(labelFont());
   label->setGeometry(20,236,300,16);
   air_card_sel[3]=new RDCardSelector(this);
-  air_card_sel[3]->setGeometry(15,254,120,117);
+  air_card_sel[3]->setGeometry(15,254,air_card_sel[3]->sizeHint().width(),
+			       air_card_sel[3]->sizeHint().height());
   air_start_rml_edit[3]=new QLineEdit(this);
   air_start_rml_edit[3]->setGeometry(205,254,160,19);
   air_start_rml_edit[3]->setValidator(validator);
@@ -162,7 +166,8 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   label->setFont(labelFont());
   label->setGeometry(20,304,300,16);
   air_card_sel[4]=new RDCardSelector(this);
-  air_card_sel[4]->setGeometry(15,322,120,117);
+  air_card_sel[4]->setGeometry(15,322,air_card_sel[4]->sizeHint().width(),
+			       air_card_sel[4]->sizeHint().height());
   air_start_rml_edit[4]=new QLineEdit(this);
   air_start_rml_edit[4]->setGeometry(205,322,160,19);
   air_start_rml_edit[4]->setValidator(validator);
@@ -185,7 +190,8 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   label->setFont(labelFont());
   label->setGeometry(20,372,300,16);
   air_card_sel[5]=new RDCardSelector(this);
-  air_card_sel[5]->setGeometry(15,390,120,117);
+  air_card_sel[5]->setGeometry(15,390,air_card_sel[5]->sizeHint().width(),
+			       air_card_sel[5]->sizeHint().height());
   air_start_rml_edit[5]=new QLineEdit(this);
   air_start_rml_edit[5]->setGeometry(205,390,160,19);
   air_start_rml_edit[5]->setValidator(validator);

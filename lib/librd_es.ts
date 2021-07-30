@@ -1214,6 +1214,10 @@ Color</translation>
         <source>Port:</source>
         <translation>Puerto:</translation>
     </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDCart</name>

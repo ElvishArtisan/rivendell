@@ -76,7 +76,9 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   // Card Selector
   //
   edit_record_selector=new RDCardSelector(this);
-  edit_record_selector->setGeometry(67,68,120,65);
+  edit_record_selector->
+    setGeometry(67,68,edit_record_selector->sizeHint().width(),
+		edit_record_selector->sizeHint().height());
   connect(edit_record_selector,SIGNAL(cardChanged(int)),
 	  this,SLOT(recordCardChangedData(int)));
 
@@ -84,7 +86,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   // Monitor Port Selector
   //
   edit_monitor_box=new QSpinBox(this);
-  edit_monitor_box->setGeometry(127,112,50,19);
+  edit_monitor_box->setGeometry(125,112,55,19);
   edit_monitor_box->setRange(-1,RD_MAX_PORTS-1);
   edit_monitor_box->setSpecialValueText(tr("None"));
   connect(edit_monitor_box,SIGNAL(valueChanged(int)),
@@ -95,12 +97,12 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_monitor_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_default_on_box=new QComboBox(this);
-  edit_default_on_box->setGeometry(305,112,60,19);
+  edit_default_on_box->setGeometry(315,112,50,19);
   edit_default_on_box->insertItem(0,tr("Off"));
   edit_default_on_box->insertItem(1,tr("On"));
   edit_default_on_label=new QLabel(tr("Monitor defaults to"),this);
   edit_default_on_label->setFont(labelFont());
-  edit_default_on_label->setGeometry(195,112,105,19);
+  edit_default_on_label->setGeometry(185,112,125,19);
   edit_default_on_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -244,7 +246,9 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   // Play Deck Card Selector
   //
   edit_play_selector=new RDCardSelector(this);
-  edit_play_selector->setGeometry(392,37,120,10);
+  edit_play_selector->
+    setGeometry(392,37,edit_play_selector->sizeHint().width(),
+		edit_play_selector->sizeHint().height());
   connect(edit_play_selector,SIGNAL(settingsChanged(int,int,int)),
 	  this,SLOT(playSettingsChangedData(int,int,int)));
 

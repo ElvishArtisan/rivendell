@@ -22126,3 +22126,5 @@
 2021-07-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in rdimport(1) and the WebGet service
 	that threw 500 errors when connecting to WebGet.
+2021-07-30 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the layout code of the 'RDCardSelector' widget.

@@ -84,7 +84,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setGeometry(25,32,200,16);
   air_card_sel[0]=new RDCardSelector(this);
   air_card_sel[0]->setId(0);
-  air_card_sel[0]->setGeometry(20,50,120,117);
+  air_card_sel[0]->setGeometry(20,50,air_card_sel[0]->sizeHint().width(),
+			       air_card_sel[0]->sizeHint().height());
   air_start_rml_edit[0]=new QLineEdit(this);
   air_start_rml_edit[0]->setGeometry(210,50,95,19);
   air_start_rml_edit[0]->setValidator(validator);
@@ -116,7 +117,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setGeometry(25,100,200,16);
   air_card_sel[1]=new RDCardSelector(this);
   air_card_sel[1]->setId(1);
-  air_card_sel[1]->setGeometry(20,118,120,117);
+  air_card_sel[1]->setGeometry(20,118,air_card_sel[1]->sizeHint().width(),
+			       air_card_sel[1]->sizeHint().height());
   air_start_rml_edit[1]=new QLineEdit(this);
   air_start_rml_edit[1]->setGeometry(210,118,95,19);
   air_start_rml_edit[1]->setValidator(validator);
@@ -149,7 +151,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setGeometry(25,168,200,16);
   air_card_sel[4]=new RDCardSelector(this);
   air_card_sel[4]->setId(4);
-  air_card_sel[4]->setGeometry(20,186,120,117);
+  air_card_sel[4]->setGeometry(20,186,air_card_sel[4]->sizeHint().width(),
+			       air_card_sel[4]->sizeHint().height());
   air_start_rml_edit[4]=new QLineEdit(this);
   air_start_rml_edit[4]->setGeometry(210,186,95,19);
   air_start_rml_edit[4]->setValidator(validator);
@@ -182,7 +185,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setGeometry(25,236,200,16);
   air_card_sel[5]=new RDCardSelector(this);
   air_card_sel[5]->setId(5);
-  air_card_sel[5]->setGeometry(20,254,120,117);
+  air_card_sel[5]->setGeometry(20,254,air_card_sel[5]->sizeHint().width(),
+			       air_card_sel[5]->sizeHint().height());
   air_start_rml_edit[5]=new QLineEdit(this);
   air_start_rml_edit[5]->setGeometry(210,254,95,19);
   air_start_rml_edit[5]->setValidator(validator);
@@ -227,7 +231,9 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   label->setGeometry(165,309,100,20);
   air_virtual_card_sel=new RDCardSelector(this);
-  air_virtual_card_sel->setGeometry(20,332,120,117);
+  air_virtual_card_sel->
+    setGeometry(20,332,air_virtual_card_sel->sizeHint().width(),
+		air_virtual_card_sel->sizeHint().height());
   air_virtual_start_rml_edit=new QLineEdit(this);
   air_virtual_start_rml_edit->setGeometry(210,332,95,19);
   air_virtual_start_rml_edit->setValidator(validator);
@@ -249,7 +255,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   air_card_sel[3]=new RDCardSelector(this);
   air_card_sel[3]->setId(3);
-  air_card_sel[3]->setGeometry(20,322,120,117);
+  air_card_sel[3]->setGeometry(20,322,air_card_sel[3]->sizeHint().width(),
+			       air_card_sel[3]->sizeHint().height());
   air_start_rml_edit[3]=new QLineEdit(this);
   air_start_rml_edit[3]->setGeometry(210,322,160,19);
   air_start_rml_edit[3]->setValidator(validator);
@@ -294,7 +301,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setGeometry(395,32,300,16);
   air_card_sel[2]=new RDCardSelector(this);
   air_card_sel[2]->setId(2);
-  air_card_sel[2]->setGeometry(390,50,120,117);
+  air_card_sel[2]->setGeometry(390,50,air_card_sel[2]->sizeHint().width(),
+			       air_card_sel[2]->sizeHint().height());
   air_start_rml_edit[2]=new QLineEdit(this);
   air_start_rml_edit[2]->setGeometry(580,50,95,19);
   air_start_rml_edit[2]->setValidator(validator);
@@ -326,7 +334,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setGeometry(395,100,300,16);
   air_card_sel[6]=new RDCardSelector(this);
   air_card_sel[6]->setId(6);
-  air_card_sel[6]->setGeometry(390,118,120,117);
+  air_card_sel[6]->setGeometry(390,118,air_card_sel[6]->sizeHint().width(),
+			       air_card_sel[6]->sizeHint().height());
   air_start_rml_edit[6]=new QLineEdit(this);
   air_start_rml_edit[6]->setGeometry(580,118,95,19);
   air_start_rml_edit[6]->setValidator(validator);
@@ -358,7 +367,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setGeometry(395,168,300,16);
   air_card_sel[7]=new RDCardSelector(this);
   air_card_sel[7]->setId(7);
-  air_card_sel[7]->setGeometry(390,186,120,117);
+  air_card_sel[7]->setGeometry(390,186,air_card_sel[7]->sizeHint().width(),
+			       air_card_sel[7]->sizeHint().height());
   air_start_rml_edit[7]=new QLineEdit(this);
   air_start_rml_edit[7]->setGeometry(580,186,95,19);
   air_start_rml_edit[7]->setValidator(validator);
@@ -390,7 +400,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setGeometry(395,236,300,16);
   air_card_sel[8]=new RDCardSelector(this);
   air_card_sel[8]->setId(8);
-  air_card_sel[8]->setGeometry(390,254,120,117);
+  air_card_sel[8]->setGeometry(390,254,air_card_sel[8]->sizeHint().width(),
+			       air_card_sel[8]->sizeHint().height());
   air_start_rml_edit[8]=new QLineEdit(this);
   air_start_rml_edit[8]->setGeometry(580,254,95,19);
   air_start_rml_edit[8]->setValidator(validator);
@@ -422,7 +433,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setGeometry(395,304,300,16);
   air_card_sel[9]=new RDCardSelector(this);
   air_card_sel[9]->setId(9);
-  air_card_sel[9]->setGeometry(390,322,120,117);
+  air_card_sel[9]->setGeometry(390,322,air_card_sel[9]->sizeHint().width(),
+			       air_card_sel[9]->sizeHint().height());
   air_start_rml_edit[9]=new QLineEdit(this);
   air_start_rml_edit[9]->setGeometry(580,322,95,19);
   air_start_rml_edit[9]->setValidator(validator);
@@ -794,7 +806,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   QPushButton *button=new QPushButton(tr("Select"),this);
   button->setFont(subButtonFont());
-  button->setGeometry(745,400,50,25);
+  button->setGeometry(740,400,50,25);
   connect(button,SIGNAL(clicked()),this,SLOT(selectSkinData()));
 
   //
@@ -834,7 +846,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_description_template_edit->setGeometry(555,491,180,20);
   label=new QLabel(tr("Description Template:"),this);
   label->setFont(subLabelFont());
-  label->setGeometry(430,491,120,20);
+  label->setGeometry(425,491,125,20);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
