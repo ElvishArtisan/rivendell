@@ -22131,3 +22131,6 @@
 2021-07-31 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'helpers/rdi18n_helper.sh.in' that broke the
 	build on Ubuntu.
+2021-07-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'systemd/daemon-reload.sh' that broke the
+	'make deb' target.

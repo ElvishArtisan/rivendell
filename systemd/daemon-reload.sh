@@ -4,7 +4,7 @@
 #
 #  Do a daemon-reload for SystemD
 #
-# (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+# (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -21,5 +21,7 @@
 #
 
 if test $UID -eq 0 ; then
-    /bin/systemctl daemon-reload
+    if test -z $FAKEROOTKEY ; then
+	/bin/systemctl daemon-reload
+    fi
 fi
