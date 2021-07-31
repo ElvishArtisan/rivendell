@@ -22136,3 +22136,5 @@
 	'make deb' target.
 2021-07-31 Fred Gleason <fredg@paravelsystems.com>
 	* Added a warning to files derived by the build system.
+2021-07-31 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the package version to 4.0.0beta2.
