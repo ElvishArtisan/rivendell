@@ -1,3 +1,5 @@
+@GENERATED_XML_FILE_WARNING@
+
 <info xmlns="http://docbook.org/ns/docbook">
   <title>Rivendell Radio Automation System</title>
   <subtitle>Operations and Administration Guide</subtitle>
@@ -9,7 +11,7 @@
   <edition>
     @VERSION@
   </edition>
-  <copyright><year>2003-2020</year><holder>Fred Gleason</holder></copyright>
+  <copyright><year>2003-2021</year><holder>Fred Gleason</holder></copyright>
   <legalnotice>
     <para>
       Permission is granted to copy, distribute and/or modify this document

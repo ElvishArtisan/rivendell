@@ -1,5 +1,7 @@
 #!/bin/sh
 
+@GENERATED_SCRIPT_FILE_WARNING@
+
 # build_debs.sh
 #
 #  Build Debian packages.

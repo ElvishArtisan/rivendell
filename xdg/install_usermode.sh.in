@@ -1,5 +1,7 @@
 #!/bin/sh
 
+@GENERATED_SCRIPT_FILE_WARNING@
+
 # install_usermode.sh
 #
 #  Install support files for usermode wrapper

@@ -1,5 +1,7 @@
 // rdpaths.h
-//
+
+@GENERATED_C_FILE_WARNING@
+
 // Install-Dependent Path Values for Rivendell
 //
 //   (C) Copyright 2008-2021 Fred Gleason <fredg@paravelsystems.com>

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+@GENERATED_SCRIPT_FILE_WARNING@
+
 # rdi18n_helper.sh
 #
 # Helper script for managing internationalization files for Rivendell

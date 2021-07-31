@@ -33,12 +33,15 @@ dist_cwrap_SOURCES = cwrap.cpp cwrap.h
 
 dist_jsmin_SOURCES = jsmin.c
 
-EXTRA_DIST = rdi18n_helper.sh.in\
+EXTRA_DIST = c_file_warning\
              install_python.sh.in\
+             rdi18n_helper.sh.in\
              rdpack.sh\
              rdtrans.sh\
              rdtransgui.sh\
-             setenvvar.sh
+             script_file_warning\
+             setenvvar.sh\
+             xml_file_warning
 
 CLEANFILES = *~\
              *.tar.gz\
