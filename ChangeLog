@@ -22128,3 +22128,6 @@
 	that threw 500 errors when connecting to WebGet.
 2021-07-30 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the layout code of the 'RDCardSelector' widget.
+2021-07-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'helpers/rdi18n_helper.sh.in' that broke the
+	build on Ubuntu.
