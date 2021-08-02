@@ -20791,3 +20791,5 @@
 	* Added an 'AUDIO_INPUTS.LABEL' field to the database.
 	* Added an 'AUDIO_OUTPUTS.LABEL' field to the database.
 	* Incremented the database version to 350.
+2021-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.2compatv40.

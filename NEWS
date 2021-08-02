@@ -1,6 +1,37 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.6.2compatv40 -- 2 August 2021
+
+   v3.6.2 with support for schema 350.
+
+Database Update:
+   This version of Rivendell uses database schema version 350, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v3.6.2 --30 July 2021
+
+Changes:
+   RDImport. Fixed a bug that could generat an erroneous
+   'Title already exists' error.
+
+   RDLogEdit. Fixed a bug in the voice trcker that could cause a
+   segfault.
+
+   RDAirPlay. Tweaked support for dark themes.
+
+Database Update:
+   This version of Rivendell uses database schema version 347, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.6.1 -- 6 June 2021
 
 Changes:
