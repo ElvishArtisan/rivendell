@@ -119,6 +119,8 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     else {  // Load Log
       logname=rml->arg(1);
       if(!RDLog::exists(logname)) {
+	rda->syslog(LOG_WARNING,"unable to load log \"%s\", no such log",
+		    logname.toUtf8().constData());
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
 	  rda->ripc()->sendRml(rml);
