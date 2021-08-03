@@ -22147,3 +22147,5 @@
 2021-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Added an error message to syslog if the 'Load Log' ['LL'] RML
 	fails to find the specified log.
+2021-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added Raspian support to the 'AR_GET_DISTRO()' autoconf macro.

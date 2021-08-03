@@ -147,21 +147,49 @@ fi
 AR_GET_DISTRO()
 AC_SUBST(DISTRO,$ar_gcc_distro)
 AC_MSG_NOTICE($ar_distro_id)
-DISTRO_NAME="|                           Distribution Name ... Unknown |"
+DISTRO_NAME="|                         Distribution Name ... Unknown   |"
 case "$ar_distro_id" in
-     debian|ubuntu)
+     debian)
        AC_MSG_NOTICE([Distro is Debian-ish])
-       DISTRO_FAMILY="|                         Distribution Family ... Debian  |"
+       DISTRO_FAMILY="|                       Distribution Family ... Debian    |"
        DISTRO_IS_DEBIANISH=yes
-       if test $ar_distro_id = "debian" ; then
-         DISTRO_NAME="|                           Distribution Name ... Debian  |"
-       else
-         DISTRO_NAME="|                           Distribution Name ... Ubuntu  |"
-       fi
+       DISTRO_NAME="|                         Distribution Name ... Debian    |"
        AC_SUBST(APACHE_PKG,"apache2")
        AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
        AC_SUBST(USERMODE_PKG,"")
-       AC_SUBST(MYSQL_PKG,"mysql-server")
+       AC_SUBST(MYSQL_PKG,"mysql-client")
+       AC_SUBST(QT_MYSQL_PKG,"libqt5sql5-mysql")
+       AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
+       AC_SUBST(HAVE_USERMODE,"no")
+       AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-sudo.desktop")
+       AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig-sudo.desktop")
+     ;;
+
+     raspbian)
+       AC_MSG_NOTICE([Distro is Debian-ish])
+       DISTRO_FAMILY="|                      Distribution Family ... Debian    |"
+       DISTRO_IS_DEBIANISH=yes
+       DISTRO_NAME="|                        Distribution Name ... Raspbian  |"
+       AC_SUBST(APACHE_PKG,"apache2")
+       AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
+       AC_SUBST(USERMODE_PKG,"")
+       AC_SUBST(MYSQL_PKG,"mysql-client")
+       AC_SUBST(QT_MYSQL_PKG,"libqt5sql5-mysql")
+       AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
+       AC_SUBST(HAVE_USERMODE,"no")
+       AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-sudo.desktop")
+       AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig-sudo.desktop")
+     ;;
+
+     ubuntu)
+       AC_MSG_NOTICE([Distro is Debian-ish])
+       DISTRO_FAMILY="|                       Distribution Family ... Debian    |"
+       DISTRO_IS_DEBIANISH=yes
+       DISTRO_NAME="|                         Distribution Name ... Ubuntu    |"
+       AC_SUBST(APACHE_PKG,"apache2")
+       AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
+       AC_SUBST(USERMODE_PKG,"")
+       AC_SUBST(MYSQL_PKG,"mysql-client")
        AC_SUBST(QT_MYSQL_PKG,"libqt5sql5-mysql")
        AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
        AC_SUBST(HAVE_USERMODE,"no")
@@ -171,15 +199,15 @@ case "$ar_distro_id" in
 
      centos|rhel|fedora)
        AC_MSG_NOTICE([Distro is RedHat-ish])
-       DISTRO_FAMILY="|                         Distribution Family ... RedHat  |"
+       DISTRO_FAMILY="|                       Distribution Family ... RedHat    |"
        if test $ar_distro_id = "centos" ; then
-         DISTRO_NAME="|                           Distribution Name ... CentOS  |"
+         DISTRO_NAME="|                         Distribution Name ... CentOS    |"
        fi
        if test $ar_distro_id = "fedora" ; then
-         DISTRO_NAME="|                           Distribution Name ... Fedora  |"
+         DISTRO_NAME="|                         Distribution Name ... Fedora    |"
        fi
        if test $ar_distro_id = "rhel" ; then
-         DISTRO_NAME="|                           Distribution Name ... RHEL    |"
+         DISTRO_NAME="|                         Distribution Name ... RHEL      |"
        fi
        AC_SUBST(APACHE_PKG,"httpd")
        AC_SUBST(APACHE_CONFIG_DIR,"/etc/httpd/conf.d")
@@ -194,7 +222,7 @@ case "$ar_distro_id" in
 
      *)
        AC_MSG_NOTICE([Distro is unknown])
-       DISTRO_FAMILY="|                         Distribution Family ... Unknown |"
+       DISTRO_FAMILY="|                       Distribution Family ... Unknown   |"
        AC_SUBST(APACHE_PKG,"apache2")
        AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
        AC_SUBST(USERMODE_PKG,"")
@@ -682,58 +710,58 @@ AC_MSG_NOTICE("| Platform Information:                                   |")
 AC_MSG_NOTICE("$DISTRO_NAME")
 AC_MSG_NOTICE("$DISTRO_FAMILY")
 if test $I18N_ENABLED ; then
-AC_MSG_NOTICE("|                            Update I18N Data ... Yes     |")
+AC_MSG_NOTICE("|                          Update I18N Data ... Yes       |")
 else
-AC_MSG_NOTICE("|                            Update I18N Data ... No      |")
+AC_MSG_NOTICE("|                          Update I18N Data ... No        |")
 fi
 AC_MSG_NOTICE("|                                                         |")
 AC_MSG_NOTICE("| Configured Audio Drivers:                               |")
 if test -z $USING_ALSA ; then
-AC_MSG_NOTICE("|    Advanced Linux Sound Architecture (ALSA) ... No      |")
+AC_MSG_NOTICE("|  Advanced Linux Sound Architecture (ALSA) ... No        |")
 else
-AC_MSG_NOTICE("|    Advanced Linux Sound Architecture (ALSA) ... Yes     |")
+AC_MSG_NOTICE("|  Advanced Linux Sound Architecture (ALSA) ... Yes       |")
 fi
 if test -z $USING_HPI ; then
-AC_MSG_NOTICE("|                            AudioScience HPI ... No      |")
+AC_MSG_NOTICE("|                          AudioScience HPI ... No        |")
 else
-AC_MSG_NOTICE("|                            AudioScience HPI ... Yes     |")
+AC_MSG_NOTICE("|                          AudioScience HPI ... Yes       |")
 fi
 if test -z $USING_JACK ; then
-AC_MSG_NOTICE("|                   JACK Audio Connection Kit ... No      |")
+AC_MSG_NOTICE("|                 JACK Audio Connection Kit ... No        |")
 else
-AC_MSG_NOTICE("|                   JACK Audio Connection Kit ... Yes     |")
+AC_MSG_NOTICE("|                 JACK Audio Connection Kit ... Yes       |")
 fi
 AC_MSG_NOTICE("|                                                         |")
 AC_MSG_NOTICE("| Audio Codecs:                                           |")
 if test -z $FLAC_FOUND ; then
-AC_MSG_NOTICE("|              FLAC Encoding/Decoding Support ... No      |")
+AC_MSG_NOTICE("|            FLAC Encoding/Decoding Support ... No        |")
 else
-AC_MSG_NOTICE("|              FLAC Encoding/Decoding Support ... Yes     |")
+AC_MSG_NOTICE("|            FLAC Encoding/Decoding Support ... Yes       |")
 fi
 if test -z $USING_MAD ; then
-AC_MSG_NOTICE("|                       MPEG Decoding Support ... No      |")
+AC_MSG_NOTICE("|                     MPEG Decoding Support ... No        |")
 else
-AC_MSG_NOTICE("|                       MPEG Decoding Support ... Yes     |")
+AC_MSG_NOTICE("|                     MPEG Decoding Support ... Yes       |")
 fi
 if test -z $USING_TWOLAME ; then
-AC_MSG_NOTICE("|               MPEG Layer 2 Encoding Support ... No      |")
+AC_MSG_NOTICE("|             MPEG Layer 2 Encoding Support ... No        |")
 else
-AC_MSG_NOTICE("|               MPEG Layer 2 Encoding Support ... Yes     |")
+AC_MSG_NOTICE("|             MPEG Layer 2 Encoding Support ... Yes       |")
 fi
 if test -z $USING_LAME ; then
-AC_MSG_NOTICE("|               MPEG Layer 3 Encoding Support ... No      |")
+AC_MSG_NOTICE("|             MPEG Layer 3 Encoding Support ... No        |")
 else
-AC_MSG_NOTICE("|               MPEG Layer 3 Encoding Support ... Yes     |")
+AC_MSG_NOTICE("|             MPEG Layer 3 Encoding Support ... Yes       |")
 fi
 if test -z $VORBIS_FOUND ; then
-AC_MSG_NOTICE("|         OggVorbis Encoding/Decoding Support ... No      |")
+AC_MSG_NOTICE("|       OggVorbis Encoding/Decoding Support ... No        |")
 else
-AC_MSG_NOTICE("|         OggVorbis Encoding/Decoding Support ... Yes     |")
+AC_MSG_NOTICE("|       OggVorbis Encoding/Decoding Support ... Yes       |")
 fi
 if test -z $MP4V2_FOUND ; then
-AC_MSG_NOTICE("|                        M4A Decoding Support ... No      |")
+AC_MSG_NOTICE("|                      M4A Decoding Support ... No        |")
 else
-AC_MSG_NOTICE("|                        M4A Decoding Support ... Yes     |")
+AC_MSG_NOTICE("|                      M4A Decoding Support ... Yes       |")
 fi
 AC_MSG_NOTICE("|---------------------------------------------------------|")
 AC_MSG_NOTICE()
