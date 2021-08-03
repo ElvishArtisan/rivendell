@@ -22138,3 +22138,7 @@
 	* Added a warning to files derived by the build system.
 2021-07-31 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the package version to 4.0.0beta2.
+2021-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that caused the start
+	time for Macro Cart events to fail to be saved after creation
+	or editing.

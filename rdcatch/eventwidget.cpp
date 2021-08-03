@@ -185,10 +185,14 @@ void EventWidget::toRecording(unsigned record_id) const
       break;
 
     case EventWidget::PlayEvent:
+      sql+=",`START_TIME`='"+RDEscapeString(d_time_edit->time().
+					 toString("hh:mm:ss"))+"' ";
       sql+=QString().sprintf(",`CHANNEL`=%u ",d_current_deck_number+128);
       break;
 
   case EventWidget::OtherEvent:
+    sql+=",`START_TIME`='"+RDEscapeString(d_time_edit->time().
+					 toString("hh:mm:ss"))+"' ";
     break;
   }
   sql+="where "+
