@@ -22142,3 +22142,5 @@
 	* Fixed a regression in rdcatch(1) that caused the start
 	time for Macro Cart events to fail to be saved after creation
 	or editing.
+2021-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Updated I18N translation data.
