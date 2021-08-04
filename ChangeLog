@@ -22158,3 +22158,6 @@
 	'RDSystem::timeFormat()' and 'RDSystem::setTimeFormat()' methods.
 	* Added a 'Date/Time Formats' section to the 'System-Wide Settings'
 	dialog in rdadmin(1).
+2021-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the 'MYSQL_PKG' dependency for Debian and Raspbian from
+	'mysql-client' to 'mariadb-client'.
