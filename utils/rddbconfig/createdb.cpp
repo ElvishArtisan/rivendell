@@ -126,22 +126,13 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *rd_config)
     "INDEX,"+
     "ALTER,"+
     "LOCK TABLES "+
-    "on `"+db_name+"` to `"+rd_config->mysqlUsername()+"`";
-/*
-    "on %s.* to %s", 
-			db_name.toUtf8().constData(),
-			rd_config->mysqlUsername().toUtf8().constData());
-*/
+    "on `"+db_name+"`.* to `"+rd_config->mysqlUsername()+"`";
   q=new QSqlQuery(sql,db);
   if (!q->isActive()) {
     *err_str+=QString().sprintf("Could not set permissions: %s",
 				sql.toUtf8().constData());
     return true;
   }
-  delete q;
-
-  sql=QString("flush privileges");
-  q=new QSqlQuery(sql,db);
   delete q;
 
   QProcess rddbmgrProcess(parent);

@@ -22170,3 +22170,6 @@
 2021-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Mysql Login' dialog in rddbconfig(8) to be
 	resizeable.
+2021-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbconfig(8) that caused creation of a new
+	database to fail.
