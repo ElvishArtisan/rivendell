@@ -22,29 +22,39 @@
 #define MYSQL_LOGIN_H
 
 #include <QDialog>
+#include <QLabel>
 #include <QLineEdit>
+#include <QPushButton>
 
 #include <rddialog.h>
 
 class MySqlLogin : public RDDialog
 {
   Q_OBJECT
-  public:
-   MySqlLogin(QString *username,QString *password,RDConfig *c,
-	      QWidget *parent=0);
-   ~MySqlLogin();
-   QSize sizeHint() const;
-   QSizePolicy sizePolicy() const;
+ public:
+  MySqlLogin(QString *username,QString *password,RDConfig *c,
+	     QWidget *parent=0);
+  ~MySqlLogin();
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
 
-  private slots:
-   void okData();
-   void cancelData();
+ private slots:
+  void okData();
+  void cancelData();
 
-  private:
-   QString *login_name;
-   QLineEdit *login_name_edit;
-   QString *login_password;
-   QLineEdit *login_password_edit;
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
+ private:
+  QString *login_name;
+  QLabel *login_name_label;
+  QLabel *login_message_label;
+  QLineEdit *login_name_edit;
+  QString *login_password;
+  QLabel *login_password_label;
+  QLineEdit *login_password_edit;
+  QPushButton *login_ok_button;
+  QPushButton *login_cancel_button;
 };
 
 
