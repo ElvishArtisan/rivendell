@@ -2,7 +2,7 @@
 //
 // mySQL Administrative Login Widget for rddbconfig(8).
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,8 @@
 #ifndef MYSQL_LOGIN_H
 #define MYSQL_LOGIN_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
+#include <QDialog>
+#include <QLineEdit>
 
 #include <rddialog.h>
 
@@ -30,7 +30,8 @@ class MySqlLogin : public RDDialog
 {
   Q_OBJECT
   public:
-   MySqlLogin(QString *username,QString *password, QWidget *parent=0);
+   MySqlLogin(QString *username,QString *password,RDConfig *c,
+	      QWidget *parent=0);
    ~MySqlLogin();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;

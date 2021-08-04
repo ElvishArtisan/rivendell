@@ -22164,3 +22164,6 @@
 2021-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogmanager(1) that threw a SQL error when
 	generating a log.
+2021-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbconfig(8) that threw a segfault when attempting
+	to create a new database.

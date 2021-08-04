@@ -255,7 +255,7 @@ void MainWidget::createData()
     }
   }
 
-  mysql_login=new MySqlLogin(&admin_name,&admin_pwd);
+  mysql_login=new MySqlLogin(&admin_name,&admin_pwd,rd_config,this);
 
   if(mysql_login->exec()) {
     delete mysql_login;

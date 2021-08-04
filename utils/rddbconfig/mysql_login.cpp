@@ -22,8 +22,9 @@
 
 #include "mysql_login.h"
 
-MySqlLogin::MySqlLogin(QString *username,QString *password, QWidget *parent)
-  : RDDialog(parent)
+MySqlLogin::MySqlLogin(QString *username,QString *password,RDConfig *c,
+		       QWidget *parent)
+  : RDDialog(c,parent)
 {
   login_name=username;
   login_password=password;
