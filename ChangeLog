@@ -22161,3 +22161,6 @@
 2021-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the 'MYSQL_PKG' dependency for Debian and Raspbian from
 	'mysql-client' to 'mariadb-client'.
+2021-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that threw a SQL error when
+	generating a log.

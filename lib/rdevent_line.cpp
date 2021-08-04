@@ -445,7 +445,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   delete q;
 
   sql=QString("select `LINK_ID` from `LOG_LINES` where ")+
-    "`LOG_NAME`='"+RDEscapeString(logname)+"` && "+
+    "`LOG_NAME`='"+RDEscapeString(logname)+"' && "+
     "`LINK_ID`>=0 "+
     "order by `LINK_ID` desc";
   q=new RDSqlQuery(sql);
