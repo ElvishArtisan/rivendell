@@ -36,7 +36,7 @@ uninstall-local:
 	../helpers/rdi18n_helper.sh --uninstall rdairplay $(DESTDIR)$(prefix)/share/rivendell
 
 all:	
-	../helpers/rdi18n_helper.sh --update rdcatch $(DESTDIR)$(prefix)/share/rivendell
+	../helpers/rdi18n_helper.sh --update rdairplay $(DESTDIR)$(prefix)/share/rivendell
 
 bin_PROGRAMS = rdairplay
 

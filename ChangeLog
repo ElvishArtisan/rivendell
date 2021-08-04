@@ -22176,3 +22176,6 @@
 2021-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'RDWaveFile' that caused generation
 	of spurrious 'returned non-zero exit code' warnings.
+2021-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in 'rdairplay/Makefile.am' that caused I18N data
+	to fail to be generated.
