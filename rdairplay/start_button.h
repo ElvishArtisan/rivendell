@@ -35,7 +35,6 @@ class StartButton : public RDPushButton
   void setPort(const QString &port);
   Mode mode() const;
   void setMode(Mode mode,RDCart::Type cart_type);
-  void setTimeMode(RDAirPlayConf::TimeMode mode);
 
  protected:
   void paintEvent(QPaintEvent *e);
@@ -51,7 +50,6 @@ class StartButton : public RDPushButton
   QPalette start_to_color;
   QPalette start_disabled_color;
   QPalette start_error_color;
-  RDAirPlayConf::TimeMode start_time_mode;
   QTime start_time;
   bool start_allow_pause;
 };

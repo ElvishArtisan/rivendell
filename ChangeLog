@@ -22179,3 +22179,10 @@
 2021-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in 'rdairplay/Makefile.am' that caused I18N data
 	to fail to be generated.
+2021-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDCoreApplication::toLongDateString()',
+	'RDCoreApplication::toShortDateString()' and
+	'RDCoreApplication::toTimeString()' methods.
+2021-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdairplay(1) to use the standard date/time formatting
+	strings.

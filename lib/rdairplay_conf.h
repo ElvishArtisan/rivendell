@@ -29,7 +29,7 @@
 class RDAirPlayConf
 {
  public:
-  enum TimeMode {TwelveHour=0,TwentyFourHour=1};
+  //  enum TimeMode {TwelveHour=0,TwentyFourHour=1};
   enum OpModeStyle {Unified=0,Independent=1};
   enum OpMode {Previous=0,LiveAssist=1,Auto=2,Manual=3};
   enum ActionMode {Normal=0,AddFrom=1,AddTo=2,DeleteFrom=3,MoveFrom=4,MoveTo=5,

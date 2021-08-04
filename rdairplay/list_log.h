@@ -40,7 +40,6 @@ class ListLog : public RDWidget
   RDAirPlayConf::ActionMode actionMode() const;
   void setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum=0);
   void setOpMode(RDAirPlayConf::OpMode mode);
-  void setTimeMode(RDAirPlayConf::TimeMode mode);
   void userChanged(bool add_allowed,bool delete_allowed,
 		   bool arrange_allowed,bool playout_allowed);
 
@@ -82,7 +81,6 @@ class ListLog : public RDWidget
   void ClearSelection();
   void ScrollTo(int line);
   void SetPlaybuttonMode(ListLog::PlayButtonMode mode);
-  QString TimeString(const QTime &time) const;
   HourSelector *list_hour_selector;
   LogTableView *list_log_view;
   RDLogPlay *list_log;
@@ -107,7 +105,6 @@ class ListLog : public RDWidget
   int *list_cart;
   int list_id;
   RDAirPlayConf::OpMode list_op_mode;
-  RDAirPlayConf::TimeMode list_time_mode;
   QPalette list_to_color;
   QPalette list_from_color;
   QPalette list_list_to_color;

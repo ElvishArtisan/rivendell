@@ -184,10 +184,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   air_top_strip=new TopStrip(this);
   connect(air_master_timer,SIGNAL(timeout()),
 	  air_top_strip->wallClockWidget(),SLOT(tickClock()));
-  connect(air_top_strip->wallClockWidget(),
-	  SIGNAL(timeModeChanged(RDAirPlayConf::TimeMode)),
-	  this,SLOT(timeModeData(RDAirPlayConf::TimeMode)));
-
   connect(air_top_strip->modeDisplayWidget(),SIGNAL(clicked()),
 	  this,SLOT(modeButtonData()));
   connect(rda->ripc(),SIGNAL(onairFlagChanged(bool)),
@@ -558,7 +554,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
     for(int i=0;i<PANEL_MAX_OUTPUTS;i++) {
       air_panel->soundPanelWidget()->
       setOutputText(i,rda->airplayConf()->soundPanelChannelName(next_output++));
-      //air_panel->soundPanelWidget()->setOutputText(i,QString().sprintf("%d",next_output++));
       assigned=false;
       for(int j=0;j<2;j++) {
 	if((air_panel->soundPanelWidget()->
@@ -568,8 +563,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 	  air_panel->soundPanelWidget()->
 	    setOutputText(i,rda->airplayConf()->
 			  soundPanelChannelName(channum[j]));
-	  //air_panel->soundPanelWidget()->
-	  //setOutputText(i,QString().sprintf("%d",channum[j]));
 	  next_output--;
 	  assigned=true;
 	  j=2;
@@ -773,7 +766,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(1035,870);
+  return QSize(1075,870);
 }
 
 
@@ -1797,17 +1790,6 @@ void MainWidget::transportChangedData()
 }
 
 
-void MainWidget::timeModeData(RDAirPlayConf::TimeMode mode)
-{
-  air_button_list->setTimeMode(mode);
-  for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log_list[i]->setTimeMode(mode);
-  }
-  air_button_list->stopCounterWidget()->setTimeMode(mode);
-  air_button_list->postCounterWidget()->setTimeMode(mode);
-}
-
-
 void MainWidget::keyPressEvent(QKeyEvent *e)
 {
  switch(e->key()) {
@@ -2050,19 +2032,19 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   // Sound Panel
   //
   if(air_panel!=NULL) {
-    air_panel->setGeometry(510,140,w-520,h-215);
+    air_panel->setGeometry(550,140,w-560,h-215);
   }
 
   //
   // Voice Tracker
   //
-  air_tracker->setGeometry(510,140,w-515,h-215);
+  air_tracker->setGeometry(550,140,w-555,h-215);
 
   //
   // Full Log Widgets
   //
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log_list[i]->setGeometry(510,140,w-520,h-215);
+    air_log_list[i]->setGeometry(550,140,w-560,h-215);
   }
 
 

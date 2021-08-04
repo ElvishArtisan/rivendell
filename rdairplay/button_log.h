@@ -48,7 +48,6 @@ class ButtonLog : public RDWidget
   void setOpMode(RDAirPlayConf::OpMode mode);
   RDAirPlayConf::ActionMode actionMode() const;
   void setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum=0);
-  void setTimeMode(RDAirPlayConf::TimeMode mode);
   PieCounter *pieCounterWidget() const;
   PostCounter *postCounterWidget() const;
   StopCounter *stopCounterWidget() const;
@@ -87,7 +86,6 @@ class ButtonLog : public RDWidget
   LogLineBox *log_line_box[BUTTON_TOTAL_BUTTONS];
   StartButton *log_start_button[BUTTON_TOTAL_BUTTONS];
   int log_line_counter;
-  RDAirPlayConf::TimeMode log_time_mode;
   EditEvent *log_event_edit;
   bool log_pause_enabled;
   PieCounter *log_pie_counter_widget;

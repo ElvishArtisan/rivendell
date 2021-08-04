@@ -26,7 +26,6 @@
 StartButton::StartButton(bool allow_pause,QWidget *parent)
   : RDPushButton(parent)
 {
-  start_time_mode=RDAirPlayConf::TwentyFourHour;
   start_time=QTime();
   start_allow_pause=allow_pause;
 
@@ -168,16 +167,6 @@ void StartButton::setMode(Mode mode,RDCart::Type cart_type)
 }
 
 
-void StartButton::setTimeMode(RDAirPlayConf::TimeMode mode)
-{
-  if(mode==start_time_mode) {
-    return;
-  }
-  start_time_mode=mode;
-  update();
-}
-
-
 void StartButton::paintEvent(QPaintEvent *e)
 {
   int w=size().width()-2;
@@ -193,16 +182,8 @@ void StartButton::paintEvent(QPaintEvent *e)
 		22,start_title);
     p->drawLine(10,24,70,24);
     if(!start_time.isNull()) {
-      if(start_time_mode==RDAirPlayConf::TwentyFourHour) {
-	p->drawText((w-p->
-		     fontMetrics().width(start_time.toString("hh:mm:ss")))/2,
-		    40,start_time.toString("hh:mm:ss"));
-      }
-      else {
-	p->drawText((w-p->
-		     fontMetrics().width(start_time.toString("h:mm:ss ap")))/2,
-		    40,start_time.toString("h:mm:ss ap"));
-      }
+      p->drawText((w-p->fontMetrics().width(rda->timeString(start_time)))/2,40,
+		  rda->timeString(start_time));
     }
     else {
       p->drawText((w-p->fontMetrics().width("--:--:--"))/2,

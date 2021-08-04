@@ -35,7 +35,7 @@ class RDLogLine
   enum TimeType {Relative=0,Hard=1,NoTime=255};
   enum TransType {Play=0,Segue=1,Stop=2,NoTrans=255};
   enum TransEdge {AllTrans=0,LeadingTrans=1,TrailingTrans=2};
-  enum Source {Manual=0,Traffic=1,Music=2,Template=3,Tracker=4};
+  enum Source {Manual=0,Traffic=1,Music=2,Template=3,Tracker=4,LastSource=5};
   enum Status {Scheduled=1,Playing=2,Auditioning=3,Finished=4,
 	       Finishing=5,Paused=6};
   enum State {Ok=0,NoCart=1,NoCut=2};

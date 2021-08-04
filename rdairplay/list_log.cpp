@@ -35,7 +35,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_log=log;
   list_op_mode=RDAirPlayConf::LiveAssist;
   list_action_mode=RDAirPlayConf::Normal;
-  list_time_mode=RDAirPlayConf::TwentyFourHour;
   list_scroll=true;
   list_pause_allowed=allow_pause;
   list_playbutton_mode=ListLog::ButtonDisabled;
@@ -107,7 +106,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   // Hour Selector
   //
   list_hour_selector=new HourSelector(this);
-  list_hour_selector->setTimeMode(list_time_mode);
   connect(list_hour_selector,SIGNAL(hourSelected(int)),
 	  this,SLOT(selectHour(int)));
   connect(list_log,SIGNAL(hourChanged(int,bool)),
@@ -138,7 +136,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_log->setPalette(palette());
   list_log_view->setModel(list_log);
   list_log_view->resizeColumnsToContents();
-  list_log->setTimeMode(list_time_mode);
   connect(list_log_view->selectionModel(),
        SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
        this,
@@ -321,8 +318,6 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
 	  this,SLOT(auditionTailData(int)));
   connect(list_log,SIGNAL(auditionStopped(int)),
 	  this,SLOT(auditionStoppedData(int)));
-
-  //  setBackgroundColor(QColor(system_mid_color));
 }
 
 
@@ -470,18 +465,6 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
     }
   }
   list_action_mode=mode;
-}
-
-
-void ListLog::setTimeMode(RDAirPlayConf::TimeMode mode)
-{
-  if(mode==list_time_mode) {
-    return;
-  }
-  list_hour_selector->setTimeMode(mode);
-  list_log->setTimeMode(mode);
-  list_time_mode=mode;
-  list_log_view->resizeColumnToContents(0);
 }
 
 
@@ -1075,22 +1058,4 @@ void ListLog::SetPlaybuttonMode(ListLog::PlayButtonMode mode)
     break;
   }
   list_playbutton_mode=mode;
-}
-
-
-QString ListLog::TimeString(const QTime &time) const
-{
-  QString ret;
-  switch(list_time_mode) {
-  case RDAirPlayConf::TwelveHour:
-    ret=time.toString("h:mm:ss.zzz");
-    ret=ret.left(ret.length()-2);
-    ret+=(" "+time.toString("ap"));
-    break;
-
-  case RDAirPlayConf::TwentyFourHour:
-    ret=time.toString("hh:mm:ss.zzz").left(10);
-    break;
-  }
-  return ret;
 }

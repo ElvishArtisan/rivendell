@@ -54,7 +54,6 @@ class LogLineBox : public RDWidget
   void setTimer(int msecs);
   void clear();
   void setBarMode(LogLineBox::BarMode);
-  void setTimeMode(RDAirPlayConf::TimeMode);
   void setStatus(RDLogLine::Status status);
   void setAllowDrags(bool state);
 
@@ -78,7 +77,6 @@ class LogLineBox : public RDWidget
  private:
   void UpdateCountdown();
   void PrintTime();
-  QString TimeString(const QTime &time);
   LogLineBox::Mode line_mode;
   QLabel *line_icon_label;
   QLabel *line_cart_label;
@@ -115,7 +113,6 @@ class LogLineBox : public RDWidget
   QPalette line_transition_palette;
   QPalette line_text_palette;
   RDLogLine::TransType line_next_type;
-  RDAirPlayConf::TimeMode line_time_mode;
   RDLogLine::Type line_type;
   QPixmap *line_playout_map;
   QPixmap *line_macro_map;

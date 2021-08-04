@@ -70,6 +70,11 @@ class RDCoreApplication : public QObject
   RDStation *station();
   RDSystem *system();
   RDUser *user();
+  bool timeFormatIs24Hour() const;
+  QString longDateString(const QDate &date)  const;
+  QString shortDateString(const QDate &date) const;
+  QString timeString(const QTime &time) const;
+  QString tenthsTimeString(const QTime &time) const;
   bool dropTable(const QString &tbl_name);
   void addTempFile(const QString &pathname);
   void syslog(int priority,const char *fmt,...) const;
@@ -104,6 +109,9 @@ class RDCoreApplication : public QObject
   char app_syslog_name[PATH_MAX];
   QString app_command_name;
   QString app_usage;
+  QString app_long_date_format;
+  QString app_short_date_format;
+  QString app_time_format;
 };
 
 #endif  // RDCOREAPPLICATION_H

@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -110,9 +110,6 @@ class RDLogPlay : public RDLogModel
   void resync();
   bool isRefreshable() const;
 
- public slots:
-  void setTimeMode(RDAirPlayConf::TimeMode mode);
-
  private slots:
   void transTimerData();
   void graceTimerData();
@@ -195,7 +192,6 @@ class RDLogPlay : public RDLogModel
   void Finished(int id);
   void ClearChannel(int deckid);
   RDLogLine::TransType GetTransType(const QString &logname,int line);
-  QString TimeString(const QTime &time) const;
   bool ClearBlock(int start_line);
   void SendNowNext();
   QString GetPadJson(const QString &name,RDLogLine *ll,
@@ -205,7 +201,6 @@ class RDLogPlay : public RDLogModel
 		  RDAirPlayConf::TrafficAction action,bool onair_flag) const;
   RDCae *play_cae;
   RDAirPlayConf::OpMode play_op_mode;
-  RDAirPlayConf::TimeMode play_time_mode;
   int play_slot_id[LOGPLAY_MAX_PLAYS];
   int play_segue_length;
   int play_trans_length;

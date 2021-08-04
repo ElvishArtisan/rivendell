@@ -28,7 +28,6 @@ StopCounter::StopCounter(QWidget *parent)
 {
   stop_running=false;
 
-  time_format="hh:mm:ss";
   stop_text=tr("Next Stop [none]");  
   old_stop_running=true;
   old_msecs=0;
@@ -36,29 +35,10 @@ StopCounter::StopCounter(QWidget *parent)
   setState(false);
 }
 
-void StopCounter::setTimeMode(RDAirPlayConf::TimeMode mode)
-{
-  switch(mode) {
-  case RDAirPlayConf::TwentyFourHour:
-    time_format="hh:mm:ss";
-    break;
-
-  case RDAirPlayConf::TwelveHour:
-    time_format="h:mm:ss ap";
-    break;
-  }
-  old_msecs = 0;
-  if (stop_running) {
-    setTime (stop_time);
-  }
-  UpdateTime();
-}
-
 
 QSize StopCounter::sizeHint() const
 {
-  return QSize(180,80);
-  //  return QSize(200,60);
+  return QSize(200,80);
 }
 
 
@@ -77,7 +57,7 @@ void StopCounter::setState(bool state)
       UpdateTime();
       stop_running=true;
       str=QString(tr("Next Stop"));
-      stop_text=tr("Next Stop")+" ["+stop_time.toString(time_format)+"]";
+      stop_text=tr("Next Stop")+" ["+rda->timeString(stop_time)+"]";
     }
   }
   else {
@@ -98,7 +78,7 @@ void StopCounter::setTime(QTime time)
     stop_time=time;
     setState(true);
     str=QString(tr("Next Stop"));
-    stop_text=tr("Next Stop")+" ["+stop_time.toString(time_format)+"]";
+    stop_text=tr("Next Stop")+" ["+rda->timeString(stop_time)+"]";
   }
   else {
     setState(false);

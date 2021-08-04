@@ -31,7 +31,6 @@ ButtonLog::ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
   log_log=log;
   log_action_mode=RDAirPlayConf::Normal;
   log_op_mode=RDAirPlayConf::LiveAssist;
-  log_time_mode=RDAirPlayConf::TwentyFourHour;
   log_pause_enabled=allow_pause;
 
   //
@@ -106,7 +105,7 @@ ButtonLog::ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
 
 QSize ButtonLog::sizeHint() const
 {
-  return QSize(492,800);
+  return QSize(532,800);
 }
 
 
@@ -275,19 +274,6 @@ void ButtonLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
     }
   }
   log_action_mode=mode;
-}
-
-
-void ButtonLog::setTimeMode(RDAirPlayConf::TimeMode mode)
-{
-  if(mode==log_time_mode) {
-    return;
-  }
-  log_time_mode=mode;
-  for(int i=0;i<BUTTON_TOTAL_BUTTONS;i++) {
-    log_start_button[i]->setTimeMode(mode);
-    log_line_box[i]->setTimeMode(mode);
-  }
 }
 
 
@@ -485,7 +471,7 @@ void ButtonLog::cartDroppedData(int line,RDLogLine *ll)
 void ButtonLog::resizeEvent(QResizeEvent *e)
 {
   log_post_counter_widget->setGeometry(5,
-				15+10,
+				25,
 				log_post_counter_widget->sizeHint().width(),
 				log_post_counter_widget->sizeHint().height());
   log_pie_counter_widget->setGeometry(10+log_post_counter_widget->size().width(),

@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell logs
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -114,6 +114,7 @@ class RDLogModel : public QAbstractTableModel
   QFontMetrics *d_bold_fms;
   QList<QVariant> d_headers;
   QList<QVariant> d_alignments;
+  QList<QVariant> d_size_hints;
   StartTimeStyle d_start_time_style;
   QString d_log_name;
   QString d_service_name;

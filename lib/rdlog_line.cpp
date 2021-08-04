@@ -2606,20 +2606,23 @@ QString RDLogLine::timeTypeText(RDLogLine::TimeType type)
 QString RDLogLine::sourceText(RDLogLine::Source src)
 {
   switch(src) {
-      case RDLogLine::Manual:
-	return QObject::tr("Manual");
+  case RDLogLine::Manual:
+    return QObject::tr("Manual");
 
-      case RDLogLine::Traffic:
-	return QObject::tr("Traffic");
+  case RDLogLine::Traffic:
+    return QObject::tr("Traffic");
 
-      case RDLogLine::Music:
-	return QObject::tr("Music");
+  case RDLogLine::Music:
+    return QObject::tr("Music");
 
-      case RDLogLine::Template:
-	return QObject::tr("RDLogManager");
+  case RDLogLine::Template:
+    return QObject::tr("RDLogManager");
 
-      case RDLogLine::Tracker:
-	return QObject::tr("Tracker");
+  case RDLogLine::Tracker:
+    return QObject::tr("Tracker");
+	
+  case RDLogLine::LastSource:
+    break;
   }
   return QObject::tr("Unknown");
 }

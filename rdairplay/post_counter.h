@@ -36,7 +36,6 @@ class PostCounter : public RDPushButton
   PostCounter(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  void setTimeMode(RDAirPlayConf::TimeMode mode);
   
  public slots:
   void setPostPoint(QTime point,int offset,bool offset_valid,bool running);

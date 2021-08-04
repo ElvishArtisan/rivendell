@@ -84,6 +84,10 @@ QFont RDLogModel::boldFont() const
 
 void RDLogModel::setFont(const QFont &font)
 {
+  int width;
+  QString sql;
+  RDSqlQuery *q=NULL;
+
   d_font=font;
   if(d_fms!=NULL) {
     delete d_fms;
@@ -95,6 +99,48 @@ void RDLogModel::setFont(const QFont &font)
     delete d_bold_fms;
   }
   d_bold_fms=new QFontMetrics(d_bold_font);
+
+  //
+  // Calculate Minimum Column Widths
+  //
+  if(rda->timeFormatIs24Hour()) {
+    d_size_hints[0]=QSize(40+d_bold_fms->width("T00:00:00"),0);
+  }
+  else {
+    d_size_hints[0]=QSize(40+d_bold_fms->width("T00:00:00 AM"),0);
+  }
+  width=d_bold_fms->width(tr("PLAY"));
+  if(d_bold_fms->width(tr("SEGUE"))>width) {
+    width=d_bold_fms->width(tr("SEGUE"));
+  }
+  if(d_bold_fms->width(tr("STOP"))>width) {
+    width=d_bold_fms->width(tr("STOP"));
+  }
+  d_size_hints[1]=QSize(10+width,0);
+  d_size_hints[2]=QSize(10+d_bold_fms->width("000000"),0);
+
+  width=0;
+  sql=QString("select ")+
+    "`NAME` "+  // 00
+    "from `GROUPS`";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    if(d_bold_fms->width(q->value(0).toString())>width) {
+      width=d_bold_fms->width(q->value(0).toString());
+    }
+  }
+  delete q;
+  d_size_hints[3]=QSize(10+width,0);
+  d_size_hints[4]=QSize(10+d_bold_fms->width("8:88:88"),0);
+
+  width=0;
+  for(int i=0;i<RDLogLine::LastSource;i++) {
+    RDLogLine::Source src=(RDLogLine::Source)i;
+    if(d_bold_fms->width(RDLogLine::sourceText(src))>width) {
+      width=d_bold_fms->width(RDLogLine::sourceText(src));
+    }
+  }
+  d_size_hints[10]=QSize(10+width,0);
 }
 
 
@@ -145,6 +191,12 @@ QVariant RDLogModel::data(const QModelIndex &index,int role) const
 
     case Qt::BackgroundRole:
       return rowBackgroundColor(row,ll);
+
+    case Qt::SizeHintRole:
+      return d_size_hints.at(col);
+
+    case Qt::TextAlignmentRole:
+      return d_alignments.at(col);
 
     default:
       break;
@@ -1663,5 +1715,6 @@ void RDLogModel::MakeModel()
   for(int i=0;i<headers.size();i++) {
     d_headers.push_back(headers.at(i));
     d_alignments.push_back(alignments.at(i));
+    d_size_hints.push_back(QVariant());
   }
 }

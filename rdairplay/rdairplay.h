@@ -84,7 +84,6 @@ class MainWidget : public RDMainWindow
   void cartDroppedData(int id,int line,RDLogLine *ll);
   void masterTimerData();
   void transportChangedData();
-  void timeModeData(RDAirPlayConf::TimeMode mode);
   
  protected:
   void keyPressEvent(QKeyEvent *e);

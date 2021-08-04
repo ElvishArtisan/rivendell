@@ -41,7 +41,7 @@
 //
 // For debugging layout issues
 //
-//#define COLORIZE_LAYOUT
+// #define COLORIZE_LAYOUT
 
 LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   : RDWidget(parent)
@@ -49,7 +49,6 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   line_status=RDLogLine::Scheduled;
   line_type=RDLogLine::UnknownType;
   line_mode=LogLineBox::Full;
-  line_time_mode=RDAirPlayConf::TwentyFourHour;
   line_logline=NULL;
   log_id=-1;
   log_line=-1;
@@ -261,8 +260,6 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   line_trans_label->setPalette(line_text_palette);
   line_trans_label->setFont(line_bold_font);
 
-  //  setBackgroundColor(QColor(LOGLINEBOX_BACKGROUND_COLOR));
-
   //
   // Countdown Timer
   //
@@ -295,12 +292,10 @@ QSize LogLineBox::sizeHint() const
 {
   switch(line_mode) {
   case LogLineBox::Full:
-    return QSize(393,LOGLINEBOX_FULL_HEIGHT);
-    break;
+    return QSize(433,LOGLINEBOX_FULL_HEIGHT);
 
   case LogLineBox::Half:
-    return QSize(393,LOGLINEBOX_HALF_HEIGHT);
-    break;
+    return QSize(433,LOGLINEBOX_HALF_HEIGHT);
   }
   return QSize(0,0);
 }
@@ -476,7 +471,6 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	line_icon_label->setPixmap(*line_playout_map);
 	break;
       }
-      //      setBackgroundColor(QColor(LOGLINEBOX_MISSING_COLOR));
     }
     else {
       if(((cart->forcedLength()==0)&&(cart->type()==RDCart::Audio))||
@@ -497,7 +491,6 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	line_comment_label->clear();
 	line_icon_label->setPixmap(*line_playout_map);
 	line_title_label->setText(logline->title());
-	//	setBackgroundColor(QColor(LOGLINEBOX_MISSING_COLOR));
       }
       else {
 	line_cart_label->
@@ -571,7 +564,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	  line_cut_label->
 	    setText(QString().sprintf("%03u",logline->cutNumber()));
 	line_outcue_label->
-	  setText(line_logline->resolveWildcards(line_outcue_template));
+	  setText(line_logline->resolveWildcards(line_outcue_template));	
 	}
 	else {
 	  //	  setBackgroundColor(QColor(LOGLINEBOX_MISSING_COLOR));
@@ -742,7 +735,6 @@ void LogLineBox::clear()
   log_line=-1;
   line_transition=RDLogLine::Stop;
   line_logline=NULL;
-  line_time_mode=RDAirPlayConf::TwentyFourHour;
   line_type=RDLogLine::Cart;
   line_up_label->hide();
   line_position_bar->hide();
@@ -783,16 +775,6 @@ void LogLineBox::setBarMode(LogLineBox::BarMode mode)
     }
     break;
   }
-}
-
-
-void LogLineBox::setTimeMode(RDAirPlayConf::TimeMode mode)
-{
-  if(mode==line_time_mode) {
-    return;
-  }
-  line_time_mode=mode;
-  PrintTime();
 }
 
 
@@ -857,19 +839,24 @@ void LogLineBox::resizeEvent(QResizeEvent *e)
   line_icon_label->setGeometry(5,3,16,16);
   line_cart_label->setGeometry(23,3,48,16);
   line_cut_label->setGeometry(73,3,24,16);
-  line_group_label->setGeometry(100,3,80,16);
-  line_time_label->setGeometry(180,3,75,16);
-  line_talktime_label->setGeometry(257,3,36,16);
-  line_length_label->setGeometry(297,3,40,16);
-  line_trans_label->setGeometry(size().width()-53,3,48,16);
+  line_group_label->setGeometry(100,3,90,16);
+  line_time_label->setGeometry(190,3,95,16);
+  line_talktime_label->setGeometry(287,3,36,16);
+  line_length_label->setGeometry(327,3,50,16);
+  line_trans_label->setGeometry(379,3,48,16);
 
   line_title_label->setGeometry(5,18,size().width()-10,18);
 
   line_artist_label->setGeometry(5,33,size().width()-10,16);
 
-  line_description_label->
-    setGeometry((size().width()/2),48,(size().width()/2 -10),16);
-  line_outcue_label->setGeometry(5,48, (size().width()/2 -10),16);
+  line_outcue_label->setGeometry(5,
+				 48,
+				 size().width()/2-10,
+				 16);
+  line_description_label->setGeometry(size().width()/2,
+				      48,
+				      size().width()/2-5,
+				      16);
 
   line_up_label->setGeometry(5,65,65,16);
   line_position_bar->setGeometry(75,66,size().width()-150,13);
@@ -930,16 +917,18 @@ void LogLineBox::PrintTime()
   switch(line_logline->timeType()) {
       case RDLogLine::Hard:
 	line_time_label->setFont(line_bold_font);
-	line_time_label->setText("T"+TimeString(line_logline->
-						startTime(RDLogLine::Logged)));
+	line_time_label->
+	  setText("T"+rda->tenthsTimeString(line_logline->
+					    startTime(RDLogLine::Logged)));
 	line_time_label->setPalette(line_hard_palette);
 	break;
 
       default:
 	line_time_label->setFont(line_font);
 	if(!line_logline->startTime(RDLogLine::Logged).isNull()) {
-	  line_time_label->setText(TimeString(line_logline->
-					      startTime(RDLogLine::Logged)));
+	  line_time_label->
+	    setText(rda->tenthsTimeString(line_logline->
+					  startTime(RDLogLine::Logged)));
 	}
 	else {
 	  line_time_label->setText("");
@@ -947,22 +936,4 @@ void LogLineBox::PrintTime()
 	line_time_label->setPalette(line_time_palette);
 	break;
   }
-}
-
-
-QString LogLineBox::TimeString(const QTime &time)
-{
-  QString ret;
-  switch(line_time_mode) {
-  case RDAirPlayConf::TwelveHour:
-    ret=time.toString("h:mm:ss.zzz");
-    ret=ret.left(ret.length()-2);
-    ret+=(" "+time.toString("ap"));
-    break;
-
-  case RDAirPlayConf::TwentyFourHour:
-    ret=time.toString("hh:mm:ss.zzz").left(10);
-    break;
-  }
-  return ret;
 }

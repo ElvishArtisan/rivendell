@@ -2,7 +2,7 @@
 //
 // The post counter widget for Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,7 +32,6 @@ class StopCounter : public RDPushButton
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   void setState(bool state);
-  void setTimeMode(RDAirPlayConf::TimeMode mode);
  
  public slots:
   void setTime(QTime time);
@@ -48,7 +47,6 @@ class StopCounter : public RDPushButton
   bool old_stop_running;
   int old_msecs;
   QString stop_text;
-  QString time_format;
 };
 
 #endif  // STOP_COUNTER_H

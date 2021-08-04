@@ -70,6 +70,9 @@ RDCoreApplication::RDCoreApplication(const QString &module_name,
   app_station=NULL;
   app_system=NULL;
   app_user=NULL;
+  app_long_date_format=RD_DEFAULT_LONG_DATE_FORMAT;
+  app_short_date_format=RD_DEFAULT_SHORT_DATE_FORMAT;
+  app_time_format=RD_DEFAULT_TIME_FORMAT;
 
   atexit(__RDCoreApplication_ExitCallback);
 }
@@ -124,6 +127,8 @@ bool RDCoreApplication::open(QString *err_msg,RDCoreApplication::ErrorType *err_
   bool skip_db_check=false;
   int persistent_dropbox_id=-1;
   bool ok=false;
+  QString sql;
+  RDSqlQuery *q=NULL;
 
   if(err_type!=NULL) {
     *err_type=RDCoreApplication::ErrorOk;
@@ -214,6 +219,25 @@ bool RDCoreApplication::open(QString *err_msg,RDCoreApplication::ErrorType *err_
   app_ripc=new RDRipc(app_station,app_config,this);
   connect(app_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
 
+  //
+  // Get Date/Time Formats
+  //
+  sql=QString("select ")+
+    "`LONG_DATE_FORMAT`,"+   // 00
+    "`SHORT_DATE_FORMAT`,"+  // 01
+    "`TIME_FORMAT` "+        // 02
+    "from `SYSTEM`";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    app_long_date_format=q->value(0).toString().trimmed();
+    app_short_date_format=q->value(1).toString().trimmed();
+    app_time_format=q->value(2).toString().trimmed();    
+  }
+  else {
+    syslog(LOG_WARNING,"unable to load date/time formats");
+  }
+  delete q;
+
   if(!app_station->exists()) {
     if(err_type!=NULL) {
       *err_type=RDCoreApplication::ErrorNoHostEntry;
@@ -297,6 +321,50 @@ RDSystem *RDCoreApplication::system()
 RDUser *RDCoreApplication::user()
 {
   return app_user;
+}
+
+
+bool RDCoreApplication::timeFormatIs24Hour() const
+{
+  return !app_time_format.toLower().contains("ap");
+}
+
+
+QString RDCoreApplication::longDateString(const QDate &date)  const
+{
+  return date.toString(app_long_date_format);
+}
+
+
+QString RDCoreApplication::shortDateString(const QDate &date) const
+{
+  return date.toString(app_short_date_format);
+}
+
+
+QString RDCoreApplication::timeString(const QTime &time) const
+{
+  return time.toString(app_time_format);
+}
+
+
+QString RDCoreApplication::tenthsTimeString(const QTime &time) const
+{
+  QString ret;
+
+  if(app_time_format.right(2).toLower()=="ap") {
+    ret=time.toString(app_time_format);
+    QString suffix=ret.right(2);
+    ret=ret.left(ret.length()-2).trimmed();
+    ret+=
+      QString().sprintf(".%d %s",time.msec()/100,suffix.toUtf8().constData());
+  }
+  else {
+    ret=time.toString(app_time_format+".zzz");
+    ret=ret.left(ret.length()-2);
+  }
+
+  return ret;
 }
 
 

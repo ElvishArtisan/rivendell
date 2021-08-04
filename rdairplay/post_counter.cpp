@@ -56,24 +56,10 @@ PostCounter::PostCounter(QWidget *parent)
   UpdateDisplay();
 }
 
-void PostCounter::setTimeMode(RDAirPlayConf::TimeMode mode)
-{
-  switch(mode) {
-  case RDAirPlayConf::TwentyFourHour:
-    post_time_format="hh:mm:ss";
-    break;
-
-  case RDAirPlayConf::TwelveHour:
-    post_time_format="h:mm:ss ap";
-    break;
-  }
-  UpdateDisplay();
-}
 
 QSize PostCounter::sizeHint() const
 {
-  return QSize(180,80);
-  //  return QSize(200,60);
+  return QSize(200,80);
 }
 
 
@@ -144,8 +130,7 @@ void PostCounter::UpdateDisplay()
   }
 
   if(isEnabled()&&(!post_time.isNull())) {
-    point= trUtf8("Next Timed Start") + " [" + post_time.toString(post_time_format) + "]";
-
+    point=tr("Next Timed Start")+" ["+rda->timeString(post_time)+"]";
     if(post_offset_valid) {
       if(offset<-POST_COUNTER_MARGIN) {
 	state="-"+QTime(0,0,0).addMSecs(-offset).toString();

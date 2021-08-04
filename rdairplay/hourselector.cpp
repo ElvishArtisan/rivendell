@@ -41,27 +41,12 @@ HourSelector::HourSelector(QWidget *parent)
     mapper->setMapping(hour_button[i],i);
     connect(hour_button[i],SIGNAL(clicked()),mapper,SLOT(map()));
   }
-
-  //
-  // Update Timer
-  //
-  hour_update_timer=new QTimer(this);
-  hour_update_timer->setSingleShot(true);
-  connect(hour_update_timer,SIGNAL(timeout()),this,SLOT(updateTimeData()));
-  updateTimeData();
-}
-
-
-QSizePolicy HourSelector::sizePolicy() const
-{
-  return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-}
-
-
-void HourSelector::setTimeMode(RDAirPlayConf::TimeMode mode)
-{
-  switch(mode) {
-  case RDAirPlayConf::TwelveHour:
+  if(rda->timeFormatIs24Hour()) {
+    for(unsigned i=0;i<24;i++) {
+      hour_button[i]->setText(QString().sprintf("%02u",i));
+    }
+  }
+  else {
     hour_button[0]->setText(tr("12a"));
     hour_button[1]->setText(tr("1a"));
     hour_button[2]->setText(tr("2a"));
@@ -86,14 +71,21 @@ void HourSelector::setTimeMode(RDAirPlayConf::TimeMode mode)
     hour_button[21]->setText(tr("9p"));
     hour_button[22]->setText(tr("10p"));
     hour_button[23]->setText(tr("11p"));
-    break;
-
-  case RDAirPlayConf::TwentyFourHour:
-    for(unsigned i=0;i<24;i++) {
-      hour_button[i]->setText(QString().sprintf("%02u",i));
-    }
-    break;
   }
+
+  //
+  // Update Timer
+  //
+  hour_update_timer=new QTimer(this);
+  hour_update_timer->setSingleShot(true);
+  connect(hour_update_timer,SIGNAL(timeout()),this,SLOT(updateTimeData()));
+  updateTimeData();
+}
+
+
+QSizePolicy HourSelector::sizePolicy() const
+{
+  return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
 }
 
 
@@ -122,15 +114,6 @@ void HourSelector::resizeEvent(QResizeEvent *e)
       }
     }
   }
-  /*
-  for(unsigned i=0;i<2;i++) {
-    for(unsigned j=0;j<12;j++) {
-      unsigned hour=12*i+j;
-      hour_button[hour]->setGeometry(j*size().width()/12,i*size().height()/2,
-				     size().width()/12,size().height()/2);
-    }
-  }
-  */
 }
 
 

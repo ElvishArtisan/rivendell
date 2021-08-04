@@ -2,7 +2,7 @@
 //
 // The wall clock widget for Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,17 +32,10 @@ class WallClock : public RDPushButton
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   void setDateDisplay(bool state);
-  void setTimeMode(RDAirPlayConf::TimeMode mode);
   void setCheckSyncEnabled(bool);
-
- private slots:
-  void clickedData();
 
  public slots:
   void tickClock();
-
- signals:
-  void timeModeChanged(RDAirPlayConf::TimeMode);
 
  protected:
   void flashButton(bool state);
@@ -53,14 +46,10 @@ class WallClock : public RDPushButton
   QTime previous_time,current_time;
   QDate previous_date,current_date;
   QString time_string;
-  RDAirPlayConf::TimeMode time_mode;
-  RDAirPlayConf::TimeMode previous_time_mode;
   bool show_date;
   QFont time_font;
   QFont label_font;
-  QFontMetrics *label_metrics;
   bool check_sync;
-  int time_offset;
   bool flash_state;
 };
 

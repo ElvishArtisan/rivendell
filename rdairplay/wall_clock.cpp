@@ -29,20 +29,10 @@
 WallClock::WallClock(QWidget *parent)
   : RDPushButton(parent)
 {
-  time_offset=rda->station()->timeOffset();
-  previous_time=QTime::currentTime().addMSecs(time_offset);
-  time_mode=RDAirPlayConf::TwentyFourHour;
-  previous_time_mode = RDAirPlayConf::TwentyFourHour;
+  previous_time=QTime::currentTime();
   show_date=true;
   check_sync=true;
   flash_state=false;
-
-  //
-  // Generate Fonts
-  //
-  label_metrics=new QFontMetrics(subLabelFont());
-
-  connect(this,SIGNAL(clicked()),this,SLOT(clickedData()));
 }
 
 
@@ -64,30 +54,9 @@ void WallClock::setDateDisplay(bool state)
 }
 
 
-void WallClock::setTimeMode(RDAirPlayConf::TimeMode mode)
-{
-  if(mode==time_mode) {
-    return;
-  }
-  time_mode=mode;
-  emit timeModeChanged(time_mode);
-}
-
-
 void WallClock::setCheckSyncEnabled(bool state)
 {
   check_sync=state;
-}
-
-
-void WallClock::clickedData()
-{
-  if(time_mode==RDAirPlayConf::TwelveHour) {
-    setTimeMode(RDAirPlayConf::TwentyFourHour);
-  }
-  else {
-    setTimeMode(RDAirPlayConf::TwelveHour);
-  }
 }
 
 
@@ -104,23 +73,19 @@ void WallClock::tickClock()
       synced=RDTimeSynced();
     }
   }
-  current_time=QTime::currentTime().addMSecs(time_offset);
-  current_date=QDate::currentDate();
-  if((current_time.second()==previous_time.second()) && (previous_time_mode == time_mode)) {
+  
+  QDateTime now=QDateTime::currentDateTime();
+  current_date=now.date();
+  current_time=now.time();;
+  if(current_time.second()==previous_time.second()) {
     return;
   }
-  previous_time_mode = time_mode;
   previous_time=current_time;
 
   //
   // Clock Display
   //
-  if(time_mode==RDAirPlayConf::TwelveHour) {
-    accum=current_time.toString("h:mm:ss ap");
-  }
-  else {
-    accum=current_time.toString("hh:mm:ss");
-  }
+  accum=rda->timeString(current_time);
   if(time_string==accum) {
     return;
   }
@@ -133,7 +98,7 @@ void WallClock::tickClock()
   }
   if(previous_date!=current_date) {
     previous_date=current_date;
-    date=current_date.toString("dddd, MMMM d, yyyy");
+    date=rda->longDateString(current_date);
   }
   QPainter p(pix);
   if(flash_state) {

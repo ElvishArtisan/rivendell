@@ -50,7 +50,6 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QObject *parent)
   play_duck_volume_port1=0;
   play_duck_volume_port2=0;
   play_start_next=false;
-  play_time_mode=RDAirPlayConf::TwentyFourHour;
   play_running=false;
   play_next_line=0;
   play_post_time=QTime();
@@ -134,11 +133,6 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QObject *parent)
   if((rda->station()->cueCard()>=0)&&
      (rda->station()->cuePort()>=0)&&
      isWidgetType()) {
-    /*
-  if((rda->station()->cueCard()>=0)&&
-     (rda->station()->cuePort()>=0)&&
-     (qApp->type()!=QApplication::Tty)) {
-    */
     play_audition_player=
       new RDSimplePlayer(play_cae,rda->ripc(),rda->station()->cueCard(),
 			 rda->station()->cuePort(),0,0);
@@ -1409,15 +1403,6 @@ bool RDLogPlay::isRefreshable() const
 }
 
 
-void RDLogPlay::setTimeMode(RDAirPlayConf::TimeMode mode)
-{
-  if(play_time_mode!=mode) {
-    play_time_mode=mode;
-    emit dataChanged(createIndex(0,0),createIndex(0,lineCount()));
-  }
-}
-  
-
 void RDLogPlay::transTimerData()
 {
   int lines[TRANSPORT_QUANTITY];
@@ -1793,14 +1778,14 @@ QString RDLogPlay::cellText(int col,int row,RDLogLine *ll) const
     if((ll->status()==RDLogLine::Scheduled)||
        (ll->status()==RDLogLine::Paused)) {
       if(ll->timeType()==RDLogLine::Hard) {
-	return tr("T")+TimeString(ll->startTime(RDLogLine::Logged));
+	return tr("T")+rda->tenthsTimeString(ll->startTime(RDLogLine::Logged));
       }
       if(!ll->startTime(RDLogLine::Predicted).isNull()) {
-	return TimeString(ll->startTime(RDLogLine::Predicted));
+	return rda->tenthsTimeString(ll->startTime(RDLogLine::Predicted));
       }
       return QString("");
     }
-    return TimeString(ll->startTime(RDLogLine::Actual));
+    return rda->tenthsTimeString(ll->startTime(RDLogLine::Actual));
   }
 
   if(((ll->cutNumber()<0)&&(ll->type()==RDLogLine::Cart))) {
@@ -2061,11 +2046,6 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
       play_event_player->
 	exec(logline->resolveWildcards(play_start_rml[aport]));
     }
-    /*
-      printf("channelStarted(%d,%d,%d,%d)\n",
-      play_id,playdeck->channel(),
-      playdeck->card(),playdeck->port());
-    */
     emit channelStarted(play_id,playdeck->channel(),
 			playdeck->card(),playdeck->port());
     rda->syslog(LOG_INFO,"log engine: started audio cart: Line: %d  Cart: %u  Cut: %u Pos: %d  Card: %d  Stream: %d  Port: %d",
@@ -3002,24 +2982,6 @@ RDLogLine::TransType RDLogPlay::GetTransType(const QString &logname,int line)
   }
   delete q;
   return trans;
-}
-
-
-QString RDLogPlay::TimeString(const QTime &time) const
-{
-  QString ret;
-  switch(play_time_mode) {
-  case RDAirPlayConf::TwelveHour:
-    ret=time.toString("h:mm:ss.zzz");
-    ret=ret.left(ret.length()-2);
-    ret+=(" "+time.toString("ap"));
-    break;
-
-  case RDAirPlayConf::TwentyFourHour:
-    ret=time.toString("hh:mm:ss.zzz").left(10);
-    break;
-  }
-  return ret;
 }
 
 
