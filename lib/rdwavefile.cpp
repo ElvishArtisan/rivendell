@@ -5037,7 +5037,7 @@ unsigned RDWaveFile::FrameOffset(int msecs) const
 
 int RDWaveFile::CheckExitCode(const QString &msg,int exit_code)
 {
-  if(exit_code!=0) {
+  if(exit_code<0) {
     fprintf(stderr,"%s returned non-zero exit code %d [%s]\n",
 	    msg.toUtf8().constData(),exit_code,strerror(errno));
   }

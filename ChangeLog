@@ -22173,3 +22173,6 @@
 2021-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbconfig(8) that caused creation of a new
 	database to fail.
+2021-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDWaveFile' that caused generation
+	of spurrious 'returned non-zero exit code' warnings.
