@@ -51,6 +51,11 @@ EditSystem::EditSystem(QWidget *parent)
   edit_station_list_model=new RDStationListModel(true,"",this);
 
   //
+  // Dialogs
+  //
+  edit_test_datetimes_dialog=new TestDatetimes(this);
+
+  //
   // System Sample Rate
   //
   edit_sample_rate_box=new QComboBox(this);
@@ -184,6 +189,45 @@ EditSystem::EditSystem(QWidget *parent)
   edit_save_button->hide();
 
   //
+  // Date/Time Formats
+  //
+  edit_datetime_group=new QGroupBox(tr("Date/Time Formats"),this);
+  edit_datetime_group->setFont(labelFont());
+
+  edit_long_date_label=
+    new QLabel(tr("Long Date Format")+":",edit_datetime_group);
+  edit_long_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_long_date_label->setFont(labelFont());
+  edit_long_date_edit=new QLineEdit(edit_datetime_group);
+  edit_long_date_edit->setFont(defaultFont());
+  edit_long_date_edit->setMaxLength(32);
+
+  edit_short_date_label=
+    new QLabel(tr("Short Date Format")+":",edit_datetime_group);
+  edit_short_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_short_date_label->setFont(labelFont());
+  edit_short_date_edit=new QLineEdit(edit_datetime_group);
+  edit_short_date_edit->setFont(defaultFont());
+  edit_short_date_edit->setMaxLength(32);
+
+  edit_time_label=
+    new QLabel(tr("Time Format")+":",edit_datetime_group);
+  edit_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_time_label->setFont(labelFont());
+  edit_time_edit=new QLineEdit(edit_datetime_group);
+  edit_time_edit->setFont(defaultFont());
+  edit_time_edit->setMaxLength(32);
+
+  edit_datetime_test_button=new QPushButton(tr("Test"),edit_datetime_group);
+  connect(edit_datetime_test_button,SIGNAL(clicked()),
+	  this,SLOT(datetimeTestData()));
+
+  edit_datetime_defaults_button=
+    new QPushButton(tr("Restore\nDefaults"),edit_datetime_group);
+  connect(edit_datetime_defaults_button,SIGNAL(clicked()),
+	  this,SLOT(datetimeDefaultsData()));
+
+  //
   //  Encoders Button
   //
   edit_encoders_button=new QPushButton(this);
@@ -207,6 +251,9 @@ EditSystem::EditSystem(QWidget *parent)
   edit_cancel_button->setText(tr("Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
+  //
+  // Load Values
+  //
   edit_duplicate_carts_box->setChecked(edit_system->allowDuplicateCartTitles());
   edit_fix_duplicate_carts_box->
     setChecked(edit_system->fixDuplicateCartTitles());
@@ -217,8 +264,9 @@ EditSystem::EditSystem(QWidget *parent)
   edit_notification_address_edit->
     setText(edit_system->notificationAddress().toString());
   edit_show_user_list_box->setChecked(edit_system->showUserList());
-
-
+  edit_long_date_edit->setText(edit_system->longDateFormat());
+  edit_short_date_edit->setText(edit_system->shortDateFormat());
+  edit_time_edit->setText(edit_system->timeFormat());
 
   QString station=edit_system->rssProcessorStation();
   for(int i=0;i<edit_rss_processor_box->count();i++) {
@@ -246,12 +294,13 @@ EditSystem::~EditSystem()
   delete edit_duplicate_label;
   delete edit_duplicate_view;
   delete edit_duplicate_model;
+  delete edit_test_datetimes_dialog;
 }
 
 
 QSize EditSystem::sizeHint() const
 {
-  return QSize(500,306+y_pos);
+  return QSize(500,406+y_pos);
 } 
 
 
@@ -325,6 +374,29 @@ void EditSystem::saveData()
 void EditSystem::encodersData()
 {
   edit_encoders_dialog->exec();
+}
+
+
+void EditSystem::datetimeTestData()
+{
+  edit_test_datetimes_dialog->exec(edit_long_date_edit->text(),
+				   edit_short_date_edit->text(),
+				   edit_time_edit->text());
+}
+
+
+void EditSystem::datetimeDefaultsData()
+{
+  if(QMessageBox::warning(this,"RDAdmin - "+tr("Warning"),
+    tr("This will reset all date/time display formats to default values!")+
+			  "\n"+
+			  tr("Proceed?"),
+			  QMessageBox::No,QMessageBox::Yes)!=QMessageBox::Yes) {
+    return;
+  }
+  edit_long_date_edit->setText(RD_DEFAULT_LONG_DATE_FORMAT);
+  edit_short_date_edit->setText(RD_DEFAULT_SHORT_DATE_FORMAT);
+  edit_time_edit->setText(RD_DEFAULT_TIME_FORMAT);
 }
 
 
@@ -439,14 +511,17 @@ void EditSystem::okData()
   else {
     edit_system->setRssProcessorStation(edit_rss_processor_box->currentText());
   }
+  edit_system->setLongDateFormat(edit_long_date_edit->text());
+  edit_system->setShortDateFormat(edit_short_date_edit->text());
+  edit_system->setTimeFormat(edit_time_edit->text());
 
-  done(0);
+  done(true);
 }
 
 
 void EditSystem::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 
@@ -504,9 +579,19 @@ void EditSystem::resizeEvent(QResizeEvent *e)
   edit_rss_processor_label->setGeometry(10,207,235,20);
   edit_rss_processor_box->setGeometry(250,207,200,20);
 
-  edit_duplicate_hidden_label->setGeometry(15,229,size().width()-30,50);
-  edit_duplicate_view->setGeometry(10,277,size().width()-20,215);
-  edit_save_button->setGeometry(size().width()-85,497,70,25);
+  edit_datetime_group->setGeometry(10,229,size().width()-20,100);
+  edit_datetime_test_button->setGeometry(5,22,80,35);
+  edit_datetime_defaults_button->setGeometry(5,60,80,35);
+  edit_long_date_label->setGeometry(110,27,120,20);
+  edit_long_date_edit->setGeometry(235,27,edit_datetime_group->width()-240,20);
+  edit_short_date_label->setGeometry(110,49,120,20);
+  edit_short_date_edit->setGeometry(235,49,edit_datetime_group->width()-240,20);
+  edit_time_label->setGeometry(110,71,120,20);
+  edit_time_edit->setGeometry(235,71,edit_datetime_group->width()-240,20);
+
+  edit_duplicate_hidden_label->setGeometry(15,329,size().width()-30,50);
+  edit_duplicate_view->setGeometry(10,377,size().width()-20,215);
+  edit_save_button->setGeometry(size().width()-85,597,70,25);
 
   edit_encoders_button->setGeometry(10,size().height()-60,120,50);
   edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);

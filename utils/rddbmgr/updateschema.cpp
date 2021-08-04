@@ -10798,7 +10798,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     //
     // Maintainer's Note:
     //
-    // Use hard-coded maximum card/port quantities (24 four for each) here,
+    // Use hard-coded maximum card/port quantities (24 for each) here,
     // in case the #define'd values change in future!
     //
     sql=QString("select `NAME` from `STATIONS`");
@@ -10825,6 +10825,31 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	  }
 	}
       }
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<351)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `SYSTEM` ")+
+      "add column `LONG_DATE_FORMAT` varchar(32) not null default 'dddd, MMMM d yyyy' "+
+      "after `ORIGIN_EMAIL_ADDRESS`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table `SYSTEM` ")+
+      "add column `SHORT_DATE_FORMAT` varchar(32) not null default 'MM/dd/yy' "+
+      "after `LONG_DATE_FORMAT`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table `SYSTEM` ")+
+      "add column `TIME_FORMAT` varchar(32) not null default 'hh:mm:ss' "+
+      "after `SHORT_DATE_FORMAT`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
     }
 
     WriteSchemaVersion(++cur_schema);

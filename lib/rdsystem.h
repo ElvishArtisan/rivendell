@@ -2,7 +2,7 @@
 //
 // System-wide Rivendell settings
 //
-//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,6 +48,12 @@ class RDSystem
   void setNotificationAddress(const QHostAddress &addr);
   QString rssProcessorStation() const;
   void setRssProcessorStation(const QString &str=QString()) const;
+  QString longDateFormat() const;
+  void setLongDateFormat(const QString &str);
+  QString shortDateFormat() const;
+  void setShortDateFormat(const QString &str);
+  QString timeFormat() const;
+  void setTimeFormat(const QString &str);
   QString xml() const;
 
  private:

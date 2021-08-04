@@ -41,6 +41,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 351
+  //
+  if((cur_schema==351)&&(set_schema<cur_schema)) {
+    DropColumn("SYSTEM","TIME_FORMAT");
+    DropColumn("SYSTEM","SHORT_DATE_FORMAT");
+    DropColumn("SYSTEM","LONG_DATE_FORMAT");
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 350
   //
   if((cur_schema==350)&&(set_schema<cur_schema)) {

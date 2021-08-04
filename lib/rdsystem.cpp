@@ -205,6 +205,42 @@ void RDSystem::setRssProcessorStation(const QString &str) const
 }
 
 
+QString RDSystem::longDateFormat() const
+{
+  return GetValue("LONG_DATE_FORMAT").toString();
+}
+
+
+void RDSystem::setLongDateFormat(const QString &str)
+{
+  SetRow("LONG_DATE_FORMAT",str);
+}
+
+
+QString RDSystem::shortDateFormat() const
+{
+  return GetValue("SHORT_DATE_FORMAT").toString();
+}
+
+
+void RDSystem::setShortDateFormat(const QString &str)
+{
+  SetRow("SHORT_DATE_FORMAT",str);
+}
+
+
+QString RDSystem::timeFormat() const
+{
+  return GetValue("TIME_FORMAT").toString();
+}
+
+
+void RDSystem::setTimeFormat(const QString &str)
+{
+  SetRow("TIME_FORMAT",str);
+}
+
+
 QString RDSystem::xml() const
 {
   QString xml="<systemSettings>\n";
@@ -214,6 +250,9 @@ QString RDSystem::xml() const
   xml+=RDXmlField("maxPostLength",maxPostLength());
   xml+=RDXmlField("isciXreferencePath",isciXreferencePath());
   xml+=RDXmlField("tempCartGroup",tempCartGroup());
+  xml+=RDXmlField("longDateFormat",longDateFormat());
+  xml+=RDXmlField("shortDateFormat",shortDateFormat());
+  xml+=RDXmlField("timeFormat",timeFormat());
   xml+="</systemSettings>\n";
 
   return xml;

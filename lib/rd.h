@@ -2,7 +2,7 @@
 //
 // System-Wide Values for Rivendell
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -648,6 +648,13 @@
  */
 #define RD_LISTWIDGET_ITEM_HEIGHT 25
 #define RD_LISTWIDGET_ITEM_WIDTH_PADDING 20
+
+/*
+ * Default Date/Time Formats
+ */
+#define RD_DEFAULT_LONG_DATE_FORMAT "dddd, MMMM d yyyy"
+#define RD_DEFAULT_SHORT_DATE_FORMAT "MM/dd/yy"
+#define RD_DEFAULT_TIME_FORMAT "hh:mm:ss"
 
 
 #endif  // RD_H

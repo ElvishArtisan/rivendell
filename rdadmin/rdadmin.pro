@@ -82,6 +82,7 @@ x11 {
   SOURCES += rdadmin.cpp
   SOURCES += rename_group.cpp
   SOURCES += test_import.cpp
+  SOURCES += test_datetimes.cpp
   SOURCES += view_adapters.cpp
   SOURCES += view_pypad_errors.cpp
   SOURCES += xpm_info_banner1.cpp
@@ -151,6 +152,7 @@ x11 {
   HEADERS += rdadmin.h
   HEADERS += rename_group.h
   HEADERS += test_import.h
+  HEADERS += test_datetimes.h
   HEADERS += view_adapters.h
   HEADERS += view_pypad_errors.h
 }

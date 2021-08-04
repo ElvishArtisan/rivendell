@@ -15,3 +15,6 @@ SHOW_USER_LIST        enum('N','Y')
 NOTIFICATION_ADDRESS  varchar(15)
 RSS_PROCESSOR_STATION varchar(64)
 ORIGIN_EMAIL_ADDRESS  varchar(64)
+LONG_DATE_FORMAT      varchar(32)        Default 'dddd, MMMM d yyyy'
+SHORT_DATE_FORMAT     varchar(32)        Default 'MM/dd/yyyy'
+TIME_FORMAT           varchar(32)        Default 'hh:mm:ss'

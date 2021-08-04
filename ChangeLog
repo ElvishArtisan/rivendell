@@ -22149,3 +22149,12 @@
 	fails to find the specified log.
 2021-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Added Raspian support to the 'AR_GET_DISTRO()' autoconf macro.
+2021-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'SYSTEM.LONG_DATE_FORMAT', 'SYSTEM.SHORT_DATE_FORMAT'
+	and 'SYSTEM.TIME_FORMAT' fields to the database.
+	* Incremented the database version to 351.
+	* Added 'RDSystem::longDateFormat()', 'RDSystem'setLongDateFormat()',
+	'RDSystem::shortDateFormat()', 'RDSystem::setShortDateFormat()',
+	'RDSystem::timeFormat()' and 'RDSystem::setTimeFormat()' methods.
+	* Added a 'Date/Time Formats' section to the 'System-Wide Settings'
+	dialog in rdadmin(1).

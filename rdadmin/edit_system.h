@@ -22,6 +22,7 @@
 #define EDIT_SYSTEM_H
 
 #include <QCheckBox>
+#include <QGroupBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
@@ -37,6 +38,7 @@
 #include <rdtableview.h>
 
 #include "list_encoders.h"
+#include "test_datetimes.h"
 
 class EditSystem : public RDDialog
 {
@@ -52,6 +54,8 @@ class EditSystem : public RDDialog
   void duplicatesCheckedData(bool state);
   void saveData();
   void encodersData();
+  void datetimeTestData();
+  void datetimeDefaultsData();
   void okData();
   void cancelData();
 
@@ -94,6 +98,16 @@ class EditSystem : public RDDialog
   ListEncoders *edit_encoders_dialog;
   int y_pos;
   RDStationListModel *edit_station_list_model;
+  QGroupBox *edit_datetime_group;
+  QLabel *edit_long_date_label;
+  QLineEdit *edit_long_date_edit;
+  QLabel *edit_short_date_label;
+  QLineEdit *edit_short_date_edit;
+  QLabel *edit_time_label;
+  QLineEdit *edit_time_edit;
+  QPushButton *edit_datetime_test_button;
+  QPushButton *edit_datetime_defaults_button;
+  TestDatetimes *edit_test_datetimes_dialog;
 };
 
 
