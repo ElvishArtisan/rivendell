@@ -22186,3 +22186,7 @@
 2021-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdairplay(1) to use the standard date/time formatting
 	strings.
+2021-08-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdadmin(1) that caused the 'Norm. Level'
+	and 'Autotrim Level' columns to display incorrect values in the
+	'Dropbox Configuration' dialog.

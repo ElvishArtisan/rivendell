@@ -305,7 +305,7 @@ void RDDropboxListModel::updateRow(int row,RDSqlQuery *q)
     texts.push_back(tr("[off]"));
   }
   else {
-    texts.push_back(QString().sprintf("%d dBFS",q->value(4).toInt()));
+    texts.push_back(QString().sprintf("%d dBFS",q->value(4).toInt()/100));
   }
 
   // Autotrim Level
@@ -313,7 +313,7 @@ void RDDropboxListModel::updateRow(int row,RDSqlQuery *q)
     texts.push_back(tr("[off]"));
   }
   else {
-    texts.push_back(QString().sprintf("%d dBFS",q->value(5).toInt()));
+    texts.push_back(QString().sprintf("%d dBFS",q->value(5).toInt()/100));
   }
 
   // To Cart
