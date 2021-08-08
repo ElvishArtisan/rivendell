@@ -22190,3 +22190,6 @@
 	* Fixed a regression in rdadmin(1) that caused the 'Norm. Level'
 	and 'Autotrim Level' columns to display incorrect values in the
 	'Dropbox Configuration' dialog.
+2021-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdservice(8) that could cause a segfault when
+	restarting dropboxes.

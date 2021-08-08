@@ -2,7 +2,7 @@
 //
 // Shutdown routines for the Rivendell Services Manager
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,13 +42,18 @@ void MainObject::Shutdown()
 
 void MainObject::ShutdownDropboxes()
 {
+  QList<int> kill_ids;
+
   for(QMap<int,RDProcess *>::iterator it=svc_processes.begin();
       it!=svc_processes.end();it++) {
     if(it.key()>=RDSERVICE_FIRST_DROPBOX_ID) {
-      it.value()->process()->kill();
-      it.value()->process()->waitForFinished();
-      delete it.value();
-      svc_processes.erase(it);
+      kill_ids.push_back(it.key());
     }
+  }
+  for(int i=0;i<kill_ids.size();i++) {
+    svc_processes.value(kill_ids.at(i))->process()->kill();
+    svc_processes.value(kill_ids.at(i))->process()->waitForFinished();
+    delete svc_processes.value(kill_ids.at(i));
+    svc_processes.remove(kill_ids.at(i));
   }
 }
