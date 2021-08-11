@@ -59,8 +59,7 @@ EventWidget::EventWidget(EventWidget::EventType type,QWidget *parent)
   d_time_label=new QLabel(tr("Start Time")+":",this);
   d_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   d_time_label->setFont(labelFont());
-  d_time_edit=new QTimeEdit(this);
-  d_time_edit->setDisplayFormat("hh:mm:ss");
+  d_time_edit=new RDTimeEdit(this);
   if(d_event_type==EventWidget::RecordEvent) {
     d_time_label->hide();
     d_time_edit->hide();
@@ -140,7 +139,7 @@ EventWidget::EventWidget(EventWidget::EventType type,QWidget *parent)
 
 QSize EventWidget::sizeHint() const
 {
-  return QSize(510,23);
+  return QSize(550,23);
 }
 
 
@@ -268,6 +267,6 @@ void EventWidget::resizeEvent(QResizeEvent *e)
   d_state_label->setGeometry(20,1,125,20);
   d_location_box->setGeometry(190,0,140,23);
   d_location_label->setGeometry(115,0,70,23);
-  d_time_edit->setGeometry(size().width()-90,2,80,20);
-  d_time_label->setGeometry(size().width()-175,2,80,20);
+  d_time_edit->setGeometry(size().width()-130,2,100,20);
+  d_time_label->setGeometry(size().width()-215,2,80,20);
 }

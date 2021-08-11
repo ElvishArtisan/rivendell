@@ -85,8 +85,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
     addButton(edit_start_hardtime_radio,RDRecording::HardStart);  
   edit_start_hardtime_radio->setFont(subLabelFont());
   
-  edit_starttime_edit=new QTimeEdit(this);
-  edit_starttime_edit->setDisplayFormat("hh:mm:ss");
+  edit_starttime_edit=new RDTimeEdit(this);
   edit_starttime_label=new QLabel(tr("Record Start Time:"),this);
   edit_starttime_label->setFont(subLabelFont());
   edit_starttime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -94,15 +93,13 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_start_gpi_radio=new QRadioButton(tr("Use GPI"),this);
   edit_start_gpi_radio->setFont(subLabelFont());
   
-  edit_start_startwindow_edit=new QTimeEdit(this);
-  edit_start_startwindow_edit->setDisplayFormat("hh:mm:ss");
+  edit_start_startwindow_edit=new RDTimeEdit(this);
   edit_start_startwindow_label=new QLabel(tr("Window Start Time:"),this);
   edit_start_startwindow_label->setFont(subLabelFont());
   edit_start_startwindow_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
-  edit_start_endwindow_edit=new QTimeEdit(this);
-  edit_start_endwindow_edit->setDisplayFormat("hh:mm:ss");
+  edit_start_endwindow_edit=new RDTimeEdit(this);
   edit_start_endwindow_label=new QLabel(tr("Window End Time:"),this);
   edit_start_endwindow_label->setFont(subLabelFont());
   edit_start_endwindow_label->
@@ -154,23 +151,20 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_end_hardtime_radio=new QRadioButton(tr("Use Hard Time"),this);
   edit_endtype_group->addButton(edit_end_hardtime_radio,RDRecording::HardEnd);  
   edit_end_hardtime_radio->setFont(subLabelFont());
-  edit_endtime_edit=new QTimeEdit(this);
-  edit_endtime_edit->setDisplayFormat("hh:mm:ss");
+  edit_endtime_edit=new RDTimeEdit(this);
   edit_endtime_label=new QLabel(tr("Record End Time:"),this);
   edit_endtime_label->setFont(subLabelFont());
   edit_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_end_gpi_radio=new QRadioButton(tr("Use GPI"),this);
   edit_end_gpi_radio->setFont(subLabelFont());
-  edit_end_startwindow_edit=new QTimeEdit(this);
-  edit_end_startwindow_edit->setDisplayFormat("hh:mm:ss");
+  edit_end_startwindow_edit=new RDTimeEdit(this);
   edit_end_startwindow_label=new QLabel(tr("Window Start Time:"),this);
   edit_end_startwindow_label->setFont(subLabelFont());
   edit_end_startwindow_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
-  edit_end_endwindow_edit=new QTimeEdit(this);
-  edit_end_endwindow_edit->setDisplayFormat("hh:mm:ss");
+  edit_end_endwindow_edit=new RDTimeEdit(this);
   edit_end_endwindow_label=new QLabel(tr("Window End Time:"),this);
   edit_end_endwindow_label->setFont(subLabelFont());
   edit_end_endwindow_label->
@@ -436,7 +430,8 @@ EditRecording::~EditRecording()
 
 QSize EditRecording::sizeHint() const
 {
-  return QSize(560,619);
+  //  return QSize(560,619);
+  return QSize(640,619);
 } 
 
 
@@ -605,43 +600,43 @@ void EditRecording::resizeEvent(QResizeEvent *e)
   // Start Parameters
   //
   edit_start_groupbox->setGeometry(10,37,size().width()-20,105);
-  edit_start_hardtime_radio->setGeometry(20,57,110,15);
-  edit_starttime_edit->setGeometry(255,53,80,20);
-  edit_starttime_label->setGeometry(135,57,115,15);
-  edit_start_gpi_radio->setGeometry(20,81,100,15);
-  edit_start_startwindow_edit->setGeometry(255,77,80,20);
-  edit_start_startwindow_label->setGeometry(135,81,115,15);
-  edit_start_endwindow_edit->setGeometry(455,77,80,20);
-  edit_start_endwindow_label->setGeometry(345,81,105,15);
-  edit_startmatrix_spin->setGeometry(185,99,35,20);
-  edit_startmatrix_label->setGeometry(100,100,80,20);
-  edit_startline_spin->setGeometry(305,99,35,20);
-  edit_startline_label->setGeometry(240,100,60,20);
-  edit_startoffset_edit->setGeometry(455,99,80,20);
-  edit_startoffset_time_label->setGeometry(345,100,105,20);
+  edit_start_hardtime_radio->setGeometry(20,59,110,15);
+  edit_starttime_edit->setGeometry(255,57,120,20);
+  edit_starttime_label->setGeometry(135,57,115,20);
+  edit_start_gpi_radio->setGeometry(20,80,100,15);
+  edit_start_startwindow_edit->setGeometry(255,79,120,20);
+  edit_start_startwindow_label->setGeometry(135,79,115,20);
+  edit_start_endwindow_edit->setGeometry(495,79,120,20);
+  edit_start_endwindow_label->setGeometry(385,79,105,20);
+  edit_startmatrix_spin->setGeometry(185,101,35,20);
+  edit_startmatrix_label->setGeometry(100,101,80,20);
+  edit_startline_spin->setGeometry(305,101,35,20);
+  edit_startline_label->setGeometry(240,101,60,20);
+  edit_startoffset_edit->setGeometry(455,101,80,20);
+  edit_startoffset_time_label->setGeometry(345,101,105,20);
   edit_multirec_box->setGeometry(140,124,size().width()-170,15);
 
   //
   // End Parameters
   //
   edit_end_groupbox->setGeometry(10,160,size().width()-20,112);
-  edit_end_length_radio->setGeometry(20,205,100,15);
-  edit_endlength_edit->setGeometry(245,201,80,20);
-  edit_endlength_label->setGeometry(125,205,115,15);
-  edit_end_hardtime_radio->setGeometry(20,181,1100,15);
-  edit_endtime_edit->setGeometry(245,177,80,20);
-  edit_endtime_label->setGeometry(125,181,115,15);
+  edit_end_length_radio->setGeometry(20,206,100,15);
+  edit_endlength_edit->setGeometry(245,204,80,20);
+  edit_endlength_label->setGeometry(125,204,115,20);
+  edit_end_hardtime_radio->setGeometry(20,183,1100,15);
+  edit_endtime_edit->setGeometry(245,181,120,20);
+  edit_endtime_label->setGeometry(125,181,115,20);
   edit_end_gpi_radio->setGeometry(20,229,100,15);
-  edit_end_startwindow_edit->setGeometry(245,225,80,20);
-  edit_end_startwindow_label->setGeometry(125,229,115,15);
-  edit_end_endwindow_edit->setGeometry(455,225,80,20);
-  edit_end_endwindow_label->setGeometry(345,229,105,15);
-  edit_endmatrix_spin->setGeometry(185,247,35,20);
-  edit_endmatrix_label->setGeometry(100,248,80,20);
-  edit_endline_spin->setGeometry(295,247,35,20);
-  edit_endline_label->setGeometry(230,248,60,20);
-  edit_maxlength_edit->setGeometry(455,247,80,20);
-  edit_maxlength_label->setGeometry(325,248,125,20);
+  edit_end_startwindow_edit->setGeometry(245,227,120,20);
+  edit_end_startwindow_label->setGeometry(125,227,115,20);
+  edit_end_endwindow_edit->setGeometry(495,227,120,20);
+  edit_end_endwindow_label->setGeometry(385,227,105,20);
+  edit_endmatrix_spin->setGeometry(185,249,35,20);
+  edit_endmatrix_label->setGeometry(100,249,80,20);
+  edit_endline_spin->setGeometry(295,249,35,20);
+  edit_endline_label->setGeometry(230,249,60,20);
+  edit_maxlength_edit->setGeometry(455,249,80,20);
+  edit_maxlength_label->setGeometry(325,249,125,20);
 
   edit_description_edit->setGeometry(105,291,size().width()-115,20);
   edit_description_label->setGeometry(10,291,90,20);

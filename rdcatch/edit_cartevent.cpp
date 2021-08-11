@@ -39,12 +39,6 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   setWindowTitle("RDCatch - "+tr("Edit Cart Event"));
 
   //
-  // Fix the Window Size
-  //
-  setMinimumSize(sizeHint());
-  setMaximumSize(sizeHint());
-
-  //
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
@@ -129,6 +123,12 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
+  // Fix the Window Size
+  //
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
+
+  //
   // Populate Data
   //
   edit_event_widget->fromRecording(edit_recording->id());
@@ -154,7 +154,7 @@ EditCartEvent::~EditCartEvent()
 
 QSize EditCartEvent::sizeHint() const
 {
-  return QSize(520,255);
+  return QSize(edit_event_widget->sizeHint().width(),255);
 } 
 
 

@@ -22,7 +22,6 @@
 #define EDIT_UPLOAD_H
 
 #include <QCheckBox>
-#include <QDateTimeEdit>
 #include <QGroupBox>
 #include <QLabel>
 #include <QSpinBox>
@@ -71,14 +70,6 @@ class EditUpload : public RDDialog
   RDRecording *edit_recording;
   RDSettings edit_settings;
   EventWidget *edit_event_widget;
-  /*
-  QCheckBox *edit_active_button;
-  QLabel *edit_active_label;
-  QLabel *edit_station_label;
-  RDComboBox *edit_station_box;
-  QLabel *edit_starttime_label;
-  QTimeEdit *edit_starttime_edit;
-  */
   QLabel *edit_feed_label;
   QComboBox *edit_feed_box;
   RDFeedListModel *edit_feed_model;

@@ -23,9 +23,9 @@
 
 #include <QCheckBox>
 #include <QComboBox>
-#include <QDateTimeEdit>
 #include <QLabel>
 
+#include <rdtimeedit.h>
 #include <rdwidget.h>
 
 class EventWidget : public RDWidget
@@ -61,7 +61,7 @@ class EventWidget : public RDWidget
   QLabel *d_location_label;
   QComboBox *d_location_box;
   QLabel *d_time_label;
-  QTimeEdit *d_time_edit;
+  RDTimeEdit *d_time_edit;
   EventType d_event_type;
   QString d_current_station_name;
   int d_current_deck_number;

@@ -24,7 +24,6 @@
 #include <QButtonGroup>
 #include <QComboBox>
 #include <QCheckBox>
-#include <QDateTimeEdit>
 #include <QLabel>
 #include <QRadioButton>
 #include <QSpinBox>
@@ -33,6 +32,7 @@
 #include <rddeck.h>
 #include <rddialog.h>
 #include <rdrecording.h>
+#include <rdtimeedit.h>
 
 #include "eventwidget.h"
 #include "dowselector.h"
@@ -98,22 +98,22 @@ class EditRecording : public RDDialog
   QRadioButton *edit_end_gpi_radio;
   QLabel *edit_endtime_label;
   QLabel *edit_starttime_label;
-  QTimeEdit *edit_starttime_edit;
-  QTimeEdit *edit_endtime_edit;
+  RDTimeEdit *edit_starttime_edit;
+  RDTimeEdit *edit_endtime_edit;
   QLabel *edit_endlength_label;
   QTimeEdit *edit_endlength_edit;
   QLabel *edit_start_startwindow_label;
-  QTimeEdit *edit_start_startwindow_edit;
+  RDTimeEdit *edit_start_startwindow_edit;
   QLabel *edit_start_endwindow_label;
-  QTimeEdit *edit_start_endwindow_edit;
+  RDTimeEdit *edit_start_endwindow_edit;
   QCheckBox *edit_multirec_box;
   QLabel *edit_multirec_label;
   QLabel *edit_maxlength_label;
   QTimeEdit *edit_maxlength_edit;
   QLabel *edit_end_startwindow_label;
-  QTimeEdit *edit_end_startwindow_edit;
+  RDTimeEdit *edit_end_startwindow_edit;
   QLabel *edit_end_endwindow_label;
-  QTimeEdit *edit_end_endwindow_edit;
+  RDTimeEdit *edit_end_endwindow_edit;
   QLabel *edit_startmatrix_label;
   QSpinBox *edit_startmatrix_spin;
   QLabel *edit_startline_label;

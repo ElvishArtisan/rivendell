@@ -40,12 +40,6 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   setWindowTitle("RDCatch - "+tr("Edit Upload"));
 
   //
-  // Fix the Window Size
-  //
-  setMinimumSize(sizeHint());
-  setMaximumSize(sizeHint());
-
-  //
   // The Recording Record
   //
   edit_recording=new RDRecording(id);
@@ -231,6 +225,12 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   connect(event_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
+  // Fix the Window Size
+  //
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
+
+  //
   // Populate Data
   //
   edit_event_widget->fromRecording(edit_recording->id());
@@ -278,7 +278,7 @@ EditUpload::~EditUpload()
 
 QSize EditUpload::sizeHint() const
 {
-  return QSize(520,451);
+  return QSize(edit_event_widget->sizeHint().width(),451);
 } 
 
 

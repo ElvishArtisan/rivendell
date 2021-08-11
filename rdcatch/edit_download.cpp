@@ -42,12 +42,6 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   setWindowTitle("RDCatch - "+tr("Edit Download"));
 
   //
-  // Fix the Window Size
-  //
-  setMinimumSize(sizeHint());
-  setMaximumSize(sizeHint());
-
-  //
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this,"validator");
@@ -231,6 +225,12 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
+  // Fix the Window Size
+  //
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
+
+  //
   // Populate Data
   //
   edit_event_widget->fromRecording(edit_recording->id());
@@ -277,7 +277,7 @@ EditDownload::~EditDownload()
 
 QSize EditDownload::sizeHint() const
 {
-  return QSize(520,432);
+  return QSize(edit_event_widget->sizeHint().width(),432);
 } 
 
 
