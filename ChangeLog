@@ -22224,3 +22224,6 @@
 2021-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted layout in the event dialogs in rdcatch(1) to be
 	compatible with 12 hour time format.
+2021-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted layout in the 'Cut Info/Record' dialog in rdlibrary(1)
+	to be compatible with 12 hour time format.

@@ -230,14 +230,12 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   cut_starttime_disable_button=new QRadioButton(tr("Disabled"),this);
   cut_daypart_group->addButton(cut_starttime_disable_button,false);
 
-  cut_starttime_edit=new QTimeEdit(this);
-  cut_starttime_edit->setDisplayFormat("hh:mm:ss");
+  cut_starttime_edit=new RDTimeEdit(this);
   cut_starttime_label=new QLabel(tr("Start Time"),this);
   cut_starttime_label->setFont(subLabelFont());
   cut_starttime_label->setAlignment(Qt::AlignRight);
 
-  cut_endtime_edit=new QTimeEdit(this);
-  cut_endtime_edit->setDisplayFormat("hh:mm:ss");
+  cut_endtime_edit=new RDTimeEdit(this);
   cut_endtime_label=new QLabel(tr("End Time"),this);
   cut_endtime_label->setFont(subLabelFont());
   cut_endtime_label->setAlignment(Qt::AlignRight);
@@ -392,7 +390,8 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   }
   if(valid) {
     cut_ingest_edit->setText(cut_origin_name+" - "+
-	       	     cut_origin_datetime.toString("M/d/yyyy hh:mm:ss"));
+			     rda->shortDateString(cut_origin_datetime.date())+
+			     " "+rda->timeString(cut_origin_datetime.time()));
   }
   if(rec_cut->sourceHostname().isEmpty()) {
     cut_source_edit->setText("["+tr("unknown")+"]");
@@ -414,7 +413,8 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   }
   if(rec_cut->playCounter()>0) {
     cut_playdate_edit->
-      setText(rec_cut->lastPlayDatetime(&valid).toString("M/d/yyyy hh:mm:ss"));
+      setText(rda->shortDateString(rec_cut->lastPlayDatetime(&valid).date())+
+	      " "+rda->timeString(rec_cut->lastPlayDatetime(&valid).time()));
   }
   else {
     cut_playdate_edit->setText("Never");
@@ -1054,9 +1054,9 @@ void RecordCut::resizeEvent(QResizeEvent *e)
   cut_starttime_disable_button->setGeometry(57,323,100,20);
   cut_daypart_groupbox->setGeometry(37,283,size().width()-64,62);
   cut_starttime_label->setGeometry(137,306,80,12);
-  cut_starttime_edit->setGeometry(222,302,90,19);
+  cut_starttime_edit->setGeometry(222,302,100,19);
   cut_endtime_label->setGeometry(137,326,80,12);
-  cut_endtime_edit->setGeometry(222,322,90,19);
+  cut_endtime_edit->setGeometry(222,322,100,19);
 
   rec_dayofweek_groupbox->setGeometry(20,359,size().width()-35,85);
   rec_weekpart_label[0]->setGeometry(62,378,80,20);

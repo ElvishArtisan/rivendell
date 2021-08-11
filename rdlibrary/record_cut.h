@@ -112,9 +112,9 @@ class RecordCut : public RDDialog
    QButtonGroup *cut_daypart_group;
    QRadioButton *cut_starttime_enable_button;
    QRadioButton *cut_starttime_disable_button;
-   QTimeEdit *cut_starttime_edit;
+   RDTimeEdit *cut_starttime_edit;
    QLabel *cut_starttime_label;
-   QTimeEdit *cut_endtime_edit;
+   RDTimeEdit *cut_endtime_edit;
    QLabel *cut_endtime_label;
    QTimer *rec_timer;
    QLabel *rec_timer_label;
