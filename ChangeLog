@@ -22206,3 +22206,5 @@
 2021-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted layout in 'RDLogEventDialog' to be compatible with
 	12 hour time format.
+2021-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Tightened up the validation checking in 'RDTimeEdit'.

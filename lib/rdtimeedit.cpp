@@ -29,8 +29,8 @@ RDTimeEdit::RDTimeEdit(QWidget *parent)
 {
   d_show_hours=true;
   d_show_tenths=false;
-  d_current_step_size=1;
   d_step_enabled=StepDownEnabled|StepUpEnabled;
+  d_width_variance=0;
 
   SetFormat();
 }
@@ -74,11 +74,30 @@ QValidator::State RDTimeEdit::validate(QString &input,int &pos) const
     return ret;
   }
   if(ret==QValidator::Acceptable) {
-    if(input.length()!=displayFormat().length()) {
+    if((input.length()!=displayFormat().length())&&
+       (input.length()!=(displayFormat().length()+d_width_variance))) {
       return QValidator::Intermediate;
     }
   }
   return ret;
+}
+
+
+void RDTimeEdit::fixup(QString &input) const
+{
+  //
+  // Don't allow higher precision than tenths of a second
+  //
+  if(d_show_tenths) {
+    QStringList f0=input.split(".",QString::KeepEmptyParts);
+    if(f0.size()==2) {
+      QStringList f1=f0.at(1).split(" ");
+      if(f1.at(0).length()>1) {
+	input.replace("."+f1.at(0),"."+f1.at(0).left(1));
+      }
+    }
+  }
+  QTimeEdit::fixup(input);
 }
 
 
@@ -170,17 +189,21 @@ void RDTimeEdit::SetFormat()
     if(d_show_tenths) {
       if(d_show_hours) {
 	setDisplayFormat(RD_TWELVE_HOUR_TENTHS_FORMAT);
+	d_width_variance=1;
       }
       else {
 	setDisplayFormat(RD_OFFSET_TENTHS_FORMAT);
+	d_width_variance=0;
       }
     }
     else {
       if(d_show_hours) {
 	setDisplayFormat(RD_TWELVE_HOUR_FORMAT);
+	d_width_variance=0;
       }
       else {
 	setDisplayFormat(RD_OFFSET_FORMAT);
+	d_width_variance=0;
       }
     }
   }
@@ -188,17 +211,21 @@ void RDTimeEdit::SetFormat()
     if(d_show_tenths) {
       if(d_show_hours) {
 	setDisplayFormat(RD_TWENTYFOUR_HOUR_TENTHS_FORMAT);
+	d_width_variance=0;
       }
       else {
 	setDisplayFormat(RD_OFFSET_TENTHS_FORMAT);
+	d_width_variance=0;
       }
     }
     else {
       if(d_show_hours) {
 	setDisplayFormat(RD_TWENTYFOUR_HOUR_FORMAT);
+	d_width_variance=0;
       }
       else {
 	setDisplayFormat(RD_OFFSET_FORMAT);
+	d_width_variance=0;
       }
     }
   }

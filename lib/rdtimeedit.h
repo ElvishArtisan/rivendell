@@ -36,6 +36,7 @@ class RDTimeEdit : public QTimeEdit
 
  protected:
   QValidator::State validate(QString &input,int &pos) const;
+  void fixup(QString &input) const;
   void stepBy(int steps);
   QAbstractSpinBox::StepEnabled stepEnabled() const;
 
@@ -43,7 +44,7 @@ class RDTimeEdit : public QTimeEdit
   void SetFormat();
   bool d_show_hours;
   bool d_show_tenths;
-  int d_current_step_size;
+  int d_width_variance;
   QAbstractSpinBox::StepEnabled d_step_enabled;
 };
 
