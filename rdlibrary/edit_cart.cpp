@@ -182,9 +182,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   //
   rdcart_controls.forced_length_edit=new RDTimeEdit(this);
   rdcart_controls.forced_length_edit->setGeometry(530,36,85,21);
-  rdcart_controls.forced_length_edit->
-    setDisplay(RDTimeEdit::Hours|RDTimeEdit::Minutes|RDTimeEdit::Seconds|
-	       RDTimeEdit::Tenths);
+  rdcart_controls.forced_length_edit->setShowTenths(true);
   rdcart_forced_length_ledit=new QLineEdit(this);
   rdcart_forced_length_ledit->setGeometry(535,36,80,21);
   rdcart_forced_length_ledit->hide();

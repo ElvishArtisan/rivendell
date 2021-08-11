@@ -229,15 +229,15 @@ void RDSystem::setShortDateFormat(const QString &str)
 }
 
 
-QString RDSystem::timeFormat() const
+bool RDSystem::showTwelveHourTime() const
 {
-  return GetValue("TIME_FORMAT").toString();
+  return RDBool(GetValue("SHOW_TWELVE_HOUR_TIME").toString());
 }
 
 
-void RDSystem::setTimeFormat(const QString &str)
+void RDSystem::setShowTwelveHourTime(bool state) const
 {
-  SetRow("TIME_FORMAT",str);
+  SetRow("SHOW_TWELVE_HOUR_TIME",RDYesNo(state));
 }
 
 
@@ -252,7 +252,7 @@ QString RDSystem::xml() const
   xml+=RDXmlField("tempCartGroup",tempCartGroup());
   xml+=RDXmlField("longDateFormat",longDateFormat());
   xml+=RDXmlField("shortDateFormat",shortDateFormat());
-  xml+=RDXmlField("timeFormat",timeFormat());
+  xml+=RDXmlField("showTwelveHourTime",showTwelveHourTime());
   xml+="</systemSettings>\n";
 
   return xml;

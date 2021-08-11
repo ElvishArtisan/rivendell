@@ -104,7 +104,7 @@ class EditSystem : public RDDialog
   QLabel *edit_short_date_label;
   QLineEdit *edit_short_date_edit;
   QLabel *edit_time_label;
-  QLineEdit *edit_time_edit;
+  QComboBox *edit_time_box;
   QPushButton *edit_datetime_test_button;
   QPushButton *edit_datetime_defaults_button;
   TestDatetimes *edit_test_datetimes_dialog;

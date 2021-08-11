@@ -17,4 +17,4 @@ RSS_PROCESSOR_STATION varchar(64)
 ORIGIN_EMAIL_ADDRESS  varchar(64)
 LONG_DATE_FORMAT      varchar(32)        Default 'dddd, MMMM d yyyy'
 SHORT_DATE_FORMAT     varchar(32)        Default 'MM/dd/yyyy'
-TIME_FORMAT           varchar(32)        Default 'hh:mm:ss'
+SHOW_TWELVE_HOUR_TIME enum('N','Y')      Default 'N'

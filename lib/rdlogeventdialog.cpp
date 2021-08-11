@@ -2,7 +2,7 @@
 //
 // Base class for rdlogedit(1) event editor dialogs
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,9 +44,8 @@ RDLogEventDialog::RDLogEventDialog(RDLogLine *line,QWidget *parent)
   // Start Time
   //
   edit_time_edit=new RDTimeEdit(this);
-  edit_time_edit->setDisplay(RDTimeEdit::Hours|RDTimeEdit::Minutes|
-			     RDTimeEdit::Seconds|RDTimeEdit::Tenths);
-  connect(edit_time_edit,SIGNAL(valueChanged(const QTime &)),
+  edit_time_edit->setShowTenths(true);
+  connect(edit_time_edit,SIGNAL(timeChanged(const QTime &)),
 	  this,SLOT(timeChangedData(const QTime &)));
 
   //

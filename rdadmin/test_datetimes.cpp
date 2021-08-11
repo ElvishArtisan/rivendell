@@ -61,13 +61,18 @@ QSize TestDatetimes::sizeHint() const
 }
 
 
-int TestDatetimes::exec(const QString &long_date_fmt,\
-		       const QString &short_date_fmt,
-		       const QString &time_fmt)
+int TestDatetimes::exec(const QString &long_date_fmt,
+			const QString &short_date_fmt,
+			bool use12hour)
 {
   d_long_date_label->setText(d_sample_datetime.toString(long_date_fmt));
   d_short_date_label->setText(d_sample_datetime.toString(short_date_fmt));
-  d_time_label->setText(d_sample_datetime.toString(time_fmt));
+  if(use12hour) {
+    d_time_label->setText(d_sample_datetime.toString("h:mm:ss ap"));
+  }
+  else {
+    d_time_label->setText(d_sample_datetime.toString("hh:mm:ss"));
+  }
 
   return QDialog::exec();
 }

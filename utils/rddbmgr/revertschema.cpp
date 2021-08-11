@@ -41,6 +41,20 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 352
+  //
+  if((cur_schema==352)&&(set_schema<cur_schema)) {
+    DropColumn("SYSTEM","SHOW_TWELVE_HOUR_TIME");
+    sql=QString("alter table `SYSTEM` ")+
+      "add column `TIME_FORMAT` varchar(32) not null default 'hh:mm:ss' "+
+      "after `SHORT_DATE_FORMAT`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 351
   //
   if((cur_schema==351)&&(set_schema<cur_schema)) {

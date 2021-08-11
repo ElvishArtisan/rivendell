@@ -70,7 +70,7 @@ class RDCoreApplication : public QObject
   RDStation *station();
   RDSystem *system();
   RDUser *user();
-  bool timeFormatIs24Hour() const;
+  bool showTwelveHourTime() const;
   QString longDateString(const QDate &date)  const;
   QString shortDateString(const QDate &date) const;
   QString timeString(const QTime &time) const;
@@ -111,7 +111,7 @@ class RDCoreApplication : public QObject
   QString app_usage;
   QString app_long_date_format;
   QString app_short_date_format;
-  QString app_time_format;
+  bool app_show_twelve_hour_time;
 };
 
 #endif  // RDCOREAPPLICATION_H

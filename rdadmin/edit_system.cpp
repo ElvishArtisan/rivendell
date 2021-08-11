@@ -214,9 +214,10 @@ EditSystem::EditSystem(QWidget *parent)
     new QLabel(tr("Time Format")+":",edit_datetime_group);
   edit_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_time_label->setFont(labelFont());
-  edit_time_edit=new QLineEdit(edit_datetime_group);
-  edit_time_edit->setFont(defaultFont());
-  edit_time_edit->setMaxLength(32);
+  edit_time_box=new QComboBox(edit_datetime_group);
+  edit_time_box->setFont(defaultFont());
+  edit_time_box->insertItem(0,tr("Twenty Four Hour"));
+  edit_time_box->insertItem(1,tr("Twelve Hour"));
 
   edit_datetime_test_button=new QPushButton(tr("Test"),edit_datetime_group);
   connect(edit_datetime_test_button,SIGNAL(clicked()),
@@ -266,7 +267,12 @@ EditSystem::EditSystem(QWidget *parent)
   edit_show_user_list_box->setChecked(edit_system->showUserList());
   edit_long_date_edit->setText(edit_system->longDateFormat());
   edit_short_date_edit->setText(edit_system->shortDateFormat());
-  edit_time_edit->setText(edit_system->timeFormat());
+  if(edit_system->showTwelveHourTime()) {
+    edit_time_box->setCurrentIndex(1);
+  }
+  else {
+    edit_time_box->setCurrentIndex(0);
+  }
 
   QString station=edit_system->rssProcessorStation();
   for(int i=0;i<edit_rss_processor_box->count();i++) {
@@ -381,7 +387,7 @@ void EditSystem::datetimeTestData()
 {
   edit_test_datetimes_dialog->exec(edit_long_date_edit->text(),
 				   edit_short_date_edit->text(),
-				   edit_time_edit->text());
+				   edit_time_box->currentIndex());
 }
 
 
@@ -396,7 +402,7 @@ void EditSystem::datetimeDefaultsData()
   }
   edit_long_date_edit->setText(RD_DEFAULT_LONG_DATE_FORMAT);
   edit_short_date_edit->setText(RD_DEFAULT_SHORT_DATE_FORMAT);
-  edit_time_edit->setText(RD_DEFAULT_TIME_FORMAT);
+  edit_time_box->setCurrentIndex(0);
 }
 
 
@@ -405,7 +411,6 @@ void EditSystem::okData()
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
-  //  std::map<unsigned,QString> dups;
   QMultiMap<unsigned,QString> dups;
 
   if(edit_duplicate_carts_box->isChecked()!=
@@ -513,7 +518,7 @@ void EditSystem::okData()
   }
   edit_system->setLongDateFormat(edit_long_date_edit->text());
   edit_system->setShortDateFormat(edit_short_date_edit->text());
-  edit_system->setTimeFormat(edit_time_edit->text());
+  edit_system->setShowTwelveHourTime(edit_time_box->currentIndex());
 
   done(true);
 }
@@ -587,7 +592,7 @@ void EditSystem::resizeEvent(QResizeEvent *e)
   edit_short_date_label->setGeometry(110,49,120,20);
   edit_short_date_edit->setGeometry(235,49,edit_datetime_group->width()-240,20);
   edit_time_label->setGeometry(110,71,120,20);
-  edit_time_edit->setGeometry(235,71,edit_datetime_group->width()-240,20);
+  edit_time_box->setGeometry(235,71,edit_time_box->sizeHint().width(),20);
 
   edit_duplicate_hidden_label->setGeometry(15,329,size().width()-30,50);
   edit_duplicate_view->setGeometry(10,377,size().width()-20,215);

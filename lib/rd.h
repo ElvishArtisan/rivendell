@@ -650,11 +650,20 @@
 #define RD_LISTWIDGET_ITEM_WIDTH_PADDING 20
 
 /*
- * Default Date/Time Formats
+ * Date/Time Formats
  */
 #define RD_DEFAULT_LONG_DATE_FORMAT "dddd, MMMM d yyyy"
 #define RD_DEFAULT_SHORT_DATE_FORMAT "MM/dd/yy"
-#define RD_DEFAULT_TIME_FORMAT "hh:mm:ss"
+
+#define RD_TWENTYFOUR_HOUR_FORMAT "hh:mm:ss"
+#define RD_TWENTYFOUR_HOUR_TENTHS_FORMAT "hh:mm:ss.z"
+
+#define RD_TWELVE_HOUR_FORMAT "h:mm:ss AP"
+#define RD_TWELVE_HOUR_TENTHS_FORMAT "h:mm:ss.z AP"
+
+#define RD_OFFSET_FORMAT "mm:ss"
+#define RD_OFFSET_TENTHS_FORMAT "mm:ss.z"
+
 
 
 #endif  // RD_H

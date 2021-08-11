@@ -41,9 +41,8 @@ EditEvent::EditEvent(RDLogPlay *log,QWidget *parent)
   // Start Time
   //
   edit_time_edit=new RDTimeEdit(this);
-  edit_time_edit->setDisplay(RDTimeEdit::Hours|RDTimeEdit::Minutes|
-			     RDTimeEdit::Seconds|RDTimeEdit::Tenths);
-  connect(edit_time_edit,SIGNAL(valueChanged(const QTime &)),
+  edit_time_edit->setShowTenths(true);
+  connect(edit_time_edit,SIGNAL(timeChanged(const QTime &)),
 	  this,SLOT(timeChangedData(const QTime &)));
 
   //
@@ -66,9 +65,10 @@ EditEvent::EditEvent(RDLogPlay *log,QWidget *parent)
   radio_button=new QRadioButton(tr("Wait up to"),edit_grace_group);
   edit_grace_bgroup->addButton(radio_button,2);
   radio_button->setFont(subLabelFont());
-  edit_grace_edit=new RDTimeEdit(this);
-  edit_grace_edit->setDisplay(RDTimeEdit::Minutes|RDTimeEdit::Seconds|
-			      RDTimeEdit::Tenths);
+  edit_grace_edit=new RDTimeEdit(edit_grace_group);
+  edit_grace_edit->setFont(defaultFont());
+  edit_grace_edit->setShowHours(false);
+  edit_grace_edit->setShowTenths(true);
   connect(edit_timetype_box,SIGNAL(toggled(bool)),
 	  this,SLOT(timeToggledData(bool)));
 
@@ -146,7 +146,8 @@ EditEvent::~EditEvent()
 
 QSize EditEvent::sizeHint() const
 {
-  return QSize(625,edit_height);
+  //  return QSize(625,edit_height);
+  return QSize(665,edit_height);
 } 
 
 
@@ -308,7 +309,7 @@ int EditEvent::exec(int line)
   // Fix the Window Size
   //
   setMinimumSize(sizeHint());
-  setMaximumSize(sizeHint());
+  //  setMaximumSize(sizeHint());
 
   resize(sizeHint());
 
@@ -447,13 +448,13 @@ void EditEvent::resizeEvent(QResizeEvent *e)
 {
   edit_timetype_box->setGeometry(10,22,15,15);
   edit_timetype_label->setGeometry(30,21,85,17);
-  edit_time_edit->setGeometry(85,19,85,20);
-
-  edit_grace_group->setGeometry(175,11,435,50);
+  edit_time_edit->setGeometry(85,19,120,20);
+  edit_grace_group->setGeometry(215,11,435,50);
+  edit_width=edit_grace_group->x()+edit_grace_group->width()+400;
   edit_grace_bgroup->button(0)->setGeometry(10,21,145,20);
   edit_grace_bgroup->button(1)->setGeometry(155,21,105,20);
   edit_grace_bgroup->button(2)->setGeometry(265,21,95,20);
-  edit_grace_edit->setGeometry(538,31,65,20);
+  edit_grace_edit->setGeometry(345,21,75,20);
 
   edit_overlap_box->setGeometry(30,72,15,15);
   edit_overlap_label->setGeometry(50,68,400,26);
@@ -463,7 +464,7 @@ void EditEvent::resizeEvent(QResizeEvent *e)
 
   edit_horizrule_label->setGeometry(0,122,size().width(),3);
 
-  edit_cue_edit->setGeometry(20,132,edit_cue_edit->sizeHint().width(),
+  edit_cue_edit->setGeometry(20+25,132,edit_cue_edit->sizeHint().width(),
 			     edit_cue_edit->sizeHint().height());
   if(edit_using_cue) {
     edit_cart_notes_label->

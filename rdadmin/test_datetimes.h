@@ -35,7 +35,7 @@ class TestDatetimes : public RDDialog
 
  public slots:
   int exec(const QString &long_date_fmt,const QString &short_date_fmt,
-	   const QString &time_fmt);
+	   bool use12hour);
 
  private slots:
   void closeData();

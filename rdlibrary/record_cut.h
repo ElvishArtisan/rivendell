@@ -2,7 +2,7 @@
 //
 // Record a Rivendell cut.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,18 +23,19 @@
 
 #define RECORD_CUT_TIMER_INTERVAL 100
 
-#include <qbuttongroup.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qdatetimeedit.h>
-#include <qgroupbox.h>
-#include <qlineedit.h>
-#include <qradiobutton.h>
-#include <qspinbox.h>
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDateTimeEdit>
+#include <QGroupBox>
+#include <QLineEdit>
+#include <QRadioButton>
+#include <QSpinBox>
 
 #include <rddialog.h>
 #include <rdstereometer.h>
 #include <rdtimeedit.h>
+#include <rdtransportbutton.h>
 #include <rdwavefile.h>
 
 #include "globals.h"

@@ -103,11 +103,11 @@ void RDLogModel::setFont(const QFont &font)
   //
   // Calculate Minimum Column Widths
   //
-  if(rda->timeFormatIs24Hour()) {
-    d_size_hints[0]=QSize(40+d_bold_fms->width("T00:00:00"),0);
+  if(rda->showTwelveHourTime()) {
+    d_size_hints[0]=QSize(40+d_bold_fms->width("T00:00:00.0 AM"),0);
   }
   else {
-    d_size_hints[0]=QSize(40+d_bold_fms->width("T00:00:00 AM"),0);
+    d_size_hints[0]=QSize(40+d_bold_fms->width("T00:00:00.0"),0);
   }
   width=d_bold_fms->width(tr("PLAY"));
   if(d_bold_fms->width(tr("SEGUE"))>width) {

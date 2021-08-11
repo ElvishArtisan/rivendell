@@ -22193,3 +22193,10 @@
 2021-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdservice(8) that could cause a segfault when
 	restarting dropboxes.
+2021-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'SYSTEM.TIME_FORMAT' field from the database.
+	* Added a 'SYSTEM.SHOW_TWELVE_HOUR_TIME' field to the database.
+	* Incremented the database version 352.
+	* Added 'RDSystem::showTwelveHourTime()' and
+	'RDSystem::setShowTwelveHourTime()' methods.
+	* Refactored 'RDTimeEdit' to support 12 hour time format.

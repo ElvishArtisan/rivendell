@@ -52,8 +52,8 @@ class RDSystem
   void setLongDateFormat(const QString &str);
   QString shortDateFormat() const;
   void setShortDateFormat(const QString &str);
-  QString timeFormat() const;
-  void setTimeFormat(const QString &str);
+  bool showTwelveHourTime() const;
+  void setShowTwelveHourTime(bool state) const;
   QString xml() const;
 
  private:

@@ -18,486 +18,188 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QLineEdit>
+#include <QStringList>
+
+#include "rdapplication.h"
 #include "rdtimeedit.h"
 
 RDTimeEdit::RDTimeEdit(QWidget *parent)
-  : QFrame(parent)
+  : QTimeEdit(parent)
 {
-  edit_display=0;
-  edit_section=0;
-  edit_read_only=false;
-  edit_digit=0;
-  GetSizeHint();
-  setFrameStyle(QFrame::StyledPanel|QFrame::Sunken);
-  setLineWidth(1);
-  setMidLineWidth(3);
-  setFocusPolicy(Qt::StrongFocus);
-  QPalette p=palette();
-  p.setColor(QPalette::Active,QPalette::Background,
-	     p.color(QPalette::Active,QPalette::Base));
-  setPalette(p);
-  edit_labels[0]=new QLabel("00",this);
-  edit_labels[0]->setAlignment(Qt::AlignCenter);
-  edit_labels[0]->setAutoFillBackground(true);
-  edit_labels[1]=new QLabel("00",this);
-  edit_labels[1]->setAlignment(Qt::AlignCenter);
-  edit_labels[1]->setAutoFillBackground(true);
-  edit_labels[2]=new QLabel("00",this);
-  edit_labels[2]->setAlignment(Qt::AlignCenter);
-  edit_labels[2]->setAutoFillBackground(true);
-  edit_labels[3]=new QLabel("0",this);
-  edit_labels[3]->setAlignment(Qt::AlignCenter);
-  edit_labels[3]->setAutoFillBackground(true);
-  edit_sep_labels[0]=new QLabel(":",this);
-  edit_sep_labels[0]->setAlignment(Qt::AlignCenter);
-  edit_sep_labels[1]=new QLabel(":",this);
-  edit_sep_labels[1]->setAlignment(Qt::AlignCenter);
-  edit_sep_labels[2]=new QLabel(".",this);
-  edit_sep_labels[2]->setAlignment(Qt::AlignCenter);
-  edit_up_button=new RDTransportButton(RDTransportButton::Up,this);
-  edit_up_button->setFocusPolicy(Qt::NoFocus);
-  connect(edit_up_button,SIGNAL(clicked()),this,SLOT(upClickedData()));
-  edit_down_button=new RDTransportButton(RDTransportButton::Down,this);
-  edit_down_button->setFocusPolicy(Qt::NoFocus);
-  connect(edit_down_button,SIGNAL(clicked()),this,SLOT(downClickedData()));
-  setDisplay(RDTimeEdit::Hours|RDTimeEdit::Minutes|RDTimeEdit::Seconds);
+  d_show_hours=true;
+  d_show_tenths=false;
+  d_current_step_size=1;
+  d_step_enabled=StepDownEnabled|StepUpEnabled;
+
+  SetFormat();
 }
 
 
-RDTimeEdit::~RDTimeEdit()
+bool RDTimeEdit::showHours() const
 {
-  for(unsigned i=0;i<4;i++) {
-    delete edit_labels[i];
+  return d_show_hours;
+}
+
+
+void RDTimeEdit::setShowHours(bool state)
+{
+  if(d_show_hours!=state) {
+    d_show_hours=state;
+    SetFormat();
   }
-  for(unsigned i=0;i<3;i++) {
-    delete edit_sep_labels[i];
+}
+
+
+bool RDTimeEdit::showTenths() const
+{
+  return d_show_tenths;
+}
+
+
+void RDTimeEdit::setShowTenths(bool state)
+{
+  if(state!=d_show_tenths) {
+    d_show_tenths=state;
+    SetFormat();
   }
-  delete edit_up_button;
-  delete edit_down_button;
 }
 
 
-QSize RDTimeEdit::sizeHint() const
+QValidator::State RDTimeEdit::validate(QString &input,int &pos) const
 {
-  return QSize(edit_widths[0]+edit_widths[1]+edit_widths[2]+
-	       edit_sep_widths[0]+edit_sep_widths[1],
-	       edit_height);
+  QValidator::State ret=QTimeEdit::validate(input,pos);
+
+  if((!d_show_tenths)||(ret==QValidator::Invalid)) {
+    return ret;
+  }
+  if(ret==QValidator::Acceptable) {
+    if(input.length()!=displayFormat().length()) {
+      return QValidator::Intermediate;
+    }
+  }
+  return ret;
 }
 
 
-QSizePolicy RDTimeEdit::sizePolicy() const
+void RDTimeEdit::stepBy(int steps)
 {
-  return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-}
+  int step_size=1;
+  int tenths=-1;
+  int tenths_lo_limit=0;
+  int tenths_hi_limit=9;
+  bool ok=false;
 
-
-QTime RDTimeEdit::time() const
-{
-  return QTime(edit_labels[0]->text().toInt(),
-	       edit_labels[1]->text().toInt(),
-	       edit_labels[2]->text().toInt(),
-	       100*edit_labels[3]->text().toInt());
-}
-
-
-bool RDTimeEdit::isReadOnly() const
-{
-  return edit_read_only;
-}
-
-
-void RDTimeEdit::setFont(const QFont &f)
-{
-  QFrame::setFont(f);
-  GetSizeHint();
-}
-
-
-uint RDTimeEdit::display() const
-{
-  return edit_display;
-}
-
-
-void RDTimeEdit::setDisplay(uint disp)
-{
-  edit_section=-1;
-  for(unsigned i=0;i<4;i++) {
-    if((disp&(1<<i))==0) {
-      edit_labels[i]->hide();
+  if(d_show_tenths) {
+    if(displayFormat()==RD_TWENTYFOUR_HOUR_TENTHS_FORMAT) {
+      if(lineEdit()->cursorPosition()>8) {
+	tenths=lineEdit()->text().mid(9,1).toInt(&ok);
+	if(!ok) {
+	  return;
+	}
+	step_size=100;
+      }
+    }
+    if(displayFormat()==RD_TWELVE_HOUR_TENTHS_FORMAT) {
+      int offset=7;
+      if(lineEdit()->text().mid(2,1)==":") {
+	offset=8;
+      }
+      if((lineEdit()->cursorPosition()>offset)&&
+	 (lineEdit()->cursorPosition()<=(offset+2))) {
+	tenths=lineEdit()->text().mid(offset+1,1).toInt(&ok);
+	if(!ok) {
+	  return;
+	}
+	step_size=100;
+      }
+    }
+    if(displayFormat()==RD_OFFSET_TENTHS_FORMAT) {
+      if(lineEdit()->cursorPosition()>5) {
+	tenths=lineEdit()->text().mid(6,1).toInt(&ok);
+	if(!ok) {
+	  return;
+	}
+	step_size=100;
+      }
+    }
+    if(steps>0) {
+      if(tenths>=9) {
+	return;
+      }
+      QTimeEdit::stepBy(step_size);
+      tenths_lo_limit=-1;
+      tenths_hi_limit=8;
+    }
+    if(steps<0) {
+      QTimeEdit::stepBy(-step_size);
+      tenths_lo_limit=1;
+      tenths_hi_limit=10;
+    }
+    if(tenths<0) {
+      d_step_enabled=QTimeEdit::stepEnabled();
     }
     else {
-      edit_labels[i]->show();
-      if(edit_section<0) {
-	edit_section=i;
+      d_step_enabled=0;
+      if(tenths>tenths_lo_limit) {
+	d_step_enabled=d_step_enabled|StepDownEnabled;
+      }
+      if(tenths<tenths_hi_limit) {
+	d_step_enabled=d_step_enabled|StepUpEnabled;
       }
     }
   }
-  for(unsigned i=1;i<4;i++) {
-    if(((disp&(1<<(i-1)))==0)||((disp&(1<<i))==0)) {
-      edit_sep_labels[i-1]->hide();
-    }
-    else {
-      edit_sep_labels[i-1]->show();
-    }
-  }
-  edit_display=disp;
-  GetSizeHint();
-  setGeometry(geometry());
-}
-
-
-void RDTimeEdit::setGeometry(int x,int y,int w,int h)
-{
-  QFrame::setGeometry(x,y,w,h);
-  QFontMetrics fm(font());
-  int fy=h-fm.height();
-  int fx=contentsRect().x()+fy;
-
-  edit_labels[0]->setGeometry(fx,fy,edit_widths[0],edit_height);
-  edit_section_x[0]=fx+edit_widths[0]+edit_sep_widths[0]/2;
-  edit_sep_labels[0]->
-    setGeometry(fx+edit_widths[0],fy,edit_sep_widths[0],edit_height);
-  edit_labels[1]->
-    setGeometry(fx+edit_widths[0]+edit_sep_widths[0],fy,edit_widths[1],
-		edit_height);
-  edit_section_x[1]=
-    fx+edit_widths[0]+edit_sep_widths[0]+edit_widths[1]+edit_sep_widths[0]/2;
-  edit_sep_labels[1]->
-    setGeometry(fx+edit_widths[0]+edit_sep_widths[0]+edit_widths[1],fy,
-		edit_sep_widths[1],edit_height);
-  edit_labels[2]->
-    setGeometry(fx+edit_widths[0]+edit_widths[1]+
-		edit_sep_widths[0]+edit_sep_widths[1],fy,
-		edit_widths[2],edit_height);
-
-  edit_section_x[2]=
-    fx+edit_widths[0]+edit_sep_widths[0]+edit_sep_widths[1]+
-    edit_widths[1]+edit_widths[2]+edit_sep_widths[2]/2;
-  edit_sep_labels[2]->
-    setGeometry(fx+edit_widths[0]+edit_sep_widths[0]+edit_sep_widths[1]+edit_widths[1]+
-		edit_widths[2],fy,edit_sep_widths[2],edit_height);
-  edit_labels[3]->
-    setGeometry(fx+edit_widths[0]+edit_widths[1]+
-		edit_sep_widths[0]+edit_sep_widths[1]+
-		edit_widths[2]+edit_sep_widths[2],fy,
-		edit_widths[3],edit_height);
-  int button_x=fx+edit_widths[0]+edit_widths[1]+edit_widths[2]+
-    edit_sep_widths[0]+edit_sep_widths[1]+edit_widths[3]+edit_sep_widths[2]+fy;
-  edit_up_button->setGeometry(button_x,0,w-button_x,h/2);
-  edit_down_button->setGeometry(button_x,h/2,w-button_x,h/2);
-}
-
-
-void RDTimeEdit::setTime(const QTime &time)
-{
-  edit_labels[0]->setText(time.toString("hh"));
-  edit_labels[1]->setText(time.toString("mm"));
-  edit_labels[2]->setText(time.toString("ss"));
-  edit_labels[3]->setText(QString().sprintf("%d",time.msec()/100));
-}
-
-
-void RDTimeEdit::setReadOnly(bool state)
-{
-  if(state) {
-    setFocusPolicy(Qt::NoFocus);
-  }
   else {
-    setFocusPolicy(Qt::StrongFocus);
-  }
-  edit_read_only=state;
-}
-
-
-void RDTimeEdit::setFocus()
-{
-  QPalette p=palette();
-  for(int i=0;i<4;i++) {
-    edit_labels[i]->setPalette(p);
-  }
-  p.setColor(QPalette::Active,QPalette::Background,
-	     p.color(QPalette::Active,QPalette::Highlight));
-  p.setColor(QPalette::Active,QPalette::Foreground,
-	     p.color(QPalette::Active,QPalette::HighlightedText));
-  edit_labels[edit_section]->setPalette(p);
-  QFrame::setFocus();
-}
-
-
-void RDTimeEdit::setGeometry(const QRect &r)
-{
-  setGeometry(r.x(),r.y(),r.width(),r.height());
-}
-
-
-void RDTimeEdit::upClickedData()
-{
-  int value;
-
-  if(edit_read_only) {
-    return;
-  }
-  setFocus();
-  switch(edit_section) {
-  case 0:
-    if((value=edit_labels[edit_section]->text().toInt())<23) {
-      value++;
-    }
-    else {
-      value=0;
-    }
-    edit_labels[edit_section]->setText(QString().sprintf("%02d",value));
-    emit valueChanged(time());
-    break;
-
-  case 1:
-  case 2:
-    if((value=edit_labels[edit_section]->text().toInt())<59) {
-      value++;
-    }
-    else {
-      value=0;
-    }
-    edit_labels[edit_section]->setText(QString().sprintf("%02d",value));
-    emit valueChanged(time());
-    break;
-
-  case 3:
-    if((value=edit_labels[edit_section]->text().toInt())<9) {
-      value++;
-    }
-    else {
-      value=0;
-    }
-    edit_labels[edit_section]->setText(QString().sprintf("%d",value));
-    emit valueChanged(time());
-    break;
+    QTimeEdit::stepBy(steps);
   }
 }
 
 
-void RDTimeEdit::downClickedData()
+QAbstractSpinBox::StepEnabled RDTimeEdit::stepEnabled() const
 {
-  int value;
-
-  if(edit_read_only) {
-    return;
+  if(d_show_tenths) {
+    return d_step_enabled;
   }
-  setFocus();
-  switch(edit_section) {
-  case 0:
-    if((value=edit_labels[edit_section]->text().toInt())>0) {
-      value--;
-    }
-    else {
-      value=23;
-    }
-    edit_labels[edit_section]->setText(QString().sprintf("%02d",value));
-    emit valueChanged(time());
-    break;
-
-  case 1:
-  case 2:
-    if((value=edit_labels[edit_section]->text().toInt())>0) {
-      value--;
-    }
-    else {
-      value=59;
-    }
-    edit_labels[edit_section]->setText(QString().sprintf("%02d",value));
-    emit valueChanged(time());
-    break;
-
-  case 3:
-    if((value=edit_labels[edit_section]->text().toInt())>0) {
-      value--;
-    }
-    else {
-      value=9;
-    }
-    edit_labels[edit_section]->setText(QString().sprintf("%d",value));
-    emit valueChanged(time());
-    break;
-  }
+  return QTimeEdit::stepEnabled();
 }
 
 
-void RDTimeEdit::mousePressEvent(QMouseEvent *e)
+void RDTimeEdit::SetFormat()
 {
-  int section=0;
-
-  if(edit_read_only) {
-    return;
-  }
-  if(e->x()<edit_section_x[0]) {
-    section=0;
-  }
-  else {
-    if(e->x()<edit_section_x[1]) {
-      section=1;
-    }
-    else {
-      if(e->x()<edit_section_x[2]) {
-	section=2;
+  if(rda->system()->showTwelveHourTime()) {
+    if(d_show_tenths) {
+      if(d_show_hours) {
+	setDisplayFormat(RD_TWELVE_HOUR_TENTHS_FORMAT);
       }
       else {
-	section=3;
+	setDisplayFormat(RD_OFFSET_TENTHS_FORMAT);
       }
-    }
-  }
-  if(edit_section!=section) {
-    edit_section=section;
-    edit_digit=0;
-  }
-  setFocus();
-}
-
-
-void RDTimeEdit::wheelEvent(QWheelEvent *e)
-{
-  if(e->delta()>=0) {
-    upClickedData();
-  }
-  else {
-    downClickedData();
-  }
-  e->accept();
-}
-
-
-void RDTimeEdit::keyPressEvent(QKeyEvent *e)
-{
-  if(edit_read_only) {
-    e->ignore();
-    return;
-  }
-  switch(e->key()) {
-  case Qt::Key_0:
-  case Qt::Key_1:
-  case Qt::Key_2:
-  case Qt::Key_3:
-  case Qt::Key_4:
-  case Qt::Key_5:
-  case Qt::Key_6:
-  case Qt::Key_7:
-  case Qt::Key_8:
-  case Qt::Key_9:
-    ProcessNumericKey(e->text().left(1).toInt());
-    e->accept();
-    break;
-
-  case Qt::Key_Left:
-    if((edit_section>0)&&(((1<<(edit_section-1))&edit_display)!=0)) {
-      edit_section--;
-      edit_digit=0;
-      setFocus();
-    }
-    e->accept();
-    break;
-
-  case Qt::Key_Right:
-    if(((1<<(edit_section+1))&edit_display)!=0) {
-      edit_section++;
-      edit_digit=0;
-      setFocus();
-    }
-    e->accept();
-    break;
-
-  case Qt::Key_Up:
-    upClickedData();
-    break;
-
-  case Qt::Key_Down:
-    downClickedData();
-    break;
-
-  default:
-    e->ignore();
-    break;
-  }
-}
-
-
-void RDTimeEdit::focusInEvent(QFocusEvent *e)
-{
-  QFrame::focusInEvent(e);
-}
-
-
-void RDTimeEdit::focusOutEvent(QFocusEvent *e)
-{
-  QFrame::focusOutEvent(e);
-  QPalette p=palette();
-  for(int i=0;i<4;i++) {
-    edit_labels[i]->setPalette(p);
-  }
-  QFrame::focusOutEvent(e);
-}
-
-
-void RDTimeEdit::GetSizeHint()
-{
-  QFontMetrics fm(font());
-  if((edit_display&RDTimeEdit::Hours)==0) {
-    edit_widths[0]=0;
-    edit_sep_widths[0]=0;
-  }
-  else {
-    edit_widths[0]=fm.width("00");
-    edit_sep_widths[0]=fm.width(":");
-  }
-  if((edit_display&RDTimeEdit::Minutes)==0) {
-    edit_widths[1]=0;
-    edit_sep_widths[1]=0;
-  }
-  else {
-    edit_widths[1]=fm.width("00");
-    edit_sep_widths[1]=fm.width(":");
-  }
-  if((edit_display&RDTimeEdit::Seconds)==0) {
-    edit_widths[2]=0;
-    edit_sep_widths[2]=0;
-  }
-  else {
-    edit_widths[2]=fm.width("00");
-    edit_sep_widths[2]=fm.width(".");
-  }
-  if((edit_display&RDTimeEdit::Tenths)==0) {
-    edit_widths[3]=0;
-  }
-  else {
-    edit_widths[3]=fm.width("0");
-  }
-  edit_height=fm.ascent();
-}
-
-
-void RDTimeEdit::ProcessNumericKey(int num)
-{
-  int ten;
-
-  switch(edit_section) {
-  case 0:
-  case 1:
-  case 2:
-    if(edit_digit==0) {
-      edit_labels[edit_section]->setText(QString().sprintf("0%d",num));
-      edit_digit=1;
     }
     else {
-      ten=edit_labels[edit_section]->text().toInt();
-      if(ten>5) {
-	ten=0;
+      if(d_show_hours) {
+	setDisplayFormat(RD_TWELVE_HOUR_FORMAT);
       }
-      edit_labels[edit_section]->setText(QString().sprintf("%d%d",ten,num));
+      else {
+	setDisplayFormat(RD_OFFSET_FORMAT);
+      }
     }
-    break;
-
-  case 3:
-    edit_labels[3]->setText(QString().sprintf("%d",num));
-    break;
   }
-  emit valueChanged(time());
+  else {
+    if(d_show_tenths) {
+      if(d_show_hours) {
+	setDisplayFormat(RD_TWENTYFOUR_HOUR_TENTHS_FORMAT);
+      }
+      else {
+	setDisplayFormat(RD_OFFSET_TENTHS_FORMAT);
+      }
+    }
+    else {
+      if(d_show_hours) {
+	setDisplayFormat(RD_TWENTYFOUR_HOUR_FORMAT);
+      }
+      else {
+	setDisplayFormat(RD_OFFSET_FORMAT);
+      }
+    }
+  }
 }

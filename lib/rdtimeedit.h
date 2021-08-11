@@ -21,62 +21,30 @@
 #ifndef RDTIMEEDIT_H
 #define RDTIMEEDIT_H
 
-#include <QDateTime>
-#include <QLabel>
+#include <QTimeEdit>
+#include <QValidator>
 
-#include <rdtransportbutton.h>
-
-class RDTimeEdit : public QFrame
+class RDTimeEdit : public QTimeEdit
 {
   Q_OBJECT
  public:
-  enum Display {Hours=0x01,Minutes=0x02,Seconds=0x04,Tenths=0x08};
   RDTimeEdit(QWidget *parent=0);
-  ~RDTimeEdit();
-  QSize sizeHint() const;
-  QSizePolicy sizePolicy() const;
-  QTime time() const;
-  bool isReadOnly() const;
-  void setFont(const QFont &f);
-  uint display() const;
-  void setDisplay(uint disp);
-
- public slots:
-  void setTime(const QTime &time);
-  void setReadOnly(bool state);
-  void setFocus();
-  void setGeometry(int x,int y,int w,int h);
-  void setGeometry(const QRect &r);
-
- signals:
-  void valueChanged(const QTime &time);
-
- private slots:
-  void upClickedData();
-  void downClickedData();
+  bool showHours() const;
+  void setShowHours(bool state);
+  bool showTenths() const;
+  void setShowTenths(bool state);
 
  protected:
-  void mousePressEvent(QMouseEvent *e);
-  void wheelEvent(QWheelEvent *e);
-  void keyPressEvent(QKeyEvent *e);
-  void focusInEvent(QFocusEvent *e);
-  void focusOutEvent(QFocusEvent *e);
+  QValidator::State validate(QString &input,int &pos) const;
+  void stepBy(int steps);
+  QAbstractSpinBox::StepEnabled stepEnabled() const;
 
  private:
-  void GetSizeHint();
-  void ProcessNumericKey(int num);
-  QLabel *edit_labels[4];
-  QLabel *edit_sep_labels[3];
-  RDTransportButton *edit_up_button;
-  RDTransportButton *edit_down_button;
-  int edit_widths[4];
-  int edit_section_x[3];
-  int edit_sep_widths[3];
-  int edit_height;
-  int edit_section;
-  int edit_digit;
-  uint edit_display;
-  bool edit_read_only;
+  void SetFormat();
+  bool d_show_hours;
+  bool d_show_tenths;
+  int d_current_step_size;
+  QAbstractSpinBox::StepEnabled d_step_enabled;
 };
 
 

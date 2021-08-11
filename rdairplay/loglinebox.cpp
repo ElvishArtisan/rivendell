@@ -839,8 +839,8 @@ void LogLineBox::resizeEvent(QResizeEvent *e)
   line_icon_label->setGeometry(5,3,16,16);
   line_cart_label->setGeometry(23,3,48,16);
   line_cut_label->setGeometry(73,3,24,16);
-  line_group_label->setGeometry(100,3,90,16);
-  line_time_label->setGeometry(190,3,95,16);
+  line_group_label->setGeometry(97,3,90,16);
+  line_time_label->setGeometry(187,3,98,16);
   line_talktime_label->setGeometry(287,3,36,16);
   line_length_label->setGeometry(327,3,50,16);
   line_trans_label->setGeometry(379,3,48,16);

@@ -78,6 +78,7 @@ class EditEvent : public RDDialog
   QPushButton *edit_ok_button;
   QPushButton *edit_cancel_button;
   QLabel *edit_horizrule_label;
+  int edit_width;
   int edit_height;
 };
 

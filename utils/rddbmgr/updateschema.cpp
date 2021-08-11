@@ -10855,6 +10855,19 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<352)&&(set_schema>cur_schema)) {
+    DropColumn("SYSTEM","TIME_FORMAT");
+    sql=QString("alter table `SYSTEM` ")+
+      "add column `SHOW_TWELVE_HOUR_TIME` enum('N','Y') not null default 'N' "+
+      "after `SHORT_DATE_FORMAT`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

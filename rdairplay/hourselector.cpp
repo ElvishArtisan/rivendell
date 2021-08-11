@@ -41,12 +41,7 @@ HourSelector::HourSelector(QWidget *parent)
     mapper->setMapping(hour_button[i],i);
     connect(hour_button[i],SIGNAL(clicked()),mapper,SLOT(map()));
   }
-  if(rda->timeFormatIs24Hour()) {
-    for(unsigned i=0;i<24;i++) {
-      hour_button[i]->setText(QString().sprintf("%02u",i));
-    }
-  }
-  else {
+  if(rda->showTwelveHourTime()) {
     hour_button[0]->setText(tr("12a"));
     hour_button[1]->setText(tr("1a"));
     hour_button[2]->setText(tr("2a"));
@@ -71,6 +66,11 @@ HourSelector::HourSelector(QWidget *parent)
     hour_button[21]->setText(tr("9p"));
     hour_button[22]->setText(tr("10p"));
     hour_button[23]->setText(tr("11p"));
+  }
+  else {
+    for(unsigned i=0;i<24;i++) {
+      hour_button[i]->setText(QString().sprintf("%02u",i));
+    }
   }
 
   //
