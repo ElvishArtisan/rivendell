@@ -22218,3 +22218,6 @@
 2021-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted layout in the 'Edit Report dialog in rdadmin(1)
 	to be compatible with 12 hour time format.
+2021-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted layout in the 'Log Render Options' dialog in
+	rdcastmanager(1) to be compatible with 12 hour time format.

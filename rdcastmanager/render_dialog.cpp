@@ -52,8 +52,7 @@ RenderDialog::RenderDialog(QWidget *parent)
   d_start_time_label=new QLabel(tr("Virtual Start Time")+":",this);
   d_start_time_label->setFont(labelFont());
   d_start_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  d_start_time_edit=new QTimeEdit(this);
-  d_start_time_edit->setDisplayFormat("hh:mm:ss");
+  d_start_time_edit=new RDTimeEdit(this);
   d_start_time_edit->setDisabled(true);
 
   //
@@ -185,7 +184,7 @@ void RenderDialog::resizeEvent(QResizeEvent *e)
 {
   d_start_time_label->setGeometry(10,2,135,20);
   d_start_time_box->setGeometry(150,2,160,20);
-  d_start_time_edit->setGeometry(315,2,80,20);
+  d_start_time_edit->setGeometry(315,2,120,20);
 
   d_ignorestop_label->setGeometry(10,24,135,20);
   d_ignorestop_box->setGeometry(150,24,160,20);

@@ -2,7 +2,7 @@
 //
 // Log Rendering Dialog for rdcastmanager(1)
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,12 @@
 #ifndef RENDER_DIALOG_H
 #define RENDER_DIALOG_H
 
-#include <qdatetimeedit.h>
-#include <qprogressdialog.h>
+#include <QProgressDialog>
 
 #include <rdcut_dialog.h>
 #include <rddialog.h>
 #include <rdlogmodel.h>
+#include <rdtimeedit.h>
 
 #include "logdialog.h"
 
@@ -62,7 +62,7 @@ class RenderDialog : public RDDialog
   void UpdateLogEventsSelection();
   QLabel *d_start_time_label;
   QComboBox *d_start_time_box;
-  QTimeEdit *d_start_time_edit;
+  RDTimeEdit *d_start_time_edit;
   QLabel *d_ignorestop_label;
   QComboBox *d_ignorestop_box;
   QLabel *d_select_label_label;
