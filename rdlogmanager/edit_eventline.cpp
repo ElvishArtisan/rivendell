@@ -106,7 +106,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClockModel *clock,
   edit_starttime_edit=new RDTimeEdit(this);
   edit_starttime_edit->setGeometry(150,40,70,20);
   edit_starttime_edit->setShowHours(false);
-  edit_starttime_edit->setShowTenths(false);
+  edit_starttime_edit->setShowTenths(true);
   label=new QLabel(tr("Start Time:"),this);
   label->setGeometry(65,42,80,20);
   label->setFont(labelFont());
@@ -118,7 +118,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClockModel *clock,
   edit_endtime_edit=new RDTimeEdit(this);
   edit_endtime_edit->setGeometry(325,40,70,20);
   edit_endtime_edit->setShowHours(false);
-  edit_endtime_edit->setShowTenths(false);
+  edit_endtime_edit->setShowTenths(true);
   label=new QLabel(tr("End Time:"),this);
   label->setGeometry(250,42,70,20);
   label->setFont(labelFont());
