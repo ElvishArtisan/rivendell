@@ -25,4 +25,26 @@ RDDateEdit::RDDateEdit(QWidget *parent)
   : QDateEdit(parent)
 {
   setDisplayFormat(rda->shortDateFormat());
+
+  d_read_only=false;
+}
+
+
+bool RDDateEdit::isReadOnly()
+{
+  return d_read_only;
+}
+
+
+void RDDateEdit::setReadOnly(bool state)
+{
+  if(d_read_only!=state) {
+    if(state) {
+      setDateRange(date(),date());
+    }
+    else {
+      setDateRange(QDate(),QDate());
+    }
+    d_read_only=state;
+  }
 }

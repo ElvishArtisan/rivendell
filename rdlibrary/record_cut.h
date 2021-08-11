@@ -26,12 +26,12 @@
 #include <QButtonGroup>
 #include <QCheckBox>
 #include <QComboBox>
-#include <QDateTimeEdit>
 #include <QGroupBox>
 #include <QLineEdit>
 #include <QRadioButton>
 #include <QSpinBox>
 
+#include <rddateedit.h>
 #include <rddialog.h>
 #include <rdstereometer.h>
 #include <rdtimeedit.h>
@@ -105,17 +105,21 @@ class RecordCut : public RDDialog
    QRadioButton *cut_startdatetime_disable_button;
    QLabel *cut_startdatetime_label;
    QGroupBox *cut_startdatetime_groupbox;
-   QDateTimeEdit *cut_startdatetime_edit;
+   //   QDateTimeEdit *cut_startdatetime_edit;
+   RDDateEdit *cut_startdate_edit;
+   RDTimeEdit *cut_starttime_edit;
    QLabel *cut_enddatetime_label;
-   QDateTimeEdit *cut_enddatetime_edit;
+   //   QDateTimeEdit *cut_enddatetime_edit;
+   RDDateEdit *cut_enddate_edit;
+   RDTimeEdit *cut_endtime_edit;
    QGroupBox *cut_daypart_groupbox;
    QButtonGroup *cut_daypart_group;
-   QRadioButton *cut_starttime_enable_button;
-   QRadioButton *cut_starttime_disable_button;
-   RDTimeEdit *cut_starttime_edit;
-   QLabel *cut_starttime_label;
-   RDTimeEdit *cut_endtime_edit;
-   QLabel *cut_endtime_label;
+   QRadioButton *cut_startdaypart_enable_button;
+   QRadioButton *cut_startdaypart_disable_button;
+   RDTimeEdit *cut_startdaypart_edit;
+   QLabel *cut_startdaypart_label;
+   RDTimeEdit *cut_enddaypart_edit;
+   QLabel *cut_enddaypart_label;
    QTimer *rec_timer;
    QLabel *rec_timer_label;
    QLabel *rec_aes_alarm_label;

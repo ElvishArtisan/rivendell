@@ -31,6 +31,7 @@ RDTimeEdit::RDTimeEdit(QWidget *parent)
   d_show_tenths=false;
   d_step_enabled=StepDownEnabled|StepUpEnabled;
   d_width_variance=0;
+  d_read_only=false;
 
   SetFormat();
 }
@@ -62,6 +63,26 @@ void RDTimeEdit::setShowTenths(bool state)
   if(state!=d_show_tenths) {
     d_show_tenths=state;
     SetFormat();
+  }
+}
+
+
+bool RDTimeEdit::isReadOnly() const
+{
+  return d_read_only;
+}
+
+
+void RDTimeEdit::setReadOnly(bool state)
+{
+  if(d_read_only!=state) {
+    if(state) {
+      setTimeRange(time(),time());
+    }
+    else {
+      setTimeRange(QTime(),QTime());
+    }
+    d_read_only=state;
   }
 }
 

@@ -33,6 +33,10 @@ class RDTimeEdit : public QTimeEdit
   void setShowHours(bool state);
   bool showTenths() const;
   void setShowTenths(bool state);
+  bool isReadOnly() const;
+
+ public slots:
+   void setReadOnly(bool state);
 
  protected:
   QValidator::State validate(QString &input,int &pos) const;
@@ -46,6 +50,7 @@ class RDTimeEdit : public QTimeEdit
   bool d_show_tenths;
   int d_width_variance;
   QAbstractSpinBox::StepEnabled d_step_enabled;
+  bool d_read_only;
 };
 
 

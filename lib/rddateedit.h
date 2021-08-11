@@ -28,6 +28,13 @@ class RDDateEdit : public QDateEdit
   Q_OBJECT
  public:
   RDDateEdit(QWidget *parent=0);
+  bool isReadOnly();
+
+ public slots:
+  void setReadOnly(bool state);
+
+ private:
+  bool d_read_only;
 };
 
 

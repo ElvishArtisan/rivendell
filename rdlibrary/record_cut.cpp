@@ -206,13 +206,13 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   cut_startdatetime_disable_button=new QRadioButton(tr("Disabled"),this);
   cut_killdatetime_group->addButton(cut_startdatetime_disable_button,false);
 
-  cut_startdatetime_edit=new QDateTimeEdit(this);
-  cut_startdatetime_edit->setDisplayFormat("MM/dd/yyyy - hh:mm:ss");
+  cut_startdate_edit=new RDDateEdit(this);
+  cut_starttime_edit=new RDTimeEdit(this);
   cut_startdatetime_label=new QLabel(tr("Start"),this);
   cut_startdatetime_label->setFont(subLabelFont());
   cut_startdatetime_label->setAlignment(Qt::AlignRight);
-  cut_enddatetime_edit=new QDateTimeEdit(this);
-  cut_enddatetime_edit->setDisplayFormat("MM/dd/yyyy - hh:mm:ss");
+  cut_enddate_edit=new RDDateEdit(this);
+  cut_endtime_edit=new RDTimeEdit(this);
   cut_enddatetime_label=new QLabel(tr("End"),this);
   cut_enddatetime_label->setFont(subLabelFont());
   cut_enddatetime_label->setAlignment(Qt::AlignRight);
@@ -225,20 +225,20 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   cut_daypart_group=new QButtonGroup(this);
   connect(cut_daypart_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(daypartButtonData(int)));
-  cut_starttime_enable_button=new QRadioButton(tr("Enabled"),this);
-  cut_daypart_group->addButton(cut_starttime_enable_button,true);
-  cut_starttime_disable_button=new QRadioButton(tr("Disabled"),this);
-  cut_daypart_group->addButton(cut_starttime_disable_button,false);
+  cut_startdaypart_enable_button=new QRadioButton(tr("Enabled"),this);
+  cut_daypart_group->addButton(cut_startdaypart_enable_button,true);
+  cut_startdaypart_disable_button=new QRadioButton(tr("Disabled"),this);
+  cut_daypart_group->addButton(cut_startdaypart_disable_button,false);
 
-  cut_starttime_edit=new RDTimeEdit(this);
-  cut_starttime_label=new QLabel(tr("Start Time"),this);
-  cut_starttime_label->setFont(subLabelFont());
-  cut_starttime_label->setAlignment(Qt::AlignRight);
+  cut_startdaypart_edit=new RDTimeEdit(this);
+  cut_startdaypart_label=new QLabel(tr("Start Time"),this);
+  cut_startdaypart_label->setFont(subLabelFont());
+  cut_startdaypart_label->setAlignment(Qt::AlignRight);
 
-  cut_endtime_edit=new RDTimeEdit(this);
-  cut_endtime_label=new QLabel(tr("End Time"),this);
-  cut_endtime_label->setFont(subLabelFont());
-  cut_endtime_label->setAlignment(Qt::AlignRight);
+  cut_enddaypart_edit=new RDTimeEdit(this);
+  cut_enddaypart_label=new QLabel(tr("End Time"),this);
+  cut_enddaypart_label->setFont(subLabelFont());
+  cut_enddaypart_label->setAlignment(Qt::AlignRight);
 
   //
   // Days of the Week
@@ -423,15 +423,17 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
     setText(QString().sprintf("%d",rec_cut->playCounter()));
   rec_evergreen_box->setChecked(rec_cut->evergreen());
   evergreenToggledData(rec_evergreen_box->isChecked());
-  cut_startdatetime_edit->setDateTime(rec_cut->startDatetime(&valid));
-  cut_enddatetime_edit->setDateTime(rec_cut->endDatetime(&valid));
+  cut_startdate_edit->setDate(rec_cut->startDatetime(&valid).date());
+  cut_starttime_edit->setTime(rec_cut->startDatetime(&valid).time());
+  cut_enddate_edit->setDate(rec_cut->endDatetime(&valid).date());
+  cut_endtime_edit->setTime(rec_cut->endDatetime(&valid).time());
   cut_startdatetime_enable_button->setChecked(valid);
   cut_startdatetime_disable_button->setChecked(!valid);
   airDateButtonData(valid);
-  cut_starttime_edit->setTime(rec_cut->startDaypart(&valid));
-  cut_starttime_enable_button->setChecked(valid);
-  cut_starttime_disable_button->setChecked(!valid);
-  cut_endtime_edit->setTime(rec_cut->endDaypart(&valid));
+  cut_startdaypart_edit->setTime(rec_cut->startDaypart(&valid));
+  cut_startdaypart_enable_button->setChecked(valid);
+  cut_startdaypart_disable_button->setChecked(!valid);
+  cut_enddaypart_edit->setTime(rec_cut->endDaypart(&valid));
   daypartButtonData(valid);
   for(int i=0;i<7;i++) {
     if(rec_cut->weekPart(i+1)) {
@@ -470,33 +472,25 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   cut_description_edit->setReadOnly(!allow_modification);
   cut_outcue_edit->setReadOnly(!allow_modification);
   cut_isci_edit->setReadOnly(!allow_modification);
-  cut_starttime_edit->setReadOnly(!allow_modification);
-  cut_endtime_edit->setReadOnly(!allow_modification);
+  cut_startdaypart_edit->setReadOnly(!allow_modification);
+  cut_enddaypart_edit->setReadOnly(!allow_modification);
   if(!allow_modification) {
     cut_weight_box->setRange(cut_weight_box->value(),cut_weight_box->value());
     if(cut_startdatetime_enable_button->isChecked()) {
-      cut_startdatetime_edit->
-	setDateRange(cut_startdatetime_edit->date(),
-		     cut_startdatetime_edit->date());
-      cut_startdatetime_edit->
-	setTimeRange(cut_startdatetime_edit->time(),
-		     cut_startdatetime_edit->time());
-      cut_enddatetime_edit->
-	setDateRange(cut_enddatetime_edit->date(),
-		     cut_enddatetime_edit->date());
+      cut_startdate_edit->setReadOnly(true);
+      cut_starttime_edit->setReadOnly(true);
+      cut_enddate_edit->setReadOnly(true);
     }
-    if(cut_starttime_enable_button->isChecked()) {
-      cut_enddatetime_edit->
-	setTimeRange(cut_enddatetime_edit->time(),
-		     cut_enddatetime_edit->time());
+    if(cut_startdaypart_enable_button->isChecked()) {
+      cut_endtime_edit->setReadOnly(true);
     }
   }
   rec_evergreen_box->setEnabled(allow_modification);
   if(!allow_modification) {
     cut_startdatetime_enable_button->setDisabled(true);
     cut_startdatetime_disable_button->setDisabled(true);
-    cut_starttime_enable_button->setDisabled(true);
-    cut_starttime_disable_button->setDisabled(true);
+    cut_startdaypart_enable_button->setDisabled(true);
+    cut_startdaypart_disable_button->setDisabled(true);
     rec_set_button->setDisabled(true);
     rec_clear_button->setDisabled(true);
   }
@@ -544,21 +538,25 @@ void RecordCut::airDateButtonData(int id)
   bool valid;
   QDateTime datetime;
 
-  cut_startdatetime_edit->setEnabled(id);
+  cut_startdate_edit->setEnabled(id);
+  cut_starttime_edit->setEnabled(id);
   cut_startdatetime_label->setEnabled(id);
-  cut_enddatetime_edit->setEnabled(id);
+  cut_enddate_edit->setEnabled(id);
+  cut_endtime_edit->setEnabled(id);
   cut_enddatetime_label->setEnabled(id);
   if(id) {
     datetime=rec_cut->startDatetime(&valid);
     if(valid&&(!datetime.isNull())) {
-      cut_startdatetime_edit->setDateTime(datetime);
-      cut_enddatetime_edit->setDateTime(rec_cut->endDatetime(&valid));
+      cut_startdate_edit->setDate(datetime.date());
+      cut_starttime_edit->setTime(datetime.time());
+      cut_enddate_edit->setDate(rec_cut->endDatetime(&valid).date());
+      cut_endtime_edit->setTime(rec_cut->endDatetime(&valid).time());
     }
     else {
-      cut_startdatetime_edit->
-	setDateTime(QDateTime(QDate::currentDate(),QTime()));
-      cut_enddatetime_edit->
-	setDateTime(QDateTime(QDate::currentDate(),QTime(23,59,59)));
+      cut_startdate_edit->setDate(QDate::currentDate());
+      cut_starttime_edit->setTime(QTime());
+      cut_enddate_edit->setDate(QDate::currentDate());
+      cut_endtime_edit->setTime(QTime(23,59,59));
     }
   }
 }
@@ -566,10 +564,10 @@ void RecordCut::airDateButtonData(int id)
 
 void RecordCut::daypartButtonData(int id)
 {
-  cut_starttime_edit->setEnabled(id);
-  cut_starttime_label->setEnabled(id);
-  cut_endtime_edit->setEnabled(id);
-  cut_endtime_label->setEnabled(id);
+  cut_startdaypart_edit->setEnabled(id);
+  cut_startdaypart_label->setEnabled(id);
+  cut_enddaypart_edit->setEnabled(id);
+  cut_enddaypart_label->setEnabled(id);
 }
 
 
@@ -824,22 +822,26 @@ void RecordCut::closeData()
   }
   rec_cut->setEvergreen(rec_evergreen_box->isChecked());
   if(cut_startdatetime_enable_button->isChecked()) {
-    if(!cut_startdatetime_edit->dateTime().isValid()) {
+    if((!cut_startdate_edit->date().isValid())||
+       (!cut_starttime_edit->time().isValid())) {
       QMessageBox::warning(this,tr("Invalid Date"),
 			   tr("The Start Date is invalid!"));
       return;
     }
-    if(!cut_enddatetime_edit->dateTime().isValid()) {
+    if((!cut_enddate_edit->date().isValid())||
+       (!cut_endtime_edit->time().isValid())) {
       QMessageBox::warning(this,tr("Invalid Date"),
 			   tr("The End Date is invalid!"));
       return;
     }
-    if(cut_enddatetime_edit->dateTime()<cut_startdatetime_edit->dateTime()) {
+    if(QDateTime(cut_enddate_edit->date(),cut_endtime_edit->time())<
+       QDateTime(cut_startdate_edit->date(),cut_starttime_edit->time())) {
       QMessageBox::warning(this,tr("Invalid Date"),
 			   tr("The End Date is prior to the Start Date!"));
       return;
     }
-    if((cut_enddatetime_edit->dateTime()<QDateTime::currentDateTime())&&
+    if((QDateTime(cut_enddate_edit->date(),cut_endtime_edit->time())<
+	QDateTime::currentDateTime())&&
        (!rec_evergreen_box->isChecked())) {
       switch(QMessageBox::warning(this,tr("Invalid Date"),
 				  tr("The End Date has already passed!\nDo you still want to save?"),
@@ -853,18 +855,18 @@ void RecordCut::closeData()
       }
     }
   }
-  if(cut_starttime_enable_button->isChecked()) {
-    if(!cut_starttime_edit->time().isValid()) {
+  if(cut_startdaypart_enable_button->isChecked()) {
+    if(!cut_startdaypart_edit->time().isValid()) {
       QMessageBox::warning(this,tr("Invalid Time"),
 			   tr("The Start Time is invalid!"));
       return;
     }
-    if(!cut_endtime_edit->time().isValid()) {
+    if(!cut_enddaypart_edit->time().isValid()) {
       QMessageBox::warning(this,tr("Invalid Time"),
 			   tr("The End Time is invalid!"));
       return;
     }
-    if(cut_endtime_edit->time()==cut_starttime_edit->time()) {
+    if(cut_enddaypart_edit->time()==cut_startdaypart_edit->time()) {
       QMessageBox::warning(this,tr("Invalid Time"),
 		   tr("The StartTime cannot be the same as the End Time!"));
       return;
@@ -876,31 +878,31 @@ void RecordCut::closeData()
     return;
   }
   if((cut_startdatetime_enable_button->isChecked())&&
-     (cut_startdatetime_edit->dateTime().time().isNull())) {
-    rec_cut->
-      setStartDatetime(QDateTime(cut_startdatetime_edit->dateTime().date(),
-				 cut_startdatetime_edit->dateTime().time().
-				 addMSecs(1)),true);
+     (cut_starttime_edit->time().isNull())) {
+    rec_cut->setStartDatetime(QDateTime(cut_startdate_edit->date(),
+					cut_starttime_edit->time().addMSecs(1)),
+			      true);
   }
   else {
-    rec_cut->setStartDatetime(cut_startdatetime_edit->dateTime(),
-			      cut_startdatetime_enable_button->isChecked());
+    rec_cut->setStartDatetime(QDateTime(cut_startdate_edit->date(),
+					cut_starttime_edit->time()),
+    			      cut_startdatetime_enable_button->isChecked());
   }
   if((cut_startdatetime_enable_button->isChecked())&&
-     (cut_enddatetime_edit->dateTime().time().isNull())) {
-    rec_cut->
-      setEndDatetime(QDateTime(cut_enddatetime_edit->dateTime().date(),
-				 cut_enddatetime_edit->dateTime().time().
-				 addMSecs(1)),true);
+     (cut_endtime_edit->time().isNull())) {
+    rec_cut->setEndDatetime(QDateTime(cut_enddate_edit->date(),
+				      cut_endtime_edit->time().
+				      addMSecs(1)),true);
   }
   else {
-    rec_cut->setEndDatetime(cut_enddatetime_edit->dateTime(),
-			    cut_startdatetime_enable_button->isChecked());
+    rec_cut->setEndDatetime(QDateTime(cut_enddate_edit->date(),
+				      cut_endtime_edit->time()),
+    			    cut_startdatetime_enable_button->isChecked());
   }
-  rec_cut->setStartDaypart(cut_starttime_edit->time(),
-			   cut_starttime_enable_button->isChecked());
-  rec_cut->setEndDaypart(cut_endtime_edit->time(),
-			 cut_starttime_enable_button->isChecked());
+  rec_cut->setStartDaypart(cut_startdaypart_edit->time(),
+			   cut_startdaypart_enable_button->isChecked());
+  rec_cut->setEndDaypart(cut_enddaypart_edit->time(),
+			 cut_startdaypart_enable_button->isChecked());
   for(int i=0;i<7;i++) {
     rec_cut->setWeekPart(i+1,rec_weekpart_button[i]->isChecked());
   }
@@ -981,16 +983,18 @@ void RecordCut::evergreenToggledData(bool state)
   cut_startdatetime_enable_button->setDisabled(state);
   cut_startdatetime_disable_button->setDisabled(state);
   cut_startdatetime_label->setDisabled(state);
-  cut_startdatetime_edit->setDisabled(state);
-  cut_enddatetime_edit->setDisabled(state);
+  cut_startdate_edit->setDisabled(state);
+  cut_starttime_edit->setDisabled(state);
+  cut_enddate_edit->setDisabled(state);
+  cut_endtime_edit->setDisabled(state);
   cut_enddatetime_label->setDisabled(state);
   cut_daypart_groupbox->setDisabled(state);
-  cut_starttime_enable_button->setDisabled(state);
-  cut_starttime_disable_button->setDisabled(state);
-  cut_starttime_edit->setDisabled(state);
-  cut_starttime_label->setDisabled(state);
-  cut_endtime_edit->setDisabled(state);
-  cut_endtime_label->setDisabled(state);
+  cut_startdaypart_enable_button->setDisabled(state);
+  cut_startdaypart_disable_button->setDisabled(state);
+  cut_startdaypart_edit->setDisabled(state);
+  cut_startdaypart_label->setDisabled(state);
+  cut_enddaypart_edit->setDisabled(state);
+  cut_enddaypart_label->setDisabled(state);
   rec_dayofweek_groupbox->setDisabled(state);
   for(int i=0;i<7;i++) {
     rec_weekpart_button[i]->setDisabled(state);
@@ -1000,7 +1004,7 @@ void RecordCut::evergreenToggledData(bool state)
   rec_clear_button->setDisabled(state);
   if (!state) {
     airDateButtonData(cut_startdatetime_enable_button->isChecked());
-    daypartButtonData(cut_starttime_enable_button->isChecked());
+    daypartButtonData(cut_startdaypart_enable_button->isChecked());
   }
 
   update();
@@ -1041,22 +1045,24 @@ void RecordCut::resizeEvent(QResizeEvent *e)
   cut_weight_label->setGeometry(w/2,178,60,19);
   cut_weight_box->setGeometry(w/2+65,178,61,19);
 
-  cut_startdatetime_enable_button->setGeometry(40,223,100,20);
-  cut_startdatetime_disable_button->setGeometry(40,243,100,20);
-  cut_killdatetime_groupbox->setGeometry(30,203,size().width()-60,65);
+  cut_startdatetime_enable_button->setGeometry(20,223,100,20);
+  cut_startdatetime_disable_button->setGeometry(20,243,100,20);
+  cut_killdatetime_groupbox->setGeometry(10,203,size().width()-20,60);
 
-  cut_startdatetime_label->setGeometry(120,226,40,12);
-  cut_startdatetime_edit->setGeometry(165,222,170,19);
-  cut_enddatetime_label->setGeometry(120,245,40,12);
-  cut_enddatetime_edit->setGeometry(165,242,170,19);
+  cut_startdatetime_label->setGeometry(100,226,40,12);
+  cut_startdate_edit->setGeometry(147,222,100,19);
+  cut_starttime_edit->setGeometry(247,222,100,19);
+  cut_enddatetime_label->setGeometry(100,245,40,12);
+  cut_enddate_edit->setGeometry(147,242,100,19);
+  cut_endtime_edit->setGeometry(247,242,100,19);
 
-  cut_starttime_enable_button->setGeometry(57,303,100,20);
-  cut_starttime_disable_button->setGeometry(57,323,100,20);
+  cut_startdaypart_enable_button->setGeometry(57,303,100,20);
+  cut_startdaypart_disable_button->setGeometry(57,323,100,20);
   cut_daypart_groupbox->setGeometry(37,283,size().width()-64,62);
-  cut_starttime_label->setGeometry(137,306,80,12);
-  cut_starttime_edit->setGeometry(222,302,100,19);
-  cut_endtime_label->setGeometry(137,326,80,12);
-  cut_endtime_edit->setGeometry(222,322,100,19);
+  cut_startdaypart_label->setGeometry(137,306,80,12);
+  cut_startdaypart_edit->setGeometry(222,302,100,19);
+  cut_enddaypart_label->setGeometry(137,326,80,12);
+  cut_enddaypart_edit->setGeometry(222,322,100,19);
 
   rec_dayofweek_groupbox->setGeometry(20,359,size().width()-35,85);
   rec_weekpart_label[0]->setGeometry(62,378,80,20);
