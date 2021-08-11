@@ -23,15 +23,14 @@
 
 #include <QCheckBox>
 #include <QComboBox>
-#include <QDateTimeEdit>
 #include <QLabel>
 #include <QLineEdit>
 #include <QSpinBox>
 
 #include <rddialog.h>
 #include <rdlistselector.h>
-
 #include <rdreport.h>
+#include <rdtimeedit.h>
 
 class EditReport : public RDDialog
 {
@@ -77,9 +76,9 @@ class EditReport : public RDDialog
   QCheckBox *edit_daypart_check;
   QLabel *edit_daypart_label;
   QLabel *edit_starttime_label;
-  QTimeEdit *edit_starttime_edit;
+  RDTimeEdit *edit_starttime_edit;
   QLabel *edit_endtime_label;
-  QTimeEdit *edit_endtime_edit;
+  RDTimeEdit *edit_endtime_edit;
 };
 
 

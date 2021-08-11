@@ -22215,3 +22215,6 @@
 	* Fixed a regression in rdlogmanager(1) that made it impossible
 	to specify event start positions to greater than 1 second
 	resolution.
+2021-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted layout in the 'Edit Report dialog in rdadmin(1)
+	to be compatible with 12 hour time format.

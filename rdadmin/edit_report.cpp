@@ -259,21 +259,19 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_daypart_label=
     new QLabel(tr("Filter by Daypart"),this);
   edit_daypart_label->
-    setGeometry(edit_daypart_check->geometry().x()+20,273,155,19);
+    setGeometry(edit_daypart_check->geometry().x()+20,270,155,19);
   edit_daypart_label->setFont(labelFont());
   edit_daypart_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
-  edit_starttime_edit=new QTimeEdit(this);
-  edit_starttime_edit->setDisplayFormat("hh:mm:ss");
-  edit_starttime_edit->setGeometry(150,294,80,20);
+  edit_starttime_edit=new RDTimeEdit(this);
+  edit_starttime_edit->setGeometry(110,294,120,20);
   edit_starttime_label=new QLabel(tr("Start Time:"),this);
-  edit_starttime_label->setGeometry(65,294,80,20);
+  edit_starttime_label->setGeometry(25,294,80,20);
   edit_starttime_label->setFont(labelFont());
   edit_starttime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
-  edit_endtime_edit=new QTimeEdit(this);
-  edit_endtime_edit->setDisplayFormat("hh:mm:ss");
-  edit_endtime_edit->setGeometry(335,294,80,20);
+  edit_endtime_edit=new RDTimeEdit(this);
+  edit_endtime_edit->setGeometry(335,294,120,20);
   edit_endtime_label=new QLabel(tr("End Time:"),this);
   edit_endtime_label->setGeometry(250,294,80,20);
   edit_endtime_label->setFont(labelFont());
