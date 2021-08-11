@@ -56,10 +56,10 @@ class EditEvent : public RDDialog
  private:
   RDLogLine *edit_logline;
   RDTimeEdit *edit_time_edit;
-  QLabel *edit_time_label;
   QCheckBox *edit_timetype_box;
   QLabel *edit_timetype_label;
   QCheckBox *edit_time_box;
+  QLabel *edit_transtype_label;
   QComboBox *edit_transtype_box;
   QButtonGroup *edit_grace_bgroup;
   QGroupBox *edit_grace_group;

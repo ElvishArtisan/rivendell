@@ -37,7 +37,6 @@ EditEvent::EditEvent(RDLogLine *line,QWidget *parent)
   //
   edit_timetype_box=new QCheckBox(this);
   edit_timetype_label=new QLabel(tr("Start at:"),this);
-  edit_timetype_label->setGeometry(30,21,85,17);
   edit_timetype_label->setFont(labelFont());
   edit_timetype_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -82,10 +81,9 @@ EditEvent::EditEvent(RDLogLine *line,QWidget *parent)
   edit_transtype_box->insertItem(0,tr("Play"));
   edit_transtype_box->insertItem(1,tr("Segue"));
   edit_transtype_box->insertItem(2,tr("Stop"));  
-  edit_time_label=new QLabel(tr("Transition Type:"),this);
-  edit_time_label->setGeometry(10,68,370,26);
-  edit_time_label->setFont(labelFont());
-  edit_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_transtype_label=new QLabel(tr("Transition Type:"),this);
+  edit_transtype_label->setFont(labelFont());
+  edit_transtype_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button
@@ -140,7 +138,7 @@ EditEvent::EditEvent(RDLogLine *line,QWidget *parent)
 void EditEvent::timeChangedData(const QTime &time)
 {
   if(edit_timetype_box->isChecked()) {
-    edit_time_label->
+    edit_transtype_label->
       setText(tr("Transition If Previous Cart Ends Before")+" "+
 	      edit_time_edit->time().toString("hh:mm:ss.zzz").left(10)+":");
   }
@@ -156,13 +154,13 @@ void EditEvent::timeToggledData(bool state)
   edit_grace_bgroup->button(2)->setEnabled(state);
   if(state) {
     graceClickedData(edit_grace_bgroup->checkedId());
-    edit_time_label->
+    edit_transtype_label->
       setText(tr("Transition If Previous Cart Ends Before")+" "+
 	      edit_time_edit->time().toString("hh:mm:ss.zzz").left(10)+":");
   }
   else {
     edit_grace_timeedit->setDisabled(true);
-    edit_time_label->setText(tr("Transition Type")+":");
+    edit_transtype_label->setText(tr("Transition Type")+":");
   }
 }
 
@@ -189,12 +187,12 @@ void EditEvent::selectTimeData(int id)
 {
   if(id==RDLogLine::Relative) {
     edit_time_edit->setDisabled(true);
-    edit_time_label->setDisabled(true);
+    edit_transtype_label->setDisabled(true);
     edit_grace_timeedit->setDisabled(true);
   }
   else {
     edit_time_edit->setEnabled(true);
-    edit_time_label->setEnabled(true);
+    edit_transtype_label->setEnabled(true);
   }
 }
 
@@ -246,13 +244,16 @@ RDLogLine *EditEvent::logLine()
 void EditEvent::resizeEvent(QResizeEvent *e)
 {
   edit_timetype_box->setGeometry(10,22,15,15);
-  edit_time_edit->setGeometry(85,19,85,20);
-  edit_grace_group->setGeometry(175,11,435,50);
+  edit_timetype_label->setGeometry(30,19,85,20);
+  edit_time_edit->setGeometry(85,19,120,20);
+  edit_grace_group->setGeometry(215,11,400,42);
   edit_grace_bgroup->button(0)->setGeometry(10,21,145,20);
   edit_grace_bgroup->button(1)->setGeometry(155,21,105,20);
   edit_grace_bgroup->button(2)->setGeometry(265,21,95,20);
-  edit_grace_timeedit->setGeometry(543,31,60,20);
-  edit_transtype_box->setGeometry(385,68,110,26);
+  edit_grace_timeedit->setGeometry(548,31,60,20);
+
+  edit_transtype_label->setGeometry(10,60,370,26);
+  edit_transtype_box->setGeometry(385,60,110,26);
 
   edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);

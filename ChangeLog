@@ -22208,3 +22208,6 @@
 	12 hour time format.
 2021-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Tightened up the validation checking in 'RDTimeEdit'.
+2021-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted layout in the event editing dialogs in rdlogedit(1)
+	to be compatible with 12 hour time format.
