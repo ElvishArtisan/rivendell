@@ -21,11 +21,11 @@
 #ifndef TEST_IMPORT_H
 #define TEST_IMPORT_H
 
-#include <QDateTimeEdit>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 
+#include <rddateedit.h>
 #include <rddialog.h>
 #include <rdlogimportmodel.h>
 #include <rdsvc.h>
@@ -54,7 +54,7 @@ class TestImport : public RDDialog
   RDSvc *test_svc;
   RDSvc::ImportSource test_src;
   QLabel *test_date_label;
-  QDateEdit *test_date_edit;
+  RDDateEdit *test_date_edit;
   QPushButton *test_import_button;
   QLabel *test_events_label;
   RDTableView *test_events_view;

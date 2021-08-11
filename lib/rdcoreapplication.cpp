@@ -330,9 +330,21 @@ bool RDCoreApplication::showTwelveHourTime() const
 }
 
 
+QString RDCoreApplication::longDateFormat() const
+{
+  return app_long_date_format;
+}
+
+
 QString RDCoreApplication::longDateString(const QDate &date)  const
 {
   return date.toString(app_long_date_format);
+}
+
+
+QString RDCoreApplication::shortDateFormat() const
+{
+  return app_short_date_format;
 }
 
 

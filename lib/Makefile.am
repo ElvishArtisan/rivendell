@@ -104,6 +104,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdcut_path.cpp rdcut_path.h\
                         rddatedecode.cpp rddatedecode.h\
                         rddatedialog.cpp rddatedialog.h\
+                        rddateedit.cpp rddateedit.h\
                         rddatepicker.cpp rddatepicker.h\
 		        rddb.h rddb.cpp\
                         rddbheartbeat.cpp rddbheartbeat.h\
@@ -321,6 +322,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdcutlistmodel.cpp\
                           moc_rddatapacer.cpp\
                           moc_rddatedialog.cpp\
+                          moc_rddateedit.cpp\
                           moc_rddatepicker.cpp\
                           moc_rddbheartbeat.cpp\
                           moc_rddelete.cpp\

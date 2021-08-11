@@ -22227,3 +22227,7 @@
 2021-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted layout in the 'Cut Info/Record' dialog in rdlibrary(1)
 	to be compatible with 12 hour time format.
+2021-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDDateEdit' widget.
+	* Adjusted layout in the 'Test Import' dialog in rdadmin(1)
+	to be compatible with short date format.

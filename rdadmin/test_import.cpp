@@ -60,8 +60,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   // Date Selector
   //
-  test_date_edit=new QDateEdit(this);
-  test_date_edit->setDisplayFormat("MM/dd/yyyy");
+  test_date_edit=new RDDateEdit(this);
   test_date_label=new QLabel(tr("Test Date:"),this);
   test_date_label->setFont(labelFont());
   test_date_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);

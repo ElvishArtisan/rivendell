@@ -71,7 +71,9 @@ class RDCoreApplication : public QObject
   RDSystem *system();
   RDUser *user();
   bool showTwelveHourTime() const;
+  QString longDateFormat() const;
   QString longDateString(const QDate &date)  const;
+  QString shortDateFormat() const;
   QString shortDateString(const QDate &date) const;
   QString timeString(const QTime &time) const;
   QString tenthsTimeString(const QTime &time) const;
