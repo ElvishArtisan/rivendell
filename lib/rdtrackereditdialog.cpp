@@ -50,8 +50,9 @@ RDTrackerEditDialog::RDTrackerEditDialog(RDLogLine *line,QWidget *parent)
 
 QSize RDTrackerEditDialog::sizeHint() const
 {
-  return QSize(625,230);
-} 
+  return QSize(660,230);
+}
+ 
 
 
 QSizePolicy RDTrackerEditDialog::sizePolicy() const

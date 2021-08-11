@@ -22203,3 +22203,6 @@
 2021-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Tweaked layout of elements in the 'Editing Event' dialog
 	in rdlogmanager(1).
+2021-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted layout in 'RDLogEventDialog' to be compatible with
+	12 hour time format.
