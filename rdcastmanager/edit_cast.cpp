@@ -132,8 +132,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   // Effective DateTime
   //
-  cast_item_effective_edit=new QDateTimeEdit(this);
-  cast_item_effective_edit->setDisplayFormat("MM/dd/yyyy hh:mm:ss");
+  cast_item_effective_edit=new RDDateTimeEdit(this);
   cast_item_effective_label=new QLabel(tr("Air Date/Time:"),this);
   cast_item_effective_label->setFont(labelFont());
   cast_item_effective_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -161,8 +160,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_expiration_box_label->
     setEnabled(cast_status!=RDPodcast::StatusExpired);
 
-  cast_item_expiration_edit=new QDateTimeEdit(this);
-  cast_item_expiration_edit->setDisplayFormat("MM/dd/yyyy hh:mm:ss");
+  cast_item_expiration_edit=new RDDateTimeEdit(this);
   cast_item_expiration_label=new QLabel(tr("at"),this);
   cast_item_expiration_label->setFont(labelFont());
   cast_item_expiration_label->setAlignment(Qt::AlignCenter);
@@ -286,8 +284,8 @@ void EditCast::effectiveSelectData()
   QDate date=cast_item_effective_edit->date();
 
   RDDateDialog *dd=
-    new RDDateDialog(current_date.year(),current_date.year()+10,this);
-  if(dd->exec(&date)==0) {
+    new RDDateDialog(1970,current_date.year()+10,this);
+  if(dd->exec(&date)) {
     cast_item_effective_edit->setDate(date);
   }
   delete dd;
@@ -478,8 +476,8 @@ void EditCast::resizeEvent(QResizeEvent *e)
   // Air Date/Time
   //
   cast_item_effective_label->setGeometry(20,h-154,110,20);
-  cast_item_effective_edit->setGeometry(135,h-154,150,20);
-  cast_item_effective_button->setGeometry(295,h-156,75,24);
+  cast_item_effective_edit->setGeometry(135,h-154,200,20);
+  cast_item_effective_button->setGeometry(345,h-156,75,24);
 
   //
   // Cast Expiration
@@ -488,8 +486,8 @@ void EditCast::resizeEvent(QResizeEvent *e)
   cast_item_expiration_box->setGeometry(135,h-126,50,20);
 
   cast_item_expiration_label->setGeometry(190,h-126,20,20);
-  cast_item_expiration_edit->setGeometry(215,h-126,150,20);
-  cast_item_expiration_button->setGeometry(375,h-128,75,24);
+  cast_item_expiration_edit->setGeometry(215,h-126,200,20);
+  cast_item_expiration_button->setGeometry(425,h-128,75,24);
 
   //
   // Buttons

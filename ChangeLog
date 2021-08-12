@@ -22246,3 +22246,7 @@
 2021-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted layout in rdgpimon(1) to be compatible with short date
 	format.
+2021-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDDateTimeEdit' widget.
+	* Adjusted layout in the 'Editing Item' dialog in
+	rdcastmanager(1) to be compatible with short date format.
