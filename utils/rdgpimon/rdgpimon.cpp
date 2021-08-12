@@ -177,8 +177,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   label->setAlignment(Qt::AlignCenter);
   label->setGeometry(110,423,sizeHint().width()-220,30);
 
-  gpi_events_date_edit=new QDateEdit(this);
-  gpi_events_date_edit->setDisplayFormat("dd/MM/yyyy");
+  gpi_events_date_edit=new RDDateEdit(this);
   gpi_events_date_edit->setGeometry(155,453,100,20);
   gpi_events_date_edit->setDate(QDate::currentDate());
   gpi_events_date_label=new QLabel(tr("Date")+":",this);

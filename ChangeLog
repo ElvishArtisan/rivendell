@@ -22243,3 +22243,6 @@
 	rdlogmanager(1) to be compatible with short date format.
 	* Adjusted layout in the 'Generate Log' dialog in
 	rdlogmanager(1) to be compatible with short date format.
+2021-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted layout in rdgpimon(1) to be compatible with short date
+	format.

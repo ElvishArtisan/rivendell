@@ -22,8 +22,8 @@
 #define RDGPIMON_H
 
 #include <QComboBox>
-#include <QDateTimeEdit>
 
+#include <rddateedit.h>
 #include <rdgpiologmodel.h>
 #include <rdmainwindow.h>
 #include <rdmatrix.h>
@@ -82,7 +82,7 @@ class MainWidget : public RDMainWindow
   int gpi_first_line;
   int gpi_last_line;
   QLabel *gpi_events_date_label;
-  QDateEdit *gpi_events_date_edit;
+  RDDateEdit *gpi_events_date_edit;
   QLabel *gpi_events_state_label;
   QComboBox *gpi_events_state_box;
   QPushButton *gpi_events_scroll_button;
