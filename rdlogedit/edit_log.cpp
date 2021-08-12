@@ -145,8 +145,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_purgedate_label=new QLabel(tr("Delete on"),this);
   edit_purgedate_label->setFont(labelFont());
   edit_purgedate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  edit_purgedate_edit=new QDateEdit(this);
-  edit_purgedate_edit->setDisplayFormat("MM/dd/yyyy");
+  edit_purgedate_edit=new RDDateEdit(this);
   edit_purgedate_button=new QPushButton(tr("Select"),this);
   edit_purgedate_button->setFont(buttonFont());
   connect(edit_purgedate_box,SIGNAL(toggled(bool)),
@@ -189,8 +188,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Start Date
   //
-  edit_startdate_edit=new QDateEdit(this);
-  edit_startdate_edit->setDisplayFormat("MM/dd/yyyy");
+  edit_startdate_edit=new RDDateEdit(this);
   edit_startdate_label=new QLabel(tr("Start Date:"),this);
   edit_startdate_label->setFont(labelFont());
   edit_startdate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
@@ -201,8 +199,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // End Date
   //
-  edit_enddate_edit=new QDateEdit(this);
-  edit_enddate_edit->setDisplayFormat("MM/dd/yyyy");
+  edit_enddate_edit=new RDDateEdit(this);
   edit_enddate_label=new QLabel(tr("End Date:"),this);
   edit_enddate_label->setFont(labelFont());
   edit_enddate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  

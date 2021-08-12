@@ -22233,3 +22233,8 @@
 	to be compatible with short date format.
 	* Adjusted layout in the 'Cut Info/Record' dialog in rdlibrary(1)
 	to be compatible with short date format.
+2021-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted layout in the 'Edit Log' dialog in rdlogedit(1)
+	to be compatible with short date format.
+	* Adjusted layout in the 'Reports' dialog in rdlogedit(1)
+	to be compatible with short date format.

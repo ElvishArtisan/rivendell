@@ -2,7 +2,7 @@
 //
 // List and Generate Log Reports
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,12 @@
 #ifndef LIST_REPORTS_H
 #define LIST_REPORTS_H
 
-#include <qdatetimeedit.h>
-
-#include <qcombobox.h>
+#include <QComboBox>
 
 #include <rddialog.h>
 #include <rdlog.h>
 #include <rdlogmodel.h>
+#include <rddateedit.h>
 
 class ListReports : public RDDialog
 {
@@ -57,7 +56,7 @@ class ListReports : public RDDialog
   QDate list_end_date;
   bool list_auto_refresh;
   RDLogModel *list_model;
-  QDateEdit *list_date_edit;
+  RDDateEdit *list_date_edit;
 };
 
 

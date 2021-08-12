@@ -66,8 +66,7 @@ ListReports::ListReports(const QString &logname,const QString &description,
   //
   // Effective Date
   //
-  list_date_edit=new QDateEdit(this);
-  list_date_edit->setDisplayFormat("MM/dd/yyyy");
+  list_date_edit=new RDDateEdit(this);
   list_date_edit->setGeometry(110,34,100,19);
   QLabel *list_date_label=new QLabel(tr("Effective Date:"),this);
   list_date_label->setGeometry(10,34,95,19);
