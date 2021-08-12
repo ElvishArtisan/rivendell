@@ -22253,3 +22253,6 @@
 2021-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted layout in the 'Cut Info/Record' dialog in rdlibrary(1)
 	to be compatible with 12 hour time format.
+2021-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Modified reports in rdlogmanager(1) to use standard date/time
+	formats.

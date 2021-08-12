@@ -25,6 +25,7 @@
 #include <QTextStream>
 
 #include <rdairplay_conf.h>
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rddatedecode.h>
 #include <rddb.h>
@@ -82,15 +83,20 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
   //
   if(startdate==enddate) {
     *strm << RDReport::center(QString("Rivendell RDAirPlay Cut Report for ")+
-		    startdate.toString("MM/dd/yyyy"),75);
+			      rda->shortDateString(startdate),78)+"\n";
   }
   else {
     *strm << RDReport::center(QString("Rivendell RDAirPlay Cut Report for ")+
-		    startdate.toString("MM/dd/yyyy")+" - "+
-		    enddate.toString("MM/dd/yyyy"),75)+"\n";
+			      rda->shortDateString(startdate)+" - "+
+			      rda->shortDateString(enddate),78)+"\n";
   }
-  *strm << RDReport::center(name()+" -- "+description(),75)+"\n";
-  *strm << "--Time--  -Cart-  --Title----------------  Cut  --Description-------  -Len-\n";
+  *strm << RDReport::center(name()+" -- "+description(),78)+"\n";
+  if(rda->showTwelveHourTime()) {
+    *strm << "--Time-----  -Cart-  --Title----------------  Cut  --Description-------  -Len-\n";
+  }
+  else {
+    *strm << "--Time--  -Cart-  --Title----------------  Cut  --Description-------  -Len-\n";
+  }
 
   //
   // Write Data Rows
@@ -113,7 +119,7 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
     if(desc.isEmpty()) {
       desc="                    ";
     }
-    *strm << q->value(2).toTime().toString("hh:mm:ss")+"  ";
+    *strm << rda->timeString(q->value(2).toTime(),true)+"  ";
     *strm << cart_num+"  ";
     *strm << RDReport::leftJustify(q->value(8).toString(),23)+"  ";
     *strm << cut+"  ";

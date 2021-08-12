@@ -354,21 +354,26 @@ QString RDCoreApplication::shortDateString(const QDate &date) const
 }
 
 
-QString RDCoreApplication::timeString(const QTime &time) const
+QString RDCoreApplication::timeString(const QTime &time,bool padded) const
 {
   if(app_show_twelve_hour_time) {
-    //    return time.toString("h:mm:ss ap");
+    if(padded) {
+      return time.toString(RD_TWELVE_HOUR_PADDED_FORMAT);
+    }
     return time.toString(RD_TWELVE_HOUR_FORMAT);
   }
   return time.toString(RD_TWENTYFOUR_HOUR_FORMAT);
 }
 
 
-QString RDCoreApplication::tenthsTimeString(const QTime &time) const
+QString RDCoreApplication::tenthsTimeString(const QTime &time,bool padded) const
 {
   QString ret;
 
   if(app_show_twelve_hour_time) {
+    if(padded) {
+      ret=time.toString(RD_TWELVE_HOUR_TENTHS_PADDED_FORMAT);
+    }
     ret=time.toString(RD_TWELVE_HOUR_TENTHS_FORMAT);
   }
   else {

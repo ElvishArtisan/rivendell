@@ -23,6 +23,7 @@
 #include <QTextStream>
 
 #include "rdairplay_conf.h"
+#include "rdapplication.h"
 #include "rdconf.h"
 #include "rddatedecode.h"
 #include "rddb.h"
@@ -62,14 +63,14 @@ bool RDReport::ExportMusicSummary(const QString &filename,
   //
   if(startdate==enddate) {
     *strm << RDReport::center(QString("Rivendell RDAirPlay Music Summary Report for ")+
-		    startdate.toString("MM/dd/yyyy"),75)+"\n";
+			      rda->shortDateString(startdate),78)+"\n";
   }
   else {
     *strm << RDReport::center(QString("Rivendell RDAirPlay Music Summary Report for ")+
-		    startdate.toString("MM/dd/yyyy")+" - "+
-		    enddate.toString("MM/dd/yyyy"),75)+"\n";
+			      rda->shortDateString(startdate)+" - "+
+			      rda->shortDateString(enddate),78)+"\n";
   }
-  *strm << RDReport::center(name()+" -- "+description(),75)+"\n";
+  *strm << RDReport::center(name()+" -- "+description(),78)+"\n";
 
   //
   // Write Data Rows

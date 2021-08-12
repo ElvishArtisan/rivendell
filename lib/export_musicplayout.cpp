@@ -23,6 +23,7 @@
 #include <QTextStream>
 
 #include "rdairplay_conf.h"
+#include "rdapplication.h"
 #include "rdconf.h"
 #include "rddatedecode.h"
 #include "rddb.h"
@@ -76,15 +77,20 @@ bool RDReport::ExportMusicPlayout(const QString &filename,
   //
   if(startdate==enddate) {
     *strm << RDReport::center(QString("Rivendell RDAirPlay Music Playout Report for ")+
-		    startdate.toString("MM/dd/yyyy"),144)+"\n";
+			      rda->shortDateString(startdate),144)+"\n";
   }
   else {
     *strm << RDReport::center(QString("Rivendell RDAirPlay Music Playout Report for ")+
-		    startdate.toString("MM/dd/yyyy")+" - "+
-		    enddate.toString("MM/dd/yyyy"),144)+"\n";
+			      rda->shortDateString(startdate)+" - "+
+			      rda->shortDateString(enddate),144)+"\n";
   }
   *strm << RDReport::center(name()+" -- "+description(),144)+"\n";
-  *strm << "--Time--  -Cart-  Cut  A-Len  --Title-----------------------   --Artist----------------------   --Album------------------   --Label-------------\n";
+  if(rda->showTwelveHourTime()) {
+    *strm << "--Time-----  -Cart-  Cut  A-Len  --Title-----------------------   --Artist----------------------   --Album------------------   --Label-------------\n";
+  }
+  else {
+    *strm << "--Time--  -Cart-  Cut  A-Len  --Title-----------------------   --Artist----------------------   --Album------------------   --Label-------------\n";
+  }
 
   //
   // Write Data Rows
@@ -103,7 +109,7 @@ bool RDReport::ExportMusicPlayout(const QString &filename,
       }
     }
     cart_num=QString().sprintf(cart_fmt.toUtf8(),q->value(1).toUInt());
-    *strm << q->value(2).toDateTime().time().toString("hh:mm:ss")+"  ";
+    *strm << rda->timeString(q->value(2).toDateTime().time(),true)+"  ";
     *strm << cart_num+"  ";
     *strm << cut+"  ";
     *strm << RDGetTimeLength(q->value(0).toInt(),true,false).right(5)+"  ";

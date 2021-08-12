@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Technical Report to an ASCII Text File.
 //
-//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,6 +22,7 @@
 #include <QTextStream>
 
 #include "rdairplay_conf.h"
+#include "rdapplication.h"
 #include "rdconf.h"
 #include "rddb.h"
 #include "rdescape_string.h"
@@ -86,18 +87,23 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
   if(incl_hdr) {
     if(startdate==enddate) {
       *strm << RDReport::center("Rivendell RDAirPlay Technical Playout Report for "+
-				 startdate.toString("MM/dd/yyyy"),96);
+				rda->shortDateString(startdate),96);
       *strm << eol;
     }
     else {
       *strm << RDReport::center("Rivendell RDAirPlay Technical Playout Report for "+
-		      startdate.toString("MM/dd/yyyy")+" - "+
-		      enddate.toString("MM/dd/yyyy"),96);
+				rda->shortDateString(startdate)+" - "+
+				rda->shortDateString(enddate),96);
       *strm << eol;
     }
     *strm << RDReport::center(name()+" -- "+description(),96);
     *strm << eol;
-    *strm << "--Time--  -Cart-  Cut  --Title----------------  A-Len  N-Len  --Host----  Srce  StartedBy  OnAir";
+    if(rda->showTwelveHourTime()) {
+      *strm << "--Time-----  -Cart-  Cut  --Title----------------  A-Len  N-Len  --Host----  Srce  StartedBy  OnAir";
+    }
+    else {
+      *strm << "--Time--  -Cart-  Cut  --Title----------------  A-Len  N-Len  --Host----  Srce  StartedBy  OnAir";
+    }
     *strm << eol;
   }
 
@@ -118,7 +124,7 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
       }
     }
     cart_num=QString().sprintf(cart_fmt.toUtf8(),q->value(1).toUInt());
-    *strm << q->value(2).toTime().toString("hh:mm:ss")+"  ";
+    *strm << rda->timeString(q->value(2).toTime(),true)+"  ";
     *strm << cart_num+"  ";
     *strm << cut+"  ";
     *strm << RDReport::leftJustify(q->value(8).toString(),23)+"  ";

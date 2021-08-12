@@ -75,8 +75,8 @@ class RDCoreApplication : public QObject
   QString longDateString(const QDate &date)  const;
   QString shortDateFormat() const;
   QString shortDateString(const QDate &date) const;
-  QString timeString(const QTime &time) const;
-  QString tenthsTimeString(const QTime &time) const;
+  QString timeString(const QTime &time,bool padded=false) const;
+  QString tenthsTimeString(const QTime &time,bool padded=false) const;
   bool dropTable(const QString &tbl_name);
   void addTempFile(const QString &pathname);
   void syslog(int priority,const char *fmt,...) const;

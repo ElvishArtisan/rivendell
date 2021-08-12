@@ -661,6 +661,9 @@
 #define RD_TWELVE_HOUR_FORMAT "h:mm:ss AP"
 #define RD_TWELVE_HOUR_TENTHS_FORMAT "h:mm:ss.z AP"
 
+#define RD_TWELVE_HOUR_PADDED_FORMAT "hh:mm:ss AP"
+#define RD_TWELVE_HOUR_TENTHS_PADDED_FORMAT "hh:mm:ss.z AP"
+
 #define RD_OFFSET_FORMAT "mm:ss"
 #define RD_OFFSET_TENTHS_FORMAT "mm:ss.z"
 

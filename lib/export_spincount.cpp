@@ -25,6 +25,7 @@
 #include <QTextStream>
 
 #include "rdairplay_conf.h"
+#include "rdapplication.h"
 #include "rdconf.h"
 #include "rddatedecode.h"
 #include "rddb.h"
@@ -89,12 +90,12 @@ bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
   //
   if(startdate==enddate) {
     *strm << RDReport::center(QString("Rivendell Spin Count Report for ")+
-		    startdate.toString("MM/dd/yyyy"),132)+"\n";
+			      rda->shortDateString(startdate),132)+"\n";
   }
   else {
     *strm << RDReport::center(QString("Rivendell Spin Count Report for ")+
-		    startdate.toString("MM/dd/yyyy")+" - "+
-		    enddate.toString("MM/dd/yyyy"),132)+"\n";
+			      rda->shortDateString(startdate)+" - "+
+			      rda->shortDateString(enddate),132)+"\n";
   }
   *strm << RDReport::center(name()+" -- "+description(),132)+"\n";
   *strm << "--Title------------------------ --Artist----------------------- --Album------------------------ --Label----------------------- Spins\n";
