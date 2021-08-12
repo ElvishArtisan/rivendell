@@ -55,7 +55,7 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   //
   edit_report_box=new QComboBox(this);
   edit_report_box->setGeometry(75,11,sizeHint().width()-85,19);
-  QLabel *label=new QLabel(tr("&Report:"),this);
+  QLabel *label=new QLabel(tr("Report:"),this);
   label->setGeometry(10,11,60,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -72,11 +72,10 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   //
   // Start Date
   //
-  edit_startdate_edit=new QDateEdit(this);
+  edit_startdate_edit=new RDDateEdit(this);
   edit_startdate_edit->setGeometry(150,35,100,22);
-  edit_startdate_edit->setDisplayFormat("MM/dd/yyyy");
   edit_startdate_edit->setDate(yesterday_date);
-  label=new QLabel(tr("&Start Date:"),this);
+  label=new QLabel(tr("Start Date:"),this);
   label->setGeometry(75,36,70,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -89,11 +88,10 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   //
   // End Date
   //
-  edit_enddate_edit=new QDateEdit(this);
+  edit_enddate_edit=new RDDateEdit(this);
   edit_enddate_edit->setGeometry(150,65,100,22);
-  edit_enddate_edit->setDisplayFormat("MM/dd/yyyy");
   edit_enddate_edit->setDate(yesterday_date);
-  label=new QLabel(tr("&End Date:"),this);
+  label=new QLabel(tr("End Date:"),this);
   label->setGeometry(75,66,70,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -109,7 +107,7 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Generate\nReport"));
+  button->setText(tr("Generate\nReport"));
   connect(button,SIGNAL(clicked()),this,SLOT(generateData()));
 
   //
@@ -119,7 +117,7 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(buttonFont());
-  button->setText(tr("C&lose"));
+  button->setText(tr("Close"));
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 

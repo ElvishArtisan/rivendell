@@ -2,7 +2,7 @@
 //
 // Select a Set of Dates for a Rivendell Report
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,10 @@
 #ifndef PICK_REPORT_DATE_H
 #define PICK_REPORT_DATE_H
 
-#include <qcombobox.h>
-#include <qdatetimeedit.h>
+#include <QComboBox>
 
 #include <rddialog.h>
+#include <rddateedit.h>
 
 #include "viewreportdialog.h"
 
@@ -45,8 +45,8 @@ class PickReportDates : public RDDialog
 
  private:
   QComboBox *edit_report_box;
-  QDateEdit *edit_startdate_edit;
-  QDateEdit *edit_enddate_edit;
+  RDDateEdit *edit_startdate_edit;
+  RDDateEdit *edit_enddate_edit;
   QString edit_svcname;
   ViewReportDialog *edit_viewreport_dialog;
 };

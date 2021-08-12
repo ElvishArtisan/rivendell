@@ -87,8 +87,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   // Date
   //
-  gen_date_edit=new QDateEdit(this);
-  gen_date_edit->setDisplayFormat("MM/dd/yyyy");
+  gen_date_edit=new RDDateEdit(this);
   gen_date_label=new QLabel(tr("Date:"),this);
   gen_date_label->setFont(labelFont());
   gen_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

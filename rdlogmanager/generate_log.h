@@ -21,11 +21,10 @@
 #ifndef GENERATE_LOG_H
 #define GENERATE_LOG_H
 
-
-#include <QDateTimeEdit>
 #include <QProgressDialog>
 
 #include <rdcombobox.h>
+#include <rddateedit.h>
 #include <rddialog.h>
 #include <rdnotification.h>
 
@@ -58,7 +57,7 @@ class GenerateLog : public RDDialog
   QLabel *gen_service_label;
   RDComboBox *gen_service_box;
   QLabel *gen_date_label;
-  QDateEdit *gen_date_edit;
+  RDDateEdit *gen_date_edit;
   QPushButton *gen_select_button;
   QLabel *gen_import_label;
   QLabel *gen_available_label;
