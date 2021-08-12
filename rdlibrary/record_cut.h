@@ -31,7 +31,7 @@
 #include <QRadioButton>
 #include <QSpinBox>
 
-#include <rddateedit.h>
+#include <rddatetimeedit.h>
 #include <rddialog.h>
 #include <rdstereometer.h>
 #include <rdtimeedit.h>
@@ -105,13 +105,13 @@ class RecordCut : public RDDialog
    QRadioButton *cut_startdatetime_disable_button;
    QLabel *cut_startdatetime_label;
    QGroupBox *cut_startdatetime_groupbox;
-   //   QDateTimeEdit *cut_startdatetime_edit;
-   RDDateEdit *cut_startdate_edit;
-   RDTimeEdit *cut_starttime_edit;
+   RDDateTimeEdit *cut_startdatetime_edit;
+   //   RDDateEdit *cut_startdate_edit;
+   //   RDTimeEdit *cut_starttime_edit;
    QLabel *cut_enddatetime_label;
-   //   QDateTimeEdit *cut_enddatetime_edit;
-   RDDateEdit *cut_enddate_edit;
-   RDTimeEdit *cut_endtime_edit;
+   RDDateTimeEdit *cut_enddatetime_edit;
+   //   RDDateEdit *cut_enddate_edit;
+   //   RDTimeEdit *cut_endtime_edit;
    QGroupBox *cut_daypart_groupbox;
    QButtonGroup *cut_daypart_group;
    QRadioButton *cut_startdaypart_enable_button;
