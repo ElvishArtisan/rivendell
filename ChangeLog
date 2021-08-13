@@ -22263,3 +22263,6 @@
 	* Added a 'DATE/TIME FORMATS' section to 'CODINGSTYLE'.
 2021-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed typos in 'CODINGSTYLE'.
+2021-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlibrary(1) that caused misaligned
+	columns when generating a Cut Report.

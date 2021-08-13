@@ -391,7 +391,7 @@ void ListReports::GenerateCutReport(QString *report)
     // Last Play
     //
     if(q->value(8).toDateTime().isNull()) {
-      *report+="    [none]    ";
+      *report+="   [none]    ";
     }
     else {
       *report+=RDReport::center(rda->shortDateString(q->value(8).toDate()),12)+"  ";
