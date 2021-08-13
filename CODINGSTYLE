@@ -308,6 +308,64 @@ argument. The appropriate 'facility' value, as determined by the
 'SyslogFacility=' directive in rd.conf(5), will be added automatically.
 
 
+DATE/TIME FORMATS:
+The formats of date/time values presented in the Rivendell's GUI modules
+are user-specifiable in RDAdmin->SystemSettings. Thus, when handling such,
+the following facilities are available:
+
+Value Inputs. The following classes are available:
+
+RDDateTimeEdit - Subclass of QDateTimeEdit
+    RDDateEdit - Subclass of QDateEdit
+    RDTimeEdit - Subclass of QTimeEdit.
+
+While the underlying Qt 'setDisplayFormat()' method remains available
+in these sublasses, *it should never be used*, as formats are automatically
+handled. In addition, these classes have a number of additional methods for
+handling Rivendell-specific situations (times to tenths-of-second precision,
+read-only states, etc). See the specific headers in 'lib/' for details.
+
+Value Outputs. The following methods are available for easily rendering
+properly formatted date/time strings in GUI module contexts:
+
+RDCoreApplication::timeString(const QTime &time,bool padded=false) const;
+RDCoreApplication::tenthsTimeString(const QTime &time,bool padded=false) const;
+RDCoreApplication::shortDateString(const QDate &date) const;
+RDCoreApplication::longDateString(const Date &date) const;
+
+The methods above that involve time all include support for optionally 
+specifying times with tenth-second precision. At present, the only place in 
+Rivendell where this facility is used is when specifying the 'Start Time' and
+'Grace Time' parameters in Rivendell logs. All other contexts should present
+times to single-second precision.
+
+These methods can be easily accessed in GUI module contexts via the global
+'rda' pointer, as illustrated in the following code snippet:
+
+*** snip snip ***
+#include <rdapplication.h>
+[..]
+QDate my_date(2021,8,13);  // 13 August 2021
+QString my_string=rda->shortDateString(my_date);
+*** snip snip ***
+
+N.B. - These date/time formats are for use when interacting with users in
+a GUI context. They should *not* be used in other contexts, including
+(but not necessarily limited to):
+  1) SQL Statements. Standard SQL date-time formats apply, and should
+     be hard-coded appropriately.
+  2) Command-line Utilities. In the interest of providing stable interfaces
+     for scripting purposes, date/time values in Rivendell command-line
+     tools generally use ISO8601-compliant formats. Where this varies
+     (due to application requirements), it should be documented in the
+     appropriate manpage.
+  3) Standardized APIs. Data interfaces for external systems (JSON, XML,
+     etc) should continue to use the formats appropriate for those
+     contexts.
+  4) Syslog Messages. Any date/time references sent to syslog(2) should
+     use ISO8601-compliant formats.
+
+
 CONTRIBUTING CHANGES:
 The master code repository for Rivendell resides at GitHub, and can be
 found at:
