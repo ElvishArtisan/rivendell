@@ -194,14 +194,14 @@ Good:
 discouraged.
 
 Good:
-  sql="select `FIELD1` from `MY_TABLE` where `FIELD2`='foobar';
+  sql="select `FIELD1` from `MY_TABLE` where `FIELD2`='foobar'";
 
 Bad:
   sql="select `FIELD1` from `MY_TABLE` where `FIELD2`="foobar";
  
 
 3) All identifiers are uppercase-only, while SQL operators
-   should be all lowercase.
+   should be all lowercase. This helps improve readability.
 
 Good:
   sql="select `FIELD1`,`FIELD2` from `MY_TABLE` where `ID`=2";
@@ -320,10 +320,11 @@ RDDateTimeEdit - Subclass of QDateTimeEdit
     RDTimeEdit - Subclass of QTimeEdit.
 
 While the underlying Qt 'setDisplayFormat()' method remains available
-in these sublasses, *it should never be used*, as formats are automatically
-handled. In addition, these classes have a number of additional methods for
-handling Rivendell-specific situations (times to tenths-of-second precision,
-read-only states, etc). See the specific headers in 'lib/' for details.
+in these subclasses, *it should never be used*, as the underlying display
+formats are automatically derived and applied. In addition, these classes
+have a number of additional methods for handling Rivendell-specific
+situations (times to tenths-of-second precision, read-only states, etc).
+See the specific headers in 'lib/' for details.
 
 Value Outputs. The following methods are available for easily rendering
 properly formatted date/time strings in GUI module contexts:
@@ -362,7 +363,7 @@ a GUI context. They should *not* be used in other contexts, including
   3) Standardized APIs. Data interfaces for external systems (JSON, XML,
      etc) should continue to use the formats appropriate for those
      contexts.
-  4) Syslog Messages. Any date/time references sent to syslog(2) should
+  4) Syslog Messages. Any date/time references sent to syslog(3) should
      use ISO8601-compliant formats.
 
 
@@ -402,7 +403,7 @@ For example:
 3) If your changes add, remove or change the behavior of one or more
    configuration entries in rd.conf(5), update the default configuration
    file ('conf/rd.conf-sample') accordingly. Similiarly, for PyPAD scripts,
-    be sure to update the corresponding '<plugin-name>-exemplar' files.
+   be sure to update the corresponding '<plugin-name>-exemplar' files.
 
 4) If your changes alter any user-visible aspect (UI or behavior), update
    the user documentation appropriately. The documentation is written

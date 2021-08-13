@@ -22261,3 +22261,5 @@
 	all reports and GUI modules.
 2021-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'DATE/TIME FORMATS' section to 'CODINGSTYLE'.
+2021-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed typos in 'CODINGSTYLE'.
