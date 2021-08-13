@@ -657,7 +657,7 @@ void RDRenderer::ProgressMessage(const QTime &time,int line,
 				 const QString &trans,const QString &msg)
 {
   QString str=QString().sprintf("%04d : ",line)+
-    time.toString("hh:mm:ss")+" : "+
+    rda->timeString(time)+" : "+
     QString().sprintf("%-5s",trans.toUtf8().constData())+msg;
   emit progressMessageSent(str);
 }

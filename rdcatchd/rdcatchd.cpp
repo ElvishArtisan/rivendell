@@ -2466,7 +2466,7 @@ void MainObject::ResolveErrorWildcards(CatchEvent *event,
   rml->replace("%d",event->description());
   rml->replace("%e",err_desc);  // Error Description
   rml->replace("%i",QString().sprintf("%u",event->id()));
-  rml->replace("%t",event->startTime().toString("hh:mm:ss"));
+  rml->replace("%t",rda->timeString(event->startTime()));
   rml->replace("%y",RDRecording::typeString(event->type()));
   switch(event->type()) {
   case RDRecording::Recording:

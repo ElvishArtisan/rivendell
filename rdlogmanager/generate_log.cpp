@@ -274,7 +274,7 @@ void GenerateLog::createData()
   if(log->exists()) {
     if(QMessageBox::question(this,"RDLogManager - "+tr("Log Exists"),
 			     tr("The log for")+" "+
-			     gen_date_edit->date().toString("MM/dd/yyyy")+" "+
+			     rda->shortDateString(gen_date_edit->date())+" "+
 			     tr("already exists.  Recreating it")+"\n"+
 			     tr("will remove any merged Music or Traffic events.")+
 			     "\n\n"+tr("Recreate?"),
@@ -368,7 +368,7 @@ void GenerateLog::musicData()
     if(log->includeImportMarkers()) {
       if(QMessageBox::question(this,"RDLogManager - "+tr("Music Exists"),
 			       tr("The log for")+" "+
-			       gen_date_edit->date().toString("MM/dd/yyyy")+" "+
+			       rda->shortDateString(gen_date_edit->date())+" "+
 			       tr("already contains merged music and/or traffic data.")+"\n"+
 			       tr("Remerging it will remove this data.  Remerge?"),
 			       QMessageBox::Yes,QMessageBox::No)!=
@@ -394,7 +394,7 @@ void GenerateLog::musicData()
     else {
       QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
 			   tr("The log for")+" "+
-			   gen_date_edit->date().toString("MM/dd/yyyy")+" "+
+			   rda->shortDateString(gen_date_edit->date())+" "+
 			   tr("cannot be relinked."));
       return;
     }
@@ -449,7 +449,7 @@ void GenerateLog::trafficData()
     if(log->includeImportMarkers()) {
       if(QMessageBox::question(this,"RDLogManager - "+tr("Traffic Exists"),
 			       tr("The log for")+" "+
-			       gen_date_edit->date().toString("MM/dd/yyyy")+" "+
+			       rda->shortDateString(gen_date_edit->date())+" "+
 			       tr("already contains merged traffic data.")+"\n"+
 			       tr("Remerging it will remove this data.  Remerge?"),
 			       QMessageBox::Yes,QMessageBox::No)!=
@@ -462,7 +462,7 @@ void GenerateLog::trafficData()
     else {
       QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
 			   tr("The log for")+" "+
-			   gen_date_edit->date().toString("MM/dd/yyyy")+" "+
+			   rda->shortDateString(gen_date_edit->date())+" "+
 			   tr("cannot be relinked."));
       return;
     }

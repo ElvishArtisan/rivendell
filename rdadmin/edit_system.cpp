@@ -208,7 +208,7 @@ EditSystem::EditSystem(QWidget *parent)
   edit_short_date_label->setFont(labelFont());
   edit_short_date_edit=new QLineEdit(edit_datetime_group);
   edit_short_date_edit->setFont(defaultFont());
-  edit_short_date_edit->setMaxLength(32);
+  edit_short_date_edit->setMaxLength(11);
 
   edit_time_label=
     new QLabel(tr("Time Format")+":",edit_datetime_group);

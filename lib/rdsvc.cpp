@@ -1821,7 +1821,7 @@ bool RDSvc::ResolveInlineEvents(const QString &logname,QString *err_msg)
 	q=new RDSqlQuery(sql);
 	if(q->size()>1) {
 	  *err_msg+=tr("In event")+" \""+logline->linkEventName()+"\"@"+
-	    logline->startTime(RDLogLine::Logged).toString("hh:mm:ss")+":\n";
+	    rda->timeString(logline->startTime(RDLogLine::Logged))+":\n";
 	  while(q->next()) {
 	    *err_msg+=MakeErrorLine(4,q->value(1).toUInt(),
 				    tr("multiple inline traffic breaks not permitted within the same music event"));

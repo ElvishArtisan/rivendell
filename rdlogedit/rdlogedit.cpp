@@ -456,10 +456,10 @@ void MainWidget::reportData()
   //
   // Generate Header
   //
-  report=RDReport::center("Rivendell Log Listing",132)+"\n";
+  report=RDReport::center("Rivendell Log Listing",135)+"\n";
   report+=QString("Generated: ")+QDateTime::currentDateTime().toString("MM/dd/yyyy - hh:mm:ss")+"\n";
   report+="\n";
-  report+="Rdy -Log Name-------------------- -Description----------------- -Service------------ Mus Tfc Tracks- Start Date -End Date- -Mod Date-\n";
+  report+="Rdy -Log Name-------------------- -Description----------------- -Service------------ Mus Tfc Tracks- Start Date- -End Date-- -Mod Date--\n";
 
   //
   // Report Body
@@ -531,34 +531,32 @@ void MainWidget::reportData()
     // Voice Tracks
     //
     report+=
-      QString().sprintf("%3u/%3u ",q->value(8).toUInt(),q->value(7).toUInt());
+      QString().sprintf("%3u/%-3u ",q->value(8).toUInt(),q->value(7).toUInt());
     
     //
     // Start Date
     //
     if(q->value(9).toDate().isNull()) {
-      report+="[none]     ";
+      report+="[none]      ";
     }
     else {
-      report+=q->value(9).toDate().toString("MM/dd/yyyy")+" ";
+      report+=RDReport::leftJustify(rda->shortDateString(q->value(9).toDate())+" ",12);
     }
     
     //
     // End Date
     //
     if(q->value(10).toDate().isNull()) {
-      report+="[none]     ";
+      report+="[none]      ";
     }
     else {
-      report+=q->value(10).toDate().toString("MM/dd/yyyy")+" ";
-      report+=QString().sprintf("%s ",q->value(10).toDate().
-				toString("MM/dd/yyyy").toUtf8().constData());
+      report+=RDReport::leftJustify(rda->shortDateString(q->value(10).toDate())+" ",12);
     }
     
     //
     // Last Modified Date
     //
-    report+=q->value(11).toDate().toString("MM/dd/yyyy");
+    report+=rda->shortDateString(q->value(11).toDate());
 
     //
     // End of Line

@@ -304,10 +304,10 @@ void ListReports::GenerateCutReport(QString *report)
   if(list_filter.isEmpty()) {
     filter="[none]";
   }
-  *report=RDReport::center("Rivendell Cut Report",132)+"\n";
+  *report=RDReport::center("Rivendell Cut Report",136)+"\n";
   *report+=RDReport::center(QString("Generated: ")+
-			    QDateTime::currentDateTime().toString("MM/dd/yyyy - hh:mm:ss")+"     Group: "+list_group+"     Filter: "+filter,132)+"\n";
-  *report+="-Cart- Cut W/O- -Cart Title-------------- -Description-- -Len- Last Play Plays Start Date End Date -Days of Week- -Daypart-----------\n";
+			    QDateTime::currentDateTime().toString("MM/dd/yyyy - hh:mm:ss")+"     Group: "+list_group+"     Filter: "+filter,136)+"\n";
+  *report+="-Cart- Cut W/O- -Cart Title-------------- -Description-- -Len- Last Play-- Plays Start Date- End Date--- -Days of Week- -Daypart----------------\n";
 
   //
   // Generate Rows
@@ -391,10 +391,10 @@ void ListReports::GenerateCutReport(QString *report)
     // Last Play
     //
     if(q->value(8).toDateTime().isNull()) {
-      *report+="  [none]   ";
+      *report+="    [none]    ";
     }
     else {
-      *report+=RDReport::center(q->value(8).toDate().toString("MM/dd/yy"),10)+"  ";
+      *report+=RDReport::center(rda->shortDateString(q->value(8).toDate()),12)+"  ";
     }
 
     //
@@ -406,20 +406,20 @@ void ListReports::GenerateCutReport(QString *report)
     // Start Date
     //
     if(q->value(10).toDateTime().isNull()) {
-      *report+="  [none]  ";
+      *report+="  [none]   ";
     }
     else {
-      *report+=RDReport::center(q->value(10).toDateTime().toString("MM/dd/yy"),10)+" ";
+      *report+=RDReport::center(rda->shortDateString(q->value(10).toDateTime().date()),12)+" ";
     }
 
     //
     // End Date
     //
     if(q->value(11).toDateTime().isNull()) {
-      *report+="   TFN    ";
+      *report+="    TFN      ";
     }
     else {
-      *report+=RDReport::center(q->value(11).toDateTime().toString("MM/dd/yy"),10)+" ";
+      *report+=RDReport::center(rda->shortDateString(q->value(11).toDateTime().date()),12)+" ";
     }
 
     //
@@ -475,8 +475,8 @@ void ListReports::GenerateCutReport(QString *report)
       *report+="[none]";
     }
     else {
-      *report+=q->value(19).toTime().toString("hh:mm:ss")+" - "+
-	q->value(20).toTime().toString("hh:mm:ss");
+      *report+=rda->timeString(q->value(19).toTime())+" - "+
+	rda->timeString(q->value(20).toTime());
     }
 
     //

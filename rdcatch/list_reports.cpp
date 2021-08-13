@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
 #include <rdrecording.h>
@@ -130,14 +131,15 @@ void ListReports::GenerateEventReport(QString *report)
   RDSqlQuery *q1;
   QString str;
   bool exists=false;
+  QDateTime now=QDateTime::currentDateTime();
 
   //
   // Generate Header
   //
   *report=RDReport::center("Rivendell RDCatch Event Report",132)+"\n";
-  *report+=QString("Generated: ")+QDateTime::currentDateTime().toString("MM/dd/yyyy - hh:mm:ss")+"\n";
+  *report+=QString("Generated: ")+rda->shortDateString(now.date())+" "+rda->timeString(now.time())+"\n";
   *report+="\n";
-  *report+="T -Start-------- -End---------- -Days of Week- -Location----- -Source------------- -Destination-------- -Description-----------------\n";
+  *report+="T -Start----------- -End------------- -Days of Week- -Location----- -Source------------- -Destination-------- -Description-----------------\n";
 
   //
   // Generate Rows
@@ -219,12 +221,12 @@ void ListReports::GenerateEventReport(QString *report)
     switch((RDRecording::StartType)q->value(1).toInt()) {
     case RDRecording::HardStart:
       *report+=QString("Hard: ")+
-	RDReport::leftJustify(q->value(2).toTime().toString("hh:mm:ss"),8)+" ";
+	RDReport::leftJustify(rda->timeString(q->value(2).toTime(),true),11)+" ";
       break;
 
     case RDRecording::GpiStart:
       *report+=QString("Gpi: ")+
-	RDReport::leftJustify(q->value(2).toTime().toString("hh:mm:ss"),8)+" ";
+	RDReport::leftJustify(rda->timeString(q->value(2).toTime(),true),11)+" ";
       break;
     }
 
@@ -236,23 +238,23 @@ void ListReports::GenerateEventReport(QString *report)
       switch((RDRecording::EndType)q->value(3).toInt()) {
       case RDRecording::HardEnd:
 	*report+=QString("Hard: ")+
-	  RDReport::leftJustify(q->value(4).toTime().toString("hh:mm:ss"),8)+" ";
+	  RDReport::leftJustify(rda->timeString(q->value(4).toTime(),true),11)+" ";
 	break;
 		
       case RDRecording::GpiEnd:
 	*report+=QString("Gpi: ")+
-	  RDReport::leftJustify(q->value(4).toTime().toString("hh:mm:ss"),8)+" ";
+	  RDReport::leftJustify(rda->timeString(q->value(4).toTime(),true),11)+" ";
 	break;
 		
       case RDRecording::LengthEnd:
 	*report+=QString("Len: ")+
-	  RDReport::leftJustify(RDGetTimeLength(q->value(5).toInt(),false,false),8)+"  ";
+	  RDReport::leftJustify(RDGetTimeLength(q->value(5).toInt(),false,false),11)+"  ";
 	break;
       }
       break;
 
     default:
-      *report+="               ";
+      *report+="                  ";
       break;
     }
 
@@ -412,9 +414,14 @@ void ListReports::GenerateXloadReport(QString *report)
   //
   *report=RDReport::center("Rivendell RDCatch Upload/Download Report",132)+"\n";
   *report+=QString("Generated: ")+
-    QDateTime::currentDateTime().toString("MM/dd/yyyy")+"\n";
+    rda->shortDateString(QDateTime::currentDateTime().date())+"\n";
   *report+="\n";
-  *report+="T -Start-- -Days of Week- -Location----- -Cut------- -URL------------------------------------- -Username---- -Description------------\n";
+  if(rda->showTwelveHourTime()) {
+    *report+="T -Start----- -Days of Week- -Location----- -Cut------- -URL------------------------------------- -Username---- -Description------------\n";
+  }
+  else {
+    *report+="T -Start-- -Days of Week- -Location----- -Cut------- -URL------------------------------------- -Username---- -Description------------\n";
+  }
 
   //
   // Generate Rows
@@ -469,7 +476,12 @@ void ListReports::GenerateXloadReport(QString *report)
     //
     // Start Time
     //
-    *report+=RDReport::leftJustify(q->value(1).toTime().toString("hh:mm:ss"),8)+" ";
+    if(rda->showTwelveHourTime()) {
+      *report+=RDReport::leftJustify(rda->timeString(q->value(1).toTime(),true),11)+" ";
+    }
+    else {
+      *report+=RDReport::leftJustify(rda->timeString(q->value(1).toTime(),true),8)+" ";
+    }
 
     //
     // Days of the Week

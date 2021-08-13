@@ -451,7 +451,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(940,600);
+  return QSize(980,600);
 }
 
 
@@ -1109,7 +1109,7 @@ void MainWidget::filterActivatedData(int id)
 void MainWidget::clockData()
 {
   QTime current_time=QTime::currentTime().addMSecs(catch_time_offset);
-  catch_clock_label->setText(current_time.toString("hh:mm:ss"));
+  catch_clock_label->setText(rda->timeString(current_time));
   catch_clock_timer->start(1000-current_time.msec());
 }
 

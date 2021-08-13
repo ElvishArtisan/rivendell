@@ -100,7 +100,7 @@ void SvcRecDialog::deleteData()
   if(QMessageBox::question(this,tr("Delete Report Data"),
 			 tr("Are you sure you want to delete report data for")+
 			 " "+
-			   date_picker->date().toString("MM/dd/yyyy"),
+			   rda->shortDateString(date_picker->date()),
 			   QMessageBox::Yes,QMessageBox::No)!=
      QMessageBox::Yes) {
     return;

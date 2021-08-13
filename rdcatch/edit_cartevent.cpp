@@ -24,6 +24,7 @@
 #include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
+#include "rdapplication.h"
 #include "edit_cartevent.h"
 #include "globals.h"
 

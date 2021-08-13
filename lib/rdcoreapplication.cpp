@@ -354,6 +354,12 @@ QString RDCoreApplication::shortDateString(const QDate &date) const
 }
 
 
+QString RDCoreApplication::shortDateTimeString(const QDateTime &dt) const
+{
+  return shortDateString(dt.date())+" "+timeString(dt.time());
+}
+
+
 QString RDCoreApplication::timeString(const QTime &time,bool padded) const
 {
   if(app_show_twelve_hour_time) {
@@ -368,19 +374,13 @@ QString RDCoreApplication::timeString(const QTime &time,bool padded) const
 
 QString RDCoreApplication::tenthsTimeString(const QTime &time,bool padded) const
 {
-  QString ret;
-
   if(app_show_twelve_hour_time) {
     if(padded) {
-      ret=time.toString(RD_TWELVE_HOUR_TENTHS_PADDED_FORMAT);
+      return time.toString(RD_TWELVE_HOUR_TENTHS_PADDED_FORMAT);
     }
-    ret=time.toString(RD_TWELVE_HOUR_TENTHS_FORMAT);
+    return time.toString(RD_TWELVE_HOUR_TENTHS_FORMAT);
   }
-  else {
-    ret=time.toString(RD_TWENTYFOUR_HOUR_TENTHS_FORMAT);
-  }
-
-  return ret;
+  return time.toString(RD_TWENTYFOUR_HOUR_TENTHS_FORMAT);
 }
 
 

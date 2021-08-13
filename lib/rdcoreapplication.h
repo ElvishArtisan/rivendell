@@ -75,6 +75,7 @@ class RDCoreApplication : public QObject
   QString longDateString(const QDate &date)  const;
   QString shortDateFormat() const;
   QString shortDateString(const QDate &date) const;
+  QString shortDateTimeString(const QDateTime &dt) const;
   QString timeString(const QTime &time,bool padded=false) const;
   QString tenthsTimeString(const QTime &time,bool padded=false) const;
   bool dropTable(const QString &tbl_name);

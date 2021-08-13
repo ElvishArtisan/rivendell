@@ -607,13 +607,13 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
       QString().sprintf(" : %dR",q->value(24).toInt());
     switch((RDRecording::StartType)q->value(30).toUInt()) {
     case RDRecording::HardStart:
-      texts[2]=tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss");
+      texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
       break;
 
     case RDRecording::GpiStart:
-      texts[2]=tr("Gpi")+": "+q->value(4).toTime().toString("hh:mm:ss")+
-	","+q->value(4).toTime().addMSecs(q->value(31).toInt()).
-	toString("hh:mm:ss")+","+
+      texts[2]=tr("Gpi")+": "+rda->timeString(q->value(4).toTime())+","+
+	rda->timeString(q->value(4).toTime().addMSecs(q->value(31).toInt()))+
+	","+
 	QString().sprintf("%d:%d,",q->value(32).toInt(),q->value(33).toInt())+
 	QTime(0,0,0).addMSecs(q->value(34).toUInt()).toString("mm:ss");
       break;
@@ -624,14 +624,14 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
       break;
 
     case RDRecording::HardEnd:
-      texts[3]=tr("Hard")+": "+q->value(36).toTime().toString("hh:mm:ss");
+      texts[3]=tr("Hard")+": "+rda->timeString(q->value(36).toTime());
       break;
 
     case RDRecording::GpiEnd:
-      texts[3]=tr("Gpi")+": "+q->value(36).toTime().toString("hh:mm:ss")+
-	","+q->value(36).toTime().addMSecs(q->value(37).toInt()).
-	toString("hh:mm:ss")+QString().sprintf(",%d:%d",q->value(38).toInt(),
-					       q->value(39).toInt());
+      texts[3]=tr("Gpi")+": "+rda->timeString(q->value(36).toTime())+","+
+	rda->timeString(q->value(36).toTime().addMSecs(q->value(37).toInt()))+
+	QString().sprintf(",%d:%d",q->value(38).toInt(),
+			  q->value(39).toInt());
       break;
     }
     texts[5]=tr("Cut")+" "+q->value(6).toString();
@@ -685,7 +685,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   case RDRecording::Playout:
     texts[1]=q->value(3).toString()+QString().sprintf(" : %dP",
 						      q->value(24).toInt()-128);
-    texts[2]=tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss");
+    texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
     cut=new RDCut(q->value(6).toString());
     if(cut->exists()) {
       texts[3]=tr("Len")+": "+RDGetTimeLength(cut->length(),false,false);
@@ -703,7 +703,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
 
   case RDRecording::SwitchEvent:
     texts[1]=q->value(3).toString();
-    texts[2]=tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss");
+    texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
     texts[4]=GetSourceName(q->value(3).toString(),  // Source
 			   q->value(24).toInt(),
 			   q->value(14).toInt());
@@ -714,14 +714,14 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
 
   case RDRecording::Download:
     texts[1]=q->value(3).toString();
-    texts[2]=tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss");
+    texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
     texts[4]=q->value(42).toString();
     texts[5]=tr("Cut")+" "+q->value(6).toString();
     break;
 
   case RDRecording::Upload:
     texts[1]=q->value(3).toString();
-    texts[2]=tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss");
+    texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
     texts[4]=tr("Cut")+" "+q->value(6).toString();
     texts[5]=q->value(42).toString();
     switch((RDSettings::Format)q->value(20).toInt()) {    // Format

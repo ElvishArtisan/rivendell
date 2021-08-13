@@ -2,7 +2,7 @@
 //
 //   A Container Class for Audio Meta Data.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,10 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qobject.h>
+#include <QObject>
 
-#include <rdconf.h>
-#include <rdwavedata.h>
+#include "rdconf.h"
+#include "rdwavedata.h"
 
 RDWaveData::RDWaveData()
 {

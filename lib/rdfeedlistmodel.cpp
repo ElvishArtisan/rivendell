@@ -571,7 +571,7 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
   else {
     d_texts[row][2]="0 / 0";      // Casts
   }
-  d_texts[row][3]=q->value(7).toDate().toString("MM/dd/yyyy");  // Creation Date
+  d_texts[row][3]=rda->shortDateString(q->value(7).toDate());  // Creation Date
   d_texts[row][4]=q->value(3).toString();  // Autopost
   d_texts[row][5]=q->value(4).toString();  // Superfeed
   d_texts[row][6]=RDFeed::publicUrl(q->value(6).toString(),keyname);
@@ -614,7 +614,7 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
     d_cast_texts[row].push_back(list);
     d_cast_texts[row].back()[1]=q->value(9);  // Item Title
     d_cast_texts[row].back()[3]=
-      q->value(11).toDateTime().toString("MM/dd/yyyy");
+      rda->shortDateString(q->value(11).toDateTime().date());
   } while(q->next()&&(q->value(1).toString()==keyname));
   q->previous();
 

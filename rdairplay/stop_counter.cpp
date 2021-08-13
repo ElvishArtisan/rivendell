@@ -21,6 +21,8 @@
 #include <QGuiApplication>
 #include <QPainter>
 
+#include <rdapplication.h>
+
 #include "stop_counter.h"
 
 StopCounter::StopCounter(QWidget *parent)
@@ -131,7 +133,7 @@ void StopCounter::UpdateTime()
       msecs += 86400000; /* 1 day */
     }
     if(stop_running) {
-      text=QTime(0,0,1).addMSecs(msecs).toString("hh:mm:ss");
+      text=rda->timeString(QTime(0,0,1).addMSecs(msecs));
       p->drawText((sizeHint().width()-2-p->fontMetrics().width(text))/2,59,
 		  text);
     }

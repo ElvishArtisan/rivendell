@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include "rdapplication.h"
 #include "rdconf.h"
 #include "rdcutlistmodel.h"
 #include "rdescape_string.h"
@@ -327,7 +328,8 @@ void RDCutListModel::updateRow(int row,RDSqlQuery *q)
   d_texts[d_row_index.at(row)][1]=q->value(2);
   d_texts[d_row_index.at(row)][2]=RDGetTimeLength(q->value(3).toUInt());
   if(q->value(5).toUInt()>0) {
-    d_texts[d_row_index.at(row)][3]=q->value(4).toDateTime().toString("M/d/yy");
+    d_texts[d_row_index.at(row)][3]=
+      rda->shortDateString(q->value(4).toDateTime().date());
   }
   else {
     d_texts[d_row_index.at(row)][3]=tr("Never");
@@ -345,25 +347,26 @@ void RDCutListModel::updateRow(int row,RDSqlQuery *q)
   }
   if(!q->value(6).toDateTime().isNull()) {
     d_texts[d_row_index.at(row)][6]=q->value(7).toString()+" - "+
-      q->value(6).toDateTime().toString("M/d/yy hh:mm:ss");
+      rda->shortDateTimeString(q->value(6).toDateTime());
   }
   d_texts[d_row_index.at(row)][7]=q->value(10).toString();
   if(!q->value(14).toDateTime().isNull()) {
     d_texts[d_row_index.at(row)][8]=
-      q->value(14).toDateTime().toString("M/d/yyyy hh:mm:ss");
+      rda->shortDateTimeString(q->value(14).toDateTime());
   }
   else {
     d_texts[d_row_index.at(row)][8]=tr("None");
   }
   if(!q->value(15).toDateTime().isNull()) {
-    d_texts[d_row_index.at(row)][9]=q->value(15).toDateTime().toString("M/d/yyyy hh:mm:ss");
+    d_texts[d_row_index.at(row)][9]=
+      rda->shortDateTimeString(q->value(15).toDateTime());
   }
   else {
     d_texts[d_row_index.at(row)][9]=tr("None");
   }
   if(!q->value(17).isNull()) {
-    d_texts[d_row_index.at(row)][10]=q->value(16).toTime().toString("hh:mm:ss");
-    d_texts[d_row_index.at(row)][11]=q->value(17).toTime().toString("hh:mm:ss");
+    d_texts[d_row_index.at(row)][10]=rda->timeString(q->value(16).toTime());
+    d_texts[d_row_index.at(row)][11]=rda->timeString(q->value(17).toTime());
   }
   else {
     d_texts[d_row_index.at(row)][10]=tr("None");

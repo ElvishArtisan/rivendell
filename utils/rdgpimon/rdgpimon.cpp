@@ -320,7 +320,7 @@ void MainWidget::eventsReportData()
   report=RDReport::center("Rivendell GPIO Event Report",78)+"\n";
   report+=
     RDReport::center(QString("Date: ")+
-		     gpi_events_date_edit->date().toString("MM/dd/yyyy")+
+		     rda->shortDateString(gpi_events_date_edit->date())+
 		     "       "+rda->station()->name()+":"+
 		     QString().sprintf("%d     ",gpi_matrix_box->currentIndex())+
 		     " State Filter: "+
@@ -349,7 +349,7 @@ void MainWidget::eventsReportData()
   q=new RDSqlQuery(sql);
   while(q->next()) {
     report+="                        ";
-    report+=q->value(0).toDateTime().toString("hh:mm:ss")+"   ";
+    report+=rda->timeString(q->value(0).toDateTime().time())+"   ";
     report+=QString().sprintf("   %5d       ",q->value(1).toInt());
     if(q->value(2).toInt()==0) {
       report+=tr("OFF");

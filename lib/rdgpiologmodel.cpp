@@ -172,7 +172,7 @@ void RDGpioLogModel::addEvent(int line,bool state)
   QList<QVariant> texts;
 
   // Time
-  texts.push_back(QTime::currentTime().toString("hh:mm:ss"));
+  texts.push_back(rda->timeString(QTime::currentTime()));
 
   // Line
   texts.push_back(QString().sprintf("%d",line+1));
@@ -269,7 +269,7 @@ void RDGpioLogModel::updateRow(int row,RDSqlQuery *q)
   QList<QVariant> texts;
 
   // Time
-  texts.push_back(q->value(0).toDateTime().toString("hh:mm:ss"));
+  texts.push_back(rda->timeString(q->value(0).toDateTime().time()));
 
   // Line
   texts.push_back(QString().sprintf("%d",q->value(1).toInt()));

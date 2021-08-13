@@ -351,7 +351,7 @@ void RDLogListModel::updateRow(int row,RDSqlQuery *q)
     texts.push_back(tr("Always"));
   }
   else {
-    texts.push_back(q->value(3).toDate().toString("MM/dd/yyyy"));
+    texts.push_back(rda->shortDateString(q->value(3).toDate()));
   }
   icons.push_back(QVariant());
 
@@ -360,7 +360,7 @@ void RDLogListModel::updateRow(int row,RDSqlQuery *q)
     texts.push_back(tr("Always"));
   }
   else {
-    texts.push_back(q->value(4).toDate().toString("MM/dd/yyyy"));
+    texts.push_back(rda->shortDateString(q->value(4).toDate()));
   }
   icons.push_back(QVariant());
 

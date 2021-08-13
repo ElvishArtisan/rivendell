@@ -22256,3 +22256,6 @@
 2021-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Modified reports in rdlogmanager(1) to use standard date/time
 	formats.
+2021-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Replaced hard-coded date/time formats with standard formats in
+	all reports and GUI modules.

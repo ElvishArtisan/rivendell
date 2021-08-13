@@ -168,15 +168,16 @@ void ListReports::GenerateLogReport(QString *report)
   }
   QString start_date=tr("[none]");
   if(!list_start_date.isNull()) {
-    start_date=list_start_date.toString("MM/dd/yyyy");
+    start_date=rda->shortDateString(list_start_date);
   }
   QString end_date=tr("[none]");
   if(!list_end_date.isNull()) {
-    end_date=list_end_date.toString("MM/dd/yyyy");
+    end_date=rda->shortDateString(list_end_date);
   }
   *report=RDReport::center("Rivendell Log Listing",132)+"\n";
   *report+=QString("Generated: ")+
-    QDateTime::currentDateTime().toString("MM/dd/yyyy")+"                        Log: "+
+    rda->shortDateString(QDate::currentDate())+
+    "                        Log: "+
     RDReport::leftJustify(list_log_name,30)+
     "  Description: "+RDReport::leftJustify(list_description,27)+"\n";
   *report+=QString("Service: ")+RDReport::leftJustify(list_service_name,10)+
@@ -184,7 +185,7 @@ void ListReports::GenerateLogReport(QString *report)
     RDReport::leftJustify(start_date,10)+"               "+end_date+"\n";
 
   *report+="\n";
-  *report+="-Type-- -Time---- Trans -Cart- -Group---- -Length- -Title--------------------------- -Artist----------------------- -Source----- Line\n";
+  *report+="-Type-- -Start Time--- Trans -Cart- -Group---- -Length- -Title--------------------------- -Artist----------------------- -Source----- Line\n";
 
   //
   // Generate Event Listing
@@ -202,13 +203,13 @@ void ListReports::GenerateLogReport(QString *report)
     // Time
     //
     if(logline->timeType()==RDLogLine::Hard) {
-      *report+="H";
+      *report+="T";
     }
     else {
       *report+=" ";
     }
     if(!logline->startTime(RDLogLine::Imported).isNull()) {
-      *report+=RDReport::leftJustify(logline->startTime(RDLogLine::Logged).toString("hh:mm:ss"),8)+" ";
+      *report+=RDReport::leftJustify(rda->tenthsTimeString(logline->startTime(RDLogLine::Logged),true),13)+" ";
     }
     else {
       *report+="         ";

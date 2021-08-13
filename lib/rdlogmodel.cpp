@@ -371,14 +371,15 @@ int RDLogModel::validate(QString *report,const QDate &date)
   RDSqlQuery *q;
   RDSqlQuery *q1;
   int errs=0;
+  QDateTime now=QDateTime::currentDateTime();
 
   //
   // Report Header
   //
   *report="Rivendell Log Exception Report\n";
   *report+=QString("Generated at: ")+
-    QDate::currentDate().toString("MM/dd/yyyy")+" - "+
-    QTime::currentTime().toString("hh:mm:ss")+"\n";
+    rda->shortDateString(now.date())+" - "+
+    rda->timeString(now.time())+"\n";
   *report+=QString("Log: ")+d_log_name+"\n";
   *report+=QString("Effective Airdate: ")+date.toString("MM/dd/yyyy")+"\n";
   *report+="\n";
@@ -440,7 +441,7 @@ int RDLogModel::validate(QString *report,const QDate &date)
 	  q1=new RDSqlQuery(sql);
 	  if(!q1->first()) {
 	    *report+=QString(" ")+
-	      logLine(i)->startTime(RDLogLine::Logged).toString("hh:mm:ss")+
+	      rda->timeString(logLine(i)->startTime(RDLogLine::Logged))+
 	      QString().sprintf(" - cart %06d [",logLine(i)->cartNumber())+
 	      q->value(1).toString()+"] "+QObject::tr("is not playable")+"\n";
 	    errs++;
