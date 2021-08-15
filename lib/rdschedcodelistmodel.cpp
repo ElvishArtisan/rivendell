@@ -243,7 +243,7 @@ void RDSchedCodeListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      "where `CODE`='"+RDEscapeString(d_texts.at(line).at(line).toString())+"'";
+      "where `CODE`='"+RDEscapeString(d_texts.at(line).at(0).toString())+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
