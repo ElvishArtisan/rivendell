@@ -360,27 +360,46 @@ QString RDCoreApplication::shortDateTimeString(const QDateTime &dt) const
 }
 
 
-QString RDCoreApplication::timeString(const QTime &time,bool padded) const
+QString RDCoreApplication::timeString(const QTime &time,
+				      const QString &padding) const
 {
   if(app_show_twelve_hour_time) {
-    if(padded) {
-      return time.toString(RD_TWELVE_HOUR_PADDED_FORMAT);
+    QString time_str=time.toString(RD_TWELVE_HOUR_FORMAT);
+    if(!padding.isEmpty()) {
+      if((time.hour()==0)||((time.hour()>=10)&&(time.hour()<13))||
+	 (time.hour()>=22)) {
+	return time_str.left(8)+" "+time_str.right(2);
+      }
+      return padding+time_str.left(7)+" "+time_str.right(2);
     }
-    return time.toString(RD_TWELVE_HOUR_FORMAT);
+    if((time.hour()==0)||((time.hour()>=10)&&(time.hour()<13))||
+       (time.hour()>=22)) {
+      return time_str.left(8)+" "+time_str.right(2);
+    }
+    return time_str.left(7)+" "+time_str.right(2);
   }
-  return time.toString(RD_TWENTYFOUR_HOUR_FORMAT);
+  return time.toString(RD_TWENTYFOUR_HOUR_FORMAT).left(10);
 }
 
 
-QString RDCoreApplication::tenthsTimeString(const QTime &time,bool padded) const
+QString RDCoreApplication::tenthsTimeString(const QTime &time,
+					    const QString &padding) const
 {
   if(app_show_twelve_hour_time) {
-    if(padded) {
-      return time.toString(RD_TWELVE_HOUR_TENTHS_PADDED_FORMAT);
+    QString time_str=time.toString(RD_TWELVE_HOUR_TENTHS_FORMAT);
+    if(!padding.isEmpty()) {
+      if((time.hour()==0)||((time.hour()>=10)&&(time.hour()<13))||
+	 (time.hour()>=22)) {
+	return time_str.left(10)+" "+time_str.right(2);
+      }
+      return padding+time_str.left(9)+" "+time_str.right(2);
     }
-    return time.toString(RD_TWELVE_HOUR_TENTHS_FORMAT);
+    if(((time.hour()>=10)&&(time.hour()<13))||(time.hour()>=22)) {
+      return time_str.left(10)+" "+time_str.right(2);
+    }
+    return time_str.left(9)+" "+time_str.right(2);
   }
-  return time.toString(RD_TWENTYFOUR_HOUR_TENTHS_FORMAT);
+  return time.toString(RD_TWENTYFOUR_HOUR_TENTHS_FORMAT).left(10);
 }
 
 

@@ -209,7 +209,7 @@ void ListReports::GenerateLogReport(QString *report)
       *report+=" ";
     }
     if(!logline->startTime(RDLogLine::Imported).isNull()) {
-      *report+=RDReport::leftJustify(rda->tenthsTimeString(logline->startTime(RDLogLine::Logged),true),13)+" ";
+      *report+=RDReport::leftJustify(rda->tenthsTimeString(logline->startTime(RDLogLine::Logged),"0"),13)+" ";
     }
     else {
       *report+="         ";
@@ -235,7 +235,7 @@ void ListReports::GenerateLogReport(QString *report)
       *report+="       ";
       *report+="           ";
       *report+="     :00 ";
-      *report+=RDReport::leftJustify(logline->markerComment(),30)+" ";
+      *report+=RDReport::leftJustify(logline->markerComment(),33)+" ";
       *report+="                               ";
       break;
 
@@ -260,7 +260,8 @@ void ListReports::GenerateLogReport(QString *report)
       *report+="       ";
       *report+="           ";
       *report+="         ";
-      *report+=RDReport::leftJustify(logline->markerLabel(),30)+" ";
+      *report+=RDReport::leftJustify(logline->markerLabel(),33)+" ";
+      *report+="                               "; 
       break;
 
     case RDLogLine::OpenBracket:

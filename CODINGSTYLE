@@ -329,8 +329,10 @@ See the specific headers in 'lib/' for details.
 Value Outputs. The following methods are available for easily rendering
 properly formatted date/time strings in GUI module contexts:
 
-RDCoreApplication::timeString(const QTime &time,bool padded=false) const;
-RDCoreApplication::tenthsTimeString(const QTime &time,bool padded=false) const;
+RDCoreApplication::timeString(const QTime &time,
+                              const QString &padding="") const;
+RDCoreApplication::tenthsTimeString(const QTime &time,
+                                    const QString &padding="") const;
 RDCoreApplication::shortDateString(const QDate &date) const;
 RDCoreApplication::longDateString(const Date &date) const;
 

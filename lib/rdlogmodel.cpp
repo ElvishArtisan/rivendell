@@ -381,7 +381,7 @@ int RDLogModel::validate(QString *report,const QDate &date)
     rda->shortDateString(now.date())+" - "+
     rda->timeString(now.time())+"\n";
   *report+=QString("Log: ")+d_log_name+"\n";
-  *report+=QString("Effective Airdate: ")+date.toString("MM/dd/yyyy")+"\n";
+  *report+=QString("Effective Airdate: ")+rda->shortDateString(date)+"\n";
   *report+="\n";
 
   //
@@ -397,7 +397,7 @@ int RDLogModel::validate(QString *report,const QDate &date)
       q=new RDSqlQuery(sql);
       if(!q->first()) {
 	*report+=QString(" ")+
-	  logLine(i)->startTime(RDLogLine::Logged).toString("hh:mm:ss")+
+	  rda->timeString(logLine(i)->startTime(RDLogLine::Logged))+
 	  QString().sprintf(" - missing cart %06d",logLine(i)->cartNumber())+
 	  "\n";
 	errs++;
@@ -1028,18 +1028,17 @@ QString RDLogModel::StartTimeString(int line) const
   if(ll!=NULL) {
     switch(ll->timeType()) {
     case RDLogLine::Hard:
-      return QString("T")+ll->startTime(RDLogLine::Logged).
-	toString("hh:mm:ss.zzz").left(10);
+      return QString("T")+
+	rda->tenthsTimeString(ll->startTime(RDLogLine::Logged));
       break;
 
     default:
       if(d_start_time_style==RDLogModel::Estimated) {
 	if(ll->startTime(RDLogLine::Predicted).isNull()) {
-	  return blockStartTime(line).toString("hh:mm:ss.zzz").left(10);
+	  return rda->tenthsTimeString(blockStartTime(line));
 	}
 	else {
-	  return ll->startTime(RDLogLine::Predicted).
-	    toString("hh:mm:ss.zzz").left(10);
+	  return rda->tenthsTimeString(ll->startTime(RDLogLine::Predicted));
 	}
       }
       else {   // Scheduled
@@ -1047,8 +1046,7 @@ QString RDLogModel::StartTimeString(int line) const
 	  return QString("");
 	}
 	else {
-	  return ll->startTime(RDLogLine::Logged).
-	    toString("hh:mm:ss.zzz").left(10);
+	  return rda->tenthsTimeString(ll->startTime(RDLogLine::Logged));
 	}
       }
       break;

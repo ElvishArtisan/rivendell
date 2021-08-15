@@ -109,7 +109,7 @@ bool RDReport::ExportMusicPlayout(const QString &filename,
       }
     }
     cart_num=QString().sprintf(cart_fmt.toUtf8(),q->value(1).toUInt());
-    *strm << rda->timeString(q->value(2).toDateTime().time(),true)+"  ";
+    *strm << rda->timeString(q->value(2).toDateTime().time()," ")+"  ";
     *strm << cart_num+"  ";
     *strm << cut+"  ";
     *strm << RDGetTimeLength(q->value(0).toInt(),true,false).right(5)+"  ";

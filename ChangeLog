@@ -22266,3 +22266,8 @@
 2021-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlibrary(1) that caused misaligned
 	columns when generating a Cut Report.
+2021-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the second parameter of the
+	'RDCoreApplication::timeString()' and
+	'RDCoreApplication::tenthsTimeString()' to allow specification
+	of the character used for padding.

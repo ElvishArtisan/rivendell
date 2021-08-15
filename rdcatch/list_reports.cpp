@@ -221,12 +221,12 @@ void ListReports::GenerateEventReport(QString *report)
     switch((RDRecording::StartType)q->value(1).toInt()) {
     case RDRecording::HardStart:
       *report+=QString("Hard: ")+
-	RDReport::leftJustify(rda->timeString(q->value(2).toTime(),true),11)+" ";
+	RDReport::leftJustify(rda->timeString(q->value(2).toTime()," "),11)+" ";
       break;
 
     case RDRecording::GpiStart:
       *report+=QString("Gpi: ")+
-	RDReport::leftJustify(rda->timeString(q->value(2).toTime(),true),11)+" ";
+	RDReport::leftJustify(rda->timeString(q->value(2).toTime()," "),11)+" ";
       break;
     }
 
@@ -238,12 +238,12 @@ void ListReports::GenerateEventReport(QString *report)
       switch((RDRecording::EndType)q->value(3).toInt()) {
       case RDRecording::HardEnd:
 	*report+=QString("Hard: ")+
-	  RDReport::leftJustify(rda->timeString(q->value(4).toTime(),true),11)+" ";
+	  RDReport::leftJustify(rda->timeString(q->value(4).toTime()," "),11)+" ";
 	break;
 		
       case RDRecording::GpiEnd:
 	*report+=QString("Gpi: ")+
-	  RDReport::leftJustify(rda->timeString(q->value(4).toTime(),true),11)+" ";
+	  RDReport::leftJustify(rda->timeString(q->value(4).toTime()," "),11)+" ";
 	break;
 		
       case RDRecording::LengthEnd:
@@ -477,10 +477,10 @@ void ListReports::GenerateXloadReport(QString *report)
     // Start Time
     //
     if(rda->showTwelveHourTime()) {
-      *report+=RDReport::leftJustify(rda->timeString(q->value(1).toTime(),true),11)+" ";
+      *report+=RDReport::leftJustify(rda->timeString(q->value(1).toTime()," "),11)+" ";
     }
     else {
-      *report+=RDReport::leftJustify(rda->timeString(q->value(1).toTime(),true),8)+" ";
+      *report+=RDReport::leftJustify(rda->timeString(q->value(1).toTime()," "),8)+" ";
     }
 
     //

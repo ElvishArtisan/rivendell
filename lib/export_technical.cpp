@@ -124,7 +124,7 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
       }
     }
     cart_num=QString().sprintf(cart_fmt.toUtf8(),q->value(1).toUInt());
-    *strm << rda->timeString(q->value(2).toTime(),true)+"  ";
+    *strm << rda->timeString(q->value(2).toTime()," ")+"  ";
     *strm << cart_num+"  ";
     *strm << cut+"  ";
     *strm << RDReport::leftJustify(q->value(8).toString(),23)+"  ";

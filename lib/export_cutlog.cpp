@@ -119,7 +119,7 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
     if(desc.isEmpty()) {
       desc="                    ";
     }
-    *strm << rda->timeString(q->value(2).toTime(),true)+"  ";
+    *strm << rda->timeString(q->value(2).toTime()," ")+"  ";
     *strm << cart_num+"  ";
     *strm << RDReport::leftJustify(q->value(8).toString(),23)+"  ";
     *strm << cut+"  ";

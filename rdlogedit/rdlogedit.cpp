@@ -531,7 +531,7 @@ void MainWidget::reportData()
     // Voice Tracks
     //
     report+=
-      QString().sprintf("%3u/%-3u ",q->value(8).toUInt(),q->value(7).toUInt());
+      QString().sprintf("%3u/%-3u ",q->value(7).toUInt(),q->value(8).toUInt());
     
     //
     // Start Date
