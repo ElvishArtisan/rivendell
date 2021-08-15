@@ -22281,3 +22281,6 @@
 	creating a new Service entry.
 	* Fixed a bug in rdadmin(1) that could cause a segfault when
 	creating a new Schedule Code entry.
+2021-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdadmin(1) that threw a SQL error when
+	attempting to create a new Replicator entry.

@@ -242,7 +242,7 @@ void RDReplicatorListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where `REPLICATORS`.`NAME`='"+
-      RDEscapeString(d_texts.at(line).at(line).toString())+"'";
+      RDEscapeString(d_texts.at(line).at(0).toString())+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
