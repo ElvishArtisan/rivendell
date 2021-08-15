@@ -166,6 +166,7 @@ class EditEvent : public RDDialog
   RDTransportButton *event_postimport_up_button;
   RDTransportButton *event_postimport_down_button;
   QPushButton *event_color_button;
+  QColor event_color;
   bool event_saved;
   bool event_new_event;
   std::vector<QString> *event_new_events;

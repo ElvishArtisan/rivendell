@@ -79,6 +79,7 @@ class EditClock : public RDDialog
   QPushButton *edit_edit_button;
   QPushButton *edit_delete_button;
   QPushButton *edit_color_button;
+  QColor edit_color;
   QLabel *edit_clockname_label;
   QLineEdit *edit_shortname_edit;
   QLabel *edit_clock_label;

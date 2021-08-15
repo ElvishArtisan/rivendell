@@ -715,7 +715,8 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_color_button->setFont(buttonFont());
   event_color_button->setText(tr("Color"));
   connect(event_color_button,SIGNAL(clicked()),this,SLOT(colorData()));
-
+  event_color=palette().color(QPalette::Background);
+  
   //
   //  OK Button
   //
@@ -809,9 +810,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   if(event_have_code2_box->findText(event_event->HaveCode2())!=-1) {
     event_have_code2_box->setCurrentText(event_event->HaveCode2());
   }
-  QColor color=event_event->color();
-  if(color.isValid()) {
-    event_color_button->setPalette(QPalette(color,palette().color(QPalette::Background)));
+  event_color=event_event->color();
+  if(event_color.isValid()) {
+    event_color_button->setPalette(QPalette(event_color,palette().color(QPalette::Background)));
   }
   QString str=event_event->nestedEvent();
   sql=QString("select `NAME` from `EVENTS` where ")+
@@ -1204,6 +1205,7 @@ void EditEvent::colorData()
   QColor color=
     QColorDialog::getColor(event_color_button->palette().color(QPalette::Background),this);
   if(color.isValid()) {
+    event_color=color;
     event_color_button->setPalette(QPalette(color,palette().color(QPalette::Background)));
   }
 }
@@ -1322,7 +1324,7 @@ void EditEvent::Save()
   event_event->
     setDefaultTransType((RDLogLine::TransType)event_defaulttrans_box->
   			currentIndex());
-  event_event->setColor(event_color_button->palette().color(QPalette::Background));
+  event_event->setColor(event_color);
   if(event_nestevent_box->currentIndex()==0) {
     event_event->setNestedEvent("");
   }

@@ -22271,3 +22271,6 @@
 	'RDCoreApplication::timeString()' and
 	'RDCoreApplication::tenthsTimeString()' to allow specification
 	of the character used for padding.
+2021-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in rdlogmanager(1) that caused the 'Color'
+	setting for Events and Clocks to fail to be saved.

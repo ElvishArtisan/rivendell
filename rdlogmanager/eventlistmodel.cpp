@@ -319,7 +319,12 @@ QPixmap EventListModel::MakeIcon(const QString &color) const
   QPixmap pix(QSize(15,15));
   QPainter *p=new QPainter();
   p->begin(&pix);
-  p->fillRect(0,0,15,15,QColor(color));
+  if(QColor(color).isValid()) {
+    p->fillRect(0,0,15,15,QColor(color));
+  }
+  else {
+    p->fillRect(0,0,15,15,d_palette.color(QPalette::Background));
+  }
   p->end();
   delete p;
 
