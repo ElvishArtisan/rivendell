@@ -22291,3 +22291,6 @@
 2021-08-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rmlsend(1) that caused it to attempt to
 	open an X11 connection even when invoked in CLI mode.
+2021-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the MySQL client package dependency for Debian from
+	'mariadb-client' to 'default-mysql-client'.
