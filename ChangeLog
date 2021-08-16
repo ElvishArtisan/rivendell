@@ -22294,3 +22294,7 @@
 2021-08-16 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the MySQL client package dependency for Debian from
 	'mariadb-client' to 'default-mysql-client'.
+2021-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdadmin(1) the 'Rivendell Dropbox
+	Configurations' dialog that caused corruption of dropbox
+	settings.

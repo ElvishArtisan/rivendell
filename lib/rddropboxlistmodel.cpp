@@ -249,7 +249,6 @@ void RDDropboxListModel::refresh(int box_id)
 void RDDropboxListModel::updateModel()
 {
   QList<QVariant> texts; 
-
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
     "where `DROPBOXES`.`STATION_NAME`='"+RDEscapeString(d_hostname)+"' "+
@@ -290,12 +289,12 @@ void RDDropboxListModel::updateRow(int row,RDSqlQuery *q)
   QList<QVariant> texts;
 
   // ID
-  d_box_ids.back()=q->value(0).toInt();
+  d_box_ids[row]=q->value(0).toInt();
   texts.push_back(q->value(0));
 
   // Group
   texts.push_back(q->value(1));
-  d_group_colors.back()=QColor(q->value(2).toString());
+  d_group_colors[row]=QColor(q->value(2).toString());
 
   // Path
   texts.push_back(q->value(3));
