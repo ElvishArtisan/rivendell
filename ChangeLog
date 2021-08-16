@@ -22284,3 +22284,7 @@
 2021-08-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdadmin(1) that threw a SQL error when
 	attempting to create a new Replicator entry.
+2021-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused a newly created schedule
+	code to persist even if its creation was abandoned halfway through
+	the creation process.

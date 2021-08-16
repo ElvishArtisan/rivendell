@@ -120,12 +120,11 @@ void ListSchedCodes::addData()
 {
   QString scode;
 
-  if(list_add_schedcode_dialog->exec(&scode)) {
-    if(list_edit_schedcode_dialog->exec(scode)) {
-      QModelIndex index=list_schedcodes_model->addSchedCode(scode);
-      if(index.isValid()) {
-	list_schedcodes_view->selectRow(index.row());
-      }
+  if(list_add_schedcode_dialog->exec(&scode)&&
+     list_edit_schedcode_dialog->exec(scode)) {
+    QModelIndex index=list_schedcodes_model->addSchedCode(scode);
+    if(index.isValid()) {
+      list_schedcodes_view->selectRow(index.row());
     }
   }
   else {
