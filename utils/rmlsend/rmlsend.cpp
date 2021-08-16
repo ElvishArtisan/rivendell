@@ -447,7 +447,7 @@ int main(int argc,char *argv[])
     }
   }
   if(cli_mode) {
-    QApplication a(argc,argv,false);
+    QCoreApplication a(argc,argv);
     new MainObject();
     return a.exec();
   }

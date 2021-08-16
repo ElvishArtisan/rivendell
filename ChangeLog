@@ -22288,3 +22288,6 @@
 	* Fixed a bug in rdadmin(1) that caused a newly created schedule
 	code to persist even if its creation was abandoned halfway through
 	the creation process.
+2021-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rmlsend(1) that caused it to attempt to
+	open an X11 connection even when invoked in CLI mode.
