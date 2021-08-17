@@ -179,7 +179,8 @@ SQL STATEMENTS:
 When embedding SQL statements in code, the following guidelines should be
 followed:
 
-1) All identifier fields should be enclosed in backtick characters.
+1) All identifier fields should be enclosed in backticks (ASCII 0x2C)
+characters (NOT to be confused with apostrophes, see below).
 
 Good:
   sql="select `FIELD1`,`FIELD2` from `MY_TABLE` where `ID`=2";
