@@ -371,7 +371,7 @@ int main(int argc,char *argv[])
   }
 
   if(cmd_generate||cmd_merge_traffic||cmd_merge_music) {
-    QApplication a(argc,argv,false);
+    QCoreApplication a(argc,argv);
     new LogObject(cmd_service,cmd_start_offset,cmd_protect_existing,
 		  cmd_generate,cmd_merge_music,cmd_merge_traffic);
     return a.exec();
