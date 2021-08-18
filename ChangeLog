@@ -22308,3 +22308,5 @@
 	* Refactored the HPI driver in caed(8) to use virtual inheritance.
 	* Disabled JACK driver support in caed(8).
 	* Disabled ALSA driver support in caed(8).
+2021-08-18 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the ALSA driver in caed(8) to use virtual inheritance.

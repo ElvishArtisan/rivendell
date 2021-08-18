@@ -90,7 +90,7 @@ void src_float_to_int_array (const float *in, int *out, int len);
 //
 // Global CAE Definitions
 //
-#define RINGBUFFER_SIZE 262144
+//#define RINGBUFFER_SIZE 262144
 #define CAED_USAGE "[-d]\n\nSupplying the '-d' flag will set 'debug' mode, causing caed(8) to stay\nin the foreground and print debugging info on standard output.\n" 
 
 //
@@ -317,6 +317,7 @@ class MainObject : public QObject
   //
   // ALSA Driver
   //
+  /*
  private slots:
   void alsaStopTimerData(int cardstream);
   void alsaFadeTimerData(int cardstream);
@@ -381,6 +382,7 @@ class MainObject : public QObject
   int alsa_fade_port[RD_MAX_CARDS][RD_MAX_STREAMS];
   unsigned alsa_samples_recorded[RD_MAX_CARDS][RD_MAX_STREAMS];
 #endif  // ALSA
+  */
 
   bool CheckLame();
   bool CheckMp4Decode();

@@ -18,12 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <dlfcn.h>
+
 #include "caedriver.h"
 
 CaeDriver::CaeDriver(RDStation::AudioDriver type,QObject *parent)
   : QObject(parent)
 {
   d_driver_type=type;
+  d_system_sample_rate=rda->system()->sampleRate();
+  twolame_handle=NULL;
+  mad_handle=NULL;
 }
 
 
@@ -36,6 +41,11 @@ RDStation::AudioDriver CaeDriver::driverType() const
 bool CaeDriver::hasCard(int cardnum) const
 {
   return d_cards.contains(cardnum);
+}
+
+
+void CaeDriver::processBuffers()
+{
 }
 
 
@@ -62,4 +72,177 @@ void CaeDriver::addCard(unsigned cardnum)
   else {
     d_cards.push_back(cardnum);
   }
+}
+
+
+unsigned CaeDriver::systemSampleRate() const
+{
+  return d_system_sample_rate;
+}
+
+
+bool CaeDriver::LoadTwoLame()
+{
+#ifdef HAVE_TWOLAME
+  if((twolame_handle=dlopen("libtwolame.so.0",RTLD_NOW))==NULL) {
+    rda->syslog(LOG_INFO,
+	   "TwoLAME encoder library not found, MPEG L2 encoding not supported");
+    return false;
+  }
+  *(void **)(&twolame_init)=dlsym(twolame_handle,"twolame_init");
+  *(void **)(&twolame_set_mode)=dlsym(twolame_handle,"twolame_set_mode");
+  *(void **)(&twolame_set_num_channels)=
+    dlsym(twolame_handle,"twolame_set_num_channels");
+  *(void **)(&twolame_set_in_samplerate)=
+    dlsym(twolame_handle,"twolame_set_in_samplerate");
+  *(void **)(&twolame_set_out_samplerate)=
+    dlsym(twolame_handle,"twolame_set_out_samplerate");
+  *(void **)(&twolame_set_bitrate)=
+    dlsym(twolame_handle,"twolame_set_bitrate");
+  *(void **)(&twolame_init_params)=
+    dlsym(twolame_handle,"twolame_init_params");
+  *(void **)(&twolame_close)=dlsym(twolame_handle,"twolame_close");
+  *(void **)(&twolame_encode_buffer_interleaved)=
+    dlsym(twolame_handle,"twolame_encode_buffer_interleaved");
+  *(void **)(&twolame_encode_buffer_float32_interleaved)=
+    dlsym(twolame_handle,"twolame_encode_buffer_float32_interleaved");
+  *(void **)(&twolame_encode_flush)=
+    dlsym(twolame_handle,"twolame_encode_flush");
+  *(void **)(&twolame_set_energy_levels)=
+    dlsym(twolame_handle,"twolame_set_energy_levels");
+  rda->syslog(LOG_INFO,
+	 "Found TwoLAME encoder library, MPEG L2 encoding supported");
+  return true;
+#else
+  rda->syslog(LOG_INFO,"MPEG L2 encoding not enabled");
+
+  return false;
+#endif  // HAVE_TWOLAME
+}
+
+
+bool CaeDriver::InitTwoLameEncoder(int card,int stream,int chans,int samprate,
+				    int bitrate)
+{
+  if(twolame_handle==NULL) {
+    rda->syslog(LOG_WARNING,"MPEG Layer 2 encode not available");
+    return false;
+  }
+#ifdef HAVE_TWOLAME
+  TWOLAME_MPEG_mode mpeg_mode=TWOLAME_STEREO;
+
+  switch(chans) {
+  case 1:
+    mpeg_mode=TWOLAME_MONO;
+    break;
+
+  case 2:
+    mpeg_mode=TWOLAME_STEREO;    
+    break;
+  }
+  if((twolame_lameopts[card][stream]=twolame_init())==NULL) {
+    rda->syslog(LOG_WARNING,
+	   "unable to initialize twolame instance, card=%d, stream=%d",
+	   card,stream);
+    return false;
+  }
+  twolame_set_mode(twolame_lameopts[card][stream],mpeg_mode);
+  twolame_set_num_channels(twolame_lameopts[card][stream],chans);
+  twolame_set_in_samplerate(twolame_lameopts[card][stream],samprate);
+  twolame_set_out_samplerate(twolame_lameopts[card][stream],samprate);
+  twolame_set_bitrate(twolame_lameopts[card][stream],bitrate/1000);
+  twolame_set_energy_levels(twolame_lameopts[card][stream],1);
+  if(twolame_init_params(twolame_lameopts[card][stream])!=0) {
+    rda->syslog(LOG_WARNING,
+			  "invalid twolame parameters, card=%d, stream=%d, chans=%d, samprate=%d  bitrate=%d",
+			  card,stream,chans,samprate,bitrate);
+    return false;
+  }
+  return true;
+#else
+  return false;
+#endif  // HAVE_TWOLAME
+}
+
+
+void CaeDriver::FreeTwoLameEncoder(int card,int stream)
+{
+#ifdef HAVE_TWOLAME
+  if(twolame_lameopts[card][stream]!=NULL) { 
+    twolame_close(&twolame_lameopts[card][stream]);
+    twolame_lameopts[card][stream]=NULL;
+  }
+#endif  // HAVE_TWOLAME
+}
+
+
+bool CaeDriver::LoadMad()
+{
+#ifdef HAVE_MAD
+  if((mad_handle=dlopen("libmad.so.0",RTLD_NOW))==NULL) {
+    rda->syslog(LOG_INFO,
+	   "MAD decoder library not found, MPEG L2 decoding not supported");
+    return false;
+  }
+  *(void **)(&mad_stream_init)=
+    dlsym(mad_handle,"mad_stream_init");
+  *(void **)(&mad_frame_init)=
+    dlsym(mad_handle,"mad_frame_init");
+  *(void **)(&mad_synth_init)=
+    dlsym(mad_handle,"mad_synth_init");
+  *(void **)(&mad_stream_buffer)=
+    dlsym(mad_handle,"mad_stream_buffer");
+  *(void **)(&mad_frame_decode)=
+    dlsym(mad_handle,"mad_frame_decode");
+  *(void **)(&mad_synth_frame)=
+    dlsym(mad_handle,"mad_synth_frame");
+  *(void **)(&mad_frame_finish)=
+    dlsym(mad_handle,"mad_frame_finish");
+  *(void **)(&mad_stream_finish)=
+    dlsym(mad_handle,"mad_stream_finish");
+  rda->syslog(LOG_INFO,
+	 "Found MAD decoder library, MPEG L2 decoding supported");
+  return true;
+#else
+  rda->syslog(LOG_INFO,"MPEG L2 decoding not enabled");
+  return false;
+#endif  // HAVE_MAD
+}
+
+
+bool CaeDriver::InitMadDecoder(int card,int stream,RDWaveFile *wave)
+{
+  if(mad_handle==NULL) {
+    rda->syslog(LOG_WARNING,"MPEG Layer 2 decode not available");
+    return false;
+  }
+#ifdef HAVE_MAD
+  if(mad_active[card][stream]) {
+    FreeMadDecoder(card,stream);
+  }
+  mad_stream_init(&mad_stream[card][stream]);
+  mad_frame_init(&mad_frame[card][stream]);
+  mad_synth_init(&mad_synth[card][stream]);
+  mad_frame_size[card][stream]=
+    144*wave->getHeadBitRate()/wave->getSamplesPerSec();
+  mad_left_over[card][stream]=0;
+  mad_active[card][stream]=true;
+  return true;
+#endif  // HAVE_MAD
+  return false;
+}
+
+
+void CaeDriver::FreeMadDecoder(int card,int stream)
+{
+#ifdef HAVE_MAD
+  if(mad_active[card][stream]) {
+    mad_synth_finish(&mad_synth[card][stream]);
+    mad_frame_finish(&mad_frame[card][stream]);
+    mad_stream_finish(&mad_stream[card][stream]);
+    mad_frame_size[card][stream]=0;
+    mad_left_over[card][stream]=0;
+    mad_active[card][stream]=false;
+  }
+#endif  // HAVE_MAD
 }

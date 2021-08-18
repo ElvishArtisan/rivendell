@@ -252,9 +252,24 @@ MainObject::MainObject(QObject *parent)
   unsigned next_card=0;
 
   //
-  // HPI Devices (One driver instance handles them all)
+  // HPI Devices
   //
   CaeDriver *dvr=CaeDriverFactory(RDStation::Hpi,this);
+  if(dvr->initialize(&next_card)) {
+    connect(dvr,SIGNAL(playStateChanged(int,int,int)),
+	    this,SLOT(statePlayUpdate(int,int,int)));
+    connect(dvr,SIGNAL(recordStateChanged(int,int,int)),
+	    this,SLOT(stateRecordUpdate(int,int,int)));
+    d_drivers.push_back(dvr);
+  }
+  else {
+    delete dvr;
+  }
+
+  //
+  // ALSA Devices
+  //
+  dvr=CaeDriverFactory(RDStation::Alsa,this);
   if(dvr->initialize(&next_card)) {
     connect(dvr,SIGNAL(playStateChanged(int,int,int)),
 	    this,SLOT(statePlayUpdate(int,int,int)));
@@ -300,6 +315,7 @@ MainObject::MainObject(QObject *parent)
   if(jack_client!=NULL) {
     pthread_getschedparam(jack_client_thread_id(jack_client),&sched_policy,
 			  &sched_params);
+    /*
 #ifdef ALSA
     for(int i=0;i<RD_MAX_CARDS;i++) {
       if(cae_driver[i]==RDStation::Alsa) {
@@ -320,6 +336,7 @@ MainObject::MainObject(QObject *parent)
       }
     }
 #endif  // ALSA
+    */
     jack_running=true;
   }
 #endif  // JACK
@@ -328,6 +345,7 @@ MainObject::MainObject(QObject *parent)
       sched_params.sched_priority=rda->config()->realtimePriority();
     }
     sched_policy=SCHED_FIFO;
+    /*
 #ifdef ALSA
     for(int i=0;i<RD_MAX_CARDS;i++) {
       if(cae_driver[i]==RDStation::Alsa) {
@@ -348,6 +366,7 @@ MainObject::MainObject(QObject *parent)
       }
     }
 #endif  // ALSA
+    */
     if(sched_params.sched_priority>sched_get_priority_min(sched_policy)) {
       sched_params.sched_priority--;
     }
@@ -1065,6 +1084,7 @@ void MainObject::connectionDroppedData(int id)
 
 void MainObject::statePlayUpdate(int card,int stream,int state)
 {
+  printf("statePlayUpdate(%d,%d,%d)\n",card,stream,state);
   int handle=GetHandle(card,stream);
 
   if(handle<0) {
@@ -1143,8 +1163,12 @@ void MainObject::updateMeters()
     exit(0);
   }
 
-  AlsaClock();
-  JackClock();
+  //
+  // Service Disk Buffers
+  //
+  for(int i=0;i<d_drivers.size();i++) {
+    d_drivers.at(i)->processBuffers();
+  }
 
   for(int i=0;i<RD_MAX_CARDS;i++) {
     CaeDriver *dvr=GetDriver(i);
@@ -1539,7 +1563,7 @@ bool MainObject::CheckMp4Decode()
 bool MainObject::LoadTwoLame()
 {
 #ifdef HAVE_TWOLAME
-  if((twolame_handle=dlopen("libtwolame.so.0",RTLD_NOW))==NULL) {
+  if((twolame_handle=dlopen("libtwolame.so.0",RTLD_LAZY))==NULL) {
     rda->syslog(LOG_INFO,
 	   "TwoLAME encoder library not found, MPEG L2 encoding not supported");
     return false;
@@ -1630,7 +1654,7 @@ void MainObject::FreeTwoLameEncoder(int card,int stream)
 bool MainObject::LoadMad()
 {
 #ifdef HAVE_MAD
-  if((mad_handle=dlopen("libmad.so.0",RTLD_NOW))==NULL) {
+  if((mad_handle=dlopen("libmad.so.0",RTLD_LAZY))==NULL) {
     rda->syslog(LOG_INFO,
 	   "MAD decoder library not found, MPEG L2 decoding not supported");
     return false;

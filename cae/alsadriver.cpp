@@ -1,8 +1,8 @@
-// cae_alsa.cpp
+// alsadriver.cpp
 //
-// The ALSA Driver for the Core Audio Engine component of Rivendell
+// caed(8) driver for Advanced Linux Audio Architecture devices
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,20 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
 #include <signal.h>
 
-#include <samplerate.h>
-
-#include <qsignalmapper.h>
-
-#include <rd.h>
-#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdmeteraverage.h>
 #include <rdringbuffer.h>
 
-#include <cae.h>
+#include "alsadriver.h"
 
 #ifdef ALSA
 //
@@ -533,10 +526,10 @@ void *AlsaPlayCallback(void *ptr)
 }
 
 
-void MainObject::AlsaInitCallback()
+void AlsaDriver::AlsaInitCallback()
 {
   int avg_periods=
-    (330*system_sample_rate)/(1000*rda->config()->alsaPeriodSize());
+    (330*systemSampleRate())/(1000*rda->config()->alsaPeriodSize());
   for(int i=0;i<RD_MAX_CARDS;i++) {
     for(int j=0;j<RD_MAX_PORTS;j++) {
       alsa_recording[i][j]=false;
@@ -569,69 +562,10 @@ void MainObject::AlsaInitCallback()
 #endif  // ALSA
 
 
-void MainObject::alsaStopTimerData(int cardstream)
+AlsaDriver::AlsaDriver(QObject *parent)
+  : CaeDriver(RDStation::Alsa,parent)
 {
 #ifdef ALSA
-  int card=cardstream/RD_MAX_STREAMS;
-  int stream=cardstream-card*RD_MAX_STREAMS;
-
-  alsaStopPlayback(card,stream);
-  statePlayUpdate(card,stream,2);
-#endif  // ALSA
-}
-
-
-void MainObject::alsaFadeTimerData(int cardstream)
-{
-#ifdef ALSA
-  int card=cardstream/RD_MAX_STREAMS;
-  int stream=cardstream-card*RD_MAX_STREAMS;
-  int16_t level;
-  if(alsa_fade_up[card][stream]) {
-    level=alsa_output_volume_db[card][alsa_fade_port[card][stream]][stream]+
-      alsa_fade_increment[card][stream];
-    if(level>=alsa_fade_volume_db[card][stream]) {
-      level=alsa_fade_volume_db[card][stream];
-      alsa_fade_timer[card][stream]->stop();
-    }
-  }
-  else {
-    level=alsa_output_volume_db[card][alsa_fade_port[card][stream]][stream]-
-      alsa_fade_increment[card][stream];
-    if(level<=alsa_fade_volume_db[card][stream]) {
-      level=alsa_fade_volume_db[card][stream];
-      alsa_fade_timer[card][stream]->stop();
-    }
-  }
-  rda->syslog(LOG_DEBUG,"FadeLevel: %d",level);
-  alsaSetOutputVolume(card,stream,alsa_fade_port[card][stream],level);
-#endif  // ALSA
-}
-
-
-void MainObject::alsaRecordTimerData(int cardport)
-{
-#ifdef ALSA
-  int card=cardport/RD_MAX_PORTS;
-  int stream=cardport-card*RD_MAX_PORTS;
-
-  alsaStopRecord(card,stream);
-  stateRecordUpdate(card,stream,2);
-#endif  // ALSA
-}
-
-
-void MainObject::alsaInit(RDStation *station)
-{
-#ifdef ALSA
-  QString dev;
-  int card=0;
-  snd_pcm_t *pcm_play_handle;
-  snd_pcm_t *pcm_capture_handle;
-  snd_ctl_t *snd_ctl;
-  snd_ctl_card_info_t *card_info=NULL;
-  bool pcm_opened;
-
   //
   // Initialize Data Structures
   //
@@ -652,18 +586,16 @@ void MainObject::alsaInit(RDStation *station)
       }
     }
   }
-  //  alsa_channels=rd_config->channels();
 
   //
   // Stop & Fade Timers
   //
   QSignalMapper *stop_mapper=new QSignalMapper(this);
-  connect(stop_mapper,SIGNAL(mapped(int)),this,SLOT(alsaStopTimerData(int)));
+  connect(stop_mapper,SIGNAL(mapped(int)),this,SLOT(stopTimerData(int)));
   QSignalMapper *fade_mapper=new QSignalMapper(this);
-  connect(fade_mapper,SIGNAL(mapped(int)),this,SLOT(alsaFadeTimerData(int)));
+  connect(fade_mapper,SIGNAL(mapped(int)),this,SLOT(fadeTimerData(int)));
   QSignalMapper *record_mapper=new QSignalMapper(this);
-  connect(record_mapper,SIGNAL(mapped(int)),
-	  this,SLOT(alsaRecordTimerData(int)));
+  connect(record_mapper,SIGNAL(mapped(int)),this,SLOT(recordTimerData(int)));
   for(int i=0;i<RD_MAX_CARDS;i++) {
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       alsa_stop_timer[i][j]=new QTimer(this);
@@ -689,89 +621,25 @@ void MainObject::alsaInit(RDStation *station)
   AlsaInitCallback();
   alsa_wave_buffer=new int16_t[RINGBUFFER_SIZE];
   alsa_wave24_buffer=new uint8_t[2*RINGBUFFER_SIZE];
-  //alsa_resample_buffer=new int16_t[2*RINGBUFFER_SIZE];
 
-  //
-  // Start Up Interfaces
-  //
-  for(int i=0;i<RD_MAX_CARDS;i++) {
-    if(cae_driver[i]==RDStation::None) {
-      pcm_opened=false;
-      // These are used to flag bits of card that are not setup
-      // They are cleared just before the pthreads are created.
-      alsa_play_format[i].exiting = true;
-      alsa_capture_format[i].exiting = true;
-      dev=QString().sprintf("rd%d",card);
-      if(snd_pcm_open(&pcm_play_handle,dev.toUtf8(),
-		      SND_PCM_STREAM_PLAYBACK,0)==0){
-	pcm_opened=true;
-	if(AlsaStartPlayDevice(dev,i,pcm_play_handle)) {
-	  cae_driver[i]=RDStation::Alsa;
-	}
-	else {
-	  snd_pcm_close(pcm_play_handle);
-	}
-      }
-      if(snd_pcm_open(&pcm_capture_handle,dev.toUtf8(),
-		      SND_PCM_STREAM_CAPTURE,0)==0) {
-	pcm_opened=true;
-	if(AlsaStartCaptureDevice(dev,i,pcm_capture_handle)) {
-	  cae_driver[i]=RDStation::Alsa;
-	}
-	else {
-	  snd_pcm_close(pcm_capture_handle);
-	}
-      }
-      if(cae_driver[i]==RDStation::Alsa) {
-	station->setCardDriver(i,RDStation::Alsa);
-	if(snd_ctl_open(&snd_ctl,dev.toUtf8(),0)<0) {
-	  rda->syslog(LOG_INFO,
-				"no control device found for %s",
-				dev.toUtf8().constData());
-	  station->setCardName(i,tr("ALSA Device")+" "+dev);
-	}
-	else {
-	  snd_ctl_card_info_malloc(&card_info);
-	  snd_ctl_card_info(snd_ctl,card_info);
-	  station->
-	    setCardName(i,snd_ctl_card_info_get_longname(card_info));
-	  snd_ctl_close(snd_ctl);
-	}
-	station->
-	  setCardInputs(i,
-			alsa_capture_format[i].channels/RD_DEFAULT_CHANNELS);
-	station->
-	  setCardOutputs(i,alsa_play_format[i].channels/RD_DEFAULT_CHANNELS);
-      }
-      else {
-	i--;
-      }
-      card++;
-      if(!pcm_opened) {
-	return;
-      }
-    }
-  }
+  LoadTwoLame();
+  LoadMad();
 #endif  // ALSA
 }
 
 
-void MainObject::alsaFree()
+AlsaDriver::~AlsaDriver()
 {
 #ifdef ALSA
   for(int i=0;i<RD_MAX_CARDS;i++) {
-    if(cae_driver[i]==RDStation::Alsa) {
+    if(hasCard(i)) {
       alsa_play_format[i].exiting=true;
       pthread_join(alsa_play_format[i].thread,NULL);
       snd_pcm_close(alsa_play_format[i].pcm);
       if(alsa_capture_format[i].pcm!=NULL) {
-	printf("SHUTDOWN 1\n");
 	alsa_capture_format[i].exiting=true;
-	printf("SHUTDOWN 2\n");
 	pthread_join(alsa_capture_format[i].thread,NULL);
-	printf("SHUTDOWN 3\n");
 	snd_pcm_close(alsa_capture_format[i].pcm);
-	printf("SHUTDOWN 4\n");
       }
     }
   }
@@ -779,20 +647,94 @@ void MainObject::alsaFree()
 }
 
 
-bool MainObject::alsaLoadPlayback(int card,QString wavename,int *stream)
+QString AlsaDriver::version() const
+{
+  return QString();
+}
+
+
+bool AlsaDriver::initialize(unsigned *next_cardnum)
+{
+  QString dev;
+  snd_pcm_t *pcm_play_handle;
+  snd_pcm_t *pcm_capture_handle;
+  snd_ctl_t *snd_ctl;
+  snd_ctl_card_info_t *card_info=NULL;
+  bool pcm_opened;
+  int card=0;
+
+  //
+  // Start Up Interfaces
+  //
+  while((*next_cardnum)<RD_MAX_CARDS) {
+    pcm_opened=false;
+    alsa_play_format[*next_cardnum].exiting = true;
+    alsa_capture_format[*next_cardnum].exiting = true;
+    dev=QString().sprintf("rd%d",card);
+    if(snd_pcm_open(&pcm_play_handle,dev.toUtf8(),
+		    SND_PCM_STREAM_PLAYBACK,0)==0){
+      pcm_opened=true;
+      if(!AlsaStartPlayDevice(dev,*next_cardnum,pcm_play_handle)) {
+	snd_pcm_close(pcm_play_handle);
+      }
+    }
+    if(snd_pcm_open(&pcm_capture_handle,dev.toUtf8(),
+		    SND_PCM_STREAM_CAPTURE,0)==0) {
+      pcm_opened=true;
+      if(!AlsaStartCaptureDevice(dev,*next_cardnum,pcm_capture_handle)) {
+	snd_pcm_close(pcm_capture_handle);
+      }
+    }
+    rda->station()->setCardDriver(*next_cardnum,RDStation::Alsa);
+    if(snd_ctl_open(&snd_ctl,dev.toUtf8(),0)<0) {
+      rda->syslog(LOG_INFO,
+		  "no control device found for %s",
+		  dev.toUtf8().constData());
+      rda->station()->setCardName(*next_cardnum,tr("ALSA Device")+" "+dev);
+    }
+    else {
+      snd_ctl_card_info_malloc(&card_info);
+      snd_ctl_card_info(snd_ctl,card_info);
+      rda->station()->
+	setCardName(*next_cardnum,snd_ctl_card_info_get_longname(card_info));
+      snd_ctl_close(snd_ctl);
+    }
+    rda->station()->
+      setCardInputs(*next_cardnum,
+		    alsa_capture_format[*next_cardnum].
+		    channels/RD_DEFAULT_CHANNELS);
+    rda->station()->
+      setCardOutputs(*next_cardnum,
+		     alsa_play_format[*next_cardnum].
+		     channels/RD_DEFAULT_CHANNELS);
+    card++;
+    if(!pcm_opened) {
+      return card>0;
+    }
+    addCard(*next_cardnum);
+    (*next_cardnum)++;
+  }
+  return card>0;
+}
+
+
+void AlsaDriver::updateMeters()
+{
+}
+
+
+bool AlsaDriver::loadPlayback(int card,QString wavename,int *stream)
 {
 #ifdef ALSA
   if(alsa_play_format[card].exiting||((*stream=GetAlsaOutputStream(card))<0)) {
-    rda->syslog(LOG_DEBUG,
-			  "alsaLoadPlayback(%s) GetAlsaOutputStream():%d < 0",
-	   (const char *)wavename.toUtf8(),*stream);
+    rda->syslog(LOG_DEBUG,"alsaLoadPlayback(%s) GetAlsaOutputStream():%d < 0",
+		wavename.toUtf8().constData(),*stream);
     return false;
   }
   alsa_play_wave[card][*stream]=new RDWaveFile(wavename);
   if(!alsa_play_wave[card][*stream]->openWave()) {
-    rda->syslog(LOG_DEBUG,
-			  "alsaLoadPlayback(%s) openWave() failed to open file",
-	   (const char *)wavename.toUtf8());
+    rda->syslog(LOG_DEBUG,"alsaLoadPlayback(%s) openWave() failed to open file",
+		wavename.toUtf8().constData());
     delete alsa_play_wave[card][*stream];
     alsa_play_wave[card][*stream]=NULL;
     FreeAlsaOutputStream(card,*stream);
@@ -805,13 +747,19 @@ bool MainObject::alsaLoadPlayback(int card,QString wavename,int *stream)
     break;
 
   case WAVE_FORMAT_MPEG:
-    InitMadDecoder(card,*stream,alsa_play_wave[card][*stream]);
+    if(!InitMadDecoder(card,*stream,alsa_play_wave[card][*stream])) {
+      delete alsa_play_wave[card][*stream];
+      alsa_play_wave[card][*stream]=NULL;
+      FreeAlsaOutputStream(card,*stream);
+      *stream=-1;
+      return false;
+    }
     break;
 
   default:
     rda->syslog(LOG_WARNING,
 	"alsaLoadPlayback(%s) getFormatTag()%d || getBistsPerSample()%d failed",
-	   (const char *)wavename.toUtf8(),
+		wavename.toUtf8().constData(),
 	   alsa_play_wave[card][*stream]->getFormatTag(),
 	   alsa_play_wave[card][*stream]->getBitsPerSample());
     delete alsa_play_wave[card][*stream];
@@ -835,7 +783,7 @@ bool MainObject::alsaLoadPlayback(int card,QString wavename,int *stream)
 }
 
 
-bool MainObject::alsaUnloadPlayback(int card,int stream)
+bool AlsaDriver::unloadPlayback(int card,int stream)
 {
 #ifdef ALSA
   if(alsa_play_ring[card][stream]==NULL) {
@@ -858,7 +806,7 @@ bool MainObject::alsaUnloadPlayback(int card,int stream)
 }
 
 
-bool MainObject::alsaPlaybackPosition(int card,int stream,unsigned pos)
+bool AlsaDriver::playbackPosition(int card,int stream,unsigned pos)
 {
 #ifdef ALSA
   unsigned offset=0;
@@ -909,8 +857,8 @@ bool MainObject::alsaPlaybackPosition(int card,int stream,unsigned pos)
 }
 
 
-bool MainObject::alsaPlay(int card,int stream,int length,int speed,bool pitch,
-			 bool rates)
+bool AlsaDriver::play(int card,int stream,int length,int speed,bool pitch,
+		      bool rates)
 {
 #ifdef ALSA
   if((alsa_play_ring[card][stream]==NULL)||
@@ -929,17 +877,7 @@ bool MainObject::alsaPlay(int card,int stream,int length,int speed,bool pitch,
 }
 
 
-bool MainObject::alsaTimescaleSupported(int card)
-{
-#ifdef ALSA
-  return false;
-#else
-  return false;
-#endif  // ALSA
-}
-
-
-bool MainObject::alsaStopPlayback(int card,int stream)
+bool AlsaDriver::stopPlayback(int card,int stream)
 {
 #ifdef ALSA
   if((alsa_play_ring[card][stream]==NULL)||(!alsa_playing[card][stream])) {
@@ -956,95 +894,101 @@ bool MainObject::alsaStopPlayback(int card,int stream)
 }
 
 
-bool MainObject::alsaLoadRecord(int card,int stream,int coding,int chans,
-			       int samprate,int bitrate,QString wavename)
+bool AlsaDriver::timescaleSupported(int card)
+{
+  return false;
+}
+
+
+bool AlsaDriver::loadRecord(int card,int port,int coding,int chans,int samprate,
+			    int bitrate,QString wavename)
 {
 #ifdef ALSA
-  alsa_record_wave[card][stream]=new RDWaveFile(wavename);
+  alsa_record_wave[card][port]=new RDWaveFile(wavename);
   switch(coding) {
   case 0:  // PCM16
-    alsa_record_wave[card][stream]->setFormatTag(WAVE_FORMAT_PCM);
-    alsa_record_wave[card][stream]->setChannels(chans);
-    alsa_record_wave[card][stream]->setSamplesPerSec(samprate);
-    alsa_record_wave[card][stream]->setBitsPerSample(16);
+    alsa_record_wave[card][port]->setFormatTag(WAVE_FORMAT_PCM);
+    alsa_record_wave[card][port]->setChannels(chans);
+    alsa_record_wave[card][port]->setSamplesPerSec(samprate);
+    alsa_record_wave[card][port]->setBitsPerSample(16);
     break;
 
   case 4:  // PCM24
-    alsa_record_wave[card][stream]->setFormatTag(WAVE_FORMAT_PCM);
-    alsa_record_wave[card][stream]->setChannels(chans);
-    alsa_record_wave[card][stream]->setSamplesPerSec(samprate);
-    alsa_record_wave[card][stream]->setBitsPerSample(24);
+    alsa_record_wave[card][port]->setFormatTag(WAVE_FORMAT_PCM);
+    alsa_record_wave[card][port]->setChannels(chans);
+    alsa_record_wave[card][port]->setSamplesPerSec(samprate);
+    alsa_record_wave[card][port]->setBitsPerSample(24);
     break;
 
   case 2:  // MPEG Layer 2
-    if(!InitTwoLameEncoder(card,stream,chans,samprate,bitrate)) {
-      delete alsa_record_wave[card][stream];
-      alsa_record_wave[card][stream]=NULL;
+    if(!InitTwoLameEncoder(card,port,chans,samprate,bitrate)) {
+      delete alsa_record_wave[card][port];
+      alsa_record_wave[card][port]=NULL;
       return false;
     }
-    alsa_record_wave[card][stream]->setFormatTag(WAVE_FORMAT_MPEG);
-    alsa_record_wave[card][stream]->setChannels(chans);
-    alsa_record_wave[card][stream]->setSamplesPerSec(samprate);
-    alsa_record_wave[card][stream]->setBitsPerSample(16);
-    alsa_record_wave[card][stream]->setHeadLayer(ACM_MPEG_LAYER2);
+    alsa_record_wave[card][port]->setFormatTag(WAVE_FORMAT_MPEG);
+    alsa_record_wave[card][port]->setChannels(chans);
+    alsa_record_wave[card][port]->setSamplesPerSec(samprate);
+    alsa_record_wave[card][port]->setBitsPerSample(16);
+    alsa_record_wave[card][port]->setHeadLayer(ACM_MPEG_LAYER2);
     switch(chans) {
     case 1:
-      alsa_record_wave[card][stream]->setHeadMode(ACM_MPEG_SINGLECHANNEL);
+      alsa_record_wave[card][port]->setHeadMode(ACM_MPEG_SINGLECHANNEL);
       break;
 
     case 2:
-      alsa_record_wave[card][stream]->setHeadMode(ACM_MPEG_STEREO);
+      alsa_record_wave[card][port]->setHeadMode(ACM_MPEG_STEREO);
       break;
 
     default:
       rda->syslog(LOG_WARNING,
-	     "requested unsupported channel count %d, card: %d, stream: %d",
-	     chans,card,stream);
-      delete alsa_record_wave[card][stream];
-      alsa_record_wave[card][stream]=NULL;
+	     "requested unsupported channel count %d, card: %d, port: %d",
+	     chans,card,port);
+      delete alsa_record_wave[card][port];
+      alsa_record_wave[card][port]=NULL;
       return false;
     }
-    alsa_record_wave[card][stream]->setHeadBitRate(bitrate);
-    alsa_record_wave[card][stream]->setMextChunk(true);
-    alsa_record_wave[card][stream]->setMextHomogenous(true);
-    alsa_record_wave[card][stream]->setMextPaddingUsed(false);
-    alsa_record_wave[card][stream]->setMextHackedBitRate(true);
-    alsa_record_wave[card][stream]->setMextFreeFormat(false);
-    alsa_record_wave[card][stream]->
-      setMextFrameSize(144*alsa_record_wave[card][stream]->getHeadBitRate()/
-		       alsa_record_wave[card][stream]->getSamplesPerSec());
-    alsa_record_wave[card][stream]->setMextAncillaryLength(5);
-    alsa_record_wave[card][stream]->setMextLeftEnergyPresent(true);
+    alsa_record_wave[card][port]->setHeadBitRate(bitrate);
+    alsa_record_wave[card][port]->setMextChunk(true);
+    alsa_record_wave[card][port]->setMextHomogenous(true);
+    alsa_record_wave[card][port]->setMextPaddingUsed(false);
+    alsa_record_wave[card][port]->setMextHackedBitRate(true);
+    alsa_record_wave[card][port]->setMextFreeFormat(false);
+    alsa_record_wave[card][port]->
+      setMextFrameSize(144*alsa_record_wave[card][port]->getHeadBitRate()/
+		       alsa_record_wave[card][port]->getSamplesPerSec());
+    alsa_record_wave[card][port]->setMextAncillaryLength(5);
+    alsa_record_wave[card][port]->setMextLeftEnergyPresent(true);
     if(chans>1) {
-      alsa_record_wave[card][stream]->setMextRightEnergyPresent(true);
+      alsa_record_wave[card][port]->setMextRightEnergyPresent(true);
     }
     else {
-      alsa_record_wave[card][stream]->setMextRightEnergyPresent(false);
+      alsa_record_wave[card][port]->setMextRightEnergyPresent(false);
     }
-    alsa_record_wave[card][stream]->setMextPrivateDataPresent(false);
+    alsa_record_wave[card][port]->setMextPrivateDataPresent(false);
     break;
 
   default:
     rda->syslog(LOG_WARNING,
-	   "requested invalid audio encoding %d, card: %d, stream: %d",
-	   coding,card,stream);
-    delete alsa_record_wave[card][stream];
-    alsa_record_wave[card][stream]=NULL;
+	   "requested invalid audio encoding %d, card: %d, port: %d",
+	   coding,card,port);
+    delete alsa_record_wave[card][port];
+    alsa_record_wave[card][port]=NULL;
     return false;
   }
-  alsa_record_wave[card][stream]->setBextChunk(true);
-  alsa_record_wave[card][stream]->setLevlChunk(true);
-  if(!alsa_record_wave[card][stream]->createWave()) {
-    delete alsa_record_wave[card][stream];
-    alsa_record_wave[card][stream]=NULL;
+  alsa_record_wave[card][port]->setBextChunk(true);
+  alsa_record_wave[card][port]->setLevlChunk(true);
+  if(!alsa_record_wave[card][port]->createWave()) {
+    delete alsa_record_wave[card][port];
+    alsa_record_wave[card][port]=NULL;
     return false;
   }
   RDCheckExitCode(rda->config(),"alsaLoadRecord() chown",
 		  chown(wavename.toUtf8(),rda->config()->uid(),rda->config()->gid()));
-  alsa_input_channels[card][stream]=chans;
-  alsa_record_ring[card][stream]=new RDRingBuffer(RINGBUFFER_SIZE);
-  alsa_record_ring[card][stream]->reset();
-  alsa_ready[card][stream]=true;
+  alsa_input_channels[card][port]=chans;
+  alsa_record_ring[card][port]=new RDRingBuffer(RINGBUFFER_SIZE);
+  alsa_record_ring[card][port]->reset();
+  alsa_ready[card][port]=true;
   return true;
 #else
   return false;
@@ -1052,20 +996,20 @@ bool MainObject::alsaLoadRecord(int card,int stream,int coding,int chans,
 }
 
 
-bool MainObject::alsaUnloadRecord(int card,int stream,unsigned *len)
+bool AlsaDriver::unloadRecord(int card,int port,unsigned *len)
 {
 #ifdef ALSA
-  alsa_recording[card][stream]=false;
-  alsa_ready[card][stream]=false;
-  EmptyAlsaInputStream(card,stream);
-  *len=alsa_samples_recorded[card][stream];
-  alsa_samples_recorded[card][stream]=0;
-  alsa_record_wave[card][stream]->closeWave(*len);
-  delete alsa_record_wave[card][stream];
-  alsa_record_wave[card][stream]=NULL;
-  delete alsa_record_ring[card][stream];
-  alsa_record_ring[card][stream]=NULL;
-  FreeTwoLameEncoder(card,stream);
+  alsa_recording[card][port]=false;
+  alsa_ready[card][port]=false;
+  EmptyAlsaInputStream(card,port);
+  *len=alsa_samples_recorded[card][port];
+  alsa_samples_recorded[card][port]=0;
+  alsa_record_wave[card][port]->closeWave(*len);
+  delete alsa_record_wave[card][port];
+  alsa_record_wave[card][port]=NULL;
+  delete alsa_record_ring[card][port];
+  alsa_record_ring[card][port]=NULL;
+  FreeTwoLameEncoder(card,port);
   return true;
 #else
   return false;
@@ -1073,18 +1017,18 @@ bool MainObject::alsaUnloadRecord(int card,int stream,unsigned *len)
 }
 
 
-bool MainObject::alsaRecord(int card,int stream,int length,int thres)
+bool AlsaDriver::record(int card,int port,int length,int thres)
 {
 #ifdef ALSA
-  if(!alsa_ready[card][stream]) {
+  if(!alsa_ready[card][port]) {
     return false;
   }
-  alsa_recording[card][stream]=true;
-  if(alsa_input_vox[card][stream]==0.0) {
+  alsa_recording[card][port]=true;
+  if(alsa_input_vox[card][port]==0.0) {
     if(length>0) {
-      alsa_record_timer[card][stream]->start(length);
+      alsa_record_timer[card][port]->start(length);
     }
-    stateRecordUpdate(card,stream,4);
+    stateRecordUpdate(card,port,4);
   }
   return true;
 #else
@@ -1093,13 +1037,13 @@ bool MainObject::alsaRecord(int card,int stream,int length,int thres)
 }
 
 
-bool MainObject::alsaStopRecord(int card,int stream)
+bool AlsaDriver::stopRecord(int card,int port)
 {
 #ifdef ALSA
-  if(!alsa_recording[card][stream]) {
+  if(!alsa_recording[card][port]) {
     return false;
   }
-  alsa_recording[card][stream]=false;
+  alsa_recording[card][port]=false;
   return true;
 #else
   return false;
@@ -1107,7 +1051,17 @@ bool MainObject::alsaStopRecord(int card,int stream)
 }
 
 
-bool MainObject::alsaSetInputVolume(int card,int stream,int level)
+bool AlsaDriver::setClockSource(int card,int src)
+{
+#ifdef ALSA
+  return true;
+#else
+  return false;
+#endif  // ALSA
+}
+
+
+bool AlsaDriver::setInputVolume(int card,int stream,int level)
 {
 #ifdef ALSA
   if(level>-10000) {
@@ -1125,7 +1079,7 @@ bool MainObject::alsaSetInputVolume(int card,int stream,int level)
 }
 
 
-bool MainObject::alsaSetOutputVolume(int card,int stream,int port,int level)
+bool AlsaDriver::setOutputVolume(int card,int stream,int port,int level)
 {
 #ifdef ALSA
   if(level>-10000) {
@@ -1143,8 +1097,8 @@ bool MainObject::alsaSetOutputVolume(int card,int stream,int port,int level)
 }
 
 
-bool MainObject::alsaFadeOutputVolume(int card,int stream,int port,int level,
-				     int length)
+bool AlsaDriver::fadeOutputVolume(int card,int stream,int port,int level,
+				  int length)
 {
 #ifdef ALSA
   int diff;
@@ -1171,7 +1125,7 @@ bool MainObject::alsaFadeOutputVolume(int card,int stream,int port,int level,
 }
 
 
-bool MainObject::alsaSetInputLevel(int card,int port,int level)
+bool AlsaDriver::setInputLevel(int card,int port,int level)
 {
 #ifdef ALSA
   return true;
@@ -1181,7 +1135,7 @@ bool MainObject::alsaSetInputLevel(int card,int port,int level)
 }
 
 
-bool MainObject::alsaSetOutputLevel(int card,int port,int level)
+bool AlsaDriver::setOutputLevel(int card,int port,int level)
 {
 #ifdef ALSA
   return true;
@@ -1191,7 +1145,7 @@ bool MainObject::alsaSetOutputLevel(int card,int port,int level)
 }
 
 
-bool MainObject::alsaSetInputMode(int card,int stream,int mode)
+bool AlsaDriver::setInputMode(int card,int stream,int mode)
 {
 #ifdef ALSA
   return true;
@@ -1201,7 +1155,7 @@ bool MainObject::alsaSetInputMode(int card,int stream,int mode)
 }
 
 
-bool MainObject::alsaSetOutputMode(int card,int stream,int mode)
+bool AlsaDriver::setOutputMode(int card,int stream,int mode)
 {
 #ifdef ALSA
   return true;
@@ -1211,7 +1165,7 @@ bool MainObject::alsaSetOutputMode(int card,int stream,int mode)
 }
 
 
-bool MainObject::alsaSetInputVoxLevel(int card,int stream,int level)
+bool AlsaDriver::setInputVoxLevel(int card,int stream,int level)
 {
 #ifdef ALSA
   return true;
@@ -1221,7 +1175,7 @@ bool MainObject::alsaSetInputVoxLevel(int card,int stream,int level)
 }
 
 
-bool MainObject::alsaSetInputType(int card,int port,int type)
+bool AlsaDriver::setInputType(int card,int port,int type)
 {
 #ifdef ALSA
   return true;
@@ -1231,7 +1185,7 @@ bool MainObject::alsaSetInputType(int card,int port,int type)
 }
 
 
-bool MainObject::alsaGetInputStatus(int card,int port)
+bool AlsaDriver::getInputStatus(int card,int port)
 {
 #ifdef ALSA
   return true;
@@ -1241,7 +1195,7 @@ bool MainObject::alsaGetInputStatus(int card,int port)
 }
 
 
-bool MainObject::alsaGetInputMeters(int card,int port,int16_t levels[2])
+bool AlsaDriver::getInputMeters(int card,int port,short levels[2])
 {
 #ifdef ALSA
   double meter;
@@ -1266,7 +1220,7 @@ bool MainObject::alsaGetInputMeters(int card,int port,int16_t levels[2])
 }
 
 
-bool MainObject::alsaGetOutputMeters(int card,int port,int16_t levels[2])
+bool AlsaDriver::getOutputMeters(int card,int port,short levels[2])
 {
 #ifdef ALSA
   double meter;
@@ -1290,7 +1244,7 @@ bool MainObject::alsaGetOutputMeters(int card,int port,int16_t levels[2])
 }
 
 
-bool MainObject::alsaGetStreamOutputMeters(int card,int stream,int16_t levels[2])
+bool AlsaDriver::getStreamOutputMeters(int card,int stream,short levels[2])
 {
 #ifdef ALSA
   double meter;
@@ -1314,25 +1268,8 @@ bool MainObject::alsaGetStreamOutputMeters(int card,int stream,int16_t levels[2]
 }
 
 
-void MainObject::alsaGetOutputPosition(int card,unsigned *pos)
-{// pos is in miliseconds
-#ifdef ALSA
-  for(int i=0;i<RD_MAX_STREAMS;i++) {
-    if((!alsa_play_format[card].exiting)&&(alsa_play_wave[card][i]!=NULL)) {
-      pos[i]=1000*(unsigned long long)(alsa_offset[card][i]+
-				       alsa_output_pos[card][i])/
-	alsa_play_wave[card][i]->getSamplesPerSec();
-    }
-    else {
-      pos[i]=0;
-    }
-  }
-#endif  // ALSA
-}
-
-
-bool MainObject::alsaSetPassthroughLevel(int card,int in_port,int out_port,
-					 int level)
+bool AlsaDriver::setPassthroughLevel(int card,int in_port,int out_port,
+				     int level)
 {
 #ifdef ALSA
   if(level>-10000) {
@@ -1351,8 +1288,104 @@ bool MainObject::alsaSetPassthroughLevel(int card,int in_port,int out_port,
 }
 
 
+void AlsaDriver::getOutputPosition(int card,unsigned *pos)
+{// pos is in miliseconds
 #ifdef ALSA
-bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
+  for(int i=0;i<RD_MAX_STREAMS;i++) {
+    if((!alsa_play_format[card].exiting)&&(alsa_play_wave[card][i]!=NULL)) {
+      pos[i]=1000*(unsigned long long)(alsa_offset[card][i]+
+				       alsa_output_pos[card][i])/
+	alsa_play_wave[card][i]->getSamplesPerSec();
+    }
+    else {
+      pos[i]=0;
+    }
+  }
+#endif  // ALSA
+}
+
+
+void AlsaDriver::processBuffers()
+{
+#ifdef ALSA
+  for(int i=0;i<RD_MAX_CARDS;i++) {
+    if(hasCard(i)) {
+      for(int j=0;j<RD_MAX_STREAMS;j++) {
+	if(alsa_stopping[i][j]) {
+	  alsa_stopping[i][j]=false;
+	  alsa_eof[i][j]=false;
+	  alsa_playing[i][j]=false;
+	  printf("stop card: %d  stream: %d\n",i,j);
+	  statePlayUpdate(i,j,2);
+	}
+	if(alsa_playing[i][j]) {
+	  FillAlsaOutputStream(i,j);
+	}
+      }
+      for(int j=0;j<RD_MAX_PORTS;j++) {
+	if(alsa_recording[i][j]) {
+	  EmptyAlsaInputStream(i,j);
+	}
+      }
+    }
+  }
+#endif  // ALSA
+}
+
+
+void AlsaDriver::stopTimerData(int cardstream)
+{
+#ifdef ALSA
+  int card=cardstream/RD_MAX_STREAMS;
+  int stream=cardstream-card*RD_MAX_STREAMS;
+
+  stopPlayback(card,stream);
+#endif  // ALSA
+}
+
+
+void AlsaDriver::fadeTimerData(int cardstream)
+{
+#ifdef ALSA
+  int card=cardstream/RD_MAX_STREAMS;
+  int stream=cardstream-card*RD_MAX_STREAMS;
+  int16_t level;
+  if(alsa_fade_up[card][stream]) {
+    level=alsa_output_volume_db[card][alsa_fade_port[card][stream]][stream]+
+      alsa_fade_increment[card][stream];
+    if(level>=alsa_fade_volume_db[card][stream]) {
+      level=alsa_fade_volume_db[card][stream];
+      alsa_fade_timer[card][stream]->stop();
+    }
+  }
+  else {
+    level=alsa_output_volume_db[card][alsa_fade_port[card][stream]][stream]-
+      alsa_fade_increment[card][stream];
+    if(level<=alsa_fade_volume_db[card][stream]) {
+      level=alsa_fade_volume_db[card][stream];
+      alsa_fade_timer[card][stream]->stop();
+    }
+  }
+  rda->syslog(LOG_DEBUG,"FadeLevel: %d",level);
+  setOutputVolume(card,stream,alsa_fade_port[card][stream],level);
+#endif  // ALSA
+}
+
+
+void AlsaDriver::recordTimerData(int cardport)
+{
+#ifdef ALSA
+  int card=cardport/RD_MAX_PORTS;
+  int stream=cardport-card*RD_MAX_PORTS;
+
+  stopRecord(card,stream);
+  stateRecordUpdate(card,stream,2);
+#endif  // ALSA
+}
+
+
+#ifdef ALSA
+bool AlsaDriver::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
 {
   snd_pcm_hw_params_t *hwparams;
   snd_pcm_sw_params_t *swparams;
@@ -1412,14 +1445,14 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
     sr=alsa_play_format[card].sample_rate;
   }
   else {
-    sr=system_sample_rate;
+    sr=systemSampleRate();
   }
   snd_pcm_hw_params_set_rate_near(pcm,hwparams,&sr,&dir);
-  if((sr<(system_sample_rate-RD_ALSA_SAMPLE_RATE_TOLERANCE))||
-     (sr>(system_sample_rate+RD_ALSA_SAMPLE_RATE_TOLERANCE))) {
+  if((sr<(systemSampleRate()-RD_ALSA_SAMPLE_RATE_TOLERANCE))||
+     (sr>(systemSampleRate()+RD_ALSA_SAMPLE_RATE_TOLERANCE))) {
     rda->syslog(LOG_WARNING,
 			  "  Asked for sample rate %u, got %u",
-	   system_sample_rate,sr);
+	   systemSampleRate(),sr);
     rda->syslog(LOG_WARNING,
 			  "  Sample rate unsupported by device");
     return false;
@@ -1519,7 +1552,7 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
 }
 
 
-bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
+bool AlsaDriver::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
 {
   snd_pcm_hw_params_t *hwparams;
   snd_pcm_sw_params_t *swparams;
@@ -1575,13 +1608,13 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   //
   // Sample Rate
   //
-  sr=system_sample_rate;
+  sr=systemSampleRate();
   snd_pcm_hw_params_set_rate_near(pcm,hwparams,&sr,&dir);
-  if((sr<(system_sample_rate-RD_ALSA_SAMPLE_RATE_TOLERANCE))||
-     (sr>(system_sample_rate+RD_ALSA_SAMPLE_RATE_TOLERANCE))) {
+  if((sr<(systemSampleRate()-RD_ALSA_SAMPLE_RATE_TOLERANCE))||
+     (sr>(systemSampleRate()+RD_ALSA_SAMPLE_RATE_TOLERANCE))) {
     rda->syslog(LOG_WARNING,
 			  "  Asked for sample rate %u, got %u",
-			  system_sample_rate,sr);
+			  systemSampleRate(),sr);
     rda->syslog(LOG_WARNING,
 			  "  Sample rate unsupported by device");
     return false;
@@ -1677,7 +1710,7 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
 }
 
 
-int MainObject::GetAlsaOutputStream(int card)
+int AlsaDriver::GetAlsaOutputStream(int card)
 {
   for(int i=0;i<RD_MAX_STREAMS;i++) {
     if(alsa_play_ring[card][i]==NULL) {
@@ -1689,14 +1722,14 @@ int MainObject::GetAlsaOutputStream(int card)
 }
 
 
-void MainObject::FreeAlsaOutputStream(int card,int stream)
+void AlsaDriver::FreeAlsaOutputStream(int card,int stream)
 {
   delete alsa_play_ring[card][stream];
   alsa_play_ring[card][stream]=NULL;
 }
 
 
-void MainObject::EmptyAlsaInputStream(int card,int stream)
+void AlsaDriver::EmptyAlsaInputStream(int card,int stream)
 {
   unsigned n=alsa_record_ring[card][stream]->
     read((char *)alsa_wave_buffer,alsa_record_ring[card][stream]->
@@ -1705,7 +1738,7 @@ void MainObject::EmptyAlsaInputStream(int card,int stream)
 }
 
 
-void MainObject::WriteAlsaBuffer(int card,int stream,int16_t *buffer,unsigned len)
+void AlsaDriver::WriteAlsaBuffer(int card,int stream,int16_t *buffer,unsigned len)
 {
   ssize_t s;
   unsigned char mpeg[2048];
@@ -1758,7 +1791,7 @@ void MainObject::WriteAlsaBuffer(int card,int stream,int16_t *buffer,unsigned le
 }
 
 
-void MainObject::FillAlsaOutputStream(int card,int stream)
+void AlsaDriver::FillAlsaOutputStream(int card,int stream)
 {
   unsigned mpeg_frames=0;
   unsigned frame_offset=0;
@@ -1869,11 +1902,11 @@ void MainObject::FillAlsaOutputStream(int card,int stream)
 #endif  // ALSA
 
 
-void MainObject::AlsaClock()
+void AlsaDriver::AlsaClock()
 {
 #ifdef ALSA
   for(int i=0;i<RD_MAX_CARDS;i++) {
-    if(cae_driver[i]==RDStation::Alsa) {
+    if(hasCard(i)) {
       for(int j=0;j<RD_MAX_STREAMS;j++) {
 	if(alsa_stopping[i][j]) {
 	  alsa_stopping[i][j]=false;

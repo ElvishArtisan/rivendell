@@ -18,26 +18,29 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include "alsadriver.h"
 #include "caedriverfactory.h"
 #include "hpidriver.h"
 
 CaeDriver *CaeDriverFactory(RDStation::AudioDriver dvr,QObject *parent)
 {
   CaeDriver *ret=NULL;
-  printf("HERE1\n");
+
   switch(dvr) {
   case RDStation::Hpi:
-  printf("HERE2\n");
     ret=new HpiDriver(parent);
     break;
 
   case RDStation::Jack:
+    break;
+
   case RDStation::Alsa:
+    ret=new AlsaDriver(parent);
+    break;
+
   case RDStation::None:
-  printf("HERE3\n");
     break;
   }
-  printf("HERE4: %p\n",ret);
 
   return ret;
 }

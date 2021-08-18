@@ -29,16 +29,16 @@ moc_%.cpp:	%.h
 
 sbin_PROGRAMS = caed
 
-dist_caed_SOURCES = cae.cpp cae.h\
-                    cae_alsa.cpp\
-                    cae_hpi.cpp\
+dist_caed_SOURCES = alsadriver.cpp alsadriver.h\
+                    cae.cpp cae.h\
                     cae_jack.cpp\
                     cae_server.cpp cae_server.h\
                     caedriver.cpp caedriver.h\
                     caedriverfactory.cpp caedriverfactory.h\
                     hpidriver.cpp hpidriver.h
 
-nodist_caed_SOURCES = moc_cae.cpp\
+nodist_caed_SOURCES = moc_alsadriver.cpp\
+                      moc_cae.cpp\
                       moc_cae_server.cpp\
                       moc_caedriver.cpp\
                       moc_hpidriver.cpp
