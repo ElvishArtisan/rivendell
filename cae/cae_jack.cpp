@@ -436,23 +436,23 @@ void MainObject::jackClientStartData()
     "`DESCRIPTION`,"+   // 00
     "`COMMAND_LINE` "+  // 01
     "from `JACK_CLIENTS` where "+
-    "`STATION_NAME`='"+RDEscapeString(rd_config->stationName())+"'";
+    "`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     QString cmd=RDDateDecode(q->value(1).toString(),QDate::currentDate(),
-			     cae_station,rd_config,
-			     rd_config->provisioningServiceName(rd_config->stationName()));
+			     rda->station(),rda->config(),
+			     rda->config()->provisioningServiceName(rda->config()->stationName()));
     QStringList args=cmd.split(" ",QString::SkipEmptyParts);
     QString program=args.at(0);
     args.removeFirst();
     jack_clients.push_back(new QProcess(this));
     jack_clients.back()->start(program,args);
     if(jack_clients.back()->waitForStarted()) {
-      RDApplication::syslog(rd_config,LOG_INFO,"started JACK Client \"%s\"",
+      rda->syslog(LOG_INFO,"started JACK Client \"%s\"",
 	     (const char *)q->value(0).toString().toUtf8());
     }
     else {
-      RDApplication::syslog(rd_config,LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 			    "failed to start JACK Client \"%s\" [%s]",
 			    (const char *)q->value(0).toString().toUtf8(),
 			    (const char *)q->value(1).toString().toUtf8());
@@ -482,7 +482,7 @@ void MainObject::jackInit(RDStation *station)
     }
   }
   if(jack_card==RD_MAX_CARDS) {
-    RDApplication::syslog(rd_config,LOG_INFO,"no more RD cards available");
+    rda->syslog(LOG_INFO,"no more RD cards available");
     return;
   }
   QString name=QString().sprintf("rivendell_%d",jack_card);
@@ -499,16 +499,16 @@ void MainObject::jackInit(RDStation *station)
       QProcess *proc=new QProcess(this);
       proc->start(program,args);
       if(proc->waitForStarted()) {
-        RDApplication::syslog(rd_config,LOG_INFO,"JACK server started");
+        rda->syslog(LOG_INFO,"JACK server started");
       }
       else {
-        RDApplication::syslog(rd_config,LOG_WARNING,
+        rda->syslog(LOG_WARNING,
 			    "failed to start JACK server");
       }
       sleep(1);
     }
     else {
-        RDApplication::syslog(rd_config,LOG_WARNING,
+        rda->syslog(LOG_WARNING,
 			    "could not start JACK server: no command line specified");
     }
   }
@@ -528,70 +528,70 @@ void MainObject::jackInit(RDStation *station)
   if(jack_client==NULL) {
     if((jackstat&JackInvalidOption)!=0) {
       fprintf (stderr, "invalid or unsupported JACK option\n");
-      RDApplication::syslog(rd_config,LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 			    "invalid or unsupported JACK option");
     }
 
     if((jackstat&JackServerError)!=0) {
       fprintf (stderr, "communication error with the JACK server\n");
-      RDApplication::syslog(rd_config,LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 			    "communication error with the JACK server");
     }
 
     if((jackstat&JackNoSuchClient)!=0) {
       fprintf (stderr, "requested JACK client does not exist\n");
-      RDApplication::syslog(rd_config,LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 			    "requested JACK client does not exist");
     }
 
     if((jackstat&JackLoadFailure)!=0) {
       fprintf (stderr, "unable to load internal JACK client\n");
-      RDApplication::syslog(rd_config,LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 			    "unable to load internal JACK client");
     }
 
     if((jackstat&JackInitFailure)!=0) {
       fprintf (stderr, "unable to initialize JACK client\n");
-      RDApplication::syslog(rd_config,LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 			    "unable to initialize JACK client");
     }
 
     if((jackstat&JackShmFailure)!=0) {
       fprintf (stderr, "unable to access JACK shared memory\n");
-      RDApplication::syslog(rd_config,LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 			    "unable to access JACK shared memory");
     }
 
     if((jackstat&JackVersionError)!=0) {
       fprintf (stderr, "JACK protocol version mismatch\n");
-      RDApplication::syslog(rd_config,LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 			    "JACK protocol version mismatch");
     }
 
     if((jackstat&JackServerStarted)!=0) {
       fprintf (stderr, "JACK server started\n");
-      RDApplication::syslog(rd_config,LOG_WARNING,"JACK server started");
+      rda->syslog(LOG_WARNING,"JACK server started");
     }
 
     if((jackstat&JackServerFailed)!=0) {
       fprintf (stderr, "unable to communication with JACK server\n");
-      RDApplication::syslog(rd_config,LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 			    "unable to communicate with JACK server");
     }
 
     if((jackstat&JackNameNotUnique)!=0) {
       fprintf (stderr, "JACK client name not unique\n");
-      RDApplication::syslog(rd_config,LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 			    "JACK client name not unique");
     }
 
     if((jackstat&JackFailure)!=0) {
       fprintf (stderr, "JACK general failure\n");
-      RDApplication::syslog(rd_config,LOG_WARNING,"JACK general failure");
+      rda->syslog(LOG_WARNING,"JACK general failure");
     }
     jack_card=-1;
     fprintf (stderr, "no connection to JACK server\n");
-    RDApplication::syslog(rd_config,LOG_WARNING,"no connection to JACK server");
+    rda->syslog(LOG_WARNING,"no connection to JACK server");
     return;
   }
   jack_connected=true;
@@ -603,7 +603,7 @@ void MainObject::jackInit(RDStation *station)
 #else
   jack_on_shutdown(jack_client,JackShutdown,0);
 #endif  // HAVE_JACK_INFO_SHUTDOWN
-  RDApplication::syslog(rd_config,LOG_INFO,"connected to JACK server");
+  rda->syslog(LOG_INFO,"connected to JACK server");
 
   //
   // Start JACK Clients
@@ -722,7 +722,7 @@ void MainObject::jackInit(RDStation *station)
   jack_sample_rate=jack_get_sample_rate(jack_client);
   if(jack_sample_rate!=system_sample_rate) {
     fprintf (stderr,"JACK sample rate mismatch!\n");
-    RDApplication::syslog(rd_config,LOG_WARNING,"JACK sample rate mismatch!");
+    rda->syslog(LOG_WARNING,"JACK sample rate mismatch!");
   }
   jack_activated=true;
   cae_driver[jack_card]=RDStation::Jack;
@@ -751,14 +751,14 @@ bool MainObject::jackLoadPlayback(int card,QString wavename,int *stream)
 {
 #ifdef JACK
   if((*stream=GetJackOutputStream())<0) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    rda->syslog(LOG_DEBUG,
 			  "jackLoadPlayback(%s)   GetJackOutputStream():%d <0",
 	   (const char *)wavename.toUtf8(),*stream);
     return false;
   }
   jack_play_wave[*stream]=new RDWaveFile(wavename);
   if(!jack_play_wave[*stream]->openWave()) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    rda->syslog(LOG_DEBUG,
 			  "jackLoadPlayback(%s) openWave() failed to open file",
 	   (const char *)wavename.toUtf8());
     delete jack_play_wave[*stream];
@@ -777,7 +777,7 @@ bool MainObject::jackLoadPlayback(int card,QString wavename,int *stream)
     break;
 
   default:
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    rda->syslog(LOG_DEBUG,
 	"jackLoadPlayback(%s) getFormatTag()%d || getBistsPerSample()%d failed",
 	   (const char *) wavename.toUtf8(),
 	   jack_play_wave[*stream]->getFormatTag(),
@@ -972,7 +972,7 @@ bool MainObject::jackLoadRecord(int card,int stream,int coding,int chans,
       break;
 
     default:
-      RDApplication::syslog(rd_config,LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 	     "requested unsupported channel count %d, card: %d, stream: %d",
 	     chans,card,stream);
       delete jack_record_wave[stream];
@@ -1000,7 +1000,7 @@ bool MainObject::jackLoadRecord(int card,int stream,int coding,int chans,
     break;
 
   default:
-    RDApplication::syslog(rd_config,LOG_WARNING,
+    rda->syslog(LOG_WARNING,
 	   "requested invalid audio encoding %d, card: %d, stream: %d",
 	   coding,card,stream);
     delete jack_record_wave[stream];
@@ -1014,8 +1014,8 @@ bool MainObject::jackLoadRecord(int card,int stream,int coding,int chans,
     jack_record_wave[stream]=NULL;
     return false;
   }
-  RDCheckExitCode(rd_config,"jackLoadRecord() chown",
-		  chown(wavename.toUtf8(),rd_config->uid(),rd_config->gid()));
+  RDCheckExitCode(rda->config(),"jackLoadRecord() chown",
+		  chown(wavename.toUtf8(),rda->config()->uid(),rda->config()->gid()));
   jack_input_channels[stream]=chans;
   jack_record_ring[stream]=new RDRingBuffer(RINGBUFFER_SIZE);
   jack_record_ring[stream]->reset();
@@ -1477,7 +1477,7 @@ void MainObject::WriteJackBuffer(int stream,jack_default_audio_sample_t *buffer,
 	jack_record_wave[stream]->writeWave(mpeg,s);
       }
       else {
-	RDApplication::syslog(rd_config,LOG_WARNING,
+	rda->syslog(LOG_WARNING,
 	       "TwoLAME encode error, card: %d, stream: %d",jack_card,stream);
       }
     }
@@ -1681,7 +1681,7 @@ void MainObject::JackSessionSetup()
   QString dest=profile->stringValue("JackSession",dest_tag,"",&dest_ok);
   while(src_ok&&dest_ok) {
     if(jack_connect(jack_client,src.toUtf8(),dest.toUtf8())!=0) {
-      RDApplication::syslog(rd_config,LOG_WARNING,"unable to connect %s to %s",
+      rda->syslog(LOG_WARNING,"unable to connect %s to %s",
 	     (const char *)src.toUtf8(),(const char *)dest.toUtf8());
     }
     count++;

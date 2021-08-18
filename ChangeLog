@@ -22304,3 +22304,7 @@
 2021-08-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlogmanager(1) that caused it to attempt to
 	open an X11 connection even when invoked in CLI mode.
+2021-08-18 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the HPI driver in caed(8) to use virtual inheritance.
+	* Disabled JACK driver support in caed(8).
+	* Disabled ALSA driver support in caed(8).

@@ -117,6 +117,7 @@ class RDStation
 		     const QString &exemplar="",
 		     const QHostAddress &hostaddr=QHostAddress());
   static void remove(const QString &name);
+  static QString audioDriverText(AudioDriver dvr);
 
  private:
   void SetRow(const QString &param,const QString &value) const;

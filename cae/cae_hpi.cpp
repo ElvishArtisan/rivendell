@@ -25,7 +25,7 @@
 #include <rddebug.h>
 
 #include "cae.h"
-
+/*
 void MainObject::hpiInit(RDStation *station)
 {
 #ifdef HPI
@@ -529,3 +529,4 @@ bool MainObject::hpiSetPassthroughLevel(int card,int in_port,int out_port,
   return false;
 #endif  // HPI
 }
+*/

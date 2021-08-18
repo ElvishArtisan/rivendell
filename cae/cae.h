@@ -74,6 +74,7 @@ struct alsa_format {
 #include <rdconfig.h>
 #include <rdstation.h>
 
+#include "caedriver.h"
 #include "cae_server.h"
 
 #ifndef HAVE_SRC_CONV
@@ -96,7 +97,7 @@ void src_float_to_int_array (const float *in, int *out, int len);
 // Function Prototypes
 //
 void SigHandler(int signum);
-extern RDConfig *rd_config;
+//extern RDConfig *rd_config;
 
 class MainObject : public QObject
 {
@@ -183,12 +184,19 @@ class MainObject : public QObject
     int owner;
   } play_handle[256];
   int next_play_handle;
-  RDStation *cae_station;
+  //  RDStation *cae_station;
+
+  //
+  // New Stuff
+  //
+  CaeDriver *GetDriver(unsigned card) const;
+  QList<CaeDriver *> d_drivers;
 
   //
   // HPI Driver
   //
  private:
+  /*
   void hpiInit(RDStation *station);
   void hpiFree();
   QString hpiVersion();
@@ -225,6 +233,7 @@ class MainObject : public QObject
   RDHPIRecordStream *record[RD_MAX_CARDS][RD_MAX_STREAMS];
   RDHPIPlayStream *play[RD_MAX_CARDS][RD_MAX_STREAMS];
 #endif  // HPI
+  */
 
   //
   // JACK Driver

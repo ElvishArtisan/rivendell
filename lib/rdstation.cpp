@@ -1992,6 +1992,30 @@ void RDStation::remove(const QString &name)
 }
 
 
+QString RDStation::audioDriverText(RDStation::AudioDriver dvr)
+{
+  QString ret=QObject::tr("Unknown");
+  switch(dvr) {
+  case RDStation::None:
+    ret=QObject::tr("None");
+    break;
+
+  case RDStation::Hpi:
+    ret=QObject::tr("AudioScience HPI");
+    break;
+
+  case RDStation::Jack:
+    ret=QObject::tr("JACK Audio Connection Kit");
+    break;
+
+  case RDStation::Alsa:
+    ret=QObject::tr("Advance Linux Sound Architecture (ALSA)");
+    break;
+  }
+  return ret;
+}
+
+
 void RDStation::SetRow(const QString &param,const QString &value) const
 {
   QString sql;
