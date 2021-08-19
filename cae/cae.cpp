@@ -49,7 +49,6 @@
 #include "cae.h"
 
 volatile bool exiting=false;
-//RDConfig *rd_config;
 #ifdef JACK
 extern jack_client_t *jack_client;
 #endif  // JACK
@@ -270,6 +269,21 @@ MainObject::MainObject(QObject *parent)
   // ALSA Devices
   //
   dvr=CaeDriverFactory(RDStation::Alsa,this);
+  if(dvr->initialize(&next_card)) {
+    connect(dvr,SIGNAL(playStateChanged(int,int,int)),
+	    this,SLOT(statePlayUpdate(int,int,int)));
+    connect(dvr,SIGNAL(recordStateChanged(int,int,int)),
+	    this,SLOT(stateRecordUpdate(int,int,int)));
+    d_drivers.push_back(dvr);
+  }
+  else {
+    delete dvr;
+  }
+
+  //
+  // JACK Devices
+  //
+  dvr=CaeDriverFactory(RDStation::Jack,this);
   if(dvr->initialize(&next_card)) {
     connect(dvr,SIGNAL(playStateChanged(int,int,int)),
 	    this,SLOT(statePlayUpdate(int,int,int)));

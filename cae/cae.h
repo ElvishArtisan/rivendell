@@ -235,6 +235,7 @@ class MainObject : public QObject
 #endif  // HPI
   */
 
+  /*
   //
   // JACK Driver
   //
@@ -313,7 +314,7 @@ class MainObject : public QObject
   int jack_clock_phase;
   unsigned jack_samples_recorded[RD_MAX_STREAMS];
 #endif  // JACK
-
+  */
   //
   // ALSA Driver
   //

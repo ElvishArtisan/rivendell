@@ -718,11 +718,6 @@ bool AlsaDriver::initialize(unsigned *next_cardnum)
 }
 
 
-void AlsaDriver::updateMeters()
-{
-}
-
-
 bool AlsaDriver::loadPlayback(int card,QString wavename,int *stream)
 {
 #ifdef ALSA

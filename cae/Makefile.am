@@ -31,17 +31,18 @@ sbin_PROGRAMS = caed
 
 dist_caed_SOURCES = alsadriver.cpp alsadriver.h\
                     cae.cpp cae.h\
-                    cae_jack.cpp\
                     cae_server.cpp cae_server.h\
                     caedriver.cpp caedriver.h\
                     caedriverfactory.cpp caedriverfactory.h\
-                    hpidriver.cpp hpidriver.h
+                    hpidriver.cpp hpidriver.h\
+                    jackdriver.cpp jackdriver.h
 
 nodist_caed_SOURCES = moc_alsadriver.cpp\
                       moc_cae.cpp\
                       moc_cae_server.cpp\
                       moc_caedriver.cpp\
-                      moc_hpidriver.cpp
+                      moc_hpidriver.cpp\
+                      moc_jackdriver.cpp
 
 caed_LDADD = @LIB_RDLIBS@\
              @LIBALSA@\

@@ -91,14 +91,6 @@ bool HpiDriver::initialize(unsigned *next_cardnum)
 }
 
 
-void HpiDriver::updateMeters()
-{
-#ifdef HPI
-
-#endif  // HPI
-}
-
-
 bool HpiDriver::loadPlayback(int card,QString wavename,int *stream)
 {
 #ifdef HPI

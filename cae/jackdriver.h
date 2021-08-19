@@ -1,4 +1,4 @@
-// alsadriver.h
+// jackdriver.h
 //
 // caed(8) driver for Advanced Linux Audio Architecture devices
 //
@@ -18,39 +18,29 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef ALSADRIVER_H
-#define ALSADRIVER_H
+#ifndef JACKDRIVER_H
+#define JACKDRIVER_H
+
+#include <QProcess>
+
+#include <soundtouch/SoundTouch.h>
 
 #include <rdconfig.h>
+#include <rdmeteraverage.h>
 #include <rdwavefile.h>
 
 #include "caedriver.h"
 
-#ifdef ALSA
-#include <alsa/asoundlib.h>
-struct alsa_format {
-  int card;
-  pthread_t thread;
-  snd_pcm_t *pcm;
-  unsigned channels;
-  unsigned capture_channels;
-  snd_pcm_uframes_t buffer_size;
-  snd_pcm_format_t format;
-  unsigned sample_rate;
-  char *card_buffer;
-  char *passthrough_buffer;
-  unsigned card_buffer_size;
-  unsigned periods;
-  bool exiting;
-};
-#endif  // ALSA
+#ifdef JACK
+#include <jack/jack.h>
+#endif  // JACK
 
-class AlsaDriver : public CaeDriver
+class JackDriver : public CaeDriver
 {
   Q_OBJECT
  public:
-  AlsaDriver(QObject *parent=0);
-  ~AlsaDriver();
+  JackDriver(QObject *parent=0);
+  ~JackDriver();
   QString version() const;
   bool initialize(unsigned *next_cardnum);
   bool loadPlayback(int card,QString wavename,int *stream);
@@ -88,41 +78,50 @@ class AlsaDriver : public CaeDriver
   void processBuffers();
 
  private slots:
-  void stopTimerData(int cardstream);
-  void fadeTimerData(int cardstream);
-  void recordTimerData(int cardport);
+  void stopTimerData(int stream);
+  void fadeTimerData(int stream);
+  void recordTimerData(int stream);
+  void clientStartData();
 
  private:
-#ifdef ALSA
-  bool AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm);
-  bool AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm);
-  void AlsaInitCallback();
-  int GetAlsaOutputStream(int card);
-  void FreeAlsaOutputStream(int card,int stream);
-  void EmptyAlsaInputStream(int card,int stream);
-  void WriteAlsaBuffer(int card,int stream,short *buffer,unsigned len);
-  void FillAlsaOutputStream(int card,int stream);
-  void AlsaClock();
-  struct alsa_format alsa_play_format[RD_MAX_CARDS];
-  struct alsa_format alsa_capture_format[RD_MAX_CARDS];
-  short alsa_input_volume_db[RD_MAX_CARDS][RD_MAX_STREAMS];
-  short alsa_output_volume_db[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_STREAMS];
-  short alsa_passthrough_volume_db[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_PORTS];
-  short *alsa_wave_buffer;
-  uint8_t *alsa_wave24_buffer;
-  RDWaveFile *alsa_record_wave[RD_MAX_CARDS][RD_MAX_STREAMS];
-  RDWaveFile *alsa_play_wave[RD_MAX_CARDS][RD_MAX_STREAMS];
-  int alsa_offset[RD_MAX_CARDS][RD_MAX_STREAMS];
-  QTimer *alsa_fade_timer[RD_MAX_CARDS][RD_MAX_STREAMS];
-  QTimer *alsa_stop_timer[RD_MAX_CARDS][RD_MAX_STREAMS];
-  QTimer *alsa_record_timer[RD_MAX_CARDS][RD_MAX_PORTS];
-  bool alsa_fade_up[RD_MAX_CARDS][RD_MAX_STREAMS];
-  short alsa_fade_volume_db[RD_MAX_CARDS][RD_MAX_STREAMS];
-  short alsa_fade_increment[RD_MAX_CARDS][RD_MAX_STREAMS];
-  int alsa_fade_port[RD_MAX_CARDS][RD_MAX_STREAMS];
-  unsigned alsa_samples_recorded[RD_MAX_CARDS][RD_MAX_STREAMS];
-#endif  // ALSA
+  int GetJackOutputStream();
+  void FreeJackOutputStream(int stream);
+  void EmptyJackInputStream(int stream,bool done);
+#ifdef JACK
+  void WriteJackBuffer(int stream,jack_default_audio_sample_t *buffer,
+		       unsigned len,bool done);
+#endif  // JACK
+  void FillJackOutputStream(int stream);
+  void JackClock();
+  void JackSessionSetup();
+  bool jack_connected;
+  bool jack_activated;
+#ifdef JACK
+  int jack_card;
+  QList<QProcess *> jack_clients;
+  RDWaveFile *jack_record_wave[RD_MAX_STREAMS];
+  RDWaveFile *jack_play_wave[RD_MAX_STREAMS];
+  short *jack_wave_buffer;
+  int *jack_wave32_buffer;
+  uint8_t *jack_wave24_buffer;
+  jack_default_audio_sample_t *jack_sample_buffer;
+  soundtouch::SoundTouch *jack_st_conv[RD_MAX_STREAMS];
+  short jack_input_volume_db[RD_MAX_STREAMS];
+  short jack_output_volume_db[RD_MAX_PORTS][RD_MAX_STREAMS];
+  short jack_passthrough_volume_db[RD_MAX_PORTS][RD_MAX_PORTS];
+  short jack_fade_volume_db[RD_MAX_STREAMS];
+  short jack_fade_increment[RD_MAX_STREAMS];
+  int jack_fade_port[RD_MAX_STREAMS];
+  bool jack_fade_up[RD_MAX_STREAMS];
+  QTimer *jack_fade_timer[RD_MAX_STREAMS];
+  QTimer *jack_stop_timer[RD_MAX_STREAMS];
+  QTimer *jack_record_timer[RD_MAX_PORTS];
+  QTimer *jack_client_start_timer;
+  int jack_offset[RD_MAX_STREAMS];
+  int jack_clock_phase;
+  unsigned jack_samples_recorded[RD_MAX_STREAMS];
+#endif  // JACK
 };
 
 
-#endif  // ALSADRIVER_H
+#endif  // JACKDRIVER_H

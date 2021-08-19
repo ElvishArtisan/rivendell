@@ -48,7 +48,6 @@ class CaeDriver : public QObject
   bool hasCard(int cardnum) const;
   virtual QString version() const=0;
   virtual bool initialize(unsigned *next_cardnum)=0;;
-  virtual void updateMeters()=0;
 
  public:
   virtual bool loadPlayback(int card,QString wavename,int *stream)=0;

@@ -21,6 +21,7 @@
 #include "alsadriver.h"
 #include "caedriverfactory.h"
 #include "hpidriver.h"
+#include "jackdriver.h"
 
 CaeDriver *CaeDriverFactory(RDStation::AudioDriver dvr,QObject *parent)
 {
@@ -32,6 +33,7 @@ CaeDriver *CaeDriverFactory(RDStation::AudioDriver dvr,QObject *parent)
     break;
 
   case RDStation::Jack:
+    ret=new JackDriver(parent);
     break;
 
   case RDStation::Alsa:
