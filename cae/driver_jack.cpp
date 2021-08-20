@@ -1,4 +1,4 @@
-// jackdriver.cpp
+// driver_jack.cpp
 //
 // caed(8) driver for Advanced Linux Audio Architecture devices
 //
@@ -25,7 +25,7 @@
 #include <rdescape_string.h>
 #include <rdprofile.h>
 
-#include "jackdriver.h"
+#include "driver_jack.h"
 
 #ifdef JACK
 #endif  // JACK
@@ -382,8 +382,8 @@ void JackInitCallback()
 
 
 
-JackDriver::JackDriver(QObject *parent)
-  : CaeDriver(RDStation::Jack,parent)
+DriverJack::DriverJack(QObject *parent)
+  : Driver(RDStation::Jack,parent)
 {
 #ifdef JACK
   jack_connected=false;
@@ -410,7 +410,7 @@ JackDriver::JackDriver(QObject *parent)
 }
 
 
-JackDriver::~JackDriver()
+DriverJack::~DriverJack()
 {
 #ifdef JACK
   for(int i=0;i<jack_clients.size();i++) {
@@ -436,7 +436,7 @@ JackDriver::~JackDriver()
 }
 
 
-QString JackDriver::version() const
+QString DriverJack::version() const
 {
 #ifdef JACK
   return QString(jack_get_version_string());
@@ -446,7 +446,7 @@ QString JackDriver::version() const
 }
 
 
-bool JackDriver::initialize(unsigned *next_cardnum)
+bool DriverJack::initialize(unsigned *next_cardnum)
 {
 #ifdef JACK
   jack_options_t jackopts=JackNullOption;
@@ -702,7 +702,7 @@ bool JackDriver::initialize(unsigned *next_cardnum)
 }
 
 
-bool JackDriver::loadPlayback(int card,QString wavename,int *stream)
+bool DriverJack::loadPlayback(int card,QString wavename,int *stream)
 {
 #ifdef JACK
   if((*stream=GetJackOutputStream())<0) {
@@ -761,7 +761,7 @@ bool JackDriver::loadPlayback(int card,QString wavename,int *stream)
 }
 
 
-bool JackDriver::unloadPlayback(int card,int stream)
+bool DriverJack::unloadPlayback(int card,int stream)
 {
 #ifdef JACK
   if ((stream <0) || (stream >= RD_MAX_STREAMS)){
@@ -787,7 +787,7 @@ bool JackDriver::unloadPlayback(int card,int stream)
 }
 
 
-bool JackDriver::playbackPosition(int card,int stream,unsigned pos)
+bool DriverJack::playbackPosition(int card,int stream,unsigned pos)
 {
 #ifdef JACK
   unsigned offset=0;
@@ -837,7 +837,7 @@ bool JackDriver::playbackPosition(int card,int stream,unsigned pos)
 }
 
 
-bool JackDriver::play(int card,int stream,int length,int speed,bool pitch,
+bool DriverJack::play(int card,int stream,int length,int speed,bool pitch,
 		      bool rates)
 {
 #ifdef JACK
@@ -863,7 +863,7 @@ bool JackDriver::play(int card,int stream,int length,int speed,bool pitch,
 }
 
 
-bool JackDriver::stopPlayback(int card,int stream)
+bool DriverJack::stopPlayback(int card,int stream)
 {
 #ifdef JACK
   if((stream <0) || (stream>=RD_MAX_STREAMS) || 
@@ -880,7 +880,7 @@ bool JackDriver::stopPlayback(int card,int stream)
 }
 
 
-bool JackDriver::timescaleSupported(int card)
+bool DriverJack::timescaleSupported(int card)
 {
 #ifdef JACK
   return true;
@@ -890,7 +890,7 @@ bool JackDriver::timescaleSupported(int card)
 }
 
 
-bool JackDriver::loadRecord(int card,int port,int coding,int chans,int samprate,
+bool DriverJack::loadRecord(int card,int port,int coding,int chans,int samprate,
 			    int bitrate,QString wavename)
 {
 #ifdef JACK
@@ -986,7 +986,7 @@ bool JackDriver::loadRecord(int card,int port,int coding,int chans,int samprate,
 }
 
 
-bool JackDriver::unloadRecord(int card,int port,unsigned *len)
+bool DriverJack::unloadRecord(int card,int port,unsigned *len)
 {
 #ifdef JACK
   if((port <0)||(port>=RD_MAX_PORTS)) {
@@ -1010,7 +1010,7 @@ bool JackDriver::unloadRecord(int card,int port,unsigned *len)
 }
 
 
-bool JackDriver::record(int card,int port,int length,int thres)
+bool DriverJack::record(int card,int port,int length,int thres)
 {
 #ifdef JACK
   if((port<0)||(port>=RD_MAX_PORTS)) {
@@ -1033,7 +1033,7 @@ bool JackDriver::record(int card,int port,int length,int thres)
 }
 
 
-bool JackDriver::stopRecord(int card,int port)
+bool DriverJack::stopRecord(int card,int port)
 {
 #ifdef JACK
   if((port<0)||(port>=RD_MAX_PORTS)) {
@@ -1050,7 +1050,7 @@ bool JackDriver::stopRecord(int card,int port)
 }
 
 
-bool JackDriver::setClockSource(int card,int src)
+bool DriverJack::setClockSource(int card,int src)
 {
 #ifdef JACK
   return true;
@@ -1060,7 +1060,7 @@ bool JackDriver::setClockSource(int card,int src)
 }
 
 
-bool JackDriver::setInputVolume(int card,int stream,int level)
+bool DriverJack::setInputVolume(int card,int stream,int level)
 {
 #ifdef JACK
   if((stream<0)||(stream>=RD_MAX_STREAMS)) {
@@ -1082,7 +1082,7 @@ bool JackDriver::setInputVolume(int card,int stream,int level)
 }
 
 
-bool JackDriver::setOutputVolume(int card,int stream,int port,int level)
+bool DriverJack::setOutputVolume(int card,int stream,int port,int level)
 {
 #ifdef JACK
   if((stream<0)||(stream>=RD_MAX_STREAMS)||(port<0)||(port>=RD_MAX_PORTS)) {
@@ -1104,7 +1104,7 @@ bool JackDriver::setOutputVolume(int card,int stream,int port,int level)
 }
 
 
-bool JackDriver::fadeOutputVolume(int card,int stream,int port,int level,
+bool DriverJack::fadeOutputVolume(int card,int stream,int port,int level,
 				  int length)
 {
 #ifdef JACK
@@ -1135,7 +1135,7 @@ bool JackDriver::fadeOutputVolume(int card,int stream,int port,int level,
 }
 
 
-bool JackDriver::setInputLevel(int card,int port,int level)
+bool DriverJack::setInputLevel(int card,int port,int level)
 {
 #ifdef JACK
   return true;
@@ -1145,7 +1145,7 @@ bool JackDriver::setInputLevel(int card,int port,int level)
 }
 
 
-bool JackDriver::setOutputLevel(int card,int port,int level)
+bool DriverJack::setOutputLevel(int card,int port,int level)
 {
 #ifdef JACK
   return true;
@@ -1155,7 +1155,7 @@ bool JackDriver::setOutputLevel(int card,int port,int level)
 }
 
 
-bool JackDriver::setInputMode(int card,int stream,int mode)
+bool DriverJack::setInputMode(int card,int stream,int mode)
 {
 #ifdef JACK
   jack_input_mode[card][stream]=mode;
@@ -1166,7 +1166,7 @@ bool JackDriver::setInputMode(int card,int stream,int mode)
 }
 
 
-bool JackDriver::setOutputMode(int card,int stream,int mode)
+bool DriverJack::setOutputMode(int card,int stream,int mode)
 {
 #ifdef JACK
   return true;
@@ -1176,7 +1176,7 @@ bool JackDriver::setOutputMode(int card,int stream,int mode)
 }
 
 
-bool JackDriver::setInputVoxLevel(int card,int stream,int level)
+bool DriverJack::setInputVoxLevel(int card,int stream,int level)
 {
 #ifdef JACK
   return true;
@@ -1186,7 +1186,7 @@ bool JackDriver::setInputVoxLevel(int card,int stream,int level)
 }
 
 
-bool JackDriver::setInputType(int card,int port,int type)
+bool DriverJack::setInputType(int card,int port,int type)
 {
 #ifdef JACK
   return true;
@@ -1196,7 +1196,7 @@ bool JackDriver::setInputType(int card,int port,int type)
 }
 
 
-bool JackDriver::getInputStatus(int card,int port)
+bool DriverJack::getInputStatus(int card,int port)
 {
 #ifdef JACK
   return true;
@@ -1206,7 +1206,7 @@ bool JackDriver::getInputStatus(int card,int port)
 }
 
 
-bool JackDriver::getInputMeters(int card,int port,short levels[2])
+bool DriverJack::getInputMeters(int card,int port,short levels[2])
 {
 #ifdef JACK
   jack_default_audio_sample_t meter;
@@ -1232,7 +1232,7 @@ bool JackDriver::getInputMeters(int card,int port,short levels[2])
 }
 
 
-bool JackDriver::getOutputMeters(int card,int port,short levels[2])
+bool DriverJack::getOutputMeters(int card,int port,short levels[2])
 {
 #ifdef JACK
   jack_default_audio_sample_t meter;
@@ -1259,7 +1259,7 @@ bool JackDriver::getOutputMeters(int card,int port,short levels[2])
 }
 
 
-bool JackDriver::getStreamOutputMeters(int card,int stream,short levels[2])
+bool DriverJack::getStreamOutputMeters(int card,int stream,short levels[2])
 {
 #ifdef JACK
   jack_default_audio_sample_t meter;
@@ -1286,7 +1286,7 @@ bool JackDriver::getStreamOutputMeters(int card,int stream,short levels[2])
 }
 
 
-bool JackDriver::setPassthroughLevel(int card,int in_port,int out_port,
+bool DriverJack::setPassthroughLevel(int card,int in_port,int out_port,
 				     int level)
 {
 #ifdef JACK
@@ -1310,7 +1310,7 @@ bool JackDriver::setPassthroughLevel(int card,int in_port,int out_port,
 }
 
 
-void JackDriver::getOutputPosition(int card,unsigned *pos)
+void DriverJack::getOutputPosition(int card,unsigned *pos)
 {
 #ifdef JACK
   for(int i=0;i<RD_MAX_STREAMS;i++) {
@@ -1326,7 +1326,7 @@ void JackDriver::getOutputPosition(int card,unsigned *pos)
 }
 
 
-void JackDriver::processBuffers()
+void DriverJack::processBuffers()
 {
 #ifdef JACK
   for(int i=0;i<RD_MAX_STREAMS;i++) {
@@ -1348,7 +1348,7 @@ void JackDriver::processBuffers()
 }
 
 
-void JackDriver::stopTimerData(int stream)
+void DriverJack::stopTimerData(int stream)
 {
 #ifdef JACK
   stopPlayback(jack_card,stream);
@@ -1357,7 +1357,7 @@ void JackDriver::stopTimerData(int stream)
 }
 
 
-void JackDriver::fadeTimerData(int stream)
+void DriverJack::fadeTimerData(int stream)
 {
 #ifdef JACK
   int level;
@@ -1382,7 +1382,7 @@ void JackDriver::fadeTimerData(int stream)
 }
 
 
-void JackDriver::recordTimerData(int stream)
+void DriverJack::recordTimerData(int stream)
 {
 #ifdef JACK
   stopRecord(jack_card,stream);
@@ -1391,7 +1391,7 @@ void JackDriver::recordTimerData(int stream)
 }
 
 
-void JackDriver::clientStartData()
+void DriverJack::clientStartData()
 {
 #ifdef JACK
   QString sql=QString("select ")+
@@ -1426,7 +1426,7 @@ void JackDriver::clientStartData()
 }
 
 
-int JackDriver::GetJackOutputStream()
+int DriverJack::GetJackOutputStream()
 {
 #ifdef JACK
   for(int i=0;i<RD_MAX_STREAMS;i++) {
@@ -1442,7 +1442,7 @@ int JackDriver::GetJackOutputStream()
 }
 
 
-void JackDriver::FreeJackOutputStream(int stream)
+void DriverJack::FreeJackOutputStream(int stream)
 {
 #ifdef JACK
   if ((stream <0) || (stream >= RD_MAX_STREAMS)){
@@ -1460,7 +1460,7 @@ void JackDriver::FreeJackOutputStream(int stream)
 }
 
 
-void JackDriver::EmptyJackInputStream(int stream,bool done)
+void DriverJack::EmptyJackInputStream(int stream,bool done)
 {
 #ifdef JACK
   if ((stream <0) || (stream >= RD_MAX_STREAMS)){
@@ -1473,7 +1473,7 @@ void JackDriver::EmptyJackInputStream(int stream,bool done)
 }
 
 #ifdef JACK
-void JackDriver::WriteJackBuffer(int stream,jack_default_audio_sample_t *buffer,
+void DriverJack::WriteJackBuffer(int stream,jack_default_audio_sample_t *buffer,
 				 unsigned len,bool done)
 {
   ssize_t s;
@@ -1538,7 +1538,7 @@ void JackDriver::WriteJackBuffer(int stream,jack_default_audio_sample_t *buffer,
 }
 #endif  // JACK
 
-void JackDriver::FillJackOutputStream(int stream)
+void DriverJack::FillJackOutputStream(int stream)
 {
 #ifdef JACK
   int n=0;
@@ -1690,7 +1690,7 @@ void JackDriver::FillJackOutputStream(int stream)
 }
 
 
-void JackDriver::JackClock()
+void DriverJack::JackClock()
 {
 #ifdef JACK
   for(int i=0;i<RD_MAX_STREAMS;i++) {
@@ -1712,7 +1712,7 @@ void JackDriver::JackClock()
 }
 
 
-void JackDriver::JackSessionSetup()
+void DriverJack::JackSessionSetup()
 {
 #ifdef JACK
   int count=0;

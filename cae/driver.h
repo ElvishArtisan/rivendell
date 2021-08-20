@@ -1,4 +1,4 @@
-// caedriver.h
+// driver.h
 //
 // Abstract base class for caed(8) audio driver implementations.
 //
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef CAEDRIVER_H
-#define CAEDRIVER_H
+#ifndef DRIVER_H
+#define DRIVER_H
 
 #ifdef HAVE_TWOLAME
 #include <twolame.h>
@@ -39,11 +39,11 @@
 
 extern void SigHandler(int signum);
 
-class CaeDriver : public QObject
+class Driver : public QObject
 {
   Q_OBJECT
  public:
-  CaeDriver(RDStation::AudioDriver type,QObject *parent=0);
+  Driver(RDStation::AudioDriver type,QObject *parent=0);
   RDStation::AudioDriver driverType() const;
   bool hasCard(int cardnum) const;
   virtual QString version() const=0;
@@ -155,4 +155,4 @@ class CaeDriver : public QObject
 };
 
 
-#endif  // CAEDRIVER_H
+#endif  // DRIVER_H

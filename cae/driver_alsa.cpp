@@ -1,4 +1,4 @@
-// alsadriver.cpp
+// driver_alsa.cpp
 //
 // caed(8) driver for Advanced Linux Audio Architecture devices
 //
@@ -24,7 +24,7 @@
 #include <rdmeteraverage.h>
 #include <rdringbuffer.h>
 
-#include "alsadriver.h"
+#include "driver_alsa.h"
 
 #ifdef ALSA
 //
@@ -526,7 +526,7 @@ void *AlsaPlayCallback(void *ptr)
 }
 
 
-void AlsaDriver::AlsaInitCallback()
+void DriverAlsa::AlsaInitCallback()
 {
   int avg_periods=
     (330*systemSampleRate())/(1000*rda->config()->alsaPeriodSize());
@@ -562,8 +562,8 @@ void AlsaDriver::AlsaInitCallback()
 #endif  // ALSA
 
 
-AlsaDriver::AlsaDriver(QObject *parent)
-  : CaeDriver(RDStation::Alsa,parent)
+DriverAlsa::DriverAlsa(QObject *parent)
+  : Driver(RDStation::Alsa,parent)
 {
 #ifdef ALSA
   //
@@ -628,7 +628,7 @@ AlsaDriver::AlsaDriver(QObject *parent)
 }
 
 
-AlsaDriver::~AlsaDriver()
+DriverAlsa::~DriverAlsa()
 {
 #ifdef ALSA
   for(int i=0;i<RD_MAX_CARDS;i++) {
@@ -647,7 +647,7 @@ AlsaDriver::~AlsaDriver()
 }
 
 
-QString AlsaDriver::version() const
+QString DriverAlsa::version() const
 {
 #ifdef ALSA
   return 
@@ -658,7 +658,7 @@ QString AlsaDriver::version() const
 }
 
 
-bool AlsaDriver::initialize(unsigned *next_cardnum)
+bool DriverAlsa::initialize(unsigned *next_cardnum)
 {
   QString dev;
   snd_pcm_t *pcm_play_handle;
@@ -726,7 +726,7 @@ bool AlsaDriver::initialize(unsigned *next_cardnum)
 }
 
 
-bool AlsaDriver::loadPlayback(int card,QString wavename,int *stream)
+bool DriverAlsa::loadPlayback(int card,QString wavename,int *stream)
 {
 #ifdef ALSA
   if(alsa_play_format[card].exiting||((*stream=GetAlsaOutputStream(card))<0)) {
@@ -786,7 +786,7 @@ bool AlsaDriver::loadPlayback(int card,QString wavename,int *stream)
 }
 
 
-bool AlsaDriver::unloadPlayback(int card,int stream)
+bool DriverAlsa::unloadPlayback(int card,int stream)
 {
 #ifdef ALSA
   if(alsa_play_ring[card][stream]==NULL) {
@@ -809,7 +809,7 @@ bool AlsaDriver::unloadPlayback(int card,int stream)
 }
 
 
-bool AlsaDriver::playbackPosition(int card,int stream,unsigned pos)
+bool DriverAlsa::playbackPosition(int card,int stream,unsigned pos)
 {
 #ifdef ALSA
   unsigned offset=0;
@@ -860,7 +860,7 @@ bool AlsaDriver::playbackPosition(int card,int stream,unsigned pos)
 }
 
 
-bool AlsaDriver::play(int card,int stream,int length,int speed,bool pitch,
+bool DriverAlsa::play(int card,int stream,int length,int speed,bool pitch,
 		      bool rates)
 {
 #ifdef ALSA
@@ -880,7 +880,7 @@ bool AlsaDriver::play(int card,int stream,int length,int speed,bool pitch,
 }
 
 
-bool AlsaDriver::stopPlayback(int card,int stream)
+bool DriverAlsa::stopPlayback(int card,int stream)
 {
 #ifdef ALSA
   if((alsa_play_ring[card][stream]==NULL)||(!alsa_playing[card][stream])) {
@@ -897,13 +897,13 @@ bool AlsaDriver::stopPlayback(int card,int stream)
 }
 
 
-bool AlsaDriver::timescaleSupported(int card)
+bool DriverAlsa::timescaleSupported(int card)
 {
   return false;
 }
 
 
-bool AlsaDriver::loadRecord(int card,int port,int coding,int chans,int samprate,
+bool DriverAlsa::loadRecord(int card,int port,int coding,int chans,int samprate,
 			    int bitrate,QString wavename)
 {
 #ifdef ALSA
@@ -999,7 +999,7 @@ bool AlsaDriver::loadRecord(int card,int port,int coding,int chans,int samprate,
 }
 
 
-bool AlsaDriver::unloadRecord(int card,int port,unsigned *len)
+bool DriverAlsa::unloadRecord(int card,int port,unsigned *len)
 {
 #ifdef ALSA
   alsa_recording[card][port]=false;
@@ -1020,7 +1020,7 @@ bool AlsaDriver::unloadRecord(int card,int port,unsigned *len)
 }
 
 
-bool AlsaDriver::record(int card,int port,int length,int thres)
+bool DriverAlsa::record(int card,int port,int length,int thres)
 {
 #ifdef ALSA
   if(!alsa_ready[card][port]) {
@@ -1040,7 +1040,7 @@ bool AlsaDriver::record(int card,int port,int length,int thres)
 }
 
 
-bool AlsaDriver::stopRecord(int card,int port)
+bool DriverAlsa::stopRecord(int card,int port)
 {
 #ifdef ALSA
   if(!alsa_recording[card][port]) {
@@ -1054,7 +1054,7 @@ bool AlsaDriver::stopRecord(int card,int port)
 }
 
 
-bool AlsaDriver::setClockSource(int card,int src)
+bool DriverAlsa::setClockSource(int card,int src)
 {
 #ifdef ALSA
   return true;
@@ -1064,7 +1064,7 @@ bool AlsaDriver::setClockSource(int card,int src)
 }
 
 
-bool AlsaDriver::setInputVolume(int card,int stream,int level)
+bool DriverAlsa::setInputVolume(int card,int stream,int level)
 {
 #ifdef ALSA
   if(level>-10000) {
@@ -1082,7 +1082,7 @@ bool AlsaDriver::setInputVolume(int card,int stream,int level)
 }
 
 
-bool AlsaDriver::setOutputVolume(int card,int stream,int port,int level)
+bool DriverAlsa::setOutputVolume(int card,int stream,int port,int level)
 {
 #ifdef ALSA
   if(level>-10000) {
@@ -1100,7 +1100,7 @@ bool AlsaDriver::setOutputVolume(int card,int stream,int port,int level)
 }
 
 
-bool AlsaDriver::fadeOutputVolume(int card,int stream,int port,int level,
+bool DriverAlsa::fadeOutputVolume(int card,int stream,int port,int level,
 				  int length)
 {
 #ifdef ALSA
@@ -1128,7 +1128,7 @@ bool AlsaDriver::fadeOutputVolume(int card,int stream,int port,int level,
 }
 
 
-bool AlsaDriver::setInputLevel(int card,int port,int level)
+bool DriverAlsa::setInputLevel(int card,int port,int level)
 {
 #ifdef ALSA
   return true;
@@ -1138,7 +1138,7 @@ bool AlsaDriver::setInputLevel(int card,int port,int level)
 }
 
 
-bool AlsaDriver::setOutputLevel(int card,int port,int level)
+bool DriverAlsa::setOutputLevel(int card,int port,int level)
 {
 #ifdef ALSA
   return true;
@@ -1148,7 +1148,7 @@ bool AlsaDriver::setOutputLevel(int card,int port,int level)
 }
 
 
-bool AlsaDriver::setInputMode(int card,int stream,int mode)
+bool DriverAlsa::setInputMode(int card,int stream,int mode)
 {
 #ifdef ALSA
   return true;
@@ -1158,7 +1158,7 @@ bool AlsaDriver::setInputMode(int card,int stream,int mode)
 }
 
 
-bool AlsaDriver::setOutputMode(int card,int stream,int mode)
+bool DriverAlsa::setOutputMode(int card,int stream,int mode)
 {
 #ifdef ALSA
   return true;
@@ -1168,7 +1168,7 @@ bool AlsaDriver::setOutputMode(int card,int stream,int mode)
 }
 
 
-bool AlsaDriver::setInputVoxLevel(int card,int stream,int level)
+bool DriverAlsa::setInputVoxLevel(int card,int stream,int level)
 {
 #ifdef ALSA
   return true;
@@ -1178,7 +1178,7 @@ bool AlsaDriver::setInputVoxLevel(int card,int stream,int level)
 }
 
 
-bool AlsaDriver::setInputType(int card,int port,int type)
+bool DriverAlsa::setInputType(int card,int port,int type)
 {
 #ifdef ALSA
   return true;
@@ -1188,7 +1188,7 @@ bool AlsaDriver::setInputType(int card,int port,int type)
 }
 
 
-bool AlsaDriver::getInputStatus(int card,int port)
+bool DriverAlsa::getInputStatus(int card,int port)
 {
 #ifdef ALSA
   return true;
@@ -1198,7 +1198,7 @@ bool AlsaDriver::getInputStatus(int card,int port)
 }
 
 
-bool AlsaDriver::getInputMeters(int card,int port,short levels[2])
+bool DriverAlsa::getInputMeters(int card,int port,short levels[2])
 {
 #ifdef ALSA
   double meter;
@@ -1223,7 +1223,7 @@ bool AlsaDriver::getInputMeters(int card,int port,short levels[2])
 }
 
 
-bool AlsaDriver::getOutputMeters(int card,int port,short levels[2])
+bool DriverAlsa::getOutputMeters(int card,int port,short levels[2])
 {
 #ifdef ALSA
   double meter;
@@ -1247,7 +1247,7 @@ bool AlsaDriver::getOutputMeters(int card,int port,short levels[2])
 }
 
 
-bool AlsaDriver::getStreamOutputMeters(int card,int stream,short levels[2])
+bool DriverAlsa::getStreamOutputMeters(int card,int stream,short levels[2])
 {
 #ifdef ALSA
   double meter;
@@ -1271,7 +1271,7 @@ bool AlsaDriver::getStreamOutputMeters(int card,int stream,short levels[2])
 }
 
 
-bool AlsaDriver::setPassthroughLevel(int card,int in_port,int out_port,
+bool DriverAlsa::setPassthroughLevel(int card,int in_port,int out_port,
 				     int level)
 {
 #ifdef ALSA
@@ -1291,7 +1291,7 @@ bool AlsaDriver::setPassthroughLevel(int card,int in_port,int out_port,
 }
 
 
-void AlsaDriver::getOutputPosition(int card,unsigned *pos)
+void DriverAlsa::getOutputPosition(int card,unsigned *pos)
 {// pos is in miliseconds
 #ifdef ALSA
   for(int i=0;i<RD_MAX_STREAMS;i++) {
@@ -1308,7 +1308,7 @@ void AlsaDriver::getOutputPosition(int card,unsigned *pos)
 }
 
 
-void AlsaDriver::processBuffers()
+void DriverAlsa::processBuffers()
 {
 #ifdef ALSA
   for(int i=0;i<RD_MAX_CARDS;i++) {
@@ -1335,7 +1335,7 @@ void AlsaDriver::processBuffers()
 }
 
 
-void AlsaDriver::stopTimerData(int cardstream)
+void DriverAlsa::stopTimerData(int cardstream)
 {
 #ifdef ALSA
   int card=cardstream/RD_MAX_STREAMS;
@@ -1346,7 +1346,7 @@ void AlsaDriver::stopTimerData(int cardstream)
 }
 
 
-void AlsaDriver::fadeTimerData(int cardstream)
+void DriverAlsa::fadeTimerData(int cardstream)
 {
 #ifdef ALSA
   int card=cardstream/RD_MAX_STREAMS;
@@ -1374,7 +1374,7 @@ void AlsaDriver::fadeTimerData(int cardstream)
 }
 
 
-void AlsaDriver::recordTimerData(int cardport)
+void DriverAlsa::recordTimerData(int cardport)
 {
 #ifdef ALSA
   int card=cardport/RD_MAX_PORTS;
@@ -1387,7 +1387,7 @@ void AlsaDriver::recordTimerData(int cardport)
 
 
 #ifdef ALSA
-bool AlsaDriver::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
+bool DriverAlsa::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
 {
   snd_pcm_hw_params_t *hwparams;
   snd_pcm_sw_params_t *swparams;
@@ -1554,7 +1554,7 @@ bool AlsaDriver::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
 }
 
 
-bool AlsaDriver::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
+bool DriverAlsa::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
 {
   snd_pcm_hw_params_t *hwparams;
   snd_pcm_sw_params_t *swparams;
@@ -1712,7 +1712,7 @@ bool AlsaDriver::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
 }
 
 
-int AlsaDriver::GetAlsaOutputStream(int card)
+int DriverAlsa::GetAlsaOutputStream(int card)
 {
   for(int i=0;i<RD_MAX_STREAMS;i++) {
     if(alsa_play_ring[card][i]==NULL) {
@@ -1724,14 +1724,14 @@ int AlsaDriver::GetAlsaOutputStream(int card)
 }
 
 
-void AlsaDriver::FreeAlsaOutputStream(int card,int stream)
+void DriverAlsa::FreeAlsaOutputStream(int card,int stream)
 {
   delete alsa_play_ring[card][stream];
   alsa_play_ring[card][stream]=NULL;
 }
 
 
-void AlsaDriver::EmptyAlsaInputStream(int card,int stream)
+void DriverAlsa::EmptyAlsaInputStream(int card,int stream)
 {
   unsigned n=alsa_record_ring[card][stream]->
     read((char *)alsa_wave_buffer,alsa_record_ring[card][stream]->
@@ -1740,7 +1740,7 @@ void AlsaDriver::EmptyAlsaInputStream(int card,int stream)
 }
 
 
-void AlsaDriver::WriteAlsaBuffer(int card,int stream,int16_t *buffer,unsigned len)
+void DriverAlsa::WriteAlsaBuffer(int card,int stream,int16_t *buffer,unsigned len)
 {
   ssize_t s;
   unsigned char mpeg[2048];
@@ -1793,7 +1793,7 @@ void AlsaDriver::WriteAlsaBuffer(int card,int stream,int16_t *buffer,unsigned le
 }
 
 
-void AlsaDriver::FillAlsaOutputStream(int card,int stream)
+void DriverAlsa::FillAlsaOutputStream(int card,int stream)
 {
   unsigned mpeg_frames=0;
   unsigned frame_offset=0;
@@ -1904,7 +1904,7 @@ void AlsaDriver::FillAlsaOutputStream(int card,int stream)
 #endif  // ALSA
 
 
-void AlsaDriver::AlsaClock()
+void DriverAlsa::AlsaClock()
 {
 #ifdef ALSA
   for(int i=0;i<RD_MAX_CARDS;i++) {

@@ -20,9 +20,9 @@
 
 #include <dlfcn.h>
 
-#include "caedriver.h"
+#include "driver.h"
 
-CaeDriver::CaeDriver(RDStation::AudioDriver type,QObject *parent)
+Driver::Driver(RDStation::AudioDriver type,QObject *parent)
   : QObject(parent)
 {
   d_driver_type=type;
@@ -32,36 +32,36 @@ CaeDriver::CaeDriver(RDStation::AudioDriver type,QObject *parent)
 }
 
 
-RDStation::AudioDriver CaeDriver::driverType() const
+RDStation::AudioDriver Driver::driverType() const
 {
   return d_driver_type;
 }
 
 
-bool CaeDriver::hasCard(int cardnum) const
+bool Driver::hasCard(int cardnum) const
 {
   return d_cards.contains(cardnum);
 }
 
 
-void CaeDriver::processBuffers()
+void Driver::processBuffers()
 {
 }
 
 
-void CaeDriver::statePlayUpdate(int card,int stream,int state)
+void Driver::statePlayUpdate(int card,int stream,int state)
 {
   emit playStateChanged(card,stream,state);
 }
 
 
-void CaeDriver::stateRecordUpdate(int card,int stream,int state)
+void Driver::stateRecordUpdate(int card,int stream,int state)
 {
   emit recordStateChanged(card,stream,state);
 }
 
 
-void CaeDriver::addCard(unsigned cardnum)
+void Driver::addCard(unsigned cardnum)
 {
   if(d_cards.contains(cardnum)) {
     rda->syslog(LOG_WARNING,
@@ -75,13 +75,13 @@ void CaeDriver::addCard(unsigned cardnum)
 }
 
 
-unsigned CaeDriver::systemSampleRate() const
+unsigned Driver::systemSampleRate() const
 {
   return d_system_sample_rate;
 }
 
 
-bool CaeDriver::LoadTwoLame()
+bool Driver::LoadTwoLame()
 {
 #ifdef HAVE_TWOLAME
   if((twolame_handle=dlopen("libtwolame.so.0",RTLD_NOW))==NULL) {
@@ -121,7 +121,7 @@ bool CaeDriver::LoadTwoLame()
 }
 
 
-bool CaeDriver::InitTwoLameEncoder(int card,int stream,int chans,int samprate,
+bool Driver::InitTwoLameEncoder(int card,int stream,int chans,int samprate,
 				    int bitrate)
 {
   if(twolame_handle==NULL) {
@@ -165,7 +165,7 @@ bool CaeDriver::InitTwoLameEncoder(int card,int stream,int chans,int samprate,
 }
 
 
-void CaeDriver::FreeTwoLameEncoder(int card,int stream)
+void Driver::FreeTwoLameEncoder(int card,int stream)
 {
 #ifdef HAVE_TWOLAME
   if(twolame_lameopts[card][stream]!=NULL) { 
@@ -176,7 +176,7 @@ void CaeDriver::FreeTwoLameEncoder(int card,int stream)
 }
 
 
-bool CaeDriver::LoadMad()
+bool Driver::LoadMad()
 {
 #ifdef HAVE_MAD
   if((mad_handle=dlopen("libmad.so.0",RTLD_NOW))==NULL) {
@@ -210,7 +210,7 @@ bool CaeDriver::LoadMad()
 }
 
 
-bool CaeDriver::InitMadDecoder(int card,int stream,RDWaveFile *wave)
+bool Driver::InitMadDecoder(int card,int stream,RDWaveFile *wave)
 {
   if(mad_handle==NULL) {
     rda->syslog(LOG_WARNING,"MPEG Layer 2 decode not available");
@@ -233,7 +233,7 @@ bool CaeDriver::InitMadDecoder(int card,int stream,RDWaveFile *wave)
 }
 
 
-void CaeDriver::FreeMadDecoder(int card,int stream)
+void Driver::FreeMadDecoder(int card,int stream)
 {
 #ifdef HAVE_MAD
   if(mad_active[card][stream]) {

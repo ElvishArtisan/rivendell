@@ -45,10 +45,10 @@
 #include <rdsvc.h>
 #include <rdsystem.h>
 
-#include "alsadriver.h"
 #include "cae.h"
-#include "hpidriver.h"
-#include "jackdriver.h"
+#include "driver_alsa.h"
+#include "driver_hpi.h"
+#include "driver_jack.h"
 
 volatile bool exiting=false;
 #ifdef JACK
@@ -341,7 +341,7 @@ void MainObject::loadPlaybackData(int id,unsigned card,const QString &name)
   QString wavename;
   int new_stream=-1;
   int handle;
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->
@@ -385,7 +385,7 @@ void MainObject::unloadPlaybackData(int id,unsigned handle)
 {
   int card=play_handle[handle].card;
   int stream=play_handle[handle].stream;
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("UP %d -!",handle));
@@ -416,7 +416,7 @@ void MainObject::playPositionData(int id,unsigned handle,unsigned pos)
 {
   int card=play_handle[handle].card;
   int stream=play_handle[handle].stream;
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("PP %d %d -!",handle,pos));
@@ -443,7 +443,7 @@ void MainObject::playData(int id,unsigned handle,unsigned length,unsigned speed,
 {
   int card=play_handle[handle].card;
   int stream=play_handle[handle].stream;
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->
@@ -494,7 +494,7 @@ void MainObject::stopPlaybackData(int id,unsigned handle)
 {
   int card=play_handle[handle].card;
   int stream=play_handle[handle].stream;
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("SP %u -!",handle));
@@ -517,7 +517,7 @@ void MainObject::stopPlaybackData(int id,unsigned handle)
 void MainObject::timescalingSupportData(int id,unsigned card)
 {
   bool state=false;
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     return;
@@ -538,7 +538,7 @@ void MainObject::loadRecordingData(int id,unsigned card,unsigned port,
 				   const QString &name)
 {
   QString wavename;
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->
@@ -579,7 +579,7 @@ void MainObject::loadRecordingData(int id,unsigned card,unsigned port,
 
 void MainObject::unloadRecordingData(int id,unsigned card,unsigned stream)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("UR %u %u -!",card,stream));
@@ -610,7 +610,7 @@ void MainObject::unloadRecordingData(int id,unsigned card,unsigned stream)
 void MainObject::recordData(int id,unsigned card,unsigned stream,unsigned len,
 			    int threshold_level)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->
@@ -643,7 +643,7 @@ void MainObject::recordData(int id,unsigned card,unsigned stream,unsigned len,
 
 void MainObject::stopRecordingData(int id,unsigned card,unsigned stream)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("SR %u %u -!",card,stream));
@@ -661,7 +661,7 @@ void MainObject::stopRecordingData(int id,unsigned card,unsigned stream)
 void MainObject::setInputVolumeData(int id,unsigned card,unsigned stream,
 				    int level)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->
@@ -686,7 +686,7 @@ void MainObject::setInputVolumeData(int id,unsigned card,unsigned stream,
 void MainObject::setOutputVolumeData(int id,unsigned card,unsigned stream,
 				     unsigned port,int level)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("OV %u %u %u %d -!",
@@ -711,7 +711,7 @@ void MainObject::setOutputVolumeData(int id,unsigned card,unsigned stream,
 void MainObject::fadeOutputVolumeData(int id,unsigned card,unsigned stream,
 				      unsigned port,int level,unsigned length)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->
@@ -739,7 +739,7 @@ void MainObject::fadeOutputVolumeData(int id,unsigned card,unsigned stream,
 void MainObject::setInputLevelData(int id,unsigned card,unsigned port,
 				   int level)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("IL %u %u %d -!",
@@ -765,7 +765,7 @@ void MainObject::setInputLevelData(int id,unsigned card,unsigned port,
 void MainObject::setOutputLevelData(int id,unsigned card,unsigned port,
 				    int level)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("OL %u %u %d -!",
@@ -790,7 +790,7 @@ void MainObject::setOutputLevelData(int id,unsigned card,unsigned port,
 void MainObject::setInputModeData(int id,unsigned card,unsigned stream,
 				  unsigned mode)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("IM %u %u %u -!",
@@ -815,7 +815,7 @@ void MainObject::setInputModeData(int id,unsigned card,unsigned stream,
 void MainObject::setOutputModeData(int id,unsigned card,unsigned stream,
 				   unsigned mode)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("OM %u %u %u -!",
@@ -840,7 +840,7 @@ void MainObject::setOutputModeData(int id,unsigned card,unsigned stream,
 void MainObject::setInputVoxLevelData(int id,unsigned card,unsigned stream,
 				      int level)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("IX %u %u %d -!",
@@ -865,7 +865,7 @@ void MainObject::setInputVoxLevelData(int id,unsigned card,unsigned stream,
 void MainObject::setInputTypeData(int id,unsigned card,unsigned port,
 				  unsigned type)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("IT %u %u %u -!",
@@ -889,7 +889,7 @@ void MainObject::setInputTypeData(int id,unsigned card,unsigned port,
 
 void MainObject::getInputStatusData(int id,unsigned card,unsigned port)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     return;
@@ -909,7 +909,7 @@ void MainObject::setAudioPassthroughLevelData(int id,unsigned card,
 					      unsigned input,unsigned output,
 					      int level)
 {
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("AL %u %u %u %d -!",
@@ -937,7 +937,7 @@ void MainObject::setClockSourceData(int id,unsigned card,int input)
     cae_server->sendCommand(id,QString().sprintf("CS %u %u -!",card,input));
     return;
   }
-  CaeDriver *dvr=GetDriver(card);
+  Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
     cae_server->sendCommand(id,QString().sprintf("CS %u %u +!",card,input));
@@ -1093,7 +1093,7 @@ void MainObject::updateMeters()
   }
 
   for(int i=0;i<RD_MAX_CARDS;i++) {
-    CaeDriver *dvr=GetDriver(i);
+    Driver *dvr=GetDriver(i);
     if(dvr!=NULL) {
       for(int j=0;j<RD_MAX_PORTS;j++) {
 	if(dvr->getInputStatus(i,j)!=port_status[i][j]) {
@@ -1194,7 +1194,7 @@ void MainObject::InitMixers()
 {
   for(int i=0;i<RD_MAX_CARDS;i++) {
     RDAudioPort *port=new RDAudioPort(rda->config()->stationName(),i);
-    CaeDriver *dvr=GetDriver(i);
+    Driver *dvr=GetDriver(i);
 
     if(dvr!=NULL) {
       dvr->setClockSource(i,port->clockSource());
@@ -1221,7 +1221,7 @@ void MainObject::InitMixers()
 void MainObject::KillSocket(int ch)
 {
   for(int i=0;i<RD_MAX_CARDS;i++) {
-    CaeDriver *dvr=GetDriver(i);
+    Driver *dvr=GetDriver(i);
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       if(record_owner[i][j]==ch) {
 	rda->syslog(LOG_DEBUG,"force unloading record context for connection %s:%u: Card: %d  Stream: %d  Handle: %d",
@@ -1623,7 +1623,7 @@ void MainObject::SendMeterUpdate(const QString &msg,int conn_id)
 }
 
 
-CaeDriver *MainObject::GetDriver(unsigned card) const
+Driver *MainObject::GetDriver(unsigned card) const
 {
   for(int i=0;i<d_drivers.size();i++) {
     if(d_drivers.at(i)->hasCard(card)) {
@@ -1636,12 +1636,12 @@ CaeDriver *MainObject::GetDriver(unsigned card) const
 
 void MainObject::MakeDriver(unsigned *next_card,RDStation::AudioDriver type)
 {
-  CaeDriver *dvr=NULL;
+  Driver *dvr=NULL;
 
   switch(type) {
   case RDStation::Hpi:
 #ifdef HPI
-    dvr=new HpiDriver(this);
+    dvr=new DriverHpi(this);
     rda->station()->setDriverVersion(RDStation::Hpi,"v"+dvr->version());
 #else
     rda->station()->setDriverVersion(RDStation::Hpi,"[not enabled]");
@@ -1650,7 +1650,7 @@ void MainObject::MakeDriver(unsigned *next_card,RDStation::AudioDriver type)
 
   case RDStation::Alsa:
 #ifdef ALSA
-    dvr=new AlsaDriver(this);
+    dvr=new DriverAlsa(this);
     rda->station()->setDriverVersion(RDStation::Alsa,"v"+dvr->version());
 #else
     rda->station()->setDriverVersion(RDStation::Alsa,"[not enabled]");
@@ -1659,7 +1659,7 @@ void MainObject::MakeDriver(unsigned *next_card,RDStation::AudioDriver type)
 
   case RDStation::Jack:
 #ifdef JACK
-    dvr=new JackDriver(this);
+    dvr=new DriverJack(this);
     rda->station()->setDriverVersion(RDStation::Jack,"v"+dvr->version());
 #else
     rda->station()->setDriverVersion(RDStation::Jack,"[not enabled]");

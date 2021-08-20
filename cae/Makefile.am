@@ -29,19 +29,19 @@ moc_%.cpp:	%.h
 
 sbin_PROGRAMS = caed
 
-dist_caed_SOURCES = alsadriver.cpp alsadriver.h\
-                    cae.cpp cae.h\
+dist_caed_SOURCES = cae.cpp cae.h\
                     cae_server.cpp cae_server.h\
-                    caedriver.cpp caedriver.h\
-                    hpidriver.cpp hpidriver.h\
-                    jackdriver.cpp jackdriver.h
+                    driver.cpp driver.h\
+                    driver_alsa.cpp driver_alsa.h\
+                    driver_hpi.cpp driver_hpi.h\
+                    driver_jack.cpp driver_jack.h
 
-nodist_caed_SOURCES = moc_alsadriver.cpp\
-                      moc_cae.cpp\
+nodist_caed_SOURCES = moc_cae.cpp\
                       moc_cae_server.cpp\
-                      moc_caedriver.cpp\
-                      moc_hpidriver.cpp\
-                      moc_jackdriver.cpp
+                      moc_driver.cpp\
+                      moc_driver_alsa.cpp\
+                      moc_driver_hpi.cpp\
+                      moc_driver_jack.cpp
 
 caed_LDADD = @LIB_RDLIBS@\
              @LIBALSA@\

@@ -1,4 +1,4 @@
-// hpidriver.cpp
+// driver_hpi.cpp
 //
 // caed(8) driver for AudioScience HPI audio devices.
 //
@@ -19,10 +19,10 @@
 //
 
 #include <rdconf.h>
-#include "hpidriver.h"
+#include "driver_hpi.h"
 
-HpiDriver::HpiDriver(QObject *parent)
-  : CaeDriver(RDStation::Hpi,parent)
+DriverHpi::DriverHpi(QObject *parent)
+  : Driver(RDStation::Hpi,parent)
 {
 #ifdef HPI
   for(int i=0;i<RD_MAX_CARDS;i++) {
@@ -36,7 +36,7 @@ HpiDriver::HpiDriver(QObject *parent)
 }
 
 
-HpiDriver::~HpiDriver()
+DriverHpi::~DriverHpi()
 {
 #ifdef HPI
   for(int i=0;i<RD_MAX_CARDS;i++) {
@@ -54,7 +54,7 @@ HpiDriver::~HpiDriver()
 }
 
 
-QString HpiDriver::version() const
+QString DriverHpi::version() const
 {
 #ifdef HPI
   if(d_sound_card==NULL) {
@@ -72,7 +72,7 @@ QString HpiDriver::version() const
 }
 
 
-bool HpiDriver::initialize(unsigned *next_cardnum)
+bool DriverHpi::initialize(unsigned *next_cardnum)
 {
 #ifdef HPI
   d_sound_card->setFadeProfile(RD_FADE_TYPE);
@@ -91,7 +91,7 @@ bool HpiDriver::initialize(unsigned *next_cardnum)
 }
 
 
-bool HpiDriver::loadPlayback(int card,QString wavename,int *stream)
+bool DriverHpi::loadPlayback(int card,QString wavename,int *stream)
 {
 #ifdef HPI
   RDHPIPlayStream *playstream=new RDHPIPlayStream(d_sound_card);
@@ -114,7 +114,7 @@ bool HpiDriver::loadPlayback(int card,QString wavename,int *stream)
 }
 
 
-bool HpiDriver::unloadPlayback(int card,int stream)
+bool DriverHpi::unloadPlayback(int card,int stream)
 {
 #ifdef HPI
   if(d_play_streams[card][stream]==NULL) {
@@ -135,7 +135,7 @@ bool HpiDriver::unloadPlayback(int card,int stream)
 }
 
 
-bool HpiDriver::playbackPosition(int card,int stream,unsigned pos)
+bool DriverHpi::playbackPosition(int card,int stream,unsigned pos)
 {
 #ifdef HPI
   if(d_play_streams[card][stream]==NULL) {
@@ -150,7 +150,7 @@ bool HpiDriver::playbackPosition(int card,int stream,unsigned pos)
 }
 
 
-bool HpiDriver::play(int card,int stream,int length,int speed,bool pitch,
+bool DriverHpi::play(int card,int stream,int length,int speed,bool pitch,
 		     bool rates)
 {
 #ifdef HPI
@@ -168,7 +168,7 @@ bool HpiDriver::play(int card,int stream,int length,int speed,bool pitch,
 }
 
 
-bool HpiDriver::stopPlayback(int card,int stream)
+bool DriverHpi::stopPlayback(int card,int stream)
 {
 #ifdef HPI
   if(d_play_streams[card][stream]==NULL) {
@@ -183,7 +183,7 @@ bool HpiDriver::stopPlayback(int card,int stream)
 }
 
 
-bool HpiDriver::timescaleSupported(int card)
+bool DriverHpi::timescaleSupported(int card)
 {
 #ifdef HPI
   return d_sound_card->haveTimescaling(card);
@@ -193,7 +193,7 @@ bool HpiDriver::timescaleSupported(int card)
 }
 
 
-bool HpiDriver::loadRecord(int card,int port,int coding,int chans,int samprate,
+bool DriverHpi::loadRecord(int card,int port,int coding,int chans,int samprate,
 			   int bitrate,QString wavename)
 {
 #ifdef HPI
@@ -262,7 +262,7 @@ bool HpiDriver::loadRecord(int card,int port,int coding,int chans,int samprate,
 }
 
 
-bool HpiDriver::unloadRecord(int card,int port,unsigned *len)
+bool DriverHpi::unloadRecord(int card,int port,unsigned *len)
 {
 #ifdef HPI
   if(d_record_streams[card][port]==NULL) {
@@ -284,7 +284,7 @@ bool HpiDriver::unloadRecord(int card,int port,unsigned *len)
 }
 
 
-bool HpiDriver::record(int card,int port,int length,int thres)
+bool DriverHpi::record(int card,int port,int length,int thres)
 {
 #ifdef HPI
   if(d_record_streams[card][port]==NULL) {
@@ -308,7 +308,7 @@ bool HpiDriver::record(int card,int port,int length,int thres)
 }
 
 
-bool HpiDriver::stopRecord(int card,int port)
+bool DriverHpi::stopRecord(int card,int port)
 {
 #ifdef HPI
   if(d_record_streams[card][port]==NULL) {
@@ -324,7 +324,7 @@ bool HpiDriver::stopRecord(int card,int port)
 }
 
 
-bool HpiDriver::setClockSource(int card,int src)
+bool DriverHpi::setClockSource(int card,int src)
 {
 #ifdef HPI
   return d_sound_card->setClockSource(card,(RDHPISoundCard::ClockSource)src);
@@ -334,7 +334,7 @@ bool HpiDriver::setClockSource(int card,int src)
 }
 
 
-bool HpiDriver::setInputVolume(int card,int stream,int level)
+bool DriverHpi::setInputVolume(int card,int stream,int level)
 {
 #ifdef HPI
   d_sound_card->setInputVolume(card,stream,level);
@@ -346,7 +346,7 @@ bool HpiDriver::setInputVolume(int card,int stream,int level)
 }
 
 
-bool HpiDriver::setOutputVolume(int card,int stream,int port,int level)
+bool DriverHpi::setOutputVolume(int card,int stream,int port,int level)
 {
 #ifdef HPI
   d_sound_card->setOutputVolume(card,stream,port,level);
@@ -358,7 +358,7 @@ bool HpiDriver::setOutputVolume(int card,int stream,int port,int level)
 }
 
 
-bool HpiDriver::fadeOutputVolume(int card,int stream,int port,int level,
+bool DriverHpi::fadeOutputVolume(int card,int stream,int port,int level,
 				 int length)
 {
 #ifdef HPI
@@ -371,7 +371,7 @@ bool HpiDriver::fadeOutputVolume(int card,int stream,int port,int level,
 }
 
 
-bool HpiDriver::setInputLevel(int card,int port,int level)
+bool DriverHpi::setInputLevel(int card,int port,int level)
 {
 #ifdef HPI
   d_sound_card->setInputLevel(card,port,level);
@@ -383,7 +383,7 @@ bool HpiDriver::setInputLevel(int card,int port,int level)
 }
 
 
-bool HpiDriver::setOutputLevel(int card,int port,int level)
+bool DriverHpi::setOutputLevel(int card,int port,int level)
 {
 #ifdef HPI
   d_sound_card->setOutputLevel(card,port,level);
@@ -395,7 +395,7 @@ bool HpiDriver::setOutputLevel(int card,int port,int level)
 }
 
 
-bool HpiDriver::setInputMode(int card,int stream,int mode)
+bool DriverHpi::setInputMode(int card,int stream,int mode)
 {
 #ifdef HPI
   switch(mode) {
@@ -426,7 +426,7 @@ bool HpiDriver::setInputMode(int card,int stream,int mode)
 }
 
 
-bool HpiDriver::setOutputMode(int card,int stream,int mode)
+bool DriverHpi::setOutputMode(int card,int stream,int mode)
 {
 #ifdef HPI
   switch(mode) {
@@ -457,7 +457,7 @@ bool HpiDriver::setOutputMode(int card,int stream,int mode)
 }
 
 
-bool HpiDriver::setInputVoxLevel(int card,int stream,int level)
+bool DriverHpi::setInputVoxLevel(int card,int stream,int level)
 {
 #ifdef HPI
   d_sound_card->setInputStreamVOX(card,stream,level);
@@ -469,7 +469,7 @@ bool HpiDriver::setInputVoxLevel(int card,int stream,int level)
 }
 
 
-bool HpiDriver::setInputType(int card,int port,int type)
+bool DriverHpi::setInputType(int card,int port,int type)
 {
 #ifdef HPI
   switch(type) {
@@ -492,7 +492,7 @@ bool HpiDriver::setInputType(int card,int port,int type)
 }
 
 
-bool HpiDriver::getInputStatus(int card,int port)
+bool DriverHpi::getInputStatus(int card,int port)
 {
 #ifdef HPI
   return d_sound_card->getInputPortError(card,port)==0;
@@ -502,7 +502,7 @@ bool HpiDriver::getInputStatus(int card,int port)
 }
 
 
-bool HpiDriver::getInputMeters(int card,int port,short levels[2])
+bool DriverHpi::getInputMeters(int card,int port,short levels[2])
 {
 #ifdef HPI
   return d_sound_card->inputStreamMeter(card,port,levels);
@@ -512,7 +512,7 @@ bool HpiDriver::getInputMeters(int card,int port,short levels[2])
 }
 
 
-bool HpiDriver::getOutputMeters(int card,int port,short levels[2])
+bool DriverHpi::getOutputMeters(int card,int port,short levels[2])
 {
 #ifdef HPI
   return d_sound_card->outputPortMeter(card,port,levels);
@@ -522,7 +522,7 @@ bool HpiDriver::getOutputMeters(int card,int port,short levels[2])
 }
 
 
-bool HpiDriver::getStreamOutputMeters(int card,int stream,short levels[2])
+bool DriverHpi::getStreamOutputMeters(int card,int stream,short levels[2])
 {
 #ifdef HPI
   return d_sound_card->outputStreamMeter(card,stream,levels);
@@ -532,7 +532,7 @@ bool HpiDriver::getStreamOutputMeters(int card,int stream,short levels[2])
 }
 
 
-bool HpiDriver::setPassthroughLevel(int card,int in_port,int out_port,int level)
+bool DriverHpi::setPassthroughLevel(int card,int in_port,int out_port,int level)
 {
 #ifdef HPI
   return d_sound_card->setPassthroughVolume(card,in_port,out_port,level);
@@ -542,7 +542,7 @@ bool HpiDriver::setPassthroughLevel(int card,int in_port,int out_port,int level)
 }
 
 
-void HpiDriver::getOutputPosition(int card,unsigned *pos)
+void DriverHpi::getOutputPosition(int card,unsigned *pos)
 {
 #ifdef HPI
   for(int i=0;i<RD_MAX_STREAMS;i++) {

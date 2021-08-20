@@ -49,7 +49,7 @@
 #include <rdconfig.h>
 #include <rdstation.h>
 
-#include "caedriver.h"
+#include "driver.h"
 #include "cae_server.h"
 
 #ifndef HAVE_SRC_CONV
@@ -136,9 +136,9 @@ class MainObject : public QObject
   void SendMeterOutputStatusUpdate();
   void SendMeterOutputStatusUpdate(int card,int port,int stream);
   void SendMeterUpdate(const QString &msg,int conn_id);
-  CaeDriver *GetDriver(unsigned card) const;
+  Driver *GetDriver(unsigned card) const;
   void MakeDriver(unsigned *next_card,RDStation::AudioDriver type);
-  QList<CaeDriver *> d_drivers;
+  QList<Driver *> d_drivers;
   bool debug;
   unsigned system_sample_rate;
   CaeServer *cae_server;

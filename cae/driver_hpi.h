@@ -1,6 +1,6 @@
-// jackdriver.h
+// driver_hpi.h
 //
-// caed(8) driver for Advanced Linux Audio Architecture devices
+// caed(8) driver for AudioScience HPI audio devices.
 //
 //   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,31 +18,28 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef JACKDRIVER_H
-#define JACKDRIVER_H
-
-#include <QProcess>
-
-#include <soundtouch/SoundTouch.h>
+#ifndef DRIVER_HPI_H
+#define DRIVER_HPI_H
 
 #include <rdconfig.h>
-#include <rdmeteraverage.h>
-#include <rdwavefile.h>
 
-#include "caedriver.h"
+#include "driver.h"
 
-#ifdef JACK
-#include <jack/jack.h>
-#endif  // JACK
+#ifdef HPI
+#include <rdhpisoundcard.h>
+#include <rdhpiplaystream.h>
+#include <rdhpirecordstream.h>
+#endif  // HPI
 
-class JackDriver : public CaeDriver
+class DriverHpi : public Driver
 {
   Q_OBJECT
  public:
-  JackDriver(QObject *parent=0);
-  ~JackDriver();
+  DriverHpi(QObject *parent=0);
+  ~DriverHpi();
   QString version() const;
   bool initialize(unsigned *next_cardnum);
+  void updateMeters();
   bool loadPlayback(int card,QString wavename,int *stream);
   bool unloadPlayback(int card,int stream);
   bool playbackPosition(int card,int stream,unsigned pos);
@@ -74,54 +71,13 @@ class JackDriver : public CaeDriver
 				   int level);
   void getOutputPosition(int card,unsigned *pos);
 
- public slots:
-  void processBuffers();
-
- private slots:
-  void stopTimerData(int stream);
-  void fadeTimerData(int stream);
-  void recordTimerData(int stream);
-  void clientStartData();
-
  private:
-  int GetJackOutputStream();
-  void FreeJackOutputStream(int stream);
-  void EmptyJackInputStream(int stream,bool done);
-#ifdef JACK
-  void WriteJackBuffer(int stream,jack_default_audio_sample_t *buffer,
-		       unsigned len,bool done);
-#endif  // JACK
-  void FillJackOutputStream(int stream);
-  void JackClock();
-  void JackSessionSetup();
-  bool jack_connected;
-  bool jack_activated;
-#ifdef JACK
-  int jack_card;
-  QList<QProcess *> jack_clients;
-  RDWaveFile *jack_record_wave[RD_MAX_STREAMS];
-  RDWaveFile *jack_play_wave[RD_MAX_STREAMS];
-  short *jack_wave_buffer;
-  int *jack_wave32_buffer;
-  uint8_t *jack_wave24_buffer;
-  jack_default_audio_sample_t *jack_sample_buffer;
-  soundtouch::SoundTouch *jack_st_conv[RD_MAX_STREAMS];
-  short jack_input_volume_db[RD_MAX_STREAMS];
-  short jack_output_volume_db[RD_MAX_PORTS][RD_MAX_STREAMS];
-  short jack_passthrough_volume_db[RD_MAX_PORTS][RD_MAX_PORTS];
-  short jack_fade_volume_db[RD_MAX_STREAMS];
-  short jack_fade_increment[RD_MAX_STREAMS];
-  int jack_fade_port[RD_MAX_STREAMS];
-  bool jack_fade_up[RD_MAX_STREAMS];
-  QTimer *jack_fade_timer[RD_MAX_STREAMS];
-  QTimer *jack_stop_timer[RD_MAX_STREAMS];
-  QTimer *jack_record_timer[RD_MAX_PORTS];
-  QTimer *jack_client_start_timer;
-  int jack_offset[RD_MAX_STREAMS];
-  int jack_clock_phase;
-  unsigned jack_samples_recorded[RD_MAX_STREAMS];
-#endif  // JACK
+#ifdef HPI
+  RDHPISoundCard *d_sound_card;
+  RDHPIRecordStream *d_record_streams[RD_MAX_CARDS][RD_MAX_STREAMS];
+  RDHPIPlayStream *d_play_streams[RD_MAX_CARDS][RD_MAX_STREAMS];
+#endif  // HPI
 };
 
 
-#endif  // JACKDRIVER_H
+#endif  // DRIVER_HPI_H
