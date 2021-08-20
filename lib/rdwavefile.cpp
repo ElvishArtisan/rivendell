@@ -962,11 +962,13 @@ unsigned RDWaveFile::getDataLength() const
 
 int RDWaveFile::readWave(void *buf,int count)
 {
-  int stream;
-  int n;
   unsigned int pos;
   int c = 0;
+#ifdef HAVE_VORBIS
+  int stream;
+  int n;
   int16_t *sample;
+#endif  // HAVE_VORBIS
 
   switch(wave_type) {
       case RDWaveFile::Ogg:
@@ -1307,11 +1309,11 @@ void RDWaveFile::getSettings(RDSettings *settings)
   case RDWaveFile::Ogg:
     settings->setFormat(RDSettings::OggVorbis);
     break;
-#ifdef HAVE_FLAC
   case RDWaveFile::Flac:
+#ifdef HAVE_FLAC
     settings->setFormat(RDSettings::Flac);
-    break;
 #endif  // HAVE_FLAC
+    break;
   }
   settings->setChannels(getChannels());
   settings->setSampleRate(getSamplesPerSec());

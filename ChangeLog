@@ -22320,3 +22320,6 @@
 	* Removed vestigal JACK dependencies from the core caed(8) code.
 2021-08-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke the build with ALSA support disabled.
+2021-08-20 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up warnings in 'lib/rdwavefile.cpp' when building
+	with OggVorbis support disabled.
