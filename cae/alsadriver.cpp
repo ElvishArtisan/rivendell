@@ -649,7 +649,12 @@ AlsaDriver::~AlsaDriver()
 
 QString AlsaDriver::version() const
 {
+#ifdef ALSA
+  return 
+    QString().sprintf("%d.%d.%d",SND_LIB_MAJOR,SND_LIB_MINOR,SND_LIB_SUBMINOR);
+#else
   return QString();
+#endif  // ALSA
 }
 
 
@@ -660,7 +665,7 @@ bool AlsaDriver::initialize(unsigned *next_cardnum)
   snd_pcm_t *pcm_capture_handle;
   snd_ctl_t *snd_ctl;
   snd_ctl_card_info_t *card_info=NULL;
-  bool pcm_opened;
+  bool pcm_opened=false;
   int card=0;
 
   //
@@ -684,6 +689,9 @@ bool AlsaDriver::initialize(unsigned *next_cardnum)
       if(!AlsaStartCaptureDevice(dev,*next_cardnum,pcm_capture_handle)) {
 	snd_pcm_close(pcm_capture_handle);
       }
+    }
+    if(!pcm_opened) {
+      return card>0;
     }
     rda->station()->setCardDriver(*next_cardnum,RDStation::Alsa);
     if(snd_ctl_open(&snd_ctl,dev.toUtf8(),0)<0) {
@@ -1310,7 +1318,6 @@ void AlsaDriver::processBuffers()
 	  alsa_stopping[i][j]=false;
 	  alsa_eof[i][j]=false;
 	  alsa_playing[i][j]=false;
-	  printf("stop card: %d  stream: %d\n",i,j);
 	  statePlayUpdate(i,j,2);
 	}
 	if(alsa_playing[i][j]) {
@@ -1907,7 +1914,6 @@ void AlsaDriver::AlsaClock()
 	  alsa_stopping[i][j]=false;
 	  alsa_eof[i][j]=false;
 	  alsa_playing[i][j]=false;
-	  printf("stop card: %d  stream: %d\n",i,j);
 	  statePlayUpdate(i,j,2);
 	}
 	if(alsa_playing[i][j]) {

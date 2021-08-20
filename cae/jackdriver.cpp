@@ -438,7 +438,11 @@ JackDriver::~JackDriver()
 
 QString JackDriver::version() const
 {
+#ifdef JACK
+  return QString(jack_get_version_string());
+#else
   return QString();
+#endif  // JACK
 }
 
 

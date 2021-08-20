@@ -33,7 +33,6 @@ dist_caed_SOURCES = alsadriver.cpp alsadriver.h\
                     cae.cpp cae.h\
                     cae_server.cpp cae_server.h\
                     caedriver.cpp caedriver.h\
-                    caedriverfactory.cpp caedriverfactory.h\
                     hpidriver.cpp hpidriver.h\
                     jackdriver.cpp jackdriver.h
 

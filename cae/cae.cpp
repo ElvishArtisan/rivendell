@@ -45,8 +45,10 @@
 #include <rdsvc.h>
 #include <rdsystem.h>
 
-#include "caedriverfactory.h"
+#include "alsadriver.h"
 #include "cae.h"
+#include "hpidriver.h"
+#include "jackdriver.h"
 
 volatile bool exiting=false;
 #ifdef JACK
@@ -123,7 +125,6 @@ MainObject::MainObject(QObject *parent)
   next_play_handle=0;
 
   for(int i=0;i<RD_MAX_CARDS;i++) {
-    cae_driver[i]=RDStation::None;
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       record_length[i][j]=0;
       record_threshold[i][j]=-10000;
@@ -240,60 +241,16 @@ MainObject::MainObject(QObject *parent)
   //
   InitProvisioning();
 
+
   //
   // Audio Driver Backend
   //
   system_sample_rate=rda->system()->sampleRate();
-  //  hpiInit(cae_station);
-  //  alsaInit(cae_station);
-  //  jackInit(cae_station);
-  ClearDriverEntries(rda->station());
+  ClearDriverEntries();
   unsigned next_card=0;
-
-  //
-  // HPI Devices
-  //
-  CaeDriver *dvr=CaeDriverFactory(RDStation::Hpi,this);
-  if(dvr->initialize(&next_card)) {
-    connect(dvr,SIGNAL(playStateChanged(int,int,int)),
-	    this,SLOT(statePlayUpdate(int,int,int)));
-    connect(dvr,SIGNAL(recordStateChanged(int,int,int)),
-	    this,SLOT(stateRecordUpdate(int,int,int)));
-    d_drivers.push_back(dvr);
-  }
-  else {
-    delete dvr;
-  }
-
-  //
-  // ALSA Devices
-  //
-  dvr=CaeDriverFactory(RDStation::Alsa,this);
-  if(dvr->initialize(&next_card)) {
-    connect(dvr,SIGNAL(playStateChanged(int,int,int)),
-	    this,SLOT(statePlayUpdate(int,int,int)));
-    connect(dvr,SIGNAL(recordStateChanged(int,int,int)),
-	    this,SLOT(stateRecordUpdate(int,int,int)));
-    d_drivers.push_back(dvr);
-  }
-  else {
-    delete dvr;
-  }
-
-  //
-  // JACK Devices
-  //
-  dvr=CaeDriverFactory(RDStation::Jack,this);
-  if(dvr->initialize(&next_card)) {
-    connect(dvr,SIGNAL(playStateChanged(int,int,int)),
-	    this,SLOT(statePlayUpdate(int,int,int)));
-    connect(dvr,SIGNAL(recordStateChanged(int,int,int)),
-	    this,SLOT(stateRecordUpdate(int,int,int)));
-    d_drivers.push_back(dvr);
-  }
-  else {
-    delete dvr;
-  }
+  MakeDriver(&next_card,RDStation::Hpi);
+  MakeDriver(&next_card,RDStation::Alsa);
+  MakeDriver(&next_card,RDStation::Jack);
 
   //
   // Probe Capabilities
@@ -329,28 +286,6 @@ MainObject::MainObject(QObject *parent)
   if(jack_client!=NULL) {
     pthread_getschedparam(jack_client_thread_id(jack_client),&sched_policy,
 			  &sched_params);
-    /*
-#ifdef ALSA
-    for(int i=0;i<RD_MAX_CARDS;i++) {
-      if(cae_driver[i]==RDStation::Alsa) {
-	if (!alsa_play_format[i].exiting) {
-	  int r = pthread_setschedparam(alsa_play_format[i].thread,sched_policy,
-					&sched_params);
-	  if (r) {
-	    result = r;
-	  }	
-	}
-	if (!alsa_capture_format[i].exiting) {
-	  int r = pthread_setschedparam(alsa_capture_format[i].thread,sched_policy,
-					&sched_params);
-	  if (r) {
-	    result = r;
-	  }
-	}
-      }
-    }
-#endif  // ALSA
-    */
     jack_running=true;
   }
 #endif  // JACK
@@ -359,28 +294,6 @@ MainObject::MainObject(QObject *parent)
       sched_params.sched_priority=rda->config()->realtimePriority();
     }
     sched_policy=SCHED_FIFO;
-    /*
-#ifdef ALSA
-    for(int i=0;i<RD_MAX_CARDS;i++) {
-      if(cae_driver[i]==RDStation::Alsa) {
-	if (!alsa_play_format[i].exiting) {
-	  int r = pthread_setschedparam(alsa_play_format[i].thread,sched_policy,
-					&sched_params);
-	  if (r) {
-	    result = r;
-	  }
-	}
-	if (!alsa_capture_format[i].exiting) {
-	  int r = pthread_setschedparam(alsa_capture_format[i].thread,sched_policy,
-					&sched_params);
-	  if (r) {
-	    result = r;
-	  }
-	}
-      }
-    }
-#endif  // ALSA
-    */
     if(sched_params.sched_priority>sched_get_priority_min(sched_policy)) {
       sched_params.sched_priority--;
     }
@@ -1165,11 +1078,6 @@ void MainObject::updateMeters()
   unsigned positions[RD_MAX_STREAMS];
 
   if(exiting) {
-    /*
-    jackFree();
-    alsaFree();
-    hpiFree();
-    */
     for(int i=0;i<d_drivers.size();i++) {
       delete d_drivers.at(i);
     }
@@ -1212,85 +1120,6 @@ void MainObject::updateMeters()
 	}      
       }
     }
-    /*
-    switch(cae_driver[i]) {
-    case RDStation::Hpi:
-      for(int j=0;j<RD_MAX_PORTS;j++) {
-	if(hpiGetInputStatus(i,j)!=port_status[i][j]) {
-	  port_status[i][j]=hpiGetInputStatus(i,j);
-	  if(port_status[i][j]) {
-	    cae_server->sendCommand(QString().sprintf("IS %d %d 0!",i,j));
-	  }
-	  else {
-	    cae_server->sendCommand(QString().sprintf("IS %d %d 1!",i,j));
-	  }
-	}
-	if(hpiGetInputMeters(i,j,levels)) {
-	  SendMeterLevelUpdate("I",i,j,levels);
-	}
-	if(hpiGetOutputMeters(i,j,levels)) {
-	  SendMeterLevelUpdate("O",i,j,levels);
-	}      
-      }
-      hpiGetOutputPosition(i,positions);
-      SendMeterPositionUpdate(i,positions);
-      for(int j=0;j<RD_MAX_STREAMS;j++) {
-	if(hpiGetStreamOutputMeters(i,j,levels)) {
-	  SendStreamMeterLevelUpdate(i,j,levels);
-	}      
-      }
-      break;
-
-    case RDStation::Jack:
-      for(int j=0;j<RD_MAX_PORTS;j++) {
-	if(jackGetInputStatus(i,j)!=port_status[i][j]) {
-	  port_status[i][j]=!port_status[i][j];
-	  cae_server->sendCommand(QString().sprintf("IS %d %d %d",i,j,
-						    port_status[i][j]));
-	}
-	if(jackGetInputMeters(i,j,levels)) {
-	  SendMeterLevelUpdate("I",i,j,levels);
-	}
-	if(jackGetOutputMeters(i,j,levels)) {
-	  SendMeterLevelUpdate("O",i,j,levels);
-	}
-      }
-      jackGetOutputPosition(i,positions);
-      SendMeterPositionUpdate(i,positions);
-      for(int j=0;j<RD_MAX_STREAMS;j++) {
-	if(jackGetStreamOutputMeters(i,j,levels)) {
-	  SendStreamMeterLevelUpdate(i,j,levels);
-	}      
-      }
-      break;
-
-    case RDStation::Alsa:
-      for(int j=0;j<RD_MAX_PORTS;j++) {
-	if(alsaGetInputStatus(i,j)!=port_status[i][j]) {
-	  port_status[i][j]=!port_status[i][j];
-	  cae_server->sendCommand(QString().sprintf("IS %d %d %d",i,j,
-						    port_status[i][j]));
-	}
-	if(alsaGetInputMeters(i,j,levels)) {
-	  SendMeterLevelUpdate("I",i,j,levels);
-	}
-	if(alsaGetOutputMeters(i,j,levels)) {
-	  SendMeterLevelUpdate("O",i,j,levels);
-	}
-      }
-      alsaGetOutputPosition(i,positions);
-      SendMeterPositionUpdate(i,positions);
-      for(int j=0;j<RD_MAX_STREAMS;j++) {
-	if(alsaGetStreamOutputMeters(i,j,levels)) {
-	  SendStreamMeterLevelUpdate(i,j,levels);
-	}      
-      }
-      break;
-
-    case RDStation::None:
-      break;
-    }
-    */
   }
 }
 
@@ -1512,43 +1341,16 @@ void MainObject::ProbeCaps(RDStation *station)
   // MP4 Decoder
   //
   station->setHaveCapability(RDStation::HaveMp4Decode,CheckMp4Decode());
-
-  /*
-#ifdef HPI
-  station->setDriverVersion(RDStation::Hpi,hpiVersion());
-#else
-  station->setDriverVersion(RDStation::Hpi,"[not enabled]");
-#endif  // HPI
-#ifdef JACK
-  //
-  // FIXME: How can we detect the current JACK version?
-  //
-  station->setDriverVersion(RDStation::Jack,"Generic");
-#else
-  station->setDriverVersion(RDStation::Jack,"");
-#endif  // JACK
-#ifdef ALSA
-  station->setDriverVersion(RDStation::Alsa,
-			    QString().sprintf("%d.%d.%d",
-					      SND_LIB_MAJOR,
-					      SND_LIB_MINOR,
-					      SND_LIB_SUBMINOR));
-#else
-  station->setDriverVersion(RDStation::Alsa,"");
-#endif  // ALSA
-  */
 }
 
 
-void MainObject::ClearDriverEntries(RDStation *station)
+void MainObject::ClearDriverEntries() const
 {
   for(int i=0;i<RD_MAX_CARDS;i++) {
-    if(cae_driver[i]==RDStation::None) {
-      station->setCardDriver(i,RDStation::None);
-      station->setCardName(i,"");
-      station->setCardInputs(i,-1);
-      station->setCardOutputs(i,-1);
-    }
+    rda->station()->setCardDriver(i,RDStation::None);
+    rda->station()->setCardName(i,"");
+    rda->station()->setCardInputs(i,-1);
+    rda->station()->setCardOutputs(i,-1);
   }
 }
 
@@ -1784,7 +1586,7 @@ void MainObject::SendMeterOutputStatusUpdate()
   QList<int> ids=cae_server->connectionIds();
 
   for(unsigned i=0;i<RD_MAX_CARDS;i++) {
-    if(cae_driver[i]!=RDStation::None) {
+    if(GetDriver(i)!=NULL) {
       for(unsigned j=0;j<RD_MAX_PORTS;j++) {
 	for(unsigned k=0;k<RD_MAX_STREAMS;k++) {
 	  for(int l=0;l<ids.size();l++) {
@@ -1829,6 +1631,56 @@ CaeDriver *MainObject::GetDriver(unsigned card) const
     }
   }
   return NULL;
+}
+
+
+void MainObject::MakeDriver(unsigned *next_card,RDStation::AudioDriver type)
+{
+  CaeDriver *dvr=NULL;
+
+  switch(type) {
+  case RDStation::Hpi:
+#ifdef HPI
+    dvr=new HpiDriver(this);
+    rda->station()->setDriverVersion(RDStation::Hpi,"v"+dvr->version());
+#else
+    rda->station()->setDriverVersion(RDStation::Hpi,"[not enabled]");
+#endif  // HPI
+    break;
+
+  case RDStation::Alsa:
+#ifdef ALSA
+    dvr=new AlsaDriver(this);
+    rda->station()->setDriverVersion(RDStation::Alsa,"v"+dvr->version());
+#else
+    rda->station()->setDriverVersion(RDStation::Alsa,"[not enabled]");
+#endif  // ALSA
+    break;
+
+  case RDStation::Jack:
+#ifdef JACK
+    dvr=new JackDriver(this);
+    rda->station()->setDriverVersion(RDStation::Jack,"v"+dvr->version());
+#else
+    rda->station()->setDriverVersion(RDStation::Jack,"[not enabled]");
+#endif  // JACK
+    break;
+
+  case RDStation::None:
+    break;
+  }
+  if(dvr!=NULL) {
+    if(dvr->initialize(next_card)) {
+      connect(dvr,SIGNAL(playStateChanged(int,int,int)),
+	      this,SLOT(statePlayUpdate(int,int,int)));
+      connect(dvr,SIGNAL(recordStateChanged(int,int,int)),
+	      this,SLOT(stateRecordUpdate(int,int,int)));
+      d_drivers.push_back(dvr);
+    }
+    else {
+      delete dvr;
+    }
+  }
 }
 
 
