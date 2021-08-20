@@ -51,11 +51,6 @@
 #include "driver_jack.h"
 
 volatile bool exiting=false;
-#ifdef JACK
-extern jack_client_t *jack_client;
-#endif  // JACK
-
-#define PRINT_COMMANDS
 
 #ifndef HAVE_SRC_CONV
 void src_int_to_float_array (const int *in, float *out, int len)
@@ -144,9 +139,6 @@ MainObject::MainObject(QObject *parent)
 #endif  // HAVE_MAD
     }
   }
-#ifdef JACK
-  jack_client=NULL;
-#endif  // JACK
 
   //
   // Server Front End
@@ -282,13 +274,6 @@ MainObject::MainObject(QObject *parent)
   struct sched_param sched_params;
   int result = 0;
   memset(&sched_params,0,sizeof(struct sched_param));
-#ifdef JACK
-  if(jack_client!=NULL) {
-    pthread_getschedparam(jack_client_thread_id(jack_client),&sched_policy,
-			  &sched_params);
-    jack_running=true;
-  }
-#endif  // JACK
   if(rda->config()->useRealtime()) {
     if(!jack_running) {
       sched_params.sched_priority=rda->config()->realtimePriority();

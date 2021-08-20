@@ -22316,3 +22316,5 @@
 	* Cleaned up code in 'cae/'.
 2021-08-20 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed audio driver components in caed(8).
+2021-08-20 Fred Gleason <fredg@paravelsystems.com>
+	* Removed vestigal JACK dependencies from the core caed(8) code.

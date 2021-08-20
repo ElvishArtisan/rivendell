@@ -34,10 +34,6 @@
 
 #include <rdwavefile.h>
 
-#ifdef JACK
-#include <jack/jack.h>
-#endif  // JACK
-
 #ifdef HAVE_TWOLAME
 #include <twolame.h>
 #endif  // HAVE_TWOLAME
@@ -56,11 +52,6 @@
 void src_int_to_float_array (const int *in, float *out, int len);
 void src_float_to_int_array (const float *in, int *out, int len);
 #endif  // HAVE_SRC_CONV
-
-//
-// Debug Options
-//
-//#define PRINT_COMMANDS
 
 //
 // Global CAE Definitions
