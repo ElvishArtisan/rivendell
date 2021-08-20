@@ -1629,7 +1629,7 @@ void MainObject::MakeDriver(unsigned *next_card,RDStation::AudioDriver type)
     dvr=new DriverHpi(this);
     rda->station()->setDriverVersion(RDStation::Hpi,"v"+dvr->version());
 #else
-    rda->station()->setDriverVersion(RDStation::Hpi,"[not enabled]");
+    rda->station()->setDriverVersion(RDStation::Hpi,"not enabled");
 #endif  // HPI
     break;
 
@@ -1638,7 +1638,7 @@ void MainObject::MakeDriver(unsigned *next_card,RDStation::AudioDriver type)
     dvr=new DriverAlsa(this);
     rda->station()->setDriverVersion(RDStation::Alsa,"v"+dvr->version());
 #else
-    rda->station()->setDriverVersion(RDStation::Alsa,"[not enabled]");
+    rda->station()->setDriverVersion(RDStation::Alsa,"not enabled");
 #endif  // ALSA
     break;
 
@@ -1647,7 +1647,7 @@ void MainObject::MakeDriver(unsigned *next_card,RDStation::AudioDriver type)
     dvr=new DriverJack(this);
     rda->station()->setDriverVersion(RDStation::Jack,"v"+dvr->version());
 #else
-    rda->station()->setDriverVersion(RDStation::Jack,"[not enabled]");
+    rda->station()->setDriverVersion(RDStation::Jack,"not enabled");
 #endif  // JACK
     break;
 

@@ -660,6 +660,7 @@ QString DriverAlsa::version() const
 
 bool DriverAlsa::initialize(unsigned *next_cardnum)
 {
+#ifdef ALSA
   QString dev;
   snd_pcm_t *pcm_play_handle;
   snd_pcm_t *pcm_capture_handle;
@@ -723,6 +724,9 @@ bool DriverAlsa::initialize(unsigned *next_cardnum)
     (*next_cardnum)++;
   }
   return card>0;
+#else
+  return false;
+#endif  // ALSA
 }
 
 
@@ -1904,9 +1908,9 @@ void DriverAlsa::FillAlsaOutputStream(int card,int stream)
 #endif  // ALSA
 
 
+#ifdef ALSA
 void DriverAlsa::AlsaClock()
 {
-#ifdef ALSA
   for(int i=0;i<RD_MAX_CARDS;i++) {
     if(hasCard(i)) {
       for(int j=0;j<RD_MAX_STREAMS;j++) {
@@ -1927,5 +1931,5 @@ void DriverAlsa::AlsaClock()
       }
     }
   }
-#endif  // ALSA
 }
+#endif  // ALSA

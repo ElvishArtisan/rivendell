@@ -22318,3 +22318,5 @@
 	* Renamed audio driver components in caed(8).
 2021-08-20 Fred Gleason <fredg@paravelsystems.com>
 	* Removed vestigal JACK dependencies from the core caed(8) code.
+2021-08-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that broke the build with ALSA support disabled.
