@@ -30,6 +30,18 @@ RDSystem::RDSystem()
 }
 
 
+QString RDSystem::realmName() const
+{
+  return GetValue("REALM_NAME").toString();
+}
+
+
+void RDSystem::setRealmName(const QString &str) const
+{
+  SetRow("REALM_NAME",str);
+}
+
+
 unsigned RDSystem::sampleRate() const
 {
   return GetValue("SAMPLE_RATE").toUInt();
@@ -244,6 +256,7 @@ void RDSystem::setShowTwelveHourTime(bool state) const
 QString RDSystem::xml() const
 {
   QString xml="<systemSettings>\n";
+  xml+=RDXmlField("realmName",realmName());
   xml+=RDXmlField("sampleRate",sampleRate());
   xml+=RDXmlField("duplicateTitles",allowDuplicateCartTitles());
   xml+=RDXmlField("fixDuplicateTitles",fixDuplicateCartTitles());

@@ -28,6 +28,8 @@ class RDSystem
 {
  public:
   RDSystem();
+  QString realmName() const;
+  void setRealmName(const QString &str) const;
   unsigned sampleRate() const;
   void setSampleRate(unsigned rate) const;
   bool allowDuplicateCartTitles() const;

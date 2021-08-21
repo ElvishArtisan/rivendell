@@ -2,6 +2,7 @@
  *
  * Header for the List System Settings Rivendell Access Library
  *
+ * (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
  * (C) Copyright 2017 Todd Baker  <bakert@rfa.org>
  *
  *   This program is free software; you can redistribute it and/or modify
@@ -22,6 +23,7 @@
 #define RD_LISTSYSTEMSETTINGS_H
 
 struct rd_system_settings {
+  char realm_name[257];
   unsigned sample_rate;
   int dup_cart_titles;
   unsigned max_post_length;

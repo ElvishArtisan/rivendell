@@ -22326,3 +22326,12 @@
 2021-08-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that broke searching for carts by
 	Scheduler Code.
+2021-08-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SYSTEM.REALM_NAME' field to the database.
+	* Incremented the database version to 353.
+	* Added 'RDSystem::realmName()' and 'RDSystem::setREalmName()'
+	methods.
+	* Added a 'realm_name' member to the 'rd_system_settings' struct
+	in the RivWebCApi library.
+	* Added a 'Realm Name' control to the 'System-Wide Settings'
+	dialog in rdadmin(1).

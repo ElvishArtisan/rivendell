@@ -98,11 +98,18 @@ int main(int argc,char *argv[])
   // List the Results
   //
   for(i=0;i<numrecs;i++) {
-    printf("           System Sample Rate : %u\n",system_settings[i].sample_rate);
-    printf("  Allow Duplicate Cart Titles : %d\n",system_settings[i].dup_cart_titles);
-    printf("    ISCI Cross Reference_Path : %s\n",system_settings[i].isci_xreference_path);
-    printf("   Maximum Remote Post Length : %u\n",system_settings[i].max_post_length);
-    printf("         Temporary Cart Group : %s\n",system_settings[i].temp_cart_group);
+    printf("                   Realm Name : %s\n",
+	   system_settings[i].realm_name);
+    printf("           System Sample Rate : %u\n",
+	   system_settings[i].sample_rate);
+    printf("  Allow Duplicate Cart Titles : %d\n",
+	   system_settings[i].dup_cart_titles);
+    printf("    ISCI Cross Reference_Path : %s\n",
+	   system_settings[i].isci_xreference_path);
+    printf("   Maximum Remote Post Length : %u\n",
+	   system_settings[i].max_post_length);
+    printf("         Temporary Cart Group : %s\n",
+	   system_settings[i].temp_cart_group);
     printf("\n");
 
   }
@@ -193,11 +200,18 @@ int main(int argc,char *argv[])
   // List the Results
   //
   for(i=0;i<numrecs;i++) {
-    printf("           System Sample Rate : %u\n",system_settings[i].sample_rate);
-    printf("  Allow Duplicate Cart Titles : %d\n",system_settings[i].dup_cart_titles);
-    printf("    ISCI Cross Reference_Path : %s\n",system_settings[i].isci_xreference_path);
-    printf("   Maximum Remote Post Length : %u\n",system_settings[i].max_post_length);
-    printf("         Temporary Cart Group : %s\n",system_settings[i].temp_cart_group);
+    printf("                   Realm Name : %s\n",
+	   system_settings[i].realm_name);
+    printf("           System Sample Rate : %u\n",
+	   system_settings[i].sample_rate);
+    printf("  Allow Duplicate Cart Titles : %d\n",
+	   system_settings[i].dup_cart_titles);
+    printf("    ISCI Cross Reference_Path : %s\n",
+	   system_settings[i].isci_xreference_path);
+    printf("   Maximum Remote Post Length : %u\n",
+	   system_settings[i].max_post_length);
+    printf("         Temporary Cart Group : %s\n",
+	   system_settings[i].temp_cart_group);
     printf("\n");
 
   }

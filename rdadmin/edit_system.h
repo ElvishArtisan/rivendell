@@ -63,6 +63,8 @@ class EditSystem : public RDDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
+  QLabel *edit_realm_name_label;
+  QLineEdit *edit_realm_name_edit;
   QLabel *edit_sample_rate_label;
   QComboBox *edit_sample_rate_box;
   QLabel *edit_sample_rate_unit_label;

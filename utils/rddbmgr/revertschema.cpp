@@ -41,6 +41,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 353
+  //
+  if((cur_schema==353)&&(set_schema<cur_schema)) {
+    DropColumn("SYSTEM","REALM_NAME");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 352
   //
   if((cur_schema==352)&&(set_schema<cur_schema)) {

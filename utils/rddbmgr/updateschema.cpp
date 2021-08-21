@@ -10867,6 +10867,28 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<353)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `SYSTEM` ")+
+      "add column `REALM_NAME` varchar(64) after `ID`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    srand(time(NULL));
+    sql=QString("update `SYSTEM` set ")+
+      "`REALM_NAME`='"+
+      RDEscapeString(QString().sprintf("Rivendell_%d",rand()))+"'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `SYSTEM` ")+
+      "modify column `REALM_NAME` varchar(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

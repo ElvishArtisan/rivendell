@@ -5,6 +5,7 @@ The SYSTEM table contains system-wide settings.
 FIELD NAME            TYPE               REMARKS
 ---------------------------------------------------------------
 ID                    int(11)            Auto increment, primary key
+REALM_NAME            varchar(64)
 SAMPLE_RATE           int(10) unsigned
 DUP_CART_TITLE        enum('N','Y')
 FIX_DUP_CART_TITLES   enum('N','Y')

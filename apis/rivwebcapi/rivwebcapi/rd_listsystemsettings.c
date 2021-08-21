@@ -63,6 +63,9 @@ static void XMLCALL __ListSystemSettingsElementEnd(void *data, const char *el)
   struct xml_data *xml_data=(struct xml_data *)data;
   struct rd_system_settings *system_settings=xml_data->system_settings;
 
+  if(strcasecmp(el,"realmName")==0){
+    strlcpy(system_settings->realm_name,xml_data->strbuf,256);
+  }
   if(strcasecmp(el,"sampleRate")==0) {
     sscanf(xml_data->strbuf,"%u",&system_settings->sample_rate);
   }
