@@ -92,7 +92,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,bool user_is_admin,
   d_codes_label->setFont(labelFont());
   d_codes_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(d_codes_box,SIGNAL(activated(const QString &)),
-	  this,SLOT(groupChangedData(const QString &)));
+	  this,SLOT(schedulerCodeChangedData(const QString &)));
 
   //
   // Results Counter
@@ -202,10 +202,21 @@ QSizePolicy RDCartFilter::sizePolicy() const
 QString RDCartFilter::filterSql(const QStringList &and_fields) const
 {
   QString sql=" where ";
+
+  //
+  // Cart Type Filter
+  //
   sql+=RDCartFilter::typeFilter(d_showaudio_check->isChecked(),
 				d_showmacro_check->isChecked(),
 				d_show_cart_type);
+  //
+  // Full Text Filter
+  //
   sql+=RDCartFilter::phraseFilter(d_filter_edit->text().trimmed(),true);
+
+  //
+  // Group Filter
+  //
   QStringList groups;
   for(int i=0;i<d_group_box->count();i++) {
     if(d_group_box->itemText(i)!=tr("ALL")) {
@@ -222,7 +233,20 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   else {
     sql+="`CART`.`OWNER` is null ";
   }
+
+  //
+  // Schedule Code Filter
+  //
+  if(d_codes_box->currentText()!=tr("ALL")) {
+    sql+="&&(`CART_SCHED_CODES`.`SCHED_CODE`='"+
+      RDEscapeString(d_codes_box->currentText())+"') ";
+  }
+
   sql+="order by `CART`.`NUMBER` ";
+
+  //
+  // Return Size Limit
+  //
   if(d_showmatches_box->isChecked()) {
     sql+=QString().sprintf("limit %d ",RD_LIMITED_CART_SEARCH_QUANTITY);
   }
@@ -449,6 +473,12 @@ void RDCartFilter::groupChangedData(const QString &str)
   if(str!=tr("ALL")) {
     emit selectedGroupChanged(str);
   }
+  filterChangedData("");
+}
+
+
+void RDCartFilter::schedulerCodeChangedData(const QString &str)
+{
   filterChangedData("");
 }
 

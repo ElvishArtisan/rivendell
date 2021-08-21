@@ -79,6 +79,7 @@ class RDCartFilter : public RDWidget
   void searchClickedData();
   void clearClickedData();
   void groupChangedData(const QString &str);
+  void schedulerCodeChangedData(const QString &str);
   void checkChangedData(int n);
   void dragsChangedData(int n);
   void searchLimitChangedData(int state);
