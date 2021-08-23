@@ -181,6 +181,7 @@
   </para>
   <programlisting>
     struct rd_system_settings {
+         char realm_name[257];
          unsigned sample_rate;
          int dup_cart_titles;
          unsigned max_post_length;

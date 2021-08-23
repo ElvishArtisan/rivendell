@@ -22335,3 +22335,6 @@
 	in the RivWebCApi library.
 	* Added a 'Realm Name' control to the 'System-Wide Settings'
 	dialog in rdadmin(1).
+2021-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the 'realm_name' member of the 'rd_system_settings'
+	struct in the rd_listsystemsettings(7) man page.
