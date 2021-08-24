@@ -388,6 +388,9 @@ QModelIndex ImportCartsModel::processCartDrop(int line,RDLogLine *ll)
 {
   int prev_len=totalLength();
 
+  if(line<0) {
+    line=lineCount();
+  }
   if(ll->cartNumber()==0) {  // Remove line
     if(line>=lineCount()) {  // Don't remove the end marker!
       return QModelIndex();
