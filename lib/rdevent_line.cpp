@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,6 +21,7 @@
 #include <qobject.h>
 #include <q3textstream.h>
 
+#include "rdapplication.h"
 #include "rdconf.h"
 #include "rdcart.h"
 #include "rddb.h"
@@ -948,7 +949,9 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
   //
   // Insert Parent Link
   //
-  if(log->includeImportMarkers()) {
+  if(log->includeImportMarkers()&&
+     !(rda->config()->suppressMusicImportLinks()&&
+       (event_import_source==RDEventLine::Music))) {
     e->insert(e->size(),1);
     logline=new RDLogLine();
     *logline=*link_logline;

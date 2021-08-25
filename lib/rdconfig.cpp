@@ -382,6 +382,12 @@ bool RDConfig::lockRdairplayMemory() const
 }
 
 
+bool RDConfig::suppressMusicImportLinks() const
+{
+  return conf_suppress_music_import_links;
+}
+
+
 int RDConfig::meterBasePort() const
 {
   return conf_meter_base_port;
@@ -600,8 +606,13 @@ bool RDConfig::load()
 
   conf_disable_maint_checks=
     profile->boolValue("Hacks","DisableMaintChecks",false);
+
+  conf_suppress_music_import_links=
+    profile->boolValue("Hacks","SuppressMusicImportLinks",false);
+
   conf_lock_rdairplay_memory=
     profile->boolValue("Hacks","LockRdairplayMemory",false);
+
   conf_meter_base_port=
     profile->intValue("Hacks","MeterPortBaseNumber",RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT);
   conf_meter_port_range=
@@ -728,6 +739,7 @@ void RDConfig::clear()
   conf_jack_ports[0].clear();
   conf_jack_ports[1].clear();
   conf_disable_maint_checks=false;
+  conf_suppress_music_import_links=false;
   conf_lock_rdairplay_memory=false;
   conf_meter_base_port=RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT;
   conf_meter_port_range=RD_METER_SOCKET_PORT_RANGE;

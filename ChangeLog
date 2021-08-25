@@ -20781,3 +20781,6 @@
 	the '--set-string-title=' switch was used.
 2021-07-30 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.2.
+2021-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SuppressMusicImportLinks=' directive to the [Hacks]
+	section of rd.conf(5).

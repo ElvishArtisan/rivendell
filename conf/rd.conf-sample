@@ -176,3 +176,7 @@ TranscodingDelay=0
 ; dropboxes configured. Rivendell imposes a hard limit of 999 on this
 ; setting.
 ; MeterPortRange=100
+
+; Suppress the generation of Music Link Markers in logs, even if the
+; 'Include Import Markers in Finished Logs' box is checked in rdadmin(1).
+; SuppressMusicImportLinks=No
