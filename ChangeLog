@@ -20786,3 +20786,6 @@
 	section of rd.conf(5).
 2021-08-25 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.2int0.
+2021-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for [NowGroups] and [NextGroups] sections in
+	PyPAD script configurations.

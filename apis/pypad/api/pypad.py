@@ -772,6 +772,8 @@ class Receiver(object):
         self.__timer_callback=None
         self.__timer_interval=None
         self.__config_parser=None
+        self.__active_now_groups=[]
+        self.__active_next_groups=[]
 
     def __pypad_Process(self,pad):
         self.__pad_callback(pad)
@@ -850,7 +852,24 @@ class Receiver(object):
             self.__config_parser.read_file(fp)
             fp.close()
 
+        # Build lists of active groups
+        if self.__config_parser.has_section('NowGroups'):
+            self.__active_now_groups=self.__loadGroups('NowGroups')
+        if self.__config_parser.has_section('NextGroups'):
+            self.__active_next_groups=self.__loadGroups('NextGroups')
+
         return self.__config_parser
+
+
+    def __loadGroups(self,section):
+        grp_list=[]
+        grp_num=1
+        line='Group'+str(grp_num)
+        while(self.__config_parser.has_option(section,line)):
+            grp_list.append(self.__config_parser.get(section,line))
+            grp_num=grp_num+1
+            line='Group'+str(grp_num)
+        return grp_list
 
 
     def start(self,hostname,port):
@@ -906,12 +925,13 @@ class Receiver(object):
                     linebytes=line.decode('utf-8','replace')
                     msg+=linebytes
                     if linebytes=='\r\n':
-                        self.__pypad_Process(Update(json.loads(msg),self.__config_parser,rd_config))
+                        jdata=json.loads(msg)
+                        if (not self.__active_now_groups and not self.__active_next_groups) or (jdata['padUpdate'] is not None and jdata['padUpdate']['now'] is not None and jdata['padUpdate']['now']['groupName'] in self.__active_now_groups) or (jdata['padUpdate'] is not None and jdata['padUpdate']['next'] is not None and jdata['padUpdate']['next']['groupName'] in self.__active_next_groups):
+                            self.__pypad_Process(Update(jdata,self.__config_parser,rd_config))
                         msg=""
                     line=bytes()
                 if self.__timer_interval!=None:
                     timeout=(deadline-datetime.datetime.now()).total_seconds()
-
 
 def SigHandler(signo,stack):
     sys.exit(0)
