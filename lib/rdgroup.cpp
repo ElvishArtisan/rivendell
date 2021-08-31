@@ -213,19 +213,6 @@ void RDGroup::setExportReport(ExportType type,bool state) const
 }
 
 
-bool RDGroup::enableNowNext() const
-{
-  return RDBool(RDGetSqlValue("GROUPS","NAME",group_name,"ENABLE_NOW_NEXT").
-		toString());
-}
-
-
-void RDGroup::setEnableNowNext(bool state) const
-{
-  SetRow("ENABLE_NOW_NEXT",RDYesNo(state));
-}
-
-
 QColor RDGroup::color() const
 {
   return QColor(RDGetSqlValue("GROUPS","NAME",group_name,"COLOR").
@@ -370,8 +357,7 @@ QString RDGroup::xml() const
     "`ENFORCE_CART_RANGE`,"+  // 06
     "`REPORT_TFC`,"+          // 07
     "`REPORT_MUS`,"+          // 08
-    "`ENABLE_NOW_NEXT`,"+     // 09
-    "`COLOR` "+               // 10
+    "`COLOR` "+               // 09
     "from `GROUPS` where "+
     "`NAME`='"+RDEscapeString(group_name)+"'";
   q=new RDSqlQuery(sql);
@@ -398,8 +384,7 @@ QString RDGroup::xml() const
     ret+="  "+RDXmlField("enforceCartRange",RDBool(q->value(6).toString()));
     ret+="  "+RDXmlField("reportTfc",RDBool(q->value(7).toString()));
     ret+="  "+RDXmlField("reportMus",RDBool(q->value(8).toString()));
-    ret+="  "+RDXmlField("enableNowNext",RDBool(q->value(9).toString()));
-    ret+="  "+RDXmlField("color",q->value(10).toString());
+    ret+="  "+RDXmlField("color",q->value(9).toString());
     ret+="</group>\n";
   }
   delete q;

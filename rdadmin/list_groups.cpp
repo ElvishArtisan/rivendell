@@ -273,7 +273,7 @@ void ListGroups::reportData()
   report+=QString("Generated: ")+
     QDateTime::currentDateTime().toString("MM/dd/yyyy - hh:mm:ss")+"\n";
   report+="\n";
-  report+="-Name----- -Description-------------------------------- -Cart Range---- Enf DefType Mus Tfc N&N\n";
+  report+="-Name----- -Description-------------------------------- -Cart Range---- Enf DefType Mus Tfc\n";
 
   //
   // Generate Body
@@ -286,8 +286,7 @@ void ListGroups::reportData()
     "`ENFORCE_CART_RANGE`,"+  // 04
     "`DEFAULT_CART_TYPE`,"+   // 05
     "`REPORT_MUS`,"+          // 06
-    "`REPORT_TFC`,"+          // 07
-    "`ENABLE_NOW_NEXT` "+     // 08
+    "`REPORT_TFC` "+          // 07
     "from `GROUPS` order by `NAME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -344,11 +343,6 @@ void ListGroups::reportData()
     //
     report+=QString(" ")+q->value(7).toString()+"  ";
     
-    //
-    // Now & Next
-    //
-    report+=QString(" ")+q->value(8).toString();
-
     //
     // End of Line
     //

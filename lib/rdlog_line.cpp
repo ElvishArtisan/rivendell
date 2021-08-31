@@ -198,7 +198,6 @@ void RDLogLine::clear()
   log_ext_annc_type="";
   log_pause_card=-1;
   log_pause_port=-1;
-  log_now_next_enabled=false;
   log_zombified=false;
   log_timescaling_active=false;
   log_play_deck=NULL;
@@ -1591,18 +1590,6 @@ void RDLogLine::setPlayPositionChanged(bool state)
 }
 
 
-bool RDLogLine::nowNextEnabled() const
-{
-  return log_now_next_enabled;
-}
-
-
-void RDLogLine::setNowNextEnabled(bool state)
-{
-  log_now_next_enabled=state;
-}
-
-
 bool RDLogLine::useEventLength() const
 {
   return log_use_event_length;
@@ -2079,14 +2066,13 @@ void RDLogLine::loadCart(int cartnum,int cutnum)
     "`CART`.`END_DATETIME`,"+          // 17
     "`CART`.`ENFORCE_LENGTH`,"+        // 18
     "`CART`.`PRESERVE_PITCH`,"+        // 19
-    "`GROUPS`.`ENABLE_NOW_NEXT`,"+     // 20
-    "`CART`.`ASYNCRONOUS`,"+           // 21
-    "`CART`.`PUBLISHER`,"+             // 22
-    "`CART`.`COMPOSER`,"+              // 23
-    "`CART`.`USAGE_CODE`,"+            // 24
-    "`CART`.`AVERAGE_SEGUE_LENGTH`,"+  // 25
-    "`CART`.`NOTES`,"+                 // 26
-    "`GROUPS`.`COLOR` "+               // 27
+    "`CART`.`ASYNCRONOUS`,"+           // 20
+    "`CART`.`PUBLISHER`,"+             // 21
+    "`CART`.`COMPOSER`,"+              // 22
+    "`CART`.`USAGE_CODE`,"+            // 23
+    "`CART`.`AVERAGE_SEGUE_LENGTH`,"+  // 24
+    "`CART`.`NOTES`,"+                 // 25
+    "`GROUPS`.`COLOR` "+               // 26
     "from `CART` left join `GROUPS` "+
     "on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` where "+
     QString().sprintf("(`CART`.`NUMBER`=%d)",cartnum);
@@ -2129,14 +2115,13 @@ void RDLogLine::loadCart(int cartnum,int cutnum)
   log_forced_length=q->value(12).toUInt();
   log_enforce_length=RDBool(q->value(18).toString());
   log_preserve_pitch=RDBool(q->value(19).toString());
-  log_now_next_enabled=RDBool(q->value(20).toString());
-  log_asyncronous=RDBool(q->value(21).toString());
-  log_publisher=q->value(22).toString();
-  log_composer=q->value(23).toString();
-  log_usage_code=(RDCart::UsageCode)q->value(24).toInt();
-  log_average_segue_length=q->value(25).toInt();
-  log_cart_notes=q->value(26).toString();
-  log_group_color=QColor(q->value(27).toString());
+  log_asyncronous=RDBool(q->value(20).toString());
+  log_publisher=q->value(21).toString();
+  log_composer=q->value(22).toString();
+  log_usage_code=(RDCart::UsageCode)q->value(23).toInt();
+  log_average_segue_length=q->value(24).toInt();
+  log_cart_notes=q->value(25).toString();
+  log_group_color=QColor(q->value(26).toString());
   log_play_source=RDLogLine::UnknownSource;
   delete q;
 

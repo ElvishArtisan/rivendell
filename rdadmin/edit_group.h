@@ -70,8 +70,6 @@ class EditGroup : public RDDialog
   QCheckBox *group_music_check;
   QLabel *group_traffic_label;
   QCheckBox *group_traffic_check;
-  QLabel *group_nownext_label;
-  QCheckBox *group_nownext_check;
   QLabel *group_carttype_label;
   QComboBox *group_carttype_box;
   QPushButton *group_color_button;

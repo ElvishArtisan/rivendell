@@ -3041,7 +3041,7 @@ void RDLogPlay::SendNowNext()
   //
   if(running>0) {
     now_line=lines[running-1];  // Most recently started event
-    if((!logLine(now_line)->nowNextEnabled())||(logLine(now_line)->cartType()!=RDCart::Macro)) {
+    if(logLine(now_line)->cartType()!=RDCart::Macro) {
       //
       // If the most recently started event is not a Now&Next-enabled macro
       // cart, then use longest running event instead
@@ -3056,7 +3056,7 @@ void RDLogPlay::SendNowNext()
     }
   }
 
-  if((now_line>=0)&&(logLine(now_line)->nowNextEnabled())) {
+  if(now_line>=0) {
     logline[0]=logLine(now_line);
   }
   else {
@@ -3075,8 +3075,7 @@ void RDLogPlay::SendNowNext()
   logline[1]=NULL;
   for(int i=nextLine();i<lineCount();i++) {
     if((ll=logLine(i))!=NULL) {
-      if((ll->status()==RDLogLine::Scheduled)&&
-	 logLine(i)->nowNextEnabled()&&(!logLine(i)->asyncronous())) {
+      if((ll->status()==RDLogLine::Scheduled)&&(!logLine(i)->asyncronous())) {
 	logline[1]=logLine(i);
 	i=lineCount();
       }

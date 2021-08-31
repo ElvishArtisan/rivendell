@@ -1353,8 +1353,6 @@ int RDLogModel::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
   }
   delete q;
 
-  LoadNowNext(start_line);
-
   if(track_ptrs) {
     //
     // Load default cart pointers for "representative" cuts.  This is
@@ -1507,35 +1505,6 @@ void RDLogModel::SaveLine(int line)
   QString values = "";
   InsertLineValues(&values, line);
   InsertLines(values);
-}
-
-
-void RDLogModel::LoadNowNext(unsigned from_line)
-{
-  QStringList groups;
-  QList<bool> now_nexts;
-
-  //
-  // Load the Lookup Table
-  //
-  QString sql=QString("select ")+
-    "`NAME`,"+             // 00
-    "`ENABLE_NOW_NEXT` "+  // 01
-    "from `GROUPS`";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    groups.push_back(QString(q->value(0).toString()));
-    now_nexts.push_back(RDBool(q->value(1).toString()));
-  }
-  delete q;
-
-  for(int i=from_line;i<d_log_lines.size();i++) {
-    for(int j=0;j<groups.size();j++) {
-      if(d_log_lines[i]->groupName()==groups[j]) {
-	d_log_lines[i]->setNowNextEnabled(now_nexts[j]);
-      }
-    }
-  }
 }
 
 

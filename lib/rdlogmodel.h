@@ -105,7 +105,6 @@ class RDLogModel : public QAbstractTableModel
   void SaveLine(int line);
   void InsertLines(QString values);
   void InsertLineValues(QString *query, int line);
-  void LoadNowNext(unsigned from_line);
   void MakeModel();
   QPalette d_palette;
   QFont d_font;

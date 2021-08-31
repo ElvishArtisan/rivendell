@@ -61,9 +61,6 @@ RDGroupListModel::RDGroupListModel(bool show_all,bool user_is_admin,
   d_headers.push_back(tr("Music Report"));
   d_alignments.push_back(center);
 
-  d_headers.push_back(tr("Now & Next"));
-  d_alignments.push_back(center);
-
   if(user_is_admin) {
     changeUser();
   }
@@ -404,9 +401,6 @@ void RDGroupListModel::updateRow(int row,RDSqlQuery *q)
   // Music Report
   texts.push_back(q->value(8));
 
-  // Now & Next
-  texts.push_back(q->value(9));
-
   d_texts[row]=texts;
 }
 
@@ -423,8 +417,7 @@ QString RDGroupListModel::sqlFields() const
     "`NOTIFY_EMAIL_ADDRESS`," // 06
     "`REPORT_TFC`,"+          // 07
     "`REPORT_MUS`,"+          // 08
-    "`ENABLE_NOW_NEXT`,"+     // 09
-    "`COLOR` "+               // 10
+    "`COLOR` "+               // 09
     "from `GROUPS` ";
 
     return sql;

@@ -234,8 +234,6 @@ class RDLogLine
   void setPlayPosition(unsigned pos);
   bool playPositionChanged() const;
   void setPlayPositionChanged(bool state);
-  bool nowNextEnabled() const;
-  void setNowNextEnabled(bool state);
   bool useEventLength() const;
   void setUseEventLength(bool state);
   int eventLength() const;
@@ -366,7 +364,6 @@ class RDLogLine
   QString log_ext_annc_type;
   int log_pause_card;
   int log_pause_port;
-  bool log_now_next_enabled;
   PlaySource log_play_source;
   StartSource log_start_source;
   bool log_zombified;

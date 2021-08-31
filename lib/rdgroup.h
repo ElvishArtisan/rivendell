@@ -52,8 +52,6 @@ class RDGroup
   void setEnforceCartRange(bool state) const;
   bool exportReport(ExportType type) const;
   void setExportReport(ExportType type,bool state) const;
-  bool enableNowNext() const;
-  void setEnableNowNext(bool state) const;
   QColor color() const;
   void setColor(const QColor &color);
   QString notifyEmailAddress() const;

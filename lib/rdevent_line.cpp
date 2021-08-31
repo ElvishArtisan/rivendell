@@ -922,7 +922,7 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
   QString sql;
   RDSqlQuery *q;
   RDLogLine *logline=NULL;
-  RDLog::Source log_src;
+  RDLog::Source log_src=RDLog::SourceMusic;
 
   //
   // Initial Import Parameters

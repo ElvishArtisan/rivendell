@@ -176,14 +176,6 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_delete_carts_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
-  // Now & Next Data Checkbox
-  //
-  group_nownext_check=new QCheckBox(this);
-  group_nownext_label=new QLabel(tr("Transmit Now && Next data"),this);
-  group_nownext_label->setFont(labelFont());
-  group_nownext_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
   // Services Selector
   //
   group_svcs_sel=new RDListSelector(this);
@@ -238,7 +230,6 @@ EditGroup::EditGroup(QString group,QWidget *parent)
     group_delete_carts_check->setChecked(group_group->deleteEmptyCarts());
   }
   purgeEnabledData(group_shelflife_check->isChecked());
-  group_nownext_check->setChecked(group_group->enableNowNext());
   sql=QString("select `SERVICE_NAME` from `AUDIO_PERMS` where ")+
     "`GROUP_NAME`='"+RDEscapeString(group_group->name())+"'";
   q=new RDSqlQuery(sql);
@@ -364,7 +355,6 @@ void EditGroup::okData()
     group_group->setCutShelflife(-1);
     group_group->setDeleteEmptyCarts(false);
   }
-  group_group->setEnableNowNext(group_nownext_check->isChecked());
   group_group->setColor(group_color_button->
 			palette().color(QPalette::Active,
 					QPalette::ButtonText));
@@ -454,10 +444,7 @@ void EditGroup::resizeEvent(QResizeEvent *e)
   group_delete_carts_check->setGeometry(40,256,15,15);
   group_delete_carts_label->setGeometry(60,256,160,19);
 
-  group_nownext_check->setGeometry(20,277,15,15);
-  group_nownext_label->setGeometry(40,276,w-50,19);
-
-  group_svcs_sel->setGeometry(10,298,w-20,h-370);
+  group_svcs_sel->setGeometry(10,282,w-20,h-344);
 
   group_color_button->setGeometry(10,h-60,80,50);
 

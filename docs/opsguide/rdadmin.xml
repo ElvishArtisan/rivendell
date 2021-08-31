@@ -222,11 +222,6 @@
 	contains no other cuts.
       </para>
       <para>
-	If the <computeroutput>Transmit Now &apos; Next</computeroutput> box
-	is ticked, then carts in this group will generate an RLM event when
-	played in a log.
-      </para>
-      <para>
 	Carts in this group will be allowed to play only on those services
 	that are shown in the <computeroutput>Active Services</computeroutput>
 	list.
