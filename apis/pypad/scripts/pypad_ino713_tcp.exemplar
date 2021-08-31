@@ -67,34 +67,25 @@ VLog118=No
 VLog119=No
 VLog120=No
 
-; Additional RDS encoders can be configured by adding new sections...
-;[Rds2]
-;IpAddress=192.168.10.22
-;TcpPort=6789
-;Delay=20
-;PsString=
-;DynamicPsString=%t
-;RadiotextString=%a
-;MasterLog=Yes
-;Aux1Log=No
-;Aux2Log=Onair
-;VLog101=No
-;VLog102=No
-;VLog103=No
-;VLog104=No
-;VLog105=No
-;VLog106=No
-;VLog107=No
-;VLog108=No
-;VLog109=No
-;VLog110=No
-;VLog111=No
-;VLog112=No
-;VLog113=No
-;VLog114=No
-;VLog115=No
-;VLog116=No
-;VLog117=No
-;VLog118=No
-;VLog119=No
-;VLog120=No
+
+[NowGroups]
+; Group Selection
+;
+; Filter updates according to the Group membership of the 'now' playing
+; event. If no groups are listed here and in the [NextGroups] section,
+; then ALL updates will be forwarded
+; without regard to Group.
+; Group1=MUSIC
+; Group2=LEGAL
+; [...] ; Additional groups can be added...
+
+[NextGroups]
+; Group Selection
+;
+; Filter updates according to the Group membership of the 'next' playing
+; event. If no groups are listed here, If no groups are listed here and in
+; the [NowGroups] section,then ALL updates will be forwarded
+; without regard to Group.
+; Group1=MUSIC
+; Group2=LEGAL
+; [...] ; Additional groups can be added...

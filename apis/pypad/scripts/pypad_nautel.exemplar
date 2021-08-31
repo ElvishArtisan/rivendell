@@ -119,72 +119,25 @@ VLog118=No
 VLog119=No
 VLog120=No
 
-; Additional RDS encoders can be configured by adding new sections...
-;[Rds2]
-;IpAddress=192.168.10.22
-;TcpPort=6789
-;Delay=20
-;ProgramService=
-;DynamicPS=%t
-;RadioText=%a
-;;PICode= ***SET THIS IN YOUR TRANSMITTER PER THE RDS/RDBS SPEC***
-;ProgramType=0
-;ProgramTypeName=
-;TrafficProgram=0
-;TrafficAnnouncement=0
-;AltFreq1=107
-;AltFreq2=107
-;AltFreq3=107
-;AltFreq4=107
-;AltFreq5=107
-;AltFreq6=107
-;AltFreq7=107
-;AltFreq8=107
-;AltFreq9=107
-;AltFreq10=107
-;AltFreq11=107
-;AltFreq12=107
-;AltFreq13=107
-;AltFreq14=107
-;AltFreq15=107
-;AltFreq16=107
-;AltFreq17=107
-;AltFreq18=107
-;AltFreq19=107
-;AltFreq20=107
-;AltFreq21=107
-;AltFreq22=107
-;AltFreq23=107
-;AltFreq24=107
-;AltFreq25=107
-;DecoderInfo=3
-;MusicSpeech=1
-;Date=
-;Time=
-;UTCOffset=39
-;Cont=
-;DPSRate=0
-;DPSMode=0
-;MasterLog=Yes
-;Aux1Log=No
-;Aux2Log=Onair
-;VLog101=No
-;VLog102=No
-;VLog103=No
-;VLog104=No
-;VLog105=No
-;VLog106=No
-;VLog107=No
-;VLog108=No
-;VLog109=No
-;VLog110=No
-;VLog111=No
-;VLog112=No
-;VLog113=No
-;VLog114=No
-;VLog115=No
-;VLog116=No
-;VLog117=No
-;VLog118=No
-;VLog119=No
-;VLog120=No
+
+[NowGroups]
+; Group Selection
+;
+; Filter updates according to the Group membership of the 'now' playing
+; event. If no groups are listed here and in the [NextGroups] section,
+; then ALL updates will be forwarded
+; without regard to Group.
+; Group1=MUSIC
+; Group2=LEGAL
+; [...] ; Additional groups can be added...
+
+[NextGroups]
+; Group Selection
+;
+; Filter updates according to the Group membership of the 'next' playing
+; event. If no groups are listed here, If no groups are listed here and in
+; the [NowGroups] section,then ALL updates will be forwarded
+; without regard to Group.
+; Group1=MUSIC
+; Group2=LEGAL
+; [...] ; Additional groups can be added...
