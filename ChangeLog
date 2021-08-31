@@ -20791,3 +20791,6 @@
 	PyPAD script configurations.
 2021-08-26 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.2int1.
+2021-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Deprecated use of the 'Transmit Now & Next data' checkbox in
+	the 'Group' dialog in rdadmin(1).

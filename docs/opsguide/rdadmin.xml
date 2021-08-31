@@ -223,9 +223,18 @@
       </para>
       <para>
 	If the <computeroutput>Transmit Now &apos; Next</computeroutput> box
-	is ticked, then carts in this group will generate an RLM event when
+	is ticked, then carts in this group will generate a PyPAD event when
 	played in a log.
       </para>
+      <note>
+	Use of <computeroutput>Transmit Now &apos; Next</computeroutput> to
+	filter PyPAD events has been deprecated, and will be removed in
+	Rivendell v4.x. Per-group filtering of PyPAD updates can be done
+	on a much more granular basis through use of entries in the
+	<userinput>[NowGroups]</userinput> and 
+	<userinput>[NextGroups]</userinput> sections of the respective
+	PyPAD script's configuration file.
+      </note>
       <para>
 	Carts in this group will be allowed to play only on those services
 	that are shown in the <computeroutput>Active Services</computeroutput>
