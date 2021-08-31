@@ -232,15 +232,23 @@ void RDLog::setCompletedTracks(unsigned tracks) const
 }
 
 
-bool RDLog::includeImportMarkers() const
+bool RDLog::includeImportMarkers(RDLog::Source src) const
 {
-  return RDBool(GetStringValue("INCLUDE_IMPORT_MARKERS"));
+  if(src==RDLog::SourceMusic) {
+    return RDBool(GetStringValue("INCLUDE_MUS_IMPORT_MARKERS"));
+  }
+  return RDBool(GetStringValue("INCLUDE_TFC_IMPORT_MARKERS")); 
 }
 
 
-void RDLog::setIncludeImportMarkers(bool state)
+void RDLog::setIncludeImportMarkers(RDLog::Source src,bool state)
 {
-  SetRow("INCLUDE_IMPORT_MARKERS",RDYesNo(state));
+  if(src==RDLog::SourceMusic) {
+    SetRow("INCLUDE_MUS_IMPORT_MARKERS",RDYesNo(state));
+  }
+  else {
+    SetRow("INCLUDE_TFC_IMPORT_MARKERS",RDYesNo(state));
+  }
 }
 
 

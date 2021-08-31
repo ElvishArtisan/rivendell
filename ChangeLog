@@ -22344,3 +22344,13 @@
 	* Fixed a bug in rdlogmanager(1) that would cause a segfault when
 	a cart was dropped in a Pre- or Post-Import list beneath the
 	'--End of List--' marker.
+2021-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SERVICES.INCLUDE_MUS_IMPORT_MARKERS' field to the database.
+	* Added a 'SERVICES.INCLUDE_TFC_IMPORT_MARKERS' field to the database.
+	* Added a 'LOGS.INCLUDE_MUS_IMPORT_MARKERS' field to the database.
+	* Added a 'LOGS.INCLUDE_TFC_IMPORT_MARKERS' field to the database.
+	* Incremented the database version to 354.
+	* Replaced the 'Include Import Marker in Finished Logs' checkbox
+	with 'Include Music Import Markers in Finished Logs' and
+	'Include Traffic Import Markers in Finished Logs' checkboxes in
+	the 'Edit Service' dialog in rdadmin(1).

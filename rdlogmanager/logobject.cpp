@@ -132,7 +132,7 @@ void LogObject::userData()
 		log->name().toUtf8().constData());
 	exit(RDApplication::ExitLogLinkFailed);
       }
-      if((!log->includeImportMarkers())&&
+      if((!log->includeImportMarkers(RDLog::SourceMusic))&&
 	 (log->linkState(RDLog::SourceMusic)!=RDLog::LinkMissing)) {
 	fprintf(stderr,
 		"rdlogmanager: music for log \"%s\" cannot be reimported\n",
@@ -178,7 +178,7 @@ void LogObject::userData()
 		(const char *)log->name().toUtf8());
 	exit(RDApplication::ExitLogLinkFailed);
       }
-      if((!log->includeImportMarkers())&&
+      if((!log->includeImportMarkers(RDLog::SourceTraffic))&&
 	 (log->linkState(RDLog::SourceTraffic)!=RDLog::LinkMissing)) {
 	fprintf(stderr,
 		"rdlogmanager: traffic for log \"%s\" cannot be reimported\n",

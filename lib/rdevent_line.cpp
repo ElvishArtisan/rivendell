@@ -922,6 +922,7 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
   QString sql;
   RDSqlQuery *q;
   RDLogLine *logline=NULL;
+  RDLog::Source log_src;
 
   //
   // Initial Import Parameters
@@ -930,10 +931,12 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
   switch(event_import_source) {
   case RDEventLine::Music:
     event_src=RDLogLine::Music;
+    log_src=RDLog::SourceMusic;
     break;
 
   case RDEventLine::Traffic:
     event_src=RDLogLine::Traffic;
+    log_src=RDLog::SourceTraffic;
     break;
 
   case RDEventLine::Scheduler:
@@ -948,7 +951,7 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
   //
   // Insert Parent Link
   //
-  if(log->includeImportMarkers()) {
+  if(log->includeImportMarkers(log_src)) {
     e->insert(e->lineCount(),1);
     logline=new RDLogLine();
     *logline=*link_logline;

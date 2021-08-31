@@ -182,19 +182,28 @@ void RDSvc::setElrShelflife(int days) const
 }
 
 
-bool RDSvc::includeImportMarkers() const
+bool RDSvc::includeImportMarkers(RDSvc::ImportSource src) const
 {
+  if(src==RDSvc::Music) {
+    return 
+      RDBool(RDGetSqlValue("SERVICES","NAME",svc_name,
+			   "INCLUDE_MUS_IMPORT_MARKERS").toString());
+  }
   return 
-    RDBool(RDGetSqlValue("SERVICES","NAME",svc_name,"INCLUDE_IMPORT_MARKERS").
-	   toString());
+    RDBool(RDGetSqlValue("SERVICES","NAME",svc_name,
+			 "INCLUDE_TFC_IMPORT_MARKERS").toString());
 }
 
 
-void RDSvc::setIncludeImportMarkers(bool state)
+void RDSvc::setIncludeImportMarkers(RDSvc::ImportSource src,bool state)
 {
-  SetRow("INCLUDE_IMPORT_MARKERS",RDYesNo(state));
+  if(src==RDSvc::Music) {
+    SetRow("INCLUDE_MUS_IMPORT_MARKERS",RDYesNo(state));
+  }
+  else {
+    SetRow("INCLUDE_TFC_IMPORT_MARKERS",RDYesNo(state));
+  }
 }
-
 
 bool RDSvc::chainto() const
 {
@@ -847,7 +856,10 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   log=new RDLog(logname);
   log->setDescription(RDDateDecode(descriptionTemplate(),date,svc_station,
 				   svc_config,svc_name));
-  log->setIncludeImportMarkers(includeImportMarkers());
+  log->setIncludeImportMarkers(RDLog::SourceMusic,
+			       includeImportMarkers(RDSvc::Music));
+  log->setIncludeImportMarkers(RDLog::SourceTraffic,
+			       includeImportMarkers(RDSvc::Traffic));
 
   emit generationProgress(1);
   qApp->processEvents();

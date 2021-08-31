@@ -34,6 +34,7 @@ EXTRA_DIST = audio_cards.txt\
              clocks.txt\
              cut_events.txt\
              cuts.txt\
+             DEAD.txt\
              deck_events.txt\
              decks.txt\
              dropboxes.txt\

@@ -392,16 +392,17 @@
 	of days after being generated.
       </para>
       <para>
-	The <computeroutput>Include Import Markers in Finished Logs</computeroutput>
-	box, if ticked, will cause markers to indicate the base location
-	of imported Music and Traffic events to be retained even after
-	such events have been imported. Some users find these markers
+	The <computeroutput>Include Music Import Markers in Finished Logs</computeroutput> and 
+	<computeroutput>Include Traffic Import Markers in Finished Logs</computeroutput>
+	boxes, if ticked, will cause markers to indicate the base location
+	of imported Music and Traffic events respectively to be retained even
+	after such events have been imported. Some users find these markers
 	distracting, so their retention can be disabled by clearing this
 	check box.
       </para>
       <warning>
 	If import markers are not included in finished logs, then it will
-	not be possible re-import music or traffic data into those logs.
+	not be possible re-import data of the respective type into those logs.
       </warning>
 
       <sect3 xml:id="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters">

@@ -63,8 +63,8 @@ class RDLog
    void setScheduledTracks(unsigned tracks) const;
    unsigned completedTracks() const;
    void setCompletedTracks(unsigned tracks) const;
-   bool includeImportMarkers() const;
-   void setIncludeImportMarkers(bool state);
+   bool includeImportMarkers(Source src) const;
+   void setIncludeImportMarkers(Source src,bool state);
    int linkQuantity(RDLog::Source src) const;
    void setLinkQuantity(RDLog::Source src,int quan) const;
    void updateLinkQuantity(RDLog::Source src) const;

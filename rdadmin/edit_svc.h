@@ -87,7 +87,8 @@ class EditSvc : public RDDialog
   QComboBox *svc_loglifeorigin_box;
   QCheckBox *svc_shelflife_box;
   QSpinBox *svc_shelflife_spin;
-  QCheckBox *svc_import_markers_check;
+  QCheckBox *svc_mus_import_markers_check;
+  QCheckBox *svc_tfc_import_markers_check;
   QPushButton *svc_tfc_copy_button;
   QPushButton *svc_mus_copy_button;
   bool import_changed;

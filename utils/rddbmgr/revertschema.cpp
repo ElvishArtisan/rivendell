@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <rdconf.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 
@@ -39,6 +40,53 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
   // NEW SCHEMA REVERSIONS GO HERE...
 
+
+  //
+  // Revert 354
+  //
+  if((cur_schema==354)&&(set_schema<cur_schema)) {
+    sql=QString("select ")+
+      "`NAME`,"+                        // 00
+      "`INCLUDE_MUS_IMPORT_MARKERS`,"+  // 01
+      "`INCLUDE_TFC_IMPORT_MARKERS` "+  // 02
+      "from `SERVICES`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update `SERVICES` set ")+
+	"`INCLUDE_IMPORT_MARKERS`='"+
+	RDYesNo((q->value(1).toString()=="Y")||(q->value(2).toString()=="Y"))+
+	"' where "+
+	"`NAME`='"+RDEscapeString(q->value(0).toString())+"'";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+    DropColumn("SERVICES","INCLUDE_MUS_IMPORT_MARKERS");
+    DropColumn("SERVICES","INCLUDE_TFC_IMPORT_MARKERS");
+
+    sql=QString("select ")+
+      "`NAME`,"+                        // 00
+      "`INCLUDE_MUS_IMPORT_MARKERS`,"+  // 01
+      "`INCLUDE_TFC_IMPORT_MARKERS` "+  // 02
+      "from `LOGS`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update `LOGS` set ")+
+	"`INCLUDE_IMPORT_MARKERS`='"+
+	RDYesNo((q->value(1).toString()=="Y")||(q->value(2).toString()=="Y"))+
+	"' where "+
+	"`NAME`='"+RDEscapeString(q->value(0).toString())+"'";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+    DropColumn("LOGS","INCLUDE_MUS_IMPORT_MARKERS");
+    DropColumn("LOGS","INCLUDE_TFC_IMPORT_MARKERS");
+
+    WriteSchemaVersion(--cur_schema);
+  }
 
   //
   // Revert 353

@@ -229,12 +229,21 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   label->setAlignment(Qt::AlignLeft);
 
   //
-  // Include Import Markers by Default
+  // Include Music Import Markers by Default
   //
-  svc_import_markers_check=new QCheckBox(this);
-  svc_import_markers_check->setGeometry(460,140,15,15);
-  label=new QLabel(tr("Include Import Markers in Finished Logs"),this);
+  svc_mus_import_markers_check=new QCheckBox(this);
+  svc_mus_import_markers_check->setGeometry(460,140,15,15);
+  label=new QLabel(tr("Include Music Import Markers in Finished Logs"),this);
   label->setGeometry(480,140,sizeHint().width()-490,19);
+  label->setAlignment(Qt::AlignLeft);
+
+  //
+  // Include Traffic Import Markers by Default
+  //
+  svc_tfc_import_markers_check=new QCheckBox(this);
+  svc_tfc_import_markers_check->setGeometry(460,163,15,15);
+  label=new QLabel(tr("Include Traffic Import Markers in Finished Logs"),this);
+  label->setGeometry(480,163,sizeHint().width()-490,19);
   label->setAlignment(Qt::AlignLeft);
 
   //
@@ -516,7 +525,10 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   else {
     svc_shelflife_spin->setDisabled(true);
   }
-  svc_import_markers_check->setChecked(svc_svc->includeImportMarkers());
+  svc_mus_import_markers_check->
+    setChecked(svc_svc->includeImportMarkers(RDSvc::Music));
+  svc_tfc_import_markers_check->
+    setChecked(svc_svc->includeImportMarkers(RDSvc::Traffic));
   svc_tfc_path_edit->setText(svc_svc->importPath(RDSvc::Traffic));
   svc_tfc_preimport_cmd_edit->
     setText(svc_svc->preimportCommand(RDSvc::Traffic));
@@ -760,7 +772,10 @@ void EditSvc::Save()
   else {
     svc_svc->setElrShelflife(-1);
   }
-  svc_svc->setIncludeImportMarkers(svc_import_markers_check->isChecked());
+  svc_svc->setIncludeImportMarkers(RDSvc::Music,
+				   svc_mus_import_markers_check->isChecked());
+  svc_svc->setIncludeImportMarkers(RDSvc::Traffic,
+				   svc_tfc_import_markers_check->isChecked());
   svc_svc->setImportPath(RDSvc::Traffic,svc_tfc_path_edit->text());
   svc_svc->
     setPreimportCommand(RDSvc::Traffic,svc_tfc_preimport_cmd_edit->text());

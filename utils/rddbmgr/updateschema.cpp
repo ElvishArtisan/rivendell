@@ -10889,6 +10889,66 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<354)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `SERVICES` ")+
+      "add column `INCLUDE_MUS_IMPORT_MARKERS` enum('N','Y') default 'Y' "+
+      "after `INCLUDE_IMPORT_MARKERS`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `SERVICES` ")+
+      "add column `INCLUDE_TFC_IMPORT_MARKERS` enum('N','Y') default 'Y' "+
+      "after `INCLUDE_MUS_IMPORT_MARKERS`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("select ")+
+      "`NAME`, "+                   // 00
+      "`INCLUDE_IMPORT_MARKERS` "+  // 01
+      "from `SERVICES`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update `SERVICES` set ")+
+	"`INCLUDE_MUS_IMPORT_MARKERS`='"+q->value(1).toString()+"',"+
+	"`INCLUDE_TFC_IMPORT_MARKERS`='"+q->value(1).toString()+"' "+
+	"where `NAME`='"+RDEscapeString(q->value(0).toString())+"'";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    sql=QString("alter table `LOGS` ")+
+      "add column `INCLUDE_MUS_IMPORT_MARKERS` enum('N','Y') default 'Y' "+
+      "after `INCLUDE_IMPORT_MARKERS`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `LOGS` ")+
+      "add column `INCLUDE_TFC_IMPORT_MARKERS` enum('N','Y') default 'Y' "+
+      "after `INCLUDE_MUS_IMPORT_MARKERS`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("select ")+
+      "`NAME`, "+                   // 00
+      "`INCLUDE_IMPORT_MARKERS` "+  // 01
+      "from `LOGS`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update `LOGS` set ")+
+	"`INCLUDE_MUS_IMPORT_MARKERS`='"+q->value(1).toString()+"',"+
+	"`INCLUDE_TFC_IMPORT_MARKERS`='"+q->value(1).toString()+"' "+
+	"where `NAME`='"+RDEscapeString(q->value(0).toString())+"'";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

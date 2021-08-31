@@ -365,7 +365,7 @@ void GenerateLog::musicData()
   RDLog *log=new RDLog(logname);
   if(((log->linkState(RDLog::SourceMusic)==RDLog::LinkDone)||
       (log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone))) {
-    if(log->includeImportMarkers()) {
+    if(log->includeImportMarkers(RDLog::SourceMusic)) {
       if(QMessageBox::question(this,"RDLogManager - "+tr("Music Exists"),
 			       tr("The log for")+" "+
 			       rda->shortDateString(gen_date_edit->date())+" "+
@@ -446,7 +446,7 @@ void GenerateLog::trafficData()
 			       rda->station(),rda->config(),svc->name());
   RDLog *log=new RDLog(logname);
   if((log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone)) {
-    if(log->includeImportMarkers()) {
+    if(log->includeImportMarkers(RDLog::SourceTraffic)) {
       if(QMessageBox::question(this,"RDLogManager - "+tr("Traffic Exists"),
 			       tr("The log for")+" "+
 			       rda->shortDateString(gen_date_edit->date())+" "+
@@ -508,9 +508,9 @@ void GenerateLog::fileScanData()
   if(gen_music_enabled) {
     if(QFile::exists(svc->
 		     importFilename(RDSvc::Music,gen_date_edit->date()))) {
-      gen_music_button->setEnabled(log->includeImportMarkers()||
-				   (log->linkState(RDLog::SourceMusic)==
-				    RDLog::LinkMissing));
+      gen_music_button->
+	setEnabled(log->includeImportMarkers(RDLog::SourceMusic)||
+		   (log->linkState(RDLog::SourceMusic)==RDLog::LinkMissing));
       gen_mus_avail_label->
 	setPixmap(rda->iconEngine()->listIcon(RDIconEngine::GreenBall));
     }
@@ -530,7 +530,7 @@ void GenerateLog::fileScanData()
       gen_traffic_button->
 	setEnabled(((!gen_music_enabled)||
 		    (log->linkState(RDLog::SourceMusic)==RDLog::LinkDone))&&
-		   (log->includeImportMarkers()||
+		   (log->includeImportMarkers(RDLog::SourceTraffic)||
 		    (log->linkState(RDLog::SourceTraffic)==
 		     RDLog::LinkMissing)));
       gen_tfc_avail_label->
