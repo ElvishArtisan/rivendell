@@ -201,7 +201,11 @@ QSizePolicy RDCartFilter::sizePolicy() const
 
 QString RDCartFilter::filterSql(const QStringList &and_fields) const
 {
-  QString sql=" where ";
+  QString sql=QString(" where ");
+
+  for(int i=0;i<and_fields.size();i++) {
+    sql+="("+and_fields.at(i)+") && ";
+  }
 
   //
   // Cart Type Filter
