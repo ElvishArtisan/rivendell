@@ -31,7 +31,7 @@
 class RDSqlQuery : public QSqlQuery
 {
  public:
-  RDSqlQuery(const QString &query = QString::null,bool reconnect=true);
+  RDSqlQuery(const QString &query,bool reconnect=true);
   int columns() const;
   QVariant value(int index) const;
   static QVariant run(const QString &sql,bool *ok=NULL);

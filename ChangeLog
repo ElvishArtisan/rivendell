@@ -22375,3 +22375,5 @@
 	'DISTRO-SPECIFIC NOTES' section in 'INSTALL'.
 	* Changed database client dependencies for Debian and Ubuntu
 	to MariaDB.
+2021-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up a build warning in 'lib/rddb.h'.
