@@ -22364,3 +22364,6 @@
 	'RDGroup::setEnableNowNext()' methods.
 	* Removed the 'RDLogLine::nowNextEnabled()' and
 	'RDLogLine::setNowNextEnabled()' methods.
+2021-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDGroupListModel' that caused SQL errors
+	upon startup in rdairplay(1) and rdcartslots(1).

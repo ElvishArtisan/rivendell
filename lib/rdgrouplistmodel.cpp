@@ -362,7 +362,7 @@ void RDGroupListModel::updateRow(int row,RDSqlQuery *q)
 
   // Group Name
   texts.push_back(q->value(0));
-  d_colors[row]=QColor(q->value(10).toString());
+  d_colors[row]=QColor(q->value(9).toString());
   if(q->value(5).toInt()==RDCart::Macro) {
     d_icons[row]=rda->iconEngine()->typeIcon(RDLogLine::Macro);
   }
