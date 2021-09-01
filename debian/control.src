@@ -7,7 +7,7 @@ Standards-Version: 4.4.1
 
 Package: rivendell
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, mysql-client, libqt5sql5-mysql, apache2, curl, rsyslog, rivendell-pypad (= @VERSION@-1)
+Depends: ${shlibs:Depends}, ${misc:Depends}, mariadb-client, libqt5sql5-mysql, apache2, curl, rsyslog, rivendell-pypad (= @VERSION@-1)
 Description: Radio Broadcast Automation System
  Rivendell is a complete radio broadcast automation solution, with
  facilities for the acquisition, management, scheduling and playout of

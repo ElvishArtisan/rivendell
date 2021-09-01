@@ -22370,3 +22370,8 @@
 2021-09-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlibrary(1) that caused added carts to appear
 	that did not match the currently selected filter.
+2021-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Debian 11 "Bullseye"' subsection to the
+	'DISTRO-SPECIFIC NOTES' section in 'INSTALL'.
+	* Changed database client dependencies for Debian and Ubuntu
+	to MariaDB.
