@@ -269,7 +269,7 @@ bool RDLiveWire::gpoState(int slot,int line) const
 
 void RDLiveWire::gpiSet(int slot,int line,unsigned interval)
 {
-  QString cmd=QString().sprintf("GPI %d ",slot+1);
+  QString cmd=QString::asprintf("GPI %d ",slot+1);
   for(int i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
     if(i==line) {
       cmd+="l";
@@ -296,7 +296,7 @@ void RDLiveWire::gpiSet(int slot,int line,unsigned interval)
 
 void RDLiveWire::gpiReset(int slot,int line,unsigned interval)
 {
-  QString cmd=QString().sprintf("GPI %d ",slot+1);
+  QString cmd=QString::asprintf("GPI %d ",slot+1);
   for(int i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
     if(i==line) {
       cmd+="h";
@@ -323,7 +323,7 @@ void RDLiveWire::gpiReset(int slot,int line,unsigned interval)
 
 void RDLiveWire::gpoSet(int slot,int line,unsigned interval)
 {
-  QString cmd=QString().sprintf("GPO %d ",slot+1);
+  QString cmd=QString::asprintf("GPO %d ",slot+1);
   for(int i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
     if(i==line) {
       cmd+="l";
@@ -348,7 +348,7 @@ void RDLiveWire::gpoSet(int slot,int line,unsigned interval)
 
 void RDLiveWire::gpoReset(int slot,int line,unsigned interval)
 {
-  QString cmd=QString().sprintf("GPO %d ",slot+1);
+  QString cmd=QString::asprintf("GPO %d ",slot+1);
   for(int i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
     if(i==line) {
       cmd+="h";
@@ -375,7 +375,7 @@ void RDLiveWire::gpoReset(int slot,int line,unsigned interval)
 void RDLiveWire::setRoute(int src_num,int dest_slot) const
 {
   QString str;
-  str=QString().sprintf("DST %d ADDR:\"239.192.%d.%d\"\r\n",
+  str=QString::asprintf("DST %d ADDR:\"239.192.%d.%d\"\r\n",
 			dest_slot+1,src_num/256,src_num%256);
   SendCommand(str);
 }
@@ -397,7 +397,7 @@ void RDLiveWire::connectionClosedData()
   if(!live_watchdog_state) {
     live_watchdog_state=true;
     int holdoff=GetHoldoff();
-    emit watchdogStateChanged(live_id,QString().sprintf(
+    emit watchdogStateChanged(live_id,QString::asprintf(
        "connection to LiveWire node at %s:%d closed, attempting reconnect, holdoff = %d mS",
        live_hostname.toUtf8().constData(),live_tcp_port,holdoff));
     live_holdoff_timer->start(holdoff);
@@ -441,7 +441,7 @@ void RDLiveWire::errorData(QAbstractSocket::SocketError err)
   case QAbstractSocket::ConnectionRefusedError:
     live_watchdog_state=true;
     interval=GetHoldoff();
-    emit watchdogStateChanged(live_id,QString().sprintf(
+    emit watchdogStateChanged(live_id,QString::asprintf(
       "connection to LiveWire node at %s:%d refused, attempting reconnect, holdoff = %d mS",
       live_hostname.toUtf8().constData(),
       live_tcp_port,interval));
@@ -464,7 +464,7 @@ void RDLiveWire::gpiTimeoutData(int id)
   int chan=id/RD_LIVEWIRE_GPIO_BUNDLE_SIZE;
   int line=id%RD_LIVEWIRE_GPIO_BUNDLE_SIZE;
 
-  QString cmd=QString().sprintf("GPI %d ",chan+1);
+  QString cmd=QString::asprintf("GPI %d ",chan+1);
   for(int i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
     if(i==line) {
       if(live_gpi_states[chan][i]) {
@@ -495,7 +495,7 @@ void RDLiveWire::gpoTimeoutData(int id)
   int chan=id/RD_LIVEWIRE_GPIO_BUNDLE_SIZE;
   int line=id%RD_LIVEWIRE_GPIO_BUNDLE_SIZE;
 
-  QString cmd=QString().sprintf("GPO %d ",chan+1);
+  QString cmd=QString::asprintf("GPO %d ",chan+1);
   for(int i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
     if(i==line) {
       if(live_gpo_states[chan][i]) {
@@ -533,7 +533,7 @@ void RDLiveWire::watchdogTimeoutData()
   live_gpi_initialized=false;
   live_gpo_initialized=false;
   int holdoff=GetHoldoff();
-  emit watchdogStateChanged(live_id,QString().sprintf(
+  emit watchdogStateChanged(live_id,QString::asprintf(
 	 "connection to LiveWire node at %s:%d lost, attempting reconnect, holdoff = %d mS",
 	 live_hostname.toUtf8().constData(),live_tcp_port,holdoff));
   live_holdoff_timer->start(holdoff);
@@ -703,7 +703,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
   }
   if(live_watchdog_state) {
     live_watchdog_state=false;
-    emit watchdogStateChanged(live_id,QString().sprintf(
+    emit watchdogStateChanged(live_id,QString::asprintf(
 	    "connection to LiveWire node at %s:%d restored",
 	    live_hostname.toUtf8().constData(),live_tcp_port));
   }

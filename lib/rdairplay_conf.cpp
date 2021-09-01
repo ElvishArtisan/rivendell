@@ -96,7 +96,7 @@ QString RDAirPlayConf::portLabel(RDAirPlayConf::Channel chan) const
     "`AUDIO_OUTPUTS`.`STATION_NAME`='"+RDEscapeString(air_station)+"' && "+
     "`AUDIO_OUTPUTS`.`CARD_NUMBER`=`RDAIRPLAY_CHANNELS`.`CARD` && "+
     "`AUDIO_OUTPUTS`.`PORT_NUMBER`=`RDAIRPLAY_CHANNELS`.`PORT` && "+
-    QString().sprintf("`RDAIRPLAY_CHANNELS`.`INSTANCE`=%u",chan);
+    QString::asprintf("`RDAIRPLAY_CHANNELS`.`INSTANCE`=%u",chan);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toString();
@@ -136,7 +136,7 @@ int RDAirPlayConf::virtualCard(int mach) const
   int ret=-1;
   QString sql=QString("select `CARD` from `RDAIRPLAY_CHANNELS` where ")+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`INSTANCE`=%d",mach);
+    QString::asprintf("`INSTANCE`=%d",mach);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toInt();
@@ -150,9 +150,9 @@ int RDAirPlayConf::virtualCard(int mach) const
 void RDAirPlayConf::setVirtualCard(int mach,int card) const
 {
   QString sql=QString("update `RDAIRPLAY_CHANNELS` set ")+
-    QString().sprintf("`CARD`=%d where ",card)+
+    QString::asprintf("`CARD`=%d where ",card)+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`INSTANCE`=%d",mach);
+    QString::asprintf("`INSTANCE`=%d",mach);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -163,7 +163,7 @@ int RDAirPlayConf::virtualPort(int mach) const
   int ret=-1;
   QString sql=QString("select `PORT` from `RDAIRPLAY_CHANNELS` where ")+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`INSTANCE`=%d",mach);
+    QString::asprintf("`INSTANCE`=%d",mach);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toInt();
@@ -177,9 +177,9 @@ int RDAirPlayConf::virtualPort(int mach) const
 void RDAirPlayConf::setVirtualPort(int mach,int port) const
 {
   QString sql=QString("update `RDAIRPLAY_CHANNELS` set ")+
-    QString().sprintf("`PORT`=%d where ",port)+
+    QString::asprintf("`PORT`=%d where ",port)+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`INSTANCE`=%d",mach);
+    QString::asprintf("`INSTANCE`=%d",mach);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -190,7 +190,7 @@ QString RDAirPlayConf::virtualStartRml(int mach) const
   QString ret;
   QString sql=QString("select `START_RML` from `RDAIRPLAY_CHANNELS` where ")+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`INSTANCE`=%d",mach);
+    QString::asprintf("`INSTANCE`=%d",mach);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toString();
@@ -206,7 +206,7 @@ void RDAirPlayConf::setVirtualStartRml(int mach,QString str) const
   QString sql=QString("update `RDAIRPLAY_CHANNELS` set ")+
     "`START_RML`='"+RDEscapeString(str)+"' where "+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`INSTANCE`=%d",mach);
+    QString::asprintf("`INSTANCE`=%d",mach);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -217,7 +217,7 @@ QString RDAirPlayConf::virtualStopRml(int mach) const
   QString ret;
   QString sql=QString("select `STOP_RML` from `RDAIRPLAY_CHANNELS` where ")+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`INSTANCE`=%d",mach);
+    QString::asprintf("`INSTANCE`=%d",mach);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toString();
@@ -233,7 +233,7 @@ void RDAirPlayConf::setVirtualStopRml(int mach,QString str) const
   QString sql=QString("update `RDAIRPLAY_CHANNELS` set ")+
     "`STOP_RML`='"+RDEscapeString(str)+"' where "+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`INSTANCE`=%d",mach);
+    QString::asprintf("`INSTANCE`=%d",mach);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -478,13 +478,13 @@ void RDAirPlayConf::setPanels(RDAirPlayConf::PanelType type,int quan) const
 bool RDAirPlayConf::showAuxButton(int auxbutton) const
 {
   return RDBool(RDGetSqlValue(air_tablename,"ID",
-	    air_id,QString().sprintf("SHOW_AUX_%d",auxbutton+1)).toString());
+	    air_id,QString::asprintf("SHOW_AUX_%d",auxbutton+1)).toString());
 }
 
 
 void RDAirPlayConf::setShowAuxButton(int auxbutton,bool state) const
 {
-  SetRow(QString().sprintf("SHOW_AUX_%d",auxbutton+1),RDYesNo(state));
+  SetRow(QString::asprintf("SHOW_AUX_%d",auxbutton+1),RDYesNo(state));
 }
 
 
@@ -767,7 +767,7 @@ RDAirPlayConf::StartMode RDAirPlayConf::startMode(int lognum) const
   QString sql=QString("select `START_MODE` ")+
     "from `LOG_MACHINES` where `STATION_NAME`='"+
     RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=(RDAirPlayConf::StartMode)q->value(0).toInt();
@@ -780,9 +780,9 @@ RDAirPlayConf::StartMode RDAirPlayConf::startMode(int lognum) const
 void RDAirPlayConf::setStartMode(int lognum,RDAirPlayConf::StartMode mode) const
 {
   QString sql=QString("update `LOG_MACHINES` set ")+
-    QString().sprintf("`START_MODE`=%d ",mode)+" where "+
+    QString::asprintf("`START_MODE`=%d ",mode)+" where "+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' &&"+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -794,7 +794,7 @@ bool RDAirPlayConf::autoRestart(int lognum) const
   QString sql=QString("select `AUTO_RESTART` ")+
     "from `LOG_MACHINES` where `STATION_NAME`='"+
     RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toString()=="Y";
@@ -809,7 +809,7 @@ void RDAirPlayConf::setAutoRestart(int lognum,bool state) const
   QString sql=QString("update `LOG_MACHINES` set ")+
     "`AUTO_RESTART`='"+RDYesNo(state)+"' where "+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' &&"+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -821,7 +821,7 @@ QString RDAirPlayConf::logName(int lognum) const
   QString sql=QString("select `LOG_NAME` ")+
     "from `LOG_MACHINES` where `STATION_NAME`='"+
     RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toString();
@@ -836,7 +836,7 @@ void RDAirPlayConf::setLogName(int lognum,const QString &name) const
   QString sql=QString("update `LOG_MACHINES` set ")+
     "`LOG_NAME`='"+RDEscapeString(name)+"' where "+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' &&"+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -848,7 +848,7 @@ QString RDAirPlayConf::currentLog(int lognum) const
   QString sql=QString("select `CURRENT_LOG` ")+
     "from `LOG_MACHINES` where `STATION_NAME`='"+
     RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toString();
@@ -863,7 +863,7 @@ void RDAirPlayConf::setCurrentLog(int lognum,const QString &name) const
   QString sql=QString("update `LOG_MACHINES` set ")+
     "`CURRENT_LOG`='"+RDEscapeString(name)+"' where "+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' &&"+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -875,7 +875,7 @@ bool RDAirPlayConf::logRunning(int lognum) const
   QString sql=QString("select `RUNNING` ")+
     "from `LOG_MACHINES` where `STATION_NAME`='"+
     RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toString()=="Y";
@@ -890,7 +890,7 @@ void RDAirPlayConf::setLogRunning(int lognum,bool state) const
   QString sql=QString("update `LOG_MACHINES` set ")+
     "`RUNNING`='"+RDYesNo(state)+"' where "+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' &&"+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -902,7 +902,7 @@ int RDAirPlayConf::logId(int lognum) const
   QString sql=QString("select `LOG_ID` ")+
     "from `LOG_MACHINES` where `STATION_NAME`='"+
     RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toInt();
@@ -915,9 +915,9 @@ int RDAirPlayConf::logId(int lognum) const
 void RDAirPlayConf::setLogId(int lognum,int id) const
 {
   QString sql=QString("update `LOG_MACHINES` set ")+
-    QString().sprintf("`LOG_ID`=%d ",id)+" where "+
+    QString::asprintf("`LOG_ID`=%d ",id)+" where "+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' &&"+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -929,7 +929,7 @@ int RDAirPlayConf::logCurrentLine(int lognum) const
   QString sql=QString("select `LOG_LINE` ")+
     "from `LOG_MACHINES` where `STATION_NAME`='"+
     RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toInt();
@@ -942,9 +942,9 @@ int RDAirPlayConf::logCurrentLine(int lognum) const
 void RDAirPlayConf::setLogCurrentLine(int lognum,int line) const
 {
   QString sql=QString("update `LOG_MACHINES` set ")+
-    QString().sprintf("`LOG_LINE`=%d ",line)+" where "+
+    QString::asprintf("`LOG_LINE`=%d ",line)+" where "+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' &&"+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -956,7 +956,7 @@ unsigned RDAirPlayConf::logNowCart(int lognum) const
   QString sql=QString("select `NOW_CART` ")+
     "from `LOG_MACHINES` where `STATION_NAME`='"+
     RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toUInt();
@@ -969,9 +969,9 @@ unsigned RDAirPlayConf::logNowCart(int lognum) const
 void RDAirPlayConf::setLogNowCart(int lognum,unsigned cartnum) const
 {
   QString sql=QString("update `LOG_MACHINES` set ")+
-    QString().sprintf("`NOW_CART`=%u ",cartnum)+" where "+
+    QString::asprintf("`NOW_CART`=%u ",cartnum)+" where "+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' &&"+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -983,7 +983,7 @@ unsigned RDAirPlayConf::logNextCart(int lognum) const
   QString sql=QString("select `NEXT_CART` ")+
     "from `LOG_MACHINES` where `STATION_NAME`='"+
     RDEscapeString(air_station)+"' && "+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toUInt();
@@ -996,9 +996,9 @@ unsigned RDAirPlayConf::logNextCart(int lognum) const
 void RDAirPlayConf::setLogNextCart(int lognum,unsigned cartnum) const
 {
   QString sql=QString("update `LOG_MACHINES` set ")+
-    QString().sprintf("`NEXT_CART`=%u ",cartnum)+" where "+
+    QString::asprintf("`NEXT_CART`=%u ",cartnum)+" where "+
     "`STATION_NAME`='"+RDEscapeString(air_station)+"' &&"+
-    QString().sprintf("`MACHINE`=%d",lognum);
+    QString::asprintf("`MACHINE`=%d",lognum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -1120,7 +1120,7 @@ QVariant RDAirPlayConf::GetChannelValue(const QString &param,RDAirPlayConf::Chan
 
   sql=QString("select `")+param+"` from `"+air_tablename+"_CHANNELS` where "+
     "(`STATION_NAME`='"+RDEscapeString(air_station)+"')&&"+
-    QString().sprintf("(`INSTANCE`=%u)",chan);
+    QString::asprintf("(`INSTANCE`=%u)",chan);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0);
@@ -1137,9 +1137,9 @@ void RDAirPlayConf::SetChannelValue(const QString &param,RDAirPlayConf::Channel 
   QString sql;
 
   sql=QString("update `")+air_tablename+"_CHANNELS` set `"+
-    param+QString().sprintf("`=%d ",value)+
+    param+QString::asprintf("`=%d ",value)+
     "where (`STATION_NAME`='"+RDEscapeString(air_station)+"')&&"+
-    QString().sprintf("(`INSTANCE`=%d)",chan);
+    QString::asprintf("(`INSTANCE`=%d)",chan);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -1153,7 +1153,7 @@ void RDAirPlayConf::SetChannelValue(const QString &param,RDAirPlayConf::Channel 
   sql=QString("update `")+air_tablename+"_CHANNELS` set `"+
     param+"`='"+RDEscapeString(value)+"' "+
     "where (`STATION_NAME`='"+RDEscapeString(air_station)+"')&&"+
-    QString().sprintf("(`INSTANCE`=%d)",chan);
+    QString::asprintf("(`INSTANCE`=%d)",chan);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -1167,7 +1167,7 @@ RDAirPlayConf::OpMode RDAirPlayConf::GetLogMode(const QString &param,int mach) c
 
   sql=QString("select `")+param+"` from `LOG_MODES` where "+
     "(`STATION_NAME`='"+RDEscapeString(air_station)+"')&&"+
-    QString().sprintf("`MACHINE`=%d",mach);
+    QString::asprintf("`MACHINE`=%d",mach);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     mode=(RDAirPlayConf::OpMode)q->value(0).toInt();
@@ -1183,9 +1183,9 @@ void RDAirPlayConf::SetLogMode(const QString &param,int mach,
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("update `LOG_MODES` set `")+param+QString().sprintf("`=%d ",mode)+
+  sql=QString("update `LOG_MODES` set `")+param+QString::asprintf("`=%d ",mode)+
     "where (`STATION_NAME`='"+RDEscapeString(air_station)+"')&&"+
-    QString().sprintf("(`MACHINE`=%d)",mach);
+    QString::asprintf("(`MACHINE`=%d)",mach);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -1197,7 +1197,7 @@ void RDAirPlayConf::SetRow(const QString &param,int value) const
   QString sql;
 
   sql=QString("update `")+air_tablename+"` set `"+
-    param+QString().sprintf("`=%d where ",value)+
+    param+QString::asprintf("`=%d where ",value)+
     "`STATION`='"+RDEscapeString(air_station)+"'";
   q=new RDSqlQuery(sql);
   delete q;
@@ -1210,7 +1210,7 @@ void RDAirPlayConf::SetRow(const QString &param,unsigned value) const
   QString sql;
 
   sql=QString("update `")+air_tablename+"` set `"+
-    param+QString().sprintf("`=%u where ",value)+
+    param+QString::asprintf("`=%u where ",value)+
     "`STATION`='"+RDEscapeString(air_station)+"'";
   q=new RDSqlQuery(sql);
   delete q;

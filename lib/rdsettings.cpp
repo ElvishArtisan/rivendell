@@ -151,7 +151,7 @@ void RDSettings::setAutotrimLevel(int level)
 QString RDSettings::description()
 {
   QString desc;
-  QString sr=QString().sprintf("%d S/sec",set_sample_rate);
+  QString sr=QString::asprintf("%d S/sec",set_sample_rate);
   switch(set_format) {
     case RDSettings::Pcm16:
       desc="PCM16, ";
@@ -164,10 +164,10 @@ QString RDSettings::description()
     case RDSettings::MpegL1:
       desc="MPEG L1, ";
       if(set_bit_rate==0) {
-	desc+=QString().sprintf("Qual %d, ",set_quality);
+	desc+=QString::asprintf("Qual %d, ",set_quality);
       }
       else {
-	desc+=QString().sprintf("%d kbit/sec, ",set_bit_rate/1000);
+	desc+=QString::asprintf("%d kbit/sec, ",set_bit_rate/1000);
       }
       break;
       
@@ -175,20 +175,20 @@ QString RDSettings::description()
     case RDSettings::MpegL2Wav:
       desc="MPEG L2, ";
       if(set_bit_rate==0) {
-	desc+=QString().sprintf("Qual %d, ",set_quality);
+	desc+=QString::asprintf("Qual %d, ",set_quality);
       }
       else {
-	desc+=QString().sprintf("%d kbit/sec, ",set_bit_rate/1000);
+	desc+=QString::asprintf("%d kbit/sec, ",set_bit_rate/1000);
       }
       break;
       
     case RDSettings::MpegL3:
       desc="MPEG L3, ";
       if(set_bit_rate==0) {
-	desc+=QString().sprintf("Qual %d, ",set_quality);
+	desc+=QString::asprintf("Qual %d, ",set_quality);
       }
       else {
-	desc+=QString().sprintf("%d kbit/sec, ",set_bit_rate/1000);
+	desc+=QString::asprintf("%d kbit/sec, ",set_bit_rate/1000);
       }
       break;
       
@@ -197,11 +197,11 @@ QString RDSettings::description()
       break;
       
     case RDSettings::OggVorbis:
-      desc=QString().sprintf("OggVorbis, Qual %d, ",set_quality);
+      desc=QString::asprintf("OggVorbis, Qual %d, ",set_quality);
       break;
   }
   if(set_sample_rate>0) {
-    desc+=QString().sprintf("%d samp/sec, ",set_sample_rate);
+    desc+=QString::asprintf("%d samp/sec, ",set_sample_rate);
   }
   switch(set_channels) {
       case 1:
@@ -213,7 +213,7 @@ QString RDSettings::description()
 	break;
 
       default:
-	desc+=QString().sprintf("%d chans",set_channels);
+	desc+=QString::asprintf("%d chans",set_channels);
 	break;
   }
   return desc;
@@ -236,7 +236,7 @@ bool RDSettings::loadPreset(unsigned id)
     "`NORMALIZATION_LEVEL`,"+  // 06
     "`AUTOTRIM_LEVEL` "+       // 07
     "from `ENCODER_PRESETS` where "+
-    QString().sprintf("`ID`=%u",id);
+    QString::asprintf("`ID`=%u",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=true;
@@ -272,7 +272,7 @@ bool RDSettings::savePreset(unsigned id) const
 
   sql=QString("update `ENCODER_PRESETS` set ")+
     SqlFields()+" where "+
-    QString().sprintf("`ID`=%u",id);
+    QString::asprintf("`ID`=%u",id);
 
   return RDSqlQuery::apply(sql);
 }
@@ -283,7 +283,7 @@ bool RDSettings::deletePreset(unsigned id) const
   QString sql;
 
   sql=QString("delete from `ENCODER_PRESETS` where ")+
-    QString().sprintf("`ID`=%u",id);
+    QString::asprintf("`ID`=%u",id);
 
   return RDSqlQuery::apply(sql);
 }
@@ -345,15 +345,15 @@ QString RDSettings::dump() const
 
   ret+="RDSettings:\n";
   ret+="name(): "+name()+"\n";
-  ret+=QString().sprintf("format(): %u\n",format());
+  ret+=QString::asprintf("format(): %u\n",format());
   ret+="formatName(): "+formatName()+"\n";
-  ret+=QString().sprintf("channels(): %u\n",channels());
-  ret+=QString().sprintf("sampleRate(): %u\n",sampleRate());
-  ret+=QString().sprintf("layer(): %u\n",layer());
-  ret+=QString().sprintf("bitRate(): %u\n",bitRate());
-  ret+=QString().sprintf("quality(): %u\n",quality());
-  ret+=QString().sprintf("normalizationLevel(): %d\n",normalizationLevel());
-  ret+=QString().sprintf("autotrimLevel(): %d\n",autotrimLevel());
+  ret+=QString::asprintf("channels(): %u\n",channels());
+  ret+=QString::asprintf("sampleRate(): %u\n",sampleRate());
+  ret+=QString::asprintf("layer(): %u\n",layer());
+  ret+=QString::asprintf("bitRate(): %u\n",bitRate());
+  ret+=QString::asprintf("quality(): %u\n",quality());
+  ret+=QString::asprintf("normalizationLevel(): %d\n",normalizationLevel());
+  ret+=QString::asprintf("autotrimLevel(): %d\n",autotrimLevel());
   ret+="Name: "+name()+"\n";
 
   return ret;
@@ -377,13 +377,13 @@ void RDSettings::clear()
 QString RDSettings::SqlFields() const
 {
   return QString("`NAME`=")+"\""+RDEscapeString(set_name)+"\","+
-    QString().sprintf("`FORMAT`=%u,",set_format)+
-    QString().sprintf("`CHANNELS`=%u,",set_channels)+
-    QString().sprintf("`SAMPLE_RATE`=%u,",set_sample_rate)+
-    QString().sprintf("`BIT_RATE`=%u,",set_bit_rate)+
-    QString().sprintf("`QUALITY`=%u,",set_quality)+
-    QString().sprintf("`NORMALIZATION_LEVEL`=%d,",set_normalization_level)+
-    QString().sprintf("`AUTOTRIM_LEVEL`=%d ",set_autotrim_level);
+    QString::asprintf("`FORMAT`=%u,",set_format)+
+    QString::asprintf("`CHANNELS`=%u,",set_channels)+
+    QString::asprintf("`SAMPLE_RATE`=%u,",set_sample_rate)+
+    QString::asprintf("`BIT_RATE`=%u,",set_bit_rate)+
+    QString::asprintf("`QUALITY`=%u,",set_quality)+
+    QString::asprintf("`NORMALIZATION_LEVEL`=%d,",set_normalization_level)+
+    QString::asprintf("`AUTOTRIM_LEVEL`=%d ",set_autotrim_level);
 }
 
 
@@ -402,7 +402,7 @@ QString RDSettings::MakeNewName() const
       "`NAME`='"+RDEscapeString(ret)+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      ret="["+QObject::tr("new profile")+QString().sprintf(" %d]",++count);
+      ret="["+QObject::tr("new profile")+QString::asprintf(" %d]",++count);
     }
     else {
       unique=true;

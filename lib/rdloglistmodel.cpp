@@ -331,7 +331,7 @@ void RDLogListModel::updateRow(int row,RDSqlQuery *q)
   }
 
   // Tracks
-  texts.push_back(QString().sprintf("%d / %d",
+  texts.push_back(QString::asprintf("%d / %d",
 				    q->value(7).toInt(),
 				    q->value(8).toInt()));
   if(q->value(8).toInt()==0) {

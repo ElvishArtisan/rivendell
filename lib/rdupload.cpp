@@ -252,7 +252,7 @@ bool RDUpload::aborting() const
 
 QString RDUpload::errorText(RDUpload::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown RDUpload Error [%u]",err);
+  QString ret=QString::asprintf("Unknown RDUpload Error [%u]",err);
 
   switch(err) {
   case RDUpload::ErrorOk:

@@ -159,7 +159,7 @@ void ListPypads::addData()
   }
   else {
     sql=QString("delete from `PYPAD_INSTANCES` where ")+
-      QString().sprintf("`ID`=%u",id);
+      QString::asprintf("`ID`=%u",id);
     RDSqlQuery::apply(sql);
   }
   delete d;
@@ -201,7 +201,7 @@ void ListPypads::deleteData()
     return;
   }
   sql=QString("delete from `PYPAD_INSTANCES` where ")+
-    QString().sprintf("`ID`=%d",id);
+    QString::asprintf("`ID`=%d",id);
   RDSqlQuery::apply(sql);
   list_list_model->removeInstance(id);
   RDNotification notify=

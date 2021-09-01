@@ -163,7 +163,7 @@ void SchedRulesModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where RULE_LINES.ID=%u",d_ids.at(row.row()));
+      QString::asprintf("where RULE_LINES.ID=%u",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -212,7 +212,7 @@ void SchedRulesModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where `RULE_LINES`.`ID`=%u",d_ids.at(line)); 
+      QString::asprintf("where `RULE_LINES`.`ID`=%u",d_ids.at(line)); 
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -232,10 +232,10 @@ void SchedRulesModel::updateRow(int row,RDSqlQuery *q)
   texts.push_back(q->value(1));
 
   // Max in a Row
-  texts.push_back(QString().sprintf("%u",q->value(2).toUInt()));
+  texts.push_back(QString::asprintf("%u",q->value(2).toUInt()));
 
   // Min. Wait
-  texts.push_back(QString().sprintf("%u",q->value(3).toUInt()));
+  texts.push_back(QString::asprintf("%u",q->value(3).toUInt()));
 
   // Do not schedule after
   texts.push_back(q->value(4));

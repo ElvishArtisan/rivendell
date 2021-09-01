@@ -61,7 +61,7 @@ BtAdms4422::BtAdms4422(RDMatrix *matrix,QObject *parent)
     if(bt_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite)) {
       // Set Mix Mode
       bt_device->
-	write(QString().sprintf("*%uUM0\r\n",BTADMS4422_UNIT_ID).toUtf8());
+	write(QString::asprintf("*%uUM0\r\n",BTADMS4422_UNIT_ID).toUtf8());
     }
     else {
       rda->syslog(LOG_WARNING,"failed to open port \"%s\"",

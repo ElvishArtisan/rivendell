@@ -712,7 +712,7 @@ void DiskRipper::mediaChangedData()
     rip_end_track.push_back(-1);
     rip_wave_datas.push_back(new RDWaveData());
     rip_wave_datas.back()->
-      setTitle(tr("Track")+QString().sprintf(" %d",rip_cdrom->tracks()-i+1));
+      setTitle(tr("Track")+QString::asprintf(" %d",rip_cdrom->tracks()-i+1));
   }
   rip_disc_record.clear();
   rip_cdrom->setCddbRecord(&rip_disc_record);
@@ -906,7 +906,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   rip_cutname=cutname;
   if(title.isEmpty()) {
     rip_trackbar_label->setText(tr("Track Progress")+" - "+tr("Track")+
-				QString().sprintf(" %d",track));
+				QString::asprintf(" %d",track));
   }
   else {
     rip_trackbar_label->setText(tr("Track Progress")+" - "+title);
@@ -1030,7 +1030,7 @@ QString DiskRipper::BuildTrackName(int start_track,int end_track) const
     if(track==start_track) {
       ret=rip_track_model->data(row.sibling(row.row(),2)).toString();
       if(ret.isEmpty()) {
-	ret=tr("Track")+QString().sprintf(" %d",start_track);
+	ret=tr("Track")+QString::asprintf(" %d",start_track);
       }
     }
     else {
@@ -1039,7 +1039,7 @@ QString DiskRipper::BuildTrackName(int start_track,int end_track) const
 	if(rip_track_model->data(row.sibling(row.row(),2)).toString().
 	   isEmpty()) {
 	  ret+=" / "+tr("Track")+
-	    QString().sprintf(" %d",track);
+	    QString::asprintf(" %d",track);
 	}
 	else {
 	  ret+=" / "+rip_track_model->data(row.sibling(row.row(),2)).toString();

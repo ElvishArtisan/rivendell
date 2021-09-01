@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the StarGuide III Satellite Receiver
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,7 +48,7 @@ StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent)
     "`CHANNEL_MODE` "+  // 03
     "from `INPUTS`  where "+
     "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
-    QString().sprintf("`MATRIX`=%d ",matrix->matrix())+
+    QString::asprintf("`MATRIX`=%d ",matrix->matrix())+
     "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   q->first();

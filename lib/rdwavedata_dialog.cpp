@@ -2,7 +2,7 @@
 //
 // A dialog to edit the contents of an RDWaveData.
 //
-//   (C) Copyright 2014-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2014-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -211,7 +211,7 @@ int RDWaveDataDialog::exec(RDWaveData *data)
   wave_title_edit->setText(wave_data->title());
   wave_artist_edit->setText(wave_data->artist());
   if(wave_data->releaseYear()>0) {
-    wave_year_edit->setText(QString().sprintf("%d",wave_data->releaseYear()));
+    wave_year_edit->setText(QString::asprintf("%d",wave_data->releaseYear()));
   }
   wave_usage_box->setCurrentIndex(wave_data->usageCode());
   wave_songid_edit->setText(wave_data->tmciSongId());

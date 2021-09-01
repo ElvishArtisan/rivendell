@@ -2,7 +2,7 @@
 //
 // Get the trim points for an audio cut.
 //
-//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -101,7 +101,7 @@ RDTrimAudio::ErrorCode RDTrimAudio::runTrim(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_TRIMAUDIO).toUtf8().
+	       QString::asprintf("%u",RDXPORT_COMMAND_TRIMAUDIO).toUtf8().
 	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -112,15 +112,15 @@ RDTrimAudio::ErrorCode RDTrimAudio::runTrim(const QString &username,
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_cart_number).toUtf8().constData(),
+	       QString::asprintf("%u",conv_cart_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_cut_number).toUtf8().constData(),
+	       QString::asprintf("%u",conv_cut_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"TRIM_LEVEL",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_trim_level).toUtf8().constData(),
+	       QString::asprintf("%u",conv_trim_level).toUtf8().constData(),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     curl_formfree(first);
@@ -188,7 +188,7 @@ RDTrimAudio::ErrorCode RDTrimAudio::runTrim(const QString &username,
 
 QString RDTrimAudio::errorText(RDTrimAudio::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown RDTrimAudio Error [%u]",err);
+  QString ret=QString::asprintf("Unknown RDTrimAudio Error [%u]",err);
 
   switch(err) {
   case RDTrimAudio::ErrorOk:

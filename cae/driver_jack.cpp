@@ -459,7 +459,7 @@ bool DriverJack::initialize(unsigned *next_cardnum)
     return false;
   }
   jack_card=*next_cardnum;
-  QString name=QString().sprintf("rivendell_%d",jack_card);
+  QString name=QString::asprintf("rivendell_%d",jack_card);
 
   //
   // Start Jack Server
@@ -655,22 +655,22 @@ bool DriverJack::initialize(unsigned *next_cardnum)
     }
   }
   for(int i=0;i<rda->station()->jackPorts();i++) {
-    name=QString().sprintf("playout_%dL",i);
+    name=QString::asprintf("playout_%dL",i);
     jack_output_port[i][0]=
       jack_port_register(jack_client,name.toUtf8(),
 			 JACK_DEFAULT_AUDIO_TYPE,
 			 JackPortIsOutput|JackPortIsTerminal,0);
-    name=QString().sprintf("playout_%dR",i);
+    name=QString::asprintf("playout_%dR",i);
     jack_output_port[i][1]=
       jack_port_register(jack_client,name.toUtf8(),
 			 JACK_DEFAULT_AUDIO_TYPE,
 			 JackPortIsOutput|JackPortIsTerminal,0);
-    name=QString().sprintf("record_%dL",i);
+    name=QString::asprintf("record_%dL",i);
     jack_input_port[i][0]=
       jack_port_register(jack_client,name.toUtf8(),
 			 JACK_DEFAULT_AUDIO_TYPE,
 			 JackPortIsInput|JackPortIsTerminal,0);
-    name=QString().sprintf("record_%dR",i);
+    name=QString::asprintf("record_%dR",i);
     jack_input_port[i][1]=
       jack_port_register(jack_client,name.toUtf8(),
 			 JACK_DEFAULT_AUDIO_TYPE,
@@ -1732,8 +1732,8 @@ void DriverJack::JackSessionSetup()
 	     (const char *)src.toUtf8(),(const char *)dest.toUtf8());
     }
     count++;
-    src_tag=QString().sprintf("Source%d",count+1);
-    dest_tag=QString().sprintf("Destination%d",count+1);
+    src_tag=QString::asprintf("Source%d",count+1);
+    dest_tag=QString::asprintf("Destination%d",count+1);
     src=profile->stringValue("JackSession",src_tag,"",&src_ok);
     dest=profile->stringValue("JackSession",dest_tag,"",&dest_ok);
   }

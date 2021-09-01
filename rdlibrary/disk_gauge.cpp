@@ -83,7 +83,7 @@ void DiskGauge::update()
     uint64_t total_min=GetMinutes(conv->totalBytes());
     disk_bar->setMaximum(total_min);
     disk_bar->setValue(free_min);
-    disk_space_label->setText(QString().sprintf("%luh %02lum",free_min/60,
+    disk_space_label->setText(QString::asprintf("%luh %02lum",free_min/60,
 						free_min-60*(free_min/60)));
     disk_label->setEnabled(true);
     disk_bar->setEnabled(true);

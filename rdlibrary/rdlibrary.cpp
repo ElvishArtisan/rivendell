@@ -356,7 +356,7 @@ void MainWidget::addData()
   delete add_cart;
 
   sql=QString("insert into `CART` set ")+
-    QString().sprintf("`NUMBER`=%u,`TYPE`=%d,",cart_num,cart_type)+
+    QString::asprintf("`NUMBER`=%u,`TYPE`=%d,",cart_num,cart_type)+
     "`GROUP_NAME`='"+RDEscapeString(lib_default_group)+"',"+
     "`TITLE`='"+RDEscapeString(cart_title)+"'";
   q=new RDSqlQuery(sql);
@@ -460,12 +460,12 @@ void MainWidget::deleteData()
     sql=QString("select ")+
       "`CUT_NAME` "+  // 00
       "from `RECORDINGS` where "+
-      QString().sprintf("(`CUT_NAME` like '%06u_%%')||",cartnum)+
-      QString().sprintf("(`MACRO_CART`=%u)",cartnum);
+      QString::asprintf("(`CUT_NAME` like '%06u_%%')||",cartnum)+
+      QString::asprintf("(`MACRO_CART`=%u)",cartnum);
     q=new RDSqlQuery(sql);
     if(q->first()) {
       QString str=tr("Cart")+
-	QString().sprintf(" %06u ",cartnum)+
+	QString::asprintf(" %06u ",cartnum)+
 	tr("is used in one or more RDCatch events!")+"\n"+
 	tr("Do you still want to delete it?");
       if(QMessageBox::warning(this,"RDLibrary - "+tr("RDCatch Event Exists"),
@@ -486,7 +486,7 @@ void MainWidget::deleteData()
     for(int i=0;i<carts.size();i++) {
       unsigned cartnum=lib_cart_model->cartNumber(carts.at(i));
       if(cartnum==cut_clipboard->cartNumber()) {
-      	QString str=tr("Deleting cart")+QString().sprintf(" %06u ",cartnum)+
+      	QString str=tr("Deleting cart")+QString::asprintf(" %06u ",cartnum)+
 	  tr("will also empty the clipboard.")+"\n"+
 	  tr("Do you still want to proceed?");
         if(QMessageBox::question(this,"RDLibrary - "+tr("Empty Clipboard"),
@@ -508,7 +508,7 @@ void MainWidget::deleteData()
   for(int i=0;i<carts.size();i++) {
     unsigned cartnum=lib_cart_model->cartNumber(carts.at(i));
     if(!lib_cart_model->cartOwnedBy(carts.at(i)).isEmpty()) {
-      QString str=tr("Cart")+QString().sprintf(" %06u ",cartnum)+
+      QString str=tr("Cart")+QString::asprintf(" %06u ",cartnum)+
 	tr("is a voicetrack belonging to log")+" \""+
 	lib_cart_model->cartOwnedBy(carts.at(i))+"\".\n"+tr("It cannot be deleted here!");
       QMessageBox::information(this,"RDLibrary - "+tr("Voicetrack Found"),str);
@@ -689,7 +689,7 @@ void MainWidget::notificationReceivedData(RDNotification *notify)
     unsigned cartnum=notify->id().toUInt();
     switch(notify->action()) {
     case RDNotification::AddAction:
-      and_fields.push_back(QString().sprintf("CART.NUMBER=%u",cartnum));
+      and_fields.push_back(QString::asprintf("CART.NUMBER=%u",cartnum));
       sql=QString("select ")+
 	"`CART`.`NUMBER` "+  // 00
 	"from `CART` "+

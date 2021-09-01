@@ -119,27 +119,27 @@ int EditVguestResource::exec(RDMatrix::VguestType type,unsigned id)
     "`RELAY_NUM`,"+    // 03
     "`BUSS_NUM` "+     // 04
     "from `VGUEST_RESOURCES` where "+
-    QString().sprintf("`ID`=%u",id);
+    QString::asprintf("`ID`=%u",id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(0).toInt()>=0) {
       edit_enginenum_edit->
-	setText(QString().sprintf("%d",q->value(0).toInt()));
+	setText(QString::asprintf("%d",q->value(0).toInt()));
     }
     if(q->value(1).toInt()>=0) {
       edit_devicenum_edit->
-	setText(QString().sprintf("%04X",q->value(1).toInt()));
+	setText(QString::asprintf("%04X",q->value(1).toInt()));
     }
     if(q->value(2).toInt()>=0) {
       edit_surfacenum_edit->
-	setText(QString().sprintf("%d",q->value(2).toInt()));
+	setText(QString::asprintf("%d",q->value(2).toInt()));
     }
     switch(edit_type) {
     case RDMatrix::VguestTypeRelay:
       setWindowTitle("RDAdmin - "+tr("Edit vGuest Switch"));
       if(q->value(3).toInt()>=0) {
 	edit_relaynum_edit->
-	  setText(QString().sprintf("%d",q->value(3).toInt()));
+	  setText(QString::asprintf("%d",q->value(3).toInt()));
       }
       break;
 
@@ -206,11 +206,11 @@ void EditVguestResource::okData()
     }
   }
   QString sql=QString("update `VGUEST_RESOURCES` set ")+
-    QString().sprintf("`ENGINE_NUM`=%d,",enginenum)+
-    QString().sprintf("`DEVICE_NUM`=%d,",devicenum)+
-    QString().sprintf("`SURFACE_NUM`=%d,",surfacenum)+
-    QString().sprintf("`RELAY_NUM`=%d ",relaynum)+
-    QString().sprintf("where `ID`=%u",edit_id);
+    QString::asprintf("`ENGINE_NUM`=%d,",enginenum)+
+    QString::asprintf("`DEVICE_NUM`=%d,",devicenum)+
+    QString::asprintf("`SURFACE_NUM`=%d,",surfacenum)+
+    QString::asprintf("`RELAY_NUM`=%d ",relaynum)+
+    QString::asprintf("where `ID`=%u",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

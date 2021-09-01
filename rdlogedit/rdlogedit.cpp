@@ -326,7 +326,7 @@ void MainWidget::deleteData()
       if(tracks>0) {
 	if(QMessageBox::question(this,"RDLogEdit - "+tr("Tracks Exist"),
 				 tr("This will also delete the")+
-			       QString().sprintf(" %u ",tracks)+
+			       QString::asprintf(" %u ",tracks)+
 				 tr("voice tracks associated with this log.")+
 				 "\n"+tr("Continue?"),
 				 QMessageBox::Yes,QMessageBox::No)!=
@@ -338,7 +338,7 @@ void MainWidget::deleteData()
     else {
       if(QMessageBox::question(this,"RDLogEdit - "+tr("Delete Log"),
 			       tr("Are you sure you want to delete these")+
-			       QString().sprintf(" %d ",rows.size())+
+			       QString::asprintf(" %d ",rows.size())+
 			       tr("logs?"),QMessageBox::Yes,QMessageBox::No)!=
 	 QMessageBox::Yes) {
 	return;
@@ -346,7 +346,7 @@ void MainWidget::deleteData()
       if(tracks>0) {
 	if(QMessageBox::question(this,"RDLogEdit - "+tr("Tracks Exist"),
 				 tr("This will also delete the")+
-			       QString().sprintf(" %u ",tracks)+
+			       QString::asprintf(" %u ",tracks)+
 				 tr("voice tracks associated with these logs.")+
 				 "\n"+tr("Continue?"),
 				 QMessageBox::Yes,QMessageBox::No)!=
@@ -531,7 +531,7 @@ void MainWidget::reportData()
     // Voice Tracks
     //
     report+=
-      QString().sprintf("%3u/%-3u ",q->value(7).toUInt(),q->value(8).toUInt());
+      QString::asprintf("%3u/%-3u ",q->value(7).toUInt(),q->value(8).toUInt());
     
     //
     // Start Date

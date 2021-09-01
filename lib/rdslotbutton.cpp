@@ -107,7 +107,7 @@ void RDSlotButton::WriteKeycap()
   p->drawText((w-p->fontMetrics().width(QString().
 					sprintf("%d",1+d_slot_number)))/2,
 	      p->fontMetrics().height(),
-	      QString().sprintf("%d",1+d_slot_number));
+	      QString::asprintf("%d",1+d_slot_number));
 
   p->setFont(bigLabelFont());
   p->drawText((w-p->fontMetrics().width(d_port_label))/2,

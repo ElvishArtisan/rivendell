@@ -260,13 +260,13 @@ void ImportCartsModel::setCartNumber(const QModelIndex &row,unsigned cartnum)
 {
   if(d_texts.at(row.row()).at(0).toString().toUInt()!=cartnum) {
     int total_len=totalLength();
-    d_texts[row.row()][0]=QString().sprintf("%06u",cartnum);
+    d_texts[row.row()][0]=QString::asprintf("%06u",cartnum);
     QString sql=QString("select ")+
       "`NUMBER`,"          // 00
       "`TYPE`,"+           // 01
       "`FORCED_LENGTH` "+  // 02
       "from `CART` where "+
-      QString().sprintf("`NUMBER`=%u",cartnum);
+      QString::asprintf("`NUMBER`=%u",cartnum);
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       d_texts[row.row()][3]=q->value(0);
@@ -336,7 +336,7 @@ void ImportCartsModel::save(RDLogLine::TransType first_trans)
 {
   QString sql=QString("delete from `EVENT_LINES` where ")+
     "`EVENT_NAME`='"+RDEscapeString(d_event_name)+"' && "+
-    QString().sprintf("`TYPE`=%u",d_import_type);
+    QString::asprintf("`TYPE`=%u",d_import_type);
   RDSqlQuery::apply(sql);
 
   for(int i=0;i<lineCount();i++) {
@@ -347,14 +347,14 @@ void ImportCartsModel::save(RDLogLine::TransType first_trans)
     }
     sql=QString("insert into `EVENT_LINES` set ")+
       "`EVENT_NAME`='"+RDEscapeString(d_event_name)+"',"+\
-      QString().sprintf("`TYPE`=%u,",d_import_type)+
-      QString().sprintf("`COUNT`=%d,",i)+
-      QString().sprintf("`EVENT_TYPE`=%u,",d_event_types.at(i));
+      QString::asprintf("`TYPE`=%u,",d_import_type)+
+      QString::asprintf("`COUNT`=%d,",i)+
+      QString::asprintf("`EVENT_TYPE`=%u,",d_event_types.at(i));
     if((i==0)&&(first_trans!=RDLogLine::NoTrans)) {
-      sql+=QString().sprintf("`TRANS_TYPE`=%u,",first_trans);
+      sql+=QString::asprintf("`TRANS_TYPE`=%u,",first_trans);
     }
     else {
-      sql+=QString().sprintf("`TRANS_TYPE`=%u,",d_trans_types.at(i));
+      sql+=QString::asprintf("`TRANS_TYPE`=%u,",d_trans_types.at(i));
     }
     switch(d_event_types.at(i)) {
     case RDLogLine::Cart:
@@ -409,7 +409,7 @@ QModelIndex ImportCartsModel::processCartDrop(int line,RDLogLine *ll)
     for(int i=0;i<columnCount();i++) {
       list.push_back(QVariant());
     }
-    list[0]=QString().sprintf("%06u",ll->cartNumber());
+    list[0]=QString::asprintf("%06u",ll->cartNumber());
     list[1]=ll->groupName();
     list[2]=RDGetTimeLength(ll->forcedLength(),false,false);
     list[3]=ll->title();
@@ -489,7 +489,7 @@ void ImportCartsModel::updateModel()
 
   sql=sqlFields()+"where "+
     "`EVENT_LINES`.`EVENT_NAME`='"+RDEscapeString(d_event_name)+"' && "+
-    QString().sprintf("`EVENT_LINES`.`TYPE`=%u ",d_import_type)+
+    QString::asprintf("`EVENT_LINES`.`TYPE`=%u ",d_import_type)+
     "order by `EVENT_LINES`.`COUNT` ";
   beginResetModel();
   d_marker_comments.clear();
@@ -545,7 +545,7 @@ void ImportCartsModel::updateRow(int row,RDSqlQuery *q)
   case RDLogLine::Cart:
   case RDLogLine::Macro:
     // Cart
-    texts.push_back(QString().sprintf("%06u",q->value(2).toUInt()));
+    texts.push_back(QString::asprintf("%06u",q->value(2).toUInt()));
 
     // Group
     texts.push_back(q->value(3));

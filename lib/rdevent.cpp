@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -311,7 +311,7 @@ void RDEvent::SetRow(const QString &param,int value) const
   QString sql;
 
   sql=QString("update `EVENTS` set `")+
-    param+QString().sprintf("`=%d where ",value)+
+    param+QString::asprintf("`=%d where ",value)+
     "`NAME`='"+RDEscapeString(event_name)+"'";
   q=new RDSqlQuery(sql);
   delete q;

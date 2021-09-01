@@ -46,7 +46,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_dropbox=new RDDropbox(id);
 
   setWindowTitle("RDAdmin - "+tr("Dropbox Configuration")+" ["+
-		 tr("ID")+QString().sprintf(": %d]",id));
+		 tr("ID")+QString::asprintf(": %d]",id));
 
   //
   // Dialogs
@@ -415,7 +415,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_group_name_box->setCurrentText(box_dropbox->groupName());
   box_path_edit->setText(box_dropbox->path());
   if(box_dropbox->toCart()>0) {
-    box_to_cart_edit->setText(QString().sprintf("%06u",box_dropbox->toCart()));
+    box_to_cart_edit->setText(QString::asprintf("%06u",box_dropbox->toCart()));
   }
   box_delete_cuts_box->setChecked(box_dropbox->deleteCuts());
   box_metadata_pattern_edit->setText(box_dropbox->metadataPattern());
@@ -453,7 +453,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_segue_length_spin->setValue(box_dropbox->segueLength());
 
   sql=QString("select `SCHED_CODE` from `DROPBOX_SCHED_CODES` ")+
-    QString().sprintf("where `DROPBOX_ID`=%d",box_dropbox->id());
+    QString::asprintf("where `DROPBOX_ID`=%d",box_dropbox->id());
   q=new RDSqlQuery(sql);
   while(q->next()) {
     box_schedcodes.push_back(q->value(0).toString());
@@ -509,7 +509,7 @@ void EditDropbox::selectCartData()
   int cartnum=box_to_cart_edit->text().toInt();
   admin_cart_dialog->exec(&cartnum,RDCart::Audio,QString(),NULL);
   if(cartnum>0) {
-    box_to_cart_edit->setText(QString().sprintf("%06d",cartnum));
+    box_to_cart_edit->setText(QString::asprintf("%06d",cartnum));
   }
 }
 
@@ -583,7 +583,7 @@ void EditDropbox::resetData()
     return;
   }
   QString sql=QString("delete from `DROPBOX_PATHS` where ")+
-    QString().sprintf("`DROPBOX_ID`=%d",box_dropbox->id());
+    QString::asprintf("`DROPBOX_ID`=%d",box_dropbox->id());
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
   QMessageBox::information(this,"RDAdmin - "+tr("Reset Dropbox"),
@@ -655,12 +655,12 @@ void EditDropbox::okData()
   }
 
   sql=QString("delete from `DROPBOX_SCHED_CODES` where ")+
-    QString().sprintf("`DROPBOX_ID`=%d",box_dropbox->id());
+    QString::asprintf("`DROPBOX_ID`=%d",box_dropbox->id());
   RDSqlQuery::apply(sql);
 
   for(int i=0;i<box_schedcodes.size();i++) {
     sql=QString("insert into `DROPBOX_SCHED_CODES` set ")+
-      QString().sprintf("`DROPBOX_ID`=%d,",box_dropbox->id())+
+      QString::asprintf("`DROPBOX_ID`=%d,",box_dropbox->id())+
       "`SCHED_CODE`='"+RDEscapeString(box_schedcodes[i])+"'";
     RDSqlQuery::apply(sql);
   }

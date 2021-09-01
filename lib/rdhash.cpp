@@ -42,7 +42,7 @@ QString __RDSha1Hash_MakePasswordHash(const QString &secret,const QString &salt)
   SHA1_Final(md,&ctx);
   QString ret=salt;
   for(int i=0;i<SHA_DIGEST_LENGTH;i++) {
-    ret+=QString().sprintf("%02x",0xff&md[i]);
+    ret+=QString::asprintf("%02x",0xff&md[i]);
   }
   
   return ret;
@@ -71,7 +71,7 @@ QString RDSha1HashFile(const QString &filename,bool throttle)
   SHA1_Final(md,&ctx);
   ret="";
   for(int i=0;i<SHA_DIGEST_LENGTH;i++) {
-    ret+=QString().sprintf("%02x",0xff&md[i]);
+    ret+=QString::asprintf("%02x",0xff&md[i]);
   }
 
   return ret;
@@ -85,7 +85,7 @@ QString RDSha1HashPassword(const QString &secret)
   // Create a salt value
   //
   srand(QDateTime::currentDateTime().toMSecsSinceEpoch());
-  QString salt=QString().sprintf("%08x",rand());
+  QString salt=QString::asprintf("%08x",rand());
 
   //
   // Generate the hash

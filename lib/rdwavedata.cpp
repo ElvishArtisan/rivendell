@@ -1137,7 +1137,7 @@ QString RDWaveData::dump() const
   //
   // Cart-level attributes
   //
-  ret+=QString().sprintf("cartNumber: %06u\n",cartNumber());
+  ret+=QString::asprintf("cartNumber: %06u\n",cartNumber());
   ret+="cartType: "+RDWaveData::cartTypeText(cartType())+"\n";
   ret+="category: "+category()+"\n";
   ret+="title: "+title()+"\n";
@@ -1151,7 +1151,7 @@ QString RDWaveData::dump() const
   ret+="conductor: "+conductor()+"\n";
   ret+="userDefined: "+userDefined()+"\n";
   if(releaseYear()>0) {
-    ret+=QString().sprintf("year: %d\n",releaseYear());
+    ret+=QString::asprintf("year: %d\n",releaseYear());
   }
   else {
     ret+="year:\n";
@@ -1163,8 +1163,8 @@ QString RDWaveData::dump() const
   ret+=
     "averageSegueLength: "+RDGetTimeLength(averageSegueLength(),true,true)+"\n";
   ret+="averageHookLength: "+RDGetTimeLength(averageHookLength(),true,true)+"\n";
-  ret+=QString().sprintf("cutQuantity: %d\n",cutQuantity());
-  ret+=QString().sprintf("lastCutPlayed: %d\n",lastCutPlayed());
+  ret+=QString::asprintf("cutQuantity: %d\n",cutQuantity());
+  ret+=QString::asprintf("lastCutPlayed: %d\n",lastCutPlayed());
   if(enforceLength()) {
     ret+="enforceLength: true\n";
   }
@@ -1185,7 +1185,7 @@ QString RDWaveData::dump() const
   // Cut-level attributes
   //
   ret+="cutName: "+cutName()+"\n";
-  ret+=QString().sprintf("cutNumber: %d\n",cutNumber());
+  ret+=QString::asprintf("cutNumber: %d\n",cutNumber());
   ret+="description: "+description()+"\n";
   ret+="outcue: "+outCue()+"\n";
   if(evergreen()) {
@@ -1198,7 +1198,7 @@ QString RDWaveData::dump() const
   ret+="isci: "+isci()+"\n";
   ret+="recordingMbId: "+recordingMbId()+"\n";
   ret+="releaseMbId: "+releaseMbId()+"\n";
-  ret+=QString().sprintf("length: %d\n",length());
+  ret+=QString::asprintf("length: %d\n",length());
   ret+="originator: "+originator()+"\n";
   ret+="originationDate: "+originationDate().toString("yyyy-MM-dd")+"\n";
   ret+="originationTime: "+originationTime().toString("hh:mm:ss")+"\n";
@@ -1245,28 +1245,28 @@ QString RDWaveData::dump() const
     ret+=lastPlayDatetime().toString("yyyy-MM-dd hh:mm:ss");
   }
   ret+="\n";
-  ret+=QString().sprintf("weight: %d\n",weight());
-  ret+=QString().sprintf("playCounter: %d\n",playCounter());
-  ret+=QString().sprintf("audioSettings::format: %u\n",
+  ret+=QString::asprintf("weight: %d\n",weight());
+  ret+=QString::asprintf("playCounter: %d\n",playCounter());
+  ret+=QString::asprintf("audioSettings::format: %u\n",
 			 audioSettings().format());
-  ret+=QString().sprintf("audioSettings::sampleRate: %u\n",
+  ret+=QString::asprintf("audioSettings::sampleRate: %u\n",
 			 audioSettings().sampleRate());
-  ret+=QString().sprintf("audioSettings::bitRate: %u\n",
+  ret+=QString::asprintf("audioSettings::bitRate: %u\n",
 			 audioSettings().bitRate());
-  ret+=QString().sprintf("audioSettings::channels: %u\n",
+  ret+=QString::asprintf("audioSettings::channels: %u\n",
 			 audioSettings().channels());
-  ret+=QString().sprintf("playGain: %d\n",playGain());
-  ret+=QString().sprintf("startPos: %d\n",startPos());
-  ret+=QString().sprintf("endPos: %d\n",endPos());
-  ret+=QString().sprintf("segueStartPos: %d\n",segueStartPos());
-  ret+=QString().sprintf("segueEndPos: %d\n",segueEndPos());
-  ret+=QString().sprintf("segueGain: %d\n",segueGain());
-  ret+=QString().sprintf("talkStartPos: %d\n",talkStartPos());
-  ret+=QString().sprintf("talkEndPos: %d\n",talkEndPos());
-  ret+=QString().sprintf("hookStartPos: %d\n",hookStartPos());
-  ret+=QString().sprintf("hookEndPos: %d\n",hookEndPos());
-  ret+=QString().sprintf("fadeUpPos: %d\n",fadeUpPos());
-  ret+=QString().sprintf("fadeDownPos: %d\n",fadeDownPos());
+  ret+=QString::asprintf("playGain: %d\n",playGain());
+  ret+=QString::asprintf("startPos: %d\n",startPos());
+  ret+=QString::asprintf("endPos: %d\n",endPos());
+  ret+=QString::asprintf("segueStartPos: %d\n",segueStartPos());
+  ret+=QString::asprintf("segueEndPos: %d\n",segueEndPos());
+  ret+=QString::asprintf("segueGain: %d\n",segueGain());
+  ret+=QString::asprintf("talkStartPos: %d\n",talkStartPos());
+  ret+=QString::asprintf("talkEndPos: %d\n",talkEndPos());
+  ret+=QString::asprintf("hookStartPos: %d\n",hookStartPos());
+  ret+=QString::asprintf("hookEndPos: %d\n",hookEndPos());
+  ret+=QString::asprintf("fadeUpPos: %d\n",fadeUpPos());
+  ret+=QString::asprintf("fadeDownPos: %d\n",fadeDownPos());
   ret+="\n";
 
   return ret;

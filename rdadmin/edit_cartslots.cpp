@@ -277,7 +277,7 @@ void EditCartSlots::quantityChangedData(int index)
   edit_slot_box->clear();
   for(int i=0;i<slot_quan;i++) {
     edit_slot_box->insertItem(edit_slot_box->count(),
-			      QString().sprintf("%d",i+1));
+			      QString::asprintf("%d",i+1));
     if(i==slot) {
       edit_slot_box->setCurrentIndex(i);
     }
@@ -347,7 +347,7 @@ void EditCartSlots::cartSelectData()
   int cartnum=edit_cart_edit->text().toInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::All,QString(),NULL)==0) {
-    edit_cart_edit->setText(QString().sprintf("%06d",cartnum));
+    edit_cart_edit->setText(QString::asprintf("%06d",cartnum));
   }
 }
 
@@ -389,7 +389,7 @@ void EditCartSlots::ReadSlot(unsigned slotnum)
     "`SERVICE_NAME` "+         // 07
     "from `CARTSLOTS` where "+
     "(`STATION_NAME`='"+RDEscapeString(edit_station->name())+"')&&"+
-    QString().sprintf("(`SLOT_NUMBER`=%u)",slotnum);
+    QString::asprintf("(`SLOT_NUMBER`=%u)",slotnum);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     edit_card_spin->setValue(q->value(0).toInt());
@@ -410,7 +410,7 @@ void EditCartSlots::ReadSlot(unsigned slotnum)
 
     default:
       edit_cartaction_box->setCurrentIndex(2);
-      edit_cart_edit->setText(QString().sprintf("%06d",q->value(6).toInt()));
+      edit_cart_edit->setText(QString::asprintf("%06d",q->value(6).toInt()));
     }
     cartActionData(edit_cartaction_box->currentIndex());
     modeData(edit_mode_box->currentIndex());
@@ -429,14 +429,14 @@ void EditCartSlots::WriteSlot(unsigned slotnum)
   QString sql;
 
   sql=QString("update `CARTSLOTS` set ")+
-    QString().sprintf("`CARD`=%d,",edit_card_spin->value())+
-    QString().sprintf("`INPUT_PORT`=%d,",edit_input_spin->value())+
-    QString().sprintf("`OUTPUT_PORT`=%d,",edit_output_spin->value())+
-    QString().sprintf("`DEFAULT_MODE`=%d,",
+    QString::asprintf("`CARD`=%d,",edit_card_spin->value())+
+    QString::asprintf("`INPUT_PORT`=%d,",edit_input_spin->value())+
+    QString::asprintf("`OUTPUT_PORT`=%d,",edit_output_spin->value())+
+    QString::asprintf("`DEFAULT_MODE`=%d,",
 		      edit_mode_box->currentIndex()-1)+
-    QString().sprintf("`DEFAULT_HOOK_MODE`=%d,",
+    QString::asprintf("`DEFAULT_HOOK_MODE`=%d,",
 		      edit_play_mode_box->currentIndex()-1)+
-    QString().sprintf("`DEFAULT_STOP_ACTION`=%d,",
+    QString::asprintf("`DEFAULT_STOP_ACTION`=%d,",
 		      edit_stop_action_box->currentIndex()-1);
   switch(edit_cartaction_box->currentIndex()) {
   case 0:
@@ -448,12 +448,12 @@ void EditCartSlots::WriteSlot(unsigned slotnum)
     break;
 
   default:
-    sql+=QString().sprintf("`DEFAULT_CART_NUMBER`=%d,",
+    sql+=QString::asprintf("`DEFAULT_CART_NUMBER`=%d,",
 			   edit_cart_edit->text().toInt());
     break;
   }
   sql+="`SERVICE_NAME`='"+RDEscapeString(edit_service_box->currentText())+"' ";
   sql+="where (`STATION_NAME`='"+RDEscapeString(edit_station->name())+"')&&";
-  sql+=QString().sprintf("(`SLOT_NUMBER`=%u)",slotnum);
+  sql+=QString::asprintf("(`SLOT_NUMBER`=%u)",slotnum);
   RDSqlQuery::apply(sql);
 }

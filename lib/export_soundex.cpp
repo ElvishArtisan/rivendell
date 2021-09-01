@@ -97,9 +97,9 @@ bool RDReport::ExportSoundEx(const QString &filename,const QDate &startdate,
 	*strm << QString("\"")+isrc+"\",";
 	*strm << QString("\"")+album+"\",";
 	*strm << QString("\"")+label+"\",,";
-	*strm << QString().sprintf("%9.2f,",ath);
+	*strm << QString::asprintf("%9.2f,",ath);
 	*strm << QString("\"")+channel_name+"\",";
-	*strm << QString().sprintf("%d",plays);
+	*strm << QString::asprintf("%d",plays);
 	*strm << "\n";
       }
       plays=1;
@@ -140,9 +140,9 @@ bool RDReport::ExportSoundEx(const QString &filename,const QDate &startdate,
     *strm << QString("\"")+isrc+"\",";
     *strm << QString("\"")+album+"\",";
     *strm << QString("\"")+label+"\",,";
-    *strm << QString().sprintf("%9.2f,",ath);
+    *strm << QString::asprintf("%9.2f,",ath);
     *strm << QString("\"")+channel_name+"\",";
-    *strm << QString().sprintf("%d",plays);
+    *strm << QString::asprintf("%d",plays);
     *strm << "\n";
   }
   delete strm;

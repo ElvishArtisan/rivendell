@@ -90,7 +90,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
     air_start_line[i]=0;
     air_start_start[i]=false;
     for(unsigned j=0;j<rda->cmdSwitch()->keys();j++) {
-      if(rda->cmdSwitch()->key(j)==QString().sprintf("--log%u",i+1)) {
+      if(rda->cmdSwitch()->key(j)==QString::asprintf("--log%u",i+1)) {
 	air_start_logname[i]=rda->cmdSwitch()->value(j);
 	for(int k=0;k<rda->cmdSwitch()->value(j).length();k++) {
 	  if(rda->cmdSwitch()->value(j).at(k)==QChar(':')) {
@@ -972,14 +972,14 @@ void MainWidget::logChannelStartedData(int id,int mport,int card,int port)
 	switch(air_channel_gpio_types[RDAirPlayConf::MainLog1Channel]) {
 	case RDAirPlayConf::LevelGpio:
 	  air_event_player->
-	    exec(QString().sprintf("GO %d %d 1 0!",
+	    exec(QString::asprintf("GO %d %d 1 0!",
 		      air_start_gpo_matrices[RDAirPlayConf::MainLog1Channel],
 		      air_start_gpo_lines[RDAirPlayConf::MainLog1Channel]+1));
 	  break;
 
 	case RDAirPlayConf::EdgeGpio:
 	  air_event_player->
-	    exec(QString().sprintf("GO %d %d 1 300!",
+	    exec(QString::asprintf("GO %d %d 1 300!",
 		      air_start_gpo_matrices[RDAirPlayConf::MainLog1Channel],
 		      air_start_gpo_lines[RDAirPlayConf::MainLog1Channel]+1));
 	  break;
@@ -992,14 +992,14 @@ void MainWidget::logChannelStartedData(int id,int mport,int card,int port)
 	switch(air_channel_gpio_types[RDAirPlayConf::MainLog2Channel]) {
 	case RDAirPlayConf::LevelGpio:
 	  air_event_player->
-	    exec(QString().sprintf("GO %d %d 1 0!",
+	    exec(QString::asprintf("GO %d %d 1 0!",
 		      air_start_gpo_matrices[RDAirPlayConf::MainLog2Channel],
 		      air_start_gpo_lines[RDAirPlayConf::MainLog2Channel]+1));
 	  break;
 
 	case RDAirPlayConf::EdgeGpio:
 	  air_event_player->
-	    exec(QString().sprintf("GO %d %d 1 300!",
+	    exec(QString::asprintf("GO %d %d 1 300!",
 		      air_start_gpo_matrices[RDAirPlayConf::MainLog2Channel],
 		      air_start_gpo_lines[RDAirPlayConf::MainLog2Channel]+1));
 	  break;
@@ -1014,14 +1014,14 @@ void MainWidget::logChannelStartedData(int id,int mport,int card,int port)
       switch(air_channel_gpio_types[RDAirPlayConf::AuxLog1Channel]) {
       case RDAirPlayConf::LevelGpio:
 	air_event_player->
-	  exec(QString().sprintf("GO %d %d 1 0!",
+	  exec(QString::asprintf("GO %d %d 1 0!",
 		      air_start_gpo_matrices[RDAirPlayConf::AuxLog1Channel],
 		      air_start_gpo_lines[RDAirPlayConf::AuxLog1Channel]+1));
 	break;
 
       case RDAirPlayConf::EdgeGpio:
 	air_event_player->
-	  exec(QString().sprintf("GO %d %d 1 300!",
+	  exec(QString::asprintf("GO %d %d 1 300!",
 		      air_start_gpo_matrices[RDAirPlayConf::AuxLog1Channel],
 		      air_start_gpo_lines[RDAirPlayConf::AuxLog1Channel]+1));
 	break;
@@ -1034,14 +1034,14 @@ void MainWidget::logChannelStartedData(int id,int mport,int card,int port)
       switch(air_channel_gpio_types[RDAirPlayConf::AuxLog2Channel]) {
       case RDAirPlayConf::LevelGpio:
 	air_event_player->
-	  exec(QString().sprintf("GO %d %d 1 0!",
+	  exec(QString::asprintf("GO %d %d 1 0!",
 		      air_start_gpo_matrices[RDAirPlayConf::AuxLog2Channel],
 		      air_start_gpo_lines[RDAirPlayConf::AuxLog2Channel]+1));
 	break;
 
       case RDAirPlayConf::EdgeGpio:
 	air_event_player->
-	  exec(QString().sprintf("GO %d %d 1 300!",
+	  exec(QString::asprintf("GO %d %d 1 300!",
 		      air_start_gpo_matrices[RDAirPlayConf::AuxLog2Channel],
 		      air_start_gpo_lines[RDAirPlayConf::AuxLog2Channel]+1));
 	break;
@@ -1062,14 +1062,14 @@ void MainWidget::logChannelStoppedData(int id,int mport,int card,int port)
 	switch(air_channel_gpio_types[RDAirPlayConf::MainLog1Channel]) {
 	case RDAirPlayConf::LevelGpio:
 	  air_event_player->
-	    exec(QString().sprintf("GO %d %d 0 0!",
+	    exec(QString::asprintf("GO %d %d 0 0!",
 		      air_stop_gpo_matrices[RDAirPlayConf::MainLog1Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::MainLog1Channel]+1));
 	  break;
 
 	case RDAirPlayConf::EdgeGpio:
 	  air_event_player->
-	    exec(QString().sprintf("GO %d %d 1 300!",
+	    exec(QString::asprintf("GO %d %d 1 300!",
 		      air_stop_gpo_matrices[RDAirPlayConf::MainLog1Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::MainLog1Channel]+1));
 	  break;
@@ -1082,14 +1082,14 @@ void MainWidget::logChannelStoppedData(int id,int mport,int card,int port)
 	switch(air_channel_gpio_types[RDAirPlayConf::MainLog2Channel]) {
 	case RDAirPlayConf::LevelGpio:
 	  air_event_player->
-	    exec(QString().sprintf("GO %d %d 0 0!",
+	    exec(QString::asprintf("GO %d %d 0 0!",
 		      air_stop_gpo_matrices[RDAirPlayConf::MainLog2Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::MainLog2Channel]+1));
 	  break;
 
 	case RDAirPlayConf::EdgeGpio:
 	  air_event_player->
-	    exec(QString().sprintf("GO %d %d 1 300!",
+	    exec(QString::asprintf("GO %d %d 1 300!",
 		      air_stop_gpo_matrices[RDAirPlayConf::MainLog2Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::MainLog2Channel]+1));
 	  break;
@@ -1104,14 +1104,14 @@ void MainWidget::logChannelStoppedData(int id,int mport,int card,int port)
       switch(air_channel_gpio_types[RDAirPlayConf::AuxLog1Channel]) {
       case RDAirPlayConf::LevelGpio:
 	air_event_player->
-	  exec(QString().sprintf("GO %d %d 0 0!",
+	  exec(QString::asprintf("GO %d %d 0 0!",
 		      air_stop_gpo_matrices[RDAirPlayConf::AuxLog1Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::AuxLog1Channel]+1));
 	break;
 
       case RDAirPlayConf::EdgeGpio:
 	air_event_player->
-	  exec(QString().sprintf("GO %d %d 1 300!",
+	  exec(QString::asprintf("GO %d %d 1 300!",
 		      air_stop_gpo_matrices[RDAirPlayConf::AuxLog1Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::AuxLog1Channel]+1));
 	break;
@@ -1124,14 +1124,14 @@ void MainWidget::logChannelStoppedData(int id,int mport,int card,int port)
       switch(air_channel_gpio_types[RDAirPlayConf::AuxLog2Channel]) {
       case RDAirPlayConf::LevelGpio:
 	air_event_player->
-	  exec(QString().sprintf("GO %d %d 0 0!",
+	  exec(QString::asprintf("GO %d %d 0 0!",
 		      air_stop_gpo_matrices[RDAirPlayConf::AuxLog2Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::AuxLog2Channel]+1));
 	break;
 
       case RDAirPlayConf::EdgeGpio:
 	air_event_player->
-	  exec(QString().sprintf("GO %d %d 1 300!",
+	  exec(QString::asprintf("GO %d %d 1 300!",
 		      air_stop_gpo_matrices[RDAirPlayConf::AuxLog2Channel],
 		      air_stop_gpo_lines[RDAirPlayConf::AuxLog2Channel]+1));
 	break;
@@ -1152,14 +1152,14 @@ void MainWidget::panelChannelStartedData(int mport,int card,int port)
     switch(air_channel_gpio_types[chan]) {
     case RDAirPlayConf::LevelGpio:
       air_event_player->
-	exec(QString().sprintf("GO %d %d 1 0!",
+	exec(QString::asprintf("GO %d %d 1 0!",
 			       air_start_gpo_matrices[chan],
 			       air_start_gpo_lines[chan]+1));
       break;
 
     case RDAirPlayConf::EdgeGpio:
       air_event_player->
-	exec(QString().sprintf("GO %d %d 1 300!",
+	exec(QString::asprintf("GO %d %d 1 300!",
 			       air_start_gpo_matrices[chan],
 			       air_start_gpo_lines[chan]+1));
       break;
@@ -1176,14 +1176,14 @@ void MainWidget::panelChannelStoppedData(int mport,int card,int port)
     switch(air_channel_gpio_types[chan]) {
     case RDAirPlayConf::LevelGpio:
       air_event_player->
-	exec(QString().sprintf("GO %d %d 0 0!",
+	exec(QString::asprintf("GO %d %d 0 0!",
 			       air_stop_gpo_matrices[chan],
 			       air_stop_gpo_lines[chan]+1));
       break;
 
     case RDAirPlayConf::EdgeGpio:
       air_event_player->
-	exec(QString().sprintf("GO %d %d 1 300!",
+	exec(QString::asprintf("GO %d %d 1 300!",
 			       air_stop_gpo_matrices[chan],
 			       air_stop_gpo_lines[chan]+1));
       break;
@@ -1960,15 +1960,15 @@ void MainWidget::keyReleaseEvent(QKeyEvent *e)
     
         for (int i = 1; i < 8 ; i++)
         {
-            temp_string = QString().sprintf("Start Line %d",i);
+            temp_string = QString::asprintf("Start Line %d",i);
             if (hot_label==temp_string)
                 air_button_list->startButton(i-1);
     
-            temp_string = QString().sprintf("Stop Line %d",i);
+            temp_string = QString::asprintf("Stop Line %d",i);
             if (hot_label==temp_string)
                 air_button_list->stopButtonHotkey(i-1);
     
-            temp_string = QString().sprintf("Pause Line %d",i);
+            temp_string = QString::asprintf("Pause Line %d",i);
             if (hot_label==temp_string)
                 air_button_list->pauseButtonHotkey(i-1);
         }

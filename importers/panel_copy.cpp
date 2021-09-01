@@ -180,13 +180,13 @@ MainObject::MainObject(QObject *parent)
   q=new QSqlQuery(sql,src_db);
   while(q->next()) {
     sql=QString("insert into `PANELS` set ")+
-      QString().sprintf("`TYPE`=%d,",q->value(0).toInt())+
+      QString::asprintf("`TYPE`=%d,",q->value(0).toInt())+
       "`OWNER`='"+RDEscapeString(q->value(1).toString())+"',"+
-      QString().sprintf("`PANEL_NO`=%d,",q->value(2).toInt())+
-      QString().sprintf("`ROW_NO`=%d,",q->value(3).toInt())+
-      QString().sprintf("`COLUMN_NO`=%d,",q->value(4).toInt())+
+      QString::asprintf("`PANEL_NO`=%d,",q->value(2).toInt())+
+      QString::asprintf("`ROW_NO`=%d,",q->value(3).toInt())+
+      QString::asprintf("`COLUMN_NO`=%d,",q->value(4).toInt())+
       "`LABEL`='"+RDEscapeString(q->value(5).toString())+"',"+
-      QString().sprintf("`CART`=%d,",q->value(6).toInt())+
+      QString::asprintf("`CART`=%d,",q->value(6).toInt())+
       "`DEFAULT_COLOR`='"+RDEscapeString(q->value(7).toString())+"'";
     q1=new QSqlQuery(sql,dest_db);
     delete q1;

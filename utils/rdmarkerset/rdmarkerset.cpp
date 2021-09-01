@@ -195,7 +195,7 @@ void MainObject::ProcessGroup(const QString &group_name)
     "from `CART` left join `CUTS` "+
     "on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` where (`CART`.`GROUP_NAME`='"+
     RDEscapeString(group_name)+"')&&"+
-    QString().sprintf("(`CART`.`TYPE`!=%d)",RDCart::Macro);
+    QString::asprintf("(`CART`.`TYPE`!=%d)",RDCart::Macro);
   q=new QSqlQuery(sql);
   while(q->next()) {
     if(set_auto_trim<0) {
@@ -285,9 +285,9 @@ void MainObject::SetAutoTrim(unsigned cartnum,int cutnum,const QString &title,
     cut->setEndPoint(end);
     cut->setLength(end-start);
     cart->updateLength();
-    Print(QString().sprintf("  auto-trimming %06u / %03d [",
+    Print(QString::asprintf("  auto-trimming %06u / %03d [",
 			    cartnum,cutnum)+title+" / "+desc+
-	  QString().sprintf("] to %d dBFS",set_auto_trim));
+	  QString::asprintf("] to %d dBFS",set_auto_trim));
   }
   else {
     if(err!=RDTrimAudio::ErrorNoAudio) {
@@ -317,7 +317,7 @@ void MainObject::ClearAutoTrim(unsigned cartnum,int cutnum,const QString &title,
     cut->setEndPoint(info->length());
     cut->setLength(info->length());
     cart->updateLength();
-    Print(QString().sprintf("  clearing auto-trim from %06u / %03d [",
+    Print(QString::asprintf("  clearing auto-trim from %06u / %03d [",
 			    cartnum,cutnum)+title+" / "+desc+"]");
   }
   else {
@@ -349,12 +349,12 @@ void MainObject::SetAutoSegue(unsigned cartnum,int cutnum,const QString &title,
     if(end<cut->endPoint()) {
       cut->setSegueStartPoint(end);
       cut->setSegueEndPoint(cut->endPoint());
-      Print(QString().sprintf("  setting segue-start for %06u / %03d [",
+      Print(QString::asprintf("  setting segue-start for %06u / %03d [",
 			      cartnum,cutnum)+title+" / "+desc+
-	    QString().sprintf("] at %d dBFS",set_auto_segue));
+	    QString::asprintf("] at %d dBFS",set_auto_segue));
     }
     else {
-      Print(QString().sprintf("  segue-start for %06u / %03d [",
+      Print(QString::asprintf("  segue-start for %06u / %03d [",
 			      cartnum,cutnum)+title+" / "+desc+
 	    "] cannot be set beyond end marker");
     }

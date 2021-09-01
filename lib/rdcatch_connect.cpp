@@ -2,7 +2,7 @@
 //
 // Connect to the Rivendell Netcatcher Daemon.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -90,7 +90,7 @@ int RDCatchConnect::currentId(unsigned chan) const
 
 void RDCatchConnect::enableMetering(bool state)
 {
-  SendCommand(QString().sprintf("RM %d!",state));
+  SendCommand(QString::asprintf("RM %d!",state));
 }
 
 
@@ -132,23 +132,23 @@ void RDCatchConnect::reloadOffset()
 
 void RDCatchConnect::stop(int deck)
 {
-  SendCommand(QString().sprintf("SR %d!",deck));
+  SendCommand(QString::asprintf("SR %d!",deck));
 }
 
 
 void RDCatchConnect::monitor(int deck,bool state)
 {
-  SendCommand(QString().sprintf("MN %d %d!",deck,state));
+  SendCommand(QString::asprintf("MN %d %d!",deck,state));
 }
 
 
 void RDCatchConnect::toggleMonitor(int deck)
 {
   if(cc_monitor_state[deck-1]) {
-    SendCommand(QString().sprintf("MN %d 0!",deck));
+    SendCommand(QString::asprintf("MN %d 0!",deck));
   }
   else {
-    SendCommand(QString().sprintf("MN %d 1!",deck));
+    SendCommand(QString::asprintf("MN %d 1!",deck));
   }
 }
 
@@ -156,7 +156,7 @@ void RDCatchConnect::toggleMonitor(int deck)
 void RDCatchConnect::setExitCode(int id,RDRecording::ExitCode code,
 				 const QString &msg)
 {
-  SendCommand(QString().sprintf("SC %d %d %s!",id,code,
+  SendCommand(QString::asprintf("SC %d %d %s!",id,code,
 				msg.trimmed().toUtf8().constData()));
 }
 

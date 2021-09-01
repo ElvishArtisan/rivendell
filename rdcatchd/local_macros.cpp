@@ -2,7 +2,7 @@
 //
 // Local macros for the Rivendell netcatcher daemon
 //
-//   (C) Copyright 2002-2009,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -61,8 +61,8 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 	      e=catch_events[event_ptr];
 	      sql=QString("insert into `CUT_EVENTS` set ")+
 		"`CUT_NAME`='"+RDEscapeString(e.cutName())+"',"+
-		QString().sprintf("`NUMBER`=%u,",eventnum)+
-		QString().sprintf("`POINT`=%u",e.startTime().
+		QString::asprintf("`NUMBER`=%u,",eventnum)+
+		QString::asprintf("`POINT`=%u",e.startTime().
 				  msecsTo(QTime::currentTime()));
 	      q=new RDSqlQuery(sql);
 	      delete q;

@@ -102,7 +102,7 @@ MainObject::MainObject(QObject *parent)
   }
   while(ReadLine(file,&wr)) {
     strcpy(wr.extension,audio_extension.toUtf8());
-    audioname=QString().sprintf("%s/%s.%s",audiodir.toUtf8().constData(),
+    audioname=QString::asprintf("%s/%s.%s",audiodir.toUtf8().constData(),
 				wr.filename,
 				audio_extension.toUtf8().constData());
     wavefile=new RDWaveFile(audioname);
@@ -204,15 +204,15 @@ bool MainObject::ImportCut(RDGroup *group,struct WingsRecord *rec,
 	 rec->filename,rec->title,cartnum,group->name().toUtf8().constData());
   
   sql=QString("insert into `CART` set ")+
-    QString().sprintf("`NUMBER`=%u,",cartnum)+
+    QString::asprintf("`NUMBER`=%u,",cartnum)+
     "`GROUP_NAME`='"+RDEscapeString(group->name())+"',"+
     "`TITLE`='"+RDEscapeString(rec->title)+"',"+
     "`ARTIST`='"+RDEscapeString(rec->artist)+"',"+
     "`ALBUM`='"+RDEscapeString(rec->album)+"',"+
     "`CUT_QUANTITY`=1,"+
-    QString().sprintf("`TYPE`=%d,",RDCart::Audio)+
-    QString().sprintf("`FORCED_LENGTH`=%u,",wavefile->getExtTimeLength())+
-    QString().sprintf("`AVERAGE_LENGTH`=%u,",wavefile->getExtTimeLength())+
+    QString::asprintf("`TYPE`=%d,",RDCart::Audio)+
+    QString::asprintf("`FORCED_LENGTH`=%u,",wavefile->getExtTimeLength())+
+    QString::asprintf("`AVERAGE_LENGTH`=%u,",wavefile->getExtTimeLength())+
     "`USER_DEFINED`='"+RDEscapeString(rec->filename)+"."+
     RDEscapeString(rec->extension)+"'";
   RDSqlQuery::apply(sql);
@@ -222,13 +222,13 @@ bool MainObject::ImportCut(RDGroup *group,struct WingsRecord *rec,
     "`DESCRIPTION`='"+RDEscapeString(rec->title)+"',"+
     "`ORIGIN_DATETIME`=now(),"+
     "`ORIGIN_NAME`='"+RDEscapeString(rda->config()->stationName())+"',"+
-    QString().sprintf("`CODING_FORMAT`=%d,",format)+
-    QString().sprintf("`SAMPLE_RATE`=%u,",wavefile->getSamplesPerSec())+
-    QString().sprintf("`CHANNELS`=%d,",wavefile->getChannels())+
-    QString().sprintf("`BIT_RATE`=%d,",wavefile->getHeadBitRate())+
-    QString().sprintf("`LENGTH`=%u,",wavefile->getExtTimeLength())+
+    QString::asprintf("`CODING_FORMAT`=%d,",format)+
+    QString::asprintf("`SAMPLE_RATE`=%u,",wavefile->getSamplesPerSec())+
+    QString::asprintf("`CHANNELS`=%d,",wavefile->getChannels())+
+    QString::asprintf("`BIT_RATE`=%d,",wavefile->getHeadBitRate())+
+    QString::asprintf("`LENGTH`=%u,",wavefile->getExtTimeLength())+
     "`START_POINT`=0,"+
-    QString().sprintf("`END_POINT`=%d where ",wavefile->getExtTimeLength())+
+    QString::asprintf("`END_POINT`=%d where ",wavefile->getExtTimeLength())+
     "`CUT_NAME`='"+RDCut::cutName(cartnum,1)+"'";
   q=new RDSqlQuery(sql);
   delete q;

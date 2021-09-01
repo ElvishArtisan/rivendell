@@ -378,7 +378,7 @@ bool MainObject::RewriteFile(const QString &old_filename,
   }
   if(proc->exitCode()!=0) {
     *err_msg=QString("\"sed ")+args.join(" ")+"\" "+
-      "returned exit code "+QString().sprintf("%d",proc->exitCode())+
+      "returned exit code "+QString::asprintf("%d",proc->exitCode())+
       "["+QString::fromUtf8(proc->readAllStandardError())+"] "+
       " when rewriting file \""+old_filename+"\" "+
       "to \""+new_filename+"\"";
@@ -593,7 +593,7 @@ void MainObject::CheckOrphanedTracks() const
   while(q->next()) {
     sql=QString("select `LINE_ID` from `LOG_LINES` where ")+
       "`LOG_NAME`='"+RDEscapeString(q->value(2).toString())+"' && "+
-      QString().sprintf("`CART_NUMBER`=%u",q->value(0).toUInt());
+      QString::asprintf("`CART_NUMBER`=%u",q->value(0).toUInt());
     q1=new QSqlQuery(sql);
     if(!q1->first()) {
       printf("  Found orphaned track %u - \"%s\".  Delete? (y/N) ",
@@ -630,7 +630,7 @@ void MainObject::CheckCutCounts() const
   q=new QSqlQuery(sql);
   while(q->next()) {
     sql=QString("select `CUT_NAME` from `CUTS` where ")+
-      QString().sprintf("(`CART_NUMBER`=%u)&&",q->value(0).toUInt())+
+      QString::asprintf("(`CART_NUMBER`=%u)&&",q->value(0).toUInt())+
       "(`LENGTH`>0)";
     q1=new QSqlQuery(sql);
     if(q1->size()!=q->value(1).toInt()) {
@@ -696,7 +696,7 @@ void MainObject::CheckOrphanedCarts() const
       if(UserResponse()) {
 	sql=QString("update `CART` set ")+
 	  "`GROUP_NAME`='"+RDEscapeString(db_orphan_group_name)+"' "+
-	  QString().sprintf("where `NUMBER`=%u",q->value(0).toUInt());
+	  QString::asprintf("where `NUMBER`=%u",q->value(0).toUInt());
 	q1=new QSqlQuery(sql);
 	delete q1;
       }
@@ -729,7 +729,7 @@ void MainObject::CheckOrphanedCuts() const
     //
     // Try to repair it
     //
-    sql=QString().sprintf("select `NUMBER` from `CART` where `NUMBER`=%d",
+    sql=QString::asprintf("select `NUMBER` from `CART` where `NUMBER`=%d",
 			  q->value(0).toString().left(6).toUInt());
     q1=new QSqlQuery(sql);
     if(q1->first()) {
@@ -759,7 +759,7 @@ void MainObject::CheckOrphanedCuts() const
     if(!file->exists()) {
       printf("  Clear it (y/N)?");
       if(UserResponse()) {
-	sql=QString().sprintf("delete from `CUTS` where `CUT_NAME`='%s'",
+	sql=QString::asprintf("delete from `CUTS` where `CUT_NAME`='%s'",
 			      q->value(0).toString().toUtf8().constData());
 	q1=new QSqlQuery(sql);
 	delete q1;
@@ -775,7 +775,7 @@ void MainObject::CheckOrphanedCuts() const
 	  RDCheckExitCode("CheckOrphanedCuts() system",
 			  system(("mv "+file->filePath()+" "+
 				  db_dump_cuts_dir+"/").toUtf8()));
-	  sql=QString().sprintf("delete from `CUTS` where `CUT_NAME`='%s'",
+	  sql=QString::asprintf("delete from `CUTS` where `CUT_NAME`='%s'",
 				q->value(0).toString().toUtf8().constData());
 	  q1=new QSqlQuery(sql);
 	  delete q1;
@@ -823,7 +823,7 @@ void MainObject::CheckOrphanedAudio() const
 		   db_dump_cuts_dir.toUtf8().constData());
 	    if(UserResponse()) {
 	      RDCheckExitCode("CheckOrphanedAudio() system",
-			      system(QString().sprintf("mv %s/%s %s/",
+			      system(QString::asprintf("mv %s/%s %s/",
 				   db_config->audioRoot().toUtf8().constData(),
 				   list.at(i).toUtf8().constData(),
 				   db_dump_cuts_dir.toUtf8().constData()).
@@ -880,7 +880,7 @@ void MainObject::Rehash(const QString &arg) const
 
   if(arg.toLower()=="all") {
     sql=QString("select `NUMBER` from `CART` where ")+
-      QString().sprintf("`TYPE`=%d ",RDCart::Audio)+
+      QString::asprintf("`TYPE`=%d ",RDCart::Audio)+
       "order by `NUMBER`";
     q=new QSqlQuery(sql);
     while(q->next()) {
@@ -908,7 +908,7 @@ void MainObject::RehashCart(unsigned cartnum) const
   if(cart->exists()) {
     if(cart->type()==RDCart::Audio) {
       QString sql=QString("select `CUT_NAME` from `CUTS` where ")+
-	QString().sprintf("`CART_NUMBER`=%u ",cartnum)+
+	QString::asprintf("`CART_NUMBER`=%u ",cartnum)+
 	"order by `CUT_NAME`";
       QSqlQuery *q=new QSqlQuery(sql);
       while(q->next()) {
@@ -977,7 +977,7 @@ void MainObject::SetCutLength(const QString &cutname,int len) const
     fflush(NULL);
     sql=QString("update `CUTS` set ")+
       "`START_POINT`=0,"+
-      QString().sprintf("`END_POINT`=%d,",len)+
+      QString::asprintf("`END_POINT`=%d,",len)+
       "`FADEUP_POINT`=-1,"+
       "`FADEDOWN_POINT`=-1,"+
       "`SEGUE_START_POINT`=-1,"+
@@ -987,7 +987,7 @@ void MainObject::SetCutLength(const QString &cutname,int len) const
       "`HOOK_START_POINT`=-1,"+
       "`HOOK_END_POINT`=-1,"+
       "`PLAY_GAIN`=0,"+
-      QString().sprintf("`LENGTH`=%d where ",len)+
+      QString::asprintf("`LENGTH`=%d where ",len)+
       "`CUT_NAME`='"+RDEscapeString(cutname)+"'";
     q=new QSqlQuery(sql);
     delete q;

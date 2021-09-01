@@ -231,7 +231,7 @@ bool RDAudioConvert::settingsValid(RDSettings *settings)
 
 QString RDAudioConvert::errorText(RDAudioConvert::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown RDAudioConvert Error [%u]",err);
+  QString ret=QString::asprintf("Unknown RDAudioConvert Error [%u]",err);
 
   switch(err) {
   case RDAudioConvert::ErrorOk:
@@ -1936,11 +1936,11 @@ void RDAudioConvert::ApplyId3Tag(const QString &filename,RDWaveData *wavedata)
     AddId3Property(map,"ISRC",wavedata->isrc());
   }
   if(wavedata->releaseYear()>0) {
-    AddId3Property(map,"YEAR",QString().sprintf("%d",wavedata->releaseYear()));
+    AddId3Property(map,"YEAR",QString::asprintf("%d",wavedata->releaseYear()));
   }
   if(wavedata->beatsPerMinute()>0) {
     AddId3Property(map,"BPM",
-		   QString().sprintf("%d",wavedata->beatsPerMinute()));
+		   QString::asprintf("%d",wavedata->beatsPerMinute()));
   }
   tag->setProperties(*map);
 

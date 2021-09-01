@@ -49,6 +49,6 @@ void RDVersion::setDatabase(int ver)
 {
   QString sql;
 
-  sql=QString().sprintf("update `VERSION` set `DB`=%d",ver);
+  sql=QString::asprintf("update `VERSION` set `DB`=%d",ver);
   RDSqlQuery::apply(sql);
 }

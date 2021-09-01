@@ -114,7 +114,7 @@ void SoftwareAuthority::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	SendCommand(QString().sprintf("activateroute %d %d %d",swa_card,
+	SendCommand(QString::asprintf("activateroute %d %d %d",swa_card,
 				      cmd->arg(2).toInt(),cmd->arg(1).toInt()));
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
@@ -134,13 +134,13 @@ void SoftwareAuthority::processCommand(RDMacro *cmd)
 	else {
 	  str="triggergpo";
 	}
-	str+=QString().sprintf(" %d",swa_card);
-	str+=QString().sprintf(" %d ",
+	str+=QString::asprintf(" %d",swa_card);
+	str+=QString::asprintf(" %d ",
 		      1+(cmd->arg(2).toInt()-1)/RD_LIVEWIRE_GPIO_BUNDLE_SIZE);
 	str+=BundleString((cmd->arg(2).toInt()-1)%RD_LIVEWIRE_GPIO_BUNDLE_SIZE,
 			  cmd->arg(3).toInt()!=0);
 	if(cmd->arg(4).toInt()>0) {   // Momentary
-	  str+=QString().sprintf(" %d",cmd->arg(4).toInt());
+	  str+=QString::asprintf(" %d",cmd->arg(4).toInt());
 	}
 	SendCommand(str);
 	break;
@@ -236,9 +236,9 @@ void SoftwareAuthority::errorData(QAbstractSocket::SocketError err)
 
 void SoftwareAuthority::SendCommand(const QString &str)
 {
-  //  LogLine(RDConfig::LogDebug,QString().sprintf("sending SA cmd: %s",(const char *)PrettifyCommand(str)));
+  //  LogLine(RDConfig::LogDebug,QString::asprintf("sending SA cmd: %s",(const char *)PrettifyCommand(str)));
   rda->syslog(LOG_DEBUG,"%p - sending \"%s\"",this,str.toUtf8().constData());
-  QString cmd=QString().sprintf("%s\x0d\x0a",str.toUtf8().constData());
+  QString cmd=QString::asprintf("%s\x0d\x0a",str.toUtf8().constData());
   swa_socket->write(cmd.toUtf8());
 }
 
@@ -253,7 +253,7 @@ void SoftwareAuthority::DispatchCommand()
   QStringList f0;
   QString name;
 
-  //  LogLine(RDConfig::LogNotice,QString().sprintf("RECEIVED: %s",(const char *)swa_buffer));
+  //  LogLine(RDConfig::LogNotice,QString::asprintf("RECEIVED: %s",(const char *)swa_buffer));
 
   QString line_in=swa_buffer;
   QString section=line_in.toLower().replace(">>","");
@@ -290,12 +290,12 @@ void SoftwareAuthority::DispatchCommand()
 
   switch(swa_istate) {
   case 0:   // No section selected
-    if(section==QString().sprintf("begin sourcenames - %d",swa_card)) {
+    if(section==QString::asprintf("begin sourcenames - %d",swa_card)) {
       swa_istate=1;
       swa_inputs=0;
       return;
     }
-    if(section==QString().sprintf("begin destnames - %d",swa_card)) {
+    if(section==QString::asprintf("begin destnames - %d",swa_card)) {
       swa_istate=2;
       swa_outputs=0;
       return;
@@ -303,7 +303,7 @@ void SoftwareAuthority::DispatchCommand()
     break;
 
   case 1:   // Source List
-    if(section==QString().sprintf("end sourcenames - %d",swa_card)) {
+    if(section==QString::asprintf("end sourcenames - %d",swa_card)) {
       //
       // Write Sources Data
       //
@@ -312,10 +312,10 @@ void SoftwareAuthority::DispatchCommand()
 	swa_gpis=swa_inputs*RD_LIVEWIRE_GPIO_BUNDLE_SIZE;
       }
       sql=QString("update `MATRICES` set ")+
-	QString().sprintf("`INPUTS`=%d,",swa_inputs)+
-	QString().sprintf("`GPIS`=%d ",swa_gpis)+
+	QString::asprintf("`INPUTS`=%d,",swa_inputs)+
+	QString::asprintf("`GPIS`=%d ",swa_gpis)+
 	"where (`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-	QString().sprintf("(`MATRIX`=%d)",swa_matrix);
+	QString::asprintf("(`MATRIX`=%d)",swa_matrix);
       RDSqlQuery::apply(sql);
       return;
     }
@@ -326,22 +326,22 @@ void SoftwareAuthority::DispatchCommand()
     }
     sql=QString("select `NUMBER` from `INPUTS` where ")+
       "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-      QString().sprintf("(`MATRIX`=%d)&&",swa_matrix)+
-      QString().sprintf("(`NUMBER`=%d)",f0[0].toInt());
+      QString::asprintf("(`MATRIX`=%d)&&",swa_matrix)+
+      QString::asprintf("(`NUMBER`=%d)",f0[0].toInt());
     q=new RDSqlQuery(sql);
     if(q->first()) {
       sql=QString("update `INPUTS` set ")+
 	"`NAME`='"+RDEscapeString(name)+"' where "+
 	"(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-	QString().sprintf("(`MATRIX`=%d)&&",swa_matrix)+
-	QString().sprintf("(`NUMBER`=%d)",f0[0].toInt());
+	QString::asprintf("(`MATRIX`=%d)&&",swa_matrix)+
+	QString::asprintf("(`NUMBER`=%d)",f0[0].toInt());
     }
     else {
       sql=QString("insert into `INPUTS` set ")+
 	"`NAME`='"+RDEscapeString(name)+"',"+
 	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
-	QString().sprintf("`MATRIX`=%d,",swa_matrix)+
-	QString().sprintf("`NUMBER`=%d",f0[0].toInt());
+	QString::asprintf("`MATRIX`=%d,",swa_matrix)+
+	QString::asprintf("`NUMBER`=%d",f0[0].toInt());
     }
     if(f0[0].toInt()>swa_inputs) {
       swa_inputs=f0[0].toInt();
@@ -351,7 +351,7 @@ void SoftwareAuthority::DispatchCommand()
     break;
 
   case 2:   // Destinations List
-    if(section==QString().sprintf("end destnames - %d",swa_card)) {
+    if(section==QString::asprintf("end destnames - %d",swa_card)) {
       //
       // Write Destinations Data
       //
@@ -360,10 +360,10 @@ void SoftwareAuthority::DispatchCommand()
 	swa_gpos=swa_outputs*RD_LIVEWIRE_GPIO_BUNDLE_SIZE;
       }
       sql=QString("update `MATRICES` set ")+
-	QString().sprintf("`OUTPUTS`=%d,",swa_outputs)+
-	QString().sprintf("`GPOS`=%d ",swa_gpos)+
+	QString::asprintf("`OUTPUTS`=%d,",swa_outputs)+
+	QString::asprintf("`GPOS`=%d ",swa_gpos)+
 	"where (`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-	QString().sprintf("(`MATRIX`=%d)",swa_matrix);
+	QString::asprintf("(`MATRIX`=%d)",swa_matrix);
       RDSqlQuery::apply(sql);
 
       rda->syslog(LOG_INFO,
@@ -382,22 +382,22 @@ void SoftwareAuthority::DispatchCommand()
     }
     sql=QString("select `NUMBER` from `OUTPUTS` where ")+
       "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-      QString().sprintf("(`MATRIX`=%d)&&",swa_matrix)+
-      QString().sprintf("(`NUMBER`=%d)",f0[0].toInt());
+      QString::asprintf("(`MATRIX`=%d)&&",swa_matrix)+
+      QString::asprintf("(`NUMBER`=%d)",f0[0].toInt());
     q=new RDSqlQuery(sql);
     if(q->first()) {
       sql=QString("update `OUTPUTS` set ")+
 	"`NAME`='"+RDEscapeString(name)+"' where "+
 	"(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-	QString().sprintf("(`MATRIX`=%d)&&",swa_matrix)+
-	QString().sprintf("(`NUMBER`=%d)",f0[0].toInt());
+	QString::asprintf("(`MATRIX`=%d)&&",swa_matrix)+
+	QString::asprintf("(`NUMBER`=%d)",f0[0].toInt());
     }
     else {
       sql=QString("insert into `OUTPUTS` set ")+
 	"`NAME`='"+RDEscapeString(name)+"',"+
 	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
-	QString().sprintf("`MATRIX`=%d,",swa_matrix)+
-	QString().sprintf("`NUMBER`=%d",f0[0].toInt());
+	QString::asprintf("`MATRIX`=%d,",swa_matrix)+
+	QString::asprintf("`NUMBER`=%d",f0[0].toInt());
     }
     if(f0[0].toInt()>swa_outputs) {
       swa_outputs=f0[0].toInt();
@@ -460,7 +460,7 @@ QString SoftwareAuthority::PrettifyCommand(const char *cmd) const
 {
   QString ret;
   if(cmd[0]<26) {
-    ret=QString().sprintf("^%c%s",'@'+cmd[0],cmd+1);
+    ret=QString::asprintf("^%c%s",'@'+cmd[0],cmd+1);
   }
   else {
     ret=cmd;

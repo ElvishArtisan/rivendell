@@ -127,19 +127,19 @@ int EditEndpoint::exec(RDMatrix *mtx,RDMatrix::Endpoint endpt_type,int endpt_id)
     "`ENGINE_NUM`,"+  // 01
     "`DEVICE_NUM` "+  // 02
     "from "+edit_table+" where "+
-    QString().sprintf("`ID`=%d",endpt_id);
+    QString::asprintf("`ID`=%d",endpt_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     edit_endpoint_edit->setText(q->value(0).toString());
     if(q->value(1).toInt()>=0) {
-      edit_enginenum_edit->setText(QString().sprintf("%d",q->value(1).toInt()));
+      edit_enginenum_edit->setText(QString::asprintf("%d",q->value(1).toInt()));
     }
     else {
       edit_enginenum_edit->setText("");
     }
     if(q->value(2).toInt()>=0) {
       edit_devicenum_edit->
-	setText(QString().sprintf("%04X",q->value(2).toInt()));
+	setText(QString::asprintf("%04X",q->value(2).toInt()));
     }
     else {
       edit_enginenum_edit->setText("");
@@ -164,11 +164,11 @@ void EditEndpoint::okData()
 
   sql=QString("update ")+edit_table+" set "+
     "`NAME`='"+RDEscapeString(edit_endpoint_edit->text())+"',"+
-    QString().sprintf("`ENGINE_NUM`=%d,",edit_enginenum_edit->text().toInt())+
+    QString::asprintf("`ENGINE_NUM`=%d,",edit_enginenum_edit->text().toInt())+
     QString().
     sprintf("`DEVICE_NUM`=%d ",edit_devicenum_edit->text().toInt(NULL,16))+
     "where "+
-    QString().sprintf("`ID`=%d",edit_endpoint_id);
+    QString::asprintf("`ID`=%d",edit_endpoint_id);
   RDSqlQuery::apply(sql);
 
   done(true);

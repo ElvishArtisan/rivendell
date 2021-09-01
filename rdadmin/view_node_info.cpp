@@ -217,7 +217,7 @@ void ViewNodeInfo::exec(const QString &hostname,uint16_t port,
 			const QString &passwd,unsigned base_output)
 {
   view_hostname_edit->setText(hostname);
-  view_tcpport_edit->setText(QString().sprintf("%u",(unsigned)port));
+  view_tcpport_edit->setText(QString::asprintf("%u",(unsigned)port));
   view_destinations_model->setBaseOutput(base_output);
   view_livewire->connectToHost(hostname,port,passwd,base_output);
   QDialog::exec();
@@ -231,18 +231,18 @@ void ViewNodeInfo::connectedData(unsigned id)
 
   view_protocol_edit->setText(view_livewire->protocolVersion());
   view_system_edit->setText(view_livewire->systemVersion());
-  view_sources_edit->setText(QString().sprintf("%d",view_livewire->sources()));
+  view_sources_edit->setText(QString::asprintf("%d",view_livewire->sources()));
   view_destinations_edit->
-    setText(QString().sprintf("%d",view_livewire->destinations()));
+    setText(QString::asprintf("%d",view_livewire->destinations()));
   view_channels_edit->
-    setText(QString().sprintf("%d",view_livewire->channels()));
+    setText(QString::asprintf("%d",view_livewire->channels()));
   view_gpis_edit->
-    setText(QString().sprintf("%d [%d X %d]",
+    setText(QString::asprintf("%d [%d X %d]",
 		     RD_LIVEWIRE_GPIO_BUNDLE_SIZE*view_livewire->gpis(),
 			      view_livewire->gpis(),
 			      RD_LIVEWIRE_GPIO_BUNDLE_SIZE));
   view_gpos_edit->
-    setText(QString().sprintf("%d [%d X %d]",
+    setText(QString::asprintf("%d [%d X %d]",
 		     RD_LIVEWIRE_GPIO_BUNDLE_SIZE*view_livewire->gpos(),
 			      view_livewire->gpos(),
 			      RD_LIVEWIRE_GPIO_BUNDLE_SIZE));

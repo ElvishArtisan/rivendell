@@ -381,7 +381,7 @@ MainObject::MainObject(QObject *parent)
 void MainObject::WriteSchemaVersion(int ver) const
 {
   QString sql=QString("update `VERSION` set ")+
-    QString().sprintf("`DB`=%d",ver);
+    QString::asprintf("`DB`=%d",ver);
   RDSqlQuery::apply(sql);
 }
 

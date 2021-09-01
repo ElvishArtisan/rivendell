@@ -582,7 +582,7 @@ bool RDUser::cartAuthorized(unsigned cartnum) const
     "left join `USER_PERMS` "+
     "on `CART`.`GROUP_NAME`=`USER_PERMS`.`GROUP_NAME` where "+
     "(`USER_PERMS`.`USER_NAME`=\""+RDEscapeString(user_name)+"\")&&"+
-    QString().sprintf("(`CART`.`NUMBER`=%u)",cartnum);
+    QString::asprintf("(`CART`.`NUMBER`=%u)",cartnum);
   q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;
@@ -633,7 +633,7 @@ QStringList RDUser::services() const
   QStringList services_list;
 
   if (adminConfig()) {
-    sql=QString().sprintf("select `NAME` from `SERVICES`" );
+    sql=QString::asprintf("select `NAME` from `SERVICES`" );
   } 
   else {
     sql=QString("select distinct ")+
@@ -684,7 +684,7 @@ bool RDUser::createTicket(QString *ticket,QDateTime *expire_dt,
     SHA1((const unsigned char *)rawstr,40,sha1);
     *ticket="";
     for(int i=0;i<SHA_DIGEST_LENGTH;i++) {
-      *ticket+=QString().sprintf("%02x",0xFF&rawstr[i]);
+      *ticket+=QString::asprintf("%02x",0xFF&rawstr[i]);
     }
     *expire_dt=start_dt.addSecs(webapiAuthTimeout());
     sql=QString("insert into `WEBAPI_AUTHS` set ")+
@@ -815,7 +815,7 @@ void RDUser::SetRow(const QString &param,int value) const
   QString sql;
 
   sql=QString("update `USERS` set `")+
-    param+QString().sprintf("`=%d where ",value)+
+    param+QString::asprintf("`=%d where ",value)+
     "`LOGIN_NAME`='"+user_name+"'";
   RDSqlQuery::apply(sql);
 }

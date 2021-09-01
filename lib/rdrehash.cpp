@@ -2,7 +2,7 @@
 //
 // Generate a SHA-1 hash of an audio file and write it to the database.
 //
-//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -77,7 +77,7 @@ RDRehash::ErrorCode RDRehash::runRehash(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_REHASH).toUtf8().
+	       QString::asprintf("%u",RDXPORT_COMMAND_REHASH).toUtf8().
 	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -88,11 +88,11 @@ RDRehash::ErrorCode RDRehash::runRehash(const QString &username,
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_cart_number).toUtf8().constData(),
+	       QString::asprintf("%u",conv_cart_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_cut_number).toUtf8().constData(),
+	       QString::asprintf("%u",conv_cut_number).toUtf8().constData(),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     curl_formfree(first);
@@ -157,7 +157,7 @@ RDRehash::ErrorCode RDRehash::runRehash(const QString &username,
 
 QString RDRehash::errorText(RDRehash::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown RDRehash Error [%u]",err);
+  QString ret=QString::asprintf("Unknown RDRehash Error [%u]",err);
 
   switch(err) {
   case RDRehash::ErrorOk:

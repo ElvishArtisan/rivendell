@@ -219,7 +219,7 @@ int EditEvent::exec(int line)
     edit_time_edit->setTime(QTime());
   }
   setWindowTitle("RDAirPlay - "+
-		 QString().sprintf("%d - ",edit_logline->cartNumber())+
+		 QString::asprintf("%d - ",edit_logline->cartNumber())+
 		 edit_logline->title());
   edit_cart_notes_text->setText(edit_logline->cartNotes());
   switch(edit_logline->type()) {

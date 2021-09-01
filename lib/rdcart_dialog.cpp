@@ -285,7 +285,7 @@ void RDCartDialog::editorData()
     "`CART`.`USER_DEFINED` "+  // 12
     "from `CUTS` left join `CART` "+
     "on `CUTS`.`CART_NUMBER`=`CART`.`NUMBER` where "+
-    QString().sprintf("(`CUTS`.`CART_NUMBER`=%u)&&",cartnum)+
+    QString::asprintf("(`CUTS`.`CART_NUMBER`=%u)&&",cartnum)+
     "(`CUTS`.`LENGTH`>0)";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
@@ -294,8 +294,8 @@ void RDCartDialog::editorData()
   }
   QString cmd=rda->station()->editorPath();
   cmd.replace("%f",RDCut::pathName(q->value(0).toString()));
-  cmd.replace("%n",QString().sprintf("%06u",cartnum));
-  cmd.replace("%h",QString().sprintf("%d",q->value(1).toInt()));
+  cmd.replace("%n",QString::asprintf("%06u",cartnum));
+  cmd.replace("%h",QString::asprintf("%d",q->value(1).toInt()));
   cmd.replace("%g",q->value(2).toString());
   cmd.replace("%t",q->value(3).toString());
   cmd.replace("%a",q->value(4).toString());

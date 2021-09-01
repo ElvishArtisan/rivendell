@@ -452,7 +452,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
     }
     if(!cart->exists()) {
       line_cart_label->
-	setText(QString().sprintf("%06u",logline->cartNumber()));
+	setText(QString::asprintf("%06u",logline->cartNumber()));
       line_description_label->clear();
       line_artist_label->clear();
       line_cut_label->clear();
@@ -476,7 +476,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
       if(((cart->forcedLength()==0)&&(cart->type()==RDCart::Audio))||
 	 (line_logline->state()==RDLogLine::NoCut)) {
 	line_cart_label->
-	  setText(QString().sprintf("%06u",logline->cartNumber()));
+	  setText(QString::asprintf("%06u",logline->cartNumber()));
 	if(cut!=NULL) {
 	  line_description_label->setText(cut->description());
 	}
@@ -494,7 +494,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
       }
       else {
 	line_cart_label->
-	  setText(QString().sprintf("%06u",logline->cartNumber()));
+	  setText(QString::asprintf("%06u",logline->cartNumber()));
 	if(line_logline->evergreen()) {
 	  //	  setBackgroundColor(QColor(LOGLINEBOX_EVERGREEN_COLOR));
 	}
@@ -562,7 +562,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	line_position_bar->setValue(line_logline->playPosition());
 	if(logline->cutNumber()>=0) {
 	  line_cut_label->
-	    setText(QString().sprintf("%03u",logline->cutNumber()));
+	    setText(QString::asprintf("%03u",logline->cutNumber()));
 	line_outcue_label->
 	  setText(line_logline->resolveWildcards(line_outcue_template));	
 	}
@@ -662,7 +662,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
     line_icon_label->setPixmap(*line_macro_map);
     line_comment_label->hide();
     cart=new RDCart(logline->cartNumber());
-    cut=new RDCut(QString().sprintf("%06u_%03u",logline->cartNumber(),
+    cut=new RDCut(QString::asprintf("%06u_%03u",logline->cartNumber(),
 				    logline->cutNumber()));
     if(!cart->exists()) {
       //      setBackgroundColor(QColor(LOGLINEBOX_MISSING_COLOR));
@@ -670,7 +670,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
     else {
       //      setBackgroundColor(QColor(LOGLINEBOX_BACKGROUND_COLOR));
     }
-    line_cart_label->setText(QString().sprintf("%06u",cart->number()));
+    line_cart_label->setText(QString::asprintf("%06u",cart->number()));
     line_cut_label->setText("");
     line_group_label->setText(cart->groupName());
     p=line_group_label->palette();

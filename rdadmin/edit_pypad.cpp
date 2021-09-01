@@ -30,7 +30,7 @@ EditPypad::EditPypad(int id,QWidget *parent)
 
   setMinimumSize(sizeHint());
   setWindowTitle(tr("Edit PyPAD Instance")+
-		 " ["+tr("ID")+QString().sprintf(": %u]",id));
+		 " ["+tr("ID")+QString::asprintf(": %u]",id));
 
   //
   // Script Path
@@ -81,7 +81,7 @@ EditPypad::EditPypad(int id,QWidget *parent)
     "`DESCRIPTION`,"+  // 01
     "`CONFIG` "+       // 02
     "from `PYPAD_INSTANCES` where "+
-    QString().sprintf("`ID`=%u",edit_id);
+    QString::asprintf("`ID`=%u",edit_id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     edit_script_path_edit->setText(q->value(0).toString());
@@ -110,7 +110,7 @@ void EditPypad::okData()
   QString sql=QString("update `PYPAD_INSTANCES` set ")+
     "`DESCRIPTION`='"+RDEscapeString(edit_description_edit->text())+"',"+
     "`CONFIG`='"+RDEscapeString(edit_config_text->toPlainText())+"' where "+
-    QString().sprintf("`ID`=%u",edit_id);
+    QString::asprintf("`ID`=%u",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

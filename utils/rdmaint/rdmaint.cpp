@@ -178,7 +178,7 @@ void MainObject::PurgeCuts()
       }
       if(q->value(2).toString()=="Y") {  // Delete Empty Cart
 	sql=QString("select CUT_NAME from CUTS where ")+
-	  QString().sprintf("CART_NUMBER=%u",q1->value(0).toUInt());
+	  QString::asprintf("CART_NUMBER=%u",q1->value(0).toUInt());
 	q2=new RDSqlQuery(sql);
 	if(!q2->first()) {
 	  cart->remove(rda->station(),rda->user(),rda->config());
@@ -267,7 +267,7 @@ void MainObject::PurgeDropboxes()
   while(q->next()) {
     if(!QFile::exists(q->value(0).toString())) {
       sql=QString("delete from `DROPBOX_PATHS` where ")+
-	QString().sprintf("`ID`=%d",q->value(1).toInt());
+	QString::asprintf("`ID`=%d",q->value(1).toInt());
       RDSqlQuery::apply(sql);
     }
   }
@@ -345,21 +345,21 @@ void MainObject::PurgeStacks()
       if (stackid-stacksize > 0) {
         sql=QString("select `ID` from `STACK_LINES` where ")+
 	  "`SERVICE_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
-	  QString().sprintf("`SCHED_STACK_ID`<=%d",stackid-stacksize);
+	  QString::asprintf("`SCHED_STACK_ID`<=%d",stackid-stacksize);
 	q2=new RDSqlQuery(sql);
 	while(q2->next()) {
 	  sql=QString("delete from `STACK_SCHED_CODES` where ")+
-	    QString().sprintf("`STACK_LINES_ID`=%u",q2->value(0).toUInt());
+	    QString::asprintf("`STACK_LINES_ID`=%u",q2->value(0).toUInt());
 	  RDSqlQuery::apply(sql);
 	}
 	delete q2;
         sql=QString("delete from `STACK_LINES` where ")+
 	  "`SERVICE_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
-	  QString().sprintf("`SCHED_STACK_ID`<=%d",stackid-stacksize);
+	  QString::asprintf("`SCHED_STACK_ID`<=%d",stackid-stacksize);
 	RDSqlQuery::apply(sql);
 
         sql=QString("update `STACK_LINES` set ")+
-	  QString().sprintf("`SCHED_STACK_ID`=`SCHED_STACK_ID`-%d where ",
+	  QString::asprintf("`SCHED_STACK_ID`=`SCHED_STACK_ID`-%d where ",
 			    stackid-stacksize)+
 	  "SERVICE_NAME='"+RDEscapeString(q->value(0).toString())+"'";
         RDSqlQuery::apply(sql);

@@ -210,7 +210,7 @@ void RDPypadListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("PYPAD_INSTANCES.ID=%u",d_ids.at(row.row()));
+      QString::asprintf("PYPAD_INSTANCES.ID=%u",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -271,8 +271,8 @@ void RDPypadListModel::stateTimeoutData()
 	emit dataChanged(createIndex(line,0),createIndex(line,0));
       }
       if(d_texts.at(line).at(3)!=
-	 QString().sprintf("%d",q->value(2).toInt())) {
-	d_texts[line][3]=QString().sprintf("%d",q->value(2).toInt());
+	 QString::asprintf("%d",q->value(2).toInt())) {
+	d_texts[line][3]=QString::asprintf("%d",q->value(2).toInt());
 	emit dataChanged(createIndex(line,3),createIndex(line,3));
       }
     }
@@ -312,7 +312,7 @@ void RDPypadListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("PYPAD_INSTANCES.ID=%u",d_ids.at(line));
+      QString::asprintf("PYPAD_INSTANCES.ID=%u",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -327,7 +327,7 @@ void RDPypadListModel::updateRow(int row,RDSqlQuery *q)
   QList<QVariant> texts;
 
   // ID
-  texts.push_back(QString().sprintf("%d",q->value(0).toInt()));
+  texts.push_back(QString::asprintf("%d",q->value(0).toInt()));
 
   // Description
   texts.push_back(q->value(1));
@@ -336,7 +336,7 @@ void RDPypadListModel::updateRow(int row,RDSqlQuery *q)
   texts.push_back(q->value(2));
 
   // Exit Code
-  texts.push_back(QString().sprintf("%d",q->value(3).toInt()));
+  texts.push_back(QString::asprintf("%d",q->value(3).toInt()));
 
   d_ids[row]=q->value(0).toInt();
   d_texts[row]=texts;

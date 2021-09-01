@@ -104,7 +104,7 @@ QString RDPodcastFilter::searchString(const QString &filter,bool active_only)
       "(PODCASTS.ITEM_SOURCE_URL like \"%"+fil+"%\"))";
   }
   if(active_only) {
-    ret+=QString().sprintf("&&(PODCASTS.STATUS=%d)",RDPodcast::StatusActive);
+    ret+=QString::asprintf("&&(PODCASTS.STATUS=%d)",RDPodcast::StatusActive);
   }
   return ret;
 }

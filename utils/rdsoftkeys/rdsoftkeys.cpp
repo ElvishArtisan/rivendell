@@ -99,10 +99,10 @@ MainWidget::MainWidget(QWidget *parent)
 	button->setGeometry(10+90*col,10+60*row,80,50);
 	button->setWordWrap(true);
 	button->setText(
-	     profile->stringValue("SoftKeys",QString().sprintf("Legend%d",n+1),
-				  QString().sprintf("Button %d",n+1)));
+	     profile->stringValue("SoftKeys",QString::asprintf("Legend%d",n+1),
+				  QString::asprintf("Button %d",n+1)));
 	if(!(color_name=profile->stringValue("SoftKeys",
-					QString().sprintf("Color%d",n+1),"")).
+					QString::asprintf("Color%d",n+1),"")).
 	   isEmpty()) {
 	  color=QColor(color_name);
 	  QPalette pal=QPalette(color,palette().color(QPalette::Background));

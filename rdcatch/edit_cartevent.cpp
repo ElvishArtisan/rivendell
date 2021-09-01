@@ -136,7 +136,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   edit_description_edit->setText(edit_recording->description());
   if(edit_cart!=NULL) {
     edit_destination_edit->
-      setText(QString().sprintf("%06d",edit_cart->number()));
+      setText(QString::asprintf("%06d",edit_cart->number()));
   }
   edit_dow_selector->fromRecording(edit_recording->id());
   edit_oneshot_box->setChecked(edit_recording->oneShot());
@@ -176,7 +176,7 @@ void EditCartEvent::selectCartData()
       delete edit_cart;
     }
     edit_cart=new RDCart(cartnum);
-    edit_destination_edit->setText(QString().sprintf("%d",cartnum));
+    edit_destination_edit->setText(QString::asprintf("%d",cartnum));
     edit_description_edit->setText(edit_cart->title());
   }
 }
@@ -283,10 +283,10 @@ bool EditCartEvent::CheckEvent(bool include_myself)
 {
   QString sql=QString("select `ID` from `RECORDINGS` where ")+
     "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
-    QString().sprintf("(`TYPE`=%d)&&",RDRecording::MacroEvent)+
+    QString::asprintf("(`TYPE`=%d)&&",RDRecording::MacroEvent)+
     "(`START_TIME`='"+RDEscapeString(edit_event_widget->startTime().
 				   toString("hh:mm:ss"))+"')&&"+
-    QString().sprintf("(`MACRO_CART`=%u)",
+    QString::asprintf("(`MACRO_CART`=%u)",
 		      edit_destination_edit->text().toUInt());
   if(edit_dow_selector->dayOfWeekEnabled(7)) {
     sql+="&&(`SUN`='Y')";
@@ -310,7 +310,7 @@ bool EditCartEvent::CheckEvent(bool include_myself)
     sql+="&&(`SAT`='Y')";
   }
   if(!include_myself) {
-    sql+=QString().sprintf("&&(`ID`!=%d)",edit_recording->id());
+    sql+=QString::asprintf("&&(`ID`!=%d)",edit_recording->id());
   }
   RDSqlQuery *q=new RDSqlQuery(sql);
   bool res=!q->first();

@@ -251,7 +251,7 @@ void Quartz1::error1Data(QAbstractSocket::SocketError err)
 
 void Quartz1::SendCommand(const char *str)
 {
-  // LogLine(QString().sprintf("SENDING: %s",str));
+  // LogLine(QString::asprintf("SENDING: %s",str));
   for(int i=0;i<2;i++) {
     switch(sas_porttype[i]) {
     case RDMatrix::TtyPort:

@@ -223,10 +223,10 @@ void RDButtonDialog::DisplayCart(int cartnum)
   RDCart *cart=new RDCart((unsigned)cartnum);
   if(cart->exists()) {
     edit_cart_edit->
-      setText(QString().sprintf("%06u - ",cart->number())+cart->title());
+      setText(QString::asprintf("%06u - ",cart->number())+cart->title());
   }
   else {
-    edit_cart_edit->setText(QString().sprintf("%06u - [",cart->number())+"] "+
+    edit_cart_edit->setText(QString::asprintf("%06u - [",cart->number())+"] "+
 			    tr("NOT FOUND"));
   }
   delete cart;

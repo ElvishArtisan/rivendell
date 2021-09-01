@@ -38,12 +38,12 @@ RDSlotOptions::RDSlotOptions(const QString &stationname,unsigned slotno)
   //
   sql=QString("select `ID` from `CARTSLOTS` where ")+
     "(`STATION_NAME`='"+RDEscapeString(stationname)+"')&&"+
-    QString().sprintf("(`SLOT_NUMBER`=%u)",slotno);
+    QString::asprintf("(`SLOT_NUMBER`=%u)",slotno);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     sql=QString("insert into `CARTSLOTS` set ")+
       "`STATION_NAME`='"+RDEscapeString(stationname)+"',"+
-      QString().sprintf("`SLOT_NUMBER`=%u",slotno);
+      QString::asprintf("`SLOT_NUMBER`=%u",slotno);
     RDSqlQuery::apply(sql);
   }
   delete q;
@@ -161,7 +161,7 @@ bool RDSlotOptions::load()
     "`AUDIO_OUTPUTS`.`STATION_NAME`='"+RDEscapeString(set_stationname)+"' && "+
     "`AUDIO_OUTPUTS`.`CARD_NUMBER`=`CARTSLOTS`.`CARD` && "+
     "`AUDIO_OUTPUTS`.`PORT_NUMBER`=`CARTSLOTS`.`OUTPUT_PORT` && "+
-    QString().sprintf("`CARTSLOTS`.`SLOT_NUMBER`=%u",set_slotno);
+    QString::asprintf("`CARTSLOTS`.`SLOT_NUMBER`=%u",set_slotno);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=true;
@@ -250,13 +250,13 @@ void RDSlotOptions::save() const
   QString sql;
 
   sql=QString("update `CARTSLOTS` set ")+
-    QString().sprintf("`MODE`=%d,",set_mode)+
-    QString().sprintf("`HOOK_MODE`=%d,",set_hook_mode)+
-    QString().sprintf("`STOP_ACTION`=%d,",set_stop_action)+
-    QString().sprintf("`CART_NUMBER`=%d,",set_cart_number)+
+    QString::asprintf("`MODE`=%d,",set_mode)+
+    QString::asprintf("`HOOK_MODE`=%d,",set_hook_mode)+
+    QString::asprintf("`STOP_ACTION`=%d,",set_stop_action)+
+    QString::asprintf("`CART_NUMBER`=%d,",set_cart_number)+
     "`SERVICE_NAME`='"+RDEscapeString(set_service)+"' "+
     "where (`STATION_NAME`='"+RDEscapeString(set_stationname)+"')&&"+
-    QString().sprintf("(`SLOT_NUMBER`=%u)",set_slotno);
+    QString::asprintf("(`SLOT_NUMBER`=%u)",set_slotno);
   RDSqlQuery::apply(sql);
 }
 

@@ -173,7 +173,7 @@ void RDLogImportModel::updateModel()
   QString sql=sqlFields()+
     "where "+
     "`IMPORTER_LINES`.`STATION_NAME`='"+RDEscapeString(d_station_name)+"'&&"+
-    QString().sprintf("`PROCESS_ID`=%u ",d_process_id)+
+    QString::asprintf("`PROCESS_ID`=%u ",d_process_id)+
     "order by `IMPORTER_LINES`.`LINE_ID` ";
   beginResetModel();
   d_texts.clear();
@@ -220,7 +220,7 @@ void RDLogImportModel::updateRow(int row,RDSqlQuery *q)
   texts[6]=q->value(7).toString().trimmed();
 
   // Line
-  texts[7]=QString().sprintf("%u",1+q->value(10).toUInt());
+  texts[7]=QString::asprintf("%u",1+q->value(10).toUInt());
 
   switch((RDLogLine::Type)q->value(9).toUInt()) {
   case RDLogLine::Cart:

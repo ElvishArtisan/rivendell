@@ -153,7 +153,7 @@ void EditGrid::hourButtonData(int id)
   }
   sql+=QString("where ")+
     "(`SERVICE_NAME`='"+RDEscapeString(edit_servicename)+"')&&"+
-    QString().sprintf("(`HOUR`=%d)",id);
+    QString::asprintf("(`HOUR`=%d)",id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
   LabelButton(dayofweek,hour,clockname);
@@ -238,7 +238,7 @@ void EditGrid::clearHourData()
 
   QString sql=QString("update `SERVICE_CLOCKS` set `CLOCK_NAME`=null where ")+
     "(`SERVICE_NAME`='"+RDEscapeString(edit_servicename)+"')&&"+
-    QString().sprintf("(HOUR=%d)",(dayofweek-1)*24+hour);
+    QString::asprintf("(HOUR=%d)",(dayofweek-1)*24+hour);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
   LabelButton(dayofweek,hour,"");
@@ -285,7 +285,7 @@ void EditGrid::LabelButton(int dayofweek,int hour,QString clockname)
     }
   }
   edit_hour_button[dayofweek-1][hour]->
-    setText(QString().sprintf("%02d-%02d\n",hour,hour+1)+code);
+    setText(QString::asprintf("%02d-%02d\n",hour,hour+1)+code);
   edit_hour_button[dayofweek-1][hour]->
     setPalette(QPalette(color,palette().color(QPalette::Background)));
 }
@@ -295,7 +295,7 @@ QString EditGrid::GetClock(int dayofweek,int hour)
 {
   QString sql=QString("select `CLOCK_NAME` from `SERVICE_CLOCKS` where ")+
     "(`SERVICE_NAME`='"+RDEscapeString(edit_servicename)+"')&&"+
-    QString().sprintf("(`HOUR`=%d)",24*(dayofweek-1)+hour);
+    QString::asprintf("(`HOUR`=%d)",24*(dayofweek-1)+hour);
 
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {

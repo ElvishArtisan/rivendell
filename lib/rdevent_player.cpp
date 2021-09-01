@@ -2,7 +2,7 @@
 //
 // Execute a list of RML commands asynchronously.
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -70,7 +70,7 @@ bool RDEventPlayer::exec(unsigned cartnum)
   if(cartnum==0) {
     return false;
   }
-  return exec(QString().sprintf("EX %u!",cartnum));
+  return exec(QString::asprintf("EX %u!",cartnum));
 }
 
 

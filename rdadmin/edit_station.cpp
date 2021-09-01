@@ -476,7 +476,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_timeoffset_box->setValue(station_station->timeOffset());
   unsigned cartnum=station_station->startupCart();
   if(cartnum>0) {
-    station_startup_cart_edit->setText(QString().sprintf("%06u",cartnum));
+    station_startup_cart_edit->setText(QString::asprintf("%06u",cartnum));
   }
 
   RDStation *cue_station=station_station;
@@ -502,16 +502,16 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_cue_sel->setPort(station_station->cuePort());
   if(station_station->cueStartCart()>0) {
     station_start_cart_edit->
-      setText(QString().sprintf("%06u",station_station->cueStartCart()));
+      setText(QString::asprintf("%06u",station_station->cueStartCart()));
   }
   if(station_station->cueStopCart()>0) {
     station_stop_cart_edit->
-      setText(QString().sprintf("%06u",station_station->cueStopCart()));
+      setText(QString::asprintf("%06u",station_station->cueStopCart()));
   }
   station_username_box->setCurrentText(station_station->defaultName());
   if((cartnum=station_station->heartbeatCart())>0) {
     station_heartbeat_box->setChecked(true);
-    station_hbcart_edit->setText(QString().sprintf("%u",cartnum));
+    station_hbcart_edit->setText(QString::asprintf("%u",cartnum));
     station_hbinterval_spin->
       setValue(station_station->heartbeatInterval()/1000);
     heartbeatToggledData(true);
@@ -570,7 +570,7 @@ void EditStation::selectClicked()
   int cartnum=station_startup_cart_edit->text().toInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
-    station_startup_cart_edit->setText(QString().sprintf("%06d",cartnum));
+    station_startup_cart_edit->setText(QString::asprintf("%06d",cartnum));
   }
 }
 
@@ -591,7 +591,7 @@ void EditStation::heartbeatClickedData()
   int cartnum=station_hbcart_edit->text().toInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
-    station_hbcart_edit->setText(QString().sprintf("%06d",cartnum));
+    station_hbcart_edit->setText(QString::asprintf("%06d",cartnum));
   }
 }
 
@@ -852,7 +852,7 @@ void EditStation::startCartClickedData()
   int cartnum=station_start_cart_edit->text().toUInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
-    station_start_cart_edit->setText(QString().sprintf("%06d",cartnum));
+    station_start_cart_edit->setText(QString::asprintf("%06d",cartnum));
   }
 }
 
@@ -862,7 +862,7 @@ void EditStation::stopCartClickedData()
   int cartnum=station_stop_cart_edit->text().toUInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
-    station_stop_cart_edit->setText(QString().sprintf("%06d",cartnum));
+    station_stop_cart_edit->setText(QString::asprintf("%06d",cartnum));
   }
 }
 

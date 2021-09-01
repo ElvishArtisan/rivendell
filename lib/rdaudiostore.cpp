@@ -81,7 +81,7 @@ RDAudioStore::ErrorCode RDAudioStore::runStore(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_AUDIOSTORE).toUtf8().constData(),
+	       QString::asprintf("%u",RDXPORT_COMMAND_AUDIOSTORE).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,username.toUtf8().constData(),CURLFORM_END);
@@ -155,7 +155,7 @@ RDAudioStore::ErrorCode RDAudioStore::runStore(const QString &username,
 
 QString RDAudioStore::errorText(RDAudioStore::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown RDAudioStore Error [%u]",err);
+  QString ret=QString::asprintf("Unknown RDAudioStore Error [%u]",err);
 
   switch(err) {
   case RDAudioStore::ErrorOk:

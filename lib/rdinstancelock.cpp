@@ -65,7 +65,7 @@ bool RDInstanceLock::lock()
 		strerror(errno));
   }
   fclose(file);
-  dir.setPath(QString().sprintf("/proc/%u",pid));
+  dir.setPath(QString::asprintf("/proc/%u",pid));
   if(!dir.exists()) {
     unlink(lock_path.toUtf8());
     if(MakeLock()) {

@@ -229,7 +229,7 @@ void MainWidget::mouseDoubleClickEvent(QMouseEvent *e)
     QProcess *proc=new QProcess(this);
     QStringList args;
     args.push_back("-geometry");
-    args.push_back(QString().sprintf("+%d+%d",mon_rdselect_x,mon_rdselect_y));
+    args.push_back(QString::asprintf("+%d+%d",mon_rdselect_x,mon_rdselect_y));
     proc->start("rdselect",args);
     proc->waitForFinished(-1);
     if(proc->exitStatus()!=QProcess::NormalExit) {
@@ -241,7 +241,7 @@ void MainWidget::mouseDoubleClickEvent(QMouseEvent *e)
     if(proc->exitCode()!=0) {
       QMessageBox::critical(this,"RDMonitor - "+tr("Error"),
 			    tr("RDSelect returned non-zero exit code")+
-			    QString().sprintf(" %d.",proc->exitCode())+
+			    QString::asprintf(" %d.",proc->exitCode())+
 			    "\n\nERROR MESSAGE:\n"+
 			    proc->readAllStandardError());
       delete proc;

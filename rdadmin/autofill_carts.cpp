@@ -109,7 +109,7 @@ void AutofillCarts::addData()
   if(admin_cart_dialog->exec(&cartnum,RDCart::Audio,svc_svc->name(),NULL)) {
     sql=QString("insert into `AUTOFILLS` set ")+
       "`SERVICE`='"+RDEscapeString(svc_svc->name())+"',"+
-      QString().sprintf("`CART_NUMBER`=%d",cartnum);
+      QString::asprintf("`CART_NUMBER`=%d",cartnum);
     RDSqlQuery::apply(sql);
     QModelIndex index=svc_cart_model->addCart(cartnum);
     if(index.isValid()) {
@@ -129,7 +129,7 @@ void AutofillCarts::deleteData()
 
   QString sql=QString("delete from `AUTOFILLS` where ")+
     "`SERVICE`='"+RDEscapeString(svc_svc->name())+"' && "+
-    QString().sprintf("`CART_NUMBER`=%u",
+    QString::asprintf("`CART_NUMBER`=%u",
 		      svc_cart_model->cartNumber(rows.first()));
   RDSqlQuery::apply(sql);
   svc_cart_model->removeCart(rows.first());

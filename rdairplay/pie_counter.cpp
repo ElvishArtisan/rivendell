@@ -108,7 +108,7 @@ void PieCounter::setTime(int msecs)
   stop();
   pie_length=msecs;
   pie_time=msecs;
-  pie_time_label->setText(QString().sprintf(":%02d",pie_time/1000));
+  pie_time_label->setText(QString::asprintf(":%02d",pie_time/1000));
 }
 
 
@@ -214,13 +214,13 @@ void PieCounter::tickCounter()
     else {
       pie_talk_label->show();
       pie_talk_label->
-	setText(QString().sprintf(":%02d",(750+pie_talk_end-pie_pos)/1000));
+	setText(QString::asprintf(":%02d",(750+pie_talk_end-pie_pos)/1000));
     }
     if(pie_time<=0) {
       stop();
     }
     else {
-      pie_time_label->setText(QString().sprintf(":%02d",(1000+pie_time)/1000));
+      pie_time_label->setText(QString::asprintf(":%02d",(1000+pie_time)/1000));
       update();
     }
   }

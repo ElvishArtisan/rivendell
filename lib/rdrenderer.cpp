@@ -135,10 +135,10 @@ void __RDRenderLogLine::close()
 
 QString __RDRenderLogLine::summary() const
 {
-  QString ret=QString().sprintf("unknown event [type: %d]",type());
+  QString ret=QString::asprintf("unknown event [type: %d]",type());
   switch(type()) {
   case RDLogLine::Cart:
-    ret=QString().sprintf("cart %06u [",cartNumber())+title()+"]";
+    ret=QString::asprintf("cart %06u [",cartNumber())+title()+"]";
     break;
 	  
   case RDLogLine::Marker:
@@ -495,14 +495,14 @@ bool RDRenderer::Render(const QString &outfile,RDLogModel *model,RDSettings *s,
       if(lls.at(i)->transType()==RDLogLine::Stop) {
 	ProgressMessage(current_time,i,tr("STOP")+" ",lls.at(i)->summary());
 	render_warnings.
-	  push_back(tr("log render halted at line")+QString().sprintf(" %d ",i)+
+	  push_back(tr("log render halted at line")+QString::asprintf(" %d ",i)+
 		    tr("due to STOP"));
 	break;
       }
       if(lls.at(i)->open(current_time)) {
 	ProgressMessage(current_time,i,
 			RDLogLine::transText(lls.at(i)->transType()),
-		      QString().sprintf(" cart %06u [",lls.at(i)->cartNumber())+
+		      QString::asprintf(" cart %06u [",lls.at(i)->cartNumber())+
 			lls.at(i)->title()+"]");
 	sf_count_t frames=0;
 	if((lls.at(i+1)->transType()==RDLogLine::Segue)&&
@@ -548,7 +548,7 @@ bool RDRenderer::Render(const QString &outfile,RDLogModel *model,RDSettings *s,
 			    " ("+tr("NO AUDIO AVAILABLE")+")");
 	    render_warnings.
 	      push_back(lls.at(i)->summary()+tr("at line")+
-			QString().sprintf(" %d ",i)+
+			QString::asprintf(" %d ",i)+
 			tr("failed to play (NO AUDIO AVAILABLE)"));
 	  }
 	  else {
@@ -656,8 +656,8 @@ void RDRenderer::ProgressMessage(const QString &msg)
 void RDRenderer::ProgressMessage(const QTime &time,int line,
 				 const QString &trans,const QString &msg)
 {
-  QString str=QString().sprintf("%04d : ",line)+
+  QString str=QString::asprintf("%04d : ",line)+
     rda->timeString(time)+" : "+
-    QString().sprintf("%-5s",trans.toUtf8().constData())+msg;
+    QString::asprintf("%-5s",trans.toUtf8().constData())+msg;
   emit progressMessageSent(str);
 }

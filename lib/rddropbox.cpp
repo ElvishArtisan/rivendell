@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell dropbox configuration.
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -403,8 +403,8 @@ void RDDropbox::SetRow(const QString &param,int value) const
   QString sql;
 
   sql=QString("update `DROPBOXES` set `")+
-    param+QString().sprintf("`=%d where ",value)+
-    QString().sprintf("`ID`=%d",box_id);
+    param+QString::asprintf("`=%d where ",value)+
+    QString::asprintf("`ID`=%d",box_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -416,8 +416,8 @@ void RDDropbox::SetRow(const QString &param,unsigned value) const
   QString sql;
 
   sql=QString("update `DROPBOXES` set `")+
-    param+QString().sprintf("`=%u where ",value)+
-    QString().sprintf("`ID`=%d",box_id);
+    param+QString::asprintf("`=%u where ",value)+
+    QString::asprintf("`ID`=%d",box_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -430,7 +430,7 @@ void RDDropbox::SetRow(const QString &param,const QString &value) const
 
   sql=QString("update `DROPBOXES` set `")+
     param+"`='"+RDEscapeString(value)+"' where "+
-    QString().sprintf("`ID`=%d",box_id);
+    QString::asprintf("`ID`=%d",box_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -443,7 +443,7 @@ void RDDropbox::SetRow(const QString &param,bool value) const
 
   sql=QString("update `DROPBOXES` set `")+
     param+"`='"+RDYesNo(value)+"' where "+
-    QString().sprintf("`ID`=%d",box_id);
+    QString::asprintf("`ID`=%d",box_id);
   q=new RDSqlQuery(sql);
   delete q;
 }

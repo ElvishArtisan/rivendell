@@ -45,7 +45,7 @@ void MainObject::gpiChangedData(int matrix,int line,bool state)
     rda->syslog(LOG_INFO,"GPI %d:%d OFF",matrix,line+1);
   }
   ripcd_gpi_state[matrix][line]=state;
-  BroadcastCommand(QString().sprintf("GI %d %d %d %d!",matrix,line,state,
+  BroadcastCommand(QString::asprintf("GI %d %d %d %d!",matrix,line,state,
 				     ripcd_gpi_mask[matrix][line]));
   if(!ripcd_gpi_mask[matrix][line]) {
     return;
@@ -66,7 +66,7 @@ void MainObject::gpoChangedData(int matrix,int line,bool state)
     rda->syslog(LOG_INFO,"GPO %d:%d OFF",matrix,line+1);
   }
   ripcd_gpo_state[matrix][line]=state;
-  BroadcastCommand(QString().sprintf("GO %d %d %d %d!",matrix,line,state,
+  BroadcastCommand(QString::asprintf("GO %d %d %d %d!",matrix,line,state,
 				     ripcd_gpo_mask[matrix][line]));
   if(!ripcd_gpo_mask[matrix][line]) {
     return;
@@ -80,18 +80,18 @@ void MainObject::gpoChangedData(int matrix,int line,bool state)
 
 void MainObject::gpiStateData(int matrix,unsigned line,bool state)
 {
-  // LogLine(RDConfig::LogWarning,QString().sprintf("gpiStateData(%d,%d,%d)",matrix,line,state));
+  // LogLine(RDConfig::LogWarning,QString::asprintf("gpiStateData(%d,%d,%d)",matrix,line,state));
 
-  BroadcastCommand(QString().sprintf("GI %d %u %d %d!",matrix,line,state,
+  BroadcastCommand(QString::asprintf("GI %d %u %d %d!",matrix,line,state,
 				     ripcd_gpi_mask[matrix][line]));
 }
 
 
 void MainObject::gpoStateData(int matrix,unsigned line,bool state)
 {
-  // LogLine(RDConfig::LogWarning,QString().sprintf("gpoStateData(%d,%d,%d)",matrix,line,state));
+  // LogLine(RDConfig::LogWarning,QString::asprintf("gpoStateData(%d,%d,%d)",matrix,line,state));
 
-  BroadcastCommand(QString().sprintf("GO %d %u %d %d!",matrix,line,state,
+  BroadcastCommand(QString::asprintf("GO %d %u %d %d!",matrix,line,state,
 				     ripcd_gpo_mask[matrix][line]));
 }
 
@@ -139,10 +139,10 @@ void MainObject::LogGpioEvent(int matrix,int line,RDMatrix::GpioType type,
 
   sql=QString("insert into `GPIO_EVENTS` set ")+
     "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
-    QString().sprintf("`MATRIX`=%d,",matrix)+
-    QString().sprintf("`NUMBER`=%d,",line+1)+
-    QString().sprintf("`TYPE`=%d,",type)+
-    QString().sprintf("`EDGE`=%d,",state)+
+    QString::asprintf("`MATRIX`=%d,",matrix)+
+    QString::asprintf("`NUMBER`=%d,",line+1)+
+    QString::asprintf("`TYPE`=%d,",type)+
+    QString::asprintf("`EDGE`=%d,",state)+
     "`EVENT_DATETIME`=now()";
   RDSqlQuery::apply(sql);
 }
@@ -320,7 +320,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     case RDMatrix::GpioInput:
       ripcd_gpi_macro[matrix_num][gpi][rml->arg(3).toInt()]=
 	rml->arg(4).toInt();
-      BroadcastCommand(QString().sprintf("GC %d %d %d %d!",matrix_num,gpi,
+      BroadcastCommand(QString::asprintf("GC %d %d %d %d!",matrix_num,gpi,
 					 ripcd_gpi_macro[matrix_num][gpi][0],
 					 ripcd_gpi_macro[matrix_num][gpi][1]));
       break;
@@ -328,7 +328,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     case RDMatrix::GpioOutput:
       ripcd_gpo_macro[matrix_num][gpi][rml->arg(3).toInt()]=
 	rml->arg(4).toInt();
-      BroadcastCommand(QString().sprintf("GD %d %d %d %d!",matrix_num,gpi,
+      BroadcastCommand(QString::asprintf("GD %d %d %d %d!",matrix_num,gpi,
 					 ripcd_gpo_macro[matrix_num][gpi][0],
 					 ripcd_gpo_macro[matrix_num][gpi][1]));
       break;
@@ -378,22 +378,22 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     case RDMatrix::GpioInput:
       if(rml->arg(3).toInt()==1) {
 	ripcd_gpi_mask[matrix_num][gpi]=true;
-	BroadcastCommand(QString().sprintf("GM %d %d 1!",matrix_num,gpi));
+	BroadcastCommand(QString::asprintf("GM %d %d 1!",matrix_num,gpi));
       }
       else {
 	ripcd_gpi_mask[matrix_num][gpi]=false;
-	BroadcastCommand(QString().sprintf("GM %d %d 0!",matrix_num,gpi));
+	BroadcastCommand(QString::asprintf("GM %d %d 0!",matrix_num,gpi));
       }
       break;
 
     case RDMatrix::GpioOutput:
       if(rml->arg(3).toInt()==1) {
 	ripcd_gpo_mask[matrix_num][gpi]=true;
-	BroadcastCommand(QString().sprintf("GN %d %d 1!",matrix_num,gpi));
+	BroadcastCommand(QString::asprintf("GN %d %d 1!",matrix_num,gpi));
       }
       else {
 	ripcd_gpo_mask[matrix_num][gpi]=false;
-	BroadcastCommand(QString().sprintf("GN %d %d 0!",matrix_num,gpi));
+	BroadcastCommand(QString::asprintf("GN %d %d 0!",matrix_num,gpi));
       }
       break;
     }
@@ -788,15 +788,15 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     str+=rml->arg(rml->argQuantity()-1);
     switch(ripcd_tty_term[tty_port]) {
     case RDTty::CrTerm:
-      str+=QString().sprintf("\x0d");
+      str+=QString::asprintf("\x0d");
       break;
       
     case RDTty::LfTerm:
-      str+=QString().sprintf("\x0a");
+      str+=QString::asprintf("\x0a");
       break;
       
     case RDTty::CrLfTerm:
-      str+=QString().sprintf("\x0d\x0a");
+      str+=QString::asprintf("\x0d\x0a");
       break;
       
     default:
@@ -872,7 +872,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       "from `TTYS` where "+
       "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
       "(`ACTIVE`='Y')&&"+
-      QString().sprintf("(`PORT_ID`=%d)",tty_port);
+      QString::asprintf("(`PORT_ID`=%d)",tty_port);
     q=new RDSqlQuery(sql);
     if(q->first()) {
       if(!ripcd_tty_inuse[tty_port]) {

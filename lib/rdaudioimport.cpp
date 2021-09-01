@@ -123,7 +123,7 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_IMPORT).
+	       QString::asprintf("%u",RDXPORT_COMMAND_IMPORT).
 	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,username.toUtf8().constData(),
@@ -133,29 +133,29 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_cart_number).toUtf8().constData(),
+	       QString::asprintf("%u",conv_cart_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_cut_number).toUtf8().constData(),
+	       QString::asprintf("%u",conv_cut_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CHANNELS",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_settings->channels()).
+	       QString::asprintf("%u",conv_settings->channels()).
 	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"NORMALIZATION_LEVEL",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%d",conv_settings->normalizationLevel()).
+	       QString::asprintf("%d",conv_settings->normalizationLevel()).
 	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"AUTOTRIM_LEVEL",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%d",conv_settings->autotrimLevel()).
+	       QString::asprintf("%d",conv_settings->autotrimLevel()).
 	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"USE_METADATA",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_use_metadata).toUtf8().constData(),
+	       QString::asprintf("%u",conv_use_metadata).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"FILENAME",
 	       CURLFORM_FILE,conv_src_filename.toUtf8().constData(),
@@ -266,7 +266,7 @@ bool RDAudioImport::aborting() const
 QString RDAudioImport::errorText(RDAudioImport::ErrorCode err,
 				 RDAudioConvert::ErrorCode conv_err)
 {
-  QString ret=QString().sprintf("Uknown Error [%u]",err);
+  QString ret=QString::asprintf("Uknown Error [%u]",err);
 
   switch(err) {
   case RDAudioImport::ErrorOk:

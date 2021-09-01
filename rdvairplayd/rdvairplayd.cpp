@@ -148,8 +148,8 @@ MainObject::MainObject(QObject *parent)
 	  "`LABEL` "+  // 00
 	  "from `AUDIO_OUTPUTS` where "+
 	  "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
-	  QString().sprintf("`CARD_NUMBER`=%d &&",cards[i])+
-	  QString().sprintf("`PORT_NUMBER`=%d",ports[i]);
+	  QString::asprintf("`CARD_NUMBER`=%d &&",cards[i])+
+	  QString::asprintf("`PORT_NUMBER`=%d",ports[i]);
 	q=new RDSqlQuery(sql);
 	if(q->first()) {
 	  labels[i]=q->value(0).toString();

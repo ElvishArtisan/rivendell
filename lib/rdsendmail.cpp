@@ -271,7 +271,7 @@ bool RDSendMail(QString *err_msg,const QString &subject,const QString &body,
   }
   if(proc->exitCode()!=0) {
     *err_msg=QObject::tr("sendmail returned non-zero exit code")+
-      QString().sprintf(": %d [",proc->exitCode())+
+      QString::asprintf(": %d [",proc->exitCode())+
       QString::fromUtf8(proc->readAllStandardError())+"]\n";
     delete proc;
     return false;

@@ -55,7 +55,7 @@ SasUsi::SasUsi(RDMatrix *matrix,QObject *parent)
     "`RELAY_NUM` "+   // 02
     "from `VGUEST_RESOURCES` where "+
     "(`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"')&&"+
-    QString().sprintf("(`MATRIX_NUM`=%d) ",matrix->matrix())+
+    QString::asprintf("(`MATRIX_NUM`=%d) ",matrix->matrix())+
     "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -449,7 +449,7 @@ void SasUsi::DispatchCommand()
   QString sql;
   RDSqlQuery *q;
 
-  //LogLine(RDConfig::LogNotice,QString().sprintf("DISPATCHED: %s",(const char *)sas_buffer));
+  //LogLine(RDConfig::LogNotice,QString::asprintf("DISPATCHED: %s",(const char *)sas_buffer));
 
   //
   // Startup Sequence.  Get the input and output lists.  The response
@@ -493,22 +493,22 @@ void SasUsi::DispatchCommand()
     }
     sql=QString("select `NUMBER` from `INPUTS` where ")+
       "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-      QString().sprintf("(`MATRIX`=%d)&&",sas_matrix)+
-      QString().sprintf("(`NUMBER`=%d)",input);
+      QString::asprintf("(`MATRIX`=%d)&&",sas_matrix)+
+      QString::asprintf("(`NUMBER`=%d)",input);
     q=new RDSqlQuery(sql);
     if(q->first()) {
       sql=QString("update `INPUTS` set ")+
 	"`NAME`='"+RDEscapeString(label)+"' where "+
 	"(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-	QString().sprintf("(`MATRIX`=%d)&&",sas_matrix)+
-	QString().sprintf("(`NUMBER`=%d)",input);
+	QString::asprintf("(`MATRIX`=%d)&&",sas_matrix)+
+	QString::asprintf("(`NUMBER`=%d)",input);
     }
     else {
       sql=QString("insert into `INPUTS` set ")+
 	"`NAME`='"+RDEscapeString(label)+"',"+
 	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
-	QString().sprintf("`MATRIX`=%d,",sas_matrix)+
-	QString().sprintf("`NUMBER`=%d",input);
+	QString::asprintf("`MATRIX`=%d,",sas_matrix)+
+	QString::asprintf("`NUMBER`=%d",input);
     }
     delete q;
     q=new RDSqlQuery(sql);
@@ -526,22 +526,22 @@ void SasUsi::DispatchCommand()
     }
     sql=QString("select `NUMBER` from `OUTPUTS` where ")+
       "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-      QString().sprintf("(`MATRIX`=%d)&&",sas_matrix)+
-      QString().sprintf("(`NUMBER`=%d)",output);
+      QString::asprintf("(`MATRIX`=%d)&&",sas_matrix)+
+      QString::asprintf("(`NUMBER`=%d)",output);
     q=new RDSqlQuery(sql);
     if(q->first()) {
       sql=QString("update `OUTPUTS` set ")+
 	"`NAME`='"+RDEscapeString(label)+"' where "+
 	"(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-	QString().sprintf("(`MATRIX`=%d)&&",sas_matrix)+
-	QString().sprintf("(`NUMBER`=%d)",output);
+	QString::asprintf("(`MATRIX`=%d)&&",sas_matrix)+
+	QString::asprintf("(`NUMBER`=%d)",output);
     }
     else {
       sql=QString("insert into `OUTPUTS` set ")+
 	"`NAME`='"+RDEscapeString(label)+"',"+
 	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
-	QString().sprintf("`MATRIX`=%d,",sas_matrix)+
-	QString().sprintf("`NUMBER`=%d",output);
+	QString::asprintf("`MATRIX`=%d,",sas_matrix)+
+	QString::asprintf("`NUMBER`=%d",output);
     }
     delete q;
     q=new RDSqlQuery(sql);
@@ -633,7 +633,7 @@ QString SasUsi::PrettifyCommand(const char *cmd) const
 {
   QString ret;
   if(cmd[0]<26) {
-    ret=QString().sprintf("^%c%s",'@'+cmd[0],cmd+1);
+    ret=QString::asprintf("^%c%s",'@'+cmd[0],cmd+1);
   }
   else {
     ret=cmd;

@@ -62,7 +62,7 @@ RDPodcast::RDPodcast(RDConfig *config,unsigned id)
     "`FEEDS`.KEY_NAME "+
     "from `PODCASTS` left join `FEEDS` "+
     "on (`PODCASTS`.`FEED_ID`=`FEEDS`.`ID`) "+
-    QString().sprintf("where `PODCASTS`.`ID`=%u",id);
+    QString::asprintf("where `PODCASTS`.`ID`=%u",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     podcast_keyname=q->value(0).toString();
@@ -381,7 +381,7 @@ bool RDPodcast::removePodcast() const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_PODCAST).toUtf8().
+	       QString::asprintf("%u",RDXPORT_COMMAND_REMOVE_PODCAST).toUtf8().
 	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -392,7 +392,7 @@ bool RDPodcast::removePodcast() const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",podcast_id).toUtf8().constData(),
+	       QString::asprintf("%u",podcast_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -443,14 +443,14 @@ bool RDPodcast::removePodcast() const
 QString RDPodcast::guid(const QString &url,const QString &filename,
 			unsigned feed_id,unsigned cast_id)
 {
-  return url+"/"+filename+QString().sprintf("_%06u_%06u",feed_id,cast_id);
+  return url+"/"+filename+QString::asprintf("_%06u_%06u",feed_id,cast_id);
 }
 
 
 QString RDPodcast::guid(const QString &full_url,unsigned feed_id,
 			unsigned cast_id)
 {
-  return full_url+QString().sprintf("_%06u_%06u",feed_id,cast_id);
+  return full_url+QString::asprintf("_%06u_%06u",feed_id,cast_id);
 }
 
 
@@ -467,7 +467,7 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_DELETE_PODCAST).toUtf8().
+	       QString::asprintf("%u",RDXPORT_COMMAND_DELETE_PODCAST).toUtf8().
 	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -478,7 +478,7 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",cast_id).toUtf8().constData(),
+	       QString::asprintf("%u",cast_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -531,8 +531,8 @@ void RDPodcast::SetRow(const QString &param,int value) const
   QString sql;
 
   sql=QString("update `PODCASTS` set `")+
-    param+QString().sprintf("`=%d where ",value)+
-    QString().sprintf("`ID`=%u",podcast_id);
+    param+QString::asprintf("`=%d where ",value)+
+    QString::asprintf("`ID`=%u",podcast_id);
   RDSqlQuery::apply(sql);
 }
 
@@ -544,12 +544,12 @@ void RDPodcast::SetRow(const QString &param,const QString &value) const
   if(value.isNull()) {
     sql=QString("update `PODCASTS` set `")+
       param+"`=NULL where "+
-      QString().sprintf("`ID`=%u",podcast_id);
+      QString::asprintf("`ID`=%u",podcast_id);
   }
   else {
     sql=QString("update `PODCASTS` set `")+
       param+"`='"+RDEscapeString(value)+"' where "+
-      QString().sprintf("`ID`=%u",podcast_id);
+      QString::asprintf("`ID`=%u",podcast_id);
   }
   RDSqlQuery::apply(sql);
 }
@@ -563,12 +563,12 @@ void RDPodcast::SetRow(const QString &param,const QDateTime &value,
   if(value.isNull()) {
     sql=QString("update `PODCASTS` set ")+
       param+"=NULL"+" where "+
-      QString().sprintf("`ID`=%u",podcast_id);
+      QString::asprintf("`ID`=%u",podcast_id);
   }
   else {
     sql=QString("update `PODCASTS` set `")+
       param+"`="+RDCheckDateTime(value, format)+" where "+
-      QString().sprintf("`ID`=%u",podcast_id);
+      QString::asprintf("`ID`=%u",podcast_id);
   }
   RDSqlQuery::apply(sql);
 }

@@ -81,7 +81,7 @@ int GpiLabel::line() const
 void GpiLabel::setLine(int line)
 {
   gpi_line=line;
-  gpi_line_label->setText(QString().sprintf("%d",line+1));
+  gpi_line_label->setText(QString::asprintf("%d",line+1));
 }
 
 
@@ -106,13 +106,13 @@ void GpiLabel::setCart(unsigned off_cartnum,unsigned on_cartnum)
     gpi_offcart_label->setText("");
   }
   else {
-    gpi_offcart_label->setText(QString().sprintf("%06u",off_cartnum));
+    gpi_offcart_label->setText(QString::asprintf("%06u",off_cartnum));
   }
   if(on_cartnum==0) {
     gpi_oncart_label->setText("");
   }
   else {
-    gpi_oncart_label->setText(QString().sprintf("%06u",on_cartnum));
+    gpi_oncart_label->setText(QString::asprintf("%06u",on_cartnum));
   }
 }
 

@@ -101,7 +101,7 @@ void BtU41MlrWeb::processCommand(RDMacro *cmd)
       SendCommand("*0MA");
     }
     else {
-      SendCommand(QString().sprintf("*0%02d",cmd->arg(1).toInt()));
+      SendCommand(QString::asprintf("*0%02d",cmd->arg(1).toInt()));
     }
     break;
 

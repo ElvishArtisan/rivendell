@@ -161,7 +161,7 @@ void ListSvcs::deleteData()
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(QMessageBox::warning(this,"RDAdmin - "+tr("Logs Exist"),
-			    tr("There are")+QString().sprintf(" %d ",q->size())+
+			    tr("There are")+QString::asprintf(" %d ",q->size())+
 			    tr("logs owned by this service that will also be deleted.")+"\n"+tr("Do you still want to proceed?"),
 			    QMessageBox::Yes,QMessageBox::No)!=
        QMessageBox::Yes) {

@@ -188,7 +188,7 @@ bool RDClock::save()
     sql=QString("update `CLOCKS` set ")+
       "`SHORT_NAME`='"+RDEscapeString(clock_short_name)+"',"+
       "`COLOR`='"+RDEscapeString(clock_color.name())+"',"+
-      QString().sprintf("`ARTISTSEP`=%d,",artistsep)+
+      QString::asprintf("`ARTISTSEP`=%d,",artistsep)+
       "`REMARKS`='"+RDEscapeString(clock_remarks)+"' "+
       "where `NAME`='"+RDEscapeString(clock_name)+"'";
     RDSqlQuery::apply(sql);
@@ -203,7 +203,7 @@ bool RDClock::save()
       "`NAME`='"+RDEscapeString(clock_name)+"',"+
       "`SHORT_NAME`='"+RDEscapeString(clock_short_name)+"',"+
       "`COLOR`='"+RDEscapeString(clock_color.name())+"',"+
-      QString().sprintf("`ARTISTSEP`=%d,",artistsep)+
+      QString::asprintf("`ARTISTSEP`=%d,",artistsep)+
       "`REMARKS`='"+RDEscapeString(clock_remarks)+"'";
     RDSqlQuery::apply(sql);
   }
@@ -214,9 +214,9 @@ bool RDClock::save()
     sql=QString("insert into `CLOCK_LINES` set ")+
       "`CLOCK_NAME`='"+RDEscapeString(clock_name)+"',"+
       "`EVENT_NAME`='"+RDEscapeString(clock_events.at(i)->name())+"',"+
-      QString().sprintf("`START_TIME`=%d,",
+      QString::asprintf("`START_TIME`=%d,",
 			QTime(0,0,0).msecsTo(clock_events.at(i)->startTime()))+
-      QString().sprintf("`LENGTH`=%d",clock_events.at(i)->length());
+      QString::asprintf("`LENGTH`=%d",clock_events.at(i)->length());
     RDSqlQuery::apply(sql);
   }
   return true;

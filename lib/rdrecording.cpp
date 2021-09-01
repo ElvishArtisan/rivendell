@@ -43,11 +43,11 @@ RDRecording::RDRecording(int id,bool create)
   }
 
   if(create) {
-    sql=QString().sprintf("select `ID` from `RECORDINGS` where `ID`=%d",rec_id);
+    sql=QString::asprintf("select `ID` from `RECORDINGS` where `ID`=%d",rec_id);
     q=new RDSqlQuery(sql);
     if(q->size()!=1) {
       delete q;
-      sql=QString().sprintf("insert into `RECORDINGS` set `ID`=%d",rec_id);
+      sql=QString::asprintf("insert into `RECORDINGS` set `ID`=%d",rec_id);
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -667,7 +667,7 @@ void RDRecording::setFeedId(const QString &keyname) const
 QString RDRecording::feedKeyName() const
 {
   QString ret;
-  QString sql=QString().sprintf("select `KEY_NAME` from `FEEDS` where `ID`=%d",
+  QString sql=QString::asprintf("select `KEY_NAME` from `FEEDS` where `ID`=%d",
 				feedId());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
@@ -792,7 +792,7 @@ int RDRecording::GetIntValue(QString field) const
   
   sql=QString("select `")+
     field+"` from `RECORDINGS` where "+
-    QString().sprintf("`ID`=%d",rec_id);
+    QString::asprintf("`ID`=%d",rec_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toInt();
@@ -812,7 +812,7 @@ unsigned RDRecording::GetUIntValue(QString field) const
   
   sql=QString("select `")+
     field+"` from `RECORDINGS` where "+
-    QString().sprintf("`ID`=%d",rec_id);
+    QString::asprintf("`ID`=%d",rec_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toUInt();
@@ -832,7 +832,7 @@ bool RDRecording::GetBoolValue(QString field) const
 
   sql=QString("select `")+
     field+"` from `RECORDINGS` where "+
-    QString().sprintf("`ID`=%d",rec_id);
+    QString::asprintf("`ID`=%d",rec_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     state=RDBool(q->value(0).toString());
@@ -852,7 +852,7 @@ QString RDRecording::GetStringValue(QString field) const
 
   sql=QString("select `")+
     field+"` from `RECORDINGS` where "+
-    QString().sprintf("`ID`=%d",rec_id);
+    QString::asprintf("`ID`=%d",rec_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toString();
@@ -872,7 +872,7 @@ QTime RDRecording::GetTimeValue(QString field) const
 
   sql=QString("select `")+
     field+"` from `RECORDINGS` where "+
-    QString().sprintf("`ID`=%d",rec_id);
+    QString::asprintf("`ID`=%d",rec_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toTime();
@@ -901,8 +901,8 @@ void RDRecording::SetRow(const QString &param,int value) const
   QString sql;
 
   sql=QString("update `RECORDINGS` set `")+
-    param+QString().sprintf("`=%d where ",value)+
-    QString().sprintf("`ID`=%d",rec_id);
+    param+QString::asprintf("`=%d where ",value)+
+    QString::asprintf("`ID`=%d",rec_id);
   RDSqlQuery::apply(sql);
 }
 
@@ -912,8 +912,8 @@ void RDRecording::SetRow(const QString &param,unsigned value) const
   QString sql;
 
   sql=QString("update `RECORDINGS` set `")+
-    param+QString().sprintf("`=%u where ",value)+
-    QString().sprintf("`ID`=%d",rec_id);
+    param+QString::asprintf("`=%u where ",value)+
+    QString::asprintf("`ID`=%d",rec_id);
   RDSqlQuery::apply(sql);
 }
 
@@ -924,7 +924,7 @@ void RDRecording::SetRow(const QString &param,bool value) const
 
   sql=QString("update `RECORDINGS` set `")+
     param+"`='"+RDYesNo(value)+"' where "+
-    QString().sprintf("`ID`=%d",rec_id);
+    QString::asprintf("`ID`=%d",rec_id);
   RDSqlQuery::apply(sql);
 }
 
@@ -935,7 +935,7 @@ void RDRecording::SetRow(const QString &param,const QString &value) const
 
   sql=QString("update `RECORDINGS` set `")+
     param+"`='"+RDEscapeString(value)+"' where "+
-    QString().sprintf("`ID`=%d",rec_id);
+    QString::asprintf("`ID`=%d",rec_id);
   RDSqlQuery::apply(sql);
 }
 
@@ -946,6 +946,6 @@ void RDRecording::SetRow(const QString &param,const QTime &value) const
 
   sql=QString("update `RECORDINGS` set `")+
     param+"`="+RDCheckDateTime(value,"hh:mm:ss")+" where "+
-    QString().sprintf("`ID`=%d",rec_id);
+    QString::asprintf("`ID`=%d",rec_id);
   RDSqlQuery::apply(sql);
 }

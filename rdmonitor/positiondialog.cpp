@@ -102,7 +102,7 @@ int PositionDialog::exec()
 {
   pos_screen_number_box->clear();
   for(int i=0;i<pos_desktop_widget->numScreens();i++) {
-    pos_screen_number_box->insertItem(i,QString().sprintf("%d",i));
+    pos_screen_number_box->insertItem(i,QString::asprintf("%d",i));
     if(i==pos_config->screenNumber()) {
       pos_screen_number_box->setCurrentIndex(i);
     }

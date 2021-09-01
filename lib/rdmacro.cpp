@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Macro Language Command
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -180,14 +180,14 @@ int RDMacro::addArg(const QString &arg)
 
 int RDMacro::addArg(int arg)
 {
-  rml_args.push_back(QString().sprintf("%d",arg));
+  rml_args.push_back(QString::asprintf("%d",arg));
   return rml_args.size()-1;
 }
 
 
 int RDMacro::addArg(unsigned arg)
 {
-  rml_args.push_back(QString().sprintf("%u",arg));
+  rml_args.push_back(QString::asprintf("%u",arg));
   return rml_args.size()-1;
 }
 
@@ -200,13 +200,13 @@ void RDMacro::setArg(int n,const QString &arg)
 
 void RDMacro::setArg(int n,int arg)
 {
-  rml_args[n]=QString().sprintf("%d",arg);
+  rml_args[n]=QString::asprintf("%d",arg);
 }
 
 
 void RDMacro::setArg(int n,unsigned arg)
 {
-  rml_args[n]=QString().sprintf("%u",arg);
+  rml_args[n]=QString::asprintf("%u",arg);
 }
 
 

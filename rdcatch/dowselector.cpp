@@ -74,7 +74,7 @@ void DowSelector::toRecording(unsigned record_id) const
     "`SAT`='"+RDYesNo(d_checks[5]->isChecked())+"',"+
     "`SUN`='"+RDYesNo(d_checks[6]->isChecked())+"' "+
     "where "+
-    QString().sprintf("`ID`=%u",record_id);
+    QString::asprintf("`ID`=%u",record_id);
   RDSqlQuery::apply(sql);
 }
 
@@ -90,7 +90,7 @@ void DowSelector::fromRecording(unsigned record_id)
     "`SAT`,"+  // 05
     "`SUN` "+  // 06
     "from `RECORDINGS` where "+
-    QString().sprintf("`ID`=%u",record_id);
+    QString::asprintf("`ID`=%u",record_id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     for(int i=0;i<7;i++) {

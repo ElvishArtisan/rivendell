@@ -129,7 +129,7 @@ void ListHostvars::addData()
     }
     else {
       sql=QString("delete from `HOSTVARS` ")+
-	QString().sprintf("where `ID`=%d",id);
+	QString::asprintf("where `ID`=%d",id);
       RDSqlQuery::apply(sql);
     }
   }
@@ -165,7 +165,7 @@ void ListHostvars::deleteData()
     return;
   }
   QString sql=QString("delete from `HOSTVARS` ")+
-    QString().sprintf("where `ID`=%d",list_model->varId(rows.first()));
+    QString::asprintf("where `ID`=%d",list_model->varId(rows.first()));
   RDSqlQuery::apply(sql);
   list_model->removeVar(rows.first());
 }

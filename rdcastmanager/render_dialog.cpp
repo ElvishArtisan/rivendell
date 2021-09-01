@@ -207,13 +207,13 @@ void RenderDialog::UpdateLogEventsSelection()
   else {
     if(d_modified_start_line==d_modified_end_line) {
       d_select_label->setText(tr("Line")+
-			      QString().sprintf(" %d",d_modified_start_line));
+			      QString::asprintf(" %d",d_modified_start_line));
     }
     else {
       d_select_label->setText(tr("Lines")+
-			      QString().sprintf(" %d ",d_modified_start_line)+
+			      QString::asprintf(" %d ",d_modified_start_line)+
 			      tr("through")+
-			      QString().sprintf(" %d",d_modified_end_line));
+			      QString::asprintf(" %d",d_modified_end_line));
     }
   }
 }

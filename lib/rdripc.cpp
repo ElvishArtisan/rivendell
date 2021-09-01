@@ -98,37 +98,37 @@ void RDRipc::connectedData()
 
 void RDRipc::sendGpiStatus(int matrix)
 {
-  SendCommand(QString().sprintf("GI %d!",matrix));
+  SendCommand(QString::asprintf("GI %d!",matrix));
 }
 
 
 void RDRipc::sendGpoStatus(int matrix)
 {
-  SendCommand(QString().sprintf("GO %d!",matrix));
+  SendCommand(QString::asprintf("GO %d!",matrix));
 }
 
 
 void RDRipc::sendGpiMask(int matrix)
 {
-  SendCommand(QString().sprintf("GM %d!",matrix));
+  SendCommand(QString::asprintf("GM %d!",matrix));
 }
 
 
 void RDRipc::sendGpoMask(int matrix)
 {
-  SendCommand(QString().sprintf("GN %d!",matrix));
+  SendCommand(QString::asprintf("GN %d!",matrix));
 }
 
 
 void RDRipc::sendGpiCart(int matrix)
 {
-  SendCommand(QString().sprintf("GC %d!",matrix));
+  SendCommand(QString::asprintf("GC %d!",matrix));
 }
 
 
 void RDRipc::sendGpoCart(int matrix)
 {
-  SendCommand(QString().sprintf("GD %d!",matrix));
+  SendCommand(QString::asprintf("GD %d!",matrix));
 }
 
 
@@ -149,7 +149,7 @@ void RDRipc::sendNotification(const RDNotification &notify)
 
 void RDRipc::sendOnairFlag()
 {
-  SendCommand(QString().sprintf("TA %d!",ripc_onair_flag));
+  SendCommand(QString::asprintf("TA %d!",ripc_onair_flag));
 }
 
 
@@ -180,12 +180,12 @@ void RDRipc::sendRml(RDMacro *macro)
   switch(macro->role()) {
   case RDMacro::Cmd:
     cmd=QString("MS ")+macro->address().toString()+
-      QString().sprintf(" %d ",port)+rmlline;
+      QString::asprintf(" %d ",port)+rmlline;
     break;
 	
   case RDMacro::Reply:
     cmd=QString("ME ")+macro->address().toString()+
-      QString().sprintf(" %d ",port)+rmlline;
+      QString::asprintf(" %d ",port)+rmlline;
     break;
 
   default:

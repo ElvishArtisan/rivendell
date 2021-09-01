@@ -68,7 +68,7 @@ bool CitadelXds::processCart(const unsigned cartnum)
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString().sprintf("select `FILENAME` from `ISCI_XREFERENCE` \
+  sql=QString::asprintf("select `FILENAME` from `ISCI_XREFERENCE` \
                          where (`CART_NUMBER`=%u)&&(`LATEST_DATE`>=now())&&\
                          ((`TYPE`='R')||(`TYPE`='B'))",cartnum);
   q=new RDSqlQuery(sql);
@@ -159,7 +159,7 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
 	  if(ValidateFilename(fields[8])) {
 	    if(date.isValid()) {
 	      sql=QString("insert into `ISCI_XREFERENCE` set ")+
-	      "`CART_NUMBER`="+QString().sprintf("%u",cartnum)+","+
+	      "`CART_NUMBER`="+QString::asprintf("%u",cartnum)+","+
 	      "`ISCI`='"+RDEscapeString(fields[4])+"',"+
 	      "`FILENAME`='"+RDEscapeString(fields[8])+"',"+
 	      "`LATEST_DATE`='"+date.toString("yyyy/MM/dd")+"',"+
@@ -268,7 +268,7 @@ void CitadelXds::CheckCarts()
       "(`CUTS`.`ORIGIN_DATETIME`<`REPL_CART_STATE`.`ITEM_DATETIME`)&&"+
       "(`REPL_CART_STATE`.`REPLICATOR_NAME`='"+
       RDEscapeString(config()->name())+"')&&"+
-      QString().sprintf("(`REPL_CART_STATE`.`CART_NUMBER`=%u)&&",
+      QString::asprintf("(`REPL_CART_STATE`.`CART_NUMBER`=%u)&&",
 			q->value(0).toUInt())+
       "(`REPL_CART_STATE`.`POSTED_FILENAME`='"+
       RDEscapeString(q->value(1).toString())+"')&&"+
@@ -280,7 +280,7 @@ void CitadelXds::CheckCarts()
 		 q->value(1).toString())) {
 	sql=QString("select `ID` from `REPL_CART_STATE` where ")+
 	  "(`REPLICATOR_NAME`='"+RDEscapeString(config()->name())+"')&&"+
-	  QString().sprintf("(`CART_NUMBER`=%u)&&",q->value(0).toUInt())+
+	  QString::asprintf("(`CART_NUMBER`=%u)&&",q->value(0).toUInt())+
 	  "(`POSTED_FILENAME`='"+RDEscapeString(q->value(1).toString())+"')";
 	q2=new RDSqlQuery(sql);
 	if(q2->first()) {
@@ -288,7 +288,7 @@ void CitadelXds::CheckCarts()
 	    "`ITEM_DATETIME`=now(),"+
 	    "`REPOST`='N' where "+
 	    "(`REPLICATOR_NAME`='"+RDEscapeString(config()->name())+"')&&"+
-	    QString().sprintf("(`CART_NUMBER`=%u)&&",q->value(0).toUInt())+
+	    QString::asprintf("(`CART_NUMBER`=%u)&&",q->value(0).toUInt())+
 	    "(`POSTED_FILENAME`='"+RDEscapeString(q->value(1).toString())+"')";
 	}
 	else {
@@ -296,7 +296,7 @@ void CitadelXds::CheckCarts()
 	    "`ITEM_DATETIME`=now(),"+
 	    "`REPOST`='N',"+
 	    "`REPLICATOR_NAME`='"+RDEscapeString(config()->name())+"',"+
-	    QString().sprintf("`CART_NUMBER`=%u,",q->value(0).toUInt())+
+	    QString::asprintf("`CART_NUMBER`=%u,",q->value(0).toUInt())+
 	    "`POSTED_FILENAME`='"+RDEscapeString(q->value(1).toString())+"'";
 	}
 	delete q2;
@@ -429,7 +429,7 @@ void CitadelXds::PurgeCuts()
 				   config()->urlPassword(),"",false,
 				   rda->config()->logXloadDebugData()))==
 	 RDDelete::ErrorOk) {
-	sql=QString().sprintf("delete from `REPL_CART_STATE` where `ID`=%d",
+	sql=QString::asprintf("delete from `REPL_CART_STATE` where `ID`=%d",
 			      q->value(0).toInt());
 	q2=new RDSqlQuery(sql);
 	delete q2;

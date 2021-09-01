@@ -155,7 +155,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,bool user_is_admin,
   d_showmatches_box=new QCheckBox(this);
   d_showmatches_label=
     new QLabel(tr("Show Only First ")+
-	       QString().sprintf("%d",RD_LIMITED_CART_SEARCH_QUANTITY)+
+	       QString::asprintf("%d",RD_LIMITED_CART_SEARCH_QUANTITY)+
 	       tr(" Matches"),this);
   d_showmatches_label->setFont(labelFont());
   d_showmatches_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -252,7 +252,7 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   // Return Size Limit
   //
   if(d_showmatches_box->isChecked()) {
-    sql+=QString().sprintf("limit %d ",RD_LIMITED_CART_SEARCH_QUANTITY);
+    sql+=QString::asprintf("limit %d ",RD_LIMITED_CART_SEARCH_QUANTITY);
   }
   //  printf("FILTER SQL: %s\n",sql.toUtf8().constData());
 
@@ -423,7 +423,7 @@ void RDCartFilter::changeUser()
 
   d_codes_box->clear();
   d_codes_box->insertItem(0,tr("ALL"));
-  sql=QString().sprintf("select `CODE` from `SCHED_CODES` order by `CODE`");
+  sql=QString::asprintf("select `CODE` from `SCHED_CODES` order by `CODE`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_codes_box->insertItem(d_codes_box->count(),q->value(0).toString());
@@ -447,7 +447,7 @@ void RDCartFilter::filterChangedData(const QString &str)
 
 void RDCartFilter::setMatchCount(int matches)
 {
-  d_matches_edit->setText(QString().sprintf("%d",matches));
+  d_matches_edit->setText(QString::asprintf("%d",matches));
 }
 
 

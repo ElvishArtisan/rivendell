@@ -245,8 +245,8 @@ void RDCutDialog::addButtonData()
     return;
   }
   sql=QString("insert into `CART` set ")+
-    QString().sprintf("`NUMBER`=%d,",cart_num)+
-    QString().sprintf("`TYPE`=%d,",cart_type)+
+    QString::asprintf("`NUMBER`=%d,",cart_num)+
+    QString::asprintf("`TYPE`=%d,",cart_type)+
     "`GROUP_NAME`='"+RDEscapeString(cart_group)+"',"+
     "`TITLE`='"+RDEscapeString(cart_title)+"'";
   q=new RDSqlQuery(sql);

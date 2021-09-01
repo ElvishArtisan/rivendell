@@ -80,7 +80,7 @@ EditAudioPorts::EditAudioPorts(RDStation *station,QWidget *parent)
     // Input Port Controls
     //
     str=QString(tr("Input Port"));
-    edit_inportnum_label[i]=new QLabel(str+QString().sprintf(" %d",i),this);
+    edit_inportnum_label[i]=new QLabel(str+QString::asprintf(" %d",i),this);
     edit_inportnum_label[i]->setFont(labelFont());
     edit_inportnum_label[i]->setAlignment(Qt::AlignCenter);  
 
@@ -131,7 +131,7 @@ EditAudioPorts::EditAudioPorts(RDStation *station,QWidget *parent)
     // Output Port Controls
     //
     str=QString(tr("Output Port"));
-    edit_outportnum_label[i]=new QLabel(str+QString().sprintf(" %d",i),this);
+    edit_outportnum_label[i]=new QLabel(str+QString::asprintf(" %d",i),this);
     edit_outportnum_label[i]->setFont(labelFont());
     edit_outportnum_label[i]->setAlignment(Qt::AlignCenter);  
       
@@ -171,7 +171,7 @@ EditAudioPorts::EditAudioPorts(RDStation *station,QWidget *parent)
   //
   int cards=rdstation->cards();
   for(int i=0;i<cards;i++) {
-    edit_card_box->insertItem(edit_card_box->count(),QString().sprintf("%d",i));
+    edit_card_box->insertItem(edit_card_box->count(),QString::asprintf("%d",i));
   }
   edit_clock_box->insertItem(edit_clock_box->count(),tr("Internal"));
   edit_clock_box->insertItem(edit_clock_box->count(),tr("AES/EBU Signal"));

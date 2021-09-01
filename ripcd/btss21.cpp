@@ -98,11 +98,11 @@ void BtSs21::processCommand(RDMacro *cmd)
       return;
     }
     if(cmd->arg(1).toInt()==0) {
-      str=QString().sprintf("*%dM",BTSS21_UNIT_ID);
+      str=QString::asprintf("*%dM",BTSS21_UNIT_ID);
       bt_device->write(str.toUtf8());
     }
     else {
-      str=QString().sprintf("*%d%d",BTSS21_UNIT_ID,cmd->arg(1).toInt());
+      str=QString::asprintf("*%d%d",BTSS21_UNIT_ID,cmd->arg(1).toInt());
       bt_device->write(str.toUtf8());
     }
     cmd->acknowledge(true);

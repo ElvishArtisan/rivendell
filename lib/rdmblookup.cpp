@@ -188,9 +188,9 @@ void RDMbLookup::lookupRecord()
   catch (MusicBrainz5::CConnectionError &err) {
     err_str="  "+tr("Connection Exception")+"\n"+
       "  "+tr("Last Result")+": "+
-      QString().sprintf("%d",mbq.LastResult())+"\n"+
+      QString::asprintf("%d",mbq.LastResult())+"\n"+
       "  "+tr("LastHTTPCode")+": "+
-      QString().sprintf("%d",mbq.LastHTTPCode())+"\n"+
+      QString::asprintf("%d",mbq.LastHTTPCode())+"\n"+
       "  "+tr("LastErrorMessage")+": "+
       QString::fromUtf8(mbq.LastErrorMessage().c_str());
     result_code=RDDiscLookup::LookupError;
@@ -198,9 +198,9 @@ void RDMbLookup::lookupRecord()
   catch (MusicBrainz5::CTimeoutError &err) {
     err_str="  "+tr("Timeout Exception")+"\n"+
       "  "+tr("Last Result")+": "+
-      QString().sprintf("%d",mbq.LastResult())+"\n"+
+      QString::asprintf("%d",mbq.LastResult())+"\n"+
       "  "+tr("LastHTTPCode")+": "+
-      QString().sprintf("%d",mbq.LastHTTPCode())+"\n"+
+      QString::asprintf("%d",mbq.LastHTTPCode())+"\n"+
       "  "+tr("LastErrorMessage")+": "+
       QString::fromUtf8(mbq.LastErrorMessage().c_str());
     result_code=RDDiscLookup::LookupError;
@@ -208,9 +208,9 @@ void RDMbLookup::lookupRecord()
   catch (MusicBrainz5::CAuthenticationError &err) {
     err_str="  "+tr("Authentication Exception")+"\n"+
       "  "+tr("Last Result")+": "+
-      QString().sprintf("%d",mbq.LastResult())+"\n"+
+      QString::asprintf("%d",mbq.LastResult())+"\n"+
       "  "+tr("LastHTTPCode")+": "+
-      QString().sprintf("%d",mbq.LastHTTPCode())+"\n"+
+      QString::asprintf("%d",mbq.LastHTTPCode())+"\n"+
       "  "+tr("LastErrorMessage")+": "+
       QString::fromUtf8(mbq.LastErrorMessage().c_str());
     result_code=RDDiscLookup::LookupError;
@@ -218,9 +218,9 @@ void RDMbLookup::lookupRecord()
   catch (MusicBrainz5::CFetchError &err) {
     err_str="  "+tr("Fetch Exception")+"\n"+
       "  "+tr("Last Result")+": "+
-      QString().sprintf("%d",mbq.LastResult())+"\n"+
+      QString::asprintf("%d",mbq.LastResult())+"\n"+
       "  "+tr("LastHTTPCode")+": "+
-      QString().sprintf("%d",mbq.LastHTTPCode())+"\n"+
+      QString::asprintf("%d",mbq.LastHTTPCode())+"\n"+
       "  "+tr("LastErrorMessage")+": "+
       QString::fromUtf8(mbq.LastErrorMessage().c_str());
     result_code=RDDiscLookup::LookupError;
@@ -228,9 +228,9 @@ void RDMbLookup::lookupRecord()
   catch (MusicBrainz5::CRequestError &err) {
     err_str="  "+tr("Request Exception")+"\n"+
       "  "+tr("Last Result")+": "+\
-      QString().sprintf("%d",mbq.LastResult())+"\n"+
+      QString::asprintf("%d",mbq.LastResult())+"\n"+
       "  "+tr("LastHTTPCode")+": "+
-      QString().sprintf("%d",mbq.LastHTTPCode())+"\n"+
+      QString::asprintf("%d",mbq.LastHTTPCode())+"\n"+
       "  "+tr("LastErrorMessage")+": "+
       QString::fromUtf8(mbq.LastErrorMessage().c_str());
     result_code=RDDiscLookup::LookupError;
@@ -238,9 +238,9 @@ void RDMbLookup::lookupRecord()
   catch (MusicBrainz5::CResourceNotFoundError &err) {
     err_str="  "+tr("Resource Not Found")+"\n"+
       "  "+tr("Last Result")+": "+\
-      QString().sprintf("%d",mbq.LastResult())+"\n"+
+      QString::asprintf("%d",mbq.LastResult())+"\n"+
       "  "+tr("LastHTTPCode")+": "+
-      QString().sprintf("%d",mbq.LastHTTPCode())+"\n"+
+      QString::asprintf("%d",mbq.LastHTTPCode())+"\n"+
       "  "+tr("LastErrorMessage")+": "+
       QString::fromUtf8(mbq.LastErrorMessage().c_str());
     result_code=RDDiscLookup::NoMatch;

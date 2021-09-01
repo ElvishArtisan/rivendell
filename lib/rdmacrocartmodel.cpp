@@ -177,7 +177,7 @@ QModelIndex RDMacroCartModel::addLine(const QModelIndex &row,const QString &rml)
   for(int i=0;i<columnCount();i++) {
     list.push_back(QVariant());
   }
-  list[0]=QString().sprintf("%d",offset+1);
+  list[0]=QString::asprintf("%d",offset+1);
   list[1]=rml;
   d_texts.insert(offset,list);
   endInsertRows();
@@ -209,7 +209,7 @@ void RDMacroCartModel::save() const
 {
   QString sql=QString("update `CART` set ")+
     "`MACROS`=\""+RDEscapeString(allCode())+"\" where "+
-    QString().sprintf("`NUMBER`=%u",d_cart_number);
+    QString::asprintf("`NUMBER`=%u",d_cart_number);
   RDSqlQuery::apply(sql);
 }
 
@@ -224,7 +224,7 @@ void RDMacroCartModel::updateModel()
   QString sql=QString("select ")+
     "`MACROS` "+  // 00
     "from `CART` where "+
-    QString().sprintf("`NUMBER`=%u",d_cart_number);
+    QString::asprintf("`NUMBER`=%u",d_cart_number);
   beginResetModel();
   d_texts.clear();
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -232,7 +232,7 @@ void RDMacroCartModel::updateModel()
     QStringList f0=q->value(0).toString().split("!",QString::SkipEmptyParts);
     for(int i=0;i<f0.size();i++) {
       d_texts.push_back(texts);
-      d_texts.back()[0]=QString().sprintf("%d",i+1);
+      d_texts.back()[0]=QString::asprintf("%d",i+1);
       d_texts.back()[1]=f0.at(i)+"!";
     }
   }

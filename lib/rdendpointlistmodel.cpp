@@ -220,7 +220,7 @@ void RDEndpointListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("`ID`=%d ",d_ids.at(row.row()));
+      QString::asprintf("`ID`=%d ",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -251,7 +251,7 @@ void RDEndpointListModel::updateModel()
   QString sql=sqlFields()+
     "where "+
     "`STATION_NAME`='"+RDEscapeString(d_mtx->station())+"' && "+
-    QString().sprintf("`MATRIX`=%d ",d_mtx->matrix())+
+    QString::asprintf("`MATRIX`=%d ",d_mtx->matrix())+
     "order by "+d_table_name+".`NUMBER` ";
   beginResetModel();
   d_ids.clear();
@@ -281,7 +281,7 @@ void RDEndpointListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      d_table_name+QString().sprintf(".`ID`=%d ",d_ids.at(line));
+      d_table_name+QString::asprintf(".`ID`=%d ",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -304,13 +304,13 @@ void RDEndpointListModel::updateRow(int row,RDSqlQuery *q)
   texts.push_back(q->value(2));
 
   // Number
-  texts.push_back(QString().sprintf("%05d",q->value(1).toInt()));
+  texts.push_back(QString::asprintf("%05d",q->value(1).toInt()));
 
   switch(d_mtx->type()) {
   case RDMatrix::LogitekVguest:
     // Engine Number
     if(q->value(3).toInt()>=0) {
-      texts.push_back(QString().sprintf("%02d",q->value(3).toInt()));
+      texts.push_back(QString::asprintf("%02d",q->value(3).toInt()));
     }
     else {
       texts.push_back("");
@@ -318,7 +318,7 @@ void RDEndpointListModel::updateRow(int row,RDSqlQuery *q)
 
     // Device Number
     if(q->value(4).toInt()>=0) {
-      texts.push_back(QString().sprintf("%04X",q->value(4).toInt()));
+      texts.push_back(QString::asprintf("%04X",q->value(4).toInt()));
     }
     else {
       texts.push_back("");
@@ -330,7 +330,7 @@ void RDEndpointListModel::updateRow(int row,RDSqlQuery *q)
     texts.push_back(q->value(3));
 
     // Slot
-    texts.push_back(QString().sprintf("%d",q->value(4).toInt()));
+    texts.push_back(QString::asprintf("%d",q->value(4).toInt()));
     break;
 
   default:

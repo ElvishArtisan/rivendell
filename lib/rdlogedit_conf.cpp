@@ -333,8 +333,8 @@ void RDLogeditConf::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update `RDLOGEDIT` set `")+
-    param+QString().sprintf("`=%d where ",value)+
+  sql=QString::asprintf("update `RDLOGEDIT` set `")+
+    param+QString::asprintf("`=%d where ",value)+
     "`STATION`='"+RDEscapeString(lib_station)+"'";
   q=new RDSqlQuery(sql);
   delete q;
@@ -347,7 +347,7 @@ void RDLogeditConf::SetRow(const QString &param,unsigned value) const
   QString sql;
 
   sql=QString("update `RDLOGEDIT` set `")+
-    param+QString().sprintf("`=%d where ",value)+
+    param+QString::asprintf("`=%d where ",value)+
     "`STATION`='"+RDEscapeString(lib_station)+"'",
   q=new RDSqlQuery(sql);
   delete q;

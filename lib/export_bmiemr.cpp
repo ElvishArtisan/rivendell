@@ -142,7 +142,7 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
   // Write TRLR Record
   //
   *strm << QString("TRLR")+
-    QString().sprintf("%012d                       \x0d\x0a",++records);
+    QString::asprintf("%012d                       \x0d\x0a",++records);
 
   delete strm;
   delete file;

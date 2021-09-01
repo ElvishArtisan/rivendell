@@ -182,11 +182,11 @@ void LiveWireLwrpGpio::connectedData(unsigned id)
 {
   QString sql;
 
-  sql=QString().sprintf("update `MATRICES` set `GPIS`=%u,`GPOS`=%u ",
+  sql=QString::asprintf("update `MATRICES` set `GPIS`=%u,`GPOS`=%u ",
 			RD_LIVEWIRE_GPIO_BUNDLE_SIZE*gpio_livewire->gpis(),
 			RD_LIVEWIRE_GPIO_BUNDLE_SIZE*gpio_livewire->gpos())+
     "where (`STATION_NAME`='"+RDEscapeString(stationName())+"')&&"+
-    QString().sprintf("(`MATRIX`=%u)",matrixNumber());
+    QString::asprintf("(`MATRIX`=%u)",matrixNumber());
   RDSqlQuery::apply(sql);
 
   for(int i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE*gpio_livewire->gpis();i++) {

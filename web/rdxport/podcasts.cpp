@@ -101,7 +101,7 @@ void Xport::SavePodcast()
 	    LINE_NUMBER);
   }
   if(chmod(destpath.toUtf8(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP)!=0) {
-    err_msg=QString().sprintf("Internal server error [%s]",strerror(errno));
+    err_msg=QString::asprintf("Internal server error [%s]",strerror(errno));
     unlink(destpath.toUtf8());
     delete feed;
     delete cast;
@@ -154,13 +154,13 @@ void Xport::GetPodcast()
   destpath=QString(RD_AUDIO_ROOT)+"/"+cast->audioFilename();
 
   if((fd=open(destpath.toUtf8(),O_RDONLY))<0) {
-    err_msg=QString().sprintf("Internal server error [%s]",strerror(errno));
+    err_msg=QString::asprintf("Internal server error [%s]",strerror(errno));
     delete cast;
     XmlExit(err_msg.toUtf8(),500,"podcasts.cpp",LINE_NUMBER);
   }
   memset(&st,0,sizeof(st));
   if(fstat(fd,&st)!=0) {
-    err_msg=QString().sprintf("Internal server error [%s]",strerror(errno));
+    err_msg=QString::asprintf("Internal server error [%s]",strerror(errno));
     delete cast;
     XmlExit(err_msg.toUtf8(),500,"podcasts.cpp",LINE_NUMBER);
   }
@@ -215,7 +215,7 @@ void Xport::DeletePodcast()
 
   if(unlink(destpath.toUtf8())!=0) {
     if(errno!=ENOENT) {
-      err_msg=QString().sprintf("Internal server error [%s]",strerror(errno));
+      err_msg=QString::asprintf("Internal server error [%s]",strerror(errno));
       delete cast;
       XmlExit(err_msg.toUtf8(),500,"podcasts.cpp",LINE_NUMBER);
     }
@@ -573,7 +573,7 @@ void Xport::PostImage()
     "`DATA`,"+            // 01
     "`FILE_EXTENSION` "+  // 02
     "from FEED_IMAGES where "+
-    QString().sprintf("ID=%d",img_id);
+    QString::asprintf("ID=%d",img_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     feed_id=q->value(0).toUInt();
@@ -684,7 +684,7 @@ void Xport::RemoveImage()
     "`FEED_ID`,"+         // 00
     "`FILE_EXTENSION` "+  // 01
     "from `FEED_IMAGES` where "+
-    QString().sprintf("`ID`=%d",img_id);
+    QString::asprintf("`ID`=%d",img_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     feed_id=q->value(0).toUInt();

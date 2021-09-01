@@ -61,7 +61,7 @@ MainObject::MainObject(QObject *parent)
   for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
     if(rda->cmdSwitch()->key(i)=="--cart-number") {
       cartnum=rda->cmdSwitch()->value(i).toUInt();
-      cartstring=QString().sprintf("%06u",cartnum);
+      cartstring=QString::asprintf("%06u",cartnum);
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--artist") {

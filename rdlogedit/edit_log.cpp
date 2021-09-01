@@ -1324,7 +1324,7 @@ void EditLog::UpdateTracks()
     }
   }
   edit_track_label->
-    setText(QString().sprintf("%u / %u",tracks,markers+tracks));
+    setText(QString::asprintf("%u / %u",tracks,markers+tracks));
 }
 
 

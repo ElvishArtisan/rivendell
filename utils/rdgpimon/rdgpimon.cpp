@@ -108,7 +108,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   gpi_matrix_box->setGeometry(280,10,80,21);
   for(int i=0;i<MAX_MATRICES;i++) {
     gpi_matrix_box->
-      insertItem(gpi_matrix_box->count(),QString().sprintf("%d",i));
+      insertItem(gpi_matrix_box->count(),QString::asprintf("%d",i));
   }
   label=new QLabel(tr("Matrix:"),this);
   label->setGeometry(220,10,55,21);
@@ -322,7 +322,7 @@ void MainWidget::eventsReportData()
     RDReport::center(QString("Date: ")+
 		     rda->shortDateString(gpi_events_date_edit->date())+
 		     "       "+rda->station()->name()+":"+
-		     QString().sprintf("%d     ",gpi_matrix_box->currentIndex())+
+		     QString::asprintf("%d     ",gpi_matrix_box->currentIndex())+
 		     " State Filter: "+
 		     gpi_events_state_box->currentText(),78)+"\n";
   report+="\n";
@@ -333,8 +333,8 @@ void MainWidget::eventsReportData()
     "`EDGE` "+            // 02
     "from `GPIO_EVENTS` where "+
     "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",gpi_matrix_box->currentIndex())+
-    QString().sprintf("(`TYPE`=%d)&&",gpi_type_box->currentIndex())+
+    QString::asprintf("(`MATRIX`=%d)&&",gpi_matrix_box->currentIndex())+
+    QString::asprintf("(`TYPE`=%d)&&",gpi_type_box->currentIndex())+
     "(`EVENT_DATETIME`>='"+gpi_events_date_edit->date().toString("yyyy-MM-dd")+
     " 00:00:00')&&"+
     "(`EVENT_DATETIME`<'"+gpi_events_date_edit->date().addDays(1).
@@ -350,7 +350,7 @@ void MainWidget::eventsReportData()
   while(q->next()) {
     report+="                        ";
     report+=rda->timeString(q->value(0).toDateTime().time())+"   ";
-    report+=QString().sprintf("   %5d       ",q->value(1).toInt());
+    report+=QString::asprintf("   %5d       ",q->value(1).toInt());
     if(q->value(2).toInt()==0) {
       report+=tr("OFF");
     }
@@ -555,8 +555,8 @@ void MainWidget::UpdateLabelsUp(int last_line)
     "`MACRO_CART` "+      // 02
     "from "+tablename+" where "+
     "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",gpi_matrix->matrix())+
-    QString().sprintf("(`NUMBER`<=%d) ",last_line)+
+    QString::asprintf("(`MATRIX`=%d)&&",gpi_matrix->matrix())+
+    QString::asprintf("(`NUMBER`<=%d) ",last_line)+
     "order by `NUMBER` desc";
   q=new RDSqlQuery(sql);
   if(q->size()<count_limit) {
@@ -607,8 +607,8 @@ void MainWidget::UpdateLabelsDown(int first_line)
     "`MACRO_CART` "+      // 02
     "from "+tablename+" where "+
     "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",gpi_matrix->matrix())+
-    QString().sprintf("(`NUMBER`>=%d) ",first_line)+
+    QString::asprintf("(`MATRIX`=%d)&&",gpi_matrix->matrix())+
+    QString::asprintf("(`NUMBER`>=%d) ",first_line)+
     "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   while(q->next()&&(count<(GPIMON_ROWS*GPIMON_COLS))) {
@@ -627,7 +627,7 @@ void MainWidget::UpdateLabelsDown(int first_line)
     tablename+" "+  // 00
     "from `MATRICES` where "+
     "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"') && "+
-    QString().sprintf("(`MATRIX`=%d)",gpi_matrix->matrix());
+    QString::asprintf("(`MATRIX`=%d)",gpi_matrix->matrix());
   q=new RDSqlQuery(sql);
   if(q->first()) {
     for(int i=0;i<(GPIMON_ROWS*GPIMON_COLS);i++) {

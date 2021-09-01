@@ -161,13 +161,13 @@ void EditSchedRules::importData()
       sql+="MAX_ROW=null,";
     }
     else {
-      sql+=QString().sprintf("MAX_ROW=%u,",q->value(2).toUInt());
+      sql+=QString::asprintf("MAX_ROW=%u,",q->value(2).toUInt());
     }
     if(q->value(3).isNull()) {
       sql+="MIN_WAIT=null,";
     }
     else {
-      sql+=QString().sprintf("MIN_WAIT=%u,",q->value(3).toUInt());
+      sql+=QString::asprintf("MIN_WAIT=%u,",q->value(3).toUInt());
     }
     if(q->value(4).isNull()) {
       sql+="NOT_AFTER=null,";

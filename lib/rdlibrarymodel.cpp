@@ -396,7 +396,7 @@ QModelIndex RDLibraryModel::addCart(unsigned cartnum)
 
   QString sql=sqlFields()+
     "where "+
-    QString().sprintf("CART.NUMBER=%u",cartnum);
+    QString::asprintf("CART.NUMBER=%u",cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     updateRow(offset,q);
@@ -461,7 +461,7 @@ void RDLibraryModel::refreshRow(const QModelIndex &index)
 
 void RDLibraryModel::refreshCart(unsigned cartnum)
 {
-  QString cartnum_str=QString().sprintf("%06u",cartnum);
+  QString cartnum_str=QString::asprintf("%06u",cartnum);
   for(int i=0;i<d_texts.size();i++) {
     if(d_texts.at(i).at(0).toString()==cartnum_str) {
       updateCartLine(i);
@@ -597,7 +597,7 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
   }
   d_cart_types[row]=(RDCart::Type)q->value(15).toUInt();
   d_texts[row][0]=                // Cart Number
-    QString().sprintf("%06d",q->value(0).toUInt());
+    QString::asprintf("%06d",q->value(0).toUInt());
   d_cart_numbers[row]=q->value(0).toUInt();
   d_texts[row][1]=q->value(12);   // Group
   if(q->value(16).toUInt()==1) {
@@ -631,12 +631,12 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
   d_texts[row][14]=q->value(7);   // Agency
   d_texts[row][15]=q->value(8);   // User Defined
   d_texts[row][16]=               // Cut Quan
-    QString().sprintf("%u",q->value(16).toUInt());
+    QString::asprintf("%u",q->value(16).toUInt());
   d_texts[row][17]=               // Last Cut Played
-    QString().sprintf("%u",q->value(17).toUInt());
+    QString::asprintf("%u",q->value(17).toUInt());
   d_texts[row][18]=q->value(18);  // Enforce Length
   d_texts[row][19]=               // Length Deviation
-    QString().sprintf("%u",q->value(20).toUInt());
+    QString::asprintf("%u",q->value(20).toUInt());
   d_texts[row][20]=q->value(21);  // Owned By
   d_notes[row]=q->value(30).toString();
 
@@ -693,7 +693,7 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
     d_cut_cutnames[row].push_back(q->value(24).toString());
     d_cut_texts[row].push_back(list);
     d_cut_texts[row].back()[0]=tr("Cut")+  // Cut Number
-      QString().sprintf(" %03d",RDCut::cutNumber(q->value(24).toString()));
+      QString::asprintf(" %03d",RDCut::cutNumber(q->value(24).toString()));
     d_cut_texts[row].back()[2]=  // Length
       RDGetTimeLength(q->value(26).toUInt()-q->value(25).toUInt());
     d_cut_texts[row].back()[3]=  // Talk Length
@@ -756,7 +756,7 @@ QByteArray RDLibraryModel::DumpIndex(const QModelIndex &index,const QString &cap
     ret+=(caption+": ").toUtf8();
   }
   if(index.isValid()) {
-    ret+=QString().sprintf("QModelIndex(%d,%d,%llu)",
+    ret+=QString::asprintf("QModelIndex(%d,%d,%llu)",
 			   index.row(),index.column(),index.internalId()).
       toUtf8();
   }

@@ -422,7 +422,7 @@ void RecordListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_ids.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where `RECORDINGS`.`ID`=%u",d_ids.at(row.row()));
+      QString::asprintf("where `RECORDINGS`.`ID`=%u",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -496,7 +496,7 @@ void RecordListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where `RECORDINGS`.`ID`=%u",d_ids.at(line));
+      QString::asprintf("where `RECORDINGS`.`ID`=%u",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -587,7 +587,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
     break;
   }
   texts[15]=q->value(29).toString();   // One Shot
-  texts[16]=QString().sprintf("%d ",  // Trim Threshold
+  texts[16]=QString::asprintf("%d ",  // Trim Threshold
 			      -q->value(17).toInt())+tr("dB");
   texts[17]=q->value(18).toString();   // Startdate Offset
   texts[18]=q->value(19).toString();   // Enddate Offset
@@ -599,12 +599,12 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   }
   texts[27]=q->value(0).toString();   // Id
   texts[28]=q->value(26).toString();   // Type
-  texts[31]=QString().sprintf("%u",RDDeck::Idle);
+  texts[31]=QString::asprintf("%u",RDDeck::Idle);
 
   switch((RDRecording::Type)q->value(26).toInt()) {
   case RDRecording::Recording:
     texts[1]=q->value(3).toString()+
-      QString().sprintf(" : %dR",q->value(24).toInt());
+      QString::asprintf(" : %dR",q->value(24).toInt());
     switch((RDRecording::StartType)q->value(30).toUInt()) {
     case RDRecording::HardStart:
       texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
@@ -614,7 +614,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
       texts[2]=tr("Gpi")+": "+rda->timeString(q->value(4).toTime())+","+
 	rda->timeString(q->value(4).toTime().addMSecs(q->value(31).toInt()))+
 	","+
-	QString().sprintf("%d:%d,",q->value(32).toInt(),q->value(33).toInt())+
+	QString::asprintf("%d:%d,",q->value(32).toInt(),q->value(33).toInt())+
 	QTime(0,0,0).addMSecs(q->value(34).toUInt()).toString("mm:ss");
       break;
     }
@@ -630,7 +630,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
     case RDRecording::GpiEnd:
       texts[3]=tr("Gpi")+": "+rda->timeString(q->value(36).toTime())+","+
 	rda->timeString(q->value(36).toTime().addMSecs(q->value(37).toInt()))+
-	QString().sprintf(",%d:%d",q->value(38).toInt(),
+	QString::asprintf(",%d:%d",q->value(38).toInt(),
 			  q->value(39).toInt());
       break;
     }
@@ -640,7 +640,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
       "`SWITCH_MATRIX` "+   // 01
       "from `DECKS` where "+
       "(`STATION_NAME`='"+RDEscapeString(q->value(3).toString())+"')&&"+
-      QString().sprintf("(`CHANNEL`=%d)",q->value(24).toInt());
+      QString::asprintf("(`CHANNEL`=%d)",q->value(24).toInt());
     q1=new RDSqlQuery(sql);
     if(q1->first()) {  // Source
       texts[4]=GetSourceName(q1->value(0).toString(),q1->value(1).toInt(),
@@ -683,7 +683,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
     break;
 
   case RDRecording::Playout:
-    texts[1]=q->value(3).toString()+QString().sprintf(" : %dP",
+    texts[1]=q->value(3).toString()+QString::asprintf(" : %dP",
 						      q->value(24).toInt()-128);
     texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
     cut=new RDCut(q->value(6).toString());
@@ -697,8 +697,8 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   case RDRecording::MacroEvent:
     texts[1]=q->value(3).toString();
     texts[2]=tr("Hard")+": "+q->value(4).toTime().
-      toString(QString().sprintf("hh:mm:ss"));
-    texts[4]=tr("Cart")+QString().sprintf(" %06d",q->value(25).toInt());
+      toString(QString::asprintf("hh:mm:ss"));
+    texts[4]=tr("Cart")+QString::asprintf(" %06d",q->value(25).toInt());
     break;
 
   case RDRecording::SwitchEvent:
@@ -763,10 +763,10 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
     texts[20]=q->value(21).toString();   // Channels
     texts[21]=q->value(22).toString();   // Sample Rate
     if(q->value(23).toInt()==0) {     // Bit Rate/Quality
-      texts[22]=QString().sprintf("Qual %d",q->value(43).toInt());
+      texts[22]=QString::asprintf("Qual %d",q->value(43).toInt());
     }
     else {
-      texts[22]=QString().sprintf("%d kb/sec",q->value(23).toInt()/1000);
+      texts[22]=QString::asprintf("%d kb/sec",q->value(23).toInt()/1000);
     }
     break;
 
@@ -844,8 +844,8 @@ QString RecordListModel::GetSourceName(QString station,int matrix,int input)
   QString input_name;
   QString sql=QString("select `NAME` from `INPUTS` where ")+
     "(`STATION_NAME`='"+RDEscapeString(station)+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",matrix)+
-    QString().sprintf("(`NUMBER`=%d)",input);
+    QString::asprintf("(`MATRIX`=%d)&&",matrix)+
+    QString::asprintf("(`NUMBER`=%d)",input);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     input_name=q->value(0).toString();
@@ -861,8 +861,8 @@ QString RecordListModel::GetDestinationName(QString station,int matrix,
   QString output_name;
   QString sql=QString("select `NAME` from `OUTPUTS` where ")+
     "(`STATION_NAME`='"+RDEscapeString(station)+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",matrix)+
-    QString().sprintf("(`NUMBER`=%d)",output);
+    QString::asprintf("(`MATRIX`=%d)&&",matrix)+
+    QString::asprintf("(`NUMBER`=%d)",output);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output_name=q->value(0).toString();
@@ -905,7 +905,7 @@ void RecordListModel::UpdateStatus(int line)
     "`RECORDINGS`.`EXIT_TEXT` "+  // 03
     "from `RECORDINGS` left join `CUTS` "+
     "on `RECORDINGS`.`CUT_NAME`=`CUTS`.`CUT_NAME` where "+
-    QString().sprintf("`RECORDINGS`.`ID`=%u",d_ids.at(line));
+    QString::asprintf("`RECORDINGS`.`ID`=%u",d_ids.at(line));
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     code=(RDRecording::ExitCode)q->value(0).toInt();
@@ -921,7 +921,7 @@ void RecordListModel::UpdateStatus(int line)
   //
   // Exit Code/Text
   //
- d_texts[line][30]=QString().sprintf("%u",code);
+ d_texts[line][30]=QString::asprintf("%u",code);
   switch(code) {
   case RDRecording::Ok:
   case RDRecording::Downloading:

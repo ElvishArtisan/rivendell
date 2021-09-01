@@ -488,7 +488,7 @@ QString RDFormPost::urlEncode(const QString &str)
       ret+=str.mid(i,1);
     }
     else {
-      ret+=QString().sprintf("%%%02X",str.at(i).toLatin1());
+      ret+=QString::asprintf("%%%02X",str.at(i).toLatin1());
     }
   }
 

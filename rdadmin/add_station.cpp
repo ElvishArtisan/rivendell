@@ -171,12 +171,12 @@ void AddStation::CloneEncoderValues(const QString &paramname,
 
   sql=QString("select ")+
   paramname+" from `ENCODER_"+paramname+"` where "+
-  QString().sprintf("`ENCODER_ID`=%d",src_id);
+  QString::asprintf("`ENCODER_ID`=%d",src_id);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString("insert into `ENCODER_")+
       paramname+"` set "+paramname+
-      QString().sprintf("=%d,`ENCODER_ID`=%d",q->value(0).toInt(),dest_id);
+      QString::asprintf("=%d,`ENCODER_ID`=%d",q->value(0).toInt(),dest_id);
     RDSqlQuery::apply(sql);
   }
   delete q;

@@ -231,6 +231,6 @@ FILE *RDKernelGpio::OpenNode(const QString &name,const char *mode,int gpio) cons
   if(gpio<0) {
     return fopen((KERNELGPIO_SYS_FILE+"/"+name).toUtf8(),mode);
   }
-  return fopen((KERNELGPIO_SYS_FILE+QString().sprintf("/gpio%d/",gpio)+name).
+  return fopen((KERNELGPIO_SYS_FILE+QString::asprintf("/gpio%d/",gpio)+name).
 	       toUtf8(),mode);
 }

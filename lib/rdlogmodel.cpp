@@ -326,7 +326,7 @@ void RDLogModel::save(RDConfig *config,bool update_tracks,int line)
   else {
     sql=QString("delete from `LOG_LINES` where ")+
       "`LOG_NAME`='"+RDEscapeString(d_log_name)+"' && "+
-      QString().sprintf("`COUNT`=%d",line);
+      QString::asprintf("`COUNT`=%d",line);
     q=new RDSqlQuery(sql);
     delete q;
     SaveLine(line);
@@ -393,12 +393,12 @@ int RDLogModel::validate(QString *report,const QDate &date)
 	"`TYPE`,"+   // 00
 	"`TITLE` "+  // 01
 	"from `CART` where "+
-	QString().sprintf("`NUMBER`=%d",logLine(i)->cartNumber());
+	QString::asprintf("`NUMBER`=%d",logLine(i)->cartNumber());
       q=new RDSqlQuery(sql);
       if(!q->first()) {
 	*report+=QString(" ")+
 	  rda->timeString(logLine(i)->startTime(RDLogLine::Logged))+
-	  QString().sprintf(" - missing cart %06d",logLine(i)->cartNumber())+
+	  QString::asprintf(" - missing cart %06d",logLine(i)->cartNumber())+
 	  "\n";
 	errs++;
       }
@@ -410,7 +410,7 @@ int RDLogModel::validate(QString *report,const QDate &date)
 	    //
 		//TODO do we need to verify date here?
 	    sql=QString("select `CUT_NAME` from `CUTS` where ")+
-	      QString().sprintf("(`CART_NUMBER`=%u)&&",logLine(i)->cartNumber())+
+	      QString::asprintf("(`CART_NUMBER`=%u)&&",logLine(i)->cartNumber())+
 	      "((`START_DATETIME` is null)||"+
 	      "(`START_DATETIME`<='"+date.toString("yyyy-MM-dd")+" 23:59:59'))&&"+
 	      "((`END_DATETIME` is null)||"+
@@ -420,7 +420,7 @@ int RDLogModel::validate(QString *report,const QDate &date)
 	  else {
 		//TODO Do we need to verify date and logLine(i)->startTime?
 	    sql=QString("select `CUT_NAME` from `CUTS` where ")+
-	      QString().sprintf("(`CART_NUMBER`=%u)&&",logLine(i)->cartNumber())+
+	      QString::asprintf("(`CART_NUMBER`=%u)&&",logLine(i)->cartNumber())+
 	      "((`START_DATETIME` is null)||"+
 	      "(`START_DATETIME`<='"+date.toString("yyyy-MM-dd")+" "+
 	      logLine(i)->startTime(RDLogLine::Logged).toString("hh:mm:ss")+
@@ -442,7 +442,7 @@ int RDLogModel::validate(QString *report,const QDate &date)
 	  if(!q1->first()) {
 	    *report+=QString(" ")+
 	      rda->timeString(logLine(i)->startTime(RDLogLine::Logged))+
-	      QString().sprintf(" - cart %06d [",logLine(i)->cartNumber())+
+	      QString::asprintf(" - cart %06d [",logLine(i)->cartNumber())+
 	      q->value(1).toString()+"] "+QObject::tr("is not playable")+"\n";
 	    errs++;
 	  }
@@ -454,10 +454,10 @@ int RDLogModel::validate(QString *report,const QDate &date)
   }
   *report+="\n";
   if(errs==1) {
-    *report+=QString().sprintf("%d validation exception found.\n\n",errs);
+    *report+=QString::asprintf("%d validation exception found.\n\n",errs);
   }
   else {
-    *report+=QString().sprintf("%d validation exceptions found.\n\n",errs);
+    *report+=QString::asprintf("%d validation exceptions found.\n\n",errs);
   }
   return errs;
 }
@@ -495,7 +495,7 @@ void RDLogModel::update(int line)
       "`GROUPS`.`COLOR` "+               // 22
       "from `CART` left join `GROUPS` "+
       "on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` where "+
-      QString().sprintf("`CART`.`NUMBER`=%u",d_log_lines[line]->cartNumber());
+      QString::asprintf("`CART`.`NUMBER`=%u",d_log_lines[line]->cartNumber());
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       switch((RDCart::Type)q->value(0).toInt()) {
@@ -1376,7 +1376,7 @@ int RDLogModel::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
 	  "`ORIGIN_NAME`,"+        // 11
 	  "`ORIGIN_DATETIME` "+    // 12
 	  "from `CUTS` where "+
-	  QString().sprintf("`CART_NUMBER`=%u ",ll->cartNumber())+
+	  QString::asprintf("`CART_NUMBER`=%u ",ll->cartNumber())+
 	  "order by `CUT_NAME`";
 	q=new RDSqlQuery(sql);
 	if(q->first()) {
@@ -1459,44 +1459,44 @@ void RDLogModel::InsertLineValues(QString *query, int line)
   RDLogLine *ll=d_log_lines[line];
   QString sql=QString("(")+
     "'"+RDEscapeString(d_log_name)+"',"+
-    QString().sprintf("%d,",ll->id())+
-    QString().sprintf("%d,",line)+
-    QString().sprintf("%u,",ll->cartNumber())+
-    QString().sprintf("%d,",QTime(0,0,0).msecsTo(ll->startTime(RDLogLine::Logged)))+
-    QString().sprintf("%d,",ll->timeType())+
-    QString().sprintf("%d,",ll->transType())+
-    QString().sprintf("%d,",ll->startPoint(RDLogLine::LogPointer))+
-    QString().sprintf("%d,",ll->endPoint(RDLogLine::LogPointer))+
-    QString().sprintf("%d,",ll->segueStartPoint(RDLogLine::LogPointer))+
-    QString().sprintf("%d,",ll->segueEndPoint(RDLogLine::LogPointer))+
-    QString().sprintf("%d,",ll->type())+
+    QString::asprintf("%d,",ll->id())+
+    QString::asprintf("%d,",line)+
+    QString::asprintf("%u,",ll->cartNumber())+
+    QString::asprintf("%d,",QTime(0,0,0).msecsTo(ll->startTime(RDLogLine::Logged)))+
+    QString::asprintf("%d,",ll->timeType())+
+    QString::asprintf("%d,",ll->transType())+
+    QString::asprintf("%d,",ll->startPoint(RDLogLine::LogPointer))+
+    QString::asprintf("%d,",ll->endPoint(RDLogLine::LogPointer))+
+    QString::asprintf("%d,",ll->segueStartPoint(RDLogLine::LogPointer))+
+    QString::asprintf("%d,",ll->segueEndPoint(RDLogLine::LogPointer))+
+    QString::asprintf("%d,",ll->type())+
     "'"+RDEscapeString(ll->markerComment())+"',"+
     "'"+RDEscapeString(ll->markerLabel())+"',"+
-    QString().sprintf("%d,",ll->graceTime())+
-    QString().sprintf("%d,",ll->source())+
+    QString::asprintf("%d,",ll->graceTime())+
+    QString::asprintf("%d,",ll->source())+
     RDCheckDateTime(ll->extStartTime(),"hh:mm:ss")+","+
-    QString().sprintf("%d,",ll->extLength())+
+    QString::asprintf("%d,",ll->extLength())+
     "'"+RDEscapeString(ll->extData())+"',"+
     "'"+RDEscapeString(ll->extEventId())+"',"+
     "'"+RDEscapeString(ll->extAnncType())+"',"+
     "'"+RDEscapeString(ll->extCartName())+"',"+
-    QString().sprintf("%d,",ll->fadeupPoint(RDLogLine::LogPointer))+
-    QString().sprintf("%d,",ll->fadeupGain())+
-    QString().sprintf("%d,",ll->fadedownPoint(RDLogLine::LogPointer))+
-    QString().sprintf("%d,",ll->fadedownGain())+
-    QString().sprintf("%d,",ll->segueGain())+
+    QString::asprintf("%d,",ll->fadeupPoint(RDLogLine::LogPointer))+
+    QString::asprintf("%d,",ll->fadeupGain())+
+    QString::asprintf("%d,",ll->fadedownPoint(RDLogLine::LogPointer))+
+    QString::asprintf("%d,",ll->fadedownGain())+
+    QString::asprintf("%d,",ll->segueGain())+
     "'"+RDEscapeString(ll->linkEventName())+"',"+
-    QString().sprintf("%d,",QTime(0,0,0).msecsTo(ll->linkStartTime()))+
-    QString().sprintf("%d,",ll->linkLength())+
-    QString().sprintf("%d,",ll->linkId())+
+    QString::asprintf("%d,",QTime(0,0,0).msecsTo(ll->linkStartTime()))+
+    QString::asprintf("%d,",ll->linkLength())+
+    QString::asprintf("%d,",ll->linkId())+
     "'"+RDYesNo(ll->linkEmbedded())+"',"+
     "'"+RDEscapeString(ll->originUser())+"',"+
     RDCheckDateTime(ll->originDateTime(),"yyyy-MM-dd hh:mm:ss")+","+
-    QString().sprintf("%d,",ll->linkStartSlop())+
-    QString().sprintf("%d,",ll->linkEndSlop())+
-    QString().sprintf("%d,",ll->duckUpGain())+
-    QString().sprintf("%d,",ll->duckDownGain())+
-    QString().sprintf("%d)",ll->eventLength());
+    QString::asprintf("%d,",ll->linkStartSlop())+
+    QString::asprintf("%d,",ll->linkEndSlop())+
+    QString::asprintf("%d,",ll->duckUpGain())+
+    QString::asprintf("%d,",ll->duckDownGain())+
+    QString::asprintf("%d)",ll->eventLength());
   *query += sql;
 }
 
@@ -1624,10 +1624,10 @@ QString RDLogModel::cellText(int col,int line,RDLogLine *ll) const
     return ll->extData();
 
   case 12:  // Line ID
-    return QString().sprintf("%d",ll->id());
+    return QString::asprintf("%d",ll->id());
 
   case 13:  // Count
-    return QString().sprintf("%d",line);
+    return QString::asprintf("%d",line);
   }
   return QString();
 }

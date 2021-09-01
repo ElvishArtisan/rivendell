@@ -73,7 +73,7 @@ SvcRec::SvcRec(const QString &svcname,QWidget *parent)
   pick_year_box->setGeometry(130,0,90,26);
   for(int i=pick_low_year;i<(pick_high_year+1);i++) {
     pick_year_box->
-      insertItem(pick_year_box->count(),QString().sprintf("%04d",i));
+      insertItem(pick_year_box->count(),QString::asprintf("%04d",i));
   }
   connect(pick_year_box,SIGNAL(activated(int)),
 	  this,SLOT(yearActivatedData(int)));
@@ -348,7 +348,7 @@ void SvcRec::PrintDay(int day,int dow_offset)
   int slot=day+dow_offset-1;
   int week=slot/7;
   int dow=slot-7*week;
-  pick_date_label[week][dow]->setText(QString().sprintf("%d",day));
+  pick_date_label[week][dow]->setText(QString::asprintf("%d",day));
   if(pick_active_days[day-1]) {
     pick_date_label[week][dow]->setFont(pick_day_font[1]);
   }
@@ -398,8 +398,8 @@ void SvcRec::GetActiveDays(const QDate &date)
   for(int i=0;i<=date.daysInMonth();i++) {
     sql=QString("select `ID` from `ELR_LINES` where ")+
       "`SERVICE_NAME`='"+RDEscapeString(pick_service_name)+"' && "+
-      "(`EVENT_DATETIME`>='"+date.toString("yyyy-MM")+QString().sprintf("-%02d 00:00:00')&&",i+1)+
-      "(`EVENT_DATETIME`<='"+date.toString("yyyy-MM")+QString().sprintf("-%02d 23:59:59')",i+1);
+      "(`EVENT_DATETIME`>='"+date.toString("yyyy-MM")+QString::asprintf("-%02d 00:00:00')&&",i+1)+
+      "(`EVENT_DATETIME`<='"+date.toString("yyyy-MM")+QString::asprintf("-%02d 23:59:59')",i+1);
     q=new RDSqlQuery(sql);
     pick_active_days[i]=q->first();
     delete q;

@@ -78,7 +78,7 @@ void Switcher::logBytes(uint8_t *data,int len)
   QString str;
 
   for(int i=0;i<len;i++) {
-    str+=QString().sprintf("%02X ",0xff&data[i]);
+    str+=QString::asprintf("%02X ",0xff&data[i]);
   }
   rda->syslog(LOG_INFO,"bytes: %s",str.toUtf8().constData());
 }
@@ -95,12 +95,12 @@ void Switcher::insertGpioEntry(bool is_gpo,int line)
   }
   sql="select `ID` from "+table+" where (`STATION_NAME`='"+
     RDEscapeString(stationName())+"')&&"+
-    QString().sprintf("(`MATRIX`=%u)&&(`NUMBER`=%d)",matrixNumber(),line);
+    QString::asprintf("(`MATRIX`=%u)&&(`NUMBER`=%d)",matrixNumber(),line);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     sql="insert into "+table+" set `STATION_NAME`='"+
       RDEscapeString(stationName())+"',"+
-      QString().sprintf("`MATRIX`=%u,`NUMBER`=%d",matrixNumber(),line);
+      QString::asprintf("`MATRIX`=%u,`NUMBER`=%d",matrixNumber(),line);
     RDSqlQuery::apply(sql);
   }
   delete q;

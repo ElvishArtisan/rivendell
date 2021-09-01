@@ -258,7 +258,7 @@ void Am16::ProcessMessage(char *msg,int len)
 
   default:
     for(int i=0;i<len;i++) {
-      str+=QString().sprintf("%02X ",0xFF&msg[i]);
+      str+=QString::asprintf("%02X ",0xFF&msg[i]);
     }
     rda->syslog(LOG_DEBUG,
 		"AM16 driver: received unrecognized MIDI message [%s]",

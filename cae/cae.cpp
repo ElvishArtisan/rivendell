@@ -330,14 +330,14 @@ void MainObject::loadPlaybackData(int id,unsigned card,const QString &name)
 
   if(dvr==NULL) {
     cae_server->
-      sendCommand(id,QString().sprintf("LP %d %s -1 -1 -!",card,
+      sendCommand(id,QString::asprintf("LP %d %s -1 -1 -!",card,
 				       name.toUtf8().constData()));
     return;
   }
   wavename=rda->config()->audioFileName(name);
   if(!dvr->loadPlayback(card,wavename,&new_stream)) {
     cae_server->
-      sendCommand(id,QString().sprintf("LP %d %s -1 -1 -!",card,
+      sendCommand(id,QString::asprintf("LP %d %s -1 -1 -!",card,
 				       name.toUtf8().constData()));
     rda->syslog(LOG_WARNING,
 			  "unable to allocate stream for card %d",card);
@@ -360,7 +360,7 @@ void MainObject::loadPlaybackData(int id,unsigned card,const QString &name)
 		     "LoadPlayback  Card: %d  Stream: %d  Name: %s  Handle: %d",
 	 card,new_stream,(const char *)wavename.toUtf8(),handle);
   cae_server->
-    sendCommand(id,QString().sprintf("LP %d %s %d %d +!",card,
+    sendCommand(id,QString::asprintf("LP %d %s %d %d +!",card,
 				     (const char *)name.toUtf8(),
 				     new_stream,handle));
 }
@@ -373,7 +373,7 @@ void MainObject::unloadPlaybackData(int id,unsigned handle)
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("UP %d -!",handle));
+    cae_server->sendCommand(id,QString::asprintf("UP %d -!",handle));
     return;
   }
   if((play_owner[card][stream]==-1)||(play_owner[card][stream]==id)) {
@@ -381,10 +381,10 @@ void MainObject::unloadPlaybackData(int id,unsigned handle)
       play_owner[card][stream]=-1;
       rda->syslog(LOG_INFO,"UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
 		  card,stream,handle);
-      cae_server->sendCommand(id,QString().sprintf("UP %d +!",handle));
+      cae_server->sendCommand(id,QString::asprintf("UP %d +!",handle));
     }
     else {
-      cae_server->sendCommand(id,QString().sprintf("UP %d -!",handle));
+      cae_server->sendCommand(id,QString::asprintf("UP %d -!",handle));
     }
     play_handle[handle].card=-1;
     play_handle[handle].stream=-1;
@@ -392,7 +392,7 @@ void MainObject::unloadPlaybackData(int id,unsigned handle)
     return;
   }
   else {
-    cae_server->sendCommand(id,QString().sprintf("UP %d -!",handle));
+    cae_server->sendCommand(id,QString::asprintf("UP %d -!",handle));
   }
 }
 
@@ -404,7 +404,7 @@ void MainObject::playPositionData(int id,unsigned handle,unsigned pos)
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("PP %d %d -!",handle,pos));
+    cae_server->sendCommand(id,QString::asprintf("PP %d %d -!",handle,pos));
     return;
   }
   if(play_owner[card][stream]==id) {
@@ -412,14 +412,14 @@ void MainObject::playPositionData(int id,unsigned handle,unsigned pos)
       rda->syslog(LOG_INFO,
 		 "PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
 		  card,stream,pos,handle);
-      cae_server->sendCommand(id,QString().sprintf("PP %d %d +!",handle,pos));
+      cae_server->sendCommand(id,QString::asprintf("PP %d %d +!",handle,pos));
     }
     else {
-      cae_server->sendCommand(id,QString().sprintf("PP %d %d -!",handle,pos));
+      cae_server->sendCommand(id,QString::asprintf("PP %d %d -!",handle,pos));
     }
     return;
   }
-  cae_server->sendCommand(id,QString().sprintf("PP %d %d -!",handle,pos));
+  cae_server->sendCommand(id,QString::asprintf("PP %d %d -!",handle,pos));
 }
 
 
@@ -432,7 +432,7 @@ void MainObject::playData(int id,unsigned handle,unsigned length,unsigned speed,
 
   if(dvr==NULL) {
     cae_server->
-      sendCommand(id,QString().sprintf("PY %u %u %u %u -!",
+      sendCommand(id,QString::asprintf("PY %u %u %u %u -!",
 				       handle,length,speed,pitch_flag));
     return;
   }
@@ -449,7 +449,7 @@ void MainObject::playData(int id,unsigned handle,unsigned length,unsigned speed,
 
   default:
     cae_server->
-      sendCommand(id,QString().sprintf("PY %u %u %u %u -!",
+      sendCommand(id,QString::asprintf("PY %u %u %u %u -!",
 				       handle,length,speed,pitch_flag));
     return;
   }
@@ -458,7 +458,7 @@ void MainObject::playData(int id,unsigned handle,unsigned length,unsigned speed,
 		  play_speed[card][stream],play_pitch[card][stream],
 		  RD_ALLOW_NONSTANDARD_RATES)) {
       cae_server->
-	sendCommand(id,QString().sprintf("PY %u %u %u %u -!",
+	sendCommand(id,QString::asprintf("PY %u %u %u %u -!",
 					 handle,length,speed,pitch_flag));
       return;
     }
@@ -470,7 +470,7 @@ void MainObject::playData(int id,unsigned handle,unsigned length,unsigned speed,
     return;
   }
   cae_server->
-    sendCommand(id,QString().sprintf("PY %u %u %u %u -!",
+    sendCommand(id,QString::asprintf("PY %u %u %u %u -!",
 				     handle,length,speed,pitch_flag));
 }
 
@@ -482,12 +482,12 @@ void MainObject::stopPlaybackData(int id,unsigned handle)
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("SP %u -!",handle));
+    cae_server->sendCommand(id,QString::asprintf("SP %u -!",handle));
     return;
   }
   if(play_owner[card][stream]==id) {
     if(!dvr->stopPlayback(card,stream)) {
-      cae_server->sendCommand(id,QString().sprintf("SP %u -!",handle));
+      cae_server->sendCommand(id,QString::asprintf("SP %u -!",handle));
       return;
     }
     rda->syslog(LOG_INFO,
@@ -495,7 +495,7 @@ void MainObject::stopPlaybackData(int id,unsigned handle)
 	   card,stream,handle);
     return;
   }
-  cae_server->sendCommand(id,QString().sprintf("SP %u -!",handle));
+  cae_server->sendCommand(id,QString::asprintf("SP %u -!",handle));
 }
 
 
@@ -509,10 +509,10 @@ void MainObject::timescalingSupportData(int id,unsigned card)
   }
   state=dvr->timescaleSupported(card);
   if(state) {
-    cae_server->sendCommand(id,QString().sprintf("TS %u +!",card));
+    cae_server->sendCommand(id,QString::asprintf("TS %u +!",card));
   }
   else {
-    cae_server->sendCommand(id,QString().sprintf("TS %u -!",card));
+    cae_server->sendCommand(id,QString::asprintf("TS %u -!",card));
   }
 }
 
@@ -527,7 +527,7 @@ void MainObject::loadRecordingData(int id,unsigned card,unsigned port,
 
   if(dvr==NULL) {
     cae_server->
-      sendCommand(id,QString().sprintf("LR %u %u %u %u %u %u %s -!",
+      sendCommand(id,QString::asprintf("LR %u %u %u %u %u %u %s -!",
 				       card,port,coding,channels,samprate,
 				       bitrate,(const char *)name.toUtf8()));
     return;
@@ -538,7 +538,7 @@ void MainObject::loadRecordingData(int id,unsigned card,unsigned port,
     unlink((wavename+".energy").toUtf8());
     if(!dvr->loadRecord(card,port,coding,channels,samprate,bitrate,wavename)) {
       cae_server->
-	sendCommand(id,QString().sprintf("LR %u %u %u %u %u %u %s -!",
+	sendCommand(id,QString::asprintf("LR %u %u %u %u %u %u %s -!",
 					 card,port,coding,channels,samprate,
 					 bitrate,(const char *)name.toUtf8()));
       return;
@@ -549,13 +549,13 @@ void MainObject::loadRecordingData(int id,unsigned card,unsigned port,
 	   (const char *)wavename.toUtf8());
     record_owner[card][port]=id;
     cae_server->
-      sendCommand(id,QString().sprintf("LR %u %u %u %u %u %u %s +!",
+      sendCommand(id,QString::asprintf("LR %u %u %u %u %u %u %s +!",
 				       card,port,coding,channels,samprate,
 				       bitrate,(const char *)name.toUtf8()));
   }
   else {
     cae_server->
-      sendCommand(id,QString().sprintf("LR %u %u %u %u %u %u %s -!",
+      sendCommand(id,QString::asprintf("LR %u %u %u %u %u %u %s -!",
 				       card,port,coding,channels,samprate,
 				       bitrate,(const char *)name.toUtf8()));
   }
@@ -567,13 +567,13 @@ void MainObject::unloadRecordingData(int id,unsigned card,unsigned stream)
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("UR %u %u -!",card,stream));
+    cae_server->sendCommand(id,QString::asprintf("UR %u %u -!",card,stream));
     return;
   }
   if((record_owner[card][stream]==-1)||(record_owner[card][stream]==id)) {
     unsigned len=0;
     if(!dvr->unloadRecord(card,stream,&len)) {
-      cae_server->sendCommand(id,QString().sprintf("UR %u %u -!",card,stream));
+      cae_server->sendCommand(id,QString::asprintf("UR %u %u -!",card,stream));
       return;
     }
     record_owner[card][stream]=-1;
@@ -581,12 +581,12 @@ void MainObject::unloadRecordingData(int id,unsigned card,unsigned stream)
 			  "UnloadRecord - Card: %d  Stream: %d, Length: %u",
 	   card,stream,len);
     cae_server->
-      sendCommand(id,QString().sprintf("UR %u %u %u +!",card,stream,
+      sendCommand(id,QString::asprintf("UR %u %u %u +!",card,stream,
 		   (unsigned)((double)len*1000.0/(double)system_sample_rate)));
     return;
   }
   else {
-    cae_server->sendCommand(id,QString().sprintf("UR %u %u -!",card,stream));
+    cae_server->sendCommand(id,QString::asprintf("UR %u %u -!",card,stream));
     return;
   }
 }
@@ -599,7 +599,7 @@ void MainObject::recordData(int id,unsigned card,unsigned stream,unsigned len,
 
   if(dvr==NULL) {
     cae_server->
-      sendCommand(id,QString().sprintf("RD %u %u %u %d -!",
+      sendCommand(id,QString::asprintf("RD %u %u %u %d -!",
 				       card,stream,len,threshold_level));
     return;
   }
@@ -609,7 +609,7 @@ void MainObject::recordData(int id,unsigned card,unsigned stream,unsigned len,
     if(!dvr->record(card,stream,record_length[card][stream],
 		    record_threshold[card][stream])) {
       cae_server->
-	sendCommand(id,QString().sprintf("RD %u %u %u %d -!",
+	sendCommand(id,QString::asprintf("RD %u %u %u %d -!",
 					 card,stream,len,threshold_level));
       return;
     }
@@ -621,7 +621,7 @@ void MainObject::recordData(int id,unsigned card,unsigned stream,unsigned len,
     return;
   }
   cae_server->
-    sendCommand(id,QString().sprintf("RD %u %u %u %d -!",
+    sendCommand(id,QString::asprintf("RD %u %u %u %d -!",
 				     card,stream,len,threshold_level));
 }
 
@@ -631,11 +631,11 @@ void MainObject::stopRecordingData(int id,unsigned card,unsigned stream)
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("SR %u %u -!",card,stream));
+    cae_server->sendCommand(id,QString::asprintf("SR %u %u -!",card,stream));
     return;
   }
   if(!dvr->stopRecord(card,stream)) {
-    cae_server->sendCommand(id,QString().sprintf("SR %u %u -!",card,stream));
+    cae_server->sendCommand(id,QString::asprintf("SR %u %u -!",card,stream));
     return;
   }
   rda->syslog(LOG_INFO,
@@ -650,12 +650,12 @@ void MainObject::setInputVolumeData(int id,unsigned card,unsigned stream,
 
   if(dvr==NULL) {
     cae_server->
-      sendCommand(id,QString().sprintf("IV %u %u %d -!",card,stream,level));
+      sendCommand(id,QString::asprintf("IV %u %u %d -!",card,stream,level));
     return;
   }
   if(!dvr->setInputVolume(card,stream,level)) {
     cae_server->
-      sendCommand(id,QString().sprintf("IV %u %u %d -!",card,stream,level));
+      sendCommand(id,QString::asprintf("IV %u %u %d -!",card,stream,level));
     return;
   }
   if(rda->config()->enableMixerLogging()) {
@@ -664,7 +664,7 @@ void MainObject::setInputVolumeData(int id,unsigned card,unsigned stream,
 			  card,stream,level);
   }
   cae_server->
-    sendCommand(id,QString().sprintf("IV %u %u %d +!",card,stream,level));
+    sendCommand(id,QString::asprintf("IV %u %u %d +!",card,stream,level));
 }
 
 
@@ -674,12 +674,12 @@ void MainObject::setOutputVolumeData(int id,unsigned card,unsigned stream,
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("OV %u %u %u %d -!",
+    cae_server->sendCommand(id,QString::asprintf("OV %u %u %u %d -!",
 						 card,stream,port,level));
     return;
   }
   if(!dvr->setOutputVolume(card,stream,port,level)) {
-    cae_server->sendCommand(id,QString().sprintf("OV %u %u %u %d -!",
+    cae_server->sendCommand(id,QString::asprintf("OV %u %u %u %d -!",
 						 card,stream,port,level));
     return;
   }
@@ -688,7 +688,7 @@ void MainObject::setOutputVolumeData(int id,unsigned card,unsigned stream,
 	   "SetOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d",
 	   card,stream,port,level);
   }
-  cae_server->sendCommand(id,QString().sprintf("OV %u %u %u %d +!",
+  cae_server->sendCommand(id,QString::asprintf("OV %u %u %u %d +!",
 					       card,stream,port,level));
 }
 
@@ -700,13 +700,13 @@ void MainObject::fadeOutputVolumeData(int id,unsigned card,unsigned stream,
 
   if(dvr==NULL) {
     cae_server->
-      sendCommand(id,QString().sprintf("FV %u %u %u %d %u -!",
+      sendCommand(id,QString::asprintf("FV %u %u %u %d %u -!",
 				       card,stream,port,level,length));
     return;
   }
   if(!dvr->fadeOutputVolume(card,stream,port,level,length)) {
     cae_server->
-      sendCommand(id,QString().sprintf("FV %u %u %u %d %u -!",
+      sendCommand(id,QString::asprintf("FV %u %u %u %d %u -!",
 				       card,stream,port,level,length));
     return;
   }
@@ -716,7 +716,7 @@ void MainObject::fadeOutputVolumeData(int id,unsigned card,unsigned stream,
 	   card,stream,port,level,length);
   }
   cae_server->
-    sendCommand(id,QString().sprintf("FV %u %u %u %d %u +!",
+    sendCommand(id,QString::asprintf("FV %u %u %u %d %u +!",
 				     card,stream,port,level,length));
 }
 
@@ -727,13 +727,13 @@ void MainObject::setInputLevelData(int id,unsigned card,unsigned port,
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("IL %u %u %d -!",
+    cae_server->sendCommand(id,QString::asprintf("IL %u %u %d -!",
 						 card,port,level));
     return;
   }
 
   if(!dvr->setInputLevel(card,port,level)) {
-    cae_server->sendCommand(id,QString().sprintf("IL %u %u %d -!",
+    cae_server->sendCommand(id,QString::asprintf("IL %u %u %d -!",
 						 card,port,level));
     return;
   }
@@ -742,7 +742,7 @@ void MainObject::setInputLevelData(int id,unsigned card,unsigned port,
 			  "SetInputLevel - Card: %d  Port: %d  Level: %d",
 			  card,port,level);
   }
-  cae_server->sendCommand(id,QString().sprintf("IL %u %u %d +!",
+  cae_server->sendCommand(id,QString::asprintf("IL %u %u %d +!",
 					       card,port,level));
 }
 
@@ -753,12 +753,12 @@ void MainObject::setOutputLevelData(int id,unsigned card,unsigned port,
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("OL %u %u %d -!",
+    cae_server->sendCommand(id,QString::asprintf("OL %u %u %d -!",
 						 card,port,level));
     return;
   }
   if(!dvr->setOutputLevel(card,port,level)) {
-    cae_server->sendCommand(id,QString().sprintf("OL %u %u %d -!",
+    cae_server->sendCommand(id,QString::asprintf("OL %u %u %d -!",
 						 card,port,level));
     return;
   }
@@ -767,7 +767,7 @@ void MainObject::setOutputLevelData(int id,unsigned card,unsigned port,
 			  "SetOutputLevel - Card: %d  Port: %d  Level: %d",
 			  card,port,level);
   }
-  cae_server->sendCommand(id,QString().sprintf("OL %u %u %d +!",
+  cae_server->sendCommand(id,QString::asprintf("OL %u %u %d +!",
 					       card,port,level));
 }
 
@@ -778,12 +778,12 @@ void MainObject::setInputModeData(int id,unsigned card,unsigned stream,
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("IM %u %u %u -!",
+    cae_server->sendCommand(id,QString::asprintf("IM %u %u %u -!",
 						 card,stream,mode));
     return;
   }
   if(!dvr->setInputMode(card,stream,mode)) {
-    cae_server->sendCommand(id,QString().sprintf("IM %u %u %u -!",
+    cae_server->sendCommand(id,QString::asprintf("IM %u %u %u -!",
 						 card,stream,mode));
     return;
   }
@@ -792,7 +792,7 @@ void MainObject::setInputModeData(int id,unsigned card,unsigned stream,
 			  "SetInputMode - Card: %d  Stream: %d  Mode: %d",
 	   card,stream,mode);
   }
-  cae_server->sendCommand(id,QString().sprintf("IM %u %u %u +!",
+  cae_server->sendCommand(id,QString::asprintf("IM %u %u %u +!",
 					       card,stream,mode));
 }
 
@@ -803,12 +803,12 @@ void MainObject::setOutputModeData(int id,unsigned card,unsigned stream,
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("OM %u %u %u -!",
+    cae_server->sendCommand(id,QString::asprintf("OM %u %u %u -!",
 						 card,stream,mode));
     return;
   }
   if(!dvr->setOutputMode(card,stream,mode)) {
-    cae_server->sendCommand(id,QString().sprintf("OM %u %u %u -!",
+    cae_server->sendCommand(id,QString::asprintf("OM %u %u %u -!",
 						 card,stream,mode));
     return;
   }
@@ -817,7 +817,7 @@ void MainObject::setOutputModeData(int id,unsigned card,unsigned stream,
 			  "SetOutputMode - Card: %d  Stream: %d  Mode: %d",
 			  card,stream,mode);
   }
-  cae_server->sendCommand(id,QString().sprintf("OM %u %u %u +!",
+  cae_server->sendCommand(id,QString::asprintf("OM %u %u %u +!",
 					       card,stream,mode));
 }
 
@@ -828,12 +828,12 @@ void MainObject::setInputVoxLevelData(int id,unsigned card,unsigned stream,
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("IX %u %u %d -!",
+    cae_server->sendCommand(id,QString::asprintf("IX %u %u %d -!",
 						 card,stream,level));
     return;
   }
   if(!dvr->setInputVoxLevel(card,stream,level)) {
-    cae_server->sendCommand(id,QString().sprintf("IX %u %u %d -!",
+    cae_server->sendCommand(id,QString::asprintf("IX %u %u %d -!",
 						 card,stream,level));
     return;
   }
@@ -842,7 +842,7 @@ void MainObject::setInputVoxLevelData(int id,unsigned card,unsigned stream,
 			  "SetInputVOXLevel - Card: %d  Stream: %d  Level: %d",
 			  card,stream,level);
   }
-  cae_server->sendCommand(id,QString().sprintf("IX %u %u %d +!",
+  cae_server->sendCommand(id,QString::asprintf("IX %u %u %d +!",
 					       card,stream,level));
 }
 
@@ -853,12 +853,12 @@ void MainObject::setInputTypeData(int id,unsigned card,unsigned port,
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("IT %u %u %u -!",
+    cae_server->sendCommand(id,QString::asprintf("IT %u %u %u -!",
 						 card,port,type));
     return;
   }
   if(!dvr->setInputType(card,port,type)) {
-    cae_server->sendCommand(id,QString().sprintf("IT %u %u %u -!",
+    cae_server->sendCommand(id,QString::asprintf("IT %u %u %u -!",
 						 card,port,type));
     return;
   }
@@ -867,7 +867,7 @@ void MainObject::setInputTypeData(int id,unsigned card,unsigned port,
 			  "SetInputType - Card: %d  Port: %d  Type: %d",
 			  card,port,type);
   }
-  cae_server->sendCommand(id,QString().sprintf("IT %u %u %u +!",
+  cae_server->sendCommand(id,QString::asprintf("IT %u %u %u +!",
 					       card,port,type));
 }
 
@@ -881,10 +881,10 @@ void MainObject::getInputStatusData(int id,unsigned card,unsigned port)
   }
   if(dvr->driverType()==RDStation::Hpi) {
     if(dvr->getInputStatus(card,port)) {
-      cae_server->sendCommand(id,QString().sprintf("IS %d %d 0 +!",card,port));
+      cae_server->sendCommand(id,QString::asprintf("IS %d %d 0 +!",card,port));
     }
     else {
-      cae_server->sendCommand(id,QString().sprintf("IS %d %d 1 +!",card,port));
+      cae_server->sendCommand(id,QString::asprintf("IS %d %d 1 +!",card,port));
     }
   }
 }
@@ -897,12 +897,12 @@ void MainObject::setAudioPassthroughLevelData(int id,unsigned card,
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("AL %u %u %u %d -!",
+    cae_server->sendCommand(id,QString::asprintf("AL %u %u %u %d -!",
 						 card,input,output,level));
     return;
   }
   if(!dvr->setPassthroughLevel(card,input,output,level)) {
-    cae_server->sendCommand(id,QString().sprintf("AL %u %u %u %d -!",
+    cae_server->sendCommand(id,QString::asprintf("AL %u %u %u %d -!",
 						 card,input,output,level));
     return;
   }
@@ -911,7 +911,7 @@ void MainObject::setAudioPassthroughLevelData(int id,unsigned card,
 	   "SetPassthroughLevel - Card: %d  InPort: %d  OutPort: %d Level: %d",
 	   card,input,output,level);
   }
-  cae_server->sendCommand(id,QString().sprintf("AL %u %u %u %d +!",
+  cae_server->sendCommand(id,QString::asprintf("AL %u %u %u %d +!",
 					       card,input,output,level));
 }
 
@@ -919,30 +919,30 @@ void MainObject::setAudioPassthroughLevelData(int id,unsigned card,
 void MainObject::setClockSourceData(int id,unsigned card,int input)
 {
   if((card<0)||(input<0)) {
-    cae_server->sendCommand(id,QString().sprintf("CS %u %u -!",card,input));
+    cae_server->sendCommand(id,QString::asprintf("CS %u %u -!",card,input));
     return;
   }
   Driver *dvr=GetDriver(card);
 
   if(dvr==NULL) {
-    cae_server->sendCommand(id,QString().sprintf("CS %u %u +!",card,input));
+    cae_server->sendCommand(id,QString::asprintf("CS %u %u +!",card,input));
     return;
   }
   if(dvr->driverType()==RDStation::Hpi) {
     if(!dvr->setClockSource(card,input)) {
-      cae_server->sendCommand(id,QString().sprintf("CS %u %u -!",card,input));
+      cae_server->sendCommand(id,QString::asprintf("CS %u %u -!",card,input));
       return;
     }
   }
   else {
-    cae_server->sendCommand(id,QString().sprintf("CS %u %u +!",card,input));
+    cae_server->sendCommand(id,QString::asprintf("CS %u %u +!",card,input));
     return;
   }
   if(rda->config()->enableMixerLogging()) {
     rda->syslog(LOG_INFO,
 			  "SetClockSource - Card: %d  Source: %d",card,input);
   }
-  cae_server->sendCommand(id,QString().sprintf("CS %u %u +!",card,input));
+  cae_server->sendCommand(id,QString::asprintf("CS %u %u +!",card,input));
 }
 
 
@@ -951,7 +951,7 @@ void MainObject::setOutputStatusFlagData(int id,unsigned card,unsigned port,
 {
   output_status_flag[card][port][stream]=state;
   SendMeterOutputStatusUpdate(card,port,stream);
-  cae_server->sendCommand(id,QString().sprintf("OS %u %u %u %u +!",
+  cae_server->sendCommand(id,QString::asprintf("OS %u %u %u %u +!",
 					       card,port,stream,state));
 }
 
@@ -966,9 +966,9 @@ void MainObject::openRtpCaptureChannelData(int id,unsigned card,unsigned port,
 void MainObject::meterEnableData(int id,uint16_t udp_port,
 				 const QList<unsigned> &cards)
 {
-  QString cmd=QString().sprintf("ME %u",0xFFFF&udp_port);
+  QString cmd=QString::asprintf("ME %u",0xFFFF&udp_port);
   for(int i=0;i<cards.size();i++) {
-    cmd+=QString().sprintf(" %u",cards.at(i));
+    cmd+=QString::asprintf(" %u",cards.at(i));
   }
   if((udp_port<0)||(udp_port>0xFFFF)) {
     cae_server->sendCommand(id,cmd+" -!");
@@ -1006,22 +1006,21 @@ void MainObject::statePlayUpdate(int card,int stream,int state)
     switch(state) {
     case 1:   // Playing
       cae_server->sendCommand(play_owner[card][stream],
-			      QString().
-			      sprintf("PY %d %d %d +!",handle,
+			      QString::asprintf("PY %d %d %d +!",handle,
 				      play_length[card][stream],
 				      play_speed[card][stream]).toUtf8());
       break;
 
     case 2:   // Paused
       cae_server->
-	sendCommand(play_owner[card][stream],(const char *)QString().
-		    sprintf("SP %d +!",handle).toUtf8());
+	sendCommand(play_owner[card][stream],
+		    QString::asprintf("SP %d +!",handle).toUtf8());
       break;
 
     case 0:   // Stopped
       cae_server->
-	sendCommand(play_owner[card][stream],(const char *)QString().
-		    sprintf("SP %d +!",handle).toUtf8());
+	sendCommand(play_owner[card][stream],
+		    QString::asprintf("SP %d +!",handle).toUtf8());
       break;
     }
   }
@@ -1034,23 +1033,23 @@ void MainObject::stateRecordUpdate(int card,int stream,int state)
     switch(state) {
     case 0:    // Recording
       cae_server->
-	sendCommand(record_owner[card][stream],(const char *)QString().
-		    sprintf("RD %d %d %d %d +!",card,stream,
-			    record_length[card][stream],
-			    record_threshold[card][stream]).toUtf8());
+	sendCommand(record_owner[card][stream],
+		    QString::asprintf("RD %d %d %d %d +!",card,stream,
+				      record_length[card][stream],
+				      record_threshold[card][stream]).toUtf8());
       break;
 
     case 4:    // Record Started
       cae_server->
-	sendCommand(record_owner[card][stream],(const char *)QString().
-		    sprintf("RS %d %d +!",card,stream).toUtf8());
+	sendCommand(record_owner[card][stream],
+		    QString::asprintf("RS %d %d +!",card,stream).toUtf8());
       break;
 
     case 2:    // Paused
     case 3:    // Stopped
       cae_server->
-	sendCommand(record_owner[card][stream],(const char *)QString().
-		    sprintf("SR %d %d +!",card,stream).toUtf8());
+	sendCommand(record_owner[card][stream],
+		    QString::asprintf("SR %d %d +!",card,stream).toUtf8());
       break;
     }
   }
@@ -1084,10 +1083,10 @@ void MainObject::updateMeters()
 	if(dvr->getInputStatus(i,j)!=port_status[i][j]) {
 	  port_status[i][j]=dvr->getInputStatus(i,j);
 	  if(port_status[i][j]) {
-	    cae_server->sendCommand(QString().sprintf("IS %d %d 0!",i,j));
+	    cae_server->sendCommand(QString::asprintf("IS %d %d 0!",i,j));
 	  }
 	  else {
-	    cae_server->sendCommand(QString().sprintf("IS %d %d 1!",i,j));
+	    cae_server->sendCommand(QString::asprintf("IS %d %d 1!",i,j));
 	  }
 	}
 	if(dvr->getInputMeters(i,j,levels)) {
@@ -1267,7 +1266,7 @@ bool MainObject::CheckDaemon(QString name)
 {
   QDir dir;
   QString path;
-  path=QString(RD_PROC_DIR)+QString("/")+QString().sprintf("%d",GetPid(name));
+  path=QString(RD_PROC_DIR)+QString("/")+QString::asprintf("%d",GetPid(name));
   dir.setPath(path);
   return dir.exists();
 }
@@ -1526,7 +1525,7 @@ void MainObject::SendMeterLevelUpdate(const QString &type,int cardnum,
   for(int l=0;l<ids.size();l++) {
     if((cae_server->meterPort(ids.at(l))>0)&&
        cae_server->metersEnabled(ids.at(l),cardnum)) {
-      SendMeterUpdate(QString().sprintf("ML %s %d %d %d %d",
+      SendMeterUpdate(QString::asprintf("ML %s %d %d %d %d",
 					type.toUtf8().constData(),
 					cardnum,portnum,levels[0],levels[1]),
 		      ids.at(l));
@@ -1543,7 +1542,7 @@ void MainObject::SendStreamMeterLevelUpdate(int cardnum,int streamnum,
   for(int l=0;l<ids.size();l++) {
     if((cae_server->meterPort(ids.at(l))>0)&&
        cae_server->metersEnabled(ids.at(l),cardnum)) {
-      SendMeterUpdate(QString().sprintf("MO %d %d %d %d",
+      SendMeterUpdate(QString::asprintf("MO %d %d %d %d",
 		  cardnum,streamnum,levels[0],levels[1]),ids.at(l));
     }
   }
@@ -1558,7 +1557,7 @@ void MainObject::SendMeterPositionUpdate(int cardnum,unsigned pos[])
     for(int l=0;l<ids.size();l++) {
       if((cae_server->meterPort(ids.at(l))>0)&&
 	 cae_server->metersEnabled(ids.at(l),cardnum)) {
-	SendMeterUpdate(QString().sprintf("MP %d %d %d",cardnum,k,pos[k]),
+	SendMeterUpdate(QString::asprintf("MP %d %d %d",cardnum,k,pos[k]),
 			ids.at(l));
       }
     }
@@ -1577,7 +1576,7 @@ void MainObject::SendMeterOutputStatusUpdate()
 	  for(int l=0;l<ids.size();l++) {
 	    if((cae_server->meterPort(ids.at(l))>0)&&
 	       cae_server->metersEnabled(ids.at(l),i)) {
-	      SendMeterUpdate(QString().sprintf("MS %d %d %d %d",i,j,k,
+	      SendMeterUpdate(QString::asprintf("MS %d %d %d %d",i,j,k,
 				      output_status_flag[i][j][k]),ids.at(l));
 	    }
 	  }
@@ -1595,7 +1594,7 @@ void MainObject::SendMeterOutputStatusUpdate(int card,int port,int stream)
   for(int l=0;l<ids.size();l++) {
     if((cae_server->meterPort(ids.at(l))>0)&&
        cae_server->metersEnabled(ids.at(l),card)) {
-      SendMeterUpdate(QString().sprintf("MS %d %d %d %d",card,port,stream,
+      SendMeterUpdate(QString::asprintf("MS %d %d %d %d",card,port,stream,
 			    output_status_flag[card][port][stream]),ids.at(l));
     }
   }

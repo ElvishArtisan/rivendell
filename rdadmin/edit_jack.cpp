@@ -187,7 +187,7 @@ void EditJack::addData()
   }
   else {
     sql=QString("delete from `JACK_CLIENTS` where ")+
-      QString().sprintf("`ID`=%u",id);
+      QString::asprintf("`ID`=%u",id);
     RDSqlQuery::apply(sql);
   }
 }
@@ -224,8 +224,8 @@ void EditJack::deleteData()
 			   tr("Are you sure you want to delete JACK Client")+
 			   " \""+edit_jack_client_model->data(rows.first()).toString()+"\"?",QMessageBox::Yes,
 			   QMessageBox::No)==QMessageBox::Yes) {
-    sql=QString().sprintf("delete from `JACK_CLIENTS` where ")+
-      QString().sprintf("`ID`=%d",id);
+    sql=QString::asprintf("delete from `JACK_CLIENTS` where ")+
+      QString::asprintf("`ID`=%d",id);
     RDSqlQuery::apply(sql);
     edit_jack_client_model->removeClient(id);
   }

@@ -109,7 +109,7 @@ void Gvc7000::processCommand(RDMacro *cmd)
       emit rmlEcho(cmd);
       return;
     }
-    gvc_pacer->send(ToSeries7000Native(QString().sprintf("TI,%04X,%04X",cmd->arg(2).toInt()-1,cmd->arg(1).toInt()-1)).toUtf8());
+    gvc_pacer->send(ToSeries7000Native(QString::asprintf("TI,%04X,%04X",cmd->arg(2).toInt()-1,cmd->arg(1).toInt()-1)).toUtf8());
     cmd->acknowledge(true);
     emit rmlEcho(cmd);
     break;
@@ -216,6 +216,6 @@ QString Gvc7000::ToSeries7000Native(const QString &str) const
 
   return QChar(1)+                  // Header
     msg+                            // Message
-    QString().sprintf("%02X",sum)+  // Checksum
+    QString::asprintf("%02X",sum)+  // Checksum
     QChar(4);                       // Footer
 }

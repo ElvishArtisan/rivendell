@@ -329,7 +329,7 @@ void MainObject::ExportTitle(const QString &title)
 
   sql=QString("select `NUMBER` from `CART` where ")+
     "(`TITLE`='"+RDEscapeString(title)+"')&&"+
-    QString().sprintf("(`TYPE`=%u) ",RDCart::Audio)+
+    QString::asprintf("(`TYPE`=%u) ",RDCart::Audio)+
     "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -346,7 +346,7 @@ void MainObject::ExportGroup(const QString &groupname)
 
   sql=QString("select `NUMBER` from `CART` where ")+
     "(`GROUP_NAME`='"+RDEscapeString(groupname)+"')&&"+
-    QString().sprintf("(`TYPE`=%u) ",RDCart::Audio)+
+    QString::asprintf("(`TYPE`=%u) ",RDCart::Audio)+
     "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -380,7 +380,7 @@ void MainObject::ExportCart(unsigned cartnum)
 
   if(cart->exists()&&(cart->type()==RDCart::Audio)) {
     sql=QString("select `CUT_NAME` from `CUTS` where ")+
-      QString().sprintf("`CART_NUMBER`=%u",cartnum);
+      QString::asprintf("`CART_NUMBER`=%u",cartnum);
     q=new RDSqlQuery(sql);
     while(q->next()) {
       RDCut *cut=new RDCut(q->value(0).toString());
@@ -469,7 +469,7 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
   }
   settings.setQuality(export_quality);
   Verbose(QString("exporting cart/cut ")+
-	  QString().sprintf("%06u/%03d",RDCut::cartNumber(cut->cutName()),
+	  QString::asprintf("%06u/%03d",RDCut::cartNumber(cut->cutName()),
 		    RDCut::cutNumber(cut->cutName()))+" ["+cart->title()+"]");
   conv->setCartNumber(cart->number());
   conv->setCutNumber(RDCut::cutNumber(cut->cutName()));
@@ -523,7 +523,7 @@ QString MainObject::ResolveOutputName(RDCart *cart,RDCut *cut,
   if(!export_allow_clobber) {
     int count=1;
     while(QFile::exists(export_output_to+"/"+ret+"."+exten)) {
-      ret=name+QString().sprintf("[%d]",count++);
+      ret=name+QString::asprintf("[%d]",count++);
     }
   }
 

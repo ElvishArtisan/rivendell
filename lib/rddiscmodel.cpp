@@ -193,7 +193,7 @@ void RDDiscModel::setCutName(const QModelIndex &row,const QString &cutname)
     }
     else {
       d_texts[row.row()][5]="["+tr("New cart")+
-	QString().sprintf(" %06u]",RDCut::cartNumber(cutname));
+	QString::asprintf(" %06u]",RDCut::cartNumber(cutname));
     }
     delete q;
   }
@@ -257,13 +257,13 @@ void RDDiscModel::setDisc(RDCdPlayer *player)
     d_lead_tracks.push_back(-1);
 
     // Track Number
-    d_texts.back().push_back(QString().sprintf("%d",i));
+    d_texts.back().push_back(QString::asprintf("%d",i));
 
     // Length
     d_texts.back().push_back(RDGetTimeLength(player->trackLength(i)));
 
     // Title
-    d_texts.back().push_back(tr("Track")+QString().sprintf(" %d",i));
+    d_texts.back().push_back(tr("Track")+QString::asprintf(" %d",i));
 
     // Other
     d_texts.back().push_back(QVariant());

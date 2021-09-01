@@ -74,7 +74,7 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
     "`DEVICE_NUM` "+  // 02
     "from `INPUTS` where "+
     "(`STATION_NAME`='"+RDEscapeString(matrix->station())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d) ",matrix->matrix())+
+    QString::asprintf("(`MATRIX`=%d) ",matrix->matrix())+
     "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   n=1;
@@ -100,7 +100,7 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
     "`DEVICE_NUM` "+  // 02
     "from `OUTPUTS` where "+
     "(`STATION_NAME`='"+RDEscapeString(matrix->station())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d) ",matrix->matrix())+
+    QString::asprintf("(`MATRIX`=%d) ",matrix->matrix())+
     "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   n=1;
@@ -128,8 +128,8 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
     "`RELAY_NUM` "+    // 04
     "from `VGUEST_RESOURCES` where "+
     "(`STATION_NAME`='"+RDEscapeString(matrix->station())+"')&&"+
-    QString().sprintf("(`MATRIX_NUM`=%d)&&",matrix->matrix())+
-    QString().sprintf("(`VGUEST_TYPE`=%d) ",RDMatrix::VguestTypeRelay)+
+    QString::asprintf("(`MATRIX_NUM`=%d)&&",matrix->matrix())+
+    QString::asprintf("(`VGUEST_TYPE`=%d) ",RDMatrix::VguestTypeRelay)+
     "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   n=1;
@@ -159,8 +159,8 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
     "`SURFACE_NUM` "+  // 03
     "from `VGUEST_RESOURCES` where "+
     "(`STATION_NAME`='"+RDEscapeString(matrix->station())+"')&&"+
-    QString().sprintf("(`MATRIX_NUM`=%d)&&",matrix->matrix())+
-    QString().sprintf("(`VGUEST_TYPE`=%d) ",RDMatrix::VguestTypeDisplay)+
+    QString::asprintf("(`MATRIX_NUM`=%d)&&",matrix->matrix())+
+    QString::asprintf("(`VGUEST_TYPE`=%d) ",RDMatrix::VguestTypeDisplay)+
     "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   n=1;
@@ -603,7 +603,7 @@ void VGuest::pingResponseData(int id)
 
 void VGuest::SendCommand(char *str,int len)
 {
-  // LogLine(QString().sprintf("SENT: %s",(const char *)RenderCommand(str,len)));
+  // LogLine(QString::asprintf("SENT: %s",(const char *)RenderCommand(str,len)));
   for(int i=0;i<2;i++) {
     switch(vguest_porttype[i]) {
       case RDMatrix::TtyPort:
@@ -632,7 +632,7 @@ void VGuest::DispatchCommand(char *cmd,int len,int id)
   int linenum;
 
   //  LogLine(RDConfig::LogNotice,
-  //  QString().sprintf("RCVD: %s",(const char *)RenderCommand(cmd,len)));
+  //  QString::asprintf("RCVD: %s",(const char *)RenderCommand(cmd,len)));
 
   switch(0xFF&cmd[2]) {
   case 0xF9:   // Username/Password Query
@@ -785,7 +785,7 @@ QString VGuest::RenderCommand(char *cmd,int len)
   QString str;
 
   for(int i=0;i<len;i++) {
-    str+=QString().sprintf("%02X",0xFF&cmd[i]);
+    str+=QString::asprintf("%02X",0xFF&cmd[i]);
   }
   return str;
 }
@@ -795,10 +795,10 @@ int VGuest::GetRelay(int enginenum,int devicenum,int surfacenum,int relaynum)
 {
   for(unsigned i=0;i<vguest_relays_engine_nums.size();i++) {
 /*
-    LogLine(QString().sprintf("Checking Engine: %d | %d",vguest_relays_engine_nums[i],enginenum));
-    LogLine(QString().sprintf("Checking Device: 0x%04X | 0x%04X",vguest_relays_device_nums[i],devicenum));
-    LogLine(QString().sprintf("Checking Surface: 0x%04X | 0x%04X",vguest_relays_surface_nums[i],surfacenum));
-    LogLine(QString().sprintf("Checking Relay: 0x%04X | 0x%04X",vguest_relays_relay_nums[i],relaynum));
+    LogLine(QString::asprintf("Checking Engine: %d | %d",vguest_relays_engine_nums[i],enginenum));
+    LogLine(QString::asprintf("Checking Device: 0x%04X | 0x%04X",vguest_relays_device_nums[i],devicenum));
+    LogLine(QString::asprintf("Checking Surface: 0x%04X | 0x%04X",vguest_relays_surface_nums[i],surfacenum));
+    LogLine(QString::asprintf("Checking Relay: 0x%04X | 0x%04X",vguest_relays_relay_nums[i],relaynum));
 */
     if((vguest_relays_engine_nums[i]==enginenum)&&
        (vguest_relays_device_nums[i]==devicenum)&&

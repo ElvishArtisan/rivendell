@@ -329,17 +329,17 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_waveform_caption_edit->setText(lib_lib->waveformCaption());
   unsigned cart=lib_lib->startCart();
   if(cart>0) {
-    lib_startcart_edit->setText(QString().sprintf("%06u",cart));
+    lib_startcart_edit->setText(QString::asprintf("%06u",cart));
   }
   if((cart=lib_lib->endCart())>0) {
-    lib_endcart_edit->setText(QString().sprintf("%06u",cart));
+    lib_endcart_edit->setText(QString::asprintf("%06u",cart));
   }  
   cart=lib_lib->recStartCart();
   if(cart>0) {
-    lib_recstartcart_edit->setText(QString().sprintf("%06u",cart));
+    lib_recstartcart_edit->setText(QString::asprintf("%06u",cart));
   }
   if((cart=lib_lib->recEndCart())>0) {
-    lib_recendcart_edit->setText(QString().sprintf("%06u",cart));
+    lib_recendcart_edit->setText(QString::asprintf("%06u",cart));
   }  
   lib_preroll_spin->setValue(lib_lib->tailPreroll());
   lib_format_box->insertItem(0,tr("PCM16"));
@@ -402,7 +402,7 @@ void EditRDLogedit::selectStartData()
   int cartnum=lib_startcart_edit->text().toInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
-    lib_startcart_edit->setText(QString().sprintf("%d",cartnum));
+    lib_startcart_edit->setText(QString::asprintf("%d",cartnum));
   }
 }
 
@@ -411,7 +411,7 @@ void EditRDLogedit::selectEndData()
 {
   int cartnum=lib_endcart_edit->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
-    lib_endcart_edit->setText(QString().sprintf("%d",cartnum));
+    lib_endcart_edit->setText(QString::asprintf("%d",cartnum));
   }
 }
 
@@ -420,7 +420,7 @@ void EditRDLogedit::selectRecordStartData()
 {
   int cartnum=lib_recstartcart_edit->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
-    lib_recstartcart_edit->setText(QString().sprintf("%d",cartnum));
+    lib_recstartcart_edit->setText(QString::asprintf("%d",cartnum));
   }
 }
 
@@ -429,7 +429,7 @@ void EditRDLogedit::selectRecordEndData()
 {
   int cartnum=lib_recendcart_edit->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
-    lib_recendcart_edit->setText(QString().sprintf("%d",cartnum));
+    lib_recendcart_edit->setText(QString::asprintf("%d",cartnum));
   }
 }
 

@@ -76,7 +76,7 @@ QString RDXmlField(const QString &tag,const int value,const QString &attrs)
   if(!attrs.isEmpty()) {
     str=" "+attrs;
   }
-  return QString("<")+tag+str+">"+QString().sprintf("%d",value)+"</"+tag+">\n";
+  return QString("<")+tag+str+">"+QString::asprintf("%d",value)+"</"+tag+">\n";
 }
 
 
@@ -87,7 +87,7 @@ QString RDXmlField(const QString &tag,const unsigned value,const QString &attrs)
   if(!attrs.isEmpty()) {
     str=" "+attrs;
   }
-  return QString("<")+tag+str+">"+QString().sprintf("%u",value)+"</"+tag+">\n";
+  return QString("<")+tag+str+">"+QString::asprintf("%u",value)+"</"+tag+">\n";
 }
 
 
@@ -230,7 +230,7 @@ QString RDJsonField(const QString &name,int value,int padding,bool final)
     comma="";
   }
 
-  return RDJsonPadding(padding)+"\""+name+"\": "+QString().sprintf("%d",value)+
+  return RDJsonPadding(padding)+"\""+name+"\": "+QString::asprintf("%d",value)+
     comma+"\r\n";
 }
 
@@ -243,7 +243,7 @@ QString RDJsonField(const QString &name,unsigned value,int padding,bool final)
     comma="";
   }
 
-  return RDJsonPadding(padding)+"\""+name+"\": "+QString().sprintf("%u",value)+
+  return RDJsonPadding(padding)+"\""+name+"\": "+QString::asprintf("%u",value)+
     comma+"\r\n";
 }
 
@@ -262,7 +262,7 @@ QString RDJsonField(const QString &name,const QString &value,int padding,
     QChar c=value.at(i);
     switch(c.category()) {
     case QChar::Other_Control:
-      ret+=QString().sprintf("\\u%04X",c.unicode());
+      ret+=QString::asprintf("\\u%04X",c.unicode());
       break;
 
     default:
@@ -340,7 +340,7 @@ QString RDUrlUnescape(const QString &str)
 
   for(int i=0;i<str.length();i++) {
     if((str.at(i)==QChar('%'))&&(i<str.length()-2)) {
-      ret+=QString().sprintf("%c",str.mid(i+1,2).toInt(NULL,16));
+      ret+=QString::asprintf("%c",str.mid(i+1,2).toInt(NULL,16));
       i+=2;
     }
     else {

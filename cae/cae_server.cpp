@@ -193,14 +193,14 @@ void CaeServer::readyReadData(int id)
 void CaeServer::connectionClosedData(int id)
 {
   QString logmsg=
-    QString().sprintf("removed connection %d [%s:%u]",
+    QString::asprintf("removed connection %d [%s:%u]",
 		      id,
 		      peerAddress(id).toString().toUtf8().constData(),
 		      0xFFFF&peerPort(id));
   int priority=LOG_DEBUG;
   if(!cae_connections.value(id)->authenticated) {
     logmsg=
-      QString().sprintf("removed never authenticated connection %d [%s:%u]",
+      QString::asprintf("removed never authenticated connection %d [%s:%u]",
 			id,
 			peerAddress(id).toString().toUtf8().constData(),
 			0xFFFF&peerPort(id));

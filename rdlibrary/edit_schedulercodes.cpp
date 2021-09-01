@@ -106,7 +106,7 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,
       } 
     }
        
-  sql=QString().sprintf("select `CODE` from `SCHED_CODES`");
+  sql=QString::asprintf("select `CODE` from `SCHED_CODES`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(codes_sel->destFindItem(q->value(0).toString())==0) {

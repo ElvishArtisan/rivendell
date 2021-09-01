@@ -64,7 +64,7 @@ QString DriverHpi::version() const
   if(info->hpiVersion()==0) {
     return tr("not active");
   }
-  return QString().sprintf("%d.%02d.%02d",info->hpiMajorVersion(),
+  return QString::asprintf("%d.%02d.%02d",info->hpiMajorVersion(),
 			   info->hpiMinorVersion(),info->hpiPointVersion());
 #else
   return tr("not enabled");

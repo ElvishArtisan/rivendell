@@ -197,7 +197,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   // Populate Values
   //
   setWindowTitle("RDCastManager - "+tr("Editing Item")+
-		 +"  [Cast ID: "+QString().sprintf("%u",cast_cast->id())+"]");
+		 +"  [Cast ID: "+QString::asprintf("%u",cast_cast->id())+"]");
   cast_item_title_edit->setText(cast_cast->itemTitle());
   cast_item_author_edit->setText(cast_cast->itemAuthor());
   if(cast_cast->originLoginName().isEmpty()) {

@@ -452,7 +452,7 @@ int ListEvents::ActiveEvents(QString event_name,QString *clock_list)
     q1=new RDSqlQuery(sql);
     if(q1->first()) {
       *clock_list+=
-	QString().sprintf("    %s\n",
+	QString::asprintf("    %s\n",
 			  q->value(0).toString().toUtf8().constData());
       n++;
     }
@@ -512,7 +512,7 @@ QString ListEvents::GetEventFilter(QString svc_name)
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->size()>0) {
     while(q->next()) {
-      filter+=QString().sprintf("(`NAME`='%s')||",
+      filter+=QString::asprintf("(`NAME`='%s')||",
 				q->value(0).toString().toUtf8().constData());
     }
     filter=filter.left(filter.length()-2);
@@ -538,7 +538,7 @@ QString ListEvents::GetNoneFilter()
     filter="where ";
   }
   while(q->next()) {
-    filter+=QString().sprintf("(`NAME`!='%s')&&",
+    filter+=QString::asprintf("(`NAME`!='%s')&&",
 			      RDEscapeString(q->value(0).toString()).toUtf8().constData());
   }
   if(q->size()>0) {

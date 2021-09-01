@@ -218,7 +218,7 @@ void RDMatrixListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("`MATRICES`.`ID`=%d ",d_ids.at(row.row()));
+      QString::asprintf("`MATRICES`.`ID`=%d ",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -277,7 +277,7 @@ void RDMatrixListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("`MATRICES`.`ID`=%d ",d_ids.at(line));
+      QString::asprintf("`MATRICES`.`ID`=%d ",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -297,22 +297,22 @@ void RDMatrixListModel::updateRow(int row,RDSqlQuery *q)
   texts.push_back(q->value(1));
 
   // Matrix Number
-  texts.push_back(QString().sprintf("%d",q->value(2).toInt()));
+  texts.push_back(QString::asprintf("%d",q->value(2).toInt()));
 
   // Type
   texts.push_back(RDMatrix::typeString((RDMatrix::Type)q->value(3).toUInt()));
 
   // Inputs
-  texts.push_back(QString().sprintf("%d",q->value(4).toInt()));
+  texts.push_back(QString::asprintf("%d",q->value(4).toInt()));
 
   // Outputs
-  texts.push_back(QString().sprintf("%d",q->value(5).toInt()));
+  texts.push_back(QString::asprintf("%d",q->value(5).toInt()));
 
   // GPIs
-  texts.push_back(QString().sprintf("%d",q->value(6).toInt()));
+  texts.push_back(QString::asprintf("%d",q->value(6).toInt()));
 
   // GPOs
-  texts.push_back(QString().sprintf("%d",q->value(7).toInt()));
+  texts.push_back(QString::asprintf("%d",q->value(7).toInt()));
 
   d_texts[row]=texts;
 }

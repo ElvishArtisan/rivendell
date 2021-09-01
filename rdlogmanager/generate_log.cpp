@@ -287,7 +287,7 @@ void GenerateLog::createData()
     if((tracks=log->completedTracks())>0) {
       if(QMessageBox::warning(this,"RDLogManager - "+tr("Tracks Exist"),
 			      tr("This will also delete the")+
-			      QString().sprintf(" %u ",tracks)+
+			      QString::asprintf(" %u ",tracks)+
 			      tr("voice tracks associated with this log.")+
 			      "\n"+tr("Continue?"),
 			      QMessageBox::Yes,QMessageBox::No)!=
@@ -339,10 +339,10 @@ void GenerateLog::createData()
   else {
     int errs=unused_report.count("\n"); 
     if(errs==1) {
-      unused_report+=QString().sprintf("\n%d broken rule.\n",errs);
+      unused_report+=QString::asprintf("\n%d broken rule.\n",errs);
     }
     else {
-      unused_report+=QString().sprintf("\n%d broken rules.\n",errs);
+      unused_report+=QString::asprintf("\n%d broken rules.\n",errs);
     }
 
     RDTextFile(report+"\n"+unused_report);
@@ -380,7 +380,7 @@ void GenerateLog::musicData()
       if((tracks=log->completedTracks())>0) {
 	if(QMessageBox::warning(this,"RDLogManager - "+tr("Tracks Exist"),
 				tr("This will also delete the")+
-				QString().sprintf(" %u ",tracks)+
+				QString::asprintf(" %u ",tracks)+
 				tr("voice tracks associated with this log.")+
 				"\n"+tr("Continue?"),
 				QMessageBox::Yes,QMessageBox::No)!=

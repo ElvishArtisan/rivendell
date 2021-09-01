@@ -2,7 +2,7 @@
 //
 // Parse and write dates/times in various standard formats. 
 //
-//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -351,9 +351,9 @@ QString RDWriteRfc822DateTime(const QDateTime &dt)
     sprintf("%02d%02d",utc_off/3600,(utc_off-3600*(utc_off/3600))/60);
 
   return __rddatetime_dow_names[dt.date().dayOfWeek()-1]+", "+
-    QString().sprintf("%d ",dt.date().day())+
+    QString::asprintf("%d ",dt.date().day())+
     __rddatetime_month_names[dt.date().month()-1]+" "+
-    QString().sprintf("%04d ",dt.date().year())+
+    QString::asprintf("%04d ",dt.date().year())+
     dt.toString("hh:mm:ss")+" "+
     tz_str;
 }

@@ -150,7 +150,7 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
     "`IP_ADDRESS` "+     // 02
     "from LIVEWIRE_GPIO_SLOTS "+
     "where (`STATION_NAME`='"+RDEscapeString(livewire_stationname)+"')&&"+
-    QString().sprintf("(`MATRIX`=%d) ",livewire_matrix)+
+    QString::asprintf("(`MATRIX`=%d) ",livewire_matrix)+
     "order by `SLOT`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -446,7 +446,7 @@ void LiveWireMcastGpio::ProcessGpoOut(int chan,unsigned line,bool state)
 
 QString LiveWireMcastGpio::AddressString(uint32_t addr) const
 {
-  return QString().sprintf("%d.%d.%d.%d",
+  return QString::asprintf("%d.%d.%d.%d",
 			   0xFF&addr,
 			   0xFF&(addr>>8),
 			   0xFF&(addr>>16),

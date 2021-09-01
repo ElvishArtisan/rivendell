@@ -240,11 +240,11 @@ void MainObject::RunPush()
   // Write it to the DB
   //
   sql=QString("insert into `FEED_IMAGES` set ")+
-    QString().sprintf("`FEED_ID`=%u,",test_feed->id())+
+    QString::asprintf("`FEED_ID`=%u,",test_feed->id())+
     "`FEED_KEY_NAME`='"+RDEscapeString(test_feed->keyName())+"',"+
-    QString().sprintf("`WIDTH`=%d,",img->width())+
-    QString().sprintf("`HEIGHT`=%d,",img->height())+
-    QString().sprintf("`DEPTH`=%d,",img->depth())+
+    QString::asprintf("`WIDTH`=%d,",img->width())+
+    QString::asprintf("`HEIGHT`=%d,",img->height())+
+    QString::asprintf("`DEPTH`=%d,",img->depth())+
     "`DESCRIPTION`='"+RDEscapeString(test_description)+"',"+
     "`DATA`="+RDEscapeBlob(data);
   RDSqlQuery::apply(sql);
@@ -259,7 +259,7 @@ void MainObject::RunPop()
   FILE *f=NULL;
 
   sql=QString("select `DATA` from `FEED_IMAGES` where ")+
-    QString().sprintf("`ID`=%u",test_image_id);
+    QString::asprintf("`ID`=%u",test_image_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if((f=fopen(test_filename.toUtf8(),"w"))==NULL) {

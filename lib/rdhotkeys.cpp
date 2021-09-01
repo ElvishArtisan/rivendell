@@ -54,7 +54,7 @@ QString RDHotkeys::GetRowLabel(const QString &station,const QString &module,cons
   QString sql; 
   QString hotkey_label;
 
-  sql=QString().sprintf("select `KEY_LABEL` from `RDHOTKEYS` where ")+
+  sql=QString::asprintf("select `KEY_LABEL` from `RDHOTKEYS` where ")+
     "`STATION_NAME`='"+RDEscapeString(station)+"' && "+
     "`MODULE_NAME`='"+RDEscapeString(module)+"' && "+
     "`KEY_VALUE`='"+RDEscapeString(value)+"'";
@@ -109,7 +109,7 @@ void RDHotkeys::InsertHotkeys() const
     sql=QString("insert into `RDHOTKEYS` set ")+
       "`STATION_NAME`='"+RDEscapeString(station_hotkeys)+"',"+
       "`MODULE_NAME`='airplay',"+
-      QString().sprintf("`KEY_ID`=%u,",i+1)+
+      QString::asprintf("`KEY_ID`=%u,",i+1)+
       "`KEY_LABEL`='"+RDEscapeString(labels[i])+"'";
     RDSqlQuery::apply(sql);
   }

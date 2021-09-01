@@ -143,7 +143,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
       "`PASSWORD`,"+     // 03
       "`BASE_OUTPUT` "+  // 04
       "from `SWITCHER_NODES` where "+
-      QString().sprintf("`ID`=%d",*edit_id);
+      QString::asprintf("`ID`=%d",*edit_id);
     q=new RDSqlQuery(sql);
     if(q->first()) {
       edit_hostname_edit->setText(q->value(0).toString());
@@ -200,9 +200,9 @@ void EditNode::okData()
   if((*edit_id)<0) {
     sql=QString("select `ID` from `SWITCHER_NODES` where ")+
       "(`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"') && "+
-      QString().sprintf("(`MATRIX`=%d) && ",edit_matrix->matrix())+
+      QString::asprintf("(`MATRIX`=%d) && ",edit_matrix->matrix())+
       "(`HOSTNAME`='"+RDEscapeString(edit_hostname_edit->text())+"') && "+
-      QString().sprintf("(`TCP_PORT`=%d)",edit_tcpport_spin->value());
+      QString::asprintf("(`TCP_PORT`=%d)",edit_tcpport_spin->value());
     q=new RDSqlQuery(sql);
     if(q->first()) {
       delete q;
@@ -222,24 +222,24 @@ void EditNode::okData()
     }
     delete q;
     sql=QString("insert into `SWITCHER_NODES` set ")+
-      QString().sprintf("`ID`=%d,",*edit_id)+
+      QString::asprintf("`ID`=%d,",*edit_id)+
       "`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"',"+
-      QString().sprintf("`MATRIX`=%d,",edit_matrix->matrix())+
+      QString::asprintf("`MATRIX`=%d,",edit_matrix->matrix())+
       "`HOSTNAME`='"+RDEscapeString(edit_hostname_edit->text())+"',"+
-      QString().sprintf("`TCP_PORT`=%d,",edit_tcpport_spin->value())+
+      QString::asprintf("`TCP_PORT`=%d,",edit_tcpport_spin->value())+
       "`DESCRIPTION`='"+RDEscapeString(edit_description_edit->text())+"',"+
-      QString().sprintf("`BASE_OUTPUT`=%d,",edit_output_spin->value())+
+      QString::asprintf("`BASE_OUTPUT`=%d,",edit_output_spin->value())+
       "`PASSWORD`='"+RDEscapeString(edit_password)+"'";
     RDSqlQuery::apply(sql);
   }
   else {
     sql=QString("update `SWITCHER_NODES` set ")+
       "`HOSTNAME`='"+RDEscapeString(edit_hostname_edit->text())+"',"+
-      QString().sprintf("`TCP_PORT`=%d,",edit_tcpport_spin->value())+
+      QString::asprintf("`TCP_PORT`=%d,",edit_tcpport_spin->value())+
       "`DESCRIPTION`='"+RDEscapeString(edit_description_edit->text())+"',"+
-      QString().sprintf("`BASE_OUTPUT`=%d,",edit_output_spin->value())+
+      QString::asprintf("`BASE_OUTPUT`=%d,",edit_output_spin->value())+
       "`PASSWORD`='"+RDEscapeString(edit_password)+"' where "+
-      QString().sprintf("`ID`=%d",*edit_id);
+      QString::asprintf("`ID`=%d",*edit_id);
     q=new RDSqlQuery(sql);
     delete q;
   }

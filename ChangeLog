@@ -22377,3 +22377,5 @@
 	to MariaDB.
 2021-09-01 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up a build warning in 'lib/rddb.h'.
+2021-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up deprecation warnings for 'QString::sprintf()'.

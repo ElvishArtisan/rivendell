@@ -112,7 +112,7 @@ int EditImage::exec(int img_id)
     "`FEEDS`.`BASE_URL` "+              // 07
     "from `FEED_IMAGES` left join `FEEDS` "+
     "on `FEED_IMAGES`.`FEED_ID`=`FEEDS`.`ID` where "+
-    QString().sprintf("`FEED_IMAGES`.`ID`=%d",img_id);
+    QString::asprintf("`FEED_IMAGES`.`ID`=%d",img_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     c_description_edit->setText(q->value(0).toString());
@@ -121,7 +121,7 @@ int EditImage::exec(int img_id)
 					      q->value(1).toString()));
     c_extension_value_label->setText(q->value(1).toString().toUpper());
     c_size_value_label->
-      setText(QString().sprintf("%dx%d",q->value(2).toInt(),
+      setText(QString::asprintf("%dx%d",q->value(2).toInt(),
 				q->value(3).toInt()));
     c_image=QImage();
     c_image.loadFromData(q->value(5).toByteArray());
@@ -142,7 +142,7 @@ void EditImage::okData()
 {
   QString sql=QString("update `FEED_IMAGES` set ")+
     "`DESCRIPTION`='"+RDEscapeString(c_description_edit->text())+"' "+
-    QString().sprintf("where `ID`=%d",c_image_id);
+    QString::asprintf("where `ID`=%d",c_image_id);
   RDSqlQuery::apply(sql);
    
   done(true);

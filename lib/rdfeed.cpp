@@ -79,7 +79,7 @@ RDFeed::RDFeed(unsigned id,RDConfig *config,QObject *parent)
   feed_id=id;
   feed_config=config;
 
-  sql=QString().sprintf("select `KEY_NAME` from `FEEDS` where `ID`=%u",id);
+  sql=QString::asprintf("select `KEY_NAME` from `FEEDS` where `ID`=%u",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     feed_keyname=q->value(0).toString();
@@ -724,14 +724,14 @@ int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
   if((!min.isNull())&&
      ((img->width()<min.width())||(img->height()<min.height()))) {
     *err_msg=
-      QString().sprintf("Image is too small - %dx%d or larger required",
+      QString::asprintf("Image is too small - %dx%d or larger required",
 			min.width(),min.height());
     return -1;
   }
   if((!max.isNull())&&
      ((img->width()>max.width())||(img->height()>max.height()))) {
     *err_msg=
-      QString().sprintf("Image is too large - %dx%d or smaller required",
+      QString::asprintf("Image is too large - %dx%d or smaller required",
 			max.width(),max.height());
     return -1;
   }
@@ -752,11 +752,11 @@ int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
   //
   QStringList f0=pathname.split(".",QString::SkipEmptyParts);
   sql=QString("insert into `FEED_IMAGES` set ")+
-    QString().sprintf("`FEED_ID`=%u,",id())+
+    QString::asprintf("`FEED_ID`=%u,",id())+
     "`FEED_KEY_NAME`='"+RDEscapeString(keyName())+"',"+
-    QString().sprintf("`WIDTH`=%d,",img->width())+
-    QString().sprintf("`HEIGHT`=%d,",img->height())+
-    QString().sprintf("`DEPTH`=%d,",img->depth())+
+    QString::asprintf("`WIDTH`=%d,",img->width())+
+    QString::asprintf("`HEIGHT`=%d,",img->height())+
+    QString::asprintf("`DEPTH`=%d,",img->depth())+
     "`DESCRIPTION`='"+RDEscapeString(desc)+"',"+
     "`FILE_EXTENSION`='"+RDEscapeString(f0.last().toLower())+"',"+
     "`DATA`="+RDEscapeBlob(data);
@@ -780,7 +780,7 @@ bool RDFeed::deleteImage(int img_id,QString *err_msg)
   removeImage(img_id);
 
   sql=QString("delete from `FEED_IMAGES` where ")+
-    QString().sprintf("`ID`=%d",img_id);
+    QString::asprintf("`ID`=%d",img_id);
   if(!RDSqlQuery::apply(sql,err_msg)) {
     *err_msg=QString("database error: ")+*err_msg;
     delete q;
@@ -805,7 +805,7 @@ bool RDFeed::postPodcast(unsigned cast_id) const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_POST_PODCAST).toUtf8().
+	       QString::asprintf("%u",RDXPORT_COMMAND_POST_PODCAST).toUtf8().
 	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -816,7 +816,7 @@ bool RDFeed::postPodcast(unsigned cast_id) const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",cast_id).toUtf8().constData(),
+	       QString::asprintf("%u",cast_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -885,7 +885,7 @@ QString RDFeed::imageUrl(int img_id) const
     "`FEED_ID`,"+         // 00
     "`FILE_EXTENSION` "+  // 01
     "from `FEED_IMAGES` where "+
-    QString().sprintf("`ID`=%d",img_id);
+    QString::asprintf("`ID`=%d",img_id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=baseUrl(q->value(0).toUInt())+"/"+
@@ -910,7 +910,7 @@ bool RDFeed::postXml()
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_POST_RSS).toUtf8().
+	       QString::asprintf("%u",RDXPORT_COMMAND_POST_RSS).toUtf8().
 	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -921,7 +921,7 @@ bool RDFeed::postXml()
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",feed_id).toUtf8().constData(),
+	       QString::asprintf("%u",feed_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -993,7 +993,7 @@ bool RDFeed::removeRss()
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_RSS).toUtf8().
+	       QString::asprintf("%u",RDXPORT_COMMAND_REMOVE_RSS).toUtf8().
 	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -1004,7 +1004,7 @@ bool RDFeed::removeRss()
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",feed_id).toUtf8().constData(),
+	       QString::asprintf("%u",feed_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -1065,7 +1065,7 @@ bool RDFeed::postImage(int img_id) const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_POST_IMAGE).toUtf8().
+	       QString::asprintf("%u",RDXPORT_COMMAND_POST_IMAGE).toUtf8().
 	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -1076,7 +1076,7 @@ bool RDFeed::postImage(int img_id) const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",img_id).toUtf8().constData(),
+	       QString::asprintf("%u",img_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -1137,7 +1137,7 @@ bool RDFeed::removeImage(int img_id) const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_REMOVE_IMAGE).toUtf8().
+	       QString::asprintf("%u",RDXPORT_COMMAND_REMOVE_IMAGE).toUtf8().
 	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -1148,7 +1148,7 @@ bool RDFeed::removeImage(int img_id) const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",img_id).toUtf8().constData(),
+	       QString::asprintf("%u",img_id).toUtf8().constData(),
 	       CURLFORM_END);
 
   //
@@ -1204,7 +1204,7 @@ void RDFeed::removeAllImages()
   sql=QString("select ")+
     "ID "+  // 00
     "from FEED_IMAGES where "+
-    QString().sprintf("FEED_ID=%u",feed_id);
+    QString::asprintf("FEED_ID=%u",feed_id);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     removeImage(q->value(0).toUInt());
@@ -1616,16 +1616,16 @@ QString RDFeed::rssXml(QString *err_msg,const QDateTime &now,bool *ok)
     sql=QString("select ")+
       "`MEMBER_FEED_ID` "+  // 00
       "from `SUPERFEED_MAPS` where "+
-      QString().sprintf("`FEED_ID`=%d",chan_q->value(18).toUInt());
+      QString::asprintf("`FEED_ID`=%d",chan_q->value(18).toUInt());
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      where+=QString().sprintf("(`PODCASTS`.`FEED_ID`=%u) || ",q->value(0).toUInt());
+      where+=QString::asprintf("(`PODCASTS`.`FEED_ID`=%u) || ",q->value(0).toUInt());
     }
     delete q;
     where=("("+where.left(where.length()-4)+") && ");
   }
   else {
-    where=QString().sprintf("(PODCASTS.FEED_ID=%u)&&",chan_q->value(18).toUInt());
+    where=QString::asprintf("(PODCASTS.FEED_ID=%u)&&",chan_q->value(18).toUInt());
   }
   sql=QString("select ")+
     "`PODCASTS`.`FEED_ID`,"+             // 00
@@ -1656,7 +1656,7 @@ QString RDFeed::rssXml(QString *err_msg,const QDateTime &now,bool *ok)
     "left join `FEED_IMAGES` "+
     "on `PODCASTS`.`ITEM_IMAGE_ID`=`FEED_IMAGES`.`ID` where "+
     where+
-    QString().sprintf("(`PODCASTS`.`STATUS`=%d) && ",RDPodcast::StatusActive)+
+    QString::asprintf("(`PODCASTS`.`STATUS`=%d) && ",RDPodcast::StatusActive)+
     "(`PODCASTS`.`EFFECTIVE_DATETIME`<=now()) && "+
     "((`PODCASTS`.`EXPIRATION_DATETIME` is null)||"+
     "(`PODCASTS`.`EXPIRATION_DATETIME`>now())) "+
@@ -1743,7 +1743,7 @@ unsigned RDFeed::create(const QString &keyname,bool enable_users,
 
 QString RDFeed::errorString(RDFeed::Error err)
 {
-  QString ret=QString().sprintf("Unknown RDFeed Error [%d]",err);
+  QString ret=QString::asprintf("Unknown RDFeed Error [%d]",err);
 
   switch(err) {
   case RDFeed::ErrorOk:
@@ -1784,7 +1784,7 @@ QString RDFeed::errorString(RDFeed::Error err)
 
 QString RDFeed::imageFilename(int feed_id,int img_id,const QString &ext)
 {
-  return QString().sprintf("img%06d_%06d.",feed_id,img_id)+ext;
+  return QString::asprintf("img%06d_%06d.",feed_id,img_id)+ext;
 }
 
 
@@ -1843,7 +1843,7 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_SAVE_PODCAST).toUtf8().
+	       QString::asprintf("%u",RDXPORT_COMMAND_SAVE_PODCAST).toUtf8().
 	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -1854,7 +1854,7 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
 	       rda->user()->password().toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ID",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",cast_id).toUtf8().constData(),
+	       QString::asprintf("%u",cast_id).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"FILENAME",
 	       CURLFORM_FILE,src_filename.toUtf8().constData(),
@@ -1924,7 +1924,7 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
     "`CHANNEL_AUTHOR`,"+             // 08
     "`CHANNEL_AUTHOR_IS_DEFAULT` "+  // 09
     "from `FEEDS` where "+
-    QString().sprintf("`ID`=%u",feed_id);
+    QString::asprintf("`ID`=%u",feed_id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -1939,7 +1939,7 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
   // Create Entry
   //
   sql=QString("insert into `PODCASTS` set ")+
-    QString().sprintf("`FEED_ID`=%u,",feed_id)+
+    QString::asprintf("`FEED_ID`=%u,",feed_id)+
     "`ITEM_TITLE`='"+RDEscapeString(q->value(0).toString())+"',"+
     "`ITEM_DESCRIPTION`='"+RDEscapeString(q->value(1).toString())+"',"+
     "`ITEM_CATEGORY`='"+RDEscapeString(q->value(2).toString())+"',"+
@@ -1950,10 +1950,10 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
     "`ORIGIN_STATION`='"+RDEscapeString(rda->station()->name())+"',"+
     "`ORIGIN_DATETIME`=now(),";
   if(RDBool(q->value(7).toString())) {
-    sql+=QString().sprintf("`STATUS`=%d,",RDPodcast::StatusActive);
+    sql+=QString::asprintf("`STATUS`=%d,",RDPodcast::StatusActive);
   }
   else {
-    sql+=QString().sprintf("`STATUS`=%d,",RDPodcast::StatusPending);
+    sql+=QString::asprintf("`STATUS`=%d,",RDPodcast::StatusPending);
   }
   if(q->value(4).toInt()==0) {
     sql+="`EXPIRATION_DATETIME`=NULL";
@@ -1980,12 +1980,12 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
   // Generate the Filename
   //
   *filename=
-    QString().sprintf("%06u_%06u",feed_id,cast_id)+"."+q->value(6).toString();
+    QString::asprintf("%06u_%06u",feed_id,cast_id)+"."+q->value(6).toString();
   sql=QString("update `PODCASTS` set ")+
     "`AUDIO_FILENAME`='"+RDEscapeString(*filename)+"',"+
-    QString().sprintf("`AUDIO_LENGTH`=%d,",bytes)+
-    QString().sprintf("`AUDIO_TIME`=%d where ",msecs)+
-    QString().sprintf("`ID`=%u",cast_id);
+    QString::asprintf("`AUDIO_LENGTH`=%d,",bytes)+
+    QString::asprintf("`AUDIO_TIME`=%d where ",msecs)+
+    QString::asprintf("`ID`=%u",cast_id);
   q1=new RDSqlQuery(sql);
   delete q1;
   delete q;
@@ -2030,9 +2030,9 @@ QString RDFeed::ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q,
 	      RDFeed::imageFilename(id(),chan_q->value(23).toInt(),
 				    chan_q->value(27).toString()));
   ret.replace("%IMAGE_WIDTH%",
-	      QString().sprintf("%d",chan_q->value(24).toInt()));
+	      QString::asprintf("%d",chan_q->value(24).toInt()));
   ret.replace("%IMAGE_HEIGHT%",
-	      QString().sprintf("%d",chan_q->value(24).toInt()));
+	      QString::asprintf("%d",chan_q->value(24).toInt()));
   ret.replace("%IMAGE_DESCRIPTION%",chan_q->value(26).toString());
 
   return ret;
@@ -2073,7 +2073,7 @@ QString RDFeed::ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
   ret.replace("%ITEM_AUDIO_TIME%",
 	      RDGetTimeLength(item_q->value(12).toInt(),false,false));
   ret.replace("%ITEM_AUDIO_SECONDS%",
-	      QString().sprintf("%d",item_q->value(12).toInt()/1000));
+	      QString::asprintf("%d",item_q->value(12).toInt()/1000));
   ret.replace("%ITEM_PUBLISH_DATE%",
 	      RDLocalToUtc(item_q->value(13).toDateTime()).
 	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
@@ -2109,7 +2109,7 @@ void RDFeed::SetRow(const QString &param,int value) const
   QString sql;
 
   sql=QString("update `FEEDS` set `")+
-    param+QString().sprintf("`=%d where ",value)+
+    param+QString::asprintf("`=%d where ",value)+
     "`KEY_NAME`='"+RDEscapeString(feed_keyname)+"'";
   q=new RDSqlQuery(sql);
   delete q;
@@ -2134,7 +2134,7 @@ void RDFeed::SetRow(const QString &param,const QDateTime &value,
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update `FEEDS` set `")+
+  sql=QString::asprintf("update `FEEDS` set `")+
     param+"`="+RDCheckDateTime(value,format)+" where "+
     "`KEY_NAME`='"+RDEscapeString(feed_keyname)+"'";
   q=new RDSqlQuery(sql);

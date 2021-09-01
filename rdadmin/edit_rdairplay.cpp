@@ -222,7 +222,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
     air_virtual_machine_box->
       insertItem(air_virtual_machine_box->count(),
-		 QString().sprintf("vLog %d",i+RD_RDVAIRPLAY_LOG_BASE+1));
+		 QString::asprintf("vLog %d",i+RD_RDVAIRPLAY_LOG_BASE+1));
   }
   connect(air_virtual_machine_box,SIGNAL(activated(int)),
 	  this,SLOT(virtualLogActivatedData(int)));
@@ -734,11 +734,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_logmachine_box->insertItem(0,tr("Main Log"));
   for(unsigned i=1;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_logmachine_box->insertItem(air_logmachine_box->count(),
-				   QString().sprintf("Aux %d Log",i));
+				   QString::asprintf("Aux %d Log",i));
   }
   for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
     air_logmachine_box->insertItem(air_logmachine_box->count(),
-		     QString().sprintf("vLog %d",i+RD_RDVAIRPLAY_LOG_BASE+1));
+		     QString::asprintf("vLog %d",i+RD_RDVAIRPLAY_LOG_BASE+1));
   }
   connect(air_logmachine_box,SIGNAL(activated(int)),
 	  this,SLOT(logActivatedData(int)));
@@ -898,7 +898,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
     air_virtual_logstartsel_box->
       insertItem(air_virtual_logstartsel_box->count(),
-		 QString().sprintf("vLog %d",i+RD_RDVAIRPLAY_LOG_BASE+1));
+		 QString::asprintf("vLog %d",i+RD_RDVAIRPLAY_LOG_BASE+1));
   }
   label=new QLabel(":",this);
   label->setFont(subLabelFont());
@@ -956,8 +956,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
     air_card_sel[i]->setCard(air_conf->card((RDAirPlayConf::Channel)i));
     air_card_sel[i]->setPort(air_conf->port((RDAirPlayConf::Channel)i));
   }
-  air_segue_edit->setText(QString().sprintf("%d",air_conf->segueLength()));
-  air_trans_edit->setText(QString().sprintf("%d",air_conf->transLength()));
+  air_segue_edit->setText(QString::asprintf("%d",air_conf->segueLength()));
+  air_trans_edit->setText(QString::asprintf("%d",air_conf->transLength()));
   air_piecount_box->setValue(air_conf->pieCountLength()/1000);
   air_countto_box->setCurrentIndex(air_conf->pieEndPoint());
   air_default_transtype_box->setCurrentIndex(air_conf->defaultTransType());

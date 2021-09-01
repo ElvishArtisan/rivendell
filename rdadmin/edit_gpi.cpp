@@ -192,14 +192,14 @@ int EditGpi::exec(RDMatrix::GpioType type,int id)
     "from "+edit_table+" "+
     "left join `CART` "+
     "on "+edit_table+".`MACRO_CART`=`CART`.`NUMBER` where "+
-    edit_table+QString().sprintf(".`ID`=%d",id);
+    edit_table+QString::asprintf(".`ID`=%d",id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     setWindowTitle("RDAdmin - "+tr("Edit GPI")+
-		   QString().sprintf(" %d",q->value(0).toInt()));
+		   QString::asprintf(" %d",q->value(0).toInt()));
     if(q->value(1).toUInt()>0) {
       edit_onmacro_edit->
-	setText(QString().sprintf("%06u",q->value(1).toUInt()));
+	setText(QString::asprintf("%06u",q->value(1).toUInt()));
       edit_ondescription_edit->setText(q->value(2).toString());
     }
     else {
@@ -218,12 +218,12 @@ int EditGpi::exec(RDMatrix::GpioType type,int id)
     "from "+edit_table+" "+
     "left join `CART` "+
     "on "+edit_table+".`OFF_MACRO_CART`=`CART`.`NUMBER` where "+
-    edit_table+QString().sprintf(".`ID`=%d",id);
+    edit_table+QString::asprintf(".`ID`=%d",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(1).toUInt()>0) {
       edit_offmacro_edit->
-	setText(QString().sprintf("%06u",q->value(1).toUInt()));
+	setText(QString::asprintf("%06u",q->value(1).toUInt()));
       edit_offdescription_edit->setText(q->value(2).toString());
     }
     else {
@@ -242,7 +242,7 @@ void EditGpi::selectOnData()
   if(admin_cart_dialog->exec(&oncart,RDCart::Macro,QString(),NULL)==0) {
     if(oncart>0) {
       RDCart *rdcart=new RDCart(oncart);
-      edit_onmacro_edit->setText(QString().sprintf("%06d",oncart));
+      edit_onmacro_edit->setText(QString::asprintf("%06d",oncart));
       edit_ondescription_edit->setText(rdcart->title());
       delete rdcart;
     }
@@ -267,7 +267,7 @@ void EditGpi::selectOffData()
   if(admin_cart_dialog->exec(&offcart,RDCart::Macro,QString(),NULL)==0) {
     if(offcart>0) {
       RDCart *rdcart=new RDCart(offcart);
-      edit_offmacro_edit->setText(QString().sprintf("%06d",offcart));
+      edit_offmacro_edit->setText(QString::asprintf("%06d",offcart));
       edit_offdescription_edit->setText(rdcart->title());
       delete rdcart;
     }
@@ -311,9 +311,9 @@ void EditGpi::okData()
   }
 
   QString sql=QString("update ")+edit_table+" set "+
-    QString().sprintf("`MACRO_CART`=%u,",oncart)+
-    QString().sprintf("`OFF_MACRO_CART`=%u ",offcart)+
-    QString().sprintf("where `ID`=%d",edit_id);
+    QString::asprintf("`MACRO_CART`=%u,",oncart)+
+    QString::asprintf("`OFF_MACRO_CART`=%u ",offcart)+
+    QString::asprintf("where `ID`=%d",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

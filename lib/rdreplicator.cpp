@@ -243,7 +243,7 @@ void RDReplicator::SetRow(const QString &param,int value) const
   QString sql;
 
   sql=QString("update `REPLICATORS` set `")+
-    param+QString().sprintf("`=%d where ",value)+
+    param+QString::asprintf("`=%d where ",value)+
     "`NAME`='"+RDEscapeString(replicator_name)+"'";
   RDSqlQuery::apply(sql);
 }
@@ -254,7 +254,7 @@ void RDReplicator::SetRow(const QString &param,unsigned value) const
   QString sql;
 
   sql=QString("update `REPLICATORS` set `")+
-    param+QString().sprintf("`=%u where ",value)+
+    param+QString::asprintf("`=%u where ",value)+
     "`NAME`='"+RDEscapeString(replicator_name)+"'";
   RDSqlQuery::apply(sql);
 }

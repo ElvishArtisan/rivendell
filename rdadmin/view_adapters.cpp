@@ -103,11 +103,11 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
     text+=tr("AUDIO ADAPTERS\n");
     for(int i=0;i<RD_MAX_CARDS;i++) {
       if(rdstation->cardName(i).isEmpty()) {
-	text+=QString("  ")+tr("Card")+QString().sprintf(" %d: ",i)+
+	text+=QString("  ")+tr("Card")+QString::asprintf(" %d: ",i)+
 	  tr("Not present")+"\n";
       }
       else {
-	text+=QString("  ")+tr("Card")+QString().sprintf(" %d: ",i)+
+	text+=QString("  ")+tr("Card")+QString::asprintf(" %d: ",i)+
 	  rdstation->cardName(i)+"\n";
 	switch(rdstation->cardDriver(i)) {
 	case RDStation::Hpi:
@@ -127,9 +127,9 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
 	  break;
 	}
 	text+=QString("      ")+tr("Inputs")+
-	  QString().sprintf(" %d\n",rdstation->cardInputs(i));
+	  QString::asprintf(" %d\n",rdstation->cardInputs(i));
 	text+=QString("      ")+tr("Outputs")+
-	  QString().sprintf(" %d\n",rdstation->cardOutputs(i));
+	  QString::asprintf(" %d\n",rdstation->cardOutputs(i));
       }
       text+="\n";
     }

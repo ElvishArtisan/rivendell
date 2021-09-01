@@ -150,7 +150,7 @@ bool RDCoreApplication::open(QString *err_msg,RDCoreApplication::ErrorType *err_
     if(app_cmd_switch->key(i)=="--persistent-dropbox-id") {
       persistent_dropbox_id=app_cmd_switch->value(i).toUInt(&ok);
       if(ok) {
-	app_command_name=QString().sprintf("dropbox[%u]",persistent_dropbox_id);
+	app_command_name=QString::asprintf("dropbox[%u]",persistent_dropbox_id);
       }
       app_cmd_switch->setProcessed(i,true);
     }
@@ -197,9 +197,9 @@ bool RDCoreApplication::open(QString *err_msg,RDCoreApplication::ErrorType *err_
       *err_type=RDCoreApplication::ErrorDbVersionSkew;
     }
     *err_msg=QObject::tr("Database version mismatch, should be")+
-      QString().sprintf(" %u, ",RD_VERSION_DATABASE)+
+      QString::asprintf(" %u, ",RD_VERSION_DATABASE)+
       QObject::tr("is")+
-      QString().sprintf(" %u",schema);
+      QString::asprintf(" %u",schema);
     return false;
   }
   app_heartbeat=new RDDbHeartbeat(app_config->mysqlHeartbeatInterval(),this);
@@ -471,7 +471,7 @@ void RDCoreApplication::syslog(RDConfig *config,int priority,const char *fmt,...
 
 QString RDCoreApplication::exitCodeText(RDCoreApplication::ExitCode code)
 {
-  QString ret=tr("unknown")+QString().sprintf(" [%u]",code);
+  QString ret=tr("unknown")+QString::asprintf(" [%u]",code);
 
   switch(code) {
   case RDCoreApplication::ExitOk:
@@ -617,7 +617,7 @@ void RDCoreApplication::userChangedData()
     else {
       if(proc->exitCode()!=0) {
 	*err_msg=tr("systemctl(1) returned exit code")+
-	  QString().sprintf(" %d:\n",proc->exitCode())+
+	  QString::asprintf(" %d:\n",proc->exitCode())+
 	  proc->readAllStandardError();
       }
       else {

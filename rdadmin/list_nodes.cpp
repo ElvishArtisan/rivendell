@@ -145,7 +145,7 @@ void ListNodes::deleteData()
      QMessageBox::Yes) {
     return;
   }
-  QString sql=QString().sprintf("delete from SWITCHER_NODES where ID=%d",id);
+  QString sql=QString::asprintf("delete from SWITCHER_NODES where ID=%d",id);
   RDSqlQuery::apply(sql);
   list_list_model->removeNode(id);
 }
@@ -185,15 +185,15 @@ void ListNodes::PurgeEndpoints(const QString &tablename)
     "TCP_PORT "+  // 01
     "from SWITCHER_NODES where "+
     "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)",list_matrix->matrix());
+    QString::asprintf("(MATRIX=%d)",list_matrix->matrix());
   q=new RDSqlQuery(sql);
   sql=QString("delete from ")+tablename+" where "+
     "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",list_matrix->matrix());
+    QString::asprintf("(MATRIX=%d)&&",list_matrix->matrix());
   while(q->next()) {
     sql+=QString("((NODE_HOSTNAME!=\"")+
       RDEscapeString(q->value(0).toString())+"\")&&"+
-      QString().sprintf("(NODE_TCP_PORT!=%d))&&",q->value(1).toInt());
+      QString::asprintf("(NODE_TCP_PORT!=%d))&&",q->value(1).toInt());
   }
   sql=sql.left(sql.length()-2);
   delete q;

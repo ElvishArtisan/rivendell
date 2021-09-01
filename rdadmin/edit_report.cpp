@@ -398,7 +398,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   }
   delete q;
 
-  sql=QString().sprintf("select `NAME` from `SERVICES`");
+  sql=QString::asprintf("select `NAME` from `SERVICES`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(edit_service_sel->destFindItem(q->value(0).toString())==0) {
@@ -415,7 +415,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   }
   delete q;
 
-  sql=QString().sprintf("select `NAME` from `STATIONS`");
+  sql=QString::asprintf("select `NAME` from `STATIONS`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(edit_station_sel->destFindItem(q->value(0).toString())==0) {
@@ -434,7 +434,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   }
   delete q;
 
-  sql=QString().sprintf("select `NAME` from `GROUPS`");
+  sql=QString::asprintf("select `NAME` from `GROUPS`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(edit_group_sel->destFindItem(q->value(0).toString())==0) {

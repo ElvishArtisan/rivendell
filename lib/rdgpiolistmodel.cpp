@@ -163,7 +163,7 @@ void RDGpioListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields(true)+
-      QString().sprintf("where ID=%u",d_ids.at(row.row()));
+      QString::asprintf("where ID=%u",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(true,row.row(),q);
@@ -173,7 +173,7 @@ void RDGpioListModel::refresh(const QModelIndex &row)
     delete q;
 
     sql=sqlFields(false)+
-      "where "+d_table+QString().sprintf(".ID=%u",d_ids.at(row.row()));
+      "where "+d_table+QString::asprintf(".ID=%u",d_ids.at(row.row()));
     q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(false,row.row(),q);
@@ -226,7 +226,7 @@ void RDGpioListModel::updateModel()
   QString sql=sqlFields(true)+
     "where "+
     d_table+".`STATION_NAME`='"+RDEscapeString(d_mtx->station())+"' && "+
-    d_table+QString().sprintf(".`MATRIX`=%d ",d_mtx->matrix())+
+    d_table+QString::asprintf(".`MATRIX`=%d ",d_mtx->matrix())+
     "order by "+d_table+".`NUMBER` ";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -240,7 +240,7 @@ void RDGpioListModel::updateModel()
   sql=sqlFields(false)+
     "where "+
     d_table+".`STATION_NAME`='"+RDEscapeString(d_mtx->station())+"' && "+
-    d_table+QString().sprintf(".`MATRIX`=%d ",d_mtx->matrix())+
+    d_table+QString::asprintf(".`MATRIX`=%d ",d_mtx->matrix())+
     "order by "+d_table+".`NUMBER` ";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -259,7 +259,7 @@ void RDGpioListModel::updateRowLine(int line)
     // The ON Values
     //
     QString sql=sqlFields(true)+
-      QString().sprintf("where `ID`=%u",d_ids.at(line));
+      QString::asprintf("where `ID`=%u",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(true,line,q);
@@ -270,7 +270,7 @@ void RDGpioListModel::updateRowLine(int line)
     // The OFF Values
     //
     sql=sqlFields(false)+
-      QString().sprintf("where `ID`=%u",d_ids.at(line));
+      QString::asprintf("where `ID`=%u",d_ids.at(line));
     q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(false,line,q);
@@ -286,14 +286,14 @@ void RDGpioListModel::updateRow(bool on_values,int row,RDSqlQuery *q)
 
   if(on_values) {
     // GPIO Line
-    d_texts[row][0]=QString().sprintf("%d",q->value(1).toInt());
+    d_texts[row][0]=QString::asprintf("%d",q->value(1).toInt());
 
     // ON Macro Cart
     if(q->value(2).toUInt()==0) {
       d_texts[row][1]="";
     }
     else {
-      d_texts[row][1]=QString().sprintf("%06u",q->value(2).toUInt());
+      d_texts[row][1]=QString::asprintf("%06u",q->value(2).toUInt());
     }
 
     // ON Description
@@ -312,7 +312,7 @@ void RDGpioListModel::updateRow(bool on_values,int row,RDSqlQuery *q)
       d_texts[row][3]="";
     }
     else {
-      d_texts[row][3]=QString().sprintf("%06u",q->value(2).toUInt());
+      d_texts[row][3]=QString::asprintf("%06u",q->value(2).toUInt());
     }
 
     // OFF Description

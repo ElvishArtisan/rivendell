@@ -453,12 +453,12 @@ void Xport::XmlExit(const QString &str,int code,const QString &srcfile,
   if(code>=400) {
     rda->syslog(LOG_WARNING,"%s '%s' %s",
 		(const char *)str.toUtf8(),(const char *)srcfile.toUtf8(),
-		(srcline>0)?(const char *)QString().sprintf("line %d",srcline).
+		(srcline>0)?(const char *)QString::asprintf("line %d",srcline).
 		toUtf8():"");
   }
 #ifdef RDXPORT_DEBUG
   if(srcline>0) {
-    RDXMLResult((str+" \""+srcfile+"\" "+QString().sprintf("line %d",srcline)).toUtf8(),
+    RDXMLResult((str+" \""+srcfile+"\" "+QString::asprintf("line %d",srcline)).toUtf8(),
 		code,err);
   }
   else {

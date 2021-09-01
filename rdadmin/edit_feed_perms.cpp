@@ -80,7 +80,7 @@ EditFeedPerms::EditFeedPerms(RDUser *user,QWidget *parent)
   }
   delete q;
 
-  sql=QString().sprintf("select `KEY_NAME` from `FEEDS`");
+  sql=QString::asprintf("select `KEY_NAME` from `FEEDS`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(feed_host_sel->destFindItem(q->value(0).toString())==0) {

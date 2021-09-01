@@ -130,7 +130,7 @@ void MainObject::InjectLine(char *line)
   //
   QString base_sql=QString("insert into `RECORDINGS` set ")+
     "`STATION_NAME`='"+RDEscapeString(rda->config()->sasStation())+"',"+
-    QString().sprintf("`CHANNEL`=%d,",rda->config()->sasMatrix());
+    QString::asprintf("`CHANNEL`=%d,",rda->config()->sasMatrix());
 
   //
   // Day of the week fields
@@ -161,7 +161,7 @@ void MainObject::InjectLine(char *line)
   // Time
   //
   line[17]=0;
-  base_sql+=QString().sprintf("`START_TIME`='%s',",line+9);
+  base_sql+=QString::asprintf("`START_TIME`='%s',",line+9);
 
   //
   // Title
@@ -214,7 +214,7 @@ void MainObject::InjectSwitchEvent(QString sql,int input,int output)
   //
   // Input and Output
   //
-  sql+=QString().sprintf("`SWITCH_INPUT`=%d,`SWITCH_OUTPUT`=%d",input,output);
+  sql+=QString::asprintf("`SWITCH_INPUT`=%d,`SWITCH_OUTPUT`=%d",input,output);
   RDSqlQuery::apply(sql);
   filter_switch_count++;
 }
@@ -230,7 +230,7 @@ void MainObject::InjectCartEvent(QString sql,int gpo)
   //
   // Macro Cart
   //
-  sql+=QString().sprintf("`MACRO_CART`=%d",gpo+rda->config()->sasBaseCart());
+  sql+=QString::asprintf("`MACRO_CART`=%d",gpo+rda->config()->sasBaseCart());
   filter_macro_count++;
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;

@@ -96,7 +96,7 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_EXPORT_PEAKS).toUtf8().
+	       QString::asprintf("%u",RDXPORT_COMMAND_EXPORT_PEAKS).toUtf8().
 	       constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -107,11 +107,11 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_cart_number).toUtf8().constData(),
+	       QString::asprintf("%u",conv_cart_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_cut_number).toUtf8().constData(),
+	       QString::asprintf("%u",conv_cut_number).toUtf8().constData(),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     curl_formfree(first);
@@ -180,7 +180,7 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
 
 QString RDPeaksExport::errorText(RDPeaksExport::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown RDPeaksExport Error [%u]",err);
+  QString ret=QString::asprintf("Unknown RDPeaksExport Error [%u]",err);
 
   switch(err) {
   case RDPeaksExport::ErrorOk:

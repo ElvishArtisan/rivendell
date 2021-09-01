@@ -309,7 +309,7 @@ void RDAlsaModel::LoadSystemConfig()
   snd_ctl_t *snd_ctl=NULL;
   int index=0;
 
-  while(snd_ctl_open(&snd_ctl,QString().sprintf("hw:%d",index).toUtf8(),0)>=0) {
+  while(snd_ctl_open(&snd_ctl,QString::asprintf("hw:%d",index).toUtf8(),0)>=0) {
     model_alsa_cards.push_back(new RDAlsaCard(snd_ctl,index));
     for(int i=0;i<model_alsa_cards.back()->pcmQuantity();i++) {
       model_card_index.push_back(index);

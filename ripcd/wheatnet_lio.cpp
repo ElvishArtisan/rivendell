@@ -125,7 +125,7 @@ void WheatnetLio::processCommand(RDMacro *cmd)
     if(cmd->arg(3).toInt()==0) {  // Turn OFF
       if(cmd->arg(4).toInt()==0) {
 	if(cmd->arg(1).toLower()=="o") {
-	  SendCommand(QString().sprintf("<LIO:%d|LVL:0>",
+	  SendCommand(QString::asprintf("<LIO:%d|LVL:0>",
 					cmd->arg(2).toInt()-1));
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,false);
 	}
@@ -141,14 +141,14 @@ void WheatnetLio::processCommand(RDMacro *cmd)
     else {
       if(cmd->arg(4).toInt()==0) {  // Turn ON
 	if(cmd->arg(1).toLower()=="o") {
-	  SendCommand(QString().sprintf("<LIO:%d|LVL:1>",
+	  SendCommand(QString::asprintf("<LIO:%d|LVL:1>",
 					cmd->arg(2).toInt()-1));
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,true);
 	}
       }
       else {  // Pulse
 	if(cmd->arg(1).toLower()=="o") {
-	  SendCommand(QString().sprintf("<LIO:%d|LVL:%d>",
+	  SendCommand(QString::asprintf("<LIO:%d|LVL:%d>",
 					cmd->arg(2).toInt()-1,
 					cmd->arg(3).toInt()!=0));
 	  lio_reset_states[cmd->arg(2).toInt()-1]=cmd->arg(3).toInt()==0;
@@ -216,7 +216,7 @@ void WheatnetLio::errorData(QAbstractSocket::SocketError err)
 
 void WheatnetLio::resetStateData(int line)
 {
-  SendCommand(QString().sprintf("<LIO:%d|LVL:%d>",line,
+  SendCommand(QString::asprintf("<LIO:%d|LVL:%d>",line,
 				(int)lio_reset_states[line]));
   emit gpoChanged(matrixNumber(),line,lio_reset_states[line]);
 }
@@ -249,28 +249,28 @@ void WheatnetLio::CheckLineEntry(int line)
 
   sql=QString("select `ID` from `GPIS` where ")+
     "(`STATION_NAME`='"+RDEscapeString(stationName())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",matrixNumber())+
-    QString().sprintf("(`NUMBER`=%d)",line);
+    QString::asprintf("(`MATRIX`=%d)&&",matrixNumber())+
+    QString::asprintf("(`NUMBER`=%d)",line);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     sql=QString("insert into `GPIS` set ")+
       "`STATION_NAME`='"+RDEscapeString(stationName())+"',"+
-      QString().sprintf("`MATRIX`=%d,",matrixNumber())+
-      QString().sprintf("`NUMBER`=%d",line);
+      QString::asprintf("`MATRIX`=%d,",matrixNumber())+
+      QString::asprintf("`NUMBER`=%d",line);
     RDSqlQuery::apply(sql);
   }
   delete q;
 
   sql=QString("select `ID` from `GPOS` where ")+
     "(`STATION_NAME`='"+RDEscapeString(stationName())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",matrixNumber())+
-    QString().sprintf("(`NUMBER`=%d)",line);
+    QString::asprintf("(`MATRIX`=%d)&&",matrixNumber())+
+    QString::asprintf("(`NUMBER`=%d)",line);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     sql=QString("insert into `GPOS` set ")+
       "`STATION_NAME`='"+RDEscapeString(stationName())+"',"+
-      QString().sprintf("`MATRIX`=%d,",matrixNumber())+
-      QString().sprintf("`NUMBER`=%d",line);
+      QString::asprintf("`MATRIX`=%d,",matrixNumber())+
+      QString::asprintf("`NUMBER`=%d",line);
     RDSqlQuery::apply(sql);
   }
   delete q;
@@ -302,12 +302,12 @@ void WheatnetLio::ProcessSys(const QString &cmd)
 	lio_reset_states.push_back(false);
 	lio_gpi_states.push_back(false);
 	CheckLineEntry(i+1);
-	SendCommand(QString().sprintf("<LIOSUB:0.%d|LVL:1>",i));
+	SendCommand(QString::asprintf("<LIOSUB:0.%d|LVL:1>",i));
       }
       sql=QString("update `MATRICES` set ")+
-	QString().sprintf("`GPIS`=%d,`GPOS`=%d where ",lio_gpios,lio_gpios)+
+	QString::asprintf("`GPIS`=%d,`GPOS`=%d where ",lio_gpios,lio_gpios)+
 	"(`STATION_NAME`='"+RDEscapeString(stationName())+"')&&"+
-	QString().sprintf("(`MATRIX`=%d)",matrixNumber());
+	QString::asprintf("(`MATRIX`=%d)",matrixNumber());
       RDSqlQuery::apply(sql);
       lio_watchdog_timer->start(WHEATNET_LIO_WATCHDOG_INTERVAL);
       lio_poll_timer->start(WHEATNET_LIO_POLL_INTERVAL);

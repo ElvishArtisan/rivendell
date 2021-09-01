@@ -135,7 +135,7 @@ int EditSchedCodeRules::exec(unsigned rule_id)
     "`RULE_LINES.OR_AFTER_II` "+   // 05
     "from `RULE_LINES` left join `SCHED_CODES` "+
     "on `RULE_LINES`.`CODE`=`SCHED_CODES`.`CODE` "+
-    QString().sprintf("where `RULE_LINES`.`ID`=%u",rule_id);
+    QString::asprintf("where `RULE_LINES`.`ID`=%u",rule_id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(1).toString().isEmpty()) {
@@ -171,8 +171,8 @@ void EditSchedCodeRules::okData()
   fields.push_back("`OR_AFTER_II`");
 
   QString sql=QString("update `RULE_LINES` set ")+
-    QString().sprintf("`MAX_ROW`=%u,",edit_max_row_spin->value())+
-    QString().sprintf("`MIN_WAIT`=%u,",edit_min_wait_spin->value());
+    QString::asprintf("`MAX_ROW`=%u,",edit_max_row_spin->value())+
+    QString::asprintf("`MIN_WAIT`=%u,",edit_min_wait_spin->value());
   for(int i=0;i<3;i++) {
     if(edit_notafter_boxes[i]->currentText()!=tr("[none]")&&
        (!codes.contains(edit_notafter_boxes[i]->currentText()))) {
@@ -190,7 +190,7 @@ void EditSchedCodeRules::okData()
     }
   }
   sql=sql.left(sql.length()-1);
-  sql+=QString().sprintf(" where `ID`=%u",edit_rule_id);
+  sql+=QString::asprintf(" where `ID`=%u",edit_rule_id);
   RDSqlQuery::apply(sql);
 
   done(true);

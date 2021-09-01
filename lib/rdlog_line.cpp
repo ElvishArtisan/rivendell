@@ -55,7 +55,7 @@ RDLogLine::RDLogLine(unsigned cartnum,int cutnum)
     "`USER_DEFINED`,"+  // 10
     "`NOTES` "+         // 11
     "from `CART` where "+
-    QString().sprintf("`NUMBER`=%u",log_cart_number);
+    QString::asprintf("`NUMBER`=%u",log_cart_number);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     log_group_name=q->value(0).toString();
@@ -393,7 +393,7 @@ QString RDLogLine::cartNumberText() const
   switch(type()) {
   case RDLogLine::Cart:
   case RDLogLine::Macro:
-    ret=QString().sprintf("%06u",cartNumber());
+    ret=QString::asprintf("%06u",cartNumber());
     break;
 
   case RDLogLine::Marker:
@@ -1751,14 +1751,14 @@ QString RDLogLine::resolveWildcards(QString pattern,int log_id)
   pattern.replace("%e",agency());
   // %f [unassigned]
   pattern.replace("%g",groupName());
-  pattern.replace("%h",QString().sprintf("%d",effectiveLength()));
+  pattern.replace("%h",QString::asprintf("%d",effectiveLength()));
   pattern.replace("%i",description());
-  pattern.replace("%j",QString().sprintf("%03d",cutNumber()));
+  pattern.replace("%j",QString::asprintf("%03d",cutNumber()));
   pattern.replace("%k",start_time);
   pattern.replace("%K",end_time);
   pattern.replace("%l",album());
   pattern.replace("%m",composer());
-  pattern.replace("%n",QString().sprintf("%06u",cartNumber()));
+  pattern.replace("%n",QString::asprintf("%06u",cartNumber()));
   pattern.replace("%o",outcue());
   pattern.replace("%p",publisher());
   pattern.replace("%q",start_date);
@@ -1767,19 +1767,19 @@ QString RDLogLine::resolveWildcards(QString pattern,int log_id)
   pattern.replace("%s",songId());
   pattern.replace("%t",title());
   pattern.replace("%u",userDefined());
-  pattern.replace("%v",QString().sprintf("%d",effectiveLength()/1000));
+  pattern.replace("%v",QString::asprintf("%d",effectiveLength()/1000));
   pattern.replace("%wc",isci());
   pattern.replace("%wi",isrc());
   pattern.replace("%wm",recordingMbId());
   pattern.replace("%wr",releaseMbId());
   if(log_id<0) {
-    pattern.replace("%x",QString().sprintf("%d",id()));
+    pattern.replace("%x",QString::asprintf("%d",id()));
   }
   else {
-    pattern.replace("%x",QString().sprintf("%d",log_id));
+    pattern.replace("%x",QString::asprintf("%d",log_id));
   }
   if(year().isValid()) {
-    pattern.replace("%y",QString().sprintf("%d",year().year()));
+    pattern.replace("%y",QString::asprintf("%d",year().year()));
   }
   else {
     pattern.replace("%y","");
@@ -2075,7 +2075,7 @@ void RDLogLine::loadCart(int cartnum,int cutnum)
     "`GROUPS`.`COLOR` "+               // 26
     "from `CART` left join `GROUPS` "+
     "on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` where "+
-    QString().sprintf("(`CART`.`NUMBER`=%d)",cartnum);
+    QString::asprintf("(`CART`.`NUMBER`=%d)",cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -2237,7 +2237,7 @@ void RDLogLine::refreshCart()
       "`END_DATETIME`,"+      // 17
       "`NOTES` "+             // 19
       "from `CART` where "+
-      QString().sprintf("`NUMBER`=%u",cartNumber());
+      QString::asprintf("`NUMBER`=%u",cartNumber());
     q=new RDSqlQuery(sql);
     if(q->first()) {
       log_title=q->value(0).toString();

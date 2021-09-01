@@ -195,7 +195,7 @@ void RDGpioSlotsModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where ID=%u",d_ids.at(row.row()));
+      QString::asprintf("where ID=%u",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -226,8 +226,8 @@ void RDGpioSlotsModel::updateModel()
   QString sql=sqlFields()+
     "where "+
     "STATION_NAME=\""+RDEscapeString(d_mtx->station())+"\" && "+
-    QString().sprintf("MATRIX=%d && ",d_mtx->matrix())+
-    QString().sprintf("SLOT<%d ",d_slot_quantity/5)+
+    QString::asprintf("MATRIX=%d && ",d_mtx->matrix())+
+    QString::asprintf("SLOT<%d ",d_slot_quantity/5)+
     "order by SLOT ";
   beginResetModel();
   d_texts.clear();
@@ -246,7 +246,7 @@ void RDGpioSlotsModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where ID=%u",d_ids.at(line));
+      QString::asprintf("where ID=%u",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -261,11 +261,11 @@ void RDGpioSlotsModel::updateRow(int row,RDSqlQuery *q)
   QList<QVariant> texts;
 
   // Lines
-  texts.push_back(QString().sprintf("%d - %d",5*row+1,5*row+5));
+  texts.push_back(QString::asprintf("%d - %d",5*row+1,5*row+5));
 
   // Source Number
   if(q->value(2).toInt()>0) {
-    texts.push_back(QString().sprintf("%05d",q->value(2).toInt()));
+    texts.push_back(QString::asprintf("%05d",q->value(2).toInt()));
   }
   else {
     texts.push_back(tr("[none]"));

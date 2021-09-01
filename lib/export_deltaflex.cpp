@@ -50,7 +50,7 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
   QTextStream *strm=new QTextStream(file);
   strm->setCodec("UTF-8");
   if(useLeadingZeros()) {
-    air_fmt=QString().sprintf("%%0%uu",cartDigits());
+    air_fmt=QString::asprintf("%%0%uu",cartDigits());
   }
   else {
     air_fmt="%u";
@@ -81,10 +81,10 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
     station_id=0;
   }
   *strm << QString("Air Log for CBSI ");
-  *strm << QString().sprintf("%03d|",CBSI_DELTAFLEX_VERSION);
+  *strm << QString::asprintf("%03d|",CBSI_DELTAFLEX_VERSION);
   *strm << startdate.toString("yy/MM/dd");
-  *strm << QString().sprintf("|%02u|",station_id);
-  *strm << QString().sprintf("%05d|",q->size());
+  *strm << QString::asprintf("|%02u|",station_id);
+  *strm << QString::asprintf("%05d|",q->size());
   *strm << QString(CBSI_SCHED_FLAG)+"|\x0d\x0a";
 
   //
@@ -126,7 +126,7 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
       }
     }
     if(q->value(0).toUInt()<=999000) {
-      play_length=QString().sprintf("%03u",q->value(0).toUInt()/1000);
+      play_length=QString::asprintf("%03u",q->value(0).toUInt()/1000);
     }
     else {
       play_length=QString("999");
@@ -136,7 +136,7 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
     }
     else {
       if(q->value(5).toInt()<=999000) {
-	tfc_length=QString().sprintf("%03d",q->value(5).toInt()/1000);
+	tfc_length=QString::asprintf("%03d",q->value(5).toInt()/1000);
       }
       else {
 	tfc_length=QString("999");
@@ -148,7 +148,7 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
     else {
       tfc_time="";
     }
-    air_cartnum=QString().sprintf(air_fmt.toUtf8(),q->value(1).toUInt());
+    air_cartnum=QString::asprintf(air_fmt.toUtf8(),q->value(1).toUInt());
     tfc_cartnum=q->value(10).toString();
 
     *strm << q->value(2).toDateTime().toString("hhmm")+"|";

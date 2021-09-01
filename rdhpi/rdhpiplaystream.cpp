@@ -158,7 +158,7 @@ QString RDHPIPlayStream::errorString(RDHPIPlayStream::Error err)
 
   default:
     str=QString(tr("Unknown RDHpiPlayStream Error:"));
-    return QString().sprintf("%s %d\n",str.toUtf8().constData(),err);
+    return QString::asprintf("%s %d\n",str.toUtf8().constData(),err);
     break;
   }
 }

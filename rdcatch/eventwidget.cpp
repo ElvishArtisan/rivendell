@@ -82,9 +82,9 @@ EventWidget::EventWidget(EventWidget::EventType type,QWidget *parent)
       d_location_box->
 	insertItem(d_location_box->count(),
 		   q->value(0).toString()+
-		   QString().sprintf(" : %dR",q->value(1).toInt()),
+		   QString::asprintf(" : %dR",q->value(1).toInt()),
 		   q->value(0).toString()+"\t"+
-		   QString().sprintf("%d",q->value(1).toInt()));
+		   QString::asprintf("%d",q->value(1).toInt()));
       d_location_box->
 	setItemData(d_location_box->count()-1,
 		    rda->iconEngine()->
@@ -107,9 +107,9 @@ EventWidget::EventWidget(EventWidget::EventType type,QWidget *parent)
       d_location_box->
 	insertItem(d_location_box->count(),
 		   q->value(0).toString()+
-		   QString().sprintf(" : %dP",q->value(1).toInt()-128),
+		   QString::asprintf(" : %dP",q->value(1).toInt()-128),
 		   q->value(0).toString()+"\t"+
-		   QString().sprintf("%d",q->value(1).toInt()-128));
+		   QString::asprintf("%d",q->value(1).toInt()-128));
       d_location_box->
 	setItemData(d_location_box->count()-1,
 		    rda->iconEngine()->
@@ -180,13 +180,13 @@ void EventWidget::toRecording(unsigned record_id) const
     "`STATION_NAME`='"+RDEscapeString(d_current_station_name)+"' ";
   switch(d_event_type) {
     case EventWidget::RecordEvent:
-      sql+=QString().sprintf(",`CHANNEL`=%u ",d_current_deck_number);
+      sql+=QString::asprintf(",`CHANNEL`=%u ",d_current_deck_number);
       break;
 
     case EventWidget::PlayEvent:
       sql+=",`START_TIME`='"+RDEscapeString(d_time_edit->time().
 					 toString("hh:mm:ss"))+"' ";
-      sql+=QString().sprintf(",`CHANNEL`=%u ",d_current_deck_number+128);
+      sql+=QString::asprintf(",`CHANNEL`=%u ",d_current_deck_number+128);
       break;
 
   case EventWidget::OtherEvent:
@@ -195,7 +195,7 @@ void EventWidget::toRecording(unsigned record_id) const
     break;
   }
   sql+="where "+
-    QString().sprintf("`ID`=%u",record_id);
+    QString::asprintf("`ID`=%u",record_id);
   RDSqlQuery::apply(sql);
 }
 
@@ -208,7 +208,7 @@ void EventWidget::fromRecording(unsigned record_id)
     "`CHANNEL`,"+       // 02
     "`START_TIME` "+    // 03
     "from `RECORDINGS` where "+
-    QString().sprintf("`ID`=%u",record_id);
+    QString::asprintf("`ID`=%u",record_id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     d_state_check->setChecked(q->value(0).toString()=="Y");
@@ -216,7 +216,7 @@ void EventWidget::fromRecording(unsigned record_id)
     case EventWidget::RecordEvent:
       d_location_box->
 	setCurrentText(q->value(1).toString()+
-		       QString().sprintf(" : %uR",q->value(2).toUInt()));
+		       QString::asprintf(" : %uR",q->value(2).toUInt()));
       d_current_station_name=q->value(1).toString();
       d_current_deck_number=q->value(2).toUInt();
       break;
@@ -225,7 +225,7 @@ void EventWidget::fromRecording(unsigned record_id)
       d_time_edit->setTime(q->value(3).toTime());
       d_location_box->
 	setCurrentText(q->value(1).toString()+
-		       QString().sprintf(" : %uP",q->value(2).toUInt()-128));
+		       QString::asprintf(" : %uP",q->value(2).toUInt()-128));
       d_current_station_name=q->value(1).toString();
       d_current_deck_number=q->value(2).toUInt()-128;
       break;

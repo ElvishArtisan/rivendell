@@ -195,7 +195,7 @@ void MainObject::GetAudio()
     "`CUTS`.`CUT_NAME` from "+
     "`CART` left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` where "+
     "`CART`.`TITLE`='"+RDEscapeString(title)+"' && "+
-    QString().sprintf("`CART`.`TYPE`=%d ",RDCart::Audio)+
+    QString::asprintf("`CART`.`TYPE`=%d ",RDCart::Audio)+
     "order by `CUTS`.`CUT_NAME`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
@@ -642,7 +642,7 @@ void MainObject::ServeForm()
       "from `GROUPS` left join `USER_PERMS` "+
       "on `GROUPS`.`NAME`=`USER_PERMS`.`GROUP_NAME` where "+
       "`USER_PERMS`.`USER_NAME`='"+RDEscapeString(rda->user()->name())+"' && "+
-      QString().sprintf("`GROUPS`.`DEFAULT_CART_TYPE`=%u && ",RDCart::Audio)+
+      QString::asprintf("`GROUPS`.`DEFAULT_CART_TYPE`=%u && ",RDCart::Audio)+
       "`GROUPS`.`DEFAULT_LOW_CART`>0 && "+
       "`GROUPS`.`DEFAULT_HIGH_CART`>0 "+
       "order by `GROUPS`.`NAME`";

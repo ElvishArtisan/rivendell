@@ -545,7 +545,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
 	}
 	RunLocalMacros(&macro);
 	BroadcastCommand(QString("MS ")+macro.address().toString()+
-			 QString().sprintf(" %d ",echo)+macro.toString());
+			 QString::asprintf(" %d ",echo)+macro.toString());
       }
       else {
 	sendRml(&macro);
@@ -630,7 +630,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
   }
 
   if(cmds[0]=="TA") {  // Send Onair Flag State
-    EchoCommand(conn->id(),QString().sprintf("TA %d!",ripc_onair_flag));
+    EchoCommand(conn->id(),QString::asprintf("TA %d!",ripc_onair_flag));
   }
 
   return true;
@@ -695,7 +695,7 @@ void MainObject::ReadRmlSocket(QUdpSocket *sock,RDMacro::Role role,
       case RDMacro::Cmd:
 	RunLocalMacros(&macro);
 	BroadcastCommand(QString("MS ")+macro.address().toString()+
-			 QString().sprintf(" %d ",echo)+
+			 QString::asprintf(" %d ",echo)+
 			 macro.toString());
 	break;
 
@@ -773,7 +773,7 @@ void MainObject::SendGpi(int ch,int matrix)
     return;
   }
   for(unsigned i=0;i<ripcd_switcher[matrix]->gpiQuantity();i++) {
-    EchoCommand(ch,QString().sprintf("GI %d %d %d %d!",
+    EchoCommand(ch,QString::asprintf("GI %d %d %d %d!",
 				     matrix,i,ripcd_gpi_state[matrix][i],
 				     ripcd_gpi_mask[matrix][i]));
   }
@@ -786,7 +786,7 @@ void MainObject::SendGpo(int ch,int matrix)
     return;
   }
   for(unsigned i=0;i<ripcd_switcher[matrix]->gpoQuantity();i++) {
-    EchoCommand(ch,QString().sprintf("GO %d %d %d %d!",
+    EchoCommand(ch,QString::asprintf("GO %d %d %d %d!",
 				     matrix,i,ripcd_gpo_state[matrix][i],
 				     ripcd_gpo_mask[matrix][i]));
   }
@@ -799,7 +799,7 @@ void MainObject::SendGpiMask(int ch,int matrix)
     return;
   }
   for(unsigned i=0;i<ripcd_switcher[matrix]->gpiQuantity();i++) {
-    EchoCommand(ch,QString().sprintf("GM %d %d %d!",
+    EchoCommand(ch,QString::asprintf("GM %d %d %d!",
 				     matrix,i,ripcd_gpi_mask[matrix][i]));
   }
 }
@@ -811,7 +811,7 @@ void MainObject::SendGpoMask(int ch,int matrix)
     return;
   }
   for(unsigned i=0;i<ripcd_switcher[matrix]->gpoQuantity();i++) {
-    EchoCommand(ch,QString().sprintf("GN %d %d %d!",
+    EchoCommand(ch,QString::asprintf("GN %d %d %d!",
 				     matrix,i,ripcd_gpo_mask[matrix][i]));
   }
 }
@@ -823,7 +823,7 @@ void MainObject::SendGpiCart(int ch,int matrix)
     return;
   }
   for(unsigned i=0;i<ripcd_switcher[matrix]->gpiQuantity();i++) {
-    EchoCommand(ch,QString().sprintf("GC %d %d %d %d!",
+    EchoCommand(ch,QString::asprintf("GC %d %d %d %d!",
 				     matrix,i,ripcd_gpi_macro[matrix][i][0],
 				     ripcd_gpi_macro[matrix][i][1]));
   }
@@ -836,7 +836,7 @@ void MainObject::SendGpoCart(int ch,int matrix)
     return;
   }
   for(unsigned i=0;i<ripcd_switcher[matrix]->gpoQuantity();i++) {
-    EchoCommand(ch,QString().sprintf("GD %d %d %d %d!",
+    EchoCommand(ch,QString::asprintf("GD %d %d %d %d!",
 				     matrix,i,ripcd_gpo_macro[matrix][i][0],
 				     ripcd_gpo_macro[matrix][i][1]));
   }

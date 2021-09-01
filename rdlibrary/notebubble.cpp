@@ -2,7 +2,7 @@
 //
 // Bubble for displaying a cart note
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -52,7 +52,7 @@ bool NoteBubble::setCartNumber(unsigned cartnum)
   note_show_timer->stop();
   hide();
   QString sql=QString("select `NOTES` from `CART` where ")+
-    QString().sprintf("`NUMBER`=%u",cartnum);
+    QString::asprintf("`NUMBER`=%u",cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()&&(!q->value(0).toString().trimmed().isEmpty())) {
     setText(q->value(0).toString());

@@ -124,7 +124,7 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
       "(`END_DAYPART`>='"+time_str+"')||"+
       "`START_DAYPART` is null))&&"+
       "("+RDGetShortDayNameEN(current_date.dayOfWeek()).toUpper()+"='Y')&&"+
-      QString().sprintf("(`CART_NUMBER`=%u)&&(`EVERGREEN`='N')&&",cart_number)+
+      QString::asprintf("(`CART_NUMBER`=%u)&&(`EVERGREEN`='N')&&",cart_number)+
       "(`LENGTH`>0)";
     if(useWeighting()) {
       sql+=" order by `LOCAL_COUNTER` ASC, ISNULL(`END_DATETIME`), `END_DATETIME` ASC, `LAST_PLAY_DATETIME` ASC";
@@ -149,7 +149,7 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
       "`LOCAL_COUNTER` "+
       "`LAST_PLAY_DATETIME` "+
       "from `CUTS` where "+
-      QString().sprintf("(`CART_NUMBER`=%u)&&",cart_number)+
+      QString::asprintf("(`CART_NUMBER`=%u)&&",cart_number)+
       "(`EVERGREEN`='Y')&&"+
       "(`LENGTH`>0)";
     if(useWeighting()) {
@@ -253,7 +253,7 @@ int RDCart::year() const
 void RDCart::setYear(int year)
 {
   if((year>0)&&(year<10000)) {
-    SetRow("YEAR",QString().sprintf("%04d-01-01",year));
+    SetRow("YEAR",QString::asprintf("%04d-01-01",year));
   }
   else {
     SetRow("YEAR");
@@ -269,7 +269,7 @@ QString RDCart::schedCodes() const
   QStringList list = schedCodesList();
 
   for(int i=0;i<list.size();i++) {
-    sched_codes+=QString().sprintf("%-11s",list.at(i).toUtf8().constData());
+    sched_codes+=QString::asprintf("%-11s",list.at(i).toUtf8().constData());
   }
   sched_codes+=".";
   return sched_codes;
@@ -298,7 +298,7 @@ QStringList RDCart::schedCodesList() const
   QString sql=QString("select ")+
     "`SCHED_CODE` "+
     "from `CART_SCHED_CODES` where "+
-    QString().sprintf("`CART_NUMBER`=%u", cart_number);
+    QString::asprintf("`CART_NUMBER`=%u", cart_number);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     list.push_back(q->value(0).toString());
@@ -315,13 +315,13 @@ void RDCart::setSchedCodesList(const QStringList &codes) const
   QString sched_codes="";
   
   sql=QString("delete from `CART_SCHED_CODES` where ")+
-    QString().sprintf("`CART_NUMBER`=%u",cart_number);
+    QString::asprintf("`CART_NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   delete q;
 
   for(int i=0;i<codes.size();i++) {
     sql=QString("insert into `CART_SCHED_CODES` set ")+
-      QString().sprintf("`CART_NUMBER`=%u,",cart_number)+
+      QString::asprintf("`CART_NUMBER`=%u,",cart_number)+
       "SCHED_CODE='"+RDEscapeString(codes.at(i))+"'";
     q=new RDSqlQuery(sql);
     delete q;
@@ -361,7 +361,7 @@ void RDCart::updateSchedCodes(const QString &add_codes,const QString &remove_cod
 
   sched_codes=schedCodes();
 
-  sql=QString().sprintf("select `CODE` from `SCHED_CODES`");
+  sql=QString::asprintf("select `CODE` from `SCHED_CODES`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
   	QString wstr=q->value(0).toString();
@@ -569,7 +569,7 @@ unsigned RDCart::calculateAverageLength(unsigned *max_dev) const
       "`WEIGHT`,"+        // 01
       "`END_DATETIME` "+  // 02
       "from `CUTS` where "+
-      QString().sprintf("(`CART_NUMBER`=%u)&&",cart_number)+
+      QString::asprintf("(`CART_NUMBER`=%u)&&",cart_number)+
       "(`LENGTH`>0)";
     q=new RDSqlQuery(sql);
     while(q->next()) {
@@ -871,8 +871,8 @@ void RDCart::setPending(const QString &station_name)
   sql=QString("update `CART` set `PENDING_STATION`='")+
     RDEscapeString(station_name)+"',"+
     "`PENDING_DATETIME`=now(),"+
-    "`PENDING_PID`="+QString().sprintf("%d ",getpid())+
-    QString().sprintf("where `NUMBER`=%u",cart_number);
+    "`PENDING_PID`="+QString::asprintf("%d ",getpid())+
+    QString::asprintf("where `NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -885,7 +885,7 @@ void RDCart::clearPending() const
 
   sql=QString("update `CART` set `PENDING_STATION`=NULL,")+
     "`PENDING_DATETIME`=NULL "+
-    QString().sprintf("where `NUMBER`=%u",cart_number);
+    QString::asprintf("where `NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -923,7 +923,7 @@ void RDCart::getMetadata(RDWaveData *data) const
     "`SONG_ID`,"+       // 11
     "`BPM`,"+           // 12
     "`USAGE_CODE` "+    // 13
-    QString().sprintf(" from `CART` where `NUMBER`=%u",cart_number);
+    QString::asprintf(" from `CART` where `NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     data->setCartNumber(cart_number);
@@ -961,7 +961,7 @@ void RDCart::setMetadata(const RDWaveData *data)
     sql+=QString("`ALBUM`='")+RDEscapeString(data->album().left(191))+"',";
   }
   if(data->releaseYear()>0) {
-    sql+=QString().sprintf("`YEAR`='%04d-01-01',",data->releaseYear());
+    sql+=QString::asprintf("`YEAR`='%04d-01-01',",data->releaseYear());
   }
   if(!data->label().isEmpty()) {
     sql+=QString("`LABEL`='")+RDEscapeString(data->label().left(64))+"',";
@@ -992,12 +992,12 @@ void RDCart::setMetadata(const RDWaveData *data)
       "',";
   }
   if(data->beatsPerMinute()>0) {
-    sql+=QString().sprintf("`BPM`=%u,",data->beatsPerMinute());
+    sql+=QString::asprintf("`BPM`=%u,",data->beatsPerMinute());
   }
-  sql+=QString().sprintf("`USAGE_CODE`=%u,",data->usageCode());
+  sql+=QString::asprintf("`USAGE_CODE`=%u,",data->usageCode());
   if(sql.right(1)==",") {
     sql=sql.left(sql.length()-1);
-    sql+=QString().sprintf(" where `NUMBER`=%u",cart_number);
+    sql+=QString::asprintf(" where `NUMBER`=%u",cart_number);
     RDSqlQuery *q=new RDSqlQuery(sql);
     delete q;
   }
@@ -1011,7 +1011,7 @@ bool RDCart::validateLengths(int len) const
   int maxlen=(int)(RD_TIMESCALE_MAX*(double)len);
   int minlen=(int)(RD_TIMESCALE_MIN*(double)len);
   QString sql=QString("select `LENGTH` from `CUTS` where ")+
-    QString().sprintf("`CART_NUMBER`=%u",cart_number);
+    QString::asprintf("`CART_NUMBER`=%u",cart_number);
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     if((q->value(0).toInt()>maxlen)||(q->value(0).toInt()<minlen)) {
@@ -1029,7 +1029,7 @@ QString RDCart::xml(bool include_cuts,bool absolute,
 		    RDSettings *settings,int cutnum) const
 {
   QString sql=RDCart::xmlSql(include_cuts)+
-    QString().sprintf(" where (`CART.NUMBER`=%u)",cart_number);
+    QString::asprintf(" where (`CART.NUMBER`=%u)",cart_number);
   if(cutnum>=0) {
     sql+=QString("&&(`CUT_NAME`=\"")+RDCut::cutName(cart_number,cutnum)+"\")";
   }
@@ -1084,7 +1084,7 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
     "`TALK_START_POINT`,"+   // 17
     "`TALK_END_POINT` "+     // 18
     "from `CUTS` where "+
-    QString().sprintf("(`CUT_NAME` like \"%06d%%\")&&(`LENGTH`>0)",cart_number);
+    QString::asprintf("(`CUT_NAME` like \"%06d%%\")&&(`LENGTH`>0)",cart_number);
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     for(unsigned i=0;i<7;i++) {
@@ -1168,11 +1168,11 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
     "`START_DATETIME`,"+  // 12
     "`END_DATETIME` "+    // 13
     "from `CUTS` where "+
-    QString().sprintf("`CART_NUMBER`=%u",cart_number);
+    QString::asprintf("`CART_NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     cut_validity=ValidateCut(q,enforce_length,length,&time_ok);
-    sql=QString().sprintf("update `CUTS` set `VALIDITY`=%u where ",
+    sql=QString::asprintf("update `CUTS` set `VALIDITY`=%u where ",
 			  cut_validity)+
       "`CUT_NAME`='"+RDEscapeString(q->value(0).toString())+"'";
     q1=new RDSqlQuery(sql);
@@ -1229,7 +1229,7 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
     sql+=QString("`END_DATETIME`=")+
       RDCheckDateTime(end_datetime,"yyyy-MM-dd hh:mm:ss")+",";
   }
-  sql+=QString().sprintf("`VALIDITY`=%u where `NUMBER`=%u",
+  sql+=QString::asprintf("`VALIDITY`=%u where `NUMBER`=%u",
 			 cart_validity,cart_number);
   q=new RDSqlQuery(sql);
   delete q;
@@ -1240,7 +1240,7 @@ void RDCart::resetRotation() const
 {
   QString sql=
     QString("update `CUTS` set `LOCAL_COUNTER`=0 where ")+
-    QString().sprintf("`CART_NUMBER`=%d",cart_number);
+    QString::asprintf("`CART_NUMBER`=%d",cart_number);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -1251,7 +1251,7 @@ void RDCart::writeTimestamp()
   QString sql;
   RDSqlQuery *q;
   sql=QString("update `CART` set `METADATA_DATETIME`=now() ")+
-    QString().sprintf("where `NUMBER`=%u",cart_number);
+    QString::asprintf("where `NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   delete q;
   metadata_changed=false;
@@ -1268,9 +1268,9 @@ int RDCart::addCut(unsigned format,unsigned bitrate,unsigned chans,
   if((next=GetNextFreeCut())<0) {
     return -1;
   }
-  QString next_name=QString().sprintf("%06d_%03d",cart_number,next);
+  QString next_name=QString::asprintf("%06d_%03d",cart_number,next);
   if(desc.isEmpty()) {
-    desc=QString().sprintf("Cut %03d",next);
+    desc=QString::asprintf("Cut %03d",next);
   }
   if(!RDCut::create(next_name)) {
     return -1;
@@ -1279,10 +1279,10 @@ int RDCart::addCut(unsigned format,unsigned bitrate,unsigned chans,
     "`ISCI`='"+RDEscapeString(isci)+"',"+
     "`DESCRIPTION`='"+RDEscapeString(desc)+"',"+
     "`LENGTH`=0,"+
-    QString().sprintf("`CODING_FORMAT`=%d,",format)+
-    QString().sprintf("`BIT_RATE`=%d,",bitrate)+
-    QString().sprintf("`CHANNELS`=%d,",chans)+
-    QString().sprintf("`PLAY_ORDER`=%d where ",next)+
+    QString::asprintf("`CODING_FORMAT`=%d,",format)+
+    QString::asprintf("`BIT_RATE`=%d,",bitrate)+
+    QString::asprintf("`CHANNELS`=%d,",chans)+
+    QString::asprintf("`PLAY_ORDER`=%d where ",next)+
     "`CUT_NAME`='"+RDEscapeString(next_name)+"'";
   q=new RDSqlQuery(sql);
   delete q;
@@ -1301,7 +1301,7 @@ bool RDCart::removeAllCuts(RDStation *station,RDUser *user,RDConfig *config)
   RDSqlQuery *q;
 
   sql=QString("select `CUT_NAME` from `CUTS` where ")+
-    QString().sprintf("`CART_NUMBER`=%u",cart_number);
+    QString::asprintf("`CART_NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(!removeCut(station,user,q->value(0).toString(),config)) {
@@ -1375,8 +1375,8 @@ unsigned RDCart::create(const QString &groupname,RDCart::Type type,
 	return 0;
       }
       QString sql=QString("insert into `CART` set ")+
-	QString().sprintf("`NUMBER`=%d,",cartnum)+
-	QString().sprintf("`TYPE`=%d,",type)+
+	QString::asprintf("`NUMBER`=%d,",cartnum)+
+	QString::asprintf("`TYPE`=%d,",type)+
 	"`GROUP_NAME`='"+RDEscapeString(groupname)+"',"+
 	"`TITLE`='"+RDEscapeString(RDCart::uniqueCartTitle(cartnum))+"'";
       RDSqlQuery *q=new RDSqlQuery(sql);
@@ -1387,8 +1387,8 @@ unsigned RDCart::create(const QString &groupname,RDCart::Type type,
   }
   else {
     QString sql=QString("insert into `CART` set ")+
-      QString().sprintf("`NUMBER`=%d,",cartnum)+
-      QString().sprintf("`TYPE`=%d,",type)+
+      QString::asprintf("`NUMBER`=%d,",cartnum)+
+      QString::asprintf("`TYPE`=%d,",type)+
       "`GROUP_NAME`='"+RDEscapeString(groupname)+"',"+
       "`TITLE`='"+RDEscapeString(RDCart::uniqueCartTitle(cartnum))+"'";
     RDSqlQuery *q=new RDSqlQuery(sql);
@@ -1583,7 +1583,7 @@ QString RDCart::xml(RDSqlQuery *q,bool include_cuts,
       else {
 	xml+="  <macroList>\n";
 	for(int i=0;i<mlist.size();i++) {
-	  xml+="    "+RDXmlField(QString().sprintf("macro%d",i),mlist[i]+"!");
+	  xml+="    "+RDXmlField(QString::asprintf("macro%d",i),mlist[i]+"!");
 	}
 	xml+="  </macroList>\n";
       }
@@ -1618,7 +1618,7 @@ QString RDCart::cutXml(unsigned cartnum,int cutnum,bool absolute,
 bool RDCart::exists(unsigned cartnum)
 {
   QString sql=QString("select `NUMBER` from `CART` where ")+
-    QString().sprintf("`NUMBER`=%u",cartnum);
+    QString::asprintf("`NUMBER`=%u",cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   bool ret=q->first();
   delete q;
@@ -1698,7 +1698,7 @@ bool RDCart::removeCart(unsigned cart_num,RDStation *station,RDUser *user,
   RDSqlQuery *q;
 
   sql=QString("select `CUT_NAME` from `CUTS`  where ")+
-    QString().sprintf("`CART_NUMBER`=%u",cart_num);
+    QString::asprintf("`CART_NUMBER`=%u",cart_num);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(!RDCart::removeCutAudio(station,user,cart_num,q->value(0).toString(),
@@ -1710,19 +1710,19 @@ bool RDCart::removeCart(unsigned cart_num,RDStation *station,RDUser *user,
   delete q;
 
   sql=QString("delete from `CUTS` where ")+
-    QString().sprintf("`CART_NUMBER`=%u",cart_num);
+    QString::asprintf("`CART_NUMBER`=%u",cart_num);
   RDSqlQuery::apply(sql);
 
   sql=QString("delete from `CART_SCHED_CODES` where ")+
-    QString().sprintf("`CART_NUMBER`=%u",cart_num);
+    QString::asprintf("`CART_NUMBER`=%u",cart_num);
   RDSqlQuery::apply(sql);
 
   sql=QString("delete from `REPL_CART_STATE` where ")+
-    QString().sprintf("`CART_NUMBER`=%u",cart_num);
+    QString::asprintf("`CART_NUMBER`=%u",cart_num);
   RDSqlQuery::apply(sql);
 
   sql=QString("delete from `CART` where ")+
-    QString().sprintf("`NUMBER`=%u",cart_num);
+    QString::asprintf("`NUMBER`=%u",cart_num);
   RDSqlQuery::apply(sql);
 
   return true;
@@ -1755,7 +1755,7 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
     //
     curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 		 CURLFORM_COPYCONTENTS,
-		 QString().sprintf("%u",RDXPORT_COMMAND_DELETEAUDIO).
+		 QString::asprintf("%u",RDXPORT_COMMAND_DELETEAUDIO).
 		 toUtf8().constData(),CURLFORM_END);
     curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 		 CURLFORM_COPYCONTENTS,user->name().toUtf8().constData(),
@@ -1765,11 +1765,11 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
 		 CURLFORM_END);
     curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 		 CURLFORM_COPYCONTENTS,
-		 QString().sprintf("%u",cart_num).toUtf8().constData(),
+		 QString::asprintf("%u",cart_num).toUtf8().constData(),
 		 CURLFORM_END);
     curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
 		 CURLFORM_COPYCONTENTS,
-		 QString().sprintf("%u",RDCut::cutNumber(cutname)).
+		 QString::asprintf("%u",RDCut::cutNumber(cutname)).
 		 toUtf8().constData(),CURLFORM_END);
     if((curl=curl_easy_init())==NULL) {
       curl_formfree(first);
@@ -1800,7 +1800,7 @@ void RDCart::removePending(RDStation *station,RDUser *user,RDConfig *config)
 
   sql=QString("delete from `CART` where ")+
     "(`PENDING_STATION`='"+RDEscapeString(station->name())+"')&&"+
-    "(`PENDING_PID`="+QString().sprintf("%d)",getpid());
+    "(`PENDING_PID`="+QString::asprintf("%d)",getpid());
   q=new RDSqlQuery(sql);
   while(q->next()) {
     
@@ -2158,10 +2158,10 @@ QString RDCart::uniqueCartTitle(unsigned cartnum)
   int count=0;
 
   if(cartnum!=0) {
-    basename=QObject::tr("cart")+QString().sprintf(" %06u",cartnum);
+    basename=QObject::tr("cart")+QString::asprintf(" %06u",cartnum);
   }
   do {
-    title="["+basename+QString().sprintf("-%d",count+1)+"]";
+    title="["+basename+QString::asprintf("-%d",count+1)+"]";
     sql=QString("select `NUMBER` from `CART` where ")+
       "`TITLE`='"+RDEscapeString(title)+"'";
     count++;
@@ -2181,7 +2181,7 @@ bool RDCart::titleIsUnique(unsigned except_cartnum,const QString &str)
 
   QString sql=QString("select `NUMBER` from `CART` where ")+
     "(`TITLE`='"+RDEscapeString(str)+"')&&"+
-    QString().sprintf("`NUMBER`!=%u",except_cartnum);
+    QString::asprintf("`NUMBER`!=%u",except_cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   ret=!q->first();
   delete q;
@@ -2203,14 +2203,14 @@ QString RDCart::ensureTitleIsUnique(unsigned except_cartnum,
       "`NUMBER` "+  // 00
       "from `CART` where "+
       "(`TITLE`='"+RDEscapeString(ret)+"') && "+
-      QString().sprintf("(`NUMBER`!=%u)",except_cartnum);
+      QString::asprintf("(`NUMBER`!=%u)",except_cartnum);
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       delete q;
       return ret;
     }
     delete q;
-    ret=str+QString().sprintf(" [%d]",n++);
+    ret=str+QString::asprintf(" [%d]",n++);
   }
 
   return QString();
@@ -2284,7 +2284,7 @@ int RDCart::GetNextFreeCut() const
   QString sql;
 
   sql=QString("select `CUT_NAME` from `CUTS` where ")+
-    QString().sprintf("`CART_NUMBER`=%d ",cart_number)+
+    QString::asprintf("`CART_NUMBER`=%d ",cart_number)+
     "order by `CUT_NAME`";
   q=new RDSqlQuery(sql);
   for(int i=1;i<=RD_MAX_CUT_NUMBER;i++) {
@@ -2387,14 +2387,14 @@ QString RDCart::VerifyTitle(const QString &title) const
     while(1==1) {
       sql=QString("select `NUMBER` from `CART` where ")+
        "(`TITLE`='"+RDEscapeString(ret)+"')&&"+
-       QString().sprintf("(`NUMBER`!=%u)",cart_number);
+       QString::asprintf("(`NUMBER`!=%u)",cart_number);
       q=new RDSqlQuery(sql);
       if(!q->first()) {
        delete q;
        return ret;
       }
       delete q;
-      ret=title+QString().sprintf(" [%d]",n++);
+      ret=title+QString::asprintf(" [%d]",n++);
     }
   }
   delete system;
@@ -2409,7 +2409,7 @@ void RDCart::SetRow(const QString &param,const QString &value) const
 
   sql=QString("update `CART` set `")+
     param+"`='"+RDEscapeString(value)+"' where "+
-    QString().sprintf("`NUMBER`=%u",cart_number);
+    QString::asprintf("`NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -2421,7 +2421,7 @@ void RDCart::SetRow(const QString &param,unsigned value) const
   QString sql;
 
   sql=QString("update `CART` set `")+
-    param+QString().sprintf("`=%d where `NUMBER`=%u",value,cart_number);
+    param+QString::asprintf("`=%d where `NUMBER`=%u",value,cart_number);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -2434,7 +2434,7 @@ void RDCart::SetRow(const QString &param,const QDateTime &value) const
 
   sql=QString("update `CART` set `")+
     param+"`="+RDCheckDateTime(value,"yyyy-MM-dd hh:mm:ss")+" where "+
-    QString().sprintf("`NUMBER`=%u",cart_number);
+    QString::asprintf("`NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -2447,7 +2447,7 @@ void RDCart::SetRow(const QString &param,const QDate &value) const
 
   sql=QString("update `CART` set `")+
     param+"`="+RDCheckDateTime(value,"yyyy-MM-dd")+" where "+
-    QString().sprintf("`NUMBER`=%u",cart_number);
+    QString::asprintf("`NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -2460,7 +2460,7 @@ void RDCart::SetRow(const QString &param) const
 
   sql=QString("update `CART` set `")+
     param+"`=NULL where "+
-    QString().sprintf("`NUMBER`=%u",cart_number);
+    QString::asprintf("`NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   delete q;
 }

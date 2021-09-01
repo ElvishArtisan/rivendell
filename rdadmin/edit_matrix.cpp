@@ -67,7 +67,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   // Matrix Number
   //
-  QLabel *label=new QLabel(QString().sprintf("%d",edit_matrix_number),this);
+  QLabel *label=new QLabel(QString::asprintf("%d",edit_matrix_number),this);
   label->setGeometry(135,10,30,19);
   label=new QLabel(tr("Matrix Number:"),this);
   label->setGeometry(10,10,120,19);
@@ -529,9 +529,9 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   str=QString(tr("Serial"));
   for(int i=0;i<MAX_TTYS;i++) {
     edit_port_box->
-      insertItem(edit_port_box->count(),str+QString().sprintf("%d",i));
+      insertItem(edit_port_box->count(),str+QString::asprintf("%d",i));
     edit_port2_box->
-      insertItem(edit_port2_box->count(),str+QString().sprintf("%d",i));
+      insertItem(edit_port2_box->count(),str+QString::asprintf("%d",i));
   }
   edit_porttype_box->
     setCurrentIndex((int)edit_matrix->portType(RDMatrix::Primary));
@@ -567,22 +567,22 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_password2_edit->setText(edit_matrix->password(RDMatrix::Backup));
   if(edit_matrix->startCart(RDMatrix::Primary)>0) {
     edit_start_cart_edit->
-      setText(QString().sprintf("%06u",
+      setText(QString::asprintf("%06u",
 				edit_matrix->startCart(RDMatrix::Primary)));
   }
   if(edit_matrix->stopCart(RDMatrix::Primary)>0) {
     edit_stop_cart_edit->
-      setText(QString().sprintf("%06u",
+      setText(QString::asprintf("%06u",
 				edit_matrix->stopCart(RDMatrix::Primary)));
   }
   if(edit_matrix->startCart(RDMatrix::Backup)>0) {
     edit_start_cart2_edit->
-      setText(QString().sprintf("%06u",
+      setText(QString::asprintf("%06u",
 				edit_matrix->startCart(RDMatrix::Backup)));
   }
   if(edit_matrix->stopCart(RDMatrix::Backup)>0) {
     edit_stop_cart2_edit->
-      setText(QString().sprintf("%06u",
+      setText(QString::asprintf("%06u",
 				edit_matrix->stopCart(RDMatrix::Backup)));
   }
   edit_displays_box->setValue(edit_matrix->displays());
@@ -1109,7 +1109,7 @@ void EditMatrix::startCartData()
   int cartnum=edit_start_cart_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     if(cartnum>0) {
-      edit_start_cart_edit->setText(QString().sprintf("%06u",cartnum));
+      edit_start_cart_edit->setText(QString::asprintf("%06u",cartnum));
     }
     else {
       edit_start_cart_edit->setText("");
@@ -1123,7 +1123,7 @@ void EditMatrix::stopCartData()
   int cartnum=edit_stop_cart_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     if(cartnum>0) {
-      edit_stop_cart_edit->setText(QString().sprintf("%06u",cartnum));
+      edit_stop_cart_edit->setText(QString::asprintf("%06u",cartnum));
     }
     else {
       edit_stop_cart_edit->setText("");
@@ -1137,7 +1137,7 @@ void EditMatrix::startCart2Data()
   int cartnum=edit_start_cart2_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     if(cartnum>0) {
-      edit_start_cart2_edit->setText(QString().sprintf("%06u",cartnum));
+      edit_start_cart2_edit->setText(QString::asprintf("%06u",cartnum));
     }
     else {
       edit_start_cart2_edit->setText("");
@@ -1151,7 +1151,7 @@ void EditMatrix::stopCart2Data()
   int cartnum=edit_stop_cart2_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
     if(cartnum>0) {
-      edit_stop_cart2_edit->setText(QString().sprintf("%06u",cartnum));
+      edit_stop_cart2_edit->setText(QString::asprintf("%06u",cartnum));
     }
     else {
       edit_stop_cart2_edit->setText("");
@@ -1381,13 +1381,13 @@ void EditMatrix::WriteGpioTable(RDMatrix::GpioType type)
     for(int i=0;i<line_quan;i++) {
       sql=QString("select `ID` from ")+tablename+
 	" where (`STATION_NAME`='"+RDEscapeString(edit_stationname)+"')&&"+
-	QString().sprintf("(`MATRIX`=%d)&&(`NUMBER`=%d)",
+	QString::asprintf("(`MATRIX`=%d)&&(`NUMBER`=%d)",
 			  edit_matrix_number,i+1);
       q=new RDSqlQuery(sql);
       if(!q->first()) {
 	sql=QString("insert into ")+tablename+
 	  " set `STATION_NAME`='"+RDEscapeString(edit_stationname)+"',"+
-	  QString().sprintf("`MATRIX`=%d,`NUMBER`=%d,`MACRO_CART`=0",
+	  QString::asprintf("`MATRIX`=%d,`NUMBER`=%d,`MACRO_CART`=0",
 			    edit_matrix_number,i+1);
 	RDSqlQuery::apply(sql);
       }
@@ -1399,7 +1399,7 @@ void EditMatrix::WriteGpioTable(RDMatrix::GpioType type)
     //
     sql=QString("delete from ")+tablename+
       " where (`STATION_NAME`='"+RDEscapeString(edit_stationname)+
-      QString().sprintf("')&&(`MATRIX`=%d)&&(`NUMBER`>%d)",
+      QString::asprintf("')&&(`MATRIX`=%d)&&(`NUMBER`>%d)",
 			edit_matrix_number,line_quan);
     RDSqlQuery::apply(sql);
   }
@@ -1429,15 +1429,15 @@ void EditMatrix::AddEndpoints(RDMatrix::Endpoint ep) const
       "`NUMBER` "+  // 00
       "from "+table+" where "+
       "`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"' && "+
-      QString().sprintf("`MATRIX`=%d && ",edit_matrix->matrix())+
-      QString().sprintf("`NUMBER`=%d",i+1);
+      QString::asprintf("`MATRIX`=%d && ",edit_matrix->matrix())+
+      QString::asprintf("`NUMBER`=%d",i+1);
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       sql=QString("insert into ")+table+" set "+
 	"`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"',"+
-	QString().sprintf("`MATRIX`=%d,",edit_matrix->matrix())+
-	QString().sprintf("`NUMBER`=%d,",i+1)+
-	"`NAME`='"+RDEscapeString(name+QString().sprintf(" %03d",i+1))+"'";
+	QString::asprintf("`MATRIX`=%d,",edit_matrix->matrix())+
+	QString::asprintf("`NUMBER`=%d,",i+1)+
+	"`NAME`='"+RDEscapeString(name+QString::asprintf(" %03d",i+1))+"'";
       RDSqlQuery::apply(sql);
     }
   }
@@ -1458,8 +1458,8 @@ void EditMatrix::PruneEndpoints(RDMatrix::Endpoint ep) const
 
   sql=QString("delete from ")+table+" where "+
       "`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"' && "+
-      QString().sprintf("`MATRIX`=%d && ",edit_matrix->matrix())+
-      QString().sprintf("`NUMBER`>%d",endpoint_quan);
+      QString::asprintf("`MATRIX`=%d && ",edit_matrix->matrix())+
+      QString::asprintf("`NUMBER`>%d",endpoint_quan);
   RDSqlQuery::apply(sql);
 }
 
@@ -1482,8 +1482,8 @@ bool EditMatrix::ConfirmPruneEndpoints(RDMatrix::Endpoint ep)
     "`ID` "+  // 00
     "from "+table+" where "+
       "`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"' && "+
-      QString().sprintf("`MATRIX`=%d && ",edit_matrix->matrix())+
-      QString().sprintf("`NUMBER`>%d",endpoint_quan);
+      QString::asprintf("`MATRIX`=%d && ",edit_matrix->matrix())+
+      QString::asprintf("`NUMBER`>%d",endpoint_quan);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(QMessageBox::warning(this,"RDAdmin - "+tr("Warning"),
@@ -1525,20 +1525,20 @@ void EditMatrix::AddResources(RDMatrix::VguestType type) const
       "`ID` "+  // 00
       "from `VGUEST_RESOURCES` where "+
       "`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"' && "+
-      QString().sprintf("`MATRIX_NUM`=%d && ",edit_matrix->matrix());
+      QString::asprintf("`MATRIX_NUM`=%d && ",edit_matrix->matrix());
     if(edit_matrix->type()==RDMatrix::LogitekVguest) {
-      sql+=QString().sprintf("`VGUEST_TYPE`=%d && ",type);
+      sql+=QString::asprintf("`VGUEST_TYPE`=%d && ",type);
     }
-    sql+=QString().sprintf("`NUMBER`=%d",i+1);
+    sql+=QString::asprintf("`NUMBER`=%d",i+1);
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       sql=QString("insert into `VGUEST_RESOURCES` set ")+
 	"`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"',"+
-	QString().sprintf("`MATRIX_NUM`=%d,",edit_matrix->matrix());
+	QString::asprintf("`MATRIX_NUM`=%d,",edit_matrix->matrix());
       if(edit_matrix->type()==RDMatrix::LogitekVguest) {
-	sql+=QString().sprintf("`VGUEST_TYPE`=%d,",type);
+	sql+=QString::asprintf("`VGUEST_TYPE`=%d,",type);
       }
-      sql+=QString().sprintf("`NUMBER`=%d",i+1);
+      sql+=QString::asprintf("`NUMBER`=%d",i+1);
       RDSqlQuery::apply(sql);
     }
     delete q;
@@ -1557,11 +1557,11 @@ void EditMatrix::PruneResources(RDMatrix::VguestType type) const
 
   sql=QString("delete from `VGUEST_RESOURCES` where ")+
     "`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"' && "+
-    QString().sprintf("`MATRIX_NUM`=%d && ",edit_matrix->matrix());
+    QString::asprintf("`MATRIX_NUM`=%d && ",edit_matrix->matrix());
   if(edit_matrix->type()==RDMatrix::LogitekVguest) {
-    sql+=QString().sprintf("`VGUEST_TYPE`=%d && ",type);
+    sql+=QString::asprintf("`VGUEST_TYPE`=%d && ",type);
   }
-  sql+=QString().sprintf("`NUMBER`>%d",entry_quan);
+  sql+=QString::asprintf("`NUMBER`>%d",entry_quan);
   RDSqlQuery::apply(sql);
 }
 
@@ -1582,11 +1582,11 @@ bool EditMatrix::ConfirmPruneResources(RDMatrix::VguestType type)
     "`ID` "+  // 00
     "from `VGUEST_RESOURCES` where "+
       "`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"' && "+
-    QString().sprintf("`MATRIX_NUM`=%d && ",edit_matrix->matrix());
+    QString::asprintf("`MATRIX_NUM`=%d && ",edit_matrix->matrix());
   if(edit_matrix->type()==RDMatrix::LogitekVguest) {
-    sql+=QString().sprintf("`VGUEST_TYPE`=%d && ",type);
+    sql+=QString::asprintf("`VGUEST_TYPE`=%d && ",type);
   }
-  sql+=QString().sprintf("`NUMBER`>%d",entry_quan);
+  sql+=QString::asprintf("`NUMBER`>%d",entry_quan);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(QMessageBox::warning(this,"RDAdmin - "+tr("Warning"),
@@ -1618,14 +1618,14 @@ void EditMatrix::AddGpioSlots()
 	"`ID` "+  // 00
 	"from `LIVEWIRE_GPIO_SLOTS` where "+
 	"`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"' && "+
-	QString().sprintf("`MATRIX`=%d && ",edit_matrix->matrix())+
-	QString().sprintf("`SLOT`=%d",i);
+	QString::asprintf("`MATRIX`=%d && ",edit_matrix->matrix())+
+	QString::asprintf("`SLOT`=%d",i);
       RDSqlQuery *q=new RDSqlQuery(sql);
       if(!q->first()) {
 	sql=QString("insert into `LIVEWIRE_GPIO_SLOTS` set ")+
 	  "`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"',"+
-	  QString().sprintf("`MATRIX`=%d,",edit_matrix->matrix())+
-	  QString().sprintf("`SLOT`=%d",i);
+	  QString::asprintf("`MATRIX`=%d,",edit_matrix->matrix())+
+	  QString::asprintf("`SLOT`=%d",i);
 	RDSqlQuery::apply(sql);
       }
       delete q;
@@ -1639,8 +1639,8 @@ void EditMatrix::PurgeGpioSlots()
   if(edit_matrix->type()==RDMatrix::LiveWireMcastGpio) {
     QString sql=QString("delete from `LIVEWIRE_GPIO_SLOTS` where ")+
       "`STATION_NAME`='"+RDEscapeString(edit_matrix->station())+"' && "+
-      QString().sprintf("`MATRIX`=%d && ",edit_matrix->matrix())+
-      QString().sprintf("`SLOT`>=%d",edit_gpis_box->value()/5);
+      QString::asprintf("`MATRIX`=%d && ",edit_matrix->matrix())+
+      QString::asprintf("`SLOT`>=%d",edit_gpis_box->value()/5);
     RDSqlQuery::apply(sql);
   }
 }

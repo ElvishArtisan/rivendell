@@ -110,12 +110,12 @@ int EditLiveWireGpio::exec(int slot_id)
     "`SOURCE_NUMBER`,"+  // 01
     "`IP_ADDRESS` "+     // 02
     "from `LIVEWIRE_GPIO_SLOTS` where "+
-    QString().sprintf("`ID`=%u",slot_id);
+    QString::asprintf("`ID`=%u",slot_id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     edit_title_label->
       setText(tr("GPIO Lines")+
-	      QString().sprintf(" %d - %d",
+	      QString::asprintf(" %d - %d",
 			5*q->value(0).toInt()+1,5*q->value(0).toInt()+5));
     edit_source_number_spin->setValue(q->value(1).toInt());
     if(addr.setAddress(q->value(2).toString())) {
@@ -142,9 +142,9 @@ void EditLiveWireGpio::okData()
     return;
   }
   QString sql=QString("update `LIVEWIRE_GPIO_SLOTS` set ")+
-    QString().sprintf("`SOURCE_NUMBER`=%d,",edit_source_number_spin->value())+
+    QString::asprintf("`SOURCE_NUMBER`=%d,",edit_source_number_spin->value())+
     "`IP_ADDRESS`='"+RDEscapeString(addr.toString())+"' "+
-    QString().sprintf("where `ID`=%u",edit_id);
+    QString::asprintf("where `ID`=%u",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

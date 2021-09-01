@@ -150,7 +150,7 @@ void MainObject::notificationReceivedData(RDNotification *notify)
     switch(notify->action()) {
     case RDNotification::AddAction: 
       sql=QString("select `ID` from `PYPAD_INSTANCES` where ")+
-	QString().sprintf("`ID`=%u && ",id)+
+	QString::asprintf("`ID`=%u && ",id)+
 	"STATION_NAME='"+RDEscapeString(rda->station()->name())+"'";
       q=new RDSqlQuery(sql);
       if(q->first()) {
@@ -257,7 +257,7 @@ bool MainObject::ScriptIsActive(unsigned id) const
 void MainObject::StartScript(unsigned id)
 {
   QString sql=QString("select `SCRIPT_PATH` from `PYPAD_INSTANCES` where ")+
-    QString().sprintf("`ID`=%u && ",id)+
+    QString::asprintf("`ID`=%u && ",id)+
     "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
@@ -268,8 +268,8 @@ void MainObject::StartScript(unsigned id)
     QStringList args;
     args.push_back(q->value(0).toString());
     args.push_back("localhost");
-    args.push_back(QString().sprintf("%u",RD_PAD_CLIENT_TCP_PORT));
-    args.push_back(QString().sprintf("$%u",id));
+    args.push_back(QString::asprintf("%u",RD_PAD_CLIENT_TCP_PORT));
+    args.push_back(QString::asprintf("$%u",id));
     pad_instances.value(id)->start(RD_PYPAD_PYTHON_PATH,args);
     rda->syslog(LOG_INFO,"%s",(QString("starting: ")+proc->program()+" "+
 			       proc->arguments().join(" ")).toUtf8().constData());
@@ -289,14 +289,14 @@ void MainObject::SetRunStatus(unsigned id,bool state,int exit_code,
 {
   QString sql=QString("update `PYPAD_INSTANCES` set ")+
     "`IS_RUNNING`='"+RDYesNo(state)+"',"+
-    QString().sprintf("`EXIT_CODE`=%u,",exit_code);
+    QString::asprintf("`EXIT_CODE`=%u,",exit_code);
   if(err_text.isNull()) {
     sql+="`ERROR_TEXT`=null ";
   }
   else {
     sql+="`ERROR_TEXT`='"+RDEscapeString(err_text)+"' ";
   }
-  sql+=QString().sprintf("where `ID`=%u",id);
+  sql+=QString::asprintf("where `ID`=%u",id);
   RDSqlQuery::apply(sql);
 }
 

@@ -150,7 +150,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   //
   for(int i=0;i<MAX_TTYS;i++) {
     edit_port_box->
-      insertItem(edit_port_box->count(),tr("Serial")+QString().sprintf("%d",i));
+      insertItem(edit_port_box->count(),tr("Serial")+QString::asprintf("%d",i));
   }
   edit_baudrate_box->insertItem(0,"50");
   edit_baudrate_box->insertItem(1,"75");
@@ -244,15 +244,15 @@ void EditTtys::enableButtonData(int state)
       "`TYPE` "+    // 02
       "from `MATRICES` where "+
       "`STATION_NAME`='"+RDEscapeString(edit_station)+"' && "+
-      QString().sprintf("(`PORT_TYPE`=%d && `PORT`=%d) || ",
+      QString::asprintf("(`PORT_TYPE`=%d && `PORT`=%d) || ",
 			RDMatrix::TtyPort,edit_port_box->currentIndex())+
-      QString().sprintf("(`PORT_TYPE_2`=%d && `PORT_2`=%d)",
+      QString::asprintf("(`PORT_TYPE_2`=%d && `PORT_2`=%d)",
 			RDMatrix::TtyPort,edit_port_box->currentIndex());
     q=new RDSqlQuery(sql);
     if(q->first()) {
       QMessageBox::information(this,"RDAdmin - "+tr("Error"),
 			       tr("This port is currently in use by the following Switcher/GPIO device")+":\n"+
-			       "\t"+tr("Matrix")+QString().sprintf(": %d.\n",q->value(1).toInt())+
+			       "\t"+tr("Matrix")+QString::asprintf(": %d.\n",q->value(1).toInt())+
 			       "\t"+tr("Type")+": "+RDMatrix::typeString((RDMatrix::Type)q->value(2).toInt())+"\n"+
 			       "\t"+tr("Description")+": "+q->value(0).toString());
       delete q;
@@ -288,7 +288,7 @@ void EditTtys::closeData()
   macro.setEchoRequested(false);
   for(int i=0;i<MAX_TTYS;i++) {
     if(edit_port_modified[i]) {
-      sql=QString().sprintf("select `MATRIX` from `MATRICES` where `PORT`=%d",i);
+      sql=QString::asprintf("select `MATRIX` from `MATRICES` where `PORT`=%d",i);
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	macro.setCommand(RDMacro::SZ);

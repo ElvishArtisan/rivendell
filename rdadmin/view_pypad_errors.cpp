@@ -2,7 +2,7 @@
 //
 // View the Edit Log for a PyPAD Instance
 //
-//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,7 +27,7 @@ ViewPypadErrors::ViewPypadErrors(int id,QWidget *parent)
 {
   setMinimumSize(sizeHint());
   setWindowTitle(tr("Script Error Log")+
-		 " ["+tr("ID")+QString().sprintf(": %d]",id)); 
+		 " ["+tr("ID")+QString::asprintf(": %d]",id)); 
 
   //
   // Viewer
@@ -35,7 +35,7 @@ ViewPypadErrors::ViewPypadErrors(int id,QWidget *parent)
   view_text=new QTextEdit(this);
   view_text->setReadOnly(true);
   QString sql=QString("select `ERROR_TEXT` from `PYPAD_INSTANCES` where ")+
-    QString().sprintf("`ID`=%u",id);
+    QString::asprintf("`ID`=%u",id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     view_text->setPlainText(q->value(0).toString());

@@ -261,7 +261,7 @@ QString RDGetBasePart(QString path)
 
 QString RDGetShortDate(QDate date)
 {
-  return QString().sprintf("%02d/%02d/%04d",
+  return QString::asprintf("%02d/%02d/%04d",
 			   date.month(),date.day(),date.year());
 }
 
@@ -411,7 +411,7 @@ bool RDDoesRowExist(const QString &table,const QString &name,unsigned test,
   QString sql;
 
   sql="select `"+name+"` from `"+table+"` where `"+name+"`="+
-    QString().sprintf("%d",test);
+    QString::asprintf("%d",test);
   q=new RDSqlQuery(sql);
   if(q->size()>0) {
     delete q;
@@ -479,7 +479,7 @@ bool RDIsSqlNull(const QString &table,const QString &name,unsigned test,
   QString sql;
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
-    QString().sprintf("%d",test);
+    QString::asprintf("%d",test);
   q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
@@ -505,7 +505,7 @@ QVariant RDGetSqlValue(const QString &table,const QString &name,unsigned test,
   QVariant v;
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
-    QString().sprintf("%u",test);
+    QString::asprintf("%u",test);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     v=q->value(0);
@@ -541,29 +541,29 @@ QString RDGetTimeLength(int mseconds,bool leadzero,bool tenths)
   if(leadzero) {
     if(tenths) {
       return QString(negative)+
-	QString().sprintf("%d:%02d:%02d.%d",hour,min,seconds,tenthsecs);
+	QString::asprintf("%d:%02d:%02d.%d",hour,min,seconds,tenthsecs);
     }
     return QString(negative)+
-      QString().sprintf("%d:%02d:%02d",hour,min,seconds);
+      QString::asprintf("%d:%02d:%02d",hour,min,seconds);
   }
   if((hour==0)&&(min==0)) {
     if(tenths) {
-      return QString(negative)+QString().sprintf(":%02d.%d",seconds,tenthsecs);
+      return QString(negative)+QString::asprintf(":%02d.%d",seconds,tenthsecs);
     }
-    return QString(negative)+QString().sprintf(":%02d",seconds);
+    return QString(negative)+QString::asprintf(":%02d",seconds);
   }
   if(hour==0) {
     if(tenths) {
       return QString(negative)+
-	QString().sprintf("%2d:%02d.%d",min,seconds,tenthsecs);
+	QString::asprintf("%2d:%02d.%d",min,seconds,tenthsecs);
     }
-    return QString(negative)+QString().sprintf("%2d:%02d",min,seconds);
+    return QString(negative)+QString::asprintf("%2d:%02d",min,seconds);
   }
   if(tenths) {
     return QString(negative)+
-      QString().sprintf("%2d:%02d:%02d.%d",hour,min,seconds,tenthsecs);
+      QString::asprintf("%2d:%02d:%02d.%d",hour,min,seconds,tenthsecs);
   }
-  return QString(negative)+QString().sprintf("%2d:%02d:%02d",hour,min,seconds);
+  return QString(negative)+QString::asprintf("%2d:%02d:%02d",hour,min,seconds);
 }
 
 
@@ -749,7 +749,7 @@ bool RDCheckPid(const QString &dirname,const QString &filename)
   QDir dir;
   QString path;
   path=QString("/proc/")+
-    QString().sprintf("%d",RDGetPid(dirname+QString("/")+filename));
+    QString::asprintf("%d",RDGetPid(dirname+QString("/")+filename));
   dir.setPath(path);
   return dir.exists();
 }
@@ -1057,7 +1057,7 @@ QString RDStringToHex(const QString &str)
   QString ret="";
 
   for(int i=0;i<bytes.length();i++) {
-    ret+=QString().sprintf("%02X ",0xFF&bytes[i]);
+    ret+=QString::asprintf("%02X ",0xFF&bytes[i]);
   }
 
   return ret;

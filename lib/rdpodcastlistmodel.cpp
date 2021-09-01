@@ -228,7 +228,7 @@ void RDPodcastListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("`PODCASTS`.`ID`=%u",d_cast_ids.at(row.row()));
+      QString::asprintf("`PODCASTS`.`ID`=%u",d_cast_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -300,7 +300,7 @@ void RDPodcastListModel::updateModel()
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+
     "where "+
-    QString().sprintf("`PODCASTS`.`FEED_ID`=%u ",d_feed_id)+
+    QString::asprintf("`PODCASTS`.`FEED_ID`=%u ",d_feed_id)+
     d_filter_sql+
     " order by `PODCASTS`.`ORIGIN_DATETIME` desc";
   beginResetModel();
@@ -324,7 +324,7 @@ void RDPodcastListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("`PODCASTS`.`ID`=%u",d_cast_ids.at(line));
+      QString::asprintf("`PODCASTS`.`ID`=%u",d_cast_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);

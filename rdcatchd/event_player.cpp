@@ -47,7 +47,7 @@ void EventPlayer::load(const QString &cutname)
   event_deck_events.clear();
   sql=QString("select `CART_NUMBER` from `DECK_EVENTS` where ")+
     "(`STATION_NAME`='"+RDEscapeString(event_station->name())+"')&&"+
-    QString().sprintf("(`CHANNEL`=%d) ",event_channel)+
+    QString::asprintf("(`CHANNEL`=%d) ",event_channel)+
     "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   while(q->next()) {

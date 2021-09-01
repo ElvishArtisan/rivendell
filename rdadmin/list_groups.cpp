@@ -204,7 +204,7 @@ void ListGroups::deleteData()
     "`GROUP_NAME`='"+RDEscapeString(grpname)+"'";
   q=new RDSqlQuery(sql);
   if((carts=q->size())>0) {
-    warning=QString().sprintf("%d ",carts)+tr("member carts will be deleted along with group")+" \""+grpname+"\"!\n";
+    warning=QString::asprintf("%d ",carts)+tr("member carts will be deleted along with group")+" \""+grpname+"\"!\n";
   }
   warning+=tr("Are you sure you want to delete group")+" \""+grpname+"\"?";
   switch(QMessageBox::warning(this,tr("Delete Group"),warning,
@@ -307,7 +307,7 @@ void ListGroups::reportData()
       report+="    [none]      ";
     }
     else {
-      report+=QString().sprintf("%06u - %06u ",q->value(2).toUInt(),
+      report+=QString::asprintf("%06u - %06u ",q->value(2).toUInt(),
 				q->value(3).toUInt());
     }
 

@@ -2163,13 +2163,13 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     }
     if(GetTransType(logline->markerLabel(),0)!=RDLogLine::Stop) {
       play_macro_deck->
-	load(QString().sprintf("LL %d %s -2!",
+	load(QString::asprintf("LL %d %s -2!",
 			       play_id+1,
 			       logline->markerLabel().toUtf8().constData()));
     }
     else {
       play_macro_deck->
-	load(QString().sprintf("LL %d %s -2!",
+	load(QString::asprintf("LL %d %s -2!",
 			       play_id+1,
 			       logline->markerLabel().toUtf8().constData()));
     }
@@ -2784,7 +2784,7 @@ bool RDLogPlay::GetNextPlayable(int *line,bool skip_meta,bool forced_start)
 
 void RDLogPlay::LogPlayEvent(RDLogLine *logline)
 {
-  RDCut *cut=new RDCut(QString().sprintf("%06u_%03d",
+  RDCut *cut=new RDCut(QString::asprintf("%06u_%03d",
 					 logline->cartNumber(),
 					 logline->cutNumber()));
   cut->logPlayout();
@@ -2975,7 +2975,7 @@ RDLogLine::TransType RDLogPlay::GetTransType(const QString &logname,int line)
   RDLogLine::TransType trans=RDLogLine::Stop;
   QString sql=QString("select `TRANS_TYPE` from `LOG_LINES` where ")+
     "`LOG_NAME`='"+RDEscapeString(logname)+"' && "+
-    QString().sprintf("COUNT=%d",line);
+    QString::asprintf("COUNT=%d",line);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     trans=(RDLogLine::TransType)q->value(0).toUInt();
@@ -3296,21 +3296,21 @@ void RDLogPlay::LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
   }
   sql=QString("insert into `ELR_LINES` set ")+
     "`SERVICE_NAME`='"+RDEscapeString(serviceName())+"',"+
-    QString().sprintf("`LENGTH`=%d,",length)+
+    QString::asprintf("`LENGTH`=%d,",length)+
     "`LOG_NAME`='"+RDEscapeString(logName())+"',"+
-    QString().sprintf("`LOG_ID`=%d,",logline->id())+
-    QString().sprintf("`CART_NUMBER`=%u,",logline->cartNumber())+
+    QString::asprintf("`LOG_ID`=%d,",logline->id())+
+    QString::asprintf("`CART_NUMBER`=%u,",logline->cartNumber())+
     "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
     "`EVENT_DATETIME`="+evt_sql+","+
-    QString().sprintf("`EVENT_TYPE`=%d,",action)+
-    QString().sprintf("`EVENT_SOURCE`=%d,",logline->source())+
+    QString::asprintf("`EVENT_TYPE`=%d,",action)+
+    QString::asprintf("`EVENT_SOURCE`=%d,",logline->source())+
     "`EXT_START_TIME`="+RDCheckDateTime(logline->extStartTime(),"hh:mm:ss")+","+
-    QString().sprintf("`EXT_LENGTH`=%d,",logline->extLength())+
+    QString::asprintf("`EXT_LENGTH`=%d,",logline->extLength())+
     "`EXT_DATA`='"+RDEscapeString(logline->extData())+"',"+
     "`EXT_EVENT_ID`='"+RDEscapeString(logline->extEventId())+"',"+
     "`EXT_ANNC_TYPE`='"+RDEscapeString(logline->extAnncType())+"',"+
-    QString().sprintf("`PLAY_SOURCE`=%d,",src)+
-    QString().sprintf("`CUT_NUMBER`=%d,",logline->cutNumber())+
+    QString::asprintf("`PLAY_SOURCE`=%d,",src)+
+    QString::asprintf("`CUT_NUMBER`=%d,",logline->cutNumber())+
     "`EXT_CART_NAME`='"+RDEscapeString(logline->extCartName())+"',"+
     "`TITLE`='"+RDEscapeString(logline->title())+"',"+
     "`ARTIST`='"+RDEscapeString(logline->artist())+"',"+
@@ -3319,8 +3319,8 @@ void RDLogPlay::LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
     "`ISRC`='"+RDEscapeString(logline->isrc())+"',"+
     "`PUBLISHER`='"+RDEscapeString(logline->publisher())+"',"+
     "`COMPOSER`='"+RDEscapeString(logline->composer())+"',"+
-    QString().sprintf("`USAGE_CODE`=%d,",logline->usageCode())+
-    QString().sprintf("`START_SOURCE`=%d,",logline->startSource())+
+    QString::asprintf("`USAGE_CODE`=%d,",logline->usageCode())+
+    QString::asprintf("`START_SOURCE`=%d,",logline->startSource())+
     "`ONAIR_FLAG`='"+RDYesNo(onair_flag)+"',"+
     "`ALBUM`='"+RDEscapeString(logline->album())+"',"+
     "`LABEL`='"+RDEscapeString(logline->label())+"',"+

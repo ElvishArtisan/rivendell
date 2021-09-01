@@ -287,21 +287,21 @@ void RDLog::updateLinkQuantity(RDLog::Source src) const
   case RDLog::SourceMusic:
     sql=QString("select `LINE_ID` from `LOG_LINES` where ")+
       "`LOG_NAME`='"+RDEscapeString(log_name)+"' && "+
-      QString().sprintf("`TYPE`=%d",RDLogLine::MusicLink);
+      QString::asprintf("`TYPE`=%d",RDLogLine::MusicLink);
     q=new RDSqlQuery(sql);
     sql=QString("update `LOGS` set ")+
-      QString().sprintf("`MUSIC_LINKS`=%d ",q->size())+
+      QString::asprintf("`MUSIC_LINKS`=%d ",q->size())+
       "where `NAME`='"+RDEscapeString(log_name)+"'";
     break;
 
   case RDLog::SourceTraffic:
     sql=QString("select `LINE_ID` from `LOG_LINES` where ")+
       "`LOG_NAME`='"+RDEscapeString(log_name)+"' && "+
-      QString().sprintf("`TYPE`=%d",RDLogLine::TrafficLink);
+      QString::asprintf("`TYPE`=%d",RDLogLine::TrafficLink);
     q=new RDSqlQuery(sql);
 
     sql=QString("update `LOGS` set ")+
-      QString().sprintf("`TRAFFIC_LINKS`=%d ",q->size())+
+      QString::asprintf("`TRAFFIC_LINKS`=%d ",q->size())+
       "where `NAME`='"+RDEscapeString(log_name)+"'";
     break;
 
@@ -422,14 +422,14 @@ void RDLog::updateTracks()
 
   sql=QString("select `LINE_ID` from `LOG_LINES` where ")+
     "`LOG_NAME`='"+RDEscapeString(log_name)+"' && "+
-    QString().sprintf("`TYPE`=%d",RDLogLine::Track);
+    QString::asprintf("`TYPE`=%d",RDLogLine::Track);
   q=new RDSqlQuery(sql);
   scheduled=q->size()+completed;
   delete q;
 
   sql=QString("update `LOGS` set ")+
-    QString().sprintf("`SCHEDULED_TRACKS`=%d,",scheduled)+
-    QString().sprintf("`COMPLETED_TRACKS`=%u where ",completed)+
+    QString::asprintf("`SCHEDULED_TRACKS`=%d,",scheduled)+
+    QString::asprintf("`COMPLETED_TRACKS`=%u where ",completed)+
     "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
@@ -719,7 +719,7 @@ void RDLog::SetRow(const QString &param,int value) const
   QString sql;
 
   sql=QString("update LOGS set `")+
-    param+QString().sprintf("`=%d where ",value)+
+    param+QString::asprintf("`=%d where ",value)+
     "`NAME`='"+RDEscapeString(log_name)+"'";
   q=new RDSqlQuery(sql);
   delete q;
@@ -732,7 +732,7 @@ void RDLog::SetRow(const QString &param,unsigned value) const
   QString sql;
 
   sql=QString("update LOGS set `")+
-    param+QString().sprintf("`=%u where ",value)+
+    param+QString::asprintf("`=%u where ",value)+
     "`NAME`='"+RDEscapeString(log_name)+"'";
   q=new RDSqlQuery(sql);
   delete q;

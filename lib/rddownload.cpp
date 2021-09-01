@@ -256,7 +256,7 @@ bool RDDownload::aborting() const
 
 QString RDDownload::errorText(RDDownload::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown RDDownload Error [%u]",err);
+  QString ret=QString::asprintf("Unknown RDDownload Error [%u]",err);
 
   switch(err) {
   case RDDownload::ErrorOk:

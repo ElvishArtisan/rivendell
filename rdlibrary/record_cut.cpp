@@ -418,7 +418,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
     cut_playdate_edit->setText("Never");
   }
   cut_playcounter_edit->
-    setText(QString().sprintf("%d",rec_cut->playCounter()));
+    setText(QString::asprintf("%d",rec_cut->playCounter()));
   rec_evergreen_box->setChecked(rec_cut->evergreen());
   evergreenToggledData(rec_evergreen_box->isChecked());
   cut_startdatetime_edit->setDateTime(rec_cut->startDatetime(&valid));
@@ -439,7 +439,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   rec_channels_box->insertItem(0,"1");
   rec_channels_box->insertItem(1,"2");
   rec_channels_box->setCurrentIndex(rec_cut->channels()-1);
-  rec_channels_edit->setText(QString().sprintf("%d",rec_cut->channels()));
+  rec_channels_edit->setText(QString::asprintf("%d",rec_cut->channels()));
   rec_mode_box->insertItem(0,tr("Manual"));
   rec_mode_box->insertItem(1,tr("VOX"));
   switch(rda->libraryConf()->defaultRecordMode()) {

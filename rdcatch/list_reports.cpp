@@ -310,12 +310,12 @@ void ListReports::GenerateEventReport(QString *report)
     switch((RDRecording::Type)q->value(0).toInt()) {
     case RDRecording::Recording:
       str=q->value(13).toString().left(12)+
-	QString().sprintf(":%d",q->value(14).toInt());
+	QString::asprintf(":%d",q->value(14).toInt());
       break;
 
     case RDRecording::Playout:
       str=q->value(13).toString().left(12)+
-	QString().sprintf(":%d",q->value(14).toInt()-128);
+	QString::asprintf(":%d",q->value(14).toInt()-128);
       break;
 
     default:
@@ -334,7 +334,7 @@ void ListReports::GenerateEventReport(QString *report)
 	"`SWITCH_MATRIX` "+   // 01
 	"from `DECKS` where "+
 	"(`STATION_NAME`='"+RDEscapeString(q->value(13).toString())+"')&&"+
-	QString().sprintf("(`CHANNEL`=%d)",q->value(14).toInt());
+	QString::asprintf("(`CHANNEL`=%d)",q->value(14).toInt());
       q1=new RDSqlQuery(sql);
       if(q1->first()) {
 	*report+=
@@ -352,7 +352,7 @@ void ListReports::GenerateEventReport(QString *report)
 
     case RDRecording::MacroEvent:
       *report+=QString("Cart ")+
-	QString().sprintf("%06u          ",q->value(17).toUInt());
+	QString::asprintf("%06u          ",q->value(17).toUInt());
       *report+="                     ";
       break;
 
@@ -442,8 +442,8 @@ void ListReports::GenerateXloadReport(QString *report)
     "`URL_USERNAME`,"+  // 12
     "`DESCRIPTION` "+   // 13
     "from `RECORDINGS` where "+
-    QString().sprintf("(`TYPE`=%d)||",RDRecording::Upload)+
-    QString().sprintf("(`TYPE`=%d) ",RDRecording::Download)+
+    QString::asprintf("(`TYPE`=%d)||",RDRecording::Upload)+
+    QString::asprintf("(`TYPE`=%d) ",RDRecording::Download)+
     "order by `START_TIME`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -569,8 +569,8 @@ QString ListReports::GetSourceName(const QString &station,int matrix,int input)
   QString input_name;
   QString sql=QString("select `NAME` from `INPUTS` where ")+
     "(`STATION_NAME`='"+RDEscapeString(station)+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",matrix)+
-    QString().sprintf("(`NUMBER`=%d)",input);
+    QString::asprintf("(`MATRIX`=%d)&&",matrix)+
+    QString::asprintf("(`NUMBER`=%d)",input);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     input_name=q->value(0).toString();
@@ -586,8 +586,8 @@ QString ListReports::GetDestinationName(const QString &station,int matrix,
   QString output_name;
   QString sql=QString("select `NAME` from `OUTPUTS` where ")+
     "(`STATION_NAME`='"+RDEscapeString(station)+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",matrix)+
-    QString().sprintf("(`NUMBER`=%d)",output);
+    QString::asprintf("(`MATRIX`=%d)&&",matrix)+
+    QString::asprintf("(`NUMBER`=%d)",output);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output_name=q->value(0).toString();

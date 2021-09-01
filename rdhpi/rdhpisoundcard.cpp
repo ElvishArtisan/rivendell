@@ -2,7 +2,7 @@
 //
 //   The audio card subsystem for the HPI Library.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -732,7 +732,7 @@ void RDHPISoundCard::HPIProbe()
     }
     card_input_ports[i]=0;
     card_output_ports[i]=0;
-    card_description[i]=QString().sprintf("AudioScience %04X [%d]",
+    card_description[i]=QString::asprintf("AudioScience %04X [%d]",
 					  hpi_adapter_list[i],i+1);
     LogHpi(HPI_AdapterOpen(NULL,card_index[i]),__LINE__);
     LogHpi(HPI_AdapterGetInfo(NULL,card_index[i],
@@ -750,13 +750,13 @@ void RDHPISoundCard::HPIProbe()
     str=QString(tr("Input Stream"));
     for(int j=0;j<card_input_streams[i];j++) {
       input_stream_description[i][j]=
-	QString().sprintf("%s - %s %d",card_description[i].toUtf8().constData(),
+	QString::asprintf("%s - %s %d",card_description[i].toUtf8().constData(),
 			  str.toUtf8().constData(),j+1);
     }
     str=QString(tr("Output Stream"));
     for(int j=0;j<card_output_streams[i];j++) {
       output_stream_description[i][j]=
-	QString().sprintf("%s - %s %d",
+	QString::asprintf("%s - %s %d",
 			  card_description[i].toUtf8().constData(),
 			  str.toUtf8().constData(),j+1);
     }
@@ -780,7 +780,7 @@ void RDHPISoundCard::HPIProbe()
 			     &input_stream_volume_control[i][0][k])==0) {
 	card_input_ports[i]++;
 	input_port_description[i][k]=
-	  QString().sprintf("%s - %s %d",
+	  QString::asprintf("%s - %s %d",
 			    card_description[i].toUtf8().constData(),
 			    str.toUtf8().constData(),card_input_ports[i]);
       }
@@ -814,7 +814,7 @@ void RDHPISoundCard::HPIProbe()
 	output_stream_volume[i][0][k]=true;
 	card_output_ports[i]++;
 	output_port_description[i][k]=
-	  QString().sprintf("%s - %s %d",
+	  QString::asprintf("%s - %s %d",
 			    card_description[i].toUtf8().constData(),
 			    str.toUtf8().constData(),card_output_ports[i]);
       }

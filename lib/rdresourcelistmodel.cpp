@@ -201,7 +201,7 @@ void RDResourceListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("`ID`=%d ",d_ids.at(row.row()));
+      QString::asprintf("`ID`=%d ",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -234,15 +234,15 @@ void RDResourceListModel::updateModel()
     sql=sqlFields()+
       "where "+
       "`STATION_NAME`='"+RDEscapeString(d_mtx->station())+"' && "+
-      QString().sprintf("`MATRIX_NUM`=%d && ",d_mtx->matrix())+
-      QString().sprintf("`VGUEST_TYPE`=%u ",d_vguest_type)+
+      QString::asprintf("`MATRIX_NUM`=%d && ",d_mtx->matrix())+
+      QString::asprintf("`VGUEST_TYPE`=%u ",d_vguest_type)+
       "order by `NUMBER` ";
   }
   if(d_type==RDMatrix::SasUsi) {
     sql=sqlFields()+
       "where "+
       "`STATION_NAME`='"+RDEscapeString(d_mtx->station())+"' && "+
-      QString().sprintf("`MATRIX_NUM`=%d ",d_mtx->matrix())+
+      QString::asprintf("`MATRIX_NUM`=%d ",d_mtx->matrix())+
       "order by `NUMBER` ";
   }
   beginResetModel();
@@ -264,7 +264,7 @@ void RDResourceListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("`ID`=%d ",d_ids.at(line));
+      QString::asprintf("`ID`=%d ",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -282,11 +282,11 @@ void RDResourceListModel::updateRow(int row,RDSqlQuery *q)
 
   //
   // GPIO Line / Display
-  texts.push_back(QString().sprintf("%d",q->value(1).toInt()));
+  texts.push_back(QString::asprintf("%d",q->value(1).toInt()));
 
   // Engine Number
   if(q->value(2).toInt()>=0) {
-    texts.push_back(QString().sprintf("%d",q->value(2).toInt()));
+    texts.push_back(QString::asprintf("%d",q->value(2).toInt()));
   }
   else {
     texts.push_back("");
@@ -295,7 +295,7 @@ void RDResourceListModel::updateRow(int row,RDSqlQuery *q)
   // Device Number
   if(d_type==RDMatrix::LogitekVguest) {
     if(q->value(3).toInt()>=0) {
-      texts.push_back(QString().sprintf("%04X",q->value(3).toInt()));
+      texts.push_back(QString::asprintf("%04X",q->value(3).toInt()));
     }
     else {
       texts.push_back("");
@@ -307,7 +307,7 @@ void RDResourceListModel::updateRow(int row,RDSqlQuery *q)
   case RDMatrix::LogitekVguest:
     // Device Number
     if(q->value(3).toInt()>=0) {
-      texts.push_back(QString().sprintf("%04X",q->value(3).toInt()));
+      texts.push_back(QString::asprintf("%04X",q->value(3).toInt()));
     }
     else {
       texts.push_back("");
@@ -315,7 +315,7 @@ void RDResourceListModel::updateRow(int row,RDSqlQuery *q)
 
     // Surface Number
     if(q->value(4).toInt()>=0) {
-      texts.push_back(QString().sprintf("%d",q->value(4).toInt()));
+      texts.push_back(QString::asprintf("%d",q->value(4).toInt()));
     }
     else {
       texts.push_back("");
@@ -325,14 +325,14 @@ void RDResourceListModel::updateRow(int row,RDSqlQuery *q)
   case RDMatrix::SasUsi:
     // Source
     if(q->value(3).toInt()>=0) {
-      texts.push_back(QString().sprintf("%d",q->value(3).toInt()));
+      texts.push_back(QString::asprintf("%d",q->value(3).toInt()));
     }
     else {
       texts.push_back("");
     }
 
     if(q->value(5).toInt()>=0) {
-      texts.push_back(QString().sprintf("%d",q->value(5).toInt()));
+      texts.push_back(QString::asprintf("%d",q->value(5).toInt()));
     }
     else {
       texts.push_back("");
@@ -346,7 +346,7 @@ void RDResourceListModel::updateRow(int row,RDSqlQuery *q)
   switch(d_vguest_type) {
   case RDMatrix::VguestTypeRelay:
     if(q->value(5).toInt()>=0) {
-      texts.push_back(QString().sprintf("%02d",q->value(5).toInt()));
+      texts.push_back(QString::asprintf("%02d",q->value(5).toInt()));
     }
     else {
       texts.push_back("");

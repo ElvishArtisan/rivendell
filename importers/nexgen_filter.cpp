@@ -350,37 +350,37 @@ void MainObject::ProcessXmlFile(const QString &xml,const QString &wavname,
   //
   // Import Audio
   //
-  Print(QString().sprintf("Importing cart %06d",cartnum));
+  Print(QString::asprintf("Importing cart %06d",cartnum));
   if(!data.title().isEmpty()) {
-    Print(QString().sprintf(" [%s",data.title().toUtf8().constData()));
+    Print(QString::asprintf(" [%s",data.title().toUtf8().constData()));
     if(!data.artist().isEmpty()) {
-      Print(QString().sprintf("/%s",data.artist().toUtf8().constData()));
+      Print(QString::asprintf("/%s",data.artist().toUtf8().constData()));
     }
-    Print(QString().sprintf("]"));
+    Print(QString::asprintf("]"));
   }
   if(arcname.isEmpty()) {
-    Print(QString().sprintf(" from %s ...",filename.toUtf8().constData()));
+    Print(QString::asprintf(" from %s ...",filename.toUtf8().constData()));
   }
   else {
-    Print(QString().sprintf(" from %s ...",arcname.toUtf8().constData()));
+    Print(QString::asprintf(" from %s ...",arcname.toUtf8().constData()));
   }
   if(filter_delete_cuts) {
     delete_cuts_switch="--delete-cuts ";
   }
   QString cmd=QString("rdimport ")+
     "--autotrim-level=0 "+
-    QString().sprintf("--normalization-level=%d ",filter_normalization_level)+
-    QString().sprintf("--to-cart=%d ",cartnum)+
+    QString::asprintf("--normalization-level=%d ",filter_normalization_level)+
+    QString::asprintf("--to-cart=%d ",cartnum)+
     delete_cuts_switch+
     filter_group->name()+" "+
     filter_temp_audiofile;
   if(system(cmd.toUtf8())!=0) {
-    Print(QString().sprintf(" aborted.\n"));
+    Print(QString::asprintf(" aborted.\n"));
     fprintf(stderr,"import of \"%s\" failed\n",filename.toUtf8().constData());
     WriteReject(xml);
     return;
   }
-  Print(QString().sprintf(" done.\n"));
+  Print(QString::asprintf(" done.\n"));
   unlink(filter_temp_audiofile.toUtf8());
 
   //
@@ -390,7 +390,7 @@ void MainObject::ProcessXmlFile(const QString &xml,const QString &wavname,
   cart->setMetadata(&data);
   delete cart;
   sql=QString("select `CUT_NAME` from `CUTS` where ")+
-    QString().sprintf("`CART_NUMBER`=%d ",cartnum)+
+    QString::asprintf("`CART_NUMBER`=%d ",cartnum)+
     "order by `ORIGIN_DATETIME` desc";
   q=new RDSqlQuery(sql);
   if(q->first()) {

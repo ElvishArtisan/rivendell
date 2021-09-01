@@ -2,7 +2,7 @@
 //
 // Container class for Rivendel Web Service result messages.
 //
-//   (C) Copyright 2011,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2011-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -83,11 +83,11 @@ QString RDWebResult::xml() const
   QString ret="";
 
   ret+="<RDWebResult>\r\n";
-  ret+=QString().sprintf("  <ResponseCode>%d</ResponseCode>\r\n",
+  ret+=QString::asprintf("  <ResponseCode>%d</ResponseCode>\r\n",
 			 web_response_code);
   ret+="  <ErrorString>"+web_text+"</ErrorString>\r\n";
   if(web_converter_code!=RDAudioConvert::ErrorOk) {
-    ret+=QString().sprintf("  <AudioConvertError>%d</AudioConvertError>\r\n",
+    ret+=QString::asprintf("  <AudioConvertError>%d</AudioConvertError>\r\n",
 			   web_converter_code);
   }
   ret+="</RDWebResult>\r\n";

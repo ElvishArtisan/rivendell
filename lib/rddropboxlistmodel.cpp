@@ -186,7 +186,7 @@ QModelIndex RDDropboxListModel::addDropbox(int box_id)
   }
   d_box_ids.insert(offset,box_id);
   d_group_colors.insert(offset,QVariant());
-  list[0]=QString().sprintf("%d",box_id);
+  list[0]=QString::asprintf("%d",box_id);
   d_texts.insert(offset,list);
   updateRowLine(offset);
   endInsertRows();
@@ -223,7 +223,7 @@ void RDDropboxListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("`DROPBOXES`.`ID`=%d",d_box_ids.at(row.row()));
+      QString::asprintf("`DROPBOXES`.`ID`=%d",d_box_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -274,7 +274,7 @@ void RDDropboxListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("`DROPBOXES`.`ID`=%d",d_box_ids.at(line));
+      QString::asprintf("`DROPBOXES`.`ID`=%d",d_box_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -304,7 +304,7 @@ void RDDropboxListModel::updateRow(int row,RDSqlQuery *q)
     texts.push_back(tr("[off]"));
   }
   else {
-    texts.push_back(QString().sprintf("%d dBFS",q->value(4).toInt()/100));
+    texts.push_back(QString::asprintf("%d dBFS",q->value(4).toInt()/100));
   }
 
   // Autotrim Level
@@ -312,7 +312,7 @@ void RDDropboxListModel::updateRow(int row,RDSqlQuery *q)
     texts.push_back(tr("[off]"));
   }
   else {
-    texts.push_back(QString().sprintf("%d dBFS",q->value(5).toInt()/100));
+    texts.push_back(QString::asprintf("%d dBFS",q->value(5).toInt()/100));
   }
 
   // To Cart
@@ -320,7 +320,7 @@ void RDDropboxListModel::updateRow(int row,RDSqlQuery *q)
     texts.push_back(tr("[auto]"));
   }
   else {
-    texts.push_back(QString().sprintf("%06u",q->value(6).toUInt()));
+    texts.push_back(QString::asprintf("%06u",q->value(6).toUInt()));
   }
 
   // Force to Mono

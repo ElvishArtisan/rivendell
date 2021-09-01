@@ -153,8 +153,8 @@ void RDSchedRulesList::Save(QString clockname)
     sql=QString("insert into `RULE_LINES` set ")+
       "`CLOCK_NAME`='"+RDEscapeString(clockname)+"',"+
       "`CODE`='"+RDEscapeString(sched_code[i])+"',"+
-      QString().sprintf("`MAX_ROW`=%d,",max_row[i])+
-      QString().sprintf("`MIN_WAIT`=%d,",min_wait[i])+
+      QString::asprintf("`MAX_ROW`=%d,",max_row[i])+
+      QString::asprintf("`MIN_WAIT`=%d,",min_wait[i])+
       "`NOT_AFTER`='"+RDEscapeString(not_after[i])+"',"+
       "`OR_AFTER`='"+RDEscapeString(or_after[i])+"',"+
       "`OR_AFTER_II`='"+RDEscapeString(or_after_II[i])+"'";

@@ -93,7 +93,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   label->setFont(subLabelFont());
 
   label=new QLabel(tr("Database Schema")+
-		   QString().sprintf(" %d",RD_VERSION_DATABASE),this);
+		   QString::asprintf(" %d",RD_VERSION_DATABASE),this);
   label->setGeometry(210,73,sizeHint().width()-220,14);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   label->setFont(subLabelFont());

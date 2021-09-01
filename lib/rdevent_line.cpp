@@ -365,22 +365,22 @@ bool RDEventLine::save(RDConfig *config)
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     sql=QString("update `EVENTS` set ")+
-      QString().sprintf("`PREPOSITION`=%d,",event_preposition)+
-      QString().sprintf("`TIME_TYPE`=%d,",event_time_type)+
-      QString().sprintf("`GRACE_TIME`=%d,",event_grace_time)+
+      QString::asprintf("`PREPOSITION`=%d,",event_preposition)+
+      QString::asprintf("`TIME_TYPE`=%d,",event_time_type)+
+      QString::asprintf("`GRACE_TIME`=%d,",event_grace_time)+
       "`USE_AUTOFILL`='"+RDYesNo(event_use_autofill)+"`,"+
       "`USE_TIMESCALE`='"+RDYesNo(event_use_timescale)+"',"+
-      QString().sprintf("`IMPORT_SOURCE`=%d,",event_import_source)+
-      QString().sprintf("`START_SLOP`=%d,",event_start_slop)+
-      QString().sprintf("`END_SLOP'=%d,",event_end_slop)+
-      QString().sprintf("`FIRST_TRANS_TYPE`=%d,",event_first_transtype)+
-      QString().sprintf("`DEFAULT_TRANS_TYPE`=%d,",event_default_transtype)+
+      QString::asprintf("`IMPORT_SOURCE`=%d,",event_import_source)+
+      QString::asprintf("`START_SLOP`=%d,",event_start_slop)+
+      QString::asprintf("`END_SLOP'=%d,",event_end_slop)+
+      QString::asprintf("`FIRST_TRANS_TYPE`=%d,",event_first_transtype)+
+      QString::asprintf("`DEFAULT_TRANS_TYPE`=%d,",event_default_transtype)+
       "`COLOR`='"+RDEscapeString(event_color.name())+"'"+
-      QString().sprintf("`AUTOFILL_SLOP`=%d,",event_autofill_slop)+
+      QString::asprintf("`AUTOFILL_SLOP`=%d,",event_autofill_slop)+
       "`NESTED_EVENT`='"+RDEscapeString(event_nested_event)+"',"+
       "`SCHED_GROUP`='"+RDEscapeString(event_sched_group)+"',"+
-      QString().sprintf("`ARTIST_SEP`=%d,",event_artist_sep)+
-      QString().sprintf("`TITLE_SEP`=%d,",event_title_sep)+
+      QString::asprintf("`ARTIST_SEP`=%d,",event_artist_sep)+
+      QString::asprintf("`TITLE_SEP`=%d,",event_title_sep)+
       "`HAVE_CODE`='"+RDEscapeString(event_have_code)+"',"+
       "`HAVE_CODE2`='"+RDEscapeString(event_have_code2)+"' "+
       "where `NAME`='"+RDEscapeString(event_name)+"'";
@@ -388,18 +388,18 @@ bool RDEventLine::save(RDConfig *config)
   else {
     sql=QString("insert into `EVENTS` set ")+
       "`NAME`='"+RDEscapeString(event_name)+"',"+
-      QString().sprintf("`PREPOSITION`=%d,",event_preposition)+
-      QString().sprintf("`TIME_TYPE`=%d,",event_time_type)+
-      QString().sprintf("`GRACE_TIME`=%d,",event_grace_time)+
+      QString::asprintf("`PREPOSITION`=%d,",event_preposition)+
+      QString::asprintf("`TIME_TYPE`=%d,",event_time_type)+
+      QString::asprintf("`GRACE_TIME`=%d,",event_grace_time)+
       "`USE_AUTOFILL`='"+RDYesNo(event_use_autofill)+"',"+
       "`USE_TIMESCALE`='"+RDYesNo(event_use_timescale)+"',"+
-      QString().sprintf("`IMPORT_SOURCE`=%d,",event_import_source)+
-      QString().sprintf("`START_SLOP`=%d,",event_start_slop)+
-      QString().sprintf("`END_SLOP`=%d,",event_end_slop)+
-      QString().sprintf("`FIRST_TRANS_TYPE`=%d,",event_first_transtype)+
-      QString().sprintf("`DEFAULT_TRANS_TYPE`=%d,",event_default_transtype)+
+      QString::asprintf("`IMPORT_SOURCE`=%d,",event_import_source)+
+      QString::asprintf("`START_SLOP`=%d,",event_start_slop)+
+      QString::asprintf("`END_SLOP`=%d,",event_end_slop)+
+      QString::asprintf("`FIRST_TRANS_TYPE`=%d,",event_first_transtype)+
+      QString::asprintf("`DEFAULT_TRANS_TYPE`=%d,",event_default_transtype)+
       "`COLOR`='"+RDEscapeString(event_color.name())+"',"+
-      QString().sprintf("`AUTOFILL_SLOP`=%d,",event_autofill_slop)+
+      QString::asprintf("`AUTOFILL_SLOP`=%d,",event_autofill_slop)+
       "`SCHED_GROUP`='"+RDEscapeString(event_sched_group)+"' where "+
       "`NAME`='"+RDEscapeString(event_name)+"'";
   }
@@ -477,17 +477,17 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     RDEventImportItem *i_item=event_preimport_list->item(i);
     sql=QString("insert into `LOG_LINES` set ")+
       "`LOG_NAME`='"+RDEscapeString(logname)+"',"+
-      QString().sprintf("`LINE_ID`=%d,",count)+
-      QString().sprintf("`COUNT`=%d,",count)+
-      QString().sprintf("`TYPE`=%d,",i_item->eventType())+
-      QString().sprintf("`SOURCE`=%d,",RDLogLine::Template)+
-      QString().sprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
-      QString().sprintf("`GRACE_TIME`=%d,",grace_time)+
-      QString().sprintf("`CART_NUMBER`=%u,",i_item->cartNumber())+
-      QString().sprintf("`TIME_TYPE`=%d,",time_type)+
-      QString().sprintf("`TRANS_TYPE`=%d,",i_item->transType())+
+      QString::asprintf("`LINE_ID`=%d,",count)+
+      QString::asprintf("`COUNT`=%d,",count)+
+      QString::asprintf("`TYPE`=%d,",i_item->eventType())+
+      QString::asprintf("`SOURCE`=%d,",RDLogLine::Template)+
+      QString::asprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
+      QString::asprintf("`GRACE_TIME`=%d,",grace_time)+
+      QString::asprintf("`CART_NUMBER`=%u,",i_item->cartNumber())+
+      QString::asprintf("`TIME_TYPE`=%d,",time_type)+
+      QString::asprintf("`TRANS_TYPE`=%d,",i_item->transType())+
       "`COMMENT`='"+RDEscapeString(i_item->markerComment())+"',"+
-      QString().sprintf("`EVENT_LENGTH`=%d",event_length);
+      QString::asprintf("`EVENT_LENGTH`=%d",event_length);
     RDSqlQuery::apply(sql);
     count++;
     trans_type=event_default_transtype;
@@ -517,23 +517,23 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 
     sql=QString("insert into `LOG_LINES` set ")+
       "`LOG_NAME`='"+RDEscapeString(logname)+"',"+
-      QString().sprintf("`LINE_ID`=%d,",count)+
-      QString().sprintf("`COUNT`=%d,",count)+
-      QString().sprintf("`TYPE`=%d,",link_type)+
-      QString().sprintf("`SOURCE`=%d,",RDLogLine::Template)+
-      QString().sprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
-      QString().sprintf("`GRACE_TIME`=%d,",grace_time)+
-      QString().sprintf("`TIME_TYPE`=%d,",time_type)+
-      QString().sprintf("`TRANS_TYPE`=%d,",trans_type)+
+      QString::asprintf("`LINE_ID`=%d,",count)+
+      QString::asprintf("`COUNT`=%d,",count)+
+      QString::asprintf("`TYPE`=%d,",link_type)+
+      QString::asprintf("`SOURCE`=%d,",RDLogLine::Template)+
+      QString::asprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
+      QString::asprintf("`GRACE_TIME`=%d,",grace_time)+
+      QString::asprintf("`TIME_TYPE`=%d,",time_type)+
+      QString::asprintf("`TRANS_TYPE`=%d,",trans_type)+
       "`LINK_EVENT_NAME`='"+RDEscapeString(event_name)+"',"+
-      QString().sprintf("`LINK_START_TIME`=%d,",
+      QString::asprintf("`LINK_START_TIME`=%d,",
 			QTime(0,0,0).msecsTo(event_start_time))+
-      QString().sprintf("`LINK_LENGTH`=%d,",
+      QString::asprintf("`LINK_LENGTH`=%d,",
 			event_start_time.msecsTo(end_start_time))+
-      QString().sprintf("`LINK_ID`=%d,",link_id)+
-      QString().sprintf("`LINK_START_SLOP`=%d,",event_start_slop)+
-      QString().sprintf("`LINK_END_SLOP`=%d,",event_end_slop)+
-      QString().sprintf("`EVENT_LENGTH`=%d",event_length);
+      QString::asprintf("`LINK_ID`=%d,",link_id)+
+      QString::asprintf("`LINK_START_SLOP`=%d,",event_start_slop)+
+      QString::asprintf("`LINK_END_SLOP`=%d,",event_end_slop)+
+      QString::asprintf("`EVENT_LENGTH`=%d",event_length);
     q=new RDSqlQuery(sql);
     delete q;
     count++;
@@ -642,7 +642,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
         schedCL->save();		  
         sql=QString("select `TITLE` from `STACK_LINES` where ")+
           "`SERVICE_NAME`='"+RDEscapeString(svcname)+"' && "+
-          QString().sprintf("`SCHED_STACK_ID` >= %d",stackid-titlesep);
+          QString::asprintf("`SCHED_STACK_ID` >= %d",stackid-titlesep);
         q=new RDSqlQuery(sql);
         while (q->next()) {
           for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
@@ -674,7 +674,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
         schedCL->save();		  
         sql=QString("select `ARTIST` from `STACK_LINES` where ")+
           "`SERVICE_NAME`='"+RDEscapeString(svcname)+"' && "+
-          QString().sprintf("`SCHED_STACK_ID` >= %d",stackid-artistsep);
+          QString::asprintf("`SCHED_STACK_ID` >= %d",stackid-artistsep);
         q=new RDSqlQuery(sql);
         while (q->next()) {
           for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
@@ -719,7 +719,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  "from `STACK_LINES` left join `STACK_SCHED_CODES` "+
 	  "on `STACK_LINES`.`ID`=`STACK_SCHED_CODES`.`STACK_LINES_ID` where "+
 	  "`STACK_LINES`.`SERVICE_NAME`='"+RDEscapeString(svcname)+"' && "+
-	  QString().sprintf("`STACK_LINES`.`SCHED_STACK_ID` > %d && ",
+	  QString::asprintf("`STACK_LINES`.`SCHED_STACK_ID` > %d && ",
 			    stackid-range)+
 	  "`STACK_SCHED_CODES`.`SCHED_CODE`='"+RDEscapeString(wstr)+"'";
 	q1=new RDSqlQuery(sql);
@@ -748,7 +748,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	    "from `STACK_LINES` left join `STACK_SCHED_CODES` "+
 	    "on `STACK_LINES`.`ID`=`STACK_SCHED_CODES`.`STACK_LINES_ID` where "+
 	    "`STACK_LINES`.`SERVICE_NAME`='"+RDEscapeString(svcname)+"' && "+
-	    QString().sprintf("`STACK_LINES`.`SCHED_STACK_ID`=%d && ",stackid-1)+
+	    QString::asprintf("`STACK_LINES`.`SCHED_STACK_ID`=%d && ",stackid-1)+
 	    "`STACK_SCHED_CODES`.`SCHED_CODE`='"+RDEscapeString(wstr)+"'";
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {
@@ -776,7 +776,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  sql=QString("select `STACK_LINES`.`CART` ")+
 	    "from `STACK_LINES` left join `STACK_SCHED_CODES` "+
 	    "on `STACK_LINES`.`ID`=`STACK_SCHED_CODES`.`STACK_LINES_ID` where "+
-	    QString().sprintf("`STACK_LINES`.`SCHED_STACK_ID`=%d && ",stackid-1)+
+	    QString::asprintf("`STACK_LINES`.`SCHED_STACK_ID`=%d && ",stackid-1)+
 	    "`STACK_SCHED_CODES`.`SCHED_CODE`='"+RDEscapeString(wstr)+"'";
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {	
@@ -804,7 +804,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  sql=QString("select `STACK_LINES`.`CART` ")+
 	    "from `STACK_LINES` left join `STACK_SCHED_CODES` "+
 	    "on `STACK_LINES`.`ID`=`STACK_SCHED_CODES`.`STACK_LINES_ID` where "+
-	    QString().sprintf("`STACK_LINES`.`SCHED_STACK_ID`=%d && ",stackid-1)+
+	    QString::asprintf("`STACK_LINES`.`SCHED_STACK_ID`=%d && ",stackid-1)+
 	    "`STACK_SCHED_CODES`.`SCHED_CODE`='"+RDEscapeString(wstr)+"'";
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {
@@ -838,17 +838,17 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       int schedpos=rand()%schedCL->getNumberOfItems();
       sql=QString("insert into `LOG_LINES` set ")+
 	"`LOG_NAME`=\""+RDEscapeString(logname)+"\","+
-	QString().sprintf("`LINE_ID`=%d,",count)+
-	QString().sprintf("`COUNT`=%d,",count)+
-	QString().sprintf("`TYPE`=%d,",RDLogLine::Cart)+
-	QString().sprintf("`SOURCE`=%d,",source)+
-	QString().sprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
-	QString().sprintf("`GRACE_TIME`=%d,",grace_time)+
-	QString().sprintf("`CART_NUMBER`=%u,",schedCL->getItemCartNumber(schedpos))+
-	QString().sprintf("`TIME_TYPE`=%d,",time_type)+
-	QString().sprintf("`TRANS_TYPE`=%d,",trans_type)+
+	QString::asprintf("`LINE_ID`=%d,",count)+
+	QString::asprintf("`COUNT`=%d,",count)+
+	QString::asprintf("`TYPE`=%d,",RDLogLine::Cart)+
+	QString::asprintf("`SOURCE`=%d,",source)+
+	QString::asprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
+	QString::asprintf("`GRACE_TIME`=%d,",grace_time)+
+	QString::asprintf("`CART_NUMBER`=%u,",schedCL->getItemCartNumber(schedpos))+
+	QString::asprintf("`TIME_TYPE`=%d,",time_type)+
+	QString::asprintf("`TRANS_TYPE`=%d,",trans_type)+
 	"`EXT_START_TIME`="+RDCheckDateTime(time,"hh:mm:ss")+","+
-	QString().sprintf("`EVENT_LENGTH`=%d",event_length);
+	QString::asprintf("`EVENT_LENGTH`=%d",event_length);
       q=new RDSqlQuery(sql);
       delete q;
 
@@ -857,15 +857,15 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       sql=QString("insert into `STACK_LINES` set ")+
 	"`SERVICE_NAME`='"+RDEscapeString(svcname)+"',"+
 	"`SCHEDULED_AT`=now(),"+
-	QString().sprintf("`SCHED_STACK_ID`=%u,",stackid)+
-	QString().sprintf("`CART`=%u,",schedCL->getItemCartNumber(schedpos))+
+	QString::asprintf("`SCHED_STACK_ID`=%u,",stackid)+
+	QString::asprintf("`CART`=%u,",schedCL->getItemCartNumber(schedpos))+
 	"`ARTIST`='"+RDEscapeString(schedCL->getItemArtist(schedpos))+"',"+
 	"`TITLE`='"+RDEscapeString(schedCL->getItemTitle(schedpos))+"'";
       unsigned line_id=RDSqlQuery::run(sql).toUInt();
       QStringList codes=schedCL->getItemSchedCodes(schedpos);
       for(int i=0;i<codes.size();i++) {
 	sql=QString("insert into `STACK_SCHED_CODES` set ")+
-	  QString().sprintf("`STACK_LINES_ID`=%u,",line_id)+
+	  QString::asprintf("`STACK_LINES_ID`=%u,",line_id)+
 	  "`SCHED_CODE`='"+RDEscapeString(codes.at(i))+"'";
 	RDSqlQuery::apply(sql);
       }
@@ -891,17 +891,17 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     RDEventImportItem *i_item=event_postimport_list->item(i);
     sql=QString("insert into `LOG_LINES` set ")+
       "`LOG_NAME`='"+RDEscapeString(logname)+"',"+
-      QString().sprintf("`LINE_ID`=%d,",count)+
-      QString().sprintf("`COUNT`=%d,",count)+
-      QString().sprintf("`TYPE`=%d,",i_item->eventType())+
-      QString().sprintf("`SOURCE`=%d,",RDLogLine::Template)+
-      QString().sprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
-      QString().sprintf("`GRACE_TIME`=%d,",grace_time)+
-      QString().sprintf("`CART_NUMBER`=%u,",i_item->cartNumber())+
-      QString().sprintf("`TIME_TYPE`=%d,",time_type)+
-      QString().sprintf("`TRANS_TYPE`=%d,",i_item->transType())+
+      QString::asprintf("`LINE_ID`=%d,",count)+
+      QString::asprintf("`COUNT`=%d,",count)+
+      QString::asprintf("`TYPE`=%d,",i_item->eventType())+
+      QString::asprintf("`SOURCE`=%d,",RDLogLine::Template)+
+      QString::asprintf("`START_TIME`=%d,",QTime(0,0,0).msecsTo(time))+
+      QString::asprintf("`GRACE_TIME`=%d,",grace_time)+
+      QString::asprintf("`CART_NUMBER`=%u,",i_item->cartNumber())+
+      QString::asprintf("`TIME_TYPE`=%d,",time_type)+
+      QString::asprintf("`TRANS_TYPE`=%d,",i_item->transType())+
       "`COMMENT`='"+RDEscapeString(i_item->markerComment())+"',"+
-      QString().sprintf("`EVENT_LENGTH`=%d",event_length);
+      QString::asprintf("`EVENT_LENGTH`=%d",event_length);
     RDSqlQuery::apply(sql);
     count++;
     time=time.addMSecs(GetLength(i_item->cartNumber()));
@@ -1013,10 +1013,10 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
     "`LINK_LENGTH` "+     // 10
     "from `IMPORTER_LINES` where "+
     "`STATION_NAME`='"+RDEscapeString(event_station->name())+"' && "+
-    QString().sprintf("`PROCESS_ID`=%u && ",getpid())+
-    QString().sprintf("(`START_HOUR`=%d)&&",start_start_hour)+
-    QString().sprintf("(`START_SECS`>=%d)&&",start_start_secs/1000)+
-    QString().sprintf("(`START_SECS`<=%d)&&",end_start_secs/1000)+
+    QString::asprintf("`PROCESS_ID`=%u && ",getpid())+
+    QString::asprintf("(`START_HOUR`=%d)&&",start_start_hour)+
+    QString::asprintf("(`START_SECS`>=%d)&&",start_start_secs/1000)+
+    QString::asprintf("(`START_SECS`<=%d)&&",end_start_secs/1000)+
     "(`EVENT_USED`='N') order by `LINE_ID`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -1138,10 +1138,10 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
   sql=QString("update `IMPORTER_LINES` set ")+
     "`EVENT_USED`='Y' where "+
     "`STATION_NAME`='"+RDEscapeString(event_station->name())+"' && "+
-    QString().sprintf("`PROCESS_ID`=%u && ",getpid())+
-    QString().sprintf("(`START_HOUR`=%d)&&",start_start_hour)+
-    QString().sprintf("(`START_SECS`>=%d)&&",start_start_secs/1000)+
-    QString().sprintf("(`START_SECS`<=%d)&&",end_start_secs/1000)+
+    QString::asprintf("`PROCESS_ID`=%u && ",getpid())+
+    QString::asprintf("(`START_HOUR`=%d)&&",start_start_hour)+
+    QString::asprintf("(`START_SECS`>=%d)&&",start_start_secs/1000)+
+    QString::asprintf("(`START_SECS`<=%d)&&",end_start_secs/1000)+
     "(`EVENT_USED`='N')";
   q=new RDSqlQuery(sql);
   delete q;
@@ -1159,7 +1159,7 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
       "from `AUTOFILLS` left join `CART` "+
       "on `AUTOFILLS`.`CART_NUMBER`=`CART`.`NUMBER` where "+
       "(`AUTOFILLS`.`SERVICE`='"+RDEscapeString(svcname)+"')&&"+
-      QString().sprintf("(`CART`.`FORCED_LENGTH`<=%d)&&",time.msecsTo(end_time))+
+      QString::asprintf("(`CART`.`FORCED_LENGTH`<=%d)&&",time.msecsTo(end_time))+
       "(`CART`.`FORCED_LENGTH`>0) "+
       "order by `CART`.`FORCED_LENGTH` desc";
     q=new RDSqlQuery(sql);

@@ -418,7 +418,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   //
   // Generate Mixdown ID
   //
-  QString mixname=QString().sprintf("MIX-%d",getpid());
+  QString mixname=QString::asprintf("MIX-%d",getpid());
 
   //
   // Iterate Selected Services
@@ -436,12 +436,12 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
       if(!exportTypeEnabled(RDReport::Generic)) {
 	if(exportTypeForced(RDReport::Traffic)||
 	   exportTypeEnabled(RDReport::Traffic)) {
-	  force_sql+=QString().sprintf("(`ELR_LINES`.`EVENT_SOURCE`=%d)||",
+	  force_sql+=QString::asprintf("(`ELR_LINES`.`EVENT_SOURCE`=%d)||",
 				       RDLogLine::Traffic);
 	}
 	if(exportTypeForced(RDReport::Music)||
 	   exportTypeEnabled(RDReport::Music)) {
-	  force_sql+=QString().sprintf("(`ELR_LINES`.`EVENT_SOURCE`=%d)||",
+	  force_sql+=QString::asprintf("(`ELR_LINES`.`EVENT_SOURCE`=%d)||",
 				       RDLogLine::Music);
 	}
 	force_sql=force_sql.left(force_sql.length()-2);
@@ -528,36 +528,36 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
       while(q1->next()) {
 	sql=QString("insert into `ELR_LINES` set ")+
 	  "`SERVICE_NAME`='"+RDEscapeString(mixname)+"',"+
-	  QString().sprintf("`LENGTH`=%d,`LOG_ID`=%u,`CART_NUMBER`=%u,",
+	  QString::asprintf("`LENGTH`=%d,`LOG_ID`=%u,`CART_NUMBER`=%u,",
 			    q1->value(0).toInt(),
 			    q1->value(1).toUInt(),
 			    q1->value(2).toInt())+
 	  "`STATION_NAME`='"+RDEscapeString(q1->value(3).toString())+"',"+
 	  "`EVENT_DATETIME`="+RDCheckDateTime(q1->value(4).toDateTime(),
 					      "yyyy-MM-dd hh:mm:ss")+","+
-	  QString().sprintf("`EVENT_TYPE`=%d,",q1->value(5).toInt())+
+	  QString::asprintf("`EVENT_TYPE`=%d,",q1->value(5).toInt())+
 	  "`EXT_START_TIME`="+
 	  RDCheckDateTime(q1->value(6).toTime(),"hh:mm:ss")+","+
-	  QString().sprintf("`EXT_LENGTH`=%d,",q1->value(7).toInt())+
+	  QString::asprintf("`EXT_LENGTH`=%d,",q1->value(7).toInt())+
 	  "`EXT_DATA`='"+RDEscapeString(q1->value(8).toString())+"',"+
 	  "`EXT_EVENT_ID`='"+RDEscapeString(q1->value(9).toString())+"',"+
 	  "`EXT_ANNC_TYPE`='"+RDEscapeString(q1->value(10).toString())+"',"+
-	  QString().sprintf("`PLAY_SOURCE`=%d,",q1->value(11).toInt())+
-	  QString().sprintf("`CUT_NUMBER`=%d,",q1->value(12).toInt())+
-	  QString().sprintf("`EVENT_SOURCE`=%d,",q1->value(13).toInt())+
+	  QString::asprintf("`PLAY_SOURCE`=%d,",q1->value(11).toInt())+
+	  QString::asprintf("`CUT_NUMBER`=%d,",q1->value(12).toInt())+
+	  QString::asprintf("`EVENT_SOURCE`=%d,",q1->value(13).toInt())+
 	  "`EXT_CART_NAME`='"+RDEscapeString(q1->value(14).toString())+"',"+
 	  "`LOG_NAME`='"+RDEscapeString(q1->value(15).toString())+"',"+
 	  "`TITLE`='"+RDEscapeString(q1->value(16).toString())+"',"+
 	  "`ARTIST`='"+RDEscapeString(q1->value(17).toString())+"',"+
 	  "`SCHEDULED_TIME`="+
 	  RDCheckDateTime(q1->value(18).toDate(),"yyyy-MM-dd hh:mm:ss")+","+
-	  QString().sprintf("`START_SOURCE`=%d,",q1->value(19).toInt())+
+	  QString::asprintf("`START_SOURCE`=%d,",q1->value(19).toInt())+
 	  "`PUBLISHER`='"+RDEscapeString(q1->value(20).toString())+"',"+
 	  "`COMPOSER`='"+RDEscapeString(q1->value(21).toString())+"',"+
 	  "`ALBUM`='"+RDEscapeString(q1->value(22).toString())+"',"+
 	  "`LABEL`='"+RDEscapeString(q1->value(23).toString())+"',"+
 	  "`ISRC`='"+RDEscapeString(q1->value(24).toString())+"',"+
-	  QString().sprintf("`USAGE_CODE`=%d,",q1->value(25).toInt())+
+	  QString::asprintf("`USAGE_CODE`=%d,",q1->value(25).toInt())+
 	  "`ONAIR_FLAG`='"+RDEscapeString(q1->value(26).toString())+"',"+
 	  "`ISCI`='"+RDEscapeString(q1->value(27).toString())+"',"+
 	  "`CONDUCTOR`='"+RDEscapeString(q1->value(28).toString())+"',"+
@@ -906,7 +906,7 @@ void RDReport::SetRow(const QString &param,int value) const
   QString sql;
 
   sql=QString("update `REPORTS` set `")+
-    param+QString().sprintf("`=%d where ",value)+
+    param+QString::asprintf("`=%d where ",value)+
     "`NAME`='"+RDEscapeString(report_name)+"'";
   RDSqlQuery::apply(sql);
 }
@@ -917,7 +917,7 @@ void RDReport::SetRow(const QString &param,unsigned value) const
   QString sql;
 
   sql=QString("update `REPORTS` set `")+
-    param+QString().sprintf("`=%u where ",value)+
+    param+QString::asprintf("`=%u where ",value)+
     "`NAME`='"+RDEscapeString(report_name)+"'";
   RDSqlQuery::apply(sql);
 }

@@ -188,7 +188,7 @@ void RDJackClientListModel::refresh(const QModelIndex &row)
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("`JACK_CLIENTS`.`ID`=%u",d_ids.at(row.row()));
+      QString::asprintf("`JACK_CLIENTS`.`ID`=%u",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -238,7 +238,7 @@ void RDJackClientListModel::updateRowLine(int line)
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
       "where "+
-      QString().sprintf("`JACK_CLIENTS`.`ID`=%u",d_ids.at(line));
+      QString::asprintf("`JACK_CLIENTS`.`ID`=%u",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);

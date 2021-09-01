@@ -170,7 +170,7 @@ void RDAddCart::groupActivatedData(const QString &groupname)
     }
   }
   else {
-    cart_number_edit->setText(QString().sprintf("%06u",cartnum));
+    cart_number_edit->setText(QString::asprintf("%06u",cartnum));
   }
   delete group;
 }
@@ -216,7 +216,7 @@ void RDAddCart::okData()
       return;
     }
   }
-  sql=QString().sprintf("select `NUMBER` from `CART` where `NUMBER`=%u",num);
+  sql=QString::asprintf("select `NUMBER` from `CART` where `NUMBER`=%u",num);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::information(this,tr("Cart Exists"),

@@ -202,10 +202,10 @@ MainObject::MainObject(QObject *parent)
     if(ok) {
       QString offset_str="";
       if(day_offset<0) {
-	offset_str=QString().sprintf(" (lost %d day)",-day_offset);
+	offset_str=QString::asprintf(" (lost %d day)",-day_offset);
       }
       if(day_offset>0) {
-	offset_str=QString().sprintf(" (gained %d day)",day_offset);
+	offset_str=QString::asprintf(" (gained %d day)",day_offset);
       }
       printf("Time: %s\n",(const char *)(t.toString("hh:mm:ss")+offset_str).toUtf8());
     }

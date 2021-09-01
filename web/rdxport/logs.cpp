@@ -175,7 +175,7 @@ void Xport::ListLogs()
     sql=sql.left(sql.length()-5);
   }
   if(recent=="1") {
-    sql+=QString().sprintf(" order by `LOGS`.`ORIGIN_DATETIME` desc limit %d",
+    sql+=QString::asprintf(" order by `LOGS`.`ORIGIN_DATETIME` desc limit %d",
 			   RD_LOGFILTER_LIMIT_QUAN);
   }
   else {
@@ -295,7 +295,7 @@ void Xport::SaveLog()
   for(int i=0;i<line_quantity;i++) {
     logmodel->insert(i,1);
     RDLogLine *ll=logmodel->logLine(i);
-    QString line=QString().sprintf("LINE%d",i);
+    QString line=QString::asprintf("LINE%d",i);
     QString str;
     int integer1;
     int integer2;
@@ -540,7 +540,7 @@ void Xport::SaveLog()
       XmlExit("invalid log lock",400);
     }
   }
-  XmlExit(QString().sprintf("OK Saved %d events",logmodel->lineCount()),
+  XmlExit(QString::asprintf("OK Saved %d events",logmodel->lineCount()),
 	  200,"logs.cpp",LINE_NUMBER);
 }
 

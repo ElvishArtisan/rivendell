@@ -46,7 +46,7 @@ Unity4000::Unity4000(RDMatrix *matrix,QObject *parent)
     "`CHANNEL_MODE` "+  // 02
     "from `INPUTS` where "+
     "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
-    QString().sprintf("`MATRIX`=%d ",matrix->matrix())+
+    QString::asprintf("`MATRIX`=%d ",matrix->matrix())+
     "order by `NUMBER`";
   q=new RDSqlQuery(sql);
   q->first();

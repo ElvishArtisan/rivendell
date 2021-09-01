@@ -128,7 +128,7 @@ QString RDEscapeBlob(const char *data,size_t len)
   QString ret="x'";
 
   for(unsigned i=0;i<len;i++) {
-    ret+=QString().sprintf("%02x",0xff&data[i]);
+    ret+=QString::asprintf("%02x",0xff&data[i]);
   }
 
   return ret+"'";

@@ -286,7 +286,7 @@ void RDCutListModel::setCartNumber(unsigned cartnum)
     for(int i=0;i<columnCount();i++) {
       text.push_back(QVariant());
     }
-    QString sql=sqlFields()+QString().sprintf("where CART_NUMBER=%u ",cartnum);
+    QString sql=sqlFields()+QString::asprintf("where CART_NUMBER=%u ",cartnum);
     if(d_use_weighting) {
       sql+="order by CUT_NAME";
     }
@@ -320,10 +320,10 @@ void RDCutListModel::updateRow(int row,RDSqlQuery *q)
   // Text Values
   //
   if(d_use_weighting) {
-    d_texts[d_row_index.at(row)][0]=QString().sprintf("%d",q->value(1).toInt());
+    d_texts[d_row_index.at(row)][0]=QString::asprintf("%d",q->value(1).toInt());
   }
   else {
-    d_texts[d_row_index.at(row)][0]=QString().sprintf("%d",q->value(0).toInt());
+    d_texts[d_row_index.at(row)][0]=QString::asprintf("%d",q->value(0).toInt());
   }
   d_texts[d_row_index.at(row)][1]=q->value(2);
   d_texts[d_row_index.at(row)][2]=RDGetTimeLength(q->value(3).toUInt());

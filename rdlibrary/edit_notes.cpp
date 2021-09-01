@@ -25,7 +25,7 @@ EditNotes::EditNotes(RDCart *cart,QWidget *parent)
 {
   notes_cart=cart;
   setWindowTitle("RDLibrary - "+tr("Notes for cart")+
-	     QString().sprintf(" %06u [",cart->number())+cart->title()+"]");
+	     QString::asprintf(" %06u [",cart->number())+cart->title()+"]");
 
   //
   // Fix the Window Size

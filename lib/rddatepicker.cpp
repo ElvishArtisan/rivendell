@@ -2,7 +2,7 @@
 //
 // A Calendar Widget.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -47,7 +47,7 @@ RDDatePicker::RDDatePicker(int low_year,int high_year,QWidget *parent)
     pick_year_box->setGeometry(130,0,90,26);
     for(int i=low_year;i<(high_year+1);i++) {
       pick_year_box->
-	insertItem(pick_year_box->count(),QString().sprintf("%04d",i));
+	insertItem(pick_year_box->count(),QString::asprintf("%04d",i));
     }
     connect(pick_year_box,SIGNAL(activated(int)),
 	    this,SLOT(yearActivatedData(int)));
@@ -300,7 +300,7 @@ void RDDatePicker::PrintDay(int day,int dow_offset)
   int slot=day+dow_offset-1;
   int week=slot/7;
   int dow=slot-7*week;
-  pick_date_label[week][dow]->setText(QString().sprintf("%d",day));
+  pick_date_label[week][dow]->setText(QString::asprintf("%d",day));
 }
 
 

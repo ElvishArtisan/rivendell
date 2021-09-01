@@ -623,7 +623,7 @@ void RDFeedListModel::updateRow(int row,RDSqlQuery *q)
   }
   else {
     d_texts[row][2]=
-      QString().sprintf("%d / %d",active_casts,total_casts);  // Casts
+      QString::asprintf("%d / %d",active_casts,total_casts);  // Casts
   }
 }
 
@@ -660,7 +660,7 @@ QByteArray RDFeedListModel::DumpIndex(const QModelIndex &index,const QString &ca
     ret+=(caption+": ").toUtf8();
   }
   if(index.isValid()) {
-    ret+=QString().sprintf("QModelIndex(%d,%d,%llu)",
+    ret+=QString::asprintf("QModelIndex(%d,%d,%llu)",
 			   index.row(),index.column(),index.internalId()).
       toUtf8();
   }

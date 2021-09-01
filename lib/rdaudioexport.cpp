@@ -143,7 +143,7 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_EXPORT).toUtf8().
+	       QString::asprintf("%u",RDXPORT_COMMAND_EXPORT).toUtf8().
 	       constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
 	       CURLFORM_COPYCONTENTS,username.toUtf8().constData(),
@@ -153,47 +153,47 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_cart_number).toUtf8().constData(),
+	       QString::asprintf("%u",conv_cart_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_cut_number).toUtf8().constData(),
+	       QString::asprintf("%u",conv_cut_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"FORMAT",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_settings->format()).
+	       QString::asprintf("%u",conv_settings->format()).
 	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CHANNELS",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_settings->channels()).
+	       QString::asprintf("%u",conv_settings->channels()).
 	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"SAMPLE_RATE",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_settings->sampleRate()).
+	       QString::asprintf("%u",conv_settings->sampleRate()).
 	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"BIT_RATE",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_settings->bitRate()).
+	       QString::asprintf("%u",conv_settings->bitRate()).
 	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"QUALITY",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_settings->quality()).
+	       QString::asprintf("%u",conv_settings->quality()).
 	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"START_POINT",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%d",conv_start_point).toUtf8().constData(),
+	       QString::asprintf("%d",conv_start_point).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"END_POINT",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%d",conv_end_point).toUtf8().constData(),
+	       QString::asprintf("%d",conv_end_point).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"NORMALIZATION_LEVEL",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%d",conv_settings->normalizationLevel()).
+	       QString::asprintf("%d",conv_settings->normalizationLevel()).
 	       toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"ENABLE_METADATA",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_enable_metadata).
+	       QString::asprintf("%u",conv_enable_metadata).
 	       toUtf8().constData(),CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     curl_formfree(first);
@@ -293,7 +293,7 @@ bool RDAudioExport::aborting() const
 QString RDAudioExport::errorText(RDAudioExport::ErrorCode err,
 				 RDAudioConvert::ErrorCode conv_err)
 {
-  QString ret=QString().sprintf("Uknown Error [%u]",err);
+  QString ret=QString::asprintf("Uknown Error [%u]",err);
 
   switch(err) {
   case RDAudioExport::ErrorOk:

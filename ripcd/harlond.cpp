@@ -317,7 +317,7 @@ bool Harlond::ProcessGpo(int line,bool state,int msecs)
     code="ON";
   }
   bt_reset_states[line]=state;
-  str=code+QString().sprintf(" %02d!",line);
+  str=code+QString::asprintf(" %02d!",line);
   bt_socket->write(str.toUtf8());
   bt_reset_timers[line]->stop();
   if(msecs>0) {
@@ -335,7 +335,7 @@ bool Harlond::SetInputLevel(int input,int db)
   if((input<1)||(input>bt_inputs)) {
     return false;
   }
-  str=QString().sprintf("VL %02d %04d!",input,db);
+  str=QString::asprintf("VL %02d %04d!",input,db);
   bt_socket->write(str.toUtf8());
 
   return true;
@@ -398,7 +398,7 @@ bool Harlond::AddCrosspoint(int input,int output)
   if(code.isEmpty()) {
     return false;
   }
-  str=code+QString().sprintf(" %02d +!",input);
+  str=code+QString::asprintf(" %02d +!",input);
   bt_socket->write(str.toUtf8());
   return true;
 }
@@ -412,7 +412,7 @@ bool Harlond::RemoveCrosspoint(int input,int output)
   if(code.isEmpty()) {
     return false;
   }
-  str=code+QString().sprintf(" %02d -!",input);
+  str=code+QString::asprintf(" %02d -!",input);
   bt_socket->write(str.toUtf8());
   return true;
 }

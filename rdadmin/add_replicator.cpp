@@ -108,7 +108,7 @@ void AddReplicator::okData()
 
   sql=QString("insert into `REPLICATORS` set ")+
     "`NAME`='"+RDEscapeString(repl_name_edit->text())+"',"+
-    QString().sprintf("`TYPE_ID`=%u",RDReplicator::TypeCitadelXds);
+    QString::asprintf("`TYPE_ID`=%u",RDReplicator::TypeCitadelXds);
   q=new RDSqlQuery(sql);
   if(!q->isActive()) {
     QMessageBox::warning(this,tr("Replicator Exists"),tr("A replicator with that name already exists!"));

@@ -37,7 +37,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   list_feed_id=feed_id;
 
   setWindowTitle("RDCastManager - "+tr("Podcast Item List")+
-		 "  [Feed ID: "+QString().sprintf("%u",feed_id)+"]");
+		 "  [Feed ID: "+QString::asprintf("%u",feed_id)+"]");
 
   //
   // Fix the Window Size
@@ -351,13 +351,13 @@ void ListCasts::deleteData()
   pd->setValue(1);
   qApp->processEvents();
   sql=QString("delete from `PODCASTS` where ")+
-    QString().sprintf("`ID`=%u",cast_id);
+    QString::asprintf("`ID`=%u",cast_id);
   RDSqlQuery::apply(sql);
 
   sql=QString("update `FEEDS` set ")+
     "LAST_BUILD_DATETIME=now() "+
     "where "+
-    QString().sprintf("`ID`=%u",list_feed_id);
+    QString::asprintf("`ID`=%u",list_feed_id);
   RDSqlQuery::apply(sql);
 
   if(!list_feed->postXml()) {

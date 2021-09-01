@@ -126,7 +126,7 @@ unsigned RDSystem::maxPostLength() const
 void RDSystem::setMaxPostLength(unsigned bytes) const
 {
   QString sql=
-    QString().sprintf("update `SYSTEM` set `MAX_POST_LENGTH`=%u",bytes);
+    QString::asprintf("update `SYSTEM` set `MAX_POST_LENGTH`=%u",bytes);
   RDSqlQuery::apply(sql);
 }
 
@@ -307,6 +307,6 @@ void RDSystem::SetRow(const QString &param,int value) const
   QString sql;
 
   sql=QString("update `SYSTEM` set `")+
-    param+QString().sprintf("`=%d",value);
+    param+QString::asprintf("`=%d",value);
   RDSqlQuery::apply(sql);
 }

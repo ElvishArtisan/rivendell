@@ -107,23 +107,23 @@ int EditSasResource::exec(unsigned id)
     "`DEVICE_NUM`,"+  // 02
     "`RELAY_NUM` "+   // 03
     "from `VGUEST_RESOURCES` where "+
-    QString().sprintf("`ID`=%u",edit_id);
+    QString::asprintf("`ID`=%u",edit_id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(1).toInt()>=0) {
-      edit_enginenum_edit->setText(QString().sprintf("%d",q->value(1).toInt()));
+      edit_enginenum_edit->setText(QString::asprintf("%d",q->value(1).toInt()));
     }
     else {
       edit_enginenum_edit->setText("");
     }
     if(q->value(2).toInt()>=0) {
-      edit_devicenum_edit->setText(QString().sprintf("%d",q->value(2).toInt()));
+      edit_devicenum_edit->setText(QString::asprintf("%d",q->value(2).toInt()));
     }
     else {
       edit_devicenum_edit->setText("");
     }
     if(q->value(3).toInt()>=0) {
-      edit_relaynum_edit->setText(QString().sprintf("%d",q->value(3).toInt()));
+      edit_relaynum_edit->setText(QString::asprintf("%d",q->value(3).toInt()));
     }
     else {
       edit_relaynum_edit->setText("");
@@ -172,10 +172,10 @@ void EditSasResource::okData()
   }
 
   QString sql=QString("update `VGUEST_RESOURCES` set ")+
-    QString().sprintf("`ENGINE_NUM`=%d,",enginenum)+
-    QString().sprintf("`DEVICE_NUM`=%d,",devicenum)+
-    QString().sprintf("`RELAY_NUM`=%d ",relaynum)+
-    QString().sprintf("where `ID`=%u",edit_id);
+    QString::asprintf("`ENGINE_NUM`=%d,",enginenum)+
+    QString::asprintf("`DEVICE_NUM`=%d,",devicenum)+
+    QString::asprintf("`RELAY_NUM`=%d ",relaynum)+
+    QString::asprintf("where `ID`=%u",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

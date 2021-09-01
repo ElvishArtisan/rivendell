@@ -69,7 +69,7 @@ HourSelector::HourSelector(QWidget *parent)
   }
   else {
     for(unsigned i=0;i<24;i++) {
-      hour_button[i]->setText(QString().sprintf("%02u",i));
+      hour_button[i]->setText(QString::asprintf("%02u",i));
     }
   }
 

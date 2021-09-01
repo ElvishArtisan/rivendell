@@ -378,7 +378,7 @@ void RDGroupListModel::updateRow(int row,RDSqlQuery *q)
     texts.push_back(tr("[none]"));
   }
   else {
-    texts.push_back(QString().sprintf("%06u",q->value(2).toUInt()));
+    texts.push_back(QString::asprintf("%06u",q->value(2).toUInt()));
   }
 
   // End Cart
@@ -386,7 +386,7 @@ void RDGroupListModel::updateRow(int row,RDSqlQuery *q)
     texts.push_back(tr("[none]"));
   }
   else {
-    texts.push_back(QString().sprintf("%06u",q->value(3).toUInt()));
+    texts.push_back(QString::asprintf("%06u",q->value(3).toUInt()));
   }
 
   // Enforce Range

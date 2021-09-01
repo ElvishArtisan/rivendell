@@ -152,12 +152,12 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       return false;
     }
     for(int i=0;i<2;i++) {
-      DropColumn("`RDAIRPLAY`",QString().sprintf("`AUTO_CARD%d`",i));
-      DropColumn("`RDAIRPLAY`",QString().sprintf("`AUTO_STREAM%d`",i));
-      DropColumn("`RDAIRPLAY`",QString().sprintf("`AUTO_PORT%d`",i)); 
-      DropColumn("`RDAIRPLAY`",QString().sprintf("`PANEL_CARD%d`",i));
-      DropColumn("`RDAIRPLAY`",QString().sprintf("`PANEL_STREAM%d`",i));
-      DropColumn("`RDAIRPLAY`",QString().sprintf("`PANEL_PORT%d`",i));
+      DropColumn("`RDAIRPLAY`",QString::asprintf("`AUTO_CARD%d`",i));
+      DropColumn("`RDAIRPLAY`",QString::asprintf("`AUTO_STREAM%d`",i));
+      DropColumn("`RDAIRPLAY`",QString::asprintf("`AUTO_PORT%d`",i)); 
+      DropColumn("`RDAIRPLAY`",QString::asprintf("`PANEL_CARD%d`",i));
+      DropColumn("`RDAIRPLAY`",QString::asprintf("`PANEL_STREAM%d`",i));
+      DropColumn("`RDAIRPLAY`",QString::asprintf("`PANEL_PORT%d`",i));
     }
     WriteSchemaVersion(++cur_schema);
   }
@@ -965,7 +965,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     q=new RDSqlQuery(sql);
     for(int i=1;i<168;i++) {
       sql=QString("alter table `SERVICES` add column ")+
-	QString().sprintf("`CLOCK%d` char(64) after `CLOCK%d`",i,i-1);
+	QString::asprintf("`CLOCK%d` char(64) after `CLOCK%d`",i,i-1);
       if(!RDSqlQuery::apply(sql,err_msg)) {
 	return false;
       }
@@ -2276,7 +2276,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
         return false;
       }
       sql=QString("alter table `")+tablename+"_LOG` "+
-	QString().sprintf("add column `FADEUP_GAIN` int default %d ",
+	QString::asprintf("add column `FADEUP_GAIN` int default %d ",
 			  RD_FADE_DEPTH)+
 	"after `FADEUP_POINT`";
       if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -2288,14 +2288,14 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
         return false;
       }
       sql=QString("alter table `")+tablename+"_LOG` "+
-	QString().sprintf("add column `FADEDOWN_GAIN` int default %d ",
+	QString::asprintf("add column `FADEDOWN_GAIN` int default %d ",
 			  RD_FADE_DEPTH)+
 	"after `FADEDOWN_POINT`";
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
       sql=QString("alter table `")+tablename+"_LOG` "+
-	QString().sprintf("add column `SEGUE_GAIN` int default %d ",
+	QString::asprintf("add column `SEGUE_GAIN` int default %d ",
 			  RD_FADE_DEPTH)+
 	"after `SEGUE_END_POINT`";
       if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -2316,7 +2316,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
         return false;
       }
       sql=QString("alter table `")+tablename+"_PRE` "+
-	QString().sprintf("add column `FADEUP_GAIN` int default %d ",
+	QString::asprintf("add column `FADEUP_GAIN` int default %d ",
 			  RD_FADE_DEPTH)+
 	"after `FADEUP_POINT`";
       if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -2328,14 +2328,14 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
         return false;
       }
       sql=QString("alter table '")+tablename+"_PRE' "+
-	QString().sprintf("add column `FADEDOWN_GAIN` int default %d ",
+	QString::asprintf("add column `FADEDOWN_GAIN` int default %d ",
 			  RD_FADE_DEPTH)+
 	"after `FADEDOWN_POINT`";
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
       sql=QString("alter table `")+tablename+"_PRE` "+
-	QString().sprintf("add column `SEGUE_GAIN` int default %d ",
+	QString::asprintf("add column `SEGUE_GAIN` int default %d ",
 			  RD_FADE_DEPTH)+
 	"after `SEGUE_END_POINT`";
 	if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -2347,7 +2347,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
         return false;
       }
       sql=QString("alter table '")+tablename+"_POST' "+
-	QString().sprintf("add column `FADEUP_GAIN` int default %d ",
+	QString::asprintf("add column `FADEUP_GAIN` int default %d ",
 			  RD_FADE_DEPTH)+
 	"after `FADEUP_POINT`";
       if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -2359,14 +2359,14 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
         return false;
       }
       sql=QString("alter table `")+tablename+"_POST` "+
-	QString().sprintf("add column `FADEDOWN_GAIN` int default %d ",
+	QString::asprintf("add column `FADEDOWN_GAIN` int default %d ",
 			  RD_FADE_DEPTH)+
 	"after `FADEDOWN_POINT`";
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
       sql=QString("alter table `")+tablename+"_POST` "+
-	QString().sprintf("add column `SEGUE_GAIN` int default %d ",
+	QString::asprintf("add column `SEGUE_GAIN` int default %d ",
 			  RD_FADE_DEPTH)+
 	"after `SEGUE_END_POINT`";
       if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -2539,23 +2539,23 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	q2=new RDSqlQuery(sql,false);
 	while(q2->next()) {
 	  sql=QString("insert into `")+q->value(0).toString()+"_SRT` set "+
-	    QString().sprintf("`LENGTH`=%d,",q2->value(0).toInt())+
+	    QString::asprintf("`LENGTH`=%d,",q2->value(0).toInt())+
 	    "`LOG_NAME`='"+RDEscapeString(q1->value(0).toString())+"',"+
-	    QString().sprintf("`LOG_ID`=%d,",q2->value(1).toInt())+
-	    QString().sprintf("`CART_NUMBER`=%u,",q2->value(2).toUInt())+
-	    QString().sprintf("`CUT_NUMBER`=%d,",q2->value(3).toInt())+
+	    QString::asprintf("`LOG_ID`=%d,",q2->value(1).toInt())+
+	    QString::asprintf("`CART_NUMBER`=%u,",q2->value(2).toUInt())+
+	    QString::asprintf("`CUT_NUMBER`=%d,",q2->value(3).toInt())+
 	    "`TITLE`='"+RDEscapeString(q2->value(15).toString())+"',"+
 	    "`ARTIST`='"+RDEscapeString(q2->value(16).toString())+"',"+
 	    "`STATION_NAME`='"+RDEscapeString(q2->value(4).toString())+"',"+
 	    "`EVENT_DATETIME`='"+RDEscapeString(q2->value(5).toDateTime().
 					toString("yyyy-MM-dd hh:mm:ss"))+"',"+
 	    "`SCHEDULED_TIME`='00:00:00',"+
-	    QString().sprintf("`EVENT_TYPE`=%d,",q2->value(6).toInt())+
-	    QString().sprintf("`EVENT_SOURCE`=%d,",q2->value(7).toInt())+
-	    QString().sprintf("`PLAY_SOURCE`=%d,",q2->value(8).toInt())+
+	    QString::asprintf("`EVENT_TYPE`=%d,",q2->value(6).toInt())+
+	    QString::asprintf("`EVENT_SOURCE`=%d,",q2->value(7).toInt())+
+	    QString::asprintf("`PLAY_SOURCE`=%d,",q2->value(8).toInt())+
 	    "`EXT_START_TIME`='"+RDEscapeString(q2->value(9).toTime().
 					       toString("hh:mm:ss"))+"',"+
-	    QString().sprintf("`EXT_LENGTH`=%d,",q2->value(10).toInt())+
+	    QString::asprintf("`EXT_LENGTH`=%d,",q2->value(10).toInt())+
 	    "`EXT_CART_NAME`='"+RDEscapeString(q2->value(11).toString())+"',"+
 	    "`EXT_DATA`='"+RDEscapeString(q2->value(12).toString())+"',"+
 	    "`EXT_EVENT_ID`='"+RDEscapeString(q2->value(13).toString())+"',"+
@@ -2601,7 +2601,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       sql=QString("update `CUTS` set ")+
 	"`ISRC`='"+RDEscapeString(q->value(1).toString())+"' where "+
-	QString().sprintf("`CART_NUMBER`=%u",q->value(0).toUInt());
+	QString::asprintf("`CART_NUMBER`=%u",q->value(0).toUInt());
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
@@ -2614,8 +2614,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   if((cur_schema<101)&&(set_schema>cur_schema)) {
     for(int i=0;i<RD_MAX_CARDS;i++) {
       sql=QString("alter table `AUDIO_PORTS` ")+
-	QString().sprintf("add column `INPUT_%d_MODE` int default 0 ",i)+
-	QString().sprintf("after `INPUT_%d_TYPE`",i);
+	QString::asprintf("add column `INPUT_%d_MODE` int default 0 ",i)+
+	QString::asprintf("after `INPUT_%d_TYPE`",i);
       q=new RDSqlQuery(sql,false);
       delete q;
     }
@@ -2709,10 +2709,10 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
   if((cur_schema<105)&&(set_schema>cur_schema)) {
     for(int i=0;i<6;i++) {
-      sql=QString().sprintf("alter table `RDAIRPLAY` add column `START_RML%d` char(255) after `PORT%d`",i,i);
+      sql=QString::asprintf("alter table `RDAIRPLAY` add column `START_RML%d` char(255) after `PORT%d`",i,i);
       q=new RDSqlQuery(sql,false);
       delete q;
-      sql=QString().sprintf("alter table `RDAIRPLAY` add column `STOP_RML%d` char(255) after `START_RML%d`",i,i);
+      sql=QString::asprintf("alter table `RDAIRPLAY` add column `STOP_RML%d` char(255) after `START_RML%d`",i,i);
       q=new RDSqlQuery(sql,false);
       delete q;
     }
@@ -2722,7 +2722,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
   if((cur_schema<106)&&(set_schema>cur_schema)) {
     for(int i=0;i<3;i++) {
-      sql=QString().sprintf("alter table `RDAIRPLAY` add column `LOG_RML%d` char(255) after `UDP_STRING%d`",i,i);
+      sql=QString::asprintf("alter table `RDAIRPLAY` add column `LOG_RML%d` char(255) after `UDP_STRING%d`",i,i);
       q=new RDSqlQuery(sql,false);
       delete q;
     }
@@ -2771,19 +2771,19 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
   if((cur_schema<110)&&(set_schema>cur_schema)) {
     for(unsigned i=6;i<10;i++) {
-      sql=QString().sprintf("alter table `RDAIRPLAY` add column `CARD%d` int default -1 after `STOP_RML%d`",i,i-1);
+      sql=QString::asprintf("alter table `RDAIRPLAY` add column `CARD%d` int default -1 after `STOP_RML%d`",i,i-1);
       q=new RDSqlQuery(sql,false);
       delete q;
 
-      sql=QString().sprintf("alter table `RDAIRPLAY` add column `PORT%d` int default -1 after `CARD%d`",i,i);
+      sql=QString::asprintf("alter table `RDAIRPLAY` add column `PORT%d` int default -1 after `CARD%d`",i,i);
       q=new RDSqlQuery(sql,false);
       delete q;
 
-      sql=QString().sprintf("alter table `RDAIRPLAY` add column `START_RML%d` char(255) after `PORT%d`",i,i);
+      sql=QString::asprintf("alter table `RDAIRPLAY` add column `START_RML%d` char(255) after `PORT%d`",i,i);
       q=new RDSqlQuery(sql,false);
       delete q;
 
-      sql=QString().sprintf("alter table `RDAIRPLAY` add column `STOP_RML%d` char(255) after `START_RML%d`",i,i);
+      sql=QString::asprintf("alter table `RDAIRPLAY` add column `STOP_RML%d` char(255) after `START_RML%d`",i,i);
       q=new RDSqlQuery(sql,false);
       delete q;
     }
@@ -2797,20 +2797,20 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("update `RDAIRPLAY` set ")+
-	QString().sprintf("`CARD6`=%d,",q->value(1).toInt())+
-	QString().sprintf("`PORT6`=%d,",q->value(2).toInt())+
+	QString::asprintf("`CARD6`=%d,",q->value(1).toInt())+
+	QString::asprintf("`PORT6`=%d,",q->value(2).toInt())+
 	"`START_RML6`='"+RDEscapeString(q->value(3).toString())+"',"+
 	"`STOP_RML6`='"+RDEscapeString(q->value(4).toString())+"',"+
-	QString().sprintf("`CARD7`=%d,",q->value(1).toInt())+
-	QString().sprintf("`PORT7`=%d,",q->value(2).toInt())+
+	QString::asprintf("`CARD7`=%d,",q->value(1).toInt())+
+	QString::asprintf("`PORT7`=%d,",q->value(2).toInt())+
 	"`START_RML7`='"+RDEscapeString(q->value(3).toString())+"',"+
 	"`STOP_RML7`='"+RDEscapeString(q->value(4).toString())+"',"+
-	QString().sprintf("`CARD8`=%d,",q->value(1).toInt())+
-	QString().sprintf("`PORT8`=%d,",q->value(2).toInt())+
+	QString::asprintf("`CARD8`=%d,",q->value(1).toInt())+
+	QString::asprintf("`PORT8`=%d,",q->value(2).toInt())+
 	"`START_RML8`='"+RDEscapeString(q->value(3).toString())+"',"+
 	"`STOP_RML8`='"+RDEscapeString(q->value(4).toString())+"',"+
-	QString().sprintf("`CARD9`=%d,",q->value(1).toInt())+
-	QString().sprintf("`PORT9`=%d,",q->value(2).toInt())+
+	QString::asprintf("`CARD9`=%d,",q->value(1).toInt())+
+	QString::asprintf("`PORT9`=%d,",q->value(2).toInt())+
 	"`START_RML9`='"+RDEscapeString(q->value(3).toString())+"',"+
 	"`STOP_RML9`='"+RDEscapeString(q->value(4).toString())+"'";
       if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -2860,8 +2860,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("update `RDLOGEDIT` set ")+
-	QString().sprintf("`TRIM_THRESHOLD`=%d,",q->value(1).toInt())+
-	QString().sprintf("`RIPPER_LEVEL`=%d where ",q->value(2).toInt())+
+	QString::asprintf("`TRIM_THRESHOLD`=%d,",q->value(1).toInt())+
+	QString::asprintf("`RIPPER_LEVEL`=%d where ",q->value(2).toInt())+
 	"STATION='"+RDEscapeString(q->value(0).toString())+"'";
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
@@ -2939,7 +2939,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
         return false;
       }
 
-      sql=QString().sprintf("alter table `")+tablename+"_LOG` "+
+      sql=QString::asprintf("alter table `")+tablename+"_LOG` "+
 	"add column `LINK_LENGTH` int default 0 after `LINK_START_TIME`";
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
@@ -3212,11 +3212,11 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("update `SERVICES` set ")+
-	QString().sprintf("`TFC_HOURS_OFFSET`=%d,",q->value(1).toInt())+
+	QString::asprintf("`TFC_HOURS_OFFSET`=%d,",q->value(1).toInt())+
 	"`TFC_HOURS_LENGTH`=2,"+
-	QString().sprintf("`TFC_MINUTES_OFFSET`=%d,",q->value(1).toInt()+3)+
+	QString::asprintf("`TFC_MINUTES_OFFSET`=%d,",q->value(1).toInt()+3)+
 	"`TFC_MINUTES_LENGTH`=2,"+
-	QString().sprintf("`TFC_SECONDS_OFFSET`=%d,",q->value(1).toInt()+6)+
+	QString::asprintf("`TFC_SECONDS_OFFSET`=%d,",q->value(1).toInt()+6)+
 	"`TFC_SECONDS_LENGTH`=2 where "+
 	"`NAME`='"+RDEscapeString(q->value(0).toString())+"'";
       if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -3256,11 +3256,11 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("update `SERVICES` set ")+
-	QString().sprintf("`MUS_HOURS_OFFSET`=%d,",q->value(1).toInt())+
+	QString::asprintf("`MUS_HOURS_OFFSET`=%d,",q->value(1).toInt())+
 	"`MUS_HOURS_LENGTH`=2,"+
-	QString().sprintf("`MUS_MINUTES_OFFSET`=%d,",q->value(1).toInt()+3)+
+	QString::asprintf("`MUS_MINUTES_OFFSET`=%d,",q->value(1).toInt()+3)+
 	"`MUS_MINUTES_LENGTH`=2,"+
-	QString().sprintf("`MUS_SECONDS_OFFSET`=%d,",q->value(1).toInt()+6)+
+	QString::asprintf("`MUS_SECONDS_OFFSET`=%d,",q->value(1).toInt()+6)+
 	"`MUS_SECONDS_LENGTH`=2 where "+
 	"`NAME`='"+RDEscapeString(q->value(0).toString())+"'";
       if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -3313,7 +3313,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       q1=new RDSqlQuery(sql,false);
       if(q1->last()) {
 	sql=QString("update `LOGS` set ")+
-	  QString().sprintf("`NEXT_ID`=%d where ",q1->value(0).toInt()+1)+
+	  QString::asprintf("`NEXT_ID`=%d where ",q1->value(0).toInt()+1)+
 	  "`NAME`='"+RDEscapeString(q->value(0).toString())+"'";
 	if(!RDSqlQuery::apply(sql,err_msg)) {
 	  return false;
@@ -3414,16 +3414,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       if(q->value(2).toInt()==5) {
 	sql=QString("update `SERVICES` set ")+
-	  QString().sprintf("`TFC_LEN_MINUTES_OFFSET`=%d,",q->value(1).toInt())+
+	  QString::asprintf("`TFC_LEN_MINUTES_OFFSET`=%d,",q->value(1).toInt())+
 	  "`TFC_LEN_MINUTES_LENGTH`=2,"+
-	  QString().sprintf("`TFC_LEN_SECONDS_OFFSET`=%d,",q->value(1).toInt()+3)+
+	  QString::asprintf("`TFC_LEN_SECONDS_OFFSET`=%d,",q->value(1).toInt()+3)+
 	  "`TFC_LEN_SECONDS_LENGTH`=2 where "+
 	  "NAME='"+RDEscapeString(q->value(0).toString())+"'";
       }
       else {
 	sql=QString("update `SERVICES` set ")+
-	  QString().sprintf("`TFC_LEN_SECONDS_OFFSET`=%d,",q->value(1).toInt())+
-	  QString().sprintf("`TFC_LEN_SECONDS_LENGTH`=%d where ",
+	  QString::asprintf("`TFC_LEN_SECONDS_OFFSET`=%d,",q->value(1).toInt())+
+	  QString::asprintf("`TFC_LEN_SECONDS_LENGTH`=%d where ",
 			    q->value(2).toInt())+
 	  "NAME='"+RDEscapeString(q->value(0).toString())+"'";
       }
@@ -3469,16 +3469,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       if(q->value(2).toInt()==5) {
 	sql=QString("update `SERVICES` set ")+
-	  QString().sprintf("`MUS_LEN_MINUTES_OFFSET`=%d,",q->value(1).toInt())+
+	  QString::asprintf("`MUS_LEN_MINUTES_OFFSET`=%d,",q->value(1).toInt())+
 	  "`MUS_LEN_MINUTES_LENGTH`=2,"+
-	  QString().sprintf("`MUS_LEN_SECONDS_OFFSET`=%d,",q->value(1).toInt()+3)+
+	  QString::asprintf("`MUS_LEN_SECONDS_OFFSET`=%d,",q->value(1).toInt()+3)+
 	  "`MUS_LEN_SECONDS_LENGTH`=2 where "+
 	  "`NAME`='"+RDEscapeString(q->value(0).toString())+"'";
       }
       else {
 	sql=QString("update `SERVICES` set ")+
-	  QString().sprintf("`MUS_LEN_SECONDS_OFFSET`=%d,",q->value(1).toInt())+
-	  QString().sprintf("`MUS_LEN_SECONDS_LENGTH`=%d where ",
+	  QString::asprintf("`MUS_LEN_SECONDS_OFFSET`=%d,",q->value(1).toInt())+
+	  QString::asprintf("`MUS_LEN_SECONDS_LENGTH`=%d where ",
 			    q->value(2).toInt())+
 	  "NAME='"+RDEscapeString(q->value(0).toString())+"'";
       }
@@ -4305,7 +4305,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
   if((cur_schema<148)&&(set_schema>cur_schema)) {
     sql=QString("alter table `CUTS` add column ")+
-      QString().sprintf("`SEGUE_GAIN` int default %d after `SEGUE_END_POINT`",
+      QString::asprintf("`SEGUE_GAIN` int default %d after `SEGUE_END_POINT`",
 			RD_FADE_DEPTH);
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4470,7 +4470,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<154)&&(set_schema>cur_schema)) {
-    sql=QString().sprintf("alter table `CUTS` add column `SEGUE_GAIN` int default %d after `SEGUE_END_POINT`",RD_FADE_DEPTH);
+    sql=QString::asprintf("alter table `CUTS` add column `SEGUE_GAIN` int default %d after `SEGUE_END_POINT`",RD_FADE_DEPTH);
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -4649,8 +4649,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       for(int i=0;i<q->value(2).toInt();i++) {
 	sql=QString("insert into `GPOS` set ")+
 	  "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	  QString().sprintf("`MATRIX`=%d,",q->value(1).toInt())+
-	  QString().sprintf("`NUMBER`=%d,",i+1)+
+	  QString::asprintf("`MATRIX`=%d,",q->value(1).toInt())+
+	  QString::asprintf("`NUMBER`=%d,",i+1)+
 	  "`MACRO_CART`=0";
 	if(!RDSqlQuery::apply(sql,err_msg)) {
 	  return false;
@@ -4910,7 +4910,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       sql=QString("update `PODCASTS` set ")+
 	"`EFFECTIVE_DATETIME`='"+q->value(1).toDateTime().
 	toString("yyyy-MM-dd hh:mm:ss")+"' where "+
-        QString().sprintf("`ID`=%u",q->value(0).toUInt());
+        QString::asprintf("`ID`=%u",q->value(0).toUInt());
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
@@ -5014,7 +5014,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
     sql=QString("alter table `SYSTEM` ")+
       "add column `MAX_POST_LENGTH` "+
-      QString().sprintf("int unsigned default %u after `DUP_CART_TITLES`",
+      QString::asprintf("int unsigned default %u after `DUP_CART_TITLES`",
 			RD_DEFAULT_MAX_POST_LENGTH);
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5260,9 +5260,9 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<194)&&(set_schema>cur_schema)) {
-    sql=QString().sprintf("alter table `SYSTEM` ")+
+    sql=QString::asprintf("alter table `SYSTEM` ")+
       "add column `SAMPLE_RATE` "+
-      QString().sprintf("int unsigned default %d after `ID`",
+      QString::asprintf("int unsigned default %d after `ID`",
 			RD_DEFAULT_SAMPLE_RATE);
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5270,7 +5270,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     sql="select `DEFAULT_SAMPRATE` from `RDLIBRARY`";
     q=new RDSqlQuery(sql,false);
     if(q->first()) {
-      sql=QString().sprintf("update `SYSTEM` set `SAMPLE_RATE`=%u",
+      sql=QString::asprintf("update `SYSTEM` set `SAMPLE_RATE`=%u",
 			    q->value(0).toUInt());
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
@@ -5315,7 +5315,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`STATION_NAME` char(64),"+
       "`FORMAT` int unsigned default 0,"+
       "`CHANNELS` int unsigned default 2,"+
-      QString().sprintf("`SAMPRATE` int unsigned default %u,",
+      QString::asprintf("`SAMPRATE` int unsigned default %u,",
 			RD_DEFAULT_SAMPLE_RATE)+
       "`BITRATE` int unsigned default 0,"+
       "`QUALITY` int unsigned default 0,"+
@@ -5699,8 +5699,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("update `STATIONS` set ")+
-	QString().sprintf("`CUE_CARD`=%d,",q->value(1).toInt())+
-	QString().sprintf("`CUE_PORT`=%d ",q->value(2).toInt())+
+	QString::asprintf("`CUE_CARD`=%d,",q->value(1).toInt())+
+	QString::asprintf("`CUE_PORT`=%d ",q->value(2).toInt())+
 	"where `NAME`='"+RDEscapeString(q->value(0).toString())+"'";
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
@@ -5808,9 +5808,9 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       while(q->next()) {
 	sql=QString("insert into `RDAIRPLAY_CHANNELS` set ")+
 	  "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	  QString().sprintf("`INSTANCE`=%u,",i)+
-	  QString().sprintf("`CARD`=%d,",q->value(1).toInt())+
-	  QString().sprintf("`PORT`=%d,",q->value(2).toInt())+
+	  QString::asprintf("`INSTANCE`=%u,",i)+
+	  QString::asprintf("`CARD`=%d,",q->value(1).toInt())+
+	  QString::asprintf("`PORT`=%d,",q->value(2).toInt())+
 	  "`START_RML`='"+RDEscapeString(q->value(3).toString())+"',"+
 	  "`STOP_RML`='"+RDEscapeString(q->value(4).toString())+"'";
 	if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -5856,9 +5856,9 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	while(q->next()) {
 	  sql=QString("insert into `RDPANEL_CHANNELS` set ")+
 	    "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	    QString().sprintf("`INSTANCE`=%u,",i)+
-	    QString().sprintf("`CARD`=%d,",q->value(1).toInt())+
-	    QString().sprintf("`PORT`=%d,",q->value(2).toInt())+
+	    QString::asprintf("`INSTANCE`=%u,",i)+
+	    QString::asprintf("`CARD`=%d,",q->value(1).toInt())+
+	    QString::asprintf("`PORT`=%d,",q->value(2).toInt())+
 	    "`START_RML`='"+RDEscapeString(q->value(3).toString())+"',"+
 	    "`STOP_RML`='"+RDEscapeString(q->value(4).toString())+"'";
 	  if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -5874,10 +5874,10 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     //
     DropColumn("RDAIRPLAY","INSTANCE");
     for(unsigned i=0;i<10;i++) {
-      DropColumn("RDAIRPLAY",QString().sprintf("CARD%u",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("PORT%u",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("START_RML%u",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("STOP%u",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("CARD%u",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("PORT%u",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("START_RML%u",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("STOP%u",i));
     }
     
     //
@@ -5886,10 +5886,10 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     DropColumn("RDPANEL","INSTANCE");
     for(unsigned i=0;i<10;i++) {
       if((i==2)||(i==3)||(i==6)||(i==7)||(i==8)||(i==9)) {
-	DropColumn("RDPANEL",QString().sprintf("CARD%u",i));
-	DropColumn("RDPANEL",QString().sprintf("PORT%u",i));
-	DropColumn("RDPANEL",QString().sprintf("START_RML%u",i));
-	DropColumn("RDPANEL",QString().sprintf("STOP_RML%u",i));
+	DropColumn("RDPANEL",QString::asprintf("CARD%u",i));
+	DropColumn("RDPANEL",QString::asprintf("PORT%u",i));
+	DropColumn("RDPANEL",QString::asprintf("START_RML%u",i));
+	DropColumn("RDPANEL",QString::asprintf("STOP_RML%u",i));
       }
     }
 
@@ -6145,9 +6145,9 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       for(unsigned i=0;i<3;i++) {
 	sql=QString("insert into `LOG_MODES` set ")+
 	  "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	  QString().sprintf("`MACHINE`=%u,",i)+
-	  QString().sprintf("`START_MODE`=%d,",q->value(1).toInt())+
-	  QString().sprintf("`OP_MODE`=%d",q->value(2).toInt());
+	  QString::asprintf("`MACHINE`=%u,",i)+
+	  QString::asprintf("`START_MODE`=%d,",q->value(1).toInt())+
+	  QString::asprintf("`OP_MODE`=%d",q->value(2).toInt());
 	if(!RDSqlQuery::apply(sql,err_msg)) {
 	  return false;
 	}
@@ -6445,8 +6445,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	for(unsigned j=0;j<MAX_DECKS;j++) {
 	  sql=QString("insert into `DECK_EVENTS` set ")+
 	    "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	    QString().sprintf("`CHANNEL`=%u,",j+129)+
-	    QString().sprintf("`NUMBER`=%u",i+1);
+	    QString::asprintf("`CHANNEL`=%u,",j+129)+
+	    QString::asprintf("`NUMBER`=%u",i+1);
 	  if(!RDSqlQuery::apply(sql,err_msg)) {
 	    return false;
 	  }
@@ -6511,7 +6511,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
     sql=QString("select `NAME`,");
     for(int i=0;i<168;i++) {
-      sql+=QString().sprintf("`CLOCK%i`,",i);
+      sql+=QString::asprintf("`CLOCK%i`,",i);
     }
     sql=sql.left(sql.length()-1);
     sql+=" from `SERVICES`";
@@ -6520,7 +6520,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       for(int i=0;i<168;i++) {
 	sql=QString("insert into `SERVICE_CLOCKS` set ")+
 	  "`SERVICE_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	  QString().sprintf("`HOUR`=%d,",i);
+	  QString::asprintf("`HOUR`=%d,",i);
 	if(q->value(i+1).isNull()) {
 	  sql+="`CLOCK_NAME`=null";
 	}
@@ -6535,7 +6535,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     delete q;
 
     for(int i=0;i<168;i++) {
-      DropColumn("SERVICES",QString().sprintf("CLOCK%d",i));
+      DropColumn("SERVICES",QString::asprintf("CLOCK%d",i));
     }
 
     WriteSchemaVersion(++cur_schema);
@@ -6607,12 +6607,12 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       for(int i=0;i<3;i++) {
 	sql=QString("select `ID` from `LOG_MODES` where ")+
 	  "(`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"')&&"+
-	  QString().sprintf("(`MACHINE`=%d)",i);
+	  QString::asprintf("(`MACHINE`=%d)",i);
 	q1=new RDSqlQuery(sql,false);
 	if(!q1->first()) {
 	  sql=QString("insert into `LOG_MODES` set ")+
 	    "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	    QString().sprintf("`MACHINE`=%d",i);
+	    QString::asprintf("`MACHINE`=%d",i);
 	  if(!RDSqlQuery::apply(sql,err_msg)) {
 	    return false;
 	  }
@@ -6669,8 +6669,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       delete q1;
 
       sql=QString("update `LOGS` set ")+
-	QString().sprintf("`SCHEDULED_TRACKS`=%d,",scheduled)+
-	QString().sprintf("`COMPLETED_TRACKS`=%u ",completed)+
+	QString::asprintf("`SCHEDULED_TRACKS`=%d,",scheduled)+
+	QString::asprintf("`COMPLETED_TRACKS`=%u ",completed)+
 	"where `NAME`='"+RDEscapeString(q->value(0).toString())+"'";
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
@@ -6885,36 +6885,36 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     for(int i=0;i<3;i++) {
       sql=QString("select ")+
 	"`STATION`,"+                                  // 00
-	QString().sprintf("`LOG%d_START_MODE`,",i)+    // 01
-	QString().sprintf("`LOG%d_AUTO_RESTART`,",i)+  // 02
-	QString().sprintf("`LOG%d_LOG_NAME`,",i)+      // 03
-	QString().sprintf("`LOG%d_CURRENT_LOG`,",i)+   // 04
-	QString().sprintf("`LOG%d_RUNNING`,",i)+       // 05
-	QString().sprintf("`LOG%d_LOG_ID`,",i)+        // 06
-	QString().sprintf("`LOG%d_LOG_LINE`,",i)+      // 07
-	QString().sprintf("`LOG%d_NOW_CART`,",i)+      // 08
-	QString().sprintf("`LOG%d_NEXT_CART`,",i)+     // 09
-	QString().sprintf("`UDP_ADDR%d`,",i)+          // 10
-	QString().sprintf("`UDP_PORT%d`,",i)+          // 11
-	QString().sprintf("`UDP_STRING%d`,",i)+        // 12
-	QString().sprintf("`LOG_RML%d` ",i)+           // 13
+	QString::asprintf("`LOG%d_START_MODE`,",i)+    // 01
+	QString::asprintf("`LOG%d_AUTO_RESTART`,",i)+  // 02
+	QString::asprintf("`LOG%d_LOG_NAME`,",i)+      // 03
+	QString::asprintf("`LOG%d_CURRENT_LOG`,",i)+   // 04
+	QString::asprintf("`LOG%d_RUNNING`,",i)+       // 05
+	QString::asprintf("`LOG%d_LOG_ID`,",i)+        // 06
+	QString::asprintf("`LOG%d_LOG_LINE`,",i)+      // 07
+	QString::asprintf("`LOG%d_NOW_CART`,",i)+      // 08
+	QString::asprintf("`LOG%d_NEXT_CART`,",i)+     // 09
+	QString::asprintf("`UDP_ADDR%d`,",i)+          // 10
+	QString::asprintf("`UDP_PORT%d`,",i)+          // 11
+	QString::asprintf("`UDP_STRING%d`,",i)+        // 12
+	QString::asprintf("`LOG_RML%d` ",i)+           // 13
 	"from `RDAIRPLAY` order by `STATION`";
       q=new RDSqlQuery(sql,false);
       while(q->next()) {
 	sql=QString("insert into `LOG_MACHINES` set ")+
 	  "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	  QString().sprintf("`MACHINE`=%d,",i)+
-	  QString().sprintf("`START_MODE`=%d,",q->value(1).toInt())+
+	  QString::asprintf("`MACHINE`=%d,",i)+
+	  QString::asprintf("`START_MODE`=%d,",q->value(1).toInt())+
 	  "`AUTO_RESTART`='"+q->value(2).toString()+"',"+
 	  "`LOG_NAME`='"+RDEscapeString(q->value(3).toString())+"',"+
 	  "`CURRENT_LOG`='"+RDEscapeString(q->value(4).toString())+"',"+
 	  "`RUNNING`='"+q->value(5).toString()+"',"+
-	  QString().sprintf("`LOG_ID`=%d,",q->value(6).toInt())+
-	  QString().sprintf("`LOG_LINE`=%d,",q->value(7).toInt())+
-	  QString().sprintf("`NOW_CART`=%u,",q->value(8).toUInt())+
-	  QString().sprintf("`NEXT_CART`=%u,",q->value(9).toUInt())+
+	  QString::asprintf("`LOG_ID`=%d,",q->value(6).toInt())+
+	  QString::asprintf("`LOG_LINE`=%d,",q->value(7).toInt())+
+	  QString::asprintf("`NOW_CART`=%u,",q->value(8).toUInt())+
+	  QString::asprintf("`NEXT_CART`=%u,",q->value(9).toUInt())+
 	  "`UDP_ADDR`='"+RDEscapeString(q->value(10).toString())+"',"+
-	  QString().sprintf("`UDP_PORT`=%u,",q->value(11).toUInt())+
+	  QString::asprintf("`UDP_PORT`=%u,",q->value(11).toUInt())+
 	  "`UDP_STRING`='"+RDEscapeString(q->value(12).toString())+"',"+
 	  "`LOG_RML`='"+RDEscapeString(q->value(13).toString())+"'";
 	if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -6930,7 +6930,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       for(int i=RD_RDVAIRPLAY_LOG_BASE;i<(RD_RDVAIRPLAY_LOG_BASE+RD_RDVAIRPLAY_LOG_QUAN);i++) {
 	sql=QString("insert into `LOG_MACHINES` set ")+
 	  "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	  QString().sprintf("`MACHINE`=%d",i);
+	  QString::asprintf("`MACHINE`=%d",i);
 	if(!RDSqlQuery::apply(sql,err_msg)) {
 	  return false;
 	}
@@ -6939,19 +6939,19 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     delete q;
 
     for(int i=0;i<3;i++) {
-      DropColumn("RDAIRPLAY",QString().sprintf("UDP_ADDR%d",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("UDP_PORT%d",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("UDP_STRING%d",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("LOG_RML%d",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_START_MODE",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_AUTO_RESTART",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_LOG_NAME",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_CURRENT_LOG",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_RUNNING",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_LOG_ID",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_LOG_LINE",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_NOW_CART",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_NEXT_CART",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("UDP_ADDR%d",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("UDP_PORT%d",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("UDP_STRING%d",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("LOG_RML%d",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("LOG%d_START_MODE",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("LOG%d_AUTO_RESTART",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("LOG%d_LOG_NAME",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("LOG%d_CURRENT_LOG",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("LOG%d_RUNNING",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("LOG%d_LOG_ID",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("LOG%d_LOG_LINE",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("LOG%d_NOW_CART",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("LOG%d_NEXT_CART",i));
     }
 
     WriteSchemaVersion(++cur_schema);
@@ -6964,7 +6964,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
 	sql=QString("insert into `RDAIRPLAY_CHANNELS` set ")+
 	  "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	  QString().sprintf("`INSTANCE`=%u",i+RD_RDVAIRPLAY_LOG_BASE);
+	  QString::asprintf("`INSTANCE`=%u",i+RD_RDVAIRPLAY_LOG_BASE);
 	if(!RDSqlQuery::apply(sql,err_msg)) {
 	  return false;
 	}
@@ -6982,7 +6982,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
 	sql=QString("insert into `LOG_MODES` set ")+
 	  "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	  QString().sprintf("`MACHINE`=%u",i+RD_RDVAIRPLAY_LOG_BASE);
+	  QString::asprintf("`MACHINE`=%u",i+RD_RDVAIRPLAY_LOG_BASE);
 	if(!RDSqlQuery::apply(sql,err_msg)) {
 	  return false;
 	}
@@ -7024,7 +7024,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       for(int i=0;i<RD_MAX_CARDS;i++) {
 	sql=QString("insert into `AUDIO_CARDS` set ")+
 	  "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	  QString().sprintf("`CARD_NUMBER`=%d",i);
+	  QString::asprintf("`CARD_NUMBER`=%d",i);
 	if(!RDSqlQuery::apply(sql,err_msg)) {
 	  return false;
 	}
@@ -7033,10 +7033,10 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     delete q;
 
     for(int i=0;i<8;i++) {
-      DropColumn("STATIONS",QString().sprintf("CARD%d_DRIVER",i));
-      DropColumn("STATIONS",QString().sprintf("CARD%d_NAME",i));
-      DropColumn("STATIONS",QString().sprintf("CARD%d_INPUTS",i));
-      DropColumn("STATIONS",QString().sprintf("CARD%d_OUTPUTS",i));
+      DropColumn("STATIONS",QString::asprintf("CARD%d_DRIVER",i));
+      DropColumn("STATIONS",QString::asprintf("CARD%d_NAME",i));
+      DropColumn("STATIONS",QString::asprintf("CARD%d_INPUTS",i));
+      DropColumn("STATIONS",QString::asprintf("CARD%d_OUTPUTS",i));
     }
 
     WriteSchemaVersion(++cur_schema);
@@ -7057,9 +7057,9 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("update `AUDIO_CARDS` set ")+
-	QString().sprintf("`CLOCK_SOURCE`=%d where ",q->value(2).toInt())+
+	QString::asprintf("`CLOCK_SOURCE`=%d where ",q->value(2).toInt())+
 	"`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
-	QString().sprintf("`CARD_NUMBER`=%d",q->value(1).toInt());
+	QString::asprintf("`CARD_NUMBER`=%d",q->value(1).toInt());
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
@@ -7086,8 +7086,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	for(int j=0;j<24;j++) {
 	  sql=QString("insert into `AUDIO_INPUTS` set ")+
 	    "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	    QString().sprintf("`CARD_NUMBER`=%d,",i)+
-	    QString().sprintf("`PORT_NUMBER`=%d",j);
+	    QString::asprintf("`CARD_NUMBER`=%d,",i)+
+	    QString::asprintf("`PORT_NUMBER`=%d",j);
 	  if(!RDSqlQuery::apply(sql,err_msg)) {
 	    return false;
 	  }
@@ -7099,19 +7099,19 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       sql=QString("select ")+
 	"`STATION_NAME`,"+                         // 00
 	"`CARD_NUMBER`,"+                          // 01
-	QString().sprintf("`INPUT_%d_LEVEL`,",i)+  // 02
-	QString().sprintf("`INPUT_%d_TYPE`,",i)+   // 03
-	QString().sprintf("`INPUT_%d_MODE` ",i)+   // 04
+	QString::asprintf("`INPUT_%d_LEVEL`,",i)+  // 02
+	QString::asprintf("`INPUT_%d_TYPE`,",i)+   // 03
+	QString::asprintf("`INPUT_%d_MODE` ",i)+   // 04
 	"from `AUDIO_PORTS`";
       q=new RDSqlQuery(sql,false);
       while(q->next()) {
 	sql=QString("update `AUDIO_INPUTS` set ")+
-	  QString().sprintf("`LEVEL`=%d,",q->value(2).toInt())+
-	  QString().sprintf("`TYPE`=%d,",q->value(3).toInt())+
-	  QString().sprintf("`MODE`=%d where ",q->value(4).toInt())+
+	  QString::asprintf("`LEVEL`=%d,",q->value(2).toInt())+
+	  QString::asprintf("`TYPE`=%d,",q->value(3).toInt())+
+	  QString::asprintf("`MODE`=%d where ",q->value(4).toInt())+
 	  "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
-	  QString().sprintf("`CARD_NUMBER`=%d && ",q->value(1).toInt())+
-	  QString().sprintf("`PORT_NUMBER`=%d",i);
+	  QString::asprintf("`CARD_NUMBER`=%d && ",q->value(1).toInt())+
+	  QString::asprintf("`PORT_NUMBER`=%d",i);
 	if(!RDSqlQuery::apply(sql,err_msg)) {
 	  return false;
 	}
@@ -7138,8 +7138,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	for(int j=0;j<24;j++) {
 	  sql=QString("insert into `AUDIO_OUTPUTS` set ")+
 	    "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	    QString().sprintf("`CARD_NUMBER`=%d,",i)+
-	    QString().sprintf("`PORT_NUMBER`=%d",j);
+	    QString::asprintf("`CARD_NUMBER`=%d,",i)+
+	    QString::asprintf("`PORT_NUMBER`=%d",j);
 	  if(!RDSqlQuery::apply(sql,err_msg)) {
 	    return false;
 	  }
@@ -7150,15 +7150,15 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       sql=QString("select ")+
 	"`STATION_NAME`,"+                          // 00
 	"`CARD_NUMBER`,"+                           // 01
-	QString().sprintf("`OUTPUT_%d_LEVEL` ",i)+  // 02
+	QString::asprintf("`OUTPUT_%d_LEVEL` ",i)+  // 02
 	"from `AUDIO_PORTS`";
       q=new RDSqlQuery(sql,false);
       while(q->next()) {
 	sql=QString("update `AUDIO_OUTPUTS` set ")+
-	  QString().sprintf("`LEVEL`=%d where ",q->value(2).toInt())+
+	  QString::asprintf("`LEVEL`=%d where ",q->value(2).toInt())+
 	  "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
-	  QString().sprintf("`CARD_NUMBER`=%d && ",q->value(1).toInt())+
-	  QString().sprintf("`PORT_NUMBER`=%d",i);
+	  QString::asprintf("`CARD_NUMBER`=%d && ",q->value(1).toInt())+
+	  QString::asprintf("`PORT_NUMBER`=%d",i);
 	if(!RDSqlQuery::apply(sql,err_msg)) {
 	  return false;
 	}
@@ -7175,26 +7175,26 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
   if((cur_schema<284)&&(set_schema>cur_schema)) { 
     for(int i=0;i<10;i++) {
-      DropColumn("RDAIRPLAY",QString().sprintf("CARD%d",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("PORT%d",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("START_RML%d",i));
-      DropColumn("RDAIRPLAY",QString().sprintf("STOP_RML%d",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("CARD%d",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("PORT%d",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("START_RML%d",i));
+      DropColumn("RDAIRPLAY",QString::asprintf("STOP_RML%d",i));
     }
     DropColumn("RDAIRPLAY","OP_MODE");
     DropColumn("RDAIRPLAY","START_MODE");
     DropColumn("RDPANEL","INSTANCE");
     for(int i=2;i<4;i++) {
-      DropColumn("RDPANEL",QString().sprintf("CARD%d",i));
-      DropColumn("RDPANEL",QString().sprintf("PORT%d",i));
-      DropColumn("RDPANEL",QString().sprintf("START_RML%d",i));
-      DropColumn("RDPANEL",QString().sprintf("STOP_RML%d",i));
+      DropColumn("RDPANEL",QString::asprintf("CARD%d",i));
+      DropColumn("RDPANEL",QString::asprintf("PORT%d",i));
+      DropColumn("RDPANEL",QString::asprintf("START_RML%d",i));
+      DropColumn("RDPANEL",QString::asprintf("STOP_RML%d",i));
     }
 
     for(int i=6;i<10;i++) {
-      DropColumn("RDPANEL",QString().sprintf("CARD%d",i));
-      DropColumn("RDPANEL",QString().sprintf("PORT%d",i));
-      DropColumn("RDPANEL",QString().sprintf("START_RML%d",i));
-      DropColumn("RDPANEL",QString().sprintf("STOP_RML%d",i));
+      DropColumn("RDPANEL",QString::asprintf("CARD%d",i));
+      DropColumn("RDPANEL",QString::asprintf("PORT%d",i));
+      DropColumn("RDPANEL",QString::asprintf("START_RML%d",i));
+      DropColumn("RDPANEL",QString::asprintf("STOP_RML%d",i));
     }
 
     sql=QString("alter table `MATRICES` alter column `PORT` set default 0");
@@ -7289,12 +7289,12 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "`START_POINT` int not null default -1,"+
       "`END_POINT` int not null default -1,"+
       "`FADEUP_POINT` int default -1,"+
-      QString().sprintf("`FADEUP_GAIN` int default %d,",RD_FADE_DEPTH)+
+      QString::asprintf("`FADEUP_GAIN` int default %d,",RD_FADE_DEPTH)+
       "`FADEDOWN_POINT` int default -1,"+
-      QString().sprintf("`FADEDOWN_GAIN` int default %d,",RD_FADE_DEPTH)+
+      QString::asprintf("`FADEDOWN_GAIN` int default %d,",RD_FADE_DEPTH)+
       "`SEGUE_START_POINT` int not null default -1,"+
       "`SEGUE_END_POINT` int not null default -1,"+
-      QString().sprintf("`SEGUE_GAIN` int default %d,",RD_FADE_DEPTH)+
+      QString::asprintf("`SEGUE_GAIN` int default %d,",RD_FADE_DEPTH)+
       "`DUCK_UP_GAIN` int default 0,"+
       "`DUCK_DOWN_GAIN` int default 0,"+
       "`COMMENT` CHAR(255),"+
@@ -7379,43 +7379,43 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	while(q1->next()) {
 	  sql=QString("insert into `LOG_LINES` set ")+
 	    "`LOG_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	    QString().sprintf("`LINE_ID`=%d,",q1->value(0).toInt())+
-	    QString().sprintf("`COUNT`=%d,",q1->value(1).toInt())+
-	    QString().sprintf("`TYPE`=%d,",q1->value(2).toInt())+
-	    QString().sprintf("`SOURCE`=%d,",q1->value(3).toInt())+
-	    QString().sprintf("`START_TIME`=%d,",q1->value(4).toInt())+
-	    QString().sprintf("`GRACE_TIME`=%d,",q1->value(5).toInt())+
-	    QString().sprintf("`CART_NUMBER`=%u,",q1->value(6).toUInt())+
-	    QString().sprintf("`TIME_TYPE`=%d,",q1->value(7).toInt())+
+	    QString::asprintf("`LINE_ID`=%d,",q1->value(0).toInt())+
+	    QString::asprintf("`COUNT`=%d,",q1->value(1).toInt())+
+	    QString::asprintf("`TYPE`=%d,",q1->value(2).toInt())+
+	    QString::asprintf("`SOURCE`=%d,",q1->value(3).toInt())+
+	    QString::asprintf("`START_TIME`=%d,",q1->value(4).toInt())+
+	    QString::asprintf("`GRACE_TIME`=%d,",q1->value(5).toInt())+
+	    QString::asprintf("`CART_NUMBER`=%u,",q1->value(6).toUInt())+
+	    QString::asprintf("`TIME_TYPE`=%d,",q1->value(7).toInt())+
 	    "`POST_POINT`='"+RDEscapeString(q1->value(8).toString())+"',"+
-	    QString().sprintf("`TRANS_TYPE`=%d,",q1->value(9).toInt())+
-	    QString().sprintf("`START_POINT`=%d,",q1->value(10).toInt())+
-	    QString().sprintf("`END_POINT`=%d,",q1->value(11).toInt())+
-	    QString().sprintf("`FADEUP_POINT`=%d,",q1->value(12).toInt())+
-	    QString().sprintf("`FADEUP_GAIN`=%d,",q1->value(13).toInt())+
-	    QString().sprintf("`FADEDOWN_POINT`=%d,",q1->value(14).toInt())+
-	    QString().sprintf("`FADEDOWN_GAIN`=%d,",q1->value(15).toInt())+
-	    QString().sprintf("`SEGUE_START_POINT`=%d,",q1->value(16).toInt())+
-	    QString().sprintf("`SEGUE_END_POINT`=%d,",q1->value(17).toInt())+
-	    QString().sprintf("`SEGUE_GAIN`=%d,",q1->value(18).toInt())+
-	    QString().sprintf("`DUCK_UP_GAIN`=%d,",q1->value(19).toInt())+
-	    QString().sprintf("`DUCK_DOWN_GAIN`=%d,",q1->value(20).toInt())+
+	    QString::asprintf("`TRANS_TYPE`=%d,",q1->value(9).toInt())+
+	    QString::asprintf("`START_POINT`=%d,",q1->value(10).toInt())+
+	    QString::asprintf("`END_POINT`=%d,",q1->value(11).toInt())+
+	    QString::asprintf("`FADEUP_POINT`=%d,",q1->value(12).toInt())+
+	    QString::asprintf("`FADEUP_GAIN`=%d,",q1->value(13).toInt())+
+	    QString::asprintf("`FADEDOWN_POINT`=%d,",q1->value(14).toInt())+
+	    QString::asprintf("`FADEDOWN_GAIN`=%d,",q1->value(15).toInt())+
+	    QString::asprintf("`SEGUE_START_POINT`=%d,",q1->value(16).toInt())+
+	    QString::asprintf("`SEGUE_END_POINT`=%d,",q1->value(17).toInt())+
+	    QString::asprintf("`SEGUE_GAIN`=%d,",q1->value(18).toInt())+
+	    QString::asprintf("`DUCK_UP_GAIN`=%d,",q1->value(19).toInt())+
+	    QString::asprintf("`DUCK_DOWN_GAIN`=%d,",q1->value(20).toInt())+
 	    "`COMMENT`='"+RDEscapeString(q1->value(21).toString())+"',"+
 	    "`LABEL`='"+RDEscapeString(q1->value(22).toString())+"',"+
 	    "`ORIGIN_USER`='"+RDEscapeString(q1->value(23).toString())+"',"+
 	    "`ORIGIN_DATETIME`="+RDCheckDateTime(q1->value(24).toDateTime(),
 	    "yyyy-MM-dd hh:mm:ss")+","+
-	    QString().sprintf("`EVENT_LENGTH`=%d,",q1->value(25).toInt())+
+	    QString::asprintf("`EVENT_LENGTH`=%d,",q1->value(25).toInt())+
 	    "`LINK_EVENT_NAME`='"+RDEscapeString(q1->value(26).toString())+"',"+
-	    QString().sprintf("`LINK_START_TIME`=%d,",q1->value(27).toInt())+
-	    QString().sprintf("`LINK_LENGTH`=%d,",q1->value(28).toInt())+
-	    QString().sprintf("`LINK_START_SLOP`=%d,",q1->value(29).toInt())+
-	    QString().sprintf("`LINK_END_SLOP`=%d,",q1->value(30).toInt())+
-	    QString().sprintf("`LINK_ID`=%d,",q1->value(31).toInt())+
+	    QString::asprintf("`LINK_START_TIME`=%d,",q1->value(27).toInt())+
+	    QString::asprintf("`LINK_LENGTH`=%d,",q1->value(28).toInt())+
+	    QString::asprintf("`LINK_START_SLOP`=%d,",q1->value(29).toInt())+
+	    QString::asprintf("`LINK_END_SLOP`=%d,",q1->value(30).toInt())+
+	    QString::asprintf("`LINK_ID`=%d,",q1->value(31).toInt())+
 	    "`LINK_EMBEDDED`='"+RDEscapeString(q1->value(32).toString())+"',"+
 	    "`EXT_START_TIME`="+
 	    RDCheckDateTime(q1->value(33).toTime(),"hh:mm:ss")+","+
-	    QString().sprintf("`EXT_LENGTH`=%d,",q1->value(34).toInt())+
+	    QString::asprintf("`EXT_LENGTH`=%d,",q1->value(34).toInt())+
 	    "`EXT_CART_NAME`='"+RDEscapeString(q1->value(35).toString())+"',"+
 	    "`EXT_DATA`='"+RDEscapeString(q1->value(36).toString())+"',"+
 	    "`EXT_EVENT_ID`='"+RDEscapeString(q1->value(37).toString())+"',"+
@@ -7537,11 +7537,11 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       while(q1->next()) {
 	sql=QString("insert into `ELR_LINES` set ")+
 	  "`SERVICE_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	  QString().sprintf("`LENGTH`=%d,",q1->value(0).toInt())+
+	  QString::asprintf("`LENGTH`=%d,",q1->value(0).toInt())+
 	  "`LOG_NAME`='"+RDEscapeString(q1->value(1).toString())+"',"+
-	  QString().sprintf("`LOG_ID`=%d,",q1->value(2).toInt())+
-	  QString().sprintf("`CART_NUMBER`=%u,",q1->value(3).toUInt())+
-	  QString().sprintf("`CUT_NUMBER`=%d,",q1->value(4).toInt())+
+	  QString::asprintf("`LOG_ID`=%d,",q1->value(2).toInt())+
+	  QString::asprintf("`CART_NUMBER`=%u,",q1->value(3).toUInt())+
+	  QString::asprintf("`CUT_NUMBER`=%d,",q1->value(4).toInt())+
 	  "`TITLE`='"+RDEscapeString(q1->value(5).toString())+"',"+
 	  "`ARTIST`='"+RDEscapeString(q1->value(6).toString())+"',"+
 	  "`PUBLISHER`='"+RDEscapeString(q1->value(7).toString())+"',"+
@@ -7561,14 +7561,14 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 				     toString("yyyy-MM-dd hh:mm:ss"))+"',"+
 	  "`SCHEDULED_TIME`="+
 	  RDCheckDateTime(q1->value(21).toTime(),"hh:mm:ss")+","+
-	  QString().sprintf("`EVENT_TYPE`=%d,",q1->value(22).toInt())+
-	  QString().sprintf("`EVENT_SOURCE`=%d,",q1->value(23).toInt())+
-	  QString().sprintf("`PLAY_SOURCE`=%d,",q1->value(24).toInt())+
-	  QString().sprintf("`START_SOURCE`=%d,",q1->value(25).toInt())+
+	  QString::asprintf("`EVENT_TYPE`=%d,",q1->value(22).toInt())+
+	  QString::asprintf("`EVENT_SOURCE`=%d,",q1->value(23).toInt())+
+	  QString::asprintf("`PLAY_SOURCE`=%d,",q1->value(24).toInt())+
+	  QString::asprintf("`START_SOURCE`=%d,",q1->value(25).toInt())+
 	  "`ONAIR_FLAG`='"+RDEscapeString(q1->value(26).toString())+"',"+
 	  "`EXT_START_TIME`="+
 	  RDCheckDateTime(q1->value(27).toTime(),"hh:mm:ss")+","+
-	  QString().sprintf("`EXT_LENGTH`=%d,",q1->value(28).toInt())+
+	  QString::asprintf("`EXT_LENGTH`=%d,",q1->value(28).toInt())+
 	  "`EXT_CART_NAME`='"+RDEscapeString(q1->value(29).toString())+"',"+
 	  "`EXT_DATA`='"+RDEscapeString(q1->value(30).toString())+"',"+
 	  "`EXT_EVENT_ID`='"+RDEscapeString(q1->value(31).toString())+"',"+
@@ -7644,10 +7644,10 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	  sql=QString("insert into `EVENT_LINES` set ")+
 	    "`EVENT_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
 	    "`TYPE`=0,"+
-	    QString().sprintf("`COUNT`=%d,",q1->value(0).toInt())+
-	    QString().sprintf("`EVENT_TYPE`=%d,",q1->value(1).toInt())+
-	    QString().sprintf("`CART_NUMBER`=%u,",q1->value(2).toUInt())+
-	    QString().sprintf("`TRANS_TYPE`=%d,",q1->value(3).toInt())+
+	    QString::asprintf("`COUNT`=%d,",q1->value(0).toInt())+
+	    QString::asprintf("`EVENT_TYPE`=%d,",q1->value(1).toInt())+
+	    QString::asprintf("`CART_NUMBER`=%u,",q1->value(2).toUInt())+
+	    QString::asprintf("`TRANS_TYPE`=%d,",q1->value(3).toInt())+
 	    "`MARKER_COMMENT`='"+RDEscapeString(q1->value(4).toString())+"'";
 	  if(!RDSqlQuery::apply(sql,err_msg)) {
 	    return false;
@@ -7682,10 +7682,10 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	  sql=QString("insert into `EVENT_LINES` set ")+
 	    "`EVENT_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
 	    "`TYPE`=1,"+
-	    QString().sprintf("`COUNT`=%d,",q1->value(0).toInt())+
-	    QString().sprintf("`EVENT_TYPE`=%d,",q1->value(1).toInt())+
-	    QString().sprintf("`CART_NUMBER`=%u,",q1->value(2).toUInt())+
-	    QString().sprintf("`TRANS_TYPE`=%d,",q1->value(3).toInt())+
+	    QString::asprintf("`COUNT`=%d,",q1->value(0).toInt())+
+	    QString::asprintf("`EVENT_TYPE`=%d,",q1->value(1).toInt())+
+	    QString::asprintf("`CART_NUMBER`=%u,",q1->value(2).toUInt())+
+	    QString::asprintf("`TRANS_TYPE`=%d,",q1->value(3).toInt())+
 	    "`MARKER_COMMENT`='"+RDEscapeString(q1->value(4).toString())+"'";
 	  if(!RDSqlQuery::apply(sql,err_msg)) {
 	    return false;
@@ -7771,8 +7771,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	    "`ID`,"+          // 00
 	    "`EVENT_NAME` "+  // 01
 	    "from `"+tablename+"` where "+
-	    QString().sprintf("`START_TIME`=%d && ",q1->value(2).toInt())+
-	    QString().sprintf("`ID`!=%u ",q1->value(0).toUInt())+
+	    QString::asprintf("`START_TIME`=%d && ",q1->value(2).toInt())+
+	    QString::asprintf("`ID`!=%u ",q1->value(0).toUInt())+
 	    "order by `ID`";
 	  q2=new RDSqlQuery(sql);
 	  while(q2->next()) {
@@ -7783,7 +7783,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 		      q->value(0).toString().toUtf8().constData());
 	      sql=QString("delete ")+
 		"from `"+tablename+"` where "+
-		QString().sprintf("`ID`=%u",q2->value(0).toUInt());
+		QString::asprintf("`ID`=%u",q2->value(0).toUInt());
 	      RDSqlQuery::apply(sql);
 	      deleted_ids.push_back(q2->value(0).toUInt());
 	    }
@@ -7804,8 +7804,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	  sql=QString("insert into `CLOCK_LINES` set ")+
 	    "`CLOCK_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
 	    "`EVENT_NAME`='"+RDEscapeString(q1->value(0).toString())+"',"+
-	    QString().sprintf("`START_TIME`=%d,",q1->value(1).toInt())+
-	    QString().sprintf("`LENGTH`=%d",q1->value(2).toInt());
+	    QString::asprintf("`START_TIME`=%d,",q1->value(1).toInt())+
+	    QString::asprintf("`LENGTH`=%d",q1->value(2).toInt());
 	  if(!RDSqlQuery::apply(sql,err_msg)) {
 	    return false;
 	  }
@@ -7873,8 +7873,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	  sql=QString("insert into `RULE_LINES` set ")+
 	    "`CLOCK_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
 	    "`CODE`='"+RDEscapeString(q1->value(0).toString())+"',"+
-	    QString().sprintf("`MAX_ROW`=%u,",q1->value(1).toUInt())+
-	    QString().sprintf("`MIN_WAIT`=%u,",q1->value(2).toUInt())+
+	    QString::asprintf("`MAX_ROW`=%u,",q1->value(1).toUInt())+
+	    QString::asprintf("`MIN_WAIT`=%u,",q1->value(2).toUInt())+
 	    "`NOT_AFTER`='"+RDEscapeString(q1->value(3).toString())+"',"+
 	    "`OR_AFTER`='"+RDEscapeString(q1->value(4).toString())+"',"+
 	    "`OR_AFTER_II`='"+RDEscapeString(q1->value(5).toString())+"'";
@@ -7948,8 +7948,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	while(q1->next()) {	
 	  sql=QString("insert into `STACK_LINES` set ")+
 	    "`SERVICE_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	    QString().sprintf("`SCHED_STACK_ID`=%u,",q1->value(0).toUInt())+
-	    QString().sprintf("`CART`=%u,",q1->value(1).toUInt())+
+	    QString::asprintf("`SCHED_STACK_ID`=%u,",q1->value(0).toUInt())+
+	    QString::asprintf("`CART`=%u,",q1->value(1).toUInt())+
 	    "`ARTIST`='"+RDEscapeString(q1->value(2).toString())+"',"+
 	    "`SCHED_CODES`='"+RDEscapeString(q1->value(3).toString())+"',"+
 	    "`SCHEDULED_AT`='"+RDEscapeString(q1->value(4).toDateTime().
@@ -8014,10 +8014,10 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	while(q1->next()) {
 	  sql=QString("insert into `CAST_DOWNLOADS` set ")+
 	    "`FEED_KEY_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	    QString().sprintf("`CAST_ID`=%u,",q1->value(0).toUInt())+
+	    QString::asprintf("`CAST_ID`=%u,",q1->value(0).toUInt())+
 	    "`ACCESS_DATE`='"+
 	    RDEscapeString(q1->value(1).toDate().toString("yyyy-MM-dd"))+"',"+
-	    QString().sprintf("`ACCESS_COUNT`=%u",q1->value(2).toUInt());
+	    QString::asprintf("`ACCESS_COUNT`=%u",q1->value(2).toUInt());
 	  if(!RDSqlQuery::apply(sql,err_msg)) {
 	    return false;
 	  }
@@ -10035,7 +10035,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       for(int i=0;i<f0.size();i++) {
 	if((!f0.at(i).trimmed().isEmpty())&&(f0.at(i).trimmed()!=".")) {
 	  sql=QString("insert into `STACK_SCHED_CODES` set ")+
-	    QString().sprintf("`STACK_LINES_ID`=%u,",q->value(0).toUInt())+
+	    QString::asprintf("`STACK_LINES_ID`=%u,",q->value(0).toUInt())+
 	    "`SCHED_CODE`='"+RDEscapeString(f0.at(i).trimmed())+"'";
 	  RDSqlQuery::apply(sql,err_msg);
 	}
@@ -10468,7 +10468,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	"`EXPIRATION_DATETIME`='"+
 	q->value(1).toDateTime().addDays(q->value(2).toInt()).
 	toString("yyyy-MM-dd hh:mm:ss")+"' where "+
-	QString().sprintf("`ID`=%u",q->value(0).toUInt());
+	QString::asprintf("`ID`=%u",q->value(0).toUInt());
       if(!RDSqlQuery::apply(sql,err_msg)) {
 	return false;
       }
@@ -10807,19 +10807,19 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       for(int i=0;i<24;i++) {
 	for(int j=0;j<24;j++) {
 	  sql=QString("update `AUDIO_INPUTS` set ")+
-	    "`LABEL`='"+RDEscapeString(QString().sprintf("M%d",j+1))+"' where "+
+	    "`LABEL`='"+RDEscapeString(QString::asprintf("M%d",j+1))+"' where "+
 	    "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
-	    QString().sprintf("`CARD_NUMBER`=%d && ",i)+
-	    QString().sprintf("`PORT_NUMBER`=%d",j);
+	    QString::asprintf("`CARD_NUMBER`=%d && ",i)+
+	    QString::asprintf("`PORT_NUMBER`=%d",j);
 	  if(!RDSqlQuery::apply(sql,err_msg)) {
 	    return false;
 	  }
 
 	  sql=QString("update `AUDIO_OUTPUTS` set ")+
-	    "`LABEL`='"+RDEscapeString(QString().sprintf("M%d",j+1))+"' where "+
+	    "`LABEL`='"+RDEscapeString(QString::asprintf("M%d",j+1))+"' where "+
 	    "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
-	    QString().sprintf("`CARD_NUMBER`=%d && ",i)+
-	    QString().sprintf("`PORT_NUMBER`=%d",j);
+	    QString::asprintf("`CARD_NUMBER`=%d && ",i)+
+	    QString::asprintf("`PORT_NUMBER`=%d",j);
 	  if(!RDSqlQuery::apply(sql,err_msg)) {
 	    return false;
 	  }
@@ -10876,7 +10876,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     srand(time(NULL));
     sql=QString("update `SYSTEM` set ")+
       "`REALM_NAME`='"+
-      RDEscapeString(QString().sprintf("Rivendell_%d",rand()))+"'";
+      RDEscapeString(QString::asprintf("Rivendell_%d",rand()))+"'";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -10966,7 +10966,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   // Update Cart Lengths, If Required
   //
   if(length_update_required) {
-    sql=QString().sprintf("select `NUMBER` from `CART` where `TYPE`=%u",
+    sql=QString::asprintf("select `NUMBER` from `CART` where `TYPE`=%u",
 			  RDCart::Audio);
     q=new RDSqlQuery(sql,false);
     while(q->next()) {
@@ -11000,7 +11000,7 @@ void MainObject::AverageCuts89(unsigned cartnum) const
     "`WEIGHT`,"+        // 01
     "`END_DATETIME` "+  // 02
     "from `CUTS` where "+
-    QString().sprintf("(`CART_NUMBER`=%u)&&(`LENGTH`>0)",cartnum);
+    QString::asprintf("(`CART_NUMBER`=%u)&&(`LENGTH`>0)",cartnum);
   q=new RDSqlQuery(sql,false);
   while(q->next()) {
     weight = q->value(1).toUInt();
@@ -11034,9 +11034,9 @@ void MainObject::AverageCuts89(unsigned cartnum) const
     max_dev=avg-low;
   }
   sql=QString("update `CART` set ")+
-    QString().sprintf("`LENGTH_DEVIATION`=%u,",max_dev)+
-    QString().sprintf("`AVERAGE_LENGTH`=%u where ",avg)+
-    QString().sprintf("`NUMBER`=%u",cartnum);
+    QString::asprintf("`LENGTH_DEVIATION`=%u,",max_dev)+
+    QString::asprintf("`AVERAGE_LENGTH`=%u where ",avg)+
+    QString::asprintf("`NUMBER`=%u",cartnum);
   q=new RDSqlQuery(sql,false);
   delete q;
 }
@@ -11047,7 +11047,7 @@ void MainObject::TotalMacros89(unsigned cartnum) const
   int len=0;
 
   QString sql=QString("select `MACROS` from `CART` where ")+
-    QString().sprintf("`NUMBER`=%d",cartnum);
+    QString::asprintf("`NUMBER`=%d",cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql,false);
   if(q->first()) {
     QStringList f0=q->value(0).toString().split("!");
@@ -11059,9 +11059,9 @@ void MainObject::TotalMacros89(unsigned cartnum) const
   }
   delete q;
   sql=QString("update `CART` set ")+
-    QString().sprintf("`AVERAGE_LENGTH`=%u,",len)+
-    QString().sprintf("`FORCED_LENGTH`=%u ",len)+
-    QString().sprintf("where `NUMBER`=%u",cartnum);
+    QString::asprintf("`AVERAGE_LENGTH`=%u,",len)+
+    QString::asprintf("`FORCED_LENGTH`=%u ",len)+
+    QString::asprintf("where `NUMBER`=%u",cartnum);
   q=new RDSqlQuery(sql,false);
   delete q;
 }
@@ -11151,7 +11151,7 @@ bool MainObject::ConvertTimeField186(const QString &table,const QString &field,
     if(!q->value(1).isNull()) {
       sql=QString("update `")+table+
 	"` set `"+
-	field+QString().sprintf("_TEMP`=%d where `ID`=%d",
+	field+QString::asprintf("_TEMP`=%d where `ID`=%d",
 				QTime(0,0,0).msecsTo(q->value(1).toTime()),
 				q->value(0).toInt());
       if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -11178,7 +11178,7 @@ bool MainObject::ConvertTimeField186(const QString &table,const QString &field,
     if(!q->value(1).isNull()) {
       sql=QString("update `")+table+
 	"` set `"+field+
-	QString().sprintf("`=%d where `ID`=%d",
+	QString::asprintf("`=%d where `ID`=%d",
 			  q->value(1).toInt(),
 			  q->value(0).toInt());
       if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -11214,7 +11214,7 @@ bool MainObject::ConvertArtistSep307(QString *err_msg) const
   }
   delete q;
 
-  sql=QString().sprintf("update `EVENTS` set `ARTIST_SEP`=%d",max);
+  sql=QString::asprintf("update `EVENTS` set `ARTIST_SEP`=%d",max);
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }

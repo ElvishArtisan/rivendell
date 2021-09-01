@@ -214,7 +214,7 @@ void ListReports::GenerateCartReport(QString *report)
       //
       // Cart Number
       //
-      *report+=QString().sprintf("%06u ",q->value(1).toUInt());
+      *report+=QString::asprintf("%06u ",q->value(1).toUInt());
 
       //
       // Group
@@ -239,7 +239,7 @@ void ListReports::GenerateCartReport(QString *report)
       //
       // Cut Quantity
       //
-      *report+=QString().sprintf("%4d ",q->value(6).toInt());
+      *report+=QString::asprintf("%4d ",q->value(6).toInt());
 
       //
       // Play Order
@@ -344,7 +344,7 @@ void ListReports::GenerateCutReport(QString *report)
     // Cart Number
     //
     if(q->value(0).toUInt()!=current_cart) {
-      *report+=QString().sprintf("%06u ",q->value(0).toUInt());
+      *report+=QString::asprintf("%06u ",q->value(0).toUInt());
     }
     else {
       *report+="       ";
@@ -354,16 +354,16 @@ void ListReports::GenerateCutReport(QString *report)
     // Cut Number
     //
     *report+=
-      QString().sprintf("%03d ",q->value(1).toString().right(3).toInt());
+      QString::asprintf("%03d ",q->value(1).toString().right(3).toInt());
 
     //
     // Weight /  Play Order
     //
     if(q->value(2).toString()=="Y") {
-      *report+=QString().sprintf("W%03d ",q->value(4).toInt());
+      *report+=QString::asprintf("W%03d ",q->value(4).toInt());
     }
     else {
-      *report+=QString().sprintf("O%03d ",q->value(3).toInt());
+      *report+=QString::asprintf("O%03d ",q->value(3).toInt());
     }
 
     //
@@ -400,7 +400,7 @@ void ListReports::GenerateCutReport(QString *report)
     //
     // Plays
     //
-    *report+=QString().sprintf("%4d ",q->value(9).toInt());
+    *report+=QString::asprintf("%4d ",q->value(9).toInt());
 
     //
     // Start Date
@@ -587,12 +587,12 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   //
   while(q->next()) {
     RDCart::Type type=(RDCart::Type)q->value(1).toInt();
-    *report+=QString().sprintf("%u,",q->value(0).toUInt());
+    *report+=QString::asprintf("%u,",q->value(0).toUInt());
     if(type==RDCart::Macro) {
       *report+="0,macro,";
     }
     else {
-      *report+=QString().sprintf("%u,",RDCut::cutNumber(q->value(2).toString()));
+      *report+=QString::asprintf("%u,",RDCut::cutNumber(q->value(2).toString()));
       *report+="audio,";
     }
     *report+=CsvField(q->value(3).toString())+",";
@@ -633,19 +633,19 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
       *report+="-1,";
     }
     else {
-      *report+=QString().sprintf("%d,",q->value(21).toInt());
-      *report+=QString().sprintf("%d,",q->value(22).toInt());
-      *report+=QString().sprintf("%d,",q->value(23).toInt());
-      *report+=QString().sprintf("%d,",q->value(24).toInt());
-      *report+=QString().sprintf("%d,",q->value(25).toInt());
-      *report+=QString().sprintf("%d,",q->value(26).toInt());
-      *report+=QString().sprintf("%d,",q->value(27).toInt());
-      *report+=QString().sprintf("%d,",q->value(28).toInt());
-      *report+=QString().sprintf("%d,",q->value(29).toInt());
-      *report+=QString().sprintf("%d,",q->value(30).toInt());
+      *report+=QString::asprintf("%d,",q->value(21).toInt());
+      *report+=QString::asprintf("%d,",q->value(22).toInt());
+      *report+=QString::asprintf("%d,",q->value(23).toInt());
+      *report+=QString::asprintf("%d,",q->value(24).toInt());
+      *report+=QString::asprintf("%d,",q->value(25).toInt());
+      *report+=QString::asprintf("%d,",q->value(26).toInt());
+      *report+=QString::asprintf("%d,",q->value(27).toInt());
+      *report+=QString::asprintf("%d,",q->value(28).toInt());
+      *report+=QString::asprintf("%d,",q->value(29).toInt());
+      *report+=QString::asprintf("%d,",q->value(30).toInt());
     }
     sql=QString("select SCHED_CODE from CART_SCHED_CODES where ")+
-      QString().sprintf("CART_NUMBER=%u",q->value(0).toUInt());
+      QString::asprintf("CART_NUMBER=%u",q->value(0).toUInt());
     QString schedcodes="";
     q1=new RDSqlQuery(sql);
     while(q1->next()) {

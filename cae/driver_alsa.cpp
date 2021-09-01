@@ -652,7 +652,7 @@ QString DriverAlsa::version() const
 {
 #ifdef ALSA
   return 
-    QString().sprintf("%d.%d.%d",SND_LIB_MAJOR,SND_LIB_MINOR,SND_LIB_SUBMINOR);
+    QString::asprintf("%d.%d.%d",SND_LIB_MAJOR,SND_LIB_MINOR,SND_LIB_SUBMINOR);
 #else
   return QString();
 #endif  // ALSA
@@ -677,7 +677,7 @@ bool DriverAlsa::initialize(unsigned *next_cardnum)
     pcm_opened=false;
     alsa_play_format[*next_cardnum].exiting = true;
     alsa_capture_format[*next_cardnum].exiting = true;
-    dev=QString().sprintf("rd%d",card);
+    dev=QString::asprintf("rd%d",card);
     if(snd_pcm_open(&pcm_play_handle,dev.toUtf8(),
 		    SND_PCM_STREAM_PLAYBACK,0)==0){
       pcm_opened=true;

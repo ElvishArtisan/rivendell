@@ -2,7 +2,7 @@
 //
 // Manage a collection of pixmap images
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -175,7 +175,7 @@ void ListImages::deleteData()
     sql=QString("select ")+
       "`ID` "+
       "from `FEEDS` where "+
-      QString().sprintf("`CHANNEL_IMAGE_ID`=%d",list_model->imageId(row));
+      QString::asprintf("`CHANNEL_IMAGE_ID`=%d",list_model->imageId(row));
     q=new RDSqlQuery(sql);
     channel_ids=q->size();
     delete q;
@@ -183,7 +183,7 @@ void ListImages::deleteData()
     sql=QString("select ")+
       "`ID` "+
       "from `FEEDS` where "+
-      QString().sprintf("`DEFAULT_ITEM_IMAGE_ID`=%d",list_model->imageId(row));
+      QString::asprintf("`DEFAULT_ITEM_IMAGE_ID`=%d",list_model->imageId(row));
     q=new RDSqlQuery(sql);
     channel_default_ids=q->size();
     delete q;
@@ -191,7 +191,7 @@ void ListImages::deleteData()
     sql=QString("select ")+
       "`ID` "+
       "from `PODCASTS` where "+
-      QString().sprintf("`ITEM_IMAGE_ID`=%d",list_model->imageId(row));
+      QString::asprintf("`ITEM_IMAGE_ID`=%d",list_model->imageId(row));
     q=new RDSqlQuery(sql);
     item_ids=q->size();
     delete q;
@@ -213,7 +213,7 @@ void ListImages::deleteData()
     }
 
     sql=QString("select `ID` from `FEED_IMAGES` where ")+
-      QString().sprintf("`ID`=%d",list_model->imageId(row));
+      QString::asprintf("`ID`=%d",list_model->imageId(row));
     q=new RDSqlQuery(sql);
     if(q->first()) {
       if((row=SelectedRow())>=0) {

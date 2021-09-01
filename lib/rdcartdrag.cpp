@@ -93,7 +93,7 @@ void RDCartDrag::SetData(unsigned cartnum,const QColor &color,
 			 const QString &title)
 {
   QString str="[Rivendell-Cart]\n";
-  str+="Number="+QString().sprintf("%06u",cartnum)+"\n";
+  str+="Number="+QString::asprintf("%06u",cartnum)+"\n";
   if(color.isValid()) {
     str+="Color="+color.name()+"\n";
   }

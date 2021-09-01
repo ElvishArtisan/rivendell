@@ -157,7 +157,7 @@ void MainObject::ProcessFeed(const QString &key_name)
 		    err_msg.toUtf8().constData());
       }
       sql=QString("delete from `PODCASTS` where ")+
-	QString().sprintf("`ID`=%u",q->value(0).toUInt());
+	QString::asprintf("`ID`=%u",q->value(0).toUInt());
       RDSqlQuery::apply(sql);
       rda->syslog(LOG_INFO,"purged cast %u [%s] from feed \"%s\"",
 		  q->value(0).toUInt(),cast->itemTitle().toUtf8().constData(),

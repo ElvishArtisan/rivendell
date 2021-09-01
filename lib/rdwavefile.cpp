@@ -3053,7 +3053,7 @@ bool RDWaveFile::GetScot(int fd)
     wave_data->setArtist(scot_artist.remove(QChar(0)).trimmed());
     wave_data->setUserDefined(scot_etc.remove(QChar(0)).trimmed());
     wave_data->setReleaseYear(scot_year);
-    wave_data->setCutId(QString().sprintf("%u",cartnum));
+    wave_data->setCutId(QString::asprintf("%u",cartnum));
     wave_data->setTalkStartPos(0);
     wave_data->setTalkEndPos(scot_intro_length);
     if(segue_start>0) {

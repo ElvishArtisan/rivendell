@@ -50,7 +50,7 @@ bool RDReport::ExportMusicClassical(const QString &filename,
   QTextStream *strm=new QTextStream(file);
   strm->setCodec("UTF-8");
   if(useLeadingZeros()) {
-    cart_fmt=QString().sprintf("%%0%uu",cartDigits());
+    cart_fmt=QString::asprintf("%%0%uu",cartDigits());
   }
   else {
     cart_fmt="%6u";
@@ -89,7 +89,7 @@ bool RDReport::ExportMusicClassical(const QString &filename,
   //
   while(q->next()) {
     if(q->value(5).toInt()>0) {
-      cut=QString().sprintf("%03d",q->value(5).toInt());
+      cut=QString::asprintf("%03d",q->value(5).toInt());
     }
     else {
       if((RDAirPlayConf::TrafficAction)q->value(6).toInt()==
@@ -100,14 +100,14 @@ bool RDReport::ExportMusicClassical(const QString &filename,
 	cut="   ";
       }
     }
-    cart_num=QString().sprintf(cart_fmt.toUtf8(),q->value(1).toUInt());
+    cart_num=QString::asprintf(cart_fmt.toUtf8(),q->value(1).toUInt());
     *strm << q->value(2).toDateTime().time().toString("hhmm")+"  ";
     *strm << RDGetTimeLength(q->value(0).toInt(),true,false).right(5)+"  ";
     *strm << RDReport::leftJustify(q->value(3).toString(),30)+"   ";
     *strm << RDReport::leftJustify(q->value(5).toString(),30)+"   ";
     *strm << RDReport::leftJustify(q->value(4).toString(),25)+"   ";
     *strm << RDReport::leftJustify(q->value(6).toString(),5)+"  ";
-    * strm << QString().sprintf("%06u",q->value(1).toUInt())+"\n";
+    * strm << QString::asprintf("%06u",q->value(1).toUInt())+"\n";
   }
   delete q;
   delete strm;

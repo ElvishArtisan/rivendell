@@ -2,7 +2,7 @@
 //
 // Get the trim points for an audio cut.
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -84,7 +84,7 @@ RDCopyAudio::ErrorCode RDCopyAudio::runCopy(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_COPYAUDIO).
+	       QString::asprintf("%u",RDXPORT_COMMAND_COPYAUDIO).
 	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -95,22 +95,22 @@ RDCopyAudio::ErrorCode RDCopyAudio::runCopy(const QString &username,
 	       password.toUtf8().constData(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"SOURCE_CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_source_cart_number).
+	       QString::asprintf("%u",conv_source_cart_number).
 	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"SOURCE_CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_source_cut_number).
+	       QString::asprintf("%u",conv_source_cut_number).
 	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"DESTINATION_CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_destination_cart_number).
+	       QString::asprintf("%u",conv_destination_cart_number).
 	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"DESTINATION_CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_destination_cut_number).
+	       QString::asprintf("%u",conv_destination_cut_number).
 	       toUtf8().constData(),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
@@ -175,7 +175,7 @@ RDCopyAudio::ErrorCode RDCopyAudio::runCopy(const QString &username,
 
 QString RDCopyAudio::errorText(RDCopyAudio::ErrorCode err)
 {
-  QString ret=QString().sprintf("Uknown Error [%u]",err);
+  QString ret=QString::asprintf("Uknown Error [%u]",err);
 
   switch(err) {
   case RDCopyAudio::ErrorOk:

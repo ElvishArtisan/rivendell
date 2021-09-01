@@ -263,7 +263,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(eventCartSelectedData(int)));
   for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i+=2) {
     for(unsigned j=0;j<2;j++) {
-      edit_event_labels[i+j]=new QLabel(QString().sprintf("%u:",i+j+1),this);
+      edit_event_labels[i+j]=new QLabel(QString::asprintf("%u:",i+j+1),this);
       edit_event_labels[i+j]->setFont(labelFont());
       edit_event_labels[i+j]->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
       edit_event_labels[i+j]->setGeometry(387+165*j,126+14*i,20,20);
@@ -318,9 +318,9 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_audition_deck=NULL;
   for(int i=0;i<MAX_DECKS;i++) {
     edit_record_deck_box->
-      insertItem(edit_record_deck_box->count(),QString().sprintf("%d",i+1));
+      insertItem(edit_record_deck_box->count(),QString::asprintf("%d",i+1));
     edit_play_deck_box->
-      insertItem(edit_play_deck_box->count(),QString().sprintf("%d",i+1));
+      insertItem(edit_play_deck_box->count(),QString::asprintf("%d",i+1));
   }
   edit_record_channel=edit_record_deck_box->currentIndex()+1;
   edit_play_channel=edit_play_deck_box->currentIndex()+129;
@@ -489,7 +489,7 @@ void EditDecks::matrixActivatedData(const QString &str)
   sql=QString("select `NAME` from `OUTPUTS` where ")+
     "(`STATION_NAME`='"+
     RDEscapeString(edit_swstation_box->currentText())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",matrix)+
+    QString::asprintf("(`MATRIX`=%d)&&",matrix)+
     "(`NAME`!='')";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -519,7 +519,7 @@ void EditDecks::eventCartSelectedData(int n)
       edit_event_edits[n]->setText("");
     }
     else {
-      edit_event_edits[n]->setText(QString().sprintf("%06d",cartnum));
+      edit_event_edits[n]->setText(QString::asprintf("%06d",cartnum));
     }
   }
 }
@@ -677,7 +677,7 @@ void EditDecks::ReadRecord(int chan)
       "`CART_NUMBER` "+  // 01
       "from `DECK_EVENTS` where "+
       "(`STATION_NAME`='"+RDEscapeString(edit_station->name())+"')&&"+
-      QString().sprintf("(`CHANNEL`=%d)",chan);
+      QString::asprintf("(`CHANNEL`=%d)",chan);
     q=new RDSqlQuery(sql);
     while(q->next()) {
       if((q->value(0).toInt()-1)<RD_CUT_EVENT_ID_QUAN) {
@@ -686,7 +686,7 @@ void EditDecks::ReadRecord(int chan)
 	}
 	else {
 	  edit_event_edits[q->value(0).toInt()-1]->
-	    setText(QString().sprintf("%06u",q->value(1).toUInt()));
+	    setText(QString::asprintf("%06u",q->value(1).toUInt()));
 	}
       }
     }
@@ -754,10 +754,10 @@ void EditDecks::WriteRecord(int chan)
 	cartnum=edit_event_edits[i]->text().toUInt();
       }
       sql=QString("update `DECK_EVENTS` set ")+
-	QString().sprintf("`CART_NUMBER`=%u ",cartnum)+
+	QString::asprintf("`CART_NUMBER`=%u ",cartnum)+
 	"where (`STATION_NAME`='"+RDEscapeString(edit_station->name())+"')&&"+
-	QString().sprintf("(`CHANNEL`=%d)&&",chan)+
-	QString().sprintf("(`NUMBER`=%u)",i+1);
+	QString::asprintf("(`CHANNEL`=%d)&&",chan)+
+	QString::asprintf("(`NUMBER`=%u)",i+1);
       q=new RDSqlQuery(sql);
       delete q;
     }
@@ -783,7 +783,7 @@ int EditDecks::GetOutput()
   QString sql=QString("select `NUMBER` from `OUTPUTS` where ")+
     "(`STATION_NAME`='"+
     RDEscapeString(edit_swstation_box->currentText())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",GetMatrix())+
+    QString::asprintf("(`MATRIX`=%d)&&",GetMatrix())+
     "(`NAME`='"+RDEscapeString(edit_swoutput_box->currentText())+"')";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
@@ -820,7 +820,7 @@ QStringList EditDecks::GetActiveOutputMatrices()
 	"`BASE_OUTPUT` "+  // 03
 	"from `SWITCHER_NODES` where "+
 	"(`STATION_NAME`='"+RDEscapeString(edit_station->name())+"')&& "+
-	QString().sprintf("(`MATRIX`=%d) ",q->value(3).toInt())+
+	QString::asprintf("(`MATRIX`=%d) ",q->value(3).toInt())+
 	"order by `BASE_OUTPUT` desc";
       q1=new RDSqlQuery(sql);
       if(q1->first()) {

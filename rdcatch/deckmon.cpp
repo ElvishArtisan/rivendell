@@ -52,11 +52,11 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   mon_station_label->setFont(defaultFont());
   if((mon_channel>0)&&(mon_channel<(MAX_DECKS+1))) {
     mon_station_label->
-      setText(mon_station+QString().sprintf(" : %uR",mon_channel));
+      setText(mon_station+QString::asprintf(" : %uR",mon_channel));
   }
   if((mon_channel>128)&&(mon_channel<(MAX_DECKS+129))) {
     mon_station_label->
-      setText(mon_station+QString().sprintf(" : %uP",mon_channel-128));
+      setText(mon_station+QString::asprintf(" : %uP",mon_channel-128));
   }
 
   //
@@ -219,7 +219,7 @@ void DeckMon::setStatus(RDDeck::Status status,int id,const QString &cutname)
 
 void DeckMon::setEvent(int number)
 {
-  mon_event_label->setText(QString().sprintf("%d",number));
+  mon_event_label->setText(QString::asprintf("%d",number));
   mon_event_label->setPalette(mon_red_palette);
   mon_event_timer->start(1000);
 }
@@ -283,7 +283,7 @@ void DeckMon::SetCutInfo(int id,const QString &cutname)
     return;
   }
   sql=QString("select `DESCRIPTION` from `RECORDINGS` where ")+
-    QString().sprintf("`ID`=%d",id);
+    QString::asprintf("`ID`=%d",id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     if(cutname.isEmpty()) {

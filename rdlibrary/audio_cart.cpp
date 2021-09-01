@@ -301,7 +301,7 @@ void AudioCart::deleteCutData()
   else {
     if(QMessageBox::question(this,"RDLibrary - "+tr("Delete Cuts"),
 			     tr("Are you sure you want to delete")+
-			     QString().sprintf(" %d ",cutnames.size())+
+			     QString::asprintf(" %d ",cutnames.size())+
 			     tr("cuts")+"?",QMessageBox::Yes,
 			     QMessageBox::No)!=QMessageBox::Yes) {
       return;
@@ -352,7 +352,7 @@ void AudioCart::deleteCutData()
 			       rda->config())) {
       QMessageBox::warning(this,tr("RDLibrary"),
 			   tr("Unable to delete audio for cut")+
-			   QString().sprintf(" %d!",RDCut::cutNumber(cutnames.at(i))));
+			   QString::asprintf(" %d!",RDCut::cutNumber(cutnames.at(i))));
       return;
     }
     rdcart_cut_model->removeCut(cutnames.at(i));
@@ -583,7 +583,7 @@ void AudioCart::importCutData()
     if(rdcart_controls->year_edit->text().isEmpty()&&
        wavedata.releaseYear()>0) {
       rdcart_controls->year_edit->
-	setText(QString().sprintf("%d",wavedata.releaseYear()));
+	setText(QString::asprintf("%d",wavedata.releaseYear()));
     }
     if(rdcart_controls->song_id_edit->text().isEmpty()) {
       rdcart_controls->song_id_edit->setText(wavedata.songId());

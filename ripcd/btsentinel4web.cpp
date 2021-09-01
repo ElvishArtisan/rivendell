@@ -115,7 +115,7 @@ void BtSentinel4Web::processCommand(RDMacro *cmd)
 	  msg="*0MA";
 	}
 	else {
-	  msg=QString().sprintf("*0%02u",input);
+	  msg=QString::asprintf("*0%02u",input);
 	}	
 	bt_socket->write(msg.toUtf8());
 	cmd->acknowledge(true);

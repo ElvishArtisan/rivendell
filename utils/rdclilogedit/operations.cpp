@@ -290,14 +290,14 @@ QString MainObject::ListLine(RDLogModel *model,int line) const
     ret+="          ";
     break;
   }
-  ret+=QString().sprintf("%-7s",RDLogLine::transText(logline->transType()).
+  ret+=QString::asprintf("%-7s",RDLogLine::transText(logline->transType()).
 			 toUtf8().constData());
   switch(logline->type()) {
   case RDLogLine::Cart:
   case RDLogLine::Macro:
-    ret+=QString().sprintf("%06u   ",logline->cartNumber());
-    ret+=QString().sprintf("%-12s",logline->groupName().toUtf8().constData());
-    ret+=QString().sprintf("%5s",RDGetTimeLength(logline->forcedLength(),false,
+    ret+=QString::asprintf("%06u   ",logline->cartNumber());
+    ret+=QString::asprintf("%-12s",logline->groupName().toUtf8().constData());
+    ret+=QString::asprintf("%5s",RDGetTimeLength(logline->forcedLength(),false,
 					    false).toUtf8().constData())+"  ";
     ret+=logline->title();
     break;

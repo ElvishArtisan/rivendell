@@ -676,7 +676,7 @@ void MainWidget::deleteData()
     return;
   }
   sql=QString("delete from `RECORDINGS` where ")+
-    QString().sprintf("`ID`=%u",catch_recordings_model->recordId(rows.first()));
+    QString::asprintf("`ID`=%u",catch_recordings_model->recordId(rows.first()));
   RDSqlQuery::apply(sql);
   RDNotification *notify=new RDNotification(RDNotification::CatchEventType,
 					    RDNotification::DeleteAction,
@@ -1086,7 +1086,7 @@ void MainWidget::filterChangedData(bool state)
     break;
   }
   if(catch_type_box->currentIndex()<RDRecording::LastType) {
-    sql+=QString().sprintf("(`RECORDINGS`.`TYPE`=%d)&&",
+    sql+=QString::asprintf("(`RECORDINGS`.`TYPE`=%d)&&",
 			   catch_type_box->currentIndex());
   }
 

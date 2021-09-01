@@ -2,7 +2,7 @@
 //
 //   Container Class for Compact Disc Metadata
 //
-//   (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -367,9 +367,9 @@ QString RDDiscRecord::dump()
 {
   QString ret="RDDiscRecord::dump()\n";
 
-  ret+=QString().sprintf("tracks: %d\n",tracks());
-  ret+=QString().sprintf("discLength: %d\n",discLength());
-  ret+=QString().sprintf("discId: %08x\n",discId());
+  ret+=QString::asprintf("tracks: %d\n",tracks());
+  ret+=QString::asprintf("discLength: %d\n",discLength());
+  ret+=QString::asprintf("discId: %08x\n",discId());
   ret+="mcn: "+mcn()+"\n";
   ret+="discMbId: "+discMbId()+"\n";
   ret+="mbSubmissionUrl: "+mbSubmissionUrl()+"\n";
@@ -377,14 +377,14 @@ QString RDDiscRecord::dump()
   ret+="discArtist: "+discArtist()+"\n";
   ret+="discAlbum: "+discAlbum()+"\n";
   ret+="discAuthor: "+discAuthor()+"\n";
-  ret+=QString().sprintf("discYear: %u\n",discYear());
+  ret+=QString::asprintf("discYear: %u\n",discYear());
   ret+="discGenre: "+discGenre()+"\n";
   ret+="discLabel: "+discLabel()+"\n";
   ret+="discExtended: "+discExtended()+"\n";
   ret+="discPlayOrder: "+discPlayOrder()+"\n";
   for(int i=0;i<tracks();i++) {
-    QString num=QString().sprintf("(%d): ",i+1);
-    ret+="trackOffset"+num+QString().sprintf("%u",trackOffset(i))+"\n";
+    QString num=QString::asprintf("(%d): ",i+1);
+    ret+="trackOffset"+num+QString::asprintf("%u",trackOffset(i))+"\n";
     ret+="trackTitle"+num+trackTitle(i)+"\n";
     ret+="trackExtended"+num+trackExtended(i)+"\n";
     ret+="trackRecordingMbId"+num+trackRecordingMbId(i)+"\n";

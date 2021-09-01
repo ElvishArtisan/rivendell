@@ -111,7 +111,7 @@ void ListReplicatorCarts::repostData()
   QString sql=QString("update `REPL_CART_STATE` set ")+
     "`REPOST`='Y' where ";
   for(int i=0;i<rows.size();i++) {
-    sql+=QString().sprintf("(`ID`=%u)||",list_model->cartId(rows.at(i)));
+    sql+=QString::asprintf("(`ID`=%u)||",list_model->cartId(rows.at(i)));
   }
   sql=sql.left(sql.length()-2);
   RDSqlQuery::apply(sql);

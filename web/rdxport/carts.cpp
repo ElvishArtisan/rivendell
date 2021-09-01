@@ -162,7 +162,7 @@ void Xport::ListCarts()
     where=RDCartSearchText(filter,group_name,"",false);
   }
   if(cart_type!=RDCart::All) {
-    where+=QString().sprintf("&&(`TYPE`=%u)",cart_type);
+    where+=QString::asprintf("&&(`TYPE`=%u)",cart_type);
   }
   sql=RDCart::xmlSql(include_cuts)+where+" order by `CART`.`NUMBER`";
   q=new RDSqlQuery(sql);
@@ -297,7 +297,7 @@ void Xport::EditCart()
 
   case RDCart::Macro:
     line=0;
-    while(xport_post->getValue(QString().sprintf("MACRO%d",line++),&value)) {
+    while(xport_post->getValue(QString::asprintf("MACRO%d",line++),&value)) {
       value=value.trimmed();
       if(value.right(1)!="!") {
 	delete cart;
@@ -529,7 +529,7 @@ void Xport::ListCuts()
   // Process Request
   //
   sql=RDCart::xmlSql(true)+
-    QString().sprintf(" where `CART`.`NUMBER`=%u",cart_number);
+    QString::asprintf(" where `CART`.`NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");

@@ -186,7 +186,7 @@ RDMatrix::RDMatrix(const QString &station,int matrix)
     "`ID` "+  // 00
     "from `MATRICES` where "+
     "`STATION_NAME`='"+RDEscapeString(station)+"' && "+
-    QString().sprintf("`MATRIX`=%d",matrix);
+    QString::asprintf("`MATRIX`=%d",matrix);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     mx_id=q->value(0).toInt();
@@ -211,7 +211,7 @@ RDMatrix::RDMatrix(int matrix_id)
     "`STATION_NAME`,"  // 00
     "`MATRIX` "+       /// 01
     "from `MATRICES` where "+
-    QString().sprintf("`ID`=%d",matrix_id);
+    QString::asprintf("`ID`=%d",matrix_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     mx_station=q->value(0).toString();
@@ -533,8 +533,8 @@ RDMatrix::Mode RDMatrix::inputMode(int input) const
 {
   QString sql=QString("select `CHANNEL_MODE` from `INPUTS` where ")+
     "`STATION_NAME`='"+RDEscapeString(mx_station)+"' && "+
-    QString().sprintf("`MATRIX`=%d && ",mx_number)+
-    QString().sprintf("`NUMBER`=%d",input);
+    QString::asprintf("`MATRIX`=%d && ",mx_number)+
+    QString::asprintf("`NUMBER`=%d",input);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -890,8 +890,8 @@ QString RDMatrix::GetEndpointName(int pointnum,const QString &table) const
 {
   QString sql=QString("select `NAME` from ")+table+" where "+
     "`STATION_NAME`='"+RDEscapeString(mx_station)+"' && "+
-    QString().sprintf("`MATRIX`=%d && ",mx_number)+
-    QString().sprintf("`NUMBER`=%d",pointnum);
+    QString::asprintf("`MATRIX`=%d && ",mx_number)+
+    QString::asprintf("`NUMBER`=%d",pointnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -908,7 +908,7 @@ QVariant RDMatrix::GetRow(const QString &param) const
   QVariant var;
   QString sql=QString("select `")+param+"` from `MATRICES` where "+
     "`STATION_NAME`='"+RDEscapeString(mx_station)+"' && "+
-    QString().sprintf("`MATRIX`=%d",mx_number);
+    QString::asprintf("`MATRIX`=%d",mx_number);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     var=q->value(0);
@@ -925,7 +925,7 @@ void RDMatrix::SetRow(const QString &param,const QString &value) const
   sql=QString("update `MATRICES` set `")+
     param+"`='"+RDEscapeString(value)+"' where "+
     "`STATION_NAME`='"+RDEscapeString(mx_station)+"' && "+
-    QString().sprintf("`MATRIX`=%d",mx_number);
+    QString::asprintf("`MATRIX`=%d",mx_number);
   RDSqlQuery::apply(sql);
 }
 
@@ -935,9 +935,9 @@ void RDMatrix::SetRow(const QString &param,int value) const
   QString sql;
 
   sql=QString("update `MATRICES` set `")+
-    param+QString().sprintf("`=%d where ",value)+
+    param+QString::asprintf("`=%d where ",value)+
     "`STATION_NAME`='"+RDEscapeString(mx_station)+"' && "+
-    QString().sprintf("`MATRIX`=%d",mx_number);
+    QString::asprintf("`MATRIX`=%d",mx_number);
   RDSqlQuery::apply(sql);
 }
 
@@ -947,8 +947,8 @@ void RDMatrix::SetRow(const QString &param,unsigned value) const
   QString sql;
 
   sql=QString("update `MATRICES` set `")+
-    param+QString().sprintf("`=%u where ",value)+
+    param+QString::asprintf("`=%u where ",value)+
     "`STATION_NAME`='"+RDEscapeString(mx_station)+"' && "+
-    QString().sprintf("`MATRIX`=%d",mx_number);
+    QString::asprintf("`MATRIX`=%d",mx_number);
   RDSqlQuery::apply(sql);
 }

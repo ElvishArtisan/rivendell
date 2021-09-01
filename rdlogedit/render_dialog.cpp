@@ -232,7 +232,7 @@ void RenderDialog::selectData()
     if(render_cut_dialog->exec(&cutname)) {
       render_to_cartnum=RDCut::cartNumber(cutname);
       render_to_cutnum=RDCut::cutNumber(cutname);
-      render_filename_edit->setText(QString().sprintf("%06u:%03d",
+      render_filename_edit->setText(QString::asprintf("%06u:%03d",
 				    render_to_cartnum,render_to_cutnum));
     }
   }

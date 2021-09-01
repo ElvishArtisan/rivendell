@@ -204,7 +204,7 @@ void RDReplCartListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where `REPL_CART_STATE`.`ID`=%u",d_ids.at(row.row()));
+      QString::asprintf("where `REPL_CART_STATE`.`ID`=%u",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -298,7 +298,7 @@ void RDReplCartListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where `REPL_CART_STATE`.`ID`=%u",d_ids.at(line));
+      QString::asprintf("where `REPL_CART_STATE`.`ID`=%u",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);
@@ -327,7 +327,7 @@ void RDReplCartListModel::updateRow(int row,RDSqlQuery *q)
   QList<QVariant> texts;
 
   // Cart Number
-  texts.push_back(QString().sprintf("%06u",q->value(2).toUInt()));
+  texts.push_back(QString::asprintf("%06u",q->value(2).toUInt()));
 
   // Title
   texts.push_back(q->value(3));

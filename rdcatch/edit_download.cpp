@@ -490,7 +490,7 @@ bool EditDownload::CheckEvent(bool include_myself)
 {
   QString sql=QString("select `ID` from `RECORDINGS` where ")+
     "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
-    QString().sprintf("(`TYPE`=%d)&&",RDRecording::Download)+
+    QString::asprintf("(`TYPE`=%d)&&",RDRecording::Download)+
     "(`START_TIME`='"+RDEscapeString(edit_event_widget->startTime().
 				    toString("hh:mm:ss"))+"')&&"+
     "(`URL`='"+RDEscapeString(edit_url_edit->text())+"')&&"+
@@ -517,7 +517,7 @@ bool EditDownload::CheckEvent(bool include_myself)
     sql+="&&(`SAT`='Y')";
   }
   if(!include_myself) {
-    sql+=QString().sprintf("&&(`ID`!=%d)",edit_recording->id());
+    sql+=QString::asprintf("&&(`ID`!=%d)",edit_recording->id());
   }
   RDSqlQuery *q=new RDSqlQuery(sql);
   bool res=!q->first();

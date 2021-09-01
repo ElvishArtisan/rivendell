@@ -236,7 +236,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   }
   delete q;
 
-  sql=QString().sprintf("select `NAME` from `GROUPS`");
+  sql=QString::asprintf("select `NAME` from `GROUPS`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(repl_groups_sel->destFindItem(q->value(0).toString())==0) {

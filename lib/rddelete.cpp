@@ -214,7 +214,7 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
 
 QString RDDelete::errorText(RDDelete::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown RDDelete Error [%u]",err);
+  QString ret=QString::asprintf("Unknown RDDelete Error [%u]",err);
 
   switch(err) {
   case RDDelete::ErrorOk:

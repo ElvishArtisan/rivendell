@@ -238,7 +238,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   }
   delete q;
 
-  sql=QString().sprintf("select `NAME` from `SERVICES`");
+  sql=QString::asprintf("select `NAME` from `SERVICES`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(group_svcs_sel->destFindItem(q->value(0).toString())==0) {

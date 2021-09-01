@@ -183,7 +183,7 @@ void RDNodeSlotsModel::setSlotQuantity(int slot_quan)
   }
   for(int i=0;i<slot_quan;i++) {
     d_texts.push_back(texts);
-    d_texts.back()[0]=QString().sprintf("%d",i+1);
+    d_texts.back()[0]=QString::asprintf("%d",i+1);
   }
   endResetModel();
 }
@@ -197,7 +197,7 @@ void RDNodeSlotsModel::updateSource(unsigned id,RDLiveWireSource *src)
       d_texts[slotnum][1]=tr("[unassigned]");
     }
     else {
-      d_texts[slotnum][1]=QString().sprintf("%d",src->channelNumber());
+      d_texts[slotnum][1]=QString::asprintf("%d",src->channelNumber());
     }
     d_texts[slotnum][2]=src->primaryName();
     if(src->rtpEnabled()) {
@@ -212,8 +212,8 @@ void RDNodeSlotsModel::updateSource(unsigned id,RDLiveWireSource *src)
     else {
       d_texts[slotnum][4]=tr("No");
     }
-    d_texts[slotnum][5]=QString().sprintf("%d",src->channels());
-    d_texts[slotnum][6]=QString().sprintf("%4.1f",(float)src->inputGain()/10.0);
+    d_texts[slotnum][5]=QString::asprintf("%d",src->channels());
+    d_texts[slotnum][6]=QString::asprintf("%4.1f",(float)src->inputGain()/10.0);
 
     emit dataChanged(createIndex(slotnum,0),
 		     createIndex(slotnum,columnCount()-1));
@@ -227,12 +227,12 @@ void RDNodeSlotsModel::updateDestination(unsigned id,RDLiveWireDestination *dst)
     int slotnum=dst->slotNumber()-1;
 
     d_texts[slotnum][1]=
-      QString().sprintf("%u",d_base_output+dst->slotNumber()-1);
+      QString::asprintf("%u",d_base_output+dst->slotNumber()-1);
     d_texts[slotnum][2]=dst->primaryName();
-    d_texts[slotnum][3]=QString().sprintf("%d",dst->channels());
+    d_texts[slotnum][3]=QString::asprintf("%d",dst->channels());
     d_texts[slotnum][4]=RDLiveWireDestination::loadString(dst->load());
     d_texts[slotnum][5]=
-      QString().sprintf("%4.1f",(float)dst->outputGain()/10.0);
+      QString::asprintf("%4.1f",(float)dst->outputGain()/10.0);
 
     emit dataChanged(createIndex(slotnum,0),
 		     createIndex(slotnum,columnCount()-1));

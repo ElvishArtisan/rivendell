@@ -142,8 +142,8 @@ void EditSuperfeed::okData()
       sql=QString("insert into `SUPERFEED_MAPS` set ")+
 	"`KEY_NAME`='"+RDEscapeString(feed_feed->keyName())+"',"+
 	"`MEMBER_KEY_NAME`='"+RDEscapeString(feed_host_sel->destText(i))+"',"+
-	QString().sprintf("`FEED_ID`=%u,",feed_ids.value(feed_feed->keyName()))+
-	QString().sprintf("`MEMBER_FEED_ID`=%u",feed_ids.value(feed_host_sel->destText(i)));
+	QString::asprintf("`FEED_ID`=%u,",feed_ids.value(feed_feed->keyName()))+
+	QString::asprintf("`MEMBER_FEED_ID`=%u",feed_ids.value(feed_host_sel->destText(i)));
       q=new RDSqlQuery(sql);
     }
     delete q;

@@ -175,7 +175,7 @@ void RDGpioLogModel::addEvent(int line,bool state)
   texts.push_back(rda->timeString(QTime::currentTime()));
 
   // Line
-  texts.push_back(QString().sprintf("%d",line+1));
+  texts.push_back(QString::asprintf("%d",line+1));
 
   // State
   if(state) {
@@ -237,8 +237,8 @@ void RDGpioLogModel::updateModel()
   QString sql=sqlFields()+
   "where "+
     "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",d_matrix_number)+
-    QString().sprintf("(TYPE=%d)&&",d_gpio_type)+
+    QString::asprintf("(MATRIX=%d)&&",d_matrix_number)+
+    QString::asprintf("(TYPE=%d)&&",d_gpio_type)+
     "(EVENT_DATETIME>=\""+d_date_filter.toString("yyyy-MM-dd")+
     " 00:00:00\")&&"+
     "(EVENT_DATETIME<\""+d_date_filter.addDays(1).
@@ -272,7 +272,7 @@ void RDGpioLogModel::updateRow(int row,RDSqlQuery *q)
   texts.push_back(rda->timeString(q->value(0).toDateTime().time()));
 
   // Line
-  texts.push_back(QString().sprintf("%d",q->value(1).toInt()));
+  texts.push_back(QString::asprintf("%d",q->value(1).toInt()));
 
   // State
   if(q->value(2).toUInt()==0) {

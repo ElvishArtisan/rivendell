@@ -761,17 +761,17 @@ void RDMarkerView::save()
 
   sql=QString("update CUTS set ");
   for(int i=0;i<RDMarkerHandle::PointerRole::LastRole;i++) {
-    sql+=d_pointer_fields.at(i)+QString().sprintf("=%d,",d_pointers[i]);
+    sql+=d_pointer_fields.at(i)+QString::asprintf("=%d,",d_pointers[i]);
   }
-  sql+=QString().sprintf("`LENGTH`=%d,",d_pointers[RDMarkerHandle::CutEnd]-
+  sql+=QString::asprintf("`LENGTH`=%d,",d_pointers[RDMarkerHandle::CutEnd]-
 			 d_pointers[RDMarkerHandle::CutStart]);
   if(d_no_segue_fade) {
     sql+="`SEGUE_GAIN`=0,";
   }
   else {
-    sql+=QString().sprintf("`SEGUE_GAIN`=%d,",RD_FADE_DEPTH);
+    sql+=QString::asprintf("`SEGUE_GAIN`=%d,",RD_FADE_DEPTH);
   }
-  sql+=QString().sprintf("`PLAY_GAIN`=%d ",100*d_play_gain);
+  sql+=QString::asprintf("`PLAY_GAIN`=%d ",100*d_play_gain);
   sql+=QString(" where ")+
     "`CUT_NAME`='"+RDEscapeString(RDCut::cutName(d_cart_number,d_cut_number))+
     "'";

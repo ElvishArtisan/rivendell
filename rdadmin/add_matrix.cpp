@@ -115,7 +115,7 @@ void AddMatrix::okData()
 {
   QString sql=QString("select `MATRIX` from `MATRICES` where ")+
     "`STATION_NAME`='"+RDEscapeString(add_station)+"' && "+
-    QString().sprintf("`MATRIX`=%d",add_matrix_box->value());
+    QString::asprintf("`MATRIX`=%d",add_matrix_box->value());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     delete q;
@@ -129,25 +129,25 @@ void AddMatrix::okData()
     "`STATION_NAME`='"+RDEscapeString(add_station)+"',"+
     "`NAME`='"+tr("New Switcher")+"',"+
     "`GPIO_DEVICE`='"+RD_DEFAULT_GPIO_DEVICE+"',"+
-    QString().sprintf("`MATRIX`=%d,",add_matrix_box->value())+
+    QString::asprintf("`MATRIX`=%d,",add_matrix_box->value())+
     "`PORT`=0,"+
-    QString().sprintf("`TYPE`=%d,",add_type_box->currentIndex())+
-    QString().sprintf("`INPUTS`=%d,",
+    QString::asprintf("`TYPE`=%d,",add_type_box->currentIndex())+
+    QString::asprintf("`INPUTS`=%d,",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
 				    currentIndex(),RDMatrix::InputsControl))+
-    QString().sprintf("`OUTPUTS`=%d,",
+    QString::asprintf("`OUTPUTS`=%d,",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
 				    currentIndex(),RDMatrix::OutputsControl))+
-    QString().sprintf("`GPIS`=%d,",
+    QString::asprintf("`GPIS`=%d,",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
 				    currentIndex(),RDMatrix::GpisControl))+
-    QString().sprintf("`GPOS`=%d,",
+    QString::asprintf("`GPOS`=%d,",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
 				    currentIndex(),RDMatrix::GposControl))+
-    QString().sprintf("`PORT_TYPE`=%d,",
+    QString::asprintf("`PORT_TYPE`=%d,",
       RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->
 				    currentIndex(),RDMatrix::PortTypeControl))+
-    QString().sprintf("`PORT_TYPE_2`=%d",RDMatrix::NoPort);
+    QString::asprintf("`PORT_TYPE_2`=%d",RDMatrix::NoPort);
   RDSqlQuery::apply(sql);
 
   done(add_matrix_box->value());

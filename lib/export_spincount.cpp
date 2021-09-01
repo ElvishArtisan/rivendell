@@ -57,7 +57,7 @@ bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
   QTextStream *strm=new QTextStream(file);
   strm->setCodec("UTF-8");
   if(useLeadingZeros()) {
-    cart_fmt=QString().sprintf("%%0%uu",cartDigits());
+    cart_fmt=QString::asprintf("%%0%uu",cartDigits());
   }
   else {
     cart_fmt="%6u";
@@ -109,7 +109,7 @@ bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
     *strm << RDReport::leftJustify(artists[it->first],30)+"  ";
     *strm << RDReport::leftJustify(albums[it->first],30)+"  ";
     *strm << RDReport::leftJustify(labels[it->first],29)+"  ";
-    *strm << QString().sprintf("%5u",it->second);
+    *strm << QString::asprintf("%5u",it->second);
     *strm << "\n";
   }
   delete strm;

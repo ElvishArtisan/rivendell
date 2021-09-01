@@ -52,7 +52,7 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
   QTextStream *strm=new QTextStream(file);
   strm->setCodec("UTF-8");
   if(useLeadingZeros()) {
-    cart_fmt=QString().sprintf("%%0%uu",cartDigits());
+    cart_fmt=QString::asprintf("%%0%uu",cartDigits());
   }
   else {
     cart_fmt="%6u";
@@ -103,7 +103,7 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
   //
   while(q->next()) {
     if(q->value(12).toInt()>0) {
-      cut=QString().sprintf("%03d",q->value(12).toInt());
+      cut=QString::asprintf("%03d",q->value(12).toInt());
     }
     else {
       if((RDAirPlayConf::TrafficAction)q->value(3).toInt()==
@@ -114,7 +114,7 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
 	cut="   ";
       }
     }
-    cart_num=QString().sprintf(cart_fmt.toUtf8(),q->value(1).toUInt());
+    cart_num=QString::asprintf(cart_fmt.toUtf8(),q->value(1).toUInt());
     QString desc=q->value(13).toString();
     if(desc.isEmpty()) {
       desc="                    ";

@@ -149,7 +149,7 @@ QString RDLogFilter::whereSql() const
     }
   }
   if(filter_recent_check->isChecked()) {
-    sql+=QString().sprintf("order by `LOGS`.`ORIGIN_DATETIME` desc limit %d",
+    sql+=QString::asprintf("order by `LOGS`.`ORIGIN_DATETIME` desc limit %d",
  			   RD_LOGFILTER_LIMIT_QUAN);
   }
   

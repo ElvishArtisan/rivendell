@@ -446,7 +446,7 @@ void EditSystem::okData()
       while(q->next()) {
 	sql=QString("select `NUMBER` from `CART` where ")+
 	  "(`TITLE`='"+RDEscapeString(q->value(1).toString())+"')&&"+
-	  QString().sprintf("(`NUMBER`!=%u)",q->value(0).toUInt());
+	  QString::asprintf("(`NUMBER`!=%u)",q->value(0).toUInt());
 	q1=new RDSqlQuery(sql);
 	while(q1->next()) {
 	  dups.insert(q1->value(0).toUInt(),q->value(1).toString());
@@ -477,7 +477,7 @@ void EditSystem::okData()
 	QString filter_sql="where (";
 	for(QMultiMap<unsigned,QString>::const_iterator ci=dups.begin();
 	    ci!=dups.end();ci++) {
-	  filter_sql+=QString().sprintf("`CART`.`NUMBER`=%u||",ci.key());
+	  filter_sql+=QString::asprintf("`CART`.`NUMBER`=%u||",ci.key());
 	}
 	filter_sql=filter_sql.left(filter_sql.length()-2)+
 	  ") order by `CART`.`TITLE` ";
@@ -552,7 +552,7 @@ void EditSystem::BuildDuplicatesList(std::map<unsigned,QString> *dups)
   while(q->next()) {
     sql=QString("select `NUMBER` from `CART` where ")+
       "(`TITLE`='"+RDEscapeString(q->value(1).toString())+"')&&"+
-      QString().sprintf("(`NUMBER`!=%u)",q->value(0).toUInt());
+      QString::asprintf("(`NUMBER`!=%u)",q->value(0).toUInt());
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       (*dups)[q1->value(0).toUInt()]=q->value(1).toString();

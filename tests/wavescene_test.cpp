@@ -157,7 +157,7 @@ void MainWidget::upShrinkData()
   int x_shrink=d_shrink_factor_edit->text().toInt();
 
   x_shrink=x_shrink*2;
-  d_shrink_factor_edit->setText(QString().sprintf("%d",x_shrink));
+  d_shrink_factor_edit->setText(QString::asprintf("%d",x_shrink));
   LoadWave();
 }
 
@@ -168,7 +168,7 @@ void MainWidget::downShrinkData()
 
   if(x_shrink>1) {
     x_shrink=x_shrink/2;
-    d_shrink_factor_edit->setText(QString().sprintf("%d",x_shrink));
+    d_shrink_factor_edit->setText(QString::asprintf("%d",x_shrink));
     LoadWave();
   }
 }
@@ -212,7 +212,7 @@ void MainWidget::LoadWave()
 			  this);
 
   QGraphicsTextItem *t_item=
-    d_scene->addText(QString().sprintf("%d frames/pixel",1152*x_shrink),
+    d_scene->addText(QString::asprintf("%d frames/pixel",1152*x_shrink),
 		     d_font_engine->bigLabelFont());
   t_item->setDefaultTextColor(Qt::red);
   //  t_item->setPos(10.0,-35.0);

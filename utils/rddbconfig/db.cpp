@@ -40,7 +40,7 @@ Db::Db(QString *err_str,RDConfig *config)
   db.setUserName(config->mysqlUsername());
   db.setPassword(config->mysqlPassword());
   if(!db.open()) {
-    *err_str+=QString().sprintf("Couldn't open MySQL connection on %s",
+    *err_str+=QString::asprintf("Couldn't open MySQL connection on %s",
 				config->mysqlHostname().toUtf8().constData());
     return;
   }
@@ -68,11 +68,11 @@ void Db::clearDatabase(QString name)
   QSqlDatabase db=QSqlDatabase::database("Rivendell");
 
   if(db.isOpen()){
-    q=new QSqlQuery(QString().sprintf("drop database if exists `%s`",
+    q=new QSqlQuery(QString::asprintf("drop database if exists `%s`",
 				      name.toUtf8().constData()),db);
     delete q;
 
-    q=new QSqlQuery(QString().sprintf("create database `%s`",
+    q=new QSqlQuery(QString::asprintf("create database `%s`",
 				      name.toUtf8().constData()),db);
     delete q;
   }

@@ -132,7 +132,7 @@ QString RDHPIRecordStream::errorString(RDHPIRecordStream::Error err)
 
   default:
     str=QString(tr("Unknown RDHpiRecordStream Error:"));
-    return QString().sprintf("%s %d\n",str.toUtf8().constData(),err);
+    return QString::asprintf("%s %d\n",str.toUtf8().constData(),err);
     break;
   }
 }

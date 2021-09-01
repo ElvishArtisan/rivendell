@@ -122,7 +122,7 @@ RDAudioInfo::ErrorCode RDAudioInfo::runInfo(const QString &username,
   //
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",RDXPORT_COMMAND_AUDIOINFO).
+	       QString::asprintf("%u",RDXPORT_COMMAND_AUDIOINFO).
 	       toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
@@ -133,11 +133,11 @@ RDAudioInfo::ErrorCode RDAudioInfo::runInfo(const QString &username,
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_cart_number).toUtf8().constData(),
+	       QString::asprintf("%u",conv_cart_number).toUtf8().constData(),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
 	       CURLFORM_COPYCONTENTS,
-	       QString().sprintf("%u",conv_cut_number).toUtf8().constData(),
+	       QString::asprintf("%u",conv_cut_number).toUtf8().constData(),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     curl_formfree(first);
@@ -215,7 +215,7 @@ RDAudioInfo::ErrorCode RDAudioInfo::runInfo(const QString &username,
 
 QString RDAudioInfo::errorText(RDAudioInfo::ErrorCode err)
 {
-  QString ret=QString().sprintf("Unknown RDAudioInfo Error [%u]",err);
+  QString ret=QString::asprintf("Unknown RDAudioInfo Error [%u]",err);
 
   switch(err) {
   case RDAudioInfo::ErrorOk:

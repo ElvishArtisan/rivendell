@@ -21,11 +21,11 @@ of reading.
 Good:
   *report+=QString(" ")+
     logLine(i)->startTime(RDLogLine::Logged).toString("hh:mm:ss")+
-    QString().sprintf(" - cart %06d [",logLine(i)->cartNumber())+
+    QString::asprintf(" - cart %06d [",logLine(i)->cartNumber())+
     q->value(1).toString()+"] "+QObject::tr("is not playable")+"\n";
 
 Bad:
-  *report+=QString(" ")+logLine(i)->startTime(RDLogLine::Logged).toString("hh:mm:ss")+QString().sprintf(" - cart %06d [",logLine(i)->cartNumber())+q->value(1).toString()+"] "+QObject::tr("is not playable")+"\n";
+  *report+=QString(" ")+logLine(i)->startTime(RDLogLine::Logged).toString("hh:mm:ss")+QString::asprintf(" - cart %06d [",logLine(i)->cartNumber())+q->value(1).toString()+"] "+QObject::tr("is not playable")+"\n";
 
 
 INDENTATION:

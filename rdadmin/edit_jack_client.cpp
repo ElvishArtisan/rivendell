@@ -103,7 +103,7 @@ int EditJackClient::exec(unsigned id)
     "`DESCRIPTION`,"    // 00
     "`COMMAND_LINE` "+  // 01
     "from `JACK_CLIENTS` where "+
-    QString().sprintf("`ID`=%u",id);
+    QString::asprintf("`ID`=%u",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     edit_jack_description_edit->setText(q->value(0).toString());
@@ -124,7 +124,7 @@ void EditJackClient::okData()
     "`COMMAND_LINE`='"+
     RDEscapeString(edit_jack_command_line_edit->text().trimmed())+"' "+
     "where "+
-    QString().sprintf("`ID`=%u",edit_id);
+    QString::asprintf("`ID`=%u",edit_id);
   RDSqlQuery::apply(sql);
 
   done(true);

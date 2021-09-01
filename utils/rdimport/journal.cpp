@@ -2,7 +2,7 @@
 //
 // E-mail file importation actions
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -60,7 +60,7 @@ void Journal::addSuccess(const QString &groupname,QString filename,
 	body+=rda->user()->emailAddress()+"\n";
       }
       body+=QObject::tr("Group")+": "+groupname+"\n";
-      body+=QObject::tr("Cart Number")+QString().sprintf(": %06u",cartnum)+"\n";
+      body+=QObject::tr("Cart Number")+QString::asprintf(": %06u",cartnum)+"\n";
       body+=QObject::tr("Cart Title")+": "+title+"\n";
 
       if(!RDSendMail(&errors,subject,body,rda->system()->originEmailAddress(),
@@ -163,7 +163,7 @@ void Journal::sendAll()
 	for(int i=0;i<grps.size();i++) {
 	  for(int j=0;j<c_good_groups.size();j++) {
 	    if(c_good_groups.at(j)==grps.at(i)) {
-	      body+=QString().sprintf("%-10s %06u %-30s %-22s\n",
+	      body+=QString::asprintf("%-10s %06u %-30s %-22s\n",
 			grps.at(i).left(10).toUtf8().constData(),
 			c_good_cart_numbers.at(j),
 			c_good_titles.at(j).left(30).toUtf8().constData(),
@@ -211,7 +211,7 @@ void Journal::sendAll()
 	for(int i=0;i<grps.size();i++) {
 	  for(int j=0;j<c_bad_groups.size();j++) {
 	    if(c_bad_groups.at(j)==grps.at(i)) {
-	      body+=QString().sprintf("%-10s %-37s %-22s\n",
+	      body+=QString::asprintf("%-10s %-37s %-22s\n",
 			grps.at(i).left(10).toUtf8().constData(),
 			c_bad_errors.at(j).left(37).toUtf8().constData(),
 			c_bad_filenames.at(j).left(22).toUtf8().constData());

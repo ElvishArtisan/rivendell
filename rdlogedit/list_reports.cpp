@@ -223,7 +223,7 @@ void ListReports::GenerateLogReport(QString *report)
     switch(logline->type()) {
     case RDLogLine::Cart:
     case RDLogLine::Macro:
-      *report+=QString().sprintf("%06u ",logline->cartNumber());
+      *report+=QString::asprintf("%06u ",logline->cartNumber());
       *report+=RDReport::leftJustify(logline->groupName(),10)+" ";
       *report+=RDReport::rightJustify(RDGetTimeLength(logline->forcedLength(),false,false),8)+" ";
       *report+=RDReport::leftJustify(logline->title(),33)+" ";
@@ -278,7 +278,7 @@ void ListReports::GenerateLogReport(QString *report)
     //
     // Line
     //
-    *report+=QString().sprintf("%4d",i);
+    *report+=QString::asprintf("%4d",i);
 
     //
     // End of Line

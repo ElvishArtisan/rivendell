@@ -88,12 +88,12 @@ void RDImagePickerModel::update(int row)
     "`WIDTH`,"+           // 02
     "`HEIGHT` "+          // 03
     "from `FEED_IMAGES` where "+
-    QString().sprintf("`ID`=%d",c_image_ids.at(row));
+    QString::asprintf("`ID`=%d",c_image_ids.at(row));
   q=new RDSqlQuery(sql);
   if(q->first()) {
     c_descriptions[row]=q->value(0).toString()+"\n"+
       +"["+q->value(1).toString().toUpper()+", "+
-      QString().sprintf("%dx%d]",q->value(2).toInt(),q->value(3).toInt());
+      QString::asprintf("%dx%d]",q->value(2).toInt(),q->value(3).toInt());
     emit dataChanged(createIndex(row,0),createIndex(row,0));
   }
   delete q;
@@ -185,7 +185,7 @@ void RDImagePickerModel::LoadRows(int cat_id,const QSize &img_size)
     "`HEIGHT`,"+          // 03
     "`DATA` "+            // 04
     "from "+c_table_name+" where "+
-    c_category_column+QString().sprintf("=%d ",cat_id)+
+    c_category_column+QString::asprintf("=%d ",cat_id)+
     "order by `DESCRIPTION`";
   q=new RDSqlQuery(sql);
   if(q->size()>0) {
@@ -195,7 +195,7 @@ void RDImagePickerModel::LoadRows(int cat_id,const QSize &img_size)
       c_descriptions.
 	push_back(q->value(1).toString()+"\n"+
 		  "["+q->value(2).toString().toUpper()+", "+
-		  QString().sprintf("%dx%d]",
+		  QString::asprintf("%dx%d]",
 				    q->value(3).toInt(),q->value(4).toInt()));
       img.loadFromData(q->value(5).toByteArray());
       c_images.push_back(new QPixmap(QPixmap::fromImage(img.scaled(img_size,

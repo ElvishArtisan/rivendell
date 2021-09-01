@@ -170,7 +170,7 @@ void ListMatrices::deleteData()
   }
   RDMatrix *mtx=new RDMatrix(list_model->matrixId(rows.first()));
   QString msg=tr("Are you sure you want to delete switcher")+
-    " \""+QString().sprintf("%d",mtx->matrix())+":"+
+    " \""+QString::asprintf("%d",mtx->matrix())+":"+
     mtx->name()+"\" "+
     tr("on")+" \""+list_station+"\"?"+"\n"+
     tr("ALL references to this switcher will be deleted!");
@@ -226,37 +226,37 @@ void ListMatrices::DeleteMatrix(RDMatrix *mtx)
 {
   QString sql=QString("delete from `MATRICES` where ")+
     "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
-    QString().sprintf("`MATRIX`=%d",mtx->matrix());
+    QString::asprintf("`MATRIX`=%d",mtx->matrix());
   RDSqlQuery::apply(sql);
 
   sql=QString("delete from `INPUTS` where ")+
     "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
-    QString().sprintf("`MATRIX`=%d",mtx->matrix());
+    QString::asprintf("`MATRIX`=%d",mtx->matrix());
   RDSqlQuery::apply(sql);
 
   sql=QString("delete from `OUTPUTS` where ")+
     "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
-    QString().sprintf("`MATRIX`=%d",mtx->matrix());
+    QString::asprintf("`MATRIX`=%d",mtx->matrix());
   RDSqlQuery::apply(sql);
 
   sql=QString("delete from `SWITCHER_NODES` where ")+
     "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
-    QString().sprintf("`MATRIX`=%d",mtx->matrix());
+    QString::asprintf("`MATRIX`=%d",mtx->matrix());
   RDSqlQuery::apply(sql);
 
   sql=QString("delete from `GPIS` where ")+
   "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
-  QString().sprintf("`MATRIX`=%d",mtx->matrix());
+  QString::asprintf("`MATRIX`=%d",mtx->matrix());
   RDSqlQuery::apply(sql);
 
   sql=QString("delete from `GPOS` where ")+
   "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
-  QString().sprintf("`MATRIX`=%d",mtx->matrix());
+  QString::asprintf("`MATRIX`=%d",mtx->matrix());
   RDSqlQuery::apply(sql);
 
   sql=QString("delete from `VGUEST_RESOURCES` where ")+
   "`STATION_NAME`='"+RDEscapeString(list_station)+"' && "+
-  QString().sprintf("`MATRIX_NUM`=%d",mtx->matrix());
+  QString::asprintf("`MATRIX_NUM`=%d",mtx->matrix());
   RDSqlQuery::apply(sql);
 
   list_model->removeMatrix(mtx->id());

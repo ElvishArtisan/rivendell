@@ -2,7 +2,7 @@
 //
 // Abstract ALSA 'card' information
 //
-//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +41,7 @@ RDAlsaCard::RDAlsaCard(snd_ctl_t *ctl,int index)
     pcm=0;
     while(pcm>=0) {
       card_pcm_names.push_back(snd_pcm_info_get_name(pcm_info)+
-			       QString().sprintf("[%02d]",pcm+1));
+			       QString::asprintf("[%02d]",pcm+1));
       snd_ctl_pcm_next_device(ctl,&pcm);
       card_enableds.push_back(false);
     }
@@ -101,14 +101,14 @@ void RDAlsaCard::setEnabled(int pcm_num,bool state)
 
 QString RDAlsaCard::dump() const
 {
-  QString ret=QString().sprintf("Card %d\n",index());
+  QString ret=QString::asprintf("Card %d\n",index());
 
   ret+="  ID: "+id()+"\n";
   ret+="  Name: "+name()+"\n";
   ret+="  LongName: "+longName()+"\n";
   ret+="  MixerName: "+mixerName()+"\n";
   for(int i=0;i<pcmQuantity();i++) {
-    ret+=QString().sprintf("    PCM[%d]: ",i)+pcmName(i)+"\n";
+    ret+=QString::asprintf("    PCM[%d]: ",i)+pcmName(i)+"\n";
   }
 
   return ret;

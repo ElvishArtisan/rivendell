@@ -767,7 +767,7 @@ QString RDConfig::createTablePostfix(const QString &engine)
 
 QString RDConfig::rdselectExitCodeText(RDSelectExitCode code)
 {
-  QString ret=QObject::tr("Unknown error")+QString().sprintf(" [%d]",code);
+  QString ret=QObject::tr("Unknown error")+QString::asprintf(" [%d]",code);
 
   switch(code) {
   case RDConfig::RDSelectOk:

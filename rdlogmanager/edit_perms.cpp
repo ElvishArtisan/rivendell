@@ -87,7 +87,7 @@ EditPerms::EditPerms(QString object_name,ObjectType type,QWidget *parent)
     svc_object_sel->destInsertItem(q->value(0).toString());
   }
   delete q;
-  sql=QString().sprintf("select `NAME` from `SERVICES`");
+  sql=QString::asprintf("select `NAME` from `SERVICES`");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(svc_object_sel->destFindItem(q->value(0).toString())==0) {

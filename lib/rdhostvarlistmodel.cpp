@@ -194,7 +194,7 @@ void RDHostvarListModel::refresh(const QModelIndex &row)
 {
   if(row.row()<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where `ID`=%d",d_ids.at(row.row()));
+      QString::asprintf("where `ID`=%d",d_ids.at(row.row()));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(row.row(),q);
@@ -243,7 +243,7 @@ void RDHostvarListModel::updateRowLine(int line)
 {
   if(line<d_texts.size()) {
     QString sql=sqlFields()+
-      QString().sprintf("where `ID`=%d ",d_ids.at(line));
+      QString::asprintf("where `ID`=%d ",d_ids.at(line));
     RDSqlQuery *q=new RDSqlQuery(sql);
     if(q->first()) {
       updateRow(line,q);

@@ -64,7 +64,7 @@ TopStrip::TopStrip(QWidget *parent)
   d_logo=new QLabel(this);
   d_logo->setAlignment(Qt::AlignCenter);
   d_logo->setFont(bannerFont());
-  d_logo->setText(QString().sprintf("User Logo\n(%dx%d)",
+  d_logo->setText(QString::asprintf("User Logo\n(%dx%d)",
 					    RD_RDAIRPLAY_LOGO_WIDTH,
 					    RD_RDAIRPLAY_LOGO_HEIGHT));
   d_logo->setStyleSheet("background-color: #99FF99");

@@ -267,7 +267,7 @@ int RDGroup::freeCartQuantity() const
   int low=q->value(0).toInt();
   int high=q->value(1).toInt();
   sql=QString("select `NUMBER` from `CART` where ")+
-    QString().sprintf("`NUMBER`>=%d)&&(`NUMBER`<=%d)",
+    QString::asprintf("`NUMBER`>=%d)&&(`NUMBER`<=%d)",
 		      q->value(0).toInt(),q->value(1).toInt());
   delete q;
   q=new RDSqlQuery(sql);
@@ -296,7 +296,7 @@ bool RDGroup::reserveCarts(QList<unsigned> *cart_nums,
     }
     else {
       for(int i=0;i<cart_nums->size();i++) {
-	sql=QString().sprintf("delete from `CART` where `NUMBER`=%u",
+	sql=QString::asprintf("delete from `CART` where `NUMBER`=%u",
 			      cart_nums->at(i));
 	q=new RDSqlQuery(sql);
 	delete q;
@@ -418,7 +418,7 @@ unsigned RDGroup::GetNextFreeCart(unsigned startcart) const
       return 0;
     }
     sql=QString("select `NUMBER` from `CART` where ")+
-      QString().sprintf("(`NUMBER`>=%u)&&(`NUMBER`<=%u) order by `NUMBER`",
+      QString::asprintf("(`NUMBER`>=%u)&&(`NUMBER`<=%u) order by `NUMBER`",
 			cart_low_limit,cart_high_limit);
     q=new RDSqlQuery(sql);
     if(q->size()<1) {
@@ -456,12 +456,12 @@ bool RDGroup::ReserveCart(const QString &station_name,RDCart::Type type,
   bool ret=false;
 
   if((cart_num>=defaultLowCart())&&(cart_num<=defaultHighCart())) {
-    sql=QString().sprintf("insert into `CART` set `NUMBER`=%u,",cart_num)+
+    sql=QString::asprintf("insert into `CART` set `NUMBER`=%u,",cart_num)+
       "`GROUP_NAME`='"+RDEscapeString(group_name)+"',"+
-      QString().sprintf("`TYPE`=%d,",type)+
+      QString::asprintf("`TYPE`=%d,",type)+
       "`TITLE`='["+RDEscapeString(QObject::tr("reserved"))+"]',"+
       "`PENDING_STATION`='"+RDEscapeString(station_name)+"',"+
-      QString().sprintf("`PENDING_PID`=%d,",getpid())+
+      QString::asprintf("`PENDING_PID`=%d,",getpid())+
       "`PENDING_DATETIME`=now()";
     q=new QSqlQuery(sql);
     ret=q->isActive();
@@ -476,8 +476,8 @@ void RDGroup::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update `GROUPS` set `")+
-    param+QString().sprintf("`=%d where ",value)+
+  sql=QString::asprintf("update `GROUPS` set `")+
+    param+QString::asprintf("`=%d where ",value)+
     "`NAME`='"+RDEscapeString(group_name)+"'";
   q=new RDSqlQuery(sql);
   delete q;
@@ -490,7 +490,7 @@ void RDGroup::SetRow(const QString &param,unsigned value) const
   QString sql;
 
   sql=QString("update `GROUPS` set `")+
-    param+QString().sprintf("`=%u where ",value)+
+    param+QString::asprintf("`=%u where ",value)+
     "`NAME`='"+RDEscapeString(group_name)+"'";
   q=new RDSqlQuery(sql);
   delete q;

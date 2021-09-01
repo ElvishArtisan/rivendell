@@ -188,7 +188,7 @@ void EditLogLine::FillCart(int cartnum)
 {
   RDCart *cart=new RDCart(cartnum);
   if(cartnum!=0) {
-    edit_cart_edit->setText(QString().sprintf("%05u",cartnum));
+    edit_cart_edit->setText(QString::asprintf("%05u",cartnum));
   }
   edit_title_edit->setText(cart->title());
   edit_artist_edit->setText(cart->artist());

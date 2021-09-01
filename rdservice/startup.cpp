@@ -256,31 +256,31 @@ bool MainObject::StartDropboxes(QString *err_msg)
   while(q->next()) {
     QStringList args;
 
-    args.push_back(QString().sprintf("--persistent-dropbox-id=%d",
+    args.push_back(QString::asprintf("--persistent-dropbox-id=%d",
 				     q->value(16).toInt()));
     args.push_back("--drop-box");
     sql=QString("select `SCHED_CODE` from `DROPBOX_SCHED_CODES` where ")+
-      QString().sprintf("`DROPBOX_ID`=%d",q->value(0).toInt());
+      QString::asprintf("`DROPBOX_ID`=%d",q->value(0).toInt());
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
-      args.push_back(QString().sprintf("--add-scheduler-code=")+
+      args.push_back(QString::asprintf("--add-scheduler-code=")+
 		     q1->value(0).toString()+"");
     }
     delete q1;
-    args.push_back(QString().sprintf("--normalization-level=%d",
+    args.push_back(QString::asprintf("--normalization-level=%d",
 				     q->value(3).toInt()/100));
-    args.push_back(QString().sprintf("--autotrim-level=%d",
+    args.push_back(QString::asprintf("--autotrim-level=%d",
 				     q->value(4).toInt()/100));
     if(q->value(5).toUInt()>0) {
-      args.push_back(QString().sprintf("--to-cart=%u",q->value(5).toUInt()));
+      args.push_back(QString::asprintf("--to-cart=%u",q->value(5).toUInt()));
     }
     if(q->value(6).toString()=="Y") {
       args.push_back("--use-cartchunk-cutid");
     }
     if(q->value(22).toInt()<1) {
-      args.push_back(QString().sprintf("--segue-level=%d",
+      args.push_back(QString::asprintf("--segue-level=%d",
 				       q->value(22).toInt()));
-      args.push_back(QString().sprintf("--segue-length=%u",
+      args.push_back(QString::asprintf("--segue-length=%u",
 				       q->value(23).toUInt()));
     }
     if(q->value(7).toString()=="Y") {
@@ -306,17 +306,17 @@ bool MainObject::StartDropboxes(QString *err_msg)
       args.push_back("--mail-per-file");
     }
     if(q->value(17).toString()=="Y") {
-      args.push_back(QString().sprintf("--create-startdate-offset=%d",
+      args.push_back(QString::asprintf("--create-startdate-offset=%d",
 				       q->value(18).toInt()));
-      args.push_back(QString().sprintf("--create-enddate-offset=%d",
+      args.push_back(QString::asprintf("--create-enddate-offset=%d",
 				       q->value(19).toInt()));
     }
     if(!q->value(20).toString().isEmpty()) {
       args.push_back(QString("--set-user-defined=")+q->value(20).toString());
     }
-    args.push_back(QString().sprintf("--startdate-offset=%d",
+    args.push_back(QString::asprintf("--startdate-offset=%d",
 				     q->value(14).toInt()));
-    args.push_back(QString().sprintf("--enddate-offset=%d",
+    args.push_back(QString::asprintf("--enddate-offset=%d",
 				     q->value(15).toInt()));
     if(RDBool(q->value(11).toString())) {
       args.push_back("--log-syslog");

@@ -222,7 +222,7 @@ void EditSwitchEvent::activateMatrixData(const QString &str)
     "`NUMBER` "+
     "from `INPUTS` where "+
     "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d) ",GetMatrix())+
+    QString::asprintf("(`MATRIX`=%d) ",GetMatrix())+
     "order by `NAME`";
   edit_input_box->clear();
   edit_input_box->insertItem(tr("--OFF--"));
@@ -250,7 +250,7 @@ void EditSwitchEvent::activateMatrixData(const QString &str)
     "`NUMBER` "+
     "from `OUTPUTS` where "+
     "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d) ",GetMatrix())+
+    QString::asprintf("(`MATRIX`=%d) ",GetMatrix())+
     "order by `NAME`";
   edit_output_box->clear();
   int output=edit_recording->switchDestination();
@@ -434,7 +434,7 @@ int EditSwitchEvent::GetSource()
     "`NUMBER` "+
     "from `INPUTS` where "+
     "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",GetMatrix())+
+    QString::asprintf("(`MATRIX`=%d)&&",GetMatrix())+
     "(`NAME`='"+RDEscapeString(edit_input_box->currentText())+"')";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
@@ -453,7 +453,7 @@ int EditSwitchEvent::GetDestination()
     "`NUMBER` "+
     "from `OUTPUTS` where "+
     "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
-    QString().sprintf("(`MATRIX`=%d)&&",GetMatrix())+
+    QString::asprintf("(`MATRIX`=%d)&&",GetMatrix())+
     "(`NAME`='"+RDEscapeString(edit_output_box->currentText())+"')";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
@@ -470,12 +470,12 @@ bool EditSwitchEvent::CheckEvent(bool include_myself)
     "`ID` "+
     "from `RECORDINGS` where "+
     "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
-    QString().sprintf("(`TYPE`=%d)&&",RDRecording::SwitchEvent)+
+    QString::asprintf("(`TYPE`=%d)&&",RDRecording::SwitchEvent)+
     "(`START_TIME`='"+
     RDEscapeString(edit_event_widget->startTime().toString("hh:mm:ss"))+"')&&"+
-    QString().sprintf("(`CHANNEL`=%d)&&",GetMatrix())+
-    QString().sprintf("(`SWITCH_INPUT`=%d)&&",GetSource())+
-    QString().sprintf("(`SWITCH_OUTPUT`=%d)",GetDestination());
+    QString::asprintf("(`CHANNEL`=%d)&&",GetMatrix())+
+    QString::asprintf("(`SWITCH_INPUT`=%d)&&",GetSource())+
+    QString::asprintf("(`SWITCH_OUTPUT`=%d)",GetDestination());
   if(edit_dow_selector->dayOfWeekEnabled(7)) {
     sql+="&&(`SUN`='Y')";
   }
@@ -498,7 +498,7 @@ bool EditSwitchEvent::CheckEvent(bool include_myself)
     sql+="&&(`SAT`='Y')";
   }
   if(!include_myself) {
-    sql+=QString().sprintf("&&(`ID`!=%d)",edit_recording->id());
+    sql+=QString::asprintf("&&(`ID`!=%d)",edit_recording->id());
   }
   RDSqlQuery *q=new RDSqlQuery(sql);
   bool res=!q->first();

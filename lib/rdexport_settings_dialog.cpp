@@ -317,7 +317,7 @@ void RDExportSettingsDialog::okData()
       "`ID` "+  // 00
       "from `ENCODER_PRESETS` where "+
       "`NAME`='"+RDEscapeString(lib_name_edit->text())+"' && "+
-      QString().sprintf("`ID`!=%u",lib_id);
+      QString::asprintf("`ID`!=%u",lib_id);
     q=new RDSqlQuery(sql);
     if(q->first()) {
       QMessageBox::information(this,lib_caption+" - "+tr("Duplicate Name"),
@@ -954,8 +954,8 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
     lib_quality_spin->setValue(qual);
     break;
   }
-  lib_channels_box->setCurrentText(QString().sprintf("%u",channels));
-  lib_samprate_box->setCurrentText(QString().sprintf("%u",samprate));
+  lib_channels_box->setCurrentText(QString::asprintf("%u",channels));
+  lib_samprate_box->setCurrentText(QString::asprintf("%u",samprate));
 }
 
 

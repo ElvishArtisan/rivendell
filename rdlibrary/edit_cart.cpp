@@ -62,7 +62,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
     rdcart_cart=new RDCart(cartnums.at(0));
     rdcart_import_path=path;
     setWindowTitle("RDLibrary - "+tr("Edit Cart")+
-		   QString().sprintf(" %06u",rdcart_cart->number())+" ["+
+		   QString::asprintf(" %06u",rdcart_cart->number())+" ["+
 		   rdcart_cart->title()+"]");
     modification_allowed=
       rda->user()->modifyCarts()&&rdcart_cart->owner().isEmpty();
@@ -555,7 +555,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_group_model->changeUser();
   if(cartnums.size()==1) { //single edit
     rdcart_number_edit->
-      setText(QString().sprintf("%06d",rdcart_cart->number()));
+      setText(QString::asprintf("%06d",rdcart_cart->number()));
     rdcart_group_box->setCurrentText(rdcart_cart->groupName());
     rdcart_group_edit->setText(rdcart_group_box->currentText());
     switch(rdcart_cart->type()) {
@@ -599,7 +599,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
     }
     if(rdcart_cart->year()>0) {
       rdcart_controls.year_edit->
-	setText(QString().sprintf("%d",rdcart_cart->year()));
+	setText(QString::asprintf("%d",rdcart_cart->year()));
     }
     sched_codes=rdcart_cart->schedCodes();
     rdcart_controls.artist_edit->setText(rdcart_cart->artist());
@@ -749,7 +749,7 @@ void EditCart::okData()
     if(!rda->system()->allowDuplicateCartTitles()) {
       sql=QString("select `NUMBER` from `CART` where ")+
 	"(`TITLE`='"+RDEscapeString(rdcart_controls.title_edit->text())+"') &&"+
-	QString().sprintf("(`NUMBER`!=%u)",rdcart_cart->number());
+	QString::asprintf("(`NUMBER`!=%u)",rdcart_cart->number());
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	QMessageBox::warning(this,tr("Duplicate Title"),
@@ -779,7 +779,7 @@ void EditCart::okData()
 	  tr("The following cut order values are assigned more than once")+
 	  ":\n";
 	for(int i=0;i<dup_values.size();i++) {
-	  msg+=QString().sprintf("%d, ",dup_values.at(i));
+	  msg+=QString::asprintf("%d, ",dup_values.at(i));
 	}
 	msg=msg.left(msg.length()-2)+".";
 	QMessageBox::warning(this,"RDLibrary - "+tr("Duplicate Cut Order"),msg);

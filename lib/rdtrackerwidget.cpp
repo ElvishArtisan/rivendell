@@ -3199,7 +3199,7 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
 	      d_loglines[2]->talkStartPoint();
 	  }
 	  d_wpg[2]->drawText(550,75,tr("Talk")+
-			     QString().sprintf(" :%d",(talk_len+500)/1000));
+			     QString::asprintf(" :%d",(talk_len+500)/1000));
 	}
 	else {
 	  d_wpg[2]->drawText(550,75,tr("Talk")+QString().
@@ -3663,7 +3663,7 @@ void RDTrackerWidget::UpdateControls()
 
 void RDTrackerWidget::UpdateRemaining()
 {
-  d_tracks_remaining_label->setText(QString().sprintf("%d",d_tracks));
+  d_tracks_remaining_label->setText(QString::asprintf("%d",d_tracks));
   if(d_block_valid) {
     d_time_remaining_label->
       setText(RDGetTimeLength(d_time_remaining,true,true));

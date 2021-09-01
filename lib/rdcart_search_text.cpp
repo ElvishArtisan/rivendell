@@ -121,7 +121,7 @@ QString RDSchedSearchText(const QStringList &schedcodes)
   QString ret="";
 
   for(int i=0;i<schedcodes.size();i++) {
-    ret+=QString().sprintf(" inner join `CART_SCHED_CODES` as S%d on (`CART`.`NUMBER`=S%d.`CART_NUMBER` and S%d.`SCHED_CODE`='%s')",i,i,i,schedcodes.at(i).toUtf8().constData());
+    ret+=QString::asprintf(" inner join `CART_SCHED_CODES` as S%d on (`CART`.`NUMBER`=S%d.`CART_NUMBER` and S%d.`SCHED_CODE`='%s')",i,i,i,schedcodes.at(i).toUtf8().constData());
   }
   return ret;
 }

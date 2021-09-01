@@ -163,7 +163,7 @@ void MainObject::ProcessCarts()
 	"`ITEM_DATETIME` "+  // 01
 	"from `REPL_CART_STATE` where "+
 	"(`REPLICATOR_NAME`='"+RDEscapeString(repl_name)+"')&&"+
-	QString().sprintf("(`CART_NUMBER`=%u)",q->value(0).toUInt());
+	QString::asprintf("(`CART_NUMBER`=%u)",q->value(0).toUInt());
       q1=new RDSqlQuery(sql);
       if(q1->first()) {
 	stale=q->value(2).toDateTime()>q1->value(1).toDateTime();
@@ -176,12 +176,12 @@ void MainObject::ProcessCarts()
 	  if(q1->isValid()) {
 	    sql=QString("update `REPL_CART_STATE` set ")+
 	      "`ITEM_DATETIME`=now() where "+
-	      QString().sprintf("`ID`=%u",q1->value(0).toUInt());
+	      QString::asprintf("`ID`=%u",q1->value(0).toUInt());
 	  }
 	  else {
 	    sql=QString("insert into `REPL_CART_STATE` set ")+
 	      "`REPLICATOR_NAME`='"+RDEscapeString(repl_name)+"',"+
-	      QString().sprintf("`CART_NUMBER`=%u,",q->value(0).toUInt())+
+	      QString::asprintf("`CART_NUMBER`=%u,",q->value(0).toUInt())+
 	      "`ITEM_DATETIME`=now()";
 	  }
 	  RDSqlQuery::apply(sql);

@@ -85,19 +85,19 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
 
-  label_hostname=new QLabel(QString().sprintf("SQL Server: %s",
+  label_hostname=new QLabel(QString::asprintf("SQL Server: %s",
 	 rd_config->mysqlHostname().toUtf8().constData()),this);
   label_hostname->setGeometry(0,5,sizeHint().width(),16);
   label_hostname->setFont(day_font);
   label_hostname->setAlignment(Qt::AlignCenter);
 
-  label_username=new QLabel(QString().sprintf("SQL Usename: %s",
+  label_username=new QLabel(QString::asprintf("SQL Usename: %s",
 	 rd_config->mysqlUsername().toUtf8().constData()),this);
   label_username->setGeometry(0,20,sizeHint().width(),16);
   label_username->setFont(day_font);
   label_username->setAlignment(Qt::AlignCenter);
 
-  label_dbname=new QLabel(QString().sprintf("SQL Database: %s",
+  label_dbname=new QLabel(QString::asprintf("SQL Database: %s",
 	 rd_config->mysqlDbname().toUtf8().constData()),this);
   label_dbname->setGeometry(0,35,sizeHint().width(),16);
   label_dbname->setFont(day_font);
@@ -170,7 +170,7 @@ void MainWidget::mismatchData()
     return;
   }
 
-  if (QMessageBox::question(this,tr("Database Mismatch"),QString().sprintf("Your database is version %d. Your Rivendell %s installation requires version %d. Would you like to modify your database to the current version?",db->schema(),VERSION,RD_VERSION_DATABASE),(QMessageBox::No|QMessageBox::Yes)) != QMessageBox::Yes) {
+  if (QMessageBox::question(this,tr("Database Mismatch"),QString::asprintf("Your database is version %d. Your Rivendell %s installation requires version %d. Would you like to modify your database to the current version?",db->schema(),VERSION,RD_VERSION_DATABASE),(QMessageBox::No|QMessageBox::Yes)) != QMessageBox::Yes) {
     return;
   }
 
@@ -189,12 +189,12 @@ void MainWidget::mismatchData()
     else {
       if(!stderr.isEmpty()) {
         QMessageBox::information(this,"Database Modified with Warnings",
-          QString().sprintf("Modified database to version %d with warnings:\n\n%s",
+          QString::asprintf("Modified database to version %d with warnings:\n\n%s",
 			    RD_VERSION_DATABASE,stderr.toUtf8().constData()));
       }
       else {
         QMessageBox::information(this,"Database Modified Successfully",
-          QString().sprintf("Modified database to version %d",
+          QString::asprintf("Modified database to version %d",
 			    RD_VERSION_DATABASE));
       }
       RDApplication::syslog(rd_config,LOG_INFO,
@@ -225,7 +225,7 @@ void MainWidget::updateLabels()
     db_restore_button->setEnabled(false);
   }
   else {
-    label_schema->setText(QString().sprintf("DB Version: %d",db->schema()));
+    label_schema->setText(QString::asprintf("DB Version: %d",db->schema()));
     db_backup_button->setEnabled(true);
     db_restore_button->setEnabled(true);
 
@@ -294,7 +294,7 @@ void MainWidget::backupData()
 
   if (!db->isOpen()) {
     QMessageBox::critical(this,tr("RDDbConfig Error"),
-      QString().sprintf("Could not open %s database.",
+      QString::asprintf("Could not open %s database.",
 			rd_config->mysqlDbname().toUtf8().constData()));
     return;
   }
@@ -306,9 +306,9 @@ void MainWidget::backupData()
   if (!filename.isEmpty()) {
     QProcess backupProcess(this);
     QStringList args;
-    args << QString().sprintf("--user=%s",rd_config->mysqlUsername().toUtf8().constData())
-	 << QString().sprintf("--password=%s",rd_config->mysqlPassword().toUtf8().constData())
-	 << QString().sprintf("--host=%s",rd_config->mysqlHostname().toUtf8().constData())
+    args << QString::asprintf("--user=%s",rd_config->mysqlUsername().toUtf8().constData())
+	 << QString::asprintf("--password=%s",rd_config->mysqlPassword().toUtf8().constData())
+	 << QString::asprintf("--host=%s",rd_config->mysqlHostname().toUtf8().constData())
       << rd_config->mysqlDbname();
     backupProcess.setStandardOutputFile(filename);
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -321,7 +321,7 @@ void MainWidget::backupData()
     }
     else {
       QMessageBox::information(this,"Database Backed Up Successfully",
-        QString().sprintf("Backed up %s database to %s",
+        QString::asprintf("Backed up %s database to %s",
 			  rd_config->mysqlDbname().toUtf8().constData(),
 			  filename.toUtf8().constData()));
       RDApplication::syslog(rd_config,LOG_INFO,"backed up %s database to %s",
@@ -356,9 +356,9 @@ void MainWidget::restoreData()
 
     QProcess restoreProcess(this);
     QStringList args;
-    args << QString().sprintf("--user=%s",rd_config->mysqlUsername().toUtf8().constData())
-	 << QString().sprintf("--password=%s",rd_config->mysqlPassword().toUtf8().constData())
-	 << QString().sprintf("--host=%s",rd_config->mysqlHostname().toUtf8().constData())
+    args << QString::asprintf("--user=%s",rd_config->mysqlUsername().toUtf8().constData())
+	 << QString::asprintf("--password=%s",rd_config->mysqlPassword().toUtf8().constData())
+	 << QString::asprintf("--host=%s",rd_config->mysqlHostname().toUtf8().constData())
       << rd_config->mysqlDbname();
     restoreProcess.setStandardInputFile(filename);
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -372,7 +372,7 @@ void MainWidget::restoreData()
     }
     else {
       QMessageBox::information(this,"Database Restored Successfully",
-        QString().sprintf("Restored %s database from %s",
+        QString::asprintf("Restored %s database from %s",
 			  rd_config->mysqlDbname().toUtf8().constData(),
 			  filename.toUtf8().constData()));
       RDApplication::syslog(rd_config,LOG_INFO,"restored %s database from %s",

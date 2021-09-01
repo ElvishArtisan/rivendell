@@ -120,11 +120,11 @@ void BtSs41Mlr::processCommand(RDMacro *cmd)
 	  return;
 	}
 	if(cmd->arg(1).toInt()==0) {
-	  str=QString().sprintf("*%dMA",BTSS41MLR_UNIT_ID);
+	  str=QString::asprintf("*%dMA",BTSS41MLR_UNIT_ID);
 	  bt_device->write(str.toUtf8());
 	}
 	else {
-	  str=QString().sprintf("*%d%02d",BTSS41MLR_UNIT_ID,
+	  str=QString::asprintf("*%d%02d",BTSS41MLR_UNIT_ID,
 				cmd->arg(1).toInt());
 	  bt_device->write(str.toUtf8());
 	}
@@ -183,7 +183,7 @@ void BtSs41Mlr::ProcessStatus(const QString &msg)
   QStringList f0=msg.split(",");
 
   if(f0.size()==10) {
-    if((f0[0]==QString().sprintf("S%dP",BTSS41MLR_UNIT_ID))&&(f0[1]=="A")) {
+    if((f0[0]==QString::asprintf("S%dP",BTSS41MLR_UNIT_ID))&&(f0[1]=="A")) {
       for(int i=0;i<bt_gpis;i++) {
 	if(f0[2+i]=="0") {
 	  if(bt_gpi_state[i]&&(!bt_gpi_mask[i])) {

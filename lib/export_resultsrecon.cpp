@@ -79,10 +79,10 @@ bool RDReport::ExportResultsReport(const QString &filename,
     *strm << "on-air,";
 
     // Cart Number
-    *strm << QString().sprintf("%06u,",q->value(3).toUInt());
+    *strm << QString::asprintf("%06u,",q->value(3).toUInt());
 
     // Cut Number
-    *strm << QString().sprintf("%03d,",q->value(4).toInt());
+    *strm << QString::asprintf("%03d,",q->value(4).toInt());
 
     // Title / Artist
     *strm << QString().
@@ -97,7 +97,7 @@ bool RDReport::ExportResultsReport(const QString &filename,
     *strm << q->value(7).toTime().toString("hh:mm:ss,");
 
     // Line Counts
-    *strm << QString().sprintf("%05d|-|%05d|00",line,line);
+    *strm << QString::asprintf("%05d|-|%05d|00",line,line);
 
     // EOL
     *strm << "\r\n";

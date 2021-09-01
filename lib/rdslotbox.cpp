@@ -240,11 +240,11 @@ void RDSlotBox::setCart(RDLogLine *logline)
   switch(line_type) {
   case RDLogLine::Cart:
     cart=new RDCart(logline->cartNumber());
-    cut=new RDCut(QString().sprintf("%06u_%03u",logline->cartNumber(),
+    cut=new RDCut(QString::asprintf("%06u_%03u",logline->cartNumber(),
 				    logline->cutNumber()));
     if(!cart->exists()) {
       line_cart_label->
-	setText(QString().sprintf("%06u",logline->cartNumber()));
+	setText(QString::asprintf("%06u",logline->cartNumber()));
       line_description_label->clear();
       line_artist_label->clear();
       line_cut_label->clear();
@@ -268,7 +268,7 @@ void RDSlotBox::setCart(RDLogLine *logline)
       if(((cart->forcedLength()==0)&&(cart->type()==RDCart::Audio))||
 	 (line_logline->state()==RDLogLine::NoCut)) {
 	line_cart_label->
-	  setText(QString().sprintf("%06u",logline->cartNumber()));
+	  setText(QString::asprintf("%06u",logline->cartNumber()));
 	line_description_label->setText(cut->description());
 	line_artist_label->setText(tr("[NO AUDIO AVAILABLE]"));
 	line_cut_label->clear();
@@ -284,7 +284,7 @@ void RDSlotBox::setCart(RDLogLine *logline)
       }
       else {
 	line_cart_label->
-	  setText(QString().sprintf("%06u",logline->cartNumber()));
+	  setText(QString::asprintf("%06u",logline->cartNumber()));
 	if(line_logline->evergreen()) {
 	  SetColor(QColor(LABELBOX_EVERGREEN_COLOR));
 	}
@@ -355,7 +355,7 @@ void RDSlotBox::setCart(RDLogLine *logline)
 	line_position_bar->setValue(line_logline->playPosition());
 	if(logline->cutNumber()>=0) {
 	  line_cut_label->
-	    setText(QString().sprintf("%03u",logline->cutNumber()));
+	    setText(QString::asprintf("%03u",logline->cutNumber()));
 	  line_outcue_label->
 	    setText(logline->resolveWildcards(line_airplay_conf->
 					      outcueTemplate(),log_id+1));
@@ -382,7 +382,7 @@ void RDSlotBox::setCart(RDLogLine *logline)
     line_up_label->hide();
     line_down_label->hide();
     cart=new RDCart(logline->cartNumber());
-    cut=new RDCut(QString().sprintf("%06u_%03u",logline->cartNumber(),
+    cut=new RDCut(QString::asprintf("%06u_%03u",logline->cartNumber(),
 				    logline->cutNumber()));
     if(!cart->exists()) {
       SetColor(QColor(LABELBOX_MISSING_COLOR));
@@ -390,7 +390,7 @@ void RDSlotBox::setCart(RDLogLine *logline)
     else {
       SetColor(QColor(LABELBOX_BACKGROUND_COLOR));
     }
-    line_cart_label->setText(QString().sprintf("%06u",cart->number()));
+    line_cart_label->setText(QString::asprintf("%06u",cart->number()));
     line_cut_label->setText("");
     line_group_label->setText(cart->groupName());
     p=line_group_label->palette();

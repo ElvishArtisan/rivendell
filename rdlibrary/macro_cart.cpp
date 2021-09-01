@@ -33,7 +33,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   rdcart_cart=cart;
   rdcart_allow_modification=rda->user()->modifyCarts();
 
-  setWindowTitle(QString().sprintf("%u",rdcart_cart->number())+" - "+
+  setWindowTitle(QString::asprintf("%u",rdcart_cart->number())+" - "+
     rdcart_cart->title());
 
   //

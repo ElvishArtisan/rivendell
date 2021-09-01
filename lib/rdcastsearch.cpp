@@ -37,7 +37,7 @@ QString RDCastSearchString(const QString &filter,bool active_only)
       "(`PODCASTS`.`ITEM_SOURCE_URL` like \"%"+fil+"%\"))";
   }
   if(active_only) {
-    ret+=QString().sprintf("&&(`STATUS`=%d)",RDPodcast::StatusActive);
+    ret+=QString::asprintf("&&(`STATUS`=%d)",RDPodcast::StatusActive);
   }
   return ret;
 }
@@ -59,7 +59,7 @@ QString RDCastSearch(const QString &keyname,bool is_super,const QString &filter,
       "`KEY_NAME`='"+RDEscapeString(keyname)+"'";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      ret+=QString().sprintf("`PODCASTS`.`FEED_ID`=%u || ",
+      ret+=QString::asprintf("`PODCASTS`.`FEED_ID`=%u || ",
 			       q->value(0).toUInt());
     }
     delete q;
@@ -72,7 +72,7 @@ QString RDCastSearch(const QString &keyname,bool is_super,const QString &filter,
       "`KEY_NAME`='"+RDEscapeString(keyname)+"'";
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      ret=QString().sprintf("where `PODCASTS`.`FEED_ID`=%u ",
+      ret=QString::asprintf("where `PODCASTS`.`FEED_ID`=%u ",
 			      q->value(0).toUInt());
     }
     delete q;

@@ -57,10 +57,10 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
   QTextStream *strm=new QTextStream(file);
   strm->setCodec("UTF-8");
   if(useLeadingZeros()) {
-    air_fmt=QString().sprintf("%%0%uu ",cartDigits());
+    air_fmt=QString::asprintf("%%0%uu ",cartDigits());
   }
   else {
-    air_fmt=QString().sprintf("%%%-uu ",cartDigits());
+    air_fmt=QString::asprintf("%%%-uu ",cartDigits());
   }
   sql=QString("select ")+
     "`ELR_LINES`.`LENGTH`,"+          // 00
@@ -106,7 +106,7 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
     else {
       *strm << "00:00:00 ";
     }
-    *strm << QString().sprintf(air_fmt.toUtf8(),q->value(1).toUInt());
+    *strm << QString::asprintf(air_fmt.toUtf8(),q->value(1).toUInt());
     *strm << RDReport::leftJustify(q->value(9).toString(),34)+" ";
     *strm << RDReport::leftJustify(q->value(6).toString(),32);
     *strm << "\x0d\x0a";

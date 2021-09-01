@@ -281,7 +281,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "`FADEDOWN_POINT` int default -1,"+
     "`SEGUE_START_POINT` int default -1,"+
     "`SEGUE_END_POINT` int default -1,"+
-    QString().sprintf("`SEGUE_GAIN` int default %d,",RD_FADE_DEPTH)+
+    QString::asprintf("`SEGUE_GAIN` int default %d,",RD_FADE_DEPTH)+
     "`HOOK_START_POINT` int default -1,"+
     "`HOOK_END_POINT` int default -1,"+
     "`TALK_START_POINT` int default -1,"+
@@ -1520,11 +1520,11 @@ bool MainObject::CreateNewDb(QString *err_msg) const
   //
   sql=QString("create table if not exists `SYSTEM` (")+
     "`ID` int auto_increment not null primary key,"+
-    QString().sprintf("`SAMPLE_RATE` int unsigned default %d,",
+    QString::asprintf("`SAMPLE_RATE` int unsigned default %d,",
 		      RD_DEFAULT_SAMPLE_RATE)+
     "`DUP_CART_TITLES` enum('N','Y') not null default 'Y',"+
     "`FIX_DUP_CART_TITLES` enum('N','Y') not null default 'Y',"+
-    QString().sprintf("`MAX_POST_LENGTH` int unsigned default %u,",
+    QString::asprintf("`MAX_POST_LENGTH` int unsigned default %u,",
 		      RD_DEFAULT_MAX_POST_LENGTH)+
     "`ISCI_XREFERENCE_PATH` char(255),"+
     "`TEMP_CART_GROUP` char(10),"+
@@ -1584,7 +1584,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "`STATION_NAME` char(64),"+
     "`FORMAT` int unsigned default 0,"+
     "`CHANNELS` int unsigned default 2,"+
-    QString().sprintf("`SAMPRATE` int unsigned default %u,",
+    QString::asprintf("`SAMPRATE` int unsigned default %u,",
 		      RD_DEFAULT_SAMPLE_RATE)+
     "`BITRATE` int unsigned default 0,"+
     "`QUALITY` int unsigned default 0,"+
@@ -2075,7 +2075,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   for(int i=0;i<RD_MAX_CARDS;i++) {
     sql=QString("insert into `AUDIO_CARDS` set ")+
       "`STATION_NAME`='"+RDEscapeString(station_name)+"',"+
-      QString().sprintf("`CARD_NUMBER`=%d",i);
+      QString::asprintf("`CARD_NUMBER`=%d",i);
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -2088,16 +2088,16 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     for(int j=0;j<RD_MAX_PORTS;j++) {
       sql=QString("insert into `AUDIO_INPUTS` set ")+
 	"`STATION_NAME`='"+RDEscapeString(station_name)+"',"+
-	QString().sprintf("`CARD_NUMBER`=%d,",i)+
-	QString().sprintf("`PORT_NUMBER`=%d",j);
+	QString::asprintf("`CARD_NUMBER`=%d,",i)+
+	QString::asprintf("`PORT_NUMBER`=%d",j);
       if(!RDSqlQuery::apply(sql,err_msg)) {
 	return false;
       }
 
       sql=QString("insert into `AUDIO_OUTPUTS` set ")+
 	"`STATION_NAME`='"+RDEscapeString(station_name)+"',"+
-	QString().sprintf("`CARD_NUMBER`=%d,",i)+
-	QString().sprintf("`PORT_NUMBER`=%d",j);
+	QString::asprintf("`CARD_NUMBER`=%d,",i)+
+	QString::asprintf("`PORT_NUMBER`=%d",j);
       if(!RDSqlQuery::apply(sql,err_msg)) {
 	return false;
       }
@@ -2112,7 +2112,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     "`DEFAULT_NAME`='user'";
   struct hostent *hostent=gethostbyname(station_name.toUtf8());
   if(hostent!=NULL) {
-    sql+=QString().sprintf(",`IPV4_ADDRESS`='%d.%d.%d.%d'",
+    sql+=QString::asprintf(",`IPV4_ADDRESS`='%d.%d.%d.%d'",
 			   0xFF&hostent->h_addr[0],0xFF&hostent->h_addr[1],
 			   0xFF&hostent->h_addr[2],0xFF&hostent->h_addr[3]);
   }
@@ -2173,7 +2173,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   for(int i=0;i<168;i++) {
     sql=QString("insert into `SERVICE_CLOCKS` set ")+
       "`SERVICE_NAME`='"+RDEscapeString(RD_SERVICE_NAME)+"',"+
-      QString().sprintf("`HOUR`=%d,",i)+
+      QString::asprintf("`HOUR`=%d,",i)+
       "`CLOCK_NAME`=null";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -2190,14 +2190,14 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   for(unsigned i=0;i<10;i++) {
     sql=QString("insert into `RDAIRPLAY_CHANNELS` set ")+
       "`STATION_NAME`='"+RDEscapeString(station_name)+"',"+
-      QString().sprintf("`INSTANCE`=%u",i);
+      QString::asprintf("`INSTANCE`=%u",i);
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
 
     sql=QString("insert into `RDPANEL_CHANNELS` set ")+
       "`STATION_NAME`='"+RDEscapeString(station_name)+"',"+
-      QString().sprintf("`INSTANCE`=%u",i);
+      QString::asprintf("`INSTANCE`=%u",i);
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -2205,7 +2205,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
     sql=QString("insert into `RDAIRPLAY_CHANNELS` set ")+
       "`STATION_NAME`='"+RDEscapeString(station_name)+"',"+
-      QString().sprintf("`INSTANCE`=%u",i+RD_RDVAIRPLAY_LOG_BASE);
+      QString::asprintf("`INSTANCE`=%u",i+RD_RDVAIRPLAY_LOG_BASE);
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -2214,8 +2214,8 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     for(unsigned j=0;j<MAX_DECKS;j++) {
       sql=QString("insert into `DECK_EVENTS` set ")+
 	"`STATION_NAME`='"+RDEscapeString(station_name)+"',"+
-	QString().sprintf("`CHANNEL`=%u,",j+129)+
-	QString().sprintf("`NUMBER`=%u",i+1);
+	QString::asprintf("`CHANNEL`=%u,",j+129)+
+	QString::asprintf("`NUMBER`=%u",i+1);
       if(!RDSqlQuery::apply(sql,err_msg)) {
 	return false;
       }
@@ -2226,17 +2226,17 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   // RDAirPlay Log Modes
   //
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    sql=QString().sprintf("insert into `LOG_MODES` set ")+
+    sql=QString::asprintf("insert into `LOG_MODES` set ")+
       "`STATION_NAME`='"+RDEscapeString(station_name)+"',"+
-      QString().sprintf("`MACHINE`=%d",i);
+      QString::asprintf("`MACHINE`=%d",i);
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
   }
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
-    sql=QString().sprintf("insert into `LOG_MODES` set ")+
+    sql=QString::asprintf("insert into `LOG_MODES` set ")+
       "`STATION_NAME`='"+RDEscapeString(station_name)+"',"+
-      QString().sprintf("`MACHINE`=%d",i+RD_RDVAIRPLAY_LOG_BASE);
+      QString::asprintf("`MACHINE`=%d",i+RD_RDVAIRPLAY_LOG_BASE);
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -2248,7 +2248,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   for(int i=0;i<3;i++) {
     sql=QString("insert into `LOG_MACHINES` set ")+
       "`STATION_NAME`='"+RDEscapeString(station_name)+"',"+
-      QString().sprintf("`MACHINE`=%d",i);
+      QString::asprintf("`MACHINE`=%d",i);
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -2256,7 +2256,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   for(int i=RD_RDVAIRPLAY_LOG_BASE;i<(RD_RDVAIRPLAY_LOG_BASE+RD_RDVAIRPLAY_LOG_QUAN);i++) {
     sql=QString("insert into `LOG_MACHINES` set ")+
       "`STATION_NAME`='"+RDEscapeString(station_name)+"',"+
-      QString().sprintf("`MACHINE`=%d",i);
+      QString::asprintf("`MACHINE`=%d",i);
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -2315,7 +2315,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   sql="select `NAME` from `GROUPS`";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("insert into `AUDIO_PERMS` set\
+    sql=QString::asprintf("insert into `AUDIO_PERMS` set\
                            `GROUP_NAME`='%s',`SERVICE_NAME`='%s'",
 			  RDEscapeString(q->value(0).toString()).
 			  toUtf8().constData(),
@@ -2329,7 +2329,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   for(int i=0;i<168;i++) {
     sql=QString("insert into `SERVICE_CLOCKS` set ")+
       "`SERVICE_NAME`='"+RDEscapeString(RD_SERVICE_NAME)+"',"+
-      QString().sprintf("`HOUR`=%d,",i)+
+      QString::asprintf("`HOUR`=%d,",i)+
       "`CLOCK_NAME`=null";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -2375,9 +2375,9 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     sql=QString("insert into `GROUPS` set ")+
       "`NAME`='"+RDEscapeString(g->group)+"',"+
       "`DESCRIPTION`='"+RDEscapeString(g->description)+"',"+
-      QString().sprintf("`DEFAULT_CART_TYPE`=%d,",g->macro?2:1)+
-      QString().sprintf("`DEFAULT_LOW_CART`=%d,",g->start)+
-      QString().sprintf("`DEFAULT_HIGH_CART`=%d,",g->end)+
+      QString::asprintf("`DEFAULT_CART_TYPE`=%d,",g->macro?2:1)+
+      QString::asprintf("`DEFAULT_LOW_CART`=%d,",g->start)+
+      QString::asprintf("`DEFAULT_HIGH_CART`=%d,",g->end)+
       "`REPORT_TFC`='"+RDYesNo(g->rpt_traffic)+"',"+
       "`REPORT_MUS`='"+RDYesNo(g->rpt_music)+"',"+
       "`ENABLE_NOW_NEXT`='"+RDYesNo(g->now_next)+"'";
@@ -2417,12 +2417,12 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     "`START_POINT` int NOT NULL DEFAULT -1,"+
     "`END_POINT` int NOT NULL DEFAULT -1,"+
     "`FADEUP_POINT` int default -1,"+
-    QString().sprintf("`FADEUP_GAIN` int default %d,",RD_FADE_DEPTH)+
+    QString::asprintf("`FADEUP_GAIN` int default %d,",RD_FADE_DEPTH)+
     "`FADEDOWN_POINT` int default -1,"+
-    QString().sprintf("`FADEDOWN_GAIN` int default %d,",RD_FADE_DEPTH)+
+    QString::asprintf("`FADEDOWN_GAIN` int default %d,",RD_FADE_DEPTH)+
     "`SEGUE_START_POINT` int NOT NULL DEFAULT -1,"+
     "`SEGUE_END_POINT` int NOT NULL DEFAULT -1,"+
-    QString().sprintf("`SEGUE_GAIN` int default %d,",RD_FADE_DEPTH)+
+    QString::asprintf("`SEGUE_GAIN` int default %d,",RD_FADE_DEPTH)+
     "`DUCK_UP_GAIN` int default 0,"+
     "`DUCK_DOWN_GAIN` int default 0,"+
     "`COMMENT` char(255),"+
@@ -2482,12 +2482,12 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   //
   if(gen_audio) {
     QString filename=
-      QString().sprintf("%s/999999_001.%s",
+      QString::asprintf("%s/999999_001.%s",
 			RDConfiguration()->audioRoot().toUtf8().constData(),
 			RDConfiguration()->audioExtension().toUtf8().
 			constData());
 
-    QString cmd=QString().sprintf("rdgen -t 10 -l 16 %s",
+    QString cmd=QString::asprintf("rdgen -t 10 -l 16 %s",
 				  filename.toUtf8().constData());
     RDCheckExitCode("InititalizeNewDb() system",system(cmd.toUtf8()));
     if(getuid()==0) {
@@ -2748,7 +2748,7 @@ bool MainObject::InsertRDAirplayHotkeys(const QString &station_name,
     sql=QString("insert into `RDHOTKEYS` set ")+
       "`STATION_NAME`='"+RDEscapeString(station_name)+"',"+
       "`MODULE_NAME`='airplay',"+
-      QString().sprintf("`KEY_ID`=%u,",i+1)+
+      QString::asprintf("`KEY_ID`=%u,",i+1)+
       "`KEY_LABEL`='"+RDEscapeString(labels[i])+"'";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
