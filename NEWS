@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.6.2int1 --26 August 2021
+v3.6.2int2 --7 September 2021
 
 Changes:
    Added a 'SuppressMusicImportLinks=No|Yes' directive to the [Hacks]
@@ -10,6 +10,9 @@ Changes:
    PyPAD Scripts. Added the ability to filter PAD updates by Group membership
    on a per-script instance basis. See the documentation for the [NowGroups]
    and [NextGroups] sections in the script exemplar files.
+
+   Now & Next/PAD System. Deprecated the use of the 'Transmit Now & Next data'
+   checkbox in the 'Group' dialog in rdadmin(1).
 
 Database Update:
    This version of Rivendell uses database schema version 347, and will
