@@ -22379,3 +22379,7 @@
 	* Cleaned up a build warning in 'lib/rddb.h'.
 2021-09-01 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up deprecation warnings for 'QString::sprintf()'.
+2021-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that caused leading event
+	attributes to fail to be preserved when suppressing Music of
+	Traffic import markers.
