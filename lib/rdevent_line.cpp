@@ -1033,7 +1033,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
 	logline->setStartTime(RDLogLine::Logged,time);
 	logline->setType(RDLogLine::TrafficLink);
 	logline->setSource(event_src);
-	logline->setTransType(trans_type);
 	logline->setEventLength(event_length);
 	logline->setLinkEventName(event_nested_event);
 	logline->setLinkStartTime(q->value(9).toTime());
@@ -1055,7 +1054,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       logline->setStartTime(RDLogLine::Logged,time);
       logline->setType(RDLogLine::Track);
       logline->setSource(event_src);
-      logline->setTransType(RDLogLine::Segue);
       logline->setMarkerComment(q->value(7).toString());
       logline->setEventLength(event_length);
       logline->setLinkEventName(event_name);
@@ -1077,7 +1075,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       logline->setStartTime(RDLogLine::Logged,time);
       logline->setType(RDLogLine::Marker);
       logline->setSource(event_src);
-      logline->setTransType(RDLogLine::Segue);
       logline->setMarkerComment(q->value(7).toString());
       logline->setEventLength(event_length);
       logline->setLinkEventName(event_name);
@@ -1102,9 +1099,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
 		     QTime(start_start_hour,0,0).addSecs(q->value(1).toInt()));
       logline->setType(RDLogLine::Cart);
       logline->setCartNumber(q->value(0).toUInt());
-      logline->setGraceTime(grace_time);
-      logline->setTimeType(time_type);
-      logline->setTransType(trans_type);
       logline->setExtStartTime(QTime().addSecs(3600*start_start_hour+
 					       q->value(1).toInt()));
       logline->setExtLength(q->value(2).toInt());
@@ -1122,6 +1116,13 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       logline->setLinkEmbedded(link_logline->linkEmbedded());
       time=time.addMSecs(length);
     }
+
+    //
+    // Apply Leading Event Values
+    //
+    logline->setGraceTime(grace_time);
+    logline->setTimeType(time_type);
+    logline->setTransType(trans_type);
 
     //
     // Clear Leading Event Values
