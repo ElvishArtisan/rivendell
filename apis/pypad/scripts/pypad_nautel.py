@@ -4,7 +4,7 @@
 #
 # Send Now & Next updates to an Nautel FM Transmitter as TCP for RDS
 #
-#   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 #                 2020 Eric Adler <eric@whrwfm.org>
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -23,6 +23,7 @@
 
 import sys
 import socket
+import syslog
 import configparser
 import pypad
 import time
@@ -31,12 +32,20 @@ def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
 
-def sendvar(var):
+def sendvar(update,var,err_sent):
     if(len(var)!=0):
         send_sock=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        send_sock.connect((ipaddr,port))
-        send_sock.sendall(var.encode('utf-8'))
-        send_sock.close()
+        ipaddr=update.config().get('Rds1','IpAddress')
+        port=int(update.config().get('Rds1','TcpPort'))
+        try:
+            send_sock.connect((ipaddr,port))
+            send_sock.sendall(var.encode('utf-8'))
+            send_sock.close()
+            return False
+        except ConnectionRefusedError:
+            if(not err_sent):
+                update.syslog(syslog.LOG_WARNING,'RDS update to '+ipaddr+':'+str(port)+' failed: connection refused')
+            return True
 
 def getval(val, update, section):
     try:
@@ -60,6 +69,7 @@ def ProcessPad(update):
     section='Rds'+str(n)
     while(update.config().has_section(section)):
         if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW):
+            err=False
             dps=''
             dps=getval_encode('DynamicPS',"DPS",update,section)
             ps=getval_encode('ProgramService',"PS",update,section)
@@ -103,59 +113,50 @@ def ProcessPad(update):
             dpsr=getval_encode('DPSRate',"DPSR",update,section)
             dpsm=getval_encode('DPSMode',"DPSM",update,section)
 
-
-
             #
             # Use TCP output
             #
-            waittime=int(update.config().get(section,'Delay'))
-            time.sleep(waittime)
-            ipaddr=update.config().get(section,'IpAddress')
-            port=int(update.config().get(section,'TcpPort'))
-            sendvar(dps)
-            sendvar(ps)
-            sendvar(text)
-            
-            sendvar(picode)
-            sendvar(pty)
-            sendvar(ptyn)
-            sendvar(trp)
-            sendvar(tra)
-            sendvar(af1)
-            sendvar(af2)
-            sendvar(af3)
-            sendvar(af4)
-            sendvar(af5)
-            sendvar(af6)
-            sendvar(af7)
-            sendvar(af8)
-            sendvar(af9)
-            sendvar(af10)
-            sendvar(af11)
-            sendvar(af12)
-            sendvar(af13)
-            sendvar(af14)
-            sendvar(af15)
-            sendvar(af16)
-            sendvar(af17)
-            sendvar(af18)
-            sendvar(af19)
-            sendvar(af20)
-            sendvar(af21)
-            sendvar(af22)
-            sendvar(af23)
-            sendvar(af24)
-            sendvar(af25)
-            sendvar(di)
-            sendvar(mus)
-            sendvar(dat)
-            sendvar(tim)
-            sendvar(utco)
-            sendvar(cont)
-            sendvar(dpsr)
-            sendvar(dpsm)
-
-
+            err=sendvar(update,dps,err)
+            err=sendvar(update,ps,err)
+            err=sendvar(update,text,err)
+            err=sendvar(update,picode,err)
+            err=sendvar(update,pty,err)
+            err=sendvar(update,ptyn,err)
+            err=sendvar(update,trp,err)
+            err=sendvar(update,tra,err)
+            err=sendvar(update,af1,err)
+            err=sendvar(update,af2,err)
+            err=sendvar(update,af3,err)
+            err=sendvar(update,af4,err)
+            err=sendvar(update,af5,err)
+            err=sendvar(update,af6,err)
+            err=sendvar(update,af7,err)
+            err=sendvar(update,af8,err)
+            err=sendvar(update,af9,err)
+            err=sendvar(update,af10,err)
+            err=sendvar(update,af11,err)
+            err=sendvar(update,af12,err)
+            err=sendvar(update,af13,err)
+            err=sendvar(update,af14,err)
+            err=sendvar(update,af15,err)
+            err=sendvar(update,af16,err)
+            err=sendvar(update,af17,err)
+            err=sendvar(update,af18,err)
+            err=sendvar(update,af19,err)
+            err=sendvar(update,af20,err)
+            err=sendvar(update,af21,err)
+            err=sendvar(update,af22,err)
+            err=sendvar(update,af23,err)
+            err=sendvar(update,af24,err)
+            err=sendvar(update,af25,err)
+            err=sendvar(update,di,err)
+            err=sendvar(update,mus,err)
+            err=sendvar(update,dat,err)
+            err=sendvar(update,tim,err)
+            err=sendvar(update,utco,err)
+            err=sendvar(update,cont,err)
+            err=sendvar(update,dpsr,err)
+            err=sendvar(update,dpsm,err)
         n=n+1
         section='Rds'+str(n)
 

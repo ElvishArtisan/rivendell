@@ -4,8 +4,6 @@
 
 ; Section Header
 ;
-; One section per remote transmitter unit is configured, starting with 'Rds1' and
-; working up consecutively
 [Rds1]
 
 ; *****************************************************************************
@@ -19,12 +17,7 @@ IpAddress=127.0.0.1
 ; TCP Port
 ;
 ; The TCP port number to send updates to, in the range 0 - 65,535.  
-TcpPort=10001
-
-; *****************************************************************************
-
-; Delay in seconds before sending the update
-Delay=30
+TcpPort=7005
 
 ; *****************************************************************************
 
@@ -95,9 +88,9 @@ RadioText=%t - %a
 ; state changes on that log should be output on this udp port.  If set
 ; to 'Onair', then output will be generated only if RDAirPlays OnAir flag
 ; is active.
-MasterLog=Onair
-Aux1Log=No
-Aux2Log=No
+MasterLog=Yes
+Aux1Log=Yes
+Aux2Log=Yes
 VLog101=No
 VLog102=No
 VLog103=No

@@ -22383,3 +22383,11 @@
 	* Fixed a bug in rdlogmanager(1) that caused leading event
 	attributes to fail to be preserved when suppressing Music of
 	Traffic import markers.
+2021-09-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in the 'pypad_nautel.py' plug-in that broke TCP
+	transmission.
+	* Added error logging to the 'pypad_nautel.py' plug-in.
+	* Changed the default 'TcpPort=' directive in 'pypad_nautel.exemplar'
+	to 7005.
+	* Removed support for the (broken) 'Delay=' directive from
+	'pypad_nautel.py'.
