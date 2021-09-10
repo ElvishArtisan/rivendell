@@ -22391,3 +22391,5 @@
 	to 7005.
 	* Removed support for the (broken) 'Delay=' directive from
 	'pypad_nautel.py'.
+2021-09-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a 'no such signal' error in 'rdcatchd/rdcatchd.cpp'.

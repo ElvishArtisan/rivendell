@@ -462,7 +462,7 @@ void MainObject::newConnectionData()
   }
   connect(sock,SIGNAL(readyRead()),catch_ready_mapper,SLOT(map()));
   catch_ready_mapper->setMapping(sock,i);
-  connect(sock,SIGNAL(connectionClosed()),catch_kill_mapper,SLOT(map()));
+  connect(sock,SIGNAL(disconnected()),catch_kill_mapper,SLOT(map()));
   catch_kill_mapper->setMapping(sock,i);
   rda->syslog(LOG_DEBUG,"created connection %d",i);
 }
