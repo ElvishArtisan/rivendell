@@ -22397,3 +22397,7 @@
 	* Fixed a bug in rdlogmanager(1) that could cause segfaults when
 	changing the contents of the 'PRE-IMPORT CARTS' or 'POST-IMPORT CARTS'
 	lists in the 'Editing Event' dialog in rdlogmanager(1).
+2021-09-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that generated a SQL error when checking
+	for orphaned scheduler code rules when no Clocks existed in the
+	database.

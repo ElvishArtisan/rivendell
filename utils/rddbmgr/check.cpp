@@ -1089,6 +1089,7 @@ void MainObject::CheckSchedCodeRules(bool prompt_user) const
   //
   // Check for orphaned rules
   //
+  int clock_quan=0;
   sql=QString("select ")+
     "`NAME` "+  // 00
     "from `CLOCKS` order by `NAME`";
@@ -1096,13 +1097,16 @@ void MainObject::CheckSchedCodeRules(bool prompt_user) const
   QString where_sql="";
   while(q->next()) {
     where_sql+="(`CLOCK_NAME`!='"+RDEscapeString(q->value(0).toString())+"')&&";
+    clock_quan++;
   }
-  where_sql=where_sql.left(where_sql.length()-2);
   delete q;
+  if(clock_quan>0) {
+    where_sql=QString("where ")+where_sql.left(where_sql.length()-2);
+  }
 
   sql=QString("select ")+
     "`ID` "  // 00
-    "from `RULE_LINES` where "+
+    "from `RULE_LINES` "+
     where_sql;
   q=new RDSqlQuery(sql);
   if(q->first()) {
@@ -1111,12 +1115,15 @@ void MainObject::CheckSchedCodeRules(bool prompt_user) const
       fflush(stdout);
     }
     if((!prompt_user)||UserResponse()) {
-      sql=QString("delete from RULE_LINES where ")+
-	where_sql;
-      RDSqlQuery::apply(sql);
+      sql=QString("delete from `RULE_LINES` where ")+
+	QString::asprintf("`ID`=%u || ",q->value(0).toUInt());
+      while(q->next()) {
+	sql+=QString::asprintf("`ID`=%u || ",q->value(0).toUInt());
+      }
+      sql=sql.left(sql.length()-4);
     }
+    RDSqlQuery::apply(sql);
   }
-  //      printf("FIXUP SQL: %s\n",sql.toUtf8().constData());
 
   //
   // Check for missing rules
