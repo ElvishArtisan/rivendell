@@ -401,6 +401,7 @@ QModelIndex ImportCartsModel::processCartDrop(int line,RDLogLine *ll)
     d_trans_types.removeAt(line);
     d_lengths.removeAt(line);
     d_icons.removeAt(line);
+    d_marker_comments.removeAt(line);
     endRemoveRows();
   }
   else {  // Add line
@@ -419,6 +420,7 @@ QModelIndex ImportCartsModel::processCartDrop(int line,RDLogLine *ll)
     d_trans_types.insert(line,ll->transType());
     d_lengths.insert(line,ll->forcedLength());
     d_icons.insert(line,rda->iconEngine()->typeIcon(ll->type()));
+    d_marker_comments.insert(line,ll->markerComment());
     endInsertRows();
   }
 

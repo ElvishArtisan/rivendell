@@ -22393,3 +22393,7 @@
 	'pypad_nautel.py'.
 2021-09-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a 'no such signal' error in 'rdcatchd/rdcatchd.cpp'.
+2021-09-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that could cause segfaults when
+	changing the contents of the 'PRE-IMPORT CARTS' or 'POST-IMPORT CARTS'
+	lists in the 'Editing Event' dialog in rdlogmanager(1).
