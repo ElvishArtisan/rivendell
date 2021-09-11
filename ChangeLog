@@ -22401,3 +22401,6 @@
 	* Fixed a bug in rddbmgr(8) that generated a SQL error when checking
 	for orphaned scheduler code rules when no Clocks existed in the
 	database.
+2021-09-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rddbmgr(8) in '--check' mode that caused
+	alteration of a table's engine type to fail.

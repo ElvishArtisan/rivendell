@@ -175,7 +175,10 @@ void MainObject::CheckTableAttributes()
       fflush(NULL);
       if(UserResponse()) {
 	sql=QString("alter table `")+q->value(0).toString()+"` "+
-	  "`ENGINE`="+db_mysql_engine;
+	  "ENGINE="+db_mysql_engine;
+	printf("*****************\n");
+	printf("SQL: %s\n",sql.toUtf8().constData());
+	printf("*****************\n");
 	RDSqlQuery::apply(sql);
       }
     }
