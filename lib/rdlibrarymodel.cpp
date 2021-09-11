@@ -706,7 +706,7 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
 
 QString RDLibraryModel::sqlFields() const
 {
-QString sql=QString("select ")+
+QString sql=QString("select distinct ")+
   "`CART`.`NUMBER`,"+             // 00
   "`CART`.`FORCED_LENGTH`,"+      // 01
   "`CART`.`TITLE`,"+              // 02
