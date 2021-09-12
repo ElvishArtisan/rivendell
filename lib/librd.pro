@@ -1,4 +1,4 @@
-# lib.pro
+# librd.pro
 #
 # The lib/ QMake project file for Rivendell.
 #
@@ -44,6 +44,7 @@ SOURCES += rdapplication.cpp
 SOURCES += rdaudio_exists.cpp
 SOURCES += rdaudio_port.cpp
 SOURCES += rdaudiosettings.cpp
+SOURCES += rdbipushbutton.cpp
 SOURCES += rdbusybar.cpp
 SOURCES += rdbusydialog.cpp
 SOURCES += rdbutton_dialog.cpp
@@ -228,6 +229,7 @@ HEADERS += rdapplication.h
 HEADERS += rdaudio_exists.h
 HEADERS += rdaudio_port.h
 HEADERS += rdaudiosettings.h
+HEADERS += rdbipushbutton.h
 HEADERS += rdbusybar.h
 HEADERS += rdbusydialog.h
 HEADERS += rdbutton_dialog.h

@@ -21,6 +21,7 @@
 #ifndef AUDIO_CART_H
 #define AUDIO_CART_H
 
+#include <rdbipushbutton.h>
 #include <rdcart.h>
 #include <rdcutlistmodel.h>
 #include <rdmarkerdialog.h>
@@ -54,6 +55,8 @@ class AudioCart : public RDWidget
   void editCutData();
   void recordCutData();
   void doubleClickedData(const QModelIndex &index);
+  void selectionChangedData(const QItemSelection &before,
+			    const QItemSelection &after);
   void ripCutData();
   void importCutData();
 
@@ -68,6 +71,7 @@ class AudioCart : public RDWidget
   void audioChanged();
 
  private:
+  void UpdateButtons();
   QModelIndex SingleSelectedLine() const;
   RDCart *rdcart_cart;
   RDTableView *rdcart_cut_view;
@@ -76,12 +80,19 @@ class AudioCart : public RDWidget
   QString *rdcart_import_path;
   bool rdcart_new_cart;
   AudioControls *rdcart_controls;
+  QPushButton *add_cut_button;
+  QPushButton *delete_cut_button;
+  QPushButton *copy_cut_button;
   QPushButton *paste_cut_button;
+  RDBiPushButton *record_cut_button;
+  QPushButton *ext_editor_cut_button;
+  QPushButton *edit_cut_button;
+  QPushButton *import_cut_button;
+  QPushButton *rip_cut_button;
   bool rdcart_modification_allowed;
   bool rdcart_import_metadata;
   bool rdcart_profile_rip;
   bool rdcart_use_weighting;
-
   RDMarkerDialog *rdcart_marker_dialog;
 };
 

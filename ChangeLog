@@ -22413,3 +22413,7 @@
 2021-09-12 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlibrary(1) that caused the first cut to
 	fail to be selected automatically when creating a new cart.
+2021-09-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDBiPushButton' widget.
+	* Modified the behavior of the buttons in the 'Edit Cart' dialog in
+	rdlibrary(1) to grey-out when there is no cut selected.
