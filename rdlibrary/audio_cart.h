@@ -36,7 +36,7 @@ class AudioCart : public RDWidget
 {
   Q_OBJECT
  public:
-  AudioCart(AudioControls *controls,RDCart *cart,QString *path,bool select_cut,
+  AudioCart(AudioControls *controls,RDCart *cart,QString *path,bool new_cart,
 	    bool profile_rip,QWidget *parent=0);
   ~AudioCart();
   QSize sizeHint() const;
@@ -74,7 +74,7 @@ class AudioCart : public RDWidget
   RDCutListModel *rdcart_cut_model;
   unsigned rdcart_average_length;
   QString *rdcart_import_path;
-  bool rdcart_select_cut;
+  bool rdcart_new_cart;
   AudioControls *rdcart_controls;
   QPushButton *paste_cut_button;
   bool rdcart_modification_allowed;

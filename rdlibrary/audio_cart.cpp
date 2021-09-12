@@ -34,14 +34,14 @@
 bool import_active=false;
 
 AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
-		     bool select_cut,bool profile_rip,QWidget *parent)
+		     bool new_cart,bool profile_rip,QWidget *parent)
   : RDWidget(parent)
 {
   rdcart_import_metadata=true;
   rdcart_controls=controls;
   rdcart_cart=cart;
   rdcart_import_path=path;
-  rdcart_select_cut=select_cut;
+  rdcart_new_cart=new_cart;
   rdcart_profile_rip=profile_rip;
   rdcart_modification_allowed=rda->user()->editAudio()&&cart->owner().isEmpty();
 
@@ -226,7 +226,7 @@ void AudioCart::changeCutScheduling(int sched)
     if(rdcart_cut_model->rowCount()>0) {
       RDCut *cut=
 	new RDCut(rdcart_cut_model->cutName(rdcart_cut_model->index(0,0)));
-      if(cut->validity()==RDCut::AlwaysValid) {
+      if((cut->validity()==RDCut::AlwaysValid)||rdcart_new_cart) {
 	rdcart_cut_view->selectRow(0);
       }
       delete cut;
