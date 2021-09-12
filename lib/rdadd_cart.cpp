@@ -18,12 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdgroup.h>
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdgroup.h"
 
 #include "rdadd_cart.h"
 
@@ -52,7 +52,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   //
   cart_group_box=new QComboBox(this);
   cart_group_box->setGeometry(145,11,160,19);
-  QLabel *cart_group_label=new QLabel(tr("&Group:"),this);
+  QLabel *cart_group_label=new QLabel(tr("Group:"),this);
   cart_group_label->setGeometry(10,11,130,19);
   cart_group_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cart_group_label->setFont(labelFont());
@@ -78,7 +78,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   QIntValidator *validator=new QIntValidator(this);
   validator->setRange(1,999999);
   cart_number_edit->setValidator(validator);
-  QLabel *cart_number_label=new QLabel(tr("&New Cart Number:"),this);
+  QLabel *cart_number_label=new QLabel(tr("New Cart Number:"),this);
   cart_number_label->setGeometry(10,32,130,19);
   cart_number_label->setFont(labelFont());
   cart_number_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -88,7 +88,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   //
   cart_type_box=new QComboBox(this);
   cart_type_box->setGeometry(145,53,100,19);
-  QLabel *cart_type_label=new QLabel(tr("&New Cart Type:"),this);
+  QLabel *cart_type_label=new QLabel(tr("New Cart Type:"),this);
   cart_type_label->setGeometry(10,53,130,19);
   cart_type_label->setFont(labelFont());
   cart_type_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -116,7 +116,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   cart_title_edit->setMaxLength(255);
   //  cart_title_edit->setValidator(text_validator);
   cart_title_edit->setText(tr("[new cart]"));
-  QLabel *cart_title_label=new QLabel(tr("&New Cart Title:"),this);
+  QLabel *cart_title_label=new QLabel(tr("New Cart Title:"),this);
   cart_title_label->setGeometry(10,73,130,19);
   cart_title_label->setFont(labelFont());
   cart_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -128,7 +128,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -138,7 +138,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   groupActivatedData(cart_group_box->currentText());

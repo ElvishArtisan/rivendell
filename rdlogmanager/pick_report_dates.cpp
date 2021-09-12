@@ -82,7 +82,7 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(260,33,50,27);
   button->setFont(subButtonFont());
-  button->setText(tr("&Select"));
+  button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectStartDateData()));
 
   //
@@ -98,7 +98,7 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(260,63,50,27);
   button->setFont(subButtonFont());
-  button->setText(tr("&Select"));
+  button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectEndDateData()));
 
   //

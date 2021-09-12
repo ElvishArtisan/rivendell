@@ -20,8 +20,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
-#include <qmessagebox.h>
+#include <QPainter>
 
 #include "rddb.h"
 #include "rdschedcodes_dialog.h"
@@ -44,7 +43,7 @@ RDSchedCodesDialog::RDSchedCodesDialog(QWidget *parent)
   //
   //  Ok Button
   //
-  edit_ok_button=new QPushButton(tr("&OK"),this);
+  edit_ok_button=new QPushButton(tr("OK"),this);
   edit_ok_button->setDefault(true);
   edit_ok_button->setFont(buttonFont());
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
@@ -52,7 +51,7 @@ RDSchedCodesDialog::RDSchedCodesDialog(QWidget *parent)
   //
   //  Cancel Button
   //
-  edit_cancel_button=new QPushButton(tr("&Cancel"),this);
+  edit_cancel_button=new QPushButton(tr("Cancel"),this);
   edit_cancel_button->setFont(buttonFont());
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

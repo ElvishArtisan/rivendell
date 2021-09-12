@@ -22407,3 +22407,6 @@
 2021-09-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlibrary(1) that could cause appearance of duplicate
 	cut entries in the cart list.
+2021-09-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions where vestigal accelerator indicators ('&')
+	remained in in-line strings.

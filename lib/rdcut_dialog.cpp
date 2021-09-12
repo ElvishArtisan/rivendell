@@ -111,7 +111,7 @@ RDCutDialog::RDCutDialog(QString *filter,QString *group,QString *schedcode,
   //
   // Add Button
   //
-  cart_add_button=new QPushButton(tr("&Add New\nCart"),this);
+  cart_add_button=new QPushButton(tr("Add New\nCart"),this);
   cart_add_button->setGeometry(10,sizeHint().height()-60,80,50);
   cart_add_button->setFont(buttonFont());
   connect(cart_add_button,SIGNAL(clicked()),this,SLOT(addButtonData()));
@@ -122,7 +122,7 @@ RDCutDialog::RDCutDialog(QString *filter,QString *group,QString *schedcode,
   //
   // Clear Button
   //
-  cart_clear_button=new QPushButton(tr("&Clear"),this);
+  cart_clear_button=new QPushButton(tr("Clear"),this);
   cart_clear_button->setFont(buttonFont());
   connect(cart_clear_button,SIGNAL(clicked()),
 	  cart_cart_view,SLOT(clearSelection()));
@@ -133,7 +133,7 @@ RDCutDialog::RDCutDialog(QString *filter,QString *group,QString *schedcode,
   //
   // OK Button
   //
-  cart_ok_button=new QPushButton(tr("&OK"),this);
+  cart_ok_button=new QPushButton(tr("OK"),this);
   cart_ok_button->setFont(buttonFont());
   connect(cart_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
   cart_ok_button->setDisabled(true);
@@ -141,7 +141,7 @@ RDCutDialog::RDCutDialog(QString *filter,QString *group,QString *schedcode,
   //
   // Cancel Button
   //
-  cart_cancel_button=new QPushButton(tr("&Cancel"),this);
+  cart_cancel_button=new QPushButton(tr("Cancel"),this);
   cart_cancel_button->setFont(buttonFont());
   connect(cart_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

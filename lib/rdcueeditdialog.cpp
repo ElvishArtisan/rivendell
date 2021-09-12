@@ -40,7 +40,7 @@ RDCueEditDialog::RDCueEditDialog(RDCae *cae,int play_card,int play_port,
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-170,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&OK"));
+  button->setText(tr("OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -49,7 +49,7 @@ RDCueEditDialog::RDCueEditDialog(RDCae *cae,int play_card,int play_port,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
+  button->setText(tr("Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 

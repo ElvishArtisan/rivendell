@@ -168,7 +168,7 @@ RDCueEdit::RDCueEdit(QWidget *parent)
     setPalette(QPalette(QColor(RD_CUEEDITOR_START_MARKER),
 			palette().color(QPalette::Background)));
   edit_recue_button->setFont(buttonFont());
-  edit_recue_button->setText(tr("&Recue"));
+  edit_recue_button->setText(tr("Recue"));
   connect(edit_recue_button,SIGNAL(clicked()),this,SLOT(recue()));
 
   //

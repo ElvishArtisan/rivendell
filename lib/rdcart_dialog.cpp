@@ -118,7 +118,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   //
   // Send to Editor Button
   //
-  cart_editor_button=new QPushButton(tr("Send to\n&Editor"),this);
+  cart_editor_button=new QPushButton(tr("Send to\nEditor"),this);
   cart_editor_button->setFont(buttonFont());
   connect(cart_editor_button,SIGNAL(clicked()),this,SLOT(editorData()));
   if(rda->station()->editorPath().isEmpty()) {
@@ -128,7 +128,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   //
   // Load From File Button
   //
-  cart_file_button=new QPushButton(tr("Load From\n&File"),this);
+  cart_file_button=new QPushButton(tr("Load From\nFile"),this);
   cart_file_button->setFont(buttonFont());
   connect(cart_file_button,SIGNAL(clicked()),this,SLOT(loadFileData()));
   if(rda->station()->editorPath().isEmpty()) {
@@ -138,14 +138,14 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   //
   // OK Button
   //
-  cart_ok_button=new QPushButton(tr("&OK"),this);
+  cart_ok_button=new QPushButton(tr("OK"),this);
   cart_ok_button->setFont(buttonFont());
   connect(cart_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   // Cancel Button
   //
-  cart_cancel_button=new QPushButton(tr("&Cancel"),this);
+  cart_cancel_button=new QPushButton(tr("Cancel"),this);
   cart_cancel_button->setFont(buttonFont());
   connect(cart_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

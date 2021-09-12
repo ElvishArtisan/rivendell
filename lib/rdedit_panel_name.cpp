@@ -43,7 +43,7 @@ RDEditPanelName::RDEditPanelName(QString *panelname,QWidget *parent)
   panel_name_edit->setMaxLength(64);
   panel_name_edit->setText(*panel_name);
   panel_name_edit->selectAll();
-  QLabel *panel_name_label=new QLabel(tr("Panel &Name:"),this);
+  QLabel *panel_name_label=new QLabel(tr("Panel Name:"),this);
   panel_name_label->setGeometry(10,13,80,19);
   panel_name_label->setFont(labelFont());
   panel_name_label->setAlignment(Qt::AlignRight);
@@ -55,7 +55,7 @@ RDEditPanelName::RDEditPanelName(QString *panelname,QWidget *parent)
   ok_button->setGeometry(sizeHint().width()-180,45,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -64,7 +64,7 @@ RDEditPanelName::RDEditPanelName(QString *panelname,QWidget *parent)
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,45,80,50);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 

@@ -83,7 +83,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
     setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   add_ok_button->setDefault(true);
   add_ok_button->setFont(buttonFont());
-  add_ok_button->setText(tr("&OK"));
+  add_ok_button->setText(tr("OK"));
   add_ok_button->setDisabled(true);
   connect(add_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -94,7 +94,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   add_cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   add_cancel_button->setFont(buttonFont());
-  add_cancel_button->setText(tr("&Cancel"));
+  add_cancel_button->setText(tr("Cancel"));
   connect(add_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

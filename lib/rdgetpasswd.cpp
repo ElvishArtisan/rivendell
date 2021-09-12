@@ -2,7 +2,7 @@
 //
 // Prompt for a password.
 //
-//   (C) Copyright 2006-2019 Fred Gleason <fredg@salemradiolabs.com>
+//   (C) Copyright 2006-2021 Fred Gleason <fredg@salemradiolabs.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,12 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qmessagebox.h>
-#include <qvalidator.h>
+#include <QPushButton>
 
-#include <rdgetpasswd.h>
+#include "rdgetpasswd.h"
 
 RDGetPasswd::RDGetPasswd(QString *passwd,QWidget *parent)
   : RDDialog(parent)
@@ -33,10 +30,8 @@ RDGetPasswd::RDGetPasswd(QString *passwd,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   setWindowTitle(tr("Enter Password"));
 
@@ -61,7 +56,7 @@ RDGetPasswd::RDGetPasswd(QString *passwd,QWidget *parent)
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
+  ok_button->setText(tr("OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -71,7 +66,7 @@ RDGetPasswd::RDGetPasswd(QString *passwd,QWidget *parent)
   cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
+  cancel_button->setText(tr("Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 

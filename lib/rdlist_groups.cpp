@@ -58,7 +58,7 @@ RDListGroups::RDListGroups(QString *groupname,const QString &caption,
   //
   // OK Button
   //
-  QPushButton *button=new QPushButton(tr("&OK"),this);
+  QPushButton *button=new QPushButton(tr("OK"),this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
   button->setDefault(true);
@@ -67,7 +67,7 @@ RDListGroups::RDListGroups(QString *groupname,const QString &caption,
   //
   // Cancel Button
   //
-  button=new QPushButton(tr("&Cancel"),this);
+  button=new QPushButton(tr("Cancel"),this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(buttonFont());
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));

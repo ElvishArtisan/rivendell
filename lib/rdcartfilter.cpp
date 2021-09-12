@@ -53,7 +53,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,bool user_is_admin,
   //
   // Filter Search Button
   //
-  d_search_button=new QPushButton(tr("&Search"),this);
+  d_search_button=new QPushButton(tr("Search"),this);
   d_search_button->setFont(buttonFont());
   connect(d_search_button,SIGNAL(clicked()),this,SLOT(searchClickedData()));
   switch(rda->station()->filterMode()) {
@@ -68,7 +68,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,bool user_is_admin,
   //
   // Filter Clear Button
   //
-  d_clear_button=new QPushButton(tr("&Clear"),this);
+  d_clear_button=new QPushButton(tr("Clear"),this);
   d_clear_button->setFont(buttonFont());
   d_clear_button->setDisabled(true);
   connect(d_clear_button,SIGNAL(clicked()),this,SLOT(clearClickedData()));

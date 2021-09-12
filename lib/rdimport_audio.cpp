@@ -2,7 +2,7 @@
 //
 // Audio File Importation Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,11 +26,10 @@
 #include <unistd.h>
 #include <math.h>
 
-#include <qpushbutton.h>
-#include <qfiledialog.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qpainter.h>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPushButton>
 
 #include "rd.h"
 #include "rdapplication.h"
@@ -99,7 +98,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   //
   // Input File Selector Button
   //
-  import_in_selector_button=new QPushButton(tr("&Select"),this);
+  import_in_selector_button=new QPushButton(tr("Select"),this);
   import_in_selector_button->setGeometry(sizeHint().width()-85,27,70,26);
   connect(import_in_selector_button,SIGNAL(clicked()),
 	  this,SLOT(selectInputFileData()));
@@ -171,7 +170,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   //
   // Output File Selector Button
   //
-  import_out_selector_button=new QPushButton(tr("&Select"),this);
+  import_out_selector_button=new QPushButton(tr("Select"),this);
   import_out_selector_button->setGeometry(sizeHint().width()-85,137,70,26);
   connect(import_out_selector_button,SIGNAL(clicked()),
 	  this,SLOT(selectOutputFileData()));
@@ -199,7 +198,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   //
   // Output Format Selector Button
   //
-  import_out_format_button=new QPushButton(tr("S&et"),this);
+  import_out_format_button=new QPushButton(tr("Set"),this);
   import_out_format_button->setGeometry(sizeHint().width()-85,178,70,26);
   connect(import_out_format_button,SIGNAL(clicked()),
 	  this,SLOT(selectOutputFormatData()));
@@ -238,7 +237,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   //
   // Import Button
   //
-  import_import_button=new QPushButton(tr("&Import"),this);
+  import_import_button=new QPushButton(tr("Import"),this);
   import_import_button->
     setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   import_import_button->setFont(buttonFont());
@@ -247,7 +246,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   //
   // Cancel Button
   //
-  import_cancel_button=new QPushButton(tr("&Cancel"),this);
+  import_cancel_button=new QPushButton(tr("Cancel"),this);
   import_cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   import_cancel_button->setFont(buttonFont());

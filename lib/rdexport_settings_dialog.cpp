@@ -139,7 +139,7 @@ RDExportSettingsDialog::RDExportSettingsDialog(const QString &caption,
   lib_ok_button=new QPushButton(this);
   lib_ok_button->setDefault(true);
   lib_ok_button->setFont(buttonFont());
-  lib_ok_button->setText(tr("&OK"));
+  lib_ok_button->setText(tr("OK"));
   connect(lib_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -147,7 +147,7 @@ RDExportSettingsDialog::RDExportSettingsDialog(const QString &caption,
   //
   lib_cancel_button=new QPushButton(this);
   lib_cancel_button->setFont(buttonFont());
-  lib_cancel_button->setText(tr("&Cancel"));
+  lib_cancel_button->setText(tr("Cancel"));
   connect(lib_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 
