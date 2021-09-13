@@ -62,7 +62,10 @@ class RDGroup
 		    RDCart::Type type,int quan) const;
   bool cartNumberValid(unsigned cartnum) const;
   QString xml() const;
-  
+  static bool create(const QString &name,bool allow_all_users,
+		     bool allow_all_services,QString *err_msg);
+  static bool remove(const QString &name,QString *err_msg);
+
  private:
   unsigned GetNextFreeCart(unsigned startcart) const;
   bool ReserveCart(const QString &station_name,RDCart::Type type,

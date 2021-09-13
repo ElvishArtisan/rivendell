@@ -392,6 +392,115 @@ QString RDGroup::xml() const
 }
 
 
+bool RDGroup::create(const QString &name,bool allow_all_users,
+		     bool allow_all_services,QString *err_msg)
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  if(name.length()>10) {
+    *err_msg=QObject::tr("Name too long (ten characters max)");
+    return false;
+  }
+  if(name.isEmpty()||(name.toLower()==QObject::tr("all").toLower())) {
+    *err_msg=QObject::tr("Invalid group name");
+    return false;
+  }
+  sql=QString("select ")+
+    "`NAME` "+
+    "from `GROUPS` where "+
+    "`NAME`='"+RDEscapeString(name)+"'";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    *err_msg=QObject::tr("group already exists");
+    delete q;
+    return false;
+  }
+  delete q;
+  sql=QString("insert into `GROUPS` set ")+
+    "`NAME`='"+RDEscapeString(name)+"'";
+  if(!RDSqlQuery::apply(sql)) {
+    *err_msg=QObject::tr("unable to create database record");
+    return false;
+  }
+
+  //
+  // Create Default Users Perms
+  //
+  if(allow_all_users) {
+    sql="select `LOGIN_NAME` from `USERS`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into `USER_PERMS` set ")+
+	"`USER_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
+	"`GROUP_NAME`='"+RDEscapeString(name)+"'";
+      RDSqlQuery::apply(sql);
+    }
+    delete q;
+  }
+
+  //
+  // Create Default Service Perms
+  //
+  if(allow_all_services) {
+    sql="select `NAME` from `SERVICES`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into `AUDIO_PERMS` set ")+
+	"`SERVICE_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
+	"`GROUP_NAME`='"+RDEscapeString(name)+"'";
+      RDSqlQuery::apply(sql);
+    }
+    delete q;
+  }
+
+  *err_msg=QObject::tr("OK");
+
+  return true;
+}
+
+
+bool RDGroup::remove(const QString &name,QString *err_msg)
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  //
+  // Check for carts using group
+  //
+  sql=QString("select ")+
+    "`NUMBER` "+  // 00
+    "from `CART` where "+
+    "`GROUP_NAME`='"+RDEscapeString(name)+"'";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    *err_msg=QObject::tr("group name in use");
+    delete q;
+    return false;
+  }
+
+  sql=QString("delete from `USER_PERMS` where ")+
+    "`GROUP_NAME`='"+RDEscapeString(name)+"'";
+  RDSqlQuery::apply(sql);
+
+  sql=QString("delete from `AUDIO_PERMS` where ")+
+    "`GROUP_NAME`='"+RDEscapeString(name)+"'";
+  RDSqlQuery::apply(sql);
+
+  sql=QString("delete from `GROUPS` where ")+
+    "`NAME`='"+RDEscapeString(name)+"'";
+  RDSqlQuery::apply(sql);
+
+  sql=QString("delete from `REPLICATOR_MAP` where ")+
+    "`GROUP_NAME`='"+RDEscapeString(name)+"'";
+  RDSqlQuery::apply(sql);
+
+  *err_msg=QObject::tr("OK");
+
+  return true;
+}
+
+
 unsigned RDGroup::GetNextFreeCart(unsigned startcart) const
 {
   QString sql;

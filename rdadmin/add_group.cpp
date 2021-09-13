@@ -127,72 +127,27 @@ QSizePolicy AddGroup::sizePolicy() const
 
 void AddGroup::okData()
 {
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
-  QString sql;
+  QString err_msg;
 
   if(group_name_edit->text().isEmpty()) {
     QMessageBox::warning(this,tr("Invalid Name"),tr("You must give the group a name!"));
     return;
   }
-
-  sql=QString("insert into `GROUPS` set ")+
-    "`NAME`='"+RDEscapeString(group_name_edit->text())+"'";
-
-  q=new RDSqlQuery(sql);
-  if(!q->isActive()) {
-    QMessageBox::warning(this,tr("Group Exists"),tr("Group Already Exists!"),
-			 1,0,0);
-    delete q;
+  if(!RDGroup::create(group_name_edit->text(),group_users_box->isChecked(),
+		      group_svcs_box->isChecked(),&err_msg)) {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			 tr("Error creating group!")+"\n"+
+			 "["+err_msg+"]");
     return;
-  }
-  delete q;
-
-  //
-  // Create Default Users Perms
-  //
-  if(group_users_box->isChecked()) {
-    sql="select `LOGIN_NAME` from `USERS`";
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      sql=QString("insert into `USER_PERMS` set ")+
-	"`USER_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	"`GROUP_NAME`='"+RDEscapeString(group_name_edit->text())+"'";
-      RDSqlQuery::apply(sql);
-    }
-    delete q;
-  }
-
-  //
-  // Create Default Service Perms
-  //
-  if(group_svcs_box->isChecked()) {
-    sql="select `NAME` from `SERVICES`";
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      sql=QString("insert into `AUDIO_PERMS` set ")+
-	"`SERVICE_NAME`='"+RDEscapeString(q->value(0).toString())+"',"+
-	"`GROUP_NAME`='"+RDEscapeString(group_name_edit->text())+"'";
-      q1=new RDSqlQuery(sql);
-      delete q1;
-    }
-    delete q;
-  }
+  }		      
 
   EditGroup *group=new EditGroup(group_name_edit->text(),this);
-  if(group->exec()<0) {
-    sql=QString("delete from `USER_PERMS` where ")+
-      "`GROUP_NAME`='"+RDEscapeString(group_name_edit->text())+"'";
-    q=new RDSqlQuery(sql);
-    delete q;
-    sql=QString("delete from `AUDIO_PERMS` where ")+
-      "`GROUP_NAME`='"+RDEscapeString(group_name_edit->text())+"'";
-    q=new RDSqlQuery(sql);
-    delete q;
-    sql=QString("delete from `GROUPS` where ")+
-      "`NAME`='"+RDEscapeString(group_name_edit->text())+"'";
-    q=new RDSqlQuery(sql);
-    delete q;
+  if(!group->exec()) {
+    if(!RDGroup::remove(group_name_edit->text(),&err_msg)) {
+      QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			   tr("Error removing stale database record!")+"\n"+
+			   "["+err_msg+"]");
+    }
     delete group;
     done(false);
     return;

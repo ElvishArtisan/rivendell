@@ -134,7 +134,6 @@ void ListGroups::addData()
     return;
   }
   delete add_group;
-  add_group=NULL;
   QModelIndex index=list_groups_model->addGroup(grpname);
   if(index.isValid()) {
     list_groups_view->selectRow(index.row());
@@ -187,12 +186,12 @@ void ListGroups::deleteData()
   RDSqlQuery *q=NULL;
   QString warning;
   int carts=0;
+  QString err_msg;
   QModelIndexList rows=list_groups_view->selectionModel()->selectedRows();
 
   if(rows.size()!=1) {
     return;
   }
-
 
   QString grpname=list_groups_model->groupName(rows.first());
   if(grpname.isEmpty()) {
@@ -229,33 +228,13 @@ void ListGroups::deleteData()
   }
   delete q;
   
-  //
-  // Delete Member Audio Perms
-  //
-  sql=QString("delete from `AUDIO_PERMS` where ")+
-    "`GROUP_NAME`='"+RDEscapeString(grpname)+"'";
-  RDSqlQuery::apply(sql);
-  
-  //
-  // Delete Member User Perms
-  //
-  sql=QString("delete from `USER_PERMS` where ")+
-    "`GROUP_NAME`='"+RDEscapeString(grpname)+"'";
-  RDSqlQuery::apply(sql);
-  
-  //
-  // Delete Replicator Map Records
-  //
-  sql=QString("delete from `REPLICATOR_MAP` where ")+
-    "`GROUP_NAME`='"+RDEscapeString(grpname)+"'";
-  RDSqlQuery::apply(sql);
-  
-  //
-  // Delete from Group List
-  //
-  sql=QString("delete from `GROUPS` where ")+
-    "`NAME`='"+RDEscapeString(grpname)+"'";
-  RDSqlQuery::apply(sql);
+  if(!RDGroup::remove(grpname,&err_msg)) {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			 tr("Unable to remove group!")+"\n"+
+			 "["+err_msg+"]");
+    return;
+  }
+
   list_groups_model->removeGroup(grpname);
 }
 
