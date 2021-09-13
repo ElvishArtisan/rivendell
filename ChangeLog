@@ -22421,3 +22421,6 @@
 	* Fixed a regression in rdlibrary(1) that could cause less than
 	100 carts to be displayed when the 'Show Only First 100 Matches'
 	box was ticked.
+2021-09-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDCartFilter' that caused a SQL error to be
+	thrown during initialization.

@@ -222,17 +222,15 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   // Group Filter
   //
   QStringList groups;
-  for(int i=0;i<d_group_box->count();i++) {
-    if(d_group_box->itemText(i)!=tr("ALL")) {
-      groups.push_back(d_group_box->itemText(i));
-    }
+  for(int i=1;i<d_group_box->count();i++) {
+    groups.push_back(d_group_box->itemText(i));
   }
   if(groups.size()==0) {  // No groups selected, so force an empty selection
     return QString(" where `CART`.`NUMBER`<0");  // An impossibility
   }
   sql+=RDCartFilter::groupFilter(d_group_box->currentText(),groups);
   if(d_show_track_carts) {
-    sql=sql.left(sql.length()-2);  // Remove the final "&&"
+    sql=sql.left(sql.length()-3);  // Remove the final "&& "
   }
   else {
     sql+="`CART`.`OWNER` is null ";
