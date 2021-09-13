@@ -80,7 +80,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
   QString sql=QString("left join `AUTOFILLS` ")+
     "on `CART`.`NUMBER`=`AUTOFILLS`.`CART_NUMBER` where "+
     "`AUTOFILLS`.`SERVICE`='"+RDEscapeString(svc_svc->name())+"'";
-  svc_cart_model->setFilterSql(sql);
+  svc_cart_model->setFilterSql(sql,RD_MAX_CART_NUMBER+1);
 }
 
 

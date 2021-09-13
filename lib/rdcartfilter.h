@@ -42,6 +42,7 @@ class RDCartFilter : public RDWidget
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   QString filterSql(const QStringList &and_fields=QStringList()) const;
+  int cartLimit() const;
   QString filterText() const;
   QString selectedGroup() const;
   QString selectedSchedCode() const;
@@ -70,7 +71,7 @@ class RDCartFilter : public RDWidget
 
  signals:
   void selectedGroupChanged(const QString &grpname);
-  void filterChanged(const QString &where_sql);
+  void filterChanged(const QString &where_sql,int cart_limit);
   void dragEnabledChanged(bool state);
 
  private slots:

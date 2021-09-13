@@ -248,15 +248,16 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
 
   sql+="order by `CART`.`NUMBER` ";
 
-  //
-  // Return Size Limit
-  //
-  if(d_showmatches_box->isChecked()) {
-    sql+=QString::asprintf("limit %d ",RD_LIMITED_CART_SEARCH_QUANTITY);
-  }
-  //  printf("FILTER SQL: %s\n",sql.toUtf8().constData());
-
   return sql;
+}
+
+
+int RDCartFilter::cartLimit() const
+{
+  if(d_showmatches_box->isChecked()) {
+    return RD_LIMITED_CART_SEARCH_QUANTITY;
+  }
+  return RD_MAX_CART_NUMBER+1;  // Effectively "unlimited"
 }
 
 
@@ -313,7 +314,7 @@ void RDCartFilter::setShowCartType(RDCart::Type type)
     }
     d_show_cart_type=type;
 
-    emit filterChanged(filterSql());
+    emit filterChanged(filterSql(),cartLimit());
   }
 }
 
@@ -328,7 +329,7 @@ void RDCartFilter::setShowTrackCarts(bool state)
 {
   if(state!=d_show_track_carts) {
     d_show_track_carts=state;
-    emit filterChanged(filterSql());
+    emit filterChanged(filterSql(),cartLimit());
   }
 }
 
@@ -359,7 +360,7 @@ void RDCartFilter::setService(const QString &svc)
     if(!d_service.isEmpty()) {
       LoadServiceGroups();
     }
-    emit filterChanged(filterSql());
+    emit filterChanged(filterSql(),cartLimit());
   }
 }
 
@@ -384,8 +385,8 @@ void RDCartFilter::setShowNoteBubbles(bool state)
 
 void RDCartFilter::setModel(RDLibraryModel *model)
 {
-  connect(this,SIGNAL(filterChanged(const QString &)),
-	  model,SLOT(setFilterSql(const QString &)));
+  connect(this,SIGNAL(filterChanged(const QString &,int)),
+	  model,SLOT(setFilterSql(const QString &,int)));
   connect(d_shownotes_box,SIGNAL(stateChanged(int)),
 	  model,SLOT(setShowNotes(int)));
   connect(model,SIGNAL(rowCountChanged(int)),this,SLOT(setMatchCount(int)));
@@ -431,7 +432,7 @@ void RDCartFilter::changeUser()
   delete q;
   d_search_button->setDisabled(true);
 
-  emit filterChanged(filterSql());
+  emit filterChanged(filterSql(),cartLimit());
 }
 
 
@@ -461,7 +462,7 @@ void RDCartFilter::searchClickedData()
   else {
     d_clear_button->setEnabled(true);
   }
-  emit filterChanged(filterSql());
+  emit filterChanged(filterSql(),cartLimit());
 }
 
 

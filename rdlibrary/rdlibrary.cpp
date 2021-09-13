@@ -274,7 +274,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   lib_macro_events=new RDMacroEvent(rda->station()->address(),rda->ripc(),this);
 
   dragsChangedData(lib_cart_filter->dragEnabled());
-  lib_cart_model->setFilterSql(lib_cart_filter->filterSql());
+  lib_cart_model->
+    setFilterSql(lib_cart_filter->filterSql(),lib_cart_model->cartLimit());
 
   LoadGeometry();
 }

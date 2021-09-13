@@ -1264,7 +1264,7 @@ void EditEvent::RefreshLibrary()
     RDCartFilter::groupFilter(event_group_box->currentText(),
 			      event_group_model->allGroupNames());
   sql=sql.left(sql.length()-3);
-  event_lib_model->setFilterSql(sql);
+  event_lib_model->setFilterSql(sql,RD_MAX_CART_NUMBER+1);
 }
 
 

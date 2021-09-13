@@ -65,13 +65,14 @@ class RDLibraryModel : public QAbstractItemModel
   void refreshRow(const QModelIndex &index);
   void refreshCart(unsigned cartnum);
   bool showNotes() const;
+  int cartLimit() const;
 
  signals:
   void rowCountChanged(int rows);
 
  public slots:
   void setShowNotes(int state);
-  void setFilterSql(const QString &sql);
+  void setFilterSql(const QString &sql,int cart_limit);
 
  protected:
   void updateModel(const QString &filter_sql);
@@ -82,6 +83,7 @@ class RDLibraryModel : public QAbstractItemModel
  private:
   QByteArray DumpIndex(const QModelIndex &index,const QString &caption="") const;
   bool d_show_notes;
+  int d_cart_limit;
   QPalette d_palette;
   QFont d_font;
   QFontMetrics *d_font_metrics;

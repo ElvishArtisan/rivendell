@@ -29,6 +29,7 @@ RDLibraryModel::RDLibraryModel(QObject *parent)
   d_font_metrics=NULL;
   d_bold_font_metrics=NULL;
   d_show_notes=false;
+  d_cart_limit=RD_MAX_CART_NUMBER+1;  // Effectively "unlimited"
 
   //
   // Column Attributes
@@ -478,15 +479,22 @@ bool RDLibraryModel::showNotes() const
 }
 
 
+int RDLibraryModel::cartLimit() const
+{
+  return d_cart_limit;
+}
+
+
 void RDLibraryModel::setShowNotes(int state)
 {
   d_show_notes=state;
 }
 
 
-void RDLibraryModel::setFilterSql(const QString &sql)
+void RDLibraryModel::setFilterSql(const QString &sql,int cart_limit)
 {
   //  printf("FILTER SQL: %s\n",sql.toUtf8().constData());
+  d_cart_limit=cart_limit;
   updateModel(sql);
 }
 
@@ -534,8 +542,9 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   d_cart_types.clear();
   d_icons.clear();
   unsigned prev_cartnum=0;
+  int carts_loaded=0;
   q=new RDSqlQuery(sql);
-  while(q->next()) {
+  while(q->next()&&(carts_loaded<d_cart_limit)) {
     if(q->value(0).toUInt()!=prev_cartnum) {
       d_texts.push_back(list);
       d_notes.push_back(QVariant());
@@ -547,6 +556,7 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
       d_icons.push_back(icons);
       updateRow(d_texts.size()-1,q);
       prev_cartnum=q->value(0).toUInt();
+      carts_loaded++;
     }
   }
   delete q;

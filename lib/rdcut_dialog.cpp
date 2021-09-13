@@ -145,7 +145,8 @@ RDCutDialog::RDCutDialog(QString *filter,QString *group,QString *schedcode,
   cart_cancel_button->setFont(buttonFont());
   connect(cart_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
-  cart_cart_model->setFilterSql(cart_cart_filter->filterSql());
+  cart_cart_model->
+    setFilterSql(cart_cart_filter->filterSql(),cart_cart_filter->cartLimit());
 
   //
   // Fix the Window Size

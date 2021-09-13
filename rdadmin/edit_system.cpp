@@ -481,7 +481,7 @@ void EditSystem::okData()
 	}
 	filter_sql=filter_sql.left(filter_sql.length()-2)+
 	  ") order by `CART`.`TITLE` ";
-	edit_duplicate_model->setFilterSql(filter_sql);
+	edit_duplicate_model->setFilterSql(filter_sql,RD_MAX_CART_NUMBER+1);
 	return;
       }
 
