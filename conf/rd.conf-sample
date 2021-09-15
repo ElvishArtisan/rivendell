@@ -180,3 +180,12 @@ TranscodingDelay=0
 ; Suppress the generation of Music Link Markers in logs, even if the
 ; 'Include Import Markers in Finished Logs' box is checked in rdadmin(1).
 ; SuppressMusicImportLinks=No
+
+; Save original files processed by the Webget service to the indicated
+; directory. Files so saved will have the date-time that the file was
+; processed prepended to the original filename, for example:
+;
+;    myfile.mp3 => YYYYMMDD-HHMMSS-myfile.mp3
+;
+; Default action is to not save files.
+; SaveWebgetFilesDirectory=

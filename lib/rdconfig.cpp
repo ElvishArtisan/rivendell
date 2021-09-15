@@ -388,6 +388,12 @@ bool RDConfig::suppressMusicImportLinks() const
 }
 
 
+QString RDConfig::saveWebgetFilesDirectory() const
+{
+  return conf_save_webget_files_directory;
+}
+
+
 int RDConfig::meterBasePort() const
 {
   return conf_meter_base_port;
@@ -610,6 +616,9 @@ bool RDConfig::load()
   conf_suppress_music_import_links=
     profile->boolValue("Hacks","SuppressMusicImportLinks",false);
 
+  conf_save_webget_files_directory=
+    profile->stringValue("Hacks","SaveWebgetFilesDirectory");
+
   conf_lock_rdairplay_memory=
     profile->boolValue("Hacks","LockRdairplayMemory",false);
 
@@ -739,6 +748,7 @@ void RDConfig::clear()
   conf_jack_ports[0].clear();
   conf_jack_ports[1].clear();
   conf_disable_maint_checks=false;
+  conf_save_webget_files_directory="";
   conf_suppress_music_import_links=false;
   conf_lock_rdairplay_memory=false;
   conf_meter_base_port=RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT;

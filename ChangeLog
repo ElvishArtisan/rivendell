@@ -20800,3 +20800,5 @@
 	Traffic import markers.
 2021-09-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.2int2.
+2021-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a ' SaveWebgetFilesDirectory=' directive to rd.conf(5).
