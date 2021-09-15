@@ -1,12 +1,48 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.6.2compatv41 -- 15 September 2021
+
+   v3.6.2 with support for schema 350.
+
+Database Update:
+   WebGet Service. Added a ' SaveWebgetFilesDirectory=' directive to
+   rd.conf(5).
+
+   This version of Rivendell uses database schema version 350, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.6.2compatv40 -- 2 August 2021
 
    v3.6.2 with support for schema 350.
 
 Database Update:
    This version of Rivendell uses database schema version 350, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v3.6.2int2 --7 September 2021
+
+Changes:
+   Added a 'SuppressMusicImportLinks=No|Yes' directive to the [Hacks]
+   section of rd.conf(5).
+
+   PyPAD Scripts. Added the ability to filter PAD updates by Group membership
+   on a per-script instance basis. See the documentation for the [NowGroups]
+   and [NextGroups] sections in the script exemplar files.
+
+   Now & Next/PAD System. Deprecated the use of the 'Transmit Now & Next data'
+   checkbox in the 'Group' dialog in rdadmin(1).
+
+Database Update:
+   This version of Rivendell uses database schema version 347, and will
    automatically upgrade any earlier versions. To see the current schema
    version prior to upgrade, see RDAdmin->SystemInfo.
 

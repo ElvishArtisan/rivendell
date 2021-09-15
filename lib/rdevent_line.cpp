@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,6 +21,7 @@
 #include <qobject.h>
 #include <q3textstream.h>
 
+#include "rdapplication.h"
 #include "rdconf.h"
 #include "rdcart.h"
 #include "rddb.h"
@@ -948,7 +949,9 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
   //
   // Insert Parent Link
   //
-  if(log->includeImportMarkers()) {
+  if(log->includeImportMarkers()&&
+     !(rda->config()->suppressMusicImportLinks()&&
+       (event_import_source==RDEventLine::Music))) {
     e->insert(e->size(),1);
     logline=new RDLogLine();
     *logline=*link_logline;
@@ -1030,7 +1033,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
 	logline->setStartTime(RDLogLine::Logged,time);
 	logline->setType(RDLogLine::TrafficLink);
 	logline->setSource(event_src);
-	logline->setTransType(trans_type);
 	logline->setEventLength(event_length);
 	logline->setLinkEventName(event_nested_event);
 	logline->setLinkStartTime(q->value(9).toTime());
@@ -1052,7 +1054,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       logline->setStartTime(RDLogLine::Logged,time);
       logline->setType(RDLogLine::Track);
       logline->setSource(event_src);
-      logline->setTransType(RDLogLine::Segue);
       logline->setMarkerComment(q->value(7).toString());
       logline->setEventLength(event_length);
       logline->setLinkEventName(event_name);
@@ -1074,7 +1075,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       logline->setStartTime(RDLogLine::Logged,time);
       logline->setType(RDLogLine::Marker);
       logline->setSource(event_src);
-      logline->setTransType(RDLogLine::Segue);
       logline->setMarkerComment(q->value(7).toString());
       logline->setEventLength(event_length);
       logline->setLinkEventName(event_name);
@@ -1099,9 +1099,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
 		     QTime(start_start_hour,0,0).addSecs(q->value(1).toInt()));
       logline->setType(RDLogLine::Cart);
       logline->setCartNumber(q->value(0).toUInt());
-      logline->setGraceTime(grace_time);
-      logline->setTimeType(time_type);
-      logline->setTransType(trans_type);
       logline->setExtStartTime(QTime().addSecs(3600*start_start_hour+
 					       q->value(1).toInt()));
       logline->setExtLength(q->value(2).toInt());
@@ -1119,6 +1116,13 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       logline->setLinkEmbedded(link_logline->linkEmbedded());
       time=time.addMSecs(length);
     }
+
+    //
+    // Apply Leading Event Values
+    //
+    logline->setGraceTime(grace_time);
+    logline->setTimeType(time_type);
+    logline->setTransType(trans_type);
 
     //
     // Clear Leading Event Values

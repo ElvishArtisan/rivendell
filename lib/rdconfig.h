@@ -100,6 +100,8 @@ class RDConfig
   QString jackPort(int num,int endpt) const;
   bool disableMaintChecks() const;
   bool lockRdairplayMemory() const;
+  bool suppressMusicImportLinks() const;
+  QString saveWebgetFilesDirectory() const;
   int meterBasePort() const;
   int meterPortRange() const;
   bool enableMixerLogging() const;
@@ -172,6 +174,8 @@ class RDConfig
   QString conf_http_user_agent;
   bool conf_disable_maint_checks;
   bool conf_lock_rdairplay_memory;
+  bool conf_suppress_music_import_links;
+  QString conf_save_webget_files_directory;
   int conf_meter_base_port;
   int conf_meter_port_range;
   std::vector<QString> conf_jack_ports[2];

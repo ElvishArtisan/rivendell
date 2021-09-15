@@ -97,3 +97,26 @@ VLog120=No
 ;VLog118=No
 ;VLog119=No
 ;VLog120=No
+
+
+[NowGroups]
+; Group Selection
+;
+; Filter updates according to the Group membership of the 'now' playing
+; event. If no groups are listed here and in the [NextGroups] section,
+; then ALL updates will be forwarded
+; without regard to Group.
+; Group1=MUSIC
+; Group2=LEGAL
+; [...] ; Additional groups can be added...
+
+[NextGroups]
+; Group Selection
+;
+; Filter updates according to the Group membership of the 'next' playing
+; event. If no groups are listed here, If no groups are listed here and in
+; the [NowGroups] section,then ALL updates will be forwarded
+; without regard to Group.
+; Group1=MUSIC
+; Group2=LEGAL
+; [...] ; Additional groups can be added...

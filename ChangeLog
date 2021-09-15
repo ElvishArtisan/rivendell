@@ -20793,3 +20793,28 @@
 	* Incremented the database version to 350.
 2021-08-02 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.2compatv40.
+2021-07-30 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.2.
+2021-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SuppressMusicImportLinks=' directive to the [Hacks]
+	section of rd.conf(5).
+2021-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.2int0.
+2021-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for [NowGroups] and [NextGroups] sections in
+	PyPAD script configurations.
+2021-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.2int1.
+2021-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Deprecated use of the 'Transmit Now & Next data' checkbox in
+	the 'Group' dialog in rdadmin(1).
+2021-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that caused leading event
+	attributes to fail to be preserved when suppressing Music of
+	Traffic import markers.
+2021-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.2int2.
+2021-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a ' SaveWebgetFilesDirectory=' directive to rd.conf(5).
+2021-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.2compatv41.
