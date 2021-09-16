@@ -728,14 +728,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   }
 
   //
-  // Create the HotKeyList object
-  //
-  air_keylist=new RDHotKeyList();
-  air_hotkeys=new RDHotkeys(rda->config()->stationName(),"rdairplay");
-  AltKeyHit=false;
-  CtrlKeyHit=false;
-
-  //
   // Set Signal Handlers
   //
   signal(SIGCHLD,SigHandler);
@@ -1790,50 +1782,8 @@ void MainWidget::transportChangedData()
 }
 
 
-void MainWidget::keyPressEvent(QKeyEvent *e)
-{
- switch(e->key()) {
- case Qt::Key_Space:
-   if(rda->airplayConf()->barAction()&&(air_log[0]->nextLine()>=0)) {
-     air_log[0]->play(air_log[0]->nextLine(),RDLogLine::StartManual);
-   }
-   break;
-
- case Qt::Key_X:
-   if(((e->modifiers()&Qt::AltModifier)!=0)&&
-      ((e->modifiers()&Qt::ShiftModifier)==0)&&
-      ((e->modifiers()&Qt::ControlModifier)==0)) {
-     QCloseEvent *ce=new QCloseEvent();
-     closeEvent(ce);
-     delete ce;
-   }
-   break;
-
- case Qt::Key_Alt:
-   keystrokecount++;
-   AltKeyHit = true;
-   break;
-
- case Qt::Key_Control:
-   keystrokecount++;
-   CtrlKeyHit = true;
-   break;
-
- default:
-   QWidget::keyPressEvent(e);
-   break;
-  }
-}
-
-
 void MainWidget::keyReleaseEvent(QKeyEvent *e)
 {
-  int keyhit = e->key();
-  QString mystring=(*air_keylist).GetKeyCode(keyhit);
-  QString hotkeystrokes;
-  QString hot_label;
-  QString temp_string;
-
   switch(e->key()) {
   case Qt::Key_Space:
     switch(air_bar_action) {
@@ -1848,131 +1798,16 @@ void MainWidget::keyReleaseEvent(QKeyEvent *e)
       break;
     }
     break;
-  }
-//  Try to figure out if this is a hot key combination
-  if ( (e->key() == Qt::Key_Shift) || 
-       (e->key() == Qt::Key_Up) || 
-       (e->key() == Qt::Key_Left) ||
-       (e->key() == Qt::Key_Right) ||
-       (e->key() == Qt::Key_Down) )    {
-      QWidget::keyReleaseEvent(e);
-      keystrokecount = 0;
-      hotkeystrokes = QString ("");
-      return;
-  }
 
-  if ((e->key() == Qt::Key_Alt) ||
-      (e->key() == Qt::Key_Control)) {
-      if (keystrokecount != 0 ) hotkeystrokes = QString ("");
-      if (AltKeyHit) {
-          AltKeyHit = false;
-          if (keystrokecount > 0) keystrokecount--;
-      }
-      if (CtrlKeyHit) {
-          CtrlKeyHit = false;
-          if (keystrokecount > 0) keystrokecount--;
-      }
-      return;
-  }
-
-  if (!e->isAutoRepeat()) {
-      if (keystrokecount == 0)
-          hotkeystrokes = QString ("");
-      if (AltKeyHit) {
-          hotkeystrokes =  (*air_keylist).GetKeyCode(Qt::Key_Alt);
-          hotkeystrokes +=  QString(" + ");
-      }
-      if (CtrlKeyHit) {
-          if (AltKeyHit) {
-              hotkeystrokes +=  (*air_keylist).GetKeyCode(Qt::Key_Control);
-              hotkeystrokes += QString (" + ");
-          }
-          else {
-              hotkeystrokes =  (*air_keylist).GetKeyCode(Qt::Key_Control);
-              hotkeystrokes += QString (" + ");
-          }
-      }
-
-      hotkeystrokes += mystring; 
-      keystrokecount = 0 ;
-  }
-  
-      // Have any Hot Key Combinations now...
-
-  if (hotkeystrokes.length() > 0)  {
-
-    hot_label=(*air_hotkeys).GetRowLabel(RDEscapeString(rda->config()->stationName()),
-					 "airplay",hotkeystrokes.toUtf8().constData());
-
-    if (hot_label.length()>0) {
-
-        // "we found a keystroke label
- 
-        if (hot_label=="Add")
-        {
-            addButtonData();
-            return;
-        }
-
-        if (hot_label=="Delete")
-        {
-            deleteButtonData();
-            return;
-        }
-
-        if (hot_label=="Copy")
-        {
-            copyButtonData();
-            return;
-        }
-
-        if (hot_label=="Move")
-        {
-            moveButtonData();
-            return;
-        }
-    
-        if (hot_label=="Sound Panel")
-        {
-            panelButtonData();
-            return;
-        }
-    
-        if (hot_label=="Main Log")
-        {
-            fullLogButtonData(0);
-            return;
-        }
-    
-        if ((hot_label=="Aux Log 1") &&
-             (rda->airplayConf()->showAuxButton(0) ) )
-        {
-            fullLogButtonData(1);
-            return;
-        }
-    
-        if ((hot_label=="Aux Log 2") &&
-             (rda->airplayConf()->showAuxButton(1) ) )
-        {
-            fullLogButtonData(2);
-            return;
-        }
-    
-        for (int i = 1; i < 8 ; i++)
-        {
-            temp_string = QString::asprintf("Start Line %d",i);
-            if (hot_label==temp_string)
-                air_button_list->startButton(i-1);
-    
-            temp_string = QString::asprintf("Stop Line %d",i);
-            if (hot_label==temp_string)
-                air_button_list->stopButtonHotkey(i-1);
-    
-            temp_string = QString::asprintf("Pause Line %d",i);
-            if (hot_label==temp_string)
-                air_button_list->pauseButtonHotkey(i-1);
-        }
-      }
+  case Qt::Key_X:
+    if(((e->modifiers()&Qt::AltModifier)!=0)&&
+       ((e->modifiers()&Qt::ShiftModifier)==0)&&
+       ((e->modifiers()&Qt::ControlModifier)==0)) {
+      QCloseEvent *ce=new QCloseEvent();
+      closeEvent(ce);
+      delete ce;
+    }
+    break;
   }
   QWidget::keyReleaseEvent(e);
 }

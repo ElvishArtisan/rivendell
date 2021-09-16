@@ -1,6 +1,7 @@
-This note lists DB fields that are currently unused and may be removed
+This note lists DB structures that are currently unused and may be removed
 in future.
 
 GROUPS.ENABLE_NOW_NEXT
 LOGS.INCLUDE_IMPORT_MARKERS
 SERVICES.INCLUDE_IMPORT_MARKERS
+RDHOTKEYS

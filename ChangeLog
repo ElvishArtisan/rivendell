@@ -22436,3 +22436,9 @@
 	'RDAirPlayConf::setLogoPath()' methods.
 	* Added a 'Logo Image' control to the 'Configure RDAirPlay' dialog
 	in rdadmin(1).
+2021-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the vestigal 'Hot Keys' capability.
+	* Modified the 'Start on SpaceBar' action in rdairplay(1) so as to
+	activate upon *release* of the spacebar.
+	* Fixed a regression that broke the Alt-X keybinding in
+	rdairplay(1).

@@ -153,8 +153,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdgrouplistmodel.cpp rdgrouplistmodel.h\
                         rdhash.cpp rdhash.h\
                         rdhostvarlistmodel.cpp rdhostvarlistmodel.h\
-                        rdhotkeys.cpp rdhotkeys.h\
-                        rdhotkeylist.cpp rdhotkeylist.h\
                         rdidvalidator.cpp rdidvalidator.h\
                         rdiconengine.cpp rdiconengine.h\
                         rdimagepickerbox.cpp rdimagepickerbox.h\

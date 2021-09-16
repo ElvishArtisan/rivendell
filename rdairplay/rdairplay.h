@@ -22,8 +22,6 @@
 #define RDAIRPLAY_H
 
 #include <rdemptycart.h>
-#include <rdhotkeylist.h>
-#include <rdhotkeys.h>
 #include <rdinstancelock.h>
 #include <rdmainwindow.h>
 #include <rdmeterstrip.h>
@@ -86,7 +84,6 @@ class MainWidget : public RDMainWindow
   void transportChangedData();
   
  protected:
-  void keyPressEvent(QKeyEvent *e);
   void keyReleaseEvent(QKeyEvent *e);
   void closeEvent(QCloseEvent *);
   void resizeEvent(QResizeEvent *e);
@@ -158,9 +155,6 @@ class MainWidget : public RDMainWindow
   QDateTime air_startup_datetime;
   QPixmap *air_refresh_pixmap;
   QString air_editor_cmd;
-  int  keystrokecount;
-  bool AltKeyHit ;
-  bool CtrlKeyHit;
   QFont air_message_fonts[AIR_MESSAGE_FONT_QUANTITY];
   QFontMetrics *air_message_metrics[AIR_MESSAGE_FONT_QUANTITY];
   int air_audio_channels[RDAirPlayConf::LastChannel];
@@ -177,8 +171,6 @@ class MainWidget : public RDMainWindow
   RDEmptyCart *air_empty_cart;
   RDCartDialog *air_cart_dialog;
   RDEventPlayer *air_event_player;
-  RDHotKeyList *air_keylist;
-  RDHotkeys *air_hotkeys;
   TopStrip *air_top_strip;
   QLabel *air_bug_label;
 };
