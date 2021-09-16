@@ -736,6 +736,18 @@ void RDAirPlayConf::setSkinPath(const QString &path) const
 }
 
 
+QString RDAirPlayConf::logoPath() const
+{
+  return RDGetSqlValue(air_tablename,"ID",air_id,"LOGO_PATH").toString();
+}
+  
+
+void RDAirPlayConf::setLogoPath(const QString &path) const
+{
+  SetRow("LOGO_PATH",path);
+}
+
+
 bool RDAirPlayConf::showCounters() const
 {
   return RDBool(RDGetSqlValue(air_tablename,"ID",air_id,"SHOW_COUNTERS").

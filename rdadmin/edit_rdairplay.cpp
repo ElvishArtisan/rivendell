@@ -810,43 +810,57 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   connect(button,SIGNAL(clicked()),this,SLOT(selectSkinData()));
 
   //
+  // Logo Path
+  //
+  air_logo_edit=new QLineEdit(this);
+  air_logo_edit->setGeometry(555,433,180,20);
+  label=new QLabel(tr("Logo Image:"),this);
+  label->setFont(subLabelFont());
+  label->setGeometry(435,433,115,20);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  button=new QPushButton(tr("Select"),this);
+  button->setFont(subButtonFont());
+  button->setGeometry(740,430,50,25);
+  connect(button,SIGNAL(clicked()),this,SLOT(selectLogoData()));
+
+  //
   // Title Template
   //
   air_title_template_edit=new QLineEdit(this);
-  air_title_template_edit->setGeometry(555,425,180,20);
+  air_title_template_edit->setGeometry(555,455,180,20);
   label=new QLabel(tr("Title Template:"),this);
   label->setFont(subLabelFont());
-  label->setGeometry(430,425,120,20);
+  label->setGeometry(430,455,120,20);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Artist Template
   //
   air_artist_template_edit=new QLineEdit(this);
-  air_artist_template_edit->setGeometry(555,447,180,20);
+  air_artist_template_edit->setGeometry(555,477,180,20);
   label=new QLabel(tr("Artist Template:"),this);
   label->setFont(subLabelFont());
-  label->setGeometry(430,447,120,20);
+  label->setGeometry(430,477,120,20);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Outcue Template
   //
   air_outcue_template_edit=new QLineEdit(this);
-  air_outcue_template_edit->setGeometry(555,469,180,20);
+  air_outcue_template_edit->setGeometry(555,499,180,20);
   label=new QLabel(tr("Outcue Template:"),this);
   label->setFont(subLabelFont());
-  label->setGeometry(430,469,120,20);
+  label->setGeometry(430,499,120,20);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Description Template
   //
   air_description_template_edit=new QLineEdit(this);
-  air_description_template_edit->setGeometry(555,491,180,20);
+  air_description_template_edit->setGeometry(555,521,180,20);
   label=new QLabel(tr("Description Template:"),this);
   label->setFont(subLabelFont());
-  label->setGeometry(425,491,125,20);
+  label->setGeometry(425,521,125,20);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -854,18 +868,18 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   label=new QLabel(tr("Log Mode Control"),this);
   label->setFont(sectionLabelFont());
-  label->setGeometry(435,530,200,16);
+  label->setGeometry(435,560,200,16);
 
   //
   // Mode Control Style
   //
   air_modecontrol_box=new QComboBox(this);
-  air_modecontrol_box->setGeometry(560,550,110,20);
+  air_modecontrol_box->setGeometry(560,580,110,20);
   connect(air_modecontrol_box,SIGNAL(activated(int)),
 	  this,SLOT(modeControlActivatedData(int)));
   label=new QLabel(tr("Mode Control Style:"),this);
   label->setFont(subLabelFont());
-  label->setGeometry(435,550,120,20);
+  label->setGeometry(435,580,120,20);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   air_modecontrol_box->insertItem(0,tr("Unified"));
   air_modecontrol_box->insertItem(1,tr("Independent"));
@@ -875,12 +889,12 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   for(int i=0;i<3;i++) {
     air_logstartmode_box[i]=new QComboBox(this);
-    air_logstartmode_box[i]->setGeometry(615,572+i*22,110,20);
+    air_logstartmode_box[i]->setGeometry(615,602+i*22,110,20);
     connect(air_logstartmode_box[i],SIGNAL(activated(int)),
 	    this,SLOT(logStartupModeActivatedData(int)));
     air_logstartmode_label[i]=new QLabel(this);
     air_logstartmode_label[i]->setFont(subLabelFont());
-    air_logstartmode_label[i]->setGeometry(470,572+i*22,140,20);
+    air_logstartmode_label[i]->setGeometry(470,602+i*22,140,20);
     air_logstartmode_label[i]->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
     air_logstartmode_box[i]->insertItem(0,tr("Previous"));
     air_logstartmode_box[i]->insertItem(1,tr("LiveAssist"));
@@ -892,7 +906,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_logstartmode_label[2]->setText(tr("Aux 2 Log Startup Mode:"));
 
   air_virtual_logstartsel_box=new QComboBox(this);
-  air_virtual_logstartsel_box->setGeometry(435,638,120,20);
+  air_virtual_logstartsel_box->setGeometry(435,668,120,20);
   connect(air_virtual_logstartsel_box,SIGNAL(activated(int)),
 	  this,SLOT(virtualModeActivatedData(int)));
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
@@ -902,10 +916,10 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   }
   label=new QLabel(":",this);
   label->setFont(subLabelFont());
-  label->setGeometry(555,638,5,20);
+  label->setGeometry(555,668,5,20);
   label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
   air_virtual_logstartmode_box=new QComboBox(this);
-  air_virtual_logstartmode_box->setGeometry(565,638,110,20);
+  air_virtual_logstartmode_box->setGeometry(565,668,110,20);
   air_virtual_logstartmode_box->insertItem(0,tr("Previous"));
   air_virtual_logstartmode_box->insertItem(1,tr("LiveAssist"));
   air_virtual_logstartmode_box->insertItem(2,tr("Automatic"));
@@ -1024,6 +1038,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_startlog_edit->setText(air_startlogs[air_logmachine]);
   air_autorestart_box->setChecked(air_autorestarts[air_logmachine]);
   air_skin_edit->setText(air_conf->skinPath());
+  air_logo_edit->setText(air_conf->logoPath());
   startModeChangedData(air_startmodes[air_logmachine]);
 
   for(unsigned i=0;i<RDAirPlayConf::LastChannel;i++) {
@@ -1040,7 +1055,7 @@ EditRDAirPlay::~EditRDAirPlay()
 
 QSize EditRDAirPlay::sizeHint() const
 {
-  return QSize(1010,680);
+  return QSize(1010,716);
 } 
 
 
@@ -1192,6 +1207,18 @@ void EditRDAirPlay::selectSkinData()
 }
 
 
+void EditRDAirPlay::selectLogoData()
+{
+  QString filename=air_logo_edit->text();
+  filename=QFileDialog::getOpenFileName(this,"RDAdmin - "+
+					tr("Select Image File"),filename,
+					RD_IMAGE_FILE_FILTER);
+  if(!filename.isNull()) {
+    air_logo_edit->setText(filename);
+  }
+}
+
+
 void EditRDAirPlay::modeControlActivatedData(int n)
 {
   if(n==0) {
@@ -1308,6 +1335,7 @@ void EditRDAirPlay::okData()
     air_conf->setOpMode(i+RD_RDVAIRPLAY_LOG_BASE,air_virtual_opmodes[i]);
   }
   air_conf->setSkinPath(air_skin_edit->text());
+  air_conf->setLogoPath(air_logo_edit->text());
   done(0);
 }
 

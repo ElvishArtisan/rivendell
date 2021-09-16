@@ -22429,3 +22429,10 @@
 	* Added an 'RDGroups::remove()' static method.
 2021-09-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added a ' SaveWebgetFilesDirectory=' directive to rd.conf(5).
+2021-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDAIRPLAY.LOGO_PATH' field to the database.
+	* Incremented the database version to 355.
+	* Added 'RDAirPlayConf::logoPath()' and
+	'RDAirPlayConf::setLogoPath()' methods.
+	* Added a 'Logo Image' control to the 'Configure RDAirPlay' dialog
+	in rdadmin(1).

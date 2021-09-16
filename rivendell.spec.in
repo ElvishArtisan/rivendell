@@ -361,6 +361,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/icons/hicolor/512x512/apps/rdlogedit.png
 %{_datadir}/icons/hicolor/512x512/apps/rdlogmanager.png
 %{_datadir}/icons/hicolor/512x512/apps/rdpanel.png
+%{_datadir}/pixmaps/rivendell/rdairplay_logo.png
 %{_datadir}/X11/fvwm2/pixmaps/mini.rivendell.xpm
 %{_datadir}/X11/fvwm2/pixmaps/rivendell.xpm
 %{_datadir}/applications/rivendell-rdadmin.desktop

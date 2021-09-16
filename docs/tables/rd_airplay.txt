@@ -28,6 +28,7 @@ EXIT_CODE              int(11)           0=clean, 1=dirty
 VIRTUAL_EXIT_CODE      int(11)           0=clean, 1=dirty
 EXIT_PASSWORD          varchar(48)
 SKIN_PATH              varchar(191)
+LOGO_PATH              varchar(191)
 SHOW_COUNTERS          enum('N','Y')
 AUDITION_PREROLL       int(11)
 TITLE_TEMPLATE         varchar(64)

@@ -42,6 +42,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 355
+  //
+  if((cur_schema==355)&&(set_schema<cur_schema)) {
+    DropColumn("RDAIRPLAY","LOGO_PATH");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 354
   //
   if((cur_schema==354)&&(set_schema<cur_schema)) {

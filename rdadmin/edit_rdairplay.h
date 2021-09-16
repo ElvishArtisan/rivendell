@@ -60,6 +60,7 @@ class EditRDAirPlay : public RDDialog
   void selectData();
   //  void editHotKeys();
   void selectSkinData();
+  void selectLogoData();
   void modeControlActivatedData(int n);
   void logStartupModeActivatedData(int n);
   void okData();
@@ -137,6 +138,7 @@ class EditRDAirPlay : public RDDialog
   QMap<int,bool> air_autorestarts;
   QLabel *air_autorestart_label;
   QLineEdit *air_skin_edit;
+  QLineEdit *air_logo_edit;
   QLineEdit *air_title_template_edit;
   QLineEdit *air_artist_template_edit;
   QLineEdit *air_outcue_template_edit;

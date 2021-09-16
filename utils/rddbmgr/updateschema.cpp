@@ -10949,6 +10949,15 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<355)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `RDAIRPLAY` ")+
+      "add column `LOGO_PATH` varchar(191) default '/usr/share/pixmaps/rivendell/rdairplay_logo.png' after `SKIN_PATH`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

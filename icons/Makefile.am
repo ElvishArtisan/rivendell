@@ -183,6 +183,8 @@ install-exec-am:
 	cp rdpanel-512x512.png $(DESTDIR)@prefix@/share/icons/hicolor/512x512/apps/rdpanel.png
 	mkdir -p $(DESTDIR)@prefix@/share/icons/hicolor/128x128/apps
 	cp rdpanel-128x128.png $(DESTDIR)@prefix@/share/icons/hicolor/128x128/apps/rdpanel.png
+	mkdir -p $(DESTDIR)@prefix@/share/pixmaps/rivendell
+	cp rdairplay_logo.png $(DESTDIR)@prefix@/share/pixmaps/rivendell/
 	mkdir -p $(DESTDIR)@prefix@/share/X11/fvwm2/pixmaps
 	cp rivendell-16x16.xpm $(DESTDIR)@prefix@/share/X11/fvwm2/pixmaps/mini.rivendell.xpm
 	cp rivendell-32x32.xpm $(DESTDIR)@prefix@/share/X11/fvwm2/pixmaps/rivendell.xpm
@@ -268,6 +270,7 @@ uninstall-local:
 	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/128x128/apps/rdpanel-128x128.png
 	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/256x256/apps/rdpanel.png
 	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/512x512/apps/rdpanel.png
+	rm -f $(DESTDIR)@prefix@/share/pixmaps/rivendell/rdairplay_logo.png
 	./update_icons.sh
 
 EXTRA_DIST = admin.xpm\
@@ -314,6 +317,7 @@ EXTRA_DIST = admin.xpm\
              post3.xpm\
              progressbar.gif\
              progressbar.xcf\
+             rdairplay_logo.png\
              record.xpm\
              record2.xpm\
              record3.xpm\

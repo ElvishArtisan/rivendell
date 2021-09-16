@@ -138,6 +138,8 @@ class RDAirPlayConf
   void setExitPassword(const QString &passwd) const;
   QString skinPath() const;
   void setSkinPath(const QString &path) const;
+  QString logoPath() const;
+  void setLogoPath(const QString &path) const;
   bool showCounters() const;
   void setShowCounters(bool state) const;
   int auditionPreroll() const;
