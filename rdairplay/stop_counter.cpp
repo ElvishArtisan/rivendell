@@ -133,7 +133,8 @@ void StopCounter::UpdateTime()
       msecs += 86400000; /* 1 day */
     }
     if(stop_running) {
-      text=rda->timeString(QTime(0,0,1).addMSecs(msecs));
+      //      text=rda->timeString(QTime(0,0,1).addMSecs(msecs));
+      text=QTime(0,0,1).addMSecs(msecs).toString("hh:mm:ss");
       p->drawText((sizeHint().width()-2-p->fontMetrics().width(text))/2,59,
 		  text);
     }

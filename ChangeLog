@@ -22442,3 +22442,7 @@
 	activate upon *release* of the spacebar.
 	* Fixed a regression that broke the Alt-X keybinding in
 	rdairplay(1).
+2021-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused the Stop Counter
+	to display incorrect Time Remaining values when the system's
+	Time Format was set to 'Twelve Hour'.
