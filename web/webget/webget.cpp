@@ -21,6 +21,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <ctype.h>
 #include <stdint.h>
@@ -473,6 +474,9 @@ void MainObject::PutAudio()
   //
   QStringList args;
 
+  if(!rda->config()->saveWebgetFilesDirectory().isEmpty()) {
+    SaveSourceFile(filename);
+  }
   args.push_back(QString("--ticket=")+webget_ticket+":"+
   		 webget_post->clientAddress().toString());
   args.push_back("--send-mail");
@@ -767,6 +771,67 @@ bool MainObject::Authenticate()
   }
 
   return true;
+}
+
+
+void MainObject::SaveSourceFile(const QString &filepath) const
+{
+  char buffer[1024];
+  ssize_t n;
+  int src_fd=-1;
+  int dst_fd=-1;
+  QDir dir(rda->config()->saveWebgetFilesDirectory());
+  if(!dir.exists()) {
+    rda->syslog(LOG_WARNING,"SaveWebgetFilesDirectory \"%s\" does not exist",
+               rda->config()->saveWebgetFilesDirectory().toUtf8().constData());
+    return;
+  }
+  QDateTime now=QDateTime::currentDateTime();
+  QStringList f0=filepath.split("/",QString::SkipEmptyParts);
+  QString filename=rda->config()->saveWebgetFilesDirectory()+"/"+
+    now.toString("yyyyMMdd-hhmmss-")+f0.last();
+
+  //
+  // Open Source File
+  //
+  if((src_fd=open(filepath.toUtf8(),O_RDONLY))<0) {
+    rda->syslog(LOG_WARNING,
+         "unable to open source file \"%s\" for SaveWebgetFilesDirectory [%s]",
+               filepath.toUtf8().constData(),strerror(errno));
+    return;
+  }
+
+  //
+  // Open Destination File
+  //
+  int num=1;
+  while((dst_fd=open(filename.toUtf8(),O_WRONLY|O_CREAT|O_EXCL,S_IRUSR|S_IRGRP))<0) {
+    if(errno!=EEXIST) {
+      rda->syslog(LOG_WARNING,
+                 "unable to open destination file \"%s\" for SaveWebgetFilesDirectory [%s]",
+                 filename.toUtf8().constData(),strerror(errno));
+      close(src_fd);
+      return;
+    }
+    filename=rda->config()->saveWebgetFilesDirectory()+"/"+
+      now.toString("yyyyMMdd-hhmmss")+QString().sprintf("[%d]-",num)+f0.last();
+    num++;
+  }
+
+  //
+  // Move the data
+  //
+  while((n=read(src_fd,buffer,1024))>0) {
+    write(dst_fd,buffer,n);
+  }
+  if(n<0) {
+    rda->syslog(LOG_WARNING,"error while reading source file \"%s\" for SaveWebgetFilesDirectory [%s]",
+               filepath.toUtf8().constData(),strerror(errno));
+  }
+  close(src_fd);
+  close(dst_fd);
+  rda->syslog(LOG_INFO,"saved Webget file \"%s\"",
+             filename.toUtf8().constData());
 }
 
 

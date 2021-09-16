@@ -22427,3 +22427,5 @@
 2021-09-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDGroups::create()' static method.
 	* Added an 'RDGroups::remove()' static method.
+2021-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added a ' SaveWebgetFilesDirectory=' directive to rd.conf(5).

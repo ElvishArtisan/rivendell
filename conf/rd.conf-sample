@@ -188,3 +188,12 @@ TranscodingDelay=0
 ; dropboxes configured. Rivendell imposes a hard limit of 999 on this
 ; setting.
 ; MeterPortRange=100
+
+; Save original files processed by the Webget service to the indicated
+; directory. Files so saved will have the date-time that the file was
+; processed prepended to the original filename, for example:
+;
+;    myfile.mp3 => YYYYMMDD-HHMMSS-myfile.mp3
+;
+; Default action is to not save files.
+; SaveWebgetFilesDirectory=

@@ -2,7 +2,7 @@
 //
 // Rivendell audio upload/download utility
 //
-//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,7 @@
 #ifndef WEBGET_H
 #define WEBGET_H
 
-#include <qobject.h>
+#include <QObject>
 
 #include <rdaudioconvert.h>
 #include <rdformpost.h>
@@ -46,6 +46,7 @@ class MainObject : public QObject
   void ServeForm();
   void ServeLogin(int resp_code);
   bool Authenticate();
+  void SaveSourceFile(const QString &filepath) const;
   void Exit(int code);
   void TextExit(const QString &msg,int code,int line) const;
   RDFormPost *webget_post;
