@@ -137,6 +137,26 @@
     </table>
   </sect2>
 
+  <sect2 xml:id="sect.object_types.catch_events">
+    <title>Catch Events</title>
+    <para>
+      <userinput>CATCH_EVENT</userinput>
+    </para>
+    <table xml:id="table.object_types.catch_events" frame="all" pgwide="0">
+      <title>Catch Event Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="10.0*"/>
+	<tbody>
+	  <row><entry>Field</entry><entry>Value</entry></row>
+	  <row><entry>obj-type</entry><entry>CATCH_EVENT</entry></row>
+	  <row><entry>id</entry><entry>Event ID</entry></row>
+	  <row><entry>type</entry><entry>Unsigned Integer</entry></row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
 </sect1>
 
 </article>

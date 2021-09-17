@@ -30,14 +30,10 @@ moc_%.cpp:	%.h
 
 sbin_PROGRAMS = rdcatchd
 
-dist_rdcatchd_SOURCES = batch.cpp\
-                        catch_event.cpp catch_event.h\
-                        event_player.cpp event_player.h\
-                        local_macros.cpp\
+dist_rdcatchd_SOURCES = catchevent.cpp catchevent.h\
                         rdcatchd.cpp rdcatchd.h
 
-nodist_rdcatchd_SOURCES = moc_event_player.cpp\
-                          moc_rdcatchd.cpp
+nodist_rdcatchd_SOURCES = moc_rdcatchd.cpp
 
 rdcatchd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT5_LIBS@ @MUSICBRAINZ_LIBS@
 

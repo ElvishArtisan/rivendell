@@ -36,7 +36,7 @@ class RDTimeEngine : public QObject
   void clear();
   QTime event(int id) const;
   void addEvent(int id,const QTime &time);
-  void removeEvent(int id);
+  bool removeEvent(int id);
   
  signals:
   void timeout(int id);

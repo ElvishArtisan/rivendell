@@ -1,8 +1,8 @@
-// catch_connect.h
+// catchconnect.h
 //
-// A container class for a Rivendell netcatch event.
+// Container class for an RDCatch event
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,21 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef CATCH_CONNECT_H
-#define CATCH_CONNECT_H
+#ifndef CATCHCONNECT_H
+#define CATCHCONNECT_H
 
-#include <qtimer.h>
+#include <QTimer>
 
 #include <rdcae.h>
-#include <rdconfig.h>
 #include <rddeck.h>
 #include <rdrecording.h>
-#include <rdstation.h>
 
 class CatchEvent
 {
  public:
-  CatchEvent(RDStation *station,RDConfig *config);
+  CatchEvent();
   unsigned id() const;
   void setId(int id);
   bool isActive() const;
@@ -137,65 +135,73 @@ class CatchEvent
   void setPodcastTime(int msecs);
   int eventdateOffset() const;
   void setEventdateOffset(int days);
+  int exitCode() const;
+  void setExitCode(int code);
+  QString exitText() const;
+  void setExitText(const QString &str);
   void resolveUrl(int time_offset);
   void clear();
+  bool load(unsigned id);
+  void save() const;
+  void loadFromQuery(RDSqlQuery *q);
+  static QString sqlFields();
 
  private:
-  unsigned catch_id;
-  bool catch_is_active;
-  RDRecording::Type catch_type;
-  unsigned catch_channel;
-  QString catch_cut_name;
-  QString catch_temp_name;
-  bool catch_delete_temp_file;
-  bool catch_day_of_week[7];
-  RDRecording::StartType catch_start_type;
-  QTime catch_start_time;
-  int catch_start_length;
-  int catch_start_matrix;
-  int catch_start_line;
-  int catch_start_offset;
-  RDRecording::EndType catch_end_type;
-  QTime catch_end_time;
-  int catch_end_length;
-  int catch_end_matrix;
-  int catch_end_line;
-  unsigned catch_length;
-  int catch_start_gpi;
-  int catch_end_gpi;
-  unsigned catch_trim_threshold;
-  unsigned catch_startdate_offset;
-  unsigned catch_enddate_offset;
-  RDCae::AudioCoding catch_format;
-  int catch_channels;
-  int catch_samplerate;
-  int catch_bitrate;
-  int catch_quality;
-  int catch_normalize_level;
-  int catch_macro_cart;
-  int catch_switch_input;
-  int catch_switch_output;
-  bool catch_oneshot;
-  RDDeck::Status catch_status;
-  QString catch_url;
-  QString catch_resolved_url;
-  QString catch_url_username;
-  QString catch_url_password;
-  bool catch_enable_metadata;
-  unsigned catch_temp_length;
-  unsigned catch_final_length;
-  QTimer *catch_gpi_start_timer;
-  QTimer *catch_gpi_offset_timer;
-  bool catch_allow_multiple_recordings;
-  int catch_max_gpi_record_length;
-  QString catch_description;
-  int catch_feed_id;
-  int catch_podcast_length;
-  int catch_podcast_time;
-  int catch_eventdate_offset;
-  RDStation *catch_station;
-  RDConfig *catch_config;
+  unsigned d_id;
+  bool d_is_active;
+  RDRecording::Type d_type;
+  unsigned d_channel;
+  QString d_cut_name;
+  QString d_temp_name;
+  bool d_delete_temp_file;
+  bool d_day_of_week[7];
+  RDRecording::StartType d_start_type;
+  QTime d_start_time;
+  int d_start_length;
+  int d_start_matrix;
+  int d_start_line;
+  int d_start_offset;
+  RDRecording::EndType d_end_type;
+  QTime d_end_time;
+  int d_end_length;
+  int d_end_matrix;
+  int d_end_line;
+  unsigned d_length;
+  int d_start_gpi;
+  int d_end_gpi;
+  unsigned d_trim_threshold;
+  unsigned d_startdate_offset;
+  unsigned d_enddate_offset;
+  RDCae::AudioCoding d_format;
+  int d_channels;
+  int d_samplerate;
+  int d_bitrate;
+  int d_quality;
+  int d_normalize_level;
+  int d_macro_cart;
+  int d_switch_input;
+  int d_switch_output;
+  bool d_oneshot;
+  RDDeck::Status d_status;
+  QString d_url;
+  QString d_resolved_url;
+  QString d_url_username;
+  QString d_url_password;
+  bool d_enable_metadata;
+  unsigned d_temp_length;
+  unsigned d_final_length;
+  QTimer *d_gpi_start_timer;
+  QTimer *d_gpi_offset_timer;
+  bool d_allow_multiple_recordings;
+  int d_max_gpi_record_length;
+  QString d_description;
+  int d_feed_id;
+  int d_podcast_length;
+  int d_podcast_time;
+  int d_eventdate_offset;
+  int d_exit_code;
+  QString d_exit_text;
 };
 
 
-#endif  // CATCH_CONNECT_H
+#endif  // CATCHCONNECT_H

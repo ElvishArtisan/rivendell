@@ -22446,3 +22446,5 @@
 	* Fixed a regression in rdairplay(1) that caused the Stop Counter
 	to display incorrect Time Remaining values when the system's
 	Time Format was set to 'Twelve Hour'.
+2021-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Stripped down rdcatchd(8) to a time engine core.

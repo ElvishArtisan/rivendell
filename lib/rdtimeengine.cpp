@@ -65,13 +65,18 @@ void RDTimeEngine::addEvent(int id,const QTime &time)
 }
 
 
-void RDTimeEngine::removeEvent(int id)
+bool RDTimeEngine::removeEvent(int id)
 {
+  if(d_timers.value(id)==NULL) {
+    return false;
+  }
   d_timers.value(id)->stop();
   d_mapper->removeMappings(d_timers.value(id));
   delete d_timers.value(id);
   d_timers.remove(id);
   d_times.remove(id);
+
+  return true;
 }
 
 
