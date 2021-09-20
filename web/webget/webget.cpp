@@ -802,7 +802,8 @@ void MainObject::SaveSourceFile(const QString &filepath) const
   // Open Destination File
   //
   int num=1;
-  while((dst_fd=open(filename.toUtf8(),O_WRONLY|O_CREAT|O_EXCL,S_IRUSR|S_IRGRP))<0) {
+  while((dst_fd=open(filename.toUtf8(),O_WRONLY|O_CREAT|O_EXCL,
+		     S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH))<0) {
     if(errno!=EEXIST) {
       rda->syslog(LOG_WARNING,
 		  "unable to open destination file \"%s\" for SaveWebgetFilesDirectory [%s]",
