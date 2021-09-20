@@ -52,7 +52,7 @@ void SigHandler(int signum)
   switch(signum) {
   case SIGINT:
   case SIGTERM:
-    rda->syslog(LOG_INFO,"rdcatchd exiting");
+    rda->syslog(LOG_INFO,"exiting");
     exit(0);
     break;
 
@@ -102,7 +102,8 @@ MainObject::MainObject(QObject *parent)
   //
   // RIPCD Connection
   //
-  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,
+			   rda->config()->password());
   connect(rda->ripc(),SIGNAL(rmlReceived(RDMacro *)),
 	  this,SLOT(rmlReceivedData(RDMacro *)));
   connect(rda->ripc(),SIGNAL(gpiStateChanged(int,int,bool)),
@@ -155,8 +156,8 @@ MainObject::MainObject(QObject *parent)
   timer->setSingleShot(true);
   connect(timer,SIGNAL(timeout()),this,SLOT(startupCartData()));
   timer->start(10000);
-
-  rda->syslog(LOG_INFO,"rdcatchd started");
+  
+  rda->syslog(LOG_DEBUG,"started");
 }
 
 
@@ -379,12 +380,6 @@ void MainObject::userChangedData()
   connect(timer,SIGNAL(timeout()),this,SLOT(exitData()));
   timer->start(5000);  // So notifications have a chance to propagate
   */
-}
-
-
-void MainObject::exitData()
-{
-  exit(0);
 }
 
 

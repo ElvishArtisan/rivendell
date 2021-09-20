@@ -2,7 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -83,6 +83,7 @@ class MainObject : public QObject
   void exitTimerData();
   void garbageData();
   void startJackData();
+  void presenceData();
   
  private:
   void SetUser(QString username);
@@ -139,6 +140,7 @@ class MainObject : public QObject
 #ifdef JACK
   jack_client_t *ripcd_jack_client;
   QTimer *ripcd_start_jack_timer;
+  QTimer *ripcd_presence_timer;
 #endif  // JACK
 };
 

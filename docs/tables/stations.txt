@@ -7,6 +7,7 @@ FIELD NAME           TYPE               REMARKS
 NAME                 varchar(64)        Primary Key
 SHORT_NAME           varchar(64)
 DESCRIPTION          varchar(64)        Indexed
+TIME_STAMP           datetime
 USER_NAME            varchar(191)       Current User
 DEFAULT_NAME         varchar(191)       Default User
 IPV4_ADDRESS	     varchar(15)

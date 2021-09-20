@@ -199,6 +199,20 @@ MainObject::MainObject(QObject *parent)
   ripcd_start_jack_timer->start(5000);
 #endif  // JACK
 
+  //
+  // Presence
+  //
+  ripcd_presence_timer=new QTimer(this);
+  connect(ripcd_presence_timer,SIGNAL(timeout()),this,SLOT(presenceData()));
+  presenceData();
+  ripcd_presence_timer->start(15000);
+  RDNotification *notify=
+    new RDNotification(RDNotification::StationPresenceType,
+		       RDNotification::AddAction,rda->station()->name());
+  ripcd_notification_mcaster->
+    send(notify->write(),rda->system()->notificationAddress(),
+	 RD_NOTIFICATION_PORT);
+  delete notify;
 
   rda->syslog(LOG_INFO,"started");
 }
@@ -349,6 +363,22 @@ void MainObject::exitTimerData()
 	delete ripcd_switcher[i];
       }
     }
+
+    RDNotification *notify=
+      new RDNotification(RDNotification::StationPresenceType,
+			 RDNotification::DeleteAction,rda->station()->name());
+    ripcd_notification_mcaster->
+      send(notify->write(),rda->system()->notificationAddress(),
+	   RD_NOTIFICATION_PORT);
+    delete notify;
+
+    QString sql=QString("update `STATIONS` set ")+
+      "`TIME_STAMP`=NULL where "+
+      "`NAME`='"+RDEscapeString(rda->station()->name())+"'";
+    RDSqlQuery::apply(sql);
+
+    qApp->processEvents();
+
     rda->syslog(LOG_INFO,"exiting normally");
     exit(0);
   }
@@ -459,6 +489,15 @@ void MainObject::startJackData()
 
 
 #endif  // JACK
+}
+
+
+void MainObject::presenceData()
+{
+  QString sql=QString("update `STATIONS` set ")+
+    "`TIME_STAMP`=now() where "+
+    "`NAME`='"+RDEscapeString(rda->station()->name())+"'";
+  RDSqlQuery::apply(sql);
 }
 
 

@@ -22448,3 +22448,11 @@
 	Time Format was set to 'Twelve Hour'.
 2021-09-17 Fred Gleason <fredg@paravelsystems.com>
 	* Stripped down rdcatchd(8) to a time engine core.
+2021-09-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'STATIONS.TIME_STAMP' field to the database.
+	* Incremented the database version to 356.
+	* Added an 'RDStation::isOnline()' method.
+	* Added a 'STATION_PRESENCE' object type to the notification
+	system.
+	* Added code to ripcd(8) to provide system presence information.
+	* Removed vestigal exit monitor code from rdcatchd(8).

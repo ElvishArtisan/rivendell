@@ -123,6 +123,10 @@ bool RDNotification::read(const QString &str)
 	  notify_id=QVariant(args[3]);
 	  break;
 
+	case RDNotification::StationPresenceType:
+	  notify_id=QVariant(args[3]);
+	  break;
+
 	case RDNotification::NullType:
 	case RDNotification::LastType:
 	  break;
@@ -182,6 +186,10 @@ QString RDNotification::write() const
     ret+=notify_id.toString();
     break;
 
+  case RDNotification::StationPresenceType: 
+    ret+=notify_id.toString();
+    break;
+
   case RDNotification::NullType:
   case RDNotification::LastType:
     break;
@@ -221,6 +229,10 @@ QString RDNotification::typeString(RDNotification::Type type)
 
   case RDNotification::FeedType:
     ret="FEED";
+    break;
+
+  case RDNotification::StationPresenceType:
+    ret="STATION_PRESENCE";
     break;
 
   case RDNotification::NullType:

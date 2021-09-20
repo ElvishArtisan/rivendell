@@ -49,7 +49,6 @@
 #define RDCATCHD_HEARTBEAT_INTERVAL 10000
 #define RDCATCHD_ERROR_ID_OFFSET 1000000
 
-
 class MainObject : public QObject
 {
   Q_OBJECT
@@ -64,7 +63,6 @@ class MainObject : public QObject
   void startupCartData();
   void notificationReceivedData(RDNotification *notify);
   void userChangedData();
-  void exitData();
 
  private:
   void LoadEngine();

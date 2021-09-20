@@ -15,8 +15,8 @@
   <title>Overview</title>
   <para>
     This defines the IP protocol used to notify Rivendell components of
-    changes to the state of database objects. Messages are send by means
-    of multicast UDP packets to port 20539.
+    changes to the state of database objects or other system state.
+    Messages are send by means of multicast UDP packets to port 20539.
   </para>
   <para>
     The format of a message is as follows:
@@ -117,7 +117,47 @@
     </table>
   </sect2>
 
-  <sect2 xml:id="sect.object_types.log">
+  <sect2 xml:id="sect.object_types.catch_events">
+    <title>Catch Events</title>
+    <para>
+      <userinput>CATCH_EVENT</userinput>
+    </para>
+    <table xml:id="table.object_types.catch_events" frame="all" pgwide="0">
+      <title>Catch Event Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="10.0*"/>
+	<tbody>
+	  <row><entry>Field</entry><entry>Value</entry></row>
+	  <row><entry>obj-type</entry><entry>CATCH_EVENT</entry></row>
+	  <row><entry>id</entry><entry>Event ID</entry></row>
+	  <row><entry>type</entry><entry>Unsigned Integer</entry></row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.object_types.dropboxes">
+    <title>Dropboxes</title>
+    <para>
+      <userinput>DROPBOX</userinput>
+    </para>
+    <table xml:id="table.object_types.dropboxes" frame="all" pgwide="0">
+      <title>Log Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="10.0*"/>
+	<tbody>
+	  <row><entry>Field</entry><entry>Value</entry></row>
+	  <row><entry>obj-type</entry><entry>DROPBOX</entry></row>
+	  <row><entry>id</entry><entry>Station hostname</entry></row>
+	  <row><entry>type</entry><entry>String</entry></row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.object_types.logs">
     <title>Logs</title>
     <para>
       <userinput>LOG</userinput>
@@ -137,21 +177,81 @@
     </table>
   </sect2>
 
-  <sect2 xml:id="sect.object_types.catch_events">
-    <title>Catch Events</title>
+  <sect2 xml:id="sect.object_types.pypad_instances">
+    <title>PyPAD Instances</title>
     <para>
-      <userinput>CATCH_EVENT</userinput>
+      <userinput>PYPAD</userinput>
     </para>
-    <table xml:id="table.object_types.catch_events" frame="all" pgwide="0">
-      <title>Catch Event Fields</title>
+    <table xml:id="table.object_types.pypad" frame="all" pgwide="0">
+      <title>Log Fields</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Field" colwidth="2.0*"/>
 	<colspec colname="Value" colwidth="10.0*"/>
 	<tbody>
 	  <row><entry>Field</entry><entry>Value</entry></row>
-	  <row><entry>obj-type</entry><entry>CATCH_EVENT</entry></row>
-	  <row><entry>id</entry><entry>Event ID</entry></row>
+	  <row><entry>obj-type</entry><entry>PYPAD</entry></row>
+	  <row><entry>id</entry><entry>ID Number</entry></row>
 	  <row><entry>type</entry><entry>Unsigned Integer</entry></row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.object_types.rss_feeds">
+    <title>RSS Feeds</title>
+    <para>
+      <userinput>FEED</userinput>
+    </para>
+    <table xml:id="table.object_types.rss_feed" frame="all" pgwide="0">
+      <title>RSS Feed Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="10.0*"/>
+	<tbody>
+	  <row><entry>Field</entry><entry>Value</entry></row>
+	  <row><entry>obj-type</entry><entry>FEED</entry></row>
+	  <row><entry>id</entry><entry>Feed keyname</entry></row>
+	  <row><entry>type</entry><entry>String</entry></row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.object_types.rss_feed_items">
+    <title>RSS Feed Items</title>
+    <para>
+      <userinput>FEED_ITEM</userinput>
+    </para>
+    <table xml:id="table.object_types.rss_feed_item" frame="all" pgwide="0">
+      <title>RSS Feed Item Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="10.0*"/>
+	<tbody>
+	  <row><entry>Field</entry><entry>Value</entry></row>
+	  <row><entry>obj-type</entry><entry>FEED_ITEM</entry></row>
+	  <row><entry>id</entry><entry>Podcast ID</entry></row>
+	  <row><entry>type</entry><entry>Unsigned Integer</entry></row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.object_types.station_presence">
+    <title>Station Presence</title>
+    <para>
+      <userinput>STATION_PRESENCE</userinput>
+    </para>
+    <table xml:id="table.object_types.station_presence" frame="all" pgwide="0">
+      <title>Station Presence Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="10.0*"/>
+	<tbody>
+	  <row><entry>Field</entry><entry>Value</entry></row>
+	  <row><entry>obj-type</entry><entry>STATION_PRESENCE</entry></row>
+	  <row><entry>id</entry><entry>Station hostname</entry></row>
+	  <row><entry>type</entry><entry>String</entry></row>
 	</tbody>
       </tgroup>
     </table>
