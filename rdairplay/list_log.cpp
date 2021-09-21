@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QHeaderView>
 #include <QMessageBox>
 #include <QPainter>
 
@@ -135,6 +136,7 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   list_log->setFont(defaultFont());
   list_log->setPalette(palette());
   list_log_view->setModel(list_log);
+  list_log_view->horizontalHeader()->setSectionsMovable(true);
   list_log_view->resizeColumnsToContents();
   connect(list_log_view->selectionModel(),
        SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),

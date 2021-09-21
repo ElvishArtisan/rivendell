@@ -22455,3 +22455,6 @@
 	length of macro carts after editing.
 2021-09-21 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored 'RDMacroEvent' to avoid use of the STL.
+2021-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that made it impossible to
+	change the order of columns in the Full Log widget.
