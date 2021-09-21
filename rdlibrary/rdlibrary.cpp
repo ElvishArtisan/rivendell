@@ -153,13 +153,14 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   lib_cart_view=new LibraryView(this);
   lib_cart_view->setGeometry(100,0,430,sizeHint().height());
   lib_cart_view->setSelectionBehavior(QAbstractItemView::SelectRows);
-  lib_cart_view->setSortingEnabled(false);
   lib_cart_view->setWordWrap(false);
   lib_cart_model=new RDLibraryModel(this);
   lib_cart_model->setFont(font());
   lib_cart_model->setPalette(palette());
   lib_cart_filter->setModel(lib_cart_model);
   lib_cart_view->setModel(lib_cart_model);
+  lib_cart_view->setSortingEnabled(true);
+  lib_cart_view->sortByColumn(0,Qt::AscendingOrder);
   connect(lib_cart_view,SIGNAL(doubleClicked(const QModelIndex &)),
   	  this,SLOT(cartDoubleClickedData(const QModelIndex &)));
   connect(lib_cart_filter,SIGNAL(dragEnabledChanged(bool)),

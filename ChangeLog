@@ -22446,3 +22446,7 @@
 	* Fixed a regression in rdairplay(1) that caused the Stop Counter
 	to display incorrect Time Remaining values when the system's
 	Time Format was set to 'Twelve Hour'.
+2021-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Enabled column sorting in the Library List in rdlibrary(1).
+	* Enabled column sorting in the 'Select Cart' dialog.
+	* Enabled column sorting in the 'Select Cut' dialog.

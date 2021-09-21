@@ -244,7 +244,7 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
       RDEscapeString(d_codes_box->currentText())+"') ";
   }
 
-  sql+="order by `CART`.`NUMBER` ";
+  //  sql+="order by `CART`.`NUMBER` ";
 
   return sql;
 }

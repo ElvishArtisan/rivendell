@@ -51,6 +51,7 @@ class RDLibraryModel : public QAbstractItemModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
+  void sort(int col,Qt::SortOrder order=Qt::AscendingOrder);
   bool isCart(const QModelIndex &index) const;
   bool isCut(const QModelIndex &index) const;
   unsigned cartNumber(const QModelIndex &index) const;
@@ -83,13 +84,18 @@ class RDLibraryModel : public QAbstractItemModel
  private:
   QByteArray DumpIndex(const QModelIndex &index,const QString &caption="") const;
   bool d_show_notes;
+  QString d_filter_sql;
   int d_cart_limit;
+  int d_sort_column;
+  Qt::SortOrder d_sort_order;
   QPalette d_palette;
   QFont d_font;
   QFontMetrics *d_font_metrics;
   QFont d_bold_font;
   QFontMetrics *d_bold_font_metrics;
   QList<QVariant> d_headers;
+  QStringList d_order_columns;
+  QMap<Qt::SortOrder,QString> d_sort_clauses;
   QList<QList<QVariant> > d_texts;
   QList<QList<QVariant> > d_icons;
   QList<QVariant> d_notes;

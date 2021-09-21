@@ -29,7 +29,12 @@ RDLibraryModel::RDLibraryModel(QObject *parent)
   d_font_metrics=NULL;
   d_bold_font_metrics=NULL;
   d_show_notes=false;
+  d_filter_sql="";
   d_cart_limit=RD_MAX_CART_NUMBER+1;  // Effectively "unlimited"
+  d_sort_column=0;
+  d_sort_order=Qt::AscendingOrder;
+  d_sort_clauses[Qt::AscendingOrder]="asc";
+  d_sort_clauses[Qt::DescendingOrder]="desc";
 
   //
   // Column Attributes
@@ -40,66 +45,87 @@ RDLibraryModel::RDLibraryModel(QObject *parent)
 
   d_headers.push_back(tr("Cart"));              // 00
   d_alignments.push_back(center);
+  d_order_columns.push_back("`CART`.`NUMBER`");
 
   d_headers.push_back(tr("Group"));             // 01
   d_alignments.push_back(center);
+  d_order_columns.push_back("`CART`.`GROUP_NAME`");
 
   d_headers.push_back(tr("Length"));            // 02
   d_alignments.push_back(right);
+  d_order_columns.push_back("`CART`.`FORCED_LENGTH`");
 
   d_headers.push_back(tr("Talk"));              // 03
   d_alignments.push_back(right);
+  d_order_columns.push_back("`CART`.`MAXIMUM_TALK_LENGTH`");
 
   d_headers.push_back(tr("Title"));             // 04
   d_alignments.push_back(left);
+  d_order_columns.push_back("`CART`.`TITLE`");
 
   d_headers.push_back(tr("Artist"));            // 05
   d_alignments.push_back(left);
+  d_order_columns.push_back("`CART`.`ARTIST`");
 
   d_headers.push_back(tr("Start"));             // 06
   d_alignments.push_back(center);
+  d_order_columns.push_back("`CART`.`START_DATETIME`");
 
   d_headers.push_back(tr("End"));               // 07
   d_alignments.push_back(center);
+  d_order_columns.push_back("`CART`.`END_DATETIME`");
 
   d_headers.push_back(tr("Album"));             // 08
   d_alignments.push_back(left);
+  d_order_columns.push_back("`CART`.`ALBUM`");
 
   d_headers.push_back(tr("Label"));             // 09
   d_alignments.push_back(left);
+  d_order_columns.push_back("`CART`.`LABEL`");
 
   d_headers.push_back(tr("Composer"));          // 10
   d_alignments.push_back(left);
+  d_order_columns.push_back("`CART`.`COMPOSER`");
 
   d_headers.push_back(tr("Conductor"));         // 11
   d_alignments.push_back(left);
+  d_order_columns.push_back("`CART`.`CONDUCTOR`");
 
   d_headers.push_back(tr("Publisher"));         // 12
   d_alignments.push_back(left);
+  d_order_columns.push_back("`CART`.`PUBLISHER`");
 
   d_headers.push_back(tr("Client"));            // 13
   d_alignments.push_back(left);
+  d_order_columns.push_back("`CART`.`CLIENT`");
 
   d_headers.push_back(tr("Agency"));            // 14
   d_alignments.push_back(left);
+  d_order_columns.push_back("`CART`.`AGENCY`");
 
   d_headers.push_back(tr("User Defined"));      // 15
   d_alignments.push_back(left);
+  d_order_columns.push_back("`CART`.`USER_DEFINED`");
 
   d_headers.push_back(tr("Cuts"));              // 16
   d_alignments.push_back(right);
+  d_order_columns.push_back("`CART`.`CUT_QUANTITY`");
 
   d_headers.push_back(tr("Last Cut Played"));   // 17
   d_alignments.push_back(right);
+  d_order_columns.push_back("`CART`.`LAST_CUT_PLAYED`");
 
   d_headers.push_back(tr("Enforce Length"));    // 18
   d_alignments.push_back(center);
+  d_order_columns.push_back("`CART`.`ENFORCE_LENGTH`");
 
   d_headers.push_back(tr("Length Deviation"));  // 19
   d_alignments.push_back(center);
+  d_order_columns.push_back("`CART`.`LENGTH_DEVIATION`");
 
   d_headers.push_back(tr("Owned By"));          // 20
   d_alignments.push_back(left);
+  d_order_columns.push_back("`CART`.`OWNER`");
 }
 
 
@@ -284,6 +310,20 @@ QVariant RDLibraryModel::data(const QModelIndex &index,int role) const
   }
 
   return QVariant();
+}
+
+
+void RDLibraryModel::sort(int col,Qt::SortOrder order)
+{
+  d_sort_column=col;
+  d_sort_order=order;
+  setFilterSql(d_filter_sql,d_cart_limit);
+  /*
+  printf("RDLibraryModel::sort():\n");
+  printf("  d_filter_sql: %s\n",d_filter_sql.toUtf8().constData());
+  printf("  d_cart_limit: %d\n",d_cart_limit);
+  printf("\n");
+  */
 }
 
 
@@ -494,8 +534,20 @@ void RDLibraryModel::setShowNotes(int state)
 void RDLibraryModel::setFilterSql(const QString &sql,int cart_limit)
 {
   //  printf("FILTER SQL: %s\n",sql.toUtf8().constData());
+  d_filter_sql=sql;
   d_cart_limit=cart_limit;
-  updateModel(sql);
+  QString fsql=sql;
+
+  if(d_sort_column<0) {  // Use "natural" sort order
+    fsql+=" order by `CART`.`NUMBER` asc ";
+  }
+  else {
+    fsql+=" order by "+d_order_columns.at(d_sort_column)+" "+
+      d_sort_clauses.value(d_sort_order);
+  }
+  fsql+=", `CUTS`.`PLAY_ORDER` asc ";
+
+  updateModel(fsql);
 }
 
 
@@ -610,10 +662,13 @@ void RDLibraryModel::updateRow(int row,RDSqlQuery *q)
     QString::asprintf("%06d",q->value(0).toUInt());
   d_cart_numbers[row]=q->value(0).toUInt();
   d_texts[row][1]=q->value(12);   // Group
+  d_texts[row][2]=RDGetTimeLength(q->value(1).toUInt());  // Total Length
   if(q->value(16).toUInt()==1) {
-    d_texts[row][2]=RDGetTimeLength(q->value(1).toUInt());  // Total Length
     d_texts[row][3]=              // Talk Length
       RDGetTimeLength(q->value(28).toUInt()-q->value(27).toUInt());
+  }
+  else {
+    d_texts[row][3]="0:00";
   }
 
   d_texts[row][4]=q->value(2);    // Title
