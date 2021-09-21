@@ -55,7 +55,7 @@ RDMacroEvent::RDMacroEvent(QHostAddress addr,RDRipc *ripc,QObject *parent)
 
 RDMacroEvent::~RDMacroEvent()
 {
-  for(unsigned i=0;i<event_cmds.size();i++) {
+  for(int i=0;i<event_cmds.size();i++) {
     delete event_cmds[i];
   }
 }
@@ -100,7 +100,8 @@ int RDMacroEvent::size() const
 unsigned RDMacroEvent::length() const
 {
   unsigned length=0;
-  for(unsigned i=0;i<event_cmds.size();i++) {
+
+  for(int i=0;i<event_cmds.size();i++) {
     length+=event_cmds[i]->length();
   }
   return length;
@@ -127,6 +128,7 @@ bool RDMacroEvent::load(const QString &str)
       rmlstr="";
     }
   }
+
   return true;
 }
 
@@ -152,7 +154,7 @@ QString RDMacroEvent::save()
 {
   QString str="";
 
-  for(unsigned i=0;i<event_cmds.size();i++) {
+  for(int i=0;i<event_cmds.size();i++) {
     str+=event_cmds[i]->toString();
   }
   return str;
@@ -161,18 +163,13 @@ QString RDMacroEvent::save()
 
 void RDMacroEvent::insert(int line,const RDMacro *cmd)
 {
-  std::vector<RDMacro *>::iterator it=event_cmds.begin()+line;
-
-  event_cmds.insert(it,1,new RDMacro(*cmd));
+  event_cmds.insert(line,new RDMacro(*cmd));
 }
 
 
 void RDMacroEvent::remove(int line)
 {
-  std::vector<RDMacro *>::iterator it=event_cmds.begin()+line;
-
-  delete event_cmds[line];
-  event_cmds.erase(it,it+1);
+  event_cmds.removeAt(line);
 }
 
 
@@ -314,7 +311,7 @@ void RDMacroEvent::ExecList(int line)
     event_whole_list=true;
     emit started();
   }
-  for(unsigned i=line;i<event_cmds.size();i++) {
+  for(int i=line;i<event_cmds.size();i++) {
     switch(event_cmds[i]->command()) {
     case RDMacro::SP:  // Sleep
       exec(i);

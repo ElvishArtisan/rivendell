@@ -21,12 +21,11 @@
 #ifndef RDMACRO_EVENT_H
 #define RDMACRO_EVENT_H
 
-#include <vector>
-
-#include <qobject.h>
-#include <qtimer.h>
-#include <qhostaddress.h>
-#include <qdatetime.h>
+#include <QDateTime>
+#include <QHostAddress>
+#include <QList>
+#include <QObject>
+#include <QTimer>
 
 #include <rdmacro.h>
 #include <rdripc.h>
@@ -71,7 +70,7 @@ class RDMacroEvent : public QObject
 
  private:
   void ExecList(int line);
-  std::vector<RDMacro *> event_cmds;
+  QList<RDMacro *> event_cmds;
   RDRipc *event_ripc;
   QTimer *event_sleep_timer;
   bool event_whole_list;
