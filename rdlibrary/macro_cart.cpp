@@ -18,8 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-
 #include "cdripper.h"
 #include "edit_macro.h"
 #include "globals.h"
@@ -300,8 +298,10 @@ void MacroCart::doubleClickedData(const QModelIndex &index)
 
 void MacroCart::UpdateLength()
 {
-  if(rdcart_events->length()!=rdcart_length) {
-    rdcart_length=rdcart_events->length();
-    emit lengthChanged(rdcart_length);
+  unsigned len=rdcart_macro_model->totalLength();
+
+  if(len!=rdcart_length) {
+    rdcart_length=len;
+    emit lengthChanged(len);
   }
 }

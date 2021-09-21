@@ -22450,3 +22450,6 @@
 	* Enabled column sorting in the Library List in rdlibrary(1).
 	* Enabled column sorting in the 'Select Cart' dialog.
 	* Enabled column sorting in the 'Select Cut' dialog.
+2021-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlibrary(1) that failed to update the
+	length of macro carts after editing.

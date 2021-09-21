@@ -166,6 +166,27 @@ QString RDMacroCartModel::allCode() const
 }
 
 
+int RDMacroCartModel::totalLength() const
+{
+  int ret=0;
+  bool ok=false;
+
+  for(int i=0;i<lineCount();i++) {
+    QStringList f0=
+      d_texts.at(i).at(1).toString().split(" ",QString::SkipEmptyParts);
+    if((f0.size()==2)&&(f0.at(0)=="SP")) {
+      f0[1].remove("!");
+      int msec=f0.at(1).toInt(&ok);
+      if(ok&&(msec>=0)) {
+	ret+=msec;
+      }
+    }
+  }
+
+  return ret;
+}
+
+
 QModelIndex RDMacroCartModel::addLine(const QModelIndex &row,const QString &rml)
 {
   //
@@ -207,8 +228,12 @@ void RDMacroCartModel::refresh(const QModelIndex &row,const QString &rml)
 
 void RDMacroCartModel::save() const
 {
+  int len=totalLength();
   QString sql=QString("update `CART` set ")+
-    "`MACROS`=\""+RDEscapeString(allCode())+"\" where "+
+    "`MACROS`='"+RDEscapeString(allCode())+"',"+
+    QString::asprintf("`FORCED_LENGTH`=%d,",len)+
+    QString::asprintf("`AVERAGE_LENGTH`=%d ",len)+
+    "where "+
     QString::asprintf("`NUMBER`=%u",d_cart_number);
   RDSqlQuery::apply(sql);
 }

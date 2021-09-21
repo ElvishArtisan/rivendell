@@ -736,13 +736,12 @@ void EditCart::lengthChangedData(unsigned len)
 
 void EditCart::okData()
 {
-  //  RDSystem *system;
   QString sql;
   RDSqlQuery *q;
 
   if(rdcart_cart_numbers.size()==1) { // Single Edit
     if(rdcart_controls.title_edit->text().isEmpty()) {
-      QMessageBox::warning(this,tr("Missing Title"),
+      QMessageBox::warning(this,"RDLibrary - "+tr("Missing Title"),
 			   tr("You must provide at least a Cart Title!"));
       return;
     }
@@ -752,7 +751,7 @@ void EditCart::okData()
 	QString::asprintf("(`NUMBER`!=%u)",rdcart_cart->number());
       q=new RDSqlQuery(sql);
       if(q->first()) {
-	QMessageBox::warning(this,tr("Duplicate Title"),
+	QMessageBox::warning(this,"RDLibrary - "+tr("Duplicate Title"),
 			     tr("The cart title must be unique!"));
 	delete q;
 	return;
@@ -761,7 +760,7 @@ void EditCart::okData()
     }
     if(rdcart_controls.enforce_length_box->isChecked()) {
       if(!ValidateLengths()) {
-	switch(QMessageBox::warning(this,tr("Length Mismatch"),
+	switch(QMessageBox::warning(this,"RDLibrary - "+tr("Length Mismatch"),
 				    tr("One or more cut lengths exceed the timescaling\nlimits of the system!  Do you still want to save?"),QMessageBox::Yes,QMessageBox::No)) {
 	  case QMessageBox::No:
 	  case QMessageBox::NoButton:

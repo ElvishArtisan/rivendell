@@ -48,6 +48,7 @@ class RDMacroCartModel : public QAbstractTableModel
   bool isEndHandle(const QModelIndex &row) const;
   QString code(const QModelIndex &row) const;
   QString allCode() const;
+  int totalLength() const;
   QModelIndex addLine(const QModelIndex &row,const QString &rml);
   void removeLine(const QModelIndex &row);
   void refresh(const QModelIndex &row,const QString &rml);

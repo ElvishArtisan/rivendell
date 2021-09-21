@@ -21,8 +21,8 @@
 #ifndef MACRO_CART_H
 #define MACRO_CART_H
 
-#include <qcombobox.h>
-#include <qpushbutton.h>
+#include <QComboBox>
+#include <QPushButton>
 
 #include <rdmacro_event.h>
 #include <rdmacrocartmodel.h>
