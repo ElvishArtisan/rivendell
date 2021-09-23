@@ -10967,6 +10967,12 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<357)&&(set_schema>cur_schema)) {
+    DropColumn("STATIONS","TIME_STAMP");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

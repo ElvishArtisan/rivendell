@@ -45,25 +45,6 @@ bool RDStation::exists() const
 }
 
 
-bool RDStation::isOnline() const
-{
-  bool ret=false;
-
-  QString sql=QString("select ")+
-    "`TIME_STAMP` "+  // 00
-    "from `STATIONS where "+
-    "`NAME`='"+RDEscapeString(station_name)+"'";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    ret=(!q->value(0).isNull())&&
-      (q->value(0).toDateTime().addSecs(30)>QDateTime::currentDateTime());
-  }
-  delete q;
-
-  return ret;
-}
-
-
 QString RDStation::name() const
 {
   return station_name;

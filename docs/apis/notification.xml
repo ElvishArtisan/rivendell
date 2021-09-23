@@ -255,6 +255,19 @@
 	</tbody>
       </tgroup>
     </table>
+
+    <sect3 xml:id="sect.object_types.station_presence.notes">
+      <title>Notes</title>
+      <para>
+	Upon reception of a <userinput>STATION_PRESENCE</userinput>
+	notification with an action of <userinput>ADD</userinput>,
+	a receiving host should reply via unicast UDP with their own
+	<userinput>STATION_PRESENCE</userinput> with an action of
+	<userinput>MODIFY</userinput> to the originating IP address,
+	such replies to be randomly delayed by 10 - 20 seconds after
+	reception of the <userinput>ADD</userinput> notification.
+      </para>
+    </sect3>
   </sect2>
 
 </sect1>

@@ -21,6 +21,7 @@
 #ifndef RDNOTIFICATION_H
 #define RDNOTIFICATION_H
 
+#include <QHostAddress>
 #include <QString>
 #include <QVariant>
 

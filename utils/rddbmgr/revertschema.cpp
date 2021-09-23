@@ -41,6 +41,22 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
 
+
+
+
+  //
+  // Revert 357
+  //
+  if((cur_schema==357)&&(set_schema<cur_schema)) {
+    sql=QString("alter table `STATIONS` ")+
+      "add column `TIME_STAMP` datetime after `DESCRIPTION`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
   //
   // Revert 356
   //

@@ -23,14 +23,13 @@
 
 #include <sys/types.h>
 
-#include <vector>
-
-#include <qobject.h>
-#include <qstring.h>
-#include <qsignalmapper.h>
-#include <qtcpserver.h>
-#include <qtimer.h>
-#include <qudpsocket.h>
+#include <QMap>
+#include <QObject>
+#include <QString>
+#include <QSignalMapper>
+#include <QTcpServer>
+#include <QTimer>
+#include <QUdpSocket>
 
 #ifdef JACK
 #include <jack/jack.h>
@@ -46,9 +45,10 @@
 #include <rdmulticaster.h>
 #include <rdtty.h>
 
-#include <ripcd_connection.h>
-#include <globals.h>
-#include <switcher.h>
+#include "globals.h"
+#include "presence.h"
+#include "ripcd_connection.h"
+#include "switcher.h"
 
 //
 // Global RIPCD Definitions
@@ -84,7 +84,8 @@ class MainObject : public QObject
   void garbageData();
   void startJackData();
   void presenceData();
-  
+  void sendLocalIdData(const QString &name);
+
  private:
   void SetUser(QString username);
   void ExecCart(int cartnum);
@@ -137,6 +138,7 @@ class MainObject : public QObject
   unsigned ripc_macro_cart[RD_MAX_MACRO_TIMERS];
   RDMulticaster *ripcd_notification_mcaster;
   QTimer *ripcd_garbage_timer;
+  QMap<QString,Presence *> ripcd_presences;
 #ifdef JACK
   jack_client_t *ripcd_jack_client;
   QTimer *ripcd_start_jack_timer;

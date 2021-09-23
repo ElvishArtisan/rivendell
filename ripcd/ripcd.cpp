@@ -202,10 +202,15 @@ MainObject::MainObject(QObject *parent)
   //
   // Presence
   //
+  /*
   ripcd_presence_timer=new QTimer(this);
   connect(ripcd_presence_timer,SIGNAL(timeout()),this,SLOT(presenceData()));
   presenceData();
   ripcd_presence_timer->start(15000);
+  */
+  Presence *pres=new Presence(rda->station()->name());
+  pres->setHostAddress(rda->station()->address());
+  ripcd_presences[pres->name()]=pres;
   RDNotification *notify=
     new RDNotification(RDNotification::StationPresenceType,
 		       RDNotification::AddAction,rda->station()->name());
@@ -252,6 +257,7 @@ void MainObject::newConnectionData()
 void MainObject::notificationReceivedData(const QString &msg,
 					  const QHostAddress &addr)
 {
+  Presence *pres=NULL;
   RDNotification *notify=new RDNotification();
 
   if(!notify->read(msg)) {
@@ -260,6 +266,34 @@ void MainObject::notificationReceivedData(const QString &msg,
     delete notify;
     return;
   }
+
+  //
+  // Update presence database
+  //
+  if(notify->type()==RDNotification::StationPresenceType) {
+    if((notify->action()==RDNotification::AddAction)||
+       (notify->action()==RDNotification::ModifyAction)) {
+      if((pres=ripcd_presences.value(notify->id().toString()))==NULL) {
+	pres=new Presence(notify->id().toString(),this);
+	connect(pres,SIGNAL(sendLocalId(const QString &)),
+		this,SLOT(sendLocalIdData(const QString &)));
+	ripcd_presences[pres->name()]=pres;
+      }
+      pres->setHostAddress(addr);
+      if(notify->action()==RDNotification::AddAction) {
+	pres->updateLocalId();
+      }
+      // Notify stack!!
+    }
+    if(notify->action()==RDNotification::DeleteAction) {
+      if((pres=ripcd_presences.value(notify->id().toString()))!=NULL) {
+	// Notify stack!
+	delete pres;
+	ripcd_presences.remove(notify->id().toString());
+      }
+    }
+  }
+
   RunLocalNotifications(notify);
   BroadcastCommand("ON "+msg+"!");
 
@@ -498,6 +532,21 @@ void MainObject::presenceData()
     "`TIME_STAMP`=now() where "+
     "`NAME`='"+RDEscapeString(rda->station()->name())+"'";
   RDSqlQuery::apply(sql);
+}
+
+
+void MainObject::sendLocalIdData(const QString &name)
+{
+  Presence *pres=ripcd_presences.value(name);
+
+  if(pres!=NULL) {
+    RDNotification *notify=
+      new RDNotification(RDNotification::StationPresenceType,
+			 RDNotification::ModifyAction,name);
+    ripcd_notification_mcaster->
+      send(notify->write(),pres->hostAddress(),RD_NOTIFICATION_PORT);
+    delete notify;
+  }
 }
 
 

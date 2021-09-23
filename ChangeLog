@@ -22456,3 +22456,7 @@
 	system.
 	* Added code to ripcd(8) to provide system presence information.
 	* Removed vestigal exit monitor code from rdcatchd(8).
+2021-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'STATIONS.TIME_STAMP' field from the database.
+	* Incremented the database version to 357.
+	* Removed the 'RDStation::isOnline()' method.
