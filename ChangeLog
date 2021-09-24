@@ -22460,3 +22460,6 @@
 	change the order of columns in the Full Log widget.
 2021-09-24 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the build system to detect Rocky Linux.
+2021-09-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RedHat Enterprise Linux 8' subsection to the
+	'DISTRO-SPECIFIC NOTES' section of 'INSTALL'.
