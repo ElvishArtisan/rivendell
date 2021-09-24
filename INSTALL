@@ -272,6 +272,15 @@ Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel 
 Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib64 --libexecdir=/var/www/rd-bin --sysconfdir=/etc/httpd/conf.d
 
 
+1) RedHat Enterprise Linux 8
+
+Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel qt5-qtbase-mysql libcurl-devel cdparanoia-devel alsa-lib-devel libsamplerate-devel libsndfile-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel 
+
+Missing: hpklinux-devel jack-audio-connection-kit-devel id3lib-devel fop docbook5-style-xsl libdiscid-devel libcoverart libcoverart-devel
+
+Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib64 --libexecdir=/var/www/rd-bin --sysconfdir=/etc/httpd/conf.d
+
+
 2) Ubuntu 20.04 LTS
 
 Required build packages: apache2 libexpat1-dev libexpat1 libid3-dev libcurl4-gnutls-dev libcoverart-dev libdiscid-dev libmusicbrainz5-dev libcdparanoia-dev libsndfile1-dev libpam0g-dev libvorbis-dev python3 python3-pycurl python3-pymysql python3-serial python3-requests libsamplerate0-dev qtbase5-dev libqt5sql5-mysql libsoundtouch-dev libsystemd-dev libjack-jackd2-dev libasound2-dev libflac-dev libflac++-dev libmp3lame-dev libmad0-dev libtwolame-dev docbook5-xml libxml2-utils docbook-xsl-ns xsltproc fop make g++ libltdl-dev autoconf automake libssl-dev libtag1-dev qttools5-dev-tools debhelper openssh-server autoconf-archive gnupg pbuilder ubuntu-dev-tools apt-file

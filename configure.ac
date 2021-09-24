@@ -197,7 +197,7 @@ case "$ar_distro_id" in
        AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig-sudo.desktop")
      ;;
 
-     centos|rhel|fedora)
+     centos|fedora|rhel|rocky)
        AC_MSG_NOTICE([Distro is RedHat-ish])
        DISTRO_FAMILY="|                       Distribution Family ... RedHat    |"
        if test $ar_distro_id = "centos" ; then
@@ -208,6 +208,9 @@ case "$ar_distro_id" in
        fi
        if test $ar_distro_id = "rhel" ; then
          DISTRO_NAME="|                         Distribution Name ... RHEL      |"
+       fi
+       if test $ar_distro_id = "rocky" ; then
+         DISTRO_NAME="|                         Distribution Name ... Rocky     |"
        fi
        AC_SUBST(APACHE_PKG,"httpd")
        AC_SUBST(APACHE_CONFIG_DIR,"/etc/httpd/conf.d")
