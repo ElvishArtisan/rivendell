@@ -30,14 +30,15 @@ Release: @RPM_RELEASE@
 License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
 Source: rivendell-@VERSION@.tar.gz
-Requires: @MYSQL_PKG@, @QT_MYSQL_PKG@, @APACHE_PKG@, curl, @USERMODE_PKG@, rivendell-pypad = @VERSION@, rsyslog
+Requires: @MYSQL_PKG@ @QT_MYSQL_PKG@ @APACHE_PKG@ curl @USERMODE_PKG@ rivendell-pypad = @VERSION@ rsyslog
+BuildRequires: qt5-qtbase-devel qt5-linguist
 BuildRoot: /var/tmp/rivendell-@VERSION@
 Obsoletes: rivendell-base rivendell-opsguide
 Conflicts: rivendell-opsguide
 
 %package importers
 Summary: Library importers for the Rivendell Broadcast Automation System
-Requires: rivendell = @VERSION@, madplay
+Requires: rivendell = @VERSION@ madplay
 
 %package opsguide
 Summary: Rivendell Operations and Administration Guide
@@ -49,15 +50,15 @@ Summary: Client libraries for interfacing with Rivendell's Web API.
 
 %package devel
 Summary: Header files and example code for development with Rivendell APIs
-Requires: rivendell = @VERSION@, rivendell-webapi = @VERSION@
+Requires: rivendell = @VERSION@ rivendell-webapi = @VERSION@
 
 %package pypad
 Summary: PyPAD Program Associated Data script system for Rivendell
-Requires: python36, python36-pycurl, python36-requests, python36-pyserial, python36-mysql python36-urllib3
+Requires: @PYPAD_DEPS@
 
 %package select
 Summary: The RDSelect system selector tool for Rivendell.
-Requires: rivendell = @VERSION@, autofs
+Requires: rivendell = @VERSION@ autofs
 
 %package webget
 Summary: The WebGet audio fetcher service for Rivendell

@@ -22463,3 +22463,10 @@
 2021-09-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RedHat Enterprise Linux 8' subsection to the
 	'DISTRO-SPECIFIC NOTES' section of 'INSTALL'.
+2021-09-25 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the shebang path in 'scripts/init_template_host.py' from
+	'/usr/bin/python' to '/usr/bin/python3'.
+	* Changed the shebang path in 'scripts/engine_conv.py' from
+	'/usr/bin/python' to '/usr/bin/python3'.
+	* Added 'qt5-qtbase-devel' and 'qt5-linguist' build dependencies
+	to 'rivendell.spec.in'.
