@@ -22470,3 +22470,8 @@
 	'/usr/bin/python' to '/usr/bin/python3'.
 	* Added 'qt5-qtbase-devel' and 'qt5-linguist' build dependencies
 	to 'rivendell.spec.in'.
+2021-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Overhauled the code for reading MPEG frame headers in 'RDWaveFile'.
+	* Fixed a bug in the rdxport 'Import' service that could result in
+	incorrect end marker placement when processing variable bit rate
+	(VBR) MPEG files.

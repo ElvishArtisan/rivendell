@@ -83,8 +83,6 @@ RDWaveFile::RDWaveFile(QString file_name)
   head_mode_ext=0;
   head_emphasis=1;
   head_flags=0;
-  pts=0;
-  mpeg_id=RDWaveFile::NonMpeg;
   mpeg_frame_size=0;
   id3v1_tag=false;
   id3v2_tag[0]=false;
@@ -262,9 +260,6 @@ bool RDWaveFile::openWave(RDWaveData *data)
 	  }
 	  data_length=wave_file.size()-data_start;
 	  sample_length=1152*(data_length/mpeg_frame_size);
-	  ext_time_length=(unsigned)(1000.0*(double)sample_length/
-				     (double)samples_per_sec);
-	  time_length=ext_time_length/1000;
 	  lseek(wave_file.handle(),data_start,SEEK_SET);
 	  format_chunk=true;
 	}
@@ -321,9 +316,6 @@ bool RDWaveFile::openWave(RDWaveData *data)
     }
     data_start=id3v2_offset[0];
     sample_length=1152*(data_length/mpeg_frame_size);
-    ext_time_length=
-      (unsigned)(1000.0*(double)sample_length/(double)samples_per_sec);
-    time_length=ext_time_length/1000;
     data_chunk=true;
     lseek(wave_file.handle(),data_start,SEEK_SET);
     format_chunk=true;
@@ -807,8 +799,6 @@ void RDWaveFile::closeWave(int samples)
   head_mode_ext=0;
   head_emphasis=1;
   head_flags=0;
-  pts=0;
-  mpeg_id=RDWaveFile::NonMpeg;
   mpeg_frame_size=0;
   id3v1_tag=false;
   id3v2_tag[0]=false;
@@ -1559,13 +1549,6 @@ unsigned short RDWaveFile::getHeadFlags() const
 }
 
 
-
-unsigned long RDWaveFile::getPTS() const
-{
-  return pts;
-}
-
-
 bool RDWaveFile::getCartChunk() const
 {
   return cart_chunk;
@@ -1762,14 +1745,6 @@ QString RDWaveFile::getCartTimerLabel(int index) const
   return QString("");
 }
 
-/*
-void RDWaveFile::setCartTimerLabel(int index,QString label)
-{
-  if(index<MAX_TIMERS) {
-    cart_timer_label[index]=label;
-  }
-}
-*/
 
 unsigned RDWaveFile::getCartTimerSample(int index) const
 {
@@ -1779,14 +1754,6 @@ unsigned RDWaveFile::getCartTimerSample(int index) const
   return 0;
 }
 
-/*
-void RDWaveFile::setCartTimerSample(int index,unsigned sample)
-{
-  if(index<MAX_TIMERS) {
-    cart_timer_sample[index]=sample;
-  }
-}
-*/
 
 QString RDWaveFile::getCartURL() const
 {
@@ -2221,11 +2188,6 @@ QString RDWaveFile::formatText(RDWaveFile::Format fmt)
 
   return ret;
 }
-
-  enum Format {Pcm8=0,Pcm16=1,Float32=2,MpegL1=3,MpegL2=4,MpegL3=5,
-  	       DolbyAc2=6,DolbyAc3=7,Vorbis=8,Pcm24=9};
-  enum Type {Unknown=0,Wave=1,Mpeg=2,Ogg=3,Atx=4,Tmc=5,Flac=6,Ambos=7,
-	     Aiff=8,M4A=9};
 
 
 QString RDWaveFile::typeText(RDWaveFile::Type type)
@@ -2666,8 +2628,6 @@ bool RDWaveFile::GetFmt(int fd)
     head_mode_ext=fmt_chunk_data[26]+256*fmt_chunk_data[27];
     head_emphasis=fmt_chunk_data[28]+256*fmt_chunk_data[29];
     head_flags=fmt_chunk_data[30]+256*fmt_chunk_data[31];
-    pts=fmt_chunk_data[32]+256*fmt_chunk_data[33]+65536*
-      fmt_chunk_data[34]+16777216*fmt_chunk_data[35];
   }
 
   if(format_tag==WAVE_FORMAT_MPEGLAYER3) {
@@ -3673,6 +3633,262 @@ void RDWaveFile::ReadId3Metadata()
 
 bool RDWaveFile::GetMpegHeader(int fd,int offset)
 {
+  //
+  // See:
+  //
+  //   http://mpgedit.org/mpgedit/mpeg_format/mpeghdr.htm
+  //   https://www.codeproject.com/Articles/8295/MPEG-Audio-Frame-Header
+  //
+  // for helpful information regarding the arcana of interpreting MPEG
+  // header data structures. Sometimes, fasting and prayer can help too!
+  //
+
+  //
+  // Bitrate table
+  //
+  // __bitrates[VERSION_INDEX][LAYER_INDEX][BITRATE_INDEX]
+  //
+  // N.B. Bitrate values in this table are in thousands of bits per second.
+  //      Certain other data structures in this class require bits per second!
+  //
+  static int __bitrates[4][4][16]={
+    {  // *** MPEG 2.5 ***
+      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},       // Reserved Layer
+      {0,8,16,24,32,40,48,56,64,80,96,112,128,144,160,-1},     // Layer III
+      {0,8,16,24,32,40,48,56,64,80,96,112,128,144,160,-1},     // Layer II
+      {0,32,48,56,64,80,96,112,128,144,160,176,192,224,256,-1} // Layer I
+    },
+
+    {  // *** Invalid MPEG Version ***
+      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},       // Reserved Layer
+      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},       // Layer III
+      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},       // Layer II
+      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}        // Layer I
+    },
+
+    {  // *** MPEG 2 ***
+      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},       // Reserved Layer
+      {0,8,16,24,32,40,48,56,64,80,96,112,128,144,160,-1},     // Layer III
+      {0,8,16,24,32,40,48,56,64,80,96,112,128,144,160,-1},     // Layer II
+      {0,32,48,56,64,80,96,112,128,144,160,176,192,224,256,-1} // Layer I
+    },
+
+    {  // *** MPEG 1 ***
+      {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},       // Reserved Layer
+      {0,32,40,48,56,64,80,96,112,128,160,192,224,256,320,-1}, // Layer III
+      {0,32,48,56,64,80,96,112,128,160,192,224,256,320,384,-1},// Layer II
+      {0,32,64,96,128,160,192,224,256,288,320,352,384,416,448,-1} // Layer I
+    }
+  };
+
+  //
+  // Sample Rate Table
+  //
+  // __samplerates[VERSION_INDEX][SAMPRATE_INDEX]
+  static int __samplerates[4][4]={
+    {11025,12000,8000,-1},  // *** MPEG 2.5 ***
+    {-1,-1,-1,-1},          // *** Invalid MPEG Version ***
+    {22050,24000,16000,-1}, // *** MPEG 2 ***
+    {44100,48000,32000,-1}  // *** MPEG 1 ***
+  };
+
+  //
+  // Channels table
+  //
+  // __channels[MODE_INDEX]
+  static int __channels[4]={2,2,2,1};
+
+  //
+  // Head Mode Table
+  //
+  // __head_modes[MODE_INDEX];
+  static int __head_modes[4]={ACM_MPEG_STEREO,ACM_MPEG_JOINTSTEREO,
+			      ACM_MPEG_DUALCHANNEL,ACM_MPEG_SINGLECHANNEL};
+
+  //
+  // Layer Numbers Table
+  //
+  // __layer_numbers[LAYER_INDEX]
+  static int __layer_numbers[4]={0,3,2,1};
+
+  //
+  // Samples per MPEG Frame Table
+  //
+  // __samples_per_frames[VERSION_INDEX][LAYER_INDEX]
+  static int __samples_per_frame[4][4]={
+    {0,576,1152,384},  // *** MPEG 2.5 ***
+    {0,0,0,384},  // *** Invalid MPEG Version ***
+    {0,576,1152,384},  // *** MPEG 2 ***
+    {0,1152,1152,384}   // *** MPEG 1 ***
+  };
+
+  //
+  // Side Data Offset Table (Layer III only)
+  //
+  // __side_data_offset[VERSION_INDEX][MODE]
+  static int __side_data_offset[4][4]={
+    {17,17,17,9},  // *** MPEG 2.5 ***
+    {0,0,0,0},     // *** Invalid MPEG Version ***
+    {17,17,17,9},  // *** MPEG 2 ***
+    {32,32,32,17}  // *** MPEG 1 ***
+  };
+
+  char header[4];
+  char *frame=NULL;
+  ssize_t n;
+  // off_t frame_start;
+  int version_index;
+  int layer_index;
+  int bitrate_index;
+  int samprate_index;
+  int padding=0;
+  int mode_index;
+  int frame_size;
+  int total_frame_quan=-1;
+
+  lseek(fd,offset,SEEK_SET);
+  if((n=read(fd,header,4))!=4) {
+    return false;
+  }
+  //  frame_start=lseek(fd,0,SEEK_CUR)-4;
+
+  //
+  // Sync bits
+  //
+  if(((0xFF&header[0])!=0xFF)||((0xE0&header[1])!=0xE0)) {
+    return false;
+  }
+
+  //
+  // MPEG Audio Version ID
+  //
+  version_index=(0x18&header[1])>>3;
+  if(version_index==0x01) {  // Illegal Version ID
+    return false;
+  }
+
+  //
+  // Layer
+  //
+  layer_index=(0x06&header[1])>>1;
+  if(layer_index==0x00) {  // Illegal Layer
+    return false;
+  }
+  head_layer=__layer_numbers[layer_index];
+
+  //
+  // Bitrate
+  //
+  bitrate_index=(0xF0&header[2])>>4;
+  if(__bitrates[version_index][layer_index][bitrate_index]<0) {
+    return false;
+  }
+  head_bit_rate=1000*__bitrates[version_index][layer_index][bitrate_index];
+
+  //
+  // Samplerate
+  //
+  samprate_index=(0x0C&header[2])>>2;
+  if((__samplerates[version_index][samprate_index]<0)&&(bitrate_index!=0)) {
+    return false;
+  }
+  samples_per_sec=__samplerates[version_index][samprate_index];
+
+  //
+  // Padding bit
+  //
+  padding=(0x02&header[2])>>1;
+
+  //
+  // Mode
+  //
+  mode_index=(0xC0&header[3])>>6;
+  head_mode=__head_modes[mode_index];
+  channels=__channels[mode_index];
+
+  //
+  // Flags
+  //
+  head_flags=0;
+  if((0x01&header[2])!=0) {
+    head_flags|=ACM_MPEG_PRIVATEBIT;
+  }    
+  if((header[3]&0x08)!=0) {
+    head_flags|=ACM_MPEG_COPYRIGHT;
+  }
+  if((header[3]&0x04)!=0) {
+    head_flags|=ACM_MPEG_ORIGINALHOME;
+  }
+  if(version_index==3) {
+    head_flags|=ACM_MPEG_ID_MPEG1;
+  }
+
+  //
+  // Frame Size
+  //
+  if(layer_index==3) {  // Layer I
+    frame_size=(12000*__bitrates[version_index][layer_index][bitrate_index]/
+		__samplerates[version_index][samprate_index]+padding)*4;
+  }
+  else {  // Layers II and III
+    frame_size=(144000*__bitrates[version_index][layer_index][bitrate_index]/
+		__samplerates[version_index][samprate_index])+padding;
+  }
+  
+  //
+  // Load the frame data
+  //
+  frame=new char[frame_size];
+  if((n=read(fd,frame,frame_size-4))!=(frame_size-4)) {
+    delete frame;
+    return false;
+  }
+
+  //
+  // Look for the Xing/Info tag (for VBR data)
+  //
+  if(((frame[__side_data_offset[version_index][mode_index]]=='X')&&
+      (frame[__side_data_offset[version_index][mode_index]+1]=='i')&&
+      (frame[__side_data_offset[version_index][mode_index]+2]=='n')&&
+      (frame[__side_data_offset[version_index][mode_index]+3]=='g'))||
+     ((frame[__side_data_offset[version_index][mode_index]]=='I')&&
+      (frame[__side_data_offset[version_index][mode_index]+1]=='n')&&
+      (frame[__side_data_offset[version_index][mode_index]+2]=='f')&&
+      (frame[__side_data_offset[version_index][mode_index]+3]=='o'))) {
+    if((frame[__side_data_offset[version_index][mode_index]+7]&0x01)==0x01) {
+      total_frame_quan=
+	16777216*frame[__side_data_offset[version_index][mode_index]+8]+
+	65536*frame[__side_data_offset[version_index][mode_index]+9]+
+	256*frame[__side_data_offset[version_index][mode_index]+10]+
+	frame[__side_data_offset[version_index][mode_index]+11];
+      time_length=
+	total_frame_quan*__samples_per_frame[version_index][layer_index]/
+	__samplerates[version_index][samprate_index];
+      ext_time_length=1000*total_frame_quan*
+	__samples_per_frame[version_index][layer_index]/
+	__samplerates[version_index][samprate_index];
+    }
+  }
+  if(total_frame_quan<0) {
+    //
+    // No VBR tag, assume CBR
+    //
+    sample_length=1152.0*((double)data_length/(144.0*(double)head_bit_rate/
+					       (double)samples_per_sec));
+    ext_time_length=1000.0*(double)sample_length/(double)samples_per_sec;
+    time_length=ext_time_length/1000;
+  }
+  mpeg_frame_size=144*head_bit_rate/samples_per_sec;
+
+  delete frame;
+
+  return true;
+}
+
+
+/*
+bool RDWaveFile::GetMpegHeader(int fd,int offset)
+{
   unsigned char buffer[4];
   int n;
   
@@ -4221,7 +4437,7 @@ bool RDWaveFile::GetMpegHeader(int fd,int offset)
 
   return true;
 }
-
+*/
 
 int RDWaveFile::GetAtxOffset(int fd)
 {
