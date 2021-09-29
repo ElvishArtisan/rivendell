@@ -461,7 +461,6 @@ void MainObject::PutAudio()
 	RDSendMail(&err_msg,tr("Rivendell import FAILURE for file: ")+
 		   short_name,body,rda->system()->originEmailAddress(),
 		   to_addrs);
-	//group->notifyEmailAddress());
       }
       TextExit(tr("Audio import failed: title already exists!"),400,
 	       LINE_NUMBER);
@@ -490,7 +489,7 @@ void MainObject::PutAudio()
   args.push_back(filename);
   QProcess *proc=new QProcess(this);
   proc->start("rdimport",args);
-  proc->waitForFinished();
+  proc->waitForFinished(1200000);
   if(proc->exitStatus()==QProcess::CrashExit) {
     delete proc;
     rda->syslog(LOG_WARNING,"importer process crashed [cmdline: %s]",

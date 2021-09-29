@@ -22475,3 +22475,7 @@
 	* Fixed a bug in the rdxport 'Import' service that could result in
 	incorrect end marker placement when processing variable bit rate
 	(VBR) MPEG files.
+2021-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the WebGet service that could cause 'Put'
+	operations to return an incomplete status message to the user
+	when posting large files.
