@@ -22479,3 +22479,6 @@
 	* Fixed a bug in the WebGet service that could cause 'Put'
 	operations to return an incomplete status message to the user
 	when posting large files.
+2021-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--show-styles' switch to all modules.
+	* Changed the default QStyle to 'Windows'.

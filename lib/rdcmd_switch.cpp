@@ -24,6 +24,7 @@
 
 #include <QCoreApplication>
 #include <QMessageBox>
+#include <QStyleFactory>
 
 #include <rdcmd_switch.h>
 
@@ -46,6 +47,13 @@ RDCmdSwitch::RDCmdSwitch(const QString &modname,const QString &usage)
     }
     if(value=="-d") {
       switch_debug=true;
+    }
+    if((value=="-show-styles")||(value=="--show-styles")) {
+      QStringList styles=QStyleFactory::keys();
+      for(int i=0;i<styles.size();i++) {
+	printf("%s\n",styles.at(i).toUtf8().constData());
+      }
+      exit(0);
     }
     QStringList f0=value.split("=",QString::KeepEmptyParts);
     if(f0.size()>=2) {
