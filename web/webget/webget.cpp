@@ -821,7 +821,7 @@ void MainObject::SaveSourceFile(const QString &filepath) const
   // Move the data
   //
   while((n=read(src_fd,buffer,1024))>0) {
-    write(dst_fd,buffer,n);
+    RDCheckExitCode("webget service",write(dst_fd,buffer,n));
   }
   if(n<0) {
     rda->syslog(LOG_WARNING,"error while reading source file \"%s\" for SaveWebgetFilesDirectory [%s]",
