@@ -22491,3 +22491,6 @@
 	RPM package.
 2021-10-02 Fred Gleason <fredg@paravelsystems.com>
 	Changed the default QStyle to 'plastique'.
+2021-10-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that broke the '--show-styles' and
+	'-style <name>' command-line switches.

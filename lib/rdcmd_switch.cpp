@@ -103,6 +103,13 @@ RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const QString &modname,
     if(value=="-d") {
       switch_debug=true;
     }
+    if((value=="-show-styles")||(value=="--show-styles")) {
+      QStringList styles=QStyleFactory::keys();
+      for(int i=0;i<styles.size();i++) {
+	printf("%s\n",styles.at(i).toUtf8().constData());
+      }
+      exit(0);
+    }
     QStringList f0=value.split("=",QString::KeepEmptyParts);
     if(f0.size()>=2) {
       if(f0.at(0).left(1)=="-") {

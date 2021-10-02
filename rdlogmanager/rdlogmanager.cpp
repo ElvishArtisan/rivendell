@@ -292,6 +292,16 @@ int main(int argc,char *argv[])
   RDCmdSwitch *cmd=
     new RDCmdSwitch(argc,argv,"rdlogmanager",RDLOGMANAGER_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
+    if((cmd->key(i)=="-display")||(cmd->key(i)=="-style")) {
+      // Pass through to QApplication
+      if(i>=(cmd->keys()-1)) {
+	fprintf(stderr,"rdlogmanager: missing argument to \"%s\"\n",
+		cmd->key(i).toUtf8().constData());
+	exit(RDApplication::ExitInvalidOption);
+      }
+      i++;
+      cmd->setProcessed(i,true);
+    }
     if (cmd->key(i)=="-P") {
       cmd_protect_existing = true;
       cmd->setProcessed(i,true);
