@@ -22482,3 +22482,6 @@
 2021-09-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--show-styles' switch to all modules.
 	* Changed the default QStyle to 'Windows'.
+2021-10-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'qt5-qtstyleplugins' dependency to the 'rivendell'
+	RPM package.
