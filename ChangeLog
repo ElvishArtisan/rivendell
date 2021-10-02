@@ -22483,5 +22483,9 @@
 	* Added a '--show-styles' switch to all modules.
 	* Changed the default QStyle to 'Windows'.
 2021-10-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a compile time warning in 'web/webget/webget.cpp'.
+2021-10-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDLibraryModel' that threw SQL errors
+	when attempting to the model when using MySQL 8.x.
 	* Added a 'qt5-qtstyleplugins' dependency to the 'rivendell'
 	RPM package.

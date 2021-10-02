@@ -802,7 +802,8 @@ QString sql=QString("select distinct ")+
   "`CUTS`.`TALK_START_POINT`,"+   // 27
   "`CUTS`.`TALK_END_POINT`,"+     // 28
   "`CUTS`.`DESCRIPTION`,"+        // 29
-  "`CART`.`NOTES` "+              // 30
+  "`CART`.`NOTES`,"+              // 30
+  "`CUTS`.`PLAY_ORDER` "+         // 31
   "from `CART` "+
   "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` "+
   "left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` "+
