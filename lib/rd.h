@@ -603,7 +603,7 @@
  * GUI Style
  * (must be one of the values returned by QStyleFactory::keys())
  */
-#define RD_GUI_STYLE "Windows"
+#define RD_GUI_STYLE "plastique"
 
 /*
  * Status / Note Bubble Background Color
