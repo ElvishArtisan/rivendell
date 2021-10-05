@@ -1,6 +1,22 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.6.2compatv44 -- 5 October 2021
+
+   v3.6.2 with support for schema 350.
+
+Changes:
+   Increased the import process timeout for the WebGet service to 1200
+   seconds.
+
+Database Update:
+   This version of Rivendell uses database schema version 350, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.6.2compatv43 -- 5 October 2021
 
    v3.6.2 with support for schema 350.
