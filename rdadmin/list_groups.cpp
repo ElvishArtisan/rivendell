@@ -161,6 +161,7 @@ void ListGroups::editData()
 void ListGroups::renameData()
 {
   QModelIndexList rows=list_groups_view->selectionModel()->selectedRows();
+  QModelIndex index;
 
   if(rows.size()!=1) {
     return;
@@ -169,11 +170,24 @@ void ListGroups::renameData()
   QString grpname=list_groups_model->groupName(rows.first());
   QString newgrpname;
   RenameGroup *rename_group=new RenameGroup(grpname,this);
-  if(rename_group->exec(&newgrpname)) {
-    QModelIndex index=list_groups_model->renameGroup(grpname,newgrpname);
+  switch((RenameGroup::Result)rename_group->exec(&newgrpname)) {
+  case RenameGroup::Renamed:
+    index=list_groups_model->renameGroup(grpname,newgrpname);
     if(index.isValid()) {
       list_groups_view->selectRow(index.row());
     }
+    break;
+
+  case RenameGroup::Merged:
+    list_groups_model->removeGroup(grpname);
+    index=list_groups_model->indexOf(newgrpname);
+    if(index.isValid()) {
+      list_groups_view->selectRow(index.row());
+    }
+    break;
+
+  case RenameGroup::Cancelled:
+    break;
   }
   delete rename_group;
   rename_group=NULL;

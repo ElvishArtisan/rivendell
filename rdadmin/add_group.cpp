@@ -23,25 +23,21 @@
 #include <rddb.h>
 #include <rdescape_string.h>
 
-#include <edit_group.h>
-#include <add_group.h>
-#include <rdpasswd.h>
-#include <rdtextvalidator.h>
+#include "add_group.h"
+#include "edit_group.h"
+#include "rdpasswd.h"
+#include "rdtextvalidator.h"
 
 AddGroup::AddGroup(QString *group,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   group_group=group;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("Add Group"));
 
@@ -49,61 +45,58 @@ AddGroup::AddGroup(QString *group,QWidget *parent)
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
+  validator->addBannedChar(',');
 
   //
   // Group Name
   //
   group_name_edit=new QLineEdit(this);
-  group_name_edit->setGeometry(145,11,sizeHint().width()-150,19);
   group_name_edit->setMaxLength(10);
   group_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(tr("New Group Name:"),this);
-  label->setFont(labelFont());
-  label->setGeometry(10,11,130,19);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  connect(group_name_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(groupNameChangedData(const QString &)));
+  group_name_label=new QLabel(tr("New Group Name:"),this);
+  group_name_label->setFont(labelFont());
+  group_name_label->setFont(labelFont());
+  group_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Enable Users Checkbox
   //
   group_users_box=new QCheckBox(this);
-  group_users_box->setGeometry(40,40,15,15);
   group_users_box->setChecked(true);
-  label=new QLabel(tr("Enable Group for All Users"),this);
-  label->setFont(subLabelFont());
-  label->setGeometry(60,38,sizeHint().width()-60,19);
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  group_users_label=new QLabel(tr("Enable Group for All Users"),this);
+  group_users_label->setFont(subLabelFont());
+  group_users_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Enable Services Checkbox
   //
   group_svcs_box=new QCheckBox(this);
-  group_svcs_box->setGeometry(40,61,15,15);
   group_svcs_box->setChecked(true);
-  label=new QLabel(tr("Enable Group for All Services"),this);
-  label->setFont(subLabelFont());
-  label->setGeometry(60,58,sizeHint().width()-60,19);
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  group_svcs_label=new QLabel(tr("Enable Group for All Services"),this);
+  group_svcs_label->setFont(subLabelFont());
+  group_svcs_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this);
-  ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  ok_button->setDefault(true);
-  ok_button->setFont(buttonFont());
-  ok_button->setText(tr("OK"));
-  connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
+  group_ok_button=new QPushButton(this);
+  group_ok_button->setDefault(true);
+  group_ok_button->setFont(buttonFont());
+  group_ok_button->setText(tr("OK"));
+  connect(group_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this);
-  cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("Cancel"));
-  connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  group_cancel_button=new QPushButton(this);
+  group_cancel_button->setFont(buttonFont());
+  group_cancel_button->setText(tr("Cancel"));
+  connect(group_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+
+  group_name_edit->setText(*group);
+  groupNameChangedData(*group);
 }
 
 
@@ -122,6 +115,20 @@ QSize AddGroup::sizeHint() const
 QSizePolicy AddGroup::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void AddGroup::groupNameChangedData(const QString &str)
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  sql=QString("select ")+
+    "`NAME` "+
+    "from `GROUPS` where `NAME`='"+RDEscapeString(str)+"'";
+  q=new RDSqlQuery(sql);
+  group_ok_button->setDisabled(str.isEmpty()||q->first());
+  delete q;
 }
 
 
@@ -161,4 +168,20 @@ void AddGroup::okData()
 void AddGroup::cancelData()
 {
   done(false);
+}
+
+
+void AddGroup::resizeEvent(QResizeEvent *e)
+{
+  group_name_edit->setGeometry(145,11,size().width()-150,19);
+  group_name_label->setGeometry(10,11,130,19);
+
+  group_users_box->setGeometry(40,40,15,15);
+  group_users_label->setGeometry(60,38,size().width()-60,19);
+
+  group_svcs_box->setGeometry(40,61,15,15);
+  group_svcs_label->setGeometry(60,58,size().width()-60,19);
+
+  group_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  group_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

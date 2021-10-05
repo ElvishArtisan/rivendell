@@ -22494,3 +22494,10 @@
 2021-10-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogmanager(1) that broke the '--show-styles' and
 	'-style <name>' command-line switches.
+2021-10-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDTextValidator::setUpperCaseOnly()' and
+	'RDTextValidator::setLowerCaseOnly()' methods.
+	* Added the RDGroupListModel::indexOf()' method.
+	* Fixed a bug in the 'Rename Group' dialog in rdadmin(1) that
+	caused the group being renamed to be deleted when simply attempting
+	to change the case of its name.

@@ -23,6 +23,9 @@
 RDTextValidator::RDTextValidator(QObject *parent,bool allow_quote)
   : QValidator(parent)
 {
+  d_upper_case_only=false;
+  d_lower_case_only=false;
+
   if(!allow_quote) {
     banned_chars.push_back(34);  // Double Quote
     }
@@ -34,13 +37,16 @@ RDTextValidator::RDTextValidator(QObject *parent,bool allow_quote)
 
 QValidator::State RDTextValidator::validate(QString &input,int &pos) const
 {
-  if(input.length()==0) {
-    return QValidator::Acceptable;
-  }
   for(int i=0;i<banned_chars.size();i++) {
     if(input.contains(banned_chars.at(i))) {
       return QValidator::Invalid;
     }
+  }
+  if(d_upper_case_only&&(input.toUpper()!=input)) {
+    return QValidator::Invalid;
+  }
+  if(d_lower_case_only&&(input.toLower()!=input)) {
+    return QValidator::Invalid;
   }
   return QValidator::Acceptable;
 }
@@ -55,6 +61,18 @@ void RDTextValidator::addBannedChar(char c)
 void RDTextValidator::addBannedChar(const QChar &c)
 {
   banned_chars.push_back(c);
+}
+
+
+void RDTextValidator::setUpperCaseOnly(bool state)
+{
+  d_upper_case_only=state;
+}
+
+
+void RDTextValidator::setLowerCaseOnly(bool state)
+{
+  d_lower_case_only=state;
 }
 
 

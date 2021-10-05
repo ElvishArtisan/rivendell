@@ -159,6 +159,17 @@ QVariant RDGroupListModel::data(const QModelIndex &index,int role) const
 }
 
 
+QModelIndex RDGroupListModel::indexOf(const QString &grpname) const
+{
+  int row=d_visible_groups.indexOf(grpname);
+
+  if(row<0) {
+    return QModelIndex();
+  }
+  return index(row,0);
+}
+
+
 QString RDGroupListModel::groupName(const QModelIndex &row) const
 {
   return d_texts.at(row.row()).at(0).toString();

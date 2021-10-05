@@ -43,6 +43,7 @@ class RDGroupListModel : public QAbstractTableModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
+  QModelIndex indexOf(const QString &grpname) const;
   QString groupName(const QModelIndex &row) const;
   QStringList allGroupNames() const;
   QModelIndex addGroup(const QString &name);

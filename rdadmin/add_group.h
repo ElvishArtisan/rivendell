@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Group
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,10 @@
 #ifndef ADD_GROUP_H
 #define ADD_GROUP_H
 
-#include <qcheckbox.h>
-#include <qlineedit.h>
+#include <QCheckBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include <rddialog.h>
 
@@ -36,16 +38,25 @@ class AddGroup : public RDDialog
    QSizePolicy sizePolicy() const;
 
   private slots:
+   void groupNameChangedData(const QString &str);
    void okData();
    void cancelData();
 
+  protected:
+   void resizeEvent(QResizeEvent *e);
+
   private:
+   QLabel *group_name_label;
    QLineEdit *group_name_edit;
    QCheckBox *group_users_box;
+   QLabel *group_users_label;
    QCheckBox *group_svcs_box;
+   QLabel *group_svcs_label;
    QString *group_group;
+   QPushButton *group_ok_button;
+   QPushButton *group_cancel_button;
 };
 
 
-#endif
+#endif  // ADD_GROUP_H
 

@@ -32,11 +32,14 @@ class RDTextValidator : public QValidator
   QValidator::State validate(QString &input,int &pos) const;
   void addBannedChar(char c);
   void addBannedChar(const QChar &c);
+  void setUpperCaseOnly(bool state);
+  void setLowerCaseOnly(bool state);
   static QString stripString(QString str);
 
  private:
   QList<QChar> banned_chars;
-  //  std::vector<char> banned_chars;
+  bool d_upper_case_only;
+  bool d_lower_case_only;
 };
 
 
