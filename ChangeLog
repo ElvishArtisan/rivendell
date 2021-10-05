@@ -20830,3 +20830,5 @@
 	* Fixed a bug in the rdxport 'Import' service that could result in
 	incorrect end marker placement when processing variable bit rate
 	(VBR) MPEG files.
+2021-10-05 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.2compatv43.
