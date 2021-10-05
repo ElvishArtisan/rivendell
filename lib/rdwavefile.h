@@ -1,8 +1,8 @@
 //   rdwavefile.h
 //
-//   A class for handling Microsoft WAV files.
+//   A class for handling audio files.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -22,14 +22,16 @@
 #ifndef RDWAVEFILE_H
 #define RDWAVEFILE_H
 
-#include <vector>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <qobject.h>
-#include <qstring.h>
-#include <qdatetime.h>
-#include <qfile.h>
+
+#include <vector>
+
+#include <QDateTime>
+#include <QFile>
+#include <QObject>
+#include <QString>
 
 #ifdef HAVE_VORBIS
 #include <vorbis/vorbisfile.h>
@@ -37,10 +39,9 @@
 #endif  // HAVE_VORBIS
 
 #include <rdmp4.h>
-
-#include <rdwavedata.h>
 #include <rdringbuffer.h>
 #include <rdsettings.h>
+#include <rdwavedata.h>
 
 //
 // Number of timers allowed in the CartChunk structure.
@@ -102,8 +103,7 @@
  * In addition to 'FMT' and 'DATA' chunks, chunk types of particular 
  * interest to broadcast applications are supported, including those 
  * specified by the Broadcast Wave File specification (EBU Tech Document
- * 3285, with suppliments) and the CartChunk specification (currently 
- * proposed to become AES standard AES-46).
+ * 3285, with suppliments) and AES standard AES-46 (aka CartChunk).
  **/   
 class RDWaveFile
 {
@@ -112,7 +112,6 @@ class RDWaveFile
   	       DolbyAc2=6,DolbyAc3=7,Vorbis=8,Pcm24=9};
   enum Type {Unknown=0,Wave=1,Mpeg=2,Ogg=3,Atx=4,Tmc=5,Flac=6,Ambos=7,
 	     Aiff=8,M4A=9};
-  enum MpegID {NonMpeg=0,Mpeg1=1,Mpeg2=2};
 
   /**
    * Create an RDWaveFile object.
@@ -1100,7 +1099,6 @@ class RDWaveFile
    unsigned short head_flags;      // MPEG header flags
    unsigned long pts;              // The MPEG PTS
    unsigned ptr_offset_msecs;
-   RDWaveFile::MpegID mpeg_id;              
    int mpeg_frame_size;
    bool id3v1_tag;
    bool id3v2_tag[2];
