@@ -93,7 +93,11 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   //
   group_carttype_box=new QComboBox(this);
   group_carttype_box->insertItem(0,tr("Audio"));
+  group_carttype_box->
+    setItemIcon(0,rda->iconEngine()->typeIcon(RDLogLine::Cart));
   group_carttype_box->insertItem(1,tr("Macro"));
+  group_carttype_box->
+    setItemIcon(1,rda->iconEngine()->typeIcon(RDLogLine::Macro));
   group_carttype_label=new QLabel(tr("Default Cart Type:"),this);
   group_carttype_label->setFont(labelFont());
   group_carttype_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);

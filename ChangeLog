@@ -22501,3 +22501,6 @@
 	* Fixed a bug in the 'Rename Group' dialog in rdadmin(1) that
 	caused the group being renamed to be deleted when simply attempting
 	to change the case of its name.
+2021-10-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added item icons to the 'Default Cart Type' dropdown in the
+	'Edit Group' dialog in rdadmin(1).
