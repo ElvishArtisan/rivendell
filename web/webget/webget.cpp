@@ -487,7 +487,7 @@ void MainObject::PutAudio()
   args.push_back(filename);
   QProcess *proc=new QProcess(this);
   proc->start("rdimport",args);
-  proc->waitForFinished();
+  proc->waitForFinished(RD_CURL_TIMEOUT*1000);
   if(proc->exitStatus()==QProcess::CrashExit) {
     delete proc;
     rda->syslog(LOG_WARNING,"importer process crashed [cmdline: %s]",

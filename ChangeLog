@@ -20832,3 +20832,8 @@
 	(VBR) MPEG files.
 2021-10-05 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.2compatv43.
+2021-10-05 Fred Gleason <fredg@paravelsystems.com>
+	* Increased the import process timeout for the WebGet service
+	to 1200 seconds.
+2021-10-05 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.2compatv44.
