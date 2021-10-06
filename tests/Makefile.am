@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -43,6 +43,7 @@ noinst_PROGRAMS = audio_convert_test\
                   mcast_recv_test\
                   metadata_wildcard_test\
                   notification_test\
+                  rdwavefile_test\
                   rdxml_parse_test\
                   readcd_test\
                   reserve_carts_test\
@@ -108,6 +109,10 @@ mcast_recv_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -
 dist_notification_test_SOURCES = notification_test.cpp notification_test.h
 nodist_notification_test_SOURCES = moc_notification_test.cpp
 notification_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
+
+dist_rdwavefile_test_SOURCES = rdwavefile_test.cpp rdwavefile_test.h
+nodist_rdwavefile_test_SOURCES = moc_rdwavefile_test.cpp
+rdwavefile_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 dist_rdxml_parse_test_SOURCES = rdxml_parse_test.cpp rdxml_parse_test.h
 rdxml_parse_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support

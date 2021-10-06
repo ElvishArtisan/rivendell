@@ -20837,3 +20837,8 @@
 	to 1200 seconds.
 2021-10-05 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.2compatv44.
+2021-10-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed an arithmetic overflow bug in 'RDWaveFile' that could
+	cause the play length of MPEG-encoded to be incorrectly calculated.
+2021-10-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'rdwavefile_test' test harness in 'tests/'.

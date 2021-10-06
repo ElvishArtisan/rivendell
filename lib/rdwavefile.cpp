@@ -3867,9 +3867,9 @@ bool RDWaveFile::GetMpegHeader(int fd,int offset)
       time_length=
 	total_frame_quan*__samples_per_frame[version_index][layer_index]/
 	__samplerates[version_index][samprate_index];
-      ext_time_length=1000*total_frame_quan*
-	__samples_per_frame[version_index][layer_index]/
-	__samplerates[version_index][samprate_index];
+      ext_time_length=1000*(int64_t)total_frame_quan*
+	(int64_t)__samples_per_frame[version_index][layer_index]/
+	(int64_t)__samplerates[version_index][samprate_index];
     }
   }
   if(total_frame_quan<0) {
