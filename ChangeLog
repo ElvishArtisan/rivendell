@@ -20813,3 +20813,6 @@
 2021-10-05 Fred Gleason <fredg@paravelsystems.com>
 	* Increased the import process timeout for the WebGet service
 	to 1200 seconds.
+2021-10-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed an arithmetic overflow bug in 'RDWaveFile' that could
+	cause the play length of MPEG-encoded to be incorrectly calculated.
