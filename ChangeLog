@@ -22518,3 +22518,5 @@
 2021-10-07 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdimport(1) that caused premature validation
 	of metadata.
+2021-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDIconEngine::nullIcon()' method.

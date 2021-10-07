@@ -42,6 +42,7 @@ class RDIconEngine
   QPixmap catchIcon(RDRecording::Type type);
   QPixmap listIcon(IconType type) const;
   QPixmap stationIcon() const;
+  QPixmap nullIcon(int edge_size) const;
   QPixmap typeIcon(RDLogLine::Type type,
 		   RDLogLine::Source src=RDLogLine::Manual) const;
   QPixmap userIcon(RDUser::Type type) const;

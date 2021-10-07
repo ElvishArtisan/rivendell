@@ -331,6 +331,15 @@ QPixmap RDIconEngine::stationIcon() const
 }
 
 
+QPixmap RDIconEngine::nullIcon(int edge_size) const
+{
+  QPixmap pix(edge_size,edge_size);
+  pix.fill(Qt::transparent);
+
+  return pix;
+}
+
+
 QPixmap RDIconEngine::typeIcon(RDLogLine::Type type,RDLogLine::Source src) const
 {
   if((type==RDLogLine::Cart)&&(src==RDLogLine::Tracker)) {
