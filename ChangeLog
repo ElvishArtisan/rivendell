@@ -20844,3 +20844,6 @@
 	* Added an 'rdwavefile_test' test harness in 'tests/'.
 2021-10-06 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.2compatv45.
+2021-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdimport(1) that caused premature validation
+	of metadata.

@@ -418,7 +418,6 @@ bool RDWaveFile::openWave(RDWaveData *data)
     format_chunk=true;
     wave_type=RDWaveFile::Ogg;
     ReadNormalizeLevel(wave_file_name);
-    ValidateMetadata();
     return true;
 #else
     return false;
@@ -488,7 +487,6 @@ bool RDWaveFile::openWave(RDWaveData *data)
     break;
   }
   lseek(wave_file.handle(),data_start,SEEK_SET);
-  ValidateMetadata();
 
   return true;
 }
@@ -4618,27 +4616,6 @@ void RDWaveFile::GrowAlloc(size_t size)
   if(size>(size_t)cook_buffer_size) {
     cook_buffer=(unsigned char *)realloc(cook_buffer,size);
     cook_buffer_size=size;
-  }
-}
-
-
-void RDWaveFile::ValidateMetadata()
-{
-  if(wave_data==NULL) {
-    return;
-  }
-
-  if(!wave_data->metadataFound()) {
-    return;
-  }
-  if(wave_data->startPos()<0) {
-    wave_data->setStartPos(0);
-  }
-  if(wave_data->endPos()<0) {
-    wave_data->setEndPos(ext_time_length);
-  }
-  if((wave_data->segueStartPos()>=0)&&(wave_data->segueEndPos()<0)) {
-    wave_data->setSegueEndPos(wave_data->endPos());
   }
 }
 
