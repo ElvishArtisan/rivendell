@@ -22515,3 +22515,6 @@
 2021-10-07 Fred Gleason <fredg@paravelsystems.com>
 	* Tweaked the layout of the 'Log Length' readouts in the full log
 	widget in rdairplay(1).
+2021-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdimport(1) that caused premature validation
+	of metadata.

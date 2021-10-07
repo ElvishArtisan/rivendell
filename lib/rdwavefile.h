@@ -299,7 +299,6 @@ class RDWaveFile
    bool ReadNormalizeLevel(QString wave_file_name);
    bool ReadEnergyFile(QString wave_file_name);
    void GrowAlloc(size_t size);
-   void ValidateMetadata();
 #ifdef HAVE_VORBIS
    int WriteOggPage(ogg_page *page);
 #endif  // HAVE_VORBIS
