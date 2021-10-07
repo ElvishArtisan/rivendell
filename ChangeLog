@@ -20818,3 +20818,6 @@
 	cause the play length of MPEG-encoded to be incorrectly calculated.
 2021-10-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'rdwavefile_test' test harness in 'tests/'.
+2021-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdimport(1) that caused premature validation
+	of metadata.
