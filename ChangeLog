@@ -22512,3 +22512,6 @@
 	cause the play length of MPEG-encoded to be incorrectly calculated.
 2021-10-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'rdwavefile_test' test harness in 'tests/'.
+2021-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Tweaked the layout of the 'Log Length' readouts in the full log
+	widget in rdairplay(1).

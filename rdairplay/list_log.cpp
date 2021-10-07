@@ -158,8 +158,9 @@ ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
   //
   // Time Counter Section
   //
-  list_groupbox=new QGroupBox(tr("Run Length"),this);
+  list_groupbox=new QGroupBox("  "+tr("Run Length"),this);
   list_groupbox->setFont(labelFont());
+  list_groupbox->setAlignment(Qt::AlignLeft|Qt::AlignBottom);
   if(!rda->airplayConf()->showCounters()) {
     list_groupbox->hide();
   }
@@ -901,11 +902,12 @@ void ListLog::resizeEvent(QResizeEvent *e)
     //
     // Counters
     //
-    list_groupbox->setGeometry(5+695,size().height()-61,153,58);
-    list_stoptime_edit->setGeometry(5+773,size().height()-45,70,18);
-    list_stoptime_label->setGeometry(5+703,size().height()-45,65,18);
-    list_endtime_edit->setGeometry(5+773,size().height()-25,70,18);
-    list_endtime_label->setGeometry(5+703,size().height()-25,65,18);
+    //    list_groupbox->setGeometry(5+695,size().height()-61,153,58);
+    list_groupbox->setGeometry(700,size().height()-64,153,62);
+    list_stoptime_edit->setGeometry(778,size().height()-43,70,18);
+    list_stoptime_label->setGeometry(708,size().height()-43,65,18);
+    list_endtime_edit->setGeometry(778,size().height()-23,70,18);
+    list_endtime_label->setGeometry(708,size().height()-23,65,18);
 
     //
     // Bottom Buttons
@@ -930,11 +932,11 @@ void ListLog::resizeEvent(QResizeEvent *e)
     //
     // Counters
     //
-    list_groupbox->setGeometry(5+333,size().height()-116,158,58);
-    list_stoptime_edit->setGeometry(5+412,size().height()-100,70,18);
-    list_stoptime_label->setGeometry(5+342,size().height()-100,65,18);
-    list_endtime_edit->setGeometry(5+412,size().height()-80,70,18);
-    list_endtime_label->setGeometry(5+342,size().height()-80,65,18);
+    list_groupbox->setGeometry(343+1,size().height()-118,158,62);
+    list_stoptime_edit->setGeometry(417+1,size().height()-96,70,18);
+    list_stoptime_label->setGeometry(347+1,size().height()-96,65,18);
+    list_endtime_edit->setGeometry(417+1,size().height()-76,70,18);
+    list_endtime_label->setGeometry(347+1,size().height()-76,65,18);
 
     //
     // Bottom Buttons
