@@ -951,21 +951,49 @@
         <source>ERR</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Name too long (ten characters max)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid group name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>group already exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unable to create database record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>group name in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AudioScience HPI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JACK Audio Connection Kit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advance Linux Sound Architecture (ALSA)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
-    <message>
-        <source>&amp;Group:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;New Cart Number:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;New Cart Type:</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Audio</source>
         <translation type="unfinished"></translation>
@@ -979,16 +1007,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;New Cart Title:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
+        <translation type="obsolete">&amp;Annuler</translation>
     </message>
     <message>
         <source>No Available Cart Numbers</source>
@@ -1038,6 +1062,30 @@
         <source>Add Cart</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Cart Number:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Cart Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Cart Title:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddLog</name>
@@ -1047,11 +1095,11 @@
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
+        <translation type="obsolete">&amp;Annuler</translation>
     </message>
     <message>
         <source>RDLogEdit</source>
@@ -1067,6 +1115,14 @@
     </message>
     <message>
         <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1113,15 +1169,23 @@ La Couleur</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Annuler</translation>
+        <translation type="vanished">&amp;Annuler</translation>
     </message>
     <message>
         <source>NOT FOUND</source>
         <translation>NON TROUVE</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1150,22 +1214,12 @@ La Couleur</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Send to
-&amp;Editor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
-    </message>
-    <message>
-        <source>Load From
-&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Annuler</translation>
     </message>
     <message>
         <source>Cart Error</source>
@@ -1207,19 +1261,25 @@ La Couleur</translation>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Send to
+Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load From
+File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDCartFilter</name>
     <message>
         <source>Filter:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Search</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1261,6 +1321,14 @@ La Couleur</translation>
     <message>
         <source>ALL</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">Effacer</translation>
     </message>
 </context>
 <context>
@@ -1422,7 +1490,7 @@ La Couleur</translation>
         <translation>Fin</translation>
     </message>
     <message>
-        <source>&amp;Recue</source>
+        <source>Recue</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1434,11 +1502,19 @@ La Couleur</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
+        <translation type="obsolete">&amp;Annuler</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1449,11 +1525,11 @@ La Couleur</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
+        <translation type="obsolete">&amp;Annuler</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1464,12 +1540,16 @@ La Couleur</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Add New
+        <source>Add New
 Cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Clear</source>
+        <source>Clear</source>
+        <translation type="unfinished">Effacer</translation>
+    </message>
+    <message>
+        <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1560,11 +1640,19 @@ Cart</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
+        <translation type="obsolete">&amp;Annuler</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1738,15 +1826,27 @@ Cart</source>
     </message>
     <message>
         <source>Panel &amp;Name:</source>
-        <translation>&amp;Nom :</translation>
+        <translation type="vanished">&amp;Nom :</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Annuler</translation>
+        <translation type="vanished">&amp;Annuler</translation>
+    </message>
+    <message>
+        <source>Panel Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1788,11 +1888,11 @@ Cart</source>
     <name>RDExportSettingsDialog</name>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
+        <translation type="obsolete">&amp;Annuler</translation>
     </message>
     <message>
         <source>PCM16</source>
@@ -1874,6 +1974,14 @@ Cart</source>
         <source>dBFS</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDFeedListModel</name>
@@ -1944,11 +2052,11 @@ figure for the report period.
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
+        <translation type="obsolete">&amp;Annuler</translation>
     </message>
     <message>
         <source>Invalid ATH</source>
@@ -1956,6 +2064,14 @@ figure for the report period.
     </message>
     <message>
         <source>You must provide a valid ATH figure!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1971,11 +2087,19 @@ figure for the report period.
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
+        <translation type="obsolete">&amp;Annuler</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2101,10 +2225,6 @@ figure for the report period.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Now &amp; Next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>[none]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2146,10 +2266,6 @@ figure for the report period.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Select</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Import file metadata</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2182,20 +2298,12 @@ figure for the report period.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>S&amp;et</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Normalize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Import</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
+        <translation type="obsolete">&amp;Annuler</translation>
     </message>
     <message>
         <source>Export</source>
@@ -2256,6 +2364,18 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Save Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2384,11 +2504,19 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
+        <translation type="obsolete">&amp;Annuler</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2676,6 +2804,18 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>--- end of log ---</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PLAY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

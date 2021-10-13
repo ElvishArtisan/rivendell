@@ -304,11 +304,11 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Group Exists</source>
-        <translation>El grupo ya existe</translation>
+        <translation type="vanished">El grupo ya existe</translation>
     </message>
     <message>
         <source>Group Already Exists!</source>
-        <translation>¡El grupo ya existe!</translation>
+        <translation type="vanished">¡El grupo ya existe!</translation>
     </message>
     <message>
         <source>New Group Name:</source>
@@ -321,6 +321,18 @@ y un respaldo de la base de datos se guardó en </translation>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error creating group!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error removing stale database record!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2060,7 +2072,7 @@ Clipboard</source>
     </message>
     <message>
         <source>Transmit Now &amp;&amp; Next data</source>
-        <translation>Transmitir datos Now &amp;&amp; Next</translation>
+        <translation type="vanished">Transmitir datos Now &amp;&amp; Next</translation>
     </message>
     <message>
         <source>C&amp;olor</source>
@@ -3245,6 +3257,10 @@ GPIOs</source>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>Logo Image:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4769,10 +4785,6 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Include Import Markers in Finished Logs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Copy To
 Custom</source>
         <translation type="unfinished"></translation>
@@ -4851,6 +4863,14 @@ Music</source>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>Include Music Import Markers in Finished Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Include Traffic Import Markers in Finished Logs</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5026,6 +5046,55 @@ List</source>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>Realm Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Date/Time Formats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long Date Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short Date Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Twenty Four Hour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Twelve Hour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore
+Defaults</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation type="unfinished">Advertencia</translation>
+    </message>
+    <message>
+        <source>This will reset all date/time display formats to default values!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proceed?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6355,6 +6424,14 @@ Report</source>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to remove group!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListHostvars</name>
@@ -7668,11 +7745,11 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Invalid Group</source>
-        <translation>Grupo inválido</translation>
+        <translation type="vanished">Grupo inválido</translation>
     </message>
     <message>
         <source>The group name is invalid!</source>
-        <translation>¡El nombre del grupo es inválido!</translation>
+        <translation type="vanished">¡El nombre del grupo es inválido!</translation>
     </message>
     <message>
         <source>A</source>
@@ -7707,6 +7784,45 @@ Do you want to combine the two?</source>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>Conflicting Cart Numbers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One or more carts in this group has an out-of-range number.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to merge!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TestDatetimes</name>
+    <message>
+        <source>Test Date/Time Formats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample Date/Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

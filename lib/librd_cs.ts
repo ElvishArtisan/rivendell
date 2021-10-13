@@ -989,20 +989,60 @@
         <source>ERR</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Name too long (ten characters max)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid group name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>group already exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unable to create database record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>group name in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AudioScience HPI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JACK Audio Connection Kit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Advance Linux Sound Architecture (ALSA)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
     <message>
         <source>&amp;Group:</source>
-        <translation>&amp;Skupina:</translation>
+        <translation type="vanished">&amp;Skupina:</translation>
     </message>
     <message>
         <source>&amp;New Cart Number:</source>
-        <translation>&amp;Nové číslo vozíku:</translation>
+        <translation type="vanished">&amp;Nové číslo vozíku:</translation>
     </message>
     <message>
         <source>&amp;New Cart Type:</source>
-        <translation>&amp;Nový typ vozíku:</translation>
+        <translation type="vanished">&amp;Nový typ vozíku:</translation>
     </message>
     <message>
         <source>Audio</source>
@@ -1018,15 +1058,15 @@
     </message>
     <message>
         <source>&amp;New Cart Title:</source>
-        <translation>&amp;Nový název vozíku:</translation>
+        <translation type="vanished">&amp;Nový název vozíku:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
     </message>
     <message>
         <source>No Available Cart Numbers</source>
@@ -1076,6 +1116,30 @@
         <source>Add Cart</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Group:</source>
+        <translation type="unfinished">Skupina:</translation>
+    </message>
+    <message>
+        <source>New Cart Number:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Cart Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Cart Title:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>RDAddLog</name>
@@ -1093,11 +1157,11 @@
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
     </message>
     <message>
         <source>RDLogEdit</source>
@@ -1118,6 +1182,14 @@
     <message>
         <source>Service</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -1206,15 +1278,23 @@ barvu</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
     </message>
     <message>
         <source>NOT FOUND</source>
         <translation>NENALEZENO</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -1340,16 +1420,16 @@ barvu</translation>
     <message>
         <source>Send to
 &amp;Editor</source>
-        <translation>Poslat do
+        <translation type="vanished">Poslat do
 &amp;editoru</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1370,7 +1450,7 @@ barvu</translation>
     <message>
         <source>Load From
 &amp;File</source>
-        <translation>Nahrát
+        <translation type="vanished">Nahrát
 ze &amp;souboru</translation>
     </message>
     <message>
@@ -1417,6 +1497,20 @@ ze &amp;souboru</translation>
         <source>Cancel</source>
         <translation type="unfinished">Zrušit</translation>
     </message>
+    <message>
+        <source>Send to
+Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load From
+File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
 </context>
 <context>
     <name>RDCartFilter</name>
@@ -1426,11 +1520,11 @@ ze &amp;souboru</translation>
     </message>
     <message>
         <source>&amp;Search</source>
-        <translation type="unfinished">&amp;Hledat</translation>
+        <translation type="obsolete">&amp;Hledat</translation>
     </message>
     <message>
         <source>&amp;Clear</source>
-        <translation type="unfinished">&amp;Smazat</translation>
+        <translation type="obsolete">&amp;Smazat</translation>
     </message>
     <message>
         <source>Group:</source>
@@ -1471,6 +1565,14 @@ ze &amp;souboru</translation>
     <message>
         <source>ALL</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">Smazat</translation>
     </message>
 </context>
 <context>
@@ -1632,7 +1734,7 @@ ze &amp;souboru</translation>
         <translation type="unfinished">Konec</translation>
     </message>
     <message>
-        <source>&amp;Recue</source>
+        <source>Recue</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1644,11 +1746,19 @@ ze &amp;souboru</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Zrušit</translation>
+        <translation type="obsolete">&amp;Zrušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -1704,20 +1814,20 @@ ze &amp;souboru</translation>
     <message>
         <source>&amp;Add New
 Cart</source>
-        <translation type="unfinished">&amp;Přidat nový
+        <translation type="obsolete">&amp;Přidat nový
 vozík</translation>
     </message>
     <message>
         <source>&amp;Clear</source>
-        <translation type="unfinished">&amp;Smazat</translation>
+        <translation type="obsolete">&amp;Smazat</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -1754,6 +1864,19 @@ vozík</translation>
 &amp;File</source>
         <translation type="obsolete">Nahrát
 ze &amp;souboru</translation>
+    </message>
+    <message>
+        <source>Add New
+Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
     </message>
 </context>
 <context>
@@ -1843,11 +1966,19 @@ ze &amp;souboru</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2246,15 +2377,27 @@ Opravdu chcete uložit?</translation>
     </message>
     <message>
         <source>Panel &amp;Name:</source>
-        <translation>&amp;Název panelu:</translation>
+        <translation type="vanished">&amp;Název panelu:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
+    </message>
+    <message>
+        <source>Panel Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2367,11 +2510,11 @@ Přepsat?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
     </message>
     <message>
         <source>PCM16</source>
@@ -2545,6 +2688,14 @@ Přepsat?</translation>
         <source>dBFS</source>
         <translation type="unfinished">dbFS</translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>RDFeedListModel</name>
@@ -2625,11 +2776,11 @@ pro dobu zprávy.
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
     </message>
     <message>
         <source>Invalid ATH</source>
@@ -2638,6 +2789,14 @@ pro dobu zprávy.
     <message>
         <source>You must provide a valid ATH figure!</source>
         <translation>Musíte zadat platný údaj ATH!</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2652,11 +2811,19 @@ pro dobu zprávy.
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2782,10 +2949,6 @@ pro dobu zprávy.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Now &amp; Next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>[none]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2828,7 +2991,7 @@ pro dobu zprávy.
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="vanished">&amp;Vybrat</translation>
     </message>
     <message>
         <source>Import file metadata</source>
@@ -2864,7 +3027,7 @@ pro dobu zprávy.
     </message>
     <message>
         <source>S&amp;et</source>
-        <translation>&amp;Nastavit</translation>
+        <translation type="vanished">&amp;Nastavit</translation>
     </message>
     <message>
         <source>Normalize</source>
@@ -2872,11 +3035,11 @@ pro dobu zprávy.
     </message>
     <message>
         <source>&amp;Import</source>
-        <translation>&amp;Zavést</translation>
+        <translation type="vanished">&amp;Zavést</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
     </message>
     <message>
         <source>Export</source>
@@ -3027,6 +3190,18 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <message>
         <source>Save Audio File</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -3192,11 +3367,19 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="vanished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="vanished">&amp;Zrušit</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -3584,6 +3767,18 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PLAY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

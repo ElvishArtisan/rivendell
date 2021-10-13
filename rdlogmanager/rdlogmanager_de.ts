@@ -1794,29 +1794,29 @@ Data</source>
     </message>
     <message>
         <source>&amp;Report:</source>
-        <translation>&amp;Report:</translation>
+        <translation type="vanished">&amp;Report:</translation>
     </message>
     <message>
         <source>&amp;Start Date:</source>
-        <translation>&amp;Startdatum:</translation>
+        <translation type="vanished">&amp;Startdatum:</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>Au&amp;swählen</translation>
+        <translation type="vanished">Au&amp;swählen</translation>
     </message>
     <message>
         <source>&amp;End Date:</source>
-        <translation>&amp;Enddatum:</translation>
+        <translation type="vanished">&amp;Enddatum:</translation>
     </message>
     <message>
         <source>&amp;Generate
 Report</source>
-        <translation>&amp;Generiere
+        <translation type="vanished">&amp;Generiere
 Report</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Schliessen</translation>
+        <translation type="vanished">&amp;Schliessen</translation>
     </message>
     <message>
         <source>Invalid Date Range</source>
@@ -1856,6 +1856,31 @@ Report</translation>
     </message>
     <message>
         <source>The report file already exists.  Overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Date:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Auswählen</translation>
+    </message>
+    <message>
+        <source>End Date:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate
+Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

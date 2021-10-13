@@ -1804,29 +1804,29 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
     </message>
     <message>
         <source>&amp;Report:</source>
-        <translation>&amp;Zpráva:</translation>
+        <translation type="vanished">&amp;Zpráva:</translation>
     </message>
     <message>
         <source>&amp;Start Date:</source>
-        <translation>&amp;Počáteční datum:</translation>
+        <translation type="vanished">&amp;Počáteční datum:</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Vybrat</translation>
+        <translation type="vanished">&amp;Vybrat</translation>
     </message>
     <message>
         <source>&amp;End Date:</source>
-        <translation>&amp;Koncové datum:</translation>
+        <translation type="vanished">&amp;Koncové datum:</translation>
     </message>
     <message>
         <source>&amp;Generate
 Report</source>
-        <translation>&amp;Vytvořit
+        <translation type="vanished">&amp;Vytvořit
 zprávu</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="vanished">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Invalid Date Range</source>
@@ -1866,6 +1866,31 @@ zprávu</translation>
     </message>
     <message>
         <source>The report file already exists.  Overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Date:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Vybrat</translation>
+    </message>
+    <message>
+        <source>End Date:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate
+Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -658,6 +658,11 @@ OBNOVEN</translation>
         <source>Main Log channel assignments are invalid!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Voice
+Tracker</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModeDisplay</name>
