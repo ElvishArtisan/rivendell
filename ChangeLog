@@ -22522,3 +22522,5 @@
 	* Added an 'RDIconEngine::nullIcon()' method.
 2021-10-13 Fred Gleason <fredg@paravelsystems.com>
 	* Updated I18N data.
+2021-10-13 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0beta3.
