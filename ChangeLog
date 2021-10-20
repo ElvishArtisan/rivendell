@@ -22524,3 +22524,6 @@
 	* Updated I18N data.
 2021-10-13 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0beta3.
+2021-10-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused the '-style' switch
+	to be ignored.

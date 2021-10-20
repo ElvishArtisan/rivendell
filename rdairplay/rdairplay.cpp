@@ -2230,7 +2230,16 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
 
 int main(int argc,char *argv[])
 {
-  QApplication::setStyle(RD_GUI_STYLE);
+  bool user_style=false;
+  for(int i=0;i<argc;i++) {
+    if(QString(argv[i])=="-style") {
+      user_style=true;
+      break;
+    }
+  }
+  if(!user_style) {
+    QApplication::setStyle(RD_GUI_STYLE);
+  }
   QApplication a(argc,argv);
   
   //
