@@ -30,6 +30,14 @@ RDMarkerReadout::RDMarkerReadout(RDMarkerHandle::PointerRole role,
   d_roles.push_back(role);
   d_selected_marker=RDMarkerHandle::LastRole;
 
+  d_default_palette=palette();
+  d_selected_palette=palette();
+  d_selected_palette.
+    setColor(QPalette::Window,d_selected_palette.color(QPalette::Highlight));
+  d_selected_palette.
+    setColor(QPalette::WindowText,
+	     d_selected_palette.color(QPalette::HighlightedText));
+
   d_label=new QLabel(RDMarkerHandle::pointerRoleText(role),this);
   d_label->setAlignment(Qt::AlignCenter);
   d_label->setFont(labelFont());
@@ -44,6 +52,7 @@ RDMarkerReadout::RDMarkerReadout(RDMarkerHandle::PointerRole role,
       d_edits.push_back(new QLabel(this));
       d_edits.back()->setFrameShape(QFrame::Box);
       d_edits.back()->setFrameShadow(QFrame::Sunken);
+      d_edits.back()->setFont(defaultFont());
       d_edits.back()->setAlignment(Qt::AlignCenter);
       d_edits.back()->setText("0:00:00");
     }
@@ -55,6 +64,7 @@ RDMarkerReadout::RDMarkerReadout(RDMarkerHandle::PointerRole role,
       d_edits.push_back(new QLabel(this));
       d_edits.back()->setFrameShape(QFrame::Box);
       d_edits.back()->setFrameShadow(QFrame::Sunken);
+      d_edits.back()->setFont(defaultFont());
       d_edits.back()->setAlignment(Qt::AlignCenter);
       d_edits.back()->setText("0:00:00");
     }
@@ -155,13 +165,17 @@ void RDMarkerReadout::setSelectedMarkers(RDMarkerHandle::PointerRole start_role,
 {
   if(d_roles.contains(start_role)||d_roles.contains(end_role)) {
     for(int i=0;i<d_edits.size();i++) {
-      d_edits.at(i)->setFont(labelFont());
-      d_edits.at(i)->setStyleSheet("background-color:#FFFF00");
+      d_edits.at(i)->setPalette(d_selected_palette);
+      d_edits.at(i)->
+	setStyleSheet("color:"+
+		     d_selected_palette.color(QPalette::HighlightedText).name()+
+		     ";background-color:"+
+		     d_selected_palette.color(QPalette::Window).name());
     }
   }
   else {
     for(int i=0;i<d_edits.size();i++) {
-      d_edits.at(i)->setFont(defaultFont());
+      d_edits.at(i)->setPalette(d_default_palette);
       d_edits.at(i)->setStyleSheet("");
     }
   }

@@ -1655,7 +1655,7 @@ QColor RDLogModel::cellTextColor(int col,int line,RDLogLine *ll) const
     return ll->groupColor();
   }
 
-  return d_palette.color(QPalette::Foreground);
+  return RDGetTextColor(rowBackgroundColor(line,ll));
 }
 
 

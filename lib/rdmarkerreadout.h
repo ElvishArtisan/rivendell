@@ -23,6 +23,7 @@
 
 #include <QLabel>
 #include <QList>
+#include <QPalette>
 
 #include <rdmarkerview.h>
 #include <rdpushbutton.h>
@@ -52,6 +53,8 @@ class RDMarkerReadout : public RDPushButton
   QList<RDMarkerHandle::PointerRole> d_roles;
   RDMarkerHandle::PointerRole d_selected_marker;
   int d_pointers[RDMarkerHandle::LastRole];
+  QPalette d_default_palette;
+  QPalette d_selected_palette;
 };
 
 

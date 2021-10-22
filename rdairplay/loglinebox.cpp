@@ -87,6 +87,28 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   //
   // Create Palettes
   //
+  line_default_palette=QGuiApplication::palette();
+
+  line_chain_palette=QGuiApplication::palette();
+  line_chain_palette.setColor(QPalette::Window,LOGLINEBOX_CHAIN_COLOR);
+  line_chain_palette.setColor(QPalette::WindowText,Qt::black);
+
+  line_error_palette=QGuiApplication::palette();
+  line_error_palette.setColor(QPalette::Window,LOGLINEBOX_MISSING_COLOR);
+  line_error_palette.setColor(QPalette::WindowText,Qt::white);
+
+  line_evergreen_palette=QGuiApplication::palette();
+  line_evergreen_palette.setColor(QPalette::Window,LOGLINEBOX_EVERGREEN_COLOR);
+  line_evergreen_palette.setColor(QPalette::WindowText,Qt::white);
+
+  line_marker_palette=QGuiApplication::palette();
+  line_marker_palette.setColor(QPalette::Window,LOGLINEBOX_MARKER_COLOR);
+  line_marker_palette.setColor(QPalette::WindowText,Qt::black);
+
+  line_chain_palette=QGuiApplication::palette();
+  line_chain_palette.setColor(QPalette::Window,LOGLINEBOX_CHAIN_COLOR);
+  line_chain_palette.setColor(QPalette::WindowText,Qt::black);
+
   line_unchanged_stop_palette=QGuiApplication::palette();
   line_unchanged_stop_palette.setColor(QPalette::Active,QPalette::Highlight,
 			     QColor(BAR_UNCHANGED_STOPPING_COLOR));
@@ -133,10 +155,6 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
 				  QColor(RD_CUSTOM_TRANSITION_COLOR));
 
   line_text_palette=QGuiApplication::palette();
-  line_text_palette.setColor(QPalette::Active,QPalette::Foreground,
-				  QColor(Qt::black));
-  line_text_palette.setColor(QPalette::Inactive,QPalette::Foreground,
-				  QColor(Qt::black));
 
   //
   // Count Up
@@ -378,7 +396,7 @@ void LogLineBox::setMode(LogLineBox::Mode mode)
     line_down_label->hide();
     line_position_bar->hide();
     line_description_label->hide();
-    line_comment_label->setGeometry(5,18,sizeHint().width()-10,31);
+    line_comment_label->setGeometry(5,18,sizeHint().width()-10,30);
     break;
   }
   line_mode=mode;
@@ -464,6 +482,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
       line_down_label->setText("0:00:00");
       line_comment_label->clear();
       line_title_label->setText(tr("[CART NOT FOUND]"));
+      SetPalette(line_error_palette,Qt::black);
       switch(cart->type()) {
       case RDCart::Audio:
       case RDCart::Macro:
@@ -491,15 +510,16 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	line_comment_label->clear();
 	line_icon_label->setPixmap(*line_playout_map);
 	line_title_label->setText(logline->title());
+	SetPalette(line_error_palette,logline->groupColor());
       }
       else {
 	line_cart_label->
 	  setText(QString::asprintf("%06u",logline->cartNumber()));
 	if(line_logline->evergreen()) {
-	  //	  setBackgroundColor(QColor(LOGLINEBOX_EVERGREEN_COLOR));
+	  SetPalette(line_evergreen_palette,logline->groupColor());
 	}
 	else {
-	  //	  setBackgroundColor(QColor(LOGLINEBOX_BACKGROUND_COLOR));
+	  SetPalette(line_default_palette,logline->groupColor());
 	}
 	if(line_logline->source()==RDLogLine::Tracker) {
 	  line_icon_label->setPixmap(*line_track_cart_map);
@@ -567,7 +587,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	  setText(line_logline->resolveWildcards(line_outcue_template));	
 	}
 	else {
-	  //	  setBackgroundColor(QColor(LOGLINEBOX_MISSING_COLOR));
+	  SetPalette(line_error_palette,logline->groupColor());
 	  line_cut_label->clear();
 	  line_outcue_label->setText(tr("[NO VALID CUT AVAILABLE]"));
 	}
@@ -584,7 +604,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
     
   case RDLogLine::Marker:
     line_icon_label->setPixmap(*line_notemarker_map);
-    //    setBackgroundColor(QColor(LOGLINEBOX_MARKER_COLOR));
+    SetPalette(line_marker_palette,logline->groupColor());
     line_title_label->hide();
     line_description_label->hide();
     line_artist_label->hide();
@@ -599,7 +619,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
     
   case RDLogLine::Track:
     line_icon_label->setPixmap(*line_mic16_map);
-    //    setBackgroundColor(QColor(LOGLINEBOX_MARKER_COLOR));
+    SetPalette(line_marker_palette,logline->groupColor());
     line_title_label->hide();
     line_description_label->hide();
     line_artist_label->hide();
@@ -614,7 +634,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
     
   case RDLogLine::MusicLink:
     line_icon_label->setPixmap(*line_music_map);
-    //    setBackgroundColor(QColor(LOGLINEBOX_MARKER_COLOR));
+    SetPalette(line_marker_palette,logline->groupColor());
     line_title_label->hide();
     line_description_label->hide();
     line_artist_label->hide();
@@ -629,7 +649,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
     
   case RDLogLine::TrafficLink:
     line_icon_label->setPixmap(*line_traffic_map);
-    //    setBackgroundColor(QColor(LOGLINEBOX_MARKER_COLOR));
+    SetPalette(line_marker_palette,logline->groupColor());
     line_title_label->hide();
     line_description_label->hide();
     line_artist_label->hide();
@@ -644,7 +664,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 
   case RDLogLine::Chain:
     line_icon_label->setPixmap(*line_chain_map);
-    //    setBackgroundColor(QColor(LOGLINEBOX_CHAIN_COLOR));
+    SetPalette(line_chain_palette,logline->groupColor());
     line_title_label->setText(logline->markerLabel());
     line_description_label->setText("");
     line_artist_label->setText(logline->markerComment());
@@ -665,10 +685,10 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
     cut=new RDCut(QString::asprintf("%06u_%03u",logline->cartNumber(),
 				    logline->cutNumber()));
     if(!cart->exists()) {
-      //      setBackgroundColor(QColor(LOGLINEBOX_MISSING_COLOR));
+      SetPalette(line_error_palette,logline->groupColor());
     }
     else {
-      //      setBackgroundColor(QColor(LOGLINEBOX_BACKGROUND_COLOR));
+      SetPalette(line_default_palette,logline->groupColor());
     }
     line_cart_label->setText(QString::asprintf("%06u",cart->number()));
     line_cut_label->setText("");
@@ -712,7 +732,7 @@ void LogLineBox::setTimer(int msecs)
 
 void LogLineBox::clear()
 {
-  //  setBackgroundColor(QColor(LOGLINEBOX_BACKGROUND_COLOR));
+  SetPalette(line_default_palette,Qt::black);
   line_cart_label->setText("");
   line_cut_label->setText("");
   line_group_label->setText("");
@@ -834,7 +854,12 @@ void LogLineBox::mouseDoubleClickEvent(QMouseEvent *e)
 
 void LogLineBox::resizeEvent(QResizeEvent *e)
 {
-  line_comment_label->setGeometry(5,18,size().width()-10,62);
+  if(line_mode==LogLineBox::Full) {
+    line_comment_label->setGeometry(5,18,size().width()-10,15);
+  }
+  else {
+    line_comment_label->setGeometry(5,18,size().width()-10,62);
+  }
 
   line_icon_label->setGeometry(5,3,16,16);
   line_cart_label->setGeometry(23,3,48,16);
@@ -845,9 +870,9 @@ void LogLineBox::resizeEvent(QResizeEvent *e)
   line_length_label->setGeometry(327,3,50,16);
   line_trans_label->setGeometry(379,3,48,16);
 
-  line_title_label->setGeometry(5,18,size().width()-10,18);
+  line_title_label->setGeometry(5,18,size().width()-10,16);
 
-  line_artist_label->setGeometry(5,33,size().width()-10,16);
+  line_artist_label->setGeometry(5,32,size().width()-10,15);
 
   line_outcue_label->setGeometry(5,
 				 48,
@@ -868,8 +893,9 @@ void LogLineBox::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
   p->fillRect(0,0,size().width()-2,size().height()-2,
-	      QGuiApplication::palette().color(QPalette::Background));
-  p->drawRect(0,0,size().width()-2,size().height()-2);
+	      palette().color(QPalette::Window));
+  p->setPen(palette().color(QPalette::Dark));
+  p->drawRect(0,0,size().width()-1,size().height()-1);
   p->end();
   delete p;
 }
@@ -892,6 +918,23 @@ void LogLineBox::dropEvent(QDropEvent *e)
   if(RDCartDrag::decode(e->mimeData(),&ll)) {
     emit cartDropped(log_line,&ll);
   }
+}
+
+
+void LogLineBox::SetPalette(const QPalette &pal,const QColor &grp_color)
+{
+  //  printf("%d:SetPalette(%s,%s)\n",log_line,
+  //	 pal.color(QPalette::WindowText).name().toUtf8().constData(),
+  //	 pal.color(QPalette::Window).name().toUtf8().constData());
+  setPalette(pal);
+  setStyleSheet("color:"+pal.color(QPalette::WindowText).name()+
+		";background-color:"+pal.color(QPalette::Window).name());
+  QPalette pal1=pal;
+  pal1.setColor(QPalette::WindowText,grp_color);
+  line_group_label->setPalette(pal1);
+  line_group_label->
+    setStyleSheet("color:"+pal1.color(QPalette::WindowText).name()+
+		  ";background-color:"+pal1.color(QPalette::Window).name());
 }
 
 

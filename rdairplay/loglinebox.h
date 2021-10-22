@@ -75,6 +75,7 @@ class LogLineBox : public RDWidget
   void dropEvent(QDropEvent *e);
 
  private:
+  void SetPalette(const QPalette &pal,const QColor &grp_color);
   void UpdateCountdown();
   void PrintTime();
   LogLineBox::Mode line_mode;
@@ -103,6 +104,11 @@ class LogLineBox : public RDWidget
   QFont line_font;
   QFont talk_font;
   QFont line_bold_font;
+  QPalette line_chain_palette;
+  QPalette line_default_palette;
+  QPalette line_error_palette;
+  QPalette line_evergreen_palette;
+  QPalette line_marker_palette;
   QPalette line_unchanged_stop_palette;
   QPalette line_unchanged_play_palette;
   QPalette line_changed_stop_palette;
