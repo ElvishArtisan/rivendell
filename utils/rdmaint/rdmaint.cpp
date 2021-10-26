@@ -156,8 +156,8 @@ void MainObject::PurgeCuts()
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString("select ")+
-      "`CART.NUMBER`,"+    // 00
-      "`CUTS.CUT_NAME` "+  // 01
+      "`CART`.`NUMBER`,"+    // 00
+      "`CUTS`.`CUT_NAME` "+  // 01
       "from `CUTS` left join `CART` "+
       "on `CUTS`.`CART_NUMBER`=`CART`.`NUMBER` where "+
       "(`CART`.`GROUP_NAME`='"+RDEscapeString(q->value(0).toString())+"')&&"+
@@ -177,8 +177,8 @@ void MainObject::PurgeCuts()
 		    (const char *)q1->value(1).toString().toUtf8());
       }
       if(q->value(2).toString()=="Y") {  // Delete Empty Cart
-	sql=QString("select CUT_NAME from CUTS where ")+
-	  QString::asprintf("CART_NUMBER=%u",q1->value(0).toUInt());
+	sql=QString("select `CUT_NAME` from `CUTS` where ")+
+	  QString::asprintf("`CART_NUMBER`=%u",q1->value(0).toUInt());
 	q2=new RDSqlQuery(sql);
 	if(!q2->first()) {
 	  cart->remove(rda->station(),rda->user(),rda->config());
