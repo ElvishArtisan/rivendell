@@ -126,13 +126,13 @@ int EditSchedCodeRules::exec(unsigned rule_id)
   edit_rule_id=rule_id;
 
   QString sql=QString("select ")+
-    "`RULE_LINES.CODE`,"+          // 00
-    "`SCHED_CODES.DESCRIPTION`,"+  // 01
-    "`RULE_LINES.MAX_ROW`,"+       // 01
-    "`RULE_LINES.MIN_WAIT`,"+      // 02
-    "`RULE_LINES.NOT_AFTER`,"+     // 03
-    "`RULE_LINES.OR_AFTER`,"+      // 04
-    "`RULE_LINES.OR_AFTER_II` "+   // 05
+    "`RULE_LINES`.`CODE`,"+          // 00
+    "`SCHED_CODES`.`DESCRIPTION`,"+  // 01
+    "`RULE_LINES`.`MAX_ROW`,"+       // 01
+    "`RULE_LINES`.`MIN_WAIT`,"+      // 02
+    "`RULE_LINES`.`NOT_AFTER`,"+     // 03
+    "`RULE_LINES`.`OR_AFTER`,"+      // 04
+    "`RULE_LINES`.`OR_AFTER_II` "+   // 05
     "from `RULE_LINES` left join `SCHED_CODES` "+
     "on `RULE_LINES`.`CODE`=`SCHED_CODES`.`CODE` "+
     QString::asprintf("where `RULE_LINES`.`ID`=%u",rule_id);
