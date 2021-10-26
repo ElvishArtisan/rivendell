@@ -63,6 +63,7 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QObject *parent)
   play_rescan_pos=0;
   play_refreshable=false;
   play_audition_preroll=rda->airplayConf()->auditionPreroll();
+  play_slot_quantity=1;
   for(int i=0;i<LOGPLAY_MAX_PLAYS;i++) {
     play_slot_id[i]=i;
   }
@@ -1403,6 +1404,18 @@ bool RDLogPlay::isRefreshable() const
 }
 
 
+void RDLogPlay::setSlotQuantity(int slot_quan)
+{
+  if(slot_quan!=play_slot_quantity) {
+    play_slot_quantity=slot_quan;
+    QVector<int> roles;
+    roles.push_back(Qt::BackgroundRole);
+    emit dataChanged(createIndex(play_next_line,0),
+		     createIndex(play_next_line+play_slot_quantity-1,columnCount()),roles);
+  }
+}
+
+
 void RDLogPlay::transTimerData()
 {
   int lines[TRANSPORT_QUANTITY];
@@ -1846,7 +1859,8 @@ QColor RDLogPlay::rowBackgroundColor(int row,RDLogLine *ll) const
 	return LOG_ERROR_COLOR;
       }
       else {
-	if((play_next_line>=0)&&(play_next_line==row)) {
+	if((play_next_line>=0)&&(play_slot_quantity>0)&&
+	   (row>=play_next_line)&&(row<(play_next_line+play_slot_quantity-1))) {
 	  if(ll->evergreen()) {
 	    return LOG_EVERGREEN_COLOR;
 	  }
@@ -2839,7 +2853,8 @@ void RDLogPlay::ChangeTransport()
   emit transportChanged();
   if(play_next_line>=0) {
     emit dataChanged(createIndex(play_next_line,0),
-		     createIndex(play_next_line+6,columnCount()));
+		     createIndex(play_next_line+play_slot_quantity-1,
+				 columnCount()));
   }
 }
 

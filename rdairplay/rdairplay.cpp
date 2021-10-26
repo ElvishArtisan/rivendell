@@ -698,6 +698,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 	  air_button_list->stopCounterWidget(),SLOT(tickCounter()));
   connect(air_log[0],SIGNAL(nextStopChanged(QTime)),
 	  air_button_list->stopCounterWidget(),SLOT(setTime(QTime)));
+  connect(air_button_list,SIGNAL(slotQuantityChanged(int)),
+	  air_log[0],SLOT(setSlotQuantity(int)));
 
   //
   // Set Startup Mode

@@ -32,6 +32,7 @@ ButtonLog::ButtonLog(RDLogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
   log_action_mode=RDAirPlayConf::Normal;
   log_op_mode=RDAirPlayConf::LiveAssist;
   log_pause_enabled=allow_pause;
+  log_slot_quantity=0;
 
   //
   // Set Mappings
@@ -277,6 +278,12 @@ void ButtonLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
 }
 
 
+int ButtonLog::slotQuantity() const
+{
+  return log_slot_quantity;
+}
+
+
 PieCounter *ButtonLog::pieCounterWidget() const
 {
   return log_pie_counter_widget;
@@ -499,6 +506,7 @@ void ButtonLog::resizeEvent(QResizeEvent *e)
 				     LOGLINEBOX_FULL_HEIGHT);
   }
 
+  int slot_quantity=BUTTON_PLAY_BUTTONS;
   QRect viewport=QRect(0,0,size().width(),size().height());
   for(int i=BUTTON_PLAY_BUTTONS;i<BUTTON_TOTAL_BUTTONS;i++) {
     log_line_box[i]->setGeometry(10+85,
@@ -515,6 +523,13 @@ void ButtonLog::resizeEvent(QResizeEvent *e)
       viewport.contains(log_start_button[i]->geometry());
     log_line_box[i]->setVisible(visible);
     log_start_button[i]->setVisible(visible);
+    if(visible) {
+      slot_quantity++;
+    }
+  }
+  if(slot_quantity!=log_slot_quantity) {
+    log_slot_quantity=slot_quantity;
+    emit slotQuantityChanged(log_slot_quantity);
   }
 }
 

@@ -110,6 +110,9 @@ class RDLogPlay : public RDLogModel
   void resync();
   bool isRefreshable() const;
 
+ public slots:
+  void setSlotQuantity(int slot_quan);
+
  private slots:
   void transTimerData();
   void graceTimerData();
@@ -253,6 +256,7 @@ class RDLogPlay : public RDLogModel
   RDEventPlayer *play_event_player;
   RDUnixSocket *play_pad_socket;
   bool play_hours[24];
+  int play_slot_quantity;
 };
 
 

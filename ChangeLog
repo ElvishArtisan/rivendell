@@ -22532,3 +22532,7 @@
 	platform styling hints.
 	* Modified the marker readouts in rdlibrary(1) so as to better respect
 	platform styling hints.
+2021-10-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused the 'shadow' of the
+	Button Log events to fail to be reflected in the 'Main Log' Full Log
+	widget.

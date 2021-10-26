@@ -48,6 +48,7 @@ class ButtonLog : public RDWidget
   void setOpMode(RDAirPlayConf::OpMode mode);
   RDAirPlayConf::ActionMode actionMode() const;
   void setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum=0);
+  int slotQuantity() const;
   PieCounter *pieCounterWidget() const;
   PostCounter *postCounterWidget() const;
   StopCounter *stopCounterWidget() const;
@@ -74,6 +75,7 @@ class ButtonLog : public RDWidget
  signals:
   void selectClicked(int id,int line,RDLogLine::Status);
   void cartDropped(int id,int line,RDLogLine *ll);
+  void slotQuantityChanged(int slots);
 
  private:
   void UpdateEvents();
@@ -85,6 +87,7 @@ class ButtonLog : public RDWidget
   RDAirPlayConf::ActionMode log_action_mode;
   LogLineBox *log_line_box[BUTTON_TOTAL_BUTTONS];
   StartButton *log_start_button[BUTTON_TOTAL_BUTTONS];
+  int log_slot_quantity;
   int log_line_counter;
   EditEvent *log_event_edit;
   bool log_pause_enabled;
