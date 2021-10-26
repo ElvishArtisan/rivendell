@@ -22542,3 +22542,6 @@
 2021-10-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlogmanager(1) that broke editing of
 	scheduler rules.
+2021-10-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that caused a clock to
+	be created without a scheduler rules context when using 'Save As'.

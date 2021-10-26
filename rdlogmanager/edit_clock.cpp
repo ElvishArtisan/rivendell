@@ -481,6 +481,8 @@ void EditClock::saveAsData()
   edit_clocks_model->setClockName(clockname);
 
   Save();
+  sched_rules_list->Save(clockname);
+  edit_clocks_model->setRulesModified(false);
   edit_new_clocks->push_back(clockname);
   CopyClockPerms(old_name,clockname);
   if(edit_new_clock) {
@@ -583,11 +585,10 @@ void EditClock::Save()
   edit_clocks_model->setShortName(edit_shortname_edit->text());
   edit_clocks_model->setRemarks(edit_remarks_edit->toPlainText());
   edit_clocks_model->save();
-  if(edit_clocks_model->getRulesModified())
-     {
-     sched_rules_list->Save(edit_clocks_model->clockName());
-     edit_clocks_model->setRulesModified(false);
-     }
+  if(edit_clocks_model->getRulesModified()) {
+    sched_rules_list->Save(edit_clocks_model->clockName());
+    edit_clocks_model->setRulesModified(false);
+  }
   edit_modified=false;
 }
 
