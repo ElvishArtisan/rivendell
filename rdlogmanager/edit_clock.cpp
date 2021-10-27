@@ -513,13 +513,15 @@ void EditClock::colorData()
 
 void EditClock::editEventData(int line)
 {
-  std::vector<QString> new_events;
+  QStringList new_events;
+  QStringList modified_events;
 
   RDEventLine *event=edit_clocks_model->eventLine(line);
   if(event==NULL) {
     return;
   }
-  EditEvent *dialog=new EditEvent(event->name(),false,&new_events,this);
+  EditEvent *dialog=
+    new EditEvent(event->name(),false,&new_events,&modified_events,this);
   if(dialog->exec()<-1) {
     delete dialog;
     return;

@@ -22550,3 +22550,8 @@
 	has a <n> transition.' dropdown in the 'Editing Event' dialog to
 	always display 'PLAY', even when opening events with 'SEGUE' set
 	for that parameter.
+2021-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) in the 'Log Events' dialog
+	that caused a 'phantom' additional entry in the event list to
+	be created when overwriting an existing event during a 'Save As'
+	operation.

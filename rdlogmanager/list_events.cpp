@@ -179,10 +179,11 @@ void ListEvents::addData()
   RDEvent *event;
   RDSqlQuery *q;
   RDSqlQuery *q1;
-  std::vector<QString> new_events;
+  QStringList new_events;
+  QStringList modified_events;
 
   AddEvent *add_dialog=new AddEvent(&logname,this);
-  if(add_dialog->exec()<0) {
+  if(!add_dialog->exec()) {
     delete add_dialog;
     return;
   }
@@ -202,7 +203,8 @@ void ListEvents::addData()
   delete q;
   event=new RDEvent(logname,true);
   delete event;
-  EditEvent *event_dialog=new EditEvent(logname,true,&new_events,this);
+  EditEvent *event_dialog=
+    new EditEvent(logname,true,&new_events,&modified_events,this);
   if(event_dialog->exec()<-1) {
     sql=QString("delete from `EVENTS` where ")+
       "`NAME`='"+RDEscapeString(logname)+"'";
@@ -241,7 +243,10 @@ void ListEvents::addData()
     }      
   }
   delete event_dialog;
-  for(unsigned i=0;i<new_events.size();i++) {
+  for(int i=0;i<modified_events.size();i++) {
+    edit_events_model->refresh(modified_events.at(i));
+  }
+  for(int i=0;i<new_events.size();i++) {
     QModelIndex row=edit_events_model->addEvent(new_events.at(i));
     if(row.isValid()) {
       edit_events_view->selectRow(row.row());
@@ -252,19 +257,23 @@ void ListEvents::addData()
 
 void ListEvents::editData()
 {
-  std::vector<QString> new_events;
+  QStringList new_events;
+  QStringList modified_events;
   QModelIndexList rows=edit_events_view->selectionModel()->selectedRows();
 
   if(rows.size()!=1) {
     return;
   }
   EditEvent *event_dialog=
-    new EditEvent(edit_events_model->eventName(rows.first()),false,&new_events,
-		  this);
+    new EditEvent(edit_events_model->eventName(rows.first()),false,
+		  &new_events,&modified_events,this);
   if(event_dialog->exec()>=-1) {
     edit_events_model->refresh(rows.first());
   }
-  for(unsigned i=0;i<new_events.size();i++) {
+  for(int i=0;i<modified_events.size();i++) {
+    edit_events_model->refresh(modified_events.at(i));
+  }
+  for(int i=0;i<new_events.size();i++) {
     edit_events_model->addEvent(new_events.at(i));
   }
   delete event_dialog;

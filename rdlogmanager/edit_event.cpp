@@ -31,14 +31,15 @@
 #include "edit_event.h"
 #include "edit_perms.h"
 
-EditEvent::EditEvent(QString eventname,bool new_event,
-		     std::vector<QString> *new_events,QWidget *parent)
+EditEvent::EditEvent(QString eventname,bool new_event,QStringList *new_events,
+		     QStringList *modified_events,QWidget *parent)
   : RDDialog(parent)
 {
   event_saved=false;
   event_name=eventname;
   event_new_event=new_event;
   event_new_events=new_events;
+  event_modified_events=modified_events;
   event_event=new RDEvent(eventname);
 
   setWindowTitle("RDLogManager - "+tr("Editing Event")+" - "+
@@ -1144,7 +1145,7 @@ void EditEvent::saveAsData()
 
   old_name=event_name;
   AddEvent *add_dialog=new AddEvent(&event_name,this);
-  if(add_dialog->exec()<0) {
+  if(!add_dialog->exec()) {
     delete add_dialog;
     return;
   }
@@ -1165,8 +1166,9 @@ void EditEvent::saveAsData()
 		   event_event->name());
   }
   else {
-    if(QMessageBox::question(this,tr("RDLogManager"),
-		   tr("Event already exists!\nDo you want to overwrite it?"),
+    if(QMessageBox::question(this,"RDLogManager - "+tr("Event Exists"),
+			     tr("An event with that name already exists!")+
+			     "\n"+tr("Do you want to overwrite it?"),
 		   QMessageBox::Yes,QMessageBox::No)!=
        QMessageBox::Yes) {
       return;
@@ -1174,7 +1176,7 @@ void EditEvent::saveAsData()
     delete event_event;
     event_event=new RDEvent(event_name,true);
     Save();
-    event_new_events->push_back(event_name);
+    event_modified_events->push_back(event_name);
     sql=QString("delete from `EVENT_PERMS` where ")+
       "`EVENT_NAME`='"+RDEscapeString(event_name)+"'";
     q=new RDSqlQuery(sql);

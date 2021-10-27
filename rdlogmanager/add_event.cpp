@@ -23,10 +23,10 @@
 #include "add_event.h"
 #include "edit_event.h"
 
-AddEvent::AddEvent(QString *logname,QWidget *parent)
+AddEvent::AddEvent(QString *evt_name,QWidget *parent)
   : RDDialog(parent)
 {
-  event_name=logname;
+  event_name=evt_name;
 
   setWindowTitle("RDLogManager - "+tr("Add Log Event"));
 
@@ -142,13 +142,13 @@ void AddEvent::nameChangedData(const QString &str)
 void AddEvent::okData()
 {
   *event_name=event_name_edit->text();
-  done(0);
+  done(true);
 }
 
 
 void AddEvent::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

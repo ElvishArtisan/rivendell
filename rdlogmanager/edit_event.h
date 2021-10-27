@@ -21,7 +21,6 @@
 #ifndef EDIT_EVENT_H
 #define EDIT_EVENT_H
 
-
 #include <QButtonGroup>
 #include <QCheckBox>
 #include <QDateTimeEdit>
@@ -29,6 +28,7 @@
 #include <QLineEdit>
 #include <QRadioButton>
 #include <QSpinBox>
+#include <QStringList>
 #include <QTextEdit>
 
 #include <rdcombobox.h>
@@ -52,8 +52,8 @@ class EditEvent : public RDDialog
 {
  Q_OBJECT
  public:
-  EditEvent(QString eventname,bool new_event,std::vector<QString> *new_events,
-	    QWidget *parent=0);
+  EditEvent(QString eventname,bool new_event,QStringList *new_events,
+	    QStringList *modified_events,QWidget *parent=0);
   ~EditEvent();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -169,7 +169,8 @@ class EditEvent : public RDDialog
   QColor event_color;
   bool event_saved;
   bool event_new_event;
-  std::vector<QString> *event_new_events;
+  QStringList *event_new_events;
+  QStringList *event_modified_events;
   RDSimplePlayer *event_player;
   QTextEdit *event_remarks_edit;
   RDEmptyCart *event_empty_cart;

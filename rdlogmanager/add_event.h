@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,7 +31,7 @@ class AddEvent : public RDDialog
 {
   Q_OBJECT
  public:
-  AddEvent(QString *logname,QWidget *parent=0);
+  AddEvent(QString *evt_name,QWidget *parent=0);
   ~AddEvent();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
