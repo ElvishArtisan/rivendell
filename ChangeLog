@@ -22555,3 +22555,6 @@
 	that caused a 'phantom' additional entry in the event list to
 	be created when overwriting an existing event during a 'Save As'
 	operation.
+2021-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'Add Clock' dialog in rdlogmanager(1) to allow
+	specification of the clock code as well as name.

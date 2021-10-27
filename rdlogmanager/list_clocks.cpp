@@ -188,31 +188,22 @@ QSizePolicy ListClocks::sizePolicy() const
 
 void ListClocks::addData()
 {
-  QString clockname;  
+  QString clockname;
+  QString code;
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
-  std::vector<QString> new_clocks;
+  QStringList new_clocks;
 
-  AddClock *add_dialog=new AddClock(&clockname,this);
-  if(add_dialog->exec()<0) {
+  AddClock *add_dialog=new AddClock(this);
+  if(!add_dialog->exec(&clockname,&code)) {
     delete add_dialog;
     return;
   }
   delete add_dialog;
-  sql=QString("select `NAME` from `CLOCKS` where ")+
-    "NAME='"+RDEscapeString(clockname)+"'";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    QMessageBox::
-      information(this,tr("Clock Exists"),
-		  tr("An clock with that name already exists!"));
-    delete q;
-    return;
-  }
-  delete q;
   sql=QString("insert into `CLOCKS` set ")+
     "`NAME`='"+RDEscapeString(clockname)+"',"+
+    "`SHORT_NAME`='"+RDEscapeString(code)+"',"+
     "`ARTISTSEP`=15";
   RDSqlQuery::apply(sql);
 
@@ -285,7 +276,7 @@ void ListClocks::addData()
 
 void ListClocks::editData()
 {
-  std::vector<QString> new_clocks;
+  QStringList new_clocks;
   QModelIndexList rows=edit_clocks_view->selectionModel()->selectedRows();
 
   if(rows.size()!=1) {
@@ -300,7 +291,7 @@ void ListClocks::editData()
   }
   delete clock_dialog;
   edit_clocks_model->refresh(rows.first());
-  for(unsigned i=0;i<new_clocks.size();i++) {
+  for(int i=0;i<new_clocks.size();i++) {
     edit_clocks_model->addClock(new_clocks.at(i));
   }
 }

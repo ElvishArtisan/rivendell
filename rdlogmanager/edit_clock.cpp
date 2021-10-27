@@ -35,7 +35,7 @@
 #include "list_clocks.h"
 
 EditClock::EditClock(QString clockname,bool new_clock,
-		     std::vector<QString> *new_clocks,QWidget *parent)
+		     QStringList *new_clocks,QWidget *parent)
   : RDDialog(parent)
 {
   QString str;
@@ -423,8 +423,7 @@ void EditClock::saveData()
 void EditClock::saveAsData()
 {
   QString clockname=edit_name;
-  QString sql;
-  RDSqlQuery *q;
+  QString code=edit_shortname_edit->text();
 
   if(!ValidateCode()) {
     return;
@@ -443,41 +442,15 @@ void EditClock::saveAsData()
 	  break;
     }
   }
-  if(edit_shortname_edit->text().isEmpty()) {
-    QMessageBox::warning(this,tr("Missing Clock Code"),
-			 tr("You must specify a clock code!"));
-    return;
-  }
-  sql=
-    QString("select `SHORT_NAME` from `CLOCKS` where ")+
-    "`SHORT_NAME`='"+RDEscapeString(edit_shortname_edit->text())+"'";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    QMessageBox::warning(this,tr("Code Exists"),
-			 tr("The clock code is already in use!"));
-    delete q;
-    return;
-  }
-  delete q;
 
-  AddClock *addclock=new AddClock(&clockname,this);
-  if(addclock->exec()<0) {
+  AddClock *addclock=new AddClock(this);
+  if(!addclock->exec(&clockname,&code)) {
     delete addclock;
     return;
   }
   delete addclock;
   edit_name=clockname;
-  sql=QString("select `NAME` from `CLOCKS` where ")+
-    "`NAME`='"+RDEscapeString(clockname)+"'";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    if(QMessageBox::question(this,tr("Clock Exists"),
-			     tr("Clock already exists!  Overwrite?"),QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
-      delete q;
-      return;
-    }
-  }
-  delete q;
+  edit_shortname_edit->setText(code);
   edit_clocks_model->setClockName(clockname);
 
   Save();

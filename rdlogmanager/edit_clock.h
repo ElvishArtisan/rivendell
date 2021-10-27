@@ -21,6 +21,7 @@
 #ifndef EDIT_CLOCK_H
 #define EDIT_CLOCK_H
 
+#include <QStringList>
 #include <QTextEdit>
 
 #include <rdclockmodel.h>
@@ -40,7 +41,7 @@ class EditClock : public RDDialog
 {
  Q_OBJECT
  public:
- EditClock(QString clockname,bool new_clock,std::vector<QString> *new_clocks,
+ EditClock(QString clockname,bool new_clock,QStringList *new_clocks,
 	    QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -88,7 +89,7 @@ class EditClock : public RDDialog
   bool edit_modified;
   QString edit_name;
   bool edit_new_clock;
-  std::vector<QString> *edit_new_clocks;
+  QStringList *edit_new_clocks;
   RDSchedRulesList* sched_rules_list;
   QTextEdit *edit_remarks_edit;
 };

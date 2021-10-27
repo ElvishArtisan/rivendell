@@ -213,7 +213,7 @@ void EditGrid::aboutToShowData()
 
 void EditGrid::editClockData()
 {
-  std::vector<QString> new_clocks;
+  QStringList new_clocks;
 
   int dayofweek=edit_rightclick_id/24+1;
   int hour=edit_rightclick_id-24*(dayofweek-1);

@@ -21,7 +21,9 @@
 #ifndef ADD_CLOCK_H
 #define ADD_CLOCK_H
 
+#include <QLabel>
 #include <QLineEdit>
+#include <QPushButton>
 
 #include <rdclock.h>
 #include <rddialog.h>
@@ -30,23 +32,34 @@ class AddClock : public RDDialog
 {
   Q_OBJECT
  public:
-  AddClock(QString *logname,QWidget *parent=0);
+  AddClock(QWidget *parent=0);
   ~AddClock();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
+ public slots:
+  int exec(QString *clk_name,QString *clk_code);
+
  private slots:
+  void clockNameChangedData(const QString &str);
+  void textChangedData(const QString &str);
   void okData();
   void cancelData();
 
  protected:
   void closeEvent(QCloseEvent *e);
+  void resizeEvent(QResizeEvent *e);
 
  private:
+  QLabel *clock_name_label;
   QLineEdit *clock_name_edit;
+  QLabel *clock_code_label;
+  QLineEdit *clock_code_edit;
   QString *clock_name;
+  QString *clock_code;
+  QPushButton *clock_ok_button;
+  QPushButton *clock_cancel_button;
 };
 
 
-#endif
-
+#endif  // ADD_CLOCK_H
