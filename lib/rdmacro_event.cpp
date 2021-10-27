@@ -112,15 +112,16 @@ bool RDMacroEvent::load(const QString &str)
 {
   RDMacro cmd;
   QString rmlstr="";
-
+  bool onlynull = true;
   for(int i=0;i<str.length();i++) {
     QChar c=str.at(i);
     rmlstr+=c;
     if(c=='!') {
       cmd=RDMacro::fromString(rmlstr,RDMacro::Cmd);
       if(cmd.isNull()) {
-	clear();
-	return false;
+        continue;
+      } else {
+        onlynull = false;
       }
       cmd.setAddress(event_address);
       cmd.setEchoRequested(false);
@@ -128,7 +129,12 @@ bool RDMacroEvent::load(const QString &str)
       rmlstr="";
     }
   }
-  return true;
+  if (onlynull) {
+    clear();
+    return false;
+  } else {
+    return true;
+  }
 }
 
 
