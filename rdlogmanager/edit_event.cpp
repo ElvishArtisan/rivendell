@@ -795,9 +795,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_source_group->button(event_event->importSource())->setChecked(true);
   event_startslop_edit->setTime(QTime(0,0,0).addMSecs(event_event->startSlop()));
   event_endslop_edit->setTime(QTime(0,0,0).addMSecs(event_event->endSlop()));
-  if(event_position_box->isChecked()||event_timetype_check->isChecked()) {
-    event_firsttrans_box->setCurrentIndex(event_event->firstTransType());
-  }
+  event_firsttrans_box->setCurrentIndex(event_event->firstTransType());
   event_defaulttrans_box->setCurrentIndex(event_event->defaultTransType());
   if(!event_event->schedGroup().isEmpty()) {
     event_sched_group_box->setCurrentText(event_event->schedGroup());

@@ -22545,3 +22545,8 @@
 2021-10-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlogmanager(1) that caused a clock to
 	be created without a scheduler rules context when using 'Save As'.
+2021-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that caused the 'First cart
+	has a <n> transition.' dropdown in the 'Editing Event' dialog to
+	always display 'PLAY', even when opening events with 'SEGUE' set
+	for that parameter.
