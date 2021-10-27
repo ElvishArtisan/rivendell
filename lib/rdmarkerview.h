@@ -171,6 +171,7 @@ class RDMarkerView : public RDWidget
   unsigned d_channels;
   int d_audio_length;
   int d_mouse_pos;
+  int d_msec_pos;
   int d_right_margin;
   QStringList d_pointer_fields;
   RDWaveFactory *d_wave_factory;

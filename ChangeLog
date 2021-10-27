@@ -22558,3 +22558,7 @@
 2021-10-27 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'Add Clock' dialog in rdlogmanager(1) to allow
 	specification of the clock code as well as name.
+2021-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Edit Audio' dialog in rdlibrary(1) that
+	would set the initial position of a newly-added marker off-screen
+	when the waveform view port was scrolled to the right.

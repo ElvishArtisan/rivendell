@@ -812,8 +812,8 @@ void RDMarkerView::updateMenuData()
 {
   bool can_add=
     (d_deleting_roles.size()==0)&&
-    (Msec(d_mouse_pos)>=d_pointers[RDMarkerHandle::CutStart])&&
-    (Msec(d_mouse_pos)<d_pointers[RDMarkerHandle::CutEnd]);
+    (d_msec_pos>=d_pointers[RDMarkerHandle::CutStart])&&
+    (d_msec_pos<d_pointers[RDMarkerHandle::CutEnd]);
   bool can_delete=
     d_marker_menu_used&&
     (!d_deleting_roles.contains(RDMarkerHandle::CutStart))&&
@@ -839,8 +839,8 @@ void RDMarkerView::updateMenuData()
 
 void RDMarkerView::addTalkData()
 {
-  d_pointers[RDMarkerHandle::TalkStart]=Msec(d_mouse_pos);
-  d_pointers[RDMarkerHandle::TalkEnd]=Msec(d_mouse_pos);
+  d_pointers[RDMarkerHandle::TalkStart]=d_msec_pos;
+  d_pointers[RDMarkerHandle::TalkEnd]=d_msec_pos;
 
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::TalkStart,60);
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::TalkEnd,60);
@@ -857,8 +857,8 @@ void RDMarkerView::addTalkData()
 
 void RDMarkerView::addSegueData()
 {
-  d_pointers[RDMarkerHandle::SegueStart]=Msec(d_mouse_pos);
-  d_pointers[RDMarkerHandle::SegueEnd]=Msec(d_mouse_pos);
+  d_pointers[RDMarkerHandle::SegueStart]=d_msec_pos;;
+  d_pointers[RDMarkerHandle::SegueEnd]=d_msec_pos;
 
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::SegueStart,40);
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::SegueEnd,40);
@@ -875,8 +875,8 @@ void RDMarkerView::addSegueData()
 
 void RDMarkerView::addHookData()
 {
-  d_pointers[RDMarkerHandle::HookStart]=Msec(d_mouse_pos);
-  d_pointers[RDMarkerHandle::HookEnd]=Msec(d_mouse_pos);
+  d_pointers[RDMarkerHandle::HookStart]=d_msec_pos;
+  d_pointers[RDMarkerHandle::HookEnd]=d_msec_pos;
 
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::HookStart,100);
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::HookEnd,100);
@@ -893,7 +893,7 @@ void RDMarkerView::addHookData()
 
 void RDMarkerView::addFadeupData()
 {
-  d_pointers[RDMarkerHandle::FadeUp]=Msec(d_mouse_pos);
+  d_pointers[RDMarkerHandle::FadeUp]=d_msec_pos;
 
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::FadeUp,80);
   InterlockFadeMarkerPair();
@@ -907,7 +907,7 @@ void RDMarkerView::addFadeupData()
 
 void RDMarkerView::addFadedownData()
 {
-  d_pointers[RDMarkerHandle::FadeDown]=Msec(d_mouse_pos);
+  d_pointers[RDMarkerHandle::FadeDown]=d_msec_pos;
 
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::FadeDown,80);
   InterlockFadeMarkerPair();
@@ -1081,9 +1081,11 @@ void RDMarkerView::resizeEvent(QResizeEvent *e)
 void RDMarkerView::mousePressEvent(QMouseEvent *e)
 {
   int origin=0;
-  int msec=0;
 
-  if((e->x()<=LEFT_MARGIN)||(e->x()>d_right_margin)) {
+  if(d_view->horizontalScrollBar()!=NULL) {
+    origin=d_view->horizontalScrollBar()->value();
+  }
+  if((e->x()<=LEFT_MARGIN)||((e->x()+origin)>d_right_margin)) {
     QWidget::mousePressEvent(e);
     return;
   }
@@ -1093,15 +1095,12 @@ void RDMarkerView::mousePressEvent(QMouseEvent *e)
     d_marker_menu_used=false;
     return;
   }
-
+  d_msec_pos=(int64_t)(d_mouse_pos+origin)*(int64_t)d_shrink_factor*1152000/
+    (int64_t)d_sample_rate;
+  
   switch(e->button()) {
   case Qt::LeftButton:
-    if(d_view->horizontalScrollBar()!=NULL) {
-      origin=d_view->horizontalScrollBar()->value();
-    }
-    msec=(int64_t)(d_mouse_pos+origin)*(int64_t)d_shrink_factor*1152000/
-      (int64_t)d_sample_rate;
-    emit positionClicked(msec);
+    emit positionClicked(d_msec_pos);
     break;
 
   case Qt::MidButton:
