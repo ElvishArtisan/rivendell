@@ -392,102 +392,7 @@
 	follow, but these are less important for understanding the
 	operation of RDCatch.
       </para>
-
-      <sect3 xml:id="sect.rdcatch.the_event_list.daylight_saving_time_considerations">
-	<title>Daylight Saving Time Considerations</title>
-	<para>
-	  Many governmental jurisdictions have promulgated regulations
-	  dictating that local clocks be adjusted at certain times of
-	  the year --e.g. during summertime or certain religious events.
-	  Commonly known as &quot;Daylight Saving Time&quot;,
-	  &quot;Summer Time&quot; or &quot;Ramadan Time&quot;,
-	  special care must be taken
-	  when configuring events that occur near or during a transition
-	  from &quot;standard&quot; time to &quot;daylight saving time&quot;
-	  and vice-versa. There are two basic types of such transitions; a
-	  &quot;spring forward&quot; transition, during which the local clock
-	  is advanced some period of time (typically an hour) and a
-	  &quot;fall back&quot; transition, during which the local clock is
-	  set back some period of time (again, typically an hour).
-	</para>
-	<sect4 xml:id="sect.rdcatch.the_event_list.daylight_saving_time_considerations.spring_forward_transitions">
-	  <title>Spring Forward Transitions</title>
-	  <para>
-	    When &quot;springing forward&quot;, the local clock will simply
-	    skip past certain time values. For example, imagine that we have
-	    a transition where, at 02:00:00 exactly (2:00:00 AM), the clock
-	    will be advanced 1 hour. A digital clock counting through this
-	    transition would show values like:
-	  </para>
-	  <literallayout>
-   [...]
-   01:59:57
-   01:59:58
-   01:59:59
-   03:00:00
-   03:00:01
-   03:00:02
-   [...]
-	  </literallayout>
-	  <para>
-	    In this example, the entire 2 AM hour simply
-	    <emphasis>doesn't exist</emphasis>. Hence, any RDCatch events
-	    that reference such events will <emphasis>not</emphasis> be
-	    executed.
-	  </para>
-	  <warning>
-	    This applies not only to configured &lt;start-time&gt; values,
-	    but also to &lt;end-time&gt; ones as well.
-	    If <emphasis>any</emphasis>
-	    configured times in an event fall into a &quot;skipped&quot;
-	    time period, then the entire event will be skipped.
-	  </warning>
-	</sect4>
-	<sect4 xml:id="sect.rdcatch.the_event_list.daylight_saving_time_considerations.fall_back_transitions">
-	  <title>Fall Back Transitions</title>
-	  <para>
-	    &quot;Fall-back&quot; transitions have the exact opposite behavior.
-	    Specifically, the time period over which the transition occurs
-	    is <emphasis>duplicated</emphasis>. For example, imagine
-	    that we have a transition where, at 02:00:00 exactly (2:00:00 AM),
-	    the clock will be set back 1 hour. A digital clock counting
-	    through this transition would show values like:
-	  </para>
-	  <literallayout>
-   [...]
-   01:59:57
-   01:59:58
-   01:59:59
-   01:00:00
-   01:00:01
-   01:00:02
-   [...]
-	  </literallayout>
-	  <para>
-	    The end of the <emphasis>second</emphasis> 1 AM hour then proceeds
-	    normally:
-	  </para>
-	  <literallayout>
-   [...]
-   01:59:57
-   01:59:58
-   01:59:59
-   02:00:00
-   02:00:01
-   02:00:02
-   [...]
-	  </literallayout>
-	  <para>
-	    When dealing with a transition of this sort, RDCatch will treat
-	    times that occur within the transition as belonging to the
-	    <emphasis>first pass</emphasis>; with the all times in the
-	    <emphasis>second pass</emphasis> being ignored.
-	  </para>
-	</sect4>
-
-      </sect3>
     </sect2>
-      
 
     <sect2 xml:id="sect.rdcatch_the_button_area">
       <title>The Button Area</title>
@@ -512,6 +417,105 @@
       </para>
     </sect2>
   </sect1>
+
+  <sect1 xml:id="sect.rdcatch.daylight_saving_time_considerations">
+    <title>Daylight Saving Time Considerations</title>
+    <para>
+      Many governmental jurisdictions have promulgated regulations
+      dictating that local clocks be adjusted at certain times of
+      the year –e.g. during summertime or certain religious events.
+      Commonly known as &quot;Daylight Saving Time&quot;,
+      &quot;Summer Time&quot; or &quot;Ramadan Time&quot;,
+      special care must be taken
+      when configuring events that occur near or during a transition
+      from &quot;standard&quot; time to &quot;daylight saving time&quot;
+      and vice-versa. There are two basic types of such transitions; a
+      &quot;spring forward&quot; transition, during which the local clock
+      is advanced some period of time (typically an hour) and a
+      &quot;fall back&quot; transition, during which the local clock is
+      set back some period of time (again, typically an hour).
+    </para>
+    <sect2 xml:id="sect.rdcatch.daylight_saving_time_considerations.spring_forward_transitions">
+      <title>Spring Forward Transitions</title>
+      <para>
+	When &quot;springing forward&quot;, the local clock will simply
+	skip past certain time values. For example, imagine that we have
+	a transition where, at 02:00:00 exactly (2:00:00 AM), the clock
+	will be advanced 1 hour. A digital clock counting through this
+	transition would show values like:
+      </para>
+      <literallayout>
+   [...]
+   01:59:57
+   01:59:58
+   01:59:59
+   03:00:00
+   03:00:01
+   03:00:02
+   [...]
+      </literallayout>
+      <para>
+	In this example, the entire 2 AM hour simply
+	<emphasis>doesn't exist</emphasis>. Hence, any RDCatch events
+	that reference such events will <emphasis>not</emphasis> be
+	executed.
+      </para>
+      <warning>
+	This applies not only to configured &lt;start-time&gt; values,
+	but also to &lt;end-time&gt; ones as well.
+	If <emphasis>any</emphasis>
+	configured times in an event fall into a &quot;skipped&quot;
+	time period, then the entire event will be skipped.
+      </warning>
+    </sect2>
+    <sect2 xml:id="sect.rdcatch.daylight_saving_time_considerations.fall_back_transitions">
+      <title>Fall Back Transitions</title>
+      <para>
+	&quot;Fall-back&quot; transitions have the exact opposite behavior.
+	Specifically, the time period over which the transition occurs
+	is <emphasis>duplicated</emphasis>. For example, imagine
+	that we have a transition where, at 02:00:00 exactly (2:00:00 AM),
+	the clock will be set back 1 hour. A digital clock counting
+	through this transition would show values like:
+      </para>
+      <literallayout>
+   [...]
+   01:59:57
+   01:59:58
+   01:59:59
+   01:00:00
+   01:00:01
+   01:00:02
+   [...]
+      </literallayout>
+      <para>
+	The end of the <emphasis>second</emphasis> 1 AM hour then proceeds
+	normally:
+      </para>
+      <literallayout>
+   [...]
+   01:59:57
+   01:59:58
+   01:59:59
+   02:00:00
+   02:00:01
+   02:00:02
+   [...]
+      </literallayout>
+      <para>
+	When dealing with a transition of this sort, RDCatch will treat
+	times that occur within the transition as belonging to the
+	<emphasis>first pass</emphasis>; with the all times in the
+	<emphasis>second pass</emphasis> being ignored.
+      </para>
+    </sect2>
+  </sect1>
+
+
+
+
+
+
   <sect1 xml:id="sect.rdcatch.adding_new_events">
     <title>Adding New Events</title>
     <para>

@@ -22568,3 +22568,6 @@
 2021-10-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Daylight Saving Time Considerations' section to the
 	'Automating Tasks with RDCatch' chapter of the Operations Guide.
+2021-10-28 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the 'Daylight Saving Time Considerations' section in the
+	Operations Guide to after the 'The RDCatch Main Window' section.
