@@ -22566,5 +22566,5 @@
 	* Refactored the 'RDTimeEngine::StartEvent()' method to account for
 	Daylight Saving Time transitions properly.
 2021-10-28 Fred Gleason <fredg@paravelsystems.com>
-	* Added a 'Daylight Saving Time' section to the 'Automating Tasks
-	with RDCatch' chapter of the Operations Guide.
+	* Added a 'Daylight Saving Time Considerations' section to the
+	'Automating Tasks with RDCatch' chapter of the Operations Guide.
