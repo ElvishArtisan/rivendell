@@ -84,12 +84,67 @@ void RDTimeEngine::timerData(int id)
 
 void RDTimeEngine::StartEvent(int id)
 {
-  QTime now=QTime::currentTime();
-  int interval=now.msecsTo(d_times.value(id));
+  //
+  // Maintainer's Note
+  //
+  // In order to account for Daylight Saving Time (DST) transitions properly,
+  // calculations for the timer interval *must* be done using QDateTime,
+  // *not* QTime!
+  //
+  // See the Qt documentation for the QDateTime and QTimeZone classes for
+  // discussion of DST and its implications.
+  //
+  QDateTime now=QDateTime::currentDateTime();
+  QDateTime then=QDateTime(now.date(),d_times.value(id));
 
-  if(interval<0) {  // Crosses midnight
-    interval=
-      now.msecsTo(QTime(23,59,59))+1000+QTime(0,0,0).msecsTo(d_times.value(id));
+  if((now.time()>d_times.value(id))||(!then.isValid())) {
+    //
+    // Ensure that the advanced date/time is valid, in case we land on a
+    // "non-existent" date/time --e.g. during a DST "spring forward"
+    // transition.
+    //
+    do {
+      then.setDate(then.date().addDays(1));
+    }
+    while(!then.isValid());
   }
+  int interval=now.msecsTo(then);
   d_timers.value(id)->start(1+interval);
+  /*
+  printf("ID %d set interval %d mS [%s] for scheduled time %s\n",id,interval,
+	 QTime(0,0,0).addMSecs(interval).toString("hh:mm:ss.zzz").toUtf8().constData(),
+	 d_times.value(id).toString("hh:mm:ss.zzz").toUtf8().constData());
+  */
+}
+
+
+void RDTimeEngine::DumpTimeZone(const QTimeZone &tz) const
+{
+  QTimeZone::OffsetData offset;
+
+  printf("id: %s\n",tz.id().constData());
+  printf("isValid: %u\n",tz.isValid());
+  printf("hasTransitions: %u\n",tz.hasTransitions());
+  if(tz.hasTransitions()) {
+    offset=tz.nextTransition(QDateTime::currentDateTime());
+    if(offset.atUtc.isValid()) {
+      printf("  next ");
+      DumpTransition(offset);
+    }
+    offset=tz.previousTransition(QDateTime::currentDateTime());
+    if(offset.atUtc.isValid()) {
+      printf("  previous ");
+      DumpTransition(offset);
+    }
+  }
+}
+
+
+void RDTimeEngine::DumpTransition(QTimeZone::OffsetData offset) const
+{
+  printf("transition: %s UTC\n",offset.atUtc.toString("yyyy-MM-ddThh:mm:ss.zzz").toUtf8().constData());
+  printf("    offsetFromUtc: %d secs\n",offset.offsetFromUtc);
+  printf("    standardTimeOffset: %d secs\n",offset.standardTimeOffset);
+  printf("    daylightTimeOffset: %d secs\n",offset.daylightTimeOffset);
+  printf("    abbreviation: %s\n",offset.abbreviation.toUtf8().constData());
 }

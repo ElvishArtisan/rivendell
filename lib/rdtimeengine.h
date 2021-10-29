@@ -1,6 +1,6 @@
 //   rdtimeengine.h
 //
-//   An event timer engine.
+//   Event timer engine.
 //
 //   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -26,6 +26,7 @@
 #include <QObject>
 #include <QSignalMapper>
 #include <QTimer>
+#include <QTimeZone>
 
 class RDTimeEngine : public QObject
 {
@@ -46,6 +47,8 @@ class RDTimeEngine : public QObject
 
  private:
   void StartEvent(int id);
+  void DumpTimeZone(const QTimeZone &tz) const;
+  void DumpTransition(QTimeZone::OffsetData offset) const;
   QMap<int,QTime> d_times;
   QMap<int,QTimer *> d_timers;
   QSignalMapper *d_mapper;

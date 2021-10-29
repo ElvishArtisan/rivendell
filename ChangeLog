@@ -22562,3 +22562,6 @@
 	* Fixed a bug in the 'Edit Audio' dialog in rdlibrary(1) that
 	would set the initial position of a newly-added marker off-screen
 	when the waveform view port was scrolled to the right.
+2021-10-28 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'RDTimeEngine::StartEvent()' method to account for
+	Daylight Saving Time transitions properly.
