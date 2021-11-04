@@ -610,6 +610,9 @@ AC_CONFIG_FILES([rivendell.spec \
     apis/rivwebcapi/rivwebcapi.pc \
     apis/rivwebcapi/rivwebcapi/Makefile \
     apis/rivwebcapi/tests/Makefile \
+    apis/rivwebpyapi/Makefile \
+    apis/rivwebpyapi/api/Makefile \
+    apis/rivwebpyapi/tests/Makefile \
     lib/rdpaths.h \
     lib/Makefile \
     rdhpi/Makefile \

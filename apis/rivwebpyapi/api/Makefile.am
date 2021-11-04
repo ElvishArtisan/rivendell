@@ -1,8 +1,8 @@
 ## Makefile.am
 ##
-## Makefile.am for rivendell/apis
+## Automake.am for Python binding for the Rivendell Web API
 ##
-##   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as
@@ -20,9 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-SUBDIRS = pypad\
-          rivwebcapi\
-          rivwebpyapi
+rivendelldir = $(pyexecdir)
+rivendell_PYTHON = rivwebpyapi.py
 
 CLEANFILES = *~\
              *.idb\
