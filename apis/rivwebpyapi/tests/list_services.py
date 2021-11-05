@@ -52,10 +52,10 @@ if((not url)or(not username)):
 
 webapi=rivwebpyapi.RivWebPyApi(url=url,username=username,passwd=password)
 services=webapi.ListServices(False)
-for svc in services.serviceList.service:
-    print('NAME: '+svc.name.cdata)
-    if(svc.description.cdata):
-        print('DESCRIPTION: '+svc.description.cdata)
+for svc in services['serviceList']['service']:
+    print('NAME: '+svc['name'])
+    if(svc['description']):
+        print('DESCRIPTION: '+svc['description'])
     else:
         print('DESCRIPTION: [none]')
     print('')

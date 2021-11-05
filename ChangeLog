@@ -22573,3 +22573,8 @@
 	Operations Guide to after the 'The RDCatch Main Window' section.
 2021-11-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'rivwebpyapi' API.
+2021-11-05 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'untangle' Python module dependency from the
+	'rivwebpyapi' API.
+	* Added a 'xmltodict' Python module dependency to the 'rivwebpyapi'
+	API.

@@ -19,7 +19,7 @@
 #
 
 import requests
-import untangle
+import xmltodict
 
 class RivWebPyApi(object):
     """
@@ -66,4 +66,4 @@ class RivWebPyApi(object):
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             r.raise_for_status()
-        return untangle.parse(r.text)
+        return xmltodict.parse(r.text)
