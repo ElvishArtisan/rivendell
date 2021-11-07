@@ -26,14 +26,14 @@ import getpass
 import rivwebpyapi
 import sys
 
-url='';
-username=''
-password=''
-
 #
 # Get login parameters
 #
-usage='login_test --url=<rd-url> --username=<rd-username>'
+usage='list_services --url=<rd-url> --username=<rd-username> [--trackable]'
+url='';
+username=''
+password=''
+trackable=False
 for arg in sys.argv:
     f0=arg.split('=')
     if(len(f0)==2):
@@ -43,19 +43,24 @@ for arg in sys.argv:
             username=f0[1]
         if(f0[0]=='--password'):
             password=f0[1]
+        if(f0[0]=='--trackable'):
+            trackable=True
 if(not password):
     password=getpass.getpass()
 if((not url)or(not username)):
     print(usage)
     sys.exit(1)
 
+#
+# Get the services list
+#
+webapi=rivwebpyapi.RivWebPyApi(url=url,username=username,password=password)
+services=webapi.ListServices(trackable=trackable)
 
-webapi=rivwebpyapi.RivWebPyApi(url=url,username=username,passwd=password)
-services=webapi.ListServices(False)
-for svc in services['serviceList']['service']:
-    print('NAME: '+svc['name'])
-    if(svc['description']):
-        print('DESCRIPTION: '+svc['description'])
-    else:
-        print('DESCRIPTION: [none]')
+#
+# Display the services list
+#
+for svc in services:
+    print('name: '+svc['name'])
+    print('description: '+svc['description'])
     print('')

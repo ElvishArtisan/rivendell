@@ -20,7 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-EXTRA_DIST = list_services.py
+EXTRA_DIST = list_logs.py\
+             list_services.py
 
 CLEANFILES = *~\
              *.idb\

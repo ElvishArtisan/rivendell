@@ -22578,3 +22578,6 @@
 	'rivwebpyapi' API.
 	* Added a 'xmltodict' Python module dependency to the 'rivwebpyapi'
 	API.
+2021-11-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'xmltodict' Python module dependency to the 'rivwebpyapi'
+	API.
