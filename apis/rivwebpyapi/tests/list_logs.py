@@ -38,9 +38,14 @@ recent=False
 #
 # Get login parameters
 #
-usage='list_logs --url=<rd-url> --username=<rd-username> [--password=<passwd>]'
+usage='list_logs --url=<rd-url> --username=<rd-username> [--password=<passwd>] [--recent] [--trackable] [--service-name=<name>] [--log-name=<name>] [--filter-string=<str>]'
 for arg in sys.argv:
     f0=arg.split('=')
+    if(len(f0)==1):
+        if(f0[0]=='--recent'):
+            recent=True
+        if(f0[0]=='--trackable'):
+            trackable=True
     if(len(f0)==2):
         if(f0[0]=='--url'):
             url=f0[1]
@@ -52,12 +57,8 @@ for arg in sys.argv:
             service_name=f0[1]
         if(f0[0]=='--log-name'):
             log_name=f0[1]
-        if(f0[0]=='--trackable'):
-            trackable=True
         if(f0[0]=='--filter-string'):
             filter_string=f0[1]
-        if(f0[0]=='--recent'):
-            recent=True
 if(not password):
     password=getpass.getpass()
 if((not url)or(not username)):
@@ -67,7 +68,7 @@ if((not url)or(not username)):
 #
 # Get the log list
 #
-webapi=rivwebpyapi.RivWebPyApi(url=url,username=username,password=password)
+webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
 logs=webapi.ListLogs(service_name=service_name,log_name=log_name,
                      trackable=trackable,filter_string=filter_string,
                      recent=recent)

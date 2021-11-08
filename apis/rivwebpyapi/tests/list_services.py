@@ -36,6 +36,9 @@ password=''
 trackable=False
 for arg in sys.argv:
     f0=arg.split('=')
+    if(len(f0)==1):
+        if(f0[0]=='--trackable'):
+            trackable=True
     if(len(f0)==2):
         if(f0[0]=='--url'):
             url=f0[1]
@@ -43,8 +46,6 @@ for arg in sys.argv:
             username=f0[1]
         if(f0[0]=='--password'):
             password=f0[1]
-        if(f0[0]=='--trackable'):
-            trackable=True
 if(not password):
     password=getpass.getpass()
 if((not url)or(not username)):
@@ -54,7 +55,7 @@ if((not url)or(not username)):
 #
 # Get the services list
 #
-webapi=rivwebpyapi.RivWebPyApi(url=url,username=username,password=password)
+webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
 services=webapi.ListServices(trackable=trackable)
 
 #

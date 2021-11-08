@@ -1,6 +1,6 @@
-# pypad.py
+# rivwebpyapi.py
 #
-# Python binding for the Rivendell Web API
+# Python3 binding for the Rivendell Web API
 #
 #   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -98,7 +98,7 @@ class RivWebPyApi_ListHandler(ContentHandler):
                              month=int(f0[1]),
                              day=int(f0[2]));
 
-class RivWebPyApi(object):
+class rivwebpyapi(object):
     """
        Create a 'RivWebPyApi' object for accessing the Web API.
     """
@@ -201,7 +201,7 @@ class RivWebPyApi(object):
 
     def ListServices(self,trackable):
         """
-          Returns a list of Rivendell services (Element).
+          Returns a list of Rivendell services (dictionary).
 
           Takes one argument:
 
