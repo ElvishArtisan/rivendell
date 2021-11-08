@@ -71,7 +71,7 @@ maintainer-clean-local:
 deb:	dist
 	./build_debs.sh
 
-rpm:	dist
+base-rpm:	dist
 	mkdir -p $(HOME)/rpmbuild/SOURCES
 	cp rivendell-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
 	$(RPMBUILD) -ba --target $(ARCH)-$(VENDOR)-linux rivendell.spec
@@ -79,6 +79,28 @@ rpm:	dist
 	mv $(HOME)/rpmbuild/RPMS/noarch/rivendell-*.rpm $(top_srcdir)/
 	mv $(HOME)/rpmbuild/SRPMS/rivendell-*.src.rpm $(top_srcdir)/
 	rm $(HOME)/rpmbuild/SOURCES/rivendell-$(VERSION).tar.gz
+
+py-rpm:	dist
+	mkdir -p $(HOME)/rpmbuild/SOURCES
+	cp rivendell-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
+	$(RPMBUILD) -ba --target noarch-$(VENDOR)-linux rivwebpyapi.spec
+	mv $(HOME)/rpmbuild/RPMS/noarch/python36-rivwebpyapi-*.rpm $(top_srcdir)/
+	mv $(HOME)/rpmbuild/SRPMS/python36-rivwebpyapi-*.rpm $(top_srcdir)/
+	rm $(HOME)/rpmbuild/SOURCES/rivendell-$(VERSION).tar.gz
+
+rpm:	py-rpm base-rpm
+
+#rpm:	dist
+#	mkdir -p $(HOME)/rpmbuild/SOURCES
+#	cp rivendell-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
+#	$(RPMBUILD) -ba --target $(ARCH)-$(VENDOR)-linux rivendell.spec
+#	$(RPMBUILD) -ba --target noarch-$(VENDOR)-linux rivwebpyapi.spec
+#	mv $(HOME)/rpmbuild/RPMS/$(ARCH)/rivendell-*.rpm $(top_srcdir)/
+#	mv $(HOME)/rpmbuild/RPMS/noarch/rivendell-*.rpm $(top_srcdir)/
+#	mv $(HOME)/rpmbuild/SRPMS/rivendell-*.src.rpm $(top_srcdir)/
+#	mv $(HOME)/rpmbuild/RPMS/noarch/python36-rivwebpyapi-*.rpm $(top_srcdir)/
+#	mv $(HOME)/rpmbuild/SRPMS/python36-rivwebpyapi-*.rpm $(top_srcdir)/
+#	rm $(HOME)/rpmbuild/SOURCES/rivendell-$(VERSION).tar.gz
 
 zip:	dist
 	tar -zxf rivendell-@VERSION@.tar.gz
@@ -94,6 +116,7 @@ EXTRA_DIST = autogen.sh\
              rivendell.ism\
              rivendell.pro\
              rivendell.spec.in\
+             rivwebpyapi.spec.in\
              UPGRADING
 
 CLEANFILES = *~\
@@ -110,11 +133,11 @@ CLEANFILES = *~\
              *.zip\
              py-compile
 
-DISTCLEANFILES = config.guess\
+DISTCLEANFILES = *.spec\
+                 config.guess\
                  config.sub\
                  ltmain.sh\
-                 rivendell\
-                 rivendell.spec
+                 rivendell
 
 MAINTAINERCLEANFILES = *~\
                        *.tar.gz\

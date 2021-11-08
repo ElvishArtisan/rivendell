@@ -19,6 +19,7 @@
 *.rlm
 *.rpm
 *.so
+*.spec
 *.xsl
 *.tar.gz
 *.tar.xz
@@ -116,7 +117,6 @@ rdvairplayd/rdvairplayd
 ripcd/ripcd
 rivendell
 rivendell-suse
-rivendell.spec
 slack-desc
 systemd/rivendell.service
 tests/audio_convert_test

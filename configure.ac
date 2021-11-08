@@ -593,6 +593,7 @@ ln -s ../../icons/redx.png docs/opsguide/redx.png
 
 
 AC_CONFIG_FILES([rivendell.spec \
+    rivwebpyapi.spec \
     debian/Makefile \
     debian/source/Makefile \
     Makefile \

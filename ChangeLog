@@ -22583,3 +22583,7 @@
 	API.
 2021-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the name of the 'RivWebPyApi' to 'rivwebpyapi'.
+2021-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'python36-rivwebpyapi' package to the 'make rpm' target.
+	* Split the 'make rpm' target into 'make base-rpm' and
+	'make py-rpm' sub-targets.

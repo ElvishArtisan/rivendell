@@ -1,0 +1,45 @@
+%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+
+# Turn off brp-python-bytecompile automagic
+# See  https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation
+%global _python_bytecompile_extra 0
+
+Name:           python36-rivwebpyapi
+Version:        @VERSION@
+Release:        1%{?dist}
+Summary:        Python 3.6 interface for accessing the Rivendell Web API
+Group:          Development/Languages
+License:        LGPLv2
+URL:            https://github.com/ElvishArtisan/rivendell
+Source:         rivendell-%{version}.tar.gz
+
+BuildRequires:  python36-devel
+
+%description
+This is a Python 3 language binding for the Rivendell Web API.
+
+%prep
+
+
+%setup -q -n rivendell-%{version}
+
+
+%build
+export PYTHON=/usr/bin/python3.6
+%configure --libexecdir=@libexecdir@ --sysconfdir=@sysconfdir@ @RDXPORTDEBUG@
+
+%install
+make -C apis/rivwebpyapi install DESTDIR=$RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/%{name}-%{version}/examples
+cp apis/rivwebpyapi/tests/*.py $RPM_BUILD_ROOT/%{_datadir}/doc/%{name}-%{version}/examples/
+
+
+%files
+/usr/lib64/python3.6/site-packages/rivwebpyapi.py
+/usr/lib64/python3.6/site-packages/__pycache__/*
+%{_datadir}/doc/%{name}-%{version}
+
+
+%changelog
+* Mon Nov  8 2021 Fred Gleason <fredg@paravelsystems.com>
+- Initial RPM package
