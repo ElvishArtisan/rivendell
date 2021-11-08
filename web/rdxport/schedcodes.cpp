@@ -40,13 +40,13 @@ void Xport::ListSchedCodes()
   //
   // Process Request
   //
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<schedCodeList>\n");
   while(q->next()) {
     schedcode=new RDSchedCode(q->value(0).toString());
-    printf("%s",(const char *)schedcode->xml().toUtf8());
+    printf("%s",schedcode->xml().toUtf8().constData());
     delete schedcode;
   }
   printf("</schedCodeList>\n");
@@ -170,13 +170,13 @@ void Xport::ListCartSchedCodes()
   //
   // Process Request
   //
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<schedCodeList>\n");
   for(int i=0;i<codes.size();i++) {
     schedcode=new RDSchedCode(codes[i]);
-    printf("%s",(const char *)schedcode->xml().toUtf8());
+    printf("%s",schedcode->xml().toUtf8().constData());
     delete schedcode;
   }
   printf("</schedCodeList>\n");

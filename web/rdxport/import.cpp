@@ -260,7 +260,7 @@ void Xport::Import()
     if(!title.isEmpty()) {
       cart->setTitle(title);
     }
-    printf("Content-type: application/xml\n");
+    printf("Content-type: application/xml; charset=utf-8\n");
     printf("Status: %d\n",resp_code);
     printf("\n");
     printf("<RDWebResult>\r\n");

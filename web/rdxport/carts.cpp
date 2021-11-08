@@ -102,7 +102,7 @@ void Xport::AddCart()
     delete cart;
     XmlExit("Unable to create cart ["+err_msg+"]",500,"carts.cpp",LINE_NUMBER);
   }
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartAdd>\n");
@@ -170,7 +170,7 @@ void Xport::ListCarts()
   //
   // Process Request
   //
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
@@ -208,7 +208,7 @@ void Xport::ListCart()
   //
   // Process Request
   //
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
@@ -395,7 +395,7 @@ void Xport::EditCart()
     cart->updateLength();
   }
 
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
@@ -486,7 +486,7 @@ void Xport::AddCut()
     delete cart;
     XmlExit("No new cuts available",500,"carts.cpp",LINE_NUMBER);
   }
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutAdd>\n");
@@ -531,7 +531,7 @@ void Xport::ListCuts()
   sql=RDCart::xmlSql(true)+
     QString::asprintf(" where `CART`.`NUMBER`=%u",cart_number);
   q=new RDSqlQuery(sql);
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
@@ -576,7 +576,7 @@ void Xport::ListCut()
     delete cut;
     XmlExit("No such cut",404,"carts.cpp",LINE_NUMBER);
   }
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
@@ -856,7 +856,7 @@ void Xport::EditCut()
     delete cart;
   }
 
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");

@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- TrimAudio service
 //
-//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -76,7 +76,7 @@ void Xport::TrimAudio()
   //
   // Send Data
   //
-  printf("Content-type: application/xml\n\n");
+  printf("Content-type: application/xml; charset=utf-8\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<trimPoint>\n");
   printf("  <cartNumber>%u</cartNumber>\n",cartnum);

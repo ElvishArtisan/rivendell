@@ -42,7 +42,7 @@ void Xport::AudioStore()
   if(statvfs(rda->config()->audioRoot().toUtf8(),&stat)<0) {
     XmlExit("Internal Error",400,"audiostore.cpp",LINE_NUMBER);
   }
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<audioStore>\n");

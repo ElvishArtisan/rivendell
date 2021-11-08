@@ -408,12 +408,12 @@ void Xport::TryCreateTicket(const QString &name)
       QDateTime expire_datetime;
       if(rda->user()->createTicket(&ticket,&expire_datetime,
 				   xport_post->clientAddress(),now)) {
-	printf("Content-type: application/xml\n\n");
+	printf("Content-type: application/xml; charset=utf-8\n\n");
 	printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
 	printf("<ticketInfo>\n");
 	printf("  %s\n",RDXmlField("ticket",ticket).toUtf8().constData());
 	printf("  %s\n",
-	       (const char *)RDXmlField("expires",expire_datetime).toUtf8());
+	       RDXmlField("expires",expire_datetime).toUtf8().constData());
 	printf("</ticketInfo>\n");
 	exit(0);
       }

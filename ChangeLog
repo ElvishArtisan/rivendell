@@ -22590,3 +22590,6 @@
 2021-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'python36-requests' dependency to the
 	'python36-rivwebpyapi' RPM package.
+2021-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the rdxport.cgi service that caused XML output
+	to be encoded with the incorrect character set.

@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Group services
 //
-//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -52,7 +52,7 @@ void Xport::ListGroups()
   //
   // Process Request
   //
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<groupList>\n");
@@ -98,7 +98,7 @@ void Xport::ListGroup()
   //
   // Process Request
   //
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   group=new RDGroup(q->value(0).toString());

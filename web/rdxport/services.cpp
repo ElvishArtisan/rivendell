@@ -72,13 +72,13 @@ void Xport::ListServices()
   //
   // Process Request
   //
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<serviceList>\n");
   while(q->next()) {
     svc=new RDSvc(q->value(0).toString(),rda->station(),rda->config());
-    printf("%s",(const char *)svc->xml().toUtf8());
+    printf("%s",svc->xml().toUtf8().constData());
     delete svc;
   }
   printf("</serviceList>\n");

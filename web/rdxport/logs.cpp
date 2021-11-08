@@ -186,7 +186,7 @@ void Xport::ListLogs()
   //
   // Process Request
   //
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<logList>\n");
@@ -230,10 +230,10 @@ void Xport::ListLog()
   //
   // Process Request
   //
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("%s\n",(const char *)log_model->xml().toUtf8());
+  printf("%s\n",log_model->xml().toUtf8().constData());
 
   Exit(0);
 }
@@ -594,7 +594,7 @@ void Xport::LockLog()
     XmlExit("No such log",404,"logs.cpp",LINE_NUMBER);
   }
 
-  printf("Content-type: application/xml\n");
+  printf("Content-type: application/xml; charset=utf-8\n");
   printf("Status: 200\n\n");
   switch(op_type) {
   case Xport::LockLogCreate:
@@ -603,24 +603,27 @@ void Xport::LockLog()
     addr=xport_remote_address;
     lock_guid=RDLogLock::makeGuid(xport_remote_hostname);
     if(RDLogLock::tryLock(&username,&stationname,&addr,log_name,lock_guid)) {
-      printf("%s",(const char *)LogLockXml(true,log_name,lock_guid,"","",addr).toUtf8());
+      printf("%s",LogLockXml(true,log_name,lock_guid,"","",addr).toUtf8().
+	     constData());
     }
     else {
-      printf("%s",(const char *)LogLockXml(false,log_name,"",username,
-					   stationname,addr).toUtf8());
+      printf("%s",LogLockXml(false,log_name,"",username,
+			     stationname,addr).toUtf8().constData());
     }
     Exit(0);
     break;
 
   case Xport::LockLogUpdate:
     RDLogLock::updateLock(log_name,lock_guid);
-    printf("%s",(const char *)LogLockXml(true,log_name,lock_guid,"","",addr).toUtf8());
+    printf("%s",LogLockXml(true,log_name,lock_guid,"","",addr).toUtf8().
+	   constData());
     Exit(0);
     break;
 
   case Xport::LockLogClear:
     RDLogLock::clearLock(lock_guid);
-    printf("%s",(const char *)LogLockXml(true,log_name,lock_guid,"","",addr).toUtf8());
+    printf("%s",LogLockXml(true,log_name,lock_guid,"","",addr).toUtf8().
+	   constData());
     Exit(0);
     break;
   }

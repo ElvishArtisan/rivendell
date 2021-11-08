@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- ListSystemSettings service
 //
-//   (C) Copyright 2011,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2011-2021 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,8 +38,8 @@ void Xport::ListSystemSettings()
   //
   // Send Data
   //
-  printf("Content-type: application/xml\n\n");
+  printf("Content-type: application/xml; charset=utf-8\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("%s\n",(const char *)sys->xml().toUtf8());
+  printf("%s\n",sys->xml().toUtf8().constData());
   Exit(0);
 }
