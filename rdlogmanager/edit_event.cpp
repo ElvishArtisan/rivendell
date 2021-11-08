@@ -1059,7 +1059,6 @@ void EditEvent::importClickedData(int id)
     statesched=false;
   }
   if(id==3) {
-    state=false;
     statesched=false;
     stateschedinv=true;
   }
