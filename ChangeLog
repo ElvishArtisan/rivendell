@@ -22587,3 +22587,6 @@
 	* Added a 'python36-rivwebpyapi' package to the 'make rpm' target.
 	* Split the 'make rpm' target into 'make base-rpm' and
 	'make py-rpm' sub-targets.
+2021-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'python36-requests' dependency to the
+	'python36-rivwebpyapi' RPM package.

@@ -12,7 +12,7 @@ Group:          Development/Languages
 License:        LGPLv2
 URL:            https://github.com/ElvishArtisan/rivendell
 Source:         rivendell-%{version}.tar.gz
-
+Requires:       python36-requests
 BuildRequires:  python36-devel
 
 %description
