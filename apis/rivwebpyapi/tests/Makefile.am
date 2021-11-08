@@ -20,7 +20,9 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-EXTRA_DIST = list_logs.py\
+EXTRA_DIST = list_group.py\
+             list_groups.py\
+             list_logs.py\
              list_services.py
 
 CLEANFILES = *~\

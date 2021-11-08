@@ -121,6 +121,96 @@ class rivwebpyapi(object):
         self.__connection_username=username
         self.__connection_password=password
 
+    def ListGroup(self,group_name):
+        """
+          Returns a list of Rivendell groups (dictionary).
+
+          Takes the following argument:
+
+          group_name - Return the attributes of the specified group name.
+                       (string)
+        """
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '5',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'GROUP_NAME': group_name
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'name': 'string',
+            'description': 'string',
+            'defaultCartType': 'string',
+            'defaultLowCart': 'integer',
+            'defaultHighCart': 'integer',
+            'cutShelfLife': 'integer',
+            'defaultTitle': 'string',
+            'enforceCartRange': 'boolean',
+            'reportTfc': 'boolean',
+            'reportMus': 'boolean',
+            'color': 'string'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='group',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()
+
+    def ListGroups(self):
+        """
+          Returns a list of Rivendell groups (dictionary).
+        """
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '4',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'name': 'string',
+            'description': 'string',
+            'defaultCartType': 'string',
+            'defaultLowCart': 'integer',
+            'defaultHighCart': 'integer',
+            'cutShelfLife': 'integer',
+            'defaultTitle': 'string',
+            'enforceCartRange': 'boolean',
+            'reportTfc': 'boolean',
+            'reportMus': 'boolean',
+            'color': 'string'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='group',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()
+
     def ListLogs(self,service_name='',log_name='',trackable=False,
                  filter_string='',recent=False):
         """

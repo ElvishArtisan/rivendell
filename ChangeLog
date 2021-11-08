@@ -22593,3 +22593,6 @@
 2021-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the rdxport.cgi service that caused XML output
 	to be encoded with the incorrect character set.
+2021-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'ListGroup()' method to the 'rivwebpyapi' API.
+	* Added a 'ListGroups()' method to the 'rivwebpyapi' API.
