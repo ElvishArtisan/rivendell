@@ -22,6 +22,7 @@
 
 EXTRA_DIST = list_group.py\
              list_groups.py\
+             list_log.py\
              list_logs.py\
              list_services.py
 

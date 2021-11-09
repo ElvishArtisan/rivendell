@@ -27,7 +27,7 @@ import xml.sax
 class RivWebPyApi_ListHandler(ContentHandler):
     def __init__(self,base_tag,fields):
         self.__output=[]
-        self.__svc={}
+        self.__record={}
         self.__base_tag=base_tag
         self.__fields=fields;
         self.__field=''
@@ -37,32 +37,53 @@ class RivWebPyApi_ListHandler(ContentHandler):
             for f in self.__fields.keys():
                 d[f]=d[f].strip()
                 if(self.__fields[f]=='boolean'):
-                    d[f]=d[f]!='0'
+                    d[f]=self.__fromBoolean(d[f])
                 elif(self.__fields[f]=='datetime'):
-                    d[f]=self.__parseDatetime(d[f])
+                    d[f]=self.__fromDatetime(d[f])
                 elif(self.__fields[f]=='date'):
-                    d[f]=self.__parseDate(d[f])
+                    d[f]=self.__fromDate(d[f])
                 elif(self.__fields[f]=='integer'):
-                    d[f]=int(d[f])
+                    d[f]=self.__fromInteger(d[f])
+                elif(self.__fields[f]=='time'):
+                    d[f]=self.__fromTime(d[f])
         return self.__output
 
     def startElement(self,tag,attrs):
         if(tag==self.__base_tag):  # Create new (empty) record
-            self.__svc={}
+            self.__record={}
             for f in self.__fields.keys():
-                self.__svc[f]=''
+                self.__record[f]=''
         self.__field=tag
 
     def endElement(self,tag):
         if(tag==self.__base_tag):  # Add completed record to output
-            self.__output.append(self.__svc)
+            self.__output.append(self.__record)
             self.__field=''
 
     def characters(self,content):
         if(self.__field in self.__fields.keys()):  # Add content to field
-            self.__svc[self.__field]=self.__svc[self.__field]+content
+            self.__record[self.__field]=self.__record[self.__field]+content
 
-    def __parseDatetime(self,str):
+    def __fromBoolean(self,str):
+        if(not str):
+            return None
+        if((str=='1')or(str.lower()=='true')):
+            return True
+        if((str=='0')or(str.lower()=='false')):
+            return False
+        raise ValueError('invalid boolean value')
+
+    def __fromDate(self,str):
+        if(not str):
+            return None
+        f0=str.split('-')
+        if(len(f0)!=3):
+            raise(ValueError('invalid date string'))
+        return datetime.date(year=int(f0[0]),
+                             month=int(f0[1]),
+                             day=int(f0[2]));
+
+    def __fromDatetime(self,str):
         if(not str):
             return None
         f0=str.split('T')
@@ -88,15 +109,66 @@ class RivWebPyApi_ListHandler(ContentHandler):
                                  second=int(time_parts[2]),
                                  tzinfo=datetime.timezone(offset));
 
-    def __parseDate(self,str):
+    def __fromInteger(self,str):
         if(not str):
             return None
-        f0=str.split('-')
-        if(len(f0)!=3):
-            raise(ValueError('invalid date string'))
-        return datetime.date(year=int(f0[0]),
-                             month=int(f0[1]),
-                             day=int(f0[2]));
+        return int(str)
+
+    def __fromTime(self,str):
+        if(not str):
+            return None
+
+        #
+        # Split time from timezone fields
+        #
+        timestr=''
+        zonestr=''
+        if('+' in str):
+            f0=str.split('+')
+            timestr=f0[0]
+            zonestr=f0[1]
+        elif('-' in str):
+            f0=str.split('-')
+            timestr=f0[0]
+            zonestr=f0[1]
+        else:
+            timestr=str
+
+        #
+        # Calculate time part
+        #
+        time_parts=timestr.split(':')
+        if(len(time_parts)!=3):
+            raise ValueError('invalid time string')
+        msecs=0
+        if('.' in time_parts[2]):
+            f0=time_parts[2].split('.')
+            msecs=int(f0[1])
+            time_parts[2]=f0[0]
+
+        #
+        # Calculate timezone offset
+        #
+        offset_minutes=0
+        if(zonestr):
+            offset_minutes=60*int(zonestr[0:2])+int(timestr[3:5])
+
+        #
+        # Put it all together
+        #
+        if(zonestr):
+            offset=timedelta(minutes=offset_minutes)
+            if('-' in str):
+                offset=-offset
+            return datetime.time(hour=int(time_parts[0]),
+                                 minute=int(time_parts[1]),
+                                 second=int(time_parts[2]),
+                                 microsecond=1000*msecs,
+                                 tzinfo=datetime.timezone(offset))
+        return datetime.time(hour=int(time_parts[0]),
+                             minute=int(time_parts[1]),
+                             second=int(time_parts[2]),
+                             microsecond=1000*msecs)
 
 class rivwebpyapi(object):
     """
@@ -207,6 +279,109 @@ class rivwebpyapi(object):
             'color': 'string'
         }
         handler=RivWebPyApi_ListHandler(base_tag='group',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()
+
+    def ListLog(self,log_name):
+        """
+          Returns a list of Rivendell logs (dictionary).
+
+          Takes the following argument:
+
+          log_name - Return the specified log. (string)
+        """
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '22',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'NAME': log_name
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'line': 'integer',
+            'id': 'integer',
+            'type': 'string',
+            'cartType': 'string',
+            'cartNumber': 'integer',
+            'cutNumber': 'integer',
+            'groupName': 'string',
+            'groupColor': 'string',
+            'title': 'string',
+            'artist': 'string',
+            'publisher': 'string',
+            'composer': 'string',
+            'album': 'string',
+            'label': 'string',
+            'year': 'integer',
+            'client': 'string',
+            'agency': 'string',
+            'conductor': 'string',
+            'userDefined': 'string',
+            'usageCode': 'integer',
+            'enforceLength': 'boolean',
+            'forcedLength': 'string',
+            'evergreen': 'boolean',
+            'source': 'string',
+            'timeType': 'string',
+            'startTime': 'time',
+            'transitionType': 'string',
+            'cutQuantity': 'integer',
+            'lastCutPlayed': 'integer',
+            'markerComment': 'string',
+            'markerLabel': 'string',
+            'description': 'string',
+            'isrc': 'string',
+            'isci': 'string',
+            'recordingMbId': 'string',
+            'releaseMbId': 'string',
+            'originUser': 'string',
+            'originDateTime': 'datetime',
+            #'startPoint': 'integer',
+            #'endPoint': 'integer',
+            #'segueStartPoint': 'integer',
+            #'segueEndPoint': 'integer',
+            'segueGain': 'integer',
+            #'fadeupPoint': 'integer',
+            'fadeupGain': 'integer',
+            #'fadedownPoint': 'integer',
+            'fadedownGain': 'integer',
+            'duckUpGain': 'integer',
+            'duckDownGain': 'integer',
+            'talkStartPoint': 'integer',
+            'talkEndPoint': 'integer',
+            'hookMode': 'boolean',
+            'hookStartPoint': 'integer',
+            'hookEndPoint': 'integer',
+            'eventLength': 'integer',
+            'linkEventName': 'string',
+            'linkStartTime': 'time',
+            'linkStartSlop': 'integer',
+            'linkEndSlop': 'integer',
+            'linkId': 'integer',
+            'linkEmbedded': 'boolean',
+            'extStartTime': 'time',
+            'extLength': 'integer',
+            'extCartName': 'string',
+            'extData': 'string',
+            'extEventId': 'integer',
+            'extAnncType': 'string'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='logLine',fields=fields)
         xml.sax.parseString(r.text,handler)
 
         return handler.output()

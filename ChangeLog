@@ -22596,3 +22596,5 @@
 2021-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'ListGroup()' method to the 'rivwebpyapi' API.
 	* Added a 'ListGroups()' method to the 'rivwebpyapi' API.
+2021-11-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'ListLog()' method to the 'rivwebpyapi'.
