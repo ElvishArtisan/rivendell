@@ -22604,3 +22604,6 @@
 	'segueEndPointCart', 'segueEndPointCart', 'fadeupPointCart',
 	'fadeupPointLog', 'fadedownPointCart' and 'fadedownPointLog'
 	fields to the return of the 'rivwebpyapi.ListLog()' call.
+2021-11-10 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'all' to the set of available cart types in
+	'web/tests/listcarts.html'.
