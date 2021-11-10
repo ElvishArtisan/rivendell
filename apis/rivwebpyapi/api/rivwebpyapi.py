@@ -53,6 +53,8 @@ class RivWebPyApi_ListHandler(ContentHandler):
             self.__record={}
             for f in self.__fields.keys():
                 self.__record[f]=''
+        if('src' in attrs.keys()):
+            tag=tag+attrs['src'].capitalize()
         self.__field=tag
 
     def endElement(self,tag):
@@ -351,14 +353,20 @@ class rivwebpyapi(object):
             'releaseMbId': 'string',
             'originUser': 'string',
             'originDateTime': 'datetime',
-            #'startPoint': 'integer',
-            #'endPoint': 'integer',
-            #'segueStartPoint': 'integer',
-            #'segueEndPoint': 'integer',
+            'startPointCart': 'integer',
+            'startPointLog': 'integer',
+            'endPointCart': 'integer',
+            'endPointLog': 'integer',
+            'segueStartPointCart': 'integer',
+            'segueStartPointLog': 'integer',
+            'segueEndPointCart': 'integer',
+            'segueEndPointLog': 'integer',
             'segueGain': 'integer',
-            #'fadeupPoint': 'integer',
+            'fadeupPointCart': 'integer',
+            'fadeupPointLog': 'integer',
             'fadeupGain': 'integer',
-            #'fadedownPoint': 'integer',
+            'fadedownPointCart': 'integer',
+            'fadedownPointLog': 'integer',
             'fadedownGain': 'integer',
             'duckUpGain': 'integer',
             'duckDownGain': 'integer',

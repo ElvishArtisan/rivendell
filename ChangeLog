@@ -22598,3 +22598,9 @@
 	* Added a 'ListGroups()' method to the 'rivwebpyapi' API.
 2021-11-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'ListLog()' method to the 'rivwebpyapi'.
+2021-11-10 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'startPointCart', 'startPointLog', 'endPointCart',
+	'endPointCart', 'segueStartPointCart', 'segueStartPointLog',
+	'segueEndPointCart', 'segueEndPointCart', 'fadeupPointCart',
+	'fadeupPointLog', 'fadedownPointCart' and 'fadedownPointLog'
+	fields to the return of the 'rivwebpyapi.ListLog()' call.
