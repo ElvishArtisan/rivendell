@@ -22607,3 +22607,5 @@
 2021-11-10 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'all' to the set of available cart types in
 	'web/tests/listcarts.html'.
+2021-11-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'ListCarts()' method to the 'rivwebpyapi' API.

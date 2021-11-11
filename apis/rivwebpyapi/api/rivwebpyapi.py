@@ -18,6 +18,8 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
+import sys
+
 import datetime
 from datetime import timedelta
 import requests
@@ -194,6 +196,91 @@ class rivwebpyapi(object):
         self.__connection_url=url
         self.__connection_username=username
         self.__connection_password=password
+
+    def ListCarts(self,group_name='',filter_string='',cart_type='all',
+                  include_cuts=False):
+        """
+          Returns a list of Rivendell carts (dictionary)
+
+          Takes the following arguments:
+
+          group_name - Filter returns to only include carts belonging to
+                       the specified group. Default is to not filter by
+                       group. (string)
+
+          filter_string - Filter returns to only include carts matching the
+                          filter string. Default is not to filter by phrase.
+                          (string)
+
+          cart_type - Filter returns to only include carts matching the
+                      specified type. Recognized values are 'all', 'audio'
+                      or 'macro'. Default is 'all'. (string)
+
+          include_cuts - Include cut information in the return. Default is
+                         False. (boolean)
+        """
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '6',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'GROUP_NAME': str(group_name),
+            'FILTER': filter_string,
+            'TYPE': cart_type.lower(),
+            'INCLUDE_CUTS': '0'
+        }
+        if(include_cuts):
+            postdata['INCLUDE_CUTS']='1'
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'number': 'integer',
+            'type': 'string',
+            'groupName': 'string',
+            'title': 'string',
+            'artist': 'string',
+            'album': 'string',
+            'year': 'integer',
+            'label': 'string',
+            'client': 'string',
+            'agency': 'string',
+            'publisher': 'string',
+            'composer': 'string',
+            'conductor': 'string',
+            'userDefined': 'string',
+            'usageCode': 'integer',
+            'forcedLength': 'string',
+            'averageLength': 'string',
+            'lengthDeviation': 'string',
+            'averageSegueLength': 'string',
+            'averageHookLength': 'string',
+            'minimumTalkLength': 'string',
+            'maximumTalkLength': 'string',
+            'cutQuantity': 'integer',
+            'lastCutPlayed': 'integer',
+            'enforceLength': 'boolean',
+            'asyncronous': 'boolean',
+            'owner': 'string',
+            'metadataDatetime': 'datetime',
+            'songId': 'string'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='cart',fields=fields)
+        print(r.text)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()
 
     def ListGroup(self,group_name):
         """
