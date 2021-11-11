@@ -277,7 +277,6 @@ class rivwebpyapi(object):
             'songId': 'string'
         }
         handler=RivWebPyApi_ListHandler(base_tag='cart',fields=fields)
-        print(r.text)
         xml.sax.parseString(r.text,handler)
 
         return handler.output()

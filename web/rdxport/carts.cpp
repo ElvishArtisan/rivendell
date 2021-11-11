@@ -174,10 +174,7 @@ void Xport::ListCarts()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
-  QByteArray data=RDCart::xml(q,include_cuts,true).toUtf8();
-  //  printf("%s\n",RDCart::xml(q,include_cuts,true).toUtf8().constData());
-  fwrite(data,1,data.size(),stdout);
-  rda->syslog(LOG_NOTICE,"xml size: %d",data.size());
+  printf("%s\n",RDCart::xml(q,include_cuts,true).toUtf8().constData());
   printf("</cartList>\n");
   delete q;
   Exit(0);

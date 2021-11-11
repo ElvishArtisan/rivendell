@@ -22609,3 +22609,6 @@
 	'web/tests/listcarts.html'.
 2021-11-11 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'ListCarts()' method to the 'rivwebpyapi' API.
+2021-11-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging code from 'web/rdxport/carts.cpp'.
+	* Removed debugging code from 'apis/rivwebpyapi/api/rivwebpyapi.py'.
