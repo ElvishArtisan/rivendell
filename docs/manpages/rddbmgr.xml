@@ -168,6 +168,18 @@
   <variablelist remap='TP'>
     <varlistentry>
       <term>
+	<option>--check-strings</option>
+      </term>
+      <listitem>
+	<para>
+	  Check all database fields of type VARCHAR for null characters and
+	  then exit.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--dump-cuts-dir=</option><replaceable>dir-name</replaceable>
       </term>
       <listitem>

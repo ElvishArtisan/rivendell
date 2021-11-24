@@ -71,6 +71,12 @@ class MainObject : public QObject
   void RemoveCart(unsigned cartnum);
   bool CopyToAudioStore(const QString &destfile,const QString &srcfile) const;
   void CheckSchedCodeRules(bool prompt_user) const;
+  void ValidateDbStrings() const;
+  void ValidateTableStrings(const QString &tbl_name) const;
+  void ValidateFieldString(const QString &pri_col,const QString &pri_type,
+			const QString &tbl_name,const QString &col_name) const;
+  void FixFieldString(const QString &pri_col,const QString &pri_type,
+		      const QString &tbl_name,const QString &col_name) const;
   bool UserResponse() const;
 
   //
@@ -148,6 +154,7 @@ class MainObject : public QObject
   bool db_check_orphaned_tracks;
   bool db_check_orphaned_carts;
   bool db_check_orphaned_cuts;
+  bool db_check_strings;
   QString db_orphan_group_name;
   QString db_dump_cuts_dir;
   QString db_rehash;

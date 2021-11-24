@@ -58,6 +58,7 @@ MainObject::MainObject(QObject *parent)
   db_check_orphaned_carts=false;
   db_check_orphaned_cuts=false;
   db_check_orphaned_tracks=false;
+  db_check_strings=false;
 
   //
   // Check that we're 'root'
@@ -228,6 +229,11 @@ MainObject::MainObject(QObject *parent)
     if(cmd->key(i)=="--orphaned-tracks") {
       db_check_all=false;
       db_check_orphaned_tracks=true;
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--check-strings") {
+      db_check_all=false;
+      db_check_strings=true;
       cmd->setProcessed(i,true);
     }
 

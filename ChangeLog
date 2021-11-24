@@ -22571,3 +22571,5 @@
 2021-10-28 Fred Gleason <fredg@paravelsystems.com>
 	* Moved the 'Daylight Saving Time Considerations' section in the
 	Operations Guide to after the 'The RDCatch Main Window' section.
+2021-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--check-strings' switch to rddbmgr(8).
