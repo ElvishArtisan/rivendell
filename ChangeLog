@@ -22576,3 +22576,8 @@
 	audio recordings manually.
 2021-11-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--check-strings' switch to rddbmgr(8).
+2021-11-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDCoreApplication::ExitSyscallError' to the
+	'RDCoreApplication::ExitCode' enumeration.
+	* Added 'RDCoreApplication::ExitNoConfig' to the
+	'RDCoreApplication::ExitCode' enumeration.

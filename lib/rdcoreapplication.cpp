@@ -550,6 +550,10 @@ QString RDCoreApplication::exitCodeText(RDCoreApplication::ExitCode code)
     ret=tr("bad ticket");
     break;
 
+  case RDCoreApplication::ExitSyscallError:
+    ret=tr("syscall error");
+    break;
+
   case RDCoreApplication::ExitLast:
     break;
   }

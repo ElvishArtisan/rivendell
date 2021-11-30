@@ -135,6 +135,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdexport_settings_dialog.cpp rdexport_settings_dialog.h\
                         rdfeed.cpp rdfeed.h\
                         rdfeedlistmodel.cpp rdfeedlistmodel.h\
+                        rdfiler.cpp rdfiler.h\
                         rdfontengine.cpp rdfontengine.h\
                         rdformpost.cpp rdformpost.h\
                         rdflacdecode.cpp rdflacdecode.h\

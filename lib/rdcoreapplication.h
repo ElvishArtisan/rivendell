@@ -53,7 +53,8 @@ class RDCoreApplication : public QObject
 		 ExitLogLinkFailed=10,ExitNoPerms=11,ExitReportFailed=12,
 		 ExitImportFailed=13,ExitNoDropbox=14,ExitNoGroup=15,
 		 ExitInvalidCart=16,ExitNoSchedCode=17,
-		 ExitBadTicket=18,ExitLast=19};
+		 ExitBadTicket=18,ExitSyscallError=19,ExitNoConfig=20,
+		 ExitLast=21};
   RDCoreApplication(const QString &module_name,const QString &cmdname,
 		const QString &usage,QObject *parent=0);
   ~RDCoreApplication();
