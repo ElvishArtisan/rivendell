@@ -22581,3 +22581,6 @@
 	'RDCoreApplication::ExitCode' enumeration.
 	* Added 'RDCoreApplication::ExitNoConfig' to the
 	'RDCoreApplication::ExitCode' enumeration.
+2021-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compile warnings in 'web/webget/webget.cpp' and
+	'lib/rdcoreapplication.cpp'.

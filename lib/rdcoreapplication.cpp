@@ -554,6 +554,10 @@ QString RDCoreApplication::exitCodeText(RDCoreApplication::ExitCode code)
     ret=tr("syscall error");
     break;
 
+  case RDCoreApplication::ExitNoConfig:
+    ret=tr("missing configuration");
+    break;
+
   case RDCoreApplication::ExitLast:
     break;
   }
