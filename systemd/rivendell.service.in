@@ -8,6 +8,7 @@ After=network.target remote-fs.target nss-lookup.target
 LimitNOFILE=4096
 Type=simple
 ExecStart=@prefix@/sbin/rdservice
+Environment=JACK_PROMISCUOUS_SERVER=audio
 PrivateTmp=false
 Restart=always
 RestartSec=2

@@ -22576,3 +22576,6 @@
 	audio recordings manually.
 2021-11-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--check-strings' switch to rddbmgr(8).
+2021-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for JACK promiscuous mode to the 'rivendell'
+	Systemd service.

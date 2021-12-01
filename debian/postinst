@@ -26,6 +26,9 @@ case "$1" in
 	  mv /etc/rd.conf /etc/rivendell.d/rd-default.conf
 	  ln -s /etc/rivendell.d/rd-default.conf /etc/rd.conf
       fi
+      if test ! -e /etc/profile.d/rivendell-env.sh ; then
+	 cp /usr/share/rivendell/rivendell-env.sh /etc/profile.d/
+      fi
       #
       # FIXME: Configure ALSA Here!
       #
