@@ -22579,3 +22579,5 @@
 2021-12-01 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for JACK promiscuous mode to the 'rivendell'
 	Systemd service.
+2021-12-02 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the RPM packaging to support JACK promiscuous mode.
