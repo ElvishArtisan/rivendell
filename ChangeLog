@@ -22588,5 +22588,5 @@
 	service is run as 'root'
 2021-12-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdadmin(1) that caused IP address settings
-	to fail to be saved when creating a new 'Logicek vGuest' matrix
+	to fail to be saved when creating a new 'Logitek vGuest' matrix
 	entry.
