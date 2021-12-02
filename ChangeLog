@@ -22581,3 +22581,5 @@
 	Systemd service.
 2021-12-02 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the RPM packaging to support JACK promiscuous mode.
+2021-12-02 Fred Gleason <fredg@paravelsystems.com>
+	* Modified caed(8) to use promisucous mode when starting jackd(8).

@@ -22,6 +22,8 @@
 
 #include <samplerate.h>
 
+#include <QProcessEnvironment>
+
 #include <rdconf.h>
 #include <rddatedecode.h>
 #include <rdescape_string.h>
@@ -470,7 +472,10 @@ bool DriverJack::initialize(unsigned *next_cardnum)
     if(args.size()) {
       QString program=args.at(0);
       args.removeFirst();
+      QProcessEnvironment penv=QProcessEnvironment::systemEnvironment();
       QProcess *proc=new QProcess(this);
+      penv.insert("JACK_PROMISCUOUS_SERVER","audio");
+      proc->setProcessEnvironment(penv);
       proc->start(program,args);
       if(proc->waitForStarted()) {
         rda->syslog(LOG_INFO,"JACK server started");
