@@ -83,6 +83,14 @@ MainObject::MainObject(QObject *parent)
   rda->syslog(LOG_DEBUG,"starting up");
 
   //
+  // Ensure that we are 'root'
+  //
+  if(geteuid()!=0) {
+    rda->syslog(LOG_ERR,"this service requires root");
+    exit(RDApplication::ExitNoPerms);
+  }
+
+  //
   // Process Startup Options
   //
   for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
