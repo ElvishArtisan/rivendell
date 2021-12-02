@@ -113,9 +113,9 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_porttype_label->setGeometry(15,96,70,19);
   edit_porttype_label->setFont(labelFont());
   edit_porttype_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  edit_porttype_box->insertItem(0,tr("Serial"));
-  edit_porttype_box->insertItem(1,tr("TCP/IP"));
-  edit_porttype_box->insertItem(1,tr("None"));
+  edit_porttype_box->insertItem(RDMatrix::TtyPort,tr("Serial"));
+  edit_porttype_box->insertItem(RDMatrix::TcpPort,tr("TCP/IP"));
+  edit_porttype_box->insertItem(RDMatrix::NoPort,tr("None"));
   connect(edit_porttype_box,SIGNAL(activated(int)),
 	  this,SLOT(portTypeActivatedData(int)));
 
@@ -217,9 +217,9 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_porttype2_label->setGeometry(15,243,70,19);
   edit_porttype2_label->setFont(labelFont());
   edit_porttype2_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  edit_porttype2_box->insertItem(0,tr("Serial"));
-  edit_porttype2_box->insertItem(1,tr("TCP/IP"));
-  edit_porttype2_box->insertItem(2,tr("None"));
+  edit_porttype2_box->insertItem(RDMatrix::TtyPort,tr("Serial"));
+  edit_porttype2_box->insertItem(RDMatrix::TcpPort,tr("TCP/IP"));
+  edit_porttype2_box->insertItem(RDMatrix::NoPort,tr("None"));
   connect(edit_porttype2_box,SIGNAL(activated(int)),
 	  this,SLOT(portType2ActivatedData(int)));
 
