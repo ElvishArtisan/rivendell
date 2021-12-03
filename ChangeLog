@@ -22590,3 +22590,6 @@
 	* Fixed a regression in rdadmin(1) that caused IP address settings
 	to fail to be saved when creating a new 'Logitek vGuest' matrix
 	entry.
+2021-12-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDCart::xml()' that caused a SQL error
+	to be generated.
