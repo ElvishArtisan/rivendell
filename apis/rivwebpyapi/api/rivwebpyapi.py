@@ -213,7 +213,7 @@ class rivwebpyapi(object):
           Takes the following arguments:
 
           cart_number - The number of the desired cart, in the range
-                        0 - 999999 (integer)
+                        1 - 999999 (integer)
 
           include_cuts - Include cut information in the return. Default is
                          False. (boolean)
@@ -361,6 +361,49 @@ class rivwebpyapi(object):
             'songId': 'string'
         }
         handler=RivWebPyApi_ListHandler(base_tag='cart',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()
+
+    def ListCartSchedCodes(self,cart_number):
+        """
+          Returns a list of Rivendell schedule codes (dictionary)
+
+          Takes the following arguments:
+
+          cart_number - The number of the cart for the desired schedule codes,
+                        in the range
+                        1 - 999999 (integer)
+        """
+
+        if((cart_number<1)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '27',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number)
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'code': 'string',
+            'description': 'string'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='schedCode',fields=fields)
         xml.sax.parseString(r.text,handler)
 
         return handler.output()

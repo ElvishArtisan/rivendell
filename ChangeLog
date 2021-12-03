@@ -22643,3 +22643,5 @@
 	* Fixed a SQL escaping bug in 'lib/export_resultsrecon.cpp'.
 	* Fixed a SQL escaping bug in 'lib/rdlibrarymodel.cpp'.
 	* Fixed a SQL escaping bug in 'rdlibrary/rdlibrary.cpp'.
+2021-12-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'ListCartSchedCodes()' method to the 'rivwebpyapi' API.
