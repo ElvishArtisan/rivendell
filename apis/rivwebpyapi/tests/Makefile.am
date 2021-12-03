@@ -24,6 +24,7 @@ EXTRA_DIST = list_cart.py\
              list_cart_sched_codes.py\
              list_carts.py\
              list_cut.py\
+             list_cuts.py\
              list_group.py\
              list_groups.py\
              list_log.py\
