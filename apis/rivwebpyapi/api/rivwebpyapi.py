@@ -23,6 +23,7 @@ import sys
 import datetime
 from datetime import timedelta
 import requests
+from urllib.parse import urlparse
 from xml.sax.handler import ContentHandler
 import xml.sax
 
@@ -186,14 +187,22 @@ class rivwebpyapi(object):
            Takes three arguments:
 
            url - The URL of the service. Typically of the form
-                'http://rivendell.example.com/rd-bin/rdxport.cgi' (string).
+                'http://rivendell.example.com' (string).
 
            username - The Rivendell Username to connect as (string).
 
            password - The password for the specified Rivendell Username
                       (string).
         """
-        self.__connection_url=url
+        #
+        # Normalize the URL
+        #
+        parsed_url=urlparse(url)
+        parsed_url=parsed_url._replace(path='/rd-bin/rdxport.cgi',
+                                       params='',
+                                       query='',
+                                       fragment='')
+        self.__connection_url=parsed_url.geturl()
         self.__connection_username=username
         self.__connection_password=password
 

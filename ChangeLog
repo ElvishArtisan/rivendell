@@ -22612,3 +22612,6 @@
 2021-11-11 Fred Gleason <fredg@paravelsystems.com>
 	* Removed debugging code from 'web/rdxport/carts.cpp'.
 	* Removed debugging code from 'apis/rivwebpyapi/api/rivwebpyapi.py'.
+2021-12-03 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'rivwebpyapi' so as to require only scheme and host
+	parts of the URL provided to the 'url' parameter.
