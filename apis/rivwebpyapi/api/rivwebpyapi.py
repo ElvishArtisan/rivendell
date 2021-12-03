@@ -685,6 +685,39 @@ class rivwebpyapi(object):
 
         return handler.output()
 
+    def ListSchedulerCodes(self):
+        """
+          Returns a list of all available Rivendell schedule codes (dictionary)
+        """
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '24',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'code': 'string',
+            'description': 'string'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='schedCode',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()
+
     def ListServices(self,trackable):
         """
           Returns a list of Rivendell services (dictionary).

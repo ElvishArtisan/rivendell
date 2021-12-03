@@ -27,6 +27,7 @@ EXTRA_DIST = list_cart.py\
              list_groups.py\
              list_log.py\
              list_logs.py\
+             list_scheduler_codes.py\
              list_services.py
 
 CLEANFILES = *~\
