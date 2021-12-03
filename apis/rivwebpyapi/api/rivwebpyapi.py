@@ -206,6 +206,81 @@ class rivwebpyapi(object):
         self.__connection_username=username
         self.__connection_password=password
 
+    def ListCart(self,cart_number,include_cuts=False):
+        """
+          Returns a Rivendell cart (dictionary)
+
+          Takes the following arguments:
+
+          cart_number - The number of the desired cart, in the range
+                        0 - 999999 (integer)
+
+          include_cuts - Include cut information in the return. Default is
+                         False. (boolean)
+        """
+
+        if((cart_number<1)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '7',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number),
+            'INCLUDE_CUTS': '0'
+        }
+        if(include_cuts):
+            postdata['INCLUDE_CUTS']='1'
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'number': 'integer',
+            'type': 'string',
+            'groupName': 'string',
+            'title': 'string',
+            'artist': 'string',
+            'album': 'string',
+            'year': 'integer',
+            'label': 'string',
+            'client': 'string',
+            'agency': 'string',
+            'publisher': 'string',
+            'composer': 'string',
+            'conductor': 'string',
+            'userDefined': 'string',
+            'usageCode': 'integer',
+            'forcedLength': 'string',
+            'averageLength': 'string',
+            'lengthDeviation': 'string',
+            'averageSegueLength': 'string',
+            'averageHookLength': 'string',
+            'minimumTalkLength': 'string',
+            'maximumTalkLength': 'string',
+            'cutQuantity': 'integer',
+            'lastCutPlayed': 'integer',
+            'enforceLength': 'boolean',
+            'asyncronous': 'boolean',
+            'owner': 'string',
+            'metadataDatetime': 'datetime',
+            'songId': 'string'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='cart',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()
+
     def ListCarts(self,group_name='',filter_string='',cart_type='all',
                   include_cuts=False):
         """

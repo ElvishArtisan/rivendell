@@ -22634,3 +22634,5 @@
 2021-12-03 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'rivwebpyapi' so as to require only scheme and host
 	parts of the URL provided to the 'url' parameter.
+2021-12-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'ListCart()' method to the 'rivwebpyapi' API.
