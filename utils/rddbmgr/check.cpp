@@ -136,6 +136,15 @@ bool MainObject::Check(QString *err_msg)
   }
 
   //
+  // Validate Strings
+  //
+  if(db_check_all||db_check_strings) {
+    printf("Validating character strings (this may take some time)...\n");
+    ValidateDbStrings();
+    printf("done.\n\n");
+  }
+
+  //
   // Rehash
   //
   if((db_check_all)&&!db_rehash.isEmpty()) {
@@ -1160,4 +1169,111 @@ void MainObject::CheckSchedCodeRules(bool prompt_user) const
     delete code_q;
   }
   delete clock_q;
+}
+
+
+void MainObject::ValidateDbStrings() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql="show tables";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    ValidateTableStrings(q->value(0).toString());
+  }
+  delete q;
+}
+
+
+void MainObject::ValidateTableStrings(const QString &tbl_name) const
+{
+  QString sql;
+  RDSqlQuery *q;
+  QString pri_col;
+  QString pri_type;
+
+  sql=QString("describe ")+"`"+tbl_name+"`";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    if(q->value(3).toString()=="PRI") {
+      pri_col=q->value(0).toString();
+      pri_type=q->value(1).toString();
+    }
+    if(q->value(1).toString().left(8)=="varchar(") {
+      ValidateFieldString(pri_col,pri_type,tbl_name,q->value(0).toString());
+    }
+  }
+  delete q;
+}
+
+
+void MainObject::ValidateFieldString(const QString &pri_col,
+				     const QString &pri_type,
+				     const QString &tbl_name,
+				     const QString &col_name) const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("select `")+col_name+"` from `"+tbl_name+"` where "+
+    "`"+col_name+"` like '%\\0'";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    FixFieldString(pri_col,pri_type,tbl_name,col_name);
+  }
+  delete q;
+}
+
+
+void MainObject::FixFieldString(const QString &pri_col,const QString &pri_type,
+				const QString &tbl_name,
+				const QString &col_name) const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  if(pri_col==col_name) {
+    printf("  Field `%s`.`%s` contains invalid characters but is also primary key, unable to fix!\n",
+	   tbl_name.toUtf8().constData(),
+	   col_name.toUtf8().constData());
+    return;
+  }
+  if(pri_col.isEmpty()||pri_type.isEmpty()) {
+    printf("  Field `%s`.`%s` contains invalid characters but no primary key found, unable to fix!\n",
+	   tbl_name.toUtf8().constData(),
+	   col_name.toUtf8().constData());
+    return;
+  }
+  printf("  Field `%s`.`%s` contains invalid characters. Fix? (y/N) ",
+	 tbl_name.toUtf8().constData(),
+	 col_name.toUtf8().constData());
+  fflush(NULL);
+  if(UserResponse()) {
+    sql=QString("select ")+
+      "`"+pri_col+"`,"+   // 00
+      "`"+col_name+"` "+  // 01
+      "from `"+tbl_name+"` where "+
+      "`"+col_name+"` like '%\\0'";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update `")+tbl_name+"` set "+
+	"`"+col_name+"`='"+RDEscapeString(q->value(1).toByteArray())+"' ";
+      if(pri_type.left(3)=="int") {
+	sql+="where `"+pri_col+QString::asprintf("`=%d",q->value(0).toInt());
+      }
+      else {
+	if(pri_type.left(7)=="varchar") {
+	  sql+="where `"+pri_col+"`='"+
+	    RDEscapeString(q->value(0).toString())+"'";
+	}
+	else {
+	  printf("  Unknown primary key type \"%s\", skipping...\n",
+		 pri_type.toUtf8().constData());
+	  return;
+	}
+      }
+      RDSqlQuery::apply(sql);
+    }
+  }
 }

@@ -137,6 +137,8 @@ binary:
 	rm -rf debian/tmp/var
 	mkdir -p debian/rivendell/etc/logrotate.d
 	cp conf/logrotate-sample debian/rivendell/etc/logrotate.d/rivendell
+	mkdir -p debian/rivendell/usr/share/rivendell
+	cp conf/rivendell-env.sh debian/rivendell/usr/share/rivendell
 	mkdir -p debian/rivendell/usr/share/rivendell/logos
 	cp icons/webget_logo.png debian/rivendell/usr/share/rivendell/logos/
 	mkdir -p debian/rivendell/usr/share/doc/rivendell/logos

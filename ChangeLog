@@ -22612,6 +22612,25 @@
 2021-11-11 Fred Gleason <fredg@paravelsystems.com>
 	* Removed debugging code from 'web/rdxport/carts.cpp'.
 	* Removed debugging code from 'apis/rivwebpyapi/api/rivwebpyapi.py'.
+2021-11-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in caed(8) that made it impossible to stop
+	audio recordings manually.
+2021-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--check-strings' switch to rddbmgr(8).
+2021-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for JACK promiscuous mode to the 'rivendell'
+	Systemd service.
+2021-12-02 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the RPM packaging to support JACK promiscuous mode.
+2021-12-02 Fred Gleason <fredg@paravelsystems.com>
+	* Modified caed(8) to use promisucous mode when starting jackd(8).
+2021-12-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check to rdservice(8) to ensure that the 'rivendell'
+	service is run as 'root'
+2021-12-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdadmin(1) that caused IP address settings
+	to fail to be saved when creating a new 'Logitek vGuest' matrix
+	entry.
 2021-12-03 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'rivwebpyapi' so as to require only scheme and host
 	parts of the URL provided to the 'url' parameter.
