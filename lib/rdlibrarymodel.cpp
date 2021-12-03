@@ -437,7 +437,7 @@ QModelIndex RDLibraryModel::addCart(unsigned cartnum)
 
   QString sql=sqlFields()+
     "where "+
-    QString::asprintf("CART.NUMBER=%u",cartnum);
+    QString::asprintf("`CART`.`NUMBER`=%u",cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     updateRow(offset,q);

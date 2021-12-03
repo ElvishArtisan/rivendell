@@ -54,7 +54,7 @@ bool RDReport::ExportResultsReport(const QString &filename,
     "`ELR_LINES`.`ARTIST`,"+          // 06
     "`ELR_LINES`.`EXT_START_TIME` "+  // 07
     "from `ELR_LINES` left join `CART` "+
-    "on `ELR_LINES`.`CART_NUMBER`=`CART.NUMBER` where "+
+    "on `ELR_LINES`.`CART_NUMBER`=`CART`.`NUMBER` where "+
     "`SERVICE_NAME`='"+RDEscapeString(mixtable)+"' "+
     "order by `EVENT_DATETIME`";
   q=new RDSqlQuery(sql);
