@@ -691,7 +691,7 @@ void MainWidget::notificationReceivedData(RDNotification *notify)
     unsigned cartnum=notify->id().toUInt();
     switch(notify->action()) {
     case RDNotification::AddAction:
-      and_fields.push_back(QString::asprintf("CART.NUMBER=%u",cartnum));
+      and_fields.push_back(QString::asprintf("`CART`.`NUMBER`=%u",cartnum));
       sql=QString("select ")+
 	"`CART`.`NUMBER` "+  // 00
 	"from `CART` "+

@@ -1029,9 +1029,10 @@ QString RDCart::xml(bool include_cuts,bool absolute,
 		    RDSettings *settings,int cutnum) const
 {
   QString sql=RDCart::xmlSql(include_cuts)+
-    QString::asprintf(" where (`CART.NUMBER`=%u)",cart_number);
+    QString::asprintf(" where (`CART`.`NUMBER`=%u)",cart_number);
   if(cutnum>=0) {
-    sql+=QString("&&(`CUT_NAME`=\"")+RDCut::cutName(cart_number,cutnum)+"\")";
+    sql+=QString("&&(`CUTS`.`CUT_NAME`=\"")+
+      RDCut::cutName(cart_number,cutnum)+"\")";
   }
   RDSqlQuery *q=new RDSqlQuery(sql);
   QString xml=RDCart::xml(q,include_cuts,absolute,settings);

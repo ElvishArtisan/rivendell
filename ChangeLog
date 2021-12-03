@@ -22636,3 +22636,10 @@
 	parts of the URL provided to the 'url' parameter.
 2021-12-03 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'ListCart()' method to the 'rivwebpyapi' API.
+2021-12-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDCart::xml()' that caused a SQL error
+	to be generated.
+2021-12-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a SQL escaping bug in 'lib/export_resultsrecon.cpp'.
+	* Fixed a SQL escaping bug in 'lib/rdlibrarymodel.cpp'.
+	* Fixed a SQL escaping bug in 'rdlibrary/rdlibrary.cpp'.
