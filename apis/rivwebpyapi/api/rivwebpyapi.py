@@ -408,6 +408,98 @@ class rivwebpyapi(object):
 
         return handler.output()
 
+    def ListCut(self,cart_number,cut_number):
+        """
+          Returns a Rivendell cut (dictionary).
+
+          Takes the following arguments:
+
+          cart_number - The number of the desired cart, in the range
+                        1 - 999999 (integer)
+
+          cut_number - The number of the desired cut, in the range
+                        1 - 999 (integer)
+
+        """
+
+        if((cart_number<1)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+        if((cut_number<1)or(cut_number>999)):
+            raise ValueError('invalid cut number')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '8',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number),
+            'CUT_NUMBER': str(cut_number)
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'cutName': 'string',
+            'cartNumber': 'integer',
+            'cutNumber': 'integer',
+            'evergreen': 'boolean',
+            'description': 'string',
+            'outcue': 'string',
+            'isrc': 'string',
+            'isci': 'string',
+            'recordingMbId': 'string',
+            'releaseMbId': 'string',
+            'length': 'integer',
+            'originDatetime': 'datetime',
+            'startDatetime': 'datetime',
+            'endDatetime': 'datetime',
+            'sun': 'boolean',
+            'mon': 'boolean',
+            'tue': 'boolean',
+            'wed': 'boolean',
+            'thu': 'boolean',
+            'fri': 'boolean',
+            'sat': 'boolean',
+            'startDaypart': 'time',
+            'endDaypart': 'time',
+            'originName': 'string',
+            'originLoginName': 'string',
+            'sourceHostname': 'string',
+            'weight': 'integer',
+            'lastPlayDatetime': 'datetime',
+            'playCounter': 'integer',
+            'codingFormat': 'integer',
+            'sampleRate': 'integer',
+            'bitRate': 'integer',
+            'channels': 'integer',
+            'playGain': 'integer',
+            'startPoint': 'integer',
+            'endPoint': 'integer',
+            'fadeupPoint': 'integer',
+            'fadedownPoint': 'integer',
+            'segueStartPoint': 'integer',
+            'segueEndPoint': 'integer',
+            'segueGain': 'integer',
+            'hookStartPoint': 'integer',
+            'hookEndPoint': 'integer',
+            'talkStartPoint': 'integer',
+            'talkEndPoint': 'integer'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='cut',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()
+
     def ListGroup(self,group_name):
         """
           Returns a list of Rivendell groups (dictionary).

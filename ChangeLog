@@ -22647,3 +22647,5 @@
 	* Added a 'ListCartSchedCodes()' method to the 'rivwebpyapi' API.
 2021-12-03 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'ListScheduleCodes()' method to the 'rivwebpyapi' API.
+2021-12-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'ListCut()' method to the 'rivwebpyapi' API.
