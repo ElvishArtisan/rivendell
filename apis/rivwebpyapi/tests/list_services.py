@@ -1,10 +1,10 @@
 #!%PYTHON_BANGPATH%
 
-# login_test.py
+# list_services.py
 #
 # RivWebPyApi test script for Rivendell
 #
-#  Attempt to log in to the Rivendell Web API
+#  Test the ListServices Web API call
 #
 #   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 #

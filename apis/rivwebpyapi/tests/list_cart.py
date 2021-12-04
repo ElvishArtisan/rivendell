@@ -4,7 +4,7 @@
 #
 # RivWebPyApi test script for Rivendell
 #
-#  Test the ListLogs Web API call
+#  Test the ListCart Web API call
 #
 #   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 #

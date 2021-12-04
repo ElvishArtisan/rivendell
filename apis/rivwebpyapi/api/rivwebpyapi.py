@@ -208,7 +208,8 @@ class rivwebpyapi(object):
 
     def ListCart(self,cart_number,include_cuts=False):
         """
-          Returns a Rivendell cart (dictionary)
+          Returns the metadata associated with a Rivendell cart
+          (list of dictionaries).
 
           Takes the following arguments:
 
@@ -284,7 +285,8 @@ class rivwebpyapi(object):
     def ListCarts(self,group_name='',filter_string='',cart_type='all',
                   include_cuts=False):
         """
-          Returns a list of Rivendell carts (dictionary)
+          Returns the metadata associated with a set of Rivendell carts
+          (list of dictionaries)
 
           Takes the following arguments:
 
@@ -367,7 +369,8 @@ class rivwebpyapi(object):
 
     def ListCartSchedCodes(self,cart_number):
         """
-          Returns a list of Rivendell schedule codes (dictionary)
+          Returns the set of scheduler codes associated with a Rivendell
+          cart (list of dictionaries)
 
           Takes the following arguments:
 
@@ -410,7 +413,8 @@ class rivwebpyapi(object):
 
     def ListCut(self,cart_number,cut_number):
         """
-          Returns a Rivendell cut (dictionary).
+          Returns the metadata associated with a Rivendell cut
+          (list of dictionaries).
 
           Takes the following arguments:
 
@@ -502,7 +506,8 @@ class rivwebpyapi(object):
 
     def ListCuts(self,cart_number):
         """
-          Returns Rivendell cuts belonging to a cart (dictionary).
+          Returns the metadata associated with all of the cuts in
+          a Rivendell cart (list of dictionaries).
 
           Takes the following argument:
 
@@ -588,7 +593,7 @@ class rivwebpyapi(object):
 
     def ListGroup(self,group_name):
         """
-          Returns a list of Rivendell groups (dictionary).
+          Returns a Rivendell group (list of dictionaries).
 
           Takes the following argument:
 
@@ -636,7 +641,7 @@ class rivwebpyapi(object):
 
     def ListGroups(self):
         """
-          Returns a list of Rivendell groups (dictionary).
+          Returns a list of all Rivendell groups (list of dictionaries).
         """
 
         #
@@ -678,7 +683,7 @@ class rivwebpyapi(object):
 
     def ListLog(self,log_name):
         """
-          Returns a list of Rivendell logs (dictionary).
+          Returns the contents of a Rivendell log (list of dictionaries).
 
           Takes the following argument:
 
@@ -788,7 +793,8 @@ class rivwebpyapi(object):
     def ListLogs(self,service_name='',log_name='',trackable=False,
                  filter_string='',recent=False):
         """
-          Returns a list of Rivendell logs (dictionary).
+          Returns the metadata for a set of Rivendell logs
+          (list of dictionaries).
 
           Takes the following arguments:
 
@@ -865,7 +871,8 @@ class rivwebpyapi(object):
 
     def ListSchedulerCodes(self):
         """
-          Returns a list of all available Rivendell schedule codes (dictionary)
+          Returns a list of all defined Rivendell schedule codes
+          (list of dictionaries)
         """
 
         #
@@ -898,13 +905,14 @@ class rivwebpyapi(object):
 
     def ListServices(self,trackable):
         """
-          Returns a list of Rivendell services (dictionary).
+          Returns a set of Rivendell services (list of dictionaries).
 
           Takes one argument:
 
           trackable - Boolean. If True, return will include only services that
                       are configured to support voice tracking. If False,
-                      all configured services will be included.
+                      all configured services for which the user has access
+                      will be included.
         """
 
         #
@@ -941,7 +949,7 @@ class rivwebpyapi(object):
 
     def ListSystemSettings(self):
         """
-          Returns Rivendell system settings (dictionary)
+          Returns Rivendell system settings (list of dictionaries).
         """
 
         #

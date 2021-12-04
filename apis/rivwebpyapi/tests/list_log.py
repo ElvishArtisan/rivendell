@@ -38,7 +38,7 @@ recent=False
 #
 # Get login parameters
 #
-usage='list_log --url=<rd-url> --username=<rd-username> [--password=<passwd>] [--log-name=<name>]'
+usage='list_log --url=<rd-url> --username=<rd-username> --log-name=<name> [--password=<passwd>]'
 for arg in sys.argv:
     f0=arg.split('=')
     if(len(f0)==2):
@@ -52,7 +52,7 @@ for arg in sys.argv:
             log_name=f0[1]
 if(not password):
     password=getpass.getpass()
-if((not url)or(not username)):
+if((not url)or(not username)or(not log_name)):
     print(usage)
     sys.exit(1)
 

@@ -59,7 +59,7 @@ webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
 settings=webapi.ListSystemSettings()
 
 #
-# Display the code list
+# Display the settings list
 #
 for setting in settings:
     print('realmName: '+str(setting['realmName']))

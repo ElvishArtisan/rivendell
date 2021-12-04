@@ -58,13 +58,13 @@ if((not url)or(not username)):
     sys.exit(1)
 
 #
-# Get the cart list
+# Get the cut list
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
 cuts=webapi.ListCut(cart_number=cart_number,cut_number=cut_number)
 
 #
-# Display the cart list
+# Display the cut list
 #
 for cut in cuts:
     print('cutName: '+str(cut['cutName']))
