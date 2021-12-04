@@ -30,7 +30,8 @@ EXTRA_DIST = list_cart.py\
              list_log.py\
              list_logs.py\
              list_scheduler_codes.py\
-             list_services.py
+             list_services.py\
+             list_system_settings.py
 
 CLEANFILES = *~\
              *.idb\

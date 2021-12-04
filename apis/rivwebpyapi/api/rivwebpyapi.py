@@ -938,3 +938,44 @@ class rivwebpyapi(object):
         xml.sax.parseString(r.text,handler)
 
         return handler.output()
+
+    def ListSystemSettings(self):
+        """
+          Returns Rivendell system settings (dictionary)
+        """
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '33',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'realmName': 'string',
+            'sampleRate': 'integer',
+            'duplicateTitles': 'boolean',
+            'fixDuplicateTitles': 'boolean',
+            'maxPostLength': 'integer',
+            'isciXreferencePath': 'string',
+            'tempCartGroup': 'string',
+            'longDateFormat': 'string',
+            'shortDateFormat': 'string',
+            'showTwelveHourTime': 'boolean'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='systemSettings',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()

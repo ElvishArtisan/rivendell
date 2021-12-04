@@ -22651,3 +22651,5 @@
 	* Added a 'ListCut()' method to the 'rivwebpyapi' API.
 2021-12-03 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'ListCuts()' method to the 'rivwebpyapi' API.
+2021-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'ListSystemSettings()' method to the 'rivwebpyapi' API.
