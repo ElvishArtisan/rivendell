@@ -416,6 +416,35 @@ class rivwebpyapi(object):
         if(r.status_code!=requests.codes.ok):
             r.raise_for_status()
 
+    def DeleteLog(self,log_name):
+        """
+          Delete an existing log.
+
+          Takes the following argument:
+
+          log_name - The name of the log to be deleted (string).
+        """
+
+        if(not log_name):
+            raise ValueError('invalid log name')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '30',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'LOG_NAME': log_name
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
     def ListCart(self,cart_number,include_cuts=False):
         """
           Returns the metadata associated with a Rivendell cart
