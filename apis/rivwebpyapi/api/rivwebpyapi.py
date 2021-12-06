@@ -1162,6 +1162,45 @@ class rivwebpyapi(object):
 
         return handler.output()
 
+    def RemoveCart(self,cart_number):
+        """
+          Remove a cart from the cart library.
+
+          Takes the following argument:
+
+          cart_number - The number of the desired cart, in the range
+                        1 - 999999 (integer)
+        """
+
+        if((cart_number<1)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '13',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number)
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'ResponseCode': 'integer',
+            'ErrorString': 'string'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='RDWebResult',fields=fields)
+
     def RemoveCut(self,cart_number,cut_number):
         """
           Remove an existing cut from an audio cart.

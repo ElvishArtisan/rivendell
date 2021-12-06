@@ -34,6 +34,7 @@ EXTRA_DIST = add_cart.py\
              list_scheduler_codes.py\
              list_services.py\
              list_system_settings.py\
+             remove_cart.py\
              remove_cut.py
 
 CLEANFILES = *~\
