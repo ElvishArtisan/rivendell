@@ -32,7 +32,8 @@ EXTRA_DIST = add_cut.py\
              list_logs.py\
              list_scheduler_codes.py\
              list_services.py\
-             list_system_settings.py
+             list_system_settings.py\
+             remove_cut.py
 
 CLEANFILES = *~\
              *.idb\

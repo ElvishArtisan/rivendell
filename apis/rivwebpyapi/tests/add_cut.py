@@ -31,7 +31,6 @@ username=''
 password=''
 cart_number=0
 cut_number=0
-include_cuts=False
 
 #
 # Get login parameters

@@ -211,7 +211,6 @@ class rivwebpyapi(object):
         self.__connection_username=username
         self.__connection_password=password
 
-##########################
     def AddCut(self,cart_number):
         """
           Add a new cut to an existing audio cart. Returns the metadata of
@@ -298,11 +297,6 @@ class rivwebpyapi(object):
         xml.sax.parseString(r.text,handler)
 
         return handler.output()
-
-##########################
-
-
-
 
     def ListCart(self,cart_number,include_cuts=False):
         """
@@ -521,7 +515,6 @@ class rivwebpyapi(object):
 
           cut_number - The number of the desired cut, in the range
                         1 - 999 (integer)
-
         """
 
         if((cart_number<1)or(cart_number>999999)):
@@ -1085,3 +1078,48 @@ class rivwebpyapi(object):
         xml.sax.parseString(r.text,handler)
 
         return handler.output()
+
+    def RemoveCut(self,cart_number,cut_number):
+        """
+          Remove an existing cut from an audio cart.
+
+          Takes the following arguments:
+
+          cart_number - The number of the desired cart, in the range
+                        1 - 999999 (integer)
+
+          cut_number - The number of the cut to remove, in the range
+                        1 - 999 (integer)
+        """
+
+        if((cart_number<1)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+        if((cut_number<1)or(cut_number>999)):
+            raise ValueError('invalid cut number')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '11',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number),
+            'CUT_NUMBER': str(cut_number)
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'ResponseCode': 'integer',
+            'ErrorString': 'string'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='RDWebResult',fields=fields)

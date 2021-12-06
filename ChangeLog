@@ -22662,3 +22662,5 @@
 	system.
 2021-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'AddCut()' method to the 'rivwebpyapi' API.
+2021-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RemoveCut()' method to the 'rivwebpyapi' API.
