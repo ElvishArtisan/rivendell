@@ -20,7 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-EXTRA_DIST = add_cut.py\
+EXTRA_DIST = add_cart.py\
+             add_cut.py\
              list_cart.py\
              list_cart_sched_codes.py\
              list_carts.py\

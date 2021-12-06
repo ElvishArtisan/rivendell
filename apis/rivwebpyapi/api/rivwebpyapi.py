@@ -211,6 +211,89 @@ class rivwebpyapi(object):
         self.__connection_username=username
         self.__connection_password=password
 
+    def AddCart(self,group_name,cart_type,cart_number=0):
+        """
+          Add a new cart to the cart library. Returns the metadata of
+          the newly created cart (list of dictionaries).
+
+          Takes the following arguments:
+
+          group_name - The name of the group to which the created cart
+                       will belong (string).
+
+          cart_type - The type of cart to be created. Valid values are
+                      'audio' and 'macro' (string).
+
+          cart_number - The number of the desired cart, in the range
+                        1 - 999999. Optional. If no cart number
+                        is specified, the next available cart number for
+                        the specified group will be used (integer).
+        """
+
+        if((cart_number<0)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+        if((cart_type!='audio')and(cart_type!='macro')):
+            raise ValueError('invalid cart type')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '12',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'GROUP_NAME': str(group_name),
+            'TYPE': str(cart_type)
+        }
+        if(cart_number>0):
+            postdata['CART_NUMBER']=str(cart_number)
+        print('ARGS: '+str(postdata))
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'number': 'integer',
+            'type': 'string',
+            'groupName': 'string',
+            'title': 'string',
+            'artist': 'string',
+            'album': 'string',
+            'year': 'integer',
+            'label': 'string',
+            'client': 'string',
+            'agency': 'string',
+            'publisher': 'string',
+            'composer': 'string',
+            'conductor': 'string',
+            'userDefined': 'string',
+            'usageCode': 'integer',
+            'forcedLength': 'string',
+            'averageLength': 'string',
+            'lengthDeviation': 'string',
+            'averageSegueLength': 'string',
+            'averageHookLength': 'string',
+            'minimumTalkLength': 'string',
+            'maximumTalkLength': 'string',
+            'cutQuantity': 'integer',
+            'lastCutPlayed': 'integer',
+            'enforceLength': 'boolean',
+            'asyncronous': 'boolean',
+            'owner': 'string',
+            'metadataDatetime': 'datetime',
+            'songId': 'string'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='cart',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()
+
     def AddCut(self,cart_number):
         """
           Add a new cut to an existing audio cart. Returns the metadata of
