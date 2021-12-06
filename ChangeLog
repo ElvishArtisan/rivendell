@@ -22674,3 +22674,5 @@
 	* Added an 'DeleteLog()' method to the 'rivwebpyapi' API.
 2021-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'AssignSchedCode()' method to the 'rivwebpyapi' API.
+2021-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'UnassignSchedCode()' method to the 'rivwebpyapi' API.

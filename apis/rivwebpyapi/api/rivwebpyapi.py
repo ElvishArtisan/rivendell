@@ -418,7 +418,7 @@ class rivwebpyapi(object):
 
     def AssignSchedCode(self,cart_number,sched_code):
         """
-          Assigned a schedule code to a cart.
+          Assign a schedule code to a cart.
 
           Takes the following arguments:
 
@@ -1344,3 +1344,38 @@ class rivwebpyapi(object):
             'ErrorString': 'string'
         }
         handler=RivWebPyApi_ListHandler(base_tag='RDWebResult',fields=fields)
+
+    def UnassignSchedCode(self,cart_number,sched_code):
+        """
+          Unassign a schedule code from a cart.
+
+          Takes the following arguments:
+
+          cart_number - The number of the desired cart, in the range
+                        1 - 999999 (integer)
+
+          sched_code - An existing schedule code (integer).
+        """
+
+        if((cart_number<1)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+        if(not sched_code):
+            raise ValueError('invalid schedule code')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '26',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number),
+            'CODE': sched_code
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
