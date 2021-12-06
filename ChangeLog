@@ -22676,3 +22676,5 @@
 	* Added an 'AssignSchedCode()' method to the 'rivwebpyapi' API.
 2021-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'UnassignSchedCode()' method to the 'rivwebpyapi' API.
+2021-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'AudioInfo()' method to the 'rivwebpyapi' API.
