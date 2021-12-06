@@ -23,6 +23,7 @@
 EXTRA_DIST = add_cart.py\
              add_cut.py\
              add_log.py\
+             assign_sched_code.py\
              delete_log.py\
              list_cart.py\
              list_cart_sched_codes.py\
