@@ -22656,3 +22656,7 @@
 2021-12-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed multiple typos in the inline documentation for the
 	'rivwebpyapi' API.
+2021-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'List*' methods in th 'rivwebpyapi' API to return
+	None in fields that do not exist in the schema of the queried
+	system.

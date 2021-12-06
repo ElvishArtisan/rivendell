@@ -38,26 +38,31 @@ class RivWebPyApi_ListHandler(ContentHandler):
     def output(self):
         for d in self.__output:  # Convert to the appropriate types
             for f in self.__fields.keys():
-                d[f]=d[f].strip()
-                if(self.__fields[f]=='boolean'):
-                    d[f]=self.__fromBoolean(d[f])
-                elif(self.__fields[f]=='datetime'):
-                    d[f]=self.__fromDatetime(d[f])
-                elif(self.__fields[f]=='date'):
-                    d[f]=self.__fromDate(d[f])
-                elif(self.__fields[f]=='integer'):
-                    d[f]=self.__fromInteger(d[f])
-                elif(self.__fields[f]=='time'):
-                    d[f]=self.__fromTime(d[f])
+                if(d[f]!=None):
+                    d[f]=d[f].strip()
+                    if(self.__fields[f]=='boolean'):
+                        d[f]=self.__fromBoolean(d[f])
+                    elif(self.__fields[f]=='datetime'):
+                        d[f]=self.__fromDatetime(d[f])
+                    elif(self.__fields[f]=='date'):
+                        d[f]=self.__fromDate(d[f])
+                    elif(self.__fields[f]=='integer'):
+                        d[f]=self.__fromInteger(d[f])
+                    elif(self.__fields[f]=='time'):
+                        d[f]=self.__fromTime(d[f])
         return self.__output
 
     def startElement(self,tag,attrs):
         if(tag==self.__base_tag):  # Create new (empty) record
             self.__record={}
             for f in self.__fields.keys():
-                self.__record[f]=''
+                self.__record[f]=None
+        else:
+            if(tag in self.__fields.keys()):
+                self.__record[tag]=''
         if('src' in attrs.keys()):
             tag=tag+attrs['src'].capitalize()
+            self.__record[tag]=''
         self.__field=tag
 
     def endElement(self,tag):
