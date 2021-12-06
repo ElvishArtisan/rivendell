@@ -504,6 +504,39 @@ class rivwebpyapi(object):
 
         return handler.output()
 
+    def AudioStore(self):
+        """
+          Get information about the audio store (list of dictionaries).
+        """
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '23',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'freeBytes': 'integer',
+            'totalBytes': 'integer'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='audioStore',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()
+
     def DeleteLog(self,log_name):
         """
           Delete an existing log.

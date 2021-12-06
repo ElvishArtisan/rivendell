@@ -25,6 +25,7 @@ EXTRA_DIST = add_cart.py\
              add_log.py\
              assign_sched_code.py\
              audio_info.py\
+             audio_store.py\
              delete_log.py\
              list_cart.py\
              list_cart_sched_codes.py\
