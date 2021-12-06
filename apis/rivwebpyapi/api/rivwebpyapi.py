@@ -537,6 +537,58 @@ class rivwebpyapi(object):
 
         return handler.output()
 
+    def DeleteAudio(self,cart_number,cut_number):
+        """
+          Delete PCM/MPEG data from the audio store.
+
+          cart_number - The number of the desired cart, in the range
+                        1 - 999999 (integer)
+
+          cut_number - The number of the desired cut, in the range
+                        1 - 999 (integer)
+        """
+
+        if((cart_number<1)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+        if((cut_number<1)or(cut_number>999)):
+            raise ValueError('invalid cut number')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '3',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number),
+            'CUT_NUMBER': str(cut_number)
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'cartNumber': 'integer',
+            'cutNumber': 'integer',
+            'format': 'integer',
+            'channels': 'integer',
+            'sampleRate': 'integer',
+            'bitRate': 'integer',
+            'frames': 'integer',
+            'length': 'integer'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='audioInfo',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()
+
     def DeleteLog(self,log_name):
         """
           Delete an existing log.
