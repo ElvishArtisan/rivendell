@@ -22668,3 +22668,5 @@
 	* Added an 'AddCart()' method to the 'rivwebpyapi' API.
 2021-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RemoveCart()' method to the 'rivwebpyapi' API.
+2021-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'AddLog()' method to the 'rivwebpyapi' API.

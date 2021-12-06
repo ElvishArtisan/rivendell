@@ -381,6 +381,41 @@ class rivwebpyapi(object):
 
         return handler.output()
 
+    def AddLog(self,service_name,log_name):
+        """
+          Create a new log.
+
+          Takes the following arguments:
+
+          service-name - The name of the service to which the new log will
+                         belong (string).
+
+          log-name - The name of the log to be created (string).
+        """
+
+        if(not service_name):
+            raise ValueError('invalid service name')
+        if(not log_name):
+            raise ValueError('invalid log name')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '29',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'SERVICE_NAME': str(service_name),
+            'LOG_NAME': str(log_name)
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
     def ListCart(self,cart_number,include_cuts=False):
         """
           Returns the metadata associated with a Rivendell cart
