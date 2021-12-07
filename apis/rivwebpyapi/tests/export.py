@@ -25,6 +25,8 @@
 import getpass
 import rivwebpyapi
 import sys
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 url='';
 username=''
@@ -32,7 +34,7 @@ password=''
 filename=''
 cart_number=0
 cut_number=0
-audio_format=0
+audio_format=-1
 channels=2
 sample_rate=48000
 bit_rate=0
@@ -84,16 +86,43 @@ for arg in sys.argv:
 if(not password):
     password=getpass.getpass()
 if((not url)or(not username)):
-    print(usage)
+    eprint(usage)
+    sys.exit(1)
+if(not filename):
+    eprint('you must supply "--filename"')
+    sys.exit(1)
+if(cart_number==0):
+    eprint('you must supply "--cart-number"')
+    sys.exit(1)
+if(cut_number==0):
+    eprint('you must supply "--cut-number"')
+    sys.exit(1)
+if(audio_format<0):
+    eprint('you must supply "--audio-format"')
+    sys.exit(1)
+if(start_point<0):
+    eprint('you must supply "--start_point"')
+    sys.exit(1)
+if(end_point<0):
+    eprint('you must supply "--end_point"')
     sys.exit(1)
 
 #
 # Get the code list
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
-webapi.Export(filename=filename,cart_number=cart_number,cut_number=cut_number,
-              audio_format=audio_format,channels=channels,
-              sample_rate=sample_rate,bit_rate=bit_rate,quality=quality,
-              start_point=start_point,end_point=end_point,
-              normalization_level=normalization_level,
-              enable_metadata=enable_metadata)
+try:
+    webapi.Export(filename=filename,cart_number=cart_number,
+                  cut_number=cut_number,
+                  audio_format=audio_format,channels=channels,
+                  sample_rate=sample_rate,bit_rate=bit_rate,quality=quality,
+                  start_point=start_point,end_point=end_point,
+                  normalization_level=normalization_level,
+                  enable_metadata=enable_metadata)
+except rivwebpyapi.RivWebPyError as err:
+    eprint('*** ERROR ***')
+    eprint('Response Code: '+str(err.responseCode))
+    eprint('ErrorString: '+str(err.errorString))
+    eprint('*************')
+    eprint('')
+    sys.exit(1)

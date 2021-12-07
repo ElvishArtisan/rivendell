@@ -25,6 +25,8 @@
 import getpass
 import rivwebpyapi
 import sys
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 url='';
 username=''
@@ -35,7 +37,7 @@ log_name=''
 #
 # Get login parameters
 #
-usage='add_log --url=<rd-url> --username=<rd-username> --cart-number=<num> [--password=<passwd>]'
+usage='add_log --url=<rd-url> --username=<rd-username> --service-name=<str> --log-name=<str> [--password=<passwd>]'
 for arg in sys.argv:
     f0=arg.split('=')
     if(len(f0)==2):
@@ -53,11 +55,25 @@ for arg in sys.argv:
 if(not password):
     password=getpass.getpass()
 if((not url)or(not username)):
-    print(usage)
+    eprint(usage)
+    sys.exit(1)
+if(not log_name):
+    eprint('you must supply "--log-name"')
+    sys.exit(1)
+if(not service_name):
+    eprint('you must supply "--service-name"')
     sys.exit(1)
 
 #
 # Execute
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
-webapi.AddLog(service_name=service_name,log_name=log_name)
+try:
+    webapi.AddLog(service_name=service_name,log_name=log_name)
+except rivwebpyapi.RivWebPyError as err:
+    eprint('*** ERROR ***')
+    eprint('Response Code: '+str(err.responseCode))
+    eprint('ErrorString: '+str(err.errorString))
+    eprint('*************')
+    eprint('')
+    sys.exit(1)

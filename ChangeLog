@@ -22688,3 +22688,23 @@
 	* Added an 'ExportPeaks()' method to the 'rivwebpyapi' API.
 2021-12-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'Import()' method to the 'rivwebpyapi' API.
+2021-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RivWebPyError' exception type to the 'rivwebpyapi' API.
+	* Modified the 'rivwebpyapi.AddCart()' method to return a single
+	dictionary.
+	* Modified the 'rivwebpyapi.AddCut()' method to return a single
+	dictionary.
+	* Modified the 'rivwebpyapi.AudioInfo()' method to return a single
+	dictionary.
+	* Modified the 'rivwebpyapi.AssignSchedCode()' method to return a
+	single dictionary.
+	* Modified the 'rivwebpyapi.AudioStore()' method to return a single
+	dictionary.
+	* Modified the 'rivwebpyapi.ListCart()' method to return a single
+	dictionary.
+	* Modified the 'rivwebpyapi.ListCut()' method to return a single
+	dictionary.
+	* Modified the 'rivwebpyapi.ListGroup()' method to return a single
+	dictionary.
+	* Modified the 'rivwebpyapi.ListSystemSettings()' method to return a
+	single dictionary.

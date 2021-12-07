@@ -25,6 +25,8 @@
 import getpass
 import rivwebpyapi
 import sys
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 #
 # Get login parameters
@@ -46,14 +48,22 @@ for arg in sys.argv:
 if(not password):
     password=getpass.getpass()
 if((not url)or(not username)):
-    print(usage)
+    eprint(usage)
     sys.exit(1)
 
 #
 # Get the group list
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
-groups=webapi.ListGroups()
+try:
+    groups=webapi.ListGroups()
+except rivwebpyapi.RivWebPyError as err:
+    eprint('*** ERROR ***')
+    eprint('Response Code: '+str(err.responseCode))
+    eprint('ErrorString: '+str(err.errorString))
+    eprint('*************')
+    eprint('')
+    sys.exit(1)
 
 #
 # Display the group list

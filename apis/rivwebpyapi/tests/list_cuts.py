@@ -25,6 +25,8 @@
 import getpass
 import rivwebpyapi
 import sys
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 url='';
 username=''
@@ -51,14 +53,25 @@ for arg in sys.argv:
 if(not password):
     password=getpass.getpass()
 if((not url)or(not username)):
-    print(usage)
+    eprint(usage)
+    sys.exit(1)
+if(cart_number==0):
+    eprint('you must supply "--cart-number"')
     sys.exit(1)
 
 #
 # Get the cut list
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
-cuts=webapi.ListCuts(cart_number=cart_number)
+try:
+    cuts=webapi.ListCuts(cart_number=cart_number)
+except rivwebpyapi.RivWebPyError as err:
+    eprint('*** ERROR ***')
+    eprint('Response Code: '+str(err.responseCode))
+    eprint('ErrorString: '+str(err.errorString))
+    eprint('*************')
+    eprint('')
+    sys.exit(1)
 
 #
 # Display the cut list

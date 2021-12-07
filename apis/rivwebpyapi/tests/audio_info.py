@@ -25,6 +25,8 @@
 import getpass
 import rivwebpyapi
 import sys
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 url='';
 username=''
@@ -55,22 +57,35 @@ if(not password):
 if((not url)or(not username)):
     print(usage)
     sys.exit(1)
+if(cart_number==0):
+    eprint('you must supply "--cart-number"')
+    sys.exit(1)
+if(cut_number==0):
+    eprint('you must supply "--cut-number"')
+    sys.exit(1)
 
 #
 # Get the code list
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
-infos=webapi.AudioInfo(cart_number=cart_number,cut_number=cut_number)
+try:
+    info=webapi.AudioInfo(cart_number=cart_number,cut_number=cut_number)
+except rivwebpyapi.RivWebPyError as err:
+    print('*** ERROR ***')
+    print('Response Code: '+str(err.responseCode))
+    print('ErrorString: '+str(err.errorString))
+    print('*************')
+    print('')
+    sys.exit(1)
 
 #
 # Display the settings list
 #
-for info in infos:
-    print('cartNumber: '+str(info['cartNumber']))
-    print('cutNumber: '+str(info['cutNumber']))
-    print('format: '+str(info['format']))
-    print('channels: '+str(info['channels']))
-    print('sampleRate: '+str(info['sampleRate']))
-    print('bitRate: '+str(info['bitRate']))
-    print('frames: '+str(info['frames']))
-    print('length: '+str(info['length']))
+print('cartNumber: '+str(info['cartNumber']))
+print('cutNumber: '+str(info['cutNumber']))
+print('format: '+str(info['format']))
+print('channels: '+str(info['channels']))
+print('sampleRate: '+str(info['sampleRate']))
+print('bitRate: '+str(info['bitRate']))
+print('frames: '+str(info['frames']))
+print('length: '+str(info['length']))

@@ -25,6 +25,8 @@
 import getpass
 import rivwebpyapi
 import sys
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 #
 # Get login parameters
@@ -45,34 +47,41 @@ for arg in sys.argv:
             password=f0[1]
         if(f0[0]=='--group-name'):
             group_name=f0[1]
-if(not group_name):
-    print(usage)
-    sys.exit(1)
 if(not password):
     password=getpass.getpass()
 if((not url)or(not username)):
-    print(usage)
+    eprint(usage)
+    sys.exit(1)
+if(not group_name):
+    eprint('you must supply "--group-name"')
     sys.exit(1)
 
 #
 # Get the group list
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
-groups=webapi.ListGroup(group_name=group_name)
+try:
+    grp=webapi.ListGroup(group_name=group_name)
+except rivwebpyapi.RivWebPyError as err:
+    eprint('*** ERROR ***')
+    eprint('Response Code: '+str(err.responseCode))
+    eprint('ErrorString: '+str(err.errorString))
+    eprint('*************')
+    eprint('')
+    sys.exit(1)
 
 #
 # Display the group list
 #
 print('')
-for grp in groups:
-    print('name: '+grp['name'])
-    print('description: '+grp['description'])
-    print('defaultCartType: '+grp['defaultCartType'])
-    print('defaultLowCart: '+str(grp['defaultLowCart']))
-    print('defaultHighCart: '+str(grp['defaultHighCart']))
-    print('cutShelfLife: '+str(grp['cutShelfLife']))
-    print('defaultTitle: '+grp['defaultTitle'])
-    print('enforceCartRange: '+str(grp['enforceCartRange']))
-    print('reportTfc: '+str(grp['reportTfc']))
-    print('reportMus: '+str(grp['reportMus']))
-    print('')
+print('name: '+grp['name'])
+print('description: '+grp['description'])
+print('defaultCartType: '+grp['defaultCartType'])
+print('defaultLowCart: '+str(grp['defaultLowCart']))
+print('defaultHighCart: '+str(grp['defaultHighCart']))
+print('cutShelfLife: '+str(grp['cutShelfLife']))
+print('defaultTitle: '+grp['defaultTitle'])
+print('enforceCartRange: '+str(grp['enforceCartRange']))
+print('reportTfc: '+str(grp['reportTfc']))
+print('reportMus: '+str(grp['reportMus']))
+print('')

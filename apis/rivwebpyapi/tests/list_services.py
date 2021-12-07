@@ -25,6 +25,8 @@
 import getpass
 import rivwebpyapi
 import sys
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 #
 # Get login parameters
@@ -56,7 +58,15 @@ if((not url)or(not username)):
 # Get the services list
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
-services=webapi.ListServices(trackable=trackable)
+try:
+    services=webapi.ListServices(trackable=trackable)
+except rivwebpyapi.RivWebPyError as err:
+    eprint('*** ERROR ***')
+    eprint('Response Code: '+str(err.responseCode))
+    eprint('ErrorString: '+str(err.errorString))
+    eprint('*************')
+    eprint('')
+    sys.exit(1)
 
 #
 # Display the services list

@@ -191,6 +191,11 @@ class RivWebPyApi_ListHandler(ContentHandler):
                              second=int(time_parts[2]),
                              microsecond=1000*msecs)
 
+class RivWebPyError(Exception):
+    def __init__(self,resp_body,resp_code):
+        self.errorString=resp_body
+        self.responseCode=resp_code
+
 class rivwebpyapi(object):
     """
        Create a 'RivWebPyApi' object for accessing the Web API.
@@ -222,10 +227,24 @@ class rivwebpyapi(object):
         self.__connection_username=username
         self.__connection_password=password
 
+    def __throwError(self,response):
+        if(response.headers['content-type']=='application/xml'):
+            fields={
+                'ResponseCode': 'integer',
+                'ErrorString': 'string'
+            }
+            handler=RivWebPyApi_ListHandler(base_tag='RDWebResult',fields=fields)
+            xml.sax.parseString(response.text,handler)
+            output=handler.output();
+            if((len(output)==1)and('ErrorString' in output[0])):
+                raise RivWebPyError(resp_body=output[0]['ErrorString'],
+                                    resp_code=response.status_code)
+        response.raise_for_status()
+
     def AddCart(self,group_name,cart_type,cart_number=0):
         """
           Add a new cart to the cart library. Returns the metadata of
-          the newly created cart (list of dictionaries).
+          the newly created cart (dictionary).
 
           Takes the following arguments:
 
@@ -258,13 +277,13 @@ class rivwebpyapi(object):
         }
         if(cart_number>0):
             postdata['CART_NUMBER']=str(cart_number)
-        print('ARGS: '+str(postdata))
+
         #
         # Fetch the XML
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -303,12 +322,12 @@ class rivwebpyapi(object):
         handler=RivWebPyApi_ListHandler(base_tag='cart',fields=fields)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()
+        return handler.output()[0]
 
     def AddCut(self,cart_number):
         """
           Add a new cut to an existing audio cart. Returns the metadata of
-          the newly created cut (list of dictionaries).
+          the newly created cut (dictionary).
 
           Takes the following argument:
 
@@ -335,7 +354,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -390,7 +409,7 @@ class rivwebpyapi(object):
         handler=RivWebPyApi_ListHandler(base_tag='cut',fields=fields)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()
+        return handler.output()[0]
 
     def AddLog(self,service_name,log_name):
         """
@@ -425,7 +444,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
     def AssignSchedCode(self,cart_number,sched_code):
         """
@@ -460,12 +479,12 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
     def AudioInfo(self,cart_number,cut_number):
         """
           Get information about an entry in the Rivendell audio store
-          (list of dictionaries).
+          (dictionary).
 
           cart_number - The number of the desired cart, in the range
                         1 - 999999 (integer)
@@ -495,7 +514,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -513,11 +532,11 @@ class rivwebpyapi(object):
         handler=RivWebPyApi_ListHandler(base_tag='audioInfo',fields=fields)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()
+        return handler.output()[0]
 
     def AudioStore(self):
         """
-          Get information about the audio store (list of dictionaries).
+          Get information about the audio store (dictionary).
         """
 
         #
@@ -534,7 +553,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -546,7 +565,7 @@ class rivwebpyapi(object):
         handler=RivWebPyApi_ListHandler(base_tag='audioStore',fields=fields)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()
+        return handler.output()[0]
 
     def DeleteAudio(self,cart_number,cut_number):
         """
@@ -580,7 +599,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -627,7 +646,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
     def Export(self,filename,cart_number,cut_number,audio_format,channels,
                sample_rate,bit_rate,quality,start_point,end_point,
@@ -702,7 +721,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata,stream=True)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
         with open(filename,'wb') as handle:
             for block in r.iter_content(1024):
                 handle.write(block)
@@ -741,7 +760,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata,stream=True)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
         ret=bytes()
         for block in r.iter_content(chunk_size=1024):
             ret=ret+block
@@ -823,12 +842,12 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata,files=files)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
     def ListCart(self,cart_number,include_cuts=False):
         """
           Returns the metadata associated with a Rivendell cart
-          (list of dictionaries).
+          (dictionary).
 
           Takes the following arguments:
 
@@ -860,7 +879,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -899,7 +918,7 @@ class rivwebpyapi(object):
         handler=RivWebPyApi_ListHandler(base_tag='cart',fields=fields)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()
+        return handler.output()[0]
 
     def ListCarts(self,group_name='',filter_string='',cart_type='all',
                   include_cuts=False):
@@ -945,7 +964,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -1016,7 +1035,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -1033,7 +1052,7 @@ class rivwebpyapi(object):
     def ListCut(self,cart_number,cut_number):
         """
           Returns the metadata associated with a Rivendell cut
-          (list of dictionaries).
+          (dictionary).
 
           Takes the following arguments:
 
@@ -1065,7 +1084,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -1120,7 +1139,7 @@ class rivwebpyapi(object):
         handler=RivWebPyApi_ListHandler(base_tag='cut',fields=fields)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()
+        return handler.output()[0]
 
     def ListCuts(self,cart_number):
         """
@@ -1152,7 +1171,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -1211,7 +1230,7 @@ class rivwebpyapi(object):
 
     def ListGroup(self,group_name):
         """
-          Returns a Rivendell group (list of dictionaries).
+          Returns a Rivendell group (dictionary).
 
           Takes the following argument:
 
@@ -1234,7 +1253,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -1255,7 +1274,7 @@ class rivwebpyapi(object):
         handler=RivWebPyApi_ListHandler(base_tag='group',fields=fields)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()
+        return handler.output()[0]
 
     def ListGroups(self):
         """
@@ -1276,7 +1295,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -1323,7 +1342,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -1458,7 +1477,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -1507,7 +1526,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -1551,7 +1570,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -1567,7 +1586,7 @@ class rivwebpyapi(object):
 
     def ListSystemSettings(self):
         """
-          Returns Rivendell system settings (list of dictionaries).
+          Returns Rivendell system settings (dictionary).
         """
 
         #
@@ -1584,7 +1603,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)
 
         #
         # Generate the output dictionary
@@ -1604,7 +1623,7 @@ class rivwebpyapi(object):
         handler=RivWebPyApi_ListHandler(base_tag='systemSettings',fields=fields)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()
+        return handler.output()[0]
 
     def RemoveCart(self,cart_number):
         """
@@ -1634,16 +1653,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
-
-        #
-        # Generate the output dictionary
-        #
-        fields={
-            'ResponseCode': 'integer',
-            'ErrorString': 'string'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='RDWebResult',fields=fields)
+            self.__throwError(response=r)
 
     def RemoveCut(self,cart_number,cut_number):
         """
@@ -1679,16 +1689,7 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
-
-        #
-        # Generate the output dictionary
-        #
-        fields={
-            'ResponseCode': 'integer',
-            'ErrorString': 'string'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='RDWebResult',fields=fields)
+            self.__throwError(response=r)
 
     def UnassignSchedCode(self,cart_number,sched_code):
         """
@@ -1723,4 +1724,4 @@ class rivwebpyapi(object):
         #
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
-            r.raise_for_status()
+            self.__throwError(response=r)

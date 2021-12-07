@@ -25,6 +25,8 @@
 import getpass
 import rivwebpyapi
 import sys
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 url='';
 username=''
@@ -51,15 +53,22 @@ if((not url)or(not username)):
     sys.exit(1)
 
 #
-# Get the code list
+# Get the settings
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
-settings=webapi.AudioStore()
+try:
+    setting=webapi.AudioStore()
+except rivwebpyapi.RivWebPyError as err:
+    print('*** ERROR ***')
+    print('Response Code: '+str(err.responseCode))
+    print('ErrorString: '+str(err.errorString))
+    print('*************')
+    print('')
+    sys.exit(1)
 
 #
 # Display the settings list
 #
-for setting in settings:
-    print('freeBytes: '+str(setting['freeBytes']))
-    print('totalBytes: '+str(setting['totalBytes']))
-    print('')
+print('freeBytes: '+str(setting['freeBytes']))
+print('totalBytes: '+str(setting['totalBytes']))
+print('')

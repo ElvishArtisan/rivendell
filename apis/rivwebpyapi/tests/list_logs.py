@@ -25,6 +25,8 @@
 import getpass
 import rivwebpyapi
 import sys
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 url='';
 username=''
@@ -69,9 +71,17 @@ if((not url)or(not username)):
 # Get the log list
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
-logs=webapi.ListLogs(service_name=service_name,log_name=log_name,
-                     trackable=trackable,filter_string=filter_string,
-                     recent=recent)
+try:
+    logs=webapi.ListLogs(service_name=service_name,log_name=log_name,
+                         trackable=trackable,filter_string=filter_string,
+                         recent=recent)
+except rivwebpyapi.RivWebPyError as err:
+    eprint('*** ERROR ***')
+    eprint('Response Code: '+str(err.responseCode))
+    eprint('ErrorString: '+str(err.errorString))
+    eprint('*************')
+    eprint('')
+    sys.exit(1)
 
 #
 # Display the log list

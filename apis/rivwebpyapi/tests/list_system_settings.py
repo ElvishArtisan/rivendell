@@ -25,6 +25,8 @@
 import getpass
 import rivwebpyapi
 import sys
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 url='';
 username=''
@@ -56,20 +58,27 @@ if((not url)or(not username)):
 # Get the code list
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
-settings=webapi.ListSystemSettings()
+try:
+    setting=webapi.ListSystemSettings()
+except rivwebpyapi.RivWebPyError as err:
+    eprint('*** ERROR ***')
+    eprint('Response Code: '+str(err.responseCode))
+    eprint('ErrorString: '+str(err.errorString))
+    eprint('*************')
+    eprint('')
+    sys.exit(1)
 
 #
 # Display the settings list
 #
-for setting in settings:
-    print('realmName: '+str(setting['realmName']))
-    print('sampleRate: '+str(setting['sampleRate']))
-    print('duplicateTitles: '+str(setting['duplicateTitles']))
-    print('fixDuplicateTitles: '+str(setting['fixDuplicateTitles']))
-    print('maxPostLength: '+str(setting['maxPostLength']))
-    print('isciXreferencePath: '+str(setting['isciXreferencePath']))
-    print('tempCartGroup: '+str(setting['tempCartGroup']))
-    print('longDateFormat: '+str(setting['longDateFormat']))
-    print('shortDateFormat: '+str(setting['shortDateFormat']))
-    print('showTwelveHourTime: '+str(setting['showTwelveHourTime']))
-    print('')
+print('realmName: '+str(setting['realmName']))
+print('sampleRate: '+str(setting['sampleRate']))
+print('duplicateTitles: '+str(setting['duplicateTitles']))
+print('fixDuplicateTitles: '+str(setting['fixDuplicateTitles']))
+print('maxPostLength: '+str(setting['maxPostLength']))
+print('isciXreferencePath: '+str(setting['isciXreferencePath']))
+print('tempCartGroup: '+str(setting['tempCartGroup']))
+print('longDateFormat: '+str(setting['longDateFormat']))
+print('shortDateFormat: '+str(setting['shortDateFormat']))
+print('showTwelveHourTime: '+str(setting['showTwelveHourTime']))
+print('')

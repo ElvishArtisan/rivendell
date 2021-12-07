@@ -25,6 +25,8 @@
 import getpass
 import rivwebpyapi
 import sys
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 url='';
 username=''
@@ -56,7 +58,15 @@ if((not url)or(not username)):
 # Get the code list
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
-codes=webapi.ListSchedulerCodes()
+try:
+    codes=webapi.ListSchedulerCodes()
+except rivwebpyapi.RivWebPyError as err:
+    eprint('*** ERROR ***')
+    eprint('Response Code: '+str(err.responseCode))
+    eprint('ErrorString: '+str(err.errorString))
+    eprint('*************')
+    eprint('')
+    sys.exit(1)
 
 #
 # Display the code list

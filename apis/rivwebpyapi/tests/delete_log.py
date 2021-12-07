@@ -25,6 +25,8 @@
 import getpass
 import rivwebpyapi
 import sys
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 url='';
 username=''
@@ -50,11 +52,22 @@ for arg in sys.argv:
 if(not password):
     password=getpass.getpass()
 if((not url)or(not username)):
-    print(usage)
+    eprint(usage)
+    sys.exit(1)
+if(not log_name):
+    eprint('you must supply "--log-name"')
     sys.exit(1)
 
 #
 # Execute
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
-webapi.DeleteLog(log_name=log_name)
+try:
+    webapi.DeleteLog(log_name=log_name)
+except rivwebpyapi.RivWebPyError as err:
+    eprint('*** ERROR ***')
+    eprint('Response Code: '+str(err.responseCode))
+    eprint('ErrorString: '+str(err.errorString))
+    eprint('*************')
+    eprint('')
+    sys.exit(1)
