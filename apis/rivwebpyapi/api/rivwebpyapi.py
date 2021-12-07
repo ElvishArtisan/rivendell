@@ -707,6 +707,46 @@ class rivwebpyapi(object):
             for block in r.iter_content(1024):
                 handle.write(block)
 
+    def ExportPeaks(self,cart_number,cut_number):
+        """
+          Export audio peak data from the audio store (bytes).
+
+          Takes the following arguments:
+
+          cart_number - The number of the desired cart, in the range
+                        1 - 999999 (integer)
+
+          cut_number - The number of the desired cut, in the range
+                        1 - 999 (integer)
+        """
+
+        if((cart_number<1)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+        if((cut_number<1)or(cut_number>999)):
+            raise ValueError('invalid cut number')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '16',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number),
+            'CUT_NUMBER': str(cut_number)
+        }
+
+        #
+        # Fetch the peak data
+        #
+        r=requests.post(self.__connection_url,data=postdata,stream=True)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+        ret=bytes()
+        for block in r.iter_content(chunk_size=1024):
+            ret=ret+block
+        return ret
+
     def ListCart(self,cart_number,include_cuts=False):
         """
           Returns the metadata associated with a Rivendell cart
