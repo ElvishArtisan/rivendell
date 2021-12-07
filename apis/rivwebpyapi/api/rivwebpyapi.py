@@ -27,6 +27,17 @@ from urllib.parse import urlparse
 from xml.sax.handler import ContentHandler
 import xml.sax
 
+#
+# Audio Formats
+#
+AUDIO_FORMAT_PCM16_WAV=0
+AUDIO_FORMAT_PCM24_WAV=7
+AUDIO_FORMAT_MPEG_L2_WAV=6
+AUDIO_FORMAT_MPEG_L2_NATIVE=2
+AUDIO_FORMAT_MPEG_L3_NATIVE=3
+AUDIO_FORMAT_FLAC=4
+AUDIO_FORMAT_OGG_VORBIS=5
+
 class RivWebPyApi_ListHandler(ContentHandler):
     def __init__(self,base_tag,fields):
         self.__output=[]
@@ -617,6 +628,84 @@ class rivwebpyapi(object):
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             r.raise_for_status()
+
+    def Export(self,filename,cart_number,cut_number,audio_format,channels,
+               sample_rate,bit_rate,quality,start_point,end_point,
+               normalization_level,enable_metadata):
+        """
+          Export audio data from the audio store (file).
+
+          Takes the following arguments:
+
+          filename - Location to save the exported audio file (string).
+
+          cart_number - The number of the desired cart, in the range
+                        1 - 999999 (integer)
+
+          cut_number - The number of the desired cut, in the range
+                        1 - 999 (integer)
+
+          audio_format - Format of the exported audio (AUDIO_FORMAT)
+
+          channels - Channel count of the exported audio (integer)
+
+          sample_rate - Sample rate of the exported audio (integer, 
+                        samples/sec)
+
+          bit_rate - Bit rate of the export audio [MPEG formats only]
+                     (integer, bits/sec)
+
+          quality - Quality [OggVorbis only] (integer, -1 - 10)
+
+          start_point - Start point of audio export (integer, mS from
+                        absolute start of stored audio)
+
+          end_point - End point of audio export (integer, mS from
+                      absolute start of stored audio)
+
+          normalization_level - Normalization level, 0 = no normalization
+                                (integer, dBFS)
+
+          enable_metadata - Encode metadata into exported file (boolean)
+        """
+
+        if((cart_number<1)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+        if((cut_number<1)or(cut_number>999)):
+            raise ValueError('invalid cut number')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '1',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number),
+            'CUT_NUMBER': str(cut_number),
+            'FORMAT': str(audio_format),
+            'CHANNELS': str(channels),
+            'SAMPLE_RATE': str(sample_rate),
+            'BIT_RATE': str(bit_rate),
+            'QUALITY': str(quality),
+            'START_POINT': str(start_point),
+            'END_POINT': str(end_point),
+            'NORMALIZATION_LEVEL': str(normalization_level)
+        }
+        if(enable_metadata):
+            postdata['ENABLE_METADATA']='1'
+        else:
+            postdata['ENABLE_METADATA']='0'
+
+        #
+        # Fetch the audio data
+        #
+        r=requests.post(self.__connection_url,data=postdata,stream=True)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+        with open(filename,'wb') as handle:
+            for block in r.iter_content(1024):
+                handle.write(block)
 
     def ListCart(self,cart_number,include_cuts=False):
         """

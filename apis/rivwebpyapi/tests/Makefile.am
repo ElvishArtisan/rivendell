@@ -28,6 +28,7 @@ EXTRA_DIST = add_cart.py\
              audio_store.py\
              delete_audio.py\
              delete_log.py\
+             export.py\
              list_cart.py\
              list_cart_sched_codes.py\
              list_carts.py\

@@ -22682,3 +22682,5 @@
 	* Added an 'AudioStore()' method to the 'rivwebpyapi' API.
 2021-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'DeleteAudio()' method to the 'rivwebpyapi' API.
+2021-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'Export()' method to the 'rivwebpyapi' API.
