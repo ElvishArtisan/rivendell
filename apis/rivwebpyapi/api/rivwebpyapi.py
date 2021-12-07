@@ -747,6 +747,84 @@ class rivwebpyapi(object):
             ret=ret+block
         return ret
 
+    def Import(self,filename,use_metadata,cart_number=0,cut_number=0,
+               channels=2,normalization_level=0,autotrim_level=0,
+               group_name='',title=''):
+        """
+          Import audio into the audio store
+
+          Takes the following arguments:
+
+          filename - Name of the file containing audio to be imported
+                     (string).
+
+          cart_number - The number of the desired cart, in the range
+                        0 - 999999 (integer)
+
+          cut_number - The number of the desired cut, in the range
+                        0 - 999 (integer)
+
+          use_metadata - Apply file embedded metadata to the destination
+                         cart/cut (boolean).
+
+          channels - Use specified number of channels in the destination
+                     cut. Valid values are 1 or 2 (integer).
+
+          normalization_level - Normalization level, 0 = no normalization
+                                (integer, dBFS)
+
+          autotrim_level - Autotrim level, 0 = no autotrim (integer, dBFS)
+
+          group_name - If both the 'cart-number' and 'cut-number' parameters
+                       are set to 0 and a valid 'group_name' parameter passed,
+                       the system will attempt to create a new cart/cut in
+                       the specified group.
+
+          title - The value to set as the title of the target cart. This
+                  will override any value found in in-file metadata
+                  (string).
+        """
+
+        if(not filename):
+            raise ValueError('missing filename')
+        if(group_name):
+            if((cart_number!=0) or (cut_number!=0)):
+                raise RuntimeError('cart/cut numbers cannot be specified when using the "group_name" parameter')
+        else:
+            if((cart_number<1)or(cart_number>999999)):
+                raise ValueError('invalid cart number')
+            if((cut_number<1)or(cut_number>999)):
+                raise ValueError('invalid cut number')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '2',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number),
+            'CUT_NUMBER': str(cut_number),
+            'CHANNELS': str(channels),
+            'NORMALIZATION_LEVEL': str(normalization_level),
+            'AUTOTRIM_LEVEL': str(autotrim_level),
+            'TITLE': str(title),
+            'USE_METADATA': '0'
+        }
+        if(use_metadata):
+            postdata['USE_METADATA']='1'
+        if(group_name):
+            postdata['CREATE']='1'
+            postdata['GROUP_NAME']=group_name
+        files={'FILENAME': open(filename,'rb')}
+
+        #
+        # Execute
+        #
+        r=requests.post(self.__connection_url,data=postdata,files=files)
+        if(r.status_code!=requests.codes.ok):
+            r.raise_for_status()
+
     def ListCart(self,cart_number,include_cuts=False):
         """
           Returns the metadata associated with a Rivendell cart

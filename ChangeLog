@@ -22686,3 +22686,5 @@
 	* Added an 'Export()' method to the 'rivwebpyapi' API.
 2021-12-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'ExportPeaks()' method to the 'rivwebpyapi' API.
+2021-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'Import()' method to the 'rivwebpyapi' API.

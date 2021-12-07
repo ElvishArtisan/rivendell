@@ -30,6 +30,7 @@ EXTRA_DIST = add_cart.py\
              delete_log.py\
              export.py\
              export_peaks.py\
+             import.py\
              list_cart.py\
              list_cart_sched_codes.py\
              list_carts.py\
