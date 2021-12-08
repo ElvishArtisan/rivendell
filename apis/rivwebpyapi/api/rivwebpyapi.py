@@ -1651,6 +1651,9 @@ class rivwebpyapi(object):
 
           operation - The operation to perform. Valid values are 'CREATE',
                       'UPDATE' and 'CLEAR'.
+
+          guid - The Globally Unique IDentifier for an existing log.
+                 Need only for the 'UPDATE' and 'CLEAR' operations (string).
         """
 
         if(not log_name):
@@ -1693,23 +1696,41 @@ class rivwebpyapi(object):
 
         return handler.output()[0]
 
+    def Rehash(self,cart_number,cut_number):
+        """
+          Update the SHA1 hash entry in the database from the contents of
+          the audio store.
 
+          Takes the following arguments:
 
+          cart_number - The number of the desired cart, in the range
+                        1 - 999999 (integer)
 
+          cut_number - The number of the desired cut, in the range
+                        1 - 999 (integer)
+        """
+        if((cart_number<1)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+        if((cut_number<1)or(cut_number>999)):
+            raise ValueError('invalid cut number')
 
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '32',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number),
+            'CUT_NUMBER': str(cut_number)
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            self.__throwError(response=r)
 
     def RemoveCart(self,cart_number):
         """
