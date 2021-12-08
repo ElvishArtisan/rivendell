@@ -844,6 +844,21 @@ class rivwebpyapi(object):
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
+        #
+        # Process Response
+        #
+        fields={
+            'ResponseCode': 'integer',
+            'ErrorString': 'string',
+            'CartNumber': 'integer',
+            'CutNumber': 'integer'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='RDWebResult',fields=fields)
+        xml.sax.parseString(r.text,handler)
+        output=handler.output();
+        if(len(output)==1):
+            return output[0]
+
     def ListCart(self,cart_number,include_cuts=False):
         """
           Returns the metadata associated with a Rivendell cart

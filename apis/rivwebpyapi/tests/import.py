@@ -79,10 +79,10 @@ if(not password):
 if((not url)or(not username)):
     print(usage)
     sys.exit(1)
-if(cart_number==0):
+if((not group_name)and(cart_number==0)):
     eprint('you must supply "--cart-number"')
     sys.exit(1)
-if(cut_number==0):
+if((not group_name)and(cut_number==0)):
     eprint('you must supply "--cut-number"')
     sys.exit(1)
 if(not filename):
@@ -94,11 +94,12 @@ if(not filename):
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
 try:
-    webapi.Import(filename=filename,cart_number=cart_number,
-                  cut_number=cut_number,
-                  channels=channels,normalization_level=normalization_level,
-                  autotrim_level=autotrim_level,use_metadata=use_metadata,
-                  group_name=group_name,title=title)
+    result=webapi.Import(filename=filename,cart_number=cart_number,
+                         cut_number=cut_number,channels=channels,
+                         normalization_level=normalization_level,
+                         autotrim_level=autotrim_level,
+                         use_metadata=use_metadata,group_name=group_name,
+                         title=title)
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR ***')
     eprint('Response Code: '+str(err.responseCode))
@@ -106,3 +107,14 @@ except rivwebpyapi.RivWebPyError as err:
     eprint('*************')
     eprint('')
     sys.exit(1)
+
+#
+# Display the destination info
+#
+print('')
+if(group_name):
+    print('ADDED:')
+    print('cartNumber: '+str(result['CartNumber']))
+    print('cutNumber: '+str(result['CutNumber']))
+    print('')
+

@@ -22708,3 +22708,6 @@
 	dictionary.
 	* Modified the 'rivwebpyapi.ListSystemSettings()' method to return a
 	single dictionary.
+2021-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'rivwebpyapi.Import()' method to return a dictionary
+	containing the cart and cut numbers of the import destination.
