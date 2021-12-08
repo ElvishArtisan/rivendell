@@ -1,10 +1,10 @@
 #!%PYTHON_BANGPATH%
 
-# lock_log.py
+# trim_audio.py
 #
 # RivWebPyApi test script for Rivendell
 #
-#  Test the LockLog Web API call
+#  Test the TrimAudio Web API call
 #
 #   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -31,14 +31,14 @@ def eprint(*args,**kwargs):
 url='';
 username=''
 password=''
-log_name=''
-operation=''
-guid=''
+cart_number=0
+cut_number=0
+trim_level=1700
 
 #
-# Get login parameters
+# Get parameters
 #
-usage='lock_log --url=<rd-url> --username=<rd-username> --log-name=<str> --operation=CREATE|UPDATE|CLEAR --guid=<str>'
+usage='trim_audio.py --url=<rd-url> --username=<rd-username> --cart-number=<num> --cut-number=<num> --trim-level=<lvl> [--password=<passwd>]'
 for arg in sys.argv:
     f0=arg.split('=')
     if(len(f0)==2):
@@ -48,29 +48,26 @@ for arg in sys.argv:
             username=f0[1]
         if(f0[0]=='--password'):
             password=f0[1]
-        if(f0[0]=='--log-name'):
-            log_name=f0[1]
-        if(f0[0]=='--operation'):
-            operation=f0[1]
-        if(f0[0]=='--guid'):
-            guid=f0[1]
+        if(f0[0]=='--cart-number'):
+            cart_number=int(f0[1])
+        if(f0[0]=='--cut-number'):
+            cut_number=int(f0[1])
+        if(f0[0]=='--trim-level'):
+            trim_level=int(f0[1])
 
 if(not password):
     password=getpass.getpass()
 if((not url)or(not username)):
-    eprint(usage)
+    print(usage)
     sys.exit(1)
-if(not log_name):
-    eprint('you must supply "--log-name"')
+if(cart_number==0):
+    eprint('you must supply "--cart-number"')
     sys.exit(1)
-if(not operation):
-    eprint('you must supply "--operation"')
+if(cut_number==0):
+    eprint('you must supply "--cut-number"')
     sys.exit(1)
-if((operation!='CREATE')and(operation!='UPDATE')and(operation!='CLEAR')):
-    eprint('invalid "--operation" specified');
-    sys.exit(1)
-if((operation!='CREATE')and(not guid)):
-    eprint('you must supply "--guid"')
+if(trim_level==1700):
+    eprint('you must supply "--trim_level"')
     sys.exit(1)
 
 #
@@ -78,7 +75,8 @@ if((operation!='CREATE')and(not guid)):
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
 try:
-    result=webapi.LockLog(log_name=log_name,operation=operation,guid=guid)
+    result=webapi.TrimAudio(cart_number=cart_number,cut_number=cut_number,
+                            trim_level=trim_level)
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR ***')
     eprint('Response Code: '+str(err.responseCode))
@@ -88,14 +86,9 @@ except rivwebpyapi.RivWebPyError as err:
     sys.exit(1)
 
 #
-# Display the result
+# Display results
 #
+print('trimLevel: '+str(result['trimLevel']))
+print('startTrimPoint: '+str(result['startTrimPoint']))
+print('endTrimPoint: '+str(result['endTrimPoint']))
 print('')
-print('RESULT:')
-print('result: '+str(result['result']))
-print('logName: '+str(result['logName']))
-print('lockGuid: '+str(result['lockGuid']))
-print('address: '+str(result['address']))
-print('lockTimeout: '+str(result['address']))
-print('')
-

@@ -1798,6 +1798,62 @@ class rivwebpyapi(object):
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
+    def TrimAudio(self,cart_number,cut_number,trim_level):
+        """
+          Return time pointers to the first and last instance of a
+          particular level in a cut (dictionary).
+
+          Takes the following arguments:
+
+          cart_number - The number of the desired cart, in the range
+                        1 - 999999 (integer)
+
+          cut_number - The number of the desired cut, in the range
+                        1 - 999 (integer)
+          trim_level - Level in 1/100 dB, relative to Rivendell reference
+                       level [-16 dBFS] (integer).
+        """
+        if((cart_number<1)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+        if((cut_number<1)or(cut_number>999)):
+            raise ValueError('invalid cut number')
+        if(trim_level>1600):
+            raise ValueError('invalid trim level')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '17',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number),
+            'CUT_NUMBER': str(cut_number),
+            'TRIM_LEVEL': str(trim_level)
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            self.__throwError(response=r)
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'cartNumber': 'integer',
+            'cutNumber': 'integer',
+            'trimLevel': 'integer',
+            'startTrimPoint': 'integer',
+            'endTrimPoint': 'integer'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='trimPoint',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()[0]
+
     def UnassignSchedCode(self,cart_number,sched_code):
         """
           Unassign a schedule code from a cart.
