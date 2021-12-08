@@ -1640,6 +1640,77 @@ class rivwebpyapi(object):
 
         return handler.output()[0]
 
+    def LockLog(self,log_name,operation,guid):
+        """
+          Manage the lock for the specified log (dictionary).
+
+          Takes the following argument:
+
+          log_name - The name of the log for which to create the write lock
+                     (string)
+
+          operation - The operation to perform. Valid values are 'CREATE',
+                      'UPDATE' and 'CLEAR'.
+        """
+
+        if(not log_name):
+            raise ValueError('invalid log name')
+        if((operation!='CREATE')and(operation!='UPDATE')and
+           (operation!='CLEAR')):
+            raise ValueError('invalid lock operation')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '34',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'LOG_NAME': str(log_name),
+            'OPERATION': str(operation),
+            'LOCK_GUID': str(guid)
+        }
+
+        #
+        # Fetch the XML
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            self.__throwError(response=r)
+
+        #
+        # Generate the output dictionary
+        #
+        fields={
+            'result': 'boolean',
+            'logName': 'string',
+            'lockGuid': 'string',
+            'address': 'string',
+            'lockTimeout': 'integer'
+        }
+        handler=RivWebPyApi_ListHandler(base_tag='logLock',fields=fields)
+        xml.sax.parseString(r.text,handler)
+
+        return handler.output()[0]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     def RemoveCart(self,cart_number):
         """
           Remove a cart from the cart library.

@@ -43,6 +43,7 @@ EXTRA_DIST = add_cart.py\
              list_scheduler_codes.py\
              list_services.py\
              list_system_settings.py\
+             lock_log.py\
              remove_cart.py\
              remove_cut.py\
              unassign_sched_code.py

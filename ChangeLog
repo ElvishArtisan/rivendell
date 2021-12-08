@@ -22711,3 +22711,5 @@
 2021-12-08 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'rivwebpyapi.Import()' method to return a dictionary
 	containing the cart and cut numbers of the import destination.
+2021-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LockLog()' method to the 'rivwebpyapi' API.
