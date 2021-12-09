@@ -22717,3 +22717,5 @@
 	* Added a 'Rehash()' method to the 'rivwebpyapi' API.
 2021-12-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'TrimAudio()' method to the 'rivwebpyapi' API.
+2021-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SavePodcast()' method to the 'rivwebpyapi' API.

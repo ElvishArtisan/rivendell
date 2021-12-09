@@ -4020,7 +4020,7 @@
 
 <sect1>
   <title>SavePodcast</title>
-  <subtitle>Save posted podcast audio</subtitle>
+  <subtitle>Save posted podcast audio to the Rivendell audio store</subtitle>
   <para>
     Command Code: <code>RDXPORT_COMMAND_SAVE_PODCAST</code>
   </para>

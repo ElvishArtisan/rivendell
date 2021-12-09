@@ -1854,6 +1854,40 @@ class rivwebpyapi(object):
 
         return handler.output()[0]
 
+    def SavePodcast(self,cast_id,filename):
+        """
+          Save posted podcast audio to the Rivendell audio store.
+
+          Takes the following arguments:
+
+          filename - Name of the file containing audio to be stored (string).
+
+          cast_id - ID of the owning podcast item (integer).
+        """
+
+        if(not filename):
+            raise ValueError('missing filename')
+        if(cast_id<0):
+            raise ValueError('invalid podcast id')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '38',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'ID': str(cast_id)
+        }
+        files={'FILENAME': open(filename,'rb')}
+
+        #
+        # Execute
+        #
+        r=requests.post(self.__connection_url,data=postdata,files=files)
+        if(r.status_code!=requests.codes.ok):
+            self.__throwError(response=r)
+
     def UnassignSchedCode(self,cart_number,sched_code):
         """
           Unassign a schedule code from a cart.
