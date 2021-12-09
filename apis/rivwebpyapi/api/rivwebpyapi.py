@@ -1920,6 +1920,35 @@ class rivwebpyapi(object):
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
+    def RemoveImage(self,image_id):
+        """
+          Upload a podcast image to the remote archive.
+
+          Takes the following argument:
+
+          image_id - ID of the image (integer).
+        """
+
+        if(image_id<0):
+            raise ValueError('invalid image ID')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '45',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'ID': str(image_id)
+        }
+
+        #
+        # Fetch the audio data
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            self.__throwError(response=r)
+
     def TrimAudio(self,cart_number,cut_number,trim_level):
         """
           Return time pointers to the first and last instance of a
