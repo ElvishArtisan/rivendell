@@ -22721,3 +22721,5 @@
 	* Added a 'SavePodcast()' method to the 'rivwebpyapi' API.
 2021-12-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'GetPodcast()' method to the 'rivwebpyapi' API.
+2021-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PostPodcast()' method to the 'rivwebpyapi' API.
