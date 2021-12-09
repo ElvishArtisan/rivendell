@@ -1891,6 +1891,35 @@ class rivwebpyapi(object):
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
+    def RemoveImage(self,image_id):
+        """
+          Upload a podcast image to the remote archive.
+
+          Takes the following argument:
+
+          image_id - ID of the image (integer).
+        """
+
+        if(image_id<0):
+            raise ValueError('invalid image ID')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '45',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'ID': str(image_id)
+        }
+
+        #
+        # Fetch the audio data
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            self.__throwError(response=r)
+
     def RemovePodcast(self,cast_id):
         """
           Delete podcast audio from the remote archive.
@@ -1920,26 +1949,26 @@ class rivwebpyapi(object):
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
-    def RemoveImage(self,image_id):
+    def RemoveRss(self,feed_id):
         """
-          Upload a podcast image to the remote archive.
+          Delete podcast RSS XML from the remote archive.
 
           Takes the following argument:
 
-          image_id - ID of the image (integer).
+          feed_id - ID of the owning podcast feed (integer).
         """
 
-        if(image_id<0):
-            raise ValueError('invalid image ID')
+        if(feed_id<0):
+            raise ValueError('invalid feed ID')
 
         #
         # Build the WebAPI arguments
         #
         postdata={
-            'COMMAND': '45',
+            'COMMAND': '43',
             'LOGIN_NAME': self.__connection_username,
             'PASSWORD': self.__connection_password,
-            'ID': str(image_id)
+            'ID': str(feed_id)
         }
 
         #
