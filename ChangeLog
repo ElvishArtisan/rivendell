@@ -22731,3 +22731,5 @@
 	* Added a 'RemoveImage()' method to the 'rivwebpyapi' API.
 2021-12-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RemoveRss()' method to the 'rivwebpyapi' API.
+2021-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PostRss()' method to the 'rivwebpyapi' API.
