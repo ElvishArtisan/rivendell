@@ -49,6 +49,7 @@ EXTRA_DIST = add_cart.py\
              rehash.py\
              remove_cart.py\
              remove_cut.py\
+             remove_podcast.py\
              save_podcast.py\
              trim_audio.py\
              unassign_sched_code.py
