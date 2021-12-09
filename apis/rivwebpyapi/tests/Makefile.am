@@ -45,6 +45,7 @@ EXTRA_DIST = add_cart.py\
              list_services.py\
              list_system_settings.py\
              lock_log.py\
+             post_image.py\
              post_podcast.py\
              rehash.py\
              remove_cart.py\

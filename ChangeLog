@@ -22725,3 +22725,5 @@
 	* Added a 'PostPodcast()' method to the 'rivwebpyapi' API.
 2021-12-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RemovePodcast()' method to the 'rivwebpyapi' API.
+2021-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PostImage()' method to the 'rivwebpyapi' API.

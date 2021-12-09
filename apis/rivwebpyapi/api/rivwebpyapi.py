@@ -1730,6 +1730,35 @@ class rivwebpyapi(object):
 
         return handler.output()[0]
 
+    def PostImage(self,image_id):
+        """
+          Upload a podcast image to the remote archive.
+
+          Takes the following argument:
+
+          image_id - ID of the image (integer).
+        """
+
+        if(image_id<0):
+            raise ValueError('invalid image ID')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '44',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'ID': str(image_id)
+        }
+
+        #
+        # Fetch the audio data
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            self.__throwError(response=r)
+
     def PostPodcast(self,cast_id):
         """
           Upload podcast audio from the Rivendell audio store to the
