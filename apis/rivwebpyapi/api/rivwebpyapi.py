@@ -766,6 +766,40 @@ class rivwebpyapi(object):
             ret=ret+block
         return ret
 
+    def GetPodcast(self,cast_id,filename):
+        """
+          Get posted podcast audio from the Rivendell audio store.
+
+          Takes the following arguments:
+
+          cast_id - ID of the owning podcast item (integer).
+
+          filename - Destination filename (string).
+        """
+
+        if(cast_id<0):
+            raise ValueError('invalid podcast ID')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '37',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'ID': str(cast_id)
+        }
+
+        #
+        # Fetch the audio data
+        #
+        r=requests.post(self.__connection_url,data=postdata,stream=True)
+        if(r.status_code!=requests.codes.ok):
+            self.__throwError(response=r)
+        with open(filename,'wb') as handle:
+            for block in r.iter_content(1024):
+                handle.write(block)
+
     def Import(self,filename,use_metadata,cart_number=0,cut_number=0,
                channels=2,normalization_level=0,autotrim_level=0,
                group_name='',title=''):

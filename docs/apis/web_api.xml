@@ -1782,7 +1782,7 @@
 
 <sect1>
   <title>GetPodcast</title>
-  <subtitle>Get posted podcast audio</subtitle>
+  <subtitle>Get posted podcast audio from the Rivendell audio store</subtitle>
   <para>
     Command Code: <code>RDXPORT_COMMAND_GET_PODCAST</code>, Feed Permissions
     or <code>Administer System</code>
