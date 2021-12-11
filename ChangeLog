@@ -22733,3 +22733,8 @@
 	* Added a 'RemoveRss()' method to the 'rivwebpyapi' API.
 2021-12-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'PostRss()' method to the 'rivwebpyapi' API.
+2021-12-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Cart' class to the 'rivwebapi' API.
+	* Modified the 'AddCart()', 'ListCart()' and 'ListCarts()' methods
+	to use the 'Cart' class in the 'rivwebapi' API.
+	* Added an 'EditCart()' method to the 'rivwebpyapi' API.

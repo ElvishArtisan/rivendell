@@ -1,10 +1,10 @@
 #!%PYTHON_BANGPATH%
 
-# list_cart.py
+# edit_cart.py
 #
 # RivWebPyApi test script for Rivendell
 #
-#  Test the ListCart Web API call
+#  Test the EditCart Web API call
 #
 #   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -32,23 +32,31 @@ url='';
 username=''
 password=''
 cart_number=0
-include_cuts=False
+values={}
 
 #
 # Get login parameters
 #
-usage='list_cart --url=<rd-url> --username=<rd-username> --cart-number=<num> [--password=<passwd>] [--include-cuts]'
+usage='list_cart --url=<rd-url> --username=<rd-username> --cart-number=<num> [--set-value=<field>=<str> ...] [--password=<passwd>]'
 for arg in sys.argv:
     f0=arg.split('=')
-    if(len(f0)==2):
-        if(f0[0]=='--url'):
-            url=f0[1]
-        if(f0[0]=='--username'):
-            username=f0[1]
-        if(f0[0]=='--password'):
-            password=f0[1]
-        if(f0[0]=='--cart-number'):
-            cart_number=int(f0[1])
+    key=f0[0]
+    del f0[0]
+    value='='.join(f0)
+    if(value):
+        if(key=='--url'):
+            url=value
+        if(key=='--username'):
+            username=value
+        if(key=='--password'):
+            password=value
+        if(key=='--cart-number'):
+            cart_number=int(value)
+        if(key=='--set-value'):
+            f1=value.split('=')
+            key1=f1[0]
+            del f1[0]
+            values[key1]='='.join(f1)
 
 if(not password):
     password=getpass.getpass()
@@ -63,8 +71,11 @@ if(cart_number==0):
 # Get the cart list
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
+cart=rivwebpyapi.Cart()
+cart.setValues(values)
+
 try:
-    cart=webapi.ListCart(cart_number=cart_number,include_cuts=include_cuts)
+    cart=webapi.EditCart(cart_number=cart_number,values=cart.values())
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR ***')
     eprint('Response Code: '+str(err.responseCode))
@@ -74,8 +85,9 @@ except rivwebpyapi.RivWebPyError as err:
     sys.exit(1)
 
 #
-# Display the cart
+# Display the modified cart
 #
+print('MODIFIED')
 for key in cart.values():
     print(key+': '+str(cart.values()[key]))
 print('')

@@ -38,6 +38,41 @@ AUDIO_FORMAT_MPEG_L3_NATIVE=3
 AUDIO_FORMAT_FLAC=4
 AUDIO_FORMAT_OGG_VORBIS=5
 
+#
+# Data Schemas
+#
+CART_FIELDS={
+    'number': 'integer',
+    'type': 'string',
+    'groupName': 'string',
+    'title': 'string',
+    'artist': 'string',
+    'album': 'string',
+    'year': 'integer',
+    'label': 'string',
+    'client': 'string',
+    'agency': 'string',
+    'publisher': 'string',
+    'composer': 'string',
+    'conductor': 'string',
+    'userDefined': 'string',
+    'usageCode': 'integer',
+    'forcedLength': 'string',
+    'averageLength': 'string',
+    'lengthDeviation': 'string',
+    'averageSegueLength': 'string',
+    'averageHookLength': 'string',
+    'minimumTalkLength': 'string',
+    'maximumTalkLength': 'string',
+    'cutQuantity': 'integer',
+    'lastCutPlayed': 'integer',
+    'enforceLength': 'boolean',
+    'asyncronous': 'boolean',
+    'owner': 'string',
+    'metadataDatetime': 'datetime',
+    'songId': 'string'
+}
+
 class RivWebPyApi_ListHandler(ContentHandler):
     def __init__(self,base_tag,fields):
         self.__output=[]
@@ -196,6 +231,23 @@ class RivWebPyError(Exception):
         self.errorString=resp_body
         self.responseCode=resp_code
 
+class Cart(object):
+    def __init__(self,values={}):
+        if(len(values)==0):
+            self.__values={}
+            for key in CART_FIELDS:
+                self.__values[key]=None
+        else:
+            self.__values=values
+
+    def values(self):
+        return self.__values
+
+    def setValues(self,values):
+        for key in values:
+            if(key in self.__values.keys()):
+                self.__values[key]=values[key]
+
 class rivwebpyapi(object):
     """
        Create a 'RivWebPyApi' object for accessing the Web API.
@@ -244,7 +296,7 @@ class rivwebpyapi(object):
     def AddCart(self,group_name,cart_type,cart_number=0):
         """
           Add a new cart to the cart library. Returns the metadata of
-          the newly created cart (dictionary).
+          the newly created cart (rivwebpyapi.Cart object).
 
           Takes the following arguments:
 
@@ -288,41 +340,10 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
-        fields={
-            'number': 'integer',
-            'type': 'string',
-            'groupName': 'string',
-            'title': 'string',
-            'artist': 'string',
-            'album': 'string',
-            'year': 'integer',
-            'label': 'string',
-            'client': 'string',
-            'agency': 'string',
-            'publisher': 'string',
-            'composer': 'string',
-            'conductor': 'string',
-            'userDefined': 'string',
-            'usageCode': 'integer',
-            'forcedLength': 'string',
-            'averageLength': 'string',
-            'lengthDeviation': 'string',
-            'averageSegueLength': 'string',
-            'averageHookLength': 'string',
-            'minimumTalkLength': 'string',
-            'maximumTalkLength': 'string',
-            'cutQuantity': 'integer',
-            'lastCutPlayed': 'integer',
-            'enforceLength': 'boolean',
-            'asyncronous': 'boolean',
-            'owner': 'string',
-            'metadataDatetime': 'datetime',
-            'songId': 'string'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='cart',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='cart',fields=CART_FIELDS)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()[0]
+        return Cart(handler.output()[0])
 
     def AddCut(self,cart_number):
         """
@@ -648,6 +669,69 @@ class rivwebpyapi(object):
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
+    def EditCart(self,cart_number,values):
+        """
+          Write metadata changes for an existing cart into the database.
+
+          Takes the following arguments:
+
+          cart_number - The number of the desired cart, in the range
+                        1 - 999999.
+
+          values - A Cart object containing the desired edits.
+        """
+
+        if((cart_number<0)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '14',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number)
+        }
+        postnames={
+            'number': 'CART_NUMBER',
+            'groupName': 'GROUP_NAME',
+            'title': 'TITLE',
+            'artist': 'ARTIST',
+            'album': 'ALBUM',
+            'year': 'YEAR',
+            'label': 'LABEL',
+            'client': 'CLIENT',
+            'agency': 'AGENCY',
+            'publisher': 'PUBLISHER',
+            'composer': 'COMPOSER',
+            'conductor': 'CONDUCTOR',
+            'userDefined': 'USER_DEFINED',
+            'usageCode': 'USAGE_CODE',
+            'forcedLength': 'FORCED_LENGTH',
+            'enforceLength': 'ENFORCE_LENGTH',
+            'asyncronous': 'ASYNCHRONOUS',
+            'owner': 'OWNER'
+        }
+        for key in values:
+            if((values[key]!=None)and(key in postnames.keys())):
+                postdata[postnames[key]]=values[key]
+
+        #
+        # Execute
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            self.__throwError(response=r)
+
+        #
+        # Generate the output dictionary
+        #
+        handler=RivWebPyApi_ListHandler(base_tag='cart',fields=CART_FIELDS)
+        xml.sax.parseString(r.text,handler)
+
+        return Cart(handler.output()[0])
+
     def Export(self,filename,cart_number,cut_number,audio_format,channels,
                sample_rate,bit_rate,quality,start_point,end_point,
                normalization_level,enable_metadata):
@@ -896,7 +980,7 @@ class rivwebpyapi(object):
     def ListCart(self,cart_number,include_cuts=False):
         """
           Returns the metadata associated with a Rivendell cart
-          (dictionary).
+          (rivwebpyapi.Cart object).
 
           Takes the following arguments:
 
@@ -933,47 +1017,16 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
-        fields={
-            'number': 'integer',
-            'type': 'string',
-            'groupName': 'string',
-            'title': 'string',
-            'artist': 'string',
-            'album': 'string',
-            'year': 'integer',
-            'label': 'string',
-            'client': 'string',
-            'agency': 'string',
-            'publisher': 'string',
-            'composer': 'string',
-            'conductor': 'string',
-            'userDefined': 'string',
-            'usageCode': 'integer',
-            'forcedLength': 'string',
-            'averageLength': 'string',
-            'lengthDeviation': 'string',
-            'averageSegueLength': 'string',
-            'averageHookLength': 'string',
-            'minimumTalkLength': 'string',
-            'maximumTalkLength': 'string',
-            'cutQuantity': 'integer',
-            'lastCutPlayed': 'integer',
-            'enforceLength': 'boolean',
-            'asyncronous': 'boolean',
-            'owner': 'string',
-            'metadataDatetime': 'datetime',
-            'songId': 'string'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='cart',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='cart',fields=CART_FIELDS)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()[0]
+        return Cart(handler.output()[0])
 
     def ListCarts(self,group_name='',filter_string='',cart_type='all',
                   include_cuts=False):
         """
           Returns the metadata associated with a set of Rivendell carts
-          (list of dictionaries)
+          (list of rivwebpyapi.Cart objects)
 
           Takes the following arguments:
 
@@ -1016,43 +1069,16 @@ class rivwebpyapi(object):
             self.__throwError(response=r)
 
         #
-        # Generate the output dictionary
+        # Generate the output
         #
-        fields={
-            'number': 'integer',
-            'type': 'string',
-            'groupName': 'string',
-            'title': 'string',
-            'artist': 'string',
-            'album': 'string',
-            'year': 'integer',
-            'label': 'string',
-            'client': 'string',
-            'agency': 'string',
-            'publisher': 'string',
-            'composer': 'string',
-            'conductor': 'string',
-            'userDefined': 'string',
-            'usageCode': 'integer',
-            'forcedLength': 'string',
-            'averageLength': 'string',
-            'lengthDeviation': 'string',
-            'averageSegueLength': 'string',
-            'averageHookLength': 'string',
-            'minimumTalkLength': 'string',
-            'maximumTalkLength': 'string',
-            'cutQuantity': 'integer',
-            'lastCutPlayed': 'integer',
-            'enforceLength': 'boolean',
-            'asyncronous': 'boolean',
-            'owner': 'string',
-            'metadataDatetime': 'datetime',
-            'songId': 'string'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='cart',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='cart',fields=CART_FIELDS)
         xml.sax.parseString(r.text,handler)
+        out=handler.output()
+        ret=[]
+        for item in out:
+            ret.append(Cart(item))
 
-        return handler.output()
+        return ret
 
     def ListCartSchedCodes(self,cart_number):
         """
@@ -1138,6 +1164,7 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
+        
         fields={
             'cutName': 'string',
             'cartNumber': 'integer',
