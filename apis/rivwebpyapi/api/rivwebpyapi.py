@@ -121,6 +121,102 @@ CUT_FIELDS={
     'talkEndPoint': 'integer'
 }
 
+LOG_FIELDS={
+    'name': 'string',
+    'serviceName': 'string',
+    'description': 'string',
+    'originUserName': 'string',
+    'originDatetime': 'datetime',
+    'linkDatetime': 'datetime',
+    'modifiedDatetime': 'datetime',
+    'purgeDate': 'date',
+    'autoRefresh': 'boolean',
+    'startDate': 'date',
+    'endDate': 'date',
+    'scheduledTracks': 'integer',
+    'completedTracks': 'integer',
+    'musicLinks': 'integer',
+    'musicLinked': 'boolean',
+    'trafficLinks': 'integer',
+    'trafficLinked': 'boolean'
+}
+
+LOGLINE_FIELDS={
+    'line': 'integer',
+    'id': 'integer',
+    'type': 'string',
+    'cartType': 'string',
+    'cartNumber': 'integer',
+    'cutNumber': 'integer',
+    'groupName': 'string',
+    'groupColor': 'string',
+    'title': 'string',
+    'artist': 'string',
+    'publisher': 'string',
+    'composer': 'string',
+    'album': 'string',
+    'label': 'string',
+    'year': 'integer',
+    'client': 'string',
+    'agency': 'string',
+    'conductor': 'string',
+    'userDefined': 'string',
+    'usageCode': 'integer',
+    'enforceLength': 'boolean',
+    'forcedLength': 'string',
+    'evergreen': 'boolean',
+    'source': 'string',
+    'timeType': 'string',
+    'startTime': 'time',
+    'transitionType': 'string',
+    'cutQuantity': 'integer',
+    'lastCutPlayed': 'integer',
+    'markerComment': 'string',
+    'markerLabel': 'string',
+    'description': 'string',
+    'isrc': 'string',
+    'isci': 'string',
+    'recordingMbId': 'string',
+    'releaseMbId': 'string',
+    'originUser': 'string',
+    'originDateTime': 'datetime',
+    'startPointCart': 'integer',
+    'startPointLog': 'integer',
+    'endPointCart': 'integer',
+    'endPointLog': 'integer',
+    'segueStartPointCart': 'integer',
+    'segueStartPointLog': 'integer',
+    'segueEndPointCart': 'integer',
+    'segueEndPointLog': 'integer',
+    'segueGain': 'integer',
+    'fadeupPointCart': 'integer',
+    'fadeupPointLog': 'integer',
+    'fadeupGain': 'integer',
+    'fadedownPointCart': 'integer',
+    'fadedownPointLog': 'integer',
+    'fadedownGain': 'integer',
+    'duckUpGain': 'integer',
+    'duckDownGain': 'integer',
+    'talkStartPoint': 'integer',
+    'talkEndPoint': 'integer',
+    'hookMode': 'boolean',
+    'hookStartPoint': 'integer',
+    'hookEndPoint': 'integer',
+    'eventLength': 'integer',
+    'linkEventName': 'string',
+    'linkStartTime': 'time',
+    'linkStartSlop': 'integer',
+    'linkEndSlop': 'integer',
+    'linkId': 'integer',
+    'linkEmbedded': 'boolean',
+    'extStartTime': 'time',
+    'extLength': 'integer',
+    'extCartName': 'string',
+    'extData': 'string',
+    'extEventId': 'integer',
+    'extAnncType': 'string'
+}
+
 class RivWebPyApi_ListHandler(ContentHandler):
     def __init__(self,base_tag,fields):
         self.__output=[]
@@ -301,6 +397,40 @@ class Cut(object):
         if(len(values)==0):
             self.__values={}
             for key in CUT_FIELDS:
+                self.__values[key]=None
+        else:
+            self.__values=values
+
+    def values(self):
+        return self.__values
+
+    def setValues(self,values):
+        for key in values:
+            if(key in self.__values.keys()):
+                self.__values[key]=values[key]
+
+class Log(object):
+    def __init__(self,values={}):
+        if(len(values)==0):
+            self.__values={}
+            for key in LOG_FIELDS:
+                self.__values[key]=None
+        else:
+            self.__values=values
+
+    def values(self):
+        return self.__values
+
+    def setValues(self,values):
+        for key in values:
+            if(key in self.__values.keys()):
+                self.__values[key]=values[key]
+
+class LogLine(object):
+    def __init__(self,values={}):
+        if(len(values)==0):
+            self.__values={}
+            for key in LOGLINE_FIELDS:
                 self.__values[key]=None
         else:
             self.__values=values
@@ -1399,7 +1529,8 @@ class rivwebpyapi(object):
 
     def ListLog(self,log_name):
         """
-          Returns the contents of a Rivendell log (list of dictionaries).
+          Returns the contents of a Rivendell log
+          (list of rivwebpyapi.LogLine objects).
 
           Takes the following argument:
 
@@ -1426,91 +1557,20 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
-        fields={
-            'line': 'integer',
-            'id': 'integer',
-            'type': 'string',
-            'cartType': 'string',
-            'cartNumber': 'integer',
-            'cutNumber': 'integer',
-            'groupName': 'string',
-            'groupColor': 'string',
-            'title': 'string',
-            'artist': 'string',
-            'publisher': 'string',
-            'composer': 'string',
-            'album': 'string',
-            'label': 'string',
-            'year': 'integer',
-            'client': 'string',
-            'agency': 'string',
-            'conductor': 'string',
-            'userDefined': 'string',
-            'usageCode': 'integer',
-            'enforceLength': 'boolean',
-            'forcedLength': 'string',
-            'evergreen': 'boolean',
-            'source': 'string',
-            'timeType': 'string',
-            'startTime': 'time',
-            'transitionType': 'string',
-            'cutQuantity': 'integer',
-            'lastCutPlayed': 'integer',
-            'markerComment': 'string',
-            'markerLabel': 'string',
-            'description': 'string',
-            'isrc': 'string',
-            'isci': 'string',
-            'recordingMbId': 'string',
-            'releaseMbId': 'string',
-            'originUser': 'string',
-            'originDateTime': 'datetime',
-            'startPointCart': 'integer',
-            'startPointLog': 'integer',
-            'endPointCart': 'integer',
-            'endPointLog': 'integer',
-            'segueStartPointCart': 'integer',
-            'segueStartPointLog': 'integer',
-            'segueEndPointCart': 'integer',
-            'segueEndPointLog': 'integer',
-            'segueGain': 'integer',
-            'fadeupPointCart': 'integer',
-            'fadeupPointLog': 'integer',
-            'fadeupGain': 'integer',
-            'fadedownPointCart': 'integer',
-            'fadedownPointLog': 'integer',
-            'fadedownGain': 'integer',
-            'duckUpGain': 'integer',
-            'duckDownGain': 'integer',
-            'talkStartPoint': 'integer',
-            'talkEndPoint': 'integer',
-            'hookMode': 'boolean',
-            'hookStartPoint': 'integer',
-            'hookEndPoint': 'integer',
-            'eventLength': 'integer',
-            'linkEventName': 'string',
-            'linkStartTime': 'time',
-            'linkStartSlop': 'integer',
-            'linkEndSlop': 'integer',
-            'linkId': 'integer',
-            'linkEmbedded': 'boolean',
-            'extStartTime': 'time',
-            'extLength': 'integer',
-            'extCartName': 'string',
-            'extData': 'string',
-            'extEventId': 'integer',
-            'extAnncType': 'string'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='logLine',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='logLine',
+                                        fields=LOGLINE_FIELDS)
         xml.sax.parseString(r.text,handler)
-
-        return handler.output()
+        out=handler.output()
+        ret=[]
+        for item in out:
+            ret.append(LogLine(item))
+        return ret
 
     def ListLogs(self,service_name='',log_name='',trackable=False,
                  filter_string='',recent=False):
         """
           Returns the metadata for a set of Rivendell logs
-          (list of dictionaries).
+          (list of rivwebpyapi.Log objects).
 
           Takes the following arguments:
 
@@ -1561,29 +1621,13 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
-        fields={
-            'name': 'string',
-            'serviceName': 'string',
-            'description': 'string',
-            'originUserName': 'string',
-            'originDatetime': 'datetime',
-            'linkDatetime': 'datetime',
-            'modifiedDatetime': 'datetime',
-            'purgeDate': 'date',
-            'autoRefresh': 'boolean',
-            'startDate': 'date',
-            'endDate': 'date',
-            'scheduledTracks': 'integer',
-            'completedTracks': 'integer',
-            'musicLinks': 'integer',
-            'musicLinked': 'boolean',
-            'trafficLinks': 'integer',
-            'trafficLinked': 'boolean'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='log',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='log',fields=LOG_FIELDS)
         xml.sax.parseString(r.text,handler)
-
-        return handler.output()
+        out=handler.output()
+        ret=[]
+        for item in out:
+            ret.append(Log(item))
+        return ret
 
     def ListSchedulerCodes(self):
         """

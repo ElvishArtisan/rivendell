@@ -22743,3 +22743,10 @@
 	* Modified the 'AddCut()', 'ListCut()' and 'ListCuts()' methods
 	to use the 'Cut' class in the 'rivwebapi' API.
 	* Added an 'EditCut()' method to the 'rivwebpyapi' API.
+2021-12-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Log' class to the 'rivwebapi' API.
+	* Modified the 'ListLogs()' method to use the 'Log' class in the
+	'rivwebapi' API.
+	* Added a 'LogLine' class to the 'rivwebapi' API.
+	* Modified the 'ListLog()' method to use the 'LogLine' class in the
+	'rivwebapi' API.

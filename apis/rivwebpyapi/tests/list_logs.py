@@ -84,23 +84,9 @@ except rivwebpyapi.RivWebPyError as err:
     sys.exit(1)
 
 #
-# Display the log list
+# Display the list of logs
 #
 for log in logs:
-    print('name: '+log['name'])
-    print('serviceName: '+log['serviceName'])
-    print('description: '+log['description'])
-    print('originUserName: '+log['originUserName'])
-    print('originDatetime: '+str(log['originDatetime']))
-    print('linkDatetime: '+str(log['linkDatetime']))
-    print('modifiedDatetime: '+str(log['modifiedDatetime']))
-    print('startDate: '+str(log['startDate']))
-    print('endDate: '+str(log['endDate']))
-    print('purgeDate: '+str(log['purgeDate']))
-    print('scheduledTracks: '+str(log['scheduledTracks']))
-    print('completedTracks: '+str(log['completedTracks']))
-    print('musicLinks: '+str(log['musicLinks']))
-    print('musicLinked: '+str(log['musicLinked']))
-    print('trafficLinks: '+str(log['trafficLinks']))
-    print('trafficLinked: '+str(log['trafficLinked']))
+    for key in log.values():
+        print(key+': '+str(log.values()[key]))
     print('')
