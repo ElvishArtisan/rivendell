@@ -73,6 +73,54 @@ CART_FIELDS={
     'songId': 'string'
 }
 
+CUT_FIELDS={
+    'cutName': 'string',
+    'cartNumber': 'integer',
+    'cutNumber': 'integer',
+    'evergreen': 'boolean',
+    'description': 'string',
+    'outcue': 'string',
+    'isrc': 'string',
+    'isci': 'string',
+    'recordingMbId': 'string',
+    'releaseMbId': 'string',
+    'length': 'integer',
+    'originDatetime': 'datetime',
+    'startDatetime': 'datetime',
+    'endDatetime': 'datetime',
+    'sun': 'boolean',
+    'mon': 'boolean',
+    'tue': 'boolean',
+    'wed': 'boolean',
+    'thu': 'boolean',
+    'fri': 'boolean',
+    'sat': 'boolean',
+    'startDaypart': 'time',
+    'endDaypart': 'time',
+    'originName': 'string',
+    'originLoginName': 'string',
+    'sourceHostname': 'string',
+    'weight': 'integer',
+    'lastPlayDatetime': 'datetime',
+    'playCounter': 'integer',
+    'codingFormat': 'integer',
+    'sampleRate': 'integer',
+    'bitRate': 'integer',
+    'channels': 'integer',
+    'playGain': 'integer',
+    'startPoint': 'integer',
+    'endPoint': 'integer',
+    'fadeupPoint': 'integer',
+    'fadedownPoint': 'integer',
+    'segueStartPoint': 'integer',
+    'segueEndPoint': 'integer',
+    'segueGain': 'integer',
+    'hookStartPoint': 'integer',
+    'hookEndPoint': 'integer',
+    'talkStartPoint': 'integer',
+    'talkEndPoint': 'integer'
+}
+
 class RivWebPyApi_ListHandler(ContentHandler):
     def __init__(self,base_tag,fields):
         self.__output=[]
@@ -248,6 +296,23 @@ class Cart(object):
             if(key in self.__values.keys()):
                 self.__values[key]=values[key]
 
+class Cut(object):
+    def __init__(self,values={}):
+        if(len(values)==0):
+            self.__values={}
+            for key in CUT_FIELDS:
+                self.__values[key]=None
+        else:
+            self.__values=values
+
+    def values(self):
+        return self.__values
+
+    def setValues(self,values):
+        for key in values:
+            if(key in self.__values.keys()):
+                self.__values[key]=values[key]
+
 class rivwebpyapi(object):
     """
        Create a 'RivWebPyApi' object for accessing the Web API.
@@ -348,7 +413,7 @@ class rivwebpyapi(object):
     def AddCut(self,cart_number):
         """
           Add a new cut to an existing audio cart. Returns the metadata of
-          the newly created cut (dictionary).
+          the newly created cut (rivwebpyapi.Cut object).
 
           Takes the following argument:
 
@@ -380,57 +445,10 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
-        fields={
-            'cutName': 'string',
-            'cartNumber': 'integer',
-            'cutNumber': 'integer',
-            'evergreen': 'boolean',
-            'description': 'string',
-            'outcue': 'string',
-            'isrc': 'string',
-            'isci': 'string',
-            'recordingMbId': 'string',
-            'releaseMbId': 'string',
-            'length': 'integer',
-            'originDatetime': 'datetime',
-            'startDatetime': 'datetime',
-            'endDatetime': 'datetime',
-            'sun': 'boolean',
-            'mon': 'boolean',
-            'tue': 'boolean',
-            'wed': 'boolean',
-            'thu': 'boolean',
-            'fri': 'boolean',
-            'sat': 'boolean',
-            'startDaypart': 'time',
-            'endDaypart': 'time',
-            'originName': 'string',
-            'originLoginName': 'string',
-            'sourceHostname': 'string',
-            'weight': 'integer',
-            'lastPlayDatetime': 'datetime',
-            'playCounter': 'integer',
-            'codingFormat': 'integer',
-            'sampleRate': 'integer',
-            'bitRate': 'integer',
-            'channels': 'integer',
-            'playGain': 'integer',
-            'startPoint': 'integer',
-            'endPoint': 'integer',
-            'fadeupPoint': 'integer',
-            'fadedownPoint': 'integer',
-            'segueStartPoint': 'integer',
-            'segueEndPoint': 'integer',
-            'segueGain': 'integer',
-            'hookStartPoint': 'integer',
-            'hookEndPoint': 'integer',
-            'talkStartPoint': 'integer',
-            'talkEndPoint': 'integer'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='cut',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='cut',fields=CUT_FIELDS)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()[0]
+        return Cut(handler.output()[0])
 
     def AddLog(self,service_name,log_name):
         """
@@ -678,7 +696,7 @@ class rivwebpyapi(object):
           cart_number - The number of the desired cart, in the range
                         1 - 999999.
 
-          values - A Cart object containing the desired edits.
+          values - A rivwebpyapi.Cart object containing the desired edits.
         """
 
         if((cart_number<0)or(cart_number>999999)):
@@ -694,7 +712,6 @@ class rivwebpyapi(object):
             'CART_NUMBER': str(cart_number)
         }
         postnames={
-            'number': 'CART_NUMBER',
             'groupName': 'GROUP_NAME',
             'title': 'TITLE',
             'artist': 'ARTIST',
@@ -731,6 +748,84 @@ class rivwebpyapi(object):
         xml.sax.parseString(r.text,handler)
 
         return Cart(handler.output()[0])
+
+    def EditCut(self,cart_number,cut_number,values):
+        """
+          Write metadata changes for an existing cut into the database.
+
+          Takes the following arguments:
+
+          cart_number - The number of the cart containing the cut to be
+                        edited, in the range 1 - 999999.
+
+          cut_number - The number of the cut to be edited, in the range
+                       1 - 999 (integer)
+
+          values - A rivwebpyapi.Cut object containing the desired edits.
+        """
+
+        if((cart_number<0)or(cart_number>999999)):
+            raise ValueError('invalid cart number')
+        if((cut_number<1)or(cut_number>999)):
+            raise ValueError('invalid cut number')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '15',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'CART_NUMBER': str(cart_number),
+            'CUT_NUMBER': str(cut_number)
+        }
+        postnames={
+            'evergreen': 'EVERGREEN',
+            'description': 'DESCRIPTION',
+            'outcue': 'OUTCUE',
+            'isrc': 'ISRC',
+            'isci': 'ISCI',
+            'startDatetime': 'START_DATETIME',
+            'endDatetime': 'END_DATETIME',
+            'sun': 'SUN',
+            'mon': 'MON',
+            'tue': 'TUE',
+            'wed': 'WED',
+            'thu': 'THU',
+            'fri': 'FRI',
+            'sat': 'SAT',
+            'startDaypart': 'START_DAYPART',
+            'endDaypart': 'END_DAYPART',
+            'weight': 'WEIGHT',
+            'startPoint': 'START_POINT',
+            'endPoint': 'END_POINT',
+            'fadeupPoint': 'FADEUP_POINT',
+            'fadedownPoint': 'FADEDOWN_POINT',
+            'segueStartPoint': 'SEGUE_START_POINT',
+            'segueEndPoint': 'SEGUE_END_POINT',
+            'hookStartPoint': 'HOOK_START_POINT',
+            'hookEndPoint': 'HOOK_END_POINT',
+            'talkStartPoint': 'TALK_START_POINT',
+            'talkEndPoint': 'TALK_END_POINT'
+        }
+        for key in values:
+            if((values[key]!=None)and(key in postnames.keys())):
+                postdata[postnames[key]]=values[key]
+
+        #
+        # Execute
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            self.__throwError(response=r)
+
+        #
+        # Generate the output dictionary
+        #
+        handler=RivWebPyApi_ListHandler(base_tag='cut',fields=CUT_FIELDS)
+        xml.sax.parseString(r.text,handler)
+
+        return Cut(handler.output()[0])
 
     def Export(self,filename,cart_number,cut_number,audio_format,channels,
                sample_rate,bit_rate,quality,start_point,end_point,
@@ -1127,7 +1222,7 @@ class rivwebpyapi(object):
     def ListCut(self,cart_number,cut_number):
         """
           Returns the metadata associated with a Rivendell cut
-          (dictionary).
+          (rivwebpyapi.Cut object).
 
           Takes the following arguments:
 
@@ -1164,63 +1259,15 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
-        
-        fields={
-            'cutName': 'string',
-            'cartNumber': 'integer',
-            'cutNumber': 'integer',
-            'evergreen': 'boolean',
-            'description': 'string',
-            'outcue': 'string',
-            'isrc': 'string',
-            'isci': 'string',
-            'recordingMbId': 'string',
-            'releaseMbId': 'string',
-            'length': 'integer',
-            'originDatetime': 'datetime',
-            'startDatetime': 'datetime',
-            'endDatetime': 'datetime',
-            'sun': 'boolean',
-            'mon': 'boolean',
-            'tue': 'boolean',
-            'wed': 'boolean',
-            'thu': 'boolean',
-            'fri': 'boolean',
-            'sat': 'boolean',
-            'startDaypart': 'time',
-            'endDaypart': 'time',
-            'originName': 'string',
-            'originLoginName': 'string',
-            'sourceHostname': 'string',
-            'weight': 'integer',
-            'lastPlayDatetime': 'datetime',
-            'playCounter': 'integer',
-            'codingFormat': 'integer',
-            'sampleRate': 'integer',
-            'bitRate': 'integer',
-            'channels': 'integer',
-            'playGain': 'integer',
-            'startPoint': 'integer',
-            'endPoint': 'integer',
-            'fadeupPoint': 'integer',
-            'fadedownPoint': 'integer',
-            'segueStartPoint': 'integer',
-            'segueEndPoint': 'integer',
-            'segueGain': 'integer',
-            'hookStartPoint': 'integer',
-            'hookEndPoint': 'integer',
-            'talkStartPoint': 'integer',
-            'talkEndPoint': 'integer'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='cut',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='cut',fields=CUT_FIELDS)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()[0]
+        return Cut(handler.output()[0])
 
     def ListCuts(self,cart_number):
         """
           Returns the metadata associated with all of the cuts in
-          a Rivendell cart (list of dictionaries).
+          a Rivendell cart (list of rivwebpyapi.Cut objects).
 
           Takes the following argument:
 
@@ -1252,57 +1299,13 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
-        fields={
-            'cutName': 'string',
-            'cartNumber': 'integer',
-            'cutNumber': 'integer',
-            'evergreen': 'boolean',
-            'description': 'string',
-            'outcue': 'string',
-            'isrc': 'string',
-            'isci': 'string',
-            'recordingMbId': 'string',
-            'releaseMbId': 'string',
-            'length': 'integer',
-            'originDatetime': 'datetime',
-            'startDatetime': 'datetime',
-            'endDatetime': 'datetime',
-            'sun': 'boolean',
-            'mon': 'boolean',
-            'tue': 'boolean',
-            'wed': 'boolean',
-            'thu': 'boolean',
-            'fri': 'boolean',
-            'sat': 'boolean',
-            'startDaypart': 'time',
-            'endDaypart': 'time',
-            'originName': 'string',
-            'originLoginName': 'string',
-            'sourceHostname': 'string',
-            'weight': 'integer',
-            'lastPlayDatetime': 'datetime',
-            'playCounter': 'integer',
-            'codingFormat': 'integer',
-            'sampleRate': 'integer',
-            'bitRate': 'integer',
-            'channels': 'integer',
-            'playGain': 'integer',
-            'startPoint': 'integer',
-            'endPoint': 'integer',
-            'fadeupPoint': 'integer',
-            'fadedownPoint': 'integer',
-            'segueStartPoint': 'integer',
-            'segueEndPoint': 'integer',
-            'segueGain': 'integer',
-            'hookStartPoint': 'integer',
-            'hookEndPoint': 'integer',
-            'talkStartPoint': 'integer',
-            'talkEndPoint': 'integer'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='cut',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='cut',fields=CUT_FIELDS)
         xml.sax.parseString(r.text,handler)
-
-        return handler.output()
+        out=handler.output()
+        ret=[]
+        for item in out:
+            ret.append(Cut(item))
+        return ret
 
     def ListGroup(self,group_name):
         """

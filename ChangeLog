@@ -22738,3 +22738,8 @@
 	* Modified the 'AddCart()', 'ListCart()' and 'ListCarts()' methods
 	to use the 'Cart' class in the 'rivwebapi' API.
 	* Added an 'EditCart()' method to the 'rivwebpyapi' API.
+2021-12-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Cut' class to the 'rivwebapi' API.
+	* Modified the 'AddCut()', 'ListCut()' and 'ListCuts()' methods
+	to use the 'Cut' class in the 'rivwebapi' API.
+	* Added an 'EditCut()' method to the 'rivwebpyapi' API.

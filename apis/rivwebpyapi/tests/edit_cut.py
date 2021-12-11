@@ -1,10 +1,10 @@
 #!%PYTHON_BANGPATH%
 
-# add_cut.py
+# edit_cut.py
 #
 # RivWebPyApi test script for Rivendell
 #
-#  Test the AddCut Web API call
+#  Test the EditCut Web API call
 #
 #   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -33,38 +33,56 @@ username=''
 password=''
 cart_number=0
 cut_number=0
+values={}
 
 #
 # Get login parameters
 #
-usage='add_cut --url=<rd-url> --username=<rd-username> --cart-number=<num> [--password=<passwd>]'
+usage='edit_cut --url=<rd-url> --username=<rd-username> --cart-number=<num> --cut-number=<num> [--set-value=<field>=<str> ...] [--password=<passwd>]'
 for arg in sys.argv:
     f0=arg.split('=')
-    if(len(f0)==2):
-        if(f0[0]=='--url'):
-            url=f0[1]
-        if(f0[0]=='--username'):
-            username=f0[1]
-        if(f0[0]=='--password'):
-            password=f0[1]
-        if(f0[0]=='--cart-number'):
-            cart_number=int(f0[1])
+    key=f0[0]
+    del f0[0]
+    value='='.join(f0)
+    if(value):
+        if(key=='--url'):
+            url=value
+        if(key=='--username'):
+            username=value
+        if(key=='--password'):
+            password=value
+        if(key=='--cart-number'):
+            cart_number=int(value)
+        if(key=='--cut-number'):
+            cut_number=int(value)
+        if(key=='--set-value'):
+            f1=value.split('=')
+            key1=f1[0]
+            del f1[0]
+            values[key1]='='.join(f1)
 
 if(not password):
     password=getpass.getpass()
 if((not url)or(not username)):
-    eprint(usage)
+    print(usage)
     sys.exit(1)
-if(not cart_number):
+if(cart_number==0):
     eprint('you must supply "--cart-number"')
+    sys.exit(1)
+if(cut_number==0):
+    eprint('you must supply "--cut-number"')
     sys.exit(1)
 
 #
-# Get the cut list
+# Execute
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
+cut=rivwebpyapi.Cut()
+cut.setValues(values)
+
 try:
-    cut=webapi.AddCut(cart_number=cart_number)
+    cut=webapi.EditCut(cart_number=cart_number,cut_number=cut_number,
+                       values=cut.values())
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR ***')
     eprint('Response Code: '+str(err.responseCode))
@@ -74,9 +92,9 @@ except rivwebpyapi.RivWebPyError as err:
     sys.exit(1)
 
 #
-# Display the cut
+# Display the modified cut
 #
-print('ADDED:')
+print('MODIFIED')
 for key in cut.values():
     print(key+': '+str(cut.values()[key]))
 print('')

@@ -37,7 +37,7 @@ values={}
 #
 # Get login parameters
 #
-usage='list_cart --url=<rd-url> --username=<rd-username> --cart-number=<num> [--set-value=<field>=<str> ...] [--password=<passwd>]'
+usage='edit_cart --url=<rd-url> --username=<rd-username> --cart-number=<num> [--set-value=<field>=<str> ...] [--password=<passwd>]'
 for arg in sys.argv:
     f0=arg.split('=')
     key=f0[0]

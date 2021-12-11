@@ -29,6 +29,7 @@ EXTRA_DIST = add_cart.py\
              delete_audio.py\
              delete_log.py\
              edit_cart.py\
+             edit_cut.py\
              export.py\
              export_peaks.py\
              get_podcast.py\
