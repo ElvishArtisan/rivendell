@@ -22775,3 +22775,7 @@
 	a  'rivwebpyapi.Group' object.
 	* Modified the 'rivwebpyapi.ListGroups()' call to return
 	a list of 'rivwebpyapi.Group' objects.
+2021-12-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Service()' type class to the 'rivwebpyapi' API.
+	* Modified the 'rivwebpyapi.ListServices()' call to return
+	a list of 'rivwebpyapi.Service' objects.

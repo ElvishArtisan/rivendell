@@ -238,6 +238,11 @@ SCHEDULER_CODE_FIELDS={
     'description': 'string'
 }
 
+SERVICE_FIELDS={
+    'name': 'string',
+    'description': 'string'
+}
+
 class RivWebPyApi_ListHandler(ContentHandler):
     def __init__(self,base_tag,fields):
         self.__output=[]
@@ -440,6 +445,10 @@ class LogLine(RivendellType):
 class SchedulerCode(RivendellType):
     def __init__(self,values={}):
         super().__init__(SCHEDULER_CODE_FIELDS,values)
+
+class Service(RivendellType):
+    def __init__(self,values={}):
+        super().__init__(SERVICE_FIELDS,values)
 
 class rivwebpyapi(object):
     """
@@ -1641,7 +1650,8 @@ class rivwebpyapi(object):
 
     def ListServices(self,trackable):
         """
-          Returns a set of Rivendell services (list of dictionaries).
+          Returns a set of Rivendell services
+          (list of rivwebpyapi.Service objects).
 
           Takes one argument:
 
@@ -1674,14 +1684,15 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
-        fields={
-            'name': 'string',
-            'description': 'string'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='service',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='service',
+                                        fields=SERVICE_FIELDS)
         xml.sax.parseString(r.text,handler)
+        out=handler.output()
+        ret=[]
+        for item in out:
+            ret.append(Service(item))
 
-        return handler.output()
+        return ret
 
     def ListSystemSettings(self):
         """

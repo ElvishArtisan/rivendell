@@ -72,6 +72,6 @@ except rivwebpyapi.RivWebPyError as err:
 # Display the services list
 #
 for svc in services:
-    print('name: '+svc['name'])
-    print('description: '+svc['description'])
+    for key in svc.values():
+        print(key+': '+str(svc.values()[key]))
     print('')
