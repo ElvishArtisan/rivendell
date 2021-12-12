@@ -257,6 +257,7 @@ void Xport::SaveLog()
   QDate start_date;
   QDate end_date;
   int line_quantity;
+  QString err_msg;
 
   //
   // Header Data
@@ -499,7 +500,12 @@ void Xport::SaveLog()
 
   RDLog *log=new RDLog(log_name);
   if(!log->exists()) {
-    XmlExit("No such log",404,"logs.cpp",LINE_NUMBER);
+    if(!RDLog::create(log_name,service_name,QDate(),rda->user()->name(),
+		      &err_msg,rda->config())) {
+      XmlExit("No such log ["+err_msg+"]",400,"logs.cpp",LINE_NUMBER);
+    }
+    SendNotification(RDNotification::LogType,RDNotification::AddAction,
+		     QVariant(log->name()));
   }
   if(lock_guid.isEmpty()) {
     QString username=rda->user()->name();
