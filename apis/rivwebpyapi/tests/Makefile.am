@@ -56,6 +56,7 @@ EXTRA_DIST = add_cart.py\
              remove_image.py\
              remove_podcast.py\
              remove_rss.py\
+             save_log.py\
              save_podcast.py\
              trim_audio.py\
              unassign_sched_code.py

@@ -168,6 +168,7 @@ LOGLINE_FIELDS={
     'source': 'string',
     'timeType': 'string',
     'startTime': 'time',
+    'graceTime': 'integer',
     'transitionType': 'string',
     'cutQuantity': 'integer',
     'lastCutPlayed': 'integer',
@@ -204,6 +205,7 @@ LOGLINE_FIELDS={
     'hookEndPoint': 'integer',
     'eventLength': 'integer',
     'linkEventName': 'string',
+    'linkLength': 'integer',
     'linkStartTime': 'time',
     'linkStartSlop': 'integer',
     'linkEndSlop': 'integer',
@@ -2081,6 +2083,155 @@ class rivwebpyapi(object):
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
+    def SaveLog(self,log_name,header_values,line_values,guid=None):
+        """
+          Save a log into the database. If the specified log does not
+          exist, it will be created automatically.
+
+          Takes the following arguments:
+
+          log_name - The log name to save to (string).
+
+          header_values - Log header data (rivwebpyapi.Log object).
+
+          line_values - Log line data (List of rivwebpyapi.LogLine objects).
+
+          guid - The lock ID, provided by rivwebpyapi.LockLog() (string).
+        """
+
+        if(not log_name):
+            raise ValueError('invalid log name')
+
+        #
+        # Build the WebAPI header arguments
+        #
+        postdata={
+            'COMMAND': '28',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'LOG_NAME': str(log_name),
+            'LINE_QUANTITY': str(len(line_values)),
+            'SERVICE_NAME': header_values.values()['serviceName'],
+            'DESCRIPTION': header_values.values()['description'],
+            'PURGE_DATE': header_values.values()['purgeDate']
+        }
+        if(header_values.values()['autoRefresh']):
+            postdata['AUTO_REFRESH']=1
+        else:
+            postdata['AUTO_REFRESH']=0
+        if(header_values.values()['startDate']==None):
+            postdata['START_DATE']=''
+        else:
+            postdata['START_DATE']=header_values.values()['startDate']
+        if(header_values.values()['endDate']==None):
+            postdata['END_DATE']=''
+        else:
+            postdata['END_DATE']=header_values.values()['endDate']
+        if(header_values.values()['purgeDate']==None):
+            postdata['PURGE_DATE']=''
+        else:
+            postdata['PURGE_DATE']=header_values.values()['purgeDate']
+        if(guid):
+            postdata['LOCK_GUID']=guid
+
+        #
+        # Log Lines
+        #
+        line_postnames={
+            'id': 'ID',
+            'type': 'TYPE',
+            'cartNumber': 'CART_NUMBER',
+            'timeType': 'TIME_TYPE',
+            'startTime': 'START_TIME',
+            'graceTime': 'GRACE_TIME',
+            'transitionType': 'TRANS_TYPE',
+            'originUser': 'ORIGIN_USER',
+            'originDateTime': 'ORIGIN_DATETIME',
+            'markerComment': 'COMMENT',
+            'markerLabel': 'LABEL',
+            'startPointLog': 'START_POINT',
+            'endPointLog': 'END_POINT',
+            'segueStartPointLog': 'SEGUE_START_POINT',
+            'segueEndPointLog': 'SEGUE_END_POINT',
+            'fadeupPointLog': 'FADEUP_POINT',
+            'fadeupGain': 'FADEUP_GAIN',
+            'fadedownPointLog': 'FADEDOWN_POINT',
+            'fadedownGain': 'FADEDOWN_GAIN',
+            'duckUpGain': 'DUCK_UP_GAIN',
+            'duckDownGain': 'DUCK_DOWN_GAIN',
+            'eventLength': 'EVENT_LENGTH',
+            'linkLength': 'LINK_LENGTH',
+            'linkEventName': 'LINK_EVENT_NAME',
+            'linkLength': 'LINK_LENGTH',
+            'linkStartTime': 'LINK_START_TIME',
+            'linkStartSlop': 'LINK_START_SLOP',
+            'linkEndSlop': 'LINK_END_SLOP',
+            'linkId': 'LINK_ID',
+            'linkEmbedded': 'LINK_EMBEDDED',
+            'extStartTime': 'EXT_START_TIME',
+            'extLength': 'EXT_LENGTH',
+            'extCartName': 'EXT_CART_NAME',
+            'extData': 'EXT_DATA',
+            'extEventId': 'EXT_EVENT_ID',
+            'extAnncType': 'EXT_ANNC_TYPE'
+        }
+        line=0
+        for ll in line_values:
+            for key in ll.values():
+                if(key in line_postnames.keys()):
+                    if(ll.values()[key]==None):
+                        postdata['LINE'+str(line)+'_'+line_postnames[key]]=''
+                    else:
+                        postdata['LINE'+str(line)+'_'+line_postnames[key]]=ll.values()[key]
+            line=line+1
+
+        #
+        # Execute
+        #
+        r=requests.post(self.__connection_url,data=postdata)
+        if(r.status_code!=requests.codes.ok):
+            self.__throwError(response=r)
+
+
+
+
+
+
+
+    def SavePodcast(self,cast_id,filename):
+        """
+          Save posted podcast audio to the Rivendell audio store.
+
+          Takes the following arguments:
+
+          filename - Name of the file containing audio to be stored (string).
+
+          cast_id - ID of the owning podcast item (integer).
+        """
+
+        if(not filename):
+            raise ValueError('missing filename')
+        if(cast_id<0):
+            raise ValueError('invalid podcast id')
+
+        #
+        # Build the WebAPI arguments
+        #
+        postdata={
+            'COMMAND': '38',
+            'LOGIN_NAME': self.__connection_username,
+            'PASSWORD': self.__connection_password,
+            'ID': str(cast_id)
+        }
+        files={'FILENAME': open(filename,'rb')}
+
+        #
+        # Execute
+        #
+        r=requests.post(self.__connection_url,data=postdata,files=files)
+        if(r.status_code!=requests.codes.ok):
+            self.__throwError(response=r)
+
     def TrimAudio(self,cart_number,cut_number,trim_level):
         """
           Return time pointers to the first and last instance of a
@@ -2136,40 +2287,6 @@ class rivwebpyapi(object):
         xml.sax.parseString(r.text,handler)
 
         return handler.output()[0]
-
-    def SavePodcast(self,cast_id,filename):
-        """
-          Save posted podcast audio to the Rivendell audio store.
-
-          Takes the following arguments:
-
-          filename - Name of the file containing audio to be stored (string).
-
-          cast_id - ID of the owning podcast item (integer).
-        """
-
-        if(not filename):
-            raise ValueError('missing filename')
-        if(cast_id<0):
-            raise ValueError('invalid podcast id')
-
-        #
-        # Build the WebAPI arguments
-        #
-        postdata={
-            'COMMAND': '38',
-            'LOGIN_NAME': self.__connection_username,
-            'PASSWORD': self.__connection_password,
-            'ID': str(cast_id)
-        }
-        files={'FILENAME': open(filename,'rb')}
-
-        #
-        # Execute
-        #
-        r=requests.post(self.__connection_url,data=postdata,files=files)
-        if(r.status_code!=requests.codes.ok):
-            self.__throwError(response=r)
 
     def UnassignSchedCode(self,cart_number,sched_code):
         """

@@ -22759,3 +22759,5 @@
 2021-12-12 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdxport(8) that caused the 'SaveLog' WebAPI call
 	to fail if the target log didn't exist.
+2021-12-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'SaveLog()' method to the 'rivwebpyapi' API.
