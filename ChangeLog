@@ -22750,3 +22750,6 @@
 	* Added a 'LogLine' class to the 'rivwebapi' API.
 	* Modified the 'ListLog()' method to use the 'LogLine' class in the
 	'rivwebapi' API.
+2021-12-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'graceTime' field to the return XML for the 'ListLog'
+	WebAPI call.
