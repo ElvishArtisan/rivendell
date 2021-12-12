@@ -121,6 +121,20 @@ CUT_FIELDS={
     'talkEndPoint': 'integer'
 }
 
+GROUP_FIELDS={
+    'name': 'string',
+    'description': 'string',
+    'defaultCartType': 'string',
+    'defaultLowCart': 'integer',
+    'defaultHighCart': 'integer',
+    'cutShelfLife': 'integer',
+    'defaultTitle': 'string',
+    'enforceCartRange': 'boolean',
+    'reportTfc': 'boolean',
+    'reportMus': 'boolean',
+    'color': 'string'
+}
+
 LOG_FIELDS={
     'name': 'string',
     'serviceName': 'string',
@@ -410,6 +424,10 @@ class Cart(RivendellType):
 class Cut(RivendellType):
     def __init__(self,values={}):
         super().__init__(CUT_FIELDS,values)
+
+class Group(RivendellType):
+    def __init__(self,values={}):
+        super().__init__(GROUP_FIELDS,values)
 
 class Log(RivendellType):
     def __init__(self,values={}):
@@ -1417,7 +1435,7 @@ class rivwebpyapi(object):
 
     def ListGroup(self,group_name):
         """
-          Returns a Rivendell group (dictionary).
+          Returns a Rivendell group (rivwebpyapi.Group object).
 
           Takes the following argument:
 
@@ -1445,27 +1463,15 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
-        fields={
-            'name': 'string',
-            'description': 'string',
-            'defaultCartType': 'string',
-            'defaultLowCart': 'integer',
-            'defaultHighCart': 'integer',
-            'cutShelfLife': 'integer',
-            'defaultTitle': 'string',
-            'enforceCartRange': 'boolean',
-            'reportTfc': 'boolean',
-            'reportMus': 'boolean',
-            'color': 'string'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='group',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='group',fields=GROUP_FIELDS)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()[0]
+        return Group(handler.output()[0])
 
     def ListGroups(self):
         """
-          Returns a list of all Rivendell groups (list of dictionaries).
+          Returns a list of all Rivendell groups
+          (list of rivwebpyapi.Group objects).
         """
 
         #
@@ -1487,23 +1493,14 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
-        fields={
-            'name': 'string',
-            'description': 'string',
-            'defaultCartType': 'string',
-            'defaultLowCart': 'integer',
-            'defaultHighCart': 'integer',
-            'cutShelfLife': 'integer',
-            'defaultTitle': 'string',
-            'enforceCartRange': 'boolean',
-            'reportTfc': 'boolean',
-            'reportMus': 'boolean',
-            'color': 'string'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='group',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='group',fields=GROUP_FIELDS)
         xml.sax.parseString(r.text,handler)
+        out=handler.output()
+        ret=[]
+        for item in out:
+            ret.append(Group(item))
 
-        return handler.output()
+        return ret
 
     def ListLog(self,log_name):
         """

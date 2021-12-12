@@ -69,14 +69,6 @@ except rivwebpyapi.RivWebPyError as err:
 # Display the group list
 #
 for grp in groups:
-    print('name: '+grp['name'])
-    print('description: '+grp['description'])
-    print('defaultCartType: '+grp['defaultCartType'])
-    print('defaultLowCart: '+str(grp['defaultLowCart']))
-    print('defaultHighCart: '+str(grp['defaultHighCart']))
-    print('cutShelfLife: '+str(grp['cutShelfLife']))
-    print('defaultTitle: '+grp['defaultTitle'])
-    print('enforceCartRange: '+str(grp['enforceCartRange']))
-    print('reportTfc: '+str(grp['reportTfc']))
-    print('reportMus: '+str(grp['reportMus']))
+    for key in grp.values():
+        print(key+': '+str(grp.values()[key]))
     print('')
