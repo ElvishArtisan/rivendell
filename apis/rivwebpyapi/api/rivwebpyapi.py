@@ -377,14 +377,18 @@ class RivWebPyError(Exception):
         self.errorString=resp_body
         self.responseCode=resp_code
 
-class Cart(object):
-    def __init__(self,values={}):
+class RivendellType(object):
+    def __init__(self,schema,values):
+        self.__schema=schema
         if(len(values)==0):
             self.__values={}
-            for key in CART_FIELDS:
+            for key in schema:
                 self.__values[key]=None
         else:
             self.__values=values
+
+    def schema(self):
+        return self.__schema
 
     def values(self):
         return self.__values
@@ -394,56 +398,21 @@ class Cart(object):
             if(key in self.__values.keys()):
                 self.__values[key]=values[key]
 
-class Cut(object):
+class Cart(RivendellType):
     def __init__(self,values={}):
-        if(len(values)==0):
-            self.__values={}
-            for key in CUT_FIELDS:
-                self.__values[key]=None
-        else:
-            self.__values=values
+        super().__init__(CART_FIELDS,values)
 
-    def values(self):
-        return self.__values
-
-    def setValues(self,values):
-        for key in values:
-            if(key in self.__values.keys()):
-                self.__values[key]=values[key]
-
-class Log(object):
+class Cut(RivendellType):
     def __init__(self,values={}):
-        if(len(values)==0):
-            self.__values={}
-            for key in LOG_FIELDS:
-                self.__values[key]=None
-        else:
-            self.__values=values
+        super().__init__(CUT_FIELDS,values)
 
-    def values(self):
-        return self.__values
-
-    def setValues(self,values):
-        for key in values:
-            if(key in self.__values.keys()):
-                self.__values[key]=values[key]
-
-class LogLine(object):
+class Log(RivendellType):
     def __init__(self,values={}):
-        if(len(values)==0):
-            self.__values={}
-            for key in LOGLINE_FIELDS:
-                self.__values[key]=None
-        else:
-            self.__values=values
+        super().__init__(LOG_FIELDS,values)
 
-    def values(self):
-        return self.__values
-
-    def setValues(self,values):
-        for key in values:
-            if(key in self.__values.keys()):
-                self.__values[key]=values[key]
+class LogLine(RivendellType):
+    def __init__(self,values={}):
+        super().__init__(LOGLINE_FIELDS,values)
 
 class rivwebpyapi(object):
     """

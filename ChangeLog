@@ -22761,3 +22761,5 @@
 	to fail if the target log didn't exist.
 2021-12-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'SaveLog()' method to the 'rivwebpyapi' API.
+2021-12-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RivendellType()' base class to the 'rivwebpyapi' API.
