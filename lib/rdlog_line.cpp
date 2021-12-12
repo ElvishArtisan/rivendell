@@ -2405,6 +2405,7 @@ QString RDLogLine::xml(int line) const
 
   ret+="    "+RDXmlField("eventLength",eventLength());
   ret+="    "+RDXmlField("linkEventName",linkEventName());
+  ret+="    "+RDXmlField("linkLength",linkLength());
   ret+="    "+RDXmlField("linkStartTime",linkStartTime());
   ret+="    "+RDXmlField("linkStartSlop",linkStartSlop());
   ret+="    "+RDXmlField("linkEndSlop",linkEndSlop());
