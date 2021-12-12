@@ -72,6 +72,6 @@ except rivwebpyapi.RivWebPyError as err:
 # Display the code list
 #
 for code in codes:
-    print('code: '+str(code['code']))
-    print('description: '+str(code['description']))
+    for key in code.values():
+        print(key+': '+str(code.values()[key]))
     print('')

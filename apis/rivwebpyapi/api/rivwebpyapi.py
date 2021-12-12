@@ -219,6 +219,11 @@ LOGLINE_FIELDS={
     'extAnncType': 'string'
 }
 
+SCHEDULER_CODE_FIELDS={
+    'code': 'string',
+    'description': 'string'
+}
+
 class RivWebPyApi_ListHandler(ContentHandler):
     def __init__(self,base_tag,fields):
         self.__output=[]
@@ -413,6 +418,10 @@ class Log(RivendellType):
 class LogLine(RivendellType):
     def __init__(self,values={}):
         super().__init__(LOGLINE_FIELDS,values)
+
+class SchedulerCode(RivendellType):
+    def __init__(self,values={}):
+        super().__init__(SCHEDULER_CODE_FIELDS,values)
 
 class rivwebpyapi(object):
     """
@@ -1279,7 +1288,7 @@ class rivwebpyapi(object):
     def ListCartSchedCodes(self,cart_number):
         """
           Returns the set of scheduler codes associated with a Rivendell
-          cart (list of dictionaries)
+          cart (list of rivwebpyapi.SchedulerCode objects).
 
           Takes the following arguments:
 
@@ -1308,17 +1317,15 @@ class rivwebpyapi(object):
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
-        #
-        # Generate the output dictionary
-        #
-        fields={
-            'code': 'string',
-            'description': 'string'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='schedCode',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='schedCode',
+                                        fields=SCHEDULER_CODE_FIELDS)
         xml.sax.parseString(r.text,handler)
+        out=handler.output()
+        ret=[]
+        for item in out:
+            ret.append(SchedulerCode(item))
 
-        return handler.output()
+        return ret
 
     def ListCut(self,cart_number,cut_number):
         """
@@ -1603,7 +1610,7 @@ class rivwebpyapi(object):
     def ListSchedulerCodes(self):
         """
           Returns a list of all defined Rivendell schedule codes
-          (list of dictionaries)
+          (list of rivwebpyapi.SchedulerCode objects).
         """
 
         #
@@ -1625,14 +1632,15 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
-        fields={
-            'code': 'string',
-            'description': 'string'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='schedCode',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='schedCode',
+                                        fields=SCHEDULER_CODE_FIELDS)
         xml.sax.parseString(r.text,handler)
+        out=handler.output()
+        ret=[]
+        for item in out:
+            ret.append(SchedulerCode(item))
 
-        return handler.output()
+        return ret
 
     def ListServices(self,trackable):
         """
@@ -2160,12 +2168,6 @@ class rivwebpyapi(object):
         r=requests.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
-
-
-
-
-
-
 
     def SavePodcast(self,cast_id,filename):
         """

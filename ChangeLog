@@ -22763,3 +22763,9 @@
 	* Added an 'SaveLog()' method to the 'rivwebpyapi' API.
 2021-12-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RivendellType()' base class to the 'rivwebpyapi' API.
+2021-12-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SchedulerCode()' type class to the 'rivwebpyapi' API.
+	* Modified the 'rivwebpyapi.ListCartSchedCodes()' call to return
+	a list of 'rivwebpyapi.SchedulerCode' objects.
+	* Modified the 'rivwebpyapi.ListSchedulerCodes()' call to return
+	a list of 'rivwebpyapi.SchedulerCode' objects.
