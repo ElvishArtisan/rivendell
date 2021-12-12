@@ -243,6 +243,19 @@ SERVICE_FIELDS={
     'description': 'string'
 }
 
+SYSTEM_SETTINGS_FIELDS={
+    'realmName': 'string',
+    'sampleRate': 'integer',
+    'duplicateTitles': 'boolean',
+    'fixDuplicateTitles': 'boolean',
+    'maxPostLength': 'integer',
+    'isciXreferencePath': 'string',
+    'tempCartGroup': 'string',
+    'longDateFormat': 'string',
+    'shortDateFormat': 'string',
+    'showTwelveHourTime': 'boolean'
+}
+
 class RivWebPyApi_ListHandler(ContentHandler):
     def __init__(self,base_tag,fields):
         self.__output=[]
@@ -449,6 +462,10 @@ class SchedulerCode(RivendellType):
 class Service(RivendellType):
     def __init__(self,values={}):
         super().__init__(SERVICE_FIELDS,values)
+
+class SystemSettings(RivendellType):
+    def __init__(self,values={}):
+        super().__init__(SYSTEM_SETTINGS_FIELDS,values)
 
 class rivwebpyapi(object):
     """
@@ -1696,7 +1713,7 @@ class rivwebpyapi(object):
 
     def ListSystemSettings(self):
         """
-          Returns Rivendell system settings (dictionary).
+          Returns Rivendell system settings (rivwebpyapi.SystemSettings object).
         """
 
         #
@@ -1718,22 +1735,11 @@ class rivwebpyapi(object):
         #
         # Generate the output dictionary
         #
-        fields={
-            'realmName': 'string',
-            'sampleRate': 'integer',
-            'duplicateTitles': 'boolean',
-            'fixDuplicateTitles': 'boolean',
-            'maxPostLength': 'integer',
-            'isciXreferencePath': 'string',
-            'tempCartGroup': 'string',
-            'longDateFormat': 'string',
-            'shortDateFormat': 'string',
-            'showTwelveHourTime': 'boolean'
-        }
-        handler=RivWebPyApi_ListHandler(base_tag='systemSettings',fields=fields)
+        handler=RivWebPyApi_ListHandler(base_tag='systemSettings',
+                                        fields=SYSTEM_SETTINGS_FIELDS)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()[0]
+        return SystemSettings(handler.output()[0])
 
     def LockLog(self,log_name,operation,guid):
         """

@@ -59,7 +59,7 @@ if((not url)or(not username)):
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
 try:
-    setting=webapi.ListSystemSettings()
+    settings=webapi.ListSystemSettings()
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR ***')
     eprint('Response Code: '+str(err.responseCode))
@@ -69,16 +69,8 @@ except rivwebpyapi.RivWebPyError as err:
     sys.exit(1)
 
 #
-# Display the settings list
+# Display the settings
 #
-print('realmName: '+str(setting['realmName']))
-print('sampleRate: '+str(setting['sampleRate']))
-print('duplicateTitles: '+str(setting['duplicateTitles']))
-print('fixDuplicateTitles: '+str(setting['fixDuplicateTitles']))
-print('maxPostLength: '+str(setting['maxPostLength']))
-print('isciXreferencePath: '+str(setting['isciXreferencePath']))
-print('tempCartGroup: '+str(setting['tempCartGroup']))
-print('longDateFormat: '+str(setting['longDateFormat']))
-print('shortDateFormat: '+str(setting['shortDateFormat']))
-print('showTwelveHourTime: '+str(setting['showTwelveHourTime']))
+for key in settings.values():
+    print(key+': '+str(settings.values()[key]))
 print('')
