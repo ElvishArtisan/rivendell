@@ -22787,3 +22787,6 @@
 	* Added a 'LogLock()' type class to the 'rivwebpyapi' API.
 	* Modified the 'rivwebpyapi.LockLog()' call to return
 	a  'rivwebpyapi.LogLock' object.
+2021-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for HTTP connection reuse to the
+	'rivewebpyapi.rivwebpyapi' class.

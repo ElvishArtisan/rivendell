@@ -509,6 +509,7 @@ class rivwebpyapi(object):
         self.__connection_url=parsed_url.geturl()
         self.__connection_username=username
         self.__connection_password=password
+        self.__session=requests.Session()
 
     def __throwError(self,response):
         if(response.headers['content-type']=='application/xml'):
@@ -564,7 +565,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -604,7 +605,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -647,7 +648,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -682,7 +683,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -717,7 +718,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -756,7 +757,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -802,7 +803,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -849,7 +850,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -903,7 +904,7 @@ class rivwebpyapi(object):
         #
         # Execute
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -981,7 +982,7 @@ class rivwebpyapi(object):
         #
         # Execute
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1064,7 +1065,7 @@ class rivwebpyapi(object):
         #
         # Fetch the audio data
         #
-        r=requests.post(self.__connection_url,data=postdata,stream=True)
+        r=self.__session.post(self.__connection_url,data=postdata,stream=True)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
         with open(filename,'wb') as handle:
@@ -1103,7 +1104,7 @@ class rivwebpyapi(object):
         #
         # Fetch the peak data
         #
-        r=requests.post(self.__connection_url,data=postdata,stream=True)
+        r=self.__session.post(self.__connection_url,data=postdata,stream=True)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
         ret=bytes()
@@ -1138,7 +1139,7 @@ class rivwebpyapi(object):
         #
         # Fetch the audio data
         #
-        r=requests.post(self.__connection_url,data=postdata,stream=True)
+        r=self.__session.post(self.__connection_url,data=postdata,stream=True)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
         with open(filename,'wb') as handle:
@@ -1219,7 +1220,7 @@ class rivwebpyapi(object):
         #
         # Execute
         #
-        r=requests.post(self.__connection_url,data=postdata,files=files)
+        r=self.__session.post(self.__connection_url,data=postdata,files=files)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1271,7 +1272,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1325,7 +1326,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1369,7 +1370,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1416,7 +1417,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1456,7 +1457,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1494,7 +1495,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1524,7 +1525,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1563,7 +1564,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1627,7 +1628,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1660,7 +1661,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1706,7 +1707,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1740,7 +1741,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1790,7 +1791,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1834,7 +1835,7 @@ class rivwebpyapi(object):
         #
         # Fetch the audio data
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1864,7 +1865,7 @@ class rivwebpyapi(object):
         #
         # Fetch the audio data
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1893,7 +1894,7 @@ class rivwebpyapi(object):
         #
         # Fetch the audio data
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1929,7 +1930,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1959,7 +1960,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -1995,7 +1996,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -2024,7 +2025,7 @@ class rivwebpyapi(object):
         #
         # Fetch the audio data
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -2053,7 +2054,7 @@ class rivwebpyapi(object):
         #
         # Fetch the audio data
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -2082,7 +2083,7 @@ class rivwebpyapi(object):
         #
         # Fetch the audio data
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -2191,7 +2192,7 @@ class rivwebpyapi(object):
         #
         # Execute
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -2225,7 +2226,7 @@ class rivwebpyapi(object):
         #
         # Execute
         #
-        r=requests.post(self.__connection_url,data=postdata,files=files)
+        r=self.__session.post(self.__connection_url,data=postdata,files=files)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -2266,7 +2267,7 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
 
@@ -2316,6 +2317,6 @@ class rivwebpyapi(object):
         #
         # Fetch the XML
         #
-        r=requests.post(self.__connection_url,data=postdata)
+        r=self.__session.post(self.__connection_url,data=postdata)
         if(r.status_code!=requests.codes.ok):
             self.__throwError(response=r)
