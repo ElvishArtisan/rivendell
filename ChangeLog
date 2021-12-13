@@ -22783,3 +22783,7 @@
 	* Added a 'SystemSettings()' type class to the 'rivwebpyapi' API.
 	* Modified the 'rivwebpyapi.ListSystemSettings()' call to return
 	a  'rivwebpyapi.SystemSettings' object.
+2021-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LogLock()' type class to the 'rivwebpyapi' API.
+	* Modified the 'rivwebpyapi.LockLog()' call to return
+	a  'rivwebpyapi.LogLock' object.

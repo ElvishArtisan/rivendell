@@ -78,7 +78,7 @@ if((operation!='CREATE')and(not guid)):
 #
 webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
 try:
-    result=webapi.LockLog(log_name=log_name,operation=operation,guid=guid)
+    lock=webapi.LockLog(log_name=log_name,operation=operation,guid=guid)
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR ***')
     eprint('Response Code: '+str(err.responseCode))
@@ -90,12 +90,6 @@ except rivwebpyapi.RivWebPyError as err:
 #
 # Display the result
 #
+for key in lock.values():
+    print(key+': '+str(lock.values()[key]))
 print('')
-print('RESULT:')
-print('result: '+str(result['result']))
-print('logName: '+str(result['logName']))
-print('lockGuid: '+str(result['lockGuid']))
-print('address: '+str(result['address']))
-print('lockTimeout: '+str(result['address']))
-print('')
-

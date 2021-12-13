@@ -233,6 +233,14 @@ LOGLINE_FIELDS={
     'extAnncType': 'string'
 }
 
+LOG_LOCK_FIELDS={
+    'result': 'boolean',
+    'logName': 'string',
+    'lockGuid': 'string',
+    'address': 'string',
+    'lockTimeout': 'integer'
+}
+
 SCHEDULER_CODE_FIELDS={
     'code': 'string',
     'description': 'string'
@@ -454,6 +462,10 @@ class Log(RivendellType):
 class LogLine(RivendellType):
     def __init__(self,values={}):
         super().__init__(LOGLINE_FIELDS,values)
+
+class LogLock(RivendellType):
+    def __init__(self,values={}):
+        super().__init__(LOG_LOCK_FIELDS,values)
 
 class SchedulerCode(RivendellType):
     def __init__(self,values={}):
@@ -1743,7 +1755,7 @@ class rivwebpyapi(object):
 
     def LockLog(self,log_name,operation,guid):
         """
-          Manage the lock for the specified log (dictionary).
+          Manage the lock for the specified log (rivwebpyapi.LogLock object).
 
           Takes the following argument:
 
@@ -1795,7 +1807,7 @@ class rivwebpyapi(object):
         handler=RivWebPyApi_ListHandler(base_tag='logLock',fields=fields)
         xml.sax.parseString(r.text,handler)
 
-        return handler.output()[0]
+        return LogLock(handler.output()[0])
 
     def PostImage(self,image_id):
         """
