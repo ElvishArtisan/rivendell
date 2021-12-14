@@ -22790,3 +22790,7 @@
 2021-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for HTTP connection reuse to the
 	'rivewebpyapi.rivwebpyapi' class.
+2021-12-14 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the comment headers of files below 'apis/rivwebpyapi/' to
+	reflecting licensing under the GNU Lesser General Public License v2
+	rather than the GNU General Public License version 2.
