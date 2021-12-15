@@ -29,6 +29,7 @@ endif
 SUBDIRS = debian\
           icons\
           helpers\
+          LICENSES\
           lib\
           $(HPI_RD_OPT) apis\
           scripts\
@@ -89,18 +90,6 @@ py-rpm:	dist
 	rm $(HOME)/rpmbuild/SOURCES/rivendell-$(VERSION).tar.gz
 
 rpm:	py-rpm base-rpm
-
-#rpm:	dist
-#	mkdir -p $(HOME)/rpmbuild/SOURCES
-#	cp rivendell-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
-#	$(RPMBUILD) -ba --target $(ARCH)-$(VENDOR)-linux rivendell.spec
-#	$(RPMBUILD) -ba --target noarch-$(VENDOR)-linux rivwebpyapi.spec
-#	mv $(HOME)/rpmbuild/RPMS/$(ARCH)/rivendell-*.rpm $(top_srcdir)/
-#	mv $(HOME)/rpmbuild/RPMS/noarch/rivendell-*.rpm $(top_srcdir)/
-#	mv $(HOME)/rpmbuild/SRPMS/rivendell-*.src.rpm $(top_srcdir)/
-#	mv $(HOME)/rpmbuild/RPMS/noarch/python36-rivwebpyapi-*.rpm $(top_srcdir)/
-#	mv $(HOME)/rpmbuild/SRPMS/python36-rivwebpyapi-*.rpm $(top_srcdir)/
-#	rm $(HOME)/rpmbuild/SOURCES/rivendell-$(VERSION).tar.gz
 
 zip:	dist
 	tar -zxf rivendell-@VERSION@.tar.gz

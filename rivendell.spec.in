@@ -141,7 +141,7 @@ mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/logos
 cp icons/webget_logo.png $RPM_BUILD_ROOT/@DOC_PATH@/logos/
 cp AUTHORS $RPM_BUILD_ROOT/@DOC_PATH@/
 cp ChangeLog $RPM_BUILD_ROOT/@DOC_PATH@/
-cp COPYING $RPM_BUILD_ROOT/@DOC_PATH@/
+cp LICENSES/GPLv2.txt $RPM_BUILD_ROOT/@DOC_PATH@/
 cp INSTALL $RPM_BUILD_ROOT/@DOC_PATH@/
 cp NEWS $RPM_BUILD_ROOT/@DOC_PATH@/
 cp README $RPM_BUILD_ROOT/@DOC_PATH@/
@@ -529,7 +529,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/rivendell/pypad/*
 %{_libdir}/python3.6/site-packages/pypad*
 %{_libdir}/python3.6/site-packages/__pycache__/pypad*
-
+%doc LICENSES/GFDL.txt
 
 %post pypad
 /usr/sbin/groupadd -r -g 151 pypad &>/dev/null || :

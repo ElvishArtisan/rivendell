@@ -22794,3 +22794,10 @@
 	* Updated the comment headers of files below 'apis/rivwebpyapi/' to
 	reflecting licensing under the GNU Lesser General Public License v2
 	rather than the GNU General Public License version 2.
+2021-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the text of the GNU General Purpose License version 2 from
+	'COPYING', to 'LICENSES/VPLv2.txt'
+	* Added the text of the GNU Lesser General Purpose Licents version
+	2.1 to 'LICENSES/LGPLv2.txt'.
+	* Added the text of the GNU Free Documentation License version
+	1.3 to 'LICENSES/GFDL.txt'.

@@ -602,6 +602,7 @@ AC_CONFIG_FILES([rivendell.spec \
     helpers/Makefile \
     helpers/install_python.sh \
     helpers/rdi18n_helper.sh \
+    LICENSES/Makefile \
     apis/Makefile \
     apis/pypad/Makefile \
     apis/pypad/api/Makefile \

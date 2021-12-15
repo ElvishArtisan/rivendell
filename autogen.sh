@@ -44,7 +44,7 @@ aclocal $ACLOCAL_FLAGS || {
     exit 1
 }
 
-automake --add-missing -Wno-portability || {
+automake --add-missing --foreign -Wno-portability || {
     echo "automake --add-missing failed, exiting..."
     exit 1
 }
