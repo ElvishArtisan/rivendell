@@ -23,8 +23,10 @@
 #
 
 import getpass
-import rivwebpyapi
 import sys
+
+from rivwebpyapi import rivwebpyapi
+
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
@@ -73,9 +75,9 @@ if(cart_number==0):
 #
 # Get the cut list
 #
-webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
+site=rivwebpyapi.Site(url=url,username=username,password=password)
 try:
-    cart=webapi.AddCart(group_name=group_name,cart_type=cart_type,cart_number=cart_number)
+    cart=site.AddCart(group_name=group_name,cart_type=cart_type,cart_number=cart_number)
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR ***')
     eprint('Response Code: '+str(err.responseCode))

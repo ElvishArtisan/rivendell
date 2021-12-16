@@ -23,8 +23,10 @@
 #
 
 import getpass
-import rivwebpyapi
 import sys
+
+from rivwebpyapi import rivwebpyapi
+
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
@@ -70,12 +72,12 @@ if(cart_number==0):
 #
 # Get the cart list
 #
-webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
+site=rivwebpyapi.Site(url=url,username=username,password=password)
 cart=rivwebpyapi.Cart()
 cart.setValues(values)
 
 try:
-    cart=webapi.EditCart(cart_number=cart_number,values=cart.values())
+    cart=site.EditCart(cart_number=cart_number,values=cart.values())
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR ***')
     eprint('Response Code: '+str(err.responseCode))

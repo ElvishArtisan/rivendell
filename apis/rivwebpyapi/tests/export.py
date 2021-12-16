@@ -23,8 +23,10 @@
 #
 
 import getpass
-import rivwebpyapi
 import sys
+
+from rivwebpyapi import rivwebpyapi
+
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
@@ -110,9 +112,9 @@ if(end_point<0):
 #
 # Get the code list
 #
-webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
+site=rivwebpyapi.Site(url=url,username=username,password=password)
 try:
-    webapi.Export(filename=filename,cart_number=cart_number,
+    site.Export(filename=filename,cart_number=cart_number,
                   cut_number=cut_number,
                   audio_format=audio_format,channels=channels,
                   sample_rate=sample_rate,bit_rate=bit_rate,quality=quality,

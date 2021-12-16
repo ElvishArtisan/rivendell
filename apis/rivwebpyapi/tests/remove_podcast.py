@@ -23,8 +23,10 @@
 #
 
 import getpass
-import rivwebpyapi
 import sys
+
+from rivwebpyapi import rivwebpyapi
+
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
@@ -61,9 +63,9 @@ if(cast_id<0):
 #
 # Execute
 #
-webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
+site=rivwebpyapi.Site(url=url,username=username,password=password)
 try:
-    webapi.RemovePodcast(cast_id=cast_id)
+    site.RemovePodcast(cast_id=cast_id)
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR ***')
     eprint('Response Code: '+str(err.responseCode))

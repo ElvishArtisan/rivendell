@@ -23,8 +23,10 @@
 #
 
 import getpass
-import rivwebpyapi
 import sys
+
+from rivwebpyapi import rivwebpyapi
+
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
@@ -70,13 +72,13 @@ if(from_log_name==to_log_name):
     eprint('"--from-log-name" and "--to-log_name" must be different')
     sys.exit(1)
 
-webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
+site=rivwebpyapi.Site(url=url,username=username,password=password)
 
 #
 # Get the "from" log
 #
 try:
-    log_header=webapi.ListLogs(log_name=from_log_name)[0]
+    log_header=site.ListLogs(log_name=from_log_name)[0]
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR Calling ListLogs() ***')
     eprint('Response Code: '+str(err.responseCode))
@@ -86,7 +88,7 @@ except rivwebpyapi.RivWebPyError as err:
     sys.exit(1)
 
 try:
-    log_lines=webapi.ListLog(log_name=from_log_name)
+    log_lines=site.ListLog(log_name=from_log_name)
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR Calling ListLog() ***')
     eprint('Response Code: '+str(err.responseCode))
@@ -99,7 +101,7 @@ except rivwebpyapi.RivWebPyError as err:
 # Save "to" log
 #
 try:
-    webapi.SaveLog(log_name=to_log_name,header_values=log_header,line_values=log_lines)
+    site.SaveLog(log_name=to_log_name,header_values=log_header,line_values=log_lines)
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR Calling SaveLog() ***')
     eprint('Response Code: '+str(err.responseCode))

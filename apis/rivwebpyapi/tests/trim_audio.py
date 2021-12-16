@@ -23,8 +23,10 @@
 #
 
 import getpass
-import rivwebpyapi
 import sys
+
+from rivwebpyapi import rivwebpyapi
+
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
@@ -73,9 +75,9 @@ if(trim_level==1700):
 #
 # Execute
 #
-webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
+site=rivwebpyapi.Site(url=url,username=username,password=password)
 try:
-    result=webapi.TrimAudio(cart_number=cart_number,cut_number=cut_number,
+    result=site.TrimAudio(cart_number=cart_number,cut_number=cut_number,
                             trim_level=trim_level)
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR ***')

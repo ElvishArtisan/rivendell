@@ -23,8 +23,10 @@
 #
 
 import getpass
-import rivwebpyapi
 import sys
+
+from rivwebpyapi import rivwebpyapi
+
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
@@ -92,9 +94,9 @@ if(not filename):
 #
 # Get the code list
 #
-webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
+site=rivwebpyapi.Site(url=url,username=username,password=password)
 try:
-    result=webapi.Import(filename=filename,cart_number=cart_number,
+    result=site.Import(filename=filename,cart_number=cart_number,
                          cut_number=cut_number,channels=channels,
                          normalization_level=normalization_level,
                          autotrim_level=autotrim_level,

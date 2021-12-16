@@ -23,8 +23,10 @@
 #
 
 import getpass
-import rivwebpyapi
 import sys
+
+from rivwebpyapi import rivwebpyapi
+
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
@@ -67,9 +69,9 @@ if(cut_number==0):
 #
 # Get the code list
 #
-webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
+site=rivwebpyapi.Site(url=url,username=username,password=password)
 try:
-    info=webapi.AudioInfo(cart_number=cart_number,cut_number=cut_number)
+    info=site.AudioInfo(cart_number=cart_number,cut_number=cut_number)
 except rivwebpyapi.RivWebPyError as err:
     print('*** ERROR ***')
     print('Response Code: '+str(err.responseCode))

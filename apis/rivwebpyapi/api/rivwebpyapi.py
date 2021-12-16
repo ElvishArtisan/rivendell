@@ -479,7 +479,7 @@ class SystemSettings(RivendellType):
     def __init__(self,values={}):
         super().__init__(SYSTEM_SETTINGS_FIELDS,values)
 
-class rivwebpyapi(object):
+class Site(object):
     """
        Create a 'RivWebPyApi' object for accessing the Web API.
     """

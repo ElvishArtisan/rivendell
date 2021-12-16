@@ -22803,3 +22803,8 @@
 	1.3 to 'LICENSES/GFDL.txt'.
 2021-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added the derived file warning to 'rivwebpyapi.spec.in'.
+2021-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'rivwebpyapi.rivwebpyapi()' class to
+	'rivwebpyapi.Site()'.
+	* Added 'make pypi' and 'make post-pypi' targets to
+	'apis/rivwebpyapi/Makefile.am'.

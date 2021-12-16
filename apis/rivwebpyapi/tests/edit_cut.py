@@ -23,8 +23,10 @@
 #
 
 import getpass
-import rivwebpyapi
 import sys
+
+from rivwebpyapi import rivwebpyapi
+
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
@@ -76,12 +78,12 @@ if(cut_number==0):
 #
 # Execute
 #
-webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
+site=rivwebpyapi.Site(url=url,username=username,password=password)
 cut=rivwebpyapi.Cut()
 cut.setValues(values)
 
 try:
-    cut=webapi.EditCut(cart_number=cart_number,cut_number=cut_number,
+    cut=site.EditCut(cart_number=cart_number,cut_number=cut_number,
                        values=cut.values())
 except rivwebpyapi.RivWebPyError as err:
     eprint('*** ERROR ***')

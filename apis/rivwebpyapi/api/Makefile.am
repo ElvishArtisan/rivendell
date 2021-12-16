@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-rivendelldir = $(pyexecdir)
+rivendelldir = $(pyexecdir)/rivwebpyapi
 rivendell_PYTHON = rivwebpyapi.py
 
 CLEANFILES = *~\

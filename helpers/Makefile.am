@@ -33,7 +33,8 @@ dist_cwrap_SOURCES = cwrap.cpp cwrap.h
 
 dist_jsmin_SOURCES = jsmin.c
 
-EXTRA_DIST = c_file_warning\
+EXTRA_DIST = build_pypi_package.sh\
+             c_file_warning\
              install_python.sh.in\
              rdi18n_helper.sh.in\
              rdpack.sh\

@@ -23,13 +23,29 @@
 SUBDIRS = api\
           tests
 
+pypi:	
+	rm -rf pypi
+	../../helpers/build_pypi_package.sh rivwebpyapi
+	cp pypi/dist/* .
+	rm -rf pypi
+
+post-pypi:	
+	python3 -m twine upload --repository testpypi *.tar.gz *.whl
+
+EXTRA_DIST = pyproject.toml\
+             setup.cfg.in
+
 CLEANFILES = *~\
              *.idb\
              *ilk\
              *.obj\
              *.pdb\
              *.qm\
+             *.tar.gz\
+             *.whl\
              moc_*
+
+DISTCLEANFILES = setup.cfg
 
 MAINTAINERCLEANFILES = *~\
                        *.tar.gz\

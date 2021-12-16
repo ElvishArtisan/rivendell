@@ -23,8 +23,10 @@
 #
 
 import getpass
-import rivwebpyapi
 import sys
+
+from rivwebpyapi import rivwebpyapi
+
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
@@ -70,9 +72,9 @@ if((not url)or(not username)):
 #
 # Get the log list
 #
-webapi=rivwebpyapi.rivwebpyapi(url=url,username=username,password=password)
+site=rivwebpyapi.Site(url=url,username=username,password=password)
 try:
-    logs=webapi.ListLogs(service_name=service_name,log_name=log_name,
+    logs=site.ListLogs(service_name=service_name,log_name=log_name,
                          trackable=trackable,filter_string=filter_string,
                          recent=recent)
 except rivwebpyapi.RivWebPyError as err:

@@ -25,6 +25,8 @@ AC_SUBST(RPM_RELEASE,1)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 AC_CONFIG_MACRO_DIR([m4])
 
+AC_SUBST(RIVWEBPYAPI_VERSION,m4_esyscmd(cat RIVWEBPYAPI_VERSION))
+
 #
 # API Library Versioning
 #
@@ -612,6 +614,7 @@ AC_CONFIG_FILES([rivendell.spec \
     apis/rivwebcapi/rivwebcapi.pc \
     apis/rivwebcapi/rivwebcapi/Makefile \
     apis/rivwebcapi/tests/Makefile \
+    apis/rivwebpyapi/setup.cfg \
     apis/rivwebpyapi/Makefile \
     apis/rivwebpyapi/api/Makefile \
     apis/rivwebpyapi/tests/Makefile \
