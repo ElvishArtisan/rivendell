@@ -117,6 +117,7 @@ rdvairplayd/rdvairplayd
 ripcd/ripcd
 rivendell
 rivendell-suse
+setup.cfg
 slack-desc
 systemd/rivendell.service
 tests/audio_convert_test
