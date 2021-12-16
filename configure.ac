@@ -19,37 +19,20 @@ dnl   License along with this program; if not, write to the Free Software
 dnl   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 dnl
 
-AC_INIT([rivendell],m4_esyscmd(cat PACKAGE_VERSION))
+AC_INIT([rivendell],m4_esyscmd(cat versions/PACKAGE_VERSION))
 AM_INIT_AUTOMAKE([1.9 tar-pax])
 AC_SUBST(RPM_RELEASE,1)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 AC_CONFIG_MACRO_DIR([m4])
 
-AC_SUBST(RIVWEBPYAPI_VERSION,m4_esyscmd(cat RIVWEBPYAPI_VERSION))
-
 #
-# API Library Versioning
+# API Versioning
 #
-# From http://www.gnu.org/software/libtool/manual.html#Updating-version-info
-#
-#   1. Start with version information of 0:0:0 for each libtool library.
-#   2. Update the version information only immediately before a public
-#      release of your software. More frequent updates are unnecessary,
-#      and only guarantee that the current interface number gets larger
-#      faster.
-#   3. If the library source code has changed at all since the last update,
-#      then increment 'REVISION' (c:r:a becomes c:r+1:a).
-#   4. If any interfaces have been added, removed, or changed since the last
-#      update, increment 'CURRENT', and set 'REVISION' to 0.
-#   5. If any interfaces have been added since the last public release, then
-#      increment 'AGE'.
-#   6. If any interfaces have been removed since the last public release,
-#      then set 'AGE' to 0.
-RIVWEBCAPI_CURRENT=1
-RIVWEBCAPI_REVISION=0
-RIVWEBCAPI_AGE=1
+AC_SUBST(RIVWEBPYAPI_VERSION,m4_esyscmd(cat versions/RIVWEBPYAPI_VERSION))
+RIVWEBCAPI_CURRENT=m4_esyscmd(cat versions/RIVWEBCAPI_CURRENT)
+RIVWEBCAPI_REVISION=m4_esyscmd(cat versions/RIVWEBCAPI_REVISION)
+RIVWEBCAPI_AGE=m4_esyscmd(cat versions/RIVWEBCAPI_AGE)
 RIVWEBCAPI_POINT=$(($RIVWEBCAPI_CURRENT - $RIVWEBCAPI_AGE))
-
 AC_SUBST(INTERFACE_RIVWEBCAPI_CURRENT,$RIVWEBCAPI_CURRENT)
 AC_SUBST(INTERFACE_RIVWEBCAPI_REVISION,$RIVWEBCAPI_REVISION)
 AC_SUBST(INTERFACE_RIVWEBCAPI_AGE,$RIVWEBCAPI_AGE)
@@ -596,6 +579,7 @@ ln -s ../../icons/redx.png docs/opsguide/redx.png
 
 AC_CONFIG_FILES([rivendell.spec \
     rivwebpyapi.spec \
+    versions/Makefile \
     debian/Makefile \
     debian/source/Makefile \
     Makefile \

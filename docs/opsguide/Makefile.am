@@ -334,10 +334,10 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 webget.xml
 
 %.html:	$(OPSGUIDE_DEPS)\
-                ../../PACKAGE_VERSION
+                ../../versions/PACKAGE_VERSION
 	xsltproc ../stylesheets/book-xhtml.xml opsguide.xml
 
-opsguide.pdf:	$(OPSGUIDE_DEPS) ../../PACKAGE_VERSION\
+opsguide.pdf:	$(OPSGUIDE_DEPS) ../../versions/PACKAGE_VERSION\
                 ../stylesheets/book-fo.xml\
                 ../stylesheets/book-fo-titlepages.xsl
 	xsltproc ../stylesheets/book-fo.xml opsguide.xml | fop - -pdf opsguide.pdf

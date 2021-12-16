@@ -2,7 +2,7 @@
 ##
 ## Top level automake.am for Rivendell
 ##
-##   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -26,7 +26,8 @@ if ALSA_RD_AM
   ALSACONFIG_RD_OPT = rdalsaconfig
 endif
 
-SUBDIRS = debian\
+SUBDIRS = versions\
+          debian\
           icons\
           helpers\
           LICENSES\
@@ -101,7 +102,6 @@ EXTRA_DIST = autogen.sh\
              get_distro.pl\
              get_target.sh\
              INSTALL-WINDOWS\
-             PACKAGE_VERSION\
              rivendell.ism\
              rivendell.pro\
              rivendell.spec.in\

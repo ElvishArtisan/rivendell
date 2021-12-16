@@ -22808,3 +22808,5 @@
 	'rivwebpyapi.Site()'.
 	* Added 'make pypi' and 'make post-pypi' targets to
 	'apis/rivwebpyapi/Makefile.am'.
+2021-12-16 Fred Gleason <fredg@paravelsystems.com>
+	* Consolidated all canonical version declarations in 'versions/'.
