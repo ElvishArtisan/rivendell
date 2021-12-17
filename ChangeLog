@@ -20827,3 +20827,6 @@
 2021-12-17 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'linkLength' field to the return XML for the 'ListLog'
 	WebAPI call.
+2021-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'graceTime' field to the return XML for the 'ListLog'
+	WebAPI call.

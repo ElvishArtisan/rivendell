@@ -2327,6 +2327,7 @@ QString RDLogLine::xml(int line) const
       ret+="    "+RDXmlField("startTime");
     }
   }
+  ret+="    "+RDXmlField("graceTime",graceTime());
   ret+="    "+RDXmlField("transitionType",RDLogLine::transText(transType()));
   ret+="    "+RDXmlField("cutQuantity",cutQuantity());
   ret+="    "+RDXmlField("lastCutPlayed",lastCutPlayed());
