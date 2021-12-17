@@ -22810,3 +22810,11 @@
 	'apis/rivwebpyapi/Makefile.am'.
 2021-12-16 Fred Gleason <fredg@paravelsystems.com>
 	* Consolidated all canonical version declarations in 'versions/'.
+2021-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Rearranged the ordering of the module imports in
+	'apis/rivwebpyapi/api/rivwebpyapi.py' to conform to recommendations
+	in Python PEP 8.
+	* Added a 'requests' dependency to the PyPI package requirements
+	for the 'rivwebpyapi' API.
+	* Incremented the version of the 'rivwebpyapi' PyPI package to
+	4.0.0b8.

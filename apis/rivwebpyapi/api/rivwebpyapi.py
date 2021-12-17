@@ -18,14 +18,14 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
-import sys
-
 import datetime
+import sys
 from datetime import timedelta
-import requests
 from urllib.parse import urlparse
 from xml.sax.handler import ContentHandler
 import xml.sax
+
+import requests
 
 #
 # Audio Formats

@@ -19,6 +19,8 @@ package_dir=
 	=src
 packages=find:
 python_requires = >=3.6
+install_requires =
+	requests >= 2.14.2
 
 [options.packages.find]
 where=src

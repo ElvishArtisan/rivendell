@@ -23,6 +23,7 @@
 *.xsl
 *.tar.gz
 *.tar.xz
+*.whl
 *.zip
 .AppleDouble
 .deps
