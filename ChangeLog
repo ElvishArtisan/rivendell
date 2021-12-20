@@ -22818,3 +22818,7 @@
 	for the 'rivwebpyapi' API.
 	* Incremented the version of the 'rivwebpyapi' PyPI package to
 	4.0.0b8.
+2021-12-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that broke the 'make py-rpm' target.
+	* Reset the version of the 'rivwebpyapi' PyPI package to
+	4.0.0b3.

@@ -79,8 +79,7 @@ helpers/install_python.sh apis/rivwebpyapi/tests/unassign_sched_code.py $RPM_BUI
 cp LICENSES/LGPLv2.txt $RPM_BUILD_ROOT/%{_datadir}/doc/%{name}-%{version}/
 
 %files
-/usr/lib64/python3.6/site-packages/rivwebpyapi.py
-/usr/lib64/python3.6/site-packages/__pycache__/*
+/usr/lib64/python3.6/site-packages/rivwebpyapi/*
 %{_datadir}/doc/%{name}-%{version}
 
 
