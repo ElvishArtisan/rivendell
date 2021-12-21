@@ -22831,3 +22831,5 @@
 	* Refactored rdpanel(1) to use 'RDPortNames'.
 	* Removed the 'RDAirPlayConf::portName()' method.
 	* Removed the 'RDAirPlayConf::soundPanelChannelName()' method.
+2021-12-21 David Klann <dklann@broadcasttool.com>
+	* Add missing files to EXTRA_DIST in versions.
