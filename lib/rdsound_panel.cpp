@@ -67,12 +67,12 @@ RDSoundPanel::RDSoundPanel(int station_panels,int user_panels,bool flash,
   panel_flash_state=false;
   panel_config_panels=false;
   panel_pause_enabled=false;
-  for(unsigned i=0;i<PANEL_MAX_OUTPUTS;i++) {
+  for(unsigned i=0;i<RD_SOUNDPANEL_MAX_OUTPUTS;i++) {
     panel_card[i]=-1;
     panel_port[i]=-1;
   }
   panel_cart_dialog=cart_dialog;
-  for(int i=0;i<PANEL_MAX_OUTPUTS;i++) {
+  for(int i=0;i<RD_SOUNDPANEL_MAX_OUTPUTS;i++) {
     panel_timescaling_supported[i]=false;
   }
   panel_onair_flag=false;
@@ -818,7 +818,7 @@ void RDSoundPanel::hookEndData(int id)
 
 void RDSoundPanel::timescalingSupportedData(int card,bool state)
 {
-  for(unsigned i=0;i<PANEL_MAX_OUTPUTS;i++) {
+  for(unsigned i=0;i<RD_SOUNDPANEL_MAX_OUTPUTS;i++) {
     if(card==panel_card[i]) {
       panel_timescaling_supported[i]=state;
     }
@@ -1017,7 +1017,7 @@ bool RDSoundPanel::PlayAudio(RDPanelButton *button,RDCart *cart,bool hookmode,in
 		    cart->number()));
     return false;
   }
-  if(mport<=0 || mport>PANEL_MAX_OUTPUTS) {
+  if(mport<=0 || mport>RD_SOUNDPANEL_MAX_OUTPUTS) {
     button->setOutput(GetFreeOutput());
     }
   else {
@@ -1475,7 +1475,7 @@ int RDSoundPanel::GetFreeOutput()
 {
   bool active=false;
 
-  for(int i=0;i<PANEL_MAX_OUTPUTS;i++) {
+  for(int i=0;i<RD_SOUNDPANEL_MAX_OUTPUTS;i++) {
     active=false;
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       if((panel_active_buttons[j]!=NULL)&&
@@ -1487,7 +1487,7 @@ int RDSoundPanel::GetFreeOutput()
       return i;
     }
   }
-  return PANEL_MAX_OUTPUTS-1;
+  return RD_SOUNDPANEL_MAX_OUTPUTS-1;
 }
 
 

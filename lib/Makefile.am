@@ -213,6 +213,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdpodcast.cpp rdpodcast.h\
                         rdpodcastfilter.cpp rdpodcastfilter.h\
                         rdpodcastlistmodel.cpp rdpodcastlistmodel.h\
+                        rdportnames.cpp rdportnames.h\
                         rdprocess.cpp rdprocess.h\
                         rdprofile.cpp rdprofile.h\
                         rdpushbutton.cpp rdpushbutton.h\

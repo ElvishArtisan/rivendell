@@ -66,6 +66,7 @@ RDCoreApplication::RDCoreApplication(const QString &module_name,
   app_library_conf=NULL;
   app_logedit_conf=NULL;
   app_panel_conf=NULL;
+  app_port_names=NULL;
   app_ripc=NULL;
   app_station=NULL;
   app_system=NULL;
@@ -103,6 +104,9 @@ RDCoreApplication::~RDCoreApplication()
   }
   if(app_panel_conf!=NULL) {
     delete app_panel_conf;
+  }
+  if(app_port_names!=NULL) {
+    delete app_port_names;
   }
   if(app_user!=NULL) {
     delete app_user;
@@ -214,6 +218,7 @@ bool RDCoreApplication::open(QString *err_msg,RDCoreApplication::ErrorType *err_
   app_logedit_conf=new RDLogeditConf(app_config->stationName());
   app_airplay_conf=new RDAirPlayConf(app_config->stationName(),"RDAIRPLAY");
   app_panel_conf=new RDAirPlayConf(app_config->stationName(),"RDPANEL");
+  app_port_names=new RDPortNames(app_config->stationName());
   app_user=new RDUser();
   app_cae=new RDCae(app_station,app_config,this);
   app_ripc=new RDRipc(app_station,app_config,this);
@@ -291,6 +296,12 @@ RDLogeditConf *RDCoreApplication::logeditConf()
 RDAirPlayConf *RDCoreApplication::panelConf()
 {
   return app_panel_conf;
+}
+
+
+RDPortNames *RDCoreApplication::portNames()
+{
+  return app_port_names;
 }
 
 

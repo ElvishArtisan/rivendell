@@ -189,46 +189,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   connect(rda->ripc(),SIGNAL(onairFlagChanged(bool)),
 	  air_top_strip,SLOT(setOnairFlag(bool)));
 
-  //
-  // Meter Strip
-  //
-  QList<int> strip_cards;
-  QList<int> strip_ports;
-  QStringList strip_labels;
-  QList<int> strip_index;
-  bool strip_changed=true;
-  for(unsigned i=0;i<RDAirPlayConf::LastChannel;i++) {
-    RDAirPlayConf::Channel chan=(RDAirPlayConf::Channel)i;
-    if(((rda->airplayConf()->card(chan)>=0)&&
-	(rda->airplayConf()->port(chan)>=0))&&
-       ((!strip_cards.contains(rda->airplayConf()->card(chan)))||
-	(!strip_ports.contains(rda->airplayConf()->port(chan))))) {
-      strip_cards.push_back(rda->airplayConf()->card(chan));
-      strip_ports.push_back(rda->airplayConf()->port(chan));
-      strip_labels.push_back(rda->airplayConf()->portLabel(chan));
-      strip_index.push_back(strip_index.size());
-    }
-  }
-  while(strip_changed) {
-    strip_changed=false;
-    for(int i=0;i<(strip_index.size()-1);i++) {
-      if(strip_labels.at(strip_index.at(i))>
-	 strip_labels.at(strip_index.at(i+1))) {
-	int index=strip_index.at(i);
-	strip_index[i]=strip_index.at(i+1);
-	strip_index[i+1]=index;
-	strip_changed=true;
-      }
-    }
-  }
-  air_meter_strip=new RDMeterStrip(this);
-  for(int i=0;i<strip_cards.size();i++) {
-    air_top_strip->meterWidget()->
-      addOutputMeter(strip_cards.at(strip_index.at(i)),
-		     strip_ports.at(strip_index.at(i)),
-		     strip_labels.at(strip_index.at(i)));
-  }
-  
+  LoadMeters();
+
   //
   // Load GPIO Channel Configuration
   //
@@ -335,27 +297,26 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   air_cue_card=rda->airplayConf()->card(RDAirPlayConf::CueChannel);
   air_cue_port=rda->airplayConf()->port(RDAirPlayConf::CueChannel);
   QString labels[3];
-  for(int i=0;i<3;i++) {
-    air_meter_card[i]=rda->airplayConf()->card((RDAirPlayConf::Channel)i);
-    air_meter_port[i]=rda->airplayConf()->port((RDAirPlayConf::Channel)i);
-    labels[i]=rda->airplayConf()->portLabel((RDAirPlayConf::Channel)i);
+  for(int i=0;i<2;i++) {
     cards[i]=rda->airplayConf()->card((RDAirPlayConf::Channel)i);
     ports[i]=rda->airplayConf()->port((RDAirPlayConf::Channel)i);
     start_rmls[i]=rda->airplayConf()->startRml((RDAirPlayConf::Channel)i);
     stop_rmls[i]=rda->airplayConf()->stopRml((RDAirPlayConf::Channel)i);
+    if((cards[i]>=0)&&(ports[i]>=0)) {
+      labels[i]=rda->portNames()->portName(cards[i],ports[i]);
+    }
   }
-  if((air_meter_card[1]<0)||(air_meter_port[1]<0)) {  // Fixup disabled main log port 2 playout
-    air_meter_card[1]=air_meter_card[0];
-    air_meter_port[1]=air_meter_port[0];
+  if((cards[1]<0)||(ports[1]<0)) {  // Fixup disabled main log port 2 playout
     cards[1]=cards[0];
     ports[1]=ports[0];
+    labels[1]=labels[0];
   }
-  air_log[0]->setChannels(cards,ports,start_rmls,stop_rmls,labels);
+  air_log[0]->setChannels(cards,ports,labels,start_rmls,stop_rmls);
 
   for(int i=0;i<2;i++) {
     cards[i]=rda->airplayConf()->card(RDAirPlayConf::AuxLog1Channel);
     ports[i]=rda->airplayConf()->port(RDAirPlayConf::AuxLog1Channel);
-    labels[i]=rda->airplayConf()->portLabel(RDAirPlayConf::AuxLog1Channel);
+    labels[i]=rda->portNames()->portName(cards[i],ports[i]);
     start_rmls[i]=rda->airplayConf()->startRml(RDAirPlayConf::AuxLog1Channel);
     stop_rmls[i]=rda->airplayConf()->stopRml(RDAirPlayConf::AuxLog1Channel);
   }
@@ -364,7 +325,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   for(int i=0;i<2;i++) {
     cards[i]=rda->airplayConf()->card(RDAirPlayConf::AuxLog2Channel);
     ports[i]=rda->airplayConf()->port(RDAirPlayConf::AuxLog2Channel);
-    ports[i]=rda->airplayConf()->port(RDAirPlayConf::AuxLog2Channel);
+    labels[i]=rda->portNames()->portName(cards[i],ports[i]);
     start_rmls[i]=rda->airplayConf()->startRml(RDAirPlayConf::AuxLog2Channel);
     stop_rmls[i]=rda->airplayConf()->stopRml(RDAirPlayConf::AuxLog2Channel);
   }
@@ -538,31 +499,21 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 		  rda->airplayConf()->
 		       stopRml(RDAirPlayConf::SoundPanel5Channel));
     int next_output=0;
-    int channum[2];
     bool assigned=false;
     if((air_log[0]->card(0)==air_log[0]->card(RDAirPlayConf::MainLog2Channel))&&
       (air_log[0]->port(0)==air_log[0]->port(RDAirPlayConf::MainLog2Channel))) {
       next_output=2;
-      channum[0]=1;
-      channum[1]=1;
     }
     else {
       next_output=3;
-      channum[0]=1;
-      channum[1]=2;
     }
-    for(int i=0;i<PANEL_MAX_OUTPUTS;i++) {
-      air_panel->soundPanelWidget()->
-      setOutputText(i,rda->airplayConf()->soundPanelChannelName(next_output++));
+    for(int i=0;i<RD_SOUNDPANEL_MAX_OUTPUTS;i++) {
       assigned=false;
       for(int j=0;j<2;j++) {
 	if((air_panel->soundPanelWidget()->
 	    card((RDAirPlayConf::Channel)i)==air_log[0]->card(j))&&
 	   (air_panel->soundPanelWidget()->
 	    port((RDAirPlayConf::Channel)i)==air_log[0]->port(j))) {
-	  air_panel->soundPanelWidget()->
-	    setOutputText(i,rda->airplayConf()->
-			  soundPanelChannelName(channum[j]));
 	  next_output--;
 	  assigned=true;
 	  j=2;
@@ -575,13 +526,17 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
 		      air_panel->soundPanelWidget()->card(j))&&
 	     (air_panel->soundPanelWidget()->
 	      port((RDAirPlayConf::Channel)i)==air_panel->soundPanelWidget()->port(j))) {
-	    air_panel->soundPanelWidget()->
-	      setOutputText(i,air_panel->soundPanelWidget()->outputText(j));
 	    next_output--;
-	    j=PANEL_MAX_OUTPUTS;
+	    j=RD_SOUNDPANEL_MAX_OUTPUTS;
 	  }
 	}
       }
+    }
+    for(int i=0;i<RD_SOUNDPANEL_MAX_OUTPUTS;i++) {
+      air_panel->soundPanelWidget()->
+	setOutputText(i,rda->portNames()->
+		      portName(air_panel->soundPanelWidget()->card(i),
+			       air_panel->soundPanelWidget()->port(i)));
     }
 
     air_panel->soundPanelWidget()->setSvcName(rda->airplayConf()->defaultSvc());
@@ -2277,21 +2232,6 @@ int main(int argc,char *argv[])
 }
 
 
-QString logfile;
-
-
-bool MainWidget::FirstPort(int index)
-{
-  for(int i=0;i<index;i++) {
-    if((air_meter_card[index]==air_meter_card[i])&&
-       (air_meter_port[index]==air_meter_port[i])) {
-      return false;
-    }
-  }
-  return true;
-}
-
-
 bool MainWidget::AssertChannelLock(int dir,int card,int port)
 {
   return AssertChannelLock(dir,AudioChannel(card,port));
@@ -2357,5 +2297,61 @@ void MainWidget::ShowTracker(bool state)
   else {
     setMinimumSize(sizeHint());
     air_tracker->hide();
+  }
+}
+
+
+void MainWidget::LoadMeters()
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  //
+  // Add Meters
+  //
+  QList<int> strip_cards;
+  QList<int> strip_ports;
+  QStringList strip_labels;
+  QList<int> strip_index;
+  bool strip_changed=true;
+  sql=QString("select ")+
+    "`CARD`,"+  // 00
+    "`PORT` "+  // 01
+    "from `RDAIRPLAY_CHANNELS` where "+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+    QString::asprintf("`INSTANCE`<%u",RDAirPlayConf::LastChannel);
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    if(((q->value(0).toInt()>=0)&&(q->value(1).toInt()>=0))&&
+       ((!strip_cards.contains(q->value(0).toInt()))||
+	(!strip_ports.contains(q->value(1).toInt())))) {
+      strip_cards.push_back(q->value(0).toInt());
+      strip_ports.push_back(q->value(1).toInt());
+      strip_labels.
+	push_back(rda->portNames()->
+		  portName(q->value(0).toInt(),q->value(1).toInt()));
+      strip_index.push_back(strip_index.size());
+    }
+  }
+  delete q;
+
+  while(strip_changed) {
+    strip_changed=false;
+    for(int i=0;i<(strip_index.size()-1);i++) {
+      if(strip_labels.at(strip_index.at(i))>
+	 strip_labels.at(strip_index.at(i+1))) {
+	int index=strip_index.at(i);
+	strip_index[i]=strip_index.at(i+1);
+	strip_index[i+1]=index;
+	strip_changed=true;
+      }
+    }
+  }
+  air_meter_strip=new RDMeterStrip(this);
+  for(int i=0;i<strip_cards.size();i++) {
+    air_top_strip->meterWidget()->
+      addOutputMeter(strip_cards.at(strip_index.at(i)),
+		     strip_ports.at(strip_index.at(i)),
+		     strip_labels.at(strip_index.at(i)));
   }
 }

@@ -175,6 +175,11 @@
 #define MAX_PANELS 50
 
 /*
+ * Maximum possible SoundPanel play-out ports
+ */
+#define RD_SOUNDPANEL_MAX_OUTPUTS 5
+
+/*
  * Maximum Cart Number
  */
 #define RD_MAX_CART_NUMBER 999999
@@ -666,7 +671,6 @@
 
 #define RD_OFFSET_FORMAT "mm:ss"
 #define RD_OFFSET_TENTHS_FORMAT "mm:ss.z"
-
 
 
 #endif  // RD_H

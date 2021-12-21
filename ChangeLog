@@ -22822,3 +22822,12 @@
 	* Fixed a bug that broke the 'make py-rpm' target.
 	* Reset the version of the 'rivwebpyapi' PyPI package to
 	4.0.0b3.
+2021-12-21 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the PANEL_MAX_OUTPUTS define in 'lib/rdsound_panel.h' to
+	RD_SOUNDPANEL_MAX_OUTPUTS in 'lib/rd.h'.
+	* Added a 'RDPortNames' class.
+	* Added a 'RDCoreApplication::portNames()' method.
+	* Refactored rdairplay(1) to use 'RDPortNames'.
+	* Refactored rdpanel(1) to use 'RDPortNames'.
+	* Removed the 'RDAirPlayConf::portName()' method.
+	* Removed the 'RDAirPlayConf::soundPanelChannelName()' method.

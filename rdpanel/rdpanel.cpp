@@ -189,9 +189,11 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     // Set Fader Display Numbers
     //
     int next_output=1;
-    for(int i=0;i<PANEL_MAX_OUTPUTS;i++) {
+    for(int i=0;i<RD_SOUNDPANEL_MAX_OUTPUTS;i++) {
       bool unique=true;
       int output=next_output;
+      QString label=
+	rda->portNames()->portName(panel_panel->card(i),panel_panel->port(i));
       for(int j=0;j<i;j++) {
 	if((panel_panel->card(i)==panel_panel->card(j))&&
 	   (panel_panel->port(i)==panel_panel->port(j))) {
@@ -202,8 +204,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
       if(unique) {
 	next_output++;
       }
-      panel_panel->
-	setOutputText(i,rda->panelConf()->soundPanelChannelName(output));
+      panel_panel->setOutputText(i,label);
     }
 
     //
@@ -299,7 +300,7 @@ void MainWidget::meterData()
   double ratio[2]={0.0,0.0};
   short level[2];
 
-  for(int i=0;i<PANEL_MAX_OUTPUTS;i++) {
+  for(int i=0;i<RD_SOUNDPANEL_MAX_OUTPUTS;i++) {
     if(meter_data_valid[i]) {
       rda->cae()->
 	outputMeterUpdate(panel_panel->card(i),panel_panel->port(i),level);

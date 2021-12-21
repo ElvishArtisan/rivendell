@@ -35,6 +35,7 @@
 #include <rddbheartbeat.h>
 #include <rdlibrary_conf.h>
 #include <rdlogedit_conf.h>
+#include <rdportnames.h>
 #include <rdripc.h>
 #include <rdrssschemas.h>
 #include <rdstation.h>
@@ -65,6 +66,7 @@ class RDCoreApplication : public QObject
   RDLibraryConf *libraryConf();
   RDLogeditConf *logeditConf();
   RDAirPlayConf *panelConf();
+  RDPortNames *portNames();
   RDRipc *ripc();
   RDRssSchemas *rssSchemas();
   RDStation *station();
@@ -101,6 +103,7 @@ class RDCoreApplication : public QObject
   RDConfig  *app_config;
   RDLibraryConf *app_library_conf;
   RDLogeditConf *app_logedit_conf;
+  RDPortNames *app_port_names;
   RDRipc *app_ripc;
   RDRssSchemas *app_schemas;
   RDStation *app_station;

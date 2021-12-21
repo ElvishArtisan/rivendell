@@ -23,10 +23,9 @@
 
 #include <vector>
 
-#include <qdatetime.h>
-#include <qlabel.h>
-#include <qsignalmapper.h>
-
+#include <QDateTime>
+#include <QLabel>
+#include <QSignalMapper>
 
 #include <rdbutton_dialog.h>
 #include <rdbutton_panel.h>
@@ -43,7 +42,6 @@
 //
 #define PANEL_BUTTON_SIZE_X 88
 #define PANEL_BUTTON_SIZE_Y 80
-#define PANEL_MAX_OUTPUTS 5
 #define PANEL_SCAN_INTERVAL 10000
 
 class RDSoundPanel : public RDWidget
@@ -170,19 +168,19 @@ class RDSoundPanel : public RDWidget
   bool panel_setup_mode;
   bool panel_reset_mode;
   QWidget *panel_parent;
-  int panel_card[PANEL_MAX_OUTPUTS];
-  int panel_port[PANEL_MAX_OUTPUTS];
+  int panel_card[RD_SOUNDPANEL_MAX_OUTPUTS];
+  int panel_port[RD_SOUNDPANEL_MAX_OUTPUTS];
   int panel_cue_card;
   int panel_cue_port;
-  QString panel_output_text[PANEL_MAX_OUTPUTS];
-  QString panel_start_rml[PANEL_MAX_OUTPUTS];
-  QString panel_stop_rml[PANEL_MAX_OUTPUTS];
+  QString panel_output_text[RD_SOUNDPANEL_MAX_OUTPUTS];
+  QString panel_start_rml[RD_SOUNDPANEL_MAX_OUTPUTS];
+  QString panel_stop_rml[RD_SOUNDPANEL_MAX_OUTPUTS];
   RDPanelButton *panel_active_buttons[RD_MAX_STREAMS];
   bool panel_flash;
   int panel_flash_count;
   bool panel_flash_state;
   QString panel_logfile;
-  bool panel_timescaling_supported[PANEL_MAX_OUTPUTS];
+  bool panel_timescaling_supported[RD_SOUNDPANEL_MAX_OUTPUTS];
   bool panel_config_panels;
   RDEventPlayer *panel_event_player;
   QString panel_svcname;

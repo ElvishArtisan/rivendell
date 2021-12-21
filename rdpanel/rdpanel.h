@@ -62,7 +62,7 @@ class MainWidget : public RDMainWindow
   RDStereoMeter *panel_stereo_meter;
   RDSoundPanel *panel_panel;
   RDEventPlayer *panel_player;
-  bool meter_data_valid[PANEL_MAX_OUTPUTS];
+  bool meter_data_valid[RD_SOUNDPANEL_MAX_OUTPUTS];
   QString panel_filter;
   QString panel_group;
   QString panel_schedcode;

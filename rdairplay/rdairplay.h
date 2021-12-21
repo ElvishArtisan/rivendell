@@ -98,13 +98,13 @@ class MainWidget : public RDMainWindow
   void SetAutoMode(int mach);
   void SetLiveAssistMode(int mach);
   void SetActionMode(StartButton::Mode mode);
-  bool FirstPort(int index);
   bool GetPanel(QString str,RDAirPlayConf::PanelType *type,int *panel);
   QFont MessageFont(QString str);
   bool AssertChannelLock(int dir,int card,int port);
   bool AssertChannelLock(int dir,int achan);
   int AudioChannel(int card,int port) const;
   void ShowTracker(bool state);
+  void LoadMeters();
   RDAirPlayConf::Channel PanelChannel(int mport) const;
   RDLogPlay *air_log[RDAIRPLAY_LOG_QUANTITY];
   SoundPanel *air_panel;
@@ -139,8 +139,6 @@ class MainWidget : public RDMainWindow
   QString air_add_group;
   QString air_add_schedcode;
   int air_source_id;
-  int air_meter_card[3];
-  int air_meter_port[3];
   int air_cue_card;
   int air_cue_port;
   RDLogLine::TransType air_default_trans_type;
