@@ -22818,3 +22818,5 @@
 	for the 'rivwebpyapi' API.
 	* Incremented the version of the 'rivwebpyapi' PyPI package to
 	4.0.0b8.
+2021-12-21 David Klann <dklann@broadcasttool.com>
+	* Add missing files to EXTRA_DIST in versions.
