@@ -22833,3 +22833,5 @@
 	* Removed the 'RDAirPlayConf::soundPanelChannelName()' method.
 2021-12-21 David Klann <dklann@broadcasttool.com>
 	* Add missing files to EXTRA_DIST in versions.
+2021-12-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added the ability to filter the library by two scheduler codes.
