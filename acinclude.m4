@@ -2,7 +2,7 @@
 #
 # Local Autoconf macro definitions
 #
-#   (C) Copyright 2006-2019 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2006-2021 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -62,6 +62,38 @@ AC_DEFUN([AR_GET_DISTRO],[]
   AC_MSG_RESULT([$ar_distro_pretty_name $ar_distro_version])
   ]
 )
+
+#
+# AR_PYTHON_MODULE(modname,[ACTION-IF-DETECTED],[ACTION-IF-NOT-DETECTED])
+#
+# Check for the existence of the {modname} python3 module.
+#
+# On successful detection, ACTION-IF-DETECTED is executed if present. If
+# the detection fails, then ACTION-IF-NOT-DETECTED is triggered.
+#
+# Based on code from the AX_PYTHON_MODULE() macro by Andrew Collier.
+#
+#   Copyright (c) 2008 Andrew Collier
+#
+#   Copying and distribution of this file, with or without modification, are
+#   permitted in any medium without royalty provided the copyright notice
+#   and this notice are preserved. This file is offered as-is, without any
+#   warranty.
+#
+AC_DEFUN([AR_PYTHON_MODULE],[
+    PYTHON="python3"
+    PYTHON_NAME=`basename $PYTHON`
+    AC_MSG_CHECKING($PYTHON_NAME module: $1)
+    $PYTHON -c "import $1" 2>/dev/null
+    if test $? -eq 0;
+    then
+        AC_MSG_RESULT(yes)
+        $2
+    else
+        AC_MSG_RESULT(no)
+        $3
+    fi
+])
 
 # ===========================================================================
 #      https://www.gnu.org/software/autoconf-archive/ax_count_cpus.html

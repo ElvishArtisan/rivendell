@@ -50,7 +50,7 @@ OggVorbis - Open Source Audio Coding Library. Needed for OggVorbis
 importing and exporting. Included with most distros, or available at: 
 http://www.xiph.org/.
 
-Python, v3.4 or later
+Python, v3.6 or later
 Open source scripting language. Included with most distros, or available at:
 https://www.python.org/.
 
@@ -126,6 +126,9 @@ Available at http://www.underbit.com/products/mad/.
 
 TwoLAME - MPEG Layer 2 Encoder Library. Needed for MPEG Layer 2 exporting and
 capture. Available at http://www.twolame.org/.
+
+Python3 'build' and 'twine' modules. Needed to build DEB packages using
+the 'make deb' target. Available from the Python Packaging Index (PyPI).
 
 
 DOCUMENTATION

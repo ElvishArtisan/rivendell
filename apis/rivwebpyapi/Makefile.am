@@ -23,7 +23,7 @@
 SUBDIRS = api\
           tests
 
-all:	pypi
+all:	@PYPI@
 
 pypi:	
 	rm -rf pypi

@@ -341,6 +341,22 @@ else
 fi
 
 #
+# Check for PyPI Module Build Chain
+#
+AR_PYTHON_MODULE([build],[BUILD_FOUND=yes],[])
+AR_PYTHON_MODULE([twine],[TWINE_FOUND=yes],[])
+if test $BUILD_FOUND ; then
+  if test $TWINE_FOUND ; then
+    PYPI_FOUND=yes
+    AC_SUBST(PYPI,pypi)
+  else
+    AC_SUBST(PYPI,"")
+  fi
+else
+  AC_SUBST(PYPI,"")
+fi
+
+#
 # Check for FLAC
 #
 if test -z $FLAC_DISABLED ; then
@@ -717,6 +733,11 @@ if test $I18N_ENABLED ; then
 AC_MSG_NOTICE("|                          Update I18N Data ... Yes       |")
 else
 AC_MSG_NOTICE("|                          Update I18N Data ... No        |")
+fi
+if test $PYPI_FOUND ; then
+AC_MSG_NOTICE("|          PyPI Module Build Chain Detected ... Yes       |")
+else
+AC_MSG_NOTICE("|          PyPI Module Build Chain Detected ... No        |")
 fi
 AC_MSG_NOTICE("|                                                         |")
 AC_MSG_NOTICE("| Configured Audio Drivers:                               |")
