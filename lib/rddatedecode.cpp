@@ -20,7 +20,44 @@
 
 #include <stdio.h>
 
-#include <rddatedecode.h>
+#include "rdconf.h"
+#include "rddatedecode.h"
+#include "rddatetime.h"
+
+QString __RDDateCode_TZFormat(int level)
+{
+  int offset=RDTimeZoneOffset();
+  int hours=abs(offset/3600);
+  int minutes=(abs(offset)-3600*hours)/60;
+  int seconds=abs(offset)-3600*hours-60*minutes;
+  QString ret;
+
+  switch(level) {
+  case 0:
+    ret=QString::asprintf("%02d",hours).left(2)+
+      QString::asprintf("%02d",minutes).left(2);
+    break;
+
+  case 1:
+    ret=QString::asprintf("%02d",hours).left(2)+":"+
+      QString::asprintf("%02d",minutes).left(2);
+    break;
+
+  case 2:
+    ret=QString::asprintf("%02d",hours).left(2)+":"+
+      QString::asprintf("%02d",minutes).left(2)+":"+
+      QString::asprintf("%02d",seconds).left(2);
+    break;
+  }
+  if(offset<0) {
+    ret="+"+ret;
+  }
+  else {
+    ret="-"+ret;
+  }
+
+  return ret;
+}
 
 QString RDDateDecode(QString str,const QDate &date,RDStation *station,
 		     RDConfig *config,const QString &svcname)
@@ -451,6 +488,24 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
 
       case 'Y':   // Year (yyyy)
 	field=QString::asprintf("%04d",dt.date().year());
+	break;
+
+      case 'z':   // +hhmm numeric time zone (e.g., -0400)
+	field=__RDDateCode_TZFormat(0);
+	break;
+
+      case ':':   // Extended numeric timezones
+	if((str.length()>(i+1))&&(str.at(i+1)==QChar('z'))) {
+	  field=__RDDateCode_TZFormat(1);
+	  i++;
+	}
+	else {
+	  if((str.length()>(i+2))&&(str.at(i+1)==QChar(':'))&&
+	     (str.at(i+2)==QChar('z'))) {
+	    field=__RDDateCode_TZFormat(2);
+	    i+=2;
+	  }
+	}
 	break;
 
       case '%':   // Literal '%'
