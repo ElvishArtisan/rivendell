@@ -81,6 +81,7 @@ class RDCartFilter : public RDWidget
   void clearClickedData();
   void groupChangedData(const QString &str);
   void schedulerCodeChangedData(const QString &str);
+  void andSchedulerCodeChangedData(const QString &str);
   void checkChangedData(int n);
   void dragsChangedData(int n);
   void searchLimitChangedData(int state);
@@ -99,6 +100,10 @@ class RDCartFilter : public RDWidget
   QLabel *d_group_label;
   QComboBox *d_codes_box;
   QLabel *d_codes_label;
+
+  QComboBox *d_and_codes_box;
+  QLabel *d_and_codes_label;
+
   QLineEdit *d_matches_edit;
   QLabel *d_matches_label;
   QPushButton *d_search_button;

@@ -1,8 +1,8 @@
 <appendix xmlns="http://docbook.org/ns/docbook" xml:id="appendix.filepath_wildcards">
   <title>Filepath Wildcards</title>
   <para>
-    Filepath wildcards can be used in most places in RDAdmin where a filename
-    is required.
+    Filepath wildcards can be used in most places in RDAdmin and RDCatch 
+    where a filename or URL is required.
   </para>
   <sect1 xml:id="sect.filepath_wildcards.definition">
     <title>Definition</title>
@@ -473,7 +473,23 @@
 	      <term><userinput>z</userinput></term>
 	      <listitem>
 		<para>
-		  [unassigned]
+		  -HHMM numeric timezone (e.g. -0400)
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term><userinput>:z</userinput></term>
+	      <listitem>
+		<para>
+		  -HH:MM numeric timezone (e.g. -04:00)
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term><userinput>::z</userinput></term>
+	      <listitem>
+		<para>
+		  -HH:MM:SS numeric timezone (e.g. -04:00:00)
 		</para>
 	      </listitem>
 	    </varlistentry>
@@ -501,7 +517,8 @@
   <sect1 xml:id="sect.filepath_wildcards.examples">
     <title>Examples</title>
     <para>
-      For the date time of February 3rd, 2017 at 2:34:26 PM:
+      For the date time of February 3rd, 2017 at 2:34:26 PM, in the
+      <code>America/New_York</code> timezone:
     </para>
     <variablelist>
       <varlistentry>
@@ -637,6 +654,22 @@
 	<listitem>
 	  <para>
 	    <code>02/03/2017 - 02:34:26 PM</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><userinput>%Y-%m-%dT%H:%M:%S</userinput></term>
+	<listitem>
+	  <para>
+	    <code>2017-02-03T14:34:26</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><userinput>%Y-%m-%dT%H:%M:%S%:z</userinput></term>
+	<listitem>
+	  <para>
+	    <code>2017-02-03T14:34:26-05:00</code>
 	  </para>
 	</listitem>
       </varlistentry>

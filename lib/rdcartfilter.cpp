@@ -88,11 +88,20 @@ RDCartFilter::RDCartFilter(bool show_drag_box,bool user_is_admin,
   // Scheduler Codes Filter
   //
   d_codes_box=new QComboBox(this);
-  d_codes_label=new QLabel(tr("Scheduler Code:"),this);
+  d_codes_label=new QLabel(tr("Scheduler Codes:"),this);
   d_codes_label->setFont(labelFont());
   d_codes_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(d_codes_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(schedulerCodeChangedData(const QString &)));
+  d_and_codes_box=new QComboBox(this);
+  d_and_codes_box->setDisabled(true);
+  d_and_codes_label=new QLabel("  "+tr("and")+"  ",this);
+  d_and_codes_label->setFont(labelFont());
+  d_and_codes_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  d_and_codes_box->insertItem(0,tr("[none]"));
+  d_and_codes_label->setDisabled(true);
+  connect(d_and_codes_box,SIGNAL(activated(const QString &)),
+	  this,SLOT(andSchedulerCodeChangedData(const QString &)));
 
   //
   // Results Counter
@@ -239,12 +248,29 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   //
   // Schedule Code Filter
   //
-  if(d_codes_box->currentText()!=tr("ALL")) {
+  if(d_codes_box->currentIndex()>0) {
     sql+="&&(`CART_SCHED_CODES`.`SCHED_CODE`='"+
       RDEscapeString(d_codes_box->currentText())+"') ";
+    if(d_and_codes_box->currentIndex()>0) {
+      //
+      // Generate a list of carts with the second scheduler code
+      //
+      QString sub_sql;
+      QString cart_sql=QString("select ")+
+	"`CART_NUMBER` "+  // 00
+	"from `CART_SCHED_CODES` where "+
+	"`SCHED_CODE`='"+RDEscapeString(d_and_codes_box->currentText())+"'";
+      RDSqlQuery *q=new RDSqlQuery(cart_sql);
+      while(q->next()) {
+	sub_sql+=
+	  QString::asprintf("(`CART`.`NUMBER`=%u)||",q->value(0).toUInt());
+      }
+      delete q;
+      if(!sub_sql.isEmpty()) {
+	sql+="&&("+sub_sql.left(sub_sql.length()-2)+")";
+      }
+    }
   }
-
-  //  sql+="order by `CART`.`NUMBER` ";
 
   return sql;
 }
@@ -482,6 +508,31 @@ void RDCartFilter::groupChangedData(const QString &str)
 
 void RDCartFilter::schedulerCodeChangedData(const QString &str)
 {
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  d_and_codes_label->setEnabled(d_codes_box->currentIndex()>0);
+  d_and_codes_box->setEnabled(d_codes_box->currentIndex()>0);
+  d_and_codes_box->clear();
+  d_and_codes_box->insertItem(0,tr("[none]"));
+  if(d_codes_box->currentIndex()>0) {
+    sql=QString("select ")+
+      "`CODE` "+  // 00
+      "from `SCHED_CODES` where "+
+      "`CODE`!='"+RDEscapeString(d_codes_box->currentText())+"' "+
+      "order by `CODE`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      d_and_codes_box->insertItem(d_codes_box->count(),q->value(0).toString());
+    }
+    delete q;
+  }
+  filterChangedData("");
+}
+
+
+void RDCartFilter::andSchedulerCodeChangedData(const QString &str)
+{
   filterChangedData("");
 }
 
@@ -523,6 +574,8 @@ void RDCartFilter::resizeEvent(QResizeEvent *e)
   d_group_box->setGeometry(70,38,140,24);
   d_codes_label->setGeometry(215,40,115,20);
   d_codes_box->setGeometry(335,38,120,24);
+  d_and_codes_label->setGeometry(455,40,labelFontMetrics()->width(d_and_codes_label->text()),20);
+  d_and_codes_box->setGeometry(d_and_codes_label->x()+d_and_codes_label->width(),38,120,24);
   d_matches_label->setGeometry(660,40,100,20);
   d_matches_edit->setGeometry(765,40,55,20);
   d_showmatches_label->setGeometry(760,66,200,20);

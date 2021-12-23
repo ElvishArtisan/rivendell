@@ -22833,6 +22833,11 @@
 	* Removed the 'RDAirPlayConf::soundPanelChannelName()' method.
 2021-12-21 David Klann <dklann@broadcasttool.com>
 	* Add missing files to EXTRA_DIST in versions.
+2021-12-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added the ability to filter the library by two scheduler codes.
+2021-12-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added '%z', '%:z' and '%::z' patterns to the set of filepath
+	wildcards.
 2021-12-23 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the build of the 'python3-rivwebpyapi' deb package
 	so as to include proper PyPI package metadata.
