@@ -23,10 +23,13 @@
 SUBDIRS = api\
           tests
 
+all:	pypi
+
 pypi:	
 	rm -rf pypi
 	../../helpers/build_pypi_package.sh rivwebpyapi
 	cp pypi/dist/* .
+	cp pypi/src/rivwebpyapi.egg-info/* .
 	rm -rf pypi
 
 post-pypi:	
@@ -43,7 +46,13 @@ CLEANFILES = *~\
              *.qm\
              *.tar.gz\
              *.whl\
-             moc_*
+             PKG-INFO\
+             SOURCES.txt\
+             dependency_links.txt\
+             moc_*\
+             not-zip-safe\
+             requires.txt\
+             top_level.txt
 
 DISTCLEANFILES = setup.cfg
 

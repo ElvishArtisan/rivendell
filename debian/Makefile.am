@@ -30,7 +30,9 @@ EXTRA_DIST = changelog\
              postinst\
              postrm\
              prerm\
-             rules
+             rules\
+             rules.src
 
 MAINTAINERCLEANFILES = changelog\
-                       control
+                       control\
+                       rules

@@ -69,3 +69,9 @@ Depends: python3, python3-pycurl, python3-mysqldb, python3-serial, python3-reque
 Description: PyPAD Program Associated Data script system for Rivendell
  This package contains Rivendell's PyPAD scripting system for transmitting
  Program Associated Data (PAD) using Python scripts.
+
+Package: python3-rivwebpyapi
+Architecture: all
+Depends: python3, python3-requests
+Description: Python 3 interface for accessing the Rivendell Web API
+ This is a Python 3 language binding for the Rivendell Web API.

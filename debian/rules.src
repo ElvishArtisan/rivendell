@@ -105,6 +105,20 @@ binary:
 	mv debian/tmp/usr/lib/python3/dist-packages/__pycache__/* debian/rivendell-pypad/usr/lib/python3/dist-packages/__pycache__/
 
 #
+# python3-rivwebpyapi
+#
+	mkdir -p debian/python3-rivwebpyapi/usr/lib/python3/dist-packages
+	mv debian/tmp/usr/lib/python3/dist-packages/rivwebpyapi debian/python3-rivwebpyapi/usr/lib/python3/dist-packages/
+	mkdir -p debian/python3-rivwebpyapi/usr/lib/python3/dist-packages/rivwebpyapi-@RIVWEBPYAPI_VERSION@.egg-info
+	cp apis/rivwebpyapi/PKG-INFO debian/python3-rivwebpyapi/usr/lib/python3/dist-packages/rivwebpyapi-@RIVWEBPYAPI_VERSION@.egg-info/
+	cp apis/rivwebpyapi/dependency_links.txt debian/python3-rivwebpyapi/usr/lib/python3/dist-packages/rivwebpyapi-@RIVWEBPYAPI_VERSION@.egg-info/
+	cp apis/rivwebpyapi/requires.txt debian/python3-rivwebpyapi/usr/lib/python3/dist-packages/rivwebpyapi-@RIVWEBPYAPI_VERSION@.egg-info/
+	cp apis/rivwebpyapi/top_level.txt debian/python3-rivwebpyapi/usr/lib/python3/dist-packages/rivwebpyapi-@RIVWEBPYAPI_VERSION@.egg-info/
+	mkdir -p debian/python3-rivwebpyapi/usr/share/doc/python3-rivwebpyapi/examples
+	cp apis/rivwebpyapi/tests/*.py debian/python3-rivwebpyapi/usr/share/doc/python3-rivwebpyapi/examples/
+
+
+#
 # rivendell-select
 #
 	mkdir -p debian/rivendell-select/usr/bin
