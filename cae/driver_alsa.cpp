@@ -1052,6 +1052,7 @@ bool DriverAlsa::stopRecord(int card,int port)
     return false;
   }
   alsa_recording[card][port]=false;
+  stateRecordUpdate(card,port,2);
   return true;
 #else
   return false;
@@ -1386,7 +1387,6 @@ void DriverAlsa::recordTimerData(int cardport)
   int stream=cardport-card*RD_MAX_PORTS;
 
   stopRecord(card,stream);
-  stateRecordUpdate(card,stream,2);
 #endif  // ALSA
 }
 

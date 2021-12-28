@@ -634,15 +634,11 @@ void MainObject::stopRecordingData(int id,unsigned card,unsigned stream)
     cae_server->sendCommand(id,QString::asprintf("SR %u %u -!",card,stream));
     return;
   }
-  if(dvr->stopRecord(card,stream)) {
-    cae_server->sendCommand(id,QString::asprintf("SR %u %u +!",card,stream));
-  }
-  else {
+  if(!dvr->stopRecord(card,stream)) {  // No positive echo required here!
     cae_server->sendCommand(id,QString::asprintf("SR %u %u -!",card,stream));
     return;
   }
-  rda->syslog(LOG_INFO,
-			"StopRecord - Card: %d  Stream: %d",card,stream);
+  rda->syslog(LOG_INFO,"StopRecord - Card: %d  Stream: %d",card,stream);
 }
 
 

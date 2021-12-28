@@ -22845,3 +22845,6 @@
 	* Added an 'AR_PYTHON_MODULE()' autoconf macro.
 	* Added a test for the PyPI module build chain to 'configure.ac'.
 	* Bumped the minimum Python version dependency from 3.4 to 3.6.
+2021-12-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in caed(8) that broke audio capture under
+	ALSA and JACK.

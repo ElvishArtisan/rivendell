@@ -217,7 +217,7 @@ void CaeServer::connectionClosedData(int id)
 
 bool CaeServer::ProcessCommand(int id,const QString &cmd)
 {
-  printf("CaeServer::ProcessCommand(%d,'%s')\n",id,cmd.toUtf8().constData());
+  //  rda->syslog(LOG_NOTICE,"processing command: \"%s\"",cmd.toUtf8().constData());
   CaeServerConnection *conn=cae_connections.value(id);
   bool ok=false;
   QString cmdstr=cmd;

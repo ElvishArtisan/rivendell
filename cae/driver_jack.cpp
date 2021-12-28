@@ -32,9 +32,6 @@
 #include "driver_jack.h"
 
 #ifdef JACK
-#endif  // JACK
-
-#ifdef JACK
 //
 // Callback Variables
 //
@@ -1050,6 +1047,7 @@ bool DriverJack::stopRecord(int card,int port)
     return false;
   }
   jack_recording[port]=false;
+  stateRecordUpdate(card,port,2);
   return true;
 #else
   return false;
@@ -1393,7 +1391,6 @@ void DriverJack::recordTimerData(int stream)
 {
 #ifdef JACK
   stopRecord(jack_card,stream);
-  //  stateRecordUpdate(jack_card,stream,2);
 #endif  // JACK
 }
 
