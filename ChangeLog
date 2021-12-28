@@ -22848,3 +22848,6 @@
 2021-12-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in caed(8) that broke audio capture under
 	ALSA and JACK.
+2021-12-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a spelling error in the 'Insufficient Privileges' dialog
+	in rdadmin(1).

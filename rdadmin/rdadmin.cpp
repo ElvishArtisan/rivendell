@@ -231,8 +231,8 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   }
   else {
     if((!config_priv)&&(!rss_priv)) {
-      QMessageBox::warning(this,tr("Insufficient Priviledges"),
-         tr("This account has insufficient priviledges for this operation."));
+      QMessageBox::warning(this,tr("Insufficient Privileges"),
+         tr("This account has insufficient privileges for this operation."));
       exit(1);
     }
   }
