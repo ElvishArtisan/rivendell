@@ -22851,3 +22851,7 @@
 2021-12-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a spelling error in the 'Insufficient Privileges' dialog
 	in rdadmin(1).
+2021-12-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Edit Audio' dialog that made it impossible
+	to add a Fade Down marker near the end of the audio when the
+	waveform was fully zoomed in.

@@ -1148,7 +1148,9 @@ int RDMarkerView::Frame(int msec) const
 
 int RDMarkerView::Msec(int frame) const
 {
-  return (int)((int64_t)frame*d_shrink_factor*1152000/(int64_t)d_sample_rate);
+  return ((int64_t)d_view->horizontalScrollBar()->value()*
+	  d_shrink_factor*1152000/(int64_t)d_sample_rate)+
+    ((int64_t)frame*d_shrink_factor*1152000/(int64_t)d_sample_rate);
 }
 
 
