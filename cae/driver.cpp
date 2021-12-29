@@ -29,6 +29,11 @@ Driver::Driver(RDStation::AudioDriver type,QObject *parent)
   d_system_sample_rate=rda->system()->sampleRate();
   twolame_handle=NULL;
   mad_handle=NULL;
+  for(int i=0;i<RD_MAX_CARDS;i++) {
+    for(int j=0;j<RD_MAX_STREAMS;j++) {
+      twolame_lameopts[i][j]=NULL;
+    }
+  }
 }
 
 

@@ -22855,3 +22855,6 @@
 	* Fixed a bug in the 'Edit Audio' dialog that made it impossible
 	to add a Fade Down marker near the end of the audio when the
 	waveform was fully zoomed in.
+2021-12-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in caed(8) that could cause segfaults when attempting
+	to capture audio via JACK.
