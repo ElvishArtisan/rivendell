@@ -3,7 +3,7 @@ dnl
 dnl Autoconf configuration for Rivendell.
 dnl Use autoconf to process this into a configure script
 dnl
-dnl   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+dnl   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 dnl
 dnl   This program is free software; you can redistribute it and/or modify
 dnl   it under the terms of the GNU General Public License version 2 as
@@ -594,7 +594,6 @@ ln -s ../../icons/redx.png docs/opsguide/redx.png
 
 
 AC_CONFIG_FILES([rivendell.spec \
-    rivwebpyapi.spec \
     versions/Makefile \
     debian/Makefile \
     debian/source/Makefile \

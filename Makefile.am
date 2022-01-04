@@ -2,7 +2,7 @@
 ##
 ## Top level automake.am for Rivendell
 ##
-##   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -73,7 +73,7 @@ maintainer-clean-local:
 deb:	dist
 	./build_debs.sh
 
-base-rpm:	dist
+rpm:	dist
 	mkdir -p $(HOME)/rpmbuild/SOURCES
 	cp rivendell-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
 	$(RPMBUILD) -ba --target $(ARCH)-$(VENDOR)-linux rivendell.spec
@@ -81,16 +81,6 @@ base-rpm:	dist
 	mv $(HOME)/rpmbuild/RPMS/noarch/rivendell-*.rpm $(top_srcdir)/
 	mv $(HOME)/rpmbuild/SRPMS/rivendell-*.src.rpm $(top_srcdir)/
 	rm $(HOME)/rpmbuild/SOURCES/rivendell-$(VERSION).tar.gz
-
-py-rpm:	dist
-	mkdir -p $(HOME)/rpmbuild/SOURCES
-	cp rivendell-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
-	$(RPMBUILD) -ba --target noarch-$(VENDOR)-linux rivwebpyapi.spec
-	mv $(HOME)/rpmbuild/RPMS/noarch/python36-rivwebpyapi-*.rpm $(top_srcdir)/
-	mv $(HOME)/rpmbuild/SRPMS/python36-rivwebpyapi-*.rpm $(top_srcdir)/
-	rm $(HOME)/rpmbuild/SOURCES/rivendell-$(VERSION).tar.gz
-
-rpm:	py-rpm base-rpm
 
 zip:	dist
 	tar -zxf rivendell-@VERSION@.tar.gz
@@ -105,7 +95,6 @@ EXTRA_DIST = autogen.sh\
              rivendell.ism\
              rivendell.pro\
              rivendell.spec.in\
-             rivwebpyapi.spec.in\
              UPGRADING
 
 CLEANFILES = *~\
