@@ -81,7 +81,7 @@ AC_DEFUN([AR_GET_DISTRO],[]
 #   warranty.
 #
 AC_DEFUN([AR_PYTHON_MODULE],[
-    PYTHON="python3"
+    PYTHON="/usr/bin/python3"
     PYTHON_NAME=`basename $PYTHON`
     AC_MSG_CHECKING($PYTHON_NAME module: $1)
     $PYTHON -c "import $1" 2>/dev/null

@@ -22860,3 +22860,5 @@
 	to capture audio via JACK.
 2022-01-04 Fred Gleason <fredg@paravelsystems.com>
 	* Removed generation of the 'rivwebpyapi' RPM package.
+2022-01-04 Fred Gleason <fredg@paravelsystems.com>
+	* Removed generation of the 'rivendell-pypad' RPM package.

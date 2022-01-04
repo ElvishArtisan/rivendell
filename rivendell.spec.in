@@ -30,10 +30,10 @@ Release: @RPM_RELEASE@
 License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
 Source: rivendell-@VERSION@.tar.gz
-Requires: @MYSQL_PKG@ @QT_MYSQL_PKG@ @APACHE_PKG@ curl @USERMODE_PKG@ rivendell-pypad = @VERSION@ rsyslog qt5-qtstyleplugins
+Requires: @MYSQL_PKG@ @QT_MYSQL_PKG@ @APACHE_PKG@ curl @USERMODE_PKG@ rsyslog qt5-qtstyleplugins @PYPAD_DEPS@
 BuildRequires: qt5-qtbase-devel qt5-linguist
 BuildRoot: /var/tmp/rivendell-@VERSION@
-Obsoletes: rivendell-base rivendell-opsguide
+Obsoletes: rivendell-base rivendell-opsguide rivendell-pypad
 Conflicts: rivendell-opsguide
 
 %package importers
@@ -51,10 +51,6 @@ Summary: Client libraries for interfacing with Rivendell's Web API.
 %package devel
 Summary: Header files and example code for development with Rivendell APIs
 Requires: rivendell = @VERSION@ rivendell-webapi = @VERSION@
-
-%package pypad
-Summary: PyPAD Program Associated Data script system for Rivendell
-Requires: @PYPAD_DEPS@
 
 %package select
 Summary: The RDSelect system selector tool for Rivendell.
@@ -99,11 +95,6 @@ Rivendell's Web C API, which can be used to integrate with Rivendell Web
 API Interface.
 
 
-%description pypad
-This package contains Rivendell's PyPAD scripting system for transmitting
-Program Associated Data (PAD) using of Python scripts.
-
-
 %description select
 This package contains the RDMonitor/RDSelect tool for Rivendell, which can
 be used to select which amoung multiple Rivendell instances a host should be
@@ -142,6 +133,8 @@ cp icons/webget_logo.png $RPM_BUILD_ROOT/@DOC_PATH@/logos/
 cp AUTHORS $RPM_BUILD_ROOT/@DOC_PATH@/
 cp ChangeLog $RPM_BUILD_ROOT/@DOC_PATH@/
 cp LICENSES/GPLv2.txt $RPM_BUILD_ROOT/@DOC_PATH@/
+cp LICENSES/LGPLv2.txt $RPM_BUILD_ROOT/@DOC_PATH@/
+cp LICENSES/GFDL.txt $RPM_BUILD_ROOT/@DOC_PATH@/
 cp INSTALL $RPM_BUILD_ROOT/@DOC_PATH@/
 cp NEWS $RPM_BUILD_ROOT/@DOC_PATH@/
 cp README $RPM_BUILD_ROOT/@DOC_PATH@/
@@ -163,6 +156,47 @@ cp docs/misc/ando_interface.odt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/apis
 cp docs/apis/*.pdf $RPM_BUILD_ROOT/@DOC_PATH@/apis/
+mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples
+helpers/install_python.sh apis/rivwebpyapi/tests/add_cart.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/add_cart.py
+helpers/install_python.sh apis/rivwebpyapi/tests/add_cut.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/add_cut.py
+helpers/install_python.sh apis/rivwebpyapi/tests/add_log.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/add_log.py
+helpers/install_python.sh apis/rivwebpyapi/tests/assign_sched_code.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/assign_sched_code.py
+helpers/install_python.sh apis/rivwebpyapi/tests/audio_info.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/audio_info.py
+helpers/install_python.sh apis/rivwebpyapi/tests/audio_store.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/audio_store.py
+helpers/install_python.sh apis/rivwebpyapi/tests/delete_audio.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/delete_audio.py
+helpers/install_python.sh apis/rivwebpyapi/tests/delete_log.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/delete_log.py
+helpers/install_python.sh apis/rivwebpyapi/tests/edit_cart.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/edit_cart.py
+helpers/install_python.sh apis/rivwebpyapi/tests/edit_cut.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/edit_cut.py
+helpers/install_python.sh apis/rivwebpyapi/tests/export_peaks.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/export_peaks.py
+helpers/install_python.sh apis/rivwebpyapi/tests/export.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/export.py
+helpers/install_python.sh apis/rivwebpyapi/tests/get_podcast.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/get_podcast.py
+helpers/install_python.sh apis/rivwebpyapi/tests/import.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/import.py
+helpers/install_python.sh apis/rivwebpyapi/tests/list_cart.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/list_cart.py
+helpers/install_python.sh apis/rivwebpyapi/tests/list_cart_sched_codes.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/list_cart_sched_codes.py
+helpers/install_python.sh apis/rivwebpyapi/tests/list_carts.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/list_carts.py
+helpers/install_python.sh apis/rivwebpyapi/tests/list_cut.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/list_cut.py
+helpers/install_python.sh apis/rivwebpyapi/tests/list_cuts.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/list_cuts.py
+helpers/install_python.sh apis/rivwebpyapi/tests/list_group.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/list_group.py
+helpers/install_python.sh apis/rivwebpyapi/tests/list_groups.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/list_groups.py
+helpers/install_python.sh apis/rivwebpyapi/tests/list_log.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/list_log.py
+helpers/install_python.sh apis/rivwebpyapi/tests/list_logs.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/list_logs.py
+helpers/install_python.sh apis/rivwebpyapi/tests/list_scheduler_codes.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/list_scheduler_codes.py
+helpers/install_python.sh apis/rivwebpyapi/tests/list_services.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/list_services.py
+helpers/install_python.sh apis/rivwebpyapi/tests/list_system_settings.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/list_system_settings.py
+helpers/install_python.sh apis/rivwebpyapi/tests/lock_log.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/lock_log.py
+helpers/install_python.sh apis/rivwebpyapi/tests/post_image.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/post_image.py
+helpers/install_python.sh apis/rivwebpyapi/tests/post_podcast.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/post_podcast.py
+helpers/install_python.sh apis/rivwebpyapi/tests/post_rss.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/post_rss.py
+helpers/install_python.sh apis/rivwebpyapi/tests/rehash.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/rehash.py
+helpers/install_python.sh apis/rivwebpyapi/tests/remove_cart.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/remove_cart.py
+helpers/install_python.sh apis/rivwebpyapi/tests/remove_cut.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/remove_cut.py
+helpers/install_python.sh apis/rivwebpyapi/tests/remove_image.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/remove_image.py
+helpers/install_python.sh apis/rivwebpyapi/tests/remove_podcast.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/remove_podcast.py
+helpers/install_python.sh apis/rivwebpyapi/tests/remove_rss.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/remove_rss.py
+helpers/install_python.sh apis/rivwebpyapi/tests/save_log.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/save_log.py
+helpers/install_python.sh apis/rivwebpyapi/tests/save_podcast.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/save_podcast.py
+helpers/install_python.sh apis/rivwebpyapi/tests/trim_audio.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/trim_audio.py
+helpers/install_python.sh apis/rivwebpyapi/tests/unassign_sched_code.py $RPM_BUILD_ROOT/@DOC_PATH@/apis/rivwebpyapi/examples/unassign_sched_code.py
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/dtds
 cp docs/dtds/*.html $RPM_BUILD_ROOT/@DOC_PATH@/dtds/
 cp docs/dtds/*.pdf $RPM_BUILD_ROOT/@DOC_PATH@/dtds/
@@ -179,7 +213,6 @@ cp scripts/init_template_host.py $RPM_BUILD_ROOT/@DOC_PATH@
 rm -f $RPM_BUILD_ROOT/etc/auto.rd.audiostore
 rm -rf $RPM_BUILD_ROOT%{_libdir}/rivendell/pypad/__pycache__
 rm -rf $RPM_BUILD_ROOT%{_libdir}/python3.6/site-packages/__pycache__
-find $RPM_BUILD_ROOT/usr/lib64/python3.6/site-packages -name \*rivwebpyapi\* -exec rm \{\} \;
 
 
 %post
@@ -235,6 +268,8 @@ if test ! -e /etc/rsyslog.d/rivendell.conf ; then
     cp @DOC_PATH@/syslog.conf-sample /etc/rsyslog.d/rivendell.conf
 fi
 /bin/systemctl restart rsyslog
+/usr/sbin/groupadd -r -g 151 pypad &>/dev/null || :
+/usr/sbin/useradd -o -u 151 -g pypad -s /bin/false -r -c "Rivendell PyPAD scripts" -d /dev/null pypad &>/dev/null || :
 exit 0
 
 
@@ -432,6 +467,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/librd.a
 %{_libdir}/librd.la
 %{_libdir}/librd.so
+%{_libdir}/rivendell/pypad/*
+%{_libdir}/python3.6/site-packages/pypad*
+%{_libdir}/python3.6/site-packages/__pycache__/pypad*
+%{_libdir}/python3.6/site-packages/rivwebpyapi/*
 %{_sbindir}/rdservice
 %{_sbindir}/caed
 %{_sbindir}/ripcd
@@ -523,17 +562,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/man/man7/rd_savepodcast.7.gz
 %{_datadir}/man/man7/rd_trimaudio.7.gz
 %{_datadir}/man/man7/rd_unassignschedcode.7.gz
-
-
-%files pypad
-%{_libdir}/rivendell/pypad/*
-%{_libdir}/python3.6/site-packages/pypad*
-%{_libdir}/python3.6/site-packages/__pycache__/pypad*
-%doc LICENSES/GFDL.txt
-
-%post pypad
-/usr/sbin/groupadd -r -g 151 pypad &>/dev/null || :
-/usr/sbin/useradd -o -u 151 -g pypad -s /bin/false -r -c "Rivendell PyPAD scripts" -d /dev/null pypad &>/dev/null || :
 
 
 %files select
