@@ -4,7 +4,11 @@ version=@RIVWEBPYAPI_VERSION@
 author=Fred Gleason
 author_email=fredg@paravelsystems.com
 description=Python 3 interface for accessing the Rivendell Web API
-long_description=str: This is a Python 3 language binding for the Rivendell Web API.
+long_description=This is a Python 3 language binding for the Rivendell Web API.
+
+ Example scripts for testing and exercising the API can be found in the
+ [Rivendell sources](https://github.com/ElvishArtisan/rivendell/tree/qt5)
+ in 'apis/rivwebpyapi/tests/'.
 long_description_content_type=text/markdown
 url=https://github.com/ElvishArtisan/rivendell
 project_urls=

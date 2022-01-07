@@ -22867,3 +22867,7 @@
 2022-01-07 Fred Gleason <fredg@paravelsystems.com>
 	* Merged the 'rivendell-pypad' DEB package into the 'rivendell'
 	DEB package.
+2022-01-07 Fred Gleason <fredg@paravelsystems.com>
+	* Reset the version of the 'rivwebpyapi' module to 4.0.0b3.
+	* Changed the upload PyPI repository for the 'rivwebpyapi' module
+	from 'testpypi' to 'pypi'.
