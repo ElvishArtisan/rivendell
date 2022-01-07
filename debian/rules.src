@@ -95,15 +95,6 @@ binary:
 	mkdir -p debian/rivendell/usr/share/rivendell
 	cp conf/rd.conf-sample debian/rivendell/usr/share/rivendell/
 
-#
-# rivendell-pypad
-#
-	mkdir -p debian/rivendell-pypad/usr/lib/rivendell/pypad
-	mv debian/tmp/usr/lib/rivendell/pypad/* debian/rivendell-pypad/usr/lib/rivendell/pypad/
-	mkdir -p debian/rivendell-pypad/usr/lib/python3/dist-packages/__pycache__
-	mv debian/tmp/usr/lib/python3/dist-packages/pypad.py debian/rivendell-pypad/usr/lib/python3/dist-packages/
-	mv debian/tmp/usr/lib/python3/dist-packages/__pycache__/* debian/rivendell-pypad/usr/lib/python3/dist-packages/__pycache__/
-
 
 #
 # rivendell-select

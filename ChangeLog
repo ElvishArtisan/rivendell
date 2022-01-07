@@ -22862,3 +22862,6 @@
 	* Removed generation of the 'rivwebpyapi' RPM package.
 2022-01-07 Fred Gleason <fredg@paravelsystems.com>
 	* Removed generation of the 'rivwebpyapi' DEB package.
+2022-01-07 Fred Gleason <fredg@paravelsystems.com>
+	* Merged the 'rivendell-pypad' DEB package into the 'rivendell'
+	DEB package.
