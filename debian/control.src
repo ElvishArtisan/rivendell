@@ -7,7 +7,8 @@ Standards-Version: 4.4.1
 
 Package: rivendell
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, mariadb-client, libqt5sql5-mysql, apache2, curl, rsyslog, rivendell-pypad (= @VERSION@-1)
+Depends: ${shlibs:Depends}, ${misc:Depends}, mariadb-client, libqt5sql5-mysql, apache2, curl, rsyslog, python3, python3-pycurl, python3-mysqldb, python3-serial, python3-requests 
+Replaces: rivendell-pypad
 Description: Radio Broadcast Automation System
  Rivendell is a complete radio broadcast automation solution, with
  facilities for the acquisition, management, scheduling and playout of
@@ -63,15 +64,9 @@ Depends: ${misc:Depends}, rivendell (= @VERSION@-1)
 Description: The WebGet audio fetcher service for Rivendell
  This package contains the WebGet audio fetching tool for Rivendell.
 
-Package: rivendell-pypad
-Architecture: all
-Depends: python3, python3-pycurl, python3-mysqldb, python3-serial, python3-requests 
-Description: PyPAD Program Associated Data script system for Rivendell
- This package contains Rivendell's PyPAD scripting system for transmitting
- Program Associated Data (PAD) using Python scripts.
-
-Package: python3-rivwebpyapi
-Architecture: all
-Depends: python3, python3-requests
-Description: Python 3 interface for accessing the Rivendell Web API
- This is a Python 3 language binding for the Rivendell Web API.
+#Package: rivendell-pypad
+#Architecture: all
+#Depends: python3, python3-pycurl, python3-mysqldb, python3-serial, python3-requests 
+#Description: PyPAD Program Associated Data script system for Rivendell
+# This package contains Rivendell's PyPAD scripting system for transmitting
+# Program Associated Data (PAD) using Python scripts.
