@@ -22874,3 +22874,5 @@
 2022-01-08 Fred Gleason <fredg@paravelsystems.com>
 	* Consolidated the 'pypad' and 'rivwebpyapi' Python modules into
 	a single 'rivendellaudio' package namespace.
+2022-01-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that broke the 'make rpm' target.

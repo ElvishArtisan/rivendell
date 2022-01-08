@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-rivendelldir = $(pyexecdir)/rivendell
+rivendelldir = $(pyexecdir)/rivendellaudio
 rivendell_PYTHON = pypad.py
 
 CLEANFILES = *~\

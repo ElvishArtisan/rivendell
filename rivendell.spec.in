@@ -468,9 +468,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/librd.la
 %{_libdir}/librd.so
 %{_libdir}/rivendell/pypad/*
-%{_libdir}/python3.6/site-packages/pypad*
-%{_libdir}/python3.6/site-packages/__pycache__/pypad*
-%{_libdir}/python3.6/site-packages/rivwebpyapi/*
+%{_libdir}/python3.6/site-packages/rivendellaudio/*
 %{_sbindir}/rdservice
 %{_sbindir}/caed
 %{_sbindir}/ripcd

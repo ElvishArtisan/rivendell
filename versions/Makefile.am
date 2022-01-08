@@ -19,7 +19,6 @@
 ## Use automake to process this into a Makefile.in
 
 EXTRA_DIST = PACKAGE_VERSION\
-             PYPAD_VERSION\
              PYTHONAPI_VERSION\
              README.txt\
              RIVWEBCAPI_AGE\
