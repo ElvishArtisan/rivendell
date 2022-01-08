@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -19,8 +19,9 @@
 ## Use automake to process this into a Makefile.in
 
 EXTRA_DIST = PACKAGE_VERSION\
+             PYPAD_VERSION\
+             PYTHONAPI_VERSION\
              README.txt\
-             RIVWEBPYAPI_VERSION\
              RIVWEBCAPI_AGE\
              RIVWEBCAPI_CURRENT\
              RIVWEBCAPI_REVISION

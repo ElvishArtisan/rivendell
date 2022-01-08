@@ -1,6 +1,6 @@
 #!/bin/sh
 ##
-##    (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+##    (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##    Adapted from './autogen.sh' in the Jack Audio Connection Kit.
 ##    Copyright (C) 2001-2003 Paul Davis, et al.
@@ -26,7 +26,7 @@
 DATESTAMP=`date +%a,\ %d\ %b\ %Y\ %T\ %z`
 sed s/@VERSION@/`cat versions/PACKAGE_VERSION`/ < debian/control.src > debian/control
 sed s/@VERSION@/`cat versions/PACKAGE_VERSION`/ < debian/changelog.src | sed "s/@DATESTAMP@/$DATESTAMP/" > debian/changelog
-sed s/@RIVWEBPYAPI_VERSION@/`cat versions/RIVWEBPYAPI_VERSION`/ < debian/rules.src > debian/rules
+sed s/@PYTHONAPI_VERSION@/`cat versions/PYTHONAPI_VERSION`/ < debian/rules.src > debian/rules
 
 mkdir -p m4
 

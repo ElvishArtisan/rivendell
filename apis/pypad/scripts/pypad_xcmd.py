@@ -4,7 +4,7 @@
 #
 # Send Now & Next updates to an RDS encoder supporting X-Command
 #
-#   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2019-2022 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,10 @@ import configparser
 import serial
 import xml.etree.ElementTree as ET
 import time
-import pypad
+try:
+    from rivendellaudio import pypad
+except ModuleNotFoundError:
+    import pypad  # Rivendell v3.x style
 
 def eprint(*args,**kwargs):
     print(pypad_name+': ',file=sys.stderr,end='')

@@ -27,5 +27,6 @@ RIVWEBCAPI_AGE
 #   6. If any interfaces have been removed since the last public release,
 #      then set 'RIVWEBCAPI_AGE' to 0.
 
-RIVWEBPYAPI_VERSION - Version string for rivwebpyapi. 
-		      See PEP 440 [https://www.python.org/dev/peps/pep-0440/].
+PYTHONAPI_VERSION - Version string for the Python components beneath '/apis/'.
+		    See PEP 440 [https://www.python.org/dev/peps/pep-0440/]
+		    for formatting rules.

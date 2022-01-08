@@ -4,7 +4,7 @@
 #
 # Write PAD updates to HTTP GET URL
 #
-#   (C) Copyright 2019-2020 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2019-2022 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +23,10 @@
 import sys
 import configparser
 import pycurl
-import pypad
+try:
+    from rivendellaudio import pypad
+except ModuleNotFoundError:
+    import pypad  # Rivendell v3.x style
 import syslog
 from io import BytesIO
 

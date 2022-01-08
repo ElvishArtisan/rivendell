@@ -4,7 +4,7 @@
 #
 # Send Now & Next updates to an Nautel FM Transmitter as TCP for RDS
 #
-#   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 #                 2020 Eric Adler <eric@whrwfm.org>
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -25,7 +25,10 @@ import sys
 import socket
 import syslog
 import configparser
-import pypad
+try:
+    from rivendellaudio import pypad
+except ModuleNotFoundError:
+    import pypad  # Rivendell v3.x style
 import time
 
 def eprint(*args,**kwargs):

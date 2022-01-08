@@ -6,7 +6,7 @@
 #
 #  Exercise every PAD accessor method of 'pypad.Update' for each update.
 #
-#   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,10 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
-import pypad
+try:
+    from rivendellaudio import pypad
+except ModuleNotFoundError:
+    import pypad  # Rivendell v3.x style
 
 def ProcessPad(update):
     print

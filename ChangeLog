@@ -22871,3 +22871,6 @@
 	* Reset the version of the 'rivwebpyapi' module to 4.0.0b3.
 	* Changed the upload PyPI repository for the 'rivwebpyapi' module
 	from 'testpypi' to 'pypi'.
+2022-01-08 Fred Gleason <fredg@paravelsystems.com>
+	* Consolidated the 'pypad' and 'rivwebpyapi' Python modules into
+	a single 'rivendellaudio' package namespace.

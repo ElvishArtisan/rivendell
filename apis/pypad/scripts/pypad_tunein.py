@@ -4,7 +4,7 @@
 #
 # Send PAD updates to TuneIn
 #
-#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -26,7 +26,10 @@ import socket
 import requests
 import xml.etree.ElementTree as ET
 import syslog
-import pypad
+try:
+    from rivendellaudio import pypad
+except ModuleNotFoundError:
+    import pypad  # Rivendell v3.x style
 import configparser
 
 def ProcessPad(update):

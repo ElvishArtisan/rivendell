@@ -31,11 +31,11 @@
 aclocal.m4
 apis/rivwebcapi/rivwebcapi.pc
 apis/rivwebcapi/tests/*_test
-apis/rivwebpyapi/PKG-INFO
-apis/rivwebpyapi/SOURCES.txt
-apis/rivwebpyapi/dependency_links.txt
-apis/rivwebpyapi/requires.txt
-apis/rivwebpyapi/top_level.txt
+apis/PKG-INFO
+apis/SOURCES.txt
+apis/dependency_links.txt
+apis/requires.txt
+apis/top_level.txt
 autom4te.cache
 build_debs.sh
 cae/caed

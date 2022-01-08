@@ -28,7 +28,7 @@ AC_CONFIG_MACRO_DIR([m4])
 #
 # API Versioning
 #
-AC_SUBST(RIVWEBPYAPI_VERSION,m4_esyscmd(cat versions/RIVWEBPYAPI_VERSION))
+AC_SUBST(PYTHONAPI_VERSION,m4_esyscmd(cat versions/PYTHONAPI_VERSION))
 RIVWEBCAPI_CURRENT=m4_esyscmd(cat versions/RIVWEBCAPI_CURRENT)
 RIVWEBCAPI_REVISION=m4_esyscmd(cat versions/RIVWEBCAPI_REVISION)
 RIVWEBCAPI_AGE=m4_esyscmd(cat versions/RIVWEBCAPI_AGE)
@@ -341,22 +341,6 @@ else
 fi
 
 #
-# Check for PyPI Module Build Chain
-#
-AR_PYTHON_MODULE([build],[BUILD_FOUND=yes],[])
-AR_PYTHON_MODULE([twine],[TWINE_FOUND=yes],[])
-if test $BUILD_FOUND ; then
-  if test $TWINE_FOUND ; then
-    PYPI_FOUND=yes
-    AC_SUBST(PYPI,pypi)
-  else
-    AC_SUBST(PYPI,"")
-  fi
-else
-  AC_SUBST(PYPI,"")
-fi
-
-#
 # Check for FLAC
 #
 if test -z $FLAC_DISABLED ; then
@@ -604,6 +588,7 @@ AC_CONFIG_FILES([rivendell.spec \
     helpers/install_python.sh \
     helpers/rdi18n_helper.sh \
     LICENSES/Makefile \
+    apis/setup.cfg \
     apis/Makefile \
     apis/pypad/Makefile \
     apis/pypad/api/Makefile \
@@ -613,7 +598,6 @@ AC_CONFIG_FILES([rivendell.spec \
     apis/rivwebcapi/rivwebcapi.pc \
     apis/rivwebcapi/rivwebcapi/Makefile \
     apis/rivwebcapi/tests/Makefile \
-    apis/rivwebpyapi/setup.cfg \
     apis/rivwebpyapi/Makefile \
     apis/rivwebpyapi/api/Makefile \
     apis/rivwebpyapi/tests/Makefile \
@@ -732,11 +716,6 @@ if test $I18N_ENABLED ; then
 AC_MSG_NOTICE("|                          Update I18N Data ... Yes       |")
 else
 AC_MSG_NOTICE("|                          Update I18N Data ... No        |")
-fi
-if test $PYPI_FOUND ; then
-AC_MSG_NOTICE("|          PyPI Module Build Chain Detected ... Yes       |")
-else
-AC_MSG_NOTICE("|          PyPI Module Build Chain Detected ... No        |")
 fi
 AC_MSG_NOTICE("|                                                         |")
 AC_MSG_NOTICE("| Configured Audio Drivers:                               |")

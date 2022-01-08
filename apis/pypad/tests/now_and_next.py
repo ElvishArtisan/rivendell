@@ -4,7 +4,7 @@
 #
 # Barebones example pypad script for Rivendell
 #
-#   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -24,10 +24,13 @@
 # To see the full documentation of these classes, enter the following at
 # a python interactive prompt:
 #
-#   import pypad
+#   from rivendellaudio import pypad
 #   help(pypad)
 #
-import pypad
+try:
+    from rivendellaudio import pypad
+except ModuleNotFoundError:
+    import pypad  # Rivendell v3.x style
 
 #
 # First, we create a callback method, that will be called every time a
@@ -66,4 +69,5 @@ rcvr.setPadCallback(ProcessPad)
 # the target Rivendell system. Once started, all further processing can only
 # be done in the callback method!
 #
-rcvr.start('localhost',pypad.PAD_TCP_PORT)
+rcvr.start('192.168.21.14',pypad.PAD_TCP_PORT)
+#rcvr.start('localhost',pypad.PAD_TCP_PORT)

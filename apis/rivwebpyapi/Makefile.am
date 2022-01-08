@@ -2,7 +2,7 @@
 ##
 ## Automake.am for Python binding for the Rivendell Web API
 ##
-##   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU Lesser General Public License as
@@ -23,38 +23,13 @@
 SUBDIRS = api\
           tests
 
-all:	@PYPI@
-
-pypi:	
-	rm -rf pypi
-	../../helpers/build_pypi_package.sh rivwebpyapi
-	cp pypi/dist/* .
-	cp pypi/src/rivwebpyapi.egg-info/* .
-	rm -rf pypi
-
-post-pypi:	
-	python3 -m twine upload --repository pypi *.tar.gz *.whl
-
-EXTRA_DIST = pyproject.toml\
-             setup.cfg.in
-
 CLEANFILES = *~\
              *.idb\
              *ilk\
              *.obj\
              *.pdb\
              *.qm\
-             *.tar.gz\
-             *.whl\
-             PKG-INFO\
-             SOURCES.txt\
-             dependency_links.txt\
-             moc_*\
-             not-zip-safe\
-             requires.txt\
-             top_level.txt
-
-DISTCLEANFILES = setup.cfg
+             moc_*
 
 MAINTAINERCLEANFILES = *~\
                        *.tar.gz\
