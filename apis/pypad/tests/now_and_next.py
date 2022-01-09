@@ -69,5 +69,4 @@ rcvr.setPadCallback(ProcessPad)
 # the target Rivendell system. Once started, all further processing can only
 # be done in the callback method!
 #
-rcvr.start('192.168.21.14',pypad.PAD_TCP_PORT)
-#rcvr.start('localhost',pypad.PAD_TCP_PORT)
+rcvr.start('localhost',pypad.PAD_TCP_PORT)
