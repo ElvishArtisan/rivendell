@@ -22878,3 +22878,6 @@
 	* Fixed a regression that broke the 'make rpm' target.
 2022-01-08 Fred Gleason <fredg@paravelsystems.com>
 	* Reset 'apis/pypad/tests/now_and_next.py' to use localhost.
+2022-01-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that caused rdimport(1) to fail to apply the
+	'<playGain>' tag when processing RDXL metadata.
