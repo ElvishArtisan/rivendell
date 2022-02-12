@@ -736,6 +736,18 @@ Gruppe des ausgewählten Service!</translation>
         <source>&amp;Select</source>
         <translation>Au&amp;swählen</translation>
     </message>
+    <message>
+        <source>Log Listing (CSV)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music Import</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>

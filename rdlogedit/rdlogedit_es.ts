@@ -736,6 +736,18 @@ desactivado para el servicio especificado!</translation>
         <source>&amp;Select</source>
         <translation>&amp;Seleccionar</translation>
     </message>
+    <message>
+        <source>Log Listing (CSV)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music Import</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>

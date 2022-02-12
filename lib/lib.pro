@@ -2,7 +2,7 @@
 #
 # The lib/ QMake project file for Rivendell.
 #
-# (C) Copyright 2003-2016 Fred Gleason <fredg@paravelsystems.com>
+# (C) Copyright 2003-2022 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -55,6 +55,7 @@ SOURCES += rdcombobox.cpp
 SOURCES += rdconf.cpp
 SOURCES += rdconfig.cpp
 SOURCES += rdcreate_log.cpp
+SOURCES += rdcsv.cpp
 SOURCES += rdcut.cpp
 SOURCES += rddatedialog.cpp
 SOURCES += rddatedecode.cpp
@@ -196,6 +197,7 @@ HEADERS += rdcombobox.h
 HEADERS += rdconf.h
 HEADERS += rdconfig.h
 HEADERS += rdcreate_log.h
+HEADERS += rdcsv.h
 HEADERS += rdcut.h
 HEADERS += rddatedecode.h
 HEADERS += rddatedialog.h

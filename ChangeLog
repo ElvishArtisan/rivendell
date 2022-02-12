@@ -16757,3 +16757,6 @@
 	to be rendered as a PLAY transition.
 2019-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Removed extraneous newline at end of version string.
+2022-02-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added CSV generation routines in 'lib/rdcsv.[cpp|h]'.
+	* Added a 'Log Listing (CSV)' report to rdlogedit(1).
