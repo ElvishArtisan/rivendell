@@ -2,7 +2,7 @@
 //
 // List and Generate Log Reports
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,6 +47,7 @@ class ListReports : public RDDialog
 
  private:
   void GenerateLogReport(QString *report);
+  void GenerateLogCsvReport(QString *report);
   void GenerateExceptionReport(QString *report,const QDate &date);
   QComboBox *list_reports_box;
   QString list_log_name;

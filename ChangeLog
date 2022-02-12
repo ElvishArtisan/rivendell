@@ -22881,3 +22881,6 @@
 2022-01-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that caused rdimport(1) to fail to apply the
 	'<playGain>' tag when processing RDXL metadata.
+2022-02-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added CSV generation routines in 'lib/rdcsv.[cpp|h]'.
+	* Added a 'Log Listing (CSV)' report to rdlogedit(1).
