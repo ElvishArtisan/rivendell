@@ -20830,3 +20830,6 @@
 2021-12-17 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'graceTime' field to the return XML for the 'ListLog'
 	WebAPI call.
+2022-02-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added CSV generation routines in 'lib/rdcsv.[cpp|h]'.
+	* Added a 'Log Listing (CSV)' report to rdlogedit(1).
