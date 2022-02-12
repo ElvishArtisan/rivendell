@@ -20833,3 +20833,6 @@
 2022-02-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added CSV generation routines in 'lib/rdcsv.[cpp|h]'.
 	* Added a 'Log Listing (CSV)' report to rdlogedit(1).
+2022-02-12 Fred Gleason <fredg@paravelsystems.com>
+	* Rewrote the 'Cart Data Dump (CSV)' report in rdlibrary(1) to
+	use the CSV generation routines in 'lib/rdcsv.[cpp|h]'.
