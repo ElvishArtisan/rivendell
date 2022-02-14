@@ -1,9 +1,11 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.19.3int04 -- 5/30/2019
+v2.19.3int05 -- 2/14/2022
 
 Changes:
+   Reports.  Added a 'Log Listing (CSV)' report to rdlogedit(1).
+
    Fixed a regression in rdlogmanager(1) that caused embedded traffic
    events to get a zero link length when the break duration was not
    explicitly set in the music import data.

@@ -16760,3 +16760,5 @@
 2022-02-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added CSV generation routines in 'lib/rdcsv.[cpp|h]'.
 	* Added a 'Log Listing (CSV)' report to rdlogedit(1).
+2022-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v2.19.3int05.
