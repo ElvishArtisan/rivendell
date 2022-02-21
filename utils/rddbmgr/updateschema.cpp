@@ -2,7 +2,7 @@
 //
 // Update Rivendell DB schema.
 //
-//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,6 +37,14 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   QString tablename;
   RDCart *cart;
   bool length_update_required=false;
+
+  if(!db_start_datetime.isNull()) {
+    QDateTime now=QDateTime::currentDateTime();
+    fprintf(stderr,
+	    "%s : starting\n",
+	    now.toString("yyyy-MM-dd hh:mm:ss").toUtf8().constData());
+    db_start_datetime=now;
+  }
 
   if((cur_schema<3)&&(set_schema>=3)) {
     //
@@ -10443,13 +10451,21 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<347)&&(set_schema>cur_schema)) {
+    // Set a default value so the "alter" operation succeeds
     sql=QString("alter table STACK_LINES add column ")+
-      "TITLE varchar(191) not null after ARTIST";
+      "TITLE varchar(191) not null default '' after ARTIST";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
 
     if (!StackLineTitles347(err_msg)) {
+      return false;
+    }
+
+    // Remove the default attribute
+    sql=QString("alter table STACK_LINES alter column ")+
+      "TITLE varchar(191) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
 
@@ -10475,6 +10491,15 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     sql=QString().sprintf("select NUMBER from CART where TYPE=%u",
 			  RDCart::Audio);
     q=new RDSqlQuery(sql,false);
+    if(!db_start_datetime.isNull()) {
+      QDateTime now=QDateTime::currentDateTime();
+      fprintf(stderr,
+	  "%s : beginning cart length updates, %d carts to process [%d secs]\n",
+	      now.toString("yyyy-MM-dd hh:mm:ss").toUtf8().constData(),
+	      q->size(),
+	      db_start_datetime.secsTo(now));
+      db_start_datetime=now;
+    }
     while(q->next()) {
       cart=new RDCart(q->value(0).toUInt());
       cart->updateLength();
@@ -10484,6 +10509,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   *err_msg="ok";
+
+  if(!db_start_datetime.isNull()) {
+    QDateTime now=QDateTime::currentDateTime();
+    fprintf(stderr,
+	    "%s : finished [%d secs]\n",
+	    now.toString("yyyy-MM-dd hh:mm:ss").toUtf8().constData(),
+	    db_start_datetime.secsTo(now));
+    db_start_datetime=now;
+  }
+
   return true;
 }
 
