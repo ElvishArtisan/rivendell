@@ -20842,3 +20842,5 @@
 	* Fixed a bug in rddbmgr(8) that could cause the 346=>347 schema
 	conversion to hang indefinitely with databases containing large
 	cart libraries.
+2022-02-22 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.3.

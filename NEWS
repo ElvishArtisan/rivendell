@@ -1,9 +1,12 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.6.2int2 --7 September 2021
+v3.6.3 --22 February 2022
 
 Changes:
+   RDLogEdit. Added a 'Log Listing (CSV)' report under the 'Reports'
+   button in the 'Edit Log' dialog.
+
    Added a 'SuppressMusicImportLinks=No|Yes' directive to the [Hacks]
    section of rd.conf(5).
 
@@ -13,6 +16,8 @@ Changes:
 
    Now & Next/PAD System. Deprecated the use of the 'Transmit Now & Next data'
    checkbox in the 'Group' dialog in rdadmin(1).
+
+   Various bugfixes. See the ChangeLog for details.
 
 Database Update:
    This version of Rivendell uses database schema version 347, and will
