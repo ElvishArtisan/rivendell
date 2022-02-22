@@ -20847,3 +20847,5 @@
 2022-02-22 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in 'lib/Makefile.am' that broke the 'make dist'
 	target.
+2022-02-22 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.4.
