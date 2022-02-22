@@ -10451,24 +10451,23 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<347)&&(set_schema>cur_schema)) {
-    // Set a default value so the "alter" operation succeeds
     sql=QString("alter table STACK_LINES add column ")+
       "TITLE varchar(191) not null default '' after ARTIST";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
 
-    if (!StackLineTitles347(err_msg)) {
-      return false;
-    }
-
-    // Remove the default attribute
-    sql=QString("alter table STACK_LINES alter column ")+
-      "TITLE varchar(191) not null";
+    sql=QString("create index CART_IDX on STACK_LINES(CART)");
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
-
+    if (!StackLineTitles347(err_msg)) {
+      return false;
+    }
+    sql=QString("drop index CART_IDX on STACK_LINES");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
     WriteSchemaVersion(++cur_schema);
   }
 
@@ -10771,12 +10770,14 @@ bool MainObject::StackLineTitles347(QString *err_msg) const
   //
   // Add titles to STACK_LINES
   //
-  q=new RDSqlQuery("select NUMBER,TITLE from CART",false);
+  q=new RDSqlQuery("select NUMBER,TITLE from CART order by NUMBER",false);
   while(q->next()) {
     if(!q->value(1).isNull()) {
       sql=QString("update STACK_LINES set ")+
-	"TITLE=\""+RDEscapeString(q->value(1).toString().lower().replace(" ",""))+"\" "+
-	"where CART=\""+RDEscapeString(q->value(0).toString())+"\"";
+	"TITLE=\""+
+	RDEscapeString(q->value(1).toString().lower().replace(" ",""))+"\" "+
+	"where "+
+	QString().sprintf("CART=%u",q->value(0).toUInt());
       if(!RDSqlQuery::apply(sql,err_msg)) {
         delete q;
         return false;
