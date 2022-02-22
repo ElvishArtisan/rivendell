@@ -151,6 +151,18 @@
 	</para>
       </listitem>
     </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--print-progress</option>
+      </term>
+      <listitem>
+	<para>
+          Print a message to standard error giving current and elapsed
+          time whenever the database schema version is altered. Useful only
+          for debugging.
+	</para>
+      </listitem>
+    </varlistentry>
   </variablelist>
   </refsect1>
 

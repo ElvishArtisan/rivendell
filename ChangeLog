@@ -22887,3 +22887,5 @@
 2022-02-12 Fred Gleason <fredg@paravelsystems.com>
 	* Rewrote the 'Cart Data Dump (CSV)' report in rdlibrary(1) to
 	use the CSV generation routines in 'lib/rdcsv.[cpp|h]'.
+2022-02-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--print-progress' switch to rddbmgr(8).

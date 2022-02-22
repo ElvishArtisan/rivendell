@@ -2,7 +2,7 @@
 //
 // Update Rivendell DB schema.
 //
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +36,15 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   RDCart *cart;
   bool length_update_required=false;
 
-    if((cur_schema<3)&&(set_schema>=3)) {
+  if(!db_start_datetime.isNull()) {
+    QDateTime now=QDateTime::currentDateTime();
+    fprintf(stderr,
+	    "%s : starting\n",
+	    now.toString("yyyy-MM-dd hh:mm:ss").toUtf8().constData());
+    db_start_datetime=now;
+  }
+
+  if((cur_schema<3)&&(set_schema>=3)) {
     //
     // Create RDAIRPLAY Table
     //
@@ -10978,6 +10986,15 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     sql=QString::asprintf("select `NUMBER` from `CART` where `TYPE`=%u",
 			  RDCart::Audio);
     q=new RDSqlQuery(sql,false);
+    if(!db_start_datetime.isNull()) {
+      QDateTime now=QDateTime::currentDateTime();
+      fprintf(stderr,
+	"%s : beginning cart length updates, %d carts to process [%lld secs]\n",
+	      now.toString("yyyy-MM-dd hh:mm:ss").toUtf8().constData(),
+	      q->size(),
+	      db_start_datetime.secsTo(now));
+      db_start_datetime=now;
+    }
     while(q->next()) {
       cart=new RDCart(q->value(0).toUInt());
       cart->updateLength();
@@ -10987,6 +11004,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   *err_msg="ok";
+
+  if(!db_start_datetime.isNull()) {
+    QDateTime now=QDateTime::currentDateTime();
+    fprintf(stderr,
+	    "%s : finished [%lld secs]\n",
+	    now.toString("yyyy-MM-dd hh:mm:ss").toUtf8().constData(),
+	    db_start_datetime.secsTo(now));
+    db_start_datetime=now;
+  }
+
   return true;
 }
 

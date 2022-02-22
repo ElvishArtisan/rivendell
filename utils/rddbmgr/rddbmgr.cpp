@@ -2,7 +2,7 @@
 //
 // Rivendell database management utility
 //
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -144,6 +144,10 @@ MainObject::MainObject(QObject *parent)
     }
     if(cmd->key(i)=="--mysql-engine") {
       db_mysql_engine=cmd->value(i);
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--print-progress") {
+      db_start_datetime=QDateTime::currentDateTime();
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--set-schema") {
@@ -384,8 +388,16 @@ MainObject::MainObject(QObject *parent)
 }
 
 
-void MainObject::WriteSchemaVersion(int ver) const
+void MainObject::WriteSchemaVersion(int ver)
 {
+  if(!db_start_datetime.isNull()) {
+    QDateTime now=QDateTime::currentDateTime();
+    fprintf(stderr,"%s : setting schema version %d [%lld secs]\n",
+	    now.toString("yyyy-MM-dd hh:mm:ss").toUtf8().constData(),
+	    ver,
+	    db_start_datetime.secsTo(now));
+    db_start_datetime=now;
+  }
   QString sql=QString("update `VERSION` set ")+
     QString::asprintf("`DB`=%d",ver);
   RDSqlQuery::apply(sql);

@@ -2,7 +2,7 @@
 //
 // Rivendell database management utility
 //
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -131,7 +131,7 @@ class MainObject : public QObject
   //
   bool PrintStatus(QString *err_msg) const;
 
-  void WriteSchemaVersion(int ver) const;
+  void WriteSchemaVersion(int ver);
   bool TableExists(const QString &tbl_name) const;
   bool DropTable(const QString &tbl_name,QString *err_msg=NULL) const;
   bool ColumnExists(const QString &tbl_name,const QString &col_name) const;
@@ -160,6 +160,7 @@ class MainObject : public QObject
   QString db_rehash;
   QString db_relink_audio;
   bool db_relink_audio_move;
+  QDateTime db_start_datetime;
   QString db_table_create_postfix;
   RDConfig *db_config;
 };
