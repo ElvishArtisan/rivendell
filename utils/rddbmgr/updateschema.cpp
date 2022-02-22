@@ -10770,7 +10770,15 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       return false;
     }
 
+    sql=QString("create index `CART_IDX` on `STACK_LINES`(`CART`)");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
     if (!StackLineTitles347(err_msg)) {
+      return false;
+    }
+    sql=QString("drop index `CART_IDX` on `STACK_LINES`");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
 
@@ -11270,8 +11278,10 @@ bool MainObject::StackLineTitles347(QString *err_msg) const
   while(q->next()) {
     if(!q->value(1).isNull()) {
       sql=QString("update `STACK_LINES` set ")+
-	"`TITLE`='"+RDEscapeString(q->value(1).toString().toLower().replace(" ",""))+"' "+
-	"where `CART`='"+RDEscapeString(q->value(0).toString())+"'";
+	"`TITLE`=\""+
+	RDEscapeString(q->value(1).toString().toLower().replace(" ",""))+"\" "+
+	"where "+
+	QString::asprintf("`CART`=%u",q->value(0).toUInt());
       if(!RDSqlQuery::apply(sql,err_msg)) {
         delete q;
         return false;

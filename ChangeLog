@@ -22889,3 +22889,7 @@
 	use the CSV generation routines in 'lib/rdcsv.[cpp|h]'.
 2022-02-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--print-progress' switch to rddbmgr(8).
+2022-02-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that could cause the 346=>347 schema
+	conversion to hang indefinitely with databases containing large
+	cart libraries.
