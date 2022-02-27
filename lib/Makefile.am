@@ -263,6 +263,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdtextvalidator.cpp rdtextvalidator.h\
                         rdtimeedit.cpp rdtimeedit.h\
                         rdtimeengine.cpp rdtimeengine.h\
+                        rdtimeprobe.cpp rdtimeprobe.h\
                         rdtrackereditdialog.cpp rdtrackereditdialog.h\
                         rdtrackermodel.cpp rdtrackermodel.h\
                         rdtrackertableview.cpp rdtrackertableview.h\
