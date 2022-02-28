@@ -2,7 +2,7 @@
 //
 // Filter widget for picking Rivendell carts.
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -337,8 +337,6 @@ void RDCartFilter::setShowCartType(RDCart::Type type)
       d_showmacro_label->hide();
     }
     d_show_cart_type=type;
-
-    emit filterChanged(filterSql(),cartLimit());
   }
 }
 
@@ -353,7 +351,6 @@ void RDCartFilter::setShowTrackCarts(bool state)
 {
   if(state!=d_show_track_carts) {
     d_show_track_carts=state;
-    emit filterChanged(filterSql(),cartLimit());
   }
 }
 
@@ -384,7 +381,6 @@ void RDCartFilter::setService(const QString &svc)
     if(!d_service.isEmpty()) {
       LoadServiceGroups();
     }
-    emit filterChanged(filterSql(),cartLimit());
   }
 }
 
@@ -456,7 +452,7 @@ void RDCartFilter::changeUser()
   delete q;
   d_search_button->setDisabled(true);
 
-  emit filterChanged(filterSql(),cartLimit());
+  UpdateModel();
 }
 
 
@@ -486,7 +482,7 @@ void RDCartFilter::searchClickedData()
   else {
     d_clear_button->setEnabled(true);
   }
-  emit filterChanged(filterSql(),cartLimit());
+  UpdateModel();
 }
 
 
@@ -683,6 +679,13 @@ QString RDCartFilter::typeFilter(bool incl_audio,bool incl_macro,
 }
 
 
+void RDCartFilter::showEvent(QShowEvent *e)
+{
+  UpdateModel();
+  QWidget::showEvent(e);
+}
+
+
 void RDCartFilter::LoadUserGroups()
 {
   QString sql;
@@ -725,4 +728,15 @@ void RDCartFilter::LoadServiceGroups()
     d_group_box->insertItem(d_group_box->count(),q->value(0).toString());
   }
   delete q;
+}
+
+
+void RDCartFilter::UpdateModel()
+{
+  if(isVisible()&&
+     ((filterSql()!=d_model_filter_sql)||(cartLimit()!=d_model_cart_limit))) {
+    d_model_filter_sql=filterSql();
+    d_model_cart_limit=cartLimit();
+    emit filterChanged(d_model_filter_sql,d_model_cart_limit);
+  }
 }

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell marker event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,7 @@
 #ifndef EDIT_MARKER_H
 #define EDIT_MARKER_H
 
-#include <qlineedit.h>
+#include <QLineEdit>
 
 #include "edit_event.h"
 
@@ -29,10 +29,13 @@ class EditMarker : public EditEvent
 {
   Q_OBJECT
  public:
-  EditMarker(RDLogLine *,QWidget *parent=0);
+  EditMarker(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
+
+ public slots:
+  int exec(RDLogLine *ll);
+
  protected:
   bool saveData();
 

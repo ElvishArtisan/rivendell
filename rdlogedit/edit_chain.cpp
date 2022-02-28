@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Chain Entry
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,8 +27,8 @@
 
 #include "globals.h"
 
-EditChain::EditChain(RDLogLine *line,QWidget *parent)
-  : EditEvent(line,parent)
+EditChain::EditChain(QWidget *parent)
+  : EditEvent(parent)
 {
   setWindowTitle("RDLogEdit - "+tr("Edit Log Chain"));
 
@@ -63,12 +63,6 @@ EditChain::EditChain(RDLogLine *line,QWidget *parent)
   edit_comment_edit->setReadOnly(true);
   edit_comment_label=new QLabel(tr("Log Description"),this);
   edit_comment_label->setFont(labelFont());
-
-  //
-  // Populate Data
-  //
-  edit_label_edit->setText(logLine()->markerLabel());
-  labelChangedData(edit_label_edit->text());
 }
 
 
@@ -81,6 +75,16 @@ QSize EditChain::sizeHint() const
 QSizePolicy EditChain::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int EditChain::exec(RDLogLine *ll)
+{
+  setLogLine(ll);
+  edit_label_edit->setText(logLine()->markerLabel());
+  labelChangedData(edit_label_edit->text());
+
+  return EditEvent::exec();
 }
 
 

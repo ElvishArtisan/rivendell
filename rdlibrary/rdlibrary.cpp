@@ -159,8 +159,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   lib_cart_model->setPalette(palette());
   lib_cart_filter->setModel(lib_cart_model);
   lib_cart_view->setModel(lib_cart_model);
-  lib_cart_view->setSortingEnabled(true);
-  lib_cart_view->sortByColumn(0,Qt::AscendingOrder);
   connect(lib_cart_view,SIGNAL(doubleClicked(const QModelIndex &)),
   	  this,SLOT(cartDoubleClickedData(const QModelIndex &)));
   connect(lib_cart_filter,SIGNAL(dragEnabledChanged(bool)),
@@ -275,8 +273,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   lib_macro_events=new RDMacroEvent(rda->station()->address(),rda->ripc(),this);
 
   dragsChangedData(lib_cart_filter->dragEnabled());
-  lib_cart_model->
-    setFilterSql(lib_cart_filter->filterSql(),lib_cart_model->cartLimit());
 
   LoadGeometry();
 }

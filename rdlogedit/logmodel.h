@@ -29,6 +29,7 @@ class LogModel : public RDLogModel
   Q_OBJECT
  public:
   LogModel(const QString &logname,QObject *parent=0);
+  LogModel(QObject *parent=0);
   ~LogModel();
   QString serviceName() const;
   bool groupIsValid(const QString &grpname) const;

@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cut.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -146,9 +146,6 @@ RDCutDialog::RDCutDialog(QString *filter,QString *group,QString *schedcode,
   cart_cancel_button=new QPushButton(tr("Cancel"),this);
   cart_cancel_button->setFont(buttonFont());
   connect(cart_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  cart_cart_model->
-    setFilterSql(cart_cart_filter->filterSql(),cart_cart_filter->cartLimit());
 
   //
   // Fix the Window Size

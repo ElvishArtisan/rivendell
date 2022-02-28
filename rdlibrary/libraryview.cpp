@@ -30,6 +30,8 @@
 LibraryView::LibraryView(QWidget *parent)
   : RDTreeView(parent)
 {
+  setSortingEnabled(true);
+  sortByColumn(0,Qt::AscendingOrder);
 }
 
 

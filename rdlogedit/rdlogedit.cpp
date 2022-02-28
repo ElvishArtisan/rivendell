@@ -111,6 +111,9 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   // Dialogs
   //
+  log_edit_dialog=
+    new EditLog(&log_filter,&log_group,&log_schedcode,&log_clipboard,this);
+
   log_tracker_dialog=new VoiceTracker(&log_import_path,this);
   
   //
@@ -268,11 +271,7 @@ void MainWidget::addData()
     }
     LockList();
     SendNotification(RDNotification::AddAction,logname);
-    EditLog *editlog=new EditLog(logname,&log_filter,&log_group,&log_schedcode,
-				 &log_clipboard,&newlogs,this);
-    editlog->exec();
-    delete editlog;
-
+    log_edit_dialog->exec(logname,&newlogs);
     row=log_log_model->addLog(logname);
     log_log_view->selectRow(row.row());
     UnlockList();
@@ -290,14 +289,10 @@ void MainWidget::editData()
   QString logname=log_log_model->logName(row);
   QStringList newlogs;
   LockList();
-  EditLog *log=
-    new EditLog(logname,&log_filter,&log_group,&log_schedcode,
-		&log_clipboard,&newlogs,this);
-  if(log->exec()) {
+  if(log_edit_dialog->exec(logname,&newlogs)) {
     log_log_model->refresh(row);
   }
   UnlockList();
-  delete log;
 }
 
 

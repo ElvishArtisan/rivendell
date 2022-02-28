@@ -86,13 +86,13 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Cart List
   //
   cart_cart_view=new RDTableView(this);
+  cart_cart_view->setSortingEnabled(true);
+  cart_cart_view->sortByColumn(0,Qt::AscendingOrder);
   cart_cart_model=new RDLibraryModel(this);
   cart_cart_model->setFont(font());
   cart_cart_model->setPalette(palette());
   cart_cart_view->setModel(cart_cart_model);
   cart_cart_filter->setModel(cart_cart_model);
-  cart_cart_view->setSortingEnabled(true);
-  cart_cart_view->sortByColumn(0,Qt::AscendingOrder);
   connect(cart_cart_model,SIGNAL(modelReset()),this,SLOT(modelResetData()));
   connect(cart_cart_view,SIGNAL(doubleClicked(const QModelIndex &)),
   	  this,SLOT(cartDoubleClickedData(const QModelIndex &)));

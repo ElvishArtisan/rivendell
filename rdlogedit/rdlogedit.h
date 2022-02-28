@@ -31,6 +31,7 @@
 #include <rdtableview.h>
 #include <rdwidget.h>
 
+#include "edit_log.h"
 #include "voice_tracker.h"
 
 #define RDLOGEDIT_DEFAULT_WIDTH 640
@@ -91,6 +92,7 @@ class MainWidget : public RDMainWindow
   bool log_resize;
   bool log_list_locked;
   QStringList log_deleted_logs;
+  EditLog *log_edit_dialog;
   VoiceTracker *log_tracker_dialog;
 };
 

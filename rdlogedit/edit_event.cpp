@@ -2,7 +2,7 @@
 //
 // Base class for rdlogedit(1) event editor dialogs
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,13 +24,12 @@
 #include <rdlist_logs.h>
 
 #include "edit_event.h"
-
 #include "globals.h"
 
-EditEvent::EditEvent(RDLogLine *line,QWidget *parent)
+EditEvent::EditEvent(QWidget *parent)
   : RDDialog(parent)
 {
-  edit_logline=line;
+  //  edit_logline=line;
 
   //
   // Time Type
@@ -101,10 +100,11 @@ EditEvent::EditEvent(RDLogLine *line,QWidget *parent)
   edit_cancel_button->setFont(buttonFont());
   edit_cancel_button->setText(tr("Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+}
 
-  //
-  // Populate Data
-  //
+
+int EditEvent::exec()
+{
   edit_time_edit->setTime(edit_logline->startTime(RDLogLine::Logged));
   if(edit_logline->timeType()==RDLogLine::Hard) {
     edit_timetype_box->setChecked(true);
@@ -132,6 +132,8 @@ EditEvent::EditEvent(RDLogLine *line,QWidget *parent)
     break;
   }
   edit_transtype_box->setCurrentIndex(edit_logline->transType());
+
+  return QDialog::exec();
 }
 
 
@@ -238,6 +240,12 @@ void EditEvent::cancelData()
 RDLogLine *EditEvent::logLine()
 {
   return edit_logline;
+}
+
+
+void EditEvent::setLogLine(RDLogLine *ll)
+{
+  edit_logline=ll;
 }
 
 

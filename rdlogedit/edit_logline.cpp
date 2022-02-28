@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Entry
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,10 +22,9 @@
 
 #include "edit_logline.h"
 
-EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
-			 QString *schedcode,QString svcname,
-			 LogModel *model,int lineno,QWidget *parent)
-  : EditEvent(line,parent)
+EditLogLine::EditLogLine(QString *filter,QString *group,QString *schedcode,
+			 QWidget *parent)
+  : EditEvent(parent)
 {
   //
   // Fix the Window Size
@@ -38,9 +37,6 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   edit_filter=filter;
   edit_group=group;
   edit_schedcode=schedcode;
-  edit_service=svcname;
-  edit_log_model=model;
-  edit_line=lineno;
 
   //
   // Cart Picker
@@ -95,28 +91,6 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   button->setFont(buttonFont());
   button->setText(tr("Select\nCart"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectCartData()));
-
-  //
-  // Populate Data
-  //
-  if(logLine()->segueStartPoint(RDLogLine::LogPointer)<0
-     && logLine()->segueEndPoint(RDLogLine::LogPointer)<0
-     && logLine()->endPoint(RDLogLine::LogPointer)<0
-     && logLine()->fadedownPoint(RDLogLine::LogPointer)<0) {
-    edit_overlap_box->setEnabled(true);
-    edit_overlap_label->setEnabled(true);
-    if(logLine()->segueGain()==0) {
-      edit_overlap_box->setChecked(true);
-    }
-    else {
-      edit_overlap_box->setChecked(false);
-    }
-  }
-  else {
-    edit_overlap_box->setEnabled(false);
-    edit_overlap_label->setEnabled(false);
-  }  
-  FillCart(logLine()->cartNumber());
 }
 
 
@@ -135,6 +109,37 @@ QSize EditLogLine::sizeHint() const
 QSizePolicy EditLogLine::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int EditLogLine::exec(const QString &svcname,LogModel *model,
+		      RDLogLine *ll,int lineno)
+{
+  edit_service=svcname;
+  edit_log_model=model;
+  edit_line=lineno;
+  setLogLine(ll);
+
+  if(logLine()->segueStartPoint(RDLogLine::LogPointer)<0
+     && logLine()->segueEndPoint(RDLogLine::LogPointer)<0
+     && logLine()->endPoint(RDLogLine::LogPointer)<0
+     && logLine()->fadedownPoint(RDLogLine::LogPointer)<0) {
+    edit_overlap_box->setEnabled(true);
+    edit_overlap_label->setEnabled(true);
+    if(logLine()->segueGain()==0) {
+      edit_overlap_box->setChecked(true);
+    }
+    else {
+      edit_overlap_box->setChecked(false);
+    }
+  }
+  else {
+    edit_overlap_box->setEnabled(false);
+    edit_overlap_label->setEnabled(false);
+  }  
+  FillCart(logLine()->cartNumber());
+
+  return EditEvent::exec();
 }
 
 
@@ -186,11 +191,16 @@ bool EditLogLine::saveData()
 
 void EditLogLine::FillCart(int cartnum)
 {
-  RDCart *cart=new RDCart(cartnum);
-  if(cartnum!=0) {
-    edit_cart_edit->setText(QString::asprintf("%05u",cartnum));
+  if(cartnum==0) {
+    edit_cart_edit->setText("");
+    edit_title_edit->setText("");
+    edit_artist_edit->setText("");
   }
-  edit_title_edit->setText(cart->title());
-  edit_artist_edit->setText(cart->artist());
-  delete cart;
+  else {
+    RDCart *cart=new RDCart(cartnum);
+    edit_cart_edit->setText(QString::asprintf("%05u",cartnum));
+    edit_title_edit->setText(cart->title());
+    edit_artist_edit->setText(cart->artist());
+    delete cart;
+  }
 }

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Voice Track Log Entry
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +20,8 @@
 
 #include "edit_track.h"
 
-EditTrack::EditTrack(RDLogLine *line,QWidget *parent)
-  : EditEvent(line,parent)
+EditTrack::EditTrack(QWidget *parent)
+  : EditEvent(parent)
 {
   setWindowTitle("RDLogEdit - "+tr("Edit Voice Track Marker"));
 
@@ -40,11 +40,6 @@ EditTrack::EditTrack(RDLogLine *line,QWidget *parent)
   QLabel *label=new QLabel(tr("Comment"),this);
   label->setFont(labelFont());
   label->setGeometry(12,100,70,14);
-
-  //
-  // Populate Data
-  //
-  edit_comment_edit->setText(logLine()->markerComment());
 }
 
 
@@ -57,6 +52,15 @@ QSize EditTrack::sizeHint() const
 QSizePolicy EditTrack::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int EditTrack::exec(RDLogLine *ll)
+{
+  setLogLine(ll);
+  edit_comment_edit->setText(logLine()->markerComment());
+
+  return EditEvent::exec();
 }
 
 

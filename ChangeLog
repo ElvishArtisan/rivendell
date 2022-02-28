@@ -22895,3 +22895,8 @@
 	cart libraries.
 2022-02-27 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDTimeProbe' class.
+2022-02-28 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'RDCartDialog' to eliminate superfluous SQL filter updates.
+	* Updated 'RDCutDialog' to eliminate superfluous SQL filter updates.
+	* Updated rdlibrary(1) to eliminate superfluous SQL filter updates.
+	* Updated rdlogedit(1) to eliminate superfluous SQL filter updates.

@@ -27,6 +27,13 @@ LogModel::LogModel(const QString &logname,QObject *parent)
 }
 
 
+LogModel::LogModel(QObject *parent)
+  : RDLogModel(parent)
+{
+  d_group_list=new RDGroupList();
+}
+
+
 LogModel::~LogModel()
 {
   delete d_group_list;

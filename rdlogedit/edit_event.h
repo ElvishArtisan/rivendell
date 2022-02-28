@@ -2,7 +2,7 @@
 //
 // Base class for rdlogedit(1) event editor dialogs
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,11 @@
 #ifndef EDIT_EVENT_H
 #define EDIT_EVENT_H
 
-#include <qbuttongroup.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qdatetimeedit.h>
-#include <qgroupbox.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QGroupBox>
+#include <QRadioButton>
 
 #include <rddialog.h>
 #include <rdlog_line.h>
@@ -37,7 +35,7 @@ class EditEvent : public RDDialog
 {
   Q_OBJECT
  protected:
-  EditEvent(RDLogLine *,QWidget *parent=0);
+  EditEvent(QWidget *parent=0);
 
  private slots:
   void timeChangedData(const QTime &);
@@ -48,7 +46,9 @@ class EditEvent : public RDDialog
   void cancelData();
 
  protected:
+  int exec();
   RDLogLine *logLine();
+  void setLogLine(RDLogLine *ll);
   virtual bool saveData()=0;
   void resizeEvent(QResizeEvent *e);
   void closeEvent(QCloseEvent *e);

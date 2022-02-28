@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,35 +27,23 @@
 #include <rdtextvalidator.h>
 
 #include "add_meta.h"
-#include "edit_chain.h"
 #include "edit_log.h"
-#include "edit_logline.h"
-#include "edit_marker.h"
-#include "edit_track.h"
 #include "globals.h"
 
-EditLog::EditLog(QString logname,QString *filter,QString *group,
-		 QString *schedcode,QList<RDLogLine> *clipboard,
-		 QStringList *new_logs,QWidget *parent)
+EditLog::EditLog(QString *filter,QString *group,QString *schedcode,
+		 QList<RDLogLine> *clipboard,QWidget *parent)
   : RDDialog(parent)
 {
-  QString sql;
-  RDSqlQuery *q;
-  QStringList services_list;
   QColor system_mid_color=palette().mid().color();
   QColor system_button_color=palette().button().color();
 
-  edit_logname=logname;
   edit_filter=filter;
   edit_group=group;
   edit_schedcode=schedcode;
   edit_clipboard=clipboard;
-  edit_newlogs=new_logs;
   edit_default_trans=RDLogLine::Play;
-  bool adding_allowed=rda->user()->addtoLog();
-  bool deleting_allowed=rda->user()->removefromLog();
-  bool editing_allowed=rda->user()->arrangeLog();
-  bool saveas_allowed=rda->user()->createLog();
+  edit_log=NULL;
+  edit_log_lock=NULL;
 
   setWindowTitle("RDLogEdit - "+tr("Edit Log"));
 
@@ -78,6 +66,11 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   // Dialogs
   //
   edit_render_dialog=new RenderDialog(this);
+  edit_logline_dialog=
+    new EditLogLine(edit_filter,edit_group,edit_schedcode,this);
+  edit_marker_dialog=new EditMarker(this);
+  edit_track_dialog=new EditTrack(this);
+  edit_chain_dialog=new EditChain(this);
 
   //
   // Text Validator
@@ -85,22 +78,12 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   RDTextValidator *validator=new RDTextValidator(this);
 
   //
-  // Log Header
-  //
-  edit_log=new RDLog(edit_logname);
-
-  //
-  // Log Data Structures
-  //
-  edit_log_lock=new RDLogLock(edit_logname,rda->user(),rda->station(),this);
-
-  //
   // Log Name
   //
   edit_modified_label=new QLabel(this);
   edit_modified_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
   edit_modified_label->setFont(progressFont());
-  edit_logname_label=new QLabel(logname,this);
+  edit_logname_label=new QLabel(this);
   edit_logname_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_logname_label_label=new QLabel(tr("Log Name:"),this);
   edit_logname_label_label->setFont(labelFont());
@@ -118,10 +101,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Log Origin
   //
-  edit_origin_label=
-    new QLabel(edit_log->originUser()+QString(" - ")+
-	       edit_log->originDatetime().toString("MM/dd/yyyy - hh:mm:ss"),
-	       this);
+  edit_origin_label=new QLabel(this);
   edit_origin_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_origin_label_label=new QLabel(tr("Origin:"),this);
   edit_origin_label_label->setFont(labelFont());
@@ -257,12 +237,10 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_log_view->setShowGrid(false);
   edit_log_view->setSortingEnabled(false);
   edit_log_view->setWordWrap(false);
-  edit_log_model=new LogModel(edit_logname,this);
+  edit_log_model=new LogModel(this);
   edit_log_model->setFont(defaultFont());
   edit_log_model->setPalette(palette());
-  edit_log_model->load(true);
   edit_log_view->setModel(edit_log_model);
-  edit_log_view->resizeColumnsToContents();
   connect(edit_log_model,
 	  SIGNAL(dataChanged(const QModelIndex &,const QModelIndex &)),
 	  this,SLOT(dataChangedData(const QModelIndex &,const QModelIndex &)));
@@ -437,10 +415,59 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_cancel_button->setFont(buttonFont());
   edit_cancel_button->setText(tr("Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+}
 
-  //
-  // Populate Data
-  //
+
+EditLog::~EditLog()
+{
+  delete edit_log_model;
+  delete edit_log_lock;
+}
+
+
+QSize EditLog::sizeHint() const
+{
+  return global_logedit_window_size;
+} 
+
+
+//int EditLog::exec()
+int EditLog::exec(const QString &logname,QStringList *new_logs)
+{
+  QString sql;
+  RDSqlQuery *q;
+  QString username;
+  QString stationname;
+  QHostAddress addr;
+  bool adding_allowed=rda->user()->addtoLog();
+  bool deleting_allowed=rda->user()->removefromLog();
+  bool editing_allowed=rda->user()->arrangeLog();
+  bool saveas_allowed=rda->user()->createLog();
+  QStringList services_list;
+
+  edit_logname=logname;
+  edit_newlogs=new_logs;
+  if(edit_log!=NULL) {
+    delete edit_log;
+  }
+  edit_log=new RDLog(edit_logname);
+  edit_logname_label->setText(edit_logname);
+  edit_log_model->setLogName(edit_logname);
+  edit_log_model->load(true);
+  edit_log_view->resizeColumnsToContents();
+  edit_origin_label->
+    setText(edit_log->originUser()+QString(" - ")+
+	    edit_log->originDatetime().toString("MM/dd/yyyy - hh:mm:ss"));
+  edit_log_lock=new RDLogLock(edit_logname,rda->user(),rda->station(),this);
+  if(!edit_log_lock->tryLock(&username,&stationname,&addr)) {
+    QString msg=tr("Log already being edited by")+" "+username+"@"+stationname;
+    if(stationname!=addr.toString()) {
+      msg+=" ["+addr.toString()+"]";
+    }
+    msg+=".";
+    QMessageBox::warning(this,"RDLogEdit - "+tr("Log Locked"),msg);
+    return false;
+  }
   edit_description_edit->setText(edit_log->description());
 
   QDate purge_date=edit_log->purgeDate();
@@ -542,37 +569,6 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_copy_button->setEnabled(adding_allowed&&editing_allowed);
   edit_paste_button->setEnabled(adding_allowed&&editing_allowed);
   edit_saveas_button->setEnabled(saveas_allowed);
-}
-
-
-EditLog::~EditLog()
-{
-  delete edit_log_model;
-  delete edit_log_lock;
-}
-
-
-QSize EditLog::sizeHint() const
-{
-  return global_logedit_window_size;
-} 
-
-
-int EditLog::exec()
-{
-  QString username;
-  QString stationname;
-  QHostAddress addr;
-
-  if(!edit_log_lock->tryLock(&username,&stationname,&addr)) {
-    QString msg=tr("Log already being edited by")+" "+username+"@"+stationname;
-    if(stationname!=addr.toString()) {
-      msg+=" ["+addr.toString()+"]";
-    }
-    msg+=".";
-    QMessageBox::warning(this,"RDLogEdit - "+tr("Log Locked"),msg);
-    return false;
-  }
 
   return QDialog::exec();
 }
@@ -681,21 +677,18 @@ void EditLog::insertCartButtonData()
   edit_log_model->logLine(line)->setTransType(edit_default_trans);
   edit_log_model->logLine(line)->setFadeupGain(-3000);
   edit_log_model->logLine(line)->setFadedownGain(-3000);
-  EditLogLine *edit=
-    new EditLogLine(edit_log_model->logLine(line),edit_filter,edit_group,
-		    edit_schedcode,edit_service_box->currentText(),
-		    edit_log_model,line,this);
-  int ret=edit->exec();
+  printf("CARTNUM: %06u\n",edit_log_model->logLine(line)->cartNumber());
+  int ret=edit_logline_dialog->
+    exec(edit_service_box->currentText(),edit_log_model,
+	 edit_log_model->logLine(line),line);
   if(ret>=0) {
     edit_log_model->update(line);
     SetLogModified(true);
   }
   else {
     edit_log_model->remove(line,1);
-    delete edit;
     return;
   }
-  delete edit;
   UpdateCounters();
 }
 
@@ -709,17 +702,12 @@ void EditLog::insertMarkerButtonData()
   }
 
   int ret;
-  EditMarker *edit_marker;
-  EditTrack *edit_track;
-  EditChain *edit_chain;
-
   AddMeta *meta=new AddMeta(this);
   switch((RDLogLine::Type)meta->exec()) {
   case RDLogLine::Marker:
     edit_log_model->insert(line,1);
     edit_log_model->logLine(line)->setType(RDLogLine::Marker);
-    edit_marker=new EditMarker(edit_log_model->logLine(line),this);
-    ret=edit_marker->exec();
+    ret=edit_marker_dialog->exec(edit_log_model->logLine(line));
     if(ret>=0) {
       edit_log_model->update(line);
       SetLogModified(true);
@@ -727,7 +715,6 @@ void EditLog::insertMarkerButtonData()
     else {
       edit_log_model->remove(line,1);
     }
-    delete edit_marker;
     break;
 
   case RDLogLine::Track:
@@ -735,8 +722,7 @@ void EditLog::insertMarkerButtonData()
     edit_log_model->logLine(line)->setType(RDLogLine::Track);
     edit_log_model->logLine(line)->setTransType(RDLogLine::Segue);
     edit_log_model->logLine(line)->setMarkerComment(tr("Voice Track"));
-    edit_track=new EditTrack(edit_log_model->logLine(line),this);
-    ret=edit_track->exec();
+    ret=edit_track_dialog->exec(edit_log_model->logLine(line));
     if(ret>=0) {
       edit_log_model->update(line);
       SetLogModified(true);
@@ -744,14 +730,12 @@ void EditLog::insertMarkerButtonData()
     else {
       edit_log_model->remove(line,1);
     }
-    delete edit_track;
     break;
 
   case RDLogLine::Chain:
     edit_log_model->insert(line,1);
     edit_log_model->logLine(line)->setType(RDLogLine::Chain);
-    edit_chain=new EditChain(edit_log_model->logLine(line),this);
-    ret=edit_chain->exec();
+    ret=edit_chain_dialog->exec(edit_log_model->logLine(line));
     if(ret>=0) {
       edit_log_model->update(line);
       SetLogModified(true);
@@ -759,7 +743,6 @@ void EditLog::insertMarkerButtonData()
     else {
       edit_log_model->remove(line,1);
     }
-    delete edit_chain;
     break;
 
   default:
@@ -813,10 +796,6 @@ void EditLog::doubleClickedData(const QModelIndex &index)
 
 void EditLog::editButtonData()
 {
-  EditLogLine *edit_cart;
-  EditMarker *edit_marker;
-  EditTrack *edit_track;
-  EditChain *edit_chain;
   int line;
 
   if((line=SingleSelectionLine())<0) {
@@ -826,39 +805,29 @@ void EditLog::editButtonData()
   switch(edit_log_model->logLine(line)->type()) {
   case RDLogLine::Cart:
   case RDLogLine::Macro:
-    edit_cart=
-      new EditLogLine(edit_log_model->logLine(line),edit_filter,edit_group,
-		      edit_schedcode,edit_service_box->currentText(),
-		      edit_log_model,line,this);
-    if(edit_cart->exec()>=0) {
+    if(edit_logline_dialog->exec(edit_service_box->currentText(),edit_log_model,
+				 edit_log_model->logLine(line),line)>=0) {
       edit_log_model->update(line);
       SetLogModified(true);
     }
-    delete edit_cart;
     break;
 
   case RDLogLine::Marker:
-    edit_marker=new EditMarker(edit_log_model->logLine(line),this);
-    if(edit_marker->exec()>=0) {
+    if(edit_marker_dialog->exec(edit_log_model->logLine(line))>=0) {
       SetLogModified(true);
     }
-    delete edit_marker;
     break;
 
   case RDLogLine::Track:
-    edit_track=new EditTrack(edit_log_model->logLine(line),this);
-    if(edit_track->exec()>=0) {
+    if(edit_track_dialog->exec(edit_log_model->logLine(line))>=0) {
       SetLogModified(true);
     }
-    delete edit_track;
     break;
 
   case RDLogLine::Chain:
-    edit_chain=new EditChain(edit_log_model->logLine(line),this);
-    if(edit_chain->exec()>=0) {
+    if(edit_chain_dialog->exec(edit_log_model->logLine(line))>=0) {
       SetLogModified(true);
     }
-    delete edit_chain;
     break;
 
   default:
@@ -1097,6 +1066,8 @@ void EditLog::okData()
   for(int i=0;i<edit_clipboard->size();i++) {
     (*edit_clipboard)[i].clearExternalData();
   }
+  delete edit_log_lock;
+  edit_log_lock=NULL;
   done(true);
 }
 
@@ -1128,6 +1099,8 @@ void EditLog::cancelData()
   for(int i=0;i<edit_clipboard->size();i++) {
     (*edit_clipboard)[i].clearExternalData();
   }
+  delete edit_log_lock;
+  edit_log_lock=NULL;
   done(false);
 }
 

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,12 +25,15 @@
 #include <QList>
 #include <QStringList>
 
-
 #include <rdcart_dialog.h>
 #include <rddateedit.h>
 #include <rddialog.h>
 #include <rdloglock.h>
 
+#include "edit_chain.h"
+#include "edit_logline.h"
+#include "edit_marker.h"
+#include "edit_track.h"
 #include "list_reports.h"
 #include "logmodel.h"
 #include "logtableview.h"
@@ -43,14 +46,13 @@ class EditLog : public RDDialog
 {
  Q_OBJECT
  public:
- EditLog(QString logname,QString *filter,QString *group,QString *schedcode,
-	 QList<RDLogLine> *clipboard,QStringList *new_logs,
-	 QWidget *parent=0);
+  EditLog(QString *filter,QString *group,QString *schedcode,
+	  QList<RDLogLine> *clipboard,QWidget *parent=0);
   ~EditLog();
   QSize sizeHint() const;
 
  public slots:
-  int exec();
+  int exec(const QString &logname,QStringList *new_logs);
   
  private slots:
   void dataChangedData(const QModelIndex &top_left,
@@ -169,6 +171,10 @@ class EditLog : public RDDialog
   RDLogLock *edit_log_lock;
   QPushButton *edit_renderas_button;
   RenderDialog *edit_render_dialog;
+  EditLogLine *edit_logline_dialog;
+  EditMarker *edit_marker_dialog;
+  EditTrack *edit_track_dialog;
+  EditChain *edit_chain_dialog;
   LogTableView *edit_log_view;
   LogModel *edit_log_model;
 };

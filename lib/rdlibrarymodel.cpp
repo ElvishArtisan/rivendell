@@ -22,6 +22,7 @@
 #include "rdconf.h"
 #include "rdescape_string.h"
 #include "rdlibrarymodel.h"
+#include "rdtimeprobe.h"
 
 RDLibraryModel::RDLibraryModel(QObject *parent)
   : QAbstractItemModel(parent)
@@ -35,6 +36,7 @@ RDLibraryModel::RDLibraryModel(QObject *parent)
   d_sort_order=Qt::AscendingOrder;
   d_sort_clauses[Qt::AscendingOrder]="asc";
   d_sort_clauses[Qt::DescendingOrder]="desc";
+  d_filter_set=false;
 
   //
   // Column Attributes
@@ -317,7 +319,9 @@ void RDLibraryModel::sort(int col,Qt::SortOrder order)
 {
   d_sort_column=col;
   d_sort_order=order;
-  setFilterSql(d_filter_sql,d_cart_limit);
+  if(d_filter_set) {
+    setFilterSql(d_filter_sql,d_cart_limit);
+  }
   /*
   printf("RDLibraryModel::sort():\n");
   printf("  d_filter_sql: %s\n",d_filter_sql.toUtf8().constData());
@@ -546,6 +550,8 @@ void RDLibraryModel::setFilterSql(const QString &sql,int cart_limit)
       d_sort_clauses.value(d_sort_order);
   }
   fsql+=", `CUTS`.`PLAY_ORDER` asc ";
+  d_filter_set=true;
+  printf("***** FILTER SQL SET *****\n");
 
   updateModel(fsql);
 }
@@ -553,6 +559,14 @@ void RDLibraryModel::setFilterSql(const QString &sql,int cart_limit)
 
 void RDLibraryModel::updateModel(const QString &filter_sql)
 {
+  if(!d_filter_set) {
+    return;
+  }
+  printf("%p - filter_sql: %s\n",this,filter_sql.toUtf8().constData());
+
+  RDTimeProbe *probe=new RDTimeProbe();
+  probe->printWaypoint("updateModel - 1");
+
   QString sql;
   RDSqlQuery *q=NULL;
 
@@ -568,6 +582,8 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   QList<QList<QVariant> > list_list;
   list_list.push_back(list);
 
+  probe->printWaypoint("updateModel - 2");
+
   //
   // Reload the color table
   //
@@ -582,6 +598,8 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   }
   delete q;
 
+  probe->printWaypoint("updateModel - 3");
+
   sql=sqlFields()+
     filter_sql;
   beginResetModel();
@@ -595,6 +613,10 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   d_icons.clear();
   unsigned prev_cartnum=0;
   int carts_loaded=0;
+
+  probe->printWaypoint("updateModel - 4");
+
+  //  printf("RDLibraryModel::updateModel() SQL: %s\n",sql.toUtf8().constData());
   q=new RDSqlQuery(sql);
   while(q->next()&&(carts_loaded<d_cart_limit)) {
     if(q->value(0).toUInt()!=prev_cartnum) {
@@ -610,10 +632,21 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
       prev_cartnum=q->value(0).toUInt();
       carts_loaded++;
     }
+    //    printf("carts_loaded: %d\n",carts_loaded);
   }
-  delete q;
+  delete q; 
+
+  probe->printWaypoint("updateModel - 5");
+
   endResetModel();
+
+  probe->printWaypoint("updateModel - 6");
+
   emit rowCountChanged(d_texts.size());
+
+  probe->printWaypoint("updateModel - 7");
+
+  delete probe;
 }
 
 

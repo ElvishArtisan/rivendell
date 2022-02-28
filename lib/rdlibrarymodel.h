@@ -106,6 +106,7 @@ class RDLibraryModel : public QAbstractItemModel
   QList<unsigned> d_cart_numbers;
   QList<RDCart::Type> d_cart_types;
   QMap<QString,QVariant> d_group_colors;
+  bool d_filter_set;
 };
 
 

@@ -88,10 +88,12 @@ class RDCartFilter : public RDWidget
 
  protected:
   void resizeEvent(QResizeEvent *e);
+  void showEvent(QShowEvent *e);
 
  private:
   void LoadUserGroups();
   void LoadServiceGroups();
+  void UpdateModel();
   RDLibraryModel *d_cart_model;
   RDGroupListModel *d_group_model;
   QLineEdit *d_filter_edit;
@@ -124,6 +126,9 @@ class RDCartFilter : public RDWidget
   QString d_default_group;
   bool d_user_is_admin;
   QString d_service;
+
+  QString d_model_filter_sql;
+  int d_model_cart_limit;
 };
 
 
