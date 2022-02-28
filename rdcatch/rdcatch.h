@@ -25,7 +25,9 @@
 #include <QComboBox>
 #include <QScrollArea>
 
+#include <rdcart_dialog.h>
 #include <rdcatch_connect.h>
+#include <rdcut_dialog.h>
 #include <rdmainwindow.h>
 #include <rdtableview.h>
 #include <rdtransportbutton.h>

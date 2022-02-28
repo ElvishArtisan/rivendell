@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Upload Event
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,26 +29,16 @@
 #include "edit_upload.h"
 #include "globals.h"
 
-EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
-		       QWidget *parent)
+EditUpload::EditUpload(QString *filter,QWidget *parent)
   : RDDialog(parent)
 {
   edit_deck=NULL;
-  edit_added_events=adds;
+  edit_recording=NULL;
+  edit_added_events=NULL;
   edit_filter=filter;
 
   setWindowTitle("RDCatch - "+tr("Edit Upload"));
 
-  //
-  // The Recording Record
-  //
-  edit_recording=new RDRecording(id);
-
-  //
-  // Dialogs
-  //
-  edit_cut_dialog=new RDCutDialog(edit_filter,&edit_group,&edit_schedcode,
-				  false,false,false,"RDCatch",false,this);
   //
   // Event Widget
   //
@@ -203,9 +193,6 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   event_saveas_button->setFont(buttonFont());
   event_saveas_button->setText(tr("Save As\nNew"));
   connect(event_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
-  if(adds==NULL) {
-    event_saveas_button->hide();
-  }
 
   //
   //  Ok Button
@@ -233,6 +220,7 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   //
   // Populate Data
   //
+  /*
   edit_event_widget->fromRecording(edit_recording->id());
   edit_description_edit->setText(edit_recording->description());
   edit_url_edit->setText(edit_recording->url());
@@ -263,6 +251,7 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   normalizeCheckData(edit_normalize_box->isChecked());
   edit_feed_box->setCurrentText(edit_recording->feedKeyName());
   feedChangedData(edit_feed_box->currentIndex());
+  */
 }
 
 
@@ -285,6 +274,55 @@ QSize EditUpload::sizeHint() const
 QSizePolicy EditUpload::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int EditUpload::exec(int id,std::vector<int> *adds)
+{
+  edit_added_events=adds;
+  if(edit_added_events==NULL) {
+    event_saveas_button->hide();
+  }
+  else {
+    event_saveas_button->show();
+  }
+  if(edit_recording!=NULL) {
+    delete edit_recording;
+  }
+  edit_recording=new RDRecording(id);
+
+  edit_event_widget->fromRecording(edit_recording->id());
+  edit_description_edit->setText(edit_recording->description());
+  edit_url_edit->setText(edit_recording->url());
+  edit_username_edit->setText(edit_recording->urlUsername());
+  edit_password_edit->setText(edit_recording->urlPassword());
+  edit_use_id_file_check->setChecked(edit_recording->urlUseIdFile());
+  edit_cutname=edit_recording->cutName();
+  if(!edit_recording->cutName().isEmpty()) {
+    edit_source_edit->setText("Cut "+edit_recording->cutName());
+  }
+  edit_metadata_box->setChecked(edit_recording->enableMetadata());
+  edit_dow_selector->fromRecording(edit_recording->id());
+  edit_eventoffset_spin->setValue(edit_recording->eventdateOffset());
+  edit_oneshot_box->setChecked(edit_recording->oneShot());
+  edit_settings.setFormat(edit_recording->format());
+  edit_settings.setChannels(edit_recording->channels());
+  edit_settings.setSampleRate(edit_recording->sampleRate());
+  edit_settings.setBitRate(edit_recording->bitrate());
+  edit_settings.setQuality(edit_recording->quality());
+  edit_format_edit->setText(edit_settings.description());
+  if(edit_recording->normalizationLevel()>0) {
+    edit_normalize_box->setChecked(false);
+  }
+  else {
+    edit_normalize_box->setChecked(true);
+    edit_normalize_spin->setValue(edit_recording->normalizationLevel()/100);
+  }
+  normalizeCheckData(edit_normalize_box->isChecked());
+  edit_feed_box->setCurrentText(edit_recording->feedKeyName());
+  feedChangedData(edit_feed_box->currentIndex());
+
+  return QDialog::exec();
 }
 
 
@@ -360,7 +398,7 @@ void EditUpload::selectCartData()
 {
   QString str;
 
-  if(edit_cut_dialog->exec(&edit_cutname)) {
+  if(catch_cut_dialog->exec(&edit_cutname)) {
     edit_description_edit->setText(RDCutPath(edit_cutname));
     str=QString(tr("Cut"));
     edit_source_edit->setText(tr("Cut")+" "+edit_cutname);

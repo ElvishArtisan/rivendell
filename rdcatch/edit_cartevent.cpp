@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Macro Cart Event
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,14 +28,14 @@
 #include "edit_cartevent.h"
 #include "globals.h"
 
-EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
+EditCartEvent::EditCartEvent(QWidget *parent)
   : RDDialog(parent)
 {
   QString temp;
-  int cartnum;
 
   edit_deck=NULL;
-  edit_added_events=adds;
+  edit_cart=NULL;
+  edit_recording=NULL;
 
   setWindowTitle("RDCatch - "+tr("Edit Cart Event"));
 
@@ -43,17 +43,6 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
-
-  //
-  // The Recording Record
-  //
-  edit_recording=new RDRecording(id);
-  if((cartnum=edit_recording->macroCart())>=0) {
-    edit_cart=new RDCart(cartnum);
-  }
-  else {
-    edit_cart=NULL;
-  }
 
   //
   // Event Widget
@@ -80,7 +69,8 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   edit_destination_button=new QPushButton(this);
   edit_destination_button->setFont(subLabelFont());
   edit_destination_button->setText(tr("Select"));
-  connect(edit_destination_button,SIGNAL(clicked()),this,SLOT(selectCartData()));
+  connect(edit_destination_button,SIGNAL(clicked()),
+	  this,SLOT(selectCartData()));
 
   //
   // DOW Selector
@@ -102,9 +92,6 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   edit_saveas_button->setFont(buttonFont());
   edit_saveas_button->setText(tr("Save As\nNew"));
   connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
-  if(adds==NULL) {
-    edit_saveas_button->hide();
-  }
 
   //
   //  Ok Button
@@ -128,18 +115,6 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   setMinimumSize(sizeHint());
   setMaximumSize(sizeHint());
-
-  //
-  // Populate Data
-  //
-  edit_event_widget->fromRecording(edit_recording->id());
-  edit_description_edit->setText(edit_recording->description());
-  if(edit_cart!=NULL) {
-    edit_destination_edit->
-      setText(QString::asprintf("%06d",edit_cart->number()));
-  }
-  edit_dow_selector->fromRecording(edit_recording->id());
-  edit_oneshot_box->setChecked(edit_recording->oneShot());
 }
 
 
@@ -157,6 +132,46 @@ QSize EditCartEvent::sizeHint() const
 {
   return QSize(edit_event_widget->sizeHint().width(),255);
 } 
+
+
+int EditCartEvent::exec(int id,std::vector<int> *adds)
+{
+  int cartnum;
+
+  edit_added_events=adds;
+
+  if(edit_recording!=NULL) {
+    delete edit_recording;
+  }
+  edit_recording=new RDRecording(id);
+  if(edit_cart!=NULL) {
+    delete edit_cart;
+  }
+  if((cartnum=edit_recording->macroCart())>=0) {
+    edit_cart=new RDCart(cartnum);
+  }
+  else {
+    edit_cart=NULL;
+  }
+
+  if(edit_added_events==NULL) {
+    edit_saveas_button->hide();
+  }
+  else {
+    edit_saveas_button->show();
+  }
+
+  edit_event_widget->fromRecording(edit_recording->id());
+  edit_description_edit->setText(edit_recording->description());
+  if(edit_cart!=NULL) {
+    edit_destination_edit->
+      setText(QString::asprintf("%06d",edit_cart->number()));
+  }
+  edit_dow_selector->fromRecording(edit_recording->id());
+  edit_oneshot_box->setChecked(edit_recording->oneShot());
+
+  return QDialog::exec();
+}
 
 
 QSizePolicy EditCartEvent::sizePolicy() const

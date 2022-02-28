@@ -2,7 +2,7 @@
 //
 // Add a Rivendell RDCatch Event
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,6 +27,7 @@
 #include "edit_switchevent.h"
 #include "edit_download.h"
 #include "edit_upload.h"
+#include "globals.h"
 
 extern RDStation *rdstation_conf;
 
@@ -154,13 +155,10 @@ int AddRecording::exec(RDRecording::Type *type,int rec_id)
 
 void AddRecording::recordingData()
 {
-  EditRecording *recording=new EditRecording(add_id,NULL,add_filter,this);
-  if(!recording->exec()) {
-    delete recording;
+  if(!catch_editrecording_dialog->exec(add_id,NULL)) {
     done(false);
     return;
   }
-  delete recording;
   *add_type=RDRecording::Recording;
   done(true);
 }
@@ -168,13 +166,10 @@ void AddRecording::recordingData()
 
 void AddRecording::playoutData()
 {
-  EditPlayout *playout=new EditPlayout(add_id,NULL,add_filter,this);
-  if(!playout->exec()) {
-    delete playout;
+  if(!catch_editplayout_dialog->exec(add_id,NULL)) {
     done(false);
     return;
   }
-  delete playout;
   *add_type=RDRecording::Playout;
   done(true);
 }
@@ -182,14 +177,10 @@ void AddRecording::playoutData()
 
 void AddRecording::downloadData()
 {
-  EditDownload *recording=
-    new EditDownload(add_id,NULL,add_filter,this);
-  if(!recording->exec()) {
-    delete recording;
+  if(!catch_editdownload_dialog->exec(add_id,NULL)) {
     done(false);
     return;
   }
-  delete recording;
   *add_type=RDRecording::Download;
   done(true);
 }
@@ -197,13 +188,10 @@ void AddRecording::downloadData()
 
 void AddRecording::uploadData()
 {
-  EditUpload *recording=new EditUpload(add_id,NULL,add_filter,this);
-  if(!recording->exec()) {
-    delete recording;
+  if(!catch_editupload_dialog->exec(add_id,NULL)) {
     done(false);
     return;
   }
-  delete recording;
   *add_type=RDRecording::Upload;
   done(true);
 }
@@ -211,13 +199,10 @@ void AddRecording::uploadData()
 
 void AddRecording::macroData()
 {
-  EditCartEvent *recording=new EditCartEvent(add_id,NULL,this);
-  if(!recording->exec()) {
-    delete recording;
+  if(!catch_editcartevent_dialog->exec(add_id,NULL)) {
     done(false);
     return;
   }
-  delete recording;
   *add_type=RDRecording::MacroEvent;
   done(true);
 }
@@ -225,13 +210,13 @@ void AddRecording::macroData()
 
 void AddRecording::switchData()
 {
-  EditSwitchEvent *recording=new EditSwitchEvent(add_id,NULL,this);
-  if(!recording->exec()) {
-    delete recording;
+  //  EditSwitchEvent *recording=new EditSwitchEvent(add_id,NULL,this);
+  if(!catch_editswitchevent_dialog->exec(add_id,NULL)) {
+    //    delete recording;
     done(false);
     return;
   }
-  delete recording;
+  //  delete recording;
   *add_type=RDRecording::SwitchEvent;
   done(true);
 }

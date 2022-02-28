@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Netcatch Cart Event
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,11 +27,13 @@
 
 #include "edit_switchevent.h"
 
-EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
+//EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
+EditSwitchEvent::EditSwitchEvent(QWidget *parent)
   : RDDialog(parent)
 {
   edit_matrix=NULL;
-  edit_added_events=adds;
+  edit_added_events=NULL;
+  edit_recording=NULL;
 
   edit_deck=NULL;
 
@@ -51,7 +53,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   // The Recording Record
   //
-  edit_recording=new RDRecording(id);
+  //  edit_recording=new RDRecording(id);
 
   //
   // Event Widget
@@ -121,9 +123,6 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   edit_saveas_button->setFont(buttonFont());
   edit_saveas_button->setText(tr("Save As\nNew"));
   connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
-  if(adds==NULL) {
-    edit_saveas_button->hide();
-  }
 
   //
   //  Ok Button
@@ -145,12 +144,13 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   // Populate Data
   //
+  /*
   edit_event_widget->fromRecording(edit_recording->id());
   edit_description_edit->setText(edit_recording->description());
   edit_dow_selector->fromRecording(edit_recording->id());
   edit_oneshot_box->setChecked(edit_recording->oneShot());
   activateStationData(edit_event_widget->stationName());
-
+  */
   //
   // Input/Output Spin Box Connections
   // (Placed here to avoid a QComboBox::changeItem error)
@@ -181,6 +181,31 @@ QSize EditSwitchEvent::sizeHint() const
 QSizePolicy EditSwitchEvent::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int EditSwitchEvent::exec(int id,std::vector<int> *adds)
+{
+  if(edit_recording!=NULL) {
+    delete edit_recording;
+  }
+  edit_added_events=adds;
+  if(edit_added_events==NULL) {
+    edit_saveas_button->hide();
+  }
+  else {
+    edit_saveas_button->show();
+  }
+
+  edit_recording=new RDRecording(id);
+
+  edit_event_widget->fromRecording(edit_recording->id());
+  edit_description_edit->setText(edit_recording->description());
+  edit_dow_selector->fromRecording(edit_recording->id());
+  edit_oneshot_box->setChecked(edit_recording->oneShot());
+  activateStationData(edit_event_widget->stationName());
+
+  return QDialog::exec();
 }
 
 

@@ -24,11 +24,25 @@
 #include <rdaudio_port.h>
 #include <rdcart_dialog.h>
 
+#include "edit_cartevent.h"
+#include "edit_download.h"
+#include "edit_playout.h"
+#include "edit_recording.h"
+#include "edit_switchevent.h"
+#include "edit_upload.h"
+
 //
 // Global Resources
 //
 extern RDAudioPort *rdaudioport_conf;
 extern RDCartDialog *catch_cart_dialog;
+extern RDCutDialog *catch_cut_dialog;
+extern EditCartEvent *catch_editcartevent_dialog;
+extern EditDownload *catch_editdownload_dialog;
+extern EditPlayout *catch_editplayout_dialog;
+extern EditRecording *catch_editrecording_dialog;
+extern EditSwitchEvent *catch_editswitchevent_dialog;
+extern EditUpload *catch_editupload_dialog;
 extern int catch_audition_card;
 extern int catch_audition_port;
 

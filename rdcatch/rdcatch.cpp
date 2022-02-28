@@ -2,7 +2,7 @@
 //
 // The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,14 +33,8 @@
 #include "add_recording.h"
 #include "colors.h"
 #include "deckmon.h"
-#include "edit_cartevent.h"
-#include "edit_download.h"
-#include "edit_playout.h"
-#include "edit_recording.h"
 #include "globals.h"
 #include "list_reports.h"
-#include "edit_switchevent.h"
-#include "edit_upload.h"
 #include "rdcatch.h"
 
 //
@@ -48,6 +42,13 @@
 //
 RDAudioPort *rdaudioport_conf;
 RDCartDialog *catch_cart_dialog;
+RDCutDialog *catch_cut_dialog;
+EditCartEvent *catch_editcartevent_dialog;
+EditDownload *catch_editdownload_dialog;
+EditPlayout *catch_editplayout_dialog;
+EditRecording *catch_editrecording_dialog;
+EditSwitchEvent *catch_editswitchevent_dialog;
+EditUpload *catch_editupload_dialog;
 int catch_audition_card=-1;
 int catch_audition_port=-1;
 
@@ -261,6 +262,22 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   }
 
   //
+  // Dialogs
+  //
+  catch_cart_dialog=
+    new RDCartDialog(&catch_filter,&catch_group,&catch_schedcode,"RDCatch",
+		     true,this);
+  catch_cut_dialog=
+    new RDCutDialog(&catch_filter,&catch_group,&catch_schedcode,
+		    false,true,false,"RDCatch",true,this);
+  catch_editcartevent_dialog=new EditCartEvent(this);
+  catch_editdownload_dialog=new EditDownload(&catch_filter,this);
+  catch_editplayout_dialog=new EditPlayout(&catch_filter,this);
+  catch_editrecording_dialog=new EditRecording(&catch_filter,this);
+  catch_editswitchevent_dialog=new EditSwitchEvent(this);
+  catch_editupload_dialog=new EditUpload(&catch_filter,this);
+
+  //
   // Filter Selectors
   //
   catch_show_active_box=new QCheckBox(this);
@@ -303,12 +320,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   }
   catch_type_box->insertItem(catch_type_box->count(),tr("All Types"));
   catch_type_box->setCurrentIndex(catch_type_box->count()-1);
-
-  //
-  // Cart Picker
-  //
-  catch_cart_dialog=new RDCartDialog(&catch_filter,&catch_group,
-  				     &catch_schedcode,"RDCatch",false,this);
 
   //
   // Cart List
@@ -566,12 +577,6 @@ void MainWidget::addData()
 void MainWidget::editData()
 {
   std::vector<int> new_events;
-  EditRecording *recording;
-  EditPlayout *playout;
-  EditCartEvent *event;
-  EditSwitchEvent *switch_event;
-  EditDownload *download;
-  EditUpload *upload;
   bool updated=false;
   QModelIndexList rows=catch_recordings_view->selectionModel()->selectedRows();
 
@@ -599,39 +604,27 @@ void MainWidget::editData()
   int id=catch_recordings_model->recordId(rows.first());
   switch(catch_recordings_model->recordType(rows.first())) {
   case RDRecording::Recording:
-    recording=new EditRecording(id,&new_events,&catch_filter,this);
-    updated=recording->exec();
-    delete recording;
+    updated=catch_editrecording_dialog->exec(id,&new_events);
     break;
 
   case RDRecording::Playout:
-    playout=new EditPlayout(id,&new_events,&catch_filter,this);
-    updated=playout->exec();
-    delete playout;
+    updated=catch_editplayout_dialog->exec(id,&new_events);
     break;
 
   case RDRecording::MacroEvent:
-    event=new EditCartEvent(id,&new_events,this);
-    updated=event->exec();
-    delete event;
+    updated=catch_editcartevent_dialog->exec(id,&new_events);
     break;
 
   case RDRecording::SwitchEvent:
-    switch_event=new EditSwitchEvent(id,&new_events,this);
-    updated=switch_event->exec();
-    delete switch_event;
+    updated=catch_editswitchevent_dialog->exec(id,&new_events);
     break;
 
   case RDRecording::Download:
-    download=new EditDownload(id,&new_events,&catch_filter,this);
-    updated=download->exec();
-    delete download;
+    updated=catch_editdownload_dialog->exec(id,&new_events);
     break;
 
   case RDRecording::Upload:
-    upload=new EditUpload(id,&new_events,&catch_filter,this);
-    updated=upload->exec();
-    delete upload;
+    updated=catch_editupload_dialog->exec(id,&new_events);
     break;
 
   case RDRecording::LastType:

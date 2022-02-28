@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Download Event
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,14 +29,14 @@
 #include "edit_download.h"
 #include "globals.h"
 
-EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
-			   QWidget *parent)
+EditDownload::EditDownload(QString *filter,QWidget *parent)
   : RDDialog(parent)
 {
   QString temp;
 
   edit_deck=NULL;
-  edit_added_events=adds;
+  edit_recording=NULL;
+  edit_added_events=NULL;
   edit_filter=filter;
 
   setWindowTitle("RDCatch - "+tr("Edit Download"));
@@ -47,15 +47,10 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   RDTextValidator *validator=new RDTextValidator(this,"validator");
 
   //
-  // The Recording Record
-  //
-  edit_recording=new RDRecording(record_id);
-
-  //
   // Dialogs
   //
-  edit_cut_dialog=new RDCutDialog(edit_filter,&edit_group,&edit_schedcode,
-				  false,true,true,"RDCatch",false,this);
+  //  edit_cut_dialog=new RDCutDialog(edit_filter,&edit_group,&edit_schedcode,
+  //				  false,true,true,"RDCatch",false,this);
 
   //
   // Event Widget
@@ -203,9 +198,6 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   edit_saveas_button->setFont(buttonFont());
   edit_saveas_button->setText(tr("Save As\nNew"));
   connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
-  if(adds==NULL) {
-    edit_saveas_button->hide();
-  }
 
   //
   //  Ok Button
@@ -229,10 +221,44 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   //
   setMinimumSize(sizeHint());
   setMaximumSize(sizeHint());
+}
 
-  //
-  // Populate Data
-  //
+
+EditDownload::~EditDownload()
+{
+  delete edit_event_widget;
+  if(edit_deck!=NULL) {
+    delete edit_deck;
+  }
+}
+
+
+QSize EditDownload::sizeHint() const
+{
+  return QSize(edit_event_widget->sizeHint().width(),432);
+} 
+
+
+QSizePolicy EditDownload::sizePolicy() const
+{
+  return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int EditDownload::exec(int record_id,std::vector<int> *adds)
+{
+  edit_added_events=adds;
+  if(edit_added_events==NULL) {
+    edit_saveas_button->hide();
+  }
+  else {
+    edit_saveas_button->show();
+  }
+  if(edit_recording!=NULL) {
+    delete edit_recording;
+  }
+  edit_recording=new RDRecording(record_id);
+
   edit_event_widget->fromRecording(edit_recording->id());
   edit_description_edit->setText(edit_recording->description());
   edit_url_edit->setText(edit_recording->url());
@@ -263,27 +289,8 @@ EditDownload::EditDownload(int record_id,std::vector<int> *adds,QString *filter,
   edit_dow_selector->fromRecording(edit_recording->id());
   edit_eventoffset_spin->setValue(edit_recording->eventdateOffset());
   edit_oneshot_box->setChecked(edit_recording->oneShot());
-}
 
-
-EditDownload::~EditDownload()
-{
-  delete edit_event_widget;
-  if(edit_deck!=NULL) {
-    delete edit_deck;
-  }
-}
-
-
-QSize EditDownload::sizeHint() const
-{
-  return QSize(edit_event_widget->sizeHint().width(),432);
-} 
-
-
-QSizePolicy EditDownload::sizePolicy() const
-{
-  return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+  return QDialog::exec();
 }
 
 
@@ -309,7 +316,7 @@ void EditDownload::urlChangedData(const QString &str)
 
 void EditDownload::selectCartData()
 {
-  if(edit_cut_dialog->exec(&edit_cutname)) {
+  if(catch_cut_dialog->exec(&edit_cutname)) {
     edit_description_edit->setText(RDCutPath(edit_cutname));
     edit_destination_edit->setText(tr("Cut")+" "+edit_cutname);
   }

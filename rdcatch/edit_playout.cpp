@@ -26,14 +26,15 @@
 #include "edit_playout.h"
 #include "globals.h"
 
-EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
-			 QWidget *parent)
+//EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
+EditPlayout::EditPlayout(QString *filter,QWidget *parent)
   : RDDialog(parent)
 {
   QString temp;
 
   edit_deck=NULL;
-  edit_added_events=adds;
+  edit_added_events=NULL;
+  edit_recording=NULL;
   edit_filter=filter;
 
   setWindowTitle("RDCatch - "+tr("Edit Playout"));
@@ -52,7 +53,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   //
   // The Recording Record
   //
-  edit_recording=new RDRecording(id);
+  //  edit_recording=NULL;
 
   //
   // Dialogs
@@ -109,9 +110,11 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   edit_saveas_button->setFont(buttonFont());
   edit_saveas_button->setText(tr("Save As\nNew"));
   connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
+  /*
   if(adds==NULL) {
     edit_saveas_button->hide();
   }
+  */
 
   //
   //  Ok Button
@@ -133,6 +136,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   //
   // Populate Data
   //
+  /*
   edit_event_widget->fromRecording(edit_recording->id());
   edit_description_edit->setText(edit_recording->description());
   edit_cutname=edit_recording->cutName();
@@ -141,6 +145,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   edit_oneshot_box->setChecked(edit_recording->oneShot());
   locationChangedData(edit_event_widget->stationName(),
 		      edit_event_widget->deckNumber());
+  */
 }
 
 
@@ -164,6 +169,33 @@ QSize EditPlayout::sizeHint() const
 QSizePolicy EditPlayout::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int EditPlayout::exec(int id,std::vector<int> *adds)
+{
+  edit_added_events=adds;
+  if(edit_added_events==NULL) {
+    edit_saveas_button->hide();
+  }
+  else {
+    edit_saveas_button->show();
+  }
+  if(edit_recording!=NULL) {
+    delete edit_recording;
+  }
+  edit_recording=new RDRecording(id);
+
+  edit_event_widget->fromRecording(edit_recording->id());
+  edit_description_edit->setText(edit_recording->description());
+  edit_cutname=edit_recording->cutName();
+  edit_destination_edit->setText(RDCutPath(edit_cutname));
+  edit_dow_selector->fromRecording(edit_recording->id());
+  edit_oneshot_box->setChecked(edit_recording->oneShot());
+  locationChangedData(edit_event_widget->stationName(),
+		      edit_event_widget->deckNumber());
+
+  return QDialog::exec();
 }
 
 

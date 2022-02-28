@@ -38,10 +38,13 @@ class EditPlayout : public RDDialog
 {
  Q_OBJECT
  public:
-  EditPlayout(int id,std::vector<int> *adds,QString *filter,QWidget *parent=0);
+  EditPlayout(QString *filter,QWidget *parent=0);
   ~EditPlayout();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+
+ public slots:
+  int exec(int id,std::vector<int> *adds);
 
  private slots:
   void locationChangedData(const QString &station,int decknum);

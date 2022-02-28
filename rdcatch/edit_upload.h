@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Upload Event
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,11 +40,14 @@ class EditUpload : public RDDialog
 {
  Q_OBJECT
  public:
- EditUpload(int id,std::vector<int> *adds,QString *filter,QWidget *parent=0);
+  EditUpload(QString *filter,QWidget *parent=0);
   ~EditUpload();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
+
+ public slots:
+  int exec(int id,std::vector<int> *adds);
+
  private slots:
   void stationChangedData(const QString &str);
   void feedChangedData(int index);
@@ -66,7 +69,6 @@ class EditUpload : public RDDialog
   bool CheckEvent(bool include_myself);
   bool CheckFormat();
   RDDeck *edit_deck;
-  RDCutDialog *edit_cut_dialog;
   RDRecording *edit_recording;
   RDSettings edit_settings;
   EventWidget *edit_event_widget;

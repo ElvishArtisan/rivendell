@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Netcatch Cart Event
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,11 +39,14 @@ class EditSwitchEvent : public RDDialog
 {
  Q_OBJECT
  public:
- EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent=0);
+ EditSwitchEvent(QWidget *parent=0);
  ~EditSwitchEvent();
  QSize sizeHint() const;
  QSizePolicy sizePolicy() const;
- 
+
+ public slots:
+  int exec(int id,std::vector<int> *adds);
+
  private slots:
   void activateStationData(const QString &str);
   void activateMatrixData(const QString &str);

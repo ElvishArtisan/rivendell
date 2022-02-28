@@ -41,12 +41,14 @@ class EditRecording : public RDDialog
 {
  Q_OBJECT
  public:
-  EditRecording(int id,std::vector<int> *adds,QString *filter,
-		QWidget *parent=0);
+  EditRecording(QString *filter,QWidget *parent=0);
   ~EditRecording();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
+
+ public slots:  
+  int exec(int id,std::vector<int> *adds);
+
  private slots:
   void locationChangedData(const QString &station,int decknum);
   void startTypeClickedData(int id);
@@ -69,7 +71,7 @@ class EditRecording : public RDDialog
   QString GetSourceName(int input);
   int GetSource();
   RDDeck *edit_deck;
-  RDCutDialog *edit_cut_dialog;
+  //  RDCutDialog *edit_cut_dialog;
   RDRecording *edit_recording;
   EventWidget *edit_event_widget;
   QGroupBox *edit_start_groupbox;
