@@ -22900,3 +22900,5 @@
 	* Updated 'RDCutDialog' to eliminate superfluous SQL filter updates.
 	* Updated rdlibrary(1) to eliminate superfluous SQL filter updates.
 	* Updated rdlogedit(1) to eliminate superfluous SQL filter updates.
+2022-02-28 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging printf()s from rdlogedit(1).

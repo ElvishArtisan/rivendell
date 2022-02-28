@@ -677,7 +677,6 @@ void EditLog::insertCartButtonData()
   edit_log_model->logLine(line)->setTransType(edit_default_trans);
   edit_log_model->logLine(line)->setFadeupGain(-3000);
   edit_log_model->logLine(line)->setFadedownGain(-3000);
-  printf("CARTNUM: %06u\n",edit_log_model->logLine(line)->cartNumber());
   int ret=edit_logline_dialog->
     exec(edit_service_box->currentText(),edit_log_model,
 	 edit_log_model->logLine(line),line);
