@@ -851,7 +851,7 @@ void EditStation::startCartClickedData()
 {
   int cartnum=station_start_cart_edit->text().toUInt();
 
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)) {
     station_start_cart_edit->setText(QString::asprintf("%06d",cartnum));
   }
 }
@@ -861,7 +861,7 @@ void EditStation::stopCartClickedData()
 {
   int cartnum=station_stop_cart_edit->text().toUInt();
 
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)) {
     station_stop_cart_edit->setText(QString::asprintf("%06d",cartnum));
   }
 }
