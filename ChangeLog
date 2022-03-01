@@ -22904,3 +22904,6 @@
 	* Removed debugging printf()s from rdlogedit(1).
 2022-02-28 Fred Gleason <fredg@paravelsystems.com>
 	* Updated rdcatch(1) to eliminate superfluous SQL filter updates.
+2022-03-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added a RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING #define switch
+	to 'RDLibraryModel'.

@@ -2,7 +2,7 @@
 //
 // Data model for the Rivendell cart library
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,6 +23,11 @@
 #include "rdescape_string.h"
 #include "rdlibrarymodel.h"
 #include "rdtimeprobe.h"
+
+//
+// Uncomment this to enable model update profiling
+//
+// #define RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
 
 RDLibraryModel::RDLibraryModel(QObject *parent)
   : QAbstractItemModel(parent)
@@ -551,7 +556,6 @@ void RDLibraryModel::setFilterSql(const QString &sql,int cart_limit)
   }
   fsql+=", `CUTS`.`PLAY_ORDER` asc ";
   d_filter_set=true;
-  printf("***** FILTER SQL SET *****\n");
 
   updateModel(fsql);
 }
@@ -562,10 +566,11 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   if(!d_filter_set) {
     return;
   }
+#ifdef RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
   printf("%p - filter_sql: %s\n",this,filter_sql.toUtf8().constData());
-
   RDTimeProbe *probe=new RDTimeProbe();
   probe->printWaypoint("updateModel - 1");
+#endif  // RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
 
   QString sql;
   RDSqlQuery *q=NULL;
@@ -582,7 +587,9 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   QList<QList<QVariant> > list_list;
   list_list.push_back(list);
 
+#ifdef RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
   probe->printWaypoint("updateModel - 2");
+#endif  // RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
 
   //
   // Reload the color table
@@ -598,7 +605,9 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   }
   delete q;
 
+#ifdef RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
   probe->printWaypoint("updateModel - 3");
+#endif  // RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
 
   sql=sqlFields()+
     filter_sql;
@@ -614,7 +623,9 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   unsigned prev_cartnum=0;
   int carts_loaded=0;
 
+#ifdef RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
   probe->printWaypoint("updateModel - 4");
+#endif  // RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
 
   //  printf("RDLibraryModel::updateModel() SQL: %s\n",sql.toUtf8().constData());
   q=new RDSqlQuery(sql);
@@ -636,17 +647,22 @@ void RDLibraryModel::updateModel(const QString &filter_sql)
   }
   delete q; 
 
+#ifdef RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
   probe->printWaypoint("updateModel - 5");
+#endif  // RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
 
   endResetModel();
 
+#ifdef RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
   probe->printWaypoint("updateModel - 6");
+#endif  // RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
 
   emit rowCountChanged(d_texts.size());
 
+#ifdef RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
   probe->printWaypoint("updateModel - 7");
-
   delete probe;
+#endif  // RDLIBRARYMODEL_ENABLE_UPDATE_PROFILING
 }
 
 
