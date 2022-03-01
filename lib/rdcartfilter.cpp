@@ -231,7 +231,7 @@ QString RDCartFilter::filterSql(const QStringList &and_fields) const
   // Group Filter
   //
   QStringList groups;
-  for(int i=1;i<d_group_box->count();i++) {
+  for(int i=0;i<d_group_box->count();i++) {
     groups.push_back(d_group_box->itemText(i));
   }
   if(groups.size()==0) {  // No groups selected, so force an empty selection

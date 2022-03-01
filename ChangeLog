@@ -22913,3 +22913,7 @@
 	'Stop Cart' fields if the cart picker dialog was canceled.
 2022-03-01 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted element layout in the 'Edit Host' dialog in rdadmin(1).
+2022-03-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the cart filter that caused the
+	first-occurring group name to be omitted when filtering for 'ALL'
+	groups.
