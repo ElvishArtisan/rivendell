@@ -915,10 +915,10 @@ void EditStation::resizeEvent(QResizeEvent *e)
   station_stop_cart_label->setGeometry(205,264,80,20);
   station_stop_cart_button->setGeometry(355,263,50,22);
 
-  station_heartbeat_box->setGeometry(10,290,15,15);
+  station_heartbeat_box->setGeometry(10,287,15,15);
   station_heartbeat_label->setGeometry(30,285,150,20);
 
-  station_filter_box->setGeometry(210,290,15,15);
+  station_filter_box->setGeometry(210,287,15,15);
   station_filter_label->setGeometry(230,285,150,20);
 
   station_hbcart_edit->setGeometry(65,310,60,19);
@@ -926,17 +926,17 @@ void EditStation::resizeEvent(QResizeEvent *e)
   station_hbcart_button->setGeometry(140,307,60,26);
 
   station_hbinterval_spin->setGeometry(275,310,45,19);
-  station_hbinterval_label->setGeometry(220,310,50,19);
+  station_hbinterval_label->setGeometry(200,310,70,19);
   station_hbinterval_unit->setGeometry(325,310,100,19);
 
   station_maint_box->setGeometry(10,335,15,15);
   station_maint_label->setGeometry(30,333,size().width()-40,20);
 
   station_dragdrop_box->setGeometry(10,356,15,15);
-  station_dragdrop_label->setGeometry(30,353,size().width()-40,20);
+  station_dragdrop_label->setGeometry(30,354,size().width()-40,20);
 
-  station_panel_enforce_box->setGeometry(25,374,15,15);
-  station_panel_enforce_label->setGeometry(45,374,size().width()-55,20);
+  station_panel_enforce_box->setGeometry(25,375,15,15);
+  station_panel_enforce_label->setGeometry(45,374-1,size().width()-55,20);
 
   station_systemservices_groupbox->setGeometry(10,395,size().width()-20,68);
 
