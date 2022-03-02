@@ -169,6 +169,10 @@ RealtimePriority=9
 ; when transcoding files.
 TranscodingDelay=0
 
+; Directory to use for temporary files. If left undefined, the value of
+; the $TMPDIR environmental variable will be used. If $TMPDIR is not defined,
+; then '/tmp' will be used.
+;TempDirectory=/tmp
 
 [Hacks]
 ; Completely disable maintenance checks on this host.

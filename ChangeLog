@@ -22917,3 +22917,5 @@
 	* Fixed a regression in the cart filter that caused the
 	first-occurring group name to be omitted when filtering for 'ALL'
 	groups.
+2022-03-02 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the 'TempDirectory=' directive in 'conf/rd.conf-sample'.
