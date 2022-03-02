@@ -22924,3 +22924,6 @@
 2022-03-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the log filter widget that caused entries in the
 	'Services' dropdown be listed in non-alphabetical order.
+2022-03-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDLogFilter' that caused a SQL error to be
+	generated filtering for 'recent' logs.

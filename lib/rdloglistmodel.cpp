@@ -246,8 +246,8 @@ void RDLogListModel::updateModel(const QString &filter_sql)
     "where "+
     "(`TYPE`=0)&&"+        
     "(`LOG_EXISTS`='Y') "+
-    filter_sql+
-    "order by `NAME` ";
+    filter_sql;
+    //    "order by `NAME` ";
   beginResetModel();
   d_texts.clear();
   d_icons.clear();
