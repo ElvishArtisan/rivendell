@@ -22921,3 +22921,6 @@
 	* Documented the 'TempDirectory=' directive in 'conf/rd.conf-sample'.
 2022-03-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that broke play-out events.
+2022-03-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the log filter widget that caused entries in the
+	'Services' dropdown be listed in non-alphabetical order.

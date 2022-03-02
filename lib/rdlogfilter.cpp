@@ -2,7 +2,7 @@
 //
 // Filter widget for picking Rivendell logs.
 //
-//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -62,7 +62,8 @@ RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,QWidget *parent)
   case RDLogFilter::StationFilter:
     filter_service_box->insertItem(filter_service_box->count(),tr("ALL"));
     sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
-      "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
+      "STATION_NAME='"+RDEscapeString(rda->config()->stationName())+"' "+
+      "order by `SERVICE_NAME`";
     q=new RDSqlQuery(sql);
     while(q->next()) {
       filter_service_box->
@@ -163,7 +164,8 @@ void RDLogFilter::changeUser()
     filter_service_box->clear();
     filter_service_box->insertItem(filter_service_box->count(),tr("ALL"));
     QString sql=QString("select `SERVICE_NAME` from `USER_SERVICE_PERMS` where ")+
-      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"'";
+      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"' "+
+      "order by `SERVICE_NAME`";
     RDSqlQuery *q=new RDSqlQuery(sql);
     while(q->next()) {
       filter_service_box->
