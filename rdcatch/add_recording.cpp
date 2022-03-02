@@ -20,6 +20,8 @@
 
 #include <QKeyEvent>
 
+#include <rdescape_string.h>
+
 #include "add_recording.h"
 #include "edit_recording.h"
 #include "edit_playout.h"
@@ -34,7 +36,7 @@ extern RDStation *rdstation_conf;
 AddRecording::AddRecording(QString *filter,QWidget *parent)
   : RDDialog(parent)
 {
-  add_id=-1;
+  add_record_id=NULL;
   add_filter=filter;
 
   setWindowTitle("RDCatch");
@@ -144,9 +146,9 @@ QSizePolicy AddRecording::sizePolicy() const
 }
 
 
-int AddRecording::exec(RDRecording::Type *type,int rec_id)
+int AddRecording::exec(unsigned *rec_id,RDRecording::Type *type)
 {
-  add_id=rec_id;
+  add_record_id=rec_id;
   add_type=type;
 
   return QDialog::exec();
@@ -155,7 +157,10 @@ int AddRecording::exec(RDRecording::Type *type,int rec_id)
 
 void AddRecording::recordingData()
 {
-  if(!catch_editrecording_dialog->exec(add_id,NULL)) {
+  *add_record_id=AddRecord(0);
+
+  if(!catch_editrecording_dialog->exec(*add_record_id,NULL)) {
+    DeleteRecord();
     done(false);
     return;
   }
@@ -166,7 +171,10 @@ void AddRecording::recordingData()
 
 void AddRecording::playoutData()
 {
-  if(!catch_editplayout_dialog->exec(add_id,NULL)) {
+  *add_record_id=AddRecord(128);
+
+  if(!catch_editplayout_dialog->exec(*add_record_id,NULL)) {
+    DeleteRecord();
     done(false);
     return;
   }
@@ -177,7 +185,10 @@ void AddRecording::playoutData()
 
 void AddRecording::downloadData()
 {
-  if(!catch_editdownload_dialog->exec(add_id,NULL)) {
+  *add_record_id=AddRecord(0);
+
+  if(!catch_editdownload_dialog->exec(*add_record_id,NULL)) {
+    DeleteRecord();
     done(false);
     return;
   }
@@ -188,7 +199,10 @@ void AddRecording::downloadData()
 
 void AddRecording::uploadData()
 {
-  if(!catch_editupload_dialog->exec(add_id,NULL)) {
+  *add_record_id=AddRecord(0);
+
+  if(!catch_editupload_dialog->exec(*add_record_id,NULL)) {
+    DeleteRecord();
     done(false);
     return;
   }
@@ -199,7 +213,10 @@ void AddRecording::uploadData()
 
 void AddRecording::macroData()
 {
-  if(!catch_editcartevent_dialog->exec(add_id,NULL)) {
+  *add_record_id=AddRecord(0);
+
+  if(!catch_editcartevent_dialog->exec(*add_record_id,NULL)) {
+    DeleteRecord();
     done(false);
     return;
   }
@@ -210,13 +227,13 @@ void AddRecording::macroData()
 
 void AddRecording::switchData()
 {
-  //  EditSwitchEvent *recording=new EditSwitchEvent(add_id,NULL,this);
-  if(!catch_editswitchevent_dialog->exec(add_id,NULL)) {
-    //    delete recording;
+  *add_record_id=AddRecord(0);
+
+  if(!catch_editswitchevent_dialog->exec(*add_record_id,NULL)) {
+    DeleteRecord();
     done(false);
     return;
   }
-  //  delete recording;
   *add_type=RDRecording::SwitchEvent;
   done(true);
 }
@@ -260,4 +277,26 @@ void AddRecording::keyPressEvent(QKeyEvent *e)
 void AddRecording::closeEvent(QCloseEvent *e)
 {
   cancelData();
+}
+
+
+unsigned AddRecording::AddRecord(unsigned chan) const
+{
+  QString sql;
+
+  sql=QString("insert into `RECORDINGS` set ")+
+    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
+    QString::asprintf("`CHANNEL`=%u,",chan)+
+    "`CUT_NAME`=''";
+  return RDSqlQuery::run(sql).toUInt();
+}
+
+
+void AddRecording::DeleteRecord()
+{
+  QString sql=QString("delete from `RECORDINGS` where ")+
+    QString::asprintf("`ID`=%u",*add_record_id);
+  RDSqlQuery::apply(sql);
+  *add_record_id=0;
+  add_record_id=NULL;
 }

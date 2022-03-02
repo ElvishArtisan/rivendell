@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Playout
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,7 +26,6 @@
 #include "edit_playout.h"
 #include "globals.h"
 
-//EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
 EditPlayout::EditPlayout(QString *filter,QWidget *parent)
   : RDDialog(parent)
 {
@@ -49,11 +48,6 @@ EditPlayout::EditPlayout(QString *filter,QWidget *parent)
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
-
-  //
-  // The Recording Record
-  //
-  //  edit_recording=NULL;
 
   //
   // Dialogs
@@ -110,11 +104,6 @@ EditPlayout::EditPlayout(QString *filter,QWidget *parent)
   edit_saveas_button->setFont(buttonFont());
   edit_saveas_button->setText(tr("Save As\nNew"));
   connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
-  /*
-  if(adds==NULL) {
-    edit_saveas_button->hide();
-  }
-  */
 
   //
   //  Ok Button
@@ -132,20 +121,6 @@ EditPlayout::EditPlayout(QString *filter,QWidget *parent)
   edit_cancel_button->setFont(buttonFont());
   edit_cancel_button->setText(tr("Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  //
-  // Populate Data
-  //
-  /*
-  edit_event_widget->fromRecording(edit_recording->id());
-  edit_description_edit->setText(edit_recording->description());
-  edit_cutname=edit_recording->cutName();
-  edit_destination_edit->setText(RDCutPath(edit_cutname));
-  edit_dow_selector->fromRecording(edit_recording->id());
-  edit_oneshot_box->setChecked(edit_recording->oneShot());
-  locationChangedData(edit_event_widget->stationName(),
-		      edit_event_widget->deckNumber());
-  */
 }
 
 

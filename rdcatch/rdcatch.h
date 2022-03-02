@@ -2,7 +2,7 @@
 //
 // The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,6 +33,7 @@
 #include <rdtransportbutton.h>
 #include <rdwidget.h>
 
+#include "add_recording.h"
 #include "catch_monitor.h"
 #include "catchtableview.h"
 #include "deckmon.h"
@@ -112,7 +113,6 @@ class MainWidget : public RDMainWindow
 
  private:
   int ShowNextEvents(int day,QTime time,QTime *next);
-  unsigned AddRecord();
   void ProcessNewRecords(std::vector<int> *adds);
   void EnableScroll(bool state);
   void UpdateScroll();
@@ -160,6 +160,7 @@ class MainWidget : public RDMainWindow
   int catch_time_offset;
   bool catch_host_warnings;
   bool catch_resize;
+  AddRecording *catch_add_recording_dialog;
 };
 
 

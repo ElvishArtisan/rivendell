@@ -276,6 +276,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   catch_editrecording_dialog=new EditRecording(&catch_filter,this);
   catch_editswitchevent_dialog=new EditSwitchEvent(this);
   catch_editupload_dialog=new EditUpload(&catch_filter,this);
+  catch_add_recording_dialog=new AddRecording(&catch_filter,this);
 
   //
   // Filter Selectors
@@ -537,7 +538,6 @@ void MainWidget::nextEventData()
 
 void MainWidget::addData()
 {
-  RDSqlQuery *q;
   int conn;
   RDNotification *notify=NULL;
   QModelIndex row;
@@ -547,9 +547,8 @@ void MainWidget::addData()
     return;
   }
   EnableScroll(false);
-  unsigned rec_id=AddRecord();
-  AddRecording *recording=new AddRecording(&catch_filter,this);
-  if(recording->exec(&type,rec_id)) {
+  unsigned rec_id=0;
+  if(catch_add_recording_dialog->exec(&rec_id,&type)) {
     notify=new RDNotification(RDNotification::CatchEventType,
 			      RDNotification::AddAction,rec_id);
     rda->ripc()->sendNotification(*notify);
@@ -565,12 +564,6 @@ void MainWidget::addData()
     }
     nextEventData();
   }
-  else {
-    q=new RDSqlQuery(QString().
-		     sprintf("delete from RECORDINGS where ID=%d",rec_id));
-    delete q;
-  }
-  delete recording;
 }
 
 
@@ -1216,18 +1209,6 @@ int MainWidget::ShowNextEvents(int day,QTime time,QTime *next)
   }
   delete q;
   return count;
-}
-
-
-unsigned MainWidget::AddRecord()
-{
-  QString sql;
-
-  sql=QString("insert into `RECORDINGS` set ")+
-    "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
-    "`CHANNEL`=0,"+
-    "`CUT_NAME`=''";
-  return RDSqlQuery::run(sql).toUInt();
 }
 
 

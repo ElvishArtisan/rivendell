@@ -2,7 +2,7 @@
 //
 // Add a Rivendell RDCatch Event
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,7 +33,7 @@ class AddRecording : public RDDialog
   QSizePolicy sizePolicy() const;
 
  public slots:
-  int exec(RDRecording::Type *type,int rec_id);
+  int exec(unsigned *rec_id,RDRecording::Type *type);
 
  private slots:
   void recordingData();
@@ -50,7 +50,9 @@ class AddRecording : public RDDialog
   void closeEvent(QCloseEvent *e);
   
  private: 
-  int add_id;
+  unsigned AddRecord(unsigned chan) const;
+  void DeleteRecord();
+  unsigned *add_record_id;
   RDRecording::Type *add_type;
   QString *add_filter;
   QLabel *add_title_label;

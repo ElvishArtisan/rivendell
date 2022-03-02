@@ -2,7 +2,7 @@
 //
 // Widget for setting basic event parameters in rdcatch(1)
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -222,12 +222,15 @@ void EventWidget::fromRecording(unsigned record_id)
       break;
 
     case EventWidget::PlayEvent:
+      d_current_deck_number=q->value(2).toUInt()-128;
+      if(d_current_deck_number<=0) {
+	d_current_deck_number=1;
+      }
       d_time_edit->setTime(q->value(3).toTime());
       d_location_box->
 	setCurrentText(q->value(1).toString()+
 		       QString::asprintf(" : %uP",q->value(2).toUInt()-128));
       d_current_station_name=q->value(1).toString();
-      d_current_deck_number=q->value(2).toUInt()-128;
       break;
 
     case EventWidget::OtherEvent:
@@ -239,6 +242,7 @@ void EventWidget::fromRecording(unsigned record_id)
     }
   }
   delete q;
+  locationActivatedData(d_location_box->currentText());
 }
 
 

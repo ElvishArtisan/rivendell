@@ -22919,3 +22919,5 @@
 	groups.
 2022-03-02 Fred Gleason <fredg@paravelsystems.com>
 	* Documented the 'TempDirectory=' directive in 'conf/rd.conf-sample'.
+2022-03-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that broke play-out events.
