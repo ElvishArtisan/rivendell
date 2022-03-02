@@ -96,6 +96,8 @@ ListGroups::ListGroups(QWidget *parent)
   // Group List
   //
   list_groups_view=new RDTableView(this);
+  list_groups_view->setSortingEnabled(true);
+  list_groups_view->sortByColumn(0,Qt::AscendingOrder);
   list_groups_model=new RDGroupListModel(false,true,this);
   list_groups_model->setFont(defaultFont());
   list_groups_model->setPalette(palette());

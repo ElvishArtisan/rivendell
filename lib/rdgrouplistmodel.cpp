@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell groups
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,6 +29,16 @@ RDGroupListModel::RDGroupListModel(bool show_all,bool user_is_admin,
   d_show_all=show_all;
   d_user_is_admin=user_is_admin;
   d_service_names.push_back(tr("ALL"));
+  d_sort_column=0;
+  d_sort_order=Qt::AscendingOrder;
+  d_column_fields.push_back("`NAME`");
+  d_column_fields.push_back("`DESCRIPTION`");
+  d_column_fields.push_back("`DEFAULT_LOW_CART`");
+  d_column_fields.push_back("`DEFAULT_HIGH_CART`");
+  d_column_fields.push_back("`ENFORCE_CART_RANGE`");
+  d_column_fields.push_back("`NOTIFY_EMAIL_ADDRESS`");
+  d_column_fields.push_back("`REPORT_TFC`");
+  d_column_fields.push_back("`REPORT_MUS`");
 
   //
   // Column Attributes
@@ -156,6 +166,16 @@ QVariant RDGroupListModel::data(const QModelIndex &index,int role) const
   }
 
   return QVariant();
+}
+
+
+void RDGroupListModel::sort(int col,Qt::SortOrder order)
+{
+  if((col!=d_sort_column)||(order!=d_sort_order)) {
+    d_sort_column=col;
+    d_sort_order=order;
+    updateModel();
+  }
 }
 
 
@@ -328,7 +348,7 @@ void RDGroupListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+filterSql();
-  sql+="order by `NAME` ";
+  //  sql+="order by `NAME` ";
   beginResetModel();
   d_texts.clear();
   d_colors.clear();
@@ -444,6 +464,11 @@ QString RDGroupListModel::filterSql() const
   }
   sql=sql.left(sql.length()-2);
   sql+=") ";
+
+  sql+="order by "+d_column_fields.at(d_sort_column)+" ";
+  if(d_sort_order==Qt::DescendingOrder) {
+    sql+="desc ";
+  }
 
   return sql;
 }

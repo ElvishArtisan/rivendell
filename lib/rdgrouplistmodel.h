@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell groups
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -43,6 +43,7 @@ class RDGroupListModel : public QAbstractTableModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
+  void sort(int col,Qt::SortOrder order=Qt::AscendingOrder);
   QModelIndex indexOf(const QString &grpname) const;
   QString groupName(const QModelIndex &row) const;
   QStringList allGroupNames() const;
@@ -76,6 +77,9 @@ class RDGroupListModel : public QAbstractTableModel
   bool d_show_all;
   bool d_user_is_admin;
   QStringList d_visible_groups;
+  QStringList d_column_fields;
+  int d_sort_column;
+  Qt::SortOrder d_sort_order;
 };
 
 

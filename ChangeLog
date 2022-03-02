@@ -22927,3 +22927,6 @@
 2022-03-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'RDLogFilter' that caused a SQL error to be
 	generated filtering for 'recent' logs.
+2022-03-02 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented sorting of the group list in the 'Rivendell Group
+	List' dialog in rdadmin(1).
