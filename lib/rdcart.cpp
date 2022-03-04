@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Cart.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -306,20 +306,18 @@ QStringList RDCart::schedCodesList() const
 }
 
 
-void RDCart::setSchedCodesList(const QStringList &codes) const
+void RDCart::setSchedCodesList(QStringList codes) const
 {
-  RDSqlQuery *q;
   QString sql;
   QString sched_codes="";
   
   sql=QString().sprintf("delete from CART_SCHED_CODES where CART_NUMBER=%u",cart_number);
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
 
+  codes.removeDuplicates();
   for(int i=0;i<codes.size();i++) {
     sql=QString().sprintf("insert into CART_SCHED_CODES set CART_NUMBER=%u,SCHED_CODE='%s'",cart_number,(const char *)codes.at(i));
-    q=new RDSqlQuery(sql);
-    delete q;
+    RDSqlQuery::apply(sql);
   }
 }
 
@@ -329,6 +327,14 @@ void RDCart::addSchedCode(const QString &code) const
   QStringList codes=schedCodesList();
   codes.push_back(code);
   setSchedCodesList(codes);
+
+  /*
+  QStringList codes=schedCodesList();
+  if(!codes.contains(code)) {
+    codes.push_back(code);
+    setSchedCodesList(codes);
+  }
+  */
 }
 
 
