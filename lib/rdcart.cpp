@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Cart.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -308,23 +308,36 @@ QStringList RDCart::schedCodesList() const
 }
 
 
-void RDCart::setSchedCodesList(const QStringList &codes) const
+void RDCart::setSchedCodesList(QStringList codes) const
 {
-  RDSqlQuery *q;
   QString sql;
+  RDSqlQuery *q;
   QString sched_codes="";
   
   sql=QString("delete from `CART_SCHED_CODES` where ")+
     QString::asprintf("`CART_NUMBER`=%u",cart_number);
+  RDSqlQuery::apply(sql);
+
+  //
+  // Normalize Codes
+  //
+  sql=QString("select `CODE` from `SCHED_CODES`");
   q=new RDSqlQuery(sql);
+  while(q->next()) {
+    for(int i=0;i<codes.size();i++) {
+      if(codes.at(i).toLower()==q->value(0).toString().toLower()) {
+	codes[i]=q->value(0).toString();
+      }
+    }
+  }
   delete q;
+  codes.removeDuplicates();
 
   for(int i=0;i<codes.size();i++) {
     sql=QString("insert into `CART_SCHED_CODES` set ")+
       QString::asprintf("`CART_NUMBER`=%u,",cart_number)+
       "SCHED_CODE='"+RDEscapeString(codes.at(i))+"'";
-    q=new RDSqlQuery(sql);
-    delete q;
+    RDSqlQuery::apply(sql);
   }
 }
 

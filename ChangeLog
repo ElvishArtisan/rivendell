@@ -22930,3 +22930,7 @@
 2022-03-02 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented sorting of the group list in the 'Rivendell Group
 	List' dialog in rdadmin(1).
+2022-03-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdimport(1) that could create duplicate
+	Scheduler Code entries when using the '--to-cart' and
+	'--add-scheduler-code' switches simultaneously.

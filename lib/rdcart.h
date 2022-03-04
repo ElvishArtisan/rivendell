@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Cart
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -65,7 +65,7 @@ class RDCart
   QString schedCodes() const;
   void setSchedCodes(const QString &sched_codes) const;
   QStringList schedCodesList() const;
-  void setSchedCodesList(const QStringList &codes) const;
+  void setSchedCodesList(QStringList codes) const;
   void addSchedCode(const QString &code) const;
   void removeSchedCode(const QString &code) const;
   void updateSchedCodes(const QString &add_codes,
