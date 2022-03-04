@@ -20853,3 +20853,6 @@
 	* Fixed a bug in rdimport(1) that could create duplicate
 	Scheduler Code entries when using the '--to-cart' and
 	'--add-scheduler-code' switches simultaneously.
+2022-03-04 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'RDCart::setSchedCodesList()' so as to normalize
+	the case of scheduler codes.

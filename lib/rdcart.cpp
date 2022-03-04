@@ -309,12 +309,27 @@ QStringList RDCart::schedCodesList() const
 void RDCart::setSchedCodesList(QStringList codes) const
 {
   QString sql;
+  RDSqlQuery *q=NULL;
   QString sched_codes="";
   
   sql=QString().sprintf("delete from CART_SCHED_CODES where CART_NUMBER=%u",cart_number);
   RDSqlQuery::apply(sql);
 
+  //
+  // Normalize Codes
+  //
+  sql=QString("select `CODE` from `SCHED_CODES`");
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    for(int i=0;i<codes.size();i++) {
+      if(codes.at(i).toLower()==q->value(0).toString().toLower()) {
+	codes[i]=q->value(0).toString();
+      }
+    }
+  }
+  delete q;
   codes.removeDuplicates();
+
   for(int i=0;i<codes.size();i++) {
     sql=QString().sprintf("insert into CART_SCHED_CODES set CART_NUMBER=%u,SCHED_CODE='%s'",cart_number,(const char *)codes.at(i));
     RDSqlQuery::apply(sql);
