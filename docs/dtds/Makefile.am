@@ -2,7 +2,7 @@
 ##
 ## docs/dtds/Makefile.am for Rivendell
 ##
-## (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -27,10 +27,15 @@
 %.pdf:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/fo/docbook.xsl $< | fop - -pdf $@
 
-all-local:	superfeed.html\
+all-local:	direct.html\
+                direct.pdf\
+                superfeed.html\
                 superfeed.pdf
 
-EXTRA_DIST = superfeed.html\
+EXTRA_DIST = direct.html\
+             direct.pdf\
+             direct.xml\
+             superfeed.html\
              superfeed.pdf\
              superfeed.xml
 

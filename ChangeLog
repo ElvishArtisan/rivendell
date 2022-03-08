@@ -20856,3 +20856,6 @@
 2022-03-04 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'RDCart::setSchedCodesList()' so as to normalize
 	the case of scheduler codes.
+2022-03-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'direct' namespace to the 'Apple iTunes' and
+	'Apple iTunes + Superfeed' RSS schemas.

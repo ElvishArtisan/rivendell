@@ -35,6 +35,8 @@ configure
 depcomp
 docs/apis/*.html
 docs/apis/*.pdf
+docs/dtds/direct.html
+docs/dtds/direct.pdf
 docs/dtds/superfeed.html
 docs/dtds/superfeed.pdf
 docs/opsguide/*.html
