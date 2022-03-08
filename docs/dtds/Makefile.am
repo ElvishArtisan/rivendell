@@ -27,12 +27,17 @@
 %.pdf:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/fo/docbook.xsl $< | fop - -pdf $@
 
-all-local:	superfeed.html\
+all-local:	direct.html\
+                direct.pdf\
+                superfeed.html\
                 superfeed.pdf
 
 EXTRA_DIST = superfeed.html\
              superfeed.pdf\
-             superfeed.xml
+             superfeed.xml\
+             direct.html\
+             direct.pdf\
+             direct.xml
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\

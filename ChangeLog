@@ -22934,3 +22934,6 @@
 	* Fixed a bug in rdimport(1) that could create duplicate
 	Scheduler Code entries when using the '--to-cart' and
 	'--add-scheduler-code' switches simultaneously.
+2022-03-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'direct' namespace to the 'Apple iTunes' and
+	'Apple iTunes + Superfeed' RSS schemas.

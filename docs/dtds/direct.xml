@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<info>
+  <title>The Rivendell &quot;direct&quot; Namespace</title>
+  <subtitle>Version 0.1</subtitle>
+  <revnumber>v0.1</revnumber>
+  <author>
+    <personname>
+      <firstname>Fred</firstname>
+      <surname>Gleason</surname>
+      <email>fredg@paravelsystems.com</email>
+    </personname>
+  </author>
+  <edition>
+    v0.1
+  </edition>
+  <copyright><year>2022</year><holder>Fred Gleason</holder></copyright>
+  <legalnotice>
+    <para>
+      Permission is granted to copy, distribute and/or modify this document
+      under the terms of the GNU Free Documentation License, Version 1.3
+      or any later version published by the Free Software Foundation;
+      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+    </para>
+  </legalnotice>
+</info>
+
+<sect1 xml:id="overview">
+  <title>Overview</title>
+  <para>
+    The &quot;direct&quot; XML namespace adds fields for enabling
+    interoperation with the Imogen Direct DAM system.
+  </para>
+</sect1>
+<sect1 xml:id="namespace_declaration">
+  <title>Namespace Declaration</title>
+  <para>
+    The namespace declaration is:
+  </para>
+  <para>
+    <code>xmlns:direct=&quot;http://www.rivendellaudio.org/dtds/direct-0.1.dtd&quot;</code>
+  </para>
+</sect1>
+<sect1 xml:id="fields">
+  <title>Fields</title>
+  <para>
+    The namespace adds the following fields:
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<code>&lt;direct:pubDate&gt;</code>
+      </term>
+      <listitem>
+	<para>
+	  The value of the RSS-standard <code>&lt;pubDate&gt;</code> field
+	  from the <code>&lt;channel&gt;</code> and
+	  <code>&lt;item&gt;</code> sections of the feed data, expressed
+	  xs:dateTime format.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</sect1>
+
+<sect1 xml:id="example">
+  <title>Example</title>
+  <para>
+    The following is an example illustrating the use of the namespace:
+  </para>
+  <literallayout>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:superfeed="http://www.rivendellaudio.org/dtds/superfeed-0.1.dtd" xmlns:direct="http://www.rivendellaudio.org/dtds/direct-0.1.dtd"&gt;
+  &lt;channel&gt;
+    &lt;title&gt;Feed2&lt;/title&gt;
+    &lt;description&gt;This is Feed2&lt;/description&gt;
+    &lt;itunes:summary&gt;This is Feed2&lt;/itunes:summary&gt;
+    &lt;category&gt;Arts&lt;/category&gt;
+    &lt;link&gt;&lt;/link&gt;
+    &lt;language&gt;en-us&lt;/language&gt;
+    &lt;copyright&gt;&lt;/copyright&gt;
+    &lt;lastBuildDate&gt;Tue, 8 Mar 2022 19:26:13 GMT&lt;/lastBuildDate&gt;
+    &lt;pubDate&gt;Mon, 12 Jul 2021 14:24:21 GMT&lt;/pubDate&gt;
+    &lt;direct:pubDate&gt;2021-07-12T14:24:21+00:00&lt;/direct:pubDate&gt;
+    &lt;managingEditor&gt;Fred Gleason &lt;fredg@paravelsystems.com&gt;&lt;/managingEditor&gt;
+    &lt;webMaster&gt;Fred Gleason &lt;fredg@paravelsystems.com&gt;&lt;/webMaster&gt;
+    &lt;generator&gt;Rivendell 4.0.0beta3&lt;/generator&gt;
+    &lt;image&gt;
+      &lt;url&gt;http://192.168.21.21/podcasts/feed2/img000009_000002.jpg&lt;/url&gt;
+      &lt;title&gt;Feed2&lt;/title&gt;
+      &lt;link&gt;&lt;/link&gt;
+      &lt;width&gt;3000&lt;/width&gt;
+      &lt;height&gt;3000&lt;/height&gt;
+      &lt;description&gt;Imported from /home/fredg/RFA/ENG/EYES.jpg&lt;/description&gt;
+    &lt;/image&gt;
+    &lt;atom:link href="http://192.168.21.21/podcasts/feed2/Feed2.rss" rel="self" type="application/rss+xml" /&gt;
+    &lt;itunes:author&gt;Fred Gleason &lt;fredg@paravelsystems.com&gt;&lt;/itunes:author&gt;
+    &lt;itunes:type&gt;episodic&lt;/itunes:type&gt;
+    &lt;itunes:owner&gt;
+     &lt;itunes:name&gt;Fred Gleason&lt;/itunes:name&gt;
+      &lt;itunes:email&gt;fredg@paravelsystems.com&lt;/itunes:email&gt;
+    &lt;/itunes:owner&gt;
+    &lt;itunes:image href="http://192.168.21.21/podcasts/feed2/img000009_000002.jpg" /&gt;
+    &lt;itunes:category text="Arts"&gt;
+      &lt;itunes:category text="Books" /&gt;
+    &lt;/itunes:category&gt;
+    &lt;itunes:explicit&gt;false&lt;/itunes:explicit&gt;
+    &lt;item&gt;
+      &lt;title&gt;Test Tone&lt;/title&gt;
+      &lt;itunes:title&gt;Test Tone&lt;/itunes:title&gt;
+      &lt;link&gt;&lt;/link&gt;
+      &lt;guid isPermaLink="false"&gt;http://192.168.21.21/podcasts/feed2/000009_000071.mp3_000009_000071&lt;/guid&gt;
+      &lt;description&gt;An example item.&lt;/description&gt;
+      &lt;itunes:summary&gt;An example item.&lt;/itunes:summary&gt;
+      &lt;author&gt;&lt;/author&gt;
+      &lt;itunes:author&gt;&lt;/itunes:author&gt;
+      &lt;comments&gt;&lt;/comments&gt;
+      &lt;source url="http://192.168.21.21/podcasts/feed2/Feed2"&gt;Feed2&lt;/source&gt;
+      &lt;enclosure url="http://192.168.21.21/podcasts/feed2/000009_000071.mp3" length="60696" type="audio/mpeg" /&gt;
+      &lt;category&gt;Arts&lt;/category&gt;
+      &lt;pubDate&gt;Tue, 8 Mar 2022 19:22:43 GMT&lt;/pubDate&gt;
+      &lt;direct:pubDate&gt;2022-03-08T19:22:43+00:00&lt;/direct:pubDate&gt;
+      &lt;itunes:duration&gt;10&lt;/itunes:duration&gt;
+      &lt;itunes:image href="http://192.168.21.21/podcasts/feed2/img000009_000002.jpg" /&gt;
+      &lt;itunes:explicit&gt;false&lt;/itunes:explicit&gt;
+    &lt;/item&gt;
+  &lt;/channel&gt;
+&lt;/rss&gt;
+  </literallayout>
+</sect1>
+
+</article>
