@@ -2,7 +2,7 @@
 //
 // Create a Rivendell Log
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,16 +26,14 @@
 #include "rdidvalidator.h"
 #include "rdadd_log.h"
 
-RDAddLog::RDAddLog(QString *logname,QString *svcname,
-		   RDLogFilter::FilterMode mode,const QString &caption,
+RDAddLog::RDAddLog(RDLogFilter::FilterMode mode,const QString &caption,
 		   QWidget *parent)
   : RDDialog(parent)
 {
   QStringList services_list;
-  QString sql;
-  RDSqlQuery *q;
-  log_name=logname;
-  log_svc=svcname;
+  log_name=NULL;
+  log_svc=NULL;
+  log_filter_mode=mode;
 
   //
   // Fix the Window Size
@@ -43,7 +41,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   setMinimumSize(sizeHint());
   setMinimumSize(sizeHint());
 
-  setWindowTitle(tr("Create Log"));
+  setWindowTitle(caption);
 
   //
   // Validator
@@ -96,32 +94,6 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   add_cancel_button->setFont(buttonFont());
   add_cancel_button->setText(tr("Cancel"));
   connect(add_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  //
-  // Populate Data
-  //
-  switch(mode) {
-  case RDLogFilter::NoFilter:
-    sql=QString("select `NAME` from `SERVICES` order by `NAME`");
-    break;
-
-  case RDLogFilter::UserFilter:
-    sql=QString("select `SERVICE_NAME` from `USER_SERVICE_PERMS` where ")+
-      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"' "+
-      "order by `SERVICE_NAME`";
-    break;
-
-  case RDLogFilter::StationFilter:
-    sql=QString("select `SERVICE_NAME` from `SERVICE_PERMS` where ")+
-      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' "+
-      "order by `SERVICE_NAME`";
-    break;
-  }
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    add_service_box->
-      insertItem(add_service_box->count(),q->value(0).toString());
-  }
 }
 
 
@@ -140,6 +112,44 @@ QSize RDAddLog::sizeHint() const
 QSizePolicy RDAddLog::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int RDAddLog::exec(QString *logname,QString *svcname)
+{
+  QString sql;
+  RDSqlQuery *q;
+  log_name=logname;
+  log_svc=svcname;
+
+  switch(log_filter_mode) {
+  case RDLogFilter::NoFilter:
+    sql=QString("select `NAME` from `SERVICES` order by `NAME`");
+    break;
+
+  case RDLogFilter::UserFilter:
+    sql=QString("select `SERVICE_NAME` from `USER_SERVICE_PERMS` where ")+
+      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"' "+
+      "order by `SERVICE_NAME`";
+    break;
+
+  case RDLogFilter::StationFilter:
+    sql=QString("select `SERVICE_NAME` from `SERVICE_PERMS` where ")+
+      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' "+
+      "order by `SERVICE_NAME`";
+    break;
+  }
+  q=new RDSqlQuery(sql);
+  add_service_box->clear();
+  while(q->next()) {
+    add_service_box->
+      insertItem(add_service_box->count(),q->value(0).toString());
+    if(q->value(0).toString()==*log_svc) {
+      add_service_box->setCurrentIndex(add_service_box->count()-1);
+    }
+  }
+  add_name_edit->setText(*logname);
+  return QDialog::exec();
 }
 
 

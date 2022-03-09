@@ -1,8 +1,8 @@
 // logmodel.cpp
 //
-// Data model for Rivendell logs in RDLogEdit
+// Data model for Rivendell logs for RDLogEdit(1)
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,13 +19,6 @@
 //
 
 #include "logmodel.h"
-
-LogModel::LogModel(const QString &logname,QObject *parent)
-  : RDLogModel(logname,false,parent)
-{
-  d_group_list=new RDGroupList();
-}
-
 
 LogModel::LogModel(QObject *parent)
   : RDLogModel(parent)

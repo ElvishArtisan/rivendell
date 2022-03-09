@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell logs in RDLogEdit
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,6 @@ class LogModel : public RDLogModel
 {
   Q_OBJECT
  public:
-  LogModel(const QString &logname,QObject *parent=0);
   LogModel(QObject *parent=0);
   ~LogModel();
   QString serviceName() const;

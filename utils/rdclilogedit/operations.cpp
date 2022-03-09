@@ -2,7 +2,7 @@
 //
 // A command-line log editor for Rivendell
 //
-//   (C) Copyright 2016-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -250,7 +250,8 @@ void MainObject::Load(QString logname)
 
   edit_log=new RDLog(logname);
   if(edit_log->exists()) {
-    edit_log_model=new RDLogModel(logname,false,this);
+    edit_log_model=new RDLogModel(false,this);
+    edit_log_model->setLogName(logname);
     edit_log_model->load();
     edit_description=edit_log->description();
     edit_service=edit_log->service();
@@ -362,7 +363,8 @@ void MainObject::New(const QString &logname)
   }
   edit_log=new RDLog(logname);
   if(!edit_log->exists()) {
-    edit_log_model=new RDLogModel(logname,false,this);
+    edit_log_model=new RDLogModel(false,this);
+    edit_log_model->setLogName(logname);
     edit_description=logname+" log";
     sql=QString("select `NAME` from `SERVICES`");
     q=new RDSqlQuery(sql);

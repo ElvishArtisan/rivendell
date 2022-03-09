@@ -2,7 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,6 @@
 #include <QMessageBox>
 #include <QTranslator>
 
-#include <rdadd_log.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
 #include <rdprofile.h>
@@ -105,8 +104,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   //
   log_filter_widget=
     new RDLogFilter(RDLogFilter::UserFilter,this);
-  connect(log_filter_widget,SIGNAL(filterChanged(const QString &)),
-	  this,SLOT(filterChangedData(const QString &)));
 
   //
   // Dialogs
@@ -115,6 +112,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     new EditLog(&log_filter,&log_group,&log_schedcode,&log_clipboard,this);
 
   log_tracker_dialog=new VoiceTracker(&log_import_path,this);
+  log_addlog_dialog=
+    new RDAddLog(RDLogFilter::UserFilter,"RDLogEdit - "+tr("Add Log"),this);
   
   //
   // Log List
@@ -229,7 +228,6 @@ void MainWidget::userData()
   log_filter_widget->changeUser();
   log_log_model->setFilterSql(log_filter_widget->whereSql());
   log_log_view->resizeColumnsToContents();
-  //  RefreshList();
 
   //
   // Set Control Perms
@@ -240,28 +238,17 @@ void MainWidget::userData()
 }
 
 
-void MainWidget::recentData(bool state)
-{
-  //  RefreshList();
-}
-
-
 void MainWidget::addData()
 {
   QString logname;
-  QString svcname;
+  QString svcname=log_filter_widget->currentServiceName();
   QStringList newlogs;
-  RDAddLog *log;
   QModelIndex row;
 
   if(rda->user()->createLog()) {
-    log=new RDAddLog(&logname,&svcname,RDLogFilter::UserFilter,
-		     tr("Add Log"),this);
-    if(log->exec()!=0) {
-      delete log;
+    if(log_addlog_dialog->exec(&logname,&svcname)!=0) {
       return;
     }
-    delete log;
     QString username(rda->ripc()->user());
     QString err_msg;
     if(!RDLog::create(logname,svcname,QDate(),username,&err_msg,
@@ -270,10 +257,14 @@ void MainWidget::addData()
       return;
     }
     LockList();
-    SendNotification(RDNotification::AddAction,logname);
-    log_edit_dialog->exec(logname,&newlogs);
-    row=log_log_model->addLog(logname);
-    log_log_view->selectRow(row.row());
+    if(log_edit_dialog->exec(logname,&newlogs)) {
+      SendNotification(RDNotification::AddAction,logname);
+      row=log_log_model->addLog(logname);
+      log_log_view->selectRow(row.row());
+    }
+    else {
+      RDLog::remove(logname);
+    }
     UnlockList();
   }
 }
@@ -424,23 +415,6 @@ void MainWidget::trackData()
   UnlockList();
 }
 
-/*
-void MainWidget::trackData()
-{
-  QModelIndex row=SingleSelectedRow();
-
-  if(!row.isValid()) {
-    return;
-  }
-  LockList();
-  VoiceTracker *dialog=
-    new VoiceTracker(log_log_model->logName(row),&log_import_path);
-  dialog->exec();
-  delete dialog;
-  log_log_model->refresh(row);
-  UnlockList();
-}
-*/
 
 void MainWidget::reportData()
 {
@@ -561,12 +535,6 @@ void MainWidget::reportData()
   delete q;
 
   RDTextFile(report);
-}
-
-
-void MainWidget::filterChangedData(const QString &str)
-{
-  //  RefreshList();
 }
 
 

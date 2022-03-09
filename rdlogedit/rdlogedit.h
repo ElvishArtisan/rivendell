@@ -2,7 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,6 +23,7 @@
 
 #include <QList>
 
+#include <rdadd_log.h>
 #include <rdlog_line.h>
 #include <rdlogfilter.h>
 #include <rdloglistmodel.h>
@@ -50,13 +51,11 @@ class MainWidget : public RDMainWindow
  private slots:
   void caeConnectedData(bool state);
   void userData();
-  void recentData(bool state);
   void addData();
   void editData();
   void deleteData();
   void trackData();
   void reportData();
-  void filterChangedData(const QString &str);
   void selectionChangedData(const QItemSelection &selected,
 			    const QItemSelection &deselected);
   void doubleClickedData(const QModelIndex &index);
@@ -94,6 +93,7 @@ class MainWidget : public RDMainWindow
   QStringList log_deleted_logs;
   EditLog *log_edit_dialog;
   VoiceTracker *log_tracker_dialog;
+  RDAddLog *log_addlog_dialog;
 };
 
 

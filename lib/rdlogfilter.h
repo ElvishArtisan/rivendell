@@ -2,7 +2,7 @@
 //
 // Filter widget for picking Rivendell logs.
 //
-//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,15 +21,14 @@
 #ifndef RDLOGFILTER_H
 #define RDLOGFILTER_H
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qstringlist.h>
-#include <qwidget.h>
-//Added by qt3to4:
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 #include <QResizeEvent>
+#include <QStringList>
+#include <QWidget>
 
 class RDLogFilter : public QWidget
 {
@@ -41,6 +40,7 @@ class RDLogFilter : public QWidget
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   QString whereSql() const;
+  QString currentServiceName() const;
 
  public slots:
   void changeUser();

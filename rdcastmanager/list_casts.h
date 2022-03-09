@@ -2,7 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,7 +50,6 @@ class ListCasts : public RDDialog
   void deleteData();
   void doubleClickedData(const QModelIndex &index);
   void userChangedData();
-  void filterChangedData(const QString &str);
   void modelResetData();
   void rowsInsertedData(const QModelIndex &parent,int start,int end);
   void postProgressChangedData(int step);

@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell logs
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,7 +35,7 @@ class RDLogModel : public QAbstractTableModel
   Q_OBJECT
  public:
   enum StartTimeStyle {Estimated=0,Scheduled=1};
-  RDLogModel(const QString &logname,bool read_only,QObject *parent=0);
+  RDLogModel(bool read_only,QObject *parent=0);
   RDLogModel(QObject *parent=0);
   ~RDLogModel();
   QPalette palette();

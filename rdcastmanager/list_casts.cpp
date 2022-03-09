@@ -2,7 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -247,7 +247,8 @@ void ListCasts::addLogData()
   RDListLogs *lld=
     new RDListLogs(&logname,RDLogFilter::UserFilter,"RDCastManager",this);
   if(lld->exec()) {
-    RDLogModel *model=new RDLogModel(logname,true,this);
+    RDLogModel *model=new RDLogModel(true,this);
+    model->setLogName(logname);
     model->load();
     QTime start_time;
     bool ignore_stops=true;
@@ -395,12 +396,6 @@ void ListCasts::userChangedData()
   list_edit_button->setEnabled(rda->user()->editPodcast()&&(!is_superfeed));
   list_delete_button->
     setEnabled(rda->user()->deletePodcast()&&(!is_superfeed));
-}
-
-
-void ListCasts::filterChangedData(const QString &str)
-{
-  //  RefreshList();
 }
 
 

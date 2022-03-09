@@ -5,7 +5,7 @@
 // This class creates a basic dialog requesting from the user a name and
 // corresponding service that is later used to create a new log.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,9 +24,9 @@
 #ifndef ADD_LOG_H
 #define ADD_LOG_H
 
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include <rddialog.h>
 #include <rdlog.h>
@@ -36,12 +36,15 @@ class RDAddLog : public RDDialog
 {
   Q_OBJECT
  public:
-  RDAddLog(QString *logname,QString *svcname,RDLogFilter::FilterMode mode,
-	   const QString &caption,QWidget *parent=0);
+  RDAddLog(RDLogFilter::FilterMode mode,const QString &caption,
+	   QWidget *parent=0);
   ~RDAddLog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
+
+ public slots:
+  int exec(QString *logname,QString *svcname);
+
  private slots:
   void okData();
   void cancelData();
@@ -57,6 +60,7 @@ class RDAddLog : public RDDialog
   QPushButton *add_cancel_button;
   QString *log_name;
   QString *log_svc;
+  RDLogFilter::FilterMode log_filter_mode;
 };
 
 

@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Log services
 //
-//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -292,7 +292,9 @@ void Xport::SaveLog()
   //
   // Logline Data
   //
-  RDLogModel *logmodel=new RDLogModel(log_name,false,this);
+  //  RDLogModel *logmodel=new RDLogModel(log_name,false,this);
+  RDLogModel *logmodel=new RDLogModel(false,this);
+  logmodel->setLogName(log_name);
   for(int i=0;i<line_quantity;i++) {
     logmodel->insert(i,1);
     RDLogLine *ll=logmodel->logLine(i);

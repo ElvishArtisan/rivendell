@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,6 +37,9 @@ ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)
 
   list_log=log;
   setWindowTitle("RDAirPlay - "+tr("Select Log"));
+
+  list_addlog_dialog=new RDAddLog(RDLogFilter::StationFilter,
+				  "RDAirPlay - "+tr("Rename Log"),this);
 
   //
   // Filter Widget
@@ -181,14 +184,9 @@ void ListLogs::saveAsButtonData()
 {
   QString logname;
   QString svcname=*list_svcname;
-  RDAddLog *log;
-  log=new RDAddLog(&logname,&svcname,RDLogFilter::StationFilter,
-		   tr("Rename Log"),this);
-  if(log->exec()<0) {
-    delete log;
+  if(list_addlog_dialog->exec(&logname,&svcname)<0) {
     return;
   }
-  delete log;
   *list_logname=logname;
   *list_svcname=svcname;
   done(ListLogs::SaveAs);

@@ -2,7 +2,7 @@
 //
 // Render a Rivendell log.
 //
-//   (C) Copyright 2017-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -287,7 +287,8 @@ void MainObject::userData()
     fprintf(stderr,"rdrender: no such log\n");
     exit(1);
   }
-  RDLogModel *log_model=new RDLogModel(render_logname,false,this);
+  RDLogModel *log_model=new RDLogModel(false,this);
+  log_model->setLogName(render_logname);
   log_model->load();
 
   //

@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -465,7 +465,9 @@ int RDLog::removeTracks(RDStation *station,RDUser *user,RDConfig *config) const
 
 RDLogModel *RDLog::createLogEvent() const
 {
-  return new RDLogModel(name(),false);
+  RDLogModel *model=new RDLogModel(false);
+  model->setLogName(name());
+  return model;
 }
 
 
@@ -613,6 +615,12 @@ bool RDLog::remove(const QString &name,RDStation *station,RDUser *user,
   ret=log->remove(station,user,config);
   delete log;
   return ret;
+}
+
+
+bool RDLog::remove(const QString &name)
+{
+  return RDLog::remove(name,rda->station(),rda->user(),rda->config());
 }
 
 

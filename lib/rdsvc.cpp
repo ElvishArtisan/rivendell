@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Service.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1008,8 +1008,10 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   //
   // Iterate Through the Log
   //
-  src_model=new RDLogModel(logname,true,this);
-  dst_model=new RDLogModel(logname,true,this);
+  src_model=new RDLogModel(true,this);
+  src_model->setLogName(logname);
+  dst_model=new RDLogModel(true,this);
+  dst_model->setLogName(logname);
   src_model->load();
   for(int i=0;i<src_model->lineCount();i++) {
     logline=src_model->logLine(i);
@@ -1163,8 +1165,10 @@ bool RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname,
 	break;
   }
 
-  RDLogModel *src_model=new RDLogModel(logname,false,this);
-  RDLogModel *dst_model=new RDLogModel(logname,false,this);
+  RDLogModel *src_model=new RDLogModel(false,this);
+  src_model->setLogName(logname);
+  RDLogModel *dst_model=new RDLogModel(false,this);
+  dst_model->setLogName(logname);
   src_model->load();
   RDLogLine *logline=NULL;
   for(int i=0;i<src_model->lineCount();i++) {
@@ -1810,7 +1814,8 @@ bool RDSvc::ResolveInlineEvents(const QString &logname,QString *err_msg)
 
   switch(subEventInheritance()) {
   case RDSvc::ParentEvent:
-    model=new RDLogModel(logname,false,this);
+    model=new RDLogModel(false,this);
+    model->setLogName(logname);
     model->load();
     ok=true;
     for(int i=0;i<model->lineCount();i++) {

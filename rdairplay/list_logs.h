@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,6 +23,7 @@
 
 #include <QPushButton>
 
+#include <rdadd_log.h>
 #include <rddialog.h>
 #include <rdlogfilter.h>
 #include <rdloglistmodel.h>
@@ -70,6 +71,7 @@ class ListLogs : public RDDialog
   QPushButton *list_cancel_button;
   RDLogPlay *list_log;
   RDLogLock **list_log_lock;
+  RDAddLog *list_addlog_dialog;
 };
 
 
