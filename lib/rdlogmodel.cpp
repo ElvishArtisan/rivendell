@@ -247,9 +247,13 @@ QString RDLogModel::logName() const
 
 void RDLogModel::setLogName(QString logname)
 {
-  RDLog *log=new RDLog(logname);
-  d_log_name=log->name();  // So we normalize the case
-  delete log;
+  if(d_log_name.toLower()!=logname) {
+    clear();
+    printf("RDLogModel::setLogName(%s)\n",logname.toUtf8().constData());
+    RDLog *log=new RDLog(logname);
+    d_log_name=log->name();  // So we normalize the case
+    delete log;
+  }
 }
 
 

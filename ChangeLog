@@ -22937,3 +22937,7 @@
 2022-03-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'direct' namespace to the 'Apple iTunes' and
 	'Apple iTunes + Superfeed' RSS schemas.
+2022-03-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogedit(1) that caused events from
+	previously viewed logs to be prepended to subsequent logs viewed
+	during the same session.
