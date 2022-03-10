@@ -1376,7 +1376,12 @@ int RDLogModel::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
 	  "`FADEDOWN_POINT`,"+     // 09
 	  "`CUT_NAME`,"+           // 10
 	  "`ORIGIN_NAME`,"+        // 11
-	  "`ORIGIN_DATETIME` "+    // 12
+	  "`ORIGIN_DATETIME`,"+    // 12
+	  "`DESCRIPTION`,"+        // 13
+	  "`ISRC`,"+               // 14
+	  "`ISCI`,"+               // 15
+	  "`RECORDING_MBID`,"+     // 16
+	  "`RELEASE_MBID` "+       // 17
 	  "from `CUTS` where "+
 	  QString::asprintf("`CART_NUMBER`=%u ",ll->cartNumber())+
 	  "order by `CUT_NAME`";
@@ -1395,6 +1400,11 @@ int RDLogModel::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
 	  ll->setCutNumber(RDCut::cutNumber(q->value(10).toString()));
 	  ll->setOriginUser(q->value(11).toString());
 	  ll->setOriginDateTime(q->value(12).toDateTime());
+	  ll->setDescription(q->value(13).toString());
+	  ll->setIsrc(q->value(14).toString());
+	  ll->setIsci(q->value(15).toString());
+	  ll->setRecordingMbId(q->value(16).toString());
+	  ll->setReleaseMbId(q->value(17).toString());
 	}
 	delete q;
       }

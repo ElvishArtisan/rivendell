@@ -22943,3 +22943,7 @@
 	during the same session.
 2022-03-09 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'RDAddLog' dialog to allow for instance reuse.
+2022-03-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'rdxport' service that caused the 'ListLog'
+	WebAPI call to return null values in the 'description', 'isrc',
+	'isci', 'recordingMbId' and 'releaseMbId' fields.
