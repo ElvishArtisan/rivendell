@@ -20863,3 +20863,5 @@
 	* Fixed a bug in the 'rdxport' service that caused the 'ListLog'
 	WebAPI call to return null values in the 'description', 'isrc',
 	'isci', 'recordingMbId' and 'releaseMbId' fields.
+2022-03-18 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.5.
