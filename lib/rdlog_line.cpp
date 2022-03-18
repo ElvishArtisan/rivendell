@@ -2327,6 +2327,7 @@ QString RDLogLine::xml(int line) const
       ret+="    "+RDXmlField("startTime");
     }
   }
+  ret+="    "+RDXmlField("graceTime",graceTime());
   ret+="    "+RDXmlField("transitionType",RDLogLine::transText(transType()));
   ret+="    "+RDXmlField("cutQuantity",cutQuantity());
   ret+="    "+RDXmlField("lastCutPlayed",lastCutPlayed());
@@ -2380,6 +2381,7 @@ QString RDLogLine::xml(int line) const
 
   ret+="    "+RDXmlField("eventLength",eventLength());
   ret+="    "+RDXmlField("linkEventName",linkEventName());
+  ret+="    "+RDXmlField("linkLength",linkLength());
   ret+="    "+RDXmlField("linkStartTime",linkStartTime());
   ret+="    "+RDXmlField("linkStartSlop",linkStartSlop());
   ret+="    "+RDXmlField("linkEndSlop",linkEndSlop());

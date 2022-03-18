@@ -96,6 +96,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdconf.cpp rdconf.h\
                         rdconfig.cpp rdconfig.h\
                         rdcopyaudio.cpp rdcopyaudio.h\
+                        rdcsv.cpp rdcsv.h\
                         rdcueedit.cpp rdcueedit.h\
                         rdcueeditdialog.cpp rdcueeditdialog.h\
                         rdcut.cpp rdcut.h\

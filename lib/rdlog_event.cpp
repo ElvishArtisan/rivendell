@@ -1098,12 +1098,26 @@ int RDLogEvent::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
     for(int i=start_line;i<size();i++) {
       RDLogLine *ll=logLine(i);
       if(ll->cartType()==RDCart::Audio) {
-	sql=QString("select START_POINT,END_POINT,")+
-	  "SEGUE_START_POINT,SEGUE_END_POINT,"+
-	  "TALK_START_POINT,TALK_END_POINT,"
-	  "HOOK_START_POINT,HOOK_END_POINT,"+
-	  "FADEUP_POINT,FADEDOWN_POINT,CUT_NAME,"+
-	  "ORIGIN_NAME,ORIGIN_DATETIME from CUTS "+
+	sql=QString("select ")+
+	  "START_POINT,"+        // 00
+	  "END_POINT,"+          // 01
+	  "SEGUE_START_POINT,"+  // 02
+	  "SEGUE_END_POINT,"+    // 03
+	  "TALK_START_POINT,"+   // 04
+	  "TALK_END_POINT,"+     // 05
+	  "HOOK_START_POINT,"+   // 06
+	  "HOOK_END_POINT,"+     // 07
+	  "FADEUP_POINT,"+       // 08
+	  "FADEDOWN_POINT,"+     // 09
+	  "CUT_NAME,"+           // 10
+	  "ORIGIN_NAME,"+        // 11
+	  "ORIGIN_DATETIME,"+    // 12
+	  "DESCRIPTION,"+        // 13
+	  "ISRC,"+               // 14
+	  "ISCI,"+               // 15
+	  "RECORDING_MBID,"+     // 16
+	  "RELEASE_MBID "+       // 17
+	  "from CUTS "+
 	  QString().sprintf("where CART_NUMBER=%u ",ll->cartNumber())+
 	  "order by CUT_NAME";
 	q=new RDSqlQuery(sql);
@@ -1121,6 +1135,11 @@ int RDLogEvent::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
 	  ll->setCutNumber(RDCut::cutNumber(q->value(10).toString()));
 	  ll->setOriginUser(q->value(11).toString());
 	  ll->setOriginDateTime(q->value(12).toDateTime());
+	  ll->setDescription(q->value(13).toString());
+	  ll->setIsrc(q->value(14).toString());
+	  ll->setIsci(q->value(15).toString());
+	  ll->setRecordingMbId(q->value(16).toString());
+	  ll->setReleaseMbId(q->value(17).toString());
 	}
 	delete q;
       }

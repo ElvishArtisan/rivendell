@@ -46,7 +46,6 @@ class ListReports : public RDDialog
   void GenerateCartReport(QString *report);
   void GenerateCutReport(QString *report);
   void GenerateCartDumpCsv(QString *report,bool prepend_names);
-  QString CsvField(QString str) const;
   QLabel *list_reports_label;
   QComboBox *list_reports_box;
   QCheckBox *list_fieldnames_check;

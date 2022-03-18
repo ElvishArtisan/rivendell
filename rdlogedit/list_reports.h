@@ -47,6 +47,7 @@ class ListReports : public RDDialog
 
  private:
   void GenerateLogReport(QString *report);
+  void GenerateLogCsvReport(QString *report);
   void GenerateExceptionReport(QString *report,const QDate &date);
   QComboBox *list_reports_box;
   QString list_log_name;

@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -2021,6 +2021,9 @@ QString RDFeed::ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q,
 	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
   ret.replace("%PUBLISH_DATE%",RDLocalToUtc(chan_q->value(13).toDateTime()).
 	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
+  ret.replace("%DIRECT_PUBLISH_DATE%",
+	      RDLocalToUtc(chan_q->value(13).toDateTime()).
+	      toString("yyyy-MM-ddThh:mm:ss+00:00"));
   ret.replace("%GENERATOR%",QString("Rivendell ")+VERSION);
   ret.replace("%FEED_URL%",RDXmlEscape(chan_q->value(17).toString())+"/"+
 	      RDXmlEscape(keyName()+"."+RD_RSS_XML_FILE_EXTENSION));
@@ -2075,6 +2078,9 @@ QString RDFeed::ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
   ret.replace("%ITEM_PUBLISH_DATE%",
 	      RDLocalToUtc(item_q->value(13).toDateTime()).
 	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
+  ret.replace("%ITEM_DIRECT_PUBLISH_DATE%",
+	      RDLocalToUtc(item_q->value(13).toDateTime()).
+	      toString("yyyy-MM-ddThh:mm:ss+00:00"));
   ret.replace("%ITEM_GUID%",RDPodcast::guid(item_q->value(15).toString(),
 					    item_q->value(10).toString(),
 					    item_q->value(0).toUInt(),

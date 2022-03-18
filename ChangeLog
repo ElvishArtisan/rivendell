@@ -20849,3 +20849,45 @@
 	of metadata.
 2021-10-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.2compatv46.
+2021-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdxport(8) that caused the 'SaveLog' WebAPI call
+	to fail if the target log didn't exist.
+2021-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'linkLength' field to the return XML for the 'ListLog'
+	WebAPI call.
+2021-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'graceTime' field to the return XML for the 'ListLog'
+	WebAPI call.
+2022-02-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added CSV generation routines in 'lib/rdcsv.[cpp|h]'.
+	* Added a 'Log Listing (CSV)' report to rdlogedit(1).
+2022-02-12 Fred Gleason <fredg@paravelsystems.com>
+	* Rewrote the 'Cart Data Dump (CSV)' report in rdlibrary(1) to
+	use the CSV generation routines in 'lib/rdcsv.[cpp|h]'.
+2022-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--print-progress' switch to rddbmgr(8).
+2022-02-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that could cause the 346=>347 schema
+	conversion to hang indefinitely with databases containing large
+	cart libraries.
+2022-02-22 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.3.
+2022-02-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in 'lib/Makefile.am' that broke the 'make dist'
+	target.
+2022-02-22 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.4.
+2022-03-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdimport(1) that could create duplicate
+	Scheduler Code entries when using the '--to-cart' and
+	'--add-scheduler-code' switches simultaneously.
+2022-03-04 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'RDCart::setSchedCodesList()' so as to normalize
+	the case of scheduler codes.
+2022-03-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'direct' namespace to the 'Apple iTunes' and
+	'Apple iTunes + Superfeed' RSS schemas.
+2022-03-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'rdxport' service that caused the 'ListLog'
+	WebAPI call to return null values in the 'description', 'isrc',
+	'isci', 'recordingMbId' and 'releaseMbId' fields.

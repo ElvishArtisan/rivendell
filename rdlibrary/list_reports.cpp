@@ -2,7 +2,7 @@
 //
 // List RDLibrary Reports
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,6 +22,7 @@
 
 #include <rdcart_search_text.h>
 #include <rdconf.h>
+#include <rdcsv.h>
 #include <rdreport.h>
 #include <rdtextfile.h>
 
@@ -579,39 +580,38 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   // Prepend Field Names
   //
   if(prepend_names) {
-    *report=QString("CART_NUMBER,")+  // 00
-      "CUT_NUMBER,"+                  // 01
-      "TYPE,"+                        // 02
-      "GROUP_NAME,"+                  // 03
-      "TITLE,"+                       // 04
-      "ARTIST,"+                      // 05
-      "ALBUM,"+                       // 06
-      "YEAR,"+                        // 07
-      "ISRC,"+                        // 08
-      "ISCI,"+                        // 09
-      "LABEL,"+                       // 10
-      "CLIENT,"+                      // 11
-      "AGENCY,"+                      // 12
-      "PUBLISHER,"+                   // 13
-      "COMPOSER,"+                    // 14
-      "CONDUCTOR,"+                   // 15
-      "SONG_ID,"+                     // 16
-      "USER_DEFINED,"+                // 17
-      "DESCRIPTION,"+                 // 18
-      "OUTCUE,"+                      // 19
-      "FILENAME,LENGTH,"+             // 20
-      "START_POINT,"+                 // 21
-      "END_POINT,"+                   // 22
-      "SEGUE_START_POINT,"+           // 23
-      "SEGUE_END_POINT,"+             // 24
-      "HOOK_START_POINT,"+            // 25
-      "HOOK_END_POINT,"+              // 26
-      "TALK_START_POINT,"+            // 27
-      "TALK_END_POINT,"+              // 28
-      "FADEUP_POINT,"+                // 29
-      "FADEDOWN_POINT,"+              // 30
-      "SCHED_CODES";                  // 31
-    *report+="\n";
+    *report=RDCsvField("CART_NUMBER");         // 00
+    *report+=RDCsvField("CUT_NUMBER");         // 01
+    *report+=RDCsvField("TYPE");               // 02
+    *report+=RDCsvField("GROUP_NAME");         // 03
+    *report+=RDCsvField("TITLE");              // 04
+    *report+=RDCsvField("ARTIST");             // 05
+    *report+=RDCsvField("ALBUM");              // 06
+    *report+=RDCsvField("YEAR");               // 07
+    *report+=RDCsvField("ISRC");               // 08
+    *report+=RDCsvField("ISCI");               // 09
+    *report+=RDCsvField("LABEL");              // 10
+    *report+=RDCsvField("CLIENT");             // 11
+    *report+=RDCsvField("AGENCY");             // 12
+    *report+=RDCsvField("PUBLISHER");          // 13
+    *report+=RDCsvField("COMPOSER");           // 14
+    *report+=RDCsvField("CONDUCTOR");          // 15
+    *report+=RDCsvField("SONG_ID");            // 16
+    *report+=RDCsvField("USER_DEFINED");       // 17
+    *report+=RDCsvField("DESCRIPTION");        // 18
+    *report+=RDCsvField("OUTCUE");             // 19
+    *report+=RDCsvField("FILENAME,LENGTH");    // 20
+    *report+=RDCsvField("START_POINT");        // 21
+    *report+=RDCsvField("END_POINT");          // 22
+    *report+=RDCsvField("SEGUE_START_POINT");  // 23
+    *report+=RDCsvField("SEGUE_END_POINT");    // 24
+    *report+=RDCsvField("HOOK_START_POINT");   // 25
+    *report+=RDCsvField("HOOK_END_POINT");     // 26
+    *report+=RDCsvField("TALK_START_POINT");   // 27
+    *report+=RDCsvField("TALK_END_POINT");     // 28
+    *report+=RDCsvField("FADEUP_POINT");       // 29
+    *report+=RDCsvField("FADEDOWN_POINT");     // 30
+    *report+=RDCsvField("SCHED_CODES",true);   // 31
   }
 
   //
@@ -619,62 +619,63 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   //
   while(q->next()) {
     RDCart::Type type=(RDCart::Type)q->value(1).toInt();
-    *report+=QString().sprintf("%u,",q->value(0).toUInt());
+    *report+=RDCsvField(q->value(0).toUInt());
     if(type==RDCart::Macro) {
-      *report+="0,macro,";
+      *report+=RDCsvField(0);
+      *report+=RDCsvField("macro");
     }
     else {
-      *report+=QString().sprintf("%u,",RDCut::cutNumber(q->value(2).toString()));
-      *report+="audio,";
+      *report+=RDCsvField(RDCut::cutNumber(q->value(2).toString()));
+      *report+=RDCsvField("audio");
     }
-    *report+=CsvField(q->value(3).toString())+",";
-    *report+=CsvField(q->value(4).toString())+",";
-    *report+=CsvField(q->value(5).toString())+",";
-    *report+=CsvField(q->value(6).toString())+",";
-    *report+=CsvField(q->value(7).toDate().toString("yyyy"))+",";
-    *report+=CsvField(q->value(8).toString())+",";
-    *report+=CsvField(q->value(9).toString())+",";
-    *report+=CsvField(q->value(10).toString())+",";
-    *report+=CsvField(q->value(11).toString())+",";
-    *report+=CsvField(q->value(12).toString())+",";
-    *report+=CsvField(q->value(13).toString())+",";
-    *report+=CsvField(q->value(14).toString())+",";
-    *report+=CsvField(q->value(15).toString())+",";
-    *report+=CsvField(q->value(16).toString())+",";
-    *report+=CsvField(q->value(17).toString())+",";
-    *report+=CsvField(q->value(18).toString())+",";
-    *report+=CsvField(q->value(19).toString())+",";
+    *report+=RDCsvField(q->value(3).toString());
+    *report+=RDCsvField(q->value(4).toString());
+    *report+=RDCsvField(q->value(5).toString());
+    *report+=RDCsvField(q->value(6).toString());
+    *report+=RDCsvField(q->value(7).toDate().toString("yyyy"));
+    *report+=RDCsvField(q->value(8).toString());
+    *report+=RDCsvField(q->value(9).toString());
+    *report+=RDCsvField(q->value(10).toString());
+    *report+=RDCsvField(q->value(11).toString());
+    *report+=RDCsvField(q->value(12).toString());
+    *report+=RDCsvField(q->value(13).toString());
+    *report+=RDCsvField(q->value(14).toString());
+    *report+=RDCsvField(q->value(15).toString());
+    *report+=RDCsvField(q->value(16).toString());
+    *report+=RDCsvField(q->value(17).toString());
+    *report+=RDCsvField(q->value(18).toString());
+    *report+=RDCsvField(q->value(19).toString());
     if(type==RDCart::Macro) {
-      *report+=",";
+      *report+=RDCsvField();
     }
     else {
-      *report+=CsvField(q->value(2).toString()+".wav")+",";
+      *report+=RDCsvField(q->value(2).toString()+".wav");
     }
     *report+=
-      RDGetTimeLength(q->value(20).toInt(),false,false).stripWhiteSpace()+",";
+      RDCsvField(RDGetTimeLength(q->value(20).toInt(),false,false).trimmed());
     if(type==RDCart::Macro) {
-      *report+="-1,";
-      *report+="-1,";
-      *report+="-1,";
-      *report+="-1,";
-      *report+="-1,";
-      *report+="-1,";
-      *report+="-1,";
-      *report+="-1,";
-      *report+="-1,";
-      *report+="-1,";
+      *report+=RDCsvField(-1);
+      *report+=RDCsvField(-1);
+      *report+=RDCsvField(-1);
+      *report+=RDCsvField(-1);
+      *report+=RDCsvField(-1);
+      *report+=RDCsvField(-1);
+      *report+=RDCsvField(-1);
+      *report+=RDCsvField(-1);
+      *report+=RDCsvField(-1);
+      *report+=RDCsvField(-1);
     }
     else {
-      *report+=QString().sprintf("%d,",q->value(21).toInt());
-      *report+=QString().sprintf("%d,",q->value(22).toInt());
-      *report+=QString().sprintf("%d,",q->value(23).toInt());
-      *report+=QString().sprintf("%d,",q->value(24).toInt());
-      *report+=QString().sprintf("%d,",q->value(25).toInt());
-      *report+=QString().sprintf("%d,",q->value(26).toInt());
-      *report+=QString().sprintf("%d,",q->value(27).toInt());
-      *report+=QString().sprintf("%d,",q->value(28).toInt());
-      *report+=QString().sprintf("%d,",q->value(29).toInt());
-      *report+=QString().sprintf("%d,",q->value(30).toInt());
+      *report+=RDCsvField(q->value(21).toInt());
+      *report+=RDCsvField(q->value(22).toInt());
+      *report+=RDCsvField(q->value(23).toInt());
+      *report+=RDCsvField(q->value(24).toInt());
+      *report+=RDCsvField(q->value(25).toInt());
+      *report+=RDCsvField(q->value(26).toInt());
+      *report+=RDCsvField(q->value(27).toInt());
+      *report+=RDCsvField(q->value(28).toInt());
+      *report+=RDCsvField(q->value(29).toInt());
+      *report+=RDCsvField(q->value(30).toInt());
     }
     sql=QString("select SCHED_CODE from CART_SCHED_CODES where ")+
       QString().sprintf("CART_NUMBER=%u",q->value(0).toUInt());
@@ -686,14 +687,7 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
     if(schedcodes.right(1)=="|") {
       schedcodes=schedcodes.left(schedcodes.length()-1);
     }
-    *report+=CsvField(schedcodes);
+    *report+=RDCsvField(schedcodes,true);
     delete q1;
-    *report+="\n";
   }
-}
-
-
-QString ListReports::CsvField(QString str) const
-{
-  return "\""+str.replace("\"","\"\"")+"\"";
 }

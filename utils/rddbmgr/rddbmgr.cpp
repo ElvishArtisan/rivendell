@@ -146,6 +146,10 @@ MainObject::MainObject(QObject *parent)
       db_mysql_engine=cmd->value(i);
       cmd->setProcessed(i,true);
     }
+    if(cmd->key(i)=="--print-progress") {
+      db_start_datetime=QDateTime::currentDateTime();
+      cmd->setProcessed(i,true);
+    }
     if(cmd->key(i)=="--set-schema") {
       set_schema=cmd->value(i).toInt(&ok);
       if((!ok)||(set_schema<=0)) {
@@ -379,8 +383,16 @@ MainObject::MainObject(QObject *parent)
 }
 
 
-void MainObject::WriteSchemaVersion(int ver) const
+void MainObject::WriteSchemaVersion(int ver)
 {
+  if(!db_start_datetime.isNull()) {
+    QDateTime now=QDateTime::currentDateTime();
+    fprintf(stderr,"%s : setting schema version %d [%d secs]\n",
+	    now.toString("yyyy-MM-dd hh:mm:ss").toUtf8().constData(),
+	    ver,
+	    db_start_datetime.secsTo(now));
+    db_start_datetime=now;
+  }
   QString sql=QString("update VERSION set ")+
     QString().sprintf("DB=%d",ver);
   RDSqlQuery::apply(sql);
