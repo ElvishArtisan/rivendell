@@ -43,6 +43,7 @@
 #include <rddisclookup.h>
 #include <rdescape_string.h>
 #include <rdlibrary_conf.h>
+#include <rdstringlist.h>
 #include <rdtempdirectory.h>
 
 #include "rdimport.h"
@@ -101,6 +102,8 @@ MainObject::MainObject(QObject *parent)
   import_send_mail=false;
   import_mail_per_file=false;
   import_journal=NULL;
+  import_dump_isci_xref=false;
+  import_by_isci=false;
 
   //
   // Open the Database
@@ -170,6 +173,14 @@ MainObject::MainObject(QObject *parent)
     }
     if(rda->cmdSwitch()->key(i)=="--delete-cuts") {
       import_delete_cuts=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--dump-isci-xref") {
+      import_dump_isci_xref=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--by-isci") {
+      import_by_isci=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--startdate-offset") {
@@ -668,6 +679,18 @@ MainObject::MainObject(QObject *parent)
   else {
     Log(LOG_INFO,QString(" Delete cuts mode is OFF\n"));
   }
+  if(import_dump_isci_xref) {
+    Log(LOG_INFO,QString(" Dump ISCI Cross Reference File is ON\n"));
+  }
+  else {
+    Log(LOG_INFO,QString(" Dump ISCI Cross Reference File is OFF\n"));
+  }
+  if(import_by_isci) {
+    Log(LOG_INFO,QString(" Import by ISCI Code is ON\n"));
+  }
+  else {
+    Log(LOG_INFO,QString(" Import by ISCI Code is OFF\n"));
+  }
   if(import_drop_box) {
     Log(LOG_INFO,QString(" DropBox mode is ON\n"));
   }
@@ -823,6 +846,36 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
+  // ISCI Code Lookups
+  //
+  if(import_dump_isci_xref) {
+    QString err_msg;
+    if(LoadIsciXref(&err_msg,rda->system()->isciXreferencePath())) {
+      for(QMap<QString,RDWaveData *>::const_iterator it=
+	    import_isci_xref.begin();
+	  it!=import_isci_xref.end();it++) {
+	printf("%32s : %06u | %s\n",it.key().toUtf8().constData(),
+	       it.value()->cartNumber(),
+	       it.value()->title().toUtf8().constData());
+      }
+      exit(RDApplication::ExitOk);
+    }
+    else {
+      fprintf(stderr,"rdimport: isci Xref load failed [%s]\n",
+	      err_msg.toUtf8().constData());
+      exit(RDApplication::ExitImportFailed);
+    }
+  }
+  if(import_by_isci) {
+    QString err_msg;
+    if(!LoadIsciXref(&err_msg,rda->system()->isciXreferencePath())) {
+      fprintf(stderr,"rdimport: isci Xref load failed [%s]\n",
+	      err_msg.toUtf8().constData());
+      exit(RDApplication::ExitImportFailed);
+    }
+  }
+
+  //
   // Start the email journal
   //
   import_journal=new Journal(import_mail_per_file);
@@ -961,7 +1014,6 @@ void MainObject::ProcessFileEntry(const QString &entry)
 	  VerifyFile(QString::fromUtf8(globbuf.gl_pathv[i]),&import_cart_number);
 	}
 	else {
-	  //ImportFile(QString::fromUtf8(globbuf.gl_pathv[i]),&import_cart_number);
 	  switch(ImportFile(QString::fromUtf8(globbuf.gl_pathv[i]),&import_cart_number)) {
 	    case MainObject::Success:
 	      break;
@@ -1093,33 +1145,91 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     wavedata->setTitle(import_string_title);
   }
 
-  //
-  // Attempt to find a free cart
-  //
-  if(*cartnum==0) {
-    *cartnum=effective_group->nextFreeCart();
-  }
-  if(*cartnum==0) {
-    Log(LOG_ERR,QString().sprintf("rdimport: no free carts available in specified group\n"));
-    wavefile->closeWave();
-    import_failed_imports++;
-    import_failed_imports++;
-    if(import_drop_box) {
-      if(!import_run) {
-	NormalExit();
+  if(import_by_isci) {
+    QString isci=wavedata->isci().trimmed();
+    if(isci.isEmpty()) {
+      isci=import_string_isci.trimmed();
+      if(isci.isEmpty()) {
+	Log(LOG_WARNING,QString().sprintf(" File \"%s\" has no ISCI code, skipping...\n",
+			RDGetBasePart(filename).toUtf8().constData()));
+	wavefile->closeWave();
+	import_failed_imports++;
+	import_journal->addFailure(effective_group->name(),filename,
+				   tr("no isci code"));
+	delete wavefile;
+	delete wavedata;
+	delete effective_group;
+	return MainObject::FileBad;
       }
-      if(!import_temp_fix_filename.isEmpty()) {
-	QFile::remove(import_temp_fix_filename);
-	import_temp_fix_filename="";
-      }
+    }	
+    RDWaveData *wd=import_isci_xref.value(isci,NULL);
+    if(wd==NULL) {
+      *cartnum=0;
+    }
+    else {
+      *cartnum=wd->cartNumber();
+    }
+    if(*cartnum==0) {
+      Log(LOG_WARNING,QString().sprintf(" File \"%s\" has no ISCI xreference entry, skipping...\n",
+		      RDGetBasePart(filename).toUtf8().constData()));
+      wavefile->closeWave();
+      import_failed_imports++;
       import_journal->addFailure(effective_group->name(),filename,
-				 tr("no free cart available in group"));
+				 tr("no isci xref entry"));
       delete wavefile;
       delete wavedata;
       delete effective_group;
-      return MainObject::NoCart;
+      return MainObject::FileBad;
     }
-    ErrorExit(RDApplication::ExitImportFailed);
+    if(!effective_group->cartNumberValid(*cartnum)) {
+      Log(LOG_WARNING,QString().sprintf(" File \"%s\" cart number %06u is is not valid in group \"%s\", skipping...\n",
+		      RDGetBasePart(filename).toUtf8().constData(),
+		      *cartnum,
+		      effective_group->name().toUtf8().constData()));
+      wavefile->closeWave();
+      import_failed_imports++;
+      import_journal->addFailure(effective_group->name(),filename,
+				 tr("forbidden cart number"));
+      delete wavefile;
+      delete wavedata;
+      delete effective_group;
+      return MainObject::FileBad;
+    }
+    if(import_string_title.isEmpty()) {
+      wavedata->setTitle(import_isci_xref.value(isci)->title());
+    }
+    printf("ISCI: %s\n",isci.toUtf8().constData());
+    printf("CARTNUM: %06u\n",*cartnum);
+  }
+  else {
+    //
+    // Attempt to find a free cart
+    //
+    if(*cartnum==0) {
+      *cartnum=effective_group->nextFreeCart();
+    }
+    if(*cartnum==0) {
+      Log(LOG_ERR,QString().sprintf("rdimport: no free carts available in specified group\n"));
+      wavefile->closeWave();
+      import_failed_imports++;
+      import_failed_imports++;
+      if(import_drop_box) {
+	if(!import_run) {
+	  NormalExit();
+	}
+	if(!import_temp_fix_filename.isEmpty()) {
+	  QFile::remove(import_temp_fix_filename);
+	  import_temp_fix_filename="";
+	}
+	import_journal->addFailure(effective_group->name(),filename,
+				   tr("no free cart available in group"));
+	delete wavefile;
+	delete wavedata;
+	delete effective_group;
+	return MainObject::NoCart;
+      }
+      ErrorExit(RDApplication::ExitImportFailed);
+    }
   }
 
   //
@@ -2110,6 +2220,7 @@ bool MainObject::VerifyPattern(const QString &pattern)
 	  return false;
 	}
 	switch(pattern.at(++i).toAscii()) {
+	case 'c':
 	case 'i':
 	case 'm':
 	case 'r':
@@ -2186,6 +2297,68 @@ void MainObject::WriteTimestampCache(const QString &filename,
   }
   q=new RDSqlQuery(sql);
   delete q;
+}
+
+
+bool MainObject::LoadIsciXref(QString *err_msg,const QString &filename)
+{
+  char line[1024];
+  FILE *f=NULL;
+  bool ok=false;
+
+  *err_msg=tr("OK");
+  for(QMap<QString,RDWaveData *>::const_iterator it=import_isci_xref.begin();
+      it!=import_isci_xref.end();it++) {
+    delete it.value();
+  }
+  import_isci_xref.clear();
+
+  if((f=fopen(filename,"r"))==NULL) {
+    *err_msg=strerror(errno);
+    return false;
+  }
+
+  //
+  // Skip Header
+  //
+  fgets(line,1024,f);
+  fgets(line,1024,f);
+
+  //
+  // Load Records
+  //
+  while(fgets(line,1024,f)!=NULL) {
+    RDStringList fields=fields.split(',',line,"\"");
+    if(fields.size()==9) {
+      for(int i=0;i<fields.size();i++) {
+	fields[i]=fields[i].replace("\"","").trimmed();
+      }
+      unsigned cartnum=fields[3].right(fields[3].length()-1).toUInt(&ok);
+      if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
+	if(!fields[4].isEmpty()) {
+	  RDWaveData *wd=new RDWaveData();
+	  wd->setCartNumber(cartnum);
+	  wd->setIsci(fields[4].trimmed());
+	  if(!fields[1].trimmed().isEmpty()) {
+	    if(fields[7].isEmpty()) {
+	      wd->setTitle(fields[1].trimmed());
+	    }
+	    else {
+	      wd->setTitle(fields[1].trimmed()+" - "+fields[7]);
+	    }
+	  }
+	  import_isci_xref[fields[4].trimmed()]=wd;
+	}
+      }
+    }
+    else {
+      *err_msg=tr("invalid/corrupt data at line")+
+	QString().sprintf("%d",3+fields.size());
+      return false;
+    }
+  }
+
+  return true;
 }
 
 
