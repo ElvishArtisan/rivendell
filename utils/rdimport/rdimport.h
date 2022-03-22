@@ -37,6 +37,7 @@
 #include <rdcut.h>
 #include <rdgroup.h>
 #include <rdnotification.h>
+#include <rdsvc.h>
 #include <rdwavedata.h>
 #include <rdwavefile.h>
 
@@ -123,8 +124,6 @@ class MainObject : public QObject
   int import_segue_length;
   bool import_send_mail;
   bool import_mail_per_file;
-  bool import_dump_isci_xref;
-  bool import_by_isci;
   unsigned import_cart_number;
   QString import_metadata_pattern;
   QString import_output_pattern;
@@ -164,8 +163,10 @@ class MainObject : public QObject
   MarkerSet *import_fadedown_marker;
   MarkerSet *import_fadeup_marker;
   Journal *import_journal;
-  //  QMap<QString,unsigned> import_isci_xref;
   QMap<QString,RDWaveData *> import_isci_xref;
+  bool import_dump_isci_xref;
+  bool import_by_isci;
+  QString import_by_isci_program_code;
 };
 
 

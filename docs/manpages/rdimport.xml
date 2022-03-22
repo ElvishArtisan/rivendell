@@ -82,15 +82,19 @@
 
     <varlistentry>
       <term>
-	<option>--by-isci</option>
+	<option>--by-isci</option>[=<replaceable>service-name</replaceable>]
       </term>
       <listitem>
 	<para>
 	  Determine the target cart number by looking it up in the ISCI
 	  cross-reference table, using the ISCI code provided by the
 	  <option>--set-string-isci</option> or
-	  <option>--metadata-pattern</option> options. Useful for
-	  importing sets of copy-split audio.
+	  <option>--metadata-pattern</option> options. If
+	  <replaceable>service-name</replaceable> is given, prepend the
+	  Program Code for the specified service followed by an underscore
+	  to the ISCI code when doing the cart number lookup in the ISCI
+	  cross-reference table. Useful for importing sets of copy-split
+	  audio.
 	</para>
 	<para>
 	  This option is mutually exclusive with the 

@@ -103,6 +103,7 @@ MainObject::MainObject(QObject *parent)
   import_mail_per_file=false;
   import_journal=NULL;
   import_dump_isci_xref=false;
+  import_by_isci_program_code="";
   import_by_isci=false;
 
   //
@@ -181,6 +182,16 @@ MainObject::MainObject(QObject *parent)
     }
     if(rda->cmdSwitch()->key(i)=="--by-isci") {
       import_by_isci=true;
+      if(!rda->cmdSwitch()->value(i).isEmpty()) {
+	RDSvc *svc=new RDSvc(rda->cmdSwitch()->value(i),
+			     rda->station(),rda->config(),this);
+	if(!svc->exists()) {
+	  Log(LOG_ERR,QString("rdimport: no such service\n"));
+	  ErrorExit(RDApplication::ExitNoSvc);
+	}
+	import_by_isci_program_code=svc->programCode();
+	delete svc;
+      }
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--startdate-offset") {
@@ -486,6 +497,10 @@ MainObject::MainObject(QObject *parent)
   }
   if((!import_log_filename.isEmpty())&&import_log_syslog) {
     Log(LOG_ERR,QString().sprintf("rdimport: --log-filename and --log-syslog are mutually exclusive\n"));
+    ErrorExit(RDApplication::ExitInvalidOption);
+  }
+  if((import_cart_number>0)&&import_by_isci) {
+    Log(LOG_ERR,QString().sprintf("rdimport: --to-cart and --by-isci are mutually exclusive\n"));
     ErrorExit(RDApplication::ExitInvalidOption);
   }
 
@@ -1161,7 +1176,10 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	delete effective_group;
 	return MainObject::FileBad;
       }
-    }	
+    }
+    if(!import_by_isci_program_code.isEmpty()) {
+      isci=import_by_isci_program_code+"_"+isci;
+    }
     RDWaveData *wd=import_isci_xref.value(isci,NULL);
     if(wd==NULL) {
       *cartnum=0;
@@ -1198,8 +1216,6 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     if(import_string_title.isEmpty()) {
       wavedata->setTitle(import_isci_xref.value(isci)->title());
     }
-    printf("ISCI: %s\n",isci.toUtf8().constData());
-    printf("CARTNUM: %06u\n",*cartnum);
   }
   else {
     //
