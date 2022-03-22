@@ -20870,3 +20870,5 @@
 2022-03-22 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdimport(1) to allow the '--by-isci' option to take
 	a service name option.
+2022-03-22 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.5int0.
