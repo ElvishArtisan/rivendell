@@ -178,7 +178,7 @@ void MainObject::SendNotification(RDNotification::Action action,
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

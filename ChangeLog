@@ -22964,3 +22964,6 @@
 2022-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that caused currently playing
 	log items to disappear when loading a new log.
+2022-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdclilogedit(1) that caused startup to fail if
+	an X11 display context was not available.
