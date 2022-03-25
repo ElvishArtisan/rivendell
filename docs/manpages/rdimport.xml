@@ -82,6 +82,29 @@
 
     <varlistentry>
       <term>
+	<option>--by-isci</option>[=<replaceable>service-name</replaceable>]
+      </term>
+      <listitem>
+	<para>
+          Determine the target cart number by looking it up in the ISCI
+          cross-reference table, using the ISCI code provided by the
+          <option>--set-string-isci</option> or
+          <option>--metadata-pattern</option> options. If
+          <replaceable>service-name</replaceable> is given, prepend the
+          Program Code for the specified service followed by an underscore
+          to the ISCI code when doing the cart number lookup in the ISCI
+          cross-reference table. Useful for importing sets of copy-split
+          audio.
+	</para>
+	<para>
+          This option is mutually exclusive with the 
+          <option>--to-cart</option> option.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--cart-number-offset=</option><replaceable>offset</replaceable>
       </term>
       <listitem>
@@ -184,6 +207,18 @@
 	  specified <replaceable>filespec</replaceable>, importing and then
 	  deleting them when found.  WARNING: use of this option also implies
 	  the <option>--delete-source</option> option!
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--dump-isci-xref</option>
+      </term>
+      <listitem>
+	<para>
+          Print a copy of the current ISCI cross-reference table and then
+          exit. Useless except for debugging.
 	</para>
       </listitem>
     </varlistentry>

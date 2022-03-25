@@ -2,7 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,11 +24,11 @@
 #include <list>
 #include <vector>
 
-#include <qobject.h>
-#include <qsqldatabase.h>
-#include <qfileinfo.h>
-#include <qdatetime.h>
+#include <QDateTime>
+#include <QFileInfo>
 #include <QList>
+#include <QMap>
+#include <QObject>
 #include <QStringList>
 
 #include <rdapplication.h>
@@ -36,6 +36,7 @@
 #include <rdcut.h>
 #include <rdgroup.h>
 #include <rdnotification.h>
+#include <rdsvc.h>
 #include <rdwavedata.h>
 #include <rdwavefile.h>
 
@@ -75,6 +76,7 @@ class MainObject : public QObject
   void DeleteCuts(unsigned cartnum);
   QDateTime GetCachedTimestamp(const QString &filename);
   void WriteTimestampCache(const QString &filename,const QDateTime &dt);
+  bool LoadIsciXref(QString *err_msg,const QString &filename);
   bool SchedulerCodeExists(const QString &code) const;
   void ReadXmlFile(const QString &basename,RDWaveData *wavedata) const;
   void Log(int prio,const QString &msg) const;
@@ -160,6 +162,10 @@ class MainObject : public QObject
   MarkerSet *import_fadedown_marker;
   MarkerSet *import_fadeup_marker;
   Journal *import_journal;
+  QMap<QString,RDWaveData *> import_isci_xref;
+  bool import_dump_isci_xref;
+  bool import_by_isci;
+  QString import_by_isci_program_code;
 };
 
 
