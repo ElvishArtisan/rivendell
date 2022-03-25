@@ -22967,3 +22967,6 @@
 2022-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdclilogedit(1) that caused startup to fail if
 	an X11 display context was not available.
+2022-03-25 David Klann <dklann@broadcasttool.com>
+	* Implemented sorting of the dropbox list in the 'Rivendell
+	Dropbox List' dialog in rdadmin(1).
