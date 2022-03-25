@@ -22961,3 +22961,6 @@
  	* Fixed a regression in rdlogedit(1) that caused events from
 	previously viewed logs to be prepended to subsequent logs viewed
 	during the same session.
+2022-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused currently playing
+	log items to disappear when loading a new log.

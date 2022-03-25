@@ -450,6 +450,7 @@ int EditLog::exec(const QString &logname,QStringList *new_logs)
   }
   edit_log=new RDLog(edit_logname);
   edit_logname_label->setText(edit_logname);
+  edit_log_model->clear();
   edit_log_model->setLogName(edit_logname);
   edit_log_model->load(true);
   edit_log_view->resizeColumnsToContents();
