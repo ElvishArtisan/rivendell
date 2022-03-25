@@ -20,6 +20,13 @@
 
 #include "logmodel.h"
 
+LogModel::LogModel(const QString &logname,QObject *parent)
+  : RDLogModel(logname,false,parent)
+{
+  d_group_list=new RDGroupList();
+}
+
+
 LogModel::LogModel(QObject *parent)
   : RDLogModel(parent)
 {

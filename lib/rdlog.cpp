@@ -465,9 +465,7 @@ int RDLog::removeTracks(RDStation *station,RDUser *user,RDConfig *config) const
 
 RDLogModel *RDLog::createLogEvent() const
 {
-  RDLogModel *model=new RDLogModel(false);
-  model->setLogName(name());
-  return model;
+  return new RDLogModel(name(),false);
 }
 
 
@@ -615,12 +613,6 @@ bool RDLog::remove(const QString &name,RDStation *station,RDUser *user,
   ret=log->remove(station,user,config);
   delete log;
   return ret;
-}
-
-
-bool RDLog::remove(const QString &name)
-{
-  return RDLog::remove(name,rda->station(),rda->user(),rda->config());
 }
 
 

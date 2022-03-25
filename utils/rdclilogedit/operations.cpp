@@ -250,8 +250,7 @@ void MainObject::Load(QString logname)
 
   edit_log=new RDLog(logname);
   if(edit_log->exists()) {
-    edit_log_model=new RDLogModel(false,this);
-    edit_log_model->setLogName(logname);
+    edit_log_model=new RDLogModel(logname,false,this);
     edit_log_model->load();
     edit_description=edit_log->description();
     edit_service=edit_log->service();
@@ -363,8 +362,7 @@ void MainObject::New(const QString &logname)
   }
   edit_log=new RDLog(logname);
   if(!edit_log->exists()) {
-    edit_log_model=new RDLogModel(false,this);
-    edit_log_model->setLogName(logname);
+    edit_log_model=new RDLogModel(logname,false,this);
     edit_description=logname+" log";
     sql=QString("select `NAME` from `SERVICES`");
     q=new RDSqlQuery(sql);

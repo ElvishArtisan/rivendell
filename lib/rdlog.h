@@ -84,7 +84,6 @@ class RDLog
    static bool exists(const QString &name);
    static bool remove(const QString &name,RDStation *station,RDUser *user,
 		      RDConfig *config);
-   static bool remove(const QString &name);
 
   private:
    int GetIntValue(const QString &field) const;

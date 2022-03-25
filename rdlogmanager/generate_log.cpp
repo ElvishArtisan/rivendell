@@ -329,8 +329,7 @@ void GenerateLog::createData()
   //
   // Generate Exception Report
   //
-  RDLogModel *model=new RDLogModel(false,this);
-  model->setLogName(logname);
+  RDLogModel *model=new RDLogModel(logname,false,this);
   model->load();
   if((model->validate(&report,gen_date_edit->date())==0)&&
      unused_report.isEmpty()) {

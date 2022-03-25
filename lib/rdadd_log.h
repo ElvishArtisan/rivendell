@@ -36,14 +36,11 @@ class RDAddLog : public RDDialog
 {
   Q_OBJECT
  public:
-  RDAddLog(RDLogFilter::FilterMode mode,const QString &caption,
-	   QWidget *parent=0);
+  RDAddLog(QString *logname,QString *svcname,RDLogFilter::FilterMode mode,
+	   const QString &caption,QWidget *parent=0);
   ~RDAddLog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-
- public slots:
-  int exec(QString *logname,QString *svcname);
 
  private slots:
   void okData();
@@ -60,7 +57,6 @@ class RDAddLog : public RDDialog
   QPushButton *add_cancel_button;
   QString *log_name;
   QString *log_svc;
-  RDLogFilter::FilterMode log_filter_mode;
 };
 
 

@@ -1452,8 +1452,7 @@ unsigned RDFeed::postLog(const QString &logname,const QTime &start_time,
   //
   // Open Log
   //
-  log_model=new RDLogModel(false,this);
-  log_model->setLogName(logname);
+  log_model=new RDLogModel(logname,false,this);
   log_model->load();
   if(!log_model->exists()) {
     *err=RDFeed::ErrorNoLog;

@@ -287,8 +287,7 @@ void MainObject::userData()
     fprintf(stderr,"rdrender: no such log\n");
     exit(1);
   }
-  RDLogModel *log_model=new RDLogModel(false,this);
-  log_model->setLogName(render_logname);
+  RDLogModel *log_model=new RDLogModel(render_logname,false,this);
   log_model->load();
 
   //

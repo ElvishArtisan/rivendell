@@ -25,9 +25,10 @@
 #include "rdlog_line.h"
 #include "rdlogmodel.h"
 
-RDLogModel::RDLogModel(bool read_only,QObject *parent)
+RDLogModel::RDLogModel(const QString &logname,bool read_only,QObject *parent)
   : QAbstractTableModel(parent)
 {
+  d_log_name=logname;
   d_read_only=read_only;
 
   MakeModel();
@@ -246,8 +247,6 @@ QString RDLogModel::logName() const
 
 void RDLogModel::setLogName(QString logname)
 {
-  clear();
-  printf("RDLogModel::setLogName(%s)\n",logname.toUtf8().constData());
   RDLog *log=new RDLog(logname);
   d_log_name=log->name();  // So we normalize the case
   delete log;
@@ -353,7 +352,6 @@ int RDLogModel::append(const QString &logname,bool track_ptrs)
 
 void RDLogModel::clear()
 {
-  printf("RDLogModel::clear()\n");
   if(d_log_lines.size()>0) {
     beginResetModel();
     for(int i=0;i<d_log_lines.size();i++) {

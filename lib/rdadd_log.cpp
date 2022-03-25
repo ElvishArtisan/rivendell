@@ -26,14 +26,16 @@
 #include "rdidvalidator.h"
 #include "rdadd_log.h"
 
-RDAddLog::RDAddLog(RDLogFilter::FilterMode mode,const QString &caption,
+RDAddLog::RDAddLog(QString *logname,QString *svcname,
+		   RDLogFilter::FilterMode mode,const QString &caption,
 		   QWidget *parent)
   : RDDialog(parent)
 {
   QStringList services_list;
-  log_name=NULL;
-  log_svc=NULL;
-  log_filter_mode=mode;
+  QString sql;
+  RDSqlQuery *q;
+  log_name=logname;
+  log_svc=svcname;
 
   //
   // Fix the Window Size
@@ -41,7 +43,7 @@ RDAddLog::RDAddLog(RDLogFilter::FilterMode mode,const QString &caption,
   setMinimumSize(sizeHint());
   setMinimumSize(sizeHint());
 
-  setWindowTitle(caption);
+  setWindowTitle(tr("Create Log"));
 
   //
   // Validator
@@ -94,6 +96,33 @@ RDAddLog::RDAddLog(RDLogFilter::FilterMode mode,const QString &caption,
   add_cancel_button->setFont(buttonFont());
   add_cancel_button->setText(tr("Cancel"));
   connect(add_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+
+  //
+  // Populate Data
+  //
+  switch(mode) {
+  case RDLogFilter::NoFilter:
+    sql=QString("select `NAME` from `SERVICES` order by `NAME`");
+    break;
+
+  case RDLogFilter::UserFilter:
+    sql=QString("select `SERVICE_NAME` from `USER_SERVICE_PERMS` where ")+
+      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"' "+
+      "order by `SERVICE_NAME`";
+    break;
+
+  case RDLogFilter::StationFilter:
+    sql=QString("select `SERVICE_NAME` from `SERVICE_PERMS` where ")+
+      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' "+
+      "order by `SERVICE_NAME`";
+    break;
+  }
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    add_service_box->
+      insertItem(add_service_box->count(),q->value(0).toString());
+  }
+  add_name_edit->setText(*logname);
 }
 
 
@@ -112,44 +141,6 @@ QSize RDAddLog::sizeHint() const
 QSizePolicy RDAddLog::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-}
-
-
-int RDAddLog::exec(QString *logname,QString *svcname)
-{
-  QString sql;
-  RDSqlQuery *q;
-  log_name=logname;
-  log_svc=svcname;
-
-  switch(log_filter_mode) {
-  case RDLogFilter::NoFilter:
-    sql=QString("select `NAME` from `SERVICES` order by `NAME`");
-    break;
-
-  case RDLogFilter::UserFilter:
-    sql=QString("select `SERVICE_NAME` from `USER_SERVICE_PERMS` where ")+
-      "`USER_NAME`='"+RDEscapeString(rda->user()->name())+"' "+
-      "order by `SERVICE_NAME`";
-    break;
-
-  case RDLogFilter::StationFilter:
-    sql=QString("select `SERVICE_NAME` from `SERVICE_PERMS` where ")+
-      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' "+
-      "order by `SERVICE_NAME`";
-    break;
-  }
-  q=new RDSqlQuery(sql);
-  add_service_box->clear();
-  while(q->next()) {
-    add_service_box->
-      insertItem(add_service_box->count(),q->value(0).toString());
-    if(q->value(0).toString()==*log_svc) {
-      add_service_box->setCurrentIndex(add_service_box->count()-1);
-    }
-  }
-  add_name_edit->setText(*logname);
-  return QDialog::exec();
 }
 
 

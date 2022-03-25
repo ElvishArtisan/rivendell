@@ -23,7 +23,6 @@
 
 #include <QPushButton>
 
-#include <rdadd_log.h>
 #include <rddialog.h>
 #include <rdlogfilter.h>
 #include <rdloglistmodel.h>
@@ -71,7 +70,6 @@ class ListLogs : public RDDialog
   QPushButton *list_cancel_button;
   RDLogPlay *list_log;
   RDLogLock **list_log_lock;
-  RDAddLog *list_addlog_dialog;
 };
 
 

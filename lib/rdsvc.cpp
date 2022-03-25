@@ -1008,10 +1008,8 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   //
   // Iterate Through the Log
   //
-  src_model=new RDLogModel(true,this);
-  src_model->setLogName(logname);
-  dst_model=new RDLogModel(true,this);
-  dst_model->setLogName(logname);
+  src_model=new RDLogModel(logname,true,this);
+  dst_model=new RDLogModel(logname,true,this);
   src_model->load();
   for(int i=0;i<src_model->lineCount();i++) {
     logline=src_model->logLine(i);
@@ -1165,10 +1163,8 @@ bool RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname,
 	break;
   }
 
-  RDLogModel *src_model=new RDLogModel(false,this);
-  src_model->setLogName(logname);
-  RDLogModel *dst_model=new RDLogModel(false,this);
-  dst_model->setLogName(logname);
+  RDLogModel *src_model=new RDLogModel(logname,false,this);
+  RDLogModel *dst_model=new RDLogModel(logname,false,this);
   src_model->load();
   RDLogLine *logline=NULL;
   for(int i=0;i<src_model->lineCount();i++) {
@@ -1814,8 +1810,7 @@ bool RDSvc::ResolveInlineEvents(const QString &logname,QString *err_msg)
 
   switch(subEventInheritance()) {
   case RDSvc::ParentEvent:
-    model=new RDLogModel(false,this);
-    model->setLogName(logname);
+    model=new RDLogModel(logname,false,this);
     model->load();
     ok=true;
     for(int i=0;i<model->lineCount();i++) {

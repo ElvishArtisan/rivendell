@@ -40,7 +40,6 @@ class RDLogFilter : public QWidget
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   QString whereSql() const;
-  QString currentServiceName() const;
 
  public slots:
   void changeUser();

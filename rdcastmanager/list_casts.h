@@ -50,6 +50,7 @@ class ListCasts : public RDDialog
   void deleteData();
   void doubleClickedData(const QModelIndex &index);
   void userChangedData();
+  void filterChangedData(const QString &str);
   void modelResetData();
   void rowsInsertedData(const QModelIndex &parent,int start,int end);
   void postProgressChangedData(int step);

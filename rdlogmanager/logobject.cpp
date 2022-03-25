@@ -107,8 +107,7 @@ void LogObject::userData()
       //
       // Generate Exception Report
       //
-      RDLogModel *model=new RDLogModel(false,this);
-      model->setLogName(logname);
+      RDLogModel *model=new RDLogModel(logname,false,this);
       model->load();
       if((model->validate(&report,start_date)!=0)||
 	 (!unused_report.isEmpty())) {

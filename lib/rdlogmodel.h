@@ -35,7 +35,7 @@ class RDLogModel : public QAbstractTableModel
   Q_OBJECT
  public:
   enum StartTimeStyle {Estimated=0,Scheduled=1};
-  RDLogModel(bool read_only,QObject *parent=0);
+  RDLogModel(const QString &logname,bool read_only,QObject *parent=0);
   RDLogModel(QObject *parent=0);
   ~RDLogModel();
   QPalette palette();

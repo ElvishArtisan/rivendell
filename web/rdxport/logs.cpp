@@ -292,9 +292,7 @@ void Xport::SaveLog()
   //
   // Logline Data
   //
-  //  RDLogModel *logmodel=new RDLogModel(log_name,false,this);
-  RDLogModel *logmodel=new RDLogModel(false,this);
-  logmodel->setLogName(log_name);
+  RDLogModel *logmodel=new RDLogModel(log_name,false,this);
   for(int i=0;i<line_quantity;i++) {
     logmodel->insert(i,1);
     RDLogLine *ll=logmodel->logLine(i);

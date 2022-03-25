@@ -158,15 +158,6 @@ QString RDLogFilter::whereSql() const
 }
 
 
-QString RDLogFilter::currentServiceName() const
-{
-  if(filter_service_box->currentText()==tr("ALL")) {
-    return QString();
-  }
-  return filter_service_box->currentText();
-}
-
-
 void RDLogFilter::changeUser()
 {
   if(filter_filter_mode==RDLogFilter::UserFilter) {

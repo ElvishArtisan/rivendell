@@ -978,8 +978,9 @@ void EditLog::saveasData()
   QString err_msg;
 
   if(rda->user()->createLog()) {
-    log=new RDAddLog(RDLogFilter::UserFilter,"RDLogEdit",this);
-    if(log->exec(&logname,&svcname)<0) {
+    log=new RDAddLog(&logname,&svcname,RDLogFilter::UserFilter,
+		     tr("Add Log"),this);
+    if(log->exec()<0) {
       return;
     }
     if(!RDLog::create(logname,svcname,QDate(),rda->ripc()->user(),&err_msg,
@@ -1070,8 +1071,6 @@ void EditLog::okData()
 
 void EditLog::cancelData()
 {
-  bool ret=false;
-
   if(edit_changed) {
     switch(QMessageBox::question(this,
 	   tr("RDLogEdit"),
@@ -1085,7 +1084,6 @@ void EditLog::cancelData()
 	    return;
       }
       SaveLog();
-      ret=true;
       break;
 
     case QMessageBox::Cancel:
@@ -1100,7 +1098,7 @@ void EditLog::cancelData()
   }
   delete edit_log_lock;
   edit_log_lock=NULL;
-  done(ret);
+  done(false);
 }
 
 

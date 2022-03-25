@@ -247,8 +247,7 @@ void ListCasts::addLogData()
   RDListLogs *lld=
     new RDListLogs(&logname,RDLogFilter::UserFilter,"RDCastManager",this);
   if(lld->exec()) {
-    RDLogModel *model=new RDLogModel(true,this);
-    model->setLogName(logname);
+    RDLogModel *model=new RDLogModel(logname,true,this);
     model->load();
     QTime start_time;
     bool ignore_stops=true;
@@ -396,6 +395,12 @@ void ListCasts::userChangedData()
   list_edit_button->setEnabled(rda->user()->editPodcast()&&(!is_superfeed));
   list_delete_button->
     setEnabled(rda->user()->deletePodcast()&&(!is_superfeed));
+}
+
+
+void ListCasts::filterChangedData(const QString &str)
+{
+  //  RefreshList();
 }
 
 

@@ -38,9 +38,6 @@ ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)
   list_log=log;
   setWindowTitle("RDAirPlay - "+tr("Select Log"));
 
-  list_addlog_dialog=new RDAddLog(RDLogFilter::StationFilter,
-				  "RDAirPlay - "+tr("Rename Log"),this);
-
   //
   // Filter Widget
   //
@@ -184,7 +181,11 @@ void ListLogs::saveAsButtonData()
 {
   QString logname;
   QString svcname=*list_svcname;
-  if(list_addlog_dialog->exec(&logname,&svcname)<0) {
+  RDAddLog *log;
+  log=new RDAddLog(&logname,&svcname,RDLogFilter::StationFilter,
+		   tr("Rename Log"),this);
+  if(log->exec()<0) {
+    delete log;
     return;
   }
   *list_logname=logname;
