@@ -22957,3 +22957,7 @@
 	  during the same session.
 	2022-03-09 Fred Gleason <fredg@paravelsystems.com>
 	  * Refactored the 'RDAddLog' dialog to allow for instance reuse.
+2022-03-25 Fred Gleason <fredg@paravelsystems.com>
+ 	* Fixed a regression in rdlogedit(1) that caused events from
+	previously viewed logs to be prepended to subsequent logs viewed
+	during the same session.

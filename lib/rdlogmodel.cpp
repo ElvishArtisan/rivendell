@@ -247,6 +247,7 @@ QString RDLogModel::logName() const
 
 void RDLogModel::setLogName(QString logname)
 {
+  clear();
   RDLog *log=new RDLog(logname);
   d_log_name=log->name();  // So we normalize the case
   delete log;
