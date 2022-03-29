@@ -2,7 +2,7 @@
 //
 // Command Line Operations for RDLogManager
 //
-//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <QApplication>
+#include <QCoreApplication>
 
 #include <dbversion.h>
 #include <rdapplication.h>
@@ -36,7 +36,7 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
   QString out_path;
   QString err_msg;
 
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv);
 
   if(end_offset<start_offset) {
     fprintf(stderr,
