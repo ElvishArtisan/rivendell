@@ -31,7 +31,8 @@
 #include <globals.h>
 
 int RunReportOperation(int argc,char *argv[],const QString &rptname,
-		       bool protect_existing,int start_offset,int end_offset)
+		       bool protect_existing,int start_offset,int end_offset,
+		       double aggregate_tuning_hours)
 {
   QString out_path;
   QString err_msg;
@@ -60,6 +61,14 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
   }
 
   //
+  // Check for Aggregate Tuning Hours
+  //
+  if((aggregate_tuning_hours<0)&&(report->aggregateTuningHoursRequired())) {
+    fprintf(stderr,"rdlogmanager: -h option required\n");
+    return RDApplication::ExitInvalidOption;
+  }
+
+  //
   // Generate Report
   //
   QDate yesterday=QDate::currentDate().addDays(-1);
@@ -71,7 +80,7 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
   }
   if(!report->generateReport(yesterday.addDays(start_offset),
 			     yesterday.addDays(end_offset),rda->station(),
-			     &out_path)) {
+			     &out_path,aggregate_tuning_hours)) {
     fprintf(stderr,"rdlogmanager: report generation failed [%s]\n",
 	    RDReport::errorText(report->errorCode()).toUtf8().constData());
     return RDApplication::ExitReportFailed;

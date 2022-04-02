@@ -84,14 +84,16 @@ class RDReport
   QTime endTime(bool *is_null=NULL) const;
   void setEndTime(const QTime &time) const;
   void setEndTime() const;
+  bool aggregateTuningHoursRequired() const;
   RDReport::ErrorCode errorCode() const;
   bool outputExists(const QDate &startdate);
   bool generateReport(const QDate &startdate,const QDate &enddate,
-		      RDStation *station,QString *out_path);
+		      RDStation *station,QString *out_path,double ath=-1.0);
   static QString filterText(RDReport::ExportFilter filter);
   static QString stationTypeText(RDReport::StationType type);
   static bool multipleDaysAllowed(RDReport::ExportFilter filter);
   static bool multipleMonthsAllowed(RDReport::ExportFilter filter);
+  static bool aggregateTuningHoursRequired(RDReport::ExportFilter filter);
   static QString errorText(RDReport::ErrorCode code);
   static QString leftJustify(const QString &str,int width);
   static QString rightJustify(const QString &str,int width);
@@ -108,7 +110,7 @@ class RDReport
 		       const QDate &enddate,bool incl_hdr,bool incl_crs,
 		       const QString &mixtable);
   bool ExportSoundEx(const QString &filename,const QDate &startdate,
-		     const QDate &enddate,const QString &mixtable);
+		     const QDate &enddate,double ath,const QString &mixtable);
   bool ExportNprSoundEx(const QString &filename,const QDate &startdate,
 			const QDate &enddate,const QString &mixtable);
   bool ExportRadioTraffic(const QString &filename,const QDate &startdate,

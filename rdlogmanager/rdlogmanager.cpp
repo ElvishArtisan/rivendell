@@ -2,7 +2,7 @@
 //
 // The Log Generator Utility for Rivendell.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -288,6 +288,8 @@ int main(int argc,char *argv[])
   QString cmd_report=NULL;
   int cmd_start_offset=0;
   int cmd_end_offset=0;
+  double cmd_hours=-1.0;
+  bool ok=false;
 
   RDCmdSwitch *cmd=
     new RDCmdSwitch(argc,argv,"rdlogmanager",RDLOGMANAGER_USAGE);
@@ -366,6 +368,21 @@ int main(int argc,char *argv[])
       }
       cmd->setProcessed(i,true);
     }
+    if (cmd->key(i)=="-h") {
+      if (i+1<cmd->keys()) {
+	i++;
+	cmd_hours=cmd->key(i).toDouble(&ok);
+	if((!ok)||(cmd_hours<0.0)) {
+	  fprintf(stderr,"rdlogmanager: invalid argument to -h\n");
+	  exit(RDApplication::ExitInvalidOption);
+	}
+      }
+      else {
+	fprintf(stderr,"rdlogmanager: missing argument to \"-h\"\n");
+	exit(RDApplication::ExitInvalidOption);
+      }
+      cmd->setProcessed(i,true);
+    }
     if(!cmd->processed(i)) {
       fprintf(stderr,"rdlogmanager: unknown command option \"%s\"\n",
 	      cmd->key(i).toUtf8().constData());
@@ -388,7 +405,7 @@ int main(int argc,char *argv[])
  }
   if(!cmd_report.isEmpty()) {
     return RunReportOperation(argc,argv,cmd_report,cmd_protect_existing,
-			      cmd_start_offset,cmd_end_offset);
+			      cmd_start_offset,cmd_end_offset,cmd_hours);
   }
   return gui_main(argc,argv);
 }

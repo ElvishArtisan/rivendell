@@ -2,7 +2,7 @@
 //
 // The Log Manager Utility for Rivendell.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,7 +38,7 @@ extern int RunLogOperation(int argc,char *argv[],const QString &svcname,
 			   bool merge_mus,bool merge_tfc);
 extern int RunReportOperation(int argc,char *argv[],const QString &rptname,
 			      bool protect_existing,int start_offset,
-			      int end_offset);
+			      int end_offset,double aggregate_tuning_hours);
 
 class MainWidget : public RDMainWindow
 {

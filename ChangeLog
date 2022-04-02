@@ -22970,3 +22970,8 @@
 2022-03-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogmanager(1) that caused startup to fail when
 	using the '-r' option when an X11 display context was not available.
+2022-04-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) where attempting to generate
+	a SoundExchange Statutory License report using the command-line
+	option would cause a crash.
+	* Added an '-h' option to rdlogmanager(1).

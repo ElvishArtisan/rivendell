@@ -298,6 +298,12 @@ void RDReport::setEndTime() const
 }
 
 
+bool RDReport::aggregateTuningHoursRequired() const
+{
+  return RDReport::aggregateTuningHoursRequired(filter());
+}
+
+
 RDReport::ErrorCode RDReport::errorCode() const
 {
   return report_error_code;
@@ -314,7 +320,7 @@ bool RDReport::outputExists(const QDate &startdate)
 
 
 bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
-			      RDStation *station,QString *out_path)
+			      RDStation *station,QString *out_path,double ath)
 {
   QString sql;
   RDSqlQuery *q;
@@ -595,7 +601,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     break;
 
   case RDReport::SoundExchange:
-    ret=ExportSoundEx(filename,startdate,enddate,mixname);
+    ret=ExportSoundEx(filename,startdate,enddate,ath,mixname);
     break;
 
   case RDReport::NprSoundExchange:
@@ -833,6 +839,43 @@ bool RDReport::multipleMonthsAllowed(RDReport::ExportFilter filter)
   return true;
 }
 
+
+bool RDReport::aggregateTuningHoursRequired(RDReport::ExportFilter filter)
+{
+  bool ret=false;
+
+  switch(filter) {
+  case RDReport::CbsiDeltaFlex:
+  case RDReport::TextLog:
+  case RDReport::BmiEmr:
+  case RDReport::RadioTraffic:
+  case RDReport::RadioTraffic2:
+  case RDReport::VisualTraffic:
+  case RDReport::CounterPoint:
+  case RDReport::CounterPoint2:
+  case RDReport::MrMaster:
+  case RDReport::Music1:
+  case RDReport::MusicClassical:
+  case RDReport::MusicPlayout:
+  case RDReport::NaturalLog:
+  case RDReport::WideOrbit:
+  case RDReport::CutLog:
+  case RDReport::ResultsReport:
+  case RDReport::MusicSummary:
+  case RDReport::NprSoundExchange:
+  case RDReport::SpinCount:
+  case RDReport::Technical:
+  case RDReport::LastFilter:
+    ret=false;
+    break;
+
+  case RDReport::SoundExchange:
+    ret=true;
+    break;
+  }
+
+  return ret;
+}
 
 QString RDReport::errorText(RDReport::ErrorCode code)
 {

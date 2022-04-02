@@ -31,7 +31,8 @@
 #include "rdreport.h"
 
 bool RDReport::ExportSoundEx(const QString &filename,const QDate &startdate,
-			     const QDate &enddate,const QString &mixtable)
+			     const QDate &enddate,double ath,
+			     const QString &mixtable)
 {
   QString sql;
   RDSqlQuery *q;
@@ -49,11 +50,12 @@ bool RDReport::ExportSoundEx(const QString &filename,const QDate &startdate,
   //
   // Get ATH Value
   //
-  double ath=0.0;
-  RDGetAth *getath=new RDGetAth(&ath);
-  if(getath->exec()<0) {
-    report_error_code=RDReport::ErrorCanceled;
-    return false;
+  if(ath<0.0) {
+    RDGetAth *getath=new RDGetAth(&ath);
+    if(getath->exec()<0) {
+      report_error_code=RDReport::ErrorCanceled;
+      return false;
+    }
   }
 
   QFile *file=new QFile(filename);

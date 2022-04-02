@@ -183,6 +183,21 @@
 	</para>
       </listitem>
     </varlistentry>
+    <varlistentry>
+      <term>
+	<option>-h
+	<arg choice='req'><replaceable>hours</replaceable></arg>
+	</option>
+      </term>
+      <listitem>
+	<para>
+	  Supply the Aggregate Tuning Hours value in hours. Currently only
+	  required for the
+	  <computeroutput>SoundExchange Statutory License</computeroutput>
+	  report.
+	</para>
+      </listitem>
+    </varlistentry>
   </variablelist>
   </refsect1>
 
