@@ -22975,3 +22975,7 @@
 	a SoundExchange Statutory License report using the command-line
 	option would cause a crash.
 	* Added an '-h' option to rdlogmanager(1).
+2022-04-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Marker Viewer' dialog that caused the cursor
+	to be repositioned to outside of the waveform viewport when zooming
+	into or out from the waveform.

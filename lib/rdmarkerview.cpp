@@ -2,7 +2,7 @@
 //
 // Widget for displaying/editing cut markers
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -367,6 +367,8 @@ RDMarkerView::RDMarkerView(int width,int height,QWidget *parent)
   d_scene=NULL;
   d_sample_rate=rda->system()->sampleRate();
   d_right_margin=0;
+  printf("clearing cursor\n");
+  d_cursor=NULL;
   clear();
 
   d_view=new QGraphicsView(this);
@@ -795,7 +797,6 @@ void RDMarkerView::clear()
   }
   d_no_segue_fade=false;
   d_play_gain=0;
-  d_cursor=NULL;
   d_shrink_factor=1;
   d_max_shrink_factor=1;
   d_pad_size=0;
@@ -1157,8 +1158,15 @@ int RDMarkerView::Msec(int frame) const
 void RDMarkerView::SetShrinkFactor(int sf)
 {
   if((d_shrink_factor!=sf)&&(sf<=d_max_shrink_factor)) {
+
+    //
+    // Reposition cursor
+    //
+    int x=LEFT_MARGIN+(d_cursor->pos().x()-LEFT_MARGIN)*d_shrink_factor/sf;
+    d_cursor->setPos(x,0);
     d_shrink_factor=sf;
     WriteWave();
+    gotoCursor();
     emit canShrinkTimeChanged(canShrinkTime());
     emit canGrowTimeChanged(canGrowTime());
   }
@@ -1256,7 +1264,9 @@ void RDMarkerView::WriteWave()
   DrawMarker(RDMarkerHandle::Start,RDMarkerHandle::CutStart,20);
   DrawMarker(RDMarkerHandle::End,RDMarkerHandle::CutEnd,20);
 
-  d_cursor=new QGraphicsLineItem(0,0,0,d_height);
+  if(d_cursor==NULL) {
+    d_cursor=new QGraphicsLineItem(0,0,0,d_height);
+  }
   QPen pen(Qt::green);
   pen.setWidth(2);
   d_cursor->setPen(pen);
