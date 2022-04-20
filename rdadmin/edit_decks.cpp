@@ -329,16 +329,20 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_format_box->insertItem(edit_format_box->count(),tr("MPEG Layer 2"));
   edit_channels_box->insertItem(0,"1");
   edit_channels_box->insertItem(1,"2");
-  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("32 kbps/chan"));
-  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("48 kbps/chan"));
-  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("56 kbps/chan"));
-  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("64 kbps/chan"));
-  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("80 kbps/chan"));
-  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("96 kbps/chan"));
-  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("112 kbps/chan"));
-  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("128 kbps/chan"));
-  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("160 kbps/chan"));
-  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("192 kbps/chan"));
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("32 kbps/chan"),32);
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("48 kbps/chan"),48);
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("56 kbps/chan"),56);
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("64 kbps/chan"),64);
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("80 kbps/chan"),80);
+  edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("96 kbps/chan"),96);
+  edit_bitrate_box->
+    insertItem(edit_bitrate_box->count(),tr("112 kbps/chan"),112);
+  edit_bitrate_box->
+    insertItem(edit_bitrate_box->count(),tr("128 kbps/chan"),128);
+  edit_bitrate_box->
+    insertItem(edit_bitrate_box->count(),tr("160 kbps/chan"),160);
+  edit_bitrate_box->
+    insertItem(edit_bitrate_box->count(),tr("192 kbps/chan"),192);
   ReadRecord(edit_record_channel);
   ReadRecord(edit_play_channel);
   ReadRecord(0);
@@ -698,7 +702,6 @@ void EditDecks::ReadRecord(int chan)
 
 void EditDecks::WriteRecord(int chan)
 {
-  int temp;
   QString sql;
   RDSqlQuery *q;
   unsigned cartnum=0;
@@ -736,8 +739,8 @@ void EditDecks::WriteRecord(int chan)
       break;
     }
     edit_record_deck->setDefaultChannels(edit_channels_box->currentIndex()+1);
-    temp=edit_bitrate_box->currentText().toInt();
-    edit_record_deck->setDefaultBitrate(temp*1000);
+    edit_record_deck->setDefaultBitrate(1000*edit_bitrate_box->
+		 itemData(edit_bitrate_box->currentIndex()).toInt());
     edit_record_deck->setSwitchStation(edit_swstation_box->currentText());
     edit_record_deck->setSwitchMatrix(GetMatrix());
     edit_record_deck->setSwitchOutput(GetOutput());

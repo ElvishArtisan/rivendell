@@ -22979,3 +22979,7 @@
 	* Fixed a bug in the 'Marker Viewer' dialog that caused the cursor
 	to be repositioned to outside of the waveform viewport when zooming
 	into or out from the waveform.
+2022-04-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused a bitrate value of '0' to
+	be saved to 'RECORDINGS.BITRATE' field in the database regardless
+	of the setting in the 'Configure RDCatch' dialog.
