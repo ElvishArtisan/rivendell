@@ -2,7 +2,7 @@
 //
 // Edit Audio Export Settings
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2021\2 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -240,14 +240,15 @@ int RDExportSettingsDialog::exec(RDSettings *s,unsigned id)
   lib_channels_box->insertItem(lib_channels_box->count(),"1");
   lib_channels_box->insertItem(lib_channels_box->count(),"2");
   lib_channels_box->setCurrentIndex(lib_settings->channels()-1);
-  lib_samprate_box->insertItem(lib_samprate_box->count(),"16000");
-  lib_samprate_box->insertItem(lib_samprate_box->count(),"22050");
-  lib_samprate_box->insertItem(lib_samprate_box->count(),"24000");
-  lib_samprate_box->insertItem(lib_samprate_box->count(),"32000");
-  lib_samprate_box->insertItem(lib_samprate_box->count(),"44100");
-  lib_samprate_box->insertItem(lib_samprate_box->count(),"48000");
+  lib_samprate_box->insertItem(lib_samprate_box->count(),"16000",16000);
+  lib_samprate_box->insertItem(lib_samprate_box->count(),"22050",22050);
+  lib_samprate_box->insertItem(lib_samprate_box->count(),"24000",24000);
+  lib_samprate_box->insertItem(lib_samprate_box->count(),"32000",32000);
+  lib_samprate_box->insertItem(lib_samprate_box->count(),"44100",44100);
+  lib_samprate_box->insertItem(lib_samprate_box->count(),"48000",48000);
   for(int i=0;i<lib_samprate_box->count();i++) {
-    if(lib_samprate_box->itemData(i).toString().toUInt()==lib_settings->sampleRate()) {
+    if(lib_samprate_box->itemData(i).toString().toUInt()==
+       lib_settings->sampleRate()) {
       lib_samprate_box->setCurrentIndex(i);
     }
   }

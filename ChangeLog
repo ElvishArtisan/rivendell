@@ -22983,3 +22983,7 @@
 	* Fixed a bug in rdadmin(1) that caused a bitrate value of '0' to
 	be saved to 'RECORDINGS.BITRATE' field in the database regardless
 	of the setting in the 'Configure RDCatch' dialog.
+2022-04-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that caused the 'Sample Rate'
+	dropdown in the 'Edit Audio Settings' dialog to always be set
+	to '32000' regardless of the actual value in the record.
