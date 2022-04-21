@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Deck Configuration
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -729,21 +729,6 @@ void EditDecks::WriteRecord(int chan)
 	edit_record_deck->setDefaultMonitorOn(true);
       }
     }
-    /*
-    switch(edit_format_box->currentIndex()) {
-    case 0:
-      edit_record_deck->setDefaultFormat(RDSettings::Pcm16);
-      break;
-
-    case 1:
-      edit_record_deck->setDefaultFormat(RDSettings::Pcm24);
-      break;
-
-    case 2:
-      edit_record_deck->setDefaultFormat(RDSettings::MpegL2);
-      break;
-    }
-    */
     edit_record_deck->
       setDefaultFormat((RDCae::AudioCoding)edit_format_box->
 		       itemData(edit_format_box->currentIndex()).toInt());

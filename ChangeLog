@@ -22991,3 +22991,5 @@
 	* Fixed bug in the RDCatch subsystem that caused audio format
 	parameters to be confounded between uploaded and audio store
 	files.
+2022-04-21 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead code from rdadmin(1).
