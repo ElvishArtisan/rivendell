@@ -324,9 +324,12 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   }
   edit_record_channel=edit_record_deck_box->currentIndex()+1;
   edit_play_channel=edit_play_deck_box->currentIndex()+129;
-  edit_format_box->insertItem(edit_format_box->count(),tr("PCM16"));
-  edit_format_box->insertItem(edit_format_box->count(),tr("PCM24"));
-  edit_format_box->insertItem(edit_format_box->count(),tr("MPEG Layer 2"));
+  edit_format_box->
+    insertItem(edit_format_box->count(),tr("PCM16"),RDCae::Pcm16);
+  edit_format_box->
+    insertItem(edit_format_box->count(),tr("PCM24"),RDCae::Pcm24);
+  edit_format_box->
+    insertItem(edit_format_box->count(),tr("MPEG Layer 2"),RDCae::MpegL2);
   edit_channels_box->insertItem(0,"1");
   edit_channels_box->insertItem(1,"2");
   edit_bitrate_box->insertItem(edit_bitrate_box->count(),tr("32 kbps/chan"),32);
@@ -582,26 +585,27 @@ void EditDecks::ReadRecord(int chan)
       edit_default_on_box->setCurrentIndex(0);
     }
     switch(edit_record_deck->defaultFormat()) {
-	case RDSettings::Pcm16:
+	case RDCae::Pcm16:
 	  edit_format_box->setCurrentIndex(0);
 	  edit_bitrate_box->setDisabled(true);
 	  break;
 
-	case RDSettings::Pcm24:
+	case RDCae::Pcm24:
 	  edit_format_box->setCurrentIndex(1);
 	  edit_bitrate_box->setDisabled(true);
 	  break;
 
-	case RDSettings::MpegL2:
-	case RDSettings::MpegL2Wav:
+	case RDCae::MpegL2:
+	  //	case RDSettings::MpegL2Wav:
 	  edit_format_box->setCurrentIndex(2);
 	  edit_bitrate_box->setEnabled(true);
 	  break;
 
-	case RDSettings::MpegL1:
+	  //	case RDSettings::MpegL1:
+	case RDCae::MpegL1:
 	case RDSettings::MpegL3:
-	case RDSettings::Flac:
-	case RDSettings::OggVorbis:
+	  //	case RDSettings::Flac:
+	  //	case RDSettings::OggVorbis:
 	  break;
     }
     edit_channels_box->setCurrentIndex(edit_record_deck->defaultChannels()-1);
@@ -725,6 +729,7 @@ void EditDecks::WriteRecord(int chan)
 	edit_record_deck->setDefaultMonitorOn(true);
       }
     }
+    /*
     switch(edit_format_box->currentIndex()) {
     case 0:
       edit_record_deck->setDefaultFormat(RDSettings::Pcm16);
@@ -738,6 +743,10 @@ void EditDecks::WriteRecord(int chan)
       edit_record_deck->setDefaultFormat(RDSettings::MpegL2);
       break;
     }
+    */
+    edit_record_deck->
+      setDefaultFormat((RDCae::AudioCoding)edit_format_box->
+		       itemData(edit_format_box->currentIndex()).toInt());
     edit_record_deck->setDefaultChannels(edit_channels_box->currentIndex()+1);
     edit_record_deck->setDefaultBitrate(1000*edit_bitrate_box->
 		 itemData(edit_bitrate_box->currentIndex()).toInt());

@@ -2,7 +2,7 @@
 //
 // Batch Routines for the Rivendell netcatcher daemon
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -481,21 +481,7 @@ bool MainObject::Import(CatchEvent *evt)
   conv->setSourceFile(RDEscapeString(evt->tempName()));
   conv->setDestinationFile(RDCut::pathName(evt->cutName()));
   RDSettings *settings=new RDSettings();
-  switch(evt->format()) {
-  case RDCae::Pcm16:
-    settings->setFormat(RDSettings::Pcm16);
-    break;
-
-  case RDCae::Pcm24:
-    settings->setFormat(RDSettings::Pcm24);
-    break;
-
-  case RDCae::MpegL1:
-  case RDCae::MpegL2:
-  case RDCae::MpegL3:
-    settings->setFormat(RDSettings::MpegL2Wav);
-    break;
-  }
+  settings->setFormat(evt->format());
   settings->setChannels(evt->channels());
   settings->setSampleRate(rda->system()->sampleRate());
   settings->setBitRate(evt->bitrate());

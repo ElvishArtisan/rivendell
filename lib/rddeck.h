@@ -24,6 +24,7 @@
 #include <qsqldatabase.h>
 #include <qtimer.h>
 
+#include <rdcae.h>
 #include <rdsettings.h>
 
 class RDDeck
@@ -44,8 +45,8 @@ class RDDeck
    void setMonitorPortNumber(int port) const;
    bool defaultMonitorOn() const;
    void setDefaultMonitorOn(bool state) const;
-   RDSettings::Format defaultFormat() const;
-   void setDefaultFormat(RDSettings::Format format) const;
+   RDCae::AudioCoding defaultFormat() const;
+   void setDefaultFormat(RDCae::AudioCoding coding) const;
    int defaultChannels() const;
    void setDefaultChannels(int chan) const;
    int defaultBitrate() const;

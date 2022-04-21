@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher Daemon
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -639,31 +639,34 @@ void MainObject::engineData(int id)
     sql=QString("select ")+
       "`CARD_NUMBER`,"+     // 00
       "`PORT_NUMBER`,"+     // 01
-      "`SWITCH_STATION`,"+  // 02
-      "`SWITCH_MATRIX`,"+   // 03
-      "`SWITCH_OUTPUT`,"+   // 04
-      "`SWITCH_DELAY` "+    // 05
+      "`DEFAULT_FORMAT`,"+  // 02
+      "`DEFAULT_BITRATE`,"  // 03
+      "`SWITCH_STATION`,"+  // 04
+      "`SWITCH_MATRIX`,"+   // 05
+      "`SWITCH_OUTPUT`,"+   // 06
+      "`SWITCH_DELAY` "+    // 07
       "from `DECKS` where "+
       "(`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"')&&"+
       QString::asprintf("(`CHANNEL`=%d)",catch_events[event].channel());
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      catch_record_card[catch_events[event].channel()-1]=
-	q->value(0).toInt();
-      catch_record_stream[catch_events[event].channel()-1]=
-	q->value(1).toInt();
-      if(q->value(2).toString()==QString("[none]")) {
+      catch_record_card[catch_events[event].channel()-1]=q->value(0).toInt();
+      catch_record_stream[catch_events[event].channel()-1]=q->value(1).toInt();
+      catch_record_coding[catch_events[event].channel()-1]=
+	(RDCae::AudioCoding)q->value(2).toInt();
+      catch_record_bitrate[catch_events[event].channel()-1]=q->value(3).toInt();
+      if(q->value(4).toString()==QString("[none]")) {
 	catch_swaddress[catch_events[event].channel()-1]=QHostAddress();
       }
       else {
-	rdstation=new RDStation(q->value(2).toString());
+	rdstation=new RDStation(q->value(4).toString());
 	catch_swaddress[catch_events[event].channel()-1]=
 	  rdstation->address();
 	delete rdstation;
       }
-      catch_swmatrix[catch_events[event].channel()-1]=q->value(3).toInt();
-      catch_swoutput[catch_events[event].channel()-1]=q->value(4).toInt();
-      catch_swdelay[catch_events[event].channel()-1]=q->value(5).toInt();
+      catch_swmatrix[catch_events[event].channel()-1]=q->value(5).toInt();
+      catch_swoutput[catch_events[event].channel()-1]=q->value(6).toInt();
+      catch_swdelay[catch_events[event].channel()-1]=q->value(7).toInt();
     }
     else {
       rda->syslog(LOG_INFO,"id %d specified non-existent record deck, ignored",
@@ -1282,7 +1285,6 @@ bool MainObject::StartRecording(int event)
   //
   // Set Temp Name
   //
-  RDCae::AudioCoding format=catch_events[event].format();
   QString cut_name;
   if(catch_events[event].normalizeLevel()==0) {
     cut_name=catch_events[event].cutName();
@@ -1292,19 +1294,19 @@ bool MainObject::StartRecording(int event)
     catch_events[event].
       setTempName(GetTempRecordingName(catch_events[event].id()));
     catch_events[event].setDeleteTempFile(true);
-    format=RDCae::Pcm24;
   }    
 
   //
   // Start the recording
   //
   rda->cae()->loadRecord(catch_record_card[deck-1],
-			catch_record_stream[deck-1],
-			cut_name,
-			format,
-			catch_events[event].channels(),
-			catch_events[event].sampleRate(),
-			catch_events[event].bitrate());
+			 catch_record_stream[deck-1],
+			 cut_name,
+			 catch_record_coding[deck-1],
+			 catch_events[event].channels(),
+			 rda->system()->sampleRate(),
+			 //			 catch_events[event].bitrate());
+			 catch_record_bitrate[deck-1]);
   rda->cae()->record(catch_record_card[deck-1],catch_record_stream[deck-1],
 		    length,0);
   catch_events[event].setStatus(RDDeck::Recording);
@@ -1344,7 +1346,7 @@ bool MainObject::StartRecording(int event)
 	break;
   }
   cut->setChannels(catch_events[event].channels());
-  cut->setSampleRate(catch_events[event].sampleRate());
+  cut->setSampleRate(rda->system()->sampleRate());
   cut->setBitRate(catch_events[event].bitrate());
   cut->setPlayCounter(0);
   cut->setSegueStartPoint(-1);
@@ -1923,29 +1925,7 @@ void MainObject::LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add)
   e->setTrimThreshold(q->value(16).toUInt());
   e->setStartdateOffset(q->value(17).toUInt());
   e->setEnddateOffset(q->value(18).toUInt());
-  switch((RDSettings::Format)q->value(19).toInt()) {
-  case RDSettings::Pcm16:
-    e->setFormat(RDCae::Pcm16);
-    break;
-
-  case RDSettings::Pcm24:
-    e->setFormat(RDCae::Pcm24);
-    break;
-
-  case RDSettings::MpegL2:
-  case RDSettings::MpegL2Wav:
-    e->setFormat(RDCae::MpegL2);
-    break;
-
-  case RDSettings::MpegL3:
-    e->setFormat(RDCae::MpegL3);
-    break;
-
-  case RDSettings::MpegL1:
-  case RDSettings::Flac:
-  case RDSettings::OggVorbis:
-    break;
-  }
+  e->setFormat((RDSettings::Format)q->value(19).toInt());
   e->setChannels(q->value(20).toInt());
   e->setSampleRate(q->value(21).toUInt());
   e->setBitrate(q->value(22).toInt());
@@ -2011,7 +1991,9 @@ void MainObject::LoadDeckList()
     "`CHANNEL`,"+          // 00
     "`CARD_NUMBER`,"+      // 01
     "`PORT_NUMBER`,"+      // 02
-    "`MON_PORT_NUMBER` "+  // 03
+    "`MON_PORT_NUMBER`,"+  // 03
+    "`DEFAULT_FORMAT`,"+   // 04
+    "`DEFAULT_BITRATE` "   // 05
     "from `DECKS` where "+
     "(`STATION_NAME`='"+RDEscapeString(rda->config()->stationName())+"')&&"+
     "(`CARD_NUMBER`!=-1)&&(`CHANNEL`>0)&&(`CHANNEL`<9)";
@@ -2021,6 +2003,9 @@ void MainObject::LoadDeckList()
     catch_record_card[q->value(0).toUInt()-1]=q->value(1).toInt();
     catch_record_stream[q->value(0).toUInt()-1]=q->value(2).toInt();
     catch_monitor_port[q->value(0).toUInt()-1]=q->value(3).toInt();
+    catch_record_coding[q->value(0).toUInt()-1]=
+      (RDCae::AudioCoding)q->value(4).toInt();
+    catch_record_bitrate[q->value(0).toInt()-1]=q->value(5).toInt();
   }
   delete q;
   for(int i=0;i<MAX_DECKS;i++) {
@@ -2108,7 +2093,6 @@ bool MainObject::AddEvent(int id)
   RDSqlQuery *q;
   QString sql;
   QString day_name;
-
 
   //
   // Load Schedule
@@ -2319,7 +2303,7 @@ void MainObject::CheckInRecording(QString cutname,CatchEvent *evt,
   RDCut *cut=new RDCut(cutname);
   RDSettings *s=new RDSettings();
   s->setFormat((RDSettings::Format)evt->format());
-  s->setSampleRate(evt->sampleRate());
+  s->setSampleRate(rda->system()->sampleRate());
   s->setBitRate(evt->bitrate());
   s->setChannels(evt->channels());
   cut->checkInRecording(rda->config()->stationName(),"",
@@ -2552,11 +2536,7 @@ void MainObject::StartRmlRecording(int chan,int cartnum,int cutnum,int maxlen)
   catch_events.back().setStartTime(dt.time());
   catch_events.back().setEndType(RDRecording::LengthEnd);
   catch_events.back().setLength(maxlen);
-  catch_events.back().
-    setFormat((RDCae::AudioCoding)deck->defaultFormat());
   catch_events.back().setChannels(deck->defaultChannels());
-  catch_events.back().setSampleRate(rda->system()->sampleRate());
-  catch_events.back().setBitrate(deck->defaultBitrate());
   catch_events.back().setNormalizeLevel(0);
   StartRecording(catch_events.size()-1);
   delete cut;

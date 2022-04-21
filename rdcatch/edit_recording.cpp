@@ -809,6 +809,7 @@ void EditRecording::Save()
   edit_recording->setSwitchSource(GetSource());
   edit_recording->setStartdateOffset(edit_startoffset_box->value());
   edit_recording->setEnddateOffset(edit_endoffset_box->value());
+  /*
   edit_recording->setFormat(edit_deck->defaultFormat());
   if(edit_deck->defaultFormat()>0) {
     edit_recording->setBitrate(edit_deck->defaultBitrate()*
@@ -817,6 +818,7 @@ void EditRecording::Save()
   else {
     edit_recording->setBitrate(0);
   }
+  */
   edit_recording->setChannels(edit_channels_box->currentIndex()+1);
   if(edit_autotrim_box->isChecked()) {
     edit_recording->setTrimThreshold(-100*edit_autotrim_spin->value());

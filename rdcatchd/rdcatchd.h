@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -202,6 +202,8 @@ class MainObject : public QObject
   bool catch_record_status[MAX_DECKS];
   int catch_record_card[MAX_DECKS];
   int catch_record_stream[MAX_DECKS];
+  RDCae::AudioCoding catch_record_coding[MAX_DECKS];
+  int catch_record_bitrate[MAX_DECKS];
   RDDeck::Status catch_record_deck_status[MAX_DECKS];
   int catch_record_id[MAX_DECKS];
   QString catch_record_name[MAX_DECKS];

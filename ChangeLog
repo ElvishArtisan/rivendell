@@ -22987,3 +22987,7 @@
 	* Fixed a regression in rdcatch(1) that caused the 'Sample Rate'
 	dropdown in the 'Edit Audio Settings' dialog to always be set
 	to '32000' regardless of the actual value in the record.
+2022-04-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bug in the RDCatch subsystem that caused audio format
+	parameters to be confounded between uploaded and audio store
+	files.

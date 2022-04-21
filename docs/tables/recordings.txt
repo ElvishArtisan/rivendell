@@ -45,7 +45,7 @@ NORMALIZE_LEVEL      int(11)           in 1/100 dBFS
 STARTDATE_OFFSET     int(10) unsigned
 ENDDATE_OFFSET	     int(10) unsigned
 EVENTDATE_OFFSET     int(11)
-FORMAT               int(11) signed    0 = PCM16, 2 = Layer 2, 3 = Layer 3
+FORMAT               int(11) signed    RDSettings::Format
 CHANNELS             int(11) signed
 SAMPRATE             int(11) signed
 BITRATE              int(11) signed

@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell netcatch event.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -354,13 +354,13 @@ void CatchEvent::setEnddateOffset(unsigned offset)
 }
 
 
-RDCae::AudioCoding CatchEvent::format() const
+RDSettings::Format CatchEvent::format() const
 {
   return catch_format;
 }
 
 
-void CatchEvent::setFormat(RDCae::AudioCoding fmt)
+void CatchEvent::setFormat(RDSettings::Format fmt)
 {
   catch_format=fmt;
 }
@@ -694,7 +694,7 @@ void CatchEvent::clear()
   catch_trim_threshold=0;
   catch_startdate_offset=0;
   catch_enddate_offset=0;
-  catch_format=RDCae::Pcm16;
+  catch_format=RDSettings::Pcm16;
   catch_channels=0;
   catch_samplerate=0;
   catch_bitrate=0;

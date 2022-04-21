@@ -145,15 +145,15 @@ void RDDeck::setDefaultMonitorOn(bool state) const
 }
 
 
-RDSettings::Format RDDeck::defaultFormat() const
+RDCae::AudioCoding RDDeck::defaultFormat() const
 {
-  return (RDSettings::Format)GetIntValue("DEFAULT_FORMAT");
+  return (RDCae::AudioCoding)GetIntValue("DEFAULT_FORMAT");
 }
 
 
-void RDDeck::setDefaultFormat(RDSettings::Format format) const
+void RDDeck::setDefaultFormat(RDCae::AudioCoding coding) const
 {
-  SetRow("DEFAULT_FORMAT",(int)format);
+  SetRow("DEFAULT_FORMAT",(int)coding);
 }
 
 
