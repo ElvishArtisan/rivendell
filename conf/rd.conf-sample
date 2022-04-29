@@ -143,6 +143,8 @@ ChannelsPerPcm=-1
 ; can use the --map-file=<filename> switch to configure multiple soft
 ; key setups on the same host.
 ; 
+; StayOnTop=No
+;
 ; Columns=10
 ;
 ; Command1=hithlum.srlabs.loc:GO 3 1 1 0!

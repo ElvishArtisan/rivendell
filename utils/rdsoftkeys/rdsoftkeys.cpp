@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,15 +36,14 @@
 //
 #include "../icons/rivendell-22x22.xpm"
 
-MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent)
-{
+MainWidget::MainWidget(RDConfig *config,Qt::WindowFlags f)
+  : QWidget(NULL,f)
+ {
   key_ysize=70;
 
   //
   // Read Command Options
   //
-  RDConfig *config=new RDConfig();
   QString map_filename=config->filename();
   RDCmdSwitch *cmd=new RDCmdSwitch("rdsoftkeys",RDSOFTKEYS_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
@@ -234,9 +233,29 @@ int main(int argc,char *argv[])
   }
 
   //
+  // Read Command Options
+  //
+  RDConfig *config=new RDConfig();
+  QString map_filename=config->filename();
+  RDCmdSwitch *cmd=new RDCmdSwitch("rdsoftkeys",RDSOFTKEYS_USAGE);
+  for(unsigned i=0;i<cmd->keys();i++) {
+    if(cmd->key(i)=="--map-file") {
+      map_filename=cmd->value(i);
+    }
+  }
+  delete cmd;
+  RDProfile *profile=new RDProfile();
+  Qt::WindowFlags f=Qt::WindowFlags();
+  profile->setSource(map_filename);
+  if(profile->boolValue("SoftKeys","StayOnTop",false)) {
+    f=f|Qt::WindowStaysOnTopHint;
+  }
+  delete profile;
+
+  //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  MainWidget *w=new MainWidget(config,f);
   w->setGeometry(w->geometry().x(),w->geometry().y(),w->sizeHint().width(),w->sizeHint().height());
   w->show();
   return a.exec();

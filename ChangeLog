@@ -22993,3 +22993,6 @@
 	files.
 2022-04-21 Fred Gleason <fredg@paravelsystems.com>
 	* Removed dead code from rdadmin(1).
+2022-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'StayOnTop=' directive to the '[SoftKeys]' section of
+	rd.conf(5).
