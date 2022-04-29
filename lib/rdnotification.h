@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Notification message.
 //
-//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,6 +42,7 @@ class RDNotification
   bool isValid() const;
   bool read(const QString &str);
   QString write() const;
+  QString dump() const;
   static QString typeString(Type type);
   static QString actionString(Action action);
 
