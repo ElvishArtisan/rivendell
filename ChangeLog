@@ -20872,3 +20872,6 @@
 	a service name option.
 2022-03-22 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.5int0.
+2022-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'StayOnTop=' directive to the '[SoftKeys]' section of
+	rd.conf(5).

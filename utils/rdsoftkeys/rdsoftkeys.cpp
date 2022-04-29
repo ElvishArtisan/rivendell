@@ -37,15 +37,14 @@
 //
 #include "../icons/rivendell-22x22.xpm"
 
-MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent)
+MainWidget::MainWidget(RDConfig *config,Qt::WindowFlags f)
+  : QWidget(NULL,f)
 {
   key_ysize=70;
 
   //
   // Read Command Options
   //
-  RDConfig *config=new RDConfig();
   QString map_filename=config->filename();
   RDCmdSwitch *cmd=
     new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdsoftkeys",RDSOFTKEYS_USAGE);
@@ -234,9 +233,30 @@ int main(int argc,char *argv[])
   a.installTranslator(&tests);
 
   //
+  // Read Command Options
+  //
+  RDConfig *config=new RDConfig();
+  QString map_filename=config->filename();
+  RDCmdSwitch *cmd=
+    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdsoftkeys",RDSOFTKEYS_USAGE);
+  for(unsigned i=0;i<cmd->keys();i++) {
+    if(cmd->key(i)=="--map-file") {
+      map_filename=cmd->value(i);
+    }
+  }
+  delete cmd;
+  RDProfile *profile=new RDProfile();
+  Qt::WindowFlags f=Qt::WindowFlags();
+  profile->setSource(map_filename);
+  if(profile->boolValue("SoftKeys","StayOnTop",false)) {
+    f=f|Qt::WindowStaysOnTopHint;
+  }
+  delete profile;
+
+  //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  MainWidget *w=new MainWidget(config,f);
   a.setMainWidget(w);
   w->setGeometry(w->geometry().x(),w->geometry().y(),w->sizeHint().width(),w->sizeHint().height());
   w->show();

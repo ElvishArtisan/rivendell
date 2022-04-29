@@ -24,6 +24,8 @@
 #include <q3socketdevice.h>
 #include <qwidget.h>
 
+#include <rdconfig.h>
+
 //
 // Settings
 //
@@ -34,7 +36,7 @@ class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0);
+  MainWidget(RDConfig *config,Qt::WindowFlags f=Qt::WindowFlags());
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
