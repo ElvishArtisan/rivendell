@@ -22996,3 +22996,7 @@
 2022-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'StayOnTop=' directive to the '[SoftKeys]' section of
 	rd.conf(5).
+2022-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) where creating a new event
+	using the 'Save As' button would fail to send notifications of
+	the added event.

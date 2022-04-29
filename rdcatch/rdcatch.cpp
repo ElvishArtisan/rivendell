@@ -1216,6 +1216,12 @@ void MainWidget::ProcessNewRecords(std::vector<int> *adds)
 {
   for(unsigned i=0;i<adds->size();i++) {
     catch_recordings_model->addRecord(adds->at(i));
+
+    RDNotification *notify=
+      new RDNotification(RDNotification::CatchEventType,
+			 RDNotification::ModifyAction,adds->at(i));
+    rda->ripc()->sendNotification(*notify);
+    delete notify;
   }
 }
 
