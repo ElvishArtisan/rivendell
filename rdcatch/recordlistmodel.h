@@ -65,6 +65,9 @@ class RecordListModel : public QAbstractTableModel
   bool refresh(unsigned id);
   void setFilterSql(const QString &sql);
 
+ signals:
+  void updateNextEvents();
+
  public slots:
   void notificationReceivedData(RDNotification *notify);
 

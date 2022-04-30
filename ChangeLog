@@ -23005,3 +23005,6 @@
 2022-04-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that caused changes in events
 	to fail to be propagated to other rdcatch(1) instances.
+2022-04-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that caused the Next Event
+	indications to fail to be updated on remote instances of rdcatch(1).

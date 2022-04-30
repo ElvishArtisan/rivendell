@@ -463,14 +463,17 @@ void RecordListModel::notificationReceivedData(RDNotification *notify)
     switch(notify->action()) {
     case RDNotification::AddAction:
       addRecord(notify->id().toUInt());
+      emit updateNextEvents();
       break;
 
     case RDNotification::ModifyAction:
       refresh(notify->id().toUInt());
+      emit updateNextEvents();
       break;
 
     case RDNotification::DeleteAction:
       removeRecord(notify->id().toUInt());
+      emit updateNextEvents();
       break;
 
     case RDNotification::NoAction:

@@ -342,6 +342,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 	  this,
 	  SLOT(selectionChangedData(const QItemSelection &,
 				    const QItemSelection &)));
+  connect(catch_recordings_model,SIGNAL(updateNextEvents()),
+	  this,SLOT(nextEventData()));
   catch_recordings_view->resizeColumnsToContents();
 
   //
@@ -451,7 +453,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   if(ShowNextEvents(current_date.dayOfWeek(),current_time,&next_time)>0) {
     catch_next_timer->start(current_time.msecsTo(next_time));
   }
-  nextEventData();
 
   //
   // Silly Resize Workaround
