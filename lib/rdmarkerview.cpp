@@ -367,7 +367,6 @@ RDMarkerView::RDMarkerView(int width,int height,QWidget *parent)
   d_scene=NULL;
   d_sample_rate=rda->system()->sampleRate();
   d_right_margin=0;
-  printf("clearing cursor\n");
   d_cursor=NULL;
   clear();
 

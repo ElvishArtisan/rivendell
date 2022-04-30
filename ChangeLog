@@ -23015,3 +23015,5 @@
 	* Fixed a regression in rdcatch(1) where creating a new event
 	using the 'Save As' button would fail to send notifications of
 	the added event.
+2022-04-30 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging printf()s from lib/rdmarkerview.cpp'.
