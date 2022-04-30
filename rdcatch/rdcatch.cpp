@@ -633,9 +633,9 @@ void MainWidget::editData()
     rda->ripc()->sendNotification(*notify);
     delete notify;
     catch_recordings_model->refresh(rows.first());
-    nextEventData();
   }
   ProcessNewRecords(&new_events);
+  nextEventData();
 }
 
 

@@ -23011,3 +23011,7 @@
 2022-04-30 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected a typo in the Operations Guide for the
 	'BroadcastTools	Universal 4.1MLR>>Web' switcher.
+2022-04-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) where creating a new event
+	using the 'Save As' button would fail to send notifications of
+	the added event.
