@@ -23017,3 +23017,7 @@
 	the added event.
 2022-04-30 Fred Gleason <fredg@paravelsystems.com>
 	* Removed debugging printf()s from lib/rdmarkerview.cpp'.
+2022-04-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused all of the button
+	labels in the Button Log widget to be initialized with a black
+	background.

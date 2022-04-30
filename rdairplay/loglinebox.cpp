@@ -2,7 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -302,6 +302,8 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   line_trans_label->setStyleSheet("background-color: #FF00FF");
 #endif  // COLORIZE_LAYOUT
   
+  SetPalette(line_default_palette,Qt::black);
+
   setAcceptDrops(true);
 }
 
@@ -893,7 +895,8 @@ void LogLineBox::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
   p->fillRect(0,0,size().width()-2,size().height()-2,
-	      palette().color(QPalette::Window));
+    	      palette().color(QPalette::Window));
+  //  	      QGuiApplication::palette().color(QPalette::Window));
   p->setPen(palette().color(QPalette::Dark));
   p->drawRect(0,0,size().width()-1,size().height()-1);
   p->end();
@@ -924,8 +927,8 @@ void LogLineBox::dropEvent(QDropEvent *e)
 void LogLineBox::SetPalette(const QPalette &pal,const QColor &grp_color)
 {
   //  printf("%d:SetPalette(%s,%s)\n",log_line,
-  //	 pal.color(QPalette::WindowText).name().toUtf8().constData(),
-  //	 pal.color(QPalette::Window).name().toUtf8().constData());
+  //  	 pal.color(QPalette::WindowText).name().toUtf8().constData(),
+  //  	 pal.color(QPalette::Window).name().toUtf8().constData());
   setPalette(pal);
   setStyleSheet("color:"+pal.color(QPalette::WindowText).name()+
 		";background-color:"+pal.color(QPalette::Window).name());
