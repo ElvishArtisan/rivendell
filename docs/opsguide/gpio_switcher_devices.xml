@@ -769,7 +769,7 @@
       </varlistentry>
     </variablelist>
     <para>
-      Control is by means of a TCP/IP connection to port 5002.
+      Control is by means of a TCP/IP connection to port 56.
     </para>
   </sect1>
 
