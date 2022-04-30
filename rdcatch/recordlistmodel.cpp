@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell RDCatch events.
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -439,6 +439,8 @@ bool RecordListModel::refresh(unsigned id)
   for(int i=0;i<d_texts.size();i++) {
     if(d_ids.at(i)==id) {
       updateRowLine(i);
+      emit dataChanged(createIndex(i,0),
+		       createIndex(i,columnCount()));
       return true;
     }
   }
@@ -451,6 +453,30 @@ void RecordListModel::setFilterSql(const QString &sql)
   if(sql!=d_filter_sql) {
     d_filter_sql=sql;
     updateModel();
+  }
+}
+
+
+void RecordListModel::notificationReceivedData(RDNotification *notify)
+{
+  if(notify->type()==RDNotification::CatchEventType) {
+    switch(notify->action()) {
+    case RDNotification::AddAction:
+      addRecord(notify->id().toUInt());
+      break;
+
+    case RDNotification::ModifyAction:
+      refresh(notify->id().toUInt());
+      break;
+
+    case RDNotification::DeleteAction:
+      removeRecord(notify->id().toUInt());
+      break;
+
+    case RDNotification::NoAction:
+    case RDNotification::LastAction:
+      break;
+    }
   }
 }
 

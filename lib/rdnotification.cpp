@@ -196,23 +196,23 @@ QString RDNotification::dump() const
 
   switch((QMetaType::Type)id().type()) {
   case QMetaType::Int:
-    ret+=QString::asprintf("id: %d",id().toInt());
+    ret+=QString::asprintf("id: %d\n",id().toInt());
     break;
 
   case QMetaType::UInt:
-    ret+=QString::asprintf("id: %u",id().toUInt());
+    ret+=QString::asprintf("id: %u\n",id().toUInt());
     break;
 
   case QMetaType::QString:
-    ret+="id: "+id().toString();
+    ret+="id: "+id().toString()+"\n";
     break;
 
   default:
     ret+="Unknown QMetaType type value: %u\n",id().type();
     break;
   }
-  ret+="type: "+RDNotification::typeString(type());
-  ret+="action: "+RDNotification::actionString(action());
+  ret+="type: "+RDNotification::typeString(type())+"\n";
+  ret+="action: "+RDNotification::actionString(action())+"\n";
 
   return ret;
 }

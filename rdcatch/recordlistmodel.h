@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell RDCatch events
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -64,6 +64,9 @@ class RecordListModel : public QAbstractTableModel
   void refresh(const QModelIndex &row);
   bool refresh(unsigned id);
   void setFilterSql(const QString &sql);
+
+ public slots:
+  void notificationReceivedData(RDNotification *notify);
 
  protected:
   void updateModel();

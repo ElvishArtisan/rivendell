@@ -23002,3 +23002,6 @@
 	the added event.
 2022-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDNotification::dump()' method.
+2022-04-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that caused changes in events
+	to fail to be propagated to other rdcatch(1) instances.

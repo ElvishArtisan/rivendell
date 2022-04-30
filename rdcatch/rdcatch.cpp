@@ -329,6 +329,9 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   catch_recordings_model=new RecordListModel(this);
   catch_recordings_model->setFont(defaultFont());
   catch_recordings_model->setPalette(palette());
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  catch_recordings_model
+	  ,SLOT(notificationReceivedData(RDNotification *)));
   catch_recordings_view->setModel(catch_recordings_model);
   catch_recordings_view->resizeColumnsToContents();
   connect(catch_recordings_view,SIGNAL(doubleClicked(const QModelIndex &)),
@@ -1216,10 +1219,9 @@ void MainWidget::ProcessNewRecords(std::vector<int> *adds)
 {
   for(unsigned i=0;i<adds->size();i++) {
     catch_recordings_model->addRecord(adds->at(i));
-
     RDNotification *notify=
       new RDNotification(RDNotification::CatchEventType,
-			 RDNotification::ModifyAction,adds->at(i));
+			 RDNotification::AddAction,adds->at(i));
     rda->ripc()->sendNotification(*notify);
     delete notify;
   }
