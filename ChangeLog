@@ -23023,5 +23023,5 @@
 	background.
 2022-05-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlibrary(1) that threw a segfault when
-	when opening the 'Edit Audio' dialog when attempting to view multiple
+	opening the 'Edit Audio' dialog when attempting to view multiple
 	cuts within the same cart.
