@@ -805,6 +805,7 @@ void RDMarkerView::clear()
   d_marker_menu_used=false;
   d_selected_markers[0]=RDMarkerHandle::LastRole;
   d_selected_markers[1]=RDMarkerHandle::LastRole;
+  d_cursor=NULL;  // Storage is automatically freed by QGraphicsScene
 }
 
 

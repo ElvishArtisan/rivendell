@@ -23021,3 +23021,7 @@
 	* Fixed a regression in rdairplay(1) that caused all of the button
 	labels in the Button Log widget to be initialized with a black
 	background.
+2022-05-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlibrary(1) that threw a segfault when
+	when opening the 'Edit Audio' dialog when attempting to view multiple
+	cuts within the same cart.
