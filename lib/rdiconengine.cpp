@@ -2,7 +2,7 @@
 //
 // Icon generator for Rivendell
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -119,6 +119,7 @@
 #include "../icons/download.xpm"
 
 #include "../icons/host-16x16.xpm"
+#include "../icons/service-16x16.xpm"
 
 #include "../icons/play.xpm"
 #include "../icons/rml5.xpm"
@@ -280,6 +281,11 @@ RDIconEngine::RDIconEngine()
   d_list_icons.push_back(QPixmap(download_xpm));
 
   //
+  // Create Service Icon
+  //
+  d_service_icon=QPixmap(service_16x16_xpm);
+
+  //
   // Create Station Icon
   //
   d_station_icon=QPixmap(host_16x16_xpm);
@@ -322,6 +328,12 @@ QPixmap RDIconEngine::catchIcon(RDRecording::Type type)
 QPixmap RDIconEngine::listIcon(RDIconEngine::IconType type) const
 {
   return d_list_icons.at(type);
+}
+
+
+QPixmap RDIconEngine::serviceIcon() const
+{
+  return d_service_icon;
 }
 
 

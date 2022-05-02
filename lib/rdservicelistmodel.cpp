@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell services
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,6 +27,19 @@ RDServiceListModel::RDServiceListModel(bool incl_none,QObject *parent)
 {
   d_include_none=incl_none;
 
+  //
+  // Load Color Map
+  //
+  QString sql=QString("select ")+
+    "`NAME`,"+   // 00
+    "`COLOR` "+  // 01
+    "from `GROUPS`";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    d_group_color_map[q->value(0).toString()]=QColor(q->value(1).toString());
+  }
+  delete q;
+  
   //
   // Column Attributes
   //
@@ -124,20 +137,22 @@ QVariant RDServiceListModel::data(const QModelIndex &index,int role) const
       return d_texts.at(row).at(col);
 
     case Qt::DecorationRole:
-      // Nothing to do!
-      break;
+      return d_icons.at(row).at(col);
 
     case Qt::TextAlignmentRole:
       return d_alignments.at(col);
 
     case Qt::FontRole:
-      if(col==0) {
+      if((col==0)||(col==3)) {
 	return d_bold_font;
       }
       return d_font;
 
     case Qt::TextColorRole:
-      // Nothing to do!
+      if(col==3) {  // Track Group
+	return d_group_color_map.value(d_texts.at(row).at(col).toString(),
+				       QVariant());
+      }
       break;
 
     case Qt::BackgroundRole:
@@ -178,6 +193,7 @@ QModelIndex RDServiceListModel::addService(const QString &svcname)
   }
   list[0]=svcname;
   d_texts.insert(offset,list);
+  d_icons.insert(offset,list);
   updateRowLine(offset);
   endInsertRows();
 
@@ -190,6 +206,7 @@ void RDServiceListModel::removeService(const QModelIndex &row)
   beginRemoveRows(QModelIndex(),row.row(),row.row());
 
   d_texts.removeAt(row.row());
+  d_icons.removeAt(row.row());
 
   endRemoveRows();
 }
@@ -243,16 +260,21 @@ void RDServiceListModel::updateModel()
   sql+="order by NAME ";
   beginResetModel();
   d_texts.clear();
+  d_icons.clear();
   if(d_include_none) {
     d_texts.push_back(texts);
+    d_icons.push_back(texts);
     d_texts.back().push_back(tr("[none]"));
+    d_icons.back().push_back(QVariant());
     for(int i=1;i<columnCount();i++) {
       d_texts.back().push_back(QVariant());
+      d_icons.back().push_back(QVariant());
     }
   }
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_texts.push_back(texts);
+    d_icons.push_back(texts);
     updateRow(d_texts.size()-1,q);
   }
   delete q;
@@ -277,35 +299,51 @@ void RDServiceListModel::updateRowLine(int line)
 void RDServiceListModel::updateRow(int row,RDSqlQuery *q)
 {
   QList<QVariant> texts;
+  QList<QVariant> icons;
 
-  // Login Name
+  // Service Name
   texts.push_back(q->value(0));
-
+  icons.push_back(rda->iconEngine()->serviceIcon());
+  
   // Description
   texts.push_back(q->value(1));
+  icons.push_back(QVariant());
 
   // Program Code
   texts.push_back(q->value(2));
+  icons.push_back(QVariant());
 
   // Track Group
   texts.push_back(q->value(3));
+  if(q->value(3).toString().isEmpty()) {
+    icons.push_back(QVariant());
+  }
+  else {
+    icons.push_back(rda->iconEngine()->typeIcon(RDLogLine::Cart));
+  }
 
   // Log Shelf Life
   texts.push_back(q->value(4));
+  icons.push_back(QVariant());
 
   // ELR Shelf Life
   texts.push_back(q->value(5));
+  icons.push_back(QVariant());
 
   // Auto Refresh
   texts.push_back(q->value(6));
+  icons.push_back(QVariant());
 
   // Chain Log
   texts.push_back(q->value(7));
+  icons.push_back(QVariant());
 
   // Import Markers
   texts.push_back(q->value(8));
+  icons.push_back(QVariant());
 
   d_texts[row]=texts;
+  d_icons[row]=icons;
 }
 
 

@@ -2,7 +2,7 @@
 //
 // Icon generator for Rivendell
 //
-//   (C) Copyright 2020-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,6 +41,7 @@ class RDIconEngine
   QPixmap applicationIcon(Application app,int edge_size) const;
   QPixmap catchIcon(RDRecording::Type type);
   QPixmap listIcon(IconType type) const;
+  QPixmap serviceIcon() const;
   QPixmap stationIcon() const;
   QPixmap nullIcon(int edge_size) const;
   QPixmap typeIcon(RDLogLine::Type type,
@@ -52,6 +53,7 @@ class RDIconEngine
   QList<QPixmap> d_catch_icons;
   QList<QPixmap> d_list_icons;
   QPixmap d_station_icon;
+  QPixmap d_service_icon;
   QMap<RDLogLine::Type,QPixmap> log_type_icons;
   QPixmap log_track_cart_icon;
   QMap<RDUser::Type,QPixmap> d_user_icons;

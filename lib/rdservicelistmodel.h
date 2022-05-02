@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell services
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,6 +24,7 @@
 #include <QAbstractTableModel>
 #include <QFont>
 #include <QList>
+#include <QMap>
 #include <QPalette>
 
 #include <rddb.h>
@@ -72,6 +73,8 @@ class RDServiceListModel : public QAbstractTableModel
   QList<QVariant> d_headers;
   QList<QVariant> d_alignments;
   QList<QList<QVariant> > d_texts;
+  QList<QList<QVariant> > d_icons;
+  QMap<QString,QVariant> d_group_color_map;
 };
 
 

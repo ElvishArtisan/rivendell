@@ -23030,3 +23030,7 @@
 	widget to be positioned atop the log listing when the window width
 	was greater than 850 and the 'Extra Buttons/Counters' and 'Hour
 	Indicator' features were turned off.
+2022-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDIconEngine::serviceIcon()' method.
+	* Added icons to the list of services in the 'List Services' dialog
+	in rdadmin(1).
