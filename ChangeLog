@@ -23025,3 +23025,8 @@
 	* Fixed a regression in rdlibrary(1) that threw a segfault when
 	opening the 'Edit Audio' dialog when attempting to view multiple
 	cuts within the same cart.
+2022-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that caused the buttons in the List Log
+	widget to be positioned atop the log listing when the window width
+	was greater than 850 and the 'Extra Buttons/Counters' and 'Hour
+	Indicator' features were turned off.

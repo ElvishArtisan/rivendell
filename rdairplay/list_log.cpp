@@ -2,7 +2,7 @@
 //
 // The full log widget for RDAirPlay
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -887,10 +887,7 @@ void ListLog::resizeEvent(QResizeEvent *e)
   // Log Items
   //
   int list_y=2;
-  int list_h=size().height()-63;
-  if(rda->airplayConf()->showCounters()) {
-    list_h-=60;
-  }
+  int list_h=size().height()-123;
 
   if(size().width()>=850) {
     //
@@ -902,7 +899,6 @@ void ListLog::resizeEvent(QResizeEvent *e)
     //
     // Counters
     //
-    //    list_groupbox->setGeometry(5+695,size().height()-61,153,58);
     list_groupbox->setGeometry(700,size().height()-64,153,62);
     list_stoptime_edit->setGeometry(778,size().height()-43,70,18);
     list_stoptime_label->setGeometry(708,size().height()-43,65,18);
@@ -923,6 +919,10 @@ void ListLog::resizeEvent(QResizeEvent *e)
     list_h+=60;
   }
   else {
+    if(!rda->airplayConf()->showCounters()) {
+      list_h+=60;
+    }
+
     //
     // Audition Head/Tail Buttons
     //
