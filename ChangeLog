@@ -23034,3 +23034,5 @@
 	* Added an 'RDIconEngine::serviceIcon()' method.
 	* Added icons to the list of services in the 'List Services' dialog
 	in rdadmin(1).
+2022-05-03 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the user logo for rdairplay(1).
