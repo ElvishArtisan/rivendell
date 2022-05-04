@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cart
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -109,7 +109,7 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   else {
     rdcart_group_box->setGeometry(135,38,110,21);
   }
-  rdcart_group_model=new RDGroupListModel(false,false,this);
+  rdcart_group_model=new RDGroupListModel(false,cartnums.size()>1,false,this);
   rdcart_group_box->setModel(rdcart_group_model);
   rdcart_group_edit=new QLineEdit(this);
   rdcart_group_edit->setGeometry(280,11,140,21);
@@ -270,11 +270,11 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   rdcart_usage_box=new QComboBox(this);
   rdcart_usage_box->setGeometry(270,110,150,21);
   if(cartnums.size()>1) {
-    rdcart_usage_box->insertItem(0,"");
+    rdcart_usage_box->insertItem(0,tr("[unchanged]"),-1);
     }
   for(int i=0;i<(int)RDCart::UsageLast;i++) {
     rdcart_usage_box->insertItem(rdcart_usage_box->count(),
-				 RDCart::usageText((RDCart::UsageCode)i));
+				 RDCart::usageText((RDCart::UsageCode)i),i);
   }
   QLabel *label=new QLabel(tr("Usage:"),this);
   label->setGeometry(195,112,70,21);
@@ -613,7 +613,12 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
     rdcart_controls.conductor_edit->setText(rdcart_cart->conductor());
     rdcart_controls.composer_edit->setText(rdcart_cart->composer());
     rdcart_controls.user_defined_edit->setText(rdcart_cart->userDefined());
-    rdcart_usage_box->setCurrentIndex((int)rdcart_cart->usageCode());
+    //rdcart_usage_box->setCurrentIndex((int)rdcart_cart->usageCode());
+    for(int i=0;i<rdcart_usage_box->count();i++) {
+      if(rdcart_usage_box->itemData(i).toInt()==(int)rdcart_cart->usageCode()) {
+	rdcart_usage_box->setCurrentIndex(i);
+      }
+    }
     rdcart_usage_edit->
       setText(RDCart::usageText((RDCart::UsageCode)rdcart_usage_box->
 				currentIndex()));
@@ -623,12 +628,8 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
     rdcart_cut_sched_box->setCurrentIndex(rdcart_cart->useWeighting());
     rdcart_cut_sched_edit->setText(rdcart_cut_sched_box->currentText());
   }
-  else {//multi edit
-    if(rdcart_group_box->count() == 0) {
-      rdcart_group_box->insertItem("");
-      //      PopulateGroupList();
-      rdcart_group_box->setCurrentIndex(0);
-    }
+  else { //Multi Edit
+    rdcart_group_box->setCurrentIndex(0);
     rdcart_usage_box->setCurrentIndex(0);
     rdcart_notes_button->hide();
   }
@@ -822,8 +823,11 @@ void EditCart::okData()
     rdcart_cart->setConductor(rdcart_controls.conductor_edit->text());
     rdcart_cart->setComposer(rdcart_controls.composer_edit->text());
     rdcart_cart->setUserDefined(rdcart_controls.user_defined_edit->text());
+    //    rdcart_cart->
+    //      setUsageCode((RDCart::UsageCode)rdcart_usage_box->currentIndex());
     rdcart_cart->
-      setUsageCode((RDCart::UsageCode)rdcart_usage_box->currentIndex());
+      setUsageCode((RDCart::UsageCode)rdcart_usage_box->
+		   itemData(rdcart_usage_box->currentIndex()).toInt());
     if(rdcart_cart->type()==RDCart::Macro) {
       rdcart_macro_cart->save();
       rdcart_cart->setAsyncronous(rdcart_syncronous_box->isChecked());
@@ -837,7 +841,7 @@ void EditCart::okData()
     for(int i=0;i<rdcart_cart_numbers.size();i++) {
       RDCart *cart=new RDCart(rdcart_cart_numbers.at(i));
       if(cart->owner().isEmpty()) {
-	if(!rdcart_group_box->currentText().trimmed().isEmpty()) {
+	if(rdcart_group_box->currentIndex()>0) {
 	  cart->setGroupName(rdcart_group_box->currentText());
 	}
 	if(!rdcart_controls.title_edit->text().trimmed().isEmpty()) {
@@ -880,9 +884,9 @@ void EditCart::okData()
 	   trimmed().isEmpty()) {
 	  cart->setUserDefined(rdcart_controls.user_defined_edit->text());
 	}
-	if(!rdcart_usage_box->currentText().trimmed().isEmpty()) {
-	  cart->setUsageCode((RDCart::UsageCode)
-			     (rdcart_usage_box->currentIndex()-1));
+	if(rdcart_usage_box->currentIndex()>0) {
+	  cart->setUsageCode((RDCart::UsageCode)rdcart_usage_box->
+			   itemData(rdcart_usage_box->currentIndex()).toInt());
 	}
 	cart->updateSchedCodes(add_codes,remove_codes);
       }

@@ -22,11 +22,12 @@
 #include "rdescape_string.h"
 #include "rdgrouplistmodel.h"
 
-RDGroupListModel::RDGroupListModel(bool show_all,bool user_is_admin,
-				   QObject *parent)
+RDGroupListModel::RDGroupListModel(bool show_all,bool show_unchanged,
+				   bool user_is_admin,QObject *parent)
   : QAbstractTableModel(parent)
 {
   d_show_all=show_all;
+  d_show_unchanged=show_unchanged;
   d_user_is_admin=user_is_admin;
   d_service_names.push_back(tr("ALL"));
   d_sort_column=0;
@@ -200,7 +201,7 @@ QStringList RDGroupListModel::allGroupNames() const
 {
   QStringList ret;
 
-  if(d_show_all) {
+  if(d_show_all||d_show_unchanged) {
     for(int i=1;i<d_texts.size();i++) {
       ret.push_back(d_texts.at(i).at(0).toString());
     }
@@ -348,7 +349,6 @@ void RDGroupListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields()+filterSql();
-  //  sql+="order by `NAME` ";
   beginResetModel();
   d_texts.clear();
   d_colors.clear();
@@ -357,6 +357,12 @@ void RDGroupListModel::updateModel()
   if(d_show_all) {
     d_texts.push_back(texts);
     d_texts.back().push_back(tr("ALL"));
+    d_colors.push_back(QVariant());
+    d_icons.push_back(icons);    
+  }
+  if(d_show_unchanged) {
+    d_texts.push_back(texts);
+    d_texts.back().push_back(tr("[unchanged]"));
     d_colors.push_back(QVariant());
     d_icons.push_back(icons);    
   }

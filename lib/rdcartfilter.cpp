@@ -36,7 +36,7 @@ RDCartFilter::RDCartFilter(bool show_drag_box,bool user_is_admin,
   d_cart_model=NULL;
   d_show_drag_box=show_drag_box;
 
-  d_group_model=new RDGroupListModel(true,user_is_admin,this);
+  d_group_model=new RDGroupListModel(true,false,user_is_admin,this);
 
   //
   // Filter Phrase

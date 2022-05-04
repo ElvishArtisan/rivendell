@@ -33,7 +33,8 @@ class RDGroupListModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  RDGroupListModel(bool show_all,bool user_is_admin,QObject *parent=0);
+  RDGroupListModel(bool show_all,bool show_unchanged,bool user_is_admin,
+		   QObject *parent);
   ~RDGroupListModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
@@ -75,6 +76,7 @@ class RDGroupListModel : public QAbstractTableModel
   QList<QVariant> d_icons;
   QList<QVariant> d_colors;
   bool d_show_all;
+  bool d_show_unchanged;
   bool d_user_is_admin;
   QStringList d_visible_groups;
   QStringList d_column_fields;

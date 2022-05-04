@@ -42,7 +42,7 @@ RDListGroups::RDListGroups(QString *groupname,const QString &caption,
   group_group_view=new RDTableView(this);
   group_group_view->setGeometry(10,10,
 			      sizeHint().width()-20,sizeHint().height()-80);
-  group_group_model=new RDGroupListModel(false,false,this);
+  group_group_model=new RDGroupListModel(false,false,false,this);
   group_group_model->setFont(font());
   group_group_model->setPalette(palette());
   group_group_view->setModel(group_group_model);

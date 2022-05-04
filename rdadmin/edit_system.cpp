@@ -2,7 +2,7 @@
 //
 // Edit Rivendell System-Wide Configuration
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -148,7 +148,7 @@ EditSystem::EditSystem(QWidget *parent)
   // Temporary Cart Group
   //
   edit_temp_cart_group_box=new RDComboBox(this);
-  edit_temp_cart_group_model=new RDGroupListModel(false,true,this);
+  edit_temp_cart_group_model=new RDGroupListModel(false,false,true,this);
   edit_temp_cart_group_box->setModel(edit_temp_cart_group_model);
   edit_temp_cart_group_label=new QLabel(tr("Temporary Cart Group:"),this);
   edit_temp_cart_group_label->setFont(labelFont());

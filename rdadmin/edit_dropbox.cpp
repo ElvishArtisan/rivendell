@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Dropbox Configuration
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -58,7 +58,7 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   box_group_name_box=new QComboBox(this);
   box_group_name_box->setGeometry(140,10,100,20);
-  box_group_name_model=new RDGroupListModel(true,true,this);
+  box_group_name_model=new RDGroupListModel(true,false,true,this);
   box_group_name_model->setFont(defaultFont());
   box_group_name_model->setPalette(palette());
   box_group_name_box->setModel(box_group_name_model);

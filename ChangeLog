@@ -23036,3 +23036,9 @@
 	in rdadmin(1).
 2022-05-03 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the user logo for rdairplay(1).
+2022-05-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'show_unchanged' argument to the constructor of the
+	'RDGroupListModel' model.
+	* Modified the 'Edit Cart' dialog in rdlibrary(1) so as to
+	default the 'Group:' and 'Usage:' controls to '[unchanged]' when
+	opened in multi-edit mode.

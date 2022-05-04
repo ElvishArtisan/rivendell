@@ -85,7 +85,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,QStringList *new_events,
   //
   event_group_box=new QComboBox(this);
   event_group_box->setGeometry(55,25,CENTER_LINE-70,20);
-  event_group_model=new RDGroupListModel(true,false,this);
+  event_group_model=new RDGroupListModel(true,false,false,this);
   event_group_model->changeUser();
   event_group_box->setModel(event_group_model);
   connect(event_group_box,SIGNAL(activated(const QString &)),

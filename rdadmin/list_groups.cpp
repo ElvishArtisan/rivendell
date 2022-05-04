@@ -2,7 +2,7 @@
 //
 // List Rivendell Groups
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -98,7 +98,7 @@ ListGroups::ListGroups(QWidget *parent)
   list_groups_view=new RDTableView(this);
   list_groups_view->setSortingEnabled(true);
   list_groups_view->sortByColumn(0,Qt::AscendingOrder);
-  list_groups_model=new RDGroupListModel(false,true,this);
+  list_groups_model=new RDGroupListModel(false,false,true,this);
   list_groups_model->setFont(defaultFont());
   list_groups_model->setPalette(palette());
   list_groups_view->setModel(list_groups_model);
