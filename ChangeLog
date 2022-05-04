@@ -23046,3 +23046,5 @@
 	* Modified the 'Edit Cart' dialog in rdlibrary(1) so as to
 	disable the 'Beats Per Minute:' control when opened in multi-edit
 	mode.
+2022-05-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that broke the 'make rpm' target.
