@@ -631,6 +631,8 @@ EditCart::EditCart(const QList<unsigned> &cartnums,QString *path,bool new_cart,
   else { //Multi Edit
     rdcart_group_box->setCurrentIndex(0);
     rdcart_usage_box->setCurrentIndex(0);
+    rdcart_controls.bpm_spin->setDisabled(true);
+    rdcart_bpm_label->setDisabled(true);
     rdcart_notes_button->hide();
   }
 
