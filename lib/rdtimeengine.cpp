@@ -2,7 +2,7 @@
 //
 //   An event timer engine.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -109,7 +109,10 @@ void RDTimeEngine::StartEvent(int id)
     while(!then.isValid());
   }
   int interval=now.msecsTo(then);
-  d_timers.value(id)->start(1+interval);
+  QTimer *timer=d_timers.value(id);
+  if (timer!=NULL) {  // In case this is a one-shot
+    d_timers.value(id)->start(1+interval);
+  }
   /*
   printf("ID %d set interval %d mS [%s] for scheduled time %s\n",id,interval,
 	 QTime(0,0,0).addMSecs(interval).toString("hh:mm:ss.zzz").toUtf8().constData(),
