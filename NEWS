@@ -1,6 +1,37 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v4.0.0beta3int0 -- 4 May 2022
+
+Internal test release.
+
+Major Changes Between v3.x and v4.x:
+   Qt Toolkit. Rivendell v4.x uses and is fully compatibile with major
+   version 5 of Qt (Qt5). See the INSTALL documents for specifics.
+
+   Date/Time Customizability. Date/Time presentation formats can now be
+   customized on the basis of site perferences.
+
+   MySQL Compatibility. Rivendell v4.x aims for full compatibility with
+   MySQL 8.0 and earlier versions in their default installation
+   configurations.
+
+   RDAirPlay. The rdairplay(1) has been completely overhauled, and now
+   supports dynamic resizeability as well as a revamped level metering
+   system.
+
+   RDPanel. The rdpanel(1) now supports dynamic resizing.
+
+   Many bug and regression fixes. See the 'ChangeLog' for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 355, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v4.0.0beta3 -- 13 Oct 2021
 
    Fourth beta release of Rivendell v4.x. Be sure to read the INSTALL

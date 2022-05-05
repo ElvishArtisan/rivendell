@@ -23048,3 +23048,5 @@
 	mode.
 2022-05-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke the 'make rpm' target.
+2022-05-04 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v4.0.0beta3int0.
