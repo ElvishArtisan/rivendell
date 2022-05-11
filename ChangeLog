@@ -23065,3 +23065,6 @@
 2022-05-11 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'Managing the Current User with RDLogin' chapter of
 	the Operations Guide.
+2022-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlibrary(1) that caused the disk free space
+	gauge to be disabled.

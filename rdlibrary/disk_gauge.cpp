@@ -2,7 +2,7 @@
 //
 // Disk Gauge Widget for RDLibrary.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +20,6 @@
 
 #include <rd.h>
 #include <rdapplication.h>
-
 #include <rdaudiostore.h>
 
 #include "disk_gauge.h"
@@ -47,14 +46,9 @@ DiskGauge::DiskGauge(int samp_rate,int chans,QWidget *parent)
   disk_space_label->setAlignment(Qt::AlignCenter);
   disk_space_label->setDisabled(true);
 
-  /*
-  update();
-  */
-
   disk_timer=new QTimer(this);
   disk_timer->setSingleShot(true);
   connect(disk_timer,SIGNAL(timeout()),this,SLOT(update()));
-  disk_timer->start(100);
 }
 
 

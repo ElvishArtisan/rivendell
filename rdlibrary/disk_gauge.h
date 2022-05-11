@@ -2,7 +2,7 @@
 //
 // Disk Gauge Widget for RDLibrary.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,12 +23,12 @@
 
 #include <stdint.h>
 
-#include <qlabel.h>
-#include <qprogressbar.h>
+#include <QLabel>
+#include <QProgressBar>
 
 #include <rdwidget.h>
 
-#define DISK_GAUGE_UPDATE_INTERVAL 60000
+#define DISK_GAUGE_UPDATE_INTERVAL 360000
 
 class DiskGauge : public RDWidget
 {
