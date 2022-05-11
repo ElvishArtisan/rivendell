@@ -1,4 +1,4 @@
-<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.overview">
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="chapter.overview">
   <title>System Overview</title>
 <!--
   <mediaobject>
@@ -38,19 +38,15 @@
     <para>
       Rivendell has been designed and developed from the ground up to run
       on the popular and highly stable <trademark>GNU/Linux</trademark>
-      operating system.
-      Selected tools (mostly having to do with log generation) have also
-      been ported to run in the Microsoft <trademark>Windows</trademark>
-      environment as well.
-      Full source code as well as binary installation packages for Windows
-      and select Linux distributions are available on line.
+      operating system. Full source code is available online at
+      <link xlink:href="https://github.com/ElvishArtisan/rivendell">https://github.com/ElvishArtisan/rivendell</link>.
     </para>
     <para>
       Rivendell has been designed to be able to operate in a wide variety
       of roles, ranging from single, self-contained workstations to large,
       multi-station clusters consisting of multiple workstations and
       centralized servers.  Also included are redundancy and hot-standby
-      capabilities to allow for reliable operation even in the presence of
+      capabilities to allow for reliable operation even in the face of
       hardware faults.
     </para>
     <para>
@@ -69,7 +65,7 @@
 	<varlistentry>
 	  <term><link linkend="chapter.rdcatch">RDCatch</link></term>
 	  <listitem>
-	    Automatic event scheduler
+	    Automatic time-driven event scheduler
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
@@ -162,7 +158,8 @@
 	  from any other host (provided the system administrator has enabled
 	  this capability).  Hosts can be used for a wide variety of
 	  applications, including content ingestion and management,
-	  automatic recording (sometimes referred to as netcatching),
+	  automatic recording (sometimes referred to as
+	  &quot;netcatching&quot;),
 	  on-air play out or log (sometimes also referred to as playlist)
 	  generation.  It is also possible for a single host to perform all
 	  of these functions.
@@ -175,9 +172,11 @@
 	  <emphasis>users</emphasis> available
 	  to it.  In this context, a 'user' is merely a set of access
 	  policies established by the system administrator that defines what
-	  tasks a given host is or is not allowed to perform.  Every host
-	  has at least one user, called the <emphasis>default user</emphasis>.
-	  As the name
+	  tasks that user is or is not allowed to perform. The set of
+	  available users is global to every host in a given Rivendell system;
+	  with each host operating under exactly one user at a time. Each
+	  host also has one user designated to be the
+	  <emphasis>default user</emphasis>. As the name
 	  suggests, this is the set of user policies that are loaded by
 	  default when the system starts up.  It is also possible to change
 	  the user currently in use on a given host by running the RDLogin
@@ -208,7 +207,7 @@
 	<para>
 	  Every facility at which Rivendell is deployed is presumed to have 
 	  one or more ultimate destinations for which audio is intended.
-	  These could be radio stations (e.g. WAVA), satellite uplink
+	  These could be radio stations --e.g. WAVA--, satellite uplink
 	  channels, live Internet audio streams, or any mix of the above.
 	  Each of these sorts of destinations is referred to in Rivendell
 	  as a <emphasis>service</emphasis>, and certain parameters,
@@ -234,8 +233,8 @@
 	  An <emphasis>audio adapter</emphasis> in Rivendell is simply a
 	  device or facility for
 	  getting audio into and/or out of a host on a realtime basis.
-	  Most commonly this will be a sound card, although other, more
-	  exotic possibilities (using TCP/IP networking or direct routing
+	  Often this will be a sound card, although other
+	  possibilities (such as AoIP or direct routing
 	  to other audio applications) also exist.  The three main classes
 	  of audio adapters supported by Rivendell are:
 	</para>
@@ -251,7 +250,7 @@
 		  to high-end cards aimed at professional audio uses.
 		  More information, including a current list of supported
 		  cards, is available at the ALSA web site,
-		  http://www.alsa-project.org/.
+		  <link xlink:href="http://www.alsa-project.org/">http://www.alsa-project.org/</link>.
 		</para>
 	      </listitem>
 	    </varlistentry>
@@ -266,7 +265,8 @@
 		  specially aimed for use in that setting.  They are so-called
 		  because Rivendell uses AudioScience's special 'HPI' driver
 		  to access and control them.  More information is available
-		  at AudioScience's web site, http://www.audioscience.com/.
+		  at AudioScience's web site at 
+		  <link xlink:href="http://www.audioscience.com/">http://www.audioscience.com/</link>.
 		</para>
 	      </listitem>
 	    </varlistentry>
@@ -274,15 +274,15 @@
 	      <term>JACK Audio Interconnect Kit</term>
 	      <listitem>
 		<para>
-		  JACK is not a particular set of hardware devices, but rather
+		  JACK is not a class of hardware devices, but rather
 		  an audio 'framework' that allows compliant applications to
 		  share audio resources and route audio in realtime amongst
-		  themselves.  JACK is different from similar efforts within
+		  themselves. JACK is different from similar efforts within
 		  the Linux realm in that it was designed from the ground up
 		  for professional audio work, with particular focus upon
 		  low-latency operation and synchronous  execution of all
-		  clients.  More information can be found at the JACK web
-		  site, http://jackit.sourceforge.net/.
+		  clients. More information can be found at the JACK web
+		  site, <link xlink:href="https://jackaudio.org/">https://jackaudio.org/</link>.
 		</para>
 	      </listitem>
 	    </varlistentry>
@@ -319,7 +319,7 @@
 	  the scope of this document.  Readers are encouraged to consult
 	  a good handbook on radio engineering for more information. 
 	  A current list of GPIO/Switcher devices supported by Rivendell
-	  can be found in 'docs/GPIO.txt' file in the Rivendell sources.
+	  can be found in <xref linkend="appendix.gpio_switcher_devices" />.
 	</para>
       </sect3>
     </sect2>
