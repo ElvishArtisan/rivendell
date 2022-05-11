@@ -2,7 +2,7 @@
 ##
 ## docs/opsguide/automake.am for Rivendell
 ##
-## (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2017-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -252,6 +252,7 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdlibrary.edit_cut_info_dialog.png\
                   rdlibrary.edit_macro_cart_dialog.png\
                   rdlibrary.edit_marker_dialog.png\
+                  rdlibrary.edit_marker_dialog.marker_menu.png\
                   rdlibrary.import_export_dialog.png\
                   rdlibrary.rdlibrary_screenshot.png\
                   rdlibrary.rip_disk_dialog.png\

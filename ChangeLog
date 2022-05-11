@@ -23068,3 +23068,6 @@
 2022-05-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlibrary(1) that caused the disk free space
 	gauge to be disabled.
+2022-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'Content Management with RDLibrary' chapter of
+	the Operations Guide.
