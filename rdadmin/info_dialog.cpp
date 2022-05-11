@@ -113,7 +113,6 @@ InfoDialog::InfoDialog(QWidget *parent)
   label->setFont(subLabelFont());
   label->setWordWrap(true);
   label->setText(tr("This program is free software, and comes with ABSOLUTELY NO WARRANTY, not even the implied warranties of MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE. Touch the \"View License\" button for details."));
-  //  label->setText(tr("This program is free software, and comes with ABSOLUTELY NO WARRANTY,\nnot even the implied warranties of MERCHANTIBILITY or FITNESS FOR A\nPARTICULAR PURPOSE.  Touch the \"View License\" button for details."));
 
   //
   // Credits Button

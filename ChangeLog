@@ -23057,3 +23057,6 @@
 	* Fixed a bug in the 'Edit Audio' dialog that caused the positions
 	of the FadeUp and FadeDown markers to be transposed when loading
 	from and saving to the database.
+2022-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the global copyright date in the Operations Guide.
+	* Updated the global copyright date in rdadmin(1).
