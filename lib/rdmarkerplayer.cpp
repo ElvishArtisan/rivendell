@@ -2,7 +2,7 @@
 //
 // Audio player for RDMarkerDialog
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -248,8 +248,8 @@ bool RDMarkerPlayer::setCut(unsigned cartnum,int cutnum)
     "`SEGUE_END_POINT`,"+    // 05
     "`HOOK_START_POINT`,"+   // 06
     "`HOOK_END_POINT`,"+     // 07
-    "`FADEUP_POINT`,"+       // 08
-    "`FADEDOWN_POINT`,"+     // 09
+    "`FADEDOWN_POINT`,"+       // 08
+    "`FADEUP_POINT`,"+     // 09
     "`SEGUE_GAIN`,"+         // 10
     "`PLAY_GAIN` "+          // 11
     "from `CUTS` where "+

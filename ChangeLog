@@ -23053,3 +23053,7 @@
 2022-05-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdcatchd(8) that could cause a segfault when
 	executing one shot events.
+2022-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Edit Audio' dialog that caused the positions
+	of the FadeUp and FadeDown markers to be transposed when loading
+	from and saving to the database.

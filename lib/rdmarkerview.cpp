@@ -382,8 +382,8 @@ RDMarkerView::RDMarkerView(int width,int height,QWidget *parent)
   d_pointer_fields.push_back("`SEGUE_END_POINT`");
   d_pointer_fields.push_back("`HOOK_START_POINT`");
   d_pointer_fields.push_back("`HOOK_END_POINT`");
-  d_pointer_fields.push_back("`FADEUP_POINT`");
   d_pointer_fields.push_back("`FADEDOWN_POINT`");
+  d_pointer_fields.push_back("`FADEUP_POINT`");
 
   //
   // The Main Mouse Menu
