@@ -23062,3 +23062,6 @@
 	* Updated the global copyright date in rdadmin(1).
 2022-05-11 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'System Overview' chapter of the Operations Guide.
+2022-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'Managing the Current User with RDLogin' chapter of
+	the Operations Guide.
