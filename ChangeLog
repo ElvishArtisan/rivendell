@@ -23074,3 +23074,6 @@
 2022-05-16 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'Automating Tasks with RDCatch' chapter of
 	the Operations Guide.
+2022-05-16 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'Generating and Maintaining Logs with RDLogEdit'
+	chapter of the Operations Guide.

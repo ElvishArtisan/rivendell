@@ -24,7 +24,7 @@
     <para>
       <mediaobject xml:id="mediaobject.rdlogedit.rdlogedit_screenshot">
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogedit.rdlogedit_screenshot.png" scale="65"/>
+	  <imagedata align="center" fileref="rdlogedit.rdlogedit_screenshot.png" width="148mm" depth="119mm" />
 	</imageobject>
 	<caption>
 	  <para xml:id="para.rdlogedit.the_rdlogedit_main_window">The RDLogEdit Main Window</para>
@@ -33,7 +33,7 @@
     </para>
     <para>
       Next comes the log's unique <computeroutput>Name</computeroutput>,
-      assigned at the time the log was created, followed by it's
+      assigned at the time the log was created, followed by its
       <computeroutput>Description</computeroutput>.
       This is a free-form alpha-numeric
       label that can be used to record any information that might be useful
@@ -109,7 +109,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogedit.edit_log_dialog.png" scale="50"/>
+	  <imagedata align="center" fileref="rdlogedit.edit_log_dialog.png" width="169mm" depth="112mm" />
 	</imageobject>
 	<caption>
 	  <para>The Edit Log Dialog</para>
@@ -130,7 +130,8 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="play.png" scale="100"/>
+<!--		  <imagedata fileref="play.png" scale="100"/> -->
+		  <imagedata fileref="play.png" width="14pt" depth="14pt" />
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -142,7 +143,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="track_cart.png" scale="100"/>
+		  <imagedata fileref="track_cart.png" width="14pt" depth="14pt" />
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -154,7 +155,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="rml5.png" scale="100"/>
+		  <imagedata fileref="rml5.png" width="14pt" depth="14pt" />
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -166,7 +167,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="notemarker.png" scale="100"/>
+		  <imagedata fileref="notemarker.png" width="14pt" depth="14pt" />
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -178,7 +179,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="mic16.png" scale="100"/>
+		  <imagedata fileref="mic16.png" width="14pt" depth="14pt" />
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -190,7 +191,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="chain.png" scale="100"/>
+		  <imagedata fileref="chain.png" width="14pt" depth="14pt" />
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -202,7 +203,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="music.png" scale="100"/>
+		  <imagedata fileref="music.png" width="14pt" depth="14pt" />
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -214,7 +215,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="traffic.png" scale="100"/>
+		  <imagedata fileref="traffic.png" width="14pt" depth="14pt" />
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -230,7 +231,7 @@
       <para>
 	The first, and usually most common type of log event is an audio cart.
 	As the name implies, audio carts are Library entries that contain
-	audio material intended for playout. Audio carts were covered in
+	audio material intended for playout. Audio carts are covered in
 	detail in <xref linkend="chapter.rdlibrary"/>.
       </para>
     </sect2>
@@ -239,8 +240,8 @@
       <para>
 	A macro cart is a cart from the Library that contains one or more
 	system commands that can be used to cause the system to take various
-	actions.  They were touched upon in
-	<xref linkend="chapter.rdlibrary"/>, and will be discussed in detail
+	actions.  They are touched upon in
+	<xref linkend="chapter.rdlibrary"/>, and discussed in detail
 	in <xref linkend="chapter.rml"/>.
       </para>
     </sect2>
@@ -248,15 +249,16 @@
       <title>Note Markers</title>
       <para>
 	A note marker is an entry in the log that contains text intended to
-	be seen by operators and used as a guide or reminder (program coders
+	be seen by operators and used as a guide or reminder. (Program coders
 	sometimes refer to this sort of functionality as a
 	<emphasis>remark</emphasis> or <emphasis>comment</emphasis>,
-	as seen in the <code>REM</code> command used by BASIC programmers).
-	Note markers
+	as seen in the <code>REM</code> command featured in the BASIC
+	programming language). Note markers
 	belong to a class of log events known as meta events because (unlike
 	carts, which exist in the Library independently of whether they are
 	placed in a log or not), they have no independent existence outside
-	of the specific log where they are placed. A note marker has
+	of the specific log where they are placed. A note marker in and of
+	itself has
 	absolutely no effect on the execution of a log other than to simply
 	display some text at a specified point in a log, and as such can be
 	useful as a mechanism for making notes or reminders to oneself or
@@ -278,22 +280,22 @@
     <sect2 xml:id="sect.rdlogedit.chain_events">
       <title>Chain Events</title>
       <para>
-	Each event in a log has a transition type, shown in the
-	<computeroutput>Trans</computeroutput>
-	column of the Edit Log dialog. The transition type determines what
-	happens when one event in a log ends and the next starts. Three basic
-	transition types can exist in a Rivendell log: 
-	<computeroutput>PLAY</computeroutput>,
-	<computeroutput>SEGUE</computeroutput> and
-	<computeroutput>STOP</computeroutput>.
+	A chain event is a meta event that instructs the log machine that is
+	executing the log to load another log, effectively replacing the
+	current log with the new one.
       </para>
+      <note>
+	If one or more events are playing out when a chain event is executed,
+	those events will be retained; with the new log appended after
+	the playing events.
+      </note>
     </sect2>
     <sect2 xml:id="sect.rdlogedit.import_links">
       <title>Import Links</title>
       <para>
 	An import link is a placeholder event that shows where events imported
 	from the external music or traffic scheduling system will eventually
-	go. They will be covered in detail in
+	go. They are covered in detail in
 	<xref linkend="chapter.rdlogmanager"/>.
       </para>
       <para>
@@ -305,7 +307,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlogedit.edit_log_entry_dialog.png" scale="55"/>
+	    <imagedata align="center" fileref="rdlogedit.edit_log_entry_dialog.png" width="123mm" depth="56mm" />
 	  </imageobject>
 	  <caption>
 	    <para>The Edit Log Entry Dialog</para>
@@ -315,7 +317,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlogedit.edit_log_marker_dialog.png" scale="55"/>
+	    <imagedata align="center" fileref="rdlogedit.edit_log_marker_dialog.png" width="123mm" depth="52mm" />
 	  </imageobject>
 	  <caption>
 	    <para>The Edit Log Marker Dialog</para>
@@ -325,7 +327,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlogedit.edit_voice_track_marker_dialog.png" scale="55"/>
+	    <imagedata align="center" fileref="rdlogedit.edit_voice_track_marker_dialog.png" width="123mm" depth="52mm" />
 	  </imageobject>
 	  <caption>
 	    <para>The Edit Voice Track Marker Dialog</para>
@@ -335,7 +337,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlogedit.edit_log_chain_dialog.png" scale="55"/>
+	    <imagedata align="center" fileref="rdlogedit.edit_log_chain_dialog.png" width="123mm" depth="52mm" />
 	  </imageobject>
 	  <caption>
 	    <para>The Edit Log Chain Dialog</para>
@@ -376,7 +378,7 @@
 	the Library or from a custom transition programmed in the voice
 	tracker), then the event will start before the prior event is
 	finished, causing the two pieces of audio to overlap and mix together.
-	<computeroutput>SEGUE</computeroutput> transitions can be a very
+	<computeroutput>SEGUE</computeroutput> transitions are a very
 	powerful tool for creating a variety
 	of special effects, particularly when used in conjunction with
 	musical material.
@@ -408,7 +410,7 @@
     <sect2 xml:id="sect.rdlogedit.the_relative_time_type">
       <title>The Relative Time Type</title>
       <para>
-	The default time type for log events, a relative time type simply
+	The default time type for log events, the relative time type simply
 	means that the event is assumed to have a start time of whenever
 	the previous event ends (if it has a
 	<computeroutput>PLAY</computeroutput> or 
@@ -491,9 +493,9 @@
 	<computeroutput>Show Start Times As</computeroutput> dropdown box.
 	<userinput>Estimated</userinput> will give start time values
 	based on any hard start times in the log, taking the known
-	lengths of the relevant carts, while <userinput>Scheduled</userinput>
-	will display the start times as provided by an external music and/or
-	traffic scheduling system.
+	lengths of the relevant carts into account, while
+	<userinput>Scheduled</userinput> will display the start times as
+	provided by an external music and/or traffic scheduling system.
       </para>
       <para>
 	The optimum style to use is largely dependent on how a particular
@@ -506,7 +508,7 @@
 	&quot;on the fly&quot; in
 	<command>rdlogedit</command><manvolnum>1</manvolnum>, the
 	<userinput>Estimated</userinput> style will usually provide more
-	insight on a log will actually time out when played.
+	insight into how a log will actually time out when played.
       </para>
     </sect2>
 
@@ -530,7 +532,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlogedit.select_cart_dialog.png" scale="55"/>
+	    <imagedata align="center" fileref="rdlogedit.select_cart_dialog.png" width="155mm" depth="80mm" />
 	  </imageobject>
 	  <caption>
 	    <para>The Select Cart Dialog</para>
@@ -541,25 +543,28 @@
     <sect2 xml:id="sect.rdlogedit.specifying_meta_event_parameters">
       <title>Specifying Meta Event Parameters</title>
       <para>
-	Note marker and track marker events each take only a single
-	parameter:  a <computeroutput>Comment</computeroutput> text that
-	will show up on the log entry.
-	In the case of a chain event, the name of the log to chain to must
-	be supplied in the <computeroutput>Log Name</computeroutput> field,
-	or the <computeroutput>Select</computeroutput> button can be
+	Both note and track marker events have a 
+	<computeroutput>Comment</computeroutput> parameter, the text of
+	which will show up as the Title on a log listing. However,chain
+	events require that the name of the log to chain to be supplied in the
+	<computeroutput>Log Name</computeroutput> field.
+	The <computeroutput>Select</computeroutput> button can be
 	touched to bring up the Select Log dialog to allow a name to picked
-	from a list of all those available.  Note that meta events are
-	assigned transition and time types just the same as cart events.
+	from a list of all those available.
       </para>
+      <note>
+	Meta events can be assigned a transition and time type just the same
+	as with cart events.
+      </note>
     </sect2>
     <sect2 xml:id="sect.rdlogedit.rearranging_log_events">
       <title>Rearranging Log Events</title>
       <para>
 	Existing events in a log can be cut, copied, pasted or rearranged
 	by touching the appropriate buttons in the Edit Log dialog.
-	In addition, touch the <computeroutput>Delete</computeroutput>
-	button will cause the selected
-	log event(s) to be removed from the log.
+	In addition, touching the <computeroutput>Delete</computeroutput>
+	button will cause the selected log event(s) to be removed from the
+	log.
       </para>
     </sect2>
     <sect2 xml:id="sect.rdlogedit.saving_or_abandoning_changes_to_a_log">
@@ -582,10 +587,7 @@
 	does not exist in the Library, or that is not enabled for play on
 	the log's owning service) its entry will be highlighted either
 	RED (indicating a missing/invalid cart) or MAGENTA (indicating a
-	cart without permission to run on the owning service). It's also
-	possible to generate an  exception report summarizing problem cart
-	entries by touching the 
-	<computeroutput>Check Log</computeroutput> button.
+	cart without permission to run on the owning service).
       </para>
     </sect2>
   </sect1>
