@@ -1,4 +1,4 @@
-<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdcatch">
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="chapter.rdcatch">
   <title>Automating Tasks with RDCatch</title>
   <sect1 xml:id="sect.rdcatch.automating_tasks_with_rdcatch">
     <title>Choosing the Correct Automation Tool</title>
@@ -80,8 +80,8 @@
     <table xml:id="table.rdcatch.rdcatch_event_states" frame="all">
       <title>RDCatch Event States</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
-	<colspec colname="Status" />
-	<colspec colname="Meaning" />
+	<colspec colname="Status" colwidth="100" />
+	<colspec colname="Meaning" colwidth="300" />
 	<thead>
 	  <row>
 	    <entry>
@@ -148,7 +148,7 @@
       <para>
 	<mediaobject xml:id="mediaobject.rdcatch.rdcatch_screenshot">
 	  <imageobject>
-	    <imagedata align="center" fileref="rdcatch.rdcatch_screenshot.png" scale="45"/>
+	    <imagedata align="center" fileref="rdcatch.rdcatch_screenshot.png" width="140mm" depth="91mm" />
 	  </imageobject>
 	  <caption>
 	    <para xml:id="para.rdcatch.the_rdcatch_main_window">The RDCatch Main Window</para>
@@ -184,8 +184,8 @@
       <table xml:id="table.rdcatch.rdcatch_event_state_colors" frame="all">
 	<title>RDCatch Event State Colors</title>
 	<tgroup cols="2" align="left" colsep="1" rowsep="1">
-	  <colspec colname="Color" />
-	  <colspec colname="Meaning" />
+	  <colspec colname="Color" colwidth="100" />
+	  <colspec colname="Meaning" colwidth="300" />
 	  <thead>
 	    <row>
 	      <entry>
@@ -248,12 +248,16 @@
       <table xml:id="table.rdcatch.rdcatch_event_icons" frame="all">
 	<title>RDCatch Event Icons</title>
 	<tgroup cols="2" align="left" colsep="1" rowsep="1">
-	  <colspec colname="Color" />
-	  <colspec colname="Meaning" />
+	  <colspec colname="Icon" colwidth="30"/>
+	  <colspec colname="Event Type" colwidth="90"/>
 	  <tbody>
 	    <row>
 	      <entry>
-		[RECORD_ICON]
+		<mediaobject xml:id="icon.rdcatch.record_icon">
+		  <imageobject>
+		    <imagedata align="center" fileref="rdcatch.record_icon.png" width="14pt" depth="14pt"/>
+		  </imageobject>
+		</mediaobject>
 	      </entry>
 	      <entry>
 		Record Event
@@ -261,7 +265,11 @@
 	    </row>
 	    <row>
 	      <entry>
-		[PLAYOUT ICON]
+		<mediaobject xml:id="icon.rdcatch.playout_icon">
+		  <imageobject>
+		    <imagedata align="center" fileref="rdcatch.play_icon.png" width="14pt" depth="14pt"/>
+		  </imageobject>
+		</mediaobject>
 	      </entry>
 	      <entry>
 		Play Out Event
@@ -269,7 +277,11 @@
 	    </row>
 	    <row>
 	      <entry>
-		[SWITCH ICON]
+		<mediaobject xml:id="icon.rdcatch.switch_icon">
+		  <imageobject>
+		    <imagedata align="center" fileref="rdcatch.switch_icon.png" width="14pt" depth="14pt"/>
+		  </imageobject>
+		</mediaobject>
 	      </entry>
 	      <entry>
 		Switch Event
@@ -277,7 +289,11 @@
 	    </row>
 	    <row>
 	      <entry>
-		[MACRO ICON]
+		<mediaobject xml:id="icon.rdcatch.macro_icon">
+		  <imageobject>
+		    <imagedata align="center" fileref="rdcatch.macro_icon.png" width="14pt" depth="14pt"/>
+		  </imageobject>
+		</mediaobject>
 	      </entry>
 	      <entry>
 		Macro Event
@@ -285,7 +301,11 @@
 	    </row>
 	    <row>
 	      <entry>
-		[UPLOAD ICON]
+		<mediaobject xml:id="icon.rdcatch.upload_icon">
+		  <imageobject>
+		    <imagedata align="center" fileref="rdcatch.upload_icon.png" width="14pt" depth="14pt"/>
+		  </imageobject>
+		</mediaobject>
 	      </entry>
 	      <entry>
 		Upload Event
@@ -293,7 +313,11 @@
 	    </row>
 	    <row>
 	      <entry>
-		[DOWNLOAD ICON]
+		<mediaobject xml:id="icon.rdcatch.download_icon">
+		  <imageobject>
+		    <imagedata align="center" fileref="rdcatch.download_icon.png" width="14pt" depth="14pt"/>
+		  </imageobject>
+		</mediaobject>
 	      </entry>
 	      <entry>
 		Download Event
@@ -312,9 +336,9 @@
 	<computeroutput>End</computeroutput> parameters.
 	These time-based parameters come in one of three different forms:
 	a hard time, which is simply an absolute time (in twenty-four hour
-	'military' format), a length (in HH:MM format, relative to an
-	earlier start time), or a GPI start.  The GPI parameters can be
-	somewhat involved.  They are specified in the following format:
+	'military' format), a length (in MM:SS format, relative to an
+	earlier start time), or a GPI start. The GPI parameters can be
+	somewhat involved. They are specified in the following format:
       </para>
       <para>
 	Gpi: &lt;start-time&gt;,&lt;end-time&gt;,&lt;gpi-num&gt;,&lt;wait-time&gt;
@@ -511,11 +535,6 @@
     </sect2>
   </sect1>
 
-
-
-
-
-
   <sect1 xml:id="sect.rdcatch.adding_new_events">
     <title>Adding New Events</title>
     <para>
@@ -528,7 +547,7 @@
       <para>
 	<mediaobject xml:id="mediaobject.rdcatch.add_event_dialog">
 	  <imageobject>
-	    <imagedata align="center" fileref="rdcatch.add_event_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdcatch.add_event_dialog.png" width="36mm" depth="77mm"/>
 	  </imageobject>
 	  <caption>
 	    <para xml:id="para.the_add_event_dialog">The Add Event Dialog</para>
@@ -569,7 +588,7 @@
       <para>
 	<mediaobject xml:id="mediaobject.rdcatch.edit_recording_dialog">
 	  <imageobject>
-	    <imagedata align="center" fileref="rdcatch.edit_recording_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdcatch.edit_recording_dialog.png" width="114mm" depth="116mm"/>
 	  </imageobject>
 	  <caption>
 	    <para xml:id="the_edit_recording_dialog">The Edit Recording Dialog</para>
@@ -670,7 +689,7 @@
       <para>
 	<mediaobject xml:id="mediaobject.rdcatch.edit_playout_dialog">
 	  <imageobject>
-	    <imagedata align="center" fileref="rdcatch.edit_playout_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdcatch.edit_playout_dialog.png" width="96mm" depth="48mm" />
 	  </imageobject>
 	  <caption>
 	    <para xml:id="the_edit_playout_dialog">The Edit Playout Dialog</para>
@@ -693,7 +712,7 @@
     <para>
       <mediaobject xml:id="mediaobject.rdcatch.edit_download_dialog">
 	<imageobject>
-	  <imagedata align="center" fileref="rdcatch.edit_download_dialog.png" scale="50"/>
+	  <imagedata align="center" fileref="rdcatch.edit_download_dialog.png" width="98mm" depth="82mm" />
 	</imageobject>
 	<caption>
 	  <para xml:id="para.rdcatch.the_edit_download_dialog">The Edit Download Dialog</para>
@@ -744,7 +763,7 @@
     <para>
       <mediaobject xml:id="metaobject.rdcatch.edit_upload_dialog">
 	<imageobject>
-	  <imagedata align="center" fileref="rdcatch.edit_upload_dialog.png" scale="50"/>
+	  <imagedata align="center" fileref="rdcatch.edit_upload_dialog.png" width="98mm" depth="82mm" />
 	</imageobject>
 	<caption>
 	  <para xml:id="para.rdcatch.the_edit_upload_dialog">The Edit Upload Dialog</para>
@@ -764,6 +783,9 @@
       <itemizedlist>
 	<listitem>
 	  PCM16 Linear (*.wav)
+	</listitem>
+	<listitem>
+	  PCM24 Linear (*.wav)
 	</listitem>
 	<listitem>
 	  Free Lossless Audio Codec [FLAC] (*.flac)
@@ -801,7 +823,7 @@
     <para>
       <mediaobject xml:id="mediaobject.dcatch.edit_cart_event_dialog">
 	<imageobject>
-	  <imagedata align="center" fileref="rdcatch.edit_cart_event_dialog.png" scale="50"/>
+	  <imagedata align="center" fileref="rdcatch.edit_cart_event_dialog.png" width="98mm" depth="50mm" />
 	</imageobject>
 	<caption>
 	  <para xml:id="para.rdcatch.the_edit_cart_event_dialog">The Edit Cart Event Dialog</para>
@@ -823,7 +845,7 @@
     <para>
       <mediaobject xml:id="mediaobject.rdcatch.edit_switcher_event_dialog">
 	<imageobject>
-	  <imagedata align="center" fileref="rdcatch.edit_switcher_event_dialog.png" scale="50"/>
+	  <imagedata align="center" fileref="rdcatch.edit_switcher_event_dialog.png" width="98mm" depth="70mm" />
 	</imageobject>
 	<caption>
 	  <para xml:id="para.rdcatch.the_edit_switcher_event_dialog">The Edit Switcher Event Dialog</para>

@@ -237,6 +237,7 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdcartslots.rdcartslots_screenshot.png\
                   rdcartslots.rivendell_services_dialog.png\
                   rdcartslots.select_cart_dialog.png\
+                  rdcatch.download_icon.png\
                   rdcatch.add_event_dialog.png\
                   rdcatch.edit_cart_event_dialog.png\
                   rdcatch.edit_download_dialog.png\
@@ -244,7 +245,12 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdcatch.edit_recording_dialog.png\
                   rdcatch.edit_switcher_event_dialog.png\
                   rdcatch.edit_upload_dialog.png\
+                  rdcatch.macro_icon.png\
+                  rdcatch.play_icon.png\
                   rdcatch.rdcatch_screenshot.png\
+                  rdcatch.record_icon.png\
+                  rdcatch.switch_icon.png\
+                  rdcatch.upload_icon.png\
                   rddbconfig.login_dialog.png\
                   rddbconfig.rddbconfig_screenshot.png\
                   rdlibrary.cd_ripper_dialog.png\
