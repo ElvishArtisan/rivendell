@@ -1,22 +1,24 @@
-<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.voicetracking">
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="chapter.voicetracking">
   <title>VoiceTracking</title>
   <sect1 xml:id="sect.voicetracking.voicetracking_in_rivendell">
     <title>Voicetracking in Rivendell</title>
     <para>
-      Voicetracking is a capability wherein custom &quot;one-off&quot;
-      content is created and inserted into logs, making it possible to
-      create programming that sounds very spontaneous and &quot;live&quot;.
-      In Rivendell, such voicetracks are placed into a special type of audio
+      Voicetracking in Rivendell is a capability wherein custom
+      &quot;one-off&quot; content is created and inserted into logs,
+      making it possible to create programming that sounds very spontaneous
+      and &quot;live&quot;.
+      Such voicetracks are placed into a special type of audio
       cart known as a voicetrack cart. These carts are automatically
-      created, deleted and managed by the voicetracker interface (part of
-      the RDLogEdit module), with no manual user intervention required.
+      created, deleted and managed by the voicetracker interface
+      (accessible within both the RDLogEdit and RDAirPlay modules),
+      with no manual user intervention required.
       The voicetracker module also includes extensive capabilities for
       allowing customization of the transitions between log elements.
     </para>
    <para>
      <mediaobject>
        <imageobject>
-	 <imagedata align="center" fileref="voicetracking.voice_tracker_dialog.png" scale="45"/>
+	 <imagedata align="center" fileref="voicetracking.voice_tracker_dialog.png" width="128mm" depth="117mm"/>
        </imageobject>
        <caption><para>The Voice Tracker Dialog</para></caption>
      </mediaobject>
@@ -26,8 +28,9 @@
       <para>
 	Before beginning voicetracking for a particular service, a
 	voicetracker group and pool of available cart numbers must be
-	configured in the RDAdmin module. These procedures are detailed in
-	the Rivendell Technical and Administration Guide.
+	configured in the RDAdmin module. See
+	<xref linkend="sect.rdadmin.managing_voicetracking" /> for
+	more information.
       </para>
     </sect2>
     <sect2 xml:id="sect.voicetracking.voicetrack_markers">
@@ -42,7 +45,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="voicetracking.voice_tracker_dialog_track_selected.png" scale="45"/>
+	    <imagedata align="center" fileref="voicetracking.voice_tracker_dialog_track_selected.png" width="128mm" depth="117mm"/>
 	  </imageobject>
 	  <caption><para>The Voice Tracker Dialog (track selected)</para></caption>
 	</mediaobject>
@@ -54,10 +57,32 @@
     <sect2 xml:id="sect.voicetracking.the_voicetracker_dialog">
       <title>The VoiceTracker Dialog</title>
       <para>
-	To voicetrack a log, start the RDLogEdit module,
-	highlight the desired log and touch the
+	There are two ways of accessing the voicetracker interface, via
+	the RDLogEdit or RDAirPlay module. To access it using RDLogEdit,
+	start the RDLogEdit module, highlight the desired log and touch the
 	<computeroutput>VoiceTracker</computeroutput> button, opening
-	the VoiceTracker dialog. This dialog consists
+	the VoiceTracker dialog. Using RDAirPlay, touch the
+	<computeroutput>Voice Tracker</computeroutput> button to make the
+	interface appear on the right-hand side, then touch the
+	<computeroutput>Load Log</computeroutput> and select the log to
+	voicetrack.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="left" fileref="voicetracking.voice_tracker_button.png" width="35mm" depth="10mm"/>
+	  </imageobject>
+	  <caption><para>The Voice Tracker button in RDAirPlay</para></caption>
+	</mediaobject>
+      </para>
+      <note>
+	You may need to drag the RDAirPlay main window to a wider size in
+	order to make the <computeroutput>Voice Tracker</computeroutput>
+	appear.
+      </note>
+
+      <para>
+	This dialog consists
 	of three major parts: the waveform area, the log list and the control
 	buttons.
       </para>
@@ -72,7 +97,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="voicetracking.voice_tracker_dialog_track_1_playing.png" scale="45"/>
+	    <imagedata align="center" fileref="voicetracking.voice_tracker_dialog_track_1_playing.png" width="128mm" depth="117mm"/>
 	  </imageobject>
 	  <caption><para>The Voice Tracker Dialog (1st track playing)</para></caption>
 	</mediaobject>
@@ -113,7 +138,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="voicetracking.voice_tracker_dialog_recording.png" scale="45"/>
+	    <imagedata align="center" fileref="voicetracking.voice_tracker_dialog_recording.png" width="128mm" depth="117mm"/>
 	  </imageobject>
 	  <caption><para>The Voice Tracker Dialog (recording)</para></caption>
 	</mediaobject>
@@ -142,7 +167,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="voicetracking.voice_tracker_dialog_track_2_playing.png" scale="45"/>
+	    <imagedata align="center" fileref="voicetracking.voice_tracker_dialog_track_2_playing.png" width="128mm" depth="117mm"/>
 	  </imageobject>
 	  <caption><para>The Voice Tracker Dialog (2nd track playing)</para></caption>
 	</mediaobject>
@@ -181,7 +206,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="voicetracking.voice_tracker_dialog_track_completed.png" scale="45"/>
+	    <imagedata align="center" fileref="voicetracking.voice_tracker_dialog_track_completed.png" width="128mm" depth="117mm"/>
 	  </imageobject>
 	  <caption><para>The Voice Tracker Dialog (track completed)</para></caption>
 	</mediaobject>

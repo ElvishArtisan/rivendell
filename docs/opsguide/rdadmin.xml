@@ -2610,6 +2610,24 @@
       for more information.
     </para>
   </sect1>
+  <sect1 xml:id="sect.rdadmin.managing_voicetracking">
+    <title>Managing Voicetracking</title>
+    <para>
+      Each service which will be employing voicetracking on its logs must
+      have an audio group assigned to contain the service's
+      voicetrack carts. The group should have a
+      <computeroutput>Default Cart Number</computeroutput> range large
+      enough to contain all voicetracks that will simultaneously exist for
+      that service, and have the
+      <computeroutput>Enforce Cart Range</computeroutput> box ticked.
+    </para>
+    <note>
+      Voicetrack carts are created, managed and ultimately deleted
+      completely by Rivendell's voicetracking system. While they are visible
+      to and can be auditioned by RDLibrary, they cannot otherwise be
+      updated or deleted by that module.
+    </note>
+  </sect1>
   <sect1 xml:id="sect.rdadmin.manage_scheduler_codes">
     <title>Managing Scheduler Codes</title>
     <para>
