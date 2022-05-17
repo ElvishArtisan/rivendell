@@ -377,18 +377,17 @@
       </para>
       <para>
 	The <computeroutput>Purge Logs after</computeroutput> box,
-	if ticked, will set the deletion date for logs to be the
-	specified number of days after being created by RDLogManager.
+	if ticked, will set the default deletion date for logs to be the
+	specified number of days after being created by RDLogManager. See
+	<xref linkend="sect.rdadmin.manage_services.general.purging_log_and_elr_data_automatically" /> for more information.
       </para>
-      <sect4 xml:id="sect.rdadmin.manage_services.general.purging_log_and_elr_data_automatically">
-	<title>Purging Log and ELR Data Automatically</title>
-	<para>
-	  The <computeroutput>Purge ELR Data after</computeroutput>
-	  box, if ticked, will cause Electronic Log Reconiliation (ELR)
-	  as-played data to be purged from the database the specified number
-	  of days after being generated.
-	</para>
-      </sect4>
+      <para>
+	The <computeroutput>Purge ELR Data after</computeroutput>
+	box, if ticked, will cause Electronic Log Reconiliation (ELR)
+	as-played data to be purged from the database the specified number
+	of days after being generated. See
+	<xref linkend="sect.rdadmin.manage_services.general.purging_log_and_elr_data_automatically" /> for more information.
+      </para>
       <para>
 	The <computeroutput>Include Music Import Markers in Finished Logs</computeroutput> and 
 	<computeroutput>Include Traffic Import Markers in Finished Logs</computeroutput>
@@ -402,7 +401,27 @@
 	If import markers are not included in finished logs, then it will
 	not be possible re-import data of the respective type into those logs.
       </warning>
-
+      <sect3 xml:id="sect.rdadmin.manage_services.general.purging_log_and_elr_data_automatically">
+	<title>Purging Log and ELR Data Automatically</title>
+	<para>
+	  Certain types of Rivendell item (specifically, play-out logs and
+	  ELR data for generating &quot;as-played&quot; reports) tend to
+	  accumulate over time. If too many of these items exist it can impact
+	  the performance and responsiveness of the Rivendell system. Thus,
+	  it is highly recommended that auto-purging of past and no longer
+	  required play-out logs and ELR data be enabled. This can be done by
+	  ticking the <computeroutput>Set Logs to auto-delete</computeroutput>
+	  and <computeroutput>Purge ELR Data</computeroutput> boxes
+	  respectively and setting the numbers of days to keep the data
+	  before purging.
+	</para>
+	<warning>
+	  Once ELR data for a particular service and date are purged it will
+	  be impossible to generate reports for that service/date.
+	  Be sure that the purge interval is sufficiently large to allow all
+	  required reports to be generated before the data is purged.
+	</warning>
+      </sect3>
       <sect3 xml:id="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters">
 	<title>Inline Event Scheduling Parameters</title>
 	<para>
@@ -443,11 +462,9 @@
 		correct placement, Start Time and Length of each inline
 		event will be determined heuristically, with Inline Traffic
 		Breaks generating Traffic Links with Start Time/Length
-		values taken from that of the parent Music Event.
-	      </para>
-	      <para>
-		N.B. This means that only one Inline Event of each type
-		may be placed within the same parent Music Event!
+		values taken from that of the parent Music Event,
+		meaning that only one Inline Event of each type
+		may be placed within the same parent Music Event.
 	      </para>
 	    </listitem>
 	  </varlistentry>
@@ -460,7 +477,6 @@
 	  new installations should use
 	  <computeroutput>From Scheduler File</computeroutput>!
 	</note>
-
 	<sect4 xml:id="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters.examples">
 	  <title>Examples</title>
 	  <para>

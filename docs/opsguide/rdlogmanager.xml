@@ -541,10 +541,13 @@
        Each date that has data eligible for purging will be shown in bold.
        To purge a particular day, select it and the touch the
        <computeroutput>Purge Data</computeroutput>
-       button. (NOTE: once purged, no reports can be generated for that
-       particular service/date, so be sure that all required reports have
-       been produced before purging!)
+       button.
      </para>
+     <warning>
+       Once ELR data for a particular service and date are purged it will
+       be impossible to generate reports for that service/date.
+       Be sure that all required reports have been produced before purging!
+     </warning>
      <note>
        It is recommended that the system be configured to purge report data
        automatically after it reaches a certain age (30 days is typical).

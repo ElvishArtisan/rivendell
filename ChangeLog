@@ -23088,3 +23088,7 @@
 	Operations Guide to 'Generating Logs and Reports with RDLogManger'.
 	* Updated the 'Generating Logs and Reports with RDLogManger'
 	chapter of the Operations Guide.
+2022-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Purging Log and ELR Data Automatically' subsection to the
+	'Managing Services' section of 'Configuring Rivendell with RDAdmin'
+	in the Operations Guide.
