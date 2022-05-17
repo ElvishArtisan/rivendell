@@ -1,6 +1,11 @@
-<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdlogmanager">
-  <title>Generating Logs with RDLogManager</title>
-  <sect1 xml:id="sect.rdlogmanager.generating_logs_with_rdlogmanager">
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="chapter.rdlogmanager">
+  <title>Generating Logs and Reports with RDLogManager</title>
+  <sect1 xml:id="sect.rdlogmanager.generating_logs_and_reports_with_rdlogmanager">
+    <note>
+      This chapter covers the graphical user interface for RDLogManager.
+      For information regarding the command-line interface, see the
+      <command>rdlogmanager</command><manvolnum>1</manvolnum> man page.
+    </note>
     <title>Overview</title>
     <para>
       RDLogManager is a tool for generating Rivendell logs. It is different
@@ -32,9 +37,9 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="center" fileref="rdlogmanager.rdlogmanager_screenshot.png" scale="45"/>
+	   <imagedata align="center" fileref="rdlogmanager.rdlogmanager_screenshot.png" width="36mm" depth="70mm" />
 	 </imageobject>
-	 <caption><para>The Log Grids Dialog</para></caption>
+	 <caption><para>The RDLogManager Main Menu</para></caption>
        </mediaobject>
      </para>
   </sect1>
@@ -48,7 +53,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="center" fileref="rdlogmanager.log_grids_dialog.png" scale="45"/>
+	   <imagedata align="center" fileref="rdlogmanager.log_grids_dialog.png" width="65mm" depth="53mm" />
 	 </imageobject>
 	 <caption><para>The Log Grids Dialog</para></caption>
        </mediaobject>
@@ -61,7 +66,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="center" fileref="rdlogmanager.edit_grid_dialog.png" scale="40"/>
+	   <imagedata align="center" fileref="rdlogmanager.edit_grid_dialog.png" width="145mm" depth="95mm" />
 	 </imageobject>
 	 <caption><para>The Edit Grid Dialog</para></caption>
        </mediaobject>
@@ -77,7 +82,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.log_clocks.png" scale="45"/>
+	  <imagedata align="center" fileref="rdlogmanager.log_clocks.png" width="96mm" depth="68mm" />
 	</imageobject>
 	<caption><para>The Log Clocks Dialog</para></caption>
       </mediaobject>
@@ -125,7 +130,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.log_clock_list.png" scale="45"/>
+	  <imagedata align="center" fileref="rdlogmanager.log_clock_list.png" width="97mm" depth="69mm" />
 	</imageobject>
 	<caption><para>The Log Clock List Dialog</para></caption>
       </mediaobject>
@@ -133,7 +138,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.edit_clock_dialog.png" scale="40"/>
+	  <imagedata align="center" fileref="rdlogmanager.edit_clock_dialog.png" width="145mm" depth="104mm" />
 	</imageobject>
 	<caption><para>The Edit Clock Dialog</para></caption>
       </mediaobject>
@@ -164,7 +169,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.edit_event_assignment_dialog.png" scale="45"/>
+	  <imagedata align="center" fileref="rdlogmanager.edit_event_assignment_dialog.png" width="88mm" depth="26mm" />
 	</imageobject>
 	<caption><para>The Edit Event Assignment Dialog</para></caption>
       </mediaobject>
@@ -193,7 +198,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.service_association_dialog.png" scale="45"/>
+	  <imagedata align="center" fileref="rdlogmanager.service_association_dialog.png" width="65mm" depth="39mm" />
 	</imageobject>
 	<caption><para>The Service Association Dialog</para></caption>
       </mediaobject>
@@ -242,7 +247,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.log_events_dialog.png" scale="45"/>
+	  <imagedata align="center" fileref="rdlogmanager.log_events_dialog.png" width="96mm" depth="69mm" />
 	</imageobject>
 	<caption><para>The Log Events Dialog</para></caption>
       </mediaobject>
@@ -250,7 +255,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.editing_event.png" scale="40"/>
+	  <imagedata align="center" fileref="rdlogmanager.editing_event.png" width="145mm" depth="114mm" />
 	</imageobject>
 	<caption><para>The Editing Event Dialog</para></caption>
       </mediaobject>
@@ -372,7 +377,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.generate_log_dialog.png" scale="45"/>
+	  <imagedata align="center" fileref="rdlogmanager.generate_log_dialog.png" width="39mm" depth="48mm" />
 	</imageobject>
 	<caption><para>The Generate Log Dialog</para></caption>
       </mediaobject>
@@ -406,7 +411,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.generate_log_dialog_music_merge_required.png" scale="45"/>
+	  <imagedata align="center" fileref="rdlogmanager.generate_log_dialog_music_merge_required.png" width="39mm" depth="48mm" />
 	</imageobject>
 	<caption><para>The Generate Log Dialog (music merge required)</para></caption>
       </mediaobject>
@@ -422,7 +427,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.generate_log_dialog_traffic_merge_required.png" scale="45"/>
+	  <imagedata align="center" fileref="rdlogmanager.generate_log_dialog_traffic_merge_required.png" width="39mm" depth="48mm" />
 	</imageobject>
 	<caption><para>The Generate Log Dialog (traffic merge required)</para></caption>
       </mediaobject>
@@ -450,7 +455,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.generate_log_dialog_fully_merged.png" scale="45"/>
+	  <imagedata align="center" fileref="rdlogmanager.generate_log_dialog_fully_merged.png" width="39mm" depth="48mm" />
 	</imageobject>
 	<caption><para>The Generate Log Dialog (fully merged)</para></caption>
       </mediaobject>
@@ -482,22 +487,20 @@
    <para>
      <mediaobject>
        <imageobject>
-	 <imagedata align="center" fileref="rdlogmanager.rivendell_services_dialog.png" scale="45"/>
+	 <imagedata align="center" fileref="rdlogmanager.rivendell_services_dialog.png" width="64mm" depth="54mm" />
        </imageobject>
        <caption><para>The Rivendell Services Dialog</para></caption>
      </mediaobject>
    </para>
    <para>
-     The dialog will show each service on the system,
-     along with the date of the oldest data available for generating
-     reports. Touch the <computeroutput>Generate Reports</computeroutput>
-     button to open the Select Report
-     Dates dialog.
+     The dialog will show each service on the system.
+     Touch the <computeroutput>Generate Reports</computeroutput>
+     button to open the Select Report Dates dialog.
    </para>
    <para>
      <mediaobject>
        <imageobject>
-	 <imagedata align="center" fileref="rdlogmanager.select_report_dates_dialog.png" scale="45"/>
+	 <imagedata align="center" fileref="rdlogmanager.select_report_dates_dialog.png" width="64mm" depth="30mm" />
        </imageobject>
        <caption><para>The Select Report Dates Dialog</para></caption>
      </mediaobject>
@@ -515,7 +518,7 @@
    <para>
      <mediaobject>
        <imageobject>
-	 <imagedata align="center" fileref="rdlogmanager.select_date_dialog.png" scale="45"/>
+	 <imagedata align="center" fileref="rdlogmanager.select_date_dialog.png" width="39mm" depth="43mm" />
        </imageobject>
        <caption><para>The Select Date Dialog</para></caption>
      </mediaobject>
@@ -526,13 +529,13 @@
      the report.
    </para>
    <sect2 xml:id="sect.rdlogmanager.purging_old_report_data">
-     <title>Purging Old Report Data</title>
+     <title>Manually Purging Old Report Data</title>
      <para>
-       Rivendell keeps the raw data used to generate reports indefinitely,
-       until manually purged out of the system. Periodic purging of old
+       Rivendell keeps the raw data used to generate reports indefinitely
+       until purged out of the system. Periodic purging of old
        data is a good idea from the standpoint of minimizing the amount of
-       system resources utilized, and can be done by selecting the desired
-       service and then touching the
+       system resources utilized, and can be done manually by selecting the
+       desired service and then touching the
        <computeroutput>Purge Data</computeroutput> button in the Select
        Service dialog, opening up a calendar dialog.
        Each date that has data eligible for purging will be shown in bold.
@@ -542,6 +545,12 @@
        particular service/date, so be sure that all required reports have
        been produced before purging!)
      </para>
+     <note>
+       It is recommended that the system be configured to purge report data
+       automatically after it reaches a certain age (30 days is typical).
+       See <xref linkend="sect.rdadmin.manage_services.general.purging_log_and_elr_data_automatically"/>
+       for information on configuring automatic data purging in RDAdmin.
+     </note>
    </sect2>
  </sect1>
 </chapter>

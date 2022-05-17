@@ -23083,3 +23083,8 @@
 2022-05-17 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'Playing Audio with RDCartSlots' chapter of the
 	Operations Guide.
+2022-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'Generating Logs with RDLogManager' chapter of the
+	Operations Guide to 'Generating Logs and Reports with RDLogManger'.
+	* Updated the 'Generating Logs and Reports with RDLogManger'
+	chapter of the Operations Guide.

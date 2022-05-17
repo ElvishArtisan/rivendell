@@ -380,12 +380,15 @@
 	if ticked, will set the deletion date for logs to be the
 	specified number of days after being created by RDLogManager.
       </para>
-      <para>
-	The <computeroutput>Purge ELR Data after</computeroutput>
-	box, if ticked, will cause Electronic Log Reconiliation (ELR)
-	as-played data to be purged from the database the specified number
-	of days after being generated.
-      </para>
+      <sect4 xml:id="sect.rdadmin.manage_services.general.purging_log_and_elr_data_automatically">
+	<title>Purging Log and ELR Data Automatically</title>
+	<para>
+	  The <computeroutput>Purge ELR Data after</computeroutput>
+	  box, if ticked, will cause Electronic Log Reconiliation (ELR)
+	  as-played data to be purged from the database the specified number
+	  of days after being generated.
+	</para>
+      </sect4>
       <para>
 	The <computeroutput>Include Music Import Markers in Finished Logs</computeroutput> and 
 	<computeroutput>Include Traffic Import Markers in Finished Logs</computeroutput>
