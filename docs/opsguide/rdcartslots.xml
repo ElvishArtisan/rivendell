@@ -1,4 +1,4 @@
-<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdcartslots">
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="chapter.rdcartslots">
   <title>Playing Audio with RDCartSlots</title>
   <sect1 xml:id="sect.rdcartslots.overview">
     <title>Overview</title>
@@ -10,7 +10,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdcartslots.rdcartslots_screenshot.png" scale="45"/>
+	  <imagedata align="center" fileref="rdcartslots.rdcartslots_screenshot.png" width="110mm" depth="124mm" />
 	</imageobject>
 	<caption>
 	  <para>The RDCartSlots Main Window</para>
@@ -39,7 +39,7 @@
     </para>
     <mediaobject>
       <imageobject>
-	<imagedata align="center" fileref="rdcartslots.rdcartslots.edit_slot_options_dialog.png" scale="70"/>
+	<imagedata align="center" fileref="rdcartslots.rdcartslots.edit_slot_options_dialog.png" width="88mm" depth="44mm" />
       </imageobject>
       <caption>
 	<para>The Edit Slot Options Dialog</para>
@@ -89,7 +89,7 @@
 	    </para>
 	    <para>
 	      When set to
-	      <computeroutput>Restart Playout (Loop></computeroutput>, the
+	      <computeroutput>Restart Playout (Loop)</computeroutput>, the
 	      the slot will retain the previously loaded cart and automatally
 	      repeat play-out from the begining when play-out reaches its
 	      end.
@@ -109,7 +109,7 @@
     </para>
     <mediaobject>
       <imageobject>
-	<imagedata align="center" fileref="rdcartslots.select_cart_dialog.png" scale="60"/>
+	<imagedata align="center" fileref="rdcartslots.select_cart_dialog.png" width="143mm" depth="61mm" />
       </imageobject>
       <caption>
 	<para>The Select Cart Dialog</para>
@@ -145,7 +145,7 @@
     </para>
     <mediaobject>
       <imageobject>
-	<imagedata align="center" fileref="rdcartslots.rivendell_services_dialog.png" scale="60"/>
+	<imagedata align="center" fileref="rdcartslots.rivendell_services_dialog.png" width="65mm" depth="58mm" />
       </imageobject>
       <caption>
 	<para>The Rivendell Services Dialog</para>
