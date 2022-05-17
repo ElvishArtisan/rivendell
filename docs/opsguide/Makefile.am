@@ -222,6 +222,7 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdairplay.rdairplay_screenshot.png\
                   rdairplay.select_a_log_dialog.png\
                   rdairplay.soundpanel_widget.png\
+                  rdairplay.user_logo.png\
                   rdairplay.wallclock_widget.png\
                   rdairplay.where_to.png\
                   rdcastmanager.delete_item_dialog.png\

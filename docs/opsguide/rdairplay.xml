@@ -13,7 +13,7 @@
    <para>
      <mediaobject>
        <imageobject>
-	 <imagedata align="center" fileref="rdairplay.rdairplay_screenshot.png" scale="45"/>
+	 <imagedata align="center" fileref="rdairplay.rdairplay_screenshot.png" width="163mm" depth="124mm" />
        </imageobject>
        <caption>
 	 <para>The RDAirPlay Main Window</para>
@@ -55,35 +55,137 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.wallclock_widget.png" scale="60"/>
+	   <imagedata align="left" fileref="rdairplay.wallclock_widget.png" width="44mm" depth="13mm" />
 	 </imageobject>
        </mediaobject>
      </para>
      <para>
        In the upper left-hand corner is the wall clock indicator, which
-       indicates
-       the current system date and time. The style used for displaying times
-       throughout RDAirPlay can be toggled between 24 hour “military” format
-       and the traditional “AM/PM” presentation by clicking once on this
-       display. If the system administrator has enabled it, this display
-       will also flash RED to indicate possible clock inaccuracy due to loss
+       indicates the current system date and time.
+       If the system administrator has enabled it, this display
+       may also flash RED to indicate possible clock inaccuracy due to loss
        of master clock synchronization.
      </para>
    </sect2>
+   <sect2 xml:id="sect.rdairplay.the_mode_indicator">
+     <title>The Mode Indicator</title>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.mode_widget.png" width="44mm" depth="13mm" />
+	 </imageobject>
+       </mediaobject>
+     </para>
+     <para>
+       Directly beneath the wall clock indicator is the mode indicator,
+       showing the current automation mode of the log machines. Three
+       different modes are possible: 
+       <computeroutput>Automatic</computeroutput>, in which all log features,
+       including <computeroutput>PLAY</computeroutput> and
+       <computeroutput>SEGUE</computeroutput> transitions and hard times
+       are fully
+       enabled; <computeroutput>LiveAssist</computeroutput>, in which no
+       automatic transitions or hard start
+       times are executed but automatic crossfades are done between
+       elements; and <computeroutput>Manual</computeroutput>, which is
+       very similar to LiveAssist except
+       that not even automatic crossfades are enabled (thus permitting
+       fully manual crossfade control by means of an external console).
+       To change RDAirPlay to a different mode, simply touch the mode
+       indicator until the desired mode is indicated.
+     </para>
+     <note>
+       The System Administrator may have configured RDAirPlay to allow
+       each log machine to have its mode independently set, in which case
+       touching the mode indicator will only change the log of the
+       <computeroutput>Main Log</computeroutput> log machine.
+     </note>
+   </sect2>
+
+   <sect2 xml:id="sect.rdairplay.the_audio_meters">
+     <title>The Audio Meters</title>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.audio_meter.png" width="24mm" depth="26mm" />
+	 </imageobject>
+       </mediaobject>
+     </para>
+     <para>
+       Immediately to the right of the wall clock and mode indicator is the
+       audio meter area, containing one or more audio meters (one for each
+       configured audio output on RDAirPlay). Levels are referenced such
+       that '0' level corresponds to -16 dBFS.
+     </para>
+   </sect2>
+
+   <sect2 xml:id="sect.rdairplay.the_label_area">
+     <title>The Label Area</title>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.label_widget.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
+     </para>
+     <para>
+       Immediately to the right of the audio meter area is the
+       label area. Text messages can be made to appear here (by means of
+       RML commands) to signal the operator concerning the state of the
+       system or need to take some kind of action.
+     </para>
+   </sect2>
+
+   <sect2 xml:id="sect.rdairplay.user_logo">
+     <title>The User Logo</title>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.user_logo.png" width="40mm" depth="30mm" />
+	 </imageobject>
+       </mediaobject>
+     </para>
+     <para>
+       Immediately to the right of the label widget is the user logo. This
+       image can be customized by means of a setting in RDAdmin.
+     </para>
+   </sect2>
+
+   <sect2 xml:id="sect.rdairplay.the_button_log_widget">
+     <title>The Button Log Widget</title>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.button_log_widget.png" width="112mm" depth="139mm" />
+	 </imageobject>
+       </mediaobject>
+     </para>
+     <para>
+       Occupying most of left hand side of RDAirPlay is the button log widget,
+       consisting of several indicators above a column of seven or more
+       large buttons adjacent to cart labels.
+       This widget provides a specialized “view” of the
+       <computeroutput>Main Log</computeroutput> log
+       machine. Specifically, the first seven or more currently playing and/or
+       next events in that log machine will always be visible here. Events
+       visible in the button log will be shown in the full log widget as
+       having a green background. Unlike the full log widget, the button
+       log is always visible, regardless of which display has been selected
+       for the right-hand side.
+     </para>
    <sect2 xml:id="sect.rdairplay.the_post_point_counter">
      <title>The Post Point Counter</title>
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.postpoint_ontime_widget.png" scale="60"/>
+	   <imagedata align="left" fileref="rdairplay.postpoint_ontime_widget.png" width="42mm" depth="15mm"/>
 	 </imageobject>
        </mediaobject>
      </para>
      <para>
-       Immediately to the right of the wall clock is the Post Point Counter.
-       A post point is an attribute applied to a log event with a hard time
-       type. The post point counter uses this information to display
-       countdown and timing information.
+       In the upper left-hand corner of the Button Log is the Post Point
+       Counter, which provides timing information regarding the log's next
+       post point (typically, the next event with a hard time attribute).
      </para>
      <para>
        The counter can be in one of four possible states: 
@@ -105,7 +207,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.postpoint_early_widget.png" scale="60"/>
+	   <imagedata align="left" fileref="rdairplay.postpoint_early_widget.png" width="42mm" depth="15mm" />
 	 </imageobject>
        </mediaobject>
      </para>
@@ -120,7 +222,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.postpoint_late_widget.png" scale="60"/>
+	   <imagedata align="left" fileref="rdairplay.postpoint_late_widget.png" width="42mm" depth="15mm" />
 	 </imageobject>
        </mediaobject>
      </para>
@@ -132,27 +234,23 @@
        much material would need to be removed to make the join on time.
      </para>
    </sect2>
-   <sect2 xml:id="sect.rdairplay.the_audio_meter">
-     <title>The Audio Meter</title>
      <para>
-       <mediaobject>
-	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.audio_meter.png" scale="60"/>
-	 </imageobject>
-       </mediaobject>
-     </para>
-     <para>
-       Immediately beneath the wall clock and post point counter is the audio
-       meter. The meter shows the current peak levels of audio being played
-       out of RDAirPlay, with '0' level referenced to -16 dBFS.
+       To start an event from the button log, simply touch an event's
+       corresponding <computeroutput>Start</computeroutput> button.
+       Touching the button of a running event
+       will either (depending upon how the system administrator has
+       configured RDAirPlay) stop or pause it. To modify an event's
+       parameters (via the Edit Event dialog), simply double-click the
+       event's cart label.
      </para>
    </sect2>
+
    <sect2 xml:id="sect.rdairplay.the_pie_wedge_widget">
      <title>The Pie Wedge Widget</title>
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.piewedge_widget.png" scale="60"/>
+	   <imagedata align="left" fileref="rdairplay.piewedge_widget.png" width="25mm" depth="25mm" />
 	 </imageobject>
        </mediaobject>
      </para>
@@ -177,7 +275,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.next_stop_widget.png" scale="60"/>
+	   <imagedata align="left" fileref="rdairplay.next_stop_widget.png" width="42mm" depth="15mm" />
 	 </imageobject>
        </mediaobject>
      </para>
@@ -192,50 +290,7 @@
        <computeroutput>Stopped</computeroutput>.
      </para>
    </sect2>
-   <sect2 xml:id="sect.rdairplay.the_mode_indicator">
-     <title>The Mode Indicator</title>
-     <para>
-       <mediaobject>
-	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.mode_widget.png" scale="60"/>
-	 </imageobject>
-       </mediaobject>
-     </para>
-     <para>
-       In the upper right-hand corner of the top area is the mode indicator,
-       showing the current automation mode of the log machines. Three
-       different modes are possible: 
-       <computeroutput>Automatic</computeroutput>, in which all log features,
-       including <computeroutput>PLAY</computeroutput> and
-       <computeroutput>SEGUE</computeroutput> transitions and hard times
-       are fully
-       enabled; <computeroutput>LiveAssist</computeroutput>, in which no
-       automatic transitions or hard start
-       times are executed but automatic crossfades are done between
-       elements; and <computeroutput>Manual</computeroutput>, which is
-       very similar to LiveAssist except
-       that not even automatic crossfades are enabled (thus permitting
-       fully manual crossfade control by means of an external console).
-       To change RDAirPlay to a different mode, simply touch the mode
-       indicator until the desired mode is indicated.
-     </para>
-   </sect2>
-   <sect2 xml:id="sect.rdairplay.the_label_area">
-     <title>The Label Area</title>
-     <para>
-       <mediaobject>
-	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.label_widget.png" scale="60"/>
-	 </imageobject>
-       </mediaobject>
-     </para>
-     <para>
-       Immediately below the next stop counter and mode indicator is the
-       label area. Text messages can be made to appear here (by means of
-       RML commands) to signal the operator concerning the state of the
-       system or need to take some kind of action.
-     </para>
-   </sect2>
+
    <sect2 xml:id="sect.rdairplay.the_right_hand_side">
      <title>The Right-Hand Side</title>
      <para>
@@ -253,7 +308,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.full_log_widget.png" scale="60"/>
+	   <imagedata align="left" fileref="rdairplay.full_log_widget.png" width="119mm" depth="138mm"/>
 	 </imageobject>
        </mediaobject>
      </para>
@@ -273,7 +328,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="center" fileref="rdairplay.select_a_log_dialog.png" scale="60"/>
+	   <imagedata align="center" fileref="rdairplay.select_a_log_dialog.png" width="129mm" depth="91mm" />
 	 </imageobject>
 	 <caption><para>The Select Log Dialog</para></caption>
        </mediaobject>
@@ -310,7 +365,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="center" fileref="rdairplay.edit_event_dialog.png" scale="60"/>
+	   <imagedata align="center" fileref="rdairplay.edit_event_dialog.png" width="142mm" depth="77mm" />
 	 </imageobject>
 	 <caption><para>The Edit Event Dialog</para></caption>
        </mediaobject>
@@ -322,37 +377,6 @@
        button &quot;ON&quot; (blue background).
      </para>
    </sect2>
-   <sect2 xml:id="sect.rdairplay.the_button_log_widget">
-     <title>The Button Log Widget</title>
-     <para>
-       <mediaobject>
-	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.button_log_widget.png" scale="60"/>
-	 </imageobject>
-       </mediaobject>
-     </para>
-     <para>
-       To the left of the full log widget is the button log widget,
-       consisting of a column of seven large buttons adjacent to cart labels.
-       This widget provides another, specialized “view” of the
-       <computeroutput>Main Log</computeroutput> log
-       machine. Specifically, the first seven currently playing and/or
-       next events in that log machine will always be visible here. Events
-       visible in the button log will be shown in the full log widget as
-       having a green background. Unlike the full log widget, the button
-       log is always visible, regardless of which display has been selected
-       for the right-hand side.
-     </para>
-     <para>
-       To start an event from the button log, simply touch an event's
-       corresponding <computeroutput>Start</computeroutput> button.
-       Touching the button of a running event
-       will either (depending upon how the system administrator has
-       configured RDAirPlay) stop or pause it. To modify an event's
-       parameters (via the Edit Event dialog), simply double-click the
-       event's cart label.
-     </para>
-   </sect2>
  </sect1>
  <sect1 xml:id="sect.rdairplay.editing_a_log">
    <title>Editing a Log</title>
@@ -361,7 +385,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="left" fileref="trashcan-32x32.png" scale="60"/>
+	   <imagedata align="left" fileref="trashcan-32x32.png" width="7mm" depth="7mm" />
 	 </imageobject>
        </mediaobject>
      </para>
@@ -378,7 +402,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.edit_buttons.png" scale="60"/>
+	   <imagedata align="left" fileref="rdairplay.edit_buttons.png" width="75mm" depth="14mm" />
 	 </imageobject>
        </mediaobject>
      </para>
@@ -407,7 +431,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="center" fileref="rdairplay.where_to.png" scale="45"/>
+	   <imagedata align="center" fileref="rdairplay.where_to.png" width="163mm" depth="124mm" />
 	 </imageobject>
 	 <caption><para>RDAirPlay Prompting for a Location</para></caption>
        </mediaobject>
@@ -473,7 +497,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="center" fileref="rdairplay.delete_from.png" scale="45"/>
+	   <imagedata align="center" fileref="rdairplay.delete_from.png" width="163mm" depth="124mm" />
 	 </imageobject>
 	 <caption><para>RDAirPlay Prompting for a Cart to Copy</para></caption>
        </mediaobject>
@@ -489,7 +513,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="left" fileref="rdairplay.soundpanel_widget.png" scale="60"/>
+	   <imagedata align="left" fileref="rdairplay.soundpanel_widget.png" width="90mm" depth="113mm" />
 	 </imageobject>
        </mediaobject>
      </para>
@@ -539,7 +563,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="center" fileref="rdairplay.edit_button_dialog.png" scale="45"/>
+	   <imagedata align="center" fileref="rdairplay.edit_button_dialog.png" width="60mm" depth="35mm" />
 	 </imageobject>
 	 <caption><para>The Edit Button Dialog</para></caption>
        </mediaobject>
