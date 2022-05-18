@@ -255,6 +255,8 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rddbconfig.login_dialog.png\
                   rddbconfig.rddbconfig_screenshot.png\
                   rdlibrary.cd_ripper_dialog.png\
+                  rdlibrary.cd_ripper_dialog_mb_choose_disc.png\
+                  rdlibrary.cd_ripper_dialog_mb_success.png\
                   rdlibrary.edit_cart_dialog.png\
                   rdlibrary.edit_cut_info_dialog.png\
                   rdlibrary.edit_macro_cart_dialog.png\

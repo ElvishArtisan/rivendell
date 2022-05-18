@@ -8,7 +8,7 @@
 	The Rivendell Library consists of a set of objects called
 	<emphasis>carts</emphasis> (short for "cartridge", a nod to the days
 	when audio material for radio broadcast was commonly loaded to and
-	played from physical cartridges).
+	played from physical magnetic tape cartridges).
 	A Rivendell cart is a data container that holds either one or more
 	pieces of audio (called an <emphasis>audio cart</emphasis>), or macro
 	commands to the system
@@ -25,7 +25,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlibrary.rdlibrary_screenshot.png" scale="43"/>
+	    <imagedata align="center" fileref="rdlibrary.rdlibrary_screenshot.png" width="154mm" depth="97mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>RDLibrary Main Window</para>
@@ -71,7 +71,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlibrary.edit_cart_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdlibrary.edit_cart_dialog.png" width="114mm" depth="138mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Edit Cart Dialog</para>
@@ -313,7 +313,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdlibrary.edit_cut_info_dialog.png" scale="50"/>
+	      <imagedata align="center" fileref="rdlibrary.edit_cut_info_dialog.png" width="67mm" depth="124mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>The Record Dialog</para>
@@ -534,7 +534,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlibrary.import_export_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdlibrary.import_export_dialog.png" width="84mm" depth="65mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Import/Export Audio Dialog</para>
@@ -600,7 +600,7 @@
      <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlibrary.cd_ripper_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdlibrary.cd_ripper_dialog.png" width="130mm" depth="116mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Rip CD Dialog</para>
@@ -610,14 +610,48 @@
       <para>
 	Load a CD into the CD drive.  After a few seconds, list of tracks
 	should appear in the Tracks area.  If the system administrator has
-	enabled the FreeDB CD Lookup Service, the names of the various
-	tracks may appear as well.  
+	enabled it, the system will attempt to locate a record for the
+	disc at the MusicBranz.org music encyclopedia. If it finds a
+	record there, the disc title and track information will be populated
+	automatically.
       </para>
+     <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.cd_ripper_dialog_mb_success.png" width="130mm" depth="116mm"/>
+	  </imageobject>
+	  <caption>
+	    <para>A typical MusicBrainz lookup</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <note>
+	It's possible that a disc will match more than one MusicBrainz record,
+	in which case the system will present a dialog asking you to select
+	the actual disc being used.
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdlibrary.cd_ripper_dialog_mb_choose_disc.png" width="80mm" depth="30mm"/>
+	    </imageobject>
+	    <caption>
+	      <para>The MusicBrainz Multiple Matches Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  If this occurs, select one or more entries from the dropdown list
+	  and then touch <computeroutput>OK</computeroutput>. If more than
+	  one track is selected, the selected tracks will be seamlessly
+	  concatenated together in the target cut.
+	</para>
+      </note>
       <para>
 	Set the <computeroutput>Channels</computeroutput>,
 	<computeroutput>Normalize</computeroutput> and 
 	<computeroutput>Autotrim</computeroutput> controls appropriately (see
-	section 2.1.0 for more details on using the
+	<xref linkend="sect2_rdlibrary_importing_audio_from_a_file" />
+	for details on using the
 	<computeroutput>Normalize</computeroutput> and
 	<computeroutput>Autotrim</computeroutput>
 	controls).  Next, touch the track you wish to rip and then press
@@ -627,11 +661,11 @@
 	rip is complete, a message box will pop up to inform you of this.
       </para>
       <para>
-	If FreeDB data was found for the CD, you can have the FreeDB track,
-	artist and album names be automatically placed on the cart label
-	for the cart by checking
-	<computeroutput>Apply FreeDB Values to Cart</computeroutput> before
-	closing the Dialog.
+	If MusicBrainz data was found for the CD, you can have that
+	information automatically be placed on the cart label
+	for the cart by ticking the
+	<computeroutput>Apply MusicBrainz Values to Cart</computeroutput>
+	box before closing the Dialog.
       </para>
     </sect2>
     <sect2 xml:id="sect.rdlibrary.ripping_multiple_cd_tracks_at_a_time">
@@ -647,7 +681,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlibrary.rip_disk_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdlibrary.rip_disk_dialog.png" width="130mm" depth="138mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Rip Disk Dialog</para>
@@ -656,15 +690,22 @@
       </para>
       <para>
 	This dialog is similar in many ways to the Rip CD Dialog described
-	above, except that each track can be assigned to transfer to a
-	different cut by double clicking on its listing, or by touching
-	the listing and then the Set Cut button, bringing up the Select
-	Cart/Cut Dialog.
+	above, except that each track or range of tracks can be assigned to
+	ripped to a different cut by double clicking on its listing or
+	selecting the desired tracks, touching the listing and then the
+	<computeroutput>Set Cart/Cut</computeroutput> button, bringing up
+	the Select Cart/Cut Dialog. It's also possible to create a new
+	cart automatically for each selected set of tracks by touching the
+	<computeroutput>Add Cart Per Track</computeroutput> or
+	<computeroutput>Add Single Cart</computeroutput> buttons.
+      </para>
+      <para>
+	
       </para>
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlibrary.set_cart_cut_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdlibrary.set_cart_cut_dialog.png" width="143mm" depth="60mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Set Cart/Cut Dialog</para>
@@ -672,12 +713,15 @@
 	</mediaobject>
       </para>
       <para>
-	The destination cut is selected by first choosing the cart from the
-	left-hand pane, followed by the desired cut within that cart on the
-	right-hand pane.  The complete set of library filtering tools are
-	available to you here – see section 2.2, 'Navigating the Audio
-	Library' for details on their function, just as in the main
-	RDLibrary screen.
+	Select the desired cut to rip to and then touch the
+	<computeroutput>OK</computeroutput> button, or create a new,
+	empty cart/cut by touching the
+	<computeroutput>Add New Cart</computeroutput> button.
+	The complete set of library filtering tools are
+	available to you here – see 
+	<xref linkend="sect.rdlibrary.navigating_the_audio_library" />
+	  for details on their function, just as in the main RDLibrary
+	  screen.
       </para>
       <para>
 	Once all of the desired tracks have been assigned to cuts, be sure
@@ -729,7 +773,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlibrary.edit_macro_cart_dialog.png" scale="50"/>
+	  <imagedata align="center" fileref="rdlibrary.edit_macro_cart_dialog.png" width="114mm" depth="138mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Edit Macro Cart Dialog</para>
@@ -877,7 +921,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlibrary.edit_marker_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdlibrary.edit_marker_dialog.png" width="150mm" depth="90mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Edit Marker Dialog</para>
@@ -999,7 +1043,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdlibrary.edit_marker_dialog.marker_menu.png" scale="50"/>
+	    <imagedata align="center" fileref="rdlibrary.edit_marker_dialog.marker_menu.png" width="150mm" depth="90mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Marker Menu</para>

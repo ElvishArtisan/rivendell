@@ -23096,3 +23096,6 @@
 	* Added a 'Managing Voicetracking' section to the 'Configuring
 	Rivendell with RDAdmin' chapter.
 	* Updated the 'VoiceTracking' chapter of the Operations Guide.
+2022-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Revised the material dealing with CD ripping in the 'Content
+	Management with RDLibrary' chapter of the Operations Guide.
