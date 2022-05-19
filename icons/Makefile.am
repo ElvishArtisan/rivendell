@@ -465,6 +465,7 @@ EXTRA_DIST = admin.xpm\
              rdpanel-64x64.xpm\
              rdpanel.ico\
              rivendell-128x128.png\
+             rivendell-1400x1400.png\
              rivendell-16x16.png\
              rivendell-22x22.png\
              rivendell-256x256.png\

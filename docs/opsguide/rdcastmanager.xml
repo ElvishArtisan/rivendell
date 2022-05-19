@@ -1,4 +1,4 @@
-<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdcastmanager">
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="chapter.rdcastmanager">
   <title>Managing Podcasts with RDCastManager</title>
   <sect1 xml:id="sect.rdcastmanager.overview">
     <title>Overview</title>
@@ -9,7 +9,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdcastmanager.rdcastmanager_screenshot.png" scale="55"/>
+	  <imagedata align="center" fileref="rdcastmanager.rdcastmanager_screenshot.png" width="125mm" depth="100mm"/>
 	</imageobject>
 	<caption>
 	  <para>The RDCastManager Main Window</para>
@@ -30,7 +30,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdcastmanager.podcast_item_list_dialog.png" scale="55"/>
+	  <imagedata align="center" fileref="rdcastmanager.podcast_item_list_dialog.png" width="125mm" depth="100mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Podcast Item List Dialog</para>
@@ -111,7 +111,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdcastmanager.editing_item_dialog.png" scale="55"/>
+	  <imagedata align="center" fileref="rdcastmanager.editing_item_dialog.png" width="125mm" depth="90mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Editing Item Dialog</para>
@@ -230,7 +230,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdcastmanager.delete_item_dialog.png" scale="55"/>
+	  <imagedata align="center" fileref="rdcastmanager.delete_item_dialog.png" width="68mm" depth="24mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Delete Item Dialog</para>
@@ -270,7 +270,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdcastmanager.select_cut_dialog.png" scale="55"/>
+	    <imagedata align="center" fileref="rdcastmanager.select_cut_dialog.png" width="150mm" depth="65mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Select Cut Dialog</para>
@@ -296,7 +296,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdcastmanager.select_log_dialog.png" scale="55"/>
+	    <imagedata align="center" fileref="rdcastmanager.select_log_dialog.png" width="117mm" depth="83mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Select Log Dialog</para>
@@ -311,7 +311,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdcastmanager.log_render_options_dialog.png" scale="55"/>
+	    <imagedata align="center" fileref="rdcastmanager.log_render_options_dialog.png" width="98mm" depth="34mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Select Log Dialog</para>
@@ -366,7 +366,7 @@
 	      <para>
 		<mediaobject>
 		  <imageobject>
-		    <imagedata align="center" fileref="rdcastmanager.list_log_events_dialog.png" scale="55"/>
+		    <imagedata align="center" fileref="rdcastmanager.list_log_events_dialog.png" width="125mm" depth="99mm"/>
 		  </imageobject>
 		  <caption>
 		    <para>The List Log Events Dialog</para>
@@ -401,7 +401,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdcastmanager.list_log_select_select_audio_file_dialog.png" scale="55"/>
+	    <imagedata align="center" fileref="rdcastmanager.list_log_select_select_audio_file_dialog.png" width="127mm" depth="85mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Select Audio File Dialog</para>
