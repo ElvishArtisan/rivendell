@@ -10,7 +10,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.rdadmin_screenshot.png" scale="45"/>
+	  <imagedata align="center" fileref="rdadmin.rdadmin_screenshot.png" width="59mm" depth="58mm"/>
 	</imageobject>
 	<caption>
 	  <para>The RDAdmin Main Window</para>
@@ -27,7 +27,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.login_dialog.png" scale="45"/>
+	  <imagedata align="center" fileref="rdadmin.login_dialog.png" width="37mm" depth="25mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Login Dialog</para>
@@ -45,7 +45,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.rivendell_user_list_dialog.png" scale="45"/>
+	  <imagedata align="center" fileref="rdadmin.rivendell_user_list_dialog.png" width="103mm" depth="81mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Rivendell User List Dialog</para>
@@ -55,12 +55,13 @@
     <para>
       Two different types of user exist within Rivendell: 
       <emphasis>administrator</emphasis> users (those which have the
-      <computeroutput>Administer System</computeroutput> right set), who
+      <computeroutput>Administer System</computeroutput> or
+      <computeroutput>Administer RSS Feeds</computeroutput> right set), who
       are allowed to log into RDAdmin, and
       <emphasis>operational</emphasis> users, who are configured to have
       rights to operate specific portions of the Rivendell system but do
-      not have access to RDAdmin. It is not possible for a single user to
-      act in both roles.
+      not have access to RDAdmin. <emphasis role="strong">It is not possible
+      for a single user to act in both roles</emphasis>.
     </para>
     <para>
       A newly created Rivendell database will have one user of each type
@@ -101,9 +102,15 @@
       The middle section of the dialog is where individual user rights
       are assigned for this user. The
       <computeroutput>Administer System</computeroutput> box, if ticked,
-      will make this user an administrative user while disallowing the
-      selection of any other rights. The other listed rights should be
-      self-explanatory.
+      will make this user an administrative user, thus permitting login
+      to RDAdmin, while disallowing the
+      selection of any other rights; while the
+      <computeroutput>Administer RSS Feeds</computeroutput> box, if ticked,
+      will allow the user to log in to RDAdmin, but only permit access to
+      the <computeroutput>Manage Feeds</computeroutput> functionality.
+    </para>
+    <para>
+      The other listed rights should be fairly self-explanatory.
     </para>
     <para>
       The bottom of the dialog contains three large buttons. The
@@ -133,7 +140,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.rivendell_group_list_dialog.png" scale="45"/>
+	  <imagedata align="center" fileref="rdadmin.rivendell_group_list_dialog.png" width="150mm" depth="114mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Rivendell Group List Dialog</para>
@@ -151,7 +158,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.group_dialog.png" scale="45"/>
+	    <imagedata align="center" fileref="rdadmin.group_dialog.png" width="80mm" depth="88mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Rivendell Group Dialog</para>
@@ -248,7 +255,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.rename_group_dialog.png" scale="60"/>
+	    <imagedata align="center" fileref="rdadmin.rename_group_dialog.png" width="65mm" depth="35mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Rename Group Dialog</para>
@@ -275,7 +282,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.services_dialog.png" scale="45"/>
+	  <imagedata align="center" fileref="rdadmin.services_dialog.png" width="80mm" depth="53mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Rivendell Services Dialog</para>
@@ -291,7 +298,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.edit_service_dialog.png" scale="45"/>
+	  <imagedata align="center" fileref="rdadmin.edit_service_dialog.png" width="140mm" depth="115mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Edit Service Dialog</para>
@@ -303,7 +310,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.services_dialog_general.png" scale="50"/>
+	    <imagedata align="center" fileref="rdadmin.services_dialog_general.png" width="75mm" depth="36mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The General Section</para>
@@ -346,10 +353,6 @@
 	<link linkend="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters">Inline Event Scheduling Parameters</link>
 	for details.
       </para>
-
-
-
-
       <para>
 	The <computeroutput>Voicetrack Group</computeroutput> dropdown
 	specifies the Rivendell group to be used for storing voicetracks
@@ -519,7 +522,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.autofill_carts_dialog.png" scale="45"/>
+	      <imagedata align="center" fileref="rdadmin.autofill_carts_dialog.png" width="103mm" depth="81mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>The Autofill Carts Dialog</para>
@@ -547,7 +550,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.hosts_dialog.png" scale="45"/>
+	      <imagedata align="center" fileref="rdadmin.hosts_dialog.png" width="64mm" depth="34mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>The Hosts Dialog</para>
@@ -574,7 +577,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.log_importation_string_fields.png" scale="45"/>
+	    <imagedata align="center" fileref="rdadmin.log_importation_string_fields.png" width="63mm" depth="17mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>Log Importation String Fields</para>
@@ -651,7 +654,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.import_parser_fields.png" scale="60"/>
+	    <imagedata align="center" fileref="rdadmin.import_parser_fields.png" width="90mm" depth="54mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Log Parser Settings</para>
@@ -704,7 +707,7 @@
 	      Many schedulers provide
 	      an opaque string with each scheduling record which they
 	      expect to be returned as part of the corresponding Electronic
-	      Log Reconciliation (ELR) feed back to the system. This field
+	      Log Reconciliation (ELR) fed back to the system. This field
 	      indicates where this &quot;GUID&quot; string should be found.
 	    </para>
 	  </listitem>
@@ -734,7 +737,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.test_import_dialog.png" scale="60"/>
+	    <imagedata align="center" fileref="rdadmin.test_import_dialog.png" width="150mm" depth="90mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Test Import Dialog</para>
@@ -761,7 +764,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.rivendell_host_list_dialog.png" scale="60"/>
+	  <imagedata align="center" fileref="rdadmin.rivendell_host_list_dialog.png" width="117mm" depth="69mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Rivendell Host List Dialog</para>
@@ -777,7 +780,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.host_dialog.png" scale="50"/>
+	  <imagedata align="center" fileref="rdadmin.host_dialog.png" width="74mm" depth="140mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Host Dialog</para>
@@ -838,6 +841,32 @@
       <command>xterm</command><manvolnum>1</manvolnum> window
       --i.e. <code>xterm -e vi</code>.
     </note>
+    <para>
+      The <computeroutput>Web Browser:</computeroutput> is used to
+      specify an external web browser to be used to display HTML content.
+      If desired, the value should consist of the command invocation
+      needed to start the browser.
+    </para>
+    <para>
+      The <computeroutput>SSH Ident. File:</computeroutput> field contains
+      the path to the SSH identity (private key) file used to
+      authenticate SFTP file transfers when the
+      <computeroutput>Authenticate with local identity file</computeroutput>
+      box is ticked in an RSS feed's configuration dialog. See the
+      <command>ssh-keygen</command><manvolnum>1</manvolnum> man page for
+      information on generating SSH identity key pair files.
+    </para>
+    <caution>
+      The SSH identity file must be owned by the same user specified by the
+      <userinput>AudioOwner</userinput> parameter in the
+      <userinput>[Identity]</userinput> section of the
+      <command>rd.conf</command><manvolnum>5</manvolnum> configuration
+      file and have permission mode <userinput>0600</userinput>,
+      otherwise transfers with fail with an
+      <computeroutput>Authentication Failed</computeroutput> error.
+      See the <command>rd.conf</command><manvolnum>5</manvolnum> man
+      page for more information.
+    </caution>
     <para>
       The <computeroutput>Time Offset:</computeroutput> field can be used
       to specify a static time offset in milliseconds to by applied to
@@ -906,7 +935,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.configure_rdlibrary_dialog.png" scale="60"/>
+	    <imagedata align="center" fileref="rdadmin.configure_rdlibrary_dialog.png" width="87mm" depth="140mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Configure RDLibrary Dialog</para>
@@ -958,7 +987,8 @@
       <para>
 	For further information on the <computeroutput>Low</computeroutput>
 	and <computeroutput>None</computeroutput> options, see the
-	'-Y' and '-Z' options in the cdparanoia(1) man page or 
+	'-Y' and '-Z' options in the
+	<command>cdparanoia</command><manvolnum>1</manvolnum> man page or 
 	<link xlink:href="https://linux.die.net/man/1/cdparanoia">https://linux.die.net/man/1/cdparanoia</link>.
       </para>
       <para>
@@ -967,14 +997,65 @@
 	Standard Recording Code data from audio tracks when loading the disc.
 	Setting this
 	to <computeroutput>Yes</computeroutput> can cause CD-ROM drives
-	to take signficantly longer to read the table of contents of
+	to take <emphasis role="strong">significantly</emphasis> longer to
+	read the table of contents of
 	newly inserted discs when the disc does not contain ISRC data.
       </para>
       <para>
-	The <computeroutput>FreeDB Server:</computeroutput> field takes the
-	URL of the server to be used for doing FreeDB lookups for CDs by
-	the CD ripper.
+	The <computeroutput>CD Metadata Source:</computeroutput> dropdown
+	determines the type of data source that will be used to lookup
+	CDs for metadata records. Three options are available:
       </para>
+      <variablelist>
+	<varlistentry>
+	  <term>MusicBrainz</term>
+	  <listitem>
+	    <para>
+	      Use a
+	      <link xlink:href="https://musicbrainz.org/doc/MusicBrainz_Database">MusicBrainz database</link>.
+	      This is the default.
+	    </para>
+	    <para>
+	      If selected, the
+	      <computeroutput>MusicBrainz Server:</computeroutput> field is
+	      used to provide the hostname of the server. Default value is
+	      <userinput>musicbrainz.org</userinput>, a public server
+	      provided by the
+	      <link xlink:href="https://metabrainz.org/about">MetaBrainz
+	      Foundation</link> (but kindly see the note regarding
+	      commercial use at
+	      <link xlink:href="https://metabrainz.org/supporters/account-type">https://metabrainz.org/supporters/account-type</link>).
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>FreeDB</term>
+	  <listitem>
+	    <para>
+	      Use a 
+	      <link xlink:href="https://en.wikipedia.org/wiki/Freedb">FreeDB database</link>.
+	    </para>
+	    <para>
+	      If selected, the <computeroutput>FreeDB Server:</computeroutput>
+	      field is used to provide the hostname of the server.
+	    </para>
+	    <note>
+	      Since the original public FreeDB gateway at
+	      <userinput>freedb.freedb.org</userinput> was
+	      shutdown in March 2019, use of a FreeDB database will
+	      generally require that a site maintain their own database server.
+	    </note>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>None</term>
+	  <listitem>
+	    <para>
+	      Do not perform any metadata lookup.
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
       <para>
 	The <computeroutput>Format:</computeroutput> dropdown indicates the
 	audio encoding format to be used in Rivendell's audio store for
@@ -1011,7 +1092,7 @@
 	dropdowns in rdlibrary(1).
       </para>
       <para>
-	The<computeroutput>Record Mode</computeroutput> and
+	The <computeroutput>Record Mode</computeroutput> and
 	<computeroutput>AutoTrim</computeroutput> dropdowns set the
 	default value of the respective dropdowns in the Record dialog.
       </para>
@@ -1032,7 +1113,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.configure_rdcatch_dialog.png" scale="60"/>
+	    <imagedata align="center" fileref="rdadmin.configure_rdcatch_dialog.png" width="151mm" depth="113mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Configure RDCatch Dialog</para>
@@ -1068,16 +1149,21 @@
 	<para>
 	  The <computeroutput>Switcher Host:</computeroutput>,
 	  <computeroutput>Switcher Matrix:</computeroutput> and
-	  <computeroutput>Switcher Output:</computeroutput> controls can
+	  <computeroutput>Switcher Output:</computeroutput> dropdowns can
 	  be used to configure a switcher device for routing multiple audio
-	  signals into this record deck. The specified switcher output
-	  should be connected to the input specified by the
+	  signals into this record deck on a per-event basis. The specified
+	  switcher output should be connected to the input specified by the
 	  <computeroutput>Card:</computeroutput> and
 	  <computeroutput>Port:</computeroutput> controls.
+	  <note>
+	    See
+	    <xref linkend="sect.rdadmin.manage_hosts.configuring_switcher_gpio_devices" />
+	    for more information on configuring switcher devices.
+	  </note>
 	</para>
 	<para>
 	  The <computeroutput>Channels:</computeroutput> control sets
-	  the default value of the same control in rdcatch(1), while the
+	  the default value of the same control in RDCatch, while the
 	  <computeroutput>Trim Threshold</computeroutput> sets the default
 	  value of the autotrim <computeroutput>Level:</computeroutput>
 	  control.
@@ -1095,17 +1181,19 @@
 	  audio output will be used by the deck.
 	</para>
 	<para>
-	  The <computeroutput>Event Cart</computeroutput> take the number of
+	  The <computeroutput>Event Carts</computeroutput> fields take the
+	  number of
 	  the macro cart that will be executed each time the corresponding
-	  event marker (originally placed during recording by the Cut Event
-	  ['CE'] RML) is encountered during playback.
+	  event marker, originally placed during recording by the Cut Event
+	  ['CE'] RML is encountered during playback. See 
+	  <xref linkend="sect.rml.cut_event__ce_" /> for more information.
 	</para>
       </sect3>
       <sect3 xml:id="rdadmin.manage_hosts.configuring_rdcatch.host_wide_settings">
 	<title>Host-Wide Settings</title>
 	<para>
 	  The <computeroutput>Error RML:</computeroutput> field takes RML
-	  code that will be executed whenever rdcatch(1) encounters an error
+	  code that will be executed whenever RDCatch encounters an error
 	  in operations --e.g. a file download failure.
 	</para>
       </sect3>
@@ -1120,7 +1208,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.configure_rdairplay_dialog.png" scale="40"/>
+	    <imagedata align="center" fileref="rdadmin.configure_rdairplay_dialog.png" width="150mm" depth="110mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Configure RDAirPlay Dialog</para>
@@ -1137,7 +1225,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.rdairplay_channel_assignments.png" scale="50"/>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_channel_assignments.png" width="131mm" depth="64mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>Channel Assignments Section</para>
@@ -1145,14 +1233,14 @@
 	  </mediaobject>
 	</para>
 	<para>
-	  Audio outputs for the Main Log, both Aux Logs and the Sound Panel
-	  are configured by means of the
+	  Audio outputs for the Main Log, both Aux Logs, Virtual Logs and
+	  the Sound Panel are configured by means of the
 	  <computeroutput>Card:</computeroutput> and 
 	  <computeroutput>Port:</computeroutput> controls. For the Main Log,
 	  if <emphasis>both</emphasis>
 	  <computeroutput>Output 1</computeroutput> and
 	  <computeroutput>Output 2</computeroutput> are set to different
-	  card and/or port values, rdairplay(1)'s output will alternate
+	  card and/or port values, RDAirPlay's output will alternate
 	  between the two outputs.
 	</para>
 	<para>
@@ -1172,7 +1260,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.edit_channel_gpios_dialog.png" scale="50"/>
+	      <imagedata align="center" fileref="rdadmin.edit_channel_gpios_dialog.png" width="53mm" depth="46mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>Edit Channel GPIOs Dialog</para>
@@ -1190,6 +1278,11 @@
 	  output event emitted by Rivendell each time the corresponding
 	  channel is started or stopped (typically mapped to the fader
 	  ON or OFF remote control on the associated mixer desk).
+	  <note>
+	    See
+	    <xref linkend="sect.rdadmin.manage_hosts.configuring_switcher_gpio_devices" />
+	    for more information on configuring GPIO devices.
+	  </note>
 	</para>
       </sect3>
       <sect3 xml:id="rdadmin.manage_hosts.configure_rdairplay.start_stop_settings">
@@ -1202,7 +1295,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.rdairplay_start_stop_settings.png" scale="60"/>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_start_stop_settings.png" width="88mm" depth="31mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>Start/Stop Section</para>
@@ -1215,7 +1308,7 @@
 	  rdairplay(1) (useful for preventing inadvertent shutdowns).
 	</para>
 	<para>
-	  For each of the log machines (Main Log, Aux 1 Log and Aux 2 Log),
+	  For each of the selected log machines
 	  it is possible to specify the action to take at startup by selecting
 	  the appropriate value in the
 	  <computeroutput>At Startup:</computeroutput> dropdown. If the
@@ -1235,7 +1328,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.rdairplay_display_settings.png" scale="60"/>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_display_settings.png" width="78mm" depth="35mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>Display Settings</para>
@@ -1244,28 +1337,35 @@
 	</para>
 	<para>
 	  The <computeroutput>Background Image:</computeroutput> field takes
-	  the full path to a bitmap file to use as the background
-	  &quot;skin&quot; for rdairplay(1)'s main window. The file should
-	  be 1024x738 resolution and be of type JPG or PNG.
+	  the full path to an image file to use as the background
+	  &quot;skin&quot; for RDAirPlay's main window. The file should
+	  be of type JPG or PNG.
+	</para>
+	<para>
+	  The <computeroutput>Logo Image:</computeroutput> field takes the
+	  full pathname to an image file to display in the upper right-hand
+	  corner of RDAirPlay. The image should should have dimensions of
+	  167x125 pixels and be of type JPG or PNG.
 	</para>
 	<para>
 	  Each of the <computeroutput>Template:</computeroutput> fields
 	  define the formatting of one of the lines of the label areas in the
-	  button widget. <link linkend="appendix.metadata_wildcards">
-	  Metadata wildcards</link> are used to define the contents to be
-	  displayed.
+	  button widget. Metadata wildcards are used to define the contents
+	  to be displayed. See <xref linkend="sect.metadata_wildcards" />
+	  for a list of supported wildcards.
 	</para>
+
       </sect3>
       <sect3 xml:id="rdadmin.manage_hosts.configure_rdairplay_start_stop_settings">
 	<title>Log Mode Control</title>
 	<para>
 	  The <computeroutput>Log Mode Control</computeroutput> section
-	  configures the behavior of rdairplay(1) mode controls.
+	  configures the behavior of RDAirPlay mode controls.
 	</para>
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.rdairplay_log_mode_control.png" scale="60"/>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_log_mode_control.png" width="63mm" depth="29mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>Log Mode Control</para>
@@ -1293,7 +1393,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.rdairplay_log_settings.png" scale="60"/>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_log_settings.png" width="48mm" depth="34mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>Log Settings</para>
@@ -1339,7 +1439,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.rdairplay_sound_panel_settings.png" scale="60"/>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_sound_panel_settings.png" width="43mm" depth="33mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>Sound Panel Settings</para>
@@ -1347,7 +1447,7 @@
 	  </mediaobject>
 	</para>
 	<para>
-	  The total number of system and User panels are set with the
+	  The total number of System and User panels are set with the
 	  <computeroutput>System Panels:</computeroutput> and
 	  <computeroutput>User Panels:</computeroutput> fields respectively.
 	</para>
@@ -1366,7 +1466,9 @@
 	  The <computeroutput>Label Template</computeroutput> control
 	  determines the default button legend for newly created Sound
 	  Panel buttons. <link linkend="appendix.metadata_wildcards">
-	  Metadata wildcards</link> can be used in this field.
+	  Metadata wildcards</link> can be used in this field. See
+	  <xref linkend="sect.metadata_wildcards" /> for a list of supported
+	  wildcards.
 	</para>
       </sect3>
       <sect3 xml:id="rdadmin.manage_hosts.configure_rdairplay_miscellaneous_settings">
@@ -1374,7 +1476,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.rdairplay_miscellaneous_settings.png" scale="60"/>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_miscellaneous_settings.png" width="46mm" depth="49mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>Miscellaneous Settings</para>
@@ -1420,62 +1522,22 @@
 	  before the current play position an audition playout will begin.
 	</para>
 	<para>
-	  The <computeroutput>Space Bar Action</computeroutput> sets what
-	  action will taken when the space bar is pressed.
+	  The <computeroutput>Space Bar Action</computeroutput> dropdown
+	  sets what action will taken when the space bar is pressed.
 	</para>
-      </sect3>
-      <sect3 xml:id="rdadmin.manage_hosts.configure_rdairplay_configuring_hotkeys">
-	<title>Configuring Hotkeys</title>
-	<para>
-	  Keyboard shortcuts (also known as &quot;hotkeys&quot;) can be
-	  configured by touch the
-	  <computeroutput>Configure Hotkeys</computeroutput> button, bringing
-	  up the Hot Key Configuration dialog.
-	</para>
-	<para>
-	  <mediaobject>
-	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.rdairplay_hotkey_configuration_dialog.png" scale="60"/>
-	    </imageobject>
-	    <caption>
-	      <para>The Hotkey Configuration Dialog</para>
-	    </caption>
-	  </mediaobject>
-	</para>
-	<para>
-	  A hotkey can be assigned to a particular function by selecting
-	  that function off of the
-	  <computeroutput>Host Hot Key Configuration</computeroutput> list,
-	  pressing and releasing the desired key, and then touching the
-	  <computeroutput>Set</computeroutput> button. To remove a hotkey
-	  assignment, select the desired function and then touch the
-	  <computeroutput>Clear</computeroutput> button. Touching the
-	  <computeroutput>Clear All Hotkeys</computeroutput> button will
-	  clear <emphasis>all</emphasis> hotkey assignments for this host.
-	  Hotkey assignments from a different host can be copied to this
-	  one by selecting the desired source host in the
-	  <computeroutput>Set From Host:</computeroutput> dropdown and
-	  then touching <computeroutput>Save</computeroutput>.
-	</para>
-	<note>
-	  <para>
-	    Not all keys may be mappable as a hotkey, as certain window
-	    managers &quot;steal&quot; keys for their own use!
-	  </para>
-	</note>
       </sect3>
     </sect2>
     <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_rdpanel">
       <title>Configuring RDPanel</title>
       <para>
-	To configure the rdpanel(1) module, touch the
+	To configure the RDPanel module, touch the
 	<computeroutput>RDPanel</computeroutput> button to open the
 	Configure RDPanel dialog.
       </para>
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.configure_rdpanel_dialog.png" scale="40"/>
+	    <imagedata align="center" fileref="rdadmin.configure_rdpanel_dialog.png" width="90mm" depth="75mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Configure RDPanel Dialog</para>
@@ -1483,16 +1545,16 @@
 	</mediaobject>
       </para>
       <para>
-	The rdpanel(1) application is merely a larger version of
-	the Sound Panel portion of rdairplay(1). As such, its configuration
-	closely mirrors that of the
-	<link linkend="sect.rdadmin.manage_hosts.configuring_rdairplay">
-	  RDAirPlay configuration</link>. Please see that section for details.
+	The RDPanel application is merely a larger version of
+	the Sound Panel portion of RDAirPlay. As such, its configuration
+	is very similar to that of the Sound Panel section in
+	<xref linkend="sect.rdadmin.manage_hosts.configuring_rdairplay" />.
+	Please see that section for details.
       </para>
       <para>
-	Although rdpanel(1)'s panels appear similar to rdairplay(1)'s panels,
-	rdpanel(1) has its own set of system and user panels that are independent
-	of rdairplay(1) and must be set up separately.
+	Although RDPanel's panels appear similar to RDAirPlay's panels,
+	RDPanel has its own set of system and user panels that are independent
+	of RDAirPlay and must be set up separately.
       </para>
     </sect2>
     <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_rdlogedit">
@@ -1505,7 +1567,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.configure_rdlogedit_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdadmin.configure_rdlogedit_dialog.png" width="67mm" depth="89mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Configure RDLogEdit Dialog</para>
@@ -1513,10 +1575,15 @@
 	</mediaobject>
       </para>
       <para>
-	The <computeroutput>INPUT</computeroutput> and
-	<computeroutput>OUTPUT</computeroutput> are used to specify
-	the audio input and output to be used.
+	The <computeroutput>Input</computeroutput> and
+	<computeroutput>Output</computeroutput> controls are used to specify
+	the audio input and output to be used for the interactive
+	voicetracker.
       </para>
+      <caution>
+	These channel assignments are also used for the voicetracker when
+	it is being accessed through the RDAirPlay module!
+      </caution>
       <para>
 	The <computeroutput>Max Record Time</computeroutput> field sets
 	the maximum time that rdlogedit(1)'s voice tracker will run in
@@ -1533,6 +1600,11 @@
 	The <computeroutput>Normalization Level</computeroutput> control sets
 	audio level at which to peak normalize the recorded audio in the
 	voice tracker.
+      </para>
+      <para>
+	The <computeroutput>Audio Margin</computeroutput> control sets
+	how much of the end of the first track in the voicetracker will
+	be visible by default when a new transition is loaded.
       </para>
       <para>
 	The <computeroutput>Format:</computeroutput> and
@@ -1581,7 +1653,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.configure_rdcartslots_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdadmin.configure_rdcartslots_dialog.png" width="54mm" depth="86mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Configure RDCartSlots Dialog</para>
@@ -1648,7 +1720,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.rivendell_dropbox_configurations_dialog.png" scale="50"/>
+	      <imagedata align="center" fileref="rdadmin.rivendell_dropbox_configurations_dialog.png" width="113mm" depth="80mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>The Rivendell Dropbox Configurations Dialog</para>
@@ -2001,7 +2073,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.select_scheduler_codes_dialog.png" scale="50"/>
+	      <imagedata align="center" fileref="rdadmin.select_scheduler_codes_dialog.png" width="71mm" depth="57mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>The Select Scheduler Codes Dialog</para>
@@ -2020,7 +2092,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.rivendell_switcher_list_dialog.png" scale="60"/>
+	    <imagedata align="center" fileref="rdadmin.rivendell_switcher_list_dialog.png" width="86mm" depth="71mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Rivendell Switcher List Dialog</para>
@@ -2029,13 +2101,29 @@
       </para>
       <para>
 	To add a new Switcher/GPIO device, touch the
-	<computeroutput>Add</computeroutput> button to open the Edit Switcher
+	<computeroutput>Add</computeroutput> button to open the Add Switcher
 	dialog.
       </para>
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.edit_switcher_dialog.png" scale="60"/>
+	    <imagedata align="center" fileref="rdadmin.add_switcher_dialog.png" width="86mm" depth="34mm"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Add Switcher Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	Select the type of switcher being added on the
+	<computeroutput>Switcher Type:</computeroutput> dropdown and then
+	touch the <computeroutput>Add</computeroutput> button to open the
+	Edit Switcher dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.edit_switcher_dialog.png" width="90mm" depth="152mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Edit Switcher Dialog</para>
@@ -2049,7 +2137,7 @@
 	  requirements. The description which follows provides a broad
 	  overview of how these devices are configured, but be sure to consult
 	  the device-specific notes for the unit question in 
-	  <xref linkend="appendix.gpio_switcher_devices"/> as well!.
+	  <xref linkend="appendix.gpio_switcher_devices"/> as well.
 	</para>
       </note>
       <sect3 xml:id="sect.rdadmin.manage_hosts.configuring_switcher_gpio_devices.connections">
@@ -2119,7 +2207,7 @@
 	  The <computeroutput>Configure Inputs</computeroutput> and
 	  <computeroutput>Configure Outputs</computeroutput> buttons
 	  can be used to assign names to each switcher input and output
-	  on the target device. These names will appear in rdcatch(1) when
+	  on the target device. These names will appear in RDCatch when
 	  configuring record events.
 	</para>
 	<para>
@@ -2132,7 +2220,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.list_gpis_dialog.png" scale="60"/>
+	      <imagedata align="center" fileref="rdadmin.list_gpis_dialog.png" width="128mm" depth="92mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>The List GPIs Dialog</para>
@@ -2147,7 +2235,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.edit_gpi_dialog.png" scale="60"/>
+	      <imagedata align="center" fileref="rdadmin.edit_gpi_dialog.png" width="90mm" depth="55mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>The Edit GPI Dialog</para>
@@ -2193,7 +2281,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.host_variables_dialog.png" scale="60"/>
+	      <imagedata align="center" fileref="rdadmin.host_variables_dialog.png" width="115mm" depth="75mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>The Host Variables Dialog</para>
@@ -2209,7 +2297,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.edit_host_variable_dialog.png" scale="60"/>
+	      <imagedata align="center" fileref="rdadmin.edit_host_variable_dialog.png" width="83mm" depth="38mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>The Edit Host Variable Dialog</para>
@@ -2228,7 +2316,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.edit_audio_ports_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdadmin.edit_audio_ports_dialog.png" width="150mm" depth="116mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Edit Audio Ports Dialog</para>
@@ -2289,7 +2377,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.edit_serial_ports_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdadmin.edit_serial_ports_dialog.png" width="54mm" depth="57mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Edit Serial Ports Dialog</para>
@@ -2314,7 +2402,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.audio_resource_information_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdadmin.audio_resource_information_dialog.png" width="81mm" depth="57mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Audio Resource Information Dialog</para>
@@ -2331,12 +2419,6 @@
 	<link xlink:href="http://jackaudio.org">http://jackaudio.org</link>.
       </para>
       <para>
-	Rivendell's JACK connectivity is handed by the caed(8) daemon,
-	and so both jackd(1) and caed(8) must operate under the same
-	Linux user in order to be able to communicate. Under stock
-	Rivendell, caed(8) is run as user 'root' [UID 0].
-      </para>
-      <para>
 	To configure Rivendell's integration with JACK, touch the
 	<computeroutput>JACK Settings</computeroutput> button to bring
 	up the JACK Configuration dialog.
@@ -2344,7 +2426,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.jack_configuration_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdadmin.jack_configuration_dialog.png" width="80mm" depth="68mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The JACK Configuration Dialog</para>
@@ -2369,7 +2451,8 @@
 	<link linkend="sect.filepath_wildcards.definition">Filepath
 	wildcards</link> can used in the command-line field.
 	The clients will be run under the same user as that of the
-	caed(8) daemon (user 'root' [UID 0] with sstock Rivendell).
+	<command>caed</command><manvolnum>8</manvolnum> daemon
+	(user 'root' [UID 0] with stock Rivendell).
 	Port connections between JACK clients can be managed by use
 	of the Jack Connect ['JC'] and Jack Disconnect ['JD'] RMLs.
 	See <xref linkend="sect.rml.connect_jack_ports__jc_" /> and
@@ -2381,8 +2464,7 @@
       <para>
 	PyPAD is a system that is built into Rivendell that
 	allows processing and transmission of Program Associated Data [PAD]
-	by means of scripts written in the popular Python programming
-	language.
+	by means of scripts written in the Python programming language.
       </para>
       <note>
 	See <xref linkend="sect.pad.pypad" /> for information
@@ -2397,7 +2479,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.pypad_instances_dialog.png" scale="60"/>
+	  <imagedata align="center" fileref="rdadmin.pypad_instances_dialog.png" width="128mm" depth="92mm"/>
 	</imageobject>
 	<caption>
 	  <para>The PyPAD Instances Dialog</para>
@@ -2412,7 +2494,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.select_pypad_script_dialog.png" scale="60"/>
+	  <imagedata align="center" fileref="rdadmin.select_pypad_script_dialog.png" width="138mm" depth="97mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Select PyPAD Script Dialog</para>
@@ -2427,7 +2509,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.edit_pypad_instance_dialog.png" scale="60"/>
+	  <imagedata align="center" fileref="rdadmin.edit_pypad_instance_dialog.png" width="128mm" depth="145mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Select PyPAD Script Dialog</para>
@@ -2449,7 +2531,7 @@
       have been applied to the active instance.
     </para>
     <note>
-      It is not necessary to restart rdairplay(1) for the configuration
+      It is not necessary to restart RDAirPlay for the configuration
       changes to be made effective.
     </note>
     <sect3 xml:id="sect.rdadmin.moving_legacy_rlm_configurations_to_pypad">
@@ -2519,12 +2601,17 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.system_wide_settings_dialog.png" scale="60"/>
+	  <imagedata align="center" fileref="rdadmin.system_wide_settings_dialog.png" width="117mm" depth="98mm"/>
 	</imageobject>
 	<caption>
 	  <para>The System-Wide Settings Dialog</para>
 	</caption>
       </mediaobject>
+    </para>
+    <para>
+      The <computeroutput>Realm Name:</computeroutput> field takes a string
+      that identifies the complete set of Rivendell hosts that share a
+      common database. It should be globally unique.
     </para>
     <para>
       The <computeroutput>System Sample Rate:</computeroutput> dropdown sets
@@ -2563,51 +2650,53 @@
     <para>
       The <computeroutput>ISCI Cross Reference Path:</computeroutput> field
       takes the full path to the ISCI cross reference file used by the
-      rdrepld(8) daemon (used only in conjunction with X-Digital copysplit
-      replication).
+      <command>rdrepld</command><manvolnum>8</manvolnum> daemon (used only
+      in conjunction with X-Digital copy-split replication).
     </para>
     <para>
       The <computeroutput>Origin E-Mail Address:</computeroutput> field
-      take the value that Rivendell will use as the &quot;From:&quot; address
+      takes the value that Rivendell will use as the &quot;From:&quot; address
       when sending e-mail.
     </para>
-    <note>
+    <important>
       Rivendell uses the system's
       <command>sendmail</command><manvolnum>1</manvolnum> interface when
       originating e-mail. For many modern e-mail setups, additional site-
-      and distro-specific configuration will likely be necessary beyond
-      what can be covered here.
-    </note>
+      and distro-specific configuration will be necessary to produce
+      a working outbound e-mail setup beyond what can be covered here.
+    </important>
     <para>
       The <computeroutput>Multicast Address for Notifications:</computeroutput>
       field takes the IPv4 multicast address to use for communicating
       state and configuration changes between Rivendell hosts and modules.
       It should seldom be necessary to change this value from the default
-      (<userinput>239.19.255.72</userinput>).
+      (<userinput>239.19.255.72</userinput>) unless unless Rivendell hosts
+      from two or more different Rivendell realms will be sharing a common
+      multicast domain. In such cases, each realm should have its own unique
+      multicast address.
     </para>
     <para>
       The <computeroutput>Maximum Remote Post Length:</computeroutput> field
       sets the maximum length POST submission that will be processed by the
-      RDXport service. It should seldom be necessary to change this value.
+      RDXport service.
     </para>
     <para>
       The <computeroutput>Temporary Cart Group:</computeroutput> dropdown
       sets the Rivendell group to be used for storing temporary carts
       --e.g. carts used for processing direct file play-outs in
-      rdcartslots(1).
+      RDCartSlots.
     </para>
     <para>
       The <computeroutput>Process RSS Updates On:</computeroutput> dropdown
       sets the Rivendell host to be used for processing automatic state
       changes for RSS feeds. If no RSS feeds are configured, this value
-      can be set to <userinput>[none]</userinput>.
+      can safely be set to <userinput>[none]</userinput>.
     </para>
     <para>
-      Touching the <computeroutput>Edit Encoder List</computeroutput> button
-      will bring up the <computeroutput>Encoder Profiles</computeroutput>
-      dialog. See
-      <xref linkend="sect.rdadmin.configuring_encoder_formats" />
-      for more information.
+      The <computeroutput>Date/Time Formats</computeroutput> settings can
+      be used to customize the display formats for various date/time elements.
+      For a list of the wildcards used in the formatting strings, see
+      <xref linkend="table.metadata_wildcards.datetimes"/>.
     </para>
   </sect1>
   <sect1 xml:id="sect.rdadmin.managing_voicetracking">
@@ -2638,7 +2727,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.rivendell_scheduler_code_list_dialog.png" scale="60"/>
+	  <imagedata align="center" fileref="rdadmin.rivendell_scheduler_code_list_dialog.png" width="137mm" depth="119mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Rivendell Scheduler Codes List Dialog</para>
@@ -2653,7 +2742,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.scheduler_code_dialog.png" scale="60"/>
+	  <imagedata align="center" fileref="rdadmin.scheduler_code_dialog.png" width="86mm" depth="35mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Scheduler Code Dialog</para>
@@ -2665,10 +2754,10 @@
     <title>Managing Replicators</title>
     <para>
       A <emphasis>replicator</emphasis> is a Rivendell service that provides
-      the ability to move content automatically to different system on the
-      basis of predefined rules. At present, Rivendell includes one such
-      replicator, which can move audio material to an X-Digital satelite
-      head-end system.
+      the ability to move content automatically between different system
+      realms on the basis of predefined rules. At present, Rivendell includes
+      one such replicator, which can move audio material to an X-Digital
+      satellite head-end system.
     </para>
     <para>
       To manage replicators, touch the
@@ -2678,7 +2767,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.rivendell_replicators_dialog.png" scale="60"/>
+	  <imagedata align="center" fileref="rdadmin.rivendell_replicators_dialog.png" width="137mm" depth="109mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Rivendell Replicators Dialog</para>
@@ -2692,7 +2781,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.replicator_dialog.png" scale="60"/>
+	  <imagedata align="center" fileref="rdadmin.replicator_dialog.png" width="117mm" depth="93mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Replicator Dialog</para>

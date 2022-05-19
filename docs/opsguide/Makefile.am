@@ -148,7 +148,8 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.wings_filter.usage.html\
                 sect.voicetracking.using_the_voicetracker_dialog.html
 
-OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
+OPSGUIDE_IMAGES = rdadmin.add_switcher_dialog.png\
+                  rdadmin.audio_resource_information_dialog.png\
                   rdadmin.autofill_carts_dialog.png\
                   rdadmin.configure_rdairplay_dialog.png\
                   rdadmin.configure_rdcartslots_dialog.png\
