@@ -74,7 +74,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdadmin.user_dialog.png" scale="45"/>
+	  <imagedata align="center" fileref="rdadmin.user_dialog.png" width="60mm" depth="120mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Rivendell User Dialog</para>
@@ -1735,7 +1735,7 @@
 	<para>
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata align="center" fileref="rdadmin.dropbox_configuration_dialog.png" scale="50"/>
+	      <imagedata align="center" fileref="rdadmin.dropbox_configuration_dialog.png" width="87mm" depth="123mm"/>
 	    </imageobject>
 	    <caption>
 	      <para>The Dropbox Configuration Dialog</para>
