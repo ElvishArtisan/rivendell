@@ -35,16 +35,17 @@
       <userinput>man 1 rdconvert</userinput>.
     </para>
   </sect1>
-  <sect1 xml:id="sect.utilities.rddbcheck">
-    <title>rddbcheck(8)</title>
+  <sect1 xml:id="sect.utilities.rddbmgr">
+    <title>rddbmgr(8)</title>
     <para>
-      <command>rddbcheck</command><manvolnum>8</manvolnum> is a
-      command-line interface (CLI) program that can be used to check a
-      Rivendell database for consistency and correct errors found.
+      <command>rddbmgr</command><manvolnum>8</manvolnum> is a command-line
+      interface (CLI) program that manages Rivendell databases. It
+      includes extensive capabilities for creating, checking and modifying
+      such databases.
     </para>
     <para>
       Full documentation is available by doing
-      <userinput>man 8 rddbcheck</userinput>.
+      <userinput>man 8 rddbmgr</userinput>.
     </para>
   </sect1>
   <sect1 xml:id="sect.utilities.rdexport">
@@ -77,6 +78,21 @@
       <userinput>man 1 rdimport</userinput>.
     </para>
   </sect1>
+  <sect1 xml:id="sect.utilities.rdlogmanager">
+    <title>rdlogmanager(1)</title>
+    <para>
+      <command>rdlogmanager</command><manvolnum>1</manvolnum> is a Rivendell
+      module for generating logs and reports. When invoked with no arguments,
+      it will start up in GUI mode, described in
+      <xref linkend="chapter.rdlogmanager" />.
+      However, it can also be used in &quot;batch&quot; mode to generate and
+      merge logs and reports by means of its command-line interface.      
+    </para>
+    <para>
+      Full documentation of rdlogmanager's command line interface is available
+      by doing <userinput>man 1 rdlogmanager</userinput>.
+    </para>
+  </sect1>
   <sect1 xml:id="sect.utilities.rdmarkerset">
     <title>rdmarkerset(8)</title>
     <para>
@@ -88,18 +104,6 @@
     <para>
       Full documentation is available by doing
       <userinput>man 8 rdmarkerset</userinput>.
-    </para>
-  </sect1>
-  <sect1 xml:id="sect.utilities.rdrevert">
-    <title>rdrevert(8)</title>
-    <para>
-      <command>rdrevert</command><manvolnum>8</manvolnum> is a
-      command-line interface (CLI) program that can be used to revert a
-      Rivendell database to a previous schema version.
-    </para>
-    <para>
-      Full documentation is available by doing
-      <userinput>man 8 rdrevert</userinput>.
     </para>
   </sect1>
   <sect1 xml:id="sect.utilities.mlsend_1_">
@@ -116,7 +120,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="utilities.rmlsend_screenshot.png" scale="60"/>
+	  <imagedata align="center" fileref="utilities.rmlsend_screenshot.png" width="140mm" depth="44mm"/>
 	</imageobject>
 	<caption><para>RMLSend in GUI Mode</para></caption>
       </mediaobject>
