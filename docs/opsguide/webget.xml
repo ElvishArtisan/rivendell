@@ -1,4 +1,4 @@
-<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.webget">
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="chapter.webget">
   <title>Webget</title>
   <sect1 xml:id="sect.webget.webget">
     <title>Webget</title>
@@ -20,7 +20,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="webget.webget_screen.png" scale="50"/>
+	  <imagedata align="center" fileref="webget.webget_screen.png" width="123mm" depth="102mm"/>
 	</imageobject>
 	<caption><para>The Webget screen</para></caption>
       </mediaobject>
