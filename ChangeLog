@@ -23124,3 +23124,5 @@
 	Utilities' chapter of the Operations Guide.
 2022-05-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added the 'xlink' namespace to all chapters of the Operations Guide.
+2022-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Removed unresolved <xref> target from 'docs/opsguide/rdlibrary.xml'.

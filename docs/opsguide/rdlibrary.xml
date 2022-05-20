@@ -892,15 +892,9 @@
       <para>
 	Rivendell uses a system of cue points within audio cuts, referred
 	to as <emphasis>markers</emphasis>. Markers can be used to specify
-	a number of
-	parameters for a piece of audio.
-	Consult <xref linkend="table.rdlibrary.marker_types"/> to see what
-	markers are available, their purpose and their corresponding color.
-      </para>
-      <para>
-	Markers are set in the Edit Markers Dialog.
-	To access the Dialog, open an audio cart, select the cut to open
-	on the cut list and then touch the
+	a number of parameters for a piece of audio. They are set in the
+	Edit Markers Dialog. To access the Dialog, open an audio cart,
+	select the cut to open on the cut list and then touch the
 	<computeroutput>Edit Markers</computeroutput> button.
       </para>
       <para>
