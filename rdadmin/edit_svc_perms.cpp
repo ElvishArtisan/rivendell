@@ -34,10 +34,8 @@ EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("Service: ")+svc_svc->name());
 
@@ -45,6 +43,7 @@ EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent)
   // Services Selector
   //
   svc_host_sel=new RDListSelector(this);
+  svc_host_sel->setItemIcon(rda->iconEngine()->stationIcon());
   svc_host_sel->sourceSetLabel(tr("Available Hosts"));
   svc_host_sel->destSetLabel(tr("Enabled Hosts"));
   svc_host_sel->setGeometry(10,10,380,130);

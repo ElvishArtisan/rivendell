@@ -50,7 +50,8 @@ RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,QWidget *parent)
     q=new RDSqlQuery(sql);
     while(q->next()) {
       filter_service_box->
-	insertItem(filter_service_box->count(),q->value(0).toString());
+	insertItem(filter_service_box->count(),rda->iconEngine()->serviceIcon(),
+		   q->value(0).toString());
     }
     delete q;
     break;
@@ -67,7 +68,8 @@ RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,QWidget *parent)
     q=new RDSqlQuery(sql);
     while(q->next()) {
       filter_service_box->
-	insertItem(filter_service_box->count(),q->value(0).toString());
+	insertItem(filter_service_box->count(),rda->iconEngine()->serviceIcon(),
+		   q->value(0).toString());
     }
     delete q;
     break;
@@ -169,7 +171,8 @@ void RDLogFilter::changeUser()
     RDSqlQuery *q=new RDSqlQuery(sql);
     while(q->next()) {
       filter_service_box->
-	insertItem(filter_service_box->count(),q->value(0).toString());
+	insertItem(filter_service_box->count(),rda->iconEngine()->serviceIcon(),
+		   q->value(0).toString());
     }
     delete q;
   }

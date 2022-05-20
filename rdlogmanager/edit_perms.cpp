@@ -43,6 +43,7 @@ EditPerms::EditPerms(QString object_name,ObjectType type,QWidget *parent)
   // Services Selector
   //
   svc_object_sel=new RDListSelector(this);
+  svc_object_sel->setItemIcon(rda->iconEngine()->serviceIcon());
   svc_object_sel->setGeometry(10,10,380,130);
   svc_object_sel->sourceSetLabel(tr("Available Services"));
   svc_object_sel->destSetLabel(tr("Enabled Services"));

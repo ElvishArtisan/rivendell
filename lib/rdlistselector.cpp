@@ -55,6 +55,12 @@ RDListSelector::RDListSelector(QWidget *parent)
 }
 
 
+void RDListSelector::setItemIcon(const QIcon &icon)
+{
+  list_item_icon=icon;
+}
+
+
 uint RDListSelector::sourceCount() const
 {
   return list_source_list->count();
@@ -81,7 +87,8 @@ void RDListSelector::destSetLabel(QString label)
 
 void RDListSelector::sourceInsertItem(const QString &text,int index)
 {
-  list_source_list->insertItem(index,text);
+  //  list_source_list->insertItem(index,text);
+  list_source_list->insertItem(index,new QListWidgetItem(list_item_icon,text));
   list_source_list->sortItems();
   CheckButtons();
 }
@@ -89,7 +96,8 @@ void RDListSelector::sourceInsertItem(const QString &text,int index)
 
 void RDListSelector::destInsertItem(const QString &text,int index)
 {
-  list_dest_list->insertItem(index,text);
+  //  list_dest_list->insertItem(index,text);
+  list_dest_list->insertItem(index,new QListWidgetItem(list_item_icon,text));
   list_dest_list->sortItems();
   CheckButtons();
 }
@@ -206,7 +214,7 @@ void RDListSelector::addData()
 
   if(list_source_list->currentRow()>=0) {
     list_dest_list->
-      insertItem(list_dest_list->count(),new QListWidgetItem(list_source_list->currentItem()->text()));
+      insertItem(list_dest_list->count(),new QListWidgetItem(list_item_icon,list_source_list->currentItem()->text()));
     delete list_source_list->takeItem(list_source_list->currentRow());
     list_dest_list->sortItems();
     if(list_source_list->count()==0) {
@@ -222,7 +230,7 @@ void RDListSelector::removeData()
 {
   if(list_dest_list->currentRow()>=0) {
     list_source_list->
-      insertItem(list_source_list->count(),new QListWidgetItem(list_dest_list->currentItem()->text()));
+      insertItem(list_source_list->count(),new QListWidgetItem(list_item_icon,list_dest_list->currentItem()->text()));
     delete list_dest_list->takeItem(list_dest_list->currentRow());
     list_source_list->sortItems();
     if(list_dest_list->count()==0) {

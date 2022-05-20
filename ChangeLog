@@ -23126,3 +23126,8 @@
 	* Added the 'xlink' namespace to all chapters of the Operations Guide.
 2022-05-20 Fred Gleason <fredg@paravelsystems.com>
 	* Removed unresolved <xref> target from 'docs/opsguide/rdlibrary.xml'.
+2022-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added icons to the 'Service' dropdowns in rdlogedit(1), rdairplay(1)
+	and rdlogmanager(1).
+	* Added icons to the host picker in the 'Service' dialog in
+	rdadmin(1).

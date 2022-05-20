@@ -55,7 +55,7 @@ class GenerateLog : public RDDialog
   void UpdateControls();
   void SendNotification(RDNotification::Action action,const QString &logname);
   QLabel *gen_service_label;
-  RDComboBox *gen_service_box;
+  QComboBox *gen_service_box;
   QLabel *gen_date_label;
   RDDateEdit *gen_date_edit;
   QPushButton *gen_select_button;

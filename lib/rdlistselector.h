@@ -31,6 +31,7 @@ class RDListSelector : public RDWidget
   Q_OBJECT
  public:
   RDListSelector(QWidget *parent=0);
+  void setItemIcon(const QIcon &icon);
   uint sourceCount() const;
   uint destCount() const;
   void sourceSetLabel(QString label);
@@ -53,7 +54,7 @@ class RDListSelector : public RDWidget
 				  Qt::MatchFlags flags=Qt::MatchExactly);
   QListWidgetItem *destFindItem(const QString &text,
 				Qt::MatchFlags flags=Qt::MatchExactly);
-  void clear();
+		   void clear();
   
  private slots:
   void addData();
@@ -70,6 +71,7 @@ class RDListSelector : public RDWidget
   QLabel *list_dest_label;
   QPushButton *list_add_button;
   QPushButton *list_remove_button;
+  QIcon list_item_icon;		   
 };
 
 

@@ -491,7 +491,9 @@ int EditLog::exec(const QString &logname,QStringList *new_logs)
   QString service=edit_log->service();
   for ( QStringList::Iterator it = services_list.begin(); 
         it != services_list.end(); ++it ) {
-    edit_service_box->insertItem(edit_service_box->count(),*it);
+    edit_service_box->
+      insertItem(edit_service_box->count(),
+		 rda->iconEngine()->serviceIcon(),*it);
     if(*it==service) {
       n=ncounter;
       edit_service_edit->setText(*it);

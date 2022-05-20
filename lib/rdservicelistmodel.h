@@ -42,7 +42,7 @@ class RDServiceListModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  RDServiceListModel(bool incl_none,QObject *parent=0);
+  RDServiceListModel(bool incl_none,QObject *parent);
   ~RDServiceListModel();
   QPalette palette();
   void setPalette(const QPalette &pal);

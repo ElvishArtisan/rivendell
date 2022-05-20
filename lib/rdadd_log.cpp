@@ -69,7 +69,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   // Service selector
   //
   add_service_box=new QComboBox(this);
-  add_service_box->setGeometry(115,33,100,19);
+  add_service_box->setGeometry(115,33,150,19);
   label=new QLabel(tr("Service")+":",this);
   label->setGeometry(10,33,100,19);
   label->setFont(labelFont());
@@ -120,7 +120,8 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   q=new RDSqlQuery(sql);
   while(q->next()) {
     add_service_box->
-      insertItem(add_service_box->count(),q->value(0).toString());
+      insertItem(add_service_box->count(),rda->iconEngine()->serviceIcon(),
+		 q->value(0).toString());
   }
   add_name_edit->setText(*logname);
 }

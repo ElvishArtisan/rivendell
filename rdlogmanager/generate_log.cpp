@@ -63,7 +63,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   // Service Name
   //
-  gen_service_box=new RDComboBox(this);
+  gen_service_box=new QComboBox(this);
   connect(gen_service_box,SIGNAL(activated(int)),
 	  this,SLOT(serviceActivatedData(int)));
   gen_service_label=new QLabel(tr("Service:"),this);
@@ -79,7 +79,8 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   for ( QStringList::Iterator it = services_list.begin(); 
         it != services_list.end();
         ++it ) {
-    gen_service_box->insertItem(*it);
+    gen_service_box->
+      insertItem(gen_service_box->count(),rda->iconEngine()->serviceIcon(),*it);
     if (cmdswitch != 0 && *cmdservice == *it)
       cmdservicefit=true;
   }
