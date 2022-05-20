@@ -23131,3 +23131,6 @@
 	and rdlogmanager(1).
 	* Added icons to the host picker in the 'Service' dialog in
 	rdadmin(1).
+2022-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted the element layout of the Edit events dialogs in
+	rdlogedit(1).

@@ -253,12 +253,12 @@ void EditEvent::resizeEvent(QResizeEvent *e)
 {
   edit_timetype_box->setGeometry(10,22,15,15);
   edit_timetype_label->setGeometry(30,19,85,20);
-  edit_time_edit->setGeometry(85,19,120,20);
-  edit_grace_group->setGeometry(215,11,400,42);
-  edit_grace_bgroup->button(0)->setGeometry(10,21,145,20);
-  edit_grace_bgroup->button(1)->setGeometry(155,21,105,20);
-  edit_grace_bgroup->button(2)->setGeometry(265,21,95,20);
-  edit_grace_timeedit->setGeometry(548,31,60,20);
+  edit_time_edit->setGeometry(85,19,110,20);
+  edit_grace_group->setGeometry(205,11,410,42);
+  edit_grace_bgroup->button(0)->setGeometry(10,16,145,20);
+  edit_grace_bgroup->button(1)->setGeometry(155,16,105,20);
+  edit_grace_bgroup->button(2)->setGeometry(265,16,95,20);
+  edit_grace_timeedit->setGeometry(548,26,60,20);
 
   edit_transtype_label->setGeometry(10,60,370,26);
   edit_transtype_box->setGeometry(385,60,110,26);
