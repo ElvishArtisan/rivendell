@@ -23134,3 +23134,7 @@
 2022-05-20 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted the element layout of the Edit events dialogs in
 	rdlogedit(1).
+2022-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'Configure RDCatch' dialog in rdcatch(1)
+	that caused the 'Select' buttons in the 'Events Carts' section to
+	fail to save the selected macro cart number.

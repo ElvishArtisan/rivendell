@@ -521,7 +521,7 @@ void EditDecks::playSettingsChangedData(int id,int card,int port)
 void EditDecks::eventCartSelectedData(int n)
 {
   int cartnum=edit_event_edits[n]->text().toInt();
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)) {
     if(cartnum==0) {
       edit_event_edits[n]->setText("");
     }
