@@ -2874,7 +2874,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.encoder_profiles_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdadmin.encoder_profiles_dialog.png" width="71mm" depth="59mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Encoder Profiles Dialog</para>
@@ -2889,7 +2889,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.edit_audio_settings_dialog.png" scale="50"/>
+	    <imagedata align="center" fileref="rdadmin.edit_audio_settings_dialog.png" width="58mm" depth="49mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Edit Audio Settings Dialog</para>
