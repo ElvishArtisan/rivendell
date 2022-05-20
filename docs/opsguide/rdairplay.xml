@@ -1,4 +1,4 @@
-<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdairplay">
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="chapter.rdairplay">
   <title>Running Logs with RDAirPlay</title>
  <sect1 xml:id="sect.rdairplay.overview">
    <title>Overview</title>

@@ -23122,3 +23122,5 @@
 2022-05-20 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'Interfacing with the Linux Ecosystem: Command-Line
 	Utilities' chapter of the Operations Guide.
+2022-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added the 'xlink' namespace to all chapters of the Operations Guide.
