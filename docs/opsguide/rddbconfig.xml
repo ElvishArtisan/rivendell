@@ -14,13 +14,17 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rddbconfig.login_dialog.png" scale="45"/>
+	  <imagedata align="center" fileref="rddbconfig.login_dialog.png" width="60mm" depth="42mm"/>
 	</imageobject>
 	<caption>
 	  <para>The Root Login Dialog</para>
 	</caption>
       </mediaobject>
     </para>
+    <note>
+      The appearance of the Root Login Dialog may vary depending on desktop
+      environment in use!
+    </note>
     <para>
       After entering the correct 'root' password, the main RDDbConfig
       window will be displayed.
@@ -28,7 +32,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rddbconfig.rddbconfig_screenshot.png" scale="50"/>
+	  <imagedata align="center" fileref="rddbconfig.rddbconfig_screenshot.png" width="50mm" depth="63mm"/>
 	</imageobject>
 	<caption>
 	  <para>The RDDbConfig Main Window</para>
