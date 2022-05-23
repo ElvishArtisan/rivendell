@@ -38,10 +38,8 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   box_dropbox=new RDDropbox(id);
 
@@ -57,8 +55,8 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   // Group Name
   //
   box_group_name_box=new QComboBox(this);
-  box_group_name_box->setGeometry(140,10,100,20);
-  box_group_name_model=new RDGroupListModel(true,false,true,this);
+  box_group_name_box->setGeometry(140,10,140,20);
+  box_group_name_model=new RDGroupListModel(false,false,true,this);
   box_group_name_model->setFont(defaultFont());
   box_group_name_model->setPalette(palette());
   box_group_name_box->setModel(box_group_name_model);
