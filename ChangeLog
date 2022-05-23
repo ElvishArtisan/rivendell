@@ -23148,3 +23148,7 @@
 2022-05-23 Fred Gleason <fredg@paravelsystems.com>
 	* Tweaked the layout of the meter strip in rdairplay(1) so as to
 	keep 4 character long labels from running together.
+2022-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'Generate Log' dialog in rdlogmanager(1)
+	that caused the progress bar dialog to fail to be hidden after
+	generation of a log.

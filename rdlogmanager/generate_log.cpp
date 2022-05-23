@@ -58,7 +58,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
     new QProgressDialog(tr("Generating Log..."),tr("Cancel"),0,24,this);
   gen_progress_dialog->setWindowTitle("Progress");
   gen_progress_dialog->setCancelButton(NULL);
-  gen_progress_dialog->setValue(24);
+  gen_progress_dialog->setValue(gen_progress_dialog->maximum());
 
   //
   // Service Name
@@ -323,6 +323,8 @@ void GenerateLog::createData()
     return;
   }
   log->updateTracks();
+  gen_progress_dialog->
+    setValue(gen_progress_dialog->setValue(gen_progress_dialog->maximum());
   SendNotification(RDNotification::AddAction,log->name());
   delete log;
   delete svc;
