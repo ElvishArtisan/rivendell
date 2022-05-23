@@ -139,11 +139,10 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.rml.specifying_color.html\
                 sect.utilities.mlsend_1_.html\
                 sect.utilities.rdconvert.html\
-                sect.utilities.rddbcheck.html\
+                sect.utilities.rddbmgr.html\
                 sect.utilities.rdexport.html\
                 sect.utilities.rdimport.html\
                 sect.utilities.rdmarkerset.html\
-                sect.utilities.rdrevert.html\
                 sect.wings_filter.procedure.html\
                 sect.wings_filter.usage.html\
                 sect.voicetracking.using_the_voicetracker_dialog.html

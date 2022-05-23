@@ -23164,3 +23164,6 @@
 2022-05-23 Fred Gleason <fredg@paravelsystems.com>
 	* Extended the 'Select Widget' ['PW'] RML to enable selection of
 	the Voice Tracker widget.
+2022-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'docs/opsguide/Makefile.am' that broke the
+	'make install' target.
