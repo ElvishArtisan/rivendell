@@ -2,7 +2,7 @@
 //
 // Local RML Macros for the Rivendell's RDAirPlay
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -779,7 +779,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>3)) {
+    if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>4)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -796,6 +796,11 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     case 3:
       fullLogButtonData(rml->arg(0).toInt()-1);
       break;
+
+    case 4:  // Voice Tracker
+      trackerButtonData();
+      break;
+
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);

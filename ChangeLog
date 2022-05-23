@@ -23161,3 +23161,6 @@
 2022-05-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdadmin(1) in the 'Edit GPIs' dialog that
 	caused changes in macro cart assignments to fail to be saved.
+2022-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Extended the 'Select Widget' ['PW'] RML to enable selection of
+	the Voice Tracker widget.

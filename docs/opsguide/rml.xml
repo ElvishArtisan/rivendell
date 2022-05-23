@@ -1587,7 +1587,8 @@
     </para>
     <para>
       Select right-hand widget to log-machine <replaceable>mach</replaceable>
-      or <userinput>0</userinput> for sound panel.
+      or <userinput>0</userinput> for sound panel or
+      <userinput>4</userinput> for voice tracker.
     </para>
   </sect2>
 
