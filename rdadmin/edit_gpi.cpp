@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Gpi
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -239,7 +239,7 @@ int EditGpi::exec(RDMatrix::GpioType type,int id)
 void EditGpi::selectOnData()
 {
   int oncart=edit_onmacro_edit->text().toInt();
-  if(admin_cart_dialog->exec(&oncart,RDCart::Macro,QString(),NULL)==0) {
+  if(admin_cart_dialog->exec(&oncart,RDCart::Macro,QString(),NULL)) {
     if(oncart>0) {
       RDCart *rdcart=new RDCart(oncart);
       edit_onmacro_edit->setText(QString::asprintf("%06d",oncart));
@@ -264,7 +264,7 @@ void EditGpi::clearOnData()
 void EditGpi::selectOffData()
 {
   int offcart=edit_offmacro_edit->text().toInt();
-  if(admin_cart_dialog->exec(&offcart,RDCart::Macro,QString(),NULL)==0) {
+  if(admin_cart_dialog->exec(&offcart,RDCart::Macro,QString(),NULL)) {
     if(offcart>0) {
       RDCart *rdcart=new RDCart(offcart);
       edit_offmacro_edit->setText(QString::asprintf("%06d",offcart));
