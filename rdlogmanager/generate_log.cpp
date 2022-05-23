@@ -323,8 +323,7 @@ void GenerateLog::createData()
     return;
   }
   log->updateTracks();
-  gen_progress_dialog->
-    setValue(gen_progress_dialog->setValue(gen_progress_dialog->maximum());
+  gen_progress_dialog->setValue(gen_progress_dialog->maximum());
   SendNotification(RDNotification::AddAction,log->name());
   delete log;
   delete svc;
