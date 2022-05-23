@@ -23155,3 +23155,6 @@
 2022-05-23 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'ALL' entry from the 'Default Group' dropdown in the
 	'Dropbox Configuration' dialog in rdlogmanager(1).
+2022-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'SAS USI' switcher driver in ripcd(8) that
+	could cause a segfault upon receipt of a network error.

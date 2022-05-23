@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS USI Protocol
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -407,6 +407,7 @@ void SasUsi::errorData(QAbstractSocket::SocketError err)
   default:
     rda->syslog(LOG_WARNING,
        	"received network error %d on connection to SasUsi device at %s:%d",
+		err,
 		(const char *)sas_ipaddress.toString().toUtf8(),
 		sas_ipport);
     break;
