@@ -2,7 +2,7 @@
 //
 // Container class for RDCartSlot options
 //
-//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -141,7 +141,6 @@ bool RDSlotOptions::load()
   bool ret=false;
   QString sql;
   RDSqlQuery *q;
-
   sql=QString("select ")+
     "`CARTSLOTS`.`CARD`,"+                 // 00
     "`CARTSLOTS`.`INPUT_PORT`,"+           // 01
@@ -157,10 +156,12 @@ bool RDSlotOptions::load()
     "`CARTSLOTS`.`SERVICE_NAME`,"+         // 11
     "`AUDIO_OUTPUTS`.`LABEL` "+            // 12
     "from `CARTSLOTS` left join `AUDIO_OUTPUTS` "+
-    "on `CARTSLOTS`.`OUTPUT_PORT`=`AUDIO_OUTPUTS`.`PORT_NUMBER` where "+
-    "`AUDIO_OUTPUTS`.`STATION_NAME`='"+RDEscapeString(set_stationname)+"' && "+
+    "on `CARTSLOTS`.`OUTPUT_PORT`=`AUDIO_OUTPUTS`.`PORT_NUMBER` && "+
     "`AUDIO_OUTPUTS`.`CARD_NUMBER`=`CARTSLOTS`.`CARD` && "+
     "`AUDIO_OUTPUTS`.`PORT_NUMBER`=`CARTSLOTS`.`OUTPUT_PORT` && "+
+    "`CARTSLOTS`.`STATION_NAME`=`AUDIO_OUTPUTS`.`STATION_NAME` where "+
+    "`AUDIO_OUTPUTS`.`STATION_NAME`='"+RDEscapeString(set_stationname)+"' && "+
+    "`CARTSLOTS`.`OUTPUT_PORT`=`AUDIO_OUTPUTS`.`PORT_NUMBER` && "+
     QString::asprintf("`CARTSLOTS`.`SLOT_NUMBER`=%u",set_slotno);
   q=new RDSqlQuery(sql);
   if(q->first()) {

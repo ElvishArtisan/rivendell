@@ -23138,3 +23138,10 @@
 	* Fixed a regression in the 'Configure RDCatch' dialog in rdcatch(1)
 	that caused the 'Select' buttons in the 'Events Carts' section to
 	fail to save the selected macro cart number.
+2022-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a schema pseudo-update to rewrite the audio input and output
+	names to correctly unique default values.
+	* Incremented the database version to 356.
+2022-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcartslots(1) that caused default settings
+	to fail to be loaded correctly at startup.

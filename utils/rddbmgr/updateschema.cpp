@@ -10974,6 +10974,48 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<356)&&(set_schema>cur_schema)) {
+    //
+    // Maintainer's Note:
+    //
+    // A 'pseudo-schema' change. No actual schema changes, just rewrite
+    // the default audio port names so each port gets a properly unique
+    // name.
+    //
+    // Use hard-coded maximum card/port quantities (24 for each) here,
+    // in case the #define'd values change in future!
+    //
+    sql=QString("select `NAME` from `STATIONS`");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      for(int i=0;i<24;i++) {
+	for(int j=0;j<24;j++) {
+	  sql=QString("update `AUDIO_INPUTS` set ")+
+	    "`LABEL`='"+RDEscapeString(QString::asprintf("M%d",24*i+j+1))+
+	    "' where "+
+	    "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
+	    QString::asprintf("`CARD_NUMBER`=%d && ",i)+
+	    QString::asprintf("`PORT_NUMBER`=%d",j);
+	  if(!RDSqlQuery::apply(sql,err_msg)) {
+	    return false;
+	  }
+
+	  sql=QString("update `AUDIO_OUTPUTS` set ")+
+	    "`LABEL`='"+RDEscapeString(QString::asprintf("M%d",24*i+j+1))+
+	    "' where "+
+	    "`STATION_NAME`='"+RDEscapeString(q->value(0).toString())+"' && "+
+	    QString::asprintf("`CARD_NUMBER`=%d && ",i)+
+	    QString::asprintf("`PORT_NUMBER`=%d",j);
+	  if(!RDSqlQuery::apply(sql,err_msg)) {
+	    return false;
+	  }
+	}
+      }
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...
