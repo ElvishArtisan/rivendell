@@ -23145,3 +23145,6 @@
 2022-05-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcartslots(1) that caused default settings
 	to fail to be loaded correctly at startup.
+2022-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Tweaked the layout of the meter strip in rdairplay(1) so as to
+	keep 4 character long labels from running together.

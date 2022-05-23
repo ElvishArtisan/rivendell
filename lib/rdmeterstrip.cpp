@@ -2,7 +2,7 @@
 //
 //   A strip of side-by-side vertical audio meters.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -37,7 +37,7 @@ QSize RDMeterStrip::sizeHint() const
   if(d_types.size()==0) {
     return QSize(1,125);
   }
-  return QSize(40*d_types.size(),125);
+  return QSize(45*d_types.size(),125);
 }
 
 
