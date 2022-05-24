@@ -23167,3 +23167,7 @@
 2022-05-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'docs/opsguide/Makefile.am' that broke the
 	'make install' target.
+2022-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'LiveWireLwrpGpio::gpiQuantity()' and
+	'LiveWireLwrpGpio::gpoQuantity()' methods where they returned slot
+	rather than line quantities.

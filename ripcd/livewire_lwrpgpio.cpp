@@ -69,13 +69,13 @@ RDMatrix::Type LiveWireLwrpGpio::type()
 
 unsigned LiveWireLwrpGpio::gpiQuantity()
 {
-  return gpio_livewire->gpis();
+  return RD_LIVEWIRE_GPIO_BUNDLE_SIZE*gpio_livewire->gpis();
 }
 
 
 unsigned LiveWireLwrpGpio::gpoQuantity()
 {
-  return gpio_livewire->gpos();
+  return RD_LIVEWIRE_GPIO_BUNDLE_SIZE*gpio_livewire->gpos();
 }
 
 
