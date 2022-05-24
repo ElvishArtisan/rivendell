@@ -32,6 +32,7 @@
 #include <rdescape_string.h>
 #include <rdmatrix.h>
 #include <rdpaths.h>
+#include <rdrange.h>
 #include <rdtty.h>
 
 #include "ripcd.h"
@@ -238,6 +239,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
   QString str;
   QString sql;
   QString cmd;
+  RDRange *range=NULL;
   RDSqlQuery *q;
   QHostAddress addr;
   RDUser *rduser;
@@ -348,12 +350,22 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       return;
     }
     matrix_num=rml->arg(0).toInt();
+    if((ripcd_switcher[matrix_num]==NULL)||
+       (rml->arg(3).toInt()<0)||(rml->arg(3).toInt()>1)) {
+      if(rml->echoRequested()) {
+	rml->acknowledge(false);
+	sendRml(rml);
+      }
+      return;
+    }
     if(rml->arg(1).toLower()=="i") {
       gpio_type=RDMatrix::GpioInput;
+      range=new RDRange(ripcd_switcher[matrix_num]->gpiQuantity());
     }
     else {
       if(rml->arg(1).toLower()=="o") {
 	gpio_type=RDMatrix::GpioOutput;
+	range=new RDRange(ripcd_switcher[matrix_num]->gpoQuantity());
       }
       else {
 	if(rml->echoRequested()) {
@@ -363,39 +375,38 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 	return;
       }
     }
-    gpi=rml->arg(2).toInt()-1;
-    if((ripcd_switcher[matrix_num]==NULL)||
-       (gpi>(MAX_GPIO_PINS-1))||
-       (gpi<0)||
-       (rml->arg(3).toInt()<0)||(rml->arg(3).toInt()>1)) {
+    if(!range->parse(rml->arg(2))) {
+      delete range;
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	sendRml(rml);
       }
       return;
     }
-    switch(gpio_type) {
-    case RDMatrix::GpioInput:
-      if(rml->arg(3).toInt()==1) {
-	ripcd_gpi_mask[matrix_num][gpi]=true;
-	BroadcastCommand(QString::asprintf("GM %d %d 1!",matrix_num,gpi));
-      }
-      else {
-	ripcd_gpi_mask[matrix_num][gpi]=false;
-	BroadcastCommand(QString::asprintf("GM %d %d 0!",matrix_num,gpi));
-      }
-      break;
+    for(int i=range->start()-1;i<range->end();i++) {
+      switch(gpio_type) {
+      case RDMatrix::GpioInput:
+	if(rml->arg(3).toInt()==1) {
+	  ripcd_gpi_mask[matrix_num][i]=true;
+	  BroadcastCommand(QString::asprintf("GM %d %d 1!",matrix_num,i));
+	}
+	else {
+	  ripcd_gpi_mask[matrix_num][i]=false;
+	  BroadcastCommand(QString::asprintf("GM %d %d 0!",matrix_num,i));
+	}
+	break;
 
-    case RDMatrix::GpioOutput:
-      if(rml->arg(3).toInt()==1) {
-	ripcd_gpo_mask[matrix_num][gpi]=true;
-	BroadcastCommand(QString::asprintf("GN %d %d 1!",matrix_num,gpi));
+      case RDMatrix::GpioOutput:
+	if(rml->arg(3).toInt()==1) {
+	  ripcd_gpo_mask[matrix_num][i]=true;
+	  BroadcastCommand(QString::asprintf("GN %d %d 1!",matrix_num,i));
+	}
+	else {
+	  ripcd_gpo_mask[matrix_num][i]=false;
+	  BroadcastCommand(QString::asprintf("GN %d %d 0!",matrix_num,i));
+	}
+	break;
       }
-      else {
-	ripcd_gpo_mask[matrix_num][gpi]=false;
-	BroadcastCommand(QString::asprintf("GN %d %d 0!",matrix_num,gpi));
-      }
-      break;
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);

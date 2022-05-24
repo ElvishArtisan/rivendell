@@ -767,11 +767,11 @@
       <userinput>GE
       <replaceable>matrix</replaceable>
       <replaceable>type</replaceable>
-      <replaceable>gpinum</replaceable>
+      <replaceable>gpinum-spec</replaceable>
       <replaceable>state</replaceable>!</userinput>
     </para>
     <para>
-      Enable or disable the GPI line of type <replaceable>type</replaceable>
+      Enable or disable the GPI line(s) of type <replaceable>type</replaceable>
       indicated by <replaceable>gpinum</replaceable> on matrix
       <replaceable>matrix</replaceable>.  Possible types are:
     </para>
@@ -787,6 +787,97 @@
 	</varlistentry>
       </variablelist>
     </para>
+    <para>
+      The <replaceable>gpinum-spec</replaceable> can be an integer value
+      to indicate a single GPI line or a range specification to indicate
+      multiple lines. A range specification has the following format:
+    </para>
+    <para>
+      [<replaceable>first-value</replaceable>]:[<replaceable>last-value</replaceable>]
+    </para>
+    <para>
+      All values in a range specification are inclusive. Some examples:
+    </para>
+    <para>
+      <table xml:id="sect.rml.gpi_enable__ge_.range_examples" frame="all" pgwide="0">
+	<title>Range Specification Examples</title>	
+	<tgroup cols="2" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Specification" colwidth="1.0*"/>
+	  <colspec colname="Meaning" colwidth="10.0*"/>
+	  <tbody>
+	    <row>
+	      <entry align="center">
+		1:10
+	      </entry>
+	      <entry>
+		Lines 1 through 10, inclusive
+	      </entry>
+	    </row>
+	    <row>
+	      <entry align="center">
+		5:10
+	      </entry>
+	      <entry>
+		Lines 5 through 10, inclusive
+	      </entry>
+	    </row>
+	    <row>
+	      <entry align="center">
+		7:7
+	      </entry>
+	      <entry>
+		Line 7
+	      </entry>
+	    </row>
+	    <row>
+	      <entry align="center">
+		:10
+	      </entry>
+	      <entry>
+		Lines 1 through 10, inclusive
+	      </entry>
+	    </row>
+	    <row>
+	      <entry align="center">
+		1:
+	      </entry>
+	      <entry>
+		Lines 1 onward, inclusive
+	      </entry>
+	    </row>
+	    <row>
+	      <entry align="center">
+		:
+	      </entry>
+	      <entry>
+		All lines in the specified matrix
+	      </entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+    </para>
+    <note>
+      <title>Note for Python programmers</title>
+      Python programmers in the audience may be noticing similarities between
+      range specifications and
+      <link xlink:href="https://stackoverflow.com/questions/509211/understanding-slicing">Python slices</link>.
+      The concepts are similar, but there are differences! Specifically:
+      <itemizedlist>
+	<listitem>
+	  All values in range specifications are <emphasis>inclusive</emphasis>,
+      whereas the <replaceable>stop</replaceable> parameter in a slice is
+      <code>last_value+1</code>.
+	</listitem>
+	<listitem>
+	  There is no <replaceable>step</replaceable> parameter.
+	</listitem>
+	<listitem>
+	  All parameter values must be positive integers --i.e. zero- and
+	  negative-valued parameters are not supported.
+	</listitem>
+      </itemizedlist>
+    </note>
   </sect2>
 
   <sect2 xml:id="sect.rml.gpi_enable__ge___old_format__deprecated_">
@@ -809,13 +900,20 @@
     <para>
       <userinput>GE
       <replaceable>matrix</replaceable>
-      <replaceable>gpinum</replaceable>
+      <replaceable>gpinum-spec</replaceable>
       <replaceable>state</replaceable>!</userinput>
     </para>
     <para>
-      Enable or disable the GPI line indicated by
-      <replaceable>gpinum</replaceable> on matrix
+      Enable or disable the GPI line(s) indicated by
+      <replaceable>gpinum-spec</replaceable> on matrix
       <replaceable>matrix</replaceable>.
+    </para>
+    <para>
+      The <replaceable>gpinum-spec</replaceable> can be an integer value
+      to indicate a single GPI line or a range specification to indicate
+      multiple lines. See
+      <xref linkend="sect.rml.gpi_enable__ge_.range_examples" /> above
+      for examples of range specifications.
     </para>
   </sect2>
 

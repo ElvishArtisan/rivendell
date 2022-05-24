@@ -219,6 +219,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdprofile.cpp rdprofile.h\
                         rdpushbutton.cpp rdpushbutton.h\
                         rdpypadlistmodel.cpp rdpypadlistmodel.h\
+                        rdrange.cpp rdrange.h\
                         rdrecording.cpp rdrecording.h\
                         rdrehash.cpp rdrehash.h\
                         rdrenderer.cpp rdrenderer.h\

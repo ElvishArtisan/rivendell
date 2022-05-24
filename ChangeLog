@@ -23171,3 +23171,7 @@
 	* Fixed a bug in the 'LiveWireLwrpGpio::gpiQuantity()' and
 	'LiveWireLwrpGpio::gpoQuantity()' methods where they returned slot
 	rather than line quantities.
+2022-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDRange' class.
+	* Added support for range specifications to the 'line' parameter
+	of the 'GPI Enable' ['GE'] RML.
