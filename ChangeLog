@@ -23175,3 +23175,7 @@
 	* Added an 'RDRange' class.
 	* Added support for range specifications to the 'line' parameter
 	of the 'GPI Enable' ['GE'] RML.
+2022-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the Voice Tracker dialog where resizing the window
+	would cause the relative positions of the markers in the waveform
+	displays to shift.

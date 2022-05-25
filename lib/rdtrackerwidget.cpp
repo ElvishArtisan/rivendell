@@ -2,7 +2,7 @@
 //
 // Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -332,7 +332,7 @@ RDTrackerWidget::RDTrackerWidget(QString *import_path,QWidget *parent)
   d_time_label->setFont(subLabelFont());
   d_time_label->setAlignment(Qt::AlignHCenter);
   d_time_label->setPalette(QPalette(palette().color(QPalette::Background),
-				    palette().mid().color()));  
+				    palette().mid().color()));
 
   //
   // Log List
@@ -1533,7 +1533,7 @@ void RDTrackerWidget::positionData(int id,int msecs)
        (msecs<(d_wave_origin[id]+d_wave_width))) {
       x=(int)(((double)(msecs-d_wave_origin[id]))*
 	      ((double)(d_wave_map[id]->size().width()))/
-	      ((double)TRACKER_START_WIDTH))+10;
+	      ((double)size().width()*(double)TRACKER_START_WIDTH/800.0))+10;
       if(x>d_scroll_threshold) {
 	d_scrolling=true;
       }
@@ -2263,7 +2263,7 @@ void RDTrackerWidget::LoadTrack(int line)
         }
       }
     }
-    d_wave_width=TRACKER_START_WIDTH;
+    d_wave_width=(double)size().width()*(double)TRACKER_START_WIDTH/800.0;
   }
   d_start_time=d_log_model->blockStartTime(line);
   DrawTrackMap(0);
