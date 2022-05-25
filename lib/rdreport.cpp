@@ -424,7 +424,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   //
   // Generate Mixdown ID
   //
-  QString mixname=QString::asprintf("MIX-%d",getpid());
+  QString mixname=QString::asprintf("MX%d",getpid());
 
   //
   // Iterate Selected Services

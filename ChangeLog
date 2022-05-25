@@ -23179,3 +23179,6 @@
 	* Fixed a bug in the Voice Tracker dialog where resizing the window
 	would cause the relative positions of the markers in the waveform
 	displays to shift.
+2022-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that could cause report generation
+	to fail on systems that generate process IDs higher than 999999.
