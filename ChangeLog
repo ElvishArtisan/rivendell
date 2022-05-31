@@ -23182,3 +23182,6 @@
 2022-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogmanager(1) that could cause report generation
 	to fail on systems that generate process IDs higher than 999999.
+2022-05-31 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'Ubuntu 22.04 LTS' section to 'DISTRO-SPECIFIC NOTES'
+	in 'INSTALL'.
