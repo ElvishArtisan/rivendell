@@ -23185,3 +23185,6 @@
 2022-05-31 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'Ubuntu 22.04 LTS' section to 'DISTRO-SPECIFIC NOTES'
 	in 'INSTALL'.
+2022-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added environmental variables to the 'Ubuntu 22.04 LTS' section to
+	'DISTRO-SPECIFIC NOTES'	in 'INSTALL'.
