@@ -302,7 +302,7 @@ Required build packages: apache2 libexpat1-dev libexpat1 libid3-dev libcurl4-gnu
 Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib --libexecdir=/var/www/rd-bin --sysconfdir=/etc/apache2/conf-enabled --enable-rdxport-debug MUSICBRAINZ_LIBS="-ldiscid -lmusicbrainz5cc -lcoverartcc"
 
 Environmental variables:
-  DOCBOOK_STYLESHEETS=/usr/share/xml/docbook/stylesheet/docbook-xsl
+  DOCBOOK_STYLESHEETS=/usr/share/xml/docbook/stylesheet/docbook-xsl-ns
   DEBUILD_MAKE_ARGS=<optional-gcc-flags>
 
 Apache Web Server Configuration: CGI processing must be enabled. This can
