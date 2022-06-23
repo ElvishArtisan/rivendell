@@ -2,7 +2,7 @@
 //
 // Rivendell RSS Processor Service
 //
-//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -146,7 +146,8 @@ void MainObject::ProcessFeed(const QString &key_name)
   q=new RDSqlQuery(sql);
   while(q->next()) {
     bool deleted=false;
-    if(q->value(1).toDateTime()<now) {  // Delete expired cast
+    if((!q->value(1).isNull())&&(q->value(1).toDateTime()<now)) {
+      // Delete expired cast
       RDPodcast *cast=new RDPodcast(rda->config(),q->value(0).toUInt());
       if(!cast->dropAudio(feed,&err_msg,false)) {
 	rda->syslog(LOG_WARNING,

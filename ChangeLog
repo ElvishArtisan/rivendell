@@ -20875,3 +20875,8 @@
 2022-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'StayOnTop=' directive to the '[SoftKeys]' section of
 	rd.conf(5).
+2022-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdrssd(8) that caused a podcast episode to be
+	deleted immediately after being made active if the 'Air Date/Time'
+	was set for the future and 'Item Expires' was set to 'No' in the
+	'Editing Item' dialog.
