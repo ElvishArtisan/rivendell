@@ -20883,3 +20883,9 @@
 2022-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the default '--process-interval=' value from 60 seconds
 	to 30 seconds in rdrssd(8).
+2022-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDListView::DateTimeSort' to the 'RDListView::SortType
+	enumeration.
+	* Fixed a bug in rdcastmanager(1) that caused incorrect ordering
+	when sorting by the 'Start' and 'Expiration' columns in the
+	'Podcast Item List' dialog.

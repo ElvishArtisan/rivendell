@@ -176,6 +176,8 @@ int RDListViewItem::compare(Q3ListViewItem *i,int col,bool ascending) const
   QStringList prev_fields;
   int this_num;
   int that_num;
+  QDateTime this_dt;
+  QDateTime that_dt;
 
   if((hard_column=list_parent->hardSortColumn())<0) {
     switch(list_parent->columnSortType(col)) {
@@ -220,7 +222,29 @@ int RDListViewItem::compare(Q3ListViewItem *i,int col,bool ascending) const
 	return -1;
       }
       return 0;
-      
+
+    case RDListView::DateTimeSort:
+      this_dt=QDateTime::fromString(text(col),"MM/dd/yyyy hh:mm:ss");
+      that_dt=QDateTime::fromString(i->text(col),"MM/dd/yyyy hh:mm:ss");
+      if(this_dt.isValid()) {
+	if(that_dt.isValid()) {
+	  if(this_dt>that_dt) {
+	    return 1;
+	  }
+	  if(this_dt<that_dt) {
+	    return -1;
+	  }
+	  return 0;
+	}
+	else {
+	  return 1;
+	}
+      }
+      else {
+	return -1;
+      }
+      return 0;
+
     case RDListView::NormalSort:
       return Q3ListViewItem::compare(i,col,ascending);
     }

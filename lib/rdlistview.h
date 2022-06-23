@@ -31,7 +31,8 @@ class RDListView : public Q3ListView
   Q_OBJECT
 
  public:
-  enum SortType {NormalSort=0,TimeSort=1,LineSort=2,GpioSort=3,NumericSort=4};
+  enum SortType {NormalSort=0,TimeSort=1,LineSort=2,GpioSort=3,NumericSort=4,
+		 DateTimeSort=5};
   RDListView(QWidget *parent);
   int hardSortColumn() const;
   void setHardSortColumn(int col);

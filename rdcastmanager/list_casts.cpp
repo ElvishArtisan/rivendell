@@ -133,8 +133,10 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
 
   list_casts_view->addColumn(tr("Start"));
   list_casts_view->setColumnAlignment(3,Qt::AlignLeft);
+  list_casts_view->setColumnSortType(3,RDListView::DateTimeSort);
   list_casts_view->addColumn(tr("Expiration"));
   list_casts_view->setColumnAlignment(4,Qt::AlignCenter);
+  list_casts_view->setColumnSortType(4,RDListView::DateTimeSort);
   list_casts_view->addColumn(tr("Length"));
   list_casts_view->setColumnAlignment(5,Qt::AlignRight);
   list_casts_view->addColumn(tr("Feed"));
