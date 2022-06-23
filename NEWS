@@ -1,12 +1,19 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.6.5int0 --22 March 2022
+v3.6.5int1 -- 23 June 2022
 
 Changes:
-   Added the ability to load copy-split audio sets (generic and regional)
-   by means of ISCI-code named files. See the '--by-isci' option in the
-   rdimport(1) man page.
+   RDImport. Added the ability to load copy-split audio sets (generic and
+   regional) by means of ISCI-code named files. See the '--by-isci' option
+   in the rdimport(1) man page.
+
+   RDCastManager. Fixed a bug in the podcasting subsystem that caused
+   episodes to be automatically deleted immediately after being made active
+   if the 'Air Date/Time' was set for the future and 'Item Expires' was set
+   to 'No' in the 'Editing Item' dialog.
+
+   Various bugfixes. See the ChangeLog for details.
 
 Database Update:
    This version of Rivendell uses database schema version 347, and will
