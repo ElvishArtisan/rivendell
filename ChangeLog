@@ -20880,3 +20880,6 @@
 	deleted immediately after being made active if the 'Air Date/Time'
 	was set for the future and 'Item Expires' was set to 'No' in the
 	'Editing Item' dialog.
+2022-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the default '--process-interval=' value from 60 seconds
+	to 30 seconds in rdrssd(8).
