@@ -23188,3 +23188,8 @@
 2022-06-01 Fred Gleason <fredg@paravelsystems.com>
 	* Added environmental variables to the 'Ubuntu 22.04 LTS' section to
 	'DISTRO-SPECIFIC NOTES'	in 'INSTALL'.
+2022-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdrssd(8) that caused a podcast episode to be
+	deleted immediately after being made active if the 'Air Date/Time'
+	was set for the future and 'Item Expires' was set to 'No' in the
+	'Editing Item' dialog.
