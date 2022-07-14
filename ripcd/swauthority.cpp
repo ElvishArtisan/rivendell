@@ -249,7 +249,6 @@ void SoftwareAuthority::DispatchCommand()
   QString cmd;
   QString label;
   QString sql;
-  RDSqlQuery *q;
   QStringList f0;
   QString name;
 
@@ -264,6 +263,18 @@ void SoftwareAuthority::DispatchCommand()
   // Startup Sequence. Get initial GPIO states and the input and output lists.
   //
   if(section=="login successful") {
+    //
+    // Clear stale endpoint entries
+    //
+    sql=QString("delete from `INPUTS` where ")+
+      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+      QString::asprintf("`MATRIX`=%d",swa_matrix);
+    RDSqlQuery::apply(sql);
+    sql=QString("delete from `OUTPUTS` where ")+
+      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+      QString::asprintf("`MATRIX`=%d",swa_matrix);
+    RDSqlQuery::apply(sql);
+
     swa_inputs=0;
     swa_outputs=0;
     swa_gpis=0;
@@ -293,11 +304,13 @@ void SoftwareAuthority::DispatchCommand()
     if(section==QString::asprintf("begin sourcenames - %d",swa_card)) {
       swa_istate=1;
       swa_inputs=0;
+      swa_next_endpt=1;
       return;
     }
     if(section==QString::asprintf("begin destnames - %d",swa_card)) {
       swa_istate=2;
       swa_outputs=0;
+      swa_next_endpt=1;
       return;
     }
     break;
@@ -305,7 +318,7 @@ void SoftwareAuthority::DispatchCommand()
   case 1:   // Source List
     if(section==QString::asprintf("end sourcenames - %d",swa_card)) {
       //
-      // Write Sources Data
+      // Update MATRICES record
       //
       swa_istate=0;
       if(swa_is_gpio) {
@@ -320,40 +333,44 @@ void SoftwareAuthority::DispatchCommand()
       return;
     }
     f0=line_in.split("\t",QString::KeepEmptyParts);
+
+    //
+    // Insert null zero or more '[null]' entries to cover holes
+    //
+    while(f0[0].toInt()>swa_next_endpt) {
+      sql=QString("insert into `INPUTS` set ")+
+	"`NAME`='"+tr("[none]")+"',"+
+	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
+	QString::asprintf("`MATRIX`=%d,",swa_matrix)+
+	QString::asprintf("`NUMBER`=%d",swa_next_endpt);
+      RDSqlQuery::apply(sql);
+      swa_next_endpt++;
+    }
+
+    //
+    // Process the actual entry
+    //
     name=f0[1];
     if(f0.size()>=7) {
       name=f0[6]+": "+f0[2];
     }
-    sql=QString("select `NUMBER` from `INPUTS` where ")+
-      "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-      QString::asprintf("(`MATRIX`=%d)&&",swa_matrix)+
-      QString::asprintf("(`NUMBER`=%d)",f0[0].toInt());
-    q=new RDSqlQuery(sql);
-    if(q->first()) {
-      sql=QString("update `INPUTS` set ")+
-	"`NAME`='"+RDEscapeString(name)+"' where "+
-	"(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-	QString::asprintf("(`MATRIX`=%d)&&",swa_matrix)+
-	QString::asprintf("(`NUMBER`=%d)",f0[0].toInt());
-    }
-    else {
-      sql=QString("insert into `INPUTS` set ")+
-	"`NAME`='"+RDEscapeString(name)+"',"+
-	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
-	QString::asprintf("`MATRIX`=%d,",swa_matrix)+
-	QString::asprintf("`NUMBER`=%d",f0[0].toInt());
-    }
+    sql=QString("insert into `INPUTS` set ")+
+      "`NAME`='"+RDEscapeString(name)+"',"+
+      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
+      QString::asprintf("`MATRIX`=%d,",swa_matrix)+
+      QString::asprintf("`NUMBER`=%d",f0[0].toInt());
+    swa_next_endpt++;
+
     if(f0[0].toInt()>swa_inputs) {
       swa_inputs=f0[0].toInt();
     }
-    delete q;
     RDSqlQuery::apply(sql);
     break;
 
   case 2:   // Destinations List
     if(section==QString::asprintf("end destnames - %d",swa_card)) {
       //
-      // Write Destinations Data
+      // Update MATRICES record
       //
       swa_istate=0;
       if(swa_is_gpio) {
@@ -376,33 +393,37 @@ void SoftwareAuthority::DispatchCommand()
       return;
     }
     f0=line_in.split("\t",QString::KeepEmptyParts);
+
+    //
+    // Insert null zero or more '[null]' entries to cover holes
+    //
+    while(f0[0].toInt()>swa_next_endpt) {
+      sql=QString("insert into `OUTPUTS` set ")+
+	"`NAME`='"+tr("[none]")+"',"+
+	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
+	QString::asprintf("`MATRIX`=%d,",swa_matrix)+
+	QString::asprintf("`NUMBER`=%d",swa_next_endpt);
+      RDSqlQuery::apply(sql);
+      swa_next_endpt++;
+    }
+
+    //
+    // Process the actual entry
+    //
     name=f0[1];
     if(f0.size()>=6) {
       name=f0[3]+"/"+f0[5]+": "+f0[2];
     }
-    sql=QString("select `NUMBER` from `OUTPUTS` where ")+
-      "(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-      QString::asprintf("(`MATRIX`=%d)&&",swa_matrix)+
-      QString::asprintf("(`NUMBER`=%d)",f0[0].toInt());
-    q=new RDSqlQuery(sql);
-    if(q->first()) {
-      sql=QString("update `OUTPUTS` set ")+
-	"`NAME`='"+RDEscapeString(name)+"' where "+
-	"(`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"')&&"+
-	QString::asprintf("(`MATRIX`=%d)&&",swa_matrix)+
-	QString::asprintf("(`NUMBER`=%d)",f0[0].toInt());
+    sql=QString("insert into `OUTPUTS` set ")+
+      "`NAME`='"+RDEscapeString(name)+"',"+
+      "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
+      QString::asprintf("`MATRIX`=%d,",swa_matrix)+
+      QString::asprintf("`NUMBER`=%d",f0[0].toInt());
+    swa_next_endpt++;
+
+    if(f0[0].toInt()>swa_inputs) {
+      swa_inputs=f0[0].toInt();
     }
-    else {
-      sql=QString("insert into `OUTPUTS` set ")+
-	"`NAME`='"+RDEscapeString(name)+"',"+
-	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
-	QString::asprintf("`MATRIX`=%d,",swa_matrix)+
-	QString::asprintf("`NUMBER`=%d",f0[0].toInt());
-    }
-    if(f0[0].toInt()>swa_outputs) {
-      swa_outputs=f0[0].toInt();
-    }
-    delete q;
     RDSqlQuery::apply(sql);
     break;
   }

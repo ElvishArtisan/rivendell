@@ -75,6 +75,7 @@ class SoftwareAuthority : public Switcher
   int swa_outputs;
   int swa_gpis;
   int swa_gpos;
+  int swa_next_endpt;
   QTimer *swa_reconnect_timer;
   unsigned swa_start_cart;
   unsigned swa_stop_cart;

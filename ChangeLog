@@ -23193,3 +23193,7 @@
 	deleted immediately after being made active if the 'Air Date/Time'
 	was set for the future and 'Item Expires' was set to 'No' in the
 	'Editing Item' dialog.
+2022-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Software Authority Protocol' switcher/GPIO
+	driver in ripcd(8) that failed to initialize matrix endpoints
+	correctly at startup.
