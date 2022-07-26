@@ -1,6 +1,20 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.19.3wavehack0 -- 7/26/2022
+
+Changes:
+   Backported a heuristic from v3.x to work-around off-by-one errors when
+   parsing WAV file chunk headers.
+
+Database Update:
+   This version of Rivendell uses database schema version 275, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v2.19.3 -- 10/31/2018
 
 Changes:
