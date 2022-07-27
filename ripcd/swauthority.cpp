@@ -421,8 +421,8 @@ void SoftwareAuthority::DispatchCommand()
       QString::asprintf("`NUMBER`=%d",f0[0].toInt());
     swa_next_endpt++;
 
-    if(f0[0].toInt()>swa_inputs) {
-      swa_inputs=f0[0].toInt();
+    if(f0[0].toInt()>swa_outputs) {
+      swa_outputs=f0[0].toInt();
     }
     RDSqlQuery::apply(sql);
     break;

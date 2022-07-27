@@ -27,7 +27,6 @@
 
 #include "edit_switchevent.h"
 
-//EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
 EditSwitchEvent::EditSwitchEvent(QWidget *parent)
   : RDDialog(parent)
 {
