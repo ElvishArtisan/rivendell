@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Switcher Matrix
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -175,6 +175,55 @@ int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
     {1,0,0,56,0,0,0,0,0,0,0,4,1,5,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // BT Universal 4.1 MLR>>Web
     {0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // BT SS 2.1
     {1,0,0,12345,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0} // GVC 7000
+  };
+
+int __mx_endpoints_are_editable_values[RDMatrix::LastType]=
+  {
+    true,  // Local GPIO
+    true,  // Generic GPIO
+    true,  // Generic Serial
+    true,  // SAS 32000
+    true,  // SAS 64000
+    true,  // Unity4k
+    true,  // BT SS 8.2
+    true,  // BT 10x1
+    true,   // SAS 64000 GPI
+    true,  // BT 16x1
+    true,  // BT 8x2
+    true,  // BT ACS 8.2
+    false, // SAS USI
+    true,  // BT 16x2
+    true,  // BT SS 12.4
+    true,  // Local Adapter
+    true,  // vGuest
+    true,  // BT SS16.4
+    true,  // StarGuide 3
+    true,  // BT SS 4.2
+    true,  // Livewire LWRP Audio
+    true,  // Quartz 1
+    true,  // BT SS 4.4
+    true,  // BT SRC8 III
+    true,  // BT SRC16
+    true,  // Harlond
+    true,  // ACU-1 Prophet
+    true,  // LiveWire  Multicast GPIO
+    true,  // 360 AM16
+    true,  // LiveWire  LWRP GPIO
+    true,  // BT Sentinel 4 Web
+    true,  // BT GPI-16
+    true,  // Modem Lines
+    false, // Software Authority
+    true,  // SAS 16000
+    true,  // Ross NK/SCP
+    true,  // BT ADMS 44.22
+    true,  // BT SS 4.1 MLR
+    true,  // Modbus
+    true,  // Kernel GPIO
+    true,  // WheatNet SLIO
+    true,  // WheatNet LIO
+    true,  // BT Universal 4.1 MLR>>Web
+    true,  // BT SS 2.1
+    true   // GVC 7000
   };
 
 RDMatrix::RDMatrix(const QString &station,int matrix)
@@ -883,6 +932,12 @@ int RDMatrix::defaultControlValue(RDMatrix::Type type,
 				  RDMatrix::Control control)
 {
   return __mx_default_values[type][control];
+}
+
+
+bool RDMatrix::endpointsAreEditable(RDMatrix::Type type)
+{
+  return __mx_endpoints_are_editable_values[type];
 }
 
 

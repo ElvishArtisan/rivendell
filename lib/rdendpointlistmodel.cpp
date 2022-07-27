@@ -264,7 +264,6 @@ void RDEndpointListModel::updateModel()
       d_texts.back().push_back(QVariant());
     }
   }
-  //  printf("SQL: %s\n",sql.toUtf8().constData());
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_ids.push_back(-1);

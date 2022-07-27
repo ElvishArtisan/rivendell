@@ -116,6 +116,7 @@ class RDMatrix
   static bool controlActive(RDMatrix::Type type,RDMatrix::Control control);
   static int defaultControlValue(RDMatrix::Type type,
 				 RDMatrix::Control control);
+  static bool endpointsAreEditable(RDMatrix::Type type);
 
  private:
   QString GetEndpointName(int pointnum,const QString &table) const;

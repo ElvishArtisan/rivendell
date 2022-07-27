@@ -56,7 +56,7 @@ class ListEndpoints : public RDDialog
   QPushButton *list_close_button;
   int list_size;
   QString list_table;
-  bool list_readonly;
+  //  bool list_readonly;
 };
 
 

@@ -23197,3 +23197,6 @@
 	* Fixed a bug in the 'Software Authority Protocol' switcher/GPIO
 	driver in ripcd(8) that failed to initialize matrix endpoints
 	correctly at startup.
+2022-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that permitted immutable switcher endpoint
+	names to be edited.

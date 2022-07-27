@@ -64,8 +64,10 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
   list_type_label=new QLabel(list_table,this);
   list_type_label->setFont(labelFont());
   list_type_label->setGeometry(14,5,85,19);
-  connect(list_list_view,SIGNAL(doubleClicked(const QModelIndex &)),
-	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  if(RDMatrix::endpointsAreEditable(list_matrix->type())) {
+    connect(list_list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	    this,SLOT(doubleClickedData(const QModelIndex &)));
+  }
   connect(list_list_model,SIGNAL(modelReset()),
 	  list_list_view,SLOT(resizeColumnsToContents()));
   list_list_view->resizeColumnsToContents();
@@ -77,7 +79,8 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
   list_edit_button->setFont(buttonFont());
   list_edit_button->setText(tr("Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
-  list_edit_button->setDisabled(list_readonly);
+  list_edit_button->
+    setEnabled(RDMatrix::endpointsAreEditable(list_matrix->type()));
 
   //
   //  Cancel Button
