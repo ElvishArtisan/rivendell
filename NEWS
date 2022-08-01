@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v4.0.0beta3int0 -- 4 May 2022
+v4.0.0beta3int1 -- 1 August 2022
 
 Internal test release.
 
@@ -25,7 +25,7 @@ Major Changes Between v3.x and v4.x:
    Many bug and regression fixes. See the 'ChangeLog' for details.
 
 Database Update:
-   This version of Rivendell uses database schema version 355, and will
+   This version of Rivendell uses database schema version 356, and will
    automatically upgrade any earlier versions. To see the current schema
    version prior to upgrade, see RDAdmin->SystemInfo.
 

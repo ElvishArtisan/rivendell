@@ -23203,3 +23203,5 @@
 2022-07-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the 'Software Authority' Switcher/GPIO driver
 	that made it impossible to add switcher events in rdcatch(1).
+2022-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0beta3int1.
