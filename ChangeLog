@@ -23205,3 +23205,6 @@
 	that made it impossible to add switcher events in rdcatch(1).
 2022-08-01 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0beta3int1.
+2022-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcatch(1) that could cause a newly added event
+	to appear twice in the record list.

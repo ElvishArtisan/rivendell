@@ -462,7 +462,12 @@ void RecordListModel::notificationReceivedData(RDNotification *notify)
   if(notify->type()==RDNotification::CatchEventType) {
     switch(notify->action()) {
     case RDNotification::AddAction:
-      addRecord(notify->id().toUInt());
+      if(d_ids.contains(notify->id().toUInt())) {
+	refresh(notify->id().toUInt());
+      }
+      else {
+	addRecord(notify->id().toUInt());
+      }
       emit updateNextEvents();
       break;
 
