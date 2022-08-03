@@ -997,6 +997,7 @@ void MainWidget::filterChangedData(bool state)
 {
   //  printf("filterChangedData(%d)\n",state);
 
+  QTime next_time;
   QString sql;
 
   if(catch_show_active_box->isChecked()) {
@@ -1087,6 +1088,7 @@ void MainWidget::filterChangedData(bool state)
     sql=sql.left(sql.length()-2);
     catch_recordings_model->setFilterSql("where "+sql);
   }
+  nextEventData();
 }
 
 

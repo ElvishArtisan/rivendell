@@ -23211,3 +23211,6 @@
 2022-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the endpoint naming format for Software Authority
 	Protocol devices to match that used in Drouter.
+2022-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcatch(1) that could cause highlighting of the
+	'next event' to disappear after changing the filtering settings.
