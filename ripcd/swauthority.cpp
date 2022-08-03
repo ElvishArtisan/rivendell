@@ -339,7 +339,7 @@ void SoftwareAuthority::DispatchCommand()
     //
     while(f0[0].toInt()>swa_next_endpt) {
       sql=QString("insert into `INPUTS` set ")+
-	"`NAME`='"+tr("[none]")+"',"+
+	"`NAME`='"+QString::asprintf("%d - ",swa_next_endpt)+tr("[none]")+"',"+
 	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
 	QString::asprintf("`MATRIX`=%d,",swa_matrix)+
 	QString::asprintf("`NUMBER`=%d",swa_next_endpt);
@@ -350,10 +350,7 @@ void SoftwareAuthority::DispatchCommand()
     //
     // Process the actual entry
     //
-    name=f0[1];
-    if(f0.size()>=7) {
-      name=f0[6]+": "+f0[2];
-    }
+    name=QString::asprintf("%d - ",f0[0].toInt())+f0[2];
     sql=QString("insert into `INPUTS` set ")+
       "`NAME`='"+RDEscapeString(name)+"',"+
       "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
@@ -399,7 +396,7 @@ void SoftwareAuthority::DispatchCommand()
     //
     while(f0[0].toInt()>swa_next_endpt) {
       sql=QString("insert into `OUTPUTS` set ")+
-	"`NAME`='"+tr("[none]")+"',"+
+	"`NAME`='"+QString::asprintf("%d - ",swa_next_endpt)+tr("[none]")+"',"+
 	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
 	QString::asprintf("`MATRIX`=%d,",swa_matrix)+
 	QString::asprintf("`NUMBER`=%d",swa_next_endpt);
@@ -410,10 +407,7 @@ void SoftwareAuthority::DispatchCommand()
     //
     // Process the actual entry
     //
-    name=f0[1];
-    if(f0.size()>=6) {
-      name=f0[3]+"/"+f0[5]+": "+f0[2];
-    }
+    name=QString::asprintf("%d - ",f0[0].toInt())+f0[2];
     sql=QString("insert into `OUTPUTS` set ")+
       "`NAME`='"+RDEscapeString(name)+"',"+
       "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
