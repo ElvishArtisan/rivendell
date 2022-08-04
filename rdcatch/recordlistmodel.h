@@ -96,6 +96,7 @@ class RecordListModel : public QAbstractTableModel
   QList<bool> d_is_nexts;
   QList<RDDeck::Status> d_statuses;
   QList<QList<QVariant> > d_icons;
+  QMap<QString,QMap<int,QString> > d_router_names;
   QString d_filter_sql;
 };
 
