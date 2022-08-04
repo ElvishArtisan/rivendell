@@ -247,7 +247,7 @@ void EditSwitchEvent::activateMatrixData(const QString &str)
     "from `INPUTS` where "+
     "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
     QString::asprintf("(`MATRIX`=%d) ",GetMatrix())+
-    "order by `NAME`";
+    "order by `NUMBER`";
   edit_input_box->clear();
   edit_input_box->insertItem(tr("--OFF--"));
   int input=edit_recording->switchSource();
@@ -275,7 +275,7 @@ void EditSwitchEvent::activateMatrixData(const QString &str)
     "from `OUTPUTS` where "+
     "(`STATION_NAME`='"+RDEscapeString(edit_event_widget->stationName())+"')&&"+
     QString::asprintf("(`MATRIX`=%d) ",GetMatrix())+
-    "order by `NAME`";
+    "order by `NUMBER`";
   edit_output_box->clear();
   int output=edit_recording->switchDestination();
   if((outputs=edit_matrix->outputs())>0) {
