@@ -23220,3 +23220,6 @@
 	* Fixed a bug in rdcatch(1) that caused switch event endpoints
 	to be sorted alphabetically rather than by endpoint number in
 	the 'Edit Switcher Event' dialog.
+2022-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added interlock logic to the 'Edit Switcher Event' dialog in
+	rdcatch(1) to prevent creation of events containing null endpoints.

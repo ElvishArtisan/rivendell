@@ -69,6 +69,7 @@ class EditSwitchEvent : public RDDialog
   int GetSource();
   int GetDestination();
   bool CheckEvent(bool include_myself);
+  void UpdateOkButton();
   RDMatrix *edit_matrix;
   RDDeck *edit_deck;
   RDRecording *edit_recording;

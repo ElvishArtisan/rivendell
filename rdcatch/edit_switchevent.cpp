@@ -295,18 +295,21 @@ void EditSwitchEvent::activateMatrixData(const QString &str)
     }
   }
   delete q;
+  UpdateOkButton();
 }
 
 
 void EditSwitchEvent::activateInputData(const QString &str)
 {
   edit_input_spin->setValue(GetSource());
+  UpdateOkButton();
 }
 
 
 void EditSwitchEvent::activateOutputData(const QString &str)
 {
   edit_output_spin->setValue(GetDestination());
+  UpdateOkButton();
 }
 
 
@@ -318,6 +321,7 @@ void EditSwitchEvent::inputChangedData(int value)
   else {
     edit_input_box->setCurrentText(tr("--OFF--"));
   }
+  UpdateOkButton();
 }
 
 
@@ -326,6 +330,7 @@ void EditSwitchEvent::outputChangedData(int value)
   if((value>0)&&(edit_output_box->count()>0)) {
     edit_output_box->setCurrentText(edit_matrix->outputName(value));
   }
+  UpdateOkButton();
 }
 
 
@@ -529,4 +534,18 @@ bool EditSwitchEvent::CheckEvent(bool include_myself)
   delete q;
 
   return res;
+}
+
+
+void EditSwitchEvent::UpdateOkButton()
+{
+  QString null_endpt=" - "+tr("[none]");
+  bool ok=(!edit_matrix_box->currentText().isEmpty())&&
+    (!edit_output_box->currentText().isEmpty())&&
+    (!edit_input_box->currentText().isEmpty())&&
+    (edit_output_box->currentText().right(null_endpt.length())!=null_endpt)&&
+    (edit_input_box->currentText().right(null_endpt.length())!=null_endpt);
+
+  edit_ok_button->setEnabled(ok);
+  edit_saveas_button->setEnabled(ok);
 }
