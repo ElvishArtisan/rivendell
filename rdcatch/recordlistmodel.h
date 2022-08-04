@@ -45,6 +45,7 @@ class RecordListModel : public QAbstractTableModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
+  void sort(int col,Qt::SortOrder order=Qt::AscendingOrder);
   unsigned recordId(const QModelIndex &row) const;
   RDRecording::Type recordType(const QModelIndex &row) const;
   RDRecording::ExitCode recordExitCode(const QModelIndex &row) const;
@@ -72,7 +73,7 @@ class RecordListModel : public QAbstractTableModel
   void notificationReceivedData(RDNotification *notify);
 
  protected:
-  void updateModel();
+  void updateModel(const QString &filter_sql);
   void updateRowLine(int line);
   void updateRow(int row,RDSqlQuery *q);
   QString sqlFields() const;
@@ -81,6 +82,10 @@ class RecordListModel : public QAbstractTableModel
   QString GetSourceName(QString station,int matrix,int input);
   QString GetDestinationName(QString station,int matrix,int output);
   void UpdateStatus(int line);
+  int d_sort_column;
+  Qt::SortOrder d_sort_order;
+  QMap<Qt::SortOrder,QString> d_sort_clauses;
+  QStringList d_order_columns;
   QPalette d_palette;
   QFont d_font;
   QFont d_bold_font;

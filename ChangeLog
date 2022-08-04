@@ -23227,3 +23227,5 @@
 	* Added a 'Router' column to the event list in rdcatch(1).
 2022-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added the ability to filter rdcatch(1) events by switcher matrix.
+2022-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for sorting the event list in rdcatch(1).

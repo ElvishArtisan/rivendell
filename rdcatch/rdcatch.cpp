@@ -379,6 +379,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 	  catch_recordings_model
 	  ,SLOT(notificationReceivedData(RDNotification *)));
   catch_recordings_view->setModel(catch_recordings_model);
+  catch_recordings_view->setSortingEnabled(true);
+  catch_recordings_view->sortByColumn(2,Qt::AscendingOrder);
   catch_recordings_view->resizeColumnsToContents();
   connect(catch_recordings_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));

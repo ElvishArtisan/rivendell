@@ -29,6 +29,11 @@
 RecordListModel::RecordListModel(QObject *parent)
   : QAbstractTableModel(parent)
 {
+  d_sort_column=0;
+  d_sort_order=Qt::AscendingOrder;
+  d_sort_clauses[Qt::AscendingOrder]="asc";
+  d_sort_clauses[Qt::DescendingOrder]="desc";
+
   //
   // Column Attributes
   //
@@ -38,104 +43,138 @@ RecordListModel::RecordListModel(QObject *parent)
 
   d_headers.push_back(tr("Description"));       // 00
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`DESCRIPTION`");
 
   d_headers.push_back(tr("Location"));          // 01
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`STATION_NAME`");
 
   d_headers.push_back(tr("Start"));             // 02
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`START_TIME`");
 
   d_headers.push_back(tr("End"));               // 03
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`END_TIME`");
 
   d_headers.push_back(tr("Router"));            // 04
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`CHANNEL`");
 
   d_headers.push_back(tr("Source"));            // 05
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`SWITCH_INPUT`");
 
   d_headers.push_back(tr("Destination"));       // 06
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`SWITCH_OUTPUT`");
 
   d_headers.push_back(tr("Su"));                // 07
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`SUN`");
 
   d_headers.push_back(tr("Mo"));                // 08
   d_alignments.push_back(left);
+  d_order_columns.push_back("");
 
   d_headers.push_back(tr("Tu"));                // 09
   d_alignments.push_back(left);
+  d_order_columns.push_back("");
 
   d_headers.push_back(tr("We"));                // 10
   d_alignments.push_back(left);
+  d_order_columns.push_back("");
 
   d_headers.push_back(tr("Th"));                // 11
   d_alignments.push_back(center);
+  d_order_columns.push_back("");
 
   d_headers.push_back(tr("Fr"));                // 12
   d_alignments.push_back(center);
+  d_order_columns.push_back("");
 
   d_headers.push_back(tr("Sa"));                // 13
   d_alignments.push_back(left);
+  d_order_columns.push_back("");
 
   d_headers.push_back(tr("RSS Feed"));          // 14
   d_alignments.push_back(left);
+  d_order_columns.push_back("`FEEDS`.`KEY_NAME`");
 
   d_headers.push_back(tr("Origin"));            // 15
   d_alignments.push_back(left);
+  d_order_columns.push_back("`CUTS`.`ORIGIN_NAME`");
 
   d_headers.push_back(tr("One Shot"));          // 16
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`ONE_SHOT`");
 
   d_headers.push_back(tr("Trim Threshold"));    // 17
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`TRIM_THRESHOLD`");
 
   d_headers.push_back(tr("StartDate Offset"));  // 18
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`STARTDATE_OFFSET`");
 
   d_headers.push_back(tr("EndDate Offset"));    // 19
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`ENDDATE_OFFSET`");
 
   d_headers.push_back(tr("Format"));            // 20
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`FORMAT`");
 
   d_headers.push_back(tr("Channels"));          // 21
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`CHANNELS`");
 
   d_headers.push_back(tr("Sample Rate"));       // 22
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`SAMPRATE`");
 
   d_headers.push_back(tr("Bit Rate"));          // 23
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`BITRATE`");
 
   d_headers.push_back(tr("Host"));              // 24
   d_alignments.push_back(left);
+  d_order_columns.push_back("");
 
   d_headers.push_back(tr("Deck"));              // 25
   d_alignments.push_back(left);
+  d_order_columns.push_back("");
 
   d_headers.push_back(tr("Cut"));               // 26
   d_alignments.push_back(left);
+  d_order_columns.push_back("");
 
   d_headers.push_back(tr("Cart"));              // 27
   d_alignments.push_back(left);
+  d_order_columns.push_back("");
 
   d_headers.push_back(tr("ID"));                // 28
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`ID`");
 
   d_headers.push_back(tr("Type"));              // 29
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`TYPE`");
 
   d_headers.push_back(tr("Status"));            // 30
   d_alignments.push_back(left);
+  d_order_columns.push_back("");
 
   d_headers.push_back(tr("Exit Code"));         // 31
   d_alignments.push_back(left);
+  d_order_columns.push_back("`RECORDINGS`.`EXIT_CODE`");
 
   d_headers.push_back(tr("State"));             // 32
   d_alignments.push_back(left);
+  d_order_columns.push_back("");
 
-  updateModel();
+  setFilterSql("");
+  //  updateModel();
 }
 
 
@@ -224,6 +263,14 @@ QVariant RecordListModel::data(const QModelIndex &index,int role) const
   }
 
   return QVariant();
+}
+
+
+void RecordListModel::sort(int col,Qt::SortOrder order)
+{
+  d_sort_column=col;
+  d_sort_order=order;
+  setFilterSql(d_filter_sql);
 }
 
 
@@ -453,10 +500,18 @@ bool RecordListModel::refresh(unsigned id)
 
 void RecordListModel::setFilterSql(const QString &sql)
 {
-  if(sql!=d_filter_sql) {
-    d_filter_sql=sql;
-    updateModel();
+  QString fsql=sql;
+
+  d_filter_sql=sql;
+  if((d_sort_column<0)||(d_order_columns.at(d_sort_column).isEmpty())) {
+    // Use "natural" sort order
+    fsql+=" order by `RECORDINGS`.`START_TIME` asc ";
   }
+  else {
+    fsql+=" order by "+d_order_columns.at(d_sort_column)+" "+
+      d_sort_clauses.value(d_sort_order);
+  }
+  updateModel(fsql);
 }
 
 
@@ -492,7 +547,7 @@ void RecordListModel::notificationReceivedData(RDNotification *notify)
 }
 
 
-void RecordListModel::updateModel()
+void RecordListModel::updateModel(const QString &filter_sql)
 {
   QList<QVariant> texts; 
   QList<QVariant> icons;
@@ -518,9 +573,12 @@ void RecordListModel::updateModel()
   //
   // Load Model Rows
   //
+  /*
   sql=sqlFields()+
     d_filter_sql+
     "order by `RECORDINGS`.`START_TIME` ";
+  */
+  sql=sqlFields()+filter_sql;
   beginResetModel();
   d_ids.clear();
   d_types.clear();
