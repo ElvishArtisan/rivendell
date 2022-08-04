@@ -309,18 +309,64 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   catch_dow_box->insertItem(8,tr("Saturday"));
   connect(catch_dow_box,SIGNAL(activated(int)),this,SLOT(filterActivatedData(int)));
 
+  //
+  // Type Filter
+  //
   catch_type_box=new QComboBox(this);
   connect(catch_type_box,SIGNAL(activated(int)),this,SLOT(filterActivatedData(int)));
   catch_type_label=new QLabel(tr("Show Event Type")+":",this);
   catch_type_label->setFont(labelFont());
   catch_type_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  for(int i=0;i<RDRecording::LastType;i++) {
-    catch_type_box->insertItem(catch_type_box->count(),rda->iconEngine()->
-			       catchIcon((RDRecording::Type)i),
-			       RDRecording::typeString((RDRecording::Type)i));
-  }
   catch_type_box->insertItem(catch_type_box->count(),tr("All Types"));
-  catch_type_box->setCurrentIndex(catch_type_box->count()-1);
+  catch_type_box->
+    insertItem(catch_type_box->count(),
+	       rda->iconEngine()->catchIcon(RDRecording::Recording),
+	       RDRecording::typeString(RDRecording::Recording),
+	       RDRecording::typeString(RDRecording::Recording));
+  catch_type_box->
+    insertItem(catch_type_box->count(),
+	       rda->iconEngine()->catchIcon(RDRecording::Playout),
+	       RDRecording::typeString(RDRecording::Playout),
+	       RDRecording::typeString(RDRecording::Playout));
+  catch_type_box->
+    insertItem(catch_type_box->count(),
+	       rda->iconEngine()->catchIcon(RDRecording::MacroEvent),
+	       RDRecording::typeString(RDRecording::MacroEvent),
+	       RDRecording::typeString(RDRecording::MacroEvent));
+  catch_type_box->
+    insertItem(catch_type_box->count(),
+	       rda->iconEngine()->catchIcon(RDRecording::Upload),
+	       RDRecording::typeString(RDRecording::Upload),
+	       RDRecording::typeString(RDRecording::Upload));
+  catch_type_box->
+    insertItem(catch_type_box->count(),
+	       rda->iconEngine()->catchIcon(RDRecording::Download),
+	       RDRecording::typeString(RDRecording::Download),
+	       RDRecording::typeString(RDRecording::Download));
+  catch_type_box->
+    insertItem(catch_type_box->count(),
+	       rda->iconEngine()->catchIcon(RDRecording::SwitchEvent),
+	       RDRecording::typeString(RDRecording::SwitchEvent)+" - "+tr("ALL"),
+	       RDRecording::typeString(RDRecording::SwitchEvent));
+
+  sql=QString("select ")+
+    "`STATION_NAME`,"+  // 00
+    "`MATRIX`,"+        // 01
+    "`NAME` "+          // 02
+    "from `MATRICES` "+
+    "order by `STATION_NAME`,`NAME`";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    catch_type_box->
+      insertItem(catch_type_box->count(),
+		 rda->iconEngine()->catchIcon(RDRecording::SwitchEvent),
+		 RDRecording::typeString(RDRecording::SwitchEvent)+" - "+
+		 q->value(0).toString()+": "+q->value(2).toString(),
+		 RDRecording::typeString(RDRecording::SwitchEvent)+"\t"+
+		 q->value(0).toString()+
+		 QString::asprintf("\t%d",q->value(1).toInt()));
+  }
+  delete q;
 
   //
   // Cart List
@@ -467,7 +513,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(980,600);
+  return QSize(1100,600);
 }
 
 
@@ -1076,11 +1122,19 @@ void MainWidget::filterChangedData(bool state)
     sql+="(`RECORDINGS`.`SAT`='Y')&&";
     break;
   }
-  if(catch_type_box->currentIndex()<RDRecording::LastType) {
-    sql+=QString::asprintf("(`RECORDINGS`.`TYPE`=%d)&&",
-			   catch_type_box->currentIndex());
+  QString type_text=
+    catch_type_box->itemData(catch_type_box->currentIndex()).toString();
+  QStringList f0=type_text.split("\t");
+  for(int i=0;i<RDRecording::LastType;i++) {
+    RDRecording::Type type=(RDRecording::Type)i;
+    if(f0.at(0)==RDRecording::typeString(type)) {
+      sql+=QString::asprintf("(`RECORDINGS`.`TYPE`=%d)&&",type);
+      if(f0.size()==3) {
+	sql+="(`RECORDINGS`.`STATION_NAME`='"+RDEscapeString(f0.at(1))+"')&&"+
+	  QString::asprintf("(`RECORDINGS`.`CHANNEL`=%d)&&",f0.at(2).toInt());
+      }
+    }
   }
-
   if(sql.isEmpty()) {
     catch_recordings_model->setFilterSql("");
   }
@@ -1147,17 +1201,17 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     deck_height=catch_monitor_area->geometry().y()+
       catch_monitor_area->geometry().height();
   }
-  catch_show_active_label->setGeometry(35,deck_height+4,155,20);
-  catch_show_active_box->setGeometry(15,deck_height+7,15,15);
-  catch_show_today_label->setGeometry(225,deck_height+4,170,20);
-  catch_show_today_box->setGeometry(205,deck_height+7,15,15);
-  catch_dow_label->setGeometry(400,deck_height+4,125,20);
-  catch_dow_box->setGeometry(530,deck_height+4,120,20);
-  catch_type_label->setGeometry(660,deck_height+4,125,20);
-  catch_type_box->setGeometry(790,deck_height+4,140,20);
+  catch_show_active_label->setGeometry(35,deck_height+4,155,26);
+  catch_show_active_box->setGeometry(15,deck_height+10,15,15);
+  catch_show_today_label->setGeometry(225,deck_height+4,170,26);
+  catch_show_today_box->setGeometry(205,deck_height+10,15,15);
+  catch_dow_label->setGeometry(400,deck_height+4,125,26);
+  catch_dow_box->setGeometry(530,deck_height+4,120,26);
+  catch_type_label->setGeometry(660,deck_height+4,125,26);
+  catch_type_box->setGeometry(790,deck_height+4,e->size().width()-800,26);
   catch_recordings_view->
-    setGeometry(10,deck_height+25,e->size().width()-20,
-		e->size().height()-90-deck_height);
+    setGeometry(10,deck_height+35,e->size().width()-20,
+		e->size().height()-100-deck_height);
   catch_add_button->setGeometry(10,e->size().height()-55,80,50);
   catch_edit_button->setGeometry(100,e->size().height()-55,80,50);
   catch_delete_button->setGeometry(190,e->size().height()-55,80,50);
