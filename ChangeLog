@@ -23229,3 +23229,5 @@
 	* Added the ability to filter rdcatch(1) events by switcher matrix.
 2022-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for sorting the event list in rdcatch(1).
+2022-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0beta3int3.
