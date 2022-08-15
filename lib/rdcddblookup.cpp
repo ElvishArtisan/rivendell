@@ -174,6 +174,7 @@ void RDCddbLookup::readyReadData()
 	lookup_state=4;
 	break;
 
+      case 202:   // No Match
       case 211:   // Inexact Match
 	FinishCddbLookup(RDCddbLookup::NoMatch,"OK");
 	break;

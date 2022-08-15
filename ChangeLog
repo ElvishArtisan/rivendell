@@ -20891,3 +20891,6 @@
 	'Podcast Item List' dialog.
 2022-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.5int1.
+2022-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the CDDB parser that caused it to emit an error
+	message when processing a 202 response.
