@@ -23231,3 +23231,8 @@
 	* Added support for sorting the event list in rdcatch(1).
 2022-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0beta3int3.
+2022-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the CDDB parser that caused it to emit an error
+	message when processing a 202 response.
+	* Added explicit processing for 201, 230, 401, 402, 403, 409, 431,
+	432, 433, 434, 501, 502, 503 and 530 returns in the CDDB parser.

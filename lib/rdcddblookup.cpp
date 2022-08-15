@@ -141,6 +141,7 @@ void RDCddbLookup::readyReadData()
     case 3:    // Query Response
       switch(code) {
       case 200:   // Exact Match
+      case 201:   // Exact Match,read-only
 	f0=line.split(" ");
 	if(f0.size()>=4) {
 	  discRecord()->setDiscId(f0[2].toUInt(&ok,16));
@@ -171,9 +172,52 @@ void RDCddbLookup::readyReadData()
 	lookup_state=4;
 	break;
 
+      case 202:   // No Match
       case 211:   // Inexact Match
-	FinishCddbLookup(RDCddbLookup::NoMatch,"OK");
+      case 230:
+ 	FinishCddbLookup(RDCddbLookup::NoMatch,"OK");
 	break;
+
+      case 401:
+      case 402:
+       FinishCddbLookup(RDCddbLookup::NoMatch,"Server failure");
+       break;
+
+      case 403:
+       FinishCddbLookup(RDCddbLookup::NoMatch,
+                        "CDDB database entry is corrupt");
+       break;
+
+      case 409:
+       FinishCddbLookup(RDCddbLookup::NoMatch,"No handshake");
+       break;
+
+      case 431:
+       FinishCddbLookup(RDCddbLookup::NoMatch,
+                        "Handshake not successful, closing connection");
+       break;
+
+      case 432:
+       FinishCddbLookup(RDCddbLookup::NoMatch,
+                        "No connections allowed: permission denied");
+       break;
+
+      case 433:
+       FinishCddbLookup(RDCddbLookup::NoMatch,
+                        "No connections allowed: too many users");
+       break;
+
+      case 434:
+       FinishCddbLookup(RDCddbLookup::NoMatch,
+                        "No connections allowed: system load too high");
+       break;
+
+      case 501:
+      case 502:
+      case 503:
+      case 530:
+       FinishCddbLookup(RDCddbLookup::NoMatch,"Server error");
+       break;
 
       default:
 	FinishCddbLookup(RDCddbLookup::LookupError,
