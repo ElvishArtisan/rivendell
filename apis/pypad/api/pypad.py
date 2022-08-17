@@ -188,18 +188,22 @@ class Update(object):
             #
             # Process Dates
             #
-            dt_pattern=dt_pattern.replace('MMMM',dt.strftime('%B'))
-            dt_pattern=dt_pattern.replace('MMM',dt.strftime('%b'))
+            dt_pattern=dt_pattern.replace('MMMM',dt.strftime('%B').upper())
+            dt_pattern=dt_pattern.replace('MMM',dt.strftime('%b').upper())
             dt_pattern=dt_pattern.replace('MM',dt.strftime('%m'))
             dt_pattern=dt_pattern.replace('M',str(dt.month))
 
-            dt_pattern=dt_pattern.replace('dddd',dt.strftime('%A'))
-            dt_pattern=dt_pattern.replace('ddd',dt.strftime('%a'))
+            dt_pattern=dt_pattern.replace('dddd',dt.strftime('%A').upper())
+            dt_pattern=dt_pattern.replace('ddd',dt.strftime('%a').upper())
             dt_pattern=dt_pattern.replace('dd',dt.strftime('%d'))
             dt_pattern=dt_pattern.replace('d',str(dt.day))
 
             dt_pattern=dt_pattern.replace('yyyy',dt.strftime('%Y'))
             dt_pattern=dt_pattern.replace('yy',dt.strftime('%y'))
+            pat=''
+            for s in dt_pattern.split(" "):
+                pat+=s.capitalize()+' '
+            dt_pattern=pat
 
         except AttributeError:
             string=string.replace(pattern,'')
@@ -751,8 +755,6 @@ class Update(object):
                 result=result and False
         else:
             result=result and False
-        #print('machine(): '+str(self.machine()))
-        #print('result: '+str(result))
         return result
 
 

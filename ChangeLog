@@ -20897,3 +20897,6 @@
 2022-08-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added explicit processing for 201, 230, 401, 402, 403, 409, 431,
 	432, 433, 434, 501, 502, 503 and 530 returns in the CDDB parser.
+2022-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in PyPAD where resolution of datetimes could be
+	incorrect.
