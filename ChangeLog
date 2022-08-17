@@ -20900,3 +20900,5 @@
 2022-08-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in PyPAD where resolution of datetimes could be
 	incorrect.
+2022-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.5int2.
