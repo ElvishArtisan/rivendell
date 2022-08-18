@@ -20902,3 +20902,6 @@
 	incorrect.
 2022-08-17 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.5int2.
+2022-08-18 Fred Gleason <fredg@paravelsystems.com>
+	* Removed superfluous line from
+	'apis/pypad/scripts/pypad_udp.exemplar'.

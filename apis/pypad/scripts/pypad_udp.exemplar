@@ -25,7 +25,6 @@ UdpPort=1234
 ; file in the Rivendell documentation directory.
 ;
 FormatString=NOW: %d(ddd MMM d hh:mm:ss yyyy): %t - %a\nNEXT: %D(ddd MMM d hh:mm:ss yyyy): %T - %A\n
-;FormatString=NEXT: %D(ddd MMM d hh:mm:ss yyyy): %T - %A\n
 
 ; Encoding.  Defines the set of escapes to be applied to the PAD fields.
 ; The following options are available:
