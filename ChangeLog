@@ -20909,3 +20909,6 @@
 	* Added an Online Feed Report to rdcastmanager(1).
 2022-08-25 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.5int3.
+2022-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdservice(8) that could cause a segfault when
+	started with a previous instance running.
