@@ -20905,3 +20905,5 @@
 2022-08-18 Fred Gleason <fredg@paravelsystems.com>
 	* Removed superfluous line from
 	'apis/pypad/scripts/pypad_udp.exemplar'.
+2022-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added an Online Feed Report to rdcastmanager(1).

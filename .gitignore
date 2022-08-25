@@ -14,7 +14,6 @@
 *.rlm
 *.rpm
 *.so
-*.xsl
 rivendell-*.tar.gz
 rivendell-*.zip
 .AppleDouble
@@ -60,6 +59,7 @@ docs/opsguide/whiteball.png
 docs/rivwebcapi/*.7
 docs/rivwebcapi/*.html
 docs/rivwebcapi/*.pdf
+docs/stylesheets/*.xsl
 helpers/cwrap
 helpers/docbook
 helpers/install_python.sh

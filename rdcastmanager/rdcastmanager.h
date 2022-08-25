@@ -2,7 +2,7 @@
 //
 // A RSS Feed Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,9 +22,11 @@
 #define RDCASTMANAGER_H
 
 #include <qpushbutton.h>
+#include <qlist.h>
 
 #include <rdconfig.h>
 #include <rdlog_line.h>
+#include <rdtempdirectory.h>
 #include <rdwidget.h>
 
 #define RDCASTMANAGER_USAGE "\n"
@@ -40,6 +42,7 @@ class MainWidget : public RDWidget
  private slots:
   void openData();
   void copyData();
+  void reportData();
   void userChangedData();
   void feedClickedData(Q3ListViewItem *item);
   void feedDoubleclickedData(Q3ListViewItem *item,const QPoint &pt,int col);
@@ -47,6 +50,7 @@ class MainWidget : public RDWidget
   void quitMainWidget();
 
  protected:
+  void closeEvent(QCloseEvent *e);
   void resizeEvent(QResizeEvent *e);
 
  private:
@@ -59,8 +63,10 @@ class MainWidget : public RDWidget
   QPixmap *cast_rdcastmanager_32x32_map;
   QPushButton *cast_open_button;
   QPushButton *cast_copy_button;
+  QPushButton *cast_report_button;
   QPushButton *cast_close_button;
   bool cast_resize;
+  QList<RDTempDirectory *> cast_temp_directories;
 };
 
 
