@@ -20907,3 +20907,5 @@
 	'apis/pypad/scripts/pypad_udp.exemplar'.
 2022-08-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added an Online Feed Report to rdcastmanager(1).
+2022-08-25 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.5int3.
