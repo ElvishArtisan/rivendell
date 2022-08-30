@@ -602,18 +602,23 @@ void CdRipper::stoppedData()
 
 void CdRipper::lookupDoneData(RDDiscLookup::Result result,const QString &err_msg)
 {
+  RDDiscRecord::DataSource src=RDDiscRecord::RemoteSource;
+
   switch(result) {
   case RDDiscLookup::ExactMatch:
     if(rip_cdrom->status()!=RDCdPlayer::Ok) {
       return;
     }
-    rip_artist_edit->setText(rip_disc_record->discArtist());
-    rip_album_edit->setText(rip_disc_record->discAlbum());
+    //
+    // FIXME: What do we do if we get BOTH local and remote data?
+    //
+    rip_artist_edit->setText(rip_disc_record->discArtist(src));
+    rip_album_edit->setText(rip_disc_record->discAlbum(src));
     rip_label_edit->setText(rip_disc_record->discLabel());
     rip_other_edit->setText(rip_disc_record->discExtended());
     for(int i=0;i<rip_disc_record->tracks();i++) {
       rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	setText(2,rip_disc_record->trackTitle(i));
+	setText(2,rip_disc_record->trackTitle(src,i));
       rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
 	setText(3,rip_disc_record->trackExtended(i));
     }

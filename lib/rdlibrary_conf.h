@@ -84,6 +84,7 @@ class RDLibraryConf
   bool searchLimited() const;
   void setSearchLimited(bool state) const;
   static QString cdServerTypeText(CdServerType type);
+  static QPixmap cdServerLogo(CdServerType type);
 
  private:
   void SetRow(const QString &param,int value) const;

@@ -877,6 +877,14 @@
         <source>Original RadioTraffic.com Traffic Reconciliation (DEPRECATED)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Disc Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disc Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1638,6 +1646,14 @@ Cartão</translation>
     <message>
         <source>Unknown</source>
         <translation type="obsolete">Desconhecido</translation>
+    </message>
+    <message>
+        <source>Unable to create temporary directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CD-TEXT</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

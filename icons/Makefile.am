@@ -2,7 +2,7 @@
 ##
 ## icons/automake.am for Rivendell
 ##
-## (C) Copyright 2002-2006,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -272,6 +272,10 @@ uninstall-local:
 EXTRA_DIST = admin.xpm\
              blueball.png\
              blueball.xpm\
+             cd_text-55x47.xpm\
+             cd_text.svg\
+             cddb-60x25.xcf\
+             cddb-60x25.xpm\
              chain.png\
              chain.xpm\
              checkmark.xpm\

@@ -847,6 +847,14 @@
         <source>Original RadioTraffic.com Traffic Reconciliation (DEPRECATED)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Disc Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disc Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1466,6 +1474,14 @@ Cart</source>
     </message>
     <message>
         <source>Unable to read CD.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create temporary directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CD-TEXT</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

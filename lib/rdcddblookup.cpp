@@ -2,7 +2,7 @@
 //
 //   RDDiscLookup instance class for accessing the FreeDB CD Database.
 //
-//   (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -59,7 +59,7 @@ RDCddbLookup::~RDCddbLookup()
 
 QString RDCddbLookup::sourceName() const
 {
-  return QString("FreeDB");
+  return QString("CDDB");
 }
 
 
@@ -156,7 +156,7 @@ void RDCddbLookup::readyReadData()
 	  f0.erase(f0.begin());
 	  f0.erase(f0.begin());
 	  f0.erase(f0.begin());
-	  discRecord()->setDiscTitle(f0.join(" "));
+	  discRecord()->setDiscTitle(RDDiscRecord::RemoteSource,f0.join(" "));
 	  snprintf(buffer,2048,"cddb read %s %08x\n",
 		   (const char *)discRecord()->discGenre().utf8(),
 		   discRecord()->discId());
@@ -248,10 +248,12 @@ void RDCddbLookup::readyReadData()
 	  discRecord()->setDiscGenre(f0.at(0));
 	  f0=titlesBox()->currentText().split("/");
 	  if(f0.size()==2) {
-	    discRecord()->setDiscTitle(f0.at(1).trimmed());
+	    discRecord()->setDiscTitle(RDDiscRecord::RemoteSource,
+				       f0.at(1).trimmed());
 	  }
 	  else {
-	    discRecord()->setDiscTitle(titlesBox()->currentText().trimmed());
+	    discRecord()->setDiscTitle(RDDiscRecord::RemoteSource,
+				       titlesBox()->currentText().trimmed());
 	  }
 	  snprintf(buffer,2048,"cddb read %s %08x\n",
 		   (const char *)discRecord()->discGenre().utf8(),
@@ -291,7 +293,8 @@ void RDCddbLookup::readyReadData()
 	}
 	ParsePair(&line,&tag,&value,&index);
 	if(tag=="DTITLE") {
-	  discRecord()->setDiscTitle(value.left(value.length()-1));
+	  discRecord()->setDiscTitle(RDDiscRecord::RemoteSource,
+				     value.left(value.length()-1));
 	}
 	if(tag=="DYEAR") {
 	  discRecord()->setDiscYear(value.toUInt());
@@ -305,7 +308,8 @@ void RDCddbLookup::readyReadData()
 	  discRecord()->setDiscPlayOrder(value);
 	}
 	if((tag=="TTITLE")&&(index!=-1)) {
-	  discRecord()->setTrackTitle(index,value.left(value.length()-1));
+	  discRecord()->setTrackTitle(RDDiscRecord::RemoteSource,index,
+				      value.left(value.length()-1));
 	}
 	if((tag=="EXTT")&&(index!=-1)) {
 	  discRecord()->
@@ -340,19 +344,19 @@ void RDCddbLookup::errorData(QAbstractSocket::SocketError err)
   }
   lookup_state=0;
   QApplication::restoreOverrideCursor();
-  emit lookupDone(RDCddbLookup::LookupError,err_msg);
 }
 
 
 void RDCddbLookup::FinishCddbLookup(RDCddbLookup::Result res,
 				    const QString &err_msg)
 {
+  printf("FinishCddbLookup(%d,%s)\n",res,err_msg.toUtf8().constData());
   SendToServer("quit");
   lookup_socket->close();
   lookup_state=0;
   QApplication::restoreOverrideCursor();
-  emit lookupDone(res,err_msg);
   profile("CDDB lookup finished");
+  processLookup(res,err_msg);
 }
 
 

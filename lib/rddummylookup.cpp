@@ -2,7 +2,7 @@
 //
 //   RDDiscLookup instance class for dummy lookup
 //
-//   (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -30,5 +30,5 @@ RDDummyLookup::RDDummyLookup(const QString &caption,FILE *profile_msgs,
 
 void RDDummyLookup::lookupRecord()
 {
-  emit lookupDone(RDDiscLookup::NoMatch,"OK");
+  processLookup(RDDiscLookup::NoMatch,"OK");
 }

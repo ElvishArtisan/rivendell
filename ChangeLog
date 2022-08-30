@@ -20912,3 +20912,5 @@
 2022-08-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdservice(8) that could cause a segfault when
 	started with a previous instance running.
+2022-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the full disc ripper in rdlibrary(1) to use CD-Text.

@@ -2,7 +2,7 @@
 //
 //   Base class for CD metadata lookup methods
 //
-//   (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -24,6 +24,8 @@
 
 #include <stdio.h>
 
+#include <discid/discid.h>
+
 #include <qcombobox.h>
 #include <qlabel.h>
 #include <qpixmap.h>
@@ -33,6 +35,7 @@
 
 #include <rddiscrecord.h>
 #include <rddialog.h>
+#include <rdtempdirectory.h>
 
 class RDDiscLookup : public RDDialog
 {
@@ -40,12 +43,15 @@ class RDDiscLookup : public RDDialog
  public:
   enum Result {ExactMatch=0,NoMatch=1,LookupError=2};
   RDDiscLookup(const QString &caption,FILE *profile_msgs,QWidget *parent=0);
+  ~RDDiscLookup();
   QSize sizeHint() const;
   virtual QString sourceName() const;
   virtual QPixmap sourceLogo() const;
+  QPixmap sourceLogo(RDDiscRecord::DataSource src) const;
   virtual QString sourceUrl() const;
   void setCddbRecord(RDDiscRecord *);
   void lookup();
+  bool hasCdText() const;
   static bool isrcIsValid(const QString &isrc);
   static QString formattedIsrc(const QString &isrc,bool *ok=NULL);
   static QString normalizedIsrc(const QString &isrc,bool *ok=NULL);
@@ -62,28 +68,34 @@ class RDDiscLookup : public RDDialog
   void cancelData();
 
  protected:
-  virtual void lookupRecord()=0;
+  virtual void lookupRecord();
+  void processLookup(RDDiscLookup::Result result,const QString &err_msg);
   void resizeEvent(QResizeEvent *e);
   RDDiscRecord *discRecord() const;
   void profile(const QString &msg);
   QComboBox *titlesBox();
   QStringList *titlesKey();
+  QString tempDirectoryPath() const;
 
  private:
-   QLabel *lookup_titles_label;
-   QComboBox *lookup_titles_box;
-   QStringList lookup_titles_key;
-   QPushButton *lookup_ok_button;
-   QPushButton *lookup_cancel_button;
-   RDDiscRecord *lookup_record;
-   QTcpSocket *lookup_socket;
-   int lookup_state;
-   QString lookup_username;
-   QString lookup_appname;
-   QString lookup_appver;
-   QString lookup_hostname;
-   FILE *lookup_profile_msgs;
-   QString lookup_caption;
+  bool ReadCdText(const QString &cdda_dev);
+  QLabel *lookup_titles_label;
+  QComboBox *lookup_titles_box;
+  QStringList lookup_titles_key;
+  QPushButton *lookup_ok_button;
+  QPushButton *lookup_cancel_button;
+  RDDiscRecord *lookup_record;
+  QTcpSocket *lookup_socket;
+  int lookup_state;
+  QString lookup_username;
+  QString lookup_appname;
+  QString lookup_appver;
+  QString lookup_hostname;
+  FILE *lookup_profile_msgs;
+  QString lookup_caption;
+  RDTempDirectory *lookup_temp_directory;
+  bool lookup_has_cd_text;
+  DiscId *lookup_disc;
 };
 
 #endif  // RDDISCLOOKUP_H

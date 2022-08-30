@@ -279,7 +279,7 @@ void RDFontEngine::MakeFonts(const QFont &default_font)
 
   font_big_label_font=QFont(family,label_size+4,QFont::Bold);
   font_big_label_font.setPixelSize(label_size+4);
-  font_big_label_font_metrics=new QFontMetrics(font_label_font);
+  font_big_label_font_metrics=new QFontMetrics(font_big_label_font);
 
   font_label_font=QFont(family,label_size,QFont::Bold);
   font_label_font.setPixelSize(label_size);
