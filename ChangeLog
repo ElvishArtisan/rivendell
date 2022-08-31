@@ -20914,3 +20914,5 @@
 	started with a previous instance running.
 2022-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the full disc ripper in rdlibrary(1) to use CD-Text.
+2022-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the per-track ripper in rdlibrary(1) to use CD-Text.

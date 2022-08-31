@@ -30,13 +30,17 @@ RDDiscRecord::RDDiscRecord()
 
 void RDDiscRecord::clear()
 {
+  for(int i=0;i<CDROM_LEADOUT;i++) {
+    disc_track_title[RDDiscRecord::LocalSource][i]=
+      QObject::tr("Track")+QString().sprintf(" %d",i+1);
+    disc_track_title[RDDiscRecord::RemoteSource][i]="";
+  }
   for(int i=0;i<RDDiscRecord::LastSource;i++) {
     disc_has_data[i]=false;
     disc_disc_title[i]="";
     disc_disc_artist[i]="";
     disc_disc_album[i]="";
     for(int j=0;j<CDROM_LEADOUT;j++) {
-      disc_track_title[i][j]="";
       disc_track_artist[i][j]="";
     }
   }

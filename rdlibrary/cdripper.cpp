@@ -2,7 +2,7 @@
 //
 // CD Track Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -138,7 +138,7 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
   rip_apply_box->setChecked(true);
   rip_apply_box->setDisabled(true);
   rip_apply_label=new QLabel(rip_apply_box,tr("Apply")+" "+
-			     rip_disc_lookup->sourceName()+" "+
+			     tr("Metadata")+" "+
 			     tr("Values to Cart"),this);
   rip_apply_label->setFont(labelFont());
   rip_apply_label->setAlignment(Qt::AlignLeft);
@@ -576,6 +576,7 @@ void CdRipper::mediaChangedData()
       l->setText(4,tr("Data Track"));
     }
     l->setText(1,RDGetTimeLength(rip_cdrom->trackLength(i)));
+    l->setText(2,tr("Track")+QString().sprintf(" %d",i));
   }
   rip_disc_record->clear();
   rip_cdrom->setCddbRecord(rip_disc_record);
@@ -602,23 +603,37 @@ void CdRipper::stoppedData()
 
 void CdRipper::lookupDoneData(RDDiscLookup::Result result,const QString &err_msg)
 {
-  RDDiscRecord::DataSource src=RDDiscRecord::RemoteSource;
+  RDDiscRecord::DataSource src=RDDiscRecord::LastSource;
+  if(rip_disc_record->hasData(RDDiscRecord::LocalSource)) {
+    src=RDDiscRecord::LocalSource;
+  }
+  else {
+    if(rip_disc_record->hasData(RDDiscRecord::RemoteSource)) {
+      src=RDDiscRecord::RemoteSource;
+    }
+    else {
+      rip_apply_box->hide();
+      rip_apply_label->hide();
+      rip_track[0]=-1;
+      rip_track[1]=-1;
+      return;  // Apply no metadata
+    }
+  }
 
   switch(result) {
   case RDDiscLookup::ExactMatch:
     if(rip_cdrom->status()!=RDCdPlayer::Ok) {
+      rip_track[0]=-1;
+      rip_track[1]=-1;
       return;
     }
-    //
-    // FIXME: What do we do if we get BOTH local and remote data?
-    //
     rip_artist_edit->setText(rip_disc_record->discArtist(src));
     rip_album_edit->setText(rip_disc_record->discAlbum(src));
     rip_label_edit->setText(rip_disc_record->discLabel());
     rip_other_edit->setText(rip_disc_record->discExtended());
     for(int i=0;i<rip_disc_record->tracks();i++) {
       rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	setText(2,rip_disc_record->trackTitle(src,i));
+      	setText(2,rip_disc_record->trackTitle(src,i));
       rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
 	setText(3,rip_disc_record->trackExtended(i));
     }
@@ -627,10 +642,14 @@ void CdRipper::lookupDoneData(RDDiscLookup::Result result,const QString &err_msg
     rip_apply_label->setEnabled(true);
     rip_browser_button->setDisabled(rip_disc_lookup->sourceUrl().isNull());
     rip_browser_label->setDisabled(rip_disc_lookup->sourceUrl().isNull());
+    rip_apply_box->show();
+    rip_apply_label->show();
     trackSelectionChangedData();
     break;
 
   case RDDiscLookup::NoMatch:
+    rip_apply_box->hide();
+    rip_apply_label->hide();
     rip_track[0]=-1;
     rip_track[1]=-1;
     break;
@@ -638,6 +657,8 @@ void CdRipper::lookupDoneData(RDDiscLookup::Result result,const QString &err_msg
   case RDDiscLookup::LookupError:
     QMessageBox::warning(this,"RDLibrary - "+rip_disc_lookup->sourceName()+
 			 " "+tr("Lookup Error"),err_msg);
+    rip_apply_box->hide();
+    rip_apply_label->hide();
     rip_track[0]=-1;
     rip_track[1]=-1;
     break;
