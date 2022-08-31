@@ -965,10 +965,60 @@
 	newly inserted discs when the disc does not contain ISRC data.
       </para>
       <para>
-	The <computeroutput>FreeDB Server:</computeroutput> field takes the
-	URL of the server to be used for doing FreeDB lookups for CDs by
-	the CD ripper.
+	The <computeroutput>CD Metadata Source:</computeroutput> dropdown
+	indicates which external directory service (if any) will be searched
+	by CD rippers for disc metadata. Choices are:
       </para>
+      <variablelist>
+	<varlistentry>
+	  <term><computeroutput>None</computeroutput></term>
+	  <listitem>
+	    <para>
+	      Perform no external lookups.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>CDDB</computeroutput></term>
+	  <listitem>
+	    <para>
+	      Perform lookups using the
+	      <link xlink:href="https://en.wikipedia.org/wiki/CDDB"> Compact
+	      Disc Database</link> protocol. CDDB is a registered trademark
+	      of Gracenote, Inc.
+	    </para>
+	    <para>
+	      If this value is selected, than a
+	      <computeroutput>CDDB Server:</computeroutput> field will
+	      also appear, which takes the hostname of the CDDB server
+	      to use (default value <userinput>freedb.freedb.org</userinput>).
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>MusicBrainz</computeroutput></term>
+	  <listitem>
+	    <para>
+	      Perform lookups using the
+	      <link xlink:xref="https://musicbrainz.org/">MusicBrainz
+	      open music encyclopedia</link>.
+	    </para>
+	    <para>
+	      If this value is selected, than a
+	      <computeroutput>MusicBrainz Server:</computeroutput> field will
+	      also appear, which takes the hostname of the MusicBrainz server
+	      to use (default value <userinput>musicbrainz.org</userinput>).
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+      <note>
+	Rivendell's CD rippers will also attempt to detect
+	<link xlink:href="https://en.wikipedia.org/wiki/CD-Text">CD-Text
+	data</link>
+	on all discs and will use any information so detected in
+	preference to that supplied by an external lookup.
+      </note>
       <para>
 	The <computeroutput>Format:</computeroutput> dropdown indicates the
 	audio encoding format to be used in Rivendell's audio store for

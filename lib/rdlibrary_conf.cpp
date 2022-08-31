@@ -420,7 +420,7 @@ QString RDLibraryConf::cdServerTypeText(RDLibraryConf::CdServerType type)
     break;
 
   case RDLibraryConf::CddbType:
-    ret="FreeDB";
+    ret="CDDB";
     break;
 
   case RDLibraryConf::MusicBrainzType:

@@ -2729,7 +2729,7 @@ GPIOs</source>
     </message>
     <message>
         <source>&amp;FreeDB Server:</source>
-        <translation>&amp;FreeDB-tenar:</translation>
+        <translation type="obsolete">&amp;FreeDB-tenar:</translation>
     </message>
     <message>
         <source>&amp;Format:</source>
@@ -2924,11 +2924,15 @@ configured to run the CAE service in order to populate the audio resources datab
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>FreeDB Server</source>
+        <source>MusicBrainz Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>MusicBrainz Server</source>
+        <source>CDDB Server:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CDDB Server</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

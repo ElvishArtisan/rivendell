@@ -20918,3 +20918,6 @@
 	* Modified the per-track ripper in rdlibrary(1) to use CD-Text.
 2022-08-31 Fred Gleason <fredg@paravelsystems.com>
 	* Removed a debugging printf() from 'lib/rdcddblookup.cpp'.
+2022-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'CD Metadata Source' control in rdlibrary(1) to use
+	'CDDB' instead of 'FreeDB' when configuring CDDB lookups.

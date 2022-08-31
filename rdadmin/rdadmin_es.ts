@@ -2951,7 +2951,7 @@ GPIOs</source>
     </message>
     <message>
         <source>&amp;FreeDB Server:</source>
-        <translation>Servidor &amp;FreeDB:</translation>
+        <translation type="obsolete">Servidor &amp;FreeDB:</translation>
     </message>
     <message>
         <source>&amp;Format:</source>
@@ -3134,11 +3134,15 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>FreeDB Server</source>
+        <source>MusicBrainz Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>MusicBrainz Server</source>
+        <source>CDDB Server:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CDDB Server</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

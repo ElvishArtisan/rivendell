@@ -2953,7 +2953,7 @@ GPIOs</source>
     </message>
     <message>
         <source>&amp;FreeDB Server:</source>
-        <translation>Server &amp;FreeDB:</translation>
+        <translation type="obsolete">Server &amp;FreeDB:</translation>
     </message>
     <message>
         <source>&amp;Format:</source>
@@ -3150,11 +3150,15 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>FreeDB Server</source>
+        <source>MusicBrainz Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>MusicBrainz Server</source>
+        <source>CDDB Server:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CDDB Server</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -225,7 +225,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_mb_server_edit=new QLineEdit(this);
   lib_mb_server_edit->setGeometry(190,278,160,19);
   lib_mb_server_edit->setValidator(validator);
-  lib_cd_server_label=new QLabel(tr("&FreeDB Server:"),this);
+  lib_cd_server_label=new QLabel(tr("CDDB Server:"),this);
   lib_cd_server_label->setFont(labelFont());
   lib_cd_server_label->setGeometry(25,278,160,19);
   lib_cd_server_label->
@@ -505,7 +505,7 @@ void EditRDLibrary::cdServerTypeData(int n)
 
   case RDLibraryConf::CddbType:
     lib_cd_server_label->setEnabled(true);
-    lib_cd_server_label->setText(tr("FreeDB Server")+":");
+    lib_cd_server_label->setText(tr("CDDB Server")+":");
     lib_cddb_server_edit->setEnabled(true);
     lib_cddb_server_edit->show();
     lib_mb_server_edit->hide();
