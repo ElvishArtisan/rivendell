@@ -350,7 +350,6 @@ void RDCddbLookup::errorData(QAbstractSocket::SocketError err)
 void RDCddbLookup::FinishCddbLookup(RDCddbLookup::Result res,
 				    const QString &err_msg)
 {
-  printf("FinishCddbLookup(%d,%s)\n",res,err_msg.toUtf8().constData());
   SendToServer("quit");
   lookup_socket->close();
   lookup_state=0;
