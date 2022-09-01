@@ -2,7 +2,7 @@
 //
 //   Base class for CD metadata lookup methods
 //
-//   (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -22,13 +22,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <qapplication.h>
-#include <qdatetime.h>
-#include <qmessagebox.h>
-#include <qregexp.h>
-#include <qtimer.h>
-
-#include <discid/discid.h>
+#include <QApplication>
+#include <QDateTime>
+#include <QMessageBox>
+#include <QProcess>
+#include <QRegExp>
+#include <QTimer>
 
 #include "rdtempdirectory.h"
 #include "rddisclookup.h"
@@ -38,8 +37,20 @@ RDDiscLookup::RDDiscLookup(const QString &caption,FILE *profile_msgs,
 			   QWidget *parent)
   : RDDialog(parent)
 {
+  QString err_msg;
+
   lookup_caption=caption;
   lookup_profile_msgs=profile_msgs;
+  lookup_has_cd_text=false;
+  lookup_disc=NULL;
+
+  lookup_temp_directory=new RDTempDirectory("rddisclookup");
+  if(!lookup_temp_directory->create(&err_msg)) {
+    QMessageBox::warning(this,caption+" - "+tr("Error"),
+                        tr("Unable to create temporary directory")+
+                        " \""+lookup_temp_directory->path()+"\".\n"+
+                        "["+err_msg+"]");
+  }
 
   lookup_titles_label=new QLabel(tr("Multiple Matches Found!"),this);
   lookup_titles_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
@@ -57,6 +68,12 @@ RDDiscLookup::RDDiscLookup(const QString &caption,FILE *profile_msgs,
 }
 
 
+RDDiscLookup::~RDDiscLookup()
+{
+  delete lookup_temp_directory;
+}
+
+
 QSize RDDiscLookup::sizeHint() const
 {
   return QSize(400,140);
@@ -65,13 +82,30 @@ QSize RDDiscLookup::sizeHint() const
 
 QString RDDiscLookup::sourceName() const
 {
-  return QString();
+  return QString("CD-Text");
 }
 
 
 QPixmap RDDiscLookup::sourceLogo() const
 {
   return QPixmap();
+}
+
+
+QPixmap RDDiscLookup::sourceLogo(RDDiscRecord::DataSource src) const
+{
+  QPixmap ret=RDLibraryConf::cdServerLogo(RDLibraryConf::DummyType);
+
+  switch(src) {
+  case RDDiscRecord::LocalSource:
+  case RDDiscRecord::LastSource:
+    break;
+
+  case RDDiscRecord::RemoteSource:
+    ret=sourceLogo();
+  }
+
+  return ret;
 }
 
 
@@ -89,61 +123,99 @@ void RDDiscLookup::setCddbRecord(RDDiscRecord *rec)
 
 void RDDiscLookup::lookup()
 {
+  QString rip_dev=rda->libraryConf()->ripperDevice();
+
   if(discRecord()->tracks()==0) {
     return;
+  }
+
+  if((lookup_has_cd_text=ReadCdText(rip_dev))) {
+    profile("CD-TEXT lookup success");
+  }
+  else {
+    profile("CD-TEXT lookup failure");
   }
 
   //
   // Get some basic disc parameters,
   //
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-  DiscId *disc=discid_new();
-  if(discid_read_sparse(disc,rda->libraryConf()->ripperDevice().toUtf8(),0)==0) {
+  if(lookup_disc!=NULL) {
+    discid_free(lookup_disc);
+    lookup_disc=NULL;
+  }
+  lookup_disc=discid_new();
+  if(discid_read_sparse(lookup_disc,rip_dev.toUtf8(),0)==0) {
     QMessageBox::warning(this,caption()+" - "+tr("Error"),
-		       tr("Unable to read CD.")+
-		       "\n["+QString::fromUtf8(discid_get_error_msg(disc))+"]");
-    discid_free(disc);
+			 tr("Unable to read CD.")+
+			 "\n["+QString::fromUtf8(discid_get_error_msg(lookup_disc))+"]");
+    discid_free(lookup_disc);
+    lookup_disc=NULL;
+    discid_free(lookup_disc);
     return;
   }
-  discRecord()->setDiscId(QString(discid_get_freedb_id(disc)).toUInt(NULL,16));
-  discRecord()->setDiscMbId(discid_get_id(disc));
-  discRecord()->setMbSubmissionUrl(discid_get_submission_url(disc));
+  discRecord()->setDiscId(QString(discid_get_freedb_id(lookup_disc)).toUInt(NULL,16));
+  discRecord()->setDiscMbId(discid_get_id(lookup_disc));
+  discRecord()->setMbSubmissionUrl(discid_get_submission_url(lookup_disc));
   QApplication::restoreOverrideCursor();
 
   //
   // Call the low-level driver to do its lookup.
   //
   lookupRecord();
+}
+
+
+void RDDiscLookup::lookupRecord()
+{
+  processLookup(RDDiscLookup::ExactMatch,"OK");
+}
+
+
+void RDDiscLookup::processLookup(RDDiscLookup::Result result,
+                                const QString &err_msg)
+{
+  QString rip_dev=rda->libraryConf()->ripperDevice();
 
   //
   // If the low-level driver didn't find ISRCs, and the user has requested
   // them, try to find them on the disc.
   //
-  // WARNING: This operation can be VERY expensive if the disc does not in
+  // WARNING: This operation can take a long time if the disc does not in
   //          fact contain ISRCs!
   //
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
   if((!discRecord()->hasIsrcs())&&rda->libraryConf()->readIsrc()) {
-    if(discid_read(disc,rda->libraryConf()->ripperDevice().toUtf8())==0) {
+    if(discid_read(lookup_disc,rip_dev.toUtf8())==0) {
       QMessageBox::warning(this,caption()+" - "+tr("Error"),
 		       tr("Unable to read CD.")+
-		       "\n["+QString::fromUtf8(discid_get_error_msg(disc))+"]");
-      discid_free(disc);
+			   "\n["+QString::fromUtf8(discid_get_error_msg(lookup_disc))+"]");
+      discid_free(lookup_disc);
+      lookup_disc=NULL;
       return;
     }
-    discRecord()->setMcn(discid_get_mcn(disc));
-    int first=discid_get_first_track_num(disc);
-    int last=discid_get_last_track_num(disc);
+    discRecord()->setMcn(discid_get_mcn(lookup_disc));
+    int first=discid_get_first_track_num(lookup_disc);
+    int last=discid_get_last_track_num(lookup_disc);
     for(int i=first;i<=last;i++) {
       if((i-first)<discRecord()->tracks()) {
 	discRecord()->setIsrc(i-first,
-		  RDDiscLookup::normalizedIsrc(discid_get_track_isrc(disc,i)));
-      }
+	   RDDiscLookup::normalizedIsrc(discid_get_track_isrc(lookup_disc,i)));
+     }
     }
   }
   QApplication::restoreOverrideCursor();
 
-  discid_free(disc);
+  discid_free(lookup_disc);
+  lookup_disc=NULL;
+
+  emit lookupDone(RDDiscLookup::ExactMatch,"OK");
+}
+
+
+bool RDDiscLookup::hasCdText() const
+{
+  return lookup_has_cd_text;
 }
 
 
@@ -359,4 +431,83 @@ QString RDDiscLookup::normalizedUpcA(const QString &barcode,bool *ok)
     *ok=false;
   }
   return QString();
+}
+
+
+QString RDDiscLookup::tempDirectoryPath() const
+{
+  return lookup_temp_directory->path();
+}
+
+
+bool RDDiscLookup::ReadCdText(const QString &cdda_dev)
+{
+  RDProfile *title_profile=new RDProfile();
+  bool ret=false;
+  QString str;
+  QString cmd;
+  int exit_code;
+
+  QStringList args;
+  args.push_back("-D");
+  args.push_back(cdda_dev);
+  args.push_back("--info-only");
+  args.push_back("-v");
+  args.push_back("titles");
+  QProcess *proc=new QProcess(this);
+  proc->setWorkingDirectory(tempDirectoryPath());
+  proc->start("/usr/bin/cdda2wav",args);
+  proc->waitForFinished();  // 5 minutes
+  QByteArray output=proc->readAllStandardError();
+  if(proc->exitStatus()!=QProcess::NormalExit) {
+    QMessageBox::warning(this,lookup_caption+" - "+tr("Ripper Error"),
+			 tr("CD-Text reader process crashed!"));
+    delete proc;
+    return false;
+  }
+  if((exit_code=proc->exitCode())!=0) {
+    QMessageBox::warning(this,lookup_caption+" - "+tr("Ripper Error"),
+			 tr("CD-Text reader process returned an error!")+"\n"+
+			 "["+output+"]");
+    delete proc;
+    return false;
+  }
+  delete proc;
+  
+  //
+  // Read the Track Title Data File
+  //
+  for(int i=0;i<lookup_record->tracks();i++) {
+    title_profile->setSource(tempDirectoryPath()+
+                            QString().sprintf("/audio_%02d.inf",i+1));
+    str=title_profile->stringValue("","Albumtitle","");
+    str.remove("'");
+    if((!str.isEmpty())&&(str!="''")) {
+      lookup_record->setDiscTitle(RDDiscRecord::LocalSource,str);
+      ret=true;
+    }
+
+    str=title_profile->stringValue("","Albumperformer","");
+    str.remove("'");
+    if((!str.isEmpty())&&(str!="''")) {
+      lookup_record->setDiscArtist(RDDiscRecord::LocalSource,str);
+      ret=true;
+    }
+
+    str=title_profile->stringValue("","Tracktitle","");
+    str.remove("'");
+    if((!str.isEmpty())&&(str!="''")) {
+      lookup_record->setTrackTitle(RDDiscRecord::LocalSource,i,str);
+      ret=true;
+    }
+
+    str=title_profile->stringValue("","Performer","");
+    str.remove("'");
+    if((!str.isEmpty())&&(str!="''")) {
+      lookup_record->setTrackArtist(RDDiscRecord::LocalSource,i,str);
+      ret=true;
+    }
+  }
+
+  return ret;
 }

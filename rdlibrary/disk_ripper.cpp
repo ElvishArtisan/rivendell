@@ -2,7 +2,7 @@
 //
 // CD Disk Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -124,8 +124,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_apply_box=new QCheckBox(this);
   rip_apply_box->setChecked(true);
   rip_apply_box->setDisabled(true);
-  rip_apply_label=new QLabel(tr("Apply")+" "+rip_disc_lookup->sourceName()+" "+
-			     tr("Values to Carts"),this);
+  rip_apply_label=new QLabel(tr("Apply Metadata Values to Carts"),this);
   rip_apply_label->setFont(labelFont());
   rip_apply_label->setAlignment(Qt::AlignLeft);
   rip_apply_box->setChecked(false);
@@ -711,8 +710,7 @@ void DiskRipper::mediaChangedData()
     rip_cutnames.push_back(QString());
     rip_end_track.push_back(-1);
     rip_wave_datas.push_back(new RDWaveData());
-    rip_wave_datas.back()->
-      setTitle(tr("Track")+QString::asprintf(" %d",rip_cdrom->tracks()-i+1));
+    rip_wave_datas.back()->setTitle(tr("Track")+QString().sprintf(" %d",i));
   }
   rip_disc_record.clear();
   rip_cdrom->setCddbRecord(&rip_disc_record);
@@ -737,37 +735,66 @@ void DiskRipper::stoppedData()
 
 
 void DiskRipper::lookupDoneData(RDDiscLookup::Result result,
-			      const QString &err_msg)
+				const QString &err_msg)
 {
+  RDDiscRecord::DataSource src=RDDiscRecord::LastSource;
+  if(rip_disc_record.hasData(RDDiscRecord::LocalSource)) {
+    src=RDDiscRecord::LocalSource;
+  }
+  else {
+    if(rip_disc_record.hasData(RDDiscRecord::RemoteSource)) {
+      src=RDDiscRecord::RemoteSource;
+    }
+    else {
+      rip_apply_box->hide();
+      rip_apply_label->hide();
+      rip_track=-1;
+      return;  // Apply no metadata
+    }
+  }
+
   switch(result) {
   case RDDiscLookup::ExactMatch:
     if(rip_cdrom->status()!=RDCdPlayer::Ok) {
+      rip_apply_box->hide();
+      rip_apply_label->hide();
+      rip_track=-1;
       return;
     }
-    rip_artist_edit->setText(rip_disc_record.discArtist());
-    rip_album_edit->setText(rip_disc_record.discAlbum());
+    rip_artist_edit->setText(rip_disc_record.discArtist(src));
+    rip_album_edit->setText(rip_disc_record.discAlbum(src));
     rip_other_edit->setText(rip_disc_record.discExtended());
-    rip_track_model->refresh(&rip_disc_record);
+    rip_track_model->refresh(&rip_disc_record,src);
     for(int i=0;i<rip_disc_record.tracks();i++) {
-      rip_wave_datas[i]->setTitle(rip_disc_record.trackTitle(i));
-      rip_wave_datas[i]->setArtist(rip_disc_record.discArtist());
-      rip_wave_datas[i]->setAlbum(rip_disc_record.discAlbum());
-      rip_wave_datas[i]->setLabel(rip_disc_record.discLabel());
+      rip_wave_datas[rip_wave_datas.size()-i-1]->
+	setTitle(rip_disc_record.trackTitle(src,i));
+      rip_wave_datas[rip_wave_datas.size()-i-1]->
+	setArtist(rip_disc_record.discArtist(src));
+      rip_wave_datas[rip_wave_datas.size()-i-1]->
+	setAlbum(rip_disc_record.discAlbum(src));
+      rip_wave_datas[rip_wave_datas.size()-i-1]->
+	setLabel(rip_disc_record.discLabel());
     }
     rip_apply_box->setChecked(true);
     rip_apply_box->setEnabled(true);
     rip_apply_label->setEnabled(true);
     rip_browser_button->setDisabled(rip_disc_lookup->sourceUrl().isNull());
     rip_browser_label->setDisabled(rip_disc_lookup->sourceUrl().isNull());
+    rip_apply_box->show();
+    rip_apply_label->show();
     break;
 
   case RDDiscLookup::NoMatch:
+    rip_apply_box->hide();
+    rip_apply_label->hide();
     rip_track=-1;
     break;
 
   case RDDiscLookup::LookupError:
     QMessageBox::warning(this,"RDLibrary - "+rip_disc_lookup->sourceName()+
 			 " "+tr("Lookup Error"),err_msg);
+    rip_apply_box->hide();
+    rip_apply_label->hide();
     rip_track=-1;
     break;
   }
@@ -964,7 +991,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
 	    runImport(rda->user()->name(),rda->user()->password(),
 		      &audio_conv_err))) {
     case RDAudioImport::ErrorOk:
-      cart->setMetadata(rip_wave_datas[track-1]);
+      cart->setMetadata(rip_wave_datas[rip_wave_datas.size()-track]);
       cut->setDescription(rip_wave_datas[track-1]->title());
       cut->setIsrc(rip_disc_record.isrc(rip_track_number-1));
       cut->setRecordingMbId(rip_disc_record.trackRecordingMbId(rip_track_number-1));

@@ -283,20 +283,20 @@ void RDDiscModel::setDisc(RDCdPlayer *player)
 }
 
 
-void RDDiscModel::refresh(RDDiscRecord *rec)
+void RDDiscModel::refresh(RDDiscRecord *rec,RDDiscRecord::DataSource src)
 {
   beginResetModel();
   for(int i=0;i<rec->tracks();i++) {
-    if(!rec->trackTitle(i).isEmpty()) {
-      d_texts[i][2]=rec->trackTitle(i);
+    if(!rec->trackTitle(src,i).isEmpty()) {
+      d_texts[i][2]=rec->trackTitle(src,i);
     }
-    if(rec->trackArtist(i).isEmpty()) {
-      if(!rec->discArtist().isEmpty()) {
-	d_texts[i][3]=rec->discArtist();
+    if(rec->trackArtist(src,i).isEmpty()) {
+      if(!rec->discArtist(src).isEmpty()) {
+	d_texts[i][3]=rec->discArtist(src);
      }
     }
     else {
-      d_texts[i][3]=rec->trackArtist(i);
+      d_texts[i][3]=rec->trackArtist(src,i);
     }
   }
   endResetModel();

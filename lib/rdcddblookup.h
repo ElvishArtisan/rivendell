@@ -2,7 +2,7 @@
 //
 //   RDDiscLookup instance class for accessing the FreeDB CD Database.
 //
-//   (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -56,16 +56,16 @@ class RDCddbLookup : public RDDiscLookup
 
  private:
   void FinishCddbLookup(RDCddbLookup::Result res,const QString &err_msg);
-   QString DecodeString(QString &str);
-   void ParsePair(QString *line,QString *tag,QString *value,int *index);
-   int GetIndex(QString *tag);
-   void SendToServer(const QString &msg);
-   QTcpSocket *lookup_socket;
-   int lookup_state;
-   QString lookup_username;
-   QString lookup_appname;
-   QString lookup_appver;
-   QString lookup_hostname;
+  QString DecodeString(QString &str);
+  void ParsePair(QString *line,QString *tag,QString *value,int *index);
+  int GetIndex(QString *tag);
+  void SendToServer(const QString &msg);
+  QTcpSocket *lookup_socket;
+  int lookup_state;
+  QString lookup_username;
+  QString lookup_appname;
+  QString lookup_appver;
+  QString lookup_hostname;
 };
 
 #endif  // RDCDDBLOOKUP_H

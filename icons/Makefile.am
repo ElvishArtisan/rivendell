@@ -280,6 +280,10 @@ EXTRA_DIST = admin.xpm\
              blueball.xpm\
              bug-138x60.png\
              bug-138x60.xpm\
+             cd-text-55x47.xpm\
+             cd-text.svg\
+             cddb-60x25.xcf\
+             cddb-60x25.xpm\
              chain.png\
              chain.xpm\
              checkmark.xpm\

@@ -1004,7 +1004,7 @@
       <para>
 	The <computeroutput>CD Metadata Source:</computeroutput> dropdown
 	determines the type of data source that will be used to lookup
-	CDs for metadata records. Three options are available:
+	CDs for external metadata records. Three options are available:
       </para>
       <variablelist>
 	<varlistentry>
@@ -1029,33 +1029,35 @@
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
-	  <term>FreeDB</term>
+	  <term>CDDB</term>
 	  <listitem>
 	    <para>
 	      Use a 
-	      <link xlink:href="https://en.wikipedia.org/wiki/Freedb">FreeDB database</link>.
+	      <link xlink:href="https://en.wikipedia.org/wiki/CDDB">CDDB database</link>.
 	    </para>
 	    <para>
-	      If selected, the <computeroutput>FreeDB Server:</computeroutput>
-	      field is used to provide the hostname of the server.
-	    </para>
-	    <note>
-	      Since the original public FreeDB gateway at
-	      <userinput>freedb.freedb.org</userinput> was
-	      shutdown in March 2019, use of a FreeDB database will
-	      generally require that a site maintain their own database server.
-	    </note>
+              If selected, a <computeroutput>CDDB Server:</computeroutput>
+	      field will also appear, which takes the hostname of the CDDB
+	      server to use (default value
+	      <userinput>freedb.freedb.org</userinput>).
+ 	    </para>
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
 	  <term>None</term>
 	  <listitem>
 	    <para>
-	      Do not perform any metadata lookup.
+	      If selected, no external metadata lookup will be performed.
 	    </para>
 	  </listitem>
 	</varlistentry>
       </variablelist>
+      <note>
+	Rivendell's CD rippers will also attempt to detect
+	<link xlink:href="https://en.wikipedia.org/wiki/CD-Text">CD-Text
+	data</link> on all discs and will use any information so detected in
+	preference to that supplied by an external lookup.
+      </note>
       <para>
 	The <computeroutput>Format:</computeroutput> dropdown indicates the
 	audio encoding format to be used in Rivendell's audio store for

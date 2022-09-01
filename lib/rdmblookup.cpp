@@ -2,7 +2,7 @@
 //
 //   RDDiscLookup instance class for MusicBrainz
 //
-//   (C) Copyright 2003-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -53,7 +53,6 @@
 #include "rdconf.h"
 #include "rdmblookup.h"
 
-#include "../icons/musicbrainz-159x25.xpm"
 #include "../icons/cover_art_default-60x60.xpm"
 
 QString err_str="OK";
@@ -118,7 +117,7 @@ QString RDMbLookup::sourceName() const
 
 QPixmap RDMbLookup::sourceLogo() const
 {
-  return QPixmap(musicbrainz_159x25_xpm);
+  return RDLibraryConf::cdServerLogo(RDLibraryConf::MusicBrainzType);
 }
 
 
@@ -246,7 +245,7 @@ void RDMbLookup::lookupRecord()
     result_code=RDDiscLookup::NoMatch;
   }
   QApplication::restoreOverrideCursor();
-  emit lookupDone(result_code,err_str);
+  processLookup(result_code,err_str);
 }
 
 
@@ -260,7 +259,8 @@ RDDiscLookup::Result RDMbLookup::ProcessRelease(MusicBrainz5::CRelease *release)
   // Extract Basic Release Data
   //
   discRecord()->setDiscReleaseMbId(QString::fromUtf8(release->ID().c_str()));
-  discRecord()->setDiscAlbum(QString::fromUtf8(release->Title().c_str()));
+  discRecord()->setDiscAlbum(RDDiscRecord::RemoteSource,
+                            QString::fromUtf8(release->Title().c_str()));
   //discRecord()->setDiscGenre();
   QStringList f0=QString::fromUtf8(release->Date().c_str()).split("-");
   discRecord()->setDiscYear(f0.at(0).toInt());
@@ -284,7 +284,7 @@ RDDiscLookup::Result RDMbLookup::ProcessRelease(MusicBrainz5::CRelease *release)
 	  QString::fromUtf8(credits->Item(j)->Artist()->Name().c_str());
 	str+=QString::fromUtf8(credits->Item(j)->JoinPhrase().c_str());
       }
-      discRecord()->setDiscArtist(str);
+      discRecord()->setDiscArtist(RDDiscRecord::RemoteSource,str);
     }
 
     //
@@ -307,7 +307,8 @@ RDDiscLookup::Result RDMbLookup::ProcessRelease(MusicBrainz5::CRelease *release)
 	MusicBrainz5::CTrack *track=tracks->Item(k);
 	MusicBrainz5::CRecording *recording=track->Recording();
 	discRecord()->
-	  setTrackTitle(k,QString::fromUtf8(recording->Title().c_str()));
+	  setTrackTitle(RDDiscRecord::RemoteSource,k,
+			QString::fromUtf8(recording->Title().c_str()));
 	discRecord()->
 	  setTrackRecordingMbId(k,QString::fromUtf8(recording->ID().c_str()));
 	MusicBrainz5::CISRCList *isrcs=recording->ISRCList();

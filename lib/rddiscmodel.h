@@ -2,7 +2,7 @@
 //
 // Data model for Audio CD track information
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -62,7 +62,7 @@ class RDDiscModel : public QAbstractTableModel
  public slots:
   void clear();
   void setDisc(RDCdPlayer *player);
-  void refresh(RDDiscRecord *rec);
+  void refresh(RDDiscRecord *rec,RDDiscRecord::DataSource src);
 
  private:
   QPalette d_palette;

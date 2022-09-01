@@ -49,11 +49,6 @@ DiskGauge *disk_gauge;
 RDCut *cut_clipboard=NULL;
 bool audio_changed;
 
-//
-// Prototypes
-//
-void SigHandler(int signo);
-
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   : MainWindow("rdlibrary",c)
 {
@@ -259,11 +254,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   QShortcut *lib_player_shortcut=new QShortcut(Qt::Key_Space,this);
   connect(lib_player_shortcut,SIGNAL(activated()),
 	  this,SLOT(playerShortcutData()));
-
-  // 
-  // Setup Signal Handling 
-  //
-  ::signal(SIGCHLD,SigHandler);
 
   lib_resize=true;
 
@@ -758,24 +748,6 @@ void MainWidget::resizeEvent(QResizeEvent *e)
       setGeometry(e->size().width()-190,e->size().height()-60,80,50);
     lib_close_button->setGeometry(e->size().width()-90,e->size().height()-60,
 				  80,50);
-  }
-}
-
-
-void SigHandler(int signo)
-{
-  pid_t pLocalPid;
-
-  switch(signo) {
-  case SIGCHLD:
-    pLocalPid=waitpid(-1,NULL,WNOHANG);
-    while(pLocalPid>0) {
-      pLocalPid=waitpid(-1,NULL,WNOHANG);
-    }
-    ripper_running=false;
-    import_active=false;
-    signal(SIGCHLD,SigHandler);
-    break;
   }
 }
 

@@ -23239,3 +23239,5 @@
 2022-08-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in PyPAD where resolution of datetimes could be
 	incorrect.
+2022-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added CD-Text support to rdlibrary(1).

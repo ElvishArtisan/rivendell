@@ -2,7 +2,7 @@
 //
 // Abstract an RDLibrary Configuration.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,14 +18,20 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QPixmap>
+
 #include "rdconf.h"
 #include "rddb.h"
 #include "rdescape_string.h"
 #include "rdlibrary_conf.h"
 
 //
-// Global Classes
+// Logos
 //
+#include "../icons/cd-text-55x47.xpm"
+#include "../icons/cddb-60x25.xpm"
+#include "../icons/musicbrainz-159x25.xpm"
+
 RDLibraryConf::RDLibraryConf(const QString &station)
 {
   RDSqlQuery *q;
@@ -414,11 +420,35 @@ QString RDLibraryConf::cdServerTypeText(RDLibraryConf::CdServerType type)
     break;
 
   case RDLibraryConf::CddbType:
-    ret="FreeDB";
+    ret="CDDB";
     break;
 
   case RDLibraryConf::MusicBrainzType:
     ret="MusicBrainz";
+    break;
+
+  case RDLibraryConf::LastType:
+    break;
+  }
+  return ret;
+}
+
+
+QPixmap RDLibraryConf::cdServerLogo(CdServerType type)
+{
+  QPixmap ret;
+
+  switch(type) {
+  case RDLibraryConf::DummyType:
+    ret=QPixmap(cd_text_55x47_xpm);
+    break;
+
+  case RDLibraryConf::CddbType:
+    ret=QPixmap(cddb_60x25_xpm);
+    break;
+
+  case RDLibraryConf::MusicBrainzType:
+    ret=QPixmap(musicbrainz_159x25_xpm);
     break;
 
   case RDLibraryConf::LastType:
