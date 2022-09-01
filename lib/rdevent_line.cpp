@@ -1120,9 +1120,11 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
     //
     // Apply Leading Event Values
     //
-    logline->setGraceTime(grace_time);
-    logline->setTimeType(time_type);
-    logline->setTransType(trans_type);
+    if(logline!=NULL) {
+      logline->setGraceTime(grace_time);
+      logline->setTimeType(time_type);
+      logline->setTransType(trans_type);
+    }
 
     //
     // Clear Leading Event Values

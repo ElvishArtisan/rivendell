@@ -20921,3 +20921,6 @@
 2022-08-31 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed the 'CD Metadata Source' control in rdlibrary(1) to use
 	'CDDB' instead of 'FreeDB' when configuring CDDB lookups.
+2022-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that could cause a segfault when
+	merging a log.
