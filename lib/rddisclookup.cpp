@@ -151,7 +151,6 @@ void RDDiscLookup::lookup()
 			 "\n["+QString::fromUtf8(discid_get_error_msg(lookup_disc))+"]");
     discid_free(lookup_disc);
     lookup_disc=NULL;
-    discid_free(lookup_disc);
     return;
   }
   discRecord()->setDiscId(QString(discid_get_freedb_id(lookup_disc)).toUInt(NULL,16));

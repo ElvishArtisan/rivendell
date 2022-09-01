@@ -23241,3 +23241,6 @@
 	incorrect.
 2022-09-01 Fred Gleason <fredg@paravelsystems.com>
 	* Added CD-Text support to rdlibrary(1).
+2022-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that could throw a segfault when
+	encountering an error in ripping a CD.
