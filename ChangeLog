@@ -20926,3 +20926,5 @@
 	merging a log.
 2022-09-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke the 'make dist' target.
+2022-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.5int4.

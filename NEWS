@@ -1,15 +1,17 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.6.5int3 -- 25 August 2022
+v3.6.5int4 -- 1 September 2022
 
 Changes:
+   RDCastManager. Added an Online Feed Report that displays a bulleted list
+   of items for a feed on the basis of the actual posted feed XML.
+
    RDImport. Added the ability to load copy-split audio sets (generic and
    regional) by means of ISCI-code named files. See the '--by-isci' option
    in the rdimport(1) man page.
 
-   RDCastManager. Added an Online Feed Report that displays a bulleted list
-   of items for a feed on the basis of the actual posted feed XML.
+   RDLibrary. Restored support for CD-Text for reading CD metadata.
 
    Fixed a bug in the podcasting subsystem that caused episodes to be
    automatically deleted immediately after being made active if the
