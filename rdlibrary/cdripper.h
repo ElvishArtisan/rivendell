@@ -118,6 +118,8 @@ class CdRipper : public RDDialog
   QLabel *rip_autotrim_unit;   
   bool rip_done;
   bool rip_profile_rip;
+  QLabel *rip_cddb_label;
+  QLabel *rip_cdtext_label;
 };
 
 

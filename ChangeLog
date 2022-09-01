@@ -23244,3 +23244,6 @@
 2022-09-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlibrary(1) that could throw a segfault when
 	encountering an error in ripping a CD.
+2022-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added icons to the CD rippers in rdlibrary(1) to indicate the
+	provenance of detected metadata.

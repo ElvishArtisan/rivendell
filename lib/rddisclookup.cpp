@@ -161,7 +161,12 @@ void RDDiscLookup::lookup()
   //
   // Call the low-level driver to do its lookup.
   //
-  lookupRecord();
+  if(lookup_has_cd_text&&(sourceName()=="CDDB")) {
+    RDDiscLookup::lookupRecord(); // Skip CDDB lookup if we have CD-Text
+  }
+  else {
+    lookupRecord();
+  }
 }
 
 
@@ -248,6 +253,12 @@ void RDDiscLookup::resizeEvent(QResizeEvent *e)
 
   lookup_ok_button->setGeometry(w-180,h-60,80,50);
   lookup_cancel_button->setGeometry(w-90,h-60,80,50);
+}
+
+
+void RDDiscLookup::closeEvent(QCloseEvent *e)
+{
+  cancelData();
 }
 
 

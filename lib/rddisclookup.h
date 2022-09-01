@@ -71,6 +71,7 @@ class RDDiscLookup : public RDDialog
   virtual void lookupRecord();
   void processLookup(RDDiscLookup::Result result,const QString &err_msg);
   void resizeEvent(QResizeEvent *e);
+  void closeEvent(QCloseEvent *e);
   RDDiscRecord *discRecord() const;
   void profile(const QString &msg);
   QComboBox *titlesBox();
