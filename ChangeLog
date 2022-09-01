@@ -20924,3 +20924,5 @@
 2022-09-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogmanager(1) that could cause a segfault when
 	merging a log.
+2022-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that broke the 'make dist' target.

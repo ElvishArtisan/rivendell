@@ -272,8 +272,8 @@ uninstall-local:
 EXTRA_DIST = admin.xpm\
              blueball.png\
              blueball.xpm\
-             cd_text-55x47.xpm\
-             cd_text.svg\
+             cd-text-55x47.xpm\
+             cd-text.svg\
              cddb-60x25.xcf\
              cddb-60x25.xpm\
              chain.png\
