@@ -186,7 +186,9 @@ void MainObject::ProcessFeed(const QString &key_name)
       }
     }
     else {
-      rda->syslog(LOG_WARNING,"repost of XML for feed \"%s\" failed");
+      rda->syslog(LOG_WARNING,
+       	  "repost of XML for feed \"%s\" triggered by cast id %u failed",
+		  key_name.toUtf8().constData(),q->value(0).toUInt());
     }
   }
   delete q;
