@@ -355,6 +355,14 @@ void Xport::RemovePodcast()
 
 bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
 {
+  FILE *ferr=NULL;
+  /*
+  if((ferr=fopen("/var/snd/PostRssElemental.debug","w+"))==NULL) {
+    rda->syslog(LOG_ERR,"debug file open failed [%s]",strerror(errno));
+    return false;
+  }
+  */
+
   CURL *curl=NULL;
   CURLcode curl_err;
   char errstr[CURL_ERROR_SIZE];
@@ -365,6 +373,14 @@ bool Xport::PostRssElemental(RDFeed *feed,const QDateTime &now,QString *err_msg)
   }
   xport_curl_data=feed->rssXml(err_msg,now).toUtf8();
   xport_curl_data_ptr=0;
+
+  //
+  // Debugging Parameters
+  //
+  if(ferr!=NULL) {
+    curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
+    curl_easy_setopt(curl,CURLOPT_STDERR,ferr);
+  }
 
   //
   // Authentication Parameters
