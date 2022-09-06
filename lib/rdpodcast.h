@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Podcast Entry
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,6 +17,8 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+
+#include <qstringlist.h>
 
 #include <rdconfig.h>
 #include <rdfeed.h>
@@ -83,6 +85,8 @@ class RDPodcast
 
  private:
   bool DeletePodcast(unsigned cast_id) const;
+  QStringList *SetupCurlLogging(CURL *curl) const;
+  void ProcessCurlLogging(const QString &label,QStringList *err_msgs) const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,const QDateTime &datetime,const QString &value) const;

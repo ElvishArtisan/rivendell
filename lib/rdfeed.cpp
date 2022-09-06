@@ -21,8 +21,6 @@
 #include <errno.h>
 #include <math.h>
 
-#include <curl/curl.h>
-
 #include <qapplication.h>
 #include <qfile.h>
 #include <qmessagebox.h>
@@ -47,6 +45,19 @@
 #include "rdupload.h"
 #include "rdwavefile.h"
 #include "rdxport_interface.h"
+
+int __RDFeed_Debug_Callback(CURL *handle,curl_infotype type,char *data,
+			    size_t size,void *userptr)
+{
+  QStringList *lines=(QStringList *)userptr;
+
+  if(type==CURLINFO_TEXT) {
+    lines->push_back(QString::fromUtf8(QByteArray(data,size)));
+  }
+
+  return 0;
+}
+
 
 RDFeed::RDFeed(const QString &keyname,RDConfig *config,QObject *parent)
   : QObject(parent)
@@ -801,6 +812,7 @@ bool RDFeed::postPodcast(unsigned cast_id) const
   long response_code;
   CURL *curl=NULL;
   CURLcode curl_err;
+  QStringList *err_msgs=NULL;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
 
@@ -829,6 +841,7 @@ bool RDFeed::postPodcast(unsigned cast_id) const
     curl_formfree(first);
     return false;
   }
+  err_msgs=SetupCurlLogging(curl);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
@@ -846,6 +859,7 @@ bool RDFeed::postPodcast(unsigned cast_id) const
   if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
     curl_easy_cleanup(curl);
     curl_formfree(first);
+    ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
     return false;
   }
 
@@ -860,8 +874,10 @@ bool RDFeed::postPodcast(unsigned cast_id) const
   // Process the results
   //
   if((response_code<200)||(response_code>299)) {
+    ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
     return false;
   }
+  delete err_msgs;
 
   return true;
 }
@@ -905,6 +921,7 @@ bool RDFeed::postXml()
   long response_code;
   CURL *curl=NULL;
   CURLcode curl_err;
+  QStringList *err_msgs=NULL;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
 
@@ -933,6 +950,7 @@ bool RDFeed::postXml()
     curl_formfree(first);
     return false;
   }
+  err_msgs=SetupCurlLogging(curl);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
@@ -950,6 +968,7 @@ bool RDFeed::postXml()
   if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
     curl_easy_cleanup(curl);
     curl_formfree(first);
+    ProcessCurlLogging("RDFeed::postXml()",err_msgs);
     return false;
   }
 
@@ -964,8 +983,10 @@ bool RDFeed::postXml()
   // Process the results
   //
   if((response_code<200)||(response_code>299)) {
+    ProcessCurlLogging("feed \""+keyName()+"\"",err_msgs);
     return false;
   }
+  delete err_msgs;
 
   return true;
 }
@@ -987,6 +1008,7 @@ bool RDFeed::removeRss()
   long response_code;
   CURL *curl=NULL;
   CURLcode curl_err;
+  QStringList *err_msgs=NULL;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
 
@@ -1015,6 +1037,7 @@ bool RDFeed::removeRss()
     curl_formfree(first);
     return false;
   }
+  err_msgs=SetupCurlLogging(curl);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
@@ -1032,6 +1055,7 @@ bool RDFeed::removeRss()
   if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
     curl_easy_cleanup(curl);
     curl_formfree(first);
+    ProcessCurlLogging("RDFeed::removeRss()",err_msgs);
     return false;
   }
 
@@ -1046,8 +1070,10 @@ bool RDFeed::removeRss()
   // Process the results
   //
   if((response_code<200)||(response_code>299)) {
+    ProcessCurlLogging("RDFeed::removeRss()",err_msgs);
     return false;
   }
+  delete err_msgs;
 
   return true;
 }
@@ -1058,6 +1084,7 @@ bool RDFeed::postImage(int img_id) const
   long response_code;
   CURL *curl=NULL;
   CURLcode curl_err;
+  QStringList *err_msgs=NULL;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
 
@@ -1103,6 +1130,7 @@ bool RDFeed::postImage(int img_id) const
   if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
     curl_easy_cleanup(curl);
     curl_formfree(first);
+    ProcessCurlLogging("RDFeed::postImage()",err_msgs);
     return false;
   }
 
@@ -1117,8 +1145,10 @@ bool RDFeed::postImage(int img_id) const
   // Process the results
   //
   if((response_code<200)||(response_code>299)) {
+    ProcessCurlLogging("RDFeed::postImage()",err_msgs);
     return false;
   }
+  delete err_msgs;
 
   return true;
 }
@@ -1129,6 +1159,7 @@ bool RDFeed::removeImage(int img_id) const
   long response_code;
   CURL *curl=NULL;
   CURLcode curl_err;
+  QStringList *err_msgs=NULL;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
 
@@ -1157,6 +1188,7 @@ bool RDFeed::removeImage(int img_id) const
     curl_formfree(first);
     return false;
   }
+  err_msgs=SetupCurlLogging(curl);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
@@ -1174,6 +1206,7 @@ bool RDFeed::removeImage(int img_id) const
   if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
     curl_easy_cleanup(curl);
     curl_formfree(first);
+    ProcessCurlLogging("RDFeed::removeImage()",err_msgs);
     return false;
   }
 
@@ -1188,8 +1221,10 @@ bool RDFeed::removeImage(int img_id) const
   // Process the results
   //
   if((response_code<200)||(response_code>299)) {
+    ProcessCurlLogging("RDFeed::removeImage()",err_msgs);
     return false;
   }
+  delete err_msgs;
 
   return true;
 }
@@ -1832,6 +1867,7 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
   long response_code;
   CURL *curl=NULL;
   CURLcode curl_err;
+  QStringList *err_msgs=NULL;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
 
@@ -1865,6 +1901,7 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
     curl_formfree(first);
     return false;
   }
+  err_msgs=SetupCurlLogging(curl);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
@@ -1882,6 +1919,7 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
   if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
     curl_easy_cleanup(curl);
     curl_formfree(first);
+    ProcessCurlLogging("RDFeed::SavePodcast()",err_msgs);
     return false;
   }
 
@@ -1896,8 +1934,10 @@ bool RDFeed::SavePodcast(unsigned cast_id,const QString &src_filename) const
   // Process the results
   //
   if((response_code<200)||(response_code>299)) {
+    ProcessCurlLogging("RDFeed::SavePodcast()",err_msgs);
     return false;
   }
+  delete err_msgs;
 
   return true;
 }
@@ -2103,6 +2143,34 @@ QString RDFeed::GetTempFilename() const
   }
 
   return QString(tempname);
+}
+
+
+QStringList *RDFeed::SetupCurlLogging(CURL *curl) const
+{
+  QStringList *err_msgs=new QStringList();
+
+  curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,__RDFeed_Debug_Callback);
+  curl_easy_setopt(curl,CURLOPT_DEBUGDATA,err_msgs);
+  curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
+
+  return err_msgs;
+}
+
+
+void RDFeed::ProcessCurlLogging(const QString &label,
+				QStringList *err_msgs) const
+{
+  if(err_msgs->size()>0) {
+    rda->syslog(LOG_ERR,"*** %s: extended CURL information begins ***",
+		label.toUtf8().constData());
+    for(int i=0;i<err_msgs->size();i++) {
+      rda->syslog(LOG_ERR,"[%d]: %s",i,err_msgs->at(i).toUtf8().constData());
+    }
+    rda->syslog(LOG_ERR,"*** %s: extended CURL information ends ***",
+		label.toUtf8().constData());
+  }
+  delete err_msgs;
 }
 
 

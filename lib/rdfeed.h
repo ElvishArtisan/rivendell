@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,6 +20,8 @@
 
 #ifndef RDFEED_H
 #define RDFEED_H
+
+#include <curl/curl.h>
 
 #include <qobject.h>
 
@@ -172,6 +174,8 @@ class RDFeed : public QObject
 			       RDSqlQuery *chan_q);
   QString GetTempFilename() const;
   void LoadSchemas();
+  QStringList *SetupCurlLogging(CURL *curl) const;
+  void ProcessCurlLogging(const QString &label,QStringList *err_msgs) const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,const QDateTime &value,

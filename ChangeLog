@@ -20933,3 +20933,6 @@
 2022-09-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdrssd(8) that caused incorrect error data to be
 	logged.
+2022-09-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to the podcasting subsystem to log extended curl(1)
+	information to syslog.
