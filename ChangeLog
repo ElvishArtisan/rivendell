@@ -23247,3 +23247,6 @@
 2022-09-01 Fred Gleason <fredg@paravelsystems.com>
 	* Added icons to the CD rippers in rdlibrary(1) to indicate the
 	provenance of detected metadata.
+2022-09-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that could cause a segfault when
+	merging a log.

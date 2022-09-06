@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1126,9 +1126,11 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
     //
     // Apply Leading Event Values
     //
-    logline->setGraceTime(grace_time);
-    logline->setTimeType(time_type);
-    logline->setTransType(trans_type);
+    if(logline!=NULL) {
+      logline->setGraceTime(grace_time);
+      logline->setTimeType(time_type);
+      logline->setTransType(trans_type);
+    }
 
     //
     // Clear Leading Event Values
