@@ -23258,3 +23258,6 @@
 	information to syslog.
 2022-09-06 Fred Gleason <fredg@paravelsystems.com>
        * Added an Online Feed Report to rdcastmanager(1).
+2022-09-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdservice(8) that could cause a segfault when
+	started with a previous instance running.

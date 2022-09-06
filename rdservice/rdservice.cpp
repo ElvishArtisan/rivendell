@@ -64,14 +64,6 @@ MainObject::MainObject(QObject *parent)
   svc_force_system_maintenance=false;
 
   //
-  // Check for prior instance
-  //
-  if(RDGetPids("rdservice").size()>1) {
-    rda->syslog(LOG_ERR,"prior instance found");
-    exit(RDApplication::ExitPriorInstance);
-  }
-
-  //
   // Open the Database
   //
   rda=static_cast<RDApplication *>(new RDCoreApplication("rdservice","rdservice","\n\n",this));
@@ -81,6 +73,14 @@ MainObject::MainObject(QObject *parent)
     exit(RDApplication::ExitNoDb);
   }
   rda->syslog(LOG_DEBUG,"starting up");
+
+  //
+  // Check for prior instance
+  //
+  if(RDGetPids("rdservice").size()>1) {
+    rda->syslog(LOG_ERR,"prior instance found");
+    exit(RDApplication::ExitPriorInstance);
+  }
 
   //
   // Ensure that we are 'root'
