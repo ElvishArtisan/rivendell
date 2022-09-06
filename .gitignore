@@ -76,6 +76,7 @@ docs/opsguide/whiteball.png
 docs/rivwebcapi/*.7
 docs/rivwebcapi/*.html
 docs/rivwebcapi/*.pdf
+docs/stylesheets/book-fo-titlepages.xsl
 helpers/cwrap
 helpers/docbook
 helpers/rdi18n_helper.sh
