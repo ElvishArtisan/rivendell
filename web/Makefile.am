@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/web
 ##
-##   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as
@@ -22,6 +22,7 @@
 
 SUBDIRS = common\
           rdxport\
+          stylesheets\
           tests\
           webget
 

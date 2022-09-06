@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Podcast
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,20 +32,15 @@
 //
 // CURL Callbacks
 //
-int PodcastErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
-			void *clientp)
+int __RDPodcast_Debug_Callback(CURL *handle,curl_infotype type,char *data,
+			       size_t size,void *userptr)
 {
-  char str[1000];
+  QStringList *lines=(QStringList *)userptr;
 
-  if(type!=CURLINFO_TEXT) {
-    return 0;
+  if(type==CURLINFO_TEXT) {
+    lines->push_back(QString::fromUtf8(QByteArray(data,size)));
   }
-  if(size>999) {
-    size=999;
-  }
-  memset(&str,0,size+1);
-  memcpy(str,msg,size);
-  rda->syslog(LOG_DEBUG,"CURL MSG: %s",str);
+
   return 0;
 }
 
@@ -402,6 +397,7 @@ bool RDPodcast::removePodcast() const
     curl_formfree(first);
     return false;
   }
+  QStringList *err_msgs=SetupCurlLogging(curl);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
@@ -419,6 +415,7 @@ bool RDPodcast::removePodcast() const
   if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
     curl_easy_cleanup(curl);
     curl_formfree(first);
+    ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
     return false;
   }
 
@@ -433,8 +430,10 @@ bool RDPodcast::removePodcast() const
   // Process the results
   //
   if((response_code<200)||(response_code>299)) {
+    ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
     return false;
   }
+  delete err_msgs;
 
   return true;
 }
@@ -488,6 +487,7 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
     curl_formfree(first);
     return false;
   }
+  QStringList *err_msgs=SetupCurlLogging(curl);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
@@ -505,6 +505,7 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
   if((curl_err=curl_easy_perform(curl))!=CURLE_OK) {
     curl_easy_cleanup(curl);
     curl_formfree(first);
+    ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
     return false;
   }
 
@@ -519,10 +520,40 @@ bool RDPodcast::DeletePodcast(unsigned cast_id) const
   // Process the results
   //
   if((response_code<200)||(response_code>299)) {
+    ProcessCurlLogging("RDFeed::postPodcast()",err_msgs);
     return false;
   }
+  delete err_msgs;
 
   return true;
+}
+
+
+QStringList *RDPodcast::SetupCurlLogging(CURL *curl) const
+{
+  QStringList *err_msgs=new QStringList();
+
+  curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,__RDPodcast_Debug_Callback);
+  curl_easy_setopt(curl,CURLOPT_DEBUGDATA,err_msgs);
+  curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
+
+  return err_msgs;
+}
+
+
+void RDPodcast::ProcessCurlLogging(const QString &label,
+                               QStringList *err_msgs) const
+{
+  if(err_msgs->size()>0) {
+    rda->syslog(LOG_ERR,"*** %s: extended CURL information begins ***",
+               label.toUtf8().constData());
+    for(int i=0;i<err_msgs->size();i++) {
+      rda->syslog(LOG_ERR,"[%d]: %s",i,err_msgs->at(i).toUtf8().constData());
+    }
+    rda->syslog(LOG_ERR,"*** %s: extended CURL information ends ***",
+               label.toUtf8().constData());
+  }
+  delete err_msgs;
 }
 
 

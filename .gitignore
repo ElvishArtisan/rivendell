@@ -20,7 +20,6 @@
 *.rpm
 *.so
 *.spec
-*.xsl
 *.tar.gz
 *.tar.xz
 *.whl

@@ -3,7 +3,7 @@
 @GENERATED_SCRIPT_FILE_WARNING@
 
 ##    The Rivendell Radio Automation System
-##    Copyright (C) 2002-2021  Fred Gleason <fredg@paravelsystems.com>
+##    Copyright (C) 2002-2022  Fred Gleason <fredg@paravelsystems.com>
 ##
 ##    This program is free software; you can redistribute it and/or modify
 ##    it under the terms of version 2 of the GNU General Public License as
@@ -30,7 +30,7 @@ Release: @RPM_RELEASE@
 License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
 Source: rivendell-@VERSION@.tar.gz
-Requires: @MYSQL_PKG@ @QT_MYSQL_PKG@ @APACHE_PKG@ curl @USERMODE_PKG@ rsyslog qt5-qtstyleplugins @PYPAD_DEPS@
+Requires: @MYSQL_PKG@ @QT_MYSQL_PKG@ @APACHE_PKG@ curl @USERMODE_PKG@ rsyslog qt5-qtstyleplugins @PYPAD_DEPS@ libxslt
 BuildRequires: qt5-qtbase-devel qt5-linguist
 BuildRoot: /var/tmp/rivendell-@VERSION@
 Obsoletes: rivendell-base rivendell-opsguide rivendell-pypad
@@ -334,6 +334,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/rdmemcheck.sh
 %{_bindir}/rdrender
 %{_datadir}/rivendell/*.qm
+%{_datadir}/rivendell/*.xsl
 %{_datadir}/rivendell/rivendell-env.sh
 %{_datadir}/icons/hicolor/16x16/apps/rivendell.png
 %{_datadir}/icons/hicolor/16x16/apps/rdadmin.png

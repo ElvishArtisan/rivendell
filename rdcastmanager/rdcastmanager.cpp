@@ -2,7 +2,7 @@
 //
 // A PodCast Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,6 +26,7 @@
 #include <rdconf.h>
 #include <rdescape_string.h>
 #include <rdpodcast.h>
+#include <rdtextfile.h>
 
 #include "edit_cast.h"
 #include "globals.h"
@@ -126,6 +127,15 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   connect(cast_copy_button,SIGNAL(clicked()),this,SLOT(copyData()));
 
   //
+  // Report Button
+  //
+  cast_report_button=new QPushButton(this);
+  cast_report_button->setFont(buttonFont());
+  cast_report_button->setText(tr("Online Feed\nReport"));
+  cast_report_button->setDisabled(true);
+  connect(cast_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
+
+  //
   // Close Button
   //
   cast_close_button=new QPushButton(this);
@@ -179,6 +189,7 @@ void MainWidget::selectionChangedData(const QItemSelection &before,
 
   cast_open_button->setEnabled(rows.size()==1);
   cast_copy_button->setEnabled(rows.size()==1);
+  cast_report_button->setEnabled(rows.size()==1);
   if(cast_feed_model->isFeed(rows.first())) {
     cast_open_button->setText(tr("View\nFeed"));
   }
@@ -225,6 +236,31 @@ void MainWidget::copyData()
 }
 
 
+void MainWidget::reportData()
+{
+  QModelIndexList rows=cast_feed_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
+    return;
+  }
+  QString err_msg;
+  QString url=cast_feed_model->
+    data(cast_feed_model->index(rows.at(0).row(),6)).toString();
+  cast_temp_directories.push_back(new RDTempDirectory("rdcastmanager-report"));
+  if(!cast_temp_directories.last()->create(&err_msg)) {
+    QMessageBox::warning(this,"RDCastManager - "+tr("Error"),
+                        tr("Unable to create temporary directory.")+"\n"+
+                        "["+err_msg+"]");
+    return;
+  }
+  QString tmpfile=cast_temp_directories.last()->path()+"/report.html";
+  QString cmd="curl -f -s "+url+" | xsltproc --encoding utf-8 /usr/share/rivendell/rdcastmanager-report.xsl - > "+tmpfile;
+  printf("CMD: %s\n",cmd.toUtf8().constData());
+  system(cmd.toUtf8());
+  RDWebBrowser("file://"+tmpfile);
+}
+
+
 void MainWidget::feedDoubleClickedData(const QModelIndex &index)
 {
   openData();
@@ -233,8 +269,17 @@ void MainWidget::feedDoubleClickedData(const QModelIndex &index)
 
 void MainWidget::quitMainWidget()
 {
+  for(int i=0;i<cast_temp_directories.size();i++) {
+    delete cast_temp_directories.at(i);
+  }
   saveSettings();
   exit(0);
+}
+
+
+void MainWidget::closeEvent(QCloseEvent *e)
+{
+  quitMainWidget();
 }
 
 
@@ -243,15 +288,10 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   if(cast_resize) {
     cast_feed_view->setGeometry(10,10,size().width()-20,size().height()-70);
     cast_open_button->setGeometry(10,size().height()-55,80,50);
-    cast_copy_button->setGeometry(120,size().height()-55,100,50);
+    cast_copy_button->setGeometry(110,size().height()-55,100,50);
+    cast_report_button->setGeometry(230,size().height()-55,100,50);
     cast_close_button->setGeometry(size().width()-90,size().height()-55,80,50);
   }
-}
-
-
-void MainWidget::closeEvent(QCloseEvent *e)
-{
-  quitMainWidget();
 }
 
 

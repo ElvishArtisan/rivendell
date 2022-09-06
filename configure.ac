@@ -608,6 +608,7 @@ AC_CONFIG_FILES([rivendell.spec \
     web/Makefile \
     web/common/Makefile \
     web/rdxport/Makefile \
+    web/stylesheets/Makefile \
     web/tests/Makefile \
     web/webget/Makefile \
     conf/Makefile \
