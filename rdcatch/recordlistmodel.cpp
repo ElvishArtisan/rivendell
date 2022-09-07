@@ -301,7 +301,7 @@ QString RecordListModel::hostName(const QModelIndex &row) const
 
 QString RecordListModel::cutName(const QModelIndex &row) const
 {
-  return d_texts.at(row.row()).at(25).toString();
+  return d_texts.at(row.row()).at(26).toString();
 }
 
 
