@@ -2,7 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -59,12 +59,6 @@ class AudioCart : public RDWidget
 			    const QItemSelection &after);
   void ripCutData();
   void importCutData();
-
-  /**
-   * fork() a child process and start an external audio application to open a
-   * cut of audio.
-   **/
-  void extEditorCutData();
   
  signals:
   void cartDataChanged();
@@ -85,7 +79,6 @@ class AudioCart : public RDWidget
   QPushButton *copy_cut_button;
   QPushButton *paste_cut_button;
   RDBiPushButton *record_cut_button;
-  QPushButton *ext_editor_cut_button;
   QPushButton *edit_cut_button;
   QPushButton *import_cut_button;
   QPushButton *rip_cut_button;

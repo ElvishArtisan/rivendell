@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -170,7 +170,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_op_mode[i]=RDAirPlayConf::Previous;
   }
-  air_editor_cmd=rda->station()->editorPath();
   bgmap=QPixmap(rda->airplayConf()->skinPath());
   if(!bgmap.isNull()&&(bgmap.width()>=1024)&&(bgmap.height()>=738)) {
     QPalette palette;

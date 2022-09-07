@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Workstation.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -239,19 +239,6 @@ unsigned RDStation::startupCart() const
 void RDStation::setStartupCart(unsigned cartnum) const
 {
   SetRow("STARTUP_CART",cartnum);
-}
-
-
-QString RDStation::editorPath() const
-{
-  return RDGetSqlValue("STATIONS","NAME",station_name,"EDITOR_PATH").
-    toString();
-}
-
-
-void RDStation::setEditorPath(const QString &cmd)
-{
-  SetRow("EDITOR_PATH",cmd);
 }
 
 
@@ -865,25 +852,24 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "`BROADCAST_SECURITY`,"+  // 03
       "`HEARTBEAT_CART`,"+      // 04
       "`HEARTBEAT_INTERVAL`,"+  // 05
-      "`EDITOR_PATH`,"+         // 06
-      "`FILTER_MODE`,"+         // 07
-      "`SYSTEM_MAINT`,"+        // 08
-      "`HTTP_STATION`,"+        // 09
-      "`CAE_STATION`,"+         // 10
-      "`START_JACK`,"+          // 11
-      "`JACK_SERVER_NAME`,"+    // 12
-      "`JACK_COMMAND_LINE`,"+   // 13
-      "`JACK_PORTS`,"+          // 14
-      "`CUE_CARD`,"+            // 15
-      "`CUE_PORT`,"+            // 16
-      "`CUE_START_CART`,"+      // 17
-      "`CUE_STOP_CART`,"+       // 18
-      "`CARTSLOT_COLUMNS`,"+    // 19
-      "`CARTSLOT_ROWS`,"+       // 20
-      "`ENABLE_DRAGDROP`,"+     // 21
-      "`ENFORCE_PANEL_SETUP`,"+ // 22
-      "`REPORT_EDITOR_PATH`,"+  // 23
-      "`BROWSER_PATH` "+        // 24
+      "`FILTER_MODE`,"+         // 06
+      "`SYSTEM_MAINT`,"+        // 07
+      "`HTTP_STATION`,"+        // 08
+      "`CAE_STATION`,"+         // 09
+      "`START_JACK`,"+          // 10
+      "`JACK_SERVER_NAME`,"+    // 11
+      "`JACK_COMMAND_LINE`,"+   // 12
+      "`JACK_PORTS`,"+          // 13
+      "`CUE_CARD`,"+            // 14
+      "`CUE_PORT`,"+            // 15
+      "`CUE_START_CART`,"+      // 16
+      "`CUE_STOP_CART`,"+       // 17
+      "`CARTSLOT_COLUMNS`,"+    // 18
+      "`CARTSLOT_ROWS`,"+       // 19
+      "`ENABLE_DRAGDROP`,"+     // 20
+      "`ENFORCE_PANEL_SETUP`,"+ // 21
+      "`REPORT_EDITOR_PATH`,"+  // 22
+      "`BROWSER_PATH` "+        // 23
       "from `STATIONS` where "+
       "`NAME`='"+RDEscapeString(exemplar)+"'";
     q=new RDSqlQuery(sql);
@@ -900,25 +886,24 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString::asprintf("`BROADCAST_SECURITY`=%u,",q->value(3).toUInt())+
 	QString::asprintf("`HEARTBEAT_CART`=%u,",q->value(4).toUInt())+
 	QString::asprintf("`HEARTBEAT_INTERVAL`=%u,",q->value(5).toUInt())+
-	"`EDITOR_PATH`='"+RDEscapeString(q->value(6).toString())+"',"+
-	QString::asprintf("`FILTER_MODE`=%d,",q->value(7).toInt())+
-	"`SYSTEM_MAINT`='"+RDEscapeString(q->value(8).toString())+"',"+
-	"`HTTP_STATION`='"+RDEscapeString(q->value(9).toString())+"',"+
-	"`CAE_STATION`='"+RDEscapeString(q->value(10).toString())+"',"+
-	"`START_JACK`='"+RDEscapeString(q->value(11).toString())+"',"+
-	"`JACK_SERVER_NAME`='"+RDEscapeString(q->value(12).toString())+"',"+
-	"`JACK_COMMAND_LINE`='"+RDEscapeString(q->value(13).toString())+"',"+
-	QString::asprintf("`JACK_PORTS`=%d,",q->value(14).toInt())+
-	QString::asprintf("`CUE_CARD`=%d,",q->value(15).toInt())+
-	QString::asprintf("`CUE_PORT`=%d,",q->value(16).toInt())+
-	QString::asprintf("`CUE_START_CART`=%u,",q->value(17).toInt())+
-	QString::asprintf("`CUE_STOP_CART`=%u,",q->value(18).toInt())+
-	QString::asprintf("`CARTSLOT_COLUMNS`=%d,",q->value(19).toInt())+
-	QString::asprintf("`CARTSLOT_ROWS`=%d,",q->value(20).toInt())+
-	"`ENABLE_DRAGDROP`='"+RDEscapeString(q->value(21).toString())+"',"+
-	"`ENFORCE_PANEL_SETUP`='"+RDEscapeString(q->value(22).toString())+"',"+
-	"`REPORT_EDITOR_PATH`='"+RDEscapeString(q->value(23).toString())+"',"+
-	"`BROWSER_PATH`='"+RDEscapeString(q->value(24).toString())+"'";
+	QString::asprintf("`FILTER_MODE`=%d,",q->value(6).toInt())+
+	"`SYSTEM_MAINT`='"+RDEscapeString(q->value(7).toString())+"',"+
+	"`HTTP_STATION`='"+RDEscapeString(q->value(8).toString())+"',"+
+	"`CAE_STATION`='"+RDEscapeString(q->value(9).toString())+"',"+
+	"`START_JACK`='"+RDEscapeString(q->value(10).toString())+"',"+
+	"`JACK_SERVER_NAME`='"+RDEscapeString(q->value(11).toString())+"',"+
+	"`JACK_COMMAND_LINE`='"+RDEscapeString(q->value(12).toString())+"',"+
+	QString::asprintf("`JACK_PORTS`=%d,",q->value(13).toInt())+
+	QString::asprintf("`CUE_CARD`=%d,",q->value(14).toInt())+
+	QString::asprintf("`CUE_PORT`=%d,",q->value(15).toInt())+
+	QString::asprintf("`CUE_START_CART`=%u,",q->value(16).toInt())+
+	QString::asprintf("`CUE_STOP_CART`=%u,",q->value(17).toInt())+
+	QString::asprintf("`CARTSLOT_COLUMNS`=%d,",q->value(18).toInt())+
+	QString::asprintf("`CARTSLOT_ROWS`=%d,",q->value(19).toInt())+
+	"`ENABLE_DRAGDROP`='"+RDEscapeString(q->value(20).toString())+"',"+
+	"`ENFORCE_PANEL_SETUP`='"+RDEscapeString(q->value(21).toString())+"',"+
+	"`REPORT_EDITOR_PATH`='"+RDEscapeString(q->value(22).toString())+"',"+
+	"`BROWSER_PATH`='"+RDEscapeString(q->value(23).toString())+"'";
       q1=new RDSqlQuery(sql);
       if(!q1->isActive()) {
 	*err_msg=QObject::tr("host already exists");

@@ -42,6 +42,19 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 357
+  //
+  if((cur_schema==357)&&(set_schema<cur_schema)) {
+    sql=QString("alter table `STATIONS` ")+
+      "add column `EDITOR_PATH` varchar(191) after `STARTUP_CART`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 356
   //
   if((cur_schema==356)&&(set_schema<cur_schema)) {

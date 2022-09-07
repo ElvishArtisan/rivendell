@@ -823,13 +823,6 @@
       (<userinput>127.0.0.1</userinput>) here.
     </para>
     <para>
-      The <computeroutput>Audio Editor:</computeroutput> can be used to
-      specify an external audio editor for use by rdlibrary(1). If desired,
-      the value should consist of the command invocation needed to start
-      the edit, with a <userinput>%f</userinput> wildcard to indicate the
-      name of the file to open.
-    </para>
-    <para>
       The <computeroutput>Report Editor:</computeroutput> can be used to
       specify an external text editor to be used to display reports.
       If desired, the value should consist of the command invocation

@@ -2,7 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -110,26 +110,10 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   connect(record_cut_button,SIGNAL(clicked()),this,SLOT(recordCutData()));
 
   //
-  // Send to (external) Editor Button (ex: Audacity)
-  //
-  ext_editor_cut_button=new QPushButton(this);
-  ext_editor_cut_button->setGeometry(550,60,80,50);
-  ext_editor_cut_button->setFont(buttonFont());
-  ext_editor_cut_button->setText(tr("Edit\nAudio"));
-  connect(ext_editor_cut_button,SIGNAL(clicked()),
-	  this,SLOT(extEditorCutData()));
-  int yoffset=60;
-  if((!rda->libraryConf()->enableEditor())||
-     rda->station()->editorPath().isEmpty()) {
-    ext_editor_cut_button->hide();
-    yoffset=0;
-  }
-
-  //
   // Edit Cut Button
   //
   edit_cut_button=new QPushButton(this);
-  edit_cut_button->setGeometry(550,60+yoffset,80,50);
+  edit_cut_button->setGeometry(550,60,80,50);
   edit_cut_button->setFont(buttonFont());
   edit_cut_button->setText(tr("Edit\nMarkers"));
   connect(edit_cut_button,SIGNAL(clicked()),this,SLOT(editCutData()));
@@ -139,7 +123,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   import_cut_button=
     new RDBiPushButton(tr("Import"),tr("Export"),this,rda->config());
-  import_cut_button->setGeometry(550,120+yoffset,80,50);
+  import_cut_button->setGeometry(550,120,80,50);
   import_cut_button->setFont(buttonFont());
   connect(import_cut_button,SIGNAL(clicked()),this,SLOT(importCutData()));
 
@@ -147,7 +131,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   // Rip Cut Button
   //
   rip_cut_button=new QPushButton(this);
-  rip_cut_button->setGeometry(550,180+yoffset,80,50);
+  rip_cut_button->setGeometry(550,180,80,50);
   rip_cut_button->setFont(buttonFont());
   rip_cut_button->setText(tr("Rip CD"));
   connect(rip_cut_button,SIGNAL(clicked()),this,SLOT(ripCutData()));
@@ -162,7 +146,6 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   }
   rip_cut_button->setEnabled(rdcart_modification_allowed);
   import_cut_button->setEnabled(rdcart_modification_allowed);
-  ext_editor_cut_button->setEnabled(rdcart_modification_allowed);
 }
 
 
@@ -404,28 +387,6 @@ void AudioCart::pasteCutData()
 }
 
 
-void AudioCart::extEditorCutData()
-{
-  QModelIndex row=SingleSelectedLine();
-
-  if(!row.isValid()) {
-    return;
-  }
-
-  QString cmd=rda->station()->editorPath();
-  cmd.replace("%f",RDCut::pathName(rdcart_cut_model->cutName(row)));
-  // FIXME: other replace commands to match: lib/rdcart_dialog.cpp editorData()
-  //        These substitions should be documented (maybe a text file),
-  //            ex: %f = cart_cut filename
-  //        and possibly also add some tooltips with help advice
-
-  if(fork()==0) {
-    RDCheckExitCode("extEditorCutData() system",system((cmd+" &").toUtf8()));
-    exit(0);
-  }
-}
-
-
 void AudioCart::editCutData()
 {
   QModelIndex row=SingleSelectedLine();
@@ -631,7 +592,6 @@ void AudioCart::UpdateButtons()
     setEnabled(row.isValid()&&(cut_clipboard!=NULL)&&
 	       rdcart_modification_allowed);
   record_cut_button->setEnabled(row.isValid());
-  ext_editor_cut_button->setEnabled(row.isValid()&&rdcart_modification_allowed);
   edit_cut_button->setEnabled(row.isValid());
   import_cut_button->setEnabled(row.isValid()&&rdcart_modification_allowed);
   rip_cut_button->setEnabled(row.isValid()&&rdcart_modification_allowed);

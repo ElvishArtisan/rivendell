@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cart.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -57,7 +57,6 @@ class RDCartDialog : public RDDialog
   void cartDoubleClickedData(const QModelIndex &index);
   void selectionChangedData(const QItemSelection &before,
 			    const QItemSelection &after);
-  void editorData();
   void loadFileData();
   void okData();
   void cancelData();
@@ -76,7 +75,6 @@ class RDCartDialog : public RDDialog
   RDLibraryModel *cart_cart_model;
   QPushButton *cart_ok_button;
   QPushButton *cart_cancel_button;
-  QPushButton *cart_editor_button;
   QPushButton *cart_file_button;
   QString *cart_filter;
   bool local_filter;

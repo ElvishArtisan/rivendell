@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Workstation Configuration
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -125,15 +125,6 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_address_label=new QLabel(tr("IP Address:"),this);
   station_address_label->setFont(labelFont());
   station_address_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
-  // Audio Editor Command
-  //
-  station_audio_editor_edit=new QLineEdit(this);
-  station_audio_editor_edit->setMaxLength(191);
-  station_audio_editor_label=new QLabel(tr("Audio Editor")+":",this);
-  station_audio_editor_label->setFont(labelFont());
-  station_audio_editor_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Report Editor Command
@@ -469,7 +460,6 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_short_name_edit->setText(station_station->shortName());
   station_description_edit->setText(station_station->description());
   station_address_edit->setText(station_station->address().toString());
-  station_audio_editor_edit->setText(station_station->editorPath());
   station_report_editor_edit->setText(station_station->reportEditorPath());
   station_web_browser_edit->setText(station_station->browserPath());
   station_ssh_identity_file_edit->setText(station_station->sshIdentityFile());
@@ -561,7 +551,7 @@ EditStation::~EditStation()
 
 QSize EditStation::sizeHint() const
 {
-  return QSize(415,765);
+  return QSize(415,744);
 } 
 
 
@@ -677,8 +667,6 @@ void EditStation::okData()
   station_station->setDescription(station_description_edit->text());
   station_station->setDefaultName(station_username_box->currentText());
   station_station->setAddress(addr);
-  station_station->
-    setEditorPath(station_audio_editor_edit->text());
   station_station->setReportEditorPath(station_report_editor_edit->text());
   station_station->setBrowserPath(station_web_browser_edit->text());
   station_station->setSshIdentityFile(station_ssh_identity_file_edit->text());
@@ -884,95 +872,92 @@ void EditStation::resizeEvent(QResizeEvent *e)
   station_address_edit->setGeometry(115,86,120,19);
   station_address_label->setGeometry(10,86,100,19);
 
-  station_audio_editor_edit->setGeometry(115,107,size().width()-120,19);
-  station_audio_editor_label->setGeometry(10,107,100,19);
+  station_report_editor_edit->setGeometry(115,107,size().width()-120,19);
+  station_report_editor_label->setGeometry(10,107,100,19);
 
-  station_report_editor_edit->setGeometry(115,128,size().width()-120,19);
-  station_report_editor_label->setGeometry(10,128,100,19);
+  station_web_browser_edit->setGeometry(115,128,size().width()-120,19);
+  station_web_browser_label->setGeometry(10,129,100,19);
 
-  station_web_browser_edit->setGeometry(115,149,size().width()-120,19);
-  station_web_browser_label->setGeometry(10,149,100,19);
+  station_ssh_identity_file_edit->setGeometry(115,149,size().width()-120,19);
+  station_ssh_identity_file_label->setGeometry(10,149,100,19);
 
-  station_ssh_identity_file_edit->setGeometry(115,170,size().width()-120,19);
-  station_ssh_identity_file_label->setGeometry(10,170,100,19);
+  station_timeoffset_box->setGeometry(115,170,80,19);
+  station_timeoffset_label->setGeometry(10,170,100,19);
 
-  station_timeoffset_box->setGeometry(115,191,80,19);
-  station_timeoffset_label->setGeometry(10,191,100,19);
+  station_startup_cart_edit->setGeometry(115,191,60,19);
+  station_startup_cart_label->setGeometry(10,191,100,19);
+  station_startup_select_button->setGeometry(190,190,50,22);
 
-  station_startup_cart_edit->setGeometry(115,212,60,19);
-  station_startup_cart_label->setGeometry(10,212,100,19);
-  station_startup_select_button->setGeometry(180,211,50,22);
-
-  station_cue_sel->setGeometry(115,243,station_cue_sel->sizeHint().width(),
+  station_cue_sel->setGeometry(115,223,station_cue_sel->sizeHint().width(),
 			       station_cue_sel->sizeHint().height());
-  station_cue_sel_label->setGeometry(10,243,100,19);
+  station_cue_sel_label->setGeometry(10,222,100,19);
 
-  station_start_cart_edit->setGeometry(290,243,60,20);
-  station_start_cart_label->setGeometry(205,243,80,20);
-  station_start_cart_button->setGeometry(355,242,50,22);
+  station_start_cart_edit->setGeometry(290,222,60,20);
+  station_start_cart_label->setGeometry(205,222,80,20);
+  station_start_cart_button->setGeometry(355,221,50,22);
 
-  station_stop_cart_edit->setGeometry(290,264,60,20);
-  station_stop_cart_label->setGeometry(205,264,80,20);
-  station_stop_cart_button->setGeometry(355,263,50,22);
+  station_stop_cart_edit->setGeometry(290,243,60,20);
+  station_stop_cart_label->setGeometry(205,243,80,20);
+  station_stop_cart_button->setGeometry(355,242,50,22);
 
-  station_heartbeat_box->setGeometry(10,287,15,15);
-  station_heartbeat_label->setGeometry(30,285,150,20);
+  station_heartbeat_box->setGeometry(10,266,15,15);
+  station_heartbeat_label->setGeometry(30,264,150,20);
 
-  station_filter_box->setGeometry(210,287,15,15);
-  station_filter_label->setGeometry(230,285,150,20);
+  station_filter_box->setGeometry(210,266,15,15);
+  station_filter_label->setGeometry(230,265,150,20);
 
-  station_hbcart_edit->setGeometry(65,310,60,19);
-  station_hbcart_label->setGeometry(10,310,50,19);
-  station_hbcart_button->setGeometry(140,307,60,26);
+  station_hbcart_edit->setGeometry(65,289,60,19);
+  station_hbcart_label->setGeometry(10,289,50,19);
+  station_hbcart_button->setGeometry(140,286,60,26);
 
-  station_hbinterval_spin->setGeometry(275,310,45,19);
-  station_hbinterval_label->setGeometry(200,310,70,19);
-  station_hbinterval_unit->setGeometry(325,310,100,19);
+  station_hbinterval_spin->setGeometry(275,289,45,19);
+  station_hbinterval_label->setGeometry(200,289,70,19);
+  station_hbinterval_unit->setGeometry(325,289,100,19);
 
-  station_maint_box->setGeometry(10,335,15,15);
-  station_maint_label->setGeometry(30,333,size().width()-40,20);
+  station_maint_box->setGeometry(10,314,15,15);
+  station_maint_label->setGeometry(30,312,size().width()-40,20);
 
-  station_dragdrop_box->setGeometry(10,356,15,15);
-  station_dragdrop_label->setGeometry(30,354,size().width()-40,20);
+  station_dragdrop_box->setGeometry(10,335,15,15);
+  station_dragdrop_label->setGeometry(30,333,size().width()-40,20);
 
-  station_panel_enforce_box->setGeometry(25,375,15,15);
-  station_panel_enforce_label->setGeometry(45,374-1,size().width()-55,20);
+  station_panel_enforce_box->setGeometry(25,354,15,15);
+  station_panel_enforce_label->setGeometry(45,351,size().width()-55,20);
 
-  station_systemservices_groupbox->setGeometry(10,395,size().width()-20,68);
+  station_systemservices_groupbox->setGeometry(10,374,size().width()-20,68);
 
-  station_http_station_box->setGeometry(145,418,size().width()-165,19);
-  station_http_station_label->setGeometry(11,416,130,19);
+  station_http_station_box->setGeometry(145,397,size().width()-165,19);
+  station_http_station_label->setGeometry(11,395,130,19);
 
-  station_cae_station_box->setGeometry(145,439,size().width()-165,19);
-  station_cae_station_label->setGeometry(11,439,130,19);
+  station_cae_station_box->setGeometry(145,418,size().width()-165,19);
+  station_cae_station_label->setGeometry(11,418,130,19);
 
-  station_rdlibrary_button->setGeometry(30,469,80,50);
+  station_rdlibrary_button->setGeometry(30,448,80,50);
 
-  station_rdcatch_button->setGeometry(120,469,80,50);
+  station_rdcatch_button->setGeometry(120,448,80,50);
 
-  station_rdairplay_button->setGeometry(210,469,80,50);
+  station_rdairplay_button->setGeometry(210,448,80,50);
 
-  station_rdpanel_button->setGeometry(300,469,80,50);
+  station_rdpanel_button->setGeometry(300,448,80,50);
 
-  station_rdlogedit_button->setGeometry(30,527,80,50);
+  station_rdlogedit_button->setGeometry(30,506,80,50);
 
-  station_rdcartslots_button->setGeometry(120,527,80,50);
+  station_rdcartslots_button->setGeometry(120,506,80,50);
 
-  station_dropboxes_button->setGeometry(210,527,80,50);
+  station_dropboxes_button->setGeometry(210,506,80,50);
 
-  station_switchers_button->setGeometry(300,527,80,50);
+  station_switchers_button->setGeometry(300,506,80,50);
 
-  station_hostvars_button->setGeometry(30,585,80,50);
+  station_hostvars_button->setGeometry(30,564,80,50);
 
-  station_audioports_button->setGeometry(120,585,80,50);
+  station_audioports_button->setGeometry(120,564,80,50);
 
-  station_ttys_button->setGeometry(210,585,80,50);
+  station_ttys_button->setGeometry(210,564,80,50);
 
-  station_adapters_button->setGeometry(300,585,80,50);
+  station_adapters_button->setGeometry(300,564,80,50);
 
-  station_jack_button->setGeometry(120,643,80,50);
+  station_jack_button->setGeometry(120,622,80,50);
 
-  station_pypad_button->setGeometry(210,643,80,50);
+  station_pypad_button->setGeometry(210,622,80,50);
 
   station_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   station_cancel_button->

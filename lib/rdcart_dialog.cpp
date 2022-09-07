@@ -118,24 +118,15 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   }
 
   //
-  // Send to Editor Button
-  //
-  cart_editor_button=new QPushButton(tr("Send to\nEditor"),this);
-  cart_editor_button->setFont(buttonFont());
-  connect(cart_editor_button,SIGNAL(clicked()),this,SLOT(editorData()));
-  if(rda->station()->editorPath().isEmpty()) {
-    cart_editor_button->hide();
-  }
-
-  //
   // Load From File Button
   //
   cart_file_button=new QPushButton(tr("Load From\nFile"),this);
   cart_file_button->setFont(buttonFont());
   connect(cart_file_button,SIGNAL(clicked()),this,SLOT(loadFileData()));
-  if(rda->station()->editorPath().isEmpty()) {
-    cart_file_button->hide();
-  }
+  //
+  // FIXME: How about this?
+  //
+  cart_file_button->hide();
 
   //
   // OK Button
@@ -190,12 +181,6 @@ int RDCartDialog::exec(int *cartnum,RDCart::Type type,const QString &svc,
   switch(cart_type) {
     case RDCart::All:
     case RDCart::Audio:
-      if(rda->station()->editorPath().isEmpty()) {
-	cart_editor_button->hide();
-      }
-      else {
-	cart_editor_button->show();
-      }
       if(temp_allowed==NULL) {
 	cart_file_button->hide();
       }
@@ -209,7 +194,6 @@ int RDCartDialog::exec(int *cartnum,RDCart::Type type,const QString &svc,
       break;
 
     case RDCart::Macro:
-      cart_editor_button->hide();
       if(cart_player!=NULL) {
 	cart_player->playButton()->hide();
 	cart_player->stopButton()->hide();
@@ -258,66 +242,6 @@ void RDCartDialog::selectionChangedData(const QItemSelection &before,
   cart_ok_button->setEnabled(rows.size()==1);
 }
 
-
-void RDCartDialog::editorData()
-{
-  QModelIndexList rows=cart_cart_view->selectionModel()->selectedRows();
-
-  if(rows.size()!=1) {
-    return;
-  }
-
-  unsigned cartnum=cart_cart_model->cartNumber(rows.first());
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("select ")+
-    "`CUTS`.`CUT_NAME`,"+      // 00
-    "`CUTS`.`LENGTH`,"+        // 01
-    "`CART`.`GROUP_NAME`,"+    // 02
-    "`CART`.`TITLE`,"+         // 03
-    "`CART`.`ARTIST`,"+        // 04
-    "`CART`.`ALBUM`,"+         // 05
-    "`CART`.`YEAR`,"+          // 06
-    "`CART`.`LABEL`,"+         // 07
-    "`CART`.`CLIENT`,"+        // 08
-    "`CART`.`AGENCY`,"+        // 09
-    "`CART`.`COMPOSER`,"+      // 10
-    "`CART`.`PUBLISHER`,"+     // 11
-    "`CART`.`USER_DEFINED` "+  // 12
-    "from `CUTS` left join `CART` "+
-    "on `CUTS`.`CART_NUMBER`=`CART`.`NUMBER` where "+
-    QString::asprintf("(`CUTS`.`CART_NUMBER`=%u)&&",cartnum)+
-    "(`CUTS`.`LENGTH`>0)";
-  q=new RDSqlQuery(sql);
-  if(!q->first()) {
-    delete q;
-    return;
-  }
-  QString cmd=rda->station()->editorPath();
-  cmd.replace("%f",RDCut::pathName(q->value(0).toString()));
-  cmd.replace("%n",QString::asprintf("%06u",cartnum));
-  cmd.replace("%h",QString::asprintf("%d",q->value(1).toInt()));
-  cmd.replace("%g",q->value(2).toString());
-  cmd.replace("%t",q->value(3).toString());
-  cmd.replace("%a",q->value(4).toString());
-  cmd.replace("%l",q->value(5).toString());
-  cmd.replace("%y",q->value(6).toString());
-  cmd.replace("%b",q->value(7).toString());
-  cmd.replace("%c",q->value(8).toString());
-  cmd.replace("%e",q->value(9).toString());
-  cmd.replace("%m",q->value(10).toString());
-  cmd.replace("%p",q->value(11).toString());
-  cmd.replace("%u",q->value(12).toString());
-  delete q;
-
-  if(fork()==0) {
-    RDCheckExitCode("RDCartDialog editor subprocess",
-		    system((cmd+" &").toUtf8()));
-    exit(0);
-  }
-}
-                                                                                
 
 void RDCartDialog::loadFileData()
 {
@@ -443,7 +367,6 @@ void RDCartDialog::resizeEvent(QResizeEvent *e)
 
   cart_cart_view->setGeometry(10,cart_cart_filter->sizeHint().height(),
 			      w-20,h-cart_cart_filter->sizeHint().height()-70);
-  cart_editor_button->setGeometry(235,h-60,80,50);
   cart_file_button->setGeometry(325,h-60,80,50);
   cart_ok_button->setGeometry(w-180,h-60,80,50);
   cart_cancel_button->setGeometry(w-90,h-60,80,50);

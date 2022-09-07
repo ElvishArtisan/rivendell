@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Workstation
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,7 @@
 #ifndef RDSTATION_H
 #define RDSTATION_H
 
-#include <qsqldatabase.h>
-#include <qhostaddress.h>
+#include <QHostAddress>
 
 #include <rdconfig.h>
 
@@ -62,8 +61,6 @@ class RDStation
   void setHeartbeatInterval(unsigned interval) const;
   unsigned startupCart() const;
   void setStartupCart(unsigned cartnum) const;
-  QString editorPath() const;
-  void setEditorPath(const QString &cmd);
   QString reportEditorPath() const;
   void setReportEditorPath(const QString &cmd);
   QString browserPath() const;
