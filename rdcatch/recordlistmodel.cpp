@@ -295,7 +295,7 @@ RDRecording::ExitCode RecordListModel::recordExitCode(const QModelIndex &row)
 
 QString RecordListModel::hostName(const QModelIndex &row) const
 {
-  return d_texts.at(row.row()).at(23).toString();
+  return d_texts.at(row.row()).at(24).toString();
 }
 
 

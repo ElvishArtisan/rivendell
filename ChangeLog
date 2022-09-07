@@ -23264,3 +23264,7 @@
 2022-09-07 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that broke operation of the
 	head and tail audition buttons.
+2022-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that could cause the wrong
+	host to be used as the default location when creating a new
+	event.
