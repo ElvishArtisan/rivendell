@@ -1530,7 +1530,7 @@ void RDTrackerWidget::positionData(int id,int msecs)
   int x=-1;
   if(msecs>=0) {
     if((msecs>=d_wave_origin[id])&&
-       (msecs<(d_wave_origin[id]+d_wave_width))) {
+       (msecs<(d_wave_origin[id]+d_time_width))) {
       x=(int)(((double)(msecs-d_wave_origin[id]))*
 	      ((double)(d_wave_map[id]->size().width()))/
 	      ((double)size().width()*(double)TRACKER_START_WIDTH/800.0))+10;
@@ -2137,7 +2137,7 @@ void RDTrackerWidget::LoadTrack(int line)
       d_wave_name[i]="";
       d_loglines[i]=NULL;
       d_wave_origin[i]=0;
-      d_wave_width=0;
+      d_time_width=0;
     }
   }
   else {
@@ -2263,7 +2263,7 @@ void RDTrackerWidget::LoadTrack(int line)
         }
       }
     }
-    d_wave_width=(double)size().width()*(double)TRACKER_START_WIDTH/800.0;
+    d_time_width=d_wave_map[2]->width()*TRACKER_MSECS_PER_PIXEL;
   }
   d_start_time=d_log_model->blockStartTime(line);
   DrawTrackMap(0);
@@ -2851,7 +2851,7 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
 	if(!d_wave_name[0].isEmpty()) {
 	  d_wpg[0]->drawWaveByMsecs(0,d_wave_map[0]->width(),
 				    d_wave_origin[0],
-				    d_wave_origin[0]+d_wave_width,800,
+				    d_wave_origin[0]+d_time_width,800,
 				    RDWavePainter::Mono,Qt::black,
 				    d_loglines[0]->
 				    startPoint(RDLogLine::CartPointer),
@@ -2993,7 +2993,7 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
 	  if(!d_wave_name[1].isEmpty()) {
 	    d_wpg[1]->drawWaveByMsecs(0,d_wave_map[1]->width(),
 				      d_wave_origin[1],
-				      d_wave_origin[1]+d_wave_width,800,
+				      d_wave_origin[1]+d_time_width,800,
 				      RDWavePainter::Mono,Qt::black,
 				      d_loglines[1]->
 				      startPoint(RDLogLine::CartPointer),
@@ -3105,11 +3105,11 @@ void RDTrackerWidget::DrawTrackMap(int trackno)
 	if(!d_wave_name[2].isEmpty()) {
 	  d_wpg[2]->
 	    drawWaveByMsecs(0,d_wave_map[2]->width(),d_wave_origin[2],
-			    d_wave_origin[2]+d_wave_width,800,
+			    d_wave_origin[2]+d_time_width,800,
 			    RDWavePainter::Mono,Qt::black,
 			    d_loglines[2]->startPoint(RDLogLine::CartPointer),
 			    d_loglines[2]->endPoint(RDLogLine::CartPointer));
-	    //
+	  //
 	  // Draw Talk Markers
 	  //
 	  if(d_loglines[2]->talkEndPoint()>0) {

@@ -23276,3 +23276,7 @@
 	* Removed the 'Audio Editor' control from the 'Configure Host'
 	dialog in rdadmin(1).
 	* Removed the 'Send to Editor' button from 'RDCartDialog'.
+2022-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the voice-track widget where the audio markers
+	would change relative position with respect to the waveform
+	when the display was scrolled or resized.

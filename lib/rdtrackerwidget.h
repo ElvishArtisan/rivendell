@@ -181,7 +181,7 @@ class RDTrackerWidget : public RDWidget
   int d_segue_start_offset[3];
   DeckState d_deck_state;
   RDPlayDeck *d_deck[3];
-  int d_wave_width;
+  int d_time_width;
   int d_input_card;
   int d_input_port;
   int d_output_card;
