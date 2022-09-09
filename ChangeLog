@@ -23283,3 +23283,7 @@
 2022-09-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'hpklinux-dev' to the list of required developmental
 	packages for Ubuntu 22.04 in 'INSTALL'.
+2022-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the JACK driver in caed(8) to define the
+	'JACK_NO_AUDIO_RESERVATION' in the environment before starting
+	jackd(1).

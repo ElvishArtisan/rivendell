@@ -472,6 +472,7 @@ bool DriverJack::initialize(unsigned *next_cardnum)
       QProcessEnvironment penv=QProcessEnvironment::systemEnvironment();
       QProcess *proc=new QProcess(this);
       penv.insert("JACK_PROMISCUOUS_SERVER","audio");
+      penv.insert("JACK_NO_AUDIO_RESERVATION","1");
       proc->setProcessEnvironment(penv);
       proc->start(program,args);
       if(proc->waitForStarted()) {
