@@ -559,7 +559,7 @@ void EditStation::selectClicked()
 {
   int cartnum=station_startup_cart_edit->text().toInt();
 
-  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)==0) {
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,QString(),NULL)) {
     station_startup_cart_edit->setText(QString::asprintf("%06d",cartnum));
   }
 }

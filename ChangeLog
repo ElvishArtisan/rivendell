@@ -23287,3 +23287,6 @@
 	* Modified the JACK driver in caed(8) to define the
 	'JACK_NO_AUDIO_RESERVATION' in the environment before starting
 	jackd(1).
+2022-09-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdadmin(1) that made it impossible to set
+	a 'Startup Cart' button using the 'Select' button.

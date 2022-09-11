@@ -205,6 +205,8 @@ int RDCartDialog::exec(int *cartnum,RDCart::Type type,const QString &svc,
   if(cart_cartnum!=NULL) {
     QModelIndex index=cart_cart_model->cartRow(*cart_cartnum);
     cart_cart_view->selectRow(index.row());
+    cart_ok_button->
+      setEnabled(cart_cart_view->selectionModel()->selectedRows().size()>0);
   }
 
   return QDialog::exec();
