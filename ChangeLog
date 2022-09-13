@@ -23293,3 +23293,6 @@
 2022-09-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlibrary(1) that ccould cause the waveform display
 	in the 'Edit Audio' dialog to truncate the end of the waveform.
+2022-09-13 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the Button Log widget in rdairplay(1) so as to display
+	cut-level attributes only after the definitive cut has been selected.

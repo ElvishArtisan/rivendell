@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Log Line.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1742,7 +1742,7 @@ QString RDLogLine::resolveWildcards(QString pattern,int log_id)
   }
 
   //
-  // Resolve Wildcards
+  // Cart level attributes
   //
   pattern.replace("%a",artist());
   pattern.replace("%b",label());
@@ -1752,26 +1752,50 @@ QString RDLogLine::resolveWildcards(QString pattern,int log_id)
   // %f [unassigned]
   pattern.replace("%g",groupName());
   pattern.replace("%h",QString::asprintf("%d",effectiveLength()));
-  pattern.replace("%i",description());
-  pattern.replace("%j",QString::asprintf("%03d",cutNumber()));
-  pattern.replace("%k",start_time);
-  pattern.replace("%K",end_time);
   pattern.replace("%l",album());
   pattern.replace("%m",composer());
   pattern.replace("%n",QString::asprintf("%06u",cartNumber()));
-  pattern.replace("%o",outcue());
   pattern.replace("%p",publisher());
-  pattern.replace("%q",start_date);
-  pattern.replace("%Q",end_date);
   pattern.replace("%r",conductor());
   pattern.replace("%s",songId());
   pattern.replace("%t",title());
   pattern.replace("%u",userDefined());
   pattern.replace("%v",QString::asprintf("%d",effectiveLength()/1000));
-  pattern.replace("%wc",isci());
-  pattern.replace("%wi",isrc());
-  pattern.replace("%wm",recordingMbId());
-  pattern.replace("%wr",releaseMbId());
+  //
+  // Cut-level attributes
+  // Resolve only if we have actually selected a cut.
+  //
+  if((log_status==RDLogLine::Scheduled)||
+     (log_status==RDLogLine::Auditioning)) {
+    pattern.replace("%i","");
+    pattern.replace("%j","");
+    pattern.replace("%o","");
+    pattern.replace("%q","");
+    pattern.replace("%Q","");
+    pattern.replace("%k","");
+    pattern.replace("%K","");
+    pattern.replace("%wc","");
+    pattern.replace("%wi","");
+    pattern.replace("%wm","");
+    pattern.replace("%wr","");
+  }
+  else {
+    pattern.replace("%i",description());
+    pattern.replace("%j",QString::asprintf("%03d",cutNumber()));
+    pattern.replace("%o",outcue());
+    pattern.replace("%q",start_date);
+    pattern.replace("%Q",end_date);
+    pattern.replace("%k",start_time);
+    pattern.replace("%K",end_time);
+    pattern.replace("%wc",isci());
+    pattern.replace("%wi",isrc());
+    pattern.replace("%wm",recordingMbId());
+    pattern.replace("%wr",releaseMbId());
+  }
+
+  //
+  // Log-based attributes
+  //
   if(log_id<0) {
     pattern.replace("%x",QString::asprintf("%d",id()));
   }

@@ -195,7 +195,6 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   line_outcue_label=new QLabel(this);
   line_outcue_label->setPalette(line_text_palette);
   line_outcue_label->setFont(outcue_font);
-  line_outcue_label->hide();
 
   //
   // Artist
@@ -408,14 +407,12 @@ void LogLineBox::setMode(LogLineBox::Mode mode)
 
 void LogLineBox::setStatus(RDLogLine::Status status)
 {
-  switch(status) {
-  case RDLogLine::Scheduled:
-    line_outcue_label->hide();
-    break;
-
-  default:
-    line_outcue_label->show();
-    break;
+  if((status==RDLogLine::Scheduled)||
+     (status==RDLogLine::Auditioning)) {
+    line_cut_label->hide();
+  }
+  else {
+    line_cut_label->show();
   }
   line_status=status;
 }
@@ -737,13 +734,13 @@ void LogLineBox::clear()
   SetPalette(line_default_palette,Qt::black);
   line_cart_label->setText("");
   line_cut_label->setText("");
+  line_cut_label->hide();
   line_group_label->setText("");
   line_trans_label->setText("");
   line_title_label->setText("");
   line_description_label->setText("");
   line_artist_label->setText("");
   line_outcue_label->setText("");
-  line_outcue_label->hide();
   line_comment_label->setText("");
   line_time_label->setText("");
   line_talktime_label->setText("");
