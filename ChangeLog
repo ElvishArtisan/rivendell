@@ -23290,3 +23290,6 @@
 2022-09-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdadmin(1) that made it impossible to set
 	a 'Startup Cart' button using the 'Select' button.
+2022-09-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that ccould cause the waveform display
+	in the 'Edit Audio' dialog to truncate the end of the waveform.

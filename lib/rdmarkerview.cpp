@@ -686,7 +686,7 @@ bool RDMarkerView::setCut(QString *err_msg,unsigned cartnum,int cutnum)
   while(d_wave_factory->energySize()>=(d_width*d_max_shrink_factor)) {
     d_max_shrink_factor=d_max_shrink_factor*2;
   }
-  d_pad_size=(d_width*d_max_shrink_factor-d_wave_factory->energySize())/d_max_shrink_factor-1;
+  d_pad_size=64+(d_width*d_max_shrink_factor-d_wave_factory->energySize())/d_max_shrink_factor-1;
   d_shrink_factor=d_max_shrink_factor;
   WriteWave();
 
