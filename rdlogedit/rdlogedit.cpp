@@ -79,6 +79,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
     }
   }
 
+  loadSettings(true);
+
   //
   // CAE Connection
   //
@@ -189,8 +191,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 	     tr("User")+": ["+tr("Unknown")+"]");
 
   log_resize=true;
-
-  loadSettings(true);
 }
 
 
@@ -203,6 +203,21 @@ QSize MainWidget::sizeHint() const
 QSizePolicy MainWidget::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void MainWidget::loadLocalSettings(RDProfile *p)
+{
+  printf("RDLogEdit loadLocalSettings()\n");
+  global_start_time_style=
+    p->intValue("rdlogedit","StartTimeStyle",(int)RDLogModel::Estimated);
+}
+
+
+void MainWidget::saveLocalSettings(FILE *f) const
+{
+  printf("RDLogEdit saveLocalSettings()\n");
+  fprintf(f,"StartTimeStyle=%d\n",global_start_time_style);
 }
 
 

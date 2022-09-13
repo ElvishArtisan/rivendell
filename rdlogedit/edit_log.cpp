@@ -648,6 +648,7 @@ void EditLog::timestyleChangedData(int index)
 {
   bool changed=edit_changed;
   edit_log_model->setStartTimeStyle((RDLogModel::StartTimeStyle)index);
+  global_start_time_style=index;
   if(!changed) {
     SetLogModified(false);
   }

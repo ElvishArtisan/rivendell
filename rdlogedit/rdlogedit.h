@@ -47,6 +47,10 @@ class MainWidget : public RDMainWindow
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
+ protected:
+  void loadLocalSettings(RDProfile *p);
+  void saveLocalSettings(FILE *f) const;
+
  private slots:
   void caeConnectedData(bool state);
   void userData();
