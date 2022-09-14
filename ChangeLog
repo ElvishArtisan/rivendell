@@ -23307,3 +23307,6 @@
 	* Fixed a bug in rdadmin(1) that caused the value of the
 	'SSH Ident. File' on the 'Edit Host' dialog to fail to be
 	propagated when cloning a new host.
+2022-09-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that could cause segfaults when adding
+	a new RSS feed.

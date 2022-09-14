@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell RSS feeds
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -357,6 +357,7 @@ QModelIndex RDFeedListModel::addFeed(const QString &keyname)
   d_cast_ids.insert(offset,ids_list);
   d_cast_icons.insert(offset,list);
   d_key_names.insert(offset,keyname);
+  d_cast_texts.insert(offset,list_list);
 
   QString sql=sqlFields()+
 	"where "+
@@ -385,6 +386,7 @@ void RDFeedListModel::removeFeed(const QString &keyname)
       d_cast_ids.removeAt(i);
       d_cast_icons.removeAt(i);
       d_key_names.removeAt(i);
+      d_cast_texts.removeAt(i);
 
       endRemoveRows();
       emit rowCountChanged(d_texts.size());
@@ -495,6 +497,7 @@ void RDFeedListModel::updateModel(const QString &filter_sql)
   d_cast_ids.clear();
   d_cast_icons.clear();
   d_key_names.clear();
+  d_cast_texts.clear();
 
   if(d_include_none) {
     d_feed_ids.push_back(0);
