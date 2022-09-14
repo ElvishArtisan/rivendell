@@ -869,7 +869,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "`ENABLE_DRAGDROP`,"+     // 20
       "`ENFORCE_PANEL_SETUP`,"+ // 21
       "`REPORT_EDITOR_PATH`,"+  // 22
-      "`BROWSER_PATH` "+        // 23
+      "`BROWSER_PATH`,"+        // 23
+      "`SSH_IDENTITY_FILE` "+   // 24
       "from `STATIONS` where "+
       "`NAME`='"+RDEscapeString(exemplar)+"'";
     q=new RDSqlQuery(sql);
@@ -903,7 +904,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	"`ENABLE_DRAGDROP`='"+RDEscapeString(q->value(20).toString())+"',"+
 	"`ENFORCE_PANEL_SETUP`='"+RDEscapeString(q->value(21).toString())+"',"+
 	"`REPORT_EDITOR_PATH`='"+RDEscapeString(q->value(22).toString())+"',"+
-	"`BROWSER_PATH`='"+RDEscapeString(q->value(23).toString())+"'";
+	"`BROWSER_PATH`='"+RDEscapeString(q->value(23).toString())+"',"+
+	"`SSH_IDENTITY_FILE`='"+RDEscapeString(q->value(24).toString())+"'";
       q1=new RDSqlQuery(sql);
       if(!q1->isActive()) {
 	*err_msg=QObject::tr("host already exists");
