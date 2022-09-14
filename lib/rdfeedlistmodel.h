@@ -2,7 +2,7 @@
 //
 // Data model for Rivendell RSS feeds
 //
-//   (C) Copyright 2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2021-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -85,16 +85,21 @@ class RDFeedListModel : public QAbstractItemModel
   QFontMetrics *d_font_metrics;
   QFont d_bold_font;
   QFontMetrics *d_bold_font_metrics;
+  // Column Data
   QList<QVariant> d_headers;
+  QList<QVariant> d_alignments;
+
+  // Row Data
+  QList<unsigned> d_feed_ids;
   QList<QList<QVariant> > d_texts;
   QList<QList<QVariant> > d_icons;
-  QList<QList<QList<QVariant> > > d_cast_texts;
   QList<QList<unsigned> > d_cast_ids;
   QList<QList<QVariant> > d_cast_icons;
-  QList<QVariant> d_alignments;
-  QList<QVariant> d_background_colors;
   QStringList d_key_names;
-  QList<unsigned> d_feed_ids;
+
+  // Z Data (episodes)
+  QList<QList<QList<QVariant> > > d_cast_texts;
+
   bool d_is_admin;
   bool d_include_none;
 };

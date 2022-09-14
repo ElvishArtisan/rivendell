@@ -350,13 +350,13 @@ QModelIndex RDFeedListModel::addFeed(const QString &keyname)
   }
   QList<QList<QVariant> > list_list;
   QList<unsigned> ids_list;
-  list_list.push_back(list);
-  d_icons.insert(offset,list);
-  d_texts.insert(offset,list);
-  d_key_names.insert(offset,keyname);
   d_feed_ids.insert(offset,0);
+  d_texts.insert(offset,list);
+  d_icons.insert(offset,list);
+  list_list.push_back(list);
   d_cast_ids.insert(offset,ids_list);
   d_cast_icons.insert(offset,list);
+  d_key_names.insert(offset,keyname);
 
   QString sql=sqlFields()+
 	"where "+
@@ -379,12 +379,12 @@ void RDFeedListModel::removeFeed(const QString &keyname)
     if(d_key_names.at(i)==keyname) {
       beginRemoveRows(QModelIndex(),i,i);
 
-      d_key_names.removeAt(i);
       d_feed_ids.removeAt(i);
       d_texts.removeAt(i);
+      d_icons.removeAt(i);
       d_cast_ids.removeAt(i);
       d_cast_icons.removeAt(i);
-      d_icons.removeAt(i);
+      d_key_names.removeAt(i);
 
       endRemoveRows();
       emit rowCountChanged(d_texts.size());
@@ -489,35 +489,35 @@ void RDFeedListModel::updateModel(const QString &filter_sql)
     "order by `FEEDS`.`KEY_NAME` asc, `PODCASTS`.`ORIGIN_DATETIME` desc";
   //  printf("SQL: %s\n",sql.toUtf8().constData());
   beginResetModel();
-  d_texts.clear();
-  d_key_names.clear();
   d_feed_ids.clear();
+  d_texts.clear();
+  d_icons.clear();
   d_cast_ids.clear();
   d_cast_icons.clear();
-  d_icons.clear();
+  d_key_names.clear();
 
   if(d_include_none) {
+    d_feed_ids.push_back(0);
     d_texts.push_back(list);
     d_texts[0][0]=tr("[none]");
+    d_icons.push_back(icons);
     d_key_names.push_back(QString());
-    d_feed_ids.push_back(0);
-    d_cast_texts.push_back(list_list);
     d_cast_ids.push_back(ids);
     d_cast_icons.push_back(list);
-    d_icons.push_back(icons);
+    d_cast_texts.push_back(list_list);
   }
 
   QString prev_keyname;
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(0).toString()!=prev_keyname) {
-      d_texts.push_back(list);
-      d_key_names.push_back(QString());
       d_feed_ids.push_back(0);
-      d_cast_texts.push_back(list_list);
+      d_texts.push_back(list);
+      d_icons.push_back(icons);
       d_cast_ids.push_back(ids);
       d_cast_icons.push_back(list);
-      d_icons.push_back(icons);
+      d_key_names.push_back(QString());
+      d_cast_texts.push_back(list_list);
       updateRow(d_texts.size()-1,q);
       prev_keyname=q->value(0).toString();
     }

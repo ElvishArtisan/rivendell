@@ -23300,3 +23300,6 @@
 	* Fixed a regression in rdlogedit(1) that caused the default setting
 	of the 'Show Start Times As' dropdown in the 'Edit Log' dialog to
 	fail to be preserved across instances.
+2022-09-14 Fred Gleason <fredg@paravelsystems.com>
+	* Rearranged data layout in the 'RDFeedListModel' class to aid
+	code readability.
