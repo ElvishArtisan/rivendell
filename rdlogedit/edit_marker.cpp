@@ -47,8 +47,8 @@ EditMarker::EditMarker(QWidget *parent)
   // Label
   //
   edit_label_edit=new QLineEdit(this);
-  edit_label_edit->setGeometry(10,156,100,18);
-  edit_label_edit->setMaxLength(10);
+  edit_label_edit->setGeometry(10,156,sizeHint().width()-200,18);
+  edit_label_edit->setMaxLength(64);
   label=new QLabel(tr("Label"),this);
   label->setFont(labelFont());
   label->setGeometry(12,140,60,14);

@@ -23310,3 +23310,7 @@
 2022-09-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that could cause segfaults when adding
 	a new RSS feed.
+2022-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug on the 'Edit Log Marker' dialog in rdlogedit(1) that
+	made it limited the maximum length of the 'Label' field to 10
+	characters.
