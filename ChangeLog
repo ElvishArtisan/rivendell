@@ -23314,3 +23314,13 @@
 	* Fixed a bug on the 'Edit Log Marker' dialog in rdlogedit(1) that
 	made it limited the maximum length of the 'Label' field to 10
 	characters.
+2022-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Format' column from the event list in rdcatch(1).
+	* Removed the 'Sample Rate' column from the event list in rdcatch(1).
+	* Removed the 'Channels' column from the event list in rdcatch(1).
+	* Removed the 'Bitrate' column from the event list in rdcatch(1).
+	* Removed the 'Host' column from the event list in rdcatch(1).
+	* Removed the 'Deck' column from the event list in rdcatch(1).
+	* Removed the 'Cart' column from the event list in rdcatch(1).
+	* Removed the 'Type' column from the event list in rdcatch(1).
+	* Removed the 'State' column from the event list in rdcatch(1).
