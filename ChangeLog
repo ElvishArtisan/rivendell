@@ -20936,6 +20936,6 @@
 2022-09-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to the podcasting subsystem to log extended curl(1)
 	information to syslog.
-2022-09-15 Fred Gleason <fredg@paravelsystems.com>
+2022-09-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for a 'SuppressLinkParameterInheritance=' directive
 	in the '[Hacks]' section of rd.conf(5).
