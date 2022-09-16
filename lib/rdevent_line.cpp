@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -920,6 +920,10 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
 			  const QString &label_cart,const QString &track_cart,
 			  QString *errors)
 {
+  //
+  // FIXME: This entire method needs to be burned down and replaced
+  //        with a rewrite.
+  //
   QString sql;
   RDSqlQuery *q;
   RDLogLine *logline=NULL;
@@ -941,6 +945,8 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
   case RDEventLine::None:
     break;
   }
+  bool suppress_link_parameter_inheritance=
+    rda->config()->suppressLinkParameterInheritance(svcname);
   RDLogLine::TimeType time_type=link_logline->timeType();
   RDLogLine::TransType trans_type=link_logline->transType();
   int grace_time=link_logline->graceTime();
@@ -949,31 +955,35 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
   //
   // Insert Parent Link
   //
-  if(log->includeImportMarkers()&&
-     !(rda->config()->suppressMusicImportLinks()&&
-       (event_import_source==RDEventLine::Music))) {
-    e->insert(e->size(),1);
-    logline=new RDLogLine();
-    *logline=*link_logline;
-    logline->setId(e->nextId());
-    *(e->logLine(e->size()-1))=*logline;
-    delete logline;
-    logline=NULL;
-
+  if((event_import_source==RDEventLine::Music)||
+     (event_import_source==RDEventLine::Traffic)) {
     //
     // Clear Leading Event Values
     //
     time_type=RDLogLine::Relative;
     trans_type=event_default_transtype;
     grace_time=-1;
-  }
-  else {
-    //
-    // Propagate Leading Event Values to Next Event
-    //
-    time_type=link_logline->timeType();
-    trans_type=link_logline->transType();
-    grace_time=link_logline->graceTime();
+    if(log->includeImportMarkers()&&
+       !(rda->config()->suppressMusicImportLinks()&&
+	 (event_import_source==RDEventLine::Music))) {
+      e->insert(e->size(),1);
+      logline=new RDLogLine();
+      *logline=*link_logline;
+      logline->setId(e->nextId());
+      *(e->logLine(e->size()-1))=*logline;
+      delete logline;
+      logline=NULL;
+    }
+    else {
+      if(!suppress_link_parameter_inheritance) {
+	//
+	// Propagate Leading Event Values to Next Event
+	//
+	time_type=link_logline->timeType();
+	trans_type=link_logline->transType();
+	grace_time=link_logline->graceTime();
+      }
+    }
   }
 
   //

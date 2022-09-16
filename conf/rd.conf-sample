@@ -191,3 +191,9 @@ TranscodingDelay=0
 ;
 ; Default action is to not save files.
 ; SaveWebgetFilesDirectory=
+
+; Do not apply the event parameters (time and transition types, hard start
+; times) from import links to the first item imported, but rather use the
+; values of the import event itself. Takes a comma-delimited list of service
+; names.
+; SuppressLinkParameterInheritance=

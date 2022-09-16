@@ -511,6 +511,13 @@ QString RDConfig::destination(unsigned n)
 }
 
 
+bool RDConfig::suppressLinkParameterInheritance(const QString &svc_name) const
+{
+  return conf_suppress_link_parameter_inheritance_services.
+    contains(svc_name,Qt::CaseInsensitive);
+}
+
+
 bool RDConfig::load()
 {
   char sname[256];
@@ -626,6 +633,9 @@ bool RDConfig::load()
     profile->intValue("Hacks","MeterPortBaseNumber",RD_DEFAULT_METER_SOCKET_BASE_UDP_PORT);
   conf_meter_port_range=
     profile->intValue("Hacks","MeterPortRange",RD_METER_SOCKET_PORT_RANGE);
+  conf_suppress_link_parameter_inheritance_services=
+    profile->stringValue("Hacks","SuppressLinkParameterInheritance").
+    split(",",QString::SkipEmptyParts);
   if((user=getpwnam(profile->stringValue("Identity","AudioOwner")))!=NULL) {
     conf_uid=user->pw_uid;
   }
@@ -770,6 +780,7 @@ void RDConfig::clear()
   conf_sas_base_cart=1;
   conf_sas_tty_device="";
   conf_destinations.clear();
+  conf_suppress_link_parameter_inheritance_services.clear();
 }
 
 

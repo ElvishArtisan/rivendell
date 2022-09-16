@@ -27,6 +27,7 @@
 
 #include <qhostaddress.h>
 #include <qstring.h>
+#include <qstringlist.h>
 
 #include <rd.h>
 
@@ -121,6 +122,7 @@ class RDConfig
   unsigned sasBaseCart() const;
   QString sasTtyDevice() const;
   QString destination(unsigned n);
+  bool suppressLinkParameterInheritance(const QString &svc_name) const;
   bool load();
   void clear();
   static QString createTablePostfix(const QString &engine);
@@ -196,6 +198,7 @@ class RDConfig
   unsigned conf_sas_base_cart;
   QString conf_sas_tty_device;
   std::vector<QString> conf_destinations;
+  QStringList conf_suppress_link_parameter_inheritance_services;
 };
 
 RDConfig *RDConfiguration(void); 
