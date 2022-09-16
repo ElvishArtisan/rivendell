@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.6.5int4 -- 1 September 2022
+v3.6.5int5 -- 16 September 2022
 
 Changes:
    RDCastManager. Added an Online Feed Report that displays a bulleted list

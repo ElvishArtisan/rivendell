@@ -20939,3 +20939,5 @@
 2022-09-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for a 'SuppressLinkParameterInheritance=' directive
 	in the '[Hacks]' section of rd.conf(5).
+2022-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.5int5.
