@@ -1210,7 +1210,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   catch_dow_label->setGeometry(400,deck_height+4,125,26);
   catch_dow_box->setGeometry(530,deck_height+4,120,26);
   catch_type_label->setGeometry(660,deck_height+4,125,26);
-  catch_type_box->setGeometry(790,deck_height+4,e->size().width()-800,26);
+  catch_type_box->setGeometry(790,deck_height+4,sizeHint().width()-800,26);
   catch_recordings_view->
     setGeometry(10,deck_height+35,e->size().width()-20,
 		e->size().height()-100-deck_height);

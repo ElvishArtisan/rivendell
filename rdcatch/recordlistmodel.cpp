@@ -39,7 +39,7 @@ RecordListModel::RecordListModel(QObject *parent)
   //
   unsigned left=Qt::AlignLeft|Qt::AlignVCenter;
   unsigned center=Qt::AlignCenter;
-  //  unsigned right=Qt::AlignRight|Qt::AlignVCenter;
+  unsigned right=Qt::AlignRight|Qt::AlignVCenter;
 
   d_headers.push_back(tr("Description"));       // 00
   d_alignments.push_back(left);
@@ -70,19 +70,19 @@ RecordListModel::RecordListModel(QObject *parent)
   d_order_columns.push_back("`RECORDINGS`.`SWITCH_OUTPUT`");
 
   d_headers.push_back(tr("Su"));                // 07
-  d_alignments.push_back(left);
+  d_alignments.push_back(center);
   d_order_columns.push_back("`RECORDINGS`.`SUN`");
 
   d_headers.push_back(tr("Mo"));                // 08
-  d_alignments.push_back(left);
+  d_alignments.push_back(center);
   d_order_columns.push_back("");
 
   d_headers.push_back(tr("Tu"));                // 09
-  d_alignments.push_back(left);
+  d_alignments.push_back(center);
   d_order_columns.push_back("");
 
   d_headers.push_back(tr("We"));                // 10
-  d_alignments.push_back(left);
+  d_alignments.push_back(center);
   d_order_columns.push_back("");
 
   d_headers.push_back(tr("Th"));                // 11
@@ -94,48 +94,40 @@ RecordListModel::RecordListModel(QObject *parent)
   d_order_columns.push_back("");
 
   d_headers.push_back(tr("Sa"));                // 13
+  d_alignments.push_back(center);
+  d_order_columns.push_back("");
+
+  d_headers.push_back(tr("Format"));            // 14
   d_alignments.push_back(left);
   d_order_columns.push_back("");
 
-  d_headers.push_back(tr("RSS Feed"));          // 14
-  d_alignments.push_back(left);
-  d_order_columns.push_back("`FEEDS`.`KEY_NAME`");
-
-  d_headers.push_back(tr("Origin"));            // 15
-  d_alignments.push_back(left);
-  d_order_columns.push_back("`CUTS`.`ORIGIN_NAME`");
-
-  d_headers.push_back(tr("One Shot"));          // 16
-  d_alignments.push_back(left);
+  d_headers.push_back(tr("One Shot"));          // 15
+  d_alignments.push_back(center);
   d_order_columns.push_back("`RECORDINGS`.`ONE_SHOT`");
 
-  d_headers.push_back(tr("Trim Threshold"));    // 17
-  d_alignments.push_back(left);
+  d_headers.push_back(tr("Autotrim"));          // 16
+  d_alignments.push_back(right);
   d_order_columns.push_back("`RECORDINGS`.`TRIM_THRESHOLD`");
 
-  d_headers.push_back(tr("StartDate Offset"));  // 18
-  d_alignments.push_back(left);
-  d_order_columns.push_back("`RECORDINGS`.`STARTDATE_OFFSET`");
+  d_headers.push_back(tr("Normalization"));     // 17
+  d_alignments.push_back(right);
+  d_order_columns.push_back("`RECORDINGS`.`NORMALIZE_LEVEL`");
 
-  d_headers.push_back(tr("EndDate Offset"));    // 19
-  d_alignments.push_back(left);
-  d_order_columns.push_back("`RECORDINGS`.`ENDDATE_OFFSET`");
+  d_headers.push_back(tr("Date Offsets"));      // 18
+  d_alignments.push_back(center);
+  d_order_columns.push_back("");
 
-  d_headers.push_back(tr("Cut"));               // 20
+  d_headers.push_back(tr("Error Status"));            // 19
   d_alignments.push_back(left);
   d_order_columns.push_back("");
+
+  d_headers.push_back(tr("Error Code"));         // 20
+  d_alignments.push_back(right);
+  d_order_columns.push_back("`RECORDINGS`.`EXIT_CODE`");
 
   d_headers.push_back(tr("ID"));                // 21
-  d_alignments.push_back(left);
+  d_alignments.push_back(right);
   d_order_columns.push_back("`RECORDINGS`.`ID`");
-
-  d_headers.push_back(tr("Status"));            // 22
-  d_alignments.push_back(left);
-  d_order_columns.push_back("");
-
-  d_headers.push_back(tr("Exit Code"));         // 23
-  d_alignments.push_back(left);
-  d_order_columns.push_back("`RECORDINGS`.`EXIT_CODE`");
 
   setFilterSql("");
 }
@@ -342,12 +334,15 @@ void RecordListModel::setRecordStatus(unsigned rec_id,RDDeck::Status status)
 void RecordListModel::channelCounts(int chan,int *waiting,int *active,
 				    unsigned *rec_id)
 {
+  /*
+   * FIXME: Do we still need this?
+   *
   *waiting=0;
   *active=0;
   *rec_id=0;
 
   for(int i=0;i<rowCount();i++) {
-    if(d_texts.at(i).at(23).toString().toInt()==chan) {
+    if(d_texts.at(i).at(21).toString().toInt()==chan) {
       switch(d_statuses.at(i)) {
       case RDDeck::Waiting:
 	(*active)++;
@@ -366,6 +361,7 @@ void RecordListModel::channelCounts(int chan,int *waiting,int *active,
       }
     }
   }
+  */
 }
 
 
@@ -585,13 +581,14 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   RDSqlQuery *q1=NULL;
   RDCut *cut=NULL;
   QMap<int,QString> names;
+  bool ok=false;
 
   //
   // Event Values
   //
   d_ids[row]=q->value(0).toUInt();
-  d_types[row]=(RDRecording::Type)q->value(22).toUInt();
-  d_exit_codes[row]=(RDRecording::ExitCode)q->value(24).toUInt();
+  d_types[row]=(RDRecording::Type)q->value(23).toUInt();
+  d_exit_codes[row]=(RDRecording::ExitCode)q->value(25).toUInt();
 
   //
   // Qt::TextColorRole
@@ -611,10 +608,10 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
     icons.push_back(QPixmap());
   }
   icons[0]=
-    rda->iconEngine()->catchIcon((RDRecording::Type)q->value(22).toUInt());
+    rda->iconEngine()->catchIcon((RDRecording::Type)q->value(23).toUInt());
   icons[1]=rda->iconEngine()->stationIcon();
-  if(!q->value(43).isNull()) {
-    icons[13]=QImage::fromData(q->value(43).toByteArray()).
+  if(!q->value(53).isNull()) {
+    icons[6]=QImage::fromData(q->value(53).toByteArray()).
       scaled(22,22,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
   }
 
@@ -625,6 +622,10 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   for(int i=0;i<columnCount();i++) {
     texts.push_back(QString());
   }
+
+  //
+  // Universal Attributes
+  //
   texts[0]=q->value(1);     // Description
   if(q->value(7).toString()=="Y") {       // Sun
     texts[7]=tr("Su");
@@ -647,125 +648,150 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   if(q->value(13).toString()=="Y") {      // Sat
     texts[13]=tr("Sa");
   }
-
-  switch((RDRecording::Type)q->value(22).toInt()) {
-  case RDRecording::Recording:
-  case RDRecording::Playout:
-  case RDRecording::Download:
-  case RDRecording::Upload:
-    texts[15]=q->value(36).toString()+" - "+q->value(37).toDateTime().
-      toString("M/dd/yyyy hh:mm:ss");
-    break;
-    
-  default:
-    break;
-  }
-  texts[16]=q->value(25).toString();   // One Shot
-  texts[17]=QString::asprintf("%d ",  // Trim Threshold
-			      -q->value(17).toInt())+tr("dB");
-  texts[18]=q->value(18).toString();   // Startdate Offset
-  texts[19]=q->value(19).toString();   // Enddate Offset
-  texts[20]=q->value(6).toString();    // Cut Name
+  texts[15]=q->value(26).toString();   // One Shot
   texts[21]=q->value(0).toString();   // Id
 
-  switch((RDRecording::Type)q->value(22).toInt()) {
+  //
+  // Type Specific Attributes
+  //
+  switch((RDRecording::Type)q->value(23).toInt()) {
   case RDRecording::Recording:
     texts[1]=q->value(3).toString()+
-      QString::asprintf(" : %dR",q->value(20).toInt());
-    switch((RDRecording::StartType)q->value(26).toUInt()) {
+      QString::asprintf(" : %dR",q->value(21).toInt());
+    switch((RDRecording::StartType)q->value(27).toUInt()) {
     case RDRecording::HardStart:
       texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
       break;
 
     case RDRecording::GpiStart:
       texts[2]=tr("Gpi")+": "+rda->timeString(q->value(4).toTime())+","+
-	rda->timeString(q->value(4).toTime().addMSecs(q->value(27).toInt()))+
+	rda->timeString(q->value(4).toTime().addMSecs(q->value(28).toInt()))+
 	","+
-	QString::asprintf("%d:%d,",q->value(28).toInt(),q->value(29).toInt())+
-	QTime(0,0,0).addMSecs(q->value(30).toUInt()).toString("mm:ss");
+	QString::asprintf("%d:%d,",q->value(29).toInt(),q->value(30).toInt())+
+	QTime(0,0,0).addMSecs(q->value(31).toUInt()).toString("mm:ss");
       break;
     }
-    switch((RDRecording::EndType)q->value(31).toUInt()) {
+    switch((RDRecording::EndType)q->value(32).toUInt()) {
     case RDRecording::LengthEnd:
       texts[3]=tr("Len")+": "+RDGetTimeLength(q->value(5).toUInt(),false,false);
       break;
 
     case RDRecording::HardEnd:
-      texts[3]=tr("Hard")+": "+rda->timeString(q->value(32).toTime());
+      texts[3]=tr("Hard")+": "+rda->timeString(q->value(33).toTime());
       break;
 
     case RDRecording::GpiEnd:
-      texts[3]=tr("Gpi")+": "+rda->timeString(q->value(32).toTime())+","+
-	rda->timeString(q->value(32).toTime().addMSecs(q->value(33).toInt()))+
-	QString::asprintf(",%d:%d",q->value(34).toInt(),
-			  q->value(35).toInt());
+      texts[3]=tr("Gpi")+": "+rda->timeString(q->value(33).toTime())+","+
+	rda->timeString(q->value(33).toTime().addMSecs(q->value(34).toInt()))+
+	QString::asprintf(",%d:%d",q->value(35).toInt(),
+			  q->value(36).toInt());
       break;
     }
 
-    texts[6]=tr("Cut")+" "+q->value(6).toString();
+    texts[6]=CutText(q->value(6).toString());
+    icons[6]=rda->iconEngine()->catchIcon(RDRecording::Playout);
     sql=QString("select ")+
       "`SWITCH_STATION`,"+  // 00
       "`SWITCH_MATRIX` "+   // 01
       "from `DECKS` where "+
       "(`STATION_NAME`='"+RDEscapeString(q->value(3).toString())+"')&&"+
-      QString::asprintf("(`CHANNEL`=%d)",q->value(20).toInt());
+      QString::asprintf("(`CHANNEL`=%d)",q->value(21).toInt());
     q1=new RDSqlQuery(sql);
     if(q1->first()) {  // Source
       texts[5]=GetSourceName(q1->value(0).toString(),q1->value(1).toInt(),
-			     q->value(14).toInt());
+			     q->value(14).toInt(),&ok);
+      if(ok) {
+	icons[5]=rda->iconEngine()->listIcon(RDIconEngine::Input);
+      }
     }
     delete q1;
+    texts[16]=LevelText(-q->value(17).toUInt());  // Autotrim
+    texts[17]=LevelText(q->value(18).toInt());    // Normalization
+    if((q->value(19).toUInt()==0)&&(q->value(20).toUInt()==0)) {
+      texts[18]=tr("[none]");
+    }
+    else {
+      texts[18]=   // Start/end Date Offsets
+	QString::asprintf("%u / %u days",
+			  q->value(19).toUInt(),q->value(20).toUInt());
+    }
     break;
 
   case RDRecording::Playout:
     texts[1]=q->value(3).toString()+QString::asprintf(" : %dP",
-						      q->value(20).toInt()-128);
+						      q->value(21).toInt()-128);
     texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
     cut=new RDCut(q->value(6).toString());
     if(cut->exists()) {
       texts[3]=tr("Len")+": "+RDGetTimeLength(cut->length(),false,false);
     }
     delete cut;
-    texts[5]=tr("Cut")+" "+q->value(6).toString();
+    texts[5]=CutText(q->value(6).toString());
+    icons[5]=rda->iconEngine()->catchIcon(RDRecording::Playout);
     break;
 
   case RDRecording::MacroEvent:
     texts[1]=q->value(3).toString();
     texts[2]=tr("Hard")+": "+q->value(4).toTime().
       toString(QString::asprintf("hh:mm:ss"));
-    texts[5]=tr("Cart")+QString::asprintf(" %06d",q->value(21).toInt());
+    texts[5]=CartText(q->value(22).toUInt());
+    icons[5]=rda->iconEngine()->catchIcon(RDRecording::MacroEvent);
     break;
 
   case RDRecording::SwitchEvent:
     texts[1]=q->value(3).toString();
     texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
     texts[4]=
-      d_router_names.value(q->value(3).toString()).value(q->value(20).toInt());
+      d_router_names.value(q->value(3).toString()).value(q->value(21).toInt());
     texts[5]=GetSourceName(q->value(3).toString(),  // Source
-			   q->value(20).toInt(),
-			   q->value(14).toInt());
+			   q->value(21).toInt(),
+			   q->value(14).toInt(),&ok);
+    if(ok) {
+      icons[5]=rda->iconEngine()->listIcon(RDIconEngine::Input);
+    }
+
     texts[6]=GetDestinationName(q->value(3).toString(),  // Dest
-				q->value(20).toInt(),
-				q->value(23).toInt());
+				q->value(21).toInt(),
+				q->value(24).toInt());
+    icons[6]=rda->iconEngine()->listIcon(RDIconEngine::Output);
     break;
 
   case RDRecording::Download:
     texts[1]=q->value(3).toString();
     texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
-    texts[5]=q->value(38).toString();
-    texts[6]=tr("Cut")+" "+q->value(6).toString();
+    texts[5]=q->value(37).toString();
+    icons[5]=rda->iconEngine()->listIcon(RDIconEngine::Url);
+    texts[6]=CutText(q->value(6).toString());
+    icons[6]=rda->iconEngine()->catchIcon(RDRecording::Playout);
+    texts[16]=LevelText(-q->value(17).toUInt());  // Autotrim
+    texts[17]=LevelText(q->value(18).toInt());    // Normalization
     break;
 
   case RDRecording::Upload:
     texts[1]=q->value(3).toString();
     texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
-    texts[5]=tr("Cut")+" "+q->value(6).toString();
-    texts[6]=q->value(38).toString();
-    if(q->value(40).toString().isEmpty()) {
-      texts[14]=tr("[none]");
+    texts[5]=CutText(q->value(6).toString());
+    icons[5]=rda->iconEngine()->catchIcon(RDRecording::Playout);
+    if(q->value(39).toString().isEmpty()) {
+      texts[6]=q->value(37).toString();
+      icons[6]=rda->iconEngine()->listIcon(RDIconEngine::Url);
     }
     else {
-      texts[14]=q->value(40).toString();    // Feed Key Name
+      texts[6]=q->value(39).toString();    // Feed Key Name
+    }
+    if(q->value(39).toString().isEmpty()) {
+      texts[14]=
+	RDSettings::description((RDSettings::Format)q->value(42).toUInt(),
+				q->value(43).toUInt(),q->value(44).toUInt(),
+				q->value(45).toUInt(),q->value(46).toUInt());
+      texts[17]=LevelText(q->value(18).toInt());    // Normalization
+    }
+    else {
+      texts[14]=
+	RDSettings::description((RDSettings::Format)q->value(47).toUInt(),
+				q->value(48).toUInt(),q->value(49).toUInt(),
+				q->value(50).toUInt(),q->value(51).toUInt());
+      texts[17]=LevelText(q->value(52).toInt());    // Normalization
     }
     break;
 
@@ -799,32 +825,44 @@ QString RecordListModel::sqlFields() const
     "`RECORDINGS`.`START_GPI`,"+         // 15
     "`RECORDINGS`.`END_GPI`,"+           // 16
     "`RECORDINGS`.`TRIM_THRESHOLD`,"+    // 17
-    "`RECORDINGS`.`STARTDATE_OFFSET`,"+  // 18
-    "`RECORDINGS`.`ENDDATE_OFFSET`,"+    // 19
-    "`RECORDINGS`.`CHANNEL`,"+           // 20
-    "`RECORDINGS`.`MACRO_CART`,"+        // 21
-    "`RECORDINGS`.`TYPE`,"+              // 22
-    "`RECORDINGS`.`SWITCH_OUTPUT`,"+     // 23
-    "`RECORDINGS`.`EXIT_CODE`,"+         // 24
-    "`RECORDINGS`.`ONE_SHOT`,"+          // 25
-    "`RECORDINGS`.`START_TYPE`,"+        // 26
-    "`RECORDINGS`.`START_LENGTH`,"+      // 27
-    "`RECORDINGS`.`START_MATRIX`,"+      // 28
-    "`RECORDINGS`.`START_LINE`,"+        // 29
-    "`RECORDINGS`.`START_OFFSET`,"+      // 30
-    "`RECORDINGS`.`END_TYPE`,"+          // 31
-    "`RECORDINGS`.`END_TIME`,"+          // 32
-    "`RECORDINGS`.`END_LENGTH`,"+        // 33
-    "`RECORDINGS`.`END_MATRIX`,"+        // 34
-    "`RECORDINGS`.`END_LINE`,"+          // 35
-    "`CUTS`.`ORIGIN_NAME`,"+             // 36
-    "`CUTS`.`ORIGIN_DATETIME`,"+         // 37
-    "`RECORDINGS`.`URL`,"+               // 38
-    "`RECORDINGS`.`QUALITY`,"+           // 39
-    "`FEEDS`.`KEY_NAME`,"+               // 40
-    "`FEEDS`.`CHANNEL_IMAGE_ID`,"+       // 41
-    "`RECORDINGS`.`EXIT_TEXT`,"+         // 42
-    "`FEED_IMAGES`.`DATA` "+             // 43
+    "`RECORDINGS`.`NORMALIZE_LEVEL`,"+   // 18
+    "`RECORDINGS`.`STARTDATE_OFFSET`,"+  // 19
+    "`RECORDINGS`.`ENDDATE_OFFSET`,"+    // 20
+    "`RECORDINGS`.`CHANNEL`,"+           // 21
+    "`RECORDINGS`.`MACRO_CART`,"+        // 22
+    "`RECORDINGS`.`TYPE`,"+              // 23
+    "`RECORDINGS`.`SWITCH_OUTPUT`,"+     // 24
+    "`RECORDINGS`.`EXIT_CODE`,"+         // 25
+    "`RECORDINGS`.`ONE_SHOT`,"+          // 26
+    "`RECORDINGS`.`START_TYPE`,"+        // 27
+    "`RECORDINGS`.`START_LENGTH`,"+      // 28
+    "`RECORDINGS`.`START_MATRIX`,"+      // 29
+    "`RECORDINGS`.`START_LINE`,"+        // 30
+    "`RECORDINGS`.`START_OFFSET`,"+      // 31
+    "`RECORDINGS`.`END_TYPE`,"+          // 32
+    "`RECORDINGS`.`END_TIME`,"+          // 33
+    "`RECORDINGS`.`END_LENGTH`,"+        // 34
+    "`RECORDINGS`.`END_MATRIX`,"+        // 35
+    "`RECORDINGS`.`END_LINE`,"+          // 36
+    "`RECORDINGS`.`URL`,"+               // 37
+    "`RECORDINGS`.`QUALITY`,"+           // 38
+    "`FEEDS`.`KEY_NAME`,"+               // 39
+    "`FEEDS`.`CHANNEL_IMAGE_ID`,"+       // 40
+    "`RECORDINGS`.`EXIT_TEXT`,"+         // 41
+    "`RECORDINGS`.`FORMAT`,"+            // 42
+    "`RECORDINGS`.`CHANNELS`,"+          // 43
+    "`RECORDINGS`.`SAMPRATE`,"+          // 44
+    "`RECORDINGS`.`BITRATE`,"+           // 45
+    "`RECORDINGS`.`QUALITY`,"+           // 46
+    "`FEEDS`.`UPLOAD_FORMAT`,"+          // 47
+    "`FEEDS`.`UPLOAD_CHANNELS`,"+        // 48
+    "`FEEDS`.`UPLOAD_SAMPRATE`,"+        // 49
+    "`FEEDS`.`UPLOAD_BITRATE`,"+         // 50
+    "`FEEDS`.`UPLOAD_QUALITY`,"+         // 51
+
+    "`FEEDS`.`NORMALIZE_LEVEL`,"+    // 52
+
+    "`FEED_IMAGES`.`DATA` "+             // 53
     "from `RECORDINGS` left join `CUTS` "+
     "on (`RECORDINGS`.`CUT_NAME`=`CUTS`.`CUT_NAME`) left join `FEEDS` "+
     "on (`RECORDINGS`.`FEED_ID`=`FEEDS`.`ID`) left join `FEED_IMAGES` "+
@@ -834,15 +872,16 @@ QString RecordListModel::sqlFields() const
 }
 
 
-QString RecordListModel::GetSourceName(QString station,int matrix,int input)
+QString RecordListModel::GetSourceName(QString station,int matrix,int input,
+				       bool *ok)
 {
-  QString input_name;
+  QString input_name=tr("[none]");;
   QString sql=QString("select `NAME` from `INPUTS` where ")+
     "(`STATION_NAME`='"+RDEscapeString(station)+"')&&"+
     QString::asprintf("(`MATRIX`=%d)&&",matrix)+
     QString::asprintf("(`NUMBER`=%d)",input);
   RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
+  if((*ok=q->first())) {
     input_name=q->value(0).toString();
   }
   delete q;
@@ -893,6 +932,7 @@ void RecordListModel::UpdateStatus(int line)
 
   RDRecording::ExitCode code=RDRecording::InternalError;
   QString err_text=tr("Unknown");
+  /*
   QString sql=QString("select ")+
     "`RECORDINGS`.`EXIT_CODE`,"+  // 00
     "`CUTS`.`ORIGIN_NAME`,"+      // 01
@@ -905,18 +945,18 @@ void RecordListModel::UpdateStatus(int line)
   if(q->first()) {
     code=(RDRecording::ExitCode)q->value(0).toInt();
     err_text=q->value(3).toString();
-    d_texts[line][14]=q->value(1).toString()+" - "+q->value(2).toDateTime().
+    d_texts[line][15]=q->value(1).toString()+" - "+q->value(2).toDateTime().
       toString("M/dd/yyyy hh:mm:ss");
   }
   else {
-    d_texts[line][14]="";
+    d_texts[line][15]="";
   }
   delete q; 
-
+  */
   //
   // Exit Code/Text
   //
- d_texts[line][23]=QString::asprintf("%u",code);
+ d_texts[line][20]=QString::asprintf("%u",code);
   switch(code) {
   case RDRecording::Ok:
   case RDRecording::Downloading:
@@ -924,7 +964,7 @@ void RecordListModel::UpdateStatus(int line)
   case RDRecording::RecordActive:
   case RDRecording::PlayActive:
   case RDRecording::Waiting:
-    d_texts[line][22]=RDRecording::exitString(code);
+    d_texts[line][19]=RDRecording::exitString(code);
     break;
 	
   case RDRecording::Short:
@@ -934,14 +974,39 @@ void RecordListModel::UpdateStatus(int line)
   case RDRecording::DeviceBusy:
   case RDRecording::NoCut:
   case RDRecording::UnknownFormat:
-    d_texts[line][22]=RDRecording::exitString(code);
+    d_texts[line][19]=RDRecording::exitString(code);
     d_back_colors[line]=QColor(EVENT_ERROR_COLOR);
     break;
 	
   case RDRecording::ServerError:
   case RDRecording::InternalError:
-    d_texts[line][22]=RDRecording::exitString(code)+": "+err_text;
+    d_texts[line][19]=RDRecording::exitString(code)+": "+err_text;
     d_back_colors[line]=QColor(EVENT_ERROR_COLOR);
     break;
   }
+}
+
+
+QString RecordListModel::CartText(unsigned cartnum) const
+{
+  return QString::asprintf("%06u",cartnum);
+}
+
+
+QString RecordListModel::CutText(const QString &cutname) const
+{
+  return QString::asprintf("%06u:%03d",RDCut::cartNumber(cutname),
+			   RDCut::cutNumber(cutname));
+}
+
+
+QString RecordListModel::LevelText(int lvl) const
+{
+  QString ret=tr("[none]");
+
+  if(lvl<0) {
+    ret=QString::asprintf("%d dBFS",lvl/100);
+  }
+
+  return ret;
 }

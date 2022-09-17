@@ -117,6 +117,7 @@
 #include "../icons/record.xpm"
 #include "../icons/upload.xpm"
 #include "../icons/download.xpm"
+#include "../icons/url.xpm"
 
 #include "../icons/host-16x16.xpm"
 #include "../icons/service-16x16.xpm"
@@ -279,6 +280,7 @@ RDIconEngine::RDIconEngine()
   d_list_icons.push_back(QPixmap(rss_xpm));
   d_list_icons.push_back(QPixmap(upload_xpm));
   d_list_icons.push_back(QPixmap(download_xpm));
+  d_list_icons.push_back(QPixmap(url_xpm));
 
   //
   // Create Service Icon

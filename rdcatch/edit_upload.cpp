@@ -319,7 +319,12 @@ int EditUpload::exec(int id,std::vector<int> *adds)
     edit_normalize_spin->setValue(edit_recording->normalizationLevel()/100);
   }
   normalizeCheckData(edit_normalize_box->isChecked());
-  edit_feed_box->setCurrentText(edit_recording->feedKeyName());
+  if(edit_recording->feedKeyName().isEmpty()) {
+    edit_feed_box->setCurrentIndex(0);
+  }
+  else {
+    edit_feed_box->setCurrentText(edit_recording->feedKeyName());
+  }
   feedChangedData(edit_feed_box->currentIndex());
 
   return QDialog::exec();

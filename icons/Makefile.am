@@ -508,6 +508,7 @@ EXTRA_DIST = admin.xpm\
              trashcan-32x32.xpm\
              update_icons.sh\
              upload.xpm\
+             url.xpm\
              user.xpm\
              webget_logo.png\
              whiteball.png\

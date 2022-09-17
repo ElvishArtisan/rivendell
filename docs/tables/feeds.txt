@@ -38,7 +38,7 @@ LAST_BUILD_DATETIME        datetime
 ORIGIN_DATETIME            datetime
 ENABLE_AUTOPOST            enum('N','Y')
 DEFAULT_ITEM_IMAGE_ID      int(11)           From FEED_IMAGES.ID
-UPLOAD_FORMAT              int(11)
+UPLOAD_FORMAT              int(11)           RDSettings::Format
 UPLOAD_CHANNELS            int(11)
 UPLOAD_SAMPRATE            int(11)
 UPLOAD_BITRATE             int(11)

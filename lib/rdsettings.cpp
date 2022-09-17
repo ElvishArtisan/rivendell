@@ -2,7 +2,7 @@
 //
 // Audio Format Settings
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -150,73 +150,8 @@ void RDSettings::setAutotrimLevel(int level)
 
 QString RDSettings::description()
 {
-  QString desc;
-  QString sr=QString::asprintf("%d S/sec",set_sample_rate);
-  switch(set_format) {
-    case RDSettings::Pcm16:
-      desc="PCM16, ";
-      break;
-      
-    case RDSettings::Pcm24:
-      desc="PCM24, ";
-      break;
-      
-    case RDSettings::MpegL1:
-      desc="MPEG L1, ";
-      if(set_bit_rate==0) {
-	desc+=QString::asprintf("Qual %d, ",set_quality);
-      }
-      else {
-	desc+=QString::asprintf("%d kbit/sec, ",set_bit_rate/1000);
-      }
-      break;
-      
-    case RDSettings::MpegL2:
-    case RDSettings::MpegL2Wav:
-      desc="MPEG L2, ";
-      if(set_bit_rate==0) {
-	desc+=QString::asprintf("Qual %d, ",set_quality);
-      }
-      else {
-	desc+=QString::asprintf("%d kbit/sec, ",set_bit_rate/1000);
-      }
-      break;
-      
-    case RDSettings::MpegL3:
-      desc="MPEG L3, ";
-      if(set_bit_rate==0) {
-	desc+=QString::asprintf("Qual %d, ",set_quality);
-      }
-      else {
-	desc+=QString::asprintf("%d kbit/sec, ",set_bit_rate/1000);
-      }
-      break;
-      
-    case RDSettings::Flac:
-      desc="FLAC, ";
-      break;
-      
-    case RDSettings::OggVorbis:
-      desc=QString::asprintf("OggVorbis, Qual %d, ",set_quality);
-      break;
-  }
-  if(set_sample_rate>0) {
-    desc+=QString::asprintf("%d samp/sec, ",set_sample_rate);
-  }
-  switch(set_channels) {
-      case 1:
-	desc+="Mono";
-	break;
-
-      case 2:
-	desc+="Stereo";
-	break;
-
-      default:
-	desc+=QString::asprintf("%d chans",set_channels);
-	break;
-  }
-  return desc;
+  return RDSettings::description(set_format,set_channels,set_sample_rate,
+				 set_bit_rate,set_quality);
 }
 
 
@@ -336,6 +271,79 @@ QString RDSettings::defaultExtension(RDSettings::Format fmt)
     break;
   }
   return ret;
+}
+
+
+QString RDSettings::description(Format fmt,unsigned chans,unsigned samprate,
+				unsigned bitrate,unsigned qual)
+{
+  QString desc;
+  QString sr=QString::asprintf("%d S/sec",samprate);
+  switch(fmt) {
+    case RDSettings::Pcm16:
+      desc="PCM16, ";
+      break;
+
+    case RDSettings::Pcm24:
+      desc="PCM24, ";
+      break;
+
+    case RDSettings::MpegL1:
+      desc="MPEG L1, ";
+      if(bitrate==0) {
+	desc+=QString::asprintf("Qual %d, ",qual);
+      }
+      else {
+	desc+=QString::asprintf("%d kbit/sec, ",bitrate/1000);
+      }
+      break;
+
+    case RDSettings::MpegL2:
+    case RDSettings::MpegL2Wav:
+      desc="MPEG L2, ";
+      if(bitrate==0) {
+	desc+=QString::asprintf("Qual %d, ",qual);
+      }
+      else {
+	desc+=QString::asprintf("%d kbit/sec, ",bitrate/1000);
+      }
+      break;
+
+    case RDSettings::MpegL3:
+      desc="MPEG L3, ";
+      if(bitrate==0) {
+	desc+=QString::asprintf("Qual %d, ",qual);
+      }
+      else {
+	desc+=QString::asprintf("%d kbit/sec, ",bitrate/1000);
+      }
+      break;
+
+    case RDSettings::Flac:
+      desc="FLAC, ";
+      break;
+
+    case RDSettings::OggVorbis:
+      desc=QString::asprintf("OggVorbis, Qual %d, ",qual);
+      break;
+  }
+  if(samprate>0) {
+    desc+=QString::asprintf("%d samp/sec, ",samprate);
+  }
+  switch(chans) {
+      case 1:
+	desc+="Mono";
+	break;
+
+      case 2:
+	desc+="Stereo";
+	break;
+
+      default:
+	desc+=QString::asprintf("%d chans",chans);
+	break;
+  }
+  return desc;
 }
 
 

@@ -56,6 +56,8 @@ class RDSettings
   bool deletePreset(unsigned id) const;
   static QString pathName(QString pathname,RDSettings::Format fmt);
   static QString defaultExtension(RDSettings::Format fmt);
+  static QString description(Format fmt,unsigned chans,unsigned samprate,
+			     unsigned bitrate,unsigned qual);
   QString dump() const;
   void clear();
 

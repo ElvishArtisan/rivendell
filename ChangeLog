@@ -23324,3 +23324,9 @@
 	* Removed the 'Cart' column from the event list in rdcatch(1).
 	* Removed the 'Type' column from the event list in rdcatch(1).
 	* Removed the 'State' column from the event list in rdcatch(1).
+2022-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added type icons to the 'Source' and 'Destination' columns of
+	the events list in rdcatch(1).
+	* Removed the 'RSS Feed' column from the event list in rdcatch(1).
+	* Consolidated the 'Start Date Offset' and 'End Date Offset'
+	columns into a single 'Start/End Date' column in rdcatch(1).
