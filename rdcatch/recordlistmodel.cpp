@@ -208,10 +208,8 @@ QVariant RecordListModel::data(const QModelIndex &index,int role) const
 
     case Qt::BackgroundRole:
       if(d_is_nexts.at(row)) {
-	printf("NEXT %d: %s\n",row,QColor(EVENT_NEXT_COLOR).name().toUtf8().constData());
 	return QColor(EVENT_NEXT_COLOR);
       }
-      printf("DEFAULT %d: %s\n",row,d_back_colors.at(row).value<QColor>().name().toUtf8().constData());
       return d_back_colors.at(row);
 
     default:

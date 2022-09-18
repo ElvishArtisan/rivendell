@@ -23333,3 +23333,6 @@
 2022-09-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that caused the current status
 	of events to fail to be indicated properly at startup.
+2022-09-18 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging printf() statements from
+	'rdcatch/recordlistmodel.cpp'.
