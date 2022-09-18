@@ -23330,3 +23330,6 @@
 	* Removed the 'RSS Feed' column from the event list in rdcatch(1).
 	* Consolidated the 'Start Date Offset' and 'End Date Offset'
 	columns into a single 'Start/End Date' column in rdcatch(1).
+2022-09-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that caused the current status
+	of events to fail to be indicated properly at startup.

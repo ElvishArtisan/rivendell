@@ -208,8 +208,10 @@ QVariant RecordListModel::data(const QModelIndex &index,int role) const
 
     case Qt::BackgroundRole:
       if(d_is_nexts.at(row)) {
+	printf("NEXT %d: %s\n",row,QColor(EVENT_NEXT_COLOR).name().toUtf8().constData());
 	return QColor(EVENT_NEXT_COLOR);
       }
+      printf("DEFAULT %d: %s\n",row,d_back_colors.at(row).value<QColor>().name().toUtf8().constData());
       return d_back_colors.at(row);
 
     default:
@@ -334,15 +336,12 @@ void RecordListModel::setRecordStatus(unsigned rec_id,RDDeck::Status status)
 void RecordListModel::channelCounts(int chan,int *waiting,int *active,
 				    unsigned *rec_id)
 {
-  /*
-   * FIXME: Do we still need this?
-   *
   *waiting=0;
   *active=0;
   *rec_id=0;
 
   for(int i=0;i<rowCount();i++) {
-    if(d_texts.at(i).at(21).toString().toInt()==chan) {
+    if(d_channels.at(i)==chan) {
       switch(d_statuses.at(i)) {
       case RDDeck::Waiting:
 	(*active)++;
@@ -361,7 +360,6 @@ void RecordListModel::channelCounts(int chan,int *waiting,int *active,
       }
     }
   }
-  */
 }
 
 
@@ -383,6 +381,7 @@ QModelIndex RecordListModel::addRecord(unsigned id)
     list.push_back(QVariant());
   }
   d_ids.insert(offset,id);
+  d_channels.insert(offset,-1);
   d_types.insert(offset,RDRecording::Recording);
   d_exit_codes.insert(offset,RDRecording::Ok);
   d_text_colors.insert(offset,QVariant());
@@ -403,6 +402,7 @@ void RecordListModel::removeRecord(const QModelIndex &row)
   beginRemoveRows(QModelIndex(),row.row(),row.row());
 
   d_ids.removeAt(row.row());
+  d_channels.removeAt(row.row());
   d_types.removeAt(row.row());
   d_exit_codes.removeAt(row.row());
   d_is_nexts.removeAt(row.row());
@@ -535,6 +535,7 @@ void RecordListModel::updateModel(const QString &filter_sql)
   sql=sqlFields()+filter_sql;
   beginResetModel();
   d_ids.clear();
+  d_channels.clear();
   d_types.clear();
   d_exit_codes.clear();
   d_is_nexts.clear();
@@ -546,6 +547,7 @@ void RecordListModel::updateModel(const QString &filter_sql)
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_ids.push_back(0);
+    d_channels.push_back(-1);
     d_types.push_back(RDRecording::Recording);
     d_exit_codes.push_back(RDRecording::Ok);
     d_text_colors.push_back(QVariant());
@@ -587,6 +589,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   // Event Values
   //
   d_ids[row]=q->value(0).toUInt();
+  d_channels[row]=q->value(29).toUInt();
   d_types[row]=(RDRecording::Type)q->value(23).toUInt();
   d_exit_codes[row]=(RDRecording::ExitCode)q->value(25).toUInt();
 
@@ -599,6 +602,16 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   else {
     d_text_colors[row]=QColor(EVENT_INACTIVE_TEXT_COLOR);
   }
+
+  //
+  // Qt::BackgroundRole:
+  //
+  if(q->value(25).toInt()==0) {
+    d_back_colors[row]=QVariant();
+  }
+  else {
+    d_back_colors[row]=QColor(EVENT_ERROR_COLOR);
+  }      
 
   //
   // Qt::DecorationType
@@ -626,7 +639,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   //
   // Universal Attributes
   //
-  texts[0]=q->value(1);     // Description
+  texts[0]=q->value(1);                   // Description
   if(q->value(7).toString()=="Y") {       // Sun
     texts[7]=tr("Su");
   }
@@ -648,8 +661,10 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   if(q->value(13).toString()=="Y") {      // Sat
     texts[13]=tr("Sa");
   }
-  texts[15]=q->value(26).toString();   // One Shot
-  texts[21]=q->value(0).toString();   // Id
+  texts[15]=q->value(26).toString();      // One Shot
+  texts[19]=q->value(41).toString();      // Error Status
+  texts[20]=QString::asprintf("%d",q->value(25).toInt());  // Error Code
+  texts[21]=q->value(0).toString();       // Id
 
   //
   // Type Specific Attributes
@@ -859,9 +874,7 @@ QString RecordListModel::sqlFields() const
     "`FEEDS`.`UPLOAD_SAMPRATE`,"+        // 49
     "`FEEDS`.`UPLOAD_BITRATE`,"+         // 50
     "`FEEDS`.`UPLOAD_QUALITY`,"+         // 51
-
-    "`FEEDS`.`NORMALIZE_LEVEL`,"+    // 52
-
+    "`FEEDS`.`NORMALIZE_LEVEL`,"+        // 52
     "`FEED_IMAGES`.`DATA` "+             // 53
     "from `RECORDINGS` left join `CUTS` "+
     "on (`RECORDINGS`.`CUT_NAME`=`CUTS`.`CUT_NAME`) left join `FEEDS` "+
@@ -932,7 +945,10 @@ void RecordListModel::UpdateStatus(int line)
 
   RDRecording::ExitCode code=RDRecording::InternalError;
   QString err_text=tr("Unknown");
-  /*
+
+  //
+  // Get Exit Code And Text
+  //
   QString sql=QString("select ")+
     "`RECORDINGS`.`EXIT_CODE`,"+  // 00
     "`CUTS`.`ORIGIN_NAME`,"+      // 01
@@ -945,14 +961,9 @@ void RecordListModel::UpdateStatus(int line)
   if(q->first()) {
     code=(RDRecording::ExitCode)q->value(0).toInt();
     err_text=q->value(3).toString();
-    d_texts[line][15]=q->value(1).toString()+" - "+q->value(2).toDateTime().
-      toString("M/dd/yyyy hh:mm:ss");
-  }
-  else {
-    d_texts[line][15]="";
   }
   delete q; 
-  */
+
   //
   // Exit Code/Text
   //
