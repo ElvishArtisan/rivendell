@@ -203,15 +203,14 @@ void MainObject::RunDownload(CatchEvent *evt)
   conv->setDestinationFile(evt->tempName());
   QString url_username=evt->urlUsername();
   QString url_password=evt->urlPassword();
+  QString id_filename=rda->station()->sshIdentityFile();
   if(url_username.isEmpty()&&
      (QUrl(evt->resolvedUrl()).scheme().toLower()=="ftp")) {
     url_username=RD_ANON_FTP_USERNAME;
     url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
   }
-  //
-  // FIXME: Finish implementing public key support!
-  //
-  switch((conv_err=conv->runDownload(url_username,url_password,"",false,
+  switch((conv_err=conv->runDownload(url_username,url_password,id_filename,
+				     evt->useSshIdentity(),
 				     rda->config()->logXloadDebugData()))) {
   case RDDownload::ErrorOk:
     rda->syslog(LOG_INFO,"finished download of %s to %s, id=%d",
@@ -305,15 +304,14 @@ void MainObject::RunUpload(CatchEvent *evt)
     conv->setDestinationUrl(evt->resolvedUrl());
     QString url_username=evt->urlUsername();
     QString url_password=evt->urlPassword();
+    QString id_filename=rda->station()->sshIdentityFile();
     if(url_username.isEmpty()&&
        (QUrl(evt->resolvedUrl()).scheme().toLower()=="ftp")) {
       url_username=RD_ANON_FTP_USERNAME;
       url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
     }
-    //
-    // FIXME: Finish implementing ssh(1) identity keys!
-    //
-    switch((conv_err=conv->runUpload(url_username,url_password,"",false,
+    switch((conv_err=conv->runUpload(url_username,url_password,id_filename,
+				     evt->useSshIdentity(),
 				     rda->config()->logXloadDebugData()))) {
     case RDUpload::ErrorOk:
       catch_connect->setExitCode(evt->id(),RDRecording::Ok,tr("Ok"));

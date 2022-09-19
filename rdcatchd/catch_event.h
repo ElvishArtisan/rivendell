@@ -117,6 +117,8 @@ class CatchEvent
   void setUrlUsername(const QString &name);
   QString urlPassword() const;
   void setUrlPassword(const QString &passwd);
+  bool useSshIdentity() const;
+  void setUseSshIdentity(bool state);
   bool enableMetadata() const;
   void setEnableMetadata(bool state);
   unsigned tempLength() const;
@@ -181,6 +183,7 @@ class CatchEvent
   QString catch_resolved_url;
   QString catch_url_username;
   QString catch_url_password;
+  bool catch_use_ssh_identity;
   bool catch_enable_metadata;
   unsigned catch_temp_length;
   unsigned catch_final_length;

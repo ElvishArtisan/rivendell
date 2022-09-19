@@ -546,6 +546,18 @@ void CatchEvent::setUrlPassword(const QString &passwd)
 }
 
 
+bool CatchEvent::useSshIdentity() const
+{
+  return catch_use_ssh_identity;
+}
+
+
+void CatchEvent::setUseSshIdentity(bool state)
+{
+  catch_use_ssh_identity=state;
+}
+
+
 unsigned CatchEvent::tempLength() const
 {
   return catch_temp_length;
@@ -709,6 +721,7 @@ void CatchEvent::clear()
   catch_resolved_url="";
   catch_url_username="";
   catch_url_password="";
+  catch_use_ssh_identity=false;
   catch_enable_metadata=false;
   catch_temp_length=0;
   catch_final_length=0;

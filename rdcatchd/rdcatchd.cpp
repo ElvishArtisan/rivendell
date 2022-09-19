@@ -186,6 +186,22 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
+  // Drop root permissions
+  //
+  /*
+  if(getuid()==0) {
+    if(setgid(rda->config()->gid())<0) {
+      perror("rdcatchd");
+      exit(1);
+    }
+    if(setuid(rda->config()->uid())<0) {
+      perror("rdcatchd");
+      exit(1);
+    }
+  }
+  */
+
+  //
   // Initialize Data Structures
   //
   for(int i=0;i<MAX_DECKS;i++) {
@@ -1892,6 +1908,7 @@ QString MainObject::LoadEventSql()
     "`URL`,"+                   // 37
     "`URL_USERNAME`,"+          // 38
     "`URL_PASSWORD`,"+          // 39
+    "`URL_USE_ID_FILE`,"+       // 40
     "`QUALITY`,"+               // 40
     "`NORMALIZE_LEVEL`,"+       // 41
     "`ALLOW_MULT_RECS`,"+       // 42
@@ -1932,9 +1949,10 @@ void MainObject::LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add)
   e->setUrl(q->value(37).toString());
   e->setUrlUsername(q->value(38).toString());
   e->setUrlPassword(q->value(39).toString());
-  e->setQuality(q->value(40).toInt());
-  e->setNormalizeLevel(q->value(41).toInt());
-  e->setFeedId(q->value(45).toUInt());
+  e->setUseSshIdentity(q->value(40).toString()=='Y');
+  e->setQuality(q->value(41).toInt());
+  e->setNormalizeLevel(q->value(42).toInt());
+  e->setFeedId(q->value(46).toUInt());
   e->setMacroCart(q->value(23).toInt());
   e->setSwitchInput(q->value(24).toInt());
   e->setSwitchOutput(q->value(25).toInt());
@@ -1950,11 +1968,11 @@ void MainObject::LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add)
   e->setEndLength(q->value(34).toInt());
   e->setEndMatrix(q->value(35).toInt());
   e->setEndLine(q->value(36).toInt());
-  e->setAllowMultipleRecordings(RDBool(q->value(42).toString()));
-  e->setMaxGpiRecordLength(q->value(43).toUInt());
-  e->setDescription(q->value(44).toString());
-  e->setEventdateOffset(q->value(46).toInt());
-  e->setEnableMetadata(RDBool(q->value(47).toString()));
+  e->setAllowMultipleRecordings(RDBool(q->value(43).toString()));
+  e->setMaxGpiRecordLength(q->value(44).toUInt());
+  e->setDescription(q->value(45).toString());
+  e->setEventdateOffset(q->value(47).toInt());
+  e->setEnableMetadata(RDBool(q->value(48).toString()));
 
   if(add) {
     if(e->startType()==RDRecording::GpiStart) {

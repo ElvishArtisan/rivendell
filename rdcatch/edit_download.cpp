@@ -47,12 +47,6 @@ EditDownload::EditDownload(QString *filter,QWidget *parent)
   RDTextValidator *validator=new RDTextValidator(this,"validator");
 
   //
-  // Dialogs
-  //
-  //  edit_cut_dialog=new RDCutDialog(edit_filter,&edit_group,&edit_schedcode,
-  //				  false,true,true,"RDCatch",false,this);
-
-  //
   // Event Widget
   //
   edit_event_widget=new EventWidget(EventWidget::OtherEvent,this);
@@ -97,6 +91,15 @@ EditDownload::EditDownload(QString *filter,QWidget *parent)
   edit_password_label=new QLabel(tr("Password:"),this);
   edit_password_label->setFont(labelFont());
   edit_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  //
+  // Use ssh(1) ID File
+  //
+  edit_use_id_file_label=
+    new QLabel(tr("Authenticate with local identity file"),this);
+  edit_use_id_file_label->setFont(labelFont());
+  edit_use_id_file_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  edit_use_id_file_check=new QCheckBox(this);
 
   //
   // Destination
@@ -235,7 +238,7 @@ EditDownload::~EditDownload()
 
 QSize EditDownload::sizeHint() const
 {
-  return QSize(edit_event_widget->sizeHint().width(),432);
+  return QSize(edit_event_widget->sizeHint().width(),456);
 } 
 
 
@@ -264,6 +267,7 @@ int EditDownload::exec(int record_id,std::vector<int> *adds)
   edit_url_edit->setText(edit_recording->url());
   edit_username_edit->setText(edit_recording->urlUsername());
   edit_password_edit->setText(edit_recording->urlPassword());
+  edit_use_id_file_check->setChecked(edit_recording->urlUseIdFile());
   edit_cutname=edit_recording->cutName();
   edit_destination_edit->setText("Cut "+edit_cutname);
   edit_channels_box->setCurrentIndex(edit_recording->channels()-1);
@@ -310,6 +314,14 @@ void EditDownload::urlChangedData(const QString &str)
     edit_username_edit->setDisabled(true);
     edit_password_label->setDisabled(true);
     edit_password_edit->setDisabled(true);
+  }
+  if((scheme=="sftp")&&(!rda->station()->sshIdentityFile().isEmpty())) {
+    edit_use_id_file_check->setEnabled(true);
+    edit_use_id_file_label->setEnabled(true);
+  }
+  else {
+    edit_use_id_file_check->setDisabled(true);
+    edit_use_id_file_label->setDisabled(true);
   }
 }
 
@@ -405,37 +417,40 @@ void EditDownload::resizeEvent(QResizeEvent *e)
   edit_password_edit->setGeometry(360,97,size().width()-370,20);
   edit_password_label->setGeometry(275,97,80,20);
 
-  edit_destination_edit->setGeometry(115,124,size().width()-195,20);
-  edit_destination_button->setGeometry(size().width()-70,122,60,24);
-  edit_destination_label->setGeometry(10,127,100,19);
+  edit_use_id_file_check->setGeometry(120,122,15,15);
+  edit_use_id_file_label->setGeometry(140,120,size().width()-150,20);
 
-  edit_channels_box->setGeometry(190,149,40,20);
-  edit_channels_label->setGeometry(120,149,70,20);
+  edit_destination_edit->setGeometry(115,148,size().width()-195,20);
+  edit_destination_button->setGeometry(size().width()-70,146,60,24);
+  edit_destination_label->setGeometry(10,151,100,19);
 
-  edit_autotrim_box->setGeometry(120,175,15,15);
-  edit_autotrim_label_label->setGeometry(140,173,80,20);
-  edit_autotrim_spin->setGeometry(265,173,40,20);
-  edit_autotrim_label->setGeometry(220,173,40,20);
-  edit_autotrim_unit->setGeometry(310,173,40,20);
+  edit_channels_box->setGeometry(190,175,40,20);
+  edit_channels_label->setGeometry(120,175,70,20);
 
-  edit_normalize_label_label->setGeometry(140,197,80,20);
-  edit_normalize_box->setGeometry(120,199,15,15);
-  edit_normalize_spin->setGeometry(265,197,40,20);
-  edit_normalize_label->setGeometry(220,197,40,20);
-  edit_normalize_unit->setGeometry(310,197,40,20);
+  edit_autotrim_box->setGeometry(120,203,15,15);
+  edit_autotrim_label_label->setGeometry(140,201,80,20);
+  edit_autotrim_spin->setGeometry(265,201,40,20);
+  edit_autotrim_label->setGeometry(220,201,40,20);
+  edit_autotrim_unit->setGeometry(310,201,40,20);
 
-  edit_metadata_box->setGeometry(120,222,15,15);
-  edit_metadata_label->setGeometry(140,222,160,20);
+  edit_normalize_label_label->setGeometry(140,227,80,20);
+  edit_normalize_box->setGeometry(120,229,15,15);
+  edit_normalize_spin->setGeometry(265,227,40,20);
+  edit_normalize_label->setGeometry(220,227,40,20);
+  edit_normalize_unit->setGeometry(310,227,40,20);
 
-  edit_dow_selector->setGeometry(10,257,edit_dow_selector->sizeHint().width(),
+  edit_metadata_box->setGeometry(120,254,15,15);
+  edit_metadata_label->setGeometry(140,252,160,20);
+
+  edit_dow_selector->setGeometry(10,281,edit_dow_selector->sizeHint().width(),
 				 edit_dow_selector->sizeHint().height());
 
-  edit_oneshot_box->setGeometry(20,335,15,15);
-  edit_oneshot_label->setGeometry(40,333,115,20);
+  edit_oneshot_box->setGeometry(20,359,15,15);
+  edit_oneshot_label->setGeometry(40,357,115,20);
 
-  edit_eventoffset_spin->setGeometry(245,333,45,20);
-  edit_eventoffset_label->setGeometry(140,333,100,20);
-  edit_eventoffset_unit->setGeometry(295,333,40,20);
+  edit_eventoffset_spin->setGeometry(245,357,45,20);
+  edit_eventoffset_label->setGeometry(140,357,100,20);
+  edit_eventoffset_unit->setGeometry(295,357,40,20);
 
   edit_saveas_button->setGeometry(size().width()-300,size().height()-60,80,50);
   edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
@@ -486,6 +501,7 @@ void EditDownload::Save()
   edit_recording->setUrl(edit_url_edit->text());
   edit_recording->setUrlUsername(edit_username_edit->text());
   edit_recording->setUrlPassword(edit_password_edit->text());
+  edit_recording->setUrlUseIdFile(edit_use_id_file_check->isChecked());
   edit_recording->setEnableMetadata(edit_metadata_box->isChecked());
   edit_dow_selector->toRecording(edit_recording->id());
   edit_recording->setEventdateOffset(edit_eventoffset_spin->value());

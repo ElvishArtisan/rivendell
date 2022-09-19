@@ -23339,3 +23339,6 @@
 2022-09-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that caused a segfault when
 	attempting to add or delete an event.
+2022-09-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for using a ssh(1) identity file for authentication
+	to the 'Upload' and 'Download' event types in rdcatch(1).

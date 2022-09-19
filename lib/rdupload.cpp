@@ -2,7 +2,7 @@
 //
 // Upload a File
 //
-//   (C) Copyright 2010-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,8 +41,8 @@
 //
 // CURL Progress Callback
 //
-int UploadProgressCallback(void *clientp,double dltotal,double dlnow,
-			  double ultotal,double ulnow)
+int __RDUpload_UploadProgressCallback(void *clientp,double dltotal,double dlnow,
+				      double ultotal,double ulnow)
 {
   RDUpload *conv=(RDUpload *)clientp;
   conv->UpdateProgress(ulnow);
@@ -54,8 +54,8 @@ int UploadProgressCallback(void *clientp,double dltotal,double dlnow,
 }
 
 
-int UploadErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
-			void *clientp)
+int __RDUpload_UploadErrorCallback(CURL *curl,curl_infotype type,char *msg,
+				   size_t size,void *clientp)
 {
   char str[1000];
 
@@ -160,7 +160,7 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
   url.replace("#","%23");
 
   //
-  // Authentication
+  // Authentication Parameters
   //
   if((conv_dst_url.scheme().toLower()=="sftp")&&
      (!id_filename.isEmpty())&&use_id_filename) {
@@ -168,25 +168,36 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
     curl_easy_setopt(curl,CURLOPT_SSH_PRIVATE_KEYFILE,
 		     id_filename.toUtf8().constData());
     curl_easy_setopt(curl,CURLOPT_KEYPASSWD,password.toUtf8().constData());
+    rda->syslog(LOG_DEBUG,"using ssh key at \"%s\"",
+		id_filename.toUtf8().constData());
   }
   else {
     strncpy(userpwd,(username+":"+password).toUtf8(),255);
     curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   }
+  curl_easy_setopt(curl,CURLOPT_SSL_VERIFYHOST,0); // Don't verify host key
 
-  curl_easy_setopt(curl,CURLOPT_URL,(const char *)url);
+  //
+  // Transfer Parameters
+  //
+  curl_easy_setopt(curl,CURLOPT_URL,url.constData());
   curl_easy_setopt(curl,CURLOPT_UPLOAD,1);
   curl_easy_setopt(curl,CURLOPT_READDATA,f);
   curl_easy_setopt(curl,CURLOPT_INFILESIZE,(long)conv_src_size);
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
-  curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,UploadProgressCallback);
+  curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,
+		   __RDUpload_UploadProgressCallback);
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,0);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent().toUtf8());
+		   rda->config()->userAgent().toUtf8().constData());
+
+  //
+  // Debug Parameters
+  //
   if(log_debug) {
     curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
-    curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,UploadErrorCallback);
+    curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,__RDUpload_UploadErrorCallback);
   }
   if(user!=NULL) {
     RDCheckExitCode("RDUpload::runUpload setegid",setegid(user->gid()));

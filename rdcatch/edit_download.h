@@ -76,6 +76,8 @@ class EditDownload : public RDDialog
   QLineEdit *edit_username_edit;
   QLabel *edit_password_label;
   QLineEdit *edit_password_edit;
+  QCheckBox *edit_use_id_file_check;;
+  QLabel *edit_use_id_file_label;
   QString edit_cutname;
   QLabel *edit_destination_label;
   QLineEdit *edit_destination_edit;
