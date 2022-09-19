@@ -250,13 +250,13 @@ RDRecording::ExitCode RecordListModel::recordExitCode(const QModelIndex &row)
 
 QString RecordListModel::hostName(const QModelIndex &row) const
 {
-  return d_texts.at(row.row()).at(23).toString();
+  return d_hostnames.at(row.row());
 }
 
 
 QString RecordListModel::cutName(const QModelIndex &row) const
 {
-  return d_texts.at(row.row()).at(25).toString();
+  return d_cutnames.at(row.row());
 }
 
 
@@ -379,7 +379,9 @@ QModelIndex RecordListModel::addRecord(unsigned id)
     list.push_back(QVariant());
   }
   d_ids.insert(offset,id);
+  d_hostnames.insert(offset,QString());
   d_channels.insert(offset,-1);
+  d_cutnames.insert(offset,QString());
   d_types.insert(offset,RDRecording::Recording);
   d_exit_codes.insert(offset,RDRecording::Ok);
   d_text_colors.insert(offset,QVariant());
@@ -400,7 +402,9 @@ void RecordListModel::removeRecord(const QModelIndex &row)
   beginRemoveRows(QModelIndex(),row.row(),row.row());
 
   d_ids.removeAt(row.row());
+  d_hostnames.removeAt(row.row());
   d_channels.removeAt(row.row());
+  d_cutnames.removeAt(row.row());
   d_types.removeAt(row.row());
   d_exit_codes.removeAt(row.row());
   d_is_nexts.removeAt(row.row());
@@ -533,7 +537,9 @@ void RecordListModel::updateModel(const QString &filter_sql)
   sql=sqlFields()+filter_sql;
   beginResetModel();
   d_ids.clear();
+  d_hostnames.clear();
   d_channels.clear();
+  d_cutnames.clear();
   d_types.clear();
   d_exit_codes.clear();
   d_is_nexts.clear();
@@ -545,7 +551,9 @@ void RecordListModel::updateModel(const QString &filter_sql)
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_ids.push_back(0);
+    d_hostnames.push_back(QString());
     d_channels.push_back(-1);
+    d_cutnames.push_back(QString());
     d_types.push_back(RDRecording::Recording);
     d_exit_codes.push_back(RDRecording::Ok);
     d_text_colors.push_back(QVariant());
@@ -587,7 +595,9 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   // Event Values
   //
   d_ids[row]=q->value(0).toUInt();
+  d_hostnames[row]=q->value(3).toString();
   d_channels[row]=q->value(29).toUInt();
+  d_cutnames[row]=q->value(6).toString();
   d_types[row]=(RDRecording::Type)q->value(23).toUInt();
   d_exit_codes[row]=(RDRecording::ExitCode)q->value(25).toUInt();
 

@@ -97,7 +97,9 @@ class RecordListModel : public QAbstractTableModel
   QList<QVariant> d_alignments;
   QList<QList<QVariant> > d_texts;
   QList<unsigned> d_ids;
+  QStringList d_hostnames;
   QList<int> d_channels;
+  QStringList d_cutnames;
   QList<RDRecording::Type> d_types;
   QList<RDRecording::ExitCode> d_exit_codes;
   QList<QVariant> d_text_colors;
