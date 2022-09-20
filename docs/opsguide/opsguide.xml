@@ -25,6 +25,7 @@
   <!ENTITY metadata_wildcards SYSTEM "metadata_wildcards.xml">
   <!ENTITY rivendell_filter SYSTEM "rivendell_filter.xml">
   <!ENTITY wings_filter SYSTEM "wings_filter.xml">
+  <!ENTITY ssh_keys SYSTEM "ssh_keys.xml">
 ]>
 
 <book xmlns="http://docbook.org/ns/docbook" version="5.0">
@@ -59,6 +60,7 @@
     &metadata_wildcards;
     &rivendell_filter;
     &wings_filter;
+    &ssh_keys;
   </part>
 </book>
 

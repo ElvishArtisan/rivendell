@@ -1,0 +1,184 @@
+<appendix xmlns="http://docbook.org/ns/docbook" xml:id="appendix.ssh_keys">
+  <title>Creating and Configuring a Secure Shell Identity Key-pair for
+  Rivendell</title>
+  <sect1 xml:id="sect.ssh_keys.overview">
+    <title>Overview</title>
+    <para>
+      Rivendell supports the use of a public/private key pair (also referred
+      to as an &quot;identity&quot; in the Secure Shell documentation) for
+      SFTP file transfers. This appendix provides an example of how to
+      generate and install such a set of key pair files so that they can be
+      used by Rivendell.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="sect.ssh_keys.requirements">
+    <title>Requirements</title>
+    <para>
+      This procedure uses the
+      <command>ssh-keygen</command><manvolnum>1</manvolnum> program, which
+      should be already installed on any system running Rivendell. If not,
+      it can be obtained most distros by installing the
+      <userinput>openssh</userinput> package.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="sect.ssh_keys.generating_the_keys">
+    <title>Generating the Keys</title>
+    <para>
+      In this example, we will generate a pair of files, called
+      <userinput>rivendell_key</userinput> and
+      <userinput>rivendell_key.pub</userinput>. The first file
+      (<userinput>rivendell_key</userinput>) is the
+      <emphasis>private</emphasis> key (also known as the
+      <emphasis>identity file</emphasis>), and will remain on the Rivendell
+      system where it was generated,
+      while the other (<userinput>rivendell_key.pub</userinput>) is the
+      <emphasis>public</emphasis> key, which will be deployed to the
+      remote server(s) with which Rivendell will be interacting.
+    </para>
+    <sect2 xml:id="sect.ssh_keys.generating_the_keys.procedure">
+      <title>Procedure</title>
+      <para>
+	Open a command line window on the Rivendell system. (This is
+	sometimes also referred to as a &quot;Terminal&quot; or
+	a &quot;Console&quot; depending upon the desktop environment
+	being used.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="ssh_keys.terminal_window.png" width="128mm"/>
+	  </imageobject>
+	  <caption><para>The Terminal Window</para></caption>
+	</mediaobject>
+      </para>
+      <para>
+	Enter command to become the 'root' user. On CentOS/RedHat systems,
+	the command to do this is <userinput>su -</userinput>, while on
+	Debian/Ubuntu-based systems it is <userinput>sudo su -</userinput>.
+	In either case, you will be prompted to enter a password. Enter the
+	password and then press the <userinput>ENTER</userinput> key.
+      </para>
+      <note>
+	You may not see anything echo to the screen while entering the
+	password. This is normal!
+      </note>
+      <para>
+	You should see the prompt in the terminal change from the dollar
+	sign [<computeroutput>$</computeroutput>] to a pound sign
+	[<computeroutput>#</computeroutput>] to signify that the window
+	now as 'root' permissions.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="ssh_keys.ordinary_prompt.png" width="50mm"/>
+	  </imageobject>
+	  <caption><para>Ordinary Prompt</para></caption>
+	</mediaobject>
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="ssh_keys.root_prompt.png" width="50mm"/>
+	  </imageobject>
+	  <caption><para>&quot;Root&quot; Prompt</para></caption>
+	</mediaobject>
+      </para>
+      <para>
+	At the root prompt, enter the following command, followed by the
+	<userinput>[Enter]</userinput> key:
+	<userinput>ssh-keygen -t rsa</userinput>
+      </para>
+      <para>
+	The system will respond with:
+	<computeroutput><literallayout>Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+</literallayout></computeroutput>
+      </para>
+      <para>
+	Enter the following location to save the key pair:
+	<userinput>/usr/share/rivendell/keys/id_rsa_rivendell</userinput>,
+	followed by the <userinput>[Enter]</userinput> key.
+      </para>
+      <para>
+	The system will respond with:
+	<computeroutput><literallayout>Enter passphrase (empty for no passphrase):
+      </literallayout></computeroutput>
+	Enter a passphrase, followed by the <userinput>[Enter]</userinput> key.
+	The system will prompt you to repeat the passphrase:
+	<computeroutput>
+	  <literallayout>Enter same passphrase again:</literallayout>
+	</computeroutput>
+	Enter the passphrase again, followed by <userinput>[Enter]</userinput>.
+	You should then see output similar to:
+	<computeroutput>
+	  <literallayout>Your identification has been saved in /usr/share/rivendell/keys/
+id_rsa_rivendell.
+Your public key has been saved in /usr/share/rivendell/keys/id_rsa_r
+ivendell.pub.
+The key fingerprint is:
+SHA256:Obdzp8PaV5D68AJULnz+XJjXUmojNqygdu2+blAuaWk root@frozone.para
+velsystems.com
+The key's randomart image is:
++---[RSA 2048]----+
+|                 |
+|            .    |
+|         . o   . |
+|         .= o o .|
+|        S*.= . *.|
+|        Eoo.O B =|
+|       + =o=.X.* |
+|      o . +++o*  |
+|     . . =*oo+   |
++----[SHA256]-----+</literallayout>
+	</computeroutput>
+      </para>
+      <note>
+	The passphrase is your final line of defense against a malicious
+	actor should they get hold of a copy of your private key. Choose
+	a long phrase that is not easily guessable.
+      </note>
+      <caution>
+	You will need to enter the passphrase each time you add an
+	an RDCatch event or RSS Feed that uses this identity!
+      </caution>
+      <para>
+	Next, set the ownership of the private key to the
+	<userinput>rivendell</userinput> user and group by doing:
+	<computeroutput>
+	  <literallayout>chown rivendell:rivendell /usr/share/rivendell/keys/id_rsa_rivendell</literallayout>
+	</computeroutput>
+	followed by the <userinput>[Enter]</userinput> key.	
+      </para>
+      <para>
+	The public key now resides at
+	<computeroutput>/usr/share/rivendell/keys/id_rsa_rivendell.pub</computeroutput>,
+	and can be deployed on remote servers. The private key (ssh identity)
+	resides at
+	<computeroutput>/usr/share/rivendell/keys/id_rsa_rivendell</computeroutput>.
+	Open RDAdmin, touch <computeroutput>Manage Hosts</computeroutput>,
+	select the name of host being configured and then touch the
+	<computeroutput>Edit</computeroutput> button to open the
+	<computeroutput>Edit Host</computeroutput> and enter the location
+	of the private key in the
+	<computeroutput>SSH Ident. File</computeroutput> field, then touch
+	the <computeroutput>OK</computeroutput> button.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="ssh_keys.edit_host_dialog.png" width="90mm"/>
+	  </imageobject>
+	  <caption>
+	    <para>
+	      Populating the <computeroutput>SSH Ident. File</computeroutput>
+	      Field
+	  </para></caption>
+	</mediaobject>
+      </para>
+    </sect2>
+  </sect1>
+
+</appendix>

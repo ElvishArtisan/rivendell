@@ -26,6 +26,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 appendix.metadata_wildcards.html\
                 appendix.rivendell_filter.html\
                 appendix.wings_filter.html\
+                appendix.ssh_keys.html\
                 chapter.overview.html\
                 chapter.pad.html\
                 chapter.rdadmin.html\
@@ -291,6 +292,10 @@ OPSGUIDE_IMAGES = rdadmin.add_switcher_dialog.png\
                   rdlogmanager.select_date_dialog.png\
                   rdlogmanager.select_report_dates_dialog.png\
                   rdlogmanager.service_association_dialog.png\
+                  ssh_keys.edit_host_dialog.png\
+                  ssh_keys.ordinary_prompt.png\
+                  ssh_keys.root_prompt.png\
+                  ssh_keys.terminal_window.png\
                   utilities.rmlsend_screenshot.png\
                   voicetracking.voice_tracker_button.png\
                   voicetracking.voice_tracker_dialog.png\
@@ -338,6 +343,7 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 rdlogin.xml\
                 rdlogmanager.xml\
                 rivendell_filter.xml\
+                ssh_keys.xml\
                 wings_filter.xml\
                 rml.xml\
                 utilities.xml\
