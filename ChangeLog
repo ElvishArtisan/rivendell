@@ -23359,3 +23359,6 @@
 	required.
 2022-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Removed dead code from 'rdcatch/edit_upload.cpp'.
+2022-09-20 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the Operations Guide to include a pointer to the example
+	for generating an SSH keypair.

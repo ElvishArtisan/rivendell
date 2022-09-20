@@ -858,7 +858,8 @@
       otherwise transfers with fail with an
       <computeroutput>Authentication Failed</computeroutput> error.
       See the <command>rd.conf</command><manvolnum>5</manvolnum> man
-      page for more information.
+      page for more information. See <xref linkend="appendix.ssh_keys" />
+      for an example.
     </caution>
     <para>
       The <computeroutput>Time Offset:</computeroutput> field can be used
