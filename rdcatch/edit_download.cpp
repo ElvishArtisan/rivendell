@@ -100,6 +100,8 @@ EditDownload::EditDownload(QString *filter,QWidget *parent)
   edit_use_id_file_label->setFont(labelFont());
   edit_use_id_file_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_use_id_file_check=new QCheckBox(this);
+  connect(edit_use_id_file_check,SIGNAL(toggled(bool)),
+	  this,SLOT(useIdFileData(bool)));
 
   //
   // Destination
@@ -318,10 +320,23 @@ void EditDownload::urlChangedData(const QString &str)
   if((scheme=="sftp")&&(!rda->station()->sshIdentityFile().isEmpty())) {
     edit_use_id_file_check->setEnabled(true);
     edit_use_id_file_label->setEnabled(true);
+    useIdFileData(edit_use_id_file_check->isChecked());
   }
   else {
     edit_use_id_file_check->setDisabled(true);
     edit_use_id_file_label->setDisabled(true);
+    useIdFileData(false);
+  }
+}
+
+
+void EditDownload::useIdFileData(bool state)
+{
+  if(state) {
+    edit_password_label->setText(tr("Passphrase")+":");
+  }
+  else {
+    edit_password_label->setText(tr("Password")+":");
   }
 }
 

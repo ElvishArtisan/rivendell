@@ -52,6 +52,7 @@ class EditUpload : public RDDialog
   void stationChangedData(const QString &str);
   void feedChangedData(int index);
   void urlChangedData(const QString &str);
+  void useIdFileData(bool state);
   void selectCartData();
   void setFormatData();
   void normalizeCheckData(bool state);

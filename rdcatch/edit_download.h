@@ -51,6 +51,7 @@ class EditDownload : public RDDialog
 
  private slots:
   void urlChangedData(const QString &str);
+  void useIdFileData(bool state);
   void selectCartData();
   void autotrimToggledData(bool state);
   void normalizeToggledData(bool state);
