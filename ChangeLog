@@ -23357,3 +23357,5 @@
 	* Tweaked the credentials section in the 'Edit Feed'  dialog in
 	rdadmin(1) to indicate whether a 'Password' or a 'Passphrase' is
 	required.
+2022-09-20 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead code from 'rdcatch/edit_upload.cpp'.

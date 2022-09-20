@@ -218,42 +218,6 @@ EditUpload::EditUpload(QString *filter,QWidget *parent)
   //
   setMinimumSize(sizeHint());
   setMaximumSize(sizeHint());
-
-  //
-  // Populate Data
-  //
-  /*
-  edit_event_widget->fromRecording(edit_recording->id());
-  edit_description_edit->setText(edit_recording->description());
-  edit_url_edit->setText(edit_recording->url());
-  edit_username_edit->setText(edit_recording->urlUsername());
-  edit_password_edit->setText(edit_recording->urlPassword());
-  edit_use_id_file_check->setChecked(edit_recording->urlUseIdFile());
-  edit_cutname=edit_recording->cutName();
-  if(!edit_recording->cutName().isEmpty()) {
-    edit_source_edit->setText("Cut "+edit_recording->cutName());
-  }
-  edit_metadata_box->setChecked(edit_recording->enableMetadata());
-  edit_dow_selector->fromRecording(edit_recording->id());
-  edit_eventoffset_spin->setValue(edit_recording->eventdateOffset());
-  edit_oneshot_box->setChecked(edit_recording->oneShot());
-  edit_settings.setFormat(edit_recording->format());
-  edit_settings.setChannels(edit_recording->channels());
-  edit_settings.setSampleRate(edit_recording->sampleRate());
-  edit_settings.setBitRate(edit_recording->bitrate());
-  edit_settings.setQuality(edit_recording->quality());
-  edit_format_edit->setText(edit_settings.description());
-  if(edit_recording->normalizationLevel()>0) {
-    edit_normalize_box->setChecked(false);
-  }
-  else {
-    edit_normalize_box->setChecked(true);
-    edit_normalize_spin->setValue(edit_recording->normalizationLevel()/100);
-  }
-  normalizeCheckData(edit_normalize_box->isChecked());
-  edit_feed_box->setCurrentText(edit_recording->feedKeyName());
-  feedChangedData(edit_feed_box->currentIndex());
-  */
 }
 
 
