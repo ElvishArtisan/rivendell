@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Feed
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,7 +40,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   // Fix the Window Size
   //
   setMinimumSize(sizeHint());
-  setMaximumSize(sizeHint());
+  setMaximumHeight(sizeHint().height());
 
   feed_feed=new RDFeed(feed,rda->config(),this);
   feed_image_model=new RDImagePickerModel("FEED_IMAGES","FEED_ID",this);
@@ -254,6 +254,8 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(tr("Authenticate with local identity file"),this);
   feed_purge_use_id_file_label->setFont(labelFont());
   feed_purge_use_id_file_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  connect(feed_purge_use_id_file_check,SIGNAL(toggled(bool)),
+	  this,SLOT(purgeUseIdFileData(bool)));
 
   //
   // Audio Format
@@ -540,10 +542,23 @@ void EditFeed::purgeUrlChangedData(const QString &str)
      (!rda->station()->sshIdentityFile().isEmpty())) {
     feed_purge_use_id_file_check->setEnabled(true);
     feed_purge_use_id_file_label->setEnabled(true);
+    purgeUseIdFileData(feed_purge_use_id_file_check->isChecked());
   }
   else {
     feed_purge_use_id_file_check->setDisabled(true);
     feed_purge_use_id_file_label->setDisabled(true);
+    purgeUseIdFileData(false);
+  }
+}
+
+
+void EditFeed::purgeUseIdFileData(bool state)
+{
+  if(state) {
+    feed_purge_password_label->setText(tr("Passphrase")+":");
+  }
+  else {
+    feed_purge_password_label->setText(tr("Password")+":");
   }
 }
 
@@ -773,8 +788,8 @@ void EditFeed::resizeEvent(QResizeEvent *e)
   feed_purge_url_label->setGeometry(20,425,130,19);
   feed_purge_username_edit->setGeometry(225,445,95,19);
   feed_purge_username_label->setGeometry(40,445,180,19);
-  feed_purge_password_edit->setGeometry(395,445,95,19);
-  feed_purge_password_label->setGeometry(320,445,70,19);
+  feed_purge_password_edit->setGeometry(415,445,75,19);
+  feed_purge_password_label->setGeometry(330,445,80,19);
   feed_purge_use_id_file_check->setGeometry(160,466,15,15);
   feed_purge_use_id_file_label->setGeometry(180,464,300,19);
 

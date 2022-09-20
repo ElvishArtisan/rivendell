@@ -53,6 +53,7 @@ class EditFeed : public RDDialog
   void schemaActivatedData(int n);
   void checkboxToggledData(bool state);
   void purgeUrlChangedData(const QString &str);
+  void purgeUseIdFileData(bool state);
   void lineeditChangedData(const QString &str);
   void selectSubfeedsData();
   void setFormatData();
