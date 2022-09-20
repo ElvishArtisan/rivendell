@@ -23345,3 +23345,7 @@
 2022-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added an appendix 'Creating and Configuring a Secure Shell Identity
 	Key-pair for Rivendell' to the Operations Guide.
+2022-09-20 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the 'RECORDINGS.URL_PASSWORD' from 'varchar(64)' to 'text'.
+	* Base64 encoded the contents of the 'RECORDINGS.URL_PASSWORD' field.
+	* Incremented the database version  to 358.

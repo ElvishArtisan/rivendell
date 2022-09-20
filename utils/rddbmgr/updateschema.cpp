@@ -11022,6 +11022,30 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<358)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `RECORDINGS` modify column `URL_PASSWORD` text");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("select ")+
+      "`ID`,"+           // 00
+      "`URL_PASSWORD` "  // 01
+      "from `RECORDINGS`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update `RECORDINGS` set ")+
+	"`URL_PASSWORD`='"+
+	RDEscapeString(q->value(1).toString().toUtf8().toBase64())+"' "+
+	QString::asprintf("where `ID`=%u",q->value(0).toUInt());
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

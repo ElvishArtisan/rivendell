@@ -42,6 +42,34 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 358
+  //
+  if((cur_schema==358)&&(set_schema<cur_schema)) {
+    sql=QString("select ")+
+      "`ID`,"+           // 00
+      "`URL_PASSWORD` "  // 01
+      "from `RECORDINGS`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update `RECORDINGS` set ")+
+	"`URL_PASSWORD`='"+
+	RDEscapeString(QByteArray::fromBase64(q->value(1).toString().toUtf8()))+"' "+
+	QString::asprintf("where `ID`=%u",q->value(0).toUInt());
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+    sql=QString("alter table `RECORDINGS` ")+
+      "modify column `URL_PASSWORD` varchar(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 357
   //
   if((cur_schema==357)&&(set_schema<cur_schema)) {

@@ -1948,7 +1948,7 @@ void MainObject::LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add)
   e->setBitrate(q->value(22).toInt());
   e->setUrl(q->value(37).toString());
   e->setUrlUsername(q->value(38).toString());
-  e->setUrlPassword(q->value(39).toString());
+  e->setUrlPassword(QByteArray::fromBase64(q->value(39).toString().toUtf8()));
   e->setUseSshIdentity(q->value(40).toString()=='Y');
   e->setQuality(q->value(41).toInt());
   e->setNormalizeLevel(q->value(42).toInt());

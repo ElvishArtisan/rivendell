@@ -603,13 +603,13 @@ void RDRecording::setUrlUsername(QString name) const
 
 QString RDRecording::urlPassword() const
 {
-  return GetStringValue("URL_PASSWORD");
+  return QByteArray::fromBase64(GetStringValue("URL_PASSWORD").toUtf8());
 }
 
 
 void RDRecording::setUrlPassword(QString passwd) const
 {
-  SetRow("URL_PASSWORD",passwd);
+  SetRow("URL_PASSWORD",QString(passwd.toUtf8().toBase64()));
 }
 
 
