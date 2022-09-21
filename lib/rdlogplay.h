@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -197,6 +197,7 @@ class RDLogPlay : public RDLogModel
   RDLogLine::TransType GetTransType(const QString &logname,int line);
   bool ClearBlock(int start_line);
   void SendNowNext();
+  void UpdateRestartData();
   QString GetPadJson(const QString &name,RDLogLine *ll,
 		     const QDateTime &start_datetime,int line,int padding,
 		     bool final=false) const;

@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -2000,7 +2000,7 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
   switch(logline->type()) {
   case RDLogLine::Cart:
     if(!StartAudioEvent(line)) {
-      rda->airplayConf()->setLogCurrentLine(play_id,nextLine());
+      UpdateRestartData();
       return false;
     }
     aport=GetNextChannel(mport,&card,&port);
@@ -2029,7 +2029,7 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
       rda->syslog(LOG_WARNING,
 		  "log engine: RDLogPlay::StartEvent(): no audio,CUT=%s",
 		  (const char *)logline->cutName().toUtf8());
-      rda->airplayConf()->setLogCurrentLine(play_id,nextLine());
+      UpdateRestartData();
       return false;
     }
     emit modified(line);
@@ -2201,13 +2201,13 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     if((logline->state()==RDLogLine::Ok)||
        (logline->state()==RDLogLine::NoCart)||
        (logline->state()==RDLogLine::NoCut)) {
-      rda->airplayConf()->setLogCurrentLine(play_id,nextLine());
+      UpdateRestartData();
       return true;
     }
     play_next_line++;
   }
   play_next_line=-1;
-  rda->airplayConf()->setLogCurrentLine(play_id,nextLine());
+  UpdateRestartData();
   return true;
 }
 
@@ -2856,6 +2856,7 @@ void RDLogPlay::ChangeTransport()
 		     createIndex(play_next_line+play_slot_quantity-1,
 				 columnCount()));
   }
+  UpdateRestartData();
 }
 
 
@@ -3212,6 +3213,39 @@ void RDLogPlay::SendNowNext()
   if(default_next_logline!=NULL) {
     delete default_next_logline;
   }
+}
+
+
+void RDLogPlay::UpdateRestartData()
+{
+  QString running;
+  int line=-1;
+  int id=-1;
+  int lines[TRANSPORT_QUANTITY];
+  if(runningEvents(lines,false)>0) {
+    line=lines[0];
+    id=logLine(line)->id();
+    running="Y";
+  }
+  else {
+    line=nextLine();
+    if(line>=0) {
+      id=logLine(line)->id();
+    }
+    running="N";
+  }
+
+  if(line<0) {
+    line=play_next_line;
+    running="N";
+  }
+  QString sql=QString("update `LOG_MACHINES` set ")+
+    QString::asprintf("`LOG_LINE`=%d,",line)+
+    QString::asprintf("`LOG_ID`=%d,",id)+
+    "`RUNNING`='"+running+"' "+
+    "where `STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+    QString::asprintf("`MACHINE`=%d",play_id);
+  RDSqlQuery::apply(sql);
 }
 
 

@@ -2,7 +2,7 @@
 //
 // Edit an RDAirPlay Configuration
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -749,7 +749,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_startmode_box=new QComboBox(this);
   air_startmode_box->setGeometry(100,524,240,20);
   air_startmode_box->insertItem(0,tr("start with empty log"));
-  air_startmode_box->insertItem(1,tr("load previous log"));
+  air_startmode_box->insertItem(1,tr("load and cue previous log"));
   air_startmode_box->insertItem(2,tr("load specified log"));
   label=new QLabel(tr("At Startup:"),this);
   label->setFont(subLabelFont());
@@ -1166,10 +1166,12 @@ void EditRDAirPlay::startModeChangedData(int mode)
 				 RDAirPlayConf::StartSpecified);
   air_startlog_button->setEnabled((RDAirPlayConf::StartMode)mode==
 				 RDAirPlayConf::StartSpecified);
-  air_autorestart_box->setDisabled((RDAirPlayConf::StartMode)mode==
-				   RDAirPlayConf::StartEmpty);
-  air_autorestart_label->setDisabled((RDAirPlayConf::StartMode)mode==
-				     RDAirPlayConf::StartEmpty);
+  air_autorestart_box->
+    setDisabled(((RDAirPlayConf::StartMode)mode==RDAirPlayConf::StartEmpty)||
+	       ((RDAirPlayConf::StartMode)mode==RDAirPlayConf::StartSpecified));
+  air_autorestart_label->
+    setDisabled(((RDAirPlayConf::StartMode)mode==RDAirPlayConf::StartEmpty)||
+	       ((RDAirPlayConf::StartMode)mode==RDAirPlayConf::StartSpecified));
 }
 
 

@@ -776,11 +776,10 @@ void MainWidget::ripcConnectedData(bool state)
 	  RDDateTimeDecode(rda->airplayConf()->currentLog(i),
 			   air_startup_datetime,rda->station(),rda->config());
 	if(!air_start_logname[i].isEmpty()) {
-	  if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
-	    if((air_start_line[i]=rda->airplayConf()->logCurrentLine(i))>=0) {
-	      air_start_start[i]=rda->airplayConf()->autoRestart(i)&&
-		rda->airplayConf()->logRunning(i);
-	    }
+	  if((air_start_line[i]=rda->airplayConf()->logCurrentLine(i))>=0) {
+	    air_start_start[i]=rda->airplayConf()->autoRestart(i)&&
+	      rda->airplayConf()->logRunning(i)&&
+	      (rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty);
 	  }
 	  else {
 	    air_start_line[i]=0;
@@ -793,21 +792,8 @@ void MainWidget::ripcConnectedData(bool state)
 	air_start_logname[i]=
 	  RDDateTimeDecode(rda->airplayConf()->logName(i),
 			   air_startup_datetime,rda->station(),rda->config());
-	if(!air_start_logname[i].isEmpty()) {
-	  if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
-	    if(air_start_logname[i]==rda->airplayConf()->currentLog(i)) {
-	      if((air_start_line[i]=rda->airplayConf()->logCurrentLine(i))>=
-		 0) {
-		air_start_start[i]=rda->airplayConf()->autoRestart(i)&&
-		  rda->airplayConf()->logRunning(i);
-	      }
-	      else {
-		air_start_line[i]=0;
-		air_start_start[i]=false;
-	      }
-	    }
-	  }
-	}
+	air_start_line[i]=0;
+	air_start_start[i]=false;
 	break;
       }
     }

@@ -23362,3 +23362,7 @@
 2022-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the Operations Guide to include a pointer to the example
 	for generating an SSH keypair.
+2022-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'load previous log' option in 'At Startup:' control
+	in the 'Configure RDAirPlay' dialog in rdadmin(1) to be
+	'load and cue previous log'.
