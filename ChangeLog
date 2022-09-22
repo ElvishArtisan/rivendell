@@ -23370,3 +23370,7 @@
 	* Updated the DTD declaration in 'xdg/rivendell-rivendell.menu' to
 	conform to the FreeDesktop specfication at
 	https://specifications.freedesktop.org/menu-spec/0.92/ar01s04.html.
+	'load and cue previous log'.
+2022-09-22 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the list of required build packages for RHEL-8 in
+	'INSTALL'.
