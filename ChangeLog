@@ -23370,3 +23370,6 @@
 	* Updated the DTD declaration in 'xdg/rivendell-rivendell.menu' to
 	conform to the FreeDesktop specfication at
 	https://specifications.freedesktop.org/menu-spec/0.92/ar01s04.html.
+2022-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the Disc Ripper in rdlibrary(1) that caused
+	manual changes to track metadata to be incorrectly applied.

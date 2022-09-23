@@ -261,13 +261,13 @@ void RDWaveDataDialog::okData()
   wave_data->setConductor(wave_conductor_edit->text());
   wave_data->setUserDefined(wave_userdef_edit->text());
 
-  done(0);
+  done(true);
 }
 
 
 void RDWaveDataDialog::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

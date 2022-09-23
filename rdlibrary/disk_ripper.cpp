@@ -683,9 +683,10 @@ void DiskRipper::modifyCartLabelData()
   if(rows.size()!=1) {
     return;
   }
-  if(rip_wavedata_dialog->exec(rip_wave_datas[rows.first().row()])==0) {
+  int real_row=rip_wave_datas.size()-rows.first().row()-1;
+  if(rip_wavedata_dialog->exec(rip_wave_datas[real_row])) {
     rip_track_model->
-      setTrackTitle(rows.first(),rip_wave_datas[rows.first().row()]->title());
+      setTrackTitle(rows.first(),rip_wave_datas[real_row]->title());
   }
 }
 
@@ -1056,7 +1057,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
 		      &audio_conv_err))) {
     case RDAudioImport::ErrorOk:
       cart->setMetadata(rip_wave_datas[rip_wave_datas.size()-track]);
-      cut->setDescription(rip_wave_datas[track-1]->title());
+      cut->setDescription(rip_wave_datas[rip_wave_datas.size()-track]->title());
       cut->setIsrc(rip_disc_record.isrc(rip_track_number-1));
       cut->setRecordingMbId(rip_disc_record.trackRecordingMbId(rip_track_number-1));
       cut->setReleaseMbId(rip_disc_record.discReleaseMbId());
