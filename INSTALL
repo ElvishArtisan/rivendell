@@ -273,8 +273,7 @@ Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib64 --lib
 
 
 2) RedHat Enterprise Linux 8
-
-Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel qt5-linguist qt5-qtbase-mysql libcurl-devel cdparanoia-devel alsa-lib-devel libsamplerate-devel libsndfile-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel id3lib-devel libdiscid-devel libcoverart libcoverart-devel jack2-devel docbook5-style-xsl hpklinux-devel
+Required build packages: git gcc-c++ automake autoconf libtool qt5-qtbase-devel qt5-linguist qt5-qtbase-mysql libcurl-devel cdparanoia-devel alsa-lib-devel libsamplerate-devel libsndfile-devel libvorbis-devel flac-devel pam-devel soundtouch-devel twolame-devel libmad-devel lame-devel rpm-build createrepo libxslt kernel-devel rpm-sign man-pages openssl-devel taglib-devel libmusicbrainz5-devel id3lib-devel libdiscid-devel libcoverart libcoverart-devel jack-audio-connection-kit-devel docbook5-style-xsl hpklinux-devel
 
 Configure script invocation: ./configure --prefix=/usr --libdir=/usr/lib64 --libexecdir=/var/www/rd-bin --sysconfdir=/etc/httpd/conf.d
 
