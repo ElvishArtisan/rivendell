@@ -888,7 +888,7 @@ void DiskRipper::selectionChangedData(const QItemSelection &before,
   rip_setcut_button->setEnabled(count==1);
   rip_setall_button->setEnabled(count>0);
   rip_setsingle_button->setEnabled((count>1)&&contiguous);
-  rip_cartlabel_button->setEnabled(false);
+  rip_cartlabel_button->setEnabled(count==1);
   rip_clear_button->setEnabled(count>0);
 }
 

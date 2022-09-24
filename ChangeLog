@@ -23376,3 +23376,7 @@
 2022-09-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the Disc Ripper in rdlibrary(1) that caused
 	manual changes to track metadata to be incorrectly applied.
+2022-09-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the Disc Ripper in rdlibrary(1) that caused the
+	'Modify Cart Label' to be grayed out at all times except immediately
+	adding a cart to a track.
