@@ -23380,3 +23380,6 @@
 	* Fixed a bug in the Disc Ripper in rdlibrary(1) that caused the
 	'Modify Cart Label' to be grayed out at all times except immediately
 	adding a cart to a track.
+2022-09-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the Disc Ripper in rdlibrary(1) that caused cart
+	list to be to be updated to reflected newly added carts.

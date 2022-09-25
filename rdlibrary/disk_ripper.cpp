@@ -35,12 +35,14 @@
 #include "globals.h"
 
 DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
+		       QList<unsigned> *added_cartnums,
 		       bool profile_rip,QWidget *parent) 
   : RDDialog(parent)
 {
   rip_filter_text=filter;
   rip_group_text=group;
   rip_schedcode_text=schedcode;
+  rip_added_cartnums=added_cartnums;
   rip_profile_rip=profile_rip;
   rip_aborting=false;
 
@@ -373,6 +375,14 @@ QSize DiskRipper::sizeHint() const
 QSizePolicy DiskRipper::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int DiskRipper::exec()
+{
+  rip_added_cartnums->clear();
+
+  return QDialog::exec();
 }
 
 
@@ -909,10 +919,10 @@ void DiskRipper::closeData()
 {
   RDCart::removePending(rda->station(),rda->user(),rda->config());
   if(rip_done&&rip_apply_box->isChecked()) {
-    done(0);
+    done(true);
   }
   else {
-    done(-1);
+    done(false);
   }
 }
 
@@ -1094,6 +1104,8 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   unlink(tmpfile.toUtf8());
   rmdir(tmpdir.toUtf8());
   rip_track_bar->setValue(0);
+
+  rip_added_cartnums->push_back(cart->number());
 
   delete cart;
   delete cut;

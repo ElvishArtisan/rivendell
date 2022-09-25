@@ -40,11 +40,14 @@ class DiskRipper : public RDDialog
   Q_OBJECT
  public:
   DiskRipper(QString *filter,QString *group,QString *schedcode,
-	     bool profile_rip,QWidget *parent=0);
+	     QList<unsigned> *added_cartnums,bool profile_rip,QWidget *parent);
   ~DiskRipper();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
+
+ public slots:
+  int exec();
+
  private slots:
   void ejectButtonData();
   void playButtonData();
@@ -137,6 +140,7 @@ class DiskRipper : public RDDialog
   bool rip_aborting;
   bool rip_profile_rip;
   RDWaveDataDialog *rip_wavedata_dialog;
+  QList<unsigned> *rip_added_cartnums;
 };
 
 

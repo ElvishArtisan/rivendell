@@ -558,7 +558,7 @@ bool RDGroup::ReserveCart(const QString &station_name,RDCart::Type type,
 {
   //
   // We use QSqlQuery here, not RDSqlQuery because the insert could
-  // fail and we don't want to reset the DB connection when that happens.
+  // fail and we don't want to reset the DB connection if that happens.
   //
   QString sql;
   QSqlQuery *q;

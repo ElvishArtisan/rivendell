@@ -546,19 +546,30 @@ void MainWidget::deleteData()
 
 void MainWidget::ripData()
 {
+  QList<unsigned> added_cartnums;
+
   lib_player->stop();
   LockUser();
   QString group=lib_cart_filter->selectedGroup();
   QString schedcode=lib_cart_filter->selectedSchedCode();
   DiskRipper *dialog=new DiskRipper(&lib_filter_text,&group,&schedcode,
-				    profile_ripping,this);
-  if(dialog->exec()==0) {
+				    &added_cartnums,profile_ripping,this);
+  if(dialog->exec()) {
     lib_cart_filter->setSelectedGroup(group);
     lib_cart_filter->setFilterText(lib_filter_text);
   }
   delete dialog;
-  if(!UnlockUser()) {
-    //    RefreshList();
+  UnlockUser();
+
+  //
+  // So the local rdlibrary(1) instance gets updated
+  //
+  for(int i=0;i<added_cartnums.size();i++) {
+    RDNotification *notify=new RDNotification(RDNotification::CartType,
+					      RDNotification::AddAction,
+					      added_cartnums.at(i));
+    notificationReceivedData(notify);
+    delete notify;
   }
 }
 
@@ -678,16 +689,24 @@ void MainWidget::notificationReceivedData(RDNotification *notify)
     unsigned cartnum=notify->id().toUInt();
     switch(notify->action()) {
     case RDNotification::AddAction:
-      and_fields.push_back(QString::asprintf("`CART`.`NUMBER`=%u",cartnum));
-      sql=QString("select ")+
-	"`CART`.`NUMBER` "+  // 00
-	"from `CART` "+
-	"left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` "+
-	"left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` "+
-	lib_cart_filter->filterSql(and_fields);
-      q=new RDSqlQuery(sql);
-      if(q->first()) {
-	lib_cart_model->addCart(cartnum);
+      if(lib_cart_model->cartRow(cartnum).isValid()) {
+	//
+	// Redundant Add, treat it like a Modify
+	//
+	lib_cart_model->refreshCart(cartnum);
+      }
+      else {
+	and_fields.push_back(QString::asprintf("`CART`.`NUMBER`=%u",cartnum));
+	sql=QString("select ")+
+	  "`CART`.`NUMBER` "+  // 00
+	  "from `CART` "+
+	  "left join `GROUPS` on `CART`.`GROUP_NAME`=`GROUPS`.`NAME` "+
+	  "left join `CUTS` on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` "+
+	  lib_cart_filter->filterSql(and_fields);
+	q=new RDSqlQuery(sql);
+	if(q->first()) {
+	  lib_cart_model->addCart(cartnum);
+	}
       }
       delete q;
       break;
