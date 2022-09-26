@@ -23383,3 +23383,5 @@
 2022-09-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the Disc Ripper in rdlibrary(1) that caused cart
 	list to be to be updated to reflected newly added carts.
+2022-09-26 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0beta3int4.
