@@ -715,7 +715,7 @@ void DiskRipper::modifyCartLabelData()
 
   while(item!=NULL) {
     if(item->isSelected()) {
-      int track=item->text(0).toInt()-1;
+      int track=rip_wave_datas.size()-item->text(0).toInt();
       if(rip_wavedata_dialog->exec(rip_wave_datas[track])==0) {
 	item->setText(2,rip_wave_datas[track]->title());
       }
@@ -1086,9 +1086,10 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
 		      &audio_conv_err))) {
     case RDAudioImport::ErrorOk:
       cart->setMetadata(rip_wave_datas[rip_wave_datas.size()-track]);
-      cut->setDescription(rip_wave_datas[track-1]->title());
+      cut->setDescription(rip_wave_datas[rip_wave_datas.size()-track]->title());
       cut->setIsrc(rip_disc_record.isrc(rip_track_number-1));
-      cut->setRecordingMbId(rip_disc_record.trackRecordingMbId(rip_track_number-1));
+      cut->setRecordingMbId(rip_disc_record.
+			    trackRecordingMbId(rip_track_number-1));
       cut->setReleaseMbId(rip_disc_record.discReleaseMbId());
       cart->clearPending();
       SendNotification(RDNotification::AddAction,cart->number());
