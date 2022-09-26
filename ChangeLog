@@ -20944,3 +20944,5 @@
 2022-09-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the Disc Ripper in rdlibrary(1) that caused
 	manual changes to track metadata to be incorrectly applied.
+2022-09-26 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.5int6.
