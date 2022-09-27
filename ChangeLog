@@ -23399,3 +23399,6 @@
 2022-09-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that caused the audio cue
 	transport buttons to be continuously grayed-out.
+2022-09-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused a segfault when
+	unloading a log.

@@ -3229,7 +3229,7 @@ void RDLogPlay::UpdateRestartData()
   }
   else {
     line=nextLine();
-    if(line>=0) {
+    if((line>=0)&&(logLine(line)!=NULL)) {
       id=logLine(line)->id();
     }
     running="N";
