@@ -23,6 +23,7 @@
 
 #include <QApplication>
 #include <QProcess>
+#include <QStyleFactory>
 
 #include "dbversion.h"
 #include "rdapplication.h"
@@ -157,6 +158,14 @@ bool RDCoreApplication::open(QString *err_msg,RDCoreApplication::ErrorType *err_
 	app_command_name=QString::asprintf("dropbox[%u]",persistent_dropbox_id);
       }
       app_cmd_switch->setProcessed(i,true);
+    }
+    if(app_cmd_switch->key(i)=="--list-styles") {
+      QStringList f0=QStyleFactory::keys();
+      printf("Available styles:\n");
+      for(int j=0;j<f0.size();j++) {
+	printf(" %s\n",f0.at(j).toUtf8().constData());
+      }
+      exit(0);
     }
   }
 

@@ -23391,3 +23391,5 @@
 	* Modified rdlogedit(1) when creating a new log to default the
 	'Service' dropdown in the 'Add Log' dialog to the currently selected
 	service.
+2022-09-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--list-styles' directive to all Rivendell modules.
