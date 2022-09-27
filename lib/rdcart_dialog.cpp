@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cart.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -112,8 +112,8 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
     cart_player=
       new RDSimplePlayer(rda->cae(),rda->ripc(),rda->station()->cueCard(),rda->station()->cuePort(),
 			 rda->station()->cueStartCart(),rda->station()->cueStopCart(),this);
-    cart_player->playButton()->setDisabled(true);
-    cart_player->stopButton()->setDisabled(true);
+    //    cart_player->playButton()->setDisabled(true);
+    //    cart_player->stopButton()->setDisabled(true);
     cart_player->stopButton()->setOnColor(Qt::red);
   }
 
@@ -241,6 +241,13 @@ void RDCartDialog::selectionChangedData(const QItemSelection &before,
 {
   QModelIndexList rows=cart_cart_view->selectionModel()->selectedRows();
 
+  if(rows.size()==1) {
+    cart_player->setCart(cart_cart_model->cartNumber(rows.at(0)));
+    cart_player->playButton()->
+      setEnabled(cart_cart_model->cartType(rows.at(0))==RDCart::Audio);
+    cart_player->stopButton()->
+      setEnabled(cart_cart_model->cartType(rows.at(0))==RDCart::Audio);
+  }
   cart_ok_button->setEnabled(rows.size()==1);
 }
 

@@ -23396,3 +23396,6 @@
 2022-09-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'Edit Event' dialog in rdairplay(1) that made
 	the Play button appear to be grayed-out even when it was active.
+2022-09-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused the audio cue
+	transport buttons to be continuously grayed-out.
