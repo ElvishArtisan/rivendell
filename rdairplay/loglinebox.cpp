@@ -367,12 +367,14 @@ void LogLineBox::setMode(LogLineBox::Mode mode)
 	line_down_label->show();
 	line_position_bar->show();
 	line_description_label->show();
+	line_outcue_label->show();
       }
       else {
 	line_up_label->hide();
 	line_down_label->hide();
 	line_position_bar->hide();
 	line_description_label->hide();
+	line_outcue_label->hide();
       }
       break;
 
@@ -384,6 +386,7 @@ void LogLineBox::setMode(LogLineBox::Mode mode)
       line_down_label->hide();
       line_position_bar->hide();
       line_description_label->hide();
+      line_outcue_label->hide();
       break;
 
     default:
@@ -397,6 +400,7 @@ void LogLineBox::setMode(LogLineBox::Mode mode)
     line_down_label->hide();
     line_position_bar->hide();
     line_description_label->hide();
+    line_outcue_label->hide();
     line_comment_label->setGeometry(5,18,sizeHint().width()-10,30);
     break;
   }

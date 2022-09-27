@@ -23402,3 +23402,6 @@
 2022-09-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that caused a segfault when
 	unloading a log.
+2022-09-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused the lower left-hand
+	border of the cart labels to be clipped in the Button Widget.
