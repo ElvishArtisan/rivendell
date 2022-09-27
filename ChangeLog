@@ -23385,3 +23385,9 @@
 	list to be to be updated to reflected newly added carts.
 2022-09-26 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0beta3int4.
+2022-09-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDLogFilter::filterServiceName()' and
+	'RDLogFilter::filterText()' methods.
+	* Modified rdlogedit(1) when creating a new log to default the
+	'Service' dropdown in the 'Add Log' dialog to the currently selected
+	service.

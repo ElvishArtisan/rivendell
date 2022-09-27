@@ -264,10 +264,10 @@ void MainWidget::recentData(bool state)
 void MainWidget::addData()
 {
   QString logname;
-  QString svcname;
   QStringList newlogs;
   RDAddLog *log;
   QModelIndex row;
+  QString svcname=log_filter_widget->filterServiceName();
 
   if(rda->user()->createLog()) {
     log=new RDAddLog(&logname,&svcname,RDLogFilter::UserFilter,

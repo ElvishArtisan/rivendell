@@ -123,6 +123,18 @@ QSizePolicy RDLogFilter::sizePolicy() const
 }
 
 
+QString RDLogFilter::filterServiceName() const
+{
+  return filter_service_box->currentText();
+}
+
+
+QString RDLogFilter::filterText() const
+{
+  return filter_filter_edit->text();
+}
+
+
 QString RDLogFilter::whereSql() const
 {
   QString sql="";

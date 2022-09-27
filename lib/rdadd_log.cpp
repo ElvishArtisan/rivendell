@@ -122,6 +122,9 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
     add_service_box->
       insertItem(add_service_box->count(),rda->iconEngine()->serviceIcon(),
 		 q->value(0).toString());
+    if(((*log_svc)!=tr("ALL"))&&(*log_svc==q->value(0).toString())) {
+      add_service_box->setCurrentIndex(add_service_box->count()-1);
+    }
   }
   add_name_edit->setText(*logname);
 }

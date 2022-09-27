@@ -39,6 +39,8 @@ class RDLogFilter : public QWidget
   ~RDLogFilter();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+  QString filterServiceName() const;
+  QString filterText() const;
   QString whereSql() const;
 
  public slots:
