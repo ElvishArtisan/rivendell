@@ -23393,3 +23393,6 @@
 	service.
 2022-09-27 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--list-styles' directive to all Rivendell modules.
+2022-09-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Edit Event' dialog in rdairplay(1) that made
+	the Play button appear to be grayed-out even when it was active.

@@ -2,7 +2,7 @@
 //
 // Cueing Editor for RDLogLine-based Events
 //
-//   (C) Copyright 2013-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -43,7 +43,8 @@ RDCueEdit::RDCueEdit(QWidget *parent)
 
   edit_position_label=new QLabel(this);
   edit_position_label->setGeometry(0,0,sizeHint().width()-30,30);
-  edit_position_label->setStyleSheet("background-color: #FFFFFF");
+  edit_position_label->
+    setStyleSheet("background-color: "+palette().color(QPalette::Base).name());
   edit_position_label->setLineWidth(1);
   edit_position_label->setMidLineWidth(0);
   edit_position_label->setFrameStyle(QFrame::Box|QFrame::Plain);
@@ -53,13 +54,15 @@ RDCueEdit::RDCueEdit(QWidget *parent)
 
   edit_up_label=new QLabel("00:00:00",this);
   edit_up_label->setGeometry(5,8,70,14);
-  edit_up_label->setStyleSheet("background-color: #FFFFFF");
+  edit_up_label->
+    setStyleSheet("background-color: "+palette().color(QPalette::Base).name());
   edit_up_label->setFont(labelFont());
   edit_up_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_down_label=new QLabel("00:00:00",this);
   edit_down_label->setGeometry(sizeHint().width()-110,8,70,14);
-  edit_down_label->setStyleSheet("background-color: #FFFFFF");
+  edit_down_label->
+    setStyleSheet("background-color: "+palette().color(QPalette::Base).name());
   edit_down_label->setFont(labelFont());
   edit_down_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -69,7 +72,6 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   edit_slider=new RDSlider(RDSlider::Right,this);
   edit_slider->setGeometry(60,30,sizeHint().width()-150,50);
   edit_slider->setKnobSize(50,50);
-  edit_slider->setKnobColor(QColor(RD_CUEEDITOR_KNOB_COLOR));
   connect(edit_slider,SIGNAL(sliderMoved(int)),
 	  this,SLOT(sliderChangedData(int)));
   connect(edit_slider,SIGNAL(sliderPressed()),this,SLOT(sliderPressedData()));
@@ -92,8 +94,6 @@ RDCueEdit::RDCueEdit(QWidget *parent)
   edit_audition_button=
     new RDTransportButton(RDTransportButton::PlayBetween,this);
   edit_audition_button->setGeometry(sizeHint().width()/2-130,90,80,50);
-  edit_audition_button->
-    setStyleSheet("background-color: "+QColor(Qt::gray).name());
   edit_audition_button->setFont(buttonFont());
   edit_audition_button->
     setDisabled((rda->station()->cueCard()<0)||(rda->station()->cuePort()<0));
