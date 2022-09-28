@@ -41,20 +41,20 @@ function ReadLanguage
     echo -n "Reading language '$LANG' ... "
     mkdir -p $RD_LANGUAGES/$LANG
     cp $RD_SOURCE/lib/librd_$LANG.ts $RD_LANGUAGES/$LANG/
-    cp $RD_SOURCE/rdhpi/rdhpi_$LANG.ts $RD_LANGUAGES/$LANG/
     cp $RD_SOURCE/rdadmin/rdadmin_$LANG.ts $RD_LANGUAGES/$LANG/
     cp $RD_SOURCE/rdairplay/rdairplay_$LANG.ts $RD_LANGUAGES/$LANG/
-    cp $RD_SOURCE/rdpanel/rdpanel_$LANG.ts $RD_LANGUAGES/$LANG/
     cp $RD_SOURCE/rdcastmanager/rdcastmanager_$LANG.ts $RD_LANGUAGES/$LANG/
     cp $RD_SOURCE/rdcatch/rdcatch_$LANG.ts $RD_LANGUAGES/$LANG/
+    cp $RD_SOURCE/rdhpi/rdhpi_$LANG.ts $RD_LANGUAGES/$LANG/
     cp $RD_SOURCE/rdlibrary/rdlibrary_$LANG.ts $RD_LANGUAGES/$LANG/
     cp $RD_SOURCE/rdlogedit/rdlogedit_$LANG.ts $RD_LANGUAGES/$LANG/
     cp $RD_SOURCE/rdlogin/rdlogin_$LANG.ts $RD_LANGUAGES/$LANG/
     cp $RD_SOURCE/rdlogmanager/rdlogmanager_$LANG.ts $RD_LANGUAGES/$LANG/
+    cp $RD_SOURCE/rdmonitor/rdmonitor_$LANG.ts $RD_LANGUAGES/$LANG/
+    cp $RD_SOURCE/rdpanel/rdpanel_$LANG.ts $RD_LANGUAGES/$LANG/
+    cp $RD_SOURCE/rdselect/rdselect_$LANG.ts $RD_LANGUAGES/$LANG/
     cp $RD_SOURCE/utils/rdgpimon/rdgpimon_$LANG.ts $RD_LANGUAGES/$LANG/
     cp $RD_SOURCE/utils/rmlsend/rmlsend_$LANG.ts $RD_LANGUAGES/$LANG/
-    cp $RD_SOURCE/utils/rdchunk/rdchunk_$LANG.ts $RD_LANGUAGES/$LANG/
-    cp $RD_SOURCE/utils/rdgpimon/rdgpimon_$LANG.ts $RD_LANGUAGES/$LANG/
     echo "done."
 }
 
@@ -63,20 +63,20 @@ function WriteLanguage
 {
     echo -n "Writing language '$LANG' ... "
     cp $RD_LANGUAGES/$LANG/librd_$LANG.ts $RD_SOURCE/lib/
-    cp $RD_LANGUAGES/$LANG/rdhpi_$LANG.ts $RD_SOURCE/rdhpi/
     cp $RD_LANGUAGES/$LANG/rdadmin_$LANG.ts $RD_SOURCE/rdadmin/
     cp $RD_LANGUAGES/$LANG/rdairplay_$LANG.ts $RD_SOURCE/rdairplay/
-    cp $RD_LANGUAGES/$LANG/rdpanel_$LANG.ts $RD_SOURCE/rdpanel/
     cp $RD_LANGUAGES/$LANG/rdcastmanager_$LANG.ts $RD_SOURCE/rdcastmanager/
     cp $RD_LANGUAGES/$LANG/rdcatch_$LANG.ts $RD_SOURCE/rdcatch/
+    cp $RD_LANGUAGES/$LANG/rdhpi_$LANG.ts $RD_SOURCE/rdhpi/
     cp $RD_LANGUAGES/$LANG/rdlibrary_$LANG.ts $RD_SOURCE/rdlibrary/
     cp $RD_LANGUAGES/$LANG/rdlogedit_$LANG.ts $RD_SOURCE/rdlogedit/
     cp $RD_LANGUAGES/$LANG/rdlogin_$LANG.ts $RD_SOURCE/rdlogin/
     cp $RD_LANGUAGES/$LANG/rdlogmanager_$LANG.ts $RD_SOURCE/rdlogmanager/
+    cp $RD_LANGUAGES/$LANG/rdmonitor_$LANG.ts $RD_SOURCE/rdmonitor/
+    cp $RD_LANGUAGES/$LANG/rdpanel_$LANG.ts $RD_SOURCE/rdpanel/
+    cp $RD_LANGUAGES/$LANG/rdselect_$LANG.ts $RD_SOURCE/rdselect/
     cp $RD_LANGUAGES/$LANG/rdgpimon_$LANG.ts $RD_SOURCE/utils/rdgpimon/
     cp $RD_LANGUAGES/$LANG/rmlsend_$LANG.ts $RD_SOURCE/utils/rmlsend/
-    cp $RD_LANGUAGES/$LANG/rdchunk_$LANG.ts $RD_SOURCE/utils/rdchunk/
-    cp $RD_LANGUAGES/$LANG/rdgpimon_$LANG.ts $RD_SOURCE/utils/rdgpimon/
     echo "done."
 }
 

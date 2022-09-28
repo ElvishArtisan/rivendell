@@ -23410,3 +23410,5 @@
 2022-09-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'qttranslations5-l10n' dependency to the 'rivendell' DEB
 	package.
+2022-09-28 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'helpers/rdtrans.sh' utility.
