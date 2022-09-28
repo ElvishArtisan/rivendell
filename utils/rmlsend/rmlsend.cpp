@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,7 +24,9 @@
 #include <QApplication>
 #include <QLineEdit>
 #include <QMessageBox>
-#include <QTranslator>
+//#include <QTranslator>
+
+#include <rdtranslator.h>
 
 #include "rmlsend.h"
 
@@ -41,6 +43,8 @@ RDCmdSwitch *rdcmdswitch=NULL;
 MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   : RDMainWindow("rmlsend",c)
 {
+  rdt=new RDTranslator("rmlsend",parent); 
+
   //
   // Set Window Size
   //

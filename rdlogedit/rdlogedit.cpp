@@ -707,34 +707,6 @@ int main(int argc,char *argv[])
   QApplication a(argc,argv);
   
   //
-  // Load Translations
-  //
-  QString tr_path;
-  QString qt_path;
-
-  QString loc=RDApplication::locale();
-  if(!loc.isEmpty()) {
-    tr_path=QString(PREFIX)+QString("/share/rivendell/");
-    qt_path=QString("/usr/share/qt4/translation/");
-
-    QTranslator qt(0);
-    qt.load(qt_path+QString("qt_")+loc,".");
-    a.installTranslator(&qt);
-
-    QTranslator rd(0);
-    rd.load(tr_path+QString("librd_")+loc,".");
-    a.installTranslator(&rd);
-
-    QTranslator rdhpi(0);
-    rdhpi.load(tr_path+QString("librdhpi_")+loc,".");
-    a.installTranslator(&rdhpi);
-
-    QTranslator tr(0);
-    tr.load(tr_path+QString("rdlogedit_")+loc,".");
-    a.installTranslator(&tr);
-  }
-
-  //
   // Start Event Loop
   //
   RDConfig *config=new RDConfig();

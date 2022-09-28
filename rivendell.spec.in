@@ -30,7 +30,7 @@ Release: @RPM_RELEASE@
 License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
 Source: rivendell-@VERSION@.tar.gz
-Requires: @MYSQL_PKG@ @QT_MYSQL_PKG@ @APACHE_PKG@ curl @USERMODE_PKG@ rsyslog qt5-qtstyleplugins @PYPAD_DEPS@ libxslt
+Requires: @MYSQL_PKG@ @QT_MYSQL_PKG@ @APACHE_PKG@ curl @USERMODE_PKG@ rsyslog qt5-qtstyleplugins qt5-qttranslations @PYPAD_DEPS@ libxslt
 BuildRequires: qt5-qtbase-devel qt5-linguist
 BuildRoot: /var/tmp/rivendell-@VERSION@
 Obsoletes: rivendell-base rivendell-opsguide rivendell-pypad

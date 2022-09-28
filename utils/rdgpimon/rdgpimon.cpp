@@ -2,7 +2,7 @@
 //
 // A Qt-based application for testing General Purpose Input (GPI) devices.
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -678,28 +678,6 @@ int main(int argc,char *argv[])
   QApplication::setStyle(RD_GUI_STYLE);
   QApplication a(argc,argv);
   
-  //
-  // Load Translations
-  //
-  QString loc=RDApplication::locale();
-  if(!loc.isEmpty()) {
-    QTranslator qt(0);
-    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,".");
-    a.installTranslator(&qt);
-
-    QTranslator rd(0);
-    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
-    a.installTranslator(&rd);
-
-    QTranslator rdhpi(0);
-    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
-    a.installTranslator(&rdhpi);
-
-    QTranslator tr(0);
-    tr.load(QString(PREFIX)+QString("/share/rivendell/rdgpimon_")+loc,".");
-    a.installTranslator(&tr);
-  }
-
   //
   // Start Event Loop
   //

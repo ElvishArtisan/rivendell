@@ -269,6 +269,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdtrackermodel.cpp rdtrackermodel.h\
                         rdtrackertableview.cpp rdtrackertableview.h\
                         rdtrackerwidget.cpp rdtrackerwidget.h\
+                        rdtranslator.cpp rdtranslator.h\
                         rdtransportbutton.cpp rdtransportbutton.h\
                         rdtransfer.cpp rdtransfer.h\
                         rdtreeview.cpp rdtreeview.h\
@@ -427,6 +428,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdtrackertableview.cpp\
                           moc_rdtrackerwidget.cpp\
                           moc_rdtransfer.cpp\
+                          moc_rdtranslator.cpp\
                           moc_rdtransportbutton.cpp\
                           moc_rdtreeview.cpp\
                           moc_rdtrimaudio.cpp\

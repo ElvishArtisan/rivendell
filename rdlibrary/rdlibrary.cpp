@@ -921,28 +921,6 @@ int main(int argc,char *argv[])
   QApplication a(argc,argv);
 
   //
-  // Load Translations
-  //
-  QString loc=RDApplication::locale();
-  if(!loc.isEmpty()) {
-    QTranslator qt(0);
-    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,".");
-    a.installTranslator(&qt);
-
-    QTranslator rd(0);
-    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
-    a.installTranslator(&rd);
-
-    QTranslator rdhpi(0);
-    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
-    a.installTranslator(&rdhpi);
-
-    QTranslator tr(0);
-    tr.load(QString(PREFIX)+QString("/share/rivendell/rdlibrary_")+loc,".");
-    a.installTranslator(&tr);
-  }
-
-  //
   // Start Event Loop
   //
   RDConfig *config=new RDConfig();

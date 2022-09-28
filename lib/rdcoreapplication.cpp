@@ -2,7 +2,7 @@
 //
 // Base Application Class
 //
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,11 +24,13 @@
 #include <QApplication>
 #include <QProcess>
 #include <QStyleFactory>
+#include <QTranslator>
 
 #include "dbversion.h"
 #include "rdapplication.h"
 #include "rdcmd_switch.h"
 #include "rdescape_string.h"
+#include "rdtranslator.h"
 
 RDCoreApplication *rdc=NULL;
 QStringList __rdapplication_temp_files;
@@ -75,6 +77,11 @@ RDCoreApplication::RDCoreApplication(const QString &module_name,
   app_long_date_format=RD_DEFAULT_LONG_DATE_FORMAT;
   app_short_date_format=RD_DEFAULT_SHORT_DATE_FORMAT;
   app_show_twelve_hour_time=false;
+
+  //
+  // Translations
+  //
+  rdt=new RDTranslator(app_command_name,this);
 
   atexit(__RDCoreApplication_ExitCallback);
 }

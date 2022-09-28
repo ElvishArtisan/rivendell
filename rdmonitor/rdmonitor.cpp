@@ -2,7 +2,7 @@
 //
 // System Monitor for Rivendell
 //
-//   (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,6 +29,7 @@
 
 #include <dbversion.h>
 #include <rdstatus.h>
+#include <rdtranslator.h>
 
 #include "rdmonitor.h"
 
@@ -57,6 +58,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   mon_dialog_y=0;
   mon_rdselect_x=0;
   mon_rdselect_y=0;
+
+  rdt=new RDTranslator("rdmonitor",this);  // Load translations
 
   //
   // Read Command Options
@@ -475,28 +478,6 @@ int main(int argc,char *argv[])
   QApplication::setStyle(RD_GUI_STYLE);
   QApplication a(argc,argv);
   
-  //
-  // Load Translations
-  //
-  QString loc=RDApplication::locale();
-  if(!loc.isEmpty()) {
-    QTranslator qt(0);
-    qt.load(QString("/usr/share/qt4/translations/qt_")+loc,".");
-    a.installTranslator(&qt);
-
-    QTranslator rd(0);
-    rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+loc,".");
-    a.installTranslator(&rd);
-
-    QTranslator rdhpi(0);
-    rdhpi.load(QString(PREFIX)+QString("/share/rivendell/librdhpi_")+loc,".");
-    a.installTranslator(&rdhpi);
-
-    QTranslator tr(0);
-    tr.load(QString(PREFIX)+QString("/share/rivendell/rdmonitor_")+loc,".");
-    a.installTranslator(&tr);
-  }
-
   //
   // Start Event Loop
   //

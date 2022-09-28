@@ -2,7 +2,7 @@
 //
 // Base Application Class
 //
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +24,8 @@
 #include <stdarg.h>
 #include <syslog.h>
 
-#include <qobject.h>
-#include <qstringlist.h>
+#include <QObject>
+#include <QStringList>
 
 #include <rdairplay_conf.h>
 #include <rdcae.h>
