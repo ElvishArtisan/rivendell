@@ -23407,3 +23407,6 @@
 	border of the cart labels to be clipped in the Button Widget.
 2022-09-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDTranslator' class.
+2022-09-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'qttranslations5-l10n' dependency to the 'rivendell' DEB
+	package.
