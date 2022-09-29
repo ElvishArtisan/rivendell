@@ -31,10 +31,12 @@ RDTranslator::RDTranslator(const QString &cmdname,QObject *parent)
   d_command_name=cmdname;
 
   QString loc=RDApplication::locale().left(2)+".qm";
-  LoadTranslation("qt_"+loc,"/usr/share/qt5/translations");
-  LoadTranslation("librd_"+loc,"/usr/share/rivendell");
-  LoadTranslation("rdhpi_"+loc,"/usr/share/rivendell");
-  LoadTranslation(d_command_name+"_"+loc,"/usr/share/rivendell");
+  if(loc.left(2)!="en") {  // There are no English translations
+    LoadTranslation("qt_"+loc,"/usr/share/qt5/translations");
+    LoadTranslation("librd_"+loc,"/usr/share/rivendell");
+    LoadTranslation("rdhpi_"+loc,"/usr/share/rivendell");
+    LoadTranslation(d_command_name+"_"+loc,"/usr/share/rivendell");
+  }
 }
 
 

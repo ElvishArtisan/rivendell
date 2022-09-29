@@ -23419,3 +23419,6 @@
 	* Fixed a regression in rdairplay(1) that caused a segfault when
 	selecting a cart in the 'Select Cart' dialog if the Cue output
 	assignment was disabled.
+2022-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the i18n system that would throw warnings when
+	attempting to load the (non-existent) English translation.
