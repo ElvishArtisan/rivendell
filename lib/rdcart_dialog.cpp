@@ -112,8 +112,6 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
     cart_player=
       new RDSimplePlayer(rda->cae(),rda->ripc(),rda->station()->cueCard(),rda->station()->cuePort(),
 			 rda->station()->cueStartCart(),rda->station()->cueStopCart(),this);
-    //    cart_player->playButton()->setDisabled(true);
-    //    cart_player->stopButton()->setDisabled(true);
     cart_player->stopButton()->setOnColor(Qt::red);
   }
 
@@ -241,7 +239,7 @@ void RDCartDialog::selectionChangedData(const QItemSelection &before,
 {
   QModelIndexList rows=cart_cart_view->selectionModel()->selectedRows();
 
-  if(rows.size()==1) {
+  if((cart_player!=NULL)&&(rows.size()==1)) {
     cart_player->setCart(cart_cart_model->cartNumber(rows.at(0)));
     cart_player->playButton()->
       setEnabled(cart_cart_model->cartType(rows.at(0))==RDCart::Audio);

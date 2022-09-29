@@ -23415,3 +23415,7 @@
 2022-09-29 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rddbmgr(8) to include the Realm name in its default
 	output.
+2022-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused a segfault when
+	selecting a cart in the 'Select Cart' dialog if the Cue output
+	assignment was disabled.
