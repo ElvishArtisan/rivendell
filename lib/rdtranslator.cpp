@@ -19,6 +19,7 @@
 //
 
 #include <QCoreApplication>
+#include <QFile>
 
 #include "rdapplication.h"
 #include "rdtranslator.h"
@@ -45,10 +46,15 @@ bool RDTranslator::LoadTranslation(const QString &filename,
 {
   QTranslator *qt=new QTranslator(0);
   if(!qt->load(filename,dirname)) {
-    fprintf(stderr,"%s: failed to load translation file \"%s/%s\"\n",
-	    d_command_name.toUtf8().constData(),
-	    dirname.toUtf8().constData(),
-	    filename.toUtf8().constData());
+    //
+    // Silly workaround so we don't false alarm on a valid-but-null file
+    //
+    if(QFile(dirname+"/"+filename).size()!=16) {
+      fprintf(stderr,"%s: failed to load translation file \"%s/%s\"\n",
+	      d_command_name.toUtf8().constData(),
+	      dirname.toUtf8().constData(),
+	      filename.toUtf8().constData());
+    }
     delete qt;
     return false;
   }
