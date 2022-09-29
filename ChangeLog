@@ -23412,3 +23412,6 @@
 	package.
 2022-09-28 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'helpers/rdtrans.sh' utility.
+2022-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rddbmgr(8) to include the Realm name in its default
+	output.

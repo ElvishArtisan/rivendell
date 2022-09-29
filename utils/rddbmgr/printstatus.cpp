@@ -2,7 +2,7 @@
 //
 // Print the status of a database.
 //
-//   (C) Copyright 2018-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,9 +39,27 @@ bool MainObject::PrintStatus(QString *err_msg) const
     printf("not a Rivendell database!\n");
     return true;
   }
-
-  printf("Rivendell database, schema %d [%s]\n",schema,
-	 GetSchemaVersion(schema).toUtf8().constData());
+  if(schema>=353) {
+    sql=QString("select ")+
+      "`REALM_NAME` "+  // 00
+      "from `SYSTEM`";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      printf("Rivendell database, schema %d [%s] (%s)\n",schema,
+	     GetSchemaVersion(schema).toUtf8().constData(),
+	     q->value(0).toString().toUtf8().constData());
+    }
+    else {
+      fprintf(stderr,"rddbmgr: WARNING - unable to read Realm value.\n");
+      printf("Rivendell database, schema %d [%s]\n",schema,
+	     GetSchemaVersion(schema).toUtf8().constData());
+    }
+    delete q;
+  }
+  else {
+    printf("Rivendell database, schema %d [%s]\n",schema,
+	   GetSchemaVersion(schema).toUtf8().constData());
+  }
 
   *err_msg="ok";
   return true;
