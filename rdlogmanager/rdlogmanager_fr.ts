@@ -19,6 +19,26 @@
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>New Clock Code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A clock with that name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That code is already in use!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AddEvent</name>
@@ -75,30 +95,6 @@ Rules</source>
     <message>
         <source>The clock has been modified.
 Do you want to save?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Missing Clock Code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You must specify a clock code!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Code Exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The clock code is already in use!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clock Exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clock already exists!  Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -331,15 +327,6 @@ List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDLogManager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Event already exists!
-Do you want to overwrite it?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit Event</source>
         <translation type="unfinished"></translation>
     </message>
@@ -418,6 +405,18 @@ List</source>
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event Exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An event with that name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to overwrite it?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -865,14 +864,6 @@ All</source>
     </message>
     <message>
         <source>Log Clocks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clock Exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>An clock with that name already exists!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

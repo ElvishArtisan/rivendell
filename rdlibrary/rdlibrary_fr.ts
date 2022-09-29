@@ -29,11 +29,6 @@
     </message>
     <message>
         <source>Edit
-Audio</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit
 Markers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -176,14 +171,6 @@ Do you still want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Apply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Values to Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Label:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -233,6 +220,10 @@ Rip</source>
     <message>
         <source>Rip
 Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Metadata Values to Cart</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -326,14 +317,6 @@ Selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Apply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Values to Carts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Lookup Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -409,6 +392,10 @@ Disc</source>
     </message>
     <message>
         <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Metadata Values to Carts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -615,6 +602,10 @@ Script</source>
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[unchanged]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

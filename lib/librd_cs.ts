@@ -1029,6 +1029,14 @@
         <source>Advance Linux Sound Architecture (ALSA)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Disc Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disc Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1190,6 +1198,10 @@
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Zrušit</translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1498,11 +1510,6 @@ ze &amp;souboru</translation>
         <translation type="unfinished">Zrušit</translation>
     </message>
     <message>
-        <source>Send to
-Editor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Load From
 File</source>
         <translation type="unfinished"></translation>
@@ -1532,7 +1539,7 @@ File</source>
     </message>
     <message>
         <source>Scheduler Code:</source>
-        <translation type="unfinished">Kódy rozvrhovače:</translation>
+        <translation type="obsolete">Kódy rozvrhovače:</translation>
     </message>
     <message>
         <source>Matching Carts:</source>
@@ -1573,6 +1580,18 @@ File</source>
     <message>
         <source>Clear</source>
         <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Scheduler Codes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2032,6 +2051,22 @@ Cart</source>
     </message>
     <message>
         <source>Unable to read CD.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create temporary directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ripper Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CD-Text reader process crashed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CD-Text reader process returned an error!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2950,6 +2985,10 @@ pro dobu zprávy.
     </message>
     <message>
         <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[unchanged]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

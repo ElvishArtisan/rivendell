@@ -35,6 +35,26 @@
         <source>Cancel</source>
         <translation type="unfinished">Zrušit</translation>
     </message>
+    <message>
+        <source>New Clock Code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A clock with that name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That code is already in use!</source>
+        <translation type="unfinished">Tento kód se již používá!</translation>
+    </message>
 </context>
 <context>
     <name>AddEvent</name>
@@ -180,27 +200,27 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Missing Clock Code</source>
-        <translation>Chybí kód hodin</translation>
+        <translation type="vanished">Chybí kód hodin</translation>
     </message>
     <message>
         <source>You must specify a clock code!</source>
-        <translation>Musíte zadat kód hodin!</translation>
+        <translation type="vanished">Musíte zadat kód hodin!</translation>
     </message>
     <message>
         <source>Code Exists</source>
-        <translation>Kód existuje</translation>
+        <translation type="vanished">Kód existuje</translation>
     </message>
     <message>
         <source>The clock code is already in use!</source>
-        <translation>Kód hodin se již používá!</translation>
+        <translation type="vanished">Kód hodin se již používá!</translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation>Hodiny existují</translation>
+        <translation type="vanished">Hodiny existují</translation>
     </message>
     <message>
         <source>Clock already exists!  Overwrite?</source>
-        <translation>Hodiny již existují! Přepsat?</translation>
+        <translation type="vanished">Hodiny již existují! Přepsat?</translation>
     </message>
     <message>
         <source>--- End of clock ---</source>
@@ -531,12 +551,12 @@ List</source>
     </message>
     <message>
         <source>RDLogManager</source>
-        <translation>RDLogManager</translation>
+        <translation type="vanished">RDLogManager</translation>
     </message>
     <message>
         <source>Event already exists!
 Do you want to overwrite it?</source>
-        <translation>Událost již existuje!
+        <translation type="vanished">Událost již existuje!
 Chcete ji přepsat?</translation>
     </message>
     <message>
@@ -695,6 +715,18 @@ List</source>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Zrušit</translation>
+    </message>
+    <message>
+        <source>Event Exists</source>
+        <translation type="unfinished">Událost existuje</translation>
+    </message>
+    <message>
+        <source>An event with that name already exists!</source>
+        <translation type="unfinished">Událost s tímto názvem již existuje!</translation>
+    </message>
+    <message>
+        <source>Do you want to overwrite it?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1431,11 +1463,11 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation type="unfinished">Hodiny existují</translation>
+        <translation type="obsolete">Hodiny existují</translation>
     </message>
     <message>
         <source>An clock with that name already exists!</source>
-        <translation type="unfinished">Hodiny s tímto názvem již existují!</translation>
+        <translation type="obsolete">Hodiny s tímto názvem již existují!</translation>
     </message>
     <message>
         <source>Are you sure you want to

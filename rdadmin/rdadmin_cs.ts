@@ -1914,6 +1914,14 @@ Clipboard</source>
         <source>Cancel</source>
         <translation type="unfinished">Zrušit</translation>
     </message>
+    <message>
+        <source>Passphrase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
@@ -3091,7 +3099,7 @@ Nyní &amp;&amp; Další</translation>
     </message>
     <message>
         <source>load previous log</source>
-        <translation type="unfinished">Nahrát předchozí zápis</translation>
+        <translation type="obsolete">Nahrát předchozí zápis</translation>
     </message>
     <message>
         <source>load specified log</source>
@@ -3266,6 +3274,10 @@ GPIOs</source>
     </message>
     <message>
         <source>Logo Image:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>load and cue previous log</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3514,10 +3526,6 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <translation type="unfinished">Výstup</translation>
     </message>
     <message>
-        <source>FreeDB Server</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>MusicBrainz Server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3554,10 +3562,6 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>FreeDB Server:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Format:</source>
         <translation type="unfinished">Formát:</translation>
     </message>
@@ -3580,6 +3584,14 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Zrušit</translation>
+    </message>
+    <message>
+        <source>CDDB Server:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CDDB Server</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4557,10 +4569,6 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Short Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Audio Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7339,11 +7347,11 @@ Stále ještě chcete pokračovat?</translation>
     </message>
     <message>
         <source>Insufficient Priviledges</source>
-        <translation>Nedostatečná oprávnění</translation>
+        <translation type="vanished">Nedostatečná oprávnění</translation>
     </message>
     <message>
         <source>This account has insufficient priviledges for this operation.</source>
-        <translation>Tento účet nemá pro tuto operaci dostatečná oprávnění.</translation>
+        <translation type="vanished">Tento účet nemá pro tuto operaci dostatečná oprávnění.</translation>
     </message>
     <message>
         <source>Manage
@@ -7517,6 +7525,14 @@ Feeds</source>
     </message>
     <message>
         <source>Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insufficient Privileges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This account has insufficient privileges for this operation.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

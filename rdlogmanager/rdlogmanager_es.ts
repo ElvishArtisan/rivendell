@@ -35,6 +35,26 @@
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
     </message>
+    <message>
+        <source>New Clock Code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A clock with that name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That code is already in use!</source>
+        <translation type="unfinished">¡Ese código ya está en uso!</translation>
+    </message>
 </context>
 <context>
     <name>AddEvent</name>
@@ -176,11 +196,11 @@ Do you want to save?</source>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation>Ya existe una torta</translation>
+        <translation type="vanished">Ya existe una torta</translation>
     </message>
     <message>
         <source>Clock already exists!  Overwrite?</source>
-        <translation>Ya existe una torta con ese nombre.  ¿Sobreescribir?</translation>
+        <translation type="vanished">Ya existe una torta con ese nombre.  ¿Sobreescribir?</translation>
     </message>
     <message>
         <source>--- End of clock ---</source>
@@ -204,19 +224,19 @@ Do you want to save?</source>
     </message>
     <message>
         <source>Code Exists</source>
-        <translation>El código ya existe</translation>
+        <translation type="vanished">El código ya existe</translation>
     </message>
     <message>
         <source>The clock code is already in use!</source>
-        <translation>¡El código para la torta ya está en uso!</translation>
+        <translation type="vanished">¡El código para la torta ya está en uso!</translation>
     </message>
     <message>
         <source>Missing Clock Code</source>
-        <translation>Falta el código</translation>
+        <translation type="vanished">Falta el código</translation>
     </message>
     <message>
         <source>You must specify a clock code!</source>
-        <translation>¡Debe suministrar un código para la torta horaria!</translation>
+        <translation type="vanished">¡Debe suministrar un código para la torta horaria!</translation>
     </message>
     <message>
         <source>Scheduler
@@ -501,7 +521,7 @@ List</source>
     </message>
     <message>
         <source>RDLogManager</source>
-        <translation>RDLogManager</translation>
+        <translation type="vanished">RDLogManager</translation>
     </message>
     <message>
         <source>Edit Event</source>
@@ -566,7 +586,7 @@ List</source>
     <message>
         <source>Event already exists!
 Do you want to overwrite it?</source>
-        <translation>¡El evento ya exista!
+        <translation type="vanished">¡El evento ya exista!
 ¿Quiere sobreescribirlo?</translation>
     </message>
     <message>
@@ -697,6 +717,18 @@ List</source>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>Event Exists</source>
+        <translation type="unfinished">El evento ya existe</translation>
+    </message>
+    <message>
+        <source>An event with that name already exists!</source>
+        <translation type="unfinished">¡Un evento con ese nombre ya existe!</translation>
+    </message>
+    <message>
+        <source>Do you want to overwrite it?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1429,11 +1461,11 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation type="unfinished">Ya existe una torta</translation>
+        <translation type="obsolete">Ya existe una torta</translation>
     </message>
     <message>
         <source>An clock with that name already exists!</source>
-        <translation type="unfinished">¡Una torta con ese nombre ya existe!</translation>
+        <translation type="obsolete">¡Una torta con ese nombre ya existe!</translation>
     </message>
     <message>
         <source>Are you sure you want to

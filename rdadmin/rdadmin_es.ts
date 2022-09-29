@@ -1913,6 +1913,14 @@ Clipboard</source>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
     </message>
+    <message>
+        <source>Passphrase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
@@ -3091,7 +3099,7 @@ Parameters</source>
     </message>
     <message>
         <source>load previous log</source>
-        <translation type="unfinished">cargar PlayList anterior</translation>
+        <translation type="obsolete">cargar PlayList anterior</translation>
     </message>
     <message>
         <source>load specified log</source>
@@ -3260,6 +3268,10 @@ GPIOs</source>
     </message>
     <message>
         <source>Logo Image:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>load and cue previous log</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3494,10 +3506,6 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
         <translation type="unfinished">Salida</translation>
     </message>
     <message>
-        <source>FreeDB Server</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>MusicBrainz Server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3534,10 +3542,6 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>FreeDB Server:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Format:</source>
         <translation type="unfinished">Formato:</translation>
     </message>
@@ -3560,6 +3564,14 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>CDDB Server:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CDDB Server</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4550,10 +4562,6 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Short Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Audio Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7269,11 +7277,11 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>Insufficient Priviledges</source>
-        <translation>No hay suficientes privilegios</translation>
+        <translation type="vanished">No hay suficientes privilegios</translation>
     </message>
     <message>
         <source>This account has insufficient priviledges for this operation.</source>
-        <translation>Esta cuenta no tiene suficientes privilegios para la operación.</translation>
+        <translation type="vanished">Esta cuenta no tiene suficientes privilegios para la operación.</translation>
     </message>
     <message>
         <source>Manage
@@ -7447,6 +7455,14 @@ Feeds</source>
     </message>
     <message>
         <source>Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insufficient Privileges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This account has insufficient privileges for this operation.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

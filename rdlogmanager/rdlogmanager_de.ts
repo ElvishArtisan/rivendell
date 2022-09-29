@@ -35,6 +35,26 @@
         <source>Cancel</source>
         <translation type="unfinished">Abbrechen</translation>
     </message>
+    <message>
+        <source>New Clock Code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A clock with that name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That code is already in use!</source>
+        <translation type="unfinished">Dieser Code wird bereits verwendet!</translation>
+    </message>
 </context>
 <context>
     <name>AddEvent</name>
@@ -180,27 +200,27 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>Missing Clock Code</source>
-        <translation>Uhr Code fehlt</translation>
+        <translation type="vanished">Uhr Code fehlt</translation>
     </message>
     <message>
         <source>You must specify a clock code!</source>
-        <translation>Sie müssen einen Uhr-Code eingeben!</translation>
+        <translation type="vanished">Sie müssen einen Uhr-Code eingeben!</translation>
     </message>
     <message>
         <source>Code Exists</source>
-        <translation>Code existiert</translation>
+        <translation type="vanished">Code existiert</translation>
     </message>
     <message>
         <source>The clock code is already in use!</source>
-        <translation>Der Uhrcode wird bereits verwendet!</translation>
+        <translation type="vanished">Der Uhrcode wird bereits verwendet!</translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation>Uhr existiert</translation>
+        <translation type="vanished">Uhr existiert</translation>
     </message>
     <message>
         <source>Clock already exists!  Overwrite?</source>
-        <translation>Uhr existiert bereits! Überschreiben?</translation>
+        <translation type="vanished">Uhr existiert bereits! Überschreiben?</translation>
     </message>
     <message>
         <source>--- End of clock ---</source>
@@ -531,12 +551,12 @@ Liste</translation>
     </message>
     <message>
         <source>RDLogManager</source>
-        <translation>RDLogManager</translation>
+        <translation type="vanished">RDLogManager</translation>
     </message>
     <message>
         <source>Event already exists!
 Do you want to overwrite it?</source>
-        <translation>Event existiert bereits!
+        <translation type="vanished">Event existiert bereits!
 Wollen Sie es überschreiben?</translation>
     </message>
     <message>
@@ -695,6 +715,18 @@ List</source>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Abbrechen</translation>
+    </message>
+    <message>
+        <source>Event Exists</source>
+        <translation type="unfinished">Event existiert</translation>
+    </message>
+    <message>
+        <source>An event with that name already exists!</source>
+        <translation type="unfinished">Ein Event mit diesem Namen existiert bereits!</translation>
+    </message>
+    <message>
+        <source>Do you want to overwrite it?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1431,11 +1463,11 @@ Einbinden wird diese entfernen. Fortfahren?</translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation type="unfinished">Uhr existiert</translation>
+        <translation type="obsolete">Uhr existiert</translation>
     </message>
     <message>
         <source>An clock with that name already exists!</source>
-        <translation type="unfinished">Eine Uhr mit diesem Namen existiert bereits!</translation>
+        <translation type="obsolete">Eine Uhr mit diesem Namen existiert bereits!</translation>
     </message>
     <message>
         <source>Are you sure you want to

@@ -431,6 +431,18 @@ New</source>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Authenticate with local identity file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Passphrase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditPlayout</name>
@@ -893,6 +905,10 @@ New</source>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished">[keine]</translation>
+    </message>
 </context>
 <context>
     <name>EditUpload</name>
@@ -1097,6 +1113,14 @@ New</source>
     </message>
     <message>
         <source>Authenticate with local identity file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Passphrase</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1548,6 +1572,10 @@ New</source>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RecordListModel</name>
@@ -1604,27 +1632,7 @@ New</source>
         <translation type="unfinished">Sa</translation>
     </message>
     <message>
-        <source>RSS Feed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Origin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>One Shot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trim Threshold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>StartDate Offset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>EndDate Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1632,52 +1640,12 @@ New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Channels</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sample Rate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bit Rate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Host</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Deck</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart</source>
-        <translation type="unfinished">Cart</translation>
+        <translation type="obsolete">Cart</translation>
     </message>
     <message>
         <source>ID</source>
         <translation type="unfinished">ID</translation>
-    </message>
-    <message>
-        <source>Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Exit Code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>[none]</source>
@@ -1685,7 +1653,7 @@ New</source>
     </message>
     <message>
         <source>dB</source>
-        <translation type="unfinished">dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>Hard</source>
@@ -1701,35 +1669,59 @@ New</source>
     </message>
     <message>
         <source>PCM16</source>
-        <translation type="unfinished">PCM16</translation>
+        <translation type="obsolete">PCM16</translation>
     </message>
     <message>
         <source>PCM24</source>
-        <translation type="unfinished">PCM24</translation>
+        <translation type="obsolete">PCM24</translation>
     </message>
     <message>
         <source>MPEG Layer 1</source>
-        <translation type="unfinished">MPEG Layer 1</translation>
+        <translation type="obsolete">MPEG Layer 1</translation>
     </message>
     <message>
         <source>MPEG Layer 2</source>
-        <translation type="unfinished">MPEG Layer 2</translation>
+        <translation type="obsolete">MPEG Layer 2</translation>
     </message>
     <message>
         <source>MPEG Layer 3</source>
-        <translation type="unfinished">MPEG Layer 3</translation>
+        <translation type="obsolete">MPEG Layer 3</translation>
     </message>
     <message>
         <source>FLAC</source>
-        <translation type="unfinished">FLAC</translation>
+        <translation type="obsolete">FLAC</translation>
     </message>
     <message>
         <source>OggVorbis</source>
-        <translation type="unfinished">OggVorbis</translation>
+        <translation type="obsolete">OggVorbis</translation>
     </message>
     <message>
         <source>Unknown</source>
         <translation type="unfinished">Unbekannt</translation>
+    </message>
+    <message>
+        <source>Router</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Autotrim</source>
+        <translation type="unfinished">Autotrim</translation>
+    </message>
+    <message>
+        <source>Normalization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Date Offsets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Code</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

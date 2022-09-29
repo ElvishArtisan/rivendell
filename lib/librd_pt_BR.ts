@@ -1026,6 +1026,14 @@
         <source>Advance Linux Sound Architecture (ALSA)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Disc Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disc Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1187,6 +1195,10 @@
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished">TODOS</translation>
     </message>
 </context>
 <context>
@@ -1473,11 +1485,6 @@ Cor</translation>
         <translation type="unfinished">Cancelar</translation>
     </message>
     <message>
-        <source>Send to
-Editor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Load From
 File</source>
         <translation type="unfinished"></translation>
@@ -1504,10 +1511,6 @@ File</source>
     <message>
         <source>Group:</source>
         <translation type="unfinished">Grupo:</translation>
-    </message>
-    <message>
-        <source>Scheduler Code:</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Matching Carts:</source>
@@ -1548,6 +1551,18 @@ File</source>
     <message>
         <source>Clear</source>
         <translation type="unfinished">Limpar</translation>
+    </message>
+    <message>
+        <source>Scheduler Codes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1990,6 +2005,22 @@ Cart</source>
     <message>
         <source>Unknown</source>
         <translation type="obsolete">Desconhecido</translation>
+    </message>
+    <message>
+        <source>Unable to create temporary directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ripper Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CD-Text reader process crashed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CD-Text reader process returned an error!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2888,6 +2919,10 @@ para o período do relatório
     </message>
     <message>
         <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[unchanged]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

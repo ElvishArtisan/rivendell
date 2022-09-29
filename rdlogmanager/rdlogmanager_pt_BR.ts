@@ -35,6 +35,26 @@
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
     </message>
+    <message>
+        <source>New Clock Code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A clock with that name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That code is already in use!</source>
+        <translation type="unfinished">Este Código já está em uso!</translation>
+    </message>
 </context>
 <context>
     <name>AddEvent</name>
@@ -182,27 +202,27 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>Missing Clock Code</source>
-        <translation>Está faltando o Código do Relógio</translation>
+        <translation type="vanished">Está faltando o Código do Relógio</translation>
     </message>
     <message>
         <source>You must specify a clock code!</source>
-        <translation>Você deve especificar um código para o Relógio!</translation>
+        <translation type="vanished">Você deve especificar um código para o Relógio!</translation>
     </message>
     <message>
         <source>Code Exists</source>
-        <translation>Código existente:</translation>
+        <translation type="vanished">Código existente:</translation>
     </message>
     <message>
         <source>The clock code is already in use!</source>
-        <translation>O Código do Relógio já está em uso!</translation>
+        <translation type="vanished">O Código do Relógio já está em uso!</translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation>Relógio Existente</translation>
+        <translation type="vanished">Relógio Existente</translation>
     </message>
     <message>
         <source>Clock already exists!  Overwrite?</source>
-        <translation>Relógio existente!   Sobreescrever</translation>
+        <translation type="vanished">Relógio existente!   Sobreescrever</translation>
     </message>
     <message>
         <source>--- End of clock ---</source>
@@ -537,12 +557,12 @@ Serviços</translation>
     </message>
     <message>
         <source>RDLogManager</source>
-        <translation>RDControle</translation>
+        <translation type="vanished">RDControle</translation>
     </message>
     <message>
         <source>Event already exists!
 Do you want to overwrite it?</source>
-        <translation>Evento já Existe!
+        <translation type="vanished">Evento já Existe!
 Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
@@ -693,6 +713,18 @@ List</source>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>Event Exists</source>
+        <translation type="unfinished">Evento Existente</translation>
+    </message>
+    <message>
+        <source>An event with that name already exists!</source>
+        <translation type="unfinished">Um Evento com este nome já existe!</translation>
+    </message>
+    <message>
+        <source>Do you want to overwrite it?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1433,11 +1465,11 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation type="unfinished">Relógio Existente</translation>
+        <translation type="obsolete">Relógio Existente</translation>
     </message>
     <message>
         <source>An clock with that name already exists!</source>
-        <translation type="unfinished">Um Relógio com este nome já existe!</translation>
+        <translation type="obsolete">Um Relógio com este nome já existe!</translation>
     </message>
     <message>
         <source>Are you sure you want to

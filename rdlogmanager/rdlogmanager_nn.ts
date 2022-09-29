@@ -35,6 +35,26 @@
         <source>Cancel</source>
         <translation type="unfinished">Avbryt</translation>
     </message>
+    <message>
+        <source>New Clock Code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A clock with that name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That code is already in use!</source>
+        <translation type="unfinished">Denne koden er alt i bruk!</translation>
+    </message>
 </context>
 <context>
     <name>AddEvent</name>
@@ -181,27 +201,27 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Missing Clock Code</source>
-        <translation>Manglar klokkekode</translation>
+        <translation type="vanished">Manglar klokkekode</translation>
     </message>
     <message>
         <source>You must specify a clock code!</source>
-        <translation>Du må gje ein klokkekode!</translation>
+        <translation type="vanished">Du må gje ein klokkekode!</translation>
     </message>
     <message>
         <source>Code Exists</source>
-        <translation>Koden eksisterer</translation>
+        <translation type="vanished">Koden eksisterer</translation>
     </message>
     <message>
         <source>The clock code is already in use!</source>
-        <translation>Klokkekoden er alt i bruk!</translation>
+        <translation type="vanished">Klokkekoden er alt i bruk!</translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation>Klokka eksisterer</translation>
+        <translation type="vanished">Klokka eksisterer</translation>
     </message>
     <message>
         <source>Clock already exists!  Overwrite?</source>
-        <translation>Klokka finst frå før! Skriv over?</translation>
+        <translation type="vanished">Klokka finst frå før! Skriv over?</translation>
     </message>
     <message>
         <source>--- End of clock ---</source>
@@ -532,12 +552,12 @@ tene&amp;ster</translation>
     </message>
     <message>
         <source>RDLogManager</source>
-        <translation>RDLogManager</translation>
+        <translation type="vanished">RDLogManager</translation>
     </message>
     <message>
         <source>Event already exists!
 Do you want to overwrite it?</source>
-        <translation>Hendinga finst frå før!
+        <translation type="vanished">Hendinga finst frå før!
 Vil du byta henne ut?</translation>
     </message>
     <message>
@@ -696,6 +716,18 @@ List</source>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Avbryt</translation>
+    </message>
+    <message>
+        <source>Event Exists</source>
+        <translation type="unfinished">Hendinga eksisterer</translation>
+    </message>
+    <message>
+        <source>An event with that name already exists!</source>
+        <translation type="unfinished">Det finst alt ei hending med det namnet!</translation>
+    </message>
+    <message>
+        <source>Do you want to overwrite it?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1436,11 +1468,11 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>Clock Exists</source>
-        <translation type="unfinished">Klokka eksisterer</translation>
+        <translation type="obsolete">Klokka eksisterer</translation>
     </message>
     <message>
         <source>An clock with that name already exists!</source>
-        <translation type="unfinished">Det finst alt ei klokke med dette namnet!</translation>
+        <translation type="obsolete">Det finst alt ei klokke med dette namnet!</translation>
     </message>
     <message>
         <source>Are you sure you want to

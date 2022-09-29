@@ -529,6 +529,15 @@ Feed</source>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Online Feed
+Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create temporary directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PickReportDates</name>

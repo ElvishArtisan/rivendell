@@ -808,6 +808,18 @@ Ação se Evento anterior estiver sendo executado</translation>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Log Listing (CSV)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music Import</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LogTableView</name>
