@@ -23431,3 +23431,6 @@
 	* Added a workaround for a bug in 'QTranslator::load()' that
 	indicates failure when attempting to load a valid-but-null
 	translation map.
+2022-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that could cause multiple entries
+	to appear for a single upload event to an RSS feed.

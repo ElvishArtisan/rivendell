@@ -108,6 +108,7 @@ class RecordListModel : public QAbstractTableModel
   QList<RDDeck::Status> d_statuses;
   QList<QList<QVariant> > d_icons;
   QMap<QString,QMap<int,QString> > d_router_names;
+  QMap<unsigned,QVariant> d_feed_images;
   QString d_filter_sql;
 };
 

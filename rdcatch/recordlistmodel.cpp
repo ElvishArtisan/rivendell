@@ -532,6 +532,27 @@ void RecordListModel::updateModel(const QString &filter_sql)
   delete q;
 
   //
+  // Load Feed Images
+  //
+  d_feed_images.clear();
+  sql=QString("select ")+
+    "`ID`,"+    // 00
+    "`DATA` "+  // 01
+    "from `FEED_IMAGES`";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    if(q->value(1).isNull()) {
+      d_feed_images[q->value(0).toUInt()]=QVariant();
+    }
+    else {
+      d_feed_images[q->value(0).toUInt()]=
+	QImage::fromData(q->value(1).toByteArray()).
+	scaled(22,22,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+    }
+  }
+  delete q;
+
+  //
   // Load Model Rows
   //
   sql=sqlFields()+filter_sql;
@@ -548,6 +569,7 @@ void RecordListModel::updateModel(const QString &filter_sql)
   d_back_colors.clear();
   d_texts.clear();
   d_icons.clear();
+
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_ids.push_back(0);
@@ -631,9 +653,8 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   icons[0]=
     rda->iconEngine()->catchIcon((RDRecording::Type)q->value(23).toUInt());
   icons[1]=rda->iconEngine()->stationIcon();
-  if(!q->value(53).isNull()) {
-    icons[6]=QImage::fromData(q->value(53).toByteArray()).
-      scaled(22,22,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+  if(!q->value(40).isNull()) {
+    icons[6]=d_feed_images.value(q->value(40).toUInt(),QVariant());
   }
 
   //
@@ -882,12 +903,10 @@ QString RecordListModel::sqlFields() const
     "`FEEDS`.`UPLOAD_SAMPRATE`,"+        // 49
     "`FEEDS`.`UPLOAD_BITRATE`,"+         // 50
     "`FEEDS`.`UPLOAD_QUALITY`,"+         // 51
-    "`FEEDS`.`NORMALIZE_LEVEL`,"+        // 52
-    "`FEED_IMAGES`.`DATA` "+             // 53
+    "`FEEDS`.`NORMALIZE_LEVEL` "+        // 52
     "from `RECORDINGS` left join `CUTS` "+
     "on (`RECORDINGS`.`CUT_NAME`=`CUTS`.`CUT_NAME`) left join `FEEDS` "+
-    "on (`RECORDINGS`.`FEED_ID`=`FEEDS`.`ID`) left join `FEED_IMAGES` "+
-    "on (`FEEDS`.`ID`=`FEED_IMAGES`.`FEED_ID`) ";
+    "on (`RECORDINGS`.`FEED_ID`=`FEEDS`.`ID`) ";
 
     return sql;
 }
