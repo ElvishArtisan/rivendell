@@ -23424,3 +23424,6 @@
 	attempting to load the (non-existent) English translation.
 2022-09-29 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the i18n translation maps.
+2022-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdcartslots/Makefile.am' that caused i18n
+	translation maps for rdcartslots(1) to fail to be generated.

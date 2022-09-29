@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/rdcartslots
 ##
-## (C) Copyright 2012-2021 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2012-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -33,10 +33,10 @@ install-exec-local:
 	../helpers/rdi18n_helper.sh --install rdcartslots $(DESTDIR)$(prefix)/share/rivendell
 
 uninstall-local:	
-	../helpers/rdi18n_helper.sh --uninstall rdcatch $(DESTDIR)$(prefix)/share/rivendell
+	../helpers/rdi18n_helper.sh --uninstall rdcartslots $(DESTDIR)$(prefix)/share/rivendell
 
 all:	
-	../helpers/rdi18n_helper.sh --update rdcatch $(DESTDIR)$(prefix)/share/rivendell
+	../helpers/rdi18n_helper.sh --update rdcartslots $(DESTDIR)$(prefix)/share/rivendell
 
 bin_PROGRAMS = rdcartslots
 
