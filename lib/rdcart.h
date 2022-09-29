@@ -175,6 +175,7 @@ class RDCart
   static bool titleIsUnique(unsigned except_cartnum,const QString &str);
   static QString ensureTitleIsUnique(unsigned except_cartnum,
 				     const QString &str);
+  static QString prettyText(unsigned cartnum);
   
  private:
   static QVariant GetXmlValue(const QString &tag,const QString &line);

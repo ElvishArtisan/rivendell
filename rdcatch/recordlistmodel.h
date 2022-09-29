@@ -82,8 +82,6 @@ class RecordListModel : public QAbstractTableModel
   QString GetSourceName(QString station,int matrix,int input,bool *ok);
   QString GetDestinationName(QString station,int matrix,int output);
   void UpdateStatus(int line);
-  QString CartText(unsigned cartnum) const;
-  QString CutText(const QString &cutname) const;
   QString LevelText(int lvl) const;
   int d_sort_column;
   Qt::SortOrder d_sort_order;

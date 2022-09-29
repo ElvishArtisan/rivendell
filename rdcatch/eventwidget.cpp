@@ -234,7 +234,12 @@ void EventWidget::fromRecording(unsigned record_id)
       break;
 
     case EventWidget::OtherEvent:
-      d_time_edit->setTime(q->value(3).toTime());
+      if(q->value(3).toTime().isValid()) {
+	d_time_edit->setTime(q->value(3).toTime());
+      }
+      else {
+	d_time_edit->setTime(QTime(0,0,0));
+      }
       d_location_box->setCurrentText(q->value(1).toString());
       d_current_station_name=q->value(1).toString();
       d_current_deck_number=-1;

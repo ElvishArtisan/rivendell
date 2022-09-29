@@ -1745,6 +1745,19 @@ QString RDCut::pathName(const QString &cutname)
 }
 
 
+QString RDCut::prettyText(unsigned cartnum,int cutnum)
+{
+  return QString::asprintf("%06u:%03d",cartnum,cutnum);
+}
+
+
+QString RDCut::prettyText(const QString &cutname)
+{
+  return RDCut::prettyText(RDCut::cartNumber(cutname),
+			   RDCut::cutNumber(cutname));
+}
+
+
 void RDCut::GetDefaultDateTimes(QString *start_dt,QString *end_dt,
 				const QString &cutname)
 {

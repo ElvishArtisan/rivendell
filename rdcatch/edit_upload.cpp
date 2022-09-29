@@ -245,6 +245,7 @@ QSizePolicy EditUpload::sizePolicy() const
 
 int EditUpload::exec(int id,std::vector<int> *adds)
 {
+  printf("exec(%d)\n",id);
   edit_added_events=adds;
   if(edit_added_events==NULL) {
     event_saveas_button->hide();
@@ -263,9 +264,13 @@ int EditUpload::exec(int id,std::vector<int> *adds)
   edit_username_edit->setText(edit_recording->urlUsername());
   edit_password_edit->setText(edit_recording->urlPassword());
   edit_use_id_file_check->setChecked(edit_recording->urlUseIdFile());
-  edit_cutname=edit_recording->cutName();
-  if(!edit_recording->cutName().isEmpty()) {
-    edit_source_edit->setText("Cut "+edit_recording->cutName());
+  edit_source_cutname=edit_recording->cutName();
+  if(edit_source_cutname.isEmpty()) {
+    edit_source_edit->clear();
+  }
+  else {
+    edit_source_edit->
+      setText("Cut "+RDCut::prettyText(edit_source_cutname));
   }
   edit_metadata_box->setChecked(edit_recording->enableMetadata());
   edit_dow_selector->fromRecording(edit_recording->id());
@@ -380,12 +385,10 @@ void EditUpload::useIdFileData(bool state)
 
 void EditUpload::selectCartData()
 {
-  QString str;
-
-  if(catch_cut_dialog->exec(&edit_cutname)) {
-    edit_description_edit->setText(RDCutPath(edit_cutname));
-    str=QString(tr("Cut"));
-    edit_source_edit->setText(tr("Cut")+" "+edit_cutname);
+  if(catch_cut_dialog->exec(&edit_source_cutname)) {
+    edit_description_edit->setText(RDCutPath(edit_source_cutname));
+    edit_source_edit->
+      setText(tr("Cut")+" "+RDCut::prettyText(edit_source_cutname));
   }
 }
 
@@ -581,7 +584,7 @@ void EditUpload::Save()
   edit_recording->setStartTime(edit_event_widget->startTime());
   edit_recording->setType(RDRecording::Upload);
   edit_recording->setDescription(edit_description_edit->text());
-  edit_recording->setCutName(edit_source_edit->text().right(10));
+  edit_recording->setCutName(edit_source_cutname);
   edit_recording->setUrl(edit_url_edit->text());
   edit_recording->setUrlUsername(edit_username_edit->text());
   edit_recording->setUrlPassword(edit_password_edit->text());
@@ -616,6 +619,11 @@ void EditUpload::Save()
 }
 
 
+void EditUpload::Clear()
+{
+}
+
+
 bool EditUpload::CheckEvent(bool include_myself)
 {
   QString sql=QString("select `ID` from `RECORDINGS` where ")+
@@ -624,7 +632,7 @@ bool EditUpload::CheckEvent(bool include_myself)
     "(`START_TIME`='"+
     edit_event_widget->startTime().toString("hh:mm:ss")+"')&&"+
     "(`URL`='"+RDEscapeString(edit_url_edit->text())+"')&&"+
-    "(`CUT_NAME`='"+RDEscapeString(edit_source_edit->text().right(10))+
+    "(`CUT_NAME`='"+RDEscapeString(edit_source_cutname)+
     "')";
   if(edit_dow_selector->dayOfWeekEnabled(7)) {
     sql+="&&(`SUN`='Y')";

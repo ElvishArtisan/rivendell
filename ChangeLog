@@ -23434,3 +23434,8 @@
 2022-09-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that could cause multiple entries
 	to appear for a single upload event to an RSS feed.
+2022-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDCart::prettyText()' method.
+	* Added 'RDCut::prettyText()' methods.
+	* Fixed a bug in rdcatch(1) that caused the 'Edit Upload' dialog
+	to fail to be completely cleared when creating a new event.

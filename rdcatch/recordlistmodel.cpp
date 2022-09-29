@@ -732,7 +732,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
       break;
     }
 
-    texts[6]=CutText(q->value(6).toString());
+    texts[6]=RDCut::prettyText(q->value(6).toString());
     icons[6]=rda->iconEngine()->catchIcon(RDRecording::Playout);
     sql=QString("select ")+
       "`SWITCH_STATION`,"+  // 00
@@ -770,7 +770,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
       texts[3]=tr("Len")+": "+RDGetTimeLength(cut->length(),false,false);
     }
     delete cut;
-    texts[5]=CutText(q->value(6).toString());
+    texts[5]=RDCut::prettyText(q->value(6).toString());
     icons[5]=rda->iconEngine()->catchIcon(RDRecording::Playout);
     break;
 
@@ -778,7 +778,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
     texts[1]=q->value(3).toString();
     texts[2]=tr("Hard")+": "+q->value(4).toTime().
       toString(QString::asprintf("hh:mm:ss"));
-    texts[5]=CartText(q->value(22).toUInt());
+    texts[5]=RDCart::prettyText(q->value(22).toUInt());
     icons[5]=rda->iconEngine()->catchIcon(RDRecording::MacroEvent);
     break;
 
@@ -805,7 +805,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
     texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
     texts[5]=q->value(37).toString();
     icons[5]=rda->iconEngine()->listIcon(RDIconEngine::Url);
-    texts[6]=CutText(q->value(6).toString());
+    texts[6]=RDCut::prettyText(q->value(6).toString());
     icons[6]=rda->iconEngine()->catchIcon(RDRecording::Playout);
     texts[16]=LevelText(-q->value(17).toUInt());  // Autotrim
     texts[17]=LevelText(q->value(18).toInt());    // Normalization
@@ -814,7 +814,7 @@ void RecordListModel::updateRow(int row,RDSqlQuery *q)
   case RDRecording::Upload:
     texts[1]=q->value(3).toString();
     texts[2]=tr("Hard")+": "+rda->timeString(q->value(4).toTime());
-    texts[5]=CutText(q->value(6).toString());
+    texts[5]=RDCut::prettyText(q->value(6).toString());
     icons[5]=rda->iconEngine()->catchIcon(RDRecording::Playout);
     if(q->value(39).toString().isEmpty()) {
       texts[6]=q->value(37).toString();
@@ -1022,19 +1022,6 @@ void RecordListModel::UpdateStatus(int line)
     d_back_colors[line]=QColor(EVENT_ERROR_COLOR);
     break;
   }
-}
-
-
-QString RecordListModel::CartText(unsigned cartnum) const
-{
-  return QString::asprintf("%06u",cartnum);
-}
-
-
-QString RecordListModel::CutText(const QString &cutname) const
-{
-  return QString::asprintf("%06u:%03d",RDCut::cartNumber(cutname),
-			   RDCut::cutNumber(cutname));
 }
 
 

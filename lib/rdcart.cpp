@@ -2232,6 +2232,12 @@ QString RDCart::ensureTitleIsUnique(unsigned except_cartnum,
 }
 
 
+QString RDCart::prettyText(unsigned cartnum)
+{
+  return QString::asprintf("%06u",cartnum);
+}
+
+
 QVariant RDCart::GetXmlValue(const QString &tag,const QString &line)
 {
   bool ok=false;

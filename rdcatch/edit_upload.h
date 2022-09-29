@@ -67,6 +67,7 @@ class EditUpload : public RDDialog
   
  private:
   void Save();
+  void Clear();
   bool CheckEvent(bool include_myself);
   bool CheckFormat();
   RDDeck *edit_deck;
@@ -87,9 +88,9 @@ class EditUpload : public RDDialog
   QLineEdit *edit_password_edit;
   QCheckBox *edit_use_id_file_check;;
   QLabel *edit_use_id_file_label;
-  QString edit_cutname;
   QLabel *edit_source_label;
   QLineEdit *edit_source_edit;
+  QString edit_source_cutname;
   QLabel *edit_format_label;
   QLineEdit *edit_format_edit;
   QPushButton *edit_format_set_button;
@@ -100,25 +101,7 @@ class EditUpload : public RDDialog
   QLabel *edit_normalize_unit;
   QCheckBox *edit_metadata_box;
   QLabel *edit_metadata_label;
-
   DowSelector *edit_dow_selector;
-  /*
-  QGroupBox *edit_dow_group;
-  QCheckBox *edit_sun_button;
-  QLabel *edit_sun_label;
-  QCheckBox *edit_mon_button;
-  QLabel *edit_mon_label;
-  QCheckBox *edit_tue_button;
-  QLabel *edit_tue_label;
-  QCheckBox *edit_wed_button;
-  QLabel *edit_wed_label;
-  QCheckBox *edit_thu_button;
-  QLabel *edit_thu_label;
-  QCheckBox *edit_fri_button;
-  QLabel *edit_fri_label;
-  QCheckBox *edit_sat_button;
-  QLabel *edit_sat_label;
-  */
   QLabel *edit_eventoffset_label;
   QSpinBox *edit_eventoffset_spin;
   QLabel *edit_eventoffset_unit_label;

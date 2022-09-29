@@ -153,6 +153,8 @@ class RDCut
   static bool exists(const QString &cutname);
   static QString pathName(unsigned cartnum,unsigned cutnum);
   static QString pathName(const QString &cutname);
+  static QString prettyText(unsigned cartnum,int cutnum);
+  static QString prettyText(const QString &cutname);
 
  private:
   bool FileCopy(const QString &srcfile,const QString &destfile) const;
