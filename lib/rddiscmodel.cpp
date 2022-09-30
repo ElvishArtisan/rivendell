@@ -112,7 +112,9 @@ QVariant RDDiscModel::data(const QModelIndex &index,int role) const
       return d_texts.at(row).at(col);
 
     case Qt::DecorationRole:
-      // Nothing to do!
+      if((col==5)&&(!d_texts.at(row).at(5).toString().isEmpty())) {
+	return rda->iconEngine()->catchIcon(RDRecording::Playout);
+      }
       break;
 
     case Qt::TextAlignmentRole:
@@ -181,21 +183,7 @@ void RDDiscModel::setCutName(const QModelIndex &row,const QString &cutname)
     d_texts[row.row()][5]=QString();
   }
   else {
-    QString sql=QString("select ")+
-      "`CART`.`TITLE`,"+        // 00
-      "`CUTS`.`DESCRIPTION` "+  // 01
-      "from `CART` left join `CUTS` "+
-      "on `CART`.`NUMBER`=`CUTS`.`CART_NUMBER` "+
-      "where `CUTS`.`CUT_NAME`='"+RDEscapeString(cutname)+"'";
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    if(q->first()) {
-      d_texts[row.row()][5]=q->value(0).toString()+"->"+q->value(1).toString();
-    }
-    else {
-      d_texts[row.row()][5]="["+tr("New cart")+
-	QString::asprintf(" %06u]",RDCut::cartNumber(cutname));
-    }
-    delete q;
+    d_texts[row.row()][5]=RDCut::prettyText(cutname);
   }
   emit dataChanged(createIndex(row.row(),5),createIndex(row.row(),5));
 }

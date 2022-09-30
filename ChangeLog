@@ -23445,3 +23445,6 @@
 2022-09-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDCartFilter' that caused 'RDLibraryModel' to
 	fail to be initialized properly.
+2022-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'Rip Disc' dialog in rdlibrary(1) to use new
+	'pretty text' styling for cart and cut objects.
