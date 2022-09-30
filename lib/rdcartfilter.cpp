@@ -624,6 +624,10 @@ QString RDCartFilter::phraseFilter(const QString &phrase, bool incl_cuts)
 QString RDCartFilter::groupFilter(const QString &group,
 				  const QStringList &groups)
 {
+  if(groups.size()<=1) {  // No actual groups included!
+    return QString("(`CART`.`NUMBER`<0) &&");  // Force empty selection
+  }
+
   QString sql=" (";
 
   if(group==tr("ALL")) {
@@ -733,8 +737,7 @@ void RDCartFilter::LoadServiceGroups()
 
 void RDCartFilter::UpdateModel()
 {
-  if(isVisible()&&
-     ((filterSql()!=d_model_filter_sql)||(cartLimit()!=d_model_cart_limit))) {
+  if((filterSql()!=d_model_filter_sql)||(cartLimit()!=d_model_cart_limit)) {
     d_model_filter_sql=filterSql();
     d_model_cart_limit=cartLimit();
     emit filterChanged(d_model_filter_sql,d_model_cart_limit);
