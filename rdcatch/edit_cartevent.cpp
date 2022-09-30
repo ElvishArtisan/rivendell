@@ -164,8 +164,7 @@ int EditCartEvent::exec(int id,std::vector<int> *adds)
   edit_event_widget->fromRecording(edit_recording->id());
   edit_description_edit->setText(edit_recording->description());
   if(edit_cart!=NULL) {
-    edit_destination_edit->
-      setText(QString::asprintf("%06d",edit_cart->number()));
+    edit_destination_edit->setText(RDCart::prettyText(edit_cart->number()));
   }
   edit_dow_selector->fromRecording(edit_recording->id());
   edit_oneshot_box->setChecked(edit_recording->oneShot());
@@ -191,7 +190,7 @@ void EditCartEvent::selectCartData()
       delete edit_cart;
     }
     edit_cart=new RDCart(cartnum);
-    edit_destination_edit->setText(QString::asprintf("%d",cartnum));
+    edit_destination_edit->setText(RDCart::prettyText(cartnum));
     edit_description_edit->setText(edit_cart->title());
   }
 }

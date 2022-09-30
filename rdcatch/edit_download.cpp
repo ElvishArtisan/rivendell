@@ -271,7 +271,12 @@ int EditDownload::exec(int record_id,std::vector<int> *adds)
   edit_password_edit->setText(edit_recording->urlPassword());
   edit_use_id_file_check->setChecked(edit_recording->urlUseIdFile());
   edit_cutname=edit_recording->cutName();
-  edit_destination_edit->setText("Cut "+edit_cutname);
+  if(edit_cutname.isEmpty()) {
+    edit_destination_edit->clear();
+  }
+  else {
+    edit_destination_edit->setText("Cut "+RDCut::prettyText(edit_cutname));
+  }
   edit_channels_box->setCurrentIndex(edit_recording->channels()-1);
   if(edit_recording->trimThreshold()>0) {
     edit_autotrim_box->setChecked(true);
@@ -345,7 +350,13 @@ void EditDownload::selectCartData()
 {
   if(catch_cut_dialog->exec(&edit_cutname)) {
     edit_description_edit->setText(RDCutPath(edit_cutname));
-    edit_destination_edit->setText(tr("Cut")+" "+edit_cutname);
+    if(edit_cutname.isEmpty()) {
+      edit_destination_edit->clear();
+    }
+    else {
+      edit_destination_edit->
+	setText(tr("Cut")+" "+RDCut::prettyText(edit_cutname));
+    }
   }
 }
 
@@ -532,7 +543,7 @@ bool EditDownload::CheckEvent(bool include_myself)
     "(`START_TIME`='"+RDEscapeString(edit_event_widget->startTime().
 				    toString("hh:mm:ss"))+"')&&"+
     "(`URL`='"+RDEscapeString(edit_url_edit->text())+"')&&"+
-    "(`CUT_NAME`='"+RDEscapeString(edit_destination_edit->text().right(10))+"')";
+    "(`CUT_NAME`='"+RDEscapeString(edit_cutname)+"')";
   if(edit_dow_selector->dayOfWeekEnabled(7)) {
     sql+="&&(`SUN`='Y')";
   }

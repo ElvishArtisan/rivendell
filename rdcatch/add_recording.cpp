@@ -157,7 +157,7 @@ int AddRecording::exec(unsigned *rec_id,RDRecording::Type *type)
 
 void AddRecording::recordingData()
 {
-  *add_record_id=AddRecord(0);
+  *add_record_id=AddRecord(RDRecording::Recording,0);
 
   if(!catch_editrecording_dialog->exec(*add_record_id,NULL)) {
     DeleteRecord();
@@ -171,7 +171,7 @@ void AddRecording::recordingData()
 
 void AddRecording::playoutData()
 {
-  *add_record_id=AddRecord(128);
+  *add_record_id=AddRecord(RDRecording::Playout,128);
 
   if(!catch_editplayout_dialog->exec(*add_record_id,NULL)) {
     DeleteRecord();
@@ -185,7 +185,7 @@ void AddRecording::playoutData()
 
 void AddRecording::downloadData()
 {
-  *add_record_id=AddRecord(0);
+  *add_record_id=AddRecord(RDRecording::Download,0);
 
   if(!catch_editdownload_dialog->exec(*add_record_id,NULL)) {
     DeleteRecord();
@@ -199,7 +199,7 @@ void AddRecording::downloadData()
 
 void AddRecording::uploadData()
 {
-  *add_record_id=AddRecord(0);
+  *add_record_id=AddRecord(RDRecording::Upload,0);
 
   if(!catch_editupload_dialog->exec(*add_record_id,NULL)) {
     DeleteRecord();
@@ -213,7 +213,7 @@ void AddRecording::uploadData()
 
 void AddRecording::macroData()
 {
-  *add_record_id=AddRecord(0);
+  *add_record_id=AddRecord(RDRecording::MacroEvent,0);
 
   if(!catch_editcartevent_dialog->exec(*add_record_id,NULL)) {
     DeleteRecord();
@@ -227,7 +227,7 @@ void AddRecording::macroData()
 
 void AddRecording::switchData()
 {
-  *add_record_id=AddRecord(0);
+  *add_record_id=AddRecord(RDRecording::SwitchEvent,0);
 
   if(!catch_editswitchevent_dialog->exec(*add_record_id,NULL)) {
     DeleteRecord();
@@ -280,14 +280,38 @@ void AddRecording::closeEvent(QCloseEvent *e)
 }
 
 
-unsigned AddRecording::AddRecord(unsigned chan) const
+unsigned AddRecording::AddRecord(RDRecording::Type type,unsigned chan) const
 {
   QString sql;
 
   sql=QString("insert into `RECORDINGS` set ")+
     "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"',"+
+    QString::asprintf("`TYPE`=%u,",type)+
     QString::asprintf("`CHANNEL`=%u,",chan)+
     "`CUT_NAME`=''";
+  switch(type) {
+  case RDRecording::Recording:
+    break;
+
+  case RDRecording::Playout:
+    break;
+
+  case RDRecording::Download:
+    break;
+
+  case RDRecording::Upload:
+    break;
+
+  case RDRecording::MacroEvent:
+    break;
+
+  case RDRecording::SwitchEvent:
+    sql+=",`DESCRIPTION`='"+RDEscapeString(tr("[new switch event]"))+"'";
+    break;
+
+  case RDRecording::LastType:
+    break;
+  }
   return RDSqlQuery::run(sql).toUInt();
 }
 

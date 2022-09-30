@@ -23439,3 +23439,6 @@
 	* Added 'RDCut::prettyText()' methods.
 	* Fixed a bug in rdcatch(1) that caused the 'Edit Upload' dialog
 	to fail to be completely cleared when creating a new event.
+2022-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Updated various dialogs in rdcatch(1) to use new 'pretty text'
+	styling for cart and cut objects.

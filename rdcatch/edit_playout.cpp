@@ -164,7 +164,13 @@ int EditPlayout::exec(int id,std::vector<int> *adds)
   edit_event_widget->fromRecording(edit_recording->id());
   edit_description_edit->setText(edit_recording->description());
   edit_cutname=edit_recording->cutName();
-  edit_destination_edit->setText(RDCutPath(edit_cutname));
+  if(edit_cutname.isEmpty()) {
+    edit_destination_edit->clear();
+  }
+  else {
+    edit_destination_edit->
+      setText(tr("Cut")+" "+RDCut::prettyText(edit_cutname));
+  }
   edit_dow_selector->fromRecording(edit_recording->id());
   edit_oneshot_box->setChecked(edit_recording->oneShot());
   locationChangedData(edit_event_widget->stationName(),
@@ -186,8 +192,15 @@ void EditPlayout::locationChangedData(const QString &station,int decknum)
 void EditPlayout::selectCutData()
 {
   if(edit_cut_dialog->exec(&edit_cutname)) {
-    edit_destination_edit->setText(edit_cutname);
-    edit_description_edit->setText(RDCutPath(edit_cutname));
+    if(edit_cutname.isEmpty()) {
+      edit_destination_edit->clear();
+      edit_description_edit->clear();
+    }
+    else {
+      edit_destination_edit->
+	setText(tr("Cut")+" "+RDCut::prettyText(edit_cutname));
+      edit_description_edit->setText(RDCutPath(edit_cutname));
+    }
   }
 }
 

@@ -29,7 +29,6 @@
 #include "edit_recording.h"
 #include "globals.h"
 
-//EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
 EditRecording::EditRecording(QString *filter,QWidget *parent)
   : RDDialog(parent)
 {
@@ -313,101 +312,6 @@ EditRecording::EditRecording(QString *filter,QWidget *parent)
   edit_cancel_button->setFont(buttonFont());
   edit_cancel_button->setText(tr("Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  //
-  // Populate Data
-  //
-  /*
-  edit_event_widget->fromRecording(edit_recording->id());
-  edit_starttime_edit->setTime(edit_recording->startTime());
-  edit_description_edit->setText(edit_recording->description());
-  edit_starttype_group->button((int)edit_recording->startType())->
-    setChecked(true);
-  switch((RDRecording::StartType)edit_starttype_group->checkedId()) {
-  case RDRecording::HardStart:
-    edit_starttime_edit->setTime(edit_recording->startTime());
-    break;
-
-  case RDRecording::GpiStart:
-    edit_start_startwindow_edit->setTime(edit_recording->startTime());
-    edit_start_endwindow_edit->
-      setTime(edit_start_startwindow_edit->time().
-	      addMSecs(edit_recording->startLength()));
-    edit_startmatrix_spin->setValue(edit_recording->startMatrix());
-    edit_startline_spin->setValue(edit_recording->startLine());
-    edit_startoffset_edit->
-      setTime(QTime(0,0,0).addMSecs(edit_recording->startOffset()));
-    edit_multirec_box->
-      setChecked(edit_recording->allowMultipleRecordings());
-    break;
-  }
-  startTypeClickedData(edit_starttype_group->checkedId());
-  edit_endtype_group->button((int)edit_recording->endType())->setChecked(true);
-  switch((RDRecording::EndType)edit_endtype_group->checkedId()) {
-  case RDRecording::LengthEnd:
-    edit_endlength_edit->
-      setTime(QTime(0,0,0).addMSecs(edit_recording->length()));
-    break;
-
-  case RDRecording::HardEnd:
-    edit_endtime_edit->setTime(edit_recording->endTime());
-    break;
-
-  case RDRecording::GpiEnd:
-    edit_end_startwindow_edit->setTime(edit_recording->endTime());
-    edit_end_endwindow_edit->
-      setTime(edit_end_startwindow_edit->time().
-	      addMSecs(edit_recording->endLength()));
-    edit_endmatrix_spin->setValue(edit_recording->endMatrix());
-    edit_endline_spin->setValue(edit_recording->endLine());
-    break;
-  }
-  edit_maxlength_edit->
-    setTime(QTime(0,0,0).addMSecs(edit_recording->maxGpiRecordingLength()));
-  endTypeClickedData(edit_endtype_group->checkedId());
-
-  edit_cutname=edit_recording->cutName();
-  edit_destination_edit->setText(RDCutPath(edit_cutname));
-  edit_dow_selector->fromRecording(edit_recording->id());
-  edit_startoffset_box->setValue(edit_recording->startdateOffset());
-  edit_endoffset_box->setValue(edit_recording->enddateOffset());
-  locationChangedData(edit_event_widget->stationName(),
-		      edit_event_widget->deckNumber());
-
-  QString source=GetSourceName(edit_recording->switchSource());
-  for(int i=0;i<edit_source_box->count();i++) {
-    if(edit_source_box->itemData(i).toString()==source) {
-      edit_source_box->setCurrentIndex(i);
-    }
-  }
-  if(edit_recording->trimThreshold()>0) {
-    edit_autotrim_box->setChecked(true);
-    edit_autotrim_spin->setValue(-(edit_recording->trimThreshold()/100));
-  }
-  else {
-    edit_autotrim_box->setChecked(false);
-    edit_autotrim_spin->setValue(rda->libraryConf()->trimThreshold()/100);
-  }
-  autotrimToggledData(edit_autotrim_box->isChecked());
-  if(edit_recording->normalizationLevel()<0) {
-    edit_normalize_box->setChecked(true);
-    edit_normalize_spin->setValue(edit_recording->normalizationLevel()/100);
-  }
-  else {
-    edit_normalize_box->setChecked(false);
-    edit_normalize_spin->setValue(rda->libraryConf()->ripperLevel()/100);
-  }
-  normalizeToggledData(edit_normalize_box->isChecked());
-  // Populate number of channels; if creating a new recording entry and a valid
-  // deck exists, use the deck default for num. channels.  Otherwise use the
-  // previously entered (or DB default) recording num. channels.
-  if( (edit_recording->station().length() == 0) && (edit_deck!=NULL) ) {
-    edit_channels_box->setCurrentIndex(edit_deck->defaultChannels()-1);
-  } else {
-    edit_channels_box->setCurrentIndex(edit_recording->channels()-1);
-  }
-  edit_oneshot_box->setChecked(edit_recording->oneShot());
-  */
 }
 
 
@@ -497,7 +401,13 @@ int EditRecording::exec(int id,std::vector<int> *adds)
   endTypeClickedData(edit_endtype_group->checkedId());
 
   edit_cutname=edit_recording->cutName();
-  edit_destination_edit->setText(RDCutPath(edit_cutname));
+  if(edit_cutname.isEmpty()) {
+    edit_destination_edit->clear();
+  }
+  else {
+    edit_destination_edit->
+      setText(tr("Cut")+" "+RDCut::prettyText(edit_cutname));
+  }
   edit_dow_selector->fromRecording(edit_recording->id());
   edit_startoffset_box->setValue(edit_recording->startdateOffset());
   edit_endoffset_box->setValue(edit_recording->enddateOffset());
@@ -638,12 +548,15 @@ void EditRecording::endTypeClickedData(int id)
 
 void EditRecording::selectCutData()
 {
-  QString str;
-
   if(catch_cut_dialog->exec(&edit_cutname)) {
     edit_description_edit->setText(RDCutPath(edit_cutname));
-    str=QString(tr("Cut"));
-    edit_destination_edit->setText(tr("Cut")+" "+edit_cutname);
+    if(edit_cutname.isEmpty()) {
+      edit_destination_edit->clear();
+    }
+    else {
+      edit_destination_edit->
+	setText(tr("Cut")+" "+RDCut::prettyText(edit_cutname));
+    }
   }
 }
 

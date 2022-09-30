@@ -50,7 +50,7 @@ class AddRecording : public RDDialog
   void closeEvent(QCloseEvent *e);
   
  private: 
-  unsigned AddRecord(unsigned chan) const;
+  unsigned AddRecord(RDRecording::Type type,unsigned chan) const;
   void DeleteRecord();
   unsigned *add_record_id;
   RDRecording::Type *add_type;
