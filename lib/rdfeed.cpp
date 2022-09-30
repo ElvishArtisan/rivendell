@@ -2064,15 +2064,22 @@ QString RDFeed::ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q,
   ret.replace("%GENERATOR%",QString("Rivendell ")+VERSION);
   ret.replace("%FEED_URL%",RDXmlEscape(chan_q->value(17).toString())+"/"+
 	      RDXmlEscape(keyName()+"."+RD_RSS_XML_FILE_EXTENSION));
-  ret.replace("%IMAGE_URL%",chan_q->value(17).toString()+"/"+
-	      RDFeed::imageFilename(id(),chan_q->value(23).toInt(),
-				    chan_q->value(27).toString()));
-  ret.replace("%IMAGE_WIDTH%",
-	      QString::asprintf("%d",chan_q->value(24).toInt()));
-  ret.replace("%IMAGE_HEIGHT%",
-	      QString::asprintf("%d",chan_q->value(24).toInt()));
-  ret.replace("%IMAGE_DESCRIPTION%",chan_q->value(26).toString());
-
+  if(chan_q->value(23).isNull()) {  // No image data found
+    ret.replace("%IMAGE_URL%","");
+    ret.replace("%IMAGE_WIDTH%","0");
+    ret.replace("%IMAGE_HEIGHT%","0");
+    ret.replace("%IMAGE_DESCRIPTION%","");
+  }
+  else {
+    ret.replace("%IMAGE_URL%",chan_q->value(17).toString()+"/"+
+		RDFeed::imageFilename(id(),chan_q->value(23).toInt(),
+				      chan_q->value(27).toString()));
+    ret.replace("%IMAGE_WIDTH%",
+		QString::asprintf("%d",chan_q->value(24).toInt()));
+    ret.replace("%IMAGE_HEIGHT%",
+		QString::asprintf("%d",chan_q->value(24).toInt()));
+    ret.replace("%IMAGE_DESCRIPTION%",chan_q->value(26).toString());
+  }
   return ret;
 }
 
@@ -2122,10 +2129,15 @@ QString RDFeed::ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
 					    item_q->value(10).toString(),
 					    item_q->value(0).toUInt(),
 					    item_q->value(14).toUInt()));
-  ret.replace("%ITEM_IMAGE_URL%",item_q->value(15).toString()+"/"+
-	      RDFeed::imageFilename(item_q->value(0).toInt(),
-				    item_q->value(18).toInt(),
-				    item_q->value(22).toString()));
+  if(item_q->value(18).isNull()) {
+    ret.replace("%ITEM_IMAGE_URL%","");
+  }
+  else {
+    ret.replace("%ITEM_IMAGE_URL%",item_q->value(15).toString()+"/"+
+		RDFeed::imageFilename(item_q->value(0).toInt(),
+				      item_q->value(18).toInt(),
+				      item_q->value(22).toString()));
+  }
   return ret;
 }
 

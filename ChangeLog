@@ -23448,3 +23448,6 @@
 2022-09-30 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'Rip Disc' dialog in rdlibrary(1) to use new
 	'pretty text' styling for cart and cut objects.
+2022-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the podcasting subsystem where a feed with no
+	provisioned images would generated invalid image URLs.
