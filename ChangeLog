@@ -23451,3 +23451,6 @@
 2022-09-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the podcasting subsystem where a feed with no
 	provisioned images would generated invalid image URLs.
+2022-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatchd(8) that caused posted podcast
+	items to be given the incorrect title.
