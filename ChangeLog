@@ -20946,3 +20946,5 @@
 	manual changes to track metadata to be incorrectly applied.
 2022-09-26 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.6.5int6.
+2022-10-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.6.6.
