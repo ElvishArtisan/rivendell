@@ -23454,3 +23454,5 @@
 2022-09-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatchd(8) that caused posted podcast
 	items to be given the incorrect title.
+2022-10-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 4.0.0rc0.
