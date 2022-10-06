@@ -459,10 +459,10 @@ QString RDMatrix::password(RDMatrix::Role role) const
 {
   switch(role) {
     case RDMatrix::Primary:
-      return GetRow("PASSWORD").toString();
+      return QByteArray::fromBase64(GetRow("PASSWORD").toString().toUtf8());
 
     case RDMatrix::Backup:
-      return GetRow("PASSWORD_2").toString();
+      return QByteArray::fromBase64(GetRow("PASSWORD_2").toString().toUtf8());
   }
   return QString();
 }
@@ -472,10 +472,10 @@ void RDMatrix::setPassword(RDMatrix::Role role,const QString &passwd) const
 {
   switch(role) {
     case RDMatrix::Primary:
-      SetRow("PASSWORD",passwd);
+      SetRow("PASSWORD",passwd.toUtf8().toBase64());
 
     case RDMatrix::Backup:
-      SetRow("PASSWORD_2",passwd);
+      SetRow("PASSWORD_2",passwd.toUtf8().toBase64());
 
   }
 }
@@ -981,6 +981,26 @@ void RDMatrix::SetRow(const QString &param,const QString &value) const
     param+"`='"+RDEscapeString(value)+"' where "+
     "`STATION_NAME`='"+RDEscapeString(mx_station)+"' && "+
     QString::asprintf("`MATRIX`=%d",mx_number);
+  RDSqlQuery::apply(sql);
+}
+
+
+void RDMatrix::SetRow(const QString &param,const QByteArray &value) const
+{
+  QString sql;
+
+  if(value.size()==0) {
+    sql=QString("update `MATRICES` set `")+
+      param+"`=NULL where "+
+      "`STATION_NAME`='"+RDEscapeString(mx_station)+"' && "+
+      QString::asprintf("`MATRIX`=%d",mx_number);
+  }
+  else {
+    sql=QString("update `MATRICES` set `")+
+      param+"`='"+RDEscapeString(value)+"' where "+
+      "`STATION_NAME`='"+RDEscapeString(mx_station)+"' && "+
+      QString::asprintf("`MATRIX`=%d",mx_number);
+  }
   RDSqlQuery::apply(sql);
 }
 

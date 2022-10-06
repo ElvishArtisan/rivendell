@@ -11146,6 +11146,57 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<362)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `MATRICES` ")+
+      "modify column `PASSWORD` text";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `MATRICES` ")+
+      "modify column `PASSWORD_2` text";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("select ")+
+      "`ID`,"+          // 00
+      "`PASSWORD`,"+    // 01
+      "`PASSWORD_2` "+  // 02
+      "from `MATRICES`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if(q->value(1).toString().isEmpty()) {
+	sql=QString("update `MATRICES` set ")+
+	  "`PASSWORD`=null ";
+      }
+      else {
+	sql=QString("update `MATRICES` set ")+
+	  "`PASSWORD`='"+
+	  RDEscapeString(q->value(1).toString().toUtf8().toBase64())+"' ";
+      }
+      sql+=QString::asprintf("where `ID`=%d",q->value(0).toInt());
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+
+      if(q->value(2).toString().isEmpty()) {
+	sql=QString("update `MATRICES` set ")+
+	  "`PASSWORD_2`=null ";
+      }
+      else {
+	sql=QString("update `MATRICES` set ")+
+	  "`PASSWORD_2`='"+
+	  RDEscapeString(q->value(2).toString().toUtf8().toBase64())+"' ";
+      }
+      sql+=QString::asprintf("where `ID`=%d",q->value(0).toInt());
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

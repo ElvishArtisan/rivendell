@@ -21,8 +21,8 @@ IP_PORT              int(11)
 IP_PORT_2            int(11)
 USERNAME             varchar(32)
 USERNAME_2           varchar(32)
-PASSWORD             varchar(32)
-PASSWORD_2           varchar(32)
+PASSWORD             text             Base64 encoded
+PASSWORD_2           text             Base64 encoded
 START_CART           int(10) unsigned
 STOP_CART            int(10) unsigned
 START_CART_2         int(10) unsigned

@@ -42,6 +42,51 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 362
+  //
+  if((cur_schema==362)&&(set_schema<cur_schema)) {
+    sql=QString("select ")+
+      "`ID`,"+          // 00
+      "`PASSWORD`,"+    // 01
+      "`PASSWORD_2` "+  // 02
+      "from `MATRICES`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if(!q->value(1).isNull()) {
+	sql=QString("update `MATRICES` set ")+
+	  "`PASSWORD`='"+
+	  RDEscapeString(QByteArray::fromBase64(q->value(1).toString().toUtf8()))+"' "+
+	  QString::asprintf("where `ID`=%d",q->value(0).toInt());
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      if(!q->value(2).isNull()) {
+	sql=QString("update `MATRICES` set ")+
+	  "`PASSWORD_2`='"+
+	  RDEscapeString(QByteArray::fromBase64(q->value(2).toString().toUtf8()))+"' "+
+	  QString::asprintf("where `ID`=%d",q->value(0).toInt());
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+    }
+    delete q;
+    sql=QString("alter table `MATRICES` ")+
+      "modify column `PASSWORD` varchar(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `MATRICES` ")+
+      "modify column `PASSWORD_2` varchar(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 361
   //
   if((cur_schema==361)&&(set_schema<cur_schema)) {

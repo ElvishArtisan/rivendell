@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Switcher Matrix
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,8 @@
 #ifndef RDMATRIX_H
 #define RDMATRIX_H
 
-#include <qsqldatabase.h>
-#include <qdatetime.h>
-#include <qhostaddress.h>
+#include <QDateTime>
+#include <QHostAddress>
 
 class RDMatrix
 {
@@ -122,6 +121,7 @@ class RDMatrix
   QString GetEndpointName(int pointnum,const QString &table) const;
   QVariant GetRow(const QString &param) const;
   void SetRow(const QString &param,const QString &value) const;
+  void SetRow(const QString &param,const QByteArray &value) const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,unsigned value) const;
   int mx_id;
