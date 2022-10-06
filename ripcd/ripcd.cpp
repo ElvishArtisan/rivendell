@@ -229,7 +229,7 @@ void MainObject::newConnectionData()
   connect(ripcd_conns[i]->socket(),SIGNAL(readyRead()),
 	  ripcd_ready_mapper,SLOT(map()));
   ripcd_kill_mapper->setMapping(ripcd_conns[i]->socket(),i);
-  connect(ripcd_conns[i]->socket(),SIGNAL(connectionClosed()),
+  connect(ripcd_conns[i]->socket(),SIGNAL(disconnected()),
 	  ripcd_kill_mapper,SLOT(map()));
   rda->syslog(LOG_DEBUG,"added new connection %d",i);
 }

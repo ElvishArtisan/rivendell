@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for systems using Software Authority Protocol
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,8 +48,6 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent)
   swa_stop_cart=matrix->stopCart(RDMatrix::Primary);
   swa_is_gpio=false;
 
-  rda->syslog(LOG_DEBUG,"%p - card: %d\n",this,swa_card);
-
   //
   // Reconnection Timer
   //
@@ -62,8 +60,7 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent)
   //
   swa_socket=new QTcpSocket(this);
   connect(swa_socket,SIGNAL(connected()),this,SLOT(connectedData()));
-  connect(swa_socket,SIGNAL(connectionClosed()),
-	  this,SLOT(connectionClosedData()));
+  connect(swa_socket,SIGNAL(disconnected()),this,SLOT(connectionClosedData()));
   connect(swa_socket,SIGNAL(readyRead()),
 	  this,SLOT(readyReadData()));
   connect(swa_socket,SIGNAL(error(QAbstractSocket::SocketError)),
@@ -236,7 +233,6 @@ void SoftwareAuthority::errorData(QAbstractSocket::SocketError err)
 
 void SoftwareAuthority::SendCommand(const QString &str)
 {
-  //  LogLine(RDConfig::LogDebug,QString::asprintf("sending SA cmd: %s",(const char *)PrettifyCommand(str)));
   rda->syslog(LOG_DEBUG,"%p - sending \"%s\"",this,str.toUtf8().constData());
   QString cmd=QString::asprintf("%s\x0d\x0a",str.toUtf8().constData());
   swa_socket->write(cmd.toUtf8());
@@ -245,19 +241,16 @@ void SoftwareAuthority::SendCommand(const QString &str)
 
 void SoftwareAuthority::DispatchCommand()
 {
-  char buffer[SWAUTHORITY_MAX_LENGTH];
   QString cmd;
   QString label;
   QString sql;
   QStringList f0;
   QString name;
 
-  //  LogLine(RDConfig::LogNotice,QString::asprintf("RECEIVED: %s",(const char *)swa_buffer));
-
   QString line_in=swa_buffer;
   QString section=line_in.toLower().replace(">>","");
-  rda->syslog(LOG_DEBUG,"%p - received \"%s\"",this,
-	      section.toUtf8().constData());
+  //  rda->syslog(LOG_DEBUG,"%p - received \"%s\"",this,
+  //	      section.toUtf8().constData());
 
   //
   // Startup Sequence. Get initial GPIO states and the input and output lists.
@@ -280,14 +273,10 @@ void SoftwareAuthority::DispatchCommand()
     swa_gpis=0;
     swa_gpos=0;
     swa_is_gpio=false;
-    sprintf(buffer,"gpistat %d\x0D\x0A",swa_card);      // Request GPI States
-    SendCommand(buffer);
-    sprintf(buffer,"gpostat %d\x0D\x0A",swa_card);      // Request GPO States
-    SendCommand(buffer);
-    sprintf(buffer,"sourcenames %d\x0D\x0A",swa_card);  // Request Input List
-    SendCommand(buffer);
-    sprintf(buffer,"destnames %d\x0D\x0A",swa_card);    // Request Output List
-    SendCommand(buffer);
+    SendCommand(QString::asprintf("gpostat %d",swa_card)); // Request GPO States
+    SendCommand(QString::asprintf("gpostat %d",swa_card)); // Request GPO States
+    SendCommand(QString::asprintf("sourcenames %d",swa_card)); // Request Input List
+    SendCommand(QString::asprintf("destnames %d",swa_card)); // Request Output List
     return;
   }
   if(section=="login failure") {
@@ -427,13 +416,13 @@ void SoftwareAuthority::DispatchCommand()
   //
   f0=section.split(" ");
   if((f0.size()==4)&&(f0[0].toLower()=="gpistat")&&(f0[1].toInt()==swa_card)) {
-    if(swa_gpi_states[f0[2].toInt()].isEmpty()) {
+    if(swa_gpi_states.value(f0[2].toInt()).isEmpty()) {
       swa_gpi_states[f0[2].toInt()]=f0[3];
     }
     else {
       for(unsigned i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
 	int gpi=(f0[2].toInt()-1)*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+i;
-	if(f0[3].at(i)!=swa_gpi_states[f0[2].toInt()].at(i)) {
+	if(f0[3].at(i)!=swa_gpi_states.value(f0[2].toInt()).at(i)) {
 	  emit gpiChanged(swa_matrix,gpi,f0[3].at(i)=='l');
 	}
       }
@@ -442,13 +431,13 @@ void SoftwareAuthority::DispatchCommand()
     swa_is_gpio=true;
   }
   if((f0.size()==4)&&(f0[0].toLower()=="gpostat")&&(f0[1].toInt()==swa_card)) {
-    if(swa_gpo_states[f0[2].toInt()].isEmpty()) {
+    if(swa_gpo_states.value(f0[2].toInt()).isEmpty()) {
       swa_gpo_states[f0[2].toInt()]=f0[3];
     }
     else {
       for(unsigned i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
 	int gpo=(f0[2].toInt()-1)*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+i;
-	if(f0[3].at(i)!=swa_gpo_states[f0[2].toInt()].at(i)) {
+	if(f0[3].at(i)!=swa_gpo_states.value(f0[2].toInt()).at(i)) {
 	  emit gpoChanged(swa_matrix,gpo,f0[3].at(i)=='l');
 	}
       }

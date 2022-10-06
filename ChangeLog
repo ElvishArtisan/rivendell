@@ -23456,3 +23456,6 @@
 	items to be given the incorrect title.
 2022-10-02 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc0.
+2022-10-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Software Authority' switcher driver in ripcd(8)
+	that broke automatic reconnection.

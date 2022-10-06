@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for systems using Software Authority Protocol
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,9 @@
 #ifndef SWAUTHORITY_H
 #define SWAUTHORITY_H
 
-#include <map>
-#include <vector>
-
-#include <qhostaddress.h>
-#include <qtcpsocket.h>
-#include <qtimer.h>
+#include <QHostAddress>
+#include <QTcpSocket>
+#include <QTimer>
 
 #include <rd.h>
 #include <rdmatrix.h>
@@ -82,8 +79,8 @@ class SoftwareAuthority : public Switcher
   int swa_istate;
   bool swa_is_gpio;
   RDMatrix::PortType swa_porttype;
-  std::map<int,QString> swa_gpi_states;
-  std::map<int,QString> swa_gpo_states;
+  QMap<int,QString> swa_gpi_states;
+  QMap<int,QString> swa_gpo_states;
 };
 
 
