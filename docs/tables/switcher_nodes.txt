@@ -10,6 +10,6 @@ STATION_NAME         varchar(64)
 MATRIX               int(11)
 BASE_OUTPUT          int(11)
 HOSTNAME             varchar(64)
-PASSWORD             varchar(64)
+PASSWORD             text               Base64 encoded
 TCP_PORT             int(11)
 DESCRIPTION          varchar(191)

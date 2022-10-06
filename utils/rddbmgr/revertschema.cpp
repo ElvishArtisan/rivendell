@@ -42,6 +42,36 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 361
+  //
+  if((cur_schema==361)&&(set_schema<cur_schema)) {
+    sql=QString("select ")+
+      "`ID`,"+        // 00
+      "`PASSWORD` "+  // 01
+      "from `SWITCHER_NODES`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if(!q->value(1).isNull()) {
+	sql=QString("update `SWITCHER_NODES` set ")+
+	  "`PASSWORD`='"+
+	  RDEscapeString(QByteArray::fromBase64(q->value(1).toString().toUtf8()))+"' "+
+	  QString::asprintf("where `ID`=%d",q->value(0).toInt());
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+    }
+    delete q;
+    sql=QString("alter table `REPLICATORS` ")+
+      "modify column `URL_PASSWORD` varchar(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 360
   //
   if((cur_schema==360)&&(set_schema<cur_schema)) {

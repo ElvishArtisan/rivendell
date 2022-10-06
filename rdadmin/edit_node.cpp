@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LiveWire Node
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -149,7 +149,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
       edit_hostname_edit->setText(q->value(0).toString());
       edit_tcpport_spin->setValue(q->value(1).toInt());
       edit_description_edit->setText(q->value(2).toString());
-      edit_password=q->value(3).toString();
+      edit_password=QByteArray::fromBase64(q->value(3).toString().toUtf8());
       edit_output_spin->setValue(q->value(4).toInt());
     }
     delete q;
@@ -229,7 +229,7 @@ void EditNode::okData()
       QString::asprintf("`TCP_PORT`=%d,",edit_tcpport_spin->value())+
       "`DESCRIPTION`='"+RDEscapeString(edit_description_edit->text())+"',"+
       QString::asprintf("`BASE_OUTPUT`=%d,",edit_output_spin->value())+
-      "`PASSWORD`='"+RDEscapeString(edit_password)+"'";
+      "`PASSWORD`='"+RDEscapeString(edit_password.toUtf8().toBase64())+"'";
     RDSqlQuery::apply(sql);
   }
   else {
@@ -238,7 +238,8 @@ void EditNode::okData()
       QString::asprintf("`TCP_PORT`=%d,",edit_tcpport_spin->value())+
       "`DESCRIPTION`='"+RDEscapeString(edit_description_edit->text())+"',"+
       QString::asprintf("`BASE_OUTPUT`=%d,",edit_output_spin->value())+
-      "`PASSWORD`='"+RDEscapeString(edit_password)+"' where "+
+      "`PASSWORD`='"+RDEscapeString(edit_password.toUtf8().toBase64())+
+      "' where "+
       QString::asprintf("`ID`=%d",*edit_id);
     q=new RDSqlQuery(sql);
     delete q;
