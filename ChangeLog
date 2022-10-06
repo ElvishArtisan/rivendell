@@ -23459,3 +23459,9 @@
 2022-10-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'Software Authority' switcher driver in ripcd(8)
 	that broke automatic reconnection.
+2022-10-06 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the length of the 'USERS.PASSWORD' field in the database
+	to 191 characters.
+	* Applied Base64 encoding to the 'USERS.PASSWORD' field in the
+	database.
+	* Incremented the database version to 359.

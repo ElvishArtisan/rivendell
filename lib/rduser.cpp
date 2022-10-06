@@ -102,8 +102,13 @@ bool RDUser::authenticated(bool webuser) const
       "`LOGIN_NAME`,"+
       "`ENABLE_WEB` "+
       "from `USERS` where "+
-      "`LOGIN_NAME`='"+RDEscapeString(user_name)+"' && "+
-      "`PASSWORD`='"+RDEscapeString(user_password)+"'";
+      "`LOGIN_NAME`='"+RDEscapeString(user_name)+"' && ";
+    if(user_password.isEmpty()) {
+      sql+="`PASSWORD` is null";
+    }
+    else {
+      sql+="`PASSWORD`='"+RDEscapeString(user_password.toUtf8().toBase64())+"'";
+    }
     q=new RDSqlQuery(sql);
     if(q->first()) {
       bool ret=RDBool(q->value(1).toString())||
@@ -134,14 +139,15 @@ bool RDUser::checkPassword(const QString &password,bool webuser)
 
 QString RDUser::password() const
 {
-  return RDGetSqlValue("USERS","LOGIN_NAME",user_name,"PASSWORD").toString();
+  return QByteArray::fromBase64(RDGetSqlValue("USERS","LOGIN_NAME",user_name,
+					      "PASSWORD").toString().toUtf8());
 }
 
 
 void RDUser::setPassword(const QString &password)
 {
   user_password=password;
-  SetRow("PASSWORD",password);
+  SetRow("PASSWORD",QString(password.toUtf8().toBase64()));
 }
 
 

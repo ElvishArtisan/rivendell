@@ -42,6 +42,38 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 359
+  //
+  if((cur_schema==359)&&(set_schema<cur_schema)) {
+    sql=QString("select ")+
+      "`LOGIN_NAME`,"+  // 00
+      "`PASSWORD` "+    // 01
+      "from `USERS`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update `USERS` set ");
+      if(q->value(1).isNull()) {
+	sql+="`PASSWORD`='' ";
+      }
+      else {
+	sql+="`PASSWORD`='"+
+	  RDEscapeString(QByteArray::fromBase64(q->value(1).toString().toUtf8()))+"' ";
+      }
+      sql+="where `LOGIN_NAME`='"+RDEscapeString(q->value(0).toString())+"'";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+    sql=QString("alter table `USERS` ")+
+      "modify column `PASSWORD` varchar(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 358
   //
   if((cur_schema==358)&&(set_schema<cur_schema)) {

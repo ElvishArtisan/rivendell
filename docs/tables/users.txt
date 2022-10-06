@@ -10,7 +10,7 @@ FULL_NAME            varchar(191)     Indexed
 EMAIL_ADDRESS        varchar(191)
 PHONE_NUMBER         varchar(20)
 DESCRIPTION          varchar(191)
-PASSWORD             varchar(32)      Not-NULL, Hashed
+PASSWORD             varchar(191)     Base64 encoded
 WEBAPI_AUTH_TIMEOUT  int(11) signed   Seconds
 ENABLE_WEB           enum('N','Y')
 LOCAL_AUTH           enum('N','Y')

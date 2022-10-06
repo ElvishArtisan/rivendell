@@ -11046,6 +11046,42 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<359)&&(set_schema>cur_schema)) {
+    sql=QString("update `RDAIRPLAY` set ")+
+      "`EXIT_PASSWORD`=NULL "+
+      "where `EXIT_PASSWORD`=''";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table `USERS` ")+
+      "modify column `PASSWORD` varchar(191)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("select ")+
+      "`LOGIN_NAME`,"+  // 00
+      "`PASSWORD` "+    // 01
+      "from `USERS`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update `USERS` set ");
+      if(q->value(1).toString().isEmpty()) {
+	sql+="`PASSWORD`=NULL ";
+      }
+      else {
+	sql+=QString("`PASSWORD`=")+
+	  "'"+RDEscapeString(q->value(1).toString().toUtf8().toBase64())+"' ";
+      }
+      sql+="where `LOGIN_NAME`='"+RDEscapeString(q->value(0).toString())+"'";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    WriteSchemaVersion(++cur_schema);
+  }
 
 
   // NEW SCHEMA UPDATES GO HERE...
