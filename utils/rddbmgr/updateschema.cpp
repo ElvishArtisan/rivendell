@@ -11083,6 +11083,37 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<360)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `REPLICATORS` ")+
+      "modify column `URL_PASSWORD` text";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("select ")+
+      "`NAME`,"+          // 00
+      "`URL_PASSWORD` "+  // 01
+      "from `REPLICATORS`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if(q->value(1).toString().isEmpty()) {
+	sql=QString("update `REPLICATORS` set ")+
+	  "`URL_PASSWORD`=null ";
+      }
+      else {
+	sql=QString("update `REPLICATORS` set ")+
+	  "`URL_PASSWORD`='"+
+	  RDEscapeString(q->value(1).toString().toUtf8().toBase64())+"' ";
+      }
+      sql+="where `NAME`='"+RDEscapeString(q->value(0).toString())+"'";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

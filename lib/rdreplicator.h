@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell replicator configuration
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,7 @@
 #ifndef RDREPLICATOR_H
 #define RDREPLICATOR_H
 
-#include <qvariant.h>
+#include <QVariant>
 
 #include <rdsettings.h>
 
@@ -62,7 +62,8 @@ class RDReplicator
 
  private:
   QVariant GetValue(const QString &field) const;
-  void SetRow(const QString &param,QString value) const;
+  void SetRow(const QString &param,const QString &value) const;
+  void SetRow(const QString &param,const QByteArray &value) const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,unsigned value) const;
   QString replicator_name;

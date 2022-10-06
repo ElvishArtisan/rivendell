@@ -23465,3 +23465,8 @@
 	* Applied Base64 encoding to the 'USERS.PASSWORD' field in the
 	database.
 	* Incremented the database version to 359.
+2022-10-06 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the type of the 'REPLICATORS.URL_PASSWORD` field in the
+	database to 'text'.
+	* Applied Base64 encoding to the 'REPLICATORS.URL_PASSWORD' field in
+	the database.

@@ -157,13 +157,13 @@ void RDReplicator::setUrlUsername(const QString &str) const
 
 QString RDReplicator::urlPassword() const
 {
-  return GetValue("URL_PASSWORD").toString();
+  return QByteArray::fromBase64(GetValue("URL_PASSWORD").toString().toUtf8());
 }
 
 
 void RDReplicator::setUrlPassword(const QString &str) const
 {
-  SetRow("URL_PASSWORD",str);
+  SetRow("URL_PASSWORD",str.toUtf8().toBase64());
 }
 
 
@@ -227,13 +227,31 @@ QVariant RDReplicator::GetValue(const QString &field) const
 }
 
 
-void RDReplicator::SetRow(const QString &param,QString value) const
+void RDReplicator::SetRow(const QString &param,const QString &value) const
 {
   QString sql;
 
   sql=QString("update `REPLICATORS` set `")+
     param+"`='"+RDEscapeString(value)+"' where "+
     "`NAME`='"+RDEscapeString(replicator_name)+"'";
+  RDSqlQuery::apply(sql);
+}
+
+
+void RDReplicator::SetRow(const QString &param,const QByteArray &value) const
+{
+  QString sql;
+
+  if(value.size()==0) {
+    sql=QString("update `REPLICATORS` set `")+
+      param+"`=NULL where "+
+      "`NAME`='"+RDEscapeString(replicator_name)+"'";
+  }
+  else {
+    sql=QString("update `REPLICATORS` set `")+
+      param+"`='"+RDEscapeString(value)+"' where "+
+      "`NAME`='"+RDEscapeString(replicator_name)+"'";
+  }
   RDSqlQuery::apply(sql);
 }
 

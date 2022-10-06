@@ -42,6 +42,36 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 360
+  //
+  if((cur_schema==360)&&(set_schema<cur_schema)) {
+    sql=QString("select ")+
+      "`NAME`,"+          // 00
+      "`URL_PASSWORD` "+  // 01
+      "from `REPLICATORS`";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if(!q->value(1).isNull()) {
+	sql=QString("update `REPLICATORS` set ")+
+	  "`URL_PASSWORD`='"+
+	  RDEscapeString(QByteArray::fromBase64(q->value(1).toString().toUtf8()))+"' "+
+	  "where `NAME`='"+RDEscapeString(q->value(0).toString())+"'";
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+    }
+    delete q;
+    sql=QString("alter table `REPLICATORS` ")+
+      "modify column `URL_PASSWORD` varchar(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 359
   //
   if((cur_schema==359)&&(set_schema<cur_schema)) {
@@ -70,6 +100,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
+
     WriteSchemaVersion(--cur_schema);
   }
 

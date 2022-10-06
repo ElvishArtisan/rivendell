@@ -16,6 +16,6 @@ BITRATE              int(10) unsigned
 QUALITY              int(10) unsigned
 URL                  varchar(255)
 URL_USERNAME         varchar(64)
-URL_PASSWORD         varchar(64)
+URL_PASSWORD         text               Base64 encoded
 ENABLE_METADATA      enum('N','Y')
 NORMALIZATION_LEVEL  int(11) signed

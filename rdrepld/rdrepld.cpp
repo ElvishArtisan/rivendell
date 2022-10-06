@@ -227,7 +227,8 @@ void MainObject::LoadReplicators()
     config->setQuality(q->value(6).toUInt());
     config->setUrl(q->value(7).toString());
     config->setUrlUsername(q->value(8).toString());
-    config->setUrlPassword(q->value(9).toString());
+    config->
+      setUrlPassword(QByteArray::fromBase64(q->value(9).toString().toUtf8()));
     config->setEnableMetadata(RDBool(q->value(10).toString()));
     config->setNormalizeLevel(q->value(11).toInt());
     switch(config->type()) {
