@@ -23487,3 +23487,6 @@
 	* Applied Base64 encoding to the 'MATRICES.PASSWORD_2' field in
 	the database.
 	* Incremented the database version to 362.
+2022-10-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RedHat Enterprise Linux 9' subsection to the
+	'DISTRO-SPECIFIC NOTES' section of 'INSTALL'.
