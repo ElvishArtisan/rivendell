@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Service
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -63,6 +63,10 @@ class EditSvc : public RDDialog
   QLineEdit *svc_program_code_edit;
   QLineEdit *svc_name_template_edit;
   QLineEdit *svc_description_template_edit;
+
+  QComboBox *svc_bypass_box;
+
+  QComboBox *svc_sub_event_inheritance_box;
   QComboBox *svc_voice_group_box;
   QComboBox *svc_autospot_group_box;
   QLineEdit *svc_tfc_path_edit;
@@ -78,7 +82,6 @@ class EditSvc : public RDDialog
   QLineEdit *svc_mus_label_cart_edit;
   QLineEdit *svc_mus_break_edit;
   QLineEdit *svc_mus_track_edit;
-  QComboBox *svc_sub_event_inheritance_box;
   QCheckBox *svc_chain_box;
   QCheckBox *svc_autorefresh_box;
   QCheckBox *svc_loglife_box;
@@ -95,5 +98,4 @@ class EditSvc : public RDDialog
 };
 
 
-#endif
-
+#endif  // EDIT_SVC_H

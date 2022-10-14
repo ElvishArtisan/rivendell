@@ -164,8 +164,8 @@ void TestImport::importData()
   QString sql=QString("delete from `IMPORTER_LINES` where ")+
     "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
     QString::asprintf("`PROCESS_ID`=%u",getpid());
-  //  printf("IMPORTER_LINES cleanup SQL: %s\n",(const char *)sql);
-  RDSqlQuery::apply(sql);
+  printf("IMPORTER_LINES cleanup SQL: %s\n",sql.toUtf8().constData());
+  //  RDSqlQuery::apply(sql);
 }
 
 

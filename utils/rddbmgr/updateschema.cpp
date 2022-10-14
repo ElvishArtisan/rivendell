@@ -11197,6 +11197,75 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<363)&&(set_schema>cur_schema)) {
+    sql=QString("alter table `SERVICES` ")+
+      "add column `BYPASS_MODE` enum('N','Y') not null default 'N' "+
+      "after `DESCRIPTION`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `SERVICES` ")+
+      "add column `MUS_TRANS_TYPE_OFFSET` int after `MUS_ANNC_TYPE_LENGTH`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `SERVICES` ")+
+      "add column `MUS_TRANS_TYPE_LENGTH` int after `MUS_TRANS_TYPE_OFFSET`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `SERVICES` ")+
+      "add column `MUS_TIME_TYPE_OFFSET` int after `MUS_TRANS_TYPE_LENGTH`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `SERVICES` ")+
+      "add column `MUS_TIME_TYPE_LENGTH` int after `MUS_TIME_TYPE_OFFSET`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table `IMPORT_TEMPLATES` ")+
+      "add column `TRANS_TYPE_OFFSET` int after `ANNC_TYPE_LENGTH`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `IMPORT_TEMPLATES` ")+
+      "add column `TRANS_TYPE_LENGTH` int after `TRANS_TYPE_OFFSET`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `IMPORT_TEMPLATES` ")+
+      "add column `TIME_TYPE_OFFSET` int after `TRANS_TYPE_LENGTH`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `IMPORT_TEMPLATES` ")+
+      "add column `TIME_TYPE_LENGTH` int after `TIME_TYPE_OFFSET`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table `IMPORTER_LINES` ")+
+      "add column `TRANS_TYPE` int not null default 255 after `LENGTH`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `IMPORTER_LINES` ")+
+      "add column `TIME_TYPE` int not null default 0 after `TRANS_TYPE`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table `IMPORTER_LINES` ")+
+      "add column `GRACE_TIME` int not null default 0 after `TIME_TYPE`";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

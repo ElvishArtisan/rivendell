@@ -28,6 +28,7 @@
 
 #include <rddb.h>
 #include <rdnotification.h>
+#include <rdsvc.h>
 
 class RDLogImportModel : public QAbstractTableModel
 {

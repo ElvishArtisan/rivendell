@@ -23490,3 +23490,21 @@
 2022-10-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RedHat Enterprise Linux 9' subsection to the
 	'DISTRO-SPECIFIC NOTES' section of 'INSTALL'.
+2022-10-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SERVICES.BYPASS_MODE' field to the database.
+	* Added a 'SERVICES.MUS_TRANS_TYPE_OFFSET' field to the database.
+	* Added a 'SERVICES.MUS_TRANS_TYPE_LENGTH' field to the database.
+	* Added a 'SERVICES.MUS_TIME_TYPE_OFFSET' field to the database.
+	* Added a 'SERVICES.MUS_TIME_TYPE_LENGTH' field to the database.
+	* Added a 'IMPORT_TEMPLATES.TRANS_TYPE_OFFSET' field to the database.
+	* Added a 'IMPORT_TEMPLATES.TRANS_TYPE_LENGTH' field to the database.
+	* Added a 'IMPORT_TEMPLATES.TIME_TYPE_OFFSET' field to the database.
+	* Added a 'IMPORT_TEMPLATES.TIME_TYPE_LENGTH' field to the database.
+	* Added a 'IMPORTER_LINES.TRANS_TYPE' field to the database.
+	* Added a 'IMPORTER_LINES.TIME_TYPE' field to the database.
+	* Added a 'IMPORTER_LINES.GRACE_TIME' field to the database.
+	* Incremented the database schema to 363.
+	* Added a 'Bypass Grid Processing' dropdown to the 'Edit Service'
+	dialog in rdadmin(1).
+	* Added 'Transition Type' and 'Time Type' parameters to the music
+	import parameters in the 'Edit Service' dialog in rdadmin(1).

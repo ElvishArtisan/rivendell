@@ -4,12 +4,13 @@ The SERVICES table holds data concerning each audio service configured
 on the system.  Following is the layout of a record in the SERVICES
 table:
 
-FIELD NAME              TYPE               REMARKS
----------------------------------------------------------------
-NAME                    varchar(10) unsigned  Primary Key
-DESCRIPTION             varchar(191)
-NAME_TEMPLATE           varchar(191)
-DESCRIPTION_TEMPLATE    varchar(191)
+FIELD NAME              TYPE                      REMARKS
+------------------------------------------------------------------------------
+NAME                        varchar(10) unsigned  Primary Key
+DESCRIPTION                 varchar(191)
+BYPASS_MODE                 enum('N','Y')
+NAME_TEMPLATE               varchar(191)
+DESCRIPTION_TEMPLATE        varchar(191)
 PROGRAM_CODE                varchar(191)
 CHAIN_LOG                   enum('N','Y')
 SUB_EVENT_INHERITANCE       int(11)               0=Inherit from parent event,
@@ -82,3 +83,7 @@ MUS_EVENT_ID_OFFSET         int(11)
 MUS_EVENT_ID_LENGTH         int(11)
 MUS_ANNC_TYPE_OFFSET        int(11)
 MUS_ANNC_TYPE_LENGTH        int(11)
+MUS_TRANS_TYPE_OFFSET       int(11)
+MUS_TRANS_TYPE_LENGTH       int(11)
+MUS_TIME_TYPE_OFFSET        int(11)
+MUS_TIME_TYPE_LENGTH        int(11)

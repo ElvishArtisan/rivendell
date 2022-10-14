@@ -67,6 +67,19 @@ void RDSvc::setDescription(const QString &desc) const
 }
 
 
+bool RDSvc::bypassMode() const
+{
+  return RDBool(RDGetSqlValue("SERVICES","NAME",svc_name,"BYPASS_MODE").
+    toString());
+}
+
+
+void RDSvc::setBypassMode(bool state) const
+{
+  SetRow("BYPASS_MODE",RDYesNo(state));
+}
+
+
 QString RDSvc::programCode() const
 {
   return RDGetSqlValue("SERVICES","NAME",svc_name,"PROGRAM_CODE").
@@ -442,6 +455,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   QString data_buf;
   QString eventid_buf;
   QString annctype_buf;
+  int grace_time=0;
   QString os_flag;
   int cartlen;
   QString sql;
@@ -536,7 +550,11 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     "`"+src_str+"LEN_MINUTES_OFFSET`,"+  // 18
     "`"+src_str+"LEN_MINUTES_LENGTH`,"+  // 19
     "`"+src_str+"LEN_SECONDS_OFFSET`,"+  // 20
-    "`"+src_str+"LEN_SECONDS_LENGTH` "+  // 21
+    "`"+src_str+"LEN_SECONDS_LENGTH`,"+  // 21
+    "`"+src_str+"TRANS_TYPE_OFFSET`,"+  // 22
+    "`"+src_str+"TRANS_TYPE_LENGTH`,"+  // 23
+    "`"+src_str+"TIME_TYPE_OFFSET`,"+  // 24
+    "`"+src_str+"TIME_TYPE_LENGTH` "+  // 25
     "from "+parser_table+" where `NAME`='"+RDEscapeString(parser_name)+"'";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
@@ -565,6 +583,10 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   int minutes_len_length=q->value(19).toInt();
   int seconds_len_offset=q->value(20).toInt();
   int seconds_len_length=q->value(21).toInt();
+  int trans_type_offset=q->value(22).toInt();
+  int trans_type_length=q->value(23).toInt();
+  int time_type_offset=q->value(24).toInt();
+  int time_type_length=q->value(25).toInt();
 
   delete q;
 
@@ -588,6 +610,10 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   int file_line=0;
   while(fgets(buf,RD_MAX_IMPORT_LINE_LENGTH,infile)!=NULL) {
     str_buf=QString::fromUtf8(buf);
+    QString trans_type_buf;
+    RDLogLine::TransType trans_type=RDLogLine::NoTrans;
+    QString time_type_buf;
+    RDLogLine::TimeType time_type=RDLogLine::Relative;
 
     //
     // Cart Number
@@ -649,6 +675,33 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     title=str_buf.mid(title_offset,title_length).trimmed();
 
     //
+    // Transition Type
+    //
+    trans_type_buf=str_buf.mid(trans_type_offset,trans_type_length).trimmed();
+    if(trans_type_buf.toLower()=="play") {
+      trans_type=RDLogLine::Play;
+    }
+    if(trans_type_buf.toLower()=="segue") {
+      trans_type=RDLogLine::Segue;
+    }
+    if(trans_type_buf.toLower()=="stop") {
+      trans_type=RDLogLine::Stop;
+    }
+
+    //
+    // Time Type
+    //
+    time_type_buf=str_buf.mid(time_type_offset,time_type_length).trimmed();
+    if(time_type_buf.toLower()=="soft") {
+      time_type=RDLogLine::Hard;
+      grace_time=-1;
+    }
+    if(time_type_buf.toLower()=="hard") {
+      time_type=RDLogLine::Hard;
+      grace_time=0;
+    }
+
+    //
     // Process Line
     //
     cartnum=cartname.toUInt(&cart_ok);
@@ -658,6 +711,9 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     //
     sql=QString("insert into `IMPORTER_LINES` set ")+
       "`STATION_NAME`='"+RDEscapeString(svc_station->name())+"',"+
+      QString::asprintf("`TRANS_TYPE`=%d,",trans_type)+
+      QString::asprintf("`TIME_TYPE`=%d,",time_type)+
+      QString::asprintf("`GRACE_TIME`=%d,",grace_time)+
       QString::asprintf("`PROCESS_ID`=%d,",getpid())+
       QString::asprintf("`FILE_LINE`=%u,",file_line)+
       QString::asprintf("`LINE_ID`=%d,",line_id);
@@ -1135,7 +1191,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   sql=QString("delete from `IMPORTER_LINES` where ")+
     "`STATION_NAME`='"+RDEscapeString(svc_station->name())+"' && "+
     QString::asprintf("`PROCESS_ID`=%u",getpid());
-  //  printf("Importer Table Cleanup SQL: %s\n",(const char *)sql);
+  //  printf("Importer Table Cleanup SQL: %s\n",sql.toUtf8().constData());
   RDSqlQuery::apply(sql);
   delete log_lock;
 
@@ -1717,6 +1773,14 @@ QString RDSvc::FieldString(ImportField field) const
 
       case RDSvc::ExtAnncType:
 	fieldname="ANNC_TYPE_";
+	break;
+
+      case RDSvc::TransType:
+	fieldname="TRANS_TYPE_";
+	break;
+
+      case RDSvc::TimeType:
+	fieldname="TIME_TYPE_";
 	break;
   }
   return fieldname;

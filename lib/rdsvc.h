@@ -38,7 +38,8 @@ class RDSvc : public QObject
   enum ImportSource {Traffic=0,Music=1};
   enum ImportField {CartNumber=0,ExtData=3,ExtEventId=4,ExtAnncType=5,
 		    Title=6,StartHours=7,StartMinutes=8,StartSeconds=9,
-		    LengthHours=10,LengthMinutes=11,LengthSeconds=12};
+		    LengthHours=10,LengthMinutes=11,LengthSeconds=12,
+		    TransType=13,TimeType=14};
   enum ShelflifeOrigin {OriginAirDate=0,OriginCreationDate=1};
   enum SubEventInheritance {ParentEvent=0,SchedFile=1};
   RDSvc(QString svcname,RDStation *station,RDConfig *config,QObject *parent=0);
@@ -46,6 +47,8 @@ class RDSvc : public QObject
   bool exists() const;
   QString description() const;
   void setDescription(const QString &desc) const;
+  bool bypassMode() const;
+  void setBypassMode(bool state) const;
   QString programCode() const;
   void setProgramCode(const QString &str) const;
   QString nameTemplate() const;
