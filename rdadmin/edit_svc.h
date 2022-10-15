@@ -21,11 +21,11 @@
 #ifndef EDIT_SVC_H
 #define EDIT_SVC_H
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rddialog.h>
 #include <rdsvc.h>

@@ -39,9 +39,12 @@ RDLogImportModel::RDLogImportModel(const QString &hostname,pid_t proc_id,
   unsigned right=Qt::AlignRight|Qt::AlignVCenter;
 
   d_headers.push_back(tr("Start Time"));
-  d_alignments.push_back(left);
+  d_alignments.push_back(right);
 
   d_headers.push_back(tr("Cart"));
+  d_alignments.push_back(center);
+
+  d_headers.push_back(tr("Trans"));
   d_alignments.push_back(center);
 
   d_headers.push_back(tr("Len"));
@@ -59,7 +62,7 @@ RDLogImportModel::RDLogImportModel(const QString &hostname,pid_t proc_id,
   d_headers.push_back(tr("Annc Type"));
   d_alignments.push_back(left);
 
-  d_headers.push_back(tr("Line"));
+  d_headers.push_back(tr("Line Number"));
   d_alignments.push_back(right);
 
   updateModel();
@@ -197,52 +200,58 @@ void RDLogImportModel::updateRow(int row,RDSqlQuery *q)
   }
 
   // Start Time
-  texts[0]=RDSvc::timeString(q->value(1).toInt(),q->value(2).toInt());
+  QString prefix;
+  if((RDLogLine::TimeType)q->value(12).toUInt()==RDLogLine::Hard) {
+    if(q->value(13).toInt()<0) {
+      prefix="S:";
+    }
+    else {
+      prefix="H:";
+    }
+  }
+  texts[0]=prefix+RDSvc::timeString(q->value(1).toInt(),q->value(2).toInt());
 
-  // Cart
-  //  texts.push_back(q->value(2));
+  // Transition Type
+  texts[2]=RDLogLine::transText((RDLogLine::TransType)q->value(11).toUInt());
 
   // Length
   if(!q->value(4).isNull()) {
-    texts[2]=RDGetTimeLength(q->value(4).toInt(),false,false);
+    texts[3]=RDGetTimeLength(q->value(4).toInt(),false,false);
   }
 
-  // Title
-  //  texts.push_back(q->value(2));
-
   // GUID
-  texts[4]=q->value(5).toString().trimmed();
+  texts[5]=q->value(5).toString().trimmed();
 
   // Event ID
-  texts[5]=q->value(6).toString().trimmed();
+  texts[6]=q->value(6).toString().trimmed();
 
   // Annc Type
-  texts[6]=q->value(7).toString().trimmed();
+  texts[7]=q->value(7).toString().trimmed();
 
   // Line
-  texts[7]=QString::asprintf("%u",1+q->value(10).toUInt());
+  texts[8]=QString::asprintf("%u",1+q->value(10).toUInt());
 
   switch((RDLogLine::Type)q->value(9).toUInt()) {
   case RDLogLine::Cart:
     d_icons[row]=rda->iconEngine()->typeIcon(RDLogLine::Cart);
     texts[1]=q->value(3);  // Cart Number
-    texts[3]=q->value(8).toString().trimmed();  // Title
+    texts[4]=q->value(8).toString().trimmed();  // Title
     break;
 
   case RDLogLine::Marker:
     d_icons[row]=rda->iconEngine()->typeIcon(RDLogLine::Marker);
     texts[1]=tr("NOTE");  // Cart Number
-    texts[3]=q->value(8).toString().trimmed();  // Title
+    texts[4]=q->value(8).toString().trimmed();  // Title
     break;
 
   case RDLogLine::TrafficLink:
     d_icons[row]=rda->iconEngine()->typeIcon(RDLogLine::TrafficLink);
-    texts[3]=tr("[spot break]");  // Title
+    texts[4]=tr("[spot break]");  // Title
     break;
 
   case RDLogLine::Track:
     d_icons[row]=rda->iconEngine()->typeIcon(RDLogLine::Track);
-    texts[3]=tr("[voice track]");  // Title
+    texts[4]=tr("[voice track]");  // Title
     break;
 
   case RDLogLine::Macro:
@@ -272,7 +281,10 @@ QString RDLogImportModel::sqlFields() const
     "`EXT_ANNC_TYPE`,"+  // 07
     "`TITLE`,"+          // 08
     "`TYPE`,"+           // 09
-    "`FILE_LINE` "+      // 10
+    "`FILE_LINE`,"+      // 10
+    "`TRANS_TYPE`,"+     // 11
+    "`TIME_TYPE`,"+      // 12
+    "`GRACE_TIME` "+     // 13
     "from `IMPORTER_LINES` ";
 
     return sql;
