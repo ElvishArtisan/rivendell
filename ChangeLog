@@ -23511,3 +23511,7 @@
 2022-10-14 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Trans' column to the 'Imported Events' list in the
 	'Test Music Import' list in rdadmin(1).
+2022-10-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'Test Music Import' dialog that caused
+	the 'Imported Events' list to fail to be cleared when starting a
+	new test.

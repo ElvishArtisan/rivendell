@@ -168,6 +168,16 @@ void RDLogImportModel::refresh()
 }
 
 
+void RDLogImportModel::clear()
+{
+  beginResetModel();
+  d_texts.clear();
+  d_icons.clear();
+  d_ids.clear();
+  endResetModel();
+}
+
+
 void RDLogImportModel::updateModel()
 {
   QList<QVariant> texts; 

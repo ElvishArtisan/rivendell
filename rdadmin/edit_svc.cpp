@@ -59,6 +59,11 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   log_validator->addBannedChar(' ');
 
   //
+  // Dialogs
+  //
+  svc_test_import_dialog=new TestImport(this);
+
+  //
   // General Section
   //
   QLabel *label=new QLabel("General",this);
@@ -583,6 +588,7 @@ EditSvc::~EditSvc()
 {
   delete svc_name_edit;
   delete svc_description_edit;
+  delete svc_test_import_dialog;
 }
 
 
@@ -754,9 +760,7 @@ void EditSvc::TestDataImport(RDSvc::ImportSource src)
     }
     Save();
   }
-  TestImport *testimport=new TestImport(svc_svc,src,this);
-  testimport->exec();
-  delete testimport;
+  svc_test_import_dialog->exec(svc_svc,src);
 }
 
 

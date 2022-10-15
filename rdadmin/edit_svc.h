@@ -31,6 +31,7 @@
 #include <rdsvc.h>
 
 #include "importfields.h"
+#include "test_import.h"
 
 class EditSvc : public RDDialog
 {
@@ -63,9 +64,7 @@ class EditSvc : public RDDialog
   QLineEdit *svc_program_code_edit;
   QLineEdit *svc_name_template_edit;
   QLineEdit *svc_description_template_edit;
-
   QComboBox *svc_bypass_box;
-
   QComboBox *svc_sub_event_inheritance_box;
   QComboBox *svc_voice_group_box;
   QComboBox *svc_autospot_group_box;
@@ -95,6 +94,7 @@ class EditSvc : public RDDialog
   QPushButton *svc_tfc_copy_button;
   QPushButton *svc_mus_copy_button;
   bool import_changed;
+  TestImport *svc_test_import_dialog;
 };
 
 
