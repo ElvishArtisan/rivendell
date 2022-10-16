@@ -155,7 +155,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   //
   edit_service_box=new QComboBox(this);
   edit_service_box->setGeometry(127,240,120,20);
-  edit_service_model=new RDServiceListModel(true,this);
+  edit_service_model=new RDServiceListModel(true,false,this);
   edit_service_model->setFont(defaultFont());
   edit_service_model->setPalette(palette());
   edit_service_box->setModel(edit_service_model);

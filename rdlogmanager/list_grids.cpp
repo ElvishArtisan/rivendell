@@ -39,7 +39,7 @@ ListGrids::ListGrids(QWidget *parent)
   edit_grids_view=new RDTableView(this);
   edit_grids_view->
     setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-80);
-  edit_grids_model=new RDServiceListModel(false,this);
+  edit_grids_model=new RDServiceListModel(false,true,this);
   edit_grids_model->setFont(font());
   edit_grids_model->setPalette(palette());
   edit_grids_view->setModel(edit_grids_model);

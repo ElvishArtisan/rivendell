@@ -22,10 +22,12 @@
 #include "rdescape_string.h"
 #include "rdservicelistmodel.h"
 
-RDServiceListModel::RDServiceListModel(bool incl_none,QObject *parent)
+RDServiceListModel::RDServiceListModel(bool incl_none,bool exclude_bypass,
+				       QObject *parent)
   : QAbstractTableModel(parent)
 {
   d_include_none=incl_none;
+  d_exclude_bypass=exclude_bypass;
 
   //
   // Load Color Map
@@ -257,6 +259,9 @@ void RDServiceListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields();
+  if(d_exclude_bypass) {
+    sql+="where `BYPASS_MODE`='N' ";
+  }
   sql+="order by NAME ";
   beginResetModel();
   d_texts.clear();

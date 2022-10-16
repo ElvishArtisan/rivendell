@@ -66,7 +66,7 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
   //
   svc_exemplar_box=new QComboBox(this);
   svc_exemplar_box->setGeometry(155,36,sizeHint().width()-165,19);
-  svc_services_model=new RDServiceListModel(true,this);
+  svc_services_model=new RDServiceListModel(true,false,this);
   svc_services_model->setFont(defaultFont());
   svc_services_model->setPalette(palette());
   svc_exemplar_box->setModel(svc_services_model);

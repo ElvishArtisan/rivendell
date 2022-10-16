@@ -23515,3 +23515,6 @@
 	* Fixed a regression in the 'Test Music Import' dialog that caused
 	the 'Imported Events' list to fail to be cleared when starting a
 	new test.
+2022-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Log Grids' dialog in rdlogmanager(1) to not display
+	services with 'Bypass Grid Processing' set to 'Yes'.

@@ -42,7 +42,7 @@ class RDServiceListModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  RDServiceListModel(bool incl_none,QObject *parent);
+  RDServiceListModel(bool incl_none,bool exclude_bypass,QObject *parent);
   ~RDServiceListModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
@@ -70,6 +70,7 @@ class RDServiceListModel : public QAbstractTableModel
   QFont d_font;
   QFont d_bold_font;
   bool d_include_none;
+  bool d_exclude_bypass;
   QList<QVariant> d_headers;
   QList<QVariant> d_alignments;
   QList<QList<QVariant> > d_texts;
