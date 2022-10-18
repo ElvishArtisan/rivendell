@@ -23522,3 +23522,9 @@
 	* Added a 'RDEventLine::loadBypass()' method.
 	* Implemented log generation and importation for bypass grid
 	processing in rdlogmanager(1).
+2022-10-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to 'RDSvc::create()' to include the
+	'SERVICES.BYPASS_MODE',	'SERVICES.MUS_TRANS_TYPE_OFFSET',
+	'SERVICES.MUS_TRANS_TYPE_LENGTH', 'SERVICES.MUS_TIME_TYPE_OFFSET'
+	and 'SERVICES.MUS_TIME_TYPE_LENGTH' fields when cloning a new
+	Service entry.
