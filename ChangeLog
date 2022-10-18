@@ -23519,6 +23519,6 @@
 	* Modified the 'Log Grids' dialog in rdlogmanager(1) to not display
 	services with 'Bypass Grid Processing' set to 'Yes'.
 2022-10-18 Fred Gleason <fredg@paravelsystems.com>
-	Added a 'RDEventLine::loadBypass()' method.
+	* Added a 'RDEventLine::loadBypass()' method.
 	* Implemented log generation and importation for bypass grid
 	processing in rdlogmanager(1).
