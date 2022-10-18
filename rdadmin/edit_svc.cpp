@@ -134,6 +134,8 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_bypass_box->insertItem(1,tr("Yes"));
   connect(svc_bypass_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
+  connect(svc_bypass_box,SIGNAL(activated(int)),
+	  this,SLOT(bypassModeChangedData(int)));
   label=new QLabel(tr("Bypass Grid Processing")+":",this);
   label->setGeometry(10,136,170,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -149,9 +151,10 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
     insertItem((int)RDSvc::SchedFile,tr("From Scheduler File"));
   connect(svc_sub_event_inheritance_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
-  label=new QLabel(tr("Inline Event Start/Length")+":",this);
-  label->setGeometry(10,157,170,19);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  svc_sub_event_inheritance_label=
+    new QLabel(tr("Inline Event Start/Length")+":",this);
+  svc_sub_event_inheritance_label->setGeometry(10,157,170,19);
+  svc_sub_event_inheritance_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Voicetracking Group
@@ -580,6 +583,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
     setText(svc_svc->trackString(RDSvc::Music));
   tfcTemplateActivatedData(svc_tfc_import_template_box->currentIndex());
   musTemplateActivatedData(svc_mus_import_template_box->currentIndex());
+  bypassModeChangedData(svc_bypass_box->currentIndex());
   import_changed=false;
 }
 
@@ -609,6 +613,16 @@ void EditSvc::autofillData()
   AutofillCarts *autofill=new AutofillCarts(svc_svc,this);
   autofill->exec();
   delete autofill;
+}
+
+
+void EditSvc::bypassModeChangedData(int n)
+{
+  if(n!=0) {
+    svc_sub_event_inheritance_box->setCurrentIndex((int)RDSvc::SchedFile);
+  }
+  svc_sub_event_inheritance_label->setEnabled(n==0);
+  svc_sub_event_inheritance_box->setEnabled(n==0);
 }
 
 

@@ -23528,3 +23528,8 @@
 	'SERVICES.MUS_TRANS_TYPE_LENGTH', 'SERVICES.MUS_TIME_TYPE_OFFSET'
 	and 'SERVICES.MUS_TIME_TYPE_LENGTH' fields when cloning a new
 	Service entry.
+2022-10-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added values for the `IMPORTER_TEMPLATES.TRANS_TYPE_*` and
+	`TIMPORTER_TEMPLATES.TIME_TYPE_*` parser settings for the
+	'Rivendell Standard Import' profile.
+	* Incremented the database version to 364.

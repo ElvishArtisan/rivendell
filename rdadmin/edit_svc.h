@@ -44,6 +44,7 @@ class EditSvc : public RDDialog
 
  private slots:
   void autofillData();
+  void bypassModeChangedData(int n);
   void enableHostsData();
   void trafficData();
   void trafficCopyData();
@@ -65,6 +66,7 @@ class EditSvc : public RDDialog
   QLineEdit *svc_name_template_edit;
   QLineEdit *svc_description_template_edit;
   QComboBox *svc_bypass_box;
+  QLabel *svc_sub_event_inheritance_label;
   QComboBox *svc_sub_event_inheritance_box;
   QComboBox *svc_voice_group_box;
   QComboBox *svc_autospot_group_box;

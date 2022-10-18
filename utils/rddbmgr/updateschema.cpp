@@ -11265,6 +11265,20 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<364)&&(set_schema>cur_schema)) {
+    sql=QString("update `IMPORT_TEMPLATES` set ")+
+      "`TRANS_TYPE_OFFSET`=102,"+
+      "`TRANS_TYPE_LENGTH`=5,"+
+      "`TIME_TYPE_OFFSET`=108,"+
+      "`TIME_TYPE_LENGTH`=4 "+
+      "where `NAME`='Rivendell Standard Import'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...
