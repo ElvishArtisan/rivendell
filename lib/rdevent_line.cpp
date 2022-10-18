@@ -294,6 +294,7 @@ void RDEventLine::clear()
    event_artist_sep=15;
    event_title_sep=100;
    event_nested_event="";
+   event_using_bypass=false;
 }
 
 
@@ -354,12 +355,53 @@ bool RDEventLine::load()
 
   event_preimport_list->load();
   event_postimport_list->load();
+
+  event_using_bypass=false;
+
+  return true;
+}
+
+
+bool RDEventLine::loadBypass()
+{
+  //
+  // Internal read-only event for processing inline traffic imports
+  //
+  event_preposition=0;
+  event_time_type=RDLogLine::Relative;
+  event_grace_time=0;
+  event_use_autofill=false;
+  event_use_timescale=false;
+  event_import_source=RDEventLine::Traffic;
+  event_start_slop=0;
+  event_end_slop=0;
+  event_first_transtype=RDLogLine::Play;
+  event_default_transtype=RDLogLine::Play;
+  event_color=QColor();
+  event_preimport_list->clear();
+  event_postimport_list->clear();
+  event_start_time=QTime(0,0,0,0);
+  event_length=0;
+  event_autofill_slop=-1;
+  event_sched_group="";
+  event_have_code="";
+  event_have_code2="";
+  event_artist_sep=15;
+  event_title_sep=100;
+  event_nested_event="";
+
+  event_using_bypass=true;
+
   return true;
 }
 
 
 bool RDEventLine::save(RDConfig *config)
 {
+  if(event_using_bypass) {
+    return false;
+  }
+
   QString sql=QString("select `NAME` from `EVENTS` where ")+
     "`NAME`='"+RDEscapeString(event_name)+"'";
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -914,7 +956,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 }
 
 
-bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
+void RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
 			  RDLogLine *link_logline,const QString &track_str,
 			  const QString &label_cart,const QString &track_cart,
 			  QString *errors)
@@ -1033,7 +1075,6 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
 	logline->setStartTime(RDLogLine::Logged,time);
 	logline->setType(RDLogLine::TrafficLink);
 	logline->setSource(event_src);
-	//	logline->setTransType(trans_type);
 	logline->setEventLength(event_length);
 	logline->setLinkEventName(event_nested_event);
 	logline->setLinkStartTime(q->value(9).toTime());
@@ -1055,7 +1096,6 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
       logline->setStartTime(RDLogLine::Logged,time);
       logline->setType(RDLogLine::Track);
       logline->setSource(event_src);
-      //      logline->setTransType(RDLogLine::Segue);
       logline->setMarkerComment(q->value(7).toString());
       logline->setEventLength(event_length);
       logline->setLinkEventName(event_name);
@@ -1077,7 +1117,6 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
       logline->setStartTime(RDLogLine::Logged,time);
       logline->setType(RDLogLine::Marker);
       logline->setSource(event_src);
-      //      logline->(RDLogLine::Segue);
       logline->setMarkerComment(q->value(7).toString());
       logline->setEventLength(event_length);
       logline->setLinkEventName(event_name);
@@ -1102,9 +1141,6 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
 		     QTime(start_start_hour,0,0).addSecs(q->value(1).toInt()));
       logline->setType(RDLogLine::Cart);
       logline->setCartNumber(q->value(0).toUInt());
-      //      logline->setGraceTime(grace_time);
-      //      logline->setTimeType(time_type);
-      //      logline->setTransType(trans_type);
       logline->setExtStartTime(QTime(0,0,0).addSecs(3600*start_start_hour+
 					       q->value(1).toInt()));
       logline->setExtLength(q->value(2).toInt());
@@ -1226,8 +1262,6 @@ bool RDEventLine::linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
       }
     }
   }
-  
-  return false;
 }
 
 

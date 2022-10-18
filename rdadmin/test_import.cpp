@@ -2,7 +2,7 @@
 //
 // Test a Rivendell Log Import
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,6 +37,8 @@ TestImport::TestImport(QWidget *parent)
   : RDDialog(parent)
 {
   QString sql;
+  test_svc=NULL;
+  test_src=RDSvc::Music;
 
   //
   // Fix the Window Size

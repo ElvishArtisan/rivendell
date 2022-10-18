@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,7 @@
 #ifndef RDEVENT_LINE_H
 #define RDEVENT_LINE_H
 
-#include <qdatetime.h>
+#include <QDateTime>
 
 #include <rdlogmodel.h>
 #include <rdeventimportlist.h>
@@ -75,10 +75,11 @@ class RDEventLine
   void setLength(int msecs);
   void clear();
   bool load();
+  bool loadBypass();
   bool save(RDConfig *config);
   bool generateLog(QString logname,const QString &svcname,
 		   QString *errors,QString clockname);
-  bool linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
+  void linkLog(RDLogModel *e,RDLog *log,const QString &svcname,
 	       RDLogLine *link_logline,const QString &track_str,
 	       const QString &label_cart,const QString &track_cart,
 	       QString *errors);
@@ -94,6 +95,7 @@ class RDEventLine
  private:
   int GetLength(unsigned cartnum,int def_length=0);
   QString event_name;
+  bool event_using_bypass;
   int event_preposition;
   RDLogLine::TimeType event_time_type;
   int event_grace_time;

@@ -28,7 +28,7 @@
 #include "rddb.h"
 #include "rd.h"
 #include "rdescape_string.h"
-#include "rdlog.h"
+#include "rdevent_line.h"
 #include "rdlogmodel.h"
 #include "rdsvc.h"
 #include "rdweb.h"
@@ -883,6 +883,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   RDClock clock(svc_station);
   RDLog *log=NULL;
   RDLogLock *log_lock=NULL;
+  int count=0;
 
   if((!date.isValid()||logname.isEmpty())) {
     return false;
@@ -916,46 +917,70 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
 			       includeImportMarkers(RDSvc::Music));
   log->setIncludeImportMarkers(RDLog::SourceTraffic,
 			       includeImportMarkers(RDSvc::Traffic));
-
   emit generationProgress(1);
   qApp->processEvents();
 
-  //
-  // Generate Events
-  //
-  for(int i=0;i<24;i++) {
-    sql=QString("select `CLOCK_NAME` from `SERVICE_CLOCKS` where ")+
-      "(`SERVICE_NAME`='"+RDEscapeString(svc_name)+"')&&"+
-      QString::asprintf("(`HOUR`=%d)",24*(date.dayOfWeek()-1)+i);
-    q=new RDSqlQuery(sql);
-    if(q->first()) {
-      if((!q->value(0).isNull())&&(!q->value(0).toString().isEmpty())) {
-	clock.setClockName(q->value(0).toString());
-	clock.load();
-	clock.generateLog(i,logname,svc_name,report);
-	clock.clear();
-      }
-    }
-    delete q;
-    emit generationProgress(1+i);
-    qApp->processEvents();
-  }
-
-  //
-  // Get Current Count
-  //
-  int count;
-  sql=QString("select `COUNT` from `LOG_LINES` where ")+
-    "`LOG_NAME`='"+RDEscapeString(logname)+"' "+
-    "order by `COUNT` desc";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    count=q->value(0).toInt()+1;
+  if(bypassMode()) {
+    //
+    // Generate Single Music Import Event
+    //
+    sql=QString("insert into `LOG_LINES` set ")+
+      "`LOG_NAME`='"+RDEscapeString(logname)+"',"+
+      QString::asprintf("`LINE_ID`=%d,",count)+
+      QString::asprintf("`COUNT`=%d,",count)+
+      QString::asprintf("`TYPE`=%d,",RDLogLine::MusicLink)+
+      QString::asprintf("`SOURCE`=%d,",RDLogLine::Template)+
+      "`START_TIME`=0,"+
+      "`GRACE_TIME`=0,"+
+      QString::asprintf("`TIME_TYPE`=%d,",RDLogLine::Relative)+
+      QString::asprintf("`TRANS_TYPE`=%d,",RDLogLine::Play)+
+      "`LINK_EVENT_NAME`='"+RDEscapeString("bypass")+"',"+
+      "`LINK_START_TIME`=0,"+
+      "`LINK_LENGTH`=86400000,"+
+      "`LINK_ID`=1,"+
+      "`LINK_START_SLOP`=0,"+
+      "`LINK_END_SLOP`=0,"+
+      "`EVENT_LENGTH`=86400000";
+    RDSqlQuery::apply(sql);
+    count++;
   }
   else {
-    count=0;
+    //
+    // Generate Grid Events
+    //
+    for(int i=0;i<24;i++) {
+      sql=QString("select `CLOCK_NAME` from `SERVICE_CLOCKS` where ")+
+	"(`SERVICE_NAME`='"+RDEscapeString(svc_name)+"')&&"+
+	QString::asprintf("(`HOUR`=%d)",24*(date.dayOfWeek()-1)+i);
+      q=new RDSqlQuery(sql);
+      if(q->first()) {
+	if((!q->value(0).isNull())&&(!q->value(0).toString().isEmpty())) {
+	  clock.setClockName(q->value(0).toString());
+	  clock.load();
+	  clock.generateLog(i,logname,svc_name,report);
+	  clock.clear();
+	}
+      }
+      delete q;
+      emit generationProgress(1+i);
+      qApp->processEvents();
+    }
+
+    //
+    // Get Current Count
+    //
+    sql=QString("select `COUNT` from `LOG_LINES` where ")+
+      "`LOG_NAME`='"+RDEscapeString(logname)+"' "+
+      "order by `COUNT` desc";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      count=q->value(0).toInt()+1;
+    }
+    else {
+      count=0;
+    }
+    delete q;
   }
-  delete q;
 
   //
   // Log Chain To
@@ -970,8 +995,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
       QString::asprintf("`TRANS_TYPE`=%d,",RDLogLine::Segue)+
       QString::asprintf("`TIME_TYPE`=%d,",RDLogLine::Relative)+
       "`LABEL`='"+RDEscapeString(nextname)+"'";
-    q=new RDSqlQuery(sql);
-    delete q;
+    RDSqlQuery::apply(sql);
     count ++;
   }
 
@@ -998,7 +1022,6 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   QTime prev_start_time;
   RDLogModel *src_model=NULL;
   RDLogModel *dst_model=NULL;
-  RDLogLine *logline=NULL;
 
   *err_msg="";
 
@@ -1025,14 +1048,14 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
     break;
   }
   RDLog *log=new RDLog(logname);
-  int current_link=0;
-  int total_links=log->linkQuantity(link_src);
+  //  int current_link=0;
+  //  int total_links=log->linkQuantity(link_src);
 
   emit generationProgress(0);
   qApp->processEvents();
 
   //
-  // Load ParserStrings
+  // Load Parser Strings
   //
   QString break_str;
   QString track_str;
@@ -1049,42 +1072,51 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
     return false;
   }
 
-  //
-  // Resolve embedded link parameters
-  //
-  if(src==RDSvc::Music) {
-    if(!ResolveInlineEvents(logname,err_msg)) {
-      delete log_lock;
-      *err_msg=tr("Import file")+": \""+importFilename(src,date)+"\"\n\n"+
-	*err_msg;
-      return false;
-    }
-  }
-
-  //
-  // Iterate Through the Log
-  //
-  src_model=new RDLogModel(logname,true,this);
-  dst_model=new RDLogModel(logname,true,this);
-  src_model->load();
-  for(int i=0;i<src_model->lineCount();i++) {
-    logline=src_model->logLine(i);
-    if(logline->type()==src_type) {
-      RDEventLine *e=new RDEventLine(svc_station);
-      e->setName(logline->linkEventName());
-      e->load();
-      e->linkLog(dst_model,log,svc_name,logline,track_str,label_cart,
-		 track_cart,&autofill_errors);
-      delete e;
-      emit generationProgress(1+(24*current_link++)/total_links);
-      qApp->processEvents();
+  if(bypassMode()) {
+    if(src==RDSvc::Music) {
+      if(!ValidateInlineEvents(err_msg)) {
+	delete log_lock;
+	*err_msg=tr("Import file")+": \""+importFilename(src,date)+"\"\n\n"+
+	  *err_msg;
+	return false;
+      }
+      src_model=new RDLogModel(logname,true,this);
+      dst_model=new RDLogModel(logname,true,this);
+      src_model->load();
+      ProcessBypassMusicEvents(log,dst_model,src_model,track_str,label_cart,
+			       track_cart,link_src,src_type,&autofill_errors);
     }
     else {
-      dst_model->insert(dst_model->lineCount(),1,true);
-      *(dst_model->logLine(dst_model->lineCount()-1))=*logline;
-      dst_model->logLine(dst_model->lineCount()-1)->setId(dst_model->nextId());
+      src_model=new RDLogModel(logname,true,this);
+      dst_model=new RDLogModel(logname,true,this);
+      src_model->load();
+      ProcessBypassTrafficEvents(log,dst_model,src_model,track_str,label_cart,
+				 track_cart,link_src,&autofill_errors);
     }
   }
+  else {
+    //
+    // Resolve embedded link parameters
+    //
+    if(src==RDSvc::Music) {
+      if(!ResolveInlineEvents(logname,err_msg)) {
+	delete log_lock;
+	*err_msg=tr("Import file")+": \""+importFilename(src,date)+"\"\n\n"+
+	  *err_msg;
+	return false;
+      }
+    }
+
+    //
+    // Iterate Through the Log
+    //
+    src_model=new RDLogModel(logname,true,this);
+    dst_model=new RDLogModel(logname,true,this);
+    src_model->load();
+    ProcessGridEvents(log,dst_model,src_model,track_str,label_cart,track_cart,
+		      link_src,src_type,&autofill_errors);
+  }
+
   dst_model->save(svc_config);
 
   //
@@ -1925,56 +1957,7 @@ bool RDSvc::ResolveInlineEvents(const QString &logname,QString *err_msg)
     break;
 
   case RDSvc::SchedFile:
-    //
-    // Verify that all inline traffic and voicetrack events have explicit
-    // start times and length
-    //
-    sql=QString("select ")+
-      "`FILE_LINE`,"+   // 00
-      "`TYPE` "+        // 01
-      "from `IMPORTER_LINES` where "+
-      "`IMPORTER_LINES`.`STATION_NAME`=\""+
-      RDEscapeString(svc_station->name())+"\" && "+
-      QString::asprintf("`IMPORTER_LINES`.`PROCESS_ID`=%u && ",getpid())+
-      QString::asprintf("((`TYPE`=%u) || ",RDLogLine::TrafficLink)+
-      QString::asprintf("(`TYPE`=%u) ||",RDLogLine::Marker)+
-      QString::asprintf("(`TYPE`=%u)) && ",RDLogLine::Track)+
-      "(`START_HOUR` is null || `START_SECS` is null || `LENGTH` is null)";
-    ok=true;
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      switch((RDLogLine::Type)q->value(1).toUInt()) {
-      case RDLogLine::Marker:
-	*err_msg+=MakeErrorLine(0,q->value(0).toUInt(),
-			       tr("invalid start time and/or length on note cart."));
-	break;
-
-      case RDLogLine::TrafficLink:
-	*err_msg+=MakeErrorLine(0,q->value(0).toUInt(),
-			       tr("invalid start time and/or length on inline traffic break."));
-	break;
-
-      case RDLogLine::Track:
-	*err_msg+=MakeErrorLine(0,q->value(0).toUInt(),
-			       tr("invalid start time and/or length on track marker."));
-	break;
-
-      case RDLogLine::Cart:
-      case RDLogLine::Macro:
-      case RDLogLine::OpenBracket:
-      case RDLogLine::CloseBracket:
-      case RDLogLine::Chain:
-      case RDLogLine::MusicLink:
-      case RDLogLine::UnknownType:
-	*err_msg+=MakeErrorLine(0,q->value(0).toUInt(),
-			       tr("unexpected event type")+
-			       " \""+RDLogLine::typeText((RDLogLine::Type)q->value(1).toUInt())+"\"");
-	break;
-      }
-      ok=false;
-    }
-    delete q;
-    if(!ok) {
+    if(!ValidateInlineEvents(err_msg)) {
       return false;
     }
 
@@ -2002,4 +1985,310 @@ bool RDSvc::ResolveInlineEvents(const QString &logname,QString *err_msg)
   }
 
   return true;
+}
+
+
+bool RDSvc::ValidateInlineEvents(QString *err_msg) const
+{
+  //
+  // Verify that all inline traffic and voicetrack events have explicit
+  // start times and length
+  //
+  bool ret=true;
+
+  QString sql=QString("select ")+
+    "`FILE_LINE`,"+   // 00
+    "`TYPE` "+        // 01
+    "from `IMPORTER_LINES` where "+
+    "`IMPORTER_LINES`.`STATION_NAME`=\""+
+    RDEscapeString(svc_station->name())+"\" && "+
+    QString::asprintf("`IMPORTER_LINES`.`PROCESS_ID`=%u && ",getpid())+
+    QString::asprintf("((`TYPE`=%u) || ",RDLogLine::TrafficLink)+
+    QString::asprintf("(`TYPE`=%u) ||",RDLogLine::Marker)+
+    QString::asprintf("(`TYPE`=%u)) && ",RDLogLine::Track)+
+    "(`START_HOUR` is null || `START_SECS` is null || `LENGTH` is null)";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    switch((RDLogLine::Type)q->value(1).toUInt()) {
+    case RDLogLine::Marker:
+      *err_msg+=MakeErrorLine(0,q->value(0).toUInt(),
+			      tr("invalid start time and/or length on note cart."));
+      break;
+
+    case RDLogLine::TrafficLink:
+      *err_msg+=MakeErrorLine(0,q->value(0).toUInt(),
+			      tr("invalid start time and/or length on inline traffic break."));
+      break;
+
+    case RDLogLine::Track:
+      *err_msg+=MakeErrorLine(0,q->value(0).toUInt(),
+			      tr("invalid start time and/or length on track marker."));
+      break;
+
+    case RDLogLine::Cart:
+    case RDLogLine::Macro:
+    case RDLogLine::OpenBracket:
+    case RDLogLine::CloseBracket:
+    case RDLogLine::Chain:
+    case RDLogLine::MusicLink:
+    case RDLogLine::UnknownType:
+      *err_msg+=MakeErrorLine(0,q->value(0).toUInt(),
+			      tr("unexpected event type")+
+			      " \""+RDLogLine::typeText((RDLogLine::Type)q->value(1).toUInt())+"\"");
+      break;
+    }
+    ret=false;
+  }
+  delete q;
+
+  return ret;
+}
+
+
+void RDSvc::ProcessGridEvents(RDLog *log,RDLogModel *dst_model,
+			      RDLogModel *src_model,const QString &track_str,
+			      const QString &label_cart,
+			      const QString &track_cart,RDLog::Source link_src,
+			      RDLogLine::Type src_type,QString *err_msgs)
+{
+  int current_link=0;
+  int total_links=log->linkQuantity(link_src);
+  RDLogLine *logline=NULL;
+
+  for(int i=0;i<src_model->lineCount();i++) {
+    logline=src_model->logLine(i);
+    if(logline->type()==src_type) {
+      RDEventLine *e=new RDEventLine(svc_station);
+      e->setName(logline->linkEventName());
+      e->load();
+      e->linkLog(dst_model,log,svc_name,logline,track_str,label_cart,
+		 track_cart,err_msgs);
+      delete e;
+      emit generationProgress(1+(24*current_link++)/total_links);
+      qApp->processEvents();
+    }
+    else {
+      dst_model->insert(dst_model->lineCount(),1,true);
+      *(dst_model->logLine(dst_model->lineCount()-1))=*logline;
+      dst_model->logLine(dst_model->lineCount()-1)->
+	setId(dst_model->nextId());
+    }
+  }
+}
+
+
+void RDSvc::ProcessBypassMusicEvents(RDLog *log,RDLogModel *dst_model,
+				     RDLogModel *src_model,
+				     const QString &track_str,
+				     const QString &label_cart,
+				     const QString &track_cart,
+				     RDLog::Source link_src,
+				     RDLogLine::Type src_type,QString *err_msgs)
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+  RDLogLine *logline=NULL;
+
+  for(int i=0;i<src_model->lineCount();i++) {
+    RDLogLine *link_logline=src_model->logLine(i);
+    if(link_logline->type()==RDLogLine::MusicLink) {
+      //
+      // Load Imported Events and Insert into Log
+      //
+      sql=QString("select ")+
+	"`CART_NUMBER`,"+     // 00
+	"`START_HOUR`,"+      // 01
+	"`START_SECS`,"+      // 02
+	"`LENGTH`,"+          // 03
+	"`EXT_DATA`,"+        // 04
+	"`EXT_EVENT_ID`,"+    // 05
+	"`EXT_ANNC_TYPE`,"+   // 06
+	"`EXT_CART_NAME`,"+   // 07
+	"`TITLE`,"+           // 08
+	"`TYPE`,"+            // 09
+	"`LINK_START_TIME`,"+ // 10
+	"`LINK_LENGTH`,"+     // 11
+	"`TRANS_TYPE`,"+      // 12
+	"`TIME_TYPE`,"+       // 13
+	"`GRACE_TIME` "+      // 14
+	"from `IMPORTER_LINES` where "+
+	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+	QString::asprintf("`PROCESS_ID`=%u && ",getpid())+
+	"(`EVENT_USED`='N') order by `LINE_ID`";
+      q=new RDSqlQuery(sql);
+      while(q->next()) {
+	QTime start_time=
+	  QTime(q->value(1).toInt(),0,0).addSecs(q->value(2).toInt());
+	int length=GetCartLength(q->value(0).toUInt(),q->value(3).toInt());
+	RDLogLine::TransType trans_type=
+	  (RDLogLine::TransType)q->value(12).toInt();
+	if(trans_type==RDLogLine::NoTrans) {
+	  trans_type=RDLogLine::Play;
+	}
+
+	//
+	// Inline Traffic Break
+	//
+	if(q->value(9).toUInt()==RDLogLine::TrafficLink) {
+	  dst_model->insert(dst_model->lineCount(),1);
+	  logline=dst_model->logLine(dst_model->lineCount()-1);
+	  logline->setId(dst_model->nextId());
+	  logline->setStartTime(RDLogLine::Logged,start_time);
+	  logline->setType(RDLogLine::TrafficLink);
+	  logline->setSource(RDLogLine::Music);
+	  logline->setEventLength(length);
+	  logline->setLinkEventName("Traffic BYPASS");
+	  logline->setLinkStartTime(QTime(0,0,0).
+		      addSecs(3600*q->value(1).toInt()+q->value(2).toInt()));
+	  logline->setLinkLength(q->value(3).toInt());
+	  logline->setLinkStartSlop(0);
+	  logline->setLinkEndSlop(0);
+	  logline->setLinkId(link_logline->linkId());
+	  logline->setLinkEmbedded(true);
+	}
+
+	//
+	// Voicetrack Marker
+	//
+	if(q->value(9).toUInt()==RDLogLine::Track) {
+	  dst_model->insert(dst_model->lineCount(),1);
+	  logline=dst_model->logLine(dst_model->lineCount()-1);
+	  logline->setId(dst_model->nextId());
+	  logline->setStartTime(RDLogLine::Logged,start_time);
+	  logline->setType(RDLogLine::Track);
+	  logline->setSource(RDLogLine::Music);
+	  logline->setMarkerComment(q->value(8).toString());
+	  logline->setEventLength(length);
+	  logline->setLinkEventName("bypass");
+	  logline->setLinkStartTime(QTime(0,0,0).
+		      addSecs(3600*q->value(1).toInt()+q->value(2).toInt()));
+	  logline->setLinkLength(q->value(3).toInt());
+	  logline->setLinkStartSlop(0);
+	  logline->setLinkEndSlop(0);
+	  logline->setLinkId(link_logline->linkId());
+	  logline->setLinkEmbedded(true);
+	}
+
+	//
+	// Label/Note Cart
+	//
+	if(q->value(9).toUInt()==RDLogLine::Marker) {
+	  dst_model->insert(dst_model->lineCount(),1);
+	  logline=dst_model->logLine(dst_model->lineCount()-1);
+	  logline->setId(dst_model->nextId());
+	  logline->setStartTime(RDLogLine::Logged,start_time);
+	  logline->setType(RDLogLine::Marker);
+	  logline->setSource(RDLogLine::Music);
+	  logline->setMarkerComment(q->value(8).toString());
+	  logline->setEventLength(length);
+	  logline->setLinkEventName("bypass");
+	  logline->setLinkStartTime(QTime(0,0,0).
+		      addSecs(3600*q->value(1).toInt()+q->value(2).toInt()));
+	  logline->setLinkLength(q->value(3).toInt());
+	  logline->setLinkStartSlop(0);
+	  logline->setLinkEndSlop(0);
+	  logline->setLinkId(link_logline->linkId());
+	  logline->setLinkEmbedded(true);
+	}
+
+	//
+	// Cart
+	//
+	if(q->value(9).toUInt()==RDLogLine::Cart) {
+	  dst_model->insert(dst_model->lineCount(),1);
+	  logline=dst_model->logLine(dst_model->lineCount()-1);
+	  logline->setId(dst_model->nextId());
+	  logline->setSource(RDLogLine::Music);
+	  logline->setStartTime(RDLogLine::Logged,start_time);
+	  logline->setType(RDLogLine::Cart);
+	  logline->setCartNumber(q->value(0).toUInt());
+	  logline->setExtStartTime(start_time);
+	  logline->setExtLength(q->value(3).toInt());
+	  logline->setExtData(q->value(4).toString().trimmed());
+	  logline->setExtEventId(q->value(5).toString().trimmed());
+	  logline->setExtAnncType(q->value(6).toString().trimmed());
+	  logline->setExtCartName(q->value(7).toString().trimmed());
+	  logline->setEventLength(length);
+	  logline->setLinkEventName("bypass");
+	  logline->setLinkStartTime(QTime(0,0,0).
+		      addSecs(3600*q->value(1).toInt()+q->value(2).toInt()));
+	  logline->setLinkLength(q->value(3).toInt());
+	  logline->setLinkStartSlop(0);
+	  logline->setLinkEndSlop(0);
+	  logline->setLinkId(logline->linkId());
+	  logline->setLinkEmbedded(link_logline->linkEmbedded());
+	}
+
+	//
+	// Apply Common Values
+	//
+	if(logline!=NULL) {
+	  logline->setGraceTime(q->value(14).toInt());
+	  logline->setTimeType((RDLogLine::TimeType)q->value(13).toInt());
+	  logline->setTransType(trans_type);
+	}
+      }
+
+      delete q;
+
+      //
+      // Mark Events as Used
+      //
+      sql=QString("update `IMPORTER_LINES` set ")+
+	"`EVENT_USED`='Y' where "+
+	"`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
+	QString::asprintf("`PROCESS_ID`=%u",getpid());
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
+
+    if((logline!=NULL)&&(logline->type()==RDLogLine::Chain)) {
+      dst_model->insert(dst_model->lineCount(),1,true);
+      *(dst_model->logLine(dst_model->lineCount()-1))=*logline;
+      dst_model->logLine(dst_model->lineCount()-1)->
+	setId(dst_model->nextId());
+    }
+  }
+}
+
+
+void RDSvc::ProcessBypassTrafficEvents(RDLog *log,RDLogModel *dst_model,
+				       RDLogModel *src_model,
+				       const QString &track_str,
+				       const QString &label_cart,
+				       const QString &track_cart,
+				       RDLog::Source link_src,
+				       QString *err_msgs)
+{
+  RDEventLine *evt=new RDEventLine(rda->station());
+
+  evt->loadBypass();
+  for(int i=0;i<src_model->lineCount();i++) {
+    RDLogLine *logline=src_model->logLine(i);
+    if(logline->type()==RDLogLine::TrafficLink) {
+      evt->linkLog(dst_model,log,rda->station()->name(),logline,
+		   track_str,label_cart,track_cart,err_msgs);
+    }
+    else {
+      dst_model->insert(dst_model->lineCount(),1);
+      *(dst_model->logLine(dst_model->lineCount()-1))=*logline;
+      dst_model->logLine(dst_model->lineCount()-1)->
+	setId(dst_model->nextId());
+    }
+  }
+
+  delete evt;
+}
+
+
+int RDSvc::GetCartLength(unsigned cartnum,int def_length) const
+{
+  RDCart *cart=new RDCart(cartnum);
+  if(!cart->exists()) {
+    delete cart;
+    return def_length;
+  }
+  int length=cart->forcedLength();
+  delete cart;
+  return length;
 }
