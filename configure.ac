@@ -149,6 +149,7 @@ case "$ar_distro_id" in
        AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-sudo.desktop")
        AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig-sudo.desktop")
        AC_SUBST(PYPAD_DEPS,"python3 python3-pycurl python3-requests python3-pyserial python3-mysql python3-urllib3")
+       AC_SUBST(RIVENDELL_PAM_FILE,"rivendell-ubuntu.pam")  
      ;;
 
      raspbian)
@@ -166,6 +167,7 @@ case "$ar_distro_id" in
        AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-sudo.desktop")
        AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig-sudo.desktop")
        AC_SUBST(PYPAD_DEPS,"python3 python3-pycurl python3-requests python3-pyserial python3-mysql python3-urllib3")
+       AC_SUBST(RIVENDELL_PAM_FILE,"rivendell-ubuntu.pam")  
      ;;
 
      ubuntu)
@@ -183,6 +185,7 @@ case "$ar_distro_id" in
        AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig-sudo.desktop")
        AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig-sudo.desktop")
        AC_SUBST(PYPAD_DEPS,"python3 python3-pycurl python3-requests python3-pyserial python3-mysql python3-urllib3")
+       AC_SUBST(RIVENDELL_PAM_FILE,"rivendell-ubuntu.pam")  
      ;;
 
      centos|fedora|rhel|rocky)
@@ -214,6 +217,7 @@ case "$ar_distro_id" in
        else
        	  AC_SUBST(PYPAD_DEPS,"python3 python3-pycurl python3-requests python3-pyserial python3-mysql python3-urllib3")
        fi
+       AC_SUBST(RIVENDELL_PAM_FILE,"rivendell-rhel.pam")  
        ;;
 
      *)
@@ -229,6 +233,7 @@ case "$ar_distro_id" in
        AC_SUBST(RDALSACONFIG_DESKTOP_FILE,"rivendell-rdalsaconfig.desktop")
        AC_SUBST(RDDBCONFIG_DESKTOP_FILE,"rivendell-rddbconfig.desktop")
        AC_SUBST(PYPAD_DEPS,"python3 python3-pycurl python3-requests python3-pyserial python3-mysql python3-urllib3")
+       AC_SUBST(RIVENDELL_PAM_FILE,"rivendell-rhel.pam")  
      ;;
 esac
 

@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,7 @@ install-exec-am:
 	mkdir -p $(DESTDIR)/$(sysconfdir)
 	cp rd-bin.conf $(DESTDIR)/$(sysconfdir)/
 	mkdir -p $(DESTDIR)/etc/pam.d
-	cp rivendell.pam $(DESTDIR)/etc/pam.d/rivendell
+	cp @RIVENDELL_PAM_FILE@ $(DESTDIR)/etc/pam.d/rivendell
 
 uninstall:	
 	rm -f $(DESTDIR)/$(sysconfdir)/rd-bin.conf
@@ -32,7 +32,8 @@ EXTRA_DIST = asound.conf-sample\
              logrotate-sample\
              rd-bin.conf.in\
              rd.conf-sample\
-             rivendell.pam\
+             rivendell-rhel.pam\
+             rivendell-ubuntu.pam\
              rivendell-env.sh\
              rivendell-webapi.conf\
              syslog.conf-sample

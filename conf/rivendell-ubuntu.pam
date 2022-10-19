@@ -1,0 +1,8 @@
+#
+# /etc/pam.d/rivendell - Ubuntu PAM plug-in for Rivendell
+#
+
+@include common-auth
+@include common-account
+@include common-password
+@include common-session

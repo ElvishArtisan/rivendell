@@ -23490,3 +23490,5 @@
 2022-10-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RedHat Enterprise Linux 9' subsection to the
 	'DISTRO-SPECIFIC NOTES' section of 'INSTALL'.
+2022-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added an Ubuntu-specific pam(7) configuration.
