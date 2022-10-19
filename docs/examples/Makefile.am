@@ -2,7 +2,7 @@
 ##
 ## docs/examples/automake.am for Rivendell
 ##
-## (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -24,6 +24,8 @@ EXTRA_DIST = 0320090805.tfc\
              0320090805.cpi\
              0320090805.vti\
              080509T3.LOG\
+             bypass_music.tfc\
+             bypass_traffic.tfc\
              cart_report.asc
 
 CLEANFILES = *~

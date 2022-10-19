@@ -140,6 +140,12 @@ cp NEWS $RPM_BUILD_ROOT/@DOC_PATH@/
 cp README $RPM_BUILD_ROOT/@DOC_PATH@/
 cp UPGRADING $RPM_BUILD_ROOT/@DOC_PATH@/
 cp CODINGSTYLE $RPM_BUILD_ROOT/@DOC_PATH@/
+mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/examples
+cp docs/examples/*.cpi $RPM_BUILD_ROOT/@DOC_PATH@/examples/
+cp docs/examples/*.elr $RPM_BUILD_ROOT/@DOC_PATH@/examples/
+cp docs/examples/*.LOG $RPM_BUILD_ROOT/@DOC_PATH@/examples/
+cp docs/examples/*.tfc $RPM_BUILD_ROOT/@DOC_PATH@/examples/
+cp docs/examples/*.vti $RPM_BUILD_ROOT/@DOC_PATH@/examples/
 cp conf/*.conf $RPM_BUILD_ROOT/@DOC_PATH@/
 cat conf/rd.conf-sample | sed s/SyslogFacility=1/SyslogFacility=23/ > $RPM_BUILD_ROOT/@DOC_PATH@/rd.conf-sample
 cp conf/asound.conf-sample $RPM_BUILD_ROOT/@DOC_PATH@/

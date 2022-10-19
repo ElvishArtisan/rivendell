@@ -23533,3 +23533,5 @@
 	`TIMPORTER_TEMPLATES.TIME_TYPE_*` parser settings for the
 	'Rivendell Standard Import' profile.
 	* Incremented the database version to 364.
+2022-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added files from 'docs/examples/' to the RPM package.
