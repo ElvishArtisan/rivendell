@@ -23535,3 +23535,6 @@
 	* Incremented the database version to 364.
 2022-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added files from 'docs/examples/' to the RPM package.
+2022-10-20 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'List Grids' dialog in rdlogmanager(1) to show
+	all services, with a 'Has Grid' column.
