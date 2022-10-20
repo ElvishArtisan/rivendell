@@ -327,6 +327,44 @@
 	The <computeroutput>Service Description</computeroutput> field is
 	for a free-form string that describes the service.
       </para>
+<!--
+      <title>The <computeroutput>General</computeroutput> Section</title>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.services_dialog_general.png" width="75mm" depth="36mm"/>
+	  </imageobject>
+	  <caption>
+	    <para>The General Section</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	The <computeroutput>Service Name</computeroutput> field contains
+	the name of the service (read-only). This value is available in
+	<link linkend="sect.filepath_wildcards.definition">
+	filepath wildcards</link> as <userinput>%s</userinput>.
+      </para>
+      <para>
+	The <computeroutput>Service Description</computeroutput> field is
+	for a free-form string that describes the service.
+      </para>
+-->
+      <para>
+	The <computeroutput>Bypass Grid Processing</computeroutput> dropdown,
+	if set to <computeroutput>Yes</computeroutput>, will completely
+	disable RDLogManager's native grid/clock/event template system
+	for this service; helpful for centralizing log template management
+	in a third-party music scheduler system. (See
+	<xref linkend="sect.rdlogmanager.rdlogmanager.grids.bypassing_grid_processing" />
+	for an overview). Logs generated in this mode will contain a single
+	music import link covering
+	the entire broadcast day (<userinput>00:00:00</userinput> through
+	<userinput>23:59:59</userinput>). See
+	<xref linkend="sect.rdadmin.manage_services.general.inline_event_scheduling_parameters" />
+	for information on encoding transition and time parameters when using
+	this option.
+      </para>
       <para>
 	The <computeroutput>Program Code</computeroutput> is a string that
 	is sent to PyPAD scripts as part of every Now &amp; Next update.
@@ -654,7 +692,7 @@
       <para>
 	<mediaobject>
 	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.import_parser_fields.png" width="90mm" depth="54mm"/>
+	    <imagedata align="center" fileref="rdadmin.import_parser_fields.png" width="90mm"/>
 	  </imageobject>
 	  <caption>
 	    <para>The Log Parser Settings</para>
@@ -723,7 +761,64 @@
 	    </para>
 	  </listitem>
 	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>Transition Type:</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The transition type to be assigned to this event. The
+	      following strings are recognized:
+	      <simplelist>
+		<member><userinput>PLAY</userinput></member>
+		<member><userinput>SEGUE</userinput></member>
+		<member><userinput>STOP</userinput></member>
+	      </simplelist>
+	    </para>
+	    <para>
+	      See <xref linkend="sect.rdlogedit.event_transitions" /> for
+	      discussion of the meaning of these types. If left blank,
+	      a <userinput>PLAY</userinput> transition will be applied.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>Time Type:</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The time type to be assigned to this event. The
+	      following strings are recognized:
+	      <variablelist>
+		<varlistentry>
+		  <term><userinput>HARD</userinput></term>
+		  <listitem>
+		    <para>
+		      Apply a hard start (Start Immediately) to this
+		      item, using the specified start time of the event.
+		    </para>
+		  </listitem>
+		</varlistentry>
+		<varlistentry>
+		  <term><userinput>SOFT</userinput></term>
+		  <listitem>
+		    <para>
+		      Apply a soft start (Make Next) to this
+		      item, using the specified start time of the event.
+		    </para>
+		  </listitem>
+		</varlistentry>
+	      </variablelist>
+	    </para>
+	    <para>
+	      If left blank, no time start options will be applied.
+	    </para>
+	  </listitem>
+	</varlistentry>
       </variablelist>
+      <note>
+	The <computeroutput>Transition Type</computeroutput> and
+	<computeroutput>Time Type</computeroutput> fields are available
+	only if the <computeroutput>Bypass Grid Processing</computeroutput>
+	dropdown has been set to <computeroutput>Yes</computeroutput>.
+      </note>
     </sect2>
     <sect2 xml:id="sect.rdadmin.manage_services.testing_data_importation">
       <title>Testing Data Importation</title>

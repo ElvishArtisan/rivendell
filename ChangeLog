@@ -23538,3 +23538,5 @@
 2022-10-20 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'List Grids' dialog in rdlogmanager(1) to show
 	all services, with a 'Has Grid' column.
+2022-10-20 Fred Gleason <fredg@paravelsystems.com>
+	* Documented grid processing bypass in the Operations Guide.
