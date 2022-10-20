@@ -23540,3 +23540,6 @@
 	all services, with a 'Has Grid' column.
 2022-10-20 Fred Gleason <fredg@paravelsystems.com>
 	* Documented grid processing bypass in the Operations Guide.
+2022-10-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that caused the Chain-To event
+	to be dropped when linking music events in bypass grid mode.

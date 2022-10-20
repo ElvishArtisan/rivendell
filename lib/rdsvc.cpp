@@ -2252,9 +2252,10 @@ void RDSvc::ProcessBypassMusicEvents(RDLog *log,RDLogModel *dst_model,
       delete q;
     }
 
-    if((logline!=NULL)&&(logline->type()==RDLogLine::Chain)) {
+    if((link_logline!=NULL)&&(link_logline->type()==RDLogLine::Chain)) {
+      printf("Chain to!\n");
       dst_model->insert(dst_model->lineCount(),1,true);
-      *(dst_model->logLine(dst_model->lineCount()-1))=*logline;
+      *(dst_model->logLine(dst_model->lineCount()-1))=*link_logline;
       dst_model->logLine(dst_model->lineCount()-1)->
 	setId(dst_model->nextId());
     }
