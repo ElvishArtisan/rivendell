@@ -23530,7 +23530,7 @@
 	Service entry.
 2022-10-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added values for the `IMPORTER_TEMPLATES.TRANS_TYPE_*` and
-	`TIMPORTER_TEMPLATES.TIME_TYPE_*` parser settings for the
+	`IMPORTER_TEMPLATES.TIME_TYPE_*` parser settings for the
 	'Rivendell Standard Import' profile.
 	* Incremented the database version to 364.
 2022-10-19 Fred Gleason <fredg@paravelsystems.com>
