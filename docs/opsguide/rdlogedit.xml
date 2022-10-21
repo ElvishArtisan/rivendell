@@ -420,36 +420,24 @@
       </para>
     </sect2>
     <sect2 xml:id="sect.rdlogedit.the_hard_time_type">
-      <title>The Hard Time Type</title>
+      <title>The Hard and Soft Time Types</title>
       <para>
-	A hard time type causes the event to be executed or otherwise acted
+	A hard or soft time type causes the event to be executed or otherwise
+	acted
 	upon when the wall clock equals the time associated with the event.
-	Hard times are a powerful feature that can be used to synchronize
-	the log to various external events.  An event can be assigned a
-	hard time by clicking the <computeroutput>Start at</computeroutput>
+	Hard/soft times are powerful features that can be used to synchronize
+	the log to various external events. An event can be assigned a
+	hard/soft time by clicking the <computeroutput>Start at</computeroutput>
 	check box in the Edit Log Entry
 	and filling in the desired time, and will show up with the letter
-	<computeroutput>T</computeroutput> appearing at the beginning of
+	<computeroutput>H</computeroutput> or
+	<computeroutput>S</computeroutput> appearing at the beginning of
 	its listed time in the
 	<computeroutput>Time</computeroutput> column of the Edit Log dialog.
       </para>
       <para>
 	The specific action that is performed when the time matches is
 	determined by the option parameters supplied as part of the event.
-	Three basic actions are possible:
-      </para>
-      <para>
-	<itemizedlist>
-	  <listitem>
-	    Start the event immediately
-	  </listitem>
-	  <listitem>
-	    Cue to the event (&quot;Make Next&quot;)
-	  </listitem>1
-	  <listitem>
-	    Wait up to some period of time, then start the event
-	  </listitem>
-	</itemizedlist>
       </para>
       <sect3 xml:id="sect.rdlogedit.start_immediately">
 	<title>Start Immediately</title>

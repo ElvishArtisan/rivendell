@@ -23543,3 +23543,6 @@
 2022-10-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogmanager(1) that caused the Chain-To event
 	to be dropped when linking music events in bypass grid mode.
+2022-10-20 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the start time display string to use 'H' and 'S' to
+	distinguish hard and soft start times.

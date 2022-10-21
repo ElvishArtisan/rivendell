@@ -209,7 +209,12 @@ void ListReports::GenerateLogReport(QString *report)
     // Time
     //
     if(logline->timeType()==RDLogLine::Hard) {
-      *report+="T";
+      if(logline->graceTime()<0) {
+	*report+="S";
+      }
+      else {
+	*report+="H";
+      }
     }
     else {
       *report+=" ";
