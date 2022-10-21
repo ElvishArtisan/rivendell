@@ -39,13 +39,19 @@ ListGrids::ListGrids(QWidget *parent)
   edit_grids_view=new RDTableView(this);
   edit_grids_view->
     setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-80);
-  edit_grids_model=new RDServiceListModel(false,this);
+  edit_grids_model=new RDServiceListModel(false,false,this);
   edit_grids_model->setFont(font());
   edit_grids_model->setPalette(palette());
   edit_grids_view->setModel(edit_grids_model);
-  for(int i=2;i<edit_grids_model->columnCount();i++) {
+  for(int i=2;i<(edit_grids_model->columnCount()-1);i++) {
     edit_grids_view->hideColumn(i);
   }
+  connect(edit_grids_view->selectionModel(),
+	  SIGNAL(selectionChanged(const QItemSelection &,
+				  const QItemSelection &)),
+	  this,
+	  SLOT(selectionChangedData(const QItemSelection &,
+				    const QItemSelection &)));
   connect(edit_grids_view,SIGNAL(doubleClicked(const QModelIndex &)),
 	  this,SLOT(doubleClickedData(const QModelIndex &)));
   connect(edit_grids_model,SIGNAL(modelReset()),
@@ -55,21 +61,23 @@ ListGrids::ListGrids(QWidget *parent)
   //
   //  Edit Button
   //
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(10,sizeHint().height()-60,80,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Edit"));
-  connect(button,SIGNAL(clicked()),this,SLOT(editData()));
+  edit_edit_button=new QPushButton(this);
+  edit_edit_button->setGeometry(10,sizeHint().height()-60,80,50);
+  edit_edit_button->setFont(buttonFont());
+  edit_edit_button->setText(tr("Edit"));
+  edit_edit_button->setDisabled(true);
+  connect(edit_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
   //  Close Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(buttonFont());
-  button->setText(tr("Close"));
-  connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
+  edit_close_button=new QPushButton(this);
+  edit_close_button->
+    setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
+  edit_close_button->setDefault(true);
+  edit_close_button->setFont(buttonFont());
+  edit_close_button->setText(tr("Close"));
+  connect(edit_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 
 
@@ -89,12 +97,25 @@ void ListGrids::editData()
 {
   QModelIndexList rows=edit_grids_view->selectionModel()->selectedRows();
 
-  if(rows.size()!=1) {
+  if((rows.size()!=1)||(!edit_grids_model->hasGrid(rows.at(0)))) {
     return;
   }
   EditGrid *d=new EditGrid(edit_grids_model->serviceName(rows.first()),this);
   d->exec();
   delete d;
+}
+
+
+void ListGrids::selectionChangedData(const QItemSelection &selected,
+				     const QItemSelection &previous)
+{
+  QModelIndexList rows=edit_grids_view->selectionModel()->selectedRows();
+
+  if(rows.size()!=1) {
+    edit_edit_button->setDisabled(true);
+    return;
+  }
+  edit_edit_button->setEnabled(edit_grids_model->hasGrid(rows.at(0)));
 }
 
 

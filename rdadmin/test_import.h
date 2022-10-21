@@ -2,7 +2,7 @@
 //
 // Test a Rivendell Log Import
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,10 +35,13 @@ class TestImport : public RDDialog
 {
  Q_OBJECT
  public:
-  TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent=0);
+  TestImport(QWidget *parent=0);
   ~TestImport();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+
+ public slots:
+  int exec(RDSvc *svc,RDSvc::ImportSource src);
 
  private slots:
   void selectData();

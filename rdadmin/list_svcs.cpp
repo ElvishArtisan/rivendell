@@ -80,7 +80,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   list_title_label=new QLabel(tr("Services:"),this);
   list_title_label->setFont(labelFont());
   list_title_label->setGeometry(14,11,85,19);
-  list_services_model=new RDServiceListModel(false,this);
+  list_services_model=new RDServiceListModel(false,false,this);
   list_services_model->setFont(defaultFont());
   list_services_model->setPalette(palette());
   list_services_view->setModel(list_services_model);

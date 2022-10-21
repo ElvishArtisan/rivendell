@@ -45,173 +45,201 @@
   </sect1>
   <sect1 xml:id="sect.rdlogmanager.grids">
     <title>Grids</title>
-    <para>
-      Each Rivendell service has an RDLogManager grid. To see the list of
-      available grids, touch the <computeroutput>Edit Grids</computeroutput>
-      button to open the Log Grids dialog.
-    </para>
-     <para>
-       <mediaobject>
-	 <imageobject>
-	   <imagedata align="center" fileref="rdlogmanager.log_grids_dialog.png" width="65mm" depth="53mm" />
-	 </imageobject>
-	 <caption><para>The Log Grids Dialog</para></caption>
-       </mediaobject>
-     </para>
-    <para>
-      To open a particular grid, select its service name and touch the
-      <computeroutput>Edit</computeroutput>
-      button.
-    </para>
-     <para>
-       <mediaobject>
-	 <imageobject>
-	   <imagedata align="center" fileref="rdlogmanager.edit_grid_dialog.png" width="145mm" depth="95mm" />
-	 </imageobject>
-	 <caption><para>The Edit Grid Dialog</para></caption>
-       </mediaobject>
-     </para>
-    <para>
-      Each grid has slots for every hour of every day of the broadcast week
-      – 168 slots in all.  By specifying a particular clock to go into each
-      of these slots, a set of rules that RDLogManager can use to generate
-      a log for any given day of the week is built up. To specify a clock,
-      simply touch the particular hour of interest to open up the
-      <computeroutput>Select Log Clock</computeroutput> dialog.
-    </para>
-    <para>
-      <mediaobject>
-	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.log_clocks.png" width="96mm" depth="68mm" />
-	</imageobject>
-	<caption><para>The Log Clocks Dialog</para></caption>
-      </mediaobject>
-    </para>
-    <para>
-      Click the desired clock, then touch the
-      <computeroutput>OK</computeroutput> button. To clear the
-      assignment of any clock to the selected hour, touch the
-      <computeroutput>Clear</computeroutput> button,
-      then <computeroutput>OK</computeroutput>.
-    </para>
-    <para>
-      It is possible to 'drill down' directly to the underlying
-      configuration of a clock (to be covered shortly) by right-clicking on
-      the relevant hour in a grid and selecting
-      <computeroutput> Edit Clock</computeroutput>.
-    </para>
-  </sect1>
-  <sect1 xml:id="sect.rdlogmanager.clocks">
-    <title>Clocks</title>
-    <para>
-      An RDLogManager clock is a collection of RDLogManager events,
-      arranged in terms of their start time (relative to the beginning of
-      the hour) and length. It basically can be thought of as the
-      &quot;schedule&quot; of an hour – <emphasis>any</emphasis> hour.
-      Once defined, a clock
-      can be plugged into any hour of a grid of any service, thus making
-      for easy modularization and changes to a service's schedule.
-    </para>
-    <para>
-      To see the list of available clocks, touch the
-      <computeroutput>Edit Clocks</computeroutput> button in
-      RDLogManager's Main Menu to open the Log Clocks dialog.
-      Each RDLogManager clock can be assigned a
-      three-letter code and color, as an aid in identifying it when
-      assigned to grids.  To add a new clock, touch the 
-      <computeroutput>Add</computeroutput> button, or to
-      edit a clock's parameters, click on it and touch the
-      <computeroutput>Edit</computeroutput> button.
-      In each case, the Edit Clock dialog will open.
-      Clocks can also be deleted by touching the
-      <computeroutput>Delete</computeroutput> button or renamed
-      by touching the <computeroutput>Rename</computeroutput> button.
-    </para>
-    <para>
-      <mediaobject>
-	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.log_clock_list.png" width="97mm" depth="69mm" />
-	</imageobject>
-	<caption><para>The Log Clock List Dialog</para></caption>
-      </mediaobject>
-    </para>
-    <para>
-      <mediaobject>
-	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.edit_clock_dialog.png" width="145mm" depth="104mm" />
-	</imageobject>
-	<caption><para>The Edit Clock Dialog</para></caption>
-      </mediaobject>
-    </para>
-    <para>
-      The Edit Clock dialog consists of three main sections: a tabular
-      list of events in chronological order, a graphical depiction of the
-      clock in the traditional “broadcast clock” format, and a series of
-      action buttons across the bottom. The clock's three-letter code is
-      set by means of the <computeroutput>Code</computeroutput> field
-      in the upper right-hand corner of the
-      table area. Its color can be set by touching the
-      <computeroutput>Color</computeroutput> button. To
-      save the clock without exiting the dialog, touch the
-      <computeroutput>Save</computeroutput>
-      or <computeroutput>Save As</computeroutput>
-      buttons. To add a new event to the clock, touch the
-      <computeroutput>Add</computeroutput> button, or
-      to edit an existing entry touch the 
-      <computeroutput>Edit</computeroutput> button. In either case,
-      the Edit Event Assignment dialog will open. To
-      delete an entry, touch the <computeroutput>Delete</computeroutput>
-      button. As in the case of grids,
-      it is possible to 'drill down' into the underlying RDLogManager
-      event by right-clicking on the respective entry in the clock event
-      table and selecting <computeroutput>Edit Event</computeroutput>.
-    </para>
-    <para>
-      <mediaobject>
-	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.edit_event_assignment_dialog.png" width="88mm" depth="26mm" />
-	</imageobject>
-	<caption><para>The Edit Event Assignment Dialog</para></caption>
-      </mediaobject>
-    </para>
-    <para>
-      The Edit Event Assignment dialog simply consists of an
-      <computeroutput>Event</computeroutput> field
-      for the name of the RDLogManager event and
-      <computeroutput>Start Time</computeroutput> and
-      <computeroutput>End Time</computeroutput>
-      fields for the start and end times relative to the start of the
-      hour. A list of available events can be brought up by touching the
-      <computeroutput>Select</computeroutput> button to bring up the
-      Log Events dialog.
-    </para>
-    <para>
-      Each clock can be designated as being associated with one or more
-      services. This can make finding the correct clock for a given
-      service much faster, as the
-      <computeroutput>Filter</computeroutput> control on the List Clocks dialog
-      can then be used. To program these associations, touch the
-      <computeroutput>Services List</computeroutput> button in the Edit
-      Clock dialog to bring up the Service
-      Associations dialog.
-    </para>
-    <para>
-      <mediaobject>
-	<imageobject>
-	  <imagedata align="center" fileref="rdlogmanager.service_association_dialog.png" width="65mm" depth="39mm" />
-	</imageobject>
-	<caption><para>The Service Association Dialog</para></caption>
-      </mediaobject>
-    </para>
-    <para>
-      To designate a service as being valid for this clock, select the
-      services name in the <computeroutput>Available Services</computeroutput>
-      list and then touch the <computeroutput>Add &gt;&gt;</computeroutput>
-      button.  Likewise, to deselect a service, select its name in the
-      <computeroutput>Enabled Services</computeroutput> list and then touch
-      the <computeroutput>&lt;&lt; Remove</computeroutput> button.
-    </para>
-  </sect1>
+    <sect2 xml:id="sect.rdlogmanager.rdlogmanager.grids.bypassing_grid_processing">
+      <title>Bypassing Grid Processing</title>
+      <para>
+	Certain third-party music scheduler systems support the ability to
+	compose the entire schedule for a service (including placement of
+	traffic breaks) within its own native user interface, thus potentially
+	centralizing and simplifying log template maintenance. To facilitate
+	this mode of operation, it is possible to configure RDLogManager to
+	bypass its native grid/clock/event template system entirely on a
+	service	by service basis,
+	instead passing  the schedule generated by the music scheduler system
+	through to Rivendell logs unchanged.
+	For information on configuring this mode of operation, see
+	 the <computeroutput>Bypass Grid Processing</computeroutput> dropdown
+	and related discussion in 
+	<xref linkend="sect.rdadmin.manage_services" />.
+      </para>
+      <para>
+	If a service has been configured to bypass grid processing, then
+	it will not have a grid. Skip forward to
+	<xref linkend="sect.rdlogmanager.generating_logs" />.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlogmanager.grids.configuring_grids">
+      <title>Configuring Grids</title>
+      <para>
+	Each Rivendell service has an RDLogManager grid. To see the list of
+	available grids, touch the <computeroutput>Edit Grids</computeroutput>
+	button to open the Log Grids dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlogmanager.log_grids_dialog.png" width="65mm" />
+	  </imageobject>
+	  <caption><para>The Log Grids Dialog</para></caption>
+	</mediaobject>
+      </para>
+      <para>
+	To open a particular grid, select its service name and touch the
+	<computeroutput>Edit</computeroutput>
+	button.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlogmanager.edit_grid_dialog.png" width="145mm" depth="95mm" />
+	  </imageobject>
+	  <caption><para>The Edit Grid Dialog</para></caption>
+	</mediaobject>
+      </para>
+      <para>
+	Each grid has slots for every hour of every day of the broadcast week
+	– 168 slots in all.  By specifying a particular clock to go into each
+	of these slots, a set of rules that RDLogManager can use to generate
+	a log for any given day of the week is built up. To specify a clock,
+	simply touch the particular hour of interest to open up the
+	<computeroutput>Select Log Clock</computeroutput> dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlogmanager.log_clocks.png" width="96mm" depth="68mm" />
+	  </imageobject>
+	  <caption><para>The Log Clocks Dialog</para></caption>
+	</mediaobject>
+      </para>
+      <para>
+	Click the desired clock, then touch the
+	<computeroutput>OK</computeroutput> button. To clear the
+	assignment of any clock to the selected hour, touch the
+	<computeroutput>Clear</computeroutput> button,
+	then <computeroutput>OK</computeroutput>.
+      </para>
+      <para>
+	It is possible to 'drill down' directly to the underlying
+	configuration of a clock (to be covered shortly) by right-clicking on
+	the relevant hour in a grid and selecting
+	<computeroutput> Edit Clock</computeroutput>.
+      </para>
+
+    </sect2>
+
+    </sect1>
+    <sect1 xml:id="sect.rdlogmanager.clocks">
+      <title>Clocks</title>
+      <para>
+	An RDLogManager clock is a collection of RDLogManager events,
+	arranged in terms of their start time (relative to the beginning of
+	the hour) and length. It basically can be thought of as the
+	&quot;schedule&quot; of an hour – <emphasis>any</emphasis> hour.
+	Once defined, a clock
+	can be plugged into any hour of a grid of any service, thus making
+	for easy modularization and changes to a service's schedule.
+      </para>
+      <para>
+	To see the list of available clocks, touch the
+	<computeroutput>Edit Clocks</computeroutput> button in
+	RDLogManager's Main Menu to open the Log Clocks dialog.
+	Each RDLogManager clock can be assigned a
+	three-letter code and color, as an aid in identifying it when
+	assigned to grids.  To add a new clock, touch the 
+	<computeroutput>Add</computeroutput> button, or to
+	edit a clock's parameters, click on it and touch the
+	<computeroutput>Edit</computeroutput> button.
+	In each case, the Edit Clock dialog will open.
+	Clocks can also be deleted by touching the
+	<computeroutput>Delete</computeroutput> button or renamed
+	by touching the <computeroutput>Rename</computeroutput> button.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlogmanager.log_clock_list.png" width="97mm" depth="69mm" />
+	  </imageobject>
+	  <caption><para>The Log Clock List Dialog</para></caption>
+	</mediaobject>
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlogmanager.edit_clock_dialog.png" width="145mm" depth="104mm" />
+	  </imageobject>
+	  <caption><para>The Edit Clock Dialog</para></caption>
+	</mediaobject>
+      </para>
+      <para>
+	The Edit Clock dialog consists of three main sections: a tabular
+	list of events in chronological order, a graphical depiction of the
+	clock in the traditional “broadcast clock” format, and a series of
+	action buttons across the bottom. The clock's three-letter code is
+	set by means of the <computeroutput>Code</computeroutput> field
+	in the upper right-hand corner of the
+	table area. Its color can be set by touching the
+	<computeroutput>Color</computeroutput> button. To
+	save the clock without exiting the dialog, touch the
+	<computeroutput>Save</computeroutput>
+	or <computeroutput>Save As</computeroutput>
+	buttons. To add a new event to the clock, touch the
+	<computeroutput>Add</computeroutput> button, or
+	to edit an existing entry touch the 
+	<computeroutput>Edit</computeroutput> button. In either case,
+	the Edit Event Assignment dialog will open. To
+	delete an entry, touch the <computeroutput>Delete</computeroutput>
+	button. As in the case of grids,
+	it is possible to 'drill down' into the underlying RDLogManager
+	event by right-clicking on the respective entry in the clock event
+	table and selecting <computeroutput>Edit Event</computeroutput>.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlogmanager.edit_event_assignment_dialog.png" width="88mm" depth="26mm" />
+	  </imageobject>
+	  <caption><para>The Edit Event Assignment Dialog</para></caption>
+	</mediaobject>
+      </para>
+      <para>
+	The Edit Event Assignment dialog simply consists of an
+	<computeroutput>Event</computeroutput> field
+	for the name of the RDLogManager event and
+	<computeroutput>Start Time</computeroutput> and
+	<computeroutput>End Time</computeroutput>
+	fields for the start and end times relative to the start of the
+	hour. A list of available events can be brought up by touching the
+	<computeroutput>Select</computeroutput> button to bring up the
+	Log Events dialog.
+      </para>
+      <para>
+	Each clock can be designated as being associated with one or more
+	services. This can make finding the correct clock for a given
+	service much faster, as the
+	<computeroutput>Filter</computeroutput> control on the List Clocks
+	dialog can then be used. To program these associations, touch the
+	<computeroutput>Services List</computeroutput> button in the Edit
+	Clock dialog to bring up the Service
+	Associations dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlogmanager.service_association_dialog.png" width="65mm" depth="39mm" />
+	  </imageobject>
+	  <caption><para>The Service Association Dialog</para></caption>
+	</mediaobject>
+      </para>
+      <para>
+	To designate a service as being valid for this clock, select the
+	services name in the <computeroutput>Available Services</computeroutput>
+	list and then touch the <computeroutput>Add &gt;&gt;</computeroutput>
+	button.  Likewise, to deselect a service, select its name in the
+	<computeroutput>Enabled Services</computeroutput> list and then touch
+	the <computeroutput>&lt;&lt; Remove</computeroutput> button.
+      </para>
+    </sect1>
   <sect1 xml:id="sect.rdlogmanager.events">
     <title>Events</title>
     <para>

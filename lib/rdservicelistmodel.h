@@ -42,7 +42,7 @@ class RDServiceListModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  RDServiceListModel(bool incl_none,QObject *parent);
+  RDServiceListModel(bool incl_none,bool exclude_bypass,QObject *parent);
   ~RDServiceListModel();
   QPalette palette();
   void setPalette(const QPalette &pal);
@@ -52,6 +52,7 @@ class RDServiceListModel : public QAbstractTableModel
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
+  bool hasGrid(const QModelIndex &index) const;
   QString serviceName(const QModelIndex &row) const;
   QModelIndex addService(const QString &name);
   void removeService(const QModelIndex &row);
@@ -70,10 +71,12 @@ class RDServiceListModel : public QAbstractTableModel
   QFont d_font;
   QFont d_bold_font;
   bool d_include_none;
+  bool d_exclude_bypass;
   QList<QVariant> d_headers;
   QList<QVariant> d_alignments;
   QList<QList<QVariant> > d_texts;
   QList<QList<QVariant> > d_icons;
+  QList<bool> d_has_grids;
   QMap<QString,QVariant> d_group_color_map;
 };
 

@@ -2,7 +2,7 @@
 //
 // Import Parser Parameters for RDAdmin.
 //
-// (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
+// (C) Copyright 2010-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,13 +17,12 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef IMPORTFIELDS_H
 #define IMPORTFIELDS_H
 
-#include <qlabel.h>
-#include <qspinbox.h>
+#include <QLabel>
+#include <QSpinBox>
 
 #include <rdsvc.h>
 #include <rdwidget.h>
@@ -32,17 +31,25 @@ class ImportFields : public RDWidget
 {
  Q_OBJECT
  public:
-  ImportFields(QWidget *parent=0);
+  ImportFields(RDSvc::ImportSource src,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   bool changed() const;
-  void readFields(RDSvc *svc,RDSvc::ImportSource type);
-  void setFields(RDSvc *svc,RDSvc::ImportSource type);
+  void readFields(RDSvc *svc);
+  void setFields(RDSvc *svc);
+  bool bypassMode() const;
+  void setBypassMode(bool state);
+
+ public slots:
+  void setBypassMode(int n);
+  void setEnabled(bool state);
 
  private slots:
   void valueChangedData(int);
 
  private:
+  RDSvc::ImportSource import_source;
+  bool bypass_mode;
   bool import_changed;
   QSpinBox *cart_offset_spin;
   QSpinBox *cart_length_spin;
@@ -66,6 +73,16 @@ class ImportFields : public RDWidget
   QSpinBox *data_length_spin;
   QSpinBox *event_id_offset_spin;
   QSpinBox *event_id_length_spin;
+  QLabel *trans_type_label;
+  QLabel *trans_type_offset_label;
+  QSpinBox *trans_type_offset_spin;
+  QLabel *trans_type_length_label;
+  QSpinBox *trans_type_length_spin;
+  QLabel *time_type_label;
+  QLabel *time_type_offset_label;
+  QSpinBox *time_type_offset_spin;
+  QLabel *time_type_length_label;
+  QSpinBox *time_type_length_spin;
 };
 
 

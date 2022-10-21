@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Service
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,10 +23,10 @@
 
 #include <vector>
 
-#include <qobject.h>
-#include <qsqldatabase.h>
+#include <QObject>
 
 #include "rdconfig.h"
+#include "rdlog.h"
 #include "rdloglock.h"
 #include "rdstation.h"
 #include "rduser.h"
@@ -38,7 +38,8 @@ class RDSvc : public QObject
   enum ImportSource {Traffic=0,Music=1};
   enum ImportField {CartNumber=0,ExtData=3,ExtEventId=4,ExtAnncType=5,
 		    Title=6,StartHours=7,StartMinutes=8,StartSeconds=9,
-		    LengthHours=10,LengthMinutes=11,LengthSeconds=12};
+		    LengthHours=10,LengthMinutes=11,LengthSeconds=12,
+		    TransType=13,TimeType=14};
   enum ShelflifeOrigin {OriginAirDate=0,OriginCreationDate=1};
   enum SubEventInheritance {ParentEvent=0,SchedFile=1};
   RDSvc(QString svcname,RDStation *station,RDConfig *config,QObject *parent=0);
@@ -46,6 +47,8 @@ class RDSvc : public QObject
   bool exists() const;
   QString description() const;
   void setDescription(const QString &desc) const;
+  bool bypassMode() const;
+  void setBypassMode(bool state) const;
   QString programCode() const;
   void setProgramCode(const QString &str) const;
   QString nameTemplate() const;
@@ -122,6 +125,25 @@ class RDSvc : public QObject
   bool CheckId(std::vector<int> *v,int value);
   QString MakeErrorLine(int indent,unsigned lineno,const QString &msg) const;
   bool ResolveInlineEvents(const QString &logname,QString *err_msg);
+  bool ValidateInlineEvents(QString *err_msg) const;
+  void ProcessGridEvents(RDLog *log,RDLogModel *dst_model,RDLogModel *src_model,
+			 const QString &track_str,const QString &label_cart,
+			 const QString &track_cart,RDLog::Source link_src,
+			 RDLogLine::Type src_type,QString *err_msgs);
+  void ProcessBypassMusicEvents(RDLog *log,RDLogModel *dst_model,
+				RDLogModel *src_model,const QString &track_str,
+				const QString &label_cart,
+				const QString &track_cart,
+				RDLog::Source link_src,RDLogLine::Type src_type,
+				QString *err_msgs);
+  void ProcessBypassTrafficEvents(RDLog *log,RDLogModel *dst_model,
+				  RDLogModel *src_model,
+				  const QString &track_str,
+				  const QString &label_cart,
+				  const QString &track_cart,
+				  RDLog::Source link_src,
+				  QString *err_msgs);
+  int GetCartLength(unsigned cartnum,int def_length) const;
   QString svc_name;
   RDStation *svc_station;
   RDConfig *svc_config;

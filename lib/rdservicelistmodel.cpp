@@ -22,10 +22,12 @@
 #include "rdescape_string.h"
 #include "rdservicelistmodel.h"
 
-RDServiceListModel::RDServiceListModel(bool incl_none,QObject *parent)
+RDServiceListModel::RDServiceListModel(bool incl_none,bool exclude_bypass,
+				       QObject *parent)
   : QAbstractTableModel(parent)
 {
   d_include_none=incl_none;
+  d_exclude_bypass=exclude_bypass;
 
   //
   // Load Color Map
@@ -47,31 +49,34 @@ RDServiceListModel::RDServiceListModel(bool incl_none,QObject *parent)
   unsigned center=Qt::AlignCenter;
   unsigned right=Qt::AlignRight|Qt::AlignVCenter;
 
-  d_headers.push_back(tr("Name"));
+  d_headers.push_back(tr("Name"));            // 00
   d_alignments.push_back(left);
 
-  d_headers.push_back(tr("Description"));
+  d_headers.push_back(tr("Description"));     // 01
   d_alignments.push_back(left);
 
-  d_headers.push_back(tr("Pgm Code"));
+  d_headers.push_back(tr("Pgm Code"));        // 02
   d_alignments.push_back(left);
 
-  d_headers.push_back(tr("Track Group"));
+  d_headers.push_back(tr("Track Group"));     // 03
   d_alignments.push_back(left);
 
-  d_headers.push_back(tr("Log Shelf Life"));
+  d_headers.push_back(tr("Log Shelf Life"));  // 04
   d_alignments.push_back(right);
 
-  d_headers.push_back(tr("ELR Shelf Life"));
+  d_headers.push_back(tr("ELR Shelf Life"));  // 05
   d_alignments.push_back(right);
 
-  d_headers.push_back(tr("Auto Refresh"));
+  d_headers.push_back(tr("Auto Refresh"));    // 06
   d_alignments.push_back(center);
 
-  d_headers.push_back(tr("Chain Log"));
+  d_headers.push_back(tr("Chain Log"));       // 07
   d_alignments.push_back(center);
 
-  d_headers.push_back(tr("Import Markers"));
+  d_headers.push_back(tr("Import Markers"));  // 08
+  d_alignments.push_back(center);
+
+  d_headers.push_back(tr("Has Grid"));        // 09
   d_alignments.push_back(center);
 
   updateModel();
@@ -168,6 +173,15 @@ QVariant RDServiceListModel::data(const QModelIndex &index,int role) const
 }
 
 
+bool RDServiceListModel::hasGrid(const QModelIndex &index) const
+{
+  if(index.isValid()) {
+    return d_has_grids.at(index.row());
+  }
+  return false;
+}
+
+
 QString RDServiceListModel::serviceName(const QModelIndex &row) const
 {
   return d_texts.at(row.row()).at(0).toString();
@@ -194,6 +208,7 @@ QModelIndex RDServiceListModel::addService(const QString &svcname)
   list[0]=svcname;
   d_texts.insert(offset,list);
   d_icons.insert(offset,list);
+  d_has_grids.insert(offset,"N");
   updateRowLine(offset);
   endInsertRows();
 
@@ -207,6 +222,7 @@ void RDServiceListModel::removeService(const QModelIndex &row)
 
   d_texts.removeAt(row.row());
   d_icons.removeAt(row.row());
+  d_has_grids.removeAt(row.row());
 
   endRemoveRows();
 }
@@ -257,10 +273,14 @@ void RDServiceListModel::updateModel()
 
   RDSqlQuery *q=NULL;
   QString sql=sqlFields();
+  if(d_exclude_bypass) {
+    sql+="where `BYPASS_MODE`='N' ";
+  }
   sql+="order by NAME ";
   beginResetModel();
   d_texts.clear();
   d_icons.clear();
+  d_has_grids.clear();
   if(d_include_none) {
     d_texts.push_back(texts);
     d_icons.push_back(texts);
@@ -270,11 +290,13 @@ void RDServiceListModel::updateModel()
       d_texts.back().push_back(QVariant());
       d_icons.back().push_back(QVariant());
     }
+    d_has_grids.push_back("N");
   }
   q=new RDSqlQuery(sql);
   while(q->next()) {
     d_texts.push_back(texts);
     d_icons.push_back(texts);
+    d_has_grids.push_back("N");
     updateRow(d_texts.size()-1,q);
   }
   delete q;
@@ -342,8 +364,18 @@ void RDServiceListModel::updateRow(int row,RDSqlQuery *q)
   texts.push_back(q->value(8));
   icons.push_back(QVariant());
 
+  // Has Grid
+  if(q->value(9).toString()=="Y") {
+    texts.push_back("N");
+  }
+  else {
+    texts.push_back("Y");
+  }
+  icons.push_back(QVariant());
+
   d_texts[row]=texts;
   d_icons[row]=icons;
+  d_has_grids[row]=q->value(9).toString()!="Y";
 }
 
 
@@ -358,7 +390,8 @@ QString RDServiceListModel::sqlFields() const
     "`SERVICES`.`ELR_SHELFLIFE`,"+           // 05
     "`SERVICES`.`AUTO_REFRESH`,"+            // 06
     "`SERVICES`.`CHAIN_LOG`,"+               // 07
-    "`SERVICES`.`INCLUDE_IMPORT_MARKERS` "+  // 08
+    "`SERVICES`.`INCLUDE_IMPORT_MARKERS`,"+  // 08
+    "`BYPASS_MODE` "+                        // 09
     "from `SERVICES` ";
 
     return sql;

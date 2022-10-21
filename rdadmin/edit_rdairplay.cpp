@@ -64,7 +64,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   // Models
   //
-  air_service_model=new RDServiceListModel(true,this);
+  air_service_model=new RDServiceListModel(true,false,this);
 
   //
   // Channel Assignments Section

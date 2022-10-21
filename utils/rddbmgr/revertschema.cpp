@@ -42,6 +42,45 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 364
+  //
+  if((cur_schema==364)&&(set_schema<cur_schema)) {
+    sql=QString("update `IMPORT_TEMPLATES` set ")+
+      "`TRANS_TYPE_OFFSET`=NULL,"+
+      "`TRANS_TYPE_LENGTH`=NULL,"+
+      "`TIME_TYPE_OFFSET`=NULL,"+
+      "`TIME_TYPE_LENGTH`=NULL "+
+      "where `NAME`='Rivendell Standard Import'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 363
+  //
+  if((cur_schema==363)&&(set_schema<cur_schema)) {
+    DropColumn("IMPORTER_LINES","GRACE_TIME");
+    DropColumn("IMPORTER_LINES","TIME_TYPE");
+    DropColumn("IMPORTER_LINES","TRANS_TYPE");
+
+    DropColumn("IMPORT_TEMPLATES","TIME_TYPE_LENGTH");
+    DropColumn("IMPORT_TEMPLATES","TIME_TYPE_OFFSET");
+    DropColumn("IMPORT_TEMPLATES","TRANS_TYPE_LENGTH");
+    DropColumn("IMPORT_TEMPLATES","TRANS_TYPE_OFFSET");
+
+    DropColumn("SERVICES","MUS_TIME_TYPE_LENGTH");
+    DropColumn("SERVICES","MUS_TIME_TYPE_OFFSET");
+    DropColumn("SERVICES","MUS_TRANS_TYPE_LENGTH");
+    DropColumn("SERVICES","MUS_TRANS_TYPE_OFFSET");
+    DropColumn("SERVICES","BYPASS_MODE");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 362
   //
   if((cur_schema==362)&&(set_schema<cur_schema)) {

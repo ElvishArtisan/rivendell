@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Service
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,17 @@
 #ifndef EDIT_SVC_H
 #define EDIT_SVC_H
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rddialog.h>
 #include <rdsvc.h>
 
 #include "importfields.h"
+#include "test_import.h"
 
 class EditSvc : public RDDialog
 {
@@ -43,6 +44,7 @@ class EditSvc : public RDDialog
 
  private slots:
   void autofillData();
+  void bypassModeChangedData(int n);
   void enableHostsData();
   void trafficData();
   void trafficCopyData();
@@ -63,6 +65,9 @@ class EditSvc : public RDDialog
   QLineEdit *svc_program_code_edit;
   QLineEdit *svc_name_template_edit;
   QLineEdit *svc_description_template_edit;
+  QComboBox *svc_bypass_box;
+  QLabel *svc_sub_event_inheritance_label;
+  QComboBox *svc_sub_event_inheritance_box;
   QComboBox *svc_voice_group_box;
   QComboBox *svc_autospot_group_box;
   QLineEdit *svc_tfc_path_edit;
@@ -78,7 +83,6 @@ class EditSvc : public RDDialog
   QLineEdit *svc_mus_label_cart_edit;
   QLineEdit *svc_mus_break_edit;
   QLineEdit *svc_mus_track_edit;
-  QComboBox *svc_sub_event_inheritance_box;
   QCheckBox *svc_chain_box;
   QCheckBox *svc_autorefresh_box;
   QCheckBox *svc_loglife_box;
@@ -92,8 +96,8 @@ class EditSvc : public RDDialog
   QPushButton *svc_tfc_copy_button;
   QPushButton *svc_mus_copy_button;
   bool import_changed;
+  TestImport *svc_test_import_dialog;
 };
 
 
-#endif
-
+#endif  // EDIT_SVC_H

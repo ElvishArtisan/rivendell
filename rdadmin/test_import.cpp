@@ -2,7 +2,7 @@
 //
 // Test a Rivendell Log Import
 //
-//   (C) Copyright 2002-2021 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2022 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,29 +33,17 @@
 #include "globals.h"
 #include "test_import.h"
 
-TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
+TestImport::TestImport(QWidget *parent)
   : RDDialog(parent)
 {
   QString sql;
-  QDate current_date=QDate::currentDate();
-
-  test_svc=svc;
-  test_src=src;
+  test_svc=NULL;
+  test_src=RDSvc::Music;
 
   //
   // Fix the Window Size
   //
   setMinimumSize(sizeHint());
-
-  switch(test_src) {
-  case RDSvc::Traffic:
-    setWindowTitle("RDAdmin - "+tr("Test Traffic Import"));
-    break;
-
-  case RDSvc::Music:
-    setWindowTitle("RDAdmin - "+tr("Test Music Import"));
-    break;
-  }
 
   //
   // Date Selector
@@ -64,7 +52,6 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   test_date_label=new QLabel(tr("Test Date:"),this);
   test_date_label->setFont(labelFont());
   test_date_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  test_date_edit->setDate(current_date);
   connect(test_date_edit,SIGNAL(dateChanged(const QDate &)),
 	  this,SLOT(dateChangedData(const QDate &)));
 
@@ -75,6 +62,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   button->setGeometry(200,5,60,30);
   button->setFont(subButtonFont());
   button->setText(tr("Select"));
+  test_date_edit->setDate(QDate::currentDate());
   connect(button,SIGNAL(clicked()),this,SLOT(selectData()));
 
   //
@@ -114,8 +102,6 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   test_close_button->setFont(buttonFont());
   test_close_button->setText(tr("Close"));
   connect(test_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
-
-  dateChangedData(current_date);
 }
 
 
@@ -133,6 +119,28 @@ QSize TestImport::sizeHint() const
 QSizePolicy TestImport::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+}
+
+
+int TestImport::exec(RDSvc *svc,RDSvc::ImportSource src)
+{
+  test_svc=svc;
+  test_src=src;
+
+  switch(test_src) {
+  case RDSvc::Traffic:
+    setWindowTitle("RDAdmin - "+tr("Test Traffic Import"));
+    break;
+
+  case RDSvc::Music:
+    setWindowTitle("RDAdmin - "+tr("Test Music Import"));
+    break;
+  }
+
+  test_events_model->clear();
+  dateChangedData(test_date_edit->date());
+
+  return QDialog::exec();
 }
 
 
@@ -164,16 +172,18 @@ void TestImport::importData()
   QString sql=QString("delete from `IMPORTER_LINES` where ")+
     "`STATION_NAME`='"+RDEscapeString(rda->station()->name())+"' && "+
     QString::asprintf("`PROCESS_ID`=%u",getpid());
-  //  printf("IMPORTER_LINES cleanup SQL: %s\n",(const char *)sql);
-  RDSqlQuery::apply(sql);
+  printf("IMPORTER_LINES cleanup SQL: %s\n",sql.toUtf8().constData());
+  //  RDSqlQuery::apply(sql);
 }
 
 
 void TestImport::dateChangedData(const QDate &date)
 {
-  test_filename_edit->
-    setText(RDDateDecode(test_svc->importPath(test_src),date,
-			 rda->station(),rda->config(),test_svc->name()));
+  if(test_svc!=NULL) {
+    test_filename_edit->
+      setText(RDDateDecode(test_svc->importPath(test_src),date,
+			   rda->station(),rda->config(),test_svc->name()));
+  }
 }
 
 

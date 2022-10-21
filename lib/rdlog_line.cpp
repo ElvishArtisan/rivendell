@@ -443,7 +443,12 @@ QString RDLogLine::startTimeText() const
   QString ret("");
 
   if(timeType()==RDLogLine::Hard) {
-    ret="T";
+    if(graceTime()<0) { 
+      ret="S";
+   }
+    else {
+      ret="H";
+    }
   }
   else {
     if(!startTime(RDLogLine::Logged).isValid()) {

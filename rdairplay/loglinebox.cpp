@@ -964,9 +964,16 @@ void LogLineBox::PrintTime()
   switch(line_logline->timeType()) {
       case RDLogLine::Hard:
 	line_time_label->setFont(line_bold_font);
-	line_time_label->
-	  setText("T"+rda->tenthsTimeString(line_logline->
-					    startTime(RDLogLine::Logged)));
+	if(line_logline->graceTime()<0) {
+	  line_time_label->
+	    setText("S"+rda->tenthsTimeString(line_logline->
+					      startTime(RDLogLine::Logged)));
+	}
+	else {
+	  line_time_label->
+	    setText("H"+rda->tenthsTimeString(line_logline->
+					      startTime(RDLogLine::Logged)));
+	}
 	line_time_label->setPalette(line_hard_palette);
 	break;
 

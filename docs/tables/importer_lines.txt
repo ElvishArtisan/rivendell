@@ -16,6 +16,9 @@ START_SECS           int(11) signed
 CART_NUMBER          int(10) unsigned
 TITLE                varchar(191)
 LENGTH               int(11) signed
+TRANS_TYPE           int(11) signed    RDLogLine::TransType
+TIME_TYPE            int(11) signed    RDLogLine::TimeType
+GRACE_TIME           int(11) signed
 EXT_DATA             varchar(32)
 EXT_EVENT_ID         varchar(32)
 EXT_ANNC_TYPE        varchar(8)

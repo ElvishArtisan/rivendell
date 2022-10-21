@@ -39,7 +39,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   // Log List
   //
   list_log_view=new RDTableView(this);
-  list_log_model=new RDServiceListModel(false,this);
+  list_log_model=new RDServiceListModel(false,false,this);
   list_log_model->setFont(font());
   list_log_model->setPalette(palette());
   list_log_view->setModel(list_log_model);

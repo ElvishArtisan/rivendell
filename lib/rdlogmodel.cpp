@@ -1027,10 +1027,13 @@ QString RDLogModel::StartTimeString(int line) const
   RDLogLine *ll=logLine(line);
 
   if(ll!=NULL) {
+    QString code="H";
     switch(ll->timeType()) {
     case RDLogLine::Hard:
-      return QString("T")+
-	rda->tenthsTimeString(ll->startTime(RDLogLine::Logged));
+      if(ll->graceTime()<0) {
+	code="S";
+      }
+      return code+rda->tenthsTimeString(ll->startTime(RDLogLine::Logged));
       break;
 
     default:

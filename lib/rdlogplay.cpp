@@ -1791,7 +1791,11 @@ QString RDLogPlay::cellText(int col,int row,RDLogLine *ll) const
     if((ll->status()==RDLogLine::Scheduled)||
        (ll->status()==RDLogLine::Paused)) {
       if(ll->timeType()==RDLogLine::Hard) {
-	return tr("T")+rda->tenthsTimeString(ll->startTime(RDLogLine::Logged));
+	if(ll->graceTime()<0) {
+	  return tr("S")+
+	    rda->tenthsTimeString(ll->startTime(RDLogLine::Logged));
+	}
+	return tr("H")+rda->tenthsTimeString(ll->startTime(RDLogLine::Logged));
       }
       if(!ll->startTime(RDLogLine::Predicted).isNull()) {
 	return rda->tenthsTimeString(ll->startTime(RDLogLine::Predicted));

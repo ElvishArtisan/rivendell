@@ -36,7 +36,7 @@ RDListSvcs::RDListSvcs(const QString &caption,QWidget *parent)
   // Services
   //
   edit_svc_view=new RDTableView(this);
-  edit_svc_model=new RDServiceListModel(false,this);
+  edit_svc_model=new RDServiceListModel(false,false,this);
   edit_svc_model->setFont(font());
   edit_svc_model->setPalette(palette());
   edit_svc_view->setModel(edit_svc_model);
