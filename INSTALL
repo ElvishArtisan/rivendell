@@ -10,6 +10,10 @@ Included with most distros, or available from: http://www.apache.org/.
 Expat
 A stream-oriented XML parser library. Available at https://libexpat.github.io/.
 
+Icedax
+A command-line utility for querying and extracting data from audio CDs.
+Included with most distros.
+
 ID3Lib
 An audio metadata tag library. Included in most distros, or available at 
 http://id3lib.sourceforge.net/.

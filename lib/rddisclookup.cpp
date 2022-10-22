@@ -476,9 +476,16 @@ bool RDDiscLookup::ReadCdText(const QString &cdda_dev)
     return false;
   }
   if((exit_code=proc->exitCode())!=0) {
-    QMessageBox::warning(this,lookup_caption+" - "+tr("Ripper Error"),
-			 tr("CD-Text reader process returned an error!")+"\n"+
-			 "["+output+"]");
+    if(output.isEmpty()) {
+      QMessageBox::warning(this,lookup_caption+" - "+tr("Ripper Error"),
+			   tr("CD-Text reader process failed.")+"\n"+
+			   "["+tr("Call to \"/usr/bin/cdda2wav\" failed")+"]");
+    }
+    else {
+      QMessageBox::warning(this,lookup_caption+" - "+tr("Ripper Error"),
+			   tr("CD-Text reader process returned an error!")+"\n"+
+			   "["+output+"]");
+    }
     delete proc;
     return false;
   }

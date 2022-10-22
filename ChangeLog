@@ -23553,3 +23553,6 @@
 	the stack of deck monitors.
 2022-10-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'icedax' dependency to the 'rivendell' RPM package.
+2022-10-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'icedax' dependency to the 'rivendell' DEB package.
+	* Documented the 'icedax' dependency in 'INSTALL'.
