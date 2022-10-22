@@ -23551,3 +23551,5 @@
 2022-10-22 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatch(1) that made it impossible to scroll
 	the stack of deck monitors.
+2022-10-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'icedax' dependency to the 'rivendell' RPM package.
