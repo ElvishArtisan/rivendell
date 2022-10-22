@@ -23548,3 +23548,6 @@
 	distinguish hard and soft start times.
 2022-10-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added an Ubuntu-specific pam(7) configuration.
+2022-10-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that made it impossible to scroll
+	the stack of deck monitors.

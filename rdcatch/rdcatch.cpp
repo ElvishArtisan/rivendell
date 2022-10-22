@@ -79,7 +79,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   QString str;
   QString err_msg;
 
-  catch_resize=false;
   catch_host_warnings=false;
   catch_audition_stream=-1;
 
@@ -501,16 +500,6 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   if(ShowNextEvents(current_date.dayOfWeek(),current_time,&next_time)>0) {
     catch_next_timer->start(current_time.msecsTo(next_time));
   }
-
-  //
-  // Silly Resize Workaround
-  // (so that the deck monitors get laid out properly)
-  //
-  QTimer *timer=new QTimer(this);
-  connect(timer,SIGNAL(timeout()),this,SLOT(resizeData()));
-  timer->start(1);
-
-  catch_resize=true;
 }
 
 QSize MainWidget::sizeHint() const
@@ -522,17 +511,6 @@ QSize MainWidget::sizeHint() const
 QSizePolicy MainWidget::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-}
-
-
-void MainWidget::resizeData()
-{
-  QResizeEvent *e=new QResizeEvent(QSize(geometry().width(),
-					 geometry().height()),
-				   QSize(geometry().width(),
-					 geometry().height()));
-  resizeEvent(e);
-  delete e;
 }
 
 
@@ -1179,11 +1157,8 @@ void MainWidget::closeEvent(QCloseEvent *e)
 
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
-  if(!catch_resize) {
-    return;
-  }
-  assert (e);
-  assert (catch_monitor_area);
+  assert(e);
+  assert(catch_monitor_area);
   if(catch_monitor.size()<=RDCATCH_MAX_VISIBLE_MONITORS) {
     catch_monitor_area->
       setGeometry(10,10,e->size().width()-20,32*catch_monitor.size()+4);
@@ -1193,10 +1168,18 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   else {
     catch_monitor_area->
       setGeometry(10,10,e->size().width()-20,32*RDCATCH_MAX_VISIBLE_MONITORS);
+    //
+    // This depends on the width of the scrollbar. How to reliably
+    // determine such on various desktops?
+    //
+    // (catch_monitor_area->verticalScrollBar()->geometry().width() is not
+    // always accurate!)
+    //
     catch_monitor_vbox->
-      setGeometry(0,0,e->size().width()-
-		  catch_monitor_area->verticalScrollBar()->geometry().width()-
-		  25,32*catch_monitor.size());
+      setGeometry(0,
+		  0,
+		  e->size().width()-40,  // Works on XFCE, what about others?
+		  32*catch_monitor.size());
   }
   int deck_height=0;  
   if (catch_monitor.size()>0){

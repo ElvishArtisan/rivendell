@@ -72,7 +72,6 @@ class MainWidget : public RDMainWindow
   QSizePolicy sizePolicy() const;
   
  private slots:
-  void resizeData();
   void connectedData(int serial,bool state);
   void nextEventData();
   void addData();
@@ -159,7 +158,6 @@ class MainWidget : public RDMainWindow
   QTimer *catch_midnight_timer;
   int catch_time_offset;
   bool catch_host_warnings;
-  bool catch_resize;
   AddRecording *catch_add_recording_dialog;
 };
 
