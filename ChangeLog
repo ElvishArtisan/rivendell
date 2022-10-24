@@ -23558,3 +23558,6 @@
 	* Documented the 'icedax' dependency in 'INSTALL'
 2022-10-24 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc0int0.
+2022-10-24 Fred Gleason <fredg@paravelsystems.com>
+	* Disabled the ability to configure an upload to an RSS feed
+	in rdcatch(1).

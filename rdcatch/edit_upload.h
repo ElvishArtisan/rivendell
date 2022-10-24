@@ -76,7 +76,7 @@ class EditUpload : public RDDialog
   EventWidget *edit_event_widget;
   QLabel *edit_feed_label;
   QComboBox *edit_feed_box;
-  RDFeedListModel *edit_feed_model;
+  //  RDFeedListModel *edit_feed_model;
   QLabel *edit_description_label;
   QLineEdit *edit_description_edit;
   QPushButton *edit_source_select_button;

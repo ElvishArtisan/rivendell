@@ -274,7 +274,7 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   catch_editplayout_dialog=new EditPlayout(&catch_filter,this);
   catch_editrecording_dialog=new EditRecording(&catch_filter,this);
   catch_editswitchevent_dialog=new EditSwitchEvent(this);
-  catch_editupload_dialog=new EditUpload(&catch_filter,this);
+  catch_editupload_dialog=new EditUpload(&catch_filter,this);  // SLOW!!
   catch_add_recording_dialog=new AddRecording(&catch_filter,this);
 
   //
