@@ -23563,3 +23563,5 @@
 	in rdcatch(1).
 2022-10-24 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 4.0.0rc0int1.
+2022-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'Rivendell Notification Protocol' API document.

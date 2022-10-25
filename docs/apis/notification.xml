@@ -19,17 +19,17 @@
     of multicast UDP packets to port 20539.
   </para>
   <para>
-    The format of a message is as follows:
+    Update messages are textual, formatted as follows:
   </para>
   <para>
-    NOTIFY <replaceable choice='req'>obj-type</replaceable>
+    NOTIFY <replaceable choice='req'>keyword</replaceable>
     <replaceable choice='req'>action</replaceable>
     <replaceable choice='req'>id</replaceable>
   </para>
   <variablelist>
     <varlistentry>
       <term>
-	<replaceable>obj-type</replaceable>
+	<replaceable>keyword</replaceable>
       </term>
       <listitem>
 	<para>
@@ -99,19 +99,32 @@
   </para>
   <sect2 xml:id="sect.object_types.cart">
     <title>Carts</title>
-    <para>
-      <userinput>CART</userinput>
-    </para>
     <table xml:id="table.object_types.carts" frame="all" pgwide="0">
       <title>Cart Fields</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Field" colwidth="2.0*"/>
-	<colspec colname="Value" colwidth="10.0*"/>
+	<colspec colname="Value" colwidth="2.0*"/>
 	<tbody>
-	  <row><entry>Field</entry><entry>Value</entry></row>
-	  <row><entry>obj-type</entry><entry>CART</entry></row>
-	  <row><entry>id</entry><entry>Cart number</entry></row>
-	  <row><entry>type</entry><entry>Unsigned Integer</entry></row>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Keyword</entry>
+	    <entry>CART</entry>
+	  </row>
+	  <row>
+	    <entry>Database Field</entry>
+	  <entry>CART.NUMBER</entry>
+	  </row>
+	  <row>
+	    <entry>Id Data Type</entry>
+	  <entry>Unsigned Integer</entry>
+	  </row>
+	  <row>
+	    <entry>RDNotification::Type Value</entry>
+	    <entry>RDNotification::CartType [1]</entry>
+	  </row>
 	</tbody>
       </tgroup>
     </table>
@@ -119,19 +132,197 @@
 
   <sect2 xml:id="sect.object_types.log">
     <title>Logs</title>
-    <para>
-      <userinput>LOG</userinput>
-    </para>
     <table xml:id="table.object_types.logs" frame="all" pgwide="0">
       <title>Log Fields</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Field" colwidth="2.0*"/>
-	<colspec colname="Value" colwidth="10.0*"/>
+	<colspec colname="Value" colwidth="2.0*"/>
 	<tbody>
-	  <row><entry>Field</entry><entry>Value</entry></row>
-	  <row><entry>obj-type</entry><entry>LOG</entry></row>
-	  <row><entry>id</entry><entry>Log name</entry></row>
-	  <row><entry>type</entry><entry>String</entry></row>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Keyword</entry>
+	    <entry>LOG</entry>
+	  </row>
+	  <row>
+	    <entry>Database Field</entry>
+	    <entry>LOGS.NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Id Data Type</entry>
+	    <entry>String</entry>
+	  </row>
+	  <row>
+	    <entry>RDNotification::Type Value</entry>
+	    <entry>RDNotification::LogType [2]</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.object_types.pypad">
+    <title>Pypad Instances</title>
+    <table xml:id="table.object_types.pypad" frame="all" pgwide="0">
+      <title>Pypad Instance Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="2.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Keyword</entry>
+	    <entry>PYPAD</entry>
+	  </row>
+	  <row>
+	    <entry>Database Field</entry>
+	    <entry>PYPAD_INSTANCES.ID</entry>
+	  </row>
+	  <row>
+	    <entry>Id Data Type</entry>
+	    <entry>Integer</entry>
+	  </row>
+	  <row>
+	    <entry>RDNotification::Type Value</entry>
+	    <entry>RDNotification::PypadType [3]</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.object_types.dropbox">
+    <title>Dropbox Instances</title>
+    <table xml:id="table.object_types.dropbox" frame="all" pgwide="0">
+      <title>Dropbox Instance Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="2.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Keyword</entry>
+	    <entry>DROPBOX</entry>
+	  </row>
+	  <row>
+	    <entry>Database Field</entry>
+	    <entry>DROPBOXES.ID</entry>
+	  </row>
+	  <row>
+	    <entry>Id Data Type</entry>
+	    <entry>Integer</entry>
+	  </row>
+	  <row>
+	    <entry>RDNotification::Type Value</entry>
+	    <entry>RDNotification::DropboxType [4]</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.object_types.catch_event">
+    <title>RDCatch Event Instances</title>
+    <table xml:id="table.object_types.catch_event" frame="all" pgwide="0">
+      <title>RDCatch Event Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="2.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Keyword</entry>
+	    <entry>CATCH_EVENT</entry>
+	  </row>
+	  <row>
+	    <entry>Database Field</entry>
+	    <entry>RECORDINGS.ID</entry>
+	  </row>
+	  <row>
+	    <entry>Id Data Type</entry>
+	    <entry>Integer</entry>
+	  </row>
+	  <row>
+	    <entry>RDNotification::Type Value</entry>
+	    <entry>RDNotification::CatchEventType [5]</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.object_types.feed_item">
+    <title>RSS Feed Items</title>
+    <table xml:id="table.object_types.feed_item" frame="all" pgwide="0">
+      <title>RSS Feed Item Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="2.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Keyword</entry>
+	    <entry>FEED_ITEM</entry>
+	  </row>
+	  <row>
+	    <entry>Database Field</entry>
+	    <entry>PODCASTS.ID</entry>
+	  </row>
+	  <row>
+	    <entry>Id Data Type</entry>
+	    <entry>Unsigned Integer</entry>
+	  </row>
+	  <row>
+	    <entry>RDNotification::Type Value</entry>
+	    <entry>RDNotification::FeedItemType [6]</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 xml:id="sect.object_types.feed">
+    <title>RSS Feeds</title>
+    <table xml:id="table.object_types.feed" frame="all" pgwide="0">
+      <title>RSS Feed Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="2.0*"/>
+	<tbody>
+	  <row>
+	    <entry>Field</entry>
+	    <entry>Value</entry>
+	  </row>
+	  <row>
+	    <entry>Keyword</entry>
+	    <entry>FEED</entry>
+	  </row>
+	  <row>
+	    <entry>Database Field</entry>
+	    <entry>FEEDS.KEY_NAME</entry>
+	  </row>
+	  <row>
+	    <entry>Id Data Type</entry>
+	    <entry>String</entry>
+	  </row>
+	  <row>
+	    <entry>RDNotification::Type Value</entry>
+	    <entry>RDNotification::FeedType [7]</entry>
+	  </row>
 	</tbody>
       </tgroup>
     </table>
